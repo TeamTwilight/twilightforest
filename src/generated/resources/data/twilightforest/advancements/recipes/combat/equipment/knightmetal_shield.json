@@ -32,15 +32,14 @@
   },
   "requirements": [
     [
+      "has_the_recipe",
       "has_ingot",
-      "has_ring",
-      "has_the_recipe"
+      "has_ring"
     ]
   ],
   "rewards": {
     "recipes": [
       "twilightforest:equipment/knightmetal_shield"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

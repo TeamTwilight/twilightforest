@@ -8,7 +8,8 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.world.entity.Entity;
-import twilightforest.capabilities.CapabilityList;
+import net.minecraft.world.entity.LivingEntity;
+import twilightforest.init.TFDataAttachments;
 
 public class ShieldCommand {
     public static LiteralArgumentBuilder<CommandSourceStack> register() {
@@ -28,12 +29,16 @@ public class ShieldCommand {
     }
 
     private static int add(Entity e, int num, boolean temporary) {
-        e.getCapability(CapabilityList.SHIELDS).ifPresent(cap -> cap.addShields(num, temporary));
+        if (e instanceof LivingEntity living) {
+            living.getData(TFDataAttachments.FORTIFICATION_SHIELDS).addShields(living, num, temporary);
+        }
         return Command.SINGLE_SUCCESS;
     }
 
     private static int set(Entity e, int num, boolean temporary) {
-        e.getCapability(CapabilityList.SHIELDS).ifPresent(cap -> cap.setShields(num, temporary));
+        if (e instanceof LivingEntity living) {
+            living.getData(TFDataAttachments.FORTIFICATION_SHIELDS).setShields(living, num, temporary);
+        }
         return Command.SINGLE_SUCCESS;
     }
 }

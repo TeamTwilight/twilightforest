@@ -7,7 +7,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.items.IItemHandler;
 import twilightforest.TwilightForestMod;
 
 import java.util.ArrayList;
@@ -23,21 +24,24 @@ public class TFItemStackUtils {
 	public static boolean consumeInventoryItem(LivingEntity living, final Predicate<ItemStack> matcher, final int count) {
 		TwilightForestMod.LOGGER.warn("consumeInventoryItem accessed! Forge requires the player to be alive before we can access this cap. This cap is most likely being accessed for an Afterdeath Charm!");
 
-		return living.getCapability(ForgeCapabilities.ITEM_HANDLER).map(inv -> {
+		IItemHandler handler = living.getCapability(Capabilities.ItemHandler.ENTITY);
+		if (handler != null) {
 			int innerCount = count;
 			boolean consumedSome = false;
 
-			for (int i = 0; i < inv.getSlots() && innerCount > 0; i++) {
-				ItemStack stack = inv.getStackInSlot(i);
+			for (int i = 0; i < handler.getSlots() && innerCount > 0; i++) {
+				ItemStack stack = handler.getStackInSlot(i);
 				if (matcher.test(stack)) {
-					ItemStack consumed = inv.extractItem(i, innerCount, false);
+					ItemStack consumed = handler.extractItem(i, innerCount, false);
 					innerCount -= consumed.getCount();
 					consumedSome = true;
 				}
 			}
 
 			return consumedSome;
-		}).orElse(false);
+		}
+
+		return false;
 	}
 
 	public static boolean consumeInventoryItem(final Player player, final Item item) {

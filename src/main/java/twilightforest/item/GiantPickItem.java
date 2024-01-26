@@ -6,7 +6,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
@@ -16,13 +15,13 @@ import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.ForgeMod;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.common.NeoForgeMod;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.block.GiantBlock;
-import twilightforest.capabilities.CapabilityList;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.TFDataAttachments;
 
 import java.util.List;
 
@@ -43,8 +42,8 @@ public class GiantPickItem extends PickaxeItem implements GiantItem {
 	public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot slot) {
 		ImmutableMultimap.Builder<Attribute, AttributeModifier> attributeBuilder = ImmutableMultimap.builder();
 		attributeBuilder.putAll(super.getDefaultAttributeModifiers(slot));
-		attributeBuilder.put(ForgeMod.BLOCK_REACH.get(), new AttributeModifier(GIANT_REACH_MODIFIER, "Reach modifier", 2.5, AttributeModifier.Operation.ADDITION));
-		attributeBuilder.put(ForgeMod.ENTITY_REACH.get(), new AttributeModifier(GIANT_RANGE_MODIFIER, "Range modifier", 2.5, AttributeModifier.Operation.ADDITION));
+		attributeBuilder.put(NeoForgeMod.BLOCK_REACH.value(), new AttributeModifier(GIANT_REACH_MODIFIER, "Reach modifier", 2.5, AttributeModifier.Operation.ADDITION));
+		attributeBuilder.put(NeoForgeMod.ENTITY_REACH.value(), new AttributeModifier(GIANT_RANGE_MODIFIER, "Range modifier", 2.5, AttributeModifier.Operation.ADDITION));
 		return slot == EquipmentSlot.MAINHAND ? attributeBuilder.build() : super.getDefaultAttributeModifiers(slot);
 	}
 
@@ -52,23 +51,22 @@ public class GiantPickItem extends PickaxeItem implements GiantItem {
 	public float getDestroySpeed(ItemStack stack, BlockState state) {
 		float destroySpeed = super.getDestroySpeed(stack, state);
 		// extra 64X strength vs giant obsidian
-		destroySpeed *= (state.getBlock() == TFBlocks.GIANT_OBSIDIAN.get()) ? 64 : 1;
+		destroySpeed *= (state.is(TFBlocks.GIANT_OBSIDIAN)) ? 64 : 1;
 		// 64x strength vs giant blocks
 		return state.getBlock() instanceof GiantBlock ? destroySpeed * 64 : destroySpeed;
 	}
 
 	@Override
-	public boolean canAttackBlock(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer) {
-		ItemStack stack = pPlayer.getMainHandItem();
+	public boolean canAttackBlock(BlockState state, Level level, BlockPos pos, Player player) {
+		ItemStack stack = player.getMainHandItem();
 		if (stack.is(this)) {
-			pPlayer.getCapability(CapabilityList.GIANT_PICK_MINE).ifPresent(cap -> {
-				if (cap.getMining() != pLevel.getGameTime()) {
-					cap.setMining(pLevel.getGameTime());
-					cap.setBreaking(false);
-					cap.setGiantBlockConversion(0);
-				}
-			});
+			var attachment = player.getData(TFDataAttachments.GIANT_PICKAXE_MINING);
+			if (attachment.getMining() != level.getGameTime()) {
+				attachment.setMining(level.getGameTime());
+				attachment.setBreaking(false);
+				attachment.setGiantBlockConversion(0);
+			}
 		}
-		return super.canAttackBlock(pState, pLevel, pPos, pPlayer);
+		return super.canAttackBlock(state, level, pos, player);
 	}
 }

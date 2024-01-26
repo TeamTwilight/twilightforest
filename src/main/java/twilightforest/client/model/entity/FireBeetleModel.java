@@ -40,9 +40,9 @@ public class FireBeetleModel extends HierarchicalModel<FireBeetle> {
 
 	public static LayerDefinition create() {
 		MeshDefinition mesh = new MeshDefinition();
-		PartDefinition partRoot = mesh.getRoot();
+		PartDefinition definition = mesh.getRoot();
 
-		var head = partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+		var head = definition.addOrReplaceChild("head", CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(-4F, -4F, -6F, 8, 6, 6),
 				PartPose.offset(0F, 19F, -5F));
@@ -87,52 +87,52 @@ public class FireBeetleModel extends HierarchicalModel<FireBeetle> {
 						.addBox(0F, 0F, -2F, 1, 1, 2),
 				PartPose.offsetAndRotation(0F, 0F, -2F, 0F, 1.570796F, 0F));
 
-		partRoot.addOrReplaceChild("thorax", CubeListBuilder.create()
+		definition.addOrReplaceChild("thorax", CubeListBuilder.create()
 						.texOffs(0, 22)
 						.addBox(-4.5F, -4F, 0F, 9, 8, 2),
 				PartPose.offset(0F, 18F, -4.5F));
 
-		partRoot.addOrReplaceChild("connector_1", CubeListBuilder.create()
+		definition.addOrReplaceChild("connector_1", CubeListBuilder.create()
 						.texOffs(0, 12)
 						.addBox(-3F, -3F, 0F, 6, 6, 1),
 				PartPose.offset(0F, 18F, -3F));
 
-		partRoot.addOrReplaceChild("connector_2", CubeListBuilder.create()
+		definition.addOrReplaceChild("connector_2", CubeListBuilder.create()
 						.texOffs(0, 12)
 						.addBox(-3F, -3F, -1F, 6, 6, 1),
 				PartPose.offset(0F, 18F, -4F));
 
-		partRoot.addOrReplaceChild("rear", CubeListBuilder.create()
+		definition.addOrReplaceChild("rear", CubeListBuilder.create()
 						.texOffs(22, 9)
 						.addBox(-6F, -9F, -4F, 12, 14, 9),
 				PartPose.offsetAndRotation(0F, 18F, 7F, 1.570796F, 0F, 0F));
 
-		partRoot.addOrReplaceChild("leg_1", CubeListBuilder.create().mirror()
+		definition.addOrReplaceChild("leg_1", CubeListBuilder.create().mirror()
 						.texOffs(40, 0)
 						.addBox(-9F, -1F, -1F, 10, 2, 2),
 				PartPose.offsetAndRotation(-4F, 21F, 4F, 0F, 0.6981317F, -0.3490659F));
 
-		partRoot.addOrReplaceChild("leg_2", CubeListBuilder.create()
+		definition.addOrReplaceChild("leg_2", CubeListBuilder.create()
 						.texOffs(40, 0)
 						.addBox(-1F, -1F, -1F, 10, 2, 2),
 				PartPose.offsetAndRotation(4F, 21F, 4F, 0F, -0.6981317F, 0.3490659F));
 
-		partRoot.addOrReplaceChild("leg_3", CubeListBuilder.create().mirror()
+		definition.addOrReplaceChild("leg_3", CubeListBuilder.create().mirror()
 						.texOffs(40, 0)
 						.addBox(-9F, -1F, -1F, 10, 2, 2),
 				PartPose.offsetAndRotation(-4F, 21F, -1F, 0F, 0.2792527F, -0.3490659F));
 
-		partRoot.addOrReplaceChild("leg_4", CubeListBuilder.create()
+		definition.addOrReplaceChild("leg_4", CubeListBuilder.create()
 						.texOffs(40, 0)
 						.addBox(-1F, -1F, -1F, 10, 2, 2),
 				PartPose.offsetAndRotation(4F, 21F, -1F, 0F, -0.2792527F, 0.3490659F));
 
-		partRoot.addOrReplaceChild("leg_5", CubeListBuilder.create().mirror()
+		definition.addOrReplaceChild("leg_5", CubeListBuilder.create().mirror()
 						.texOffs(40, 0)
 						.addBox(-9F, -1F, -1F, 10, 2, 2),
 				PartPose.offsetAndRotation(-4F, 21F, -4F, 0F, -0.2792527F, -0.3490659F));
 
-		partRoot.addOrReplaceChild("leg_6", CubeListBuilder.create()
+		definition.addOrReplaceChild("leg_6", CubeListBuilder.create()
 						.texOffs(40, 0)
 						.addBox(-1F, -1F, -1F, 10, 2, 2),
 				PartPose.offsetAndRotation(4F, 21F, -4F, 0F, 0.2792527F, 0.3490659F));

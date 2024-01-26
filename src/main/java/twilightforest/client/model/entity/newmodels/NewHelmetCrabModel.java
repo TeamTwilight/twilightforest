@@ -5,8 +5,8 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import twilightforest.entity.monster.HelmetCrab;
 
 /**
@@ -41,9 +41,9 @@ public class NewHelmetCrabModel extends HierarchicalModel<HelmetCrab> {
 
     public static LayerDefinition create() {
         MeshDefinition mesh = new MeshDefinition();
-        PartDefinition partRoot = mesh.getRoot();
+        PartDefinition definition = mesh.getRoot();
 
-        var body = partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+        var body = definition.addOrReplaceChild("body", CubeListBuilder.create()
                         .texOffs(0, 9)
                         .addBox(-2.5F, -4.0F, -2.5F, 5.0F, 4.0F, 5.0F)
                         .texOffs(58, 0)
@@ -74,22 +74,22 @@ public class NewHelmetCrabModel extends HierarchicalModel<HelmetCrab> {
                         .addBox(-1.0F, -3.0F, -5.0F, 2.0F, 4.0F, 5.0F),
                 PartPose.offsetAndRotation(3.0F, 0.0F, -3.0F, 0.0F, -0.39269908169872414F, 0.0F));
 
-        partRoot.addOrReplaceChild("right_leg_1", CubeListBuilder.create()
+        definition.addOrReplaceChild("right_leg_1", CubeListBuilder.create()
                         .texOffs(32, 15)
                         .addBox(-6.0F, -1.0F, -1.0F, 6.0F, 2.0F, 2.0F),
                 PartPose.offsetAndRotation(-2.0F, 21.0F, 0.0F, 0.2181661564992912F, 0.4363323129985824F, -0.4363323129985824F));
 
-        partRoot.addOrReplaceChild("left_leg_1", CubeListBuilder.create()
+        definition.addOrReplaceChild("left_leg_1", CubeListBuilder.create()
                         .texOffs(48, 19)
                         .addBox(0.0F, -1.0F, -1.0F, 6.0F, 2.0F, 2.0F),
                 PartPose.offsetAndRotation(2.0F, 21.0F, 0.0F, 0.2181661564992912F, -0.4363323129985824F, 0.4363323129985824F));
 
-        partRoot.addOrReplaceChild("right_leg_2", CubeListBuilder.create()
+        definition.addOrReplaceChild("right_leg_2", CubeListBuilder.create()
                         .texOffs(32, 19)
                         .addBox(-6.0F, -1.0F, -1.0F, 6.0F, 2.0F, 2.0F),
                 PartPose.offsetAndRotation(-2.0F, 21.0F, -1.5F, 0.2181661564992912F, 0.0F, -0.4363323129985824F));
 
-        partRoot.addOrReplaceChild("left_leg_2", CubeListBuilder.create()
+        definition.addOrReplaceChild("left_leg_2", CubeListBuilder.create()
                         .texOffs(48, 15)
                         .addBox(0.0F, -1.0F, -1.0F, 6.0F, 2.0F, 2.0F),
                 PartPose.offsetAndRotation(2.0F, 21.0F, -1.5F, 0.2181661564992912F, 0.0F, 0.4363323129985824F));

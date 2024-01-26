@@ -42,7 +42,6 @@ import twilightforest.TwilightForestMod;
 import twilightforest.entity.boss.AlphaYeti;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
-import twilightforest.init.TFParticleType;
 
 import java.util.Objects;
 

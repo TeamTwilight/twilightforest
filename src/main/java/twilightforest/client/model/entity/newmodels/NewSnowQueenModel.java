@@ -8,8 +8,8 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import twilightforest.entity.boss.SnowQueen;
 
 /**
@@ -24,40 +24,40 @@ public class NewSnowQueenModel extends HumanoidModel<SnowQueen> {
 
     public static LayerDefinition create() {
         MeshDefinition mesh = new MeshDefinition();
-        PartDefinition partRoot = mesh.getRoot();
+        PartDefinition definition = mesh.getRoot();
 
-        partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+        definition.addOrReplaceChild("body", CubeListBuilder.create()
                         .texOffs(0, 16)
                         .addBox(-4.0F, 0.0F, -2.0F, 8.0F, 12.0F, 4.0F)
                         .texOffs(32, 45)
                         .addBox(-4.5F, 10.0F, -2.5F, 9.0F, 14.0F, 5.0F),
                 PartPose.ZERO);
 
-        partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+        definition.addOrReplaceChild("head", CubeListBuilder.create()
                         .addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F),
                 PartPose.ZERO);
 
-        partRoot.addOrReplaceChild("left_arm", CubeListBuilder.create()
+        definition.addOrReplaceChild("left_arm", CubeListBuilder.create()
                         .texOffs(14, 32)
                         .addBox(-1.0F, -2.0F, -2.0F, 3.0F, 12.0F, 4.0F),
                 PartPose.offset(5.0F, 2.0F, 0.0F));
 
-        partRoot.addOrReplaceChild("left_leg", CubeListBuilder.create()
+        definition.addOrReplaceChild("left_leg", CubeListBuilder.create()
                         .texOffs(16, 48)
                         .addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F),
                 PartPose.offset(1.9F, 12.0F, 0.0F));
 
-        partRoot.addOrReplaceChild("right_leg", CubeListBuilder.create()
+        definition.addOrReplaceChild("right_leg", CubeListBuilder.create()
                         .texOffs(0, 48)
                         .addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F),
                 PartPose.offset(-1.9F, 12.0F, 0.0F));
 
-        partRoot.addOrReplaceChild("right_arm", CubeListBuilder.create()
+        definition.addOrReplaceChild("right_arm", CubeListBuilder.create()
                         .texOffs(0, 32)
                         .addBox(-2.0F, -2.0F, -2.0F, 3.0F, 12.0F, 4.0F),
                 PartPose.offset(-5.0F, 2.0F, 0.0F));
 
-        var hat = partRoot.addOrReplaceChild("hat", CubeListBuilder.create()
+        var hat = definition.addOrReplaceChild("hat", CubeListBuilder.create()
                         .addBox(0, 0, 0, 0, 0, 0),
                 PartPose.ZERO);
 

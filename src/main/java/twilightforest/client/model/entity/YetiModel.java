@@ -25,19 +25,19 @@ public class YetiModel<T extends Yeti> extends HumanoidModel<T> {
 
 	public static LayerDefinition create() {
 		MeshDefinition mesh = new MeshDefinition();
-		PartDefinition partRoot = mesh.getRoot();
+		PartDefinition definition = mesh.getRoot();
 
-		partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+		definition.addOrReplaceChild("head", CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(-4.0F, -8.0F, -4.0F, 0, 0, 0),
 				PartPose.ZERO);
 
-		partRoot.addOrReplaceChild("hat", CubeListBuilder.create()
+		definition.addOrReplaceChild("hat", CubeListBuilder.create()
 						.texOffs(32, 0)
 						.addBox(-4.0F, -8.0F, -4.0F, 0, 0, 0),
 				PartPose.ZERO);
 
-		var body = partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+		var body = definition.addOrReplaceChild("body", CubeListBuilder.create()
 						.texOffs(32, 0)
 						.addBox(-10.0F, 0.0F, -6.0F, 20, 26, 12),
 				PartPose.offset(0.0F, -14.0F, 0.0F));
@@ -67,23 +67,23 @@ public class YetiModel<T extends Yeti> extends HumanoidModel<T> {
 						.addBox(-2.5F, -2.5F, -0.5F, 5, 5, 1),
 				PartPose.offset(-5.5F, 4.5F, -6.0F));
 
-		partRoot.addOrReplaceChild("right_arm", CubeListBuilder.create()
+		definition.addOrReplaceChild("right_arm", CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(-5.0F, -2.0F, -3.0F, 6, 16, 6),
 				PartPose.offset(-11.0F, -4.0F, 0.0F));
 
-		partRoot.addOrReplaceChild("left_arm", CubeListBuilder.create()
+		definition.addOrReplaceChild("left_arm", CubeListBuilder.create()
 						.mirror()
 						.texOffs(0, 0)
 						.addBox(-1.0F, -2.0F, -3.0F, 6, 16, 6),
 				PartPose.offset(11.0F, -4.0F, 0.0F));
 
-		partRoot.addOrReplaceChild("right_leg", CubeListBuilder.create()
+		definition.addOrReplaceChild("right_leg", CubeListBuilder.create()
 						.texOffs(0, 22)
 						.addBox(-4.0F, 0.0F, -4.0F, 8, 12, 8),
 				PartPose.offset(-6.0F, 12.0F, 0.0F));
 
-		partRoot.addOrReplaceChild("left_leg", CubeListBuilder.create()
+		definition.addOrReplaceChild("left_leg", CubeListBuilder.create()
 						.mirror()
 						.texOffs(0, 22)
 						.addBox(-4.0F, 0.0F, -4.0F, 8, 12, 8),
@@ -150,6 +150,11 @@ public class YetiModel<T extends Yeti> extends HumanoidModel<T> {
 			this.leftArm.zRot -= Mth.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
 			this.rightArm.xRot += Mth.sin(ageInTicks * 0.067F) * 0.05F;
 			this.leftArm.xRot -= Mth.sin(ageInTicks * 0.067F) * 0.05F;
+			if (entity.isVehicle()) {
+				// arms up!
+				this.rightArm.xRot -= Mth.HALF_PI;
+				this.leftArm.xRot -= Mth.HALF_PI;
+			}
 		}
 	}
 

@@ -13,11 +13,7 @@ import net.minecraft.world.level.biome.*;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
-import twilightforest.init.TFConfiguredFeatures;
-import twilightforest.init.TFEntities;
-import twilightforest.init.TFParticleType;
-import twilightforest.init.TFPlacedFeatures;
-import twilightforest.init.TFCaveCarvers;
+import twilightforest.init.*;
 
 public abstract class BiomeHelper {
 
@@ -182,10 +178,19 @@ public abstract class BiomeHelper {
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_HIGHLANDS_TREES);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, MiscOverworldPlacements.FOREST_ROCK);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, VegetationPlacements.PATCH_GRASS_TAIGA);
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_SPARSE_MUSHGLOOMS);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_SPRUCE_FALLEN_LOG);
 
 		addHighlandCaves(biome);
 		addSmallStoneClusters(biome);
+
+		return biome;
+	}
+
+	public static BiomeGenerationSettings.Builder highlandsUndergroundGen(HolderGetter<PlacedFeature> featureGetter, HolderGetter<ConfiguredWorldCarver<?>> carverGetter) {
+		BiomeGenerationSettings.Builder biome = new BiomeGenerationSettings.Builder(featureGetter, carverGetter);
+
+		addHighlandCaves(biome);
 
 		return biome;
 	}

@@ -2,25 +2,24 @@ package twilightforest.data.tags;
 
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
+import twilightforest.data.tags.compat.ModdedBlockTagGenerator;
 import twilightforest.init.TFBlocks;
 
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Predicate;
 
-public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
+public class BlockTagGenerator extends ModdedBlockTagGenerator {
 	public static final TagKey<Block> TOWERWOOD = BlockTags.create(TwilightForestMod.prefix("towerwood"));
 	public static final TagKey<Block> MAZESTONE = BlockTags.create(TwilightForestMod.prefix("mazestone"));
 	public static final TagKey<Block> CASTLE_BLOCKS = BlockTags.create(TwilightForestMod.prefix("castle_blocks"));
@@ -77,6 +76,7 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 	public static final TagKey<Block> ROOT_ORES = BlockTags.create(new ResourceLocation("forge", "ores_in_ground/root"));
 
 	public static final TagKey<Block> TIME_CORE_EXCLUDED = BlockTags.create(TwilightForestMod.prefix("time_core_excluded"));
+	public static final TagKey<Block> ORE_METER_TARGETABLE = BlockTags.create(TwilightForestMod.prefix("ore_meter_targetable"));
 
 	public static final TagKey<Block> PENGUINS_SPAWNABLE_ON = BlockTags.create(TwilightForestMod.prefix("penguins_spawnable_on"));
 	public static final TagKey<Block> GIANTS_SPAWNABLE_ON = BlockTags.create(TwilightForestMod.prefix("giants_spawnable_on"));
@@ -88,13 +88,22 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 
 	public static final TagKey<Block> CLOUDS = BlockTags.create(TwilightForestMod.prefix("clouds"));
 
+	public static final TagKey<Block> TF_CHESTS = BlockTags.create(TwilightForestMod.prefix("chests"));
+
+	public static final TagKey<Block> DEADROCK = BlockTags.create(TwilightForestMod.prefix("deadrock"));
+
+	public static final TagKey<Block> SUPPORTS_STALAGMITES = BlockTags.create(TwilightForestMod.prefix("supports_stalagmites"));
+
+	public static final TagKey<Block> CARVER_REPLACEABLES = BlockTags.create(TwilightForestMod.prefix("carver_replaceables"));
+
 	public BlockTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> future, ExistingFileHelper helper) {
-		super(output, Registries.BLOCK, future, block -> block.builtInRegistryHolder().key(), TwilightForestMod.ID, helper);
+		super(output, future, helper);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void addTags(HolderLookup.Provider provider) {
+		super.addTags(provider);
 		tag(TWILIGHT_OAK_LOGS)
 				.add(TFBlocks.TWILIGHT_OAK_LOG.get(), TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.get(), TFBlocks.TWILIGHT_OAK_WOOD.get(), TFBlocks.STRIPPED_TWILIGHT_OAK_WOOD.get());
 		tag(CANOPY_LOGS)
@@ -187,6 +196,8 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 				.add(TFBlocks.POTTED_TWILIGHT_OAK_SAPLING.get(), TFBlocks.POTTED_CANOPY_SAPLING.get(), TFBlocks.POTTED_MANGROVE_SAPLING.get(), TFBlocks.POTTED_DARKWOOD_SAPLING.get(), TFBlocks.POTTED_RAINBOW_OAK_SAPLING.get())
 				.add(TFBlocks.POTTED_HOLLOW_OAK_SAPLING.get(), TFBlocks.POTTED_TIME_SAPLING.get(), TFBlocks.POTTED_TRANSFORMATION_SAPLING.get(), TFBlocks.POTTED_MINING_SAPLING.get(), TFBlocks.POTTED_SORTING_SAPLING.get())
 				.add(TFBlocks.POTTED_MAYAPPLE.get(), TFBlocks.POTTED_FIDDLEHEAD.get(), TFBlocks.POTTED_MUSHGLOOM.get(), TFBlocks.POTTED_THORN.get(), TFBlocks.POTTED_GREEN_THORN.get(), TFBlocks.POTTED_DEAD_THORN.get());
+
+		tag(BlockTags.WALLS).add(TFBlocks.WROUGHT_IRON_FENCE.get());
 
 		tag(BANISTERS).add(
 				TFBlocks.OAK_BANISTER.get(),
@@ -291,7 +302,7 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 				TFBlocks.ROOT_STRAND.get(),
 				TFBlocks.ROOT_BLOCK.get());
 
-		tag(BlockTags.CLIMBABLE).add(TFBlocks.IRON_LADDER.get(), TFBlocks.ROOT_STRAND.get()).addTag(HOLLOW_LOGS_CLIMBABLE);
+		tag(BlockTags.CLIMBABLE).add(TFBlocks.IRON_LADDER.get(), TFBlocks.ROPE.get(), TFBlocks.ROOT_STRAND.get()).addTag(HOLLOW_LOGS_CLIMBABLE);
 
 		tag(BlockTags.STANDING_SIGNS).add(
 				TFBlocks.TWILIGHT_OAK_SIGN.get(), TFBlocks.CANOPY_SIGN.get(),
@@ -367,7 +378,7 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 		tag(PORTAL_POOL).add(Blocks.WATER);
 		tag(PORTAL_DECO).add(
 						Blocks.BAMBOO,
-						Blocks.GRASS, Blocks.TALL_GRASS,
+						Blocks.SHORT_GRASS, Blocks.TALL_GRASS,
 						Blocks.FERN, Blocks.LARGE_FERN,
 						Blocks.DEAD_BUSH,
 						Blocks.SUGAR_CANE,
@@ -397,7 +408,7 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 
 		tag(GENERATED_PORTAL_DECO)
 				.add(Blocks.BROWN_MUSHROOM, Blocks.RED_MUSHROOM,
-						Blocks.GRASS, Blocks.FERN,
+						Blocks.SHORT_GRASS, Blocks.FERN,
 						Blocks.BLUE_ORCHID, Blocks.AZURE_BLUET,
 						Blocks.LILY_OF_THE_VALLEY, Blocks.OXEYE_DAISY,
 						Blocks.ALLIUM, Blocks.CORNFLOWER,
@@ -436,7 +447,7 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 		tag(FIRE_JET_FUEL).add(Blocks.LAVA);
 
 		tag(ICE_BOMB_REPLACEABLES)
-				.add(TFBlocks.MAYAPPLE.get(), TFBlocks.FIDDLEHEAD.get(), Blocks.GRASS, Blocks.TALL_GRASS, Blocks.FERN, Blocks.LARGE_FERN)
+				.add(TFBlocks.MAYAPPLE.get(), TFBlocks.FIDDLEHEAD.get(), Blocks.SHORT_GRASS, Blocks.TALL_GRASS, Blocks.FERN, Blocks.LARGE_FERN)
 				.addTag(BlockTags.FLOWERS);
 
 		tag(PLANTS_HANG_ON)
@@ -487,10 +498,12 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 
 		tag(CARMINITE_REACTOR_ORES).add(Blocks.NETHER_QUARTZ_ORE, Blocks.NETHER_GOLD_ORE);
 
+		tag(DEADROCK).add(TFBlocks.DEADROCK.get(), TFBlocks.CRACKED_DEADROCK.get(), TFBlocks.WEATHERED_DEADROCK.get());
+
 		tag(ANNIHILATION_INCLUSIONS) // This is NOT a blacklist! This is a whitelist
 				.add(Blocks.NETHER_PORTAL)
-				.add(TFBlocks.DEADROCK.get(), TFBlocks.CRACKED_DEADROCK.get(), TFBlocks.WEATHERED_DEADROCK.get())
-				.add(TFBlocks.CASTLE_BRICK.get(), TFBlocks.CRACKED_DEADROCK.get(), TFBlocks.THICK_CASTLE_BRICK.get(), TFBlocks.MOSSY_CASTLE_BRICK.get(), TFBlocks.CASTLE_ROOF_TILE.get(), TFBlocks.WORN_CASTLE_BRICK.get())
+				.addTag(DEADROCK)
+				.add(TFBlocks.CASTLE_BRICK.get(), TFBlocks.THICK_CASTLE_BRICK.get(), TFBlocks.MOSSY_CASTLE_BRICK.get(), TFBlocks.CASTLE_ROOF_TILE.get(), TFBlocks.WORN_CASTLE_BRICK.get())
 				.add(TFBlocks.BLUE_CASTLE_RUNE_BRICK.get(), TFBlocks.VIOLET_CASTLE_RUNE_BRICK.get(), TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get(), TFBlocks.PINK_CASTLE_RUNE_BRICK.get())
 				.add(TFBlocks.PINK_FORCE_FIELD.get(), TFBlocks.ORANGE_FORCE_FIELD.get(), TFBlocks.GREEN_FORCE_FIELD.get(), TFBlocks.BLUE_FORCE_FIELD.get(), TFBlocks.VIOLET_FORCE_FIELD.get())
 				.add(TFBlocks.BROWN_THORNS.get(), TFBlocks.GREEN_THORNS.get());
@@ -537,6 +550,16 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 
 		tag(CLOUDS).add(TFBlocks.FLUFFY_CLOUD.get(), TFBlocks.WISPY_CLOUD.get(), TFBlocks.RAINY_CLOUD.get(), TFBlocks.SNOWY_CLOUD.get());
 
+		tag(TF_CHESTS).add(
+				TFBlocks.TWILIGHT_OAK_CHEST.get(),
+				TFBlocks.CANOPY_CHEST.get(),
+				TFBlocks.MANGROVE_CHEST.get(),
+				TFBlocks.DARK_CHEST.get(),
+				TFBlocks.TIME_CHEST.get(),
+				TFBlocks.TRANSFORMATION_CHEST.get(),
+				TFBlocks.MINING_CHEST.get(),
+				TFBlocks.SORTING_CHEST.get());
+
 		tag(BlockTags.DAMPENS_VIBRATIONS).addTag(CLOUDS).add(TFBlocks.ARCTIC_FUR_BLOCK.get());
 		tag(BlockTags.OCCLUDES_VIBRATION_SIGNALS).add(TFBlocks.ARCTIC_FUR_BLOCK.get());
 
@@ -553,6 +576,21 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 		tag(BlockTags.OVERWORLD_CARVER_REPLACEABLES).add(TFBlocks.TROLLSTEINN.get());
 
 		tag(TIME_CORE_EXCLUDED).add(Blocks.NETHER_PORTAL);
+
+		tag(ORE_METER_TARGETABLE)
+				.addTag(Tags.Blocks.ORES)
+				.addTag(BlockTags.BASE_STONE_OVERWORLD)
+				.addTag(BlockTags.BASE_STONE_NETHER)
+				.addTag(BlockTags.DIRT)
+				.addTag(Tags.Blocks.SAND)
+				.addTag(Tags.Blocks.SANDSTONE)
+				.addTag(BlockTags.TERRACOTTA)
+				.addTag(Tags.Blocks.GRAVEL)
+				.addTag(BlockTags.NYLIUM)
+				.add(Blocks.BUDDING_AMETHYST)
+				.add(Blocks.CALCITE)
+				.add(Blocks.SOUL_SAND)
+				.add(Blocks.SOUL_SOIL);
 
 		tag(PENGUINS_SPAWNABLE_ON).add(Blocks.ICE, Blocks.PACKED_ICE, Blocks.BLUE_ICE);
 		tag(GIANTS_SPAWNABLE_ON).addTag(CLOUDS);
@@ -612,7 +650,7 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 				TFBlocks.ARCTIC_FUR_BLOCK.get()
 		);
 
-		tag(BlockTags.MINEABLE_WITH_PICKAXE).add(
+		tag(BlockTags.MINEABLE_WITH_PICKAXE).addTag(DEADROCK).add(
 				TFBlocks.NAGASTONE.get(),
 				TFBlocks.NAGASTONE_HEAD.get(),
 				TFBlocks.STRONGHOLD_SHIELD.get(),
@@ -623,9 +661,6 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 				TFBlocks.MOSSY_UNDERBRICK.get(),
 				TFBlocks.CRACKED_UNDERBRICK.get(),
 				TFBlocks.UNDERBRICK_FLOOR.get(),
-				TFBlocks.DEADROCK.get(),
-				TFBlocks.CRACKED_DEADROCK.get(),
-				TFBlocks.WEATHERED_DEADROCK.get(),
 				TFBlocks.TROLLSTEINN.get(),
 				TFBlocks.GIANT_LEAVES.get(),
 				TFBlocks.GIANT_OBSIDIAN.get(),
@@ -667,7 +702,9 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 				TFBlocks.TWISTED_STONE.get(),
 				TFBlocks.TWISTED_STONE_PILLAR.get(),
 				TFBlocks.KEEPSAKE_CASKET.get(),
-				TFBlocks.BOLD_STONE_PILLAR.get()
+				TFBlocks.BOLD_STONE_PILLAR.get(),
+				TFBlocks.TERRORCOTTA_LINES.get(),
+				TFBlocks.TERRORCOTTA_CURVES.get()
 		).addTags(MAZESTONE, CASTLE_BLOCKS);
 
 		tag(BlockTags.MINEABLE_WITH_SHOVEL).add(
@@ -695,6 +732,8 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 				TFBlocks.TWISTED_STONE.get(),
 				TFBlocks.TWISTED_STONE_PILLAR.get(),
 				TFBlocks.BOLD_STONE_PILLAR.get(),
+				TFBlocks.TERRORCOTTA_LINES.get(),
+				TFBlocks.TERRORCOTTA_CURVES.get(),
 				TFBlocks.AURORA_PILLAR.get(),
 				TFBlocks.AURORA_SLAB.get(),
 				TFBlocks.TROLLSTEINN.get()
@@ -713,12 +752,7 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 				TFBlocks.KNIGHTMETAL_BLOCK.get()
 		);
 
-		tag(BlockTags.NEEDS_DIAMOND_TOOL).add(
-				TFBlocks.AURORA_BLOCK.get(),
-				TFBlocks.DEADROCK.get(),
-				TFBlocks.CRACKED_DEADROCK.get(),
-				TFBlocks.WEATHERED_DEADROCK.get()
-		).addTags(CASTLE_BLOCKS, MAZESTONE);
+		tag(BlockTags.NEEDS_DIAMOND_TOOL).add(TFBlocks.AURORA_BLOCK.get()).addTags(CASTLE_BLOCKS, MAZESTONE, DEADROCK);
 
 		tag(BlockTags.MUSHROOM_GROW_BLOCK).add(TFBlocks.UBEROUS_SOIL.get());
 
@@ -767,11 +801,15 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 				TFBlocks.MINOSHROOM_BOSS_SPAWNER.get(), TFBlocks.HYDRA_BOSS_SPAWNER.get(),
 				TFBlocks.KNIGHT_PHANTOM_BOSS_SPAWNER.get(), TFBlocks.UR_GHAST_BOSS_SPAWNER.get(),
 				TFBlocks.ALPHA_YETI_BOSS_SPAWNER.get(), TFBlocks.SNOW_QUEEN_BOSS_SPAWNER.get());
+
+		tag(SUPPORTS_STALAGMITES).addTag(DEADROCK).add(Blocks.PACKED_ICE);
+
+		tag(CARVER_REPLACEABLES).addTag(BlockTags.OVERWORLD_CARVER_REPLACEABLES).add(Blocks.SNOW_BLOCK);
 	}
 
 	private static Block[] getAllMinecraftOrTwilightBlocks(Predicate<Block> predicate) {
-		return ForgeRegistries.BLOCKS.getValues().stream()
-				.filter(b -> ForgeRegistries.BLOCKS.getKey(b) != null && (ForgeRegistries.BLOCKS.getKey(b).getNamespace().equals(TwilightForestMod.ID) || ForgeRegistries.BLOCKS.getKey(b).getNamespace().equals("minecraft")) && predicate.test(b))
+		return BuiltInRegistries.BLOCK.stream()
+				.filter(b -> BuiltInRegistries.BLOCK.getKey(b) != null && (BuiltInRegistries.BLOCK.getKey(b).getNamespace().equals(TwilightForestMod.ID) || BuiltInRegistries.BLOCK.getKey(b).getNamespace().equals("minecraft")) && predicate.test(b))
 				.toArray(Block[]::new);
 	}
 

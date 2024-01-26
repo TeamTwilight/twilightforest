@@ -34,7 +34,6 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancement.twilightforest.progress_troll.desc",
       "with": [
@@ -44,12 +43,10 @@
       ]
     },
     "frame": "goal",
-    "hidden": false,
     "icon": {
       "item": "twilightforest:lamp_of_cinders",
       "nbt": "{Damage:0}"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancement.twilightforest.progress_troll"
     }

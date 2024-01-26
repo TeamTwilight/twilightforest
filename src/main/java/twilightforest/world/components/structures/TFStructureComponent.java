@@ -4,9 +4,9 @@ import com.google.common.collect.ImmutableSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.Display;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.Sheep;
-import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.WorldGenLevel;
@@ -20,10 +20,13 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.phys.Vec3;
+import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
 import twilightforest.util.ColorUtil;
 
 import java.util.Set;
+import java.util.function.Consumer;
 
 @Deprecated
 // We keep rehashing Vanillacopies and they'll keep breaking between ports, we should be adding TwilightFeature to the
@@ -68,6 +71,7 @@ public abstract class TFStructureComponent extends StructurePiece {
 			.add(TFBlocks.ORANGE_FORCE_FIELD.get())
 			.add(TFBlocks.BROWN_THORNS.get())
 			.add(TFBlocks.GREEN_THORNS.get())
+			.add(Blocks.GRAVEL)
 			.build();
 
 
@@ -97,65 +101,60 @@ public abstract class TFStructureComponent extends StructurePiece {
 	protected void setDebugCorners(Level world) {
 		if (rotation == null) rotation = Rotation.NONE;
 
-		if (shouldDebug() ) { // && rotation!= Rotation.NONE) {
+		if (shouldDebug()) { // && rotation!= Rotation.NONE) {
 			int i = rotation.ordinal() * 4;
 			DyeColor[] colors = DyeColor.values();
-			world.setBlockAndUpdate(new BlockPos(this.getBoundingBox().minX(), this.getBoundingBox().maxY() + i    , this.getBoundingBox().minZ()), ColorUtil.WOOL.getColor(colors[i]));
+			world.setBlockAndUpdate(new BlockPos(this.getBoundingBox().minX(), this.getBoundingBox().maxY() + i, this.getBoundingBox().minZ()), ColorUtil.WOOL.getColor(colors[i]));
 			world.setBlockAndUpdate(new BlockPos(this.getBoundingBox().maxX(), this.getBoundingBox().maxY() + i + 1, this.getBoundingBox().minZ()), ColorUtil.WOOL.getColor(colors[1 + i]));
 			world.setBlockAndUpdate(new BlockPos(this.getBoundingBox().minX(), this.getBoundingBox().maxY() + i + 2, this.getBoundingBox().maxZ()), ColorUtil.WOOL.getColor(colors[2 + i]));
 			world.setBlockAndUpdate(new BlockPos(this.getBoundingBox().maxX(), this.getBoundingBox().maxY() + i + 3, this.getBoundingBox().maxZ()), ColorUtil.WOOL.getColor(colors[3 + i]));
 		}
 	}
 
-	@SuppressWarnings({"SameParameterValue", "unused"})
-	protected void setDebugEntity(WorldGenLevel world, int x, int y, int z, BoundingBox sbb, String s) {
-		setInvisibleTextEntity(world, x, y, z, sbb, s, shouldDebug(), 0f);
-	}
-
-	protected void setInvisibleTextEntity(WorldGenLevel world, int x, int y, int z, BoundingBox sbb, String s, boolean forcePlace, float additionalYOffset) {
+	protected void setInvisibleTextEntity(WorldGenLevel world, int x, int y, int z, BoundingBox sbb, String s, boolean forcePlace, float additionalYOffset, Consumer<Vec3> positionAccumulator, Display.BillboardConstraints billboardConstraint) {
 		if (forcePlace) {
 			final BlockPos pos = new BlockPos(this.getWorldX(x, z), this.getWorldY(y), this.getWorldZ(x, z));
 
 			if (sbb.isInside(pos)) {
-				final ArmorStand armorStand = new ArmorStand(EntityType.ARMOR_STAND, world.getLevel());
-				armorStand.setCustomName(Component.literal(s));
-				armorStand.moveTo(pos.getX() + 0.5, pos.getY() + additionalYOffset, pos.getZ() + 0.5, 0, 0);
-				armorStand.setInvisible(true);
-				armorStand.setCustomNameVisible(true);
-				armorStand.setSilent(true);
-				armorStand.setNoGravity(true);
-				// set marker flag
-				armorStand.getEntityData().set(ArmorStand.DATA_CLIENT_FLAGS, (byte) (armorStand.getEntityData().get(ArmorStand.DATA_CLIENT_FLAGS) | 16));
-				world.addFreshEntity(armorStand);
+				final Display.TextDisplay display = new Display.TextDisplay(EntityType.TEXT_DISPLAY, world.getLevel());
+				display.setText(Component.literal(s));
+				display.setBillboardConstraints(billboardConstraint);
+				display.moveTo(pos.getX() + 0.5, pos.getY() + additionalYOffset, pos.getZ() + 0.5, 0, 0);
+
+				if (world.addFreshEntity(display))
+					positionAccumulator.accept(display.position());
 			}
 		}
 	}
 
 	@Override
 	protected void placeBlock(WorldGenLevel worldIn, BlockState blockstateIn, int x, int y, int z, BoundingBox boundingboxIn) {
-	      BlockPos blockpos = new BlockPos(this.getWorldX(x, z), this.getWorldY(y), this.getWorldZ(x, z));
+		BlockPos blockpos = new BlockPos(this.getWorldX(x, z), this.getWorldY(y), this.getWorldZ(x, z));
+		if (blockstateIn == null) {
+			TwilightForestMod.LOGGER.warn("TFStructureComponent: Block at Pos {} {} {} was null! Ignoring!", blockpos.getX(), blockpos.getY(), blockpos.getZ());
+		}
 
-	      if (boundingboxIn.isInside(blockpos)) {
-	          if (this.mirror != Mirror.NONE) {
-	             blockstateIn = blockstateIn.mirror(this.mirror);
-	          }
+		if (boundingboxIn.isInside(blockpos)) {
+			if (this.mirror != Mirror.NONE) {
+				blockstateIn = blockstateIn.mirror(this.mirror);
+			}
 
-	          if (this.rotation != Rotation.NONE) {
-	             blockstateIn = blockstateIn.rotate(this.rotation);
-	          }
+			if (this.rotation != Rotation.NONE) {
+				blockstateIn = blockstateIn.rotate(this.rotation);
+			}
 
-	          worldIn.setBlock(blockpos, blockstateIn, 2);
-	          FluidState fluidstate = worldIn.getFluidState(blockpos);
-	          if (!fluidstate.isEmpty()) {
-	             worldIn.scheduleTick(blockpos, fluidstate.getType(), 0);
-	          }
+			worldIn.setBlock(blockpos, blockstateIn, 2);
+			FluidState fluidstate = worldIn.getFluidState(blockpos);
+			if (!fluidstate.isEmpty()) {
+				worldIn.scheduleTick(blockpos, fluidstate.getType(), 0);
+			}
 
-	          if (BLOCKS_NEEDING_POSTPROCESSING.contains(blockstateIn.getBlock())) {
-	             worldIn.getChunk(blockpos).markPosForPostprocessing(blockpos);
-	          }
+			if (BLOCKS_NEEDING_POSTPROCESSING.contains(blockstateIn.getBlock())) {
+				worldIn.getChunk(blockpos).markPosForPostprocessing(blockpos);
+			}
 
-	       }
-	   }
+		}
+	}
 
 	@SuppressWarnings({"SameParameterValue", "unused"})
 	protected void setDebugEntity(Level world, BlockPos blockpos, String s) {

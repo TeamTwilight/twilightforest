@@ -27,8 +27,8 @@ public class LampOfCindersItem extends Item {
 
 	private static final int FIRING_TIME = 12;
 
-	public LampOfCindersItem(Properties props) {
-		super(props);
+	public LampOfCindersItem(Properties properties) {
+		super(properties);
 	}
 
 	@Override
@@ -81,7 +81,7 @@ public class LampOfCindersItem extends Item {
 
 	private boolean burnBlock(Level level, BlockPos pos) {
 		BlockState state = level.getBlockState(pos);
-		if (state.is(TFBlocks.BROWN_THORNS.get()) || state.is(TFBlocks.GREEN_THORNS.get())) {
+		if (state.is(TFBlocks.BROWN_THORNS) || state.is(TFBlocks.GREEN_THORNS)) {
 			level.setBlockAndUpdate(pos, TFBlocks.BURNT_THORNS.get().withPropertiesOf(state));
 			return true;
 		} else return false;

@@ -17,6 +17,7 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import twilightforest.entity.MagicPainting;
+import twilightforest.entity.MagicPaintingVariant;
 import twilightforest.init.custom.MagicPaintingVariants;
 
 import javax.annotation.Nullable;
@@ -78,7 +79,7 @@ public class MagicPaintingItem extends Item {
             CompoundTag tag = stack.getTag();
             if (tag != null && tag.contains("EntityTag", 10)) {
                 CompoundTag entityTag = tag.getCompound("EntityTag");
-                MagicPaintingVariants.getVariant(level.registryAccess(), entityTag.getString("variant")).ifPresent((variant) -> {
+                MagicPaintingVariant.getVariant(level.registryAccess(), entityTag.getString("variant")).ifPresent((variant) -> {
                     ResourceLocation location = new ResourceLocation(entityTag.getString("variant"));
                     components.add(Component.translatable(location.toLanguageKey("magic_painting", "title")).withStyle(ChatFormatting.YELLOW));
                     components.add(Component.translatable(location.toLanguageKey("magic_painting", "author")).withStyle(ChatFormatting.GRAY));

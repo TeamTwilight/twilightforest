@@ -88,13 +88,12 @@
           "entries": [
             {
               "data": {
-                "Name": "twilightforest:canopy_fence",
+                "Name": "twilightforest:rope",
                 "Properties": {
-                  "east": "false",
-                  "north": "false",
-                  "south": "false",
                   "waterlogged": "false",
-                  "west": "false"
+                  "x": "false",
+                  "y": "true",
+                  "z": "false"
                 }
               },
               "weight": 3

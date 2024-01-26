@@ -11,8 +11,8 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import twilightforest.entity.passive.TinyBird;
 
 /**
@@ -41,9 +41,9 @@ public class NewTinyBirdModel extends AgeableListModel<TinyBird> {
 
     public static LayerDefinition create() {
         MeshDefinition mesh = new MeshDefinition();
-        PartDefinition partRoot = mesh.getRoot();
+        PartDefinition definition = mesh.getRoot();
 
-        partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+        definition.addOrReplaceChild("head", CubeListBuilder.create()
                         .texOffs(0, 0)
                         .addBox(-1.5F, -2.0F, -2.0F, 3.0F, 3.0F, 3.0F)
                         .texOffs(9, 0)
@@ -52,17 +52,17 @@ public class NewTinyBirdModel extends AgeableListModel<TinyBird> {
                         .addBox(-1.5F, -5.0F, 1.0F, 3.0F, 3.0F, 0.0F),
                 PartPose.offset(0.0F, 21.0F, 0.0F));
 
-        var body = partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+        var body = definition.addOrReplaceChild("body", CubeListBuilder.create()
                         .texOffs(12, 0)
                         .addBox(-1.5F, 0.0F, 0.0F, 3.0F, 3.0F, 3.0F),
                 PartPose.offset(0.0F, 20.0F, 0.0F));
 
-        partRoot.addOrReplaceChild("right_foot", CubeListBuilder.create()
+        definition.addOrReplaceChild("right_foot", CubeListBuilder.create()
                         .texOffs(0, 9)
                         .addBox(-0.5F, 0.0F, -1.0F, 1.0F, 1.0F, 1.0F),
                 PartPose.offset(-1.0F, 23.0F, 2.0F));
 
-        partRoot.addOrReplaceChild("left_foot", CubeListBuilder.create()
+        definition.addOrReplaceChild("left_foot", CubeListBuilder.create()
                         .texOffs(0, 11)
                         .addBox(-0.5F, 0.0F, -1.0F, 1.0F, 1.0F, 1.0F),
                 PartPose.offset(1.0F, 23.0F, 2.0F));

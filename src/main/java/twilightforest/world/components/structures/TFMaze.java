@@ -62,7 +62,7 @@ public class TFMaze {
 
 	public final RandomSource rand;
 
-	public TFMaze(int cellsWidth, int cellsDepth) {
+	public TFMaze(int cellsWidth, int cellsDepth, RandomSource random) {
 		// default values
 		oddBias = 3;
 		evenBias = 1;
@@ -84,7 +84,7 @@ public class TFMaze {
 		this.rawDepth = depth * 2 + 1;
 		storage = new int[rawWidth * rawDepth];
 
-		rand = RandomSource.create();
+		this.rand = random;
 	}
 
 	/**
@@ -330,7 +330,7 @@ public class TFMaze {
 	 */
 	private void putWallBlock(WorldGenLevel world, int x, int y, int z, TFStructureComponentOld component, BoundingBox sbb) {
 		if (wallBlocks != null) {
-			wallBlocks.next(rand, x, y, z, true);
+			wallBlocks.next(world.getRandom(), x, y, z, true);
 			component.placeBlock(world, wallBlocks.getNext(), x, y, z, sbb);
 		} else {
 			component.placeBlock(world, wallBlockState, x, y, z, sbb);
@@ -363,7 +363,7 @@ public class TFMaze {
 
 		// only place it if we're actually generating the chunk the tree is in (or at least the middle of the tree)
 		if (sbb.isInside(pos)) {
-			if (!world.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE).get(TFConfiguredFeatures.CANOPY_TREE).place(world, generator, rand, pos)) {
+			if (!world.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE).get(TFConfiguredFeatures.CANOPY_TREE).place(world, generator, world.getRandom(), pos)) {
 				makeWallThing(world, y, component, sbb, x, z, 0, 0);
 			}
 		}

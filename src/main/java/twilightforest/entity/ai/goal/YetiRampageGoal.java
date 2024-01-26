@@ -3,10 +3,10 @@ package twilightforest.entity.ai.goal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.init.TFSounds;
-import twilightforest.init.TFEntities;
-import twilightforest.entity.projectile.IceBomb;
 import twilightforest.entity.boss.AlphaYeti;
+import twilightforest.entity.projectile.IceBomb;
+import twilightforest.init.TFEntities;
+import twilightforest.init.TFSounds;
 
 import java.util.EnumSet;
 
@@ -44,7 +44,7 @@ public class YetiRampageGoal extends Goal {
 		this.currentDuration = this.tantrumDuration;
 		this.yeti.setRampaging(true);
 		this.yeti.playSound(TFSounds.ALPHA_YETI_ROAR.get(), 4F, 0.5F + yeti.getRandom().nextFloat() * 0.5F);
-		this.yeti.gameEvent(GameEvent.ENTITY_ROAR);
+		this.yeti.gameEvent(GameEvent.ENTITY_ACTION);
 	}
 
 	/**

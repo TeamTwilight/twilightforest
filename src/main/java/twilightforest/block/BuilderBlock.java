@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -16,8 +17,9 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import twilightforest.block.entity.CarminiteBuilderBlockEntity;
 import twilightforest.enums.TowerDeviceVariant;
@@ -25,16 +27,21 @@ import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFSounds;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 
 public class BuilderBlock extends BaseEntityBlock {
 
+	public static final MapCodec<BuilderBlock> CODEC = simpleCodec(BuilderBlock::new);
 	public static final EnumProperty<TowerDeviceVariant> STATE = EnumProperty.create("state", TowerDeviceVariant.class);
 
 	public BuilderBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(STATE, TowerDeviceVariant.BUILDER_INACTIVE));
+	}
+
+	@Override
+	protected MapCodec<? extends BaseEntityBlock> codec() {
+		return CODEC;
 	}
 
 	@Override
@@ -97,6 +104,16 @@ public class BuilderBlock extends BaseEntityBlock {
 				activateBuiltBlocks(level, pos.relative(e));
 			}
 		}
+	}
+
+	@Override
+	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean moving) {
+		if (!newState.is(state.getBlock())) {
+			for (Direction e : Direction.values()) {
+				activateBuiltBlocks(level, pos.relative(e));
+			}
+		}
+		super.onRemove(state, level, pos, newState, moving);
 	}
 
 	private void letsBuild(Level level, BlockPos pos) {

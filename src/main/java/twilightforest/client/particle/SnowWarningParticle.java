@@ -1,12 +1,12 @@
 package twilightforest.client.particle;
 
-import net.minecraft.client.particle.SpriteSet;
-import net.minecraft.client.particle.ParticleProvider;
-import net.minecraft.client.particle.Particle;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.particles.SimpleParticleType;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 public class SnowWarningParticle extends SnowParticle {
 

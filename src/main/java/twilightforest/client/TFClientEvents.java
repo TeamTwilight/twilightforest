@@ -3,16 +3,12 @@ package twilightforest.client;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.Options;
 import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
@@ -25,7 +21,6 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -41,16 +36,16 @@ import net.minecraft.world.level.chunk.ChunkStatus;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.DimensionSpecialEffectsManager;
-import net.minecraftforge.client.event.*;
-import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.player.ItemTooltipEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModList;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.client.DimensionSpecialEffectsManager;
+import net.neoforged.neoforge.client.event.*;
+import net.neoforged.neoforge.client.gui.overlay.VanillaGuiOverlay;
+import net.neoforged.neoforge.event.TickEvent;
+import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.GiantBlock;
@@ -64,7 +59,6 @@ import twilightforest.client.model.block.patch.PatchModelLoader;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.client.renderer.entity.ShieldLayer;
-import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.events.HostileMountEvents;
 import twilightforest.init.TFItems;
@@ -83,10 +77,10 @@ public class TFClientEvents {
 	public static class ModBusEvents {
 		@SubscribeEvent
 		public static void registerLoaders(ModelEvent.RegisterGeometryLoaders event) {
-			event.register("patch", PatchModelLoader.INSTANCE);
-			event.register("giant_block", GiantBlockModelLoader.INSTANCE);
-			event.register("force_field", ForceFieldModelLoader.INSTANCE);
-			event.register("castle_door", CastleDoorModelLoader.INSTANCE);
+			event.register(TwilightForestMod.prefix("patch"), PatchModelLoader.INSTANCE);
+			event.register(TwilightForestMod.prefix("giant_block"), GiantBlockModelLoader.INSTANCE);
+			event.register(TwilightForestMod.prefix("force_field"), ForceFieldModelLoader.INSTANCE);
+			event.register(TwilightForestMod.prefix("castle_door"), CastleDoorModelLoader.INSTANCE);
 		}
 
 		@SubscribeEvent
@@ -137,24 +131,8 @@ public class TFClientEvents {
 	@SubscribeEvent
 	public static void renderWorldLast(RenderLevelStageEvent event) {
 		if (Minecraft.getInstance().level == null) return;
-		if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) { // after particles says its best for special rendering effects, and thats what I consider this
-			if (!TFConfig.CLIENT_CONFIG.firstPersonEffects.get()) return;
 
-			Options settings = Minecraft.getInstance().options;
-			if (settings.getCameraType() != CameraType.FIRST_PERSON || settings.hideGui) return;
-
-			Entity entity = Minecraft.getInstance().getCameraEntity();
-			if (entity instanceof LivingEntity) {
-				EntityRenderer<? extends Entity> renderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(entity);
-				if (renderer instanceof LivingEntityRenderer<?, ?>) {
-					for (EffectRenders effect : EffectRenders.VALUES) {
-						if (effect.shouldRender((LivingEntity) entity, true)) {
-							effect.render((LivingEntity) entity, ((LivingEntityRenderer<?, ?>) renderer).getModel(), 0.0, 0.0, 0.0, event.getPartialTick(), true);
-						}
-					}
-				}
-			}
-		} else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_WEATHER && (aurora > 0 || lastAurora > 0) && TFShaders.AURORA != null) {
+		if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_WEATHER && (aurora > 0 || lastAurora > 0) && TFShaders.AURORA != null) {
 			BufferBuilder buffer = Tesselator.getInstance().getBuilder();
 			buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 
@@ -250,7 +228,7 @@ public class TFClientEvents {
 
 			// add weather box if needed
 			if (mc.level != null && info instanceof TwilightForestRenderInfo) {
-				TFWeatherRenderer.tick();
+				TFWeatherRenderer.tick(mc.level);
 			}
 
 			if (TFConfig.CLIENT_CONFIG.firstPersonEffects.get() && mc.level != null && mc.player != null) {
@@ -328,7 +306,7 @@ public class TFClientEvents {
 	}
 
 	@SubscribeEvent
-	public static void unrenderHeadWithTrophies(RenderLivingEvent<?, ?> event) {
+	public static void unrenderHeadWithTrophies(RenderLivingEvent.Pre<?, ?> event) {
 		ItemStack stack = event.getEntity().getItemBySlot(EquipmentSlot.HEAD);
 		boolean visible = !(stack.getItem() instanceof TrophyItem) && !(stack.getItem() instanceof SkullCandleItem) && !areCuriosEquipped(event.getEntity());
 
@@ -341,8 +319,8 @@ public class TFClientEvents {
 	}
 
 	private static boolean areCuriosEquipped(LivingEntity entity) {
-		if (ModList.get().isLoaded("curios")) {
-			return CuriosCompat.isTrophyCurioEquipped(entity) || CuriosCompat.isSkullCurioEquipped(entity);
+		if (ModList.get().isLoaded("curios")) { //FIXME: When curios gets updated, uncomment this
+			//return CuriosCompat.isCurioEquippedAndVisible(entity, stack -> stack.getItem() instanceof TrophyItem) || CuriosCompat.isCurioEquippedAndVisible(entity, stack -> stack.getItem() instanceof SkullCandleItem);
 		}
 		return false;
 	}

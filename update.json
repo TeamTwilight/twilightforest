@@ -1,6 +1,8 @@
 {
   "homepage": "https://minecraft.curseforge.com/projects/the-twilight-forest",
   "promos": {
+	"1.20.2-latest": "4.4.1977",
+	"1.20.2-recommended": "4.4.1977",
 	"1.20.1-latest": "4.3.1750",
 	"1.20.1-recommended": "4.3.1750",
 	"1.19.4-latest": "4.2.1696",

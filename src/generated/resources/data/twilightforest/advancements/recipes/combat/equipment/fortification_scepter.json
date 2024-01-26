@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_item",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_item"
     ]
   ],
   "rewards": {
     "recipes": [
       "twilightforest:equipment/fortification_scepter"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

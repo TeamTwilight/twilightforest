@@ -3,19 +3,17 @@ package twilightforest.data;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.SlabType;
-import net.minecraftforge.client.model.generators.BlockModelBuilder;
-import net.minecraftforge.client.model.generators.ConfiguredModel;
-import net.minecraftforge.client.model.generators.ModelFile;
-import net.minecraftforge.client.model.generators.MultiPartBlockStateBuilder;
-import net.minecraftforge.client.model.generators.loaders.CompositeModelBuilder;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.client.model.generators.*;
+import net.neoforged.neoforge.client.model.generators.loaders.CompositeModelBuilder;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
 import twilightforest.client.model.block.doors.CastleDoorBuilder;
@@ -100,6 +98,16 @@ public class BlockstateGenerator extends BlockModelBuilders {
 					.condition(LadderBlock.FACING, d).condition(IronLadderBlock.RIGHT, true).end();
 		}
 
+		getMultipartBuilder(TFBlocks.ROPE.value())
+				.part().modelFile(models().getExistingFile(prefix("block/rope_y"))).addModel().condition(RopeBlock.Y, true).end()
+				.part().modelFile(models().getExistingFile(prefix("block/rope_x"))).addModel().condition(RopeBlock.X, true).end()
+				.part().modelFile(models().getExistingFile(prefix("block/rope_z"))).addModel().condition(RopeBlock.Z, true).end()
+				.part().modelFile(models().getExistingFile(prefix("block/rope_knot"))).addModel().useOr()
+				.nestedGroup().condition(RopeBlock.X, true).condition(RopeBlock.Y, true).end()
+				.nestedGroup().condition(RopeBlock.Y, true).condition(RopeBlock.Z, true).end()
+				.nestedGroup().condition(RopeBlock.Z, true).condition(RopeBlock.X, true).end()
+				.end();
+
 		towerBlocks();
 
 		simpleBlock(TFBlocks.FAKE_GOLD.get(), models().getExistingFile(new ResourceLocation("block/gold_block")));
@@ -137,7 +145,7 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		simpleBlock(TFBlocks.PIGLIN_SKULL_CANDLE.get(), models().getExistingFile(new ResourceLocation("block/skull")));
 		simpleBlock(TFBlocks.PIGLIN_WALL_SKULL_CANDLE.get(), models().getExistingFile(new ResourceLocation("block/skull")));
 
-		getVariantBuilder(TFBlocks.SPIRAL_BRICKS.get()).forAllStates(state -> ConfiguredModel.builder().modelFile(models().getExistingFile(TwilightForestMod.prefix("block/spiral_bricks/" + state.getValue(SpiralBrickBlock.AXIS_FACING).getName() + "_spiral_" + state.getValue(SpiralBrickBlock.DIAGONAL).getSerializedName()))).build());
+		getVariantBuilder(TFBlocks.SPIRAL_BRICKS.get()).forAllStatesExcept(state -> ConfiguredModel.builder().modelFile(models().getExistingFile(TwilightForestMod.prefix("block/spiral_bricks/" + state.getValue(SpiralBrickBlock.AXIS_FACING).getName() + "_spiral_" + state.getValue(SpiralBrickBlock.DIAGONAL).getSerializedName()))).build(), BlockStateProperties.WATERLOGGED);
 
 		ModelFile shieldModel = models().cubeTop(TFBlocks.STRONGHOLD_SHIELD.getId().getPath(), prefix("block/shield_outside"), prefix("block/shield_inside"));
 		getVariantBuilder(TFBlocks.STRONGHOLD_SHIELD.get())
@@ -198,7 +206,7 @@ public class BlockstateGenerator extends BlockModelBuilders {
 				.texture("particle", blockTexture(Blocks.OBSIDIAN))
 				.texture("all", blockTexture(Blocks.OBSIDIAN))
 				.customLoader(GiantBlockBuilder::begin).parentBlock(Blocks.OBSIDIAN).end());
-		simpleBlock(TFBlocks.UBEROUS_SOIL.get(), models().withExistingParent(TFBlocks.UBEROUS_SOIL.getId().getPath(), "block/template_farmland").renderType(TRANSLUCENT)
+		simpleBlock(TFBlocks.UBEROUS_SOIL.get(), models().withExistingParent(TFBlocks.UBEROUS_SOIL.getId().getPath(), "block/template_farmland")
 				.texture("top", blockTexture(TFBlocks.UBEROUS_SOIL.get()))
 				.texture("dirt", blockTexture(TFBlocks.UBEROUS_SOIL.get())));
 		axisBlock(TFBlocks.HUGE_STALK.get(), prefix("block/huge_stalk"), prefix("block/huge_stalk_top"));
@@ -345,8 +353,9 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		}, TomeSpawnerBlock.SPAWNER);
 
 		getMultipartBuilder(TFBlocks.WROUGHT_IRON_FENCE.get())
-				.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_post"))).addModel().condition(WroughtIronFenceBlock.POST, true).end()
-				
+				.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_post"))).addModel().condition(WroughtIronFenceBlock.POST, WroughtIronFenceBlock.PostState.POST).end()
+				.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_post_capped"))).addModel().condition(WroughtIronFenceBlock.POST, WroughtIronFenceBlock.PostState.CAPPED).end()
+
 				.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_full"))).addModel().condition(WroughtIronFenceBlock.NORTH_FENCE, WroughtIronFenceBlock.FenceSide.FULL).end()
 				.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_top"))).addModel().condition(WroughtIronFenceBlock.NORTH_FENCE, WroughtIronFenceBlock.FenceSide.TOP).end()
 				.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_middle"))).addModel().condition(WroughtIronFenceBlock.NORTH_FENCE, WroughtIronFenceBlock.FenceSide.MIDDLE).end()
@@ -366,11 +375,6 @@ public class BlockstateGenerator extends BlockModelBuilders {
 				.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_top"))).rotationY(270).addModel().condition(WroughtIronFenceBlock.WEST_FENCE, WroughtIronFenceBlock.FenceSide.TOP).end()
 				.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_middle"))).rotationY(270).addModel().condition(WroughtIronFenceBlock.WEST_FENCE, WroughtIronFenceBlock.FenceSide.MIDDLE).end()
 				.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_bottom"))).rotationY(270).addModel().condition(WroughtIronFenceBlock.WEST_FENCE, WroughtIronFenceBlock.FenceSide.BOTTOM).end();
-
-		getVariantBuilder(TFBlocks.WROUGHT_IRON_FINIAL.get()).forAllStatesExcept(state ->
-				ConfiguredModel.builder().modelFile(state.getValue(WroughtIronFinialBlock.ROTATED) ? models().getExistingFile(prefix("wrought_iron_finial_ew")) : models().getExistingFile(prefix("wrought_iron_finial_ns")))
-						.rotationX(state.getValue(WroughtIronFinialBlock.FACING) == Direction.DOWN ? 180 : state.getValue(WroughtIronFinialBlock.FACING).getAxis().isHorizontal() ? 90 : 0)
-						.rotationY(state.getValue(WroughtIronFinialBlock.FACING).getAxis().isVertical() ? 0 : (((int) state.getValue(WroughtIronFinialBlock.FACING).toYRot()) + 180) % 360).build(), WroughtIronFinialBlock.WATERLOGGED);
 
 		registerWoodBlocks();
 		registerNagastone();
@@ -435,13 +439,24 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		builtinEntity(TFBlocks.MINING_CHEST.get(), "twilightforest:block/wood/planks_mine_0");
 		builtinEntity(TFBlocks.SORTING_CHEST.get(), "twilightforest:block/wood/planks_sort_0");
 
+		builtinEntity(TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST.get(), "twilightforest:block/wood/planks_twilight_oak_0");
+		builtinEntity(TFBlocks.CANOPY_TRAPPED_CHEST.get(), "twilightforest:block/wood/planks_canopy_0");
+		builtinEntity(TFBlocks.MANGROVE_TRAPPED_CHEST.get(), "twilightforest:block/wood/planks_mangrove_0");
+		builtinEntity(TFBlocks.DARK_TRAPPED_CHEST.get(), "twilightforest:block/wood/planks_darkwood_0");
+		builtinEntity(TFBlocks.TIME_TRAPPED_CHEST.get(), "twilightforest:block/wood/planks_time_0");
+		builtinEntity(TFBlocks.TRANSFORMATION_TRAPPED_CHEST.get(), "twilightforest:block/wood/planks_trans_0");
+		builtinEntity(TFBlocks.MINING_TRAPPED_CHEST.get(), "twilightforest:block/wood/planks_mine_0");
+		builtinEntity(TFBlocks.SORTING_TRAPPED_CHEST.get(), "twilightforest:block/wood/planks_sort_0");
+
 		casketStuff();
 		stonePillar();
 		candelabra();
+
+		this.terrorcotta();
 	}
 
 	private void registerForceFields() {
-		for (RegistryObject<Block> block : ImmutableList.of(TFBlocks.PINK_FORCE_FIELD, TFBlocks.BLUE_FORCE_FIELD, TFBlocks.GREEN_FORCE_FIELD, TFBlocks.VIOLET_FORCE_FIELD, TFBlocks.ORANGE_FORCE_FIELD)) {
+		for (DeferredHolder<Block, Block> block : ImmutableList.of(TFBlocks.PINK_FORCE_FIELD, TFBlocks.BLUE_FORCE_FIELD, TFBlocks.GREEN_FORCE_FIELD, TFBlocks.VIOLET_FORCE_FIELD, TFBlocks.ORANGE_FORCE_FIELD)) {
 			ResourceLocation textureLocation = prefix("block/" + block.getId().getPath());
 			simpleBlock(block.get(), models().withExistingParent(block.getId().getPath(), new ResourceLocation("block/block"))
 				.texture("particle", textureLocation)
@@ -819,12 +834,12 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		singleBlockBoilerPlate(TFBlocks.HARDENED_DARK_LEAVES.get(), "block/leaves", m -> m.texture("all", "block/darkwood_leaves"));
 
 		logWoodSapling(TFBlocks.TIME_LOG.get(), TFBlocks.STRIPPED_TIME_LOG.get(), TFBlocks.TIME_WOOD.get(), TFBlocks.STRIPPED_TIME_WOOD.get(), TFBlocks.TIME_SAPLING.get());
-		plankBlocks("time", TFBlocks.TIME_PLANKS.get(), TFBlocks.TIME_SLAB.get(), TFBlocks.TIME_STAIRS.get(), TFBlocks.TIME_BUTTON.get(), TFBlocks.TIME_FENCE.get(), TFBlocks.TIME_GATE.get(), TFBlocks.TIME_PLATE.get(), TFBlocks.TIME_DOOR.get(), TFBlocks.TIME_TRAPDOOR.get(), true, TFBlocks.TIME_BANISTER.get());
+		plankBlocks("time", TFBlocks.TIME_PLANKS.get(), TFBlocks.TIME_SLAB.get(), TFBlocks.TIME_STAIRS.get(), TFBlocks.TIME_BUTTON.get(), TFBlocks.TIME_FENCE.get(), TFBlocks.TIME_GATE.get(), TFBlocks.TIME_PLATE.get(), TFBlocks.TIME_DOOR.get(), TFBlocks.TIME_TRAPDOOR.get(), true, false, TFBlocks.TIME_BANISTER.get());
 		singleBlockBoilerPlate(TFBlocks.TIME_LEAVES.get(), "block/leaves", m -> m.texture("all", "block/time_leaves"));
 		magicLogCore(TFBlocks.TIME_LOG_CORE.get());
 
 		logWoodSapling(TFBlocks.TRANSFORMATION_LOG.get(), TFBlocks.STRIPPED_TRANSFORMATION_LOG.get(), TFBlocks.TRANSFORMATION_WOOD.get(), TFBlocks.STRIPPED_TRANSFORMATION_WOOD.get(), TFBlocks.TRANSFORMATION_SAPLING.get());
-		plankBlocks("trans", TFBlocks.TRANSFORMATION_PLANKS.get(), TFBlocks.TRANSFORMATION_SLAB.get(), TFBlocks.TRANSFORMATION_STAIRS.get(), TFBlocks.TRANSFORMATION_BUTTON.get(), TFBlocks.TRANSFORMATION_FENCE.get(), TFBlocks.TRANSFORMATION_GATE.get(), TFBlocks.TRANSFORMATION_PLATE.get(), TFBlocks.TRANSFORMATION_DOOR.get(), TFBlocks.TRANSFORMATION_TRAPDOOR.get(), true, TFBlocks.TRANSFORMATION_BANISTER.get());
+		plankBlocks("trans", TFBlocks.TRANSFORMATION_PLANKS.get(), TFBlocks.TRANSFORMATION_SLAB.get(), TFBlocks.TRANSFORMATION_STAIRS.get(), TFBlocks.TRANSFORMATION_BUTTON.get(), TFBlocks.TRANSFORMATION_FENCE.get(), TFBlocks.TRANSFORMATION_GATE.get(), TFBlocks.TRANSFORMATION_PLATE.get(), TFBlocks.TRANSFORMATION_DOOR.get(), TFBlocks.TRANSFORMATION_TRAPDOOR.get(), true, false, TFBlocks.TRANSFORMATION_BANISTER.get());
 		singleBlockBoilerPlate(TFBlocks.TRANSFORMATION_LEAVES.get(), "block/leaves", m -> m.texture("all", "block/transformation_leaves"));
 		magicLogCore(TFBlocks.TRANSFORMATION_LOG_CORE.get());
 
@@ -834,7 +849,7 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		magicLogCore(TFBlocks.MINING_LOG_CORE.get());
 
 		logWoodSapling(TFBlocks.SORTING_LOG.get(), TFBlocks.STRIPPED_SORTING_LOG.get(), TFBlocks.SORTING_WOOD.get(), TFBlocks.STRIPPED_SORTING_WOOD.get(), TFBlocks.SORTING_SAPLING.get());
-		plankBlocks("sort", TFBlocks.SORTING_PLANKS.get(), TFBlocks.SORTING_SLAB.get(), TFBlocks.SORTING_STAIRS.get(), TFBlocks.SORTING_BUTTON.get(), TFBlocks.SORTING_FENCE.get(), TFBlocks.SORTING_GATE.get(), TFBlocks.SORTING_PLATE.get(), TFBlocks.SORTING_DOOR.get(), TFBlocks.SORTING_TRAPDOOR.get(), true, TFBlocks.SORTING_BANISTER.get());
+		plankBlocks("sort", TFBlocks.SORTING_PLANKS.get(), TFBlocks.SORTING_SLAB.get(), TFBlocks.SORTING_STAIRS.get(), TFBlocks.SORTING_BUTTON.get(), TFBlocks.SORTING_FENCE.get(), TFBlocks.SORTING_GATE.get(), TFBlocks.SORTING_PLATE.get(), TFBlocks.SORTING_DOOR.get(), TFBlocks.SORTING_TRAPDOOR.get(), true, true, TFBlocks.SORTING_BANISTER.get());
 		singleBlockBoilerPlate(TFBlocks.SORTING_LEAVES.get(), "block/leaves", m -> m.texture("all", "block/sorting_leaves"));
 		magicLogCore(TFBlocks.SORTING_LOG_CORE.get());
 
@@ -852,7 +867,7 @@ public class BlockstateGenerator extends BlockModelBuilders {
 
 		final ResourceLocation MOSS = TwilightForestMod.prefix("block/mosspatch");
 		final ResourceLocation MOSS_OVERHANG = TwilightForestMod.prefix("block/moss_overhang");
-		final ResourceLocation TALL_GRASS = new ResourceLocation("block/grass");
+		final ResourceLocation TALL_GRASS = new ResourceLocation("block/short_grass");
 		final ResourceLocation SNOW = new ResourceLocation("block/snow");
 		final ResourceLocation SNOW_OVERHANG = TwilightForestMod.prefix("block/snow_overhang");
 
@@ -921,7 +936,7 @@ public class BlockstateGenerator extends BlockModelBuilders {
 	}
 
 	private void castleDoor(Block b) {
-		ModelFile vanished = models().withExistingParent(ForgeRegistries.BLOCKS.getKey(b).getPath() + "_vanished", "block/block")
+		ModelFile vanished = models().withExistingParent(BuiltInRegistries.BLOCK.getKey(b).getPath() + "_vanished", "block/block")
 				.texture("base", TwilightForestMod.prefix("block/castle_door_vanished"))
 				.texture("particle", TwilightForestMod.prefix("block/castle_door_vanished"))
 				.texture("overlay", TwilightForestMod.prefix("block/castle_door_rune_corners"))
@@ -929,7 +944,7 @@ public class BlockstateGenerator extends BlockModelBuilders {
 				.renderType(CUTOUT)
 				.customLoader(CastleDoorBuilder::begin).end();
 
-		ModelFile main = models().withExistingParent(ForgeRegistries.BLOCKS.getKey(b).getPath(), "block/block")
+		ModelFile main = models().withExistingParent(BuiltInRegistries.BLOCK.getKey(b).getPath(), "block/block")
 				.texture("base", TwilightForestMod.prefix("block/castle_door"))
 				.texture("particle", TwilightForestMod.prefix("block/castle_door"))
 				.texture("overlay", TwilightForestMod.prefix("block/castle_door_rune_corners"))
@@ -1174,7 +1189,7 @@ public class BlockstateGenerator extends BlockModelBuilders {
 	}
 
 	private void thorns() {
-		for (RegistryObject<Block> block : ImmutableList.of(TFBlocks.GREEN_THORNS, TFBlocks.BROWN_THORNS, TFBlocks.BURNT_THORNS)) {
+		for (DeferredHolder<Block, Block> block : ImmutableList.of(TFBlocks.GREEN_THORNS, TFBlocks.BROWN_THORNS, TFBlocks.BURNT_THORNS)) {
 			String path = block.getId().getPath();
 			ResourceLocation sideTexture = prefix("block/" + path + "_side");
 			ResourceLocation endTexture = prefix("block/" + path + "_top");
@@ -1354,42 +1369,15 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		});
 	}
 
-	@SuppressWarnings("SuspiciousNameCombination")
 	private void candelabra() {
-		// TODO variants
-		final List<ModelFile> candelabras = new ArrayList<>();
-		final List<ModelFile> wallCandelabras = new ArrayList<>();
-
-		final int minHeight = 4;
-		final int maxHeight = 5;
-		for (int right = minHeight; right <= maxHeight; right++) {
-			for (int center = minHeight; center <= maxHeight; center++) {
-				for (int left = minHeight; left <= maxHeight; left++) {
-					candelabras.add(this.buildCandelabra(left, center, right));
-					wallCandelabras.add(this.buildWallCandelabra(left, center, right));
-				}
-			}
-		}
-
-		this.getVariantBuilder(TFBlocks.CANDELABRA.get()).forAllStates(state -> {
+		ModelFile floorModel = this.buildCandelabra();
+		ModelFile wallModel = this.buildWallCandelabra();
+		this.getVariantBuilder(TFBlocks.CANDELABRA.get()).forAllStatesExcept(state -> {
 			Direction direction = state.getValue(CandelabraBlock.FACING);
 			boolean onWall = state.getValue(CandelabraBlock.ON_WALL);
-			boolean lit = state.getValue(CandelabraBlock.LIGHTING) != LightableBlock.Lighting.NONE;
 
-			ConfiguredModel.Builder<?> stateBuilder = ConfiguredModel.builder();
-
-			Iterator<ModelFile> models = onWall ? wallCandelabras.iterator() : candelabras.iterator();
-
-			while (models.hasNext()) {
-				ModelFile model = models.next();
-				stateBuilder.modelFile(this.models().getBuilder(model.getLocation().toString() + "_plain" + (lit ? "_lit" : "")).parent(model).renderType(CUTOUT).texture("candle", lit ? "minecraft:block/candle_lit" : "minecraft:block/candle")).rotationY((int) direction.toYRot());
-
-				if (models.hasNext())
-					stateBuilder = stateBuilder.nextModel();
-			}
-
-			return stateBuilder.build();
-		});
+			return ConfiguredModel.builder().modelFile(onWall ? wallModel : floorModel).rotationY((int) direction.toYRot()).build();
+		}, CandelabraBlock.LIGHTING, BlockStateProperties.WATERLOGGED, CandelabraBlock.CANDLES.get(0), CandelabraBlock.CANDLES.get(1), CandelabraBlock.CANDLES.get(2));
 	}
 
 	private void perFaceBlock(Block b, ResourceLocation inside, ResourceLocation outside) {
@@ -1411,7 +1399,78 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		getMultipartBuilder(b).part().modelFile(modelOutside).uvLock(true).rotationX(90).addModel().condition(HugeMushroomBlock.DOWN, true).end();
 	}
 
-	private void hollowLogs(Block originalLog, Block strippedLog, RegistryObject<HollowLogHorizontal> horizontalHollowLog, RegistryObject<HollowLogVertical> verticalHollowLog, RegistryObject<HollowLogClimbable> climbableHollowLog, ModelFile emptyLog, ModelFile mossLog, ModelFile grassLog, ModelFile snowLog, ModelFile hollowLog, ModelFile vineLog, ModelFile ladderLog) {
+	private void terrorcotta() {
+		this.getVariantBuilder(TFBlocks.TERRORCOTTA_CURVES.get()).forAllStates(state -> ConfiguredModel.builder().modelFile(this.makeTerrorcottaCurvesModel("terrorcotta_curves", state.getValue(GlazedTerracottaBlock.FACING).get2DDataValue())).build());
+		this.getVariantBuilder(TFBlocks.TERRORCOTTA_LINES.get()).forAllStates(state -> ConfiguredModel.builder().modelFile(this.makeTerrorcottaLinesModel("terrorcotta_lines", state.getValue(BinaryRotatedBlock.ROTATED))).build());
+	}
+
+	private BlockModelBuilder makeTerrorcottaCurvesModel(String type, int rotation) {
+		return this.models().withExistingParent(type + "_" + (rotation * 90), new ResourceLocation("block/cube"))
+				.texture("particle", prefix("block/" + type + "_a"))
+				.texture("up", prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.UP)))
+				.texture("down", prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.DOWN)))
+				.texture("south", prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.SOUTH)))
+				.texture("west", prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.WEST)))
+				.texture("north", prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.NORTH)))
+				.texture("east", prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.EAST)));
+	}
+
+	@NotNull
+	private static String curvesSuffixForFacing(int blockRotation, Direction blockFace) {
+		int rotationForFace = switch (blockFace) {
+			case UP -> 2 - blockRotation;
+			case DOWN -> 1 + blockRotation;
+			case SOUTH -> switch (blockRotation) {
+				case 3  -> 2;
+				case 2  -> 1;
+				case 1  -> 3;
+				default -> 0;
+			};
+			case WEST -> switch (blockRotation) {
+				case 3  -> 1;
+				case 2  -> 3;
+				case 1  -> 0;
+				default -> 2;
+			};
+			case NORTH -> switch (blockRotation) {
+				case 3  -> 3;
+				case 2  -> 0;
+				case 1  -> 2;
+				default -> 1;
+			};
+			case EAST -> switch (blockRotation) {
+				case 3  -> 0;
+				case 2  -> 2;
+				case 1  -> 1;
+				default -> 3;
+			};
+		};
+
+		return switch (Math.floorMod(rotationForFace, 4)) {
+			case 3  -> "_d";
+			case 2  -> "_c";
+			case 1  -> "_b";
+			default -> "_a";
+		};
+	}
+
+	private BlockModelBuilder makeTerrorcottaLinesModel(String type, boolean rotated) {
+		return this.models().withExistingParent(type + "_" + (rotated ? 90 : 0), new ResourceLocation("block/cube"))
+				.texture("particle", prefix("block/" + type + "_a"))
+				.texture("up", prefix("block/" + type + linesSuffixForFacing(rotated, Direction.UP)))
+				.texture("down", prefix("block/" + type + linesSuffixForFacing(rotated, Direction.DOWN)))
+				.texture("south", prefix("block/" + type + linesSuffixForFacing(rotated, Direction.SOUTH)))
+				.texture("west", prefix("block/" + type + linesSuffixForFacing(rotated, Direction.WEST)))
+				.texture("north", prefix("block/" + type + linesSuffixForFacing(rotated, Direction.NORTH)))
+				.texture("east", prefix("block/" + type + linesSuffixForFacing(rotated, Direction.EAST)));
+	}
+
+	@NotNull
+	private static String linesSuffixForFacing(boolean blockRotation, Direction blockFace) {
+		return (blockFace.getAxis() == Direction.Axis.Z) != blockRotation ? "_a" : "_b";
+	}
+
+	private void hollowLogs(Block originalLog, Block strippedLog, DeferredHolder<Block, HollowLogHorizontal> horizontalHollowLog, DeferredHolder<Block, HollowLogVertical> verticalHollowLog, DeferredHolder<Block, HollowLogClimbable> climbableHollowLog, ModelFile emptyLog, ModelFile mossLog, ModelFile grassLog, ModelFile snowLog, ModelFile hollowLog, ModelFile vineLog, ModelFile ladderLog) {
 		ResourceLocation top = new ResourceLocation("block/" + name(originalLog) + "_top");
 		ResourceLocation side = new ResourceLocation("block/" + name(originalLog));
 		ResourceLocation inner = new ResourceLocation("block/" + name(strippedLog));
@@ -1431,7 +1490,7 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		}).renderType(CUTOUT).texture("top", top).texture("side", side).texture("inner", inner)).rotationY((int) state.getValue(HollowLogClimbable.FACING).toYRot()).uvLock(true).build());
 	}
 
-	private void hollowLogs(RegistryObject<RotatedPillarBlock> originalLog, RegistryObject<RotatedPillarBlock> strippedLog, RegistryObject<HollowLogHorizontal> horizontalHollowLog, RegistryObject<HollowLogVertical> verticalHollowLog, RegistryObject<HollowLogClimbable> climbableHollowLog, ModelFile emptyLog, ModelFile mossLog, ModelFile grassLog, ModelFile snowLog, ModelFile hollowLog, ModelFile vineLog, ModelFile ladderLog) {
+	private void hollowLogs(DeferredHolder<Block, RotatedPillarBlock> originalLog, DeferredHolder<Block, RotatedPillarBlock> strippedLog, DeferredHolder<Block, HollowLogHorizontal> horizontalHollowLog, DeferredHolder<Block, HollowLogVertical> verticalHollowLog, DeferredHolder<Block, HollowLogClimbable> climbableHollowLog, ModelFile emptyLog, ModelFile mossLog, ModelFile grassLog, ModelFile snowLog, ModelFile hollowLog, ModelFile vineLog, ModelFile ladderLog) {
 		ResourceLocation top = TwilightForestMod.prefix("block/" + originalLog.getId().getPath() + "_top");
 		ResourceLocation side = TwilightForestMod.prefix("block/" + originalLog.getId().getPath());
 		ResourceLocation inner = TwilightForestMod.prefix("block/" + strippedLog.getId().getPath());

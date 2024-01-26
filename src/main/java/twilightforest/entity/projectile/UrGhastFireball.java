@@ -11,7 +11,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.neoforged.neoforge.event.EventHooks;
 import twilightforest.entity.boss.UrGhast;
 
 public class UrGhastFireball extends LargeFireball implements ITFProjectile {
@@ -45,7 +45,7 @@ public class UrGhastFireball extends LargeFireball implements ITFProjectile {
 			result.getEntity().hurt(this.damageSources().fireball(this, this.getOwner()), 16.0F);
 			this.doEnchantDamageEffects((LivingEntity) this.getOwner(), result.getEntity());
 
-			boolean flag = ForgeEventFactory.getMobGriefingEvent(this.level(), this.getOwner());
+			boolean flag = EventHooks.getMobGriefingEvent(this.level(), this.getOwner());
 			this.level().explode(null, this.getX(), this.getY(), this.getZ(), this.power, flag, Level.ExplosionInteraction.NONE);
 			this.discard();
 		}
@@ -55,7 +55,7 @@ public class UrGhastFireball extends LargeFireball implements ITFProjectile {
 	protected void onHitBlock(BlockHitResult result) {
 		super.onHitBlock(result);
 		//explode and leave fire when hitting a block, but dont destroy them
-		boolean flag = ForgeEventFactory.getMobGriefingEvent(this.level(), this.getOwner());
+		boolean flag = EventHooks.getMobGriefingEvent(this.level(), this.getOwner());
 		this.level().explode(null, this.getX(), this.getY(), this.getZ(), (float) this.power, flag, Level.ExplosionInteraction.NONE);
 		this.discard();
 	}

@@ -93,16 +93,13 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancement.twilightforest.twilight_dining.desc"
     },
     "frame": "challenge",
-    "hidden": false,
     "icon": {
       "item": "minecraft:bowl"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancement.twilightforest.twilight_dining"
     }

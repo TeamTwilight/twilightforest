@@ -9,7 +9,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
-import twilightforest.util.WorldUtil;
 
 //Places single block features in patches around the dark forest
 public class DarkForestFeature extends Feature<RandomPatchConfiguration> {
@@ -27,7 +26,8 @@ public class DarkForestFeature extends Feature<RandomPatchConfiguration> {
         boolean foundDirt = false;
 
         if (pos.getY() <= 40) {
-            for (int dy = pos.getY(); dy >= WorldUtil.getSeaLevel(ctx.chunkGenerator()); dy--) {
+            int seaLevel = ctx.chunkGenerator().getSeaLevel();
+            for (int dy = pos.getY(); dy >= seaLevel; dy--) {
                 BlockState state = reader.getBlockState(new BlockPos(pos.getX(), dy - 1, pos.getZ()));
                 if (state.is(BlockTags.DIRT) && reader.getBlockState(pos).canBeReplaced()) {
                     foundDirt = true;

@@ -20,7 +20,6 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancement.twilightforest.hill1.desc",
       "with": [
@@ -29,13 +28,10 @@
         }
       ]
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
       "item": "minecraft:iron_boots",
       "nbt": "{Damage:0}"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancement.twilightforest.hill1"
     }

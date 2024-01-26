@@ -14,27 +14,27 @@ public class AdherentModel extends HumanoidModel<Adherent> {
 
 	public static LayerDefinition create() {
 		MeshDefinition mesh = HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F);
-		PartDefinition partRoot = mesh.getRoot();
+		PartDefinition definition = mesh.getRoot();
 
-		partRoot.addOrReplaceChild("head",
+		definition.addOrReplaceChild("head",
 				CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F),
 				PartPose.ZERO);
 
-		partRoot.addOrReplaceChild("hat",
+		definition.addOrReplaceChild("hat",
 				CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F),
 				PartPose.ZERO);
 
-		partRoot.addOrReplaceChild("body",
+		definition.addOrReplaceChild("body",
 				CubeListBuilder.create()
 						.texOffs(32, 0)
 						.addBox(-4.0F, 0.0F, -2.0F, 8.0F, 24.0F, 4.0F),
 				PartPose.ZERO);
 
-		var leftArm = partRoot.addOrReplaceChild("left_arm",
+		var leftArm = definition.addOrReplaceChild("left_arm",
 				CubeListBuilder.create()
 						.texOffs(0, 16)
 						.addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F),
@@ -46,7 +46,7 @@ public class AdherentModel extends HumanoidModel<Adherent> {
 						.addBox(-1.0F, -2.0F, 2.0F, 4.0F, 12.0F, 4.0F),
 				PartPose.ZERO);
 
-		var rightArm = partRoot.addOrReplaceChild("right_arm",
+		var rightArm = definition.addOrReplaceChild("right_arm",
 				CubeListBuilder.create()
 						.texOffs(0, 16)
 						.addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F),
@@ -58,13 +58,13 @@ public class AdherentModel extends HumanoidModel<Adherent> {
 						.addBox(-3.0F, -2.0F, 2.0F, 4.0F, 12.0F, 4.0F),
 				PartPose.ZERO);
 
-		partRoot.addOrReplaceChild("left_leg",
+		definition.addOrReplaceChild("left_leg",
 				CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F),
 				PartPose.ZERO);
 
-		partRoot.addOrReplaceChild("right_leg",
+		definition.addOrReplaceChild("right_leg",
 				CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F),

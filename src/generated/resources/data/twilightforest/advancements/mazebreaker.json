@@ -15,7 +15,6 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancement.twilightforest.mazebreaker.desc",
       "with": [
@@ -25,12 +24,10 @@
       ]
     },
     "frame": "challenge",
-    "hidden": false,
     "icon": {
       "item": "twilightforest:mazebreaker_pickaxe",
       "nbt": "{Damage:0}"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancement.twilightforest.mazebreaker"
     }

@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -15,25 +16,32 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BonemealableBlock;
+import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.PlantType;
-import twilightforest.init.TFSounds;
+import net.neoforged.neoforge.common.PlantType;
 import twilightforest.init.TFItems;
+import twilightforest.init.TFSounds;
 import twilightforest.init.TFStats;
 
 public class TorchberryPlantBlock extends TFPlantBlock implements BonemealableBlock {
 
+	public static final MapCodec<TorchberryPlantBlock> CODEC = simpleCodec(TorchberryPlantBlock::new);
 	public static final BooleanProperty HAS_BERRIES = BooleanProperty.create("has_torchberries");
 	private static final VoxelShape TORCHBERRY_SHAPE = Block.box(1, 2, 1, 15, 16, 15);
 
 	public TorchberryPlantBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(HAS_BERRIES, false));
+	}
+
+	@Override
+	protected MapCodec<? extends BushBlock> codec() {
+		return CODEC;
 	}
 
 	@Override
@@ -65,7 +73,7 @@ public class TorchberryPlantBlock extends TFPlantBlock implements BonemealableBl
 	}
 
 	@Override
-	public boolean isValidBonemealTarget(LevelReader getter, BlockPos pos, BlockState state, boolean isClient) {
+	public boolean isValidBonemealTarget(LevelReader getter, BlockPos pos, BlockState state) {
 		return !state.getValue(HAS_BERRIES);
 	}
 

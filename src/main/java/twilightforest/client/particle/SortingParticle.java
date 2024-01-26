@@ -4,8 +4,8 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class SortingParticle extends TextureSheetParticle {
@@ -31,17 +31,23 @@ public class SortingParticle extends TextureSheetParticle {
         this.hasPhysics = false;
         this.lifetime = (int)(Math.random() * 10.0D) + 19;
         this.alpha = 0;
+        this.rCol = 0.0F;
+        this.gCol = 0.9F;
+        this.bCol = 0.1F;
     }
 
+    @Override
     public ParticleRenderType getRenderType() {
         return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
     }
 
+    @Override
     public void move(double x, double y, double z) {
         this.setBoundingBox(this.getBoundingBox().move(x, y, z));
         this.setLocationFromBoundingbox();
     }
 
+    @Override
     public int getLightColor(float partialTicks) {
         float f = ((float)this.age + partialTicks) / (float)this.lifetime;
         f = Mth.clamp(f, 0.0F, 1.0F);
@@ -56,6 +62,7 @@ public class SortingParticle extends TextureSheetParticle {
         return j | k << 16;
     }
 
+    @Override
     public void tick() {
         this.xo = this.x;
         this.yo = this.y;
@@ -77,7 +84,7 @@ public class SortingParticle extends TextureSheetParticle {
 
     @OnlyIn(Dist.CLIENT)
     public record Factory(SpriteSet sprite) implements ParticleProvider<SimpleParticleType> {
-
+        @Override
         public Particle createParticle(SimpleParticleType particleType, ClientLevel level, double x, double y, double z, double x2, double y2, double z2) {
             SortingParticle sortingParticle = new SortingParticle(level, x, y, z, x2, y2, z2);
             sortingParticle.pickSprite(this.sprite);

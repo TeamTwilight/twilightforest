@@ -2,7 +2,9 @@ package twilightforest.item;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -19,16 +21,15 @@ import net.minecraft.world.level.block.FlowerBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.level.BlockEvent;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.block.LightableBlock;
-import twilightforest.block.AbstractSkullCandleBlock;
-import twilightforest.capabilities.CapabilityList;
-import twilightforest.capabilities.fan.FeatherFanFallCapability;
+import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFSounds;
-import twilightforest.network.TFPacketHandler;
-import twilightforest.network.ThrowPlayerPacket;
+import twilightforest.network.ParticlePacket;
+import twilightforest.network.MovePlayerPacket;
+import twilightforest.network.UpdateFeatherFanFallPacket;
 import twilightforest.util.WorldUtil;
 
 import javax.annotation.Nonnull;
@@ -44,12 +45,33 @@ public class PeacockFanItem extends Item {
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, @Nonnull InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 
-		boolean flag = !player.onGround() && !player.isSwimming() && !player.getCapability(CapabilityList.FEATHER_FAN_FALLING).map(FeatherFanFallCapability::getFalling).orElse(true);
+		boolean flag = !player.onGround() && !player.isSwimming() && !player.getData(TFDataAttachments.FEATHER_FAN);
 
 		if (!level.isClientSide()) {
 			int fanned = this.doFan(level, player);
 			stack.hurtAndBreak(fanned + 1, player, (user) -> user.broadcastBreakEvent(hand));
-			if (flag) player.getCapability(CapabilityList.FEATHER_FAN_FALLING).ifPresent(cap -> cap.setFalling(true));
+			if (flag) {
+				player.setData(TFDataAttachments.FEATHER_FAN, true);
+				PacketDistributor.TRACKING_ENTITY_AND_SELF.with(player).send(new UpdateFeatherFanFallPacket(player.getId(), true));
+			} else {
+				AABB fanBox = this.getEffectAABB(player);
+				Vec3 lookVec = player.getLookAngle();
+
+				for (ServerPlayer serverplayer : ((ServerLevel)level).players()) {
+					if (serverplayer.distanceToSqr(player.position()) < 4096.0D) {
+						ParticlePacket packet = new ParticlePacket();
+
+						for (int i = 0; i < 30; i++) {
+							packet.queueParticle(ParticleTypes.CLOUD, true, fanBox.minX + level.getRandom().nextFloat() * (fanBox.maxX - fanBox.minX),
+									fanBox.minY + level.getRandom().nextFloat() * (fanBox.maxY - fanBox.minY),
+									fanBox.minZ + level.getRandom().nextFloat() * (fanBox.maxZ - fanBox.minZ),
+									lookVec.x(), lookVec.y(), lookVec.z());
+						}
+						PacketDistributor.PLAYER.with(serverplayer).send(packet);
+					}
+				}
+			}
+			level.playSound(null, player.blockPosition(), TFSounds.FAN_WHOOSH.get(), SoundSource.PLAYERS, 1.0F + level.getRandom().nextFloat(), level.getRandom().nextFloat() * 0.7F + 0.3F);
 		} else {
 			if (player.isFallFlying()) {
 				Vec3 look = player.getLookAngle();
@@ -67,19 +89,7 @@ public class PeacockFanItem extends Item {
 						1.5F,
 						player.getDeltaMovement().z() * 1.05F
 				));
-			} else {
-				AABB fanBox = this.getEffectAABB(player);
-				Vec3 lookVec = player.getLookAngle();
-
-				// particle effect
-				for (int i = 0; i < 30; i++) {
-					level.addParticle(ParticleTypes.CLOUD, fanBox.minX + level.getRandom().nextFloat() * (fanBox.maxX - fanBox.minX),
-							fanBox.minY + level.getRandom().nextFloat() * (fanBox.maxY - fanBox.minY),
-							fanBox.minZ + level.getRandom().nextFloat() * (fanBox.maxZ - fanBox.minZ),
-							lookVec.x(), lookVec.y(), lookVec.z());
-				}
 			}
-			player.playSound(TFSounds.FAN_WHOOSH.get(), 1.0F + level.getRandom().nextFloat(), level.getRandom().nextFloat() * 0.7F + 0.3F);
 			return new InteractionResultHolder<>(InteractionResult.SUCCESS, stack);
 		}
 
@@ -116,7 +126,7 @@ public class PeacockFanItem extends Item {
 			}
 
 			if (entity instanceof ServerPlayer pushedPlayer && pushedPlayer != player && !pushedPlayer.isShiftKeyDown()) {
-				TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> pushedPlayer), new ThrowPlayerPacket(moveVec.x(), moveVec.y(), moveVec.z()));
+				PacketDistributor.PLAYER.with(pushedPlayer).send(new MovePlayerPacket(moveVec.x(), moveVec.y(), moveVec.z()));
 				player.getCooldowns().addCooldown(fan, 40);
 				fannedEntities += 2;
 			}
@@ -148,14 +158,14 @@ public class PeacockFanItem extends Item {
 		BlockState state = level.getBlockState(pos);
 		if (state.getBlock() instanceof FlowerBlock) {
 			if (level.getRandom().nextInt(3) == 0) {
-				if (!MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(level, pos, state, player))) {
+				if (!NeoForge.EVENT_BUS.post(new BlockEvent.BreakEvent(level, pos, state, player)).isCanceled()) {
 					level.destroyBlock(pos, true);
 					cost++;
 				}
 			}
 		} else if (state.getBlock() instanceof AbstractCandleBlock && state.getValue(AbstractCandleBlock.LIT)) {
 			AbstractCandleBlock.extinguish(null, state, level, pos);
-		} else if (state.getBlock() instanceof LightableBlock lightable && state.getValue(LightableBlock.LIGHTING) != LightableBlock.Lighting.NONE) {
+		} else if (state.getBlock() instanceof LightableBlock lightable && (state.getValue(LightableBlock.LIGHTING) == LightableBlock.Lighting.NORMAL || state.getValue(LightableBlock.LIGHTING) == LightableBlock.Lighting.DIM)) {
 			lightable.extinguish(null, state, level, pos);
 		}
 

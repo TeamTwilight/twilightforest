@@ -5,7 +5,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.MatchTool;
-import net.minecraftforge.common.data.GlobalLootModifierProvider;
+import net.neoforged.neoforge.common.data.GlobalLootModifierProvider;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFItems;
 import twilightforest.loot.conditions.GiantPickUsedCondition;

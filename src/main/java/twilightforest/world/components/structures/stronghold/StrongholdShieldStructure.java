@@ -16,7 +16,7 @@ import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructurePieceTypes;
 
 
-public class StrongholdShieldStructure extends StructureTFStrongholdComponent {
+public class StrongholdShieldStructure extends KnightStrongholdComponent {
 
 	public StrongholdShieldStructure(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(TFStructurePieceTypes.TFSShield.get(), nbt);

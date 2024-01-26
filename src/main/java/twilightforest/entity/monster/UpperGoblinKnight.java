@@ -31,8 +31,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import twilightforest.entity.ai.goal.HeavySpearAttackGoal;
 import twilightforest.init.TFSounds;
 
@@ -67,7 +67,7 @@ public class UpperGoblinKnight extends Monster {
 		this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0D, false) {
 			@Override
 			public boolean canUse() {
-				return !this.mob.isPassenger() && !(((UpperGoblinKnight) this.mob).heavySpearTimer > 0) && super.canUse();
+				return !(((UpperGoblinKnight) this.mob).heavySpearTimer > 0) && super.canUse();
 			}
 		});
 		this.goalSelector.addGoal(6, new WaterAvoidingRandomStrollGoal(this, 1.0D));
@@ -105,7 +105,7 @@ public class UpperGoblinKnight extends Monster {
 					Objects.requireNonNull(getAttribute(Attributes.ARMOR)).addTransientModifier(ARMOR_MODIFIER);
 				}
 			} else {
-				Objects.requireNonNull(getAttribute(Attributes.ARMOR)).removeModifier(ARMOR_MODIFIER);
+				Objects.requireNonNull(getAttribute(Attributes.ARMOR)).removeModifier(ARMOR_MODIFIER.getId());
 			}
 		}
 	}

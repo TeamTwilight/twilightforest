@@ -6,6 +6,10 @@
     },
     {
       "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/frame"
+    },
+    {
+      "type": "minecraft:single",
       "resource": "twilightforest:magic_paintings/darkness/background"
     },
     {

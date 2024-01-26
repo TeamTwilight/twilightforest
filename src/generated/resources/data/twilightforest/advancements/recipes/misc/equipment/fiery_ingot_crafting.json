@@ -20,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_item",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_item"
     ]
   ],
   "rewards": {
     "recipes": [
       "twilightforest:equipment/fiery_ingot_crafting"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

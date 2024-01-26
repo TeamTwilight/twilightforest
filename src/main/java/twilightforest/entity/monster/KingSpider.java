@@ -5,20 +5,17 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Spider;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
-
-import org.jetbrains.annotations.Nullable;
 
 public class KingSpider extends Spider {
 
@@ -77,7 +74,7 @@ public class KingSpider extends Spider {
 	}
 
 	@Override
-	public double getPassengersRidingOffset() {
-		return this.getBbHeight() * 0.75D;
+	protected Vector3f getPassengerAttachmentPoint(Entity entity, EntityDimensions dimensions, float yRot) {
+		return new Vector3f(0.0F, dimensions.height * 0.85F, 0.0F);
 	}
 }

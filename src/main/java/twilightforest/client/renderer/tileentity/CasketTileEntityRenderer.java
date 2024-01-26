@@ -21,13 +21,13 @@ import net.minecraft.world.level.block.DoubleBlockCombiner;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.LidBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.KeepsakeCasketBlock;
-import twilightforest.init.TFBlocks;
 import twilightforest.block.entity.KeepsakeCasketBlockEntity;
 import twilightforest.client.model.TFModelLayers;
+import twilightforest.init.TFBlocks;
 
 /**
  * Keepsake Casket Model - MCVinnyq

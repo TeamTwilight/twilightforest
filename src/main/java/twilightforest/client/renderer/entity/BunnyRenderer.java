@@ -14,6 +14,6 @@ public class BunnyRenderer extends MobRenderer<DwarfRabbit, BunnyModel> {
 
 	@Override
 	public ResourceLocation getTextureLocation(DwarfRabbit entity) {
-		return entity.getBunnyType().texture();
+		return entity.getVariant().texture();
 	}
 }

@@ -8,8 +8,8 @@ import net.minecraft.world.level.block.state.properties.WoodType;
 import twilightforest.block.entity.TFHangingSignBlockEntity;
 
 public class TFCeilingHangingSignBlock extends CeilingHangingSignBlock {
-	public TFCeilingHangingSignBlock(Properties properties, WoodType type) {
-		super(properties, type);
+	public TFCeilingHangingSignBlock(WoodType type, Properties properties) {
+		super(type, properties);
 	}
 
 	@Override

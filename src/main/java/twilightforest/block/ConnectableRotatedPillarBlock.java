@@ -25,12 +25,12 @@ public abstract class ConnectableRotatedPillarBlock extends RotatedPillarBlock {
 	final double boundingBoxWidthLower;
 	final double boundingBoxWidthUpper;
 
-	ConnectableRotatedPillarBlock(Properties props, double size) {
-		this(props, size, size);
+	ConnectableRotatedPillarBlock(Properties properties, double size) {
+		this(properties, size, size);
 	}
 
-	ConnectableRotatedPillarBlock(Properties props, double width, double height) {
-		super(props.noOcclusion());
+	ConnectableRotatedPillarBlock(Properties properties, double width, double height) {
+		super(properties.noOcclusion());
 
 		if (width >= 16d) {
 			this.boundingBoxWidthLower = 0d;

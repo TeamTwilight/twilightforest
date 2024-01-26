@@ -6,8 +6,8 @@ import net.minecraft.util.LinearCongruentialGenerator;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
 import twilightforest.init.TFDimensionSettings;
-import twilightforest.world.components.layer.vanillalegacy.area.LazyArea;
 import twilightforest.world.components.layer.vanillalegacy.Area;
+import twilightforest.world.components.layer.vanillalegacy.area.LazyArea;
 
 public class LazyAreaContext implements BigContext<LazyArea> {
 	private final Long2ObjectLinkedOpenHashMap<ResourceKey<Biome>> cache;

@@ -7,6 +7,6 @@
     "Count": 1,
     "id": "twilightforest:lich_tower_miniature_structure"
   },
-  "multiplier": 2.0,
+  "multiplier": 0.0,
   "structure_key": "twilightforest:yeti_cave"
 }

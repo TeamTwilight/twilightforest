@@ -37,6 +37,22 @@
                 "min": 0.0
               },
               "function": "minecraft:looting_enchant"
+            },
+            {
+              "conditions": [
+                {
+                  "chance": 0.002,
+                  "condition": "minecraft:random_chance"
+                },
+                {
+                  "condition": "minecraft:killed_by_player"
+                }
+              ],
+              "function": "minecraft:set_name",
+              "name": {
+                "italic": false,
+                "translate": "item.twilightforest.boarkchop"
+              }
             }
           ],
           "name": "minecraft:porkchop"

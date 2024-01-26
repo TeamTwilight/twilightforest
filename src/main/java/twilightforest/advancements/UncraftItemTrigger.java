@@ -1,64 +1,48 @@
 package twilightforest.advancements;
 
-import com.google.common.collect.ImmutableSet;
-import com.google.gson.JsonObject;
-import net.minecraft.advancements.critereon.*;
-import net.minecraft.resources.ResourceLocation;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.advancements.Criterion;
+import net.minecraft.advancements.critereon.ContextAwarePredicate;
+import net.minecraft.advancements.critereon.EntityPredicate;
+import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.Item;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.level.ItemLike;
-import twilightforest.TwilightForestMod;
+import twilightforest.init.TFAdvancements;
+
+import java.util.Optional;
 
 public class UncraftItemTrigger extends SimpleCriterionTrigger<UncraftItemTrigger.TriggerInstance> {
-	public static final ResourceLocation ID = TwilightForestMod.prefix("uncraft_item");
 
 	@Override
-	public ResourceLocation getId() {
-		return ID;
-	}
-
-	@Override
-	protected UncraftItemTrigger.TriggerInstance createInstance(JsonObject json, ContextAwarePredicate player, DeserializationContext ctx) {
-		return new UncraftItemTrigger.TriggerInstance(player, ItemPredicate.fromJson(json.get("item")));
+	public Codec<UncraftItemTrigger.TriggerInstance> codec() {
+		return UncraftItemTrigger.TriggerInstance.CODEC;
 	}
 
 	public void trigger(ServerPlayer player, ItemStack stack) {
 		this.trigger(player, (instance) -> instance.matches(stack));
 	}
 
-	public static class TriggerInstance extends AbstractCriterionTriggerInstance {
+	public record TriggerInstance(Optional<ContextAwarePredicate> player, Optional<ItemPredicate> item) implements SimpleInstance {
 
-		private final ItemPredicate item;
+		public static final Codec<UncraftItemTrigger.TriggerInstance> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+						ExtraCodecs.strictOptionalField(EntityPredicate.ADVANCEMENT_CODEC, "player").forGetter(UncraftItemTrigger.TriggerInstance::player),
+						ExtraCodecs.strictOptionalField(ItemPredicate.CODEC, "item").forGetter(UncraftItemTrigger.TriggerInstance::item))
+				.apply(instance, UncraftItemTrigger.TriggerInstance::new));
 
-		public TriggerInstance(ContextAwarePredicate player, ItemPredicate item) {
-			super(ID, player);
-			this.item = item;
+		public static Criterion<UncraftItemTrigger.TriggerInstance> uncraftedItem(ItemPredicate predicate) {
+			return TFAdvancements.UNCRAFT_ITEM.get().createCriterion(new UncraftItemTrigger.TriggerInstance(Optional.empty(), Optional.of(predicate)));
 		}
 
-		public static UncraftItemTrigger.TriggerInstance uncraftedItem() {
-			return new UncraftItemTrigger.TriggerInstance(ContextAwarePredicate.ANY, ItemPredicate.ANY);
-		}
-
-		public static UncraftItemTrigger.TriggerInstance uncraftedItem(ItemPredicate pItem) {
-			return new UncraftItemTrigger.TriggerInstance(ContextAwarePredicate.ANY, pItem);
-		}
-
-		public static UncraftItemTrigger.TriggerInstance uncraftedItem(ItemLike pItem) {
-			return new UncraftItemTrigger.TriggerInstance(ContextAwarePredicate.ANY, new ItemPredicate((TagKey<Item>)null, ImmutableSet.of(pItem.asItem()), MinMaxBounds.Ints.ANY, MinMaxBounds.Ints.ANY, EnchantmentPredicate.NONE, EnchantmentPredicate.NONE, (Potion)null, NbtPredicate.ANY));
+		public static Criterion<UncraftItemTrigger.TriggerInstance> uncraftedItem(ItemLike item) {
+			return uncraftedItem(ItemPredicate.Builder.item().of(item).build());
 		}
 
 		public boolean matches(ItemStack item) {
-			return this.item.matches(item);
-		}
-
-		@Override
-		public JsonObject serializeToJson(SerializationContext ctx) {
-			JsonObject jsonobject = super.serializeToJson(ctx);
-			jsonobject.add("item", this.item.serializeToJson());
-			return jsonobject;
+			return this.item.isEmpty() || this.item.get().matches(item);
 		}
 	}
 }

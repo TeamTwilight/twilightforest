@@ -1,0 +1,44 @@
+{
+	"ambientocclusion": false,
+	"render_type": "minecraft:cutout",
+	"textures": {
+		"particle": "twilightforest:block/wrought_iron",
+		"all": "twilightforest:block/wrought_iron"
+	},
+	"elements": [
+		{
+			"from": [7, 0, 7],
+			"to": [9, 16, 9],
+			"faces": {
+				"north": {"uv": [7, 0, 9, 16], "texture": "#all"},
+				"east": {"uv": [7, 0, 9, 16], "texture": "#all"},
+				"south": {"uv": [7, 0, 9, 16], "texture": "#all"},
+				"west": {"uv": [7, 0, 9, 16], "texture": "#all"},
+				"up": {"uv": [7, 7, 9, 9], "texture": "#all", "cullface": "up"},
+				"down": {"uv": [7, 7, 9, 9], "texture": "#all", "cullface": "down"}
+			}
+		},
+		{
+			"from": [7.4, 15.9, 7.4],
+			"to": [8.6, 17.1, 8.6],
+			"faces": {
+				"north": {"uv": [7, 7, 8, 8], "texture": "#all"},
+				"east": {"uv": [6, 7, 7, 8], "texture": "#all"},
+				"south": {"uv": [7, 15, 8, 16], "texture": "#all"},
+				"west": {"uv": [7, 14, 8, 15], "texture": "#all"}
+			}
+		},
+		{
+			"from": [6.5, 17, 6.5],
+			"to": [9.5, 20, 9.5],
+			"faces": {
+				"north": {"uv": [4, 12, 7, 15], "texture": "#all"},
+				"east": {"uv": [7, 12, 10, 15], "texture": "#all"},
+				"south": {"uv": [7, 9, 10, 12], "texture": "#all"},
+				"west": {"uv": [10, 12, 13, 15], "texture": "#all"},
+				"up": {"uv": [7, 6, 10, 9], "texture": "#all"},
+				"down": {"uv": [7, 3, 10, 6], "texture": "#all"}
+			}
+		}
+	]
+}

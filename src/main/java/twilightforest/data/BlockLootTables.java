@@ -7,7 +7,10 @@ import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.PipeBlock;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -18,13 +21,15 @@ import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.functions.CopyBlockState;
 import net.minecraft.world.level.storage.loot.functions.CopyNbtFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
-import net.minecraft.world.level.storage.loot.predicates.*;
+import net.minecraft.world.level.storage.loot.predicates.BonusLevelTableCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.world.level.storage.loot.predicates.MatchTool;
 import net.minecraft.world.level.storage.loot.providers.nbt.ContextNbtProvider;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.registries.ForgeRegistries;
-import twilightforest.TwilightForestMod;
+import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import twilightforest.block.*;
 import twilightforest.enums.HollowLogVariants;
 import twilightforest.init.TFBlocks;
@@ -204,6 +209,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 		add(TFBlocks.PIGLIN_WALL_SKULL_CANDLE.get(), createSingleItemTable(Blocks.PIGLIN_HEAD));
 
 		dropSelf(TFBlocks.IRON_LADDER.get());
+		add(TFBlocks.ROPE.get(), this.rope());
 		dropSelf(TFBlocks.TWISTED_STONE.get());
 		dropSelf(TFBlocks.TWISTED_STONE_PILLAR.get());
 		dropSelf(TFBlocks.BOLD_STONE_PILLAR.get());
@@ -211,7 +217,9 @@ public class BlockLootTables extends BlockLootSubProvider {
 		add(TFBlocks.KEEPSAKE_CASKET.get(), casketInfo(TFBlocks.KEEPSAKE_CASKET.get()));
 		dropSelf(TFBlocks.CANDELABRA.get());
 		dropSelf(TFBlocks.WROUGHT_IRON_FENCE.get());
-		dropSelf(TFBlocks.WROUGHT_IRON_FINIAL.get());
+		dropSelf(TFBlocks.TERRORCOTTA_LINES.get());
+		dropSelf(TFBlocks.TERRORCOTTA_CURVES.get());
+
 		dropPottedContents(TFBlocks.POTTED_TWILIGHT_OAK_SAPLING.get());
 		dropPottedContents(TFBlocks.POTTED_CANOPY_SAPLING.get());
 		dropPottedContents(TFBlocks.POTTED_MANGROVE_SAPLING.get());
@@ -323,6 +331,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 		add(TFBlocks.TWILIGHT_OAK_WALL_HANGING_SIGN.get(), createSingleItemTable(TFBlocks.TWILIGHT_OAK_HANGING_SIGN.get().asItem()));
 		dropSelf(TFBlocks.TWILIGHT_OAK_BANISTER.get());
 		dropSelf(TFBlocks.TWILIGHT_OAK_CHEST.get());
+		dropSelf(TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST.get());
 
 		dropSelf(TFBlocks.CANOPY_LOG.get());
 		dropSelf(TFBlocks.STRIPPED_CANOPY_LOG.get());
@@ -346,6 +355,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 		add(TFBlocks.CANOPY_BOOKSHELF.get(), createSingleItemTableWithSilkTouch(TFBlocks.CANOPY_BOOKSHELF.get(), Items.BOOK, ConstantValue.exactly(2.0F)));
 		dropSelf(TFBlocks.CANOPY_BANISTER.get());
 		dropSelf(TFBlocks.CANOPY_CHEST.get());
+		dropSelf(TFBlocks.CANOPY_TRAPPED_CHEST.get());
 
 		dropSelf(TFBlocks.MANGROVE_LOG.get());
 		dropSelf(TFBlocks.STRIPPED_MANGROVE_LOG.get());
@@ -368,6 +378,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 		add(TFBlocks.MANGROVE_WALL_HANGING_SIGN.get(), createSingleItemTable(TFBlocks.MANGROVE_HANGING_SIGN.get().asItem()));
 		dropSelf(TFBlocks.MANGROVE_BANISTER.get());
 		dropSelf(TFBlocks.MANGROVE_CHEST.get());
+		dropSelf(TFBlocks.MANGROVE_TRAPPED_CHEST.get());
 
 		dropSelf(TFBlocks.DARK_LOG.get());
 		dropSelf(TFBlocks.STRIPPED_DARK_LOG.get());
@@ -391,6 +402,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 		add(TFBlocks.DARK_WALL_HANGING_SIGN.get(), createSingleItemTable(TFBlocks.DARK_HANGING_SIGN.get().asItem()));
 		dropSelf(TFBlocks.DARK_BANISTER.get());
 		dropSelf(TFBlocks.DARK_CHEST.get());
+		dropSelf(TFBlocks.DARK_TRAPPED_CHEST.get());
 
 		dropSelf(TFBlocks.TIME_LOG.get());
 		dropSelf(TFBlocks.STRIPPED_TIME_LOG.get());
@@ -414,6 +426,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 		add(TFBlocks.TIME_WALL_HANGING_SIGN.get(), createSingleItemTable(TFBlocks.TIME_HANGING_SIGN.get().asItem()));
 		dropSelf(TFBlocks.TIME_BANISTER.get());
 		dropSelf(TFBlocks.TIME_CHEST.get());
+		dropSelf(TFBlocks.TIME_TRAPPED_CHEST.get());
 
 		dropSelf(TFBlocks.TRANSFORMATION_LOG.get());
 		dropSelf(TFBlocks.STRIPPED_TRANSFORMATION_LOG.get());
@@ -437,6 +450,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 		add(TFBlocks.TRANSFORMATION_WALL_HANGING_SIGN.get(), createSingleItemTable(TFBlocks.TRANSFORMATION_HANGING_SIGN.get().asItem()));
 		dropSelf(TFBlocks.TRANSFORMATION_BANISTER.get());
 		dropSelf(TFBlocks.TRANSFORMATION_CHEST.get());
+		dropSelf(TFBlocks.TRANSFORMATION_TRAPPED_CHEST.get());
 
 		dropSelf(TFBlocks.MINING_LOG.get());
 		dropSelf(TFBlocks.STRIPPED_MINING_LOG.get());
@@ -460,6 +474,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 		add(TFBlocks.MINING_WALL_HANGING_SIGN.get(), createSingleItemTable(TFBlocks.MINING_HANGING_SIGN.get().asItem()));
 		dropSelf(TFBlocks.MINING_BANISTER.get());
 		dropSelf(TFBlocks.MINING_CHEST.get());
+		dropSelf(TFBlocks.MINING_TRAPPED_CHEST.get());
 
 		dropSelf(TFBlocks.SORTING_LOG.get());
 		dropSelf(TFBlocks.STRIPPED_SORTING_LOG.get());
@@ -483,6 +498,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 		add(TFBlocks.SORTING_WALL_HANGING_SIGN.get(), createSingleItemTable(TFBlocks.SORTING_HANGING_SIGN.get().asItem()));
 		dropSelf(TFBlocks.SORTING_BANISTER.get());
 		dropSelf(TFBlocks.SORTING_CHEST.get());
+		dropSelf(TFBlocks.SORTING_TRAPPED_CHEST.get());
 
 	}
 
@@ -498,7 +514,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
 						.add(LootItem.lootTableItem(log.asItem()).when(HAS_SILK_TOUCH).otherwise(LootItem.lootTableItem(Items.STICK).apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 4.0F))).apply(ApplyBonusCount.addUniformBonusCount(Enchantments.BLOCK_FORTUNE)))))
 				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
-						.add(LootItem.lootTableItem(Blocks.GRASS).when(HAS_SILK_TOUCH).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(log).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(HollowLogHorizontal.VARIANT, HollowLogVariants.Horizontal.MOSS_AND_GRASS)))))
+						.add(LootItem.lootTableItem(Blocks.SHORT_GRASS).when(HAS_SILK_TOUCH).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(log).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(HollowLogHorizontal.VARIANT, HollowLogVariants.Horizontal.MOSS_AND_GRASS)))))
 				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
 						.add(LootItem.lootTableItem(TFBlocks.MOSS_PATCH.get()).when(HAS_SILK_TOUCH).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(log).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(HollowLogHorizontal.VARIANT, HollowLogVariants.Horizontal.MOSS_AND_GRASS)))))
 				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
@@ -579,6 +595,25 @@ public class BlockLootTables extends BlockLootSubProvider {
 								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(-1.0F), true)))));
 	}
 
+	protected LootTable.Builder rope() {
+		return LootTable.lootTable()
+				.withPool(LootPool.lootPool()
+						.add(this.applyExplosionDecay(TFBlocks.ROPE.get(), LootItem.lootTableItem(TFBlocks.ROPE.get())
+								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F), true)
+										.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.ROPE.get())
+												.setProperties(StatePropertiesPredicate.Builder.properties()
+														.hasProperty(RopeBlock.X, true))))
+								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F), true)
+										.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.ROPE.get())
+												.setProperties(StatePropertiesPredicate.Builder.properties()
+														.hasProperty(RopeBlock.Y, true))))
+								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F), true)
+										.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.ROPE.get())
+												.setProperties(StatePropertiesPredicate.Builder.properties()
+														.hasProperty(RopeBlock.Z, true))))
+								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(-1.0F), true)))));
+	}
+
 	protected LootTable.Builder fallenLeaves() {
 		return LootTable.lootTable().withPool(LootPool.lootPool()
 				.add(AlternativesEntry.alternatives(AlternativesEntry.alternatives(FallenLeavesBlock.LAYERS.getPossibleValues(), layer ->
@@ -603,6 +638,6 @@ public class BlockLootTables extends BlockLootSubProvider {
 
 	@Override
 	protected Iterable<Block> getKnownBlocks() {
-		return ForgeRegistries.BLOCKS.getValues().stream().filter(block -> ForgeRegistries.BLOCKS.getKey(block).getNamespace().equals(TwilightForestMod.ID)).collect(Collectors.toList());
+		return TFBlocks.BLOCKS.getEntries().stream().map(DeferredHolder::value).collect(Collectors.toList());
 	}
 }

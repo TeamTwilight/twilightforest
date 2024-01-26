@@ -12,12 +12,12 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import twilightforest.TwilightForestMod;
+import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.ArrayUtil;
 import twilightforest.world.components.structures.TwilightTemplateStructurePiece;
-import twilightforest.init.TFStructurePieceTypes;
 
 import java.util.EnumMap;
 import java.util.List;

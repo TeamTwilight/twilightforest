@@ -32,9 +32,9 @@ public class SquirrelModel extends QuadrupedModel<Squirrel> {
 
 	public static LayerDefinition create() {
 		MeshDefinition mesh = QuadrupedModel.createBodyMesh(0, CubeDeformation.NONE);
-		PartDefinition partRoot = mesh.getRoot();
+		PartDefinition definition = mesh.getRoot();
 
-		partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+		definition.addOrReplaceChild("head", CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(-2F, -5F, -3F, 4, 4, 4)
 						.texOffs(16, 0)
@@ -43,32 +43,32 @@ public class SquirrelModel extends QuadrupedModel<Squirrel> {
 						.addBox(1F, -6F, -0.5F, 1, 1, 1),
 				PartPose.offset(0F, 22F, -2F));
 
-		var body = partRoot.addOrReplaceChild("body", CubeListBuilder.create().mirror()
+		var body = definition.addOrReplaceChild("body", CubeListBuilder.create().mirror()
 						.texOffs(0, 8)
 						.addBox(-2F, -1F, -2F, 4, 3, 5),
 				PartPose.offset(0F, 21F, 0F));
 
-		partRoot.addOrReplaceChild("right_hind_leg", CubeListBuilder.create().mirror()
+		definition.addOrReplaceChild("right_hind_leg", CubeListBuilder.create().mirror()
 						.texOffs(0, 16)
 						.addBox(0F, 0F, 0F, 1, 1, 1),
 				PartPose.offset(-2F, 23F, 2F));
 
-		partRoot.addOrReplaceChild("left_hind_leg", CubeListBuilder.create().mirror()
+		definition.addOrReplaceChild("left_hind_leg", CubeListBuilder.create().mirror()
 						.texOffs(0, 16)
 						.addBox(0F, 0F, 0F, 1, 1, 1),
 				PartPose.offset(1F, 23F, 2F));
 
-		partRoot.addOrReplaceChild("right_front_leg", CubeListBuilder.create()
+		definition.addOrReplaceChild("right_front_leg", CubeListBuilder.create()
 						.texOffs(0, 16)
 						.addBox(0F, 0F, 0F, 1, 1, 1),
 				PartPose.offset(-2F, 23F, -2F));
 
-		partRoot.addOrReplaceChild("left_front_leg", CubeListBuilder.create()
+		definition.addOrReplaceChild("left_front_leg", CubeListBuilder.create()
 						.texOffs(0, 16)
 						.addBox(0F, 0F, 0F, 1, 1, 1),
 				PartPose.offset(1F, 23F, -2F));
 
-		var tail = partRoot.addOrReplaceChild("tail", CubeListBuilder.create()
+		var tail = definition.addOrReplaceChild("tail", CubeListBuilder.create()
 						.texOffs(0, 18)
 						.addBox(-0.5F, -1.5F, 0.5F, 1, 1, 1),
 				PartPose.offset(0F, 21F, 2F));

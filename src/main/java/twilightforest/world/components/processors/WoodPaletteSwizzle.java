@@ -9,11 +9,10 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
+import org.jetbrains.annotations.Nullable;
+import twilightforest.init.TFStructureProcessors;
 import twilightforest.init.custom.WoodPalettes;
 import twilightforest.util.WoodPalette;
-import twilightforest.init.TFStructureProcessors;
-
-import org.jetbrains.annotations.Nullable;
 
 public final class WoodPaletteSwizzle extends StructureProcessor {
     private final Holder<WoodPalette> targetPalette;
@@ -31,7 +30,7 @@ public final class WoodPaletteSwizzle extends StructureProcessor {
 
     @Override
     public StructureTemplate.StructureBlockInfo process(LevelReader worldIn, BlockPos pos, BlockPos piecepos, StructureTemplate.StructureBlockInfo p_215194_3_, StructureTemplate.StructureBlockInfo blockInfo, StructurePlaceSettings settings, @Nullable StructureTemplate template) {
-        return this.replacementPalette.get().modifyBlockWithType(this.targetPalette.get(), blockInfo);
+        return this.replacementPalette.value().modifyBlockWithType(this.targetPalette.value(), blockInfo);
     }
 
     @Override

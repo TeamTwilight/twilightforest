@@ -75,6 +75,7 @@
       "spawns": []
     }
   },
+  "speleothem_config": "twilightforest:small_hollow_hill",
   "step": "surface_structures",
   "water_spawns": []
 }

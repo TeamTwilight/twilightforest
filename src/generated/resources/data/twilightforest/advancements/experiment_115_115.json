@@ -28,7 +28,6 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancement.twilightforest.experiment_115_3.desc"
     },
@@ -38,7 +37,6 @@
       "item": "twilightforest:experiment_115",
       "nbt": "{think:{think:1}}"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancement.twilightforest.experiment_115_3"
     }

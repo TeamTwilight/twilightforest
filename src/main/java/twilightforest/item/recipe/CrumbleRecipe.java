@@ -1,10 +1,10 @@
 package twilightforest.item.recipe;
 
-import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.GsonHelper;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
@@ -12,14 +12,10 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFRecipes;
 
-import org.jetbrains.annotations.Nullable;
-
-public record CrumbleRecipe(ResourceLocation recipeID, BlockState input, BlockState result) implements Recipe<Container> {
+public record CrumbleRecipe(Block input, Block result) implements Recipe<Container> {
 
 	@Override
 	public boolean matches(Container container, Level level) {
@@ -42,11 +38,6 @@ public record CrumbleRecipe(ResourceLocation recipeID, BlockState input, BlockSt
 	}
 
 	@Override
-	public ResourceLocation getId() {
-		return this.recipeID;
-	}
-
-	@Override
 	public RecipeSerializer<?> getSerializer() {
 		return TFRecipes.CRUMBLE_SERIALIZER.get();
 	}
@@ -58,28 +49,29 @@ public record CrumbleRecipe(ResourceLocation recipeID, BlockState input, BlockSt
 
 	public static class Serializer implements RecipeSerializer<CrumbleRecipe> {
 
+		private static final Codec<CrumbleRecipe> CODEC = RecordCodecBuilder.create(
+				instance -> instance.group(
+						BuiltInRegistries.BLOCK.byNameCodec().fieldOf("from").forGetter(o -> o.input),
+						BuiltInRegistries.BLOCK.byNameCodec().fieldOf("to").forGetter(o -> o.result)
+				).apply(instance, CrumbleRecipe::new));
+
 		@Override
-		public CrumbleRecipe fromJson(ResourceLocation id, JsonObject object) {
-			Block input = ForgeRegistries.BLOCKS.getValue(ResourceLocation.tryParse(GsonHelper.getAsString(object, "from")));
-			Block output = ForgeRegistries.BLOCKS.getValue(ResourceLocation.tryParse(GsonHelper.getAsString(object, "to")));
-			if (input != null && output != null) {
-				return new CrumbleRecipe(id, input.defaultBlockState(), output.defaultBlockState());
-			}
-			return new CrumbleRecipe(id, Blocks.AIR.defaultBlockState(), Blocks.AIR.defaultBlockState());
+		public Codec<CrumbleRecipe> codec() {
+			return CODEC;
 		}
 
 		@Nullable
 		@Override
-		public CrumbleRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buffer) {
-			Block input = buffer.readRegistryIdUnsafe(ForgeRegistries.BLOCKS);
-			Block output = buffer.readRegistryIdUnsafe(ForgeRegistries.BLOCKS);
-			return new CrumbleRecipe(id, input.defaultBlockState(), output.defaultBlockState());
+		public CrumbleRecipe fromNetwork(FriendlyByteBuf buffer) {
+			Block input = buffer.readById(BuiltInRegistries.BLOCK);
+			Block output = buffer.readById(BuiltInRegistries.BLOCK);
+			return new CrumbleRecipe(input, output);
 		}
 
 		@Override
 		public void toNetwork(FriendlyByteBuf buffer, CrumbleRecipe recipe) {
-			buffer.writeRegistryIdUnsafe(ForgeRegistries.BLOCKS, recipe.input.getBlock());
-			buffer.writeRegistryIdUnsafe(ForgeRegistries.BLOCKS, recipe.result.getBlock());
+			buffer.writeId(BuiltInRegistries.BLOCK, recipe.input);
+			buffer.writeId(BuiltInRegistries.BLOCK, recipe.result);
 		}
 	}
 }

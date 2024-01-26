@@ -3,8 +3,8 @@ package twilightforest.data;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.common.data.SoundDefinition;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.common.data.SoundDefinition;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.helpers.TFSoundProvider;
 import twilightforest.init.TFSounds;
@@ -202,6 +202,7 @@ public class SoundGenerator extends TFSoundProvider {
 
 		this.generateExistingSoundWithSubtitle(TFSounds.SHIELD_ADD, SoundEvents.CHICKEN_EGG);
 		this.generateExistingSoundWithSubtitle(TFSounds.SHIELD_BREAK, SoundEvents.ITEM_BREAK);
+		this.generateExistingSoundWithSubtitle(TFSounds.SHIELD_BLOCK, SoundEvents.TRIDENT_HIT);
 
 		this.generateExistingSoundWithSubtitle(TFSounds.SKELETON_DRUID_AMBIENT, SoundEvents.STRAY_AMBIENT);
 		this.generateExistingSoundWithSubtitle(TFSounds.SKELETON_DRUID_DEATH, SoundEvents.STRAY_DEATH);
@@ -297,7 +298,7 @@ public class SoundGenerator extends TFSoundProvider {
 		this.generateExistingSoundWithSubtitle(TFSounds.DOOR_ACTIVATED, SoundEvents.COMPARATOR_CLICK);
 		this.generateExistingSoundWithSubtitle(TFSounds.DOOR_REAPPEAR, SoundEvents.FIRE_EXTINGUISH);
 		this.generateExistingSoundWithSubtitle(TFSounds.DOOR_VANISH, SoundEvents.FIRE_EXTINGUISH);
-		this.generateExistingSoundWithSubtitle(TFSounds.GHAST_TRAP_AMBIENT, SoundEvents.NOTE_BLOCK_HARP.get());
+		this.generateExistingSoundWithSubtitle(TFSounds.GHAST_TRAP_AMBIENT, SoundEvents.NOTE_BLOCK_HARP.value());
 		this.generateNewSoundWithSubtitle(TFSounds.GHAST_TRAP_ON, "mob/ur_ghast/trap_on", 5);
 		this.generateNewSoundWithSubtitle(TFSounds.GHAST_TRAP_SPINDOWN, "mob/ur_ghast/trap_spin_down", 1);
 		this.generateNewSoundWithSubtitle(TFSounds.GHAST_TRAP_WARMUP, "mob/ur_ghast/trap_warmup", 1);
@@ -314,11 +315,11 @@ public class SoundGenerator extends TFSoundProvider {
 		this.generateNewSoundWithSubtitle(TFSounds.SLIDER, "random/creakgo2", 1);
 		this.generateExistingSoundWithSubtitle(TFSounds.SMOKER_START, SoundEvents.COMPARATOR_CLICK);
 		this.generateExistingSoundWithSubtitle(TFSounds.TIME_CORE, SoundEvents.COMPARATOR_CLICK);
-		this.generateExistingSoundWithSubtitle(TFSounds.TRANSFORMATION_CORE, SoundEvents.NOTE_BLOCK_HARP.get());
+		this.generateExistingSoundWithSubtitle(TFSounds.TRANSFORMATION_CORE, SoundEvents.NOTE_BLOCK_HARP.value());
 		this.generateExistingSound(TFSounds.UNCRAFTING_TABLE_ACTIVATE, SoundEvents.END_PORTAL_SPAWN, false);
 		this.generateExistingSoundWithSubtitle(TFSounds.UNLOCK_VANISHING_BLOCK, SoundEvents.COMPARATOR_CLICK);
 		this.generateExistingSoundWithSubtitle(TFSounds.VANISHING_BLOCK, SoundEvents.ITEM_PICKUP);
-
+		this.generateNewSoundWithSubtitle(TFSounds.WROUGHT_IRON_FENCE_EXTENDED, "random/casket/repair", 1);
 
 		this.generateExistingSoundWithSubtitle(TFSounds.BLOCK_AND_CHAIN_COLLIDE, SoundEvents.ANVIL_LAND);
 		this.generateExistingSoundWithSubtitle(TFSounds.BLOCK_AND_CHAIN_FIRED, SoundEvents.ARROW_SHOOT);
@@ -336,9 +337,13 @@ public class SoundGenerator extends TFSoundProvider {
 		this.generateExistingSoundWithSubtitle(TFSounds.MAGNET_GRAB, SoundEvents.CHORUS_FRUIT_TELEPORT);
 		this.generateExistingSoundWithSubtitle(TFSounds.METAL_SHIELD_SHATTERS, SoundEvents.ZOMBIE_ATTACK_IRON_DOOR);
 		this.generateExistingSoundWithSubtitle(TFSounds.MOONWORM_SQUISH, SoundEvents.SLIME_SQUISH_SMALL);
+		this.generateNewSoundMC(TFSounds.ORE_METER_CLEAR, "block/crafter/craft", 1, true);
+		this.generateNewSoundMC(TFSounds.ORE_METER_CRACKLE, "ambient/nether/basalt_deltas/click", 5, true);
+		this.generateExistingSoundWithSubtitle(TFSounds.ORE_METER_TARGET_BLOCK, SoundEvents.LODESTONE_COMPASS_LOCK);
 		this.generateExistingSoundWithSubtitle(TFSounds.POWDER_USE, SoundEvents.ZOMBIE_VILLAGER_CURE);
 		this.generateExistingSoundWithSubtitle(TFSounds.SCEPTER_DRAIN, SoundEvents.GENERIC_BIG_FALL);
-		this.generateExistingSoundWithSubtitle(TFSounds.SCEPTER_PEARL, SoundEvents.FLINTANDSTEEL_USE);
+		this.generateExistingSoundWithSubtitle(TFSounds.SCEPTER_PEARL, SoundEvents.FIRECHARGE_USE);
+		this.generateExistingSoundWithSubtitle(TFSounds.SCEPTER_USE, SoundEvents.FLINTANDSTEEL_USE);
 		this.generateExistingSoundWithSubtitle(TFSounds.WOOD_SHIELD_SHATTERS, SoundEvents.ZOMBIE_BREAK_WOODEN_DOOR);
 
 		this.makeMusicDisc(TFSounds.MUSIC_DISC_RADIANCE, "radiance");

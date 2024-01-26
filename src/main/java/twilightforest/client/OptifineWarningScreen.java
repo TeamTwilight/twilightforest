@@ -41,7 +41,7 @@ public class OptifineWarningScreen extends Screen {
 
 	@Override
 	public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-		this.renderBackground(graphics);
+		this.renderBackground(graphics, mouseX, mouseY, partialTicks);
 		graphics.drawCenteredString(this.font, this.title, this.width / 2, 30, 16777215);
 		this.message.renderCentered(graphics, this.width / 2, 70);
 		this.suggestions.renderCentered(graphics, this.width / 2, 160);

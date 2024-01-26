@@ -7,12 +7,12 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.block.HollowLogClimbable;
 import twilightforest.block.HollowLogHorizontal;
 import twilightforest.block.HollowLogVertical;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 
 public class HollowLogItem extends BlockItem {
@@ -20,7 +20,7 @@ public class HollowLogItem extends BlockItem {
     private final HollowLogVertical verticalLog;
     private final HollowLogClimbable climbable;
 
-    public HollowLogItem(RegistryObject<HollowLogHorizontal> horizontalLog, RegistryObject<HollowLogVertical> verticalLog, RegistryObject<HollowLogClimbable> climbable, Properties properties) {
+    public HollowLogItem(DeferredHolder<Block, HollowLogHorizontal> horizontalLog, DeferredHolder<Block, HollowLogVertical> verticalLog, DeferredHolder<Block, HollowLogClimbable> climbable, Properties properties) {
         super(verticalLog.get(), properties);
         this.horizontalLog = horizontalLog.get();
         this.verticalLog = verticalLog.get();

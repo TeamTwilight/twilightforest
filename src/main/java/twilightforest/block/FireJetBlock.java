@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -17,21 +18,26 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.FireJetBlockEntity;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.data.tags.FluidTagGenerator;
 import twilightforest.enums.FireJetVariant;
 import twilightforest.init.TFBlockEntities;
 
-import org.jetbrains.annotations.Nullable;
-
 public class FireJetBlock extends BaseEntityBlock {
 
+	public static final MapCodec<FireJetBlock> CODEC = simpleCodec(FireJetBlock::new);
 	public static final EnumProperty<FireJetVariant> STATE = EnumProperty.create("state", FireJetVariant.class);
 
 	public FireJetBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(STATE, FireJetVariant.IDLE));
+	}
+
+	@Override
+	protected MapCodec<? extends BaseEntityBlock> codec() {
+		return CODEC;
 	}
 
 	@Override

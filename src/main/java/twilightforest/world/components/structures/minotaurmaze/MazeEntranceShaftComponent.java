@@ -44,6 +44,6 @@ public class MazeEntranceShaftComponent extends TFStructureComponentOld {
 		this.boundingBox.encapsulate(pos.setY(generator.getSeaLevel() - 9));
 
 		this.generateBox(world, sbb, 0, 0, 0, 5, this.boundingBox.getYSpan(), 5, TFBlocks.MAZESTONE_BRICK.get().defaultBlockState(), AIR, true);
-		this.generateAirBox(world, sbb, 1, 0, 1, 4, this.boundingBox.getYSpan(), 4);
+		this.generateAirBox(world, sbb, 1, 0, 1, 4, (generator.getSeaLevel() + 11) - this.boundingBox.minY(), 4);
 	}
 }

@@ -13,9 +13,9 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import twilightforest.TwilightForestMod;
+import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.world.components.processors.NagastoneVariants;
 import twilightforest.world.components.structures.TwilightTemplateStructurePiece;
-import twilightforest.init.TFStructurePieceTypes;
 
 public class CourtyardPathPiece extends TwilightTemplateStructurePiece {
     public CourtyardPathPiece(StructurePieceSerializationContext ctx, CompoundTag nbt) {

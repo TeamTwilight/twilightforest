@@ -10,8 +10,8 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import twilightforest.entity.monster.SlimeBeetle;
 
 /**
@@ -63,9 +63,9 @@ public class NewSlimeBeetleModel extends HierarchicalModel<SlimeBeetle> {
 
     public static LayerDefinition create() {
         MeshDefinition mesh = new MeshDefinition();
-        PartDefinition partRoot = mesh.getRoot();
+        PartDefinition definition = mesh.getRoot();
 
-        var head = partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+        var head = definition.addOrReplaceChild("head", CubeListBuilder.create()
                         .texOffs(0, 0)
                         .addBox(-4.0F, -3.0F, -6.0F, 8.0F, 6.0F, 6.0F),
                 PartPose.offset(0.0F, 17.0F, -8.0F));
@@ -90,42 +90,42 @@ public class NewSlimeBeetleModel extends HierarchicalModel<SlimeBeetle> {
                         .addBox(-1.0F, -1.0F, -2.0F, 3.0F, 3.0F, 3.0F),
                 PartPose.offset(2.5F, -1.0F, -4.5F));
         
-        partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+        definition.addOrReplaceChild("body", CubeListBuilder.create()
                         .texOffs(32, 8)
                         .addBox(-4.0F, 0.0F, -4.0F, 8.0F, 10.0F, 8.0F),
                 PartPose.offsetAndRotation(0.0F, 17.0F, -8.0F, 1.5707963267948966F, 0.0F, 0.0F));
 
-        partRoot.addOrReplaceChild("right_leg_1", CubeListBuilder.create()
+        definition.addOrReplaceChild("right_leg_1", CubeListBuilder.create()
                         .texOffs(40, 0)
                         .addBox(-10.0F, -1.0F, -1.0F, 10.0F, 2.0F, 2.0F),
                 PartPose.offsetAndRotation(-2.0F, 20.0F, -6.0F, 0.0F, -0.4363323129985824F, -0.4363323129985824F));
 
-        partRoot.addOrReplaceChild("right_leg_2", CubeListBuilder.create()
+        definition.addOrReplaceChild("right_leg_2", CubeListBuilder.create()
                         .texOffs(40, 0)
                         .addBox(-10.0F, -1.0F, -1.0F, 10.0F, 2.0F, 2.0F),
                 PartPose.offsetAndRotation(-2.0F, 20.0F, -4.0F, 0.0F, 0.2181661564992912F, -0.4363323129985824F));
 
-        partRoot.addOrReplaceChild("right_leg_3", CubeListBuilder.create()
+        definition.addOrReplaceChild("right_leg_3", CubeListBuilder.create()
                         .texOffs(40, 0)
                         .addBox(-10.0F, -1.0F, -1.0F, 10.0F, 2.0F, 2.0F),
                 PartPose.offsetAndRotation(-2.0F, 20.0F, -2.0F, 0.0F, 0.7853981633974483F, -0.4363323129985824F));
 
-        partRoot.addOrReplaceChild("left_leg_1", CubeListBuilder.create().mirror()
+        definition.addOrReplaceChild("left_leg_1", CubeListBuilder.create().mirror()
                         .texOffs(40, 0)
                         .addBox(0.0F, -1.0F, -1.0F, 10.0F, 2.0F, 2.0F),
                 PartPose.offsetAndRotation(2.0F, 20.0F, -6.0F, 0.0F, 0.4363323129985824F, 0.4363323129985824F));
 
-        partRoot.addOrReplaceChild("left_leg_2", CubeListBuilder.create().mirror()
+        definition.addOrReplaceChild("left_leg_2", CubeListBuilder.create().mirror()
                         .texOffs(40, 0)
                         .addBox(0.0F, -1.0F, -1.0F, 10.0F, 2.0F, 2.0F),
                 PartPose.offsetAndRotation(2.0F, 20.0F, -4.0F, 0.0F, -0.2181661564992912F, 0.4363323129985824F));
 
-        partRoot.addOrReplaceChild("left_leg_3", CubeListBuilder.create().mirror()
+        definition.addOrReplaceChild("left_leg_3", CubeListBuilder.create().mirror()
                         .texOffs(40, 0)
                         .addBox(0.0F, -1.0F, -1.0F, 10.0F, 2.0F, 2.0F),
                 PartPose.offsetAndRotation(2.0F, 20.0F, -2.0F, 0.0F, -0.7853981633974483F, 0.4363323129985824F));
 
-        var tailBottom = partRoot.addOrReplaceChild("tail_bottom", CubeListBuilder.create()
+        var tailBottom = definition.addOrReplaceChild("tail_bottom", CubeListBuilder.create()
                         .texOffs(0, 34)
                         .addBox(-3.0F, -3.0F, 0.0F, 6.0F, 6.0F, 6.0F),
                 PartPose.offset(0.0F, 18.0F, 2.0F));

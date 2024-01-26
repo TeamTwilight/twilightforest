@@ -23,9 +23,9 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.util.EntityUtil;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class HedgeBlock extends Block {
@@ -67,7 +67,8 @@ public class HedgeBlock extends Block {
 
 	@Override
 	public void attack(BlockState state, Level level, BlockPos pos, Player player) {
-		if (!level.isClientSide) {
+		if (!level.isClientSide()) {
+			player.hurt(level.damageSources().cactus(), DAMAGE);
 			level.scheduleTick(pos, this, 10);
 		}
 	}

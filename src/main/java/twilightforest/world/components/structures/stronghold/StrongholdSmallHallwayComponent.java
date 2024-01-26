@@ -16,7 +16,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import twilightforest.init.TFStructurePieceTypes;
 
 
-public class StrongholdSmallHallwayComponent extends StructureTFStrongholdComponent {
+public class StrongholdSmallHallwayComponent extends KnightStrongholdComponent {
 
 	public StrongholdSmallHallwayComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(TFStructurePieceTypes.TFSSH.get(), nbt);
@@ -28,7 +28,7 @@ public class StrongholdSmallHallwayComponent extends StructureTFStrongholdCompon
 
 	@Override
 	public BoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
-		return StructureTFStrongholdComponent.getComponentToAddBoundingBox(x, y, z, -4, -1, 0, 9, 7, 18, facing);
+		return KnightStrongholdComponent.getComponentToAddBoundingBox(x, y, z, -4, -1, 0, 9, 7, 18, facing);
 	}
 
 	@Override

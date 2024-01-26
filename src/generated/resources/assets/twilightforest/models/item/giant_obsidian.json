@@ -7,7 +7,7 @@
       "top": "minecraft:block/obsidian"
     }
   },
-  "loader": "forge:separate_transforms",
+  "loader": "neoforge:separate_transforms",
   "perspectives": {
     "gui": {
       "parent": "twilightforest:item/giant_block_gui",

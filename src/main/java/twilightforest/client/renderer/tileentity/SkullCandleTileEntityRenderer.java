@@ -3,7 +3,6 @@ package twilightforest.client.renderer.tileentity;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.Util;
@@ -19,16 +18,16 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.DefaultPlayerSkin;
+import net.minecraft.client.resources.SkinManager;
 import net.minecraft.core.Direction;
-import net.minecraft.core.UUIDUtil;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.CandleBlock;
 import net.minecraft.world.level.block.SkullBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RotationSegment;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.block.LightableBlock;
 import twilightforest.block.AbstractSkullCandleBlock;
+import twilightforest.block.LightableBlock;
 import twilightforest.block.SkullCandleBlock;
 import twilightforest.block.WallSkullCandleBlock;
 import twilightforest.block.entity.SkullCandleBlockEntity;
@@ -46,7 +45,7 @@ public class SkullCandleTileEntityRenderer<T extends SkullCandleBlockEntity> imp
 		map.put(SkullBlock.Types.ZOMBIE, new ResourceLocation("textures/entity/zombie/zombie.png"));
 		map.put(SkullBlock.Types.CREEPER, new ResourceLocation("textures/entity/creeper/creeper.png"));
 		map.put(SkullBlock.Types.PIGLIN, new ResourceLocation("textures/entity/piglin/piglin.png"));
-		map.put(SkullBlock.Types.PLAYER, DefaultPlayerSkin.getDefaultSkin());
+		map.put(SkullBlock.Types.PLAYER, DefaultPlayerSkin.getDefaultTexture());
 	});
 
 	public static Map<SkullBlock.Type, SkullModelBase> createSkullRenderers(EntityModelSet set) {
@@ -107,9 +106,8 @@ public class SkullCandleTileEntityRenderer<T extends SkullCandleBlockEntity> imp
 	public static RenderType getRenderType(SkullBlock.Type type, @Nullable GameProfile profile) {
 		ResourceLocation resourcelocation = SKIN_BY_TYPE.get(type);
 		if (type == SkullBlock.Types.PLAYER && profile != null) {
-			Minecraft minecraft = Minecraft.getInstance();
-			Map<MinecraftProfileTexture.Type, MinecraftProfileTexture> map = minecraft.getSkinManager().getInsecureSkinInformation(profile);
-			return map.containsKey(MinecraftProfileTexture.Type.SKIN) ? RenderType.entityTranslucent(minecraft.getSkinManager().registerTexture(map.get(MinecraftProfileTexture.Type.SKIN), MinecraftProfileTexture.Type.SKIN)) : RenderType.entityCutoutNoCull(DefaultPlayerSkin.getDefaultSkin(UUIDUtil.getOrCreatePlayerUUID(profile)));
+			SkinManager skinmanager = Minecraft.getInstance().getSkinManager();
+			return RenderType.entityTranslucent(skinmanager.getInsecureSkin(profile).texture());
 		} else {
 			return RenderType.entityCutoutNoCullZOffset(resourcelocation);
 		}

@@ -28,7 +28,7 @@ public class TripleBowItem extends BowItem {
 			ItemStack itemstack = player.getProjectile(stack);
 
 			int i = this.getUseDuration(stack) - timeLeft;
-			i = net.minecraftforge.event.ForgeEventFactory.onArrowLoose(stack, level, player, i, !itemstack.isEmpty() || flag);
+			i = net.neoforged.neoforge.event.EventHooks.onArrowLoose(stack, level, player, i, !itemstack.isEmpty() || flag);
 			if (i < 0) return;
 
 			if (!itemstack.isEmpty() || flag) {

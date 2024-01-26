@@ -37,16 +37,12 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancement.twilightforest.hedge.desc"
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
       "item": "twilightforest:hedge"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancement.twilightforest.hedge"
     }

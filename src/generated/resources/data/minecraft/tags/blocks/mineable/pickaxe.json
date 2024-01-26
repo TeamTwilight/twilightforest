@@ -1,5 +1,6 @@
 {
   "values": [
+    "#twilightforest:deadrock",
     "twilightforest:nagastone",
     "twilightforest:nagastone_head",
     "twilightforest:stronghold_shield",
@@ -10,9 +11,6 @@
     "twilightforest:mossy_underbrick",
     "twilightforest:cracked_underbrick",
     "twilightforest:underbrick_floor",
-    "twilightforest:deadrock",
-    "twilightforest:cracked_deadrock",
-    "twilightforest:weathered_deadrock",
     "twilightforest:trollsteinn",
     "twilightforest:giant_leaves",
     "twilightforest:giant_obsidian",
@@ -43,6 +41,8 @@
     "twilightforest:twisted_stone_pillar",
     "twilightforest:keepsake_casket",
     "twilightforest:bold_stone_pillar",
+    "twilightforest:terrorcotta_lines",
+    "twilightforest:terrorcotta_curves",
     "#twilightforest:mazestone",
     "#twilightforest:castle_blocks"
   ]

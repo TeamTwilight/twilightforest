@@ -1,13 +1,13 @@
 package twilightforest.world.components.structures.stronghold;
 
-import twilightforest.world.components.structures.stronghold.StructureTFStrongholdComponent.Factory;
+import twilightforest.world.components.structures.stronghold.KnightStrongholdComponent.Factory;
 
 /**
  * Based off StructureStrongholdPieceWeight
  */
 public class StrongholdPieceWeight {
 
-	public final Factory<? extends StructureTFStrongholdComponent> factory;
+	public final Factory<? extends KnightStrongholdComponent> factory;
 	public final int pieceWeight;
 	public int instancesSpawned;
 
@@ -17,11 +17,11 @@ public class StrongholdPieceWeight {
 	public final int instancesLimit;
 	public final int minimumDepth;
 
-	public <T extends StructureTFStrongholdComponent> StrongholdPieceWeight(Factory<T> factory, int weight, int limit) {
+	public <T extends KnightStrongholdComponent> StrongholdPieceWeight(Factory<T> factory, int weight, int limit) {
 		this(factory, weight, limit, 0);
 	}
 
-	public <T extends StructureTFStrongholdComponent> StrongholdPieceWeight(Factory<T> factory, int weight, int limit, int minDepth) {
+	public <T extends KnightStrongholdComponent> StrongholdPieceWeight(Factory<T> factory, int weight, int limit, int minDepth) {
 		this.factory = factory;
 		this.pieceWeight = weight;
 		this.instancesLimit = limit;

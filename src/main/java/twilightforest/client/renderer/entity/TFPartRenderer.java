@@ -3,105 +3,113 @@ package twilightforest.client.renderer.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.ListModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.model.ListModel;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.LivingEntity;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.TFPart;
 
-import org.jetbrains.annotations.Nullable;
-
+@SuppressWarnings("unused")
 public abstract class TFPartRenderer<T extends TFPart<?>, M extends ListModel<T>> extends EntityRenderer<T> {
 
-	protected final M entityModel;
+	protected final M model;
 
-	public TFPartRenderer(EntityRendererProvider.Context renderManager, M model) {
-		super(renderManager);
-		this.entityModel = model;
+	public TFPartRenderer(EntityRendererProvider.Context context, M model) {
+		super(context);
+		this.model = model;
 	}
 
 	@Override
-	public void render(T entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int light) {
-		int packedLightIn = entityRenderDispatcher.getPackedLightCoords(entityIn.getParent(), partialTicks);
-		super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
-		matrixStackIn.pushPose();
+	public void render(T entity, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light) {
+		stack.pushPose();
 
-		float f = Mth.rotLerp(partialTicks, entityIn.prevRenderYawOffset, entityIn.renderYawOffset);
-		float f6 = Mth.lerp(partialTicks, entityIn.xRotO, entityIn.getXRot());
+		float yRot = Mth.rotLerp(partialTicks, entity.prevRenderYawOffset, entity.renderYawOffset);
+		float xRot = Mth.lerp(partialTicks, entity.xRotO, entity.getXRot());
 
-		float f7 = this.handleRotationFloat(entityIn, partialTicks);
-		this.applyRotations(entityIn, matrixStackIn, f7, f, partialTicks);
-		matrixStackIn.scale(-1.0F, -1.0F, 1.0F);
-		matrixStackIn.translate(0.0D, -1.501F, 0.0D);
-		float f8 = 0.0F;
-		float f5 = 0.0F;
+		float ageInTicks = this.getBob(entity, partialTicks);
+		this.setupRotations(entity, stack, ageInTicks, yRot, partialTicks);
+		stack.scale(-1.0F, -1.0F, 1.0F);
+		stack.translate(0.0D, -1.501F, 0.0D);
 
-		this.entityModel.prepareMobModel(entityIn, f5, f8, partialTicks);
-		this.entityModel.setupAnim(entityIn, f5, f8, f7, f, f6);
-		Minecraft minecraft = Minecraft.getInstance();
-		boolean flag = this.isVisible(entityIn);
-		boolean flag1 = !flag && !entityIn.isInvisibleTo(minecraft.player);
-		boolean flag2 = minecraft.shouldEntityAppearGlowing(entityIn);
-		RenderType rendertype = this.getRenderType(entityIn, flag, flag1, flag2);
+		this.model.prepareMobModel(entity, 0.0F, 0.0F, partialTicks);
+		this.model.setupAnim(entity, 0.0F, 0.0F, ageInTicks, yRot, xRot);
+		boolean visible = this.isBodyVisible(entity);
+		boolean ghostly = !visible && !entity.isInvisibleTo(Minecraft.getInstance().player);
+		boolean glowing = Minecraft.getInstance().shouldEntityAppearGlowing(entity);
+		RenderType rendertype = this.getRenderType(entity, visible, ghostly, glowing);
 		if (rendertype != null) {
-			VertexConsumer ivertexbuilder = bufferIn.getBuffer(rendertype);
-			int i = getPackedOverlay(entityIn, this.getOverlayProgress(entityIn, partialTicks));
-			this.entityModel.renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, i, 1.0F, 1.0F, 1.0F, flag1 ? 0.15F : 1.0F);
+			VertexConsumer consumer = buffer.getBuffer(rendertype);
+			int overlay = this.getOverlayCoords(entity, this.getWhiteOverlayProgress(entity, partialTicks));
+			this.model.renderToBuffer(stack, consumer, light, overlay, 1.0F, 1.0F, 1.0F, ghostly ? 0.15F : 1.0F);
 		}
 
-		matrixStackIn.popPose();
+		stack.popPose();
+		super.render(entity, entityYaw, partialTicks, stack, buffer, light);
 	}
 
-	protected float getOverlayProgress(T livingEntityIn, float partialTicks) {
+	protected float getWhiteOverlayProgress(T entity, float partialTicks) {
 		return 0.0F;
 	}
 
-	public int getPackedOverlay(T livingEntityIn, float uIn) {
-		if (livingEntityIn.getParent() instanceof LivingEntity)
-			return OverlayTexture.pack(OverlayTexture.u(uIn), OverlayTexture.v(((LivingEntity) livingEntityIn.getParent()).hurtTime > 0 || ((LivingEntity) livingEntityIn.getParent()).deathTime > 0));
-		return OverlayTexture.NO_OVERLAY;
+	public int getOverlayCoords(T entity, float uIn) {
+		if (entity.getParent() instanceof LivingEntity living)
+			return OverlayTexture.pack(OverlayTexture.u(uIn), OverlayTexture.v(living.hurtTime > 0 || living.deathTime > 0 || entity.hurtTime > 0 || entity.deathTime > 0));
+		return OverlayTexture.pack(OverlayTexture.u(uIn), OverlayTexture.v(entity.hurtTime > 0 || entity.deathTime > 0));
 	}
 
 	@Nullable
-	protected RenderType getRenderType(T p_230496_1_, boolean p_230496_2_, boolean p_230496_3_, boolean p_230496_4_) {
-		ResourceLocation resourcelocation = this.getTextureLocation(p_230496_1_);
-		if (p_230496_3_) {
+	protected RenderType getRenderType(T entity, boolean visible, boolean ghostly, boolean glowing) {
+		ResourceLocation resourcelocation = this.getTextureLocation(entity);
+		if (ghostly) {
 			return RenderType.itemEntityTranslucentCull(resourcelocation);
-		} else if (p_230496_2_) {
-			return this.entityModel.renderType(resourcelocation);
+		} else if (visible) {
+			return this.model.renderType(resourcelocation);
 		} else {
-			return p_230496_4_ ? RenderType.outline(resourcelocation) : null;
+			return glowing ? RenderType.outline(resourcelocation) : null;
 		}
 	}
 
-	protected float handleRotationFloat(T livingBase, float partialTicks) {
-		return (float)livingBase.tickCount + partialTicks;
+	protected float getBob(T entity, float partialTicks) {
+		return (float)entity.tickCount + partialTicks;
 	}
 
-	protected void applyRotations(T entityLiving, PoseStack matrixStackIn, float ageInTicks, float rotationYaw, float partialTicks) {
-		if (entityLiving.deathTime > 0) {
-			float f = ((float)entityLiving.deathTime + partialTicks - 1.0F) / 20.0F * 1.6F;
+	protected void setupRotations(T entity, PoseStack stack, float ageInTicks, float rotationYaw, float partialTicks) {
+		if (entity.deathTime > 0) {
+			float f = ((float)entity.deathTime + partialTicks - 1.0F) / 20.0F * 1.6F;
 			f = Mth.sqrt(f);
 			if (f > 1.0F) {
 				f = 1.0F;
 			}
 
-			matrixStackIn.mulPose(Axis.ZP.rotationDegrees(f * this.getDeathMaxRotation(entityLiving)));
+			stack.mulPose(Axis.of(entity.getDirection().step()).rotationDegrees(f * this.getFlipDegrees(entity)));
+		} else if (this.isEntityUpsideDown(entity)) {
+			stack.translate(0.0F, entity.getBbHeight() + 0.1F, 0.0F);
+			stack.mulPose(Axis.ZP.rotationDegrees(180.0F));
 		}
-
 	}
 
-	protected float getDeathMaxRotation(T entityLivingBaseIn) {
+	protected float getFlipDegrees(T entity) {
 		return 90.0F;
 	}
 
-	protected boolean isVisible(T livingEntityIn) {
-		return !livingEntityIn.isInvisible();
+	protected boolean isBodyVisible(T entity) {
+		return !entity.isInvisible();
+	}
+
+	private boolean isEntityUpsideDown(T entity) {
+		if (entity.hasCustomName()) {
+			String s = ChatFormatting.stripFormatting(entity.getName().getString());
+			return s != null && (s.equalsIgnoreCase("dinnerbone") || s.equalsIgnoreCase("grumm"));
+		}
+
+		return false;
 	}
 }

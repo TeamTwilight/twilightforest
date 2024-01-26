@@ -20,9 +20,9 @@ public class HydraNeckModel extends ListModel<HydraNeck> {
 
     public static LayerDefinition create() {
         MeshDefinition mesh = new MeshDefinition();
-        PartDefinition partRoot = mesh.getRoot();
+        PartDefinition definition = mesh.getRoot();
 
-        partRoot.addOrReplaceChild("neck", CubeListBuilder.create()
+        definition.addOrReplaceChild("neck", CubeListBuilder.create()
                         .texOffs(128, 136)
                         .addBox(-16F, -16F, -16F, 32, 32, 32)
                         .texOffs(128, 200)

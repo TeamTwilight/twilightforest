@@ -20,15 +20,14 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.common.Mod;
-import top.theillusivec4.curios.api.CuriosApi;
-import top.theillusivec4.curios.api.SlotResult;
+import net.neoforged.bus.api.EventPriority;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModList;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.common.util.FakePlayer;
+import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.KeepsakeCasketBlock;
@@ -41,7 +40,6 @@ import twilightforest.util.TFItemStackUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class CharmEvents {
@@ -50,6 +48,7 @@ public class CharmEvents {
 	//stores if the casket was planned to break on respawn
 	private static boolean casketExpiration = false;
 	//stores the charm that was used for the effect later
+	@Nullable
 	public static ItemStack charmUsed;
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
@@ -316,13 +315,8 @@ public class CharmEvents {
 	}
 
 	private static boolean hasCharmCurio(Item item, Player player) {
-		if (ModList.get().isLoaded("curios")) {
-			Optional<SlotResult> slot = CuriosApi.getCuriosHelper().findFirstCurio(player, stack -> stack.is(item));
-
-			if (slot.isPresent()) {
-				slot.get().stack().shrink(1);
-				return true;
-			}
+		if (ModList.get().isLoaded("curios")) { //FIXME: When curios gets updated, uncomment this
+			//return CuriosCompat.findAndConsumeCurio(item, player);
 		}
 
 		return false;

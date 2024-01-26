@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.ChestType;
 import net.minecraft.world.level.block.state.properties.StructureMode;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
@@ -93,26 +94,39 @@ public class DruidHutFeature extends TemplateFeature<SwizzleConfig> {
             chest = switch (s.substring(5, 6)) {
                 case "L" -> chest.setValue(ChestBlock.TYPE, mirror != Mirror.NONE ? ChestType.RIGHT : ChestType.LEFT);
                 case "R" -> chest.setValue(ChestBlock.TYPE, mirror != Mirror.NONE ? ChestType.LEFT : ChestType.RIGHT);
-                default -> chest.setValue(ChestBlock.TYPE, ChestType.SINGLE);
+                default  -> chest.setValue(ChestBlock.TYPE, ChestType.SINGLE); // S
             };
 
             chest = switch (s.substring(4, 5)) {
                 case "W" -> chest.setValue(HorizontalDirectionalBlock.FACING, rotation.rotate(mirror.mirror(Direction.WEST)));
                 case "E" -> chest.setValue(HorizontalDirectionalBlock.FACING, rotation.rotate(mirror.mirror(Direction.EAST)));
                 case "S" -> chest.setValue(HorizontalDirectionalBlock.FACING, rotation.rotate(mirror.mirror(Direction.SOUTH)));
-                default -> chest.setValue(HorizontalDirectionalBlock.FACING, rotation.rotate(mirror.mirror(Direction.NORTH)));
+                default  -> chest.setValue(HorizontalDirectionalBlock.FACING, rotation.rotate(mirror.mirror(Direction.NORTH)));
             };
 
-            TFLootTables.BASEMENT.generateLootContainer(world, blockPos, chest, 16 | 2);
+            (s.endsWith("J") ? TFLootTables.HUT_JUNK : TFLootTables.BASEMENT).generateLootContainer(world, blockPos, chest, 16 | 2);
+        } else if (s.startsWith("barrel")) {
+            world.removeBlock(blockPos, false);
+            BlockState chest = Blocks.BARREL.defaultBlockState();
+
+            chest = switch (s.substring(6, 7)) {
+                case "D" -> chest.setValue(BlockStateProperties.FACING, rotation.rotate(mirror.mirror(Direction.DOWN)));
+                case "W" -> chest.setValue(BlockStateProperties.FACING, rotation.rotate(mirror.mirror(Direction.WEST)));
+                case "E" -> chest.setValue(BlockStateProperties.FACING, rotation.rotate(mirror.mirror(Direction.EAST)));
+                case "N" -> chest.setValue(BlockStateProperties.FACING, rotation.rotate(mirror.mirror(Direction.NORTH)));
+                case "S" -> chest.setValue(BlockStateProperties.FACING, rotation.rotate(mirror.mirror(Direction.SOUTH)));
+                default  -> chest.setValue(BlockStateProperties.FACING, rotation.rotate(mirror.mirror(Direction.UP)));
+            };
+
+            TFLootTables.HUT_JUNK.generateLootContainer(world, blockPos, chest, 16 | 2);
         } else if (s.startsWith("painting")) {
             world.removeBlock(blockPos, false);
-
 
             Direction direction = rotation.rotate(mirror.mirror(switch (s.substring(8, 9)) {
                 case "W" -> Direction.WEST;
                 case "E" -> Direction.EAST;
                 case "S" -> Direction.SOUTH;
-                default -> Direction.NORTH;
+                default  -> Direction.NORTH;
             }));
 
             String widthS = s.substring(9, 10);

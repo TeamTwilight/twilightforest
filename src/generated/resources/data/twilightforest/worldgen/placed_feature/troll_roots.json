@@ -6,20 +6,8 @@
       "heightmap": "WORLD_SURFACE_WG"
     },
     {
-      "type": "minecraft:height_range",
-      "height": {
-        "type": "minecraft:uniform",
-        "max_inclusive": {
-          "absolute": 60
-        },
-        "min_inclusive": {
-          "above_bottom": 0
-        }
-      }
-    },
-    {
-      "type": "minecraft:count",
-      "count": 8
+      "type": "minecraft:count_on_every_layer",
+      "count": 12
     },
     {
       "type": "minecraft:biome"

@@ -12,8 +12,8 @@ import twilightforest.init.TFEntities;
 
 public class InfestedTowerwoodBlock extends FlammableBlock {
 
-	public InfestedTowerwoodBlock(int flammability, int spreadSpeed, Properties props) {
-		super(flammability, spreadSpeed, props);
+	public InfestedTowerwoodBlock(int flammability, int spreadSpeed, Properties properties) {
+		super(flammability, spreadSpeed, properties);
 	}
 
 	@Override

@@ -1,8 +1,8 @@
 package twilightforest.dispenser;
 
-import net.minecraft.core.BlockSource;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Position;
+import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -18,9 +18,9 @@ public abstract class DamageableStackDispenseBehavior extends DefaultDispenseIte
 
 	@Override
 	public ItemStack execute(BlockSource source, ItemStack stack) {
-		Level level = source.getLevel();
+		Level level = source.level();
 		Position pos = DispenserBlock.getDispensePosition(source);
-		Direction direction = source.getBlockState().getValue(DispenserBlock.FACING);
+		Direction direction = source.state().getValue(DispenserBlock.FACING);
 		if (!level.isClientSide()) {
 			if (!(stack.getMaxDamage() == stack.getDamageValue() + this.getDamageAmount())) {
 				Projectile projectileentity = this.getProjectileEntity(level, pos, stack);
@@ -37,10 +37,10 @@ public abstract class DamageableStackDispenseBehavior extends DefaultDispenseIte
 
 	protected void playSound(BlockSource source) {
 		if (this.fired) {
-			source.getLevel().playSound(null, source.x(), source.y(), source.z(), this.getFiredSound(), SoundSource.NEUTRAL, 1.0F, 1.0F);
+			source.level().playSound(null, source.center().x(), source.center().y(), source.center().z(), this.getFiredSound(), SoundSource.NEUTRAL, 1.0F, 1.0F);
 			this.fired = false;
 		} else {
-			source.getLevel().levelEvent(1001, source.getPos(), 0);
+			source.level().levelEvent(1001, source.pos(), 0);
 		}
 	}
 

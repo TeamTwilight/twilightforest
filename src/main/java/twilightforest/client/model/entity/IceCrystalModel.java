@@ -3,13 +3,13 @@ package twilightforest.client.model.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
 import twilightforest.entity.monster.IceCrystal;
 
@@ -32,13 +32,13 @@ public class IceCrystalModel extends HierarchicalModel<IceCrystal> {
 
 	public static LayerDefinition create() {
 		MeshDefinition mesh = new MeshDefinition();
-		PartDefinition partRoot = mesh.getRoot();
+		PartDefinition definition = mesh.getRoot();
 
 		for (int i = 0; i < 16; i++) {
 
 			int spikeLength = i % 2 == 0 ? 6 : 8;
 
-			var spike = partRoot.addOrReplaceChild("spike_" + i, CubeListBuilder.create()
+			var spike = definition.addOrReplaceChild("spike_" + i, CubeListBuilder.create()
 							.texOffs(0, 16)
 							.addBox(-1.0F, -1.0F, -1.0F, 2.0F, spikeLength, 2.0F),
 					PartPose.ZERO);

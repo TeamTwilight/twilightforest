@@ -37,18 +37,8 @@ public class GiantMiner extends Monster {
 	@Override
 	protected void registerGoals() {
 		this.goalSelector.addGoal(1, new FloatGoal(this));
-		this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, false) {
-			@Override
-			protected double getAttackReachSqr(LivingEntity attackTarget) {
-				return this.mob.getBbWidth() * this.mob.getBbHeight();
-			}
-
-			@Override
-			protected void checkAndPerformAttack(LivingEntity pEnemy, double pDistToEnemySqr) {
-				double eyeHeightDistToEnemySqr = this.mob.distanceToSqr(pEnemy.getX(), pEnemy.getY() - this.mob.getEyeHeight() + pEnemy.getEyeHeight(), pEnemy.getZ());
-				super.checkAndPerformAttack(pEnemy, Math.min(pDistToEnemySqr, eyeHeightDistToEnemySqr * 0.8D));
-			}
-		});
+		//TODO verify giant's reach isnt messed up again
+		this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, false));
 		this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
 		this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
 		this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
@@ -97,11 +87,6 @@ public class GiantMiner extends Monster {
 	@Override
 	public boolean doHurtTarget(Entity entity) {
 		return EntityUtil.properlyApplyCustomDamageSource(this, entity, TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.ANT, this));
-	}
-
-	@Override
-	public double getMyRidingOffset() {
-		return -2.5D;
 	}
 
 	@Override

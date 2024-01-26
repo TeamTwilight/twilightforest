@@ -13,15 +13,13 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.animal.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.data.tags.ItemTagGenerator;
 
 public class Squirrel extends Animal {
-
-	protected static final Ingredient SEEDS = Ingredient.of(Items.WHEAT_SEEDS, Items.MELON_SEEDS, Items.PUMPKIN_SEEDS, Items.BEETROOT_SEEDS);
 
 	public Squirrel(EntityType<? extends Squirrel> type, Level world) {
 		super(type, world);
@@ -31,7 +29,7 @@ public class Squirrel extends Animal {
 	protected void registerGoals() {
 		this.goalSelector.addGoal(0, new FloatGoal(this));
 		this.goalSelector.addGoal(1, new PanicGoal(this, 1.38F));
-		this.goalSelector.addGoal(2, new TemptGoal(this, 1.0F, SEEDS, true));
+		this.goalSelector.addGoal(2, new TemptGoal(this, 1.0F, Ingredient.of(ItemTagGenerator.SQUIRREL_TEMPT_ITEMS), true));
 		this.goalSelector.addGoal(3, new AvoidEntityGoal<>(this, Player.class, 2.0F, 0.8F, 1.4F));
 		this.goalSelector.addGoal(3, new AvoidEntityGoal<>(this, Wolf.class, 8.0F, 0.8F, 1.4F));
 		this.goalSelector.addGoal(3, new AvoidEntityGoal<>(this, Cat.class, 8.0F, 0.8F, 1.4F));

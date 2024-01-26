@@ -20,9 +20,9 @@ public class QuestRamTrophyLegacyModel extends GenericTrophyModel {
 
 	public static LayerDefinition create() {
 		MeshDefinition mesh = new MeshDefinition();
-		PartDefinition partRoot = mesh.getRoot();
+		PartDefinition definition = mesh.getRoot();
 
-		var head = partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+		var head = definition.addOrReplaceChild("head", CubeListBuilder.create()
 						.texOffs(0, 70).addBox(-6F, -4.5F, -7F, 12, 9, 15)
 						.texOffs(0, 94).addBox(5F, -9F, 1F, 4, 4, 6)
 						.texOffs(20, 96).addBox(7F, -8F, 6F, 3, 4, 4)
@@ -40,7 +40,7 @@ public class QuestRamTrophyLegacyModel extends GenericTrophyModel {
 						.texOffs(88, 97).addBox(-16F, -6F, 1F, 3, 3, 4),
 				PartPose.offset(0F, -4F, -0F));
 
-		partRoot.addOrReplaceChild("neck", CubeListBuilder.create()
+		definition.addOrReplaceChild("neck", CubeListBuilder.create()
 						.texOffs(66, 37)
 						.addBox(-5.5F, -8F, 0F, 11, 14, 12),
 				PartPose.offsetAndRotation(0F, -8F, -7F, 0.2617994F, 0F, 0F));

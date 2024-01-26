@@ -24,7 +24,7 @@ import twilightforest.init.TFStructurePieceTypes;
 
 
 
-public class StrongholdAtriumComponent extends StructureTFStrongholdComponent {
+public class StrongholdAtriumComponent extends KnightStrongholdComponent {
 
 	private boolean enterBottom;
 
@@ -55,10 +55,10 @@ public class StrongholdAtriumComponent extends StructureTFStrongholdComponent {
 		}
 
 		if (enterBottom) {
-			return StructureTFStrongholdComponent.getComponentToAddBoundingBox(x, y, z, -4, -1, 0, 18, 14, 18, facing);
+			return KnightStrongholdComponent.getComponentToAddBoundingBox(x, y, z, -4, -1, 0, 18, 14, 18, facing);
 		} else {
 			// enter on the top
-			return StructureTFStrongholdComponent.getComponentToAddBoundingBox(x, y, z, -13, -8, 0, 18, 14, 18, facing);
+			return KnightStrongholdComponent.getComponentToAddBoundingBox(x, y, z, -13, -8, 0, 18, 14, 18, facing);
 		}
 	}
 

@@ -1,7 +1,5 @@
 package twilightforest.item;
 
-import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
@@ -11,7 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ComplexItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import twilightforest.world.registration.TFGenerationSettings;
+import twilightforest.data.tags.CustomTagGenerator;
 
 public class EmptyMagicMapItem extends ComplexItem {
 	public EmptyMagicMapItem(Properties properties) {
@@ -24,10 +22,11 @@ public class EmptyMagicMapItem extends ComplexItem {
 		ItemStack emptyMapStack = player.getItemInHand(hand);
 		if (level.isClientSide())
 			return InteractionResultHolder.pass(emptyMapStack);
-		if(level instanceof ServerLevel server && !TFGenerationSettings.usesTwilightChunkGenerator(server)) {
-			player.displayClientMessage(Component.translatable("misc.twilightforest.magic_map_fail"), true);
+
+		if (!level.dimensionTypeRegistration().is(CustomTagGenerator.DimensionTypeTagGenerator.ALLOWS_MAGIC_MAP_CHARTING)) {
 			return InteractionResultHolder.fail(emptyMapStack);
 		}
+
 		// TF - scale at 4
 		ItemStack newMapStack = MagicMapItem.setupNewMap(level, Mth.floor(player.getX()), Mth.floor(player.getZ()), (byte) 4, true, false);
 		if (!player.getAbilities().instabuild) {

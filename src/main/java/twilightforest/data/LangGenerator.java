@@ -4,6 +4,8 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.data.helpers.TFLangProvider;
+import twilightforest.data.tags.FluidTagGenerator;
+import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.*;
 
 import java.util.HashMap;
@@ -78,6 +80,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addCommand("structure.conquer.update", "Structure conquer flag was %s, changing to %s");
 		this.addCommand("structure.spawn_list", "Spawn list for this area is:");
 		this.addCommand("structure.spawn_info", "%s, Weight %s");
+		this.addCommand("structure.boundaries", "Structure boundaries: %s");
 
 		this.add("gamerule.tfEnforcedProgression", "Twilight Forest: Enforced Progression");
 		this.add("gamerule.tfEnforcedProgression.description", "Some Twilight Forest biomes will be locked until you defeat certain bosses in the dimension. (You can check the progression order in your advancements)");
@@ -141,8 +144,18 @@ public class LangGenerator extends TFLangProvider {
 		this.addMessage("firefly_spawner_radius", "Firefly Particle Radius: %s Blocks");
 		this.addMessage("magic_map_fail", "The Magic faltered. Perhaps it doesn't work here?");
 		this.addMessage("nyi", "This feature has effects that are not yet implemented.");
-		this.addMessage("ore_meter_exposed", "Exposed: %s");
+		this.addMessage("ore_meter_separator", "-");
+		this.addMessage("ore_meter_ratio", "(%s%%)");
+		this.addMessage("ore_meter_header_block", "Block");
+		this.addMessage("ore_meter_header_count", "Count");
+		this.addMessage("ore_meter_header_ratio", "Ratio");
+		this.addMessage("ore_meter_loading", "Loading");
+		this.addMessage("ore_meter_new_range", "Range set to %s chunks");
+		this.addMessage("ore_meter_no_blocks", "No blocks found nearby");
 		this.addMessage("ore_meter_range", "Radius: %s, Origin: [%s, %s]");
+		this.addMessage("ore_meter_set_block", "Targeted block set to %s");
+		this.addMessage("ore_meter_targeted_block", "Targeted block: %s");
+		this.addMessage("ore_meter_total", "Total blocks scanned: %s");
 		this.addMessage("pedestal_ineligible", "You are unworthy.");
 		this.addMessage("portal_unsafe", "It doesn't seem safe here...");
 		this.addMessage("portal_unworthy", "The Portal pool is unresponsive. Perhaps something was neglected?");
@@ -177,7 +190,10 @@ public class LangGenerator extends TFLangProvider {
 		this.addBlock(TFBlocks.BOLD_STONE_PILLAR, "Bold Stone Pillar");
 		this.addBlock(TFBlocks.CANDELABRA, "Candelabra");
 		this.addBlock(TFBlocks.WROUGHT_IRON_FENCE, "Wrought Iron Fence");
-		this.addBlock(TFBlocks.WROUGHT_IRON_FINIAL, "Wrought Iron Finial");
+		this.add("block.twilightforest.wrought_iron_fence.cap", "Right-click with an Iron Ingot or Nugget to add a finial");
+		this.addBlock(TFBlocks.TERRORCOTTA_LINES, "Terrorcotta Lines");
+		this.addBlock(TFBlocks.TERRORCOTTA_CURVES, "Terrorcotta Curves");
+
 		this.addBlock(TFBlocks.KEEPSAKE_CASKET, "Keepsake Casket");
 		this.add("block.twilightforest.casket.broken", "Your Keepsake Casket was too damaged to hold any more items. All items that would be stored in your casket were dropped on the ground.");
 		this.add("block.twilightforest.casket.locked", "This Casket can only be opened by %s!");
@@ -302,6 +318,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addBlock(TFBlocks.CINDER_WOOD, "Cinder Wood");
 
 		this.addBlock(TFBlocks.IRON_LADDER, "Iron Ladder");
+		this.addBlock(TFBlocks.ROPE, "Rope");
 		this.addBlock(TFBlocks.SLIDER, "Slide Trap");
 
 		this.addBlock(TFBlocks.TWILIGHT_OAK_LEAVES, "Twilight Oak Leaves");
@@ -408,7 +425,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addBlock(TFBlocks.UR_GHAST_TROPHY, "Ur-Ghast Trophy");
 		this.addBlock(TFBlocks.ALPHA_YETI_TROPHY, "Alpha Yeti Trophy");
 		this.addBlock(TFBlocks.SNOW_QUEEN_TROPHY, "Snow Queen Trophy");
-		this.addBlock(TFBlocks.QUEST_RAM_TROPHY, "Quest Ram Trophy");
+		this.addBlock(TFBlocks.QUEST_RAM_TROPHY, "Questing Ram Trophy");
 
 		this.addBlock(TFBlocks.NAGA_BOSS_SPAWNER, "Naga Boss Spawner");
 		this.addBlock(TFBlocks.LICH_BOSS_SPAWNER, "Lich Boss Spawner");
@@ -428,7 +445,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addBannerPattern("ur_ghast", "Carminite Border");
 		this.addBannerPattern("alpha_yeti", "Alpha Yeti Face");
 		this.addBannerPattern("snow_queen", "Snow Queen Crown");
-		this.addBannerPattern("quest_ram", "Quest Ram Swirls");
+		this.addBannerPattern("quest_ram", "Questing Ram Swirls");
 
 		this.addBlock(TFBlocks.ZOMBIE_SKULL_CANDLE, "Zombie Skull Candle");
 		this.addBlock(TFBlocks.ZOMBIE_WALL_SKULL_CANDLE, "Zombie Wall Skull Candle");
@@ -450,6 +467,7 @@ public class LangGenerator extends TFLangProvider {
 		this.add("container.twilightforest.uncrafting_table.disabled_item", "Uncrafting this item is disabled.");
 		this.add("container.twilightforest.uncrafting_table.uncrafting_disabled", "Uncrafting is disabled via config");
 
+		this.add("item.twilightforest.boarkchop", "Raw Boarkchop");
 		this.addItem(TFItems.NAGA_SCALE, "Naga Scale");
 		this.addItem(TFItems.NAGA_CHESTPLATE, "Naga Scale Tunic");
 		this.addItem(TFItems.NAGA_LEGGINGS, "Naga Scale Leggings");
@@ -560,6 +578,8 @@ public class LangGenerator extends TFLangProvider {
 		this.add("item.twilightforest.moon_dial.phase_unknown", "Moon phase indeterminate");
 		this.add("item.twilightforest.moon_dial.phase_unknown_fools", "404 moon not found");
 
+		this.addItem(TFItems.POCKET_WATCH, "Pocket Watch");
+		this.add("item.twilightforest.pocket_watch.desc", "It seems to always be running late");
 		this.addItem(TFItems.ORE_MAGNET, "Ore Magnet");
 		this.addItem(TFItems.CRUMBLE_HORN, "Crumble Horn");
 		this.addItem(TFItems.MOONWORM_QUEEN, "Moonworm Queen");
@@ -633,7 +653,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addEntityAndEgg(TFEntities.NAGA, "Naga");
 		this.addEntityAndEgg(TFEntities.PENGUIN, "Penguin");
 		this.addEntityAndEgg(TFEntities.PINCH_BEETLE, "Pinch Beetle");
-		this.addEntityAndEgg(TFEntities.QUEST_RAM, "Quest Ram");
+		this.addEntityAndEgg(TFEntities.QUEST_RAM, "Questing Ram");
 		this.addEntityAndEgg(TFEntities.RAVEN, "Raven");
 		this.addEntityAndEgg(TFEntities.REDCAP, "Redcap");
 		this.addEntityAndEgg(TFEntities.REDCAP_SAPPER, "Redcap Sapper");
@@ -662,6 +682,7 @@ public class LangGenerator extends TFLangProvider {
 
 		this.addEntityType(TFEntities.ICE_SNOWBALL, "Ice Snowball");
 		this.addEntityType(TFEntities.ICE_ARROW, "Ice Arrow");
+		this.addEntityType(TFEntities.THROWN_ICE, "Ice Bomb");
 		this.addEntityType(TFEntities.SEEKER_ARROW, "Seeker Arrow");
 		this.addEntityType(TFEntities.MOONWORM_SHOT, "Moonworm");
 		this.addEntityType(TFEntities.NATURE_BOLT, "Nature Bolt");
@@ -795,7 +816,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addSubtitle(TFSounds.KOBOLD_MUNCH, "Kobold munches on food");
 
 		this.addSubtitle(TFSounds.LICH_AMBIENT, "Lich breathes");
-		this.addSubtitle(TFSounds.LICH_CLONE_HURT, "Lich shadow clone bypasses attack");
+		this.addSubtitle(TFSounds.LICH_CLONE_HURT, "Lich clone ignores attack");
 		this.addSubtitle(TFSounds.LICH_DEATH, "Lich dies");
 		this.addSubtitle(TFSounds.LICH_HURT, "Lich hurts");
 		this.addSubtitle(TFSounds.LICH_POP_MOB, "Lich absorbs mob");
@@ -841,9 +862,9 @@ public class LangGenerator extends TFLangProvider {
 		this.addSubtitle(TFSounds.PINCH_BEETLE_DEATH, "Pinch Beetle dies");
 		this.addSubtitle(TFSounds.PINCH_BEETLE_HURT, "Pinch Beetle hurts");
 
-		this.addSubtitle(TFSounds.QUEST_RAM_AMBIENT, "Quest Ram bleats");
-		this.addSubtitle(TFSounds.QUEST_RAM_DEATH, "Quest Ram dies");
-		this.addSubtitle(TFSounds.QUEST_RAM_HURT, "Quest Ram hurts");
+		this.addSubtitle(TFSounds.QUEST_RAM_AMBIENT, "Questing Ram bleats");
+		this.addSubtitle(TFSounds.QUEST_RAM_DEATH, "Questing Ram dies");
+		this.addSubtitle(TFSounds.QUEST_RAM_HURT, "Questing Ram hurts");
 
 		this.addSubtitle(TFSounds.RAVEN_CAW, "Raven caws");
 		this.addSubtitle(TFSounds.RAVEN_SQUAWK, "Raven squawks in pain");
@@ -854,6 +875,7 @@ public class LangGenerator extends TFLangProvider {
 
 		this.addSubtitle(TFSounds.SHIELD_ADD, "Fortification Shield spawns");
 		this.addSubtitle(TFSounds.SHIELD_BREAK, "Fortification Shield breaks");
+		this.addSubtitle(TFSounds.SHIELD_BLOCK, "Fortification Shield deflects");
 
 		this.addSubtitle(TFSounds.SLIME_BEETLE_DEATH, "Slime Beetle dies");
 		this.addSubtitle(TFSounds.SLIME_BEETLE_HURT, "Slime Beetle hurts");
@@ -879,6 +901,10 @@ public class LangGenerator extends TFLangProvider {
 		this.addSubtitle(TFSounds.TINY_BIRD_HURT, "Bird squeaks in pain");
 		this.addSubtitle(TFSounds.TINY_BIRD_SONG, "Bird sings");
 		this.addSubtitle(TFSounds.TINY_BIRD_TAKEOFF, "Bird takes off");
+
+		this.addSubtitle(TFSounds.TOWERWOOD_BORER_AMBIENT, "Towerwood Borer hisses");
+		this.addSubtitle(TFSounds.TOWERWOOD_BORER_DEATH, "Towerwood Borer dies");
+		this.addSubtitle(TFSounds.TOWERWOOD_BORER_HURT, "Towerwood Borer hurts");
 
 		this.addSubtitle(TFSounds.TROLL_THROWS_ROCK, "Troll chucks block");
 
@@ -953,6 +979,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addSubtitle(TFSounds.TRANSFORMATION_CORE, "Tree of Transformation hums");
 		this.addSubtitle(TFSounds.UNLOCK_VANISHING_BLOCK, "Towerwood door unlocks");
 		this.addSubtitle(TFSounds.VANISHING_BLOCK, "Vanishing Block vanishes");
+		this.addSubtitle(TFSounds.WROUGHT_IRON_FENCE_EXTENDED, "Iron clanks");
 
 		this.addSubtitle(TFSounds.BLOCK_AND_CHAIN_COLLIDE, "Block and Chain hits block");
 		this.addSubtitle(TFSounds.BLOCK_AND_CHAIN_FIRED, "Block and Chain fires");
@@ -970,9 +997,13 @@ public class LangGenerator extends TFLangProvider {
 		this.addSubtitle(TFSounds.MAGNET_GRAB, "Ore Magnet pulls up ore");
 		this.addSubtitle(TFSounds.METAL_SHIELD_SHATTERS, "Metal Shield shatters");
 		this.addSubtitle(TFSounds.MOONWORM_SQUISH, "Moonworm fires");
-		this.addSubtitle(TFSounds.POWDER_USE, "Mob Transforms");
-		this.addSubtitle(TFSounds.SCEPTER_DRAIN, "Life Scepter drains");
+		this.addSubtitle(TFSounds.ORE_METER_CLEAR, "Ore Meter wipes information");
+		this.addSubtitle(TFSounds.ORE_METER_CRACKLE, "Ore Meter crackles");
+		this.addSubtitle(TFSounds.ORE_METER_TARGET_BLOCK, "Ore Meter locks onto block");
+		this.addSubtitle(TFSounds.POWDER_USE, "Mob transforms");
+		this.addSubtitle(TFSounds.SCEPTER_DRAIN, "Mob explodes");
 		this.addSubtitle(TFSounds.SCEPTER_PEARL, "Twilight Scepter throws pearl");
+		this.addSubtitle(TFSounds.SCEPTER_USE, "Life Scepter drains");
 		this.addSubtitle(TFSounds.WOOD_SHIELD_SHATTERS, "Wooden Shield shatters");
 
 		this.addDeathMessage("ghastTear", "%1$s was scalded by fiery tears");
@@ -1051,7 +1082,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addStat("trophy_pedestals_activated", "Trophy Pedestals Activated");
 		this.addStat("uncrafting_table_interactions", "Interactions with Uncrafting Table");
 
-		this.add("config.jade.plugin_twilightforest.quest_ram_wool", "Quest Ram Wool");
+		this.add("config.jade.plugin_twilightforest.quest_ram_wool", "Questing Ram Wool");
 
 		this.add("twilightforest.book.author", "a forgotten explorer");
 
@@ -1114,6 +1145,8 @@ public class LangGenerator extends TFLangProvider {
 		this.addScreenMessage("crumble_horn_jei", "Crumble Horn");
 		this.addScreenMessage("transformation_jei", "Transformation Powder");
 		this.addScreenMessage("uncrafting_jei", "Uncrafting");
+		this.addScreenMessage("moonworm_queen_jei", "Moonworm Queen Repairing");
+		this.add("item.twilightforest.moonworm_queen.jei_info_message", "Torchberries restore 64 durability each");
 
 		this.addTrim("carminite", "Carminite");
 		this.addTrim("fiery", "Fiery");
@@ -1149,5 +1182,113 @@ public class LangGenerator extends TFLangProvider {
 			this.add(location.toLanguageKey("magic_painting", "title"), stringStringPair.getFirst());
 			this.add(location.toLanguageKey("magic_painting", "author"), stringStringPair.getSecond());
 		});
+
+		this.createTip("anvil_squashing", "Bugs can be squashed by Anvils.");
+		this.createTip("arctic_armor", "Arctic Armor can be dyed any color.");
+		this.createTip("banister_shape", "Banisters can be right-clicked with an axe to change their height.");
+		this.createTip("block_and_chain", "Enchanting a Block and Chain with Destruction allows it to break blocks.");
+		this.createTip("boggard", "What the heck is a Boggard?");
+		this.createTip("bugs_on_head", "Bugs will happily sit on your head.");
+		this.createTip("burnt_thorns", "Burnt Thorns will disintegrate when stepped on.");
+		this.createTip("carminite_builder", "Carminite Builders place temporary blocks in the direction you're looking.");
+		this.createTip("charm_of_keeping", "A Charm of Keeping will return parts of your inventory after death.");
+		this.createTip("charm_of_life", "A Charm of Life can save you from a fatal blow.");
+		this.createTip("crumble_horn", "The Crumble Horn will deteriorate nearby blocks when used.");
+		this.createTip("druid_hut", "Druid huts sometimes have hidden basements.");
+		this.createTip("e115_pickup", "Sneak + right-click placed Experiment 115 to pick it back up.");
+		this.createTip("e115_sprinkle", "Redstone can be sprinkled on top of Experiment 115.");
+		this.createTip("experiment_115", "Does anyone know what Experiment 115 really is?");
+		this.createTip("fiery_pickaxe", "A Fiery Pickaxe will smelt any blocks it breaks.");
+		this.createTip("ghast_trap", "Killing Carminite Ghastlings near a Ghast Trap will charge it.");
+		this.createTip("glass_sword", "Glass Swords break after a single hit.");
+		this.createTip("hollow_log", "Various things can be placed inside Hollow Logs such as snow, moss, or ladders.");
+		this.createTip("hollow_oak_sapling", "Saplings that grow into giant hollow trees can be found in Druid Huts.");
+		this.createTip("hollow_oak_tree", "Hollow Oak trees sometimes have dungeon-like rooms with unique loot in their leaves.");
+		this.createTip("hydra_chop", "Hydra Chops fill up your hunger bar completely when eaten.");
+		this.createTip("hydra_heads", "For each head slain, the Hydra will regrow two in its place!");
+		this.createTip("hydra_mortars", "You can deflect the Hydra's mortar attack.");
+		this.createTip("ice_core", "Ice Cores and Snow Guardians melt in hot biomes.");
+		this.createTip("jars", "Fireflies and Cicadas can be put into jars.");
+		this.createTip("kobold", "Kobold");
+		this.createTip("labyrinth_vault", "The Labyrinth contains a secret room.");
+		this.createTip("lich_scepters", "The Lich drops a variety of magic-based scepters.");
+		this.createTip("liveroot", "Liveroot is found under most trees.");
+		this.createTip("magic_beans", "Planting Magic Beans on Uberous Soil sprouts a mighty beanstalk.");
+		this.createTip("magic_leaves", "Magic Tree Leaves won't drop saplings when broken.");
+		this.createTip("magic_map", "Magic Maps are used to easily locate structures.");
+		this.createTip("magic_saplings", "Special magic saplings can be found inside Hollow Oak trees.");
+		this.createTip("mazebreaker", "The Mazebreaker can break Mazestone blocks 16 times faster and doesn't take extra durability damage.");
+		this.createTip("mining_tree", "The Miner's Tree will pull ores up to the surface.");
+		this.createTip("moon_dial", "The Moon Dial shows the current phase of the moon.");
+		this.createTip("moonworm_queen", "The Moonworm Queen can be fed Torchberries.");
+		this.createTip("mushglooms", "Mushglooms cannot be bonemealed into giant mushrooms. However, placing them on Uberous Soil will make them grow.");
+		this.createTip("music_disc", "Music Discs are found outside of dungeons.");
+		this.createTip("naga", "The Naga can be stunned by making it ram something hard!");
+		this.createTip("netherite_axe", "There will never be a Netherite Minotaur Axe.");
+		this.createTip("ore_magnet", "The Ore Magnet can pull ore veins up to the surface.");
+		this.createTip("peacock_feather_fan", "The Peacock Feather Fan can be used to extinguish Candles.");
+		this.createTip("phantom_armor", "Phantom Armor is automatically kept on death.");
+		this.createTip("quest_ram", "The Questing Ram will reward anyone who gives it what it's missing.");
+		this.createTip("red_thread", "Red Thread can be seen through walls.");
+		this.createTip("redcap", "Redcaps can place and light TNT.");
+		this.createTip("skull_candle", "Candles can be placed on top of mob heads to create a fancy light source.");
+		this.createTip("sorting_tree", "The Sorting Tree will sort chests next to it into other chests nearby.");
+		this.createTip("spooky_forest", "The Spooky Forest is not Halloween themed.");
+		this.createTip("structure_conquering", "Killing a boss will make mobs stop spawning in that structure.");
+		this.createTip("structure_spawning", "Structures spawn in a grid-like pattern.");
+		this.createTip("time_tree", "The Tree of Time will accelerate the growth of nearby crops.");
+		this.createTip("torchberries", "We did glow berries first!");
+		this.createTip("towerwood", "Towerwood Planks are very resistant, but not immune, to fire.");
+		this.createTip("transformation_tree", "The Tree of Transformation will convert the area around it into an Enchanted Forest.");
+		this.createTip("trollber_ripening", "Killing a Troll will ripen nearby Trollber.");
+		this.createTip("twilight_portal", "Throw a diamond into a pool of water surrounded by flowers.");
+		this.createTip("ur_ghast", "The Ur-Ghast can be pulled down from the sky using Ghast Traps.");
+		this.createTip("vanishing_block", "Vanishing Blocks will disappear forever when activated.");
+		this.createTip("worldgen_features", "The forest is filled with many ruins. Some may even contain unique items.");
+		this.createTip("yeti", "Yetis love throwing things.");
+		this.createTip("zombie_healing", "Zombies summoned with a Zombie Scepter can be healed with Rotten Flesh.");
+
+		this.translateTag(ItemTagGenerator.CARMINITE_GEMS, "Carminite Gems");
+		this.translateTag(ItemTagGenerator.FIERY_INGOTS, "Fiery Ingots");
+		this.translateTag(ItemTagGenerator.IRONWOOD_INGOTS, "Ironwood Ingots");
+		this.translateTag(ItemTagGenerator.KNIGHTMETAL_INGOTS, "Knightmetal Ingots");
+		this.translateTag(ItemTagGenerator.STEELEAF_INGOTS, "Steeleaf Ingots");
+		this.translateTag(ItemTagGenerator.PAPER, "Papers");
+		this.translateTag(ItemTagGenerator.RAW_MATERIALS_IRONWOOD, "Raw Ironwood");
+		this.translateTag(ItemTagGenerator.RAW_MATERIALS_KNIGHTMETAL, "Raw Knightmetal");
+		this.translateTag(ItemTagGenerator.STORAGE_BLOCKS_ARCTIC_FUR, "Arctic Fur Storage Blocks");
+		this.translateTag(ItemTagGenerator.STORAGE_BLOCKS_CARMINITE, "Carminite Storage Blocks");
+		this.translateTag(ItemTagGenerator.STORAGE_BLOCKS_FIERY, "Fiery Storage Blocks");
+		this.translateTag(ItemTagGenerator.STORAGE_BLOCKS_IRONWOOD, "Ironwood Storage Blocks");
+		this.translateTag(ItemTagGenerator.STORAGE_BLOCKS_KNIGHTMETAL, "Knightmetal Storage Blocks");
+		this.translateTag(ItemTagGenerator.STORAGE_BLOCKS_STEELEAF, "Steeleaf Storage Blocks");
+		this.translateTag(ItemTagGenerator.ARCTIC_FUR, "Arctic Fur");
+		this.translateTag(ItemTagGenerator.BANNED_UNCRAFTABLES, "Can't be Uncrafted");
+		this.translateTag(ItemTagGenerator.BANNED_UNCRAFTING_INGREDIENTS, "Banned Uncrafting Ingredients");
+		this.translateTag(ItemTagGenerator.CANOPY_LOGS, "Canopy Logs");
+		this.translateTag(ItemTagGenerator.DARKWOOD_LOGS, "Darkwood Logs");
+		this.translateTag(ItemTagGenerator.FIERY_VIAL, "Fiery Vials");
+		this.translateTag(ItemTagGenerator.KEPT_ON_DEATH, "Kept on Death");
+		this.translateTag(ItemTagGenerator.KOBOLD_PACIFICATION_BREADS, "Kobold Pacification Items");
+		this.translateTag(ItemTagGenerator.BOAR_TEMPT_ITEMS, "Boar Temptables");
+		this.translateTag(ItemTagGenerator.DEER_TEMPT_ITEMS, "Deer Temptables");
+		this.translateTag(ItemTagGenerator.DWARF_RABBIT_TEMPT_ITEMS, "Dwarf Rabbit Temptables");
+		this.translateTag(ItemTagGenerator.PENGUIN_TEMPT_ITEMS, "Penguin Temptables");
+		this.translateTag(ItemTagGenerator.RAVEN_TEMPT_ITEMS, "Raven Temptables");
+		this.translateTag(ItemTagGenerator.SQUIRREL_TEMPT_ITEMS, "Squirrel Temptables");
+		this.translateTag(ItemTagGenerator.TINY_BIRD_TEMPT_ITEMS, "Tiny Bird Temptables");
+		this.translateTag(ItemTagGenerator.TWILIGHT_LOGS, "Twilight Forest Logs");
+		this.translateTag(ItemTagGenerator.MANGROVE_LOGS, "Mangrove Logs");
+		this.translateTag(ItemTagGenerator.MINING_LOGS, "Miningwood Logs");
+		this.translateTag(ItemTagGenerator.NYI, "Not Yet Implemented Items");
+		this.translateTag(ItemTagGenerator.PORTAL_ACTIVATOR, "Twilight Forest Portal Activators");
+		this.translateTag(ItemTagGenerator.SORTING_LOGS, "Sortingwood Logs");
+		this.translateTag(ItemTagGenerator.TIME_LOGS, "Timewood Logs");
+		this.translateTag(ItemTagGenerator.TOWERWOOD, "Towerwood Blocks");
+		this.translateTag(ItemTagGenerator.TRANSFORMATION_LOGS, "Transformationwood Logs");
+		this.translateTag(ItemTagGenerator.TWILIGHT_OAK_LOGS, "Twilight Oak Logs");
+		this.translateTag(ItemTagGenerator.UNCRAFTING_IGNORES_COST, "Uncrafting Table Ignores Cost");
+		this.translateTag(ItemTagGenerator.WIP, "Work In Progress Items");
+		this.translateTag(FluidTagGenerator.FIRE_JET_FUEL, "Fire Jet Fuel");
 	}
 }

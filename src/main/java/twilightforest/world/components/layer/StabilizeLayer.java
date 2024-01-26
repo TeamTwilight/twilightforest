@@ -99,7 +99,7 @@ public enum StabilizeLayer implements AreaTransformer1 {
 
 		@Override
 		public LazyArea build(LongFunction<LazyAreaContext> contextFactory) {
-			return INSTANCE.run(contextFactory.apply(this.salt), this.parent.get().build(contextFactory));
+			return INSTANCE.run(contextFactory.apply(this.salt), this.parent.value().build(contextFactory));
 		}
 
 		@Override

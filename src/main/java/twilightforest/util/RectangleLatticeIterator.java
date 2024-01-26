@@ -1,6 +1,10 @@
 package twilightforest.util;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import org.jetbrains.annotations.NotNull;
@@ -83,5 +87,55 @@ public class RectangleLatticeIterator<T> implements Iterator<T>, Iterable<T> {
     @FunctionalInterface
     public interface TernaryIntegerFunction<T> {
         T apply(int x, int y, int z);
+    }
+
+    public record TriangularLatticeConfig(float spacing, float xOffset, float zOffset, float xSpacing, float zSpacing) {
+        private static final Codec<TriangularLatticeConfig> VERBOSE_CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                Codec.floatRange(1, 32).fieldOf("spacing").forGetter(TriangularLatticeConfig::spacing),
+                Codec.floatRange(1, 32).fieldOf("x_offset").forGetter(TriangularLatticeConfig::xOffset),
+                Codec.floatRange(1, 32).fieldOf("z_offset").forGetter(TriangularLatticeConfig::zOffset),
+                Codec.floatRange(1, 32).fieldOf("x_spacing").forGetter(TriangularLatticeConfig::xSpacing),
+                Codec.floatRange(1, 32).fieldOf("z_spacing").forGetter(TriangularLatticeConfig::zSpacing)
+        ).apply(instance, TriangularLatticeConfig::new));
+
+        private static final Codec<TriangularLatticeConfig> OFFSET_CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                Codec.floatRange(1, 32).fieldOf("spacing").forGetter(TriangularLatticeConfig::spacing),
+                Codec.floatRange(1, 32).fieldOf("x_offset").forGetter(TriangularLatticeConfig::xOffset),
+                Codec.floatRange(1, 32).fieldOf("z_offset").forGetter(TriangularLatticeConfig::zOffset)
+        ).apply(instance, TriangularLatticeConfig::new));
+
+        private static final Codec<TriangularLatticeConfig> SPACING_CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                Codec.floatRange(1, 32).fieldOf("spacing").forGetter(TriangularLatticeConfig::spacing)
+        ).apply(instance, TriangularLatticeConfig::new));
+
+        public static final TriangularLatticeConfig DEFAULT = new TriangularLatticeConfig(3.5f);
+
+        public static final Codec<TriangularLatticeConfig> CODEC = ExtraCodecs.withAlternative(VERBOSE_CODEC, ExtraCodecs.withAlternative(OFFSET_CODEC, ExtraCodecs.withAlternative(SPACING_CODEC, Codec.unit(DEFAULT))));
+
+        public TriangularLatticeConfig(float spacing) {
+            this(spacing, Mth.cos(Mth.PI/6f) * spacing, Mth.sin(Mth.PI/6f) * spacing);
+        }
+
+        public TriangularLatticeConfig(float spacing, float xOffset, float zOffset) {
+            this(spacing, xOffset, zOffset, xOffset * 2f, spacing);
+        }
+
+        public static TriangularLatticeConfig fromNBT(CompoundTag tag) {
+            float spacing = tag.getFloat("spacing");
+            if (spacing <= 0.0000001) spacing = 3.5f;
+
+            float xOffset = tag.contains("x_offset", 5) ? tag.getFloat("x_offset") : Mth.cos(Mth.PI/6f) * spacing;
+            float zOffset = tag.contains("z_offset", 5) ? tag.getFloat("z_offset") : Mth.sin(Mth.PI/6f) * spacing;
+
+            if (tag.contains("x_spacing", 5) || tag.contains("z_spacing", 5)) {
+                return new TriangularLatticeConfig(spacing, xOffset, zOffset, tag.getFloat("x_spacing"), tag.getFloat("z_spacing"));
+            } else {
+                return new TriangularLatticeConfig(spacing, xOffset, zOffset);
+            }
+        }
+
+        public ZippedIterator<BlockPos.MutableBlockPos> boundedGrid(BoundingBox chunkBounds, int yLevel) {
+            return new ZippedIterator<>(RectangleLatticeIterator.boundedGrid(chunkBounds, yLevel, this.xSpacing, this.zSpacing, 0, 0), RectangleLatticeIterator.boundedGrid(chunkBounds, yLevel, this.xSpacing, this.zSpacing, this.xOffset, this.zOffset));
+        }
     }
 }

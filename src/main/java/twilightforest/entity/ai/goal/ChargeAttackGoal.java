@@ -8,7 +8,7 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.neoforged.neoforge.event.EventHooks;
 import twilightforest.entity.ITFCharger;
 import twilightforest.entity.boss.Minoshroom;
 import twilightforest.util.EntityUtil;
@@ -96,7 +96,7 @@ public class ChargeAttackGoal extends Goal {
 				}
 			}
 		} else if (this.canBreak) {
-			if (!this.charger.level().isClientSide() && ForgeEventFactory.getMobGriefingEvent(this.charger.level(), this.charger)) {
+			if (!this.charger.level().isClientSide() && EventHooks.getMobGriefingEvent(this.charger.level(), this.charger)) {
 
 				AABB bb = this.charger.getBoundingBox();
 				int minx = Mth.floor(bb.minX - 0.75D);

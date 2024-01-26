@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_trophy",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_trophy"
     ]
   ],
   "rewards": {
     "recipes": [
       "twilightforest:snow_queen_banner_pattern"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

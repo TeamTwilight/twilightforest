@@ -1,0 +1,6 @@
+{
+  "max_length": 3,
+  "ores": "minecraft:emerald_ore",
+  "size_variation": 0.5,
+  "weight": 8
+}

@@ -1,20 +1,19 @@
 package twilightforest.world.components.processors;
 
 import com.mojang.serialization.Codec;
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import twilightforest.util.FeaturePlacers;
-import twilightforest.init.TFStructureProcessors;
-
 import org.jetbrains.annotations.Nullable;
+import twilightforest.init.TFStructureProcessors;
+import twilightforest.util.FeaturePlacers;
 
 public final class CobbleVariants extends StructureProcessor {
 	public static final CobbleVariants INSTANCE = new CobbleVariants();

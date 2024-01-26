@@ -1,6 +1,9 @@
 package twilightforest;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.datafixers.util.Pair;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import it.unimi.dsi.fastutil.objects.ObjectListIterator;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -10,8 +13,11 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.sounds.Music;
 import net.minecraft.sounds.Musics;
@@ -21,16 +27,15 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.decoration.ItemFrame;
+import net.minecraft.world.entity.decoration.LeashFenceKnotEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MapItem;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.*;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
@@ -39,28 +44,35 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.entity.PartEntity;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.common.NeoForgeMod;
+import net.neoforged.neoforge.entity.PartEntity;
+import net.neoforged.neoforge.network.PacketDistributor;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import twilightforest.block.CloudBlock;
+import twilightforest.block.WroughtIronFenceBlock;
+import twilightforest.client.FoliageColorHandler;
 import twilightforest.client.TFClientSetup;
+import twilightforest.entity.TFPart;
 import twilightforest.events.ToolEvents;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDimensionSettings;
-import twilightforest.entity.TFPart;
 import twilightforest.init.TFItems;
+import twilightforest.init.custom.ChunkBlanketProcessors;
 import twilightforest.item.GiantItem;
-import twilightforest.network.TFPacketHandler;
+import twilightforest.item.mapdata.TFMagicMapData;
 import twilightforest.network.UpdateTFMultipartPacket;
+import twilightforest.util.WorldUtil;
+import twilightforest.world.components.structures.CustomDensitySource;
 import twilightforest.world.components.structures.util.CustomStructureData;
 import twilightforest.world.registration.TFGenerationSettings;
 
-import org.jetbrains.annotations.Nullable;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @SuppressWarnings({"JavadocReference", "unused", "RedundantSuppression", "deprecation"})
 public class ASMHooks {
@@ -78,12 +90,16 @@ public class ASMHooks {
 	/**
 	 * Injection Point:<br>
 	 * {@link net.minecraft.client.gui.MapRenderer.MapInstance#draw(PoseStack, MultiBufferSource, boolean, int)}<br>
-	 * [BEFORE FIRST ISTORE]
+	 * [BEFORE ISTORE 5]
 	 */
-	public static void mapRenderContext(PoseStack stack, MultiBufferSource buffer, int light) {
-		TFMagicMapData.TFMapDecoration.RenderContext.stack = stack;
-		TFMagicMapData.TFMapDecoration.RenderContext.buffer = buffer;
-		TFMagicMapData.TFMapDecoration.RenderContext.light = light;
+	public static int mapRenderDecorations(int o, MapItemSavedData data, PoseStack stack, MultiBufferSource buffer, int light) {
+		if (data instanceof TFMagicMapData mapData) {
+			for (TFMagicMapData.TFMapDecoration decoration : mapData.tfDecorations.values()) {
+				decoration.render(o, stack, buffer, light);
+				o++;
+			}
+		}
+		return o;
 	}
 
 	private static boolean isOurMap(ItemStack stack) {
@@ -93,7 +109,7 @@ public class ASMHooks {
 	/**
 	 * Injection Point:<br>
 	 * {@link net.minecraft.client.renderer.ItemInHandRenderer#renderArmWithItem(AbstractClientPlayer, float, float, InteractionHand, float, ItemStack, float, PoseStack, MultiBufferSource, int)} <br>
-	 * [AFTER INST AFTER FIRST GETSTATIC {@link net.minecraft.world.item.Items#FILLED_MAP}]
+	 * [AFTER FIRST GETSTATIC {@link net.minecraft.world.item.Items#FILLED_MAP}]
 	 * <p></p>
 	 * Injection Point:<br>
 	 * {@link ItemFrame#getFramedMapId()} <br>
@@ -137,7 +153,7 @@ public class ASMHooks {
 	 */
 	public static Entity updateMultiparts(Entity entity) {
 		if (entity.isMultipartEntity())
-			TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), new UpdateTFMultipartPacket(entity));
+			PacketDistributor.TRACKING_ENTITY.with(entity).send(new UpdateTFMultipartPacket(entity));
 		return entity;
 	}
 
@@ -248,12 +264,12 @@ public class ASMHooks {
 		ItemStack heldStack = player.getItemInHand(hand);
 		if (ToolEvents.hasGiantItemInOneHand(player) && !(heldStack.getItem() instanceof GiantItem) && hand == InteractionHand.OFF_HAND) {
 			UUID uuidForOppositeHand = GiantItem.GIANT_REACH_MODIFIER;
-			AttributeInstance reachDistance = player.getAttribute(ForgeMod.BLOCK_REACH.get());
+			AttributeInstance reachDistance = player.getAttribute(NeoForgeMod.BLOCK_REACH.value());
 			if (reachDistance != null) {
 				AttributeModifier giantModifier = reachDistance.getModifier(uuidForOppositeHand);
 				if (giantModifier != null) {
-					reachDistance.removeModifier(giantModifier);
-					double reach = player.getAttributeValue(ForgeMod.BLOCK_REACH.get());
+					reachDistance.removeModifier(giantModifier.getId());
+					double reach = player.getAttributeValue(NeoForgeMod.BLOCK_REACH.value());
 					double trueReach = reach == 0 ? 0 : reach + (player.isCreative() ? 0.5 : 0); // Copied from IForgePlayer#getReachDistance().
 					BlockHitResult result = getPlayerPOVHitResultForReach(level, player, trueReach, fluidMode);
 					reachDistance.addTransientModifier(giantModifier);
@@ -293,7 +309,7 @@ public class ASMHooks {
 			for (int z = -1; z <= 1; z++) {
 				if (x == 0 && z == 0)
 					continue;
-				if (level.getBlockState(pos.offset(x, -1, z)).is(TFBlocks.TWILIGHT_PORTAL.get()))
+				if (level.getBlockState(pos.offset(x, -1, z)).is(TFBlocks.TWILIGHT_PORTAL))
 					return 0;
 			}
 		}
@@ -319,5 +335,70 @@ public class ASMHooks {
 			}
 		}
 		return isRaining;
+	}
+
+	/**
+	 * Injection Point:<br>
+	 * {@link net.minecraft.world.entity.decoration.LeashFenceKnotEntity#survives()}<br>
+	 * [BEFORE IRETURN]
+	 */
+	public static boolean lead(boolean o, LeashFenceKnotEntity entity) {
+		BlockState fenceState = entity.level().getBlockState(entity.getPos());
+		return o || (fenceState.is(TFBlocks.WROUGHT_IRON_FENCE) && fenceState.getValue(WroughtIronFenceBlock.POST) != WroughtIronFenceBlock.PostState.NONE);
+	}
+
+	/**
+	 * Injection Point:<br>
+	 * {@link net.minecraft.world.level.chunk.ChunkStatus#getStatusList()}<br>
+	 * [HEAD]
+	 */
+	public static void assertChunkBlanketing() {
+		// Only need to touch this class to ensure it's classloaded before other classes cache our reconstructed ChunkStatus sequence
+		ChunkBlanketProcessors.init();
+	}
+
+	/**
+	 * structure_terraform.js: attach<br>
+	 * Injection point:<br>
+	 * {@link net.minecraft.world.level.levelgen.Beardifier#forStructuresInChunk(StructureManager, ChunkPos)}<br>
+	 * [BEFORE ARETURN]
+	 */
+	public static ObjectListIterator<DensityFunction> gatherCustomTerrain(StructureManager structureManager, ChunkPos chunkPos) {
+		ObjectArrayList<DensityFunction> customStructureTerraforms = new ObjectArrayList<>(10);
+
+		for (StructureStart structureStart : structureManager.startsForStructure(chunkPos, s -> s instanceof CustomDensitySource))
+			if (structureStart.getStructure() instanceof CustomDensitySource customDensitySource)
+				customStructureTerraforms.add(customDensitySource.getStructureTerraformer(chunkPos, structureStart));
+
+		return customStructureTerraforms.iterator();
+	}
+
+	/**
+	 * structure_terraform.js: recompute<br>
+	 * Injection point:<br>
+	 * {@link net.minecraft.world.level.levelgen.Beardifier#compute(DensityFunction.FunctionContext)}<br>
+	 * [BEFORE DRETURN]
+	 */
+	public static double getCustomDensity(double densityBefore, DensityFunction.FunctionContext context, ObjectListIterator<DensityFunction> customDensities) {
+		double newDensity = 0;
+
+		while (customDensities.hasNext()) {
+			newDensity += customDensities.next().compute(context);
+		}
+		customDensities.back(Integer.MAX_VALUE);
+
+		return densityBefore + newDensity;
+	}
+
+	/**
+	 * Injection Point:<br>
+	 * {@link net.minecraft.world.level.chunk.ChunkGenerator#findNearestMapStructure(ServerLevel, HolderSet, BlockPos, int, boolean)}<br>
+	 * [BEFORE LAST ARETURN]
+	 */
+	@Nullable
+	public static Pair<BlockPos, Holder<Structure>> findNearestMapLandmark(@Nullable Pair<BlockPos, Holder<Structure>> oldReturnable, ServerLevel level, HolderSet<Structure> targetStructures, BlockPos pos, int searchRadius, boolean skipKnownStructures) {
+		Pair<BlockPos, Holder<Structure>> nearestLandmark = WorldUtil.findNearestMapLandmark(level, targetStructures, pos, searchRadius, skipKnownStructures);
+
+		return nearestLandmark != null ? nearestLandmark : oldReturnable;
 	}
 }

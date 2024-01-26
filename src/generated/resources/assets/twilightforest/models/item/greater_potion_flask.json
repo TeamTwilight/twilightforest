@@ -18,12 +18,6 @@
       "predicate": {
         "twilightforest:potion_level": 3.0
       }
-    },
-    {
-      "model": "twilightforest:item/greater_flask_3",
-      "predicate": {
-        "twilightforest:potion_level": 4.0
-      }
     }
   ],
   "textures": {

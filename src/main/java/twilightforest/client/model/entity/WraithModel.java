@@ -3,10 +3,10 @@ package twilightforest.client.model.entity;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.util.Mth;
 import twilightforest.entity.monster.Wraith;
@@ -22,9 +22,19 @@ public class WraithModel extends HumanoidModel<Wraith> {
 
 	public static LayerDefinition create() {
 		MeshDefinition mesh = HumanoidModel.createMesh(CubeDeformation.NONE, 0);
-		PartDefinition partRoot = mesh.getRoot();
+		PartDefinition definition = mesh.getRoot();
 
-		partRoot.addOrReplaceChild("dress", CubeListBuilder.create()
+		definition.addOrReplaceChild("right_arm", CubeListBuilder.create()
+						.texOffs(0, 16)
+						.addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F),
+				PartPose.offset(-5.0F, 2.0F, 0.0F));
+
+		definition.addOrReplaceChild("left_arm", CubeListBuilder.create().mirror()
+						.texOffs(0, 16)
+						.addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F),
+				PartPose.offset(5.0F, 2.0F, 0.0F));
+
+		definition.addOrReplaceChild("dress", CubeListBuilder.create()
 						.texOffs(40, 16)
 						.addBox(-4F, 12.0F, -2F, 8, 12, 4),
 				PartPose.ZERO);

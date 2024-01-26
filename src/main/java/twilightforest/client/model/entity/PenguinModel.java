@@ -23,41 +23,41 @@ public class PenguinModel extends HumanoidModel<Penguin> {
 
 	public static LayerDefinition create() {
 		MeshDefinition mesh = HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F);
-		PartDefinition partRoot = mesh.getRoot();
+		PartDefinition definition = mesh.getRoot();
 
-		partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+		definition.addOrReplaceChild("body", CubeListBuilder.create()
 						.texOffs(32, 0)
 						.addBox(-4.0F, 0.0F, -4.0F, 8.0F, 9.0F, 8.0F),
 				PartPose.offset(0.0F, 14.0F, 0.0F));
 
-		var head = partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+		var head = definition.addOrReplaceChild("head", CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(-3.5F, -4.0F, -3.5F, 7.0F, 5.0F, 7.0F),
 				PartPose.offset(0.0F, 13.0F, 0.0F));
 
-		partRoot.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
+		definition.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
 
 		head.addOrReplaceChild("beak", CubeListBuilder.create()
 						.texOffs(0, 13)
 						.addBox(-1.0F, 0.0F, -1.0F, 2.0F, 1.0F, 2.0F),
 				PartPose.offset(0.0F, -1.0F, -4.0F));
 
-		partRoot.addOrReplaceChild("right_arm", CubeListBuilder.create()
+		definition.addOrReplaceChild("right_arm", CubeListBuilder.create()
 						.texOffs(34, 18)
 						.addBox(-1.0F, -1.0F, -2.0F, 1.0F, 8.0F, 4.0F),
 				PartPose.offset(-4.0F, 15.0F, 0.0F));
 
-		partRoot.addOrReplaceChild("left_arm", CubeListBuilder.create()
+		definition.addOrReplaceChild("left_arm", CubeListBuilder.create()
 						.texOffs(24, 18)
 						.addBox(0.0F, -1.0F, -2.0F, 1.0F, 8.0F, 4.0F),
 				PartPose.offset(4.0F, 15.0F, 0.0F));
 
-		partRoot.addOrReplaceChild("right_leg", CubeListBuilder.create()
+		definition.addOrReplaceChild("right_leg", CubeListBuilder.create()
 						.texOffs(0, 16)
 						.addBox(-2.0F, 0.0F, -5.0F, 4.0F, 1.0F, 8.0F),
 				PartPose.offset(-2.0F, 23.0F, 0.0F));
 
-		partRoot.addOrReplaceChild("left_leg", CubeListBuilder.create()
+		definition.addOrReplaceChild("left_leg", CubeListBuilder.create()
 						.texOffs(0, 16)
 						.addBox(-2.0F, 0.0F, -5.0F, 4.0F, 1.0F, 8.0F),
 				PartPose.offset(2.0F, 23.0F, 0.0F));

@@ -1,9 +1,9 @@
 package twilightforest.dispenser;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.BlockSource;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
+import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundSource;
@@ -26,14 +26,14 @@ public class FeatherFanDispenseBehavior extends DefaultDispenseItemBehavior {
 
 	@Override
 	protected ItemStack execute(BlockSource source, ItemStack stack) {
-		Level level = source.getLevel();
-		BlockPos blockpos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
+		Level level = source.level();
+		BlockPos blockpos = source.pos().relative(source.state().getValue(DispenserBlock.FACING));
 		int damage = stack.getMaxDamage() - stack.getDamageValue();
 		if (!level.isClientSide()) {
 			List<LivingEntity> thingsToPush = level.getEntitiesOfClass(LivingEntity.class, new AABB(blockpos).inflate(3), EntitySelector.NO_SPECTATORS);
 			if (!(thingsToPush.size() >= damage)) {
 				for (Entity entity : thingsToPush) {
-					Vec3i lookVec = level.getBlockState(source.getPos()).getValue(DispenserBlock.FACING).getNormal();
+					Vec3i lookVec = level.getBlockState(source.pos()).getValue(DispenserBlock.FACING).getNormal();
 
 					if (entity.isPushable() || entity instanceof ItemEntity) {
 						entity.setDeltaMovement(lookVec.getX(), lookVec.getY(), lookVec.getZ());
@@ -51,11 +51,11 @@ public class FeatherFanDispenseBehavior extends DefaultDispenseItemBehavior {
 	@Override
 	protected void playSound(BlockSource source) {
 		if (this.fired) {
-			RandomSource random = source.getLevel().getRandom();
-			source.getLevel().playSound(null, source.getPos(), TFSounds.FAN_WHOOSH.get(), SoundSource.BLOCKS, 1.0F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F);
+			RandomSource random = source.level().getRandom();
+			source.level().playSound(null, source.pos(), TFSounds.FAN_WHOOSH.get(), SoundSource.BLOCKS, 1.0F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F);
 			this.fired = false;
 		} else {
-			source.getLevel().levelEvent(1001, source.getPos(), 0);
+			source.level().levelEvent(1001, source.pos(), 0);
 		}
 	}
 
@@ -63,8 +63,8 @@ public class FeatherFanDispenseBehavior extends DefaultDispenseItemBehavior {
 	//[VanillaCopy] of WorldRender.playEvent(case 2000), but with further range and a different particle
 	@Override
 	protected void playAnimation(BlockSource source, Direction direction) {
-		BlockPos blockpos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
-		Level world = source.getLevel();
+		BlockPos blockpos = source.pos().relative(source.state().getValue(DispenserBlock.FACING));
+		Level world = source.level();
 		RandomSource random = world.getRandom();
 
 		int j1 = direction.getStepX();

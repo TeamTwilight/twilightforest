@@ -1,30 +1,35 @@
 package twilightforest.init;
 
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.valueproviders.UniformInt;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.*;
+import net.minecraft.world.level.levelgen.synth.NormalNoise;
+import org.jetbrains.annotations.NotNull;
+import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.custom.BiomeLayerStack;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
-import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
-import twilightforest.world.registration.biomes.BiomeMaker;
+import twilightforest.world.components.chunkgenerators.TerrainDensityRouter;
+import twilightforest.world.components.layer.vanillalegacy.BiomeDensitySource;
 import twilightforest.world.registration.surface_rules.TFSurfaceRules;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.OptionalLong;
 
 public class TFDimensionSettings {
 
 	public static long seed; //Minecraft Overworld seed - used for seed ASM
+
+	public static final ResourceKey<DensityFunction> TWILIGHT_TERRAIN = ResourceKey.create(Registries.DENSITY_FUNCTION, TwilightForestMod.prefix("twilight_terrain"));
+	public static final ResourceKey<DensityFunction> SKYLIGHT_TERRAIN = ResourceKey.create(Registries.DENSITY_FUNCTION, TwilightForestMod.prefix("skylight_terrain"));
 
 	public static final ResourceKey<NoiseGeneratorSettings> TWILIGHT_NOISE_GEN = ResourceKey.create(Registries.NOISE_SETTINGS, TwilightForestMod.prefix("twilight_noise_gen"));
 	public static final ResourceKey<NoiseGeneratorSettings> SKYLIGHT_NOISE_GEN = ResourceKey.create(Registries.NOISE_SETTINGS, TwilightForestMod.prefix("skylight_noise_gen"));
@@ -53,12 +58,82 @@ public class TFDimensionSettings {
 		);
 	}
 
+	public static void bootstrapDensityFunctions(BootstapContext<DensityFunction> context) {
+		Holder.Reference<BiomeDensitySource> biomeGrid = context.lookup(TFRegistries.Keys.BIOME_TERRAIN_DATA).getOrThrow(BiomeLayerStack.BIOME_GRID);
+		Holder.Reference<NormalNoise.NoiseParameters> surfaceParams = context.lookup(Registries.NOISE).getOrThrow(Noises.SURFACE);
+		Holder.Reference<NormalNoise.NoiseParameters> ridgeParams = context.lookup(Registries.NOISE).getOrThrow(Noises.RIDGE);
 
-	public static NoiseGeneratorSettings tfDefault() {
+        DensityFunction routedBiomeWarp = DensityFunctions.mul(
+				DensityFunctions.constant(1/6f),
+				DensityFunctions.add(
+						new TerrainDensityRouter(
+								biomeGrid,
+								new DensityFunction.NoiseHolder(surfaceParams),
+								-31,
+								64,
+								1,
+								DensityFunctions.constant(8),
+								DensityFunctions.constant(-1.25)
+						),
+						DensityFunctions.yClampedGradient(-31, 256, 31, -256)
+				)
+		);
+
+		// Debug: For a flat substitute of BiomeTerrainWarpRouter
+		// routedBiomeWarp = DensityFunctions.yClampedGradient(-31, 32, 2, -2);
+
+		DensityFunction wideNoise = mulAddHalf(DensityFunctions.noise(ridgeParams, 1, 0));
+
+		DensityFunction thinNoise = mulAddHalf(DensityFunctions.noise(ridgeParams, 4, 0));
+
+		DensityFunction noiseInterpolator = mulAddHalf(DensityFunctions.noise(surfaceParams, 1, 1.0/16.0));
+
+		DensityFunction jitteredNoise = DensityFunctions.lerp(
+				noiseInterpolator.clamp(0, 1),
+				wideNoise,
+				thinNoise
+		);
+
+		DensityFunction finalDensity = DensityFunctions.add(
+				routedBiomeWarp,
+				DensityFunctions.cache2d(DensityFunctions.interpolated(DensityFunctions.max(
+						DensityFunctions.zero(),
+						jitteredNoise
+				)))
+		);
+
+		context.register(TWILIGHT_TERRAIN, finalDensity.clamp(-0.1, 1));
+
+		context.register(SKYLIGHT_TERRAIN, DensityFunctions.mul(
+				DensityFunctions.constant(0.1),
+				DensityFunctions.add(
+						DensityFunctions.constant(-1),
+						noiseInterpolator
+				).clamp(-1, 0)
+		).clamp(-0.1, 1));
+	}
+
+	@NotNull
+	private static DensityFunction mulAddHalf(DensityFunction input) {
+		// mulAddHalf(x) = x * 0.5 + 0.5
+		// Useful for squeezing function range [-1,1] into [0,1]
+		return DensityFunctions.add(
+				DensityFunctions.constant(0.5),
+				DensityFunctions.mul(
+						DensityFunctions.constant(0.5),
+						input
+				)
+		);
+	}
+
+	public static NoiseGeneratorSettings tfDefault(BootstapContext<NoiseGeneratorSettings> context) {
+		HolderGetter<DensityFunction> densityFunctions = context.lookup(Registries.DENSITY_FUNCTION);
+		DensityFunction finalDensity = new DensityFunctions.HolderHolder(densityFunctions.getOrThrow(TWILIGHT_TERRAIN));
+
 		NoiseSettings tfNoise = NoiseSettings.create(
 				-32, //TODO Deliberate over this. For now it'll be -32
 				256,
-				1,
+				2,
 				2
 		);
 
@@ -77,8 +152,8 @@ public class TFDimensionSettings {
 						DensityFunctions.zero(),
 						DensityFunctions.zero(),
 						DensityFunctions.zero(),
-						DensityFunctions.zero(),
-						DensityFunctions.zero(),
+						finalDensity,
+						finalDensity,
 						DensityFunctions.zero(),
 						DensityFunctions.zero(),
 						DensityFunctions.zero()
@@ -93,21 +168,22 @@ public class TFDimensionSettings {
 		);
 	}
 
-	public static NoiseGeneratorSettings skylight() {
+	// completely untested
+	public static NoiseGeneratorSettings skylight(BootstapContext<NoiseGeneratorSettings> context) {
+		HolderGetter<DensityFunction> densityFunctions = context.lookup(Registries.DENSITY_FUNCTION);
+		DensityFunction finalDensity = new DensityFunctions.HolderHolder(densityFunctions.getOrThrow(SKYLIGHT_TERRAIN));
+
 		NoiseSettings skylightNoise = NoiseSettings.create(
 				-32, //min height
 				256, // height
 				2, // size_horizontal
-				1 // size_vertical
+				2 // size_vertical
 		);
 
-		// Problem island at /tp 9389.60 90.00 11041.66
 		return new NoiseGeneratorSettings(
-				// https://misode.github.io/worldgen/noise-settings/
-				// So far this looks great! We just need to raise the island levels to sea level. Otherwise is generates flat-flakey islands that really show the roots on dirt bottoms from trees
 				skylightNoise,
 				Blocks.STONE.defaultBlockState(),
-				Blocks.WATER.defaultBlockState(),
+				Blocks.AIR.defaultBlockState(),
 				new NoiseRouter(
 						DensityFunctions.zero(),
 						DensityFunctions.zero(),
@@ -119,8 +195,8 @@ public class TFDimensionSettings {
 						DensityFunctions.zero(),
 						DensityFunctions.zero(),
 						DensityFunctions.zero(),
-						DensityFunctions.zero(),
-						DensityFunctions.zero(),
+						finalDensity,
+						finalDensity,
 						DensityFunctions.zero(),
 						DensityFunctions.zero(),
 						DensityFunctions.zero()
@@ -136,8 +212,8 @@ public class TFDimensionSettings {
 	}
 
 	public static void bootstrapNoise(BootstapContext<NoiseGeneratorSettings> context) {
-		context.register(TWILIGHT_NOISE_GEN, tfDefault());
-		context.register(SKYLIGHT_NOISE_GEN, skylight());
+		context.register(TWILIGHT_NOISE_GEN, tfDefault(context));
+		context.register(SKYLIGHT_NOISE_GEN, skylight(context));
 	}
 
 	public static void bootstrapType(BootstapContext<DimensionType> context) {
@@ -145,27 +221,20 @@ public class TFDimensionSettings {
 	}
 
 	public static void bootstrapStem(BootstapContext<LevelStem> context) {
-		HolderGetter<Biome> biomeRegistry = context.lookup(Registries.BIOME);
 		HolderGetter<DimensionType> dimTypes = context.lookup(Registries.DIMENSION_TYPE);
 		HolderGetter<NoiseGeneratorSettings> noiseGenSettings = context.lookup(Registries.NOISE_SETTINGS);
 
-		NoiseBasedChunkGenerator wrappedChunkGenerator = new NoiseBasedChunkGenerator(
-				new TFBiomeProvider(
-						BiomeMaker.makeBiomeList(biomeRegistry, biomeRegistry.getOrThrow(TFBiomes.UNDERGROUND)),
-						-1.25F,
-						2.5F,
-						context.lookup(BiomeLayerStack.BIOME_STACK_KEY).getOrThrow(BiomeLayerStack.BIOMES_ALONG_STREAMS)
-				),
-				noiseGenSettings.getOrThrow(TFDimensionSettings.TWILIGHT_NOISE_GEN));
+		HolderGetter<BiomeDensitySource> biomeDataRegistry = context.lookup(TFRegistries.Keys.BIOME_TERRAIN_DATA);
+
+		NoiseBasedChunkGenerator twilightChunkGenerator = new NoiseBasedChunkGenerator(
+				new TFBiomeProvider(biomeDataRegistry.getOrThrow(BiomeLayerStack.BIOME_GRID)),
+				noiseGenSettings.getOrThrow(TFDimensionSettings.TWILIGHT_NOISE_GEN)
+		);
 
 		LevelStem stem = new LevelStem(
 				dimTypes.getOrThrow(TFDimensionSettings.TWILIGHT_DIM_TYPE),
-				new ChunkGeneratorTwilight(
-						wrappedChunkGenerator,
-						noiseGenSettings.getOrThrow(TFDimensionSettings.TWILIGHT_NOISE_GEN),
-						true,
-						Optional.of(19),
-						BiomeMaker.BIOME_FEATURES_SETS));
+				twilightChunkGenerator
+		);
 
 		context.register(TWILIGHT_LEVEL_STEM, stem);
 	}

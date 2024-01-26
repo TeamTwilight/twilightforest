@@ -23,9 +23,9 @@ public class BunnyModel extends QuadrupedModel<DwarfRabbit> {
 
 	public static LayerDefinition create() {
 		MeshDefinition mesh = QuadrupedModel.createBodyMesh(1, CubeDeformation.NONE);
-		PartDefinition partRoot = mesh.getRoot();
+		PartDefinition definition = mesh.getRoot();
 
-		partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+		definition.addOrReplaceChild("body", CubeListBuilder.create()
 						.texOffs(0, 8)
 						.addBox(-2F, -1F, -2F, 4, 3, 5)
 						.texOffs(0, 18) // Tail
@@ -33,31 +33,31 @@ public class BunnyModel extends QuadrupedModel<DwarfRabbit> {
 						.mirror(),
 				PartPose.offset(0F, 21F, 0F));
 
-		partRoot.addOrReplaceChild("left_hind_leg", CubeListBuilder.create()
+		definition.addOrReplaceChild("left_hind_leg", CubeListBuilder.create()
 						.texOffs(0, 16)
 						.addBox(0F, 0F, 0F, 1, 1, 1)
 						.mirror(),
 				PartPose.offset(-2F, 23F, 2F));
 
-		partRoot.addOrReplaceChild("right_hind_leg", CubeListBuilder.create()
+		definition.addOrReplaceChild("right_hind_leg", CubeListBuilder.create()
 						.texOffs(0, 16)
 						.addBox(0F, 0F, 0F, 1, 1, 1)
 						.mirror(),
 				PartPose.offset(1F, 23F, 2F));
 
-		partRoot.addOrReplaceChild("left_front_leg", CubeListBuilder.create()
+		definition.addOrReplaceChild("left_front_leg", CubeListBuilder.create()
 						.texOffs(0, 16)
 						.addBox(0F, 0F, 0F, 1, 1, 1)
 						.mirror(),
 				PartPose.offset(-2F, 23F, -2F));
 
-		partRoot.addOrReplaceChild("right_front_leg", CubeListBuilder.create()
+		definition.addOrReplaceChild("right_front_leg", CubeListBuilder.create()
 						.texOffs(0, 16)
 						.addBox(0F, 0F, 0F, 1, 1, 1)
 						.mirror(),
 				PartPose.offset(1F, 23F, -2F));
 
-		partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+		definition.addOrReplaceChild("head", CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(-2F, -4F, -3F, 4, 4, 4, new CubeDeformation(0.1F))
 						.texOffs(16, 0)

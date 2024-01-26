@@ -15,19 +15,19 @@ public class AlphaYetiModel extends HumanoidModel<AlphaYeti> {
 
 	public static LayerDefinition create() {
 		MeshDefinition mesh = HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F);
-		PartDefinition partRoot = mesh.getRoot();
+		PartDefinition definition = mesh.getRoot();
 
-		partRoot.addOrReplaceChild("head",
+		definition.addOrReplaceChild("head",
 				CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(-4.0F, -8.0F, -4.0F, 0.0F, 0.0F, 0.0F),
 				PartPose.ZERO);
-		partRoot.addOrReplaceChild("hat",
+		definition.addOrReplaceChild("hat",
 				CubeListBuilder.create()
 						.texOffs(32, 0)
 						.addBox(-4.0F, -8.0F, -4.0F, 0.0F, 0.0F, 0.0F),
 				PartPose.ZERO);
-		var body = partRoot.addOrReplaceChild("body",
+		var body = definition.addOrReplaceChild("body",
 				CubeListBuilder.create()
 						.texOffs(80, 0)
 						.addBox(-24.0F, -60.0F, -18.0F, 48.0F, 72.0F, 36.0F),
@@ -47,22 +47,22 @@ public class AlphaYetiModel extends HumanoidModel<AlphaYeti> {
 						.texOffs(64, 0)
 						.addBox(-6.0F, -6.0F, -1.5F, 12.0F, 12.0F, 2.0F),
 				PartPose.offset(14.0F, -50.0F, -18.0F));
-		partRoot.addOrReplaceChild("right_arm",
+		definition.addOrReplaceChild("right_arm",
 				CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(-15.0F, -6.0F, -8.0F, 16.0F, 48.0F, 16.0F),
 				PartPose.offset(-25.0F, -26.0F, 0.0F));
-		partRoot.addOrReplaceChild("left_arm",
+		definition.addOrReplaceChild("left_arm",
 				CubeListBuilder.create().mirror()
 						.texOffs(0, 0)
 						.addBox(-1.0F, -6.0F, -8.0F, 16.0F, 48.0F, 16.0F),
 				PartPose.offset(25.0F, -26.0F, 0.0F));
-		partRoot.addOrReplaceChild("right_leg",
+		definition.addOrReplaceChild("right_leg",
 				CubeListBuilder.create()
 						.texOffs(0, 66)
 						.addBox(-10.0F, 0.0F, -10.0F, 20.0F, 20.0F, 20.0F),
 				PartPose.offset(-13.5F, 4.0F, 0.0F));
-		partRoot.addOrReplaceChild("left_leg",
+		definition.addOrReplaceChild("left_leg",
 				CubeListBuilder.create().mirror()
 						.texOffs(0, 66)
 						.addBox(-10.0F, 0.0F, -10.0F, 20.0F, 20.0F, 20.0F),

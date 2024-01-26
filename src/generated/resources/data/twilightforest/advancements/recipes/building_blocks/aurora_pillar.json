@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_slab",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_slab"
     ]
   ],
   "rewards": {
     "recipes": [
       "twilightforest:aurora_pillar"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

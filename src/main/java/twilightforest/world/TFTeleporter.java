@@ -1,13 +1,10 @@
 package twilightforest.world;
 
-import com.google.common.collect.Maps;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.core.SectionPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ColumnPos;
 import net.minecraft.server.level.FullChunkStatus;
 import net.minecraft.server.level.ServerLevel;
@@ -18,14 +15,14 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.portal.PortalInfo;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.util.ITeleporter;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.common.util.ITeleporter;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFConfig;
@@ -33,10 +30,10 @@ import twilightforest.TwilightForestMod;
 import twilightforest.block.TFPortalBlock;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFBlocks;
-import twilightforest.init.custom.Restrictions;
 import twilightforest.item.MagicMapItem;
 import twilightforest.util.LandmarkUtil;
 import twilightforest.util.LegacyLandmarkPlacements;
+import twilightforest.util.Restriction;
 import twilightforest.world.registration.TFGenerationSettings;
 
 import java.util.*;
@@ -45,57 +42,17 @@ import java.util.function.Predicate;
 
 public class TFTeleporter implements ITeleporter {
 
-	// destinationCoordinateCache is (src -> dest) [DestWorld, [SrcPos, DestPos]]
-	private static final Map<ResourceLocation, Map<ColumnPos, PortalPosition>> destinationCoordinateCache = new HashMap<>();
-
-	private static boolean locked;
+	private final boolean locked;
 
 	public TFTeleporter(boolean locked) {
-		TFTeleporter.locked = locked;
-	}
-
-	public static CompoundTag saveLinks() {
-		CompoundTag tag = new CompoundTag();
-		ListTag dcc = new ListTag();
-		destinationCoordinateCache.forEach((rl, map) -> {
-			CompoundTag ct = new CompoundTag();
-			ListTag links = new ListTag();
-			map.forEach((columnPos, portalPos) -> {
-				CompoundTag link = new CompoundTag();
-				CompoundTag column = new CompoundTag();
-				column.putInt("x", columnPos.x());
-				column.putInt("z", columnPos.z());
-				link.put("column", column);
-				CompoundTag portal = new CompoundTag();
-				portal.putLong("time", portalPos.lastUpdateTime);
-				portal.putLong("pos", portalPos.pos.asLong());
-				link.put("portal", portal);
-				links.add(link);
-			});
-			ct.put("links", links);
-			ct.putString("name", rl.toString());
-			dcc.add(ct);
-		});
-		tag.put("dest", dcc);
-		return tag;
-	}
-
-	public static void loadLinks(CompoundTag tag) {
-		tag.getList("dest", Tag.TAG_COMPOUND).stream().map(CompoundTag.class::cast).forEach(dest -> {
-			ResourceLocation name = new ResourceLocation(dest.getString("name"));
-			destinationCoordinateCache.putIfAbsent(name, Maps.newHashMapWithExpectedSize(4096));
-			dest.getList("links", Tag.TAG_COMPOUND).stream().map(CompoundTag.class::cast).forEach(link -> {
-				CompoundTag column = link.getCompound("column");
-				CompoundTag portal = link.getCompound("portal");
-				destinationCoordinateCache.get(name).put(new ColumnPos(column.getInt("x"), column.getInt("z")), new PortalPosition(BlockPos.of(portal.getLong("pos")), portal.getLong("time")));
-			});
-		});
+		this.locked = locked;
 	}
 
 	@Nullable
 	@Override
 	public PortalInfo getPortalInfo(Entity entity, ServerLevel dest, Function<ServerLevel, PortalInfo> defaultPortalInfo) {
 		PortalInfo pos;
+		TeleporterCache cache = TeleporterCache.get(dest);
 
 		// Scale the coords based on the dimension type coordinate_scale
 		ServerLevel tfDim = dest.getServer().getLevel(TFGenerationSettings.DIMENSION_KEY);
@@ -103,34 +60,34 @@ public class TFTeleporter implements ITeleporter {
 		scale = dest.dimension().equals(TFGenerationSettings.DIMENSION_KEY) ? 1F / scale : scale;
 		BlockPos destPos = dest.getWorldBorder().clampToBounds(entity.blockPosition().getX() * scale, entity.blockPosition().getY(), entity.blockPosition().getZ() * scale);
 
-		if ((pos = placeInExistingPortal(dest, entity, destPos)) == null) {
+		if ((pos = placeInExistingPortal(cache, dest, entity, destPos)) == null) {
 			TwilightForestMod.LOGGER.debug("Did not find existing portal, making a new one.");
 			pos = moveToSafeCoords(dest, entity, destPos);
-			makePortal(entity, dest, pos.pos);
-			pos = placeInExistingPortal(dest, entity, BlockPos.containing(pos.pos));
+			this.makePortal(cache, entity, dest, pos.pos);
+			pos = placeInExistingPortal(cache, dest, entity, BlockPos.containing(pos.pos));
 		}
 
 		return pos == null ? ITeleporter.super.getPortalInfo(entity, dest, defaultPortalInfo) : pos;
 	}
 
 	@Nullable
-	private static PortalInfo placeInExistingPortal(ServerLevel destDim, Entity entity, BlockPos pos) {
+	private static PortalInfo placeInExistingPortal(TeleporterCache cache, ServerLevel destDim, Entity entity, BlockPos pos) {
 		boolean flag = true;
 		BlockPos blockpos;
 		ColumnPos columnPos = new ColumnPos(entity.blockPosition().getX(), entity.blockPosition().getZ()); // Must be the position from the src dim
 
-		PortalPosition portalPosition = destinationCoordinateCache.containsKey(destDim.dimension().location()) ? destinationCoordinateCache.get(destDim.dimension().location()).get(columnPos) : null;
+		PortalPosition portalPosition = cache.getPortalPosition(destDim.dimension().location(), columnPos);
 		if (portalPosition != null) {
 			blockpos = portalPosition.pos;
 			portalPosition.lastUpdateTime = destDim.getGameTime();
 			flag = false;
 			// Validate that the Portal still exists
 			TwilightForestMod.LOGGER.debug("Using cache, validating. {}", blockpos);
-			if (blockpos == null || !destDim.getBlockState(blockpos).is(TFBlocks.TWILIGHT_PORTAL.get())) {
+			if (blockpos == null || !destDim.getBlockState(blockpos).is(TFBlocks.TWILIGHT_PORTAL)) {
 				// Portal was broken, we need to recreate it.
 				TwilightForestMod.LOGGER.debug("Portal Invalid, recreating.");
 				blockpos = null;
-				destinationCoordinateCache.get(destDim.dimension().location()).remove(columnPos);
+				cache.removeInvalidPos(destDim.dimension().location(), columnPos);
 			}
 		} else {
 			//BlockPos blockpos3 = new BlockPos(entity);
@@ -142,7 +99,6 @@ public class TFTeleporter implements ITeleporter {
 		} else {
 			if (flag) {
 				TwilightForestMod.LOGGER.debug("Caching Src Portal Blocks to {}", blockpos);
-				destinationCoordinateCache.putIfAbsent(destDim.dimension().location(), Maps.newHashMapWithExpectedSize(4096));
 				Map<BlockPos, Boolean> portalBlocks = new HashMap<>();
 				portalBlocks.put(entity.blockPosition(), true);
 				TFPortalBlock.recursivelyValidatePortal(entity.level(), entity.blockPosition(), portalBlocks, new MutableInt(0), entity.level().getBlockState(entity.blockPosition()));
@@ -150,7 +106,7 @@ public class TFTeleporter implements ITeleporter {
 				portalBlocks.forEach((blockPos, b) -> {
 					if (b) {
 						TwilightForestMod.LOGGER.debug("Caching {}", blockPos);
-						destinationCoordinateCache.get(destDim.dimension().location()).put(new ColumnPos(blockPos.getX(), blockPos.getZ()), new PortalPosition(finalBlockpos, destDim.getGameTime()));
+						cache.addBlockToCache(destDim.dimension().location(), new ColumnPos(blockPos.getX(), blockPos.getZ()), new PortalPosition(finalBlockpos, destDim.getGameTime()));
 					}
 				});
 				// the last param is just an object for tracking, don't worry about it using columnPos instead of blockpos
@@ -216,11 +172,6 @@ public class TFTeleporter implements ITeleporter {
 						}
 					}
 				}
-
-				// mark unwatched chunks for unload
-				//						if (!this.world.getPlayerChunkMap().contains(chunkPos.x, chunkPos.z)) {
-				//							this.world.getChunkProvider().queueUnload(chunk);
-				//						}
 			}
 		}
 		return result;
@@ -239,7 +190,7 @@ public class TFTeleporter implements ITeleporter {
 	}
 
 	private static boolean isPortal(BlockState state) {
-		return state.getBlock() == TFBlocks.TWILIGHT_PORTAL.get();
+		return state.is(TFBlocks.TWILIGHT_PORTAL);
 	}
 
 	// from the start point, builds a set of all directly adjacent non-portal blocks
@@ -354,7 +305,7 @@ public class TFTeleporter implements ITeleporter {
 	}
 
 	private static boolean checkBiome(Level world, BlockPos pos, Entity entity) {
-		return Restrictions.isBiomeSafeFor(world.getBiome(pos).value(), entity);
+		return Restriction.isBiomeSafeFor(world.getBiome(pos).value(), entity);
 	}
 
 	@Nullable
@@ -372,7 +323,7 @@ public class TFTeleporter implements ITeleporter {
 		return null;
 	}
 
-	private void makePortal(Entity entity, ServerLevel world, Vec3 pos) {
+	private void makePortal(TeleporterCache cache, Entity entity, ServerLevel world, Vec3 pos) {
 		ServerLevel src = entity.level() instanceof ServerLevel serverLevel ? serverLevel : null;
 
 		// ensure area is populated first
@@ -383,7 +334,7 @@ public class TFTeleporter implements ITeleporter {
 
 		if (spot != null) {
 			TwilightForestMod.LOGGER.debug("Found existing portal for {} at {}", name, spot);
-			cacheNewPortalCoords(src, spot, entity.blockPosition());
+			cacheNewPortalCoords(cache, src, spot, entity.blockPosition());
 			return;
 		}
 
@@ -391,7 +342,7 @@ public class TFTeleporter implements ITeleporter {
 
 		if (spot != null) {
 			TwilightForestMod.LOGGER.debug("Found ideal portal spot for {} at {}", name, spot);
-			cacheNewPortalCoords(src, makePortalAt(world, spot), entity.blockPosition());
+			cacheNewPortalCoords(cache, src, this.makePortalAt(world, spot), entity.blockPosition());
 			return;
 		}
 
@@ -400,7 +351,7 @@ public class TFTeleporter implements ITeleporter {
 
 		if (spot != null) {
 			TwilightForestMod.LOGGER.debug("Found okay portal spot for {} at {}", name, spot);
-			cacheNewPortalCoords(src, makePortalAt(world, spot), entity.blockPosition());
+			cacheNewPortalCoords(cache, src, this.makePortalAt(world, spot), entity.blockPosition());
 			return;
 		}
 
@@ -410,13 +361,13 @@ public class TFTeleporter implements ITeleporter {
 		// adjust the portal height based on what world we're traveling to
 		double yFactor = getYFactor(world);
 		// modified copy of base Teleporter method:
-		cacheNewPortalCoords(src, makePortalAt(world, BlockPos.containing(entity.getX(), (entity.getY() * yFactor) - 1.0, entity.getZ())), entity.blockPosition());
+		cacheNewPortalCoords(cache, src, this.makePortalAt(world, BlockPos.containing(entity.getX(), (entity.getY() * yFactor) - 1.0, entity.getZ())), entity.blockPosition());
 	}
 
 	private static void loadSurroundingArea(ServerLevel world, Vec3 pos) {
 
-		int x = Mth.floor(pos.x) >> 4;
-		int z = Mth.floor(pos.y) >> 4;
+		int x = Mth.floor(pos.x()) >> 4;
+		int z = Mth.floor(pos.y()) >> 4;
 
 		for (int dx = -2; dx <= 2; dx++) {
 			for (int dz = -2; dz <= 2; dz++) {
@@ -430,8 +381,8 @@ public class TFTeleporter implements ITeleporter {
 		// adjust the height based on what world we're traveling to
 		double yFactor = getYFactor(world);
 		// modified copy of base Teleporter method:
-		int entityX = Mth.floor(loc.x);
-		int entityZ = Mth.floor(loc.z);
+		int entityX = Mth.floor(loc.x());
+		int entityZ = Mth.floor(loc.z());
 
 		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
 
@@ -440,9 +391,9 @@ public class TFTeleporter implements ITeleporter {
 
 		int range = 16;
 		for (int rx = entityX - range; rx <= entityX + range; rx++) {
-			double xWeight = (rx + 0.5D) - loc.x;
+			double xWeight = (rx + 0.5D) - loc.x();
 			for (int rz = entityZ - range; rz <= entityZ + range; rz++) {
-				double zWeight = (rz + 0.5D) - loc.z;
+				double zWeight = (rz + 0.5D) - loc.z();
 
 				for (int ry = getScanHeight(world, rx, rz); ry >= world.getMinBuildHeight(); ry--) {
 
@@ -454,7 +405,7 @@ public class TFTeleporter implements ITeleporter {
 						ry--;
 					}
 
-					double yWeight = (ry + 0.5D) - loc.y * yFactor;
+					double yWeight = (ry + 0.5D) - loc.y() * yFactor;
 					double rPosWeight = xWeight * xWeight + yWeight * yWeight + zWeight * zWeight;
 
 					if (spotWeight < 0.0D || rPosWeight < spotWeight) {
@@ -475,7 +426,7 @@ public class TFTeleporter implements ITeleporter {
 		return world.dimension().location().equals(Level.OVERWORLD.location()) ? 2.0 : 0.5;
 	}
 
-	private static void cacheNewPortalCoords(@Nullable ServerLevel srcDim, BlockPos pos, BlockPos srcPos) {
+	private static void cacheNewPortalCoords(TeleporterCache cache, @Nullable ServerLevel srcDim, BlockPos pos, BlockPos srcPos) {
 		// src/dest is backwards logic because we're caching the opposite direction
 		if (srcDim == null)
 			return;
@@ -483,11 +434,10 @@ public class TFTeleporter implements ITeleporter {
 		if (exitPos == null)
 			return;
 		TwilightForestMod.LOGGER.debug("Caching Dest Portal Blocks to {}", exitPos);
-		destinationCoordinateCache.putIfAbsent(srcDim.dimension().location(), Maps.newHashMapWithExpectedSize(4096));
-		destinationCoordinateCache.get(srcDim.dimension().location()).put(new ColumnPos(pos.getX(), pos.getZ()), new PortalPosition(exitPos, srcDim.getGameTime()));
-		destinationCoordinateCache.get(srcDim.dimension().location()).put(new ColumnPos(pos.south().getX(), pos.south().getZ()), new PortalPosition(exitPos, srcDim.getGameTime()));
-		destinationCoordinateCache.get(srcDim.dimension().location()).put(new ColumnPos(pos.east().getX(), pos.east().getZ()), new PortalPosition(exitPos, srcDim.getGameTime()));
-		destinationCoordinateCache.get(srcDim.dimension().location()).put(new ColumnPos(pos.south().east().getX(), pos.south().east().getZ()), new PortalPosition(exitPos, srcDim.getGameTime()));
+		cache.addBlockToCache(srcDim.dimension().location(), new ColumnPos(pos.getX(), pos.getZ()), new TFTeleporter.PortalPosition(exitPos, srcDim.getGameTime()));
+		cache.addBlockToCache(srcDim.dimension().location(), new ColumnPos(pos.south().getX(), pos.south().getZ()), new TFTeleporter.PortalPosition(exitPos, srcDim.getGameTime()));
+		cache.addBlockToCache(srcDim.dimension().location(), new ColumnPos(pos.east().getX(), pos.east().getZ()), new TFTeleporter.PortalPosition(exitPos, srcDim.getGameTime()));
+		cache.addBlockToCache(srcDim.dimension().location(), new ColumnPos(pos.south().east().getX(), pos.south().east().getZ()), new TFTeleporter.PortalPosition(exitPos, srcDim.getGameTime()));
 	}
 
 	private static boolean isIdealForPortal(ServerLevel world, BlockPos pos) {
@@ -534,7 +484,7 @@ public class TFTeleporter implements ITeleporter {
 		world.setBlockAndUpdate(pos.east().south().below(), dirt);
 
 		// portal in it
-		BlockState portal = TFBlocks.TWILIGHT_PORTAL.get().defaultBlockState().setValue(TFPortalBlock.DISALLOW_RETURN, (locked || !TFConfig.COMMON_CONFIG.shouldReturnPortalBeUsable.get()));
+		BlockState portal = TFBlocks.TWILIGHT_PORTAL.get().defaultBlockState().setValue(TFPortalBlock.DISALLOW_RETURN, (this.locked || !TFConfig.COMMON_CONFIG.shouldReturnPortalBeUsable.get()));
 
 		world.setBlock(pos, portal, 2);
 		world.setBlock(pos.east(), portal, 2);
@@ -571,7 +521,11 @@ public class TFTeleporter implements ITeleporter {
 	}
 
 	private static BlockState randNatureBlock(RandomSource random) {
-		return ForgeRegistries.BLOCKS.tags().getTag(BlockTagGenerator.GENERATED_PORTAL_DECO).getRandomElement(random).get().defaultBlockState();
+		Optional<Block> optional = BuiltInRegistries.BLOCK
+				.getTag(BlockTagGenerator.GENERATED_PORTAL_DECO)
+				.flatMap(tag -> tag.getRandomElement(random))
+				.map(Holder::value);
+		return optional.map(Block::defaultBlockState).orElseGet(Blocks.SHORT_GRASS::defaultBlockState);
 	}
 
 	private static boolean isOkayForPortal(ServerLevel world, BlockPos pos) {

@@ -1,0 +1,17 @@
+{
+  "values": [
+    "#forge:ores",
+    "#minecraft:base_stone_overworld",
+    "#minecraft:base_stone_nether",
+    "#minecraft:dirt",
+    "#forge:sand",
+    "#forge:sandstone",
+    "#minecraft:terracotta",
+    "#forge:gravel",
+    "#minecraft:nylium",
+    "minecraft:budding_amethyst",
+    "minecraft:calcite",
+    "minecraft:soul_sand",
+    "minecraft:soul_soil"
+  ]
+}

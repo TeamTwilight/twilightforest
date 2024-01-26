@@ -14,22 +14,18 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.*;
-import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.advancements.TFAdvancements;
+import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFSounds;
 
 import java.util.List;
 
 public class BrittleFlaskItem extends Item {
 
-	private static Potion lastUsedPotion;
-	private static int timesUsed;
-	private static boolean advancementWindow;
-	public static int seconds;
+	public static final int DOSES = 3;
 
 	public BrittleFlaskItem(Properties properties) {
 		super(properties);
@@ -63,7 +59,7 @@ public class BrittleFlaskItem extends Item {
 		if (flaskTag != null && potionTag != null) {
 			if (action == ClickAction.SECONDARY && other.is(Items.POTION)) {
 				if (potionTag.contains("Potion") && this.canBeRefilled(stack)) {
-					if (flaskTag.contains("Potion") && flaskTag.getString("Potion").equals(potionTag.getString("Potion")) && flaskTag.getInt("Uses") < 4) {
+					if (flaskTag.contains("Potion") && flaskTag.getString("Potion").equals(potionTag.getString("Potion")) && flaskTag.getInt("Uses") < DOSES) {
 						if (!player.getAbilities().instabuild) {
 							other.shrink(1);
 							player.getInventory().add(new ItemStack(Items.GLASS_BOTTLE));
@@ -117,7 +113,9 @@ public class BrittleFlaskItem extends Item {
 		if (tag != null) {
 			if (entity instanceof Player player) {
 				if (!level.isClientSide()) {
-					if (!player.isCreative()) addTowardsAdvancement(Potion.byName(tag.getString("Potion")), player);
+					if (!player.isCreative() && !player.isSpectator()) {
+						player.getData(TFDataAttachments.FLASK_DOSES).incrementDoses(PotionUtils.getPotion(stack), (ServerPlayer) player);
+					}
 					for (MobEffectInstance mobeffectinstance : PotionUtils.getMobEffects(stack)) {
 						if (mobeffectinstance.getEffect().isInstantenous()) {
 							mobeffectinstance.getEffect().applyInstantenousEffect(player, player, player, mobeffectinstance.getAmplifier(), 1.0D);
@@ -150,35 +148,6 @@ public class BrittleFlaskItem extends Item {
 		return super.finishUsingItem(stack, level, entity);
 	}
 
-	private void addTowardsAdvancement(Potion potionDrank, Player drinker) {
-		if (lastUsedPotion == null) {
-			lastUsedPotion = Potions.EMPTY;
-		}
-
-		if (!lastUsedPotion.equals(potionDrank)) {
-			timesUsed = 1;
-			lastUsedPotion = potionDrank;
-			advancementWindow = true;
-		} else {
-			timesUsed++;
-		}
-
-		if (drinker instanceof ServerPlayer player && drinker.isAlive() && advancementWindow) {
-			TFAdvancements.DRINK_FROM_FLASK.trigger(player, timesUsed, lastUsedPotion);
-		}
-	}
-
-	public static void ticker() {
-		if (advancementWindow) seconds++;
-
-		if (seconds == 8) {
-			advancementWindow = false;
-			timesUsed = 0;
-			lastUsedPotion = null;
-			seconds = 0;
-		}
-	}
-
 	public boolean canBreak() {
 		return true;
 	}
@@ -192,11 +161,11 @@ public class BrittleFlaskItem extends Item {
 
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-		PotionUtils.addPotionTooltip(stack, tooltip, 1.0F);
+		PotionUtils.addPotionTooltip(stack, tooltip, 1.0F, level == null ? 20.0F : level.tickRateManager().tickrate());
 		if (stack.getTag() != null) {
-			tooltip.add(Component.translatable("item.twilightforest.flask.doses", stack.getTag().getInt("Uses"), 4).withStyle(ChatFormatting.GRAY));
+			tooltip.add(Component.translatable("item.twilightforest.flask.doses", stack.getTag().getInt("Uses"), DOSES).withStyle(ChatFormatting.GRAY));
 			if (stack.getTag().contains("Refillable") && !stack.getTag().getBoolean("Refillable"))
-				tooltip.add(Component.translatable("item.twilightforest.flask_no_refill").withStyle(ChatFormatting.RED));
+				tooltip.add(Component.translatable("item.twilightforest.flask.no_refill").withStyle(ChatFormatting.RED));
 		}
 	}
 
@@ -204,7 +173,7 @@ public class BrittleFlaskItem extends Item {
 	@Override
 	public int getBarWidth(ItemStack stack) {
 		if (stack.getTag() != null) {
-			return Math.round(13.0F - Math.abs(stack.getTag().getInt("Uses") - 4) * 13.0F / 4);
+			return Math.round(13.0F - Math.abs(stack.getTag().getInt("Uses") - DOSES) * 13.0F / DOSES);
 		}
 		return 0;
 	}

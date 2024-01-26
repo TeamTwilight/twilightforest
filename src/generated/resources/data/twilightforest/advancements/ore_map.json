@@ -15,7 +15,6 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancement.twilightforest.ore_map.desc",
       "with": [
@@ -29,7 +28,6 @@
     "icon": {
       "item": "twilightforest:filled_ore_map"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancement.twilightforest.ore_map"
     }

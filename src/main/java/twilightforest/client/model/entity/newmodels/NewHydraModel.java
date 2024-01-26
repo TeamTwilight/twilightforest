@@ -10,8 +10,8 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.boss.Hydra;
 
@@ -41,9 +41,9 @@ public class NewHydraModel extends HierarchicalModel<Hydra> {
 
 	public static LayerDefinition create() {
 		MeshDefinition mesh = new MeshDefinition();
-		PartDefinition partRoot = mesh.getRoot();
+		PartDefinition definition = mesh.getRoot();
 
-		var head1 = partRoot.addOrReplaceChild("head_1", CubeListBuilder.create()
+		var head1 = definition.addOrReplaceChild("head_1", CubeListBuilder.create()
 						.texOffs(260, 64)
 						.addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
 						.texOffs(236, 128)
@@ -52,7 +52,7 @@ public class NewHydraModel extends HierarchicalModel<Hydra> {
 						.addBox(-12.0F, 8.0F, -36.0F, 24.0F, 6.0F, 20.0F),
 				PartPose.offset(-74.0F, -100.0F, -56.0F));
 
-		var head2 = partRoot.addOrReplaceChild("head_2", CubeListBuilder.create()
+		var head2 = definition.addOrReplaceChild("head_2", CubeListBuilder.create()
 						.texOffs(260, 64)
 						.addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
 						.texOffs(236, 128)
@@ -61,7 +61,7 @@ public class NewHydraModel extends HierarchicalModel<Hydra> {
 						.addBox(-12.0F, 8.0F, -36.0F, 24.0F, 6.0F, 20.0F),
 				PartPose.offset(0.0F, -116.0F, -56.0F));
 
-		var head3 = partRoot.addOrReplaceChild("head_3", CubeListBuilder.create()
+		var head3 = definition.addOrReplaceChild("head_3", CubeListBuilder.create()
 						.texOffs(260, 64)
 						.addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
 						.texOffs(236, 128)
@@ -106,17 +106,17 @@ public class NewHydraModel extends HierarchicalModel<Hydra> {
 						.addBox(-4.0F, -32.0F, -8.0F, 8.0F, 32.0F, 8.0F),
 				PartPose.offsetAndRotation(0.0F, 0.0F, -1.0F, -0.7853981633974483F, 0.0F, 0.0F));
 
-		var neck1 = partRoot.addOrReplaceChild("neck_1", CubeListBuilder.create()
+		var neck1 = definition.addOrReplaceChild("neck_1", CubeListBuilder.create()
 						.texOffs(260, 0).addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
 						.texOffs(0, 0).addBox(-2.0F, -24.0F, 0.0F, 4.0F, 8.0F, 16.0F),
 				PartPose.offset(-42.0F, -48.0F, 0.0F));
 
-		var neck2 = partRoot.addOrReplaceChild("neck_2", CubeListBuilder.create()
+		var neck2 = definition.addOrReplaceChild("neck_2", CubeListBuilder.create()
 						.texOffs(260, 0).addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
 						.texOffs(0, 0).addBox(-2.0F, -24.0F, 0.0F, 4.0F, 8.0F, 16.0F),
 				PartPose.offset(0.0F, -48.0F, 0.0F));
 
-		var neck3 = partRoot.addOrReplaceChild("neck_3", CubeListBuilder.create()
+		var neck3 = definition.addOrReplaceChild("neck_3", CubeListBuilder.create()
 						.texOffs(260, 0).addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
 						.texOffs(0, 0).addBox(-2.0F, -24.0F, 0.0F, 4.0F, 8.0F, 16.0F),
 				PartPose.offset(42.0F, -48.0F, 0.0F));
@@ -151,7 +151,7 @@ public class NewHydraModel extends HierarchicalModel<Hydra> {
 						.texOffs(0, 0).addBox(-2.0F, -24.0F, 0.0F, 4.0F, 8.0F, 16.0F),
 				PartPose.offset(16.0F, -16.0F, -16.0F));
 
-		partRoot.addOrReplaceChild("torso", CubeListBuilder.create()
+		definition.addOrReplaceChild("torso", CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(-45.0F, -12.0F, -20.0F, 90.0F, 96.0F, 40.0F)
 						.texOffs(88, 136)
@@ -160,21 +160,21 @@ public class NewHydraModel extends HierarchicalModel<Hydra> {
 						.addBox(-2.0F, 48.0F, 20.0F, 4.0F, 16.0F, 12.0F),
 				PartPose.offsetAndRotation(0.0F, -32.0F, 0.0F, 1.117010721276371F, 0.0F, 0.0F));
 
-		partRoot.addOrReplaceChild("right_leg", CubeListBuilder.create()
+		definition.addOrReplaceChild("right_leg", CubeListBuilder.create()
 						.texOffs(0, 136)
 						.addBox(-14.0F, -8.0F, -16.0F, 28.0F, 52.0F, 32.0F)
 						.texOffs(0, 220)
 						.addBox(-14.0F, 36.0F, -22.0F, 28.0F, 8.0F, 6.0F),
 				PartPose.offset(-40.0F, -20.0F, -12.0F));
 
-		partRoot.addOrReplaceChild("left_leg", CubeListBuilder.create()
+		definition.addOrReplaceChild("left_leg", CubeListBuilder.create()
 						.texOffs(120, 136)
 						.addBox(-14.0F, -8.0F, -16.0F, 28.0F, 52.0F, 32.0F)
 						.texOffs(68, 220)
 						.addBox(-14.0F, 36.0F, -22.0F, 28.0F, 8.0F, 6.0F),
 				PartPose.offset(40.0F, -20.0F, -12.0F));
 
-		var tail1 = partRoot.addOrReplaceChild("tail_1", CubeListBuilder.create()
+		var tail1 = definition.addOrReplaceChild("tail_1", CubeListBuilder.create()
 						.texOffs(260, 0)
 						.addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
 						.texOffs(0, 0)

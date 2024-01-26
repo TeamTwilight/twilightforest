@@ -40,15 +40,15 @@ public abstract class SpecialMagicLogBlock extends RotatedPillarBlock {
 	}
 
 	@Override
-	@Deprecated
+	@SuppressWarnings("deprecation")
 	public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
 		level.scheduleTick(pos, this, this.tickRate());
 	}
 
 	@Override
-	@Deprecated
+	@SuppressWarnings("deprecation")
 	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand) {
-		if (level.isClientSide() || !state.getValue(ACTIVE) || !this.doesCoreFunction()) return;
+		if (!state.getValue(ACTIVE) || !this.doesCoreFunction()) return;
 
 		this.playSound(level, pos, rand);
 		this.performTreeEffect(level, pos, rand);
@@ -57,7 +57,7 @@ public abstract class SpecialMagicLogBlock extends RotatedPillarBlock {
 	}
 
 	@Override
-	@Deprecated
+	@SuppressWarnings("deprecation")
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
 		if (!this.doesCoreFunction()) {
 			state.setValue(ACTIVE, false);
@@ -77,8 +77,9 @@ public abstract class SpecialMagicLogBlock extends RotatedPillarBlock {
 		return InteractionResult.PASS;
 	}
 
-	abstract void performTreeEffect(Level level, BlockPos pos, RandomSource rand);
+	abstract void performTreeEffect(ServerLevel level, BlockPos pos, RandomSource rand);
 
+	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 	public abstract boolean doesCoreFunction();
 
 	protected void playSound(Level level, BlockPos pos, RandomSource rand) {

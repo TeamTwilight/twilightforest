@@ -43,13 +43,14 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.entity.PartEntity;
-import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.fluids.FluidType;
-import net.minecraftforge.network.PacketDistributor;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.neoforged.neoforge.entity.PartEntity;
+import net.neoforged.neoforge.event.EventHooks;
+import net.neoforged.neoforge.fluids.FluidType;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFConfig;
-import twilightforest.advancements.TFAdvancements;
+import twilightforest.init.TFAdvancements;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.entity.TFPart;
 import twilightforest.entity.ai.control.NagaMoveControl;
@@ -62,8 +63,7 @@ import twilightforest.init.TFSounds;
 import twilightforest.init.TFStructures;
 import twilightforest.loot.TFLootTables;
 import twilightforest.network.ParticlePacket;
-import twilightforest.network.TFPacketHandler;
-import twilightforest.network.ThrowPlayerPacket;
+import twilightforest.network.MovePlayerPacket;
 import twilightforest.util.EntityUtil;
 import twilightforest.util.LandmarkUtil;
 
@@ -272,7 +272,7 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 			this.setTarget(null);
 		}
 
-		if (ForgeEventFactory.getMobGriefingEvent(this.level(), this)) {
+		if (EventHooks.getMobGriefingEvent(this.level(), this)) {
 			AABB bb = this.getBoundingBox();
 
 			int minx = Mth.floor(bb.minX - 0.75D);
@@ -387,7 +387,7 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 				this.push(motion.x() * -1.25D, 0.5D, motion.z() * -1.25D);
 				if (toAttack instanceof ServerPlayer player) {
 					player.getUseItem().hurtAndBreak(5, player, user -> user.broadcastBreakEvent(player.getUsedItemHand()));
-					TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new ThrowPlayerPacket(motion.x() * 3.0D, motion.y() + 0.75D, motion.z() * 3.0D));
+					PacketDistributor.PLAYER.with(player).send(new MovePlayerPacket(motion.x() * 3.0D, motion.y() + 0.75D, motion.z() * 3.0D));
 				}
 				this.hurt(this.damageSources().generic(), 2.0F);
 				this.level().playSound(null, toAttack.blockPosition(), SoundEvents.SHIELD_BLOCK, SoundSource.PLAYERS, 1.0F, 0.8F + this.level().getRandom().nextFloat() * 0.4F);
@@ -568,7 +568,7 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 			this.setDazed(false);
 			LandmarkUtil.markStructureConquered(this.level(), this, TFStructures.NAGA_COURTYARD, true);
 			for (ServerPlayer player : this.hurtBy) {
-				TFAdvancements.HURT_BOSS.trigger(player, this);
+				TFAdvancements.HURT_BOSS.get().trigger(player, this);
 			}
 
 			IBossLootBuffer.saveDropsIntoBoss(this, TFLootTables.createLootParams(this, true, cause).create(LootContextParamSets.ENTITY), serverLevel);
@@ -623,11 +623,11 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 							if (preciseTime < 0.0D) continue;
 							double factor = preciseTime / (double) (maxDeath - renderEnd);
 							Vec3 particlePos = start.add(diff.scale(factor)).add(Math.sin(preciseTime * Math.PI * 0.075D) * xMul, Math.sin(preciseTime * Math.PI * 0.025D) * 0.1D, Math.cos(preciseTime * Math.PI * 0.0625D) * zMul);//Some sine waves to make it slither-y;
-							BlockHitResult blockhitresult = this.level().clip(new ClipContext(particlePos.add(0.0D, 2.0D, 0.0D), particlePos.subtract(0.0D, 3.0D, 0.0D), ClipContext.Block.COLLIDER, ClipContext.Fluid.WATER, null));
+							BlockHitResult blockhitresult = this.level().clip(new ClipContext(particlePos.add(0.0D, 2.0D, 0.0D), particlePos.subtract(0.0D, 3.0D, 0.0D), ClipContext.Block.COLLIDER, ClipContext.Fluid.WATER, CollisionContext.empty()));
 							particlePacket.queueParticle(ParticleTypes.COMPOSTER, false, blockhitresult.getLocation().add(0.0D, 0.15D, 0.0D), Vec3.ZERO);
 						}
 					}
-					TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), particlePacket);
+					PacketDistributor.TRACKING_ENTITY.with(this).send(particlePacket);
 				}
 			}
 		}

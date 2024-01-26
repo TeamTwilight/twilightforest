@@ -16,8 +16,8 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import twilightforest.init.TFBlocks;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.util.BoundingBoxUtils;
 import twilightforest.util.LegacyLandmarkPlacements;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
@@ -40,7 +40,7 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 		x = ((x + 127) >> 8) << 8;
 		z = ((z + 127) >> 8) << 8;
 
-		this.boundingBox = TFLandmark.getComponentToAddBoundingBox(x, y, z, -24, 120, -24, 48, 40, 48, Direction.SOUTH, false);
+		this.boundingBox = BoundingBoxUtils.getComponentToAddBoundingBox(x, y, z, -24, 120, -24, 48, 40, 48, Direction.SOUTH, false);
 
 		BlockPos cc = LegacyLandmarkPlacements.getNearestCenterXZ(x >> 4, z >> 4);
 
@@ -172,7 +172,7 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 	private boolean isMazeComplete(StructurePieceAccessor list, BlockState type) {
 		if (list instanceof StructurePiecesBuilder start) {
 			if (start.pieces.size() > 60) {
-				//TwilightForestMod.LOGGER.warn("Maze of color {} is getting a bit excessive.", ForgeRegistries.BLOCKS.getKey(type.getBlock()).toString());
+				//TwilightForestMod.LOGGER.warn("Maze of color {} is getting a bit excessive.", BuiltInRegistries.BLOCK.getKey(type.getBlock()).toString());
 			}
 			for (StructurePiece structurecomponent : start.pieces) {
 				BoundingBox boundingBox = structurecomponent.getBoundingBox();

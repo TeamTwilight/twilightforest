@@ -15,11 +15,11 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
-import org.jetbrains.annotations.Nullable;
 
 @OnlyIn(value = Dist.CLIENT, _interface = ItemSupplier.class)
 public class CharmEffect extends Entity implements ItemSupplier {
@@ -95,7 +95,7 @@ public class CharmEffect extends Entity implements ItemSupplier {
 	}
 
 	@Override
-	public void lerpTo(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport) {
+	public void lerpTo(double x, double y, double z, float yaw, float pitch, int posRotationIncrements) {
 		this.interpTargetX = x;
 		this.interpTargetY = y;
 		this.interpTargetZ = z;

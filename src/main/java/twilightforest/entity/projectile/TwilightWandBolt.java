@@ -12,8 +12,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
 
@@ -74,7 +74,7 @@ public class TwilightWandBolt extends TFThrowable {
 	protected void onHitEntity(EntityHitResult result) {
 		super.onHitEntity(result);
 		if (!this.level().isClientSide()) {
-			result.getEntity().hurt(TFDamageTypes.getIndirectEntityDamageSource(this.level(), TFDamageTypes.TWILIGHT_SCEPTER, this.getOwner(), this), 6);
+			result.getEntity().hurt(TFDamageTypes.getIndirectEntityDamageSource(this.level(), TFDamageTypes.TWILIGHT_SCEPTER, this, this.getOwner()), 6);
 
 			this.level().broadcastEntityEvent(this, (byte) 3);
 			this.discard();

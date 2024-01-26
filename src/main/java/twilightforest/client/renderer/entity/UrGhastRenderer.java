@@ -4,8 +4,6 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.UrGhastModel;
-import twilightforest.client.renderer.entity.CarminiteGhastRenderer;
-import twilightforest.entity.boss.Naga;
 import twilightforest.entity.boss.UrGhast;
 
 public class UrGhastRenderer extends CarminiteGhastRenderer<UrGhast, UrGhastModel> {

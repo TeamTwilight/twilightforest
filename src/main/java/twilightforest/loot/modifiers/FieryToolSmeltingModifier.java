@@ -8,9 +8,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-import net.minecraftforge.common.loot.IGlobalLootModifier;
-import net.minecraftforge.common.loot.LootModifier;
-import net.minecraftforge.items.ItemHandlerHelper;
+import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
+import net.neoforged.neoforge.common.loot.LootModifier;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.NotNull;
 
 public class FieryToolSmeltingModifier extends LootModifier {
@@ -26,7 +26,7 @@ public class FieryToolSmeltingModifier extends LootModifier {
 		generatedLoot.forEach((stack) -> newLoot.add(
 				context.getLevel().getRecipeManager()
 						.getRecipeFor(RecipeType.SMELTING, new SimpleContainer(stack), context.getLevel())
-						.map(recipe -> recipe.getResultItem(context.getLevel().registryAccess()))
+						.map(holder -> holder.value().getResultItem(context.getLevel().registryAccess()))
 						.filter(itemStack -> !itemStack.isEmpty())
 						.map(itemStack -> ItemHandlerHelper.copyStackWithSize(itemStack, stack.getCount() * itemStack.getCount()))
 						.orElse(stack)));

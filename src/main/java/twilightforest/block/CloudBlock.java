@@ -22,13 +22,12 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.extensions.common.IClientBlockExtensions;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.extensions.common.IClientBlockExtensions;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.apache.commons.lang3.tuple.Pair;
 import twilightforest.TFConfig;
 import twilightforest.init.TFParticleType;
 import twilightforest.network.ParticlePacket;
-import twilightforest.network.TFPacketHandler;
 
 import javax.annotation.Nullable;
 import java.util.function.Consumer;
@@ -72,7 +71,7 @@ public class CloudBlock extends Block {
      */
     public Pair<Biome.Precipitation, Float> getCurrentPrecipitation(BlockPos pos, Level level, float rainLevel) {
         if (this.getPrecipitation() == null) {
-            if (rainLevel > 0.0F) return Pair.of(level.getBiome(pos).get().getPrecipitationAt(pos), rainLevel);
+            if (rainLevel > 0.0F) return Pair.of(level.getBiome(pos).value().getPrecipitationAt(pos), rainLevel);
             else return Pair.of(Biome.Precipitation.NONE, 0.0F);
         } else return Pair.of(this.getPrecipitation(), 1.0F);
     }
@@ -150,7 +149,7 @@ public class CloudBlock extends Block {
             particlePacket.queueParticle(TFParticleType.CLOUD_PUFF.get(),  false, x, y, z, xSpeed, ySpeed, zSpeed);
         }
 
-        TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_CHUNK.with(() -> level.getChunkAt(pos)), particlePacket);
+        PacketDistributor.TRACKING_CHUNK.with(level.getChunkAt(pos)).send(particlePacket);
 
         return true;
     }

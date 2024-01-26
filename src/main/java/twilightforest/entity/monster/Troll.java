@@ -11,6 +11,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -28,13 +29,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 import twilightforest.entity.projectile.ThrownBlock;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
 import twilightforest.util.WorldUtil;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 
 public class Troll extends Monster implements RangedAttackMob {
@@ -118,8 +120,8 @@ public class Troll extends Monster implements RangedAttackMob {
 	}
 
 	@Override
-	public double getPassengersRidingOffset() {
-		return super.getPassengersRidingOffset() + 1.75D;
+	protected Vector3f getPassengerAttachmentPoint(Entity entity, EntityDimensions dimensions, float yRot) {
+		return new Vector3f(0.0F, dimensions.height * 1.25F, 0.0F);
 	}
 
 	@Override
@@ -147,7 +149,7 @@ public class Troll extends Monster implements RangedAttackMob {
 					Objects.requireNonNull(this.getAttribute(Attributes.FOLLOW_RANGE)).addTransientModifier(ROCK_MODIFIER);
 				}
 			} else {
-				Objects.requireNonNull(this.getAttribute(Attributes.FOLLOW_RANGE)).removeModifier(ROCK_MODIFIER);
+				Objects.requireNonNull(this.getAttribute(Attributes.FOLLOW_RANGE)).removeModifier(ROCK_MODIFIER.getId());
 			}
 			this.setCombatTask();
 		}

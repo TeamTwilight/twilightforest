@@ -14,27 +14,27 @@ public class HarbingerCubeModel<T extends HarbingerCube> extends QuadrupedModel<
 
 	public static LayerDefinition create() {
 		MeshDefinition mesh = QuadrupedModel.createBodyMesh(0, CubeDeformation.NONE);
-		PartDefinition partRoot = mesh.getRoot();
+		PartDefinition definition = mesh.getRoot();
 
-		partRoot.addOrReplaceChild("head", CubeListBuilder.create(),
+		definition.addOrReplaceChild("head", CubeListBuilder.create(),
 				PartPose.ZERO);
-		partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+		definition.addOrReplaceChild("body", CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F),
 				PartPose.offset(0.0F, 0.0F, -2.0F));
-		partRoot.addOrReplaceChild("right_hind_leg", CubeListBuilder.create()
+		definition.addOrReplaceChild("right_hind_leg", CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(-4.0F, 0.0F, -4.0F, 8.0F, 8.0F, 8.0F),
 				PartPose.offset(-6F, 16F, 9F));
-		partRoot.addOrReplaceChild("left_hind_leg", CubeListBuilder.create()
+		definition.addOrReplaceChild("left_hind_leg", CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(-4.0F, 0.0F, -4.0F, 8.0F, 8.0F, 8.0F),
 				PartPose.offset(6F, 16F, 9F));
-		partRoot.addOrReplaceChild("right_front_leg", CubeListBuilder.create()
+		definition.addOrReplaceChild("right_front_leg", CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(-4.0F, 0.0F, -4.0F, 8.0F, 8.0F, 8.0F),
 				PartPose.offset(-9F, 16F, -14F));
-		partRoot.addOrReplaceChild("left_front_leg", CubeListBuilder.create()
+		definition.addOrReplaceChild("left_front_leg", CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(-4.0F, 0.0F, -4.0F, 8.0F, 8.0F, 8.0F),
 				PartPose.offset(9F, 16F, -14F));

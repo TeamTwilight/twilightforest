@@ -1,5 +1,13 @@
 {
-  "parent": "minecraft:item/handheld",
+  "parent": "minecraft:item/goat_horn",
+  "overrides": [
+    {
+      "model": "twilightforest:item/tooting_crumble_horn",
+      "predicate": {
+        "twilightforest:tooting": 1.0
+      }
+    }
+  ],
   "textures": {
     "layer0": "twilightforest:item/crumble_horn"
   }

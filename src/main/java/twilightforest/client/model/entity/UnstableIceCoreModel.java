@@ -36,9 +36,9 @@ public class UnstableIceCoreModel<T extends BaseIceMob> extends HierarchicalMode
 
 	public static LayerDefinition create() {
 		MeshDefinition mesh = new MeshDefinition();
-		PartDefinition partRoot = mesh.getRoot();
+		PartDefinition definition = mesh.getRoot();
 
-		partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+		definition.addOrReplaceChild("head", CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(-4.0F, 0.0F, -4.0F, 8.0F, 8.0F, 8.0F),
 				PartPose.ZERO);
@@ -46,15 +46,15 @@ public class UnstableIceCoreModel<T extends BaseIceMob> extends HierarchicalMode
 		for (int i = 0; i < 16; i++) {
 			int spikeLength = i % 2 == 0 ? 6 : 8;
 
-			var spike = partRoot.addOrReplaceChild("spike_" + i, CubeListBuilder.create()
+			var spike = definition.addOrReplaceChild("spike_" + i, CubeListBuilder.create()
 							.texOffs(0, 16)
-							.addBox(-1.0F, 6.0F, -1.0F, 2, spikeLength, 2),
+							.addBox(-1.0F, 4.0F, -1.0F, 2, spikeLength, 2),
 					PartPose.offset(0.0F, 4.0F, 0.0F));
 
 			spike.addOrReplaceChild("cube_" + i, CubeListBuilder.create()
 							.texOffs(8, 16)
 							.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3),
-					PartPose.offsetAndRotation(0.0F, 8.0F, 0.0F, 0.0F, 0.0F, (Mth.PI / 4F)));
+					PartPose.offsetAndRotation(0.0F, 8.0F, 0.0F, 0.0F, 0.0F, Mth.PI / 4.0F));
 		}
 
 		return LayerDefinition.create(mesh, 32, 32);
@@ -79,7 +79,7 @@ public class UnstableIceCoreModel<T extends BaseIceMob> extends HierarchicalMode
 	public void prepareMobModel(T entity, float limbSwing, float limbSwingAmount, float partialTicks) {
 		this.alive = entity.isAlive();
 
-		for (int i = 0; i < spikes.length; i++) {
+		for (int i = 0; i < this.spikes.length; i++) {
 			// rotate the spikes
 			this.spikes[i].yRot = (entity.tickCount + partialTicks) / 5.0F;
 			this.spikes[i].xRot = Mth.sin((entity.tickCount + partialTicks) / 5.0F) / 4.0F;

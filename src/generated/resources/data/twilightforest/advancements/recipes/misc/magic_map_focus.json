@@ -34,15 +34,14 @@
   },
   "requirements": [
     [
+      "has_the_recipe",
       "has_berries",
-      "has_feather",
-      "has_the_recipe"
+      "has_feather"
     ]
   ],
   "rewards": {
     "recipes": [
       "twilightforest:magic_map_focus"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -24,14 +24,13 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.ITFCharger;
 import twilightforest.entity.ai.goal.ChargeAttackGoal;
 import twilightforest.entity.boss.Minoshroom;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFSounds;
-
-import org.jetbrains.annotations.Nullable;
 
 public class Minotaur extends Monster implements ITFCharger {
 
@@ -45,14 +44,7 @@ public class Minotaur extends Monster implements ITFCharger {
 	protected void registerGoals() {
 		this.goalSelector.addGoal(0, new FloatGoal(this));
 		this.goalSelector.addGoal(2, new ChargeAttackGoal(this, 1.5F, this instanceof Minoshroom));
-		this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0D, false) {
-			//normally, the minoshroom attack reach is 9.5. It can hit you from nearly 2 blocks away!
-			//lowering this to make the fight a bit more fair and more doable hitless with melee
-			@Override
-			protected double getAttackReachSqr(LivingEntity entity) {
-				return this.mob instanceof Minoshroom ? 5.0D : super.getAttackReachSqr(entity);
-			}
-		});
+		this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0D, false));
 		this.goalSelector.addGoal(6, new WaterAvoidingRandomStrollGoal(this, 1.0D));
 		this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0F));
 		this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
@@ -153,11 +145,6 @@ public class Minotaur extends Monster implements ITFCharger {
 		if (this.isCharging()) {
 			this.walkAnimation.setSpeed(this.walkAnimation.speed() + 0.6F);
 		}
-	}
-
-	@Override
-	public double getMyRidingOffset() {
-		return -0.5D;
 	}
 
 	@Override

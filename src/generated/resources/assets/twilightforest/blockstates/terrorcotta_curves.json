@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "twilightforest:block/terrorcotta_curves_270"
+    },
+    "facing=north": {
+      "model": "twilightforest:block/terrorcotta_curves_180"
+    },
+    "facing=south": {
+      "model": "twilightforest:block/terrorcotta_curves_0"
+    },
+    "facing=west": {
+      "model": "twilightforest:block/terrorcotta_curves_90"
+    }
+  }
+}

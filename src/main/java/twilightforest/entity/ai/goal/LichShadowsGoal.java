@@ -1,11 +1,13 @@
 package twilightforest.entity.ai.goal;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.entity.boss.Lich;
 import twilightforest.entity.projectile.LichBolt;
@@ -13,6 +15,8 @@ import twilightforest.entity.projectile.LichBomb;
 import twilightforest.init.TFItems;
 
 import java.util.EnumSet;
+import java.util.List;
+import java.util.UUID;
 
 public class LichShadowsGoal extends Goal {
 
@@ -74,10 +78,10 @@ public class LichShadowsGoal extends Goal {
 	}
 
 	private void checkForMaster() {
-		if (this.lich.getMasterLich() == null) {
+		if (this.lich.getMaster() == null) {
 			this.findNewMaster();
 		}
-		if (!this.lich.level().isClientSide() && (this.lich.getMasterLich() == null || !this.lich.getMasterLich().isAlive() || this.lich.getMasterLich().getPhase() != 1)) {
+		if (this.lich.getMaster() == null || !this.lich.getMaster().isAlive() || this.lich.getMaster().getPhase() != 1) {
 			this.lich.discard();
 		}
 	}
@@ -102,25 +106,28 @@ public class LichShadowsGoal extends Goal {
 
 			newClone.setTarget(targetedEntity);
 			newClone.setAttackCooldown(60 + this.lich.getRandom().nextInt(3) - this.lich.getRandom().nextInt(3));
-
+			this.lich.addClone(newClone.getUUID());
 			// make sparkles leading to it
 			this.lich.makeTeleportTrail(this.lich.getX(), this.lich.getY(), this.lich.getZ(), cloneSpot.x(), cloneSpot.y(), cloneSpot.z());
 		}
 	}
 
 	private void despawnClones() {
-		for (Lich nearbyLich : this.lich.getNearbyLiches()) {
-			if (nearbyLich.isShadowClone()) {
-				nearbyLich.remove(Entity.RemovalReason.DISCARDED);
+		if (this.lich.level() instanceof ServerLevel server) {
+			for (UUID uuid : this.lich.getClones()) {
+				Entity entity = server.getEntity(uuid);
+				if (entity instanceof Lich clone && lich.getMaster() == this.lich) {
+					clone.remove(Entity.RemovalReason.DISCARDED);
+				}
 			}
 		}
 	}
 
 	private void findNewMaster() {
-
-		for (Lich nearbyLich : this.lich.getNearbyLiches()) {
+		for (Lich nearbyLich : this.getNearbyLiches()) {
 			if (!nearbyLich.isShadowClone() && nearbyLich.wantsNewClone(this.lich)) {
-				this.lich.setMaster(nearbyLich);
+				this.lich.setMasterUUID(nearbyLich.getUUID());
+				nearbyLich.addClone(this.lich.getUUID());
 
 				// animate our new linkage!
 				this.lich.makeTeleportTrail(this.lich.getX(), this.lich.getY(), this.lich.getZ(), nearbyLich.getX(), nearbyLich.getY(), nearbyLich.getZ());
@@ -129,5 +136,9 @@ public class LichShadowsGoal extends Goal {
 				break;
 			}
 		}
+	}
+
+	private List<? extends Lich> getNearbyLiches() {
+		return this.lich.level().getEntitiesOfClass(this.lich.getClass(), new AABB(this.lich.getX(), this.lich.getY(), this.lich.getZ(), this.lich.getX() + 1, this.lich.getY() + 1, this.lich.getZ() + 1).inflate(32.0D, 16.0D, 32.0D));
 	}
 }

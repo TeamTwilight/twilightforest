@@ -60,7 +60,6 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancement.twilightforest.progress_merge.desc",
       "with": [
@@ -76,11 +75,9 @@
       ]
     },
     "frame": "goal",
-    "hidden": false,
     "icon": {
       "item": "twilightforest:uberous_soil"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancement.twilightforest.progress_merge"
     }

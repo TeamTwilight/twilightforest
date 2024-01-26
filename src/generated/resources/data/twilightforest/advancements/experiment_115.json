@@ -13,16 +13,12 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancement.twilightforest.experiment_115.desc"
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
       "item": "twilightforest:experiment_115"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancement.twilightforest.experiment_115"
     }

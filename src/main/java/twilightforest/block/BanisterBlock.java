@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -30,14 +31,16 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.ToolActions;
+import net.neoforged.neoforge.common.ToolActions;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.enums.BanisterShape;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class BanisterBlock extends HorizontalDirectionalBlock implements SimpleWaterloggedBlock {
+
+	public static final MapCodec<BanisterBlock> CODEC = simpleCodec(BanisterBlock::new);
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	public static final EnumProperty<BanisterShape> SHAPE = EnumProperty.create("shape", BanisterShape.class);
 	public static final BooleanProperty EXTENDED = BooleanProperty.create("extended");
@@ -46,6 +49,11 @@ public class BanisterBlock extends HorizontalDirectionalBlock implements SimpleW
 		super(properties);
 
 		this.registerDefaultState(this.getStateDefinition().any().setValue(SHAPE, BanisterShape.TALL).setValue(EXTENDED, false).setValue(FACING, Direction.NORTH).setValue(WATERLOGGED, false));
+	}
+
+	@Override
+	protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
+		return CODEC;
 	}
 
 	@Override
@@ -59,6 +67,7 @@ public class BanisterBlock extends HorizontalDirectionalBlock implements SimpleW
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 		boolean extended = state.getValue(EXTENDED);
 
@@ -131,11 +140,13 @@ public class BanisterBlock extends HorizontalDirectionalBlock implements SimpleW
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public FluidState getFluidState(BlockState state) {
 		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
 		ItemStack held = player.getItemInHand(hand);
 

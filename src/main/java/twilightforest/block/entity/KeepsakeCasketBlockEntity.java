@@ -18,15 +18,15 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.LidBlockEntity;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.wrapper.EmptyHandler;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.wrapper.EmptyHandler;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFSounds;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.UUID;
 
 //used a fair bit of chest logic in this for the lid
@@ -182,16 +182,11 @@ public class KeepsakeCasketBlockEntity extends RandomizableContainerBlockEntity 
 		}
 	}
 
-	@Override
-	protected IItemHandler createUnSidedHandler() {
-		return new EmptyHandler();
-	}
-
 	//remove stored player when chest is broken
 	@Override
 	public void setRemoved() {
         this.playeruuid = null;
-		this.invalidateCaps();
+		this.invalidateCapabilities();
 		super.setRemoved();
 	}
 

@@ -7,11 +7,11 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
-import net.minecraft.util.Mth;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import twilightforest.entity.boss.Minoshroom;
 
 /**
@@ -37,9 +37,9 @@ public class NewMinoshroomModel extends HumanoidModel<Minoshroom> {
 
     public static LayerDefinition create() {
         MeshDefinition mesh = HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F);
-        PartDefinition partRoot = mesh.getRoot();
+        PartDefinition definition = mesh.getRoot();
 
-        partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+        definition.addOrReplaceChild("head", CubeListBuilder.create()
                         .texOffs(0, 0)
                         .addBox(-4.0F, -11.0F, -4.0F, 8.0F, 8.0F, 8.0F)
                         .texOffs(0, 16)
@@ -54,44 +54,44 @@ public class NewMinoshroomModel extends HumanoidModel<Minoshroom> {
                         .addBox(6.0F, -13.0F, -1.0F, 2.0F, 3.0F, 3.0F),
                 PartPose.offset(0.0F, -6.0F, -7.0F));
 
-        partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+        definition.addOrReplaceChild("body", CubeListBuilder.create()
                         .texOffs(0, 29)
                 .addBox(-5.0F, -3.0F, 0.0F, 10.0F, 12.0F, 5.0F),
                 PartPose.offset(0.0F, -6.0F, -9.0F));
 
-        partRoot.addOrReplaceChild("left_arm", CubeListBuilder.create()
+        definition.addOrReplaceChild("left_arm", CubeListBuilder.create()
                         .texOffs(46, 15)
                         .addBox(0.0F, -1.0F, -2.0F, 4.0F, 14.0F, 5.0F),
                 PartPose.offset(5.0F, -8.0F, -7.0F));
 
-        partRoot.addOrReplaceChild("right_arm", CubeListBuilder.create()
+        definition.addOrReplaceChild("right_arm", CubeListBuilder.create()
                         .texOffs(28, 15)
                         .addBox(-4.0F, -1.0F, -2.0F, 4.0F, 14.0F, 5.0F),
                 PartPose.offset(-5.0F, -8.0F, -7.0F));
 
-        partRoot.addOrReplaceChild("cow_torso", CubeListBuilder.create()
+        definition.addOrReplaceChild("cow_torso", CubeListBuilder.create()
                         .texOffs(20, 36)
                         .addBox(-6.0F, -14.0F, -2.0F, 12.0F, 18.0F, 10.0F)
                         .texOffs(0, 20)
                         .addBox(-2.0F, -2.0F, -3.0F, 4.0F, 6.0F, 1.0F),
                 PartPose.offsetAndRotation(0.0F, 10.0F, 6.0F, 1.5707963267948966F, 0.0F, 0.0F));
 
-        partRoot.addOrReplaceChild("right_front_leg", CubeListBuilder.create()
+        definition.addOrReplaceChild("right_front_leg", CubeListBuilder.create()
                         .texOffs(0, 48)
                         .addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F),
                 PartPose.offset(-4.0F, 12.0F, -6.0F));
 
-        partRoot.addOrReplaceChild("left_front_leg", CubeListBuilder.create()
+        definition.addOrReplaceChild("left_front_leg", CubeListBuilder.create()
                         .texOffs(0, 48)
                         .addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F),
                 PartPose.offset(4.0F, 12.0F, -6.0F));
 
-        partRoot.addOrReplaceChild("right_back_leg", CubeListBuilder.create()
+        definition.addOrReplaceChild("right_back_leg", CubeListBuilder.create()
                         .texOffs(0, 48)
                         .addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F),
                 PartPose.offset(-4.0F, 12.0F, 7.0F));
 
-        partRoot.addOrReplaceChild("left_back_leg", CubeListBuilder.create()
+        definition.addOrReplaceChild("left_back_leg", CubeListBuilder.create()
                         .texOffs(0, 48)
                         .addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F),
                 PartPose.offset(4.0F, 12.0F, 7.0F));

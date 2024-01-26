@@ -13,9 +13,11 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.item.Equipable;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -41,15 +43,15 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import twilightforest.advancements.TFAdvancements;
+import org.jetbrains.annotations.Nullable;
+import twilightforest.init.TFAdvancements;
 import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFSounds;
 import twilightforest.init.TFStats;
 
-import org.jetbrains.annotations.Nullable;
+public abstract class CritterBlock extends BaseEntityBlock implements SimpleWaterloggedBlock, Equipable {
 
-public abstract class CritterBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
 	public static final DirectionProperty FACING = DirectionalBlock.FACING;
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	private final VoxelShape DOWN_BB = Shapes.create(new AABB(0.2F, 0.85F, 0.2F, 0.8F, 1.0F, 0.8F));
@@ -120,7 +122,7 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 	public boolean canSurvive(BlockState state, LevelReader reader, BlockPos pos) {
 		Direction facing = state.getValue(DirectionalBlock.FACING);
 		BlockPos restingPos = pos.relative(facing.getOpposite());
-		return canSupportCenter(reader, restingPos, facing);
+		return canSupportCenter(reader, restingPos, facing) || reader.getBlockState(restingPos).getBlock() instanceof LeavesBlock;
 	}
 
 	@Override
@@ -173,7 +175,7 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 			}
 			if (entity instanceof Projectile projectile && projectile.getOwner() instanceof ServerPlayer player) {
 				player.awardStat(TFStats.BUGS_SQUISHED.get());
-				TFAdvancements.KILL_BUG.trigger(player, state);
+				TFAdvancements.KILL_BUG.get().trigger(player, state);
 			}
 		}
 	}
@@ -183,6 +185,11 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 	@Nullable
 	@Override
 	public abstract BlockEntity newBlockEntity(BlockPos pos, BlockState state);
+
+	@Override
+	public EquipmentSlot getEquipmentSlot() {
+		return EquipmentSlot.HEAD;
+	}
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {

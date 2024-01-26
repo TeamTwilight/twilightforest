@@ -19,6 +19,9 @@
         "occupies_surface": true,
         "occupies_underground": false
       }
+    },
+    {
+      "type": "minecraft:biome"
     }
   ]
 }

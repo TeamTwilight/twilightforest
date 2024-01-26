@@ -2,14 +2,14 @@ package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.AbstractGlassBlock;
+import net.minecraft.world.level.block.TransparentBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.util.ColorUtil;
 
-public class AuroralizedGlassBlock extends AbstractGlassBlock {
+public class AuroralizedGlassBlock extends TransparentBlock {
 
-	public AuroralizedGlassBlock(Properties props) {
-		super(props);
+	public AuroralizedGlassBlock(Properties properties) {
+		super(properties);
 	}
 
 	@Override

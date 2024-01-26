@@ -11,10 +11,7 @@ import net.minecraft.core.SectionPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import twilightforest.util.LandmarkUtil;
-import twilightforest.util.WorldUtil;
-import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.world.components.structures.start.TFStructureStart;
-import twilightforest.world.registration.TFGenerationSettings;
 
 import java.util.Optional;
 
@@ -28,28 +25,17 @@ public class ConquerCommand {
 	}
 
 	private static int changeStructureActivity(CommandSourceStack source, boolean flag) throws CommandSyntaxException {
-		if (!TFGenerationSettings.usesTwilightChunkGenerator(source.getLevel())) {
-			throw TFCommand.NOT_IN_TF.create();
-		}
-
-		// are you in a structure?
-		ChunkGeneratorTwilight chunkGenerator = WorldUtil.getChunkGenerator(source.getLevel());
-
 		BlockPos pos = BlockPos.containing(source.getPosition());
-		if (chunkGenerator != null) {
-			Optional<StructureStart> struct = LandmarkUtil.locateNearestLandmarkStart(source.getLevel(), SectionPos.blockToSectionCoord(pos.getX()), SectionPos.blockToSectionCoord(pos.getZ()));
+        Optional<StructureStart> struct = LandmarkUtil.locateNearestLandmarkStart(source.getLevel(), SectionPos.blockToSectionCoord(pos.getX()), SectionPos.blockToSectionCoord(pos.getZ()));
 
-			if (struct.isPresent() && struct.get().getBoundingBox().isInside(pos) && struct.get() instanceof TFStructureStart TFStructureStart) {
-				source.sendSuccess(() -> Component.translatable("commands.tffeature.structure.conquer.update", TFStructureStart.isConquered(), flag), true);
+        if (struct.isPresent() && struct.get().getBoundingBox().isInside(pos) && struct.get() instanceof TFStructureStart TFStructureStart) {
+            source.sendSuccess(() -> Component.translatable("commands.tffeature.structure.conquer.update", TFStructureStart.isConquered(), flag), true);
 
-				TFStructureStart.setConquered(flag, source.getLevel());
-			} else {
-				throw NOT_IN_STRUCTURE.create();
-			}
+            TFStructureStart.setConquered(flag, source.getLevel());
+        } else {
+            throw NOT_IN_STRUCTURE.create();
+        }
 
-			return Command.SINGLE_SUCCESS;
-		} else {
-			throw NOT_IN_STRUCTURE.create();
-		}
-	}
+        return Command.SINGLE_SUCCESS;
+    }
 }

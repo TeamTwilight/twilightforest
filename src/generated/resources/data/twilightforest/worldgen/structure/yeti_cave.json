@@ -69,7 +69,7 @@
       "spawns": []
     }
   },
+  "speleothem_config": "twilightforest:yeti_cave",
   "step": "surface_structures",
-  "terrain_adaptation": "bury",
   "water_spawns": []
 }

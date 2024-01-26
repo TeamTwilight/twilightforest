@@ -30,7 +30,6 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancement.twilightforest.lich_scepters.desc"
     },
@@ -40,7 +39,6 @@
       "item": "twilightforest:zombie_scepter",
       "nbt": "{Damage:0}"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancement.twilightforest.lich_scepters"
     }

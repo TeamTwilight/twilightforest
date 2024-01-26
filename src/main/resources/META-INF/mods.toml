@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[47,)"
+loaderVersion="[1,)"
 issueTrackerURL="https://github.com/TeamTwilight/twilightforest/issues"
 license="GNU LESSER GENERAL PUBLIC LICENSE Version 2.1"
 
@@ -18,16 +18,16 @@ An enchanted forest dimension.
 '''
 
 [[dependencies.twilightforest]]
-    modId="forge"
-    mandatory=true
-    versionRange="[47.1.0,)"
+    modId="neoforge"
+    type="required"
+    versionRange="[20.4.117-beta,)"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.twilightforest]]
     modId="minecraft"
-    mandatory=true
-    versionRange="[1.20.1,)"
+    type="required"
+    versionRange="[1.20.4,)"
     ordering="NONE"
     side="BOTH"
 

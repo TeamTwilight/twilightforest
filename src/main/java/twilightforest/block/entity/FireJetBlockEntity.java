@@ -1,20 +1,16 @@
 package twilightforest.block.entity;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import twilightforest.init.TFBlockEntities;
-import twilightforest.init.TFSounds;
 import twilightforest.block.FireJetBlock;
-import twilightforest.init.TFBlocks;
 import twilightforest.enums.FireJetVariant;
-import twilightforest.init.TFParticleType;
-import twilightforest.init.TFDamageTypes;
+import twilightforest.init.*;
 
 import java.util.List;
 
@@ -98,7 +94,7 @@ public class FireJetBlockEntity extends BlockEntity {
 			if (te.counter % 5 == 0) {
 				// find entities in the area of effect
 				List<Entity> entitiesInRange = level.getEntitiesOfClass(Entity.class,
-						new AABB(pos.offset(-2, 0, -2), pos.offset(2, 4, 2)));
+						new AABB(pos.offset(-2, 0, -2).getCenter(), pos.offset(2, 4, 2).getCenter()));
 				// fire!
 				for (Entity entity : entitiesInRange) {
 					if (!entity.fireImmune()) {

@@ -63,7 +63,7 @@ public class StrongholdPieces {
 		return flag;
 	}
 
-	public StructureTFStrongholdComponent getNextComponent(StructurePiece parent, StructurePieceAccessor list, RandomSource random, int index, Direction facing, int x, int y, int z) {
+	public KnightStrongholdComponent getNextComponent(StructurePiece parent, StructurePieceAccessor list, RandomSource random, int index, Direction facing, int x, int y, int z) {
 		if (!hasMoreLimitedPieces()) {
 			return null;
 		} else {
@@ -81,7 +81,7 @@ public class StrongholdPieces {
 						}
 
 						// we're here!
-						StructureTFStrongholdComponent component = piece.factory.newInstance(index, facing, x, y, z);
+						KnightStrongholdComponent component = piece.factory.newInstance(index, facing, x, y, z);
 
 						if (list.findCollisionPiece(component.getBoundingBox()) == null) {
 							++piece.instancesSpawned;
@@ -100,7 +100,7 @@ public class StrongholdPieces {
 		}
 
 		// dead end?
-		StructureTFStrongholdComponent deadEnd = new StrongholdDeadEndComponent(index, facing, x, y, z);
+		KnightStrongholdComponent deadEnd = new StrongholdDeadEndComponent(index, facing, x, y, z);
 
 		if (list.findCollisionPiece(deadEnd.getBoundingBox()) == null) {
 			return deadEnd;

@@ -171,6 +171,11 @@
         },
         {
           "type": "minecraft:item",
+          "name": "twilightforest:ore_meter",
+          "weight": 25
+        },
+        {
+          "type": "minecraft:item",
           "functions": [
             {
               "add": false,

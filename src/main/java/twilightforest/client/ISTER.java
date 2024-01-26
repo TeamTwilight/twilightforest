@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.blockentity.SkullBlockRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
@@ -20,7 +21,6 @@ import net.minecraft.client.resources.model.Material;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.item.BlockItem;
@@ -30,18 +30,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.SkullBlockEntity;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
-import net.minecraftforge.client.model.data.ModelData;
-import net.minecraftforge.registries.RegistryObject;
-import org.apache.commons.lang3.StringUtils;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
+import net.neoforged.neoforge.client.model.data.ModelData;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.AbstractSkullCandleBlock;
-import twilightforest.block.AbstractTrophyBlock;
-import twilightforest.block.KeepsakeCasketBlock;
-import twilightforest.block.TFChestBlock;
-import twilightforest.block.entity.KeepsakeCasketBlockEntity;
-import twilightforest.block.entity.TwilightChestEntity;
+import twilightforest.block.*;
+import twilightforest.block.entity.*;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.KnightmetalShieldModel;
 import twilightforest.client.model.tileentity.GenericTrophyModel;
@@ -63,9 +58,8 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 			return INSTANCE.get();
 		}
 	});
-
 	private final KeepsakeCasketBlockEntity casket = new KeepsakeCasketBlockEntity(BlockPos.ZERO, TFBlocks.KEEPSAKE_CASKET.get().defaultBlockState());
-	private final Map<Block, TwilightChestEntity> chestEntities = Util.make(new HashMap<>(), map -> {
+	private final Map<Block, TFChestBlockEntity> chestEntities = Util.make(new HashMap<>(), map -> {
 		makeInstance(map, TFBlocks.TWILIGHT_OAK_CHEST);
 		makeInstance(map, TFBlocks.CANOPY_CHEST);
 		makeInstance(map, TFBlocks.MANGROVE_CHEST);
@@ -75,8 +69,20 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 		makeInstance(map, TFBlocks.MINING_CHEST);
 		makeInstance(map, TFBlocks.SORTING_CHEST);
 	});
+	private final Map<Block, TFTrappedChestBlockEntity> trappedChestEntities = Util.make(new HashMap<>(), map -> {
+		makeTrappedInstance(map, TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST);
+		makeTrappedInstance(map, TFBlocks.CANOPY_TRAPPED_CHEST);
+		makeTrappedInstance(map, TFBlocks.MANGROVE_TRAPPED_CHEST);
+		makeTrappedInstance(map, TFBlocks.DARK_TRAPPED_CHEST);
+		makeTrappedInstance(map, TFBlocks.TIME_TRAPPED_CHEST);
+		makeTrappedInstance(map, TFBlocks.TRANSFORMATION_TRAPPED_CHEST);
+		makeTrappedInstance(map, TFBlocks.MINING_TRAPPED_CHEST);
+		makeTrappedInstance(map, TFBlocks.SORTING_TRAPPED_CHEST);
+	});
 	private KnightmetalShieldModel shield = new KnightmetalShieldModel(Minecraft.getInstance().getEntityModels().bakeLayer(TFModelLayers.KNIGHTMETAL_SHIELD));
 	private Map<BossVariant, GenericTrophyModel> trophies = TrophyTileEntityRenderer.createTrophyRenderers(Minecraft.getInstance().getEntityModels());
+	private Map<SkullBlock.Type, SkullModelBase> skulls = SkullBlockRenderer.createSkullRenderers(Minecraft.getInstance().getEntityModels());
+	private final CandelabraBlockEntity candelabra = new CandelabraBlockEntity(BlockPos.ZERO, TFBlocks.CANDELABRA.get().defaultBlockState());
 
 	// Use the cached INSTANCE.get instead
 	private ISTER() {
@@ -87,6 +93,7 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 	public void onResourceManagerReload(ResourceManager manager) {
 		this.shield = new KnightmetalShieldModel(Minecraft.getInstance().getEntityModels().bakeLayer(TFModelLayers.KNIGHTMETAL_SHIELD));
 		this.trophies = TrophyTileEntityRenderer.createTrophyRenderers(Minecraft.getInstance().getEntityModels());
+		this.skulls = SkullBlockRenderer.createSkullRenderers(Minecraft.getInstance().getEntityModels());
 
 		TwilightForestMod.LOGGER.debug("Reloaded ISTER!");
 	}
@@ -134,54 +141,58 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 				Minecraft.getInstance().getBlockEntityRenderDispatcher().renderItem(this.casket, ms, buffers, light, overlay);
 			} else if (block instanceof TFChestBlock) {
 				Minecraft.getInstance().getBlockEntityRenderDispatcher().renderItem(this.chestEntities.get(block), ms, buffers, light, overlay);
+			} else if (block instanceof TFTrappedChestBlock) {
+				Minecraft.getInstance().getBlockEntityRenderDispatcher().renderItem(this.trappedChestEntities.get(block), ms, buffers, light, overlay);
 			} else if (block instanceof AbstractSkullCandleBlock candleBlock) {
-				GameProfile gameprofile = null;
-				if (stack.hasTag()) {
-					CompoundTag compoundtag = stack.getTag();
-					if (compoundtag.contains("SkullOwner", 10)) {
-						gameprofile = NbtUtils.readGameProfile(compoundtag.getCompound("SkullOwner"));
-					} else if (compoundtag.contains("SkullOwner", 8) && !StringUtils.isBlank(compoundtag.getString("SkullOwner"))) {
-						gameprofile = new GameProfile(null, compoundtag.getString("SkullOwner"));
-						compoundtag.remove("SkullOwner");
-						SkullBlockEntity.updateGameprofile(gameprofile, (p_172560_) ->
-								compoundtag.put("SkullOwner", NbtUtils.writeGameProfile(new CompoundTag(), p_172560_)));
-					}
-				}
-
+				CompoundTag compoundtag = stack.getTag();
+				GameProfile gameprofile = compoundtag != null ? SkullBlockEntity.getOrResolveGameProfile(compoundtag) : null;
 				SkullBlock.Type type = candleBlock.getType();
-				SkullModelBase base = SkullCandleTileEntityRenderer.createSkullRenderers(Minecraft.getInstance().getEntityModels()).get(type);
+				SkullModelBase base = this.skulls.get(type);
 				RenderType renderType = SkullCandleTileEntityRenderer.getRenderType(type, gameprofile);
 				SkullCandleTileEntityRenderer.renderSkull(null, 180.0F, 0.0F, ms, buffers, light, base, renderType);
 
 				//we put the candle
 				ms.translate(0.0F, 0.5F, 0.0F);
-				CompoundTag tag = stack.getTagElement("BlockEntityTag");
+				CompoundTag tag = BlockItem.getBlockEntityData(stack);
 				if (tag != null && tag.contains("CandleColor") && tag.contains("CandleAmount")) {
 					if (tag.getInt("CandleAmount") <= 0) tag.putInt("CandleAmount", 1);
 					Minecraft.getInstance().getBlockRenderer().renderSingleBlock(
 							AbstractSkullCandleBlock.candleColorToCandle(AbstractSkullCandleBlock.CandleColors.colorFromInt(tag.getInt("CandleColor")))
 									.defaultBlockState().setValue(CandleBlock.CANDLES, tag.getInt("CandleAmount")), ms, buffers, light, overlay, ModelData.EMPTY, RenderType.cutout());
 				}
-			} else {
-				if (block instanceof EntityBlock be) {
-					BlockEntity blockEntity = be.newBlockEntity(BlockPos.ZERO, block.defaultBlockState());
-					if (blockEntity != null) {
-						Minecraft.getInstance().getBlockEntityRenderDispatcher().getRenderer(blockEntity).render(null, 0, ms, buffers, light, overlay);
-					}
+			} else if (block instanceof CandelabraBlock) {
+				//we need to render the candelabra block here since we have to use builtin/entity on the item.
+				//This doesnt allow us to set the item parent to the candelabra block, and without it, only the candles render, if any
+				Minecraft.getInstance().getBlockRenderer().renderSingleBlock(TFBlocks.CANDELABRA.get().defaultBlockState(), ms, buffers, light, overlay);
+				CompoundTag tag = BlockItem.getBlockEntityData(stack);
+				if (tag != null && tag.contains("Candles")) {
+					CandelabraBlockEntity copy = this.candelabra;
+					copy.load(tag);
+					Minecraft.getInstance().getBlockEntityRenderDispatcher().renderItem(copy, ms, buffers, light, overlay);
+				}
+			} else if (block instanceof CritterBlock critter) {
+				BlockEntity blockEntity = critter.newBlockEntity(BlockPos.ZERO, block.defaultBlockState());
+				if (blockEntity != null) {
+					Minecraft.getInstance().getBlockEntityRenderDispatcher().getRenderer(blockEntity).render(null, 0, ms, buffers, light, overlay);
 				}
 			}
 		} else if (item instanceof KnightmetalShieldItem) {
 			ms.pushPose();
 			ms.scale(1.0F, -1.0F, -1.0F);
-			Material material = new Material(Sheets.SHIELD_SHEET, new ResourceLocation(TwilightForestMod.ID, "model/knightmetal_shield"));
+			Material material = new Material(Sheets.SHIELD_SHEET, new ResourceLocation(TwilightForestMod.ID, "entity/knightmetal_shield"));
 			VertexConsumer vertexconsumer = material.sprite().wrap(ItemRenderer.getFoilBufferDirect(buffers, this.shield.renderType(material.atlasLocation()), true, stack.hasFoil()));
 			this.shield.renderToBuffer(ms, vertexconsumer, light, overlay, 1.0F, 1.0F, 1.0F, 1.0F);
 			ms.popPose();
 		}
 	}
 
-	public static void makeInstance(Map<Block, TwilightChestEntity> map, RegistryObject<? extends ChestBlock> registryObject) {
+	public static void makeInstance(Map<Block, TFChestBlockEntity> map, DeferredHolder<Block, ? extends ChestBlock> registryObject) {
 		ChestBlock block = registryObject.get();
-		map.put(block, new TwilightChestEntity(BlockPos.ZERO, block.defaultBlockState()));
+		map.put(block, new TFChestBlockEntity(BlockPos.ZERO, block.defaultBlockState()));
+	}
+
+	public static void makeTrappedInstance(Map<Block, TFTrappedChestBlockEntity> map, DeferredHolder<Block, ? extends ChestBlock> registryObject) {
+		ChestBlock block = registryObject.get();
+		map.put(block, new TFTrappedChestBlockEntity(BlockPos.ZERO, block.defaultBlockState()));
 	}
 }

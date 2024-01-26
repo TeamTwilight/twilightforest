@@ -9,13 +9,12 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.DirectionalBlock;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.entity.CicadaBlockEntity;
 import twilightforest.client.BugModelAnimationHelper;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.CicadaModel;
-
-import org.jetbrains.annotations.Nullable;
 
 public class CicadaTileEntityRenderer implements BlockEntityRenderer<CicadaBlockEntity> {
 

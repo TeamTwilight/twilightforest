@@ -20,14 +20,14 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.IPlantable;
-import net.minecraftforge.common.PlantType;
-import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.common.util.FakePlayerFactory;
+import net.neoforged.neoforge.common.IPlantable;
+import net.neoforged.neoforge.common.PlantType;
+import net.neoforged.neoforge.common.util.FakePlayer;
+import net.neoforged.neoforge.common.util.FakePlayerFactory;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -62,7 +62,7 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
 		if (fromPos.getY() == pos.getY() + 1) {
 			BlockState above = level.getBlockState(fromPos);
-			if (!(above.getBlock() instanceof BonemealableBlock bonemealableBlock && !above.is(TFBlocks.UBEROUS_SOIL.get()))) {
+			if (!(above.getBlock() instanceof BonemealableBlock bonemealableBlock && !above.is(TFBlocks.UBEROUS_SOIL))) {
 				if (above.isSolid())
 					level.setBlockAndUpdate(pos, pushEntitiesUp(state, Blocks.DIRT.defaultBlockState(), level, pos));
 				return;
@@ -126,26 +126,26 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 
 	@Override
 	//check each side of the block, as well as above and below each of those positions for valid spots
-	public boolean isValidBonemealTarget(LevelReader getter, BlockPos pos, BlockState state, boolean isClient) {
+	public boolean isValidBonemealTarget(LevelReader getter, BlockPos pos, BlockState state) {
 		for (Direction dir : Direction.values()) {
 			if (dir != Direction.UP && dir != Direction.DOWN) {
 				BlockState blockAt = getter.getBlockState(pos.relative(dir));
 				if (
 						!getter.getBlockState(pos.relative(dir).above()).isSolid() &&
 								(blockAt.is(BlockTags.DIRT) || blockAt.is(Blocks.FARMLAND)) &&
-								!blockAt.is(TFBlocks.UBEROUS_SOIL.get())) {
+								!blockAt.is(TFBlocks.UBEROUS_SOIL)) {
 					return true;
 
 				} else if (
 						!getter.getBlockState(pos.relative(dir).above().above()).isSolid() &&
 								(getter.getBlockState(pos.relative(dir).above()).is(BlockTags.DIRT) || getter.getBlockState(pos.relative(dir).above()).is(Blocks.FARMLAND)) &&
-								!getter.getBlockState(pos.relative(dir).above()).is(TFBlocks.UBEROUS_SOIL.get())) {
+								!getter.getBlockState(pos.relative(dir).above()).is(TFBlocks.UBEROUS_SOIL)) {
 					return true;
 
 				} else if (
 						!getter.getBlockState(pos.relative(dir)).isSolid() &&
 								(getter.getBlockState(pos.relative(dir).below()).is(BlockTags.DIRT) || getter.getBlockState(pos.relative(dir).below()).is(Blocks.FARMLAND)) &&
-								!getter.getBlockState(pos.relative(dir).below()).is(TFBlocks.UBEROUS_SOIL.get())) {
+								!getter.getBlockState(pos.relative(dir).below()).is(TFBlocks.UBEROUS_SOIL)) {
 					return true;
 				}
 			}
@@ -170,21 +170,21 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 				if (
 						!level.getBlockState(pos.relative(dir).above()).isSolid() &&
 								(blockAt.is(BlockTags.DIRT) || blockAt.is(Blocks.FARMLAND)) &&
-								!blockAt.is(TFBlocks.UBEROUS_SOIL.get())) {
+								!blockAt.is(TFBlocks.UBEROUS_SOIL)) {
 
 					level.setBlockAndUpdate(pos.relative(dir), this.defaultBlockState());
 					break;
 				} else if (
 						!level.getBlockState(pos.relative(dir).above().above()).isSolid() &&
 								(level.getBlockState(pos.relative(dir).above()).is(BlockTags.DIRT) || level.getBlockState(pos.relative(dir).above()).is(Blocks.FARMLAND)) &&
-								!level.getBlockState(pos.relative(dir).above()).is(TFBlocks.UBEROUS_SOIL.get())) {
+								!level.getBlockState(pos.relative(dir).above()).is(TFBlocks.UBEROUS_SOIL)) {
 
 					level.setBlockAndUpdate(pos.relative(dir).above(), this.defaultBlockState());
 					break;
 				} else if (
 						!level.getBlockState(pos.relative(dir)).isSolid() &&
 								(level.getBlockState(pos.relative(dir).below()).is(BlockTags.DIRT) || level.getBlockState(pos.relative(dir).below()).is(Blocks.FARMLAND)) &&
-								!level.getBlockState(pos.relative(dir).below()).is(TFBlocks.UBEROUS_SOIL.get())) {
+								!level.getBlockState(pos.relative(dir).below()).is(TFBlocks.UBEROUS_SOIL)) {
 
 					level.setBlockAndUpdate(pos.relative(dir).below(), this.defaultBlockState());
 					break;

@@ -75,17 +75,14 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancement.twilightforest.fiery_set.desc"
     },
     "frame": "challenge",
-    "hidden": false,
     "icon": {
       "item": "twilightforest:fiery_sword",
       "nbt": "{Damage:0}"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancement.twilightforest.fiery_set"
     }

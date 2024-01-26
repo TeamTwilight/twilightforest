@@ -1,10 +1,10 @@
 package twilightforest.util;
 
 import com.google.common.collect.ImmutableMap;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.AbstractMap;
 import java.util.Map;
@@ -13,7 +13,7 @@ import java.util.function.Function;
 
 public record ColorUtil(Function<DyeColor, Block> function) {
 	public static final ColorUtil WOOL = new ColorUtil(color -> switch (color) {
-		case WHITE -> Blocks.WHITE_WOOL;
+		default -> Blocks.WHITE_WOOL;
 		case ORANGE -> Blocks.ORANGE_WOOL;
 		case MAGENTA -> Blocks.MAGENTA_WOOL;
 		case LIGHT_BLUE -> Blocks.LIGHT_BLUE_WOOL;
@@ -32,7 +32,7 @@ public record ColorUtil(Function<DyeColor, Block> function) {
 	});
 
 	public static final ColorUtil TERRACOTTA = new ColorUtil(color -> switch (color) {
-		case WHITE -> Blocks.WHITE_TERRACOTTA;
+		default -> Blocks.WHITE_TERRACOTTA;
 		case ORANGE -> Blocks.ORANGE_TERRACOTTA;
 		case MAGENTA -> Blocks.MAGENTA_TERRACOTTA;
 		case LIGHT_BLUE -> Blocks.LIGHT_BLUE_TERRACOTTA;
@@ -51,7 +51,7 @@ public record ColorUtil(Function<DyeColor, Block> function) {
 	});
 
 	public static final ColorUtil STAINED_GLASS = new ColorUtil(color -> switch (color) {
-		case WHITE -> Blocks.WHITE_STAINED_GLASS;
+		default -> Blocks.WHITE_STAINED_GLASS;
 		case ORANGE -> Blocks.ORANGE_STAINED_GLASS;
 		case MAGENTA -> Blocks.MAGENTA_STAINED_GLASS;
 		case LIGHT_BLUE -> Blocks.LIGHT_BLUE_STAINED_GLASS;

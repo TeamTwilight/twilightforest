@@ -20,7 +20,6 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancement.twilightforest.troll.desc",
       "with": [
@@ -29,12 +28,9 @@
         }
       ]
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
       "item": "twilightforest:magic_beans"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancement.twilightforest.troll"
     }

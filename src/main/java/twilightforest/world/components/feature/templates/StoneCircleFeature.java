@@ -7,10 +7,9 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.processors.CobbleVariants;
-
-import org.jetbrains.annotations.Nullable;
 
 public class StoneCircleFeature extends TemplateFeature<NoneFeatureConfiguration> {
     private static final ResourceLocation STONE_CIRCLE = TwilightForestMod.prefix("feature/ruins/stone_circle");

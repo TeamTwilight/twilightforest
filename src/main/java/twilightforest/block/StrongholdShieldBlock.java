@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
@@ -13,15 +14,21 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
-import twilightforest.util.EntityUtil;
-
 import org.jetbrains.annotations.Nullable;
+import twilightforest.util.EntityUtil;
 
 public class StrongholdShieldBlock extends DirectionalBlock {
 
-	public StrongholdShieldBlock(BlockBehaviour.Properties props) {
-		super(props);
+	public static final MapCodec<StrongholdShieldBlock> CODEC = simpleCodec(StrongholdShieldBlock::new);
+
+	public StrongholdShieldBlock(BlockBehaviour.Properties properties) {
+		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.DOWN));
+	}
+
+	@Override
+	protected MapCodec<? extends DirectionalBlock> codec() {
+		return CODEC;
 	}
 
 	@Override
@@ -33,7 +40,11 @@ public class StrongholdShieldBlock extends DirectionalBlock {
 	@Nullable
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
-		return defaultBlockState().setValue(FACING, context.getNearestLookingDirection().getOpposite());
+		Direction facing = context.getNearestLookingDirection();
+		if (facing.getAxis().equals(Direction.Axis.Y)) {
+			facing = facing.getOpposite();
+		}
+		return defaultBlockState().setValue(FACING, facing);
 	}
 
 	@Override

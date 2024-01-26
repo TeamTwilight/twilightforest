@@ -13,7 +13,6 @@ import net.minecraft.world.level.levelgen.structure.StructureStart;
 import twilightforest.init.TFFeatureModifiers;
 import twilightforest.util.LandmarkUtil;
 import twilightforest.util.LegacyLandmarkPlacements;
-import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.world.components.structures.util.DecorationClearance;
 
 import java.util.Optional;
@@ -51,9 +50,6 @@ public class AvoidLandmarkModifier extends PlacementModifier {
 
 	@Override
 	public Stream<BlockPos> getPositions(PlacementContext worldDecoratingHelper, RandomSource random, BlockPos blockPos) {
-		if (!(worldDecoratingHelper.getLevel().getLevel().getChunkSource().getGenerator() instanceof ChunkGeneratorTwilight))
-			return Stream.of(blockPos);
-
 		// Feature Center
 		BlockPos.MutableBlockPos featurePos = LegacyLandmarkPlacements.getNearestCenterXZ(blockPos.getX() >> 4, blockPos.getZ() >> 4).mutable();
 

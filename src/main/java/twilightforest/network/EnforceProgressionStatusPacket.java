@@ -1,35 +1,32 @@
 package twilightforest.network;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 import twilightforest.TwilightForestMod;
 
-import java.util.function.Supplier;
+public record EnforceProgressionStatusPacket(boolean enforce) implements CustomPacketPayload {
 
-public class EnforceProgressionStatusPacket {
-
-	private final boolean enforce;
+	public static final ResourceLocation ID = TwilightForestMod.prefix("sync_progression_status");
 
 	public EnforceProgressionStatusPacket(FriendlyByteBuf buf) {
-		this.enforce = buf.readBoolean();
+		this(buf.readBoolean());
 	}
 
-	public EnforceProgressionStatusPacket(boolean enforce) {
-		this.enforce = enforce;
-	}
-
-	public void encode(FriendlyByteBuf buf) {
+	@Override
+	public void write(FriendlyByteBuf buf) {
 		buf.writeBoolean(this.enforce);
 	}
 
-	public static class Handler {
+	@Override
+	public ResourceLocation id() {
+		return ID;
+	}
 
-		public static boolean onMessage(EnforceProgressionStatusPacket message, Supplier<NetworkEvent.Context> ctx) {
-			ctx.get().enqueueWork(() ->
-					Minecraft.getInstance().level.getGameRules().getRule(TwilightForestMod.ENFORCED_PROGRESSION_RULE).set(message.enforce, null));
-			ctx.get().setPacketHandled(true);
-			return true;
-		}
+	public static void handle(EnforceProgressionStatusPacket message, PlayPayloadContext ctx) {
+		ctx.workHandler().execute(() ->
+				ctx.level().orElseThrow().getGameRules().getRule(TwilightForestMod.ENFORCED_PROGRESSION_RULE).set(message.enforce(), null)
+		);
 	}
 }

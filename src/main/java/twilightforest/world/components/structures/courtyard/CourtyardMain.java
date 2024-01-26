@@ -13,8 +13,8 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockRotProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import twilightforest.init.TFBlocks;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.util.BoundingBoxUtils;
 
 public class CourtyardMain extends StructureMazeGenerator {
 	static final int ROW_OF_CELLS = 8;
@@ -37,8 +37,8 @@ public class CourtyardMain extends StructureMazeGenerator {
 
 		this.setOrientation(Direction.NORTH);
 
-		this.boundingBox = TFLandmark.getComponentToAddBoundingBox(x, y, z, -RADIUS/2, -1, -RADIUS/2, RADIUS, 10, RADIUS, this.getOrientation(), false);
-		this.sizeConstraints = TFLandmark.getComponentToAddBoundingBox(x, y, z, -RADIUS, -1, -RADIUS, RADIUS * 2, 10, RADIUS * 2, this.getOrientation(), false);
+		this.boundingBox = BoundingBoxUtils.getComponentToAddBoundingBox(x, y, z, -RADIUS/2, -1, -RADIUS/2, RADIUS, 10, RADIUS, this.getOrientation(), false);
+		this.sizeConstraints = BoundingBoxUtils.getComponentToAddBoundingBox(x, y, z, -RADIUS, -1, -RADIUS, RADIUS * 2, 10, RADIUS * 2, this.getOrientation(), false);
 	}
 
 	@Override

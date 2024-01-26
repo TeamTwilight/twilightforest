@@ -15,18 +15,17 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
+import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import twilightforest.init.TFBiomes;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
-import twilightforest.init.TFLandmark;
-import twilightforest.init.TFStructurePieceTypes;
-
 
 import java.util.function.Predicate;
 
@@ -49,7 +48,7 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 		this.size = 31;
 		this.height = 7;
 		this.level = level;
-		this.boundingBox = TFLandmark.getComponentToAddBoundingBox(x, y, z, -15, 0, -15, this.size - 1, this.height - 1, this.size - 1, Direction.SOUTH, false);
+		this.boundingBox = BoundingBoxUtils.getComponentToAddBoundingBox(x, y, z, -15, 0, -15, this.size - 1, this.height - 1, this.size - 1, Direction.SOUTH, false);
 	}
 
 	@Override
@@ -161,7 +160,7 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 		RandomSource decoRNG = RandomSource.create(world.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
 
 		//TODO add a deadrock tag, or a tag for castle replaceables
-		Predicate<BlockState> replacing = state -> state.isAir() || state.is(TFBlocks.DEADROCK.get()) || state.is(TFBlocks.CRACKED_DEADROCK.get()) || state.is(TFBlocks.WEATHERED_DEADROCK.get());
+		Predicate<BlockState> replacing = state -> state.isAir() || state.is(TFBlocks.DEADROCK) || state.is(TFBlocks.CRACKED_DEADROCK) || state.is(TFBlocks.WEATHERED_DEADROCK);
 
 
 		this.fillWithAir(world, sbb, 0, 0, 0, this.size - 1, this.height - 1, this.size - 1, replacing);
@@ -192,7 +191,7 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 	}
 
 	protected BlockState getRuneColor(BlockState forceFieldColor) {
-		return forceFieldColor.is(TFBlocks.GREEN_FORCE_FIELD.get()) ? TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get().defaultBlockState() : TFBlocks.BLUE_CASTLE_RUNE_BRICK.get().defaultBlockState();
+		return forceFieldColor.is(TFBlocks.GREEN_FORCE_FIELD) ? TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get().defaultBlockState() : TFBlocks.BLUE_CASTLE_RUNE_BRICK.get().defaultBlockState();
 	}
 
 	protected BlockState getForceFieldColor(RandomSource decoRNG) {
@@ -202,5 +201,15 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 			return TFBlocks.GREEN_FORCE_FIELD.get().defaultBlockState();
 		else
 			return TFBlocks.BLUE_FORCE_FIELD.get().defaultBlockState();
+	}
+
+	@Override
+	public TerrainAdjustment getTerrainAdjustment() {
+		return TerrainAdjustment.BURY;
+	}
+
+	@Override
+	public int getGroundLevelDelta() {
+		return 0;
 	}
 }

@@ -11,8 +11,8 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.entity.Entity;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import twilightforest.entity.boss.Naga;
 import twilightforest.entity.boss.NagaSegment;
 
@@ -37,9 +37,9 @@ public class NewNagaModel<T extends Entity> extends ListModel<T> {
 
     public static LayerDefinition create() {
         MeshDefinition mesh = new MeshDefinition();
-        PartDefinition partRoot = mesh.getRoot();
+        PartDefinition definition = mesh.getRoot();
 
-        var head = partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+        var head = definition.addOrReplaceChild("head", CubeListBuilder.create()
                         .texOffs(0, 0)
                         .addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F),
                 PartPose.offset(0.0F, 8.0F, 0.0F));
@@ -49,7 +49,7 @@ public class NewNagaModel<T extends Entity> extends ListModel<T> {
                         .addBox(-6.0F, 0.0F, -12.0F, 12.0F, 0.0F, 12.0F),
                 PartPose.offsetAndRotation(0.0F, 10.0F, -16.0F, 0.4363323129985824F, 0.0F, 0.0F));
 
-        partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+        definition.addOrReplaceChild("body", CubeListBuilder.create()
                         .texOffs(0, 0)
                         .addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F),
                 PartPose.offset(0.0F, 8.0F, 0.0F));

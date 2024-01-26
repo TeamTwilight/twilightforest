@@ -2,7 +2,7 @@ package twilightforest.data.custom;
 
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.entity.EntityType;
-import net.minecraftforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFEntities;
 

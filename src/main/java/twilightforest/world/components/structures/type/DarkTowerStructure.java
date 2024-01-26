@@ -18,16 +18,15 @@ import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.world.components.structures.darktower.DarkTowerMainComponent;
-import twilightforest.world.components.structures.util.ConquerableStructure;
+import twilightforest.world.components.structures.util.ControlledSpawningStructure;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
-public class DarkTowerStructure extends ConquerableStructure {
+public class DarkTowerStructure extends ControlledSpawningStructure {
     public static final Codec<DarkTowerStructure> CODEC = RecordCodecBuilder.create(instance ->
-            conquerStatusCodec(instance).apply(instance, DarkTowerStructure::new)
+            controlledSpawningCodec(instance).apply(instance, DarkTowerStructure::new)
     );
 
     public DarkTowerStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, DecorationConfig decorationConfig, StructureSettings structureSettings) {

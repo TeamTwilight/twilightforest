@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_item",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_item"
     ]
   ],
   "rewards": {
     "recipes": [
       "twilightforest:nagastone/cracked_nagastone_stairs_left"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

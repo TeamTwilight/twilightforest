@@ -11,7 +11,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
-
 import org.jetbrains.annotations.Nullable;
 
 public class BurntThornsBlock extends ThornsBlock {

@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_food",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_food"
     ]
   ],
   "rewards": {
     "recipes": [
       "twilightforest:food/smoked_venison"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

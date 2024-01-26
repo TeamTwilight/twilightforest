@@ -1,9 +1,9 @@
 plugins {
+    id 'java-library'
     id 'eclipse'
     id 'idea'
     id 'maven-publish'
-    id 'net.neoforged.gradle' version '[6.0.18,6.2)'
-    id 'org.parchmentmc.librarian.forgegradle' version '1.+'
+    id 'net.neoforged.gradle.userdev' version '7.0.+'
 }
 
 def secrets = new Properties()
@@ -31,53 +31,47 @@ base {
 }
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
-
+minecraft.accessTransformers.file rootProject.file('src/main/resources/META-INF/accesstransformer.cfg')
 compileJava.options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation" << "-Werror"
 
-minecraft {
-    // https://ldtteam.jfrog.io/ui/native/parchmentmc-public/org/parchmentmc/data
-    mappings channel: mapping_channel, version: mapping_version
+runs {
+    configureEach {
+        workingDirectory project.file('run')
+        systemProperty 'forge.logging.console.level', 'debug'
+        systemProperty 'fml.earlyprogresswindow', 'false'
+        systemProperty 'mixin.env.disableRefMap', 'true'
 
-    copyIdeResources = true
+        modSource project.sourceSets.main
+    }
 
-    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+    client {
+//      name "Minecraft_Client_${project.minecraft_version}"
+        systemProperty 'forge.enabledGameTestNamespaces', mod_id
+        programArguments.addAll '--username', secrets.getProperty("username")?: 'Dev', secrets.getProperty("uuid") ? '--uuid' : '', secrets.getProperty("uuid")?: ''
+    }
 
-    runs {
-        configureEach {
-            workingDirectory project.file('run')
-            property 'forge.logging.console.level', 'debug'
-            property 'fml.earlyprogresswindow', 'false'
-            property 'mixin.env.disableRefMap', 'true'
+    server {
+//      name "Minecraft_Server_${project.minecraft_version}"
+        systemProperty 'forge.enabledGameTestNamespaces', mod_id
+        programArgument '--nogui'
+    }
 
-            mods {
-                "${mod_id}" {
-                    source sourceSets.main
-                }
-            }
-        }
+    gameTestServer {
+//      name "Minecraft_GameTestServer_${project.minecraft_version}"
+        systemProperty 'forge.enabledGameTestNamespaces', mod_id
+    }
 
-        client {
-            taskName "Minecraft_Client_${project.minecraft_version}"
-            property 'forge.enabledGameTestNamespaces', mod_id
-            args '--username', secrets.getProperty("username")?: 'Dev', secrets.getProperty("uuid") ? '--uuid' : '', secrets.getProperty("uuid")?: ''
-        }
+    data {
+//      name "Minecraft_Data_${project.minecraft_version}"
+        workingDirectory project.file('run-data')
+        programArguments.addAll '--mod', mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+    }
+}
 
-        server {
-            taskName "Minecraft_Server_${project.minecraft_version}"
-            property 'forge.enabledGameTestNamespaces', mod_id
-            args '--nogui'
-        }
-
-        gameTestServer {
-            taskName "Minecraft_GameTestServer_${project.minecraft_version}"
-            property 'forge.enabledGameTestNamespaces', mod_id
-        }
-
-        data {
-            taskName "Minecraft_Data_${project.minecraft_version}"
-            workingDirectory project.file('run-data')
-            args '--mod', mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
-        }
+subsystems {
+    parchment {
+        minecraftVersion = "1.20.3" //parchment doesnt support 1.20.4 yet????
+        mappingsVersion = project.parchment_version
     }
 }
 
@@ -101,6 +95,14 @@ repositories {
         url "https://maven.tamaized.com/releases"
     }
     maven {
+        name 'Shedaniel\'s Maven' //REI
+        url "https://maven.shedaniel.me"
+    }
+    maven {
+        name = "TerraformersMC" //EMI
+        url = "https://maven.terraformersmc.com/"
+    }
+    maven {
         name 'Curseforge Maven' // Jade
         url "https://www.cursemaven.com"
         content {
@@ -110,27 +112,26 @@ repositories {
 }
 
 dependencies {
-    // jared
-    implementation fg.deobf("mezz.jei:jei-${project.minecraft_version}-forge:${project.jei_version}")
-
-    // tterrag
-    //runtimeOnly fg.deobf("team.chisel.ctm:CTM:${project.minecraft_version}-${project.ctm_version}")
+    //make sure to only pick one of these when testing (switch others to compileOnly)
+    compileOnly "mezz.jei:jei-${project.minecraft_version}-neoforge:${project.jei_version}"
+    compileOnly "me.shedaniel:RoughlyEnoughItems-neoforge:${project.rei_version}"
+    implementation "dev.emi:emi-neoforge:${project.emi_version}+${project.minecraft_version}"
 
     // theillusivec4
-    implementation fg.deobf("top.theillusivec4.curios:curios-forge:${project.curios_version}+${project.minecraft_version}")
+    //implementation "top.theillusivec4.curios:curios-neoforge:${project.curios_version}+${project.minecraft_version}"
 
     //curse maven
-    implementation fg.deobf("curse.maven:jade-324717:4681833")
-    runtimeOnly fg.deobf("curse.maven:jeed-532286:4599236")
-    runtimeOnly fg.deobf("curse.maven:museum-curator-859070:4629894")
+    compileOnly "curse.maven:jade-324717:4980188"
+    //runtimeOnly fg.deobf("curse.maven:jeed-532286:4599236")
+    //runtimeOnly fg.deobf("curse.maven:museum-curator-859070:4629894")
 
-    compileOnly fg.deobf("curse.maven:the-one-probe-245211:4629624")
+    //compileOnly fg.deobf("curse.maven:the-one-probe-245211:4629624")
 
     //mods we dont have compat with but are nice to have
-    runtimeOnly fg.deobf("team-twilight:crossdimcommands:${project.base_minecraft_version}-1.0")
+    //runtimeOnly fg.deobf("team-twilight:crossdimcommands:${project.base_minecraft_version}-1.0")
 
     //minecraft
-    minecraft "net.neoforged:forge:${project.minecraft_version}-${project.neo_version}"
+    implementation "net.neoforged:neoforge:${project.neo_version}"
 }
 
 tasks.named('jar', Jar).configure {
@@ -146,8 +147,6 @@ tasks.named('jar', Jar).configure {
                 'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }
-
-    finalizedBy 'reobfJar'
 }
 
 publishing {

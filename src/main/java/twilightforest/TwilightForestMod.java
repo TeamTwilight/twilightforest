@@ -7,55 +7,50 @@ import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.GameRules;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.block.FireBlock;
 import net.minecraft.world.level.block.FlowerPotBlock;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.crafting.CraftingHelper;
-import net.minecraftforge.event.RegisterCommandsEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.*;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.network.PacketDistributor;
-import net.minecraftforge.registries.DataPackRegistryEvent;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegisterEvent;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModList;
+import net.neoforged.fml.ModLoadingContext;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
+import net.neoforged.neoforge.common.ModConfigSpec;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.RegisterCommandsEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent;
+import net.neoforged.neoforge.network.registration.IPayloadRegistrar;
+import net.neoforged.neoforge.registries.DataPackRegistryEvent;
+import net.neoforged.neoforge.registries.NewRegistryEvent;
+import net.neoforged.neoforge.registries.RegisterEvent;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import twilightforest.advancements.TFAdvancements;
-import twilightforest.capabilities.CapabilityList;
-import twilightforest.client.ClientInitiator;
+import twilightforest.client.TFClientSetup;
 import twilightforest.command.TFCommand;
-import twilightforest.compat.curios.CuriosCompat;
-import twilightforest.compat.top.TopCompat;
-import twilightforest.item.recipe.UncraftingTableCondition;
-import twilightforest.loot.modifiers.GiantToolGroupingModifier;
-import twilightforest.network.UpdateGamerulePacket;
-import twilightforest.util.MagicPaintingVariant;
-import twilightforest.util.Restriction;
 import twilightforest.data.custom.stalactites.entry.Stalactite;
 import twilightforest.dispenser.TFDispenserBehaviors;
+import twilightforest.entity.MagicPaintingVariant;
 import twilightforest.init.*;
 import twilightforest.init.custom.*;
-import twilightforest.network.TFPacketHandler;
+import twilightforest.loot.modifiers.GiantToolGroupingModifier;
+import twilightforest.network.*;
+import twilightforest.util.Restriction;
+import twilightforest.util.TFRemapper;
 import twilightforest.util.WoodPalette;
 import twilightforest.world.components.BiomeGrassColors;
 import twilightforest.world.components.biomesources.LandmarkBiomeSource;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
-import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
+import twilightforest.world.components.layer.vanillalegacy.BiomeDensitySource;
+import twilightforest.world.components.structures.StructureSpeleothemConfig;
 
 import java.util.Locale;
 
@@ -63,130 +58,163 @@ import java.util.Locale;
 public class TwilightForestMod {
 
 	public static final String ID = "twilightforest";
-	public static final String REGISTRY_NAMESPACE = "twilight";
 
-	private static final String MODEL_DIR = "textures/model/";
+	private static final String MODEL_DIR = "textures/entity/";
 	private static final String GUI_DIR = "textures/gui/";
 	private static final String ENVIRO_DIR = "textures/environment/";
 	// odd one out, as armor textures are a stringy mess at present
 	public static final String ARMOR_DIR = ID + ":textures/armor/";
 
-	public static final GameRules.Key<GameRules.BooleanValue> ENFORCED_PROGRESSION_RULE = GameRules.register("tfEnforcedProgression", GameRules.Category.UPDATES, GameRules.BooleanValue.create(true, (server, enforced) -> TFPacketHandler.CHANNEL.send(PacketDistributor.ALL.noArg(), new UpdateGamerulePacket(enforced.get())))); //Putting it in UPDATES since other world stuff is here
+	public static final GameRules.Key<GameRules.BooleanValue> ENFORCED_PROGRESSION_RULE = GameRules.register("tfEnforcedProgression",
+			GameRules.Category.UPDATES,  //Putting it in UPDATES since other world stuff is here
+			GameRules.BooleanValue.create(true, (server, enforced) ->
+			PacketDistributor.ALL.noArg().send(new EnforceProgressionStatusPacket(enforced.get())))); //sends a packet to every player online when this changes so weather effects update accordingly
 
 	public static final Logger LOGGER = LogManager.getLogger(ID);
 
 	private static final Rarity rarity = Rarity.create("TWILIGHT", ChatFormatting.DARK_GREEN);
 
-	public TwilightForestMod() {
+	public TwilightForestMod(IEventBus bus, Dist dist) {
 		{
-			final Pair<TFConfig.Common, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(TFConfig.Common::new);
+			final Pair<TFConfig.Common, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(TFConfig.Common::new);
 			ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, specPair.getRight());
 			TFConfig.COMMON_CONFIG = specPair.getLeft();
 		}
 		{
-			final Pair<TFConfig.Client, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(TFConfig.Client::new);
+			final Pair<TFConfig.Client, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(TFConfig.Client::new);
 			ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, specPair.getRight());
 			TFConfig.CLIENT_CONFIG = specPair.getLeft();
 		}
 
-		DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> ClientInitiator::call);
-		MinecraftForge.EVENT_BUS.addListener(this::registerCommands);
-		MinecraftForge.EVENT_BUS.addGenericListener(Level.class, CapabilityList::attachLevelCapability);
-		MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, CapabilityList::attachEntityCapability);
-		MinecraftForge.EVENT_BUS.addListener(Stalactite::reloadStalactites);
+		if (dist.isClient()) {
+			TFClientSetup.init(bus);
+		}
+		NeoForge.EVENT_BUS.addListener(this::registerCommands);
+		NeoForge.EVENT_BUS.addListener(Stalactite::reloadStalactites);
 
-		IEventBus modbus = FMLJavaModLoadingContext.get().getModEventBus();
+		TFItems.ITEMS.register(bus);
+		TFStats.STATS.register(bus);
+		TFBlocks.BLOCKS.register(bus);
+		TFPOITypes.POIS.register(bus);
+		TFSounds.SOUNDS.register(bus);
+		TFLoot.FUNCTIONS.register(bus);
+		TFLoot.CONDITIONS.register(bus);
+		TFEntities.ENTITIES.register(bus);
+		TFFeatures.FEATURES.register(bus);
+		TFCreativeTabs.TABS.register(bus);
+		TFLoot.CONDITIONALS.register(bus);
+		TFEntities.SPAWN_EGGS.register(bus);
+		TFMenuTypes.CONTAINERS.register(bus);
+		TFRecipes.RECIPE_TYPES.register(bus);
+		TFAdvancements.TRIGGERS.register(bus);
+		TFMobEffects.MOB_EFFECTS.register(bus);
+		Enforcements.ENFORCEMENTS.register(bus);
+		TFCaveCarvers.CARVER_TYPES.register(bus);
+		TFEnchantments.ENCHANTMENTS.register(bus);
+		TFRecipes.RECIPE_SERIALIZERS.register(bus);
+		TFParticleType.PARTICLE_TYPES.register(bus);
+		TFBlockEntities.BLOCK_ENTITIES.register(bus);
+		TFLootModifiers.LOOT_MODIFIERS.register(bus);
+		TFBannerPatterns.BANNER_PATTERNS.register(bus);
+		TFStructureTypes.STRUCTURE_TYPES.register(bus);
+		TFFeatureModifiers.TRUNK_PLACERS.register(bus);
+		BiomeLayerTypes.BIOME_LAYER_TYPES.register(bus);
+		TFDataAttachments.ATTACHMENT_TYPES.register(bus);
+		TFDataSerializers.DATA_SERIALIZERS.register(bus);
+		TFFeatureModifiers.FOLIAGE_PLACERS.register(bus);
+		TFFeatureModifiers.TREE_DECORATORS.register(bus);
+		TinyBirdVariants.TINY_BIRD_VARIANTS.register(bus);
+		TFFeatureModifiers.PLACEMENT_MODIFIERS.register(bus);
+		TFDensityFunctions.DENSITY_FUNCTION_TYPES.register(bus);
+		DwarfRabbitVariants.DWARF_RABBIT_VARIANTS.register(bus);
+		TFStructureProcessors.STRUCTURE_PROCESSORS.register(bus);
+		TFStructurePieceTypes.STRUCTURE_PIECE_TYPES.register(bus);
+		ChunkBlanketProcessors.CHUNK_BLANKETING_TYPES.register(bus);
+		TFStructurePlacementTypes.STRUCTURE_PLACEMENT_TYPES.register(bus);
 
-		TFBannerPatterns.BANNER_PATTERNS.register(modbus);
-		TFBlockEntities.BLOCK_ENTITIES.register(modbus);
-		TFBlocks.BLOCKS.register(modbus);
-		TFLoot.CONDITIONS.register(modbus);
-		TFMenuTypes.CONTAINERS.register(modbus);
-		TFEnchantments.ENCHANTMENTS.register(modbus);
-		TFEntities.ENTITIES.register(modbus);
-		BiomeLayerTypes.BIOME_LAYER_TYPES.register(modbus);
-		BiomeLayerStack.BIOME_LAYER_STACKS.register(modbus);
-		TFFeatures.FEATURES.register(modbus);
-		TFFeatureModifiers.FOLIAGE_PLACERS.register(modbus);
-		TFLoot.FUNCTIONS.register(modbus);
-		TFItems.ITEMS.register(modbus);
-		TFLootModifiers.LOOT_MODIFIERS.register(modbus);
-		TFMobEffects.MOB_EFFECTS.register(modbus);
-		TFParticleType.PARTICLE_TYPES.register(modbus);
-		TFPOITypes.POIS.register(modbus);
-		TFFeatureModifiers.PLACEMENT_MODIFIERS.register(modbus);
-		TFRecipes.RECIPE_SERIALIZERS.register(modbus);
-		TFRecipes.RECIPE_TYPES.register(modbus);
-		TFSounds.SOUNDS.register(modbus);
-		TFEntities.SPAWN_EGGS.register(modbus);
-		TFStats.STATS.register(modbus);
-		TFStructurePieceTypes.STRUCTURE_PIECE_TYPES.register(modbus);
-		TFStructureProcessors.STRUCTURE_PROCESSORS.register(modbus);
-		TFStructurePlacementTypes.STRUCTURE_PLACEMENT_TYPES.register(modbus);
-		TFStructureTypes.STRUCTURE_TYPES.register(modbus);
-		TFCreativeTabs.TABS.register(modbus);
-		TFFeatureModifiers.TREE_DECORATORS.register(modbus);
-		TFFeatureModifiers.TRUNK_PLACERS.register(modbus);
+		TFRemapper.addRegistryAliases();
 
-		DwarfRabbitVariant.DWARF_RABBITS.register(modbus);
-		TinyBirdVariant.TINY_BIRDS.register(modbus);
-		WoodPalettes.WOOD_PALETTES.register(modbus);
-		Enforcement.ENFORCEMENTS.register(modbus);
-		Restrictions.RESTRICTIONS.register(modbus);
-		MagicPaintingVariants.MAGIC_PAINTINGS.register(modbus);
+		bus.addListener(this::init);
+		bus.addListener(this::sendIMCs);
+		bus.addListener(this::setupPackets);
+		bus.addListener(this::registerExtraStuff);
+		bus.addListener(this::createNewRegistries);
+		bus.addListener(this::setRegistriesForDatapack);
 
-		modbus.addListener(this::sendIMCs);
-		modbus.addListener(this::init);
-		modbus.addListener(this::registerExtraStuff);
-		modbus.addListener(this::setRegistriesForDatapack);
-		modbus.addListener(CapabilityList::registerCapabilities);
-
-		if (ModList.get().isLoaded("curios")) {
-			Bindings.getForgeBus().get().addListener(CuriosCompat::keepCurios);
-			modbus.addListener(CuriosCompat::registerCurioRenderers);
-			modbus.addListener(CuriosCompat::registerCurioLayers);
+		if (ModList.get().isLoaded("curios")) { //FIXME: When curios gets updated, uncomment this
+			/*NeoForge.EVENT_BUS.addListener(CuriosCompat::keepCurios);
+			bus.addListener(CuriosCompat::registerCuriosCapabilities);
+			bus.addListener(CuriosCompat::registerCurioRenderers);
+			bus.addListener(CuriosCompat::registerCurioLayers);*/
 		}
 
 		BiomeGrassColors.init();
 	}
 
+	public void createNewRegistries(NewRegistryEvent event) {
+		event.register(TFRegistries.BIOME_LAYER_TYPE);
+		event.register(TFRegistries.DWARF_RABBIT_VARIANT);
+		event.register(TFRegistries.ENFORCEMENT);
+		event.register(TFRegistries.TINY_BIRD_VARIANT);
+		event.register(TFRegistries.CHUNK_BLANKET_TYPES);
+	}
+
 	public void setRegistriesForDatapack(DataPackRegistryEvent.NewRegistry event) {
-		event.dataPackRegistry(WoodPalettes.WOOD_PALETTE_TYPE_KEY, WoodPalette.CODEC);
-		event.dataPackRegistry(BiomeLayerStack.BIOME_STACK_KEY, BiomeLayerStack.DISPATCH_CODEC);
-		event.dataPackRegistry(Restrictions.RESTRICTION_KEY, Restriction.CODEC, Restriction.CODEC);
-		event.dataPackRegistry(MagicPaintingVariants.REGISTRY_KEY, MagicPaintingVariant.CODEC, MagicPaintingVariant.CODEC);
+		event.dataPackRegistry(TFRegistries.Keys.WOOD_PALETTES, WoodPalette.CODEC);
+		event.dataPackRegistry(TFRegistries.Keys.BIOME_STACK, BiomeLayerStack.DISPATCH_CODEC);
+		event.dataPackRegistry(TFRegistries.Keys.BIOME_TERRAIN_DATA, BiomeDensitySource.CODEC);
+		event.dataPackRegistry(TFRegistries.Keys.RESTRICTIONS, Restriction.CODEC, Restriction.CODEC);
+		event.dataPackRegistry(TFRegistries.Keys.MAGIC_PAINTINGS, MagicPaintingVariant.CODEC, MagicPaintingVariant.CODEC);
+		event.dataPackRegistry(TFRegistries.Keys.STRUCTURE_SPELEOTHEM_SETTINGS, StructureSpeleothemConfig.CODEC);
+		event.dataPackRegistry(TFRegistries.Keys.CHUNK_BLANKET_PROCESSORS, ChunkBlanketProcessors.DISPATCH_CODEC);
 	}
 
 	public void registerExtraStuff(RegisterEvent evt) {
 		if (evt.getRegistryKey().equals(Registries.BIOME_SOURCE)) {
 			Registry.register(BuiltInRegistries.BIOME_SOURCE, TwilightForestMod.prefix("twilight_biomes"), TFBiomeProvider.TF_CODEC);
 			Registry.register(BuiltInRegistries.BIOME_SOURCE, TwilightForestMod.prefix("landmarks"), LandmarkBiomeSource.CODEC);
-		} else if (evt.getRegistryKey().equals(Registries.CHUNK_GENERATOR)) {
-			Registry.register(BuiltInRegistries.CHUNK_GENERATOR, TwilightForestMod.prefix("structure_locating_wrapper"), ChunkGeneratorTwilight.CODEC);
-		} else if (evt.getRegistryKey().equals(ForgeRegistries.Keys.RECIPE_SERIALIZERS)) {
-			CraftingHelper.register(UncraftingTableCondition.Serializer.INSTANCE);
 		}
 	}
 
 	public void sendIMCs(InterModEnqueueEvent evt) {
 		if (ModList.get().isLoaded("theoneprobe")) {
-			InterModComms.sendTo("theoneprobe", "getTheOneProbe", TopCompat::new);
+			//InterModComms.sendTo("theoneprobe", "getTheOneProbe", TopCompat::new);
 		}
 	}
 
-	public void init(FMLCommonSetupEvent evt) {
-		TFPacketHandler.init();
-		TFAdvancements.init();
+	public void setupPackets(RegisterPayloadHandlerEvent event) {
+		IPayloadRegistrar registrar = event.registrar(ID).versioned("1.0.0").optional();
+		registrar.play(AreaProtectionPacket.ID, AreaProtectionPacket::new, payload -> payload.client(AreaProtectionPacket::handle));
+		registrar.play(CreateMovingCicadaSoundPacket.ID, CreateMovingCicadaSoundPacket::new, payload -> payload.client(CreateMovingCicadaSoundPacket::handle));
+		registrar.play(EnforceProgressionStatusPacket.ID, EnforceProgressionStatusPacket::new, payload -> payload.client(EnforceProgressionStatusPacket::handle));
+		registrar.play(MagicMapPacket.ID, MagicMapPacket::new, payload -> payload.client(MagicMapPacket::handle));
+		registrar.play(MazeMapPacket.ID, MazeMapPacket::new, payload -> payload.client(MazeMapPacket::handle));
+		registrar.play(MissingAdvancementToastPacket.ID, MissingAdvancementToastPacket::new, payload -> payload.client(MissingAdvancementToastPacket::handle));
+		registrar.play(MovePlayerPacket.ID, MovePlayerPacket::new, payload -> payload.client(MovePlayerPacket::handle));
+		registrar.play(ParticlePacket.ID, ParticlePacket::new, payload -> payload.client(ParticlePacket::handle));
+		registrar.play(SpawnFallenLeafFromPacket.ID, SpawnFallenLeafFromPacket::new, payload -> payload.client(SpawnFallenLeafFromPacket::handle));
+		registrar.play(StructureProtectionClearPacket.ID, buf -> new StructureProtectionClearPacket(), payload -> payload.client(StructureProtectionClearPacket::handle));
+		registrar.play(StructureProtectionPacket.ID, StructureProtectionPacket::new, payload -> payload.client(StructureProtectionPacket::handle));
+		registrar.play(SyncOreMeterPacket.ID, SyncOreMeterPacket::new, payload -> payload.server(SyncOreMeterPacket::handle));
+		registrar.play(SyncUncraftingTableConfigPacket.ID, SyncUncraftingTableConfigPacket::new, payload -> payload.client(SyncUncraftingTableConfigPacket::handle));
+		registrar.play(UncraftingGuiPacket.ID, UncraftingGuiPacket::new, payload -> payload.server(UncraftingGuiPacket::handle));
+		registrar.play(UpdateFeatherFanFallPacket.ID, UpdateFeatherFanFallPacket::new, payload -> payload.client(UpdateFeatherFanFallPacket::handle));
+		registrar.play(UpdateShieldPacket.ID, UpdateShieldPacket::new, payload -> payload.client(UpdateShieldPacket::handle));
+		registrar.play(UpdateTFMultipartPacket.ID, UpdateTFMultipartPacket::new, payload -> payload.client(UpdateTFMultipartPacket::handle));
+		registrar.play(UpdateThrownPacket.ID, UpdateThrownPacket::new, payload -> payload.client(UpdateThrownPacket::handle));
+		registrar.play(WipeOreMeterPacket.ID, WipeOreMeterPacket::new, payload -> payload.server(WipeOreMeterPacket::handle));
+	}
 
+	public void init(FMLCommonSetupEvent evt) {
 		evt.enqueueWork(() -> {
 			TFSounds.registerParrotSounds();
 			TFDispenserBehaviors.init();
 			TFStats.init();
 
-			CauldronInteraction.WATER.put(TFItems.ARCTIC_HELMET.get(), CauldronInteraction.DYED_ITEM);
-			CauldronInteraction.WATER.put(TFItems.ARCTIC_CHESTPLATE.get(), CauldronInteraction.DYED_ITEM);
-			CauldronInteraction.WATER.put(TFItems.ARCTIC_LEGGINGS.get(), CauldronInteraction.DYED_ITEM);
-			CauldronInteraction.WATER.put(TFItems.ARCTIC_BOOTS.get(), CauldronInteraction.DYED_ITEM);
+			CauldronInteraction.WATER.map().put(TFItems.ARCTIC_HELMET.get(), CauldronInteraction.DYED_ITEM);
+			CauldronInteraction.WATER.map().put(TFItems.ARCTIC_CHESTPLATE.get(), CauldronInteraction.DYED_ITEM);
+			CauldronInteraction.WATER.map().put(TFItems.ARCTIC_LEGGINGS.get(), CauldronInteraction.DYED_ITEM);
+			CauldronInteraction.WATER.map().put(TFItems.ARCTIC_BOOTS.get(), CauldronInteraction.DYED_ITEM);
 
 			AxeItem.STRIPPABLES = Maps.newHashMap(AxeItem.STRIPPABLES);
 			AxeItem.STRIPPABLES.put(TFBlocks.TWILIGHT_OAK_LOG.get(), TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.get());
@@ -346,10 +374,6 @@ public class TwilightForestMod {
 
 	public static ResourceLocation prefix(String name) {
 		return new ResourceLocation(ID, name.toLowerCase(Locale.ROOT));
-	}
-
-	public static ResourceLocation namedRegistry(String name) {
-		return new ResourceLocation(REGISTRY_NAMESPACE, name.toLowerCase(Locale.ROOT));
 	}
 
 	public static ResourceLocation getModelTexture(String name) {

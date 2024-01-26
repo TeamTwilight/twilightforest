@@ -2,7 +2,6 @@
   "parent": "twilightforest:progress_trophy_pedestal",
   "criteria": {
     "all_knights": {
-      "conditions": {},
       "trigger": "twilightforest:kill_all_phantoms"
     },
     "previous_progression": {
@@ -52,16 +51,13 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancement.twilightforest.progress_knights.desc"
     },
     "frame": "goal",
-    "hidden": false,
     "icon": {
       "item": "twilightforest:knight_phantom_trophy"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancement.twilightforest.progress_knights"
     }

@@ -17,15 +17,18 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.food.FoodData;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import twilightforest.client.MagicPaintingTextureManager;
 import twilightforest.entity.MagicPainting;
-import twilightforest.init.custom.MagicPaintingVariants;
-import twilightforest.util.MagicPaintingVariant;
-import twilightforest.util.MagicPaintingVariant.Layer.OpacityModifier;
-import twilightforest.util.MagicPaintingVariant.Layer.Parallax;
+import twilightforest.entity.MagicPaintingVariant;
+import twilightforest.entity.MagicPaintingVariant.Layer.OpacityModifier;
+import twilightforest.entity.MagicPaintingVariant.Layer.Parallax;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
@@ -56,7 +59,7 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting> {
     }
 
     private void renderPainting(PoseStack stack, VertexConsumer vertex, MagicPainting painting, MagicPaintingVariant variant) {
-        ResourceLocation textureLocation = MagicPaintingVariants.getVariantResourceLocation(painting.level().registryAccess(), variant);
+        ResourceLocation textureLocation = MagicPaintingVariant.getVariantResourceLocation(painting.level().registryAccess(), variant);
 
         int width = variant.width();
         int height = variant.height();
@@ -71,8 +74,8 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting> {
         float y = (float)(-height) / 2.0F;
         float z = 0.5F;
 
-        double widthFactor = 16.0D / (double)widthAsBlock;
-        double heightFactor = 16.0D / (double)heightAsBlock;
+        double widthFactor = 1.0D / (double)widthAsBlock;
+        double heightFactor = 1.0D / (double)heightAsBlock;
 
         Direction direction = painting.getDirection();
         int posX = painting.getBlockX();
@@ -90,8 +93,8 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting> {
             double layerWidthAsBlock = layerWidth / 16.0D;
             double layerHeightAsBlock = layerHeight / 16.0D;
 
-            double layerWidthFactor = 16.0D / layerWidthAsBlock;
-            double layerHeightFactor = 16.0D / layerHeightAsBlock;
+            double layerWidthFactor = 1.0D / layerWidthAsBlock;
+            double layerHeightFactor = 1.0D / layerHeightAsBlock;
 
             double widthDiff = parallax != null ? (widthFactor - layerWidthFactor) * (double)widthAsBlock * 0.5D : 0.0D;
             double widthOffset = widthDiff != 0.0D ? this.getWidthOffset(parallax, painting, widthDiff) : 0.0D;
@@ -114,15 +117,48 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting> {
                     if (direction == Direction.EAST) posZ = Mth.floor(painting.getZ() + (double) ((xMax + xMin) / 2.0F / 16.0F));
 
                     int light = layer.fullbright() ? 15728850 : LevelRenderer.getLightColor(painting.level(), new BlockPos(posX, Mth.floor(painting.getY() + (double) ((yMax + yMin) / 2.0F / 16.0F)), posZ));
-                    float xEnd = layerTexture.getU(layerWidthFactor * (double) (widthAsBlock - k) + widthOffset);
-                    float xStart = layerTexture.getU(layerWidthFactor * (double) (widthAsBlock - (k + 1)) + widthOffset);
-                    float yEnd = layerTexture.getV(layerHeightFactor * (double) (heightAsBlock - l) + heightOffset);
-                    float yStart = layerTexture.getV(layerHeightFactor * (double) (heightAsBlock - (l + 1)) + heightOffset);
+                    float xEnd = layerTexture.getU((float) (layerWidthFactor * (double) (widthAsBlock - k) + widthOffset));
+                    float xStart = layerTexture.getU((float) (layerWidthFactor * (double) (widthAsBlock - (k + 1)) + widthOffset));
+                    float yEnd = layerTexture.getV((float) (layerHeightFactor * (double) (heightAsBlock - l) + heightOffset));
+                    float yStart = layerTexture.getV((float) (layerHeightFactor * (double) (heightAsBlock - (l + 1)) + heightOffset));
                     this.vertex(matrix4f, matrix3f, vertex, xMax, yMin, -z, xStart, yEnd, 0, 0, -1, light, alpha);
                     this.vertex(matrix4f, matrix3f, vertex, xMin, yMin, -z, xEnd, yEnd, 0, 0, -1, light, alpha);
                     this.vertex(matrix4f, matrix3f, vertex, xMin, yMax, -z, xEnd, yStart, 0, 0, -1, light, alpha);
                     this.vertex(matrix4f, matrix3f, vertex, xMax, yMax, -z, xStart, yStart, 0, 0, -1, light, alpha);
                 }
+            }
+        }
+
+        TextureAtlasSprite layerTexture = MagicPaintingTextureManager.instance.getFrameSprite(variant);
+
+        for (int k = 0; k < widthAsBlock; ++k) {
+            for (int l = 0; l < heightAsBlock; ++l) {
+                int u = this.getFrameUV(k, widthAsBlock);
+                int v = this.getFrameUV(l, heightAsBlock);
+
+                float xMax = x + (float) ((k + 1) * 16);
+                float xMin = x + (float) (k * 16);
+                float yMax = y + (float) ((l + 1) * 16);
+                float yMin = y + (float) (l * 16);
+
+                float uO = layerTexture.getUOffset(u);
+                float vO = layerTexture.getVOffset(v);
+
+                if (direction == Direction.NORTH) posX = Mth.floor(painting.getX() + (double) ((xMax + xMin) / 2.0F / 16.0F));
+                if (direction == Direction.WEST) posZ = Mth.floor(painting.getZ() - (double) ((xMax + xMin) / 2.0F / 16.0F));
+                if (direction == Direction.SOUTH) posX = Mth.floor(painting.getX() - (double) ((xMax + xMin) / 2.0F / 16.0F));
+                if (direction == Direction.EAST) posZ = Mth.floor(painting.getZ() + (double) ((xMax + xMin) / 2.0F / 16.0F));
+
+                int light = LevelRenderer.getLightColor(painting.level(), new BlockPos(posX, Mth.floor(painting.getY() + (double) ((yMax + yMin) / 2.0F / 16.0F)), posZ));
+                float xEnd = layerTexture.getU((float) (4 - u) + uO);
+                float xStart = layerTexture.getU((float) (4 - (u + 1)) + uO);
+                float yEnd = layerTexture.getV((float) (4 - v) + vO);
+                float yStart = layerTexture.getV((float) (4 - (v + 1)) + vO);
+
+                this.vertex(matrix4f, matrix3f, vertex, xMax, yMin, -z, xStart, yEnd, 0, 0, -1, light, 1.0F);
+                this.vertex(matrix4f, matrix3f, vertex, xMin, yMin, -z, xEnd, yEnd, 0, 0, -1, light, 1.0F);
+                this.vertex(matrix4f, matrix3f, vertex, xMin, yMax, -z, xEnd, yStart, 0, 0, -1, light, 1.0F);
+                this.vertex(matrix4f, matrix3f, vertex, xMax, yMax, -z, xStart, yStart, 0, 0, -1, light, 1.0F);
             }
         }
 
@@ -134,9 +170,9 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting> {
         float u01 = backSprite.getU0();
         float u11 = backSprite.getU1();
         float v01 = backSprite.getV0();
-        float v = backSprite.getV(1.0D);
+        float v = backSprite.getV(1.0F);
         float u02 = backSprite.getU0();
-        float u = backSprite.getU(1.0D);
+        float u = backSprite.getU(1.0F);
         float v02 = backSprite.getV0();
         float v11 = backSprite.getV1();
 
@@ -260,12 +296,12 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting> {
                 }
             }
             case DAY_TIME -> {
-                float dayTime =  Math.abs(painting.level().getTimeOfDay(Minecraft.getInstance().getPartialTick()) - 0.5F) * 2.0F;
+                float dayTime = Math.abs(painting.level().getTimeOfDay(Minecraft.getInstance().getPartialTick()) - 0.5F) * 2.0F;
                 if (opacityModifier.invert()) dayTime = 1.0F - dayTime;
                 a = (float) Math.pow(dayTime, opacityModifier.multiplier());
             }
             case DAY_TIME_SHARP -> {
-                float dayTime =  Math.abs(painting.level().getTimeOfDay(Minecraft.getInstance().getPartialTick()) - 0.5F) * 2.0F;
+                float dayTime = Math.abs(painting.level().getTimeOfDay(Minecraft.getInstance().getPartialTick()) - 0.5F) * 2.0F;
                 if (opacityModifier.invert()) dayTime = 1.0F - dayTime;
                 float threshold = 1.0F - opacityModifier.multiplier();
 
@@ -276,10 +312,41 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting> {
                 else if (dayTime <= threshold + ONE_SECOND) a = (dayTime - threshold) / ONE_SECOND;
             }
             case SINE_TIME -> {
-                a = (float)(Math.sin((painting.tickCount + Minecraft.getInstance().getPartialTick()) * opacityModifier.multiplier())) * 0.5F + 0.5F;
+                a = (float) (Math.sin((painting.tickCount + Minecraft.getInstance().getPartialTick()) * opacityModifier.multiplier())) * 0.5F + 0.5F;
                 if (opacityModifier.invert()) a = 1.0F - a;
+            }
+            case HEALTH -> {
+                if (Minecraft.getInstance().getCameraEntity() instanceof LivingEntity living) {
+                    a = (living.getHealth() / living.getMaxHealth()) * opacityModifier.multiplier();
+                }
+                if (opacityModifier.invert()) a = 1.0F - a;
+            }
+            case HUNGER -> {
+                if (Minecraft.getInstance().getCameraEntity() instanceof Player player) {
+                    FoodData food = player.getFoodData();
+                    a = ((float) food.getFoodLevel() / 20.0F) * opacityModifier.multiplier();
+                }
+                if (opacityModifier.invert()) a = 1.0F - a;
+            }
+            case HOLDING_ITEM -> {
+                if (Minecraft.getInstance().getCameraEntity() instanceof LivingEntity living) {
+                    ItemStack key = opacityModifier.item();
+                    if (key != null) {
+                        if (!living.isHolding(stack -> ItemStack.isSameItemSameTags(stack, key) &&
+                                (opacityModifier.multiplier() <= 0.0F || Mth.equal(stack.getCount(), opacityModifier.multiplier()))))
+                            a = 0.0F;
+                        if (opacityModifier.invert()) a = 1.0F - a;
+                    }
+                }
             }
         }
         return Mth.clamp(a, 0.0F, 1.0F);
+    }
+
+    protected int getFrameUV(int i, int maxI) {
+        if (maxI <= 1) return 4;
+        else if (i == 0) return 1;
+        else if (i == maxI - 1) return 3;
+        else return 2;
     }
 }

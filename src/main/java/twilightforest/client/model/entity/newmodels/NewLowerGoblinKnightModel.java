@@ -7,8 +7,8 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import twilightforest.entity.monster.LowerGoblinKnight;
 
 /**
@@ -26,42 +26,42 @@ public class NewLowerGoblinKnightModel extends HumanoidModel<LowerGoblinKnight> 
 
     public static LayerDefinition create() {
         MeshDefinition mesh = HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F);
-        PartDefinition partRoot = mesh.getRoot();
+        PartDefinition definition = mesh.getRoot();
 
-        partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+        definition.addOrReplaceChild("head", CubeListBuilder.create()
                         .texOffs(0, 30)
                         .addBox(-2.5F, -5.0F, -3.5F, 5.0F, 5.0F, 5.0F),
                 PartPose.offset(0.0F, 8.0F, 1.0F));
 
-        partRoot.addOrReplaceChild("hat", CubeListBuilder.create(),
+        definition.addOrReplaceChild("hat", CubeListBuilder.create(),
                 PartPose.ZERO);
 
-        partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+        definition.addOrReplaceChild("body", CubeListBuilder.create()
                         .texOffs(16, 48)
                         .addBox(-3.5F, 0.0F, -2.0F, 7.0F, 8.0F, 4.0F),
                 PartPose.offset(0.0F, 8.0F, 0.0F));
 
-        partRoot.addOrReplaceChild("tunic", CubeListBuilder.create()
+        definition.addOrReplaceChild("tunic", CubeListBuilder.create()
                         .texOffs(64, 19)
                         .addBox(-6.0F, 0.0F, -3.0F, 12.0F, 9.0F, 6.0F),
                 PartPose.offset(0.0F, 7.5F, 0.0F));
 
-        partRoot.addOrReplaceChild("right_arm", CubeListBuilder.create()
+        definition.addOrReplaceChild("right_arm", CubeListBuilder.create()
                         .texOffs(48, 48)
                         .addBox(-2.0F, -2.0F, -1.5F, 2.0F, 8.0F, 3.0F),
                 PartPose.offsetAndRotation(-3.5F, 10.0F, 0.0F, 0.0F, 0.0F, 0.10000000116728046F));
 
-        partRoot.addOrReplaceChild("left_arm", CubeListBuilder.create()
+        definition.addOrReplaceChild("left_arm", CubeListBuilder.create()
                         .texOffs(38, 48)
                         .addBox(0.0F, -2.0F, -1.5F, 2.0F, 8.0F, 3.0F),
                 PartPose.offsetAndRotation(3.5F, 10.0F, 0.0F, 0.0F, 0.0F, -0.10000736647217022F));
 
-        partRoot.addOrReplaceChild("right_leg", CubeListBuilder.create()
+        definition.addOrReplaceChild("right_leg", CubeListBuilder.create()
                         .texOffs(0, 40)
                         .addBox(-3.0F, 0.0F, -2.0F, 4.0F, 8.0F, 4.0F),
                 PartPose.offset(-2.5F, 16.0F, 0.0F));
 
-        partRoot.addOrReplaceChild("left_leg", CubeListBuilder.create()
+        definition.addOrReplaceChild("left_leg", CubeListBuilder.create()
                         .texOffs(0, 52)
                         .addBox(-1.0F, 0.0F, -2.0F, 4.0F, 8.0F, 4.0F),
                 PartPose.offset(2.5F, 16.0F, 0.0F));

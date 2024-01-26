@@ -1,7 +1,7 @@
 package twilightforest.dispenser;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.BlockSource;
+import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -17,18 +17,18 @@ public class CrumbleDispenseBehavior extends DefaultDispenseItemBehavior {
 
 	@Override
 	protected ItemStack execute(BlockSource source, ItemStack stack) {
-		Level level = source.getLevel();
-		BlockPos pos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
+		Level level = source.level();
+		BlockPos pos = source.pos().relative(source.state().getValue(DispenserBlock.FACING));
 		BlockState state = level.getBlockState(pos);
 		if (!level.isClientSide()) {
 			if (!(stack.getMaxDamage() == stack.getDamageValue() + 1)) {
-				level.getRecipeManager().getAllRecipesFor(TFRecipes.CRUMBLE_RECIPE.get()).forEach(recipe -> {
-					if (recipe.input().is(state.getBlock())) {
-						if (recipe.result().is(Blocks.AIR)) {
+				level.getRecipeManager().getAllRecipesFor(TFRecipes.CRUMBLE_RECIPE.get()).forEach(recipeHolder -> {
+					if (recipeHolder.value().input() == state.getBlock()) {
+						if (recipeHolder.value().result() == Blocks.AIR) {
 							level.removeBlock(pos, true);
 							level.levelEvent(2001, pos, Block.getId(state));
 						} else {
-							level.setBlock(pos, recipe.result().getBlock().withPropertiesOf(state), 3);
+							level.setBlock(pos, recipeHolder.value().result().withPropertiesOf(state), 3);
 						}
 						stack.hurt(1, level.getRandom(), null);
 						this.fired = true;
@@ -45,7 +45,7 @@ public class CrumbleDispenseBehavior extends DefaultDispenseItemBehavior {
 			super.playSound(source);
 			this.fired = false;
 		} else {
-			source.getLevel().levelEvent(1001, source.getPos(), 0);
+			source.level().levelEvent(1001, source.pos(), 0);
 		}
 	}
 

@@ -9,12 +9,12 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import twilightforest.TwilightForestMod;
+import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.world.components.processors.CobbleVariants;
 import twilightforest.world.components.processors.NagastoneVariants;
 import twilightforest.world.components.processors.SmoothStoneVariants;
 import twilightforest.world.components.processors.StoneBricksVariants;
 import twilightforest.world.components.structures.TwilightDoubleTemplateStructurePiece;
-import twilightforest.init.TFStructurePieceTypes;
 
 public class CourtyardWallCornerOuter extends TwilightDoubleTemplateStructurePiece {
     public CourtyardWallCornerOuter(StructurePieceSerializationContext ctx, CompoundTag nbt) {

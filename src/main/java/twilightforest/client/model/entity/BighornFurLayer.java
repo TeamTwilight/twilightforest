@@ -13,14 +13,14 @@ public class BighornFurLayer extends SheepFurModel<Bighorn> {
 
 	public static LayerDefinition create() {
 		MeshDefinition mesh = new MeshDefinition();
-		PartDefinition partRoot = mesh.getRoot();
+		PartDefinition definition = mesh.getRoot();
 
-		partRoot.addOrReplaceChild("head",
+		definition.addOrReplaceChild("head",
 				CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(-3.0F, -4.0F, -4.0F, 6.0F, 6.0F, 6.0F, new CubeDeformation(0.6F)),
 				PartPose.offset(0.0F, 6.0F, -8.0F));
-		partRoot.addOrReplaceChild("body",
+		definition.addOrReplaceChild("body",
 				CubeListBuilder.create()
 						.texOffs(28, 8)
 						.addBox(-4.0F, -9.0F, -7.0F, 8.0F, 15.0F, 6.0F, new CubeDeformation(0.5F)),
@@ -30,10 +30,10 @@ public class BighornFurLayer extends SheepFurModel<Bighorn> {
 				.texOffs(0, 16)
 				.addBox(-2.0F, 0.0F, -2.0F, 4.0F, 6.0F, 4.0F, new CubeDeformation(0.4F));
 
-		partRoot.addOrReplaceChild("right_hind_leg", legOffset, PartPose.offset(-3.0F, 12.0F, 7.0F));
-		partRoot.addOrReplaceChild("left_hind_leg", legOffset, PartPose.offset(3.0F, 12.0F, 7.0F));
-		partRoot.addOrReplaceChild("right_front_leg", legOffset, PartPose.offset(-3.0F, 12.0F, -5.0F));
-		partRoot.addOrReplaceChild("left_front_leg", legOffset, PartPose.offset(3.0F, 12.0F, -5.0F));
+		definition.addOrReplaceChild("right_hind_leg", legOffset, PartPose.offset(-3.0F, 12.0F, 7.0F));
+		definition.addOrReplaceChild("left_hind_leg", legOffset, PartPose.offset(3.0F, 12.0F, 7.0F));
+		definition.addOrReplaceChild("right_front_leg", legOffset, PartPose.offset(-3.0F, 12.0F, -5.0F));
+		definition.addOrReplaceChild("left_front_leg", legOffset, PartPose.offset(3.0F, 12.0F, -5.0F));
 
 		return LayerDefinition.create(mesh, 64, 32);
 	}

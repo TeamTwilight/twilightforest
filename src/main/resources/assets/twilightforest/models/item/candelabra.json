@@ -1,0 +1,38 @@
+{
+  "parent": "minecraft:builtin/entity",
+  "textures": {
+    "particle": "twilightforest:block/candelabra"
+  },
+  "display": {
+    "gui": {
+      "rotation": [ 30, 225, 0 ],
+      "translation": [ 0, 0, 0 ],
+      "scale": [ 0.9, 0.9, 0.9 ]
+    },
+    "ground": {
+      "rotation": [ 0, 0, 0 ],
+      "translation": [ 0, 3, 0 ],
+      "scale": [ 0.25, 0.25, 0.25 ]
+    },
+    "head": {
+      "rotation": [ 0, 0, 0 ],
+      "translation": [ 0, 14.5, 0 ],
+      "scale": [ 1, 1, 1 ]
+    },
+    "fixed": {
+      "rotation": [ 0, 0, 0 ],
+      "translation": [ 0, 0, 0 ],
+      "scale": [ 0.75, 0.75, 0.75 ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [ 0, 0, 0 ],
+      "translation": [ 0, 4, 1 ],
+      "scale": [ 0.5, 0.5, 0.5 ]
+    },
+    "firstperson_righthand": {
+      "rotation": [ 0, 135, 0 ],
+      "translation": [ 0.5, 3.5, 1 ],
+      "scale": [ 0.40, 0.40, 0.40 ]
+    }
+  }
+}

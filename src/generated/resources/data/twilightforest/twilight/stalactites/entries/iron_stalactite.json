@@ -1,0 +1,15 @@
+{
+  "max_length": 8,
+  "ores": [
+    {
+      "block": "minecraft:iron_ore",
+      "weight": 30
+    },
+    {
+      "block": "minecraft:raw_iron_block",
+      "weight": 1
+    }
+  ],
+  "size_variation": 0.7,
+  "weight": 40
+}

@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_castle_brick",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_castle_brick"
     ]
   ],
   "rewards": {
     "recipes": [
       "twilightforest:castleblock/bold_castle_brick_pillar"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -10,8 +10,8 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.item.DyeColor;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import twilightforest.entity.passive.QuestRam;
 
 /**
@@ -42,9 +42,9 @@ public class NewQuestRamModel extends QuadrupedModel<QuestRam> {
 
     public static LayerDefinition create() {
         MeshDefinition mesh = QuadrupedModel.createBodyMesh(16, CubeDeformation.NONE);
-        PartDefinition partRoot = mesh.getRoot();
+        PartDefinition definition = mesh.getRoot();
 
-        var horns = partRoot.addOrReplaceChild("horns", CubeListBuilder.create()
+        var horns = definition.addOrReplaceChild("horns", CubeListBuilder.create()
                         .texOffs(64, 0)
                         .addBox(-9.0F, -11.0F, -1.0F, 4.0F, 10.0F, 10.0F)
                         .texOffs(48, 0)
@@ -62,7 +62,7 @@ public class NewQuestRamModel extends QuadrupedModel<QuestRam> {
                         .addBox(-6.0F, -5.0F, -9.0F, 12.0F, 3.0F, 11.0F),
                 PartPose.offsetAndRotation(0.0F, -4.0F, 3.0F, 0.4363323129985824F, 0.0F, 0.0F));
 
-        var frontTorso = partRoot.addOrReplaceChild("front_torso", CubeListBuilder.create()
+        var frontTorso = definition.addOrReplaceChild("front_torso", CubeListBuilder.create()
                         .texOffs(0, 0)
                         .addBox(-8.0F, -7.0F, -6.0F, 16.0F, 14.0F, 16.0F),
                 PartPose.offset(0.0F, 0.0F, 0.0F));
@@ -72,33 +72,33 @@ public class NewQuestRamModel extends QuadrupedModel<QuestRam> {
                         .addBox(-5.0F, -11.0F, -2.0F, 10.0F, 12.0F, 12.0F),
                 PartPose.offsetAndRotation(0.0F, 2.0F, -3.0F, 0.6108652381980153F, 0.0F, 0.0F));
 
-        partRoot.addOrReplaceChild("back_torso", CubeListBuilder.create()
+        definition.addOrReplaceChild("back_torso", CubeListBuilder.create()
                         .texOffs(0, 30)
                         .addBox(-8.0F, -7.0F, 8.0F, 16.0F, 14.0F, 16.0F),
                 PartPose.offset(0.0F, 0.0F, 6.0F));
 
-        partRoot.addOrReplaceChild("right_front_leg", CubeListBuilder.create()
+        definition.addOrReplaceChild("right_front_leg", CubeListBuilder.create()
                         .texOffs(0, 60)
                         .addBox(-3.0F, 2.0F, -3.0F, 6.0F, 16.0F, 6.0F)
                         .texOffs(54, 20)
                         .addBox(-4.0F, -4.0F, -5.0F, 8.0F, 10.0F, 10.0F),
                 PartPose.offset(-5.0F, 6.0F, 0.0F));
 
-        partRoot.addOrReplaceChild("left_front_leg", CubeListBuilder.create()
+        definition.addOrReplaceChild("left_front_leg", CubeListBuilder.create()
                         .texOffs(24, 60)
                         .addBox(-3.0F, 2.0F, -3.0F, 6.0F, 16.0F, 6.0F)
                         .texOffs(90, 20)
                         .addBox(-4.0F, -4.0F, -5.0F, 8.0F, 10.0F, 10.0F),
                 PartPose.offset(5.0F, 6.0F, 0.0F));
 
-        partRoot.addOrReplaceChild("right_hind_leg", CubeListBuilder.create()
+        definition.addOrReplaceChild("right_hind_leg", CubeListBuilder.create()
                         .texOffs(0, 82)
                         .addBox(7.0F, 2.0F, -5.0F, 6.0F, 16.0F, 6.0F)
                         .texOffs(54, 50)
                         .addBox(6.0F, -4.0F, -7.0F, 8.0F, 10.0F, 10.0F),
                 PartPose.offset(-16.0F, 6.0F, 0.0F));
 
-        partRoot.addOrReplaceChild("left_hind_leg", CubeListBuilder.create()
+        definition.addOrReplaceChild("left_hind_leg", CubeListBuilder.create()
                         .texOffs(24, 82)
                         .addBox(-13.0F, 2.0F, -5.0F, 6.0F, 16.0F, 6.0F)
                         .texOffs(90, 50)

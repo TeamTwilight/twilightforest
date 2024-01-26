@@ -24,26 +24,26 @@ public class CarminiteGolemModel<T extends CarminiteGolem> extends HierarchicalM
 
 	public static LayerDefinition create() {
 		MeshDefinition mesh = new MeshDefinition();
-		PartDefinition partRoot = mesh.getRoot();
+		PartDefinition definition = mesh.getRoot();
 
-		partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+		definition.addOrReplaceChild("head", CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(-3.5F, -10F, -3F, 7, 8, 6)
 						.texOffs(0, 14)
 						.addBox(-4F, -6F, -3.5F, 8, 4, 6),
 				PartPose.offset(0F, -11F, -2F));
 
-		partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+		definition.addOrReplaceChild("body", CubeListBuilder.create()
 						.texOffs(0, 26)
 						.addBox(-8F, 0F, -5F, 16, 10, 10),
 				PartPose.offset(0F, -13F, 0F));
 
-		partRoot.addOrReplaceChild("ribs", CubeListBuilder.create()
+		definition.addOrReplaceChild("ribs", CubeListBuilder.create()
 						.texOffs(0, 46)
 						.addBox(-5F, 0F, -3F, 10, 6, 6),
 				PartPose.offset(0F, -3F, 0F));
 
-		partRoot.addOrReplaceChild("right_arm", CubeListBuilder.create()
+		definition.addOrReplaceChild("right_arm", CubeListBuilder.create()
 						.texOffs(52, 0) // arm
 						.addBox(-5F, -2F, -1.5F, 3, 14, 3)
 						.texOffs(52, 17) // fist
@@ -58,7 +58,7 @@ public class CarminiteGolemModel<T extends CarminiteGolem> extends HierarchicalM
 						.addBox(-2F, -1F, -2F, 2, 5, 3),
 				PartPose.offset(-8F, -12F, 0F));
 
-		partRoot.addOrReplaceChild("left_arm", CubeListBuilder.create()
+		definition.addOrReplaceChild("left_arm", CubeListBuilder.create()
 						.mirror()
 						.texOffs(52, 0) // arm
 						.addBox(2F, -2F, -1.5F, 3, 14, 3)
@@ -74,24 +74,24 @@ public class CarminiteGolemModel<T extends CarminiteGolem> extends HierarchicalM
 						.addBox(0F, -1F, -2F, 2, 5, 3),
 				PartPose.offset(8F, -12F, 0F));
 
-		partRoot.addOrReplaceChild("hips", CubeListBuilder.create()
+		definition.addOrReplaceChild("hips", CubeListBuilder.create()
 						.texOffs(84, 25)
 						.addBox(-5F, 0F, -2F, 10, 3, 4),
 				PartPose.offset(0F, 1F, 0F));
 
-		partRoot.addOrReplaceChild("spine", CubeListBuilder.create()
+		definition.addOrReplaceChild("spine", CubeListBuilder.create()
 						.texOffs(84, 18)
 						.addBox(-1.5F, 0F, -1.5F, 3, 4, 3),
 				PartPose.offset(0F, -3F, 0F));
 
-		partRoot.addOrReplaceChild("right_leg", CubeListBuilder.create()
+		definition.addOrReplaceChild("right_leg", CubeListBuilder.create()
 						.texOffs(84, 32)
 						.addBox(-3F, 0F, -1.5F, 3, 8, 3)
 						.texOffs(84, 43)
 						.addBox(-5.5F, 8F, -4F, 6, 14, 7),
 				PartPose.offset(-1F, 2F, 0F));
 
-		partRoot.addOrReplaceChild("left_leg", CubeListBuilder.create()
+		definition.addOrReplaceChild("left_leg", CubeListBuilder.create()
 						.mirror()
 						.texOffs(84, 32)
 						.addBox(0F, 0F, -1.5F, 3, 8, 3)

@@ -5,13 +5,12 @@ import net.minecraft.world.level.block.StandingSignBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.WoodType;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.TFSignBlockEntity;
 
-import org.jetbrains.annotations.Nullable;
-
 public class TFSignBlock extends StandingSignBlock {
-	public TFSignBlock(Properties properties, WoodType type) {
-		super(properties, type);
+	public TFSignBlock(WoodType type, Properties properties) {
+		super(type, properties);
 	}
 
 	@Nullable

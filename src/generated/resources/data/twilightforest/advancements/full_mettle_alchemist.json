@@ -4,13 +4,15 @@
     "drink_4_harming": {
       "conditions": {
         "doses": 4,
-        "potion": "minecraft:strong_harming"
+        "potion": "minecraft:strong_harming",
+        "seconds": {
+          "max": 7
+        }
       },
       "trigger": "twilightforest:drink_from_flask"
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancement.twilightforest.full_mettle_alchemist.desc"
     },
@@ -20,7 +22,6 @@
       "item": "twilightforest:greater_potion_flask",
       "nbt": "{Potion:\"minecraft:strong_harming\",Uses:4}"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancement.twilightforest.full_mettle_alchemist"
     }

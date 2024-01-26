@@ -3,11 +3,14 @@ package twilightforest.world.components.structures.util;
 import com.mojang.datafixers.Products;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.structures.TFStructureComponentTemplate;
 
 import java.util.Optional;
@@ -81,5 +84,21 @@ public abstract class LandmarkStructure extends Structure implements DecorationC
     @Override
     public int chunkClearanceRadius() {
         return this.decorationConfig.chunkClearanceRadius();
+    }
+
+    @Override
+    public Optional<GenerationStub> findValidGenerationPoint(GenerationContext context) {
+        if (!(context.biomeSource() instanceof TFBiomeProvider twilightBiomeProvider))
+            return super.findValidGenerationPoint(context);
+
+        ChunkPos chunkPos = context.chunkPos();
+        // set biomeX and biomeZ to center of the biome-grid tile.
+        // Otherwise some tightly-fitting biomes like Highlands vs Thornlands may fail the Troll-Clouds structure generation
+        int biomeX = (Math.round(chunkPos.x / 16F) << 6) + 2;
+        int biomeZ = (Math.round(chunkPos.z / 16F) << 6) + 2;
+
+        Holder<Biome> biomeAt = twilightBiomeProvider.getMainBiome(biomeX, biomeZ);
+
+        return context.validBiome().test(biomeAt) ? this.findGenerationPoint(context) : Optional.empty();
     }
 }

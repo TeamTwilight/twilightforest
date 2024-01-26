@@ -74,7 +74,6 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancement.twilightforest.progress_yeti.desc",
       "with": [
@@ -84,11 +83,9 @@
       ]
     },
     "frame": "goal",
-    "hidden": false,
     "icon": {
       "item": "twilightforest:alpha_yeti_fur"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancement.twilightforest.progress_yeti"
     }

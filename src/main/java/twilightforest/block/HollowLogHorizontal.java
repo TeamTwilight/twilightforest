@@ -30,7 +30,7 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.ToolActions;
+import net.neoforged.neoforge.common.ToolActions;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.enums.HollowLogVariants;
 import twilightforest.init.TFBlocks;
@@ -126,7 +126,7 @@ public class HollowLogHorizontal extends Block implements WaterloggedBlock {
 		if (stack.isEmpty() && player.isSecondaryUseActive() && player.getDirection().getAxis().equals(stateAxis) &&
 				player.blockPosition().getY() == pos.getY() && !player.isFallFlying() && player.position().distanceTo(Vec3.atBottomCenterOf(pos)) < 0.81D) {
 			player.setPose(Pose.SWIMMING);
-		} else if (stack.is(TFBlocks.MOSS_PATCH.get().asItem())) {
+		} else if (stack.is(TFBlocks.MOSS_PATCH.asItem())) {
 			if (canChangeVariant(variant, level, pos, stateAxis)) {
 				level.setBlock(pos, state.setValue(VARIANT, HollowLogVariants.Horizontal.MOSS), 3);
 				level.playSound(null, pos, SoundEvents.MOSS_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
@@ -134,7 +134,7 @@ public class HollowLogHorizontal extends Block implements WaterloggedBlock {
 
 				return InteractionResult.sidedSuccess(level.isClientSide());
 			}
-		} else if (stack.is(Blocks.GRASS.asItem())) {
+		} else if (stack.is(Blocks.SHORT_GRASS.asItem())) {
 			if (variant == HollowLogVariants.Horizontal.MOSS) {
 				level.setBlock(pos, state.setValue(VARIANT, HollowLogVariants.Horizontal.MOSS_AND_GRASS), 3);
 				level.playSound(null, pos, SoundEvents.GRASS_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
@@ -170,7 +170,7 @@ public class HollowLogHorizontal extends Block implements WaterloggedBlock {
 					stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
 					level.addFreshEntity(new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(TFBlocks.MOSS_PATCH.get())));
 					if (variant == HollowLogVariants.Horizontal.MOSS_AND_GRASS)
-						level.addFreshEntity(new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(Blocks.GRASS)));
+						level.addFreshEntity(new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(Blocks.SHORT_GRASS)));
 				}
 
 				return InteractionResult.sidedSuccess(level.isClientSide());

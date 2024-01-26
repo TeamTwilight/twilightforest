@@ -3,20 +3,20 @@ package twilightforest.data.tags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.tags.EntityTypeTagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
+import twilightforest.data.tags.compat.ModdedEntityTagGenerator;
 import twilightforest.init.TFEntities;
 
 import java.util.concurrent.CompletableFuture;
 
-public class EntityTagGenerator extends EntityTypeTagsProvider {
+public class EntityTagGenerator extends ModdedEntityTagGenerator {
 	public static final TagKey<EntityType<?>> BOSSES = create(TwilightForestMod.prefix("bosses"));
 	public static final TagKey<EntityType<?>> LICH_POPPABLES = create(TwilightForestMod.prefix("lich_poppables"));
 	public static final TagKey<EntityType<?>> LIFEDRAIN_DROPS_NO_FLESH = create(TwilightForestMod.prefix("lifedrain_drops_no_flesh"));
@@ -25,11 +25,12 @@ public class EntityTagGenerator extends EntityTypeTagsProvider {
 	public static final TagKey<EntityType<?>> SORTABLE_ENTITIES = create(TwilightForestMod.prefix("sortable_entities"));
 
 	public EntityTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, @Nullable ExistingFileHelper helper) {
-		super(output, provider, TwilightForestMod.ID, helper);
+		super(output, provider, helper);
 	}
 
 	@Override
 	protected void addTags(HolderLookup.Provider provider) {
+		super.addTags(provider);
 		tag(EntityTypeTags.SKELETONS).add(TFEntities.SKELETON_DRUID.get());
 		tag(EntityTypeTags.ARROWS).add(TFEntities.ICE_ARROW.get(), TFEntities.SEEKER_ARROW.get());
 		tag(EntityTypeTags.FREEZE_HURTS_EXTRA_TYPES).add(TFEntities.FIRE_BEETLE.get());

@@ -22,8 +22,8 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.init.TFDamageTypes;
@@ -142,6 +142,8 @@ public class LifedrainScepterItem extends Item {
 			if (pointedEntity instanceof LivingEntity target && !(target instanceof ArmorStand)) {
 				if (level.isClientSide()) {
 					this.makeRedMagicTrail(level, living, target.getEyePosition());
+				} else {
+					level.playSound(null, living.blockPosition(), TFSounds.SCEPTER_USE.get(), SoundSource.PLAYERS);
 				}
 
 				if (target.hurt(TFDamageTypes.getEntityDamageSource(level, TFDamageTypes.LIFEDRAIN, living), 1)) {

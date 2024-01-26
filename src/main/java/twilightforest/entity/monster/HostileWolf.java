@@ -22,8 +22,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFSounds;
+import twilightforest.init.TFStructures;
 import twilightforest.util.LegacyLandmarkPlacements;
 
 public class HostileWolf extends Monster {
@@ -63,7 +63,7 @@ public class HostileWolf extends Monster {
 		int chunkX = Mth.floor(pos.getX()) >> 4;
 		int chunkZ = Mth.floor(pos.getZ()) >> 4;
 		// We're allowed to spawn in bright light only in hedge mazes.
-		return LegacyLandmarkPlacements.getNearestLandmark(chunkX, chunkZ, accessor.getLevel()) == TFLandmark.HEDGE_MAZE || Monster.isDarkEnoughToSpawn(accessor, pos, random);
+		return LegacyLandmarkPlacements.pickLandmarkForChunk(chunkX, chunkZ, accessor) == TFStructures.HEDGE_MAZE || Monster.isDarkEnoughToSpawn(accessor, pos, random);
 	}
 
 	protected SoundEvent getTargetSound() {

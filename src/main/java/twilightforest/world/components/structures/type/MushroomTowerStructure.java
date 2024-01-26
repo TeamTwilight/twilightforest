@@ -16,7 +16,6 @@ import twilightforest.world.components.structures.mushroomtower.MushroomTowerMai
 import twilightforest.world.components.structures.util.LandmarkStructure;
 
 import java.util.Arrays;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class MushroomTowerStructure extends LandmarkStructure {

@@ -26,9 +26,9 @@ public class ProtectionBoxModel<T extends ProtectionBox> extends ListModel<T> {
 
 	public static MeshDefinition createMesh() {
 		MeshDefinition mesh = new MeshDefinition();
-		PartDefinition partRoot = mesh.getRoot();
+		PartDefinition definition = mesh.getRoot();
 
-		partRoot.addOrReplaceChild("box", CubeListBuilder.create()
+		definition.addOrReplaceChild("box", CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(0.0F, 0.0F, 0.0F, 16.0F, 16.0F, 16.0F),
 				PartPose.ZERO);
@@ -69,13 +69,13 @@ public class ProtectionBoxModel<T extends ProtectionBox> extends ListModel<T> {
 	private void resizeBoxElement(int pixelsX, int pixelsY, int pixelsZ) {
 
 		MeshDefinition mesh = createMesh();
-		PartDefinition partRoot = mesh.getRoot();
+		PartDefinition definition = mesh.getRoot();
 
-		partRoot.addOrReplaceChild("box", CubeListBuilder.create()
+		definition.addOrReplaceChild("box", CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(-1.0F, -1.0F, -1.0F, pixelsX, pixelsY, pixelsZ),
 				PartPose.ZERO);
-		box = partRoot.getChild("box").bake(16, 16);
+		box = definition.getChild("box").bake(16, 16);
 
 		this.lastPixelsX = pixelsX;
 		this.lastPixelsY = pixelsY;

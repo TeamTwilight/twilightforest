@@ -2,7 +2,7 @@ package twilightforest.data.custom;
 
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
 
@@ -15,6 +15,7 @@ public class CrumbleHornGenerator extends CrumbleHornProvider {
 	@Override
 	public void registerTransforms() {
 		addTransform(Blocks.STONE_BRICKS, Blocks.CRACKED_STONE_BRICKS);
+		addTransform(Blocks.INFESTED_STONE_BRICKS, Blocks.INFESTED_CRACKED_STONE_BRICKS);
 		addTransform(Blocks.POLISHED_BLACKSTONE_BRICKS, Blocks.CRACKED_POLISHED_BLACKSTONE_BRICKS);
 		addTransform(Blocks.CRACKED_POLISHED_BLACKSTONE_BRICKS, Blocks.BLACKSTONE);
 		addTransform(Blocks.NETHER_BRICKS, Blocks.CRACKED_NETHER_BRICKS);
@@ -23,10 +24,15 @@ public class CrumbleHornGenerator extends CrumbleHornProvider {
 		addTransform(TFBlocks.MAZESTONE_BRICK.get(), TFBlocks.CRACKED_MAZESTONE.get());
 		addTransform(TFBlocks.UNDERBRICK.get(), TFBlocks.CRACKED_UNDERBRICK.get());
 		addTransform(TFBlocks.DEADROCK.get(), TFBlocks.CRACKED_DEADROCK.get());
+		addTransform(TFBlocks.CRACKED_DEADROCK.get(), TFBlocks.WEATHERED_DEADROCK.get());
 		addTransform(TFBlocks.TOWERWOOD.get(), TFBlocks.CRACKED_TOWERWOOD.get());
 		addTransform(TFBlocks.CASTLE_BRICK.get(), TFBlocks.CRACKED_CASTLE_BRICK.get());
+		addTransform(TFBlocks.CRACKED_CASTLE_BRICK.get(), TFBlocks.WORN_CASTLE_BRICK.get());
 		addTransform(TFBlocks.NAGASTONE_PILLAR.get(), TFBlocks.CRACKED_NAGASTONE_PILLAR.get());
 		addTransform(TFBlocks.ETCHED_NAGASTONE.get(), TFBlocks.CRACKED_ETCHED_NAGASTONE.get());
+		addTransform(TFBlocks.CASTLE_BRICK_STAIRS.get(), TFBlocks.CRACKED_CASTLE_BRICK_STAIRS.get());
+		addTransform(TFBlocks.NAGASTONE_STAIRS_LEFT.get(), TFBlocks.CRACKED_NAGASTONE_STAIRS_LEFT.get());
+		addTransform(TFBlocks.NAGASTONE_STAIRS_RIGHT.get(), TFBlocks.CRACKED_NAGASTONE_STAIRS_RIGHT.get());
 		addTransform(Blocks.STONE, Blocks.COBBLESTONE);
 		addTransform(Blocks.COBBLESTONE, Blocks.GRAVEL);
 		addTransform(Blocks.SANDSTONE, Blocks.SAND);

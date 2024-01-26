@@ -19,7 +19,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.neoforged.neoforge.event.EventHooks;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFSounds;
 
@@ -127,13 +127,13 @@ public class TowerwoodBorer extends Monster {
 			} else {
 				RandomSource random = this.mob.getRandom();
 
-				if (random.nextInt(10) == 0 && ForgeEventFactory.getMobGriefingEvent(this.mob.level(), this.mob)) {
+				if (random.nextInt(10) == 0 && EventHooks.getMobGriefingEvent(this.mob.level(), this.mob)) {
 					this.facing = Direction.getRandom(random);
 					BlockPos blockpos = BlockPos.containing(this.mob.getX(), this.mob.getY() + 0.5D, this.mob.getZ()).relative(this.facing);
 					BlockState state = this.mob.level().getBlockState(blockpos);
 
 					// TF - Change block check
-					if (state.is(TFBlocks.TOWERWOOD.get())) {
+					if (state.is(TFBlocks.TOWERWOOD)) {
 						this.doMerge = true;
 						return true;
 					}
@@ -160,7 +160,7 @@ public class TowerwoodBorer extends Monster {
 
 				// TF - Change block check
 				// TF - add a random chance to dig. This should prevent them from instantly digging away
-				if (state.is(TFBlocks.TOWERWOOD.get()) && this.mob.getRandom().nextInt(5) == 0) {
+				if (state.is(TFBlocks.TOWERWOOD) && this.mob.getRandom().nextInt(5) == 0) {
 					// TF - Change block type
 					level.setBlock(blockpos, TFBlocks.INFESTED_TOWERWOOD.get().defaultBlockState(), 3);
 					this.mob.spawnAnim();
@@ -209,8 +209,8 @@ public class TowerwoodBorer extends Monster {
 							BlockState state = world.getBlockState(offsetPos);
 
 							// TF - Change block check
-							if (state.is(TFBlocks.INFESTED_TOWERWOOD.get())) {
-								if (ForgeEventFactory.getMobGriefingEvent(world, this.borer)) {
+							if (state.is(TFBlocks.INFESTED_TOWERWOOD)) {
+								if (EventHooks.getMobGriefingEvent(world, this.borer)) {
 									world.destroyBlock(offsetPos, true);
 									this.borer.gameEvent(GameEvent.BLOCK_DESTROY);
 								} else {

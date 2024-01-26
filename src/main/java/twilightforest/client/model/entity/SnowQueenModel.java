@@ -16,14 +16,14 @@ public class SnowQueenModel extends HumanoidModel<SnowQueen> {
 
 	public static LayerDefinition create() {
 		MeshDefinition mesh = HumanoidModel.createMesh(CubeDeformation.NONE, 0);
-		PartDefinition partRoot = mesh.getRoot();
+		PartDefinition definition = mesh.getRoot();
 
-		var head = partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+		var head = definition.addOrReplaceChild("head", CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F),
 				PartPose.offset(0.0F, -4.0F, 0.0F));
 
-		partRoot.addOrReplaceChild("hat", CubeListBuilder.create(),
+		definition.addOrReplaceChild("hat", CubeListBuilder.create(),
 				PartPose.ZERO);
 
 		var crown = head.addOrReplaceChild("crown", CubeListBuilder.create(),
@@ -34,27 +34,27 @@ public class SnowQueenModel extends HumanoidModel<SnowQueen> {
 		makeSideCrown(crown, -1, -4, 10F, 0);
 		makeSideCrown(crown, 0, 4, -10F, 1);
 
-		partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+		definition.addOrReplaceChild("body", CubeListBuilder.create()
 						.texOffs(32, 0)
 						.addBox(-4.0F, 0.0F, -2.0F, 8, 23, 4),
 				PartPose.ZERO);
 
-		partRoot.addOrReplaceChild("right_arm", CubeListBuilder.create()
+		definition.addOrReplaceChild("right_arm", CubeListBuilder.create()
 						.texOffs(16, 16)
 						.addBox(-2.0F, -2.0F, -1.5F, 3, 12, 3),
 				PartPose.offset(-5.0F, 2.0F, 0.0F));
 
-		partRoot.addOrReplaceChild("left_arm", CubeListBuilder.create()
+		definition.addOrReplaceChild("left_arm", CubeListBuilder.create()
 						.texOffs(16, 16)
 						.addBox(-1.0F, -2.0F, -1.3F, 3, 12, 3),
 				PartPose.offset(5.0F, 2.0F, 0.0F));
 
-		partRoot.addOrReplaceChild("right_leg", CubeListBuilder.create()
+		definition.addOrReplaceChild("right_leg", CubeListBuilder.create()
 						.texOffs(0, 16)
 						.addBox(-1.5F, 0.0F, -1.5F, 3, 12, 3),
 				PartPose.offset(-1.9F, 12.0F, 0.0F));
 
-		partRoot.addOrReplaceChild("left_leg", CubeListBuilder.create()
+		definition.addOrReplaceChild("left_leg", CubeListBuilder.create()
 						.texOffs(0, 16)
 						.addBox(-1.5F, 0.0F, -1.5F, 3, 12, 3),
 				PartPose.offset(1.9F, 12.0F, 0.0F));

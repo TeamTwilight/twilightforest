@@ -163,7 +163,7 @@ public class SkeletonDruid extends AbstractSkeleton {
 		this.getEntityData().set(DATA_BABY_ID, shouldBaby);
 		if (!this.level().isClientSide()) {
 			AttributeInstance attributeinstance = this.getAttribute(Attributes.MOVEMENT_SPEED);
-			attributeinstance.removeModifier(SPEED_MODIFIER_BABY);
+			attributeinstance.removeModifier(SPEED_MODIFIER_BABY.getId());
 			if (shouldBaby) {
 				attributeinstance.addTransientModifier(SPEED_MODIFIER_BABY);
 			}
@@ -177,11 +177,6 @@ public class SkeletonDruid extends AbstractSkeleton {
 		}
 
 		super.onSyncedDataUpdated(dataAccessor);
-	}
-
-	@Override
-	public double getMyRidingOffset() {
-		return this.isBaby() ? -0.35D : -0.6D;
 	}
 
 	@Override

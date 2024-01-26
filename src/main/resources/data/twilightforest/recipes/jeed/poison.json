@@ -1,25 +1,18 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
+  "neoforge:conditions": [
     {
-      "conditions": [
-        {
-          "modid": "jeed",
-          "type": "forge:mod_loaded"
-        }
-      ],
-      "recipe": {
-        "type": "jeed:effect_provider",
-        "effect": "minecraft:poison",
-        "providers": [
-          {
-            "item": "twilightforest:adherent_spawn_egg"
-          },
-          {
-            "item": "twilightforest:skeleton_druid_spawn_egg"
-          }
-        ]
-      }
+      "type": "neoforge:mod_loaded",
+      "modid": "jeed"
+    }
+  ],
+  "type": "jeed:effect_provider",
+  "effect": "minecraft:poison",
+  "providers": [
+    {
+      "item": "twilightforest:adherent_spawn_egg"
+    },
+    {
+      "item": "twilightforest:skeleton_druid_spawn_egg"
     }
   ]
 }

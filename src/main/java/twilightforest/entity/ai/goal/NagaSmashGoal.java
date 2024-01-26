@@ -6,7 +6,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.neoforged.neoforge.event.EventHooks;
 import twilightforest.entity.boss.Naga;
 import twilightforest.util.EntityUtil;
 
@@ -20,7 +20,7 @@ public class NagaSmashGoal extends Goal {
 
 	@Override
 	public boolean canUse() {
-		return this.naga.horizontalCollision && ForgeEventFactory.getMobGriefingEvent(this.naga.level(), this.naga);
+		return this.naga.horizontalCollision && EventHooks.getMobGriefingEvent(this.naga.level(), this.naga);
 	}
 
 	@Override

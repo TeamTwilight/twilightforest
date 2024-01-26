@@ -22,9 +22,9 @@ import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFEntities;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.loot.TFLootTables;
+import twilightforest.util.BoundingBoxUtils;
 import twilightforest.util.EntityUtil;
 import twilightforest.util.RotationUtil;
 import twilightforest.util.TFStructureHelper;
@@ -79,7 +79,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 
 		this.highestOpening = 0;
 
-		this.boundingBox = TFLandmark.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, size - 1, height - 1, size - 1, direction, false);
+		this.boundingBox = BoundingBoxUtils.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, size - 1, height - 1, size - 1, direction, false);
 	}
 
 	/**
@@ -1879,5 +1879,10 @@ public class TowerWingComponent extends TFStructureComponentOld {
 				this.setBlockStateRotated(world, colour, 0, y, rightOffset, rotation, sbb);
 			}
 		}
+	}
+
+	@Override
+	public int getGroundLevelDelta() {
+		return 1;
 	}
 }

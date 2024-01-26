@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_item",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_item"
     ]
   ],
   "rewards": {
     "recipes": [
       "twilightforest:wood/twilight_oak_chest"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -5,7 +5,15 @@
         "model": "twilightforest:block/wrought_iron_fence_post"
       },
       "when": {
-        "post": "true"
+        "post": "post"
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/wrought_iron_fence_post_capped"
+      },
+      "when": {
+        "post": "capped"
       }
     },
     {

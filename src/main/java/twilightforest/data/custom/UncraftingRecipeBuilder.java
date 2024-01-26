@@ -1,32 +1,31 @@
 package twilightforest.data.custom;
 
-import com.google.common.collect.Sets;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import net.minecraft.advancements.CriterionTriggerInstance;
+import net.minecraft.advancements.Criterion;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeBuilder;
+import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import net.minecraft.world.level.ItemLike;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
-import twilightforest.init.TFRecipes;
+import twilightforest.item.recipe.UncraftingRecipe;
 
-import java.util.*;
-import java.util.function.Consumer;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 public class UncraftingRecipeBuilder implements RecipeBuilder {
 
 	private final Ingredient input;
 	private final int count;
 	private int cost = -1;
-	private final List<String> pattern = new ArrayList<>();
-	private final Map<Character, Ingredient> outputs = new HashMap<>();
+	private final List<String> rows = new ArrayList<>();
+	private final Map<Character, Ingredient> key = new LinkedHashMap<>();
 
 	public UncraftingRecipeBuilder(Ingredient input, int count) {
 		this.input = input;
@@ -66,31 +65,30 @@ public class UncraftingRecipeBuilder implements RecipeBuilder {
 		return this;
 	}
 
-	public UncraftingRecipeBuilder define(Character pSymbol, Ingredient pIngredient) {
-		if (this.outputs.containsKey(pSymbol)) {
-			throw new IllegalArgumentException("Symbol '" + pSymbol + "' is already defined!");
-		} else if (pSymbol == ' ') {
+	public UncraftingRecipeBuilder define(Character symbol, Ingredient ingredient) {
+		if (this.key.containsKey(symbol)) {
+			throw new IllegalArgumentException("Symbol '" + symbol + "' is already defined!");
+		} else if (symbol == ' ') {
 			throw new IllegalArgumentException("Symbol ' ' (whitespace) is reserved and cannot be defined");
 		} else {
-			this.outputs.put(pSymbol, pIngredient);
+			this.key.put(symbol, ingredient);
 			return this;
 		}
 	}
 
 	public UncraftingRecipeBuilder pattern(String pattern) {
-		if (!this.pattern.isEmpty() && pattern.length() != this.pattern.get(0).length()) {
+		if (!this.rows.isEmpty() && pattern.length() != this.rows.get(0).length()) {
 			throw new IllegalArgumentException("Pattern must be the same width on every line!");
 		} else {
-			this.pattern.add(pattern);
+			this.rows.add(pattern);
 			return this;
 		}
 	}
 
 	@Override
-	public RecipeBuilder unlockedBy(String pCriterionName, CriterionTriggerInstance pCriterionTrigger) {
+	public RecipeBuilder unlockedBy(String name, Criterion<?> trigger) {
 		return this;
 	}
-
 
 	@Override
 	public RecipeBuilder group(@Nullable String group) {
@@ -103,112 +101,14 @@ public class UncraftingRecipeBuilder implements RecipeBuilder {
 	}
 
 	@Override
-	public void save(Consumer<FinishedRecipe> consumer, ResourceLocation id) {
-		this.ensureValid(id);
-		consumer.accept(new Result(id, this.input, this.count, this.cost, this.pattern, this.outputs));
+	public void save(RecipeOutput output) {
+		this.save(output, TwilightForestMod.prefix("uncrafting/" + RecipeBuilder.getDefaultRecipeId(this.getResult()).getPath()));
 	}
 
 	@Override
-	public void save(Consumer<FinishedRecipe> consumer) {
-		this.save(consumer, new ResourceLocation(TwilightForestMod.ID, "uncrafting/" + this.getDefaultRecipeId(this.getResult()).getPath()));
-	}
-
-	private void ensureValid(ResourceLocation id) {
-		if (this.pattern.isEmpty()) {
-			throw new IllegalStateException("No pattern is defined for shaped recipe " + id + "!");
-		} else {
-			Set<Character> set = Sets.newHashSet(this.outputs.keySet());
-			set.remove(' ');
-
-			for(String s : this.pattern) {
-				for(int i = 0; i < s.length(); ++i) {
-					char c0 = s.charAt(i);
-					if (!this.outputs.containsKey(c0) && c0 != ' ') {
-						throw new IllegalStateException("Pattern in recipe " + id + " uses undefined symbol '" + c0 + "'");
-					}
-
-					set.remove(c0);
-				}
-			}
-
-			if (!set.isEmpty()) {
-				throw new IllegalStateException("Ingredients are defined but not used in pattern for recipe " + id);
-			}
-		}
-	}
-
-	private ResourceLocation getDefaultRecipeId(ItemLike item) {
-		return BuiltInRegistries.ITEM.getKey(item.asItem());
-	}
-
-	public static class Result implements FinishedRecipe {
-
-		private final ResourceLocation id;
-		private final Ingredient input;
-		private final int count;
-		private final int cost;
-		private final List<String> pattern;
-		private final Map<Character, Ingredient> outputs;
-
-		public Result(ResourceLocation id, Ingredient input, int count, int cost, List<String> pattern, Map<Character, Ingredient> outputs) {
-			this.id = id;
-			this.input = input;
-			this.count = count;
-			this.cost = cost;
-			this.pattern = pattern;
-			this.outputs = outputs;
-		}
-
-		@Override
-		public void serializeRecipeData(JsonObject object) {
-			JsonArray jsonarray = new JsonArray();
-
-			for(String s : this.pattern) {
-				jsonarray.add(s);
-			}
-
-			object.add("pattern", jsonarray);
-			JsonObject keys = new JsonObject();
-
-			for(Map.Entry<Character, Ingredient> entry : this.outputs.entrySet()) {
-				keys.add(String.valueOf(entry.getKey()), entry.getValue().toJson());
-			}
-
-			object.add("key", keys);
-
-			JsonObject inputJson = new JsonObject();
-			inputJson.add("ingredient", this.input.toJson());
-			if (this.count > 1) {
-				inputJson.addProperty("count", this.count);
-			}
-
-			object.add("input", inputJson);
-
-			if (this.cost > -1) {
-				object.addProperty("cost", this.cost);
-			}
-		}
-
-		@Override
-		public ResourceLocation getId() {
-			return this.id;
-		}
-
-		@Override
-		public RecipeSerializer<?> getType() {
-			return TFRecipes.UNCRAFTING_SERIALIZER.get();
-		}
-
-		@Nullable
-		@Override
-		public JsonObject serializeAdvancement() {
-			return null;
-		}
-
-		@Nullable
-		@Override
-		public ResourceLocation getAdvancementId() {
-			return null;
-		}
+	public void save(RecipeOutput output, ResourceLocation id) {
+		ShapedRecipePattern pattern = ShapedRecipePattern.of(this.key, this.rows);
+		UncraftingRecipe recipe = new UncraftingRecipe(this.cost, this.input, this.count, pattern);
+		output.accept(id, recipe, null);
 	}
 }

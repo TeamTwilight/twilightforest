@@ -15,7 +15,6 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancement.twilightforest.magic_map_focus.desc",
       "with": [
@@ -33,12 +32,9 @@
         }
       ]
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
       "item": "twilightforest:magic_map_focus"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancement.twilightforest.magic_map_focus"
     }

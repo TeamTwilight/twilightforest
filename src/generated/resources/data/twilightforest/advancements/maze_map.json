@@ -15,7 +15,6 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancement.twilightforest.maze_map.desc",
       "with": [
@@ -25,11 +24,9 @@
       ]
     },
     "frame": "goal",
-    "hidden": false,
     "icon": {
       "item": "twilightforest:filled_maze_map"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancement.twilightforest.maze_map"
     }

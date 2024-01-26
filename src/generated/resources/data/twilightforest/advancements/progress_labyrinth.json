@@ -32,16 +32,13 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancement.twilightforest.progress_labyrinth.desc"
     },
     "frame": "goal",
-    "hidden": false,
     "icon": {
       "item": "twilightforest:meef_stroganoff"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancement.twilightforest.progress_labyrinth"
     }

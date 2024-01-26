@@ -11,9 +11,9 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.init.TFBlocks;
-import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.util.BoundingBoxUtils;
+import twilightforest.world.components.structures.TFStructureComponentOld;
 
 
 public class CloudTreeComponent extends TFStructureComponentOld {
@@ -32,10 +32,7 @@ public class CloudTreeComponent extends TFStructureComponentOld {
 		y = (y >> 2) << 2;
 		z = (z >> 2) << 2;
 
-		this.boundingBox = TFLandmark.getComponentToAddBoundingBox(x, y, z, -8, 0, -8, 20, 28, 20, Direction.SOUTH, false);
-
-		// spawn list!
-		this.spawnListIndex = 1;
+		this.boundingBox = BoundingBoxUtils.getComponentToAddBoundingBox(x, y, z, -8, 0, -8, 20, 28, 20, Direction.SOUTH, false);
 	}
 
 	@Override

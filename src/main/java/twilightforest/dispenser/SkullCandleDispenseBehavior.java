@@ -2,7 +2,7 @@ package twilightforest.dispenser;
 
 import com.mojang.authlib.GameProfile;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.BlockSource;
+import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -13,8 +13,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.block.LightableBlock;
 import twilightforest.block.AbstractSkullCandleBlock;
+import twilightforest.block.LightableBlock;
 import twilightforest.block.SkullCandleBlock;
 import twilightforest.block.WallSkullCandleBlock;
 import twilightforest.block.entity.SkullCandleBlockEntity;
@@ -27,9 +27,9 @@ public class SkullCandleDispenseBehavior extends OptionalDispenseItemBehavior {
 
 	@Override
 	protected ItemStack execute(BlockSource source, ItemStack stack) {
-		ServerLevel level = source.getLevel();
+		ServerLevel level = source.level();
 		if (!level.isClientSide()) {
-			BlockPos blockpos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
+			BlockPos blockpos = source.pos().relative(source.state().getValue(DispenserBlock.FACING));
 			this.setSuccess(tryAddCandle(level, blockpos, stack.getItem()) || tryCreateSkullCandle(level, blockpos, stack.getItem()));
 			if (this.isSuccess()) {
 				stack.shrink(1);

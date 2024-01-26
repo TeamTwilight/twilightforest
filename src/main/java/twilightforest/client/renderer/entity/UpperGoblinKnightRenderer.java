@@ -4,7 +4,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import twilightforest.client.model.entity.UpperGoblinKnightModel;
-import twilightforest.client.renderer.entity.TFBipedRenderer;
 import twilightforest.entity.monster.UpperGoblinKnight;
 
 public class UpperGoblinKnightRenderer extends TFBipedRenderer<UpperGoblinKnight, UpperGoblinKnightModel> {

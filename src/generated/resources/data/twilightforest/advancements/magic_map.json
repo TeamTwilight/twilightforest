@@ -15,7 +15,6 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancement.twilightforest.magic_map.desc",
       "with": [
@@ -24,12 +23,9 @@
         }
       ]
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
       "item": "twilightforest:filled_magic_map"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancement.twilightforest.magic_map"
     }

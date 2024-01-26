@@ -13,8 +13,8 @@ import twilightforest.init.TFSounds;
 
 public class IceBombItem extends Item {
 
-	public IceBombItem(Properties props) {
-		super(props);
+	public IceBombItem(Properties properties) {
+		super(properties);
 	}
 
 	@Override

@@ -8,12 +8,12 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-
 import org.jetbrains.annotations.Nullable;
+
 import java.util.List;
 
 // Landmark structure with a progression lock; Lich Tower/Labyrinth/Hydra Lair/Final Castle/etc
-public abstract class ProgressionStructure extends LandmarkStructure implements AdvancementLockedStructure, StructureHints {
+public abstract class ProgressionStructure extends ConquerableStructure implements AdvancementLockedStructure, StructureHints {
     protected static <S extends ProgressionStructure> Products.P4<RecordCodecBuilder.Mu<S>, AdvancementLockConfig, HintConfig, DecorationConfig, StructureSettings> progressionCodec(RecordCodecBuilder.Instance<S> instance) {
         return instance.group(
                 AdvancementLockConfig.CODEC.fieldOf("advancements_required").forGetter(s -> s.advancementLockConfig),

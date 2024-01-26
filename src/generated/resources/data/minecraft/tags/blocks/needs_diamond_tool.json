@@ -1,10 +1,8 @@
 {
   "values": [
     "twilightforest:aurora_block",
-    "twilightforest:deadrock",
-    "twilightforest:cracked_deadrock",
-    "twilightforest:weathered_deadrock",
     "#twilightforest:castle_blocks",
-    "#twilightforest:mazestone"
+    "#twilightforest:mazestone",
+    "#twilightforest:deadrock"
   ]
 }

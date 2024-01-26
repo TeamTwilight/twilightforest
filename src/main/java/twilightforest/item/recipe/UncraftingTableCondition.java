@@ -1,24 +1,17 @@
 package twilightforest.item.recipe;
 
-import com.google.gson.JsonObject;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.common.crafting.conditions.ICondition;
-import net.minecraftforge.common.crafting.conditions.IConditionSerializer;
+import com.mojang.serialization.Codec;
+import net.neoforged.neoforge.common.conditions.ICondition;
 import twilightforest.TFConfig;
-import twilightforest.TwilightForestMod;
 
 public class UncraftingTableCondition implements ICondition {
 
-	private static final ResourceLocation ID = TwilightForestMod.prefix("uncrafting_table_enabled");
 	public static final UncraftingTableCondition INSTANCE = new UncraftingTableCondition();
-
-	private UncraftingTableCondition() {
-
-	}
+	public static final Codec<UncraftingTableCondition> CODEC = Codec.unit(INSTANCE).stable();
 
 	@Override
-	public ResourceLocation getID() {
-		return ID;
+	public Codec<? extends ICondition> codec() {
+		return CODEC;
 	}
 
 	@Override
@@ -26,25 +19,8 @@ public class UncraftingTableCondition implements ICondition {
 		return !TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableEntireTable.get();
 	}
 
-	public static class Serializer implements IConditionSerializer<UncraftingTableCondition> {
-
-		public static final Serializer INSTANCE = new Serializer();
-
-		public Serializer() {
-		}
-
-		@Override
-		public ResourceLocation getID() {
-			return ID;
-		}
-
-		@Override
-		public UncraftingTableCondition read(JsonObject json) {
-			return new UncraftingTableCondition();
-		}
-
-		@Override
-		public void write(JsonObject json, UncraftingTableCondition value) {
-		}
+	@Override
+	public String toString() {
+		return "Uncrafting Table Enabled";
 	}
 }

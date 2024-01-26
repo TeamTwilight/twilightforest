@@ -40,7 +40,6 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancement.twilightforest.beanstalk.desc",
       "with": [
@@ -50,11 +49,9 @@
       ]
     },
     "frame": "goal",
-    "hidden": false,
     "icon": {
       "item": "twilightforest:huge_stalk"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancement.twilightforest.beanstalk"
     }

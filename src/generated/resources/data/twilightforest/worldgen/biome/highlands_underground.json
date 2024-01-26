@@ -1,0 +1,136 @@
+{
+  "carvers": {
+    "air": "twilightforest:highland_caves"
+  },
+  "downfall": 0.0,
+  "effects": {
+    "fog_color": 12648408,
+    "mood_sound": {
+      "block_search_extent": 8,
+      "offset": 2.0,
+      "sound": "minecraft:ambient.cave",
+      "tick_delay": 6000
+    },
+    "music": {
+      "max_delay": 12000,
+      "min_delay": 1200,
+      "replace_current_music": true,
+      "sound": "twilightforest:music.twilightforest.twilight_forest"
+    },
+    "sky_color": 2105930,
+    "water_color": 4159204,
+    "water_fog_color": 329011
+  },
+  "features": [
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [
+      "twilightforest:legacy_coal_ore",
+      "twilightforest:legacy_iron_ore",
+      "twilightforest:legacy_gold_ore",
+      "twilightforest:legacy_redstone_ore",
+      "twilightforest:legacy_diamond_ore",
+      "twilightforest:legacy_lapis_ore",
+      "twilightforest:legacy_copper_ore"
+    ],
+    [
+      "twilightforest:troll_roots"
+    ]
+  ],
+  "has_precipitation": true,
+  "spawn_costs": {
+    "minecraft:creeper": {
+      "charge": 0.5,
+      "energy_budget": 0.1
+    },
+    "minecraft:enderman": {
+      "charge": 0.3,
+      "energy_budget": 0.1
+    },
+    "minecraft:skeleton": {
+      "charge": 0.7,
+      "energy_budget": 0.1
+    },
+    "minecraft:slime": {
+      "charge": 0.2,
+      "energy_budget": 0.1
+    },
+    "minecraft:spider": {
+      "charge": 0.6,
+      "energy_budget": 0.1
+    },
+    "minecraft:zombie": {
+      "charge": 0.7,
+      "energy_budget": 0.1
+    },
+    "twilightforest:kobold": {
+      "charge": 0.2,
+      "energy_budget": 0.1
+    }
+  },
+  "spawners": {
+    "ambient": [
+      {
+        "type": "minecraft:bat",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 10
+      }
+    ],
+    "axolotls": [],
+    "creature": [],
+    "misc": [],
+    "monster": [
+      {
+        "type": "minecraft:spider",
+        "maxCount": 3,
+        "minCount": 2,
+        "weight": 10
+      },
+      {
+        "type": "minecraft:zombie",
+        "maxCount": 2,
+        "minCount": 1,
+        "weight": 10
+      },
+      {
+        "type": "minecraft:skeleton",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 10
+      },
+      {
+        "type": "minecraft:creeper",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 1
+      },
+      {
+        "type": "minecraft:slime",
+        "maxCount": 4,
+        "minCount": 2,
+        "weight": 10
+      },
+      {
+        "type": "minecraft:enderman",
+        "maxCount": 2,
+        "minCount": 1,
+        "weight": 1
+      },
+      {
+        "type": "twilightforest:kobold",
+        "maxCount": 3,
+        "minCount": 1,
+        "weight": 10
+      }
+    ],
+    "underground_water_creature": [],
+    "water_ambient": [],
+    "water_creature": []
+  },
+  "temperature": 0.35
+}

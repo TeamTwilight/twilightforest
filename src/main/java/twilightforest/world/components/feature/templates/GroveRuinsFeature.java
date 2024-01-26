@@ -7,10 +7,9 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.processors.StoneBricksVariants;
-
-import org.jetbrains.annotations.Nullable;
 
 public class GroveRuinsFeature extends TemplateFeature<NoneFeatureConfiguration> {
     private static final ResourceLocation PILLAR = TwilightForestMod.prefix("feature/ruins/grove_pillar");

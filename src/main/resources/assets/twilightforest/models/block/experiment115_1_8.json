@@ -82,43 +82,43 @@
             "from": [ 4, 8, 1 ],
             "to": [ 8, 8, 5 ],
             "faces": {
-                "up":    { "texture": "#top_2", "forge_data": { "color": "FFFFFFFF", "block_light": 15, "sky_light": 15 } }
+                "up":    { "texture": "#top_2", "neoforge_data": { "block_light": 15, "sky_light": 15 } }
             }
         }, {
             "from": [ 2, 8, 1 ],
             "to": [ 4, 8, 3 ],
             "faces": {
-                "up":    { "texture": "#top_2", "forge_data": { "color": "FFFFFFFF", "block_light": 15, "sky_light": 15 } }
+                "up":    { "texture": "#top_2", "neoforge_data": { "block_light": 15, "sky_light": 15 } }
             }
         },
         {   "from": [ 6, 8, 5 ],
             "to": [ 8, 8, 7 ],
             "faces": {
-                "up":    { "texture": "#top_2", "forge_data": { "color": "FFFFFFFF", "block_light": 15, "sky_light": 15 } }
+                "up":    { "texture": "#top_2", "neoforge_data": { "block_light": 15, "sky_light": 15 } }
             }
         },
         {   "from": [ 1, 8, 1 ],
             "to": [ 2, 8, 2 ],
             "faces": {
-                "up":    { "texture": "#top_2", "forge_data": { "color": "FFFFFFFF", "block_light": 15, "sky_light": 15 } }
+                "up":    { "texture": "#top_2", "neoforge_data": { "block_light": 15, "sky_light": 15 } }
             }
         },
         {   "from": [ 3, 8, 3 ],
             "to": [ 4, 8, 4 ],
             "faces": {
-                "up":    { "texture": "#top_2", "forge_data": { "color": "FFFFFFFF", "block_light": 15, "sky_light": 15 } }
+                "up":    { "texture": "#top_2", "neoforge_data": { "block_light": 15, "sky_light": 15 } }
             }
         },
         {   "from": [ 5, 8, 5 ],
             "to": [ 6, 8, 6 ],
             "faces": {
-                "up":    { "texture": "#top_2", "forge_data": { "color": "FFFFFFFF", "block_light": 15, "sky_light": 15 } }
+                "up":    { "texture": "#top_2", "neoforge_data": { "block_light": 15, "sky_light": 15 } }
             }
         },
         {   "from": [ 7, 8, 7 ],
             "to": [ 8, 8, 8 ],
             "faces": {
-                "up":    { "texture": "#top_2", "forge_data": { "color": "FFFFFFFF", "block_light": 15, "sky_light": 15 } }
+                "up":    { "texture": "#top_2", "neoforge_data": { "block_light": 15, "sky_light": 15 } }
             }
         }
     ]

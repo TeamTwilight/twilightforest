@@ -1,12 +1,15 @@
 package twilightforest.entity.passive;
 
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
+import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.TFSounds;
 
 public class Raven extends FlyingBird {
@@ -44,5 +47,10 @@ public class Raven extends FlyingBird {
 	@Override
 	public boolean isSpooked() {
 		return this.getLastHurtByMob() != null;
+	}
+
+	@Override
+	public TagKey<Item> getTemptItems() {
+		return ItemTagGenerator.RAVEN_TEMPT_ITEMS;
 	}
 }

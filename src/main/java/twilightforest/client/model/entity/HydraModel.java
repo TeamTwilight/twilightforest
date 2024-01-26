@@ -39,14 +39,14 @@ public class HydraModel extends HierarchicalModel<Hydra> {
 
 	public static LayerDefinition create() {
 		MeshDefinition mesh = new MeshDefinition();
-		PartDefinition partRoot = mesh.getRoot();
+		PartDefinition definition = mesh.getRoot();
 
-		partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+		definition.addOrReplaceChild("body", CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(-48F, 0F, 0F, 96, 96, 40),
 				PartPose.offsetAndRotation(0F, -12F, 0F, 1.22173F, 0F, 0F));
 
-		partRoot.addOrReplaceChild("leg_1", CubeListBuilder.create()
+		definition.addOrReplaceChild("leg_1", CubeListBuilder.create()
 						.texOffs(0, 136)
 						.addBox(-16F, 0F, -16F, 32, 48, 32)
 						.texOffs(184, 200)
@@ -57,7 +57,7 @@ public class HydraModel extends HierarchicalModel<Hydra> {
 						.addBox(12F, 40F, -20F, 8, 8, 8),
 				PartPose.offset(48F, -24F, 0F));
 
-		partRoot.addOrReplaceChild("leg_2", CubeListBuilder.create().mirror()
+		definition.addOrReplaceChild("leg_2", CubeListBuilder.create().mirror()
 						.texOffs(0, 136)
 						.addBox(-16F, 0F, -16F, 32, 48, 32)
 						.texOffs(184, 200)
@@ -68,7 +68,7 @@ public class HydraModel extends HierarchicalModel<Hydra> {
 						.addBox(12F, 40F, -20F, 8, 8, 8),
 				PartPose.offset(-48F, -24F, 0F));
 
-		var tail1 = partRoot.addOrReplaceChild("tail_1", CubeListBuilder.create()
+		var tail1 = definition.addOrReplaceChild("tail_1", CubeListBuilder.create()
 						.texOffs(128, 136)
 						.addBox(-16F, -16F, -16F, 32, 32, 32)
 						.texOffs(128, 200)
@@ -96,7 +96,7 @@ public class HydraModel extends HierarchicalModel<Hydra> {
 						.addBox(-2F, -28F, -11F, 4, 24, 24),
 				PartPose.offset(0F, 0F, 32F));
 
-		var head1 = partRoot.addOrReplaceChild("head_1", CubeListBuilder.create()
+		var head1 = definition.addOrReplaceChild("head_1", CubeListBuilder.create()
 						.texOffs(272, 0)
 						.addBox(-16F, -14F, -32F, 32, 24, 32)
 						.texOffs(272, 56)
@@ -115,7 +115,7 @@ public class HydraModel extends HierarchicalModel<Hydra> {
 						.addBox(-24F, -40.0F, 0F, 48, 48, 4),
 				PartPose.offsetAndRotation(0F, 0F, -10F, -0.5235988F, 0F, 0F));
 
-		var neck1a = partRoot.addOrReplaceChild("neck_1a", CubeListBuilder.create()
+		var neck1a = definition.addOrReplaceChild("neck_1a", CubeListBuilder.create()
 						.texOffs(128, 136).addBox(-16F, -16F, -16F, 32, 32, 32)
 						.texOffs(128, 200).addBox(-2F, -24F, 0F, 4, 24, 24),
 				PartPose.offset(-42F, -48F, 0F));
@@ -130,7 +130,7 @@ public class HydraModel extends HierarchicalModel<Hydra> {
 						.texOffs(128, 200).addBox(-2F, -24F, 0F, 4, 24, 24),
 				PartPose.offset(-16F, -16F, -16F));
 
-		var head2 = partRoot.addOrReplaceChild("head_2", CubeListBuilder.create()
+		var head2 = definition.addOrReplaceChild("head_2", CubeListBuilder.create()
 						.texOffs(272, 0)
 						.addBox(-16F, -14F, -32F, 32, 24, 32)
 						.texOffs(272, 56)
@@ -149,7 +149,7 @@ public class HydraModel extends HierarchicalModel<Hydra> {
 						.addBox(-24F, -40.0F, 0F, 48, 48, 4),
 				PartPose.offsetAndRotation(0F, 0F, -10F, -0.5235988F, 0F, 0F));
 
-		var neck2a = partRoot.addOrReplaceChild("neck_2a", CubeListBuilder.create()
+		var neck2a = definition.addOrReplaceChild("neck_2a", CubeListBuilder.create()
 						.texOffs(128, 136).addBox(-16F, -16F, -16F, 32, 32, 32)
 						.texOffs(128, 200).addBox(-2F, -24F, 0F, 4, 24, 24),
 				PartPose.offset(0F, -48F, 0F));
@@ -164,7 +164,7 @@ public class HydraModel extends HierarchicalModel<Hydra> {
 						.texOffs(128, 200).addBox(-2F, -24F, 0F, 4, 24, 24),
 				PartPose.offset(0F, -24F, -16F));
 
-		var head3 = partRoot.addOrReplaceChild("head_3", CubeListBuilder.create()
+		var head3 = definition.addOrReplaceChild("head_3", CubeListBuilder.create()
 						.texOffs(272, 0)
 						.addBox(-16F, -14F, -32F, 32, 24, 32)
 						.texOffs(272, 56)
@@ -183,7 +183,7 @@ public class HydraModel extends HierarchicalModel<Hydra> {
 						.addBox(-24F, -40.0F, 0F, 48, 48, 4),
 				PartPose.offsetAndRotation(0F, 0F, -10F, -0.5235988F, 0F, 0F));
 
-		var neck3a = partRoot.addOrReplaceChild("neck_3a", CubeListBuilder.create()
+		var neck3a = definition.addOrReplaceChild("neck_3a", CubeListBuilder.create()
 						.texOffs(128, 136).addBox(-16F, -16F, -16F, 32, 32, 32)
 						.texOffs(128, 200).addBox(-2F, -24F, 0F, 4, 24, 24),
 				PartPose.offset(42F, -48F, 0F));

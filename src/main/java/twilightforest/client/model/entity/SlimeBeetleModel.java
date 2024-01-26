@@ -84,7 +84,7 @@ public class SlimeBeetleModel extends HierarchicalModel<SlimeBeetle> {
 						.texOffs(40, 0)
 						.addBox(-1F, -1F, -1F, 10, 2, 2),
 				PartPose.offsetAndRotation(2F, 21F, -4F, 0F, 0.2792527F, 0.3490659F));
-		base.addOrReplaceChild("front_right_leg", CubeListBuilder.create()
+		base.addOrReplaceChild("front_right_leg", CubeListBuilder.create().mirror()
 						.texOffs(40, 0)
 						.addBox(-9F, -1F, -1F, 10, 2, 2)
 						.mirror(),
@@ -93,7 +93,7 @@ public class SlimeBeetleModel extends HierarchicalModel<SlimeBeetle> {
 						.texOffs(40, 0)
 						.addBox(-1F, -1F, -1F, 10, 2, 2),
 				PartPose.offsetAndRotation(2F, 21F, -1F, 0F, -0.2792527F, 0.3490659F));
-		base.addOrReplaceChild("middle_right_leg", CubeListBuilder.create()
+		base.addOrReplaceChild("middle_right_leg", CubeListBuilder.create().mirror()
 						.texOffs(40, 0)
 						.addBox(-9F, -1F, -1F, 10, 2, 2)
 						.mirror(),
@@ -102,7 +102,7 @@ public class SlimeBeetleModel extends HierarchicalModel<SlimeBeetle> {
 						.texOffs(40, 0)
 						.addBox(-1F, -1F, -1F, 10, 2, 2),
 				PartPose.offsetAndRotation(2F, 21F, 4F, 0F, -0.6981317F, 0.3490659F));
-		base.addOrReplaceChild("back_right_leg", CubeListBuilder.create()
+		base.addOrReplaceChild("back_right_leg", CubeListBuilder.create().mirror()
 						.texOffs(40, 0)
 						.addBox(-9F, -1F, -1F, 10, 2, 2)
 						.mirror(),

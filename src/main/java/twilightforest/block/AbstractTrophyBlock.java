@@ -11,7 +11,9 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Equipable;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -27,6 +29,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.TrophyBlockEntity;
 import twilightforest.enums.BossVariant;
 import twilightforest.init.TFBlockEntities;
@@ -34,10 +37,8 @@ import twilightforest.init.TFItems;
 import twilightforest.init.TFParticleType;
 import twilightforest.init.TFSounds;
 
-import org.jetbrains.annotations.Nullable;
-
 //[VanillaCopy] of AbstractSkullBlock except uses Variants instead of ISkullType and adds Sounds when clicked or powered
-public abstract class AbstractTrophyBlock extends BaseEntityBlock {
+public abstract class AbstractTrophyBlock extends BaseEntityBlock implements Equipable {
 
 	private final BossVariant variant;
 	private final int comparatorValue;
@@ -237,5 +238,10 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock {
 				}
 			}
 		}
+	}
+
+	@Override
+	public EquipmentSlot getEquipmentSlot() {
+		return EquipmentSlot.HEAD;
 	}
 }

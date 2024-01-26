@@ -10,14 +10,14 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import twilightforest.init.TFBlockEntities;
-import twilightforest.init.TFSounds;
 import twilightforest.block.GhastTrapBlock;
-import twilightforest.init.TFBlocks;
-import twilightforest.init.TFParticleType;
 import twilightforest.entity.boss.UrGhast;
 import twilightforest.entity.monster.CarminiteGhastguard;
 import twilightforest.entity.monster.CarminiteGhastling;
+import twilightforest.init.TFBlockEntities;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFParticleType;
+import twilightforest.init.TFSounds;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,10 +100,12 @@ public class GhastTrapBlockEntity extends BlockEntity {
 	}
 
 	public static void tick(Level level, BlockPos pos, BlockState state, GhastTrapBlockEntity te) {
-		if (state.getValue(GhastTrapBlock.ACTIVE)) {
-			te.tickActive(level, pos, state, te);
-		} else {
-			te.tickInactive(level, pos, state, te);
+		if (!level.isDebug()) {
+			if (state.getValue(GhastTrapBlock.ACTIVE)) {
+				te.tickActive(level, pos, state, te);
+			} else {
+				te.tickInactive(level, pos, state, te);
+			}
 		}
 	}
 
@@ -157,7 +159,7 @@ public class GhastTrapBlockEntity extends BlockEntity {
 			}
 		} else {
 			// trap nearby ghasts
-			AABB aabb = new AABB(pos.above(16), pos.above(16).offset(1, 1, 1)).inflate(6D, 16D, 6D);
+			AABB aabb = new AABB(pos.above(16).getCenter(), pos.above(16).offset(1, 1, 1).getCenter()).inflate(6D, 16D, 6D);
 
 			List<Ghast> nearbyGhasts = level.getEntitiesOfClass(Ghast.class, aabb);
 

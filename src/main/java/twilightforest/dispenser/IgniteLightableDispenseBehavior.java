@@ -1,7 +1,7 @@
 package twilightforest.dispenser;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.BlockSource;
+import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
 import net.minecraft.server.level.ServerLevel;
@@ -20,9 +20,9 @@ public class IgniteLightableDispenseBehavior extends OptionalDispenseItemBehavio
 
 	@Override
 	protected ItemStack execute(BlockSource source, ItemStack stack) {
-		ServerLevel level = source.getLevel();
+		ServerLevel level = source.level();
 		if (!level.isClientSide()) {
-			BlockPos blockpos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
+			BlockPos blockpos = source.pos().relative(source.state().getValue(DispenserBlock.FACING));
 			this.setSuccess(tryLightBlock(level, blockpos));
 			if (this.isSuccess() && stack.hurt(1, level.getRandom(), null)) {
 				stack.setCount(0);

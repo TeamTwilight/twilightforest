@@ -43,7 +43,7 @@
       "faces": {
         "down": {
           "cullface": "down",
-          "forge_data": {
+          "neoforge_data": {
             "block_light": 15,
             "sky_light": 15
           },
@@ -51,7 +51,7 @@
         },
         "east": {
           "cullface": "east",
-          "forge_data": {
+          "neoforge_data": {
             "block_light": 15,
             "sky_light": 15
           },
@@ -59,7 +59,7 @@
         },
         "north": {
           "cullface": "north",
-          "forge_data": {
+          "neoforge_data": {
             "block_light": 15,
             "sky_light": 15
           },
@@ -67,7 +67,7 @@
         },
         "south": {
           "cullface": "south",
-          "forge_data": {
+          "neoforge_data": {
             "block_light": 15,
             "sky_light": 15
           },
@@ -75,7 +75,7 @@
         },
         "up": {
           "cullface": "up",
-          "forge_data": {
+          "neoforge_data": {
             "block_light": 15,
             "sky_light": 15
           },
@@ -83,7 +83,7 @@
         },
         "west": {
           "cullface": "west",
-          "forge_data": {
+          "neoforge_data": {
             "block_light": 15,
             "sky_light": 15
           },
@@ -105,7 +105,7 @@
       "faces": {
         "down": {
           "cullface": "down",
-          "forge_data": {
+          "neoforge_data": {
             "block_light": 10,
             "sky_light": 10
           },
@@ -113,7 +113,7 @@
         },
         "east": {
           "cullface": "east",
-          "forge_data": {
+          "neoforge_data": {
             "block_light": 10,
             "sky_light": 10
           },
@@ -121,7 +121,7 @@
         },
         "north": {
           "cullface": "north",
-          "forge_data": {
+          "neoforge_data": {
             "block_light": 10,
             "sky_light": 10
           },
@@ -129,7 +129,7 @@
         },
         "south": {
           "cullface": "south",
-          "forge_data": {
+          "neoforge_data": {
             "block_light": 10,
             "sky_light": 10
           },
@@ -137,7 +137,7 @@
         },
         "up": {
           "cullface": "up",
-          "forge_data": {
+          "neoforge_data": {
             "block_light": 10,
             "sky_light": 10
           },
@@ -145,7 +145,7 @@
         },
         "west": {
           "cullface": "west",
-          "forge_data": {
+          "neoforge_data": {
             "block_light": 10,
             "sky_light": 10
           },

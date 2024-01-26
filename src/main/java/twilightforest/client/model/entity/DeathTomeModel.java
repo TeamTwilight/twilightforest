@@ -41,9 +41,9 @@ public class DeathTomeModel extends HierarchicalModel<DeathTome> {
 
     public static LayerDefinition create() {
         MeshDefinition mesh = new MeshDefinition();
-        PartDefinition partRoot = mesh.getRoot();
+        PartDefinition definition = mesh.getRoot();
 
-        var book = partRoot.addOrReplaceChild("book", CubeListBuilder.create(), PartPose.ZERO);
+        var book = definition.addOrReplaceChild("book", CubeListBuilder.create(), PartPose.ZERO);
 
         book.addOrReplaceChild("pages_right", CubeListBuilder.create()
                         .texOffs(0, 10)
@@ -79,7 +79,7 @@ public class DeathTomeModel extends HierarchicalModel<DeathTome> {
                         .addBox(-1.0F, -5.0F, 0.0F, 2.0F, 10.0F, 0.005F),
                 PartPose.rotation(0, Mth.HALF_PI, 0));
 
-        var paperStorm = partRoot.addOrReplaceChild("paper_storm", CubeListBuilder.create(), PartPose.ZERO);
+        var paperStorm = definition.addOrReplaceChild("paper_storm", CubeListBuilder.create(), PartPose.ZERO);
 
         paperStorm.addOrReplaceChild("loose_page_0", CubeListBuilder.create()
                         .texOffs(24, 10)

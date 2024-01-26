@@ -13,13 +13,12 @@ import net.minecraft.world.level.levelgen.structure.*;
 import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.world.components.structures.courtyard.CourtyardMain;
-import twilightforest.world.components.structures.util.LandmarkStructure;
+import twilightforest.world.components.structures.util.ConquerableStructure;
 
 import java.util.Arrays;
-import java.util.Map;
 import java.util.stream.Collectors;
 
-public class NagaCourtyardStructure extends LandmarkStructure {
+public class NagaCourtyardStructure extends ConquerableStructure {
     public static final Codec<NagaCourtyardStructure> CODEC = RecordCodecBuilder.create(instance -> landmarkCodec(instance).apply(instance, NagaCourtyardStructure::new));
 
     public NagaCourtyardStructure(DecorationConfig decorationConfig, StructureSettings structureSettings) {
@@ -28,7 +27,7 @@ public class NagaCourtyardStructure extends LandmarkStructure {
 
     @Override
     protected StructurePiece getFirstPiece(GenerationContext context, RandomSource random, ChunkPos chunkPos, int x, int y, int z) {
-        return new CourtyardMain(random, 0, x + 1, context.chunkGenerator().getSeaLevel() + 5, z + 1, context.structureTemplateManager());
+        return new CourtyardMain(random, 0, x + 1, y, z + 1, context.structureTemplateManager());
     }
 
     @Override

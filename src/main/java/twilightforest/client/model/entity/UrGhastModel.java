@@ -28,9 +28,9 @@ public class UrGhastModel extends TFGhastModel<UrGhast> {
 
 	public static LayerDefinition create() {
 		MeshDefinition mesh = new MeshDefinition();
-		PartDefinition partRoot = mesh.getRoot();
+		PartDefinition definition = mesh.getRoot();
 
-		var body = partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+		var body = definition.addOrReplaceChild("body", CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(-8.0F, -8.0F, -8.0F, 16, 16, 16),
 				PartPose.offset(0.0F, 8.0F, 0.0F));

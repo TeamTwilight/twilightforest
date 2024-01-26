@@ -10,10 +10,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.capabilities.CapabilityList;
+import twilightforest.init.TFDataAttachments;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -34,10 +34,8 @@ public class FortificationWandItem extends Item {
 		}
 
 		if (!level.isClientSide()) {
-			player.getCapability(CapabilityList.SHIELDS).ifPresent(cap -> {
-				cap.replenishShields();
-				stack.hurt(1, level.getRandom(), null);
-			});
+			player.getData(TFDataAttachments.FORTIFICATION_SHIELDS).replenishShields(player);
+			stack.hurt(1, level.getRandom(), null);
 		}
 
 		if (!player.isCreative())

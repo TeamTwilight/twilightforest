@@ -7,7 +7,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.neoforged.neoforge.event.EventHooks;
 import twilightforest.entity.monster.Redcap;
 
 import java.util.EnumSet;
@@ -26,7 +26,7 @@ public class RedcapLightTNTGoal extends RedcapBaseGoal {
 
 	@Override
 	public boolean canUse() {
-		if (!ForgeEventFactory.getMobGriefingEvent(this.redcap.level(), this.redcap)) {
+		if (!EventHooks.getMobGriefingEvent(this.redcap.level(), this.redcap)) {
 			return false;
 		}
 

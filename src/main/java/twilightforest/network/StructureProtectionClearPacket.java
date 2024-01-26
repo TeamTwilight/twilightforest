@@ -2,38 +2,35 @@ package twilightforest.network;
 
 import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.client.DimensionSpecialEffectsManager;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.client.DimensionSpecialEffectsManager;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.TwilightForestRenderInfo;
 import twilightforest.client.renderer.TFWeatherRenderer;
 
-import java.util.function.Supplier;
+public class StructureProtectionClearPacket implements CustomPacketPayload {
 
-public class StructureProtectionClearPacket {
+	public static final ResourceLocation ID = TwilightForestMod.prefix("clear_protection_renderer");
 
-	public StructureProtectionClearPacket() {
+	@Override
+	public void write(FriendlyByteBuf buf) {
 	}
 
-	public StructureProtectionClearPacket(FriendlyByteBuf unused) {
+	@Override
+	public ResourceLocation id() {
+		return ID;
 	}
 
-	public void encode(FriendlyByteBuf unused) {
-	}
+	public static void handle(StructureProtectionClearPacket message, PlayPayloadContext ctx) {
+		ctx.workHandler().execute(() -> {
+			DimensionSpecialEffects info = DimensionSpecialEffectsManager.getForType(TwilightForestMod.prefix("renderer"));
 
-	public static class Handler {
-		public static boolean onMessage(StructureProtectionClearPacket message, Supplier<NetworkEvent.Context> ctx) {
-			ctx.get().enqueueWork(() -> {
-				DimensionSpecialEffects info = DimensionSpecialEffectsManager.getForType(TwilightForestMod.prefix("renderer"));
-
-				// add weather box if needed
-				if (info instanceof TwilightForestRenderInfo) {
-					TFWeatherRenderer.setProtectedBox(null);
-				}
-			});
-
-			ctx.get().setPacketHandled(true);
-			return true;
-		}
+			// remove weather box if needed
+			if (info instanceof TwilightForestRenderInfo) {
+				TFWeatherRenderer.setProtectedBox(null);
+			}
+		});
 	}
 }

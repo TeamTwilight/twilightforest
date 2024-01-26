@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import com.mojang.serialization.MapCodec;
 import it.unimi.dsi.fastutil.floats.Float2FloatFunction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -31,23 +32,26 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.material.*;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.KeepsakeCasketBlockEntity;
 import twilightforest.enums.BlockLoggingEnum;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFSounds;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 
 public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLoggingEnum.IMultiLoggable {
+
+	public static final MapCodec<KeepsakeCasketBlock> CODEC = simpleCodec(KeepsakeCasketBlock::new);
 
 	public static final DirectionProperty FACING = TFHorizontalBlock.FACING;
 	public static final IntegerProperty BREAKAGE = IntegerProperty.create("damage", 0, 2);
@@ -68,6 +72,11 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 	public KeepsakeCasketBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH).setValue(BREAKAGE, 0));
+	}
+
+	@Override
+	protected MapCodec<? extends BaseEntityBlock> codec() {
+		return CODEC;
 	}
 
 	@Override
@@ -145,7 +154,7 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 	}
 
 	@Override
-	public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+	public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
 		if (!level.isClientSide() && !player.isCreative() && level.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS)) {
 			BlockEntity tile = level.getBlockEntity(pos);
 			if (tile instanceof KeepsakeCasketBlockEntity casket) {
@@ -173,7 +182,7 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 				level.addFreshEntity(itementity);
 			}
 		}
-		super.playerWillDestroy(level, pos, state, player);
+		return super.playerWillDestroy(level, pos, state, player);
 	}
 
 	@Override

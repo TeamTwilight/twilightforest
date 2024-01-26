@@ -18,16 +18,15 @@ import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.world.components.structures.lichtower.TowerMainComponent;
-import twilightforest.world.components.structures.util.ConquerableStructure;
+import twilightforest.world.components.structures.util.ControlledSpawningStructure;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
-public class LichTowerStructure extends ConquerableStructure {
+public class LichTowerStructure extends ControlledSpawningStructure {
     public static final Codec<LichTowerStructure> CODEC = RecordCodecBuilder.create(instance ->
-            conquerStatusCodec(instance).apply(instance, LichTowerStructure::new)
+            controlledSpawningCodec(instance).apply(instance, LichTowerStructure::new)
     );
 
     public LichTowerStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, DecorationConfig decorationConfig, StructureSettings structureSettings) {

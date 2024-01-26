@@ -2,8 +2,8 @@ package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.model.Model;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -12,7 +12,7 @@ import net.minecraft.util.Mth;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.CubeOfAnnihilationModel;
-import twilightforest.entity.CubeOfAnnihilation;
+import twilightforest.entity.projectile.CubeOfAnnihilation;
 
 public class CubeOfAnnihilationRenderer extends EntityRenderer<CubeOfAnnihilation> {
 

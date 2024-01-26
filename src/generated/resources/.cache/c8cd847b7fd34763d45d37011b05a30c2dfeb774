@@ -1,5 +1,14 @@
-// 1.20.1	2023-06-13T21:36:19.2308414	Twilight Forest Entity Tags
+// 1.20.4	2023-12-09T00:52:59.126824	Twilight Forest Entity Tags
+00b66b9a62a509d2c0bcfad259ff965c818a8f12 data/aether/tags/entity_types/deflectable_projectiles.json
+9e5f68b2faa6d767538d0f4264a7145d32a2bdda data/aether/tags/entity_types/fire_mob.json
+3ddb086fa7ad80a4f7018142796566c22407e7e4 data/aether/tags/entity_types/pigs.json
+986ee69ca972520c9ae4cf136e28d84e98d0f256 data/alexscaves/tags/entity_types/resists_acid.json
+0865b5410d11831c91b4a4164d890df4852489ff data/alexscaves/tags/entity_types/resists_magnets.json
+9b4d24dfda4f2cd65854a2383c5684509da3cea5 data/alexscaves/tags/entity_types/resists_tremorsaurus_roar.json
+0865b5410d11831c91b4a4164d890df4852489ff data/ars_nouveau/tags/entity_types/jar_blacklist.json
+0865b5410d11831c91b4a4164d890df4852489ff data/ars_nouveau/tags/entity_types/jar_release_blacklist.json
 0865b5410d11831c91b4a4164d890df4852489ff data/forge/tags/entity_types/bosses.json
+0865b5410d11831c91b4a4164d890df4852489ff data/immersiveengineering/tags/entity_types/shaderbag/blacklist.json
 96a1f9f2c5c062278d532397563660cb0c4982a7 data/minecraft/tags/entity_types/arrows.json
 e5bff3b10b54d6af46050743b454bd8cce4993e0 data/minecraft/tags/entity_types/fall_damage_immune.json
 9e5f68b2faa6d767538d0f4264a7145d32a2bdda data/minecraft/tags/entity_types/freeze_hurts_extra_types.json

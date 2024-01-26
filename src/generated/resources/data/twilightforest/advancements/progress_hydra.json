@@ -62,7 +62,6 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancement.twilightforest.kill_hydra.desc",
       "with": [
@@ -72,11 +71,9 @@
       ]
     },
     "frame": "goal",
-    "hidden": false,
     "icon": {
       "item": "twilightforest:hydra_trophy"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancement.twilightforest.kill_hydra"
     }

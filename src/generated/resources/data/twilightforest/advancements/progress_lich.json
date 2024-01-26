@@ -110,7 +110,6 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancement.twilightforest.kill_lich.desc",
       "with": [
@@ -120,11 +119,9 @@
       ]
     },
     "frame": "goal",
-    "hidden": false,
     "icon": {
       "item": "twilightforest:lich_tower_miniature_structure"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancement.twilightforest.kill_lich"
     }

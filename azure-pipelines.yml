@@ -16,10 +16,37 @@ variables:
 steps:
 - task: Cache@2
   inputs:
-    key: 'gradle | "$(Agent.OS)" | build.gradle | gradle.properties | src/main/resources/META-INF/accesstransformer.cfg'
-    restoreKeys: gradle
+    key: 'gradle | "$(Agent.OS)" | build.gradle | settings.gradle | gradle.properties | src/main/resources/META-INF/accesstransformer.cfg'
     path: $(GRADLE_USER_HOME)
-  displayName: Gradle build cache
+  displayName: Restore Gradle Cache
+  condition: eq(variables.SKIP_BUILD, 'false')
+
+- task: Cache@2
+  inputs:
+    key: 'gradleLocal | "$(Agent.OS)" | build.gradle | settings.gradle | gradle.properties | src/main/resources/META-INF/accesstransformer.cfg'
+    path: .gradle
+  displayName: Restore Project Level Gradle Cache
+  condition: eq(variables.SKIP_BUILD, 'false')
+
+- task: Cache@2
+  inputs:
+    key: 'gradleBuildNeoForgeLocal | "$(Agent.OS)" | build.gradle | settings.gradle | gradle.properties | src/main/resources/META-INF/accesstransformer.cfg'
+    path: build/neoForge
+  displayName: Restore Project Level build/neoForge Cache
+  condition: eq(variables.SKIP_BUILD, 'false')
+
+- task: Cache@2
+  inputs:
+    key: 'gradleBuildNeoFormLocal | "$(Agent.OS)" | build.gradle | settings.gradle | gradle.properties | src/main/resources/META-INF/accesstransformer.cfg'
+    path: build/neoForm
+  displayName: Restore Project Level build/neoForm Cache
+  condition: eq(variables.SKIP_BUILD, 'false')
+
+- task: Cache@2
+  inputs:
+    key: 'gradleBuildTmpLocal | "$(Agent.OS)" | build.gradle | settings.gradle | gradle.properties | src/main/resources/META-INF/accesstransformer.cfg'
+    path: build/tmp
+  displayName: Restore Project Level build/tmp Cache
   condition: eq(variables.SKIP_BUILD, 'false')
 
 - powershell: |

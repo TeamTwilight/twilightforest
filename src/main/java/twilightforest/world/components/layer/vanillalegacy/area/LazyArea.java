@@ -19,14 +19,14 @@ public class LazyArea implements Area {
 	}
 
 	@Override
-	public ResourceKey<Biome> getBiome(int x, int z) {
-		long i = ChunkPos.asLong(x, z);
+	public ResourceKey<Biome> getBiome(int biomeX, int biomeZ) {
+		long i = ChunkPos.asLong(biomeX, biomeZ);
 		synchronized(this.cachedSamples) {
 			ResourceKey<Biome> j = this.cachedSamples.get(i);
 			if (j != null && j != Biomes.THE_VOID) {
 				return j;
 			} else {
-				ResourceKey<Biome> k = this.transformer.getBiome(x, z);
+				ResourceKey<Biome> k = this.transformer.getBiome(biomeX, biomeZ);
 				this.cachedSamples.put(i, k);
 				if (this.cachedSamples.size() > this.maxCache) {
 					for(int l = 0; l < this.maxCache / 16; ++l) {

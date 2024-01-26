@@ -1,46 +1,40 @@
 {
-  "advancements": [
+  "neoforge:conditions": [
     {
-      "advancement": {
-        "parent": "minecraft:recipes/root",
-        "criteria": {
-          "has_the_recipe": {
-            "conditions": {
-              "recipe": "twilightforest:uncrafting_table"
-            },
-            "trigger": "minecraft:recipe_unlocked"
-          },
-          "has_uncrafting_table": {
-            "conditions": {
-              "items": [
-                {
-                  "items": [
-                    "twilightforest:uncrafting_table"
-                  ]
-                }
-              ]
-            },
-            "trigger": "minecraft:inventory_changed"
-          }
-        },
-        "requirements": [
-          [
-            "has_uncrafting_table",
-            "has_the_recipe"
-          ]
-        ],
-        "rewards": {
-          "recipes": [
-            "twilightforest:uncrafting_table"
-          ]
-        },
-        "sends_telemetry_event": false
-      },
-      "conditions": [
-        {
-          "type": "twilightforest:uncrafting_table_enabled"
-        }
-      ]
+      "type": "twilightforest:uncrafting_table_enabled",
+      "value": {}
     }
-  ]
+  ],
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "twilightforest:uncrafting_table"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_uncrafting_table": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:uncrafting_table"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_uncrafting_table"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "twilightforest:uncrafting_table"
+    ]
+  }
 }

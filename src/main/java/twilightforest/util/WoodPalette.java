@@ -7,12 +7,12 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import twilightforest.block.BanisterBlock;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Supplier;
 
 public class WoodPalette {
 	public static final Codec<WoodPalette> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -26,7 +26,7 @@ public class WoodPalette {
 			BuiltInRegistries.BLOCK.byNameCodec().fieldOf("banister").forGetter(p -> p.banister)
 	).apply(instance, WoodPalette::new));
 
-	public WoodPalette(Supplier<Block> planks, Supplier<StairBlock> stairs, Supplier<Block> slab, Supplier<Block> button, Supplier<Block> fence, Supplier<Block> gate, Supplier<Block> plate, Supplier<BanisterBlock> banister) {
+	public WoodPalette(DeferredHolder<Block, Block> planks, DeferredHolder<Block, StairBlock> stairs, DeferredHolder<Block, Block> slab, DeferredHolder<Block, Block> button, DeferredHolder<Block, Block> fence, DeferredHolder<Block, Block> gate, DeferredHolder<Block, Block> plate, DeferredHolder<Block, BanisterBlock> banister) {
 		this(planks.get(), stairs.get(), slab.get(), button.get(), fence.get(), gate.get(), plate.get(), banister.get());
 	}
 

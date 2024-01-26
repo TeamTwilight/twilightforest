@@ -21,9 +21,9 @@ public class SnowQueenTrophyLegacyModel extends GenericTrophyModel {
 
 	public static LayerDefinition create() {
 		MeshDefinition mesh = new MeshDefinition();
-		PartDefinition partRoot = mesh.getRoot();
+		PartDefinition definition = mesh.getRoot();
 
-		var head = partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+		var head = definition.addOrReplaceChild("head", CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F),
 				PartPose.offset(0.0F, -4.0F, 0.0F));

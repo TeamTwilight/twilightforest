@@ -40,5 +40,5 @@
     }
   },
   "step": "surface_structures",
-  "terrain_adaptation": "beard_thin"
+  "terrain_adaptation": "beard_box"
 }

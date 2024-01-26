@@ -15,6 +15,7 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.util.FeaturePlacers;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 
 public class MazeUpperEntranceComponent extends TFStructureComponentOld {
@@ -40,6 +41,7 @@ public class MazeUpperEntranceComponent extends TFStructureComponentOld {
 
 	@Override
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+		FeaturePlacers.replaceBlocksDome(world, this.boundingBox.getCenter().atY(this.getWorldY(-1)), 16, 0.8f, sbb, this.boundingBox.inflatedBy(8), Blocks.STONE, Blocks.DIRT.defaultBlockState());
 
 		// ceiling
 		this.generateMaybeBox(world, sbb, rand, 0.7F, 0, 5, 0, 15, 5, 15, TFBlocks.MAZESTONE.get().defaultBlockState(), AIR, true, false);

@@ -20,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_boat",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_boat"
     ]
   ],
   "rewards": {
     "recipes": [
       "twilightforest:transformation_chest_boat"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

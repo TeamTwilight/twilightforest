@@ -10,11 +10,11 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import twilightforest.TwilightForestMod;
-import twilightforest.world.components.structures.TwilightTemplateStructurePiece;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.world.components.structures.TwilightTemplateStructurePiece;
 
 import java.util.List;
 

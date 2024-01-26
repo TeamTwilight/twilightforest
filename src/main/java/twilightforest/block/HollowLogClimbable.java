@@ -1,7 +1,11 @@
 package twilightforest.block;
 
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -27,11 +31,16 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.ToolActions;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.common.ToolActions;
 import twilightforest.enums.HollowLogVariants;
 
 public class HollowLogClimbable extends HorizontalDirectionalBlock implements WaterloggedBlock {
+
+	public static final MapCodec<HollowLogClimbable> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+					BuiltInRegistries.BLOCK.holderByNameCodec().fieldOf("vertical_log").forGetter(o -> o.vertical),
+					propertiesCodec())
+			.apply(instance, HollowLogClimbable::new)
+	);
 	public static final EnumProperty<HollowLogVariants.Climbable> VARIANT = EnumProperty.create("variant", HollowLogVariants.Climbable.class);
 
 	private static final VoxelShape LADDER_EAST = Block.box(0, 0, 0, 3, 16, 16);
@@ -51,9 +60,9 @@ public class HollowLogClimbable extends HorizontalDirectionalBlock implements Wa
 	private static final VoxelShape COLLISION_SHAPE_EAST = Shapes.or(COLLISION_SHAPE, LADDER_EAST);
 	private static final VoxelShape COLLISION_SHAPE_WEST = Shapes.or(COLLISION_SHAPE, LADDER_WEST);
 
-	private final RegistryObject<HollowLogVertical> vertical;
+	private final Holder<Block> vertical;
 
-	public HollowLogClimbable(Properties properties, RegistryObject<HollowLogVertical> vertical) {
+	public HollowLogClimbable(Holder<Block> vertical, Properties properties) {
 		super(properties);
 		this.vertical = vertical;
 
@@ -93,7 +102,8 @@ public class HollowLogClimbable extends HorizontalDirectionalBlock implements Wa
 	@Override
 	public BlockState setWaterlog(BlockState prior, boolean doWater) {
 		return switch (prior.getValue(VARIANT)) {
-			case VINE -> doWater ? this.vertical.get().defaultBlockState().setValue(HollowLogVertical.WATERLOGGED, true) : prior;
+			case VINE ->
+					doWater ? this.vertical.value().defaultBlockState().setValue(HollowLogVertical.WATERLOGGED, true) : prior;
 			case LADDER -> prior.setValue(VARIANT, HollowLogVariants.Climbable.LADDER_WATERLOGGED);
 			case LADDER_WATERLOGGED -> prior.setValue(VARIANT, HollowLogVariants.Climbable.LADDER);
 		};
@@ -121,7 +131,7 @@ public class HollowLogClimbable extends HorizontalDirectionalBlock implements Wa
 
 		if (stack.canPerformAction(ToolActions.SHEARS_HARVEST)) {
 			HollowLogVariants.Climbable variant = state.getValue(VARIANT);
-			level.setBlock(pos, this.vertical.get().defaultBlockState().setValue(HollowLogVertical.WATERLOGGED, variant == HollowLogVariants.Climbable.LADDER_WATERLOGGED), 3);
+			level.setBlock(pos, this.vertical.value().defaultBlockState().setValue(HollowLogVertical.WATERLOGGED, variant == HollowLogVariants.Climbable.LADDER_WATERLOGGED), 3);
 			level.playSound(null, pos, SoundEvents.SHEEP_SHEAR, SoundSource.BLOCKS, 1.0F, 1.0F);
 			if (!player.isCreative()) {
 				stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
@@ -148,5 +158,10 @@ public class HollowLogClimbable extends HorizontalDirectionalBlock implements Wa
 	@Override
 	public int getFireSpreadSpeed(BlockState state, BlockGetter getter, BlockPos pos, Direction face) {
 		return 5;
+	}
+
+	@Override
+	protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
+		return CODEC;
 	}
 }

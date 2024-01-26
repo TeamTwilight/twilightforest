@@ -28,12 +28,12 @@ public class TFTrimMaterials {
 	}
 
 	public static void bootstrap(BootstapContext<TrimMaterial> context) {
-		register(context, IRONWOOD, TFItems.IRONWOOD_INGOT.getHolder().get(), Style.EMPTY.withColor(7037281), 0.2F);
-		register(context, STEELEAF, TFItems.STEELEAF_INGOT.getHolder().get(), Style.EMPTY.withColor(4814643), 0.7F);
-		register(context, KNIGHTMETAL, TFItems.KNIGHTMETAL_INGOT.getHolder().get(), Style.EMPTY.withColor(8424562), 0.1F);
-		register(context, FIERY, TFItems.FIERY_INGOT.getHolder().get(), Style.EMPTY.withColor(16758076), 0.3F);
-		register(context, NAGA_SCALE, TFItems.NAGA_SCALE.getHolder().get(), Style.EMPTY.withColor(2381586), 0.7F);
-		register(context, CARMINITE, TFItems.CARMINITE.getHolder().get(), Style.EMPTY.withColor(10092544), 0.4F);
+		register(context, IRONWOOD, TFItems.IRONWOOD_INGOT, Style.EMPTY.withColor(7037281), 0.2F);
+		register(context, STEELEAF, TFItems.STEELEAF_INGOT, Style.EMPTY.withColor(4814643), 0.7F);
+		register(context, KNIGHTMETAL, TFItems.KNIGHTMETAL_INGOT, Style.EMPTY.withColor(8424562), 0.1F);
+		register(context, FIERY, TFItems.FIERY_INGOT, Style.EMPTY.withColor(16758076), 0.3F);
+		register(context, NAGA_SCALE, TFItems.NAGA_SCALE, Style.EMPTY.withColor(2381586), 0.7F);
+		register(context, CARMINITE, TFItems.CARMINITE, Style.EMPTY.withColor(10092544), 0.4F);
 	}
 
 	private static void register(BootstapContext<TrimMaterial> context, ResourceKey<TrimMaterial> trimKey, Holder<Item> trimItem, Style color, float itemModelIndex) {

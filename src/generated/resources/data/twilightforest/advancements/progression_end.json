@@ -43,11 +43,9 @@
       "translate": "advancement.twilightforest.progression_end.desc"
     },
     "frame": "goal",
-    "hidden": false,
     "icon": {
       "item": "minecraft:structure_void"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancement.twilightforest.progression_end"
     }

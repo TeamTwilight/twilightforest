@@ -11,13 +11,12 @@ import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.block.HollowLogHorizontal;
-import twilightforest.init.TFBlocks;
 import twilightforest.enums.HollowLogVariants;
+import twilightforest.init.TFBlocks;
 import twilightforest.util.FeatureUtil;
 import twilightforest.world.components.feature.config.HollowLogConfig;
-
-import org.jetbrains.annotations.Nullable;
 
 public class SmallFallenLogFeature extends Feature<HollowLogConfig> {
 

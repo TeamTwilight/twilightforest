@@ -45,6 +45,7 @@ public class TFLootTables {
 	public static final TFLootTables TOWER_ROOM = new TFLootTables("tower_room");
 	public static final TFLootTables TOWER_LIBRARY = new TFLootTables("tower_library");
 	public static final TFLootTables BASEMENT = new TFLootTables("basement");
+	public static final TFLootTables HUT_JUNK = new TFLootTables("hut_junk");
 	public static final TFLootTables FOUNDATION_BASEMENT = new TFLootTables("foundation_basement");
 	public static final TFLootTables LABYRINTH_VAULT = new TFLootTables("labyrinth_vault");
 	public static final TFLootTables LABYRINTH_VAULT_JACKPOT = new TFLootTables("labyrinth_vault_jackpot");

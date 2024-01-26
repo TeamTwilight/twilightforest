@@ -20,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_item",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_item"
     ]
   ],
   "rewards": {
     "recipes": [
       "twilightforest:compressed_blocks/reversed/arctic_block_to_item"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

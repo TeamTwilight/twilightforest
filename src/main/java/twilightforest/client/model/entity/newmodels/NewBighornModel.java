@@ -7,8 +7,8 @@ import net.minecraft.client.model.SheepModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import twilightforest.entity.passive.Bighorn;
 
 /**
@@ -23,9 +23,9 @@ public class NewBighornModel<T extends Bighorn> extends SheepModel<T> {
 
     public static LayerDefinition create() {
         MeshDefinition mesh = SheepModel.createBodyMesh(0, CubeDeformation.NONE);
-        PartDefinition partRoot = mesh.getRoot();
+        PartDefinition definition = mesh.getRoot();
 
-        var head = partRoot.addOrReplaceChild("head",
+        var head = definition.addOrReplaceChild("head",
                 CubeListBuilder.create()
                         .texOffs(38, 0)
                         .addBox(-3.0F, -4.0F, -6.0F, 6.0F, 6.0F, 7.0F),
@@ -50,25 +50,25 @@ public class NewBighornModel<T extends Bighorn> extends SheepModel<T> {
                         .addBox(2.0F, 0.0F, -11.0F, 2.0F, 3.0F, 2.0F),
                 PartPose.offsetAndRotation(2.0F, -3.0F, -1.0F,
                         0.0F, -0.39269908169872414F, -0.2181661564992912F));
-        partRoot.addOrReplaceChild("body",
+        definition.addOrReplaceChild("body",
                 CubeListBuilder.create()
                         .texOffs(34, 13)
                         .addBox(-4.5F, -14.0F, -3.0F, 9.0F, 16.0F, 6.0F),
                 PartPose.offsetAndRotation(0.0F, 10.0F, 6.0F,
                         1.5707963267948966F, 0.0F, 0.0F));
-        partRoot.addOrReplaceChild("right_hind_leg",
+        definition.addOrReplaceChild("right_hind_leg",
                 CubeListBuilder.create()
                         .texOffs(0, 48).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F),
                 PartPose.offset(-3.0F, 12.0F, 7.0F));
-        partRoot.addOrReplaceChild("left_hind_leg",
+        definition.addOrReplaceChild("left_hind_leg",
                 CubeListBuilder.create()
                         .texOffs(16, 48).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F),
                 PartPose.offset(3.0F, 12.0F, 7.0F));
-        partRoot.addOrReplaceChild("right_front_leg",
+        definition.addOrReplaceChild("right_front_leg",
                 CubeListBuilder.create()
                         .texOffs(0, 32).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F),
                 PartPose.offset(-3.0F, 12.0F, -5.0F));
-        partRoot.addOrReplaceChild("left_front_leg",
+        definition.addOrReplaceChild("left_front_leg",
                 CubeListBuilder.create()
                         .texOffs(16, 32).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F),
                 PartPose.offset(3.0F, 12.0F, -5.0F));

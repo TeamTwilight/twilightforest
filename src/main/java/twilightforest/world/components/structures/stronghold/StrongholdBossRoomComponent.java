@@ -18,7 +18,7 @@ import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructurePieceTypes;
 
 
-public class StrongholdBossRoomComponent extends StructureTFStrongholdComponent {
+public class StrongholdBossRoomComponent extends KnightStrongholdComponent {
 
 	public StrongholdBossRoomComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(TFStructurePieceTypes.TFSBR.get(), nbt);
@@ -31,7 +31,7 @@ public class StrongholdBossRoomComponent extends StructureTFStrongholdComponent 
 
 	@Override
 	public BoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
-		return StructureTFStrongholdComponent.getComponentToAddBoundingBox(x, y, z, -13, -1, 0, 27, 7, 27, facing);
+		return KnightStrongholdComponent.getComponentToAddBoundingBox(x, y, z, -13, -1, 0, 27, 7, 27, facing);
 	}
 
 	@Override

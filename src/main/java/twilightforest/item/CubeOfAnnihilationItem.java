@@ -13,7 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.entity.CubeOfAnnihilation;
+import twilightforest.entity.projectile.CubeOfAnnihilation;
 import twilightforest.init.TFEntities;
 
 import java.util.UUID;
@@ -41,7 +41,7 @@ public class CubeOfAnnihilationItem extends Item {
 			return new InteractionResultHolder<>(InteractionResult.PASS, stack);
 
 		if (!level.isClientSide()) {
-			CubeOfAnnihilation launchedCube = new CubeOfAnnihilation(TFEntities.CUBE_OF_ANNIHILATION.get(), level, player);
+			CubeOfAnnihilation launchedCube = new CubeOfAnnihilation(TFEntities.CUBE_OF_ANNIHILATION.get(), level, player, stack);
 			level.addFreshEntity(launchedCube);
 			setThrownEntity(stack, launchedCube);
 		}

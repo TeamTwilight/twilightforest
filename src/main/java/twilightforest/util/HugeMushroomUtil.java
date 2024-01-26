@@ -1,7 +1,7 @@
 package twilightforest.util;
 
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.HugeMushroomBlock;
+import net.minecraft.world.level.block.state.BlockState;
 
 /**
  * Utility class for Huge Mushroom blocks. Contains presets

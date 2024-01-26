@@ -21,21 +21,17 @@
       "trigger": "minecraft:tick"
     },
     "trophy_pedestal": {
-      "conditions": {},
       "trigger": "twilightforest:placed_on_trophy_pedestal"
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancement.twilightforest.progress_trophy_pedestal.desc"
     },
     "frame": "goal",
-    "hidden": false,
     "icon": {
       "item": "twilightforest:trophy_pedestal"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancement.twilightforest.progress_trophy_pedestal"
     }

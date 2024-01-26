@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": {
+      "tag": "forge:ingots/iron"
+    },
+    "W": {
+      "item": "twilightforest:wrought_iron_fence"
+    }
+  },
+  "pattern": [
+    "III",
+    " W "
+  ],
+  "result": {
+    "item": "twilightforest:candelabra"
+  }
+}

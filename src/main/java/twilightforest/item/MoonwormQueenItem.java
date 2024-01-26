@@ -81,20 +81,23 @@ public class MoonwormQueenItem extends Item {
 			pos = pos.relative(context.getClickedFace());
 		}
 
-		ItemStack itemstack = player.getItemInHand(context.getHand());
+		if (player != null) {
+			ItemStack itemstack = player.getItemInHand(context.getHand());
 
-		if (itemstack.getDamageValue() < itemstack.getMaxDamage() && player.mayUseItemAt(pos, context.getClickedFace(), itemstack) && level.isUnobstructed(TFBlocks.MOONWORM.get().defaultBlockState(), pos, CollisionContext.empty())) {
-			if (this.tryPlace(blockItemUseContext).shouldSwing()) {
-				SoundType soundtype = level.getBlockState(pos).getBlock().getSoundType(level.getBlockState(pos), level, pos, player);
-				level.playSound(player, pos, soundtype.getPlaceSound(), SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
-				// TF - damage stack instead of shrinking
-				player.stopUsingItem();
+			if (itemstack.getDamageValue() < itemstack.getMaxDamage() && player.mayUseItemAt(pos, context.getClickedFace(), itemstack) && level.isUnobstructed(TFBlocks.MOONWORM.get().defaultBlockState(), pos, CollisionContext.empty())) {
+				if (this.tryPlace(blockItemUseContext).shouldSwing()) {
+					SoundType soundtype = level.getBlockState(pos).getBlock().getSoundType(level.getBlockState(pos), level, pos, player);
+					level.playSound(player, pos, soundtype.getPlaceSound(), SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
+					// TF - damage stack instead of shrinking
+					player.stopUsingItem();
+				}
+
+				return InteractionResult.SUCCESS;
+			} else {
+				return InteractionResult.FAIL;
 			}
-
-			return InteractionResult.SUCCESS;
-		} else {
-			return InteractionResult.FAIL;
 		}
+		return InteractionResult.FAIL;
 	}
 
 

@@ -1,18 +1,17 @@
 package twilightforest.loot.conditions;
 
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSerializationContext;
-import net.minecraft.util.GsonHelper;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.level.storage.loot.LootContext;
-import net.minecraft.world.level.storage.loot.Serializer;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
-import net.minecraftforge.fml.ModList;
+import net.neoforged.fml.ModList;
 import twilightforest.init.TFLoot;
 
 // Loot condition for checking if a mod exists.
 public class ModExistsCondition implements LootItemCondition {
+
+	public static final Codec<ModExistsCondition> CODEC = RecordCodecBuilder.create(instance -> instance.group(Codec.STRING.fieldOf("mod_id").forGetter(o -> o.modID)).apply(instance, ModExistsCondition::new));
 
 	private final boolean exists;
 	private final String modID;
@@ -34,17 +33,5 @@ public class ModExistsCondition implements LootItemCondition {
 
 	public static LootItemCondition.Builder builder(String modid) {
 		return () -> new ModExistsCondition(modid);
-	}
-
-	public static class ConditionSerializer implements Serializer<ModExistsCondition> {
-		@Override
-		public void serialize(JsonObject json, ModExistsCondition value, JsonSerializationContext context) {
-			json.addProperty("mod_id", value.modID);
-		}
-
-		@Override
-		public ModExistsCondition deserialize(JsonObject json, JsonDeserializationContext context) {
-			return new ModExistsCondition(GsonHelper.getAsString(json, "mod_id"));
-		}
 	}
 }

@@ -17,8 +17,8 @@ public class AuroraBrickBlock extends Block {
 
 	public static final IntegerProperty VARIANT = IntegerProperty.create("variant", 0, 15);
 
-	public AuroraBrickBlock(Properties props) {
-		super(props);
+	public AuroraBrickBlock(Properties properties) {
+		super(properties);
 	}
 
 	@Override

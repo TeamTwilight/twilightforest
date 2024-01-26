@@ -7,9 +7,12 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.block.TomeSpawnerBlock;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFBlocks;
@@ -23,7 +26,6 @@ public class TomeSpawnerBlockEntity extends BlockEntity {
 
 	//controlled variables via nbt
 	private String entityType;
-	private int tomesLeft;
 	private int spawnTime;
 	private int playerDistance;
 
@@ -31,38 +33,35 @@ public class TomeSpawnerBlockEntity extends BlockEntity {
 		super(TFBlockEntities.TOME_SPAWNER.get(), pos, state);
 		if (state.getValue(TomeSpawnerBlock.SPAWNER)) {
 			this.entityType = "twilightforest:death_tome";
-			this.tomesLeft = 5;
 			this.spawnTime = 400;
 			this.playerDistance = 8;
 		}
 	}
 
 	public static void tick(Level level, BlockPos pos, BlockState state, TomeSpawnerBlockEntity te) {
-		if (!level.isClientSide() && !(level.getDifficulty() == Difficulty.PEACEFUL)) {
-			if (te.tomesLeft > 10) te.tomesLeft = 10;
+		if (!level.isClientSide() && !(level.getDifficulty() == Difficulty.PEACEFUL) && te.isNearPlayer(level, pos)) {
+            if (te.elapsedTime < te.spawnTime) {
+                te.elapsedTime++;
+            } else {
+                te.elapsedTime = 0;
 
-			if (te.isNearPlayer(level, pos)) {
-				if (te.elapsedTime < te.spawnTime) {
-					te.elapsedTime++;
-				} else {
-					te.elapsedTime = 0;
-					te.attemptSpawnTome((ServerLevel) level, pos, false);
-				}
-			}
+				if (!te.attemptSpawnTome((ServerLevel) level, pos, false, null)) return;
 
-			if (te.tomesLeft <= 0) {
-				te.invalidateCaps();
-				level.setBlockAndUpdate(pos, TFBlocks.EMPTY_CANOPY_BOOKSHELF.get().defaultBlockState());
-			} else {
-				level.setBlockAndUpdate(pos, state.setValue(TomeSpawnerBlock.BOOK_STAGES, te.tomesLeft));
-			}
-		}
+                int tomesLeft = state.getValue(TomeSpawnerBlock.BOOK_STAGES);
 
+                if (tomesLeft <= 1) {
+                    te.invalidateCapabilities();
+                    level.setBlockAndUpdate(pos, TFBlocks.EMPTY_CANOPY_BOOKSHELF.get().defaultBlockState());
+                } else {
+                    level.setBlockAndUpdate(pos, state.setValue(TomeSpawnerBlock.BOOK_STAGES, tomesLeft - 1));
+                }
+            }
+        }
 	}
 
-	public void attemptSpawnTome(ServerLevel level, BlockPos pos, boolean fire) {
-		Optional<EntityType<?>> mob = EntityType.byString(this.entityType);
-		boolean spawnedOne = false;
+	public boolean attemptSpawnTome(ServerLevel level, BlockPos pos, boolean fire, @Nullable LivingEntity assailant) {
+		Optional<EntityType<?>> nbtType = EntityType.byString(this.entityType);
+
 		for (Direction dir : Direction.Plane.HORIZONTAL) {
 			if (level.isEmptyBlock(pos.relative(dir))) {
 				for (int i = 0; i < 5; i++) {
@@ -70,19 +69,25 @@ public class TomeSpawnerBlockEntity extends BlockEntity {
 					double y = (double) pos.getY() + (level.getRandom().nextDouble() - level.getRandom().nextDouble());
 					double z = pos.relative(dir).getZ() + (level.getRandom().nextDouble() - level.getRandom().nextDouble()) * 2.0D;
 
-					if (level.noCollision(mob.orElse(TFEntities.DEATH_TOME.get()).getAABB(x, y, z)) && mob.isPresent()) {
-						Entity entity = mob.orElse(TFEntities.DEATH_TOME.get()).create(level);
+					EntityType<?> type = nbtType.orElse(TFEntities.DEATH_TOME.get());
+					if (level.noCollision(type.getAABB(x, y, z))) {
+                        Entity entity = type.create(level);
 						entity.moveTo(BlockPos.containing(x, y, z), entity.getYRot(), entity.getXRot());
-						if (fire) entity.setSecondsOnFire(10);
+
+						if (fire)
+							entity.setSecondsOnFire(10);
+
+						if (assailant != null && entity instanceof Mob mob)
+							mob.setTarget(assailant);
+
 						level.addFreshEntity(entity);
-						this.tomesLeft--;
-						spawnedOne = true;
-						break;
+						return true;
 					}
 				}
 			}
-			if (spawnedOne) break;
 		}
+
+		return false;
 	}
 
 	private boolean isNearPlayer(Level level, BlockPos pos) {
@@ -93,7 +98,6 @@ public class TomeSpawnerBlockEntity extends BlockEntity {
 	public void saveAdditional(CompoundTag tag) {
 		super.saveAdditional(tag);
 		tag.putString("EntityType", this.entityType);
-		tag.putInt("MobSpawnsLeft", this.tomesLeft);
 		tag.putInt("SpawnDelay", this.spawnTime);
 		tag.putInt("MaxPlayerDistance", this.playerDistance);
 	}
@@ -102,7 +106,6 @@ public class TomeSpawnerBlockEntity extends BlockEntity {
 	public void load(CompoundTag tag) {
 		super.load(tag);
 		this.entityType = tag.getString("EntityType");
-		this.tomesLeft = tag.getInt("MobSpawnsLeft");
 		this.spawnTime = tag.getInt("SpawnDelay");
 		this.playerDistance = tag.getInt("MaxPlayerDistance");
 	}

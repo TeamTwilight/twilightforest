@@ -14,6 +14,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfigur
 import net.minecraft.world.level.levelgen.structure.templatesystem.ProcessorRule;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import org.jetbrains.annotations.NotNull;
+import twilightforest.TFRegistries;
 import twilightforest.data.tags.CustomTagGenerator;
 import twilightforest.init.custom.WoodPalettes;
 import twilightforest.util.WoodPalette;
@@ -25,8 +26,8 @@ import java.util.List;
 
 public record SwizzleConfig(HolderSet<WoodPalette> targets, WeightedRandomList<WeightedEntry.Wrapper<HolderSet<WoodPalette>>> paletteChoices, List<ProcessorRule> preprocessingRules) implements FeatureConfiguration {
     public static final Codec<SwizzleConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            RegistryCodecs.homogeneousList(WoodPalettes.WOOD_PALETTE_TYPE_KEY).fieldOf("target_palettes").forGetter(SwizzleConfig::targets),
-            WeightedRandomList.codec(WeightedEntry.Wrapper.codec(RegistryCodecs.homogeneousList(WoodPalettes.WOOD_PALETTE_TYPE_KEY))).fieldOf("palette_choices").forGetter(SwizzleConfig::paletteChoices),
+            RegistryCodecs.homogeneousList(TFRegistries.Keys.WOOD_PALETTES).fieldOf("target_palettes").forGetter(SwizzleConfig::targets),
+            WeightedRandomList.codec(WeightedEntry.Wrapper.codec(RegistryCodecs.homogeneousList(TFRegistries.Keys.WOOD_PALETTES))).fieldOf("palette_choices").forGetter(SwizzleConfig::paletteChoices),
             ProcessorRule.CODEC.listOf().fieldOf("preprocessing_rules").orElseGet(Collections::emptyList).forGetter(SwizzleConfig::preprocessingRules)
     ).apply(instance, SwizzleConfig::new));
 

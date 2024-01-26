@@ -19,9 +19,9 @@ public class HydraMortarModel extends HierarchicalModel<HydraMortar> {
 
 	public static LayerDefinition create() {
 		MeshDefinition mesh = new MeshDefinition();
-		PartDefinition partRoot = mesh.getRoot();
+		PartDefinition definition = mesh.getRoot();
 
-		partRoot.addOrReplaceChild("mortar", CubeListBuilder.create()
+		definition.addOrReplaceChild("mortar", CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(-4.0F, 0.0F, -4.0F, 8.0F, 8.0F, 8.0F),
 				PartPose.ZERO);

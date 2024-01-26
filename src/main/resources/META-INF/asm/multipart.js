@@ -1,6 +1,6 @@
 // noinspection ES6ConvertVarToLetConst
 
-var ASM = Java.type('net.minecraftforge.coremod.api.ASMAPI');
+var ASM = Java.type('net.neoforged.coremod.api.ASMAPI');
 var Opcodes = Java.type('org.objectweb.asm.Opcodes');
 
 var MethodInsnNode = Java.type('org.objectweb.asm.tree.MethodInsnNode');
@@ -14,7 +14,7 @@ function initializeCoreMod() {
             'target': {
                 'type': 'METHOD',
                 'class': 'net.minecraft.server.level.ServerEntity',
-                'methodName': ASM.mapMethod('m_8543_'),
+                'methodName': 'sendDirtyEntityData',
                 'methodDesc': '()V'
             },
             'transformer': function (/*org.objectweb.asm.tree.MethodNode*/ methodNode) {
@@ -38,7 +38,7 @@ function initializeCoreMod() {
             'target': {
                 'type': 'METHOD',
                 'class': 'net.minecraft.client.renderer.entity.EntityRenderDispatcher',
-                'methodName': ASM.mapMethod('m_6213_'),
+                'methodName': 'onResourceManagerReload',
                 'methodDesc': '(Lnet/minecraft/server/packs/resources/ResourceManager;)V'
             },
             'transformer': function (/*org.objectweb.asm.tree.MethodNode*/ methodNode) {
@@ -62,7 +62,7 @@ function initializeCoreMod() {
             'target': {
                 'type': 'METHOD',
                 'class': 'net.minecraft.client.renderer.entity.EntityRenderDispatcher',
-                'methodName': ASM.mapMethod('m_114382_'),
+                'methodName': 'getRenderer',
                 'methodDesc': '(Lnet/minecraft/world/entity/Entity;)Lnet/minecraft/client/renderer/entity/EntityRenderer;'
             },
             'transformer': function (/*org.objectweb.asm.tree.MethodNode*/ methodNode) {
@@ -100,7 +100,7 @@ function initializeCoreMod() {
             'target': {
                 'type': 'METHOD',
                 'class': 'net.minecraft.client.renderer.LevelRenderer',
-                'methodName': ASM.mapMethod('m_109599_'),
+                'methodName': 'renderLevel',
                 'methodDesc': '(Lcom/mojang/blaze3d/vertex/PoseStack;FJZLnet/minecraft/client/Camera;Lnet/minecraft/client/renderer/GameRenderer;Lnet/minecraft/client/renderer/LightTexture;Lorg/joml/Matrix4f;)V'
             },
             'transformer': function (/*org.objectweb.asm.tree.MethodNode*/ methodNode) {
@@ -116,7 +116,7 @@ function initializeCoreMod() {
 
                         equate(node.owner, 'net/minecraft/client/multiplayer/ClientLevel') &&
 
-                        equate(node.name, ASM.mapMethod('m_104735_')) &&
+                        equate(node.name, 'entitiesForRendering') &&
 
                         equate(node.desc, '()Ljava/lang/Iterable;')
 

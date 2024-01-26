@@ -3,6 +3,8 @@ package twilightforest.block;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMaps;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
@@ -28,6 +30,10 @@ import java.util.Map;
 
 public class WallSkullCandleBlock extends AbstractSkullCandleBlock {
 
+	public static final MapCodec<WallSkullCandleBlock> CODEC = RecordCodecBuilder.mapCodec(
+			instance -> instance.group(SkullBlock.Type.CODEC.fieldOf("kind").forGetter(AbstractSkullCandleBlock::getType), propertiesCodec())
+					.apply(instance, WallSkullCandleBlock::new)
+	);
 	public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 	//im not doing individual boxes for each candle per facing, the boxes get cut off since the heads are halfway up the wall, and that would be 16!! boxes to make. No thanks.
 	private static final Map<Direction, VoxelShape> AABBS = Maps.newEnumMap(ImmutableMap.of(
@@ -55,6 +61,11 @@ public class WallSkullCandleBlock extends AbstractSkullCandleBlock {
 	public WallSkullCandleBlock(SkullBlock.Type type, Properties properties) {
 		super(type, properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH));
+	}
+
+	@Override
+	protected MapCodec<? extends BaseEntityBlock> codec() {
+		return CODEC;
 	}
 
 	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
@@ -93,8 +104,10 @@ public class WallSkullCandleBlock extends AbstractSkullCandleBlock {
 	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource rand) {
 		Direction dir = state.getValue(FACING);
 		if (state.getValue(LIGHTING) != Lighting.NONE) {
-			this.getParticleOffsets(state, level, pos).forEach((offset) ->
-					addParticlesAndSound(level, offset.add(pos.getX() - (float) dir.getStepX() * 0.25F, pos.getY(), pos.getZ() - (float) dir.getStepZ() * 0.25F), rand, state.getValue(LIGHTING) == Lighting.OMINOUS));
+			this.getParticleOffsets(state, level, pos).forEach(offset -> {
+				Vec3 trueOffset = offset.add(pos.getX() - (float) dir.getStepX() * 0.25F, pos.getY(), pos.getZ() - (float) dir.getStepZ() * 0.25F);
+				this.addParticlesAndSound(level, trueOffset.x(), trueOffset.y(), trueOffset.z(), rand, state.getValue(LIGHTING));
+			});
 		}
 	}
 

@@ -8,8 +8,8 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import twilightforest.entity.monster.PinchBeetle;
 
 /**
@@ -48,9 +48,9 @@ public class NewPinchBeetleModel extends HierarchicalModel<PinchBeetle> {
 
     public static LayerDefinition create() {
         MeshDefinition mesh = new MeshDefinition();
-        PartDefinition partRoot = mesh.getRoot();
+        PartDefinition definition = mesh.getRoot();
 
-        var head = partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+        var head = definition.addOrReplaceChild("head", CubeListBuilder.create()
                         .texOffs(0, 0)
                         .addBox(-4.0F, -3.0F, -6.0F, 8.0F, 6.0F, 6.0F),
                 PartPose.offset(0.0F, 19.0F, 0.0F));
@@ -74,37 +74,37 @@ public class NewPinchBeetleModel extends HierarchicalModel<PinchBeetle> {
                         .addBox(-12.0F, 0.0F, -12.0F, 12.0F, 2.0F, 12.0F),
                 PartPose.offsetAndRotation(-4.0F, 2.0F, -4.0F, 0.08726646259971647F, -0.6108652381980153F, 0.0F));
 
-        partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+        definition.addOrReplaceChild("body", CubeListBuilder.create()
                         .texOffs(0, 28)
                         .addBox(-5.0F, -8.0F, -3.0F, 10.0F, 10.0F, 7.0F),
                 PartPose.offsetAndRotation(0.0F, 19.0F, 8.0F, 1.5707963267948966F, 0.0F, 0.0F));
 
-        partRoot.addOrReplaceChild("right_leg_1", CubeListBuilder.create()
+        definition.addOrReplaceChild("right_leg_1", CubeListBuilder.create()
                         .texOffs(40, 28)
                         .addBox(-10.0F, 0.0F, -1.0F, 10.0F, 2.0F, 2.0F),
                 PartPose.offsetAndRotation(-2.0F, 21.0F, 6.0F, 0.0F, 0.6108652381980153F, -0.17453292519943295F));
 
-        partRoot.addOrReplaceChild("right_leg_2", CubeListBuilder.create()
+        definition.addOrReplaceChild("right_leg_2", CubeListBuilder.create()
                         .texOffs(40, 32)
                         .addBox(-10.0F, 0.0F, -1.0F, 10.0F, 2.0F, 2.0F),
                 PartPose.offsetAndRotation(-2.0F, 21.0F, 4.0F, 0.0F, 0.20943951023931953F, -0.17453292519943295F));
 
-        partRoot.addOrReplaceChild("right_leg_3", CubeListBuilder.create()
+        definition.addOrReplaceChild("right_leg_3", CubeListBuilder.create()
                         .texOffs(40, 36)
                         .addBox(-10.0F, 0.0F, -1.0F, 10.0F, 2.0F, 2.0F),
                 PartPose.offsetAndRotation(-2.0F, 21.0F, 2.0F, 0.0F, -0.20943951023931953F, -0.17453292519943295F));
 
-        partRoot.addOrReplaceChild("left_leg_1", CubeListBuilder.create()
+        definition.addOrReplaceChild("left_leg_1", CubeListBuilder.create()
                         .texOffs(40, 42)
                         .addBox(0.0F, 0.0F, -1.0F, 10.0F, 2.0F, 2.0F),
                 PartPose.offsetAndRotation(2.0F, 21.0F, 6.0F, 0.0F, -0.6108652381980153F, 0.17453292519943295F));
 
-        partRoot.addOrReplaceChild("left_leg_2", CubeListBuilder.create()
+        definition.addOrReplaceChild("left_leg_2", CubeListBuilder.create()
                         .texOffs(40, 46)
                         .addBox(0.0F, 0.0F, -1.0F, 10.0F, 2.0F, 2.0F),
                 PartPose.offsetAndRotation(2.0F, 21.0F, 4.0F, 0.0F, -0.20943951023931953F, 0.17453292519943295F));
 
-        partRoot.addOrReplaceChild("left_leg_3", CubeListBuilder.create()
+        definition.addOrReplaceChild("left_leg_3", CubeListBuilder.create()
                         .texOffs(40, 50)
                         .addBox(0.0F, 0.0F, -1.0F, 10.0F, 2.0F, 2.0F),
                 PartPose.offsetAndRotation(2.0F, 21.0F, 2.0F, 0.0F, 0.20943951023931953F, 0.17453292519943295F));

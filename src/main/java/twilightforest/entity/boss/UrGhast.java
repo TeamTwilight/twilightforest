@@ -29,10 +29,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFConfig;
-import twilightforest.advancements.TFAdvancements;
+import twilightforest.init.TFAdvancements;
 import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.entity.ai.control.NoClipMoveControl;
 import twilightforest.entity.ai.goal.GhastguardHomedFlightGoal;
@@ -43,7 +43,6 @@ import twilightforest.entity.projectile.UrGhastFireball;
 import twilightforest.init.*;
 import twilightforest.loot.TFLootTables;
 import twilightforest.network.ParticlePacket;
-import twilightforest.network.TFPacketHandler;
 import twilightforest.util.EntityUtil;
 import twilightforest.util.LandmarkUtil;
 
@@ -314,7 +313,7 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 
 		if (this.tickCount % 60 == 0 && !this.getTrapLocations().isEmpty()) {
 			//validate traps positions are still actually usable traps. If not, remove them
-			this.getTrapLocations().removeIf(pos -> !this.level().getBlockState(pos).is(TFBlocks.GHAST_TRAP.get()) || !this.level().canSeeSky(pos.above()));
+			this.getTrapLocations().removeIf(pos -> !this.level().getBlockState(pos).is(TFBlocks.GHAST_TRAP) || !this.level().canSeeSky(pos.above()));
 		}
 
 		if (this.firstTick || this.tickCount % 100 == 0) {
@@ -382,7 +381,7 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 		int trapsWithEnoughGhasts = 0;
 
 		for (BlockPos trap : this.getTrapLocations()) {
-			AABB aabb = new AABB(trap, trap.offset(1, 1, 1)).inflate(8D, 16D, 8D);
+			AABB aabb = new AABB(trap.getCenter(), trap.offset(1, 1, 1).getCenter()).inflate(8D, 16D, 8D);
 
 			List<CarminiteGhastling> nearbyGhasts = this.level().getEntitiesOfClass(CarminiteGhastling.class, aabb);
 
@@ -488,7 +487,7 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 			IBossLootBuffer.saveDropsIntoBoss(this, TFLootTables.createLootParams(this, true, cause).create(LootContextParamSets.ENTITY), serverLevel);
 			LandmarkUtil.markStructureConquered(this.level(), this, TFStructures.DARK_TOWER, true);
 			for (ServerPlayer player : this.hurtBy) {
-				TFAdvancements.HURT_BOSS.trigger(player, this);
+				TFAdvancements.HURT_BOSS.get().trigger(player, this);
 			}
 
 			LightningBolt lightningbolt = EntityType.LIGHTNING_BOLT.create(serverLevel);
@@ -549,7 +548,7 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 				double z = (this.random.nextDouble() - 0.5D) * 0.05D * i;
 				particlePacket.queueParticle(DustParticleOptions.REDSTONE, false, particlePos.add(x, y, z), Vec3.ZERO);
 			}
-			TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), particlePacket);
+			PacketDistributor.TRACKING_ENTITY.with(this).send(particlePacket);
 		}
 	}
 

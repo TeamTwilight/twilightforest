@@ -24,9 +24,9 @@ public class HydraHeadModel extends ListModel<HydraHead> {
 
     public static LayerDefinition create() {
         MeshDefinition mesh = new MeshDefinition();
-        PartDefinition partRoot = mesh.getRoot();
+        PartDefinition definition = mesh.getRoot();
 
-        var head = partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+        var head = definition.addOrReplaceChild("head", CubeListBuilder.create()
                         .texOffs(272, 0)
                         .addBox(-16F, -14F, -32F, 32, 24, 32)
                         .texOffs(272, 56)

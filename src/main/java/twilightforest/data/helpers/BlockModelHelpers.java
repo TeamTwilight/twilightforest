@@ -1,14 +1,17 @@
 package twilightforest.data.helpers;
 
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.block.state.properties.*;
-import net.minecraftforge.client.model.generators.*;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraft.world.level.block.state.properties.AttachFace;
+import net.minecraft.world.level.block.state.properties.Half;
+import net.minecraft.world.level.block.state.properties.SlabType;
+import net.minecraft.world.level.block.state.properties.StairsShape;
+import net.neoforged.neoforge.client.model.generators.*;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BanisterBlock;
 
@@ -64,10 +67,10 @@ public abstract class BlockModelHelpers extends BlockStateProvider {
 	}
 
 	protected void plankBlocks(String variant, Block plank, Block slab, StairBlock stair, Block button, Block fence, Block gate, Block plate, DoorBlock door, TrapDoorBlock trapdoor, BanisterBlock banister) {
-		this.plankBlocks(variant, plank, slab, stair, button, fence, gate, plate, door, trapdoor, false, banister);
+		this.plankBlocks(variant, plank, slab, stair, button, fence, gate, plate, door, trapdoor, false, false, banister);
 	}
 
-	protected void plankBlocks(String variant, Block plank, Block slab, StairBlock stair, Block button, Block fence, Block gate, Block plate, DoorBlock door, TrapDoorBlock trapdoor, boolean cutoutDoors, BanisterBlock banister) {
+	protected void plankBlocks(String variant, Block plank, Block slab, StairBlock stair, Block button, Block fence, Block gate, Block plate, DoorBlock door, TrapDoorBlock trapdoor, boolean cutoutDoors, boolean correctDoors, BanisterBlock banister) {
 		String plankTexName = "planks_" + variant;
 		String plankDir = "block/wood/planks/" + variant + "/";
 		ResourceLocation tex0 = prefix("block/wood/" + plankTexName + "_0");
@@ -104,15 +107,33 @@ public abstract class BlockModelHelpers extends BlockStateProvider {
 		String doorDir = "block/wood/door/" + variant + "/";
 		String trapdoorDir = "block/wood/trapdoor/" + variant + "/";
 
-		if(cutoutDoors) {
-			doorBlockWithRenderType(door, doorDir + name(door), prefix("block/wood/door/" + variant + "_lower"), prefix("block/wood/door/" + variant + "_upper"), CUTOUT);
-			trapdoorBlockWithRenderType(trapdoor, trapdoorDir + variant, prefix("block/wood/trapdoor/" + variant + "_trapdoor"), true, CUTOUT);
+		if (correctDoors) {
+			correctedDoorBlock(door, doorDir + name(door), prefix("block/wood/door/" + variant + "_lower"), prefix("block/wood/door/" + variant + "_upper"), prefix("block/wood/door/" + variant + "_side"), cutoutDoors ? CUTOUT : SOLID);
 		} else {
-			doorBlock(door, doorDir + name(door), prefix("block/wood/door/" + variant + "_lower"), prefix("block/wood/door/" + variant + "_upper"));
-			trapdoorBlock(trapdoor, trapdoorDir + variant, prefix("block/wood/trapdoor/" + variant + "_trapdoor"), true);
-
+			doorBlockWithRenderType(door, doorDir + variant, prefix("block/wood/door/" + variant + "_lower"), prefix("block/wood/door/" + variant + "_upper"), cutoutDoors ? CUTOUT : SOLID);
 		}
+		trapdoorBlockWithRenderType(trapdoor, trapdoorDir + variant, prefix("block/wood/trapdoor/" + variant + "_trapdoor"), true, cutoutDoors ? CUTOUT : SOLID);
+
 		banister(banister, plankTexName, variant);
+	}
+
+	private void correctedDoorBlock(DoorBlock block, String baseName, ResourceLocation bottom, ResourceLocation top, ResourceLocation side, ResourceLocation renderType) {
+		ModelFile bottomLeft = door(baseName + "_bottom_left", "corrected_door_bottom_left", bottom, top, side).renderType(renderType);
+		ModelFile bottomLeftOpen = door(baseName + "_bottom_left_open", "corrected_door_bottom_left_open", bottom, top, side).renderType(renderType);
+		ModelFile bottomRight = door(baseName + "_bottom_right", "corrected_door_bottom_right", bottom, top, side).renderType(renderType);
+		ModelFile bottomRightOpen = door(baseName + "_bottom_right_open", "corrected_door_bottom_right_open", bottom, top, side).renderType(renderType);
+		ModelFile topLeft = door(baseName + "_top_left", "corrected_door_top_left", bottom, top, side).renderType(renderType);
+		ModelFile topLeftOpen = door(baseName + "_top_left_open", "corrected_door_top_left_open", bottom, top, side).renderType(renderType);
+		ModelFile topRight = door(baseName + "_top_right", "corrected_door_top_right", bottom, top, side).renderType(renderType);
+		ModelFile topRightOpen = door(baseName + "_top_right_open", "corrected_door_top_right_open", bottom, top, side).renderType(renderType);
+		doorBlock(block, bottomLeft, bottomLeftOpen, bottomRight, bottomRightOpen, topLeft, topLeftOpen, topRight, topRightOpen);
+	}
+
+	private BlockModelBuilder door(String name, String model, ResourceLocation bottom, ResourceLocation top, ResourceLocation side) {
+		return models().withExistingParent(name, prefix("block/util/" + model))
+				.texture("bottom", bottom)
+				.texture("top", top)
+				.texture("side", side);
 	}
 
 	protected void woodGate(Block gate, String texName, String variant) {
@@ -382,11 +403,11 @@ public abstract class BlockModelHelpers extends BlockStateProvider {
 		}, BanisterBlock.WATERLOGGED);
 	}
 
-	protected void bisectedStairsBlock(RegistryObject<StairBlock> block, ResourceLocation side, ResourceLocation end, ResourceLocation middle) {
+	protected void bisectedStairsBlock(DeferredHolder<Block, StairBlock> block, ResourceLocation side, ResourceLocation end, ResourceLocation middle) {
 		this.bisectedStairsBlock(block, block.getId().getPath(), side, end, middle);
 	}
 
-	protected void bisectedStairsBlock(RegistryObject<StairBlock> block, String name, ResourceLocation side, ResourceLocation end, ResourceLocation middle) {
+	protected void bisectedStairsBlock(DeferredHolder<Block, StairBlock> block, String name, ResourceLocation side, ResourceLocation end, ResourceLocation middle) {
 		ModelFile stairs = this.models().withExistingParent(name, TwilightForestMod.prefix("block/util/bisected_stairs")).texture("side", side).texture("end", end).texture("middle", middle);
 		ModelFile stairsInner = this.models().withExistingParent(name + "_inner", TwilightForestMod.prefix("block/util/bisected_inner_stairs")).texture("side", side).texture("end", end).texture("middle", middle);
 		ModelFile stairsOuter = this.models().withExistingParent(name + "_outer", TwilightForestMod.prefix("block/util/bisected_outer_stairs")).texture("side", side).texture("end", end).texture("middle", middle);
@@ -395,7 +416,7 @@ public abstract class BlockModelHelpers extends BlockStateProvider {
 	}
 
 	protected ResourceLocation key(Block block) {
-		return ForgeRegistries.BLOCKS.getKey(block);
+		return BuiltInRegistries.BLOCK.getKey(block);
 	}
 
 	protected String name(Block block) {

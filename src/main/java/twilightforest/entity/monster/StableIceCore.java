@@ -15,8 +15,8 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import twilightforest.init.TFSounds;
 import twilightforest.entity.projectile.IceSnowball;
+import twilightforest.init.TFSounds;
 
 public class StableIceCore extends BaseIceMob implements RangedAttackMob {
 

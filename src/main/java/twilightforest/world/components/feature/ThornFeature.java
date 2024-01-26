@@ -45,7 +45,7 @@ public class ThornFeature extends Feature<ThornsConfig> {
 			BlockPos dPos = pos.relative(dir, i);
 
 			// Makes it avoid the troll clouds
-			if (!avoidGiantCloud || dPos.getY() - 64 <= WorldUtil.getBaseHeight(world, dPos.getX(), dPos.getZ(), Heightmap.Types.MOTION_BLOCKING_NO_LEAVES)) {
+            if (!avoidGiantCloud || checkIsUnderCloud(world, pos, dPos)) {
 				if (Math.abs(dPos.getX() - oPos.getX()) < config.maxSpread() && Math.abs(dPos.getZ() - oPos.getZ()) < config.maxSpread() && canPlaceThorns(world, dPos)) {
 					world.setBlock(dPos, TFBlocks.BROWN_THORNS.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, dir.getAxis()), 1 | 2);
 					world.getChunk(dPos).markPosForPostprocessing(dPos);
@@ -109,6 +109,11 @@ public class ThornFeature extends Feature<ThornsConfig> {
 				world.setBlock(nextPos, TFBlocks.THORN_LEAVES.get().defaultBlockState().setValue(LeavesBlock.DISTANCE, 1), 3/*.with(LeavesBlock.CHECK_DECAY, false)*/);
 			}
 		}
+	}
+
+	private static boolean checkIsUnderCloud(WorldGenLevel world, BlockPos pos, BlockPos dPos) {
+		return world.hasChunk(pos.getX() >> 4, pos.getZ() >> 4)
+				&& Math.max(dPos.getY(), world.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, dPos.getX(), dPos.getZ())) <= WorldUtil.getGeneratorSeaLevel(world) + 150;
 	}
 
 	private boolean canPlaceThorns(LevelAccessor world, BlockPos pos) {

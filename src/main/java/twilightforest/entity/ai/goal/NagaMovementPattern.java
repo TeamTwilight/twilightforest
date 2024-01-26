@@ -6,7 +6,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.neoforged.neoforge.event.EventHooks;
 import twilightforest.entity.boss.Naga;
 import twilightforest.init.TFSounds;
 import twilightforest.util.EntityUtil;
@@ -169,13 +169,13 @@ public class NagaMovementPattern extends Goal {
 	private void doIntimidate() {
 		this.state = MovementState.INTIMIDATE;
 		this.naga.playSound(TFSounds.NAGA_RATTLE.get(), 4.0F, this.naga.getVoicePitch());
-		this.naga.gameEvent(GameEvent.ENTITY_ROAR);
+		this.naga.gameEvent(GameEvent.ENTITY_ACTION);
 
 		this.stateCounter += 15 + this.naga.getRandom().nextInt(10);
 	}
 
 	private void crumbleBelowTarget(int range) {
-		if (!ForgeEventFactory.getMobGriefingEvent(this.naga.level(), this.naga) || naga.getTarget() == null) return;
+		if (!EventHooks.getMobGriefingEvent(this.naga.level(), this.naga) || naga.getTarget() == null) return;
 
 		int floor = (int) this.naga.getBoundingBox().minY;
 		int targetY = (int) this.naga.getTarget().getBoundingBox().minY;

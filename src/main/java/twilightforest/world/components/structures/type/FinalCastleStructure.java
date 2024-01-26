@@ -16,16 +16,15 @@ import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.world.components.structures.finalcastle.FinalCastleMainComponent;
-import twilightforest.world.components.structures.util.ConquerableStructure;
+import twilightforest.world.components.structures.util.ControlledSpawningStructure;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
-public class FinalCastleStructure extends ConquerableStructure {
+public class FinalCastleStructure extends ControlledSpawningStructure {
     public static final Codec<FinalCastleStructure> CODEC = RecordCodecBuilder.create(instance ->
-            conquerStatusCodec(instance).apply(instance, FinalCastleStructure::new)
+            controlledSpawningCodec(instance).apply(instance, FinalCastleStructure::new)
     );
 
     public FinalCastleStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, DecorationConfig decorationConfig, StructureSettings structureSettings) {
@@ -71,7 +70,7 @@ public class FinalCastleStructure extends ConquerableStructure {
                         context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_FINAL_CASTLE_BIOMES),
                         Arrays.stream(MobCategory.values()).collect(Collectors.toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create()))), // Landmarks have Controlled Mob spawning
                         GenerationStep.Decoration.SURFACE_STRUCTURES,
-                        TerrainAdjustment.BEARD_THIN
+                        TerrainAdjustment.BEARD_BOX
                 )
         );
     }

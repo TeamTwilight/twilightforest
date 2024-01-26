@@ -69,11 +69,6 @@ public class SlimeBeetle extends Monster implements RangedAttackMob {
 	}
 
 	@Override
-	public double getMyRidingOffset() {
-		return -0.15D;
-	}
-
-	@Override
 	public MobType getMobType() {
 		return MobType.ARTHROPOD;
 	}

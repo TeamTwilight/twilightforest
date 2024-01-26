@@ -2,13 +2,16 @@ package twilightforest.entity;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.entity.PartEntity;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.entity.PartEntity;
 import twilightforest.TwilightForestMod;
 import twilightforest.network.UpdateTFMultipartPacket;
 
@@ -18,7 +21,7 @@ public abstract class TFPart<T extends Entity> extends PartEntity<T> {
 
 	public static final ResourceLocation RENDERER = TwilightForestMod.prefix("noop");
 
-	protected EntityDimensions realSize;
+	protected EntityDimensions realSize = EntityDimensions.fixed(1F, 1F);
 
 	protected int newPosRotationIncrements;
 	protected double interpTargetX;
@@ -110,6 +113,11 @@ public abstract class TFPart<T extends Entity> extends PartEntity<T> {
 	}
 
 	@Override
+	public InteractionResult interact(Player player, InteractionHand hand) {
+		return this.getParent().interact(player, hand);
+	}
+
+	@Override
 	public void setId(int id) {
 		super.setId(id + 1);
 	}
@@ -136,7 +144,7 @@ public abstract class TFPart<T extends Entity> extends PartEntity<T> {
 		final float h = data.height();
 		this.setSize(data.fixed() ? EntityDimensions.fixed(w, h) : EntityDimensions.scalable(w, h));
 		this.refreshDimensions();
-		if (data.dirty())
+		if (data.dirty() && data.data() != null)
 			getEntityData().assignValues(data.data());
 	}
 

@@ -35,12 +35,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.entity.PartEntity;
-import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.fluids.FluidType;
+import net.neoforged.neoforge.entity.PartEntity;
+import net.neoforged.neoforge.event.EventHooks;
+import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFConfig;
-import twilightforest.advancements.TFAdvancements;
+import twilightforest.init.TFAdvancements;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.entity.IBreathAttacker;
 import twilightforest.entity.TFPart;
@@ -269,7 +269,7 @@ public class SnowQueen extends Monster implements IBreathAttacker, EnforcedHomeP
 			this.bossInfo.setProgress(0.0F);
 			LandmarkUtil.markStructureConquered(this.level(), this, TFStructures.AURORA_PALACE, true);
 			for (ServerPlayer player : this.hurtBy) {
-				TFAdvancements.HURT_BOSS.trigger(player, this);
+				TFAdvancements.HURT_BOSS.get().trigger(player, this);
 			}
 
 			TFLootTables.entityDropsIntoContainer(this, cause, TFBlocks.TWILIGHT_OAK_CHEST.get().defaultBlockState(), EntityUtil.bossChestLocation(this));
@@ -373,7 +373,7 @@ public class SnowQueen extends Monster implements IBreathAttacker, EnforcedHomeP
 	}
 
 	public void destroyBlocksInAABB(AABB box) {
-		if (ForgeEventFactory.getMobGriefingEvent(this.level(), this)) {
+		if (EventHooks.getMobGriefingEvent(this.level(), this)) {
 			for (BlockPos pos : WorldUtil.getAllInBB(box)) {
 				BlockState state = this.level().getBlockState(pos);
 				if (state.getBlock() == Blocks.ICE || state.getBlock() == Blocks.PACKED_ICE) {

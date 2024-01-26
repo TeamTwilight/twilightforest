@@ -36,11 +36,12 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.fluids.FluidType;
+import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.advancements.TFAdvancements;
+import twilightforest.init.TFAdvancements;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.entity.ai.control.NoClipMoveControl;
 import twilightforest.entity.ai.goal.PhantomAttackStartGoal;
@@ -235,22 +236,22 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 
 				// make treasure for killing the last knight
 				// This one won't receive the same loot treatment like the other bosses because this chest is supposed to reward for all of them instead of just the last one killed
-				TFLootTables.STRONGHOLD_BOSS.generateChest(serverLevel, treasurePos, Direction.NORTH, false);
+				TFLootTables.STRONGHOLD_BOSS.generateLootContainer(serverLevel, treasurePos, TFBlocks.DARK_CHEST.get().defaultBlockState().setValue(ChestBlock.FACING, Direction.NORTH), 2, this.getLootTableSeed());
 
 				//trigger criteria for killing every phantom in a group
 				if (cause.getEntity() instanceof ServerPlayer player) {
-					TFAdvancements.KILL_ALL_PHANTOMS.trigger(player);
+					TFAdvancements.KILL_ALL_PHANTOMS.get().trigger(player);
 				}
 
 				// mark the stronghold as defeated
 				LandmarkUtil.markStructureConquered(this.level(), this, TFStructures.KNIGHT_STRONGHOLD, true);
 
 				for (ServerPlayer player : this.hurtBy) {
-					TFAdvancements.HURT_BOSS.trigger(player, this);
+					TFAdvancements.HURT_BOSS.get().trigger(player, this);
 				}
 
-				for (ServerPlayer player : this.level().getEntitiesOfClass(ServerPlayer.class, new AABB(treasurePos).inflate(64.0D))) {
-					TFAdvancements.HURT_BOSS.trigger(player, this);
+				for (ServerPlayer player : this.level().getEntitiesOfClass(ServerPlayer.class, new AABB(treasurePos).inflate(32.0D))) {
+					TFAdvancements.HURT_BOSS.get().trigger(player, this);
 				}
 			}
 		}
@@ -361,10 +362,10 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 					this.getAttribute(Attributes.ATTACK_DAMAGE).addTransientModifier(CHARGING_MODIFIER);
 				}
 				if (this.getAttribute(Attributes.ARMOR).hasModifier(NON_CHARGING_ARMOR_MODIFIER)) {
-					this.getAttribute(Attributes.ARMOR).removeModifier(NON_CHARGING_ARMOR_MODIFIER);
+					this.getAttribute(Attributes.ARMOR).removeModifier(NON_CHARGING_ARMOR_MODIFIER.getId());
 				}
 			} else {
-				this.getAttribute(Attributes.ATTACK_DAMAGE).removeModifier(CHARGING_MODIFIER);
+				this.getAttribute(Attributes.ATTACK_DAMAGE).removeModifier(CHARGING_MODIFIER.getId());
 				if (!this.getAttribute(Attributes.ARMOR).hasModifier(NON_CHARGING_ARMOR_MODIFIER)) {
 					this.getAttribute(Attributes.ARMOR).addTransientModifier(NON_CHARGING_ARMOR_MODIFIER);
 				}
@@ -430,15 +431,15 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 	}
 
 	public boolean isSwordKnight() {
-		return this.getMainHandItem().is(TFItems.KNIGHTMETAL_SWORD.get());
+		return this.getMainHandItem().is(TFItems.KNIGHTMETAL_SWORD);
 	}
 
 	public boolean isAxeKnight() {
-		return this.getMainHandItem().is(TFItems.KNIGHTMETAL_AXE.get());
+		return this.getMainHandItem().is(TFItems.KNIGHTMETAL_AXE);
 	}
 
 	public boolean isPickKnight() {
-		return this.getMainHandItem().is(TFItems.KNIGHTMETAL_PICKAXE.get());
+		return this.getMainHandItem().is(TFItems.KNIGHTMETAL_PICKAXE);
 	}
 
 	public int getNumber() {

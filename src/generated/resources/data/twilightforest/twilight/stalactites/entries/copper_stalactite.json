@@ -1,0 +1,15 @@
+{
+  "max_length": 12,
+  "ores": [
+    {
+      "block": "minecraft:copper_ore",
+      "weight": 30
+    },
+    {
+      "block": "minecraft:raw_copper_block",
+      "weight": 1
+    }
+  ],
+  "size_variation": 0.6,
+  "weight": 25
+}

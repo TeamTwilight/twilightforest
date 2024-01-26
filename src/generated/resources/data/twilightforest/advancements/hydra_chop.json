@@ -2,12 +2,10 @@
   "parent": "twilightforest:progress_hydra",
   "criteria": {
     "hydra_chop": {
-      "conditions": {},
       "trigger": "twilightforest:consume_hydra_chop_on_low_hunger"
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancement.twilightforest.hydra_chop.desc",
       "with": [
@@ -16,12 +14,9 @@
         }
       ]
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
       "item": "twilightforest:hydra_chop"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancement.twilightforest.hydra_chop"
     }

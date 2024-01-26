@@ -141,7 +141,7 @@ public class IceBomb extends TFThrowable {
 					entity.discard();
 				} else {
 					if (!entity.getType().is(EntityTypeTags.FREEZE_IMMUNE_ENTITY_TYPES)) {
-						entity.hurt(TFDamageTypes.getIndirectEntityDamageSource(this.level(), TFDamageTypes.FROZEN, this.getOwner(), this), entity.getType().is(EntityTypeTags.FREEZE_HURTS_EXTRA_TYPES) ? 5 : 1);
+						entity.hurt(TFDamageTypes.getIndirectEntityDamageSource(this.level(), TFDamageTypes.FROZEN, this, this.getOwner()), entity.getType().is(EntityTypeTags.FREEZE_HURTS_EXTRA_TYPES) ? 5 : 1);
 						ChillAuraEnchantment.doChillAuraEffect(entity, 100, 0, true);
 					}
 				}

@@ -14,7 +14,8 @@ import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.client.model.data.ModelData;
+import net.neoforged.neoforge.client.RenderTypeHelper;
+import net.neoforged.neoforge.client.model.data.ModelData;
 import twilightforest.entity.projectile.FallingIce;
 
 public class FallingIceRenderer extends EntityRenderer<FallingIce> {
@@ -38,7 +39,7 @@ public class FallingIceRenderer extends EntityRenderer<FallingIce> {
 				BlockRenderDispatcher dispatcher = Minecraft.getInstance().getBlockRenderer();
 				var model = dispatcher.getBlockModel(blockstate);
 				for (var renderType : model.getRenderTypes(blockstate, RandomSource.create(blockstate.getSeed(entity.blockPosition())), ModelData.EMPTY))
-					dispatcher.getModelRenderer().tesselateBlock(world, model, blockstate, blockpos, stack, buffer.getBuffer(renderType), false, RandomSource.create(), blockstate.getSeed(entity.blockPosition()), OverlayTexture.NO_OVERLAY, ModelData.EMPTY, renderType);
+					dispatcher.getModelRenderer().tesselateBlock(world, model, blockstate, blockpos, stack, buffer.getBuffer(RenderTypeHelper.getMovingBlockRenderType(renderType)), false, RandomSource.create(), blockstate.getSeed(entity.blockPosition()), OverlayTexture.NO_OVERLAY, ModelData.EMPTY, renderType);
 				stack.popPose();
 				super.render(entity, entityYaw, partialTicks, stack, buffer, light);
 			}

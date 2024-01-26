@@ -42,16 +42,15 @@
   },
   "requirements": [
     [
+      "has_the_recipe",
       "has_block",
       "has_ingot",
-      "has_ring",
-      "has_the_recipe"
+      "has_ring"
     ]
   ],
   "rewards": {
     "recipes": [
       "twilightforest:equipment/block_and_chain"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

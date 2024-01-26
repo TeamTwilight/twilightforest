@@ -1,11 +1,8 @@
 {
   "values": [
     "minecraft:nether_portal",
-    "twilightforest:deadrock",
-    "twilightforest:cracked_deadrock",
-    "twilightforest:weathered_deadrock",
+    "#twilightforest:deadrock",
     "twilightforest:castle_brick",
-    "twilightforest:cracked_deadrock",
     "twilightforest:thick_castle_brick",
     "twilightforest:mossy_castle_brick",
     "twilightforest:castle_roof_tile",

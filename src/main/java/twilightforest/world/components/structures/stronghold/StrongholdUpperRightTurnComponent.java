@@ -16,7 +16,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import twilightforest.init.TFStructurePieceTypes;
 
 
-public class StrongholdUpperRightTurnComponent extends StructureTFStrongholdComponent {
+public class StrongholdUpperRightTurnComponent extends KnightStrongholdComponent {
 
 	public StrongholdUpperRightTurnComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(TFStructurePieceTypes.TFSURT.get(), nbt);

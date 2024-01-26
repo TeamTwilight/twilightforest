@@ -97,7 +97,7 @@ public enum ZoomLayer implements AreaTransformer1 {
 		@Override
 		public LazyArea build(LongFunction<LazyAreaContext> contextFactory) {
 			LazyAreaContext seededContext = contextFactory.apply(this.salt);
-			LazyArea parentLayer = this.parent.get().build(contextFactory);
+			LazyArea parentLayer = this.parent.value().build(contextFactory);
 
 			if (this.fuzzy)
 				return FUZZY.run(seededContext, parentLayer);

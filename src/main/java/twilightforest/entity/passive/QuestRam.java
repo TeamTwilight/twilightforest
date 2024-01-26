@@ -12,11 +12,13 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -27,22 +29,22 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.advancements.TFAdvancements;
+import twilightforest.init.TFAdvancements;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.entity.ai.goal.QuestRamEatWoolGoal;
 import twilightforest.init.TFSounds;
+import twilightforest.init.TFStructures;
 import twilightforest.loot.TFLootTables;
 import twilightforest.network.ParticlePacket;
-import twilightforest.network.TFPacketHandler;
+import twilightforest.util.LandmarkUtil;
 
 import java.util.Optional;
 
@@ -69,8 +71,6 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 		this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0F));
 		this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
 	}
-
-
 
 	@Override
 	public boolean isFood(ItemStack stack) {
@@ -124,8 +124,10 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 		rewards.forEach(stack -> this.spawnAtLocation(stack, 1.0F));
 
 		for (ServerPlayer player : this.level().getEntitiesOfClass(ServerPlayer.class, getBoundingBox().inflate(16.0D, 16.0D, 16.0D))) {
-			TFAdvancements.QUEST_RAM_COMPLETED.trigger(player);
+			TFAdvancements.QUEST_RAM_COMPLETED.get().trigger(player);
 		}
+
+		LandmarkUtil.markStructureConquered(this.level(), this, TFStructures.QUEST_GROVE, true);
 	}
 
 	@Override
@@ -228,7 +230,7 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 								red, green, blue);
 					}
 
-					TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> serverplayer), packet);
+					PacketDistributor.PLAYER.with(serverplayer).send(packet);
 				}
 			}
 		}

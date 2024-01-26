@@ -1,6 +1,8 @@
 package twilightforest.block.entity;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -10,11 +12,12 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.block.CarminiteReactorBlock;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.entity.monster.CarminiteGhastling;
 import twilightforest.init.*;
+
+import java.util.Optional;
 
 public class CarminiteReactorBlockEntity extends BlockEntity {
 
@@ -48,7 +51,7 @@ public class CarminiteReactorBlockEntity extends BlockEntity {
 
 	public static void tick(Level level, BlockPos pos, BlockState state, CarminiteReactorBlockEntity te) {
 
-		if (state.getValue(CarminiteReactorBlock.ACTIVE)) {
+		if (!level.isDebug() && state.getValue(CarminiteReactorBlock.ACTIVE)) {
 			te.counter++;
 
 			if (!level.isClientSide()) {
@@ -129,11 +132,10 @@ public class CarminiteReactorBlockEntity extends BlockEntity {
 
 				}
 
-
 				if (te.counter >= 350) {
 					// deactivate & explode
 					level.explode(null, TFDamageTypes.getDamageSource(level, TFDamageTypes.REACTOR), null, pos.getX(), pos.getY(), pos.getZ(), 4.0F, true, Level.ExplosionInteraction.BLOCK);
-					level.removeBlock(pos, false);
+					level.destroyBlock(pos, false);
 
 					// spawn mini ghasts near the secondary & tertiary points
 					for (int i = 0; i < 3; i++) {
@@ -200,7 +202,7 @@ public class CarminiteReactorBlockEntity extends BlockEntity {
 	private void transformBlock(BlockPos pos, BlockState state, int fuzz, boolean netherTransform) {
 		BlockState stateThere = this.getLevel().getBlockState(pos);
 
-		if (stateThere.getBlock() != Blocks.AIR && (stateThere.is(BlockTagGenerator.CARMINITE_REACTOR_IMMUNE) || stateThere.getDestroySpeed(level, pos) == -1)) {
+		if (stateThere.getBlock() != Blocks.AIR && (stateThere.is(BlockTagGenerator.CARMINITE_REACTOR_IMMUNE) || stateThere.getDestroySpeed(this.getLevel(), pos) == -1)) {
 			// don't destroy unbreakable stuff
 			return;
 		}
@@ -211,9 +213,11 @@ public class CarminiteReactorBlockEntity extends BlockEntity {
 		}
 
 		if (netherTransform && stateThere.getBlock() != Blocks.AIR) {
-			BlockState ore = ForgeRegistries.BLOCKS.tags().getTag(BlockTagGenerator.CARMINITE_REACTOR_ORES).getRandomElement(this.getLevel().getRandom()).get().defaultBlockState();
-
-			this.getLevel().setBlock(pos, (this.getLevel().getRandom().nextInt(8) == 0 ? ore : Blocks.NETHERRACK.defaultBlockState()), 3);
+			Optional<Block> optional = BuiltInRegistries.BLOCK
+					.getTag(BlockTagGenerator.CARMINITE_REACTOR_ORES)
+					.flatMap(tag -> tag.getRandomElement(this.getLevel().getRandom()))
+					.map(Holder::value);
+			this.getLevel().setBlock(pos, (this.getLevel().getRandom().nextInt(8) == 0 && optional.isPresent() ? optional.get().defaultBlockState() : Blocks.NETHERRACK.defaultBlockState()), 3);
 			// fire on top?
 			if (this.getLevel().isEmptyBlock(pos.above()) && fuzz % 3 == 0) {
 				this.getLevel().setBlock(pos.above(), Blocks.FIRE.defaultBlockState(), 3);

@@ -16,14 +16,13 @@
   },
   "requirements": [
     [
-      "in_water",
-      "has_the_recipe"
+      "has_the_recipe",
+      "in_water"
     ]
   ],
   "rewards": {
     "recipes": [
       "twilightforest:time_boat"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

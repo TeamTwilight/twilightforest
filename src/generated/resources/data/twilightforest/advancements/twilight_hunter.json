@@ -938,16 +938,12 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancement.twilightforest.twilight_hunter.desc"
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
       "item": "twilightforest:raven_feather"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancement.twilightforest.twilight_hunter"
     }

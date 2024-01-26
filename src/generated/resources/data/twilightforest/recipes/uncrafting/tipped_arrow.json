@@ -2,11 +2,9 @@
   "type": "twilightforest:uncrafting",
   "cost": 4,
   "input": {
-    "count": 8,
-    "ingredient": {
-      "item": "minecraft:tipped_arrow"
-    }
+    "item": "minecraft:tipped_arrow"
   },
+  "input_count": 8,
   "key": {
     "A": {
       "item": "minecraft:arrow"

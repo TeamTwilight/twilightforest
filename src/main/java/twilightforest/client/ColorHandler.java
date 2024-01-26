@@ -5,13 +5,14 @@ import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RegisterColorHandlersEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.AuroraBrickBlock;
 import twilightforest.block.CastleDoorBlock;
@@ -66,7 +67,7 @@ public final class ColorHandler {
 
 			return (red / 9 & 255) << 16 | (grn / 9 & 255) << 8 | blu / 9 & 255;
 		}, TFBlocks.DARK_LEAVES.get(), TFBlocks.HARDENED_DARK_LEAVES.get(), TFBlocks.GIANT_LEAVES.get());
-		event.register((state, getter, pos, tintIndex) -> tintIndex > 15 ? 0xFFFFFF : blockColors.getColor(Blocks.GRASS.defaultBlockState(), getter, pos, tintIndex), TFBlocks.SMOKER.get(), TFBlocks.FIRE_JET.get());
+		event.register((state, getter, pos, tintIndex) -> tintIndex > 15 ? 0xFFFFFF : blockColors.getColor(Blocks.SHORT_GRASS.defaultBlockState(), getter, pos, tintIndex), TFBlocks.SMOKER.get(), TFBlocks.FIRE_JET.get());
 		event.register((state, getter, pos, tintIndex) -> getter != null && pos != null ? 2129968 : 7455580, TFBlocks.HUGE_LILY_PAD.get());
 		event.register((state, getter, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
@@ -405,7 +406,7 @@ public final class ColorHandler {
 				TFItems.ARCTIC_HELMET.get(), TFItems.ARCTIC_CHESTPLATE.get(), TFItems.ARCTIC_LEGGINGS.get(), TFItems.ARCTIC_BOOTS.get());
 
 		event.register((stack, tintIndex) ->
-						tintIndex > 0 ? -1 : PotionUtils.getColor(stack),
+						tintIndex > 0 || PotionUtils.getPotion(stack) == Potions.EMPTY ? -1 : PotionUtils.getColor(stack),
 				TFItems.BRITTLE_FLASK.get(), TFItems.GREATER_FLASK.get());
 	}
 }

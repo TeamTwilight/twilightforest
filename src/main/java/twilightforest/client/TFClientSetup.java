@@ -1,11 +1,16 @@
 package twilightforest.client;
 
+import com.ibm.icu.text.RuleBasedNumberFormat;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.SplashRenderer;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.SilverfishModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
+import net.minecraft.client.renderer.blockentity.HangingSignRenderer;
+import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
@@ -16,17 +21,18 @@ import net.minecraft.util.LazyLoadedValue;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
-import net.minecraftforge.client.event.ScreenEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.bus.api.EventPriority;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.neoforged.neoforge.client.event.ScreenEvent;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
@@ -34,6 +40,7 @@ import twilightforest.client.model.entity.*;
 import twilightforest.client.model.entity.newmodels.*;
 import twilightforest.client.renderer.entity.*;
 import twilightforest.client.renderer.entity.newmodels.*;
+import twilightforest.client.renderer.tileentity.*;
 import twilightforest.entity.TFPart;
 import twilightforest.entity.boss.HydraHead;
 import twilightforest.entity.boss.HydraNeck;
@@ -45,7 +52,10 @@ import twilightforest.init.TFMenuTypes;
 import twilightforest.util.TFWoodTypes;
 
 import java.lang.reflect.Field;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.BooleanSupplier;
@@ -55,9 +65,8 @@ public class TFClientSetup {
 
 	public static boolean optifinePresent = false;
 
-	public static void init() {
-		IEventBus busMod = FMLJavaModLoadingContext.get().getModEventBus();
-		TFShaders.init(busMod);
+	public static void init(IEventBus bus) {
+		TFShaders.init(bus);
 	}
 
 	@Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE, modid = TwilightForestMod.ID)
@@ -82,6 +91,20 @@ public class TFClientSetup {
 
 			firstTitleScreenShown = true;
 		}
+
+		@SubscribeEvent
+		public static void customizeSplashes(ScreenEvent.Init.Post event) {
+			if (event.getScreen() instanceof TitleScreen title) {
+				SplashRenderer renderer = title.splash;
+				if (renderer != null) {
+					LocalDate date = LocalDate.now();
+					if (date.getMonth() == Month.AUGUST && date.getDayOfMonth() == 19) {
+						RuleBasedNumberFormat formatter = new RuleBasedNumberFormat(Locale.US, RuleBasedNumberFormat.ORDINAL);
+						renderer.splash = String.format("Happy %s birthday to the Twilight Forest!", formatter.format(date.getYear() - 2011));
+					}
+				}
+			}
+		}
 	}
 
     @SubscribeEvent
@@ -92,9 +115,6 @@ public class TFClientSetup {
 		} catch (ClassNotFoundException e) {
 			optifinePresent = false;
 		}
-
-        TFBlockEntities.registerTileEntityRenders();
-        TFMenuTypes.renderScreens();
 
         evt.enqueueWork(() -> {
             Sheets.addWoodType(TFWoodTypes.TWILIGHT_OAK_WOOD_TYPE);
@@ -113,6 +133,11 @@ public class TFClientSetup {
 		event.registerReloadListener(JappaPackReloadListener.INSTANCE);
 		MagicPaintingTextureManager.instance = new MagicPaintingTextureManager(Minecraft.getInstance().getTextureManager());
 		event.registerReloadListener(MagicPaintingTextureManager.instance);
+	}
+	
+	@SubscribeEvent
+	public static void registerScreens(RegisterMenuScreensEvent event) {
+		event.register(TFMenuTypes.UNCRAFTING.get(), UncraftingScreen::new);
 	}
 
 	@SubscribeEvent
@@ -203,6 +228,20 @@ public class TFClientSetup {
 		event.registerEntityRenderer(TFEntities.SLIDER.get(), SlideBlockRenderer::new);
 		event.registerEntityRenderer(TFEntities.SEEKER_ARROW.get(), DefaultArrowRenderer::new);
 		event.registerEntityRenderer(TFEntities.ICE_ARROW.get(), DefaultArrowRenderer::new);
+
+		// Block Entities
+		event.registerBlockEntityRenderer(TFBlockEntities.FIREFLY.get(), FireflyTileEntityRenderer::new);
+		event.registerBlockEntityRenderer(TFBlockEntities.CICADA.get(), CicadaTileEntityRenderer::new);
+		event.registerBlockEntityRenderer(TFBlockEntities.MOONWORM.get(), MoonwormTileEntityRenderer::new);
+		event.registerBlockEntityRenderer(TFBlockEntities.TROPHY.get(), TrophyTileEntityRenderer::new);
+		event.registerBlockEntityRenderer(TFBlockEntities.TF_SIGN.get(), SignRenderer::new);
+		event.registerBlockEntityRenderer(TFBlockEntities.TF_HANGING_SIGN.get(), HangingSignRenderer::new);
+		event.registerBlockEntityRenderer(TFBlockEntities.TF_CHEST.get(), TFChestTileEntityRenderer::new);
+		event.registerBlockEntityRenderer(TFBlockEntities.TF_TRAPPED_CHEST.get(), TFChestTileEntityRenderer::new);
+		event.registerBlockEntityRenderer(TFBlockEntities.KEEPSAKE_CASKET.get(), CasketTileEntityRenderer::new);
+		event.registerBlockEntityRenderer(TFBlockEntities.SKULL_CANDLE.get(), SkullCandleTileEntityRenderer::new);
+		event.registerBlockEntityRenderer(TFBlockEntities.RED_THREAD.get(), RedThreadRenderer::new);
+		event.registerBlockEntityRenderer(TFBlockEntities.CANDELABRA.get(), CandelabraTileEntityRenderer::new);
 	}
 
 	@OnlyIn(Dist.CLIENT)
@@ -225,6 +264,7 @@ public class TFClientSetup {
 		}
 	}
 
+	@Nullable
 	private static Field field_EntityRenderersEvent$AddLayers_renderers;
 
 	@SubscribeEvent

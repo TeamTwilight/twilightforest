@@ -309,6 +309,12 @@
     ],
     "subtitle": "subtitles.twilightforest.block.vanish.vanish"
   },
+  "block.twilightforest.wrought_iron_fence.extend": {
+    "sounds": [
+      "twilightforest:random/casket/repair"
+    ],
+    "subtitle": "subtitles.twilightforest.block.wrought_iron_fence.extend"
+  },
   "entity.twilightforest.alpha_yeti.alert": {
     "sounds": [
       "twilightforest:mob/alpha_yeti/alert"
@@ -1700,6 +1706,15 @@
     ],
     "subtitle": "subtitles.twilightforest.entity.shield.add"
   },
+  "entity.twilightforest.shield.block": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "item.trident.hit"
+      }
+    ],
+    "subtitle": "subtitles.twilightforest.entity.shield.block"
+  },
   "entity.twilightforest.shield.break": {
     "sounds": [
       {
@@ -2275,6 +2290,31 @@
     ],
     "subtitle": "subtitles.twilightforest.item.moonworm.squish"
   },
+  "item.twilightforest.ore_meter.clear": {
+    "sounds": [
+      "block/crafter/craft"
+    ],
+    "subtitle": "subtitles.twilightforest.item.ore_meter.clear"
+  },
+  "item.twilightforest.ore_meter.crackle": {
+    "sounds": [
+      "ambient/nether/basalt_deltas/click1",
+      "ambient/nether/basalt_deltas/click2",
+      "ambient/nether/basalt_deltas/click3",
+      "ambient/nether/basalt_deltas/click4",
+      "ambient/nether/basalt_deltas/click5"
+    ],
+    "subtitle": "subtitles.twilightforest.item.ore_meter.crackle"
+  },
+  "item.twilightforest.ore_meter.target_block": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "item.lodestone_compass.lock"
+      }
+    ],
+    "subtitle": "subtitles.twilightforest.item.ore_meter.target_block"
+  },
   "item.twilightforest.scepter.drain": {
     "sounds": [
       {
@@ -2288,10 +2328,19 @@
     "sounds": [
       {
         "type": "event",
-        "name": "item.flintandsteel.use"
+        "name": "item.firecharge.use"
       }
     ],
     "subtitle": "subtitles.twilightforest.item.scepter.pearl"
+  },
+  "item.twilightforest.scepter.use": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "item.flintandsteel.use"
+      }
+    ],
+    "subtitle": "subtitles.twilightforest.item.scepter.use"
   },
   "item.twilightforest.shield.shatter": {
     "sounds": [

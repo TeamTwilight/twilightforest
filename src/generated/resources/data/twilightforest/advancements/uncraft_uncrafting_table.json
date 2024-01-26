@@ -13,16 +13,13 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancement.twilightforest.uncraft_uncrafting_table.desc"
     },
-    "frame": "task",
     "hidden": true,
     "icon": {
       "item": "twilightforest:uncrafting_table"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancement.twilightforest.uncraft_uncrafting_table"
     }

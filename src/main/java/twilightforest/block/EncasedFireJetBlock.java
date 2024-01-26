@@ -6,8 +6,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import twilightforest.init.TFSounds;
 import twilightforest.enums.FireJetVariant;
+import twilightforest.init.TFSounds;
 
 public class EncasedFireJetBlock extends FireJetBlock {
 

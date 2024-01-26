@@ -59,5 +59,6 @@
       "spawns": []
     }
   },
+  "speleothem_config": "twilightforest:hydra_lair",
   "step": "surface_structures"
 }

@@ -15,39 +15,39 @@ public class NewTrollModel extends HumanoidModel<Troll> {
 
 	public static LayerDefinition create() {
 		MeshDefinition mesh = HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F);
-		PartDefinition partRoot = mesh.getRoot();
+		PartDefinition definition = mesh.getRoot();
 
-		partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+		definition.addOrReplaceChild("head", CubeListBuilder.create()
 						.texOffs(52, 31)
 						.addBox(-5.0F, -8.0F, -8.0F, 10.0F, 10.0F, 10.0F)
 						.texOffs(36, 41)
 						.addBox(-2.0F, -4.0F, -11.0F, 4.0F, 8.0F, 4.0F),
 				PartPose.offset(0.0F, -11.0F, -1.0F));
 
-		partRoot.addOrReplaceChild("hat", CubeListBuilder.create(),
+		definition.addOrReplaceChild("hat", CubeListBuilder.create(),
 				PartPose.ZERO);
 
-		partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+		definition.addOrReplaceChild("body", CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(-8.0F, -37.0F, -6.0F, 16.0F, 26.0F, 15.0F),
 				PartPose.offset(0.0F, 24.0F, 0.0F));
 
-		partRoot.addOrReplaceChild("right_arm", CubeListBuilder.create()
+		definition.addOrReplaceChild("right_arm", CubeListBuilder.create()
 						.texOffs(0, 41)
 						.addBox(-6.0F, -1.0F, -4.0F, 6.0F, 25.0F, 8.0F),
 				PartPose.offset(-8.0F, -9.0F, 0.0F));
 
-		partRoot.addOrReplaceChild("left_arm", CubeListBuilder.create().mirror()
+		definition.addOrReplaceChild("left_arm", CubeListBuilder.create().mirror()
 						.texOffs(0, 41)
 						.addBox(0.0F, -1.0F, -4.0F, 6.0F, 25.0F, 8.0F),
 				PartPose.offset(8.0F, -9.0F, 0.0F));
 
-		partRoot.addOrReplaceChild("right_leg", CubeListBuilder.create()
+		definition.addOrReplaceChild("right_leg", CubeListBuilder.create()
 						.texOffs(28, 54)
 						.addBox(-3.0F, -1.0F, -4.0F, 6.0F, 12.0F, 8.0F),
 				PartPose.offset(-4.0F, 13.0F, 0.0F));
 
-		partRoot.addOrReplaceChild("left_leg", CubeListBuilder.create().mirror()
+		definition.addOrReplaceChild("left_leg", CubeListBuilder.create().mirror()
 						.texOffs(28, 54)
 						.addBox(-3.0F, -1.0F, -4.0F, 6.0F, 12.0F, 8.0F),
 				PartPose.offset(4.0F, 13.0F, 0.0F));

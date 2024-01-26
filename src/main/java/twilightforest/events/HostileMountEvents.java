@@ -5,17 +5,16 @@ import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.event.entity.EntityMountEvent;
-import net.minecraftforge.event.entity.EntityTeleportEvent;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.event.entity.EntityMountEvent;
+import net.neoforged.neoforge.event.entity.EntityTeleportEvent;
+import net.neoforged.neoforge.event.entity.living.LivingAttackEvent;
+import net.neoforged.neoforge.event.entity.living.LivingEvent;
 import twilightforest.TwilightForestMod;
-import twilightforest.capabilities.CapabilityList;
-import twilightforest.capabilities.thrown.YetiThrowCapability;
 import twilightforest.entity.IHostileMount;
 import twilightforest.init.TFDamageTypes;
+import twilightforest.init.TFDataAttachments;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class HostileMountEvents {
@@ -31,10 +30,10 @@ public class HostileMountEvents {
 			event.setCanceled(true);
 		}
 
-		if (damageSource.is(DamageTypes.FALL) && living.getCapability(CapabilityList.YETI_THROWN).map(YetiThrowCapability::getThrown).orElse(false)) {
+		if (damageSource.is(DamageTypes.FALL) && living.getData(TFDataAttachments.YETI_THROWING).getThrown()) {
 			float amount = event.getAmount();
 			event.setCanceled(true);
-			living.hurt(TFDamageTypes.getEntityDamageSource(living.level(), TFDamageTypes.YEETED, living.getCapability(CapabilityList.YETI_THROWN).resolve().get().getThrower()), amount);
+			living.hurt(TFDamageTypes.getEntityDamageSource(living.level(), TFDamageTypes.YEETED, living.getData(TFDataAttachments.YETI_THROWING).getThrower()), amount);
 		}
 	}
 

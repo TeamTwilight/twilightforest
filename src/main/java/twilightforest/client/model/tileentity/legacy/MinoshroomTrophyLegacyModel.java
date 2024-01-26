@@ -4,7 +4,10 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import twilightforest.client.model.tileentity.GenericTrophyModel;
 
@@ -18,14 +21,14 @@ public class MinoshroomTrophyLegacyModel extends GenericTrophyModel {
 
 	public static LayerDefinition create() {
 		MeshDefinition mesh = new MeshDefinition();
-		PartDefinition partRoot = mesh.getRoot();
+		PartDefinition definition = mesh.getRoot();
 
-		var head = partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+		var head = definition.addOrReplaceChild("head", CubeListBuilder.create()
 						.texOffs(96, 16)
 						.addBox(-4F, -8F, -4F, 8, 8, 8),
 				PartPose.offset(0F, -6F, -9F));
 
-		partRoot.addOrReplaceChild("hat", CubeListBuilder.create(),
+		definition.addOrReplaceChild("hat", CubeListBuilder.create(),
 				PartPose.ZERO);
 
 		head.addOrReplaceChild("snout", CubeListBuilder.create()

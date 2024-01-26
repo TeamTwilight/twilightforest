@@ -13,10 +13,9 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
-
-import org.jetbrains.annotations.Nullable;
 
 public class TowerBroodling extends SwarmSpider {
 

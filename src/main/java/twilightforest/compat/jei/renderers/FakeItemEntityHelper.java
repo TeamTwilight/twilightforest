@@ -3,8 +3,8 @@ package twilightforest.compat.jei.renderers;
 import mezz.jei.api.ingredients.IIngredientHelper;
 import mezz.jei.api.ingredients.IIngredientType;
 import mezz.jei.api.ingredients.subtypes.UidContext;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.compat.jei.FakeItemEntity;
 import twilightforest.compat.jei.JEICompat;
@@ -25,12 +25,12 @@ public class FakeItemEntityHelper implements IIngredientHelper<FakeItemEntity> {
 
 	@Override
 	public String getUniqueId(FakeItemEntity ingredient, UidContext context) {
-		return Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(ingredient.stack().getItem())).toString();
+		return Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(ingredient.stack().getItem())).toString();
 	}
 
 	@Override
 	public ResourceLocation getResourceLocation(FakeItemEntity ingredient) {
-		return Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(ingredient.stack().getItem()));
+		return Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(ingredient.stack().getItem()));
 	}
 
 	@Override

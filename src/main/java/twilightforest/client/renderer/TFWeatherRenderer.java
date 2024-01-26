@@ -35,10 +35,11 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
-import twilightforest.init.custom.Enforcement;
-import twilightforest.util.Restriction;
+import twilightforest.init.custom.Enforcements;
+import twilightforest.util.Enforcement;
 import twilightforest.init.custom.Restrictions;
 import twilightforest.util.LandmarkUtil;
+import twilightforest.util.Restriction;
 
 import java.util.Optional;
 import java.util.Random;
@@ -57,6 +58,7 @@ public class TFWeatherRenderer {
 	public static final float[] rainzs = new float[1024];
 
 	private static int rendererUpdateCount;
+	@Nullable
 	private static BoundingBox protectedBox;
 
 	private static final Random random = new Random();
@@ -76,8 +78,10 @@ public class TFWeatherRenderer {
 		}
 	}
 
-	public static void tick() {
-		++rendererUpdateCount;
+	public static void tick(ClientLevel level) {
+		if (level.tickRateManager().runsNormally()) {
+			++rendererUpdateCount;
+		}
 	}
 
 	//Helpful tip: x, y, and z relate to the looking entity's position.
@@ -255,7 +259,7 @@ public class TFWeatherRenderer {
 					Biome biome = level.getBiome(blockpos$mutableblockpos).value();
 
 					// TF - check for our own biomes
-					Optional<Restriction> restriction = Restrictions.getRestrictionForBiome(biome, player);
+					Optional<Restriction> restriction = Restriction.getRestrictionForBiome(biome, player);
 					if (restriction.isPresent()) {
 						int groundY = 0; // TF - extend through full height
 						int minY = y0 - range;
@@ -483,7 +487,7 @@ public class TFWeatherRenderer {
 		for (int z = pz - range; z <= pz + range; ++z) {
 			for (int x = px - range; x <= px + range; ++x) {
 				Biome biome = world.getBiome(pos.set(x, 0, z)).value();
-				if (!Restrictions.isBiomeSafeFor(biome, viewEntity)) {
+				if (!Restriction.isBiomeSafeFor(biome, viewEntity)) {
 					return true;
 				}
 			}
@@ -500,16 +504,16 @@ public class TFWeatherRenderer {
 		return protectedBox != null && protectedBox.intersects(px - range, pz - range, px + range, pz + range);
 	}
 
-	public static void setProtectedBox(BoundingBox protectedBox) {
+	public static void setProtectedBox(@Nullable BoundingBox protectedBox) {
 		TFWeatherRenderer.protectedBox = protectedBox;
 	}
 
 	private static @Nullable RenderType getRenderType(Restriction restriction) {
-		if (restriction.enforcement().equals(Enforcement.FROST.getKey())) return RenderType.BLIZZARD;
-		else if (restriction.enforcement().equals(Enforcement.HUNGER.getKey())) return RenderType.MOSQUITO;
-		else if (restriction.enforcement().equals(Enforcement.FIRE.getKey())) return RenderType.ASHES;
-		else if (restriction.enforcement().equals(Enforcement.DARKNESS.getKey())) return random.nextBoolean() ? RenderType.DARK_STREAM : null;
-		else if (restriction.enforcement().equals(Enforcement.ACID_RAIN.getKey())) return RenderType.BIG_RAIN;
+		if (restriction.enforcement().equals(Enforcements.FROST.getKey())) return RenderType.BLIZZARD;
+		else if (restriction.enforcement().equals(Enforcements.HUNGER.getKey())) return RenderType.MOSQUITO;
+		else if (restriction.enforcement().equals(Enforcements.FIRE.getKey())) return RenderType.ASHES;
+		else if (restriction.enforcement().equals(Enforcements.DARKNESS.getKey())) return random.nextBoolean() ? RenderType.DARK_STREAM : null;
+		else if (restriction.enforcement().equals(Enforcements.ACID_RAIN.getKey())) return RenderType.BIG_RAIN;
 		return null;
 	}
 

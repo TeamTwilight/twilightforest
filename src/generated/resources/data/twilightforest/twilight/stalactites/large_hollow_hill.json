@@ -1,0 +1,24 @@
+{
+  "type": "large_hollow_hill",
+  "base_stalactites": [
+    "twilightforest:entries/hill_stone_stalactite"
+  ],
+  "ore_chance": 0.85,
+  "ore_stalactites": [
+    "twilightforest:entries/iron_stalactite",
+    "twilightforest:entries/coal_stalactite",
+    "twilightforest:entries/copper_stalactite",
+    "twilightforest:entries/glowstone_stalactite",
+    "twilightforest:entries/gold_stalactite",
+    "twilightforest:entries/redstone_stalactite",
+    "twilightforest:entries/diamond_stalactite",
+    "twilightforest:entries/lapis_stalactite",
+    "twilightforest:entries/emerald_stalactite"
+  ],
+  "replace": false,
+  "stalactite_chance": 1.0,
+  "stalagmite_chance": 1.0,
+  "stalagmites": [
+    "twilightforest:entries/hill_stone_stalactite"
+  ]
+}

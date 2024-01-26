@@ -1,31 +1,24 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
+  "neoforge:conditions": [
     {
-      "conditions": [
-        {
-          "modid": "jeed",
-          "type": "forge:mod_loaded"
-        }
-      ],
-      "recipe": {
-        "type": "jeed:effect_provider",
-        "effect": "twilightforest:frosted",
-        "providers": [
-          {
-            "item": "twilightforest:alpha_yeti_spawn_egg"
-          },
-          {
-            "item": "twilightforest:ice_bomb"
-          },
-          {
-            "item": "twilightforest:ice_bow"
-          },
-          {
-            "item": "twilightforest:ice_sword"
-          }
-        ]
-      }
+      "type": "neoforge:mod_loaded",
+      "modid": "jeed"
+    }
+  ],
+  "type": "jeed:effect_provider",
+  "effect": "twilightforest:frosted",
+  "providers": [
+    {
+      "item": "twilightforest:alpha_yeti_spawn_egg"
+    },
+    {
+      "item": "twilightforest:ice_bomb"
+    },
+    {
+      "item": "twilightforest:ice_bow"
+    },
+    {
+      "item": "twilightforest:ice_sword"
     }
   ]
 }

@@ -2,7 +2,9 @@ package twilightforest.entity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -18,16 +20,16 @@ import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.entity.IEntityAdditionalSpawnData;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFSounds;
 
 import javax.annotation.Nonnull;
 import java.util.List;
 
-public class SlideBlock extends Entity implements IEntityAdditionalSpawnData {
+public class SlideBlock extends Entity {
 
 	private static final int WARMUP_TIME = 20;
 	private static final EntityDataAccessor<Direction> MOVE_DIRECTION = SynchedEntityData.defineId(SlideBlock.class, EntityDataSerializers.DIRECTION);
@@ -38,6 +40,7 @@ public class SlideBlock extends Entity implements IEntityAdditionalSpawnData {
 	public SlideBlock(EntityType<? extends SlideBlock> type, Level world) {
 		super(type, world);
 		this.blocksBuilding = true;
+		this.myState = TFBlocks.SLIDER.get().defaultBlockState();
 	}
 
 	public SlideBlock(EntityType<? extends SlideBlock> type, Level world, double x, double y, double z, BlockState state) {
@@ -181,22 +184,14 @@ public class SlideBlock extends Entity implements IEntityAdditionalSpawnData {
 	protected void readAdditionalSaveData(@Nonnull CompoundTag compound) {
 		this.slideTime = compound.getInt("Time");
 		this.getEntityData().set(MOVE_DIRECTION, Direction.from3DDataValue(compound.getByte("Direction")));
+		this.myState = NbtUtils.readBlockState(this.level().holderLookup(Registries.BLOCK), compound.getCompound("BlockState"));
 	}
 
 	@Override
 	protected void addAdditionalSaveData(@Nonnull CompoundTag compound) {
 		compound.putInt("Time", this.slideTime);
 		compound.putByte("Direction", (byte) this.getEntityData().get(MOVE_DIRECTION).get3DDataValue());
-	}
-
-	@Override
-	public void writeSpawnData(FriendlyByteBuf buffer) {
-		buffer.writeInt(Block.getId(this.myState));
-	}
-
-	@Override
-	public void readSpawnData(FriendlyByteBuf additionalData) {
-		this.myState = Block.stateById(additionalData.readInt());
+		compound.put("BlockState", NbtUtils.writeBlockState(this.myState));
 	}
 
 	@Override

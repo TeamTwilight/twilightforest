@@ -55,7 +55,6 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancement.twilightforest.kill_naga.desc",
       "with": [
@@ -68,11 +67,9 @@
       ]
     },
     "frame": "goal",
-    "hidden": false,
     "icon": {
       "item": "twilightforest:naga_courtyard_miniature_structure"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancement.twilightforest.kill_naga"
     }

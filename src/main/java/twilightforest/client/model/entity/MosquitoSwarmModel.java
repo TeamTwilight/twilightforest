@@ -33,9 +33,9 @@ public class MosquitoSwarmModel extends HierarchicalModel<MosquitoSwarm> {
 
 	public static LayerDefinition create() {
 		MeshDefinition mesh = new MeshDefinition();
-		PartDefinition partRoot = mesh.getRoot();
+		PartDefinition definition = mesh.getRoot();
 
-		var core = partRoot.addOrReplaceChild("core", CubeListBuilder.create()
+		var core = definition.addOrReplaceChild("core", CubeListBuilder.create()
 						.texOffs(rand.nextInt(28), rand.nextInt(28))
 						.addBox(-0.5F, 2F, -0.5F, 1, 1, 1),
 				PartPose.offset(0.0F, -4.0F, 0.0F));

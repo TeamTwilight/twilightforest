@@ -19,14 +19,14 @@ public class ChainModel extends ListModel<Entity> {
 
 	public static LayerDefinition create() {
 		MeshDefinition mesh = new MeshDefinition();
-		PartDefinition partRoot = mesh.getRoot();
+		PartDefinition definition = mesh.getRoot();
 
-		partRoot.addOrReplaceChild("chain", CubeListBuilder.create()
-						.texOffs(56, 36)
+		definition.addOrReplaceChild("chain", CubeListBuilder.create()
+						.texOffs(24, 0)
 						.addBox(-1F, -1F, -1F, 2, 2, 2),
 				PartPose.ZERO);
 
-		return LayerDefinition.create(mesh, 64, 64);
+		return LayerDefinition.create(mesh, 32, 16);
 	}
 
 	@Override

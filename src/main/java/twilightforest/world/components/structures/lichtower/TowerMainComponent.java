@@ -18,6 +18,7 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
+import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.phys.AABB;
 import twilightforest.init.TFBlocks;
@@ -464,5 +465,10 @@ public class TowerMainComponent extends TowerWingComponent {
 				world.setBlock(tCoords.above(), Blocks.TORCH.defaultBlockState(), 2);
 			}
 		}
+	}
+
+	@Override
+	public TerrainAdjustment getTerrainAdjustment() {
+		return TerrainAdjustment.BEARD_BOX;
 	}
 }

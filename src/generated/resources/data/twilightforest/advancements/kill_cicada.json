@@ -13,12 +13,10 @@
     "description": {
       "translate": "advancement.twilightforest.kill_cicada.desc"
     },
-    "frame": "task",
     "hidden": true,
     "icon": {
       "item": "twilightforest:cicada"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancement.twilightforest.kill_cicada"
     }

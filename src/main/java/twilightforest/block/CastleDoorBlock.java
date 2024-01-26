@@ -21,8 +21,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import twilightforest.init.TFParticleType;
 import twilightforest.init.TFSounds;
-import twilightforest.util.WorldUtil;
-import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 
 public class CastleDoorBlock extends Block {
 
@@ -96,10 +94,7 @@ public class CastleDoorBlock extends Block {
 
 	private static boolean isBlockLocked(Level level, BlockPos pos) {
 		// check if we are in a structure, and if that structure says that we are locked
-		if (!level.isClientSide()) {
-			ChunkGeneratorTwilight generator = WorldUtil.getChunkGenerator(level);
-			//return generator != null && generator.isStructureLocked(pos, lockIndex);
-		}
+		// TODO is this method even needed any more? Might be needed in the future when the structure comes with internal gating progression - don't delete this method quite yet
 		return false;
 	}
 

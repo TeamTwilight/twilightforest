@@ -17,16 +17,15 @@ import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.world.components.structures.icetower.IceTowerMainComponent;
-import twilightforest.world.components.structures.util.ConquerableStructure;
+import twilightforest.world.components.structures.util.ControlledSpawningStructure;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
-public class AuroraPalaceStructure extends ConquerableStructure {
+public class AuroraPalaceStructure extends ControlledSpawningStructure {
     public static final Codec<AuroraPalaceStructure> CODEC = RecordCodecBuilder.create(instance ->
-            conquerStatusCodec(instance).apply(instance, AuroraPalaceStructure::new)
+            controlledSpawningCodec(instance).apply(instance, AuroraPalaceStructure::new)
     );
 
     public AuroraPalaceStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, DecorationConfig decorationConfig, StructureSettings structureSettings) {

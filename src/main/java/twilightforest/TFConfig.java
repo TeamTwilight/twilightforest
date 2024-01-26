@@ -1,36 +1,28 @@
 package twilightforest;
 
-import com.mojang.authlib.EnvironmentParser;
 import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.HttpAuthenticationService;
-import com.mojang.authlib.exceptions.*;
-import com.mojang.authlib.minecraft.client.ObjectMapper;
+import com.mojang.authlib.minecraft.MinecraftSessionService;
+import com.mojang.authlib.yggdrasil.ProfileResult;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
-import com.mojang.authlib.yggdrasil.YggdrasilEnvironment;
-import com.mojang.authlib.yggdrasil.response.MinecraftProfilePropertiesResponse;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.config.ModConfigEvent;
-import net.minecraftforge.network.PacketDistributor;
-import net.minecraftforge.server.ServerLifecycleHooks;
-import org.apache.commons.lang3.StringUtils;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.event.config.ModConfigEvent;
+import net.neoforged.neoforge.common.ModConfigSpec;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.network.SyncUncraftingTableConfigPacket;
-import twilightforest.network.TFPacketHandler;
 import twilightforest.util.PlayerHelper;
 
-import java.io.IOException;
 import java.net.Proxy;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -44,7 +36,7 @@ public class TFConfig {
 
 	public static class Common {
 
-		public Common(ForgeConfigSpec.Builder builder) {
+		public Common(ModConfigSpec.Builder builder) {
 			builder.
 					comment("Settings that are not reversible without consequences.").
 					push("Dimension Settings");
@@ -276,51 +268,51 @@ public class TFConfig {
 
 		public static class Dimension {
 
-			public ForgeConfigSpec.BooleanValue newPlayersSpawnInTF;
-			public ForgeConfigSpec.BooleanValue portalForNewPlayerSpawn;
+			public ModConfigSpec.BooleanValue newPlayersSpawnInTF;
+			public ModConfigSpec.BooleanValue portalForNewPlayerSpawn;
 
 		}
 
-		public final ForgeConfigSpec.ConfigValue<String> originDimension;
-		public final ForgeConfigSpec.BooleanValue allowPortalsInOtherDimensions;
-		public final ForgeConfigSpec.BooleanValue adminOnlyPortals;
-		public final ForgeConfigSpec.BooleanValue disablePortalCreation;
-		public final ForgeConfigSpec.BooleanValue checkPortalDestination;
-		public final ForgeConfigSpec.BooleanValue portalLightning;
-		public final ForgeConfigSpec.BooleanValue shouldReturnPortalBeUsable;
-		public final ForgeConfigSpec.ConfigValue<String> portalAdvancementLock;
-		public final ForgeConfigSpec.IntValue maxPortalSize;
-		public final ForgeConfigSpec.BooleanValue casketUUIDLocking;
-		public final ForgeConfigSpec.BooleanValue disableSkullCandles;
-		public final ForgeConfigSpec.BooleanValue defaultItemEnchants;
-		public final ForgeConfigSpec.BooleanValue bossDropChests;
-		public final ForgeConfigSpec.IntValue cloudBlockPrecipitationDistanceCommon;
+		public final ModConfigSpec.ConfigValue<String> originDimension;
+		public final ModConfigSpec.BooleanValue allowPortalsInOtherDimensions;
+		public final ModConfigSpec.BooleanValue adminOnlyPortals;
+		public final ModConfigSpec.BooleanValue disablePortalCreation;
+		public final ModConfigSpec.BooleanValue checkPortalDestination;
+		public final ModConfigSpec.BooleanValue portalLightning;
+		public final ModConfigSpec.BooleanValue shouldReturnPortalBeUsable;
+		public final ModConfigSpec.ConfigValue<String> portalAdvancementLock;
+		public final ModConfigSpec.IntValue maxPortalSize;
+		public final ModConfigSpec.BooleanValue casketUUIDLocking;
+		public final ModConfigSpec.BooleanValue disableSkullCandles;
+		public final ModConfigSpec.BooleanValue defaultItemEnchants;
+		public final ModConfigSpec.BooleanValue bossDropChests;
+		public final ModConfigSpec.IntValue cloudBlockPrecipitationDistanceCommon;
 
 		public final MagicTrees MAGIC_TREES = new MagicTrees();
 
 		public static class MagicTrees {
-			public ForgeConfigSpec.BooleanValue disableTime;
-			public ForgeConfigSpec.IntValue timeRange;
-			public ForgeConfigSpec.BooleanValue disableTransformation;
-			public ForgeConfigSpec.IntValue transformationRange;
-			public ForgeConfigSpec.BooleanValue disableMining;
-			public ForgeConfigSpec.IntValue miningRange;
-			public ForgeConfigSpec.BooleanValue disableSorting;
-			public ForgeConfigSpec.IntValue sortingRange;
+			public ModConfigSpec.BooleanValue disableTime;
+			public ModConfigSpec.IntValue timeRange;
+			public ModConfigSpec.BooleanValue disableTransformation;
+			public ModConfigSpec.IntValue transformationRange;
+			public ModConfigSpec.BooleanValue disableMining;
+			public ModConfigSpec.IntValue miningRange;
+			public ModConfigSpec.BooleanValue disableSorting;
+			public ModConfigSpec.IntValue sortingRange;
 		}
 
 		public final UncraftingStuff UNCRAFTING_STUFFS = new UncraftingStuff();
 
 		public static class UncraftingStuff {
-			public ForgeConfigSpec.DoubleValue uncraftingXpCostMultiplier;
-			public ForgeConfigSpec.DoubleValue repairingXpCostMultiplier;
-			public ForgeConfigSpec.BooleanValue allowShapelessUncrafting;
-			public ForgeConfigSpec.BooleanValue disableUncraftingOnly;
-			public ForgeConfigSpec.BooleanValue disableEntireTable;
-			public ForgeConfigSpec.ConfigValue<List<? extends String>> disableUncraftingRecipes;
-			public ForgeConfigSpec.BooleanValue reverseRecipeBlacklist;
-			public ForgeConfigSpec.ConfigValue<List<? extends String>> blacklistedUncraftingModIds;
-			public ForgeConfigSpec.BooleanValue flipUncraftingModIdList;
+			public ModConfigSpec.DoubleValue uncraftingXpCostMultiplier;
+			public ModConfigSpec.DoubleValue repairingXpCostMultiplier;
+			public ModConfigSpec.BooleanValue allowShapelessUncrafting;
+			public ModConfigSpec.BooleanValue disableUncraftingOnly;
+			public ModConfigSpec.BooleanValue disableEntireTable;
+			public ModConfigSpec.ConfigValue<List<? extends String>> disableUncraftingRecipes;
+			public ModConfigSpec.BooleanValue reverseRecipeBlacklist;
+			public ModConfigSpec.ConfigValue<List<? extends String>> blacklistedUncraftingModIds;
+			public ModConfigSpec.BooleanValue flipUncraftingModIdList;
 		}
 
 		public final ShieldInteractions SHIELD_INTERACTIONS = new ShieldInteractions();
@@ -328,15 +320,15 @@ public class TFConfig {
 		public ResourceLocation portalLockingAdvancement;
 
 		public static class ShieldInteractions {
-			public ForgeConfigSpec.BooleanValue parryNonTwilightAttacks;
-			public ForgeConfigSpec.IntValue shieldParryTicks;
+			public ModConfigSpec.BooleanValue parryNonTwilightAttacks;
+			public ModConfigSpec.IntValue shieldParryTicks;
 		}
 
 	}
 
 	public static class Client {
 
-		public Client(ForgeConfigSpec.Builder builder) {
+		public Client(ModConfigSpec.Builder builder) {
 			silentCicadas = builder.
 					translation(config + "silent_cicadas").
 					comment("Make cicadas silent for those having sound library problems, or otherwise finding them annoying.").
@@ -363,7 +355,7 @@ public class TFConfig {
 					define("disableLockedBiomeToasts", false);
 			showQuestRamCrosshairIndicator = builder.
 					translation(config + "ram_indicator").
-					comment("Renders a little check mark or x above your crosshair depending on if fed the Quest Ram that color of wool. Turn this off if you find it intrusive.").
+					comment("Renders a little check mark or x above your crosshair depending on if fed the Questing Ram that color of wool. Turn this off if you find it intrusive.").
 					define("questRamWoolIndicator", true);
 			cloudBlockPrecipitationDistanceClient = builder.
 					translation(config + "cloud_block_precipitation_distance").
@@ -381,18 +373,24 @@ public class TFConfig {
 					translation(config + "aurora_biomes").
 					comment("Defines which biomes the aurora shader effect will appear in. Leave the list empty to disable the effect.")
 					.defineList("auroraBiomes", List.of("twilightforest:glacier"), s -> s instanceof String);
+
+			prettifyOreMeterGui = builder
+					.translation(config + "prettify_ore_meter_gui")
+					.comment("Lines up dashes & percentages in Ore Meter GUI")
+					.define("prettifyOreMeterGui", true);
 		}
 
-		public final ForgeConfigSpec.BooleanValue silentCicadas;
-		public final ForgeConfigSpec.BooleanValue silentCicadasOnHead;
-		public final ForgeConfigSpec.BooleanValue firstPersonEffects;
-		public final ForgeConfigSpec.BooleanValue rotateTrophyHeadsGui;
-		public final ForgeConfigSpec.BooleanValue disableOptifineNagScreen;
-		public final ForgeConfigSpec.BooleanValue disableLockedBiomeToasts;
-		public final ForgeConfigSpec.BooleanValue showQuestRamCrosshairIndicator;
-		public final ForgeConfigSpec.IntValue cloudBlockPrecipitationDistanceClient;
-		public final ForgeConfigSpec.ConfigValue<List<? extends String>> giantSkinUUIDs;
-		public final ForgeConfigSpec.ConfigValue<List<? extends String>> auroraBiomes;
+		public final ModConfigSpec.BooleanValue silentCicadas;
+		public final ModConfigSpec.BooleanValue silentCicadasOnHead;
+		public final ModConfigSpec.BooleanValue firstPersonEffects;
+		public final ModConfigSpec.BooleanValue rotateTrophyHeadsGui;
+		public final ModConfigSpec.BooleanValue disableOptifineNagScreen;
+		public final ModConfigSpec.BooleanValue disableLockedBiomeToasts;
+		public final ModConfigSpec.BooleanValue showQuestRamCrosshairIndicator;
+		public final ModConfigSpec.IntValue cloudBlockPrecipitationDistanceClient;
+		public final ModConfigSpec.ConfigValue<List<? extends String>> giantSkinUUIDs;
+		public final ModConfigSpec.ConfigValue<List<? extends String>> auroraBiomes;
+		public final ModConfigSpec.BooleanValue prettifyOreMeterGui;
 		private final List<ResourceLocation> validAuroraBiomes = new ArrayList<>();
 	}
 
@@ -442,7 +440,7 @@ public class TFConfig {
 				//resends uncrafting settings to all players when the config is reloaded. This ensures all players have matching configs so things dont desync.
 				MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
 				if (server != null && server.isDedicatedServer()) {
-					TFPacketHandler.CHANNEL.send(PacketDistributor.ALL.noArg(), new SyncUncraftingTableConfigPacket(
+					PacketDistributor.ALL.noArg().send(new SyncUncraftingTableConfigPacket(
 							COMMON_CONFIG.UNCRAFTING_STUFFS.uncraftingXpCostMultiplier.get(),
 							COMMON_CONFIG.UNCRAFTING_STUFFS.repairingXpCostMultiplier.get(),
 							COMMON_CONFIG.UNCRAFTING_STUFFS.allowShapelessUncrafting.get(),
@@ -476,7 +474,7 @@ public class TFConfig {
 		public static void syncConfigOnLogin(PlayerEvent.PlayerLoggedInEvent event) {
 			MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
 			if (server != null && server.isDedicatedServer() && event.getEntity() instanceof ServerPlayer player) {
-				TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new SyncUncraftingTableConfigPacket(
+				PacketDistributor.PLAYER.with(player).send(new SyncUncraftingTableConfigPacket(
 						COMMON_CONFIG.UNCRAFTING_STUFFS.uncraftingXpCostMultiplier.get(),
 						COMMON_CONFIG.UNCRAFTING_STUFFS.repairingXpCostMultiplier.get(),
 						COMMON_CONFIG.UNCRAFTING_STUFFS.allowShapelessUncrafting.get(),
@@ -498,43 +496,16 @@ public class TFConfig {
 				@Override
 				public void run() {
 					GAME_PROFILES.clear();
-
 					YggdrasilAuthenticationService service = new YggdrasilAuthenticationService(Proxy.NO_PROXY);
-					String baseUrl = EnvironmentParser.getEnvironmentFromProperties().orElse(YggdrasilEnvironment.PROD.getEnvironment()).getSessionHost() + "/session/minecraft/";
-					boolean requireSecure = false;
+					MinecraftSessionService session = service.createMinecraftSessionService();
 					for (String stringUUID : TFConfig.CLIENT_CONFIG.giantSkinUUIDs.get()) {
 						try {
-							UUID uuid = UUID.fromString(stringUUID);
-
-							URL url = HttpAuthenticationService.constantURL(baseUrl + "profile/" + uuid);
-							url = HttpAuthenticationService.concatenateURL(url, "unsigned=" + !requireSecure);
-
-							final MinecraftProfilePropertiesResponse response = ObjectMapper.create().readValue(service.performGetRequest(url), MinecraftProfilePropertiesResponse.class);
-
-							if (StringUtils.isNotBlank(response.getError())) {
-								if ("UserMigratedException".equals(response.getCause())) {
-									throw new UserMigratedException(response.getErrorMessage());
-								} else if ("ForbiddenOperationException".equals(response.getError())) {
-									throw new InvalidCredentialsException(response.getErrorMessage());
-								} else if ("InsufficientPrivilegesException".equals(response.getError())) {
-									throw new InsufficientPrivilegesException(response.getErrorMessage());
-								} else if ("multiplayer.access.banned".equals(response.getError())) {
-									throw new UserBannedException();
-								} else {
-									throw new AuthenticationException(response.getErrorMessage());
-								}
-							}
-
-							if (response.getId() != null) {
-								final GameProfile result = new GameProfile(response.getId(), response.getName());
-								if (response.getProperties() != null)
-									result.getProperties().putAll(response.getProperties());
-								GAME_PROFILES.add(result);
+							ProfileResult result = session.fetchProfile(UUID.fromString(stringUUID), false);
+							if (result != null) {
+								GAME_PROFILES.add(result.profile());
 							}
 						} catch (IllegalArgumentException e) {
 							TwilightForestMod.LOGGER.error("\"{}\" is not a valid UUID!", stringUUID);
-						} catch (AuthenticationException | IOException e) {
-							e.printStackTrace();
 						}
 					}
 					super.run();

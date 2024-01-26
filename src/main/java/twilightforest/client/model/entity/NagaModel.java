@@ -29,14 +29,14 @@ public class NagaModel<T extends Entity> extends ListModel<T> {
 
 	public static LayerDefinition create() {
 		MeshDefinition mesh = new MeshDefinition();
-		PartDefinition partRoot = mesh.getRoot();
+		PartDefinition definition = mesh.getRoot();
 
-		partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+		definition.addOrReplaceChild("head", CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(-8.0F, -12.0F, -8.0F, 16.0F, 16.0F, 16.0F),
 				PartPose.ZERO);
 
-		partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+		definition.addOrReplaceChild("body", CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(-8.0F, -12.0F, -8.0F, 16.0F, 16.0F, 16.0F),
 				PartPose.ZERO);

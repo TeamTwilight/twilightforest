@@ -1,24 +1,36 @@
 {
   "type": "twilightforest:highland_caves",
   "config": {
-    "floor_level": -0.7,
-    "horizontal_radius_multiplier": 1.0,
+    "floor_level": {
+      "type": "minecraft:uniform",
+      "value": {
+        "max_exclusive": -0.65,
+        "min_inclusive": -0.9
+      }
+    },
+    "horizontal_radius_multiplier": {
+      "type": "minecraft:uniform",
+      "value": {
+        "max_exclusive": 1.3,
+        "min_inclusive": 1.1
+      }
+    },
     "lava_level": {
       "above_bottom": 0
     },
-    "probability": 0.1,
-    "replaceable": "#minecraft:overworld_carver_replaceables",
-    "vertical_radius_multiplier": 1.0,
+    "probability": 1.0,
+    "replaceable": "#twilightforest:carver_replaceables",
+    "vertical_radius_multiplier": 1.1,
     "y": {
       "type": "minecraft:biased_to_bottom",
-      "inner": 48,
+      "inner": 16,
       "max_inclusive": {
-        "absolute": 65
+        "absolute": 32
       },
       "min_inclusive": {
-        "above_bottom": 5
+        "absolute": 8
       }
     },
-    "yScale": 0.75
+    "yScale": 0.6
   }
 }

@@ -2,7 +2,6 @@ package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -11,9 +10,9 @@ import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import twilightforest.client.model.entity.KoboldModel;
-import twilightforest.client.renderer.entity.TFBipedRenderer;
 import twilightforest.entity.monster.Kobold;
 
 public class KoboldRenderer extends TFBipedRenderer<Kobold, KoboldModel> {

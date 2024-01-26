@@ -17,7 +17,6 @@ import twilightforest.world.components.structures.util.DecorationClearance;
 import twilightforest.world.components.structures.util.LandmarkStructure;
 
 import java.util.Arrays;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class HedgeMazeStructure extends LandmarkStructure {
@@ -29,7 +28,7 @@ public class HedgeMazeStructure extends LandmarkStructure {
 
     @Override
     protected StructurePiece getFirstPiece(GenerationContext context, RandomSource random, ChunkPos chunkPos, int x, int y, int z) {
-        return new HedgeMazeComponent(0, x + 1, context.chunkGenerator().getSeaLevel() + 8, z + 1);
+        return new HedgeMazeComponent(0, x + 1, y + 4, z + 1);
     }
 
     @Override
@@ -44,7 +43,7 @@ public class HedgeMazeStructure extends LandmarkStructure {
                         context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_HEDGE_MAZE_BIOMES),
                         Arrays.stream(MobCategory.values()).collect(Collectors.toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create()))), // Landmarks have Controlled Mob spawning
                         GenerationStep.Decoration.SURFACE_STRUCTURES,
-                        TerrainAdjustment.BEARD_THIN
+                        TerrainAdjustment.BEARD_BOX
                 )
         );
     }

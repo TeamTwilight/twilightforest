@@ -3,6 +3,7 @@ package twilightforest.util;
 import net.minecraft.core.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
@@ -12,11 +13,14 @@ import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkStatus;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
+import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
+import twilightforest.init.TFAdvancements;
 import twilightforest.data.tags.StructureTagGenerator;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.world.components.structures.start.TFStructureStart;
+import twilightforest.world.components.structures.util.CustomStructureData;
 
 import java.util.Map;
 import java.util.Optional;
@@ -40,16 +44,16 @@ public final class LandmarkUtil {
     }
 
     public static Optional<StructureStart> locateNearestMatchingLandmark(LevelAccessor level, HolderSet<Structure> matching, int chunkX, int chunkZ) {
-        Set<Structure> structures = matching.stream().map(Holder::get).collect(Collectors.toSet());
-        return locateNearestMatchingLandmark(level, structures::contains, chunkX, chunkZ);
+        Set<Structure> structures = matching.stream().map(Holder::value).collect(Collectors.toSet());
+        return locateNearestMatchingLandmark(level, structures::contains, chunkX, chunkZ, true);
     }
 
-    public static Optional<StructureStart> locateNearestMatchingLandmark(LevelAccessor level, Predicate<Structure> filter, int chunkX, int chunkZ) {
+    public static Optional<StructureStart> locateNearestMatchingLandmark(LevelAccessor level, Predicate<Structure> filter, int chunkX, int chunkZ, boolean checkReady) {
         BlockPos nearestFeature = LegacyLandmarkPlacements.getNearestCenterXZ(chunkX, chunkZ);
         int centerX = SectionPos.blockToSectionCoord(nearestFeature.getX());
         int centerZ =  SectionPos.blockToSectionCoord(nearestFeature.getZ());
 
-        if (!level.hasChunk(centerX, centerZ)) return Optional.empty();
+        if (checkReady && !level.hasChunk(centerX, centerZ)) return Optional.empty();
 
         ChunkAccess chunkAccess = level.getChunk(centerX, centerZ, ChunkStatus.STRUCTURE_STARTS);
 
@@ -58,6 +62,11 @@ public final class LandmarkUtil {
                 return Optional.of(structureEntry.getValue());
 
         return Optional.empty();
+    }
+
+    public static boolean isConquered(Level level, int blockX, int blockZ) {
+        Optional<StructureStart> start = locateNearestMatchingLandmark(level, s -> s instanceof CustomStructureData, blockX >> 4, blockZ >> 4, false);
+        return start.filter(structureStart -> structureStart instanceof TFStructureStart tfStructureStart && tfStructureStart.isConquered()).isPresent();
     }
 
     public static void markStructureConquered(Level level, EnforcedHomePoint mobHome, ResourceKey<Structure> structureKey, boolean conquered) {
@@ -70,6 +79,10 @@ public final class LandmarkUtil {
             if (nearStart.isEmpty() || !(nearStart.get() instanceof TFStructureStart twilightStart)) return;
 
             twilightStart.setConquered(conquered, level);
+
+            for (ServerPlayer player : level.getEntitiesOfClass(ServerPlayer.class, new AABB(pos.pos()).inflate(32.0F))) {
+                TFAdvancements.STRUCTURE_CLEARED.get().trigger(player, structureKey);
+            }
         }
     }
 

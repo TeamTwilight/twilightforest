@@ -1,4 +1,4 @@
-// 1.20.1	2023-06-13T21:36:19.2163676	Twilight Forest Biome Tags
+// 1.20.4	2024-01-24T20:21:27.072304	Twilight Forest Biome Tags
 de7eae9ce12a34bc9ba7e9b0a080f206b7bf5ab8 data/minecraft/tags/worldgen/biome/has_closer_water_fog.json
 6fcfc9f11967d4486971cf630ce3613738d77290 data/minecraft/tags/worldgen/biome/snow_golem_melts.json
 d465db5120f478c5dbf3e4038d755aaec6ea9eed data/minecraft/tags/worldgen/biome/spawns_cold_variant_frogs.json
@@ -11,6 +11,7 @@ cb846337ee5998dbc62b197a9a1f006cbc978bf2 data/minecraft/tags/worldgen/biome/with
 089e3f639e6201676ac279a83e322bf14f2af7f9 data/twilightforest/tags/worldgen/biome/valid_aurora_palace_biomes.json
 bd0de92370a6ecd43b98916ae731430b57c06693 data/twilightforest/tags/worldgen/biome/valid_dark_tower_biomes.json
 ffed46f1c73aadb1dec87c223b4930163ccd7036 data/twilightforest/tags/worldgen/biome/valid_final_castle_biomes.json
+314565d6885146dded331c51c43558f6992cd4f2 data/twilightforest/tags/worldgen/biome/valid_giant_house_biomes.json
 5dbc0593cfefd9710d1e409268dc18f9778ebaf9 data/twilightforest/tags/worldgen/biome/valid_hedge_maze_biomes.json
 5dbc0593cfefd9710d1e409268dc18f9778ebaf9 data/twilightforest/tags/worldgen/biome/valid_hollow_hill_biomes.json
 5fd1719d0b22f0d7e010f4116f4eb77dee86b226 data/twilightforest/tags/worldgen/biome/valid_hydra_lair_biomes.json

@@ -1,0 +1,80 @@
+{
+  "type": "twilightforest:giant_house",
+  "adjust_structure_elevation": false,
+  "advancements_required": [
+    "twilightforest:progress_merge"
+  ],
+  "allow_biome_surface_decorations": true,
+  "allow_biome_underground_decorations": true,
+  "ambient_spawns": [],
+  "biomes": "#twilightforest:valid_giant_house_biomes",
+  "chunk_clearance_radius": 1,
+  "hint_item": {
+    "Count": 1,
+    "id": "minecraft:written_book",
+    "tag": {
+      "author": "twilightforest.book.author",
+      "generation": 3,
+      "pages": [
+        "{\"translate\":\"twilightforest.book.trollcave.1\"}",
+        "{\"translate\":\"twilightforest.book.trollcave.2\"}",
+        "{\"translate\":\"twilightforest.book.trollcave.3\"}"
+      ],
+      "title": "twilightforest.book.trollcave",
+      "twilightforest:book": 1
+    }
+  },
+  "hint_mob": "twilightforest:kobold",
+  "labelled_monster_spawns": {
+    "0": [
+      {
+        "type": "twilightforest:giant_miner",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 10
+      },
+      {
+        "type": "twilightforest:armored_giant",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 10
+      }
+    ]
+  },
+  "spawn_overrides": {
+    "ambient": {
+      "bounding_box": "full",
+      "spawns": []
+    },
+    "axolotls": {
+      "bounding_box": "full",
+      "spawns": []
+    },
+    "creature": {
+      "bounding_box": "full",
+      "spawns": []
+    },
+    "misc": {
+      "bounding_box": "full",
+      "spawns": []
+    },
+    "monster": {
+      "bounding_box": "full",
+      "spawns": []
+    },
+    "underground_water_creature": {
+      "bounding_box": "full",
+      "spawns": []
+    },
+    "water_ambient": {
+      "bounding_box": "full",
+      "spawns": []
+    },
+    "water_creature": {
+      "bounding_box": "full",
+      "spawns": []
+    }
+  },
+  "step": "top_layer_modification",
+  "water_spawns": []
+}

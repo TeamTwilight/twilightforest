@@ -18,16 +18,15 @@ import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.world.components.structures.stronghold.StrongholdEntranceComponent;
-import twilightforest.world.components.structures.util.ConquerableStructure;
+import twilightforest.world.components.structures.util.ControlledSpawningStructure;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
-public class KnightStrongholdStructure extends ConquerableStructure {
+public class KnightStrongholdStructure extends ControlledSpawningStructure {
     public static final Codec<KnightStrongholdStructure> CODEC = RecordCodecBuilder.create(instance ->
-            conquerStatusCodec(instance).apply(instance, KnightStrongholdStructure::new)
+            controlledSpawningCodec(instance).apply(instance, KnightStrongholdStructure::new)
     );
 
     public KnightStrongholdStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, DecorationConfig decorationConfig, StructureSettings structureSettings) {
@@ -36,7 +35,7 @@ public class KnightStrongholdStructure extends ConquerableStructure {
 
     @Override
     protected @Nullable StructurePiece getFirstPiece(GenerationContext context, RandomSource random, ChunkPos chunkPos, int x, int y, int z) {
-        return new StrongholdEntranceComponent(0, x, y + 5, z);
+        return new StrongholdEntranceComponent(0, x, y + random.nextInt(3) == 0 ? 5 : 1, z);
     }
 
     @Override

@@ -4,6 +4,8 @@ import net.minecraft.Util;
 import net.minecraft.data.loot.EntityLootSubProvider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.ItemStack;
@@ -19,11 +21,11 @@ import net.minecraft.world.level.storage.loot.entries.LootTableReference;
 import net.minecraft.world.level.storage.loot.functions.*;
 import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemKilledByPlayerCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceWithLootingCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
-import net.minecraftforge.registries.ForgeRegistries;
-import twilightforest.TwilightForestMod;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFItems;
@@ -137,7 +139,10 @@ public class EntityLootTables extends EntityLootSubProvider {
 										.apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 3.0F)))
 										.apply(SmeltItemFunction.smelted()
 												.when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, ENTITY_ON_FIRE)))
-										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))));
+										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
+										.apply(SetNameFunction.setName(Component.translatable("item.twilightforest.boarkchop").withStyle(Style.EMPTY.withItalic(false)))
+												.when(LootItemRandomChanceCondition.randomChance(0.002F))
+												.when(LootItemKilledByPlayerCondition.killedByPlayer())))));
 
 		add(TFEntities.HELMET_CRAB.get(),
 				LootTable.lootTable()
@@ -536,14 +541,14 @@ public class EntityLootTables extends EntityLootSubProvider {
 											ListTag items = new ListTag();
 
 											// Do NOT overstuff the bag.
-											items.add(new ItemStack(TFBlocks.QUEST_RAM_TROPHY.get()).serializeNBT());
-											items.add(new ItemStack(Blocks.COAL_BLOCK).serializeNBT());
-											items.add(new ItemStack(Blocks.IRON_BLOCK).serializeNBT());
-											items.add(new ItemStack(Blocks.COPPER_BLOCK).serializeNBT());
-											items.add(new ItemStack(Blocks.LAPIS_BLOCK).serializeNBT());
-											items.add(new ItemStack(Blocks.GOLD_BLOCK).serializeNBT());
-											items.add(new ItemStack(Blocks.DIAMOND_BLOCK).serializeNBT());
-											items.add(new ItemStack(Blocks.EMERALD_BLOCK).serializeNBT());
+											items.add(new ItemStack(TFBlocks.QUEST_RAM_TROPHY.get()).save(new CompoundTag()));
+											items.add(new ItemStack(Blocks.COAL_BLOCK).save(new CompoundTag()));
+											items.add(new ItemStack(Blocks.IRON_BLOCK).save(new CompoundTag()));
+											items.add(new ItemStack(Blocks.COPPER_BLOCK).save(new CompoundTag()));
+											items.add(new ItemStack(Blocks.LAPIS_BLOCK).save(new CompoundTag()));
+											items.add(new ItemStack(Blocks.GOLD_BLOCK).save(new CompoundTag()));
+											items.add(new ItemStack(Blocks.DIAMOND_BLOCK).save(new CompoundTag()));
+											items.add(new ItemStack(Blocks.EMERALD_BLOCK).save(new CompoundTag()));
 
 											nbt.put("Items", items);
 										}))))));
@@ -566,6 +571,6 @@ public class EntityLootTables extends EntityLootSubProvider {
 
 	@Override
 	protected Stream<EntityType<?>> getKnownEntityTypes() {
-		return ForgeRegistries.ENTITY_TYPES.getValues().stream().filter(entities -> ForgeRegistries.ENTITY_TYPES.getKey(entities).getNamespace().equals(TwilightForestMod.ID));
+		return TFEntities.ENTITIES.getEntries().stream().map(DeferredHolder::value);
 	}
 }

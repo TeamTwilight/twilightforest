@@ -2,6 +2,8 @@ package twilightforest.world.components.structures.darktower;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.features.TreeFeatures;
 import net.minecraft.nbt.CompoundTag;
@@ -26,22 +28,18 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
-import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
-import twilightforest.init.TFBlocks;
 import twilightforest.data.tags.BlockTagGenerator;
-import twilightforest.init.TFEntities;
-import twilightforest.init.TFItems;
+import twilightforest.init.*;
 import twilightforest.loot.TFLootTables;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFMaze;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.TFStructureDecorator;
-import twilightforest.init.TFStructurePieceTypes;
-import twilightforest.init.TFConfiguredFeatures;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class DarkTowerMainComponent extends DarkTowerWingComponent {
 	private boolean placedKeys = false;
@@ -492,7 +490,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 	private void decorateReappearingMaze(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource decoRNG, BoundingBox sbb, Rotation rotation, int y) {
 		// make maze object
 		int mazeSize = 6;
-		TFMaze maze = new TFMaze(mazeSize, mazeSize);
+		TFMaze maze = new TFMaze(mazeSize, mazeSize, decoRNG);
 
 		// set the seed to a fixed value based on this maze's x and z
 		maze.setSeed(world.getSeed() + this.boundingBox.minX() * 90342903L + y * 90342903L ^ this.boundingBox.minZ());
@@ -1105,8 +1103,11 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 	}
 
 	private void placeRandomPlant(WorldGenLevel world, RandomSource decoRNG, int x, int y, int z, Rotation rotation, BoundingBox sbb) {
-		BlockState flowerPot = ForgeRegistries.BLOCKS.tags().getTag(BlockTagGenerator.DARK_TOWER_ALLOWED_POTS).getRandomElement(decoRNG).get().defaultBlockState();
-		setBlockStateRotated(world, decoRNG.nextInt(10) == 0 ? Blocks.FLOWER_POT.defaultBlockState() : flowerPot, x, y, z, rotation, sbb);
+		Optional<Block> optional = BuiltInRegistries.BLOCK
+				.getTag(BlockTagGenerator.DARK_TOWER_ALLOWED_POTS)
+				.flatMap(tag -> tag.getRandomElement(decoRNG))
+				.map(Holder::value);
+		setBlockStateRotated(world, decoRNG.nextInt(10) != 0 && optional.isPresent() ? optional.get().defaultBlockState() : Blocks.FLOWER_POT.defaultBlockState(), x, y, z, rotation, sbb);
 	}
 
 	private void makeBottomEntrance(WorldGenLevel world, BoundingBox sbb, Rotation rotation, int y) {

@@ -241,6 +241,18 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "canopy_trapped_chest": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:canopy_trapped_chest"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "canopy_wood": {
       "conditions": {
         "items": [
@@ -463,6 +475,18 @@
           {
             "items": [
               "twilightforest:dark_trapdoor"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "dark_trapped_chest": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:dark_trapped_chest"
             ]
           }
         ]
@@ -937,6 +961,18 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "mangrove_trapped_chest": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:mangrove_trapped_chest"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "mangrove_wood": {
       "conditions": {
         "items": [
@@ -1159,6 +1195,18 @@
           {
             "items": [
               "twilightforest:mining_trapdoor"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "mining_trapped_chest": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:mining_trapped_chest"
             ]
           }
         ]
@@ -1447,6 +1495,18 @@
           {
             "items": [
               "twilightforest:sorting_trapdoor"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "sorting_trapped_chest": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:sorting_trapped_chest"
             ]
           }
         ]
@@ -1897,6 +1957,18 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "time_trapped_chest": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:time_trapped_chest"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "time_wood": {
       "conditions": {
         "items": [
@@ -2137,6 +2209,18 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "transformation_trapped_chest": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:transformation_trapped_chest"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "transformation_wood": {
       "conditions": {
         "items": [
@@ -2365,6 +2449,18 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "twilight_oak_trapped_chest": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:twilight_oak_trapped_chest"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "twilight_oak_wood": {
       "conditions": {
         "items": [
@@ -2379,16 +2475,13 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancement.twilightforest.arborist.desc"
     },
     "frame": "challenge",
-    "hidden": false,
     "icon": {
       "item": "twilightforest:twilight_oak_fence"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancement.twilightforest.arborist"
     }
@@ -2450,6 +2543,9 @@
     ],
     [
       "twilight_oak_chest"
+    ],
+    [
+      "twilight_oak_trapped_chest"
     ],
     [
       "twilight_oak_banister"
@@ -2516,6 +2612,9 @@
     ],
     [
       "canopy_chest"
+    ],
+    [
+      "canopy_trapped_chest"
     ],
     [
       "canopy_banister"
@@ -2590,6 +2689,9 @@
       "mangrove_chest"
     ],
     [
+      "mangrove_trapped_chest"
+    ],
+    [
       "mangrove_banister"
     ],
     [
@@ -2654,6 +2756,9 @@
     ],
     [
       "dark_chest"
+    ],
+    [
+      "dark_trapped_chest"
     ],
     [
       "dark_banister"
@@ -2722,6 +2827,9 @@
       "time_chest"
     ],
     [
+      "time_trapped_chest"
+    ],
+    [
       "time_banister"
     ],
     [
@@ -2786,6 +2894,9 @@
     ],
     [
       "transformation_chest"
+    ],
+    [
+      "transformation_trapped_chest"
     ],
     [
       "transformation_banister"
@@ -2854,6 +2965,9 @@
       "mining_chest"
     ],
     [
+      "mining_trapped_chest"
+    ],
+    [
       "mining_banister"
     ],
     [
@@ -2918,6 +3032,9 @@
     ],
     [
       "sorting_chest"
+    ],
+    [
+      "sorting_trapped_chest"
     ],
     [
       "sorting_banister"

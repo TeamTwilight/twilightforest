@@ -40,6 +40,8 @@ public class TFBiomes {
 	public static final ResourceKey<Biome> GLACIER = makeKey("glacier");
 
 	public static final ResourceKey<Biome> HIGHLANDS = makeKey("highlands");
+	public static final ResourceKey<Biome> HIGHLANDS_UNDERGROUND = makeKey("highlands_underground");
+
 	public static final ResourceKey<Biome> THORNLANDS = makeKey("thornlands");
 	public static final ResourceKey<Biome> FINAL_PLATEAU = makeKey("final_plateau");
 
@@ -76,6 +78,7 @@ public class TFBiomes {
 		context.register(GLACIER, biomeWithDefaults(defaultAmbientBuilder().skyColor(0x130D28).fogColor(0x361F88), penguinSpawning(), glacierGen(featureGetter, carverGetter)).temperature(0.08F).downfall(0.1F).hasPrecipitation(true).build());
 
 		context.register(HIGHLANDS, biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), highlandsGen(featureGetter, carverGetter)).temperature(0.4F).downfall(0.7F).build());
+		context.register(HIGHLANDS_UNDERGROUND, biomeWithDefaults(defaultAmbientBuilder(), undergroundMobSpawning(), highlandsUndergroundGen(featureGetter, carverGetter)).temperature(0.35F).downfall(0.0F).build());
 		context.register(THORNLANDS, biomeWithDefaults(defaultAmbientBuilder(), new MobSpawnSettings.Builder(), thornlandsGen(featureGetter, carverGetter)).temperature(0.3F).downfall(0.2F).build());
 		context.register(FINAL_PLATEAU, biomeWithDefaults(defaultAmbientBuilder(), ravenSpawning(), new BiomeGenerationSettings.Builder(featureGetter, carverGetter)).temperature(1.0F).downfall(0.2F).build());
 

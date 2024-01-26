@@ -1,22 +1,15 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
+  "neoforge:conditions": [
     {
-      "conditions": [
-        {
-          "modid": "jeed",
-          "type": "forge:mod_loaded"
-        }
-      ],
-      "recipe": {
-        "type": "jeed:effect_provider",
-        "effect": "minecraft:fire_resistance",
-        "providers": [
-          {
-            "item": "twilightforest:charm_of_life_2"
-          }
-        ]
-      }
+      "type": "neoforge:mod_loaded",
+      "modid": "jeed"
+    }
+  ],
+  "type": "jeed:effect_provider",
+  "effect": "minecraft:fire_resistance",
+  "providers": [
+    {
+      "item": "twilightforest:charm_of_life_2"
     }
   ]
 }

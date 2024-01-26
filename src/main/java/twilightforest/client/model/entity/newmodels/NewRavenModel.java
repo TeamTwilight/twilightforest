@@ -8,8 +8,8 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import twilightforest.entity.passive.Raven;
 
 /**
@@ -41,16 +41,16 @@ public class NewRavenModel extends HierarchicalModel<Raven> {
 
     public static LayerDefinition create() {
         MeshDefinition mesh = new MeshDefinition();
-        PartDefinition partRoot = mesh.getRoot();
+        PartDefinition definition = mesh.getRoot();
 
-        partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+        definition.addOrReplaceChild("head", CubeListBuilder.create()
                         .texOffs(0, 0)
                         .addBox(-1.5F, -1.0F, -2.0F, 3.0F, 3.0F, 3.0F)
                         .texOffs(9, 0)
                         .addBox(-0.5F, 0.0F, -3.0F, 1.0F, 2.0F, 1.0F),
                 PartPose.offset(0.0F, 18.5F, -2.0F));
 
-        var body = partRoot.addOrReplaceChild("torso", CubeListBuilder.create()
+        var body = definition.addOrReplaceChild("torso", CubeListBuilder.create()
                         .texOffs(0, 6)
                         .addBox(-2.0F, -1.5F, 0.0F, 4.0F, 3.0F, 6.0F),
                 PartPose.offsetAndRotation(0.0F, 18.5F, -2.0F, -0.4363323129985824F, 0.0F, 0.0F));
@@ -65,12 +65,12 @@ public class NewRavenModel extends HierarchicalModel<Raven> {
                         .addBox(0.0F, 0.0F, -1.0F, 1.0F, 3.0F, 6.0F),
                 PartPose.offsetAndRotation(2.0F, -1.0F, 2.0F, 0.2617993877991494F, 0.0F, 0.0F));
 
-        partRoot.addOrReplaceChild("right_leg", CubeListBuilder.create()
+        definition.addOrReplaceChild("right_leg", CubeListBuilder.create()
                         .texOffs(8, 15)
                         .addBox(0.0F, 0.0F, -1.0F, 1.0F, 2.0F, 2.0F),
                 PartPose.offsetAndRotation(-1.0F, 0.0F, 0.0F, 0.7853981633974483F, 0.0F, 0.0F));
 
-        partRoot.addOrReplaceChild("left_leg", CubeListBuilder.create()
+        definition.addOrReplaceChild("left_leg", CubeListBuilder.create()
                         .texOffs(14, 15)
                         .addBox(0.0F, 0.0F, -1.0F, 1.0F, 2.0F, 2.0F),
                 PartPose.offsetAndRotation(1.0F, 0.0F, 0.0F, 0.7853981633974483F, 0.0F, 0.0F));

@@ -2,36 +2,33 @@ package twilightforest.events;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
-import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.level.BlockEvent;
-import net.minecraftforge.eventbus.api.Event;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.bus.api.Event;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.common.util.BlockSnapshot;
+import net.neoforged.neoforge.common.util.FakePlayer;
+import net.neoforged.neoforge.event.entity.living.LivingAttackEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.entity.monster.Kobold;
-import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructures;
 import twilightforest.network.AreaProtectionPacket;
-import twilightforest.network.EnforceProgressionStatusPacket;
-import twilightforest.network.TFPacketHandler;
 import twilightforest.util.LandmarkUtil;
 import twilightforest.util.LegacyLandmarkPlacements;
 import twilightforest.util.WorldUtil;
-import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.world.components.structures.util.ProgressionStructure;
-import twilightforest.world.registration.TFGenerationSettings;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,20 +39,56 @@ import java.util.Optional;
  */
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class ProgressionEvents {
-
 	/**
 	 * Check if the player is trying to break a block in a structure that's considered unbreakable for progression reasons
+	 * FIXME If there is a way to check on the client, it would be ideal to prevent the block-breaking in the first place
 	 */
 	@SubscribeEvent
 	public static void breakBlock(BlockEvent.BreakEvent event) {
 		Player player = event.getPlayer();
-		BlockPos pos = event.getPos();
 
 		if (!(event.getLevel() instanceof Level level) || level.isClientSide()) return;
 
+		BlockPos pos = event.getPos();
 		if (isBlockProtectedFromBreaking(level, pos) && isAreaProtected(level, player, pos)) {
 			event.setCanceled(true);
+		}
+	}
 
+	/**
+	 * Check if the player is trying to place a block in a structure that's considered inaccessible for progression reasons
+	 * FIXME If there is a way to check on the client, it would be ideal to prevent the block placement in the first place.
+	 *  Currently makes a desync from server that the item appeared consumed to the placer's client, despite it being unconsumed on serverside
+	 */
+	@SubscribeEvent
+	public static void placeBlock(BlockEvent.EntityPlaceEvent event) {
+		Entity entity = event.getEntity();
+
+		if (!(event.getLevel() instanceof Level level) || !(entity instanceof Player player)) return;
+
+		BlockPos pos = event.getPos();
+		if (isBlockProtectedFromBreaking(level, pos) && isAreaProtected(level, player, pos)) {
+			event.setCanceled(true);
+		}
+	}
+
+	/**
+	 * Check if the player is trying to break a multi-block that intersects a structure that's considered inaccessible for progression reasons
+	 * FIXME If there is a way to check on the client, it would be ideal to prevent the block placement in the first place.
+	 *  Currently makes a desync from server that the item appeared consumed to the placer's client, despite it being unconsumed on serverside
+	 */
+	@SubscribeEvent
+	public static void placeMultiBlock(BlockEvent.EntityMultiPlaceEvent event) {
+		Entity entity = event.getEntity();
+
+		if (!(event.getLevel() instanceof Level level) || !(entity instanceof Player player)) return;
+
+		for (BlockSnapshot snapshot : event.getReplacedBlockSnapshots()) {
+			BlockPos pos = snapshot.getPos();
+
+			if (isBlockProtectedFromBreaking(level, pos) && isAreaProtected(level, player, pos)) {
+				event.setCanceled(true);
+			}
 		}
 	}
 
@@ -86,50 +119,45 @@ public class ProgressionEvents {
 	 * Currently, if we return true, we also send the area protection packet here.
 	 */
 	private static boolean isAreaProtected(Level level, Player player, BlockPos pos) {
-
 		if (player.getAbilities().instabuild || player.isSpectator() ||
 				!LandmarkUtil.isProgressionEnforced(level) || player instanceof FakePlayer) {
 			return false;
 		}
 
-		ChunkGeneratorTwilight chunkGenerator = WorldUtil.getChunkGenerator(level);
+        Optional<StructureStart> struct = LandmarkUtil.locateNearestLandmarkStart(level, SectionPos.blockToSectionCoord(pos.getX()), SectionPos.blockToSectionCoord(pos.getZ()));
+        if (struct.isPresent()) {
+            StructureStart structureStart = struct.get();
+            if (structureStart.getBoundingBox().isInside(pos) && structureStart.getStructure() instanceof ProgressionStructure structureHints) {
+                if (!structureHints.doesPlayerHaveRequiredAdvancements(player)/* && chunkGenerator.isBlockProtected(pos)*/) {
+                    // what feature is nearby?  is it one the player has not unlocked?
+                    ResourceKey<Structure> nearbyFeature = LegacyLandmarkPlacements.pickLandmarkAtBlock(pos.getX(), pos.getZ(), level);
 
-		if (chunkGenerator != null) {
-			Optional<StructureStart> struct = LandmarkUtil.locateNearestLandmarkStart(level, SectionPos.blockToSectionCoord(pos.getX()), SectionPos.blockToSectionCoord(pos.getZ()));
-			if (struct.isPresent()) {
-				StructureStart structureStart = struct.get();
-				if (structureStart.getBoundingBox().isInside(pos) && structureStart.getStructure() instanceof ProgressionStructure structureHints) {
-					if (!structureHints.doesPlayerHaveRequiredAdvancements(player)/* && chunkGenerator.isBlockProtected(pos)*/) {
-						// what feature is nearby?  is it one the player has not unlocked?
-						TFLandmark nearbyFeature = LegacyLandmarkPlacements.pickLandmarkAtBlock(pos.getX(), pos.getZ(), (ServerLevel) level);
+                    // TODO: This is terrible but *works* for now.. proper solution is to figure out why the stronghold bounding box is going so high
+                    if (nearbyFeature == TFStructures.KNIGHT_STRONGHOLD && pos.getY() >= WorldUtil.getGeneratorSeaLevel(level) - 2)
+                        return false;
 
-						// TODO: This is terrible but *works* for now.. proper solution is to figure out why the stronghold bounding box is going so high
-						if (nearbyFeature == TFLandmark.KNIGHT_STRONGHOLD && pos.getY() >= TFGenerationSettings.SEALEVEL)
-							return false;
+                    // send protection packet
+                    List<BoundingBox> boxes = new ArrayList<>();
+                    structureStart.getPieces().forEach(piece -> {
+                        if (piece.getBoundingBox().isInside(pos))
+                            boxes.add(piece.getBoundingBox());
+                    });
 
-						// send protection packet
-						List<BoundingBox> boxes = new ArrayList<>();
-						structureStart.getPieces().forEach(piece -> {
-							if (piece.getBoundingBox().isInside(pos))
-								boxes.add(piece.getBoundingBox());
-						});
+                    sendAreaProtectionPacket(level, pos, boxes);
 
-						sendAreaProtectionPacket(level, pos, boxes);
+                    // send a hint monster?
+                    structureHints.trySpawnHintMonster(level, player, pos);
 
-						// send a hint monster?
-						structureHints.trySpawnHintMonster(level, player, pos);
-
-						return true;
-					}
-				}
-			}
-		}
-		return false;
+                    return true;
+                }
+            }
+        }
+        return false;
 	}
 
 	private static void sendAreaProtectionPacket(Level level, BlockPos pos, List<BoundingBox> sbb) {
 		PacketDistributor.TargetPoint targetPoint = new PacketDistributor.TargetPoint(pos.getX(), pos.getY(), pos.getZ(), 64, level.dimension());
-		TFPacketHandler.CHANNEL.send(PacketDistributor.NEAR.with(() -> targetPoint), new AreaProtectionPacket(sbb, pos));
+		PacketDistributor.NEAR.with(targetPoint).send(new AreaProtectionPacket(sbb, pos));
 	}
 
 	@SubscribeEvent
@@ -141,25 +169,5 @@ public class ProgressionEvents {
 
 			event.setCanceled(true);
 		}
-	}
-
-	@SubscribeEvent
-	public static void playerPortals(PlayerEvent.PlayerChangedDimensionEvent event) {
-		if (!event.getEntity().level().isClientSide() && event.getEntity() instanceof ServerPlayer player) {
-			if (TFGenerationSettings.usesTwilightChunkGenerator((ServerLevel) player.level())) {
-				sendEnforcedProgressionStatus(player, LandmarkUtil.isProgressionEnforced(player.level()));
-			}
-		}
-	}
-
-	@SubscribeEvent
-	public static void playerLogsIn(PlayerEvent.PlayerLoggedInEvent event) {
-		if (!event.getEntity().level().isClientSide() && event.getEntity() instanceof ServerPlayer player) {
-			sendEnforcedProgressionStatus(player, LandmarkUtil.isProgressionEnforced(event.getEntity().level()));
-		}
-	}
-
-	private static void sendEnforcedProgressionStatus(ServerPlayer player, boolean isEnforced) {
-		TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new EnforceProgressionStatusPacket(isEnforced));
 	}
 }

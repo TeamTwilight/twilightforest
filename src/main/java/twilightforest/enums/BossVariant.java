@@ -1,5 +1,6 @@
 package twilightforest.enums;
 
+import com.mojang.serialization.Codec;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import org.jetbrains.annotations.Nullable;
@@ -22,7 +23,9 @@ public enum BossVariant implements StringRepresentable {
 	QUEST_RAM     (TrophyType.IRONWOOD, null),
 	FINAL_BOSS    (TrophyType.GOLD    , TFBlockEntities.FINAL_BOSS_SPAWNER::get);
 
+	public static final EnumCodec<BossVariant> CODEC = StringRepresentable.fromEnum(BossVariant::values);
 	private final TrophyType trophyType;
+	@Nullable
 	private final Supplier<BlockEntityType<? extends BossSpawnerBlockEntity<?>>> blockEntityType;
 
 	BossVariant(TrophyType trophyType, @Nullable Supplier<BlockEntityType<? extends BossSpawnerBlockEntity<?>>> blockEntityType) {

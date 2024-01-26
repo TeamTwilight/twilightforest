@@ -3,13 +3,13 @@ package twilightforest.data.custom;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import com.google.gson.JsonObject;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.apache.commons.lang3.tuple.Triple;
 import twilightforest.init.TFRecipes;
 
@@ -43,8 +43,8 @@ public abstract class TransformationPowderProvider implements DataProvider {
 
 		this.builders.forEach((name, transform) -> {
 			List<String> list = builders.keySet().stream()
-					.filter(s -> ForgeRegistries.ENTITY_TYPES.containsValue(transform.getLeft()))
-					.filter(s -> ForgeRegistries.ENTITY_TYPES.containsValue(transform.getMiddle()))
+					.filter(s -> BuiltInRegistries.ENTITY_TYPE.containsValue(transform.getLeft()))
+					.filter(s -> BuiltInRegistries.ENTITY_TYPE.containsValue(transform.getMiddle()))
 					.filter(s -> !this.builders.containsKey(s))
 					.filter(this::missing)
 					.toList();
@@ -71,9 +71,9 @@ public abstract class TransformationPowderProvider implements DataProvider {
 	private JsonObject serializeToJson(EntityType<?> transformFrom, EntityType<?> transformTo, boolean reversible) {
 		JsonObject jsonobject = new JsonObject();
 
-		jsonobject.addProperty("type", ForgeRegistries.RECIPE_SERIALIZERS.getKey(TFRecipes.TRANSFORMATION_SERIALIZER.get()).toString());
-		jsonobject.addProperty("from", ForgeRegistries.ENTITY_TYPES.getKey(transformFrom).toString());
-		jsonobject.addProperty("to", ForgeRegistries.ENTITY_TYPES.getKey(transformTo).toString());
+		jsonobject.addProperty("type", BuiltInRegistries.RECIPE_SERIALIZER.getKey(TFRecipes.TRANSFORMATION_SERIALIZER.get()).toString());
+		jsonobject.addProperty("from", BuiltInRegistries.ENTITY_TYPE.getKey(transformFrom).toString());
+		jsonobject.addProperty("to", BuiltInRegistries.ENTITY_TYPE.getKey(transformTo).toString());
 		jsonobject.addProperty("reversible", reversible);
 		return jsonobject;
 	}
@@ -85,10 +85,10 @@ public abstract class TransformationPowderProvider implements DataProvider {
 
 	//helper methods
 	public void addOneWayTransform(EntityType<?> from, EntityType<?> to) {
-		this.builders.put(ForgeRegistries.ENTITY_TYPES.getKey(from).getPath() + "_to_" + ForgeRegistries.ENTITY_TYPES.getKey(to).getPath(), Triple.of(from, to, false));
+		this.builders.put(BuiltInRegistries.ENTITY_TYPE.getKey(from).getPath() + "_to_" + BuiltInRegistries.ENTITY_TYPE.getKey(to).getPath(), Triple.of(from, to, false));
 	}
 
 	public void addTwoWayTransform(EntityType<?> from, EntityType<?> to) {
-		this.builders.put(ForgeRegistries.ENTITY_TYPES.getKey(from).getPath() + "_to_" + ForgeRegistries.ENTITY_TYPES.getKey(to).getPath(), Triple.of(from, to, true));
+		this.builders.put(BuiltInRegistries.ENTITY_TYPE.getKey(from).getPath() + "_to_" + BuiltInRegistries.ENTITY_TYPE.getKey(to).getPath(), Triple.of(from, to, true));
 	}
 }

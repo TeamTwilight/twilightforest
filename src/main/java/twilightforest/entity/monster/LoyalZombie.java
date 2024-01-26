@@ -128,11 +128,6 @@ public class LoyalZombie extends TamableAnimal {
 	}
 
 	@Override
-	public double getMyRidingOffset() {
-		return -0.35D;
-	}
-
-	@Override
 	protected SoundEvent getAmbientSound() {
 		return TFSounds.LOYAL_ZOMBIE_AMBIENT.get();
 	}

@@ -13,7 +13,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.Vec3;
+import org.joml.Vector3f;
 import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.entity.IHostileMount;
 import twilightforest.entity.ai.goal.ChargeAttackGoal;
@@ -112,34 +112,8 @@ public class PinchBeetle extends Monster implements IHostileMount {
 	}
 
 	@Override
-	public void positionRider(Entity passenger, Entity.MoveFunction callback) {
-		if (!this.getPassengers().isEmpty()) {
-			Vec3 riderPos = this.getRiderPosition();
-			callback.accept(passenger, riderPos.x(), riderPos.y(), riderPos.z());
-		}
-	}
-
-	@Override
-	public double getMyRidingOffset() {
-		return -0.1D;
-	}
-
-	@Override
-	public double getPassengersRidingOffset() {
-		return 0.75D;
-	}
-
-	private Vec3 getRiderPosition() {
-		if (!this.getPassengers().isEmpty()) {
-			float distance = 0.75F;
-
-			double dx = Math.cos((this.getYRot() + 90) * Math.PI / 180.0D) * distance;
-			double dz = Math.sin((this.getYRot() + 90) * Math.PI / 180.0D) * distance;
-
-			return new Vec3(this.getX() + dx, this.getY() + this.getPassengersRidingOffset() + this.getPassengers().get(0).getMyRidingOffset(), this.getZ() + dz);
-		} else {
-			return new Vec3(this.getX(), this.getY(), this.getZ());
-		}
+	protected Vector3f getPassengerAttachmentPoint(Entity entity, EntityDimensions dimensions, float yRot) {
+		return new Vector3f(0.0F, this.getEyeHeight(), 0.75F);
 	}
 
 	@Override
@@ -151,7 +125,7 @@ public class PinchBeetle extends Monster implements IHostileMount {
 	public EntityDimensions getDimensions(Pose pose) {
 
 		if (!this.getPassengers().isEmpty()) {
-			return EntityDimensions.scalable(2.25F, 1.25F);
+			return EntityDimensions.scalable(2.2F, 1.45F);
 		} else {
 			return super.getDimensions(pose);
 		}

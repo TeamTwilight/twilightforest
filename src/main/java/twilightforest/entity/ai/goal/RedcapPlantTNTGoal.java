@@ -5,7 +5,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.neoforged.neoforge.event.EventHooks;
 import twilightforest.entity.monster.Redcap;
 
 public class RedcapPlantTNTGoal extends RedcapBaseGoal {
@@ -21,7 +21,7 @@ public class RedcapPlantTNTGoal extends RedcapBaseGoal {
 				&& !this.redcap.heldTNT.isEmpty()
 				&& this.redcap.distanceToSqr(attackTarget) < 25
 				&& !this.isTargetLookingAtMe(attackTarget)
-				&& ForgeEventFactory.getMobGriefingEvent(this.redcap.level(), this.redcap)
+				&& EventHooks.getMobGriefingEvent(this.redcap.level(), this.redcap)
 				&& !this.isLitTNTNearby(8)
 				&& this.findBlockTNTNearby(5) == null;
 	}

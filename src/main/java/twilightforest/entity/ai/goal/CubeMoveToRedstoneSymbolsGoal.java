@@ -4,9 +4,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.block.Blocks;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.RovingCube;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.EnumSet;
 
 public class CubeMoveToRedstoneSymbolsGoal extends Goal {

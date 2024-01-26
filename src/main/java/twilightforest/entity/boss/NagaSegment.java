@@ -9,11 +9,10 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFPart;
 
@@ -104,7 +103,7 @@ public class NagaSegment extends TFPart<Naga> {
 		entity.push(this);
 
 		// attack anything that's not us
-		if (entity instanceof LivingEntity && !(entity instanceof Naga) && !this.getParent().isDazed()) {
+		if (entity instanceof LivingEntity && !(entity instanceof Naga) && !this.getParent().isDazed() && !this.getParent().isDeadOrDying()) {
 			int attackStrength = 2;
 
 			// get rid of nearby deer & look impressive

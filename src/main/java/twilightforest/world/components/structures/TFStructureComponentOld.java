@@ -23,7 +23,9 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
+import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.loot.TFLootTables;
@@ -35,7 +37,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 @Deprecated
-public abstract class TFStructureComponentOld extends TFStructureComponent {
+public abstract class TFStructureComponentOld extends TFStructureComponent implements PieceBeardifierModifier {
 
 	protected static final BlockState AIR = Blocks.AIR.defaultBlockState();
 	private static final StrongholdStones strongholdStones = new StrongholdStones();
@@ -576,5 +578,20 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 	protected static BlockState getSlabState(BlockState inputBlockState, SlabType half) {
 		return inputBlockState
 				.setValue(SlabBlock.TYPE, half);
+	}
+
+	@Override
+	public BoundingBox getBeardifierBox() {
+		return this.boundingBox;
+	}
+
+	@Override
+	public TerrainAdjustment getTerrainAdjustment() {
+		return TerrainAdjustment.NONE;
+	}
+
+	@Override
+	public int getGroundLevelDelta() {
+		return 0;
 	}
 }
