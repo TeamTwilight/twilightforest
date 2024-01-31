@@ -29,5 +29,9 @@
   "advancement.twilightforest.hill2.desc": "Bir Orta Boşluklu Tepede bir %s 'yi yenin",
   "advancement.twilightforest.hill3": "Senin İçini Görüyorum",
   "advancement.twilightforest.hill3.desc": "Büyük Oyuk Tepede bir %s 'yi yenin",
-  "advancement.twilightforest.hydra_chop": "Hydra Chop, bebeğim!"
+  "advancement.twilightforest.hydra_chop": "Hydra Chop, bebeğim!",
+  "advancement.twilightforest.hydra_chop.desc": "Açlık çubuğunuz tükendiğinde bir %s 'yi yiyin",
+  "advancement.twilightforest.kill_cicada": "Kapat",
+  "advancement.twilightforest.kill_cicada.desc": "Bir Ağustos Böceği Öldür",
+  "advancement.twilightforest.kill_hydra": "Hidra Katili"
 }
