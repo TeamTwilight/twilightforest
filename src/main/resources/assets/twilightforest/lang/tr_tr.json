@@ -212,5 +212,7 @@
   "block.twilightforest.arctic_fur_block": "Arktik Kürk Bloğu",
   "block.twilightforest.arctic_fur_block.desc": "Düşme hasarını %90 azaltır",
   "block.twilightforest.aurora_block": "Aurora Bloğu",
-  "block.twilightforest.aurora_pillar": "Aurora Sütunu"
+  "block.twilightforest.aurora_pillar": "Aurora Sütunu",
+  "block.twilightforest.aurora_slab": "Aurora Basamak",
+  "item.twilightforest.snow_queen_banner_pattern.desc": "Kar Tanesi"
 }
