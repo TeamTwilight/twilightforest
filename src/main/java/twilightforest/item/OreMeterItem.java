@@ -4,6 +4,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -68,6 +69,10 @@ public class OreMeterItem extends Item {
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
+
+		// FakePlayers should never be allowed to use the Ore Meter
+		if (player.getClass() != ServerPlayer.class) return InteractionResultHolder.fail(stack);
+
 		//if we're in the "loading" state don't try to run any logic
 		if (isLoading(stack)) return InteractionResultHolder.pass(stack);
 
