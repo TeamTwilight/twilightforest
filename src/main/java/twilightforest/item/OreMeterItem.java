@@ -1,14 +1,9 @@
 package twilightforest.item;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -24,19 +19,18 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
-import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
+import twilightforest.capabilities.OreScannerAttachment;
 import twilightforest.data.tags.BlockTagGenerator;
+import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFSounds;
 
-import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 public class OreMeterItem extends Item {
 	public static final int MAX_CHUNK_SEARCH_RANGE = 2;
@@ -49,21 +43,26 @@ public class OreMeterItem extends Item {
 
 	@Override
 	public void inventoryTick(ItemStack stack, Level level, Entity entity, int slot, boolean held) {
-		//loading logic. The ore meter doesn't display any info until it's been "loading" for 50 ticks.
-		//While mostly a visual thing, this also prevents spamming the meter and constantly populating it with data.
-		CompoundTag scanNbt = getScanData(stack);
-		if (scanNbt != null && scanNbt.contains("Loading") && level.isClientSide()) {
-			int loadTime = scanNbt.getInt("Loading");
-			if (loadTime < LOAD_TIME) {
-				scanNbt.putInt("Loading", loadTime + 1);
-			} else {
-				scanNbt.remove("Loading");
-				int useX = Mth.floor(entity.getX());
-				int useZ = Mth.floor(entity.getZ());
-				String blockId = getAssignedBlock(stack);
-				this.countOreInArea(stack, level, useX, useZ, getRange(stack), blockId != null ? BuiltInRegistries.BLOCK.get(ResourceLocation.tryParse(blockId)) : null);
-			}
+		if (level.isClientSide() || !stack.hasData(TFDataAttachments.ORE_SCANNER)) return;
+
+		OreScannerAttachment data = stack.getData(TFDataAttachments.ORE_SCANNER);
+
+		if (data.isEmpty()) {
+			stack.removeData(TFDataAttachments.ORE_SCANNER);
+			return;
 		}
+
+		if (!data.tickScan(level)) {
+			getOrCreateScanData(stack).putInt("Loading", data.getTickProgress());
+			return;
+		}
+
+		CompoundTag scanData = getScanData(stack);
+		if (scanData != null) scanData.remove("Loading");
+
+		saveScanInfo(stack, data.getResults(getAssignedBlock(stack)), data.centerChunkPos().toLong(), data.getVolume(level));
+
+		stack.removeData(TFDataAttachments.ORE_SCANNER);
 	}
 
 	@Override
@@ -72,28 +71,40 @@ public class OreMeterItem extends Item {
 		//if we're in the "loading" state don't try to run any logic
 		if (isLoading(stack)) return InteractionResultHolder.pass(stack);
 
-		CompoundTag scanNbt = getOrCreateScanData(stack);
-
 		//if we're not crouching, put the ore meter into its "loading" state
 		if (!player.isSecondaryUseActive()) {
-			if (level.isClientSide() && !scanNbt.contains("Loading")) {
-				scanNbt.putInt("Loading", 0);
-			}
-			level.playSound(player, player.blockPosition(), TFSounds.ORE_METER_CRACKLE.get(), SoundSource.PLAYERS, 0.5F, level.getRandom().nextFloat() * 0.1F + 0.9F);
-			return InteractionResultHolder.pass(stack);
+			return beginScanning(level, player, stack);
 		} else {
-			//if we're crouching and not targeting a block, change the ore meter range instead
-			HitResult result = getPlayerPOVHitResult(level, player, ClipContext.Fluid.ANY);
-			if (result.getType() == HitResult.Type.MISS) {
-				int newRange = getRange(stack) + 1;
-				if (newRange > MAX_CHUNK_SEARCH_RANGE) {
-					newRange = 0;
-				}
-				stack.getOrCreateTag().putInt("Range", newRange);
+			return toggleRange(level, player, stack);
+		}
+	}
+
+	@NotNull
+	private static InteractionResultHolder<ItemStack> beginScanning(Level level, Player player, ItemStack stack) {
+		if (!level.isClientSide) {
+			int range = getRange(stack);
+			OreScannerAttachment data = OreScannerAttachment.scanFromCenter(player.blockPosition(), range, LOAD_TIME);
+			stack.setData(TFDataAttachments.ORE_SCANNER, data);
+		}
+
+		level.playSound(player, player.blockPosition(), TFSounds.ORE_METER_CRACKLE.get(), SoundSource.PLAYERS, 0.5F, level.getRandom().nextFloat() * 0.1F + 0.9F);
+
+		return InteractionResultHolder.pass(stack);
+	}
+
+	@NotNull
+	private static InteractionResultHolder<ItemStack> toggleRange(Level level, Player player, ItemStack stack) {
+		//if we're crouching and not targeting a block, change the ore meter range instead
+		HitResult result = getPlayerPOVHitResult(level, player, ClipContext.Fluid.ANY);
+		if (result.getType() == HitResult.Type.MISS) {
+			if (!level.isClientSide) {
+				int newRange = Mth.positiveModulo(getRange(stack) + 1, MAX_CHUNK_SEARCH_RANGE + 1);
+
+				getOrCreateScanData(stack).putInt("Range", newRange);
 				player.displayClientMessage(Component.translatable("misc.twilightforest.ore_meter_new_range", newRange), true);
-				level.playSound(player, player.blockPosition(), SoundEvents.UI_BUTTON_CLICK.value(), SoundSource.PLAYERS, 0.25F, 0.75F + (newRange * 0.1F));
-				return InteractionResultHolder.success(stack);
+				level.playSound(null, player.blockPosition(), SoundEvents.UI_BUTTON_CLICK.value(), SoundSource.PLAYERS, 0.25F, 0.75F + (newRange * 0.1F));
 			}
+			return InteractionResultHolder.success(stack);
 		}
 
 		return InteractionResultHolder.pass(stack);
@@ -106,7 +117,7 @@ public class OreMeterItem extends Item {
 		if (context.isSecondaryUseActive()) {
 			BlockState state = context.getLevel().getBlockState(context.getClickedPos());
 			if (state.is(BlockTagGenerator.ORE_METER_TARGETABLE)) {
-				getScanData(stack).putString("TargetedBlock", BuiltInRegistries.BLOCK.getKey(state.getBlock()).toString());
+				getOrCreateScanData(stack).putString("TargetedBlock", BuiltInRegistries.BLOCK.getKey(state.getBlock()).toString());
 				context.getPlayer().displayClientMessage(Component.translatable("misc.twilightforest.ore_meter_set_block", Component.translatable(state.getBlock().getDescriptionId())), true);
 				context.getLevel().playSound(context.getPlayer(), context.getPlayer().blockPosition(), TFSounds.ORE_METER_TARGET_BLOCK.get(), SoundSource.PLAYERS, 0.5F, context.getLevel().getRandom().nextFloat() * 0.1F + 0.9F);
 				return InteractionResult.SUCCESS;
@@ -218,31 +229,25 @@ public class OreMeterItem extends Item {
 		CompoundTag scanNbt = getScanData(stack);
 
 		if (scanNbt != null && scanNbt.contains("ScanInfo")) {
-			ListTag listTag = scanNbt.getList("ScanInfo", 10);
-			for (Tag tag : listTag) {
-				try {
-					String name = ((CompoundTag) tag).getAllKeys().toArray()[0].toString();
-					tooltips.put(name, ((CompoundTag) tag).getInt(name));
-				} catch (Exception e) {
-					TwilightForestMod.LOGGER.error("Error with deserializing ScanInfo from NBT", e);
-				}
+			CompoundTag listTag = scanNbt.getCompound("ScanInfo");
+			for (var key : listTag.getAllKeys()) {
+				tooltips.put(key, listTag.getInt(key));
 			}
 		}
+
 		return tooltips;
 	}
 
 	public static void saveScanInfo(ItemStack stack, Map<String, Integer> blockInfos, long chunkPos, int totalScanned) {
-		ListTag tag = new ListTag();
-		CompoundTag scanNbt = getOrCreateScanData(stack);
+		CompoundTag blocksCounted = new CompoundTag();
 
-		for (Map.Entry<String, Integer> entry : blockInfos.entrySet()) {
-			CompoundTag compTag = new CompoundTag();
-			compTag.putInt(entry.getKey(), entry.getValue());
-			tag.add(compTag);
+		for (Map.Entry<String, Integer> countEntry : blockInfos.entrySet()) {
+			blocksCounted.putInt(countEntry.getKey(), countEntry.getValue());
 		}
 
-		tag.sort(new TagSorter());
-		scanNbt.put("ScanInfo", tag);
+		CompoundTag scanNbt = getOrCreateScanData(stack);
+		scanNbt.put("ScanInfo", blocksCounted);
+
 		if (chunkPos != 0L) {
 			scanNbt.putLong("ScannedChunk", chunkPos);
 		} else {
@@ -253,88 +258,6 @@ public class OreMeterItem extends Item {
 		} else {
 			scanNbt.remove("ScannedBlocks");
 		}
-		scanNbt.putLong("ID", (tag.hashCode() ^ chunkPos) * (getRange(stack) ^ totalScanned));
-	}
-
-	//note: this is only done client-side to avoid anyone lagging the server.
-	//This information is not synced with the server to prevent sending NBT data, as it could potentially be used maliciously.
-	//the unfortunate side effect of this is that this information will not persist across world reloads
-	private void countOreInArea(ItemStack stack, Level level, int useX, int useZ, int radius, @Nullable Block targetedBlock) {
-		Map<String, Integer> oreCounts = new HashMap<>();
-		int chunkX = useX >> 4;
-		int chunkZ = useZ >> 4;
-
-		ScanResult dummy = new ScanResult();
-		Map<Block, Integer> finalResults = new TreeMap<>(Comparator.comparing(Block::getDescriptionId));
-		AtomicInteger totalScanned = new AtomicInteger();
-		for (int cx = chunkX - radius; cx <= chunkX + radius; cx++) {
-			for (int cz = chunkZ - radius; cz <= chunkZ + radius; cz++) {
-				if (!level.hasChunk(cx, cz)) continue;
-				Map<Block, ScanResult> results = this.countBlocksInChunk(level, cx, cz);
-				results.forEach((state, scanResult) -> totalScanned.addAndGet(scanResult.count));
-				if (targetedBlock != null) {
-					if (results.getOrDefault(targetedBlock, dummy).count != 0) {
-						if (finalResults.containsKey(targetedBlock)) {
-							int existingCount = finalResults.get(targetedBlock);
-							finalResults.put(targetedBlock, results.getOrDefault(targetedBlock, dummy).count + existingCount);
-						} else {
-							finalResults.put(targetedBlock, results.getOrDefault(targetedBlock, dummy).count);
-						}
-					}
-				} else {
-					for (Block block : BuiltInRegistries.BLOCK.getTag(Tags.Blocks.ORES).get().stream().map(Holder::value).toList()) {
-						if (results.getOrDefault(block, dummy).count != 0) {
-							if (finalResults.containsKey(block)) {
-								int existingCount = finalResults.get(block);
-								finalResults.put(block, results.getOrDefault(block, dummy).count + existingCount);
-							} else {
-								finalResults.put(block, results.getOrDefault(block, dummy).count);
-							}
-						}
-					}
-				}
-			}
-		}
-
-
-		if (!finalResults.isEmpty()) {
-			for (Map.Entry<Block, Integer> entry : finalResults.entrySet()) {
-				oreCounts.put(entry.getKey().getDescriptionId(), entry.getValue());
-			}
-		}
-
-		saveScanInfo(stack, oreCounts, new ChunkPos(chunkX, chunkZ).toLong(), totalScanned.get());
-	}
-
-	private Map<Block, ScanResult> countBlocksInChunk(Level level, int cx, int cz) {
-		Map<Block, ScanResult> ret = new IdentityHashMap<>();
-		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
-		for (int x = cx << 4; x < (cx << 4) + 16; x++) {
-			for (int z = cz << 4; z < (cz << 4) + 16; z++) {
-				for (int y = level.getMinBuildHeight(); y < level.getMaxBuildHeight(); y++) {
-					BlockState state = level.getBlockState(pos.set(x, y, z));
-					if (!state.isAir() && !(state.getBlock() instanceof LiquidBlock)) {
-						ScanResult res = ret.computeIfAbsent(state.getBlock(), s -> new ScanResult());
-						res.count++;
-					}
-				}
-			}
-		}
-
-		return ret;
-	}
-
-	private static class ScanResult {
-		int count;
-	}
-
-	public static class TagSorter implements Comparator<Tag> {
-
-		@Override
-		public int compare(Tag o1, Tag o2) {
-			String key1 = (String) ((CompoundTag) o1).getAllKeys().toArray()[0];
-			String key2 = (String) ((CompoundTag) o2).getAllKeys().toArray()[0];
-			return Integer.compare(((CompoundTag) o2).getInt(key2), ((CompoundTag) o1).getInt(key1));
-		}
+		scanNbt.putLong("ID", (blocksCounted.hashCode() ^ chunkPos) * (getRange(stack) ^ totalScanned));
 	}
 }

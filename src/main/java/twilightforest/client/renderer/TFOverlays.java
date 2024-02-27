@@ -148,7 +148,11 @@ public class TFOverlays {
 		);
 
 		ArrayList<ComponentColumn> columns = new ArrayList<>();
-		List<Pair<String, Integer>> scanData = OreMeterItem.getScanInfo(meter).entrySet().stream().map(e -> Pair.of(e.getKey(), e.getValue())).toList();
+
+		List<Pair<String, Integer>> scanData = OreMeterItem.getScanInfo(meter).entrySet().stream()
+				.map(e -> Pair.of(e.getKey(), e.getValue())) // Convert Entries into Pairs
+				.sorted(Comparator.comparing(Pair::getSecond)) // Sort Pairs by second element (quantity)
+				.toList(); // Make sorted immutable list
 
 		if (TFConfig.CLIENT_CONFIG.prettifyOreMeterGui.get()) {
 			ComponentColumn padding = ComponentColumn.padding(1);
