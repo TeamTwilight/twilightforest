@@ -88,7 +88,15 @@ public class OreMeterItem extends Item {
 	private static InteractionResultHolder<ItemStack> beginScanning(Level level, Player player, ItemStack stack) {
 		if (!level.isClientSide) {
 			int range = getRange(stack);
-			OreScannerAttachment data = OreScannerAttachment.scanFromCenter(player.blockPosition(), range, LOAD_TIME);
+
+			// 50 base ticks plus 25 additional ticks for each range increment
+			// Range 0: 50 ticks
+			// Range 1: 75 ticks
+			// Range 2: 100 ticks
+			// It's not an exponent growth to match the increase in chunks, but range is capped at 2 anyway
+			int scanTime = LOAD_TIME + range * 25;
+
+			OreScannerAttachment data = OreScannerAttachment.scanFromCenter(player.blockPosition(), range, scanTime);
 			stack.setData(TFDataAttachments.ORE_SCANNER, data);
 		}
 
