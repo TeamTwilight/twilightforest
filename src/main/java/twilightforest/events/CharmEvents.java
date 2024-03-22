@@ -52,13 +52,14 @@ public class CharmEvents {
 	public static final String CASKET_BROKEN_TAG = "CasketBroken";
 	public static final String CONSUMED_CHARM_TAG = "CharmStack";
 
-	@SubscribeEvent(priority = EventPriority.HIGHEST)
+	@SubscribeEvent(priority = EventPriority.HIGH)
 	// For when the player dies
 	public static void applyDeathItems(LivingDeathEvent event) {
+
 		LivingEntity living = event.getEntity();
 
 		//ensure our player is real and in survival before attempting anything
-		if (living.level().isClientSide() || !(living instanceof Player player) || living instanceof FakePlayer ||
+		if (event.isCanceled() || living.level().isClientSide() || !(living instanceof Player player) || living instanceof FakePlayer ||
 				player.isCreative() || player.isSpectator()) return;
 
 		if (charmOfLife(player)) {
