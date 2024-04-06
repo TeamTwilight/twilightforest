@@ -23,8 +23,6 @@ import twilightforest.init.TFBlocks;
 import java.util.ArrayList;
 import java.util.List;
 
-/* Unlike the usual way models are done, this takes more of a state-oriented approach.
- * It is suboptimal but please, be my guest if you wish to see it improved */
 public record PatchModel(ResourceLocation location, TextureAtlasSprite texture, boolean shaggify) implements BakedModel {
     private static final FaceBakery BAKERY = new FaceBakery();
 
@@ -52,19 +50,11 @@ public record PatchModel(ResourceLocation location, TextureAtlasSprite texture, 
         long northSeed = posRandom.nextLong();
         long southSeed = posRandom.nextLong();
 
-        int minX = bb.minX();
         int minY = bb.minY();
-        int minZ = bb.minZ();
-        int maxX = bb.maxX();
         int maxY = bb.maxY();
-        int maxZ = bb.maxZ();
 
         // add on shaggy edges
         if (!west) {
-            Vector3f min = new Vector3f(minX, minY, minZ);
-            Vector3f max = new Vector3f(maxX, maxY, maxZ);
-            float originalMaxZ = max.z;
-
             long seed = westSeed;
             seed = seed * seed * 42317861L + seed * 7L;
 
@@ -73,27 +63,21 @@ public record PatchModel(ResourceLocation location, TextureAtlasSprite texture, 
             int num2 = (int) (seed >> 18 & 3L) + 1;
             int num3 = (int) (seed >> 21 & 3L) + 1;
 
-            max.x = min.x;
-            min.add(-1, 0, num0);
-            if (max.z - ((num1 + num2 + num3)) > min.z) {
+			int minZ = bb.minZ() + num0;
+            int maxZ = bb.maxZ();
+
+            if (maxZ - ((num1 + num2 + num3)) > minZ) {
                 // draw two blobs
-                max.z = min.z + num1;
-                this.quadsFromAABB(list, min.x, min.y, min.z, max.x, max.y, max.z);
-                max.z = originalMaxZ - num2;
-                min.z = max.z - num3;
-                this.quadsFromAABB(list, min.x, min.y, min.z, max.x, max.y, max.z);
+                int innerZ = bb.maxZ() - num2;
+                this.quadsFromAABB(list, bb.minX() - 1, minY, minZ, bb.minX(), maxY, minZ + num1);
+                this.quadsFromAABB(list, bb.minX() - 1, minY, innerZ - num3, bb.minX(), maxY, innerZ);
             } else {
                 //draw one blob
-                max.add(0, 0, -num2);
-                this.quadsFromAABB(list, min.x, min.y, min.z, max.x, max.y, max.z);
+                this.quadsFromAABB(list, bb.minX() - 1, minY, minZ, bb.minX(), maxY, maxZ - num2);
             }
         }
 
         if (!east) {
-            Vector3f min = new Vector3f(minX, minY, minZ);
-            Vector3f max = new Vector3f(maxX, maxY, maxZ);
-            float originalMaxZ = max.z;
-
             long seed = eastSeed;
             seed = seed * seed * 42317861L + seed * 17L;
 
@@ -102,28 +86,21 @@ public record PatchModel(ResourceLocation location, TextureAtlasSprite texture, 
             int num2 = (int) (seed >> 18 & 3L) + 1;
             int num3 = (int) (seed >> 21 & 3L) + 1;
 
-            min.x = max.x;
-            max.add(1, 0, 0);
-            min.add(0, 0, num0);
-            if (max.z - ((num1 + num2 + num3)) > min.z) {
+			int minZ = bb.minZ() + num0;
+            int maxZ = bb.maxZ();
+
+            if (maxZ - ((num1 + num2 + num3)) > minZ) {
                 // draw two blobs
-                max.z = min.z + num1;
-                this.quadsFromAABB(list, min.x, min.y, min.z, max.x, max.y, max.z);
-                max.z = originalMaxZ - num2;
-                min.z = max.z - num3;
-                this.quadsFromAABB(list, min.x, min.y, min.z, max.x, max.y, max.z);
+                int innerZ = maxZ - num2;
+                this.quadsFromAABB(list, bb.maxX(), minY, minZ, bb.maxX() + 1, maxY, minZ + num1);
+                this.quadsFromAABB(list, bb.maxX(), minY, innerZ - num3, bb.maxX() + 1, maxY, innerZ);
             } else {
                 //draw one blob
-                max.add(0, 0, -num2);
-                this.quadsFromAABB(list, min.x, min.y, min.z, max.x, max.y, max.z);
+                this.quadsFromAABB(list, bb.maxX(), minY, minZ, bb.maxX() + 1, maxY, maxZ - num2);
             }
         }
 
         if (!north) {
-            Vector3f min = new Vector3f(minX, minY, minZ);
-            Vector3f max = new Vector3f(maxX, maxY, maxZ);
-            float originalMaxX = max.x;
-
             long seed = northSeed;
             seed = seed * seed * 42317861L + seed * 23L;
 
@@ -132,20 +109,15 @@ public record PatchModel(ResourceLocation location, TextureAtlasSprite texture, 
             int num2 = (int) (seed >> 18 & 3L) + 1;
             int num3 = (int) (seed >> 21 & 3L) + 1;
 
-            max.z = min.z;
-            min.add(num0, 0, -1F);
-            max.x = min.x + num1;
-            this.quadsFromAABB(list, min.x, min.y, min.z, max.x, max.y, max.z);
-            max.x = originalMaxX - num2;
-            min.x = max.x - num3;
-            this.quadsFromAABB(list, min.x, min.y, min.z, max.x, max.y, max.z);
+            int minX = bb.minX() + num0;
+            int innerX = minX + num1;
+            int maxX = bb.maxX() - num2;
+
+			this.quadsFromAABB(list, minX, minY, bb.minZ() - 1, innerX, maxY, bb.minZ());
+            this.quadsFromAABB(list, maxX - num3, minY, bb.minZ() - 1, maxX, maxY, bb.minZ());
         }
 
         if (!south) {
-            Vector3f min = new Vector3f(minX, minY, minZ);
-            Vector3f max = new Vector3f(maxX, maxY, maxZ);
-            float originalMaxX = max.x;
-
             long seed = southSeed;
             seed = seed * seed * 42317861L + seed * 11L;
 
@@ -154,14 +126,11 @@ public record PatchModel(ResourceLocation location, TextureAtlasSprite texture, 
             int num2 = (int) (seed >> 18 & 3L) + 1;
             int num3 = (int) (seed >> 21 & 3L) + 1;
 
-            min.z = max.z;
-            max.add(0, 0, 1F);
-            min.add(num0, 0, 0);
-            max.x = min.x + num1;
-            this.quadsFromAABB(list, min.x, min.y, min.z, max.x, max.y, max.z);
-            max.x = originalMaxX - num2;
-            min.x = max.x - num3;
-            this.quadsFromAABB(list, min.x, min.y, min.z, max.x, max.y, max.z);
+            int minX = bb.minX() + num0;
+			int maxX = bb.maxX() - num2;
+
+			this.quadsFromAABB(list, minX, minY, bb.maxZ(), minX + num1, maxY, bb.maxZ() + 1);
+            this.quadsFromAABB(list, maxX - num3, minY, bb.maxZ(), maxX, maxY, bb.maxZ() + 1);
         }
 
         return ImmutableList.copyOf(list);
