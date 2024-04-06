@@ -1,5 +1,6 @@
 package twilightforest.client.model.block.patch;
 
+import com.google.common.collect.ImmutableList;
 import com.mojang.math.Transformation;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.*;
@@ -9,7 +10,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.neoforged.neoforge.client.ChunkRenderTypeSet;
 import net.neoforged.neoforge.client.model.SimpleModelState;
 import net.neoforged.neoforge.client.model.data.ModelData;
@@ -27,46 +28,44 @@ import java.util.List;
 public record PatchModel(ResourceLocation location, TextureAtlasSprite texture, boolean shaggify) implements BakedModel {
     private static final FaceBakery BAKERY = new FaceBakery();
 
-    // POOLED - not threadsafe
-    private static final Vector3f MIN = new Vector3f(0, 0, 0);
-    private static final Vector3f MAX = new Vector3f(0, 0, 0);
-
-    private void setVectors(AABB bb) {
-        MIN.set((float) bb.minX, (float) bb.minY, (float) bb.minZ);
-        MAX.set((float) bb.maxX, (float) bb.maxY, (float) bb.maxZ);
-    }
-
-    private void setVectors(AABB bb, boolean north, boolean east, boolean south, boolean west) {
-        MIN.set(west ? 0 : (float) bb.minX, (float) bb.minY, north ? 0 : (float) bb.minZ);
-        MAX.set(east ? 16 : (float) bb.maxX, (float) bb.maxY, south ? 16 : (float) bb.maxZ);
-    }
-
     @Override
     public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, RandomSource random) {
         if (state == null)
-            return this.getQuads(false, false, false, false, PatchBlock.AABBFromRandom(random), random);
+            return this.getQuads(false, false, false, false, random);
         else
-            return this.getQuads(state.getValue(PatchBlock.NORTH), state.getValue(PatchBlock.EAST), state.getValue(PatchBlock.SOUTH), state.getValue(PatchBlock.WEST), PatchBlock.AABBFromRandom(random), random);
+            return this.getQuads(state.getValue(PatchBlock.NORTH), state.getValue(PatchBlock.EAST), state.getValue(PatchBlock.SOUTH), state.getValue(PatchBlock.WEST), random);
     }
 
-    private List<BakedQuad> getQuads(boolean north, boolean east, boolean south, boolean west, AABB bb, RandomSource random) {
+    private List<BakedQuad> getQuads(boolean north, boolean east, boolean south, boolean west, RandomSource posRandom) {
         List<BakedQuad> list = new ArrayList<>();
 
-        this.setVectors(bb, north, east, south, west);
+        BoundingBox bb = PatchBlock.AABBFromRandom(posRandom);
 
-        this.quadsFromAABB(list);
+        this.quadsFromAABB(list, west ? 0 : bb.minX(), bb.minY(), north ? 0 : bb.minZ(), east ? 16 : bb.maxX(), bb.maxY(), south ? 16 : bb.maxZ());
 
-        if (!this.shaggify())
-            return list;
+        if (!this.shaggify)
+            return ImmutableList.copyOf(list);
 
-        // This has to be set without connections or else there will be inconsistency problems
-        this.setVectors(bb);
+        // Poll these seeds before entering branching code, otherwise placing neighbors will cause odd changes
+        long westSeed = posRandom.nextLong();
+        long eastSeed = posRandom.nextLong();
+        long northSeed = posRandom.nextLong();
+        long southSeed = posRandom.nextLong();
+
+        int minX = bb.minX();
+        int minY = bb.minY();
+        int minZ = bb.minZ();
+        int maxX = bb.maxX();
+        int maxY = bb.maxY();
+        int maxZ = bb.maxZ();
 
         // add on shaggy edges
-        if (MIN.x() > 0) {
-            float originalMaxZ = MAX.z();
+        if (!west) {
+            Vector3f min = new Vector3f(minX, minY, minZ);
+            Vector3f max = new Vector3f(maxX, maxY, maxZ);
+            float originalMaxZ = max.z;
 
-            long seed = random.nextLong();
+            long seed = westSeed;
             seed = seed * seed * 42317861L + seed * 7L;
 
             int num0 = (int) (seed >> 12 & 3L) + 1;
@@ -74,28 +73,28 @@ public record PatchModel(ResourceLocation location, TextureAtlasSprite texture, 
             int num2 = (int) (seed >> 18 & 3L) + 1;
             int num3 = (int) (seed >> 21 & 3L) + 1;
 
-            MAX.x = MIN.x();
-            MIN.add(-1, 0, num0);
-            if (MAX.z() - ((num1 + num2 + num3)) > MIN.z()) {
+            max.x = min.x;
+            min.add(-1, 0, num0);
+            if (max.z - ((num1 + num2 + num3)) > min.z) {
                 // draw two blobs
-                MAX.z = MIN.z() + num1;
-                this.quadsFromAABB(list);
-                MAX.z = originalMaxZ - num2;
-                MIN.z = MAX.z() - num3;
-                this.quadsFromAABB(list);
+                max.z = min.z + num1;
+                this.quadsFromAABB(list, min.x, min.y, min.z, max.x, max.y, max.z);
+                max.z = originalMaxZ - num2;
+                min.z = max.z - num3;
+                this.quadsFromAABB(list, min.x, min.y, min.z, max.x, max.y, max.z);
             } else {
                 //draw one blob
-                MAX.add(0, 0, -num2);
-                this.quadsFromAABB(list);
+                max.add(0, 0, -num2);
+                this.quadsFromAABB(list, min.x, min.y, min.z, max.x, max.y, max.z);
             }
-
-            // reset render bounds
-            this.setVectors(bb);
         }
-        if (MAX.x() < 16F) {
-            float originalMaxZ = MAX.z();
 
-            long seed = random.nextLong();
+        if (!east) {
+            Vector3f min = new Vector3f(minX, minY, minZ);
+            Vector3f max = new Vector3f(maxX, maxY, maxZ);
+            float originalMaxZ = max.z;
+
+            long seed = eastSeed;
             seed = seed * seed * 42317861L + seed * 17L;
 
             int num0 = (int) (seed >> 12 & 3L) + 1;
@@ -103,28 +102,29 @@ public record PatchModel(ResourceLocation location, TextureAtlasSprite texture, 
             int num2 = (int) (seed >> 18 & 3L) + 1;
             int num3 = (int) (seed >> 21 & 3L) + 1;
 
-            MIN.x = MAX.x();
-            MAX.add(1, 0, 0);
-            MIN.add(0, 0, num0);
-            if (MAX.z() - ((num1 +num2 + num3)) > MIN.z()) {
+            min.x = max.x;
+            max.add(1, 0, 0);
+            min.add(0, 0, num0);
+            if (max.z - ((num1 + num2 + num3)) > min.z) {
                 // draw two blobs
-                MAX.z = MIN.z() + num1;
-                this.quadsFromAABB(list);
-                MAX.z = originalMaxZ - num2;
-                MIN.z = MAX.z() - num3;
-                this.quadsFromAABB(list);
+                max.z = min.z + num1;
+                this.quadsFromAABB(list, min.x, min.y, min.z, max.x, max.y, max.z);
+                max.z = originalMaxZ - num2;
+                min.z = max.z - num3;
+                this.quadsFromAABB(list, min.x, min.y, min.z, max.x, max.y, max.z);
             } else {
                 //draw one blob
-                MAX.add(0, 0, -num2);
-                this.quadsFromAABB(list);
+                max.add(0, 0, -num2);
+                this.quadsFromAABB(list, min.x, min.y, min.z, max.x, max.y, max.z);
             }
-            // reset render bounds
-            this.setVectors(bb);
         }
-        if (MIN.z() > 0) {
-            float originalMaxX = MAX.x();
 
-            long seed = random.nextLong();
+        if (!north) {
+            Vector3f min = new Vector3f(minX, minY, minZ);
+            Vector3f max = new Vector3f(maxX, maxY, maxZ);
+            float originalMaxX = max.x;
+
+            long seed = northSeed;
             seed = seed * seed * 42317861L + seed * 23L;
 
             int num0 = (int) (seed >> 12 & 3L) + 1;
@@ -132,20 +132,21 @@ public record PatchModel(ResourceLocation location, TextureAtlasSprite texture, 
             int num2 = (int) (seed >> 18 & 3L) + 1;
             int num3 = (int) (seed >> 21 & 3L) + 1;
 
-            MAX.z = MIN.z();
-            MIN.add(num0, 0, -1F);
-            MAX.x = MIN.x() + num1;
-            this.quadsFromAABB(list);
-            MAX.x = originalMaxX - num2;
-            MIN.x = MAX.x() - num3;
-            this.quadsFromAABB(list);
-            // reset render bounds
-            this.setVectors(bb);
+            max.z = min.z;
+            min.add(num0, 0, -1F);
+            max.x = min.x + num1;
+            this.quadsFromAABB(list, min.x, min.y, min.z, max.x, max.y, max.z);
+            max.x = originalMaxX - num2;
+            min.x = max.x - num3;
+            this.quadsFromAABB(list, min.x, min.y, min.z, max.x, max.y, max.z);
         }
-        if (MAX.z() < 16F) {
-            float originalMaxX = MAX.x();
 
-            long seed = random.nextLong();
+        if (!south) {
+            Vector3f min = new Vector3f(minX, minY, minZ);
+            Vector3f max = new Vector3f(maxX, maxY, maxZ);
+            float originalMaxX = max.x;
+
+            long seed = southSeed;
             seed = seed * seed * 42317861L + seed * 11L;
 
             int num0 = (int) (seed >> 12 & 3L) + 1;
@@ -153,41 +154,37 @@ public record PatchModel(ResourceLocation location, TextureAtlasSprite texture, 
             int num2 = (int) (seed >> 18 & 3L) + 1;
             int num3 = (int) (seed >> 21 & 3L) + 1;
 
-            MIN.z = MAX.z();
-            MAX.add(0, 0, 1F);
-            MIN.add(num0, 0, 0);
-            MAX.x = MIN.x() + num1;
-            this.quadsFromAABB(list);
-            MAX.x = originalMaxX - num2;
-            MIN.x = MAX.x() - num3;
-            this.quadsFromAABB(list);
-            // reset render bounds
-            this.setVectors(bb);
+            min.z = max.z;
+            max.add(0, 0, 1F);
+            min.add(num0, 0, 0);
+            max.x = min.x + num1;
+            this.quadsFromAABB(list, min.x, min.y, min.z, max.x, max.y, max.z);
+            max.x = originalMaxX - num2;
+            min.x = max.x - num3;
+            this.quadsFromAABB(list, min.x, min.y, min.z, max.x, max.y, max.z);
         }
 
-        return list;
+        return ImmutableList.copyOf(list);
     }
 
-    // FIXME I'm open for a efficient way of putting quads but this is good enough without reading through a bunch of method chains to duplicate behavior
-    // For now this works, especially when the blocks won't generate frequently on worldgen
-    private void quadsFromAABB(List<BakedQuad> quads) {
-        quads.add(this.quadFromVectors(MIN, MAX, Direction.UP));
-        quads.add(this.quadFromVectors(MIN, MAX, Direction.NORTH));
-        quads.add(this.quadFromVectors(MIN, MAX, Direction.EAST));
-        quads.add(this.quadFromVectors(MIN, MAX, Direction.SOUTH));
-        quads.add(this.quadFromVectors(MIN, MAX, Direction.WEST));
+    private void quadsFromAABB(List<BakedQuad> quads, float minX, float minY, float minZ, float maxX, float maxY, float maxZ) {
+        quads.add(this.quadFromVectors(Direction.UP, minX, minY, minZ, maxX, maxY, maxZ));
+        quads.add(this.quadFromVectors(Direction.NORTH, minX, minY, minZ, maxX, maxY, maxZ));
+        quads.add(this.quadFromVectors(Direction.EAST, minX, minY, minZ, maxX, maxY, maxZ));
+        quads.add(this.quadFromVectors(Direction.SOUTH, minX, minY, minZ, maxX, maxY, maxZ));
+        quads.add(this.quadFromVectors(Direction.WEST, minX, minY, minZ, maxX, maxY, maxZ));
     }
 
-    private BakedQuad quadFromVectors(Vector3f min, Vector3f max, Direction direction) {
-        BlockElementFace face = new BlockElementFace(null, 0, this.texture().atlasLocation().toString(), switch (direction) {
-            case NORTH -> new BlockFaceUV(new float[] { max.x(), min.z() + 1f, min.x(), min.z() }, 0);
-            case EAST  -> new BlockFaceUV(new float[] { max.x(), min.z(), max.x() - 1f, max.z() }, 90);
-            case SOUTH -> new BlockFaceUV(new float[] { min.x(), max.z(), max.x(), max.z() - 1f }, 0);
-            case WEST  -> new BlockFaceUV(new float[] { min.x(), max.z(), min.x() + 1f, min.z() }, 90);
-            default -> new BlockFaceUV(new float[] { min.x(), min.z(), max.x(), max.z() }, 0);
+    private BakedQuad quadFromVectors(Direction direction, float minX, float minY, float minZ, float maxX, float maxY, float maxZ) {
+		BlockElementFace face = new BlockElementFace(null, 0, this.texture.atlasLocation().toString(), switch (direction) {
+            case NORTH -> new BlockFaceUV(new float[] {maxX, minZ + 1f, minX, minZ}, 0);
+            case EAST  -> new BlockFaceUV(new float[] {maxX, minZ, maxX - 1f, maxZ}, 90);
+            case SOUTH -> new BlockFaceUV(new float[] {minX, maxZ, maxX, maxZ - 1f }, 0);
+            case WEST  -> new BlockFaceUV(new float[] {minX, maxZ, minX + 1f, minZ}, 90);
+            default -> new BlockFaceUV(new float[] {minX, minZ, maxX, maxZ}, 0);
         });
 
-        return BAKERY.bakeQuad(min, max, face, this.texture(), direction, new SimpleModelState(Transformation.identity()), null, true, this.location);
+        return BAKERY.bakeQuad(new Vector3f(minX, minY, minZ), new Vector3f(maxX, maxY, maxZ), face, this.texture, direction, new SimpleModelState(Transformation.identity()), null, true, this.location);
     }
 
     // --- Boilerplating ---------------------------------------------------
