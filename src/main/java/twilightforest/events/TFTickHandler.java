@@ -2,6 +2,7 @@ package twilightforest.events;
 
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.DisplayInfo;
+import net.minecraft.commands.Commands;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -18,7 +19,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.event.TickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
-import twilightforest.TFConfig;
+import twilightforest.config.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFPortalBlock;
 import twilightforest.data.tags.ItemTagGenerator;
@@ -50,16 +51,11 @@ public class TFTickHandler {
 		if (!(player.level() instanceof ServerLevel world)) return;
 
 		// check for portal creation, at least if it's not disabled
-		if (!TFConfig.COMMON_CONFIG.disablePortalCreation.get() && event.phase == TickEvent.Phase.END && player.tickCount % (TFConfig.COMMON_CONFIG.checkPortalDestination.get() ? 100 : 20) == 0) {
+		if (!TFConfig.disablePortalCreation && event.phase == TickEvent.Phase.END && player.tickCount % (!TFConfig.checkPortalPlacement ? 100 : 20) == 0) {
 			// skip non admin players when the option is on
-			if (TFConfig.COMMON_CONFIG.adminOnlyPortals.get()) {
-				if (world.getServer().getProfilePermissions(player.getGameProfile()) != 0) {
-					// reduce range to 4.0 when the option is on
-					checkForPortalCreation(player, world, 4.0F);
-				}
-			} else {
-				// normal check, no special options
-				checkForPortalCreation(player, world, 32.0F);
+			if (world.getServer().getProfilePermissions(player.getGameProfile()) >= TFConfig.portalCreationPermission) {
+				// reduce range to 4.0 if config is set to admins/owners only
+				checkForPortalCreation(player, world, TFConfig.portalCreationPermission >= Commands.LEVEL_ADMINS ? 4.0F : 32.0F);
 			}
 		}
 
@@ -110,9 +106,9 @@ public class TFTickHandler {
 	}
 
 	private static void checkForPortalCreation(ServerPlayer player, Level world, float rangeToCheck) {
-		if (world.dimension().location().equals(new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get()))
+		if (world.dimension().location().equals(new ResourceLocation(TFConfig.originDimension))
 				|| TFDimension.isTwilightPortalDestination(world)
-				|| TFConfig.COMMON_CONFIG.allowPortalsInOtherDimensions.get()) {
+				|| TFConfig.allowPortalsInOtherDimensions) {
 
 			List<ItemEntity> itemList = world.getEntitiesOfClass(ItemEntity.class, player.getBoundingBox().inflate(rangeToCheck));
 			ItemEntity qualified = null;

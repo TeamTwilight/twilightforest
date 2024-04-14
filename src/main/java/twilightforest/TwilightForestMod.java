@@ -1,7 +1,9 @@
 package twilightforest;
 
 import com.google.common.collect.Maps;
+import com.google.common.reflect.Reflection;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -17,14 +19,16 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.InterModComms;
 import net.neoforged.fml.ModList;
-import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
-import net.neoforged.neoforge.common.ModConfigSpec;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.IBlockCapabilityProvider;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.wrapper.InvWrapper;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent;
 import net.neoforged.neoforge.network.registration.IPayloadRegistrar;
@@ -32,13 +36,15 @@ import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
 import net.neoforged.neoforge.registries.RegisterEvent;
 import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
-import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.Nullable;
+import twilightforest.block.entity.TFChestBlockEntity;
 import twilightforest.client.TFClientSetup;
 import twilightforest.command.TFCommand;
 import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.compat.top.TopCompat;
+import twilightforest.config.ConfigSetup;
 import twilightforest.data.custom.stalactites.entry.Stalactite;
 import twilightforest.dispenser.TFDispenserBehaviors;
 import twilightforest.entity.MagicPaintingVariant;
@@ -77,17 +83,7 @@ public class TwilightForestMod {
 	private static final Rarity rarity = Rarity.create("TWILIGHT", ChatFormatting.DARK_GREEN);
 
 	public TwilightForestMod(IEventBus bus, Dist dist) {
-		{
-			final Pair<TFConfig.Common, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(TFConfig.Common::new);
-			ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, specPair.getRight());
-			TFConfig.COMMON_CONFIG = specPair.getLeft();
-		}
-		{
-			final Pair<TFConfig.Client, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(TFConfig.Client::new);
-			ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, specPair.getRight());
-			TFConfig.CLIENT_CONFIG = specPair.getLeft();
-		}
-
+		Reflection.initialize(ConfigSetup.class);
 		if (dist.isClient()) {
 			TFClientSetup.init(bus);
 		}
@@ -144,6 +140,11 @@ public class TwilightForestMod {
 		bus.addListener(this::registerExtraStuff);
 		bus.addListener(this::createNewRegistries);
 		bus.addListener(this::setRegistriesForDatapack);
+		bus.addListener(this::registerGenericItemHandlers);
+
+		bus.addListener(ConfigSetup::loadConfigs);
+		bus.addListener(ConfigSetup::reloadConfigs);
+		NeoForge.EVENT_BUS.addListener(ConfigSetup::syncUncraftingConfig);
 
 		if (ModList.get().isLoaded("curios")) {
 			NeoForge.EVENT_BUS.addListener(CuriosCompat::keepCurios);
@@ -153,6 +154,30 @@ public class TwilightForestMod {
 		}
 
 		BiomeGrassColors.init();
+	}
+
+	private void registerGenericItemHandlers(RegisterCapabilitiesEvent event) {
+		IBlockCapabilityProvider<IItemHandler, @Nullable Direction> itemHandlerProvider = (level, pos, state, blockEntity, side) -> level.getBlockEntity(pos) instanceof TFChestBlockEntity tfChestBlock ? new InvWrapper(tfChestBlock) : null;
+		event.registerBlock(
+				Capabilities.ItemHandler.BLOCK,
+				itemHandlerProvider,
+				TFBlocks.TWILIGHT_OAK_CHEST.get(),
+				TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST.get(),
+				TFBlocks.CANOPY_CHEST.get(),
+				TFBlocks.CANOPY_TRAPPED_CHEST.get(),
+				TFBlocks.MANGROVE_CHEST.get(),
+				TFBlocks.MANGROVE_TRAPPED_CHEST.get(),
+				TFBlocks.DARK_CHEST.get(),
+				TFBlocks.DARK_TRAPPED_CHEST.get(),
+				TFBlocks.TIME_CHEST.get(),
+				TFBlocks.TIME_TRAPPED_CHEST.get(),
+				TFBlocks.TRANSFORMATION_CHEST.get(),
+				TFBlocks.TRANSFORMATION_TRAPPED_CHEST.get(),
+				TFBlocks.MINING_CHEST.get(),
+				TFBlocks.MINING_TRAPPED_CHEST.get(),
+				TFBlocks.SORTING_CHEST.get(),
+				TFBlocks.SORTING_TRAPPED_CHEST.get()
+		);
 	}
 
 	public void createNewRegistries(NewRegistryEvent event) {

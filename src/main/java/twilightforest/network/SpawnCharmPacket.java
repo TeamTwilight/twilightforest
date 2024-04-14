@@ -15,7 +15,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
-import twilightforest.TFConfig;
+import twilightforest.config.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.CharmEffect;
 import twilightforest.init.TFEntities;
@@ -49,7 +49,7 @@ public record SpawnCharmPacket(ItemStack charm, ResourceKey<SoundEvent> event) i
 					Player player = ctx.player().orElseThrow();
 					ClientLevel level = (ClientLevel) ctx.level().orElse(Minecraft.getInstance().level);
 					Entity camera = Minecraft.getInstance().getCameraEntity();
-					if (TFConfig.CLIENT_CONFIG.spawnCharmAnimationAsTotem.get()) {
+					if (TFConfig.spawnCharmAnimationAsTotem) {
 						Minecraft.getInstance().gameRenderer.displayItemActivation(packet.charm());
 						//prefer the camera pos over the player as the player position isnt quite synced to the client yet
 						Minecraft.getInstance().particleEngine.createTrackingEmitter(camera != null ? camera : player, new ItemParticleOption(ParticleTypes.ITEM, packet.charm()), 20);

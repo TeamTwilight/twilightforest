@@ -6,7 +6,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.fml.ModList;
-import twilightforest.TFConfig;
+import twilightforest.config.TFConfig;
 import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFSounds;
@@ -45,6 +45,6 @@ public class MovingCicadaSoundInstance extends AbstractTickableSoundInstance {
 
 	@Override
 	public boolean canPlaySound() {
-		return !TFConfig.CLIENT_CONFIG.silentCicadas.get() && !TFConfig.CLIENT_CONFIG.silentCicadasOnHead.get();
+		return !TFConfig.silentCicadas && !TFConfig.silentCicadasOnHead;
 	}
 }

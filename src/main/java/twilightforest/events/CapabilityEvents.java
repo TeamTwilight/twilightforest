@@ -13,7 +13,7 @@ import net.neoforged.neoforge.event.entity.living.LivingAttackEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
-import twilightforest.TFConfig;
+import twilightforest.config.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFPortalBlock;
 import twilightforest.init.TFDataAttachments;
@@ -60,7 +60,7 @@ public class CapabilityEvents {
 	public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
 		if (!(event.getEntity() instanceof ServerPlayer serverPlayer)) return;
 
-		if (TFConfig.COMMON_CONFIG.DIMENSION.newPlayersSpawnInTF.get() && serverPlayer.getRespawnPosition() == null) {
+		if (TFConfig.newPlayersSpawnInTF && serverPlayer.getRespawnPosition() == null) {
 			CompoundTag tagCompound = serverPlayer.getPersistentData();
 			CompoundTag playerData = tagCompound.getCompound(Player.PERSISTED_NBT_TAG);
 			playerData.putBoolean(NBT_TAG_TWILIGHT, false); // set to false so that the method works
@@ -106,12 +106,12 @@ public class CapabilityEvents {
 		CompoundTag playerData = tagCompound.getCompound(Player.PERSISTED_NBT_TAG);
 
 		// getBoolean returns false, if false or didn't exist
-		boolean shouldBanishPlayer = TFConfig.COMMON_CONFIG.DIMENSION.newPlayersSpawnInTF.get() && !playerData.getBoolean(NBT_TAG_TWILIGHT);
+		boolean shouldBanishPlayer = TFConfig.newPlayersSpawnInTF && !playerData.getBoolean(NBT_TAG_TWILIGHT);
 
 		playerData.putBoolean(NBT_TAG_TWILIGHT, true); // set true once player has spawned either way
 		tagCompound.put(Player.PERSISTED_NBT_TAG, playerData); // commit
 
 		if (shouldBanishPlayer)
-			TFPortalBlock.attemptSendEntity(player, true, TFConfig.COMMON_CONFIG.DIMENSION.portalForNewPlayerSpawn.get()); // See ya hate to be ya
+			TFPortalBlock.attemptSendEntity(player, true, TFConfig.portalForNewPlayerSpawn); // See ya hate to be ya
 	}
 }

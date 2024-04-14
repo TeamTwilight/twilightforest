@@ -33,7 +33,7 @@ import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.registries.DeferredHolder;
-import twilightforest.TFConfig;
+import twilightforest.config.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
 import twilightforest.block.entity.*;
@@ -126,7 +126,7 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 					if (trophyBlock.getVariant() == BossVariant.HYDRA || trophyBlock.getVariant() == BossVariant.QUEST_RAM)
 						ms.scale(0.9F, 0.9F, 0.9F);
 					ms.mulPose(Axis.XP.rotationDegrees(30));
-					ms.mulPose(Axis.YN.rotationDegrees(TFConfig.CLIENT_CONFIG.rotateTrophyHeadsGui.get() && !Minecraft.getInstance().isPaused() ? TFClientEvents.rotationTicker : -45));
+					ms.mulPose(Axis.YN.rotationDegrees(TFConfig.rotateTrophyHeadsGui && !Minecraft.getInstance().isPaused() ? TFClientEvents.rotationTicker : -45));
 					ms.translate(-0.5F, -0.5F, -0.5F);
 					ms.translate(0.0F, 0.25F, 0.0F);
 					if (trophyBlock.getVariant() == BossVariant.UR_GHAST) ms.translate(0.0F, 0.5F, 0.0F);

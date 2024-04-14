@@ -13,7 +13,7 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.network.PacketDistributor;
-import twilightforest.TFConfig;
+import twilightforest.config.TFConfig;
 import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.init.TFParticleType;
 import twilightforest.network.ParticlePacket;
@@ -29,7 +29,7 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 
 	@Override
 	public boolean doesCoreFunction() {
-		return !TFConfig.Common.MagicTrees.disableSortingCore;
+		return !TFConfig.disableSortingCore;
 	}
 
 	@Override
@@ -37,7 +37,7 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 		Map<List<IItemHandler>, Vec3> inputMap = new HashMap<>();
 		Map<IItemHandler, Vec3> outputMap = new HashMap<>();
 
-		for (BlockPos blockPos : WorldUtil.getAllAround(pos, TFConfig.Common.MagicTrees.sortingCoreRange)) { // Get every itemHandler from every block in the area
+		for (BlockPos blockPos : WorldUtil.getAllAround(pos, TFConfig.sortingCoreRange)) { // Get every itemHandler from every block in the area
 			if (!blockPos.equals(pos)) {
 				BlockEntity blockEntity = level.getBlockEntity(blockPos);
 				if (blockEntity != null) {

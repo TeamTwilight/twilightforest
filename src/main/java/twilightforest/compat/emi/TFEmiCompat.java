@@ -14,7 +14,7 @@ import dev.emi.emi.recipe.special.EmiGrindstoneDisenchantingRecipe;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.block.Block;
-import twilightforest.TFConfig;
+import twilightforest.config.TFConfig;
 import twilightforest.compat.RecipeViewerConstants;
 import twilightforest.compat.emi.recipes.*;
 import twilightforest.init.TFBlocks;
@@ -51,7 +51,7 @@ public class TFEmiCompat implements EmiPlugin {
 		registry.addWorkstation(MOONWORM_QUEEN, EmiStack.of(TFItems.MOONWORM_QUEEN));
 
 		RecipeManager manager = Objects.requireNonNull(Minecraft.getInstance().level).getRecipeManager();
-		if (!TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableEntireTable.get()) {
+		if (!TFConfig.disableEntireTable) {
 			List<RecipeHolder<? extends CraftingRecipe>> recipes = RecipeViewerConstants.getAllUncraftingRecipes(manager);
 			recipes.forEach(recipe -> registry.addRecipe(new EmiUncraftingRecipe<>(recipe)));
 		}

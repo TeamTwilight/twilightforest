@@ -2,7 +2,7 @@ package twilightforest.item.recipe;
 
 import com.mojang.serialization.Codec;
 import net.neoforged.neoforge.common.conditions.ICondition;
-import twilightforest.TFConfig;
+import twilightforest.config.TFConfig;
 
 public class UncraftingTableCondition implements ICondition {
 
@@ -16,7 +16,7 @@ public class UncraftingTableCondition implements ICondition {
 
 	@Override
 	public boolean test(IContext context) {
-		return !TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableEntireTable.get();
+		return !TFConfig.disableEntireTable;
 	}
 
 	@Override

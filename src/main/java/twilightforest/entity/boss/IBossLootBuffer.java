@@ -12,12 +12,11 @@ import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.TFConfig;
+import twilightforest.config.TFConfig;
 import twilightforest.init.TFSounds;
 import twilightforest.loot.TFLootTables;
 
@@ -46,7 +45,7 @@ public interface IBossLootBuffer {
 	}
 
 	static <T extends LivingEntity & IBossLootBuffer> void saveDropsIntoBoss(T boss, LootParams params, ServerLevel serverLevel) {
-		if (TFConfig.COMMON_CONFIG.bossDropChests.get()) {
+		if (TFConfig.bossDropChests) {
 			LootTable table = serverLevel.getServer().getLootData().getLootTable(boss.getLootTable());
 			ObjectArrayList<ItemStack> stacks = table.getRandomItems(params);
 			boss.fill(boss, params, table);
@@ -64,7 +63,7 @@ public interface IBossLootBuffer {
 	}
 
 	static <T extends LivingEntity & IBossLootBuffer> void depositDropsIntoChest(T boss, BlockState chest, BlockPos pos, ServerLevel serverLevel) {
-		if (TFConfig.COMMON_CONFIG.bossDropChests.get() && (serverLevel.setBlock(pos, chest, TFLootTables.DEFAULT_PLACE_FLAG) || serverLevel.getBlockState(pos).is(chest.getBlock())) && serverLevel.getBlockEntity(pos) instanceof Container container) {
+		if (TFConfig.bossDropChests && (serverLevel.setBlock(pos, chest, TFLootTables.DEFAULT_PLACE_FLAG) || serverLevel.getBlockState(pos).is(chest.getBlock())) && serverLevel.getBlockEntity(pos) instanceof Container container) {
 			for (int i = 0; i < CONTAINER_SIZE && i < container.getContainerSize(); i++) {
 				container.setItem(i, boss.getItem(i));
 			}

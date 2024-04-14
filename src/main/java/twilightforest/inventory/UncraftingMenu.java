@@ -22,7 +22,7 @@ import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.crafting.IShapedRecipe;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TFConfig;
+import twilightforest.config.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.TFBlocks;
@@ -313,8 +313,8 @@ public class UncraftingMenu extends RecipeBookMenu<CraftingContainer> {
 						recipe.value().canCraftInDimensions(3, 3) &&
 						!recipe.value().getIngredients().isEmpty() &&
 						matches(inputStack, recipe.value().getResultItem(world.registryAccess())) &&
-						TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.reverseRecipeBlacklist.get() == TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingRecipes.get().contains(recipe.id().toString())) {
-					if (TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.flipUncraftingModIdList.get() == TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.blacklistedUncraftingModIds.get().contains(recipe.id().getNamespace())) {
+						TFConfig.reverseRecipeBlacklist == TFConfig.disableUncraftingRecipes.contains(recipe.id().toString())) {
+					if (TFConfig.flipUncraftingModIdList == TFConfig.blacklistedUncraftingModIds.contains(recipe.id().getNamespace())) {
 						recipes.add(recipe.value());
 					}
 				}
@@ -328,7 +328,7 @@ public class UncraftingMenu extends RecipeBookMenu<CraftingContainer> {
 	}
 
 	private static boolean isRecipeSupported(Recipe<?> recipe) {
-		return TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.allowShapelessUncrafting.get() ? recipe instanceof CraftingRecipe : recipe instanceof ShapedRecipe;
+		return TFConfig.allowShapelessUncrafting ? recipe instanceof CraftingRecipe : recipe instanceof ShapedRecipe;
 	}
 
 	private static boolean matches(ItemStack input, ItemStack output) {
@@ -408,8 +408,8 @@ public class UncraftingMenu extends RecipeBookMenu<CraftingContainer> {
 	 */
 	private int calculateUncraftingCost() {
 		// we don't want to display anything if there is anything in the assembly grid
-		if ((!TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingOnly.get() || this.storedGhostRecipe instanceof UncraftingRecipe) && this.assemblyMatrix.isEmpty()) {
-			return this.storedGhostRecipe instanceof UncraftingRecipe recipe ? recipe.cost() : (int) Math.round(countDamageableParts(this.uncraftingMatrix) * TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.uncraftingXpCostMultiplier.get());
+		if ((!TFConfig.disableUncraftingOnly || this.storedGhostRecipe instanceof UncraftingRecipe) && this.assemblyMatrix.isEmpty()) {
+			return this.storedGhostRecipe instanceof UncraftingRecipe recipe ? recipe.cost() : (int) Math.round(countDamageableParts(this.uncraftingMatrix) * TFConfig.uncraftingXpCostMultiplier);
 		}
 		return 0;
 	}
@@ -445,7 +445,7 @@ public class UncraftingMenu extends RecipeBookMenu<CraftingContainer> {
 		// minimum cost of 1 if we're even calling this part
 		cost = Math.max(1, cost);
 
-		return (int) Math.round(cost * TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.repairingXpCostMultiplier.get());
+		return (int) Math.round(cost * TFConfig.repairingXpCostMultiplier);
 	}
 
 	private static int countTotalEnchantmentCost(ItemStack stack) {
@@ -498,7 +498,7 @@ public class UncraftingMenu extends RecipeBookMenu<CraftingContainer> {
 		if (slotNum > 0 && this.getSlotContainer(slotNum) == this.uncraftingMatrix) {
 
 			// don't allow uncrafting normal recipes if the server option is turned off
-			if (TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingOnly.get() && !(this.storedGhostRecipe instanceof UncraftingRecipe)) {
+			if (TFConfig.disableUncraftingOnly && !(this.storedGhostRecipe instanceof UncraftingRecipe)) {
 				return;
 			}
 
@@ -632,7 +632,7 @@ public class UncraftingMenu extends RecipeBookMenu<CraftingContainer> {
 
 	@Override
 	public boolean stillValid(Player player) {
-		return !TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableEntireTable.get() && stillValid(this.positionData, player, TFBlocks.UNCRAFTING_TABLE.get());
+		return !TFConfig.disableEntireTable && stillValid(this.positionData, player, TFBlocks.UNCRAFTING_TABLE.get());
 	}
 
 	@Override

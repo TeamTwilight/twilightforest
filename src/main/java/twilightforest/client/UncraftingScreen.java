@@ -16,7 +16,7 @@ import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
-import twilightforest.TFConfig;
+import twilightforest.config.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.inventory.UncraftingMenu;
@@ -56,7 +56,7 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> im
 			this.menu.slotsChanged(this.menu.tinkerInput);
 		}));
 
-		if (!TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableIngredientSwitching.get()) {
+		if (!TFConfig.disableIngredientSwitching) {
 			this.addRenderableWidget(new CycleButtonMini(this.leftPos + 27, this.topPos + 56, true, button -> {
 				PacketDistributor.SERVER.noArg().send(new UncraftingGuiPacket(2));
 				this.menu.ingredientsInCycle++;
@@ -92,7 +92,7 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> im
 		boolean scrolled = super.mouseScrolled(x, y, vertScroll, horizScroll);
 
 		//ingredient buttons
-		if (!TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableIngredientSwitching.get()) {
+		if (!TFConfig.disableIngredientSwitching) {
 			if (x > this.leftPos + 27 && x < this.leftPos + 33 && y > this.topPos + 56 && y < this.topPos + 69) {
 				if (vertScroll > 0) {
 					PacketDistributor.SERVER.noArg().send(new UncraftingGuiPacket(2));
@@ -150,7 +150,7 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> im
 	@Override
 	protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {
 		graphics.drawString(this.font, this.title, 6, 6, 4210752, false);
-		if (TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingOnly.get()) {
+		if (TFConfig.disableUncraftingOnly) {
 			graphics.drawString(this.font, Component.translatable("container.twilightforest.uncrafting_table.uncrafting_disabled").withStyle(ChatFormatting.DARK_RED), 6, this.imageHeight - 96 + 2, 4210752, false);
 		} else {
 			graphics.drawString(this.font, I18n.get("container.inventory"), 7, this.imageHeight - 96 + 2, 4210752, false);

@@ -60,7 +60,7 @@ public class ChainBlockItem extends Item {
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 
-		if (getThrownUuid(stack) != null)
+		if (getThrownUuid(stack) != null || !level.getWorldBorder().isWithinBounds(player.blockPosition()))
 			return new InteractionResultHolder<>(InteractionResult.PASS, stack);
 
 		player.playSound(TFSounds.BLOCK_AND_CHAIN_FIRED.get(), 0.5F, 1.0F / (level.getRandom().nextFloat() * 0.4F + 1.2F));

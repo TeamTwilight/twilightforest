@@ -57,6 +57,7 @@ import twilightforest.block.CloudBlock;
 import twilightforest.block.WroughtIronFenceBlock;
 import twilightforest.client.FoliageColorHandler;
 import twilightforest.client.TFClientSetup;
+import twilightforest.config.TFConfig;
 import twilightforest.entity.TFPart;
 import twilightforest.events.ToolEvents;
 import twilightforest.init.TFBlocks;
@@ -329,9 +330,9 @@ public class ASMHooks {
 	 * [BEFORE ALOAD]
 	 */
 	public static boolean cloud(boolean isRaining, Level level, BlockPos pos) {
-		if (!isRaining && TFConfig.Common.cachedCloudBlockPrecipitationDistance > 0) {
+		if (!isRaining && TFConfig.commonCloudBlockPrecipitationDistance > 0) {
 			LevelChunk chunk = level.getChunkAt(pos);
-			for (int y = pos.getY(); y < pos.getY() + TFConfig.Common.cachedCloudBlockPrecipitationDistance; y++) {
+			for (int y = pos.getY(); y < pos.getY() + TFConfig.commonCloudBlockPrecipitationDistance; y++) {
 				BlockPos newPos = pos.atY(y);
 				BlockState state = chunk.getBlockState(newPos);
 				if (state.getBlock() instanceof CloudBlock cloudBlock && cloudBlock.getCurrentPrecipitation(newPos, level, level.getRainLevel(1.0F)).getLeft() == Biome.Precipitation.RAIN) {

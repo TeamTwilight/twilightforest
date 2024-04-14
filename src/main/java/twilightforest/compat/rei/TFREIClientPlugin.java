@@ -8,8 +8,6 @@ import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
 import me.shedaniel.rei.api.client.registry.category.CategoryRegistry;
 import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
 import me.shedaniel.rei.api.client.registry.screen.ScreenRegistry;
-import me.shedaniel.rei.api.common.category.CategoryIdentifier;
-import me.shedaniel.rei.api.common.display.DisplaySerializerRegistry;
 import me.shedaniel.rei.api.common.entry.EntryStack;
 import me.shedaniel.rei.api.common.entry.type.EntryTypeRegistry;
 import me.shedaniel.rei.api.common.entry.type.VanillaEntryTypes;
@@ -17,7 +15,6 @@ import me.shedaniel.rei.api.common.util.EntryIngredients;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import me.shedaniel.rei.forge.REIPluginClient;
 import me.shedaniel.rei.plugin.common.BuiltinPlugin;
-import me.shedaniel.rei.plugin.common.displays.DefaultCompostingDisplay;
 import me.shedaniel.rei.plugin.common.displays.DefaultSmithingDisplay;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.RegistryAccess;
@@ -27,11 +24,10 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TFConfig;
+import twilightforest.config.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.UncraftingScreen;
 import twilightforest.compat.RecipeViewerConstants;
@@ -62,14 +58,14 @@ public class TFREIClientPlugin implements REIClientPlugin {
 
 	@Override
 	public void registerCategories(CategoryRegistry registry) {
-		if (!TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableEntireTable.get()) {
+		if (!TFConfig.disableEntireTable) {
 			registry.addWorkstations(BuiltinPlugin.CRAFTING, EntryStacks.of(TFBlocks.UNCRAFTING_TABLE));
 			registry.addWorkstations(TFREIServerPlugin.UNCRAFTING, EntryStacks.of(TFBlocks.UNCRAFTING_TABLE));
 		}
 		registry.addWorkstations(REICrumbleHornCategory.CRUMBLE_HORN, EntryStacks.of(TFItems.CRUMBLE_HORN));
 		registry.addWorkstations(REITransformationPowderCategory.TRANSFORMATION, EntryStacks.of(TFItems.TRANSFORMATION_POWDER));
 
-		if (!TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableEntireTable.get()) {
+		if (!TFConfig.disableEntireTable) {
 			registry.add(new REIUncraftingCategory());
 		}
 		registry.add(new REICrumbleHornCategory());
@@ -81,23 +77,23 @@ public class TFREIClientPlugin implements REIClientPlugin {
 	public void registerDisplays(DisplayRegistry registry) {
 		RegistryAccess registryAccess = Minecraft.getInstance().level.registryAccess();
 
-		if (!TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableEntireTable.get()) {
+		if (!TFConfig.disableEntireTable) {
 			registry.registerRecipeFiller(UncraftingRecipe.class, TFRecipes.UNCRAFTING_RECIPE.get(), REIUncraftingDisplay::ofUncrafting);
-		}
-		if (!TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingOnly.get()) {
-			registry.registerRecipeFiller(CraftingRecipe.class, RecipeType.CRAFTING, recipe -> {
-				if (recipe.value().getResultItem(registryAccess).isEmpty() ||
-						recipe.value().getResultItem(registryAccess).is(ItemTagGenerator.BANNED_UNCRAFTABLES) ||
-						TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingRecipes.get().contains(recipe.id().toString()) ||
-						TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.flipUncraftingModIdList.get() != TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.blacklistedUncraftingModIds.get().contains(recipe.id().getNamespace())) {
-					return null;
-				}
-				if (recipe.value() instanceof ShapelessRecipe && !TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.allowShapelessUncrafting.get()) {
-					return null;
-				}
+			if (!TFConfig.disableUncraftingOnly) {
+				registry.registerRecipeFiller(CraftingRecipe.class, RecipeType.CRAFTING, recipe -> {
+					if (recipe.value().getResultItem(registryAccess).isEmpty() ||
+							recipe.value().getResultItem(registryAccess).is(ItemTagGenerator.BANNED_UNCRAFTABLES) ||
+							TFConfig.disableUncraftingRecipes.contains(recipe.id().toString()) ||
+							TFConfig.flipUncraftingModIdList != TFConfig.blacklistedUncraftingModIds.contains(recipe.id().getNamespace())) {
+						return null;
+					}
+					if (recipe.value() instanceof ShapelessRecipe && !TFConfig.allowShapelessUncrafting) {
+						return null;
+					}
 
-				return REIUncraftingDisplay.of(recipe);
-			});
+					return REIUncraftingDisplay.of(recipe);
+				});
+			}
 		}
 		RecipeViewerConstants.getCrumbleHornRecipes().forEach(info ->
 				registry.add(new REICrumbleHornDisplay(
@@ -114,7 +110,7 @@ public class TFREIClientPlugin implements REIClientPlugin {
 
 	@Override
 	public void registerScreens(ScreenRegistry registry) {
-		if (!TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableEntireTable.get()) {
+		if (!TFConfig.disableEntireTable) {
 			registry.registerClickArea(screen -> new Rectangle(34, 33, 27, 20), UncraftingScreen.class, TFREIServerPlugin.UNCRAFTING);
 			registry.registerClickArea(screen -> new Rectangle(115, 33, 27, 20), UncraftingScreen.class, BuiltinPlugin.CRAFTING);
 		}

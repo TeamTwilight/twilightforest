@@ -136,7 +136,7 @@ dependencies {
 
 tasks.named('jar', Jar).configure {
     manifest {
-        archiveClassifier = ''
+        archiveClassifier = 'universal'
         attributes([
                 'Specification-Title'     : mod_id,
                 'Specification-Vendor'    : "TeamTwilight",

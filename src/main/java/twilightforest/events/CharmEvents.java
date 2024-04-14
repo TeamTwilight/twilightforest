@@ -28,14 +28,12 @@ import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
-import org.jetbrains.annotations.Nullable;
-import twilightforest.TFConfig;
+import twilightforest.config.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.KeepsakeCasketBlock;
 import twilightforest.block.entity.KeepsakeCasketBlockEntity;
 import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.data.tags.ItemTagGenerator;
-import twilightforest.entity.CharmEffect;
 import twilightforest.enums.BlockLoggingEnum;
 import twilightforest.init.*;
 import twilightforest.network.SpawnCharmPacket;
@@ -208,7 +206,7 @@ public class CharmEvents {
 				BlockEntity te = level.getBlockEntity(immutablePos);
 
 				if (te instanceof KeepsakeCasketBlockEntity casket) {
-					if (TFConfig.COMMON_CONFIG.casketUUIDLocking.get()) {
+					if (TFConfig.casketUUIDLocking) {
 						//make it so only the player who died can open the chest if our config allows us
 						casket.playeruuid = player.getGameProfile().getId();
 					} else {

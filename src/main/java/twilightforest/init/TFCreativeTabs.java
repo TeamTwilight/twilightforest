@@ -19,7 +19,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import twilightforest.TFConfig;
+import twilightforest.config.TFConfig;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.MagicPainting;
@@ -589,7 +589,7 @@ public class TFCreativeTabs {
 
 	private static void generateGearWithEnchants(CreativeModeTab.Output output, ItemLike item, EnchantmentInstance... instances) {
 		ItemStack stack = new ItemStack(item);
-		if (TFConfig.COMMON_CONFIG.defaultItemEnchants.get()) {
+		if (TFConfig.defaultItemEnchants) {
 			for (EnchantmentInstance enchant : instances) {
 				stack.enchant(enchant.enchantment, enchant.level);
 			}

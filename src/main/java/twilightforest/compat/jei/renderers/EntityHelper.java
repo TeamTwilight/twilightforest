@@ -7,44 +7,44 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.compat.jei.FakeEntityType;
 import twilightforest.compat.jei.JEICompat;
 
 import java.util.Objects;
 
-@SuppressWarnings("rawtypes")
-public class EntityHelper implements IIngredientHelper<EntityType> {
+public class EntityHelper implements IIngredientHelper<FakeEntityType> {
 
 	@Override
-	public IIngredientType<EntityType> getIngredientType() {
+	public IIngredientType<FakeEntityType> getIngredientType() {
 		return JEICompat.ENTITY_TYPE;
 	}
 
 	@Override
-	public String getDisplayName(EntityType type) {
-		return type.getDescription().getString();
+	public String getDisplayName(FakeEntityType type) {
+		return type.type().getDescription().getString();
 	}
 
 	@Override
-	public String getUniqueId(EntityType type, UidContext context) {
-		return Objects.requireNonNull(BuiltInRegistries.ENTITY_TYPE.getKey(type)).toString();
+	public String getUniqueId(FakeEntityType type, UidContext context) {
+		return Objects.requireNonNull(BuiltInRegistries.ENTITY_TYPE.getKey(type.type())).toString();
 	}
 
 	@Override
-	public ResourceLocation getResourceLocation(EntityType type) {
-		return Objects.requireNonNull(BuiltInRegistries.ENTITY_TYPE.getKey(type));
+	public ResourceLocation getResourceLocation(FakeEntityType type) {
+		return Objects.requireNonNull(BuiltInRegistries.ENTITY_TYPE.getKey(type.type()));
 	}
 
 	@Override
-	public EntityType copyIngredient(EntityType type) {
+	public FakeEntityType copyIngredient(FakeEntityType type) {
 		return type;
 	}
 
 	@Override
-	public String getErrorInfo(@Nullable EntityType type) {
+	public String getErrorInfo(@Nullable FakeEntityType type) {
 		if (type == null) {
 			return "null";
 		}
-		ResourceLocation name = BuiltInRegistries.ENTITY_TYPE.getKey(type);
+		ResourceLocation name = BuiltInRegistries.ENTITY_TYPE.getKey(type.type());
 		if (name == null) {
 			return "unnamed sadface :(";
 		}

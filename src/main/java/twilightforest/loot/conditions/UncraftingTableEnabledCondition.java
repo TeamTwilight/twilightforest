@@ -4,7 +4,7 @@ import com.mojang.serialization.Codec;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
-import twilightforest.TFConfig;
+import twilightforest.config.TFConfig;
 import twilightforest.init.TFLoot;
 
 public class UncraftingTableEnabledCondition implements LootItemCondition {
@@ -20,7 +20,7 @@ public class UncraftingTableEnabledCondition implements LootItemCondition {
 
 	@Override
 	public boolean test(LootContext context) {
-		return !TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableEntireTable.get();
+		return !TFConfig.disableEntireTable;
 	}
 
 	public static LootItemCondition.Builder uncraftingTableEnabled() {

@@ -24,7 +24,7 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import twilightforest.TFConfig;
+import twilightforest.config.TFConfig;
 import twilightforest.entity.monster.GiantMiner;
 
 public class TFGiantRenderer<T extends GiantMiner> extends MobRenderer<T, PlayerModel<T>> {

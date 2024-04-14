@@ -6,12 +6,12 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.TooltipFlag;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.compat.jei.FakeEntityType;
 import twilightforest.util.EntityRenderingUtil;
 
 import java.util.List;
 
-@SuppressWarnings("rawtypes")
-public class EntityRenderer implements IIngredientRenderer<EntityType> {
+public class EntityRenderer implements IIngredientRenderer<FakeEntityType> {
 
 	private final int size;
 
@@ -30,14 +30,14 @@ public class EntityRenderer implements IIngredientRenderer<EntityType> {
 	}
 
 	@Override
-	public void render(GuiGraphics graphics, @Nullable EntityType type) {
+	public void render(GuiGraphics graphics, @Nullable FakeEntityType type) {
 		if (type != null) {
-			EntityRenderingUtil.renderEntity(graphics.pose(), type, this.size);
+			EntityRenderingUtil.renderEntity(graphics.pose(), type.type(), this.size);
 		}
 	}
 
 	@Override
-	public List<Component> getTooltip(EntityType type, TooltipFlag flag) {
-		return EntityRenderingUtil.getMobTooltip(type);
+	public List<Component> getTooltip(FakeEntityType type, TooltipFlag flag) {
+		return EntityRenderingUtil.getMobTooltip(type.type());
 	}
 }

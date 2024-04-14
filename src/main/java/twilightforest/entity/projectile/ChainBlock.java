@@ -103,8 +103,9 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 	@Override
 	protected void onHitEntity(EntityHitResult result) {
 		super.onHitEntity(result);
-		// only hit living things
-		if (!this.level().isClientSide() && result.getEntity() != this.getOwner()) {
+		// only hit living things & inside the world border
+		Level level = this.level();
+		if (!level.isClientSide() && result.getEntity() != this.getOwner() && level.getWorldBorder().isWithinBounds(result.getEntity().blockPosition())) {
 			float damage = 0.0F;
 			if (result.getEntity() instanceof LivingEntity living) {
 				damage = 10 + EnchantmentHelper.getDamageBonus(this.stack, living.getMobType());
@@ -119,7 +120,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 			}
 
 			if (damage > 0.0F) {
-				if (result.getEntity().hurt(TFDamageTypes.getIndirectEntityDamageSource(this.level(), TFDamageTypes.SPIKED, this, this.getOwner()), damage)) {
+				if (result.getEntity().hurt(TFDamageTypes.getIndirectEntityDamageSource(level, TFDamageTypes.SPIKED, this, this.getOwner()), damage)) {
 					this.playSound(TFSounds.BLOCK_AND_CHAIN_HIT.get(), 1.0f, this.random.nextFloat());
 					// age when we hit a monster so that we go back to the player faster
 					this.hitEntity = true;
@@ -209,8 +210,10 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 	}
 
 	private boolean canBreakBlockAt(BlockPos pos, BlockState state, boolean restrictedPlaceMode) {
-		return this.stack.isCorrectToolForDrops(state)
-				&& (!restrictedPlaceMode || this.stack.hasAdventureModeBreakTagForBlock(this.level().registryAccess().registryOrThrow(Registries.BLOCK), new BlockInWorld(this.level(), pos, false)));
+		Level level = this.level();
+
+		return level.getWorldBorder().isWithinBounds(pos) && this.stack.isCorrectToolForDrops(state)
+				&& (!restrictedPlaceMode || this.stack.hasAdventureModeBreakTagForBlock(level.registryAccess().registryOrThrow(Registries.BLOCK), new BlockInWorld(level, pos, false)));
 	}
 
 	private void affectBlocksInAABB(AABB box) {

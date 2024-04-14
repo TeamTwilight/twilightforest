@@ -75,7 +75,7 @@ public class TransformationPowderCategory implements IRecipeCategory<Transformat
 				.setCustomRenderer(JEICompat.ENTITY_TYPE, this.entityRenderer)
 				.addIngredient(JEICompat.ENTITY_TYPE, recipe.input());
 
-		SpawnEggItem inputEgg = DeferredSpawnEggItem.byId(recipe.input());
+		SpawnEggItem inputEgg = DeferredSpawnEggItem.byId(recipe.input().type());
 		if (inputEgg != null) {
 			//make it so hovering over the entity shows its name
 			builder.addInvisibleIngredients(RecipeIngredientRole.INPUT).addItemStack(new ItemStack(inputEgg));
@@ -84,7 +84,7 @@ public class TransformationPowderCategory implements IRecipeCategory<Transformat
 				.setCustomRenderer(JEICompat.ENTITY_TYPE, this.entityRenderer)
 				.addIngredient(JEICompat.ENTITY_TYPE, recipe.output());
 
-		SpawnEggItem outputEgg = DeferredSpawnEggItem.byId(recipe.output());
+		SpawnEggItem outputEgg = DeferredSpawnEggItem.byId(recipe.output().type());
 		if (outputEgg != null) {
 			//make it so hovering over the entity shows its name
 			builder.addInvisibleIngredients(RecipeIngredientRole.OUTPUT).addItemStack(new ItemStack(outputEgg));

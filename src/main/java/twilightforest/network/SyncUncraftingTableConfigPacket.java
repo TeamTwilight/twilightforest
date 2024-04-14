@@ -4,7 +4,9 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
-import twilightforest.TFConfig;
+import twilightforest.config.ConfigSetup;
+import twilightforest.config.TFCommonConfig;
+import twilightforest.config.TFConfig;
 import twilightforest.TwilightForestMod;
 
 import java.util.List;
@@ -45,16 +47,16 @@ public record SyncUncraftingTableConfigPacket(
 
 	public static void handle(SyncUncraftingTableConfigPacket message, PlayPayloadContext ctx) {
 		ctx.workHandler().execute(() -> {
-			TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.uncraftingXpCostMultiplier.set(message.uncraftingMultiplier());
-			TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.repairingXpCostMultiplier.set(message.repairingMultiplier());
-			TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.allowShapelessUncrafting.set(message.allowShapeless());
-			TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableIngredientSwitching.set(message.disableIngredientSwitching());
-			TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingOnly.set(message.disabledUncrafting());
-			TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableEntireTable.set(message.disabledTable());
-			TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingRecipes.set(message.disabledRecipes());
-			TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.reverseRecipeBlacklist.set(message.flipRecipeList());
-			TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.blacklistedUncraftingModIds.set(message.disabledModids());
-			TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.flipUncraftingModIdList.set(message.flipModidList());
+			TFConfig.uncraftingXpCostMultiplier = message.uncraftingMultiplier();
+			TFConfig.repairingXpCostMultiplier = message.repairingMultiplier();
+			TFConfig.allowShapelessUncrafting = message.allowShapeless();
+			TFConfig.disableIngredientSwitching = message.disableIngredientSwitching();
+			TFConfig.disableUncraftingOnly = message.disabledUncrafting();
+			TFConfig.disableEntireTable = message.disabledTable();
+			TFConfig.disableUncraftingRecipes = message.disabledRecipes();
+			TFConfig.reverseRecipeBlacklist = message.flipRecipeList();
+			TFConfig.blacklistedUncraftingModIds = message.disabledModids();
+			TFConfig.flipUncraftingModIdList = message.flipModidList();
 		});
 	}
 }

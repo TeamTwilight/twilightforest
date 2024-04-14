@@ -25,7 +25,7 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.extensions.common.IClientBlockExtensions;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.apache.commons.lang3.tuple.Pair;
-import twilightforest.TFConfig;
+import twilightforest.config.TFConfig;
 import twilightforest.init.TFParticleType;
 import twilightforest.network.ParticlePacket;
 
@@ -82,14 +82,14 @@ public class CloudBlock extends Block {
     @Override
     @SuppressWarnings("deprecation")
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-        if (!level.isAreaLoaded(pos, 1) || TFConfig.Common.cachedCloudBlockPrecipitationDistance == 0) return;
+        if (!level.isAreaLoaded(pos, 1) || TFConfig.commonCloudBlockPrecipitationDistance == 0) return;
 
         Pair<Biome.Precipitation, Float> pair = this.getCurrentPrecipitation(pos, level, level.getRainLevel(1.0F));
         if (pair.getRight() > 0.0F) {
             Biome.Precipitation precipitation = pair.getLeft();
             if (precipitation == Biome.Precipitation.RAIN || precipitation == Biome.Precipitation.SNOW) {
                 int highestRainyBlock = pos.getY() - 1;
-                for (int y = pos.getY() - 1; y > pos.getY() - TFConfig.Common.cachedCloudBlockPrecipitationDistance ; y--) {
+                for (int y = pos.getY() - 1; y > pos.getY() - TFConfig.commonCloudBlockPrecipitationDistance; y--) {
                     if (!Heightmap.Types.MOTION_BLOCKING.isOpaque().test(level.getBlockState(pos.atY(y)))) highestRainyBlock = y - 1;
                     else break;
                 }

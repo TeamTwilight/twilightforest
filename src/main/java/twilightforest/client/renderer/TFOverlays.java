@@ -25,7 +25,7 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.event.RegisterGuiOverlaysEvent;
 import net.neoforged.neoforge.client.gui.overlay.ExtendedGui;
 import net.neoforged.neoforge.client.gui.overlay.VanillaGuiOverlay;
-import twilightforest.TFConfig;
+import twilightforest.config.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.passive.QuestRam;
 import twilightforest.events.HostileMountEvents;
@@ -49,7 +49,7 @@ public class TFOverlays {
 		event.registerAbove(VanillaGuiOverlay.CROSSHAIR.id(), TwilightForestMod.prefix("quest_ram_indicator"), (gui, graphics, partialTick, screenWidth, screenHeight) -> {
 			Minecraft minecraft = Minecraft.getInstance();
 			LocalPlayer player = minecraft.player;
-			if (player != null && !minecraft.options.hideGui && TFConfig.CLIENT_CONFIG.showQuestRamCrosshairIndicator.get()) {
+			if (player != null && !minecraft.options.hideGui && TFConfig.showQuestRamCrosshairIndicator) {
 				RenderSystem.enableBlend();
 				renderIndicator(minecraft, graphics, gui, player, screenWidth, screenHeight);
 				RenderSystem.disableBlend();
@@ -73,7 +73,7 @@ public class TFOverlays {
 		event.registerAbove(VanillaGuiOverlay.ARMOR_LEVEL.id(), TwilightForestMod.prefix("fortification_shield_count"), (gui, graphics, partialTick, screenWidth, screenHeight) -> {
 			Minecraft minecraft = Minecraft.getInstance();
 			LocalPlayer player = minecraft.player;
-			if (player != null && !minecraft.options.hideGui && gui.shouldDrawSurvivalElements() && player.hasData(TFDataAttachments.FORTIFICATION_SHIELDS) && player.getData(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft() > 0 && TFConfig.CLIENT_CONFIG.showFortificationShieldIndicator.get()) {
+			if (player != null && !minecraft.options.hideGui && gui.shouldDrawSurvivalElements() && player.hasData(TFDataAttachments.FORTIFICATION_SHIELDS) && player.getData(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft() > 0 && TFConfig.showFortificationShieldIndicator) {
 				renderShieldCount(graphics, gui, player, screenWidth, screenHeight, player.getData(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft());
 			}
 		});
@@ -154,7 +154,7 @@ public class TFOverlays {
 				.sorted(Comparator.comparing(Pair::getSecond)) // Sort Pairs by second element (quantity)
 				.toList(); // Make sorted immutable list
 
-		if (TFConfig.CLIENT_CONFIG.prettifyOreMeterGui.get()) {
+		if (TFConfig.prettifyOreMeterGui) {
 			ComponentColumn padding = ComponentColumn.padding(1);
 			List<Integer> counts = scanData.stream().map(Pair::getSecond).toList();
 

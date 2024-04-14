@@ -25,7 +25,7 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.util.ITeleporter;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TFConfig;
+import twilightforest.config.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFPortalBlock;
 import twilightforest.data.tags.BlockTagGenerator;
@@ -490,7 +490,7 @@ public class TFTeleporter implements ITeleporter {
 		world.setBlockAndUpdate(pos.east().south().below(), dirt);
 
 		// portal in it
-		BlockState portal = TFBlocks.TWILIGHT_PORTAL.get().defaultBlockState().setValue(TFPortalBlock.DISALLOW_RETURN, (this.locked || !TFConfig.COMMON_CONFIG.shouldReturnPortalBeUsable.get()));
+		BlockState portal = TFBlocks.TWILIGHT_PORTAL.get().defaultBlockState().setValue(TFPortalBlock.DISALLOW_RETURN, (this.locked || !TFConfig.shouldReturnPortalBeUsable));
 
 		world.setBlock(pos, portal, 2);
 		world.setBlock(pos.east(), portal, 2);
@@ -507,21 +507,21 @@ public class TFTeleporter implements ITeleporter {
 		}
 
 		// finally, "nature decorations"!
-		world.setBlock(pos.west().north().above(), randNatureBlock(world.random), 2);
-		world.setBlock(pos.north().above(), randNatureBlock(world.random), 2);
-		world.setBlock(pos.east().north().above(), randNatureBlock(world.random), 2);
-		world.setBlock(pos.east(2).north().above(), randNatureBlock(world.random), 2);
+		world.setBlock(pos.west().north().above(), randNatureBlock(world.getRandom()), 2);
+		world.setBlock(pos.north().above(), randNatureBlock(world.getRandom()), 2);
+		world.setBlock(pos.east().north().above(), randNatureBlock(world.getRandom()), 2);
+		world.setBlock(pos.east(2).north().above(), randNatureBlock(world.getRandom()), 2);
 
-		world.setBlock(pos.west().above(), randNatureBlock(world.random), 2);
-		world.setBlock(pos.east(2).above(), randNatureBlock(world.random), 2);
+		world.setBlock(pos.west().above(), randNatureBlock(world.getRandom()), 2);
+		world.setBlock(pos.east(2).above(), randNatureBlock(world.getRandom()), 2);
 
-		world.setBlock(pos.west().south().above(), randNatureBlock(world.random), 2);
-		world.setBlock(pos.east(2).south().above(), randNatureBlock(world.random), 2);
+		world.setBlock(pos.west().south().above(), randNatureBlock(world.getRandom()), 2);
+		world.setBlock(pos.east(2).south().above(), randNatureBlock(world.getRandom()), 2);
 
-		world.setBlock(pos.west().south(2).above(), randNatureBlock(world.random), 2);
-		world.setBlock(pos.south(2).above(), randNatureBlock(world.random), 2);
-		world.setBlock(pos.east().south(2).above(), randNatureBlock(world.random), 2);
-		world.setBlock(pos.east(2).south(2).above(), randNatureBlock(world.random), 2);
+		world.setBlock(pos.west().south(2).above(), randNatureBlock(world.getRandom()), 2);
+		world.setBlock(pos.south(2).above(), randNatureBlock(world.getRandom()), 2);
+		world.setBlock(pos.east().south(2).above(), randNatureBlock(world.getRandom()), 2);
+		world.setBlock(pos.east(2).south(2).above(), randNatureBlock(world.getRandom()), 2);
 
 		return pos;
 	}

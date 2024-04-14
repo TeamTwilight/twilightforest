@@ -4,7 +4,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import twilightforest.TFConfig;
+import twilightforest.config.TFConfig;
 
 public class UncraftingContainer implements Container {
 
@@ -81,7 +81,7 @@ public class UncraftingContainer implements Container {
 
 	@Override
 	public boolean stillValid(Player player) {
-		return !TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableEntireTable.get();
+		return !TFConfig.disableEntireTable;
 	}
 
 	@Override
