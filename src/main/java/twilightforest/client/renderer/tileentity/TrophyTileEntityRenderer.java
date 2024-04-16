@@ -108,7 +108,7 @@ public class TrophyTileEntityRenderer implements BlockEntityRenderer<TrophyBlock
 		BooleanSupplier jappa = JappaPackReloadListener.INSTANCE::isJappaPackLoaded;
 		matrixStackIn.pushPose();
 		if (directionIn == null || variant == BossVariant.UR_GHAST) {
-			matrixStackIn.translate(0.5D, 0.01D, 0.5D);
+			matrixStackIn.translate(0.5D, 0.0D, 0.5D);
 		} else {
 			matrixStackIn.translate(0.5F - directionIn.getStepX() * 0.249F, 0.25D, 0.5F - directionIn.getStepZ() * 0.249F);
 		}
