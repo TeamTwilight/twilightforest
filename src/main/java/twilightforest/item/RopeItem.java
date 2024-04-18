@@ -39,7 +39,8 @@ public class RopeItem extends BlockItem {
             return context;
         } else {
             Direction direction = this.getForward(context, blockstate, blockpos, level);
-            if (direction == Direction.UP) return null;
+            if (direction == null) return null;
+            if (direction == Direction.UP) direction = Direction.DOWN;
 
             int i = 0;
             BlockPos.MutableBlockPos mutableBlockPos = blockpos.mutable();
@@ -48,8 +49,8 @@ public class RopeItem extends BlockItem {
                 if (!level.isClientSide && !level.isInWorldBounds(mutableBlockPos)) {
                     Player player = context.getPlayer();
                     int j = level.getMaxBuildHeight();
-                    if (player instanceof ServerPlayer && mutableBlockPos.getY() >= j) {
-                        ((ServerPlayer)player).sendSystemMessage(Component.translatable("build.tooHigh", j - 1).withStyle(ChatFormatting.RED), true);
+                    if (player instanceof ServerPlayer serverPlayer && mutableBlockPos.getY() >= j) {
+                        serverPlayer.sendSystemMessage(Component.translatable("build.tooHigh", j - 1).withStyle(ChatFormatting.RED), true);
                     }
                     break;
                 }
@@ -58,9 +59,7 @@ public class RopeItem extends BlockItem {
                 if (!blockstate.is(this.getBlock())) {
                     if (blockstate.canBeReplaced(context)) return BlockPlaceContext.at(context, mutableBlockPos, direction);
                     break;
-                } else {
-                    if (!stateHasValue(blockstate, direction)) return BlockPlaceContext.at(context, mutableBlockPos, direction);
-                }
+                } else if (!stateHasValue(blockstate, direction)) return BlockPlaceContext.at(context, mutableBlockPos, direction);
 
                 mutableBlockPos.move(direction);
                 if (direction.getAxis().isHorizontal()) {
@@ -87,7 +86,6 @@ public class RopeItem extends BlockItem {
         BlockPos pos = context.getClickedPos();
         BlockState state = level.getBlockState(pos);
 
-
         if (state.is(this.getBlock())) {
             Direction direction = context.getClickedFace();
             if (direction.getAxis() == Direction.Axis.X && !state.getValue(RopeBlock.X)) {
@@ -102,7 +100,7 @@ public class RopeItem extends BlockItem {
         return super.getPlacementState(context);
     }
 
-    protected Direction getForward(BlockPlaceContext context, BlockState state, BlockPos pos, Level level) {
+    protected @Nullable Direction getForward(BlockPlaceContext context, BlockState state, BlockPos pos, Level level) {
         Direction clickedFace = context.getClickedFace();
         if (RopeBlock.canConnectTo(state, clickedFace, level, pos)) return clickedFace;
         Direction oppositeFace = context.getClickedFace().getOpposite();
@@ -127,6 +125,6 @@ public class RopeItem extends BlockItem {
                 }
             }
         }
-        return Direction.UP;
+        return null;
     }
 }

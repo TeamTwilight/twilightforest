@@ -1,5 +1,4 @@
 {
-  "frame": "twilightforest:magic_paintings/frame",
   "height": 32,
   "layers": [
     {
@@ -39,6 +38,10 @@
         "width": 58
       },
       "path": "crystal_plains"
+    },
+    {
+      "fullbright": false,
+      "path": "frame"
     }
   ],
   "width": 32

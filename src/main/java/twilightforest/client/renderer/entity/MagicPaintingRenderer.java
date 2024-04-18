@@ -129,39 +129,6 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting> {
             }
         }
 
-        TextureAtlasSprite layerTexture = MagicPaintingTextureManager.instance.getFrameSprite(variant);
-
-        for (int k = 0; k < widthAsBlock; ++k) {
-            for (int l = 0; l < heightAsBlock; ++l) {
-                int u = this.getFrameUV(k, widthAsBlock);
-                int v = this.getFrameUV(l, heightAsBlock);
-
-                float xMax = x + (float) ((k + 1) * 16);
-                float xMin = x + (float) (k * 16);
-                float yMax = y + (float) ((l + 1) * 16);
-                float yMin = y + (float) (l * 16);
-
-                float uO = layerTexture.getUOffset(u);
-                float vO = layerTexture.getVOffset(v);
-
-                if (direction == Direction.NORTH) posX = Mth.floor(painting.getX() + (double) ((xMax + xMin) / 2.0F / 16.0F));
-                if (direction == Direction.WEST) posZ = Mth.floor(painting.getZ() - (double) ((xMax + xMin) / 2.0F / 16.0F));
-                if (direction == Direction.SOUTH) posX = Mth.floor(painting.getX() - (double) ((xMax + xMin) / 2.0F / 16.0F));
-                if (direction == Direction.EAST) posZ = Mth.floor(painting.getZ() + (double) ((xMax + xMin) / 2.0F / 16.0F));
-
-                int light = LevelRenderer.getLightColor(painting.level(), new BlockPos(posX, Mth.floor(painting.getY() + (double) ((yMax + yMin) / 2.0F / 16.0F)), posZ));
-                float xEnd = layerTexture.getU((float) (4 - u) + uO);
-                float xStart = layerTexture.getU((float) (4 - (u + 1)) + uO);
-                float yEnd = layerTexture.getV((float) (4 - v) + vO);
-                float yStart = layerTexture.getV((float) (4 - (v + 1)) + vO);
-
-                this.vertex(matrix4f, matrix3f, vertex, xMax, yMin, -z, xStart, yEnd, 0, 0, -1, light, 1.0F);
-                this.vertex(matrix4f, matrix3f, vertex, xMin, yMin, -z, xEnd, yEnd, 0, 0, -1, light, 1.0F);
-                this.vertex(matrix4f, matrix3f, vertex, xMin, yMax, -z, xEnd, yStart, 0, 0, -1, light, 1.0F);
-                this.vertex(matrix4f, matrix3f, vertex, xMax, yMax, -z, xStart, yStart, 0, 0, -1, light, 1.0F);
-            }
-        }
-
         TextureAtlasSprite backSprite = MagicPaintingTextureManager.instance.getBackSprite();
         float u0 = backSprite.getU0();
         float u1 = backSprite.getU1();
@@ -225,9 +192,8 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting> {
     protected double getWidthOffset(@Nullable Parallax parallax, MagicPainting painting, double widthDiff) {
         if (parallax != null) switch (parallax.type()) {
             case VIEW_ANGLE -> {
-                float partialTick = Minecraft.getInstance().getPartialTick();
                 Vec3 camPos = Minecraft.getInstance().cameraEntity != null ?
-                        Minecraft.getInstance().cameraEntity.getEyePosition(partialTick) :
+                        Minecraft.getInstance().cameraEntity.getEyePosition(Minecraft.getInstance().getPartialTick()) :
                         Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
 
                 Vec3 paintPos = painting.position().relative(painting.getDirection().getOpposite(), 1.0D);
@@ -252,9 +218,8 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting> {
     protected double getHeightOffset(@Nullable Parallax parallax, MagicPainting painting, double heightDiff) {
         if (parallax != null) switch (parallax.type()) {
             case VIEW_ANGLE -> {
-                float partialTick = Minecraft.getInstance().getPartialTick();
                 Vec3 camPos = Minecraft.getInstance().cameraEntity != null ?
-                        Minecraft.getInstance().cameraEntity.getEyePosition(partialTick) :
+                        Minecraft.getInstance().cameraEntity.getEyePosition(Minecraft.getInstance().getPartialTick()) :
                         Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
 
                 Vec3 paintPos = painting.position().relative(painting.getDirection().getOpposite(), 1.0D);
@@ -279,72 +244,64 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting> {
         return 0.0D;
     }
 
-    protected static final float ONE_SECOND = 1.0F / 1200F;
+    protected static final float DAY_LENGTH = 24000.0F;
 
     protected float getAlpha(@Nullable OpacityModifier opacityModifier, MagicPainting painting) {
         float a = 1.0F;
-        if (opacityModifier != null) switch (opacityModifier.type()) {
-            case DISTANCE -> {
-                Vec3 camPos = Optional.ofNullable(Minecraft.getInstance().cameraEntity).map(Entity::getEyePosition).orElse(Minecraft.getInstance().gameRenderer.getMainCamera().getPosition());
-                a = (float) (opacityModifier.invert() ? opacityModifier.multiplier() - camPos.distanceTo(painting.position()) : camPos.distanceTo(painting.position()) - opacityModifier.multiplier());
-            }
-            case WEATHER -> {
-                float partialTick = Minecraft.getInstance().getPartialTick();
-                a = (painting.level().getRainLevel(partialTick) + painting.level().getThunderLevel(partialTick)) * 0.5F * Math.abs(opacityModifier.multiplier());
-                if (opacityModifier.invert()) a = 1.0F - a;
-            }
-            case LIGHTNING -> {
-                if (painting.level() instanceof ClientLevel clientLevel) {
-                    a = clientLevel.getSkyFlashTime() * opacityModifier.multiplier();
-                    if (opacityModifier.invert()) a = 1.0F - a;
+        if (opacityModifier != null) {
+            switch (opacityModifier.type()) {
+                case DISTANCE -> {
+                    Vec3 camPos = Optional.ofNullable(Minecraft.getInstance().cameraEntity).map(Entity::getEyePosition).orElse(Minecraft.getInstance().gameRenderer.getMainCamera().getPosition());
+                    a = fromTo(opacityModifier.from(), opacityModifier.to(), (float) camPos.distanceTo(painting.position()));
                 }
-            }
-            case DAY_TIME -> {
-                float dayTime = Math.abs(painting.level().getTimeOfDay(Minecraft.getInstance().getPartialTick()) - 0.5F) * 2.0F;
-                if (opacityModifier.invert()) dayTime = 1.0F - dayTime;
-                a = (float) Math.pow(dayTime, opacityModifier.multiplier());
-            }
-            case DAY_TIME_SHARP -> {
-                float dayTime = Math.abs(painting.level().getTimeOfDay(Minecraft.getInstance().getPartialTick()) - 0.5F) * 2.0F;
-                if (opacityModifier.invert()) dayTime = 1.0F - dayTime;
-                float threshold = 1.0F - opacityModifier.multiplier();
-
-                if (threshold > 1.0F - ONE_SECOND) threshold = 1.0F - ONE_SECOND;
-                else if (threshold < ONE_SECOND) threshold = ONE_SECOND;
-
-                if (dayTime < threshold) a = 0.0F;
-                else if (dayTime <= threshold + ONE_SECOND) a = (dayTime - threshold) / ONE_SECOND;
-            }
-            case SINE_TIME -> {
-                a = (float) (Math.sin((painting.tickCount + Minecraft.getInstance().getPartialTick()) * opacityModifier.multiplier())) * 0.5F + 0.5F;
-                if (opacityModifier.invert()) a = 1.0F - a;
-            }
-            case HEALTH -> {
-                if (Minecraft.getInstance().getCameraEntity() instanceof LivingEntity living) {
-                    a = (living.getHealth() / living.getMaxHealth()) * opacityModifier.multiplier();
+                case WEATHER -> a = painting.level().getRainLevel(Minecraft.getInstance().getPartialTick());
+                case STORM -> {
+                    float partialTick = Minecraft.getInstance().getPartialTick();
+                    a = (painting.level().getRainLevel(partialTick) + painting.level().getThunderLevel(partialTick)) * 0.5F;
                 }
-                if (opacityModifier.invert()) a = 1.0F - a;
-            }
-            case HUNGER -> {
-                if (Minecraft.getInstance().getCameraEntity() instanceof Player player) {
-                    FoodData food = player.getFoodData();
-                    a = ((float) food.getFoodLevel() / 20.0F) * opacityModifier.multiplier();
+                case LIGHTNING -> {
+                    if (painting.level() instanceof ClientLevel clientLevel) a = clientLevel.getSkyFlashTime();
                 }
-                if (opacityModifier.invert()) a = 1.0F - a;
-            }
-            case HOLDING_ITEM -> {
-                if (Minecraft.getInstance().getCameraEntity() instanceof LivingEntity living) {
-                    ItemStack key = opacityModifier.item();
-                    if (key != null) {
-                        if (!living.isHolding(stack -> ItemStack.isSameItemSameTags(stack, key) &&
-                                (opacityModifier.multiplier() <= 0.0F || Mth.equal(stack.getCount(), opacityModifier.multiplier()))))
-                            a = 0.0F;
-                        if (opacityModifier.invert()) a = 1.0F - a;
+                case DAY_TIME -> {
+                    float time = painting.level().getTimeOfDay(Minecraft.getInstance().getPartialTick()) * DAY_LENGTH;
+                    if (opacityModifier.from() < opacityModifier.to()) {
+                        a = 1.0F - Math.abs(((time - opacityModifier.from()) / (opacityModifier.to() - opacityModifier.from())) - 0.5F) * 2.0F;
+                    } else {
+                        if (time < opacityModifier.to()) time += DAY_LENGTH;
+                        a = 1.0F - Math.abs(((time - opacityModifier.from()) / (opacityModifier.to() + DAY_LENGTH - opacityModifier.from())) - 0.5F) * 2.0F;
+                    }
+                }
+                case SINE_TIME -> a = (float) (Math.sin((painting.tickCount + Minecraft.getInstance().getPartialTick()) * opacityModifier.multiplier())) * 0.5F + 0.5F;
+                case HEALTH -> {
+                    if (Minecraft.getInstance().getCameraEntity() instanceof LivingEntity living) {
+                        a = fromTo(opacityModifier.from(), opacityModifier.to(), living.getHealth());
+                    }
+                }
+                case HUNGER -> {
+                    if (Minecraft.getInstance().getCameraEntity() instanceof Player player) {
+                        FoodData food = player.getFoodData();
+                        a = fromTo(opacityModifier.from(), opacityModifier.to(), (float) food.getFoodLevel());
+                    }
+                }
+                case HOLDING_ITEM -> {
+                    if (Minecraft.getInstance().getCameraEntity() instanceof LivingEntity living) {
+                        ItemStack key = opacityModifier.item();
+                        if (key != null && !living.isHolding(stack -> ItemStack.isSameItemSameTags(stack, key))) a = 0.0F;
                     }
                 }
             }
+
+            a = Mth.clamp(a, 0.0F, 1.0F);
+            if (opacityModifier.type() != OpacityModifier.Type.SINE_TIME) a = (float) Math.pow(a, opacityModifier.multiplier());
+            if (opacityModifier.invert()) a = 1.0F - a;
+            a = a * (opacityModifier.max() - opacityModifier.min()) + opacityModifier.min();
         }
-        return Mth.clamp(a, 0.0F, 1.0F);
+        return a;
+    }
+
+    protected static float fromTo(float from, float to, float value) {
+        if (from < to) return (value - from) / (to - from);
+        else return (from - value) / (from - to);
     }
 
     protected int getFrameUV(int i, int maxI) {

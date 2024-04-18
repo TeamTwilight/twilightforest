@@ -456,7 +456,7 @@ public class TFCreativeTabs {
 				output.accept(TFItems.GREATER_FLASK);
 				output.accept(TFItems.MAGIC_BEANS);
 				output.accept(TFItems.CUBE_TALISMAN);
-				parameters.holders().lookup(TFRegistries.Keys.MAGIC_PAINTINGS).ifPresent((lookup) -> createPaintings(output, lookup));
+				if (parameters.hasPermissions()) parameters.holders().lookup(TFRegistries.Keys.MAGIC_PAINTINGS).ifPresent((lookup) -> createPaintings(output, lookup));
 				output.accept(TFItems.MUSIC_DISC_THREAD);
 				output.accept(TFItems.MUSIC_DISC_FINDINGS);
 				output.accept(TFItems.MUSIC_DISC_RADIANCE);

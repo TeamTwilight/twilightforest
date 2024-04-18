@@ -1,5 +1,4 @@
 {
-  "frame": "twilightforest:magic_paintings/frame",
   "height": 32,
   "layers": [
     {
@@ -11,6 +10,8 @@
       "opacity_modifier": {
         "type": "sine_time",
         "invert": false,
+        "max": 1.0,
+        "min": 0.0,
         "multiplier": 0.03
       },
       "parallax": {
@@ -33,8 +34,12 @@
       "fullbright": true,
       "opacity_modifier": {
         "type": "day_time",
+        "from": 1.0,
         "invert": true,
-        "multiplier": 2.0
+        "max": 1.0,
+        "min": 0.0,
+        "multiplier": 2.0,
+        "to": 23999.0
       },
       "path": "gems"
     },
@@ -43,9 +48,15 @@
       "opacity_modifier": {
         "type": "lightning",
         "invert": false,
+        "max": 1.0,
+        "min": 0.0,
         "multiplier": 1.0
       },
       "path": "lightning"
+    },
+    {
+      "fullbright": false,
+      "path": "frame"
     }
   ],
   "width": 64

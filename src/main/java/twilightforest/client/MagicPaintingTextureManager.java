@@ -15,7 +15,6 @@ public class MagicPaintingTextureManager extends TextureAtlasHolder {
     public static final ResourceLocation ATLAS_LOCATION = TwilightForestMod.prefix("textures/atlas/magic_paintings.png");
     public static final ResourceLocation ATLAS_INFO_LOCATION = new ResourceLocation(MAGIC_PAINTING_PATH);
     public static final ResourceLocation BACK_SPRITE_LOCATION = TwilightForestMod.prefix(MAGIC_PAINTING_PATH + "/back");
-    public static final ResourceLocation FRAME_SPRITE_LOCATION = TwilightForestMod.prefix(MAGIC_PAINTING_PATH + "/frame");
 
     public static MagicPaintingTextureManager instance;
 
@@ -31,9 +30,4 @@ public class MagicPaintingTextureManager extends TextureAtlasHolder {
         return this.getSprite(BACK_SPRITE_LOCATION);
     }
 
-    public TextureAtlasSprite getFrameSprite(MagicPaintingVariant variant) {
-        ResourceLocation location = ResourceLocation.tryParse(variant.framePath());
-        if (location == null) location = FRAME_SPRITE_LOCATION;
-        return this.getSprite(location.withPrefix(MAGIC_PAINTING_PATH + "/"));
-    }
 }

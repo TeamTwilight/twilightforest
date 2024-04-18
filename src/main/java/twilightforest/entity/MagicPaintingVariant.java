@@ -11,14 +11,14 @@ import twilightforest.TFRegistries;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
-public record MagicPaintingVariant(int width, int height, List<Layer> layers,  String framePath) {
+public record MagicPaintingVariant(int width, int height, List<Layer> layers) {
     public static final Codec<MagicPaintingVariant> CODEC = RecordCodecBuilder.create((recordCodecBuilder) -> recordCodecBuilder.group(
             ExtraCodecs.POSITIVE_INT.fieldOf("width").forGetter(MagicPaintingVariant::width),
             ExtraCodecs.POSITIVE_INT.fieldOf("height").forGetter(MagicPaintingVariant::height),
-            ExtraCodecs.nonEmptyList(Layer.CODEC.listOf()).fieldOf("layers").forGetter(MagicPaintingVariant::layers),
-            ExtraCodecs.NON_EMPTY_STRING.fieldOf("frame").forGetter(MagicPaintingVariant::framePath)
+            ExtraCodecs.nonEmptyList(Layer.CODEC.listOf()).fieldOf("layers").forGetter(MagicPaintingVariant::layers)
     ).apply(recordCodecBuilder, MagicPaintingVariant::new));
 
     public static Optional<MagicPaintingVariant> getVariant(RegistryAccess regAccess, String id) {
@@ -77,40 +77,63 @@ public record MagicPaintingVariant(int width, int height, List<Layer> layers,  S
             }
         }
 
-        public record OpacityModifier(Type type, float multiplier, boolean invert, @Nullable ItemStack item) {
+        public record OpacityModifier(Type type, float multiplier, boolean invert, float min, float max, float from, float to, @Nullable ItemStack item) {
+            public OpacityModifier(Type type, float multiplier, boolean invert, float min, float max) {
+                this(type, multiplier, invert, min, max, Float.NaN, Float.NaN, null);
+            }
+
+            public OpacityModifier(Type type, float multiplier, boolean invert, float min, float max, float from, float to) {
+                this(type, multiplier, invert, min, max, from, to, null);
+            }
+
+            public OpacityModifier(Type type, float multiplier, boolean invert, float min, float max, ItemStack item) {
+                this(type, multiplier, invert, min, max, Float.NaN, Float.NaN, item);
+            }
+
             public static final Codec<OpacityModifier> CODEC = RecordCodecBuilder.create((recordCodecBuilder) -> recordCodecBuilder.group(
                     OpacityModifier.Type.CODEC.fieldOf("type").forGetter(OpacityModifier::type),
                     ExtraCodecs.POSITIVE_FLOAT.fieldOf("multiplier").forGetter(OpacityModifier::multiplier),
                     Codec.BOOL.fieldOf("invert").forGetter(OpacityModifier::invert),
+                    Codec.FLOAT.fieldOf("min").forGetter(OpacityModifier::min),
+                    ExtraCodecs.POSITIVE_FLOAT.fieldOf("max").forGetter(OpacityModifier::max),
+                    Codec.FLOAT.optionalFieldOf("from").forGetter((modifier) -> Float.isNaN(modifier.from()) ? Optional.empty() : Optional.of(modifier.from())),
+                    Codec.FLOAT.optionalFieldOf("to").forGetter((modifier) -> Float.isNaN(modifier.to()) ? Optional.empty() : Optional.of(modifier.to())),
                     ItemStack.CODEC.optionalFieldOf("item_stack").forGetter((modifier) -> Optional.ofNullable(modifier.item()))
             ).apply(recordCodecBuilder, OpacityModifier::create));
 
             @SuppressWarnings("OptionalUsedAsFieldOrParameterType") // Vanilla does this too
-            private static OpacityModifier create(Type type, float multiplier, boolean invert, Optional<ItemStack> item) {
-                return new OpacityModifier(type, multiplier, invert, item.orElse(null));
+            private static OpacityModifier create(Type type, float multiplier, boolean invert, float min, float max, Optional<Float> from, Optional<Float> to, Optional<ItemStack> item) {
+                if (type.usesRange() && (from.isEmpty() || to.isEmpty())) throw new NoSuchElementException("Range for opacity modifier is not defined!");
+                return new OpacityModifier(type, multiplier, invert, min, max, from.orElse(Float.NaN), to.orElse(Float.NaN), item.orElse(ItemStack.EMPTY));
             }
 
             public enum Type implements StringRepresentable {
-                DISTANCE("distance"),
-                WEATHER("weather"),
-                LIGHTNING("lightning"),
-                DAY_TIME("day_time"),
-                DAY_TIME_SHARP("day_time_sharp"),
-                SINE_TIME("sine_time"),
-                HEALTH("health"),
-                HUNGER("hunger"),
-                HOLDING_ITEM("holding_item");
+                DISTANCE("distance", true),
+                WEATHER("weather", false),
+                STORM("storm", false),
+                LIGHTNING("lightning", false),
+                DAY_TIME("day_time", true),
+                SINE_TIME("sine_time", false),
+                HEALTH("health", true),
+                HUNGER("hunger", true),
+                HOLDING_ITEM("holding_item", false);
 
                 static final Codec<OpacityModifier.Type> CODEC = StringRepresentable.fromEnum(OpacityModifier.Type::values);
                 private final String name;
+                private final boolean usesRange;
 
-                Type(String pName) {
+                Type(String pName, boolean usesRange) {
                     this.name = pName;
+                    this.usesRange = usesRange;
                 }
 
                 @Override
                 public String getSerializedName() {
                     return this.name;
+                }
+
+                public boolean usesRange() {
+                    return this.usesRange;
                 }
             }
         }

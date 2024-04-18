@@ -6,10 +6,6 @@
     },
     {
       "type": "minecraft:single",
-      "resource": "twilightforest:magic_paintings/frame"
-    },
-    {
-      "type": "minecraft:single",
       "resource": "twilightforest:magic_paintings/darkness/background"
     },
     {
@@ -34,6 +30,10 @@
     },
     {
       "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/darkness/frame"
+    },
+    {
+      "type": "minecraft:single",
       "resource": "twilightforest:magic_paintings/lucid_lands/background"
     },
     {
@@ -51,6 +51,74 @@
     {
       "type": "minecraft:single",
       "resource": "twilightforest:magic_paintings/lucid_lands/crystal_plains"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/lucid_lands/frame"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/castaway_paradise/sunset"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/castaway_paradise/sun"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/castaway_paradise/faraway_palm"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/castaway_paradise/ocean"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/castaway_paradise/deckchair"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/castaway_paradise/palm_tree"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/castaway_paradise/frame"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/untitled/1_background"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/untitled/2_temple_par"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/untitled/3_fog_1_opa"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/untitled/4_portal_par"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/untitled/5_fog_2_opa"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/untitled/6_tree_par"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/untitled/7_fog_3_opa"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/untitled/8_foreground_par"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/untitled/9_frame"
     }
   ]
 }
