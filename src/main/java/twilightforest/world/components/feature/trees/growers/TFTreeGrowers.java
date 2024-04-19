@@ -8,8 +8,8 @@ import java.util.Optional;
 public class TFTreeGrowers {
 
 	public static final TreeGrower TWILIGHT_OAK = new TreeGrower("twilight_oak", 0.1F,
-			Optional.of(TFConfiguredFeatures.FOREST_CANOPY_OAK_TREE),
-			Optional.of(TFConfiguredFeatures.SAVANNAH_CANOPY_OAK_TREE),
+			Optional.of(TFConfiguredFeatures.FOREST_MEGA_OAK_TREE),
+			Optional.of(TFConfiguredFeatures.SAVANNAH_MEGA_OAK_TREE),
 			Optional.of(TFConfiguredFeatures.TWILIGHT_OAK_TREE),
 			Optional.of(TFConfiguredFeatures.LARGE_TWILIGHT_OAK_TREE),
 			Optional.empty(),

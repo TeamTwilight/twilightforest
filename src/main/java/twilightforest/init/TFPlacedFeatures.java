@@ -89,9 +89,9 @@ public class TFPlacedFeatures {
 	public static final ResourceKey<PlacedFeature> PLACED_MANGROVE_TREE = registerKey("tree/mangrove_tree");
 	public static final ResourceKey<PlacedFeature> PLACED_TWILIGHT_OAK_TREE = registerKey("tree/twilight_oak_tree");
 	public static final ResourceKey<PlacedFeature> PLACED_LARGE_TWILIGHT_OAK_TREE = registerKey("tree/large_twilight_oak_tree");
-	public static final ResourceKey<PlacedFeature> PLACED_FOREST_CANOPY_OAK_TREE = registerKey("tree/forest_canopy_oak_tree");
+	public static final ResourceKey<PlacedFeature> PLACED_FOREST_MEGA_OAK_TREE = registerKey("tree/forest_mega_oak_tree");
 	public static final ResourceKey<PlacedFeature> PLACED_SAVANNAH_OAK_TREE = registerKey("tree/savannah_oak_tree");
-	public static final ResourceKey<PlacedFeature> PLACED_SAVANNAH_CANOPY_OAK_TREE = registerKey("tree/savannah_canopy_oak_tree");
+	public static final ResourceKey<PlacedFeature> PLACED_SAVANNAH_MEGA_OAK_TREE = registerKey("tree/savannah_mega_oak_tree");
 	public static final ResourceKey<PlacedFeature> PLACED_SWAMPY_OAK_TREE = registerKey("tree/swampy_oak_tree");
 	public static final ResourceKey<PlacedFeature> PLACED_DARKWOOD_TREE = registerKey("tree/darkwood_tree");
 
@@ -207,8 +207,8 @@ public class TFPlacedFeatures {
 		context.register(PLACED_MANGROVE_TREE, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.MANGROVE_TREE), List.of(PlacementUtils.countExtra(3, 0.1F, 1), InSquarePlacement.spread(), SurfaceWaterDepthFilter.forMaxDepth(6), PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, AvoidLandmarkModifier.checkSurface(), PlacementUtils.filteredByBlockSurvival(TFBlocks.MANGROVE_SAPLING.get()), BiomeFilter.biome())));
 		context.register(PLACED_TWILIGHT_OAK_TREE, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.TWILIGHT_OAK_TREE), tfTreeCheckArea(PlacementUtils.countExtra(1, 0.1F, 1), TFBlocks.TWILIGHT_OAK_SAPLING.get().defaultBlockState())));
 		context.register(PLACED_LARGE_TWILIGHT_OAK_TREE, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.LARGE_TWILIGHT_OAK_TREE), tfTreeCheckArea(PlacementUtils.countExtra(1, 0.1F, 1), TFBlocks.TWILIGHT_OAK_SAPLING.get().defaultBlockState())));
-		context.register(PLACED_FOREST_CANOPY_OAK_TREE, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.FOREST_CANOPY_OAK_TREE), tfTreeCheckArea(PlacementUtils.countExtra(7, 0.1F, 1), TFBlocks.TWILIGHT_OAK_SAPLING.get().defaultBlockState())));
-		context.register(PLACED_SAVANNAH_CANOPY_OAK_TREE, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.SAVANNAH_CANOPY_OAK_TREE), tfTreeCheckArea(PlacementUtils.countExtra(0, 0.1F, 1), TFBlocks.TWILIGHT_OAK_SAPLING.get().defaultBlockState())));
+		context.register(PLACED_FOREST_MEGA_OAK_TREE, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.FOREST_MEGA_OAK_TREE), tfTreeCheckArea(PlacementUtils.countExtra(7, 0.1F, 1), TFBlocks.TWILIGHT_OAK_SAPLING.get().defaultBlockState())));
+		context.register(PLACED_SAVANNAH_MEGA_OAK_TREE, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.SAVANNAH_MEGA_OAK_TREE), tfTreeCheckArea(PlacementUtils.countExtra(0, 0.1F, 1), TFBlocks.TWILIGHT_OAK_SAPLING.get().defaultBlockState())));
 		context.register(PLACED_SAVANNAH_OAK_TREE, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.TWILIGHT_OAK_TREE), tfTreeCheckArea(PlacementUtils.countExtra(1, 0.1F, 1), TFBlocks.TWILIGHT_OAK_SAPLING.get().defaultBlockState())));
 		context.register(PLACED_SWAMPY_OAK_TREE, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.SWAMPY_OAK_TREE), tfTreeCheckArea(PlacementUtils.countExtra(4, 0.1F, 1), TFBlocks.TWILIGHT_OAK_SAPLING.get().defaultBlockState())));
 		context.register(PLACED_DARKWOOD_TREE, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.DARKWOOD_TREE), List.of(PlacementUtils.countExtra(5, 0.1F, 1), InSquarePlacement.spread(), SurfaceWaterDepthFilter.forMaxDepth(0), PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, new AvoidLandmarkModifier(true, false, 16), PlacementUtils.filteredByBlockSurvival(TFBlocks.DARKWOOD_SAPLING.get()), BiomeFilter.biome())));

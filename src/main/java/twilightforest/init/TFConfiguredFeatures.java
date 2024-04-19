@@ -136,8 +136,8 @@ public final class TFConfiguredFeatures {
 	public static final ResourceKey<ConfiguredFeature<?, ?>> TRANSFORMATION_TREE = registerKey("tree/transformation_tree");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> MINING_TREE = registerKey("tree/mining_tree");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> SORTING_TREE = registerKey("tree/sorting_tree");
-	public static final ResourceKey<ConfiguredFeature<?, ?>> FOREST_CANOPY_OAK_TREE = registerKey("tree/forest_canopy_oak_tree");
-	public static final ResourceKey<ConfiguredFeature<?, ?>> SAVANNAH_CANOPY_OAK_TREE = registerKey("tree/savannah_canopy_oak_tree");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> FOREST_MEGA_OAK_TREE = registerKey("tree/forest_mega_oak_tree");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> SAVANNAH_MEGA_OAK_TREE = registerKey("tree/savannah_mega_oak_tree");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> RAINBOW_OAK_TREE = registerKey("tree/rainbow_oak");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> LARGE_RAINBOW_OAK_TREE = registerKey("tree/large_rainbow_oak");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> BROWN_CANOPY_MUSHROOM_TREE = registerKey("mushroom/brown_canopy_mushroom");
@@ -298,8 +298,8 @@ public final class TFConfiguredFeatures {
 		context.register(TRANSFORMATION_TREE, new ConfiguredFeature<>(Feature.TREE, TreeConfigurations.TRANSFORM_TREE));
 		context.register(MINING_TREE, new ConfiguredFeature<>(TFFeatures.MINERS_TREE.get(), TreeConfigurations.MINING_TREE));
 		context.register(SORTING_TREE, new ConfiguredFeature<>(Feature.TREE, TreeConfigurations.SORT_TREE));
-		context.register(FOREST_CANOPY_OAK_TREE, new ConfiguredFeature<>(TFFeatures.CANOPY_OAK.get(), TreeConfigurations.FOREST_CANOPY_OAK));
-		context.register(SAVANNAH_CANOPY_OAK_TREE, new ConfiguredFeature<>(TFFeatures.CANOPY_OAK.get(), TreeConfigurations.SAVANNAH_CANOPY_OAK));
+		context.register(FOREST_MEGA_OAK_TREE, new ConfiguredFeature<>(TFFeatures.MEGA_OAK.get(), TreeConfigurations.FOREST_MEGA_OAK));
+		context.register(SAVANNAH_MEGA_OAK_TREE, new ConfiguredFeature<>(TFFeatures.MEGA_OAK.get(), TreeConfigurations.SAVANNAH_MEGA_OAK));
 		context.register(RAINBOW_OAK_TREE, new ConfiguredFeature<>(Feature.TREE, TreeConfigurations.RAINBOAK_TREE));
 		context.register(LARGE_RAINBOW_OAK_TREE, new ConfiguredFeature<>(Feature.TREE, TreeConfigurations.LARGE_RAINBOAK_TREE));
 		context.register(BROWN_CANOPY_MUSHROOM_TREE, new ConfiguredFeature<>(TFFeatures.CANOPY_BROWN_MUSHROOM.get(), new HugeMushroomFeatureConfiguration(BlockStateProvider.simple(Blocks.BROWN_MUSHROOM_BLOCK.defaultBlockState().setValue(HugeMushroomBlock.UP, Boolean.TRUE).setValue(HugeMushroomBlock.DOWN, Boolean.FALSE)), BlockStateProvider.simple(Blocks.MUSHROOM_STEM.defaultBlockState().setValue(HugeMushroomBlock.UP, Boolean.FALSE).setValue(HugeMushroomBlock.DOWN, Boolean.FALSE)), 3)));

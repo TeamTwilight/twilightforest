@@ -153,7 +153,7 @@ public class HollowTreeLargeBranch extends HollowTreeMedBranch {
 
 		if (this.leafy && !this.hasLeafDungeon) {
 			// leaf blob at the end
-			this.drawBlockBlob(level, writeableBounds, this.dest.getX() - this.boundingBox.minX(), this.dest.getY() - this.boundingBox.minY(), this.dest.getZ() - this.boundingBox.minZ(), 3, decoRNG, this.leaves, false, false);
+			this.drawBlockBlob(level, writeableBounds, this.dest.getX() - this.boundingBox.minX(), this.dest.getY() - this.boundingBox.minY(), this.dest.getZ() - this.boundingBox.minZ(), 3, decoRNG, this.leaves, false, false, true);
 		}
 	}
 }

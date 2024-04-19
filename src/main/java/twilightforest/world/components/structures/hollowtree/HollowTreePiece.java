@@ -96,7 +96,7 @@ public abstract class HollowTreePiece extends StructurePiece {
 	/**
 	 * Make a leaf blob
 	 */
-	protected void drawBlockBlob(WorldGenLevel world, BoundingBox sbb, int sx, int sy, int sz, int blobRadius, RandomSource random, BlockStateProvider stateProvider, boolean forcedPlace, boolean leafHack) {
+	protected void drawBlockBlob(WorldGenLevel world, BoundingBox sbb, int sx, int sy, int sz, int blobRadius, RandomSource random, BlockStateProvider stateProvider, boolean forcedPlace, boolean leafHack, boolean imperfect) {
 		BlockPos origin = this.getWorldPos(sx, sy, sz).immutable();
 
 		// then trace out a quadrant
@@ -116,6 +116,23 @@ public abstract class HollowTreePiece extends StructurePiece {
 
 					// if we're inside the blob, fill it
 					if (dist <= blobRadius) {
+						if (imperfect && dist == blobRadius) {
+							// no cubes allowed!
+							if (dx == dy && dy == dz) continue;
+							// randomly don't generate some blocks on the very edges of the circles that comprise the leaf blob
+							if (dx == dy && dz > dx && dx > 0 || dy == dz && dx > dy && dy > 0 || dz == dx && dy > dz && dz > 0) {
+								if (random.nextInt(2) == 0) this.placeProvidedBlock(world, stateProvider, random, sx + dx, sy + dy, sz + dz, sbb, origin, forcedPlace, leafHack);
+								if (random.nextInt(2) == 0) this.placeProvidedBlock(world, stateProvider, random, sx + dx, sy + dy, sz - dz, sbb, origin, forcedPlace, leafHack);
+								if (random.nextInt(2) == 0) this.placeProvidedBlock(world, stateProvider, random, sx - dx, sy + dy, sz + dz, sbb, origin, forcedPlace, leafHack);
+								if (random.nextInt(2) == 0) this.placeProvidedBlock(world, stateProvider, random, sx - dx, sy + dy, sz - dz, sbb, origin, forcedPlace, leafHack);
+								if (random.nextInt(2) == 0) this.placeProvidedBlock(world, stateProvider, random, sx + dx, sy - dy, sz + dz, sbb, origin, forcedPlace, leafHack);
+								if (random.nextInt(2) == 0) this.placeProvidedBlock(world, stateProvider, random, sx + dx, sy - dy, sz - dz, sbb, origin, forcedPlace, leafHack);
+								if (random.nextInt(2) == 0) this.placeProvidedBlock(world, stateProvider, random, sx - dx, sy - dy, sz + dz, sbb, origin, forcedPlace, leafHack);
+								if (random.nextInt(2) == 0) this.placeProvidedBlock(world, stateProvider, random, sx - dx, sy - dy, sz - dz, sbb, origin, forcedPlace, leafHack);
+								continue;
+							}
+						}
+
 						// do eight at a time for easiness!
 						this.placeProvidedBlock(world, stateProvider, random, sx + dx, sy + dy, sz + dz, sbb, origin, forcedPlace, leafHack);
 						this.placeProvidedBlock(world, stateProvider, random, sx + dx, sy + dy, sz - dz, sbb, origin, forcedPlace, leafHack);

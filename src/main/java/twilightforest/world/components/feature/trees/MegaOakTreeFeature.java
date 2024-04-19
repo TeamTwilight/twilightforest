@@ -21,9 +21,9 @@ import java.util.List;
 import java.util.function.BiConsumer;
 
 @ParametersAreNonnullByDefault
-public class OakCanopyTreeFeature extends CanopyTreeFeature {
+public class MegaOakTreeFeature extends CanopyTreeFeature {
 
-	public OakCanopyTreeFeature(Codec<TFTreeFeatureConfig> config) {
+	public MegaOakTreeFeature(Codec<TFTreeFeatureConfig> config) {
 		super(config);
 	}
 
@@ -73,10 +73,10 @@ public class OakCanopyTreeFeature extends CanopyTreeFeature {
 			makeLeafBlob(world, leavesPlacer, random, leafPos, config);
 		}
 
-		OakCanopyTreeFeature.makeRoots(world, trunkPlacer, decorationPlacer, random, pos, config);
-		OakCanopyTreeFeature.makeRoots(world, trunkPlacer, decorationPlacer, random, pos.east(), config);
-		OakCanopyTreeFeature.makeRoots(world, trunkPlacer, decorationPlacer, random, pos.south(), config);
-		OakCanopyTreeFeature.makeRoots(world, trunkPlacer, decorationPlacer, random, pos.east().south(), config);
+		MegaOakTreeFeature.makeRoots(world, trunkPlacer, decorationPlacer, random, pos, config);
+		MegaOakTreeFeature.makeRoots(world, trunkPlacer, decorationPlacer, random, pos.east(), config);
+		MegaOakTreeFeature.makeRoots(world, trunkPlacer, decorationPlacer, random, pos.south(), config);
+		MegaOakTreeFeature.makeRoots(world, trunkPlacer, decorationPlacer, random, pos.east().south(), config);
 
 		return true;
 	}

@@ -5,11 +5,13 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.ImageButton;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.recipebook.RecipeBookComponent;
 import net.minecraft.client.gui.screens.recipebook.RecipeUpdateListener;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ClickType;
@@ -49,36 +51,36 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> im
 			PacketDistributor.SERVER.noArg().send(new UncraftingGuiPacket(0));
 			this.menu.unrecipeInCycle++;
 			this.menu.slotsChanged(this.menu.tinkerInput);
-		}));
+		}, Component.translatable("container.twilightforest.uncrafting_table.cycle_next_uncraft")));
 		this.addRenderableWidget(new CycleButton(this.leftPos + 40, this.topPos + 55, false, button -> {
 			PacketDistributor.SERVER.noArg().send(new UncraftingGuiPacket(1));
 			this.menu.unrecipeInCycle--;
 			this.menu.slotsChanged(this.menu.tinkerInput);
-		}));
+		}, Component.translatable("container.twilightforest.uncrafting_table.cycle_back_uncraft")));
 
 		if (!TFConfig.disableIngredientSwitching) {
 			this.addRenderableWidget(new CycleButtonMini(this.leftPos + 27, this.topPos + 56, true, button -> {
 				PacketDistributor.SERVER.noArg().send(new UncraftingGuiPacket(2));
 				this.menu.ingredientsInCycle++;
 				this.menu.slotsChanged(this.menu.tinkerInput);
-			}));
+			}, Component.translatable("container.twilightforest.uncrafting_table.cycle_next_ingredient")));
 			this.addRenderableWidget(new CycleButtonMini(this.leftPos + 27, this.topPos + 63, false, button -> {
 				PacketDistributor.SERVER.noArg().send(new UncraftingGuiPacket(3));
 				this.menu.ingredientsInCycle--;
 				this.menu.slotsChanged(this.menu.tinkerInput);
-			}));
+			}, Component.translatable("container.twilightforest.uncrafting_table.cycle_back_ingredient")));
 		}
 
 		this.addRenderableWidget(new CycleButton(this.leftPos + 121, this.topPos + 22, true, button -> {
 			PacketDistributor.SERVER.noArg().send(new UncraftingGuiPacket(4));
 			this.menu.recipeInCycle++;
 			this.menu.slotsChanged(this.menu.assemblyMatrix);
-		}));
+		}, Component.translatable("container.twilightforest.uncrafting_table.cycle_next_recipe")));
 		this.addRenderableWidget(new CycleButton(this.leftPos + 121, this.topPos + 55, false, button -> {
 			PacketDistributor.SERVER.noArg().send(new UncraftingGuiPacket(5));
 			this.menu.recipeInCycle--;
 			this.menu.slotsChanged(this.menu.assemblyMatrix);
-		}));
+		}, Component.translatable("container.twilightforest.uncrafting_table.cycle_back_recipe")));
 	}
 
 	@Override
@@ -280,9 +282,10 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> im
 	private static class CycleButton extends Button {
 		private final boolean up;
 
-		CycleButton(int x, int y, boolean up, OnPress onClick) {
+		CycleButton(int x, int y, boolean up, OnPress onClick, MutableComponent tooltip) {
 			super(x, y, 14, 9, Component.empty(), onClick, message -> Component.empty());
 			this.up = up;
+			this.setTooltip(Tooltip.create(tooltip));
 		}
 
 		@Override
@@ -306,9 +309,10 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> im
 	private static class CycleButtonMini extends Button {
 		private final boolean up;
 
-		CycleButtonMini(int x, int y, boolean up, OnPress onClick) {
+		CycleButtonMini(int x, int y, boolean up, OnPress onClick, MutableComponent tooltip) {
 			super(x, y, 8, 6, Component.empty(), onClick, message -> Component.empty());
 			this.up = up;
+			this.setTooltip(Tooltip.create(tooltip));
 		}
 
 		@Override

@@ -395,7 +395,7 @@ public class LangGenerator extends TFLangProvider {
 		this.createHollowLogs("warped", "Warped", true);
 		this.createHollowLogs("vangrove", "Mangrove", false);
 		this.createHollowLogs("cherry", "Cherry", false);
-		this.add("block.twilightforest.banister.cycle", "Right click with an axe to cycle");
+		this.add("block.twilightforest.banister.cycle", "Right-click with axe to cycle");
 
 		this.addBlock(TFBlocks.MOSS_PATCH, "Moss Patch");
 		this.addBlock(TFBlocks.CLOVER_PATCH, "Clover Patch");
@@ -466,6 +466,12 @@ public class LangGenerator extends TFLangProvider {
 		this.add("container.twilightforest.uncrafting_table", "Uncrafting Table");
 		this.add("container.twilightforest.uncrafting_table.disabled_item", "Uncrafting this item is disabled.");
 		this.add("container.twilightforest.uncrafting_table.uncrafting_disabled", "Uncrafting is disabled via config");
+		this.add("container.twilightforest.uncrafting_table.cycle_next_recipe", "Next Crafting Recipe");
+		this.add("container.twilightforest.uncrafting_table.cycle_back_recipe", "Previous Crafting Recipe");
+		this.add("container.twilightforest.uncrafting_table.cycle_next_ingredient", "Next Uncrafting Ingredients");
+		this.add("container.twilightforest.uncrafting_table.cycle_back_ingredient", "Previous Uncrafting Ingredients");
+		this.add("container.twilightforest.uncrafting_table.cycle_next_uncraft", "Next Uncrafting Recipe");
+		this.add("container.twilightforest.uncrafting_table.cycle_back_uncraft", "Previous Uncrafting Recipe");
 
 		this.add("item.twilightforest.boarkchop", "Raw Boarkchop");
 		this.addItem(TFItems.NAGA_SCALE, "Naga Scale");

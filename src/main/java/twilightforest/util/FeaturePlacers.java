@@ -1,6 +1,9 @@
 package twilightforest.util;
 
-import net.minecraft.core.*;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.GlobalPos;
+import net.minecraft.core.HolderSet;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -202,6 +205,22 @@ public final class FeaturePlacers {
                     float xzSquare = ((x * x + z * z) * yRadiusSquared);
 
                     if (xzSquare + (y * y) * xzRadiusSquared <= superRadiusSquared) {
+                        if ((((x + 1) * (x + 1) + (z + 1) * (z + 1)) * yRadiusSquared) + ((y + 1) * (y + 1)) * xzRadiusSquared > superRadiusSquared) {
+                            // randomly don't generate some blocks on the very edges of the circles that comprise the leaf blob
+                            if (x == y && z > x && x > 0 || y == z && x > y && y > 0 || z == x && y > z && z > 0) {
+                                if (random.nextInt(3) != 0) FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset(  x,  y,  z), config, random);
+                                if (random.nextInt(3) != 0) FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset( -x,  y, -z), config, random);
+                                if (random.nextInt(3) != 0) FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset( -z,  y,  x), config, random);
+                                if (random.nextInt(3) != 0) FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset(  z,  y, -x), config, random);
+
+                                if (random.nextInt(3) != 0) FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset(  x, -y,  z), config, random);
+                                if (random.nextInt(3) != 0) FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset( -x, -y, -z), config, random);
+                                if (random.nextInt(3) != 0) FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset( -z, -y,  x), config, random);
+                                if (random.nextInt(3) != 0) FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset(  z, -y, -x), config, random);
+                                continue;
+                            }
+                        }
+
                         FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset(  x,  y,  z), config, random);
                         FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset( -x,  y, -z), config, random);
                         FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset( -z,  y,  x), config, random);

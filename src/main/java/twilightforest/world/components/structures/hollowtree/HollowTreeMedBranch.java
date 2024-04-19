@@ -136,10 +136,10 @@ public class HollowTreeMedBranch extends HollowTreePiece {
 				BlockPos bdst = FeatureLogic.translate(new BlockPos(this.src.getX() - this.boundingBox.minX(), this.src.getY() - this.boundingBox.minY(), this.src.getZ() - this.boundingBox.minZ()), slength, this.angle, this.tilt);
 
 				int radius = decoRNG.nextBoolean() ? 2 : 3;
-				this.drawBlockBlob(level, writeableBounds, bdst.getX(), bdst.getY(), bdst.getZ(), radius, decoRNG, this.leaves, false, false);
+				this.drawBlockBlob(level, writeableBounds, bdst.getX(), bdst.getY(), bdst.getZ(), radius, decoRNG, this.leaves, false, false, true);
 			}
 
-			this.drawBlockBlob(level, writeableBounds, this.dest.getX() - this.boundingBox.minX(), this.dest.getY() - this.boundingBox.minY(), this.dest.getZ() - this.boundingBox.minZ(), 3, decoRNG, this.leaves, false, false);
+			this.drawBlockBlob(level, writeableBounds, this.dest.getX() - this.boundingBox.minX(), this.dest.getY() - this.boundingBox.minY(), this.dest.getZ() - this.boundingBox.minZ(), 3, decoRNG, this.leaves, false, false, true);
 		}
 	}
 
@@ -153,7 +153,7 @@ public class HollowTreeMedBranch extends HollowTreePiece {
 		this.drawBresehnam(world, sbb, sourcePos, branchDest, woodProvider, random);
 
 		// leaf blob at the end
-		this.drawBlockBlob(world, sbb, branchDest.getX() - this.boundingBox.minX(), branchDest.getY() - this.boundingBox.minY(), branchDest.getZ() - this.boundingBox.minZ(), 2, random, leafProvider, false, false);
+		this.drawBlockBlob(world, sbb, branchDest.getX() - this.boundingBox.minX(), branchDest.getY() - this.boundingBox.minY(), branchDest.getZ() - this.boundingBox.minZ(), 2, random, leafProvider, false, false, true);
 	}
 
 	protected static BoundingBox branchBoundingBox(BlockPos src, BlockPos dest, int extraPadding) {

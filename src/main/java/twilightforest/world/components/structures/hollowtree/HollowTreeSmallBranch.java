@@ -41,7 +41,7 @@ public class HollowTreeSmallBranch extends HollowTreeMedBranch {
 			int sx = this.dest.getX() - this.boundingBox.minX();
 			int sy = this.dest.getY() - this.boundingBox.minY();
 			int sz = this.dest.getZ() - this.boundingBox.minZ();
-			this.drawBlockBlob(level, writeableBounds, sx, sy, sz, leafRad, decoRNG, this.leaves, false, false);
+			this.drawBlockBlob(level, writeableBounds, sx, sy, sz, leafRad, decoRNG, this.leaves, false, false, true);
 		}
 	}
 }
