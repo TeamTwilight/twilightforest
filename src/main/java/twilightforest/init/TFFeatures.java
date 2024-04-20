@@ -19,6 +19,7 @@ public class TFFeatures {
 	public static final DeferredHolder<Feature<?>, Feature<HugeMushroomFeatureConfiguration>> CANOPY_BROWN_MUSHROOM = FEATURES.register("canopy_brown_mushroom", () -> new BrownCanopyMushroomFeature(HugeMushroomFeatureConfiguration.CODEC));
 	public static final DeferredHolder<Feature<?>, Feature<HugeMushroomFeatureConfiguration>> CANOPY_RED_MUSHROOM = FEATURES.register("canopy_red_mushroom", () -> new RedCanopyMushroomFeature(HugeMushroomFeatureConfiguration.CODEC));
 	public static final DeferredHolder<Feature<?>, Feature<TFTreeFeatureConfig>> MEGA_OAK = FEATURES.register("mega_oak", () -> new MegaOakTreeFeature(TFTreeFeatureConfig.codecTFTreeConfig));
+	public static final DeferredHolder<Feature<?>, Feature<TFTreeFeatureConfig>> MEGA_CANOPY = FEATURES.register("mega_canopy", () -> new MegaCanopyTreeFeature(TFTreeFeatureConfig.codecTFTreeConfig));
 	public static final DeferredHolder<Feature<?>, Feature<NoneFeatureConfiguration>> CAVE_STALACTITE = FEATURES.register("block_spike", () -> new BlockSpikeFeature(NoneFeatureConfiguration.CODEC));
 	public static final DeferredHolder<Feature<?>, Feature<TreeConfiguration>> DARK_CANOPY_TREE = FEATURES.register("dark_canopy_tree", () -> new DarkCanopyTreeFeature(TreeConfiguration.CODEC));
 	public static final DeferredHolder<Feature<?>, Feature<SwizzleConfig>> DRUID_HUT = FEATURES.register("druid_hut", () -> new DruidHutFeature(SwizzleConfig.CODEC));

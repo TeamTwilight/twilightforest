@@ -202,23 +202,20 @@ public final class FeaturePlacers {
                 FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset(  z, 0, -x), config, random);
 
                 for (int y = 1; y <= yRadius; y++) {
-                    float xzSquare = ((x * x + z * z) * yRadiusSquared);
-
-                    if (xzSquare + (y * y) * xzRadiusSquared <= superRadiusSquared) {
-                        if ((((x + 1) * (x + 1) + (z + 1) * (z + 1)) * yRadiusSquared) + ((y + 1) * (y + 1)) * xzRadiusSquared > superRadiusSquared) {
+                    float ySquare = (y * y) * xzRadiusSquared;
+                    if ((x * x + z * z) * yRadiusSquared + ySquare <= superRadiusSquared) {
+                        if ((((x + 1) * (x + 1) + z * z) * yRadiusSquared) + ySquare > superRadiusSquared && ((x * x + (z + 1) * (z + 1)) * yRadiusSquared) + ySquare > superRadiusSquared) {
                             // randomly don't generate some blocks on the very edges of the circles that comprise the leaf blob
-                            if (x == y && z > x && x > 0 || y == z && x > y && y > 0 || z == x && y > z && z > 0) {
-                                if (random.nextInt(3) != 0) FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset(  x,  y,  z), config, random);
-                                if (random.nextInt(3) != 0) FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset( -x,  y, -z), config, random);
-                                if (random.nextInt(3) != 0) FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset( -z,  y,  x), config, random);
-                                if (random.nextInt(3) != 0) FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset(  z,  y, -x), config, random);
+                            if (random.nextInt(3) != 0) FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset(x, y, z), config, random);
+                            if (random.nextInt(3) != 0) FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset(-x, y, -z), config, random);
+                            if (random.nextInt(3) != 0) FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset(-z, y, x), config, random);
+                            if (random.nextInt(3) != 0) FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset(z, y, -x), config, random);
 
-                                if (random.nextInt(3) != 0) FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset(  x, -y,  z), config, random);
-                                if (random.nextInt(3) != 0) FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset( -x, -y, -z), config, random);
-                                if (random.nextInt(3) != 0) FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset( -z, -y,  x), config, random);
-                                if (random.nextInt(3) != 0) FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset(  z, -y, -x), config, random);
-                                continue;
-                            }
+                            if (random.nextInt(3) != 0) FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset(x, -y, z), config, random);
+                            if (random.nextInt(3) != 0) FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset(-x, -y, -z), config, random);
+                            if (random.nextInt(3) != 0) FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset(-z, -y, x), config, random);
+                            if (random.nextInt(3) != 0) FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset(z, -y, -x), config, random);
+                            continue;
                         }
 
                         FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset(  x,  y,  z), config, random);

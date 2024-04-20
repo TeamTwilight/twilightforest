@@ -127,4 +127,20 @@ public class CanopyTreeFeature extends TFTreeFeature<TFTreeFeatureConfig> {
 			leaves.add(dest);
 		}
 	}
+
+	protected static void makeRoots(LevelAccessor world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> decoPlacer, RandomSource random, BlockPos pos, TFTreeFeatureConfig config) {
+		// root bulb
+		if (FeatureUtil.hasAirAround(world, pos.below())) {
+			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, random, pos.below(), config.trunkProvider);
+		} else {
+			FeaturePlacers.placeIfValidRootPos(world, decoPlacer, random, pos.below(), config.rootsProvider);
+		}
+
+		// roots!
+		int numRoots = 1 + random.nextInt(2);
+		float offset = random.nextFloat();
+		for (int b = 0; b < numRoots; b++) {
+			FeaturePlacers.buildRoot(world, decoPlacer, random, pos, offset, b, config.rootsProvider);
+		}
+	}
 }

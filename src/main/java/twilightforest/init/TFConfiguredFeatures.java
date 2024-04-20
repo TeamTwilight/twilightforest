@@ -126,6 +126,7 @@ public final class TFConfiguredFeatures {
 	public static final ResourceKey<ConfiguredFeature<?, ?>> LARGE_TWILIGHT_OAK_TREE = registerKey("tree/large_twilight_oak_tree");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> SWAMPY_OAK_TREE = registerKey("tree/swampy_oak_tree");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> CANOPY_TREE = registerKey("tree/canopy_tree");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> MEGA_CANOPY_TREE = registerKey("tree/mega_canopy_tree");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> FIREFLY_CANOPY_TREE = registerKey("tree/firefly_canopy_tree");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> DEAD_CANOPY_TREE = registerKey("tree/dead_canopy_tree");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> MANGROVE_TREE = registerKey("tree/mangrove_tree");
@@ -288,6 +289,7 @@ public final class TFConfiguredFeatures {
 		context.register(LARGE_TWILIGHT_OAK_TREE, new ConfiguredFeature<>(Feature.TREE, TreeConfigurations.LARGE_TWILIGHT_OAK));
 		context.register(SWAMPY_OAK_TREE, new ConfiguredFeature<>(Feature.TREE, TreeConfigurations.SWAMPY_OAK));
 		context.register(CANOPY_TREE, new ConfiguredFeature<>(Feature.TREE, TreeConfigurations.CANOPY_TREE));
+		context.register(MEGA_CANOPY_TREE, new ConfiguredFeature<>(TFFeatures.MEGA_CANOPY.get(), TreeConfigurations.MEGA_CANOPY));
 		context.register(FIREFLY_CANOPY_TREE, new ConfiguredFeature<>(Feature.TREE, TreeConfigurations.CANOPY_TREE_FIREFLY));
 		context.register(DEAD_CANOPY_TREE, new ConfiguredFeature<>(Feature.TREE, TreeConfigurations.CANOPY_TREE_DEAD));
 		context.register(MANGROVE_TREE, new ConfiguredFeature<>(Feature.TREE, TreeConfigurations.MANGROVE_TREE));

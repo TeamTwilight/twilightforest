@@ -121,6 +121,17 @@ public class TreeConfigurations {
 			.ignoreVines()
 			.build();
 
+	public static final TFTreeFeatureConfig MEGA_CANOPY = new TFTreeFeatureConfig.Builder(
+			BlockStateProvider.simple(TFBlocks.CANOPY_LOG.get()),
+			BlockStateProvider.simple(TFBlocks.CANOPY_LEAVES.get()),
+			BlockStateProvider.simple(TFBlocks.CANOPY_WOOD.get()),
+			BlockStateProvider.simple(TFBlocks.ROOT_BLOCK.get())
+	)
+			.minHeight(30)
+			.chanceFirstFive(2)
+			.chanceSecondFive(3)
+			.build();
+
 	public static final TreeConfiguration MANGROVE_TREE = new TreeConfiguration.TreeConfigurationBuilder(
 			BlockStateProvider.simple(TFBlocks.MANGROVE_LOG.get()),
 			new TrunkRiser(5, new BranchingTrunkPlacer(6, 4, 0, 6, new BranchesConfig(0, 3, 6, 2, 0.3, 0.25), false)),

@@ -16,7 +16,7 @@ public class TFTreeGrowers {
 			Optional.empty());
 
 	public static final TreeGrower CANOPY = new TreeGrower("canopy",
-			Optional.empty(), //TODO https://discord.com/channels/313006291012288521/343501360517611531/1019431002269044786
+			Optional.of(TFConfiguredFeatures.MEGA_CANOPY_TREE),
 			Optional.of(TFConfiguredFeatures.CANOPY_TREE),
 			Optional.empty());
 

@@ -79,7 +79,8 @@
       "twilightforest:tree/twilight_oak_tree",
       "twilightforest:tree/large_twilight_oak_tree",
       "twilightforest:tree/selector/canopy_trees",
-      "twilightforest:default_fallen_logs"
+      "twilightforest:default_fallen_logs",
+      "twilightforest:tree/mega_canopy_tree"
     ],
     [
       "minecraft:freeze_top_layer"
