@@ -88,11 +88,20 @@
     },
     "trunk_placer": {
       "type": "twilightforest:trunk_mover_upper",
-      "offset_up": 5,
+      "offset_up": 4,
       "trunk_placer": {
         "type": "twilightforest:branching_trunk_placer",
-        "base_height": 6,
+        "base_height": 7,
         "branch_config": {
+          "branch_provider": {
+            "type": "minecraft:simple_state_provider",
+            "state": {
+              "Name": "twilightforest:mangrove_wood",
+              "Properties": {
+                "axis": "y"
+              }
+            }
+          },
           "count_minimum": 0,
           "downwards_pitch": 0.25,
           "length": 6.0,

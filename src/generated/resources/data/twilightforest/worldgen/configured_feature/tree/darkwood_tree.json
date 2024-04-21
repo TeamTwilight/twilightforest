@@ -60,6 +60,15 @@
       "type": "twilightforest:branching_trunk_placer",
       "base_height": 9,
       "branch_config": {
+        "branch_provider": {
+          "type": "minecraft:simple_state_provider",
+          "state": {
+            "Name": "twilightforest:dark_wood",
+            "Properties": {
+              "axis": "y"
+            }
+          }
+        },
         "count_minimum": 4,
         "downwards_pitch": 0.23,
         "length": 8.0,

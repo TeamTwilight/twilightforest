@@ -17,6 +17,7 @@ import twilightforest.util.VoxelBresenhamIterator;
 
 import java.util.List;
 import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 public class BranchingTrunkPlacer extends TrunkPlacer {
     public static final Codec<BranchingTrunkPlacer> CODEC = RecordCodecBuilder.create(instance ->
@@ -59,32 +60,32 @@ public class BranchingTrunkPlacer extends TrunkPlacer {
         int numBranches = this.branchesConfig.branchCount() + random.nextInt(this.branchesConfig.randomAddBranches() + 1);
         float offset = random.nextFloat();
         for (int b = 0; b < numBranches; b++) {
-            buildBranch(worldReader, worldPlacer, startPos, leafAttachments, height - this.branchDownwardOffset + b, this.branchesConfig.length(), this.branchesConfig.spacingYaw() * b + offset, this.branchesConfig.downwardsPitch(), random, treeConfig, this.perpendicularBranches);
+            buildBranch(worldReader, worldPlacer, startPos, leafAttachments, height - this.branchDownwardOffset + b, this.branchesConfig.length(), this.branchesConfig.spacingYaw() * b + offset, this.branchesConfig.downwardsPitch(), random, this.perpendicularBranches);
         }
 
         return leafAttachments;
     }
 
-    private void buildBranch(LevelSimulatedReader worldReader, BiConsumer<BlockPos, BlockState> worldPlacer, BlockPos pos, List<FoliagePlacer.FoliageAttachment> leafBlocks, int height, double length, double angle, double tilt, RandomSource treeRNG, TreeConfiguration treeConfig, boolean perpendicularBranches) {
+    private void buildBranch(LevelSimulatedReader worldReader, BiConsumer<BlockPos, BlockState> worldPlacer, BlockPos pos, List<FoliagePlacer.FoliageAttachment> leafBlocks, int height, double length, double angle, double tilt, RandomSource treeRNG, boolean perpendicularBranches) {
         BlockPos src = pos.above(height);
         BlockPos dest = FeatureLogic.translate(src, length, angle, tilt);
 
         if (perpendicularBranches) {
-            drawBresenhamBranch(worldReader, worldPlacer, treeRNG, src, new BlockPos(dest.getX(), src.getY(), dest.getZ()), treeConfig);
+            drawBresenhamBranch(worldReader, worldPlacer, treeRNG, src, new BlockPos(dest.getX(), src.getY(), dest.getZ()));
 
             int max = Math.max(src.getY(), dest.getY());
 
             for (int i = Math.min(src.getY(), dest.getY()); i < max + 1; i++) {
-                placeLog(worldReader, worldPlacer, treeRNG, new BlockPos(dest.getX(), i, dest.getZ()), treeConfig);
+                placeWood(worldReader, worldPlacer, treeRNG, new BlockPos(dest.getX(), i, dest.getZ()));
             }
         } else {
-            drawBresenhamBranch(worldReader, worldPlacer, treeRNG, src, dest, treeConfig);
+            drawBresenhamBranch(worldReader, worldPlacer, treeRNG, src, dest);
         }
 
-        placeLog(worldReader, worldPlacer, treeRNG, dest.east(), treeConfig);
-        placeLog(worldReader, worldPlacer, treeRNG, dest.west(), treeConfig);
-        placeLog(worldReader, worldPlacer, treeRNG, dest.south(), treeConfig);
-        placeLog(worldReader, worldPlacer, treeRNG, dest.north(), treeConfig);
+        placeWood(worldReader, worldPlacer, treeRNG, dest.east());
+        placeWood(worldReader, worldPlacer, treeRNG, dest.west());
+        placeWood(worldReader, worldPlacer, treeRNG, dest.south());
+        placeWood(worldReader, worldPlacer, treeRNG, dest.north());
 
         leafBlocks.add(new FoliagePlacer.FoliageAttachment(dest, 0, false));
     }
@@ -93,9 +94,19 @@ public class BranchingTrunkPlacer extends TrunkPlacer {
      * Draws a line from {x1, y1, z1} to {x2, y2, z2}
      * This takes all variables for setting Branch
      */
-    private void drawBresenhamBranch(LevelSimulatedReader worldReader, BiConsumer<BlockPos, BlockState> worldPlacer, RandomSource random, BlockPos from, BlockPos to, TreeConfiguration config) {
-        for (BlockPos pixel : new VoxelBresenhamIterator(from, to)) {
-            placeLog(worldReader, worldPlacer, random, pixel, config);
-        }
+    private void drawBresenhamBranch(LevelSimulatedReader worldReader, BiConsumer<BlockPos, BlockState> worldPlacer, RandomSource random, BlockPos from, BlockPos to) {
+        for (BlockPos pixel : new VoxelBresenhamIterator(from, to)) placeWood(worldReader, worldPlacer, random, pixel);
+    }
+
+    @SuppressWarnings("UnusedReturnValue")
+    protected boolean placeWood(LevelSimulatedReader level, BiConsumer<BlockPos, BlockState> blockSetter, RandomSource random, BlockPos pos) {
+        return this.placeWood(level, blockSetter, random, pos, Function.identity());
+    }
+
+    protected boolean placeWood(LevelSimulatedReader level, BiConsumer<BlockPos, BlockState> blockSetter, RandomSource random, BlockPos pos, Function<BlockState, BlockState> propertySetter) {
+        if (this.validTreePos(level, pos)) {
+            blockSetter.accept(pos, propertySetter.apply(this.branchesConfig.branchProvider().getState(random, pos)));
+            return true;
+        } else return false;
     }
 }

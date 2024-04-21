@@ -2,11 +2,13 @@ package twilightforest.world.components.feature.trees.treeplacers;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 
-public record BranchesConfig(int branchCount, int randomAddBranches, double length, double randomAddLength,
+public record BranchesConfig(BlockStateProvider branchProvider, int branchCount, int randomAddBranches, double length, double randomAddLength,
                              double spacingYaw, double downwardsPitch) {
     public static final Codec<BranchesConfig> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
+                    BlockStateProvider.CODEC.fieldOf("branch_provider").forGetter(p -> p.branchProvider),
                     Codec.intRange(0, 16).fieldOf("count_minimum").forGetter(o -> o.branchCount),
                     Codec.intRange(0, 16).fieldOf("random_add_count").orElse(0).forGetter(o -> o.randomAddBranches),
                     Codec.doubleRange(1, 24).fieldOf("length").forGetter(o -> o.length),
