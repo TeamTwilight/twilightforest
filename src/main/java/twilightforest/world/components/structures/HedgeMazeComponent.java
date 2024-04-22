@@ -190,7 +190,16 @@ public class HedgeMazeComponent extends TFStructureComponentOld {
 		int rx = x + rand.nextInt(diameter) - (diameter / 2);
 		int rz = z + rand.nextInt(diameter) - (diameter / 2);
 
-		placeTreasureAtCurrentPosition(world, rx, FLOOR_LEVEL, rz, table, sbb);
+		int xDiff = x - rx;
+		int zDiff = z - rz;
+
+		BlockPos pos = new BlockPos(getWorldX(rx, rz), getWorldY(FLOOR_LEVEL), getWorldZ(rx, rz));
+		if (sbb.isInside(pos) && world.getBlockState(pos).getBlock() != (Blocks.CHEST)) {
+			Direction facing;
+			if (Math.abs(xDiff) > Math.abs(zDiff)) facing = xDiff < 0 ? Direction.WEST : Direction.EAST;
+			else facing = zDiff < 0 ? Direction.NORTH : Direction.SOUTH;
+			table.generateChest(world, pos, facing, false);
+		}
 	}
 
 	/**

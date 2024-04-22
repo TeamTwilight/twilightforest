@@ -44,7 +44,8 @@
             }
           ]
         },
-        "root_length": 12
+        "root_length": 12,
+        "y_offset": 1
       },
       {
         "type": "minecraft:leave_vine",

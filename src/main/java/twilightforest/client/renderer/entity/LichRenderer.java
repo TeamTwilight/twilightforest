@@ -2,9 +2,11 @@ package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.LichModel;
 import twilightforest.entity.boss.Lich;
@@ -16,6 +18,13 @@ public class LichRenderer extends HumanoidMobRenderer<Lich, LichModel> {
 	public LichRenderer(EntityRendererProvider.Context manager, LichModel modelbiped, float shadowSize) {
 		super(manager, modelbiped, shadowSize);
 		addLayer(new ShieldLayer<>(this));
+	}
+
+	@Nullable
+	@Override
+	protected RenderType getRenderType(Lich lich, boolean bodyVisible, boolean translucent, boolean glowing) {
+		if (lich.isShadowClone()) return RenderType.entityTranslucent(this.getTextureLocation(lich));
+		else return super.getRenderType(lich, bodyVisible, translucent, glowing);
 	}
 
 	@Override

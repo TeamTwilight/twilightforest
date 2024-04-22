@@ -23,6 +23,7 @@ public class TreeRootsDecorator extends TreeDecorator {
 					Codec.intRange(0, 16).fieldOf("base_strand_count").forGetter(o -> o.strands),
 					Codec.intRange(0, 16).fieldOf("additional_random_strands").forGetter(o -> o.addExtraStrands),
 					Codec.intRange(0, 32).fieldOf("root_length").forGetter(o -> o.length),
+					Codec.INT.fieldOf("y_offset").forGetter(o -> o.yOffset),
 					BlockStateProvider.CODEC.optionalFieldOf("exposed_roots_provider").forGetter(o -> Optional.ofNullable(o.surfaceBlock != EMPTY ? o.surfaceBlock : null)),
 					BlockStateProvider.CODEC.fieldOf("ground_roots_provider").forGetter(o -> o.rootBlock)
 			).apply(instance, TreeRootsDecorator::new)
@@ -31,15 +32,17 @@ public class TreeRootsDecorator extends TreeDecorator {
 	private final int strands;
 	private final int addExtraStrands;
 	private final int length;
+	private final int yOffset;
 	private final BlockStateProvider surfaceBlock;
 	private final BlockStateProvider rootBlock;
 
 	private final boolean hasSurfaceRoots;
 
-	private TreeRootsDecorator(int count, int addExtraStrands, int length, Optional<BlockStateProvider> surfaceBlock, BlockStateProvider rootBlock) {
+	private TreeRootsDecorator(int count, int addExtraStrands, int length, int yOffset, Optional<BlockStateProvider> surfaceBlock, BlockStateProvider rootBlock) {
 		this.strands = count;
 		this.addExtraStrands = addExtraStrands;
 		this.length = length;
+		this.yOffset = yOffset;
 		this.rootBlock = rootBlock;
 		this.hasSurfaceRoots = surfaceBlock.isPresent();
 
@@ -54,15 +57,17 @@ public class TreeRootsDecorator extends TreeDecorator {
 		this.strands = count;
 		this.addExtraStrands = addExtraStrands;
 		this.length = length;
+		this.yOffset = 0;
 		this.rootBlock = rootBlock;
 		this.hasSurfaceRoots = false;
 		this.surfaceBlock = EMPTY;
 	}
 
-	public TreeRootsDecorator(int count, int addExtraStrands, int length, BlockStateProvider surfaceBlock, BlockStateProvider rootBlock) {
+	public TreeRootsDecorator(int count, int addExtraStrands, int length, int yOffset, BlockStateProvider surfaceBlock, BlockStateProvider rootBlock) {
 		this.strands = count;
 		this.addExtraStrands = addExtraStrands;
 		this.length = length;
+		this.yOffset = yOffset;
 		this.rootBlock = rootBlock;
 		this.hasSurfaceRoots = true;
 		this.surfaceBlock = surfaceBlock;
@@ -80,7 +85,7 @@ public class TreeRootsDecorator extends TreeDecorator {
 
 		int numBranches = this.strands + context.random().nextInt(this.addExtraStrands + 1);
 		float offset = context.random().nextFloat();
-		BlockPos startPos = context.logs().get(0).above();
+		BlockPos startPos = context.logs().get(0).above(this.yOffset);
 
 		if (this.hasSurfaceRoots) {
 			for (int i = 0; i < numBranches; i++) {

@@ -23,7 +23,8 @@
             }
           ]
         },
-        "root_length": 5
+        "root_length": 5,
+        "y_offset": 0
       },
       {
         "type": "twilightforest:trunkside_decorator",

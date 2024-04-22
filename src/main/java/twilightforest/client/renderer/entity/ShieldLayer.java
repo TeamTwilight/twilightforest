@@ -32,8 +32,8 @@ public class ShieldLayer<T extends LivingEntity, M extends EntityModel<T>> exten
 	}
 
 	private int getShieldCount(T entity) {
-		return entity instanceof Lich
-						? ((Lich) entity).getShieldStrength()
+		return entity instanceof Lich lich
+						? lich.getShieldStrength()
 						: entity.getData(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft();
 	}
 

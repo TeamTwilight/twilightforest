@@ -77,8 +77,8 @@ public class LichModel extends HumanoidModel<Lich> {
 		if (!this.shadowClone) {
 			super.renderToBuffer(stack, builder, light, overlay, red, green, blue, alpha);
 		} else {
-			float shadow = 0.33f;
-			super.renderToBuffer(stack, builder, light, overlay, red * shadow, green * shadow, blue * shadow, 0.8F);
+			float shadow = 0.25f;
+			super.renderToBuffer(stack, builder, light, overlay, red * shadow, green * shadow, blue * shadow, 0.75F);
 		}
 	}
 
