@@ -2,7 +2,9 @@ package twilightforest.entity.passive;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -16,9 +18,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.TFEntities;
+import twilightforest.init.TFSounds;
 
 public class Penguin extends Bird {
 	public Penguin(EntityType<? extends Penguin> type, Level world) {
@@ -46,6 +50,22 @@ public class Penguin extends Bird {
 	@Override
 	public boolean isFood(ItemStack stack) {
 		return stack.is(ItemTagGenerator.PENGUIN_TEMPT_ITEMS);
+	}
+
+	@Nullable
+	@Override
+	protected SoundEvent getAmbientSound() {
+		return TFSounds.PENGUIN_AMBIENT.get();
+	}
+
+	@Override
+	protected SoundEvent getHurtSound(DamageSource source) {
+		return TFSounds.PENGUIN_HURT.get();
+	}
+
+	@Override
+	protected SoundEvent getDeathSound() {
+		return TFSounds.PENGUIN_DEATH.get();
 	}
 
 	public static AttributeSupplier.Builder registerAttributes() {

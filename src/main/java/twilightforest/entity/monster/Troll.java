@@ -7,9 +7,11 @@ import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
@@ -50,9 +52,9 @@ public class Troll extends Monster implements RangedAttackMob {
 	@Nullable
 	private BlockState rock;
 
-	public Troll(EntityType<? extends Troll> type, Level world) {
-		super(type, world);
-		this.rockCooldown = 300;
+	public Troll(EntityType<? extends Troll> type, Level level) {
+		super(type, level);
+		this.rockCooldown = 300 + this.getRandom().nextInt(100);
 	}
 
 	@Override
@@ -110,6 +112,7 @@ public class Troll extends Monster implements RangedAttackMob {
 
 					if (this.rock != null) {
 						this.setHasRock(true);
+						this.playSound(TFSounds.TROLL_GRABS_ROCK.get());
 						ThrownBlock block = new ThrownBlock(level, this, this.rock);
 						block.startRiding(this);
 						level.addFreshEntity(block);
@@ -127,7 +130,8 @@ public class Troll extends Monster implements RangedAttackMob {
 	@Override
 	public void positionRider(Entity entity, Entity.MoveFunction callback) {
 		super.positionRider(entity, callback);
-		entity.setXRot(this.getXRot());
+		entity.setYRot(this.yBodyRot);
+		entity.yRotO = this.yBodyRotO;
 	}
 
 	@Override
@@ -189,6 +193,22 @@ public class Troll extends Monster implements RangedAttackMob {
 		}
 	}
 
+	@Nullable
+	@Override
+	protected SoundEvent getAmbientSound() {
+		return TFSounds.TROLL_AMBIENT.get();
+	}
+
+	@Override
+	protected SoundEvent getHurtSound(DamageSource source) {
+		return TFSounds.TROLL_HURT.get();
+	}
+
+	@Override
+	protected SoundEvent getDeathSound() {
+		return TFSounds.TROLL_DEATH.get();
+	}
+
 	@Override
 	protected void tickDeath() {
 		super.tickDeath();
@@ -230,7 +250,7 @@ public class Troll extends Monster implements RangedAttackMob {
 			if (!this.getPassengers().isEmpty() && Objects.requireNonNull(this.getFirstPassenger()).getType() == TFEntities.THROWN_BLOCK.get()) {
 				this.getFirstPassenger().discard();
 			}
-			this.rockCooldown = 300;
+			this.rockCooldown = 300 + this.getRandom().nextInt(100);
 			this.rock = null;
 		}
 	}

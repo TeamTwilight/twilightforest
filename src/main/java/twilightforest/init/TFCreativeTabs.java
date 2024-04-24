@@ -616,6 +616,7 @@ public class TFCreativeTabs {
 		ItemStack loreSword = new ItemStack(TFItems.GLASS_SWORD.get());
 		CompoundTag tags = new CompoundTag();
 		tags.putBoolean("Unbreakable", true);
+		tags.putBoolean("TFInfiniteGlassSword", true);
 
 		ListTag lore = new ListTag();
 		lore.add(StringTag.valueOf("{\"translate\":\"item.twilightforest.glass_sword.desc\",\"italic\":false,\"color\":\"gray\"}"));

@@ -20,14 +20,14 @@ An enchanted forest dimension.
 [[dependencies.twilightforest]]
     modId="neoforge"
     type="required"
-    versionRange="[20.4.167,)"
+    versionRange="[20.5.0-beta,)"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.twilightforest]]
     modId="minecraft"
     type="required"
-    versionRange="[1.20.4,)"
+    versionRange="[1.20.5,)"
     ordering="NONE"
     side="BOTH"
 

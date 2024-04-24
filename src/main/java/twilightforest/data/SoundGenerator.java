@@ -184,6 +184,10 @@ public class SoundGenerator extends TFSoundProvider {
 		this.generateNewSoundWithSubtitle(TFSounds.NAGA_HURT, "mob/naga/hurt", 3);
 		this.generateNewSoundWithSubtitle(TFSounds.NAGA_RATTLE, "mob/naga/rattle", 2);
 
+		this.generateNewSoundWithSubtitle(TFSounds.PENGUIN_AMBIENT, "mob/penguin/idle", 7);
+		this.generateNewSoundWithSubtitle(TFSounds.PENGUIN_DEATH, "mob/penguin/death", 1);
+		this.generateNewSoundWithSubtitle(TFSounds.PENGUIN_HURT, "mob/penguin/hurt", 1);
+
 		this.generateExistingSoundWithSubtitle(TFSounds.PINCH_BEETLE_DEATH, SoundEvents.SPIDER_DEATH);
 		this.generateExistingSoundWithSubtitle(TFSounds.PINCH_BEETLE_HURT, SoundEvents.SPIDER_HURT);
 		this.makeStepSound(TFSounds.PINCH_BEETLE_STEP, SoundEvents.SPIDER_STEP);
@@ -216,6 +220,10 @@ public class SoundGenerator extends TFSoundProvider {
 		this.generateExistingSoundWithSubtitle(TFSounds.SLIME_BEETLE_SQUISH, SoundEvents.SLIME_SQUISH_SMALL);
 		this.makeStepSound(TFSounds.SLIME_BEETLE_STEP, SoundEvents.SPIDER_STEP);
 
+		this.generateNewSoundWithSubtitle(TFSounds.SQUIRREL_AMBIENT, "mob/squirrel/idle", 5);
+		this.generateNewSoundWithSubtitle(TFSounds.SQUIRREL_DEATH, "mob/squirrel/death", 1);
+		this.generateNewSoundWithSubtitle(TFSounds.SQUIRREL_HURT, "mob/squirrel/hurt", 1);
+
 		this.generateNewSoundWithSubtitle(TFSounds.SNOW_GUARDIAN_AMBIENT, "mob/ice/crackle", 2);
 		this.generateNewSoundWithSubtitle(TFSounds.SNOW_GUARDIAN_DEATH, "mob/ice/death", 2);
 		this.generateNewSoundWithSubtitle(TFSounds.SNOW_GUARDIAN_HURT, "mob/ice/hurt", 2);
@@ -243,7 +251,11 @@ public class SoundGenerator extends TFSoundProvider {
 		this.generateExistingSoundWithSubtitle(TFSounds.TOWERWOOD_BORER_HURT, SoundEvents.SILVERFISH_HURT);
 		this.makeStepSound(TFSounds.TOWERWOOD_BORER_STEP, SoundEvents.SILVERFISH_STEP);
 
-		this.generateExistingSoundWithSubtitle(TFSounds.TROLL_THROWS_ROCK, SoundEvents.ARROW_SHOOT);
+		this.generateNewSoundWithSubtitle(TFSounds.TROLL_AMBIENT, "mob/troll/idle", 4);
+		this.generateNewSoundWithSubtitle(TFSounds.TROLL_DEATH, "mob/troll/death", 1);
+		this.generateNewSoundWithSubtitle(TFSounds.TROLL_GRABS_ROCK, "mob/troll/grab", 1);
+		this.generateNewSoundWithSubtitle(TFSounds.TROLL_HURT, "mob/troll/hurt", 1);
+		this.generateNewSoundWithSubtitle(TFSounds.TROLL_THROWS_ROCK, "mob/troll/throw", 1);
 
 		this.generateExistingSoundWithSubtitle(TFSounds.UR_GHAST_AMBIENT, SoundEvents.GHAST_AMBIENT);
 		this.generateExistingSoundWithSubtitle(TFSounds.UR_GHAST_DEATH, SoundEvents.GHAST_DEATH);

@@ -867,6 +867,10 @@ public class LangGenerator extends TFLangProvider {
 		this.addSubtitle(TFSounds.NAGA_HURT, "Naga hurts");
 		this.addSubtitle(TFSounds.NAGA_RATTLE, "Naga rattles");
 
+		this.addSubtitle(TFSounds.PENGUIN_AMBIENT, "Penguin honks");
+		this.addSubtitle(TFSounds.PENGUIN_DEATH, "Penguin dies");
+		this.addSubtitle(TFSounds.PENGUIN_HURT, "Penguin hurts");
+
 		this.addSubtitle(TFSounds.PINCH_BEETLE_DEATH, "Pinch Beetle dies");
 		this.addSubtitle(TFSounds.PINCH_BEETLE_HURT, "Pinch Beetle hurts");
 
@@ -900,6 +904,10 @@ public class LangGenerator extends TFLangProvider {
 		this.addSubtitle(TFSounds.SNOW_QUEEN_DEATH, "Snow Queen dies");
 		this.addSubtitle(TFSounds.SNOW_QUEEN_HURT, "Snow Queen hurts");
 
+		this.addSubtitle(TFSounds.SQUIRREL_AMBIENT, "Squirrel chitters");
+		this.addSubtitle(TFSounds.SQUIRREL_DEATH, "Squirrel dies");
+		this.addSubtitle(TFSounds.SQUIRREL_HURT, "Squirrel hurts");
+
 		this.addSubtitle(TFSounds.SWARM_SPIDER_AMBIENT, "Swarm Spider hisses");
 		this.addSubtitle(TFSounds.SWARM_SPIDER_DEATH, "Swarm Spider dies");
 		this.addSubtitle(TFSounds.SWARM_SPIDER_HURT, "Swarm Spider hurts");
@@ -915,6 +923,10 @@ public class LangGenerator extends TFLangProvider {
 		this.addSubtitle(TFSounds.TOWERWOOD_BORER_DEATH, "Towerwood Borer dies");
 		this.addSubtitle(TFSounds.TOWERWOOD_BORER_HURT, "Towerwood Borer hurts");
 
+		this.addSubtitle(TFSounds.TROLL_AMBIENT, "Troll grumbles");
+		this.addSubtitle(TFSounds.TROLL_DEATH, "Troll dies");
+		this.addSubtitle(TFSounds.TROLL_GRABS_ROCK, "Troll picks up block");
+		this.addSubtitle(TFSounds.TROLL_HURT, "Troll hurts");
 		this.addSubtitle(TFSounds.TROLL_THROWS_ROCK, "Troll chucks block");
 
 		this.addSubtitle(TFSounds.UR_GHAST_AMBIENT, "Ur-Ghast cries");

@@ -1592,6 +1592,30 @@
     ],
     "subtitle": "subtitles.twilightforest.entity.parrot.imitate.wraith"
   },
+  "entity.twilightforest.penguin.ambient": {
+    "sounds": [
+      "twilightforest:mob/penguin/idle1",
+      "twilightforest:mob/penguin/idle2",
+      "twilightforest:mob/penguin/idle3",
+      "twilightforest:mob/penguin/idle4",
+      "twilightforest:mob/penguin/idle5",
+      "twilightforest:mob/penguin/idle6",
+      "twilightforest:mob/penguin/idle7"
+    ],
+    "subtitle": "subtitles.twilightforest.entity.penguin.ambient"
+  },
+  "entity.twilightforest.penguin.death": {
+    "sounds": [
+      "twilightforest:mob/penguin/death"
+    ],
+    "subtitle": "subtitles.twilightforest.entity.penguin.death"
+  },
+  "entity.twilightforest.penguin.hurt": {
+    "sounds": [
+      "twilightforest:mob/penguin/hurt"
+    ],
+    "subtitle": "subtitles.twilightforest.entity.penguin.hurt"
+  },
   "entity.twilightforest.pinch_beetle.death": {
     "sounds": [
       {
@@ -1873,6 +1897,28 @@
     ],
     "subtitle": "subtitles.twilightforest.entity.snow_queen.hurt"
   },
+  "entity.twilightforest.squirrel.ambient": {
+    "sounds": [
+      "twilightforest:mob/squirrel/idle1",
+      "twilightforest:mob/squirrel/idle2",
+      "twilightforest:mob/squirrel/idle3",
+      "twilightforest:mob/squirrel/idle4",
+      "twilightforest:mob/squirrel/idle5"
+    ],
+    "subtitle": "subtitles.twilightforest.entity.squirrel.ambient"
+  },
+  "entity.twilightforest.squirrel.death": {
+    "sounds": [
+      "twilightforest:mob/squirrel/death"
+    ],
+    "subtitle": "subtitles.twilightforest.entity.squirrel.death"
+  },
+  "entity.twilightforest.squirrel.hurt": {
+    "sounds": [
+      "twilightforest:mob/squirrel/hurt"
+    ],
+    "subtitle": "subtitles.twilightforest.entity.squirrel.hurt"
+  },
   "entity.twilightforest.swarm_spider.ambient": {
     "sounds": [
       {
@@ -1985,12 +2031,36 @@
     ],
     "subtitle": "subtitles.block.generic.footsteps"
   },
+  "entity.twilightforest.troll.ambient": {
+    "sounds": [
+      "twilightforest:mob/troll/idle1",
+      "twilightforest:mob/troll/idle2",
+      "twilightforest:mob/troll/idle3",
+      "twilightforest:mob/troll/idle4"
+    ],
+    "subtitle": "subtitles.twilightforest.entity.troll.ambient"
+  },
+  "entity.twilightforest.troll.death": {
+    "sounds": [
+      "twilightforest:mob/troll/death"
+    ],
+    "subtitle": "subtitles.twilightforest.entity.troll.death"
+  },
+  "entity.twilightforest.troll.grab_rock": {
+    "sounds": [
+      "twilightforest:mob/troll/grab"
+    ],
+    "subtitle": "subtitles.twilightforest.entity.troll.grab_rock"
+  },
+  "entity.twilightforest.troll.hurt": {
+    "sounds": [
+      "twilightforest:mob/troll/hurt"
+    ],
+    "subtitle": "subtitles.twilightforest.entity.troll.hurt"
+  },
   "entity.twilightforest.troll.throw_rock": {
     "sounds": [
-      {
-        "type": "event",
-        "name": "entity.arrow.shoot"
-      }
+      "twilightforest:mob/troll/throw"
     ],
     "subtitle": "subtitles.twilightforest.entity.troll.throw_rock"
   },

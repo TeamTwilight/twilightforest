@@ -47,7 +47,7 @@ public class TinyBird extends FlyingBird implements VariantHolder<TinyBirdVarian
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return FlyingBird.createMobAttributes()
-				.add(Attributes.MAX_HEALTH, 1.0D)
+				.add(Attributes.MAX_HEALTH, 4.0D)
 				.add(Attributes.MOVEMENT_SPEED, 0.2D);
 	}
 

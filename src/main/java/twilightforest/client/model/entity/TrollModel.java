@@ -64,10 +64,6 @@ public class TrollModel extends HumanoidModel<Troll> {
 		this.head.xRot = headPitch / (180F / (float) Math.PI);
 		this.hat.yRot = this.head.yRot;
 		this.hat.xRot = this.head.xRot;
-		this.rightArm.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 2.0F * limbSwingAmount * 0.5F;
-		this.leftArm.xRot = Mth.cos(limbSwing * 0.6662F) * 2.0F * limbSwingAmount * 0.5F;
-		this.rightArm.zRot = 0.0F;
-		this.leftArm.zRot = 0.0F;
 		this.rightLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
 		this.leftLeg.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
 		this.rightLeg.yRot = 0.0F;
@@ -75,10 +71,14 @@ public class TrollModel extends HumanoidModel<Troll> {
 
 		if (entity.isVehicle()) {
 			// arms up!
-			this.rightArm.xRot += Math.PI;
-			this.leftArm.xRot += Math.PI;
-
+			this.rightArm.xRot = Mth.PI;
+			this.leftArm.xRot = Mth.PI;
+		} else {
+			this.rightArm.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 2.0F * limbSwingAmount * 0.5F;
+			this.leftArm.xRot = Mth.cos(limbSwing * 0.6662F) * 2.0F * limbSwingAmount * 0.5F;
 		}
+		this.rightArm.zRot = 0.0F;
+		this.leftArm.zRot = 0.0F;
 
 		if (this.leftArmPose != ArmPose.EMPTY) {
 			this.rightArm.xRot += Math.PI;
@@ -97,10 +97,12 @@ public class TrollModel extends HumanoidModel<Troll> {
 		this.rightArm.yRot = 0.0F;
 		this.leftArm.yRot = 0.0F;
 
-		this.rightArm.zRot += Mth.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
-		this.leftArm.zRot -= Mth.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
-		this.rightArm.xRot += Mth.sin(ageInTicks * 0.067F) * 0.05F;
-		this.leftArm.xRot -= Mth.sin(ageInTicks * 0.067F) * 0.05F;
+		if (!entity.isVehicle()) {
+			this.rightArm.zRot += Mth.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
+			this.leftArm.zRot -= Mth.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
+			this.rightArm.xRot += Mth.sin(ageInTicks * 0.067F) * 0.05F;
+			this.leftArm.xRot -= Mth.sin(ageInTicks * 0.067F) * 0.05F;
+		}
 	}
 
 	@Override
