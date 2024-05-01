@@ -33,7 +33,7 @@ public class FortificationWandItem extends Item {
 
 		if (!level.isClientSide()) {
 			player.getData(TFDataAttachments.FORTIFICATION_SHIELDS).setShields(player, 5, true);
-			if(player.getAbilities().instabuild) {
+			if(!player.getAbilities().instabuild) {
 				stack.hurtAndBreak(1, level.getRandom(), player, () -> {
 				});
 			}
