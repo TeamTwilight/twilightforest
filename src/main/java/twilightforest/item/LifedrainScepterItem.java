@@ -42,7 +42,7 @@ public class LifedrainScepterItem extends Item {
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 
-		if (stack.getDamageValue() == stack.getMaxDamage()) {
+		if (stack.getDamageValue() == stack.getMaxDamage() && !player.getAbilities().instabuild) {
 			return InteractionResultHolder.fail(player.getItemInHand(hand));
 		} else {
 			player.startUsingItem(hand);

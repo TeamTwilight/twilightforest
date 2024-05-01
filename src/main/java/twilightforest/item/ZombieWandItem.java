@@ -33,7 +33,7 @@ public class ZombieWandItem extends Item {
 
 		ItemStack stack = player.getItemInHand(hand);
 
-		if (stack.getDamageValue() == stack.getMaxDamage()) {
+		if (stack.getDamageValue() == stack.getMaxDamage() && !player.getAbilities().instabuild) {
 			return InteractionResultHolder.fail(stack);
 		}
 
@@ -54,8 +54,10 @@ public class ZombieWandItem extends Item {
 				level.addFreshEntity(zombie);
 				level.gameEvent(player, GameEvent.ENTITY_PLACE, result.getBlockPos());
 
-				stack.hurtAndBreak(1, level.getRandom(), player, () -> {
-				});
+				if (!player.getAbilities().instabuild) {
+					stack.hurtAndBreak(1, level.getRandom(), player, () -> {
+					});
+				}
 				zombie.playSound(TFSounds.LOYAL_ZOMBIE_SUMMON.get(), 1.0F, zombie.getVoicePitch());
 			}
 		}

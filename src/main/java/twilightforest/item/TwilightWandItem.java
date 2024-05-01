@@ -25,15 +25,17 @@ public class TwilightWandItem extends Item {
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 
-		if (stack.getDamageValue() == stack.getMaxDamage()) {
+		if (stack.getDamageValue() == stack.getMaxDamage() && !player.getAbilities().instabuild) {
 			return InteractionResultHolder.fail(player.getItemInHand(hand));
 		} else {
 			player.playSound(TFSounds.SCEPTER_PEARL.get(), 1.0F, (level.getRandom().nextFloat() - level.getRandom().nextFloat()) * 0.2F + 1.0F);
 
 			if (!level.isClientSide()) {
 				level.addFreshEntity(new TwilightWandBolt(level, player));
-				stack.hurtAndBreak(1, level.getRandom(), player, () -> {
-				});
+				if (!player.getAbilities().instabuild) {
+					stack.hurtAndBreak(1, level.getRandom(), player, () -> {
+					});
+				}
 			}
 
 			return InteractionResultHolder.success(player.getItemInHand(hand));
