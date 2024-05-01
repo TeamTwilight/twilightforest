@@ -180,7 +180,7 @@ public class LifedrainScepterItem extends Item {
 							}
 						}
 
-						if (living instanceof Player player && !player.isCreative()) {
+						if (living instanceof Player player && !player.getAbilities().instabuild) {
 							stack.hurtAndBreak(1, level.getRandom(), player, () -> {
 							});
 						}
