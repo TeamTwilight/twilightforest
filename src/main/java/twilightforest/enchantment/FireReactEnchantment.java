@@ -24,7 +24,7 @@ public class FireReactEnchantment extends LootOnlyEnchantment {
 	public boolean canEnchant(ItemStack stack) {
 		if (stack.getItem() instanceof ArmorItem armorItem) {
 			ArmorMaterial material = armorItem.getMaterial().value();
-			return material != TFArmorMaterials.YETI.get() && material != TFArmorMaterials.ARCTIC.get();
+			return material != TFArmorMaterials.YETI.get();
 		}
 		return super.canEnchant(stack);
 	}
