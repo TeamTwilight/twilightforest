@@ -152,7 +152,7 @@ public class TFTeleporter implements ITeleporter {
 					continue;
 				}
 
-				for (BlockPos blockpos1 = pos.offset(i1, getScanHeight(destDim, pos) - pos.getY(), j1); blockpos1.getY() >= 0; blockpos1 = blockpos2) {
+				for (BlockPos blockpos1 = pos.offset(i1, getScanHeight(destDim, pos) - pos.getY(), j1); blockpos1.getY() >= destDim.getMinBuildHeight(); blockpos1 = blockpos2) {
 					blockpos2 = blockpos1.below();
 
 					// don't lookup state if inner condition would fail
@@ -541,7 +541,7 @@ public class TFTeleporter implements ITeleporter {
 	protected static boolean isOkayForPortal(ServerLevel world, BlockPos pos) {
 		for (int potentialZ = 0; potentialZ < 4; potentialZ++) {
 			for (int potentialX = 0; potentialX < 4; potentialX++) {
-				for (int potentialY = 0; potentialY < 4; potentialY++) {
+				for (int potentialY = -1; potentialY < 6; potentialY++) {
 					BlockPos tPos = pos.offset(potentialX - 1, potentialY, potentialZ - 1);
 					BlockState state = world.getBlockState(tPos);
 					if (potentialY == 0 && !state.isSolid() && !state.liquid() || potentialY >= 1 && !state.canBeReplaced()) {
