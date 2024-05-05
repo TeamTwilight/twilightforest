@@ -54,10 +54,7 @@ public class TFTeleporter implements ITeleporter {
 		PortalInfo pos;
 		TeleporterCache cache = TeleporterCache.get(dest);
 
-		// Scale the coords based on the dimension type coordinate_scale
-		ServerLevel tfDim = dest.getServer().getLevel(TFDimension.DIMENSION_KEY);
-		double scale = tfDim == null ? 0.125D : tfDim.dimensionType().coordinateScale();
-		scale = dest.dimension().equals(TFDimension.DIMENSION_KEY) ? 1F / scale : scale;
+		double scale = getHorizontalScale(dest);
 		BlockPos destPos = dest.getWorldBorder().clampToBounds(entity.blockPosition().getX() * scale, entity.blockPosition().getY(), entity.blockPosition().getZ() * scale);
 
 		if ((pos = placeInExistingPortal(cache, dest, entity, destPos)) == null) {
@@ -222,6 +219,13 @@ public class TFTeleporter implements ITeleporter {
 
 	protected static boolean isPortalAt(ServerLevel world, BlockPos pos) {
 		return isPortal(world.getBlockState(pos));
+	}
+
+	// Scale the coords based on the dimension type coordinate_scale
+	protected static double getHorizontalScale(ServerLevel destination) {
+		ServerLevel tfDim = destination.getServer().getLevel(TFDimension.DIMENSION_KEY);
+		double scale = tfDim == null ? 0.125D : tfDim.dimensionType().coordinateScale();
+		return destination.dimension().equals(TFDimension.DIMENSION_KEY) ? 1F / scale : scale;
 	}
 
 	protected static PortalInfo moveToSafeCoords(ServerLevel world, Entity entity, BlockPos pos) {
