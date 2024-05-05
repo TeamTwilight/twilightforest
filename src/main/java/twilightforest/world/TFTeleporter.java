@@ -365,8 +365,17 @@ public class TFTeleporter implements ITeleporter {
 			return;
 		}
 
+		TwilightForestMod.LOGGER.debug("Did not even find an okay portal spot, just making a fallback one for {}", name);
+
+		spot = findPortalCoords(world, pos, blockpos -> isOkayForFallbackPortal(world, 	blockpos), true);
+		if (spot != null) {
+			TwilightForestMod.LOGGER.debug("Found fallback portal spot for {} at {}", name, spot);
+			cacheNewPortalCoords(cache, src, this.makePortalAt(world, spot), entity.blockPosition());
+			return;
+		}
+
 		// well I don't think we can actually just return and fail here
-		TwilightForestMod.LOGGER.debug("Did not even find an okay portal spot, just making a random one for {}", name);
+		TwilightForestMod.LOGGER.debug("Did not even find a fallback portal spot, just making a random one for {}", name);
 
 		// adjust the portal height based on what world we're traveling to
 		double yFactor = getYFactor(world);
@@ -388,6 +397,11 @@ public class TFTeleporter implements ITeleporter {
 
 	@Nullable
 	protected static BlockPos findPortalCoords(ServerLevel world, Vec3 loc, Predicate<BlockPos> predicate) {
+		return findPortalCoords(world, loc, predicate, false);
+	}
+
+	@Nullable
+	protected static BlockPos findPortalCoords(ServerLevel world, Vec3 loc, Predicate<BlockPos> predicate, boolean makePortalInAir) {
 		// adjust the height based on what world we're traveling to
 		double yFactor = getYFactor(world);
 		// modified copy of base Teleporter method:
@@ -407,12 +421,22 @@ public class TFTeleporter implements ITeleporter {
 
 				for (int ry = getScanHeight(world, rx, rz); ry >= world.getMinBuildHeight(); ry--) {
 
-					if (!world.isEmptyBlock(pos.set(rx, ry, rz))) {
+
+					pos.set(rx, ry, rz);
+					if (!makePortalInAir && !world.isEmptyBlock(pos)) {
 						continue;
 					}
 
-					while (ry > world.getMinBuildHeight() && world.isEmptyBlock(pos.set(rx, ry - 1, rz))) {
-						ry--;
+					if (makePortalInAir) {
+						while (ry > world.getMinBuildHeight() && world.isEmptyBlock(pos.set(rx, ry - 1, rz)) && predicate.test(pos)) {
+							ry--;
+						}
+						pos.set(rx, ry, rz);
+					}
+					else {
+						while (ry > world.getMinBuildHeight() && world.isEmptyBlock(pos.set(rx, ry - 1, rz))) {
+							ry--;
+						}
 					}
 
 					double yWeight = (ry + 0.5D) - loc.y() * yFactor;
@@ -453,10 +477,12 @@ public class TFTeleporter implements ITeleporter {
 	protected static boolean isIdealForPortal(ServerLevel world, BlockPos pos) {
 		for (int potentialZ = 0; potentialZ < 4; potentialZ++) {
 			for (int potentialX = 0; potentialX < 4; potentialX++) {
-				for (int potentialY = 0; potentialY < 4; potentialY++) {
+				for (int potentialY = -1; potentialY < 6; potentialY++) {
 					BlockPos tPos = pos.offset(potentialX - 1, potentialY, potentialZ - 1);
 					BlockState state = world.getBlockState(tPos);
-					if (potentialY == 0 && !state.is(BlockTags.DIRT) || potentialY >= 1 && !state.canBeReplaced()) {
+
+					// all blocks mustn't be bedrock, end portal frame, etc.; and other conditions for layers >= 0
+					if (state.is(BlockTags.FEATURES_CANNOT_REPLACE) || potentialY == 0 && !state.is(BlockTags.DIRT) || potentialY >= 1 && !state.canBeReplaced()) {
 						return false;
 					}
 				}
@@ -544,7 +570,26 @@ public class TFTeleporter implements ITeleporter {
 				for (int potentialY = -1; potentialY < 6; potentialY++) {
 					BlockPos tPos = pos.offset(potentialX - 1, potentialY, potentialZ - 1);
 					BlockState state = world.getBlockState(tPos);
-					if (potentialY == 0 && !state.isSolid() && !state.liquid() || potentialY >= 1 && !state.canBeReplaced()) {
+
+					// all blocks mustn't be bedrock, end portal frame, etc.; and other conditions for layers >= 0
+					if (state.is(BlockTags.FEATURES_CANNOT_REPLACE) || potentialY == 0 && !state.isSolid() && !state.liquid() || potentialY >= 1 && !state.canBeReplaced()) {
+						return false;
+					}
+				}
+			}
+		}
+		return true;
+	}
+
+	protected static boolean isOkayForFallbackPortal(ServerLevel world, BlockPos pos) {
+		for (int potentialZ = 0; potentialZ < 4; potentialZ++) {
+			for (int potentialX = 0; potentialX < 4; potentialX++) {
+				for (int potentialY = -1; potentialY < 6; potentialY++) {
+					BlockPos tPos = pos.offset(potentialX - 1, potentialY, potentialZ - 1);
+					BlockState state = world.getBlockState(tPos);
+
+					// all blocks mustn't be bedrock, end portal frame, etc.;
+					if (state.is(BlockTags.FEATURES_CANNOT_REPLACE) || potentialY >= 1 && !state.canBeReplaced()) {
 						return false;
 					}
 				}
