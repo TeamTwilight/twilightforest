@@ -53,6 +53,7 @@ public class NoReturnTeleporter extends TFTeleporter {
 		// adjust the portal height based on what world we're traveling to
 		double yFactor = getYFactor(world);
 		// modified copy of base Teleporter method:
-		return makePortalInfo(entity, entity.getX(), (entity.getY() * yFactor) - 1.0, entity.getZ());
+		// + 2 to make it above bedrock
+		return makePortalInfo(entity, entity.getX() * getHorizontalScale(world), (entity.getY() * yFactor) + 2, entity.getZ() * getHorizontalScale(world));
 	}
 }

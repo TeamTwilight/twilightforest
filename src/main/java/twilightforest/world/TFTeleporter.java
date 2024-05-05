@@ -379,8 +379,9 @@ public class TFTeleporter implements ITeleporter {
 
 		// adjust the portal height based on what world we're traveling to
 		double yFactor = getYFactor(world);
-		// modified copy of base Teleporter method:
-		cacheNewPortalCoords(cache, src, this.makePortalAt(world, BlockPos.containing(entity.getX(), (entity.getY() * yFactor) - 1.0, entity.getZ())), entity.blockPosition());
+
+		// + 2 to make it above bedrock
+		cacheNewPortalCoords(cache, src, this.makePortalAt(world, BlockPos.containing(entity.getX() * getHorizontalScale(world), (entity.getY() * yFactor) + 2, entity.getZ() * getHorizontalScale(world))), entity.blockPosition());
 	}
 
 	protected static void loadSurroundingArea(ServerLevel world, Vec3 pos) {
