@@ -28,27 +28,27 @@ public class NoReturnTeleporter extends TFTeleporter {
 		String name = entity.getName().getString();
 
 		if (spot != null) {
-			TwilightForestMod.LOGGER.debug("Found existing portal for {} at {}", name, spot);
+			TwilightForestMod.LOGGER.debug("Found existing teleportation for {} at {}", name, spot);
 			return makePortalInfo(entity, Vec3.atCenterOf(spot.above()));
 		}
 
 		spot = findPortalCoords(world, pos, blockpos -> isIdealForPortal(world, blockpos));
 
 		if (spot != null) {
-			TwilightForestMod.LOGGER.debug("Found ideal portal spot for {} at {}", name, spot);
+			TwilightForestMod.LOGGER.debug("Found ideal teleportation spot for {} at {}", name, spot);
 			return makePortalInfo(entity, Vec3.atCenterOf(spot.above()));
 		}
 
-		TwilightForestMod.LOGGER.debug("Did not find ideal portal spot, shooting for okay one for {}", name);
+		TwilightForestMod.LOGGER.debug("Did not find ideal teleportation spot, shooting for okay one for {}", name);
 		spot = findPortalCoords(world, pos, blockPos -> isOkayForPortal(world, blockPos));
 
 		if (spot != null) {
-			TwilightForestMod.LOGGER.debug("Found okay portal spot for {} at {}", name, spot);
+			TwilightForestMod.LOGGER.debug("Found okay teleportation spot for {} at {}", name, spot);
 			return makePortalInfo(entity, Vec3.atCenterOf(spot.above()));
 		}
 
 		// well I don't think we can actually just return and fail here
-		TwilightForestMod.LOGGER.debug("Did not even find an okay portal spot, just making a random one for {}", name);
+		TwilightForestMod.LOGGER.debug("Did not even find an okay teleportation spot, just making a random one for {}", name);
 
 		// adjust the portal height based on what world we're traveling to
 		double yFactor = getYFactor(world);
