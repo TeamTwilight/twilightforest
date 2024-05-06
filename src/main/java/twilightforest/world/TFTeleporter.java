@@ -478,7 +478,7 @@ public class TFTeleporter implements ITeleporter {
 	protected static boolean isIdealForPortal(ServerLevel world, BlockPos pos) {
 		for (int potentialZ = 0; potentialZ < 4; potentialZ++) {
 			for (int potentialX = 0; potentialX < 4; potentialX++) {
-				for (int potentialY = -1; potentialY < 6; potentialY++) {
+				for (int potentialY = 0; potentialY < 6; potentialY++) {
 					BlockPos tPos = pos.offset(potentialX - 1, potentialY, potentialZ - 1);
 					BlockState state = world.getBlockState(tPos);
 
@@ -512,13 +512,18 @@ public class TFTeleporter implements ITeleporter {
 		world.setBlockAndUpdate(pos.east().south(2), grass);
 		world.setBlockAndUpdate(pos.east(2).south(2), grass);
 
+		BlockPos[] positions = new BlockPos[4];
+		positions[0] = pos.below();
+		positions[1] = pos.east().below();
+		positions[2] = pos.south().below();
+		positions[3] = pos.east().south().below();
+
 		// dirt under it
 		BlockState dirt = Blocks.DIRT.defaultBlockState();
-
-		world.setBlockAndUpdate(pos.below(), dirt);
-		world.setBlockAndUpdate(pos.east().below(), dirt);
-		world.setBlockAndUpdate(pos.south().below(), dirt);
-		world.setBlockAndUpdate(pos.east().south().below(), dirt);
+		for (BlockPos blockpos: positions) {
+			if(world.getBlockState(pos).is(BlockTags.FEATURES_CANNOT_REPLACE))
+				world.setBlockAndUpdate(blockpos, dirt);
+		}
 
 		// portal in it
 		BlockState portal = TFBlocks.TWILIGHT_PORTAL.get().defaultBlockState().setValue(TFPortalBlock.DISALLOW_RETURN, (this.locked || !TFConfig.shouldReturnPortalBeUsable));
@@ -568,7 +573,7 @@ public class TFTeleporter implements ITeleporter {
 	protected static boolean isOkayForPortal(ServerLevel world, BlockPos pos) {
 		for (int potentialZ = 0; potentialZ < 4; potentialZ++) {
 			for (int potentialX = 0; potentialX < 4; potentialX++) {
-				for (int potentialY = -1; potentialY < 6; potentialY++) {
+				for (int potentialY = 0; potentialY < 6; potentialY++) {
 					BlockPos tPos = pos.offset(potentialX - 1, potentialY, potentialZ - 1);
 					BlockState state = world.getBlockState(tPos);
 
@@ -585,7 +590,7 @@ public class TFTeleporter implements ITeleporter {
 	protected static boolean isOkayForFallbackPortal(ServerLevel world, BlockPos pos) {
 		for (int potentialZ = 0; potentialZ < 4; potentialZ++) {
 			for (int potentialX = 0; potentialX < 4; potentialX++) {
-				for (int potentialY = -1; potentialY < 6; potentialY++) {
+				for (int potentialY = 0; potentialY < 6; potentialY++) {
 					BlockPos tPos = pos.offset(potentialX - 1, potentialY, potentialZ - 1);
 					BlockState state = world.getBlockState(tPos);
 
