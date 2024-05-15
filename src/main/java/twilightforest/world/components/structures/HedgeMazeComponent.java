@@ -85,22 +85,25 @@ public class HedgeMazeComponent extends TFStructureComponentOld {
 		placeBlock(world, southJacko, 24, FLOOR_LEVEL, 50, sbb);
 		placeBlock(world, southJacko, 29, FLOOR_LEVEL, 50, sbb);
 
-		maze.generateRecursiveBacktracker(0, 0);
-
 		int nrooms = MSIZE / 3;
 		int[] rcoords = new int[nrooms * 2];
 
-		for (int i = 0; i < nrooms; i++) {
-			int rx, rz;
-			do {
-				rx = maze.rand.nextInt(MSIZE - 2) + 1;
-				rz = maze.rand.nextInt(MSIZE - 2) + 1;
-			} while (isNearRoom(rx, rz, rcoords));
+		while (!maze.allCellsNonZero()) {
+			maze.resetCells();
+			for (int i = 0; i < nrooms; i++) {
+				int rx, rz;
+				do {
+					rx = maze.rand.nextInt(MSIZE - 2) + 1;
+					rz = maze.rand.nextInt(MSIZE - 2) + 1;
+				} while (isNearRoom(rx, rz, rcoords));
 
-			maze.carveRoom1(rx, rz);
+				maze.carveRoom1(rx, rz);
 
-			rcoords[i * 2] = rx;
-			rcoords[i * 2 + 1] = rz;
+				rcoords[i * 2] = rx;
+				rcoords[i * 2 + 1] = rz;
+			}
+
+			maze.generateRecursiveBacktracker(0, 0);
 		}
 
 		maze.add4Exits();
