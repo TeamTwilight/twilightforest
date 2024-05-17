@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 
-public class OreScannerComponent  {
+public class OreScannerComponent {
 	public static Codec<OreScannerComponent> CODEC = RecordCodecBuilder.<OreScannerComponent>create(inst -> inst.group(
 		BlockPos.CODEC.fieldOf("origin").forGetter(s -> s.origin),
 		Codec.INT.fieldOf("span_x").forGetter(s -> s.xSpan),
