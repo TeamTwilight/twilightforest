@@ -9,7 +9,6 @@ import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingAttackEvent;
-import net.neoforged.neoforge.event.entity.living.LivingEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
@@ -35,13 +34,15 @@ public class CapabilityEvents {
 	@SubscribeEvent
 	public static void updatePlayerCaps(PlayerTickEvent.Post event) {
 		if (event.getEntity().getData(TFDataAttachments.FEATHER_FAN)) {
-			event.getEntity().resetFallDistance();
+			event.getEntity().ignoreFallDamageFromCurrentImpulse = true;
+			event.getEntity().currentImpulseImpactPos = event.getEntity().position();
 
 			if (event.getEntity().onGround() || event.getEntity().isSwimming() || event.getEntity().isInWater()) {
 				event.getEntity().setData(TFDataAttachments.FEATHER_FAN, false);
 			}
 		}
 		event.getEntity().getData(TFDataAttachments.YETI_THROWING).tick(event.getEntity());
+		event.getEntity().getData(TFDataAttachments.TF_PORTAL_COOLDOWN).tick(event.getEntity());
 	}
 
 	@SubscribeEvent

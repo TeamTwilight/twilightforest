@@ -2,6 +2,7 @@ package twilightforest.entity.boss;
 
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Ints;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.GlobalPos;
@@ -29,6 +30,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -38,6 +40,10 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.Structure;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -177,44 +183,91 @@ public class KnightPhantom extends BaseTFBoss {
 	}
 
 	@Override
-	protected void tickDeath() {
-		super.tickDeath();
+	protected void postmortem(ServerLevel serverLevel, DamageSource cause) {
+		List<KnightPhantom> knights = this.getNearbyKnights();
 
-		for (int i = 0; i < 20; ++i) {
-			double d0 = this.getRandom().nextGaussian() * 0.02D;
-			double d1 = this.getRandom().nextGaussian() * 0.02D;
-			double d2 = this.getRandom().nextGaussian() * 0.02D;
-			this.level().addParticle(ParticleTypes.EXPLOSION, this.getX() + this.getRandom().nextFloat() * this.getBbWidth() * 2.0F - this.getBbWidth(), this.getY() + this.getRandom().nextFloat() * this.getBbHeight(), this.getZ() + this.getRandom().nextFloat() * this.getBbWidth() * 2.0F - this.getBbWidth(), d0, d1, d2);
+		LootParams params = TFLootTables.createLootParams(this, true, cause).create(LootContextParamSets.ENTITY);
+		LootTable table = serverLevel.getServer().reloadableRegistries().getLootTable(this.getLootTable());
+
+		if (!knights.isEmpty()) {
+			knights.forEach(KnightPhantom::updateMyNumber);
+
+			ObjectArrayList<ItemStack> items = table.getRandomItems(params);
+			if (!this.getItemStacks().isEmpty()) items.addAll(this.getItemStacks());
+			List<Integer> list = this.getAvailableSlots(this.random);
+			table.shuffleAndSplitItems(items, list.size(), this.random);
+
+			giveKnightLoot(knights.getFirst(), items, serverLevel, list, this.position());
+		} else if (!cause.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+			this.getBossBar().setProgress(0.0F);
+			BlockPos treasurePos = this.getRestrictionPoint() != null ? serverLevel.getBlockState(this.getRestrictionPoint().pos().below()).canBeReplaced() ? this.getRestrictionPoint().pos().below() : this.getRestrictionPoint().pos() : this.blockPosition();
+
+			ObjectArrayList<ItemStack> items = table.getRandomItems(params);
+
+			LootParams.Builder builder = new LootParams.Builder(serverLevel)
+				.withParameter(LootContextParams.THIS_ENTITY, this)
+				.withParameter(LootContextParams.ORIGIN, this.getEyePosition())
+				.withParameter(LootContextParams.DAMAGE_SOURCE, cause);
+
+			if (this.lastHurtByPlayer != null) {
+                builder = builder.withParameter(LootContextParams.LAST_DAMAGE_PLAYER, this.lastHurtByPlayer)
+                    .withLuck(this.lastHurtByPlayer.getLuck());
+            }
+
+			if (cause.getEntity() != null) {
+				builder = builder.withParameter(LootContextParams.KILLER_ENTITY, cause.getEntity());
+			}
+
+			if (cause.getDirectEntity() != null) {
+				builder = builder.withParameter(LootContextParams.DIRECT_KILLER_ENTITY, cause.getDirectEntity());
+			}
+
+			items.addAll(serverLevel.getServer().reloadableRegistries().getLootTable(TFLootTables.KNIGHT_PHANTOM_DEFEATED).getRandomItems(builder.create(LootContextParamSets.ENTITY)));
+			List<Integer> list = this.getAvailableSlots(this.random);
+			table.shuffleAndSplitItems(items, list.size(), this.random);
+
+			giveKnightLoot(this, items, serverLevel, list, this.position());
+
+			//trigger criteria for killing every phantom in a group
+			if (cause.getEntity() instanceof ServerPlayer player) {
+				TFAdvancements.KILL_ALL_PHANTOMS.get().trigger(player);
+				for (ServerPlayer otherPlayer : this.level().getEntitiesOfClass(ServerPlayer.class, new AABB(treasurePos).inflate(32.0D))) {
+					TFAdvancements.KILL_ALL_PHANTOMS.get().trigger(otherPlayer);
+				}
+			}
+
+			// mark the stronghold as defeated
+			LandmarkUtil.markStructureConquered(this.level(), this, TFStructures.KNIGHT_STRONGHOLD, true);
+		}
+	}
+
+	protected static  void giveKnightLoot(KnightPhantom phantom, ObjectArrayList<ItemStack> items, ServerLevel serverLevel, List<Integer> list, Vec3 dropOff) {
+		for (ItemStack itemstack : items) {
+			if (!list.isEmpty()) { // If there are still more slots to be occupied, occupy them :)
+				while (!list.isEmpty()) {
+					int index = list.removeLast();
+					if (phantom.getItemStacks().get(index).isEmpty()) {
+						ItemStack stack = itemstack.isEmpty() ? ItemStack.EMPTY : itemstack;
+						phantom.getItemStacks().set(index, itemstack);
+						if (!stack.isEmpty() && stack.getCount() > stack.getMaxStackSize()) {
+							stack.setCount(stack.getMaxStackSize());
+						}
+						break;
+					}
+				}
+			} else { // If all slots have been used up, throw the items on the ground, I guess, IDK
+				ItemEntity item = new ItemEntity(serverLevel, dropOff.x(), dropOff.y(), dropOff.z(), itemstack);
+				item.setExtendedLifetime();
+				item.setNoPickUpDelay();
+				serverLevel.addFreshEntity(item);
+			}
 		}
 	}
 
 	@Override
-	public void die(DamageSource cause) {
-		super.die(cause);
-		if (this.level() instanceof ServerLevel serverLevel) {
-			List<KnightPhantom> knights = this.getNearbyKnights();
-			if (!knights.isEmpty()) {
-				knights.forEach(KnightPhantom::updateMyNumber);
-			} else if (!cause.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
-				this.getBossBar().setProgress(0.0F);
-
-				BlockPos treasurePos = this.getRestrictionPoint() != null ? serverLevel.getBlockState(this.getRestrictionPoint().pos().below()).canBeReplaced() ? this.getRestrictionPoint().pos().below() : this.getRestrictionPoint().pos() : this.blockPosition();
-
-				// make treasure for killing the last knight
-				// This one won't receive the same loot treatment like the other bosses because this chest is supposed to reward for all of them instead of just the last one killed
-				TFLootTables.generateLootContainer(serverLevel, treasurePos, TFBlocks.DARK_CHEST.get().defaultBlockState().setValue(ChestBlock.FACING, Direction.NORTH), 2, this.getLootTableSeed(), TFLootTables.STRONGHOLD_BOSS);
-
-				//trigger criteria for killing every phantom in a group
-				if (cause.getEntity() instanceof ServerPlayer player) {
-					TFAdvancements.KILL_ALL_PHANTOMS.get().trigger(player);
-					for (ServerPlayer otherPlayer : this.level().getEntitiesOfClass(ServerPlayer.class, new AABB(treasurePos).inflate(32.0D))) {
-						TFAdvancements.KILL_ALL_PHANTOMS.get().trigger(otherPlayer);
-					}
-				}
-
-				// mark the stronghold as defeated
-				LandmarkUtil.markStructureConquered(this.level(), this, TFStructures.KNIGHT_STRONGHOLD, true);
-			}
+	protected void postRemoval(ServerLevel serverLevel, RemovalReason reason) {
+		if (reason.equals(RemovalReason.KILLED) && this.shouldSpawnLoot() && this.getNearbyKnights().isEmpty()) {
+			IBossLootBuffer.depositDropsIntoChest(this, this.getDeathContainer(this.getRandom()).defaultBlockState().setValue(ChestBlock.FACING, Direction.Plane.HORIZONTAL.getRandomDirection(this.level().getRandom())), EntityUtil.bossChestLocation(this), serverLevel);
 		}
 	}
 
@@ -491,8 +544,13 @@ public class KnightPhantom extends BaseTFBoss {
 	}
 
 	@Override
-	protected boolean shouldSpawnLoot() {
-		return false;
+	public void tickDeathAnimation() {
+		for (int i = 0; i < 20; ++i) {
+			double d0 = this.getRandom().nextGaussian() * 0.02D;
+			double d1 = this.getRandom().nextGaussian() * 0.02D;
+			double d2 = this.getRandom().nextGaussian() * 0.02D;
+			this.level().addParticle(ParticleTypes.EXPLOSION, this.getX() + this.getRandom().nextFloat() * this.getBbWidth() * 2.0F - this.getBbWidth(), this.getY() + this.getRandom().nextFloat() * this.getBbHeight(), this.getZ() + this.getRandom().nextFloat() * this.getBbWidth() * 2.0F - this.getBbWidth(), d0, d1, d2);
+		}
 	}
 
 	public enum Formation {

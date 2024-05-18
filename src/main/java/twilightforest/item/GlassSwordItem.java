@@ -16,9 +16,11 @@ import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.enchantment.DigDurabilityEnchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Blocks;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFSounds;
+import twilightforest.network.ParticlePacket;
 
 import java.util.function.Consumer;
 
@@ -32,12 +34,15 @@ public class GlassSwordItem extends SwordItem {
 	@Override
 	public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
 		if (target.level() instanceof ServerLevel server) {
+			ParticlePacket particlePacket = new ParticlePacket();
 			for (int i = 0; i < 20; i++) {
-				double px = target.getX() + target.getRandom().nextFloat() * target.getBbWidth() * 2.0F - target.getBbWidth();
-				double py = target.getY() + target.getRandom().nextFloat() * target.getBbHeight();
-				double pz = target.getZ() + target.getRandom().nextFloat() * target.getBbWidth() * 2.0F - target.getBbWidth();
-				server.sendParticles(GLASS_PARTICLE, px, py, pz, 1, 0, 0, 0, 0);
+				particlePacket.queueParticle(GLASS_PARTICLE, false,
+				target.getX() + target.getRandom().nextFloat() * target.getBbWidth() * 2.0F - target.getBbWidth(),
+				target.getY() + target.getRandom().nextFloat() * target.getBbHeight(),
+				target.getZ() + target.getRandom().nextFloat() * target.getBbWidth() * 2.0F - target.getBbWidth(),
+				0, 0, 0);
 			}
+			PacketDistributor.sendToPlayersTrackingEntity(target, particlePacket);
 		}
 
 		this.hurtAndBreak(stack, attacker, (user) -> {

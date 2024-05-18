@@ -41,7 +41,7 @@ public final class FeaturePlacers {
 
 		mob.setPersistenceRequired();
 		mob.moveTo(pos, 0.0F, 0.0F);
-		EventHooks.onFinalizeSpawn(mob, levelAccessor, levelAccessor.getCurrentDifficultyAt(pos), MobSpawnType.STRUCTURE, null);
+		EventHooks.finalizeMobSpawn(mob, levelAccessor, levelAccessor.getCurrentDifficultyAt(pos), MobSpawnType.STRUCTURE, null);
 		if (mob instanceof EnforcedHomePoint home) {
 			home.setRestrictionPoint(GlobalPos.of(levelAccessor.getLevel().dimension(), pos));
 		}

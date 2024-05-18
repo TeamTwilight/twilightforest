@@ -180,7 +180,7 @@ public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 						}
 						Wraith wraith = new Wraith(TFEntities.WRAITH.get(), world.getLevel());
 						wraith.setPos(placement.getX(), placement.getY(), placement.getZ());
-						EventHooks.onFinalizeSpawn(wraith, world, world.getCurrentDifficultyAt(placement), MobSpawnType.STRUCTURE, null);
+						EventHooks.finalizeMobSpawn(wraith, world, world.getCurrentDifficultyAt(placement), MobSpawnType.STRUCTURE, null);
 						world.addFreshEntity(wraith);
 					}
 				}

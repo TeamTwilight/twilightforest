@@ -41,7 +41,7 @@ public class EmiEntityWidget extends Widget {
 	public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		graphics.pose().pushPose();
 		graphics.pose().translate(this.bounds.x(), this.bounds.y(), 0.0D);
-		EntityRenderingUtil.renderEntity(graphics.pose(), this.type, this.size);
+		EntityRenderingUtil.renderEntity(graphics, this.type, this.size);
 		graphics.pose().popPose();
 	}
 }

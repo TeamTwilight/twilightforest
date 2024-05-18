@@ -720,28 +720,6 @@ public class ChestLootTables implements LootTableSubProvider {
 					.add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withEnchantment(TFEnchantments.DESTRUCTION.get())))
 					.add(LootItem.lootTableItem(TFItems.MAZE_MAP_FOCUS))));
 
-		register.accept(TFLootTables.STRONGHOLD_BOSS,
-			LootTable.lootTable()
-				.withPool(LootPool.lootPool()
-					.setRolls(ConstantValue.exactly(4))
-					//common loot
-					.add(LootItem.lootTableItem(TFItems.KNIGHTMETAL_SWORD).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(20))))
-					.add(LootItem.lootTableItem(TFItems.KNIGHTMETAL_PICKAXE).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(20))))
-					.add(LootItem.lootTableItem(TFItems.KNIGHTMETAL_AXE).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(20)))))
-				.withPool(LootPool.lootPool()
-					.setRolls(ConstantValue.exactly(2))
-					//uncommon loot
-					.add(LootItem.lootTableItem(TFItems.PHANTOM_HELMET).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(20))))
-					.add(LootItem.lootTableItem(TFItems.PHANTOM_CHESTPLATE).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(20)))))
-				.withPool(LootPool.lootPool()
-					.setRolls(ConstantValue.exactly(1))
-					//rare loot
-					.add(LootItem.lootTableItem(TFItems.PHANTOM_HELMET).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(30))))
-					.add(LootItem.lootTableItem(TFItems.PHANTOM_CHESTPLATE).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(30)))))
-				.withPool(LootPool.lootPool()
-					.setRolls(ConstantValue.exactly(1))
-					.add(LootItem.lootTableItem(TFBlocks.KNIGHT_PHANTOM_TROPHY))));
-
 		register.accept(TFLootTables.DARKTOWER_CACHE,
 			LootTable.lootTable()
 				.withPool(LootPool.lootPool()

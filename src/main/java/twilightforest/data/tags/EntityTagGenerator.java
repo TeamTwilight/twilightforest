@@ -113,7 +113,10 @@ public class EntityTagGenerator extends ModdedEntityTagGenerator {
 			TFEntities.CARMINITE_GHASTGUARD.get(),
 			TFEntities.TINY_BIRD.get());
 
-		this.tag(LICH_POPPABLES).addTag(EntityTypeTags.SKELETONS).add(EntityType.ZOMBIE, EntityType.ENDERMAN, EntityType.SPIDER, EntityType.CREEPER, TFEntities.SWARM_SPIDER.get());
+		this.tag(LICH_POPPABLES)
+			.addTag(EntityTypeTags.SKELETONS)
+			.add(EntityType.ZOMBIE, EntityType.ENDERMAN, EntityType.SPIDER, EntityType.CREEPER, TFEntities.SWARM_SPIDER.get())
+			.remove(Tags.EntityTypes.BOSSES);
 
 		this.tag(LIFEDRAIN_DROPS_NO_FLESH).addTag(EntityTypeTags.SKELETONS).addTag(EntityTypeTags.FROG_FOOD).add(
 			EntityType.BLAZE,

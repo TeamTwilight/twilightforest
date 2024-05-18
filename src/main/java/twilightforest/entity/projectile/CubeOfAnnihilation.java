@@ -21,10 +21,12 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.*;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFParticleType;
 import twilightforest.init.TFSounds;
+import twilightforest.network.ParticlePacket;
 import twilightforest.util.WorldUtil;
 
 public class CubeOfAnnihilation extends ThrowableProjectile {
@@ -123,22 +125,21 @@ public class CubeOfAnnihilation extends ThrowableProjectile {
 	}
 
 	private void annihilateParticles(Level level, BlockPos pos) {
-		RandomSource rand = level.getRandom();
 		if (level instanceof ServerLevel server) {
+			RandomSource rand = level.getRandom();
+			ParticlePacket particlePacket = new ParticlePacket();
 			for (int dx = 0; dx < 3; dx++) {
 				for (int dy = 0; dy < 3; dy++) {
 					for (int dz = 0; dz < 3; dz++) {
-
-						double x = pos.getX() + (dx + 0.5D) / 4;
-						double y = pos.getY() + (dy + 0.5D) / 4;
-						double z = pos.getZ() + (dz + 0.5D) / 4;
-
-						double speed = rand.nextGaussian() * 0.2D;
-
-						server.sendParticles(TFParticleType.ANNIHILATE.get(), x, y, z, 1, 0, 0, 0, speed);
+						particlePacket.queueParticle(TFParticleType.ANNIHILATE.get(), false,
+							pos.getX() + (dx + 0.5D) / 4,
+							pos.getY() + (dy + 0.5D) / 4,
+							pos.getZ() + (dz + 0.5D) / 4,
+							rand.nextGaussian() * 0.2D, rand.nextGaussian() * 0.2D, rand.nextGaussian() * 0.2D);
 					}
 				}
 			}
+			PacketDistributor.sendToPlayersNear(server, null, pos.getX(), pos.getY(), pos.getZ(), 32.0D, particlePacket);
 		}
 	}
 

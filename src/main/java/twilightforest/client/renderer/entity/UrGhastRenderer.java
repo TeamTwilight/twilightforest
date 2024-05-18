@@ -47,7 +47,7 @@ public class UrGhastRenderer extends MobRenderer<UrGhast, UrGhastModel> {
 
 	@Override
 	public boolean shouldRender(UrGhast pLivingEntity, Frustum pCamera, double pCamX, double pCamY, double pCamZ) {
-		if (pLivingEntity.deathTime > 40) return false;
+		if (pLivingEntity.deathTime > UrGhast.DEATH_ANIMATION_DURATION / 3) return false;
 		return super.shouldRender(pLivingEntity, pCamera, pCamX, pCamY, pCamZ);
 	}
 

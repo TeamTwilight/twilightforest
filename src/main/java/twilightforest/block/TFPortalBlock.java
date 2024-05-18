@@ -41,9 +41,11 @@ import net.neoforged.neoforge.event.EventHooks;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.components.entity.TFPortalAttachment;
 import twilightforest.config.TFConfig;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFDimension;
 import twilightforest.init.TFSounds;
 import twilightforest.network.MissingAdvancementToastPacket;
@@ -234,6 +236,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 
 			attemptSendEntity(entity, false, true);
 		}
+		entity.getData(TFDataAttachments.TF_PORTAL_COOLDOWN).setInPortal(true);
 	}
 
 	public static boolean isPlayerNotifiedOfRequirement(ServerPlayer player) {
@@ -265,13 +268,16 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 		if (serverWorld == null)
 			return;
 
+		TFPortalAttachment portalAttachment = entity.getData(TFDataAttachments.TF_PORTAL_COOLDOWN);
+
+		if (portalAttachment.getPortalTimer() > 0) return;
+
 		entity.changeDimension(serverWorld, makeReturnPortal ? new TFTeleporter(forcedEntry) : new NoReturnTeleporter());
 
 		if (destination == TFDimension.DIMENSION_KEY && entity instanceof ServerPlayer playerMP && forcedEntry) {
 			// set respawn point for TF dimension to near the arrival portal, only if we spawn here on world creation
 			playerMP.setRespawnPosition(destination, playerMP.blockPosition(), playerMP.getYRot(), true, false);
 		}
-
 	}
 
 	// Full [VanillaCopy] of NetherPortalBlock.animateTick

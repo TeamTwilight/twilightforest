@@ -27,14 +27,16 @@ public class FortificationWandItem extends Item {
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, @Nonnull InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 
-		if (stack.getDamageValue() == stack.getMaxDamage()) {
+		if (stack.getDamageValue() == stack.getMaxDamage() && !player.getAbilities().instabuild) {
 			return InteractionResultHolder.fail(stack);
 		}
 
 		if (!level.isClientSide()) {
 			player.getData(TFDataAttachments.FORTIFICATION_SHIELDS).setShields(player, 5, true);
-			stack.hurtAndBreak(1, level.getRandom(), player, () -> {
-			});
+			if(!player.getAbilities().instabuild) {
+				stack.hurtAndBreak(1, level.getRandom(), player, () -> {
+				});
+			}
 		}
 		player.playSound(TFSounds.SHIELD_ADD.get(), 1.0F, (player.getRandom().nextFloat() - player.getRandom().nextFloat()) * 0.2F + 1.0F);
 

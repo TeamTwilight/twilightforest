@@ -62,6 +62,9 @@ import twilightforest.util.EntityUtil;
 import java.util.*;
 
 public class Lich extends BaseTFBoss {
+	public static final int DEATH_ANIMATION_DURATION = 175; //How many ticks until the body disappears
+	public static final int DEATH_ANIMATION_POINT_A = 50;
+	private static final int DEATH_ANIMATION_POINT_B = 70;
 
 	private static final EntityDataAccessor<Optional<UUID>> MASTER_LICH = SynchedEntityData.defineId(Lich.class, EntityDataSerializers.OPTIONAL_UUID);
 	private static final EntityDataAccessor<Integer> SHIELD_STRENGTH = SynchedEntityData.defineId(Lich.class, EntityDataSerializers.INT);
@@ -336,109 +339,6 @@ public class Lich extends BaseTFBoss {
 			if (this.getShieldStrength() > 0) {
 				this.setShieldStrength(0);
 				this.playSound(TFSounds.SHIELD_BREAK.get(), 1.2F, this.getVoicePitch() * 2.0F);
-			}
-		}
-	}
-
-	@Override
-	protected void tickDeath() {
-		if (this.isShadowClone()) {
-			super.tickDeath();
-			return;
-		}
-		++this.deathTime;
-
-		if (this.level() instanceof ServerLevel) {
-			int maxDeath = 175; //How many ticks until the body disappears
-			if (this.deathTime <= 50) {
-				boolean done = this.deathTime == 50;
-				boolean hurt = this.deathTime % 17 == 0;
-
-				if (hurt) this.playHurtSound(this.damageSources().generic());
-				if (done) {
-					SoundEvent soundevent = this.getDeathSound();
-					if (soundevent != null) {
-						this.playSound(soundevent, this.getSoundVolume(), this.getVoicePitch());
-					}
-				}
-
-				Vec3 pos = this.position();
-				ParticlePacket particlePacket = new ParticlePacket();
-
-				for (int i = 0; i < (hurt ? 12 : 3); i++) {
-					double x = (this.getRandom().nextDouble() - 0.5D) * 0.7D;
-					double y = this.getRandom().nextDouble() * this.getBbHeight();
-					double z = (this.getRandom().nextDouble() - 0.5D) * 0.7D;
-					particlePacket.queueParticle(this.getRandom().nextBoolean() || hurt ? BONE_PARTICLE : ParticleTypes.SMOKE, false, pos.add(x, y, z), Vec3.ZERO);
-				}
-
-				if (hurt) {
-					double x = (this.getRandom().nextDouble() - 0.5D) * 0.7D;
-					double y = this.getRandom().nextDouble() * this.getBbHeight();
-					double z = (this.getRandom().nextDouble() - 0.5D) * 0.7D;
-					for (int i = 0; i < 7; i++) {
-						double x1 = x + (this.getRandom().nextDouble() - 0.5D) * 0.1D;
-						double y1 = y + (this.getRandom().nextDouble() - 0.5D) * 0.1D;
-						double z1 = z + (this.getRandom().nextDouble() - 0.5D) * 0.1D;
-						particlePacket.queueParticle(this.getRandom().nextBoolean() ? BONE_PARTICLE : ParticleTypes.CLOUD, false, pos.add(x1, y1, z1), Vec3.ZERO);
-					}
-				}
-
-				if (done) {
-					for (int i = 0; i < 32; i++) {
-						double x = (this.getRandom().nextDouble() - 0.5D) * 0.7D;
-						double y = this.getRandom().nextDouble() * this.getBbHeight();
-						double z = (this.getRandom().nextDouble() - 0.5D) * 0.7D;
-						particlePacket.queueParticle(this.getRandom().nextBoolean() ? BONE_PARTICLE : ParticleTypes.CLOUD, false, pos.add(x, y, z), Vec3.ZERO);
-					}
-				}
-
-				PacketDistributor.sendToPlayersTrackingEntity(this, particlePacket);
-			} else if (this.deathTime == 70) {
-				ParticlePacket particlePacket = new ParticlePacket();
-				for (int i = 0; i < 3; i++) {
-					double x = (this.getRandom().nextDouble() - 0.5D) * 0.75D;
-					double z = (this.getRandom().nextDouble() - 0.5D) * 0.75D;
-					particlePacket.queueParticle(ParticleTypes.CLOUD, false, this.position().add(x, 0.0D, z), Vec3.ZERO);
-				}
-
-				PacketDistributor.sendToPlayersTrackingEntity(this, particlePacket);
-			} else if (this.deathTime > 70) {
-				boolean flag = this.deathTime >= maxDeath && !this.isRemoved();
-
-				Vec3 start = this.position().add(0.0D, 0.45F, 0.0D);
-				Vec3 end = Vec3.atCenterOf(EntityUtil.bossChestLocation(this));
-				int deathTime2 = this.deathTime - 70;
-				double factor = (double) deathTime2 / 105.0D;
-				double powFactor = Math.pow(factor, 2.0D) * 2.0D;
-				double expandFactor = (Math.cos((factor + 0.5D) * Math.PI * 2) + 1.0D) * 0.5D;
-				Vec3 particlePos = start.add(end.subtract(start).scale(Math.min(((double) deathTime2 / 70.0D) * 1.25D, 1.0D)));
-				ParticlePacket particlePacket = new ParticlePacket();
-				if (this.deathTime >= maxDeath - 3) {
-					for (int i = 0; i < 40; i++) {
-						double x = (this.getRandom().nextDouble() - 0.5D) * 0.075D * i;
-						double y = (this.getRandom().nextDouble() - 0.5D) * 0.075D * i;
-						double z = (this.getRandom().nextDouble() - 0.5D) * 0.075D * i;
-						particlePacket.queueParticle(this.getRandom().nextBoolean() ? TFParticleType.OMINOUS_FLAME.get() : ParticleTypes.POOF, false, end.add(x, y, z), Vec3.ZERO);
-					}
-				}
-				if (flag) {
-					for (int i = 0; i < 16; i++) {
-						double x = (this.getRandom().nextDouble() - 0.5D) * 0.075D * i;
-						double y = (this.getRandom().nextDouble() - 0.5D) * 0.075D * i;
-						double z = (this.getRandom().nextDouble() - 0.5D) * 0.075D * i;
-						particlePacket.queueParticle(ParticleTypes.POOF, false, start.add(x, y, z), Vec3.ZERO);
-					}
-				}
-				for (double i = 0.0D; i < 1.0D; i += 0.2D) {
-					double x = Math.sin((powFactor + i) * Math.PI * 2.0D) * expandFactor * 1.25D;
-					double z = Math.cos((powFactor + i) * Math.PI * 2.0D) * expandFactor * 1.25D;
-					particlePacket.queueParticle(TFParticleType.OMINOUS_FLAME.get(), false, particlePos.add(x, -0.25D, z), Vec3.ZERO);
-				}
-
-				PacketDistributor.sendToPlayersTrackingEntity(this, particlePacket);
-
-				if (flag) this.remove(RemovalReason.KILLED);
 			}
 		}
 	}
@@ -798,4 +698,83 @@ public class Lich extends BaseTFBoss {
 	protected boolean shouldSpawnLoot() {
 		return !this.isShadowClone();
 	}
+
+	@Override
+	public boolean isDeathAnimationFinished() {
+		return this.deathTime >= DEATH_ANIMATION_DURATION;
+	}
+
+	@Override
+	public void tickDeathAnimation() {
+		if (this.isShadowClone()) return;
+
+        if (this.deathTime <= DEATH_ANIMATION_POINT_A) {
+            boolean done = this.deathTime == DEATH_ANIMATION_POINT_A;
+            boolean hurt = this.deathTime % 17 == 0;
+
+            if (hurt) {
+				SoundEvent soundevent = this.getHurtSound(this.damageSources().generic());
+				if (soundevent != null) {
+					this.level().playLocalSound(this, soundevent, SoundSource.HOSTILE, this.getSoundVolume(), this.getVoicePitch());
+				}
+            }
+            if (done) {
+                SoundEvent soundevent = this.getDeathSound();
+                if (soundevent != null) {
+					this.level().playLocalSound(this, soundevent, SoundSource.HOSTILE, this.getSoundVolume(), this.getVoicePitch());
+                }
+            }
+
+            Vec3 pos = this.position();
+
+            for (int i = 0; i < (hurt ? 12 : 3); i++) {
+                double x = (this.getRandom().nextDouble() - 0.5D) * 0.7D;
+                double y = this.getRandom().nextDouble() * this.getBbHeight();
+                double z = (this.getRandom().nextDouble() - 0.5D) * 0.7D;
+				this.level().addParticle(this.getRandom().nextBoolean() || hurt ? BONE_PARTICLE : ParticleTypes.SMOKE, false, pos.x() + x, pos.y() + y, pos.z() + z, 0.0D, 0.0D, 0.0D);
+            }
+
+            if (hurt) {
+                double x = (this.getRandom().nextDouble() - 0.5D) * 0.7D;
+                double y = this.getRandom().nextDouble() * this.getBbHeight();
+                double z = (this.getRandom().nextDouble() - 0.5D) * 0.7D;
+                for (int i = 0; i < 7; i++) {
+                    double x1 = x + (this.getRandom().nextDouble() - 0.5D) * 0.1D;
+                    double y1 = y + (this.getRandom().nextDouble() - 0.5D) * 0.1D;
+                    double z1 = z + (this.getRandom().nextDouble() - 0.5D) * 0.1D;
+					this.level().addParticle(this.getRandom().nextBoolean() ? BONE_PARTICLE : ParticleTypes.CLOUD, false, pos.x() + x1, pos.y() + y1, pos.z() + z1, 0.0D, 0.0D, 0.0D);
+                }
+            }
+
+            if (done) {
+                for (int i = 0; i < 32; i++) {
+                    double x = (this.getRandom().nextDouble() - 0.5D) * 0.7D;
+                    double y = this.getRandom().nextDouble() * this.getBbHeight();
+                    double z = (this.getRandom().nextDouble() - 0.5D) * 0.7D;
+					this.level().addParticle(this.getRandom().nextBoolean() ? BONE_PARTICLE : ParticleTypes.CLOUD, false, pos.x() + x, pos.y() + y, pos.z() + z, 0.0D, 0.0D, 0.0D);
+                }
+            }
+        } else if (this.deathTime == DEATH_ANIMATION_POINT_B) {
+			Vec3 pos = this.position();
+            for (int i = 0; i < 3; i++) {
+                double x = (this.getRandom().nextDouble() - 0.5D) * 0.75D;
+                double z = (this.getRandom().nextDouble() - 0.5D) * 0.75D;
+				this.level().addParticle(ParticleTypes.CLOUD, false, pos.x() + x, pos.y(), pos.z() + z, 0.0D, 0.0D, 0.0D);
+            }
+        } else if (this.deathTime > DEATH_ANIMATION_POINT_B) {
+            Vec3 start = this.position().add(0.0D, 0.45F, 0.0D);
+            Vec3 end = Vec3.atCenterOf(EntityUtil.bossChestLocation(this));
+            int deathTime2 = this.deathTime - DEATH_ANIMATION_POINT_B;
+            double factor = (double) deathTime2 / 105.0D;
+            double powFactor = Math.pow(factor, 2.0D) * 2.0D;
+            double expandFactor = (Math.cos((factor + 0.5D) * Math.PI * 2) + 1.0D) * 0.5D;
+            Vec3 particlePos = start.add(end.subtract(start).scale(Math.min(((double) deathTime2 / (double) DEATH_ANIMATION_POINT_B) * 1.25D, 1.0D)));
+
+            for (double i = 0.0D; i < 1.0D; i += 0.2D) {
+                double x = Math.sin((powFactor + i) * Math.PI * 2.0D) * expandFactor * 1.25D;
+                double z = Math.cos((powFactor + i) * Math.PI * 2.0D) * expandFactor * 1.25D;
+				this.level().addParticle(TFParticleType.OMINOUS_FLAME.get(), false, particlePos.x() + x, particlePos.y() - 0.25D, particlePos.z() + z, 0.0D, 0.0D, 0.0D);
+            }
+        }
+    }
 }

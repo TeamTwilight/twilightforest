@@ -26,10 +26,12 @@ import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.neoforged.neoforge.fluids.FluidType;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.config.TFConfig;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.loot.TFLootTables;
+import twilightforest.network.UpdateDeathTimePacket;
 import twilightforest.util.EntityUtil;
 import twilightforest.util.LandmarkUtil;
 
@@ -83,6 +85,7 @@ public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, Enf
 	public void startSeenByPlayer(ServerPlayer player) {
 		super.startSeenByPlayer(player);
 		this.getBossBar().addPlayer(player);
+		if (this.deathTime > 0) PacketDistributor.sendToPlayersTrackingEntity(this, new UpdateDeathTimePacket(this.getId(), this.deathTime));
 	}
 
 	@Override
@@ -122,22 +125,27 @@ public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, Enf
 	@Override
 	public void die(DamageSource cause) {
 		super.die(cause);
-		if (this.shouldSpawnLoot()) {
-			// mark the boss structure as conquered
-			if (this.level() instanceof ServerLevel server) {
-				this.getBossBar().setProgress(0.0F);
-				IBossLootBuffer.saveDropsIntoBoss(this, TFLootTables.createLootParams(this, true, cause).create(LootContextParamSets.ENTITY), server);
-				LandmarkUtil.markStructureConquered(this.level(), this, this.getHomeStructure(), true);
-			}
-		}
+		if (this.shouldSpawnLoot() && this.level() instanceof ServerLevel server) this.postmortem(server, cause);
+	}
+
+	// mark the boss structure as conquered, separate method, so it can be overridden
+	protected void postmortem(ServerLevel serverLevel, DamageSource cause) {
+		this.getBossBar().setProgress(0.0F);
+		IBossLootBuffer.saveDropsIntoBoss(this, TFLootTables.createLootParams(this, true, cause).create(LootContextParamSets.ENTITY), serverLevel);
+		LandmarkUtil.markStructureConquered(serverLevel, this, this.getHomeStructure(), true);
 	}
 
 	@Override
 	public void remove(RemovalReason reason) {
-		if (reason.equals(RemovalReason.KILLED) && this.shouldSpawnLoot() && this.level() instanceof ServerLevel serverLevel) {
+		if (this.level() instanceof ServerLevel serverLevel) this.postRemoval(serverLevel, reason);
+		super.remove(reason);
+	}
+
+	// drop loot into a chest after removal, separate method, so it can be overridden
+	protected void postRemoval(ServerLevel serverLevel, RemovalReason reason) {
+		if (reason.equals(RemovalReason.KILLED) && this.shouldSpawnLoot()) {
 			IBossLootBuffer.depositDropsIntoChest(this, this.getDeathContainer(this.getRandom()).defaultBlockState().setValue(ChestBlock.FACING, Direction.Plane.HORIZONTAL.getRandomDirection(this.level().getRandom())), EntityUtil.bossChestLocation(this), serverLevel);
 		}
-		super.remove(reason);
 	}
 
 	@Override
@@ -200,5 +208,24 @@ public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, Enf
 	@Override
 	public NonNullList<ItemStack> getItemStacks() {
 		return this.dyingInventory;
+	}
+
+	@Override
+	protected void tickDeath() {
+		this.deathTime++;
+		if (!this.isRemoved()) {
+			if (this.isDeathAnimationFinished() && !this.level().isClientSide()) {
+				this.level().broadcastEntityEvent(this, (byte) 60); // makePoofParticles()
+				this.remove(RemovalReason.KILLED);
+			} else if (this.level().isClientSide()) this.tickDeathAnimation();
+		}
+	}
+
+	public boolean isDeathAnimationFinished() {
+		return this.deathTime >= 20;
+	}
+
+	public void tickDeathAnimation() {
+
 	}
 }

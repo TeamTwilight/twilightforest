@@ -834,7 +834,6 @@ public class LangGenerator extends TFLangProvider {
 		this.addSubtitle(TFSounds.LOYAL_ZOMBIE_AMBIENT, "Loyal Zombie groans");
 		this.addSubtitle(TFSounds.LOYAL_ZOMBIE_DEATH, "Loyal Zombie dies");
 		this.addSubtitle(TFSounds.LOYAL_ZOMBIE_HURT, "Loyal Zombie hurts");
-		this.addSubtitle(TFSounds.LOYAL_ZOMBIE_SUMMON, "Loyal Zombie summoned");
 
 		this.addSubtitle(TFSounds.MAZE_SLIME_DEATH, "Maze Slime dies");
 		this.addSubtitle(TFSounds.MAZE_SLIME_HURT, "Maze Slime hurts");
@@ -1015,6 +1014,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addSubtitle(TFSounds.ICE_BOMB_FIRED, "Ice Bomb thrown");
 		this.addSubtitle(TFSounds.KNIGHTMETAL_EQUIP, "Knightmetal Armor clanks");
 		this.addSubtitle(TFSounds.LAMP_BURN, "Lamp of Cinders ignites area");
+		this.addSubtitle(TFSounds.LIFE_SCEPTER_DRAIN, "Life Scepter drains");
 		this.addSubtitle(TFSounds.MAGNET_GRAB, "Ore Magnet pulls up ore");
 		this.addSubtitle(TFSounds.METAL_SHIELD_SHATTERS, "Metal Shield shatters");
 		this.addSubtitle(TFSounds.MOONWORM_SQUISH, "Moonworm fires");
@@ -1022,10 +1022,10 @@ public class LangGenerator extends TFLangProvider {
 		this.addSubtitle(TFSounds.ORE_METER_CRACKLE, "Ore Meter crackles");
 		this.addSubtitle(TFSounds.ORE_METER_TARGET_BLOCK, "Ore Meter locks onto block");
 		this.addSubtitle(TFSounds.POWDER_USE, "Mob transforms");
-		this.addSubtitle(TFSounds.SCEPTER_DRAIN, "Mob explodes");
-		this.addSubtitle(TFSounds.SCEPTER_PEARL, "Twilight Scepter throws pearl");
-		this.addSubtitle(TFSounds.SCEPTER_USE, "Life Scepter drains");
+		this.addSubtitle(TFSounds.TWILIGHT_SCEPTER_HIT, "Twilight Pearl hits mob");
+		this.addSubtitle(TFSounds.TWILIGHT_SCEPTER_USE, "Twilight Scepter throws pearl");
 		this.addSubtitle(TFSounds.WOOD_SHIELD_SHATTERS, "Wooden Shield shatters");
+		this.addSubtitle(TFSounds.ZOMBIE_SCEPTER_USE, "Loyal Zombie summoned");
 
 		this.addDeathMessage("ghastTear", "%1$s was scalded by fiery tears");
 		this.addDeathMessage("ghastTear.player", "%1$s was scalded by fiery tears while escaping %2$s");
@@ -1286,6 +1286,7 @@ public class LangGenerator extends TFLangProvider {
 		this.translateTag(ItemTagGenerator.ARCTIC_FUR, "Arctic Fur");
 		this.translateTag(ItemTagGenerator.BANNED_UNCRAFTABLES, "Can't be Uncrafted");
 		this.translateTag(ItemTagGenerator.BANNED_UNCRAFTING_INGREDIENTS, "Banned Uncrafting Ingredients");
+		this.translateTag(ItemTagGenerator.BANISTERS, "Banisters");
 		this.translateTag(ItemTagGenerator.CANOPY_LOGS, "Canopy Logs");
 		this.translateTag(ItemTagGenerator.DARKWOOD_LOGS, "Darkwood Logs");
 		this.translateTag(ItemTagGenerator.FIERY_VIAL, "Fiery Vials");
@@ -1304,10 +1305,16 @@ public class LangGenerator extends TFLangProvider {
 		this.translateTag(ItemTagGenerator.MINING_LOGS, "Miningwood Logs");
 		this.translateTag(ItemTagGenerator.NYI, "Not Yet Implemented Items");
 		this.translateTag(ItemTagGenerator.PORTAL_ACTIVATOR, "Twilight Forest Portal Activators");
+		this.translateTag(ItemTagGenerator.REPAIRS_FIERY_TOOLS, "Repairs Fiery Tools");
+		this.translateTag(ItemTagGenerator.REPAIRS_GIANT_TOOLS, "Repairs Giant Tools");
+		this.translateTag(ItemTagGenerator.REPAIRS_ICE_TOOLS, "Repairs Ice Tools");
+		this.translateTag(ItemTagGenerator.REPAIRS_IRONWOOD_TOOLS, "Repairs Ironwood Tools");
+		this.translateTag(ItemTagGenerator.REPAIRS_KNIGHTMETAL_TOOLS, "Repairs Knightmetal Tools");
+		this.translateTag(ItemTagGenerator.REPAIRS_STEELEAF_TOOLS, "Repairs Steeleaf Tools");
 		this.translateTag(ItemTagGenerator.SORTING_LOGS, "Sortingwood Logs");
 		this.translateTag(ItemTagGenerator.TIME_LOGS, "Timewood Logs");
 		this.translateTag(ItemTagGenerator.TOWERWOOD, "Towerwood Blocks");
-		this.translateTag(ItemTagGenerator.TRANSFORMATION_LOGS, "Transformationwood Logs");
+		this.translateTag(ItemTagGenerator.TRANSFORMATION_LOGS, "Transformation Logs");
 		this.translateTag(ItemTagGenerator.TWILIGHT_OAK_LOGS, "Twilight Oak Logs");
 		this.translateTag(ItemTagGenerator.UNCRAFTING_IGNORES_COST, "Uncrafting Table Ignores Cost");
 		this.translateTag(ItemTagGenerator.WIP, "Work In Progress Items");

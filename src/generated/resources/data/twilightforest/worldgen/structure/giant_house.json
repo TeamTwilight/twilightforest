@@ -16,20 +16,21 @@
         "generation": 3,
         "pages": [
           {
-            "raw": "{\"translate\":\"twilightforest.book.trollcave.0\"}"
-          },
-          {
             "raw": "{\"translate\":\"twilightforest.book.trollcave.1\"}"
           },
           {
             "raw": "{\"translate\":\"twilightforest.book.trollcave.2\"}"
+          },
+          {
+            "raw": "{\"translate\":\"twilightforest.book.trollcave.3\"}"
           }
         ],
         "resolved": true,
         "title": {
           "raw": "twilightforest.book.trollcave"
         }
-      }
+      },
+      "twilightforest:translatable_book": {}
     },
     "count": 1,
     "id": "minecraft:written_book"

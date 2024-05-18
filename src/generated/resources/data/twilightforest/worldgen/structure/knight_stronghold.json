@@ -16,9 +16,6 @@
         "generation": 3,
         "pages": [
           {
-            "raw": "{\"translate\":\"twilightforest.book.tfstronghold.0\"}"
-          },
-          {
             "raw": "{\"translate\":\"twilightforest.book.tfstronghold.1\"}"
           },
           {
@@ -26,13 +23,17 @@
           },
           {
             "raw": "{\"translate\":\"twilightforest.book.tfstronghold.3\"}"
+          },
+          {
+            "raw": "{\"translate\":\"twilightforest.book.tfstronghold.4\"}"
           }
         ],
         "resolved": true,
         "title": {
           "raw": "twilightforest.book.tfstronghold"
         }
-      }
+      },
+      "twilightforest:translatable_book": {}
     },
     "count": 1,
     "id": "minecraft:written_book"

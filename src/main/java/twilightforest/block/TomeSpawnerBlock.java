@@ -24,10 +24,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.TomeSpawnerBlockEntity;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFSounds;
+import twilightforest.network.ParticlePacket;
 
 public class TomeSpawnerBlock extends BaseEntityBlock {
 
@@ -76,14 +78,17 @@ public class TomeSpawnerBlock extends BaseEntityBlock {
 
 	@Override
 	public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity entity, ItemStack stack) {
-		if (!level.isClientSide && state.getValue(SPAWNER)) {
+		if (level instanceof ServerLevel serverLevel && state.getValue(SPAWNER)) {
 			level.playSound(null, pos, TFSounds.DEATH_TOME_DEATH.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+			ParticlePacket particlePacket = new ParticlePacket();
 			for (int i = 0; i < 20; ++i) {
-				double d3 = level.random.nextGaussian() * 0.02D;
-				double d1 = level.random.nextGaussian() * 0.02D;
-				double d2 = level.random.nextGaussian() * 0.02D;
-				((ServerLevel) level).sendParticles(ParticleTypes.POOF, (double) pos.getX() + 0.5D, pos.getY(), (double) pos.getZ() + 0.5D, 1, d3, d1, d2, 0.15F);
+				particlePacket.queueParticle(ParticleTypes.POOF, false,
+					(double) pos.getX() + 0.5D + level.random.nextGaussian() * 0.02D * level.random.nextGaussian(),
+					(double) pos.getY() + level.random.nextGaussian() * 0.02D * level.random.nextGaussian(),
+					(double) pos.getZ() + 0.5D + level.random.nextGaussian() * 0.02D * level.random.nextGaussian(),
+					0.15F * level.random.nextGaussian(), 0.15F * level.random.nextGaussian(), 0.15F * level.random.nextGaussian());
 			}
+			PacketDistributor.sendToPlayersNear(serverLevel, null, pos.getX(), pos.getY(), pos.getZ(), 32.0D, particlePacket);
 		}
 		super.playerDestroy(level, player, pos, state, entity, stack);
 	}

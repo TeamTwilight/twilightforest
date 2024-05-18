@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import net.minecraft.core.Holder;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -16,15 +17,15 @@ import twilightforest.block.HollowLogVertical;
 import java.util.Map;
 
 public class HollowLogItem extends BlockItem {
-	private final HollowLogHorizontal horizontalLog;
-	private final HollowLogVertical verticalLog;
-	private final HollowLogClimbable climbable;
+	private final Block horizontalLog;
+	private final Block verticalLog;
+	private final Block climbable;
 
-	public HollowLogItem(DeferredHolder<Block, HollowLogHorizontal> horizontalLog, DeferredHolder<Block, HollowLogVertical> verticalLog, DeferredHolder<Block, HollowLogClimbable> climbable, Properties properties) {
-		super(verticalLog.get(), properties);
-		this.horizontalLog = horizontalLog.get();
-		this.verticalLog = verticalLog.get();
-		this.climbable = climbable.get();
+	public HollowLogItem(Holder<Block> horizontalLog, Holder<Block> verticalLog, Holder<Block> climbable, Properties properties) {
+		super(verticalLog.value(), properties);
+		this.horizontalLog = horizontalLog.value();
+		this.verticalLog = verticalLog.value();
+		this.climbable = climbable.value();
 	}
 
 	@Nullable

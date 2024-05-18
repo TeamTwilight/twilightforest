@@ -16,12 +16,14 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyC
 import net.minecraft.world.level.storage.loot.predicates.LootItemKilledByPlayerCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceWithLootingCondition;
+import net.minecraft.world.level.storage.loot.providers.number.BinomialDistributionGenerator;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFItems;
+import twilightforest.loot.LootingEnchantNumberProvider;
 import twilightforest.loot.MultiplayerBasedAdditionLootFunction;
 import twilightforest.loot.MultiplayerBasedNumberProvider;
 import twilightforest.loot.TFLootTables;
@@ -40,7 +42,6 @@ public class EntityLootTables extends EntityLootSubProvider {
 		add(TFEntities.ADHERENT.get(), emptyLootTable());
 		add(TFEntities.LICH_MINION.get(), emptyLootTable());
 		add(TFEntities.LOYAL_ZOMBIE.get(), emptyLootTable());
-		add(TFEntities.KNIGHT_PHANTOM.get(), emptyLootTable());
 		//haha no loot for you
 		add(TFEntities.PLATEAU_BOSS.get(), emptyLootTable());
 		add(TFEntities.HARBINGER_CUBE.get(), emptyLootTable());
@@ -489,6 +490,24 @@ public class EntityLootTables extends EntityLootSubProvider {
 					.name("hydra_trophy")
 					.setRolls(ConstantValue.exactly(1.0F))
 					.add(LootItem.lootTableItem(TFBlocks.HYDRA_TROPHY.get().asItem()))));
+
+		add(TFEntities.KNIGHT_PHANTOM.get(), LootTable.lootTable()
+			.withPool(LootPool.lootPool()
+				.name("knight_phantom_weapon")
+				.setRolls(new BinomialDistributionGenerator(LootingEnchantNumberProvider.applyLootingLevelTo(MultiplayerBasedNumberProvider.rollsForPlayers(ConstantValue.exactly(1.5F), ConstantValue.exactly(4.0F))), ConstantValue.exactly(0.17F)))
+				.add(LootItem.lootTableItem(TFItems.KNIGHTMETAL_SWORD).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(20))))
+				.add(LootItem.lootTableItem(TFItems.KNIGHTMETAL_PICKAXE).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(20))))
+				.add(LootItem.lootTableItem(TFItems.KNIGHTMETAL_AXE).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(20)))))
+			.withPool(LootPool.lootPool()
+				.setRolls(new BinomialDistributionGenerator(LootingEnchantNumberProvider.applyLootingLevelTo(MultiplayerBasedNumberProvider.rollsForPlayers(ConstantValue.exactly(1.0F), ConstantValue.exactly(2.0F))), ConstantValue.exactly(0.17F)))
+				.name("knight_phantom_armor")
+				.add(LootItem.lootTableItem(TFItems.PHANTOM_HELMET).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(20))))
+				.add(LootItem.lootTableItem(TFItems.PHANTOM_CHESTPLATE).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(20)))))
+			.withPool(LootPool.lootPool()
+				.setRolls(new BinomialDistributionGenerator(LootingEnchantNumberProvider.applyLootingLevelTo(MultiplayerBasedNumberProvider.rollsForPlayers(ConstantValue.exactly(0.5F), ConstantValue.exactly(1.0F))), ConstantValue.exactly(0.17F)))
+				.name("knight_phantom_rare_armor")
+				.add(LootItem.lootTableItem(TFItems.PHANTOM_HELMET).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(30))))
+				.add(LootItem.lootTableItem(TFItems.PHANTOM_CHESTPLATE).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(30))))));
 
 		add(TFEntities.UR_GHAST.get(),
 			LootTable.lootTable()

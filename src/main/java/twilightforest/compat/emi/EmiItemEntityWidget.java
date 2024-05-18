@@ -13,6 +13,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
+import org.joml.Matrix4fStack;
 import twilightforest.TwilightForestMod;
 import twilightforest.util.EntityRenderingUtil;
 
@@ -54,19 +55,12 @@ public class EmiItemEntityWidget extends Widget {
 	public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		graphics.pose().pushPose();
 		graphics.pose().translate(this.bounds.x(), this.bounds.y(), 0.0D);
-		PoseStack modelView = RenderSystem.getModelViewStack();
-
-		modelView.pushPose();
-		modelView.mulPoseMatrix(graphics.pose().last().pose());
 
 		try {
-			EntityRenderingUtil.renderItemEntity(this.stack, Minecraft.getInstance().level, this.bobOffs);
+			EntityRenderingUtil.renderItemEntity(graphics, this.stack, Minecraft.getInstance().level, this.bobOffs);
 		} catch (Exception e) {
 			TwilightForestMod.LOGGER.error("Error drawing item in EMI!", e);
 		}
-
-		modelView.popPose();
-		RenderSystem.applyModelViewMatrix();
 		graphics.pose().popPose();
 	}
 }

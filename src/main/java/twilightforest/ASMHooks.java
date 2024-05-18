@@ -6,6 +6,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectListIterator;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LightTexture;
@@ -23,13 +24,16 @@ import net.minecraft.sounds.Music;
 import net.minecraft.sounds.Musics;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.decoration.ItemFrame;
 import net.minecraft.world.entity.decoration.LeashFenceKnotEntity;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.MapItem;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.*;
+import net.minecraft.world.item.*;
+import net.minecraft.world.item.component.DyedItemColor;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
@@ -57,13 +61,16 @@ import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFDimension;
 import twilightforest.init.TFItems;
 import twilightforest.init.custom.ChunkBlanketProcessors;
+import twilightforest.item.ArcticArmorItem;
 import twilightforest.item.mapdata.TFMagicMapData;
 import twilightforest.network.UpdateTFMultipartPacket;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.structures.CustomDensitySource;
 import twilightforest.world.components.structures.util.CustomStructureData;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @SuppressWarnings({"JavadocReference", "unused", "RedundantSuppression", "deprecation"})
 public class ASMHooks {
@@ -86,7 +93,7 @@ public class ASMHooks {
 	/**
 	 * Injection Point:<br>
 	 * {@link net.minecraft.client.gui.MapRenderer.MapInstance#draw(PoseStack, MultiBufferSource, boolean, int)}<br>
-	 * [BEFORE ISTORE 5]
+	 * [BEFORE ISTORE 10]
 	 */
 	public static int mapRenderDecorations(int o, MapItemSavedData data, PoseStack stack, MultiBufferSource buffer, int light) {
 		if (data instanceof TFMagicMapData mapData) {
@@ -121,7 +128,7 @@ public class ASMHooks {
 	 * [BEFORE FIRST ASTORE 6]
 	 * <p></p>
 	 * Injection Point:<br>
-	 * {@link net.minecraft.world.item.MapItem#appendHoverText(ItemStack, Level, List, TooltipFlag)}<br>
+	 * {@link net.minecraft.world.item.MapItem#appendHoverText(ItemStack, Item.TooltipContext, List, TooltipFlag)}<br>
 	 * [AFTER INVOKESTATIC {@link net.minecraft.world.item.MapItem#getSavedData(Integer, Level)}]
 	 */
 	@Nullable
@@ -177,7 +184,7 @@ public class ASMHooks {
 
 	/**
 	 * Injection Point:<br>
-	 * {@link net.minecraft.client.renderer.LevelRenderer#renderLevel(PoseStack, float, long, boolean, Camera, GameRenderer, LightTexture, Matrix4f)}<br>
+	 * {@link net.minecraft.client.renderer.LevelRenderer#renderLevel(float, long, boolean, Camera, GameRenderer, LightTexture, Matrix4f, Matrix4f)}<br>
 	 * [AFTER {@link net.minecraft.client.multiplayer.ClientLevel#entitiesForRendering}]
 	 */
 	public static Iterable<Entity> renderMultiparts(Iterable<Entity> iter) {
@@ -252,9 +259,6 @@ public class ASMHooks {
 		}
 		return o;
 	}
-
-	private static final List<Float> defibrator = new ArrayList<>();
-	private static float average;
 
 	/**
 	 * Injection Point:<br>
@@ -346,6 +350,7 @@ public class ASMHooks {
 	/**
 	 * Injection Point:<br>
 	 * {@link net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer#renderArmorPiece(PoseStack, MultiBufferSource, LivingEntity, EquipmentSlot, int, HumanoidModel)} <br>
+	 * [AFTER FIRST INSTANCEOF CHECK]
 	 */
 	public static boolean cancelArmorRendering(boolean o, ItemStack stack) {
 		if (o && stack.get(TFDataComponents.EMPERORS_CLOTH) != null) {
@@ -354,6 +359,11 @@ public class ASMHooks {
 		return o;
 	}
 
+	/**
+	 * Injection Point:<br>
+	 * {@link net.minecraft.world.entity.LivingEntity#getVisibilityPercent(Entity)} <br>
+	 * [BEFORE FIRST FSTORE 4]
+	 */
 	public static float modifyClothVisibility(float o, LivingEntity entity) {
 		return o - getShroudedArmorPercentage(entity);
 	}
@@ -372,5 +382,15 @@ public class ASMHooks {
 		}
 
 		return nonShroudedArmor > 0 && shroudedArmor > 0 ? (float) shroudedArmor / (float) nonShroudedArmor : 0.0F;
+	}
+
+	/**
+	 * Injection Point:<br>
+	 * {@link net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer#renderArmorPiece(PoseStack, MultiBufferSource, LivingEntity, EquipmentSlot, int, HumanoidModel)} <br>
+	 * [AFTER FIRST INVOKESTATIC of {@link net.minecraft.world.item.component.DyedItemColor#getOrDefault(net.minecraft.world.item.ItemStack, int)}]
+	 */
+	public static int getArcticArmorColor(int color, ArmorItem armorItem, ItemStack armorStack) {
+		if (armorItem instanceof ArcticArmorItem) return DyedItemColor.getOrDefault(armorStack, ArcticArmorItem.DEFAULT_COLOR);
+		return color;
 	}
 }

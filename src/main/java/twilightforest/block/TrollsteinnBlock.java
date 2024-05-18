@@ -6,7 +6,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -49,39 +48,31 @@ public class TrollsteinnBlock extends Block {
 	}
 
 	@Override
-	public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-		BlockState newState = state;
-		for (Direction direction : Direction.values())
-			newState = newState.setValue(PROPERTY_MAP.get(direction), level.getMaxLocalRawBrightness(pos.relative(direction)) > LIGHT_THRESHOLD);
-		if (!newState.equals(state)) level.setBlockAndUpdate(pos, newState);
-	}
-
-	@Override
+	@SuppressWarnings("deprecation")
 	public boolean hasAnalogOutputSignal(BlockState state) {
 		return true;
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
 		int peak = 0;
-		for (Direction direction : Direction.values())
-			peak = Math.max(level.getMaxLocalRawBrightness(pos.relative(direction)), peak);
+		for (Direction direction : Direction.values()) peak = Math.max(level.getMaxLocalRawBrightness(pos.relative(direction)), peak);
 		return peak;
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
-		BlockState ret = defaultBlockState();
-		for (Map.Entry<Direction, BooleanProperty> e : PROPERTY_MAP.entrySet()) {
-			int light = ctx.getLevel().getMaxLocalRawBrightness(ctx.getClickedPos().relative(e.getKey()));
-			ret = ret.setValue(e.getValue(), light > LIGHT_THRESHOLD);
+	public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+		BlockState newState = state;
+		for (Map.Entry<Direction, BooleanProperty> propertyEntry : PROPERTY_MAP.entrySet()) {
+			newState = newState.setValue(propertyEntry.getValue(), level.getMaxLocalRawBrightness(pos.relative(propertyEntry.getKey())) > LIGHT_THRESHOLD);
 		}
-		return ret;
+		if (!newState.equals(state)) level.setBlockAndUpdate(pos, newState);
 	}
 
 	@Override
 	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource rand) {
-		if (rand.nextInt(2) == 0) this.sparkle(level, pos);
+		if (rand.nextBoolean()) this.sparkle(level, pos);
 	}
 
 	// [VanillaCopy] Based on RedstoneOreBlock.spawnParticles

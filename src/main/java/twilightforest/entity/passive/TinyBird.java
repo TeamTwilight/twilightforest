@@ -1,8 +1,10 @@
 package twilightforest.entity.passive;
 
+import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.TagKey;
@@ -26,10 +28,13 @@ import twilightforest.TFRegistries;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.TFDataSerializers;
 import twilightforest.init.TFSounds;
+import twilightforest.init.custom.TinyBirdVariants;
 
-public class TinyBird extends FlyingBird implements VariantHolder<TinyBirdVariant> {
+import java.util.Optional;
 
-	private static final EntityDataAccessor<TinyBirdVariant> VARIANT = SynchedEntityData.defineId(TinyBird.class, TFDataSerializers.TINY_BIRD_VARIANT.get());
+public class TinyBird extends FlyingBird implements VariantHolder<Holder<TinyBirdVariant>> {
+
+	private static final EntityDataAccessor<Holder<TinyBirdVariant>> VARIANT = SynchedEntityData.defineId(TinyBird.class, TFDataSerializers.TINY_BIRD_VARIANT.get());
 
 	public TinyBird(EntityType<? extends TinyBird> type, Level level) {
 		super(type, level);
@@ -45,7 +50,7 @@ public class TinyBird extends FlyingBird implements VariantHolder<TinyBirdVarian
 	@Override
 	protected void defineSynchedData(SynchedEntityData.Builder builder) {
 		super.defineSynchedData(builder);
-		builder.define(VARIANT, TinyBirdVariant.getRandomVariant(this.getRandom()));
+		builder.define(VARIANT, this.registryAccess().registryOrThrow(TFRegistries.Keys.TINY_BIRD_VARIANT).getHolderOrThrow(TinyBirdVariants.RED));
 	}
 
 	public static AttributeSupplier.Builder registerAttributes() {
@@ -58,32 +63,32 @@ public class TinyBird extends FlyingBird implements VariantHolder<TinyBirdVarian
 	@Override
 	public void addAdditionalSaveData(CompoundTag compound) {
 		super.addAdditionalSaveData(compound);
-		compound.putString("variant", TFRegistries.TINY_BIRD_VARIANT.getKey(this.getVariant()).toString());
+		compound.putString("variant", this.getVariant().unwrapKey().orElse(TinyBirdVariants.RED).location().toString());
 	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
-		TinyBirdVariant variant = TFRegistries.TINY_BIRD_VARIANT.get(ResourceLocation.tryParse(compound.getString("variant")));
-		if (variant != null) {
-			this.setVariant(variant);
-		}
+		Optional.ofNullable(ResourceLocation.tryParse(compound.getString("variant")))
+			.map(location -> ResourceKey.create(TFRegistries.Keys.TINY_BIRD_VARIANT, location))
+			.flatMap(key -> this.registryAccess().registryOrThrow(TFRegistries.Keys.TINY_BIRD_VARIANT).getHolder(key))
+			.ifPresent(this::setVariant);
 	}
 
 	@Override
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data) {
 		data = super.finalizeSpawn(accessor, difficulty, type, data);
-		this.setVariant(TinyBirdVariant.getRandomVariant(this.getRandom()));
+		this.setVariant(TinyBirdVariant.getVariant(accessor.registryAccess(), accessor.getBiome(this.blockPosition()), this.getRandom()));
 		return data;
 	}
 
 	@Override
-	public TinyBirdVariant getVariant() {
+	public Holder<TinyBirdVariant> getVariant() {
 		return this.getEntityData().get(VARIANT);
 	}
 
 	@Override
-	public void setVariant(TinyBirdVariant variant) {
+	public void setVariant(Holder<TinyBirdVariant> variant) {
 		this.getEntityData().set(VARIANT, variant);
 	}
 

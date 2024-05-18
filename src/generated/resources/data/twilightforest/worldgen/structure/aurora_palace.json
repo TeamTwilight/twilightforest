@@ -16,20 +16,21 @@
         "generation": 3,
         "pages": [
           {
-            "raw": "{\"translate\":\"twilightforest.book.icetower.0\"}"
-          },
-          {
             "raw": "{\"translate\":\"twilightforest.book.icetower.1\"}"
           },
           {
             "raw": "{\"translate\":\"twilightforest.book.icetower.2\"}"
+          },
+          {
+            "raw": "{\"translate\":\"twilightforest.book.icetower.3\"}"
           }
         ],
         "resolved": true,
         "title": {
           "raw": "twilightforest.book.icetower"
         }
-      }
+      },
+      "twilightforest:translatable_book": {}
     },
     "count": 1,
     "id": "minecraft:written_book"

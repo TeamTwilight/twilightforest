@@ -65,8 +65,9 @@ public class TFTeleporter implements ITeleporter {
 			pos = createPosition(dest, entity, destPos, cache);
 		}
 
-		return pos == null ? ITeleporter.super.getPortalInfo(entity, dest, defaultPortalInfo) : pos;
-	}
+		if (pos != null) return pos;
+        return this.isVanilla() ? defaultPortalInfo.apply(dest) : new PortalInfo(Vec3.atCenterOf(destPos.atY(dest.getSeaLevel())), Vec3.ZERO, entity.getYRot(), entity.getXRot());
+    }
 
 	@Nullable
 	protected PortalInfo createPosition(ServerLevel dest, Entity entity, BlockPos destPos, TeleporterCache cache) {
@@ -155,7 +156,7 @@ public class TFTeleporter implements ITeleporter {
 					continue;
 				}
 
-				for (BlockPos blockpos1 = pos.offset(i1, getScanHeight(destDim, pos) - pos.getY(), j1); blockpos1.getY() >= 0; blockpos1 = blockpos2) {
+				for (BlockPos blockpos1 = pos.offset(i1, getScanHeight(destDim, pos) - pos.getY(), j1); blockpos1.getY() >= destDim.getMinBuildHeight(); blockpos1 = blockpos2) {
 					blockpos2 = blockpos1.below();
 
 					// don't lookup state if inner condition would fail

@@ -24,6 +24,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.TrophyBlockEntity;
 import twilightforest.enums.BossVariant;
@@ -31,6 +32,7 @@ import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFParticleType;
 import twilightforest.init.TFSounds;
+import twilightforest.network.ParticlePacket;
 
 //[VanillaCopy] of AbstractSkullBlock except uses Variants instead of ISkullType and adds Sounds when clicked or powered
 public abstract class AbstractTrophyBlock extends BaseEntityBlock implements Equipable {
@@ -151,88 +153,89 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock implements Equ
 	}
 
 	public void createParticle(Level level, BlockPos pos) {
-		BlockEntity te = level.getBlockEntity(pos);
-		if (te instanceof TrophyBlockEntity) {
+		if (level.getBlockEntity(pos) instanceof TrophyBlockEntity && level instanceof ServerLevel server) {
 			RandomSource rand = level.getRandom();
-			if (level instanceof ServerLevel server) {
-				switch (this.variant) {
-					case NAGA:
-						for (int daze = 0; daze < 10; daze++) {
-							server.sendParticles(ParticleTypes.CRIT,
-								((double) pos.getX() + rand.nextFloat() * 0.5 * 2.0F),
-								(double) pos.getY() + 0.25,
-								((double) pos.getZ() + rand.nextFloat() * 0.5 * 2.0F),
-								1, 0, 0, 0, rand.nextGaussian() * 0.02D);
-						}
-						break;
-					case LICH:
-						for (int a = 0; a < 5; a++) {
-							server.sendParticles(ParticleTypes.ANGRY_VILLAGER,
-								(double) pos.getX() + rand.nextFloat() * 0.5 * 2.0F,
-								(double) pos.getY() + 0.5 + rand.nextFloat() * 0.25,
-								(double) pos.getZ() + rand.nextFloat() * 0.5 * 2.0F, 1,
-								rand.nextGaussian() * 0.02D, rand.nextGaussian() * 0.02D, rand.nextGaussian() * 0.02D, 0);
-						}
-						break;
-					case MINOSHROOM:
-						for (int g = 0; g < 10; g++) {
-							server.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, level.getBlockState(pos.below())),
-								(double) pos.getX() + rand.nextFloat() * 10F - 5F,
-								(double) pos.getY() + 0.1F + rand.nextFloat() * 0.3F,
-								(double) pos.getZ() + rand.nextFloat() * 10F - 5F,
-								1, 0, 0, 0, 0);
-						}
-						break;
-					case KNIGHT_PHANTOM:
-						for (int brek = 0; brek < 10; brek++) {
-							server.sendParticles(new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(TFItems.KNIGHTMETAL_SWORD.get())),
-								pos.getX() + 0.5 + (rand.nextFloat() - 0.5),
-								pos.getY() + rand.nextFloat() + 0.5,
-								pos.getZ() + 0.5 + (rand.nextFloat() - 0.5),
-								1, 0, .25, 0, 0);
-
-						}
-						break;
-					case UR_GHAST:
-						for (int red = 0; red < 10; red++) {
-							server.sendParticles(DustParticleOptions.REDSTONE,
-								(double) pos.getX() + (rand.nextDouble() * 1) - 0.25,
-								(double) pos.getY() + rand.nextDouble() * 0.5 + 0.5,
-								(double) pos.getZ() + (rand.nextDouble() * 1),
-								1, 0, 0, 0, 0);
-						}
-						break;
-					case ALPHA_YETI:
-						for (int sweat = 0; sweat < 10; sweat++) {
-							server.sendParticles(ParticleTypes.SPLASH,
-								(double) pos.getX() + (rand.nextDouble() * 1) - 0.25,
-								(double) pos.getY() + rand.nextDouble() * 0.5 + 0.5,
-								(double) pos.getZ() + (rand.nextDouble() * 1),
-								1, 0, 0, 0, 0);
-						}
-						break;
-					case SNOW_QUEEN:
-						for (int b = 0; b < 20; b++) {
-							server.sendParticles(TFParticleType.SNOW_WARNING.get(),
-								(double) pos.getX() - 1 + (rand.nextDouble() * 3.25),
-								(double) pos.getY() + 5,
-								(double) pos.getZ() - 1 + (rand.nextDouble() * 3.25), 1,
-								0, 1, 0, 0);
-						}
-						break;
-					case QUEST_RAM:
-						for (int p = 0; p < 10; p++) {
-							server.sendParticles(ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, rand.nextFloat(), rand.nextFloat(), rand.nextFloat()),
-								(double) pos.getX() + 0.5 + (rand.nextDouble() - 0.5),
-								(double) pos.getY() + (rand.nextDouble() - 0.5),
-								(double) pos.getZ() + 0.5 + (rand.nextDouble() - 0.5), 1,
-								0.0F, 0.0F, 0.0F, 1);
-						}
-						break;
-					default:
-						break;
-				}
+			ParticlePacket particlePacket = new ParticlePacket();
+			switch (this.variant) {
+				case NAGA:
+					for (int daze = 0; daze < 10; daze++) {
+						particlePacket.queueParticle(ParticleTypes.CRIT, false,
+							((double) pos.getX() + rand.nextFloat() * 0.5D * 2.0D),
+							(double) pos.getY() + 0.25D,
+							((double) pos.getZ() + rand.nextFloat() * 0.5D * 2.0D),
+							rand.nextGaussian() * 0.02D, rand.nextGaussian() * 0.02D, rand.nextGaussian() * 0.02D);
+					}
+					break;
+				case LICH:
+					for (int a = 0; a < 5; a++) {
+						particlePacket.queueParticle(ParticleTypes.ANGRY_VILLAGER, false,
+							(double) pos.getX() + rand.nextFloat() * 0.5D * 2.0F + rand.nextGaussian() * 0.02D,
+							(double) pos.getY() + 0.5D + rand.nextFloat() * 0.25 + rand.nextGaussian() * 0.02D,
+							(double) pos.getZ() + rand.nextFloat() * 0.5D * 2.0F + rand.nextGaussian() * 0.02D,
+							0, 0, 0);
+					}
+					break;
+				case MINOSHROOM:
+					ParticleOptions minoshroomParticle = new BlockParticleOption(ParticleTypes.BLOCK, level.getBlockState(pos.below()));
+					for (int g = 0; g < 10; g++) {
+						particlePacket.queueParticle(minoshroomParticle, false,
+							(double) pos.getX() + rand.nextFloat() * 10F - 5F,
+							(double) pos.getY() + 0.1F + rand.nextFloat() * 0.3F,
+							(double) pos.getZ() + rand.nextFloat() * 10F - 5F,
+							0, 0, 0);
+					}
+					break;
+				case KNIGHT_PHANTOM:
+					ParticleOptions knightPhantomParticle = new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(TFItems.KNIGHTMETAL_SWORD.get()));
+					for (int brek = 0; brek < 10; brek++) {
+						particlePacket.queueParticle(knightPhantomParticle, false,
+							pos.getX() + 0.5D + (rand.nextFloat() - 0.5D),
+							pos.getY() + rand.nextFloat() + 0.5D + 0.25D * rand.nextGaussian(),
+							pos.getZ() + 0.5D + (rand.nextFloat() - 0.5D),
+							0, 0, 0);
+					}
+					break;
+				case UR_GHAST:
+					for (int red = 0; red < 10; red++) {
+						particlePacket.queueParticle(DustParticleOptions.REDSTONE, false,
+							(double) pos.getX() + (rand.nextDouble() * 1),
+							(double) pos.getY() + rand.nextDouble() * 0.5 + 0.5,
+							(double) pos.getZ() + (rand.nextDouble() * 1),
+							0, 0, 0);
+					}
+					break;
+				case ALPHA_YETI:
+					for (int sweat = 0; sweat < 10; sweat++) {
+						particlePacket.queueParticle(ParticleTypes.SPLASH, false,
+							(double) pos.getX() + (rand.nextDouble() * 1),
+							(double) pos.getY() + rand.nextDouble() * 0.5 + 0.5,
+							(double) pos.getZ() + (rand.nextDouble() * 1),
+							0, 0, 0);
+					}
+					break;
+				case SNOW_QUEEN:
+					for (int b = 0; b < 20; b++) {
+						particlePacket.queueParticle(TFParticleType.SNOW_WARNING.get(), false,
+							(double) pos.getX() - 1 + (rand.nextDouble() * 3.25D),
+							(double) pos.getY() + 5 + rand.nextGaussian(),
+							(double) pos.getZ() - 1 + (rand.nextDouble() * 3.25D),
+							0, 0, 0);
+					}
+					break;
+				case QUEST_RAM:
+					for (int p = 0; p < 10; p++) {
+						particlePacket.queueParticle(ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, rand.nextFloat(), rand.nextFloat(), rand.nextFloat()), false,
+							(double) pos.getX() + 0.5 + (rand.nextDouble() - 0.5),
+							(double) pos.getY() + (rand.nextDouble() - 0.5),
+							(double) pos.getZ() + 0.5 + (rand.nextDouble() - 0.5),
+							rand.nextGaussian(), rand.nextGaussian(), rand.nextGaussian());
+					}
+					break;
+				default:
+					break;
 			}
+
+			PacketDistributor.sendToPlayersNear(server, null, pos.getX(), pos.getY(), pos.getZ(), 32.0F, particlePacket);
 		}
 	}
 

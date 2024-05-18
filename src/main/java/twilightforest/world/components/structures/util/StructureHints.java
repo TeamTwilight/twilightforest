@@ -41,7 +41,6 @@ public interface StructureHints {
 	 */
 	default ItemStack createHintBook(RegistryAccess registryAccess) {
 		ItemStack book = new ItemStack(Items.WRITTEN_BOOK);
-		book.set(TFDataComponents.TRANSLATABLE_BOOK, Unit.INSTANCE);
 		this.addBookInformation(book);
 		return book;
 	}
@@ -53,7 +52,7 @@ public interface StructureHints {
 	static void addBookInformationStatic(ItemStack book, @Nullable String name, int pageCount) {
 		String key = name == null ? "unknown" : name;
 
-		Function<Integer, Filterable<Component>> pageGenerationFunc = index -> Filterable.passThrough(Component.translatable(TwilightForestMod.ID + ".book." + key + "." + index));
+		Function<Integer, Filterable<Component>> pageGenerationFunc = index -> Filterable.passThrough(Component.translatable(TwilightForestMod.ID + ".book." + key + "." + (index + 1)));
 
 		List<Filterable<Component>> list = Stream.iterate(0, index -> index + 1)
 			.limit(pageCount)
@@ -67,6 +66,8 @@ public interface StructureHints {
 			list,
 			true
 		));
+
+		book.set(TFDataComponents.TRANSLATABLE_BOOK, Unit.INSTANCE);
 	}
 
 	/**

@@ -44,7 +44,7 @@ public class CuriosCompat {
 				@Nonnull
 				@Override
 				public SoundInfo getEquipSound(SlotContext slotContext) {
-					return new SoundInfo(SoundEvents.ARMOR_EQUIP_GENERIC, 1.0F, 1.0F);
+					return new SoundInfo(SoundEvents.ARMOR_EQUIP_GENERIC.value(), 1.0F, 1.0F);
 				}
 
 				@Override
@@ -133,7 +133,7 @@ public class CuriosCompat {
 	public static boolean findAndConsumeCurio(Item item, Player player) {
 		Optional<SlotResult> slot = CuriosApi.getCuriosInventory(player).flatMap(handler -> handler.findFirstCurio(item));
 		if (slot.isPresent()) {
-			CharmEvents.getPlayerData(player).put(CharmEvents.CONSUMED_CHARM_TAG, slot.get().stack().save(new CompoundTag()));
+			CharmEvents.getPlayerData(player).put(CharmEvents.CONSUMED_CHARM_TAG, slot.get().stack().save(player.registryAccess()));
 			slot.get().stack().shrink(1);
 			return true;
 		}

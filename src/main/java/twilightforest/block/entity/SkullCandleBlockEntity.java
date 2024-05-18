@@ -49,7 +49,7 @@ public class SkullCandleBlockEntity extends SkullBlockEntity {
 
 	@Override
 	public CompoundTag getUpdateTag(HolderLookup.Provider provider) {
-		CompoundTag tag = new CompoundTag();
+		CompoundTag tag = super.getUpdateTag(provider);
 		tag.putInt("CandleColor", this.candleColor);
 		if (this.candleAmount != 0) tag.putInt("CandleAmount", this.candleAmount);
 		return tag;

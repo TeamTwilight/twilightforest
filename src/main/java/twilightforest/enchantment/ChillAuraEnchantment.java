@@ -9,9 +9,11 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
+import twilightforest.init.TFArmorMaterials;
 import twilightforest.init.TFEnchantments;
 import twilightforest.init.TFMobEffects;
 
@@ -22,7 +24,11 @@ public class ChillAuraEnchantment extends LootOnlyEnchantment {
 
 	@Override
 	public boolean canEnchant(ItemStack stack) {
-		return stack.getItem() instanceof ArmorItem || super.canEnchant(stack);
+		if (stack.getItem() instanceof ArmorItem armorItem) {
+			ArmorMaterial material = armorItem.getMaterial().value();
+			return material != TFArmorMaterials.FIERY.get();
+		}
+		return super.canEnchant(stack);
 	}
 
 	@Override

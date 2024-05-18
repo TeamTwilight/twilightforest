@@ -15,9 +15,9 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.common.CommonHooks;
 import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
 import net.neoforged.neoforge.common.loot.LootModifier;
+import net.neoforged.neoforge.event.EventHooks;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
@@ -65,7 +65,7 @@ public class GiantToolGroupingModifier extends LootModifier {
 		BlockPos pos = event.getPos();
 		BlockState state = event.getState();
 
-		if (event.getPlayer() instanceof ServerPlayer player && canHarvestWithGiantPick(player, state)) {
+		if (event.getPlayer() instanceof ServerPlayer player && canHarvestWithGiantPick(player, state, pos)) {
 			var attachment = player.getData(TFDataAttachments.GIANT_PICKAXE_MINING);
 
 			if (shouldBreakGiantBlock(player, attachment)) {
@@ -95,8 +95,8 @@ public class GiantToolGroupingModifier extends LootModifier {
 		}
 	}
 
-	private static boolean canHarvestWithGiantPick(Player player, BlockState state) {
-		return player.getMainHandItem().getItem() instanceof GiantPickItem && CommonHooks.isCorrectToolForDrops(state, player);
+	private static boolean canHarvestWithGiantPick(Player player, BlockState state, BlockPos pos) {
+		return player.getMainHandItem().getItem() instanceof GiantPickItem && EventHooks.doPlayerHarvestCheck(player, state, player.level(), pos);
 	}
 
 	private static boolean shouldBreakGiantBlock(Player player, GiantPickaxeMiningAttachment attachment) {

@@ -4,7 +4,9 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.chunk.ChunkGeneratorStructureState;
 import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadStructurePlacement;
 import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadType;
@@ -38,7 +40,20 @@ public class AvoidLandmarkGridPlacement extends RandomSpreadStructurePlacement {
 
 	@Override
 	protected boolean isPlacementChunk(ChunkGeneratorStructureState state, int chunkX, int chunkZ) {
-		return super.isPlacementChunk(state, chunkX, chunkZ) && !LegacyLandmarkPlacements.chunkHasLandmarkCenter(chunkX, chunkZ);
+		//copy of super
+		ChunkPos chunkpos = this.getPotentialStructureChunk(state.getLevelSeed(), chunkX, chunkZ);
+		if (chunkpos.x != chunkX || chunkpos.z != chunkZ) {
+			return false;
+		}
+
+		// Feature Center
+		BlockPos.MutableBlockPos featurePos = LegacyLandmarkPlacements.getNearestCenterXZ(chunkX, chunkZ).mutable();
+
+		// Turn Feature Center into Feature Offset
+		featurePos.set(Math.abs(featurePos.getX() - chunkpos.getWorldPosition().getX()), 0, Math.abs(featurePos.getZ() - chunkpos.getWorldPosition().getZ()));
+		int size = 48;
+
+		return featurePos.getX() >= size && featurePos.getZ() >= size;
 	}
 
 	@Override

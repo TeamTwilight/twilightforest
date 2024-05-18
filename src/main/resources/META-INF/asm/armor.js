@@ -35,6 +35,38 @@ function initializeCoreMod() {
                 return methodNode;
             }
         },
+        'coloring': {
+            'target': {
+                'type': 'METHOD',
+                'class': 'net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer',
+                'methodName': 'renderArmorPiece',
+                'methodDesc': '(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/entity/EquipmentSlot;ILnet/minecraft/client/model/HumanoidModel;)V'
+            },
+            'transformer': function (/*org.objectweb.asm.tree.MethodNode*/ methodNode) {
+                var /*org.objectweb.asm.tree.InsnList*/ instructions = methodNode.instructions;
+                instructions.insert(
+                    ASM.findFirstMethodCall(
+                        methodNode,
+                        ASM.MethodType.STATIC,
+                        'net/minecraft/world/item/component/DyedItemColor',
+                        'getOrDefault',
+                        '(Lnet/minecraft/world/item/ItemStack;I)I'
+                    ),
+                    ASM.listOf(
+                        new VarInsnNode(Opcodes.ALOAD, 8),
+                        new VarInsnNode(Opcodes.ALOAD, 7),
+                        new MethodInsnNode(
+                            Opcodes.INVOKESTATIC,
+                            'twilightforest/ASMHooks',
+                            'getArcticArmorColor',
+                            '(ILnet/minecraft/world/item/ArmorItem;Lnet/minecraft/world/item/ItemStack;)I',
+                            false
+                        )
+                    )
+                );
+                return methodNode;
+            }
+        },
         'visibility': {
             'target': {
                 'type': 'METHOD',

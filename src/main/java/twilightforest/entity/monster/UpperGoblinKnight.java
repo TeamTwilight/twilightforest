@@ -31,8 +31,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.entity.ai.goal.HeavySpearAttackGoal;
 import twilightforest.init.TFSounds;
+import twilightforest.network.ParticlePacket;
 
 import java.util.List;
 import java.util.Objects;
@@ -204,15 +206,16 @@ public class UpperGoblinKnight extends Monster {
 		double py = this.getBoundingBox().minY - (this.isPassenger() ? 0.75D : 0.0D);
 		double pz = this.getZ() + vector.z() * dist;
 
-
-		if (this.level() instanceof ServerLevel server) {
+		if (this.level() instanceof ServerLevel) {
+			ParticlePacket particlePacket = new ParticlePacket();
 			for (int i = 0; i < 50; i++) {
-				server.sendParticles(
-					ParticleTypes.LARGE_SMOKE, px, py, pz, 1,
-					(this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.25F,
-					0,
-					(this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.25F, 0);
+				particlePacket.queueParticle(ParticleTypes.LARGE_SMOKE, false,
+					px + (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.25F * this.getRandom().nextGaussian(),
+					py,
+					pz + (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.25F * this.getRandom().nextGaussian(),
+					0, 0, 0);
 			}
+			PacketDistributor.sendToPlayersTrackingEntity(this, particlePacket);
 		}
 
 		// damage things in front that aren't us or our "mount"

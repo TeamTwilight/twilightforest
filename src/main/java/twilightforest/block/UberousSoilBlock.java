@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -8,7 +9,6 @@ import net.minecraft.server.TickTask;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BoneMealItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -111,14 +111,16 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 	}
 
 	@Override
+	protected boolean useShapeForLightOcclusion(BlockState state) {
+		return true;
+	}
+
+	@Override
 	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource rand) {
 		if (level.isClientSide() && rand.nextInt(5) == 0) {
-			for (Player player : level.players()) {
-				if (player.getMainHandItem().getItem().equals(TFItems.MAGIC_BEANS.get()) || player.getOffhandItem().getItem().equals(TFItems.MAGIC_BEANS.get())) {
-					for (int i = 0; i < 2; i++) {
-						level.addParticle(ParticleTypes.HAPPY_VILLAGER, pos.getX() + rand.nextDouble(), pos.getY() + 1.25D, pos.getZ() + rand.nextDouble(), 0.0D, 0.0D, 0.0D);
-					}
-					break;
+			if (Minecraft.getInstance().player != null && Minecraft.getInstance().player.isHolding(TFItems.MAGIC_BEANS.get())) {
+				for (int i = 0; i < 2; i++) {
+					level.addParticle(ParticleTypes.HAPPY_VILLAGER, pos.getX() + rand.nextDouble(), pos.getY() + 1.25D, pos.getZ() + rand.nextDouble(), 0.0D, 0.0D, 0.0D);
 				}
 			}
 		}

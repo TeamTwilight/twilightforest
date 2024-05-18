@@ -18,8 +18,10 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.init.TFParticleType;
 import twilightforest.init.TFSounds;
+import twilightforest.network.ParticlePacket;
 
 public class CastleDoorBlock extends Block {
 
@@ -143,22 +145,21 @@ public class CastleDoorBlock extends Block {
 	}
 
 	private void vanishParticles(Level level, BlockPos pos) {
-		RandomSource rand = level.getRandom();
-		if (level instanceof ServerLevel) {
+		if (level instanceof ServerLevel serverLevel) {
+			RandomSource rand = level.getRandom();
+			ParticlePacket particlePacket = new ParticlePacket();
 			for (int dx = 0; dx < 4; ++dx) {
 				for (int dy = 0; dy < 4; ++dy) {
 					for (int dz = 0; dz < 4; ++dz) {
-
-						double x = pos.getX() + (dx + 0.5D) / 4;
-						double y = pos.getY() + (dy + 0.5D) / 4;
-						double z = pos.getZ() + (dz + 0.5D) / 4;
-
-						double speed = rand.nextGaussian() * 0.2D;
-
-						((ServerLevel) level).sendParticles(TFParticleType.ANNIHILATE.get(), x, y, z, 1, 0, 0, 0, speed);
+						particlePacket.queueParticle(TFParticleType.ANNIHILATE.get(), false,
+							pos.getX() + (dx + 0.5D) / 4,
+							pos.getY() + (dy + 0.5D) / 4,
+							pos.getZ() + (dz + 0.5D) / 4,
+							rand.nextGaussian() * 0.2D, rand.nextGaussian() * 0.2D, rand.nextGaussian() * 0.2D);
 					}
 				}
 			}
+			PacketDistributor.sendToPlayersNear(serverLevel, null, pos.getX(), pos.getY(), pos.getZ(), 32.0, particlePacket);
 		}
 	}
 }

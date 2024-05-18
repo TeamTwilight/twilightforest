@@ -16,20 +16,21 @@
         "generation": 3,
         "pages": [
           {
-            "raw": "{\"translate\":\"twilightforest.book.darktower.0\"}"
-          },
-          {
             "raw": "{\"translate\":\"twilightforest.book.darktower.1\"}"
           },
           {
             "raw": "{\"translate\":\"twilightforest.book.darktower.2\"}"
+          },
+          {
+            "raw": "{\"translate\":\"twilightforest.book.darktower.3\"}"
           }
         ],
         "resolved": true,
         "title": {
           "raw": "twilightforest.book.darktower"
         }
-      }
+      },
+      "twilightforest:translatable_book": {}
     },
     "count": 1,
     "id": "minecraft:written_book"

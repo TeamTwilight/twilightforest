@@ -144,7 +144,6 @@ public class SoundGenerator extends TFSoundProvider {
 		this.generateExistingSoundWithSubtitle(TFSounds.LOYAL_ZOMBIE_DEATH, SoundEvents.ZOMBIE_DEATH);
 		this.generateExistingSoundWithSubtitle(TFSounds.LOYAL_ZOMBIE_HURT, SoundEvents.ZOMBIE_HURT);
 		this.makeStepSound(TFSounds.LOYAL_ZOMBIE_STEP, SoundEvents.ZOMBIE_STEP);
-		this.generateExistingSoundWithSubtitle(TFSounds.LOYAL_ZOMBIE_SUMMON, SoundEvents.ITEM_PICKUP);
 
 		this.generateExistingSoundWithSubtitle(TFSounds.MAZE_SLIME_DEATH, SoundEvents.SLIME_DEATH);
 		this.generateExistingSoundWithSubtitle(TFSounds.MAZE_SLIME_HURT, SoundEvents.SLIME_HURT);
@@ -204,10 +203,10 @@ public class SoundGenerator extends TFSoundProvider {
 		this.generateNewSoundWithSubtitle(TFSounds.REDCAP_DEATH, "mob/redcap/die", 3);
 		this.generateNewSoundWithSubtitle(TFSounds.REDCAP_HURT, "mob/redcap/hurt", 4);
 
-		this.generateExistingSoundWithSubtitle(TFSounds.SHIELD_ADD, SoundEvents.CHICKEN_EGG, 0.75F, 1.0F);
-		this.generateExistingSoundWithSubtitle(TFSounds.SHIELD_BREAK, SoundEvents.DECORATED_POT_SHATTER);
+		this.generateNewSoundWithSubtitle(TFSounds.SHIELD_ADD, "random/scepter/shield_use", 1);
+		this.generateNewSoundWithSubtitle(TFSounds.SHIELD_BREAK, "random/scepter/shield_break", 1);
 		this.generateExistingSoundWithSubtitle(TFSounds.SHIELD_BLOCK, SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, 0.5F, 1.0F);
-		this.generateNewSoundWithSubtitle(TFSounds.SHIELD_EXPIRE, "random/shield_poof", 1);
+		this.generateNewSoundWithSubtitle(TFSounds.SHIELD_EXPIRE, "random/scepter/shield_stop", 1);
 
 		this.generateExistingSoundWithSubtitle(TFSounds.SKELETON_DRUID_AMBIENT, SoundEvents.STRAY_AMBIENT);
 		this.generateExistingSoundWithSubtitle(TFSounds.SKELETON_DRUID_DEATH, SoundEvents.STRAY_DEATH);
@@ -354,10 +353,11 @@ public class SoundGenerator extends TFSoundProvider {
 		this.generateNewSoundMC(TFSounds.ORE_METER_CRACKLE, "ambient/nether/basalt_deltas/click", 5, true);
 		this.generateExistingSoundWithSubtitle(TFSounds.ORE_METER_TARGET_BLOCK, SoundEvents.LODESTONE_COMPASS_LOCK);
 		this.generateExistingSoundWithSubtitle(TFSounds.POWDER_USE, SoundEvents.ZOMBIE_VILLAGER_CURE);
-		this.generateExistingSoundWithSubtitle(TFSounds.SCEPTER_DRAIN, SoundEvents.GENERIC_BIG_FALL);
-		this.generateExistingSoundWithSubtitle(TFSounds.SCEPTER_PEARL, SoundEvents.FIRECHARGE_USE);
-		this.generateExistingSoundWithSubtitle(TFSounds.SCEPTER_USE, SoundEvents.FLINTANDSTEEL_USE);
+		this.generateNewSoundWithSubtitle(TFSounds.LIFE_SCEPTER_DRAIN, "random/scepter/drain", 3);
+		this.generateNewSoundWithSubtitle(TFSounds.TWILIGHT_SCEPTER_HIT, "random/scepter/twilight_hit", 3);
+		this.generateNewSoundWithSubtitle(TFSounds.TWILIGHT_SCEPTER_USE, "random/scepter/twilight_use", 3);
 		this.generateExistingSoundWithSubtitle(TFSounds.WOOD_SHIELD_SHATTERS, SoundEvents.ZOMBIE_BREAK_WOODEN_DOOR);
+		this.generateNewSoundWithSubtitle(TFSounds.ZOMBIE_SCEPTER_USE, "random/scepter/zombie", 1);
 
 		this.makeMusicDisc(TFSounds.MUSIC_DISC_RADIANCE, "radiance");
 		this.makeMusicDisc(TFSounds.MUSIC_DISC_STEPS, "steps");

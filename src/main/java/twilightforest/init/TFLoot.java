@@ -11,6 +11,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.item.recipe.UncraftingTableCondition;
+import twilightforest.loot.LootingEnchantNumberProvider;
 import twilightforest.loot.MultiplayerBasedAdditionLootFunction;
 import twilightforest.loot.MultiplayerBasedNumberProvider;
 import twilightforest.loot.conditions.GiantPickUsedCondition;
@@ -31,6 +32,7 @@ public class TFLoot {
 	public static final DeferredHolder<LootItemConditionType, LootItemConditionType> GIANT_PICK_USED_CONDITION = CONDITIONS.register("giant_pick_used", () -> new LootItemConditionType(GiantPickUsedCondition.CODEC));
 	public static final DeferredHolder<LootItemFunctionType<?>, LootItemFunctionType<MultiplayerBasedAdditionLootFunction>> MULTIPLAYER_MULTIPLIER = FUNCTIONS.register("multiplayer_addition", () -> new LootItemFunctionType<>(MultiplayerBasedAdditionLootFunction.CODEC));
 	public static final DeferredHolder<LootNumberProviderType, LootNumberProviderType> MULTIPLAYER_ROLLS = NUMBERS.register("multiplayer_rolls", () -> new LootNumberProviderType(MultiplayerBasedNumberProvider.CODEC));
+	public static final DeferredHolder<LootNumberProviderType, LootNumberProviderType> LOOTING_ROLLS = NUMBERS.register("looting_rolls", () -> new LootNumberProviderType(LootingEnchantNumberProvider.CODEC));
 
 	public static final DeferredHolder<MapCodec<? extends ICondition>, MapCodec<UncraftingTableCondition>> UNCRAFTING_TABLE_CONDITION = CONDITIONALS.register("uncrafting_table_enabled", () -> UncraftingTableCondition.CODEC);
 

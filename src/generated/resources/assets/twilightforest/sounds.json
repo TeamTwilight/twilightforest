@@ -745,6 +745,34 @@
     ],
     "subtitle": "subtitles.block.generic.footsteps"
   },
+  "entity.twilightforest.fortification_shield.add": {
+    "sounds": [
+      "twilightforest:random/scepter/shield_use"
+    ],
+    "subtitle": "subtitles.twilightforest.entity.fortification_shield.add"
+  },
+  "entity.twilightforest.fortification_shield.block": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.zombie.attack_iron_door",
+        "volume": 0.5
+      }
+    ],
+    "subtitle": "subtitles.twilightforest.entity.fortification_shield.block"
+  },
+  "entity.twilightforest.fortification_shield.break": {
+    "sounds": [
+      "twilightforest:random/scepter/shield_break"
+    ],
+    "subtitle": "subtitles.twilightforest.entity.fortification_shield.break"
+  },
+  "entity.twilightforest.fortification_shield.expire": {
+    "sounds": [
+      "twilightforest:random/scepter/shield_stop"
+    ],
+    "subtitle": "subtitles.twilightforest.entity.fortification_shield.expire"
+  },
   "entity.twilightforest.goblin_knight.ambient": {
     "sounds": [
       "twilightforest:mob/redcap/redcap1",
@@ -1193,15 +1221,6 @@
       }
     ],
     "subtitle": "subtitles.block.generic.footsteps"
-  },
-  "entity.twilightforest.loyal_zombie.summon": {
-    "sounds": [
-      {
-        "type": "event",
-        "name": "entity.item.pickup"
-      }
-    ],
-    "subtitle": "subtitles.twilightforest.entity.loyal_zombie.summon"
   },
   "entity.twilightforest.maze_slime.death": {
     "sounds": [
@@ -1720,41 +1739,6 @@
       "twilightforest:mob/redcap/hurt4"
     ],
     "subtitle": "subtitles.twilightforest.entity.redcap.hurt"
-  },
-  "entity.twilightforest.shield.add": {
-    "sounds": [
-      {
-        "type": "event",
-        "name": "entity.chicken.egg",
-        "volume": 0.75
-      }
-    ],
-    "subtitle": "subtitles.twilightforest.entity.shield.add"
-  },
-  "entity.twilightforest.shield.block": {
-    "sounds": [
-      {
-        "type": "event",
-        "name": "entity.zombie.attack_iron_door",
-        "volume": 0.5
-      }
-    ],
-    "subtitle": "subtitles.twilightforest.entity.shield.block"
-  },
-  "entity.twilightforest.shield.break": {
-    "sounds": [
-      {
-        "type": "event",
-        "name": "block.decorated_pot.shatter"
-      }
-    ],
-    "subtitle": "subtitles.twilightforest.entity.shield.break"
-  },
-  "entity.twilightforest.shield.expire": {
-    "sounds": [
-      "twilightforest:random/shield_poof"
-    ],
-    "subtitle": "subtitles.twilightforest.entity.shield.expire"
   },
   "entity.twilightforest.skeleton_druid.ambient": {
     "sounds": [
@@ -2350,6 +2334,14 @@
     ],
     "subtitle": "subtitles.twilightforest.item.lamp.burn"
   },
+  "item.twilightforest.life_scepter.drain": {
+    "sounds": [
+      "twilightforest:random/scepter/drain1",
+      "twilightforest:random/scepter/drain2",
+      "twilightforest:random/scepter/drain3"
+    ],
+    "subtitle": "subtitles.twilightforest.item.life_scepter.drain"
+  },
   "item.twilightforest.magnet.grab": {
     "sounds": [
       {
@@ -2393,33 +2385,6 @@
     ],
     "subtitle": "subtitles.twilightforest.item.ore_meter.target_block"
   },
-  "item.twilightforest.scepter.drain": {
-    "sounds": [
-      {
-        "type": "event",
-        "name": "entity.generic.big_fall"
-      }
-    ],
-    "subtitle": "subtitles.twilightforest.item.scepter.drain"
-  },
-  "item.twilightforest.scepter.pearl": {
-    "sounds": [
-      {
-        "type": "event",
-        "name": "item.firecharge.use"
-      }
-    ],
-    "subtitle": "subtitles.twilightforest.item.scepter.pearl"
-  },
-  "item.twilightforest.scepter.use": {
-    "sounds": [
-      {
-        "type": "event",
-        "name": "item.flintandsteel.use"
-      }
-    ],
-    "subtitle": "subtitles.twilightforest.item.scepter.use"
-  },
   "item.twilightforest.shield.shatter": {
     "sounds": [
       {
@@ -2437,6 +2402,28 @@
       }
     ],
     "subtitle": "subtitles.twilightforest.item.transformation_powder.use"
+  },
+  "item.twilightforest.twilight_scepter.pearl_hit": {
+    "sounds": [
+      "twilightforest:random/scepter/twilight_hit1",
+      "twilightforest:random/scepter/twilight_hit2",
+      "twilightforest:random/scepter/twilight_hit3"
+    ],
+    "subtitle": "subtitles.twilightforest.item.twilight_scepter.pearl_hit"
+  },
+  "item.twilightforest.twilight_scepter.use": {
+    "sounds": [
+      "twilightforest:random/scepter/twilight_use1",
+      "twilightforest:random/scepter/twilight_use2",
+      "twilightforest:random/scepter/twilight_use3"
+    ],
+    "subtitle": "subtitles.twilightforest.item.twilight_scepter.use"
+  },
+  "item.twilightforest.zombie_scepter.use": {
+    "sounds": [
+      "twilightforest:random/scepter/zombie"
+    ],
+    "subtitle": "subtitles.twilightforest.item.zombie_scepter.use"
   },
   "music.twilightforest.twilight_forest": {
     "sounds": [

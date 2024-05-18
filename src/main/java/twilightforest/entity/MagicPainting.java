@@ -4,13 +4,14 @@ import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -46,7 +47,7 @@ public class MagicPainting extends HangingEntity {
 
 	@Override
 	protected void defineSynchedData(SynchedEntityData.Builder builder) {
-		builder.define(MAGIC_PAINTING_VARIANT, this.registryAccess().registryOrThrow(TFRegistries.Keys.MAGIC_PAINTINGS).getHolderOrThrow(MagicPaintingVariants.DEFAULT));
+		builder.define(MAGIC_PAINTING_VARIANT, this.getReg().getHolderOrThrow(MagicPaintingVariants.DEFAULT));
 	}
 
 	@Override
@@ -103,19 +104,28 @@ public class MagicPainting extends HangingEntity {
 
 	@Override
 	public void addAdditionalSaveData(CompoundTag tag) {
-		tag.put("variant", MagicPaintingVariants.CODEC.encodeStart(NbtOps.INSTANCE, this.getVariant()).getOrThrow());
+		ResourceLocation location = this.getReg().getKey(this.getVariant().value());
+		if (location != null) tag.putString("variant", location.toString());
 		tag.putByte("facing", (byte) this.direction.get2DDataValue());
 		super.addAdditionalSaveData(tag);
 	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag tag) {
-		if (tag.contains("variant"))
-			this.setVariant(MagicPaintingVariants.CODEC.parse(NbtOps.INSTANCE, tag.get("variant")).getOrThrow());
+		if (tag.contains("variant")) {
+			ResourceLocation location = ResourceLocation.tryParse(tag.getString("variant"));
+			if (location != null) {
+				this.setVariant(this.getReg().getHolder(location).orElse(this.getReg().getHolderOrThrow(MagicPaintingVariants.DEFAULT)));
+			}
+        }
 
 		this.direction = Direction.from2DDataValue(tag.getByte("facing"));
 		super.readAdditionalSaveData(tag);
 		this.setDirection(this.direction);
+	}
+
+	protected Registry<MagicPaintingVariant> getReg() {
+		return this.registryAccess().registryOrThrow(TFRegistries.Keys.MAGIC_PAINTINGS);
 	}
 
 	@Override

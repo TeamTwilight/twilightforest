@@ -682,49 +682,6 @@ public class Hydra extends BaseTFBoss {
 		return false;
 	}
 
-	@Override
-	protected void tickDeath() {
-		++this.deathTime;
-
-		// stop any head actions on death
-		if (this.deathTime == 1) {
-			for (int i = 0; i < MAX_HEADS; i++) {
-				this.hc[i].setRespawnCounter(-1);
-				if (!this.hc[i].isDead()) {
-					this.hc[i].setNextState(HydraHeadContainer.State.IDLE);
-					this.hc[i].endCurrentAction();
-					this.hc[i].setHurtTime(200);
-				}
-			}
-		}
-
-		// heads die off one by one
-		if (this.deathTime <= 140 && this.deathTime % 20 == 0) {
-			int headToDie = (this.deathTime / 20) - 1;
-
-			if (!this.hc[headToDie].isDead()) {
-				this.hc[headToDie].setNextState(HydraHeadContainer.State.DYING);
-				this.hc[headToDie].endCurrentAction();
-			}
-		}
-
-		if (this.deathTime == 200) {
-			this.remove(RemovalReason.KILLED);
-		}
-
-		for (int i = 0; i < 10; ++i) {
-			double vx = this.getRandom().nextGaussian() * 0.02D;
-			double vy = this.getRandom().nextGaussian() * 0.02D;
-			double vz = this.getRandom().nextGaussian() * 0.02D;
-			this.level().addParticle((this.getRandom().nextInt(2) == 0 ? ParticleTypes.EXPLOSION : ParticleTypes.POOF),
-				this.getX() + this.getRandom().nextFloat() * this.body.getBbWidth() * 2.0F - this.body.getBbWidth(),
-				this.getY() + this.getRandom().nextFloat() * this.body.getBbHeight(),
-				this.getZ() + this.getRandom().nextFloat() * this.body.getBbWidth() * 2.0F - this.body.getBbWidth(),
-				vx, vy, vz
-			);
-		}
-	}
-
 	public String getHeadNameFor(int index) {
 		return this.getEntityData().get(HEAD_NAMES).get(index);
 	}
@@ -759,5 +716,53 @@ public class Hydra extends BaseTFBoss {
 	@Override
 	public Block getBossSpawner() {
 		return TFBlocks.HYDRA_BOSS_SPAWNER.get();
+	}
+
+	@Override
+	protected void tickDeath() {
+		++this.deathTime;
+
+		// stop any head actions on death
+		if (this.deathTime == 1) {
+			for (int i = 0; i < MAX_HEADS; i++) {
+				this.hc[i].setRespawnCounter(-1);
+				if (!this.hc[i].isDead()) {
+					this.hc[i].setNextState(HydraHeadContainer.State.IDLE);
+					this.hc[i].endCurrentAction();
+					this.hc[i].setHurtTime(200);
+				}
+			}
+		}
+
+		// heads die off one by one
+		if (this.deathTime <= 140 && this.deathTime % 20 == 0) {
+			int headToDie = (this.deathTime / 20) - 1;
+
+			if (!this.hc[headToDie].isDead()) {
+				this.hc[headToDie].setNextState(HydraHeadContainer.State.DYING);
+				this.hc[headToDie].endCurrentAction();
+			}
+		}
+
+		if (this.deathTime == 200) {
+			this.remove(RemovalReason.KILLED);
+		}
+
+		if (this.level().isClientSide()) this.tickDeathAnimation();
+	}
+
+	@Override
+	public void tickDeathAnimation() {
+		for (int i = 0; i < 10; ++i) {
+			double vx = this.getRandom().nextGaussian() * 0.02D;
+			double vy = this.getRandom().nextGaussian() * 0.02D;
+			double vz = this.getRandom().nextGaussian() * 0.02D;
+			this.level().addParticle((this.getRandom().nextInt(2) == 0 ? ParticleTypes.EXPLOSION : ParticleTypes.POOF),
+				this.getX() + this.getRandom().nextFloat() * this.body.getBbWidth() * 2.0F - this.body.getBbWidth(),
+				this.getY() + this.getRandom().nextFloat() * this.body.getBbHeight(),
+				this.getZ() + this.getRandom().nextFloat() * this.body.getBbWidth() * 2.0F - this.body.getBbWidth(),
+				vx, vy, vz
+			);
+		}
 	}
 }

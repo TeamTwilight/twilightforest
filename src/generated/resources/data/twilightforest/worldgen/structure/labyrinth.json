@@ -16,9 +16,6 @@
         "generation": 3,
         "pages": [
           {
-            "raw": "{\"translate\":\"twilightforest.book.labyrinth.0\"}"
-          },
-          {
             "raw": "{\"translate\":\"twilightforest.book.labyrinth.1\"}"
           },
           {
@@ -29,13 +26,17 @@
           },
           {
             "raw": "{\"translate\":\"twilightforest.book.labyrinth.4\"}"
+          },
+          {
+            "raw": "{\"translate\":\"twilightforest.book.labyrinth.5\"}"
           }
         ],
         "resolved": true,
         "title": {
           "raw": "twilightforest.book.labyrinth"
         }
-      }
+      },
+      "twilightforest:translatable_book": {}
     },
     "count": 1,
     "id": "minecraft:written_book"

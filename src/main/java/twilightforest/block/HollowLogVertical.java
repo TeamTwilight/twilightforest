@@ -2,6 +2,7 @@ package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -39,10 +40,10 @@ public class HollowLogVertical extends Block implements SimpleWaterloggedBlock {
 	private static final VoxelShape HOLLOW_SHAPE = Shapes.join(Shapes.block(), Block.box(2, 0, 2, 14, 16, 14), BooleanOp.ONLY_FIRST);
 	private static final VoxelShape COLLISION_SHAPE = Shapes.join(Shapes.block(), Block.box(1, 0, 1, 15, 16, 15), BooleanOp.ONLY_FIRST);
 
-	private final DeferredHolder<Block, HollowLogClimbable> climbable;
+	private final Holder<Block> climbable;
 
 	@SuppressWarnings("this-escape")
-	public HollowLogVertical(Properties properties, DeferredHolder<Block, HollowLogClimbable> climbable) {
+	public HollowLogVertical(Properties properties, Holder<Block> climbable) {
 		super(properties);
 		this.climbable = climbable;
 
@@ -69,14 +70,14 @@ public class HollowLogVertical extends Block implements SimpleWaterloggedBlock {
 		if (!isInside(hit, pos)) return super.useItemOn(stack, state, level, pos, player, hand, hit);
 
 		if (stack.is(Blocks.VINE.asItem())) {
-			level.setBlock(pos, this.climbable.get().defaultBlockState().setValue(HollowLogClimbable.VARIANT, HollowLogVariants.Climbable.VINE).setValue(HollowLogClimbable.FACING, DirectionUtil.horizontalOrElse(hit.getDirection(), player.getDirection().getOpposite())), 3);
+			level.setBlock(pos, this.climbable.value().defaultBlockState().setValue(HollowLogClimbable.VARIANT, HollowLogVariants.Climbable.VINE).setValue(HollowLogClimbable.FACING, DirectionUtil.horizontalOrElse(hit.getDirection(), player.getDirection().getOpposite())), 3);
 			level.playSound(null, pos, SoundEvents.VINE_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
 			if (!player.isCreative()) stack.shrink(1);
 
 			return ItemInteractionResult.sidedSuccess(level.isClientSide());
 
 		} else if (stack.is(Blocks.LADDER.asItem())) {
-			level.setBlock(pos, this.climbable.get().defaultBlockState().setValue(HollowLogClimbable.VARIANT, state.getValue(WATERLOGGED) ? HollowLogVariants.Climbable.LADDER_WATERLOGGED : HollowLogVariants.Climbable.LADDER).setValue(HollowLogClimbable.FACING, DirectionUtil.horizontalOrElse(hit.getDirection(), player.getDirection().getOpposite())), 3);
+			level.setBlock(pos, this.climbable.value().defaultBlockState().setValue(HollowLogClimbable.VARIANT, state.getValue(WATERLOGGED) ? HollowLogVariants.Climbable.LADDER_WATERLOGGED : HollowLogVariants.Climbable.LADDER).setValue(HollowLogClimbable.FACING, DirectionUtil.horizontalOrElse(hit.getDirection(), player.getDirection().getOpposite())), 3);
 			level.playSound(null, pos, SoundEvents.LADDER_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
 			if (!player.isCreative()) stack.shrink(1);
 

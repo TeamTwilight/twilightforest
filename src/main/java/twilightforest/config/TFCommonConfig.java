@@ -182,7 +182,7 @@ public class TFCommonConfig {
 				.worldRestart()
 				.translation(TFConfig.CONFIG_ID + "disable_ingredient_switching")
 				.comment("""
-					If true, the uncrafting table will will no longer allow you to switch between ingredients if a recipe uses a tag for crafting.
+					If true, the uncrafting table will no longer allow you to switch between ingredients if a recipe uses a tag for crafting.
 					This will remove the functionality for ALL RECIPES!
 					If you want to prevent certain ingredients from showing up in the first place, use the "twilightforest:banned_uncrafting_ingredients" tag.""")
 				.define("disableIngredientSwitching", false);

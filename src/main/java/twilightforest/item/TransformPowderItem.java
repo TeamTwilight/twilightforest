@@ -69,7 +69,7 @@ public class TransformPowderItem extends Item {
 
 			newEntity.moveTo(target.getX(), target.getY(), target.getZ(), target.getYRot(), target.getXRot());
 			if (newEntity instanceof Mob mob && target.level() instanceof ServerLevelAccessor world) {
-				EventHooks.onFinalizeSpawn(mob, world, target.level().getCurrentDifficultyAt(target.blockPosition()), MobSpawnType.CONVERSION, null);
+				EventHooks.finalizeMobSpawn(mob, world, target.level().getCurrentDifficultyAt(target.blockPosition()), MobSpawnType.CONVERSION, null);
 			}
 
 			try { // try copying what can be copied

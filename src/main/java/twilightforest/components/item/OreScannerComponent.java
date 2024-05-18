@@ -8,6 +8,8 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMaps;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
+import net.minecraft.core.component.DataComponentHolder;
+import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.BlockGetter;
@@ -17,6 +19,7 @@ import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 
 public class OreScannerComponent {
@@ -132,5 +135,31 @@ public class OreScannerComponent {
 
 	public boolean isFinished() {
 		return this.isEmpty() || this.ticksProgressed >= this.scanDurationTicks;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		OreScannerComponent that = (OreScannerComponent) o;
+		return xSpan == that.xSpan && zSpan == that.zSpan && scanDurationTicks == that.scanDurationTicks && ticksProgressed == that.ticksProgressed && Objects.equals(origin, that.origin) && Objects.equals(blockCounter, that.blockCounter);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(xSpan, zSpan, scanDurationTicks, origin, blockCounter, ticksProgressed);
+	}
+
+	@Override
+	public String toString() {
+		return "OreScannerComponent{" +
+			"xSpan=" + xSpan +
+			", zSpan=" + zSpan +
+			", area=" + area +
+			", scanDurationTicks=" + scanDurationTicks +
+			", origin=" + origin +
+			", blockCounter=" + blockCounter +
+			", ticksProgressed=" + ticksProgressed +
+			'}';
 	}
 }

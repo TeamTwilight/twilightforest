@@ -15,9 +15,6 @@
         "generation": 3,
         "pages": [
           {
-            "raw": "{\"translate\":\"twilightforest.book.hydralair.0\"}"
-          },
-          {
             "raw": "{\"translate\":\"twilightforest.book.hydralair.1\"}"
           },
           {
@@ -25,13 +22,17 @@
           },
           {
             "raw": "{\"translate\":\"twilightforest.book.hydralair.3\"}"
+          },
+          {
+            "raw": "{\"translate\":\"twilightforest.book.hydralair.4\"}"
           }
         ],
         "resolved": true,
         "title": {
           "raw": "twilightforest.book.hydralair"
         }
-      }
+      },
+      "twilightforest:translatable_book": {}
     },
     "count": 1,
     "id": "minecraft:written_book"

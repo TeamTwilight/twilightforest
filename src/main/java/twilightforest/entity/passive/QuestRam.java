@@ -35,6 +35,7 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
@@ -144,6 +145,11 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 		} else {
 			return super.interactAt(player, vec, hand);
 		}
+	}
+
+	@Override
+	public AABB getBoundingBoxForCulling() {
+		return super.getBoundingBoxForCulling().inflate(3.0D);
 	}
 
 	public boolean tryAccept(ItemStack stack) {

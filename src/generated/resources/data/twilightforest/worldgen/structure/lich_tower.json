@@ -16,9 +16,6 @@
         "generation": 3,
         "pages": [
           {
-            "raw": "{\"translate\":\"twilightforest.book.lichtower.0\"}"
-          },
-          {
             "raw": "{\"translate\":\"twilightforest.book.lichtower.1\"}"
           },
           {
@@ -26,13 +23,17 @@
           },
           {
             "raw": "{\"translate\":\"twilightforest.book.lichtower.3\"}"
+          },
+          {
+            "raw": "{\"translate\":\"twilightforest.book.lichtower.4\"}"
           }
         ],
         "resolved": true,
         "title": {
           "raw": "twilightforest.book.lichtower"
         }
-      }
+      },
+      "twilightforest:translatable_book": {}
     },
     "count": 1,
     "id": "minecraft:written_book"

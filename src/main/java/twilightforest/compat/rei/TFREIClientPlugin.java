@@ -143,7 +143,7 @@ public class TFREIClientPlugin implements REIClientPlugin {
 				Entity entity;
 
 				if (stack.getItem() instanceof DeferredSpawnEggItem spawnEggItem) {
-					EntityType<?> type = spawnEggItem.getType(stack.getTag());
+					EntityType<?> type = spawnEggItem.getType(stack);
 
 					entity = EntityRenderingUtil.fetchEntity(type, Minecraft.getInstance().level);
 				} else {

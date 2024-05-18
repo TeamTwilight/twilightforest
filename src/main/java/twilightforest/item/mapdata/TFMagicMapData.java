@@ -7,21 +7,23 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.common.ClientboundCustomPayloadPacket;
 import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.saveddata.SavedData;
+import net.minecraft.world.level.saveddata.maps.MapDecorationTypes;
 import net.minecraft.world.level.saveddata.maps.MapId;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import org.jetbrains.annotations.Nullable;
@@ -135,14 +137,20 @@ public class TFMagicMapData extends MapItemSavedData {
 	// [VanillaCopy] Adapted from World.getMapData
 	@Nullable
 	public static TFMagicMapData getMagicMapData(Level level, String name) {
-		if (level.isClientSide()) return CLIENT_DATA.get(name);
-		else return (TFMagicMapData) ((ServerLevel) level).getServer().overworld().getDataStorage().get(TFMagicMapData.factory(), name);
+		if (level instanceof ServerLevel serverLevel) return (TFMagicMapData) serverLevel.getServer().overworld().getDataStorage().get(TFMagicMapData.factory(), name);
+		else return CLIENT_DATA.get(name);
+	}
+
+	// Like the method above, but if we know we're on client
+	@Nullable
+	public static TFMagicMapData getClientMagicMapData(String name) {
+		return CLIENT_DATA.get(name);
 	}
 
 	// [VanillaCopy] Adapted from World.registerMapData
 	public static void registerMagicMapData(Level level, TFMagicMapData data, String id) {
-		if (level.isClientSide()) CLIENT_DATA.put(id, data);
-		else ((ServerLevel) level).getServer().overworld().getDataStorage().set(id, data);
+		if (level instanceof ServerLevel serverLevel) serverLevel.getServer().overworld().getDataStorage().set(id, data);
+		else CLIENT_DATA.put(id, data);
 	}
 
 	public static Factory<MapItemSavedData> factory() {
@@ -217,7 +225,7 @@ public class TFMagicMapData extends MapItemSavedData {
 				float uMax = (featureId % 8 + 1) / 8.0F;
 				float vMax = (featureId / 8 + 1) / 8.0F;
 				Matrix4f matrix4f = stack.last().pose();
-				float depth = idx * -0.004F;
+				float depth = idx * -0.001F;
 				VertexConsumer mapIconVertices = buffer.getBuffer(DecorationRenderTypes.MAP_ICONS);
 				mapIconVertices.vertex(matrix4f, -1.0F, 1.0F, depth).color(255, 255, 255, 255).uv(uMin, vMin).uv2(light).endVertex();
 				mapIconVertices.vertex(matrix4f, 1.0F, 1.0F, depth).color(255, 255, 255, 255).uv(uMax, vMin).uv2(light).endVertex();
@@ -225,16 +233,17 @@ public class TFMagicMapData extends MapItemSavedData {
 				mapIconVertices.vertex(matrix4f, -1.0F, -1.0F, depth).color(255, 255, 255, 255).uv(uMin, vMax).uv2(light).endVertex();
 
 				if (this.conquered) {
-					uMin = 10f / 16f;
-					vMin = 1f / 16f;
-					uMax = 11f / 16f;
-					vMax = 2f / 16f;
 					depth -= 0.002f;
-					VertexConsumer vanillaIconVertices = buffer.getBuffer(DecorationRenderTypes.VANILLA_ICONS);
-					vanillaIconVertices.vertex(matrix4f, -1, 0, depth).color(255, 255, 255, 255).uv(uMin, vMin).uv2(light).endVertex();
-					vanillaIconVertices.vertex(matrix4f, 0, 0, depth).color(255, 255, 255, 255).uv(uMax, vMin).uv2(light).endVertex();
-					vanillaIconVertices.vertex(matrix4f, 0, -1, depth).color(255, 255, 255, 255).uv(uMax, vMax).uv2(light).endVertex();
-					vanillaIconVertices.vertex(matrix4f, -1, -1, depth).color(255, 255, 255, 255).uv(uMin, vMax).uv2(light).endVertex();
+					TextureAtlasSprite sprite = Minecraft.getInstance().getMapDecorationTextures().getSprite(MapDecorationTypes.RED_X.value().assetId());
+					float f2 = sprite.getU0();
+					float f3 = sprite.getV0();
+					float f4 = sprite.getU1();
+					float f5 = sprite.getV1();
+					VertexConsumer vertexconsumer1 = buffer.getBuffer(RenderType.text(sprite.atlasLocation()));
+					vertexconsumer1.vertex(matrix4f, -1.0F, 1.0F, depth).color(255, 255, 255, 255).uv(f2, f3).uv2(light).endVertex();
+					vertexconsumer1.vertex(matrix4f, 1.0F, 1.0F, depth).color(255, 255, 255, 255).uv(f4, f3).uv2(light).endVertex();
+					vertexconsumer1.vertex(matrix4f, 1.0F, -1.0F, depth).color(255, 255, 255, 255).uv(f4, f5).uv2(light).endVertex();
+					vertexconsumer1.vertex(matrix4f, -1.0F, -1.0F, depth).color(255, 255, 255, 255).uv(f2, f5).uv2(light).endVertex();
 				}
 				stack.popPose();
 			}
@@ -256,7 +265,6 @@ public class TFMagicMapData extends MapItemSavedData {
 
 		private static class DecorationRenderTypes {
 			private static final RenderType MAP_ICONS = RenderType.text(TwilightForestMod.prefix("textures/gui/mapicons.png"));
-			private static final RenderType VANILLA_ICONS = RenderType.text(new ResourceLocation("textures/map/map_icons.png"));
 		}
 	}
 }

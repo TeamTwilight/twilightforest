@@ -75,7 +75,7 @@ public class DangleFromTreeDecorator extends TreeDecorator {
 					clearedOfPossibleLeaves = true;
 
 				if (clearedOfPossibleLeaves && !isAir) {
-					cordLength = ropeUnrolling;
+					cordLength = ropeUnrolling - 1;
 
 					break;
 				}

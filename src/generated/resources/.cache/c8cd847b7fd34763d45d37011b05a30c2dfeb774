@@ -1,4 +1,4 @@
-// 1.20.5	2024-04-28T23:16:38.5677772	Twilight Forest Entity Tags
+// 1.20.6	2024-05-08T00:14:16.4666673	Twilight Forest Entity Tags
 00b66b9a62a509d2c0bcfad259ff965c818a8f12 data/aether/tags/entity_types/deflectable_projectiles.json
 9e5f68b2faa6d767538d0f4264a7145d32a2bdda data/aether/tags/entity_types/fire_mob.json
 3ddb086fa7ad80a4f7018142796566c22407e7e4 data/aether/tags/entity_types/pigs.json
@@ -25,7 +25,7 @@ d0db54edeabbabca99c42c3c4953efe760b18c03 data/minecraft/tags/entity_types/undead
 4c421f0abf08155c163118250eff7f5a24617998 data/minecraft/tags/entity_types/zombies.json
 38bf80bb5d608168d87dbbc33e3314fd1d0135d9 data/twilightforest/tags/entity_types/bosses.json
 bfe454dfc8b286c9a748229c8338e4e382fb5348 data/twilightforest/tags/entity_types/dont_kill_bugs.json
-97ff9312c2bcde14cf20a5eec42f4dedc8dc8e6f data/twilightforest/tags/entity_types/lich_poppables.json
+6787368a63a113d6f8b2e25cd08d952fd7467436 data/twilightforest/tags/entity_types/lich_poppables.json
 89130461ab941c91d37ae7e0d43ccaccfbdc44fb data/twilightforest/tags/entity_types/lifedrain_drops_no_flesh.json
 c5eb251bcb3f4e958ddcb4f254b0d3563e7d28e7 data/twilightforest/tags/entity_types/multiplayer_inclusive_entities.json
 3ee8c8fc2a97ac50a0823d806c70f772cf32f52b data/twilightforest/tags/entity_types/rides_obstruct_snatching.json

@@ -31,7 +31,6 @@ import twilightforest.item.mapdata.TFMazeMapData;
 import java.util.Optional;
 
 // [VanillaCopy] super everything, but with appropriate redirections to our own datastructures. finer details noted
-//FIXME this probably needs a rewrite. Im too tired to look into it rn
 public class MazeMapItem extends MapItem {
 
 	public static final String STR_ID = "mazemap";

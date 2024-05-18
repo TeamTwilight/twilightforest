@@ -6,6 +6,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -17,7 +18,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
@@ -63,7 +63,7 @@ public class EntityRenderingUtil {
 		return null;
 	}
 
-	public static void renderEntity(PoseStack stack, EntityType<?> type, int size) {
+	public static void renderEntity(GuiGraphics graphics, EntityType<?> type, int size) {
 		Entity entity = fetchEntity(type, Minecraft.getInstance().level);
 		if (entity instanceof LivingEntity living) {
 			// scale down large mobs, but don't scale up small ones
@@ -75,13 +75,7 @@ public class EntityRenderingUtil {
 			}
 			// catch exceptions drawing the entity to be safe, any caught exceptions blacklist the entity
 			try {
-				PoseStack modelView = new PoseStack();
-				modelView.last().pose().set(RenderSystem.getModelViewStack());
-				modelView.pushPose();
-				modelView.mulPose(stack.last().pose());
-				renderTheEntity(size / 2, size - 2, scale, living);
-				modelView.popPose();
-				RenderSystem.applyModelViewMatrix();
+				renderTheEntity(graphics, size / 2, size - 2, scale, living);
 			} catch (Exception e) {
 				TwilightForestMod.LOGGER.error("Error drawing entity " + BuiltInRegistries.ENTITY_TYPE.getKey(type), e);
 				IGNORED_ENTITIES.add(type);
@@ -91,27 +85,11 @@ public class EntityRenderingUtil {
 	}
 
 	//[VanillaCopy] of InventoryScreen.renderEntityInInventory, with added rotations and some other modified values
-	private static void renderTheEntity(int x, int y, int scale, LivingEntity entity) {
-		PoseStack posestack = new PoseStack();
-		posestack.last().pose().set(RenderSystem.getModelViewStack());
-		posestack.pushPose();
-		posestack.translate(x, y, 1050.0D);
-		applyAdditionalTransforms(entity.getType(), posestack);
-		posestack.scale(1.0F, 1.0F, -1.0F);
-		RenderSystem.applyModelViewMatrix();
-		PoseStack posestack1 = new PoseStack();
-		posestack1.translate(0.0D, 0.0D, 1000.0D);
-		if (entity instanceof EnderDragon) {
-			posestack1.mulPose(Axis.YP.rotationDegrees(180.0F));
-			posestack1.mulPose(Axis.XP.rotationDegrees(-30.0F));
-		}
-		posestack1.scale((float) scale, (float) scale, (float) scale);
+	private static void renderTheEntity(GuiGraphics graphics, int x, int y, int scale, LivingEntity entity) {
+		PoseStack posestack = graphics.pose();
 		Quaternionf quaternion = Axis.ZP.rotationDegrees(180.0F);
 		Quaternionf quaternion1 = Axis.XP.rotationDegrees(20.0F);
 		quaternion.mul(quaternion1);
-		posestack1.mulPose(quaternion);
-		posestack1.mulPose(Axis.XN.rotationDegrees(35.0F));
-		posestack1.mulPose(Axis.YN.rotationDegrees(145.0F));
 		float f2 = entity.yBodyRot;
 		float f3 = entity.getYRot();
 		float f4 = entity.getXRot();
@@ -122,6 +100,13 @@ public class EntityRenderingUtil {
 		entity.setXRot(0.0F);
 		entity.yHeadRot = entity.getYRot();
 		entity.yHeadRotO = entity.getYRot();
+		posestack.pushPose();
+		posestack.translate(x, y, 50.0D);
+		applyAdditionalTransforms(entity.getType(), posestack);
+		posestack.scale((float) scale, (float) scale, (float) -scale);
+		posestack.mulPose(quaternion);
+		posestack.mulPose(Axis.XN.rotationDegrees(35.0F));
+		posestack.mulPose(Axis.YN.rotationDegrees(145.0F));
 		Lighting.setupForEntityInInventory();
 		EntityRenderDispatcher dispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
 		quaternion1.conjugate();
@@ -129,19 +114,17 @@ public class EntityRenderingUtil {
 		boolean hitboxes = dispatcher.shouldRenderHitBoxes();
 		dispatcher.setRenderShadow(false);
 		dispatcher.setRenderHitBoxes(false);
-		MultiBufferSource.BufferSource multibuffersource$buffersource = Minecraft.getInstance().renderBuffers().bufferSource();
-		RenderSystem.runAsFancy(() -> dispatcher.render(entity, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F, posestack1, multibuffersource$buffersource, 15728880));
-		multibuffersource$buffersource.endBatch();
+		RenderSystem.runAsFancy(() -> dispatcher.render(entity, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F, posestack, graphics.bufferSource(), 15728880));
+		graphics.flush();
 		dispatcher.setRenderShadow(true);
 		dispatcher.setRenderHitBoxes(hitboxes);
+		posestack.popPose();
+		Lighting.setupFor3DItems();
 		entity.yBodyRot = f2;
 		entity.setYRot(f3);
 		entity.setXRot(f4);
 		entity.yHeadRotO = f5;
 		entity.yHeadRot = f6;
-		posestack.popPose();
-		RenderSystem.applyModelViewMatrix();
-		Lighting.setupFor3DItems();
 	}
 
 	//certain entities are a pain. This exists to fix vanilla cases.
@@ -156,32 +139,24 @@ public class EntityRenderingUtil {
 		if (entity == EntityType.ELDER_GUARDIAN) stack.scale(0.6F, 0.6F, 0.6F);
 	}
 
-	public static void renderItemEntity(ItemStack stack, @Nullable Level level, float bobOffset) {
-		PoseStack posestack = new PoseStack();
-		posestack.last().pose().set(RenderSystem.getModelViewStack());
+	public static void renderItemEntity(GuiGraphics graphics, ItemStack stack, @Nullable Level level, float bobOffset) {
+		PoseStack posestack = graphics.pose();
 		posestack.pushPose();
-		posestack.translate(16.0D, 32.0D, 1050.0D);
-		posestack.scale(1.0F, 1.0F, -1.0F);
-		RenderSystem.applyModelViewMatrix();
-		PoseStack posestack1 = new PoseStack();
-		posestack1.translate(0.0D, 0.0D, 1000.0D);
-		posestack1.scale(50.0F, 50.0F, 50.0F);
+		posestack.translate(16.0D, 32.0D, 50.0D);
+		posestack.scale(50.0F, 50.0F, -50.0F);
 		Quaternionf quaternion = Axis.ZP.rotationDegrees(180.0F);
 		Quaternionf quaternion1 = Axis.XP.rotationDegrees(20.0F);
 		quaternion.mul(quaternion1);
-		posestack1.mulPose(quaternion);
-		posestack1.mulPose(Axis.XN.rotationDegrees(35.0F));
-		posestack1.mulPose(Axis.YN.rotationDegrees(145.0F));
+		posestack.mulPose(quaternion);
+		posestack.mulPose(Axis.XN.rotationDegrees(35.0F));
+		posestack.mulPose(Axis.YN.rotationDegrees(145.0F));
 		Lighting.setupForEntityInInventory();
 		quaternion1.conjugate();
-		MultiBufferSource.BufferSource buffer = Minecraft.getInstance().renderBuffers().bufferSource();
 		ItemEntity item = (ItemEntity) fetchEntity(EntityType.ITEM, level);
 		Objects.requireNonNull(item).setItem(stack);
-		RenderSystem.runAsFancy(() ->
-			render(item, Minecraft.getInstance().getDeltaFrameTime(), posestack1, buffer, bobOffset));
-		buffer.endBatch();
+		RenderSystem.runAsFancy(() -> render(item, Minecraft.getInstance().getDeltaFrameTime(), posestack, graphics.bufferSource(), bobOffset));
+		graphics.flush();
 		posestack.popPose();
-		RenderSystem.applyModelViewMatrix();
 		Lighting.setupFor3DItems();
 	}
 

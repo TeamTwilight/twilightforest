@@ -1,9 +1,11 @@
 package twilightforest.entity.passive;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -29,9 +31,11 @@ import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
 import twilightforest.init.custom.DwarfRabbitVariants;
 
-public class DwarfRabbit extends Animal implements VariantHolder<DwarfRabbitVariant> {
+import java.util.Optional;
 
-	private static final EntityDataAccessor<DwarfRabbitVariant> VARIANT = SynchedEntityData.defineId(DwarfRabbit.class, TFDataSerializers.DWARF_RABBIT_VARIANT.get());
+public class DwarfRabbit extends Animal implements VariantHolder<Holder<DwarfRabbitVariant>> {
+
+	private static final EntityDataAccessor<Holder<DwarfRabbitVariant>> VARIANT = SynchedEntityData.defineId(DwarfRabbit.class, TFDataSerializers.DWARF_RABBIT_VARIANT.get());
 
 	public DwarfRabbit(EntityType<? extends DwarfRabbit> type, Level world) {
 		super(type, world);
@@ -65,7 +69,7 @@ public class DwarfRabbit extends Animal implements VariantHolder<DwarfRabbitVari
 	@Override
 	public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob mob) {
 		DwarfRabbit dwarf = TFEntities.DWARF_RABBIT.get().create(level);
-		DwarfRabbitVariant variant = DwarfRabbitVariant.getRandomVariant(this.getRandom());
+		Holder<DwarfRabbitVariant> variant = DwarfRabbitVariant.getRandomCommonVariant(level.registryAccess(), level.getRandom());
 		if (dwarf != null && mob instanceof DwarfRabbit parent) {
 			if (this.getRandom().nextInt(20) != 0) {
 				if (this.getRandom().nextBoolean()) {
@@ -83,38 +87,38 @@ public class DwarfRabbit extends Animal implements VariantHolder<DwarfRabbitVari
 	@Override
 	protected void defineSynchedData(SynchedEntityData.Builder builder) {
 		super.defineSynchedData(builder);
-		builder.define(VARIANT, DwarfRabbitVariants.BROWN.get());
+		builder.define(VARIANT, this.registryAccess().registryOrThrow(TFRegistries.Keys.DWARF_RABBIT_VARIANT).getHolderOrThrow(DwarfRabbitVariants.BROWN));
 	}
 
 	@Override
 	public void addAdditionalSaveData(CompoundTag compound) {
 		super.addAdditionalSaveData(compound);
-		compound.putString("variant", TFRegistries.DWARF_RABBIT_VARIANT.getKey(this.getVariant()).toString());
+		compound.putString("variant", this.getVariant().unwrapKey().orElse(DwarfRabbitVariants.BROWN).location().toString());
 	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
-		DwarfRabbitVariant variant = TFRegistries.DWARF_RABBIT_VARIANT.get(ResourceLocation.tryParse(compound.getString("variant")));
-		if (variant != null) {
-			this.setVariant(variant);
-		}
+		Optional.ofNullable(ResourceLocation.tryParse(compound.getString("variant")))
+			.map(location -> ResourceKey.create(TFRegistries.Keys.DWARF_RABBIT_VARIANT, location))
+			.flatMap(key -> this.registryAccess().registryOrThrow(TFRegistries.Keys.DWARF_RABBIT_VARIANT).getHolder(key))
+			.ifPresent(this::setVariant);
 	}
 
 	@Override
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data) {
 		data = super.finalizeSpawn(accessor, difficulty, type, data);
-		this.setVariant(DwarfRabbitVariant.getRandomVariant(this.getRandom()));
+		this.setVariant(DwarfRabbitVariant.getVariant(accessor.registryAccess(), accessor.getBiome(this.blockPosition()), this.getRandom()));
 		return data;
 	}
 
 	@Override
-	public DwarfRabbitVariant getVariant() {
+	public Holder<DwarfRabbitVariant> getVariant() {
 		return this.getEntityData().get(VARIANT);
 	}
 
 	@Override
-	public void setVariant(DwarfRabbitVariant variant) {
+	public void setVariant(Holder<DwarfRabbitVariant> variant) {
 		this.getEntityData().set(VARIANT, variant);
 	}
 

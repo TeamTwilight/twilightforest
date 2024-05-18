@@ -16,20 +16,21 @@
         "generation": 3,
         "pages": [
           {
-            "raw": "{\"translate\":\"twilightforest.book.yeticave.0\"}"
-          },
-          {
             "raw": "{\"translate\":\"twilightforest.book.yeticave.1\"}"
           },
           {
             "raw": "{\"translate\":\"twilightforest.book.yeticave.2\"}"
+          },
+          {
+            "raw": "{\"translate\":\"twilightforest.book.yeticave.3\"}"
           }
         ],
         "resolved": true,
         "title": {
           "raw": "twilightforest.book.yeticave"
         }
-      }
+      },
+      "twilightforest:translatable_book": {}
     },
     "count": 1,
     "id": "minecraft:written_book"

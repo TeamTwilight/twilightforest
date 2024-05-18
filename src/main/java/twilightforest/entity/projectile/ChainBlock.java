@@ -226,7 +226,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 
 				if (!state.isAir() && this.canBreakBlockAt(pos, state, player.gameMode.getGameModeForPlayer().isBlockPlacingRestricted()) && block.canEntityDestroy(state, this.level(), pos, this)) {
 					if (!NeoForge.EVENT_BUS.post(new BlockEvent.BreakEvent(this.level(), pos, state, player)).isCanceled()) {
-						if (EventHooks.doPlayerHarvestCheck(player, state, !state.requiresCorrectToolForDrops() || player.getItemInHand(this.getHand()).isCorrectToolForDrops(state))) {
+						if (EventHooks.doPlayerHarvestCheck(player, state, this.level(), pos)) {
 							this.level().destroyBlock(pos, false);
 							if (!creative) block.playerDestroy(this.level(), player, pos, state, this.level().getBlockEntity(pos), player.getItemInHand(this.getHand()));
 							this.blocksSmashed++;

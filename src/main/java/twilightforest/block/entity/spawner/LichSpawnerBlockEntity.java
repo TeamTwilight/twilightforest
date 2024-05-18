@@ -30,7 +30,7 @@ public class LichSpawnerBlockEntity extends BossSpawnerBlockEntity<Lich> {
 		Lich myCreature = this.makeMyCreature();
 
 		myCreature.moveTo(this.getBlockPos(), accessor.getLevel().random.nextFloat() * 360F, 0.0F);
-		EventHooks.onFinalizeSpawn(myCreature, accessor, accessor.getCurrentDifficultyAt(this.getBlockPos()), MobSpawnType.SPAWNER, null);
+		EventHooks.finalizeMobSpawn(myCreature, accessor, accessor.getCurrentDifficultyAt(this.getBlockPos()), MobSpawnType.SPAWNER, null);
 		myCreature.setAttackCooldown(40);
 		myCreature.setExtinguishTimer();
 

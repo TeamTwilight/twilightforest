@@ -56,13 +56,14 @@ import twilightforest.init.TFBlocks;
 import twilightforest.init.TFSounds;
 import twilightforest.init.TFStructures;
 import twilightforest.network.MovePlayerPacket;
-import twilightforest.network.ParticlePacket;
 import twilightforest.util.EntityUtil;
 
 import java.util.Objects;
 import java.util.UUID;
 
 public class Naga extends BaseTFBoss {
+	private static final int DEATH_ANIMATION_DURATION = 24;
+	private static final int DEATH_PARTICLES_DURATION = 100;
 
 	private static final int TICKS_BEFORE_HEALING = 600;
 	private static final int MAX_SEGMENTS = 12;
@@ -207,6 +208,7 @@ public class Naga extends BaseTFBoss {
 
 	@Nullable
 	@Override
+	@SuppressWarnings("deprecation")
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data) {
 		if (this.level().getDifficulty() != Difficulty.EASY && this.getAttribute(Attributes.MAX_HEALTH) != null) {
 			boolean hard = this.level().getDifficulty() == Difficulty.HARD;
@@ -511,81 +513,6 @@ public class Naga extends BaseTFBoss {
 	}
 
 	@Override
-	protected void tickDeath() {
-		++this.deathTime;
-		if (!this.level().isClientSide() && !this.isRemoved()) {
-			int renderEnd = 24;
-			int maxDeath = renderEnd + 120;
-			if (this.deathTime >= renderEnd) {
-				if (this.deathTime == renderEnd) {
-					SoundEvent soundevent = this.getDeathSound();
-					if (soundevent != null) {
-						this.playSound(soundevent, this.getSoundVolume() * 1.2F, this.getVoicePitch() * 0.75F);
-					}
-					this.level().broadcastEntityEvent(this, (byte) 60);
-				} else if (this.deathTime >= maxDeath) {
-					this.remove(Entity.RemovalReason.KILLED);
-				} else {
-					Vec3 start = this.position().add(0.0D, this.getBbHeight() * 0.5D, 0.0D);
-					Vec3 end = Vec3.atCenterOf(EntityUtil.bossChestLocation(this));
-					Vec3 diff = end.subtract(start);
-
-					ParticlePacket particlePacket = new ParticlePacket();
-					if (this.deathTime >= maxDeath - 3) {
-						for (int i = 0; i < 40; i++) {
-							double x = (this.getRandom().nextDouble() - 0.5D) * 0.075D * i;
-							double y = (this.getRandom().nextDouble() - 0.5D) * 0.075D * i;
-							double z = (this.getRandom().nextDouble() - 0.5D) * 0.075D * i;
-							particlePacket.queueParticle(ParticleTypes.POOF, false, end.add(x, y, z), Vec3.ZERO);
-						}
-					}
-
-					double angle = Math.atan2(end.z - start.z, end.x - start.x) * Mth.RAD_TO_DEG + 180D;
-
-					double xMul = angle % 180.0D;
-					xMul = Math.min(xMul, 180.0D - xMul);
-					xMul = Math.pow((xMul / 90.0D), 1.5D) * 2.0D;
-
-					double zMul = (angle + 90.0D) % 180.0D;
-					zMul = Math.min(zMul, 180.0D - zMul);
-					zMul = Math.pow((zMul / 90.0D), 1.5D) * 2.0D;
-
-					for (int p = 0; p < 4; p++) {
-						int trailTime = (this.deathTime - renderEnd) - p + 1;//Plus one cuz the math makes it reach the correct spot at 120 ticks, but the method ends at 119
-						if (trailTime < 0) continue;
-						for (double d = 0.0D; d < 1.0D; d += 0.25D) {
-							double preciseTime = trailTime - d;
-							if (preciseTime < 0.0D) continue;
-							double factor = preciseTime / (double) (maxDeath - renderEnd);
-							Vec3 particlePos = start.add(diff.scale(factor)).add(Math.sin(preciseTime * Math.PI * 0.075D) * xMul, Math.sin(preciseTime * Math.PI * 0.025D) * 0.1D, Math.cos(preciseTime * Math.PI * 0.0625D) * zMul);//Some sine waves to make it slither-y;
-							BlockHitResult blockhitresult = this.level().clip(new ClipContext(particlePos.add(0.0D, 2.0D, 0.0D), particlePos.subtract(0.0D, 3.0D, 0.0D), ClipContext.Block.COLLIDER, ClipContext.Fluid.WATER, CollisionContext.empty()));
-							particlePacket.queueParticle(ParticleTypes.COMPOSTER, false, blockhitresult.getLocation().add(0.0D, 0.15D, 0.0D), Vec3.ZERO);
-						}
-					}
-					PacketDistributor.sendToPlayersTrackingEntity(this, particlePacket);
-				}
-			}
-		}
-	}
-
-	@Override
-	public void handleEntityEvent(byte id) {
-		if (id == 60) {
-			Vec3 pos = this.position();
-			float width = this.getBbWidth();
-			float height = this.getBbHeight();
-			for (int k = 0; k < 20; k++) {
-				this.level().addParticle(this.getRandom().nextBoolean() ? ParticleTypes.EXPLOSION : ParticleTypes.EXPLOSION_EMITTER,
-					(pos.x() + this.getRandom().nextFloat() * width * 2.0F) - width,
-					pos.y() + this.getRandom().nextFloat() * height,
-					(pos.z() + this.getRandom().nextFloat() * width * 2.0F) - width,
-					this.getRandom().nextGaussian() * 0.02D, this.getRandom().nextGaussian() * 0.02D, this.getRandom().nextGaussian() * 0.02D);
-			}
-		}
-		super.handleEntityEvent(id);
-	}
-
-	@Override
 	public boolean isMultipartEntity() {
 		return true;
 	}
@@ -625,5 +552,62 @@ public class Naga extends BaseTFBoss {
 	@Override
 	public Block getBossSpawner() {
 		return TFBlocks.NAGA_BOSS_SPAWNER.get();
+	}
+
+	@Override
+	public boolean isDeathAnimationFinished() {
+		return this.deathTime >= DEATH_ANIMATION_DURATION + DEATH_PARTICLES_DURATION;
+	}
+
+	@Override
+	public void tickDeathAnimation() {
+		if (this.deathTime >= DEATH_ANIMATION_DURATION) {
+            Vec3 start = this.position().add(0.0D, this.getBbHeight() * 0.5D, 0.0D);
+            Vec3 end = EntityUtil.bossChestLocation(this).getCenter();
+            Vec3 diff = end.subtract(start);
+
+            double angle = Math.atan2(end.z - start.z, end.x - start.x) * Mth.RAD_TO_DEG + 180D;
+
+            double xMul = angle % 180.0D;
+            xMul = Math.min(xMul, 180.0D - xMul);
+            xMul = Math.pow((xMul / 90.0D), 1.5D) * 2.0D;
+
+            double zMul = (angle + 90.0D) % 180.0D;
+            zMul = Math.min(zMul, 180.0D - zMul);
+            zMul = Math.pow((zMul / 90.0D), 1.5D) * 2.0D;
+
+            for (int p = 1; p <= 4; p++) {
+                int trailTime = (this.deathTime - DEATH_ANIMATION_DURATION) - p;
+                if (trailTime < 0) continue;
+                for (double d = 0.0D; d < 1.0D; d += 0.25D) {
+                    double preciseTime = trailTime - d;
+                    if (preciseTime < 0.0D) continue;
+                    double factor = preciseTime / (double) DEATH_PARTICLES_DURATION;
+                    Vec3 particlePos = start.add(diff.scale(factor)).add(Math.sin(preciseTime * Math.PI * 0.075D) * xMul, Math.sin(preciseTime * Math.PI * 0.025D) * 0.1D, Math.cos(preciseTime * Math.PI * 0.0625D) * zMul);//Some sine waves to make it slither-y;
+                    BlockHitResult blockhitresult = this.level().clip(new ClipContext(particlePos.add(0.0D, 2.0D, 0.0D), particlePos.subtract(0.0D, 3.0D, 0.0D), ClipContext.Block.COLLIDER, ClipContext.Fluid.WATER, CollisionContext.empty()));
+                    particlePos = blockhitresult.getLocation().add(0.0D, 0.15D, 0.0D);
+					this.level().addParticle(ParticleTypes.COMPOSTER, false, particlePos.x(), particlePos.y(), particlePos.z(), 0.0D, 0.0D, 0.0D);
+                }
+            }
+        }
+	}
+
+	@Override
+	public void makePoofParticles() {
+		if (this.getDeathSound() != null) this.playSound(this.getDeathSound(), this.getSoundVolume() * 1.25F, this.getVoicePitch() * 0.25F);
+		this.makePoofAt(this.position());
+	}
+
+	// Made separate so that the NagaSegments can do it as well
+	public void makePoofAt(Vec3 pos) {
+		float width = this.getBbWidth();
+		float height = this.getBbHeight();
+		for (int k = 0; k < 20; k++) {
+			this.level().addParticle(ParticleTypes.EXPLOSION,
+				(pos.x() + this.getRandom().nextFloat() * width * 2.0F) - width,
+				pos.y() + this.getRandom().nextFloat() * height,
+				(pos.z() + this.getRandom().nextFloat() * width * 2.0F) - width,
+				this.getRandom().nextGaussian() * 0.02D, this.getRandom().nextGaussian() * 0.02D, this.getRandom().nextGaussian() * 0.02D);
+		}
 	}
 }

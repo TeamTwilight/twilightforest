@@ -68,7 +68,7 @@ public class RecipeViewerConstants {
 			if (output != null) {
 				TransformationPowderInfo dummy = new TransformationPowderInfo(output.result(), input, true);
 				if (!info.contains(dummy)) {
-					if (inputs.contains(output)) {
+					if (inputs.contains(output.result())) {
 						info.add(new TransformationPowderInfo(input, output.result(), true));
 					} else {
 						info.add(new TransformationPowderInfo(input, output.result(), false));

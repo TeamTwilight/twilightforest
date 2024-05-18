@@ -41,10 +41,13 @@ import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.TFChestBlockEntity;
 import twilightforest.client.TFClientSetup;
 import twilightforest.command.TFCommand;
+import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.config.ConfigSetup;
 import twilightforest.data.custom.stalactites.entry.Stalactite;
 import twilightforest.dispenser.TFDispenserBehaviors;
 import twilightforest.entity.MagicPaintingVariant;
+import twilightforest.entity.passive.DwarfRabbitVariant;
+import twilightforest.entity.passive.TinyBirdVariant;
 import twilightforest.init.*;
 import twilightforest.init.custom.*;
 import twilightforest.loot.modifiers.GiantToolGroupingModifier;
@@ -118,10 +121,8 @@ public final class TwilightForestMod {
 		TFDataSerializers.DATA_SERIALIZERS.register(bus);
 		TFFeatureModifiers.FOLIAGE_PLACERS.register(bus);
 		TFFeatureModifiers.TREE_DECORATORS.register(bus);
-		TinyBirdVariants.TINY_BIRD_VARIANTS.register(bus);
 		TFFeatureModifiers.PLACEMENT_MODIFIERS.register(bus);
 		TFDensityFunctions.DENSITY_FUNCTION_TYPES.register(bus);
-		DwarfRabbitVariants.DWARF_RABBIT_VARIANTS.register(bus);
 		TFStructureProcessors.STRUCTURE_PROCESSORS.register(bus);
 		TFStructurePieceTypes.STRUCTURE_PIECE_TYPES.register(bus);
 		ChunkBlanketProcessors.CHUNK_BLANKETING_TYPES.register(bus);
@@ -148,10 +149,10 @@ public final class TwilightForestMod {
 	}
 
 	private static void loadCuriosCompat(IEventBus bus) {
-		// NeoForge.EVENT_BUS.addListener(CuriosCompat::keepCurios);
-		// bus.addListener(CuriosCompat::registerCuriosCapabilities);
-		// bus.addListener(CuriosCompat::registerCurioRenderers);
-		// bus.addListener(CuriosCompat::registerCurioLayers);
+		NeoForge.EVENT_BUS.addListener(CuriosCompat::keepCurios);
+		bus.addListener(CuriosCompat::registerCuriosCapabilities);
+		bus.addListener(CuriosCompat::registerCurioRenderers);
+		bus.addListener(CuriosCompat::registerCurioLayers);
 	}
 
 	private void registerGenericItemHandlers(RegisterCapabilitiesEvent event) {
@@ -180,9 +181,7 @@ public final class TwilightForestMod {
 
 	public void createNewRegistries(NewRegistryEvent event) {
 		event.register(TFRegistries.BIOME_LAYER_TYPE);
-		event.register(TFRegistries.DWARF_RABBIT_VARIANT);
 		event.register(TFRegistries.ENFORCEMENT);
-		event.register(TFRegistries.TINY_BIRD_VARIANT);
 		event.register(TFRegistries.CHUNK_BLANKET_TYPES);
 	}
 
@@ -194,6 +193,8 @@ public final class TwilightForestMod {
 		event.dataPackRegistry(TFRegistries.Keys.MAGIC_PAINTINGS, MagicPaintingVariant.CODEC, MagicPaintingVariant.CODEC);
 		event.dataPackRegistry(TFRegistries.Keys.STRUCTURE_SPELEOTHEM_SETTINGS, StructureSpeleothemConfig.CODEC);
 		event.dataPackRegistry(TFRegistries.Keys.CHUNK_BLANKET_PROCESSORS, ChunkBlanketProcessors.DISPATCH_CODEC);
+		event.dataPackRegistry(TFRegistries.Keys.DWARF_RABBIT_VARIANT, DwarfRabbitVariant.DIRECT_CODEC, DwarfRabbitVariant.DIRECT_CODEC);
+		event.dataPackRegistry(TFRegistries.Keys.TINY_BIRD_VARIANT, TinyBirdVariant.DIRECT_CODEC, TinyBirdVariant.DIRECT_CODEC);
 	}
 
 	public void registerExtraStuff(RegisterEvent evt) {
@@ -231,6 +232,8 @@ public final class TwilightForestMod {
 		registrar.playToClient(UpdateTFMultipartPacket.TYPE, UpdateTFMultipartPacket.STREAM_CODEC, UpdateTFMultipartPacket::handle);
 		registrar.playToClient(UpdateThrownPacket.TYPE, UpdateThrownPacket.STREAM_CODEC, UpdateThrownPacket::handle);
 		registrar.playToServer(WipeOreMeterPacket.TYPE, WipeOreMeterPacket.STREAM_CODEC, WipeOreMeterPacket::handle);
+		registrar.playToClient(LifedrainParticlePacket.TYPE, LifedrainParticlePacket.STREAM_CODEC, LifedrainParticlePacket::handle);
+		registrar.playToClient(UpdateDeathTimePacket.TYPE, UpdateDeathTimePacket.STREAM_CODEC, UpdateDeathTimePacket::handle);
 	}
 
 	public void init(FMLCommonSetupEvent evt) {

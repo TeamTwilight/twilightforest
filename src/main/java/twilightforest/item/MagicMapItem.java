@@ -36,7 +36,6 @@ import java.util.List;
 import java.util.Map;
 
 // [VanillaCopy] super everything, but with appropriate redirections to our own datastructures. finer details noted
-//FIXME this probably needs a rewrite. Im too tired to look into it rn
 public class MagicMapItem extends MapItem {
 
 	public static final String STR_ID = "magicmap";
@@ -279,19 +278,17 @@ public class MagicMapItem extends MapItem {
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
 		MapId mapId = stack.get(DataComponents.MAP_ID);
-		if (flag.isAdvanced() && mapId != null) {
-			MapItemSavedData mapitemsaveddata = context.mapData(mapId);
-			if (mapitemsaveddata != null) {
-				tooltip.add((Component.translatable("filled_map.id", mapId.id())).withStyle(ChatFormatting.GRAY));
-				tooltip.add((Component.translatable("filled_map.scale", 1 << mapitemsaveddata.scale)).withStyle(ChatFormatting.GRAY));
-				tooltip.add((Component.translatable("filled_map.level", mapitemsaveddata.scale, 4)).withStyle(ChatFormatting.GRAY));
-			} else {
-				tooltip.add((Component.translatable("filled_map.unknown")).withStyle(ChatFormatting.GRAY));
-			}
-		} else {
-			if (mapId != null) {
-				tooltip.add(Component.literal("#" + mapId.id()).withStyle(ChatFormatting.GRAY));
-			}
+		if (mapId != null) {
+			if (flag.isAdvanced()) {
+				MapItemSavedData mapitemsaveddata = TFMagicMapData.getClientMagicMapData(getMapName(mapId.id()));
+				if (mapitemsaveddata != null) {
+					tooltip.add((Component.translatable("filled_map.id", mapId.id())).withStyle(ChatFormatting.GRAY));
+					tooltip.add((Component.translatable("filled_map.scale", 1 << mapitemsaveddata.scale)).withStyle(ChatFormatting.GRAY));
+					tooltip.add((Component.translatable("filled_map.level", mapitemsaveddata.scale, 4)).withStyle(ChatFormatting.GRAY));
+				} else {
+					tooltip.add((Component.translatable("filled_map.unknown")).withStyle(ChatFormatting.GRAY));
+				}
+			} else tooltip.add(MapItem.getTooltipForId(mapId));
 		}
 	}
 }

@@ -16,7 +16,10 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LightningBolt;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
@@ -31,7 +34,6 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.event.EventHooks;
-import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.entity.ai.control.NoClipMoveControl;
 import twilightforest.entity.ai.goal.UrGhastAttackGoal;
@@ -40,7 +42,6 @@ import twilightforest.entity.ai.goal.UrGhastLookGoal;
 import twilightforest.entity.monster.CarminiteGhastguard;
 import twilightforest.entity.monster.CarminiteGhastling;
 import twilightforest.init.*;
-import twilightforest.network.ParticlePacket;
 import twilightforest.util.EntityUtil;
 
 import java.util.ArrayList;
@@ -51,8 +52,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class UrGhast extends BaseTFBoss {
-
 	private static final Vec3 DYING_DECENT = new Vec3(0.0D, -0.03D, 0.0D);
+	public static final int DEATH_ANIMATION_DURATION = 90;
+
 	// 0 = idle, 1 = eyes open / tracking player, 2 = shooting fireball
 	private static final EntityDataAccessor<Byte> ATTACK_STATUS = SynchedEntityData.defineId(UrGhast.class, EntityDataSerializers.BYTE);
 	private static final EntityDataAccessor<Byte> ATTACK_TIMER = SynchedEntityData.defineId(UrGhast.class, EntityDataSerializers.BYTE);
@@ -260,7 +262,7 @@ public class UrGhast extends BaseTFBoss {
 
 			minion.moveTo(sx, sy, sz, level.getRandom().nextFloat() * 360.0F, 0.0F);
 			minion.makeBossMinion();
-			EventHooks.onFinalizeSpawn(minion, level, level.getCurrentDifficultyAt(minion.blockPosition()), MobSpawnType.MOB_SUMMONED, null);
+			EventHooks.finalizeMobSpawn(minion, level, level.getCurrentDifficultyAt(minion.blockPosition()), MobSpawnType.MOB_SUMMONED, null);
 			if (minion.checkSpawnRules(level, MobSpawnType.MOB_SUMMONED)) {
 				level.addFreshEntity(minion);
 				minion.spawnAnim();
@@ -452,59 +454,6 @@ public class UrGhast extends BaseTFBoss {
 	}
 
 	@Override
-	protected void tickDeath() {
-		++this.deathTime;
-		int maxDeath = 80;
-		// extra death explosions
-		if (this.deathTime <= maxDeath / 2) {
-			float bbWidth = this.getBbWidth();
-			float bbHeight = this.getBbHeight();
-			for (int k = 0; k < 12; k++) {
-				double d = this.random.nextGaussian() * 0.02D;
-				double d1 = this.random.nextGaussian() * 0.02D;
-				double d2 = this.random.nextGaussian() * 0.02D;
-
-				this.level().addParticle(this.random.nextBoolean() ? (this.random.nextBoolean() ? ParticleTypes.POOF : ParticleTypes.EXPLOSION) : DustParticleOptions.REDSTONE,
-					(this.getX() + this.random.nextFloat() * bbWidth * 1.8F) - bbWidth,
-					this.getY() + this.random.nextFloat() * bbHeight,
-					(this.getZ() + this.random.nextFloat() * bbWidth * 1.8F) - bbWidth,
-					d, d1, d2
-				);
-			}
-		} else if (this.level() instanceof ServerLevel) {
-			if (this.deathTime >= maxDeath && !this.isRemoved()) {
-				this.level().broadcastEntityEvent(this, (byte) 60);
-				this.remove(Entity.RemovalReason.KILLED);
-				return;
-			}
-			Vec3 start = this.position().add(0.0D, this.getBbHeight() * 0.5F, 0.0D);
-			Vec3 end = Vec3.atCenterOf(EntityUtil.bossChestLocation(this));
-			Vec3 diff = end.subtract(start);
-
-			int deathTime2 = this.deathTime - (maxDeath / 2) + 1;
-			double factor = (double) deathTime2 / (double) (maxDeath / 2);
-			Vec3 particlePos = start.add(diff.scale(factor)).add(Math.sin(deathTime2 * Math.PI * 0.1D), Math.sin(deathTime2 * Math.PI * 0.05D), Math.cos(deathTime2 * Math.PI * 0.1125D));//Some sine waves to make it pretty
-
-			ParticlePacket particlePacket = new ParticlePacket();
-			if (this.deathTime >= maxDeath - 2) {
-				for (int i = 0; i < 40; i++) {
-					double x = (this.random.nextDouble() - 0.5D) * 0.075D * i;
-					double y = (this.random.nextDouble() - 0.5D) * 0.075D * i;
-					double z = (this.random.nextDouble() - 0.5D) * 0.075D * i;
-					particlePacket.queueParticle(ParticleTypes.POOF, false, end.add(x, y, z), Vec3.ZERO);
-				}
-			}
-			for (int i = 0; i < 40; i++) {
-				double x = (this.random.nextDouble() - 0.5D) * 0.05D * i;
-				double y = (this.random.nextDouble() - 0.5D) * 0.05D * i;
-				double z = (this.random.nextDouble() - 0.5D) * 0.05D * i;
-				particlePacket.queueParticle(DustParticleOptions.REDSTONE, false, particlePos.add(x, y, z), Vec3.ZERO);
-			}
-			PacketDistributor.sendToPlayersTrackingEntity(this, particlePacket);
-		}
-	}
-
-	@Override
 	public Vec3 getDeltaMovement() {
 		return this.isDeadOrDying() ? DYING_DECENT : super.getDeltaMovement();
 	}
@@ -583,5 +532,52 @@ public class UrGhast extends BaseTFBoss {
 	@Override
 	public Block getBossSpawner() {
 		return TFBlocks.UR_GHAST_BOSS_SPAWNER.get();
+	}
+
+	@Override
+	public boolean isDeathAnimationFinished() {
+		return this.deathTime >= DEATH_ANIMATION_DURATION;
+	}
+
+	@Override
+	public void tickDeathAnimation() {
+		// extra death explosions
+		int third = DEATH_ANIMATION_DURATION / 3;
+		if (this.deathTime <= third) {
+			float bbWidth = this.getBbWidth();
+			float bbHeight = this.getBbHeight();
+			for (int k = 0; k < 12; k++) {
+				double d = this.random.nextGaussian() * 0.02D;
+				double d1 = this.random.nextGaussian() * 0.02D;
+				double d2 = this.random.nextGaussian() * 0.02D;
+
+				this.level().addParticle(this.random.nextBoolean() ? (this.random.nextBoolean() ? ParticleTypes.POOF : ParticleTypes.EXPLOSION) : DustParticleOptions.REDSTONE,
+					(this.getX() + this.random.nextFloat() * bbWidth * 1.8F) - bbWidth,
+					this.getY() + this.random.nextFloat() * bbHeight,
+					(this.getZ() + this.random.nextFloat() * bbWidth * 1.8F) - bbWidth,
+					d, d1, d2
+				);
+			}
+		} else {
+			Vec3 start = this.position().add(0.0D, this.getBbHeight() * 0.5F, 0.0D);
+			Vec3 end = Vec3.atCenterOf(EntityUtil.bossChestLocation(this));
+			Vec3 diff = end.subtract(start);
+
+			int deathTime2 = this.deathTime - third + 1;
+			double factor = (double) deathTime2 / (double) (third * 2);
+			Vec3 particlePos = start.add(diff.scale(factor)).add(Math.sin(deathTime2 * Math.PI * 0.1D), Math.sin(deathTime2 * Math.PI * 0.05D), Math.cos(deathTime2 * Math.PI * 0.1125D));//Some sine waves to make it pretty
+
+			for (int i = 0; i < 40; i++) {
+				double x = (this.random.nextDouble() - 0.5D) * 0.05D * i;
+				double y = (this.random.nextDouble() - 0.5D) * 0.05D * i;
+				double z = (this.random.nextDouble() - 0.5D) * 0.05D * i;
+				this.level().addParticle(DustParticleOptions.REDSTONE, false, particlePos.x() + x, particlePos.y() + y, particlePos.z() + z, 0.0D, 0.0D, 0.0D);
+			}
+		}
+	}
+
+	@Override
+	public void makePoofParticles() {
+
 	}
 }

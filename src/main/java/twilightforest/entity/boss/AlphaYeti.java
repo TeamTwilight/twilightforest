@@ -172,8 +172,12 @@ public class AlphaYeti extends BaseTFBoss implements RangedAttackMob, IHostileMo
 			return false;
 		}
 
-		this.canRampage = true;
-		return super.hurt(source, amount);
+		boolean flag = super.hurt(source, amount);
+
+		if (flag) {
+			this.canRampage = true;
+		}
+		return flag;
 	}
 
 	@Nullable

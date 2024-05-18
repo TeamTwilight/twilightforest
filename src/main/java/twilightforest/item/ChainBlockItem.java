@@ -1,7 +1,6 @@
 package twilightforest.item;
 
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -11,6 +10,7 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.entity.projectile.ChainBlock;
 import twilightforest.init.TFDataComponents;
@@ -84,27 +84,22 @@ public class ChainBlockItem extends Item {
 		return repairItem.is(ItemTagGenerator.KNIGHTMETAL_INGOTS);
 	}
 
-	//FIXME I hate new tool tier logic
 	@Override
 	public boolean isCorrectToolForDrops(ItemStack stack, BlockState state) {
 		//dont try to check harvest level if we arent thrown
 		if (stack.get(TFDataComponents.THROWN_PROJECTILE) == null) return false;
 		if (stack.getEnchantmentLevel(TFEnchantments.DESTRUCTION.get()) > 0) {
-			if (state.is(BlockTags.MINEABLE_WITH_PICKAXE) || state.is(BlockTags.MINEABLE_WITH_HOE)
-				|| state.is(BlockTags.MINEABLE_WITH_SHOVEL) || state.is(BlockTags.MINEABLE_WITH_AXE))
-				return this.getHarvestLevel(stack).createToolProperties(BlockTags.MINEABLE_WITH_AXE).isCorrectForDrops(state);
+            return state.is(BlockTagGenerator.MINEABLE_WITH_BLOCK_AND_CHAIN) && this.getHarvestLevel(stack).createToolProperties(BlockTagGenerator.MINEABLE_WITH_BLOCK_AND_CHAIN).isCorrectForDrops(state);
 		}
 		return false;
 	}
 
 	public Tier getHarvestLevel(ItemStack stack) {
-		int enchantLevel = stack.getEnchantmentLevel(TFEnchantments.DESTRUCTION.get());
-		if (enchantLevel == 2) {
-			return Tiers.STONE;
-		} else if (enchantLevel >= 3) {
-			return Tiers.IRON;
-		} else {
-			return Tiers.WOOD;
-		}
+        return switch (stack.getEnchantmentLevel(TFEnchantments.DESTRUCTION.get())) {
+            case 1 -> Tiers.WOOD;
+            case 2 -> Tiers.STONE;
+			case 3 -> Tiers.IRON;
+            default -> Tiers.DIAMOND;
+        };
 	}
 }
