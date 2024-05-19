@@ -1,14 +1,18 @@
 package twilightforest.block;
 
 import com.google.common.collect.ImmutableMap;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -73,10 +77,22 @@ public class TrollsteinnBlock extends Block {
 	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
 		BlockState ret = defaultBlockState();
 		for (Map.Entry<Direction, BooleanProperty> e : PROPERTY_MAP.entrySet()) {
-			int light = ctx.getLevel().getMaxLocalRawBrightness(ctx.getClickedPos().relative(e.getKey()));
+			Level level = ctx.getLevel();
+			BlockPos pos = ctx.getClickedPos();
+			int light = level.getMaxLocalRawBrightness(pos.relative(e.getKey()), level instanceof ClientLevel clientLevel ? calculateServerSkyDarken(clientLevel) : level.getSkyDarken());
 			ret = ret.setValue(e.getValue(), light > LIGHT_THRESHOLD);
 		}
 		return ret;
+	}
+
+	/**
+	 * Computation from vanilla function updateSkyBrightness in Level.java
+	 */
+	public static int calculateServerSkyDarken(ClientLevel level) {
+		double rainEffect = 1.0 - (double)(level.getRainLevel(1.0F) * 5.0F) / 16.0;
+		double thunderEffect = 1.0 - (double)(level.getThunderLevel(1.0F) * 5.0F) / 16.0;
+		double dayCycleEffect = 0.5 + 2.0 * Mth.clamp(Mth.cos(level.getTimeOfDay(1.0F) * (float) (Math.PI * 2)), -0.25, 0.25);
+		return  (int)((1.0 - dayCycleEffect  * rainEffect * thunderEffect) * 11.0);
 	}
 
 	@Override
