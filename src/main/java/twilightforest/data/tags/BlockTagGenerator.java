@@ -237,6 +237,7 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			TFBlocks.MOSS_PATCH.get(),
 			TFBlocks.CLOVER_PATCH.get(),
 			TFBlocks.MUSHGLOOM.get(),
+			TFBlocks.FIREFLY.get(),
 			TFBlocks.FALLEN_LEAVES.get(),
 			TFBlocks.TORCHBERRY_PLANT.get(),
 			TFBlocks.ROOT_STRAND.get(),
