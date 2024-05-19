@@ -522,6 +522,7 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			.add(Blocks.CALCITE)
 			.add(Blocks.SOUL_SAND)
 			.add(Blocks.SOUL_SOIL);
+			.add(TFBlocks.LIVEROOT_BLOCK);
 
 		this.tag(PENGUINS_SPAWNABLE_ON).addTag(BlockTags.ICE);
 		this.tag(GIANTS_SPAWNABLE_ON).addTag(CLOUDS);
@@ -581,7 +582,7 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			TFBlocks.ARCTIC_FUR_BLOCK.get()
 		);
 
-		this.tag(BlockTags.MINEABLE_WITH_PICKAXE).addTag(DEADROCK).add(
+		this.tag(BlockTags.MINEABLE_WITH_PICKAXE).addTag().add(
 			TFBlocks.NAGASTONE.get(),
 			TFBlocks.NAGASTONE_HEAD.get(),
 			TFBlocks.STRONGHOLD_SHIELD.get(),
@@ -637,7 +638,7 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			TFBlocks.BOLD_STONE_PILLAR.get(),
 			TFBlocks.TERRORCOTTA_LINES.get(),
 			TFBlocks.TERRORCOTTA_CURVES.get()
-		).addTags(MAZESTONE, CASTLE_BLOCKS);
+		).addTags(MAZESTONE, CASTLE_BLOCKS, DEADROCK);
 
 		this.tag(BlockTags.MINEABLE_WITH_SHOVEL).add(
 			TFBlocks.SMOKER.get(),
