@@ -10,9 +10,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -34,7 +32,7 @@ public class TrollsteinnBlock extends Block {
 		.put(Direction.WEST, WEST_LIT)
 		.put(Direction.EAST, EAST_LIT).build();
 
-	private static final int LIGHT_THRESHOLD = 7;
+	public static final int LIGHT_THRESHOLD = 7;
 
 	@SuppressWarnings("this-escape")
 	public TrollsteinnBlock(Properties properties) {

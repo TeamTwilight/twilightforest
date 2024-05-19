@@ -1,4 +1,4 @@
-// 1.20.6	2024-05-06T00:59:12.1537012	TwilightForest Item and BlockItem models
+// 1.20.6	2024-05-19T23:36:54.9787116	TwilightForest Item and BlockItem models
 387b18dfa614fda790f7b8e8324e3b139fa177c2 assets/twilightforest/models/item/acacia_banister.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/adherent_spawn_egg.json
 0ca7dc7b4daec376dd0f85d57465830781584c7d assets/twilightforest/models/item/alpha_yeti_banner_pattern.json
@@ -789,6 +789,7 @@ da8ccbaaf7197d8de6f5a670061779d6c9bd69b8 assets/twilightforest/models/item/tripl
 1e9c9118a16e3aae53792c02900e73a27d2e8855 assets/twilightforest/models/item/triple_bow_pulling_2.json
 10fe4ffbfd9f8331fc671518c1601a37d29dca92 assets/twilightforest/models/item/trollber.json
 143fcec33946ad1372d8bdba061bc72f5838b117 assets/twilightforest/models/item/trollsteinn.json
+93593e7779b3cc6b8401375cec38388a3c9692f5 assets/twilightforest/models/item/trollsteinn_light.json
 c40a954fe657d4d44a308596d3fcdc3ad6de9faf assets/twilightforest/models/item/trollvidr.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/troll_spawn_egg.json
 44ba301b492f28d0b9bfd8cc87b39c994c056e5d assets/twilightforest/models/item/trophy.json

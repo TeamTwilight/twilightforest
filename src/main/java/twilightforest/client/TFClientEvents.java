@@ -56,6 +56,7 @@ import twilightforest.client.model.block.forcefield.ForceFieldModelLoader;
 import twilightforest.client.model.block.giantblock.GiantBlockModelLoader;
 import twilightforest.client.model.block.leaves.BakedLeavesModel;
 import twilightforest.client.model.block.patch.PatchModelLoader;
+import twilightforest.client.model.item.TrollsteinnModel;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.entity.ShieldLayer;
 import twilightforest.compat.curios.CuriosCompat;
@@ -88,10 +89,14 @@ public class TFClientEvents {
 		public static void modelBake(ModelEvent.ModifyBakingResult event) {
 			TFItems.addItemModelProperties();
 
-			List<Map.Entry<ResourceLocation, BakedModel>> models = event.getModels().entrySet().stream()
+			Map<ResourceLocation, BakedModel> models = event.getModels();
+			List<Map.Entry<ResourceLocation, BakedModel>> leavesModels = models.entrySet().stream()
 				.filter(entry -> entry.getKey().getNamespace().equals(TwilightForestMod.ID) && entry.getKey().getPath().contains("leaves") && !entry.getKey().getPath().contains("dark")).toList();
 
-			models.forEach(entry -> event.getModels().put(entry.getKey(), new BakedLeavesModel(entry.getValue())));
+			leavesModels.forEach(entry -> models.put(entry.getKey(), new BakedLeavesModel(entry.getValue())));
+
+            BakedModel oldModel = event.getModels().get(new ModelResourceLocation("twilightforest", "trollsteinn", "inventory"));
+			models.put(new ModelResourceLocation("twilightforest", "trollsteinn", "inventory"), new TrollsteinnModel(oldModel));
 		}
 
 		@SubscribeEvent
@@ -100,6 +105,7 @@ public class TFClientEvents {
 			event.register(new ModelResourceLocation(TwilightForestMod.prefix("trophy"), "inventory"));
 			event.register(new ModelResourceLocation(TwilightForestMod.prefix("trophy_minor"), "inventory"));
 			event.register(new ModelResourceLocation(TwilightForestMod.prefix("trophy_quest"), "inventory"));
+			event.register(new ModelResourceLocation(TwilightForestMod.prefix("trollsteinn_light"), "inventory"));
 
 			event.register(TwilightForestMod.prefix("block/casket_obsidian"));
 			event.register(TwilightForestMod.prefix("block/casket_stone"));
