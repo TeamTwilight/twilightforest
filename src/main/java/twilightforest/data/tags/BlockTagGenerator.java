@@ -582,7 +582,7 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			TFBlocks.ARCTIC_FUR_BLOCK.get()
 		);
 
-		this.tag(BlockTags.MINEABLE_WITH_PICKAXE).addTag().add(
+		this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(
 			TFBlocks.NAGASTONE.get(),
 			TFBlocks.NAGASTONE_HEAD.get(),
 			TFBlocks.STRONGHOLD_SHIELD.get(),
