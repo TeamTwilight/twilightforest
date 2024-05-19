@@ -10,6 +10,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.LiverootBlock;
 import twilightforest.data.tags.compat.ModdedBlockTagGenerator;
 import twilightforest.init.TFBlocks;
 
@@ -518,11 +519,11 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			.addTag(BlockTags.TERRACOTTA)
 			.addTag(Tags.Blocks.GRAVELS)
 			.addTag(BlockTags.NYLIUM)
+			.addTag(ROOT_ORES)
 			.add(Blocks.BUDDING_AMETHYST)
 			.add(Blocks.CALCITE)
 			.add(Blocks.SOUL_SAND)
 			.add(Blocks.SOUL_SOIL);
-			.add(TFBlocks.LIVEROOT_BLOCK);
 
 		this.tag(PENGUINS_SPAWNABLE_ON).addTag(BlockTags.ICE);
 		this.tag(GIANTS_SPAWNABLE_ON).addTag(CLOUDS);
