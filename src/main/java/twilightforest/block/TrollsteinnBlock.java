@@ -59,11 +59,13 @@ public class TrollsteinnBlock extends Block {
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public boolean hasAnalogOutputSignal(BlockState state) {
 		return true;
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
 		int peak = 0;
 		for (Direction direction : Direction.values())
