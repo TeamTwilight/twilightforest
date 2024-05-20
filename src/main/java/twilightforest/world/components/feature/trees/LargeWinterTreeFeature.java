@@ -9,6 +9,7 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.util.FeaturePlacers;
+import twilightforest.util.RootPlacer;
 import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
 
 import java.util.function.BiConsumer;
@@ -20,7 +21,7 @@ public class LargeWinterTreeFeature extends TFTreeFeature<TFTreeFeatureConfig> {
 	}
 
 	@Override
-	protected boolean generate(WorldGenLevel world, RandomSource random, BlockPos pos, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, BiConsumer<BlockPos, BlockState> decorationPlacer, TFTreeFeatureConfig config) {
+	protected boolean generate(WorldGenLevel world, RandomSource random, BlockPos pos, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, RootPlacer decorationPlacer, TFTreeFeatureConfig config) {
 		// determine a height
 		int treeHeight = 35;
 		if (random.nextInt(3) == 0) {

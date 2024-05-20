@@ -11,6 +11,7 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import twilightforest.util.FeatureLogic;
 import twilightforest.util.FeaturePlacers;
+import twilightforest.util.RootPlacer;
 import twilightforest.util.VoxelBresenhamIterator;
 import twilightforest.world.components.feature.config.RootConfig;
 
@@ -66,7 +67,7 @@ public class WoodRootFeature extends Feature<RootConfig> {
 		}
 
 		// if both the start and the end are in stone, put a root there
-		FeaturePlacers.traceRoot(world, (checkedPos, rootPlacement) -> world.setBlock(checkedPos, rootPlacement, 3), rand, rootBlock, new VoxelBresenhamIterator(pos, dest));
+		FeaturePlacers.traceRoot(world, new RootPlacer((checkedPos, rootPlacement) -> world.setBlock(checkedPos, rootPlacement, 3), 1), rand, rootBlock, new VoxelBresenhamIterator(pos, dest));
 
 		// if we are long enough, make either another root or an oreball
 		if (length > 8) {

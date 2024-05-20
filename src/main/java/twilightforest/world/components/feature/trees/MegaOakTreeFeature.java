@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.init.TFBlocks;
 import twilightforest.util.FeatureLogic;
 import twilightforest.util.FeaturePlacers;
+import twilightforest.util.RootPlacer;
 import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -27,7 +28,7 @@ public class MegaOakTreeFeature extends CanopyTreeFeature {
 	}
 
 	@Override
-	protected boolean generate(WorldGenLevel world, RandomSource random, BlockPos pos, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, BiConsumer<BlockPos, BlockState> decorationPlacer, TFTreeFeatureConfig config) {
+	protected boolean generate(WorldGenLevel world, RandomSource random, BlockPos pos, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, RootPlacer decorationPlacer, TFTreeFeatureConfig config) {
 		List<BlockPos> leaves = Lists.newArrayList();
 		// determine a height
 		int treeHeight = config.minHeight;

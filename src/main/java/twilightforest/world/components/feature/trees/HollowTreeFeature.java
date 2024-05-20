@@ -15,10 +15,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
 import twilightforest.loot.TFLootTables;
-import twilightforest.util.FeatureLogic;
-import twilightforest.util.FeaturePlacers;
-import twilightforest.util.FeatureUtil;
-import twilightforest.util.VoxelBresenhamIterator;
+import twilightforest.util.*;
 import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
 
 import java.util.function.BiConsumer;
@@ -31,7 +28,7 @@ public abstract class HollowTreeFeature extends TFTreeFeature<TFTreeFeatureConfi
 		super(config);
 	}
 
-	public static void makeHollowTree(WorldGenLevel world, RandomSource random, BlockPos pos, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, BiConsumer<BlockPos, BlockState> decorationPlacer, TFTreeFeatureConfig config) {
+	public static void makeHollowTree(WorldGenLevel world, RandomSource random, BlockPos pos, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, RootPlacer decorationPlacer, TFTreeFeatureConfig config) {
 		int diameter = random.nextInt(4) + 1;
 		int height = random.nextInt(64) + 32;
 
@@ -145,7 +142,7 @@ public abstract class HollowTreeFeature extends TFTreeFeature<TFTreeFeatureConfi
 	/**
 	 * This function builds the hollow trunk of the tree
 	 */
-	protected static void buildTrunk(LevelAccessor world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> decoPlacer, RandomSource random, BlockPos pos, int diameter, int height, TFTreeFeatureConfig config) {
+	protected static void buildTrunk(LevelAccessor world, BiConsumer<BlockPos, BlockState> trunkPlacer, RootPlacer decoPlacer, RandomSource random, BlockPos pos, int diameter, int height, TFTreeFeatureConfig config) {
 		final int hollow = diameter >> 1;
 
 		// go down 4 squares and fill in extra trunk as needed, in case we're on uneven terrain
@@ -287,10 +284,10 @@ public abstract class HollowTreeFeature extends TFTreeFeature<TFTreeFeatureConfi
 		BlockPos src = FeatureLogic.translate(pos.above(branchHeight), diameter, angle, 0.5);
 		BlockPos dest = FeatureLogic.translate(src, length, angle, tilt);
 
-		FeaturePlacers.traceExposedRoot(world, (checkedPos, state) -> {
-			if (FeatureLogic.canRootGrowIn(world, checkedPos)) world.setBlock(checkedPos, state, 3);
-			if (FeatureLogic.canRootGrowIn(world, checkedPos.below())) world.setBlock(checkedPos.below(), state, 3);
-		}, random, config.branchProvider, config.rootsProvider, new VoxelBresenhamIterator(src, dest));
+		FeaturePlacers.traceExposedRoot(world, new RootPlacer((checkedPos, state) -> {
+			world.setBlock(checkedPos, state, 3);
+			world.setBlock(checkedPos.below(), state, 3);
+		}, 2), random, config.branchProvider, config.rootsProvider, new VoxelBresenhamIterator(src, dest));
 	}
 
 	/**

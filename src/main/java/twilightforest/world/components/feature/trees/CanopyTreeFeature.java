@@ -13,6 +13,7 @@ import twilightforest.init.TFBlocks;
 import twilightforest.util.FeatureLogic;
 import twilightforest.util.FeaturePlacers;
 import twilightforest.util.FeatureUtil;
+import twilightforest.util.RootPlacer;
 import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
 
 import java.util.List;
@@ -30,7 +31,7 @@ public class CanopyTreeFeature extends TFTreeFeature<TFTreeFeatureConfig> {
 	}
 
 	@Override
-	protected boolean generate(WorldGenLevel world, RandomSource random, BlockPos pos, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, BiConsumer<BlockPos, BlockState> decorationPlacer, TFTreeFeatureConfig config) {
+	protected boolean generate(WorldGenLevel world, RandomSource random, BlockPos pos, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, RootPlacer decorationPlacer, TFTreeFeatureConfig config) {
 		// determine a height
 		List<BlockPos> leaves = Lists.newArrayList();
 		int treeHeight = config.minHeight;
@@ -128,7 +129,7 @@ public class CanopyTreeFeature extends TFTreeFeature<TFTreeFeatureConfig> {
 		}
 	}
 
-	protected static void makeRoots(LevelAccessor world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> decoPlacer, RandomSource random, BlockPos pos, TFTreeFeatureConfig config) {
+	protected static void makeRoots(LevelAccessor world, BiConsumer<BlockPos, BlockState> trunkPlacer, RootPlacer decoPlacer, RandomSource random, BlockPos pos, TFTreeFeatureConfig config) {
 		// root bulb
 		if (FeatureUtil.hasAirAround(world, pos.below())) {
 			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, random, pos.below(), config.trunkProvider);

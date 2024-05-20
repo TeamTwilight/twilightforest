@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.init.TFBlocks;
 import twilightforest.util.FeaturePlacers;
 import twilightforest.util.FeatureUtil;
+import twilightforest.util.RootPlacer;
 import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
 
 import java.util.function.BiConsumer;
@@ -22,7 +23,7 @@ public class MiningTreeFeature extends TFTreeFeature<TFTreeFeatureConfig> {
 	}
 
 	@Override
-	protected boolean generate(WorldGenLevel world, RandomSource random, BlockPos pos, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, BiConsumer<BlockPos, BlockState> decorationPlacer, TFTreeFeatureConfig config) {
+	protected boolean generate(WorldGenLevel world, RandomSource random, BlockPos pos, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, RootPlacer decorationPlacer, TFTreeFeatureConfig config) {
 		if (world.isOutsideBuildHeight(pos.getY() + 12)) {
 			return false;
 		}

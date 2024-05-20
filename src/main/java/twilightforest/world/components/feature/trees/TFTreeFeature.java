@@ -14,6 +14,7 @@ import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.phys.shapes.DiscreteVoxelShape;
+import twilightforest.util.RootPlacer;
 import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
 
 import java.util.Set;
@@ -51,7 +52,7 @@ public abstract class TFTreeFeature<T extends TFTreeFeatureConfig> extends Featu
 			set3.add(pos.immutable());
 			worldgenlevel.setBlock(pos, state, 19);
 		};
-		boolean flag = this.generate(worldgenlevel, randomsource, blockpos, biconsumer, biconsumer1, biconsumer2, treeconfiguration);
+		boolean flag = this.generate(worldgenlevel, randomsource, blockpos, biconsumer, biconsumer1, new RootPlacer(biconsumer2, 1), treeconfiguration);
 		if (flag && (!set1.isEmpty() || !set2.isEmpty())) {
 			if (!treeconfiguration.decorators.isEmpty()) {
 				TreeDecorator.Context treedecorator$context = new TreeDecorator.Context(worldgenlevel, biconsumer3, randomsource, set1, set2, set);
@@ -73,6 +74,6 @@ public abstract class TFTreeFeature<T extends TFTreeFeatureConfig> extends Featu
 	/**
 	 * This works akin to the AbstractTreeFeature.generate, but put our branches and roots here
 	 */
-	protected abstract boolean generate(WorldGenLevel world, RandomSource random, BlockPos pos, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, BiConsumer<BlockPos, BlockState> decorationPlacer, T config);
+	protected abstract boolean generate(WorldGenLevel world, RandomSource random, BlockPos pos, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, RootPlacer decorationPlacer, T config);
 
 }
