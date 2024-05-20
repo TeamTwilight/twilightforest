@@ -95,7 +95,7 @@ public class TrollsteinnBlock extends Block {
 
 	@Override
 	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource rand) {
-		if (rand.nextInt(2) == 0) this.sparkle(level, pos);
+		if (rand.nextBoolean()) this.sparkle(level, pos);
 	}
 
 	// [VanillaCopy] Based on RedstoneOreBlock.spawnParticles
