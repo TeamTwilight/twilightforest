@@ -38,6 +38,7 @@
             }
           ]
         },
+        "rootPenetrability": 1,
         "root_length": 5,
         "y_offset": 0
       }
