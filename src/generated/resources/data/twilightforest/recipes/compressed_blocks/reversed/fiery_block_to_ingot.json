@@ -1,6 +1,7 @@
 {
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
+  "group": "fiery_ingot",
   "ingredients": [
     {
       "tag": "c:storage_blocks/fiery"

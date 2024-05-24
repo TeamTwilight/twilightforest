@@ -20,6 +20,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ChestBlock;
@@ -54,7 +55,7 @@ public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, Enf
 	public abstract Block getBossSpawner();
 
 	protected boolean shouldSpawnLoot() {
-		return true;
+		return this.level().getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT);
 	}
 
 	protected boolean shouldCreateSpawner() {

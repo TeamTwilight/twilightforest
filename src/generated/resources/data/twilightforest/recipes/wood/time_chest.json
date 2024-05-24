@@ -1,12 +1,13 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "misc",
+  "group": "chest",
   "key": {
     "#": {
       "item": "twilightforest:time_planks"
     },
     "C": {
-      "tag": "c:chests/wooden"
+      "item": "minecraft:chest"
     }
   },
   "pattern": [

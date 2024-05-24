@@ -1,6 +1,7 @@
 {
   "type": "minecraft:crafting_shapeless",
   "category": "equipment",
+  "group": "fiery_pickaxe",
   "ingredients": [
     {
       "item": "minecraft:iron_pickaxe"

@@ -1,6 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "misc",
+  "group": "hanging_sign",
   "key": {
     "#": {
       "item": "twilightforest:stripped_twilight_oak_log"

@@ -696,7 +696,7 @@ public class Lich extends BaseTFBoss {
 
 	@Override
 	protected boolean shouldSpawnLoot() {
-		return !this.isShadowClone();
+		return !this.isShadowClone() && super.shouldSpawnLoot();
 	}
 
 	@Override
