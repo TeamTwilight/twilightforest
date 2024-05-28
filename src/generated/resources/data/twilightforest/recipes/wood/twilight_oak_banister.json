@@ -1,6 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "misc",
+  "group": "wooden_banister",
   "key": {
     "-": {
       "item": "twilightforest:twilight_oak_slab"

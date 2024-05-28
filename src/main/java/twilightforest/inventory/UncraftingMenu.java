@@ -3,6 +3,7 @@ package twilightforest.inventory;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.core.Holder;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.Container;
@@ -10,10 +11,13 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.inventory.*;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.neoforged.fml.loading.FMLLoader;
@@ -33,12 +37,8 @@ import twilightforest.inventory.slot.UncraftingSlot;
 import twilightforest.item.recipe.UncraftingRecipe;
 import twilightforest.util.TFItemStackUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.StringJoiner;
+import java.util.*;
 
-@SuppressWarnings("this-escape")
 public class UncraftingMenu extends RecipeBookMenu<CraftingContainer> {
 
 	private static final String TAG_MARKER = "TwilightForestMarker";
@@ -237,8 +237,18 @@ public class UncraftingMenu extends RecipeBookMenu<CraftingContainer> {
 			ItemStack result = this.tinkerResult.getItem(0);
 
 			if (!result.isEmpty() && isValidMatchForInput(input, result)) {
-				// copy all data with nbt, enchantments, etc
-				result.applyComponents(input.getComponents());
+				//store copy of input enchants
+				ItemEnchantments.Mutable enchants = new ItemEnchantments.Mutable(input.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY));
+				//add all resulting item enchants to the list. This allows pre-enchanted gear to keep its enchants
+				if (result.has(DataComponents.ENCHANTMENTS)) {
+					result.get(DataComponents.ENCHANTMENTS).entrySet().forEach(enchantment -> enchants.set(enchantment.getKey().value(), enchantment.getIntValue()));
+				}
+				//remove any incompatible enchants
+				enchants.removeIf(holder -> !holder.value().canEnchant(result));
+
+				//remove enchantments and replace with filtered list
+				result.remove(DataComponents.ENCHANTMENTS);
+				EnchantmentHelper.setEnchantments(result, enchants.toImmutable());
 
 				this.tinkerResult.setItem(0, result);
 				this.uncraftingMatrix.uncraftingCost = 0;
@@ -358,8 +368,8 @@ public class UncraftingMenu extends RecipeBookMenu<CraftingContainer> {
 			return true;
 		}
 
-		if (inputStack.is(Tags.Items.ARMORS) && resultStack.is(Tags.Items.ARMORS)) {
-			return inputStack.getEquipmentSlot() == resultStack.getEquipmentSlot();
+		if (inputStack.getItem() instanceof ArmorItem input && resultStack.getItem() instanceof ArmorItem result) {
+			return input.getEquipmentSlot() == result.getEquipmentSlot();
 		}
 
 		return false;

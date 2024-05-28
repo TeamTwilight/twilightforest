@@ -1,6 +1,7 @@
 {
   "type": "minecraft:crafting_shapeless",
   "category": "building",
+  "group": "planks",
   "ingredients": [
     {
       "tag": "twilightforest:timewood_logs"

@@ -68,7 +68,7 @@ public class UnstableIceCore extends BaseIceMob {
 
 		if (this.deathTime == 60) { // delay until 3 seconds
 			if (!this.level().isClientSide()) {
-				boolean mobGriefing = EventHooks.getMobGriefingEvent(this.level(), this);
+				boolean mobGriefing = EventHooks.canEntityGrief(this.level(), this);
 				this.level().explode(this, this.getX(), this.getY(), this.getZ(), UnstableIceCore.EXPLOSION_RADIUS, Level.ExplosionInteraction.MOB);
 
 				if (mobGriefing) {

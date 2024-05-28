@@ -264,15 +264,15 @@ public class OreMagnetItem extends Item {
 		ORE_TO_BLOCK_REPLACEMENTS.clear();
 
 		//collect all tags
-		for (TagKey<Block> tag : BuiltInRegistries.BLOCK.getTagNames().filter(location -> location.location().getNamespace().equals("forge")).toList()) {
+		for (TagKey<Block> tag : BuiltInRegistries.BLOCK.getTagNames().filter(location -> location.location().getNamespace().equals("c")).toList()) {
 			//check if the tag is a valid ore tag
 			if (tag.location().getPath().contains("ores_in_ground/")) {
 				//grab the part after the slash for use later
 				String oreground = tag.location().getPath().substring(15);
 				//check if a tag for ore grounds matches up with our ores in ground tag
-				if (BuiltInRegistries.BLOCK.getTagNames().filter(location -> location.location().getNamespace().equals("forge")).anyMatch(blockTagKey -> blockTagKey.location().getPath().equals("ore_bearing_ground/" + oreground))) {
+				if (BuiltInRegistries.BLOCK.getTagNames().filter(location -> location.location().getNamespace().equals("c")).anyMatch(blockTagKey -> blockTagKey.location().getPath().equals("ore_bearing_ground/" + oreground))) {
 					//add each ground type to each ore
-					BuiltInRegistries.BLOCK.getTag(TagKey.create(Registries.BLOCK, new ResourceLocation("forge", "ore_bearing_ground/" + oreground))).get().forEach(ground ->
+					BuiltInRegistries.BLOCK.getTag(TagKey.create(Registries.BLOCK, new ResourceLocation("c", "ore_bearing_ground/" + oreground))).get().forEach(ground ->
 						BuiltInRegistries.BLOCK.getTag(tag).get().forEach(ore -> {
 							//exclude ignored ores
 							if (!ore.value().defaultBlockState().is(BlockTagGenerator.ORE_MAGNET_IGNORE)) {

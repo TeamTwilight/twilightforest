@@ -1,6 +1,7 @@
 {
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
+  "group": "sticks",
   "ingredients": [
     {
       "item": "twilightforest:root_strand"

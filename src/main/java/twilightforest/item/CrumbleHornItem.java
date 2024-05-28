@@ -122,7 +122,7 @@ public class CrumbleHornItem extends Item {
 						}
 						return true;
 					}
-				} else if (EventHooks.getMobGriefingEvent(serverLevel, living)) {
+				} else if (EventHooks.canEntityGrief(serverLevel, living)) {
 					serverLevel.destroyBlock(pos, true);
 					return true;
 				}

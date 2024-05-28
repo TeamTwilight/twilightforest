@@ -97,7 +97,7 @@ public class ChargeAttackGoal extends Goal {
 				}
 			}
 		} else if (this.canBreak) {
-			if (!this.charger.level().isClientSide() && EventHooks.getMobGriefingEvent(this.charger.level(), this.charger)) {
+			if (!this.charger.level().isClientSide() && EventHooks.canEntityGrief(this.charger.level(), this.charger)) {
 
 				AABB bb = this.charger.getBoundingBox();
 				int minx = Mth.floor(bb.minX - 0.75D);

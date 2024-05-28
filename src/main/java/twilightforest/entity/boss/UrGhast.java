@@ -13,7 +13,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.EntityType;
@@ -68,8 +67,6 @@ public class UrGhast extends BaseTFBoss {
 	private int inTrapCounter;
 
 	private float damageUntilNextPhase = 10; // how much damage can we take before we toggle tantrum mode
-	@SuppressWarnings("this-escape")
-	private final ServerBossEvent bossInfo = new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS);
 
 	@SuppressWarnings("this-escape")
 	public UrGhast(EntityType<? extends UrGhast> type, Level level) {
@@ -520,11 +517,6 @@ public class UrGhast extends BaseTFBoss {
 	}
 
 	@Override
-	public ServerBossEvent getBossBar() {
-		return this.bossInfo;
-	}
-
-	@Override
 	public Block getDeathContainer(RandomSource random) {
 		return TFBlocks.DARK_CHEST.get();
 	}
@@ -579,5 +571,10 @@ public class UrGhast extends BaseTFBoss {
 	@Override
 	public void makePoofParticles() {
 
+	}
+
+	@Override
+	public int getBossBarColor() {
+		return 0xFF0000;
 	}
 }

@@ -22,11 +22,11 @@ public abstract class DamageableStackDispenseBehavior extends DefaultDispenseIte
 		Position pos = DispenserBlock.getDispensePosition(source);
 		Direction direction = source.state().getValue(DispenserBlock.FACING);
 		if (!level.isClientSide()) {
-			if (!(stack.getMaxDamage() == stack.getDamageValue() + this.getDamageAmount())) {
+			if (stack.getMaxDamage() >= stack.getDamageValue() + this.getDamageAmount()) {
 				Projectile projectileentity = this.getProjectileEntity(level, pos, stack);
 				projectileentity.shoot(direction.getStepX(), (float) direction.getStepY() + 0.1F, direction.getStepZ(), this.getProjectileVelocity(), this.getProjectileInaccuracy());
 				level.addFreshEntity(projectileentity);
-				stack.hurtAndBreak(this.getDamageAmount(), level.getRandom(), null, () -> stack.setCount(0));
+				stack.hurtAndBreak(this.getDamageAmount(), level.getRandom(), null, () -> stack.setCount(1));
 				this.fired = true;
 			}
 		}

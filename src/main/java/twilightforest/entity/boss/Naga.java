@@ -7,7 +7,6 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -79,8 +78,6 @@ public class Naga extends BaseTFBoss {
 	private int damageDuringCurrentStun = 0;
 	public float stunlessRedOverlayProgress = 0.0F;
 
-	@SuppressWarnings("this-escape")
-	private final ServerBossEvent bossInfo = new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.GREEN, BossEvent.BossBarOverlay.NOTCHED_10);
 	private static final UUID MOVEMENT_SPEED_UUID = UUID.fromString("1fe84ad2-3b63-4922-ade7-546aae84a9e1");
 	private static final EntityDataAccessor<Boolean> DATA_DAZE = SynchedEntityData.defineId(Naga.class, EntityDataSerializers.BOOLEAN);
 	private static final EntityDataAccessor<Boolean> DATA_CHARGE = SynchedEntityData.defineId(Naga.class, EntityDataSerializers.BOOLEAN);
@@ -265,7 +262,7 @@ public class Naga extends BaseTFBoss {
 			this.setTarget(null);
 		}
 
-		if (EventHooks.getMobGriefingEvent(this.level(), this)) {
+		if (EventHooks.canEntityGrief(this.level(), this)) {
 			AABB bb = this.getBoundingBox();
 
 			int minx = Mth.floor(bb.minX - 0.75D);
@@ -319,9 +316,6 @@ public class Naga extends BaseTFBoss {
 			this.getMovementPattern().forceCircle();
 			this.damageDuringCurrentStun = 0;
 		}
-
-		// BOSS BAR!
-		this.bossInfo.setProgress(this.getHealth() / this.getMaxHealth());
 	}
 
 	public boolean shouldDestroyAllBlocks() {
@@ -540,11 +534,6 @@ public class Naga extends BaseTFBoss {
 	}
 
 	@Override
-	public ServerBossEvent getBossBar() {
-		return this.bossInfo;
-	}
-
-	@Override
 	public Block getDeathContainer(RandomSource random) {
 		return random.nextBoolean() ? TFBlocks.TWILIGHT_OAK_CHEST.get() : TFBlocks.CANOPY_CHEST.get();
 	}
@@ -609,5 +598,15 @@ public class Naga extends BaseTFBoss {
 				(pos.z() + this.getRandom().nextFloat() * width * 2.0F) - width,
 				this.getRandom().nextGaussian() * 0.02D, this.getRandom().nextGaussian() * 0.02D, this.getRandom().nextGaussian() * 0.02D);
 		}
+	}
+
+	@Override
+	public BossEvent.BossBarOverlay getBossBarOverlay() {
+		return BossEvent.BossBarOverlay.NOTCHED_10;
+	}
+
+	@Override
+	public int getBossBarColor() {
+		return 0x5E9916;
 	}
 }

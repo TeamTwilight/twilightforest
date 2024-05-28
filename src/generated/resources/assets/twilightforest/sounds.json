@@ -709,21 +709,26 @@
     ],
     "subtitle": "subtitles.twilightforest.entity.dwarf_rabbit.hurt"
   },
+  "entity.twilightforest.fire_beetle.ambient": {
+    "sounds": [
+      "twilightforest:mob/fire_beetle/idle1",
+      "twilightforest:mob/fire_beetle/idle2",
+      "twilightforest:mob/fire_beetle/idle3",
+      "twilightforest:mob/fire_beetle/idle4"
+    ],
+    "subtitle": "subtitles.twilightforest.entity.fire_beetle.ambient"
+  },
   "entity.twilightforest.fire_beetle.death": {
     "sounds": [
-      {
-        "type": "event",
-        "name": "entity.spider.death"
-      }
+      "twilightforest:mob/fire_beetle/death"
     ],
     "subtitle": "subtitles.twilightforest.entity.fire_beetle.death"
   },
   "entity.twilightforest.fire_beetle.hurt": {
     "sounds": [
-      {
-        "type": "event",
-        "name": "entity.spider.hurt"
-      }
+      "twilightforest:mob/fire_beetle/hurt1",
+      "twilightforest:mob/fire_beetle/hurt2",
+      "twilightforest:mob/fire_beetle/hurt3"
     ],
     "subtitle": "subtitles.twilightforest.entity.fire_beetle.hurt"
   },
@@ -865,30 +870,38 @@
     ],
     "subtitle": "subtitles.block.generic.footsteps"
   },
+  "entity.twilightforest.helmet_crab.ambient": {
+    "sounds": [
+      "twilightforest:mob/helmet_crab/idle1",
+      "twilightforest:mob/helmet_crab/idle2",
+      "twilightforest:mob/helmet_crab/idle3"
+    ],
+    "subtitle": "subtitles.twilightforest.entity.helmet_crab.ambient"
+  },
   "entity.twilightforest.helmet_crab.death": {
     "sounds": [
-      {
-        "type": "event",
-        "name": "entity.spider.death"
-      }
+      "twilightforest:mob/helmet_crab/hurt1",
+      "twilightforest:mob/helmet_crab/hurt2",
+      "twilightforest:mob/helmet_crab/hurt3"
     ],
     "subtitle": "subtitles.twilightforest.entity.helmet_crab.death"
   },
   "entity.twilightforest.helmet_crab.hurt": {
     "sounds": [
-      {
-        "type": "event",
-        "name": "entity.spider.hurt"
-      }
+      "twilightforest:mob/helmet_crab/hurt1",
+      "twilightforest:mob/helmet_crab/hurt2",
+      "twilightforest:mob/helmet_crab/hurt3"
     ],
     "subtitle": "subtitles.twilightforest.entity.helmet_crab.hurt"
   },
   "entity.twilightforest.helmet_crab.step": {
     "sounds": [
-      {
-        "type": "event",
-        "name": "entity.spider.step"
-      }
+      "twilightforest:mob/helmet_crab/step1",
+      "twilightforest:mob/helmet_crab/step2",
+      "twilightforest:mob/helmet_crab/step3",
+      "twilightforest:mob/helmet_crab/step4",
+      "twilightforest:mob/helmet_crab/step5",
+      "twilightforest:mob/helmet_crab/step6"
     ],
     "subtitle": "subtitles.block.generic.footsteps"
   },
@@ -1635,21 +1648,34 @@
     ],
     "subtitle": "subtitles.twilightforest.entity.penguin.hurt"
   },
+  "entity.twilightforest.pinch_beetle.ambient": {
+    "sounds": [
+      "twilightforest:mob/pinch_beetle/idle1",
+      "twilightforest:mob/pinch_beetle/idle2",
+      "twilightforest:mob/pinch_beetle/idle3",
+      "twilightforest:mob/pinch_beetle/idle4"
+    ],
+    "subtitle": "subtitles.twilightforest.entity.pinch_beetle.ambient"
+  },
+  "entity.twilightforest.pinch_beetle.attack": {
+    "sounds": [
+      "twilightforest:mob/pinch_beetle/attack1",
+      "twilightforest:mob/pinch_beetle/attack2",
+      "twilightforest:mob/pinch_beetle/attack3"
+    ],
+    "subtitle": "subtitles.twilightforest.entity.pinch_beetle.attack"
+  },
   "entity.twilightforest.pinch_beetle.death": {
     "sounds": [
-      {
-        "type": "event",
-        "name": "entity.spider.death"
-      }
+      "twilightforest:mob/pinch_beetle/death"
     ],
     "subtitle": "subtitles.twilightforest.entity.pinch_beetle.death"
   },
   "entity.twilightforest.pinch_beetle.hurt": {
     "sounds": [
-      {
-        "type": "event",
-        "name": "entity.spider.hurt"
-      }
+      "twilightforest:mob/pinch_beetle/hurt1",
+      "twilightforest:mob/pinch_beetle/hurt2",
+      "twilightforest:mob/pinch_beetle/hurt3"
     ],
     "subtitle": "subtitles.twilightforest.entity.pinch_beetle.hurt"
   },
@@ -1785,21 +1811,26 @@
     ],
     "subtitle": "subtitles.block.generic.footsteps"
   },
+  "entity.twilightforest.slime_beetle.ambient": {
+    "sounds": [
+      "twilightforest:mob/slime_beetle/idle1",
+      "twilightforest:mob/slime_beetle/idle2",
+      "twilightforest:mob/slime_beetle/idle3",
+      "twilightforest:mob/slime_beetle/idle4"
+    ],
+    "subtitle": "subtitles.twilightforest.entity.slime_beetle.ambient"
+  },
   "entity.twilightforest.slime_beetle.death": {
     "sounds": [
-      {
-        "type": "event",
-        "name": "entity.spider.death"
-      }
+      "twilightforest:mob/slime_beetle/death"
     ],
     "subtitle": "subtitles.twilightforest.entity.slime_beetle.death"
   },
   "entity.twilightforest.slime_beetle.hurt": {
     "sounds": [
-      {
-        "type": "event",
-        "name": "entity.spider.hurt"
-      }
+      "twilightforest:mob/slime_beetle/hurt1",
+      "twilightforest:mob/slime_beetle/hurt2",
+      "twilightforest:mob/slime_beetle/hurt3"
     ],
     "subtitle": "subtitles.twilightforest.entity.slime_beetle.hurt"
   },

@@ -105,7 +105,7 @@ public class TFOverlays {
 
 	public static void renderShieldCount(GuiGraphics graphics, Gui gui, Player player, int screenWidth, int screenHeight, int shieldCount) {
 		for (int i = 0; i < Math.min(shieldCount, 10); i++) {
-			graphics.blitSprite(FORTIFICATION_SHIELD_SPRITE, screenWidth / 2 - 91 + (i * 8), screenHeight - gui.leftHeight + (player.getArmorValue() > 0 ? 0 : 10), 9, 9);
+			graphics.blitSprite(FORTIFICATION_SHIELD_SPRITE, screenWidth / 2 - 91 + (i * 8), screenHeight - gui.leftHeight, 9, 9);
 		}
 		gui.leftHeight += 10;
 	}

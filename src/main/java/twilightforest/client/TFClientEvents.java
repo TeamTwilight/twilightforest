@@ -62,6 +62,7 @@ import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.components.entity.TFPortalAttachment;
 import twilightforest.config.TFConfig;
 import twilightforest.data.tags.ItemTagGenerator;
+import twilightforest.entity.boss.bar.ClientTFBossBar;
 import twilightforest.events.HostileMountEvents;
 import twilightforest.init.*;
 import twilightforest.item.*;
@@ -398,5 +399,13 @@ public class TFClientEvents {
 			consumer.vertex(last.pose(), (float) (x + posX), (float) (y + posY), (float) (z + posZ)).color(0.0F, 0.0F, 0.0F, 0.45F).normal(last, xSize, ySize, zSize).endVertex();
 			consumer.vertex(last.pose(), (float) (x1 + posX), (float) (y1 + posY), (float) (z1 + posZ)).color(0.0F, 0.0F, 0.0F, 0.45F).normal(last, xSize, ySize, zSize).endVertex();
 		});
+	}
+
+	@SubscribeEvent
+	public static void onBossProgressRenderEvent(CustomizeGuiOverlayEvent.BossEventProgress event) {
+		if (event.getBossEvent() instanceof ClientTFBossBar bossEvent) {
+			event.setCanceled(true);
+			bossEvent.renderBossBar(event.getGuiGraphics(), event.getX(), event.getY());
+		}
 	}
 }

@@ -1,4 +1,4 @@
-// 1.20.6	2024-05-12T10:05:50.3679339	Registries
+// 1.20.6	2024-05-24T12:01:47.6848716	Registries
 9089ada9ce06fd30adf8b10e50f02233c7d5a76e data/minecraft/twilight/wood_palettes/acacia.json
 dca1ef01d0df4e956fd414782de57c25dfddd290 data/minecraft/twilight/wood_palettes/birch.json
 01becb45438b7f2bfdc77baba72bc986341510c8 data/minecraft/twilight/wood_palettes/crimson.json
@@ -21,7 +21,7 @@ d93f72e67dbbc32b79b2fdede98e00b2f5c33a41 data/twilightforest/damage_type/acid_ra
 7fbe3ed8167b8f255c6b290356d8dc14d4c88d24 data/twilightforest/damage_type/ant.json
 a66797f1cd4859ca4d6d1715be9b337d3b962630 data/twilightforest/damage_type/axing.json
 332122844817fadea48b84007f499ac191bd5802 data/twilightforest/damage_type/chilling_breath.json
-90a15a99259e2457fb5b177d11636839838f2ee1 data/twilightforest/damage_type/clamped.json
+549f9d31a8d7929a978cca7805684fd9d5276c00 data/twilightforest/damage_type/clamped.json
 3c958335abebe45d0d78dcf31eb4c8b81715ecde data/twilightforest/damage_type/expired.json
 9ee458c70cfbcdf2f00ae26201e8c9ba6dfc8baa data/twilightforest/damage_type/falling_ice.json
 44931205303645ace656caefac7fcde2f8f94fad data/twilightforest/damage_type/fiery.json

@@ -16,7 +16,6 @@ import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.CastleDoorBlock;
 import twilightforest.block.HollowLogClimbable;
 import twilightforest.components.item.PotionFlaskComponent;
 import twilightforest.enums.HollowLogVariants;
@@ -342,30 +341,10 @@ public final class ColorHandler {
 		event.register((state, getter, pos, tintIndex) -> GrassColor.get(0.5D, 1.0D),
 			TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get(), /*TFBlocks.HEDGE_MAZE_MINIATURE_STRUCTURE.get(), TFBlocks.HOLLOW_HILL_MINIATURE_STRUCTURE.get(), TFBlocks.QUEST_GROVE_MINIATURE_STRUCTURE.get(), TFBlocks.MUSHROOM_TOWER_MINIATURE_STRUCTURE.get(),*/ TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE.get(), TFBlocks.LICH_TOWER_MINIATURE_STRUCTURE.get() //TFBlocks.MINOTAUR_LABYRINTH_MINIATURE_STRUCTURE.get(),
 			/*TFBlocks.HYDRA_LAIR_MINIATURE_STRUCTURE.get(), TFBlocks.GOBLIN_STRONGHOLD_MINIATURE_STRUCTURE.get(), TFBlocks.DARK_TOWER_MINIATURE_STRUCTURE.get(), TFBlocks.YETI_CAVE_MINIATURE_STRUCTURE.get(), TFBlocks.AURORA_PALACE_MINIATURE_STRUCTURE.get(), TFBlocks.TROLL_CAVE_COTTAGE_MINIATURE_STRUCTURE.get(), TFBlocks.FINAL_CASTLE_MINIATURE_STRUCTURE.get()*/);
-		event.register((state, getter, pos, tintIndex) -> {
-			if (tintIndex > 15) return WHITE;
-			int color = 0xFFFF00FF;
-			if (state.getBlock() instanceof CastleDoorBlock && state.getValue(CastleDoorBlock.ACTIVE) && !state.getValue(CastleDoorBlock.VANISHED)) return color ^ WHITE;
-			return color;
-		}, TFBlocks.PINK_CASTLE_RUNE_BRICK.get(), TFBlocks.PINK_CASTLE_DOOR.get());
-		event.register((state, getter, pos, tintIndex) -> {
-			if (tintIndex > 15) return WHITE;
-			int color = 0xFF00FFFF;
-			if (state.getBlock() instanceof CastleDoorBlock && state.getValue(CastleDoorBlock.ACTIVE) && !state.getValue(CastleDoorBlock.VANISHED)) return color ^ WHITE;
-			return color;
-		}, TFBlocks.BLUE_CASTLE_RUNE_BRICK.get(), TFBlocks.BLUE_CASTLE_DOOR.get());
-		event.register((state, getter, pos, tintIndex) -> {
-			if (tintIndex > 15) return WHITE;
-			int color = 0xFFFFFF00;
-			if (state.getBlock() instanceof CastleDoorBlock && state.getValue(CastleDoorBlock.ACTIVE) && !state.getValue(CastleDoorBlock.VANISHED)) return color ^ WHITE;
-			return color;
-		}, TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get(), TFBlocks.YELLOW_CASTLE_DOOR.get());
-		event.register((state, getter, pos, tintIndex) -> {
-			if (tintIndex > 15) return WHITE;
-			int color = 0xFF4B0082;
-			if (state.getBlock() instanceof CastleDoorBlock && state.getValue(CastleDoorBlock.ACTIVE) && !state.getValue(CastleDoorBlock.VANISHED)) return color ^ WHITE;
-			return color;
-		}, TFBlocks.VIOLET_CASTLE_RUNE_BRICK.get(), TFBlocks.VIOLET_CASTLE_DOOR.get());
+		event.register((state, getter, pos, tintIndex) -> tintIndex > 15 ? WHITE : 0xFFFF00FF, TFBlocks.PINK_CASTLE_RUNE_BRICK.get(), TFBlocks.PINK_CASTLE_DOOR.get());
+		event.register((state, getter, pos, tintIndex) -> tintIndex > 15 ? WHITE : 0xFF00FFFF, TFBlocks.BLUE_CASTLE_RUNE_BRICK.get(), TFBlocks.BLUE_CASTLE_DOOR.get());
+		event.register((state, getter, pos, tintIndex) -> tintIndex > 15 ? WHITE : 0xFFFFFF00, TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get(), TFBlocks.YELLOW_CASTLE_DOOR.get());
+		event.register((state, getter, pos, tintIndex) -> tintIndex > 15 ? WHITE : 0xFF4B0082, TFBlocks.VIOLET_CASTLE_RUNE_BRICK.get(), TFBlocks.VIOLET_CASTLE_DOOR.get());
 		event.register((state, getter, pos, tintIndex) -> {
 			if (tintIndex > 15) return WHITE;
 			return 0xFF5C1074;

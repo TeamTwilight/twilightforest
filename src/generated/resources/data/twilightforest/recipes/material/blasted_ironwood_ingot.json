@@ -3,6 +3,7 @@
   "category": "misc",
   "cookingtime": 100,
   "experience": 1.0,
+  "group": "ironwood_ingot",
   "ingredient": {
     "item": "twilightforest:raw_ironwood"
   },
