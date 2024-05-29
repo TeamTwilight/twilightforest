@@ -161,9 +161,9 @@ public abstract class HollowTreeFeature extends TFTreeFeature<TFTreeFeatureConfi
 					BlockPos dPos = pos.offset(dx, dy, dz);
 					if (FeatureUtil.hasAirAround(world, dPos)) {
 						if (dist > hollow) {
-							FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, random, dPos, config.trunkProvider);
+							trunkPlacer.accept(dPos, config.trunkProvider.getState(random, dPos));
 						} else {
-							FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, random, dPos, config.branchProvider);
+							trunkPlacer.accept(dPos, config.branchProvider.getState(random, dPos));
 						}
 					} else {
 						FeaturePlacers.placeIfValidRootPos(world, decoPlacer, random, dPos, config.rootsProvider);
