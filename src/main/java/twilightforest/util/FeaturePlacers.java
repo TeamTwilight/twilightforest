@@ -316,7 +316,7 @@ public final class FeaturePlacers {
 			// Is the position considered not underground?
 			if (FeatureLogic.hasEmptyNeighborExceptBelow(worldReader, exposedPos)) {
 				// Check if the position is not replaceable
-				if (FeatureUtil.anyBelowMatch(exposedPos, worldPlacer.getRootPenetrability(), (blockPos -> worldReader.isStateAtPosition(blockPos, FeatureLogic::worldGenReplaceable))))
+				if (FeatureUtil.anyBelowMatch(exposedPos, worldPlacer.getRootPenetrability(), (blockPos -> worldReader.isStateAtPosition(blockPos, (state) -> !FeatureLogic.worldGenReplaceable(state)))))
 					return; // Root must stop
 
 				// Good to go!
