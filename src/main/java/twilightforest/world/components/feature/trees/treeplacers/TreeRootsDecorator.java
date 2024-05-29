@@ -90,13 +90,13 @@ public class TreeRootsDecorator extends TreeDecorator {
 		if (this.hasSurfaceRoots) {
 			for (int i = 0; i < numBranches; i++) {
 				BlockPos dest = FeatureLogic.translate(startPos.below(i + 2), this.length, 0.3 * i + (double) offset, 0.8);
-				// this methods is used only for trees with rootPenetrability = 1, so 1 is not a magic number
+				// this method is used only for trees with rootPenetrability = 1, so 1 is not a magic number
 				FeaturePlacers.traceExposedRoot(context.level(), new RootPlacer(context.decorationSetter, 1), context.random(), this.surfaceBlock, this.rootBlock, new VoxelBresenhamIterator(startPos.below(), dest));
 			}
 		} else {
 			for (int i = 0; i < numBranches; i++) {
 				BlockPos dest = FeatureLogic.translate(startPos.below(i + 2), this.length, 0.3 * i + (double) offset, 0.8);
-				// this methods is used only for trees with rootPenetrability = 1, so 1 is not a magic number
+				// this method is used only for trees with rootPenetrability = 1, so 1 is not a magic number
 				FeaturePlacers.traceRoot(context.level(), new RootPlacer(context.decorationSetter, 1), context.random(), this.rootBlock, new VoxelBresenhamIterator(startPos.below(), dest));
 			}
 		}
