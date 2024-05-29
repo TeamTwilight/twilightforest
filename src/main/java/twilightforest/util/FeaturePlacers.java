@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.core.HolderSet;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -27,8 +28,6 @@ import twilightforest.init.TFBlocks;
 
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
-import java.util.function.Predicate;
-import java.util.stream.IntStream;
 
 /**
  * Feature Utility methods that invoke placement. For non-placement see FeatureLogic
@@ -247,7 +246,7 @@ public final class FeaturePlacers {
 	}
 
 	public static boolean placeIfValidRootPos(LevelSimulatedReader world, RootPlacer placer, RandomSource random, BlockPos pos, BlockStateProvider config) {
-		if (!anyBelowMatch(pos, placer.getRootPenetrability(), (blockPos -> !FeatureLogic.canRootGrowIn(world, blockPos)))) {
+		if (!FeatureUtil.anyBelowMatch(pos, placer.getRootPenetrability(), (blockPos -> !FeatureLogic.canRootGrowIn(world, blockPos)))) {
 			placer.getPlacer().accept(pos, config.getState(random, pos));
 			return true;
 		} else {
@@ -299,8 +298,8 @@ public final class FeaturePlacers {
 	public static void traceRoot(LevelSimulatedReader worldReader, RootPlacer worldPlacer, RandomSource random, BlockStateProvider dirtRoot, Iterable<BlockPos> posTracer) {
 		// Trace block positions and stop tracing too far into open air
 		for (BlockPos rootPos : posTracer) {
-			if (anyBelowMatch(rootPos, worldPlacer.getRootPenetrability(), (blockPos -> worldReader.isStateAtPosition(blockPos, FeatureLogic.ROOT_SHOULD_SKIP))))
-				continue; // Ignore pos if this block should be checked (root, or one of the protected block IDs)
+			if (FeatureUtil.anyBelowMatch(rootPos, worldPlacer.getRootPenetrability(), (blockPos -> worldReader.isStateAtPosition(blockPos, FeatureLogic.ROOT_SHOULD_SKIP))))
+				return; // End root if this block cannot be penetrated
 
 			// If the block/position cannot be replaced or is detached from ground-mass, stop
 			if (!FeaturePlacers.placeIfValidRootPos(worldReader, worldPlacer, random, rootPos, dirtRoot))
@@ -317,7 +316,7 @@ public final class FeaturePlacers {
 			// Is the position considered not underground?
 			if (FeatureLogic.hasEmptyNeighborExceptBelow(worldReader, exposedPos)) {
 				// Check if the position is not replaceable
-				if (anyBelowMatch(exposedPos, worldPlacer.getRootPenetrability(), (blockPos -> !worldReader.isStateAtPosition(blockPos, FeatureLogic::worldGenReplaceable))))
+				if (FeatureUtil.anyBelowMatch(exposedPos, worldPlacer.getRootPenetrability(), (blockPos -> worldReader.isStateAtPosition(blockPos, FeatureLogic::worldGenReplaceable))))
 					return; // Root must stop
 
 				// Good to go!
@@ -330,12 +329,6 @@ public final class FeaturePlacers {
 				return; // Now the outer loop can end as we terminate here. Goodbye!
 			}
 		}
-	}
-
-	public static boolean anyBelowMatch(BlockPos exposedPos, int depth, Predicate<BlockPos> predicate) {
-		return IntStream.range(0, depth)
-			.mapToObj(exposedPos::below)
-			.anyMatch(blockPos -> predicate.test(blockPos));
 	}
 
 

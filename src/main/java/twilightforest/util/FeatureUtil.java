@@ -7,6 +7,9 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 
+import java.util.function.Predicate;
+import java.util.stream.IntStream;
+
 // TODO Split into FeatureLogic and FeaturePlacers
 @Deprecated
 public final class FeatureUtil {
@@ -19,8 +22,6 @@ public final class FeatureUtil {
 	 * Checks an area to see if it consists of flat natural ground below and air above
 	 */
 	public static boolean isAreaSuitable(WorldGenLevel world, BlockPos pos, int xWidth, int height, int zWidth, boolean underwaterAllowed) {
-		boolean flag = true;
-
 		// check if there's anything within the diameter
 		for (int cx = 0; cx < xWidth; cx++) {
 			for (int cz = 0; cz < zWidth; cz++) {
@@ -33,7 +34,7 @@ public final class FeatureUtil {
 						if (underwaterAllowed && state.liquid()) {
 							continue;
 						}
-						flag = false;
+						return false;
 					}
 
 					for (int cy = 0; cy < height; cy++) {
@@ -42,17 +43,28 @@ public final class FeatureUtil {
 							if (underwaterAllowed && world.getBlockState(pos_.above(cy)).liquid()) {
 								continue;
 							}
-							flag = false;
+							return false;
 						}
 					}
 				} else {
-					flag = false;
+					return false;
 				}
 			}
 		}
+		return true;
+	}
 
-		// Okie dokie
-		return flag;
+	public static boolean anyBelowMatch(BlockPos exposedPos, int depth, Predicate<BlockPos> predicate) {
+		return isAnyMatchInArea(exposedPos.below(depth), 1, depth + 1, 1, predicate);
+	}
+
+	public static boolean isAnyMatchInArea(BlockPos pos, int xWidth, int height, int zWidth, Predicate<BlockPos> predicate) {
+		return IntStream.range(0, xWidth)
+			.mapToObj(cx -> IntStream.range(0, height)
+				.mapToObj(cy -> IntStream.range(0, zWidth)
+					.mapToObj(cz -> pos.offset(cx, cy, cz))))
+			.flatMap(stream -> stream.flatMap(s -> s))
+			.anyMatch(predicate);
 	}
 
 	/**
