@@ -16,6 +16,8 @@ import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.crafting.CompoundIngredient;
+import net.neoforged.neoforge.common.crafting.DataComponentIngredient;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.custom.NoSmithingTemplateRecipeBuilder;
 import twilightforest.data.custom.UncraftingGenerator;
@@ -540,30 +542,30 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.save(output, locEquip(TFItems.KNIGHTMETAL_SHIELD.getId().getPath()));
 
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, TFItems.LIFEDRAIN_SCEPTER.get())
-			.requires(Ingredient.of(new ItemStack(TFItems.LIFEDRAIN_SCEPTER, 1, DataComponentPatch.builder().set(DataComponents.DAMAGE, 99).build())))
+			.requires(DataComponentIngredient.of(false, DataComponents.DAMAGE, 99, TFItems.LIFEDRAIN_SCEPTER))
 			.requires(Ingredient.of(Items.FERMENTED_SPIDER_EYE))
 			.unlockedBy("has_item", has(TFItems.LIFEDRAIN_SCEPTER.get()))
 			.save(output, locEquip(TFItems.LIFEDRAIN_SCEPTER.getId().getPath()));
 
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, TFItems.FORTIFICATION_SCEPTER.get())
-			.requires(Ingredient.of(new ItemStack(TFItems.FORTIFICATION_SCEPTER, 1, DataComponentPatch.builder().set(DataComponents.DAMAGE, 9).build())))
+			.requires(DataComponentIngredient.of(false, DataComponents.DAMAGE, 9, TFItems.FORTIFICATION_SCEPTER))
 			.requires(Ingredient.of(Items.GOLDEN_APPLE))
 			.unlockedBy("has_item", has(TFItems.FORTIFICATION_SCEPTER.get()))
 			.save(output, locEquip(TFItems.FORTIFICATION_SCEPTER.getId().getPath()));
 
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, TFItems.TWILIGHT_SCEPTER.get())
-			.requires(Ingredient.of(new ItemStack(TFItems.TWILIGHT_SCEPTER, 1, DataComponentPatch.builder().set(DataComponents.DAMAGE, 99).build())))
+			.requires(DataComponentIngredient.of(false, DataComponents.DAMAGE, 99, TFItems.TWILIGHT_SCEPTER))
 			.requires(Tags.Items.ENDER_PEARLS)
 			.unlockedBy("has_item", has(TFItems.TWILIGHT_SCEPTER.get()))
 			.save(output, locEquip(TFItems.TWILIGHT_SCEPTER.getId().getPath()));
 
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, TFItems.ZOMBIE_SCEPTER.get())
-			.requires(Ingredient.of(
-				PotionContents.createItemStack(Items.POTION, Potions.STRENGTH),
-				PotionContents.createItemStack(Items.POTION, Potions.LONG_STRENGTH),
-				PotionContents.createItemStack(Items.POTION, Potions.STRONG_STRENGTH)
+			.requires(CompoundIngredient.of(
+				DataComponentIngredient.of(false, DataComponents.POTION_CONTENTS, new PotionContents(Potions.STRENGTH), Items.POTION),
+				DataComponentIngredient.of(false, DataComponents.POTION_CONTENTS, new PotionContents(Potions.LONG_STRENGTH), Items.POTION),
+				DataComponentIngredient.of(false, DataComponents.POTION_CONTENTS, new PotionContents(Potions.STRONG_STRENGTH), Items.POTION)
 			))
-			.requires(Ingredient.of(new ItemStack(TFItems.ZOMBIE_SCEPTER, 1, DataComponentPatch.builder().set(DataComponents.DAMAGE, 9).build())))
+			.requires(DataComponentIngredient.of(false, DataComponents.DAMAGE, 9, TFItems.ZOMBIE_SCEPTER))
 			.requires(Ingredient.of(Items.ROTTEN_FLESH))
 			.unlockedBy("has_item", has(TFItems.ZOMBIE_SCEPTER.get()))
 			.save(output, locEquip(TFItems.ZOMBIE_SCEPTER.getId().getPath()));

@@ -68,7 +68,6 @@ public class UrGhast extends BaseTFBoss {
 
 	private float damageUntilNextPhase = 10; // how much damage can we take before we toggle tantrum mode
 
-	@SuppressWarnings("this-escape")
 	public UrGhast(EntityType<? extends UrGhast> type, Level level) {
 		super(type, level);
 		this.noPhysics = true;

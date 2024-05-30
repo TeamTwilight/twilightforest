@@ -2,6 +2,7 @@ package twilightforest.entity.monster;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -11,6 +12,9 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.Boat;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -127,6 +131,26 @@ public class PinchBeetle extends Monster implements IHostileMount {
 			}
 		}
 		return EntityUtil.properlyApplyCustomDamageSource(this, entity, TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.CLAMPED, this), null);
+	}
+
+	@Override
+	public boolean startRiding(Entity entity, boolean force) {
+		if (entity instanceof Boat boat) {
+			boat.kill();
+			if (this.level().getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
+				for (int i = 0; i < 3; i++) {
+					this.spawnAtLocation(boat.getVariant().getPlanks());
+				}
+
+				for (int j = 0; j < 2; j++) {
+					this.spawnAtLocation(Items.STICK);
+				}
+			}
+			this.playSound(SoundEvents.ZOMBIE_BREAK_WOODEN_DOOR);
+			return false;
+		}
+
+		return super.startRiding(entity, force);
 	}
 
 	@Override

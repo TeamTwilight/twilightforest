@@ -3,7 +3,11 @@
   "category": "equipment",
   "ingredients": [
     {
-      "item": "twilightforest:twilight_scepter"
+      "type": "neoforge:components",
+      "components": {
+        "minecraft:damage": 99
+      },
+      "items": "twilightforest:twilight_scepter"
     },
     {
       "tag": "c:ender_pearls"

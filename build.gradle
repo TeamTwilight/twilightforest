@@ -114,11 +114,11 @@ dependencies {
     implementation "top.theillusivec4.curios:curios-neoforge:${project.curios_version}+${project.minecraft_version}"
 
     //curse maven
-//	implementation "curse.maven:jade-324717:5288504"
+	implementation "curse.maven:jade-324717:5366595"
 //	runtimeOnly "curse.maven:jeed-532286:4599236"
 //	runtimeOnly "curse.maven:museum-curator-859070:4629894"
 
-//	compileOnly "curse.maven:the-one-probe-245211:5084077"
+	implementation "curse.maven:the-one-probe-245211:5304322"
 
     //mods we dont have compat with but are nice to have
 //	runtimeOnly "team-twilight:crossdimcommands:${project.base_minecraft_version}-1.0"
