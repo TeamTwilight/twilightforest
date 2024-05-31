@@ -65,7 +65,7 @@ public class TFClientConfig {
 
 		showFortificationShieldIndicatorInCreative = builder
 			.translation(TFConfig.CONFIG_ID + "shield_indicator_creative")
-			.comment("Enables shield indicator in creative for debugging.")
+			.comment("Enables fortification shield indicator in creative for debugging.")
 			.define("fortificationShieldIndicatorInCreative", false);
 
 		cloudBlockPrecipitationDistance = builder
