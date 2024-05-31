@@ -39,6 +39,7 @@ public class TFConfig {
 	public static boolean disableLockedBiomeToasts = false;
 	public static boolean showQuestRamCrosshairIndicator = true;
 	public static boolean showFortificationShieldIndicator = true;
+	public static boolean showFortificationShieldIndicatorInCreative = false;
 	private static int clientCloudBlockPrecipitationDistance = 32;
 	public static boolean prettifyOreMeterGui = true;
 	public static boolean spawnCharmAnimationAsTotem = false;
@@ -200,6 +201,7 @@ public class TFConfig {
 		disableOptifineNagScreen = config.disableOptifineNagScreen.get();
 		disableLockedBiomeToasts = config.disableLockedBiomeToasts.get();
 		showFortificationShieldIndicator = config.showFortificationShieldIndicator.get();
+		showFortificationShieldIndicatorInCreative = config.showFortificationShieldIndicatorInCreative.get();
 		showQuestRamCrosshairIndicator = config.showQuestRamCrosshairIndicator.get();
 		clientCloudBlockPrecipitationDistance = config.cloudBlockPrecipitationDistance.get();
 		prettifyOreMeterGui = config.prettifyOreMeterGui.get();

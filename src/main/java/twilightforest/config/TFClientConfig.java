@@ -15,6 +15,7 @@ public class TFClientConfig {
 	final ModConfigSpec.BooleanValue disableLockedBiomeToasts;
 	final ModConfigSpec.BooleanValue showQuestRamCrosshairIndicator;
 	final ModConfigSpec.BooleanValue showFortificationShieldIndicator;
+	final ModConfigSpec.BooleanValue showFortificationShieldIndicatorInCreative;
 	final ModConfigSpec.IntValue cloudBlockPrecipitationDistance;
 	final ModConfigSpec.ConfigValue<List<? extends String>> giantSkinUUIDs;
 	final ModConfigSpec.ConfigValue<List<? extends String>> auroraBiomes;
@@ -61,6 +62,11 @@ public class TFClientConfig {
 			.translation(TFConfig.CONFIG_ID + "shield_indicator")
 			.comment("Renders how many fortification shields are currently active on your player above your armor bar. Turn this off if you find it intrusive or other mods render over/under it.")
 			.define("fortificationShieldIndicator", true);
+
+		showFortificationShieldIndicatorInCreative = builder
+			.translation(TFConfig.CONFIG_ID + "shield_indicator_creative")
+			.comment("Enables shield indicator in creative for debugging.")
+			.define("fortificationShieldIndicatorInCreative", false);
 
 		cloudBlockPrecipitationDistance = builder
 			.translation(TFConfig.CONFIG_ID + "cloud_block_precipitation_distance")
