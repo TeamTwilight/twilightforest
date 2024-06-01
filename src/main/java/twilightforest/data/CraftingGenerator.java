@@ -2,7 +2,6 @@ package twilightforest.data;
 
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
@@ -111,6 +110,22 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.pattern("#")
 			.define('#', Ingredient.of(TFBlocks.ROOT_STRAND.get()))
 			.unlockedBy("has_root_strand", has(TFBlocks.ROOT_STRAND.get()))
+			.save(output);
+
+		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, TFBlocks.CANOPY_WINDOW.value(), 4)
+			.pattern("GPG")
+			.pattern("PPP")
+			.pattern("GPG")
+			.define('G', Ingredient.of(Tags.Items.GLASS_BLOCKS))
+			.define('P', Ingredient.of(TFBlocks.CANOPY_PLANKS.value()))
+			.unlockedBy("has_planks", has(TFBlocks.CANOPY_PLANKS.value()))
+			.save(output);
+
+		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, TFBlocks.CANOPY_WINDOW_PANE.value(), 16)
+			.pattern("GGG")
+			.pattern("GGG")
+			.define('G', Ingredient.of(TFBlocks.CANOPY_WINDOW.value()))
+			.unlockedBy("has_windows", has(TFBlocks.CANOPY_WINDOW.value()))
 			.save(output);
 
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, TFBlocks.FIREFLY_JAR.get())

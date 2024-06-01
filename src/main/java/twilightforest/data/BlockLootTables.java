@@ -219,6 +219,8 @@ public class BlockLootTables extends BlockLootSubProvider {
 
 		dropSelf(TFBlocks.IRON_LADDER.get());
 		add(TFBlocks.ROPE.get(), this.rope());
+		dropWhenSilkTouch(TFBlocks.CANOPY_WINDOW.value());
+		dropWhenSilkTouch(TFBlocks.CANOPY_WINDOW_PANE.value());
 		dropSelf(TFBlocks.TWISTED_STONE.get());
 		dropSelf(TFBlocks.TWISTED_STONE_PILLAR.get());
 		dropSelf(TFBlocks.BOLD_STONE_PILLAR.get());

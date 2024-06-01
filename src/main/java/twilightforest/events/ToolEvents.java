@@ -4,6 +4,7 @@ import net.minecraft.network.protocol.game.ClientboundAnimatePacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -21,6 +22,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
 import net.neoforged.neoforge.event.entity.living.LivingAttackEvent;
 import net.neoforged.neoforge.event.entity.living.LivingHurtEvent;
+import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import org.jetbrains.annotations.Nullable;
@@ -125,7 +127,6 @@ public class ToolEvents {
 		}
 	}
 
-
 	@SubscribeEvent
 	public static void damageToolsExtra(BlockEvent.BreakEvent event) {
 		ItemStack stack = event.getPlayer().getMainHandItem();
@@ -134,6 +135,13 @@ public class ToolEvents {
 				stack.hurtAndBreak(16, event.getPlayer(), EquipmentSlot.MAINHAND);
 			}
 		}
+	}
+
+	@SubscribeEvent
+	public static void onMobEffectApplicableEvent(MobEffectEvent.Applicable event) {
+		if (event.getEffectInstance() != null && event.getEffectInstance().is(MobEffects.DIG_SLOWDOWN) && event.getEntity().isHolding(TFItems.POCKET_WATCH.get())) {
+			event.setResult(MobEffectEvent.Applicable.Result.DO_NOT_APPLY);
+		} else event.setResult(MobEffectEvent.Applicable.Result.DEFAULT);
 	}
 
 	@SubscribeEvent

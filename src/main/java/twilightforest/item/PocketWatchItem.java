@@ -32,10 +32,6 @@ public class PocketWatchItem extends Item {
 
 			if (living.isHolding(this)) {
 				living.addEffect(new MobEffectInstance(MobEffects.DIG_SPEED, 5, 0, false, false, false));
-
-				if (living.hasEffect(MobEffects.DIG_SLOWDOWN)) {
-					living.removeEffect(MobEffects.DIG_SLOWDOWN);
-				}
 			}
 		}
 	}

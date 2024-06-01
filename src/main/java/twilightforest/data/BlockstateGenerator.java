@@ -9,10 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.SlabType;
-import net.neoforged.neoforge.client.model.generators.BlockModelBuilder;
-import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
-import net.neoforged.neoforge.client.model.generators.ModelFile;
-import net.neoforged.neoforge.client.model.generators.MultiPartBlockStateBuilder;
+import net.neoforged.neoforge.client.model.generators.*;
 import net.neoforged.neoforge.client.model.generators.loaders.CompositeModelBuilder;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -114,6 +111,9 @@ public class BlockstateGenerator extends BlockModelBuilders {
 			.nestedGroup().condition(RopeBlock.Y, true).condition(RopeBlock.Z, true).end()
 			.nestedGroup().condition(RopeBlock.Z, true).condition(RopeBlock.X, true).end()
 			.end();
+
+		simpleBlock(TFBlocks.CANOPY_WINDOW.value(), this.models().cubeAll(this.name(TFBlocks.CANOPY_WINDOW.value()), this.blockTexture(TFBlocks.CANOPY_WINDOW.value())).renderType(CUTOUT));
+		paneBlockWithRenderType(TFBlocks.CANOPY_WINDOW_PANE.value(), TFBlocks.CANOPY_WINDOW.getId().withPrefix("block/"), TFBlocks.CANOPY_WINDOW.getId().withPrefix("block/"), CUTOUT);
 
 		towerBlocks();
 

@@ -593,6 +593,7 @@ public class EntityLootTables extends EntityLootSubProvider {
 			.withPool(LootPool.lootPool().add(LootItem.lootTableItem(Blocks.LAPIS_BLOCK)))
 			.withPool(LootPool.lootPool().add(LootItem.lootTableItem(Blocks.GOLD_BLOCK)))
 			.withPool(LootPool.lootPool().add(LootItem.lootTableItem(Blocks.DIAMOND_BLOCK)))
+			.withPool(LootPool.lootPool().add(LootItem.lootTableItem(Blocks.EMERALD_BLOCK)))
 		);
 	}
 
