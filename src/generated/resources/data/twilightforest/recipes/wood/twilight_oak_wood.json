@@ -1,6 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "building",
+  "group": "bark",
   "key": {
     "#": {
       "item": "twilightforest:twilight_oak_log"

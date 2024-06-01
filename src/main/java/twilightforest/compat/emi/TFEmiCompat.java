@@ -8,8 +8,10 @@ import dev.emi.emi.api.recipe.EmiPatternCraftingRecipe;
 import dev.emi.emi.api.recipe.VanillaEmiRecipeCategories;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
+import dev.emi.emi.recipe.EmiAnvilRecipe;
 import dev.emi.emi.recipe.EmiGrindstoneRecipe;
 import dev.emi.emi.recipe.special.EmiAnvilEnchantRecipe;
+import dev.emi.emi.recipe.special.EmiAnvilRepairItemRecipe;
 import dev.emi.emi.recipe.special.EmiGrindstoneDisenchantingRecipe;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.item.crafting.*;
@@ -36,6 +38,9 @@ public class TFEmiCompat implements EmiPlugin {
 		stack.contains(EmiStack.of(TFItems.MOONWORM_QUEEN)) || stack.contains(EmiStack.of(TFItems.LAMP_OF_CINDERS)) || stack.contains(EmiStack.of(TFItems.ORE_MAGNET)) ||
 			stack.contains(EmiStack.of(TFItems.TWILIGHT_SCEPTER)) || stack.contains(EmiStack.of(TFItems.LIFEDRAIN_SCEPTER)) ||
 			stack.contains(EmiStack.of(TFItems.ZOMBIE_SCEPTER)) || stack.contains(EmiStack.of(TFItems.FORTIFICATION_SCEPTER));
+
+	private static final Function<List<EmiIngredient>, Boolean> NO_REPAIRING = stack ->
+		stack.contains(EmiStack.of(TFItems.LAMP_OF_CINDERS)) || stack.contains(EmiStack.of(TFItems.GLASS_SWORD)) || stack.contains(EmiStack.of(TFItems.MAZEBREAKER_PICKAXE));
 
 	@Override
 	public void register(EmiRegistry registry) {
@@ -74,11 +79,11 @@ public class TFEmiCompat implements EmiPlugin {
 		//emi makes a few assumptions about damageable items that it honestly shouldnt
 		registry.removeRecipes(recipe -> {
 			if (recipe instanceof EmiPatternCraftingRecipe || recipe instanceof EmiGrindstoneRecipe) {
-				return recipe.getInputs().contains(EmiStack.of(TFItems.MOONWORM_QUEEN));
-			} else if (recipe instanceof EmiGrindstoneDisenchantingRecipe) {
+				return recipe.getInputs().contains(EmiStack.of(TFItems.MOONWORM_QUEEN)) || NO_REPAIRING.apply(recipe.getInputs());
+			} else if (recipe instanceof EmiGrindstoneDisenchantingRecipe || recipe instanceof EmiAnvilEnchantRecipe) {
 				return CANT_USE_ENCHANTS.apply(recipe.getInputs());
-			} else if (recipe instanceof EmiAnvilEnchantRecipe) {
-				return CANT_USE_ENCHANTS.apply(recipe.getInputs());
+			} else if (recipe instanceof EmiAnvilRepairItemRecipe || recipe instanceof EmiAnvilRecipe) {
+				return NO_REPAIRING.apply(recipe.getInputs());
 			}
 			return false;
 		});

@@ -21,7 +21,7 @@ public class RedcapPlantTNTGoal extends RedcapBaseGoal {
 			&& !this.redcap.heldTNT.isEmpty()
 			&& this.redcap.distanceToSqr(attackTarget) < 25
 			&& !this.isTargetLookingAtMe(attackTarget)
-			&& EventHooks.getMobGriefingEvent(this.redcap.level(), this.redcap)
+			&& EventHooks.canEntityGrief(this.redcap.level(), this.redcap)
 			&& !this.isLitTNTNearby(8)
 			&& this.findBlockTNTNearby(5) == null;
 	}

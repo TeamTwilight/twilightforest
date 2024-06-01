@@ -3,7 +3,11 @@
   "category": "equipment",
   "ingredients": [
     {
-      "item": "twilightforest:lifedrain_scepter"
+      "type": "neoforge:components",
+      "components": {
+        "minecraft:damage": 99
+      },
+      "items": "twilightforest:lifedrain_scepter"
     },
     {
       "item": "minecraft:fermented_spider_eye"

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "twilightforest:equipment/fiery_fiery_chestplate"
+        "recipe": "twilightforest:equipment/fiery_iron_boots"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "twilightforest:equipment/fiery_fiery_chestplate"
+      "twilightforest:equipment/fiery_iron_boots"
     ]
   }
 }

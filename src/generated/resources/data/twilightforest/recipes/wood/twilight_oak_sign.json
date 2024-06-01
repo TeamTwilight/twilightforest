@@ -1,6 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "misc",
+  "group": "wooden_sign",
   "key": {
     "#": {
       "item": "twilightforest:twilight_oak_planks"

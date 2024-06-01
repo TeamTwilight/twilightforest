@@ -146,11 +146,6 @@ public abstract class TFLangProvider extends LanguageProvider {
 		this.add("item.twilightforest." + entity.getId().getPath() + "_spawn_egg", name + " Spawn Egg");
 	}
 
-	public void addSubtitle(DeferredHolder<SoundEvent, SoundEvent> sound, String name) {
-		String[] splitSoundName = sound.getId().getPath().split("\\.", 3);
-		this.add("subtitles.twilightforest." + splitSoundName[0] + "." + splitSoundName[2], name);
-	}
-
 	public void addDeathMessage(String key, String name) {
 		this.add("death.attack.twilightforest." + key, name);
 	}

@@ -13,6 +13,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFSounds;
 
 public class HelmetCrab extends Monster {
@@ -39,6 +40,12 @@ public class HelmetCrab extends Monster {
 			.add(Attributes.MOVEMENT_SPEED, 0.28D)
 			.add(Attributes.ATTACK_DAMAGE, 3.0D)
 			.add(Attributes.ARMOR, 6.0D);
+	}
+
+	@Nullable
+	@Override
+	protected SoundEvent getAmbientSound() {
+		return TFSounds.HELMET_CRAB_AMBIENT.get();
 	}
 
 	@Override

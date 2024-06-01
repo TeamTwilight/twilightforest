@@ -1,6 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
+  "group": "fiery_leggings",
   "key": {
     "#": {
       "tag": "c:ingots/fiery"

@@ -7,11 +7,9 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.BossEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -44,8 +42,6 @@ public class Minoshroom extends BaseTFBoss implements ITFCharger {
 	private float prevClientSideChargeAnimation;
 	private float clientSideChargeAnimation;
 	private boolean groundSmashState = false;
-	@SuppressWarnings("this-escape")
-	private final ServerBossEvent bossInfo = new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS);
 
 	@SuppressWarnings("this-escape")
 	public Minoshroom(EntityType<? extends Minoshroom> type, Level level) {
@@ -200,11 +196,6 @@ public class Minoshroom extends BaseTFBoss implements ITFCharger {
 	}
 
 	@Override
-	public ServerBossEvent getBossBar() {
-		return this.bossInfo;
-	}
-
-	@Override
 	public Block getDeathContainer(RandomSource random) {
 		return TFBlocks.MANGROVE_CHEST.get();
 	}
@@ -212,5 +203,10 @@ public class Minoshroom extends BaseTFBoss implements ITFCharger {
 	@Override
 	public Block getBossSpawner() {
 		return TFBlocks.MINOSHROOM_BOSS_SPAWNER.get();
+	}
+
+	@Override
+	public int getBossBarColor() {
+		return 0xFF0000;
 	}
 }

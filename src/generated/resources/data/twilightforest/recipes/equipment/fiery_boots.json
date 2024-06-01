@@ -1,6 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
+  "group": "fiery_boots",
   "key": {
     "#": {
       "tag": "c:ingots/fiery"

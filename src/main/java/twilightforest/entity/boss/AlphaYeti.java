@@ -6,13 +6,11 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
@@ -49,8 +47,6 @@ public class AlphaYeti extends BaseTFBoss implements RangedAttackMob, IHostileMo
 
 	private static final EntityDataAccessor<Boolean> RAMPAGE_FLAG = SynchedEntityData.defineId(AlphaYeti.class, EntityDataSerializers.BOOLEAN);
 	private static final EntityDataAccessor<Boolean> TIRED_FLAG = SynchedEntityData.defineId(AlphaYeti.class, EntityDataSerializers.BOOLEAN);
-	@SuppressWarnings("this-escape")
-	private final ServerBossEvent bossInfo = new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.PROGRESS);
 	private int collisionCounter;
 	private boolean canRampage;
 
@@ -217,7 +213,7 @@ public class AlphaYeti extends BaseTFBoss implements RangedAttackMob, IHostileMo
 	}
 
 	public void destroyBlocksInAABB(AABB box) {
-		if (EventHooks.getMobGriefingEvent(this.level(), this)) {
+		if (EventHooks.canEntityGrief(this.level(), this)) {
 			for (BlockPos pos : WorldUtil.getAllInBB(box)) {
 				if (EntityUtil.canDestroyBlock(this.level(), pos, this)) {
 					this.level().destroyBlock(pos, false);
@@ -227,7 +223,7 @@ public class AlphaYeti extends BaseTFBoss implements RangedAttackMob, IHostileMo
 	}
 
 	public void makeRandomBlockFall(int range, int hangTime) {
-		if (EventHooks.getMobGriefingEvent(this.level(), this)) {
+		if (EventHooks.canEntityGrief(this.level(), this)) {
 			// find a block nearby
 			int bx = Mth.floor(this.getX()) + this.getRandom().nextInt(range) - this.getRandom().nextInt(range);
 			int bz = Mth.floor(this.getZ()) + this.getRandom().nextInt(range) - this.getRandom().nextInt(range);
@@ -327,11 +323,6 @@ public class AlphaYeti extends BaseTFBoss implements RangedAttackMob, IHostileMo
 	}
 
 	@Override
-	public ServerBossEvent getBossBar() {
-		return this.bossInfo;
-	}
-
-	@Override
 	public Block getDeathContainer(RandomSource random) {
 		return TFBlocks.CANOPY_CHEST.get();
 	}
@@ -339,5 +330,10 @@ public class AlphaYeti extends BaseTFBoss implements RangedAttackMob, IHostileMo
 	@Override
 	public Block getBossSpawner() {
 		return TFBlocks.ALPHA_YETI_BOSS_SPAWNER.get();
+	}
+
+	@Override
+	public int getBossBarColor() {
+		return 0xB4F0F0;
 	}
 }

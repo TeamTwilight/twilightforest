@@ -51,10 +51,10 @@ public class KnightPhantomModel extends HumanoidModel<KnightPhantom> {
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, float red, float green, float blue, float scale) {
+	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, float red, float green, float blue, float alpha) {
 		if (this.knight != null && this.knight.isChargingAtPlayer()) {
 			// render full skeleton
-			super.renderToBuffer(stack, builder, light, overlay, red, green, blue, scale);
+			super.renderToBuffer(stack, builder, light, overlay, red, green, blue, alpha);
 		}
 		this.knight = null;
 	}

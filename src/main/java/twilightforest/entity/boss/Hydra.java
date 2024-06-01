@@ -11,12 +11,10 @@ import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -60,7 +58,6 @@ public class Hydra extends BaseTFBoss {
 
 	private static final EntityDataAccessor<List<String>> HEAD_NAMES = SynchedEntityData.defineId(Hydra.class, TFDataSerializers.STRING_LIST.get());
 	public final HydraHeadContainer[] hc = new HydraHeadContainer[MAX_HEADS];
-	private final ServerBossEvent bossInfo = new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.BLUE, BossEvent.BossBarOverlay.PROGRESS);
 
 	private final HydraPart[] partArray;
 	public final HydraSmallPart body;
@@ -531,7 +528,7 @@ public class Hydra extends BaseTFBoss {
 	}
 
 	private void destroyBlocksInAABB(AABB box) {
-		if (this.deathTime <= 0 && EventHooks.getMobGriefingEvent(this.level(), this)) {
+		if (this.deathTime <= 0 && EventHooks.canEntityGrief(this.level(), this)) {
 			for (BlockPos pos : WorldUtil.getAllInBB(box)) {
 				if (EntityUtil.canDestroyBlock(this.level(), pos, this)) {
 					this.level().destroyBlock(pos, false);
@@ -704,11 +701,6 @@ public class Hydra extends BaseTFBoss {
 	}
 
 	@Override
-	public ServerBossEvent getBossBar() {
-		return this.bossInfo;
-	}
-
-	@Override
 	public Block getDeathContainer(RandomSource random) {
 		return TFBlocks.MANGROVE_CHEST.get();
 	}
@@ -764,5 +756,10 @@ public class Hydra extends BaseTFBoss {
 				vx, vy, vz
 			);
 		}
+	}
+
+	@Override
+	public int getBossBarColor() {
+		return 0x05EBB9;
 	}
 }

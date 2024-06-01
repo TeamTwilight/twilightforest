@@ -11,7 +11,7 @@ import twilightforest.init.TFSounds;
 
 public class EncasedFireJetBlock extends FireJetBlock {
 
-	public static final EnumProperty<FireJetVariant> STATE = EnumProperty.create("state", FireJetVariant.class);
+	public static final EnumProperty<FireJetVariant> STATE = FireJetBlock.STATE;
 
 	public EncasedFireJetBlock(Properties properties) {
 		super(properties);

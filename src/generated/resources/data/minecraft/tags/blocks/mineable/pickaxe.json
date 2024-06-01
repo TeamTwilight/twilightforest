@@ -1,6 +1,5 @@
 {
   "values": [
-    "#twilightforest:deadrock",
     "twilightforest:nagastone",
     "twilightforest:nagastone_head",
     "twilightforest:stronghold_shield",
@@ -45,6 +44,7 @@
     "twilightforest:terrorcotta_lines",
     "twilightforest:terrorcotta_curves",
     "#twilightforest:mazestone",
-    "#twilightforest:castle_blocks"
+    "#twilightforest:castle_blocks",
+    "#twilightforest:deadrock"
   ]
 }

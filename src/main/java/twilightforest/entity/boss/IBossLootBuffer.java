@@ -69,7 +69,7 @@ public interface IBossLootBuffer {
 	}
 
 	static <T extends LivingEntity & IBossLootBuffer> void depositDropsIntoChest(T boss, BlockState chest, BlockPos pos, ServerLevel serverLevel) {
-		if (TFConfig.bossDropChests) {
+		if (TFConfig.bossDropChests && !boss.getItemStacks().isEmpty()) {
 			if (!tryDeposit(boss, chest, pos, serverLevel)) {
 				BlockPos.MutableBlockPos chestPos = pos.mutable();
 				for (int y = pos.getY(); y < serverLevel.getMaxBuildHeight(); y++) {
@@ -77,11 +77,12 @@ public interface IBossLootBuffer {
 					if (tryDeposit(boss, chest, chestPos, serverLevel)) return;
 				}
 			} else return;
+
+			for (int i = 0; i < CONTAINER_SIZE; i++) {
+				Block.popResource(serverLevel, pos, boss.getItem(i));
+			}
+			celebrateAt(boss, pos.getCenter(), serverLevel);
 		}
-		for (int i = 0; i < CONTAINER_SIZE; i++) {
-			Block.popResource(serverLevel, pos, boss.getItem(i));
-		}
-		celebrateAt(boss, pos.getCenter(), serverLevel);
 	}
 
 	static <T extends LivingEntity & IBossLootBuffer> boolean tryDeposit(T boss, BlockState chest, BlockPos pos, ServerLevel serverLevel) {

@@ -1,6 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "building",
+  "group": "wooden_stairs",
   "key": {
     "#": {
       "item": "twilightforest:time_planks"

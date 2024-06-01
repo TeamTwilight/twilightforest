@@ -75,7 +75,7 @@ public class UrGhastAttackGoal extends Goal {
 		Vec3 lookVec = this.ghast.getViewVector(1.0F);
 		fireball.setPos(
 			this.ghast.getX() + lookVec.x() * shotSpawnDistance,
-			this.ghast.getY() + this.ghast.getBbHeight() / 2.0F + lookVec.y() * shotSpawnDistance,
+			this.ghast.getY() + this.ghast.getBbHeight() / 2.0F + lookVec.y() * shotSpawnDistance + 2.0D,
 			this.ghast.getZ() + lookVec.z() * shotSpawnDistance
 		);
 		this.ghast.level().addFreshEntity(fireball);

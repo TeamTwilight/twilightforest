@@ -3,7 +3,11 @@
   "category": "equipment",
   "ingredients": [
     {
-      "item": "twilightforest:fortification_scepter"
+      "type": "neoforge:components",
+      "components": {
+        "minecraft:damage": 9
+      },
+      "items": "twilightforest:fortification_scepter"
     },
     {
       "item": "minecraft:golden_apple"

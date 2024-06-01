@@ -1,6 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
+  "group": "wooden_pressure_plate",
   "key": {
     "#": {
       "item": "twilightforest:transformation_planks"

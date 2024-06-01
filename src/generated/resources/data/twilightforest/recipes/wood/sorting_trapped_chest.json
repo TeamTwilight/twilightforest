@@ -1,12 +1,13 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
+  "group": "trapped_chest",
   "key": {
     "#": {
       "item": "twilightforest:sorting_planks"
     },
     "C": {
-      "tag": "c:chests/trapped"
+      "item": "minecraft:trapped_chest"
     }
   },
   "pattern": [

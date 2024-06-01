@@ -1,4 +1,5 @@
 {
+  "effects": "pinch",
   "exhaustion": 0.1,
   "message_id": "twilightforest.clamped",
   "scaling": "when_caused_by_living_non_player"

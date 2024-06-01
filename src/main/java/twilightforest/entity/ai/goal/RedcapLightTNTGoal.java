@@ -27,7 +27,7 @@ public class RedcapLightTNTGoal extends RedcapBaseGoal {
 
 	@Override
 	public boolean canUse() {
-		if (!EventHooks.getMobGriefingEvent(this.redcap.level(), this.redcap)) {
+		if (!EventHooks.canEntityGrief(this.redcap.level(), this.redcap)) {
 			return false;
 		}
 

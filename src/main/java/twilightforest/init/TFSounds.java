@@ -82,6 +82,7 @@ public final class TFSounds {
 	public static final DeferredHolder<SoundEvent, SoundEvent> DWARF_RABBIT_DEATH = createEvent("entity.twilightforest.dwarf_rabbit.death");
 	public static final DeferredHolder<SoundEvent, SoundEvent> DWARF_RABBIT_HURT = createEvent("entity.twilightforest.dwarf_rabbit.hurt");
 	public static final DeferredHolder<SoundEvent, SoundEvent> FAN_WHOOSH = createEvent("item.twilightforest.fan.whoosh");
+	public static final DeferredHolder<SoundEvent, SoundEvent> FIRE_BEETLE_AMBIENT = createEvent("entity.twilightforest.fire_beetle.ambient");
 	public static final DeferredHolder<SoundEvent, SoundEvent> FIRE_BEETLE_DEATH = createEvent("entity.twilightforest.fire_beetle.death");
 	public static final DeferredHolder<SoundEvent, SoundEvent> FIRE_BEETLE_HURT = createEvent("entity.twilightforest.fire_beetle.hurt");
 	public static final DeferredHolder<SoundEvent, SoundEvent> FIRE_BEETLE_SHOOT = createEvent("entity.twilightforest.fire_beetle.shoot");
@@ -103,6 +104,7 @@ public final class TFSounds {
 	public static final DeferredHolder<SoundEvent, SoundEvent> HEDGE_SPIDER_DEATH = createEvent("entity.twilightforest.hedge_spider.death");
 	public static final DeferredHolder<SoundEvent, SoundEvent> HEDGE_SPIDER_HURT = createEvent("entity.twilightforest.hedge_spider.hurt");
 	public static final DeferredHolder<SoundEvent, SoundEvent> HEDGE_SPIDER_STEP = createEvent("entity.twilightforest.hedge_spider.step");
+	public static final DeferredHolder<SoundEvent, SoundEvent> HELMET_CRAB_AMBIENT = createEvent("entity.twilightforest.helmet_crab.ambient");
 	public static final DeferredHolder<SoundEvent, SoundEvent> HELMET_CRAB_DEATH = createEvent("entity.twilightforest.helmet_crab.death");
 	public static final DeferredHolder<SoundEvent, SoundEvent> HELMET_CRAB_HURT = createEvent("entity.twilightforest.helmet_crab.hurt");
 	public static final DeferredHolder<SoundEvent, SoundEvent> HELMET_CRAB_STEP = createEvent("entity.twilightforest.helmet_crab.step");
@@ -194,6 +196,8 @@ public final class TFSounds {
 	public static final DeferredHolder<SoundEvent, SoundEvent> PENGUIN_DEATH = createEvent("entity.twilightforest.penguin.death");
 	public static final DeferredHolder<SoundEvent, SoundEvent> PENGUIN_HURT = createEvent("entity.twilightforest.penguin.hurt");
 	public static final DeferredHolder<SoundEvent, SoundEvent> PICKED_TORCHBERRIES = createEvent("block.twilightforest.torchberry.harvest");
+	public static final DeferredHolder<SoundEvent, SoundEvent> PINCH_BEETLE_AMBIENT = createEvent("entity.twilightforest.pinch_beetle.ambient");
+	public static final DeferredHolder<SoundEvent, SoundEvent> PINCH_BEETLE_ATTACK = createEvent("entity.twilightforest.pinch_beetle.attack");
 	public static final DeferredHolder<SoundEvent, SoundEvent> PINCH_BEETLE_DEATH = createEvent("entity.twilightforest.pinch_beetle.death");
 	public static final DeferredHolder<SoundEvent, SoundEvent> PINCH_BEETLE_HURT = createEvent("entity.twilightforest.pinch_beetle.hurt");
 	public static final DeferredHolder<SoundEvent, SoundEvent> PINCH_BEETLE_STEP = createEvent("entity.twilightforest.pinch_beetle.step");
@@ -221,6 +225,7 @@ public final class TFSounds {
 	public static final DeferredHolder<SoundEvent, SoundEvent> SKELETON_DRUID_SHOOT = createEvent("entity.twilightforest.skeleton_druid.shoot");
 	public static final DeferredHolder<SoundEvent, SoundEvent> SKELETON_DRUID_STEP = createEvent("entity.twilightforest.skeleton_druid.step");
 	public static final DeferredHolder<SoundEvent, SoundEvent> SLIDER = createEvent("block.twilightforest.slider.move");
+	public static final DeferredHolder<SoundEvent, SoundEvent> SLIME_BEETLE_AMBIENT = createEvent("entity.twilightforest.slime_beetle.ambient");
 	public static final DeferredHolder<SoundEvent, SoundEvent> SLIME_BEETLE_DEATH = createEvent("entity.twilightforest.slime_beetle.death");
 	public static final DeferredHolder<SoundEvent, SoundEvent> SLIME_BEETLE_HURT = createEvent("entity.twilightforest.slime_beetle.hurt");
 	public static final DeferredHolder<SoundEvent, SoundEvent> SLIME_BEETLE_SQUISH = createEvent("entity.twilightforest.slime_beetle.squish");

@@ -288,8 +288,8 @@ public abstract class HollowTreeFeature extends TFTreeFeature<TFTreeFeatureConfi
 		BlockPos dest = FeatureLogic.translate(src, length, angle, tilt);
 
 		FeaturePlacers.traceExposedRoot(world, (checkedPos, state) -> {
-			world.setBlock(checkedPos, state, 3);
-			world.setBlock(checkedPos.below(), state, 3);
+			if (FeatureLogic.canRootGrowIn(world, checkedPos)) world.setBlock(checkedPos, state, 3);
+			if (FeatureLogic.canRootGrowIn(world, checkedPos.below())) world.setBlock(checkedPos.below(), state, 3);
 		}, random, config.branchProvider, config.rootsProvider, new VoxelBresenhamIterator(src, dest));
 	}
 
