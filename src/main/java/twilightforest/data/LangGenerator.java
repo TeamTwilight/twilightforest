@@ -163,6 +163,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addMessage("wip0", "This feature is a work in progress and may have bugs or unintended effects that may damage your world.");
 		this.addMessage("wip1", "Use with caution.");
 
+		this.addBlock(TFBlocks.MASON_JAR, "Mason Jar");
 		this.addBlock(TFBlocks.CICADA, "Cicada");
 		this.addBlock(TFBlocks.CICADA_JAR, "Cicada Jar");
 		this.addBlock(TFBlocks.FIREFLY, "Firefly");

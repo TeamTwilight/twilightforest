@@ -110,6 +110,7 @@ public class TFItems {
 	public static final DeferredItem<Item> CARMINITE = ITEMS.register("carminite", () -> new Item(new Item.Properties()));
 	public static final DeferredItem<Item> EXPERIMENT_115 = ITEMS.register("experiment_115", () -> new Experiment115Item(TFBlocks.EXPERIMENT_115.get(), new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationModifier(0.3F).build())));
 	public static final DeferredItem<Item> ROPE = ITEMS.register("rope", () -> new RopeItem(TFBlocks.ROPE.get(), new Item.Properties()));
+	public static final DeferredItem<Item> MASON_JAR = ITEMS.register("mason_jar", () -> new MasonJarItem(TFBlocks.MASON_JAR.get(), new Item.Properties()));
 	public static final DeferredItem<Item> ARMOR_SHARD = ITEMS.register("armor_shard", () -> new Item(new Item.Properties()));
 	public static final DeferredItem<Item> ARMOR_SHARD_CLUSTER = ITEMS.register("armor_shard_cluster", () -> new Item(new Item.Properties()));
 	public static final DeferredItem<Item> KNIGHTMETAL_INGOT = ITEMS.register("knightmetal_ingot", () -> new Item(new Item.Properties()));

@@ -238,6 +238,7 @@ public class TFClientSetup {
 		event.registerBlockEntityRenderer(TFBlockEntities.SKULL_CANDLE.get(), SkullCandleTileEntityRenderer::new);
 		event.registerBlockEntityRenderer(TFBlockEntities.RED_THREAD.get(), RedThreadRenderer::new);
 		event.registerBlockEntityRenderer(TFBlockEntities.CANDELABRA.get(), CandelabraTileEntityRenderer::new);
+		event.registerBlockEntityRenderer(TFBlockEntities.MASON_JAR.get(), MasonJarRenderer::new);
 	}
 
 	@SuppressWarnings("deprecation")

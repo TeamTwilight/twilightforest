@@ -38,6 +38,7 @@ public class TFBlocks {
 
 	//misc.
 	public static final DeferredBlock<Block> HEDGE = register("hedge", () -> new HedgeBlock(BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).pushReaction(PushReaction.DESTROY).sound(SoundType.GRASS).strength(2.0F, 6.0F)));
+	public static final DeferredBlock<Block> MASON_JAR = BLOCKS.register("mason_jar", () -> new MasonJarBlock(BlockBehaviour.Properties.of().noOcclusion().noTerrainParticles().randomTicks().sound(SoundType.BONE_BLOCK).strength(0.3F, 3.0F)));
 	public static final DeferredBlock<Block> FIREFLY_JAR = register("firefly_jar", () -> new FireflyJarBlock(BlockBehaviour.Properties.of().lightLevel((state) -> 15).noOcclusion().noTerrainParticles().sound(SoundType.BONE_BLOCK).strength(0.3F, 3.0F)));
 	public static final DeferredBlock<Block> FIREFLY_SPAWNER = register("firefly_particle_spawner", () -> new FireflySpawnerBlock(BlockBehaviour.Properties.of().lightLevel((state) -> 15).noOcclusion().noTerrainParticles().sound(SoundType.BONE_BLOCK).strength(0.3F, 3.0F)));
 	public static final DeferredBlock<Block> CICADA_JAR = register("cicada_jar", () -> new CicadaJarBlock(BlockBehaviour.Properties.of().noOcclusion().noTerrainParticles().randomTicks().sound(SoundType.BONE_BLOCK).strength(0.3F, 3.0F)));

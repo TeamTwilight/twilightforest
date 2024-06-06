@@ -259,6 +259,7 @@ public class TFCreativeTabs {
 			output.accept(TFBlocks.THORN_ROSE);
 			output.accept(TFBlocks.THORN_LEAVES);
 			output.accept(TFBlocks.HEDGE);
+			output.accept(TFBlocks.MASON_JAR);
 			output.accept(TFBlocks.FIREFLY_JAR);
 			output.accept(TFBlocks.CICADA_JAR);
 			output.accept(TFBlocks.FIREFLY_SPAWNER);
