@@ -145,9 +145,9 @@ public class MasonJarBlockEntity extends BlockEntity {
 			if (simulate) return super.extractItem(slot, amount, true);
 			ItemStack extractedStack = super.extractItem(slot, amount, false);
 			if (!extractedStack.isEmpty()) {
-                this.jarEntity.wobble(WobbleStyle.NEGATIVE);
+				this.jarEntity.wobble(WobbleStyle.NEGATIVE);
 				this.jarEntity.setChanged();
-            }
+			}
 			return extractedStack;
 		}
 
@@ -157,9 +157,9 @@ public class MasonJarBlockEntity extends BlockEntity {
 			ItemStack inserted = stack.copy();
 			ItemStack returned = super.insertItem(slot, stack, false);
 			if (!ItemStack.isSameItemSameComponents(inserted, returned) || inserted.getCount() != returned.getCount()) {
-                this.jarEntity.wobble(WobbleStyle.POSITIVE);
+				this.jarEntity.wobble(WobbleStyle.POSITIVE);
 				this.jarEntity.setChanged();
-            }
+			}
 			return returned;
 		}
 	}

@@ -93,13 +93,13 @@ public class MasonJarBlock extends BaseEntityBlock implements SimpleWaterloggedB
 	@Override
 	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
 		if (level.getBlockEntity(pos) instanceof MasonJarBlockEntity blockEntity && blockEntity.getItemHandler().getItem().is(TFBlocks.FIREFLY.asItem())) {//FIXME move to be
-            for (int i = 0; i < 2; i++) {
-                double dx = pos.getX() + ((random.nextFloat() - random.nextFloat()) * 0.2F + 0.5F);
-                double dy = pos.getY() + 0.4F + ((random.nextFloat() - random.nextFloat()) * 0.3F);
-                double dz = pos.getZ() + ((random.nextFloat() - random.nextFloat()) * 0.2F + 0.5F);
-                level.addParticle(TFParticleType.FIREFLY.get(), dx, dy, dz, 0, 0, 0);
-            }
-        }
+			for (int i = 0; i < 2; i++) {
+				double dx = pos.getX() + ((random.nextFloat() - random.nextFloat()) * 0.2F + 0.5F);
+				double dy = pos.getY() + 0.4F + ((random.nextFloat() - random.nextFloat()) * 0.3F);
+				double dz = pos.getZ() + ((random.nextFloat() - random.nextFloat()) * 0.2F + 0.5F);
+				level.addParticle(TFParticleType.FIREFLY.get(), dx, dy, dz, 0, 0, 0);
+			}
+		}
 	}
 
 	@Nullable
@@ -118,12 +118,12 @@ public class MasonJarBlock extends BaseEntityBlock implements SimpleWaterloggedB
 						ItemStack attainedStack = handler.extractItem(0, Integer.MAX_VALUE, false);
 						player.setItemInHand(hand, attainedStack);
 						serverLevel.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
-                    } else {
+					} else {
 						serverLevel.playSound(null, pos, SoundEvents.DECORATED_POT_INSERT_FAIL, SoundSource.BLOCKS, 1.0F, 1.0F);
 						blockEntity.wobble(DecoratedPotBlockEntity.WobbleStyle.NEGATIVE);
-                    }
-                    return ItemInteractionResult.SUCCESS;
-                } else if (handler.insertItem(0, heldStack, true).getCount() < heldStack.getCount()) {
+					}
+					return ItemInteractionResult.SUCCESS;
+				} else if (handler.insertItem(0, heldStack, true).getCount() < heldStack.getCount()) {
 					player.awardStat(Stats.ITEM_USED.get(heldStack.getItem()));
 					ItemStack inserted = heldStack.copy();
 					ItemStack returned = handler.insertItem(0, heldStack, false);

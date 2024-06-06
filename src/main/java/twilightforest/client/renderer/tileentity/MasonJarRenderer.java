@@ -44,7 +44,7 @@ public class MasonJarRenderer implements BlockEntityRenderer<MasonJarBlockEntity
 		WobbleStyle wobbleStyle = blockEntity.lastWobbleStyle;
 
 		if (wobbleStyle != null && blockEntity.getLevel() != null) {
-			float f = ((float)(blockEntity.getLevel().getGameTime() - blockEntity.wobbleStartedAtTick) + partialTick) / (float)wobbleStyle.duration;
+			float f = ((float) (blockEntity.getLevel().getGameTime() - blockEntity.wobbleStartedAtTick) + partialTick) / (float) wobbleStyle.duration;
 			if (f >= 0.0F && f <= 1.0F) {
 				if (wobbleStyle == WobbleStyle.POSITIVE) {
 					float f1 = 0.015625F;
@@ -84,9 +84,9 @@ public class MasonJarRenderer implements BlockEntityRenderer<MasonJarBlockEntity
 	public static void renderJarModel(BlockState blockState, BlockRenderDispatcher blockRenderer, PoseStack stack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
 		BakedModel bakedmodel = blockRenderer.getBlockModel(blockState);
 		int color = blockRenderer.blockColors.getColor(blockState, null, null, 0);
-		float r = (float)(color >> 16 & 0xFF) / 255.0F;
-		float g = (float)(color >> 8 & 0xFF) / 255.0F;
-		float b = (float)(color & 0xFF) / 255.0F;
+		float r = (float) (color >> 16 & 0xFF) / 255.0F;
+		float g = (float) (color >> 8 & 0xFF) / 255.0F;
+		float b = (float) (color & 0xFF) / 255.0F;
 		for (RenderType rt : bakedmodel.getRenderTypes(blockState, RandomSource.create(42), ModelData.EMPTY))
 			blockRenderer.getModelRenderer()
 				.renderModel(
