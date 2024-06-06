@@ -315,11 +315,10 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		simpleBlock(TFBlocks.MINOSHROOM_BOSS_SPAWNER.get(), bigSpawner);
 		simpleBlock(TFBlocks.ALPHA_YETI_BOSS_SPAWNER.get(), bigSpawner);
 		simpleBlock(TFBlocks.FINAL_BOSS_BOSS_SPAWNER.get(), bigSpawner);
-		simpleBlock(TFBlocks.FIREFLY_JAR.get(), this.makeJar(TFBlocks.FIREFLY_JAR.getId().getPath())
-			.texture("cork", prefix("block/firefly_jar_cork")));
+		simpleBlock(TFBlocks.MASON_JAR.get(), this.makeJar(TFBlocks.MASON_JAR.getId().getPath()).texture("cork", prefix("block/firefly_jar_cork")));
+		simpleBlock(TFBlocks.FIREFLY_JAR.get(), this.makeJar(TFBlocks.FIREFLY_JAR.getId().getPath()).texture("cork", prefix("block/firefly_jar_cork")));
 		simpleBlockExisting(TFBlocks.FIREFLY_SPAWNER.get());
-		simpleBlock(TFBlocks.CICADA_JAR.get(), this.makeJar(TFBlocks.CICADA_JAR.getId().getPath())
-			.texture("cork", prefix("block/cicada_jar_cork")));
+		simpleBlock(TFBlocks.CICADA_JAR.get(), this.makeJar(TFBlocks.CICADA_JAR.getId().getPath()).texture("cork", prefix("block/cicada_jar_cork")));
 		registerPlantBlocks();
 		simpleBlock(TFBlocks.ROOT_BLOCK.get());
 		simpleBlock(TFBlocks.LIVEROOT_BLOCK.get());

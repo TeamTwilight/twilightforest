@@ -26,6 +26,8 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
+import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.item.component.ResolvableProfile;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.CandleBlock;
@@ -44,6 +46,7 @@ import twilightforest.block.entity.TFTrappedChestBlockEntity;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.KnightmetalShieldModel;
 import twilightforest.client.model.tileentity.GenericTrophyModel;
+import twilightforest.client.renderer.tileentity.MasonJarRenderer;
 import twilightforest.client.renderer.tileentity.SkullCandleTileEntityRenderer;
 import twilightforest.client.renderer.tileentity.TrophyTileEntityRenderer;
 import twilightforest.components.item.CandelabraData;
@@ -53,6 +56,7 @@ import twilightforest.enums.BossVariant;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDataComponents;
 import twilightforest.item.KnightmetalShieldItem;
+import twilightforest.item.MasonJarItem;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -189,6 +193,19 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 				BlockEntity blockEntity = critter.newBlockEntity(BlockPos.ZERO, block.defaultBlockState());
 				if (blockEntity != null) {
 					minecraft.getBlockEntityRenderDispatcher().getRenderer(blockEntity).render(null, 0, ms, buffers, light, overlay);
+				}
+			} else if (item instanceof MasonJarItem) {
+				MasonJarRenderer.renderJarModel(block.defaultBlockState(), minecraft.getBlockRenderer(), ms, buffers, light, overlay);
+
+				ItemContainerContents contents = stack.getComponents().get(DataComponents.CONTAINER);
+				if (contents != null) {
+					MultiBufferSource.BufferSource bufferSource = minecraft.renderBuffers().bufferSource();
+					ms.pushPose();
+					ms.translate(0.5D, 0.4375D, 0.5D);
+					ms.scale(0.5F, 0.5F, 0.5F);
+					minecraft.getItemRenderer().render(contents.copyOne(), ItemDisplayContext.FIXED, false, ms, bufferSource, 15728880, OverlayTexture.NO_OVERLAY, minecraft.getItemRenderer().getModel(contents.copyOne(), null, null, 1));
+					ms.popPose();
+					bufferSource.endBatch();
 				}
 			}
 		} else if (item instanceof KnightmetalShieldItem) {

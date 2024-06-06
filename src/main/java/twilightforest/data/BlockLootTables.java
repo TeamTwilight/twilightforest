@@ -150,6 +150,25 @@ public class BlockLootTables extends BlockLootSubProvider {
 		add(TFBlocks.LIVEROOT_BLOCK.get(), createSilkTouchDispatchTable(TFBlocks.LIVEROOT_BLOCK.get(), applyExplosionCondition(TFBlocks.LIVEROOT_BLOCK.get(), LootItem.lootTableItem(TFItems.LIVEROOT.get()).apply(ApplyBonusCount.addOreBonusCount(registrylookup.getOrThrow(Enchantments.FORTUNE))))));
 		add(TFBlocks.MANGROVE_ROOT.get(), createSingleItemTableWithSilkTouch(TFBlocks.MANGROVE_ROOT.get(), Items.STICK, UniformGenerator.between(3, 5)));
 		dropSelf(TFBlocks.UNCRAFTING_TABLE.get());
+
+		this.add(TFBlocks.MASON_JAR.get(), LootTable.lootTable().withPool(
+			this.applyExplosionCondition(
+				TFBlocks.MASON_JAR.get(),
+				LootPool.lootPool()
+					.setRolls(ConstantValue.exactly(1.0F))
+					.add(
+						LootItem.lootTableItem(TFBlocks.MASON_JAR.get())
+							.apply(
+								CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
+									.include(DataComponents.CUSTOM_NAME)
+									.include(DataComponents.CONTAINER)
+									.include(DataComponents.LOCK)
+									.include(DataComponents.CONTAINER_LOOT)
+							)
+					)
+			)
+		));
+
 		dropSelf(TFBlocks.FIREFLY_JAR.get());
 		add(TFBlocks.FIREFLY_SPAWNER.get(), particleSpawner());
 		dropSelf(TFBlocks.CICADA_JAR.get());

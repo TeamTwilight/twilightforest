@@ -184,6 +184,9 @@ public final class TwilightForestMod {
 			TFBlocks.SORTING_CHEST.get(),
 			TFBlocks.SORTING_TRAPPED_CHEST.get()
 		);
+
+		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, TFBlockEntities.MASON_JAR.get(), (masonJarBlock, side) ->
+			side == Direction.UP ? masonJarBlock.getItemHandler() : null);
 	}
 
 	public void createNewRegistries(NewRegistryEvent event) {
@@ -243,6 +246,7 @@ public final class TwilightForestMod {
 		registrar.playToClient(UpdateDeathTimePacket.TYPE, UpdateDeathTimePacket.STREAM_CODEC, UpdateDeathTimePacket::handle);
 		registrar.playToClient(TFBossBarPacket.AddTFBossBarPacket.TYPE, TFBossBarPacket.AddTFBossBarPacket.STREAM_CODEC, TFBossBarPacket.AddTFBossBarPacket::handle);
 		registrar.playToClient(TFBossBarPacket.UpdateTFBossBarStylePacket.TYPE, TFBossBarPacket.UpdateTFBossBarStylePacket.STREAM_CODEC, TFBossBarPacket.UpdateTFBossBarStylePacket::handle);
+		registrar.playToClient(SetMasonJarItemPacket.TYPE, SetMasonJarItemPacket.STREAM_CODEC, SetMasonJarItemPacket::handle);
 	}
 
 	public void init(FMLCommonSetupEvent evt) {
