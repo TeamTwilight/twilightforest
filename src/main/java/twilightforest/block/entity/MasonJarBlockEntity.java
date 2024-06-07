@@ -6,7 +6,6 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemContainerContents;
@@ -16,24 +15,16 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.init.TFBlockEntities;
-import twilightforest.init.TFBlocks;
 import twilightforest.network.SetMasonJarItemPacket;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 import static net.minecraft.world.level.block.entity.DecoratedPotBlockEntity.WobbleStyle;
 
-public class MasonJarBlockEntity extends BlockEntity {
+public class MasonJarBlockEntity extends JarBlockEntity {
 	public static final String TAG_ITEM = "item";
-	public static final int EVENT_POT_WOBBLES = 1;
-	public static final int EVEN_SET_LID = 2;
-	public static final int CLEAR_ITEM_EVENT = 3;
 
 	protected final MasonJarItemStackHandler item;
-	public long wobbleStartedAtTick;
-	@Nullable
-	public WobbleStyle lastWobbleStyle;
 
 	public MasonJarBlockEntity(BlockPos pos, BlockState state) {
 		super(TFBlockEntities.MASON_JAR.get(), pos, state);
@@ -56,21 +47,12 @@ public class MasonJarBlockEntity extends BlockEntity {
 		this.item.deserializeNBT(registries, tag.getCompound(TAG_ITEM));
 	}
 
-	public ClientboundBlockEntityDataPacket getUpdatePacket() {
-		return ClientboundBlockEntityDataPacket.create(this);
-	}
-
-	@Override
-	public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
-		return this.saveCustomOnly(registries);
-	}
-
 	public void setFromItem(ItemStack stack) {
 		this.applyComponentsFromItemStack(stack);
 	}
 
 	public ItemStack getJarAsItem() {
-		return Util.make(TFBlocks.MASON_JAR.asItem().getDefaultInstance(), jar -> jar.applyComponents(this.collectComponents()));
+		return Util.make(this.getBlockState().getBlock().asItem().getDefaultInstance(), jar -> jar.applyComponents(this.collectComponents()));
 	}
 
 	@Override
@@ -86,27 +68,9 @@ public class MasonJarBlockEntity extends BlockEntity {
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
 	public void removeComponentsFromTag(CompoundTag tag) {
 		super.removeComponentsFromTag(tag);
 		tag.remove(TAG_ITEM);
-	}
-
-	public void wobble(WobbleStyle pStyle) {
-		if (this.level != null && !this.level.isClientSide()) {
-			this.level.blockEvent(this.getBlockPos(), this.getBlockState().getBlock(), EVENT_POT_WOBBLES, pStyle.ordinal());
-		}
-	}
-
-	@Override
-	public boolean triggerEvent(int pId, int pType) {
-		if (this.level != null && pId == EVENT_POT_WOBBLES && pType >= 0 && pType < WobbleStyle.values().length) {
-			this.wobbleStartedAtTick = this.level.getGameTime();
-			this.lastWobbleStyle = WobbleStyle.values()[pType];
-			return true;
-		} else {
-			return super.triggerEvent(pId, pType);
-		}
 	}
 
 	@Override
