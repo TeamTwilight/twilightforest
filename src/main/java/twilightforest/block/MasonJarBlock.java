@@ -12,6 +12,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -26,6 +27,7 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.neoforged.neoforge.common.world.AuxiliaryLightManager;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.MasonJarBlockEntity;
 
@@ -112,6 +114,18 @@ public class MasonJarBlock extends JarBlock implements SimpleWaterloggedBlock {
 	@SuppressWarnings("deprecation")
 	protected boolean hasAnalogOutputSignal(BlockState state) {
 		return true;
+	}
+
+	@Override
+	public boolean hasDynamicLightEmission(BlockState state) {
+		return true;
+	}
+
+	@Override
+	public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
+		AuxiliaryLightManager lightManager = level.getAuxLightManager(pos);
+		if (lightManager != null) return lightManager.getLightAt(pos);
+		return super.getLightEmission(state, level, pos);
 	}
 
 	@Override

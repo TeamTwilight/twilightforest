@@ -7,11 +7,13 @@ import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.common.world.AuxiliaryLightManager;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.init.TFBlockEntities;
@@ -74,8 +76,17 @@ public class MasonJarBlockEntity extends JarBlockEntity {
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public void setChanged() {
 		super.setChanged();
+		if (this.level != null) {
+			BlockPos pos = this.getBlockPos();
+			AuxiliaryLightManager lightManager = this.level.getAuxLightManager(pos);
+			if (lightManager != null) {
+                lightManager.setLightAt(pos, this.item.getItem().getItem() instanceof BlockItem blockItem ? blockItem.getBlock().defaultBlockState().getLightEmission() : 0);
+            }
+			this.level.getLightEngine().checkBlock(pos);
+		}
 		if (this.level instanceof ServerLevel serverLevel) {
 			PacketDistributor.sendToPlayersTrackingChunk(serverLevel, new ChunkPos(this.getBlockPos()), new SetMasonJarItemPacket(this.getBlockPos(), this.item.getItem()));
 		}
