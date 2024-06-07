@@ -3,6 +3,7 @@ package twilightforest.block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceKey;
@@ -19,7 +20,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Equipable;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -46,10 +47,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.data.tags.EntityTagGenerator;
-import twilightforest.init.TFAdvancements;
-import twilightforest.init.TFBlocks;
-import twilightforest.init.TFSounds;
-import twilightforest.init.TFStats;
+import twilightforest.init.*;
 
 public abstract class CritterBlock extends BaseEntityBlock implements SimpleWaterloggedBlock, Equipable {
 
@@ -138,19 +136,22 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 
 	@Override
 	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
-		if (stack.getItem() == Items.GLASS_BOTTLE) {
-			if (this == TFBlocks.FIREFLY.get()) {
-				if (!player.isCreative()) stack.shrink(1);
-				player.getInventory().add(new ItemStack(TFBlocks.FIREFLY_JAR.get()));
-				level.setBlockAndUpdate(pos, state.getValue(WATERLOGGED) ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState());
-				return ItemInteractionResult.sidedSuccess(level.isClientSide());
-			} else if (this == TFBlocks.CICADA.get()) {
-				if (!player.isCreative()) stack.shrink(1);
-				player.getInventory().add(new ItemStack(TFBlocks.CICADA_JAR.get()));
-				if (level.isClientSide())
-					Minecraft.getInstance().getSoundManager().stop(TFSounds.CICADA.get().getLocation(), SoundSource.NEUTRAL);
-				level.setBlockAndUpdate(pos, state.getValue(WATERLOGGED) ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState());
-				return ItemInteractionResult.sidedSuccess(level.isClientSide());
+		if (stack.getItem() == TFItems.MASON_JAR.asItem()) {
+			ItemContainerContents contents = stack.getComponents().get(DataComponents.CONTAINER);
+			if (contents == null || contents.copyOne().isEmpty()) {
+				if (this == TFBlocks.FIREFLY.get()) {
+					if (!player.isCreative()) stack.shrink(1);
+					player.getInventory().add(new ItemStack(TFBlocks.FIREFLY_JAR.get()));
+					level.setBlockAndUpdate(pos, state.getValue(WATERLOGGED) ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState());
+					return ItemInteractionResult.sidedSuccess(level.isClientSide());
+				} else if (this == TFBlocks.CICADA.get()) {
+					if (!player.isCreative()) stack.shrink(1);
+					player.getInventory().add(new ItemStack(TFBlocks.CICADA_JAR.get()));
+					if (level.isClientSide())
+						Minecraft.getInstance().getSoundManager().stop(TFSounds.CICADA.get().getLocation(), SoundSource.NEUTRAL);
+					level.setBlockAndUpdate(pos, state.getValue(WATERLOGGED) ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState());
+					return ItemInteractionResult.sidedSuccess(level.isClientSide());
+				}
 			}
 		}
 		return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;

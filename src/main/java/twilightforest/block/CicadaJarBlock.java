@@ -5,10 +5,19 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.phys.BlockHitResult;
 import twilightforest.config.TFConfig;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFItems;
 import twilightforest.init.TFSounds;
 
 public class CicadaJarBlock extends JarBlock {
@@ -16,18 +25,18 @@ public class CicadaJarBlock extends JarBlock {
 		super(properties);
 	}
 
-	/*@Override
+	@Override
 	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult result) {
 		if (player.isShiftKeyDown()) {
 			ItemEntity cicada = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(TFBlocks.CICADA));
 			level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
 			cicada.spawnAtLocation(cicada.getItem());
-			cicada.spawnAtLocation(Items.GLASS_BOTTLE);
+			cicada.spawnAtLocation(TFItems.MASON_JAR.get());
 			level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
 			return InteractionResult.sidedSuccess(level.isClientSide());
 		}
-		return InteractionResult.PASS;
-	}*/
+		return super.useWithoutItem(state, level, pos, player, result);
+	}
 
 	@Override
 	public void destroy(LevelAccessor accessor, BlockPos pos, BlockState state) {

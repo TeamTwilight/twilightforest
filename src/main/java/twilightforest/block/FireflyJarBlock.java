@@ -2,8 +2,17 @@ package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.phys.BlockHitResult;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFItems;
 import twilightforest.init.TFParticleType;
 
 public class FireflyJarBlock extends JarBlock {
@@ -22,18 +31,18 @@ public class FireflyJarBlock extends JarBlock {
 		return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 	}*/
 
-	/*@Override
+	@Override
 	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult result) {
 		if (player.isShiftKeyDown()) {
 			ItemEntity firefly = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(TFBlocks.FIREFLY));
 			level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
 			firefly.spawnAtLocation(firefly.getItem());
-			firefly.spawnAtLocation(Items.GLASS_BOTTLE);
+			firefly.spawnAtLocation(TFItems.MASON_JAR.get());
 			level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
 			return InteractionResult.sidedSuccess(level.isClientSide());
 		}
-		return InteractionResult.PASS;
-	}*/
+		return super.useWithoutItem(state, level, pos, player, result);
+	}
 
 	@Override
 	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
