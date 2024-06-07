@@ -46,7 +46,7 @@ import twilightforest.block.entity.TFTrappedChestBlockEntity;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.KnightmetalShieldModel;
 import twilightforest.client.model.tileentity.GenericTrophyModel;
-import twilightforest.client.renderer.tileentity.MasonJarRenderer;
+import twilightforest.client.renderer.tileentity.JarRenderer;
 import twilightforest.client.renderer.tileentity.SkullCandleTileEntityRenderer;
 import twilightforest.client.renderer.tileentity.TrophyTileEntityRenderer;
 import twilightforest.components.item.CandelabraData;
@@ -195,7 +195,7 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 					minecraft.getBlockEntityRenderDispatcher().getRenderer(blockEntity).render(null, 0, ms, buffers, light, overlay);
 				}
 			} else if (item instanceof MasonJarItem) {
-				MasonJarRenderer.renderJarModel(block.defaultBlockState(), minecraft.getBlockRenderer(), ms, buffers, light, overlay);
+				JarRenderer.renderJarModel(block.defaultBlockState(), minecraft.getBlockRenderer(), ms, buffers, light, overlay);
 
 				ItemContainerContents contents = stack.getComponents().get(DataComponents.CONTAINER);
 				if (contents != null) {

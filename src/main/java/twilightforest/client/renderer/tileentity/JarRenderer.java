@@ -21,22 +21,24 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.RenderTypeHelper;
 import net.neoforged.neoforge.client.model.data.ModelData;
+import twilightforest.block.entity.JarBlockEntity;
 import twilightforest.block.entity.MasonJarBlockEntity;
 
-public class MasonJarRenderer implements BlockEntityRenderer<MasonJarBlockEntity> {
-	protected final EntityRenderDispatcher entityRender;
-	private final ItemRenderer itemRenderer;
-	private final BlockRenderDispatcher blockRenderer;
-	private static final float WOBBLE_AMPLITUDE = 0.125F;
+public class JarRenderer<T extends JarBlockEntity> implements BlockEntityRenderer<T> {
+	protected final BlockRenderDispatcher blockRenderer;
+	protected static final float WOBBLE_AMPLITUDE = 0.125F;
 
-	public MasonJarRenderer(BlockEntityRendererProvider.Context context) {
-		this.entityRender = context.getEntityRenderer();
-		this.itemRenderer = context.getItemRenderer();
+	public JarRenderer(BlockEntityRendererProvider.Context context) {
 		this.blockRenderer = context.getBlockRenderDispatcher();
 	}
 
 	@Override
-	public void render(MasonJarBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
+	public int getViewDistance() {
+		return 256;
+	}
+
+	@Override
+	public void render(T blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
 		poseStack.pushPose();
 		poseStack.translate(0.5, 0.0, 0.5);
 		poseStack.mulPose(Axis.YP.rotationDegrees(180.0F));
@@ -62,21 +64,7 @@ public class MasonJarRenderer implements BlockEntityRenderer<MasonJarBlockEntity
 		}
 
 		renderJarModel(blockEntity.getBlockState(), this.blockRenderer, poseStack, buffer, packedLight, packedOverlay);
-
-		ItemStack stack = blockEntity.getItemHandler().getItem();
-
-		if (!stack.isEmpty()) {
-			poseStack.pushPose();
-			poseStack.translate(0.5D, 0.4375D, 0.5D);
-			poseStack.scale(0.5F, 0.5F, 0.5F);
-
-			Vec3 camPos = this.entityRender.camera.getEntity() instanceof LivingEntity living ? living.getEyePosition(partialTick).subtract(living.getDeltaMovement()) : this.entityRender.camera.getPosition();
-
-			Vec3 thisPos = blockEntity.getBlockPos().getCenter();
-			poseStack.mulPose(Axis.YN.rotationDegrees((float) Math.toDegrees(Math.atan2(thisPos.z - camPos.z, thisPos.x - camPos.x)) + 90.0F));
-			this.itemRenderer.renderStatic(stack, ItemDisplayContext.FIXED, packedLight, OverlayTexture.NO_OVERLAY, poseStack, buffer, null, 0);
-			poseStack.popPose();
-		}
+		this.renderContents(blockEntity, partialTick, poseStack, buffer, packedLight, packedOverlay);
 
 		poseStack.popPose();
 	}
@@ -102,5 +90,38 @@ public class MasonJarRenderer implements BlockEntityRenderer<MasonJarBlockEntity
 					ModelData.EMPTY,
 					rt
 				);
+	}
+
+	public void renderContents(T blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
+
+	}
+
+	public static class MasonJarRenderer extends JarRenderer<MasonJarBlockEntity> {
+		protected final ItemRenderer itemRenderer;
+		protected final EntityRenderDispatcher entityRender;
+
+		public MasonJarRenderer(BlockEntityRendererProvider.Context context) {
+			super(context);
+			this.entityRender = context.getEntityRenderer();
+			this.itemRenderer = context.getItemRenderer();
+		}
+
+		@Override
+		public void renderContents(MasonJarBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
+			ItemStack stack = blockEntity.getItemHandler().getItem();
+
+			if (!stack.isEmpty()) {
+				poseStack.pushPose();
+				poseStack.translate(0.5D, 0.4375D, 0.5D);
+				poseStack.scale(0.5F, 0.5F, 0.5F);
+
+				Vec3 camPos = this.entityRender.camera.getEntity() instanceof LivingEntity living ? living.getEyePosition(partialTick).subtract(living.getDeltaMovement()) : this.entityRender.camera.getPosition();
+
+				Vec3 thisPos = blockEntity.getBlockPos().getCenter();
+				poseStack.mulPose(Axis.YN.rotationDegrees((float) Math.toDegrees(Math.atan2(thisPos.z - camPos.z, thisPos.x - camPos.x)) + 90.0F));
+				this.itemRenderer.renderStatic(stack, ItemDisplayContext.FIXED, packedLight, OverlayTexture.NO_OVERLAY, poseStack, buffer, null, 0);
+				poseStack.popPose();
+			}
+		}
 	}
 }
