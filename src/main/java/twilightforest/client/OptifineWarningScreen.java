@@ -19,7 +19,7 @@ public class OptifineWarningScreen extends Screen {
 	private static final MutableComponent url = Component.translatable("gui.twilightforest.optifine.suggestions").withStyle(style -> style.withColor(ChatFormatting.GREEN).applyFormat(ChatFormatting.UNDERLINE).withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/NordicGamerFE/usefulmods")));
 	private Button exitButton;
 
-	protected OptifineWarningScreen(Screen screen) {
+	public OptifineWarningScreen(Screen screen) {
 		super(Component.translatable("gui.twilightforest.optifine.title"));
 		this.lastScreen = screen;
 	}

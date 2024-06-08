@@ -21,17 +21,15 @@ public class TFShaders {
 	public static ShaderInstance RED_THREAD;
 	public static PositionAwareShaderInstance AURORA;
 
-	public static void init(IEventBus bus) {
-		bus.addListener((Consumer<RegisterShadersEvent>) event -> {
-			try {
-				event.registerShader(new ShaderInstance(event.getResourceProvider(), TwilightForestMod.prefix("red_thread/red_thread"), DefaultVertexFormat.BLOCK),
-					shader -> RED_THREAD = shader);
-				event.registerShader(new PositionAwareShaderInstance(event.getResourceProvider(), TwilightForestMod.prefix("aurora/aurora"), DefaultVertexFormat.POSITION_COLOR),
-					shader -> AURORA = (PositionAwareShaderInstance) shader);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		});
+	public static void registerShaders(RegisterShadersEvent event) {
+		try {
+			event.registerShader(new ShaderInstance(event.getResourceProvider(), TwilightForestMod.prefix("red_thread/red_thread"), DefaultVertexFormat.BLOCK),
+				shader -> RED_THREAD = shader);
+			event.registerShader(new PositionAwareShaderInstance(event.getResourceProvider(), TwilightForestMod.prefix("aurora/aurora"), DefaultVertexFormat.POSITION_COLOR),
+				shader -> AURORA = (PositionAwareShaderInstance) shader);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static class BindableShaderInstance extends ShaderInstance {

@@ -1,4 +1,4 @@
-package twilightforest.client;
+package twilightforest.client.event;
 
 
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -28,13 +28,9 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import org.apache.commons.lang3.tuple.Pair;
-import twilightforest.TwilightForestMod;
 import twilightforest.block.CloudBlock;
 import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.config.TFConfig;
@@ -43,7 +39,6 @@ import twilightforest.util.Vec2i;
 import java.util.ArrayList;
 import java.util.List;
 
-@EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT)
 public class CloudEvents {
 	private static final List<PrecipitationRenderHelper> RENDER_HELPER = new ArrayList<>();
 
@@ -51,8 +46,7 @@ public class CloudEvents {
 
 	}
 
-	@SubscribeEvent
-	public static void clientTick(ClientTickEvent.Post event) {
+	public static void tickWeatherEffects(ClientTickEvent.Post event) {
 		Minecraft mc = Minecraft.getInstance();
 
 		if (!mc.isPaused()) {
@@ -158,8 +152,7 @@ public class CloudEvents {
 		}
 	}
 
-	@SubscribeEvent
-	public static void renderCloudBlockPrecipitation(RenderLevelStageEvent event) {
+	public static void renderPrecipitation(RenderLevelStageEvent event) {
 		if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_WEATHER && TFConfig.getClientCloudBlockPrecipitationDistance() > 0 && !RENDER_HELPER.isEmpty()) {
 			Minecraft minecraft = Minecraft.getInstance();
 			if (minecraft.level == null) return;

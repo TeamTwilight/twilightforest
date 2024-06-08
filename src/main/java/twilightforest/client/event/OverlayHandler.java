@@ -1,7 +1,8 @@
-package twilightforest.client.renderer;
+package twilightforest.client.event;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
@@ -9,6 +10,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -18,16 +20,15 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.GameType;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import twilightforest.TwilightForestMod;
+import twilightforest.components.entity.TFPortalAttachment;
 import twilightforest.components.item.OreScannerData;
 import twilightforest.config.TFConfig;
 import twilightforest.entity.passive.QuestRam;
 import twilightforest.events.HostileMountEvents;
+import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFItems;
@@ -37,15 +38,13 @@ import twilightforest.util.ComponentAlignment;
 import java.text.DecimalFormat;
 import java.util.*;
 
-@EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
-public class TFOverlays {
+public class OverlayHandler {
 	private static final ResourceLocation QUESTING_RAM_CHECK_SPRITE = TwilightForestMod.prefix("questing_ram_check");
 	private static final ResourceLocation QUESTING_RAM_X_SPRITE = TwilightForestMod.prefix("questing_ram_x");
 	private static final ResourceLocation FORTIFICATION_SHIELD_SPRITE = TwilightForestMod.prefix("fortification_shield");
 	public static Map<Long, OreMeterInfoCache> ORE_METER_STAT_CACHE = new HashMap<>();
 
-	@SubscribeEvent
-	public static void registerOverlays(RegisterGuiLayersEvent event) {
+	protected static void registerOverlays(RegisterGuiLayersEvent event) {
 		event.registerAbove(VanillaGuiLayers.CROSSHAIR, TwilightForestMod.prefix("quest_ram_indicator"), (graphics, partialTicks) -> {
 			Minecraft minecraft = Minecraft.getInstance();
 			LocalPlayer player = minecraft.player;
@@ -81,12 +80,34 @@ public class TFOverlays {
 			LocalPlayer player = minecraft.player;
 			Gui gui = minecraft.gui;
 			if (player != null && !minecraft.options.hideGui && (minecraft.gameMode.canHurtPlayer() || TFConfig.showFortificationShieldIndicatorInCreative) && player.hasData(TFDataAttachments.FORTIFICATION_SHIELDS) && player.getData(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft() > 0 && TFConfig.showFortificationShieldIndicator) {
-				renderShieldCount(graphics, gui, player, graphics.guiWidth(), graphics.guiHeight(), player.getData(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft());
+				renderShieldCount(graphics, gui, graphics.guiWidth(), graphics.guiHeight(), player.getData(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft());
+			}
+		});
+
+		event.registerAboveAll(TwilightForestMod.prefix("portal_overlay"), (graphics, partialTick) -> {
+			Minecraft minecraft = Minecraft.getInstance();
+			Window window = minecraft.getWindow();
+			LocalPlayer player = minecraft.player;
+
+			if (player != null) {
+				TFPortalAttachment portal = player.getData(TFDataAttachments.TF_PORTAL_COOLDOWN);
+				if (portal.getPortalTimer() > 0) {
+					RenderSystem.disableDepthTest();
+					RenderSystem.depthMask(false);
+					RenderSystem.enableBlend();
+					graphics.setColor(1.0F, 1.0F, 1.0F, (float) portal.getPortalTimer() / (float) TFPortalAttachment.MAX_TICKS);
+					TextureAtlasSprite textureatlassprite = minecraft.getBlockRenderer().getBlockModelShaper().getParticleIcon(TFBlocks.TWILIGHT_PORTAL.get().defaultBlockState());
+					graphics.blit(0, 0, -90, window.getGuiScaledWidth(), window.getGuiScaledHeight(), textureatlassprite);
+					RenderSystem.disableBlend();
+					RenderSystem.depthMask(true);
+					RenderSystem.enableDepthTest();
+					graphics.setColor(1.0F, 1.0F, 1.0F, 1.0F);
+				}
 			}
 		});
 	}
 
-	public static void renderIndicator(Minecraft minecraft, GuiGraphics graphics, Gui gui, Player player, int screenWidth, int screenHeight) {
+	private static void renderIndicator(Minecraft minecraft, GuiGraphics graphics, Gui gui, Player player, int screenWidth, int screenHeight) {
         if (minecraft.options.getCameraType().isFirstPerson() && (minecraft.gameMode.getPlayerMode() != GameType.SPECTATOR || gui.canRenderCrosshairForSpectator(minecraft.hitResult)) && minecraft.crosshairPickEntity instanceof QuestRam ram) {
             ItemStack stack = player.getInventory().getItem(player.getInventory().selected);
             if (!stack.isEmpty() && stack.is(ItemTags.WOOL)) {
@@ -103,14 +124,14 @@ public class TFOverlays {
         }
 	}
 
-	public static void renderShieldCount(GuiGraphics graphics, Gui gui, Player player, int screenWidth, int screenHeight, int shieldCount) {
+	private static void renderShieldCount(GuiGraphics graphics, Gui gui, int screenWidth, int screenHeight, int shieldCount) {
 		for (int i = 0; i < Math.min(shieldCount, 10); i++) {
 			graphics.blitSprite(FORTIFICATION_SHIELD_SPRITE, screenWidth / 2 - 91 + (i * 8), screenHeight - gui.leftHeight, 9, 9);
 		}
 		gui.leftHeight += 10;
 	}
 
-	public static void renderOreMeterStats(GuiGraphics graphics, Player player) {
+	private static void renderOreMeterStats(GuiGraphics graphics, Player player) {
 		if (player.isHolding(TFItems.ORE_METER.get())) {
 			InteractionHand handToUse = player.getItemInHand(InteractionHand.MAIN_HAND).is(TFItems.ORE_METER.get()) ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
 			ItemStack selectedMeter = player.getItemInHand(handToUse);
@@ -143,10 +164,9 @@ public class TFOverlays {
 		}
 	}
 
-
 	private static final DecimalFormat FORMAT = new DecimalFormat("0.000");
 
-	public static void initTooltips(long id, int range, OreScannerData data) {
+	private static void initTooltips(long id, int range, OreScannerData data) {
 		ChunkPos pos = data.scannedChunk();
 		int totalScanned = data.totalScannedBlocks();
 
@@ -200,7 +220,7 @@ public class TFOverlays {
 	private static ComponentColumn nameColumn(List<String> oreNameKeys) {
 		ImmutableList.Builder<Component> toList = ImmutableList.builder();
 
-		toList.add(Component.translatable("misc.twilightforest.ore_meter_header_block").withColor(ChatFormatting.GRAY.getColor()));
+		toList.add(Component.translatable("misc.twilightforest.ore_meter_header_block").withStyle(ChatFormatting.GRAY));
 
 		for (String oreNameKey : oreNameKeys) {
 			MutableComponent translatable = Component.translatable(oreNameKey);
@@ -225,7 +245,7 @@ public class TFOverlays {
 	private static ComponentColumn countColumn(List<Integer> oreCounts) {
 		ImmutableList.Builder<Component> toList = ImmutableList.builder();
 
-		toList.add(Component.translatable("misc.twilightforest.ore_meter_header_count").withColor(ChatFormatting.GRAY.getColor()));
+		toList.add(Component.translatable("misc.twilightforest.ore_meter_header_count").withStyle(ChatFormatting.GRAY));
 
 		oreCounts.stream().mapToInt(count -> count).mapToObj(count -> Component.literal(String.valueOf(count))).forEach(toList::add);
 
@@ -235,7 +255,7 @@ public class TFOverlays {
 	private static ComponentColumn ratioColumn(int totalScanned, List<Integer> oreCounts) {
 		ImmutableList.Builder<Component> toList = ImmutableList.builder();
 
-		toList.add(Component.translatable("misc.twilightforest.ore_meter_header_ratio").withColor(ChatFormatting.GRAY.getColor()));
+		toList.add(Component.translatable("misc.twilightforest.ore_meter_header_ratio").withStyle(ChatFormatting.GRAY));
 
 		for (int count : oreCounts) {
 			var percentage = FORMAT.format(count * 100.0F / totalScanned);

@@ -42,6 +42,7 @@ import twilightforest.block.entity.CandelabraBlockEntity;
 import twilightforest.block.entity.KeepsakeCasketBlockEntity;
 import twilightforest.block.entity.TFChestBlockEntity;
 import twilightforest.block.entity.TFTrappedChestBlockEntity;
+import twilightforest.client.event.ClientEvents;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.KnightmetalShieldModel;
 import twilightforest.client.model.tileentity.GenericTrophyModel;
@@ -135,15 +136,15 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 					if (trophyBlock.getVariant() == BossVariant.HYDRA || trophyBlock.getVariant() == BossVariant.QUEST_RAM)
 						ms.scale(0.9F, 0.9F, 0.9F);
 					ms.mulPose(Axis.XP.rotationDegrees(30));
-					ms.mulPose(Axis.YN.rotationDegrees(TFConfig.rotateTrophyHeadsGui && !minecraft.isPaused() ? TFClientEvents.rotationTicker : -45));
+					ms.mulPose(Axis.YN.rotationDegrees(TFConfig.rotateTrophyHeadsGui && !minecraft.isPaused() ? ClientEvents.time % 360 : -45));
 					ms.translate(-0.5F, -0.5F, -0.5F);
 					ms.translate(0.0F, 0.25F, 0.0F);
 					if (trophyBlock.getVariant() == BossVariant.UR_GHAST) ms.translate(0.0F, 0.5F, 0.0F);
 					if (trophyBlock.getVariant() == BossVariant.ALPHA_YETI) ms.translate(0.0F, -0.15F, 0.0F);
-					TrophyTileEntityRenderer.render(null, 180.0F, trophy, variant, !minecraft.isPaused() ? TFClientEvents.time + minecraft.getDeltaFrameTime() : 0, ms, buffers, light, camera);
+					TrophyTileEntityRenderer.render(null, 180.0F, trophy, variant, !minecraft.isPaused() ? ClientEvents.time + minecraft.getDeltaFrameTime() : 0, ms, buffers, light, camera);
 					ms.popPose();
 				} else {
-					TrophyTileEntityRenderer.render(null, 180.0F, trophy, variant, !minecraft.isPaused() ? TFClientEvents.time + minecraft.getDeltaFrameTime() : 0, ms, buffers, light, camera);
+					TrophyTileEntityRenderer.render(null, 180.0F, trophy, variant, !minecraft.isPaused() ? ClientEvents.time + minecraft.getDeltaFrameTime() : 0, ms, buffers, light, camera);
 				}
 
 			} else if (block instanceof KeepsakeCasketBlock) {

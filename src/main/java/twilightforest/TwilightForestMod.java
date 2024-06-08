@@ -41,7 +41,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.TFChestBlockEntity;
-import twilightforest.client.TFClientSetup;
+import twilightforest.client.event.RegistrationEvents;
+import twilightforest.client.event.ClientEvents;
 import twilightforest.command.TFCommand;
 import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.compat.top.TopCompat;
@@ -87,7 +88,8 @@ public final class TwilightForestMod {
 	public TwilightForestMod(IEventBus bus, Dist dist) {
 		Reflection.initialize(ConfigSetup.class);
 		if (dist.isClient()) {
-			TFClientSetup.init(bus);
+			RegistrationEvents.initModBusEvents(bus);
+			ClientEvents.initGameEvents();
 		}
 		NeoForge.EVENT_BUS.addListener(this::registerCommands);
 		NeoForge.EVENT_BUS.addListener(Stalactite::reloadStalactites);

@@ -1,4 +1,4 @@
-package twilightforest.client;
+package twilightforest.client.event;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.packs.PackType;
@@ -16,7 +16,6 @@ import java.util.function.BooleanSupplier;
 // I would like to look at migrating the models to using EntityModelJson (https://www.curseforge.com/minecraft/mc-mods/entity-model-json) in the future.
 // we can make the pack depend on it to load the new models instead of having them hardcoded here.
 // could also shade the mod since I dont trust people to actually download the mod. I can already see the bug reports flooding in, yikes
-@EventBusSubscriber(value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD, modid = TwilightForestMod.ID)
 public class JappaPackReloadListener implements ResourceManagerReloadListener {
 
 	private static boolean jappaPackLoaded = false;
@@ -27,8 +26,7 @@ public class JappaPackReloadListener implements ResourceManagerReloadListener {
 		jappaPackLoaded = Minecraft.getInstance().getResourceManager().listPacks().anyMatch(pack -> pack.getResource(PackType.CLIENT_RESOURCES, TwilightForestMod.prefix("jappa_models.marker")) != null);
 	}
 
-	@SubscribeEvent
-	public static void clientSetup(FMLClientSetupEvent event) {
+	protected static void assertIfPackIsLoaded(FMLClientSetupEvent event) {
 		jappaPackLoaded = Minecraft.getInstance().getResourceManager().listPacks().anyMatch(pack -> pack.getResource(PackType.CLIENT_RESOURCES, TwilightForestMod.prefix("jappa_models.marker")) != null);
 	}
 

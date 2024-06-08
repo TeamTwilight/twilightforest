@@ -52,8 +52,8 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import twilightforest.block.CloudBlock;
 import twilightforest.block.WroughtIronFenceBlock;
+import twilightforest.client.BakedMultiPartRenderers;
 import twilightforest.client.FoliageColorHandler;
-import twilightforest.client.TFClientSetup;
 import twilightforest.config.TFConfig;
 import twilightforest.entity.TFPart;
 import twilightforest.init.TFBlocks;
@@ -167,8 +167,8 @@ public class ASMHooks {
 	 */
 	@Nullable
 	public static EntityRenderer<?> getMultipartRenderer(@Nullable EntityRenderer<?> renderer, Entity entity) {
-		if (entity instanceof TFPart<?>)
-			return TFClientSetup.BakedMultiPartRenderers.lookup(((TFPart<?>) entity).renderer());
+		if (entity instanceof TFPart<?> part)
+			return BakedMultiPartRenderers.lookup(part.renderer());
 		return renderer;
 	}
 
@@ -178,7 +178,7 @@ public class ASMHooks {
 	 * [AFTER FIRST INVOKESPECIAL]
 	 */
 	public static EntityRendererProvider.Context bakeMultipartRenders(EntityRendererProvider.Context context) {
-		TFClientSetup.BakedMultiPartRenderers.bakeMultiPartRenderers(context);
+		BakedMultiPartRenderers.bakeMultiPartRenderers(context);
 		return context;
 	}
 

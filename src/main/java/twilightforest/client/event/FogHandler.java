@@ -1,4 +1,4 @@
-package twilightforest.client;
+package twilightforest.client.event;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -6,24 +6,29 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.material.FogType;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ViewportEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
-import twilightforest.TwilightForestMod;
+import twilightforest.client.TwilightForestRenderInfo;
 import twilightforest.init.TFBiomes;
 
 import javax.annotation.Nullable;
 
-@EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT)
 public class FogHandler {
+
+	private static boolean SKY_CHUNK_LOADED = false;
+
+	private static float SKY_FAR = 0.0F;
+	private static float SKY_NEAR = 0.0F;
+
+	private static boolean TERRAIN_CHUNK_LOADED = false;
+
+	private static float TERRAIN_FAR = 0.0F;
+	private static float TERRAIN_NEAR = 0.0F;
 
 	private static final float[] spoopColors = new float[3];
 	private static float spoopColor = 0F;
 
-	@SubscribeEvent
-	public static void fogColors(ViewportEvent.ComputeFogColor event) {
+	protected static void setupFogColors(ViewportEvent.ComputeFogColor event) {
 		boolean flag = isSpooky(Minecraft.getInstance().level, Minecraft.getInstance().player);
 		if (flag || spoopColor > 0F) {
 			final float[] realColors = {event.getRed(), event.getGreen(), event.getBlue()};
@@ -46,19 +51,7 @@ public class FogHandler {
 		}
 	}
 
-	private static boolean SKY_CHUNK_LOADED = false;
-
-	private static float SKY_FAR = 0.0F;
-	private static float SKY_NEAR = 0.0F;
-
-	private static boolean TERRAIN_CHUNK_LOADED = false;
-
-	private static float TERRAIN_FAR = 0.0F;
-	private static float TERRAIN_NEAR = 0.0F;
-
-
-	@SubscribeEvent
-	public static void renderFog(ViewportEvent.RenderFog event) {
+	protected static void renderFog(ViewportEvent.RenderFog event) {
 		if (event.getType().equals(FogType.NONE) && Minecraft.getInstance().cameraEntity instanceof LocalPlayer player && player.level() instanceof ClientLevel clientLevel && clientLevel.effects() instanceof TwilightForestRenderInfo) {
 			if (event.getMode().equals(FogRenderer.FogMode.FOG_SKY)) {
 				if (SKY_CHUNK_LOADED) {
@@ -100,8 +93,7 @@ public class FogHandler {
 		}
 	}
 
-	@SubscribeEvent
-	public static void onUnload(LevelEvent.Unload event) { //As supernatural as the fog is, it shouldn't follow the player between worlds
+	protected static void unloadFog(LevelEvent.Unload event) { //As supernatural as the fog is, it shouldn't follow the player between worlds
 		SKY_CHUNK_LOADED = false;
 		TERRAIN_CHUNK_LOADED = false;
 	}

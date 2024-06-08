@@ -1,4 +1,4 @@
-package twilightforest.client;
+package twilightforest.client.event;
 
 import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.renderer.BiomeColors;
@@ -9,13 +9,9 @@ import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.block.Blocks;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import net.neoforged.neoforge.registries.DeferredHolder;
-import twilightforest.TwilightForestMod;
 import twilightforest.block.HollowLogClimbable;
 import twilightforest.components.item.PotionFlaskComponent;
 import twilightforest.enums.HollowLogVariants;
@@ -27,12 +23,10 @@ import twilightforest.item.ArcticArmorItem;
 import twilightforest.util.ColorUtil;
 import twilightforest.util.SimplexNoiseHelper;
 
-@EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
-public final class ColorHandler {
+public class ColorHandler {
 	public static int WHITE = 0xFFFFFFFF;
 
-	@SubscribeEvent
-	public static void registerBlockColors(RegisterColorHandlersEvent.Block event) {
+	protected static void registerBlockColors(RegisterColorHandlersEvent.Block event) {
 		BlockColors blockColors = event.getBlockColors();
 
 		event.register((state, getter, pos, tintIndex) -> tintIndex > 15 ? WHITE : 0xFF000000 | ColorUtil.hsvToRGB(getter == null ? 0.45F : SimplexNoiseHelper.rippleFractalNoise(2, 128.0f, pos != null ? pos.above(128) : new BlockPos(0, 0, 0), 0.37f, 0.67f, 1.5f), 1.0f, 1.0f), TFBlocks.AURORA_BLOCK.get());
@@ -367,8 +361,7 @@ public final class ColorHandler {
 		}, TFBlocks.BLUE_FORCE_FIELD.get());
 	}
 
-	@SubscribeEvent
-	public static void registerItemColors(RegisterColorHandlersEvent.Item event) {
+	protected static void registerItemColors(RegisterColorHandlersEvent.Item event) {
 		BlockColors blockColors = event.getBlockColors();
 
 		event.register((stack, tintIndex) -> stack.getItem() instanceof BlockItem blocc ? blockColors.getColor(blocc.getBlock().defaultBlockState(), null, null, tintIndex) : WHITE,

@@ -20,7 +20,7 @@ import twilightforest.block.AbstractTrophyBlock;
 import twilightforest.block.TrophyBlock;
 import twilightforest.block.TrophyWallBlock;
 import twilightforest.block.entity.TrophyBlockEntity;
-import twilightforest.client.JappaPackReloadListener;
+import twilightforest.client.event.JappaPackReloadListener;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.tileentity.*;
 import twilightforest.client.model.tileentity.legacy.HydraTrophyLegacyModel;
