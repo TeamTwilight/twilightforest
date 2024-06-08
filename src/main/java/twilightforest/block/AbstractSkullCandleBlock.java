@@ -45,11 +45,26 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 
 	private final SkullBlock.Type type;
 
-	@SuppressWarnings("this-escape")
 	public AbstractSkullCandleBlock(SkullBlock.Type type, Properties properties) {
 		super(properties);
 		this.type = type;
 		this.registerDefaultState(this.getStateDefinition().any().setValue(LIGHTING, Lighting.NONE));
+	}
+
+	//input one of the enum names to convert it into a candle block
+	public static Block candleColorToCandle(CandleColors color) {
+		if (color != CandleColors.PLAIN) {
+			return Objects.requireNonNull(BuiltInRegistries.BLOCK.get(new ResourceLocation(color.getSerializedName() + "_candle")));
+		}
+		return Blocks.CANDLE;
+	}
+
+	//inverse of above
+	public static CandleColors candleToCandleColor(Item candle) {
+		if (!(candle == Blocks.CANDLE.asItem())) {
+			return CandleColors.valueOf(BuiltInRegistries.ITEM.getKey(candle).getPath().replace("_candle", "").replace("\"", "").toUpperCase(Locale.ROOT));
+		}
+		return CandleColors.PLAIN;
 	}
 
 	public SkullBlock.Type getType() {
@@ -74,29 +89,13 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 		return 0;
 	}
 
-	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new SkullCandleBlockEntity(pos, state, 0, 0);
 	}
 
-	//input one of the enum names to convert it into a candle block
-	public static Block candleColorToCandle(CandleColors color) {
-		if (color != CandleColors.PLAIN) {
-			return Objects.requireNonNull(BuiltInRegistries.BLOCK.get(new ResourceLocation(color.getSerializedName() + "_candle")));
-		}
-		return Blocks.CANDLE;
-	}
-
-	//inverse of above
-	public static CandleColors candleToCandleColor(Item candle) {
-		if (!(candle == Blocks.CANDLE.asItem())) {
-			return CandleColors.valueOf(BuiltInRegistries.ITEM.getKey(candle).getPath().replace("_candle", "").replace("\"", "").toUpperCase(Locale.ROOT));
-		}
-		return CandleColors.PLAIN;
-	}
-
 	@Override
+	@SuppressWarnings("deprecation")
 	public RenderShape getRenderShape(BlockState state) {
 		return RenderShape.INVISIBLE;
 	}
@@ -195,7 +194,6 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 		builder.add(LIGHTING);
 	}
 
-	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
 		return createTickerHelper(type, TFBlockEntities.SKULL_CANDLE.get(), SkullCandleBlockEntity::tick);
@@ -214,17 +212,18 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 		LIME(9), BLUE(10), CYAN(11), LIGHT_BLUE(12),
 		PURPLE(13), MAGENTA(14), PINK(15), BROWN(16);
 
-		private final int value;
 		private static final Map<Integer, CandleColors> map = new HashMap<>();
-
-		CandleColors(int value) {
-			this.value = value;
-		}
 
 		static {
 			for (CandleColors color : CandleColors.values()) {
 				map.put(color.value, color);
 			}
+		}
+
+		private final int value;
+
+		CandleColors(int value) {
+			this.value = value;
 		}
 
 		public static CandleColors colorFromInt(int value) {

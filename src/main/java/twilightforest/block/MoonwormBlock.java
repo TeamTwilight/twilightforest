@@ -11,7 +11,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootTable;
-import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.MoonwormBlockEntity;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.loot.TFLootTables;
@@ -29,20 +28,18 @@ public class MoonwormBlock extends CritterBlock {
 		return CODEC;
 	}
 
-	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new MoonwormBlockEntity(pos, state);
 	}
 
-	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
 		return createTickerHelper(type, TFBlockEntities.MOONWORM.get(), MoonwormBlockEntity::tick);
 	}
 
 	@Override
-	public @Nullable ResourceKey<LootTable> getSquishLootTable() {
+	public ResourceKey<LootTable> getSquishLootTable() {
 		return TFLootTables.MOONWORM_SQUISH_DROPS;
 	}
 }

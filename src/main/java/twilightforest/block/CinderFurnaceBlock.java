@@ -22,17 +22,15 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.CinderFurnaceBlockEntity;
 import twilightforest.init.TFBlockEntities;
 
 public class CinderFurnaceBlock extends BaseEntityBlock {
 
-	public static final MapCodec<CinderFurnaceBlock> CODEC = simpleCodec(CinderFurnaceBlock::new);
 	public static final BooleanProperty LIT = BooleanProperty.create("lit");
 	private static final DirectionProperty FACING = TFHorizontalBlock.FACING;
+	public static final MapCodec<CinderFurnaceBlock> CODEC = simpleCodec(CinderFurnaceBlock::new);
 
-	@SuppressWarnings("this-escape")
 	public CinderFurnaceBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH).setValue(LIT, false));
@@ -44,6 +42,7 @@ public class CinderFurnaceBlock extends BaseEntityBlock {
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public RenderShape getRenderShape(BlockState state) {
 		return RenderShape.MODEL;
 	}
@@ -59,20 +58,18 @@ public class CinderFurnaceBlock extends BaseEntityBlock {
 		builder.add(LIT, FACING);
 	}
 
-	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new CinderFurnaceBlockEntity(pos, state);
 	}
 
-	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
 		return createTickerHelper(type, TFBlockEntities.CINDER_FURNACE.get(), CinderFurnaceBlockEntity::tick);
 	}
 
 	@Override
-	@Deprecated
+	@SuppressWarnings("deprecation")
 	public boolean triggerEvent(BlockState state, Level level, BlockPos pos, int id, int param) {
 		super.triggerEvent(state, level, pos, id, param);
 		BlockEntity tileentity = level.getBlockEntity(pos);
@@ -96,7 +93,6 @@ public class CinderFurnaceBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	@Deprecated
 	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (state.getBlock() != newState.getBlock()) {
 			BlockEntity tileentity = level.getBlockEntity(pos);

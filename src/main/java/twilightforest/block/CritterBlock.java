@@ -62,14 +62,17 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 	private final VoxelShape WEST_BB = Shapes.create(new AABB(0.85F, 0.2F, 0.2F, 1.0F, 0.8F, 0.8F));
 	private final VoxelShape EAST_BB = Shapes.create(new AABB(0.0F, 0.2F, 0.2F, 0.15F, 0.8F, 0.8F));
 
-	@SuppressWarnings("this-escape")
 	protected CritterBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.UP).setValue(WATERLOGGED, Boolean.FALSE));
 	}
 
+	public static boolean canSurvive(LevelReader reader, BlockPos pos, Direction facing) {
+		BlockPos restingPos = pos.relative(facing.getOpposite());
+		return canSupportCenter(reader, restingPos, facing) || reader.getBlockState(restingPos).getBlock() instanceof LeavesBlock;
+	}
+
 	@Override
-	@Deprecated
 	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 		return switch (state.getValue(FACING)) {
 			case DOWN -> DOWN_BB;
@@ -86,7 +89,6 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
 	}
 
-	@Nullable
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		Direction clicked = context.getClickedFace();
@@ -107,7 +109,6 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 	}
 
 	@Override
-	@Deprecated
 	public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor accessor, BlockPos pos, BlockPos neighborPos) {
 		if (state.getValue(WATERLOGGED)) {
 			accessor.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(accessor));
@@ -120,19 +121,13 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 	}
 
 	@Override
-	@Deprecated
 	public boolean canSurvive(BlockState state, LevelReader reader, BlockPos pos) {
 		Direction facing = state.getValue(DirectionalBlock.FACING);
 		return canSurvive(reader, pos, facing);
 	}
 
-	public static boolean canSurvive(LevelReader reader, BlockPos pos, Direction facing) {
-		BlockPos restingPos = pos.relative(facing.getOpposite());
-		return canSupportCenter(reader, restingPos, facing) || reader.getBlockState(restingPos).getBlock() instanceof LeavesBlock;
-	}
-
 	@Override
-	public BlockState rotate(BlockState state, Rotation rotation) {
+	public BlockState rotate(BlockState state, LevelAccessor accessor, BlockPos pos, Rotation rotation) {
 		return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
 	}
 
@@ -185,9 +180,9 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 		}
 	}
 
-	public abstract @Nullable ResourceKey<LootTable> getSquishLootTable(); // Oh, no!
-
 	@Nullable
+	public abstract ResourceKey<LootTable> getSquishLootTable(); // Oh, no!
+
 	@Override
 	public abstract BlockEntity newBlockEntity(BlockPos pos, BlockState state);
 

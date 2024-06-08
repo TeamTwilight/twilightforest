@@ -33,7 +33,6 @@ public class FireflySpawnerBlock extends AbstractParticleSpawnerBlock implements
 	private static final VoxelShape SHAPE = Block.box(3.0D, 0.0D, 3.0D, 13.0D, 14.0D, 13.0D);
 	private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-	@SuppressWarnings("this-escape")
 	public FireflySpawnerBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(WATERLOGGED, false));

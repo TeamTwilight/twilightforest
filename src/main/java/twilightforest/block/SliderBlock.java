@@ -25,7 +25,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.SlideBlock;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
@@ -43,7 +42,6 @@ public class SliderBlock extends RotatedPillarBlock implements SimpleWaterlogged
 	private static final VoxelShape Z_BB = Shapes.create(new AABB(0.3125, 0.3125, 0, 0.6875, 0.6875, 1F));
 	private static final VoxelShape X_BB = Shapes.create(new AABB(0, 0.3125, 0.3125, 1F, 0.6875, 0.6875));
 
-	@SuppressWarnings("this-escape")
 	public SliderBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(AXIS, Direction.Axis.Y).setValue(DELAY, 0).setValue(WATERLOGGED, false));
@@ -54,7 +52,6 @@ public class SliderBlock extends RotatedPillarBlock implements SimpleWaterlogged
 		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
 	}
 
-	@Nullable
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
@@ -78,7 +75,6 @@ public class SliderBlock extends RotatedPillarBlock implements SimpleWaterlogged
 	}
 
 	@Override
-	@Deprecated
 	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 		return switch (state.getValue(AXIS)) {
 			case X -> X_BB;
@@ -88,7 +84,6 @@ public class SliderBlock extends RotatedPillarBlock implements SimpleWaterlogged
 	}
 
 	@Override
-	@Deprecated
 	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 		if (!level.isClientSide() && this.isConnectedInRange(level, pos)) {
 			//TODO calls for a creakstart sound effect, but it doesnt exist in the game files
@@ -135,13 +130,11 @@ public class SliderBlock extends RotatedPillarBlock implements SimpleWaterlogged
 	}
 
 	@Override
-	@Deprecated
 	public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
 		this.scheduleBlockUpdate(level, pos);
 	}
 
 	@Override
-	@Deprecated
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
 		entity.hurt(TFDamageTypes.getDamageSource(level, TFDamageTypes.SLIDER), BLOCK_DAMAGE);
 		if (entity instanceof LivingEntity living) {

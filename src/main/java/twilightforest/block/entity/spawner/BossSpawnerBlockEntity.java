@@ -30,12 +30,8 @@ public abstract class BossSpawnerBlockEntity<T extends Mob & EnforcedHomePoint> 
 		this.entityType = entityType;
 	}
 
-	public boolean anyPlayerInRange() {
-		return Objects.requireNonNull(this.getLevel()).hasNearbyAlivePlayer(this.getBlockPos().getX() + 0.5D, this.getBlockPos().getY() + 0.5D, this.getBlockPos().getZ() + 0.5D, this.getRange());
-	}
-
 	public static void tick(Level level, BlockPos pos, BlockState state, BossSpawnerBlockEntity<?> te) {
-		if (te.spawnedBoss || !te.anyPlayerInRange()) {
+		if (te.spawnedBoss || !te.anyPlayerInRange(level)) {
 			return;
 		}
 		if (level.isClientSide()) {
@@ -52,6 +48,10 @@ public abstract class BossSpawnerBlockEntity<T extends Mob & EnforcedHomePoint> 
 				}
 			}
 		}
+	}
+
+	public boolean anyPlayerInRange(Level level) {
+		return level.hasNearbyAlivePlayer(this.getBlockPos().getX() + 0.5D, this.getBlockPos().getY() + 0.5D, this.getBlockPos().getZ() + 0.5D, this.getRange());
 	}
 
 	protected boolean spawnMyBoss(ServerLevelAccessor accessor) {

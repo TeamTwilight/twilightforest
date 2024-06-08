@@ -21,7 +21,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import org.jetbrains.annotations.Nullable;
 import twilightforest.config.TFConfig;
 import twilightforest.init.TFSounds;
 import twilightforest.init.TFStats;
@@ -33,7 +32,6 @@ public class UncraftingTableBlock extends Block {
 
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
-	@SuppressWarnings("this-escape")
 	public UncraftingTableBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(POWERED, false));
@@ -74,7 +72,6 @@ public class UncraftingTableBlock extends Block {
 		}
 	}
 
-	@Nullable
 	@Override
 	public MenuProvider getMenuProvider(BlockState state, Level level, BlockPos pos) {
 		return new SimpleMenuProvider((id, inv, player) -> new UncraftingMenu(id, inv, player.level(), ContainerLevelAccess.create(level, pos)),
@@ -92,5 +89,4 @@ public class UncraftingTableBlock extends Block {
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		builder.add(POWERED);
 	}
-
 }

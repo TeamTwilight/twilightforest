@@ -13,7 +13,6 @@ public class DirectionalRotatedPillarBlock extends RotatedPillarBlock {
 
 	public static final BooleanProperty REVERSED = BooleanProperty.create("reversed");
 
-	@SuppressWarnings("this-escape")
 	public DirectionalRotatedPillarBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(AXIS, Direction.Axis.Y).setValue(REVERSED, false));
@@ -31,7 +30,7 @@ public class DirectionalRotatedPillarBlock extends RotatedPillarBlock {
 	}
 
 	@Override
-	@Deprecated
+	@SuppressWarnings("deprecation")
 	public BlockState mirror(BlockState state, Mirror mirror) {
 		if (mirror != Mirror.NONE) {
 			Direction.Axis axis = state.getValue(AXIS);

@@ -6,7 +6,6 @@ import net.minecraft.core.QuartPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -75,23 +74,19 @@ public class TransLogCoreBlock extends SpecialMagicLogBlock {
 
 			Vec3 xyz = Vec3.atCenterOf(dPos);
 
-			for (ServerPlayer serverplayer : level.players()) { // This is just particle math, we send a particle packet to every player in range
-				if (serverplayer.distanceToSqr(xyz) < 4096.0D) {
-					ParticlePacket particlePacket = new ParticlePacket();
-					for (int j = 0; j < 9; j++) {
-						float angle = rand.nextFloat() * 360.0F;
-						Vec3 offset = new Vec3(Math.cos(angle), 0.0D, Math.sin(angle)).scale(2.0D);
-						particlePacket.queueParticle(TFParticleType.TRANSFORMATION_PARTICLE.get(), false, xyz.add(offset), Vec3.ZERO.subtract(offset));
-					}
-					PacketDistributor.sendToPlayer(serverplayer, particlePacket);
-				}
+			ParticlePacket particlePacket = new ParticlePacket();
+			for (int j = 0; j < 9; j++) {
+				float angle = rand.nextFloat() * 360.0F;
+				Vec3 offset = new Vec3(Math.cos(angle), 0.0D, Math.sin(angle)).scale(2.0D);
+				particlePacket.queueParticle(TFParticleType.TRANSFORMATION_PARTICLE.get(), false, xyz.add(offset), Vec3.ZERO.subtract(offset));
 			}
+			PacketDistributor.sendToPlayersNear(level, null, xyz.x(), xyz.y(), xyz.z(), 64.0D, particlePacket);
 			break;
 		}
 	}
 
 	@Override
 	protected void playSound(Level level, BlockPos pos, RandomSource rand) {
-		level.playSound(null, pos, TFSounds.TRANSFORMATION_CORE.get(), SoundSource.BLOCKS, 0.1F, rand.nextFloat() * 2F);
+		level.playSound(null, pos, TFSounds.TRANSFORMATION_CORE.get(), SoundSource.BLOCKS, 0.1F, rand.nextFloat() * 2.0F);
 	}
 }

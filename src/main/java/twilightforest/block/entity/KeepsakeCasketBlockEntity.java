@@ -45,6 +45,31 @@ public class KeepsakeCasketBlockEntity extends RandomizableContainerBlockEntity 
 		super(TFBlockEntities.KEEPSAKE_CASKET.get(), pos, state);
 	}
 
+	//[VanillaCopy] of EnderChestBlockEntity, with some small adaptations
+	public static void tick(Level level, BlockPos pos, BlockState state, KeepsakeCasketBlockEntity te) {
+		if (++te.ticksSinceSync % 20 * 4 == 0) {
+			level.blockEvent(pos, TFBlocks.KEEPSAKE_CASKET.get(), 1, te.numPlayersUsing);
+		}
+		te.prevLidAngle = te.lidAngle;
+		if (te.numPlayersUsing > 0 && te.lidAngle == 0.0F) {
+			level.playSound(null, pos, TFSounds.CASKET_OPEN.get(), SoundSource.BLOCKS, 0.5F, level.getRandom().nextFloat() * 0.1F + 0.9F);
+		}
+		if (te.numPlayersUsing == 0 && te.lidAngle > 0.0F || te.numPlayersUsing > 0 && te.lidAngle < 1.0F) {
+			float f2 = te.lidAngle;
+
+			if (te.numPlayersUsing > 0) te.lidAngle += 0.025F;
+			else te.lidAngle -= 0.075F;
+
+			if (te.lidAngle > 1.0F) te.lidAngle = 1.0F;
+
+			if (te.lidAngle < 0.4F && f2 >= 0.4F) {
+				level.playSound(null, pos, TFSounds.CASKET_CLOSE.get(), SoundSource.BLOCKS, 0.75F, level.getRandom().nextFloat() * 0.1F + 0.9F);
+			}
+			if (te.lidAngle < 0.0F) te.lidAngle = 0.0F;
+		}
+
+	}
+
 	@Override
 	public boolean isEmpty() {
 		for (ItemStack itemstack : this.contents) {
@@ -112,31 +137,6 @@ public class KeepsakeCasketBlockEntity extends RandomizableContainerBlockEntity 
 		}
 		if (nbt.hasUUID("deadPlayer")) this.playeruuid = nbt.getUUID("deadPlayer");
 		if (nbt.hasUUID("playerName")) this.casketname = nbt.getString("playerName");
-	}
-
-	//[VanillaCopy] of EnderChestBlockEntity, with some small adaptations
-	public static void tick(Level level, BlockPos pos, BlockState state, KeepsakeCasketBlockEntity te) {
-		if (++te.ticksSinceSync % 20 * 4 == 0) {
-			level.blockEvent(pos, TFBlocks.KEEPSAKE_CASKET.get(), 1, te.numPlayersUsing);
-		}
-		te.prevLidAngle = te.lidAngle;
-		if (te.numPlayersUsing > 0 && te.lidAngle == 0.0F) {
-			level.playSound(null, pos, TFSounds.CASKET_OPEN.get(), SoundSource.BLOCKS, 0.5F, level.getRandom().nextFloat() * 0.1F + 0.9F);
-		}
-		if (te.numPlayersUsing == 0 && te.lidAngle > 0.0F || te.numPlayersUsing > 0 && te.lidAngle < 1.0F) {
-			float f2 = te.lidAngle;
-
-			if (te.numPlayersUsing > 0) te.lidAngle += 0.025F;
-			else te.lidAngle -= 0.075F;
-
-			if (te.lidAngle > 1.0F) te.lidAngle = 1.0F;
-
-			if (te.lidAngle < 0.4F && f2 >= 0.4F) {
-				level.playSound(null, pos, TFSounds.CASKET_CLOSE.get(), SoundSource.BLOCKS, 0.75F, level.getRandom().nextFloat() * 0.1F + 0.9F);
-			}
-			if (te.lidAngle < 0.0F) te.lidAngle = 0.0F;
-		}
-
 	}
 
 	@Override

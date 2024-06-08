@@ -3,7 +3,6 @@ package twilightforest.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
@@ -65,14 +64,10 @@ public class TimeLogCoreBlock extends SpecialMagicLogBlock {
 
 				if (worked) {
 					Vec3 xyz = Vec3.atCenterOf(dPos);
-					for (ServerPlayer serverplayer : level.players()) { // This is just particle math, we send a particle packet to every player in range
-						if (serverplayer.distanceToSqr(xyz) < 4096.0D) {
-							ParticlePacket particlePacket = new ParticlePacket();
-							double yOffset = state.getOcclusionShape(level, dPos).max(Direction.Axis.Y);
-							particlePacket.queueParticle(TFParticleType.LOG_CORE_PARTICLE.get(), false, xyz.add(0.0, yOffset - 0.5, 0.0), new Vec3(0.953, 0.698, 0.0));
-							PacketDistributor.sendToPlayer(serverplayer, particlePacket);
-						}
-					}
+					ParticlePacket particlePacket = new ParticlePacket();
+					double yOffset = state.getOcclusionShape(level, dPos).max(Direction.Axis.Y);
+					particlePacket.queueParticle(TFParticleType.LOG_CORE_PARTICLE.get(), false, xyz.add(0.0, yOffset - 0.5, 0.0), new Vec3(0.953, 0.698, 0.0));
+					PacketDistributor.sendToPlayersNear(level, null, xyz.x(), xyz.y(), xyz.z(), 64.0D, particlePacket);
 				}
 			}
 		}

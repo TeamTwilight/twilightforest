@@ -18,16 +18,6 @@ public class HardenedDarkLeavesBlock extends Block {
 	}
 
 	@Override
-	public int getFlammability(BlockState state, BlockGetter getter, BlockPos pos, Direction face) {
-		return 1;
-	}
-
-	@Override
-	public int getFireSpreadSpeed(BlockState state, BlockGetter getter, BlockPos pos, Direction face) {
-		return 0;
-	}
-
-	@Override
 	public ItemStack getCloneItemStack(BlockState state, HitResult result, LevelReader reader, BlockPos pos, Player player) {
 		return new ItemStack(TFBlocks.DARK_LEAVES.get());
 	}

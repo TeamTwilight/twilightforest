@@ -33,7 +33,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.common.ToolActions;
-import org.jetbrains.annotations.Nullable;
 import twilightforest.enums.HollowLogVariants;
 import twilightforest.init.TFBlocks;
 import twilightforest.util.AxisUtil;
@@ -49,11 +48,28 @@ public class HollowLogHorizontal extends Block implements WaterloggedBlock {
 	private static final VoxelShape COLLISION_SHAPE_X = Shapes.join(Shapes.block(), Block.box(0, 1, 1, 16, 15, 15), BooleanOp.ONLY_FIRST);
 	private static final VoxelShape COLLISION_SHAPE_Z = Shapes.join(Shapes.block(), Block.box(1, 1, 0, 15, 15, 16), BooleanOp.ONLY_FIRST);
 
-	@SuppressWarnings("this-escape")
 	public HollowLogHorizontal(Properties properties) {
 		super(properties);
 
 		this.registerDefaultState(this.getStateDefinition().any().setValue(HORIZONTAL_AXIS, Direction.Axis.X).setValue(VARIANT, HollowLogVariants.Horizontal.EMPTY));
+	}
+
+	private static boolean canChangeVariant(HollowLogVariants.Horizontal variant, Level level, BlockPos pos, Direction.Axis axis) {
+		// Empty Log, or the Log has water, and will be filled by water
+		return variant == HollowLogVariants.Horizontal.EMPTY || (variant == HollowLogVariants.Horizontal.WATERLOGGED && level.getFluidState(pos.relative(AxisUtil.getAxisDirectionNegative(axis))).getType() != Fluids.WATER && level.getFluidState(pos.relative(AxisUtil.getAxisDirectionPositive(axis))).getType() != Fluids.WATER);
+	}
+
+	private static boolean isInside(HitResult result, Direction.Axis axis, BlockPos pos) {
+		Vec3 vec = result.getLocation().subtract(pos.getX(), pos.getY(), pos.getZ());
+
+		if (0.124 > vec.y || vec.y > 0.876) return false;
+		// 2vox/16vox < y < 14vox/16vox
+
+		return switch (axis) {
+			case X -> (0.124 <= vec.z && vec.z <= 0.876);
+			case Z -> (0.124 <= vec.x && vec.x <= 0.876);
+			default -> false;
+		};
 	}
 
 	@Override
@@ -97,7 +113,6 @@ public class HollowLogHorizontal extends Block implements WaterloggedBlock {
 		return prior.setValue(VARIANT, doWater ? HollowLogVariants.Horizontal.WATERLOGGED : HollowLogVariants.Horizontal.EMPTY);
 	}
 
-	@Nullable
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		return super.getStateForPlacement(context).setValue(HORIZONTAL_AXIS, context.getClickedFace().getAxis()).setValue(VARIANT, context.getLevel().getBlockState(context.getClickedPos()).getFluidState().getType() == Fluids.WATER ? HollowLogVariants.Horizontal.WATERLOGGED : HollowLogVariants.Horizontal.EMPTY);
@@ -187,33 +202,5 @@ public class HollowLogHorizontal extends Block implements WaterloggedBlock {
 			player.setPose(Pose.SWIMMING);
 		}
 		return super.useWithoutItem(state, level, pos, player, hit);
-	}
-
-	private static boolean canChangeVariant(HollowLogVariants.Horizontal variant, Level level, BlockPos pos, Direction.Axis axis) {
-		// Empty Log, or the Log has water, and will be filled by water
-		return variant == HollowLogVariants.Horizontal.EMPTY || (variant == HollowLogVariants.Horizontal.WATERLOGGED && level.getFluidState(pos.relative(AxisUtil.getAxisDirectionNegative(axis))).getType() != Fluids.WATER && level.getFluidState(pos.relative(AxisUtil.getAxisDirectionPositive(axis))).getType() != Fluids.WATER);
-	}
-
-	private static boolean isInside(HitResult result, Direction.Axis axis, BlockPos pos) {
-		Vec3 vec = result.getLocation().subtract(pos.getX(), pos.getY(), pos.getZ());
-
-		if (0.124 > vec.y || vec.y > 0.876) return false;
-		// 2vox/16vox < y < 14vox/16vox
-
-		return switch (axis) {
-			case X -> (0.124 <= vec.z && vec.z <= 0.876);
-			case Z -> (0.124 <= vec.x && vec.x <= 0.876);
-			default -> false;
-		};
-	}
-
-	@Override
-	public int getFlammability(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
-		return 5;
-	}
-
-	@Override
-	public int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
-		return 5;
 	}
 }

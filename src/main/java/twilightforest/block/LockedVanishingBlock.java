@@ -22,7 +22,6 @@ public class LockedVanishingBlock extends VanishingBlock {
 
 	public static final BooleanProperty LOCKED = BooleanProperty.create("locked");
 
-	@SuppressWarnings("this-escape")
 	public LockedVanishingBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.defaultBlockState().setValue(LOCKED, true));
@@ -46,7 +45,7 @@ public class LockedVanishingBlock extends VanishingBlock {
 
 	@Override
 	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-		if (!stack.isEmpty() && stack.getItem() == TFItems.TOWER_KEY.get() && state.getValue(LOCKED)) {
+		if (!stack.isEmpty() && stack.is(TFItems.TOWER_KEY.get()) && state.getValue(LOCKED)) {
 			if (!level.isClientSide()) {
 				stack.shrink(1);
 				level.setBlockAndUpdate(pos, state.setValue(LOCKED, false));

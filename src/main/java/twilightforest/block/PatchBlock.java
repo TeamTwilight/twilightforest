@@ -23,33 +23,16 @@ import java.util.Random;
 
 public class PatchBlock extends TFPlantBlock {
 
-	public static final MapCodec<PatchBlock> CODEC = simpleCodec(PatchBlock::new);
 	public static final BooleanProperty NORTH = BlockStateProperties.NORTH;
 	public static final BooleanProperty EAST = BlockStateProperties.EAST;
 	public static final BooleanProperty SOUTH = BlockStateProperties.SOUTH;
 	public static final BooleanProperty WEST = BlockStateProperties.WEST;
+	public static final MapCodec<PatchBlock> CODEC = simpleCodec(PatchBlock::new);
 	private static final Map<Direction, BooleanProperty> PROPERTY_BY_DIRECTION = PipeBlock.PROPERTY_BY_DIRECTION.entrySet().stream().filter(directionPropertyPair -> directionPropertyPair.getKey().getAxis().isHorizontal()).collect(Util.toMap());
 
-	@SuppressWarnings("this-escape")
 	public PatchBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(NORTH, false).setValue(EAST, false).setValue(SOUTH, false).setValue(WEST, false));
-	}
-
-	@Override
-	protected MapCodec<? extends BushBlock> codec() {
-		return CODEC;
-	}
-
-	@Override
-	public BlockState updateShape(BlockState state, Direction dir, BlockState neighborUpdated, LevelAccessor accessor, BlockPos pos, BlockPos posNeighbor) {
-		return dir.getAxis().isHorizontal() ? state.setValue(PROPERTY_BY_DIRECTION.get(dir), neighborUpdated.getBlock() == this) : super.updateShape(state, dir, neighborUpdated, accessor, pos, posNeighbor);
-	}
-
-	@Override
-	@Deprecated
-	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
-		return shapeFromPos(state, pos);
 	}
 
 	public static VoxelShape shapeFromLong(BlockState state, long seed) {
@@ -92,11 +75,26 @@ public class PatchBlock extends TFPlantBlock {
 		int x1 = 15 - xOff0;
 		int z1 = 15 - zOff0;
 
-		return new BoundingBox(Math.min(x0, x1), 0, Math.min(z0, z1), Math.max(x0, x1), 1, Math.max(z0, z1));
+		return new BoundingBox(x0, 0, z0, x1, 1, z1);
 	}
 
 	public static BoundingBox AABBFromRandom(RandomSource random) {
 		return AABBFromLong(random.nextLong());
+	}
+
+	@Override
+	protected MapCodec<? extends BushBlock> codec() {
+		return CODEC;
+	}
+
+	@Override
+	public BlockState updateShape(BlockState state, Direction dir, BlockState neighborUpdated, LevelAccessor accessor, BlockPos pos, BlockPos posNeighbor) {
+		return dir.getAxis().isHorizontal() ? state.setValue(PROPERTY_BY_DIRECTION.get(dir), neighborUpdated.getBlock() == this) : super.updateShape(state, dir, neighborUpdated, accessor, pos, posNeighbor);
+	}
+
+	@Override
+	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
+		return shapeFromPos(state, pos);
 	}
 
 	@Override

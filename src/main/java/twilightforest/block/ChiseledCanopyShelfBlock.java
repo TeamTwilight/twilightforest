@@ -102,25 +102,13 @@ public class ChiseledCanopyShelfBlock extends ChiseledBookShelfBlock {
 		return RenderShape.MODEL;
 	}
 
-	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new ChiseledCanopyShelfBlockEntity(pos, state);
 	}
 
-	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
 		return createTickerHelper(type, TFBlockEntities.CHISELED_CANOPY_BOOKSHELF.get(), ChiseledCanopyShelfBlockEntity::tick);
-	}
-
-	@Override
-	public int getFlammability(BlockState state, BlockGetter getter, BlockPos pos, Direction face) {
-		return 20;
-	}
-
-	@Override
-	public int getFireSpreadSpeed(BlockState state, BlockGetter getter, BlockPos pos, Direction face) {
-		return 30;
 	}
 }

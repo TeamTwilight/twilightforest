@@ -6,7 +6,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import org.jetbrains.annotations.Nullable;
 
 public class TFHorizontalBlock extends HorizontalDirectionalBlock {
 
@@ -27,7 +26,6 @@ public class TFHorizontalBlock extends HorizontalDirectionalBlock {
 		builder.add(FACING);
 	}
 
-	@Nullable
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());

@@ -29,8 +29,6 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import org.jetbrains.annotations.Nullable;
 import twilightforest.enums.HollowLogVariants;
 import twilightforest.util.DirectionUtil;
 
@@ -42,12 +40,17 @@ public class HollowLogVertical extends Block implements SimpleWaterloggedBlock {
 
 	private final Holder<Block> climbable;
 
-	@SuppressWarnings("this-escape")
 	public HollowLogVertical(Properties properties, Holder<Block> climbable) {
 		super(properties);
 		this.climbable = climbable;
 
 		this.registerDefaultState(this.getStateDefinition().any().setValue(WATERLOGGED, false));
+	}
+
+	private static boolean isInside(HitResult result, BlockPos pos) {
+		Vec3 vec = result.getLocation().subtract(pos.getX(), pos.getY(), pos.getZ());
+
+		return (0.124 <= vec.x() && vec.x() <= 0.876) && (0.124 <= vec.z() && vec.z() <= 0.876);
 	}
 
 	@Override
@@ -87,7 +90,6 @@ public class HollowLogVertical extends Block implements SimpleWaterloggedBlock {
 		return super.useItemOn(stack, state, level, pos, player, hand, hit);
 	}
 
-	@Nullable
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		return super.getStateForPlacement(context).setValue(WATERLOGGED, context.getLevel().getBlockState(context.getClickedPos()).getFluidState().getType() == Fluids.WATER);
@@ -105,21 +107,5 @@ public class HollowLogVertical extends Block implements SimpleWaterloggedBlock {
 		}
 
 		return super.updateShape(state, facing, neighborState, accessor, pos, neighborPos);
-	}
-
-	private static boolean isInside(HitResult result, BlockPos pos) {
-		Vec3 vec = result.getLocation().subtract(pos.getX(), pos.getY(), pos.getZ());
-
-		return (0.124 <= vec.x() && vec.x() <= 0.876) && (0.124 <= vec.z() && vec.z() <= 0.876);
-	}
-
-	@Override
-	public int getFlammability(BlockState state, BlockGetter getter, BlockPos pos, Direction face) {
-		return 5;
-	}
-
-	@Override
-	public int getFireSpreadSpeed(BlockState state, BlockGetter getter, BlockPos pos, Direction face) {
-		return 5;
 	}
 }

@@ -20,12 +20,11 @@ public class BurntThornsBlock extends ThornsBlock {
 	}
 
 	@Override
-	public @Nullable PathType getBlockPathType(BlockState state, BlockGetter getter, BlockPos pos, @Nullable Mob entity) {
+	public PathType getBlockPathType(BlockState state, BlockGetter getter, BlockPos pos, @Nullable Mob entity) {
 		return null;
 	}
 
 	@Override
-	@Deprecated
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
 		// dissolve
 		if (!level.isClientSide() && (entity instanceof LivingEntity || entity instanceof Projectile)) {
@@ -36,6 +35,6 @@ public class BurntThornsBlock extends ThornsBlock {
 	@Override
 	public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
 		state.getBlock().playerWillDestroy(level, pos, state, player);
-		return level.setBlock(pos, fluid.createLegacyBlock(), level.isClientSide ? 11 : 3);
+		return level.setBlock(pos, fluid.createLegacyBlock(), level.isClientSide() ? 11 : 3);
 	}
 }

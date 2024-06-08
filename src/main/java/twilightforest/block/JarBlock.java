@@ -21,20 +21,17 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class JarBlock extends Block implements SimpleWaterloggedBlock {
 
-	public static final MapCodec<JarBlock> CODEC = simpleCodec(JarBlock::new);
 	private static final VoxelShape JAR = Block.box(3.0D, 0.0D, 3.0D, 13.0D, 14.0D, 13.0D);
 	private static final VoxelShape LID = Block.box(4.0D, 14.0D, 4.0D, 12.0D, 16.0D, 12.0D);
 	private static final VoxelShape AABB = Shapes.or(JAR, LID);
 	private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-	@SuppressWarnings("this-escape")
 	public JarBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(WATERLOGGED, false));
 	}
 
 	@Override
-	@Deprecated
 	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 		return AABB;
 	}

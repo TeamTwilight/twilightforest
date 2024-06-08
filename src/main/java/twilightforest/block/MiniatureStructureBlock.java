@@ -17,7 +17,6 @@ public class MiniatureStructureBlock extends HorizontalDirectionalBlock {
 
 	public static final MapCodec<MiniatureStructureBlock> CODEC = simpleCodec(MiniatureStructureBlock::new);
 
-	@SuppressWarnings("this-escape")
 	public MiniatureStructureBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH));

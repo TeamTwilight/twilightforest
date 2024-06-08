@@ -28,6 +28,16 @@ public class SkullCandleBlockEntity extends SkullBlockEntity {
 		this.candleAmount = amount;
 	}
 
+	public static void tick(Level level, BlockPos pos, BlockState state, SkullCandleBlockEntity entity) {
+		if (level.hasNeighborSignal(pos)) {
+			entity.isAnimating = true;
+			++entity.animationTickCount;
+		} else {
+			entity.isAnimating = false;
+		}
+
+	}
+
 	@Override
 	public BlockEntityType<?> getType() {
 		return TFBlockEntities.SKULL_CANDLE.get();
@@ -55,23 +65,18 @@ public class SkullCandleBlockEntity extends SkullBlockEntity {
 		return tag;
 	}
 
-	@Override
-	public ClientboundBlockEntityDataPacket getUpdatePacket() {
-		return ClientboundBlockEntityDataPacket.create(this);
-	}
-
 	public int getCandleColor() {
 		return this.candleColor;
-	}
-
-	public int getCandleAmount() {
-		return this.candleAmount;
 	}
 
 	public void setCandleColor(int color) {
 		this.candleColor = color;
 		this.setChanged();
 		this.getLevel().sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
+	}
+
+	public int getCandleAmount() {
+		return this.candleAmount;
 	}
 
 	public void setCandleAmount(int amount) {
@@ -84,16 +89,6 @@ public class SkullCandleBlockEntity extends SkullBlockEntity {
 		this.candleAmount++;
 		this.setChanged();
 		this.getLevel().sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
-	}
-
-	public static void tick(Level level, BlockPos pos, BlockState state, SkullCandleBlockEntity entity) {
-		if (level.hasNeighborSignal(pos)) {
-			entity.isAnimating = true;
-			++entity.animationTickCount;
-		} else {
-			entity.isAnimating = false;
-		}
-
 	}
 
 	public float getAnimation(float partialTick) {

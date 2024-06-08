@@ -37,13 +37,12 @@ import twilightforest.enums.HollowLogVariants;
 
 public class HollowLogClimbable extends HorizontalDirectionalBlock implements WaterloggedBlock {
 
+	public static final EnumProperty<HollowLogVariants.Climbable> VARIANT = EnumProperty.create("variant", HollowLogVariants.Climbable.class);
 	public static final MapCodec<HollowLogClimbable> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 			BuiltInRegistries.BLOCK.holderByNameCodec().fieldOf("vertical_log").forGetter(o -> o.vertical),
 			propertiesCodec())
 		.apply(instance, HollowLogClimbable::new)
 	);
-	public static final EnumProperty<HollowLogVariants.Climbable> VARIANT = EnumProperty.create("variant", HollowLogVariants.Climbable.class);
-
 	private static final VoxelShape LADDER_EAST = Block.box(0, 0, 0, 3, 16, 16);
 	private static final VoxelShape LADDER_WEST = Block.box(13, 0, 0, 16, 16, 16);
 	private static final VoxelShape LADDER_SOUTH = Block.box(0, 0, 0, 16, 16, 3);
@@ -63,12 +62,17 @@ public class HollowLogClimbable extends HorizontalDirectionalBlock implements Wa
 
 	private final Holder<Block> vertical;
 
-	@SuppressWarnings("this-escape")
 	public HollowLogClimbable(Holder<Block> vertical, Properties properties) {
 		super(properties);
 		this.vertical = vertical;
 
 		this.registerDefaultState(this.getStateDefinition().any().setValue(VARIANT, HollowLogVariants.Climbable.VINE).setValue(FACING, Direction.NORTH));
+	}
+
+	private static boolean isInside(HitResult result, BlockPos pos) {
+		Vec3 vec = result.getLocation().subtract(pos.getX(), pos.getY(), pos.getZ());
+
+		return (0.124 <= vec.x() && vec.x() <= 0.876) && (0.124 <= vec.z() && vec.z() <= 0.876);
 	}
 
 	@Override
@@ -141,22 +145,6 @@ public class HollowLogClimbable extends HorizontalDirectionalBlock implements Wa
 		}
 
 		return super.useItemOn(stack, state, level, pos, player, hand, hit);
-	}
-
-	private static boolean isInside(HitResult result, BlockPos pos) {
-		Vec3 vec = result.getLocation().subtract(pos.getX(), pos.getY(), pos.getZ());
-
-		return (0.124 <= vec.x() && vec.x() <= 0.876) && (0.124 <= vec.z() && vec.z() <= 0.876);
-	}
-
-	@Override
-	public int getFlammability(BlockState state, BlockGetter getter, BlockPos pos, Direction face) {
-		return 5;
-	}
-
-	@Override
-	public int getFireSpreadSpeed(BlockState state, BlockGetter getter, BlockPos pos, Direction face) {
-		return 5;
 	}
 
 	@Override

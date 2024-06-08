@@ -10,7 +10,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.function.Predicate;
 
-public class SpecialStemLeavesBlock extends TFLeavesBlock {
+public class SpecialStemLeavesBlock extends LeavesBlock {
 	protected final Predicate<BlockState> stemPredicate;
 
 	public SpecialStemLeavesBlock(Properties properties, Predicate<BlockState> stemPredicate) {

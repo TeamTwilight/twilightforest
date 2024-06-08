@@ -21,7 +21,6 @@ public class ThornRoseBlock extends BushBlock {
 	private static final float RADIUS = 0.4F;
 	private static final VoxelShape AABB = Shapes.create(new AABB(0.5F - RADIUS, 0.5F - RADIUS, 0.5F - RADIUS, 0.5F + RADIUS, .5F + RADIUS, 0.5F + RADIUS));
 
-	@SuppressWarnings("this-escape")
 	public ThornRoseBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.stateDefinition.any().setValue(DirectionalBlock.FACING, Direction.UP));
@@ -44,7 +43,6 @@ public class ThornRoseBlock extends BushBlock {
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
 	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 		return AABB;
 	}

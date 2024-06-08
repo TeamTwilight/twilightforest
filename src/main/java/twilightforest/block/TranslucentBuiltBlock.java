@@ -15,7 +15,6 @@ public class TranslucentBuiltBlock extends Block {
 
 	public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
-	@SuppressWarnings("this-escape")
 	public TranslucentBuiltBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(ACTIVE, false));
@@ -28,7 +27,6 @@ public class TranslucentBuiltBlock extends Block {
 	}
 
 	@Override
-	@Deprecated
 	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 		if (state.getValue(ACTIVE)) {
 			level.removeBlock(pos, false);

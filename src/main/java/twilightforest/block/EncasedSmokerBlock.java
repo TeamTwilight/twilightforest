@@ -13,7 +13,6 @@ public class EncasedSmokerBlock extends TFSmokerBlock {
 
 	public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
-	@SuppressWarnings("this-escape")
 	public EncasedSmokerBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(ACTIVE, false));
@@ -26,7 +25,6 @@ public class EncasedSmokerBlock extends TFSmokerBlock {
 	}
 
 	@Override
-	@Deprecated
 	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
 		if (level.isClientSide()) return;
 

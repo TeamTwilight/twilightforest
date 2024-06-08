@@ -26,7 +26,6 @@ public class MushgloomBlock extends MushroomBlock {
 	}
 
 	@Override
-	@Deprecated
 	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 		return MUSHGLOOM_SHAPE;
 	}
@@ -37,7 +36,7 @@ public class MushgloomBlock extends MushroomBlock {
 	}
 
 	@Override
-	public PlantType getPlantType(BlockGetter world, BlockPos pos) {
+	public PlantType getPlantType(BlockGetter getter, BlockPos pos) {
 		return PlantType.CAVE;
 	}
 }

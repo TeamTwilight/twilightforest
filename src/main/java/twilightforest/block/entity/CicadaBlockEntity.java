@@ -12,14 +12,13 @@ import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFSounds;
 
 public class CicadaBlockEntity extends BlockEntity {
-	private int yawDelay;
+	public final float randRot = RandomSource.create().nextInt(4) * 90.0F;
 	public int currentYaw;
+	private int yawDelay;
 	private int desiredYaw;
-
 	private int singDuration;
 	private boolean singing;
 	private int singDelay;
-	public final float randRot = RandomSource.create().nextInt(4) * 90.0F;
 
 	public CicadaBlockEntity(BlockPos pos, BlockState state) {
 		super(TFBlockEntities.CICADA.get(), pos, state);

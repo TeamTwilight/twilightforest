@@ -7,6 +7,7 @@ import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LanternBlock;
+import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize;
@@ -22,7 +23,6 @@ import net.minecraft.world.level.levelgen.feature.trunkplacers.FancyTrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.GiantTrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlacer;
 import twilightforest.block.FireflyBlock;
-import twilightforest.block.TFLogBlock;
 import twilightforest.init.TFBlocks;
 import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
 import twilightforest.world.components.feature.trees.treeplacers.*;
@@ -235,7 +235,7 @@ public class TreeConfigurations {
 		new TwoLayersFeatureSize(4, 1, canopyDistancing)
 	)
 		.ignoreVines()
-		.decorators(ImmutableList.of(new TreeCorePlacer(3, BlockStateProvider.simple(TFBlocks.TRANSFORMATION_LOG_CORE.get().defaultBlockState().setValue(TFLogBlock.AXIS, Direction.Axis.Y)))))
+		.decorators(ImmutableList.of(new TreeCorePlacer(3, BlockStateProvider.simple(TFBlocks.TRANSFORMATION_LOG_CORE.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y)))))
 		.build();
 
 	public static final TFTreeFeatureConfig MINING_TREE = new TFTreeFeatureConfig.Builder(
@@ -255,7 +255,7 @@ public class TreeConfigurations {
 	)
 		.ignoreVines()
 		.forceDirt()
-		.decorators(ImmutableList.of(new TreeCorePlacer(2, BlockStateProvider.simple(TFBlocks.SORTING_LOG_CORE.get().defaultBlockState().setValue(TFLogBlock.AXIS, Direction.Axis.Y)))))
+		.decorators(ImmutableList.of(new TreeCorePlacer(2, BlockStateProvider.simple(TFBlocks.SORTING_LOG_CORE.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y)))))
 		.build();
 
 	public static final TFTreeFeatureConfig LARGE_WINTER = new TFTreeFeatureConfig.Builder(

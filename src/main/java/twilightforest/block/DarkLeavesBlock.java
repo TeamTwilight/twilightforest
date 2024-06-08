@@ -15,16 +15,6 @@ public class DarkLeavesBlock extends LeavesBlock {
 	}
 
 	@Override
-	public int getFlammability(BlockState state, BlockGetter getter, BlockPos pos, Direction face) {
-		return 1;
-	}
-
-	@Override
-	public int getFireSpreadSpeed(BlockState state, BlockGetter getter, BlockPos pos, Direction face) {
-		return 0;
-	}
-
-	@Override
 	public VoxelShape getBlockSupportShape(BlockState state, BlockGetter getter, BlockPos pos) {
 		return Shapes.block();
 	}
