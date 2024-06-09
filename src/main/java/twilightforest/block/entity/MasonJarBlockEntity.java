@@ -1,6 +1,5 @@
 package twilightforest.block.entity;
 
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentMap;
@@ -51,10 +50,6 @@ public class MasonJarBlockEntity extends JarBlockEntity {
 
 	public void setFromItem(ItemStack stack) {
 		this.applyComponentsFromItemStack(stack);
-	}
-
-	public ItemStack getJarAsItem() {
-		return Util.make(this.getBlockState().getBlock().asItem().getDefaultInstance(), jar -> jar.applyComponents(this.collectComponents()));
 	}
 
 	@Override

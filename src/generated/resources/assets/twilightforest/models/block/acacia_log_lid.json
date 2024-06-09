@@ -1,0 +1,7 @@
+{
+  "parent": "twilightforest:block/jar_lid",
+  "textures": {
+    "1": "minecraft:block/acacia_log_top",
+    "2": "minecraft:block/acacia_log"
+  }
+}

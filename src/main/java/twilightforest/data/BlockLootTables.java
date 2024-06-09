@@ -35,6 +35,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import twilightforest.block.*;
 import twilightforest.enums.HollowLogVariants;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFItems;
 
 import java.util.Set;
@@ -164,14 +165,43 @@ public class BlockLootTables extends BlockLootSubProvider {
 									.include(DataComponents.CONTAINER)
 									.include(DataComponents.LOCK)
 									.include(DataComponents.CONTAINER_LOOT)
+									.include(TFDataComponents.JAR_LID.get())
 							)
 					)
 			)
 		));
 
-		dropSelf(TFBlocks.FIREFLY_JAR.get());
+		this.add(TFBlocks.FIREFLY_JAR.get(), LootTable.lootTable().withPool(
+			this.applyExplosionCondition(
+				TFBlocks.FIREFLY_JAR.get(),
+				LootPool.lootPool()
+					.setRolls(ConstantValue.exactly(1.0F))
+					.add(
+						LootItem.lootTableItem(TFBlocks.FIREFLY_JAR.get())
+							.apply(
+								CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
+									.include(TFDataComponents.JAR_LID.get())
+							)
+					)
+			)
+		));
+
+		this.add(TFBlocks.CICADA_JAR.get(), LootTable.lootTable().withPool(
+			this.applyExplosionCondition(
+				TFBlocks.CICADA_JAR.get(),
+				LootPool.lootPool()
+					.setRolls(ConstantValue.exactly(1.0F))
+					.add(
+						LootItem.lootTableItem(TFBlocks.CICADA_JAR.get())
+							.apply(
+								CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
+									.include(TFDataComponents.JAR_LID.get())
+							)
+					)
+			)
+		));
+
 		add(TFBlocks.FIREFLY_SPAWNER.get(), particleSpawner());
-		dropSelf(TFBlocks.CICADA_JAR.get());
 		add(TFBlocks.MOSS_PATCH.get(), createShearsOnlyDrop(TFBlocks.MOSS_PATCH.get()));
 		add(TFBlocks.MAYAPPLE.get(), createShearsOnlyDrop(TFBlocks.MAYAPPLE.get()));
 		add(TFBlocks.CLOVER_PATCH.get(), createShearsOnlyDrop(TFBlocks.CLOVER_PATCH.get()));
