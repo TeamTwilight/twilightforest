@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "twilightforest:block/cicada_jar"
+      "model": "twilightforest:block/mason_jar"
     }
   }
 }

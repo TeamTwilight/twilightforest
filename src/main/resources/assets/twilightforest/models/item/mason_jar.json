@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:builtin/entity",
   "textures": {
-    "particle": "twilightforest:block/candelabra"
+    "particle": "twilightforest:block/jar_side"
   },
   "display": {
     "gui": {

@@ -6,12 +6,17 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
@@ -24,12 +29,18 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.JarBlockEntity;
+import twilightforest.init.TFBlocks;
+
+import java.util.List;
 
 public class JarBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
 	public static final MapCodec<JarBlock> CODEC = simpleCodec(JarBlock::new);
@@ -77,10 +88,45 @@ public class JarBlock extends BaseEntityBlock implements SimpleWaterloggedBlock 
 		builder.add(WATERLOGGED);
 	}
 
+	public Item getDefaultLid() {
+		return TFBlocks.TWILIGHT_OAK_LOG.asItem();
+	}
+
+	@Override
+	public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
+		return level.getBlockEntity(pos) instanceof JarBlockEntity jarBlockEntity
+			? jarBlockEntity.getJarAsItem()
+			: super.getCloneItemStack(state, target, level, pos, player);
+	}
+
+	@Override
+	protected List<ItemStack> getDrops(BlockState state, LootParams.Builder params) {
+		if (params.getOptionalParameter(LootContextParams.BLOCK_ENTITY) instanceof JarBlockEntity jarBlockEntity) {
+			params = params.withDynamicDrop(JarBlockEntity.JAR_LID, stackConsumer ->
+				stackConsumer.accept(jarBlockEntity.lid.getDefaultInstance()));
+		}
+
+		return super.getDrops(state, params);
+	}
+
 	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new JarBlockEntity(pos, state);
+	}
+
+	@Override
+	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+		if (level.getBlockEntity(pos) instanceof JarBlockEntity jarBlockEntity && hitResult.getLocation().y >= pos.getY() + (14.0D / 16.0D) && JarBlockEntity.REGISTERED_LOG_LIDS.contains(stack.getItem())) {
+			jarBlockEntity.lid = stack.getItem();
+			if (level instanceof ServerLevel serverLevel) {
+				serverLevel.playSound(null, pos, SoundEvents.DECORATED_POT_INSERT, SoundSource.BLOCKS, 1.0F, 1.0F);
+				jarBlockEntity.wobble(DecoratedPotBlockEntity.WobbleStyle.POSITIVE);
+				jarBlockEntity.setChanged();
+			}
+			return ItemInteractionResult.SUCCESS;
+		}
+		return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
 	}
 
 	@Override

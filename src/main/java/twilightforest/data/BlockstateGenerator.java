@@ -10,7 +10,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.SlabType;
-import net.neoforged.neoforge.client.model.generators.*;
+import net.neoforged.neoforge.client.model.generators.BlockModelBuilder;
+import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
+import net.neoforged.neoforge.client.model.generators.MultiPartBlockStateBuilder;
 import net.neoforged.neoforge.client.model.generators.loaders.CompositeModelBuilder;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -22,6 +25,7 @@ import twilightforest.client.model.block.connected.ConnectedTextureBuilder;
 import twilightforest.client.model.block.forcefield.ForceFieldModel;
 import twilightforest.client.model.block.forcefield.ForceFieldModelBuilder;
 import twilightforest.client.model.block.giantblock.GiantBlockBuilder;
+import twilightforest.client.renderer.tileentity.JarRenderer;
 import twilightforest.data.helpers.BlockModelBuilders;
 import twilightforest.enums.*;
 import twilightforest.init.TFBlocks;
@@ -315,10 +319,22 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		simpleBlock(TFBlocks.MINOSHROOM_BOSS_SPAWNER.get(), bigSpawner);
 		simpleBlock(TFBlocks.ALPHA_YETI_BOSS_SPAWNER.get(), bigSpawner);
 		simpleBlock(TFBlocks.FINAL_BOSS_BOSS_SPAWNER.get(), bigSpawner);
-		simpleBlock(TFBlocks.MASON_JAR.get(), this.makeJar(TFBlocks.MASON_JAR.getId().getPath()).texture("cork", prefix("block/firefly_jar_cork")));
-		simpleBlock(TFBlocks.FIREFLY_JAR.get(), this.makeJar(TFBlocks.FIREFLY_JAR.getId().getPath()).texture("cork", prefix("block/firefly_jar_cork")));
+
+		BlockModelBuilder masonJar = this.makeJar(TFBlocks.MASON_JAR.getId().getPath());
+		simpleBlock(TFBlocks.MASON_JAR.get(), masonJar);
+		simpleBlock(TFBlocks.CICADA_JAR.get(), masonJar);
+		simpleBlock(TFBlocks.FIREFLY_JAR.get(), masonJar);
 		simpleBlockExisting(TFBlocks.FIREFLY_SPAWNER.get());
-		simpleBlock(TFBlocks.CICADA_JAR.get(), this.makeJar(TFBlocks.CICADA_JAR.getId().getPath()).texture("cork", prefix("block/cicada_jar_cork")));
+
+		ResourceLocation jarLid = TwilightForestMod.prefix("jar_lid");
+		for (ResourceLocation item : JarRenderer.LOG_LOCATION_MAP.values()) {
+			String name = item.getPath() + "_lid";
+			if ((name.equals("mangrove_log_lid") || name.equals("stripped_mangrove_log_lid")) && item.getNamespace().equals("minecraft")) name = "vanilla_" + name;
+			this.models().withExistingParent(name, jarLid)
+				.texture("1", item.getNamespace() + ":block/" + item.getPath() + "_top")
+				.texture("2", item.getNamespace() + ":block/" + item.getPath());
+		}
+
 		registerPlantBlocks();
 		simpleBlock(TFBlocks.ROOT_BLOCK.get());
 		simpleBlock(TFBlocks.LIVEROOT_BLOCK.get());

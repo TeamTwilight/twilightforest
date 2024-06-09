@@ -14,7 +14,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.ShulkerBoxBlock;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
@@ -26,7 +25,6 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.neoforged.neoforge.common.world.AuxiliaryLightManager;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.MasonJarBlockEntity;
@@ -53,38 +51,41 @@ public class MasonJarBlock extends JarBlock implements SimpleWaterloggedBlock {
 	}
 
 	@Override
-	protected ItemInteractionResult useItemOn(ItemStack heldStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-		if (level.getBlockEntity(pos) instanceof MasonJarBlockEntity blockEntity) {
-			if (level instanceof ServerLevel serverLevel) {
-				MasonJarBlockEntity.MasonJarItemStackHandler handler = blockEntity.getItemHandler();
-				if (heldStack.isEmpty()) {
-					if (!handler.extractItem(0, Integer.MAX_VALUE, true).isEmpty()) {
-						ItemStack attainedStack = handler.extractItem(0, Integer.MAX_VALUE, false);
-						player.setItemInHand(hand, attainedStack);
+	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+		if (super.useItemOn(stack, state, level, pos, player, hand, hitResult) != ItemInteractionResult.SUCCESS) {
+			if (level.getBlockEntity(pos) instanceof MasonJarBlockEntity blockEntity) {
+				if (level instanceof ServerLevel serverLevel) {
+					MasonJarBlockEntity.MasonJarItemStackHandler handler = blockEntity.getItemHandler();
+					if (stack.isEmpty()) {
+						if (!handler.extractItem(0, Integer.MAX_VALUE, true).isEmpty()) {
+							ItemStack attainedStack = handler.extractItem(0, Integer.MAX_VALUE, false);
+							player.setItemInHand(hand, attainedStack);
+							serverLevel.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
+						} else {
+							serverLevel.playSound(null, pos, SoundEvents.DECORATED_POT_INSERT_FAIL, SoundSource.BLOCKS, 1.0F, 1.0F);
+							blockEntity.wobble(DecoratedPotBlockEntity.WobbleStyle.NEGATIVE);
+						}
+					} else if (handler.insertItem(0, stack, true).getCount() < stack.getCount()) {
+						player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
+						ItemStack inserted = stack.copy();
+						ItemStack returned = handler.insertItem(0, stack, false);
+
+						player.setItemInHand(hand, returned);
+						float pitch = (float) (inserted.getCount() - returned.getCount()) / (float) inserted.getMaxStackSize();
+						serverLevel.playSound(null, pos, SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 1.0F, 0.7F + 0.5F * pitch); // FIXME
+
 						serverLevel.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
 					} else {
 						serverLevel.playSound(null, pos, SoundEvents.DECORATED_POT_INSERT_FAIL, SoundSource.BLOCKS, 1.0F, 1.0F);
 						blockEntity.wobble(DecoratedPotBlockEntity.WobbleStyle.NEGATIVE);
 					}
-				} else if (handler.insertItem(0, heldStack, true).getCount() < heldStack.getCount()) {
-					player.awardStat(Stats.ITEM_USED.get(heldStack.getItem()));
-					ItemStack inserted = heldStack.copy();
-					ItemStack returned = handler.insertItem(0, heldStack, false);
-
-					player.setItemInHand(hand, returned);
-					float pitch = (float) (inserted.getCount() - returned.getCount()) / (float) inserted.getMaxStackSize();
-					serverLevel.playSound(null, pos, SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 1.0F, 0.7F + 0.5F * pitch); // FIXME
-
-					serverLevel.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
-				} else {
-					serverLevel.playSound(null, pos, SoundEvents.DECORATED_POT_INSERT_FAIL, SoundSource.BLOCKS, 1.0F, 1.0F);
-					blockEntity.wobble(DecoratedPotBlockEntity.WobbleStyle.NEGATIVE);
 				}
+				return ItemInteractionResult.SUCCESS;
+			} else {
+				return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
 			}
-			return ItemInteractionResult.SUCCESS;
-		} else {
-			return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
 		}
+		return ItemInteractionResult.SUCCESS;
 	}
 
 	@Override
@@ -101,13 +102,6 @@ public class MasonJarBlock extends JarBlock implements SimpleWaterloggedBlock {
 	protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
 		Containers.dropContentsOnDestroy(state, newState, level, pos); //FIXME
 		super.onRemove(state, level, pos, newState, movedByPiston);
-	}
-
-	@Override
-	public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
-		return level.getBlockEntity(pos) instanceof MasonJarBlockEntity jarBlockEntity
-			? jarBlockEntity.getJarAsItem()
-			: super.getCloneItemStack(state, target, level, pos, player);
 	}
 
 	@Override
