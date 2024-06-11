@@ -7,7 +7,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
-import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -96,12 +95,6 @@ public class MasonJarBlock extends JarBlock implements SimpleWaterloggedBlock {
 		}
 
 		return super.getDrops(state, params);
-	}
-
-	@Override
-	protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
-		Containers.dropContentsOnDestroy(state, newState, level, pos); //FIXME
-		super.onRemove(state, level, pos, newState, movedByPiston);
 	}
 
 	@Override
