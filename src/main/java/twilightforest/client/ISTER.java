@@ -207,7 +207,7 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 						ms.pushPose();
 						ms.translate(0.5D, 0.4375D, 0.5D);
 						ms.scale(0.5F, 0.5F, 0.5F);
-						minecraft.getItemRenderer().render(contents.copyOne(), ItemDisplayContext.FIXED, false, ms, bufferSource, 15728880, OverlayTexture.NO_OVERLAY, minecraft.getItemRenderer().getModel(contents.copyOne(), null, null, 1));
+						minecraft.getItemRenderer().render(contents.copyOne(), ItemDisplayContext.FIXED, false, ms, bufferSource, light, OverlayTexture.NO_OVERLAY, minecraft.getItemRenderer().getModel(contents.copyOne(), null, null, 1));
 						ms.popPose();
 						bufferSource.endBatch();
 					}
