@@ -2,6 +2,8 @@ package twilightforest.client.renderer.tileentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
@@ -21,6 +23,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.entity.DecoratedPotBlockEntity.WobbleStyle;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.RenderTypeHelper;
 import net.neoforged.neoforge.client.model.data.ModelData;
@@ -152,11 +155,13 @@ public class JarRenderer<T extends JarBlockEntity> implements BlockEntityRendere
 	public static class MasonJarRenderer extends JarRenderer<MasonJarBlockEntity> {
 		protected final ItemRenderer itemRenderer;
 		protected final EntityRenderDispatcher entityRender;
+		protected final Font font;
 
 		public MasonJarRenderer(BlockEntityRendererProvider.Context context) {
 			super(context);
 			this.entityRender = context.getEntityRenderer();
 			this.itemRenderer = context.getItemRenderer();
+			this.font = context.getFont();
 		}
 
 		@Override
@@ -166,13 +171,37 @@ public class JarRenderer<T extends JarBlockEntity> implements BlockEntityRendere
 			if (!stack.isEmpty()) {
 				poseStack.pushPose();
 				poseStack.translate(0.5D, 0.4375D, 0.5D);
-				poseStack.scale(0.5F, 0.5F, 0.5F);
 
 				Vec3 camPos = this.entityRender.camera.getEntity() instanceof LivingEntity living ? living.getEyePosition(partialTick).subtract(living.getDeltaMovement()) : this.entityRender.camera.getPosition();
-
 				Vec3 thisPos = blockEntity.getBlockPos().getCenter();
 				poseStack.mulPose(Axis.YN.rotationDegrees((float) Math.toDegrees(Math.atan2(thisPos.z - camPos.z, thisPos.x - camPos.x)) + 90.0F));
+
+				poseStack.pushPose();
+				poseStack.scale(0.5F, 0.5F, 0.5F);
 				this.itemRenderer.renderStatic(stack, ItemDisplayContext.FIXED, packedLight, OverlayTexture.NO_OVERLAY, poseStack, buffer, null, 0);
+				poseStack.popPose();
+
+				if (stack.getCount() != 1 && Minecraft.getInstance().hitResult instanceof BlockHitResult hitResult && hitResult.getBlockPos().equals(blockEntity.getBlockPos())) {
+					poseStack.pushPose();
+
+					poseStack.translate(0.0F, 0.0F, -0.25F);
+					poseStack.scale(0.025F, 0.025F, 0.025F);
+					poseStack.mulPose(Axis.ZP.rotationDegrees(180.0F));
+
+					String s = String.valueOf(stack.getCount());
+					float x = 10.0F - this.font.width(s);
+					float y = 2.0F;
+
+					Font.DisplayMode displayMode = this.itemRenderer.getModel(stack, blockEntity.getLevel(), null, 0).isCustomRenderer() ? Font.DisplayMode.SEE_THROUGH : Font.DisplayMode.NORMAL;
+
+					// Fake the drop-shadow cuz the real one is being weird about it
+					this.font.drawInBatch(s, x, y, 0xFFFFFF, false, poseStack.last().pose(), buffer, displayMode, 0, 15728880, this.font.isBidirectional());
+					poseStack.translate(0.0F, 0.0F, 1F);
+					this.font.drawInBatch(s, x + 1.0F, y + 1.0F, 0x3E3E3E, false, poseStack.last().pose(), buffer, displayMode, 0, 15728880, this.font.isBidirectional());
+
+					poseStack.popPose();
+				}
+
 				poseStack.popPose();
 			}
 		}
