@@ -9,20 +9,24 @@ import twilightforest.entity.monster.CarminiteGhastguard;
 
 public class TFGhastRenderer<T extends CarminiteGhastguard, M extends TFGhastModel<T>> extends MobRenderer<T, M> {
 
-	private static final ResourceLocation textureLocClosed = TwilightForestMod.getModelTexture("towerghast.png");
-	private static final ResourceLocation textureLocOpen = TwilightForestMod.getModelTexture("towerghast_openeyes.png");
-	private static final ResourceLocation textureLocAttack = TwilightForestMod.getModelTexture("towerghast_fire.png");
+	private static final ResourceLocation TEXTURE = TwilightForestMod.getModelTexture("towerghast.png");
+	private static final ResourceLocation LOOKING_TEXTURE = TwilightForestMod.getModelTexture("towerghast_openeyes.png");
+	private static final ResourceLocation ATTACKING_TEXTURE = TwilightForestMod.getModelTexture("towerghast_fire.png");
 
-	public TFGhastRenderer(EntityRendererProvider.Context manager, M model, float shadowSize) {
-		super(manager, model, shadowSize);
+	public TFGhastRenderer(EntityRendererProvider.Context context, M model, float shadowSize) {
+		super(context, model, shadowSize);
 	}
 
 	@Override
 	public ResourceLocation getTextureLocation(T entity) {
-		return switch (entity.isCharging() ? 2 : entity.getAttackStatus()) {
-			case 1 -> textureLocOpen;
-			case 2 -> textureLocAttack;
-			default -> textureLocClosed;
+		if (entity.isCharging() || entity.isDeadOrDying()) {
+			return ATTACKING_TEXTURE;
+		}
+
+		return switch (entity.getAttackStatus()) {
+			case 1 -> LOOKING_TEXTURE;
+			case 2 -> ATTACKING_TEXTURE;
+			default -> TEXTURE;
 		};
 	}
 }

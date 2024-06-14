@@ -224,7 +224,7 @@ public class CloudEvents {
 					bufferbuilder.vertex((double) roofX - camX - rainX + 0.5D, (double) botY - camY, (double) roofZ - camZ - rainZ + 0.5D).uv(0.0F, (float) topY * 0.25F + uvOffset).color(1.0F, 1.0F, 1.0F, alpha).uv2(lightColor).endVertex();
 				} else if (helper.precipitation() == Biome.Precipitation.SNOW) {
 					if (tesselatorCheck != 1) {
-						if (tesselatorCheck >= 0) tesselator.end();
+						if (tesselatorCheck == 0) tesselator.end();
 
 						tesselatorCheck = 1;
 						RenderSystem.setShaderTexture(0, TFWeatherRenderer.SNOW_TEXTURES);

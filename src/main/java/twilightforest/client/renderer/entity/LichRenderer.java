@@ -13,48 +13,47 @@ import twilightforest.entity.boss.Lich;
 
 public class LichRenderer extends HumanoidMobRenderer<Lich, LichModel> {
 
-	private static final ResourceLocation LICH_TEXTURE = TwilightForestMod.getModelTexture("twilightlich64.png");
+	public static final ResourceLocation TEXTURE = TwilightForestMod.getModelTexture("twilightlich64.png");
 
-	@SuppressWarnings("this-escape")
-	public LichRenderer(EntityRendererProvider.Context manager, LichModel modelbiped, float shadowSize) {
-		super(manager, modelbiped, shadowSize);
-		addLayer(new ShieldLayer<>(this));
+	public LichRenderer(EntityRendererProvider.Context context, LichModel model, float shadowSize) {
+		super(context, model, shadowSize);
+		this.addLayer(new ShieldLayer<>(this));
 	}
 
 	@Nullable
 	@Override
-	protected RenderType getRenderType(Lich lich, boolean bodyVisible, boolean translucent, boolean glowing) {
-		if (lich.isShadowClone()) return RenderType.entityTranslucent(this.getTextureLocation(lich));
-		else return super.getRenderType(lich, bodyVisible, translucent, glowing);
+	protected RenderType getRenderType(Lich entity, boolean bodyVisible, boolean translucent, boolean glowing) {
+		if (entity.isShadowClone()) return RenderType.entityTranslucent(this.getTextureLocation(entity));
+		else return super.getRenderType(entity, bodyVisible, translucent, glowing);
 	}
 
 	@Override
-	protected boolean isShaking(Lich pEntity) {
-		return super.isShaking(pEntity) || (pEntity.isDeadOrDying() && pEntity.deathTime <= Lich.DEATH_ANIMATION_POINT_A);
+	protected boolean isShaking(Lich entity) {
+		return super.isShaking(entity) || (entity.isDeadOrDying() && entity.deathTime <= Lich.DEATH_ANIMATION_POINT_A);
 	}
 
 	@Override
-	public void render(Lich lich, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int packedLight) {
-		if (lich.deathTime > 0) {
+	public void render(Lich entity, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int packedLight) {
+		if (entity.deathTime > 0) {
 			stack.pushPose();
-			if (lich.deathTime > Lich.DEATH_ANIMATION_POINT_A) {
-				stack.translate(0.0D, -1.8D * Math.pow(Math.min(((float) (lich.deathTime - Lich.DEATH_ANIMATION_POINT_A) + partialTicks) * 0.05D, 1.0D), 3.0D), 0.0D);
+			if (entity.deathTime > Lich.DEATH_ANIMATION_POINT_A) {
+				stack.translate(0.0D, -1.8D * Math.pow(Math.min(((float) (entity.deathTime - Lich.DEATH_ANIMATION_POINT_A) + partialTicks) * 0.05D, 1.0D), 3.0D), 0.0D);
 			} else {
-				float time = (float) lich.deathTime + partialTicks;
+				float time = (float) entity.deathTime + partialTicks;
 				stack.translate(Math.sin(time * time) * 0.01D, 0.0D, Math.cos(time * time) * 0.01D);
 			}
-			super.render(lich, entityYaw, partialTicks, stack, buffer, packedLight);
+			super.render(entity, entityYaw, partialTicks, stack, buffer, packedLight);
 			stack.popPose();
-		} else super.render(lich, entityYaw, partialTicks, stack, buffer, packedLight);
+		} else super.render(entity, entityYaw, partialTicks, stack, buffer, packedLight);
 	}
 
 	@Override
-	protected float getFlipDegrees(Lich lich) { //Prevent the body from keeling over
-		return lich.isDeadOrDying() ? 0.0F : super.getFlipDegrees(lich);
+	protected float getFlipDegrees(Lich entity) { //Prevent the body from keeling over
+		return entity.isDeadOrDying() ? 0.0F : super.getFlipDegrees(entity);
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(Lich lich) {
-		return LICH_TEXTURE;
+	public ResourceLocation getTextureLocation(Lich entity) {
+		return TEXTURE;
 	}
 }

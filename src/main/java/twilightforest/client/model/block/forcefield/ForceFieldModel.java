@@ -36,8 +36,11 @@ public class ForceFieldModel implements IDynamicBakedModel {
 	private final IGeometryBakingContext context;
 	private final TextureAtlasSprite particle;
 	private final ItemOverrides overrides;
+	@Nullable
 	private final ChunkRenderTypeSet blockRenderTypes;
+	@Nullable
 	private final List<RenderType> itemRenderTypes;
+	@Nullable
 	private final List<RenderType> fabulousItemRenderTypes;
 
 	public ForceFieldModel(Map<BlockElement, ForceFieldModelLoader.Condition> parts, Function<Material, TextureAtlasSprite> spriteFunction, IGeometryBakingContext context, ItemOverrides overrides) {

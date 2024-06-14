@@ -14,78 +14,136 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
+import twilightforest.client.JappaPackReloadListener;
 import twilightforest.entity.passive.Raven;
 
 public class RavenModel extends HierarchicalModel<Raven> {
-	final ModelPart root;
-	//fields
-	final ModelPart head;
-	final ModelPart rightarm;
-	final ModelPart leftarm;
-	final ModelPart rightleg;
-	final ModelPart leftleg;
+	private final ModelPart root;
+	private final ModelPart head;
+	private final ModelPart rightWing;
+	private final ModelPart leftWing;
+	private final ModelPart rightLeg;
+	private final ModelPart leftLeg;
 
 	public RavenModel(ModelPart root) {
 		this.root = root;
 
 		this.head = root.getChild("head");
-		this.rightarm = root.getChild("right_wing");
-		this.leftarm = root.getChild("left_wing");
-		this.rightleg = root.getChild("right_leg");
-		this.leftleg = root.getChild("left_leg");
+		var body = root.getChild("body");
+		this.rightWing = body.getChild("right_wing");
+		this.leftWing = body.getChild("left_wing");
+		this.rightLeg = root.getChild("right_leg");
+		this.leftLeg = root.getChild("left_leg");
 	}
 
-	public static LayerDefinition create() {
-		MeshDefinition mesh = new MeshDefinition();
-		PartDefinition base = mesh.getRoot();
+	public static LayerDefinition checkForPack() {
+		return JappaPackReloadListener.INSTANCE.isJappaPackLoaded() ? createJappaModel() : create();
+	}
 
-		PartDefinition headpart = base.addOrReplaceChild("head", CubeListBuilder.create()
+	private static LayerDefinition create() {
+		MeshDefinition meshdefinition = new MeshDefinition();
+		PartDefinition base = meshdefinition.getRoot();
+
+		PartDefinition head = base.addOrReplaceChild("head", CubeListBuilder.create()
 				.texOffs(0, 0)
-				.addBox(-1.5F, -1.5F, -3F, 3, 3, 3)
-				.mirror(),
-			PartPose.offset(0F, 18F, 0F));
-		headpart.addOrReplaceChild("beak1", CubeListBuilder.create()
-				.texOffs(12, 0)
-				.addBox(-0.5F, -1F, -2F, 1, 1, 2),
-			PartPose.offsetAndRotation(0F, 0F, -2.5F, 0.2617994F, 0.0F, 0.0F));
-		headpart.addOrReplaceChild("beak2", CubeListBuilder.create()
-				.texOffs(12, 0)
-				.addBox(-0.5F, 0F, -2F, 1, 1, 2),
-			PartPose.offsetAndRotation(0F, 0F, -2.5F, -0.2617994F, 0.0F, 0.0F));
-		base.addOrReplaceChild("body", CubeListBuilder.create()
-				.texOffs(0, 6)
-				.addBox(-1.5F, 0F, -1F, 3, 4, 6),
-			PartPose.offsetAndRotation(0F, 17F, 1F, -0.5235988F, 0F, 0F));
-		base.addOrReplaceChild("right_wing", CubeListBuilder.create()
-				.texOffs(0, 16)
-				.addBox(-1F, 0F, -1.5F, 1, 3, 6),
-			PartPose.offset(-1.5F, 18F, 1F));
-		base.addOrReplaceChild("left_wing", CubeListBuilder.create()
-				.texOffs(0, 16)
-				.addBox(0F, 0F, -1.5F, 1, 3, 6),
-			PartPose.offset(1.5F, 18F, 1F));
-		PartDefinition rightlegpart = base.addOrReplaceChild("right_leg", CubeListBuilder.create()
-				.texOffs(14, 16)
-				.addBox(0F, 0F, 0F, 1, 2, 1),
-			PartPose.offset(-1.5F, 21F, 1F));
-		rightlegpart.addOrReplaceChild("right_foot", CubeListBuilder.create()
-				.texOffs(14, 20)
-				.addBox(0F, -1F, -2F, 1, 1, 2),
-			PartPose.offsetAndRotation(0F, 2F, 1F, 0.5235988F, 0F, 0F));
-		PartDefinition leftlegpart = base.addOrReplaceChild("left_leg", CubeListBuilder.create()
-				.texOffs(14, 16)
-				.addBox(0F, 0F, 0F, 1, 2, 1),
-			PartPose.offset(0.5F, 21F, 1F));
-		leftlegpart.addOrReplaceChild("left_foot", CubeListBuilder.create()
-				.texOffs(14, 20)
-				.addBox(0F, -1F, -2F, 1, 1, 2),
-			PartPose.offsetAndRotation(0F, 2F, 1F, 0.5235988F, 0F, 0F));
-		base.addOrReplaceChild("tail", CubeListBuilder.create()
-				.texOffs(0, 25)
-				.addBox(-1.5F, -0.5F, 0F, 3, 1, 3),
-			PartPose.offsetAndRotation(0F, 21F, 4F, -0.5235988F, 0F, 0F));
+				.addBox(-1.5F, -1.5F, -3.0F, 3.0F, 3.0F, 3.0F),
+			PartPose.offset(0.0F, 18.0F, 0.0F));
 
-		return LayerDefinition.create(mesh, 32, 32);
+		head.addOrReplaceChild("beak1", CubeListBuilder.create()
+				.texOffs(12, 0)
+				.addBox(-0.5F, -1.0F, -2.0F, 1.0F, 1.0F, 2.0F),
+			PartPose.offsetAndRotation(0.0F, 0.0F, -2.5F, 0.2617994F, 0.0F, 0.0F));
+
+		head.addOrReplaceChild("beak2", CubeListBuilder.create()
+				.texOffs(12, 0)
+				.addBox(-0.5F, 0.0F, -2.0F, 1.0F, 1.0F, 2.0F),
+			PartPose.offsetAndRotation(0.0F, 0.0F, -2.5F, -0.2617994F, 0.0F, 0.0F));
+
+		var body = base.addOrReplaceChild("body", CubeListBuilder.create()
+				.texOffs(0, 6)
+				.addBox(-1.5F, 0.0F, -1.0F, 3.0F, 4.0F, 6.0F),
+			PartPose.offsetAndRotation(0.0F, 17.0F, 1.0F, -0.5235988F, 0.0F, 0.0F));
+
+		body.addOrReplaceChild("right_wing", CubeListBuilder.create()
+				.texOffs(0, 16)
+				.addBox(-1.0F, 0.0F, -1.5F, 1.0F, 3.0F, 6.0F),
+			PartPose.offset(-1.5F, 0.0F, 1.0F));
+
+		body.addOrReplaceChild("left_wing", CubeListBuilder.create()
+				.texOffs(0, 16)
+				.addBox(0.0F, 0.0F, -1.5F, 1.0F, 3.0F, 6.0F),
+			PartPose.offset(1.5F, 0.0F, 1.0F));
+
+		PartDefinition rightLeg = base.addOrReplaceChild("right_leg", CubeListBuilder.create()
+				.texOffs(14, 16)
+				.addBox(0.0F, 0.0F, 0.0F, 1.0F, 2.0F, 1.0F),
+			PartPose.offset(-1.5F, 21.0F, 1.0F));
+
+		rightLeg.addOrReplaceChild("right_foot", CubeListBuilder.create()
+				.texOffs(14, 20)
+				.addBox(0.0F, -1.0F, -2.0F, 1.0F, 1.0F, 2.0F),
+			PartPose.offsetAndRotation(0.0F, 2.0F, 1.0F, 0.5235988F, 0.0F, 0.0F));
+
+		PartDefinition leftLeg = base.addOrReplaceChild("left_leg", CubeListBuilder.create()
+				.texOffs(14, 16)
+				.addBox(0.0F, 0.0F, 0.0F, 1.0F, 2.0F, 1.0F),
+			PartPose.offset(0.5F, 21.0F, 1.0F));
+
+		leftLeg.addOrReplaceChild("left_foot", CubeListBuilder.create()
+				.texOffs(14, 20)
+				.addBox(0.0F, -1.0F, -2.0F, 1.0F, 1.0F, 2.0F),
+			PartPose.offsetAndRotation(0.0F, 2.0F, 1.0F, 0.5235988F, 0.0F, 0.0F));
+
+		body.addOrReplaceChild("tail", CubeListBuilder.create()
+				.texOffs(0, 25)
+				.addBox(-1.5F, -0.5F, 0.0F, 3.0F, 1.0F, 3.0F),
+			PartPose.offsetAndRotation(0.0F, 0.5F, 4.5F, 0.5235988F, 0.0F, 0.0F));
+
+		return LayerDefinition.create(meshdefinition, 32, 32);
+	}
+
+	private static LayerDefinition createJappaModel() {
+		MeshDefinition meshdefinition = new MeshDefinition();
+		PartDefinition partdefinition = meshdefinition.getRoot();
+
+		partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
+				.texOffs(0, 0)
+				.addBox(-1.5F, -1.0F, -2.0F, 3.0F, 3.0F, 3.0F)
+				.texOffs(9, 0)
+				.addBox(-0.5F, 0.0F, -3.0F, 1.0F, 2.0F, 1.0F),
+			PartPose.offset(0.0F, 18.5F, -2.0F));
+
+		var body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create()
+				.texOffs(0, 6)
+				.addBox(-2.0F, -1.5F, 0.0F, 4.0F, 3.0F, 6.0F),
+			PartPose.offsetAndRotation(0.0F, 18.5F, -2.0F, -0.4363323129985824F, 0.0F, 0.0F));
+
+		body.addOrReplaceChild("right_wing", CubeListBuilder.create()
+				.texOffs(0, 15)
+				.addBox(-1.0F, 0.0F, -1.0F, 1.0F, 3.0F, 6.0F),
+			PartPose.offsetAndRotation(-2.0F, -1.0F, 2.0F, 0.2617993877991494F, 0.0F, 0.0F));
+
+		body.addOrReplaceChild("left_wing", CubeListBuilder.create()
+				.texOffs(14, 15)
+				.addBox(0.0F, 0.0F, -1.0F, 1.0F, 3.0F, 6.0F),
+			PartPose.offsetAndRotation(2.0F, -1.0F, 2.0F, 0.2617993877991494F, 0.0F, 0.0F));
+
+		partdefinition.addOrReplaceChild("right_leg", CubeListBuilder.create()
+				.texOffs(8, 15)
+				.addBox(0.0F, 0.0F, -1.0F, 1.0F, 2.0F, 2.0F),
+			PartPose.offsetAndRotation(-1.0F, 0.0F, 0.0F, 0.7853981633974483F, 0.0F, 0.0F));
+
+		partdefinition.addOrReplaceChild("left_leg", CubeListBuilder.create()
+				.texOffs(14, 15)
+				.addBox(0.0F, 0.0F, -1.0F, 1.0F, 2.0F, 2.0F),
+			PartPose.offsetAndRotation(1.0F, 0.0F, 0.0F, 0.7853981633974483F, 0.0F, 0.0F));
+
+		body.addOrReplaceChild("tail", CubeListBuilder.create()
+				.texOffs(8, 0)
+				.addBox(-2.5F, 0.0F, 0.0F, 5.0F, 0.0F, 5.0F),
+			PartPose.offsetAndRotation(0.0F, -1.5F, 6.0F, -0.4363323129985824F, 0.0F, 0.0F));
+
+		return LayerDefinition.create(meshdefinition, 32, 32);
 	}
 
 	@Override
@@ -95,22 +153,22 @@ public class RavenModel extends HierarchicalModel<Raven> {
 
 	@Override
 	public void setupAnim(Raven entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		head.xRot = headPitch / (180F / (float) Math.PI);
-		head.yRot = netHeadYaw / (180F / (float) Math.PI);
-		head.zRot = netHeadYaw > 5 ? -0.2617994F : 0;
+		this.head.xRot = headPitch * Mth.DEG_TO_RAD;
+		this.head.yRot = netHeadYaw * Mth.DEG_TO_RAD;
+		this.head.zRot = netHeadYaw > 5.0F ? -0.2617994F : 0.0F;
 
-		rightleg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-		leftleg.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
+		this.rightLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+		this.leftLeg.xRot = Mth.cos(limbSwing * 0.6662F + Mth.PI) * 1.4F * limbSwingAmount;
 
-		rightarm.zRot = ageInTicks;
-		leftarm.zRot = -ageInTicks;
+		this.rightWing.zRot = ageInTicks;
+		this.leftWing.zRot = -ageInTicks;
 
 		if (entity.isBirdLanded()) {
-			rightleg.y = 21;
-			leftleg.y = 21;
+			this.rightLeg.y = 21.0F;
+			this.leftLeg.y = 21.0F;
 		} else {
-			rightleg.y = 20F;
-			leftleg.y = 20F;
+			this.rightLeg.y = 20.0F;
+			this.leftLeg.y = 20.0F;
 		}
 	}
 }

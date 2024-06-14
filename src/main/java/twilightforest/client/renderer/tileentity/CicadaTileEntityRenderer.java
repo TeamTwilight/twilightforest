@@ -19,28 +19,28 @@ import twilightforest.client.model.entity.CicadaModel;
 public class CicadaTileEntityRenderer implements BlockEntityRenderer<CicadaBlockEntity> {
 
 	private final CicadaModel cicadaModel;
-	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("cicada-model.png");
+	private static final ResourceLocation TEXTURE = TwilightForestMod.getModelTexture("cicada-model.png");
 
-	public CicadaTileEntityRenderer(BlockEntityRendererProvider.Context renderer) {
-		this.cicadaModel = new CicadaModel(renderer.bakeLayer(TFModelLayers.CICADA));
+	public CicadaTileEntityRenderer(BlockEntityRendererProvider.Context context) {
+		this.cicadaModel = new CicadaModel(context.bakeLayer(TFModelLayers.CICADA));
 	}
 
 	@Override
-	public void render(@Nullable CicadaBlockEntity te, float partialTicks, PoseStack ms, MultiBufferSource buffers, int light, int overlay) {
-		int yaw = te != null ? te.currentYaw : BugModelAnimationHelper.currentYaw;
+	public void render(@Nullable CicadaBlockEntity entity, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light, int overlay) {
+		int yaw = entity != null ? entity.currentYaw : BugModelAnimationHelper.currentYaw;
 
-		ms.pushPose();
-		Direction facing = te != null ? te.getBlockState().getValue(DirectionalBlock.FACING) : Direction.NORTH;
-		float randRot = te != null ? te.randRot : 0.0F;
+		stack.pushPose();
+		Direction facing = entity != null ? entity.getBlockState().getValue(DirectionalBlock.FACING) : Direction.NORTH;
+		float randRot = entity != null ? entity.randRot : 0.0F;
 
-		ms.translate(0.5F, 0.5F, 0.5F);
-		ms.mulPose(facing.getRotation());
-		ms.mulPose(Axis.ZP.rotationDegrees(180.0F));
-		ms.mulPose(Axis.YP.rotationDegrees(180.0F + randRot));
-		ms.mulPose(Axis.YN.rotationDegrees(yaw));
+		stack.translate(0.5F, 0.5F, 0.5F);
+		stack.mulPose(facing.getRotation());
+		stack.mulPose(Axis.ZP.rotationDegrees(180.0F));
+		stack.mulPose(Axis.YP.rotationDegrees(180.0F + randRot));
+		stack.mulPose(Axis.YN.rotationDegrees(yaw));
 
-		VertexConsumer vertex = buffers.getBuffer(cicadaModel.renderType(textureLoc));
-		cicadaModel.renderToBuffer(ms, vertex, light, overlay, 1.0F, 1.0F, 1.0F, 1.0F);
-		ms.popPose();
+		VertexConsumer consumer = buffer.getBuffer(cicadaModel.renderType(TEXTURE));
+		cicadaModel.renderToBuffer(stack, consumer, light, overlay, 1.0F, 1.0F, 1.0F, 1.0F);
+		stack.popPose();
 	}
 }

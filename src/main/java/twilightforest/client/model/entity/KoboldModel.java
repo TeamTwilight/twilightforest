@@ -6,99 +6,158 @@
 
 package twilightforest.client.model.entity;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.HumanoidArm;
+import twilightforest.client.JappaPackReloadListener;
 import twilightforest.entity.monster.Kobold;
 
 public class KoboldModel extends HumanoidModel<Kobold> {
 
-	final ModelPart jaw;
-	boolean isJumping;
+	private final ModelPart jaw;
+	private boolean isJumping;
 
-	@SuppressWarnings("this-escape")
 	public KoboldModel(ModelPart root) {
 		super(root);
-		this.isJumping = false;
-		this.jaw = getHead().getChild("jaw");
+		this.jaw = this.getHead().getChild("mouth");
 	}
 
-	public static LayerDefinition create() {
-		MeshDefinition mesh = HumanoidModel.createMesh(CubeDeformation.NONE, 0);
-		PartDefinition definition = mesh.getRoot();
+	public static LayerDefinition checkForPack() {
+		return JappaPackReloadListener.INSTANCE.isJappaPackLoaded() ? createJappaModel() : create();
+	}
 
-		var head = definition.addOrReplaceChild("head", CubeListBuilder.create()
+	private static LayerDefinition create() {
+		MeshDefinition meshdefinition = HumanoidModel.createMesh(CubeDeformation.NONE, 0);
+		PartDefinition partdefinition = meshdefinition.getRoot();
+
+		var head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
 				.texOffs(0, 0)
-				.addBox(-3.5F, -7F, -3F, 7, 6, 6),
-			PartPose.offset(0F, 13F, 0F));
+				.addBox(-3.5F, -7.0F, -3.0F, 7.0F, 6.0F, 6.0F),
+			PartPose.offset(0.0F, 13.0F, 0.0F));
 
-		definition.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
+		partdefinition.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
 
 		head.addOrReplaceChild("right_ear", CubeListBuilder.create()
 				.texOffs(48, 20)
-				.addBox(0F, -4F, 0F, 4, 4, 1),
-			PartPose.offsetAndRotation(3.5F, -3F, -1F, 0.0F, 0.2617994F, -0.3490659F));
+				.addBox(0.0F, -4.0F, 0.0F, 4.0F, 4.0F, 1.0F),
+			PartPose.offsetAndRotation(3.5F, -3.0F, -1.0F, 0.0F, 0.2617994F, -0.3490659F));
 
 		head.addOrReplaceChild("left_ear", CubeListBuilder.create()
 				.texOffs(48, 25)
-				.addBox(-4F, -4F, 0F, 4, 4, 1),
-			PartPose.offsetAndRotation(-3.5F, -3F, -1F, 0.0F, -0.2617994F, 0.3490659F));
+				.addBox(-4.0F, -4.0F, 0.0F, 4.0F, 4.0F, 1.0F),
+			PartPose.offsetAndRotation(-3.5F, -3.0F, -1.0F, 0.0F, -0.2617994F, 0.3490659F));
 
 		head.addOrReplaceChild("snout", CubeListBuilder.create()
 				.texOffs(28, 0)
-				.addBox(-1.5F, -2F, -2F, 3, 2, 3),
-			PartPose.offset(0F, -2F, -3F));
+				.addBox(-1.5F, -2.0F, -2.0F, 3.0F, 2.0F, 3.0F),
+			PartPose.offset(0.0F, -2.0F, -3.0F));
 
-		head.addOrReplaceChild("jaw", CubeListBuilder.create()
+		head.addOrReplaceChild("mouth", CubeListBuilder.create()
 				.texOffs(28, 5)
-				.addBox(-1.5F, 0F, -2F, 3, 1, 3),
-			PartPose.offsetAndRotation(0F, -2F, -3F, 0.20944F, 0.0F, 0.0F));
+				.addBox(-1.5F, 0.0F, -2.0F, 3.0F, 1.0F, 3.0F),
+			PartPose.offsetAndRotation(0.0F, -2.0F, -3.0F, 0.20944F, 0.0F, 0.0F));
 
-		definition.addOrReplaceChild("body", CubeListBuilder.create()
+		partdefinition.addOrReplaceChild("body", CubeListBuilder.create()
 				.texOffs(12, 19)
-				.addBox(0F, 0F, 0F, 7, 7, 4),
-			PartPose.offset(-3.5F, 12F, -2F));
+				.addBox(0.0F, 0.0F, 0.0F, 7.0F, 7.0F, 4.0F),
+			PartPose.offset(-3.5F, 12.0F, -2.0F));
 
-		definition.addOrReplaceChild("right_arm", CubeListBuilder.create()
+		partdefinition.addOrReplaceChild("right_arm", CubeListBuilder.create()
 				.texOffs(36, 17)
-				.addBox(-3F, -1F, -1.5F, 3, 7, 3),
-			PartPose.offset(-3.5F, 12F, 0F));
+				.addBox(-3.0F, -1.0F, -1.5F, 3.0F, 7.0F, 3.0F),
+			PartPose.offset(-3.5F, 12.0F, 0.0F));
 
-		definition.addOrReplaceChild("left_arm", CubeListBuilder.create().mirror()
+		partdefinition.addOrReplaceChild("left_arm", CubeListBuilder.create().mirror()
 				.texOffs(36, 17)
-				.addBox(0F, -1F, -1.5F, 3, 7, 3),
-			PartPose.offset(3.5F, 12F, 0F));
+				.addBox(0.0F, -1.0F, -1.5F, 3.0F, 7.0F, 3.0F),
+			PartPose.offset(3.5F, 12.0F, 0.0F));
 
-		definition.addOrReplaceChild("right_leg", CubeListBuilder.create()
+		partdefinition.addOrReplaceChild("right_leg", CubeListBuilder.create()
 				.texOffs(0, 20)
-				.addBox(-1.5F, 0F, -1.5F, 3, 5, 3),
-			PartPose.offset(-2F, 19F, 0F));
+				.addBox(-1.5F, 0.0F, -1.5F, 3.0F, 5.0F, 3.0F),
+			PartPose.offset(-2.0F, 19.0F, 0.0F));
 
-		definition.addOrReplaceChild("left_leg", CubeListBuilder.create().mirror()
+		partdefinition.addOrReplaceChild("left_leg", CubeListBuilder.create().mirror()
 				.texOffs(0, 20)
-				.addBox(-1.5F, 0F, -1.5F, 3, 5, 3),
-			PartPose.offset(2F, 19F, 0F));
+				.addBox(-1.5F, 0.0F, -1.5F, 3.0F, 5.0F, 3.0F),
+			PartPose.offset(2.0F, 19.0F, 0.0F));
 
-		return LayerDefinition.create(mesh, 64, 32);
+		return LayerDefinition.create(meshdefinition, 64, 32);
+	}
+
+	private static LayerDefinition createJappaModel() {
+		MeshDefinition meshdefinition = HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F);
+		PartDefinition partdefinition = meshdefinition.getRoot();
+
+		var head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
+				.texOffs(0, 0)
+				.addBox(-3.5F, -6.0F, -3.0F, 7.0F, 6.0F, 6.0F)
+				.texOffs(20, 0)
+				.addBox(-1.5F, -3.0F, -6.0F, 3.0F, 2.0F, 3.0F),
+			PartPose.offset(0.0F, 12.0F, 0.0F));
+
+		partdefinition.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
+
+		head.addOrReplaceChild("mouth", CubeListBuilder.create()
+				.texOffs(26, 5)
+				.addBox(-1.5F, 0.0F, -3.0F, 3.0F, 1.0F, 3.0F),
+			PartPose.offsetAndRotation(0.0F, -1.0F, -3.0F, 0.2181661564992912F, 0.0F, 0.0F));
+
+		head.addOrReplaceChild("right_ear", CubeListBuilder.create()
+				.texOffs(32, 0)
+				.addBox(-2.0F, -4.0F, 0.0F, 4.0F, 4.0F, 1.0F),
+			PartPose.offsetAndRotation(-3.0F, -4.0F, 0.0F, 0.0F, 0.0F, -1.3089969389957472F));
+
+		head.addOrReplaceChild("left_ear", CubeListBuilder.create()
+				.texOffs(42, 0)
+				.addBox(-2.0F, -4.0F, 0.0F, 4.0F, 4.0F, 1.0F),
+			PartPose.offsetAndRotation(3.0F, -4.0F, 0.0F, 0.0F, 0.0F, 1.3089969389957472F));
+
+		partdefinition.addOrReplaceChild("body", CubeListBuilder.create()
+				.texOffs(12, 12)
+				.addBox(-3.5F, 0.0F, -2.0F, 7.0F, 7.0F, 4.0F),
+			PartPose.offset(0.0F, 12.0F, 0.0F));
+
+		partdefinition.addOrReplaceChild("right_arm", CubeListBuilder.create()
+				.texOffs(34, 12)
+				.addBox(-2.0F, -1.0F, -1.5F, 3.0F, 7.0F, 3.0F),
+			PartPose.offset(-4.5F, 13.0F, 0.0F));
+
+		partdefinition.addOrReplaceChild("left_arm", CubeListBuilder.create()
+				.texOffs(34, 22)
+				.addBox(-1.0F, -1.0F, -1.5F, 3.0F, 7.0F, 3.0F),
+			PartPose.offset(4.5F, 13.0F, 0.0F));
+
+		partdefinition.addOrReplaceChild("right_leg", CubeListBuilder.create()
+				.texOffs(0, 12)
+				.addBox(-1.5F, 0.0F, -1.5F, 3.0F, 5.0F, 3.0F),
+			PartPose.offset(-1.9F, 19.0F, 0.0F));
+
+		partdefinition.addOrReplaceChild("left_leg", CubeListBuilder.create()
+				.texOffs(0, 20)
+				.addBox(-1.5F, 0.0F, -1.5F, 3.0F, 5.0F, 3.0F),
+			PartPose.offset(1.9F, 19.0F, 0.0F));
+
+		return LayerDefinition.create(meshdefinition, 64, 32);
 	}
 
 	@Override
 	public void setupAnim(Kobold entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		this.head.yRot = netHeadYaw / (180F / (float) Math.PI);
-		this.head.xRot = headPitch / (180F / (float) Math.PI);
+		this.head.yRot = netHeadYaw * Mth.DEG_TO_RAD;
+		this.head.xRot = headPitch * Mth.DEG_TO_RAD;
 
-		this.rightArm.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 2.0F * limbSwingAmount * 0.5F;
-		this.leftArm.xRot = Mth.cos(limbSwing * 0.6662F) * 2.0F * limbSwingAmount * 0.5F;
 		this.rightArm.zRot = 0.0F;
 		this.leftArm.zRot = 0.0F;
 
-		this.rightArm.xRot = -((float) Math.PI * .15F);
-		this.leftArm.xRot = -((float) Math.PI * .15F);
+		this.rightArm.xRot = -(Mth.PI * 0.15F);
+		this.leftArm.xRot = -(Mth.PI * 0.15F);
 
 		this.rightLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-		this.leftLeg.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
+		this.leftLeg.xRot = Mth.cos(limbSwing * 0.6662F + Mth.PI) * 1.4F * limbSwingAmount;
 		this.rightLeg.yRot = 0.0F;
 		this.leftLeg.yRot = 0.0F;
 
@@ -116,8 +175,15 @@ public class KoboldModel extends HumanoidModel<Kobold> {
 	}
 
 	@Override
+	public void translateToHand(HumanoidArm arm, PoseStack stack) {
+		super.translateToHand(arm, stack);
+		stack.translate(0.0F, -0.075F, 0.0F);
+		stack.scale(0.75F, 0.75F, 0.75F);
+	}
+
+	@Override
 	public void prepareMobModel(Kobold entity, float limbSwing, float limbSwingAmount, float partialTicks) {
 		// check if entity is jumping
-		this.isJumping = entity.getDeltaMovement().y() > 0;
+		this.isJumping = !entity.isNoAi() && entity.getDeltaMovement().y() > 0;
 	}
 }

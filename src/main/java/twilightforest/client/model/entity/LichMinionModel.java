@@ -21,11 +21,11 @@ public class LichMinionModel extends ZombieModel<LichMinion> {
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, float red, float green, float blue, float scale) {
-		if (hasStrength) {
-			super.renderToBuffer(stack, builder, light, overlay, red * 0.25F, green, blue * 0.25F, scale);
+	public void renderToBuffer(PoseStack stack, VertexConsumer consumer, int light, int overlay, float red, float green, float blue, float scale) {
+		if (this.hasStrength) {
+			super.renderToBuffer(stack, consumer, light, overlay, red * 0.25F, green, blue * 0.25F, scale);
 		} else {
-			super.renderToBuffer(stack, builder, light, overlay, red * 0.5F, green, blue * 0.5F, scale);
+			super.renderToBuffer(stack, consumer, light, overlay, red * 0.5F, green, blue * 0.5F, scale);
 		}
 	}
 }

@@ -9,9 +9,6 @@ import net.minecraft.client.renderer.RenderType;
 import org.joml.Matrix4f;
 import twilightforest.TwilightForestMod;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-
-@ParametersAreNonnullByDefault
 public class TFRenderTypes extends RenderType {
 	public TFRenderTypes(String name, VertexFormat vertexFormat, VertexFormat.Mode mode, int bufferSize, boolean crumbling, boolean sort, Runnable setup, Runnable clear) {
 		super(name, vertexFormat, mode, bufferSize, crumbling, sort, setup, clear);

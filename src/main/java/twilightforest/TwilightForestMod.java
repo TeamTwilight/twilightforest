@@ -437,7 +437,7 @@ public final class TwilightForestMod {
 			fireblock.setFlammable(TFBlocks.BEANSTALK_LEAVES.get(), 30, 60);
 			fireblock.setFlammable(TFBlocks.THORN_LEAVES.get(), 30, 60);
 			fireblock.setFlammable(TFBlocks.RAINBOW_OAK_LEAVES.get(), 30, 60);
-			fireblock.setFlammable(TFBlocks.HARDENED_DARK_LEAVES.get(), 30, 60);
+			fireblock.setFlammable(TFBlocks.HARDENED_DARK_LEAVES.get(), 0, 1);
 
 			fireblock.setFlammable(TFBlocks.HOLLOW_OAK_LOG_HORIZONTAL.get(), 5, 5);
 			fireblock.setFlammable(TFBlocks.HOLLOW_OAK_LOG_VERTICAL.get(), 5, 5);

@@ -22,8 +22,8 @@ import twilightforest.entity.projectile.IceBomb;
  */
 public class ThrownIceRenderer extends EntityRenderer<IceBomb> {
 
-	public ThrownIceRenderer(EntityRendererProvider.Context manager) {
-		super(manager);
+	public ThrownIceRenderer(EntityRendererProvider.Context context) {
+		super(context);
 		this.shadowRadius = 0.5F;
 	}
 

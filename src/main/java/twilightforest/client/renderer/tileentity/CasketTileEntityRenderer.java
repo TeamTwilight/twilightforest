@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DoubleBlockCombiner;
@@ -33,11 +34,12 @@ import twilightforest.init.TFBlocks;
  */
 //Most of the other stuff is derived from ChestRenderer
 public class CasketTileEntityRenderer<T extends KeepsakeCasketBlockEntity & LidBlockEntity> implements BlockEntityRenderer<T> {
-	public final ModelPart base;
-	public final ModelPart lid;
 
-	public CasketTileEntityRenderer(BlockEntityRendererProvider.Context renderer) {
-		var root = renderer.bakeLayer(TFModelLayers.KEEPSAKE_CASKET);
+	private final ModelPart base;
+	private final ModelPart lid;
+
+	public CasketTileEntityRenderer(BlockEntityRendererProvider.Context context) {
+		var root = context.bakeLayer(TFModelLayers.KEEPSAKE_CASKET);
 
 		this.base = root.getChild("base");
 		this.lid = root.getChild("lid");
@@ -73,35 +75,35 @@ public class CasketTileEntityRenderer<T extends KeepsakeCasketBlockEntity & LidB
 
 
 	@Override
-	public void render(T tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
-		Level world = tileEntityIn.getLevel();
+	public void render(T entity, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light, int overlay) {
+		Level world = entity.getLevel();
 		boolean flag = world != null;
-		BlockState blockstate = flag ? tileEntityIn.getBlockState() : TFBlocks.KEEPSAKE_CASKET.get().defaultBlockState();
+		BlockState blockstate = flag ? entity.getBlockState() : TFBlocks.KEEPSAKE_CASKET.get().defaultBlockState();
 		Block block = blockstate.getBlock();
 		if (block instanceof KeepsakeCasketBlock) {
 			int damage = blockstate.getValue(KeepsakeCasketBlock.BREAKAGE);
 			Direction facing = blockstate.getValue(HorizontalDirectionalBlock.FACING);
 
-			matrixStackIn.pushPose();
+			stack.pushPose();
 
-			matrixStackIn.translate(0.5, 0.0, 0.5);
-			matrixStackIn.mulPose(facing.getRotation());
-			matrixStackIn.mulPose(Axis.XP.rotationDegrees(90.0F));
+			stack.translate(0.5F, 0.0F, 0.5F);
+			stack.mulPose(facing.getRotation());
+			stack.mulPose(Axis.XP.rotationDegrees(90.0F));
 
-			DoubleBlockCombiner.NeighborCombineResult<? extends KeepsakeCasketBlockEntity> icallbackwrapper = DoubleBlockCombiner.Combiner::acceptNone;
-			float f1 = icallbackwrapper.apply(KeepsakeCasketBlock.getLidRotationCallback(tileEntityIn)).get(partialTicks);
+			DoubleBlockCombiner.NeighborCombineResult<? extends KeepsakeCasketBlockEntity> result = DoubleBlockCombiner.Combiner::acceptNone;
+			float f1 = result.apply(KeepsakeCasketBlock.getLidRotationCallback(entity)).get(partialTicks);
 			f1 = 1.0F - f1;
 			f1 = 1.0F - f1 * f1 * f1;
 
-			ResourceLocation CASKET = TwilightForestMod.getModelTexture("casket/keepsake_casket_" + damage + ".png");
-			this.renderModels(matrixStackIn, bufferIn.getBuffer(RenderType.entityCutoutNoCull(CASKET)), this.lid, this.base, f1, combinedLightIn, combinedOverlayIn);
-			matrixStackIn.popPose();
+			ResourceLocation casket = TwilightForestMod.getModelTexture("casket/keepsake_casket_" + damage + ".png");
+			this.renderModels(stack, buffer.getBuffer(RenderType.entityCutoutNoCull(casket)), this.lid, this.base, f1, light, overlay);
+			stack.popPose();
 		}
 	}
 
-	private void renderModels(PoseStack matrixStackIn, VertexConsumer bufferIn, ModelPart lid, ModelPart base, float lidAngle, int combinedLightIn, int combinedOverlayIn) {
-		lid.xRot = -(lidAngle * ((float) Math.PI / 2F));
-		lid.render(matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
-		base.render(matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
+	private void renderModels(PoseStack stack, VertexConsumer buffer, ModelPart lid, ModelPart base, float lidAngle, int light, int overlay) {
+		lid.xRot = -(lidAngle * Mth.HALF_PI);
+		lid.render(stack, buffer, light, overlay);
+		base.render(stack, buffer, light, overlay);
 	}
 }

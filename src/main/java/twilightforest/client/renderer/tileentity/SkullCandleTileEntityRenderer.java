@@ -59,8 +59,8 @@ public class SkullCandleTileEntityRenderer<T extends SkullCandleBlockEntity> imp
 		return map.build();
 	}
 
-	public SkullCandleTileEntityRenderer(BlockEntityRendererProvider.Context renderer) {
-		this.modelByType = createSkullRenderers(renderer.getModelSet());
+	public SkullCandleTileEntityRenderer(BlockEntityRendererProvider.Context context) {
+		this.modelByType = createSkullRenderers(context.getModelSet());
 	}
 
 	@Override

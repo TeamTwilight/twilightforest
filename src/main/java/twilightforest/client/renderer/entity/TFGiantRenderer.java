@@ -31,7 +31,6 @@ public class TFGiantRenderer<T extends GiantMiner> extends MobRenderer<T, Player
 	private final PlayerModel<T> normalModel;
 	private final PlayerModel<T> slimModel;
 
-	@SuppressWarnings("this-escape")
 	public TFGiantRenderer(EntityRendererProvider.Context context) {
 		super(context, new PlayerModel<>(context.bakeLayer(ModelLayers.PLAYER), false), 1.8F);
 		this.normalModel = this.getModel();
@@ -62,7 +61,7 @@ public class TFGiantRenderer<T extends GiantMiner> extends MobRenderer<T, Player
 	}
 
 	@Override
-	public void scale(T entitylivingbaseIn, PoseStack stack, float partialTickTime) {
+	public void scale(T entity, PoseStack stack, float partialTicks) {
 		float scale = 4.0F;
 		stack.scale(scale, scale, scale);
 	}

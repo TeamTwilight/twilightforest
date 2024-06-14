@@ -98,6 +98,9 @@ repositories {
 	maven { // TOP
 		url "https://maven.k-4u.nl"
 	}
+	maven { //CS
+		url "https://nexus.resourcefulbees.com/repository/maven-public/"
+	}
     maven {
         name 'Curseforge Maven' // Jade
         url "https://www.cursemaven.com"
@@ -125,6 +128,7 @@ dependencies {
 
     //mods we dont have compat with but are nice to have
 //	runtimeOnly "team-twilight:crossdimcommands:${project.base_minecraft_version}-1.0"
+	runtimeOnly "com.telepathicgrunt:CommandStructures-Neoforge:4.3.2+1.20.6"
 
     //minecraft
     implementation "net.neoforged:neoforge:${project.neo_version}"

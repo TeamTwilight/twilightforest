@@ -12,7 +12,7 @@ import twilightforest.init.TFParticleType;
 
 import javax.annotation.Nonnull;
 
-public class LeafParticleData implements ParticleOptions {
+public record LeafParticleData(int r, int g, int b) implements ParticleOptions {
 	public static MapCodec<LeafParticleData> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 		Codec.INT.fieldOf("r").forGetter((obj) -> obj.r),
 		Codec.INT.fieldOf("g").forGetter((obj) -> obj.g),
@@ -25,16 +25,6 @@ public class LeafParticleData implements ParticleOptions {
 		ByteBufCodecs.VAR_INT, p -> p.b,
 		LeafParticleData::new
 	);
-
-	public final int r;
-	public final int g;
-	public final int b;
-
-	public LeafParticleData(int r, int g, int b) {
-		this.r = r;
-		this.g = g;
-		this.b = b;
-	}
 
 	@Nonnull
 	@Override

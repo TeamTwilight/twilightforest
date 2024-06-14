@@ -10,13 +10,14 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 
 public class FireflyModel extends Model {
-	//fields
-	public final ModelPart legs;
-	public final ModelPart fatbody;
-	public final ModelPart skinnybody;
-	public final ModelPart glow;
+
+	private final ModelPart legs;
+	private final ModelPart fatbody;
+	private final ModelPart skinnybody;
+	private final ModelPart glow;
 
 	public FireflyModel(ModelPart root) {
 		super(RenderType::entityCutoutNoCull);
@@ -59,5 +60,9 @@ public class FireflyModel extends Model {
 		this.legs.render(stack, consumer, light, overlay, red, green, blue, alpha);
 		this.fatbody.render(stack, consumer, light, overlay, red, green, blue, alpha);
 		this.skinnybody.render(stack, consumer, light, overlay, red, green, blue, alpha);
+	}
+
+	public void renderGlow(PoseStack stack, VertexConsumer consumer, float alpha) {
+		this.glow.render(stack, consumer, 0xF000F0, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, alpha);
 	}
 }

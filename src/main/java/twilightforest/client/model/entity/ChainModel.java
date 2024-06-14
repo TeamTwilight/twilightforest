@@ -11,6 +11,7 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.entity.Entity;
 
 public class ChainModel extends ListModel<Entity> {
+
 	private final ModelPart chain;
 
 	public ChainModel(ModelPart root) {
@@ -18,24 +19,24 @@ public class ChainModel extends ListModel<Entity> {
 	}
 
 	public static LayerDefinition create() {
-		MeshDefinition mesh = new MeshDefinition();
-		PartDefinition definition = mesh.getRoot();
+		MeshDefinition meshdefinition = new MeshDefinition();
+		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		definition.addOrReplaceChild("chain", CubeListBuilder.create()
+		partdefinition.addOrReplaceChild("chain", CubeListBuilder.create()
 				.texOffs(24, 0)
-				.addBox(-1F, -1F, -1F, 2, 2, 2),
+				.addBox(-1.0F, -1.0F, -1.0F, 2.0F, 2.0F, 2.0F),
 			PartPose.ZERO);
 
-		return LayerDefinition.create(mesh, 32, 16);
+		return LayerDefinition.create(meshdefinition, 32, 16);
 	}
 
 	@Override
 	public Iterable<ModelPart> parts() {
-		return ImmutableList.of(chain);
+		return ImmutableList.of(this.chain);
 	}
 
 	@Override
-	public void setupAnim(Entity entity, float v, float v1, float v2, float v3, float v4) {
+	public void setupAnim(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 
 	}
 }

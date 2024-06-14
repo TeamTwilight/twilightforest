@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.model.ListModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.network.chat.Component;
@@ -14,23 +15,21 @@ import net.neoforged.neoforge.client.ClientHooks;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import twilightforest.TwilightForestMod;
-import twilightforest.client.model.TFModelLayers;
-import twilightforest.client.model.entity.HydraHeadModel;
 import twilightforest.entity.boss.Hydra;
 import twilightforest.entity.boss.HydraHead;
 import twilightforest.entity.boss.HydraHeadContainer;
 
-public class HydraHeadRenderer extends TFPartRenderer<HydraHead, HydraHeadModel> {
+public class HydraHeadRenderer<T extends HydraHead, M extends ListModel<T>> extends TFPartRenderer<T, M> {
 
-	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("hydra4.png");
+	private static final ResourceLocation TEXTURE = TwilightForestMod.getModelTexture("hydra4.png");
 
 
-	public HydraHeadRenderer(EntityRendererProvider.Context manager) {
-		super(manager, new HydraHeadModel(manager.bakeLayer(TFModelLayers.NEW_HYDRA_HEAD)));
+	public HydraHeadRenderer(EntityRendererProvider.Context context, M model) {
+		super(context, model);
 	}
 
 	@Override
-	public void render(HydraHead entity, float yaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light) {
+	public void render(T entity, float yaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light) {
 		// get the HydraHeadContainer that we're taking about
 		HydraHeadContainer headCon = getHeadObject(entity);
 
@@ -47,17 +46,17 @@ public class HydraHeadRenderer extends TFPartRenderer<HydraHead, HydraHeadModel>
 	}
 
 	@Override
-	protected boolean shouldShowName(HydraHead head) {
-		return head.hasCustomName() && !head.getCustomName().getString().isEmpty();
+	protected boolean shouldShowName(T entity) {
+		return entity.hasCustomName() && !entity.getCustomName().getString().isEmpty();
 	}
 
 	@Override
-	protected void renderNameTag(HydraHead head, Component component, PoseStack stack, MultiBufferSource source, int light, float scale) {
-		double d0 = this.entityRenderDispatcher.distanceToSqr(head);
-		if (ClientHooks.isNameplateInRenderDistance(head, d0)) {
-			Vec3 vec3 = head.getAttachments().getNullable(EntityAttachment.NAME_TAG, 0, head.getViewYRot(scale));
+	protected void renderNameTag(T entity, Component component, PoseStack stack, MultiBufferSource source, int light, float scale) {
+		double d0 = this.entityRenderDispatcher.distanceToSqr(entity);
+		if (ClientHooks.isNameplateInRenderDistance(entity, d0)) {
+			Vec3 vec3 = entity.getAttachments().getNullable(EntityAttachment.NAME_TAG, 0, entity.getViewYRot(scale));
 			if (vec3 != null) {
-				boolean flag = !head.isDiscrete();
+				boolean flag = !entity.isDiscrete();
 				stack.pushPose();
 				stack.translate(vec3.x, vec3.y + 0.5, vec3.z);
 				stack.mulPose(Axis.YP.rotationDegrees(180.0F));
@@ -93,7 +92,7 @@ public class HydraHeadRenderer extends TFPartRenderer<HydraHead, HydraHeadModel>
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(HydraHead entity) {
-		return textureLoc;
+	public ResourceLocation getTextureLocation(T entity) {
+		return TEXTURE;
 	}
 }

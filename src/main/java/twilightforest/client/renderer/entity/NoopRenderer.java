@@ -6,12 +6,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 
 public class NoopRenderer<T extends Entity> extends EntityRenderer<T> {
-	public NoopRenderer(EntityRendererProvider.Context mgr) {
-		super(mgr);
+	public NoopRenderer(EntityRendererProvider.Context context) {
+		super(context);
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(T p_110775_1_) {
+	public ResourceLocation getTextureLocation(T entity) {
 		throw new UnsupportedOperationException();
 	}
 }

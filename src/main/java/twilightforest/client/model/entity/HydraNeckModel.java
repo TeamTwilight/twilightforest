@@ -8,38 +8,58 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.util.Mth;
+import twilightforest.client.JappaPackReloadListener;
 import twilightforest.entity.boss.HydraNeck;
 
 public class HydraNeckModel extends ListModel<HydraNeck> {
 
-	final ModelPart neck;
+	private final ModelPart neck;
 
 	public HydraNeckModel(ModelPart root) {
 		this.neck = root.getChild("neck");
 	}
 
-	public static LayerDefinition create() {
-		MeshDefinition mesh = new MeshDefinition();
-		PartDefinition definition = mesh.getRoot();
+	public static LayerDefinition checkForPack() {
+		return JappaPackReloadListener.INSTANCE.isJappaPackLoaded() ? createJappaModel() : create();
+	}
 
-		definition.addOrReplaceChild("neck", CubeListBuilder.create()
+	private static LayerDefinition create() {
+		MeshDefinition meshdefinition = new MeshDefinition();
+		PartDefinition partdefinition = meshdefinition.getRoot();
+
+		partdefinition.addOrReplaceChild("neck", CubeListBuilder.create()
 				.texOffs(128, 136)
-				.addBox(-16F, -16F, -16F, 32, 32, 32)
+				.addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
 				.texOffs(128, 200)
-				.addBox(-2F, -23F, 0F, 4, 24, 24),
+				.addBox(-2.0F, -23.0F, 0.0F, 4.0F, 24.0F, 24.0F),
 			PartPose.ZERO);
 
-		return LayerDefinition.create(mesh, 512, 256);
+		return LayerDefinition.create(meshdefinition, 512, 256);
+	}
+
+	private static LayerDefinition createJappaModel() {
+		MeshDefinition meshdefinition = new MeshDefinition();
+		PartDefinition partdefinition = meshdefinition.getRoot();
+
+		partdefinition.addOrReplaceChild("neck", CubeListBuilder.create()
+				.texOffs(260, 0)
+				.addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
+				.texOffs(0, 0)
+				.addBox(-2.0F, -24.0F, 0.0F, 4.0F, 8.0F, 16.0F),
+			PartPose.ZERO);
+
+		return LayerDefinition.create(meshdefinition, 512, 256);
 	}
 
 	@Override
 	public Iterable<ModelPart> parts() {
-		return ImmutableList.of(neck);
+		return ImmutableList.of(this.neck);
 	}
 
 	@Override
 	public void setupAnim(HydraNeck entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		neck.yRot = netHeadYaw / 57.29578F;
-		neck.xRot = headPitch / 57.29578F;
+		this.neck.yRot = netHeadYaw * Mth.DEG_TO_RAD;
+		this.neck.xRot = headPitch * Mth.DEG_TO_RAD;
 	}
 }

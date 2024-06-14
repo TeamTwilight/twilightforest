@@ -1,16 +1,10 @@
-package twilightforest.client.event;
+package twilightforest.client;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import twilightforest.TwilightForestMod;
-
-import java.util.function.BooleanSupplier;
 
 //TODO
 // I would like to look at migrating the models to using EntityModelJson (https://www.curseforge.com/minecraft/mc-mods/entity-model-json) in the future.
@@ -26,16 +20,7 @@ public class JappaPackReloadListener implements ResourceManagerReloadListener {
 		jappaPackLoaded = Minecraft.getInstance().getResourceManager().listPacks().anyMatch(pack -> pack.getResource(PackType.CLIENT_RESOURCES, TwilightForestMod.prefix("jappa_models.marker")) != null);
 	}
 
-	protected static void assertIfPackIsLoaded(FMLClientSetupEvent event) {
-		jappaPackLoaded = Minecraft.getInstance().getResourceManager().listPacks().anyMatch(pack -> pack.getResource(PackType.CLIENT_RESOURCES, TwilightForestMod.prefix("jappa_models.marker")) != null);
-	}
-
 	public boolean isJappaPackLoaded() {
 		return jappaPackLoaded;
-	}
-
-	//Avoid using this. Its needed for entity models only due to reload ordering.
-	public BooleanSupplier uncachedJappaPackCheck() {
-		return () -> Minecraft.getInstance().getResourceManager().listPacks().anyMatch(pack -> pack.getResource(PackType.CLIENT_RESOURCES, TwilightForestMod.prefix("jappa_models.marker")) != null);
 	}
 }

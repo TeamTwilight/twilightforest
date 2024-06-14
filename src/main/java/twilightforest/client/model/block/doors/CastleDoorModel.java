@@ -33,8 +33,11 @@ public class CastleDoorModel implements IDynamicBakedModel {
 	private final TextureAtlasSprite particle;
 	private final ItemOverrides overrides;
 	private final ItemTransforms transforms;
+	@Nullable
 	private final ChunkRenderTypeSet blockRenderTypes;
+	@Nullable
 	private final List<RenderType> itemRenderTypes;
+	@Nullable
 	private final List<RenderType> fabulousItemRenderTypes;
 	//if we ever expand this model to be more flexible, I think we'll need a list of blocks that can connect together defined in the json instead of hardcoding this (tags may be nice for this)
 	private final Block[] validConnectors = {TFBlocks.PINK_CASTLE_DOOR.get(), TFBlocks.YELLOW_CASTLE_DOOR.get(), TFBlocks.BLUE_CASTLE_DOOR.get(), TFBlocks.VIOLET_CASTLE_DOOR.get()};

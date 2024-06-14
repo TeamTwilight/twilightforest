@@ -45,7 +45,7 @@ import twilightforest.block.entity.TFTrappedChestBlockEntity;
 import twilightforest.client.event.ClientEvents;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.KnightmetalShieldModel;
-import twilightforest.client.model.tileentity.GenericTrophyModel;
+import twilightforest.client.model.entity.TrophyBlockModel;
 import twilightforest.client.renderer.tileentity.SkullCandleTileEntityRenderer;
 import twilightforest.client.renderer.tileentity.TrophyTileEntityRenderer;
 import twilightforest.components.item.SkullCandles;
@@ -89,7 +89,7 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 		makeTrappedInstance(map, TFBlocks.SORTING_TRAPPED_CHEST);
 	});
 	private KnightmetalShieldModel shield = new KnightmetalShieldModel(Minecraft.getInstance().getEntityModels().bakeLayer(TFModelLayers.KNIGHTMETAL_SHIELD));
-	private Map<BossVariant, GenericTrophyModel> trophies = TrophyTileEntityRenderer.createTrophyRenderers(Minecraft.getInstance().getEntityModels());
+	private Map<BossVariant, TrophyBlockModel> trophies = TrophyTileEntityRenderer.createTrophyRenderers(Minecraft.getInstance().getEntityModels());
 	private Map<SkullBlock.Type, SkullModelBase> skulls = SkullBlockRenderer.createSkullRenderers(Minecraft.getInstance().getEntityModels());
 	private final CandelabraBlockEntity candelabra = new CandelabraBlockEntity(BlockPos.ZERO, TFBlocks.CANDELABRA.get().defaultBlockState());
 
@@ -115,7 +115,7 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 			Minecraft minecraft = Minecraft.getInstance();
 			if (block instanceof AbstractTrophyBlock trophyBlock) {
 				BossVariant variant = trophyBlock.getVariant();
-				GenericTrophyModel trophy = this.trophies.get(variant);
+				TrophyBlockModel trophy = this.trophies.get(variant);
 
 				if (camera == ItemDisplayContext.GUI) {
 					ModelResourceLocation back = new ModelResourceLocation(TwilightForestMod.prefix(((AbstractTrophyBlock) block).getVariant().getTrophyType().getModelName()), "inventory");
@@ -133,8 +133,6 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 
 					ms.pushPose();
 					ms.translate(0.5F, 0.5F, 0.5F);
-					if (trophyBlock.getVariant() == BossVariant.HYDRA || trophyBlock.getVariant() == BossVariant.QUEST_RAM)
-						ms.scale(0.9F, 0.9F, 0.9F);
 					ms.mulPose(Axis.XP.rotationDegrees(30));
 					ms.mulPose(Axis.YN.rotationDegrees(TFConfig.rotateTrophyHeadsGui && !minecraft.isPaused() ? ClientEvents.time % 360 : -45));
 					ms.translate(-0.5F, -0.5F, -0.5F);

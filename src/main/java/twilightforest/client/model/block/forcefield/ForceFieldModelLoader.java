@@ -46,7 +46,7 @@ public class ForceFieldModelLoader implements IGeometryLoader<UnbakedForceFieldM
 		return new UnbakedForceFieldModel(elementsAndConditions);
 	}
 
-	record Condition(@Nullable ExtraDirection direction, boolean b, List<ExtraDirection> parents) {
+	public record Condition(@Nullable ExtraDirection direction, boolean b, List<ExtraDirection> parents) {
 
 	}
 }

@@ -20,32 +20,32 @@ import twilightforest.client.model.entity.MoonwormModel;
 
 public class MoonwormTileEntityRenderer implements BlockEntityRenderer<MoonwormBlockEntity> {
 
-	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("moonworm.png");
+	private static final ResourceLocation TEXTURE = TwilightForestMod.getModelTexture("moonworm.png");
 	private final MoonwormModel moonwormModel;
 
-	public MoonwormTileEntityRenderer(BlockEntityRendererProvider.Context renderer) {
-		this.moonwormModel = new MoonwormModel(renderer.bakeLayer(TFModelLayers.MOONWORM));
+	public MoonwormTileEntityRenderer(BlockEntityRendererProvider.Context context) {
+		this.moonwormModel = new MoonwormModel(context.bakeLayer(TFModelLayers.MOONWORM));
 	}
 
 	@Override
-	public void render(@Nullable MoonwormBlockEntity te, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
-		int yaw = te != null ? te.currentYaw : BugModelAnimationHelper.currentRotation;
-		if (te == null) partialTicks = Minecraft.getInstance().getFrameTime();
-		float randRot = te != null ? te.randRot : 0.0F;
+	public void render(@Nullable MoonwormBlockEntity entity, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light, int overlay) {
+		int yaw = entity != null ? entity.currentYaw : BugModelAnimationHelper.currentRotation;
+		if (entity == null) partialTicks = Minecraft.getInstance().getFrameTime();
+		float randRot = entity != null ? entity.randRot : 0.0F;
 
-		ms.pushPose();
-		Direction facing = te != null ? te.getBlockState().getValue(DirectionalBlock.FACING) : Direction.NORTH;
+		stack.pushPose();
+		Direction facing = entity != null ? entity.getBlockState().getValue(DirectionalBlock.FACING) : Direction.NORTH;
 
-		ms.translate(0.5F, 0.5F, 0.5F);
-		ms.mulPose(facing.getRotation());
-		ms.mulPose(Axis.ZP.rotationDegrees(180.0F));
-		ms.mulPose(Axis.YP.rotationDegrees(180.0F + randRot));
-		ms.mulPose(Axis.YN.rotationDegrees(yaw));
+		stack.translate(0.5F, 0.5F, 0.5F);
+		stack.mulPose(facing.getRotation());
+		stack.mulPose(Axis.ZP.rotationDegrees(180.0F));
+		stack.mulPose(Axis.YP.rotationDegrees(180.0F + randRot));
+		stack.mulPose(Axis.YN.rotationDegrees(yaw));
 
-		VertexConsumer builder = buffer.getBuffer(this.moonwormModel.renderType(textureLoc));
-		this.moonwormModel.setRotationAngles(te, partialTicks);
-		this.moonwormModel.renderToBuffer(ms, builder, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		VertexConsumer consumer = buffer.getBuffer(this.moonwormModel.renderType(TEXTURE));
+		this.moonwormModel.setRotationAngles(entity, partialTicks);
+		this.moonwormModel.renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 
-		ms.popPose();
+		stack.popPose();
 	}
 }

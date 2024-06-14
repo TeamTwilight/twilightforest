@@ -23,18 +23,18 @@ import twilightforest.entity.SlideBlock;
 
 public class SlideBlockRenderer extends EntityRenderer<SlideBlock> {
 
-	public SlideBlockRenderer(EntityRendererProvider.Context manager) {
-		super(manager);
-		this.shadowRadius = 0.0f;
+	public SlideBlockRenderer(EntityRendererProvider.Context context) {
+		super(context);
+		this.shadowRadius = 0.0F;
 	}
 
-	// [VanillaCopy] RenderFallingBlock, with spin
+	// [VanillaCopy] FallingBlockRenderer, with spin
 	@Override
 	public void render(SlideBlock entity, float yaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light) {
 		BlockState blockstate = entity.getBlockState();
 		if (blockstate.getRenderShape() == RenderShape.MODEL) {
-			Level world = entity.level();
-			if (blockstate != world.getBlockState(entity.blockPosition()) && blockstate.getRenderShape() != RenderShape.INVISIBLE) {
+			Level level = entity.level();
+			if (blockstate != level.getBlockState(entity.blockPosition()) && blockstate.getRenderShape() != RenderShape.INVISIBLE) {
 				stack.pushPose();
 				BlockPos blockpos = BlockPos.containing(entity.getX(), entity.getBoundingBox().maxY, entity.getZ());
 				// spin
@@ -54,7 +54,7 @@ public class SlideBlockRenderer extends EntityRenderer<SlideBlock> {
 				BlockRenderDispatcher dispatcher = Minecraft.getInstance().getBlockRenderer();
 				var model = dispatcher.getBlockModel(blockstate);
 				for (var renderType : model.getRenderTypes(blockstate, RandomSource.create(blockstate.getSeed(entity.blockPosition())), ModelData.EMPTY))
-					dispatcher.getModelRenderer().tesselateBlock(world, model, blockstate, blockpos, stack, buffer.getBuffer(RenderTypeHelper.getMovingBlockRenderType(renderType)), false, RandomSource.create(), blockstate.getSeed(entity.blockPosition()), OverlayTexture.NO_OVERLAY, ModelData.EMPTY, renderType);
+					dispatcher.getModelRenderer().tesselateBlock(level, model, blockstate, blockpos, stack, buffer.getBuffer(RenderTypeHelper.getMovingBlockRenderType(renderType)), false, RandomSource.create(), blockstate.getSeed(entity.blockPosition()), OverlayTexture.NO_OVERLAY, ModelData.EMPTY, renderType);
 				stack.popPose();
 				super.render(entity, yaw, partialTicks, stack, buffer, light);
 			}

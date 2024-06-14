@@ -46,14 +46,14 @@ public class TFChestTileEntityRenderer<T extends ChestBlockEntity> extends Chest
 	}
 
 	@Override
-	protected Material getMaterial(T blockEntity, ChestType chestType) {
-		EnumMap<ChestType, Material> b = MATERIALS.get(blockEntity.getBlockState().getBlock());
+	protected Material getMaterial(T entity, ChestType chestType) {
+		EnumMap<ChestType, Material> b = MATERIALS.get(entity.getBlockState().getBlock());
 
-		if (b == null) return super.getMaterial(blockEntity, chestType);
+		if (b == null) return super.getMaterial(entity, chestType);
 
 		Material material = b.get(chestType);
 
-		return material != null ? material : super.getMaterial(blockEntity, chestType);
+		return material != null ? material : super.getMaterial(entity, chestType);
 	}
 
 	private static EnumMap<ChestType, Material> chestMaterial(String type, boolean trapped) {

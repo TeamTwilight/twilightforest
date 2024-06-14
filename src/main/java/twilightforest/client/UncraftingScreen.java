@@ -256,7 +256,7 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> im
 		}
 
 		//check if we're hovering over a banned uncraftable item
-		if (container.slots.get(0).hasItem() && container.slots.get(0).getItem().is(ItemTagGenerator.BANNED_UNCRAFTABLES) && container.slots.get(0).equals(this.hoveredSlot)) {
+		if (container.slots.getFirst().hasItem() && container.slots.getFirst().getItem().is(ItemTagGenerator.BANNED_UNCRAFTABLES) && container.slots.getFirst().equals(this.hoveredSlot)) {
 			graphics.renderTooltip(this.font, Component.translatable("container.twilightforest.uncrafting_table.disabled_item").withStyle(ChatFormatting.RED), pX, pY);
 		} else {
 			super.renderTooltip(graphics, pX, pY);

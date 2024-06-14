@@ -11,11 +11,21 @@ import net.minecraft.util.Mth;
 import twilightforest.entity.monster.DeathTome;
 
 public class DeathTomeModel extends HierarchicalModel<DeathTome> {
-	private final ModelPart root, book, paperStorm;
-	private final ModelPart pagesRight, pagesLeft;
-	private final ModelPart flippingPageRight, flippingPageLeft;
-	private final ModelPart coverRight, coverLeft;
-	private final ModelPart loosePage0, loosePage1, loosePage2, loosePage3;
+
+	private final ModelPart root;
+	private final ModelPart book;
+	private final ModelPart pagesRight;
+	private final ModelPart pagesLeft;
+	private final ModelPart flippingPageRight;
+	private final ModelPart flippingPageLeft;
+	private final ModelPart coverRight;
+	private final ModelPart coverLeft;
+
+	private final ModelPart paperStorm;
+	private final ModelPart loosePage0;
+	private final ModelPart loosePage1;
+	private final ModelPart loosePage2;
+	private final ModelPart loosePage3;
 
 	public DeathTomeModel(ModelPart root) {
 		this.root = root;
@@ -33,17 +43,17 @@ public class DeathTomeModel extends HierarchicalModel<DeathTome> {
 
 		this.paperStorm = this.root.getChild("paper_storm");
 
-		this.loosePage0 = paperStorm.getChild("loose_page_0");
-		this.loosePage1 = paperStorm.getChild("loose_page_1");
-		this.loosePage2 = paperStorm.getChild("loose_page_2");
-		this.loosePage3 = paperStorm.getChild("loose_page_3");
+		this.loosePage0 = this.paperStorm.getChild("loose_page_0");
+		this.loosePage1 = this.paperStorm.getChild("loose_page_1");
+		this.loosePage2 = this.paperStorm.getChild("loose_page_2");
+		this.loosePage3 = this.paperStorm.getChild("loose_page_3");
 	}
 
 	public static LayerDefinition create() {
-		MeshDefinition mesh = new MeshDefinition();
-		PartDefinition definition = mesh.getRoot();
+		MeshDefinition meshdefinition = new MeshDefinition();
+		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		var book = definition.addOrReplaceChild("book", CubeListBuilder.create(), PartPose.ZERO);
+		var book = partdefinition.addOrReplaceChild("book", CubeListBuilder.create(), PartPose.ZERO);
 
 		book.addOrReplaceChild("pages_right", CubeListBuilder.create()
 				.texOffs(0, 10)
@@ -79,29 +89,29 @@ public class DeathTomeModel extends HierarchicalModel<DeathTome> {
 				.addBox(-1.0F, -5.0F, 0.0F, 2.0F, 10.0F, 0.005F),
 			PartPose.rotation(0, Mth.HALF_PI, 0));
 
-		var paperStorm = definition.addOrReplaceChild("paper_storm", CubeListBuilder.create(), PartPose.ZERO);
+		var paperStorm = partdefinition.addOrReplaceChild("paper_storm", CubeListBuilder.create(), PartPose.ZERO);
 
 		paperStorm.addOrReplaceChild("loose_page_0", CubeListBuilder.create()
 				.texOffs(24, 10)
-				.addBox(0F, -4F, -8F, 5, 8, 0.005F),
+				.addBox(0.0F, -4.0F, -8.0F, 5.0F, 8.0F, 0.005F),
 			PartPose.ZERO);
 
 		paperStorm.addOrReplaceChild("loose_page_1", CubeListBuilder.create()
 				.texOffs(24, 10)
-				.addBox(0F, -4F, 9F, 5, 8, 0.005F),
+				.addBox(0.0F, -4.0F, 9.0F, 5.0F, 8.0F, 0.005F),
 			PartPose.ZERO);
 
 		paperStorm.addOrReplaceChild("loose_page_2", CubeListBuilder.create()
 				.texOffs(24, 10)
-				.addBox(0F, -4F, 11F, 5, 8, 0.005F),
+				.addBox(0.0F, -4.0F, 11.0F, 5.0F, 8.0F, 0.005F),
 			PartPose.ZERO);
 
 		paperStorm.addOrReplaceChild("loose_page_3", CubeListBuilder.create()
 				.texOffs(24, 10)
-				.addBox(0F, -4F, 7F, 5, 8, 0.005F),
+				.addBox(0.0F, -4.0F, 7.0F, 5.0F, 8.0F, 0.005F),
 			PartPose.ZERO);
 
-		return LayerDefinition.create(mesh, 64, 32);
+		return LayerDefinition.create(meshdefinition, 64, 32);
 	}
 
 	@Override
@@ -110,7 +120,7 @@ public class DeathTomeModel extends HierarchicalModel<DeathTome> {
 	}
 
 	@Override
-	public void setupAnim(DeathTome entity, float limbAngle, float limbDistance, float customAngle, float headYaw, float headPitch) {
+	public void setupAnim(DeathTome entity, float limbAngle, float limbDistance, float ageInTicks, float headYaw, float headPitch) {
 		this.root.yRot = Mth.HALF_PI;
 
 		if (entity.isOnLectern()) {
@@ -121,7 +131,7 @@ public class DeathTomeModel extends HierarchicalModel<DeathTome> {
 			this.book.x = 0.0F;
 		}
 
-		this.paperStorm.yRot = customAngle * Mth.DEG_TO_RAD + Mth.HALF_PI;
+		this.paperStorm.yRot = ageInTicks * Mth.DEG_TO_RAD + Mth.HALF_PI;
 		this.paperStorm.zRot = 0.8726646259971647F;
 	}
 

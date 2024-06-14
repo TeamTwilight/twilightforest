@@ -18,9 +18,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import twilightforest.entity.boss.SnowQueenIceShield;
 
-public class SnowQueenIceShieldLayer<T extends SnowQueenIceShield> extends EntityRenderer<T> {
-	public SnowQueenIceShieldLayer(EntityRendererProvider.Context renderManager) {
-		super(renderManager);
+public class SnowQueenIceShieldRenderer<T extends SnowQueenIceShield> extends EntityRenderer<T> {
+	public SnowQueenIceShieldRenderer(EntityRendererProvider.Context context) {
+		super(context);
 	}
 
 	@Override

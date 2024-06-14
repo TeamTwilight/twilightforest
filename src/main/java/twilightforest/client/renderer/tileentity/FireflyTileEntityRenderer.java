@@ -21,36 +21,36 @@ import twilightforest.client.model.entity.FireflyModel;
 public class FireflyTileEntityRenderer implements BlockEntityRenderer<FireflyBlockEntity> {
 
 	private final FireflyModel fireflyModel;
-	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("firefly-tiny.png");
+	private static final ResourceLocation TEXTURE = TwilightForestMod.getModelTexture("firefly-tiny.png");
 
-	public FireflyTileEntityRenderer(BlockEntityRendererProvider.Context renderer) {
-		this.fireflyModel = new FireflyModel(renderer.bakeLayer(TFModelLayers.FIREFLY));
+	public FireflyTileEntityRenderer(BlockEntityRendererProvider.Context context) {
+		this.fireflyModel = new FireflyModel(context.bakeLayer(TFModelLayers.FIREFLY));
 	}
 
 	@Override
-	public void render(@Nullable FireflyBlockEntity te, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
-		int yaw = te != null ? te.currentYaw : BugModelAnimationHelper.currentYaw;
-		float glow = te != null ? te.glowIntensity : BugModelAnimationHelper.glowIntensity;
-		float randRot = te != null ? te.randRot : 0.0F;
+	public void render(@Nullable FireflyBlockEntity entity, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light, int overlay) {
+		int yaw = entity != null ? entity.currentYaw : BugModelAnimationHelper.currentYaw;
+		float glow = entity != null ? entity.glowIntensity : BugModelAnimationHelper.glowIntensity;
+		float randRot = entity != null ? entity.randRot : 0.0F;
 
-		ms.pushPose();
-		Direction facing = te != null ? te.getBlockState().getValue(DirectionalBlock.FACING) : Direction.NORTH;
+		stack.pushPose();
+		Direction facing = entity != null ? entity.getBlockState().getValue(DirectionalBlock.FACING) : Direction.NORTH;
 
-		ms.translate(0.5F, 0.5F, 0.5F);
-		ms.mulPose(facing.getRotation());
-		ms.mulPose(Axis.ZP.rotationDegrees(180.0F));
-		ms.mulPose(Axis.YP.rotationDegrees(180.0F + randRot));
-		ms.mulPose(Axis.YN.rotationDegrees(yaw));
+		stack.translate(0.5F, 0.5F, 0.5F);
+		stack.mulPose(facing.getRotation());
+		stack.mulPose(Axis.ZP.rotationDegrees(180.0F));
+		stack.mulPose(Axis.YP.rotationDegrees(180.0F + randRot));
+		stack.mulPose(Axis.YN.rotationDegrees(yaw));
 
-		ms.pushPose();
+		stack.pushPose();
 
-		VertexConsumer builder = buffer.getBuffer(RenderType.entityCutout(textureLoc));
-		fireflyModel.renderToBuffer(ms, builder, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		VertexConsumer consumer = buffer.getBuffer(RenderType.entityCutout(TEXTURE));
+		this.fireflyModel.renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 
-		builder = buffer.getBuffer(RenderType.entityTranslucent(textureLoc));
-		fireflyModel.glow.render(ms, builder, 0xF000F0, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, glow);
+		consumer = buffer.getBuffer(RenderType.entityTranslucent(TEXTURE));
+		this.fireflyModel.renderGlow(stack, consumer, glow);
 
-		ms.popPose();
-		ms.popPose();
+		stack.popPose();
+		stack.popPose();
 	}
 }

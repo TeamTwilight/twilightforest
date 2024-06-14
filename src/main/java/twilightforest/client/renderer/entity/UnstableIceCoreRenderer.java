@@ -9,24 +9,20 @@ import twilightforest.entity.monster.UnstableIceCore;
 
 public class UnstableIceCoreRenderer<T extends UnstableIceCore, M extends UnstableIceCoreModel<T>> extends TFGenericMobRenderer<T, M> {
 
-	public UnstableIceCoreRenderer(EntityRendererProvider.Context manager, M model) {
-		super(manager, model, 0.4F, "iceexploder.png");
+	public UnstableIceCoreRenderer(EntityRendererProvider.Context context, M model) {
+		super(context, model, 0.4F, "iceexploder.png");
 	}
 
 	@Override
 	protected void scale(T entity, PoseStack stack, float partialTicks) {
 		float bounce = entity.tickCount + partialTicks;
 
-		stack.translate(0F, Mth.sin((bounce) * 0.2F) * 0.15F, 0F);
+		stack.translate(0.0F, Mth.sin((bounce) * 0.2F) * 0.15F, 0.0F);
 
 		// flash
 		float f1 = entity.deathTime;
 		if (f1 > 0) {
 			float f2 = 1.0F + Mth.sin(f1 * 100.0F) * f1 * 0.01F;
-
-			if (f1 < 0.0F) {
-				f1 = 0.0F;
-			}
 
 			if (f1 > 1.0F) {
 				f1 = 1.0F;
