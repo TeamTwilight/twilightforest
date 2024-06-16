@@ -1,4 +1,4 @@
-// 1.20.6	2024-06-07T13:49:21.0016497	Twilight Forest Block Tags
+// 1.20.6	2024-06-14T21:24:59.9830277	Twilight Forest Block Tags
 9d529390443b5da5d71bd6e867c066632e1340b8 data/alexscaves/tags/blocks/ferromagnetic_blocks.json
 ddfcbead67bb9487c003af137a276963e5b20022 data/alexscaves/tags/blocks/gloomoth_light_sources.json
 c365018bd78f1335cd4508b5d74bc4500ae951bd data/alexscaves/tags/blocks/underzealot_light_sources.json
@@ -32,11 +32,12 @@ f285ead821ac84499caf16d88d7a2b79c397953b data/minecraft/tags/blocks/features_can
 211134157771c86a72a0c5a1985c2b05da55729b data/minecraft/tags/blocks/fence_gates.json
 e121d38615572a340044db73e20622af4e2a0a7c data/minecraft/tags/blocks/flower_pots.json
 89b1de786c6a6e577b7de5733e462baa124cd138 data/minecraft/tags/blocks/frog_prefer_jump_to.json
+89b1de786c6a6e577b7de5733e462baa124cd138 data/minecraft/tags/blocks/inside_step_sound_blocks.json
 65049c26c09e844c582a701fe66bd426a58aec5d data/minecraft/tags/blocks/invalid_spawn_inside.json
 30b260e82242a2b548549ed7a4f89117c8d2c3c3 data/minecraft/tags/blocks/leaves.json
 19bd74ce640c043c09053d7571fb7a9915d41417 data/minecraft/tags/blocks/logs.json
 19bd74ce640c043c09053d7571fb7a9915d41417 data/minecraft/tags/blocks/logs_that_burn.json
-34c2d9064373ac86ecb568a5a8dac22f508b0409 data/minecraft/tags/blocks/mineable/axe.json
+a0a081794273a24a6369307f2d26f6a3a3975f72 data/minecraft/tags/blocks/mineable/axe.json
 7177f5d8a3deacfcbfc12170902b73749e87213c data/minecraft/tags/blocks/mineable/hoe.json
 c49cf9252e927b6819b26f0f65d40ef9b7024f10 data/minecraft/tags/blocks/mineable/pickaxe.json
 944d5178d1a94490d123e31a73bc58d4eea852ab data/minecraft/tags/blocks/mineable/shovel.json
@@ -56,6 +57,7 @@ bb39f860aaf80d261eee2fc6cf18ee75a411d1c1 data/minecraft/tags/blocks/slabs.json
 60d2c0021214d67e32e5edc0ee008326caa52bf7 data/minecraft/tags/blocks/stairs.json
 0074c60e923669a4539ccbc5bd0c293f255ff5a5 data/minecraft/tags/blocks/standing_signs.json
 c15f20a0c7467da527d9bde3456b9eb9e6a86021 data/minecraft/tags/blocks/strider_warm_blocks.json
+89b1de786c6a6e577b7de5733e462baa124cd138 data/minecraft/tags/blocks/sword_efficient.json
 e67d2a0a3001de2207130c3fffff8d6665f26fbf data/minecraft/tags/blocks/walls.json
 f1654e579781c2bce8d458efa0cdb304b5ad052c data/minecraft/tags/blocks/wall_hanging_signs.json
 8b7e0d4d896e5e197798d761800abbb1510d92e8 data/minecraft/tags/blocks/wall_signs.json

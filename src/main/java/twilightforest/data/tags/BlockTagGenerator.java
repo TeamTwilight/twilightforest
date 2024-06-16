@@ -11,7 +11,6 @@ import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.compat.ModdedBlockTagGenerator;
-import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFBlocks;
 
 import java.util.concurrent.CompletableFuture;
@@ -563,7 +562,8 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			TFBlocks.TIME_CHEST.get(),
 			TFBlocks.TRANSFORMATION_CHEST.get(),
 			TFBlocks.MINING_CHEST.get(),
-			TFBlocks.SORTING_CHEST.get()
+			TFBlocks.SORTING_CHEST.get(),
+			TFBlocks.HUGE_LILY_PAD.get()
 		).addTags(BANISTERS, HOLLOW_LOGS, TOWERWOOD);
 
 		this.tag(BlockTags.MINEABLE_WITH_HOE).add(
@@ -735,6 +735,12 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 
 		this.tag(BLOCK_AND_CHAIN_NEVER_BREAKS).addTags(MAZESTONE, CASTLE_BLOCKS, DEADROCK, BlockTags.WITHER_IMMUNE)
 			.add(TFBlocks.TIME_LOG_CORE.get(), TFBlocks.TRANSFORMATION_LOG_CORE.get(), TFBlocks.MINING_LOG_CORE.get(), TFBlocks.SORTING_LOG_CORE.get());
+
+		this.tag(BlockTags.INSIDE_STEP_SOUND_BLOCKS)
+			.add(TFBlocks.HUGE_LILY_PAD.get());
+
+		this.tag(BlockTags.SWORD_EFFICIENT)
+			.add(TFBlocks.HUGE_LILY_PAD.get());
 	}
 
 	public static TagKey<Block> create(String tagName) {
