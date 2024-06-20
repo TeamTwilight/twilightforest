@@ -1,4 +1,4 @@
-// 1.21	2024-06-18T11:46:57.99987	TwilightForest Item and BlockItem models
+// 1.21	2024-06-20T12:50:45.8460948	TwilightForest Item and BlockItem models
 387b18dfa614fda790f7b8e8324e3b139fa177c2 assets/twilightforest/models/item/acacia_banister.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/adherent_spawn_egg.json
 0ca7dc7b4daec376dd0f85d57465830781584c7d assets/twilightforest/models/item/alpha_yeti_banner_pattern.json
@@ -129,7 +129,7 @@ c50f26fad82a552662a94f174591373b8f80e4a2 assets/twilightforest/models/item/charm
 df0898c30d4de00dbea13cb826421b02d2fbb58d assets/twilightforest/models/item/charm_of_life_1.json
 d3a3e3ad93428c961cd3665623af8d0f92c59b9b assets/twilightforest/models/item/charm_of_life_2.json
 dcc75e838a6729f58e57b25d4af37902da17af1c assets/twilightforest/models/item/cherry_banister.json
-c9b93fd80e1127475977ce7e7508b44a4990a756 assets/twilightforest/models/item/cicada_jar.json
+3173f2fc815feaad64c9c93c11d284ae95d01048 assets/twilightforest/models/item/cicada_jar.json
 60287266a73cc75aea724a679eef047886e30aa3 assets/twilightforest/models/item/cinder_furnace.json
 b9819b08c50eb1669081cbdefcda06703a043530 assets/twilightforest/models/item/cinder_log.json
 c0905c2fad082d3d418febd423b7b90cdee47d03 assets/twilightforest/models/item/cinder_wood.json
@@ -251,7 +251,7 @@ d895c75381c7feefb45bb9b9554f3530b3ab90c6 assets/twilightforest/models/item/fiery
 2cee91b73f1e622d13636ea951266294a7f8858f assets/twilightforest/models/item/filled_maze_map.json
 a4efc46b585c4575013020061d1c0ff5ec73261b assets/twilightforest/models/item/filled_ore_map.json
 061906a0c9a9a334fbb82acb809c3748e2b1f9cb assets/twilightforest/models/item/final_boss_boss_spawner.json
-6d0c86e31d39d88d46daf77d6f0225eeae485cb8 assets/twilightforest/models/item/firefly_jar.json
+3173f2fc815feaad64c9c93c11d284ae95d01048 assets/twilightforest/models/item/firefly_jar.json
 e7acd2988378a41a4eb4f423392b0a95545f63ed assets/twilightforest/models/item/firefly_particle_spawner.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/fire_beetle_spawn_egg.json
 83c3392a583d70aceb92d9b7f16a5cf58172172b assets/twilightforest/models/item/fire_jet.json
