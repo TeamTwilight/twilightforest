@@ -24,8 +24,10 @@ import static net.minecraft.world.level.block.entity.DecoratedPotBlockEntity.Wob
 
 public class MasonJarBlockEntity extends JarBlockEntity {
 	public static final String TAG_ITEM = "item";
+	public static final String TAG_ANGLE = "rotation";
 
 	protected final MasonJarItemStackHandler item;
+	protected int itemRotation = 0;
 
 	public MasonJarBlockEntity(BlockPos pos, BlockState state) {
 		super(TFBlockEntities.MASON_JAR.get(), pos, state);
@@ -40,12 +42,14 @@ public class MasonJarBlockEntity extends JarBlockEntity {
 	protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
 		super.saveAdditional(tag, registries);
 		tag.put(TAG_ITEM, this.item.serializeNBT(registries));
+		tag.putInt(TAG_ANGLE, this.itemRotation);
 	}
 
 	@Override
 	protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
 		super.loadAdditional(tag, registries);
 		this.item.deserializeNBT(registries, tag.getCompound(TAG_ITEM));
+		this.itemRotation = tag.getInt(TAG_ANGLE);
 	}
 
 	public void setFromItem(ItemStack stack) {
@@ -78,13 +82,21 @@ public class MasonJarBlockEntity extends JarBlockEntity {
 			BlockPos pos = this.getBlockPos();
 			AuxiliaryLightManager lightManager = this.level.getAuxLightManager(pos);
 			if (lightManager != null) {
-                lightManager.setLightAt(pos, this.item.getItem().getItem() instanceof BlockItem blockItem ? blockItem.getBlock().defaultBlockState().getLightEmission() : 0);
-            }
+				lightManager.setLightAt(pos, this.item.getItem().getItem() instanceof BlockItem blockItem ? blockItem.getBlock().defaultBlockState().getLightEmission() : 0);
+			}
 			this.level.getLightEngine().checkBlock(pos);
 		}
 		if (this.level instanceof ServerLevel serverLevel) {
-			PacketDistributor.sendToPlayersTrackingChunk(serverLevel, new ChunkPos(this.getBlockPos()), new SetMasonJarItemPacket(this.getBlockPos(), this.item.getItem()));
+			PacketDistributor.sendToPlayersTrackingChunk(serverLevel, new ChunkPos(this.getBlockPos()), new SetMasonJarItemPacket(this.getBlockPos(), this.item.getItem(), this.itemRotation));
 		}
+	}
+
+	public int getItemRotation() {
+		return this.itemRotation;
+	}
+
+	public void setItemRotation(int itemRotation) {
+		this.itemRotation = itemRotation;
 	}
 
 	public static class MasonJarItemStackHandler extends ItemStackHandler {

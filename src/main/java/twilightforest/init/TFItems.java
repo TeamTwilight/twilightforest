@@ -1,17 +1,10 @@
 package twilightforest.init;
 
-import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
-import net.minecraft.client.renderer.item.ItemProperties;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
@@ -21,7 +14,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.components.item.PotionFlaskComponent;
 import twilightforest.data.tags.CustomTagGenerator;
@@ -110,7 +102,9 @@ public class TFItems {
 	public static final DeferredItem<Item> CARMINITE = ITEMS.register("carminite", () -> new Item(new Item.Properties()));
 	public static final DeferredItem<Item> EXPERIMENT_115 = ITEMS.register("experiment_115", () -> new Experiment115Item(TFBlocks.EXPERIMENT_115.get(), new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationModifier(0.3F).build())));
 	public static final DeferredItem<Item> ROPE = ITEMS.register("rope", () -> new RopeItem(TFBlocks.ROPE.get(), new Item.Properties()));
-	public static final DeferredItem<Item> MASON_JAR = ITEMS.register("mason_jar", () -> new MasonJarItem(TFBlocks.MASON_JAR.get(), new Item.Properties()));
+	public static final DeferredItem<Item> MASON_JAR = ITEMS.register("mason_jar", () -> new JarItem.MasonJarItem(TFBlocks.MASON_JAR.get(), new Item.Properties()));
+	public static final DeferredItem<Item> FIREFLY_JAR = ITEMS.register("firefly_jar", () -> new JarItem(TFBlocks.FIREFLY_JAR.get(), new Item.Properties()));
+	public static final DeferredItem<Item> CICADA_JAR = ITEMS.register("cicada_jar", () -> new JarItem(TFBlocks.CICADA_JAR.get(), new Item.Properties()));
 	public static final DeferredItem<Item> ARMOR_SHARD = ITEMS.register("armor_shard", () -> new Item(new Item.Properties()));
 	public static final DeferredItem<Item> ARMOR_SHARD_CLUSTER = ITEMS.register("armor_shard_cluster", () -> new Item(new Item.Properties()));
 	public static final DeferredItem<Item> KNIGHTMETAL_INGOT = ITEMS.register("knightmetal_ingot", () -> new Item(new Item.Properties()));

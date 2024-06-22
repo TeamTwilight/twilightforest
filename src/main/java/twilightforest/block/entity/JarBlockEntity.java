@@ -35,8 +35,6 @@ public class JarBlockEntity extends BlockEntity {
 	public static final String TAG_LID = "lid";
 	public static final ResourceLocation JAR_LID = TwilightForestMod.prefix("jar_lid");
 	public static final int EVENT_POT_WOBBLES = 1;
-	public static final int EVEN_SET_LID = 2;
-	public static final int CLEAR_ITEM_EVENT = 3;
 
 	@NotNull
 	public Item lid = TFBlocks.TWILIGHT_OAK_LOG.asItem();
@@ -61,9 +59,8 @@ public class JarBlockEntity extends BlockEntity {
 
 	@Override
 	protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-		super.loadAdditional(tag, registries);//FIXME
+		super.loadAdditional(tag, registries);
 		this.lid = tag.contains(TAG_LID) ? ITEM_CODEC.parse(NbtOps.INSTANCE, tag.get(TAG_LID)).result().orElse(TFBlocks.TWILIGHT_OAK_LOG.asItem()) : TFBlocks.TWILIGHT_OAK_LOG.asItem();
-		TwilightForestMod.LOGGER.error("LOADED AS {} - {}", tag.contains(TAG_LID), tag.get(TAG_LID));
 	}
 
 	public ItemStack getJarAsItem() {
