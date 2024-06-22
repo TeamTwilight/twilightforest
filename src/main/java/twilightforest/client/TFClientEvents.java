@@ -250,7 +250,7 @@ public class TFClientEvents {
 			for (ResourceLocation location : JarRenderer.LOG_LOCATION_MAP.values()) {
 				String name = location.getPath();
 				if ((name.equals("mangrove_log") || name.equals("stripped_mangrove_log")) && location.getNamespace().equals("minecraft")) name = "vanilla_" + name;
-				event.register(new ModelResourceLocation(TwilightForestMod.prefix("block/" + name + "_lid"), ModelResourceLocation.STANDALONE_VARIANT));
+				event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("block/" + name + "_lid")));
 			}
 		}
 
@@ -259,7 +259,7 @@ public class TFClientEvents {
 			JarRenderer.LOG_LOCATION_MAP.forEach((item, location) -> {
 				String name = location.getPath();
 				if ((name.equals("mangrove_log") || name.equals("stripped_mangrove_log")) && location.getNamespace().equals("minecraft")) name = "vanilla_" + name;
-                JarRenderer.LIDS.put(item, event.getModels().get(new ModelResourceLocation(TwilightForestMod.prefix("block/" + name + "_lid"), ModelResourceLocation.STANDALONE_VARIANT)));
+                JarRenderer.LIDS.put(item, event.getModels().get(ModelResourceLocation.standalone(TwilightForestMod.prefix("block/" + name + "_lid"))));
             });
 		}
 
