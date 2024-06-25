@@ -5,7 +5,9 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSpecialEffects;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.renderer.tileentity.JarRenderer;
 import twilightforest.init.TFSounds;
 import twilightforest.world.components.BiomeGrassColors;
 
@@ -97,6 +99,19 @@ public class TFEnumExtensions {
 				double noise = (Biome.TEMPERATURE_NOISE.getValue(x * 0.0225D, z * 0.0225D, false) + 1D) / 2D;
 				return BiomeGrassColors.blendColors(0xc43323, 0x5BC423, noise > 0.6D ? noise * 0.1D : noise);
 			};
+			default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
+		});
+	}
+
+	/**
+	 * {@link JarRenderer.MasonJarRenderer#JARRED}
+	 */
+	@Nullable
+	public static Object jarred(int idx, Class<?> type) {
+		return type.cast(switch (idx) {
+			case 0 -> -1;
+			case 1 -> prefix("jarred");
+			case 2 -> "FIXED";
 			default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
 		});
 	}

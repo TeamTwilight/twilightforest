@@ -62,6 +62,15 @@
         "class": "twilightforest/util/TFEnumExtensions",
         "method": "spookyBiomeGrassColor"
       }
+    },
+    {
+      "enum": "net/minecraft/world/item/ItemDisplayContext",
+      "name": "TWILIGHTFOREST_JARRED",
+      "constructor": "(ILjava/lang/String;Ljava/lang/String;)V",
+      "parameters": {
+        "class": "twilightforest/util/TFEnumExtensions",
+        "method": "jarred"
+      }
     }
   ]
 }
