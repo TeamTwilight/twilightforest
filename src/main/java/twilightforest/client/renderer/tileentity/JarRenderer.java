@@ -27,6 +27,7 @@ import net.neoforged.neoforge.client.model.data.ModelData;
 import twilightforest.block.entity.JarBlockEntity;
 import twilightforest.block.entity.MasonJarBlockEntity;
 import twilightforest.init.TFBlocks;
+import twilightforest.util.TFEnumExtensions;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -150,6 +151,11 @@ public class JarRenderer<T extends JarBlockEntity> implements BlockEntityRendere
 	}
 
 	public static class MasonJarRenderer extends JarRenderer<MasonJarBlockEntity> {
+		/**
+		 * {@link TFEnumExtensions#jarred(int, Class)}
+		 */
+		public static final ItemDisplayContext JARRED = ItemDisplayContext.valueOf("TWILIGHTFOREST_JARRED");
+
 		protected final ItemRenderer itemRenderer;
 		protected final EntityRenderDispatcher entityRender;
 		protected final Font font;
@@ -172,7 +178,7 @@ public class JarRenderer<T extends JarBlockEntity> implements BlockEntityRendere
 				poseStack.mulPose(Axis.YN.rotationDegrees(RotationSegment.convertToDegrees(blockEntity.getItemRotation())));
 
 				poseStack.scale(0.5F, 0.5F, 0.5F);
-				this.itemRenderer.renderStatic(stack, ItemDisplayContext.FIXED, packedLight, OverlayTexture.NO_OVERLAY, poseStack, buffer, null, 0);
+				this.itemRenderer.renderStatic(stack, JARRED, packedLight, OverlayTexture.NO_OVERLAY, poseStack, buffer, null, 0);
 
 
 				poseStack.popPose();
