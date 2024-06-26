@@ -1,5 +1,6 @@
 {
   "values": [
-    "#c:crops/wheat"
+    "#c:crops/wheat",
+    "minecraft:apple"
   ]
 }
