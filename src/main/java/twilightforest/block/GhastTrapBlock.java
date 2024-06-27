@@ -18,8 +18,8 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.init.TFAdvancements;
 import twilightforest.block.entity.GhastTrapBlockEntity;
+import twilightforest.init.TFAdvancements;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFSounds;
 
@@ -30,6 +30,7 @@ public class GhastTrapBlock extends BaseEntityBlock {
 	public static final int DEACTIVATE_EVENT = 1;
 	public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
+	@SuppressWarnings("this-escape")
 	public GhastTrapBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(ACTIVE, false));

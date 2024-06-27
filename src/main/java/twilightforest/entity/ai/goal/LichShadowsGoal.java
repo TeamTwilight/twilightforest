@@ -22,6 +22,7 @@ public class LichShadowsGoal extends Goal {
 
 	private final Lich lich;
 
+	@SuppressWarnings("this-escape")
 	public LichShadowsGoal(Lich boss) {
 		this.lich = boss;
 		this.setFlags(EnumSet.of(Flag.LOOK, Flag.MOVE));

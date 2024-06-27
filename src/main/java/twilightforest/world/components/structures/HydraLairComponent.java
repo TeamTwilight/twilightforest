@@ -36,8 +36,8 @@ public class HydraLairComponent extends HollowHillComponent {
 
 	@Override
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox writeableBounds, ChunkPos chunkPosIn, BlockPos blockPos) {
-		FeaturePlacers.replaceBlocksDome(world, this.boundingBox.getCenter().atY(this.getWorldY(-4)), 36.5f, 1/80f, writeableBounds, this.boundingBox.inflatedBy(4), HolderSet.direct(Blocks.GRASS_BLOCK.builtInRegistryHolder(), Blocks.DIRT.builtInRegistryHolder()), Blocks.STONE.defaultBlockState());
-		FeaturePlacers.replaceBlocksDome(world, this.boundingBox.getCenter().offset(-16, 0, -16).atY(this.getWorldY(-1)), 18.5f, 1/80f, writeableBounds, this.boundingBox.inflatedBy(1), HolderSet.direct(Blocks.STONE.builtInRegistryHolder()), Blocks.GRASS_BLOCK.defaultBlockState());
+		FeaturePlacers.replaceBlocksDome(world, this.boundingBox.getCenter().atY(this.getWorldY(-4)), 36.5f, 1 / 80f, writeableBounds, this.boundingBox.inflatedBy(4), HolderSet.direct(Blocks.GRASS_BLOCK.builtInRegistryHolder(), Blocks.DIRT.builtInRegistryHolder()), Blocks.STONE.defaultBlockState());
+		FeaturePlacers.replaceBlocksDome(world, this.boundingBox.getCenter().offset(-16, 0, -16).atY(this.getWorldY(-1)), 18.5f, 1 / 80f, writeableBounds, this.boundingBox.inflatedBy(1), HolderSet.direct(Blocks.STONE.builtInRegistryHolder()), Blocks.GRASS_BLOCK.defaultBlockState());
 
 		this.generateSpeleothems(world, rand, writeableBounds);
 

@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:stripped_time_log"
-            ]
+            "items": "twilightforest:stripped_time_log"
           }
         ]
       },

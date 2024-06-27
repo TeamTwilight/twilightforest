@@ -3,7 +3,7 @@
   "category": "equipment",
   "key": {
     "#": {
-      "tag": "forge:ingots/knightmetal"
+      "tag": "c:ingots/knightmetal"
     }
   },
   "pattern": [
@@ -11,6 +11,7 @@
     "# #"
   ],
   "result": {
-    "item": "twilightforest:knightmetal_helmet"
+    "count": 1,
+    "id": "twilightforest:knightmetal_helmet"
   }
 }

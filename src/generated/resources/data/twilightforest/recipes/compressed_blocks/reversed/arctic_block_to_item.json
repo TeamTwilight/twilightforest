@@ -3,11 +3,11 @@
   "category": "misc",
   "ingredients": [
     {
-      "tag": "forge:storage_blocks/arctic_fur"
+      "tag": "c:storage_blocks/arctic_fur"
     }
   ],
   "result": {
     "count": 9,
-    "item": "twilightforest:arctic_fur"
+    "id": "twilightforest:arctic_fur"
   }
 }

@@ -6,5 +6,8 @@
   "ingredient": {
     "item": "twilightforest:underbrick"
   },
-  "result": "twilightforest:cracked_underbrick"
+  "result": {
+    "count": 1,
+    "id": "twilightforest:cracked_underbrick"
+  }
 }

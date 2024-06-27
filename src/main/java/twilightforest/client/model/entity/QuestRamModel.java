@@ -66,74 +66,74 @@ public class QuestRamModel extends HierarchicalModel<QuestRam> {
 		PartDefinition base = mesh.getRoot();
 
 		PartDefinition headpart = base.addOrReplaceChild("head", CubeListBuilder.create()
-						.texOffs(0, 70).addBox(-6F, -4.5F, -15F, 12, 9, 15)
-						.texOffs(0, 94).addBox(5F, -9F, -7F, 4, 4, 6)
-						.texOffs(20, 96).addBox(7F, -8F, -2F, 3, 4, 4)
-						.texOffs(34, 95).addBox(8F, -6F, 0F, 3, 6, 3)
-						.texOffs(46, 98).addBox(9.5F, -2F, -2F, 3, 3, 3)
-						.texOffs(58, 95).addBox(11F, 0F, -7F, 3, 3, 6)
-						.texOffs(76, 95).addBox(12F, -4F, -9F, 3, 6, 3)
-						.texOffs(88, 97).addBox(13F, -6F, -7F, 3, 3, 4)
-						.texOffs(0, 94).addBox(-9F, -9F, -7F, 4, 4, 6)
-						.texOffs(20, 96).addBox(-10F, -8F, -2F, 3, 4, 4)
-						.texOffs(34, 95).addBox(-11F, -6F, 0F, 3, 6, 3)
-						.texOffs(46, 98).addBox(-12.5F, -2F, -2F, 3, 3, 3)
-						.texOffs(58, 95).addBox(-14F, 0F, -7F, 3, 3, 6)
-						.texOffs(76, 95).addBox(-15F, -4F, -9F, 3, 6, 3)
-						.texOffs(88, 97).addBox(-16F, -6F, -7F, 3, 3, 4),
-				PartPose.offset(0F, -13F, -5F));
+				.texOffs(0, 70).addBox(-6F, -4.5F, -15F, 12, 9, 15)
+				.texOffs(0, 94).addBox(5F, -9F, -7F, 4, 4, 6)
+				.texOffs(20, 96).addBox(7F, -8F, -2F, 3, 4, 4)
+				.texOffs(34, 95).addBox(8F, -6F, 0F, 3, 6, 3)
+				.texOffs(46, 98).addBox(9.5F, -2F, -2F, 3, 3, 3)
+				.texOffs(58, 95).addBox(11F, 0F, -7F, 3, 3, 6)
+				.texOffs(76, 95).addBox(12F, -4F, -9F, 3, 6, 3)
+				.texOffs(88, 97).addBox(13F, -6F, -7F, 3, 3, 4)
+				.texOffs(0, 94).addBox(-9F, -9F, -7F, 4, 4, 6)
+				.texOffs(20, 96).addBox(-10F, -8F, -2F, 3, 4, 4)
+				.texOffs(34, 95).addBox(-11F, -6F, 0F, 3, 6, 3)
+				.texOffs(46, 98).addBox(-12.5F, -2F, -2F, 3, 3, 3)
+				.texOffs(58, 95).addBox(-14F, 0F, -7F, 3, 3, 6)
+				.texOffs(76, 95).addBox(-15F, -4F, -9F, 3, 6, 3)
+				.texOffs(88, 97).addBox(-16F, -6F, -7F, 3, 3, 4),
+			PartPose.offset(0F, -13F, -5F));
 		headpart.addOrReplaceChild("nose", CubeListBuilder.create()
-						.texOffs(54, 73)
-						.addBox(-5.5F, -5F, -13F, 11, 9, 12),
-				PartPose.offsetAndRotation(0F, -7F, -1F, 0.5235988F, 0F, 0F));
+				.texOffs(54, 73)
+				.addBox(-5.5F, -5F, -13F, 11, 9, 12),
+			PartPose.offsetAndRotation(0F, -7F, -1F, 0.5235988F, 0F, 0F));
 		base.addOrReplaceChild("neck", CubeListBuilder.create()
-						.texOffs(66, 37)
-						.addBox(-5.5F, -8F, -8F, 11, 14, 12),
-				PartPose.offsetAndRotation(0F, -8F, -7F, 0.2617994F, 0F, 0F));
+				.texOffs(66, 37)
+				.addBox(-5.5F, -8F, -8F, 11, 14, 12),
+			PartPose.offsetAndRotation(0F, -8F, -7F, 0.2617994F, 0F, 0F));
 		base.addOrReplaceChild("front_body", CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(-9F, -7.5F, -15F, 18, 15, 15),
-				PartPose.offset(0F, -1F, 2F));
+				.texOffs(0, 0)
+				.addBox(-9F, -7.5F, -15F, 18, 15, 15),
+			PartPose.offset(0F, -1F, 2F));
 		base.addOrReplaceChild("rear_body", CubeListBuilder.create()
-						.texOffs(0, 30)
-						.addBox(-9F, -7.5F, 0F, 18, 15, 15),
-				PartPose.offset(0F, -1F, 4F));
+				.texOffs(0, 30)
+				.addBox(-9F, -7.5F, 0F, 18, 15, 15),
+			PartPose.offset(0F, -1F, 4F));
 		base.addOrReplaceChild("right_front_haunch", CubeListBuilder.create()
-						.texOffs(90, 0)
-						.addBox(-3.5F, 0F, -6F, 7, 10, 10),
-				PartPose.offset(-6F, 2F, 13F));
+				.texOffs(90, 0)
+				.addBox(-3.5F, 0F, -6F, 7, 10, 10),
+			PartPose.offset(-6F, 2F, 13F));
 		base.addOrReplaceChild("right_front_leg", CubeListBuilder.create()
-						.texOffs(66, 0)
-						.addBox(-3F, 10F, -3F, 6, 12, 6),
-				PartPose.offset(-6F, 2F, 13F));
+				.texOffs(66, 0)
+				.addBox(-3F, 10F, -3F, 6, 12, 6),
+			PartPose.offset(-6F, 2F, 13F));
 		base.addOrReplaceChild("left_front_haunch", CubeListBuilder.create()
-						.texOffs(90, 0)
-						.addBox(-3.5F, 0F, -6F, 7, 10, 10),
-				PartPose.offset(6F, 2F, 13F));
+				.texOffs(90, 0)
+				.addBox(-3.5F, 0F, -6F, 7, 10, 10),
+			PartPose.offset(6F, 2F, 13F));
 		base.addOrReplaceChild("left_front_leg", CubeListBuilder.create()
-						.texOffs(66, 0)
-						.addBox(-3F, 10F, -3F, 6, 12, 6),
-				PartPose.offset(6F, 2F, 13F));
+				.texOffs(66, 0)
+				.addBox(-3F, 10F, -3F, 6, 12, 6),
+			PartPose.offset(6F, 2F, 13F));
 		base.addOrReplaceChild("right_back_haunch", CubeListBuilder.create()
-						.texOffs(90, 20)
-						.addBox(-3.5F, 0F, -4F, 7, 10, 7),
-				PartPose.offset(-6F, 1F, -8F));
+				.texOffs(90, 20)
+				.addBox(-3.5F, 0F, -4F, 7, 10, 7),
+			PartPose.offset(-6F, 1F, -8F));
 		base.addOrReplaceChild("right_back_leg", CubeListBuilder.create()
-						.texOffs(66, 18)
-						.addBox(-3F, 10F, -3F, 6, 13, 6),
-				PartPose.offset(-6F, 1F, -8F));
+				.texOffs(66, 18)
+				.addBox(-3F, 10F, -3F, 6, 13, 6),
+			PartPose.offset(-6F, 1F, -8F));
 		base.addOrReplaceChild("left_back_haunch", CubeListBuilder.create()
-						.texOffs(90, 20)
-						.addBox(-3.5F, 0F, -4F, 7, 10, 7),
-				PartPose.offset(6F, 1F, -8F));
+				.texOffs(90, 20)
+				.addBox(-3.5F, 0F, -4F, 7, 10, 7),
+			PartPose.offset(6F, 1F, -8F));
 		base.addOrReplaceChild("left_back_leg", CubeListBuilder.create()
-						.texOffs(66, 18)
-						.addBox(-3F, 10F, -3F, 6, 13, 6),
-				PartPose.offset(6F, 1F, -8F));
+				.texOffs(66, 18)
+				.addBox(-3F, 10F, -3F, 6, 13, 6),
+			PartPose.offset(6F, 1F, -8F));
 
 		CubeListBuilder bodycube = CubeListBuilder.create()
-				.texOffs(0, 104)
-				.addBox(-9F, -7.5F, 0F, 18, 15, 2);
+			.texOffs(0, 104)
+			.addBox(-9F, -7.5F, 0F, 18, 15, 2);
 		for (int i = 0; i < 16; i++) {
 			base.addOrReplaceChild(getSegmentName(i), bodycube, PartPose.offset(0F, -1F, 2F));
 		}

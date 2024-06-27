@@ -1,7 +1,7 @@
 package twilightforest.init;
 
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import twilightforest.TwilightForestMod;
@@ -37,7 +37,7 @@ public class TFStructures {
 		return ResourceKey.create(Registries.STRUCTURE, TwilightForestMod.prefix(name));
 	}
 
-	public static void bootstrap(BootstapContext<Structure> context) {
+	public static void bootstrap(BootstrapContext<Structure> context) {
 		context.register(HOLLOW_TREE, HollowTreeStructure.buildStructureConfig(context));
 		context.register(HEDGE_MAZE, HedgeMazeStructure.buildStructureConfig(context));
 		context.register(QUEST_GROVE, QuestGroveStructure.buildStructureConfig(context));

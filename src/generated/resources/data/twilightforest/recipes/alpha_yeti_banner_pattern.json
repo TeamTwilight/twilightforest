@@ -3,13 +3,14 @@
   "category": "misc",
   "ingredients": [
     {
-      "tag": "forge:paper"
+      "tag": "c:paper"
     },
     {
       "item": "twilightforest:alpha_yeti_trophy"
     }
   ],
   "result": {
-    "item": "twilightforest:alpha_yeti_banner_pattern"
+    "count": 1,
+    "id": "twilightforest:alpha_yeti_banner_pattern"
   }
 }

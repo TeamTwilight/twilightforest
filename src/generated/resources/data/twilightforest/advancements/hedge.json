@@ -10,7 +10,7 @@
             "predicate": {
               "type": "twilightforest:hedge_spider",
               "location": {
-                "structure": "twilightforest:hedge_maze"
+                "structures": "twilightforest:hedge_maze"
               }
             }
           }
@@ -27,7 +27,7 @@
             "predicate": {
               "type": "twilightforest:swarm_spider",
               "location": {
-                "structure": "twilightforest:hedge_maze"
+                "structures": "twilightforest:hedge_maze"
               }
             }
           }
@@ -41,7 +41,8 @@
       "translate": "advancement.twilightforest.hedge.desc"
     },
     "icon": {
-      "item": "twilightforest:hedge"
+      "count": 1,
+      "id": "twilightforest:hedge"
     },
     "title": {
       "translate": "advancement.twilightforest.hedge"

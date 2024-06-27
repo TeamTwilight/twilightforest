@@ -16,7 +16,10 @@ import twilightforest.data.custom.stalactites.entry.Stalactite;
 import twilightforest.data.custom.stalactites.entry.StalactiteReloadListener;
 
 import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 public abstract class StalactiteProvider implements DataProvider {
@@ -136,5 +139,6 @@ public abstract class StalactiteProvider implements DataProvider {
 		}
 	}
 
-	private record HillInformation(SpeleothemVarietyConfig config, Map<ResourceLocation, Stalactite> baseStalactites, Map<ResourceLocation, Stalactite> oreStalactites, Map<ResourceLocation, Stalactite> stalagmites) {}
+	private record HillInformation(SpeleothemVarietyConfig config, Map<ResourceLocation, Stalactite> baseStalactites, Map<ResourceLocation, Stalactite> oreStalactites, Map<ResourceLocation, Stalactite> stalagmites) {
+	}
 }

@@ -1,0 +1,49 @@
+plugins {
+	id 'java-library'
+	id 'idea'
+	id 'net.neoforged.gradle.platform' version '7.0.133'
+}
+
+repositories {
+	maven { url = 'https://maven.neoforged.net/releases' }
+	maven {
+		name 'Mojang'
+		url 'https://libraries.minecraft.net'
+	}
+	mavenCentral()
+}
+
+java {
+	toolchain {
+		languageVersion.set(JavaLanguageVersion.of(21))
+	}
+}
+
+compileJava.options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation,-this-escape" << "-Werror"
+
+base {
+	archivesName = "${project.mod_id}-asm-${project.minecraft_version}"
+}
+
+dependencies {
+	compileOnly "org.jetbrains:annotations:24.0.1"
+	compileOnly "net.neoforged.fancymodloader:loader:3.0.45"
+
+	// This is for javadoc, please do not actually classload anything from the main source set!!!!!!
+	compileOnly project(":")
+}
+
+jar {
+	manifest {
+		attributes(
+			'FMLModType': "LIBRARY",
+			'Specification-Title': "twilightforest-asm",
+			'Specification-Vendor': "TeamTwilight",
+			'Specification-Version': "1",
+			'Implementation-Title': project.name,
+			'Implementation-Version': project.jar.archiveVersion,
+			'Implementation-Vendor': "TeamTwilight",
+			'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+		)
+	}
+}

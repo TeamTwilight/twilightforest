@@ -33,82 +33,82 @@ public class MinoshroomModel extends HumanoidModel<Minoshroom> {
 		PartDefinition definition = mesh.getRoot();
 
 		var head = definition.addOrReplaceChild("head", CubeListBuilder.create()
-						.texOffs(96, 16)
-						.addBox(-4F, -8F, -4F, 8, 8, 8),
-				PartPose.offset(0F, -6F, -9F));
+				.texOffs(96, 16)
+				.addBox(-4F, -8F, -4F, 8, 8, 8),
+			PartPose.offset(0F, -6F, -9F));
 
 		definition.addOrReplaceChild("hat", CubeListBuilder.create(),
-				PartPose.ZERO);
+			PartPose.ZERO);
 
 		head.addOrReplaceChild("snout", CubeListBuilder.create()
-						.texOffs(105, 28)
-						.addBox(-2, -1, -1, 4, 3, 1),
-				PartPose.offset(0F, -2.0F, -4F));
+				.texOffs(105, 28)
+				.addBox(-2, -1, -1, 4, 3, 1),
+			PartPose.offset(0F, -2.0F, -4F));
 
 		var rightHorn = head.addOrReplaceChild("right_horn_1", CubeListBuilder.create().mirror()
-						.texOffs(0, 0)
-						.addBox(-5.5F, -1.5F, -1.5F, 5, 3, 3),
-				PartPose.offsetAndRotation(-2.5F, -6.5F, 0.0F, 0.0F, -25F / (180F / Mth.PI), 10F / (180F / Mth.PI)));
+				.texOffs(0, 0)
+				.addBox(-5.5F, -1.5F, -1.5F, 5, 3, 3),
+			PartPose.offsetAndRotation(-2.5F, -6.5F, 0.0F, 0.0F, -25F / (180F / Mth.PI), 10F / (180F / Mth.PI)));
 
 		rightHorn.addOrReplaceChild("right_horn_2", CubeListBuilder.create().mirror()
-						.texOffs(16, 0)
-						.addBox(-3.5F, -1.0F, -1.0F, 3, 2, 2),
-				PartPose.offsetAndRotation(-4.5F, 0.0F, 0.0F, 0.0F, -15F / (180F / Mth.PI), 45F / (180F / Mth.PI)));
+				.texOffs(16, 0)
+				.addBox(-3.5F, -1.0F, -1.0F, 3, 2, 2),
+			PartPose.offsetAndRotation(-4.5F, 0.0F, 0.0F, 0.0F, -15F / (180F / Mth.PI), 45F / (180F / Mth.PI)));
 
 		var leftHorn = head.addOrReplaceChild("left_horn_1", CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(0.5F, -1.5F, -1.5F, 5, 3, 3),
-				PartPose.offsetAndRotation(2.5F, -6.5F, 0.0F, 0.0F, 25F / (180F / Mth.PI), -10F / (180F / Mth.PI)));
+				.texOffs(0, 0)
+				.addBox(0.5F, -1.5F, -1.5F, 5, 3, 3),
+			PartPose.offsetAndRotation(2.5F, -6.5F, 0.0F, 0.0F, 25F / (180F / Mth.PI), -10F / (180F / Mth.PI)));
 
 		leftHorn.addOrReplaceChild("left_horn_2", CubeListBuilder.create()
-						.texOffs(16, 0)
-						.addBox(0.5F, -1.0F, -1.0F, 3, 2, 2),
-				PartPose.offsetAndRotation(4.5F, 0.0F, 0.0F, 0.0F, 15F / (180F / Mth.PI), -45F / (180F / Mth.PI)));
+				.texOffs(16, 0)
+				.addBox(0.5F, -1.0F, -1.0F, 3, 2, 2),
+			PartPose.offsetAndRotation(4.5F, 0.0F, 0.0F, 0.0F, 15F / (180F / Mth.PI), -45F / (180F / Mth.PI)));
 
 		definition.addOrReplaceChild("body", CubeListBuilder.create()
-						.texOffs(64, 0)
-						.addBox(-4F, 0F, -2.5F, 8, 12, 5),
-				PartPose.offset(0F, -6F, -9F));
+				.texOffs(64, 0)
+				.addBox(-4F, 0F, -2.5F, 8, 12, 5),
+			PartPose.offset(0F, -6F, -9F));
 
 		definition.addOrReplaceChild("right_arm", CubeListBuilder.create()
-						.texOffs(90, 0)
-						.addBox(-3.0F, -2.0F, -2.0F, 4, 12, 4),
-				PartPose.offset(-5F, -4F, -9F));
+				.texOffs(90, 0)
+				.addBox(-3.0F, -2.0F, -2.0F, 4, 12, 4),
+			PartPose.offset(-5F, -4F, -9F));
 
 		definition.addOrReplaceChild("left_arm", CubeListBuilder.create().mirror()
-						.texOffs(90, 0)
-						.addBox(-1.0F, -2.0F, -2.0F, 4, 12, 4),
-				PartPose.offset(5F, -4F, -9F));
+				.texOffs(90, 0)
+				.addBox(-1.0F, -2.0F, -2.0F, 4, 12, 4),
+			PartPose.offset(5F, -4F, -9F));
 
 		definition.addOrReplaceChild("cow_body", CubeListBuilder.create()
-						.texOffs(18, 4)
-						.addBox(-6F, -10F, -7F, 12, 18, 10),
-				PartPose.offsetAndRotation(0F, 5F, 2F, 1.570796F, 0F, 0F));
+				.texOffs(18, 4)
+				.addBox(-6F, -10F, -7F, 12, 18, 10),
+			PartPose.offsetAndRotation(0F, 5F, 2F, 1.570796F, 0F, 0F));
 
 		definition.addOrReplaceChild("udders", CubeListBuilder.create()
-						.texOffs(52, 0)
-						.addBox(-2F, -3F, 0F, 4, 6, 2),
-				PartPose.offsetAndRotation(0F, 14F, 6F, 1.570796F, 0F, 0F));
+				.texOffs(52, 0)
+				.addBox(-2F, -3F, 0F, 4, 6, 2),
+			PartPose.offsetAndRotation(0F, 14F, 6F, 1.570796F, 0F, 0F));
 
 		definition.addOrReplaceChild("leg_1", CubeListBuilder.create()
-						.texOffs(0, 16)
-						.addBox(-3F, 0F, -2F, 4, 12, 4),
-				PartPose.offset(-3F, 12F, 7F));
+				.texOffs(0, 16)
+				.addBox(-3F, 0F, -2F, 4, 12, 4),
+			PartPose.offset(-3F, 12F, 7F));
 
 		definition.addOrReplaceChild("leg_2", CubeListBuilder.create()
-						.texOffs(0, 16)
-						.addBox(-1F, 0F, -2F, 4, 12, 4),
-				PartPose.offset(3F, 12F, 7F));
+				.texOffs(0, 16)
+				.addBox(-1F, 0F, -2F, 4, 12, 4),
+			PartPose.offset(3F, 12F, 7F));
 
 		definition.addOrReplaceChild("leg_3", CubeListBuilder.create()
-						.texOffs(0, 16)
-						.addBox(-3F, 0F, -2F, 4, 12, 4),
-				PartPose.offset(-3F, 12F, -5F));
+				.texOffs(0, 16)
+				.addBox(-3F, 0F, -2F, 4, 12, 4),
+			PartPose.offset(-3F, 12F, -5F));
 
 		definition.addOrReplaceChild("leg_4", CubeListBuilder.create()
-						.texOffs(0, 16)
-						.addBox(-1F, 0F, -2F, 4, 12, 4),
-				PartPose.offset(3F, 12F, -5F));
+				.texOffs(0, 16)
+				.addBox(-1F, 0F, -2F, 4, 12, 4),
+			PartPose.offset(3F, 12F, -5F));
 
 		return LayerDefinition.create(mesh, 128, 32);
 	}

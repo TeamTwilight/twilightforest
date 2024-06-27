@@ -14,6 +14,8 @@ import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFConfiguredFeatures;
 
+import java.util.stream.IntStream;
+
 /**
  * This is a maze of cells and walls.
  * <p>
@@ -90,7 +92,7 @@ public class TFMaze {
 	/**
 	 * Gets the value from a cell in the maze
 	 */
-	private int getCell(int x, int z) {
+	public int getCell(int x, int z) {
 		return getRaw(x * 2 + 1, z * 2 + 1);
 	}
 
@@ -170,6 +172,19 @@ public class TFMaze {
 		} else {
 			return storage[rawz * rawWidth + rawx];
 		}
+	}
+
+	public boolean allCellsNonZero() {
+		return IntStream.range(0, width)
+			.allMatch(x -> IntStream.range(0, depth)
+				.allMatch(z -> getCell(x, z) != 0));
+	}
+
+
+	public void resetCells() {
+		IntStream.range(0, width)
+			.forEach(x -> IntStream.range(0, depth)
+				.forEach(z -> putCell(x, z, 0)));
 	}
 
 	/**
@@ -488,7 +503,6 @@ public class TFMaze {
 
 	/**
 	 * Mark the cell as visited.  If we have any unvisited neighbors, pick one randomly, carve the wall between them, then call this function on that neighbor.
-	 *
 	 */
 	public void rbGen(int sx, int sz) {
 		// mark cell as visited

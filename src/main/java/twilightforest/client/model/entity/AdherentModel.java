@@ -17,58 +17,58 @@ public class AdherentModel extends HumanoidModel<Adherent> {
 		PartDefinition definition = mesh.getRoot();
 
 		definition.addOrReplaceChild("head",
-				CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F),
-				PartPose.ZERO);
+			CubeListBuilder.create()
+				.texOffs(0, 0)
+				.addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F),
+			PartPose.ZERO);
 
 		definition.addOrReplaceChild("hat",
-				CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F),
-				PartPose.ZERO);
+			CubeListBuilder.create()
+				.texOffs(0, 0)
+				.addBox(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F),
+			PartPose.ZERO);
 
 		definition.addOrReplaceChild("body",
-				CubeListBuilder.create()
-						.texOffs(32, 0)
-						.addBox(-4.0F, 0.0F, -2.0F, 8.0F, 24.0F, 4.0F),
-				PartPose.ZERO);
+			CubeListBuilder.create()
+				.texOffs(32, 0)
+				.addBox(-4.0F, 0.0F, -2.0F, 8.0F, 24.0F, 4.0F),
+			PartPose.ZERO);
 
 		var leftArm = definition.addOrReplaceChild("left_arm",
-				CubeListBuilder.create()
-						.texOffs(0, 16)
-						.addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F),
-				PartPose.offset(5.0F, 2.0F, 0.0F));
+			CubeListBuilder.create()
+				.texOffs(0, 16)
+				.addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F),
+			PartPose.offset(5.0F, 2.0F, 0.0F));
 
 		leftArm.addOrReplaceChild("left_sleeve",
-				CubeListBuilder.create()
-						.texOffs(16, 16)
-						.addBox(-1.0F, -2.0F, 2.0F, 4.0F, 12.0F, 4.0F),
-				PartPose.ZERO);
+			CubeListBuilder.create()
+				.texOffs(16, 16)
+				.addBox(-1.0F, -2.0F, 2.0F, 4.0F, 12.0F, 4.0F),
+			PartPose.ZERO);
 
 		var rightArm = definition.addOrReplaceChild("right_arm",
-				CubeListBuilder.create()
-						.texOffs(0, 16)
-						.addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F),
-				PartPose.offset(-5.0F, 2.0F, 0.0F));
+			CubeListBuilder.create()
+				.texOffs(0, 16)
+				.addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F),
+			PartPose.offset(-5.0F, 2.0F, 0.0F));
 
 		rightArm.addOrReplaceChild("right_sleeve",
-				CubeListBuilder.create()
-						.texOffs(16, 16)
-						.addBox(-3.0F, -2.0F, 2.0F, 4.0F, 12.0F, 4.0F),
-				PartPose.ZERO);
+			CubeListBuilder.create()
+				.texOffs(16, 16)
+				.addBox(-3.0F, -2.0F, 2.0F, 4.0F, 12.0F, 4.0F),
+			PartPose.ZERO);
 
 		definition.addOrReplaceChild("left_leg",
-				CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F),
-				PartPose.ZERO);
+			CubeListBuilder.create()
+				.texOffs(0, 0)
+				.addBox(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F),
+			PartPose.ZERO);
 
 		definition.addOrReplaceChild("right_leg",
-				CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F),
-				PartPose.ZERO);
+			CubeListBuilder.create()
+				.texOffs(0, 0)
+				.addBox(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F),
+			PartPose.ZERO);
 		return LayerDefinition.create(mesh, 64, 32);
 	}
 

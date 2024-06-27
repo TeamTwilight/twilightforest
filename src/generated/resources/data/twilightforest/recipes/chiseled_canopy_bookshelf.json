@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "-": {
+      "item": "twilightforest:canopy_slab"
+    }
+  },
+  "pattern": [
+    "---",
+    "   ",
+    "---"
+  ],
+  "result": {
+    "count": 1,
+    "id": "twilightforest:chiseled_canopy_bookshelf"
+  }
+}

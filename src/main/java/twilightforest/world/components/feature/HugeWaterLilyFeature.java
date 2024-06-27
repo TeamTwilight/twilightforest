@@ -30,9 +30,9 @@ public class HugeWaterLilyFeature extends Feature<NoneFeatureConfiguration> {
 
 		for (int i = 0; i < 4; i++) {
 			BlockPos pos_ = pos.offset(
-					random.nextInt(8) - random.nextInt(8),
-					random.nextInt(4) - random.nextInt(4),
-					random.nextInt(8) - random.nextInt(8)
+				random.nextInt(8) - random.nextInt(8),
+				random.nextInt(4) - random.nextInt(4),
+				random.nextInt(8) - random.nextInt(8)
 			);
 
 			if (shouldPlacePadAt(world, pos_)) {

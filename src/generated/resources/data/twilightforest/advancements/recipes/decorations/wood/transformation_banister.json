@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:transformation_slab"
-            ]
+            "items": "twilightforest:transformation_slab"
           }
         ]
       },

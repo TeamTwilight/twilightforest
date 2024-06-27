@@ -47,7 +47,7 @@
       }
     }
   },
-  "dungeon_loot_table": "twilightforest:chests/tree_cache",
+  "dungeon_loot_table": "twilightforest:tree_cache",
   "dungeon_monster": "twilightforest:swarm_spider",
   "dungeon_wood": {
     "type": "minecraft:simple_state_provider",
@@ -60,10 +60,8 @@
   },
   "height": {
     "type": "minecraft:uniform",
-    "value": {
-      "max_inclusive": 95,
-      "min_inclusive": 32
-    }
+    "max_inclusive": 95,
+    "min_inclusive": 32
   },
   "leaves": {
     "type": "minecraft:simple_state_provider",
@@ -87,10 +85,8 @@
   },
   "radius": {
     "type": "minecraft:uniform",
-    "value": {
-      "max_inclusive": 4,
-      "min_inclusive": 1
-    }
+    "max_inclusive": 4,
+    "min_inclusive": 1
   },
   "root": {
     "type": "minecraft:simple_state_provider",
@@ -138,7 +134,7 @@
     "state": {
       "Name": "minecraft:vine",
       "Properties": {
-        "east": "true",
+        "east": "false",
         "north": "false",
         "south": "false",
         "up": "false",

@@ -68,7 +68,7 @@ public class DarkCanopyTreeFeature extends Feature<TreeConfiguration> {
 			return false;
 		}
 
-		for (int i = 0; i < 4; i ++) {
+		for (int i = 0; i < 4; i++) {
 			//We check against the TreeFeature's validTreePos method, to see if the tree can grow here, cuz the trunk placer uses this as well
 			//If we don't, some trees end up growing only one or two blocks tall
 			if (!TreeFeature.validTreePos(reader, pos.relative(Direction.UP, i))) return false;
@@ -161,11 +161,11 @@ public class DarkCanopyTreeFeature extends Feature<TreeConfiguration> {
 	private int getMaxFreeTreeHeight(LevelSimulatedReader level, int trunkHeight, BlockPos pos, TreeConfiguration config) {
 		BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
 
-		for(int i = 0; i <= trunkHeight + 1; ++i) {
+		for (int i = 0; i <= trunkHeight + 1; ++i) {
 			int j = config.minimumSize.getSizeAtHeight(trunkHeight, i);
 
-			for(int k = -j; k <= j; ++k) {
-				for(int l = -j; l <= j; ++l) {
+			for (int k = -j; k <= j; ++k) {
+				for (int l = -j; l <= j; ++l) {
 					mutable.setWithOffset(pos, k, i, l);
 					if (!validTreePos(level, mutable) || !config.ignoreVines) {
 						return i - 2;
@@ -190,24 +190,24 @@ public class DarkCanopyTreeFeature extends Feature<TreeConfiguration> {
 		DiscreteVoxelShape discretevoxelshape = new BitSetDiscreteVoxelShape(p_67204_.getXSpan(), p_67204_.getYSpan(), p_67204_.getZSpan());
 		int i = 6;
 
-		for(int j = 0; j < 6; ++j) {
+		for (int j = 0; j < 6; ++j) {
 			list.add(Sets.newHashSet());
 		}
 
 		BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
 
-		for(BlockPos blockpos : Lists.newArrayList(p_67206_)) {
+		for (BlockPos blockpos : Lists.newArrayList(p_67206_)) {
 			if (p_67204_.isInside(blockpos)) {
 				discretevoxelshape.fill(blockpos.getX() - p_67204_.minX(), blockpos.getY() - p_67204_.minY(), blockpos.getZ() - p_67204_.minZ());
 			}
 		}
 
-		for(BlockPos blockpos1 : Lists.newArrayList(p_67205_)) {
+		for (BlockPos blockpos1 : Lists.newArrayList(p_67205_)) {
 			if (p_67204_.isInside(blockpos1)) {
 				discretevoxelshape.fill(blockpos1.getX() - p_67204_.minX(), blockpos1.getY() - p_67204_.minY(), blockpos1.getZ() - p_67204_.minZ());
 			}
 
-			for(Direction direction : Direction.values()) {
+			for (Direction direction : Direction.values()) {
 				blockpos$mutableblockpos.setWithOffset(blockpos1, direction);
 				if (!p_67205_.contains(blockpos$mutableblockpos)) {
 					BlockState blockstate = p_67203_.getBlockState(blockpos$mutableblockpos);
@@ -222,16 +222,16 @@ public class DarkCanopyTreeFeature extends Feature<TreeConfiguration> {
 			}
 		}
 
-		for(int l = 1; l < 6; ++l) {
+		for (int l = 1; l < 6; ++l) {
 			Set<BlockPos> set = list.get(l - 1);
 			Set<BlockPos> set1 = list.get(l);
 
-			for(BlockPos blockpos2 : set) {
+			for (BlockPos blockpos2 : set) {
 				if (p_67204_.isInside(blockpos2)) {
 					discretevoxelshape.fill(blockpos2.getX() - p_67204_.minX(), blockpos2.getY() - p_67204_.minY(), blockpos2.getZ() - p_67204_.minZ());
 				}
 
-				for(Direction direction1 : Direction.values()) {
+				for (Direction direction1 : Direction.values()) {
 					blockpos$mutableblockpos.setWithOffset(blockpos2, direction1);
 					if (!set.contains(blockpos$mutableblockpos) && !set1.contains(blockpos$mutableblockpos)) {
 						BlockState blockstate1 = p_67203_.getBlockState(blockpos$mutableblockpos);

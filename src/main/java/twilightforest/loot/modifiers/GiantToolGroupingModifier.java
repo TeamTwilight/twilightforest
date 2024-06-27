@@ -1,6 +1,6 @@
 package twilightforest.loot.modifiers;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
@@ -14,27 +14,26 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.common.CommonHooks;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
 import net.neoforged.neoforge.common.loot.LootModifier;
+import net.neoforged.neoforge.event.EventHooks;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.GiantBlock;
-import twilightforest.capabilities.GiantPickaxeMiningAttachment;
+import twilightforest.components.entity.GiantPickaxeMiningAttachment;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.item.GiantPickItem;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
+@EventBusSubscriber(modid = TwilightForestMod.ID)
 public class GiantToolGroupingModifier extends LootModifier {
 	public static Map<Block, Item> CONVERSIONS = new HashMap<>(); // Map of block-to-giant block conversions. Supposed to be similar to vanilla's AxeItem.STRIPPABLES Map
 
-	public static final Codec<GiantToolGroupingModifier> CODEC = RecordCodecBuilder.create(inst -> LootModifier.codecStart(inst).apply(inst, GiantToolGroupingModifier::new));
+	public static final MapCodec<GiantToolGroupingModifier> CODEC = RecordCodecBuilder.mapCodec(inst -> LootModifier.codecStart(inst).apply(inst, GiantToolGroupingModifier::new));
 
 	public GiantToolGroupingModifier(LootItemCondition[] conditions) {
 		super(conditions);
@@ -57,7 +56,7 @@ public class GiantToolGroupingModifier extends LootModifier {
 	}
 
 	@Override
-	public Codec<? extends IGlobalLootModifier> codec() {
+	public MapCodec<? extends IGlobalLootModifier> codec() {
 		return GiantToolGroupingModifier.CODEC;
 	}
 
@@ -66,7 +65,7 @@ public class GiantToolGroupingModifier extends LootModifier {
 		BlockPos pos = event.getPos();
 		BlockState state = event.getState();
 
-		if (event.getPlayer() instanceof ServerPlayer player && canHarvestWithGiantPick(player, state)) {
+		if (event.getPlayer() instanceof ServerPlayer player && canHarvestWithGiantPick(player, state, pos)) {
 			var attachment = player.getData(TFDataAttachments.GIANT_PICKAXE_MINING);
 
 			if (shouldBreakGiantBlock(player, attachment)) {
@@ -96,8 +95,8 @@ public class GiantToolGroupingModifier extends LootModifier {
 		}
 	}
 
-	private static boolean canHarvestWithGiantPick(Player player, BlockState state) {
-		return player.getMainHandItem().getItem() instanceof GiantPickItem && CommonHooks.isCorrectToolForDrops(state, player);
+	private static boolean canHarvestWithGiantPick(Player player, BlockState state, BlockPos pos) {
+		return player.getMainHandItem().getItem() instanceof GiantPickItem && EventHooks.doPlayerHarvestCheck(player, state, player.level(), pos);
 	}
 
 	private static boolean shouldBreakGiantBlock(Player player, GiantPickaxeMiningAttachment attachment) {

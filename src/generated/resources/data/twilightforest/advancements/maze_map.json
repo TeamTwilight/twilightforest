@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:filled_maze_map"
-            ]
+            "items": "twilightforest:filled_maze_map"
           }
         ]
       },
@@ -25,7 +23,8 @@
     },
     "frame": "goal",
     "icon": {
-      "item": "twilightforest:filled_maze_map"
+      "count": 1,
+      "id": "twilightforest:filled_maze_map"
     },
     "title": {
       "translate": "advancement.twilightforest.maze_map"

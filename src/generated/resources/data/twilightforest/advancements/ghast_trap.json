@@ -21,7 +21,8 @@
       ]
     },
     "icon": {
-      "item": "twilightforest:ghast_trap"
+      "count": 1,
+      "id": "twilightforest:ghast_trap"
     },
     "title": {
       "translate": "advancement.twilightforest.ghast_trap"

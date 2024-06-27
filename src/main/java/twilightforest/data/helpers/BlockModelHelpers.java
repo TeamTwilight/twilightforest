@@ -25,15 +25,15 @@ public abstract class BlockModelHelpers extends BlockStateProvider {
 	protected static final ResourceLocation CUTOUT = new ResourceLocation("cutout");
 	protected static final ResourceLocation CUTOUT_MIPPED = new ResourceLocation("cutout_mipped");
 	protected static final ResourceLocation TRANSLUCENT = new ResourceLocation("translucent");
-	
+
 	public BlockModelHelpers(PackOutput output, ExistingFileHelper exFileHelper) {
 		super(output, TwilightForestMod.ID, exFileHelper);
 	}
 
 	protected void builtinEntity(Block b, String particle) {
 		simpleBlock(b, models().getBuilder(name(b))
-				.parent(new ModelFile.UncheckedModelFile("builtin/entity"))
-				.texture("particle", particle));
+			.parent(new ModelFile.UncheckedModelFile("builtin/entity"))
+			.texture("particle", particle));
 	}
 
 	protected void simpleBlockExisting(Block b) {
@@ -78,23 +78,23 @@ public abstract class BlockModelHelpers extends BlockStateProvider {
 		ResourceLocation tex2 = prefix("block/wood/" + plankTexName + "_2");
 		ResourceLocation tex3 = prefix("block/wood/" + plankTexName + "_3");
 		ConfiguredModel[] plankModels = ConfiguredModel.builder()
-				.weight(10).modelFile(models().cubeAll(plankDir + name(plank), tex0)).nextModel()
-				.weight(10).modelFile(models().cubeAll(plankDir + name(plank) + "_1", tex1)).nextModel()
-				.weight(1).modelFile(models().cubeAll(plankDir + name(plank) + "_2", tex2)).nextModel()
-				.weight(1).modelFile(models().cubeAll(plankDir + name(plank) + "_3", tex3)).build();
+			.weight(10).modelFile(models().cubeAll(plankDir + name(plank), tex0)).nextModel()
+			.weight(10).modelFile(models().cubeAll(plankDir + name(plank) + "_1", tex1)).nextModel()
+			.weight(1).modelFile(models().cubeAll(plankDir + name(plank) + "_2", tex2)).nextModel()
+			.weight(1).modelFile(models().cubeAll(plankDir + name(plank) + "_3", tex3)).build();
 		simpleBlock(plank, plankModels);
 
 		String slabDir = "block/wood/slab/" + variant + "/";
 		ConfiguredModel[] bottomSlabModels = ConfiguredModel.builder()
-				.weight(10).modelFile(models().slab(slabDir + name(slab), tex0, tex0, tex0)).nextModel()
-				.weight(10).modelFile(models().slab(slabDir + name(slab) + "_1", tex1, tex1, tex1)).nextModel()
-				.weight(1).modelFile(models().slab(slabDir + name(slab) + "_2", tex2, tex2, tex2)).nextModel()
-				.weight(1).modelFile(models().slab(slabDir + name(slab) + "_3", tex3, tex3, tex3)).build();
+			.weight(10).modelFile(models().slab(slabDir + name(slab), tex0, tex0, tex0)).nextModel()
+			.weight(10).modelFile(models().slab(slabDir + name(slab) + "_1", tex1, tex1, tex1)).nextModel()
+			.weight(1).modelFile(models().slab(slabDir + name(slab) + "_2", tex2, tex2, tex2)).nextModel()
+			.weight(1).modelFile(models().slab(slabDir + name(slab) + "_3", tex3, tex3, tex3)).build();
 		ConfiguredModel[] topSlabModels = ConfiguredModel.builder()
-				.weight(10).uvLock(true).rotationX(180).modelFile(bottomSlabModels[0].model).nextModel()
-				.weight(10).uvLock(true).rotationX(180).modelFile(bottomSlabModels[1].model).nextModel()
-				.weight(1).uvLock(true).rotationX(180).modelFile(bottomSlabModels[2].model).nextModel()
-				.weight(1).uvLock(true).rotationX(180).modelFile(bottomSlabModels[3].model).build();
+			.weight(10).uvLock(true).rotationX(180).modelFile(bottomSlabModels[0].model).nextModel()
+			.weight(10).uvLock(true).rotationX(180).modelFile(bottomSlabModels[1].model).nextModel()
+			.weight(1).uvLock(true).rotationX(180).modelFile(bottomSlabModels[2].model).nextModel()
+			.weight(1).uvLock(true).rotationX(180).modelFile(bottomSlabModels[3].model).build();
 		getVariantBuilder(slab).partialState().with(SlabBlock.TYPE, SlabType.BOTTOM).setModels(bottomSlabModels);
 		getVariantBuilder(slab).partialState().with(SlabBlock.TYPE, SlabType.TOP).setModels(topSlabModels);
 		getVariantBuilder(slab).partialState().with(SlabBlock.TYPE, SlabType.DOUBLE).setModels(plankModels);
@@ -131,9 +131,9 @@ public abstract class BlockModelHelpers extends BlockStateProvider {
 
 	private BlockModelBuilder door(String name, String model, ResourceLocation bottom, ResourceLocation top, ResourceLocation side) {
 		return models().withExistingParent(name, prefix("block/util/" + model))
-				.texture("bottom", bottom)
-				.texture("top", top)
-				.texture("side", side);
+			.texture("bottom", bottom)
+			.texture("top", top)
+			.texture("side", side);
 	}
 
 	protected void woodGate(Block gate, String texName, String variant) {
@@ -180,22 +180,22 @@ public abstract class BlockModelHelpers extends BlockStateProvider {
 				model3 = model3 == wall3 ? wallOpen3 : open3;
 			}
 			return ConfiguredModel.builder()
-					.weight(10).modelFile(model0)
-					.rotationY((int) state.getValue(HorizontalDirectionalBlock.FACING).toYRot())
-					.uvLock(true).nextModel()
+				.weight(10).modelFile(model0)
+				.rotationY((int) state.getValue(HorizontalDirectionalBlock.FACING).toYRot())
+				.uvLock(true).nextModel()
 
-					.weight(10).modelFile(model1)
-					.rotationY((int) state.getValue(HorizontalDirectionalBlock.FACING).toYRot())
-					.uvLock(true).nextModel()
+				.weight(10).modelFile(model1)
+				.rotationY((int) state.getValue(HorizontalDirectionalBlock.FACING).toYRot())
+				.uvLock(true).nextModel()
 
-					.weight(1).modelFile(model2)
-					.rotationY((int) state.getValue(HorizontalDirectionalBlock.FACING).toYRot())
-					.uvLock(true).nextModel()
+				.weight(1).modelFile(model2)
+				.rotationY((int) state.getValue(HorizontalDirectionalBlock.FACING).toYRot())
+				.uvLock(true).nextModel()
 
-					.weight(1).modelFile(model3)
-					.rotationY((int) state.getValue(HorizontalDirectionalBlock.FACING).toYRot())
-					.uvLock(true)
-					.build();
+				.weight(1).modelFile(model3)
+				.rotationY((int) state.getValue(HorizontalDirectionalBlock.FACING).toYRot())
+				.uvLock(true)
+				.build();
 		}, FenceGateBlock.POWERED);
 	}
 
@@ -218,19 +218,19 @@ public abstract class BlockModelHelpers extends BlockStateProvider {
 
 		// [VanillaCopy] super.fourWayBlock, but with more models
 		MultiPartBlockStateBuilder builder = getMultipartBuilder(fence).part()
-				.weight(10).modelFile(post0).nextModel()
-				.weight(10).modelFile(post1).nextModel()
-				.weight(1).modelFile(post2).nextModel()
-				.weight(1).modelFile(post3).addModel().end();
+			.weight(10).modelFile(post0).nextModel()
+			.weight(10).modelFile(post1).nextModel()
+			.weight(1).modelFile(post2).nextModel()
+			.weight(1).modelFile(post3).addModel().end();
 		PipeBlock.PROPERTY_BY_DIRECTION.forEach((dir, value) -> {
 			if (dir.getAxis().isHorizontal()) {
 				builder.part()
-						.weight(10).modelFile(side0).rotationY((((int) dir.toYRot()) + 180) % 360).uvLock(true).nextModel()
-						.weight(10).modelFile(side1).rotationY((((int) dir.toYRot()) + 180) % 360).uvLock(true).nextModel()
-						.weight(1).modelFile(side2).rotationY((((int) dir.toYRot()) + 180) % 360).uvLock(true).nextModel()
-						.weight(1).modelFile(side3).rotationY((((int) dir.toYRot()) + 180) % 360).uvLock(true)
-						.addModel()
-						.condition(value, true);
+					.weight(10).modelFile(side0).rotationY((((int) dir.toYRot()) + 180) % 360).uvLock(true).nextModel()
+					.weight(10).modelFile(side1).rotationY((((int) dir.toYRot()) + 180) % 360).uvLock(true).nextModel()
+					.weight(1).modelFile(side2).rotationY((((int) dir.toYRot()) + 180) % 360).uvLock(true).nextModel()
+					.weight(1).modelFile(side3).rotationY((((int) dir.toYRot()) + 180) % 360).uvLock(true)
+					.addModel()
+					.condition(value, true);
 			}
 		});
 	}
@@ -243,15 +243,15 @@ public abstract class BlockModelHelpers extends BlockStateProvider {
 		ResourceLocation tex2 = prefix("block/wood/" + texName + "_2");
 		ResourceLocation tex3 = prefix("block/wood/" + texName + "_3");
 		ConfiguredModel[] unpressed = ConfiguredModel.builder()
-				.weight(10).modelFile(models().withExistingParent(plateDir + name(plate), "pressure_plate_up").texture("texture", tex0)).nextModel()
-				.weight(10).modelFile(models().withExistingParent(plateDir + name(plate) + "_1", "pressure_plate_up").texture("texture", tex1)).nextModel()
-				.weight(1).modelFile(models().withExistingParent(plateDir + name(plate) + "_2", "pressure_plate_up").texture("texture", tex2)).nextModel()
-				.weight(1).modelFile(models().withExistingParent(plateDir + name(plate) + "_3", "pressure_plate_up").texture("texture", tex3)).build();
+			.weight(10).modelFile(models().withExistingParent(plateDir + name(plate), "pressure_plate_up").texture("texture", tex0)).nextModel()
+			.weight(10).modelFile(models().withExistingParent(plateDir + name(plate) + "_1", "pressure_plate_up").texture("texture", tex1)).nextModel()
+			.weight(1).modelFile(models().withExistingParent(plateDir + name(plate) + "_2", "pressure_plate_up").texture("texture", tex2)).nextModel()
+			.weight(1).modelFile(models().withExistingParent(plateDir + name(plate) + "_3", "pressure_plate_up").texture("texture", tex3)).build();
 		ConfiguredModel[] pressed = ConfiguredModel.builder()
-				.weight(10).modelFile(models().withExistingParent(plateDir + name(plate) + "_down", "pressure_plate_down").texture("texture", tex0)).nextModel()
-				.weight(10).modelFile(models().withExistingParent(plateDir + name(plate) + "_down_1", "pressure_plate_down").texture("texture", tex1)).nextModel()
-				.weight(1).modelFile(models().withExistingParent(plateDir + name(plate) + "_down_2", "pressure_plate_down").texture("texture", tex2)).nextModel()
-				.weight(1).modelFile(models().withExistingParent(plateDir + name(plate) + "_down_3", "pressure_plate_down").texture("texture", tex3)).build();
+			.weight(10).modelFile(models().withExistingParent(plateDir + name(plate) + "_down", "pressure_plate_down").texture("texture", tex0)).nextModel()
+			.weight(10).modelFile(models().withExistingParent(plateDir + name(plate) + "_down_1", "pressure_plate_down").texture("texture", tex1)).nextModel()
+			.weight(1).modelFile(models().withExistingParent(plateDir + name(plate) + "_down_2", "pressure_plate_down").texture("texture", tex2)).nextModel()
+			.weight(1).modelFile(models().withExistingParent(plateDir + name(plate) + "_down_3", "pressure_plate_down").texture("texture", tex3)).build();
 
 		getVariantBuilder(plate).partialState().with(PressurePlateBlock.POWERED, false).setModels(unpressed);
 		getVariantBuilder(plate).partialState().with(PressurePlateBlock.POWERED, true).setModels(pressed);
@@ -284,7 +284,7 @@ public abstract class BlockModelHelpers extends BlockStateProvider {
 				case CEILING -> 180;
 			};
 			int rotY = 0;
-			if (state.getValue(FaceAttachedHorizontalDirectionalBlock.FACE) == AttachFace.CEILING)  {
+			if (state.getValue(FaceAttachedHorizontalDirectionalBlock.FACE) == AttachFace.CEILING) {
 				switch (state.getValue(HorizontalDirectionalBlock.FACING)) {
 					case NORTH -> rotY = 180;
 					case WEST -> rotY = 90;
@@ -300,11 +300,11 @@ public abstract class BlockModelHelpers extends BlockStateProvider {
 			boolean uvlock = state.getValue(FaceAttachedHorizontalDirectionalBlock.FACE) == AttachFace.WALL;
 
 			return ConfiguredModel.builder()
-					.weight(10).uvLock(uvlock).rotationX(rotX).rotationY(rotY).modelFile(model0).nextModel()
-					.weight(10).uvLock(uvlock).rotationX(rotX).rotationY(rotY).modelFile(model1).nextModel()
-					.weight(1).uvLock(uvlock).rotationX(rotX).rotationY(rotY).modelFile(model2).nextModel()
-					.weight(1).uvLock(uvlock).rotationX(rotX).rotationY(rotY).modelFile(model3)
-					.build();
+				.weight(10).uvLock(uvlock).rotationX(rotX).rotationY(rotY).modelFile(model0).nextModel()
+				.weight(10).uvLock(uvlock).rotationX(rotX).rotationY(rotY).modelFile(model1).nextModel()
+				.weight(1).uvLock(uvlock).rotationX(rotX).rotationY(rotY).modelFile(model2).nextModel()
+				.weight(1).uvLock(uvlock).rotationX(rotX).rotationY(rotY).modelFile(model3)
+				.build();
 		});
 	}
 
@@ -329,40 +329,40 @@ public abstract class BlockModelHelpers extends BlockStateProvider {
 		ModelFile outer3 = models().stairsOuter(stairsDir + name(block) + "_outer_3", tex3, tex3, tex3);
 		// [VanillaCopy] super.stairsBlock, but multiple files returned each time
 		getVariantBuilder(block)
-				.forAllStatesExcept(state -> {
-					Direction facing = state.getValue(StairBlock.FACING);
-					Half half = state.getValue(StairBlock.HALF);
-					StairsShape shape = state.getValue(StairBlock.SHAPE);
-					int yRot = (int) facing.getClockWise().toYRot(); // Stairs model is rotated 90 degrees clockwise for some reason
-					if (shape == StairsShape.INNER_LEFT || shape == StairsShape.OUTER_LEFT) {
-						yRot += 270; // Left facing stairs are rotated 90 degrees clockwise
-					}
-					if (shape != StairsShape.STRAIGHT && half == Half.TOP) {
-						yRot += 90; // Top stairs are rotated 90 degrees clockwise
-					}
-					yRot %= 360;
-					boolean uvlock = yRot != 0 || half == Half.TOP; // Don't set uvlock for states that have no rotation
-					return ConfiguredModel.builder()
-							.weight(10)
-							.modelFile(shape == StairsShape.STRAIGHT ? main0 : shape == StairsShape.INNER_LEFT || shape == StairsShape.INNER_RIGHT ? inner0 : outer0)
-							.rotationX(half == Half.BOTTOM ? 0 : 180).rotationY(yRot).uvLock(uvlock)
-							.nextModel()
+			.forAllStatesExcept(state -> {
+				Direction facing = state.getValue(StairBlock.FACING);
+				Half half = state.getValue(StairBlock.HALF);
+				StairsShape shape = state.getValue(StairBlock.SHAPE);
+				int yRot = (int) facing.getClockWise().toYRot(); // Stairs model is rotated 90 degrees clockwise for some reason
+				if (shape == StairsShape.INNER_LEFT || shape == StairsShape.OUTER_LEFT) {
+					yRot += 270; // Left facing stairs are rotated 90 degrees clockwise
+				}
+				if (shape != StairsShape.STRAIGHT && half == Half.TOP) {
+					yRot += 90; // Top stairs are rotated 90 degrees clockwise
+				}
+				yRot %= 360;
+				boolean uvlock = yRot != 0 || half == Half.TOP; // Don't set uvlock for states that have no rotation
+				return ConfiguredModel.builder()
+					.weight(10)
+					.modelFile(shape == StairsShape.STRAIGHT ? main0 : shape == StairsShape.INNER_LEFT || shape == StairsShape.INNER_RIGHT ? inner0 : outer0)
+					.rotationX(half == Half.BOTTOM ? 0 : 180).rotationY(yRot).uvLock(uvlock)
+					.nextModel()
 
-							.weight(10)
-							.modelFile(shape == StairsShape.STRAIGHT ? main1 : shape == StairsShape.INNER_LEFT || shape == StairsShape.INNER_RIGHT ? inner1 : outer1)
-							.rotationX(half == Half.BOTTOM ? 0 : 180).rotationY(yRot).uvLock(uvlock)
-							.nextModel()
+					.weight(10)
+					.modelFile(shape == StairsShape.STRAIGHT ? main1 : shape == StairsShape.INNER_LEFT || shape == StairsShape.INNER_RIGHT ? inner1 : outer1)
+					.rotationX(half == Half.BOTTOM ? 0 : 180).rotationY(yRot).uvLock(uvlock)
+					.nextModel()
 
-							.weight(1)
-							.modelFile(shape == StairsShape.STRAIGHT ? main2 : shape == StairsShape.INNER_LEFT || shape == StairsShape.INNER_RIGHT ? inner2 : outer2)
-							.rotationX(half == Half.BOTTOM ? 0 : 180).rotationY(yRot).uvLock(uvlock)
-							.nextModel()
+					.weight(1)
+					.modelFile(shape == StairsShape.STRAIGHT ? main2 : shape == StairsShape.INNER_LEFT || shape == StairsShape.INNER_RIGHT ? inner2 : outer2)
+					.rotationX(half == Half.BOTTOM ? 0 : 180).rotationY(yRot).uvLock(uvlock)
+					.nextModel()
 
-							.weight(1)
-							.modelFile(shape == StairsShape.STRAIGHT ? main3 : shape == StairsShape.INNER_LEFT || shape == StairsShape.INNER_RIGHT ? inner3 : outer3)
-							.rotationX(half == Half.BOTTOM ? 0 : 180).rotationY(yRot).uvLock(uvlock)
-							.build();
-				}, StairBlock.WATERLOGGED);
+					.weight(1)
+					.modelFile(shape == StairsShape.STRAIGHT ? main3 : shape == StairsShape.INNER_LEFT || shape == StairsShape.INNER_RIGHT ? inner3 : outer3)
+					.rotationX(half == Half.BOTTOM ? 0 : 180).rotationY(yRot).uvLock(uvlock)
+					.build();
+			}, StairBlock.WATERLOGGED);
 	}
 
 	protected void banister(BanisterBlock banister, String texName, String woodVariant) {
@@ -381,10 +381,10 @@ public abstract class BlockModelHelpers extends BlockStateProvider {
 			String newModelName = banisterDir + name(banister) + "_" + variant;
 
 			return ConfiguredModel.builder()
-					.weight(10).modelFile(models().withExistingParent(newModelName, TwilightForestMod.prefix("banister_" + variant)).texture("texture", tex0)).rotationY(yRot).nextModel()
-					.weight(10).modelFile(models().withExistingParent(newModelName + "_1", TwilightForestMod.prefix("banister_" + variant)).texture("texture", tex1)).rotationY(yRot).nextModel()
-					.weight(1).modelFile(models().withExistingParent(newModelName + "_2", TwilightForestMod.prefix("banister_" + variant)).texture("texture", tex2)).rotationY(yRot).nextModel()
-					.weight(1).modelFile(models().withExistingParent(newModelName + "_3", TwilightForestMod.prefix("banister_" + variant)).texture("texture", tex3)).rotationY(yRot).build();
+				.weight(10).modelFile(models().withExistingParent(newModelName, TwilightForestMod.prefix("banister_" + variant)).texture("texture", tex0)).rotationY(yRot).nextModel()
+				.weight(10).modelFile(models().withExistingParent(newModelName + "_1", TwilightForestMod.prefix("banister_" + variant)).texture("texture", tex1)).rotationY(yRot).nextModel()
+				.weight(1).modelFile(models().withExistingParent(newModelName + "_2", TwilightForestMod.prefix("banister_" + variant)).texture("texture", tex2)).rotationY(yRot).nextModel()
+				.weight(1).modelFile(models().withExistingParent(newModelName + "_3", TwilightForestMod.prefix("banister_" + variant)).texture("texture", tex3)).rotationY(yRot).build();
 		}, BanisterBlock.WATERLOGGED);
 	}
 
@@ -399,7 +399,7 @@ public abstract class BlockModelHelpers extends BlockStateProvider {
 			String variant = state.getValue(BanisterBlock.SHAPE).getSerializedName() + extended;
 
 			return ConfiguredModel.builder()
-					.modelFile(models().withExistingParent(banisterDir + name(banister) + "_" + variant, TwilightForestMod.prefix("banister_" + variant)).texture("texture", tex0)).rotationY(yRot).build();
+				.modelFile(models().withExistingParent(banisterDir + name(banister) + "_" + variant, TwilightForestMod.prefix("banister_" + variant)).texture("texture", tex0)).rotationY(yRot).build();
 		}, BanisterBlock.WATERLOGGED);
 	}
 

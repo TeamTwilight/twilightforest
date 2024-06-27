@@ -73,7 +73,9 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.CRACKED_DEADROCK.get());
 		toBlock(TFBlocks.WEATHERED_DEADROCK.get());
 		getBuilder(TFBlocks.TROLLSTEINN.getId().getPath()).parent(getExistingFile(new ResourceLocation("block/cube_all")))
-						.texture("all", prefix("block/trollsteinn"));
+			.texture("all", prefix("block/trollsteinn"));
+		getBuilder(TFBlocks.TROLLSTEINN.getId().getPath() + "_light").parent(getExistingFile(new ResourceLocation("block/cube_all")))
+			.texture("all", prefix("block/trollsteinn_light"));
 		toBlock(TFBlocks.WISPY_CLOUD.get());
 		toBlock(TFBlocks.FLUFFY_CLOUD.get());
 		toBlock(TFBlocks.RAINY_CLOUD.get());
@@ -82,16 +84,16 @@ public class ItemModelGenerator extends ItemModelProvider {
 		float giant = 4.0F;
 
 		ItemModelBuilder giant_block = withExistingParent("giant_block_base", new ResourceLocation("block/cube")).transforms()
-				.transform(ItemDisplayContext.GROUND).translation( 0.0F, 3.0F, 0.0F).scale(0.25F * giant).end()
-				.transform(ItemDisplayContext.FIXED).scale(0.5F * giant * 0.625F).end()
-				.transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND).rotation(75.0F, 45.0F, 0.0F).translation( 0.0F, 2.5F * giant, 0.0F).scale(0.375F * giant).end()
-				.transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND).rotation(0.0F, 45.0F, 0.0F).translation( 0.0F, -2.5F * giant, -2.5F * giant).scale(0.40F * giant).end()
-				.transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND).rotation(1.0F, 225.0F, 0.0F).translation( 0.0F, -2.5F * giant, -2.5F * giant).scale(0.40F * giant).end().end()
-				.element().allFaces((direction, faceBuilder) -> faceBuilder.uvs(0,0,16,16).texture(direction.getAxis() == Direction.Axis.Y ? "#top" : "#all").tintindex(0).cullface(direction).end().end()).end();
+			.transform(ItemDisplayContext.GROUND).translation(0.0F, 3.0F, 0.0F).scale(0.25F * giant).end()
+			.transform(ItemDisplayContext.FIXED).scale(0.5F * giant * 0.625F).end()
+			.transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND).rotation(75.0F, 45.0F, 0.0F).translation(0.0F, 2.5F * giant, 0.0F).scale(0.375F * giant).end()
+			.transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND).rotation(0.0F, 45.0F, 0.0F).translation(0.0F, -2.5F * giant, -2.5F * giant).scale(0.40F * giant).end()
+			.transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND).rotation(1.0F, 225.0F, 0.0F).translation(0.0F, -2.5F * giant, -2.5F * giant).scale(0.40F * giant).end().end()
+			.element().allFaces((direction, faceBuilder) -> faceBuilder.uvs(0, 0, 16, 16).texture(direction.getAxis() == Direction.Axis.Y ? "#top" : "#all").tintindex(0).cullface(direction).end().end()).end();
 
 		ItemModelBuilder gui_giant = withExistingParent("giant_block_gui", new ResourceLocation("block/cube")).transforms()
-				.transform(ItemDisplayContext.GUI).rotation(30.0F, 45.0F, 0.0F).scale(0.625F).end().end()
-				.element().allFaces((direction, faceBuilder) -> faceBuilder.uvs(0,0,4,4).texture(direction.getAxis() == Direction.Axis.Y ? "#top" : "#all").tintindex(0).cullface(direction).end().end()).end();
+			.transform(ItemDisplayContext.GUI).rotation(30.0F, 45.0F, 0.0F).scale(0.625F).end().end()
+			.element().allFaces((direction, faceBuilder) -> faceBuilder.uvs(0, 0, 4, 4).texture(direction.getAxis() == Direction.Axis.Y ? "#top" : "#all").tintindex(0).cullface(direction).end().end()).end();
 
 		toGiantModel(TFBlocks.GIANT_COBBLESTONE.get(), new ResourceLocation("block/cobblestone"), giant_block, gui_giant);
 		toGiantModel(TFBlocks.GIANT_LOG.get(), new ResourceLocation("block/oak_log"), new ResourceLocation("block/oak_log_top"), giant_block, gui_giant);
@@ -99,13 +101,13 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toGiantModel(TFBlocks.GIANT_OBSIDIAN.get(), new ResourceLocation("block/obsidian"), giant_block, gui_giant);
 
 		ItemModelBuilder giant_tool = withExistingParent("giant_tool_base", new ResourceLocation("item/generated")).transforms()
-				.transform(ItemDisplayContext.GROUND).translation( 0.0F, 2.0F, 0.0F).scale(2.5F).end()
-				.transform(ItemDisplayContext.HEAD).rotation(0.0F, 180.0F, 0.0F).translation( 0.0F, 13.0F, 7.0F).scale(5.0F).end()
-				.transform(ItemDisplayContext.FIXED).rotation(0.0F, 180.0F, 0.0F).scale(5.0F).end()
-				.transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND).rotation(0.0F, -90.0F, 55.0F).translation( -0.1F, 24.0F, -5.5F).scale(4.25F).end()
-				.transform(ItemDisplayContext.THIRD_PERSON_LEFT_HAND).rotation(0.0F, 90.0F, -55.0F).translation( -0.1F, 24.0F, -3.5F).scale(4.25F).end()
-				.transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND).rotation(0.0F, -90.0F, 25.0F).translation(  1.13F, 3.2F, 1.13F).scale(1.7F).end()
-				.transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND).rotation(0.0F, 90.0F, -25.0F).translation( 1.13F, 3.2F, 1.13F).scale(1.7F).end().end();
+			.transform(ItemDisplayContext.GROUND).translation(0.0F, 2.0F, 0.0F).scale(2.5F).end()
+			.transform(ItemDisplayContext.HEAD).rotation(0.0F, 180.0F, 0.0F).translation(0.0F, 13.0F, 7.0F).scale(5.0F).end()
+			.transform(ItemDisplayContext.FIXED).rotation(0.0F, 180.0F, 0.0F).scale(5.0F).end()
+			.transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND).rotation(0.0F, -90.0F, 55.0F).translation(-0.1F, 24.0F, -5.5F).scale(4.25F).end()
+			.transform(ItemDisplayContext.THIRD_PERSON_LEFT_HAND).rotation(0.0F, 90.0F, -55.0F).translation(-0.1F, 24.0F, -3.5F).scale(4.25F).end()
+			.transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND).rotation(0.0F, -90.0F, 25.0F).translation(1.13F, 3.2F, 1.13F).scale(1.7F).end()
+			.transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND).rotation(0.0F, 90.0F, -25.0F).translation(1.13F, 3.2F, 1.13F).scale(1.7F).end().end();
 
 		toGiantItemModel(TFItems.GIANT_PICKAXE, new ResourceLocation("item/stone_pickaxe"), giant_tool, 7, 2);
 		toGiantItemModel(TFItems.GIANT_SWORD, new ResourceLocation("item/stone_sword"), giant_tool, 3, 5);
@@ -113,9 +115,9 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.UBEROUS_SOIL.get());
 		toBlock(TFBlocks.HUGE_STALK.get());
 		getBuilder(TFBlocks.HUGE_MUSHGLOOM.getId().getPath()).parent(getExistingFile(new ResourceLocation("block/cube_all")))
-						.texture("all", prefix("block/huge_gloom_cap"));
+			.texture("all", prefix("block/huge_gloom_cap"));
 		getBuilder(TFBlocks.HUGE_MUSHGLOOM_STEM.getId().getPath()).parent(getExistingFile(new ResourceLocation("block/cube_all")))
-				.texture("all", prefix("block/huge_mushgloom_stem"));
+			.texture("all", prefix("block/huge_mushgloom_stem"));
 		generated(TFBlocks.TROLLVIDR.getId().getPath(), prefix("block/" + TFBlocks.TROLLVIDR.getId().getPath()));
 		generated(TFBlocks.UNRIPE_TROLLBER.getId().getPath(), prefix("block/" + TFBlocks.UNRIPE_TROLLBER.getId().getPath()));
 		generated(TFBlocks.TROLLBER.getId().getPath(), prefix("block/" + TFBlocks.TROLLBER.getId().getPath()));
@@ -157,8 +159,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 		ModelFile think115 = generated("item/think115", prefix("item/think115"));
 		ModelFile fullBlockSprinkle = getExistingFile(prefix("block/experiment115_8_8_regenerating"));
 		generated(TFBlocks.EXPERIMENT_115.getId().getPath(), prefix("item/experiment_115"))
-						.override().predicate(Experiment115Item.THINK, 1).model(think115).end()
-						.override().predicate(Experiment115Item.FULL, 1).model(fullBlockSprinkle).end();
+			.override().predicate(Experiment115Item.THINK, 1).model(think115).end()
+			.override().predicate(Experiment115Item.FULL, 1).model(fullBlockSprinkle).end();
 		toBlockModel(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get(), "miniature/portal");
 		toBlockModel(TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE.get(), "miniature/naga_courtyard");
 		toBlockModel(TFBlocks.LICH_TOWER_MINIATURE_STRUCTURE.get(), "miniature/lich_tower");
@@ -180,9 +182,9 @@ public class ItemModelGenerator extends ItemModelProvider {
 		ModelFile spool = generated("red_thread_spool", prefix("item/red_thread_bundle_1"));
 		ModelFile large_spool = generated("red_thread_large_spool", prefix("item/red_thread_bundle_2"));
 		singleTex(TFBlocks.RED_THREAD)
-				.override().predicate(prefix("size"), 0.25F).model(bundle).end()
-				.override().predicate(prefix("size"), 0.5F).model(spool).end()
-				.override().predicate(prefix("size"), 1.0F).model(large_spool).end();
+			.override().predicate(prefix("size"), 0.25F).model(bundle).end()
+			.override().predicate(prefix("size"), 0.5F).model(spool).end()
+			.override().predicate(prefix("size"), 1.0F).model(large_spool).end();
 		toBlock(TFBlocks.HEDGE.get());
 		toBlock(TFBlocks.ROOT_BLOCK.get());
 		toBlock(TFBlocks.LIVEROOT_BLOCK.get());
@@ -230,10 +232,10 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.TWISTED_STONE.get());
 		toBlockModel(TFBlocks.TWISTED_STONE_PILLAR.get(), prefix("block/pillar/pillar_inventory"));
 		toBlock(TFBlocks.BOLD_STONE_PILLAR.get());
-		toBlockModel(TFBlocks.DEATH_TOME_SPAWNER.get(), prefix("block/death_tome_spawner_10"));
-		toBlock(TFBlocks.EMPTY_CANOPY_BOOKSHELF.get());
 		toBlock(TFBlocks.CANOPY_BOOKSHELF.get());
 		generated(TFBlocks.ROPE.getId().getPath(), prefix("block/" + TFBlocks.ROPE.getId().getPath()));
+		toBlock(TFBlocks.CANOPY_WINDOW.value());
+		generated(TFBlocks.CANOPY_WINDOW_PANE.getId().getPath(), prefix("block/" + TFBlocks.CANOPY_WINDOW.getId().getPath()));
 
 		toBlockModel(TFBlocks.TERRORCOTTA_LINES.get(), prefix("block/terrorcotta_lines_0"));
 		toBlockModel(TFBlocks.TERRORCOTTA_CURVES.get(), prefix("block/terrorcotta_curves_90"));
@@ -525,8 +527,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 		ModelFile magnetPull1 = specialTool("ore_magnet_pulling_1", prefix("item/ore_magnet_pulling_1"));
 		ModelFile magnetPull2 = specialTool("ore_magnet_pulling_2", prefix("item/ore_magnet_pulling_2"));
 		specialTool(TFItems.ORE_MAGNET)
-				.override().predicate(new ResourceLocation("pulling"), 1).predicate(new ResourceLocation("pull"), (float) 0.5).model(magnetPull1).end()
-				.override().predicate(new ResourceLocation("pulling"), 1).predicate(new ResourceLocation("pull"), 1).model(magnetPull2).end();
+			.override().predicate(new ResourceLocation("pulling"), 1).predicate(new ResourceLocation("pull"), (float) 0.5).model(magnetPull1).end()
+			.override().predicate(new ResourceLocation("pulling"), 1).predicate(new ResourceLocation("pull"), 1).model(magnetPull2).end();
 		crumbleHorn(TFItems.CRUMBLE_HORN);
 		singleTexTool(TFItems.PEACOCK_FEATHER_FAN);
 		moonwormQueen(TFItems.MOONWORM_QUEEN);
@@ -600,14 +602,14 @@ public class ItemModelGenerator extends ItemModelProvider {
 		ModelFile quarter1 = phaseTex("moon_dial_quarter1", prefix("item/moon_dial/first_quarter"));
 		ModelFile waxing_gib = phaseTex("moon_dial_waxing_gib", prefix("item/moon_dial/waxing_gibbous"));
 		phaseTex(TFItems.MOON_DIAL.getId().getPath(), prefix("item/moon_dial/full"))
-				.override().predicate(new ResourceLocation("phase"), 0).model(full).end()
-				.override().predicate(new ResourceLocation("phase"), 0.125F).model(waning_gib).end()
-				.override().predicate(new ResourceLocation("phase"), 0.25F).model(quarter3).end()
-				.override().predicate(new ResourceLocation("phase"), 0.375F).model(waning_cres).end()
-				.override().predicate(new ResourceLocation("phase"), 0.5F).model(unlit).end()
-				.override().predicate(new ResourceLocation("phase"), 0.625F).model(waxing_cres).end()
-				.override().predicate(new ResourceLocation("phase"), 0.75F).model(quarter1).end()
-				.override().predicate(new ResourceLocation("phase"), 0.875F).model(waxing_gib).end();
+			.override().predicate(new ResourceLocation("phase"), 0).model(full).end()
+			.override().predicate(new ResourceLocation("phase"), 0.125F).model(waning_gib).end()
+			.override().predicate(new ResourceLocation("phase"), 0.25F).model(quarter3).end()
+			.override().predicate(new ResourceLocation("phase"), 0.375F).model(waning_cres).end()
+			.override().predicate(new ResourceLocation("phase"), 0.5F).model(unlit).end()
+			.override().predicate(new ResourceLocation("phase"), 0.625F).model(waxing_cres).end()
+			.override().predicate(new ResourceLocation("phase"), 0.75F).model(quarter1).end()
+			.override().predicate(new ResourceLocation("phase"), 0.875F).model(waxing_gib).end();
 
 		ModelFile fill1 = generated("brittle_flask_0", prefix("item/brittle_potion_flask_1"), prefix("item/brittle_potion_flask_labelled"));
 		ModelFile fill2 = generated("brittle_flask_1", prefix("item/brittle_potion_flask_2"), prefix("item/brittle_potion_flask_labelled"));
@@ -621,26 +623,26 @@ public class ItemModelGenerator extends ItemModelProvider {
 		ModelFile fill2_damaged = generated("brittle_flask_1_damaged", prefix("item/brittle_potion_flask_2"), prefix("item/brittle_potion_flask_damaged"));
 		ModelFile fill3_damaged = generated("brittle_flask_2_damaged", prefix("item/brittle_potion_flask_3"), prefix("item/brittle_potion_flask_damaged"));
 		generated(TFItems.BRITTLE_FLASK.getId().getPath(), prefix("block/blank"), prefix("item/brittle_potion_flask"))
-				.override().predicate(prefix("potion_level"), 1).model(fill1).end()
-				.override().predicate(prefix("potion_level"), 2).model(fill2).end()
-				.override().predicate(prefix("potion_level"), 3).model(fill3).end()
-				.override().predicate(prefix("potion_level"), 0).predicate(prefix("breakage"), 1).model(splintered).end()
-				.override().predicate(prefix("potion_level"), 1).predicate(prefix("breakage"), 1).model(fill1_splintered).end()
-				.override().predicate(prefix("potion_level"), 2).predicate(prefix("breakage"), 1).model(fill2_splintered).end()
-				.override().predicate(prefix("potion_level"), 3).predicate(prefix("breakage"), 1).model(fill3_splintered).end()
-				.override().predicate(prefix("potion_level"), 0).predicate(prefix("breakage"), 2).model(damaged).end()
-				.override().predicate(prefix("potion_level"), 1).predicate(prefix("breakage"), 2).model(fill1_damaged).end()
-				.override().predicate(prefix("potion_level"), 2).predicate(prefix("breakage"), 2).model(fill2_damaged).end()
-				.override().predicate(prefix("potion_level"), 3).predicate(prefix("breakage"), 2).model(fill3_damaged).end();
+			.override().predicate(prefix("potion_level"), 1).model(fill1).end()
+			.override().predicate(prefix("potion_level"), 2).model(fill2).end()
+			.override().predicate(prefix("potion_level"), 3).model(fill3).end()
+			.override().predicate(prefix("potion_level"), 0).predicate(prefix("breakage"), 1).model(splintered).end()
+			.override().predicate(prefix("potion_level"), 1).predicate(prefix("breakage"), 1).model(fill1_splintered).end()
+			.override().predicate(prefix("potion_level"), 2).predicate(prefix("breakage"), 1).model(fill2_splintered).end()
+			.override().predicate(prefix("potion_level"), 3).predicate(prefix("breakage"), 1).model(fill3_splintered).end()
+			.override().predicate(prefix("potion_level"), 0).predicate(prefix("breakage"), 2).model(damaged).end()
+			.override().predicate(prefix("potion_level"), 1).predicate(prefix("breakage"), 2).model(fill1_damaged).end()
+			.override().predicate(prefix("potion_level"), 2).predicate(prefix("breakage"), 2).model(fill2_damaged).end()
+			.override().predicate(prefix("potion_level"), 3).predicate(prefix("breakage"), 2).model(fill3_damaged).end();
 
 		ModelFile gfill1 = generated("greater_flask_0", prefix("item/greater_potion_flask_1"), prefix("item/greater_potion_flask"));
 		ModelFile gfill2 = generated("greater_flask_1", prefix("item/greater_potion_flask_2"), prefix("item/greater_potion_flask"));
 		ModelFile gfill3 = generated("greater_flask_2", prefix("item/greater_potion_flask_3"), prefix("item/greater_potion_flask"));
 
 		generated(TFItems.GREATER_FLASK.getId().getPath(), prefix("block/blank"), prefix("item/greater_potion_flask"))
-				.override().predicate(prefix("potion_level"), 1).model(gfill1).end()
-				.override().predicate(prefix("potion_level"), 2).model(gfill2).end()
-				.override().predicate(prefix("potion_level"), 3).model(gfill3).end();
+			.override().predicate(prefix("potion_level"), 1).model(gfill1).end()
+			.override().predicate(prefix("potion_level"), 2).model(gfill2).end()
+			.override().predicate(prefix("potion_level"), 3).model(gfill3).end();
 
 		singleTex(TFItems.MUSIC_DISC_FINDINGS);
 		singleTex(TFItems.MUSIC_DISC_HOME);
@@ -760,16 +762,16 @@ public class ItemModelGenerator extends ItemModelProvider {
 
 	private void bowTex(DeferredHolder<Item, Item> item, ModelFile pull0, ModelFile pull1, ModelFile pull2) {
 		bowItem(item.getId().getPath(), prefix("item/" + item.getId().getPath()))
-				.override().predicate(new ResourceLocation("pulling"), 1).model(pull0).end()
-				.override().predicate(new ResourceLocation("pulling"), 1).predicate(new ResourceLocation("pull"), (float) 0.65).model(pull1).end()
-				.override().predicate(new ResourceLocation("pulling"), 1).predicate(new ResourceLocation("pull"), (float) 0.9).model(pull2).end();
+			.override().predicate(new ResourceLocation("pulling"), 1).model(pull0).end()
+			.override().predicate(new ResourceLocation("pulling"), 1).predicate(new ResourceLocation("pull"), (float) 0.65).model(pull1).end()
+			.override().predicate(new ResourceLocation("pulling"), 1).predicate(new ResourceLocation("pull"), (float) 0.9).model(pull2).end();
 	}
 
 	private void iceBowTex(ModelFile pull0, ModelFile pull1, ModelFile pull2) {
 		bowItem(TFItems.ICE_BOW.getId().getPath(), prefix("item/ice_bow_solid"), prefix("item/ice_bow_clear"))
-				.override().predicate(new ResourceLocation("pulling"), 1).model(pull0).end()
-				.override().predicate(new ResourceLocation("pulling"), 1).predicate(new ResourceLocation("pull"), (float) 0.65).model(pull1).end()
-				.override().predicate(new ResourceLocation("pulling"), 1).predicate(new ResourceLocation("pull"), (float) 0.9).model(pull2).end();
+			.override().predicate(new ResourceLocation("pulling"), 1).model(pull0).end()
+			.override().predicate(new ResourceLocation("pulling"), 1).predicate(new ResourceLocation("pull"), (float) 0.65).model(pull1).end()
+			.override().predicate(new ResourceLocation("pulling"), 1).predicate(new ResourceLocation("pull"), (float) 0.9).model(pull2).end();
 	}
 
 	private ItemModelBuilder phaseTex(String name, ResourceLocation... layers) {
@@ -782,14 +784,14 @@ public class ItemModelGenerator extends ItemModelProvider {
 
 	private void woodenButton(Block button, String variant) {
 		getBuilder(BuiltInRegistries.BLOCK.getKey(button).getPath())
-						.parent(getExistingFile(mcLoc("block/button_inventory")))
-						.texture("texture", "block/wood/planks_" + variant + "_0");
+			.parent(getExistingFile(mcLoc("block/button_inventory")))
+			.texture("texture", "block/wood/planks_" + variant + "_0");
 	}
 
 	private void woodenFence(Block fence, String variant) {
 		getBuilder(BuiltInRegistries.BLOCK.getKey(fence).getPath())
-						.parent(getExistingFile(mcLoc("block/fence_inventory")))
-						.texture("texture", "block/wood/planks_" + variant + "_0");
+			.parent(getExistingFile(mcLoc("block/fence_inventory")))
+			.texture("texture", "block/wood/planks_" + variant + "_0");
 	}
 
 	private void hollowLog(DeferredHolder<Item, HollowLogItem> hollowLog) {
@@ -823,19 +825,19 @@ public class ItemModelGenerator extends ItemModelProvider {
 	private void toGiantModel(Block b, ResourceLocation model, ResourceLocation top, ItemModelBuilder base, ItemModelBuilder gui) {
 		String name = BuiltInRegistries.BLOCK.getKey(b).getPath();
 		withExistingParent(name, model).customLoader(SeparateTransformsModelBuilder::begin)
-				.base(withExistingParent(name + "_base", base.getLocation()).texture("all", model).texture("top", top))
-				.perspective(ItemDisplayContext.GUI, withExistingParent(name + "_gui", gui.getLocation()).texture("all", model).texture("top", top)).end();
+			.base(withExistingParent(name + "_base", base.getLocation()).texture("all", model).texture("top", top))
+			.perspective(ItemDisplayContext.GUI, withExistingParent(name + "_gui", gui.getLocation()).texture("all", model).texture("top", top)).end();
 	}
 
 	private void toGiantItemModel(DeferredHolder<Item, Item> item, ResourceLocation parent, ItemModelBuilder base, int x, int y) {
 		String name = item.getId().getPath();
 
 		ItemModelBuilder gui = getBuilder(name + "_gui").texture("all", parent)
-				.element().from(0,0,0).to(16, 16, 0).face(Direction.SOUTH).texture("#all").uvs(x, y, x + 8, y + 8).tintindex(0).end().end();
+			.element().from(0, 0, 0).to(16, 16, 0).face(Direction.SOUTH).texture("#all").uvs(x, y, x + 8, y + 8).tintindex(0).end().end();
 
 		withExistingParent(name, parent).customLoader(SeparateTransformsModelBuilder::begin)
-				.base(withExistingParent(name + "_base", base.getLocation()).texture("layer0", parent))
-				.perspective(ItemDisplayContext.GUI, gui.texture("all", parent)).end();
+			.base(withExistingParent(name + "_base", base.getLocation()).texture("layer0", parent))
+			.perspective(ItemDisplayContext.GUI, gui.texture("all", parent)).end();
 	}
 
 	private void trimmedArmor(DeferredHolder<Item, ArmorItem> armor) {
@@ -844,8 +846,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 			String material = trim.name();
 			String name = armor.getId().getPath() + "_" + material + "_trim";
 			ModelFile trimModel = this.withExistingParent(name, this.mcLoc("item/generated"))
-					.texture("layer0", prefix("item/" + armor.getId().getPath()))
-					.texture("layer1", this.mcLoc("trims/items/" + armor.get().getType().getName() + "_trim_" + material));
+				.texture("layer0", prefix("item/" + armor.getId().getPath()))
+				.texture("layer1", this.mcLoc("trims/items/" + armor.get().getType().getName() + "_trim_" + material));
 			base.override().predicate(new ResourceLocation("trim_type"), trim.itemModelIndex()).model(trimModel).end();
 		}
 	}
@@ -856,8 +858,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 			String material = trim.name();
 			String name = armor.getId().getPath() + "_" + material + "_trim";
 			ModelFile trimModel = this.withExistingParent(name, this.mcLoc("item/generated"))
-					.texture("layer0", prefix("item/" + armor.getId().getPath()))
-					.texture("layer1", this.mcLoc("trims/items/" + armor.get().getType().getName() + "_trim_" + material));
+				.texture("layer0", prefix("item/" + armor.getId().getPath()))
+				.texture("layer1", this.mcLoc("trims/items/" + armor.get().getType().getName() + "_trim_" + material));
 			base.override().predicate(new ResourceLocation("trim_type"), trim.itemModelIndex()).model(trimModel).end();
 		}
 		base.customLoader(ItemLayerModelBuilder::begin).emissive(15, 15, 0).renderType("minecraft:translucent", 0).end();
@@ -869,9 +871,9 @@ public class ItemModelGenerator extends ItemModelProvider {
 			String material = trim.name();
 			String name = armor.getId().getPath() + "_" + material + "_trim";
 			ModelFile trimModel = this.withExistingParent(name, this.mcLoc("item/generated"))
-					.texture("layer0", prefix("item/" + armor.getId().getPath()))
-					.texture("layer1", prefix("item/" + armor.getId().getPath() + "_0"))
-					.texture("layer2", this.mcLoc("trims/items/" + armor.get().getType().getName() + "_trim_" + material));
+				.texture("layer0", prefix("item/" + armor.getId().getPath()))
+				.texture("layer1", prefix("item/" + armor.getId().getPath() + "_0"))
+				.texture("layer2", this.mcLoc("trims/items/" + armor.get().getType().getName() + "_trim_" + material));
 			base.override().predicate(new ResourceLocation("trim_type"), trim.itemModelIndex()).model(trimModel).end();
 		}
 	}
@@ -879,62 +881,62 @@ public class ItemModelGenerator extends ItemModelProvider {
 	private void crumbleHorn(DeferredHolder<Item, Item> item) {
 		String name = item.getId().getPath();
 		ItemModelBuilder tooting = withExistingParent("tooting_" + name, this.mcLoc("item/tooting_goat_horn"))
-				.texture("layer0", prefix("item/" + name));
+			.texture("layer0", prefix("item/" + name));
 
 		withExistingParent(name, this.mcLoc("item/goat_horn"))
-				.texture("layer0", prefix("item/" + name))
-				.override().predicate(TwilightForestMod.prefix("tooting"), 1).model(tooting);
+			.texture("layer0", prefix("item/" + name))
+			.override().predicate(TwilightForestMod.prefix("tooting"), 1).model(tooting);
 	}
 
 	private void lamp(DeferredHolder<Item, Item> item) {
 		String name = item.getId().getPath();
 		tool(name)
-				.texture("layer0", prefix("item/" + name))
-				.transforms()
-				.transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND)
-				.rotation(0, -90, 0)
-				.translation(0, -0.5F, -3.0F)
-				.scale(0.65F)
-				.end()
-				.transform(ItemDisplayContext.THIRD_PERSON_LEFT_HAND)
-				.rotation(0, 90, 0)
-				.translation(0, -0.5F, -3.0F)
-				.scale(0.65F)
-				.end()
-				.end();
+			.texture("layer0", prefix("item/" + name))
+			.transforms()
+			.transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND)
+			.rotation(0, -90, 0)
+			.translation(0, -0.5F, -3.0F)
+			.scale(0.65F)
+			.end()
+			.transform(ItemDisplayContext.THIRD_PERSON_LEFT_HAND)
+			.rotation(0, 90, 0)
+			.translation(0, -0.5F, -3.0F)
+			.scale(0.65F)
+			.end()
+			.end();
 	}
 
 	private void moonwormQueen(DeferredHolder<Item, Item> item) {
 		String name = item.getId().getPath();
 
 		ModelFile alt = fullbrightTool(name + "_alt", prefix("item/" + name + "_alt"))
-				.transforms()
-				.transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND)
-				.rotation(0, -90, 55)
-				.translation(0, 2.0F, -1.0F)
-				.scale(0.85F)
-				.end()
-				.transform(ItemDisplayContext.THIRD_PERSON_LEFT_HAND)
-				.rotation(0, 90, -55)
-				.translation(0, 2.0F, -1.0F)
-				.scale(0.85F)
-				.end()
-				.end();
+			.transforms()
+			.transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND)
+			.rotation(0, -90, 55)
+			.translation(0, 2.0F, -1.0F)
+			.scale(0.85F)
+			.end()
+			.transform(ItemDisplayContext.THIRD_PERSON_LEFT_HAND)
+			.rotation(0, 90, -55)
+			.translation(0, 2.0F, -1.0F)
+			.scale(0.85F)
+			.end()
+			.end();
 
 		singleTexFullbrightTool(item)
-				.transforms()
-				.transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND)
-				.rotation(0, -90, 55)
-				.translation(0, 2.0F, -1.0F)
-				.scale(0.85F)
-				.end()
-				.transform(ItemDisplayContext.THIRD_PERSON_LEFT_HAND)
-				.rotation(0, 90, -55)
-				.translation(0, 2.0F, -1.0F)
-				.scale(0.85F)
-				.end()
-				.end()
-				.override().predicate(prefix("alt"), 1).model(alt).end();
+			.transforms()
+			.transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND)
+			.rotation(0, -90, 55)
+			.translation(0, 2.0F, -1.0F)
+			.scale(0.85F)
+			.end()
+			.transform(ItemDisplayContext.THIRD_PERSON_LEFT_HAND)
+			.rotation(0, 90, -55)
+			.translation(0, 2.0F, -1.0F)
+			.scale(0.85F)
+			.end()
+			.end()
+			.override().predicate(prefix("alt"), 1).model(alt).end();
 	}
 
 	@Override

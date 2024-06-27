@@ -19,8 +19,8 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import org.apache.commons.lang3.ArrayUtils;
 import twilightforest.TwilightForestMod;
-import twilightforest.init.TFDataAttachments;
 import twilightforest.entity.boss.Lich;
+import twilightforest.init.TFDataAttachments;
 
 public class ShieldLayer<T extends LivingEntity, M extends EntityModel<T>> extends RenderLayer<T, M> {
 
@@ -32,9 +32,9 @@ public class ShieldLayer<T extends LivingEntity, M extends EntityModel<T>> exten
 	}
 
 	private int getShieldCount(T entity) {
-		return entity instanceof Lich
-						? ((Lich) entity).getShieldStrength()
-						: entity.getData(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft();
+		return entity instanceof Lich lich
+			? lich.getShieldStrength()
+			: entity.getData(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft();
 	}
 
 	private void renderShields(PoseStack stack, MultiBufferSource buffer, T entity, float partialTicks) {
@@ -60,12 +60,12 @@ public class ShieldLayer<T extends LivingEntity, M extends EntityModel<T>> exten
 			BakedModel model = Minecraft.getInstance().getModelManager().getModel(LOC);
 			for (Direction dir : DIRS) {
 				Minecraft.getInstance().getItemRenderer().renderQuadList(
-						stack,
-						buffer.getBuffer(Sheets.translucentCullBlockSheet()),
-						model.getQuads(null, dir, entity.getRandom(), ModelData.EMPTY, Sheets.translucentCullBlockSheet()),
-						ItemStack.EMPTY,
-						0xF000F0,
-						OverlayTexture.NO_OVERLAY
+					stack,
+					buffer.getBuffer(Sheets.translucentCullBlockSheet()),
+					model.getQuads(null, dir, entity.getRandom(), ModelData.EMPTY, Sheets.translucentCullBlockSheet()),
+					ItemStack.EMPTY,
+					0xF000F0,
+					OverlayTexture.NO_OVERLAY
 				);
 			}
 

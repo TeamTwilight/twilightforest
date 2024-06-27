@@ -9,7 +9,7 @@
             "entity": "this",
             "predicate": {
               "type_specific": {
-                "type": "player",
+                "type": "minecraft:player",
                 "advancements": {
                   "twilightforest:progress_lich": true
                 }
@@ -23,9 +23,7 @@
     "meef": {
       "conditions": {
         "item": {
-          "items": [
-            "twilightforest:meef_stroganoff"
-          ]
+          "items": "twilightforest:meef_stroganoff"
         }
       },
       "trigger": "minecraft:consume_item"
@@ -37,7 +35,8 @@
     },
     "frame": "goal",
     "icon": {
-      "item": "twilightforest:meef_stroganoff"
+      "count": 1,
+      "id": "twilightforest:meef_stroganoff"
     },
     "title": {
       "translate": "advancement.twilightforest.progress_labyrinth"

@@ -1,30 +1,15 @@
 package twilightforest.enchantment;
 
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.MobType;
 import net.minecraft.world.item.ItemStack;
-import twilightforest.init.TFEnchantments;
+import net.minecraft.world.item.enchantment.Enchantment;
+import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.item.ChainBlockItem;
 
 public class DestructionEnchantment extends LootOnlyEnchantment {
-
-	public DestructionEnchantment(Rarity rarity) {
-		super(rarity, TFEnchantments.BLOCK_AND_CHAIN, new EquipmentSlot[] {EquipmentSlot.MAINHAND});
-	}
-
-	@Override
-	public int getMinCost(int level) {
-		return 5 + (level - 1) * 9;
-	}
-
-	@Override
-	public int getMaxCost(int level) {
-		return this.getMinCost(level) + 15;
-	}
-
-	@Override
-	public int getMaxLevel() {
-		return 3;
+	public DestructionEnchantment(int weight) {
+		super(ItemTagGenerator.BLOCK_AND_CHAIN_ENCHANTABLE, weight, 3, Enchantment.dynamicCost(5, 9), Enchantment.dynamicCost(20, 9), 2, EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND);
 	}
 
 	@Override
@@ -33,7 +18,7 @@ public class DestructionEnchantment extends LootOnlyEnchantment {
 	}
 
 	@Override
-	public float getDamageBonus(int level, MobType type, ItemStack item) {
+	public float getDamageBonus(int level, EntityType<?> entityType, ItemStack enchantedItem) {
 		return -level * 1.5F;
 	}
 }

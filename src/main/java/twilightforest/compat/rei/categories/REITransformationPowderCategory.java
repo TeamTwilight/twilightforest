@@ -75,18 +75,18 @@ public class REITransformationPowderCategory implements DisplayCategory<REITrans
 
 		//input
 		widgets.add(Widgets.createSlot(new Rectangle(bounds.getX() + 8, bounds.getY() + 11, 32, 32))
-				.markInput()
-				.disableHighlight()
-				.entries(display.getInputEntries().get(0))
-				.disableBackground()
+			.markInput()
+			.disableHighlight()
+			.entries(display.getInputEntries().get(0))
+			.disableBackground()
 		);
 
 		//output
 		widgets.add(Widgets.createSlot(new Rectangle(bounds.getX() + 76, bounds.getY() + 11, 32, 32))
-				.markOutput()
-				.disableHighlight()
-				.entries(display.getOutputEntries().get(0))
-				.disableBackground()
+			.markOutput()
+			.disableHighlight()
+			.entries(display.getOutputEntries().get(0))
+			.disableBackground()
 		);
 
 		return widgets;

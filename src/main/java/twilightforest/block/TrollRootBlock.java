@@ -5,7 +5,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -42,7 +41,7 @@ public class TrollRootBlock extends Block {
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
+	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult result) {
 		if (state.is(TFBlocks.TROLLBER)) {
 			level.setBlock(pos, TFBlocks.TROLLVIDR.get().defaultBlockState(), 2);
 			level.playSound(null, pos, TFSounds.PICKED_TORCHBERRIES.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
@@ -51,7 +50,7 @@ public class TrollRootBlock extends Block {
 			if (player instanceof ServerPlayer) player.awardStat(TFStats.TORCHBERRIES_HARVESTED.get());
 			return InteractionResult.sidedSuccess(level.isClientSide());
 		}
-		return super.use(state, level, pos, player, hand, result);
+		return super.useWithoutItem(state, level, pos, player, result);
 	}
 
 	@Override

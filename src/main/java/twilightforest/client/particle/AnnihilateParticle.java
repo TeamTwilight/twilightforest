@@ -3,10 +3,7 @@ package twilightforest.client.particle;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
 public class AnnihilateParticle extends TextureSheetParticle {
 
 	public AnnihilateParticle(ClientLevel level, double x, double y, double z, double vx, double vy, double vz, float scale) {
@@ -51,7 +48,7 @@ public class AnnihilateParticle extends TextureSheetParticle {
 			this.zd *= 0.7D;
 		}
 
-		this.quadSize *= 0.97D;
+		this.quadSize *= 0.97F;
 
 		if (this.quadSize < 0.04F) {
 			this.remove();
@@ -70,7 +67,6 @@ public class AnnihilateParticle extends TextureSheetParticle {
 		return 240 | 240 << 16;
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	public record Factory(SpriteSet sprite) implements ParticleProvider<SimpleParticleType> {
 
 		@Override

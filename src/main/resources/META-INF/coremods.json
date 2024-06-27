@@ -5,14 +5,10 @@
   "multipart": "META-INF/asm/multipart.js",
   "foliage": "META-INF/asm/foliage.js",
   "mount": "META-INF/asm/mount.js",
-  "book": "META-INF/asm/book.js",
   "conquered": "META-INF/asm/conquered.js",
-  "reach": "META-INF/asm/reach.js",
   "shroom": "META-INF/asm/shroom.js",
   "cloud": "META-INF/asm/cloud.js",
   "lead": "META-INF/asm/lead.js",
-  "chunkstatus": "META-INF/asm/chunkstatus.js",
   "structure_terraform": "META-INF/asm/structure_terraform.js",
-  "structure_scan": "META-INF/asm/structure_scan.js",
-  "armor": "META-INF/asm/armor.js"
+  "structure_scan": "META-INF/asm/structure_scan.js"
 }

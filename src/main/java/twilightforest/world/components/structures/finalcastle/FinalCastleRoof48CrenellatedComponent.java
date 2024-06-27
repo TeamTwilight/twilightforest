@@ -25,6 +25,7 @@ public class FinalCastleRoof48CrenellatedComponent extends TFStructureComponentO
 		super(TFStructurePieceTypes.TFFCRo48Cr.get(), nbt);
 	}
 
+	@SuppressWarnings("this-escape")
 	public FinalCastleRoof48CrenellatedComponent(int i, TFStructureComponentOld keep, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFFCRo48Cr.get(), i, x, y, z);
 

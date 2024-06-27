@@ -21,7 +21,8 @@ public class RisingZombieModel extends ZombieModel<RisingZombie> {
 		stack.pushPose();
 
 		if (this.young) {
-			stack.pushPose();{
+			stack.pushPose();
+			{
 				stack.scale(0.75F, 0.75F, 0.75F);
 				stack.translate(0.0F, 16.0F * scale, 0.0F);
 				this.headParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, scale));

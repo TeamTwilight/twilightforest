@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:mossy_nagastone_stairs_right"
-            ]
+            "items": "twilightforest:mossy_nagastone_stairs_right"
           }
         ]
       },

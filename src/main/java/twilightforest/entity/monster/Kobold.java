@@ -1,12 +1,13 @@
 package twilightforest.entity.monster;
 
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ItemParticleOption;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
@@ -25,13 +26,16 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.entity.ai.goal.FlockToSameKindGoal;
 import twilightforest.entity.ai.goal.PanicOnFlockDeathGoal;
 import twilightforest.init.TFSounds;
+import twilightforest.network.ParticlePacket;
 
 import java.util.EnumSet;
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 
 public class Kobold extends Monster {
@@ -40,6 +44,7 @@ public class Kobold extends Monster {
 	private int lastEatenBreadTicks;
 	private int eatingTime;
 
+	@SuppressWarnings("this-escape")
 	public Kobold(EntityType<? extends Kobold> type, Level world) {
 		super(type, world);
 		this.setCanPickUpLoot(true);
@@ -62,16 +67,16 @@ public class Kobold extends Monster {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(PANICKED, false);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(PANICKED, false);
 	}
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Monster.createMonsterAttributes()
-				.add(Attributes.MAX_HEALTH, 13.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.28D)
-				.add(Attributes.ATTACK_DAMAGE, 4.0D);
+			.add(Attributes.MAX_HEALTH, 13.0D)
+			.add(Attributes.MOVEMENT_SPEED, 0.28D)
+			.add(Attributes.ATTACK_DAMAGE, 4.0D);
 	}
 
 	@Override
@@ -149,24 +154,41 @@ public class Kobold extends Monster {
 	}
 
 	private void spawnItemParticles(ItemStack stack, int amount) {
-		for (int i = 0; i < amount; ++i) {
-			Vec3 vec3 = new Vec3((this.getRandom().nextFloat() - 0.5D) * 0.1D, Math.random() * 0.1D + 0.1D, 0.0D);
-			vec3 = vec3.xRot(-this.getXRot() * Mth.DEG_TO_RAD);
-			vec3 = vec3.yRot(-this.getYHeadRot() * Mth.DEG_TO_RAD);
-			double d0 = -this.getRandom().nextFloat() * 0.6D - 0.3D;
-			Vec3 vec31 = new Vec3((this.getRandom().nextFloat() - 0.5D) * 0.3D, d0, 0.6D);
-			vec31 = vec31.xRot(-this.getXRot() * Mth.DEG_TO_RAD);
-			vec31 = vec31.yRot(-this.getYHeadRot() * Mth.DEG_TO_RAD);
-			vec31 = vec31.add(this.getX(), this.getEyeY(), this.getZ());
-			if (this.level() instanceof ServerLevel server)
-				server.sendParticles(new ItemParticleOption(ParticleTypes.ITEM, stack), vec31.x(), vec31.y(), vec31.z(), 1, vec3.x(), vec3.y() + 0.05D, vec3.z(), 0.0D);
-			else
-				this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, stack), vec31.x(), vec31.y(), vec31.z(), vec3.x(), vec3.y() + 0.05D, vec3.z());
+		ParticleOptions particleOptions = new ItemParticleOption(ParticleTypes.ITEM, stack);
+		if (this.level().isClientSide()) {
+			for (int i = 0; i < amount; ++i) {
+				this.getItemParticleVectors((vec31, vec3) ->
+					this.level().addParticle(particleOptions, vec31.x(), vec31.y(), vec31.z(), vec3.x(), vec3.y() + 0.05D, vec3.z()));
+			}
+		} else {
+			ParticlePacket particlePacket = new ParticlePacket();
+			for (int i = 0; i < amount; ++i) {
+				this.getItemParticleVectors((vec31, vec3) ->
+					particlePacket.queueParticle(particleOptions, false,
+						vec31.x() + vec3.x() * this.random.nextGaussian(),
+						vec31.y() + (vec3.y() + 0.05D) * this.random.nextGaussian(),
+						vec31.z() + vec3.z() * this.random.nextGaussian(),
+						0.0D, 0.0D, 0.0D));
+			}
+			PacketDistributor.sendToPlayersTrackingEntity(this, particlePacket);
 		}
 	}
 
+	private void getItemParticleVectors(BiConsumer<Vec3, Vec3> consumer) {
+		Vec3 vec3 = new Vec3((this.getRandom().nextFloat() - 0.5D) * 0.1D, Math.random() * 0.1D + 0.1D, 0.0D);
+		vec3 = vec3.xRot(-this.getXRot() * Mth.DEG_TO_RAD);
+		vec3 = vec3.yRot(-this.getYHeadRot() * Mth.DEG_TO_RAD);
+		double d0 = -this.getRandom().nextFloat() * 0.6D - 0.3D;
+		Vec3 vec31 = new Vec3((this.getRandom().nextFloat() - 0.5D) * 0.3D, d0, 0.6D);
+		vec31 = vec31.xRot(-this.getXRot() * Mth.DEG_TO_RAD);
+		vec31 = vec31.yRot(-this.getYHeadRot() * Mth.DEG_TO_RAD);
+		vec31 = vec31.add(this.getX(), this.getEyeY(), this.getZ());
+
+		consumer.accept(vec31, vec3);
+	}
+
 	private boolean canEat(ItemStack stack) {
-		return stack.getItem().isEdible() && !this.isPanicked();
+		return stack.get(DataComponents.FOOD) != null && !this.isPanicked();
 	}
 
 	@Override
@@ -266,7 +288,7 @@ public class Kobold extends Monster {
 	private static class SeekBreadGoal extends Goal {
 
 		private static final Predicate<ItemEntity> ALLOWED_ITEMS = (item) ->
-				item.getItem().is(ItemTagGenerator.KOBOLD_PACIFICATION_BREADS);
+			item.getItem().is(ItemTagGenerator.KOBOLD_PACIFICATION_BREADS);
 
 		private final Kobold mob;
 

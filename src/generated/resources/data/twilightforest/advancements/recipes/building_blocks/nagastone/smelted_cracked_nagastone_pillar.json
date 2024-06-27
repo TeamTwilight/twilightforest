@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:nagastone_pillar"
-            ]
+            "items": "twilightforest:nagastone_pillar"
           }
         ]
       },

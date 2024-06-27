@@ -97,7 +97,7 @@ public class BlockSpikeFeature extends Feature<NoneFeatureConfiguration> {
 			BlockPos below = startPos.below(2);
 			BlockState belowState = level.getBlockState(below);
 			if (!belowState.is(BlockTagGenerator.SUPPORTS_STALAGMITES) &&
-					(!FeatureLogic.worldGenReplaceable(belowState) || !belowState.isFaceSturdy(level, below, Direction.UP) || FeatureLogic.isBlockNotOk(belowState))) return false;
+				(!FeatureLogic.worldGenReplaceable(belowState) || !belowState.isFaceSturdy(level, below, Direction.UP) || FeatureLogic.isBlockNotOk(belowState))) return false;
 		}
 
 		// let's see...
@@ -119,8 +119,9 @@ public class BlockSpikeFeature extends Feature<NoneFeatureConfiguration> {
 						if (ore.right().isPresent()) {
 							level.setBlock(placement, ore.right().get().defaultBlockState(), 3);
 						} else {
+							// FIXME Deduplicate this construction of the weightedlist, tt is constructed many times per generation
 							WeightedRandomList<WeightedEntry.Wrapper<Block>> entries = WeightedRandomList.create(ore.left().get().stream().map(pair -> WeightedEntry.wrap(pair.getFirst(), pair.getSecond())).toList());
-							level.setBlock(placement, entries.getRandom(random).orElse(WeightedEntry.wrap(Blocks.STONE, 1)).getData().defaultBlockState(), 3);
+							level.setBlock(placement, entries.getRandom(random).orElse(WeightedEntry.wrap(Blocks.STONE, 1)).data().defaultBlockState(), 3);
 						}
 					}
 				}

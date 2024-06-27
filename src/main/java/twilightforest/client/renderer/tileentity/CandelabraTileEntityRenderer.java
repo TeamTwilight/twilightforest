@@ -1,21 +1,15 @@
 package twilightforest.client.renderer.tileentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.SkullModelBase;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.CandleBlock;
-import net.minecraft.world.level.block.SkullBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.RotationSegment;
-import twilightforest.TwilightForestMod;
-import twilightforest.block.*;
+import twilightforest.block.CandelabraBlock;
+import twilightforest.block.LightableBlock;
 import twilightforest.block.entity.CandelabraBlockEntity;
 
 public class CandelabraTileEntityRenderer<T extends CandelabraBlockEntity> implements BlockEntityRenderer<T> {

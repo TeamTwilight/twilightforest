@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:bamboo_slab"
-            ]
+            "items": "minecraft:bamboo_slab"
           }
         ]
       },

@@ -7,10 +7,11 @@
       "item": "twilightforest:mining_boat"
     },
     {
-      "tag": "forge:chests/wooden"
+      "tag": "c:chests/wooden"
     }
   ],
   "result": {
-    "item": "twilightforest:mining_chest_boat"
+    "count": 1,
+    "id": "twilightforest:mining_chest_boat"
   }
 }

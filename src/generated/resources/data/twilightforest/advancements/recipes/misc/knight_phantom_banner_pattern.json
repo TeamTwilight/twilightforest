@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:knight_phantom_trophy"
-            ]
+            "items": "twilightforest:knight_phantom_trophy"
           }
         ]
       },

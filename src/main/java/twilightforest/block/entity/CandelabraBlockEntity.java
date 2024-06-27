@@ -1,17 +1,16 @@
 package twilightforest.block.entity;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.ChiseledBookShelfBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -21,7 +20,6 @@ import twilightforest.block.LightableBlock;
 import twilightforest.init.TFBlockEntities;
 
 import java.util.Arrays;
-import java.util.Objects;
 
 public class CandelabraBlockEntity extends BlockEntity {
 
@@ -53,17 +51,16 @@ public class CandelabraBlockEntity extends BlockEntity {
 	}
 
 	@Override
-	public void saveAdditional(CompoundTag tag) {
-		super.saveAdditional(tag);
+	public void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
+		super.saveAdditional(tag, provider);
 		ListTag list = new ListTag();
 		Arrays.stream(this.candles).toList().forEach(block -> list.add(StringTag.valueOf(BuiltInRegistries.BLOCK.getKey(block).toString())));
 		tag.put("Candles", list);
-
 	}
 
 	@Override
-	public void load(CompoundTag tag) {
-		super.load(tag);
+	protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
+		super.loadAdditional(tag, provider);
 		if (tag.contains("Candles", Tag.TAG_LIST)) {
 			ListTag list = tag.getList("Candles", Tag.TAG_STRING);
 			for (int i = 0; i < list.size(); i++) {
@@ -77,7 +74,7 @@ public class CandelabraBlockEntity extends BlockEntity {
 		if (index >= 0 && index < 3) {
 			BlockState blockstate = this.getBlockState();
 
-			for(int i = 0; i < CandelabraBlock.CANDLES.size(); ++i) {
+			for (int i = 0; i < CandelabraBlock.CANDLES.size(); ++i) {
 				boolean flag = !this.getCandle(i).defaultBlockState().isAir();
 				BooleanProperty booleanproperty = CandelabraBlock.CANDLES.get(i);
 				blockstate = blockstate.setValue(booleanproperty, flag);
@@ -93,9 +90,9 @@ public class CandelabraBlockEntity extends BlockEntity {
 	}
 
 	@Override
-	public CompoundTag getUpdateTag() {
+	public CompoundTag getUpdateTag(HolderLookup.Provider provider) {
 		CompoundTag tag = new CompoundTag();
-		this.saveAdditional(tag);
+		this.saveAdditional(tag, provider);
 		return tag;
 	}
 

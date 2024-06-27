@@ -15,6 +15,7 @@
     "mmm"
   ],
   "result": {
-    "item": "minecraft:moss_block"
+    "count": 1,
+    "id": "minecraft:moss_block"
   }
 }

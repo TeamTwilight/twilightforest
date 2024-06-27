@@ -26,16 +26,16 @@ public class ConquerCommand {
 
 	private static int changeStructureActivity(CommandSourceStack source, boolean flag) throws CommandSyntaxException {
 		BlockPos pos = BlockPos.containing(source.getPosition());
-        Optional<StructureStart> struct = LandmarkUtil.locateNearestLandmarkStart(source.getLevel(), SectionPos.blockToSectionCoord(pos.getX()), SectionPos.blockToSectionCoord(pos.getZ()));
+		Optional<StructureStart> struct = LandmarkUtil.locateNearestLandmarkStart(source.getLevel(), SectionPos.blockToSectionCoord(pos.getX()), SectionPos.blockToSectionCoord(pos.getZ()));
 
-        if (struct.isPresent() && struct.get().getBoundingBox().isInside(pos) && struct.get() instanceof TFStructureStart TFStructureStart) {
-            source.sendSuccess(() -> Component.translatable("commands.tffeature.structure.conquer.update", TFStructureStart.isConquered(), flag), true);
+		if (struct.isPresent() && struct.get().getBoundingBox().isInside(pos) && struct.get() instanceof TFStructureStart TFStructureStart) {
+			source.sendSuccess(() -> Component.translatable("commands.tffeature.structure.conquer.update", TFStructureStart.isConquered(), flag), true);
 
-            TFStructureStart.setConquered(flag, source.getLevel());
-        } else {
-            throw NOT_IN_STRUCTURE.create();
-        }
+			TFStructureStart.setConquered(flag, source.getLevel());
+		} else {
+			throw NOT_IN_STRUCTURE.create();
+		}
 
-        return Command.SINGLE_SUCCESS;
-    }
+		return Command.SINGLE_SUCCESS;
+	}
 }

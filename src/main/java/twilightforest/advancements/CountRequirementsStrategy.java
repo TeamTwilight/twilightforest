@@ -3,7 +3,6 @@ package twilightforest.advancements;
 import net.minecraft.advancements.AdvancementRequirements;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 

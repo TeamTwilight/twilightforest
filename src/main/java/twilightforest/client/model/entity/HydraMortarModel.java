@@ -22,9 +22,9 @@ public class HydraMortarModel extends HierarchicalModel<HydraMortar> {
 		PartDefinition definition = mesh.getRoot();
 
 		definition.addOrReplaceChild("mortar", CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(-4.0F, 0.0F, -4.0F, 8.0F, 8.0F, 8.0F),
-				PartPose.ZERO);
+				.texOffs(0, 0)
+				.addBox(-4.0F, 0.0F, -4.0F, 8.0F, 8.0F, 8.0F),
+			PartPose.ZERO);
 
 		return LayerDefinition.create(mesh, 32, 32);
 	}
@@ -35,5 +35,6 @@ public class HydraMortarModel extends HierarchicalModel<HydraMortar> {
 	}
 
 	@Override
-	public void setupAnim(HydraMortar entity, float v, float v1, float v2, float v3, float v4) { }
+	public void setupAnim(HydraMortar entity, float v, float v1, float v2, float v3, float v4) {
+	}
 }

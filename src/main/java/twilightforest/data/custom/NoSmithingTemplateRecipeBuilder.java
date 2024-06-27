@@ -1,31 +1,30 @@
 package twilightforest.data.custom;
 
-import net.minecraft.Util;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.component.TypedDataComponent;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import twilightforest.item.recipe.NoTemplateSmithingRecipe;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public class NoSmithingTemplateRecipeBuilder {
 
 	private final RecipeCategory category;
 	private final Ingredient base;
 	private final Ingredient addition;
-	private CompoundTag additionalData = new CompoundTag();
+	private List<TypedDataComponent<?>> additionalData = new ArrayList<>();
 	private final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
 
 	private NoSmithingTemplateRecipeBuilder(RecipeCategory category, Ingredient base, Ingredient addition) {
@@ -43,17 +42,21 @@ public class NoSmithingTemplateRecipeBuilder {
 		return this;
 	}
 
-	public NoSmithingTemplateRecipeBuilder attachData(Consumer<CompoundTag> tag) {
-		this.additionalData = Util.make(new CompoundTag(), tag);
+	public <T> NoSmithingTemplateRecipeBuilder attachData(Supplier<DataComponentType<T>> type, T element) {
+		return attachData(new TypedDataComponent<>(type.get(), element));
+	}
+
+	public NoSmithingTemplateRecipeBuilder attachData(TypedDataComponent<?> component) {
+		this.additionalData.add(component);
 		return this;
 	}
 
 	public void save(RecipeOutput output, ResourceLocation id) {
 		this.ensureValid(id);
 		Advancement.Builder advancement$builder = output.advancement()
-				.addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(id))
-				.rewards(AdvancementRewards.Builder.recipe(id))
-				.requirements(AdvancementRequirements.Strategy.OR);
+			.addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(id))
+			.rewards(AdvancementRewards.Builder.recipe(id))
+			.requirements(AdvancementRequirements.Strategy.OR);
 		this.criteria.forEach(advancement$builder::addCriterion);
 		NoTemplateSmithingRecipe smithingtrimrecipe = new NoTemplateSmithingRecipe(this.base, this.addition, this.additionalData);
 		output.accept(id, smithingtrimrecipe, advancement$builder.build(id.withPrefix("recipes/" + this.category.getFolderName() + "/")));

@@ -4,9 +4,9 @@
     "item": "twilightforest:emperors_cloth"
   },
   "additional_data": {
-    "twilightforest_emperors_cloth_applied": 1
+    "twilightforest:emperors_cloth": {}
   },
   "base": {
-    "tag": "forge:armors"
+    "tag": "c:armors"
   }
 }

@@ -36,6 +36,7 @@ public class FinalCastleBossGazeboComponent extends TFStructureComponentOld {
 		super(TFStructurePieceTypes.TFFCBoGaz.get(), nbt);
 	}
 
+	@SuppressWarnings("this-escape")
 	public FinalCastleBossGazeboComponent(int i, TFStructureComponentOld keep, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFFCBoGaz.get(), i, x, y, z);
 		this.spawnListIndex = -1; // no monsters
@@ -67,7 +68,7 @@ public class FinalCastleBossGazeboComponent extends TFStructureComponentOld {
 		this.generateBox(world, sbb, 0, 11, 0, 0, 11, 20, state, state, false);
 		this.generateBox(world, sbb, 20, 11, 0, 20, 11, 20, state, state, false);
 
-        this.willBeAddingFinalBossSoon(world, sbb);
+		this.willBeAddingFinalBossSoon(world, sbb);
 
 		// placeBlock(world, TFBlocks.boss_spawner_final_boss.get().defaultBlockState(), 10, 1, 10, sbb);
 	}
@@ -105,7 +106,7 @@ public class FinalCastleBossGazeboComponent extends TFStructureComponentOld {
 
 			interaction.setHeight((float) height);
 			interaction.setWidth((float) width);
-            Vec3 center = punchBox.getCenter();
+			Vec3 center = punchBox.getCenter();
 			interaction.setPos(center.x, punchBox.minY, center.z);
 			world.addFreshEntity(interaction);
 		}

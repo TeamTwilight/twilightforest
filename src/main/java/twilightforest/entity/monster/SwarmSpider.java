@@ -1,7 +1,6 @@
 package twilightforest.entity.monster;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
@@ -9,7 +8,10 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
@@ -36,8 +38,8 @@ public class SwarmSpider extends Spider {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Spider.createAttributes()
-				.add(Attributes.MAX_HEALTH, 3.0D)
-				.add(Attributes.ATTACK_DAMAGE, 1.0D);
+			.add(Attributes.MAX_HEALTH, 3.0D)
+			.add(Attributes.ATTACK_DAMAGE, 1.0D);
 	}
 
 	@Override
@@ -74,11 +76,6 @@ public class SwarmSpider extends Spider {
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState state) {
 		this.playSound(TFSounds.SWARM_SPIDER_STEP.get(), 0.15F, 1.0F);
-	}
-
-	@Override
-	protected float getStandingEyeHeight(Pose pose, EntityDimensions size) {
-		return 0.3F;
 	}
 
 	@Override
@@ -131,8 +128,8 @@ public class SwarmSpider extends Spider {
 
 	@Nullable
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingData, @Nullable CompoundTag dataTag) {
-		livingData = super.finalizeSpawn(accessor, difficulty, reason, livingData, dataTag);
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingData) {
+		livingData = super.finalizeSpawn(accessor, difficulty, reason, livingData);
 
 		if (reason != MobSpawnType.CONVERSION && reason != MobSpawnType.REINFORCEMENT) {
 			int more = 1 + this.getRandom().nextInt(2);
@@ -153,7 +150,7 @@ public class SwarmSpider extends Spider {
 			if (druid != null) {
 				druid.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
 				druid.setBaby(true);
-				EventHooks.onFinalizeSpawn(druid, accessor, difficulty, MobSpawnType.JOCKEY, null, null);
+				EventHooks.finalizeMobSpawn(druid, accessor, difficulty, MobSpawnType.JOCKEY, null);
 
 				if (this.hasPassenger(e -> true)) this.ejectPassengers();
 				druid.startRiding(this);

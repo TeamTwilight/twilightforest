@@ -26,9 +26,9 @@ function initializeCoreMod() {
                             'music',
                             '(Lnet/minecraft/sounds/Music;)Lnet/minecraft/sounds/Music;',
                             false
-                            )
                         )
-                    );
+                    )
+                );
                 return methodNode;
             }
         }

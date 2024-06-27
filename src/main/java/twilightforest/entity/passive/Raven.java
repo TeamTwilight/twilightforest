@@ -4,7 +4,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
@@ -20,8 +19,9 @@ public class Raven extends FlyingBird {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return FlyingBird.createMobAttributes()
-				.add(Attributes.MAX_HEALTH, 10.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.2D);
+			.add(Attributes.MAX_HEALTH, 10.0D)
+			.add(Attributes.MOVEMENT_SPEED, 0.2D)
+			.add(Attributes.STEP_HEIGHT, 1.0D);
 	}
 
 	@Override
@@ -37,11 +37,6 @@ public class Raven extends FlyingBird {
 	@Override
 	protected SoundEvent getDeathSound() {
 		return TFSounds.RAVEN_SQUAWK.get();
-	}
-
-	@Override
-	public float getEyeHeight(Pose pose) {
-		return this.getBbHeight() * 0.75F;
 	}
 
 	@Override

@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "forge:storage_blocks/arctic_fur"
+            "items": "#c:storage_blocks/arctic_fur"
           }
         ]
       },

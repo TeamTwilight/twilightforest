@@ -36,17 +36,17 @@ public class MosquitoSwarmModel extends HierarchicalModel<MosquitoSwarm> {
 		PartDefinition definition = mesh.getRoot();
 
 		var core = definition.addOrReplaceChild("core", CubeListBuilder.create()
-						.texOffs(rand.nextInt(28), rand.nextInt(28))
-						.addBox(-0.5F, 2F, -0.5F, 1, 1, 1),
-				PartPose.offset(0.0F, -4.0F, 0.0F));
+				.texOffs(rand.nextInt(28), rand.nextInt(28))
+				.addBox(-0.5F, 2F, -0.5F, 1, 1, 1),
+			PartPose.offset(0.0F, -4.0F, 0.0F));
 
 		PartPose offset = PartPose.offset(-0.5F, -2F, -0.5F);
 
 		for (Direction dir : Direction.values()) {
 			addBugsToGroup(dir.ordinal(), core.addOrReplaceChild("group_" + (dir.ordinal() + 1), CubeListBuilder.create()
-							.texOffs(rand.nextInt(28), rand.nextInt(28))
-							.addBox(dir.getStepX() * 11, dir.getStepY() * 11, dir.getStepZ() * 11, 1, 1, 1),
-					offset));
+					.texOffs(rand.nextInt(28), rand.nextInt(28))
+					.addBox(dir.getStepX() * 11, dir.getStepY() * 11, dir.getStepZ() * 11, 1, 1, 1),
+				offset));
 		}
 
 		return LayerDefinition.create(mesh, 64, 64);
@@ -68,9 +68,9 @@ public class MosquitoSwarmModel extends HierarchicalModel<MosquitoSwarm> {
 			float bugZ = (rand.nextFloat() - rand.nextFloat()) * 16.0f;
 
 			parent.addOrReplaceChild("bug_" + (iteration * bugs + i), CubeListBuilder.create()
-							.texOffs(rand.nextInt(28), rand.nextInt(28))
-							.addBox(bugX, bugY, bugZ, 1, 1, 1),
-					PartPose.offsetAndRotation((float) vec.x, (float) vec.y, (float) vec.z, 0, rotateY, 0));
+					.texOffs(rand.nextInt(28), rand.nextInt(28))
+					.addBox(bugX, bugY, bugZ, 1, 1, 1),
+				PartPose.offsetAndRotation((float) vec.x, (float) vec.y, (float) vec.z, 0, rotateY, 0));
 		}
 	}
 

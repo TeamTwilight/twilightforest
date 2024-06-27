@@ -3,13 +3,14 @@
   "category": "misc",
   "ingredients": [
     {
-      "tag": "forge:paper"
+      "tag": "c:paper"
     },
     {
       "item": "twilightforest:knight_phantom_trophy"
     }
   ],
   "result": {
-    "item": "twilightforest:knight_phantom_banner_pattern"
+    "count": 1,
+    "id": "twilightforest:knight_phantom_banner_pattern"
   }
 }

@@ -14,6 +14,7 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.neoforged.neoforge.common.PlantType;
 import twilightforest.enums.HugeLilypadPiece;
 
 import java.util.List;
@@ -25,6 +26,7 @@ public class HugeLilyPadBlock extends WaterlilyBlock {
 
 	private boolean isSelfDestructing = false;
 
+	@SuppressWarnings("this-escape")
 	public HugeLilyPadBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH).setValue(PIECE, HugeLilypadPiece.NW));
@@ -87,5 +89,10 @@ public class HugeLilyPadBlock extends WaterlilyBlock {
 		}
 
 		return pieces;
+	}
+
+	@Override
+	public PlantType getPlantType(BlockGetter level, BlockPos pos) {
+		return PlantType.WATER;
 	}
 }

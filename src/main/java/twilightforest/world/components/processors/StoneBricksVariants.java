@@ -1,6 +1,6 @@
 package twilightforest.world.components.processors;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelReader;
@@ -16,10 +16,10 @@ import twilightforest.util.FeaturePlacers;
 
 public final class StoneBricksVariants extends StructureProcessor {
 	public static final StoneBricksVariants INSTANCE = new StoneBricksVariants();
-	public static final Codec<StoneBricksVariants> CODEC = Codec.unit(() -> INSTANCE);
+	public static final MapCodec<StoneBricksVariants> CODEC = MapCodec.unit(() -> INSTANCE);
 
 	private StoneBricksVariants() {
-    }
+	}
 
 	@Override
 	public StructureTemplate.StructureBlockInfo process(LevelReader worldReaderIn, BlockPos pos, BlockPos piecepos, StructureTemplate.StructureBlockInfo originalBlock, StructureTemplate.StructureBlockInfo modifiedBlockInfo, StructurePlaceSettings settings, @Nullable StructureTemplate template) {

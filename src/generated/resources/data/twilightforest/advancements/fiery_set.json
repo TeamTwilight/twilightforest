@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:fiery_boots"
-            ]
+            "items": "twilightforest:fiery_boots"
           }
         ]
       },
@@ -17,9 +15,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:fiery_chestplate"
-            ]
+            "items": "twilightforest:fiery_chestplate"
           }
         ]
       },
@@ -29,9 +25,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:fiery_helmet"
-            ]
+            "items": "twilightforest:fiery_helmet"
           }
         ]
       },
@@ -41,9 +35,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:fiery_leggings"
-            ]
+            "items": "twilightforest:fiery_leggings"
           }
         ]
       },
@@ -53,9 +45,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:fiery_pickaxe"
-            ]
+            "items": "twilightforest:fiery_pickaxe"
           }
         ]
       },
@@ -65,9 +55,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:fiery_sword"
-            ]
+            "items": "twilightforest:fiery_sword"
           }
         ]
       },
@@ -80,8 +68,8 @@
     },
     "frame": "challenge",
     "icon": {
-      "item": "twilightforest:fiery_sword",
-      "nbt": "{Damage:0}"
+      "count": 1,
+      "id": "twilightforest:fiery_sword"
     },
     "title": {
       "translate": "advancement.twilightforest.fiery_set"

@@ -10,7 +10,7 @@
             "predicate": {
               "type": "twilightforest:redcap",
               "location": {
-                "structure": "twilightforest:small_hollow_hill"
+                "structures": "twilightforest:small_hollow_hill"
               }
             }
           }
@@ -29,8 +29,8 @@
       ]
     },
     "icon": {
-      "item": "minecraft:iron_boots",
-      "nbt": "{Damage:0}"
+      "count": 1,
+      "id": "minecraft:iron_boots"
     },
     "title": {
       "translate": "advancement.twilightforest.hill1"

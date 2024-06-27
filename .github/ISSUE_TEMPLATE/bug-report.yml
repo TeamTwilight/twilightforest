@@ -5,7 +5,7 @@ body:
   - type: input
     attributes:
       label: NeoForge Version
-      description: What version of NeoForge are you running? This can be found on the installation jar you have downloaded, in the Mod Options menu, or the profile's version. Please note "latest" is NOT a version. *If you are reporting a bug that exists only on the Fabric port, please report it **[here](https://github.com/TeamTwilight/twilightforest-fabric/issues)** instead.*
+      description: What version of NeoForge are you running? This can be found on the installation jar you have downloaded, in the Mod Options menu, or the profile's version. Please note "latest" is NOT a version. *Fabric issues are not accepted as the Fabric version is no longer maintained.*
       placeholder: "Example: 20.2.0"
     validations:
       required: true

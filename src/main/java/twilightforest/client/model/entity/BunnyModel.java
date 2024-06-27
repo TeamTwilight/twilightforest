@@ -26,46 +26,46 @@ public class BunnyModel extends QuadrupedModel<DwarfRabbit> {
 		PartDefinition definition = mesh.getRoot();
 
 		definition.addOrReplaceChild("body", CubeListBuilder.create()
-						.texOffs(0, 8)
-						.addBox(-2F, -1F, -2F, 4, 3, 5)
-						.texOffs(0, 18) // Tail
-						.addBox(-1F, -2F, 3F, 2, 2, 2)
-						.mirror(),
-				PartPose.offset(0F, 21F, 0F));
+				.texOffs(0, 8)
+				.addBox(-2F, -1F, -2F, 4, 3, 5)
+				.texOffs(0, 18) // Tail
+				.addBox(-1F, -2F, 3F, 2, 2, 2)
+				.mirror(),
+			PartPose.offset(0F, 21F, 0F));
 
 		definition.addOrReplaceChild("left_hind_leg", CubeListBuilder.create()
-						.texOffs(0, 16)
-						.addBox(0F, 0F, 0F, 1, 1, 1)
-						.mirror(),
-				PartPose.offset(-2F, 23F, 2F));
+				.texOffs(0, 16)
+				.addBox(0F, 0F, 0F, 1, 1, 1)
+				.mirror(),
+			PartPose.offset(-2F, 23F, 2F));
 
 		definition.addOrReplaceChild("right_hind_leg", CubeListBuilder.create()
-						.texOffs(0, 16)
-						.addBox(0F, 0F, 0F, 1, 1, 1)
-						.mirror(),
-				PartPose.offset(1F, 23F, 2F));
+				.texOffs(0, 16)
+				.addBox(0F, 0F, 0F, 1, 1, 1)
+				.mirror(),
+			PartPose.offset(1F, 23F, 2F));
 
 		definition.addOrReplaceChild("left_front_leg", CubeListBuilder.create()
-						.texOffs(0, 16)
-						.addBox(0F, 0F, 0F, 1, 1, 1)
-						.mirror(),
-				PartPose.offset(-2F, 23F, -2F));
+				.texOffs(0, 16)
+				.addBox(0F, 0F, 0F, 1, 1, 1)
+				.mirror(),
+			PartPose.offset(-2F, 23F, -2F));
 
 		definition.addOrReplaceChild("right_front_leg", CubeListBuilder.create()
-						.texOffs(0, 16)
-						.addBox(0F, 0F, 0F, 1, 1, 1)
-						.mirror(),
-				PartPose.offset(1F, 23F, -2F));
+				.texOffs(0, 16)
+				.addBox(0F, 0F, 0F, 1, 1, 1)
+				.mirror(),
+			PartPose.offset(1F, 23F, -2F));
 
 		definition.addOrReplaceChild("head", CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(-2F, -4F, -3F, 4, 4, 4, new CubeDeformation(0.1F))
-						.texOffs(16, 0)
-						.addBox(-2.5F, -8F, -0.5F, 2, 4, 1)
-						.texOffs(16, 0)
-						.addBox(0.5F, -8F, -0.5F, 2, 4, 1)
-						.mirror(),
-				PartPose.offset(0F, 22F, -1F));
+				.texOffs(0, 0)
+				.addBox(-2F, -4F, -3F, 4, 4, 4, new CubeDeformation(0.1F))
+				.texOffs(16, 0)
+				.addBox(-2.5F, -8F, -0.5F, 2, 4, 1)
+				.texOffs(16, 0)
+				.addBox(0.5F, -8F, -0.5F, 2, 4, 1)
+				.mirror(),
+			PartPose.offset(0F, 22F, -1F));
 
 		return LayerDefinition.create(mesh, 32, 32);
 	}

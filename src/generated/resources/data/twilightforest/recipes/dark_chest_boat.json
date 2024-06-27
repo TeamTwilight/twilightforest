@@ -7,10 +7,11 @@
       "item": "twilightforest:dark_boat"
     },
     {
-      "tag": "forge:chests/wooden"
+      "tag": "c:chests/wooden"
     }
   ],
   "result": {
-    "item": "twilightforest:dark_chest_boat"
+    "count": 1,
+    "id": "twilightforest:dark_chest_boat"
   }
 }

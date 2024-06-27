@@ -1,8 +1,8 @@
 package twilightforest.entity.projectile;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -21,10 +21,12 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.*;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFParticleType;
 import twilightforest.init.TFSounds;
+import twilightforest.network.ParticlePacket;
 import twilightforest.util.WorldUtil;
 
 public class CubeOfAnnihilation extends ThrowableProjectile {
@@ -36,6 +38,7 @@ public class CubeOfAnnihilation extends ThrowableProjectile {
 		super(type, world);
 	}
 
+	@SuppressWarnings("this-escape")
 	public CubeOfAnnihilation(EntityType<? extends CubeOfAnnihilation> type, Level world, LivingEntity thrower, ItemStack stack) {
 		super(type, thrower, world);
 		this.shootFromRotation(thrower, thrower.getXRot(), thrower.getYRot(), 0.0F, 1.5F, 1.0F);
@@ -48,11 +51,11 @@ public class CubeOfAnnihilation extends ThrowableProjectile {
 	}
 
 	@Override
-	protected void defineSynchedData() {
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
 	}
 
 	@Override
-	protected float getGravity() {
+	protected double getDefaultGravity() {
 		return 0F;
 	}
 
@@ -118,26 +121,25 @@ public class CubeOfAnnihilation extends ThrowableProjectile {
 		// whitelist many castle blocks
 		Block block = state.getBlock();
 		return (state.is(BlockTagGenerator.ANNIHILATION_INCLUSIONS) || block.getExplosionResistance() < 8F && state.getDestroySpeed(this.level(), pos) >= 0)
-				&& (!restrictedPlaceMode || this.stack.hasAdventureModeBreakTagForBlock(this.level().registryAccess().registryOrThrow(Registries.BLOCK), new BlockInWorld(this.level(), pos, false)));
+			&& (!restrictedPlaceMode || this.stack.canBreakBlockInAdventureMode(new BlockInWorld(this.level(), pos, false)));
 	}
 
 	private void annihilateParticles(Level level, BlockPos pos) {
-		RandomSource rand = level.getRandom();
 		if (level instanceof ServerLevel server) {
+			RandomSource rand = level.getRandom();
+			ParticlePacket particlePacket = new ParticlePacket();
 			for (int dx = 0; dx < 3; dx++) {
 				for (int dy = 0; dy < 3; dy++) {
 					for (int dz = 0; dz < 3; dz++) {
-
-						double x = pos.getX() + (dx + 0.5D) / 4;
-						double y = pos.getY() + (dy + 0.5D) / 4;
-						double z = pos.getZ() + (dz + 0.5D) / 4;
-
-						double speed = rand.nextGaussian() * 0.2D;
-
-						server.sendParticles(TFParticleType.ANNIHILATE.get(), x, y, z, 1, 0, 0, 0, speed);
+						particlePacket.queueParticle(TFParticleType.ANNIHILATE.get(), false,
+							pos.getX() + (dx + 0.5D) / 4,
+							pos.getY() + (dy + 0.5D) / 4,
+							pos.getZ() + (dz + 0.5D) / 4,
+							rand.nextGaussian() * 0.2D, rand.nextGaussian() * 0.2D, rand.nextGaussian() * 0.2D);
 					}
 				}
 			}
+			PacketDistributor.sendToPlayersNear(server, null, pos.getX(), pos.getY(), pos.getZ(), 32.0D, particlePacket);
 		}
 	}
 
@@ -177,9 +179,9 @@ public class CubeOfAnnihilation extends ThrowableProjectile {
 
 			if (currentSpeed > maxSpeed) {
 				this.setDeltaMovement(new Vec3(
-						this.getDeltaMovement().x() / (currentSpeed / maxSpeed),
-						this.getDeltaMovement().y() / (currentSpeed / maxSpeed),
-						this.getDeltaMovement().z() / (currentSpeed / maxSpeed)));
+					this.getDeltaMovement().x() / (currentSpeed / maxSpeed),
+					this.getDeltaMovement().y() / (currentSpeed / maxSpeed),
+					this.getDeltaMovement().z() / (currentSpeed / maxSpeed)));
 			} else {
 				float slow = 0.5F;
 				this.getDeltaMovement().multiply(slow, slow, slow);
@@ -211,13 +213,13 @@ public class CubeOfAnnihilation extends ThrowableProjectile {
 	protected void readAdditionalSaveData(CompoundTag pCompound) {
 		super.readAdditionalSaveData(pCompound);
 		if (pCompound.contains("CubeOfAnnihilationStack", 10)) {
-			this.stack = ItemStack.of(pCompound.getCompound("CubeOfAnnihilationStack"));
+			this.stack = ItemStack.parseOptional(this.registryAccess(), pCompound.getCompound("CubeOfAnnihilationStack"));
 		}
 	}
 
 	@Override
 	protected void addAdditionalSaveData(CompoundTag pCompound) {
 		super.addAdditionalSaveData(pCompound);
-		pCompound.put("CubeOfAnnihilationStack", this.stack.save(new CompoundTag()));
+		pCompound.put("CubeOfAnnihilationStack", this.stack.save(this.registryAccess()));
 	}
 }

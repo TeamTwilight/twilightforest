@@ -2,7 +2,7 @@
   "collection": "museumcurator.collection.botany",
   "name": "museumcurator.botany.twilightforest.sortingtree",
   "relativeTo": "museumcurator.botany.sprucetree",
-  "placement" : "before",
+  "placement": "before",
   "items": [
     "twilightforest:sorting_sapling",
     "twilightforest:sorting_leaves",

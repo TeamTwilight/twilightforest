@@ -46,6 +46,7 @@ public class HollowTreeMedBranch extends HollowTreePiece {
 		this(TFStructurePieceTypes.TFHTMB.value(), i, src, dest, boundingBox, length, angle, tilt, leafy, wood, leaves);
 	}
 
+	@SuppressWarnings("this-escape")
 	protected HollowTreeMedBranch(StructurePieceType type, int i, BlockPos src, BlockPos dest, BoundingBox boundingBox, double length, double angle, double tilt, boolean leafy, BlockStateProvider wood, BlockStateProvider leaves) {
 		super(type, i, boundingBox);
 
@@ -90,7 +91,7 @@ public class HollowTreeMedBranch extends HollowTreePiece {
 		tag.putInt("srcPosX", this.src.getX());
 		tag.putInt("srcPosY", this.src.getY());
 		tag.putInt("srcPosZ", this.src.getZ());
-		
+
 		tag.putInt("destPosX", this.dest.getX());
 		tag.putInt("destPosY", this.dest.getY());
 		tag.putInt("destPosZ", this.dest.getZ());
@@ -112,12 +113,12 @@ public class HollowTreeMedBranch extends HollowTreePiece {
 		this.drawBresehnam(level, writeableBounds, this.src.above(), this.dest, this.wood, decoRNG);
 
 		// and several small branches
-		int numShoots = Math.min(decoRNG.nextInt(3) + 1, (int)(this.length / 5));
+		int numShoots = Math.min(decoRNG.nextInt(3) + 1, (int) (this.length / 5));
 		double angleInc, angleVar, outVar;
 
 		angleInc = 0.8 / numShoots;
 
-		for(int i = 0; i < numShoots; i++) {
+		for (int i = 0; i < numShoots; i++) {
 			angleVar = (angleInc * i) - 0.4;
 			outVar = (decoRNG.nextDouble() * 0.8) + 0.2;
 
@@ -128,18 +129,18 @@ public class HollowTreeMedBranch extends HollowTreePiece {
 
 		// with leaves!
 		if (this.leafy) {
-			int numLeafBalls = Math.min(decoRNG.nextInt(3) + 1, (int)(this.length / 5));
+			int numLeafBalls = Math.min(decoRNG.nextInt(3) + 1, (int) (this.length / 5));
 
-			for(int i = 0; i < numLeafBalls; i++) {
+			for (int i = 0; i < numLeafBalls; i++) {
 
 				double slength = (decoRNG.nextFloat() * 0.6F + 0.2F) * this.length;
 				BlockPos bdst = FeatureLogic.translate(new BlockPos(this.src.getX() - this.boundingBox.minX(), this.src.getY() - this.boundingBox.minY(), this.src.getZ() - this.boundingBox.minZ()), slength, this.angle, this.tilt);
 
 				int radius = decoRNG.nextBoolean() ? 2 : 3;
-				this.drawBlockBlob(level, writeableBounds, bdst.getX(), bdst.getY(), bdst.getZ(), radius, decoRNG, this.leaves, false, false);
+				this.drawBlockBlob(level, writeableBounds, bdst.getX(), bdst.getY(), bdst.getZ(), radius, decoRNG, this.leaves, false, false, true);
 			}
 
-			this.drawBlockBlob(level, writeableBounds, this.dest.getX() - this.boundingBox.minX(), this.dest.getY() - this.boundingBox.minY(), this.dest.getZ() - this.boundingBox.minZ(), 3, decoRNG, this.leaves, false, false);
+			this.drawBlockBlob(level, writeableBounds, this.dest.getX() - this.boundingBox.minX(), this.dest.getY() - this.boundingBox.minY(), this.dest.getZ() - this.boundingBox.minZ(), 3, decoRNG, this.leaves, false, false, true);
 		}
 	}
 
@@ -153,7 +154,7 @@ public class HollowTreeMedBranch extends HollowTreePiece {
 		this.drawBresehnam(world, sbb, sourcePos, branchDest, woodProvider, random);
 
 		// leaf blob at the end
-		this.drawBlockBlob(world, sbb, branchDest.getX() - this.boundingBox.minX(), branchDest.getY() - this.boundingBox.minY(), branchDest.getZ() - this.boundingBox.minZ(), 2, random, leafProvider, false, false);
+		this.drawBlockBlob(world, sbb, branchDest.getX() - this.boundingBox.minX(), branchDest.getY() - this.boundingBox.minY(), branchDest.getZ() - this.boundingBox.minZ(), 2, random, leafProvider, false, false, true);
 	}
 
 	protected static BoundingBox branchBoundingBox(BlockPos src, BlockPos dest, int extraPadding) {

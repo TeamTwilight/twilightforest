@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:time_slab"
-            ]
+            "items": "twilightforest:time_slab"
           }
         ]
       },

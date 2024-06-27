@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:sorting_planks"
-            ]
+            "items": "twilightforest:sorting_planks"
           }
         ]
       },

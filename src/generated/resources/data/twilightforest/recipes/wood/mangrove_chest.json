@@ -1,12 +1,13 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "misc",
+  "group": "chest",
   "key": {
     "#": {
       "item": "twilightforest:mangrove_planks"
     },
     "C": {
-      "tag": "forge:chests/wooden"
+      "item": "minecraft:chest"
     }
   },
   "pattern": [
@@ -16,6 +17,6 @@
   ],
   "result": {
     "count": 2,
-    "item": "twilightforest:mangrove_chest"
+    "id": "twilightforest:mangrove_chest"
   }
 }

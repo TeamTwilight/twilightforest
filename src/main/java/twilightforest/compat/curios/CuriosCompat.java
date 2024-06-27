@@ -36,37 +36,37 @@ public class CuriosCompat {
 
 	public static void registerCuriosCapabilities(RegisterCapabilitiesEvent event) {
 		event.registerItem(CuriosCapability.ITEM, (stack, context) -> new ICurio() {
-					@Override
-					public ItemStack getStack() {
-						return stack;
-					}
+				@Override
+				public ItemStack getStack() {
+					return stack;
+				}
 
-					@Nonnull
-					@Override
-					public SoundInfo getEquipSound(SlotContext slotContext) {
-						return new SoundInfo(SoundEvents.ARMOR_EQUIP_GENERIC, 1.0F, 1.0F);
-					}
+				@Nonnull
+				@Override
+				public SoundInfo getEquipSound(SlotContext slotContext) {
+					return new SoundInfo(SoundEvents.ARMOR_EQUIP_GENERIC.value(), 1.0F, 1.0F);
+				}
 
-					@Override
-					public void onEquip(SlotContext context, ItemStack prevStack) {
-						//check that we don't have a cicada already on our head before trying to start the sound
-						if (!context.entity().getItemBySlot(EquipmentSlot.HEAD).is(TFBlocks.CICADA.get().asItem())) {
-							if (stack.is(TFBlocks.CICADA.get().asItem()) && !context.entity().level().isClientSide()) {
-								PacketDistributor.TRACKING_ENTITY_AND_SELF.with(context.entity()).send(new CreateMovingCicadaSoundPacket(context.entity().getId()));
-							}
+				@Override
+				public void onEquip(SlotContext context, ItemStack prevStack) {
+					//check that we don't have a cicada already on our head before trying to start the sound
+					if (!context.entity().getItemBySlot(EquipmentSlot.HEAD).is(TFBlocks.CICADA.get().asItem())) {
+						if (stack.is(TFBlocks.CICADA.get().asItem()) && !context.entity().level().isClientSide()) {
+							PacketDistributor.sendToPlayersTrackingEntityAndSelf(context.entity(), new CreateMovingCicadaSoundPacket(context.entity().getId()));
 						}
 					}
+				}
 
-					@Override
-					public boolean canEquipFromUse(SlotContext slotContext) {
-						return true;
-					}
-				},
-				TFItems.CHARM_OF_KEEPING_1, TFItems.CHARM_OF_KEEPING_2, TFItems.CHARM_OF_KEEPING_3, TFItems.CHARM_OF_LIFE_1, TFItems.CHARM_OF_LIFE_2,
-				TFItems.NAGA_TROPHY, TFItems.LICH_TROPHY, TFItems.MINOSHROOM_TROPHY, TFItems.HYDRA_TROPHY, TFItems.KNIGHT_PHANTOM_TROPHY,
-				TFItems.UR_GHAST_TROPHY, TFItems.ALPHA_YETI_TROPHY, TFItems.SNOW_QUEEN_TROPHY, TFItems.QUEST_RAM_TROPHY,
-				TFBlocks.CICADA, TFBlocks.FIREFLY, TFBlocks.MOONWORM, TFItems.SKELETON_SKULL_CANDLE, TFItems.WITHER_SKELETON_SKULL_CANDLE,
-				TFItems.ZOMBIE_SKULL_CANDLE, TFItems.CREEPER_SKULL_CANDLE, TFItems.PLAYER_SKULL_CANDLE, TFItems.PIGLIN_SKULL_CANDLE
+				@Override
+				public boolean canEquipFromUse(SlotContext slotContext) {
+					return true;
+				}
+			},
+			TFItems.CHARM_OF_KEEPING_1, TFItems.CHARM_OF_KEEPING_2, TFItems.CHARM_OF_KEEPING_3, TFItems.CHARM_OF_LIFE_1, TFItems.CHARM_OF_LIFE_2,
+			TFItems.NAGA_TROPHY, TFItems.LICH_TROPHY, TFItems.MINOSHROOM_TROPHY, TFItems.HYDRA_TROPHY, TFItems.KNIGHT_PHANTOM_TROPHY,
+			TFItems.UR_GHAST_TROPHY, TFItems.ALPHA_YETI_TROPHY, TFItems.SNOW_QUEEN_TROPHY, TFItems.QUEST_RAM_TROPHY,
+			TFBlocks.CICADA, TFBlocks.FIREFLY, TFBlocks.MOONWORM, TFItems.SKELETON_SKULL_CANDLE, TFItems.WITHER_SKELETON_SKULL_CANDLE,
+			TFItems.ZOMBIE_SKULL_CANDLE, TFItems.CREEPER_SKULL_CANDLE, TFItems.PLAYER_SKULL_CANDLE, TFItems.PIGLIN_SKULL_CANDLE
 		);
 	}
 
@@ -133,7 +133,7 @@ public class CuriosCompat {
 	public static boolean findAndConsumeCurio(Item item, Player player) {
 		Optional<SlotResult> slot = CuriosApi.getCuriosInventory(player).flatMap(handler -> handler.findFirstCurio(item));
 		if (slot.isPresent()) {
-			CharmEvents.getPlayerData(player).put(CharmEvents.CONSUMED_CHARM_TAG, slot.get().stack().save(new CompoundTag()));
+			CharmEvents.getPlayerData(player).put(CharmEvents.CONSUMED_CHARM_TAG, slot.get().stack().save(player.registryAccess()));
 			slot.get().stack().shrink(1);
 			return true;
 		}

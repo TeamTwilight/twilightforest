@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:loot_table",
-          "name": "minecraft:empty"
+          "value": "minecraft:empty"
         },
         {
           "type": "minecraft:item",

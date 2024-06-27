@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "forge:storage_blocks/knightmetal"
+            "items": "#c:storage_blocks/knightmetal"
           }
         ]
       },

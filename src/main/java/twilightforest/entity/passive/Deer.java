@@ -4,7 +4,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -39,13 +41,8 @@ public class Deer extends Animal {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Mob.createMobAttributes()
-				.add(Attributes.MAX_HEALTH, 10.0)
-				.add(Attributes.MOVEMENT_SPEED, 0.2);
-	}
-
-	@Override
-	public float getEyeHeight(Pose pose) {
-		return this.getBbHeight() * 0.7F;
+			.add(Attributes.MAX_HEALTH, 10.0)
+			.add(Attributes.MOVEMENT_SPEED, 0.2);
 	}
 
 	@Override
@@ -70,11 +67,6 @@ public class Deer extends Animal {
 	@Override
 	public Deer getBreedOffspring(ServerLevel level, AgeableMob mate) {
 		return TFEntities.DEER.get().create(level);
-	}
-
-	@Override
-	protected float getStandingEyeHeight(Pose pos, EntityDimensions size) {
-		return this.isBaby() ? size.height * 0.95F : 1.65F;
 	}
 
 	@Override

@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:thorn_rose"
-            ]
+            "items": "twilightforest:thorn_rose"
           }
         ]
       },

@@ -28,6 +28,7 @@ public class MazeRuinsComponent extends TFStructureComponentOld {
 		super(TFStructurePieceTypes.TFMMRuins.get(), nbt);
 	}
 
+	@SuppressWarnings("this-escape")
 	public MazeRuinsComponent(int i, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFMMRuins.get(), i, BoundingBoxUtils.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, 0, 0, 0, Direction.SOUTH, false));
 		this.setOrientation(Direction.SOUTH);

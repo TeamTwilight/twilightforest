@@ -1,12 +1,13 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "misc",
+  "group": "wooden_sign",
   "key": {
     "#": {
       "item": "twilightforest:dark_planks"
     },
     "-": {
-      "tag": "forge:rods/wooden"
+      "tag": "c:rods/wooden"
     }
   },
   "pattern": [
@@ -16,6 +17,6 @@
   ],
   "result": {
     "count": 3,
-    "item": "twilightforest:dark_sign"
+    "id": "twilightforest:dark_sign"
   }
 }

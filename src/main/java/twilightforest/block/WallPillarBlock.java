@@ -39,6 +39,7 @@ public class WallPillarBlock extends ConnectableRotatedPillarBlock implements Si
 
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
+	@SuppressWarnings("this-escape")
 	public WallPillarBlock(BlockBehaviour.Properties properties, double width, double height) {
 		super(properties, width, height);
 		this.registerDefaultState(this.defaultBlockState().setValue(WATERLOGGED, false));

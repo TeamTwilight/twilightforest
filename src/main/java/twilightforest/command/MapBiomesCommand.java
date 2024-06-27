@@ -64,12 +64,12 @@ public class MapBiomesCommand {
 
 	public static LiteralArgumentBuilder<CommandSourceStack> register() {
 		return Commands.literal("biomepng").requires(cs -> cs.hasPermission(2)).executes(context -> createMap(context.getSource(), 4096, 4096, true))
-				.then(Commands.argument("width", IntegerArgumentType.integer(0))
-						.executes(context -> createMap(context.getSource(), IntegerArgumentType.getInteger(context, "width"), IntegerArgumentType.getInteger(context, "width"), true))
-						.then(Commands.argument("height", IntegerArgumentType.integer(0))
-								.executes(context -> createMap(context.getSource(), IntegerArgumentType.getInteger(context, "width"), IntegerArgumentType.getInteger(context, "height"), true))
-								.then(Commands.argument("showBiomePercents", BoolArgumentType.bool())
-										.executes(context -> createMap(context.getSource(), IntegerArgumentType.getInteger(context, "width"), IntegerArgumentType.getInteger(context, "height"), BoolArgumentType.getBool(context, "showBiomePercents"))))));
+			.then(Commands.argument("width", IntegerArgumentType.integer(0))
+				.executes(context -> createMap(context.getSource(), IntegerArgumentType.getInteger(context, "width"), IntegerArgumentType.getInteger(context, "width"), true))
+				.then(Commands.argument("height", IntegerArgumentType.integer(0))
+					.executes(context -> createMap(context.getSource(), IntegerArgumentType.getInteger(context, "width"), IntegerArgumentType.getInteger(context, "height"), true))
+					.then(Commands.argument("showBiomePercents", BoolArgumentType.bool())
+						.executes(context -> createMap(context.getSource(), IntegerArgumentType.getInteger(context, "width"), IntegerArgumentType.getInteger(context, "height"), BoolArgumentType.getBool(context, "showBiomePercents"))))));
 
 	}
 
@@ -124,8 +124,8 @@ public class MapBiomesCommand {
 			source.sendSuccess(() -> Component.literal("Approximate biome-block counts within a " + (width + "x" + height) + " region"), false);
 			int totalCount = biomeCount.values().stream().mapToInt(i -> i).sum();
 			biomeCount.forEach((biome, integer) -> source.sendSuccess(() -> Component.literal(
-							source.getLevel().registryAccess().registryOrThrow(Registries.BIOME).getKey(biome).toString())
-					.append(": " + (integer) + ChatFormatting.GRAY + " (" + numberFormat.format(((double) integer / totalCount) * 100) + "%)"), false));
+					source.getLevel().registryAccess().registryOrThrow(Registries.BIOME).getKey(biome).toString())
+				.append(": " + (integer) + ChatFormatting.GRAY + " (" + numberFormat.format(((double) integer / totalCount) * 100) + "%)"), false));
 		}
 
 		int startX = Mth.floor(source.getPosition().x()) - (img.getWidth() / 2);
@@ -159,9 +159,9 @@ public class MapBiomesCommand {
 
 		public BiomeMapColor(int r, int g, int b, int a) {
 			this.value = ((a & 0xFF) << 24) |
-					((r & 0xFF) << 16) |
-					((g & 0xFF) << 8) |
-					((b & 0xFF));
+				((r & 0xFF) << 16) |
+				((g & 0xFF) << 8) |
+				((b & 0xFF));
 		}
 
 		public BiomeMapColor(int rgb) {

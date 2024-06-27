@@ -29,6 +29,7 @@ public abstract class BiomeHelper {
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_TWILIGHT_OAK_TREE);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_LARGE_TWILIGHT_OAK_TREE);
 		addCanopyTrees(biome);
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_MEGA_CANOPY_TREE);
 
 		return biome;
 	}
@@ -46,7 +47,8 @@ public abstract class BiomeHelper {
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_VANILLA_TF_TREES);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TreePlacements.JUNGLE_BUSH);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_DEFAULT_FALLEN_LOGS);
-		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_FOREST_CANOPY_OAK_TREE);
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_FOREST_MEGA_OAK_TREE);
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_MEGA_CANOPY_TREE);
 
 		return biome;
 	}
@@ -96,7 +98,7 @@ public abstract class BiomeHelper {
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_SAVANNAH_OAK_TREE);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_LARGE_TWILIGHT_OAK_TREE);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_DEFAULT_FALLEN_LOGS);
-		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_SAVANNAH_CANOPY_OAK_TREE);
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_SAVANNAH_MEGA_OAK_TREE);
 
 		return biome;
 	}
@@ -157,6 +159,7 @@ public abstract class BiomeHelper {
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_LARGE_TWILIGHT_OAK_TREE);
 		addCanopyMushrooms(biome, false);
 		addCanopyTrees(biome);
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_MEGA_CANOPY_TREE);
 
 		return biome;
 	}
@@ -176,6 +179,7 @@ public abstract class BiomeHelper {
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_LARGE_TWILIGHT_OAK_TREE);
 		addCanopyMushrooms(biome, true);
 		addCanopyTrees(biome);
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_MEGA_CANOPY_TREE);
 
 		return biome;
 	}
@@ -421,7 +425,7 @@ public abstract class BiomeHelper {
 		biome.addCarver(GenerationStep.Carving.AIR, TFCaveCarvers.TFCAVES_CONFIGURED);
 		biome.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, TFPlacedFeatures.PLACED_PLANT_ROOTS);
 		biome.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, TFPlacedFeatures.PLACED_TORCH_BERRIES);
-		biome.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, TFPlacedFeatures.PLACED_VANILLA_ROOTS);
+		//biome.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, TFPlacedFeatures.PLACED_VANILLA_ROOTS);
 		addLegacyOres(biome);
 	}
 
@@ -509,12 +513,12 @@ public abstract class BiomeHelper {
 	// Defaults
 	public static BiomeSpecialEffects.Builder defaultAmbientBuilder() {
 		return new BiomeSpecialEffects.Builder()
-				.fogColor(0xC0FFD8)
-				.waterColor(0x3F76E4)
-				.waterFogColor(0x050533)
-				.skyColor(0x20224A)
-				.ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS) // We should probably change it
-				.backgroundMusic(TFConfiguredFeatures.TFMUSICTYPE);
+			.fogColor(0xC0FFD8)
+			.waterColor(0x3F76E4)
+			.waterFogColor(0x050533)
+			.skyColor(0x20224A)
+			.ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS) // We should probably change it
+			.backgroundMusic(TFConfiguredFeatures.TFMUSICTYPE);
 
 	}
 
@@ -568,16 +572,12 @@ public abstract class BiomeHelper {
 
 	public static Biome.BiomeBuilder biomeWithDefaults(BiomeSpecialEffects.Builder biomeAmbience, MobSpawnSettings.Builder mobSpawnInfo, BiomeGenerationSettings.Builder biomeGenerationSettings) {
 		return new Biome.BiomeBuilder()
-				.hasPrecipitation(true)
-				.temperature(0.5F)
-				.downfall(0.5F)
-				.specialEffects(biomeAmbience.build())
-				.mobSpawnSettings(mobSpawnInfo.build())
-				.generationSettings(biomeGenerationSettings.build())
-				.temperatureAdjustment(Biome.TemperatureModifier.NONE);
-	}
-
-	public enum FernCount {
-		NORMAL, LESS, NONE
+			.hasPrecipitation(true)
+			.temperature(0.5F)
+			.downfall(0.5F)
+			.specialEffects(biomeAmbience.build())
+			.mobSpawnSettings(mobSpawnInfo.build())
+			.generationSettings(biomeGenerationSettings.build())
+			.temperatureAdjustment(Biome.TemperatureModifier.NONE);
 	}
 }

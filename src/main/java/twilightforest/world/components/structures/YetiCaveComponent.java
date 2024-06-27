@@ -32,12 +32,12 @@ public class YetiCaveComponent extends HollowHillComponent {
 
 		// FIXME Get rid of HollowHillComponent so this ugly hack can be sanitized
 		this.boundingBox = new BoundingBox(
-				this.boundingBox.minX(),
-				this.boundingBox.minY() - 1,
-				this.boundingBox.minZ(),
-				this.boundingBox.maxX(),
-				this.boundingBox.maxY(),
-				this.boundingBox.maxZ()
+			this.boundingBox.minX(),
+			this.boundingBox.minY() - 1,
+			this.boundingBox.minZ(),
+			this.boundingBox.maxX(),
+			this.boundingBox.maxY(),
+			this.boundingBox.maxZ()
 		);
 	}
 
@@ -66,7 +66,7 @@ public class YetiCaveComponent extends HollowHillComponent {
 
 			if (xDist <= maxRadius && zDist <= maxRadius) {
 				if (this.speleothemConfig.shouldDoAStalactite(rand))
-                	this.generateSpeleothem(world, dest.above(15 - minDelta / 6), writeableBounds, true);
+					this.generateSpeleothem(world, dest.above(15 - minDelta / 6), writeableBounds, true);
 
 				if (this.speleothemConfig.shouldDoAStalagmite(rand))
 					this.generateSpeleothem(world, dest.above(-4 + minDelta / 6), writeableBounds, false);

@@ -2,7 +2,6 @@ package twilightforest.entity.monster;
 
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -20,8 +19,8 @@ import java.util.Objects;
 
 public class RisingZombie extends Zombie {
 
-	public RisingZombie(EntityType<? extends RisingZombie> type, Level worldIn) {
-		super(type, worldIn);
+	public RisingZombie(EntityType<? extends RisingZombie> type, Level level) {
+		super(type, level);
 	}
 
 	@Override
@@ -31,7 +30,7 @@ public class RisingZombie extends Zombie {
 
 	@Nullable
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData data) {
 		// NO-OP
 		return data;
 	}

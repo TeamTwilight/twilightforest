@@ -13,12 +13,9 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import twilightforest.init.TFSounds;
 
-@OnlyIn(Dist.CLIENT)
 public class GhastTearParticle extends TextureSheetParticle {
 
 	public GhastTearParticle(ClientLevel level, double x, double y, double z, Item item) {
@@ -57,7 +54,6 @@ public class GhastTearParticle extends TextureSheetParticle {
 		super.tick();
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	public static class Factory implements ParticleProvider<SimpleParticleType> {
 		@Override
 		public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {

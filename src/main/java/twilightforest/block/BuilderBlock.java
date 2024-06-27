@@ -17,10 +17,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Vector3f;
 import twilightforest.block.entity.CarminiteBuilderBlockEntity;
 import twilightforest.enums.TowerDeviceVariant;
 import twilightforest.init.TFBlockEntities;
@@ -34,6 +31,7 @@ public class BuilderBlock extends BaseEntityBlock {
 	public static final MapCodec<BuilderBlock> CODEC = simpleCodec(BuilderBlock::new);
 	public static final EnumProperty<TowerDeviceVariant> STATE = EnumProperty.create("state", TowerDeviceVariant.class);
 
+	@SuppressWarnings("this-escape")
 	public BuilderBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(STATE, TowerDeviceVariant.BUILDER_INACTIVE));
@@ -125,52 +123,24 @@ public class BuilderBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
 		if (state.getValue(STATE) == TowerDeviceVariant.BUILDER_ACTIVE) {
 			this.sparkle(level, pos);
 		}
 	}
 
-	// [VanillaCopy] BlockRedstoneOre.spawnParticles. Unchanged.
+	// [VanillaCopy] RedstoneOreBlock.spawnParticles. Unchanged.
 	public void sparkle(Level level, BlockPos pos) {
 		RandomSource random = level.getRandom();
-		double d0 = 0.0625D;
 
-		for (int i = 0; i < 6; ++i) {
-			double d1 = pos.getX() + random.nextFloat();
-			double d2 = pos.getY() + random.nextFloat();
-			double d3 = pos.getZ() + random.nextFloat();
-
-			if (i == 0 && !level.getBlockState(pos.above()).isSolidRender(level, pos)) {
-				d2 = pos.getY() + d0 + 1.0D;
-			}
-
-			if (i == 1 && !level.getBlockState(pos.below()).isSolidRender(level, pos)) {
-				d2 = pos.getY() - d0;
-			}
-
-			if (i == 2 && !level.getBlockState(pos.south()).isSolidRender(level, pos)) {
-				d3 = pos.getZ() + d0 + 1.0D;
-			}
-
-			if (i == 3 && !level.getBlockState(pos.north()).isSolidRender(level, pos)) {
-				d3 = pos.getZ() - d0;
-			}
-
-			if (i == 4 && !level.getBlockState(pos.east()).isSolidRender(level, pos)) {
-				d1 = pos.getX() + d0 + 1.0D;
-			}
-
-			if (i == 5 && !level.getBlockState(pos.west()).isSolidRender(level, pos)) {
-				d1 = pos.getX() - d0;
-			}
-
-			float f1 = 0.6F + 0.4F;
-			float f2 = Math.max(0.0F, 1.0F * 1.0F * 0.7F - 0.5F);
-			float f3 = Math.max(0.0F, 1.0F * 1.0F * 0.6F - 0.7F);
-			if (d1 < pos.getX() || d1 > pos.getX() + 1 || d2 < 0.0D || d2 > pos.getY() + 1 || d3 < pos.getZ() || d3 > pos.getZ() + 1) {
-				level.addParticle(new DustParticleOptions(new Vector3f(f1, f2, f3), 1.0F), d1, d2, d3, 0.0D, 0.0D, 0.0D);
+		for (Direction direction : Direction.values()) {
+			BlockPos blockpos = pos.relative(direction);
+			if (!level.getBlockState(blockpos).isSolidRender(level, blockpos)) {
+				Direction.Axis direction$axis = direction.getAxis();
+				double d1 = direction$axis == Direction.Axis.X ? 0.5 + 0.5625 * (double) direction.getStepX() : (double) random.nextFloat();
+				double d2 = direction$axis == Direction.Axis.Y ? 0.5 + 0.5625 * (double) direction.getStepY() : (double) random.nextFloat();
+				double d3 = direction$axis == Direction.Axis.Z ? 0.5 + 0.5625 * (double) direction.getStepZ() : (double) random.nextFloat();
+				level.addParticle(DustParticleOptions.REDSTONE, (double) pos.getX() + d1, (double) pos.getY() + d2, (double) pos.getZ() + d3, 0.0, 0.0, 0.0);
 			}
 		}
 	}

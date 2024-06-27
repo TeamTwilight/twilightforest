@@ -4,6 +4,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ItemSupplier;
@@ -12,12 +13,9 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
 
-@OnlyIn(value = Dist.CLIENT, _interface = ItemSupplier.class)
 public class IceSnowball extends TFThrowable implements ItemSupplier {
 
 	private static final int DAMAGE = 2;
@@ -37,7 +35,7 @@ public class IceSnowball extends TFThrowable implements ItemSupplier {
 	}
 
 	@Override
-	protected float getGravity() {
+	protected double getDefaultGravity() {
 		return 0.006F;
 	}
 
@@ -48,7 +46,6 @@ public class IceSnowball extends TFThrowable implements ItemSupplier {
 		return true;
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void handleEntityEvent(byte id) {
 		if (id == 3) {
@@ -67,9 +64,9 @@ public class IceSnowball extends TFThrowable implements ItemSupplier {
 		if (!this.level().isClientSide() && target instanceof LivingEntity) {
 			target.hurt(TFDamageTypes.getIndirectEntityDamageSource(this.level(), TFDamageTypes.SNOWBALL_FIGHT, this, this.getOwner()), DAMAGE);
 			//damage armor pieces
-			if (target instanceof Player) {
-				for (ItemStack stack : target.getArmorSlots())
-					stack.hurtAndBreak(this.random.nextInt(1), ((Player) target), (user) -> user.broadcastBreakEvent(stack.getEquipmentSlot()));
+			if (target instanceof Player player) {
+				for (ItemStack stack : player.getArmorSlots())
+					stack.hurtAndBreak(this.random.nextInt(1), player, stack.getEquipmentSlot() != null ? stack.getEquipmentSlot() : EquipmentSlot.CHEST);
 			}
 		}
 	}

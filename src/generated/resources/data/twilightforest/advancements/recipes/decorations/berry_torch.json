@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:torchberries"
-            ]
+            "items": "twilightforest:torchberries"
           }
         ]
       },

@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:ur_ghast_trophy"
-            ]
+            "items": "twilightforest:ur_ghast_trophy"
           }
         ]
       },

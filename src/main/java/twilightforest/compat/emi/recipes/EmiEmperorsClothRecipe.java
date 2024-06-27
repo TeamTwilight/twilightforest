@@ -5,13 +5,13 @@ import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.GeneratedSlotWidget;
 import dev.emi.emi.api.widget.SlotWidget;
-import net.minecraft.Util;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.util.Unit;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
+import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFRecipes;
-import twilightforest.item.recipe.EmperorsClothRecipe;
 
 import java.util.List;
 import java.util.Random;
@@ -48,7 +48,7 @@ public class EmiEmperorsClothRecipe extends EmiPatternCraftingRecipe {
 	private EmiStack getArmor(Random random, boolean addTag) {
 		ItemStack stack = ARMORS.get(random.nextInt(ARMORS.size())).getItemStack().copy();
 		if (addTag) {
-			stack.getOrCreateTag().putBoolean(EmperorsClothRecipe.INVISIBLE_TAG, true);
+			stack.set(TFDataComponents.EMPERORS_CLOTH, Unit.INSTANCE);
 		}
 		return EmiStack.of(stack);
 	}

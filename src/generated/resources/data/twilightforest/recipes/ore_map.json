@@ -6,16 +6,17 @@
       "item": "twilightforest:maze_map"
     },
     {
-      "tag": "forge:storage_blocks/diamond"
+      "tag": "c:storage_blocks/diamond"
     },
     {
-      "tag": "forge:storage_blocks/gold"
+      "tag": "c:storage_blocks/gold"
     },
     {
-      "tag": "forge:storage_blocks/iron"
+      "tag": "c:storage_blocks/iron"
     }
   ],
   "result": {
-    "item": "twilightforest:ore_map"
+    "count": 1,
+    "id": "twilightforest:ore_map"
   }
 }

@@ -143,7 +143,7 @@ public class CinderFurnaceBlockEntity extends FurnaceBlockEntity {
 		}
 
 		return direction != null ? TFBlocks.CINDER_LOG.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, direction)
-				: TFBlocks.CINDER_WOOD.get().defaultBlockState();
+			: TFBlocks.CINDER_WOOD.get().defaultBlockState();
 	}
 
 	/**

@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:twisted_stone"
-            ]
+            "items": "twilightforest:twisted_stone"
           }
         ]
       },

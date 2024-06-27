@@ -70,8 +70,8 @@ public class GiantBlock extends Block {
 
 	public static Iterable<BlockPos> getVolume(BlockPos pos) {
 		return BlockPos.betweenClosed(
-				pos.getX() & ~0b11, pos.getY() & ~0b11, pos.getZ() & ~0b11,
-				pos.getX() | 0b11, pos.getY() | 0b11, pos.getZ() | 0b11
+			pos.getX() & ~0b11, pos.getY() & ~0b11, pos.getZ() & ~0b11,
+			pos.getX() | 0b11, pos.getY() | 0b11, pos.getZ() | 0b11
 		);
 	}
 }

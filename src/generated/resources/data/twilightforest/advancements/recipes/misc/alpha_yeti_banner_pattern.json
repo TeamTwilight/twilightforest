@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:alpha_yeti_trophy"
-            ]
+            "items": "twilightforest:alpha_yeti_trophy"
           }
         ]
       },

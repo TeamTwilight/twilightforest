@@ -19,6 +19,7 @@ public class HoverThenDropGoal extends HoverBaseGoal<SnowQueen> {
 
 	private double dropY;
 
+	@SuppressWarnings("this-escape")
 	public HoverThenDropGoal(SnowQueen snowQueen, int hoverTime, int dropTime) {
 		super(snowQueen, 6F, 0F);
 

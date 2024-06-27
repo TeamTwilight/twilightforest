@@ -34,7 +34,7 @@ public class FallenHollowLogFeature extends Feature<NoneFeatureConfiguration> {
 		WorldGenLevel world = ctx.level();
 		BlockPos pos = ctx.origin();
 		RandomSource rand = ctx.random();
-		
+
 		return rand.nextBoolean() ? makeLog4Z(world, rand, pos) : makeLog4X(world, rand, pos);
 	}
 

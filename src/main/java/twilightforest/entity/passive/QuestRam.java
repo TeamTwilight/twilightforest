@@ -3,6 +3,7 @@ package twilightforest.entity.passive;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
+import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -34,12 +35,13 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.init.TFAdvancements;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.entity.ai.goal.QuestRamEatWoolGoal;
+import twilightforest.init.TFAdvancements;
 import twilightforest.init.TFSounds;
 import twilightforest.init.TFStructures;
 import twilightforest.loot.TFLootTables;
@@ -85,16 +87,16 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Mob.createMobAttributes()
-				.add(Attributes.MAX_HEALTH, 70.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.23D);
+			.add(Attributes.MAX_HEALTH, 70.0D)
+			.add(Attributes.MOVEMENT_SPEED, 0.23D);
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(DATA_COLOR, 0);
-		this.getEntityData().define(DATA_REWARDED, false);
-		this.getEntityData().define(HOME_POINT, Optional.empty());
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(DATA_COLOR, 0);
+		builder.define(DATA_REWARDED, false);
+		builder.define(HOME_POINT, Optional.empty());
 	}
 
 	@Override
@@ -120,7 +122,7 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 	private void rewardQuest() {
 		// todo flesh the context out more
 		LootParams ctx = new LootParams.Builder((ServerLevel) this.level()).withParameter(LootContextParams.THIS_ENTITY, this).create(LootContextParamSets.PIGLIN_BARTER);
-		ObjectArrayList<ItemStack> rewards = this.level().getServer().getLootData().getLootTable(TFLootTables.QUESTING_RAM_REWARDS).getRandomItems(ctx);
+		ObjectArrayList<ItemStack> rewards = this.level().getServer().reloadableRegistries().getLootTable(TFLootTables.QUESTING_RAM_REWARDS).getRandomItems(ctx);
 		rewards.forEach(stack -> this.spawnAtLocation(stack, 1.0F));
 
 		for (ServerPlayer player : this.level().getEntitiesOfClass(ServerPlayer.class, getBoundingBox().inflate(16.0D, 16.0D, 16.0D))) {
@@ -143,6 +145,11 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 		} else {
 			return super.interactAt(player, vec, hand);
 		}
+	}
+
+	@Override
+	public AABB getBoundingBoxForCulling() {
+		return super.getBoundingBoxForCulling().inflate(3.0D);
 	}
 
 	public boolean tryAccept(ItemStack stack) {
@@ -223,14 +230,14 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 					ParticlePacket packet = new ParticlePacket();
 
 					for (int i = 0; i < iterations; i++) {
-						packet.queueParticle(ParticleTypes.ENTITY_EFFECT, false,
-								this.getX() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 1.5D,
-								this.getY() + this.getRandom().nextDouble() * this.getBbHeight() * 1.5D,
-								this.getZ() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 1.5D,
-								red, green, blue);
+						packet.queueParticle(ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, red, green, blue), false,
+							this.getX() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 1.5D,
+							this.getY() + this.getRandom().nextDouble() * this.getBbHeight() * 1.5D,
+							this.getZ() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 1.5D,
+							0.0F, 0.0F, 0.0F);
 					}
 
-					PacketDistributor.PLAYER.with(serverplayer).send(packet);
+					PacketDistributor.sendToPlayer(serverplayer, packet);
 				}
 			}
 		}

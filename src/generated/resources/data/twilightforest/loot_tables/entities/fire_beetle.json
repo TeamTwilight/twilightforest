@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:loot_table",
-          "name": "minecraft:entities/creeper"
+          "value": "minecraft:entities/creeper"
         }
       ],
       "rolls": 1.0

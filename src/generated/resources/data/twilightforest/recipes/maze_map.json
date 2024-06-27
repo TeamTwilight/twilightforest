@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "#": {
-      "tag": "forge:paper"
+      "tag": "c:paper"
     },
     "•": {
       "item": "twilightforest:maze_map_focus"
@@ -15,6 +15,7 @@
     "###"
   ],
   "result": {
-    "item": "twilightforest:maze_map"
+    "count": 1,
+    "id": "twilightforest:maze_map"
   }
 }

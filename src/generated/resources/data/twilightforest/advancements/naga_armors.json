@@ -5,14 +5,10 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:naga_chestplate"
-            ]
+            "items": "twilightforest:naga_chestplate"
           },
           {
-            "items": [
-              "twilightforest:naga_leggings"
-            ]
+            "items": "twilightforest:naga_leggings"
           }
         ]
       },
@@ -30,8 +26,8 @@
     },
     "frame": "challenge",
     "icon": {
-      "item": "twilightforest:naga_chestplate",
-      "nbt": "{Damage:0}"
+      "count": 1,
+      "id": "twilightforest:naga_chestplate"
     },
     "title": {
       "translate": "advancement.twilightforest.naga_armors"

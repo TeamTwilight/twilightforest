@@ -1,6 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "misc",
+  "group": "hanging_sign",
   "key": {
     "#": {
       "item": "twilightforest:stripped_time_log"
@@ -16,6 +17,6 @@
   ],
   "result": {
     "count": 6,
-    "item": "twilightforest:time_hanging_sign"
+    "id": "twilightforest:time_hanging_sign"
   }
 }

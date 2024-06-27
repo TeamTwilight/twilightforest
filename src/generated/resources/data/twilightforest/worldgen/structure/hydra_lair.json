@@ -9,20 +9,33 @@
   "biomes": "#twilightforest:valid_hydra_lair_biomes",
   "chunk_clearance_radius": 2,
   "hint_item": {
-    "Count": 1,
-    "id": "minecraft:written_book",
-    "tag": {
-      "author": "twilightforest.book.author",
-      "generation": 3,
-      "pages": [
-        "{\"translate\":\"twilightforest.book.hydralair.1\"}",
-        "{\"translate\":\"twilightforest.book.hydralair.2\"}",
-        "{\"translate\":\"twilightforest.book.hydralair.3\"}",
-        "{\"translate\":\"twilightforest.book.hydralair.4\"}"
-      ],
-      "title": "twilightforest.book.hydralair",
-      "twilightforest:book": 1
-    }
+    "components": {
+      "minecraft:written_book_content": {
+        "author": "twilightforest.book.author",
+        "generation": 3,
+        "pages": [
+          {
+            "raw": "{\"translate\":\"twilightforest.book.hydralair.1\"}"
+          },
+          {
+            "raw": "{\"translate\":\"twilightforest.book.hydralair.2\"}"
+          },
+          {
+            "raw": "{\"translate\":\"twilightforest.book.hydralair.3\"}"
+          },
+          {
+            "raw": "{\"translate\":\"twilightforest.book.hydralair.4\"}"
+          }
+        ],
+        "resolved": true,
+        "title": {
+          "raw": "twilightforest.book.hydralair"
+        }
+      },
+      "twilightforest:translatable_book": {}
+    },
+    "count": 1,
+    "id": "minecraft:written_book"
   },
   "hint_mob": "twilightforest:kobold",
   "spawn_overrides": {

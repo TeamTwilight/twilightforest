@@ -17,7 +17,7 @@ public class TFStructurePlacementTypes {
 	public static final DeferredHolder<StructurePlacementType<?>, StructurePlacementType<LandmarkGridPlacement>> GRID_LANDMARK_PLACEMENT_TYPE = registerPlacer("landmark_grid", () -> () -> LandmarkGridPlacement.CODEC);
 	public static final DeferredHolder<StructurePlacementType<?>, StructurePlacementType<AvoidLandmarkGridPlacement>> AVOID_GRID_LANDMARK_PLACEMENT_TYPE = registerPlacer("avoid_landmark_grid", () -> () -> AvoidLandmarkGridPlacement.CODEC);
 
-    private static <P extends StructurePlacement> DeferredHolder<StructurePlacementType<?>, StructurePlacementType<P>> registerPlacer(String name, Supplier<StructurePlacementType<P>> factory) {
-        return STRUCTURE_PLACEMENT_TYPES.register(name, factory);
-    }
+	private static <P extends StructurePlacement> DeferredHolder<StructurePlacementType<?>, StructurePlacementType<P>> registerPlacer(String name, Supplier<StructurePlacementType<P>> factory) {
+		return STRUCTURE_PLACEMENT_TYPES.register(name, factory);
+	}
 }

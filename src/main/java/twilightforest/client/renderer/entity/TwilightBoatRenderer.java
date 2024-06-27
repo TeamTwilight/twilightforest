@@ -60,19 +60,19 @@ public class TwilightBoatRenderer extends EntityRenderer<TwilightBoat> {
 		stack.pushPose();
 		stack.translate(0.0F, 0.375F, 0.0F);
 		stack.mulPose(Axis.YP.rotationDegrees(180.0F - boatYaw));
-		float f = (float)boat.getHurtTime() - partialTicks;
+		float f = (float) boat.getHurtTime() - partialTicks;
 		float f1 = boat.getDamage() - partialTicks;
 		if (f1 < 0.0F) {
 			f1 = 0.0F;
 		}
 
 		if (f > 0.0F) {
-			stack.mulPose(Axis.XP.rotationDegrees(Mth.sin(f) * f * f1 / 10.0F * (float)boat.getHurtDir()));
+			stack.mulPose(Axis.XP.rotationDegrees(Mth.sin(f) * f * f1 / 10.0F * (float) boat.getHurtDir()));
 		}
 
 		float f2 = boat.getBubbleAngle(partialTicks);
 		if (!Mth.equal(f2, 0.0F)) {
-			stack.mulPose((new Quaternionf()).setAngleAxis(boat.getBubbleAngle(partialTicks) * ((float)Math.PI / 180F), 1.0F, 0.0F, 1.0F));
+			stack.mulPose((new Quaternionf()).setAngleAxis(boat.getBubbleAngle(partialTicks) * ((float) Math.PI / 180F), 1.0F, 0.0F, 1.0F));
 		}
 
 		Pair<ResourceLocation, BoatModel> pair = this.getModelWithLocation(boat);

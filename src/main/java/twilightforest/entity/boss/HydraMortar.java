@@ -2,6 +2,7 @@ package twilightforest.entity.boss;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -33,6 +34,7 @@ public class HydraMortar extends ThrowableProjectile {
 		super(type, world);
 	}
 
+	@SuppressWarnings("this-escape")
 	public HydraMortar(EntityType<? extends HydraMortar> type, Level world, HydraHead head) {
 		super(type, head.getParent(), world);
 
@@ -52,7 +54,7 @@ public class HydraMortar extends ThrowableProjectile {
 	}
 
 	@Override
-	protected void defineSynchedData() {
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
 
 	}
 
@@ -124,12 +126,12 @@ public class HydraMortar extends ThrowableProjectile {
 
 	private void detonate() {
 		float explosionPower = megaBlast ? 4.0F : 0.1F;
-		boolean flag = EventHooks.getMobGriefingEvent(this.level(), this);
+		boolean flag = EventHooks.canEntityGrief(this.level(), this);
 		this.level().explode(this, this.getX(), this.getY(), this.getZ(), explosionPower, flag, Level.ExplosionInteraction.MOB);
 
 		for (Entity nearby : this.level().getEntities(this, this.getBoundingBox().inflate(1.0D, 1.0D, 1.0D))) {
 			if ((!nearby.fireImmune() || nearby instanceof Hydra || nearby instanceof HydraPart) && nearby.hurt(TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.HYDRA_MORTAR, this.getOwner(), TFEntities.HYDRA.get()), DIRECT_DAMAGE)) {
-				nearby.setSecondsOnFire(BURN_FACTOR);
+				nearby.igniteForSeconds(BURN_FACTOR);
 			}
 		}
 
@@ -177,7 +179,7 @@ public class HydraMortar extends ThrowableProjectile {
 	}
 
 	@Override
-	protected float getGravity() {
-		return 0.05F;
+	protected double getDefaultGravity() {
+		return 0.05D;
 	}
 }

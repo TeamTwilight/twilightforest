@@ -30,7 +30,7 @@ public class REIUncraftingDisplay extends BasicDisplay {
 	public static REIUncraftingDisplay ofUncrafting(RecipeHolder<UncraftingRecipe> recipe) {
 		RegistryAccess registryAccess = registryAccess();
 
-		List<EntryIngredient> inputs = EntryIngredients.ofIngredients(recipe.value().getIngredients()) ;
+		List<EntryIngredient> inputs = EntryIngredients.ofIngredients(recipe.value().getIngredients());
 		List<EntryIngredient> outputs = List.of(EntryIngredients.of(recipe.value().getResultItem(registryAccess)));
 
 		return new REIUncraftingDisplay(inputs, outputs, recipe);

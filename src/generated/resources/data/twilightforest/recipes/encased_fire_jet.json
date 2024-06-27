@@ -12,7 +12,7 @@
       "item": "minecraft:lava_bucket"
     },
     "∴": {
-      "tag": "forge:dusts/redstone"
+      "tag": "c:dusts/redstone"
     }
   },
   "pattern": [
@@ -21,6 +21,7 @@
     "uuu"
   ],
   "result": {
-    "item": "twilightforest:encased_fire_jet"
+    "count": 1,
+    "id": "twilightforest:encased_fire_jet"
   }
 }

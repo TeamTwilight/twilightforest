@@ -4,8 +4,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobType;
-import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -15,6 +13,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFSounds;
 
 public class HelmetCrab extends Monster {
@@ -37,15 +36,16 @@ public class HelmetCrab extends Monster {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Monster.createMonsterAttributes()
-				.add(Attributes.MAX_HEALTH, 13.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.28D)
-				.add(Attributes.ATTACK_DAMAGE, 3.0D)
-				.add(Attributes.ARMOR, 6.0D);
+			.add(Attributes.MAX_HEALTH, 13.0D)
+			.add(Attributes.MOVEMENT_SPEED, 0.28D)
+			.add(Attributes.ATTACK_DAMAGE, 3.0D)
+			.add(Attributes.ARMOR, 6.0D);
 	}
 
+	@Nullable
 	@Override
-	public float getEyeHeight(Pose pose) {
-		return this.getBbHeight() * 0.4F;
+	protected SoundEvent getAmbientSound() {
+		return TFSounds.HELMET_CRAB_AMBIENT.get();
 	}
 
 	@Override
@@ -66,10 +66,5 @@ public class HelmetCrab extends Monster {
 	@Override
 	public int getMaxSpawnClusterSize() {
 		return 4;
-	}
-
-	@Override
-	public MobType getMobType() {
-		return MobType.ARTHROPOD;
 	}
 }

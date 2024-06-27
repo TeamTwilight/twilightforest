@@ -26,8 +26,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Vector3f;
 import twilightforest.entity.IHostileMount;
 import twilightforest.entity.ai.goal.ThrowRiderGoal;
 import twilightforest.init.TFBiomes;
@@ -39,7 +39,7 @@ import java.util.Optional;
 public class Yeti extends Monster implements IHostileMount {
 
 	private static final EntityDataAccessor<Boolean> ANGER_FLAG = SynchedEntityData.defineId(Yeti.class, EntityDataSerializers.BOOLEAN);
-	private static final AttributeModifier ANGRY_MODIFIER = new AttributeModifier("Angry follow range boost", 24, AttributeModifier.Operation.ADDITION);
+	private static final AttributeModifier ANGRY_MODIFIER = new AttributeModifier("Angry follow range boost", 8, AttributeModifier.Operation.ADD_VALUE);
 
 	public Yeti(EntityType<? extends Yeti> type, Level world) {
 		super(type, world);
@@ -72,16 +72,16 @@ public class Yeti extends Monster implements IHostileMount {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Monster.createMonsterAttributes()
-				.add(Attributes.MAX_HEALTH, 20.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.38D)
-				.add(Attributes.ATTACK_DAMAGE, 0.0D)
-				.add(Attributes.FOLLOW_RANGE, 4.0D);
+			.add(Attributes.MAX_HEALTH, 20.0D)
+			.add(Attributes.MOVEMENT_SPEED, 0.38D)
+			.add(Attributes.ATTACK_DAMAGE, 0.0D)
+			.add(Attributes.FOLLOW_RANGE, 4.0D);
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(ANGER_FLAG, false);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(ANGER_FLAG, false);
 	}
 
 	@Override
@@ -117,7 +117,7 @@ public class Yeti extends Monster implements IHostileMount {
 					Objects.requireNonNull(this.getAttribute(Attributes.FOLLOW_RANGE)).addTransientModifier(ANGRY_MODIFIER);
 				}
 			} else {
-				Objects.requireNonNull(this.getAttribute(Attributes.FOLLOW_RANGE)).removeModifier(ANGRY_MODIFIER.getId());
+				Objects.requireNonNull(this.getAttribute(Attributes.FOLLOW_RANGE)).removeModifier(ANGRY_MODIFIER.id());
 			}
 		}
 	}
@@ -135,8 +135,8 @@ public class Yeti extends Monster implements IHostileMount {
 	}
 
 	@Override
-	protected Vector3f getPassengerAttachmentPoint(Entity entity, EntityDimensions dimensions, float yRot) {
-		return new Vector3f(0.0F, dimensions.height, 0.4F);
+	protected Vec3 getPassengerAttachmentPoint(Entity entity, EntityDimensions dimensions, float yRot) {
+		return new Vec3(0.0F, dimensions.height(), 0.4F);
 	}
 
 	@Override

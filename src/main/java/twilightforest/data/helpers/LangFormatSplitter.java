@@ -208,7 +208,6 @@ public class LangFormatSplitter {
 
 		/**
 		 * @param contents Contents to create a {@link MessageFormatComponent} from.
-		 *
 		 * @return A {@link MessageFormatComponent} representing the given contents, or {@code null} if the contents do not represent a valid
 		 * {@link MessageFormatComponent}
 		 */

@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:fortification_scepter"
-            ]
+            "items": "twilightforest:fortification_scepter"
           }
         ]
       },

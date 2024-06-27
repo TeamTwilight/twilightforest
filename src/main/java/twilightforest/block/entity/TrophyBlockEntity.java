@@ -4,8 +4,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFBlocks;
 
@@ -25,7 +23,6 @@ public class TrophyBlockEntity extends BlockEntity {
 		}
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	public float getAnimationProgress(float time) {
 		return this.animated ? this.animatedTicks + time : (float) this.animatedTicks;
 	}

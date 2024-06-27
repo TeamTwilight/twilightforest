@@ -24,6 +24,7 @@ import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Ghast;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -58,9 +59,9 @@ public class LoyalZombie extends TamableAnimal {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Mob.createMobAttributes()
-				.add(Attributes.MAX_HEALTH, 40.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.3D)
-				.add(Attributes.ARMOR, 3.0D);
+			.add(Attributes.MAX_HEALTH, 40.0D)
+			.add(Attributes.MOVEMENT_SPEED, 0.3D)
+			.add(Attributes.ARMOR, 3.0D);
 	}
 
 	@Override
@@ -128,6 +129,11 @@ public class LoyalZombie extends TamableAnimal {
 	}
 
 	@Override
+	public boolean isFood(ItemStack stack) {
+		return false;
+	}
+
+	@Override
 	protected SoundEvent getAmbientSound() {
 		return TFSounds.LOYAL_ZOMBIE_AMBIENT.get();
 	}
@@ -145,11 +151,6 @@ public class LoyalZombie extends TamableAnimal {
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState state) {
 		playSound(TFSounds.LOYAL_ZOMBIE_STEP.get(), 0.15F, 1.0F);
-	}
-
-	@Override
-	public MobType getMobType() {
-		return MobType.UNDEAD;
 	}
 
 	@Override

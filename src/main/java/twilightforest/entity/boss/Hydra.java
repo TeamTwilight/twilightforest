@@ -11,12 +11,10 @@ import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -44,6 +42,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+@SuppressWarnings("this-escape")
 public class Hydra extends BaseTFBoss {
 
 	private static final int TICKS_BEFORE_HEALING = 1000;
@@ -59,7 +58,6 @@ public class Hydra extends BaseTFBoss {
 
 	private static final EntityDataAccessor<List<String>> HEAD_NAMES = SynchedEntityData.defineId(Hydra.class, TFDataSerializers.STRING_LIST.get());
 	public final HydraHeadContainer[] hc = new HydraHeadContainer[MAX_HEADS];
-	private final ServerBossEvent bossInfo = new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.BLUE, BossEvent.BossBarOverlay.PROGRESS);
 
 	private final HydraPart[] partArray;
 	public final HydraSmallPart body;
@@ -94,15 +92,15 @@ public class Hydra extends BaseTFBoss {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(HEAD_NAMES, List.of("", "", "", "", "", "", ""));
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(HEAD_NAMES, List.of("", "", "", "", "", "", ""));
 	}
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Mob.createMobAttributes()
-				.add(Attributes.MAX_HEALTH, MAX_HEALTH)
-				.add(Attributes.MOVEMENT_SPEED, 0.28D);
+			.add(Attributes.MAX_HEALTH, MAX_HEALTH)
+			.add(Attributes.MOVEMENT_SPEED, 0.28D);
 	}
 
 	@Override
@@ -189,7 +187,7 @@ public class Hydra extends BaseTFBoss {
 		byte headData = 0;
 		for (int i = 0; i < MAX_HEADS; i++) {
 			if (this.hc[i].isActive()) {
-				headData |= 1 << i;
+				headData |= (byte) (1 << i);
 			}
 		}
 		compound.putByte("NumHeads", headData);
@@ -470,10 +468,10 @@ public class Hydra extends BaseTFBoss {
 	@Nullable
 	private LivingEntity findSecondaryTarget(double range) {
 		return this.level().getEntitiesOfClass(LivingEntity.class, new AABB(this.getX(), this.getY(), this.getZ(), this.getX() + 1, this.getY() + 1, this.getZ() + 1).inflate(range, range, range))
-				.stream()
-				.filter(e -> !(e instanceof Hydra))
-				.filter(e -> e != this.getTarget() && !this.isAnyHeadTargeting(e) && this.getSensing().hasLineOfSight(e) && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(e))
-				.min(Comparator.comparingDouble(this::distanceToSqr)).orElse(null);
+			.stream()
+			.filter(e -> !(e instanceof Hydra))
+			.filter(e -> e != this.getTarget() && !this.isAnyHeadTargeting(e) && this.getSensing().hasLineOfSight(e) && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(e))
+			.min(Comparator.comparingDouble(this::distanceToSqr)).orElse(null);
 	}
 
 	private boolean isAnyHeadTargeting(Entity targetEntity) {
@@ -530,7 +528,7 @@ public class Hydra extends BaseTFBoss {
 	}
 
 	private void destroyBlocksInAABB(AABB box) {
-		if (this.deathTime <= 0 && EventHooks.getMobGriefingEvent(this.level(), this)) {
+		if (this.deathTime <= 0 && EventHooks.canEntityGrief(this.level(), this)) {
 			for (BlockPos pos : WorldUtil.getAllInBB(box)) {
 				if (EntityUtil.canDestroyBlock(this.level(), pos, this)) {
 					this.level().destroyBlock(pos, false);
@@ -681,6 +679,37 @@ public class Hydra extends BaseTFBoss {
 		return false;
 	}
 
+	public String getHeadNameFor(int index) {
+		return this.getEntityData().get(HEAD_NAMES).get(index);
+	}
+
+	public void setHeadNameFor(int index, String name) {
+		//we're working with an ImmutableList here so we need to copy and modify it
+		List<String> nameCopy = new ArrayList<>(this.getEntityData().get(HEAD_NAMES));
+		nameCopy.set(index, name);
+		this.getEntityData().set(HEAD_NAMES, nameCopy);
+	}
+
+	@Override
+	public int getHomeRadius() {
+		return 20;
+	}
+
+	@Override
+	public ResourceKey<Structure> getHomeStructure() {
+		return TFStructures.HYDRA_LAIR;
+	}
+
+	@Override
+	public Block getDeathContainer(RandomSource random) {
+		return TFBlocks.MANGROVE_CHEST.get();
+	}
+
+	@Override
+	public Block getBossSpawner() {
+		return TFBlocks.HYDRA_BOSS_SPAWNER.get();
+	}
+
 	@Override
 	protected void tickDeath() {
 		++this.deathTime;
@@ -711,52 +740,26 @@ public class Hydra extends BaseTFBoss {
 			this.remove(RemovalReason.KILLED);
 		}
 
+		if (this.level().isClientSide()) this.tickDeathAnimation();
+	}
+
+	@Override
+	public void tickDeathAnimation() {
 		for (int i = 0; i < 10; ++i) {
 			double vx = this.getRandom().nextGaussian() * 0.02D;
 			double vy = this.getRandom().nextGaussian() * 0.02D;
 			double vz = this.getRandom().nextGaussian() * 0.02D;
 			this.level().addParticle((this.getRandom().nextInt(2) == 0 ? ParticleTypes.EXPLOSION : ParticleTypes.POOF),
-					this.getX() + this.getRandom().nextFloat() * this.body.getBbWidth() * 2.0F - this.body.getBbWidth(),
-					this.getY() + this.getRandom().nextFloat() * this.body.getBbHeight(),
-					this.getZ() + this.getRandom().nextFloat() * this.body.getBbWidth() * 2.0F - this.body.getBbWidth(),
-					vx, vy, vz
+				this.getX() + this.getRandom().nextFloat() * this.body.getBbWidth() * 2.0F - this.body.getBbWidth(),
+				this.getY() + this.getRandom().nextFloat() * this.body.getBbHeight(),
+				this.getZ() + this.getRandom().nextFloat() * this.body.getBbWidth() * 2.0F - this.body.getBbWidth(),
+				vx, vy, vz
 			);
 		}
 	}
 
-	public String getHeadNameFor(int index) {
-		return this.getEntityData().get(HEAD_NAMES).get(index);
-	}
-
-	public void setHeadNameFor(int index, String name) {
-		//we're working with an ImmutableList here so we need to copy and modify it
-		List<String> nameCopy = new ArrayList<>(this.getEntityData().get(HEAD_NAMES));
-		nameCopy.set(index, name);
-		this.getEntityData().set(HEAD_NAMES, nameCopy);
-	}
-
 	@Override
-	public int getHomeRadius() {
-		return 20;
-	}
-
-	@Override
-	public ResourceKey<Structure> getHomeStructure() {
-		return TFStructures.HYDRA_LAIR;
-	}
-
-	@Override
-	public ServerBossEvent getBossBar() {
-		return this.bossInfo;
-	}
-
-	@Override
-	public Block getDeathContainer(RandomSource random) {
-		return TFBlocks.MANGROVE_CHEST.get();
-	}
-
-	@Override
-	public Block getBossSpawner() {
-		return TFBlocks.HYDRA_BOSS_SPAWNER.get();
+	public int getBossBarColor() {
+		return 0x05EBB9;
 	}
 }

@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:maze_map"
-            ]
+            "items": "twilightforest:maze_map"
           }
         ]
       },

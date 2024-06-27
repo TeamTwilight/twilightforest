@@ -25,9 +25,9 @@ public class HydraRenderer extends MobRenderer<Hydra, HydraModel> {
 	}
 
 	@Override
-	protected void setupRotations(Hydra p_115317_, PoseStack p_115318_, float p_115319_, float p_115320_, float p_115321_) {
+	protected void setupRotations(Hydra p_115317_, PoseStack p_115318_, float p_115319_, float p_115320_, float p_115321_, float scale) {
 		if (this.isShaking(p_115317_)) {
-			p_115320_ += (float)(Math.cos((double)p_115317_.tickCount * 3.25) * Math.PI * 0.4F);
+			p_115320_ += (float) (Math.cos((double) p_115317_.tickCount * 3.25) * Math.PI * 0.4F);
 		}
 
 		if (!p_115317_.hasPose(Pose.SLEEPING)) {
@@ -35,7 +35,7 @@ public class HydraRenderer extends MobRenderer<Hydra, HydraModel> {
 		}
 
 		if (p_115317_.deathTime > 0) {
-			float f = ((float)p_115317_.deathTime + p_115321_ - 1.0F) / 20.0F * 1.6F;
+			float f = ((float) p_115317_.deathTime + p_115321_ - 1.0F) / 20.0F * 1.6F;
 			f = Mth.sqrt(f);
 			if (f > 1.0F) {
 				f = 1.0F;

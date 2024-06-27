@@ -158,13 +158,11 @@
         }
       }
     },
-    "loot_table": "twilightforest:chests/foundation_basement",
+    "loot_table": "twilightforest:foundation_basement",
     "random_floor_chance": {
       "type": "minecraft:uniform",
-      "value": {
-        "max_exclusive": 1.0,
-        "min_inclusive": -2.0
-      }
+      "max_exclusive": 1.0,
+      "min_inclusive": -2.0
     },
     "wall_block": {
       "type": "minecraft:simple_state_provider",
@@ -174,10 +172,8 @@
     },
     "wall_heights": {
       "type": "minecraft:uniform",
-      "value": {
-        "max_inclusive": 5,
-        "min_inclusive": 1
-      }
+      "max_inclusive": 5,
+      "min_inclusive": 1
     },
     "wall_top_block": {
       "type": "minecraft:weighted_state_provider",
@@ -226,10 +222,8 @@
     },
     "wall_width": {
       "type": "minecraft:uniform",
-      "value": {
-        "max_inclusive": 9,
-        "min_inclusive": 5
-      }
+      "max_inclusive": 9,
+      "min_inclusive": 5
     }
   }
 }

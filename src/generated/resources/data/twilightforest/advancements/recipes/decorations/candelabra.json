@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:wrought_iron_fence"
-            ]
+            "items": "twilightforest:wrought_iron_fence"
           }
         ]
       },

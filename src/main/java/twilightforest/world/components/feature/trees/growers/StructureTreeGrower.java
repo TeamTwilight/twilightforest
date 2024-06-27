@@ -46,21 +46,21 @@ public class StructureTreeGrower extends TreeGrower {
 		level.setBlock(pos, Blocks.AIR.defaultBlockState(), 0b11);
 
 		ChunkPos.rangeClosed(start, end).forEach(
-				chunkPos -> structurestart.placeInChunk(
-						level,
-						level.structureManager(),
-						generator,
-						level.getRandom(),
-						new BoundingBox(
-								chunkPos.getMinBlockX(),
-								level.getMinBuildHeight(),
-								chunkPos.getMinBlockZ(),
-								chunkPos.getMaxBlockX(),
-								level.getMaxBuildHeight(),
-								chunkPos.getMaxBlockZ()
-						),
-						chunkPos
-				)
+			chunkPos -> structurestart.placeInChunk(
+				level,
+				level.structureManager(),
+				generator,
+				level.getRandom(),
+				new BoundingBox(
+					chunkPos.getMinBlockX(),
+					level.getMinBuildHeight(),
+					chunkPos.getMinBlockZ(),
+					chunkPos.getMaxBlockX(),
+					level.getMaxBuildHeight(),
+					chunkPos.getMaxBlockZ()
+				),
+				chunkPos
+			)
 		);
 
 		return true;

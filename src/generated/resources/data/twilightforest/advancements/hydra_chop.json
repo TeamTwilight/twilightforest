@@ -15,7 +15,8 @@
       ]
     },
     "icon": {
-      "item": "twilightforest:hydra_chop"
+      "count": 1,
+      "id": "twilightforest:hydra_chop"
     },
     "title": {
       "translate": "advancement.twilightforest.hydra_chop"

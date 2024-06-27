@@ -32,13 +32,13 @@ public class Enforcements {
 
 	public static final DeferredHolder<Enforcement, Enforcement> FIRE = ENFORCEMENTS.register("fire", () -> new Enforcement((player, level, restriction) -> {
 		if (player.tickCount % 60 == 0 && level.tickRateManager().runsNormally()) {
-			player.setSecondsOnFire((int) restriction.multiplier());
+			player.igniteForSeconds((int) restriction.multiplier());
 		}
 	}));
 
 	public static final DeferredHolder<Enforcement, Enforcement> FROST = ENFORCEMENTS.register("frost", () -> new Enforcement((player, level, restriction) -> {
 		if (player.tickCount % 60 == 0 && level.tickRateManager().runsNormally()) {
-			player.addEffect(new MobEffectInstance(TFMobEffects.FROSTY.get(), 100, (int) restriction.multiplier(), false, true));
+			player.addEffect(new MobEffectInstance(TFMobEffects.FROSTY, 100, (int) restriction.multiplier(), false, true));
 		}
 	}));
 

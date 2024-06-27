@@ -8,7 +8,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -46,10 +45,10 @@ public class TowerwoodBorer extends Monster {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Monster.createMonsterAttributes()
-				.add(Attributes.MAX_HEALTH, 15.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.27D)
-				.add(Attributes.ATTACK_DAMAGE, 5.0D)
-				.add(Attributes.FOLLOW_RANGE, 8.0D);
+			.add(Attributes.MAX_HEALTH, 15.0D)
+			.add(Attributes.MOVEMENT_SPEED, 0.27D)
+			.add(Attributes.ATTACK_DAMAGE, 5.0D)
+			.add(Attributes.FOLLOW_RANGE, 8.0D);
 	}
 
 	@Override
@@ -102,11 +101,6 @@ public class TowerwoodBorer extends Monster {
 		super.tick();
 	}
 
-	@Override
-	public MobType getMobType() {
-		return MobType.ARTHROPOD;
-	}
-
 	// [VanillaCopy] Silverfish.SilverfishMergeWithStoneGoal. Changes noted
 	private static class HideInTowerwoodGoal extends RandomStrollGoal {
 
@@ -127,7 +121,7 @@ public class TowerwoodBorer extends Monster {
 			} else {
 				RandomSource random = this.mob.getRandom();
 
-				if (random.nextInt(10) == 0 && EventHooks.getMobGriefingEvent(this.mob.level(), this.mob)) {
+				if (random.nextInt(10) == 0 && EventHooks.canEntityGrief(this.mob.level(), this.mob)) {
 					this.facing = Direction.getRandom(random);
 					BlockPos blockpos = BlockPos.containing(this.mob.getX(), this.mob.getY() + 0.5D, this.mob.getZ()).relative(this.facing);
 					BlockState state = this.mob.level().getBlockState(blockpos);
@@ -210,7 +204,7 @@ public class TowerwoodBorer extends Monster {
 
 							// TF - Change block check
 							if (state.is(TFBlocks.INFESTED_TOWERWOOD)) {
-								if (EventHooks.getMobGriefingEvent(world, this.borer)) {
+								if (EventHooks.canEntityGrief(world, this.borer)) {
 									world.destroyBlock(offsetPos, true);
 									this.borer.gameEvent(GameEvent.BLOCK_DESTROY);
 								} else {

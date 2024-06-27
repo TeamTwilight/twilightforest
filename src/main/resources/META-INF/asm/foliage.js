@@ -30,9 +30,9 @@ function initializeCoreMod() {
                             'foliage',
                             '(ILnet/minecraft/world/level/biome/Biome;DD)I',
                             false
-                            )
                         )
-                    );
+                    )
+                );
                 return methodNode;
             }
         }

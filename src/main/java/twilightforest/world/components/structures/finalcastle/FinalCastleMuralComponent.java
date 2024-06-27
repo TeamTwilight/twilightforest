@@ -28,6 +28,7 @@ public class FinalCastleMuralComponent extends TFStructureComponentOld {
 		super(TFStructurePieceTypes.TFFCMur.get(), nbt);
 	}
 
+	@SuppressWarnings("this-escape")
 	public FinalCastleMuralComponent(int i, int x, int y, int z, int width, int height, Direction direction) {
 		super(TFStructurePieceTypes.TFFCMur.get(), i, x, y, z);
 		this.setOrientation(direction);

@@ -22,6 +22,7 @@ public abstract class HydraPart extends TFPart<Hydra> {
 	boolean markedDead;
 	private EntityDimensions cacheSize;
 
+	@SuppressWarnings("this-escape")
 	public HydraPart(Hydra parent, float width, float height) {
 		super(parent);
 		this.setSize(EntityDimensions.scalable(width, height));
@@ -29,8 +30,8 @@ public abstract class HydraPart extends TFPart<Hydra> {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		this.getEntityData().define(DATA_SIZEACTIVE, true);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		builder.define(DATA_SIZEACTIVE, true);
 	}
 
 	@Override
@@ -75,10 +76,10 @@ public abstract class HydraPart extends TFPart<Hydra> {
 			float height = this.getBbHeight();
 			for (int k = 0; k < 10; k++) {
 				this.level().addParticle(this.random.nextInt(5) == 0 ? ParticleTypes.EXPLOSION : ParticleTypes.POOF,
-						(this.getX() + this.random.nextFloat() * width),
-						this.getY() + this.random.nextFloat() * height,
-						(this.getZ() + this.random.nextFloat() * width),
-						this.random.nextGaussian() * 0.02D, this.random.nextGaussian() * 0.02D, this.random.nextGaussian() * 0.02D);
+					(this.getX() + this.random.nextFloat() * width),
+					this.getY() + this.random.nextFloat() * height,
+					(this.getZ() + this.random.nextFloat() * width),
+					this.random.nextGaussian() * 0.02D, this.random.nextGaussian() * 0.02D, this.random.nextGaussian() * 0.02D);
 			}
 		}
 

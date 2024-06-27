@@ -3,7 +3,7 @@
   "category": "building",
   "key": {
     "#": {
-      "tag": "forge:ingots/fiery"
+      "tag": "c:ingots/fiery"
     }
   },
   "pattern": [
@@ -12,6 +12,7 @@
     "###"
   ],
   "result": {
-    "item": "twilightforest:fiery_block"
+    "count": 1,
+    "id": "twilightforest:fiery_block"
   }
 }

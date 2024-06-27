@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:transformation_powder"
-            ]
+            "items": "twilightforest:transformation_powder"
           }
         ]
       },

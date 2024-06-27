@@ -24,16 +24,16 @@ public class NagaTrophyModel extends GenericTrophyModel {
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
 		var head = partdefinition.addOrReplaceChild("head",
-				CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(-8.0F, -16.0F, -8.0F, 16.0F, 16.0F, 16.0F),
-		PartPose.offset(0.0F, -4.0F, 0.0F));
+			CubeListBuilder.create()
+				.texOffs(0, 0)
+				.addBox(-8.0F, -16.0F, -8.0F, 16.0F, 16.0F, 16.0F),
+			PartPose.offset(0.0F, -4.0F, 0.0F));
 
 		head.addOrReplaceChild("tongue",
-				CubeListBuilder.create()
-						.texOffs(42, 0)
-						.addBox(-3.0F, -3.0F, -14.0F, 6.0F, 0.0F, 6.0F),
-				PartPose.ZERO);
+			CubeListBuilder.create()
+				.texOffs(42, 0)
+				.addBox(-3.0F, -3.0F, -14.0F, 6.0F, 0.0F, 6.0F),
+			PartPose.ZERO);
 
 		return LayerDefinition.create(meshdefinition, 64, 32);
 	}
@@ -46,6 +46,6 @@ public class NagaTrophyModel extends GenericTrophyModel {
 
 	@Override
 	public void renderToBuffer(PoseStack matrix, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		this.head.render(matrix, buffer, packedLight, packedOverlay, red, green, blue, alpha); 
+		this.head.render(matrix, buffer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 }

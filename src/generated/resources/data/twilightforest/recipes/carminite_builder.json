@@ -6,7 +6,7 @@
       "item": "twilightforest:encased_towerwood"
     },
     "6": {
-      "tag": "forge:gems/carminite"
+      "tag": "c:gems/carminite"
     },
     "o": {
       "item": "minecraft:dispenser"
@@ -18,6 +18,7 @@
     "#6#"
   ],
   "result": {
-    "item": "twilightforest:carminite_builder"
+    "count": 1,
+    "id": "twilightforest:carminite_builder"
   }
 }

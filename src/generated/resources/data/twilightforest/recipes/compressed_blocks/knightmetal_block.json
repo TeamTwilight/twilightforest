@@ -3,7 +3,7 @@
   "category": "building",
   "key": {
     "#": {
-      "tag": "forge:ingots/knightmetal"
+      "tag": "c:ingots/knightmetal"
     }
   },
   "pattern": [
@@ -12,6 +12,7 @@
     "###"
   ],
   "result": {
-    "item": "twilightforest:knightmetal_block"
+    "count": 1,
+    "id": "twilightforest:knightmetal_block"
   }
 }

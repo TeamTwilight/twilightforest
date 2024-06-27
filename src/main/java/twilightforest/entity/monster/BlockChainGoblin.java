@@ -10,7 +10,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -47,6 +46,7 @@ public class BlockChainGoblin extends Monster {
 
 	private float chainMoveLength;
 
+	@SuppressWarnings("this-escape")
 	public final SpikeBlock block = new SpikeBlock(this);
 
 	private final MultipartGenericsAreDumb[] partsArray;
@@ -77,24 +77,19 @@ public class BlockChainGoblin extends Monster {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(DATA_CHAINLENGTH, (byte) 0);
-		this.getEntityData().define(DATA_CHAINPOS, (byte) 0);
-		this.getEntityData().define(IS_THROWING, false);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(DATA_CHAINLENGTH, (byte) 0);
+		builder.define(DATA_CHAINPOS, (byte) 0);
+		builder.define(IS_THROWING, false);
 	}
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Monster.createMonsterAttributes()
-				.add(Attributes.MAX_HEALTH, 20.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.28D)
-				.add(Attributes.ATTACK_DAMAGE, 8.0D)
-				.add(Attributes.ARMOR, 11.0D);
-	}
-
-	@Override
-	public float getEyeHeight(Pose pose) {
-		return this.getBbHeight() * 0.78F;
+			.add(Attributes.MAX_HEALTH, 20.0D)
+			.add(Attributes.MOVEMENT_SPEED, 0.28D)
+			.add(Attributes.ATTACK_DAMAGE, 8.0D)
+			.add(Attributes.ARMOR, 11.0D);
 	}
 
 	@Override

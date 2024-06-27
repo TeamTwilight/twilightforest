@@ -35,9 +35,9 @@ public class UndergroundPlantFeature extends Feature<BlockStateConfiguration> {
 				}
 			} else {
 				pos = new BlockPos(
-						copyX + random.nextInt(4) - random.nextInt(4),
-						pos.getY(),
-						copyZ + random.nextInt(4) - random.nextInt(4)
+					copyX + random.nextInt(4) - random.nextInt(4),
+					pos.getY(),
+					copyZ + random.nextInt(4) - random.nextInt(4)
 				);
 			}
 		}

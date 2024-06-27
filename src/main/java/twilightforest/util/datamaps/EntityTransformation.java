@@ -8,6 +8,6 @@ import net.minecraft.world.entity.EntityType;
 public record EntityTransformation(EntityType<?> result) {
 
 	public static final Codec<EntityTransformation> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-			BuiltInRegistries.ENTITY_TYPE.byNameCodec().fieldOf("transform_to").forGetter(EntityTransformation::result)
+		BuiltInRegistries.ENTITY_TYPE.byNameCodec().fieldOf("transform_to").forGetter(EntityTransformation::result)
 	).apply(instance, EntityTransformation::new));
 }

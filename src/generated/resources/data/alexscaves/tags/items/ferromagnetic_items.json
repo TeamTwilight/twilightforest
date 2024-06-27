@@ -1,8 +1,8 @@
 {
   "values": [
-    "#forge:storage_blocks/ironwood",
-    "#forge:storage_blocks/steeleaf",
-    "#forge:storage_blocks/knightmetal",
+    "#c:storage_blocks/ironwood",
+    "#c:storage_blocks/steeleaf",
+    "#c:storage_blocks/knightmetal",
     "twilightforest:candelabra",
     "twilightforest:wrought_iron_fence",
     "twilightforest:raw_ironwood",

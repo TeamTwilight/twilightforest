@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:loot_table",
-          "name": "minecraft:entities/wolf"
+          "value": "minecraft:entities/wolf"
         }
       ],
       "rolls": 1.0

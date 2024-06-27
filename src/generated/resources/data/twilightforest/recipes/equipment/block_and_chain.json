@@ -3,22 +3,23 @@
   "category": "equipment",
   "ingredients": [
     {
-      "tag": "forge:storage_blocks/knightmetal"
+      "tag": "c:storage_blocks/knightmetal"
     },
     {
-      "tag": "forge:ingots/knightmetal"
+      "tag": "c:ingots/knightmetal"
     },
     {
-      "tag": "forge:ingots/knightmetal"
+      "tag": "c:ingots/knightmetal"
     },
     {
-      "tag": "forge:ingots/knightmetal"
+      "tag": "c:ingots/knightmetal"
     },
     {
       "item": "twilightforest:knightmetal_ring"
     }
   ],
   "result": {
-    "item": "twilightforest:block_and_chain"
+    "count": 1,
+    "id": "twilightforest:block_and_chain"
   }
 }

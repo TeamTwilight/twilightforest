@@ -3,17 +3,13 @@
   "config": {
     "floor_level": {
       "type": "minecraft:uniform",
-      "value": {
-        "max_exclusive": -0.65,
-        "min_inclusive": -0.9
-      }
+      "max_exclusive": -0.65,
+      "min_inclusive": -0.9
     },
     "horizontal_radius_multiplier": {
       "type": "minecraft:uniform",
-      "value": {
-        "max_exclusive": 1.3,
-        "min_inclusive": 1.1
-      }
+      "max_exclusive": 1.3,
+      "min_inclusive": 1.1
     },
     "lava_level": {
       "above_bottom": 0

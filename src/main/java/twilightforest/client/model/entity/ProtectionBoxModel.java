@@ -29,9 +29,9 @@ public class ProtectionBoxModel<T extends ProtectionBox> extends ListModel<T> {
 		PartDefinition definition = mesh.getRoot();
 
 		definition.addOrReplaceChild("box", CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(0.0F, 0.0F, 0.0F, 16.0F, 16.0F, 16.0F),
-				PartPose.ZERO);
+				.texOffs(0, 0)
+				.addBox(0.0F, 0.0F, 0.0F, 16.0F, 16.0F, 16.0F),
+			PartPose.ZERO);
 
 		return mesh;
 	}
@@ -72,9 +72,9 @@ public class ProtectionBoxModel<T extends ProtectionBox> extends ListModel<T> {
 		PartDefinition definition = mesh.getRoot();
 
 		definition.addOrReplaceChild("box", CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(-1.0F, -1.0F, -1.0F, pixelsX, pixelsY, pixelsZ),
-				PartPose.ZERO);
+				.texOffs(0, 0)
+				.addBox(-1.0F, -1.0F, -1.0F, pixelsX, pixelsY, pixelsZ),
+			PartPose.ZERO);
 		box = definition.getChild("box").bake(16, 16);
 
 		this.lastPixelsX = pixelsX;

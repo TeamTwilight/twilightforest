@@ -14,6 +14,7 @@ public final class FeatureUtil {
 	public static boolean isAreaSuitable(WorldGenLevel world, BlockPos pos, int xWidth, int height, int zWidth) {
 		return isAreaSuitable(world, pos, xWidth, height, zWidth, false);
 	}
+
 	/**
 	 * Checks an area to see if it consists of flat natural ground below and air above
 	 */
@@ -38,7 +39,7 @@ public final class FeatureUtil {
 					for (int cy = 0; cy < height; cy++) {
 						// blank space above?
 						if (!world.isEmptyBlock(pos_.above(cy)) && !world.getBlockState(pos_.above(cy)).canBeReplaced()) {
-							if(underwaterAllowed && world.getBlockState(pos_.above(cy)).liquid()) {
+							if (underwaterAllowed && world.getBlockState(pos_.above(cy)).liquid()) {
 								continue;
 							}
 							flag = false;
@@ -108,7 +109,7 @@ public final class FeatureUtil {
 	public static boolean isNearSolid(LevelReader world, BlockPos pos) {
 		for (Direction e : Direction.values()) {
 			if (world.hasChunkAt(pos.relative(e))
-					&& world.getBlockState(pos.relative(e)).isSolid()) {
+				&& world.getBlockState(pos.relative(e)).isSolid()) {
 				return true;
 			}
 		}

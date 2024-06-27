@@ -12,7 +12,8 @@ import java.util.List;
 public class NoiseVaryingModelLoader implements IGeometryLoader<UnbakedNoiseVaryingModel> {
 	public static final NoiseVaryingModelLoader INSTANCE = new NoiseVaryingModelLoader();
 
-	private NoiseVaryingModelLoader() {}
+	private NoiseVaryingModelLoader() {
+	}
 
 	@Override
 	public UnbakedNoiseVaryingModel read(JsonObject json, JsonDeserializationContext context) throws JsonParseException {

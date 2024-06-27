@@ -25,16 +25,16 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.util.ITeleporter;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFPortalBlock;
+import twilightforest.config.TFConfig;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.TFDimension;
 import twilightforest.item.MagicMapItem;
 import twilightforest.util.LandmarkUtil;
 import twilightforest.util.LegacyLandmarkPlacements;
 import twilightforest.util.Restriction;
-import twilightforest.init.TFDimension;
 
 import java.util.*;
 import java.util.function.Function;
@@ -54,10 +54,7 @@ public class TFTeleporter implements ITeleporter {
 		PortalInfo pos;
 		TeleporterCache cache = TeleporterCache.get(dest);
 
-		// Scale the coords based on the dimension type coordinate_scale
-		ServerLevel tfDim = dest.getServer().getLevel(TFDimension.DIMENSION_KEY);
-		double scale = tfDim == null ? 0.125D : tfDim.dimensionType().coordinateScale();
-		scale = dest.dimension().equals(TFDimension.DIMENSION_KEY) ? 1F / scale : scale;
+		double scale = getHorizontalScale(dest);
 		BlockPos destPos = dest.getWorldBorder().clampToBounds(entity.blockPosition().getX() * scale, entity.blockPosition().getY(), entity.blockPosition().getZ() * scale);
 
 		if ((pos = placeInExistingPortal(cache, dest, entity, destPos)) == null) {
@@ -65,8 +62,9 @@ public class TFTeleporter implements ITeleporter {
 			pos = createPosition(dest, entity, destPos, cache);
 		}
 
-		return pos == null ? ITeleporter.super.getPortalInfo(entity, dest, defaultPortalInfo) : pos;
-	}
+		if (pos != null) return pos;
+        return this.isVanilla() ? defaultPortalInfo.apply(dest) : new PortalInfo(Vec3.atCenterOf(destPos.atY(dest.getSeaLevel())), Vec3.ZERO, entity.getYRot(), entity.getXRot());
+    }
 
 	@Nullable
 	protected PortalInfo createPosition(ServerLevel dest, Entity entity, BlockPos destPos, TeleporterCache cache) {
@@ -155,7 +153,7 @@ public class TFTeleporter implements ITeleporter {
 					continue;
 				}
 
-				for (BlockPos blockpos1 = pos.offset(i1, getScanHeight(destDim, pos) - pos.getY(), j1); blockpos1.getY() >= 0; blockpos1 = blockpos2) {
+				for (BlockPos blockpos1 = pos.offset(i1, getScanHeight(destDim, pos) - pos.getY(), j1); blockpos1.getY() >= destDim.getMinBuildHeight(); blockpos1 = blockpos2) {
 					blockpos2 = blockpos1.below();
 
 					// don't lookup state if inner condition would fail
@@ -222,6 +220,13 @@ public class TFTeleporter implements ITeleporter {
 
 	protected static boolean isPortalAt(ServerLevel world, BlockPos pos) {
 		return isPortal(world.getBlockState(pos));
+	}
+
+	// Scale the coords based on the dimension type coordinate_scale
+	protected static double getHorizontalScale(ServerLevel destination) {
+		ServerLevel tfDim = destination.getServer().getLevel(TFDimension.DIMENSION_KEY);
+		double scale = tfDim == null ? 0.125D : tfDim.dimensionType().coordinateScale();
+		return destination.dimension().equals(TFDimension.DIMENSION_KEY) ? 1F / scale : scale;
 	}
 
 	protected static PortalInfo moveToSafeCoords(ServerLevel world, Entity entity, BlockPos pos) {
@@ -361,13 +366,23 @@ public class TFTeleporter implements ITeleporter {
 			return;
 		}
 
+		TwilightForestMod.LOGGER.debug("Did not even find an okay portal spot, just making a fallback one for {}", name);
+
+		spot = findPortalCoords(world, pos, blockpos -> isOkayForFallbackPortal(world, 	blockpos), true);
+		if (spot != null) {
+			TwilightForestMod.LOGGER.debug("Found fallback portal spot for {} at {}", name, spot);
+			cacheNewPortalCoords(cache, src, this.makePortalAt(world, spot), entity.blockPosition());
+			return;
+		}
+
 		// well I don't think we can actually just return and fail here
-		TwilightForestMod.LOGGER.debug("Did not even find an okay portal spot, just making a random one for {}", name);
+		TwilightForestMod.LOGGER.debug("Did not even find a fallback portal spot, just making a random one for {}", name);
 
 		// adjust the portal height based on what world we're traveling to
 		double yFactor = getYFactor(world);
-		// modified copy of base Teleporter method:
-		cacheNewPortalCoords(cache, src, this.makePortalAt(world, BlockPos.containing(entity.getX(), (entity.getY() * yFactor) - 1.0, entity.getZ())), entity.blockPosition());
+
+		// + 2 to make it above bedrock
+		cacheNewPortalCoords(cache, src, this.makePortalAt(world, BlockPos.containing(entity.getX() * getHorizontalScale(world), (entity.getY() * yFactor) + 2, entity.getZ() * getHorizontalScale(world))), entity.blockPosition());
 	}
 
 	protected static void loadSurroundingArea(ServerLevel world, Vec3 pos) {
@@ -384,6 +399,11 @@ public class TFTeleporter implements ITeleporter {
 
 	@Nullable
 	protected static BlockPos findPortalCoords(ServerLevel world, Vec3 loc, Predicate<BlockPos> predicate) {
+		return findPortalCoords(world, loc, predicate, false);
+	}
+
+	@Nullable
+	protected static BlockPos findPortalCoords(ServerLevel world, Vec3 loc, Predicate<BlockPos> predicate, boolean makePortalInAir) {
 		// adjust the height based on what world we're traveling to
 		double yFactor = getYFactor(world);
 		// modified copy of base Teleporter method:
@@ -403,12 +423,22 @@ public class TFTeleporter implements ITeleporter {
 
 				for (int ry = getScanHeight(world, rx, rz); ry >= world.getMinBuildHeight(); ry--) {
 
-					if (!world.isEmptyBlock(pos.set(rx, ry, rz))) {
+
+					pos.set(rx, ry, rz);
+					if (!makePortalInAir && !world.isEmptyBlock(pos)) {
 						continue;
 					}
 
-					while (ry > world.getMinBuildHeight() && world.isEmptyBlock(pos.set(rx, ry - 1, rz))) {
-						ry--;
+					if (makePortalInAir) {
+						while (ry > world.getMinBuildHeight() && world.isEmptyBlock(pos.set(rx, ry - 1, rz)) && predicate.test(pos)) {
+							ry--;
+						}
+						pos.set(rx, ry, rz);
+					}
+					else {
+						while (ry > world.getMinBuildHeight() && world.isEmptyBlock(pos.set(rx, ry - 1, rz))) {
+							ry--;
+						}
 					}
 
 					double yWeight = (ry + 0.5D) - loc.y() * yFactor;
@@ -449,10 +479,12 @@ public class TFTeleporter implements ITeleporter {
 	protected static boolean isIdealForPortal(ServerLevel world, BlockPos pos) {
 		for (int potentialZ = 0; potentialZ < 4; potentialZ++) {
 			for (int potentialX = 0; potentialX < 4; potentialX++) {
-				for (int potentialY = 0; potentialY < 4; potentialY++) {
+				for (int potentialY = 0; potentialY < 6; potentialY++) {
 					BlockPos tPos = pos.offset(potentialX - 1, potentialY, potentialZ - 1);
 					BlockState state = world.getBlockState(tPos);
-					if (potentialY == 0 && !state.is(BlockTags.DIRT) || potentialY >= 1 && !state.canBeReplaced()) {
+
+					// all blocks mustn't be bedrock, end portal frame, etc.; and other conditions for layers >= 0
+					if (state.is(BlockTags.FEATURES_CANNOT_REPLACE) || potentialY == 0 && !state.is(BlockTags.DIRT) || potentialY >= 1 && !state.canBeReplaced()) {
 						return false;
 					}
 				}
@@ -481,16 +513,21 @@ public class TFTeleporter implements ITeleporter {
 		world.setBlockAndUpdate(pos.east().south(2), grass);
 		world.setBlockAndUpdate(pos.east(2).south(2), grass);
 
+		BlockPos[] positions = new BlockPos[4];
+		positions[0] = pos.below();
+		positions[1] = pos.east().below();
+		positions[2] = pos.south().below();
+		positions[3] = pos.east().south().below();
+
 		// dirt under it
 		BlockState dirt = Blocks.DIRT.defaultBlockState();
-
-		world.setBlockAndUpdate(pos.below(), dirt);
-		world.setBlockAndUpdate(pos.east().below(), dirt);
-		world.setBlockAndUpdate(pos.south().below(), dirt);
-		world.setBlockAndUpdate(pos.east().south().below(), dirt);
+		for (BlockPos blockpos: positions) {
+			if(world.getBlockState(pos).is(BlockTags.FEATURES_CANNOT_REPLACE))
+				world.setBlockAndUpdate(blockpos, dirt);
+		}
 
 		// portal in it
-		BlockState portal = TFBlocks.TWILIGHT_PORTAL.get().defaultBlockState().setValue(TFPortalBlock.DISALLOW_RETURN, (this.locked || !TFConfig.COMMON_CONFIG.shouldReturnPortalBeUsable.get()));
+		BlockState portal = TFBlocks.TWILIGHT_PORTAL.get().defaultBlockState().setValue(TFPortalBlock.DISALLOW_RETURN, (this.locked || !TFConfig.shouldReturnPortalBeUsable));
 
 		world.setBlock(pos, portal, 2);
 		world.setBlock(pos.east(), portal, 2);
@@ -507,40 +544,59 @@ public class TFTeleporter implements ITeleporter {
 		}
 
 		// finally, "nature decorations"!
-		world.setBlock(pos.west().north().above(), randNatureBlock(world.random), 2);
-		world.setBlock(pos.north().above(), randNatureBlock(world.random), 2);
-		world.setBlock(pos.east().north().above(), randNatureBlock(world.random), 2);
-		world.setBlock(pos.east(2).north().above(), randNatureBlock(world.random), 2);
+		world.setBlock(pos.west().north().above(), randNatureBlock(world.getRandom()), 2);
+		world.setBlock(pos.north().above(), randNatureBlock(world.getRandom()), 2);
+		world.setBlock(pos.east().north().above(), randNatureBlock(world.getRandom()), 2);
+		world.setBlock(pos.east(2).north().above(), randNatureBlock(world.getRandom()), 2);
 
-		world.setBlock(pos.west().above(), randNatureBlock(world.random), 2);
-		world.setBlock(pos.east(2).above(), randNatureBlock(world.random), 2);
+		world.setBlock(pos.west().above(), randNatureBlock(world.getRandom()), 2);
+		world.setBlock(pos.east(2).above(), randNatureBlock(world.getRandom()), 2);
 
-		world.setBlock(pos.west().south().above(), randNatureBlock(world.random), 2);
-		world.setBlock(pos.east(2).south().above(), randNatureBlock(world.random), 2);
+		world.setBlock(pos.west().south().above(), randNatureBlock(world.getRandom()), 2);
+		world.setBlock(pos.east(2).south().above(), randNatureBlock(world.getRandom()), 2);
 
-		world.setBlock(pos.west().south(2).above(), randNatureBlock(world.random), 2);
-		world.setBlock(pos.south(2).above(), randNatureBlock(world.random), 2);
-		world.setBlock(pos.east().south(2).above(), randNatureBlock(world.random), 2);
-		world.setBlock(pos.east(2).south(2).above(), randNatureBlock(world.random), 2);
+		world.setBlock(pos.west().south(2).above(), randNatureBlock(world.getRandom()), 2);
+		world.setBlock(pos.south(2).above(), randNatureBlock(world.getRandom()), 2);
+		world.setBlock(pos.east().south(2).above(), randNatureBlock(world.getRandom()), 2);
+		world.setBlock(pos.east(2).south(2).above(), randNatureBlock(world.getRandom()), 2);
 
 		return pos;
 	}
 
 	private static BlockState randNatureBlock(RandomSource random) {
 		Optional<Block> optional = BuiltInRegistries.BLOCK
-				.getTag(BlockTagGenerator.GENERATED_PORTAL_DECO)
-				.flatMap(tag -> tag.getRandomElement(random))
-				.map(Holder::value);
+			.getTag(BlockTagGenerator.GENERATED_PORTAL_DECO)
+			.flatMap(tag -> tag.getRandomElement(random))
+			.map(Holder::value);
 		return optional.map(Block::defaultBlockState).orElseGet(Blocks.SHORT_GRASS::defaultBlockState);
 	}
 
 	protected static boolean isOkayForPortal(ServerLevel world, BlockPos pos) {
 		for (int potentialZ = 0; potentialZ < 4; potentialZ++) {
 			for (int potentialX = 0; potentialX < 4; potentialX++) {
-				for (int potentialY = 0; potentialY < 4; potentialY++) {
+				for (int potentialY = 0; potentialY < 6; potentialY++) {
 					BlockPos tPos = pos.offset(potentialX - 1, potentialY, potentialZ - 1);
 					BlockState state = world.getBlockState(tPos);
-					if (potentialY == 0 && !state.isSolid() && !state.liquid() || potentialY >= 1 && !state.canBeReplaced()) {
+
+					// all blocks mustn't be bedrock, end portal frame, etc.; and other conditions for layers >= 0
+					if (state.is(BlockTags.FEATURES_CANNOT_REPLACE) || potentialY == 0 && !state.isSolid() && !state.liquid() || potentialY >= 1 && !state.canBeReplaced()) {
+						return false;
+					}
+				}
+			}
+		}
+		return true;
+	}
+
+	protected static boolean isOkayForFallbackPortal(ServerLevel world, BlockPos pos) {
+		for (int potentialZ = 0; potentialZ < 4; potentialZ++) {
+			for (int potentialX = 0; potentialX < 4; potentialX++) {
+				for (int potentialY = 0; potentialY < 6; potentialY++) {
+					BlockPos tPos = pos.offset(potentialX - 1, potentialY, potentialZ - 1);
+					BlockState state = world.getBlockState(tPos);
+
+					// all blocks mustn't be bedrock, end portal frame, etc.;
+					if (state.is(BlockTags.FEATURES_CANNOT_REPLACE) || potentialY >= 1 && !state.canBeReplaced()) {
 						return false;
 					}
 				}

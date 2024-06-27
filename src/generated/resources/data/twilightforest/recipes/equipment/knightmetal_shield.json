@@ -6,7 +6,7 @@
       "tag": "twilightforest:towerwood"
     },
     "-": {
-      "tag": "forge:ingots/knightmetal"
+      "tag": "c:ingots/knightmetal"
     },
     "o": {
       "item": "twilightforest:knightmetal_ring"
@@ -18,6 +18,7 @@
     "-#"
   ],
   "result": {
-    "item": "twilightforest:knightmetal_shield"
+    "count": 1,
+    "id": "twilightforest:knightmetal_shield"
   }
 }

@@ -9,13 +9,9 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Mob;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
-import twilightforest.entity.monster.CarminiteGhastguard;
 
 import java.util.Random;
 
-@OnlyIn(Dist.CLIENT)
 public class TFGhastModel<T extends Mob> extends HierarchicalModel<T> {
 	protected final static int tentacleCount = 9;
 	private final ModelPart root, body;
@@ -35,9 +31,9 @@ public class TFGhastModel<T extends Mob> extends HierarchicalModel<T> {
 		PartDefinition definition = mesh.getRoot();
 
 		var body = definition.addOrReplaceChild("body", CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(-8.0F, -8.0F, -8.0F, 16, 16, 16),
-				PartPose.offset(0, 8, 0));
+				.texOffs(0, 0)
+				.addBox(-8.0F, -8.0F, -8.0F, 16, 16, 16),
+			PartPose.offset(0, 8, 0));
 
 		Random rand = new Random(1660L);
 
@@ -61,8 +57,8 @@ public class TFGhastModel<T extends Mob> extends HierarchicalModel<T> {
 		float zPoint = ((i % 3 - i)) * 1.5F + 4.0F;
 
 		return parent.addOrReplaceChild(name, CubeListBuilder.create()
-						.addBox(-1.0F, 0.0F, -1.0F, 2, length, 2),
-				PartPose.offset(xPoint, 7, zPoint));
+				.addBox(-1.0F, 0.0F, -1.0F, 2, length, 2),
+			PartPose.offset(xPoint, 7, zPoint));
 	}
 
 	/**

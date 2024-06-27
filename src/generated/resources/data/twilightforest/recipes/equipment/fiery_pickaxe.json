@@ -1,12 +1,13 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
+  "group": "fiery_pickaxe",
   "key": {
     "#": {
-      "tag": "forge:ingots/fiery"
+      "tag": "c:ingots/fiery"
     },
     "X": {
-      "tag": "forge:rods/blaze"
+      "tag": "c:rods/blaze"
     }
   },
   "pattern": [
@@ -15,6 +16,7 @@
     " X "
   ],
   "result": {
-    "item": "twilightforest:fiery_pickaxe"
+    "count": 1,
+    "id": "twilightforest:fiery_pickaxe"
   }
 }

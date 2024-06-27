@@ -18,6 +18,7 @@ public class RedcapLightTNTGoal extends RedcapBaseGoal {
 	private int delay;
 	private BlockPos tntPos = null;
 
+	@SuppressWarnings("this-escape")
 	public RedcapLightTNTGoal(Redcap hostEntity, float speed) {
 		super(hostEntity);
 		this.pursueSpeed = speed;
@@ -26,7 +27,7 @@ public class RedcapLightTNTGoal extends RedcapBaseGoal {
 
 	@Override
 	public boolean canUse() {
-		if (!EventHooks.getMobGriefingEvent(this.redcap.level(), this.redcap)) {
+		if (!EventHooks.canEntityGrief(this.redcap.level(), this.redcap)) {
 			return false;
 		}
 

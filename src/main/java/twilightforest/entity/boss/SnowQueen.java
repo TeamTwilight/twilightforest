@@ -7,11 +7,9 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -54,7 +52,6 @@ public class SnowQueen extends BaseTFBoss implements IBreathAttacker {
 	private static final EntityDataAccessor<Boolean> BEAM_FLAG = SynchedEntityData.defineId(SnowQueen.class, EntityDataSerializers.BOOLEAN);
 	private static final EntityDataAccessor<Byte> PHASE_FLAG = SynchedEntityData.defineId(SnowQueen.class, EntityDataSerializers.BYTE);
 
-	private final ServerBossEvent bossInfo = new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.PROGRESS);
 	private static final int MAX_DAMAGE_WHILE_BEAMING = 25;
 	private static final float BREATH_DAMAGE = 4.0F;
 
@@ -67,6 +64,7 @@ public class SnowQueen extends BaseTFBoss implements IBreathAttacker {
 	private int maxDrops;
 	private int damageWhileBeaming;
 
+	@SuppressWarnings("this-escape")
 	public SnowQueen(EntityType<? extends SnowQueen> type, Level level) {
 		super(type, level);
 
@@ -101,19 +99,19 @@ public class SnowQueen extends BaseTFBoss implements IBreathAttacker {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Monster.createMonsterAttributes()
-				.add(Attributes.MOVEMENT_SPEED, 0.23D)
-				.add(Attributes.FLYING_SPEED, 0.23D)
-				.add(Attributes.ATTACK_DAMAGE, 7.0D)
-				.add(Attributes.FOLLOW_RANGE, 40.0D)
-				.add(Attributes.MAX_HEALTH, 200.0D)
-				.add(Attributes.KNOCKBACK_RESISTANCE, 0.75D);
+			.add(Attributes.MOVEMENT_SPEED, 0.23D)
+			.add(Attributes.FLYING_SPEED, 0.23D)
+			.add(Attributes.ATTACK_DAMAGE, 7.0D)
+			.add(Attributes.FOLLOW_RANGE, 40.0D)
+			.add(Attributes.MAX_HEALTH, 200.0D)
+			.add(Attributes.KNOCKBACK_RESISTANCE, 0.75D);
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(BEAM_FLAG, false);
-		this.getEntityData().define(PHASE_FLAG, (byte) 0);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(BEAM_FLAG, false);
+		builder.define(PHASE_FLAG, (byte) 0);
 	}
 
 	@Override
@@ -221,9 +219,9 @@ public class SnowQueen extends BaseTFBoss implements IBreathAttacker {
 				double d1 = this.getRandom().nextGaussian() * 0.02D;
 				double d2 = this.getRandom().nextGaussian() * 0.02D;
 				this.level().addParticle(this.getRandom().nextBoolean() ? ParticleTypes.EXPLOSION : ParticleTypes.POOF,
-						(this.getX() + this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - this.getBbWidth(),
-						this.getY() + this.getRandom().nextFloat() * this.getBbHeight(),
-						(this.getZ() + this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - this.getBbWidth(), d, d1, d2);
+					(this.getX() + this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - this.getBbWidth(),
+					this.getY() + this.getRandom().nextFloat() * this.getBbHeight(),
+					(this.getZ() + this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - this.getBbWidth(), d, d1, d2);
 			}
 		}
 	}
@@ -279,7 +277,7 @@ public class SnowQueen extends BaseTFBoss implements IBreathAttacker {
 		boolean result = super.hurt(source, damage);
 
 		if (result && this.getCurrentPhase() == Phase.BEAM) {
-			this.damageWhileBeaming += damage;
+			this.damageWhileBeaming += (int) damage;
 		}
 		return result;
 	}
@@ -304,7 +302,7 @@ public class SnowQueen extends BaseTFBoss implements IBreathAttacker {
 	}
 
 	public void destroyBlocksInAABB(AABB box) {
-		if (EventHooks.getMobGriefingEvent(this.level(), this)) {
+		if (EventHooks.canEntityGrief(this.level(), this)) {
 			for (BlockPos pos : WorldUtil.getAllInBB(box)) {
 				BlockState state = this.level().getBlockState(pos);
 				if (state.is(BlockTags.ICE)) {
@@ -430,11 +428,6 @@ public class SnowQueen extends BaseTFBoss implements IBreathAttacker {
 	}
 
 	@Override
-	public ServerBossEvent getBossBar() {
-		return this.bossInfo;
-	}
-
-	@Override
 	public Block getDeathContainer(RandomSource random) {
 		return TFBlocks.TWILIGHT_OAK_CHEST.get();
 	}
@@ -442,5 +435,10 @@ public class SnowQueen extends BaseTFBoss implements IBreathAttacker {
 	@Override
 	public Block getBossSpawner() {
 		return TFBlocks.SNOW_QUEEN_BOSS_SPAWNER.get();
+	}
+
+	@Override
+	public int getBossBarColor() {
+		return 0x8CF0F0;
 	}
 }

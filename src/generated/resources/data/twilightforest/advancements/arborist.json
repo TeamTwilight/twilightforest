@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:beanstalk_leaves"
-            ]
+            "items": "twilightforest:beanstalk_leaves"
           }
         ]
       },
@@ -17,9 +15,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:canopy_banister"
-            ]
+            "items": "twilightforest:canopy_banister"
           }
         ]
       },
@@ -29,9 +25,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:canopy_boat"
-            ]
+            "items": "twilightforest:canopy_boat"
           }
         ]
       },
@@ -41,9 +35,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:canopy_bookshelf"
-            ]
+            "items": "twilightforest:canopy_bookshelf"
           }
         ]
       },
@@ -53,9 +45,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:canopy_button"
-            ]
+            "items": "twilightforest:canopy_button"
           }
         ]
       },
@@ -65,9 +55,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:canopy_chest"
-            ]
+            "items": "twilightforest:canopy_chest"
           }
         ]
       },
@@ -77,9 +65,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:canopy_chest_boat"
-            ]
+            "items": "twilightforest:canopy_chest_boat"
           }
         ]
       },
@@ -89,9 +75,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:canopy_door"
-            ]
+            "items": "twilightforest:canopy_door"
           }
         ]
       },
@@ -101,9 +85,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:canopy_fence"
-            ]
+            "items": "twilightforest:canopy_fence"
           }
         ]
       },
@@ -113,9 +95,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:canopy_fence_gate"
-            ]
+            "items": "twilightforest:canopy_fence_gate"
           }
         ]
       },
@@ -125,9 +105,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:canopy_hanging_sign"
-            ]
+            "items": "twilightforest:canopy_hanging_sign"
           }
         ]
       },
@@ -137,9 +115,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:canopy_leaves"
-            ]
+            "items": "twilightforest:canopy_leaves"
           }
         ]
       },
@@ -149,9 +125,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:canopy_log"
-            ]
+            "items": "twilightforest:canopy_log"
           }
         ]
       },
@@ -161,9 +135,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:canopy_planks"
-            ]
+            "items": "twilightforest:canopy_planks"
           }
         ]
       },
@@ -173,9 +145,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:canopy_pressure_plate"
-            ]
+            "items": "twilightforest:canopy_pressure_plate"
           }
         ]
       },
@@ -185,9 +155,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:canopy_sapling"
-            ]
+            "items": "twilightforest:canopy_sapling"
           }
         ]
       },
@@ -197,9 +165,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:canopy_sign"
-            ]
+            "items": "twilightforest:canopy_sign"
           }
         ]
       },
@@ -209,9 +175,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:canopy_slab"
-            ]
+            "items": "twilightforest:canopy_slab"
           }
         ]
       },
@@ -221,9 +185,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:canopy_stairs"
-            ]
+            "items": "twilightforest:canopy_stairs"
           }
         ]
       },
@@ -233,9 +195,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:canopy_trapdoor"
-            ]
+            "items": "twilightforest:canopy_trapdoor"
           }
         ]
       },
@@ -245,9 +205,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:canopy_trapped_chest"
-            ]
+            "items": "twilightforest:canopy_trapped_chest"
           }
         ]
       },
@@ -257,9 +215,17 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:canopy_wood"
-            ]
+            "items": "twilightforest:canopy_wood"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "chiseled_canopy_bookshelf": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:chiseled_canopy_bookshelf"
           }
         ]
       },
@@ -269,9 +235,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:cracked_towerwood"
-            ]
+            "items": "twilightforest:cracked_towerwood"
           }
         ]
       },
@@ -281,9 +245,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:dark_banister"
-            ]
+            "items": "twilightforest:dark_banister"
           }
         ]
       },
@@ -293,9 +255,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:dark_boat"
-            ]
+            "items": "twilightforest:dark_boat"
           }
         ]
       },
@@ -305,9 +265,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:dark_button"
-            ]
+            "items": "twilightforest:dark_button"
           }
         ]
       },
@@ -317,9 +275,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:dark_chest"
-            ]
+            "items": "twilightforest:dark_chest"
           }
         ]
       },
@@ -329,9 +285,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:dark_chest_boat"
-            ]
+            "items": "twilightforest:dark_chest_boat"
           }
         ]
       },
@@ -341,9 +295,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:dark_door"
-            ]
+            "items": "twilightforest:dark_door"
           }
         ]
       },
@@ -353,9 +305,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:dark_fence"
-            ]
+            "items": "twilightforest:dark_fence"
           }
         ]
       },
@@ -365,9 +315,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:dark_fence_gate"
-            ]
+            "items": "twilightforest:dark_fence_gate"
           }
         ]
       },
@@ -377,9 +325,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:dark_hanging_sign"
-            ]
+            "items": "twilightforest:dark_hanging_sign"
           }
         ]
       },
@@ -389,9 +335,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:dark_leaves"
-            ]
+            "items": "twilightforest:dark_leaves"
           }
         ]
       },
@@ -401,9 +345,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:dark_log"
-            ]
+            "items": "twilightforest:dark_log"
           }
         ]
       },
@@ -413,9 +355,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:dark_planks"
-            ]
+            "items": "twilightforest:dark_planks"
           }
         ]
       },
@@ -425,9 +365,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:dark_pressure_plate"
-            ]
+            "items": "twilightforest:dark_pressure_plate"
           }
         ]
       },
@@ -437,9 +375,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:dark_sign"
-            ]
+            "items": "twilightforest:dark_sign"
           }
         ]
       },
@@ -449,9 +385,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:dark_slab"
-            ]
+            "items": "twilightforest:dark_slab"
           }
         ]
       },
@@ -461,9 +395,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:dark_stairs"
-            ]
+            "items": "twilightforest:dark_stairs"
           }
         ]
       },
@@ -473,9 +405,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:dark_trapdoor"
-            ]
+            "items": "twilightforest:dark_trapdoor"
           }
         ]
       },
@@ -485,9 +415,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:dark_trapped_chest"
-            ]
+            "items": "twilightforest:dark_trapped_chest"
           }
         ]
       },
@@ -497,9 +425,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:dark_wood"
-            ]
+            "items": "twilightforest:dark_wood"
           }
         ]
       },
@@ -509,21 +435,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:darkwood_sapling"
-            ]
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
-    "empty_canopy_bookshelf": {
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "twilightforest:empty_canopy_bookshelf"
-            ]
+            "items": "twilightforest:darkwood_sapling"
           }
         ]
       },
@@ -533,9 +445,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:encased_towerwood"
-            ]
+            "items": "twilightforest:encased_towerwood"
           }
         ]
       },
@@ -545,9 +455,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:fallen_leaves"
-            ]
+            "items": "twilightforest:fallen_leaves"
           }
         ]
       },
@@ -557,9 +465,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:giant_leaves"
-            ]
+            "items": "twilightforest:giant_leaves"
           }
         ]
       },
@@ -569,9 +475,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:giant_log"
-            ]
+            "items": "twilightforest:giant_log"
           }
         ]
       },
@@ -581,9 +485,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:hedge"
-            ]
+            "items": "twilightforest:hedge"
           }
         ]
       },
@@ -593,9 +495,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:hollow_canopy_log"
-            ]
+            "items": "twilightforest:hollow_canopy_log"
           }
         ]
       },
@@ -605,9 +505,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:hollow_dark_log"
-            ]
+            "items": "twilightforest:hollow_dark_log"
           }
         ]
       },
@@ -617,9 +515,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:hollow_mangrove_log"
-            ]
+            "items": "twilightforest:hollow_mangrove_log"
           }
         ]
       },
@@ -629,9 +525,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:hollow_mining_log"
-            ]
+            "items": "twilightforest:hollow_mining_log"
           }
         ]
       },
@@ -641,9 +535,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:hollow_oak_sapling"
-            ]
+            "items": "twilightforest:hollow_oak_sapling"
           }
         ]
       },
@@ -653,9 +545,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:hollow_sorting_log"
-            ]
+            "items": "twilightforest:hollow_sorting_log"
           }
         ]
       },
@@ -665,9 +555,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:hollow_time_log"
-            ]
+            "items": "twilightforest:hollow_time_log"
           }
         ]
       },
@@ -677,9 +565,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:hollow_transformation_log"
-            ]
+            "items": "twilightforest:hollow_transformation_log"
           }
         ]
       },
@@ -689,9 +575,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:hollow_twilight_oak_log"
-            ]
+            "items": "twilightforest:hollow_twilight_oak_log"
           }
         ]
       },
@@ -701,9 +585,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:huge_stalk"
-            ]
+            "items": "twilightforest:huge_stalk"
           }
         ]
       },
@@ -713,9 +595,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:liveroot"
-            ]
+            "items": "twilightforest:liveroot"
           }
         ]
       },
@@ -725,9 +605,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:liveroot_block"
-            ]
+            "items": "twilightforest:liveroot_block"
           }
         ]
       },
@@ -737,9 +615,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:mangrove_banister"
-            ]
+            "items": "twilightforest:mangrove_banister"
           }
         ]
       },
@@ -749,9 +625,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:mangrove_boat"
-            ]
+            "items": "twilightforest:mangrove_boat"
           }
         ]
       },
@@ -761,9 +635,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:mangrove_button"
-            ]
+            "items": "twilightforest:mangrove_button"
           }
         ]
       },
@@ -773,9 +645,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:mangrove_chest"
-            ]
+            "items": "twilightforest:mangrove_chest"
           }
         ]
       },
@@ -785,9 +655,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:mangrove_chest_boat"
-            ]
+            "items": "twilightforest:mangrove_chest_boat"
           }
         ]
       },
@@ -797,9 +665,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:mangrove_door"
-            ]
+            "items": "twilightforest:mangrove_door"
           }
         ]
       },
@@ -809,9 +675,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:mangrove_fence"
-            ]
+            "items": "twilightforest:mangrove_fence"
           }
         ]
       },
@@ -821,9 +685,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:mangrove_fence_gate"
-            ]
+            "items": "twilightforest:mangrove_fence_gate"
           }
         ]
       },
@@ -833,9 +695,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:mangrove_hanging_sign"
-            ]
+            "items": "twilightforest:mangrove_hanging_sign"
           }
         ]
       },
@@ -845,9 +705,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:mangrove_leaves"
-            ]
+            "items": "twilightforest:mangrove_leaves"
           }
         ]
       },
@@ -857,9 +715,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:mangrove_log"
-            ]
+            "items": "twilightforest:mangrove_log"
           }
         ]
       },
@@ -869,9 +725,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:mangrove_planks"
-            ]
+            "items": "twilightforest:mangrove_planks"
           }
         ]
       },
@@ -881,9 +735,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:mangrove_pressure_plate"
-            ]
+            "items": "twilightforest:mangrove_pressure_plate"
           }
         ]
       },
@@ -893,9 +745,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:mangrove_root"
-            ]
+            "items": "twilightforest:mangrove_root"
           }
         ]
       },
@@ -905,9 +755,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:mangrove_sapling"
-            ]
+            "items": "twilightforest:mangrove_sapling"
           }
         ]
       },
@@ -917,9 +765,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:mangrove_sign"
-            ]
+            "items": "twilightforest:mangrove_sign"
           }
         ]
       },
@@ -929,9 +775,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:mangrove_slab"
-            ]
+            "items": "twilightforest:mangrove_slab"
           }
         ]
       },
@@ -941,9 +785,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:mangrove_stairs"
-            ]
+            "items": "twilightforest:mangrove_stairs"
           }
         ]
       },
@@ -953,9 +795,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:mangrove_trapdoor"
-            ]
+            "items": "twilightforest:mangrove_trapdoor"
           }
         ]
       },
@@ -965,9 +805,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:mangrove_trapped_chest"
-            ]
+            "items": "twilightforest:mangrove_trapped_chest"
           }
         ]
       },
@@ -977,9 +815,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:mangrove_wood"
-            ]
+            "items": "twilightforest:mangrove_wood"
           }
         ]
       },
@@ -989,9 +825,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:mining_banister"
-            ]
+            "items": "twilightforest:mining_banister"
           }
         ]
       },
@@ -1001,9 +835,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:mining_boat"
-            ]
+            "items": "twilightforest:mining_boat"
           }
         ]
       },
@@ -1013,9 +845,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:mining_button"
-            ]
+            "items": "twilightforest:mining_button"
           }
         ]
       },
@@ -1025,9 +855,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:mining_chest"
-            ]
+            "items": "twilightforest:mining_chest"
           }
         ]
       },
@@ -1037,9 +865,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:mining_chest_boat"
-            ]
+            "items": "twilightforest:mining_chest_boat"
           }
         ]
       },
@@ -1049,9 +875,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:mining_door"
-            ]
+            "items": "twilightforest:mining_door"
           }
         ]
       },
@@ -1061,9 +885,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:mining_fence"
-            ]
+            "items": "twilightforest:mining_fence"
           }
         ]
       },
@@ -1073,9 +895,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:mining_fence_gate"
-            ]
+            "items": "twilightforest:mining_fence_gate"
           }
         ]
       },
@@ -1085,9 +905,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:mining_hanging_sign"
-            ]
+            "items": "twilightforest:mining_hanging_sign"
           }
         ]
       },
@@ -1097,9 +915,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:mining_leaves"
-            ]
+            "items": "twilightforest:mining_leaves"
           }
         ]
       },
@@ -1109,9 +925,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:mining_log"
-            ]
+            "items": "twilightforest:mining_log"
           }
         ]
       },
@@ -1121,9 +935,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:mining_planks"
-            ]
+            "items": "twilightforest:mining_planks"
           }
         ]
       },
@@ -1133,9 +945,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:mining_pressure_plate"
-            ]
+            "items": "twilightforest:mining_pressure_plate"
           }
         ]
       },
@@ -1145,9 +955,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:mining_sapling"
-            ]
+            "items": "twilightforest:mining_sapling"
           }
         ]
       },
@@ -1157,9 +965,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:mining_sign"
-            ]
+            "items": "twilightforest:mining_sign"
           }
         ]
       },
@@ -1169,9 +975,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:mining_slab"
-            ]
+            "items": "twilightforest:mining_slab"
           }
         ]
       },
@@ -1181,9 +985,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:mining_stairs"
-            ]
+            "items": "twilightforest:mining_stairs"
           }
         ]
       },
@@ -1193,9 +995,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:mining_trapdoor"
-            ]
+            "items": "twilightforest:mining_trapdoor"
           }
         ]
       },
@@ -1205,9 +1005,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:mining_trapped_chest"
-            ]
+            "items": "twilightforest:mining_trapped_chest"
           }
         ]
       },
@@ -1217,9 +1015,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:mining_wood"
-            ]
+            "items": "twilightforest:mining_wood"
           }
         ]
       },
@@ -1229,9 +1025,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:mossy_towerwood"
-            ]
+            "items": "twilightforest:mossy_towerwood"
           }
         ]
       },
@@ -1241,9 +1035,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:rainbow_oak_leaves"
-            ]
+            "items": "twilightforest:rainbow_oak_leaves"
           }
         ]
       },
@@ -1253,9 +1045,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:rainbow_oak_sapling"
-            ]
+            "items": "twilightforest:rainbow_oak_sapling"
           }
         ]
       },
@@ -1265,9 +1055,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:root"
-            ]
+            "items": "twilightforest:root"
           }
         ]
       },
@@ -1277,9 +1065,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:root_strand"
-            ]
+            "items": "twilightforest:root_strand"
           }
         ]
       },
@@ -1289,9 +1075,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:sorting_banister"
-            ]
+            "items": "twilightforest:sorting_banister"
           }
         ]
       },
@@ -1301,9 +1085,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:sorting_boat"
-            ]
+            "items": "twilightforest:sorting_boat"
           }
         ]
       },
@@ -1313,9 +1095,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:sorting_button"
-            ]
+            "items": "twilightforest:sorting_button"
           }
         ]
       },
@@ -1325,9 +1105,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:sorting_chest"
-            ]
+            "items": "twilightforest:sorting_chest"
           }
         ]
       },
@@ -1337,9 +1115,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:sorting_chest_boat"
-            ]
+            "items": "twilightforest:sorting_chest_boat"
           }
         ]
       },
@@ -1349,9 +1125,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:sorting_door"
-            ]
+            "items": "twilightforest:sorting_door"
           }
         ]
       },
@@ -1361,9 +1135,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:sorting_fence"
-            ]
+            "items": "twilightforest:sorting_fence"
           }
         ]
       },
@@ -1373,9 +1145,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:sorting_fence_gate"
-            ]
+            "items": "twilightforest:sorting_fence_gate"
           }
         ]
       },
@@ -1385,9 +1155,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:sorting_hanging_sign"
-            ]
+            "items": "twilightforest:sorting_hanging_sign"
           }
         ]
       },
@@ -1397,9 +1165,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:sorting_leaves"
-            ]
+            "items": "twilightforest:sorting_leaves"
           }
         ]
       },
@@ -1409,9 +1175,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:sorting_log"
-            ]
+            "items": "twilightforest:sorting_log"
           }
         ]
       },
@@ -1421,9 +1185,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:sorting_planks"
-            ]
+            "items": "twilightforest:sorting_planks"
           }
         ]
       },
@@ -1433,9 +1195,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:sorting_pressure_plate"
-            ]
+            "items": "twilightforest:sorting_pressure_plate"
           }
         ]
       },
@@ -1445,9 +1205,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:sorting_sapling"
-            ]
+            "items": "twilightforest:sorting_sapling"
           }
         ]
       },
@@ -1457,9 +1215,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:sorting_sign"
-            ]
+            "items": "twilightforest:sorting_sign"
           }
         ]
       },
@@ -1469,9 +1225,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:sorting_slab"
-            ]
+            "items": "twilightforest:sorting_slab"
           }
         ]
       },
@@ -1481,9 +1235,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:sorting_stairs"
-            ]
+            "items": "twilightforest:sorting_stairs"
           }
         ]
       },
@@ -1493,9 +1245,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:sorting_trapdoor"
-            ]
+            "items": "twilightforest:sorting_trapdoor"
           }
         ]
       },
@@ -1505,9 +1255,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:sorting_trapped_chest"
-            ]
+            "items": "twilightforest:sorting_trapped_chest"
           }
         ]
       },
@@ -1517,9 +1265,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:sorting_wood"
-            ]
+            "items": "twilightforest:sorting_wood"
           }
         ]
       },
@@ -1529,9 +1275,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:stripped_canopy_log"
-            ]
+            "items": "twilightforest:stripped_canopy_log"
           }
         ]
       },
@@ -1541,9 +1285,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:stripped_canopy_wood"
-            ]
+            "items": "twilightforest:stripped_canopy_wood"
           }
         ]
       },
@@ -1553,9 +1295,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:stripped_dark_log"
-            ]
+            "items": "twilightforest:stripped_dark_log"
           }
         ]
       },
@@ -1565,9 +1305,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:stripped_dark_wood"
-            ]
+            "items": "twilightforest:stripped_dark_wood"
           }
         ]
       },
@@ -1577,9 +1315,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:stripped_mangrove_log"
-            ]
+            "items": "twilightforest:stripped_mangrove_log"
           }
         ]
       },
@@ -1589,9 +1325,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:stripped_mangrove_wood"
-            ]
+            "items": "twilightforest:stripped_mangrove_wood"
           }
         ]
       },
@@ -1601,9 +1335,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:stripped_mining_log"
-            ]
+            "items": "twilightforest:stripped_mining_log"
           }
         ]
       },
@@ -1613,9 +1345,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:stripped_mining_wood"
-            ]
+            "items": "twilightforest:stripped_mining_wood"
           }
         ]
       },
@@ -1625,9 +1355,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:stripped_sorting_log"
-            ]
+            "items": "twilightforest:stripped_sorting_log"
           }
         ]
       },
@@ -1637,9 +1365,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:stripped_sorting_wood"
-            ]
+            "items": "twilightforest:stripped_sorting_wood"
           }
         ]
       },
@@ -1649,9 +1375,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:stripped_time_log"
-            ]
+            "items": "twilightforest:stripped_time_log"
           }
         ]
       },
@@ -1661,9 +1385,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:stripped_time_wood"
-            ]
+            "items": "twilightforest:stripped_time_wood"
           }
         ]
       },
@@ -1673,9 +1395,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:stripped_transformation_log"
-            ]
+            "items": "twilightforest:stripped_transformation_log"
           }
         ]
       },
@@ -1685,9 +1405,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:stripped_transformation_wood"
-            ]
+            "items": "twilightforest:stripped_transformation_wood"
           }
         ]
       },
@@ -1697,9 +1415,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:stripped_twilight_oak_log"
-            ]
+            "items": "twilightforest:stripped_twilight_oak_log"
           }
         ]
       },
@@ -1709,9 +1425,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:stripped_twilight_oak_wood"
-            ]
+            "items": "twilightforest:stripped_twilight_oak_wood"
           }
         ]
       },
@@ -1721,9 +1435,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:thorn_leaves"
-            ]
+            "items": "twilightforest:thorn_leaves"
           }
         ]
       },
@@ -1733,9 +1445,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:thorn_rose"
-            ]
+            "items": "twilightforest:thorn_rose"
           }
         ]
       },
@@ -1745,9 +1455,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:time_banister"
-            ]
+            "items": "twilightforest:time_banister"
           }
         ]
       },
@@ -1757,9 +1465,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:time_boat"
-            ]
+            "items": "twilightforest:time_boat"
           }
         ]
       },
@@ -1769,9 +1475,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:time_button"
-            ]
+            "items": "twilightforest:time_button"
           }
         ]
       },
@@ -1781,9 +1485,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:time_chest"
-            ]
+            "items": "twilightforest:time_chest"
           }
         ]
       },
@@ -1793,9 +1495,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:time_chest_boat"
-            ]
+            "items": "twilightforest:time_chest_boat"
           }
         ]
       },
@@ -1805,9 +1505,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:time_door"
-            ]
+            "items": "twilightforest:time_door"
           }
         ]
       },
@@ -1817,9 +1515,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:time_fence"
-            ]
+            "items": "twilightforest:time_fence"
           }
         ]
       },
@@ -1829,9 +1525,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:time_fence_gate"
-            ]
+            "items": "twilightforest:time_fence_gate"
           }
         ]
       },
@@ -1841,9 +1535,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:time_hanging_sign"
-            ]
+            "items": "twilightforest:time_hanging_sign"
           }
         ]
       },
@@ -1853,9 +1545,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:time_leaves"
-            ]
+            "items": "twilightforest:time_leaves"
           }
         ]
       },
@@ -1865,9 +1555,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:time_log"
-            ]
+            "items": "twilightforest:time_log"
           }
         ]
       },
@@ -1877,9 +1565,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:time_planks"
-            ]
+            "items": "twilightforest:time_planks"
           }
         ]
       },
@@ -1889,9 +1575,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:time_pressure_plate"
-            ]
+            "items": "twilightforest:time_pressure_plate"
           }
         ]
       },
@@ -1901,9 +1585,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:time_sapling"
-            ]
+            "items": "twilightforest:time_sapling"
           }
         ]
       },
@@ -1913,9 +1595,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:time_sign"
-            ]
+            "items": "twilightforest:time_sign"
           }
         ]
       },
@@ -1925,9 +1605,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:time_slab"
-            ]
+            "items": "twilightforest:time_slab"
           }
         ]
       },
@@ -1937,9 +1615,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:time_stairs"
-            ]
+            "items": "twilightforest:time_stairs"
           }
         ]
       },
@@ -1949,9 +1625,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:time_trapdoor"
-            ]
+            "items": "twilightforest:time_trapdoor"
           }
         ]
       },
@@ -1961,9 +1635,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:time_trapped_chest"
-            ]
+            "items": "twilightforest:time_trapped_chest"
           }
         ]
       },
@@ -1973,9 +1645,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:time_wood"
-            ]
+            "items": "twilightforest:time_wood"
           }
         ]
       },
@@ -1985,9 +1655,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:towerwood"
-            ]
+            "items": "twilightforest:towerwood"
           }
         ]
       },
@@ -1997,9 +1665,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:transformation_banister"
-            ]
+            "items": "twilightforest:transformation_banister"
           }
         ]
       },
@@ -2009,9 +1675,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:transformation_boat"
-            ]
+            "items": "twilightforest:transformation_boat"
           }
         ]
       },
@@ -2021,9 +1685,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:transformation_button"
-            ]
+            "items": "twilightforest:transformation_button"
           }
         ]
       },
@@ -2033,9 +1695,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:transformation_chest"
-            ]
+            "items": "twilightforest:transformation_chest"
           }
         ]
       },
@@ -2045,9 +1705,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:transformation_chest_boat"
-            ]
+            "items": "twilightforest:transformation_chest_boat"
           }
         ]
       },
@@ -2057,9 +1715,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:transformation_door"
-            ]
+            "items": "twilightforest:transformation_door"
           }
         ]
       },
@@ -2069,9 +1725,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:transformation_fence"
-            ]
+            "items": "twilightforest:transformation_fence"
           }
         ]
       },
@@ -2081,9 +1735,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:transformation_fence_gate"
-            ]
+            "items": "twilightforest:transformation_fence_gate"
           }
         ]
       },
@@ -2093,9 +1745,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:transformation_hanging_sign"
-            ]
+            "items": "twilightforest:transformation_hanging_sign"
           }
         ]
       },
@@ -2105,9 +1755,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:transformation_leaves"
-            ]
+            "items": "twilightforest:transformation_leaves"
           }
         ]
       },
@@ -2117,9 +1765,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:transformation_log"
-            ]
+            "items": "twilightforest:transformation_log"
           }
         ]
       },
@@ -2129,9 +1775,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:transformation_planks"
-            ]
+            "items": "twilightforest:transformation_planks"
           }
         ]
       },
@@ -2141,9 +1785,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:transformation_pressure_plate"
-            ]
+            "items": "twilightforest:transformation_pressure_plate"
           }
         ]
       },
@@ -2153,9 +1795,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:transformation_sapling"
-            ]
+            "items": "twilightforest:transformation_sapling"
           }
         ]
       },
@@ -2165,9 +1805,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:transformation_sign"
-            ]
+            "items": "twilightforest:transformation_sign"
           }
         ]
       },
@@ -2177,9 +1815,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:transformation_slab"
-            ]
+            "items": "twilightforest:transformation_slab"
           }
         ]
       },
@@ -2189,9 +1825,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:transformation_stairs"
-            ]
+            "items": "twilightforest:transformation_stairs"
           }
         ]
       },
@@ -2201,9 +1835,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:transformation_trapdoor"
-            ]
+            "items": "twilightforest:transformation_trapdoor"
           }
         ]
       },
@@ -2213,9 +1845,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:transformation_trapped_chest"
-            ]
+            "items": "twilightforest:transformation_trapped_chest"
           }
         ]
       },
@@ -2225,9 +1855,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:transformation_wood"
-            ]
+            "items": "twilightforest:transformation_wood"
           }
         ]
       },
@@ -2237,9 +1865,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:twilight_oak_banister"
-            ]
+            "items": "twilightforest:twilight_oak_banister"
           }
         ]
       },
@@ -2249,9 +1875,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:twilight_oak_boat"
-            ]
+            "items": "twilightforest:twilight_oak_boat"
           }
         ]
       },
@@ -2261,9 +1885,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:twilight_oak_button"
-            ]
+            "items": "twilightforest:twilight_oak_button"
           }
         ]
       },
@@ -2273,9 +1895,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:twilight_oak_chest"
-            ]
+            "items": "twilightforest:twilight_oak_chest"
           }
         ]
       },
@@ -2285,9 +1905,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:twilight_oak_chest_boat"
-            ]
+            "items": "twilightforest:twilight_oak_chest_boat"
           }
         ]
       },
@@ -2297,9 +1915,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:twilight_oak_door"
-            ]
+            "items": "twilightforest:twilight_oak_door"
           }
         ]
       },
@@ -2309,9 +1925,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:twilight_oak_fence"
-            ]
+            "items": "twilightforest:twilight_oak_fence"
           }
         ]
       },
@@ -2321,9 +1935,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:twilight_oak_fence_gate"
-            ]
+            "items": "twilightforest:twilight_oak_fence_gate"
           }
         ]
       },
@@ -2333,9 +1945,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:twilight_oak_hanging_sign"
-            ]
+            "items": "twilightforest:twilight_oak_hanging_sign"
           }
         ]
       },
@@ -2345,9 +1955,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:twilight_oak_leaves"
-            ]
+            "items": "twilightforest:twilight_oak_leaves"
           }
         ]
       },
@@ -2357,9 +1965,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:twilight_oak_log"
-            ]
+            "items": "twilightforest:twilight_oak_log"
           }
         ]
       },
@@ -2369,9 +1975,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:twilight_oak_planks"
-            ]
+            "items": "twilightforest:twilight_oak_planks"
           }
         ]
       },
@@ -2381,9 +1985,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:twilight_oak_pressure_plate"
-            ]
+            "items": "twilightforest:twilight_oak_pressure_plate"
           }
         ]
       },
@@ -2393,9 +1995,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:twilight_oak_sapling"
-            ]
+            "items": "twilightforest:twilight_oak_sapling"
           }
         ]
       },
@@ -2405,9 +2005,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:twilight_oak_sign"
-            ]
+            "items": "twilightforest:twilight_oak_sign"
           }
         ]
       },
@@ -2417,9 +2015,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:twilight_oak_slab"
-            ]
+            "items": "twilightforest:twilight_oak_slab"
           }
         ]
       },
@@ -2429,9 +2025,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:twilight_oak_stairs"
-            ]
+            "items": "twilightforest:twilight_oak_stairs"
           }
         ]
       },
@@ -2441,9 +2035,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:twilight_oak_trapdoor"
-            ]
+            "items": "twilightforest:twilight_oak_trapdoor"
           }
         ]
       },
@@ -2453,9 +2045,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:twilight_oak_trapped_chest"
-            ]
+            "items": "twilightforest:twilight_oak_trapped_chest"
           }
         ]
       },
@@ -2465,9 +2055,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:twilight_oak_wood"
-            ]
+            "items": "twilightforest:twilight_oak_wood"
           }
         ]
       },
@@ -2480,7 +2068,8 @@
     },
     "frame": "challenge",
     "icon": {
-      "item": "twilightforest:twilight_oak_fence"
+      "count": 1,
+      "id": "twilightforest:twilight_oak_fence"
     },
     "title": {
       "translate": "advancement.twilightforest.arborist"
@@ -2623,7 +2212,7 @@
       "canopy_bookshelf"
     ],
     [
-      "empty_canopy_bookshelf"
+      "chiseled_canopy_bookshelf"
     ],
     [
       "canopy_boat"

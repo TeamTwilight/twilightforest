@@ -12,19 +12,19 @@ import java.util.List;
 public class StrongholdPieces {
 
 	private static final StrongholdPieceWeight[] pieceWeightArray = new StrongholdPieceWeight[]{
-			new StrongholdPieceWeight(StrongholdSmallHallwayComponent::new, 40, 0),
-			new StrongholdPieceWeight(StrongholdLeftTurnComponent::new, 20, 0),
-			new StrongholdPieceWeight(StrongholdCrossingComponent::new, 10, 4),
-			new StrongholdPieceWeight(StrongholdRightTurnComponent::new, 20, 0),
-			new StrongholdPieceWeight(StrongholdDeadEndComponent::new, 5, 0),
-			new StrongholdPieceWeight(StrongholdBalconyRoomComponent::new, 10, 3, 2),
-			new StrongholdPieceWeight(StrongholdTrainingRoomComponent::new, 10, 2),
-			new StrongholdPieceWeight(StrongholdSmallStairsComponent::new, 10, 0),
-			new StrongholdPieceWeight(StrongholdTreasureCorridorComponent::new, 5, 0),
-			new StrongholdPieceWeight(StrongholdAtriumComponent::new, 5, 2, 3),
-			new StrongholdPieceWeight(StrongholdFoundryComponent::new, 5, 1, 4),
-			new StrongholdPieceWeight(StrongholdTreasureRoomComponent::new, 5, 1, 4),
-			new StrongholdPieceWeight(StrongholdBossRoomComponent::new, 15, 1, 4)};
+		new StrongholdPieceWeight(StrongholdSmallHallwayComponent::new, 40, 0),
+		new StrongholdPieceWeight(StrongholdLeftTurnComponent::new, 20, 0),
+		new StrongholdPieceWeight(StrongholdCrossingComponent::new, 10, 4),
+		new StrongholdPieceWeight(StrongholdRightTurnComponent::new, 20, 0),
+		new StrongholdPieceWeight(StrongholdDeadEndComponent::new, 5, 0),
+		new StrongholdPieceWeight(StrongholdBalconyRoomComponent::new, 10, 3, 2),
+		new StrongholdPieceWeight(StrongholdTrainingRoomComponent::new, 10, 2),
+		new StrongholdPieceWeight(StrongholdSmallStairsComponent::new, 10, 0),
+		new StrongholdPieceWeight(StrongholdTreasureCorridorComponent::new, 5, 0),
+		new StrongholdPieceWeight(StrongholdAtriumComponent::new, 5, 2, 3),
+		new StrongholdPieceWeight(StrongholdFoundryComponent::new, 5, 1, 4),
+		new StrongholdPieceWeight(StrongholdTreasureRoomComponent::new, 5, 1, 4),
+		new StrongholdPieceWeight(StrongholdBossRoomComponent::new, 15, 1, 4)};
 
 	private List<StrongholdPieceWeight> pieceList;
 	static int totalWeight = 0;

@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:mossy_castle_brick"
-            ]
+            "items": "twilightforest:mossy_castle_brick"
           }
         ]
       },

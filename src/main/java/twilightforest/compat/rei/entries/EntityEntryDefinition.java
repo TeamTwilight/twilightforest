@@ -23,6 +23,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.Level;
@@ -168,7 +169,7 @@ public class EntityEntryDefinition implements EntryDefinition<Entity>, EntrySeri
 
 	@Override
 	public Component asFormattedText(EntryStack<Entity> entry, Entity value) {
-		return this.asFormattedText(entry, value, TooltipContext.of());
+		return this.asFormattedText(entry, value, TooltipContext.of(Item.TooltipContext.EMPTY));
 	}
 
 	@Override
@@ -188,7 +189,7 @@ public class EntityEntryDefinition implements EntryDefinition<Entity>, EntrySeri
 			if (!entry.isEmpty()) {
 				graphics.pose().pushPose();
 				graphics.pose().translate(bounds.getX(), bounds.getY(), -100.0D);
-				EntityRenderingUtil.renderEntity(graphics.pose(), entry.getValue().getType(), 32);
+				EntityRenderingUtil.renderEntity(graphics, entry.getValue().getType(), 32);
 				graphics.pose().popPose();
 			}
 		}
@@ -221,19 +222,11 @@ public class EntityEntryDefinition implements EntryDefinition<Entity>, EntrySeri
 				graphics.pose().translate(bounds.getX(), bounds.getY(), 0);
 
 				if (level != null) {
-					PoseStack modelView = RenderSystem.getModelViewStack();
-
-					modelView.pushPose();
-					modelView.mulPoseMatrix(graphics.pose().last().pose());
-
 					try {
-						EntityRenderingUtil.renderItemEntity(item, level, this.bobOffs);
+						EntityRenderingUtil.renderItemEntity(graphics, item, level, this.bobOffs);
 					} catch (Exception e) {
 						TwilightForestMod.LOGGER.error("Error drawing item in REI!", e);
 					}
-
-					modelView.popPose();
-					RenderSystem.applyModelViewMatrix();
 				}
 
 				graphics.pose().popPose();

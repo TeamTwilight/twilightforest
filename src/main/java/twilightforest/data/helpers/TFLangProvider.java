@@ -4,11 +4,13 @@ import com.google.common.collect.ImmutableList;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.mojang.serialization.JsonOps;
 import net.minecraft.ChatFormatting;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.TagKey;
@@ -23,7 +25,6 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import org.apache.commons.lang3.text.WordUtils;
 import twilightforest.TwilightForestMod;
 
-import java.text.ChoiceFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -145,11 +146,6 @@ public abstract class TFLangProvider extends LanguageProvider {
 		this.add("item.twilightforest." + entity.getId().getPath() + "_spawn_egg", name + " Spawn Egg");
 	}
 
-	public void addSubtitle(DeferredHolder<SoundEvent, SoundEvent> sound, String name) {
-		String[] splitSoundName  = sound.getId().getPath().split("\\.", 3);
-		this.add("subtitles.twilightforest." + splitSoundName[0] + "." + splitSoundName[2], name);
-	}
-
 	public void addDeathMessage(String key, String name) {
 		this.add("death.attack.twilightforest." + key, name);
 	}
@@ -209,7 +205,9 @@ public abstract class TFLangProvider extends LanguageProvider {
 		//generate tips
 		for (Map.Entry<String, String> entry : TF_TIPS.entrySet()) {
 			JsonObject object = new JsonObject();
-			object.add("tip", Component.Serializer.toJsonTree(Component.translatable(entry.getKey()).withStyle(ChatFormatting.GREEN)));
+
+			Component tooltipText = Component.translatable(entry.getKey()).withStyle(ChatFormatting.GREEN);
+			object.add("tip", ComponentSerialization.CODEC.encodeStart(JsonOps.INSTANCE, tooltipText).getOrThrow());
 			futuresBuilder.add(DataProvider.saveStable(cache, GSON.toJsonTree(object), this.output.getOutputFolder().resolve("assets/twilightforest/tips/" + entry.getValue() + ".json")));
 		}
 		return CompletableFuture.allOf(futuresBuilder.build().toArray(CompletableFuture[]::new));

@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:charm_of_life_1"
-            ]
+            "items": "twilightforest:charm_of_life_1"
           }
         ]
       },

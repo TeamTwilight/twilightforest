@@ -2,7 +2,7 @@ package twilightforest.init;
 
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.util.valueproviders.ConstantFloat;
@@ -32,32 +32,32 @@ public class TFCaveCarvers {
 	public static final DeferredRegister<WorldCarver<?>> CARVER_TYPES = DeferredRegister.create(Registries.CARVER, TwilightForestMod.ID);
 
 	public static final DeferredHolder<WorldCarver<?>, TFCavesCarver> TF_CAVES = CARVER_TYPES.register("tf_caves", () -> new TFCavesCarver(
-			CaveCarverConfiguration.CODEC,
-			false,
-			new NoiseProvider(
-					6972119253061020355L,
-					new NormalNoise.NoiseParameters(0, 1.0),
-					0.5f,
-					List.of(
-							Blocks.DIRT.defaultBlockState(),
-							Blocks.DIRT.defaultBlockState(),
-							Blocks.ROOTED_DIRT.defaultBlockState(),
-							Blocks.DIRT.defaultBlockState(),
-							Blocks.DIRT.defaultBlockState(),
-							Blocks.COARSE_DIRT.defaultBlockState(),
-							Blocks.DIRT.defaultBlockState(),
-							Blocks.DIRT.defaultBlockState()
-					)
+		CaveCarverConfiguration.CODEC,
+		false,
+		new NoiseProvider(
+			6972119253061020355L,
+			new NormalNoise.NoiseParameters(0, 1.0),
+			0.5f,
+			List.of(
+				Blocks.DIRT.defaultBlockState(),
+				Blocks.DIRT.defaultBlockState(),
+				Blocks.ROOTED_DIRT.defaultBlockState(),
+				Blocks.DIRT.defaultBlockState(),
+				Blocks.DIRT.defaultBlockState(),
+				Blocks.COARSE_DIRT.defaultBlockState(),
+				Blocks.DIRT.defaultBlockState(),
+				Blocks.DIRT.defaultBlockState()
 			)
+		)
 	));
 	public static final DeferredHolder<WorldCarver<?>, TFCavesCarver> HIGHLAND_CAVES = CARVER_TYPES.register("highland_caves", () -> new TFCavesCarver(
-			CaveCarverConfiguration.CODEC,
-			true,
-			new WeightedStateProvider(
-					new SimpleWeightedRandomList.Builder<BlockState>()
-							.add(TFBlocks.TROLLSTEINN.value().defaultBlockState(), 1)
-							.add(Blocks.STONE.defaultBlockState(), 3)
-			)
+		CaveCarverConfiguration.CODEC,
+		true,
+		new WeightedStateProvider(
+			new SimpleWeightedRandomList.Builder<BlockState>()
+				.add(TFBlocks.TROLLSTEINN.value().defaultBlockState(), 1)
+				.add(Blocks.STONE.defaultBlockState(), 3)
+		)
 	));
 
 	public static final ResourceKey<ConfiguredWorldCarver<?>> TFCAVES_CONFIGURED = registerKey("tf_caves");
@@ -67,28 +67,28 @@ public class TFCaveCarvers {
 		return ResourceKey.create(Registries.CONFIGURED_CARVER, TwilightForestMod.prefix(name));
 	}
 
-	public static void bootstrap(BootstapContext<ConfiguredWorldCarver<?>> context) {
+	public static void bootstrap(BootstrapContext<ConfiguredWorldCarver<?>> context) {
 		HolderGetter<Block> blocks = context.lookup(Registries.BLOCK);
 		context.register(TFCAVES_CONFIGURED, TF_CAVES.value().configured(new CaveCarverConfiguration(
-				0.1F,
-				UniformHeight.of(VerticalAnchor.aboveBottom(16), VerticalAnchor.absolute(-8)),
-				ConstantFloat.of(0.6F),
-				VerticalAnchor.bottom(),
-				blocks.getOrThrow(BlockTagGenerator.CARVER_REPLACEABLES),
-				ConstantFloat.of(1.05F),
-				ConstantFloat.of(1.05F),
-				ConstantFloat.of(-0.7F)
+			0.1F,
+			UniformHeight.of(VerticalAnchor.aboveBottom(16), VerticalAnchor.absolute(-8)),
+			ConstantFloat.of(0.6F),
+			VerticalAnchor.bottom(),
+			blocks.getOrThrow(BlockTagGenerator.CARVER_REPLACEABLES),
+			ConstantFloat.of(1.05F),
+			ConstantFloat.of(1.05F),
+			ConstantFloat.of(-0.7F)
 		)));
 
 		context.register(HIGHLANDCAVES_CONFIGURED, HIGHLAND_CAVES.value().configured(new CaveCarverConfiguration(
-				1f,
-				BiasedToBottomHeight.of(VerticalAnchor.absolute(8), VerticalAnchor.absolute(32), 16),
-				ConstantFloat.of(0.6f),
-				VerticalAnchor.bottom(),
-				blocks.getOrThrow(BlockTagGenerator.CARVER_REPLACEABLES),
-				UniformFloat.of(1.1f, 1.3f),
-				ConstantFloat.of(1.1f),
-				UniformFloat.of(-0.9F, -0.65F)
+			1f,
+			BiasedToBottomHeight.of(VerticalAnchor.absolute(8), VerticalAnchor.absolute(32), 16),
+			ConstantFloat.of(0.6f),
+			VerticalAnchor.bottom(),
+			blocks.getOrThrow(BlockTagGenerator.CARVER_REPLACEABLES),
+			UniformFloat.of(1.1f, 1.3f),
+			ConstantFloat.of(1.1f),
+			UniformFloat.of(-0.9F, -0.65F)
 		)));
 	}
 }

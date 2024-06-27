@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:canopy_log"
-            ]
+            "items": "twilightforest:canopy_log"
           }
         ]
       },

@@ -1,6 +1,6 @@
 package twilightforest.world.components.structures.placements;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.registries.Registries;
@@ -19,33 +19,33 @@ import java.util.Optional;
  * Does not filter for biome. That's for the structure's config to handle.
  */
 public class LandmarkGridPlacement extends StructurePlacement {
-    public static final Codec<LandmarkGridPlacement> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-            ResourceKey.codec(Registries.STRUCTURE).optionalFieldOf("structure_grid_lock").forGetter(p -> p.landmark)
-    ).apply(inst, LandmarkGridPlacement::new));
+	public static final MapCodec<LandmarkGridPlacement> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
+		ResourceKey.codec(Registries.STRUCTURE).optionalFieldOf("structure_grid_lock").forGetter(p -> p.landmark)
+	).apply(inst, LandmarkGridPlacement::new));
 
-    private final Optional<ResourceKey<Structure>> landmark;
+	private final Optional<ResourceKey<Structure>> landmark;
 
-    // Using this will mean this structure will spawn at every center, unless its generation stub is actually blocked by the structure
-    public static LandmarkGridPlacement forceStructureForCenters() {
-        return new LandmarkGridPlacement(Optional.empty());
-    }
+	// Using this will mean this structure will spawn at every center, unless its generation stub is actually blocked by the structure
+	public static LandmarkGridPlacement forceStructureForCenters() {
+		return new LandmarkGridPlacement(Optional.empty());
+	}
 
-    public LandmarkGridPlacement(Optional<ResourceKey<Structure>> landmark) {
-        super(Vec3i.ZERO, FrequencyReductionMethod.DEFAULT, 1f, 0, Optional.empty()); // None of these params matter except for possibly flat-world or whatever
+	public LandmarkGridPlacement(Optional<ResourceKey<Structure>> landmark) {
+		super(Vec3i.ZERO, FrequencyReductionMethod.DEFAULT, 1f, 0, Optional.empty()); // None of these params matter except for possibly flat-world or whatever
 
-        this.landmark = landmark;
-    }
+		this.landmark = landmark;
+	}
 
-    @Override
-    protected boolean isPlacementChunk(ChunkGeneratorStructureState state, int chunkX, int chunkZ) {
-        if (!LegacyLandmarkPlacements.chunkHasLandmarkCenter(chunkX, chunkZ))
-            return false;
+	@Override
+	protected boolean isPlacementChunk(ChunkGeneratorStructureState state, int chunkX, int chunkZ) {
+		if (!LegacyLandmarkPlacements.chunkHasLandmarkCenter(chunkX, chunkZ))
+			return false;
 
-        return this.landmark.isEmpty() || LegacyLandmarkPlacements.pickVarietyLandmark(chunkX, chunkZ) == this.landmark.get();
-    }
+		return this.landmark.isEmpty() || LegacyLandmarkPlacements.pickVarietyLandmark(chunkX, chunkZ) == this.landmark.get();
+	}
 
-    @Override
-    public StructurePlacementType<?> type() {
-        return TFStructurePlacementTypes.GRID_LANDMARK_PLACEMENT_TYPE.get();
-    }
+	@Override
+	public StructurePlacementType<?> type() {
+		return TFStructurePlacementTypes.GRID_LANDMARK_PLACEMENT_TYPE.get();
+	}
 }

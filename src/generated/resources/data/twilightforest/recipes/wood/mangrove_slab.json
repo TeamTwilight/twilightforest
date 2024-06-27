@@ -1,6 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "building",
+  "group": "wooden_slab",
   "key": {
     "#": {
       "item": "twilightforest:mangrove_planks"
@@ -11,6 +12,6 @@
   ],
   "result": {
     "count": 6,
-    "item": "twilightforest:mangrove_slab"
+    "id": "twilightforest:mangrove_slab"
   }
 }

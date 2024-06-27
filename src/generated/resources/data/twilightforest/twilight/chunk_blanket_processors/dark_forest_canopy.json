@@ -1,19 +1,17 @@
 {
   "type": "twilightforest:canopy",
-  "config": {
-    "avoid_structures": [
-      "twilightforest:dark_tower"
-    ],
-    "biome_mask": [
-      "twilightforest:dark_forest",
-      "twilightforest:dark_forest_center"
-    ],
-    "block": {
-      "type": "minecraft:simple_state_provider",
-      "state": {
-        "Name": "twilightforest:hardened_dark_leaves"
-      }
-    },
-    "height": 14
-  }
+  "avoid_structures": [
+    "twilightforest:dark_tower"
+  ],
+  "biome_mask": [
+    "twilightforest:dark_forest",
+    "twilightforest:dark_forest_center"
+  ],
+  "block": {
+    "type": "minecraft:simple_state_provider",
+    "state": {
+      "Name": "twilightforest:hardened_dark_leaves"
+    }
+  },
+  "height": 14
 }

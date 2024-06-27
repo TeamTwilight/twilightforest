@@ -1,6 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
+  "group": "wooden_door",
   "key": {
     "#": {
       "item": "twilightforest:sorting_planks"
@@ -13,6 +14,6 @@
   ],
   "result": {
     "count": 3,
-    "item": "twilightforest:sorting_door"
+    "id": "twilightforest:sorting_door"
   }
 }

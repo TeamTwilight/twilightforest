@@ -1,12 +1,13 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "misc",
+  "group": "wooden_sign",
   "key": {
     "#": {
       "item": "twilightforest:time_planks"
     },
     "-": {
-      "tag": "forge:rods/wooden"
+      "tag": "c:rods/wooden"
     }
   },
   "pattern": [
@@ -16,6 +17,6 @@
   ],
   "result": {
     "count": 3,
-    "item": "twilightforest:time_sign"
+    "id": "twilightforest:time_sign"
   }
 }

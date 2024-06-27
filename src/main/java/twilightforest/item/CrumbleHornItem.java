@@ -21,12 +21,9 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.EventHooks;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import twilightforest.init.TFDataMaps;
-import twilightforest.init.TFRecipes;
 import twilightforest.init.TFSounds;
 import twilightforest.init.TFStats;
 import twilightforest.util.WorldUtil;
-
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class CrumbleHornItem extends Item {
 
@@ -47,7 +44,7 @@ public class CrumbleHornItem extends Item {
 			int crumbled = this.doCrumble(serverLevel, living);
 
 			if (crumbled > 0) {
-				stack.hurtAndBreak(crumbled, living, (user) -> user.broadcastBreakEvent(living.getUsedItemHand()));
+				stack.hurtAndBreak(crumbled, living, LivingEntity.getSlotForHand(living.getUsedItemHand()));
 			}
 
 			serverLevel.playSound(null, living.getX(), living.getY(), living.getZ(), TFSounds.QUEST_RAM_AMBIENT.get(), living.getSoundSource(), 1.0F, 0.8F);
@@ -125,7 +122,7 @@ public class CrumbleHornItem extends Item {
 						}
 						return true;
 					}
-				} else if (EventHooks.getMobGriefingEvent(serverLevel, living)) {
+				} else if (EventHooks.canEntityGrief(serverLevel, living)) {
 					serverLevel.destroyBlock(pos, true);
 					return true;
 				}

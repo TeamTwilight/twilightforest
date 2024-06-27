@@ -89,7 +89,7 @@ public class GhastTrapBlockEntity extends BlockEntity {
 	public static void tick(Level level, BlockPos pos, BlockState state, GhastTrapBlockEntity te) {
 		if (!level.isDebug()) {
 			if (state.getValue(GhastTrapBlock.ACTIVE)) te.tickActive(level, pos, state, te);
-            else te.tickInactive(level, pos, state, te);
+			else te.tickInactive(level, pos, state, te);
 		}
 	}
 

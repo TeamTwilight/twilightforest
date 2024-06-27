@@ -6,7 +6,6 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import twilightforest.entity.projectile.IceArrow;
 
@@ -22,8 +21,8 @@ public class IceBowItem extends BowItem {
 	@Override
 	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
 		AtomicBoolean badEnchant = new AtomicBoolean();
-		EnchantmentHelper.getEnchantments(book).forEach((enchantment, integer) -> {
-			if (Objects.equals(Enchantments.FLAMING_ARROWS, enchantment)) {
+		book.getEnchantments().entrySet().forEach(enchantment -> {
+			if (Objects.equals(Enchantments.FLAME, enchantment)) {
 				badEnchant.set(true);
 			}
 		});
@@ -33,7 +32,7 @@ public class IceBowItem extends BowItem {
 
 	@Override
 	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-		return !Enchantments.FLAMING_ARROWS.equals(enchantment) && super.canApplyAtEnchantingTable(stack, enchantment);
+		return !Enchantments.FLAME.equals(enchantment) && super.canApplyAtEnchantingTable(stack, enchantment);
 	}
 
 	@Override

@@ -201,7 +201,7 @@ public class ForceFieldModelBuilder<T extends ModelBuilder<T>> extends CustomLoa
 
 		public ForceFieldElementBuilder allFaces(BiConsumer<Direction, ForceFieldElementBuilder.FaceBuilder> action) {
 			Arrays.stream(Direction.values())
-					.forEach(d -> action.accept(d, face(d)));
+				.forEach(d -> action.accept(d, face(d)));
 			return this;
 		}
 
@@ -268,7 +268,9 @@ public class ForceFieldModelBuilder<T extends ModelBuilder<T>> extends CustomLoa
 
 		BlockElement build() {
 			Map<Direction, BlockElementFace> faces = this.faces.entrySet().stream()
-					.collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().build(), (k1, k2) -> { throw new IllegalArgumentException(); }, LinkedHashMap::new));
+				.collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().build(), (k1, k2) -> {
+					throw new IllegalArgumentException();
+				}, LinkedHashMap::new));
 			return new BlockElement(from, to, faces, rotation == null ? null : rotation.build(), shade, new ExtraFaceData(this.color, this.blockLight, this.skyLight, this.hasAmbientOcclusion));
 		}
 
@@ -307,7 +309,7 @@ public class ForceFieldModelBuilder<T extends ModelBuilder<T>> extends CustomLoa
 			}
 
 			public ForceFieldElementBuilder.FaceBuilder uvs(float u1, float v1, float u2, float v2) {
-				this.uvs = new float[] { u1, v1, u2, v2 };
+				this.uvs = new float[]{u1, v1, u2, v2};
 				return this;
 			}
 

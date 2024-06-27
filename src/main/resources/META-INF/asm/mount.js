@@ -28,20 +28,20 @@ function initializeCoreMod() {
                             'net/minecraft/client/player/LocalPlayer',
                             'input',
                             'Lnet/minecraft/client/player/Input;'
-                            ),
+                        ),
                         new VarInsnNode(Opcodes.ALOAD, 0),
                         new FieldInsnNode(
                             Opcodes.GETFIELD,
                             'net/minecraft/client/player/LocalPlayer',
                             'input',
                             'Lnet/minecraft/client/player/Input;'
-                            ),
+                        ),
                         new FieldInsnNode(
                             Opcodes.GETFIELD,
                             'net/minecraft/client/player/Input',
                             'shiftKeyDown',
                             'Z'
-                            ),
+                        ),
                         new VarInsnNode(Opcodes.ALOAD, 0),
                         new MethodInsnNode(
                             Opcodes.INVOKEVIRTUAL,
@@ -49,7 +49,7 @@ function initializeCoreMod() {
                             'wantsToStopRiding',
                             '()Z',
                             false
-                            ),
+                        ),
                         new VarInsnNode(Opcodes.ALOAD, 0),
                         new MethodInsnNode(
                             Opcodes.INVOKEVIRTUAL,
@@ -57,22 +57,22 @@ function initializeCoreMod() {
                             'isPassenger',
                             '()Z',
                             false
-                            ),
+                        ),
                         new MethodInsnNode(
                             Opcodes.INVOKESTATIC,
                             'twilightforest/ASMHooks',
                             'mountFix',
                             '(ZZZ)Z',
                             false
-                            ),
+                        ),
                         new FieldInsnNode(
                             Opcodes.PUTFIELD,
                             'net/minecraft/client/player/Input',
                             'shiftKeyDown',
                             'Z'
-                            )
                         )
-                    );
+                    )
+                );
                 return methodNode;
             }
         }

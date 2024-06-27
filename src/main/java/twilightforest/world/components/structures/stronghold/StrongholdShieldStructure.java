@@ -30,12 +30,12 @@ public class StrongholdShieldStructure extends KnightStrongholdComponent {
 
 	@Override
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource randomIn, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		BlockState down  = TFBlocks.STRONGHOLD_SHIELD.get().defaultBlockState().setValue(DirectionalBlock.FACING, Direction.DOWN);
-		BlockState up    = TFBlocks.STRONGHOLD_SHIELD.get().defaultBlockState().setValue(DirectionalBlock.FACING, Direction.UP);
+		BlockState down = TFBlocks.STRONGHOLD_SHIELD.get().defaultBlockState().setValue(DirectionalBlock.FACING, Direction.DOWN);
+		BlockState up = TFBlocks.STRONGHOLD_SHIELD.get().defaultBlockState().setValue(DirectionalBlock.FACING, Direction.UP);
 		BlockState north = TFBlocks.STRONGHOLD_SHIELD.get().defaultBlockState().setValue(DirectionalBlock.FACING, Direction.NORTH);
 		BlockState south = TFBlocks.STRONGHOLD_SHIELD.get().defaultBlockState().setValue(DirectionalBlock.FACING, Direction.SOUTH);
-		BlockState west  = TFBlocks.STRONGHOLD_SHIELD.get().defaultBlockState().setValue(DirectionalBlock.FACING, Direction.WEST);
-		BlockState east  = TFBlocks.STRONGHOLD_SHIELD.get().defaultBlockState().setValue(DirectionalBlock.FACING, Direction.EAST);
+		BlockState west = TFBlocks.STRONGHOLD_SHIELD.get().defaultBlockState().setValue(DirectionalBlock.FACING, Direction.WEST);
+		BlockState east = TFBlocks.STRONGHOLD_SHIELD.get().defaultBlockState().setValue(DirectionalBlock.FACING, Direction.EAST);
 
 		// +x
 		this.generateBox(world, sbb, this.boundingBox.getXSpan(), 0, 0, this.boundingBox.getXSpan(), this.boundingBox.getYSpan(), this.boundingBox.getZSpan(), west, west, false);

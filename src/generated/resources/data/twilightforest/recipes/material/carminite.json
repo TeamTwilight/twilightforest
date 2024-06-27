@@ -6,31 +6,32 @@
       "item": "twilightforest:borer_essence"
     },
     {
-      "tag": "forge:dusts/redstone"
+      "tag": "c:dusts/redstone"
     },
     {
       "item": "twilightforest:borer_essence"
     },
     {
-      "tag": "forge:dusts/redstone"
+      "tag": "c:dusts/redstone"
     },
     {
       "item": "minecraft:ghast_tear"
     },
     {
-      "tag": "forge:dusts/redstone"
+      "tag": "c:dusts/redstone"
     },
     {
       "item": "twilightforest:borer_essence"
     },
     {
-      "tag": "forge:dusts/redstone"
+      "tag": "c:dusts/redstone"
     },
     {
       "item": "twilightforest:borer_essence"
     }
   ],
   "result": {
-    "item": "twilightforest:carminite"
+    "count": 1,
+    "id": "twilightforest:carminite"
   }
 }

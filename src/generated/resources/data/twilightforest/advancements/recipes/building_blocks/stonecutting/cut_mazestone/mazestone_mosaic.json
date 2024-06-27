@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:cut_mazestone"
-            ]
+            "items": "twilightforest:cut_mazestone"
           }
         ]
       },

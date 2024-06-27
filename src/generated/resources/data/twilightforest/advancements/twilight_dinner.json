@@ -4,9 +4,7 @@
     "cooked_meef": {
       "conditions": {
         "item": {
-          "items": [
-            "twilightforest:cooked_meef"
-          ]
+          "items": "twilightforest:cooked_meef"
         }
       },
       "trigger": "minecraft:consume_item"
@@ -14,9 +12,7 @@
     "cooked_venison": {
       "conditions": {
         "item": {
-          "items": [
-            "twilightforest:cooked_venison"
-          ]
+          "items": "twilightforest:cooked_venison"
         }
       },
       "trigger": "minecraft:consume_item"
@@ -24,9 +20,7 @@
     "experiment_115": {
       "conditions": {
         "item": {
-          "items": [
-            "twilightforest:experiment_115"
-          ]
+          "items": "twilightforest:experiment_115"
         }
       },
       "trigger": "minecraft:consume_item"
@@ -34,9 +28,7 @@
     "hydra_chop": {
       "conditions": {
         "item": {
-          "items": [
-            "twilightforest:hydra_chop"
-          ]
+          "items": "twilightforest:hydra_chop"
         }
       },
       "trigger": "minecraft:consume_item"
@@ -44,9 +36,7 @@
     "maze_wafer": {
       "conditions": {
         "item": {
-          "items": [
-            "twilightforest:maze_wafer"
-          ]
+          "items": "twilightforest:maze_wafer"
         }
       },
       "trigger": "minecraft:consume_item"
@@ -54,9 +44,7 @@
     "meef_stroganoff": {
       "conditions": {
         "item": {
-          "items": [
-            "twilightforest:meef_stroganoff"
-          ]
+          "items": "twilightforest:meef_stroganoff"
         }
       },
       "trigger": "minecraft:consume_item"
@@ -64,9 +52,7 @@
     "raw_meef": {
       "conditions": {
         "item": {
-          "items": [
-            "twilightforest:raw_meef"
-          ]
+          "items": "twilightforest:raw_meef"
         }
       },
       "trigger": "minecraft:consume_item"
@@ -74,9 +60,7 @@
     "raw_venison": {
       "conditions": {
         "item": {
-          "items": [
-            "twilightforest:raw_venison"
-          ]
+          "items": "twilightforest:raw_venison"
         }
       },
       "trigger": "minecraft:consume_item"
@@ -84,9 +68,7 @@
     "torchberries": {
       "conditions": {
         "item": {
-          "items": [
-            "twilightforest:torchberries"
-          ]
+          "items": "twilightforest:torchberries"
         }
       },
       "trigger": "minecraft:consume_item"
@@ -98,7 +80,8 @@
     },
     "frame": "challenge",
     "icon": {
-      "item": "minecraft:bowl"
+      "count": 1,
+      "id": "minecraft:bowl"
     },
     "title": {
       "translate": "advancement.twilightforest.twilight_dining"

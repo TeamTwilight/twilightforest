@@ -942,7 +942,8 @@
       "translate": "advancement.twilightforest.twilight_hunter.desc"
     },
     "icon": {
-      "item": "twilightforest:raven_feather"
+      "count": 1,
+      "id": "twilightforest:raven_feather"
     },
     "title": {
       "translate": "advancement.twilightforest.twilight_hunter"

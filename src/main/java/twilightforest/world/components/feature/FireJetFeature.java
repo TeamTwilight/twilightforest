@@ -24,18 +24,18 @@ public class FireJetFeature extends Feature<BlockStateConfiguration> {
 		RandomSource rand = ctx.random();
 		BlockStateConfiguration config = ctx.config();
 
-		if(!FeatureUtil.isAreaSuitable(world, pos, 5, 2, 5)) return false;
+		if (!FeatureUtil.isAreaSuitable(world, pos, 5, 2, 5)) return false;
 
 		for (int i = 0; i < 4; ++i) {
 			BlockPos dPos = pos.offset(
-					rand.nextInt(8) - rand.nextInt(8),
-					rand.nextInt(4) - rand.nextInt(4),
-					rand.nextInt(8) - rand.nextInt(8)
+				rand.nextInt(8) - rand.nextInt(8),
+				rand.nextInt(4) - rand.nextInt(4),
+				rand.nextInt(8) - rand.nextInt(8)
 			);
 
 			if (world.isEmptyBlock(dPos) && world.canSeeSkyFromBelowWater(dPos) && world.getBlockState(dPos.below()).is(BlockTags.DIRT)
-					&& world.getBlockState(dPos.east().below()).is(BlockTags.DIRT) && world.getBlockState(dPos.west().below()).is(BlockTags.DIRT)
-					&& world.getBlockState(dPos.south().below()).is(BlockTags.DIRT) && world.getBlockState(dPos.north().below()).is(BlockTags.DIRT)) {
+				&& world.getBlockState(dPos.east().below()).is(BlockTags.DIRT) && world.getBlockState(dPos.west().below()).is(BlockTags.DIRT)
+				&& world.getBlockState(dPos.south().below()).is(BlockTags.DIRT) && world.getBlockState(dPos.north().below()).is(BlockTags.DIRT)) {
 
 				//create blocks around the jet/smoker, just in case
 				for (int gx = -2; gx <= 2; gx++) {

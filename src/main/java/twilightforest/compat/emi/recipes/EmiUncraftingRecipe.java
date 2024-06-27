@@ -45,8 +45,8 @@ public class EmiUncraftingRecipe<T extends CraftingRecipe> extends TFEmiRecipe<T
 		this.displayedOutputs = new ArrayList<>();
 		List<Ingredient> outputs = new ArrayList<>(this.getRecipe().value().getIngredients()); //Collect each ingredient
 		outputs.replaceAll(ingredient -> Ingredient.of(Arrays.stream(ingredient.getItems())
-					.filter(o -> !o.is(ItemTagGenerator.BANNED_UNCRAFTING_INGREDIENTS))
-					.filter(o -> o.getCraftingRemainingItem().isEmpty())));
+			.filter(o -> !o.is(ItemTagGenerator.BANNED_UNCRAFTING_INGREDIENTS))
+			.filter(o -> o.getCraftingRemainingItem().isEmpty())));
 
 		for (int index = 0, offset = 0; index - offset < outputs.size() && index < 9; index++) {
 			int x = index % 3, y = index / 3;

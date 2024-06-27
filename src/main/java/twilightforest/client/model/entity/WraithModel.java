@@ -25,19 +25,19 @@ public class WraithModel extends HumanoidModel<Wraith> {
 		PartDefinition definition = mesh.getRoot();
 
 		definition.addOrReplaceChild("right_arm", CubeListBuilder.create()
-						.texOffs(0, 16)
-						.addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F),
-				PartPose.offset(-5.0F, 2.0F, 0.0F));
+				.texOffs(0, 16)
+				.addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F),
+			PartPose.offset(-5.0F, 2.0F, 0.0F));
 
 		definition.addOrReplaceChild("left_arm", CubeListBuilder.create().mirror()
-						.texOffs(0, 16)
-						.addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F),
-				PartPose.offset(5.0F, 2.0F, 0.0F));
+				.texOffs(0, 16)
+				.addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F),
+			PartPose.offset(5.0F, 2.0F, 0.0F));
 
 		definition.addOrReplaceChild("dress", CubeListBuilder.create()
-						.texOffs(40, 16)
-						.addBox(-4F, 12.0F, -2F, 8, 12, 4),
-				PartPose.ZERO);
+				.texOffs(40, 16)
+				.addBox(-4F, 12.0F, -2F, 8, 12, 4),
+			PartPose.ZERO);
 
 		return LayerDefinition.create(mesh, 64, 32);
 	}
@@ -50,10 +50,10 @@ public class WraithModel extends HumanoidModel<Wraith> {
 	@Override
 	protected Iterable<ModelPart> bodyParts() {
 		return ImmutableList.of(
-				this.body,
-				this.rightArm,
-				this.leftArm,
-				this.dress
+			this.body,
+			this.rightArm,
+			this.leftArm,
+			this.dress
 		);
 	}
 

@@ -43,11 +43,11 @@ public class BigMushgloomFeature extends AbstractHugeMushroomFeature {
 
 						if (blockstate.hasProperty(HugeMushroomBlock.WEST) && blockstate.hasProperty(HugeMushroomBlock.EAST) && blockstate.hasProperty(HugeMushroomBlock.NORTH) && blockstate.hasProperty(HugeMushroomBlock.SOUTH) && blockstate.hasProperty(HugeMushroomBlock.UP)) {
 							blockstate = blockstate
-									.setValue(HugeMushroomBlock.UP, y == 1 || capHeight == 1)
-									.setValue(HugeMushroomBlock.WEST, x == -i)
-									.setValue(HugeMushroomBlock.EAST, x == i)
-									.setValue(HugeMushroomBlock.NORTH, z == -i)
-									.setValue(HugeMushroomBlock.SOUTH, z == i);
+								.setValue(HugeMushroomBlock.UP, y == 1 || capHeight == 1)
+								.setValue(HugeMushroomBlock.WEST, x == -i)
+								.setValue(HugeMushroomBlock.EAST, x == i)
+								.setValue(HugeMushroomBlock.NORTH, z == -i)
+								.setValue(HugeMushroomBlock.SOUTH, z == i);
 						}
 
 						this.setBlock(levelAccessor, mutableBlockPos, blockstate);

@@ -27,7 +27,8 @@
       "translate": "advancement.twilightforest.root.desc"
     },
     "icon": {
-      "item": "twilightforest:twilight_portal_miniature_structure"
+      "count": 1,
+      "id": "twilightforest:twilight_portal_miniature_structure"
     },
     "title": {
       "translate": "advancement.twilightforest.root"

@@ -6,7 +6,7 @@
       "item": "twilightforest:encased_towerwood"
     },
     "6": {
-      "tag": "forge:gems/carminite"
+      "tag": "c:gems/carminite"
     },
     "w": {
       "tag": "twilightforest:towerwood"
@@ -19,6 +19,6 @@
   ],
   "result": {
     "count": 8,
-    "item": "twilightforest:vanishing_block"
+    "id": "twilightforest:vanishing_block"
   }
 }

@@ -78,12 +78,12 @@ public abstract class TFPartRenderer<T extends TFPart<?>, M extends ListModel<T>
 	}
 
 	protected float getBob(T entity, float partialTicks) {
-		return (float)entity.tickCount + partialTicks;
+		return (float) entity.tickCount + partialTicks;
 	}
 
 	protected void setupRotations(T entity, PoseStack stack, float ageInTicks, float rotationYaw, float partialTicks) {
 		if (entity.deathTime > 0) {
-			float f = ((float)entity.deathTime + partialTicks - 1.0F) / 20.0F * 1.6F;
+			float f = ((float) entity.deathTime + partialTicks - 1.0F) / 20.0F * 1.6F;
 			f = Mth.sqrt(f);
 			if (f > 1.0F) {
 				f = 1.0F;

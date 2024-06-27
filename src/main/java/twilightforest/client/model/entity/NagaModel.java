@@ -32,14 +32,14 @@ public class NagaModel<T extends Entity> extends ListModel<T> {
 		PartDefinition definition = mesh.getRoot();
 
 		definition.addOrReplaceChild("head", CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(-8.0F, -12.0F, -8.0F, 16.0F, 16.0F, 16.0F),
-				PartPose.ZERO);
+				.texOffs(0, 0)
+				.addBox(-8.0F, -12.0F, -8.0F, 16.0F, 16.0F, 16.0F),
+			PartPose.ZERO);
 
 		definition.addOrReplaceChild("body", CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(-8.0F, -12.0F, -8.0F, 16.0F, 16.0F, 16.0F),
-				PartPose.ZERO);
+				.texOffs(0, 0)
+				.addBox(-8.0F, -12.0F, -8.0F, 16.0F, 16.0F, 16.0F),
+			PartPose.ZERO);
 
 		return LayerDefinition.create(mesh, 64, 32);
 	}

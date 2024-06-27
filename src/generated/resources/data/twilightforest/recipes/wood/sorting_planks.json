@@ -1,6 +1,7 @@
 {
   "type": "minecraft:crafting_shapeless",
   "category": "building",
+  "group": "planks",
   "ingredients": [
     {
       "tag": "twilightforest:sortwood_logs"
@@ -8,6 +9,6 @@
   ],
   "result": {
     "count": 4,
-    "item": "twilightforest:sorting_planks"
+    "id": "twilightforest:sorting_planks"
   }
 }

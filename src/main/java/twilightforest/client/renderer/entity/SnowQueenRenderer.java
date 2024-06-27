@@ -31,5 +31,5 @@ public class SnowQueenRenderer extends HumanoidMobRenderer<SnowQueen, SnowQueenM
 	@Override
 	public void render(SnowQueen queen, float yaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light) {
 		super.render(queen, yaw, partialTicks, stack, buffer, light);
-    }
+	}
 }

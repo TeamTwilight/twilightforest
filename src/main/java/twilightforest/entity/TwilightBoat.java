@@ -22,6 +22,7 @@ public class TwilightBoat extends Boat {
 		this.blocksBuilding = true;
 	}
 
+	@SuppressWarnings("this-escape")
 	public TwilightBoat(Level level, double x, double y, double z) {
 		this(TFEntities.BOAT.get(), level);
 		this.setPos(x, y, z);
@@ -53,9 +54,9 @@ public class TwilightBoat extends Boat {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(BOAT_TYPE, TwilightBoat.Type.TWILIGHT_OAK.ordinal());
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(BOAT_TYPE, TwilightBoat.Type.TWILIGHT_OAK.ordinal());
 	}
 
 	@Override

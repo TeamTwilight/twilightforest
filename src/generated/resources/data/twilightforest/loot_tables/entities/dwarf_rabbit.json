@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:loot_table",
-          "name": "minecraft:entities/rabbit"
+          "value": "minecraft:entities/rabbit"
         }
       ],
       "rolls": 1.0

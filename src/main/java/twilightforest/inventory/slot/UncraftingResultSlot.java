@@ -42,7 +42,7 @@ public class UncraftingResultSlot extends ResultSlot {
 		this.tempRemainderMap.clear();
 
 		for (RecipeHolder<CraftingRecipe> recipe : player.level().getRecipeManager().getRecipesFor(RecipeType.CRAFTING, this.assemblyMatrix, this.player.level())) {
-			if (ItemStack.isSameItemSameTags(recipe.value().getResultItem(player.level().registryAccess()), stack)) {
+			if (ItemStack.isSameItemSameComponents(recipe.value().getResultItem(player.level().registryAccess()), stack)) {
 				combined = false;
 				break;
 			}
@@ -75,7 +75,7 @@ public class UncraftingResultSlot extends ResultSlot {
 		NonNullList<ItemStack> remainingItems = player.level().getRecipeManager().getRemainingItemsFor(RecipeType.CRAFTING, this.assemblyMatrix, player.level());
 		CommonHooks.setCraftingPlayer(null);
 
-		for(int i = 0; i < remainingItems.size(); ++i) {
+		for (int i = 0; i < remainingItems.size(); ++i) {
 			ItemStack currentStack = this.assemblyMatrix.getItem(i);
 			ItemStack remainingStack = remainingItems.get(i);
 			if (!currentStack.isEmpty()) {
@@ -86,7 +86,7 @@ public class UncraftingResultSlot extends ResultSlot {
 			if (!remainingStack.isEmpty()) {
 				if (currentStack.isEmpty()) {
 					this.assemblyMatrix.setItem(i, remainingStack);
-				} else if (!ItemStack.isSameItemSameTags(currentStack, remainingStack) && !this.player.getInventory().add(remainingStack)) {
+				} else if (!ItemStack.isSameItemSameComponents(currentStack, remainingStack) && !this.player.getInventory().add(remainingStack)) {
 					this.player.drop(remainingStack, false);
 				}
 			}

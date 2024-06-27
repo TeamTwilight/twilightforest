@@ -21,48 +21,48 @@ import twilightforest.world.components.feature.config.SwizzleConfig;
 import twilightforest.world.components.processors.SmartGrassProcessor;
 
 public class FancyWellFeature extends TemplateFeature<SwizzleConfig> {
-    private static final ResourceLocation WELL_TOP = TwilightForestMod.prefix("feature/well/fancy_well_top");
-    private static final ResourceLocation WELL_BOTTOM = TwilightForestMod.prefix("feature/well/fancy_well_bottom");
+	private static final ResourceLocation WELL_TOP = TwilightForestMod.prefix("feature/well/fancy_well_top");
+	private static final ResourceLocation WELL_BOTTOM = TwilightForestMod.prefix("feature/well/fancy_well_bottom");
 
-    public FancyWellFeature(Codec<SwizzleConfig> config) {
-        super(config);
-    }
+	public FancyWellFeature(Codec<SwizzleConfig> config) {
+		super(config);
+	}
 
-    @Nullable
-    @Override
-    protected StructureTemplate getTemplate(StructureTemplateManager templateManager, RandomSource random) {
-        return templateManager.getOrCreate(WELL_TOP);
-    }
+	@Nullable
+	@Override
+	protected StructureTemplate getTemplate(StructureTemplateManager templateManager, RandomSource random) {
+		return templateManager.getOrCreate(WELL_TOP);
+	}
 
-    @Override
-    protected void modifySettings(StructurePlaceSettings settings, RandomSource random, SwizzleConfig config) {
-        config.buildAddProcessors(settings, random);
-    }
+	@Override
+	protected void modifySettings(StructurePlaceSettings settings, RandomSource random, SwizzleConfig config) {
+		config.buildAddProcessors(settings, random);
+	}
 
-    @Override
-    protected void postPlacement(WorldGenLevel world, RandomSource random, StructureTemplateManager templateManager, Rotation rotation, Mirror mirror, StructurePlaceSettings placementSettings, BlockPos placementPos, SwizzleConfig config) {
-        StructureTemplate template = templateManager.getOrCreate(WELL_BOTTOM);
+	@Override
+	protected void postPlacement(WorldGenLevel world, RandomSource random, StructureTemplateManager templateManager, Rotation rotation, Mirror mirror, StructurePlaceSettings placementSettings, BlockPos placementPos, SwizzleConfig config) {
+		StructureTemplate template = templateManager.getOrCreate(WELL_BOTTOM);
 
-        if (template == null) return;
+		if (template == null) return;
 
-        placementPos = placementPos.below(template.getSize().getY());//.relative(rotation.rotate(mirror.mirror(Direction.SOUTH)), 1).relative(rotation.rotate(mirror.mirror(Direction.EAST)), 1);
-        placementSettings.addProcessor(SmartGrassProcessor.INSTANCE);
+		placementPos = placementPos.below(template.getSize().getY());//.relative(rotation.rotate(mirror.mirror(Direction.SOUTH)), 1).relative(rotation.rotate(mirror.mirror(Direction.EAST)), 1);
+		placementSettings.addProcessor(SmartGrassProcessor.INSTANCE);
 
-        template.placeInWorld(world, placementPos, placementPos, placementSettings, random, 20);
+		template.placeInWorld(world, placementPos, placementPos, placementSettings, random, 20);
 
-        for (StructureTemplate.StructureBlockInfo info : template.filterBlocks(placementPos, placementSettings, Blocks.STRUCTURE_BLOCK))
-            if (info.nbt() != null && StructureMode.valueOf(info.nbt().getString("mode")) == StructureMode.DATA)
-                this.processMarkers(info, world, rotation, mirror, random);
-    }
+		for (StructureTemplate.StructureBlockInfo info : template.filterBlocks(placementPos, placementSettings, Blocks.STRUCTURE_BLOCK))
+			if (info.nbt() != null && StructureMode.valueOf(info.nbt().getString("mode")) == StructureMode.DATA)
+				this.processMarkers(info, world, rotation, mirror, random);
+	}
 
-    @Override
-    protected void processMarkers(StructureTemplate.StructureBlockInfo info, WorldGenLevel world, Rotation rotation, Mirror mirror, RandomSource random) {
-        String s = info.nbt().getString("metadata");
+	@Override
+	protected void processMarkers(StructureTemplate.StructureBlockInfo info, WorldGenLevel world, Rotation rotation, Mirror mirror, RandomSource random) {
+		String s = info.nbt().getString("metadata");
 
-        if (!s.startsWith("loot")) return;
+		if (!s.startsWith("loot")) return;
 
-        world.removeBlock(info.pos(), false);
+		world.removeBlock(info.pos(), false);
 
-        TFLootTables.FANCY_WELL.generateLootContainer(world, info.pos(), Blocks.BARREL.defaultBlockState().setValue(BarrelBlock.FACING, Direction.UP), 16 | 2);
-    }
+		TFLootTables.generateLootContainer(world, info.pos(), Blocks.BARREL.defaultBlockState().setValue(BarrelBlock.FACING, Direction.UP), 16 | 2, TFLootTables.FANCY_WELL);
+	}
 }

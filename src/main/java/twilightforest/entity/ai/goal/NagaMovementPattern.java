@@ -21,6 +21,7 @@ public class NagaMovementPattern extends Goal {
 	private boolean clockwise;
 	private boolean stunCalculated;
 
+	@SuppressWarnings("this-escape")
 	public NagaMovementPattern(Naga naga) {
 		this.naga = naga;
 		this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
@@ -175,7 +176,7 @@ public class NagaMovementPattern extends Goal {
 	}
 
 	private void crumbleBelowTarget(int range) {
-		if (!EventHooks.getMobGriefingEvent(this.naga.level(), this.naga) || naga.getTarget() == null) return;
+		if (!EventHooks.canEntityGrief(this.naga.level(), this.naga) || naga.getTarget() == null) return;
 
 		int floor = (int) this.naga.getBoundingBox().minY;
 		int targetY = (int) this.naga.getTarget().getBoundingBox().minY;
@@ -201,10 +202,10 @@ public class NagaMovementPattern extends Goal {
 					double d2 = this.naga.getRandom().nextGaussian() * 0.02D;
 
 					this.naga.level().addParticle(ParticleTypes.CRIT,
-							(this.naga.getX() + this.naga.getRandom().nextFloat() * this.naga.getBbWidth() * 2.0F) - this.naga.getBbWidth(),
-							this.naga.getY() + this.naga.getRandom().nextFloat() * this.naga.getBbHeight(),
-							(this.naga.getZ() + this.naga.getRandom().nextFloat() * this.naga.getBbWidth() * 2.0F) - this.naga.getBbWidth(),
-							d, d1, d2);
+						(this.naga.getX() + this.naga.getRandom().nextFloat() * this.naga.getBbWidth() * 2.0F) - this.naga.getBbWidth(),
+						this.naga.getY() + this.naga.getRandom().nextFloat() * this.naga.getBbHeight(),
+						(this.naga.getZ() + this.naga.getRandom().nextFloat() * this.naga.getBbWidth() * 2.0F) - this.naga.getBbWidth(),
+						d, d1, d2);
 				}
 			}
 		}
@@ -222,7 +223,7 @@ public class NagaMovementPattern extends Goal {
 		float rangle = (float) (Math.atan2(vecz, vecx));
 
 		// add a little, so he circles (clockwise)
-		rangle += clockwise ? rotation : -rotation;
+		rangle += (float) (clockwise ? rotation : -rotation);
 
 		// figure out where we're headed from the target angle
 		double dx = Mth.cos(rangle) * radius;

@@ -5,6 +5,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Multisets;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
@@ -19,14 +20,17 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.saveddata.maps.MapDecoration;
+import net.minecraft.world.level.saveddata.maps.MapDecorationTypes;
+import net.minecraft.world.level.saveddata.maps.MapId;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.item.mapdata.TFMazeMapData;
 import twilightforest.init.TFItems;
+import twilightforest.item.mapdata.TFMazeMapData;
+
+import java.util.Optional;
 
 // [VanillaCopy] super everything, but with appropriate redirections to our own datastructures. finer details noted
-
 public class MazeMapItem extends MapItem {
 
 	public static final String STR_ID = "mazemap";
@@ -47,8 +51,8 @@ public class MazeMapItem extends MapItem {
 
 	@Nullable
 	public static TFMazeMapData getData(ItemStack stack, Level level) {
-		Integer id = getMapId(stack);
-		return id == null ? null : TFMazeMapData.getMazeMapData(level, getMapName(id));
+		MapId id = stack.get(DataComponents.MAP_ID);
+		return id == null ? null : TFMazeMapData.getMazeMapData(level, getMapName(id.id()));
 	}
 
 	@Nullable
@@ -56,14 +60,15 @@ public class MazeMapItem extends MapItem {
 	protected TFMazeMapData getCustomMapData(ItemStack stack, Level level) {
 		TFMazeMapData mapdata = getData(stack, level);
 		if (mapdata == null && !level.isClientSide()) {
-			mapdata = MazeMapItem.createMapData(stack, level, level.getLevelData().getXSpawn(), level.getLevelData().getZSpawn(), 0, false, false, level.dimension(), level.getLevelData().getYSpawn(), mapOres);
+			BlockPos pos = level.getSharedSpawnPos();
+			mapdata = MazeMapItem.createMapData(stack, level, pos.getX(), pos.getZ(), 0, false, false, level.dimension(), pos.getY(), mapOres);
 		}
 
 		return mapdata;
 	}
 
 	private static TFMazeMapData createMapData(ItemStack stack, Level level, int x, int z, int scale, boolean trackingPosition, boolean unlimitedTracking, ResourceKey<Level> dimension, int y, boolean ore) {
-		int i = level.getFreeMapId();
+		MapId i = level.getFreeMapId();
 
 		int mapSize = 128 * (1 << scale);
 		int roundX = Mth.floor((x + 64.0D) / (double) mapSize);
@@ -74,8 +79,8 @@ public class MazeMapItem extends MapItem {
 		TFMazeMapData mapdata = new TFMazeMapData(scaledX, scaledZ, (byte) scale, trackingPosition, unlimitedTracking, false, dimension);
 		mapdata.calculateMapCenter(level, x, y, z); // call our own map center calculation
 		mapdata.ore = ore;
-		TFMazeMapData.registerMazeMapData(level, mapdata, getMapName(i)); // call our own register method
-		stack.getOrCreateTag().putInt("map", i);
+		TFMazeMapData.registerMazeMapData(level, mapdata, getMapName(i.id())); // call our own register method
+		stack.set(DataComponents.MAP_ID, i);
 		return mapdata;
 	}
 
@@ -217,7 +222,7 @@ public class MazeMapItem extends MapItem {
 					if (yProximity < -YSEARCH || yProximity > YSEARCH) {
 						MapDecoration decoration = mapdata.decorations.get(entityplayer.getName().getString());
 						if (decoration != null) {
-							mapdata.decorations.put(entityplayer.getName().getString(), new MapDecoration(MapDecoration.Type.PLAYER_OFF_MAP, decoration.x(), decoration.y(), decoration.rot(), null));
+							mapdata.decorations.put(entityplayer.getName().getString(), new MapDecoration(MapDecorationTypes.PLAYER_OFF_MAP, decoration.x(), decoration.y(), decoration.rot(), Optional.empty()));
 						}
 					}
 				}
@@ -237,8 +242,8 @@ public class MazeMapItem extends MapItem {
 	@Override
 	@Nullable
 	public Packet<?> getUpdatePacket(ItemStack stack, Level level, Player player) {
-		Integer id = getMapId(stack);
+		MapId mapId = stack.get(DataComponents.MAP_ID);
 		TFMazeMapData mapdata = getCustomMapData(stack, level);
-		return id == null || mapdata == null ? null : mapdata.getUpdatePacket(id, player);
+		return mapId == null || mapdata == null ? null : mapdata.getUpdatePacket(mapId, player);
 	}
 }

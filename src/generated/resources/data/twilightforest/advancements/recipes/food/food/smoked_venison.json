@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:raw_venison"
-            ]
+            "items": "twilightforest:raw_venison"
           }
         ]
       },

@@ -19,9 +19,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:magic_beans"
-            ]
+            "items": "twilightforest:magic_beans"
           }
         ]
       },
@@ -42,8 +40,8 @@
     },
     "frame": "goal",
     "icon": {
-      "item": "twilightforest:giant_pickaxe",
-      "nbt": "{Damage:0}"
+      "count": 1,
+      "id": "twilightforest:giant_pickaxe"
     },
     "title": {
       "translate": "advancement.twilightforest.giants"

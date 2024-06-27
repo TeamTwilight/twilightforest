@@ -1,10 +1,12 @@
 package twilightforest.item.recipe;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -24,12 +26,12 @@ public record UncraftingRecipe(int cost, Ingredient input, int count,
 	}
 
 	@Override //We have to implement this method, can't really be used since we have multiple outputs
-	public ItemStack assemble(CraftingContainer container, RegistryAccess access) {
+	public ItemStack assemble(CraftingContainer container, HolderLookup.Provider provider) {
 		return ItemStack.EMPTY;
 	}
 
 	@Override //We have to implement this method, returns the count just in case
-	public ItemStack getResultItem(RegistryAccess access) {
+	public ItemStack getResultItem(HolderLookup.Provider provider) {
 		return new ItemStack(Items.AIR, this.count);
 	}
 
@@ -59,12 +61,12 @@ public record UncraftingRecipe(int cost, Ingredient input, int count,
 	}
 
 	@Override
-	public int getRecipeWidth() {
+	public int getWidth() {
 		return this.pattern().width();
 	}
 
 	@Override
-	public int getRecipeHeight() {
+	public int getHeight() {
 		return this.pattern().height();
 	}
 
@@ -75,32 +77,38 @@ public record UncraftingRecipe(int cost, Ingredient input, int count,
 
 	public static class Serializer implements RecipeSerializer<UncraftingRecipe> {
 
-		public static final Codec<UncraftingRecipe> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-						Codec.INT.optionalFieldOf("cost", -1).forGetter(UncraftingRecipe::cost),
-						Ingredient.CODEC_NONEMPTY.fieldOf("input").forGetter(UncraftingRecipe::input),
-						Codec.INT.optionalFieldOf("input_count", 1).forGetter(UncraftingRecipe::count),
-						ShapedRecipePattern.MAP_CODEC.forGetter(UncraftingRecipe::pattern)
-				).apply(instance, UncraftingRecipe::new)
+		public static final MapCodec<UncraftingRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+				Codec.INT.optionalFieldOf("cost", -1).forGetter(UncraftingRecipe::cost),
+				Ingredient.CODEC_NONEMPTY.fieldOf("input").forGetter(UncraftingRecipe::input),
+				Codec.INT.optionalFieldOf("input_count", 1).forGetter(UncraftingRecipe::count),
+				ShapedRecipePattern.MAP_CODEC.forGetter(UncraftingRecipe::pattern)
+			).apply(instance, UncraftingRecipe::new)
 		);
+		public static final StreamCodec<RegistryFriendlyByteBuf, UncraftingRecipe> STREAM_CODEC = StreamCodec.of(UncraftingRecipe.Serializer::toNetwork, UncraftingRecipe.Serializer::fromNetwork);
 
 		@Override
-		public Codec<UncraftingRecipe> codec() {
+		public MapCodec<UncraftingRecipe> codec() {
 			return CODEC;
 		}
 
-		public UncraftingRecipe fromNetwork(FriendlyByteBuf buf) {
+		@Override
+		public StreamCodec<RegistryFriendlyByteBuf, UncraftingRecipe> streamCodec() {
+			return STREAM_CODEC;
+		}
+
+		public static UncraftingRecipe fromNetwork(RegistryFriendlyByteBuf buf) {
 			int cost = buf.readInt();
-			Ingredient input = Ingredient.fromNetwork(buf);
+			Ingredient input = Ingredient.CONTENTS_STREAM_CODEC.decode(buf);
 			int count = buf.readInt();
-			ShapedRecipePattern pattern = ShapedRecipePattern.fromNetwork(buf);
+			ShapedRecipePattern pattern = ShapedRecipePattern.STREAM_CODEC.decode(buf);
 			return new UncraftingRecipe(cost, input, count, pattern);
 		}
 
-		public void toNetwork(FriendlyByteBuf buf, UncraftingRecipe recipe) {
+		public static void toNetwork(RegistryFriendlyByteBuf buf, UncraftingRecipe recipe) {
 			buf.writeInt(recipe.cost());
-			recipe.input().toNetwork(buf);
+			Ingredient.CONTENTS_STREAM_CODEC.encode(buf, recipe.input());
 			buf.writeInt(recipe.count());
-			recipe.pattern().toNetwork(buf);
+			ShapedRecipePattern.STREAM_CODEC.encode(buf, recipe.pattern());
 		}
 	}
 }

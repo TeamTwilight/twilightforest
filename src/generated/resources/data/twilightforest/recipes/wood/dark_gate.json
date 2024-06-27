@@ -1,12 +1,13 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
+  "group": "wooden_fence_gate",
   "key": {
     "#": {
       "item": "twilightforest:dark_planks"
     },
     "S": {
-      "tag": "forge:rods/wooden"
+      "tag": "c:rods/wooden"
     }
   },
   "pattern": [
@@ -14,6 +15,7 @@
     "S#S"
   ],
   "result": {
-    "item": "twilightforest:dark_fence_gate"
+    "count": 1,
+    "id": "twilightforest:dark_fence_gate"
   }
 }

@@ -2,11 +2,12 @@ package twilightforest.entity.passive;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -18,6 +19,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.data.tags.ItemTagGenerator;
+import twilightforest.init.TFSounds;
 
 public class Squirrel extends Animal {
 
@@ -43,18 +45,9 @@ public class Squirrel extends Animal {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Mob.createMobAttributes()
-				.add(Attributes.MAX_HEALTH, 1.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.3D);
-	}
-
-	@Override
-	public float getStepHeight() {
-		return 1.0F;
-	}
-
-	@Override
-	public float getEyeHeight(Pose pose) {
-		return this.getBbHeight() * 0.7F;
+			.add(Attributes.MAX_HEALTH, 6.0D)
+			.add(Attributes.MOVEMENT_SPEED, 0.3D)
+			.add(Attributes.STEP_HEIGHT, 1.0D);
 	}
 
 	@Override
@@ -83,5 +76,21 @@ public class Squirrel extends Animal {
 	@Override
 	public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob mob) {
 		return null;
+	}
+
+	@Nullable
+	@Override
+	protected SoundEvent getAmbientSound() {
+		return TFSounds.SQUIRREL_AMBIENT.get();
+	}
+
+	@Override
+	protected SoundEvent getHurtSound(DamageSource source) {
+		return TFSounds.SQUIRREL_HURT.get();
+	}
+
+	@Override
+	protected SoundEvent getDeathSound() {
+		return TFSounds.SQUIRREL_DEATH.get();
 	}
 }

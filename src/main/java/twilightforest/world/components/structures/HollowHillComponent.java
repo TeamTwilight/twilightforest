@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
@@ -20,6 +21,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
+import net.minecraft.world.level.storage.loot.LootTable;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFStructurePieceTypes;
@@ -42,7 +44,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	protected final ResourceLocation speleothemConfigId;
 
 	public HollowHillComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-        this(ctx, TFStructurePieceTypes.TFHill.get(), nbt);
+		this(ctx, TFStructurePieceTypes.TFHill.get(), nbt);
 	}
 
 	public HollowHillComponent(StructurePieceSerializationContext ctx, StructurePieceType piece, CompoundTag nbt) {
@@ -53,11 +55,12 @@ public class HollowHillComponent extends TFStructureComponentOld {
 		this.hdiam = (this.hillSize * 2 + 1) * 16;
 
 		// TODO: Maybe write a fallback based on hillsize/Class, possibly in a new superclass
-        Holder.Reference<StructureSpeleothemConfig> configHolder = StructureSpeleothemConfigs.getConfigHolder(ctx.registryAccess(), nbt.getString("config_id"));
+		Holder.Reference<StructureSpeleothemConfig> configHolder = StructureSpeleothemConfigs.getConfigHolder(ctx.registryAccess(), nbt.getString("config_id"));
 		this.speleothemConfig = configHolder.value();
 		this.speleothemConfigId = configHolder.key().location();
 	}
 
+	@SuppressWarnings("this-escape")
 	public HollowHillComponent(StructurePieceType piece, int i, int size, int x, int y, int z, Holder.Reference<StructureSpeleothemConfig> speleothemConfig) {
 		super(piece, i, x, y, z);
 
@@ -94,7 +97,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 
 		drainWater(generator, writeableBounds, this.boundingBox, world, this.hillSize * 3 + 2, Blocks.CAVE_AIR.defaultBlockState(), center.getX(), center.getZ(), drainRadius * drainRadius, Blocks.STONE.defaultBlockState());
 
-        // Use two rectangle-grid lattices to simulate a triangular-grid lattice, simulating an optimal hexagonal-packing pattern for filling this structure
+		// Use two rectangle-grid lattices to simulate a triangular-grid lattice, simulating an optimal hexagonal-packing pattern for filling this structure
 		// with stalactites, stalagmites, chests, and spawners
 
 		// RectangleLatticeIterator enables for approximately-even spacing across chunks
@@ -173,7 +176,8 @@ public class HollowHillComponent extends TFStructureComponentOld {
 			pos.set(x, floorY, z);
 
 			if (floatChance < SPAWNER_SPAWN_CHANCE) {
-				setSpawnerInWorld(world, writeableBounds, this.getMobID(rand), v -> {}, pos.above());
+				setSpawnerInWorld(world, writeableBounds, this.getMobID(rand), v -> {
+				}, pos.above());
 			} else {
 				this.placeTreasureAtWorldPosition(world, this.getTreasureType(), false, writeableBounds, pos.above());
 			}
@@ -194,7 +198,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	private void placeCeilingFeature(WorldGenLevel world, RandomSource rand, BlockPos.MutableBlockPos pos, float distSq) {
 		if (!this.speleothemConfig.shouldDoAStalactite(rand)) return;
 
-        BlockPos ceiling = pos.atY(this.getCeilingY(distSq));
+		BlockPos ceiling = pos.atY(this.getCeilingY(distSq));
 		// There's no generational defect from over-generating Stalactites, such as poking through the ground with Stalagmites.
 		// Plus the ore girth would be diminished as well. Thus, no max height is set for stalactites unlike
 		BlockSpikeFeature.startSpike(world, ceiling, this.speleothemConfig.getStalactite(rand), rand, true);
@@ -209,7 +213,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	}
 
 	@NotNull
-	private TFLootTables getTreasureType() {
+	private ResourceKey<LootTable> getTreasureType() {
 		return this.hillSize == 3 ? TFLootTables.LARGE_HOLLOW_HILL : (this.hillSize == 2 ? TFLootTables.MEDIUM_HOLLOW_HILL : TFLootTables.SMALL_HOLLOW_HILL);
 	}
 
@@ -223,7 +227,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 			RandomSource stalRNG = RandomSource.create(world.getSeed() + (long) pos.getX() * pos.getZ());
 
 			// make the actual stalactite
-            BlockSpikeFeature.startSpike(world, pos, this.speleothemConfig.getSpeleothem(hanging, stalRNG), stalRNG, hanging);
+			BlockSpikeFeature.startSpike(world, pos, this.speleothemConfig.getSpeleothem(hanging, stalRNG), stalRNG, hanging);
 		}
 	}
 
@@ -244,7 +248,6 @@ public class HollowHillComponent extends TFStructureComponentOld {
 
 	/**
 	 * Gets the id of a mob appropriate to the specified hill size.
-	 *
 	 */
 	protected EntityType<?> getMobID(RandomSource rand, int level) {
 		if (level == 1) {

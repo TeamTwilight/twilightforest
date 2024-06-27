@@ -1,7 +1,6 @@
 package twilightforest.data.custom;
 
 import net.minecraft.advancements.Criterion;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;

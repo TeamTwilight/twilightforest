@@ -26,36 +26,36 @@ public class CubeOfAnnihilationModel extends ListModel<CubeOfAnnihilation> {
 		PartDefinition definition = mesh.getRoot();
 
 		definition.addOrReplaceChild("box", CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(-8F, -8F, -8F, 16, 16, 16),
-				PartPose.ZERO);
+				.texOffs(0, 0)
+				.addBox(-8F, -8F, -8F, 16, 16, 16),
+			PartPose.ZERO);
 
 		definition.addOrReplaceChild("box_x", CubeListBuilder.create()
-						.texOffs(0, 32)
-						.addBox(-8F, -8F, -8F, 16, 16, 16),
-				PartPose.ZERO);
+				.texOffs(0, 32)
+				.addBox(-8F, -8F, -8F, 16, 16, 16),
+			PartPose.ZERO);
 
 		definition.addOrReplaceChild("box_y", CubeListBuilder.create()
-						.texOffs(0, 32)
-						.addBox(-8F, -8F, -8F, 16, 16, 16),
-				PartPose.ZERO);
+				.texOffs(0, 32)
+				.addBox(-8F, -8F, -8F, 16, 16, 16),
+			PartPose.ZERO);
 
 		definition.addOrReplaceChild("box_z", CubeListBuilder.create()
-						.texOffs(0, 32)
-						.addBox(-8F, -8F, -8F, 16, 16, 16),
-				PartPose.ZERO);
+				.texOffs(0, 32)
+				.addBox(-8F, -8F, -8F, 16, 16, 16),
+			PartPose.ZERO);
 
 
 		return LayerDefinition.create(mesh, 64, 64);
 	}
 
-    @Override
+	@Override
 	public Iterable<ModelPart> parts() {
 		return ImmutableList.of(
-				this.box,
-				this.boxX,
-				this.boxY,
-				this.boxZ
+			this.box,
+			this.boxX,
+			this.boxY,
+			this.boxZ
 		);
 	}
 

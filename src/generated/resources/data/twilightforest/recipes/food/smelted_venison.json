@@ -6,5 +6,8 @@
   "ingredient": {
     "item": "twilightforest:raw_venison"
   },
-  "result": "twilightforest:cooked_venison"
+  "result": {
+    "count": 1,
+    "id": "twilightforest:cooked_venison"
+  }
 }

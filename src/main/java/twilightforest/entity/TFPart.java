@@ -9,8 +9,6 @@ import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.entity.PartEntity;
 import twilightforest.TwilightForestMod;
 import twilightforest.network.UpdateTFMultipartPacket;
@@ -39,12 +37,10 @@ public abstract class TFPart<T extends Entity> extends PartEntity<T> {
 		super(parent);
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	public ResourceLocation renderer() {
 		return RENDERER;
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements) {
 		this.interpTargetX = x;
 		this.interpTargetY = y;
@@ -124,15 +120,15 @@ public abstract class TFPart<T extends Entity> extends PartEntity<T> {
 
 	public UpdateTFMultipartPacket.PartDataHolder writeData() {
 		return new UpdateTFMultipartPacket.PartDataHolder(
-				this.getX(),
-				this.getY(),
-				this.getZ(),
-				this.getYRot(),
-				this.getXRot(),
-				this.dimensions.width,
-				this.dimensions.height,
-				this.dimensions.fixed,
-				getEntityData().packDirty());
+			this.getX(),
+			this.getY(),
+			this.getZ(),
+			this.getYRot(),
+			this.getXRot(),
+			this.dimensions.width(),
+			this.dimensions.height(),
+			this.dimensions.fixed(),
+			getEntityData().packDirty());
 
 	}
 

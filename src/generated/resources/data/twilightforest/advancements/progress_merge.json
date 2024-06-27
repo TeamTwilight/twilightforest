@@ -9,7 +9,7 @@
             "entity": "this",
             "predicate": {
               "type_specific": {
-                "type": "player",
+                "type": "minecraft:player",
                 "advancements": {
                   "twilightforest:progress_hydra": true
                 }
@@ -28,7 +28,7 @@
             "entity": "this",
             "predicate": {
               "type_specific": {
-                "type": "player",
+                "type": "minecraft:player",
                 "advancements": {
                   "twilightforest:progress_glacier": true
                 }
@@ -47,7 +47,7 @@
             "entity": "this",
             "predicate": {
               "type_specific": {
-                "type": "player",
+                "type": "minecraft:player",
                 "advancements": {
                   "twilightforest:progress_ur_ghast": true
                 }
@@ -76,7 +76,8 @@
     },
     "frame": "goal",
     "icon": {
-      "item": "twilightforest:uberous_soil"
+      "count": 1,
+      "id": "twilightforest:uberous_soil"
     },
     "title": {
       "translate": "advancement.twilightforest.progress_merge"

@@ -1,6 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "building",
+  "group": "wooden_slab",
   "key": {
     "#": {
       "item": "twilightforest:sorting_planks"
@@ -11,6 +12,6 @@
   ],
   "result": {
     "count": 6,
-    "item": "twilightforest:sorting_slab"
+    "id": "twilightforest:sorting_slab"
   }
 }

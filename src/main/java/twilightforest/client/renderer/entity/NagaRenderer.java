@@ -19,6 +19,7 @@ public class NagaRenderer<M extends NagaModel<Naga>> extends MobRenderer<Naga, M
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("nagahead.png");
 	private static final ResourceLocation textureLocCharging = TwilightForestMod.getModelTexture("nagahead_charging.png");
 
+	@SuppressWarnings("this-escape")
 	public NagaRenderer(EntityRendererProvider.Context manager, M model, float shadowSize) {
 		super(manager, model, shadowSize);
 		this.addLayer(new NagaEyelidsLayer<>(this));

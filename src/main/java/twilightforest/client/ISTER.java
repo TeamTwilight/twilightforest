@@ -1,7 +1,6 @@
 package twilightforest.client;
 
 import com.google.common.base.Suppliers;
-import com.mojang.authlib.GameProfile;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -20,30 +19,39 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.item.component.ResolvableProfile;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.CandleBlock;
+import net.minecraft.world.level.block.ChestBlock;
+import net.minecraft.world.level.block.SkullBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.registries.DeferredHolder;
-import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
-import twilightforest.block.entity.*;
+import twilightforest.block.entity.CandelabraBlockEntity;
+import twilightforest.block.entity.KeepsakeCasketBlockEntity;
+import twilightforest.block.entity.TFChestBlockEntity;
+import twilightforest.block.entity.TFTrappedChestBlockEntity;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.KnightmetalShieldModel;
 import twilightforest.client.model.tileentity.GenericTrophyModel;
 import twilightforest.client.renderer.tileentity.SkullCandleTileEntityRenderer;
 import twilightforest.client.renderer.tileentity.TrophyTileEntityRenderer;
+import twilightforest.components.item.CandelabraData;
+import twilightforest.components.item.SkullCandles;
+import twilightforest.config.TFConfig;
 import twilightforest.enums.BossVariant;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.TFDataComponents;
 import twilightforest.item.KnightmetalShieldItem;
 
 import java.util.HashMap;
@@ -103,20 +111,21 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 		Item item = stack.getItem();
 		if (item instanceof BlockItem blockItem) {
 			Block block = blockItem.getBlock();
+			Minecraft minecraft = Minecraft.getInstance();
 			if (block instanceof AbstractTrophyBlock trophyBlock) {
 				BossVariant variant = trophyBlock.getVariant();
 				GenericTrophyModel trophy = this.trophies.get(variant);
 
 				if (camera == ItemDisplayContext.GUI) {
 					ModelResourceLocation back = new ModelResourceLocation(TwilightForestMod.prefix(((AbstractTrophyBlock) block).getVariant().getTrophyType().getModelName()), "inventory");
-					BakedModel modelBack = Minecraft.getInstance().getItemRenderer().getItemModelShaper().getModelManager().getModel(back);
+					BakedModel modelBack = minecraft.getItemRenderer().getItemModelShaper().getModelManager().getModel(back);
 
 					Lighting.setupForFlatItems();
-					MultiBufferSource.BufferSource bufferSource = Minecraft.getInstance().renderBuffers().bufferSource();
+					MultiBufferSource.BufferSource bufferSource = minecraft.renderBuffers().bufferSource();
 					ms.pushPose();
 					Lighting.setupForFlatItems();
 					ms.translate(0.5F, 0.5F, -1.5F);
-					Minecraft.getInstance().getItemRenderer().render(TrophyTileEntityRenderer.stack, ItemDisplayContext.GUI, false, ms, bufferSource, 15728880, OverlayTexture.NO_OVERLAY, modelBack.applyTransform(camera, ms, false));
+					minecraft.getItemRenderer().render(TrophyTileEntityRenderer.stack, ItemDisplayContext.GUI, false, ms, bufferSource, 15728880, OverlayTexture.NO_OVERLAY, modelBack.applyTransform(camera, ms, false));
 					ms.popPose();
 					bufferSource.endBatch();
 					Lighting.setupFor3DItems();
@@ -126,54 +135,60 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 					if (trophyBlock.getVariant() == BossVariant.HYDRA || trophyBlock.getVariant() == BossVariant.QUEST_RAM)
 						ms.scale(0.9F, 0.9F, 0.9F);
 					ms.mulPose(Axis.XP.rotationDegrees(30));
-					ms.mulPose(Axis.YN.rotationDegrees(TFConfig.CLIENT_CONFIG.rotateTrophyHeadsGui.get() && !Minecraft.getInstance().isPaused() ? TFClientEvents.rotationTicker : -45));
+					ms.mulPose(Axis.YN.rotationDegrees(TFConfig.rotateTrophyHeadsGui && !minecraft.isPaused() ? TFClientEvents.rotationTicker : -45));
 					ms.translate(-0.5F, -0.5F, -0.5F);
 					ms.translate(0.0F, 0.25F, 0.0F);
 					if (trophyBlock.getVariant() == BossVariant.UR_GHAST) ms.translate(0.0F, 0.5F, 0.0F);
 					if (trophyBlock.getVariant() == BossVariant.ALPHA_YETI) ms.translate(0.0F, -0.15F, 0.0F);
-					TrophyTileEntityRenderer.render(null, 180.0F, trophy, variant, !Minecraft.getInstance().isPaused() ? TFClientEvents.time + Minecraft.getInstance().getDeltaFrameTime() : 0, ms, buffers, light, camera);
+					TrophyTileEntityRenderer.render(null, 180.0F, trophy, variant, !minecraft.isPaused() ? TFClientEvents.time + minecraft.getDeltaFrameTime() : 0, ms, buffers, light, camera);
 					ms.popPose();
 				} else {
-					TrophyTileEntityRenderer.render(null, 180.0F, trophy, variant, !Minecraft.getInstance().isPaused() ? TFClientEvents.time + Minecraft.getInstance().getDeltaFrameTime() : 0, ms, buffers, light, camera);
+					TrophyTileEntityRenderer.render(null, 180.0F, trophy, variant, !minecraft.isPaused() ? TFClientEvents.time + minecraft.getDeltaFrameTime() : 0, ms, buffers, light, camera);
 				}
 
 			} else if (block instanceof KeepsakeCasketBlock) {
-				Minecraft.getInstance().getBlockEntityRenderDispatcher().renderItem(this.casket, ms, buffers, light, overlay);
+				minecraft.getBlockEntityRenderDispatcher().renderItem(this.casket, ms, buffers, light, overlay);
 			} else if (block instanceof TFChestBlock) {
-				Minecraft.getInstance().getBlockEntityRenderDispatcher().renderItem(this.chestEntities.get(block), ms, buffers, light, overlay);
+				minecraft.getBlockEntityRenderDispatcher().renderItem(this.chestEntities.get(block), ms, buffers, light, overlay);
 			} else if (block instanceof TFTrappedChestBlock) {
-				Minecraft.getInstance().getBlockEntityRenderDispatcher().renderItem(this.trappedChestEntities.get(block), ms, buffers, light, overlay);
+				minecraft.getBlockEntityRenderDispatcher().renderItem(this.trappedChestEntities.get(block), ms, buffers, light, overlay);
 			} else if (block instanceof AbstractSkullCandleBlock candleBlock) {
-				CompoundTag compoundtag = stack.getTag();
-				GameProfile gameprofile = compoundtag != null ? SkullBlockEntity.getOrResolveGameProfile(compoundtag) : null;
+				ResolvableProfile profile = stack.get(DataComponents.PROFILE);
+
+				if (profile != null && !profile.isResolved()) {
+					stack.remove(DataComponents.PROFILE);
+					profile.resolve().thenAcceptAsync(p_329787_ -> stack.set(DataComponents.PROFILE, p_329787_), minecraft);
+
+					return;
+				}
+
 				SkullBlock.Type type = candleBlock.getType();
 				SkullModelBase base = this.skulls.get(type);
-				RenderType renderType = SkullCandleTileEntityRenderer.getRenderType(type, gameprofile);
+				RenderType renderType = SkullCandleTileEntityRenderer.getRenderType(type, profile);
 				SkullCandleTileEntityRenderer.renderSkull(null, 180.0F, 0.0F, ms, buffers, light, base, renderType);
 
 				//we put the candle
 				ms.translate(0.0F, 0.5F, 0.0F);
-				CompoundTag tag = BlockItem.getBlockEntityData(stack);
-				if (tag != null && tag.contains("CandleColor") && tag.contains("CandleAmount")) {
-					if (tag.getInt("CandleAmount") <= 0) tag.putInt("CandleAmount", 1);
-					Minecraft.getInstance().getBlockRenderer().renderSingleBlock(
-							AbstractSkullCandleBlock.candleColorToCandle(AbstractSkullCandleBlock.CandleColors.colorFromInt(tag.getInt("CandleColor")))
-									.defaultBlockState().setValue(CandleBlock.CANDLES, tag.getInt("CandleAmount")), ms, buffers, light, overlay, ModelData.EMPTY, RenderType.cutout());
-				}
+
+				SkullCandles skullCandles = stack.getOrDefault(TFDataComponents.SKULL_CANDLES, SkullCandles.DEFAULT);
+
+				minecraft.getBlockRenderer().renderSingleBlock(
+					AbstractSkullCandleBlock.candleColorToCandle(AbstractSkullCandleBlock.CandleColors.colorFromInt(skullCandles.color()))
+						.defaultBlockState().setValue(CandleBlock.CANDLES, skullCandles.count()), ms, buffers, light, overlay, ModelData.EMPTY, RenderType.cutout());
 			} else if (block instanceof CandelabraBlock) {
 				//we need to render the candelabra block here since we have to use builtin/entity on the item.
 				//This doesnt allow us to set the item parent to the candelabra block, and without it, only the candles render, if any
-				Minecraft.getInstance().getBlockRenderer().renderSingleBlock(TFBlocks.CANDELABRA.get().defaultBlockState(), ms, buffers, light, overlay);
-				CompoundTag tag = BlockItem.getBlockEntityData(stack);
-				if (tag != null && tag.contains("Candles")) {
+				minecraft.getBlockRenderer().renderSingleBlock(TFBlocks.CANDELABRA.get().defaultBlockState(), ms, buffers, light, overlay);
+				CandelabraData candelabraData = stack.get(TFDataComponents.CANDELABRA_DATA);
+				if (candelabraData != null) {
 					CandelabraBlockEntity copy = this.candelabra;
-					copy.load(tag);
-					Minecraft.getInstance().getBlockEntityRenderDispatcher().renderItem(copy, ms, buffers, light, overlay);
+					CandelabraData.setCandlesOf(copy, candelabraData);
+					minecraft.getBlockEntityRenderDispatcher().renderItem(copy, ms, buffers, light, overlay);
 				}
 			} else if (block instanceof CritterBlock critter) {
 				BlockEntity blockEntity = critter.newBlockEntity(BlockPos.ZERO, block.defaultBlockState());
 				if (blockEntity != null) {
-					Minecraft.getInstance().getBlockEntityRenderDispatcher().getRenderer(blockEntity).render(null, 0, ms, buffers, light, overlay);
+					minecraft.getBlockEntityRenderDispatcher().getRenderer(blockEntity).render(null, 0, ms, buffers, light, overlay);
 				}
 			}
 		} else if (item instanceof KnightmetalShieldItem) {

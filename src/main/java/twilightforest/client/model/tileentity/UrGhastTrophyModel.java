@@ -15,7 +15,7 @@ public class UrGhastTrophyModel extends GenericTrophyModel {
 
 	public final ModelPart body;
 	private final ModelPart[][] tentacles = new ModelPart[9][3];
-	
+
 	public UrGhastTrophyModel(ModelPart part) {
 		this.body = part.getChild("body");
 
@@ -31,10 +31,10 @@ public class UrGhastTrophyModel extends GenericTrophyModel {
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
 		var body = partdefinition.addOrReplaceChild("body",
-				CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(-8.0F, -8.0F, -8.0F, 16.0F, 16.0F, 16.0F),
-				PartPose.offset(0.0F, 8.0F, 0.0F));
+			CubeListBuilder.create()
+				.texOffs(0, 0)
+				.addBox(-8.0F, -8.0F, -8.0F, 16.0F, 16.0F, 16.0F),
+			PartPose.offset(0.0F, 8.0F, 0.0F));
 
 		for (int i = 0; i < 9; ++i) {
 			makeTentacle(body, "tentacle_" + i, i);
@@ -45,35 +45,35 @@ public class UrGhastTrophyModel extends GenericTrophyModel {
 
 	private static void makeTentacle(PartDefinition parent, String name, int iteration) {
 		var tentacleBase = parent.addOrReplaceChild(name + "_base", CubeListBuilder.create()
-						.addBox(-1.5F, 0.0F, -1.5F, 3.333F, 5.333F, 3.333F),
-				switch (iteration) {
-					case 0 -> PartPose.offset(4.5F, 7, 4.5F);
-					case 1 -> PartPose.offset(-4.5F, 7, 4.5F);
-					case 2 -> PartPose.offset(0F, 7, 0F);
-					case 3 -> PartPose.offset(5.5F, 7, -4.5F);
-					case 4 -> PartPose.offset(-5.5F, 7, -4.5F);
-					case 5 -> PartPose.offsetAndRotation(-7.5F, 3.5F, -1F, 0F, 0F, Mth.PI / 4.0F);
-					case 6 -> PartPose.offsetAndRotation(-7.5F, -1.5F, 3.5F, 0F, 0F, Mth.PI / 3.0F);
-					case 7 -> PartPose.offsetAndRotation(7.5F, 3.5F, -1F, 0F, 0F, -Mth.PI / 4.0F);
-					case 8 -> PartPose.offsetAndRotation(7.5F, -1.5F, 3.5F, 0F, 0F, -Mth.PI / 3.0F);
-					default -> {
-						TwilightForestMod.LOGGER.warn("Out of bounds with Ur-Ghast Trophy limb creation: Iteration " + iteration);
-						yield PartPose.ZERO;
-					}
-				});
+				.addBox(-1.5F, 0.0F, -1.5F, 3.333F, 5.333F, 3.333F),
+			switch (iteration) {
+				case 0 -> PartPose.offset(4.5F, 7, 4.5F);
+				case 1 -> PartPose.offset(-4.5F, 7, 4.5F);
+				case 2 -> PartPose.offset(0F, 7, 0F);
+				case 3 -> PartPose.offset(5.5F, 7, -4.5F);
+				case 4 -> PartPose.offset(-5.5F, 7, -4.5F);
+				case 5 -> PartPose.offsetAndRotation(-7.5F, 3.5F, -1F, 0F, 0F, Mth.PI / 4.0F);
+				case 6 -> PartPose.offsetAndRotation(-7.5F, -1.5F, 3.5F, 0F, 0F, Mth.PI / 3.0F);
+				case 7 -> PartPose.offsetAndRotation(7.5F, 3.5F, -1F, 0F, 0F, -Mth.PI / 4.0F);
+				case 8 -> PartPose.offsetAndRotation(7.5F, -1.5F, 3.5F, 0F, 0F, -Mth.PI / 3.0F);
+				default -> {
+					TwilightForestMod.LOGGER.warn("Out of bounds with Ur-Ghast Trophy limb creation: Iteration " + iteration);
+					yield PartPose.ZERO;
+				}
+			});
 
 		var tentacleExtension = tentacleBase.addOrReplaceChild(name + "_extension", CubeListBuilder.create()
-						.texOffs(0, 3)
-						.addBox(-1.5F, -1.35F, -1.5F, 3.333F, 6.66F, 3.333F),
-				PartPose.offset(0, 6.66F, 0));
+				.texOffs(0, 3)
+				.addBox(-1.5F, -1.35F, -1.5F, 3.333F, 6.66F, 3.333F),
+			PartPose.offset(0, 6.66F, 0));
 
 		tentacleExtension.addOrReplaceChild(name + "_tip", CubeListBuilder.create()
-						.texOffs(0, 9)
-						.addBox(-1.5F, 1.3F, -1.5F, 3.333F, 4, 3.333F),
-				PartPose.offset(0, 4, 0));
+				.texOffs(0, 9)
+				.addBox(-1.5F, 1.3F, -1.5F, 3.333F, 4, 3.333F),
+			PartPose.offset(0, 4, 0));
 
 	}
-	
+
 	@Override
 	public void setRotations(float x, float y, float z) {
 		this.body.yRot = y * ((float) Math.PI / 180F);

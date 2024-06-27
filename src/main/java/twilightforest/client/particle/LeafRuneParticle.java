@@ -3,8 +3,6 @@ package twilightforest.client.particle;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 
 public class LeafRuneParticle extends TextureSheetParticle {
 
@@ -16,7 +14,7 @@ public class LeafRuneParticle extends TextureSheetParticle {
 		this.zd = velZ;
 
 		this.quadSize = this.random.nextFloat() * 0.25F;
-		this.lifetime = (int)(Math.random() * 10.0D) + 40;
+		this.lifetime = (int) (Math.random() * 10.0D) + 40;
 		this.gravity = 0.3F + random.nextFloat() * 0.6F;
 	}
 
@@ -25,7 +23,6 @@ public class LeafRuneParticle extends TextureSheetParticle {
 		return ParticleRenderType.PARTICLE_SHEET_OPAQUE;
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	public record Factory(SpriteSet sprite) implements ParticleProvider<SimpleParticleType> {
 
 		@Override

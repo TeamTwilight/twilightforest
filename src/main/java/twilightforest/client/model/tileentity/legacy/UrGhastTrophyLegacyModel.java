@@ -33,9 +33,9 @@ public class UrGhastTrophyLegacyModel extends GenericTrophyModel {
 		PartDefinition definition = mesh.getRoot();
 
 		var body = definition.addOrReplaceChild("body", CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(-8.0F, -8.0F, -8.0F, 16, 16, 16),
-				PartPose.offset(0.0F, 8.0F, 0.0F));
+				.texOffs(0, 0)
+				.addBox(-8.0F, -8.0F, -8.0F, 16, 16, 16),
+			PartPose.offset(0.0F, 8.0F, 0.0F));
 
 		for (int i = 0; i < 9; ++i) {
 			makeTentacle(body, "tentacle_" + i, i);
@@ -43,44 +43,44 @@ public class UrGhastTrophyLegacyModel extends GenericTrophyModel {
 
 		return LayerDefinition.create(mesh, 64, 32);
 	}
-	
+
 	protected static void makeTentacle(PartDefinition parent, String name, int iteration) {
 
 		var tentacleBase = parent.addOrReplaceChild(name + "_base", CubeListBuilder.create()
-						.addBox(-1.5F, 0.0F, -1.5F, 3, 5, 3),
-				switch (iteration) {
-					case 0 -> PartPose.offset(4.5F, 7, 4.5F);
-					case 1 -> PartPose.offset(-4.5F, 7, 4.5F);
-					case 2 -> PartPose.offset(0F, 7, 0F);
-					case 3 -> PartPose.offset(5.5F, 7, -4.5F);
-					case 4 -> PartPose.offset(-5.5F, 7, -4.5F);
-					case 5 -> PartPose.offsetAndRotation(-7.5F, 3.5F, -1F, 0F, 0F, Mth.PI / 4.0F);
-					case 6 -> PartPose.offsetAndRotation(-7.5F, -1.5F, 3.5F, 0F, 0F, Mth.PI / 3.0F);
-					case 7 -> PartPose.offsetAndRotation(7.5F, 3.5F, -1F, 0F, 0F, -Mth.PI / 4.0F);
-					case 8 -> PartPose.offsetAndRotation(7.5F, -1.5F, 3.5F, 0F, 0F, -Mth.PI / 3.0F);
-					default -> {
-						TwilightForestMod.LOGGER.warn("Out of bounds with Ur-Ghast Trophy limb creation: Iteration " + iteration);
-						yield PartPose.ZERO;
-					}
-				});
+				.addBox(-1.5F, 0.0F, -1.5F, 3, 5, 3),
+			switch (iteration) {
+				case 0 -> PartPose.offset(4.5F, 7, 4.5F);
+				case 1 -> PartPose.offset(-4.5F, 7, 4.5F);
+				case 2 -> PartPose.offset(0F, 7, 0F);
+				case 3 -> PartPose.offset(5.5F, 7, -4.5F);
+				case 4 -> PartPose.offset(-5.5F, 7, -4.5F);
+				case 5 -> PartPose.offsetAndRotation(-7.5F, 3.5F, -1F, 0F, 0F, Mth.PI / 4.0F);
+				case 6 -> PartPose.offsetAndRotation(-7.5F, -1.5F, 3.5F, 0F, 0F, Mth.PI / 3.0F);
+				case 7 -> PartPose.offsetAndRotation(7.5F, 3.5F, -1F, 0F, 0F, -Mth.PI / 4.0F);
+				case 8 -> PartPose.offsetAndRotation(7.5F, -1.5F, 3.5F, 0F, 0F, -Mth.PI / 3.0F);
+				default -> {
+					TwilightForestMod.LOGGER.warn("Out of bounds with Ur-Ghast Trophy limb creation: Iteration " + iteration);
+					yield PartPose.ZERO;
+				}
+			});
 
 		var tentacleExtension = tentacleBase.addOrReplaceChild(name + "_extension", CubeListBuilder.create()
-						.texOffs(0, 3)
-						.addBox(-1.5F, -0.5F, -1.5F, 3.0F, 4.0F, 3.0F),
-				PartPose.offset(0.0F, 4.0F, 0.0F));
+				.texOffs(0, 3)
+				.addBox(-1.5F, -0.5F, -1.5F, 3.0F, 4.0F, 3.0F),
+			PartPose.offset(0.0F, 4.0F, 0.0F));
 
 		var tentacleExtension2 = tentacleExtension.addOrReplaceChild(name + "_extension_2", CubeListBuilder.create()
-						.texOffs(0, 9)
-						.addBox(-1.5F, 1.3F, -1.5F, 3.0F, 4.0F, 3.0F),
-				PartPose.offset(0.0F, 4.0F, 0.0F));
+				.texOffs(0, 9)
+				.addBox(-1.5F, 1.3F, -1.5F, 3.0F, 4.0F, 3.0F),
+			PartPose.offset(0.0F, 4.0F, 0.0F));
 
 		tentacleExtension2.addOrReplaceChild(name + "_tip", CubeListBuilder.create()
-						.texOffs(0, 9)
-						.addBox(-1.5F, 1.3F, -1.5F, 3.0F, 4.0F, 3.0F),
-				PartPose.offset(0, 4, 0));
+				.texOffs(0, 9)
+				.addBox(-1.5F, 1.3F, -1.5F, 3.0F, 4.0F, 3.0F),
+			PartPose.offset(0, 4, 0));
 
 	}
-	
+
 	@Override
 	public void setRotations(float x, float y, float z) {
 		this.body.yRot = y * ((float) Math.PI / 180F);
@@ -104,11 +104,11 @@ public class UrGhastTrophyLegacyModel extends GenericTrophyModel {
 			this.tentacles[i][0].yRot = yTwist * Mth.sin(time * 0.3F);
 		}
 	}
-	
+
 	public void setTranslate(PoseStack matrix, float x, float y, float z) {
 		matrix.translate(x, y, z);
 	}
-	
+
 	@Override
 	public void renderToBuffer(PoseStack matrix, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		this.body.render(matrix, buffer, packedLight, packedOverlay, red, green, blue, alpha);

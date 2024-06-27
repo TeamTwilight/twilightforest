@@ -116,6 +116,7 @@ in vec4 vertexColor;
 
 const int STEPS = 16;
 const float FSTEPS = 16.0;
+const float PRECISION = 0.000001;
 
 float genNoise(float x, float z, float speed) {
     float xx = x + PositionContext.x + (SeedContext / 360);
@@ -124,15 +125,14 @@ float genNoise(float x, float z, float speed) {
 }
 
 int floatToOneOrZero(float value) {
-    int swap = min(1, max(0, int(value)));
-    // 7 decimal places, we may lose precision but thats fine
-    return (1 - swap) * min(1, max(0, int(value * 10000000.0))) + swap;
+    return int(step(PRECISION, value));
 }
 
 float fixNoise(float noise) {
+    float absNoise = abs(noise);
     // Avoids if (noise > -0.2 && noise < 0.2) else ...
-    int swap = floatToOneOrZero(abs(noise) - 0.2);
-    noise = (1 - swap) * (1.0 + abs(noise) * 5.0) + swap * -1.0;
+    int swap = floatToOneOrZero(absNoise - 0.2);
+    noise = (1 - swap) * (1.0 + absNoise * 5.0) + swap * -1.0;
 
     noise = clamp((noise + 1.0) / 2.0 - 0.5, 0.0, 1.0);
     noise = (1.0 - noise) * floatToOneOrZero(noise); // Avoids if (noise > 0)

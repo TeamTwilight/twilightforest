@@ -105,7 +105,7 @@ public record ColorUtil(Function<DyeColor, Block> function) {
 			}
 			if (h < 0) {
 				h += 1;
-			}else if (h > 1) {
+			} else if (h > 1) {
 				h -= 1;
 			}
 		}
@@ -132,7 +132,7 @@ public record ColorUtil(Function<DyeColor, Block> function) {
 	}
 
 	private static int rgb(float r, float g, float b) {
-		return (((int)((r * 255F) + 0.5F) & 0xFF) << 16) | (((int)((g * 255F) + 0.5F) & 0xFF) << 8) | ((int)((b * 255F) + 0.5F) & 0xFF);
+		return (((int) ((r * 255F) + 0.5F) & 0xFF) << 16) | (((int) ((g * 255F) + 0.5F) & 0xFF) << 8) | ((int) ((b * 255F) + 0.5F) & 0xFF);
 	}
 
 	public static int argbToABGR(int argbColor) {
@@ -144,14 +144,14 @@ public record ColorUtil(Function<DyeColor, Block> function) {
 	//We COULD use the WOOL method at the very top of this class, but then we have to use the order of the dyecolor enum, which doesnt show the wools in the order the ram displays them.
 	//I personally like this order better so suck it
 	public static final Map<DyeColor, Block> WOOL_TO_DYE_IN_RAM_ORDER = ImmutableMap.ofEntries(
-			entryOf(DyeColor.WHITE, Blocks.WHITE_WOOL), entryOf(DyeColor.LIGHT_GRAY, Blocks.LIGHT_GRAY_WOOL),
-			entryOf(DyeColor.GRAY, Blocks.GRAY_WOOL), entryOf(DyeColor.BLACK, Blocks.BLACK_WOOL),
-			entryOf(DyeColor.RED, Blocks.RED_WOOL), entryOf(DyeColor.ORANGE, Blocks.ORANGE_WOOL),
-			entryOf(DyeColor.YELLOW, Blocks.YELLOW_WOOL), entryOf(DyeColor.LIME, Blocks.LIME_WOOL),
-			entryOf(DyeColor.GREEN, Blocks.GREEN_WOOL), entryOf(DyeColor.LIGHT_BLUE, Blocks.LIGHT_BLUE_WOOL),
-			entryOf(DyeColor.CYAN, Blocks.CYAN_WOOL), entryOf(DyeColor.BLUE, Blocks.BLUE_WOOL),
-			entryOf(DyeColor.PURPLE, Blocks.PURPLE_WOOL), entryOf(DyeColor.MAGENTA, Blocks.MAGENTA_WOOL),
-			entryOf(DyeColor.PINK, Blocks.PINK_WOOL), entryOf(DyeColor.BROWN, Blocks.BROWN_WOOL));
+		entryOf(DyeColor.WHITE, Blocks.WHITE_WOOL), entryOf(DyeColor.LIGHT_GRAY, Blocks.LIGHT_GRAY_WOOL),
+		entryOf(DyeColor.GRAY, Blocks.GRAY_WOOL), entryOf(DyeColor.BLACK, Blocks.BLACK_WOOL),
+		entryOf(DyeColor.RED, Blocks.RED_WOOL), entryOf(DyeColor.ORANGE, Blocks.ORANGE_WOOL),
+		entryOf(DyeColor.YELLOW, Blocks.YELLOW_WOOL), entryOf(DyeColor.LIME, Blocks.LIME_WOOL),
+		entryOf(DyeColor.GREEN, Blocks.GREEN_WOOL), entryOf(DyeColor.LIGHT_BLUE, Blocks.LIGHT_BLUE_WOOL),
+		entryOf(DyeColor.CYAN, Blocks.CYAN_WOOL), entryOf(DyeColor.BLUE, Blocks.BLUE_WOOL),
+		entryOf(DyeColor.PURPLE, Blocks.PURPLE_WOOL), entryOf(DyeColor.MAGENTA, Blocks.MAGENTA_WOOL),
+		entryOf(DyeColor.PINK, Blocks.PINK_WOOL), entryOf(DyeColor.BROWN, Blocks.BROWN_WOOL));
 
 	static <K, V> Map.Entry<K, V> entryOf(K key, V value) {
 		return new AbstractMap.SimpleImmutableEntry<>(key, value);

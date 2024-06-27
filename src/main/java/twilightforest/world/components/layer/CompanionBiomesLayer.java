@@ -2,6 +2,7 @@ package twilightforest.world.components.layer;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
@@ -37,10 +38,10 @@ public record CompanionBiomesLayer(List<Pair<ResourceKey<Biome>, ResourceKey<Bio
 	}
 
 	public static final class Factory implements BiomeLayerFactory {
-		public static final Codec<Factory> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-				Codec.LONG.fieldOf("salt").forGetter(Factory::salt),
-				Codec.mapPair(ResourceKey.codec(Registries.BIOME).fieldOf("key"), ResourceKey.codec(Registries.BIOME).fieldOf("companion")).codec().listOf().fieldOf("keys_to_companions").forGetter(Factory::biomeCompanions),
-				BiomeLayerStack.HOLDER_CODEC.fieldOf("parent").forGetter(Factory::parent)
+		public static final MapCodec<Factory> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
+			Codec.LONG.fieldOf("salt").forGetter(Factory::salt),
+			Codec.mapPair(ResourceKey.codec(Registries.BIOME).fieldOf("key"), ResourceKey.codec(Registries.BIOME).fieldOf("companion")).codec().listOf().fieldOf("keys_to_companions").forGetter(Factory::biomeCompanions),
+			BiomeLayerStack.HOLDER_CODEC.fieldOf("parent").forGetter(Factory::parent)
 		).apply(inst, Factory::new));
 		private final long salt;
 		private final List<Pair<ResourceKey<Biome>, ResourceKey<Biome>>> biomeCompanions;

@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:hydra_trophy"
-            ]
+            "items": "twilightforest:hydra_trophy"
           }
         ]
       },

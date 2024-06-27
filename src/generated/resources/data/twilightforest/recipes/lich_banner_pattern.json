@@ -3,13 +3,14 @@
   "category": "misc",
   "ingredients": [
     {
-      "tag": "forge:paper"
+      "tag": "c:paper"
     },
     {
       "item": "twilightforest:lich_trophy"
     }
   ],
   "result": {
-    "item": "twilightforest:lich_banner_pattern"
+    "count": 1,
+    "id": "twilightforest:lich_banner_pattern"
   }
 }

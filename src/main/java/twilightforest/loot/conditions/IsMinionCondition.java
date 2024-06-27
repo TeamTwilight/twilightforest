@@ -1,6 +1,7 @@
 package twilightforest.loot.conditions;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
@@ -13,7 +14,7 @@ import javax.annotation.Nonnull;
 
 public record IsMinionCondition(boolean inverse) implements LootItemCondition {
 
-	public static final Codec<IsMinionCondition> CODEC = RecordCodecBuilder.create(instance -> instance.group(Codec.BOOL.fieldOf("inverse").forGetter(o -> o.inverse)).apply(instance, IsMinionCondition::new));
+	public static final MapCodec<IsMinionCondition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(Codec.BOOL.fieldOf("inverse").forGetter(o -> o.inverse)).apply(instance, IsMinionCondition::new));
 
 	@Override
 	public LootItemConditionType getType() {

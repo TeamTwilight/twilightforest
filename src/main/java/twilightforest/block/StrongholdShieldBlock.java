@@ -21,6 +21,7 @@ public class StrongholdShieldBlock extends DirectionalBlock {
 
 	public static final MapCodec<StrongholdShieldBlock> CODEC = simpleCodec(StrongholdShieldBlock::new);
 
+	@SuppressWarnings("this-escape")
 	public StrongholdShieldBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.DOWN));

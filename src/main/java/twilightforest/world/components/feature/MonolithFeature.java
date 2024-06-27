@@ -81,9 +81,9 @@ public class MonolithFeature extends Feature<NoneFeatureConfiguration> {
 		// spawn a few ravens nearby
 		for (int i = 0; i < 2; i++) {
 			BlockPos dPos = pos.offset(
-					rand.nextInt(8) - rand.nextInt(8),
-					0,
-					rand.nextInt(8) - rand.nextInt(8)
+				rand.nextInt(8) - rand.nextInt(8),
+				0,
+				rand.nextInt(8) - rand.nextInt(8)
 			);
 			dPos = world.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, dPos);
 

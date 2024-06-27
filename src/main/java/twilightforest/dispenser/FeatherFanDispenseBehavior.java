@@ -37,9 +37,8 @@ public class FeatherFanDispenseBehavior extends DefaultDispenseItemBehavior {
 
 					if (entity.isPushable() || entity instanceof ItemEntity) {
 						entity.setDeltaMovement(lookVec.getX(), lookVec.getY(), lookVec.getZ());
-						if (stack.hurt(1, level.getRandom(), null)) {
-							stack.setCount(0);
-						}
+
+						stack.hurtAndBreak(1, level.getRandom(), null, () -> stack.setCount(0));
 					}
 				}
 				this.fired = true;

@@ -35,8 +35,8 @@ public class StalactiteReloadListener extends SimpleJsonResourceReloadListener {
 	protected void apply(Map<ResourceLocation, JsonElement> map, ResourceManager manager, ProfilerFiller profiler) {
 		List<Map.Entry<ResourceLocation, JsonElement>> nonTwilight = new ArrayList<>();
 
-        for (Map.Entry<ResourceLocation, JsonElement> entry : map.entrySet()) {
-            ResourceLocation location = entry.getKey();
+		for (Map.Entry<ResourceLocation, JsonElement> entry : map.entrySet()) {
+			ResourceLocation location = entry.getKey();
 
 			if (location.getPath().contains("entries"))
 				continue;
@@ -47,7 +47,7 @@ public class StalactiteReloadListener extends SimpleJsonResourceReloadListener {
 			} else {
 				nonTwilight.add(entry);
 			}
-        }
+		}
 
 		for (Map.Entry<ResourceLocation, JsonElement> entry : nonTwilight) {
 			ResourceLocation location = entry.getKey();
@@ -57,25 +57,25 @@ public class StalactiteReloadListener extends SimpleJsonResourceReloadListener {
 	}
 
 	private void forLocation(ResourceManager manager, ResourceLocation location, JsonElement jsonElement) {
-        try {
-            Optional<SpeleothemVarietyConfig> checkFile = SpeleothemVarietyConfig.CODEC.parse(JsonOps.INSTANCE, jsonElement).result();
-            if (checkFile.isPresent()) {
-                SpeleothemVarietyConfig config = checkFile.get();
-                if (!HILL_CONFIGS.containsKey(config.type()) || config.replace()) {
-                    HILL_CONFIGS.put(config.type(), config);
-                    if (config.replace()) {
-                        TwilightForestMod.LOGGER.info("Stalactite Config {} wiped by {}", config.type(), location.getNamespace());
-                    }
-                }
+		try {
+			Optional<SpeleothemVarietyConfig> checkFile = SpeleothemVarietyConfig.CODEC.parse(JsonOps.INSTANCE, jsonElement).result();
+			if (checkFile.isPresent()) {
+				SpeleothemVarietyConfig config = checkFile.get();
+				if (!HILL_CONFIGS.containsKey(config.type()) || config.replace()) {
+					HILL_CONFIGS.put(config.type(), config);
+					if (config.replace()) {
+						TwilightForestMod.LOGGER.info("Stalactite Config {} wiped by {}", config.type(), location.getNamespace());
+					}
+				}
 
-                this.populateList(manager, config, config.baseStalactites(), STALACTITES_PER_HILL);
-                this.populateList(manager, config, config.oreStalactites(), ORE_STALACTITES_PER_HILL);
-                this.populateList(manager, config, config.stalagmites(), STALAGMITES_PER_HILL);
-            }
-        } catch (Exception e) {
-            TwilightForestMod.LOGGER.error("Couldn't read Hollow Hill list {}", location, e);
-        }
-    }
+				this.populateList(manager, config, config.baseStalactites(), STALACTITES_PER_HILL);
+				this.populateList(manager, config, config.oreStalactites(), ORE_STALACTITES_PER_HILL);
+				this.populateList(manager, config, config.stalagmites(), STALAGMITES_PER_HILL);
+			}
+		} catch (Exception e) {
+			TwilightForestMod.LOGGER.error("Couldn't read Hollow Hill list {}", location, e);
+		}
+	}
 
 	private void populateList(ResourceManager manager, SpeleothemVarietyConfig config, List<ResourceLocation> rawEntries, Map<String, List<Stalactite>> stalactiteDict) {
 		List<Stalactite> stalactitesForType = stalactiteDict.computeIfAbsent(config.type(), k -> new ArrayList<>());

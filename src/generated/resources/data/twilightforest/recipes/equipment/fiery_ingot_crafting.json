@@ -1,15 +1,17 @@
 {
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
+  "group": "fiery_ingot",
   "ingredients": [
     {
       "tag": "twilightforest:fiery_vial"
     },
     {
-      "tag": "forge:ingots/iron"
+      "tag": "c:ingots/iron"
     }
   ],
   "result": {
-    "item": "twilightforest:fiery_ingot"
+    "count": 1,
+    "id": "twilightforest:fiery_ingot"
   }
 }

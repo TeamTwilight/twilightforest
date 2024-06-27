@@ -6,10 +6,10 @@
       "item": "twilightforest:encased_towerwood"
     },
     "6": {
-      "tag": "forge:gems/carminite"
+      "tag": "c:gems/carminite"
     },
     "∴": {
-      "tag": "forge:dusts/redstone"
+      "tag": "c:dusts/redstone"
     }
   },
   "pattern": [
@@ -19,6 +19,6 @@
   ],
   "result": {
     "count": 2,
-    "item": "twilightforest:reappearing_block"
+    "id": "twilightforest:reappearing_block"
   }
 }

@@ -8,13 +8,13 @@ public class UncraftingGenerator {
 
 	public static void buildRecipes(RecipeOutput output) {
 		UncraftingRecipeBuilder.uncrafting(Items.TIPPED_ARROW, 8).setCost(4)
-				.pattern("AAA")
-				.pattern("A A")
-				.pattern("AAA")
-				.define('A', Ingredient.of(Items.ARROW)).save(output);
+			.pattern("AAA")
+			.pattern("A A")
+			.pattern("AAA")
+			.define('A', Ingredient.of(Items.ARROW)).save(output);
 
 		UncraftingRecipeBuilder.uncrafting(Items.WRITTEN_BOOK).setCost(0)
-				.pattern("B")
-				.define('B', Items.BOOK).save(output);
+			.pattern("B")
+			.define('B', Items.BOOK).save(output);
 	}
 }

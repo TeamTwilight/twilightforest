@@ -31,79 +31,79 @@ public class UpperGoblinKnightModel extends HumanoidModel<UpperGoblinKnight> {
 		PartDefinition definition = mesh.getRoot();
 
 		definition.addOrReplaceChild("head", CubeListBuilder.create(),
-				PartPose.offset(0.0F, 12.0F, 0.0F));
+			PartPose.offset(0.0F, 12.0F, 0.0F));
 
 		var hat = definition.addOrReplaceChild("hat", CubeListBuilder.create(),
-				PartPose.offset(0.0F, 12.0F, 0.0F));
+			PartPose.offset(0.0F, 12.0F, 0.0F));
 
 		var helm = hat.addOrReplaceChild("helmet", CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(-3.5F, -11.0F, -3.5F, 7, 11, 7),
-				PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 45F / (180F / Mth.PI), 0.0F));
+				.texOffs(0, 0)
+				.addBox(-3.5F, -11.0F, -3.5F, 7, 11, 7),
+			PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 45F / (180F / Mth.PI), 0.0F));
 
 		var rightHorn = hat.addOrReplaceChild("right_horn_1", CubeListBuilder.create()
-						.texOffs(28, 0)
-						.addBox(-6F, -1.5F, -1.5F, 7, 3, 3),
-				PartPose.offsetAndRotation(-3.5F, -9F, 0.0F, 0.0F, 15F / (180F / Mth.PI), 10F / (180F / Mth.PI)));
+				.texOffs(28, 0)
+				.addBox(-6F, -1.5F, -1.5F, 7, 3, 3),
+			PartPose.offsetAndRotation(-3.5F, -9F, 0.0F, 0.0F, 15F / (180F / Mth.PI), 10F / (180F / Mth.PI)));
 
 		rightHorn.addOrReplaceChild("right_horn_2", CubeListBuilder.create()
-						.texOffs(28, 6)
-						.addBox(-3.0F, -1.0F, -1.0F, 3, 2, 2),
-				PartPose.offsetAndRotation(-5.5F, 0.0F, 0.0F, 0.0F, 0.0F, 10F / (180F / Mth.PI)));
+				.texOffs(28, 6)
+				.addBox(-3.0F, -1.0F, -1.0F, 3, 2, 2),
+			PartPose.offsetAndRotation(-5.5F, 0.0F, 0.0F, 0.0F, 0.0F, 10F / (180F / Mth.PI)));
 
 		var leftHorn = hat.addOrReplaceChild("left_horn_1", CubeListBuilder.create().mirror()
-						.texOffs(28, 0)
-						.addBox(-1F, -1.5F, -1.5F, 7, 3, 3),
-				PartPose.offsetAndRotation(3.5F, -9F, 0.0F, 0.0F, -15F / (180F / Mth.PI), -10F / (180F / Mth.PI)));
+				.texOffs(28, 0)
+				.addBox(-1F, -1.5F, -1.5F, 7, 3, 3),
+			PartPose.offsetAndRotation(3.5F, -9F, 0.0F, 0.0F, -15F / (180F / Mth.PI), -10F / (180F / Mth.PI)));
 
 		leftHorn.addOrReplaceChild("left_horn_2", CubeListBuilder.create().mirror()
-						.texOffs(28, 6)
-						.addBox(0.0F, -1.0F, -1.0F, 3, 2, 2),
-				PartPose.offsetAndRotation(5.5F, 0.0F, 0.0F, 0.0F, 0.0F, -10F / (180F / Mth.PI)));
+				.texOffs(28, 6)
+				.addBox(0.0F, -1.0F, -1.0F, 3, 2, 2),
+			PartPose.offsetAndRotation(5.5F, 0.0F, 0.0F, 0.0F, 0.0F, -10F / (180F / Mth.PI)));
 
 		definition.addOrReplaceChild("body", CubeListBuilder.create()
-						.texOffs(0, 18)
-						.addBox(-5.5F, 0.0F, -2.0F, 11, 8, 4)
-						.texOffs(30, 24)
-						.addBox(-6.5F, 0F, -2F, 1, 4, 4)
-						.texOffs(30, 24)
-						.addBox(5.5F, 0F, -2F, 1, 4, 4),
-				PartPose.offset(0.0F, 12.0F, 0.0F));
+				.texOffs(0, 18)
+				.addBox(-5.5F, 0.0F, -2.0F, 11, 8, 4)
+				.texOffs(30, 24)
+				.addBox(-6.5F, 0F, -2F, 1, 4, 4)
+				.texOffs(30, 24)
+				.addBox(5.5F, 0F, -2F, 1, 4, 4),
+			PartPose.offset(0.0F, 12.0F, 0.0F));
 
 		definition.addOrReplaceChild("breastplate", CubeListBuilder.create()
-						.texOffs(64, 0)
-						.addBox(-6.5F, 0.0F, -3.0F, 13, 12, 6),
-				PartPose.offset(0F, 11.5F, 0.0F));
+				.texOffs(64, 0)
+				.addBox(-6.5F, 0.0F, -3.0F, 13, 12, 6),
+			PartPose.offset(0F, 11.5F, 0.0F));
 
 		var rightArm = definition.addOrReplaceChild("right_arm", CubeListBuilder.create()
-						.texOffs(44, 16)
-						.addBox(-4.0F, -2.0F, -2.0F, 4, 12, 4),
-				PartPose.offset(-6.5F, 14.0F, 0.0F));
+				.texOffs(44, 16)
+				.addBox(-4.0F, -2.0F, -2.0F, 4, 12, 4),
+			PartPose.offset(-6.5F, 14.0F, 0.0F));
 
 		rightArm.addOrReplaceChild("spear", CubeListBuilder.create()
-						.texOffs(108, 0)
-						.addBox(-1.0F, -19.0F, -1.0F, 2, 40, 2),
-				PartPose.offsetAndRotation(-2F, 8.5F, 0.0F, 90F / (180F / Mth.PI), 0.0F, 0.0F));
+				.texOffs(108, 0)
+				.addBox(-1.0F, -19.0F, -1.0F, 2, 40, 2),
+			PartPose.offsetAndRotation(-2F, 8.5F, 0.0F, 90F / (180F / Mth.PI), 0.0F, 0.0F));
 
 		var leftArm = definition.addOrReplaceChild("left_arm", CubeListBuilder.create()
-						.texOffs(44, 16)
-						.addBox(0.0F, -2.0F, -2.0F, 4, 12, 4),
-				PartPose.offset(6.5F, 14.0F, 0.0F));
+				.texOffs(44, 16)
+				.addBox(0.0F, -2.0F, -2.0F, 4, 12, 4),
+			PartPose.offset(6.5F, 14.0F, 0.0F));
 
 		leftArm.addOrReplaceChild("shield", CubeListBuilder.create()
-						.texOffs(63, 36)
-						.addBox(-6.0F, -6.0F, -2.0F, 12, 20, 2),
-				PartPose.offsetAndRotation(0F, 12F, 0.0F, 90F / (180F / Mth.PI), 0.0F, 0.0F));
+				.texOffs(63, 36)
+				.addBox(-6.0F, -6.0F, -2.0F, 12, 20, 2),
+			PartPose.offsetAndRotation(0F, 12F, 0.0F, 90F / (180F / Mth.PI), 0.0F, 0.0F));
 
 		definition.addOrReplaceChild("right_leg", CubeListBuilder.create()
-						.texOffs(30, 16)
-						.addBox(-1.5F, 0.0F, -2.0F, 3, 4, 4),
-				PartPose.offset(-4F, 20.0F, 0.0F));
+				.texOffs(30, 16)
+				.addBox(-1.5F, 0.0F, -2.0F, 3, 4, 4),
+			PartPose.offset(-4F, 20.0F, 0.0F));
 
 		definition.addOrReplaceChild("left_leg", CubeListBuilder.create()
-						.texOffs(30, 16)
-						.addBox(-1.5F, 0.0F, -2.0F, 3, 4, 4),
-				PartPose.offset(4F, 20.0F, 0.0F));
+				.texOffs(30, 16)
+				.addBox(-1.5F, 0.0F, -2.0F, 3, 4, 4),
+			PartPose.offset(4F, 20.0F, 0.0F));
 
 		return LayerDefinition.create(mesh, 128, 64);
 	}
@@ -134,7 +134,7 @@ public class UpperGoblinKnightModel extends HumanoidModel<UpperGoblinKnight> {
 		float leftConstraint = hasShield ? 0.2F : limbSwingAmount;
 
 		if (entity.isShieldDisabled()) {
-			this.leftArm.zRot = ((float)(Math.cos((double)entity.tickCount * 3.25D) * Math.PI * (double)0.4F) * Mth.DEG_TO_RAD) - 0.4F;
+			this.leftArm.zRot = ((float) (Math.cos((double) entity.tickCount * 3.25D) * Math.PI * (double) 0.4F) * Mth.DEG_TO_RAD) - 0.4F;
 		} else {
 			this.leftArm.zRot = 0.0F;
 		}
@@ -162,7 +162,7 @@ public class UpperGoblinKnightModel extends HumanoidModel<UpperGoblinKnight> {
 
 		this.rightArm.xRot = this.rightArm.xRot * 0.5F - ((float) Math.PI / 10F);
 
-		rightArm.xRot -= (Math.PI * 0.66);
+		rightArm.xRot -= (Mth.PI * 0.66F);
 
 		// during swing move arm forward
 		if (entity.heavySpearTimer > 0) {

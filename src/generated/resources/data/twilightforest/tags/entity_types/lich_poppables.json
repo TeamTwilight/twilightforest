@@ -1,4 +1,7 @@
 {
+  "remove": [
+    "#c:bosses"
+  ],
   "values": [
     "#minecraft:skeletons",
     "minecraft:zombie",

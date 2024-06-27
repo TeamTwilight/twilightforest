@@ -1,8 +1,8 @@
 package twilightforest.world.components.layer.vanillalegacy;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 
 @FunctionalInterface
 public interface BiomeLayerType {
-    Codec<? extends BiomeLayerFactory> getCodec();
+	MapCodec<? extends BiomeLayerFactory> getCodec();
 }

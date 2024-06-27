@@ -30,44 +30,44 @@ public class LichModel extends HumanoidModel<Lich> {
 		PartDefinition definition = mesh.getRoot();
 
 		definition.addOrReplaceChild("hat", CubeListBuilder.create()
-						.texOffs(32, 0)
-						.addBox(-4.0F, -12.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.5F)),
-				PartPose.ZERO);
+				.texOffs(32, 0)
+				.addBox(-4.0F, -12.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.5F)),
+			PartPose.ZERO);
 
 		definition.addOrReplaceChild("collar", CubeListBuilder.create()
-						.texOffs(32, 16)
-						.addBox(-6.0F, -2.0F, -4.0F, 12.0F, 12.0F, 1.0F, new CubeDeformation(-0.1F)),
-				PartPose.offsetAndRotation(0.0F, -3.0F, -1.0F, 2.164208F, 0F, 0F));
+				.texOffs(32, 16)
+				.addBox(-6.0F, -2.0F, -4.0F, 12.0F, 12.0F, 1.0F, new CubeDeformation(-0.1F)),
+			PartPose.offsetAndRotation(0.0F, -3.0F, -1.0F, 2.164208F, 0F, 0F));
 
 		definition.addOrReplaceChild("cloak", CubeListBuilder.create()
-						.texOffs(0, 44)
-						.addBox(-6.0F, 2.0F, 0.0F, 12.0F, 19.0F, 1.0F),
-				PartPose.offset(0.0F, -4.0F, 2.5F));
+				.texOffs(0, 44)
+				.addBox(-6.0F, 2.0F, 0.0F, 12.0F, 19.0F, 1.0F),
+			PartPose.offset(0.0F, -4.0F, 2.5F));
 
 		definition.addOrReplaceChild("body", CubeListBuilder.create()
-						.texOffs(8, 16)
-						.addBox(-4.0F, 0.0F, -2.0F, 8.0F, 24.0F, 4.0F),
-				PartPose.offset(0.0F, -4.0F, 0.0F));
+				.texOffs(8, 16)
+				.addBox(-4.0F, 0.0F, -2.0F, 8.0F, 24.0F, 4.0F),
+			PartPose.offset(0.0F, -4.0F, 0.0F));
 
 		definition.addOrReplaceChild("right_arm", CubeListBuilder.create()
-						.texOffs(0, 16)
-						.addBox(-1.0F, -2.0F, -1.0F, 2.0F, 12.0F, 2.0F),
-				PartPose.offset(-5.0F, -2.0F, 0.0F));
+				.texOffs(0, 16)
+				.addBox(-1.0F, -2.0F, -1.0F, 2.0F, 12.0F, 2.0F),
+			PartPose.offset(-5.0F, -2.0F, 0.0F));
 
 		definition.addOrReplaceChild("left_arm", CubeListBuilder.create().mirror()
-						.texOffs(0, 16)
-						.addBox(-1.0F, -2.0F, -1.0F, 2.0F, 12.0F, 2.0F),
-				PartPose.offset(5.0F, 2.0F, 0.0F));
+				.texOffs(0, 16)
+				.addBox(-1.0F, -2.0F, -1.0F, 2.0F, 12.0F, 2.0F),
+			PartPose.offset(5.0F, 2.0F, 0.0F));
 
 		definition.addOrReplaceChild("right_leg", CubeListBuilder.create()
-						.texOffs(0, 16)
-						.addBox(-1.0F, 0.0F, -1.0F, 2.0F, 12.0F, 2.0F),
-				PartPose.offset(-2.0F, 12.0F, 0.0F));
+				.texOffs(0, 16)
+				.addBox(-1.0F, 0.0F, -1.0F, 2.0F, 12.0F, 2.0F),
+			PartPose.offset(-2.0F, 12.0F, 0.0F));
 
 		definition.addOrReplaceChild("left_leg", CubeListBuilder.create().mirror()
-						.texOffs(0, 16)
-						.addBox(-1.0F, 0.0F, -1.0F, 2.0F, 12.0F, 2.0F),
-				PartPose.offset(2.0F, 12.0F, 0.0F));
+				.texOffs(0, 16)
+				.addBox(-1.0F, 0.0F, -1.0F, 2.0F, 12.0F, 2.0F),
+			PartPose.offset(2.0F, 12.0F, 0.0F));
 
 		return LayerDefinition.create(mesh, 64, 64);
 	}
@@ -77,8 +77,8 @@ public class LichModel extends HumanoidModel<Lich> {
 		if (!this.shadowClone) {
 			super.renderToBuffer(stack, builder, light, overlay, red, green, blue, alpha);
 		} else {
-			float shadow = 0.33f;
-			super.renderToBuffer(stack, builder, light, overlay, red * shadow, green * shadow, blue * shadow, 0.8F);
+			float shadow = 0.25f;
+			super.renderToBuffer(stack, builder, light, overlay, red * shadow, green * shadow, blue * shadow, 0.75F);
 		}
 	}
 

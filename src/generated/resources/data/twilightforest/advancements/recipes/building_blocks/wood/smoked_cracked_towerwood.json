@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:towerwood"
-            ]
+            "items": "twilightforest:towerwood"
           }
         ]
       },

@@ -3,11 +3,11 @@
   "category": "misc",
   "ingredients": [
     {
-      "tag": "forge:storage_blocks/carminite"
+      "tag": "c:storage_blocks/carminite"
     }
   ],
   "result": {
     "count": 9,
-    "item": "twilightforest:carminite"
+    "id": "twilightforest:carminite"
   }
 }

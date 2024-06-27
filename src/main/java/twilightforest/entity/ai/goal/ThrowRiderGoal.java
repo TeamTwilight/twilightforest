@@ -10,7 +10,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.network.PacketDistributor;
-import twilightforest.capabilities.YetiThrowAttachment;
+import twilightforest.components.entity.YetiThrowAttachment;
 import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.events.HostileMountEvents;
 import twilightforest.init.TFDataAttachments;
@@ -29,10 +29,10 @@ public class ThrowRiderGoal extends MeleeAttackGoal {
 	@Override
 	public boolean canUse() {
 		return this.mob.getPassengers().isEmpty() &&
-				this.mob.getTarget() != null &&
-				!this.mob.getTarget().getType().is(Tags.EntityTypes.BOSSES) &&
-				this.mob.getTarget().getData(TFDataAttachments.YETI_THROWING).getThrowCooldown() <= 0 &&
-				super.canUse();
+			this.mob.getTarget() != null &&
+			!this.mob.getTarget().getType().is(Tags.EntityTypes.BOSSES) &&
+			this.mob.getTarget().getData(TFDataAttachments.YETI_THROWING).getThrowCooldown() <= 0 &&
+			super.canUse();
 	}
 
 	@Override
@@ -88,7 +88,7 @@ public class ThrowRiderGoal extends MeleeAttackGoal {
 				player.push(throwVec.x(), throwVec.y(), throwVec.z());
 
 				if (player instanceof ServerPlayer server) {
-					PacketDistributor.PLAYER.with(server).send(new MovePlayerPacket(throwVec.x(), throwVec.y(), throwVec.z()));
+					PacketDistributor.sendToPlayer(server, new MovePlayerPacket(throwVec.x(), throwVec.y(), throwVec.z()));
 				}
 			} else rider.push(throwVec.x(), throwVec.y(), throwVec.z());
 		}

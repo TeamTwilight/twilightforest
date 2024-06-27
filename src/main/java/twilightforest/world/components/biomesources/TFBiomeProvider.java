@@ -1,6 +1,6 @@
 package twilightforest.world.components.biomesources;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.RegistryFileCodec;
@@ -14,15 +14,15 @@ import java.util.List;
 import java.util.stream.Stream;
 
 public class TFBiomeProvider extends BiomeSource {
-	public static final Codec<TFBiomeProvider> TF_CODEC = RegistryFileCodec.create(TFRegistries.Keys.BIOME_TERRAIN_DATA, BiomeDensitySource.CODEC, false).xmap(TFBiomeProvider::new, TFBiomeProvider::getBiomeConfig).fieldOf("terrain_data").codec();
+	public static final MapCodec<TFBiomeProvider> TF_CODEC = RegistryFileCodec.create(TFRegistries.Keys.BIOME_TERRAIN_DATA, BiomeDensitySource.CODEC, false).xmap(TFBiomeProvider::new, TFBiomeProvider::getBiomeConfig).fieldOf("terrain_data");
 
 	private final Holder<BiomeDensitySource> biomeTerrainDataHolder;
 
-    public TFBiomeProvider(Holder<BiomeDensitySource> biomeTerrainDataHolder) {
+	public TFBiomeProvider(Holder<BiomeDensitySource> biomeTerrainDataHolder) {
 		super();
 
 		this.biomeTerrainDataHolder = biomeTerrainDataHolder;
-    }
+	}
 
 	private Holder<BiomeDensitySource> getBiomeConfig() {
 		return this.biomeTerrainDataHolder;
@@ -34,7 +34,7 @@ public class TFBiomeProvider extends BiomeSource {
 	}
 
 	@Override
-	protected Codec<? extends BiomeSource> codec() {
+	protected MapCodec<? extends BiomeSource> codec() {
 		return TF_CODEC;
 	}
 

@@ -7,8 +7,8 @@ import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.SilverfishModel;
 import net.minecraft.client.model.geom.ModelLayers;
+import net.minecraft.client.particle.FlameParticle;
 import net.minecraft.client.renderer.Sheets;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.blockentity.HangingSignRenderer;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -22,25 +22,21 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.neoforge.client.event.EntityRenderersEvent;
-import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
-import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
-import net.neoforged.neoforge.client.event.ScreenEvent;
-import org.jetbrains.annotations.Nullable;
-import twilightforest.TFConfig;
+import net.neoforged.neoforge.client.event.*;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.*;
 import twilightforest.client.model.entity.newmodels.*;
+import twilightforest.client.particle.*;
 import twilightforest.client.renderer.entity.*;
 import twilightforest.client.renderer.entity.newmodels.*;
 import twilightforest.client.renderer.tileentity.*;
+import twilightforest.config.TFConfig;
 import twilightforest.entity.TFPart;
 import twilightforest.entity.boss.HydraHead;
 import twilightforest.entity.boss.HydraNeck;
@@ -49,9 +45,9 @@ import twilightforest.entity.boss.SnowQueenIceShield;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFMenuTypes;
+import twilightforest.init.TFParticleType;
 import twilightforest.util.TFWoodTypes;
 
-import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.HashMap;
@@ -60,7 +56,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.BooleanSupplier;
 
-@Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD, modid = TwilightForestMod.ID)
+@EventBusSubscriber(value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD, modid = TwilightForestMod.ID)
 public class TFClientSetup {
 
 	public static boolean optifinePresent = false;
@@ -69,7 +65,7 @@ public class TFClientSetup {
 		TFShaders.init(bus);
 	}
 
-	@Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE, modid = TwilightForestMod.ID)
+	@EventBusSubscriber(value = Dist.CLIENT, bus = EventBusSubscriber.Bus.GAME, modid = TwilightForestMod.ID)
 	public static class ForgeEvents {
 
 		private static boolean firstTitleScreenShown = false;
@@ -85,7 +81,7 @@ public class TFClientSetup {
 				TwilightForestMod.LOGGER.debug("Registered ISTER listener");
 			}
 
-			if (optifinePresent && !TFConfig.CLIENT_CONFIG.disableOptifineNagScreen.get()) {
+			if (optifinePresent && !TFConfig.disableOptifineNagScreen) {
 				Minecraft.getInstance().setScreen(new OptifineWarningScreen(event.getScreen()));
 			}
 
@@ -107,8 +103,8 @@ public class TFClientSetup {
 		}
 	}
 
-    @SubscribeEvent
-    public static void clientSetup(FMLClientSetupEvent evt) {
+	@SubscribeEvent
+	public static void clientSetup(FMLClientSetupEvent evt) {
 		try {
 			Class.forName("net.optifine.Config");
 			optifinePresent = true;
@@ -116,17 +112,17 @@ public class TFClientSetup {
 			optifinePresent = false;
 		}
 
-        evt.enqueueWork(() -> {
-            Sheets.addWoodType(TFWoodTypes.TWILIGHT_OAK_WOOD_TYPE);
-            Sheets.addWoodType(TFWoodTypes.CANOPY_WOOD_TYPE);
-            Sheets.addWoodType(TFWoodTypes.MANGROVE_WOOD_TYPE);
-            Sheets.addWoodType(TFWoodTypes.DARK_WOOD_TYPE);
-            Sheets.addWoodType(TFWoodTypes.TIME_WOOD_TYPE);
-            Sheets.addWoodType(TFWoodTypes.TRANSFORMATION_WOOD_TYPE);
-            Sheets.addWoodType(TFWoodTypes.MINING_WOOD_TYPE);
-            Sheets.addWoodType(TFWoodTypes.SORTING_WOOD_TYPE);
-        });
-    }
+		evt.enqueueWork(() -> {
+			Sheets.addWoodType(TFWoodTypes.TWILIGHT_OAK_WOOD_TYPE);
+			Sheets.addWoodType(TFWoodTypes.CANOPY_WOOD_TYPE);
+			Sheets.addWoodType(TFWoodTypes.MANGROVE_WOOD_TYPE);
+			Sheets.addWoodType(TFWoodTypes.DARK_WOOD_TYPE);
+			Sheets.addWoodType(TFWoodTypes.TIME_WOOD_TYPE);
+			Sheets.addWoodType(TFWoodTypes.TRANSFORMATION_WOOD_TYPE);
+			Sheets.addWoodType(TFWoodTypes.MINING_WOOD_TYPE);
+			Sheets.addWoodType(TFWoodTypes.SORTING_WOOD_TYPE);
+		});
+	}
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void registerClientReloadListeners(RegisterClientReloadListenersEvent event) {
@@ -134,7 +130,7 @@ public class TFClientSetup {
 		MagicPaintingTextureManager.instance = new MagicPaintingTextureManager(Minecraft.getInstance().getTextureManager());
 		event.registerReloadListener(MagicPaintingTextureManager.instance);
 	}
-	
+
 	@SubscribeEvent
 	public static void registerScreens(RegisterMenuScreensEvent event) {
 		event.register(TFMenuTypes.UNCRAFTING.get(), UncraftingScreen::new);
@@ -244,7 +240,6 @@ public class TFClientSetup {
 		event.registerBlockEntityRenderer(TFBlockEntities.CANDELABRA.get(), CandelabraTileEntityRenderer::new);
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	@SuppressWarnings("deprecation")
 	public static class BakedMultiPartRenderers {
 
@@ -264,36 +259,49 @@ public class TFClientSetup {
 		}
 	}
 
-	@Nullable
-	private static Field field_EntityRenderersEvent$AddLayers_renderers;
-
 	@SubscribeEvent
-	@SuppressWarnings("unchecked")
 	public static void attachRenderLayers(EntityRenderersEvent.AddLayers event) {
-		if (field_EntityRenderersEvent$AddLayers_renderers == null) {
-			try {
-				field_EntityRenderersEvent$AddLayers_renderers = EntityRenderersEvent.AddLayers.class.getDeclaredField("renderers");
-				field_EntityRenderersEvent$AddLayers_renderers.setAccessible(true);
-			} catch (NoSuchFieldException e) {
-				e.printStackTrace();
+		for (EntityType<?> type : event.getEntityTypes()) {
+			var renderer = event.getRenderer(type);
+			if (renderer instanceof LivingEntityRenderer<?, ?> living) {
+				attachRenderLayers(living);
 			}
 		}
-		if (field_EntityRenderersEvent$AddLayers_renderers != null) {
-			event.getSkins().forEach(renderer -> {
-				LivingEntityRenderer<Player, EntityModel<Player>> skin = event.getSkin(renderer);
-				attachRenderLayers(Objects.requireNonNull(skin));
-			});
-			try {
-				((Map<EntityType<?>, EntityRenderer<?>>) field_EntityRenderersEvent$AddLayers_renderers.get(event)).values().stream().
-						filter(LivingEntityRenderer.class::isInstance).map(LivingEntityRenderer.class::cast).forEach(TFClientSetup::attachRenderLayers);
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			}
-		}
+
+		event.getSkins().forEach(renderer -> {
+			LivingEntityRenderer<Player, EntityModel<Player>> skin = event.getSkin(renderer);
+			attachRenderLayers(Objects.requireNonNull(skin));
+		});
 	}
 
 	private static <T extends LivingEntity, M extends EntityModel<T>> void attachRenderLayers(LivingEntityRenderer<T, M> renderer) {
 		renderer.addLayer(new ShieldLayer<>(renderer));
 		renderer.addLayer(new IceLayer<>(renderer));
+	}
+
+	@SubscribeEvent
+	public static void registerParticleFactories(RegisterParticleProvidersEvent event) {
+		event.registerSpriteSet(TFParticleType.LARGE_FLAME.get(), LargeFlameParticle.Factory::new);
+		event.registerSpriteSet(TFParticleType.LEAF_RUNE.get(), LeafRuneParticle.Factory::new);
+		event.registerSpecial(TFParticleType.BOSS_TEAR.get(), new GhastTearParticle.Factory());
+		event.registerSpriteSet(TFParticleType.GHAST_TRAP.get(), GhastTrapParticle.Factory::new);
+		event.registerSpriteSet(TFParticleType.PROTECTION.get(), ProtectionParticle.Factory::new); //probably not a good idea, but worth a shot
+		event.registerSpriteSet(TFParticleType.SNOW.get(), SnowParticle.Factory::new);
+		event.registerSpriteSet(TFParticleType.SNOW_GUARDIAN.get(), SnowGuardianParticle.Factory::new);
+		event.registerSpriteSet(TFParticleType.SNOW_WARNING.get(), SnowWarningParticle.SimpleFactory::new);
+		event.registerSpriteSet(TFParticleType.EXTENDED_SNOW_WARNING.get(), SnowWarningParticle.ExtendedFactory::new);
+		event.registerSpriteSet(TFParticleType.ICE_BEAM.get(), IceBeamParticle.Factory::new);
+		event.registerSpriteSet(TFParticleType.ANNIHILATE.get(), AnnihilateParticle.Factory::new);
+		event.registerSpriteSet(TFParticleType.HUGE_SMOKE.get(), SmokeScaleParticle.Factory::new);
+		event.registerSpriteSet(TFParticleType.FIREFLY.get(), FireflyParticle.StationaryProvider::new);
+		event.registerSpriteSet(TFParticleType.WANDERING_FIREFLY.get(), FireflyParticle.WanderingProvider::new);
+		event.registerSpriteSet(TFParticleType.PARTICLE_SPAWNER_FIREFLY.get(), FireflyParticle.ParticleSpawnerProvider::new);
+		event.registerSpriteSet(TFParticleType.FALLEN_LEAF.get(), LeafParticle.Factory::new);
+		event.registerSpriteSet(TFParticleType.DIM_FLAME.get(), FlameParticle.SmallFlameProvider::new);
+		event.registerSpriteSet(TFParticleType.OMINOUS_FLAME.get(), FlameParticle.SmallFlameProvider::new);
+		event.registerSpriteSet(TFParticleType.SORTING_PARTICLE.get(), SortingParticle.Factory::new);
+		event.registerSpriteSet(TFParticleType.TRANSFORMATION_PARTICLE.get(), TransformationParticle.Factory::new);
+		event.registerSpriteSet(TFParticleType.LOG_CORE_PARTICLE.get(), LogCoreParticle.Factory::new);
+		event.registerSpriteSet(TFParticleType.CLOUD_PUFF.get(), CloudPuffParticle.Factory::new);
 	}
 }

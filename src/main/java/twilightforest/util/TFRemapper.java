@@ -15,7 +15,7 @@ public class TFRemapper {
 		DeferredRegister<Block> blockReg = TFBlocks.BLOCKS;
 		DeferredRegister<EntityType<?>> entityReg = TFEntities.ENTITIES;
 		DeferredRegister<Item> itemReg = TFItems.ITEMS;
-		
+
 		remapEntryFromRegistries("yeti_trophy", "alpha_yeti_trophy", blockReg, itemReg);
 		remapEntryFromRegistries("yeti_wall_trophy", "alpha_yeti_wall_trophy", blockReg, itemReg);
 		remapEntryFromRegistries("boss_spawner_naga", "naga_boss_spawner", blockReg, itemReg);

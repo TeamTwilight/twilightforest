@@ -1,6 +1,6 @@
 package twilightforest.loot;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
@@ -11,18 +11,18 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
 import net.minecraft.world.level.storage.loot.providers.number.NumberProviders;
-import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
+import twilightforest.config.TFConfig;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFLoot;
 
 import java.util.List;
 
 public class MultiplayerBasedAdditionLootFunction extends LootItemConditionalFunction {
-	public static final Codec<MultiplayerBasedAdditionLootFunction> CODEC = RecordCodecBuilder.create(
-			p_298131_ -> commonFields(p_298131_)
-					.and(NumberProviders.CODEC.fieldOf("extra_count_per_player").forGetter(o -> o.value))
-					.apply(p_298131_, MultiplayerBasedAdditionLootFunction::new)
+	public static final MapCodec<MultiplayerBasedAdditionLootFunction> CODEC = RecordCodecBuilder.mapCodec(
+		p_298131_ -> commonFields(p_298131_)
+			.and(NumberProviders.CODEC.fieldOf("extra_count_per_player").forGetter(o -> o.value))
+			.apply(p_298131_, MultiplayerBasedAdditionLootFunction::new)
 	);
 
 	private final NumberProvider value;
@@ -37,13 +37,13 @@ public class MultiplayerBasedAdditionLootFunction extends LootItemConditionalFun
 	}
 
 	@Override
-	public LootItemFunctionType getType() {
+	public LootItemFunctionType<? extends LootItemConditionalFunction> getType() {
 		return TFLoot.MULTIPLAYER_MULTIPLIER.get();
 	}
 
 	@Override
 	protected ItemStack run(ItemStack stack, LootContext context) {
-		if (TFConfig.COMMON_CONFIG.multiplayerFightAdjuster.get().adjustsLootRolls()) {
+		if (TFConfig.multiplayerFightAdjuster.adjustsLootRolls()) {
 			if (context.hasParam(LootContextParams.THIS_ENTITY) && context.getParam(LootContextParams.THIS_ENTITY).hasData(TFDataAttachments.MULTIPLAYER_FIGHT)) {
 				int qualifiedPlayers = context.getParam(LootContextParams.THIS_ENTITY).getData(TFDataAttachments.MULTIPLAYER_FIGHT).getQualifiedPlayers().size();
 				if (qualifiedPlayers > 1) {

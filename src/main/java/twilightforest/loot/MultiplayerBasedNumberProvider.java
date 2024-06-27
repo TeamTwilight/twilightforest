@@ -1,23 +1,25 @@
 package twilightforest.loot;
 
 import com.google.common.collect.Sets;
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParam;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
-import net.minecraft.world.level.storage.loot.providers.number.*;
-import twilightforest.TFConfig;
+import net.minecraft.world.level.storage.loot.providers.number.LootNumberProviderType;
+import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
+import net.minecraft.world.level.storage.loot.providers.number.NumberProviders;
+import twilightforest.config.TFConfig;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFLoot;
 
 import java.util.Set;
 
 public record MultiplayerBasedNumberProvider(NumberProvider rollsPerPlayer, NumberProvider defaultRolls) implements NumberProvider {
-	public static final Codec<MultiplayerBasedNumberProvider> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-					NumberProviders.CODEC.fieldOf("per_player_rolls").forGetter(MultiplayerBasedNumberProvider::rollsPerPlayer),
-					NumberProviders.CODEC.fieldOf("default_rolls").forGetter(MultiplayerBasedNumberProvider::defaultRolls))
-			.apply(instance, MultiplayerBasedNumberProvider::new)
+	public static final MapCodec<MultiplayerBasedNumberProvider> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+			NumberProviders.CODEC.fieldOf("per_player_rolls").forGetter(MultiplayerBasedNumberProvider::rollsPerPlayer),
+			NumberProviders.CODEC.fieldOf("default_rolls").forGetter(MultiplayerBasedNumberProvider::defaultRolls))
+		.apply(instance, MultiplayerBasedNumberProvider::new)
 	);
 
 	@Override
@@ -31,7 +33,7 @@ public record MultiplayerBasedNumberProvider(NumberProvider rollsPerPlayer, Numb
 
 	@Override
 	public float getFloat(LootContext context) {
-		if (TFConfig.COMMON_CONFIG.multiplayerFightAdjuster.get().adjustsLootRolls()) {
+		if (TFConfig.multiplayerFightAdjuster.adjustsLootRolls()) {
 			if (context.hasParam(LootContextParams.THIS_ENTITY) && context.getParam(LootContextParams.THIS_ENTITY).hasData(TFDataAttachments.MULTIPLAYER_FIGHT)) {
 				int qualifiedPlayers = context.getParam(LootContextParams.THIS_ENTITY).getData(TFDataAttachments.MULTIPLAYER_FIGHT).getQualifiedPlayers().size();
 				float total = this.defaultRolls.getFloat(context);

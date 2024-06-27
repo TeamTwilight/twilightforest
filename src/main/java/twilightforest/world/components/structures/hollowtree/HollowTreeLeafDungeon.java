@@ -1,6 +1,7 @@
 package twilightforest.world.components.structures.hollowtree;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -17,6 +18,7 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -25,6 +27,7 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import net.minecraft.world.level.storage.loot.LootTable;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFStructurePieceTypes;
 
@@ -35,13 +38,14 @@ public class HollowTreeLeafDungeon extends HollowTreePiece {
 	private final BlockStateProvider leaves;
 	private final BlockStateProvider inside;
 	private final BlockStateProvider lootContainer;
-	private final ResourceLocation lootTable;
+	private final ResourceKey<LootTable> lootTable;
 	private final Holder<EntityType<?>> monster;
 
 	/**
 	 * Make a blob of leaves
 	 */
-	protected HollowTreeLeafDungeon(int index, int x, int y, int z, int radius, BlockStateProvider wood, BlockStateProvider leaves, BlockStateProvider inside, BlockStateProvider lootContainer, ResourceLocation lootTable, Holder<EntityType<?>> monster, RandomSource random) {
+	@SuppressWarnings("this-escape")
+	protected HollowTreeLeafDungeon(int index, int x, int y, int z, int radius, BlockStateProvider wood, BlockStateProvider leaves, BlockStateProvider inside, BlockStateProvider lootContainer, ResourceKey<LootTable> lootTable, Holder<EntityType<?>> monster, RandomSource random) {
 		super(TFStructurePieceTypes.TFHTLD.value(), index, new BoundingBox(x - radius, y - radius, z - radius, x + radius, y + radius, z + radius));
 
 		this.setOrientation(StructurePiece.getRandomHorizontalDirection(random));
@@ -71,12 +75,12 @@ public class HollowTreeLeafDungeon extends HollowTreePiece {
 		this.inside = BlockStateProvider.CODEC.parse(ops, tag.getCompound("air")).result().orElse(HollowTreePiece.DEFAULT_DUNGEON_AIR);
 		this.lootContainer = BlockStateProvider.CODEC.parse(ops, tag.getCompound("loot_block")).result().orElse(HollowTreePiece.DEFAULT_DUNGEON_LOOT_BLOCK);
 
-		this.lootTable = new ResourceLocation(tag.getString("loot_table"));
+		this.lootTable = ResourceKey.create(Registries.LOOT_TABLE, new ResourceLocation(tag.getString("loot_table")));
 
 		ResourceKey<EntityType<?>> dungeonMonster = ResourceKey.create(Registries.ENTITY_TYPE, new ResourceLocation(tag.getString("monster")));
 		this.monster = context.registryAccess().registry(Registries.ENTITY_TYPE)
-				.<Holder<EntityType<?>>>flatMap(reg -> reg.getHolder(dungeonMonster))
-				.orElse(HollowTreePiece.DEFAULT_DUNGEON_MONSTER);
+			.<Holder<EntityType<?>>>flatMap(reg -> reg.getHolder(dungeonMonster))
+			.orElse(HollowTreePiece.DEFAULT_DUNGEON_MONSTER);
 	}
 
 	/**
@@ -91,7 +95,7 @@ public class HollowTreeLeafDungeon extends HollowTreePiece {
 		tag.put("air", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.inside).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
 		tag.put("loot_block", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.lootContainer).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
 
-		tag.putString("loot_table", this.lootTable.toString());
+		tag.putString("loot_table", this.lootTable.location().toString());
 
 		tag.putString("monster", BuiltInRegistries.ENTITY_TYPE.getKey(this.monster.value()).toString());
 	}
@@ -104,15 +108,14 @@ public class HollowTreeLeafDungeon extends HollowTreePiece {
 		RandomSource decoRNG = this.getInterChunkDecoRNG(level);
 
 		// leaves on the outside
-		this.drawBlockBlob(level, writeableBounds, this.radius, this.radius, this.radius, 4, decoRNG, this.leaves, false, true);
+		this.drawBlockBlob(level, writeableBounds, this.radius, this.radius, this.radius, 5, decoRNG, this.leaves, false, true, true);
 		// then wood
-		this.drawBlockBlob(level, writeableBounds, this.radius, this.radius, this.radius, 3, decoRNG, this.wood, false, false);
+		this.drawBlockBlob(level, writeableBounds, this.radius, this.radius, this.radius, 3, decoRNG, this.wood, false, false, false);
 		// then air
-		this.drawBlockBlob(level, writeableBounds, this.radius, this.radius, this.radius, 2, decoRNG, this.inside, true, false);
+		this.drawBlockBlob(level, writeableBounds, this.radius, this.radius, this.radius, 2, decoRNG, this.inside, true, false, true);
 
 		// then treasure chest
-		// which direction is this chest in?
-		this.placeTreasureAtCurrentPosition(level, this.radius + 2, this.radius - 1, this.radius, writeableBounds, decoRNG, this.lootContainer, this.lootTable);
+		this.placeTreasureAtCurrentPosition(level, this.radius, this.radius - 1, this.radius, writeableBounds, decoRNG, this.lootContainer, this.lootTable);
 
 		// then spawner
 		this.placeSpawnerAtCurrentPosition(level, decoRNG, this.radius, this.radius, this.radius, this.monster.value(), writeableBounds);
@@ -121,15 +124,18 @@ public class HollowTreeLeafDungeon extends HollowTreePiece {
 	/**
 	 * Place a treasure chest at the specified coordinates
 	 */
-	protected void placeTreasureAtCurrentPosition(WorldGenLevel world, int x, int y, int z, BoundingBox sbb, RandomSource random, BlockStateProvider stateProvider, ResourceLocation lootTable) {
-		BlockPos pos = this.getWorldPos(x, y, z);
-		BlockState state = stateProvider.getState(random, pos).mirror(this.mirror).rotate(this.rotation);
+	protected void placeTreasureAtCurrentPosition(WorldGenLevel world, int x, int y, int z, BoundingBox sbb, RandomSource random, BlockStateProvider stateProvider, ResourceKey<LootTable> lootTable) {
+		Direction direction = new Direction[]{Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST}[random.nextInt(4)];
+		BlockPos pos = this.getWorldPos(x, y, z).relative(direction, 2);
+
+		BlockState state = stateProvider.getState(random, pos).mirror(this.mirror).rotate(world, pos, this.rotation);
+		if (state.getBlock() instanceof ChestBlock) state = state.setValue(ChestBlock.FACING, direction.getOpposite());
 
 		if (sbb.isInside(pos) && !world.getBlockState(pos).is(state.getBlock())) {
 			world.setBlock(pos, state, 2);
 
-			if (world.getBlockEntity(pos) instanceof RandomizableContainerBlockEntity lootContainer)
-				lootContainer.setLootTable(lootTable, random.nextLong());
+			if (world.getBlockEntity(pos) instanceof RandomizableContainerBlockEntity randomLootContainer)
+				randomLootContainer.setLootTable(lootTable, random.nextLong());
 		}
 	}
 

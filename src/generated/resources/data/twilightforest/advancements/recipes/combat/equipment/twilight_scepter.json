@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:twilight_scepter"
-            ]
+            "items": "twilightforest:twilight_scepter"
           }
         ]
       },

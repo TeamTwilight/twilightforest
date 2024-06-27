@@ -20,9 +20,9 @@ public final class FoliageColorHandler {
 		Handler handler = HANDLES.get(biome);
 		if (handler == null) {
 			handler = Handler.REGISTRY.getOrDefault(
-					Minecraft.getInstance().level == null ? null :
-							Minecraft.getInstance().level.registryAccess().registryOrThrow(Registries.BIOME).getResourceKey(biome).orElse(null),
-					Handler.DEFAULT);
+				Minecraft.getInstance().level == null ? null :
+					Minecraft.getInstance().level.registryAccess().registryOrThrow(Registries.BIOME).getResourceKey(biome).orElse(null),
+				Handler.DEFAULT);
 			HANDLES.put(biome, handler);
 		}
 		return handler.apply(o, x, z);

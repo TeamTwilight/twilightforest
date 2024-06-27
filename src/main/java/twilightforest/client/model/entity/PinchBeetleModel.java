@@ -50,129 +50,129 @@ public class PinchBeetleModel extends HierarchicalModel<PinchBeetle> {
 		PartDefinition definition = mesh.getRoot();
 
 		var head = definition.addOrReplaceChild("head", CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(-4F, -4F, -6F, 8, 6, 6),
-				PartPose.offset(0F, 19F, -5F));
+				.texOffs(0, 0)
+				.addBox(-4F, -4F, -6F, 8, 6, 6),
+			PartPose.offset(0F, 19F, -5F));
 
 		head.addOrReplaceChild("right_antenna", CubeListBuilder.create()
-						.texOffs(42, 4)
-						.addBox(0F, -0.5F, -0.5F, 10, 1, 1),
-				PartPose.offsetAndRotation(1F, -3F, -5F, 0F, 1.047198F, -0.296706F));
+				.texOffs(42, 4)
+				.addBox(0F, -0.5F, -0.5F, 10, 1, 1),
+			PartPose.offsetAndRotation(1F, -3F, -5F, 0F, 1.047198F, -0.296706F));
 
 		head.addOrReplaceChild("left_antenna", CubeListBuilder.create()
-						.texOffs(42, 4)
-						.addBox(0F, -0.5F, -0.5F, 10, 1, 1),
-				PartPose.offsetAndRotation(-1F, -3F, -5F,  0F, 2.094395F, 0.296706F));
+				.texOffs(42, 4)
+				.addBox(0F, -0.5F, -0.5F, 10, 1, 1),
+			PartPose.offsetAndRotation(-1F, -3F, -5F, 0F, 2.094395F, 0.296706F));
 
 		head.addOrReplaceChild("right_eye", CubeListBuilder.create()
-						.texOffs(15, 12)
-						.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3),
-				PartPose.offset(-3F, -2F, -5F));
+				.texOffs(15, 12)
+				.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3),
+			PartPose.offset(-3F, -2F, -5F));
 
 		head.addOrReplaceChild("left_eye", CubeListBuilder.create()
-						.texOffs(15, 12)
-						.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3),
-				PartPose.offset(3F, -2F, -5F));
+				.texOffs(15, 12)
+				.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3),
+			PartPose.offset(3F, -2F, -5F));
 
 		var rightJaw = head.addOrReplaceChild("right_jaw_bottom", CubeListBuilder.create()
-						.texOffs(40, 6)
-						.addBox(-1F, -1F, -1.5F, 8, 2, 3),
-				PartPose.offsetAndRotation(-3F, 1F, -6F, 0F, 2.6354471F, 0F));
+				.texOffs(40, 6)
+				.addBox(-1F, -1F, -1.5F, 8, 2, 3),
+			PartPose.offsetAndRotation(-3F, 1F, -6F, 0F, 2.6354471F, 0F));
 
 		var rightJawTooth = rightJaw.addOrReplaceChild("right_jaw_top", CubeListBuilder.create()
-						.texOffs(40, 10)
-						.addBox(-1F, -1F, -1F, 10, 2, 2),
-				PartPose.offsetAndRotation(7F, 0F, 0F, 0F, -1.047197F, 0F));
+				.texOffs(40, 10)
+				.addBox(-1F, -1F, -1F, 10, 2, 2),
+			PartPose.offsetAndRotation(7F, 0F, 0F, 0F, -1.047197F, 0F));
 
 		rightJawTooth.addOrReplaceChild("right_tooth_1", CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(0F, -0.5F, -0F, 2, 1, 1),
-				PartPose.offsetAndRotation(9F, 0F, 0F, 0F, -0.5235987F, 0));
+				.texOffs(0, 0)
+				.addBox(0F, -0.5F, -0F, 2, 1, 1),
+			PartPose.offsetAndRotation(9F, 0F, 0F, 0F, -0.5235987F, 0));
 
 		rightJawTooth.addOrReplaceChild("right_tooth_2", CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(0F, -0.5F, -0F, 2, 1, 1),
-				PartPose.offsetAndRotation(6F, 0F, 0F, 0F, 1.5707963F, 0));
+				.texOffs(0, 0)
+				.addBox(0F, -0.5F, -0F, 2, 1, 1),
+			PartPose.offsetAndRotation(6F, 0F, 0F, 0F, 1.5707963F, 0));
 
 		rightJawTooth.addOrReplaceChild("right_tooth_3", CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(0F, -0.5F, -0F, 2, 1, 1),
-				PartPose.offsetAndRotation(3F, 0F, 0F, 0F, 1.5707963F, 0));
+				.texOffs(0, 0)
+				.addBox(0F, -0.5F, -0F, 2, 1, 1),
+			PartPose.offsetAndRotation(3F, 0F, 0F, 0F, 1.5707963F, 0));
 
 		var leftJaw = head.addOrReplaceChild("left_jaw_bottom", CubeListBuilder.create()
-						.texOffs(40, 6)
-						.addBox(-1F, -1F, -1.5F, 8, 2, 3),
-				PartPose.offsetAndRotation(3F, 1F, -6F, 0F, 0.5410520F, 0F));
+				.texOffs(40, 6)
+				.addBox(-1F, -1F, -1.5F, 8, 2, 3),
+			PartPose.offsetAndRotation(3F, 1F, -6F, 0F, 0.5410520F, 0F));
 
 		var leftJawTooth = leftJaw.addOrReplaceChild("left_jaw_top", CubeListBuilder.create()
-						.texOffs(40, 10)
-						.addBox(-1F, -1F, -1F, 10, 2, 2),
-				PartPose.offsetAndRotation(7F, 0F, 0F, 0F, 1.047197F, 0F));
+				.texOffs(40, 10)
+				.addBox(-1F, -1F, -1F, 10, 2, 2),
+			PartPose.offsetAndRotation(7F, 0F, 0F, 0F, 1.047197F, 0F));
 
 		leftJawTooth.addOrReplaceChild("left_tooth_1", CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(0F, -0.5F, -0F, 2, 1, 1),
-				PartPose.offsetAndRotation(8F, 0F, -1F, 0F, 0.5235987F, 0));
+				.texOffs(0, 0)
+				.addBox(0F, -0.5F, -0F, 2, 1, 1),
+			PartPose.offsetAndRotation(8F, 0F, -1F, 0F, 0.5235987F, 0));
 
 		leftJawTooth.addOrReplaceChild("left_tooth_2", CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(0F, -0.5F, -0F, 2, 1, 1),
-				PartPose.offsetAndRotation(7F, 0F, 0F, 0F, -1.5707963F, 0));
+				.texOffs(0, 0)
+				.addBox(0F, -0.5F, -0F, 2, 1, 1),
+			PartPose.offsetAndRotation(7F, 0F, 0F, 0F, -1.5707963F, 0));
 
 		leftJawTooth.addOrReplaceChild("left_tooth_3", CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(0F, -0.5F, -0F, 2, 1, 1),
-				PartPose.offsetAndRotation(3.5F, 0F, 0F, 0F, -1.5707963F, 0));
+				.texOffs(0, 0)
+				.addBox(0F, -0.5F, -0F, 2, 1, 1),
+			PartPose.offsetAndRotation(3.5F, 0F, 0F, 0F, -1.5707963F, 0));
 
 		definition.addOrReplaceChild("thorax", CubeListBuilder.create()
-						.texOffs(0, 22)
-						.addBox(-4.5F, -4F, 0F, 9, 8, 2),
-				PartPose.offset(0F, 18F, -4.5F));
+				.texOffs(0, 22)
+				.addBox(-4.5F, -4F, 0F, 9, 8, 2),
+			PartPose.offset(0F, 18F, -4.5F));
 
 		definition.addOrReplaceChild("connector_1", CubeListBuilder.create()
-						.texOffs(0, 12)
-						.addBox(-3F, -3F, 0F, 6, 6, 1),
-				PartPose.offset(0F, 18F, -3F));
+				.texOffs(0, 12)
+				.addBox(-3F, -3F, 0F, 6, 6, 1),
+			PartPose.offset(0F, 18F, -3F));
 
 		definition.addOrReplaceChild("connector_2", CubeListBuilder.create()
-						.texOffs(0, 12)
-						.addBox(-3F, -3F, -1F, 6, 6, 1),
-				PartPose.offset(0F, 18F, -4F));
+				.texOffs(0, 12)
+				.addBox(-3F, -3F, -1F, 6, 6, 1),
+			PartPose.offset(0F, 18F, -4F));
 
 		definition.addOrReplaceChild("rear", CubeListBuilder.create()
-						.texOffs(28, 14)
-						.addBox(-5F, -9F, -4F, 10, 10, 8),
-				PartPose.offsetAndRotation(0F, 18F, 7F, 1.570796F, 0F, 0F));
+				.texOffs(28, 14)
+				.addBox(-5F, -9F, -4F, 10, 10, 8),
+			PartPose.offsetAndRotation(0F, 18F, 7F, 1.570796F, 0F, 0F));
 
 		definition.addOrReplaceChild("leg_1", CubeListBuilder.create().mirror()
-						.texOffs(40, 0)
-						.addBox(-9F, -1F, -1F, 10, 2, 2),
-				PartPose.offsetAndRotation(-4F, 21F, 4F, 0F, 0.6981317F, -0.3490659F));
+				.texOffs(40, 0)
+				.addBox(-9F, -1F, -1F, 10, 2, 2),
+			PartPose.offsetAndRotation(-4F, 21F, 4F, 0F, 0.6981317F, -0.3490659F));
 
 		definition.addOrReplaceChild("leg_2", CubeListBuilder.create()
-						.texOffs(40, 0)
-						.addBox(-1F, -1F, -1F, 10, 2, 2),
-				PartPose.offsetAndRotation(4F, 21F, 4F, 0F, -0.6981317F, 0.3490659F));
+				.texOffs(40, 0)
+				.addBox(-1F, -1F, -1F, 10, 2, 2),
+			PartPose.offsetAndRotation(4F, 21F, 4F, 0F, -0.6981317F, 0.3490659F));
 
 		definition.addOrReplaceChild("leg_3", CubeListBuilder.create().mirror()
-						.texOffs(40, 0)
-						.addBox(-9F, -1F, -1F, 10, 2, 2),
-				PartPose.offsetAndRotation(-4F, 21F, -1F, 0F, 0.2792527F, -0.3490659F));
+				.texOffs(40, 0)
+				.addBox(-9F, -1F, -1F, 10, 2, 2),
+			PartPose.offsetAndRotation(-4F, 21F, -1F, 0F, 0.2792527F, -0.3490659F));
 
 		definition.addOrReplaceChild("leg_4", CubeListBuilder.create()
-						.texOffs(40, 0)
-						.addBox(-1F, -1F, -1F, 10, 2, 2),
-				PartPose.offsetAndRotation(4F, 21F, -1F, 0F, -0.2792527F, 0.3490659F));
+				.texOffs(40, 0)
+				.addBox(-1F, -1F, -1F, 10, 2, 2),
+			PartPose.offsetAndRotation(4F, 21F, -1F, 0F, -0.2792527F, 0.3490659F));
 
 		definition.addOrReplaceChild("leg_5", CubeListBuilder.create().mirror()
-						.texOffs(40, 0)
-						.addBox(-9F, -1F, -1F, 10, 2, 2),
-				PartPose.offsetAndRotation(-4F, 21F, -4F, 0F, -0.2792527F, -0.3490659F));
+				.texOffs(40, 0)
+				.addBox(-9F, -1F, -1F, 10, 2, 2),
+			PartPose.offsetAndRotation(-4F, 21F, -4F, 0F, -0.2792527F, -0.3490659F));
 
 		definition.addOrReplaceChild("leg_6", CubeListBuilder.create()
-						.texOffs(40, 0)
-						.addBox(-1F, -1F, -1F, 10, 2, 2),
-				PartPose.offsetAndRotation(4F, 21F, -4F, 0F, 0.2792527F, 0.3490659F));
+				.texOffs(40, 0)
+				.addBox(-1F, -1F, -1F, 10, 2, 2),
+			PartPose.offsetAndRotation(4F, 21F, -4F, 0F, 0.2792527F, 0.3490659F));
 
 		return LayerDefinition.create(mesh, 64, 32);
 	}

@@ -25,9 +25,9 @@ public class TFShaders {
 		bus.addListener((Consumer<RegisterShadersEvent>) event -> {
 			try {
 				event.registerShader(new ShaderInstance(event.getResourceProvider(), TwilightForestMod.prefix("red_thread/red_thread"), DefaultVertexFormat.BLOCK),
-						shader -> RED_THREAD = shader);
+					shader -> RED_THREAD = shader);
 				event.registerShader(new PositionAwareShaderInstance(event.getResourceProvider(), TwilightForestMod.prefix("aurora/aurora"), DefaultVertexFormat.POSITION_COLOR),
-						shader -> AURORA = (PositionAwareShaderInstance) shader);
+					shader -> AURORA = (PositionAwareShaderInstance) shader);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -88,6 +88,7 @@ public class TFShaders {
 		@Nullable
 		public final Uniform POSITION;
 
+		@SuppressWarnings("this-escape")
 		public PositionAwareShaderInstance(ResourceProvider p_173336_, ResourceLocation shaderLocation, VertexFormat p_173338_) throws IOException {
 			super(p_173336_, shaderLocation, p_173338_);
 			SEED = getUniform("SeedContext");

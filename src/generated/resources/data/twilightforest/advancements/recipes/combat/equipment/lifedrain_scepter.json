@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:lifedrain_scepter"
-            ]
+            "items": "twilightforest:lifedrain_scepter"
           }
         ]
       },

@@ -1,12 +1,13 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "misc",
+  "group": "wooden_fence",
   "key": {
     "#": {
       "item": "twilightforest:transformation_planks"
     },
     "S": {
-      "tag": "forge:rods/wooden"
+      "tag": "c:rods/wooden"
     }
   },
   "pattern": [
@@ -15,6 +16,6 @@
   ],
   "result": {
     "count": 3,
-    "item": "twilightforest:transformation_fence"
+    "id": "twilightforest:transformation_fence"
   }
 }

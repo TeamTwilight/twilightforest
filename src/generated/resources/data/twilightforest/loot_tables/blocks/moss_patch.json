@@ -5,10 +5,8 @@
       "bonus_rolls": 0.0,
       "conditions": [
         {
-          "condition": "minecraft:match_tool",
-          "predicate": {
-            "tag": "forge:shears"
-          }
+          "action": "shears_dig",
+          "condition": "neoforge:can_tool_perform_action"
         }
       ],
       "entries": [

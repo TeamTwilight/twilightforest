@@ -22,6 +22,7 @@ public class TFBipedRenderer<T extends Mob, M extends HumanoidModel<T>> extends 
 		}
 	}
 
+	@SuppressWarnings("this-escape")
 	public TFBipedRenderer(EntityRendererProvider.Context context, M modelBiped, M armorModel1, M armorModel2, float shadowSize, String textureName) {
 		this(context, modelBiped, shadowSize, textureName);
 		this.addLayer(new HumanoidArmorLayer<>(this, armorModel1, armorModel2, context.getModelManager()));

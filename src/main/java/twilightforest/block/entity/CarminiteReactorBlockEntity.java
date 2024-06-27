@@ -132,8 +132,8 @@ public class CarminiteReactorBlockEntity extends BlockEntity {
 
 				if (te.counter >= 350) {
 					// deactivate & explode
-					level.explode(null, TFDamageTypes.getDamageSource(level, TFDamageTypes.REACTOR), null, pos.getX(), pos.getY(), pos.getZ(), 4.0F, true, Level.ExplosionInteraction.BLOCK);
 					level.destroyBlock(pos, false);
+					level.explode(null, TFDamageTypes.getDamageSource(level, TFDamageTypes.REACTOR), null, pos.getX(), pos.getY(), pos.getZ(), 4.0F, true, Level.ExplosionInteraction.BLOCK);
 
 					// spawn mini ghasts near the secondary & tertiary points
 					for (int i = 0; i < 3; i++) {
@@ -212,9 +212,9 @@ public class CarminiteReactorBlockEntity extends BlockEntity {
 
 		if (netherTransform && stateThere.getBlock() != Blocks.AIR) {
 			Optional<Block> optional = BuiltInRegistries.BLOCK
-					.getTag(BlockTagGenerator.CARMINITE_REACTOR_ORES)
-					.flatMap(tag -> tag.getRandomElement(this.getLevel().getRandom()))
-					.map(Holder::value);
+				.getTag(BlockTagGenerator.CARMINITE_REACTOR_ORES)
+				.flatMap(tag -> tag.getRandomElement(this.getLevel().getRandom()))
+				.map(Holder::value);
 			this.getLevel().setBlock(pos, (this.getLevel().getRandom().nextInt(8) == 0 && optional.isPresent() ? optional.get().defaultBlockState() : Blocks.NETHERRACK.defaultBlockState()), 3);
 			// fire on top?
 			if (this.getLevel().isEmptyBlock(pos.above()) && fuzz % 3 == 0) {
@@ -230,8 +230,8 @@ public class CarminiteReactorBlockEntity extends BlockEntity {
 
 		// don't destroy unbreakable stuff
 		if (stateThere.getBlock() != Blocks.AIR &&
-				!(stateThere.is(BlockTagGenerator.CARMINITE_REACTOR_IMMUNE) ||
-						(stateThere.getDestroySpeed(this.getLevel(), pos) == -1))) {
+			!(stateThere.is(BlockTagGenerator.CARMINITE_REACTOR_IMMUNE) ||
+				(stateThere.getDestroySpeed(this.getLevel(), pos) == -1))) {
 			this.getLevel().setBlock(pos, state, 2);
 		}
 	}

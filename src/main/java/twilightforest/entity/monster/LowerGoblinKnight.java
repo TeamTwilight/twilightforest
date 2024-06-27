@@ -21,11 +21,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.event.EventHooks;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Vector3f;
 import twilightforest.entity.ai.goal.RiderSpearAttackGoal;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
@@ -35,8 +33,9 @@ import java.util.Objects;
 public class LowerGoblinKnight extends Monster {
 
 	private static final EntityDataAccessor<Boolean> ARMOR = SynchedEntityData.defineId(LowerGoblinKnight.class, EntityDataSerializers.BOOLEAN);
-	private static final AttributeModifier ARMOR_MODIFIER = new AttributeModifier("Armor boost", 17, AttributeModifier.Operation.ADDITION);
+	private static final AttributeModifier ARMOR_MODIFIER = new AttributeModifier("Armor boost", 17, AttributeModifier.Operation.ADD_VALUE);
 
+	@SuppressWarnings("this-escape")
 	public LowerGoblinKnight(EntityType<? extends LowerGoblinKnight> type, Level world) {
 		super(type, world);
 		this.setHasArmor(true);
@@ -64,15 +63,15 @@ public class LowerGoblinKnight extends Monster {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Monster.createMonsterAttributes()
-				.add(Attributes.MAX_HEALTH, 20.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.28D)
-				.add(Attributes.ATTACK_DAMAGE, 4.0D);
+			.add(Attributes.MAX_HEALTH, 20.0D)
+			.add(Attributes.MOVEMENT_SPEED, 0.28D)
+			.add(Attributes.ATTACK_DAMAGE, 4.0D);
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(ARMOR, false);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(ARMOR, false);
 	}
 
 	public boolean hasArmor() {
@@ -88,7 +87,7 @@ public class LowerGoblinKnight extends Monster {
 					Objects.requireNonNull(this.getAttribute(Attributes.ARMOR)).addTransientModifier(ARMOR_MODIFIER);
 				}
 			} else {
-				Objects.requireNonNull(this.getAttribute(Attributes.ARMOR)).removeModifier(ARMOR_MODIFIER.getId());
+				Objects.requireNonNull(this.getAttribute(Attributes.ARMOR)).removeModifier(ARMOR_MODIFIER.id());
 			}
 		}
 	}
@@ -107,20 +106,20 @@ public class LowerGoblinKnight extends Monster {
 
 	@Nullable
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
-		data = super.finalizeSpawn(accessor, difficulty, reason, data, tag);
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData data) {
+		data = super.finalizeSpawn(accessor, difficulty, reason, data);
 
 		UpperGoblinKnight upper = new UpperGoblinKnight(TFEntities.UPPER_GOBLIN_KNIGHT.get(), this.level());
 		upper.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
-		EventHooks.onFinalizeSpawn(upper, accessor, difficulty, MobSpawnType.NATURAL, data, tag);
+		EventHooks.finalizeMobSpawn(upper, accessor, difficulty, MobSpawnType.NATURAL, data);
 		upper.startRiding(this);
 
 		return data;
 	}
 
 	@Override
-	protected Vector3f getPassengerAttachmentPoint(Entity entity, EntityDimensions dimensions, float yRot) {
-		return new Vector3f(0.0F, dimensions.height * 0.91F, 0.0F);
+	protected Vec3 getPassengerAttachmentPoint(Entity entity, EntityDimensions dimensions, float yRot) {
+		return new Vec3(0.0F, dimensions.height() * 0.91F, 0.0F);
 	}
 
 	@Override
@@ -203,7 +202,6 @@ public class LowerGoblinKnight extends Monster {
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public void handleEntityEvent(byte id) {
 		if (id == 5) {
 			ItemStack broken = new ItemStack(Items.IRON_CHESTPLATE);

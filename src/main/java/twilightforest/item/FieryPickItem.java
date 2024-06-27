@@ -8,17 +8,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.Level;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 public class FieryPickItem extends PickaxeItem {
 
 	public FieryPickItem(Tier toolMaterial, Properties properties) {
-		super(toolMaterial, 1, -2.8F, properties);
+		super(toolMaterial, properties);
 	}
 
 	@Override
@@ -27,7 +23,7 @@ public class FieryPickItem extends PickaxeItem {
 
 		if (result && !target.fireImmune()) {
 			if (!target.level().isClientSide()) {
-				target.setSecondsOnFire(15);
+				target.igniteForSeconds(15);
 			} else {
 				target.level().addParticle(ParticleTypes.FLAME, target.getX(), target.getY() + target.getBbHeight() * 0.5, target.getZ(), target.getBbWidth() * 0.5, target.getBbHeight() * 0.5, target.getBbWidth() * 0.5);
 			}
@@ -37,9 +33,8 @@ public class FieryPickItem extends PickaxeItem {
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flags) {
-		super.appendHoverText(stack, level, tooltip, flags);
-		tooltip.add(Component.translatable(getDescriptionId() + ".desc").withStyle(ChatFormatting.GRAY));
+	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flags) {
+		super.appendHoverText(stack, context, tooltip, flags);
+		tooltip.add(Component.translatable(this.getDescriptionId() + ".desc").withStyle(ChatFormatting.GRAY));
 	}
 }

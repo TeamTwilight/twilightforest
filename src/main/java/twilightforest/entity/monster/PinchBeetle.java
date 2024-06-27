@@ -2,6 +2,7 @@ package twilightforest.entity.monster;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -11,14 +12,19 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.Boat;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import org.joml.Vector3f;
+import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.entity.IHostileMount;
 import twilightforest.entity.ai.goal.ChargeAttackGoal;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFSounds;
+import twilightforest.util.EntityUtil;
 
 public class PinchBeetle extends Monster implements IHostileMount {
 
@@ -40,10 +46,16 @@ public class PinchBeetle extends Monster implements IHostileMount {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Monster.createMonsterAttributes()
-				.add(Attributes.MAX_HEALTH, 40.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.23D)
-				.add(Attributes.ATTACK_DAMAGE, 4.0D)
-				.add(Attributes.ARMOR, 2.0D);
+			.add(Attributes.MAX_HEALTH, 40.0D)
+			.add(Attributes.MOVEMENT_SPEED, 0.23D)
+			.add(Attributes.ATTACK_DAMAGE, 4.0D)
+			.add(Attributes.ARMOR, 2.0D);
+	}
+
+	@Nullable
+	@Override
+	protected SoundEvent getAmbientSound() {
+		return TFSounds.PINCH_BEETLE_AMBIENT.get();
 	}
 
 	@Override
@@ -63,19 +75,25 @@ public class PinchBeetle extends Monster implements IHostileMount {
 
 	@Override
 	public void aiStep() {
-
 		super.aiStep();
 		this.dimensions = this.getDimensions(this.getPose());
 
 		if (!this.getPassengers().isEmpty()) {
-			this.getLookControl().setLookAt(this.getPassengers().get(0), 100.0F, 100.0F);
+			Entity passenger = this.getPassengers().getFirst();
+
+			if (passenger.getVehicle() != this) {
+				this.removePassenger(passenger);
+				return;
+			}
+
+			this.getLookControl().setLookAt(passenger, 100.0F, 100.0F);
 			//always set our passenger as our target
-			if (this.getPassengers().get(0) instanceof LivingEntity entity) {
+			if (passenger instanceof LivingEntity entity) {
 				this.setTarget(entity);
 			}
 
 			//if our held player switches gamemodes let them go
-			if (this.getPassengers().get(0) instanceof Player player && player.getAbilities().invulnerable) {
+			if (passenger instanceof Player player && player.getAbilities().invulnerable) {
 				player.stopRiding();
 				this.setTarget(null);
 			}
@@ -93,7 +111,7 @@ public class PinchBeetle extends Monster implements IHostileMount {
 	@Override
 	public void knockback(double x, double y, double z) {
 		//only take knockback if not holding something
-		if(this.getPassengers().isEmpty()) {
+		if (this.getPassengers().isEmpty()) {
 			super.knockback(x, y, z);
 		}
 	}
@@ -110,18 +128,32 @@ public class PinchBeetle extends Monster implements IHostileMount {
 				entity.startRiding(this, true);
 			}
 		}
-		entity.hurt(TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.CLAMPED, this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
-		return super.doHurtTarget(entity);
+		return EntityUtil.properlyApplyCustomDamageSource(this, entity, TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.CLAMPED, this), null);
 	}
 
 	@Override
-	public float getEyeHeight(Pose pose) {
-		return 0.25F;
+	public boolean startRiding(Entity entity, boolean force) {
+		if (entity instanceof Boat boat) {
+			boat.kill();
+			if (this.level().getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
+				for (int i = 0; i < 3; i++) {
+					this.spawnAtLocation(boat.getVariant().getPlanks());
+				}
+
+				for (int j = 0; j < 2; j++) {
+					this.spawnAtLocation(Items.STICK);
+				}
+			}
+			this.playSound(SoundEvents.ZOMBIE_BREAK_WOODEN_DOOR);
+			return false;
+		}
+
+		return super.startRiding(entity, force);
 	}
 
 	@Override
-	protected Vector3f getPassengerAttachmentPoint(Entity entity, EntityDimensions dimensions, float yRot) {
-		return new Vector3f(0.0F, this.getEyeHeight(), 0.75F);
+	protected Vec3 getPassengerAttachmentPoint(Entity entity, EntityDimensions dimensions, float yRot) {
+		return new Vec3(0.0F, this.getEyeHeight(), 0.75F);
 	}
 
 	@Override
@@ -130,17 +162,12 @@ public class PinchBeetle extends Monster implements IHostileMount {
 	}
 
 	@Override
-	public EntityDimensions getDimensions(Pose pose) {
+	public EntityDimensions getDefaultDimensions(Pose pose) {
 
 		if (!this.getPassengers().isEmpty()) {
 			return EntityDimensions.scalable(2.2F, 1.6F);
 		} else {
-			return super.getDimensions(pose);
+			return super.getDefaultDimensions(pose);
 		}
-	}
-
-	@Override
-	public MobType getMobType() {
-		return MobType.ARTHROPOD;
 	}
 }

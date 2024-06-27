@@ -23,11 +23,9 @@
     },
     {
       "type": "twilightforest:no_structure",
-      "value": {
-        "additional_clearance": 0,
-        "occupies_surface": false,
-        "occupies_underground": true
-      }
+      "additional_clearance": 0,
+      "occupies_surface": false,
+      "occupies_underground": true
     },
     {
       "type": "minecraft:biome"

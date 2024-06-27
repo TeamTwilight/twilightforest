@@ -1,6 +1,7 @@
 package twilightforest.item.recipe;
 
-import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.util.Unit;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
@@ -8,12 +9,11 @@ import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
+import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFRecipes;
 
 public class EmperorsClothRecipe extends CustomRecipe {
-
-	public static final String INVISIBLE_TAG = "twilightforest_emperors_cloth_applied";
 
 	public EmperorsClothRecipe(CraftingBookCategory category) {
 		super(category);
@@ -30,7 +30,7 @@ public class EmperorsClothRecipe extends CustomRecipe {
 				if (stack.is(TFItems.EMPERORS_CLOTH.get()) && !foundInk) {
 					foundInk = true;
 				} else if (!foundItem) {
-					if (stack.getItem() instanceof ArmorItem && !stack.hasCraftingRemainingItem() && (stack.getTag() == null || !stack.getTag().contains(INVISIBLE_TAG))) {
+					if (stack.getItem() instanceof ArmorItem && !stack.hasCraftingRemainingItem() && stack.get(TFDataComponents.EMPERORS_CLOTH) == null) {
 						foundItem = true;
 					} else {
 						return false;
@@ -45,7 +45,7 @@ public class EmperorsClothRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public ItemStack assemble(CraftingContainer container, RegistryAccess access) {
+	public ItemStack assemble(CraftingContainer container, HolderLookup.Provider provider) {
 		ItemStack item = ItemStack.EMPTY;
 
 		for (int i = 0; i < container.getContainerSize(); i++) {
@@ -56,7 +56,7 @@ public class EmperorsClothRecipe extends CustomRecipe {
 		}
 
 		ItemStack copy = item.copy();
-		copy.getOrCreateTag().putBoolean(INVISIBLE_TAG, true);
+		copy.set(TFDataComponents.EMPERORS_CLOTH, Unit.INSTANCE);
 		return copy;
 	}
 

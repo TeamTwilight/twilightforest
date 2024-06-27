@@ -9,10 +9,11 @@
       "item": "twilightforest:torchberries"
     },
     {
-      "tag": "forge:dusts/glowstone"
+      "tag": "c:dusts/glowstone"
     }
   ],
   "result": {
-    "item": "twilightforest:magic_map_focus"
+    "count": 1,
+    "id": "twilightforest:magic_map_focus"
   }
 }

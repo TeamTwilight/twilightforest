@@ -4,8 +4,6 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import twilightforest.TwilightForestMod;
 
 public class TFDimension {
@@ -23,7 +21,6 @@ public class TFDimension {
 	}
 
 	// Checks if the world is a qualified Twilight world by checking against its namespace or if it's a portal destination
-	@OnlyIn(Dist.CLIENT)
 	public static boolean isTwilightWorldOnClient(Level clientWorld) {
 		return TwilightForestMod.ID.equals(clientWorld.dimension().location().getNamespace()) || isTwilightPortalDestination(clientWorld);
 	}

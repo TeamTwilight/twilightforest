@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:mangrove_slab"
-            ]
+            "items": "twilightforest:mangrove_slab"
           }
         ]
       },

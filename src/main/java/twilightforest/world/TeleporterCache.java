@@ -2,6 +2,7 @@ package twilightforest.world;
 
 import com.google.common.collect.Maps;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -54,7 +55,7 @@ public class TeleporterCache extends SavedData {
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag tag) {
+	public CompoundTag save(CompoundTag tag, HolderLookup.Provider provider) {
 		ListTag dcc = new ListTag();
 		this.destinationCoordinateCache.forEach((rl, map) -> {
 			CompoundTag ct = new CompoundTag();
@@ -79,7 +80,7 @@ public class TeleporterCache extends SavedData {
 		return tag;
 	}
 
-	public static TeleporterCache load(CompoundTag tag) {
+	public static TeleporterCache load(CompoundTag tag, HolderLookup.Provider provider) {
 		TeleporterCache cache = new TeleporterCache();
 		tag.getList("dest", Tag.TAG_COMPOUND).stream().map(CompoundTag.class::cast).forEach(dest -> {
 			ResourceLocation name = new ResourceLocation(dest.getString("name"));

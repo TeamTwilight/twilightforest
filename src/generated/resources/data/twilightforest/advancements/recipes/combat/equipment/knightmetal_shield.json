@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "forge:ingots/knightmetal"
+            "items": "#c:ingots/knightmetal"
           }
         ]
       },
@@ -15,9 +15,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:knightmetal_ring"
-            ]
+            "items": "twilightforest:knightmetal_ring"
           }
         ]
       },

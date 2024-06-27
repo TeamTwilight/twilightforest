@@ -1,6 +1,6 @@
 package twilightforest.world.components.processors;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelReader;
@@ -17,10 +17,10 @@ import twilightforest.util.FeaturePlacers;
 
 public final class CobbleVariants extends StructureProcessor {
 	public static final CobbleVariants INSTANCE = new CobbleVariants();
-	public static final Codec<CobbleVariants> CODEC = Codec.unit(() -> INSTANCE);
+	public static final MapCodec<CobbleVariants> CODEC = MapCodec.unit(() -> INSTANCE);
 
 	private CobbleVariants() {
-    }
+	}
 
 	@Override
 	public StructureTemplate.StructureBlockInfo process(LevelReader worldReaderIn, BlockPos pos, BlockPos piecepos, StructureTemplate.StructureBlockInfo p_215194_3_, StructureTemplate.StructureBlockInfo modifiedBlockInfo, StructurePlaceSettings settings, @Nullable StructureTemplate template) {

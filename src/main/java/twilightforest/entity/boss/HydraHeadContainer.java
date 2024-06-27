@@ -147,7 +147,7 @@ public class HydraHeadContainer {
 	private final Map<State, Float>[] stateYRotations;
 	private final Map<State, Float>[] stateMouthOpen;
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"this-escape", "unchecked"})
 	public HydraHeadContainer(Hydra hydra, int number, boolean startActive) {
 		this.headNum = number;
 		this.hydra = hydra;
@@ -350,10 +350,10 @@ public class HydraHeadContainer {
 		// only actually do these things on the server
 		if (!this.hydra.level().isClientSide()) {
 			// make sure this is set up
-			if (!this.isDead() && this.headEntity.dimensions.width == 0) {
+			if (!this.isDead() && this.headEntity.dimensions.width() == 0) {
 				this.headEntity.activate();
 				this.performOnAllNecks(HydraPart::activate);
-			} else if (!this.isActive() && this.headEntity.dimensions.width > 0) {
+			} else if (!this.isActive() && this.headEntity.dimensions.width() > 0) {
 				this.headEntity.deactivate();
 				this.performOnAllNecks(HydraPart::deactivate);
 			}
@@ -678,12 +678,12 @@ public class HydraHeadContainer {
 						if (!player.getCooldowns().isOnCooldown(player.getUseItem().getItem())) {
 							//cause severe damage and play a shatter sound
 							this.headEntity.level().playSound(null, player.blockPosition(), player.getUseItem().is(Items.SHIELD) ? TFSounds.WOOD_SHIELD_SHATTERS.get() : TFSounds.METAL_SHIELD_SHATTERS.get(), SoundSource.PLAYERS, 1.0F, player.getVoicePitch());
-							player.getUseItem().hurtAndBreak(112, player, event -> event.broadcastBreakEvent(player.getUsedItemHand()));
+							player.getUseItem().hurtAndBreak(112, player, LivingEntity.getSlotForHand(player.getUsedItemHand()));
 						}
 						//add cooldown and knockback
 						player.getCooldowns().addCooldown(player.getUseItem().getItem(), 200);
 						player.stopUsingItem();
-						PacketDistributor.PLAYER.with((ServerPlayer) player).send(new MovePlayerPacket(-this.headEntity.getDirection().getStepX() * 0.5F, 0.15F, -this.headEntity.getDirection().getStepZ() * 0.5F));
+						PacketDistributor.sendToPlayer((ServerPlayer) player, new MovePlayerPacket(-this.headEntity.getDirection().getStepX() * 0.5F, 0.15F, -this.headEntity.getDirection().getStepZ() * 0.5F));
 					}
 
 					// bite it!
@@ -691,7 +691,7 @@ public class HydraHeadContainer {
 
 					//knockback!
 					if (living instanceof Player player) {
-						PacketDistributor.PLAYER.with((ServerPlayer) player).send(new MovePlayerPacket(-this.headEntity.getDirection().getStepX() * 0.5F, 0.1F, -this.headEntity.getDirection().getStepZ() * 0.5F));
+						PacketDistributor.sendToPlayer((ServerPlayer) player, new MovePlayerPacket(-this.headEntity.getDirection().getStepX() * 0.5F, 0.1F, -this.headEntity.getDirection().getStepZ() * 0.5F));
 					} else {
 						living.knockback(-this.headEntity.getDirection().getStepX(), 0.1F, -this.headEntity.getDirection().getStepZ());
 					}
@@ -704,7 +704,7 @@ public class HydraHeadContainer {
 
 			if (target != null && target != this.headEntity.getParent() && (!(target instanceof HydraPart) || ((HydraPart) target).getParent() != this.headEntity.getParent())) {
 				if (!target.fireImmune() && target.hurt(TFDamageTypes.getEntityDamageSource(target.level(), TFDamageTypes.HYDRA_FIRE, this.hydra, TFEntities.HYDRA.get()), FLAME_DAMAGE)) {
-					target.setSecondsOnFire(FLAME_BURN_FACTOR);
+					target.igniteForSeconds(FLAME_BURN_FACTOR);
 				}
 			}
 		}
@@ -948,21 +948,21 @@ public class HydraHeadContainer {
 
 	public boolean isAttacking() {
 		return this.currentState == State.BITE_BEGINNING || this.currentState == State.BITE_READY
-				|| this.currentState == State.BITING || this.currentState == State.FLAME_BEGINNING
-				|| this.currentState == State.FLAMING || this.currentState == State.MORTAR_BEGINNING
-				|| this.currentState == State.MORTAR_SHOOTING;
+			|| this.currentState == State.BITING || this.currentState == State.FLAME_BEGINNING
+			|| this.currentState == State.FLAMING || this.currentState == State.MORTAR_BEGINNING
+			|| this.currentState == State.MORTAR_SHOOTING;
 	}
 
 	public boolean isBiting() {
 		return this.currentState == State.BITE_BEGINNING || this.currentState == State.BITE_READY
-				|| this.currentState == State.BITING || this.nextState == State.BITE_BEGINNING;
+			|| this.currentState == State.BITING || this.nextState == State.BITE_BEGINNING;
 	}
 
 	/**
 	 * Add to our damage taken counter
 	 */
 	public void addDamage(float damageAmount) {
-		this.damageTaken += damageAmount;
+		this.damageTaken += (int) damageAmount;
 	}
 
 	/**

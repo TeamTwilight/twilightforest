@@ -4,7 +4,7 @@
   ],
   "enforcement": "twilightforest:frost",
   "locked_biome_toast": {
-    "Count": 1,
+    "count": 1,
     "id": "twilightforest:lich_tower_miniature_structure"
   },
   "multiplier": 0.0,

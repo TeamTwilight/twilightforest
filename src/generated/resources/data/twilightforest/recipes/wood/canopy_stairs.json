@@ -1,6 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "building",
+  "group": "wooden_stairs",
   "key": {
     "#": {
       "item": "twilightforest:canopy_planks"
@@ -13,6 +14,6 @@
   ],
   "result": {
     "count": 8,
-    "item": "twilightforest:canopy_stairs"
+    "id": "twilightforest:canopy_stairs"
   }
 }

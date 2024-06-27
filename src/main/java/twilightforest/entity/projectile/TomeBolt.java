@@ -16,11 +16,8 @@ import net.minecraft.world.level.block.LecternBlock;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import twilightforest.init.TFDamageTypes;
 
-@OnlyIn(value = Dist.CLIENT, _interface = ItemSupplier.class)
 public class TomeBolt extends TFThrowable implements ItemSupplier {
 
 	public TomeBolt(EntityType<? extends TomeBolt> type, Level world, LivingEntity thrower) {
@@ -38,12 +35,10 @@ public class TomeBolt extends TFThrowable implements ItemSupplier {
 	}
 
 	@Override
-	protected float getGravity() {
+	protected double getDefaultGravity() {
 		return 0.003F;
 	}
 
-
-	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void handleEntityEvent(byte id) {
 		if (id == 3) {
@@ -71,8 +66,8 @@ public class TomeBolt extends TFThrowable implements ItemSupplier {
 	@Override
 	protected void onHit(HitResult result) {
 		if (this.getOwner() != null && result instanceof BlockHitResult blockHitResult &&
-				this.getOwner().blockPosition().equals(blockHitResult.getBlockPos()) &&
-				this.level().getBlockState(blockHitResult.getBlockPos()).getBlock() instanceof LecternBlock) {
+			this.getOwner().blockPosition().equals(blockHitResult.getBlockPos()) &&
+			this.level().getBlockState(blockHitResult.getBlockPos()).getBlock() instanceof LecternBlock) {
 			return;
 		}
 		super.onHit(result);

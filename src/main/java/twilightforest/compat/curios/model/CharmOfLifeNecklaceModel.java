@@ -20,8 +20,8 @@ public class CharmOfLifeNecklaceModel extends HumanoidModel<LivingEntity> {
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
 		partdefinition.addOrReplaceChild("body", CubeListBuilder.create()
-						.texOffs(0, 0).addBox(-6.5F, -0.1F, -4.0F, 13.0F, 21.0F, 8.0F),
-				PartPose.ZERO);
+				.texOffs(0, 0).addBox(-6.5F, -0.1F, -4.0F, 13.0F, 21.0F, 8.0F),
+			PartPose.ZERO);
 
 		return LayerDefinition.create(meshdefinition, 64, 48);
 	}

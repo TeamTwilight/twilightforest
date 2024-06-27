@@ -2,10 +2,7 @@ package twilightforest.block;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.MultifaceBlock;
 import net.minecraft.world.level.block.MultifaceSpreader;
@@ -35,11 +32,6 @@ public class RedThreadBlock extends MultifaceBlock implements EntityBlock {
 	@Override
 	public MultifaceSpreader getSpreader() {
 		return new MultifaceSpreader(this);
-	}
-
-	@Override
-	public boolean isValidSpawn(BlockState state, BlockGetter getter, BlockPos pos, SpawnPlacements.Type type, EntityType<?> entityType) {
-		return false;
 	}
 
 	@Nullable

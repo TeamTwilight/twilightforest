@@ -22,8 +22,8 @@ public class TowerBroodling extends SwarmSpider {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return SwarmSpider.registerAttributes()
-				.add(Attributes.MAX_HEALTH, 7.0D)
-				.add(Attributes.ATTACK_DAMAGE, 4.0D);
+			.add(Attributes.MAX_HEALTH, 7.0D)
+			.add(Attributes.ATTACK_DAMAGE, 4.0D);
 	}
 
 	@Override

@@ -8,10 +8,6 @@
     "twilightforest:transformation_planks",
     "twilightforest:mining_planks",
     "twilightforest:sorting_planks",
-    "twilightforest:towerwood",
-    "twilightforest:encased_towerwood",
-    "twilightforest:cracked_towerwood",
-    "twilightforest:mossy_towerwood",
-    "twilightforest:infested_towerwood"
+    "#twilightforest:towerwood"
   ]
 }

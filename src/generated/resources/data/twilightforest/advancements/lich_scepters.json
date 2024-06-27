@@ -5,24 +5,16 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:lifedrain_scepter"
-            ]
+            "items": "twilightforest:lifedrain_scepter"
           },
           {
-            "items": [
-              "twilightforest:twilight_scepter"
-            ]
+            "items": "twilightforest:twilight_scepter"
           },
           {
-            "items": [
-              "twilightforest:zombie_scepter"
-            ]
+            "items": "twilightforest:zombie_scepter"
           },
           {
-            "items": [
-              "twilightforest:fortification_scepter"
-            ]
+            "items": "twilightforest:fortification_scepter"
           }
         ]
       },
@@ -36,8 +28,8 @@
     "frame": "challenge",
     "hidden": true,
     "icon": {
-      "item": "twilightforest:zombie_scepter",
-      "nbt": "{Damage:0}"
+      "count": 1,
+      "id": "twilightforest:zombie_scepter"
     },
     "title": {
       "translate": "advancement.twilightforest.lich_scepters"

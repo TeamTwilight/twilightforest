@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:filled_magic_map"
-            ]
+            "items": "twilightforest:filled_magic_map"
           }
         ]
       },
@@ -24,7 +22,8 @@
       ]
     },
     "icon": {
-      "item": "twilightforest:filled_magic_map"
+      "count": 1,
+      "id": "twilightforest:filled_magic_map"
     },
     "title": {
       "translate": "advancement.twilightforest.magic_map"

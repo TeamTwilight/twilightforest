@@ -1,12 +1,14 @@
 {
   "type": "minecraft:crafting_shapeless",
   "category": "redstone",
+  "group": "wooden_button",
   "ingredients": [
     {
       "item": "twilightforest:mining_planks"
     }
   ],
   "result": {
-    "item": "twilightforest:mining_button"
+    "count": 1,
+    "id": "twilightforest:mining_button"
   }
 }

@@ -23,42 +23,42 @@ public class LowerGoblinKnightModel extends HumanoidModel<LowerGoblinKnight> {
 		PartDefinition definition = mesh.getRoot();
 
 		definition.addOrReplaceChild("head", CubeListBuilder.create()
-						.texOffs(0, 32)
-						.addBox(-2.5F, -5.0F, -3.5F, 5, 5, 5),
-				PartPose.offset(0.0F, 10.0F, 1.0F));
+				.texOffs(0, 32)
+				.addBox(-2.5F, -5.0F, -3.5F, 5, 5, 5),
+			PartPose.offset(0.0F, 10.0F, 1.0F));
 
 		definition.addOrReplaceChild("hat", CubeListBuilder.create(),
-				PartPose.ZERO);
+			PartPose.ZERO);
 
 		definition.addOrReplaceChild("body", CubeListBuilder.create()
-						.texOffs(16, 48)
-						.addBox(-3.5F, 0.0F, -2.0F, 7, 8, 4),
-				PartPose.offset(0.0F, 8.0F, 0.0F));
+				.texOffs(16, 48)
+				.addBox(-3.5F, 0.0F, -2.0F, 7, 8, 4),
+			PartPose.offset(0.0F, 8.0F, 0.0F));
 
 		definition.addOrReplaceChild("tunic", CubeListBuilder.create()
-						.texOffs(64, 19)
-						.addBox(-6.0F, 0.0F, -3.0F, 12, 9, 6),
-				PartPose.offset(0F, 7.5F, 0.0F));
+				.texOffs(64, 19)
+				.addBox(-6.0F, 0.0F, -3.0F, 12, 9, 6),
+			PartPose.offset(0F, 7.5F, 0.0F));
 
 		definition.addOrReplaceChild("right_arm", CubeListBuilder.create()
-						.texOffs(40, 48)
-						.addBox(-2.0F, -2.0F, -1.5F, 2, 8, 3),
-				PartPose.offset(-3.5F, 10.0F, 0.0F));
+				.texOffs(40, 48)
+				.addBox(-2.0F, -2.0F, -1.5F, 2, 8, 3),
+			PartPose.offset(-3.5F, 10.0F, 0.0F));
 
 		definition.addOrReplaceChild("left_arm", CubeListBuilder.create().mirror()
-						.texOffs(40, 48)
-						.addBox(0.0F, -2.0F, -1.5F, 2, 8, 3),
-				PartPose.offset(3.5F, 10.0F, 0.0F));
+				.texOffs(40, 48)
+				.addBox(0.0F, -2.0F, -1.5F, 2, 8, 3),
+			PartPose.offset(3.5F, 10.0F, 0.0F));
 
 		definition.addOrReplaceChild("right_leg", CubeListBuilder.create()
-						.texOffs(0, 48)
-						.addBox(-3.0F, 0.0F, -2.0F, 4, 8, 4),
-				PartPose.offset(-2.5F, 16.0F, 0.0F));
+				.texOffs(0, 48)
+				.addBox(-3.0F, 0.0F, -2.0F, 4, 8, 4),
+			PartPose.offset(-2.5F, 16.0F, 0.0F));
 
 		definition.addOrReplaceChild("left_leg", CubeListBuilder.create().mirror()
-						.texOffs(0, 48)
-						.addBox(-1.0F, 0.0F, -2.0F, 4, 8, 4),
-				PartPose.offset(2.5F, 16.0F, 0.0F));
+				.texOffs(0, 48)
+				.addBox(-1.0F, 0.0F, -2.0F, 4, 8, 4),
+			PartPose.offset(2.5F, 16.0F, 0.0F));
 
 		return LayerDefinition.create(mesh, 128, 64);
 	}

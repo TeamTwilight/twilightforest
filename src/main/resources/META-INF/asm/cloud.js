@@ -31,9 +31,9 @@ function initializeCoreMod() {
                                 'cloud',
                                 '(ZLnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;)Z',
                                 false
-                                )
                             )
                         )
+                    )
                 });
                 return methodNode;
             }

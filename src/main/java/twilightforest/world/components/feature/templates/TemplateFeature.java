@@ -35,12 +35,12 @@ public abstract class TemplateFeature<T extends FeatureConfiguration> extends Fe
 		WorldGenLevel world = ctx.level();
 		BlockPos pos = ctx.origin();
 		RandomSource random = world.getRandom();
-        T config = ctx.config();
+		T config = ctx.config();
 
 		StructureTemplateManager templateManager = world.getLevel().getServer().getStructureManager();
 		StructureTemplate template = this.getTemplate(templateManager, random);
 
-		if(template == null)
+		if (template == null)
 			return false;
 
 		Rotation rotation = Rotation.getRandom(random);
@@ -60,86 +60,86 @@ public abstract class TemplateFeature<T extends FeatureConfiguration> extends Fe
 
 		if (!offsetToAverageGroundLevel(world, startPos, transformedSize)) return false;
 
-        startPos.move(0, this.yLevelOffset(), 0);
+		startPos.move(0, this.yLevelOffset(), 0);
 
 		BlockPos placementPos = template.getZeroPositionWithTransform(startPos, mirror, rotation);
 
-        StructurePlaceSettings placementSettings = (new StructurePlaceSettings()).setMirror(mirror).setRotation(rotation).setBoundingBox(structureMask).setRandom(random);
-        this.modifySettings(placementSettings.clearProcessors(), random, config);
+		StructurePlaceSettings placementSettings = (new StructurePlaceSettings()).setMirror(mirror).setRotation(rotation).setBoundingBox(structureMask).setRandom(random);
+		this.modifySettings(placementSettings.clearProcessors(), random, config);
 
 		template.placeInWorld(world, placementPos, placementPos, placementSettings, random, 20);
 
 		for (StructureTemplate.StructureBlockInfo info : template.filterBlocks(placementPos, placementSettings, Blocks.STRUCTURE_BLOCK))
-            if (info.nbt() != null && StructureMode.valueOf(info.nbt().getString("mode")) == StructureMode.DATA)
-                this.processMarkers(info, world, rotation, mirror, random);
+			if (info.nbt() != null && StructureMode.valueOf(info.nbt().getString("mode")) == StructureMode.DATA)
+				this.processMarkers(info, world, rotation, mirror, random);
 
-        this.postPlacement(world, random, templateManager, rotation, mirror, placementSettings, placementPos, config);
+		this.postPlacement(world, random, templateManager, rotation, mirror, placementSettings, placementPos, config);
 
 		return true;
 	}
 
-    @Nullable
+	@Nullable
 	protected abstract StructureTemplate getTemplate(StructureTemplateManager templateManager, RandomSource random);
 
 	protected void modifySettings(StructurePlaceSettings settings, RandomSource random, T config) {
-    }
+	}
 
 	protected void processMarkers(StructureTemplate.StructureBlockInfo info, WorldGenLevel world, Rotation rotation, Mirror mirror, RandomSource random) {
-    }
+	}
 
-    protected void postPlacement(WorldGenLevel world, RandomSource random, StructureTemplateManager templateManager, Rotation rotation, Mirror mirror, StructurePlaceSettings placementSettings, BlockPos placementPos, T config) {
-    }
+	protected void postPlacement(WorldGenLevel world, RandomSource random, StructureTemplateManager templateManager, Rotation rotation, Mirror mirror, StructurePlaceSettings placementSettings, BlockPos placementPos, T config) {
+	}
 
-    protected int yLevelOffset() {
-        return 0;
-    }
+	protected int yLevelOffset() {
+		return 0;
+	}
 
-    private static boolean offsetToAverageGroundLevel(WorldGenLevel world, BlockPos.MutableBlockPos startPos, Vec3i size) {
-        StatsAccumulator heights = new StatsAccumulator();
+	private static boolean offsetToAverageGroundLevel(WorldGenLevel world, BlockPos.MutableBlockPos startPos, Vec3i size) {
+		StatsAccumulator heights = new StatsAccumulator();
 
-        for (int dx = 0; dx < size.getX(); dx++) {
-            for (int dz = 0; dz < size.getZ(); dz++) {
+		for (int dx = 0; dx < size.getX(); dx++) {
+			for (int dz = 0; dz < size.getZ(); dz++) {
 
-                int x = startPos.getX() + dx;
-                int z = startPos.getZ() + dz;
+				int x = startPos.getX() + dx;
+				int z = startPos.getZ() + dz;
 
-                int y = world.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z);
+				int y = world.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z);
 
-                while (y >= 0) {
-                    BlockState state = world.getBlockState(new BlockPos(x, y, z));
-                    if (FeatureLogic.isBlockNotOk(state)) return false;
-                    if (FeatureLogic.isBlockOk(state)) break;
-                    y--;
-                }
+				while (y >= 0) {
+					BlockState state = world.getBlockState(new BlockPos(x, y, z));
+					if (FeatureLogic.isBlockNotOk(state)) return false;
+					if (FeatureLogic.isBlockOk(state)) break;
+					y--;
+				}
 
-                if (y < 0) return false;
+				if (y < 0) return false;
 
-                heights.add(y);
-            }
-        }
+				heights.add(y);
+			}
+		}
 
-        if (heights.populationStandardDeviation() > 2.0) {
-            return false;
-        }
+		if (heights.populationStandardDeviation() > 2.0) {
+			return false;
+		}
 
-        int baseY = (int) (heights.mean() + 0.5);
-        int maxY = (int) heights.max();
+		int baseY = (int) (heights.mean() + 0.5);
+		int maxY = (int) heights.max();
 
-        startPos.setY(baseY);
+		startPos.setY(baseY);
 
-        return isAreaClear(world, startPos.above(maxY - baseY + 1), startPos.offset(size));
-    }
+		return isAreaClear(world, startPos.above(maxY - baseY + 1), startPos.offset(size));
+	}
 
-    private static boolean isAreaClear(LevelAccessor world, BlockPos min, BlockPos max) {
-        for (BlockPos pos : BlockPos.betweenClosed(min, max)) {
-            if (!world.getBlockState(pos).canBeReplaced()) {
-                return false;
-            }
-        }
-        return true;
-    }
+	private static boolean isAreaClear(LevelAccessor world, BlockPos min, BlockPos max) {
+		for (BlockPos pos : BlockPos.betweenClosed(min, max)) {
+			if (!world.getBlockState(pos).canBeReplaced()) {
+				return false;
+			}
+		}
+		return true;
+	}
 
-    private static boolean isDataBlock(StructureTemplate.StructureBlockInfo info) {
-	    return StructureMode.DATA.name().equals(info.nbt().getString("mode"));
-    }
+	private static boolean isDataBlock(StructureTemplate.StructureBlockInfo info) {
+		return StructureMode.DATA.name().equals(info.nbt().getString("mode"));
+	}
 }

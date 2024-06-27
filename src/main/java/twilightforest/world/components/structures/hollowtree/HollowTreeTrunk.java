@@ -24,6 +24,7 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import net.minecraft.world.level.storage.loot.LootTable;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.FeatureLogic;
@@ -42,10 +43,11 @@ public class HollowTreeTrunk extends HollowTreePiece {
 	private final BlockStateProvider dungeonWood;
 	private final BlockStateProvider dungeonAir;
 	private final BlockStateProvider dungeonLootBlock;
-	private final ResourceLocation dungeonLootTable;
+	private final ResourceKey<LootTable> dungeonLootTable;
 	private final Holder<EntityType<?>> dungeonMonster;
 
-	public HollowTreeTrunk(int height, int radius, BoundingBox pBoundingBox, BlockStateProvider log1, BlockStateProvider wood, BlockStateProvider root, BlockStateProvider leaves, BlockStateProvider vine, BlockStateProvider bug, BlockStateProvider dungeonWood, BlockStateProvider dungeonAir, BlockStateProvider dungeonLootBlock, ResourceLocation dungeonLootTable, Holder<EntityType<?>> dungeonMonster) {
+	@SuppressWarnings("this-escape")
+	public HollowTreeTrunk(int height, int radius, BoundingBox pBoundingBox, BlockStateProvider log1, BlockStateProvider wood, BlockStateProvider root, BlockStateProvider leaves, BlockStateProvider vine, BlockStateProvider bug, BlockStateProvider dungeonWood, BlockStateProvider dungeonAir, BlockStateProvider dungeonLootBlock, ResourceKey<LootTable> dungeonLootTable, Holder<EntityType<?>> dungeonMonster) {
 		super(TFStructurePieceTypes.TFHTTr.value(), 0, pBoundingBox);
 
 		this.setOrientation(Direction.SOUTH);
@@ -88,12 +90,12 @@ public class HollowTreeTrunk extends HollowTreePiece {
 		this.dungeonAir = BlockStateProvider.CODEC.parse(ops, tag.getCompound("dungeon_air")).result().orElse(HollowTreePiece.DEFAULT_DUNGEON_AIR);
 		this.dungeonLootBlock = BlockStateProvider.CODEC.parse(ops, tag.getCompound("dungeon_loot_block")).result().orElse(HollowTreePiece.DEFAULT_DUNGEON_LOOT_BLOCK);
 
-		this.dungeonLootTable = new ResourceLocation(tag.getString("dungeon_loot_table"));
+		this.dungeonLootTable = ResourceKey.create(Registries.LOOT_TABLE, new ResourceLocation(tag.getString("dungeon_loot_table")));
 
 		ResourceKey<EntityType<?>> dungeonMonster = ResourceKey.create(Registries.ENTITY_TYPE, new ResourceLocation(tag.getString("dungeon_monster")));
 		this.dungeonMonster = context.registryAccess().registry(Registries.ENTITY_TYPE)
-				.<Holder<EntityType<?>>>flatMap(reg -> reg.getHolder(dungeonMonster))
-				.orElse(HollowTreePiece.DEFAULT_DUNGEON_MONSTER);
+			.<Holder<EntityType<?>>>flatMap(reg -> reg.getHolder(dungeonMonster))
+			.orElse(HollowTreePiece.DEFAULT_DUNGEON_MONSTER);
 	}
 
 	/**
@@ -114,7 +116,7 @@ public class HollowTreeTrunk extends HollowTreePiece {
 		tag.put("dungeon_air", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.dungeonAir).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
 		tag.put("dungeon_loot_block", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.dungeonLootBlock).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
 
-		tag.putString("dungeon_loot_table", this.dungeonLootTable.toString());
+		tag.putString("dungeon_loot_table", this.dungeonLootTable.location().toString());
 
 		tag.putString("dungeon_monster", BuiltInRegistries.ENTITY_TYPE.getKey(this.dungeonMonster.value()).toString());
 	}
@@ -129,7 +131,7 @@ public class HollowTreeTrunk extends HollowTreePiece {
 		// 3-5 couple branches on the way up...
 		int numBranches = rand.nextInt(3) + 3;
 		for (int i = 0; i <= numBranches; i++) {
-			int branchHeight = (int)(this.height * rand.nextDouble() * 0.9) + (this.height / 10);
+			int branchHeight = (int) (this.height * rand.nextDouble() * 0.9) + (this.height / 10);
 			double branchRotation = rand.nextDouble();
 
 			this.makeSmallBranch(list, rand, index + i + 1, branchHeight, 4, branchRotation, 0.35D, true);
@@ -243,13 +245,14 @@ public class HollowTreeTrunk extends HollowTreePiece {
 		RandomSource decoRNG = this.getInterChunkDecoRNG(level);
 
 		int hollow = this.radius / 2;
+		Direction vineDirection = Direction.from2DDataValue(decoRNG.nextInt(4));
 
 		for (int dx = 0; dx <= 2 * this.radius; dx++) {
 			for (int dz = 0; dz <= 2 * this.radius; dz++) {
 				// determine how far we are from the center.
 				int ax = Math.abs(dx - this.radius);
 				int az = Math.abs(dz - this.radius);
-				int dist = (int)(Math.max(ax, az) + (Math.min(ax, az) * 0.5));
+				int dist = (int) (Math.max(ax, az) + (Math.min(ax, az) * 0.5));
 
 				for (int dy = 0; dy <= this.height; dy++) {
 					// fill the body of the trunk
@@ -264,8 +267,8 @@ public class HollowTreeTrunk extends HollowTreePiece {
 				}
 
 				// add vines
-				if (dist == hollow && dx == hollow + this.radius) {
-					this.fillColumnDown(level, this.vine, decoRNG, dx + 1, this.height, dz + 1, writeableBounds);
+				if (dist == hollow && (vineDirection.getAxis() == Direction.Axis.X ? (dx == this.radius + (hollow * vineDirection.getStepX())) : (dz == this.radius + (hollow * vineDirection.getStepZ())))) {
+					this.fillVineColumnDown(level, this.vine, decoRNG, dx + 1, this.height, dz + 1, writeableBounds, vineDirection);
 				}
 			}
 		}
@@ -273,7 +276,7 @@ public class HollowTreeTrunk extends HollowTreePiece {
 		// fireflies & cicadas
 		int numInsects = decoRNG.nextInt(3 * this.radius) + decoRNG.nextInt(3 * this.radius) + 10;
 		for (int i = 0; i <= numInsects; i++) {
-			int fHeight = (int)(this.height * decoRNG.nextDouble() * 0.9) + (this.height / 10);
+			int fHeight = (int) (this.height * decoRNG.nextDouble() * 0.9) + (this.height / 10);
 			double fAngle = decoRNG.nextDouble();
 			this.addInsect(level, decoRNG, fHeight, fAngle, writeableBounds);
 		}
@@ -304,8 +307,8 @@ public class HollowTreeTrunk extends HollowTreePiece {
 			facing = Rotation.COUNTERCLOCKWISE_90;
 		}
 
-		BlockState decor = this.bug.getState(random, src).rotate(facing);
-		if (decor.canSurvive(world, src)) {
+		BlockState decor = this.bug.getState(random, src).rotate(world, src, facing);
+		if (world.getBlockState(src).canBeReplaced() && decor.canSurvive(world, src)) {
 			world.setBlock(src, decor, 3);
 		}
 	}

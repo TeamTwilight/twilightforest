@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:emperors_cloth"
-            ]
+            "items": "twilightforest:emperors_cloth"
           }
         ]
       },

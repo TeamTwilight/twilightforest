@@ -34,6 +34,7 @@ public class TrollCaveGardenComponent extends TrollCaveMainComponent {
 		super(TFStructurePieceTypes.TFTCGard.get(), ctx, nbt);
 	}
 
+	@SuppressWarnings("this-escape")
 	public TrollCaveGardenComponent(int index, int x, int y, int z, int caveSize, int caveHeight, Direction direction, Holder.Reference<StructureSpeleothemConfig> speleothemConfig) {
 		super(TFStructurePieceTypes.TFTCGard.get(), index, x, y, z, speleothemConfig);
 		this.size = caveSize;
@@ -50,7 +51,7 @@ public class TrollCaveGardenComponent extends TrollCaveMainComponent {
 	@Override
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		Predicate<Biome> highlands = biome -> biome == world.registryAccess().registryOrThrow(Registries.BIOME).get(TFBiomes.HIGHLANDS);
-		if (this.isBoundingBoxOutsideBiomes(world, highlands)) {
+		if (this.isBoundingBoxOutsideBiomes(world, highlands, blockPos)) {
 			return;
 		}
 

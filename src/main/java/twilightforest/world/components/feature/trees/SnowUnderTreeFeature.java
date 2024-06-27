@@ -15,44 +15,44 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 
 public class SnowUnderTreeFeature extends Feature<NoneFeatureConfiguration> {
 
-    public SnowUnderTreeFeature(Codec<NoneFeatureConfiguration> config) {
-        super(config);
-    }
+	public SnowUnderTreeFeature(Codec<NoneFeatureConfiguration> config) {
+		super(config);
+	}
 
-    @Override
-    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> ctx) {
-        BlockPos pos = ctx.origin();
-        WorldGenLevel world = ctx.level();
-        BlockPos.MutableBlockPos mPos = new BlockPos.MutableBlockPos();
-        BlockPos.MutableBlockPos mPosDown = new BlockPos.MutableBlockPos();
+	@Override
+	public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> ctx) {
+		BlockPos pos = ctx.origin();
+		WorldGenLevel world = ctx.level();
+		BlockPos.MutableBlockPos mPos = new BlockPos.MutableBlockPos();
+		BlockPos.MutableBlockPos mPosDown = new BlockPos.MutableBlockPos();
 
-        for (int xi = 0; xi < 16; xi++) {
-            for (int zi = 0; zi < 16; zi++) {
-                int x = pos.getX() + xi;
-                int z = pos.getZ() + zi;
-                mPos.set(x, world.getHeight(Heightmap.Types.MOTION_BLOCKING, x, z) - 1, z);
+		for (int xi = 0; xi < 16; xi++) {
+			for (int zi = 0; zi < 16; zi++) {
+				int x = pos.getX() + xi;
+				int z = pos.getZ() + zi;
+				mPos.set(x, world.getHeight(Heightmap.Types.MOTION_BLOCKING, x, z) - 1, z);
 
-                if (world.getBlockState(mPos).getBlock() instanceof LeavesBlock) {
-                    BlockState state;
-                    mPos.set(x, world.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z), z);
-                    state = world.getBlockState(mPos);
+				if (world.getBlockState(mPos).getBlock() instanceof LeavesBlock) {
+					BlockState state;
+					mPos.set(x, world.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z), z);
+					state = world.getBlockState(mPos);
 
-                    if (state.isAir()) {
-                        BlockState stateBelow;
-                        mPosDown.set(mPos).move(Direction.DOWN);
-                        stateBelow = world.getBlockState(mPosDown);
+					if (state.isAir()) {
+						BlockState stateBelow;
+						mPosDown.set(mPos).move(Direction.DOWN);
+						stateBelow = world.getBlockState(mPosDown);
 
-                        if (stateBelow.isFaceSturdy(world, mPosDown, Direction.UP)) {
-                            world.setBlock(mPos, Blocks.SNOW.defaultBlockState(), 2);
+						if (stateBelow.isFaceSturdy(world, mPosDown, Direction.UP)) {
+							world.setBlock(mPos, Blocks.SNOW.defaultBlockState(), 2);
 
-                            if (stateBelow.hasProperty(SnowyDirtBlock.SNOWY)) {
-                                world.setBlock(mPosDown, stateBelow.setValue(SnowyDirtBlock.SNOWY, true), 2);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return true;
-    }
+							if (stateBelow.hasProperty(SnowyDirtBlock.SNOWY)) {
+								world.setBlock(mPosDown, stateBelow.setValue(SnowyDirtBlock.SNOWY, true), 2);
+							}
+						}
+					}
+				}
+			}
+		}
+		return true;
+	}
 }

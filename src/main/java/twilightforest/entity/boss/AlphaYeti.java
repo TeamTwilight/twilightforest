@@ -6,13 +6,11 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
@@ -32,9 +30,9 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.event.EventHooks;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Vector3f;
 import twilightforest.entity.IHostileMount;
 import twilightforest.entity.ai.goal.ThrowRiderGoal;
 import twilightforest.entity.ai.goal.YetiRampageGoal;
@@ -49,7 +47,6 @@ public class AlphaYeti extends BaseTFBoss implements RangedAttackMob, IHostileMo
 
 	private static final EntityDataAccessor<Boolean> RAMPAGE_FLAG = SynchedEntityData.defineId(AlphaYeti.class, EntityDataSerializers.BOOLEAN);
 	private static final EntityDataAccessor<Boolean> TIRED_FLAG = SynchedEntityData.defineId(AlphaYeti.class, EntityDataSerializers.BOOLEAN);
-	private final ServerBossEvent bossInfo = new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.PROGRESS);
 	private int collisionCounter;
 	private boolean canRampage;
 
@@ -93,19 +90,19 @@ public class AlphaYeti extends BaseTFBoss implements RangedAttackMob, IHostileMo
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(RAMPAGE_FLAG, false);
-		this.getEntityData().define(TIRED_FLAG, false);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(RAMPAGE_FLAG, false);
+		builder.define(TIRED_FLAG, false);
 	}
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Monster.createMonsterAttributes()
-				.add(Attributes.MAX_HEALTH, 200.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.38D)
-				.add(Attributes.ATTACK_DAMAGE, 1.0D)
-				.add(Attributes.FOLLOW_RANGE, 40.0D)
-				.add(Attributes.KNOCKBACK_RESISTANCE, 0.5D);
+			.add(Attributes.MAX_HEALTH, 200.0D)
+			.add(Attributes.MOVEMENT_SPEED, 0.38D)
+			.add(Attributes.ATTACK_DAMAGE, 1.0D)
+			.add(Attributes.FOLLOW_RANGE, 40.0D)
+			.add(Attributes.KNOCKBACK_RESISTANCE, 0.5D);
 	}
 
 	@Override
@@ -171,8 +168,12 @@ public class AlphaYeti extends BaseTFBoss implements RangedAttackMob, IHostileMo
 			return false;
 		}
 
-		this.canRampage = true;
-		return super.hurt(source, amount);
+		boolean flag = super.hurt(source, amount);
+
+		if (flag) {
+			this.canRampage = true;
+		}
+		return flag;
 	}
 
 	@Nullable
@@ -202,8 +203,8 @@ public class AlphaYeti extends BaseTFBoss implements RangedAttackMob, IHostileMo
 	}
 
 	@Override
-	protected Vector3f getPassengerAttachmentPoint(Entity entity, EntityDimensions dimensions, float yRot) {
-		return new Vector3f(0.0F, dimensions.height, 0.4F);
+	protected Vec3 getPassengerAttachmentPoint(Entity entity, EntityDimensions dimensions, float yRot) {
+		return new Vec3(0.0F, dimensions.height(), 0.4F);
 	}
 
 	@Override
@@ -212,7 +213,7 @@ public class AlphaYeti extends BaseTFBoss implements RangedAttackMob, IHostileMo
 	}
 
 	public void destroyBlocksInAABB(AABB box) {
-		if (EventHooks.getMobGriefingEvent(this.level(), this)) {
+		if (EventHooks.canEntityGrief(this.level(), this)) {
 			for (BlockPos pos : WorldUtil.getAllInBB(box)) {
 				if (EntityUtil.canDestroyBlock(this.level(), pos, this)) {
 					this.level().destroyBlock(pos, false);
@@ -222,7 +223,7 @@ public class AlphaYeti extends BaseTFBoss implements RangedAttackMob, IHostileMo
 	}
 
 	public void makeRandomBlockFall(int range, int hangTime) {
-		if (EventHooks.getMobGriefingEvent(this.level(), this)) {
+		if (EventHooks.canEntityGrief(this.level(), this)) {
 			// find a block nearby
 			int bx = Mth.floor(this.getX()) + this.getRandom().nextInt(range) - this.getRandom().nextInt(range);
 			int bz = Mth.floor(this.getZ()) + this.getRandom().nextInt(range) - this.getRandom().nextInt(range);
@@ -322,11 +323,6 @@ public class AlphaYeti extends BaseTFBoss implements RangedAttackMob, IHostileMo
 	}
 
 	@Override
-	public ServerBossEvent getBossBar() {
-		return this.bossInfo;
-	}
-
-	@Override
 	public Block getDeathContainer(RandomSource random) {
 		return TFBlocks.CANOPY_CHEST.get();
 	}
@@ -334,5 +330,10 @@ public class AlphaYeti extends BaseTFBoss implements RangedAttackMob, IHostileMo
 	@Override
 	public Block getBossSpawner() {
 		return TFBlocks.ALPHA_YETI_BOSS_SPAWNER.get();
+	}
+
+	@Override
+	public int getBossBarColor() {
+		return 0xB4F0F0;
 	}
 }

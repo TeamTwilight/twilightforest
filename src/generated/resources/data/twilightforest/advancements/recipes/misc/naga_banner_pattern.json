@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:naga_trophy"
-            ]
+            "items": "twilightforest:naga_trophy"
           }
         ]
       },

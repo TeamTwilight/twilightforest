@@ -39,14 +39,14 @@ public class IceCrystalModel extends HierarchicalModel<IceCrystal> {
 			int spikeLength = i % 2 == 0 ? 6 : 8;
 
 			var spike = definition.addOrReplaceChild("spike_" + i, CubeListBuilder.create()
-							.texOffs(0, 16)
-							.addBox(-1.0F, -1.0F, -1.0F, 2.0F, spikeLength, 2.0F),
-					PartPose.ZERO);
+					.texOffs(0, 16)
+					.addBox(-1.0F, -1.0F, -1.0F, 2.0F, spikeLength, 2.0F),
+				PartPose.ZERO);
 
 			spike.addOrReplaceChild("cube_" + i, CubeListBuilder.create()
-							.texOffs(8, 16)
-							.addBox(-1.5F, -1.5F, -1.5F, 3.0F, 3.0F, 3.0F),
-					PartPose.offsetAndRotation(0.0F, spikeLength, 0.0F, 0.0F, 0.0F, (Mth.PI / 4F)));
+					.texOffs(8, 16)
+					.addBox(-1.5F, -1.5F, -1.5F, 3.0F, 3.0F, 3.0F),
+				PartPose.offsetAndRotation(0.0F, spikeLength, 0.0F, 0.0F, 0.0F, (Mth.PI / 4F)));
 		}
 
 		return LayerDefinition.create(mesh, 32, 32);
@@ -77,7 +77,7 @@ public class IceCrystalModel extends HierarchicalModel<IceCrystal> {
 			this.spikes[i].yRot = (entity.tickCount + partialTicks) / 5.0F;
 			this.spikes[i].zRot = Mth.cos((entity.tickCount + partialTicks) / 5.0F) / 4.0F;
 
-			this.spikes[i].xRot += i * (Math.PI / 8F);
+			this.spikes[i].xRot += i * (Mth.PI / 8F);
 
 			if (i % 4 == 0) {
 				this.spikes[i].yRot += 1;

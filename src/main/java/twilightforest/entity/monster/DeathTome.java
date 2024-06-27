@@ -50,6 +50,7 @@ public class DeathTome extends Monster implements RangedAttackMob {
 	public float flipT;
 	public float flipA;
 
+	@SuppressWarnings("this-escape")
 	public DeathTome(EntityType<? extends DeathTome> type, Level world) {
 		super(type, world);
 		this.moveControl = new FlyingMoveControl(this, 10, false);
@@ -68,24 +69,24 @@ public class DeathTome extends Monster implements RangedAttackMob {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Monster.createMonsterAttributes()
-				.add(Attributes.MAX_HEALTH, 30.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.25D)
-				.add(Attributes.FLYING_SPEED, 0.6D)
-				.add(Attributes.ATTACK_DAMAGE, 4.0D);
+			.add(Attributes.MAX_HEALTH, 30.0D)
+			.add(Attributes.MOVEMENT_SPEED, 0.25D)
+			.add(Attributes.FLYING_SPEED, 0.6D)
+			.add(Attributes.ATTACK_DAMAGE, 4.0D);
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.entityData.define(DATA_LECTERN, false);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(DATA_LECTERN, false);
 	}
 
 	public void setOnLectern(boolean hidden) {
-		this.entityData.set(DATA_LECTERN, hidden);
+		this.getEntityData().set(DATA_LECTERN, hidden);
 	}
 
 	public boolean isOnLectern() {
-		return this.entityData.get(DATA_LECTERN);
+		return this.getEntityData().get(DATA_LECTERN);
 	}
 
 	@Override
@@ -142,7 +143,7 @@ public class DeathTome extends Monster implements RangedAttackMob {
 
 		for (int i = 0; i < 1; ++i) {
 			this.level().addParticle(ParticleTypes.ENCHANT, this.getX() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth(), this.getY() + this.getRandom().nextDouble() * (this.getBbHeight() - 0.75D) + 0.5D, this.getZ() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth(),
-					0.0D, 0.5D, 0.0D);
+				0.0D, 0.5D, 0.0D);
 		}
 	}
 
@@ -183,7 +184,7 @@ public class DeathTome extends Monster implements RangedAttackMob {
 				if (!this.level().isClientSide()) {
 					LootParams ctx = TFLootTables.createLootParams(this, true, src).create(LootContextParamSets.ENTITY);
 
-					Objects.requireNonNull(this.level().getServer()).getLootData().getLootTable(TFLootTables.DEATH_TOME_HURT).getRandomItems(ctx, s -> spawnAtLocation(s, 1.0F));
+					Objects.requireNonNull(this.level().getServer()).reloadableRegistries().getLootTable(TFLootTables.DEATH_TOME_HURT).getRandomItems(ctx, s -> spawnAtLocation(s, 1.0F));
 				}
 			}
 			return true;

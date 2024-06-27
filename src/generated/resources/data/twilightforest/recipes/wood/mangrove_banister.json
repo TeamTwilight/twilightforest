@@ -1,12 +1,13 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "misc",
+  "group": "wooden_banister",
   "key": {
     "-": {
       "item": "twilightforest:mangrove_slab"
     },
     "|": {
-      "tag": "forge:rods/wooden"
+      "tag": "c:rods/wooden"
     }
   },
   "pattern": [
@@ -15,6 +16,6 @@
   ],
   "result": {
     "count": 3,
-    "item": "twilightforest:mangrove_banister"
+    "id": "twilightforest:mangrove_banister"
   }
 }

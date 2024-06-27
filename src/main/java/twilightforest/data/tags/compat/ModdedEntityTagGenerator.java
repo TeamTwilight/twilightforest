@@ -41,11 +41,11 @@ public class ModdedEntityTagGenerator extends EntityTypeTagsProvider {
 		tag(AC_RESISTS_TREMORSAURUS_ROAR).add(TFEntities.HYDRA.get(), TFEntities.UR_GHAST.get());
 
 		tag(AETHER_DEFLECTABLE_PROJECTILES).add(
-				TFEntities.NATURE_BOLT.get(),
-				TFEntities.LICH_BOLT.get(),
-				TFEntities.WAND_BOLT.get(),
-				TFEntities.SLIME_BLOB.get(),
-				TFEntities.ICE_SNOWBALL.get());
+			TFEntities.NATURE_BOLT.get(),
+			TFEntities.LICH_BOLT.get(),
+			TFEntities.WAND_BOLT.get(),
+			TFEntities.SLIME_BLOB.get(),
+			TFEntities.ICE_SNOWBALL.get());
 
 		tag(AETHER_FIRE_MOB).add(TFEntities.FIRE_BEETLE.get());
 		tag(AETHER_PIGS).add(TFEntities.BOAR.get());

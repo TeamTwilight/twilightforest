@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:mazebreaker_pickaxe"
-            ]
+            "items": "twilightforest:mazebreaker_pickaxe"
           }
         ]
       },
@@ -25,8 +23,8 @@
     },
     "frame": "challenge",
     "icon": {
-      "item": "twilightforest:mazebreaker_pickaxe",
-      "nbt": "{Damage:0}"
+      "count": 1,
+      "id": "twilightforest:mazebreaker_pickaxe"
     },
     "title": {
       "translate": "advancement.twilightforest.mazebreaker"

@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:minoshroom_trophy"
-            ]
+            "items": "twilightforest:minoshroom_trophy"
           }
         ]
       },

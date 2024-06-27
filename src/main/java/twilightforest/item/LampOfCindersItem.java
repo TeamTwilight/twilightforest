@@ -114,9 +114,9 @@ public class LampOfCindersItem extends Item {
 		if (living instanceof Player player) {
 			for (int i = 0; i < 6; i++) {
 				BlockPos rPos = pos.offset(
-						level.getRandom().nextInt(range) - level.getRandom().nextInt(range),
-						level.getRandom().nextInt(2),
-						level.getRandom().nextInt(range) - level.getRandom().nextInt(range)
+					level.getRandom().nextInt(range) - level.getRandom().nextInt(range),
+					level.getRandom().nextInt(2),
+					level.getRandom().nextInt(range) - level.getRandom().nextInt(range)
 				);
 
 				level.levelEvent(player, 2004, rPos, 0);
@@ -124,7 +124,7 @@ public class LampOfCindersItem extends Item {
 
 			//burn mobs!
 			for (LivingEntity targets : level.getEntitiesOfClass(LivingEntity.class, new AABB(pos.below(2)).inflate(4.0D))) {
-				if (!(targets instanceof Player)) targets.setSecondsOnFire(5);
+				if (!(targets instanceof Player)) targets.igniteForSeconds(5);
 			}
 		}
 	}

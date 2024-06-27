@@ -52,7 +52,8 @@
               "name": {
                 "italic": false,
                 "translate": "item.twilightforest.boarkchop"
-              }
+              },
+              "target": "item_name"
             }
           ],
           "name": "minecraft:porkchop"

@@ -2,7 +2,7 @@ package twilightforest.world.components.feature;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.FloatProvider;
@@ -16,6 +16,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import net.minecraft.world.level.storage.loot.LootTable;
 import twilightforest.util.FeatureLogic;
 import twilightforest.util.FeatureUtil;
 import twilightforest.world.components.feature.config.RuinedFoundationConfig;
@@ -85,7 +86,7 @@ public class FoundationFeature extends Feature<RuinedFoundationConfig> {
 		return rand.nextInt(decayRarity + 1) >= 1 ? main : decay;
 	}
 
-	private static void generateBasement(int xWidth, int zWidth, int depth, WorldGenLevel world, BlockPos ceilingPos, RandomSource rand, FloatProvider placeFloorTest, BlockStateProvider floor, BlockStateProvider basementPost, BlockStateProvider lootContainer, ResourceLocation lootTable) {
+	private static void generateBasement(int xWidth, int zWidth, int depth, WorldGenLevel world, BlockPos ceilingPos, RandomSource rand, FloatProvider placeFloorTest, BlockStateProvider floor, BlockStateProvider basementPost, BlockStateProvider lootContainer, ResourceKey<LootTable> lootTable) {
 		if (xWidth < 1 || zWidth < 1 || depth < 1) return;
 
 		int chestX = rollChestCoord(xWidth, rand);

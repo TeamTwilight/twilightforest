@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:raw_meef"
-            ]
+            "items": "twilightforest:raw_meef"
           }
         ]
       },

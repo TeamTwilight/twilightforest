@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "I": {
-      "tag": "forge:ingots/iron"
+      "tag": "c:ingots/iron"
     },
     "W": {
       "item": "twilightforest:wrought_iron_fence"
@@ -14,6 +14,7 @@
     " W "
   ],
   "result": {
-    "item": "twilightforest:candelabra"
+    "count": 1,
+    "id": "twilightforest:candelabra"
   }
 }

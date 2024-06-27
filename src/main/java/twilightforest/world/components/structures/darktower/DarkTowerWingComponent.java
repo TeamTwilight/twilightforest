@@ -468,7 +468,6 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 
 	/**
 	 * Dark tower treasure rooms!
-	 *
 	 */
 	protected void decorateTreasureRoom(WorldGenLevel world, BoundingBox sbb, Rotation rotation, int y, int spacing, TFStructureDecorator myDeco) {
 		//treasure chest!
@@ -563,8 +562,8 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 				direction = Direction.NORTH;
 		}
 		return initialState.setValue(HorizontalDirectionalBlock.FACING, direction)
-				.setValue(FaceAttachedHorizontalDirectionalBlock.FACE, face)
-				.setValue(LeverBlock.POWERED, isPowered);
+			.setValue(FaceAttachedHorizontalDirectionalBlock.FACE, face)
+			.setValue(LeverBlock.POWERED, isPowered);
 	}
 
 	/**
@@ -852,7 +851,6 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 
 	/**
 	 * Generate walls for the tower with the distinct pattern of blocks and accent blocks
-	 *
 	 */
 	protected void makeEncasedWalls(WorldGenLevel world, RandomSource rand, BoundingBox sbb, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
 
@@ -863,7 +861,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 					} else {
 						// wall
 						if (((y == minY || y == maxY) && ((x == minY || x == maxX) || (z == minZ || z == maxZ)))
-								|| ((z == minZ || z == maxZ) && ((x == minY || x == maxX) || (y == minY || y == maxY)))) {
+							|| ((z == minZ || z == maxZ) && ((x == minY || x == maxX) || (y == minY || y == maxY)))) {
 							this.placeBlock(world, deco.accentState, x, y, z, sbb);
 						} else {
 							StructurePiece.BlockSelector blocker = deco.randomBlocks;

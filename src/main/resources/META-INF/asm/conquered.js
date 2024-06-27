@@ -25,7 +25,7 @@ function initializeCoreMod() {
                         'net/minecraft/world/level/levelgen/structure/StructureStart',
                         '<init>',
                         '(Lnet/minecraft/world/level/levelgen/structure/Structure;Lnet/minecraft/world/level/ChunkPos;ILnet/minecraft/world/level/levelgen/structure/pieces/PiecesContainer;)V'
-                        ),
+                    ),
                     ASM.listOf(
                         new VarInsnNode(Opcodes.ALOAD, 10),
                         new VarInsnNode(Opcodes.ALOAD, 1),
@@ -35,9 +35,9 @@ function initializeCoreMod() {
                             'conquered',
                             '(Lnet/minecraft/world/level/levelgen/structure/StructureStart;Lnet/minecraft/world/level/levelgen/structure/pieces/PiecesContainer;Lnet/minecraft/nbt/CompoundTag;)Lnet/minecraft/world/level/levelgen/structure/StructureStart;',
                             false
-                            )
                         )
-                    );
+                    )
+                );
                 return methodNode;
             }
         }

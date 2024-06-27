@@ -2,7 +2,7 @@
   "collection": "museumcurator.collection.botany",
   "name": "museumcurator.botany.twilightforest.canopytree",
   "relativeTo": "museumcurator.botany.cherrytree",
-  "placement" : "before",
+  "placement": "before",
   "items": [
     "twilightforest:canopy_sapling",
     "twilightforest:canopy_leaves",

@@ -1,6 +1,7 @@
 package twilightforest.loot.conditions;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
@@ -11,7 +12,7 @@ import twilightforest.init.TFLoot;
 // Loot condition for checking if a mod exists.
 public class ModExistsCondition implements LootItemCondition {
 
-	public static final Codec<ModExistsCondition> CODEC = RecordCodecBuilder.create(instance -> instance.group(Codec.STRING.fieldOf("mod_id").forGetter(o -> o.modID)).apply(instance, ModExistsCondition::new));
+	public static final MapCodec<ModExistsCondition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(Codec.STRING.fieldOf("mod_id").forGetter(o -> o.modID)).apply(instance, ModExistsCondition::new));
 
 	private final boolean exists;
 	private final String modID;

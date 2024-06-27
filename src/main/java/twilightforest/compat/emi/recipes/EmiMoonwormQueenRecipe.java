@@ -43,12 +43,12 @@ public class EmiMoonwormQueenRecipe extends TFEmiRecipe<MoonwormQueenRepairRecip
 		widgets.add(new OrderedSlotWidget(RecipeViewerConstants.BERRY_3_LIST.stream().map(EmiStack::of).toList(), 0, 18, 1000L));
 		widgets.add(new OrderedSlotWidget(RecipeViewerConstants.BERRY_4_LIST.stream().map(EmiStack::of).toList(), 18, 18, 1000L));
 
-		for(int i = 5; i < 9; ++i) {
+		for (int i = 5; i < 9; ++i) {
 			widgets.addSlot(EmiStack.EMPTY, i % 3 * 18, i / 3 * 18);
 		}
 
 		widgets.add(new OrderedSlotWidget(RecipeViewerConstants.MOONWORM_QUEEN_LIST.stream().map(EmiStack::of).toList(), 92, 14, 1000L)
-				.appendTooltip(RecipeViewerConstants.MOONWORM_QUEEN_TOOLTIP).large(true).recipeContext(this));
+			.appendTooltip(RecipeViewerConstants.MOONWORM_QUEEN_TOOLTIP).large(true).recipeContext(this));
 	}
 
 	@Override

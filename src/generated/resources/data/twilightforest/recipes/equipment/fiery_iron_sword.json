@@ -1,6 +1,7 @@
 {
   "type": "minecraft:crafting_shapeless",
   "category": "equipment",
+  "group": "fiery_sword",
   "ingredients": [
     {
       "item": "minecraft:iron_sword"
@@ -12,10 +13,11 @@
       "tag": "twilightforest:fiery_vial"
     },
     {
-      "tag": "forge:rods/blaze"
+      "tag": "c:rods/blaze"
     }
   ],
   "result": {
-    "item": "twilightforest:fiery_sword"
+    "count": 1,
+    "id": "twilightforest:fiery_sword"
   }
 }

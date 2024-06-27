@@ -19,6 +19,7 @@ public class QuestRamRenderer extends MobRenderer<QuestRam, QuestRamModel> {
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("questram.png");
 	private static final ResourceLocation textureLocLines = TwilightForestMod.getModelTexture("questram_lines.png");
 
+	@SuppressWarnings("this-escape")
 	public QuestRamRenderer(EntityRendererProvider.Context manager, QuestRamModel model) {
 		super(manager, model, 1.0F);
 		addLayer(new LayerGlowingLines(this));

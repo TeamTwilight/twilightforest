@@ -13,8 +13,8 @@ public class NewUpperGoblinKnightRenderer extends TFBipedRenderer<UpperGoblinKni
 	}
 
 	@Override
-	protected void setupRotations(UpperGoblinKnight upperKnight, PoseStack stack, float ageInTicks, float rotationYaw, float partialTicks) {
-		super.setupRotations(upperKnight, stack, ageInTicks, rotationYaw, partialTicks);
+	protected void setupRotations(UpperGoblinKnight upperKnight, PoseStack stack, float ageInTicks, float rotationYaw, float partialTicks, float scale) {
+		super.setupRotations(upperKnight, stack, ageInTicks, rotationYaw, partialTicks, scale);
 
 		if (upperKnight.heavySpearTimer > 0) {
 			stack.mulPose(Axis.XP.rotationDegrees(getPitchForAttack((60 - upperKnight.heavySpearTimer) + partialTicks)));

@@ -8,9 +8,7 @@
             "condition": "minecraft:location_check",
             "predicate": {
               "block": {
-                "blocks": [
-                  "twilightforest:experiment_115"
-                ],
+                "blocks": "twilightforest:experiment_115",
                 "state": {
                   "regenerate": "true"
                 }
@@ -20,9 +18,7 @@
           {
             "condition": "minecraft:match_tool",
             "predicate": {
-              "items": [
-                "minecraft:redstone"
-              ]
+              "items": "minecraft:redstone"
             }
           }
         ]
@@ -37,8 +33,11 @@
     "frame": "challenge",
     "hidden": true,
     "icon": {
-      "item": "twilightforest:experiment_115",
-      "nbt": "{full:{full:1}}"
+      "components": {
+        "twilightforest:e115_variant": "full"
+      },
+      "count": 1,
+      "id": "twilightforest:experiment_115"
     },
     "title": {
       "translate": "advancement.twilightforest.experiment_115_2"

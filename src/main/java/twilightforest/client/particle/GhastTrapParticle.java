@@ -4,10 +4,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
 public class GhastTrapParticle extends TextureSheetParticle {
 
 	private final float reddustParticleScale;
@@ -32,7 +29,7 @@ public class GhastTrapParticle extends TextureSheetParticle {
 		float brightness = (float) Math.random() * 0.4F;
 		this.rCol = 1.0F;
 		this.gCol = ((float) (Math.random() * 0.2D) + 0.8F) * brightness;
-		this.bCol  = ((float) (Math.random() * 0.2D) + 0.8F) * brightness;
+		this.bCol = ((float) (Math.random() * 0.2D) + 0.8F) * brightness;
 		this.quadSize *= 0.75F * scale;
 		this.reddustParticleScale = this.quadSize;
 		this.lifetime = (int) (10.0D / (Math.random() * 0.8D + 0.2D));
@@ -68,7 +65,6 @@ public class GhastTrapParticle extends TextureSheetParticle {
 		}
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	public record Factory(SpriteSet sprite) implements ParticleProvider<SimpleParticleType> {
 
 		@Override

@@ -1,21 +1,19 @@
 {
   "type": "twilightforest:glacier",
-  "config": {
-    "biome_mask": [
-      "twilightforest:glacier"
-    ],
-    "body_block": {
-      "type": "minecraft:simple_state_provider",
-      "state": {
-        "Name": "minecraft:packed_ice"
-      }
-    },
-    "height": 32,
-    "top_block": {
-      "type": "minecraft:simple_state_provider",
-      "state": {
-        "Name": "minecraft:ice"
-      }
+  "biome_mask": [
+    "twilightforest:glacier"
+  ],
+  "body_block": {
+    "type": "minecraft:simple_state_provider",
+    "state": {
+      "Name": "minecraft:packed_ice"
+    }
+  },
+  "height": 32,
+  "top_block": {
+    "type": "minecraft:simple_state_provider",
+    "state": {
+      "Name": "minecraft:ice"
     }
   }
 }

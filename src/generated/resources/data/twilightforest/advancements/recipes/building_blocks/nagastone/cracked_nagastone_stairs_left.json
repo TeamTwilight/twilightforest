@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:cracked_etched_nagastone"
-            ]
+            "items": "twilightforest:cracked_etched_nagastone"
           }
         ]
       },

@@ -127,10 +127,10 @@ public class FinalCastleFoundation13ComponentThorns extends FinalCastleFoundatio
 				// go out that far
 				final Rotation add = dir.getRotated(rotation).getRotated(this.getRotation());
 				BlockState thorns = TFBlocks.GREEN_THORNS.get().defaultBlockState()
-						.setValue(
-								RotatedPillarBlock.AXIS,
-								add == Rotation.NONE || add == Rotation.CLOCKWISE_180 ? Direction.Axis.X : Direction.Axis.Z
-						);
+					.setValue(
+						RotatedPillarBlock.AXIS,
+						add == Rotation.NONE || add == Rotation.CLOCKWISE_180 ? Direction.Axis.X : Direction.Axis.Z
+					);
 				if (i > 0) {
 					this.setBlockStateRotated(world, thorns, x + (dx * i), y, z + (dz * i), rotation, sbb);
 				}

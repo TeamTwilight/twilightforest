@@ -28,10 +28,10 @@ public class UrGhastFireball extends LargeFireball implements ITFProjectile {
 	protected void onHit(HitResult pResult) {
 		HitResult.Type hitresult$type = pResult.getType();
 		if (hitresult$type == HitResult.Type.ENTITY) {
-			this.onHitEntity((EntityHitResult)pResult);
+			this.onHitEntity((EntityHitResult) pResult);
 			this.level().gameEvent(GameEvent.PROJECTILE_LAND, pResult.getLocation(), GameEvent.Context.of(this, null));
 		} else if (hitresult$type == HitResult.Type.BLOCK) {
-			BlockHitResult blockhitresult = (BlockHitResult)pResult;
+			BlockHitResult blockhitresult = (BlockHitResult) pResult;
 			this.onHitBlock(blockhitresult);
 			BlockPos blockpos = blockhitresult.getBlockPos();
 			this.level().gameEvent(GameEvent.PROJECTILE_LAND, blockpos, GameEvent.Context.of(this, this.level().getBlockState(blockpos)));
@@ -45,7 +45,7 @@ public class UrGhastFireball extends LargeFireball implements ITFProjectile {
 			result.getEntity().hurt(this.damageSources().fireball(this, this.getOwner()), 16.0F);
 			this.doEnchantDamageEffects((LivingEntity) this.getOwner(), result.getEntity());
 
-			boolean flag = EventHooks.getMobGriefingEvent(this.level(), this.getOwner());
+			boolean flag = EventHooks.canEntityGrief(this.level(), this.getOwner());
 			this.level().explode(null, this.getX(), this.getY(), this.getZ(), this.power, flag, Level.ExplosionInteraction.NONE);
 			this.discard();
 		}
@@ -55,7 +55,7 @@ public class UrGhastFireball extends LargeFireball implements ITFProjectile {
 	protected void onHitBlock(BlockHitResult result) {
 		super.onHitBlock(result);
 		//explode and leave fire when hitting a block, but dont destroy them
-		boolean flag = EventHooks.getMobGriefingEvent(this.level(), this.getOwner());
+		boolean flag = EventHooks.canEntityGrief(this.level(), this.getOwner());
 		this.level().explode(null, this.getX(), this.getY(), this.getZ(), (float) this.power, flag, Level.ExplosionInteraction.NONE);
 		this.discard();
 	}
@@ -63,9 +63,9 @@ public class UrGhastFireball extends LargeFireball implements ITFProjectile {
 	@Override
 	public void shoot(double x, double y, double z, float scale, float dist) {
 		Vec3 vec3d = (new Vec3(x, y, z))
-				.normalize()
-				.add(this.random.nextGaussian() * 0.0075F * dist, this.random.nextGaussian() * 0.0075F * dist, this.random.nextGaussian() * 0.0075F * dist)
-				.scale(scale);
+			.normalize()
+			.add(this.random.nextGaussian() * 0.0075F * dist, this.random.nextGaussian() * 0.0075F * dist, this.random.nextGaussian() * 0.0075F * dist)
+			.scale(scale);
 		this.setDeltaMovement(vec3d);
 		float f = Mth.sqrt((float) distanceToSqr(vec3d));
 		this.setYRot((float) (Mth.atan2(vec3d.x(), z) * (180F / Mth.PI)));

@@ -1,8 +1,10 @@
 {
   "type": "minecraft:stonecutting",
-  "count": 1,
   "ingredient": {
     "item": "twilightforest:mazestone_brick"
   },
-  "result": "twilightforest:cut_mazestone"
+  "result": {
+    "count": 1,
+    "id": "twilightforest:cut_mazestone"
+  }
 }

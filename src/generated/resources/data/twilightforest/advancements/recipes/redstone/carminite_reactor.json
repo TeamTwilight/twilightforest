@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "forge:gems/carminite"
+            "items": "#c:gems/carminite"
           }
         ]
       },

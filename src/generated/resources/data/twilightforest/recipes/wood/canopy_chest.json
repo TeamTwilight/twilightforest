@@ -1,12 +1,13 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "misc",
+  "group": "chest",
   "key": {
     "#": {
       "item": "twilightforest:canopy_planks"
     },
     "C": {
-      "tag": "forge:chests/wooden"
+      "item": "minecraft:chest"
     }
   },
   "pattern": [
@@ -16,6 +17,6 @@
   ],
   "result": {
     "count": 2,
-    "item": "twilightforest:canopy_chest"
+    "id": "twilightforest:canopy_chest"
   }
 }

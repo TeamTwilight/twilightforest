@@ -438,7 +438,6 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 
 	/**
 	 * Make a single three quarter floor
-	 *
 	 */
 	protected void makeThreeQuarterFloor(WorldGenLevel world, BoundingBox sbb, Rotation rotation, int y, boolean isBottom, boolean isTowerTopFloor) {
 		int half = size / 2;
@@ -932,10 +931,10 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 
 		// anvils
 		this.setBlockStateRotated(world, List.of(Blocks.ANVIL, Blocks.CHIPPED_ANVIL, Blocks.DAMAGED_ANVIL).get(decoRNG.nextInt(3)).defaultBlockState()
-				.setValue(AnvilBlock.FACING, Direction.Plane.HORIZONTAL.getRandomDirection(decoRNG)), 13, y + 2, 5, rotation, sbb);
+			.setValue(AnvilBlock.FACING, Direction.Plane.HORIZONTAL.getRandomDirection(decoRNG)), 13, y + 2, 5, rotation, sbb);
 
 		this.setBlockStateRotated(world, List.of(Blocks.ANVIL, Blocks.CHIPPED_ANVIL, Blocks.DAMAGED_ANVIL).get(decoRNG.nextInt(3)).defaultBlockState()
-				.setValue(AnvilBlock.FACING, Direction.Plane.HORIZONTAL.getRandomDirection(decoRNG)), 13, y + 2, 13, rotation, sbb);
+			.setValue(AnvilBlock.FACING, Direction.Plane.HORIZONTAL.getRandomDirection(decoRNG)), 13, y + 2, 13, rotation, sbb);
 
 		// fire pit
 		makeFirePit(world, forgeDeco, 6, y + 1, 12, rotation, sbb);
@@ -1038,7 +1037,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 		setBlockStateRotated(world, Blocks.CRAFTING_TABLE.defaultBlockState(), 14, y + 2, 4, rotation, sbb);
 
 		BlockState slab = Blocks.SPRUCE_SLAB.defaultBlockState()
-				.setValue(SlabBlock.TYPE, SlabType.TOP);
+			.setValue(SlabBlock.TYPE, SlabType.TOP);
 
 		// bench 2
 		setBlockStateRotated(world, getStairState(deco.stairState, Direction.EAST, true), 12, y + 1, 7, rotation, sbb);
@@ -1080,17 +1079,17 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 		if (sbb.isInside(new BlockPos(dx, dy, dz))) {
 			ResourceKey<ConfiguredFeature<?, ?>> treeGen = switch (treeNum) {
 				case 1 ->
-						// jungle tree
-						// made a custom one so it doesnt cut through the floor
-						TFConfiguredFeatures.SMALLER_JUNGLE_TREE;
+					// jungle tree
+					// made a custom one so it doesnt cut through the floor
+					TFConfiguredFeatures.SMALLER_JUNGLE_TREE;
 				case 2 ->
-						// birch
-						TreeFeatures.BIRCH;
+					// birch
+					TreeFeatures.BIRCH;
 				case 3 -> TFConfiguredFeatures.TWILIGHT_OAK_TREE;
 				case 4 -> TFConfiguredFeatures.RAINBOW_OAK_TREE;
 				default ->
-						// oak tree
-						TreeFeatures.OAK;
+					// oak tree
+					TreeFeatures.OAK;
 			};
 			// grow a tree
 
@@ -1104,9 +1103,9 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 
 	private void placeRandomPlant(WorldGenLevel world, RandomSource decoRNG, int x, int y, int z, Rotation rotation, BoundingBox sbb) {
 		Optional<Block> optional = BuiltInRegistries.BLOCK
-				.getTag(BlockTagGenerator.DARK_TOWER_ALLOWED_POTS)
-				.flatMap(tag -> tag.getRandomElement(decoRNG))
-				.map(Holder::value);
+			.getTag(BlockTagGenerator.DARK_TOWER_ALLOWED_POTS)
+			.flatMap(tag -> tag.getRandomElement(decoRNG))
+			.map(Holder::value);
 		setBlockStateRotated(world, decoRNG.nextInt(10) != 0 && optional.isPresent() ? optional.get().defaultBlockState() : Blocks.FLOWER_POT.defaultBlockState(), x, y, z, rotation, sbb);
 	}
 
@@ -1138,7 +1137,6 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 
 	/**
 	 * Make a lattice of log blocks
-	 *
 	 */
 	protected void makeTimberBeams(WorldGenLevel world, RandomSource rand, BoundingBox sbb, Rotation rotation, int y, boolean isBottom, boolean isTop, int top) {
 		BlockState beamID = TFBlocks.TWILIGHT_OAK_LOG.get().defaultBlockState();

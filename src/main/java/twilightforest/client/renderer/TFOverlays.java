@@ -6,7 +6,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.Options;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
@@ -21,15 +20,16 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.GameType;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.client.event.RegisterGuiOverlaysEvent;
-import net.neoforged.neoforge.client.gui.overlay.ExtendedGui;
-import net.neoforged.neoforge.client.gui.overlay.VanillaGuiOverlay;
-import twilightforest.TFConfig;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
+import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import twilightforest.TwilightForestMod;
+import twilightforest.components.item.OreScannerData;
+import twilightforest.config.TFConfig;
 import twilightforest.entity.passive.QuestRam;
 import twilightforest.events.HostileMountEvents;
 import twilightforest.init.TFDataAttachments;
+import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFItems;
 import twilightforest.item.OreMeterItem;
 import twilightforest.util.ComponentAlignment;
@@ -37,7 +37,7 @@ import twilightforest.util.ComponentAlignment;
 import java.text.DecimalFormat;
 import java.util.*;
 
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
 public class TFOverlays {
 	private static final ResourceLocation QUESTING_RAM_CHECK_SPRITE = TwilightForestMod.prefix("questing_ram_check");
 	private static final ResourceLocation QUESTING_RAM_X_SPRITE = TwilightForestMod.prefix("questing_ram_x");
@@ -45,64 +45,67 @@ public class TFOverlays {
 	public static Map<Long, OreMeterInfoCache> ORE_METER_STAT_CACHE = new HashMap<>();
 
 	@SubscribeEvent
-	public static void registerOverlays(RegisterGuiOverlaysEvent event) {
-		event.registerAbove(VanillaGuiOverlay.CROSSHAIR.id(), TwilightForestMod.prefix("quest_ram_indicator"), (gui, graphics, partialTick, screenWidth, screenHeight) -> {
+	public static void registerOverlays(RegisterGuiLayersEvent event) {
+		event.registerAbove(VanillaGuiLayers.CROSSHAIR, TwilightForestMod.prefix("quest_ram_indicator"), (graphics, partialTicks) -> {
 			Minecraft minecraft = Minecraft.getInstance();
 			LocalPlayer player = minecraft.player;
-			if (player != null && !minecraft.options.hideGui && TFConfig.CLIENT_CONFIG.showQuestRamCrosshairIndicator.get()) {
+			Gui gui = minecraft.gui;
+			if (player != null && !minecraft.options.hideGui && TFConfig.showQuestRamCrosshairIndicator) {
 				RenderSystem.enableBlend();
-				renderIndicator(minecraft, graphics, gui, player, screenWidth, screenHeight);
+				renderIndicator(minecraft, graphics, gui, player, graphics.guiWidth(), graphics.guiHeight());
 				RenderSystem.disableBlend();
 			}
 		});
-		event.registerAbove(VanillaGuiOverlay.MOUNT_HEALTH.id(), TwilightForestMod.prefix("hostile_mount_hunger_bar"), (gui, graphics, partialTick, screenWidth, screenHeight) -> {
-			LocalPlayer player = Minecraft.getInstance().player;
-			if (!gui.getMinecraft().options.hideGui && gui.shouldDrawSurvivalElements() && player != null && HostileMountEvents.isRidingUnfriendly(player)) {
-				gui.setupOverlayRenderState(true, false);
-				gui.renderFood(screenWidth, screenHeight, graphics);
-			}
-		});
-		event.registerAboveAll(TwilightForestMod.prefix("ore_meter_stats"), (gui, graphics, partialTick, screenWidth, screenHeight) -> {
+		event.registerAbove(VanillaGuiLayers.VEHICLE_HEALTH, TwilightForestMod.prefix("hostile_mount_hunger_bar"), (graphics, partialTicks) -> {
 			Minecraft minecraft = Minecraft.getInstance();
 			LocalPlayer player = minecraft.player;
+			Gui gui = minecraft.gui;
+			if (!minecraft.options.hideGui && minecraft.gameMode.canHurtPlayer() && player != null && HostileMountEvents.isRidingUnfriendly(player)) {
+				int xPos = graphics.guiWidth() / 2 + 91;
+				int yPos = graphics.guiHeight() - gui.rightHeight;
+				gui.renderFood(graphics, player, yPos, xPos);
+				gui.rightHeight += 10;
+			}
+		});
+		event.registerAboveAll(TwilightForestMod.prefix("ore_meter_stats"), (graphics, partialTicks) -> {
+			Minecraft minecraft = Minecraft.getInstance();
+			LocalPlayer player = minecraft.player;
+			Gui gui = minecraft.gui;
 			if (player != null && !minecraft.options.hideGui && !gui.getDebugOverlay().showDebugScreen() && minecraft.screen == null) {
 				renderOreMeterStats(graphics, player);
 			}
 		});
 
-		event.registerAbove(VanillaGuiOverlay.ARMOR_LEVEL.id(), TwilightForestMod.prefix("fortification_shield_count"), (gui, graphics, partialTick, screenWidth, screenHeight) -> {
+		event.registerAbove(VanillaGuiLayers.ARMOR_LEVEL, TwilightForestMod.prefix("fortification_shield_count"), (graphics, partialTick) -> {
 			Minecraft minecraft = Minecraft.getInstance();
 			LocalPlayer player = minecraft.player;
-			if (player != null && !minecraft.options.hideGui && gui.shouldDrawSurvivalElements() && player.hasData(TFDataAttachments.FORTIFICATION_SHIELDS) && player.getData(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft() > 0 && TFConfig.CLIENT_CONFIG.showFortificationShieldIndicator.get()) {
-				renderShieldCount(graphics, gui, player, screenWidth, screenHeight, player.getData(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft());
+			Gui gui = minecraft.gui;
+			if (player != null && !minecraft.options.hideGui && (minecraft.gameMode.canHurtPlayer() || TFConfig.showFortificationShieldIndicatorInCreative) && player.hasData(TFDataAttachments.FORTIFICATION_SHIELDS) && player.getData(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft() > 0 && TFConfig.showFortificationShieldIndicator) {
+				renderShieldCount(graphics, gui, player, graphics.guiWidth(), graphics.guiHeight(), player.getData(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft());
 			}
 		});
 	}
 
 	public static void renderIndicator(Minecraft minecraft, GuiGraphics graphics, Gui gui, Player player, int screenWidth, int screenHeight) {
-		Options options = minecraft.options;
-		if (options.getCameraType().isFirstPerson()) {
-			if (minecraft.gameMode.getPlayerMode() != GameType.SPECTATOR || gui.canRenderCrosshairForSpectator(minecraft.hitResult)) {
+        if (minecraft.options.getCameraType().isFirstPerson() && (minecraft.gameMode.getPlayerMode() != GameType.SPECTATOR || gui.canRenderCrosshairForSpectator(minecraft.hitResult)) && minecraft.crosshairPickEntity instanceof QuestRam ram) {
+            ItemStack stack = player.getInventory().getItem(player.getInventory().selected);
+            if (!stack.isEmpty() && stack.is(ItemTags.WOOL)) {
 				RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 				int j = ((screenHeight - 1) / 2) - 11;
 				int k = ((screenWidth - 1) / 2) - 3;
-				if (minecraft.crosshairPickEntity instanceof QuestRam ram) {
-					ItemStack stack = player.getInventory().getItem(player.getInventory().selected);
-					if (!stack.isEmpty() && stack.is(ItemTags.WOOL)) {
-						if (ram.guessColor(stack) != null && !ram.isColorPresent(Objects.requireNonNull(ram.guessColor(stack)))) {
-							graphics.blitSprite(QUESTING_RAM_X_SPRITE, k, j, 7, 7);
-						} else {
-							graphics.blitSprite(QUESTING_RAM_CHECK_SPRITE, k, j, 7, 7);
-						}
-					}
-				}
-			}
-		}
+                if (ram.guessColor(stack) != null && !ram.isColorPresent(Objects.requireNonNull(ram.guessColor(stack)))) {
+                    graphics.blitSprite(QUESTING_RAM_X_SPRITE, k, j, 7, 7);
+                } else {
+                    graphics.blitSprite(QUESTING_RAM_CHECK_SPRITE, k, j, 7, 7);
+                }
+				RenderSystem.defaultBlendFunc();
+            }
+        }
 	}
 
-	public static void renderShieldCount(GuiGraphics graphics, ExtendedGui gui, Player player, int screenWidth, int screenHeight, int shieldCount) {
+	public static void renderShieldCount(GuiGraphics graphics, Gui gui, Player player, int screenWidth, int screenHeight, int shieldCount) {
 		for (int i = 0; i < Math.min(shieldCount, 10); i++) {
-			graphics.blitSprite(FORTIFICATION_SHIELD_SPRITE, screenWidth / 2 - 91 + (i * 8), screenHeight - gui.leftHeight + (player.getArmorValue() > 0 ? 0 : 10), 9, 9);
+			graphics.blitSprite(FORTIFICATION_SHIELD_SPRITE, screenWidth / 2 - 91 + (i * 8), screenHeight - gui.leftHeight, 9, 9);
 		}
 		gui.leftHeight += 10;
 	}
@@ -119,11 +122,16 @@ public class TFOverlays {
 				}
 				graphics.fill(0, 0, 56, 16, 0x9b000000);
 				graphics.drawString(Minecraft.getInstance().font, component, 4, 4, 16777215, false);
-			} else if (!OreMeterItem.getScanInfo(selectedMeter).isEmpty()) {
-				long identifier = OreMeterItem.getID(selectedMeter);
+			} else {
+				OreScannerData oreScannerData = selectedMeter.get(TFDataComponents.ORE_DATA);
+
+				if (oreScannerData == null) return;
+
+				long identifier = oreScannerData.universalId();
 				if (identifier != 0L && !ORE_METER_STAT_CACHE.containsKey(identifier)) {
-					initTooltips(identifier, selectedMeter);
+					initTooltips(identifier, selectedMeter.getOrDefault(TFDataComponents.ORE_RANGE, 1), oreScannerData);
 				}
+
 				if (ORE_METER_STAT_CACHE.containsKey(identifier)) {
 					OreMeterInfoCache info = ORE_METER_STAT_CACHE.get(identifier);
 
@@ -138,23 +146,23 @@ public class TFOverlays {
 
 	private static final DecimalFormat FORMAT = new DecimalFormat("0.000");
 
-	public static void initTooltips(long id, ItemStack meter) {
-		ChunkPos pos = OreMeterItem.getScannedChunk(meter);
-		int totalScanned = OreMeterItem.getScannedBlocks(meter);
+	public static void initTooltips(long id, int range, OreScannerData data) {
+		ChunkPos pos = data.scannedChunk();
+		int totalScanned = data.totalScannedBlocks();
 
 		List<Component> headerRowTexts = ImmutableList.of(
-				Component.translatable("misc.twilightforest.ore_meter_range", OreMeterItem.getRange(meter), pos.x, pos.z),
-				Component.translatable("misc.twilightforest.ore_meter_total", totalScanned)
+			Component.translatable("misc.twilightforest.ore_meter_range", range, pos.x, pos.z),
+			Component.translatable("misc.twilightforest.ore_meter_total", totalScanned)
 		);
 
 		ArrayList<ComponentColumn> columns = new ArrayList<>();
 
-		List<Pair<String, Integer>> scanData = OreMeterItem.getScanInfo(meter).entrySet().stream()
-				.map(e -> Pair.of(e.getKey(), e.getValue())) // Convert Entries into Pairs
-				.sorted(Comparator.comparing(Pair::getSecond)) // Sort Pairs by second element (quantity)
-				.toList(); // Make sorted immutable list
+		List<Pair<String, Integer>> scanData = data.counts().entrySet().stream()
+			.map(e -> Pair.of(e.getKey(), e.getValue())) // Convert Entries into Pairs
+			.sorted(Comparator.comparing(Pair::getSecond)) // Sort Pairs by second element (quantity)
+			.toList(); // Make sorted immutable list
 
-		if (TFConfig.CLIENT_CONFIG.prettifyOreMeterGui.get()) {
+		if (TFConfig.prettifyOreMeterGui) {
 			ComponentColumn padding = ComponentColumn.padding(1);
 			List<Integer> counts = scanData.stream().map(Pair::getSecond).toList();
 
@@ -178,10 +186,10 @@ public class TFOverlays {
 		for (Pair<String, Integer> entry : entries) {
 			String percentage = FORMAT.format(entry.getSecond() * 100.0F / totalScanned);
 			Component formattedEntry = Component.translatable(entry.getFirst())
-					.append(Component.literal(" "))
-					.append(Component.translatable("misc.twilightforest.ore_meter_separator"))
-					.append(Component.literal(" " + entry.getSecond() + " "))
-					.append(Component.translatable("misc.twilightforest.ore_meter_ratio", percentage));
+				.append(Component.literal(" "))
+				.append(Component.translatable("misc.twilightforest.ore_meter_separator"))
+				.append(Component.literal(" " + entry.getSecond() + " "))
+				.append(Component.translatable("misc.twilightforest.ore_meter_ratio", percentage));
 
 			tooltips.add(formattedEntry);
 		}

@@ -3,16 +3,13 @@ package twilightforest.entity.boss;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.BossEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -28,8 +25,6 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.Structure;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.ITFCharger;
 import twilightforest.entity.ai.goal.ChargeAttackGoal;
@@ -47,8 +42,8 @@ public class Minoshroom extends BaseTFBoss implements ITFCharger {
 	private float prevClientSideChargeAnimation;
 	private float clientSideChargeAnimation;
 	private boolean groundSmashState = false;
-	private final ServerBossEvent bossInfo = new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS);
 
+	@SuppressWarnings("this-escape")
 	public Minoshroom(EntityType<? extends Minoshroom> type, Level level) {
 		super(type, level);
 		this.xpReward = 100;
@@ -71,11 +66,11 @@ public class Minoshroom extends BaseTFBoss implements ITFCharger {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(CHARGING, false);
-		this.getEntityData().define(GROUND_ATTACK, false);
-		this.getEntityData().define(GROUND_CHARGE, 0);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(CHARGING, false);
+		builder.define(GROUND_ATTACK, false);
+		builder.define(GROUND_CHARGE, 0);
 	}
 
 	@Override
@@ -98,8 +93,8 @@ public class Minoshroom extends BaseTFBoss implements ITFCharger {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Minotaur.registerAttributes()
-				.add(Attributes.MAX_HEALTH, 120.0D)
-				.add(Attributes.KNOCKBACK_RESISTANCE, 0.5D);
+			.add(Attributes.MAX_HEALTH, 120.0D)
+			.add(Attributes.KNOCKBACK_RESISTANCE, 0.5D);
 	}
 
 	@Override
@@ -139,8 +134,8 @@ public class Minoshroom extends BaseTFBoss implements ITFCharger {
 
 	@Nullable
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
-		data = super.finalizeSpawn(accessor, difficulty, reason, data, tag);
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData data) {
+		data = super.finalizeSpawn(accessor, difficulty, reason, data);
 		this.populateDefaultEquipmentSlots(accessor.getRandom(), difficulty);
 		this.populateDefaultEquipmentEnchantments(accessor.getRandom(), difficulty);
 		return data;
@@ -150,7 +145,7 @@ public class Minoshroom extends BaseTFBoss implements ITFCharger {
 	public boolean doHurtTarget(Entity entity) {
 		return EntityUtil.properlyApplyCustomDamageSource(this, entity, TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.AXING, this), TFSounds.MINOSHROOM_ATTACK.get());
 	}
-	
+
 	@Override
 	protected SoundEvent getAmbientSound() {
 		return TFSounds.MINOSHROOM_AMBIENT.get();
@@ -176,7 +171,6 @@ public class Minoshroom extends BaseTFBoss implements ITFCharger {
 		return (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.2F + 0.7F;
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	public float getChargeAnimationScale(float scale) {
 		return (this.prevClientSideChargeAnimation + (this.clientSideChargeAnimation - this.prevClientSideChargeAnimation) * scale) / 6.0F;
 	}
@@ -202,11 +196,6 @@ public class Minoshroom extends BaseTFBoss implements ITFCharger {
 	}
 
 	@Override
-	public ServerBossEvent getBossBar() {
-		return this.bossInfo;
-	}
-
-	@Override
 	public Block getDeathContainer(RandomSource random) {
 		return TFBlocks.MANGROVE_CHEST.get();
 	}
@@ -214,5 +203,10 @@ public class Minoshroom extends BaseTFBoss implements ITFCharger {
 	@Override
 	public Block getBossSpawner() {
 		return TFBlocks.MINOSHROOM_BOSS_SPAWNER.get();
+	}
+
+	@Override
+	public int getBossBarColor() {
+		return 0xFF0000;
 	}
 }

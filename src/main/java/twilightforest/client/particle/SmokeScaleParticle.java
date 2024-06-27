@@ -6,8 +6,6 @@ import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SmokeParticle;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.particles.SimpleParticleType;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 
 public class SmokeScaleParticle extends SmokeParticle {
 
@@ -15,7 +13,6 @@ public class SmokeScaleParticle extends SmokeParticle {
 		super(level, x, y, z, velX, velY, velZ, scale, sprite);
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	public record Factory(SpriteSet sprite) implements ParticleProvider<SimpleParticleType> {
 
 		@Override

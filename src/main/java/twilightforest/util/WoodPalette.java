@@ -2,6 +2,7 @@ package twilightforest.util;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.StairBlock;
@@ -16,18 +17,18 @@ import java.util.Set;
 
 public class WoodPalette {
 	public static final Codec<WoodPalette> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-			BuiltInRegistries.BLOCK.byNameCodec().fieldOf("planks").forGetter(p -> p.planks),
-			BuiltInRegistries.BLOCK.byNameCodec().fieldOf("stairs").forGetter(p -> p.stairs),
-			BuiltInRegistries.BLOCK.byNameCodec().fieldOf("slab").forGetter(p -> p.slab),
-			BuiltInRegistries.BLOCK.byNameCodec().fieldOf("button").forGetter(p -> p.button),
-			BuiltInRegistries.BLOCK.byNameCodec().fieldOf("fence").forGetter(p -> p.fence),
-			BuiltInRegistries.BLOCK.byNameCodec().fieldOf("gate").forGetter(p -> p.gate),
-			BuiltInRegistries.BLOCK.byNameCodec().fieldOf("plate").forGetter(p -> p.plate),
-			BuiltInRegistries.BLOCK.byNameCodec().fieldOf("banister").forGetter(p -> p.banister)
+		BuiltInRegistries.BLOCK.byNameCodec().fieldOf("planks").forGetter(p -> p.planks),
+		BuiltInRegistries.BLOCK.byNameCodec().fieldOf("stairs").forGetter(p -> p.stairs),
+		BuiltInRegistries.BLOCK.byNameCodec().fieldOf("slab").forGetter(p -> p.slab),
+		BuiltInRegistries.BLOCK.byNameCodec().fieldOf("button").forGetter(p -> p.button),
+		BuiltInRegistries.BLOCK.byNameCodec().fieldOf("fence").forGetter(p -> p.fence),
+		BuiltInRegistries.BLOCK.byNameCodec().fieldOf("gate").forGetter(p -> p.gate),
+		BuiltInRegistries.BLOCK.byNameCodec().fieldOf("plate").forGetter(p -> p.plate),
+		BuiltInRegistries.BLOCK.byNameCodec().fieldOf("banister").forGetter(p -> p.banister)
 	).apply(instance, WoodPalette::new));
 
-	public WoodPalette(DeferredHolder<Block, Block> planks, DeferredHolder<Block, StairBlock> stairs, DeferredHolder<Block, Block> slab, DeferredHolder<Block, Block> button, DeferredHolder<Block, Block> fence, DeferredHolder<Block, Block> gate, DeferredHolder<Block, Block> plate, DeferredHolder<Block, BanisterBlock> banister) {
-		this(planks.get(), stairs.get(), slab.get(), button.get(), fence.get(), gate.get(), plate.get(), banister.get());
+	public WoodPalette(Holder<Block> planks, Holder<Block> stairs, Holder<Block> slab, Holder<Block> button, Holder<Block> fence, Holder<Block> gate, Holder<Block> plate, Holder<Block> banister) {
+		this(planks.value(), stairs.value(), slab.value(), button.value(), fence.value(), gate.value(), plate.value(), banister.value());
 	}
 
 	private final Set<Block> blocks;

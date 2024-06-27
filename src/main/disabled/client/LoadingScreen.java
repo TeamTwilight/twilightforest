@@ -27,7 +27,6 @@ import java.util.Random;
 //retired loading screen, see https://twitter.com/Drullkus/status/928466334744064000 for a video example.
 //1.16+ load times have gotten a lot better, and you cant really see this screen anymore.
 //it also breaks in one way or another every update, so we're gonna retire it until we find another use for it.
-@OnlyIn(Dist.CLIENT)
 public class LoadingScreen extends Screen {
 
 	private boolean isEntering;
@@ -42,7 +41,7 @@ public class LoadingScreen extends Screen {
 	private static final TFConfig.Client.LoadingScreen LOADING_SCREEN = TFConfig.CLIENT_CONFIG.LOADING_SCREEN;
 
 	LoadingScreen() {
-	    super(NarratorChatListener.NO_TITLE);
+		super(NarratorChatListener.NO_TITLE);
 	}
 
 	void setEntering(boolean isEntering) {
@@ -55,10 +54,10 @@ public class LoadingScreen extends Screen {
 		this.assignContent();
 	}
 
-    @Override
-    public boolean isPauseScreen() {
-        return false;
-    }
+	@Override
+	public boolean isPauseScreen() {
+		return false;
+	}
 
 	@Override
 	public void tick() {
@@ -95,9 +94,9 @@ public class LoadingScreen extends Screen {
 		String loadTitle = I18n.get(TwilightForestMod.ID + ".loading.title." + (isEntering ? "enter" : "leave"));
 		ms.pushPose();
 		ms.translate(
-				(resolution.getGuiScaledWidth() / 2f) - (fontRenderer.width(loadTitle) / 4f),
-				(resolution.getGuiScaledHeight() / 3f),
-				0f
+			(resolution.getGuiScaledWidth() / 2f) - (fontRenderer.width(loadTitle) / 4f),
+			(resolution.getGuiScaledHeight() / 3f),
+			0f
 		);
 		ms.translate(-(fontRenderer.width(loadTitle) / 4f), 0f, 0f);
 		fontRenderer.drawShadow(ms, loadTitle, 0, 0, 0xEEEEEE); //eeeeeeeeeeeeeeeeee
@@ -148,10 +147,10 @@ public class LoadingScreen extends Screen {
 
 	public enum BackgroundThemes {
 		LABYRINTH(
-				TwilightForestMod.prefix("textures/block/mazestone_brick.png"),
-				TwilightForestMod.prefix("textures/block/mazestone_brick.png"),
-				//TwilightForestMod.prefix("textures/block/mossy_mazestone.png"     ),
-				TwilightForestMod.prefix("textures/block/cracked_mazestone.png")
+			TwilightForestMod.prefix("textures/block/mazestone_brick.png"),
+			TwilightForestMod.prefix("textures/block/mazestone_brick.png"),
+			//TwilightForestMod.prefix("textures/block/mossy_mazestone.png"     ),
+			TwilightForestMod.prefix("textures/block/cracked_mazestone.png")
 		) {
 			private final ResourceLocation mazestoneDecor = TwilightForestMod.prefix("textures/block/decorative_mazestone.png");
 
@@ -163,21 +162,21 @@ public class LoadingScreen extends Screen {
 
 				buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 				buffer.vertex(0, 24F, 0F)
-						.uv(0F, 0.75F)
-						.color(0.5F, 0.5F, 0.5F, 1F)
-						.endVertex();
+					.uv(0F, 0.75F)
+					.color(0.5F, 0.5F, 0.5F, 1F)
+					.endVertex();
 				buffer.vertex(width, 24F, 0F)
-						.uv(width / backgroundScale, 0.75F)
-						.color(0.5F, 0.5F, 0.5F, 1F)
-						.endVertex();
+					.uv(width / backgroundScale, 0.75F)
+					.color(0.5F, 0.5F, 0.5F, 1F)
+					.endVertex();
 				buffer.vertex(width, 8F, 0F)
-						.uv(width / backgroundScale, 0.25F)
-						.color(0.5F, 0.5F, 0.5F, 1F)
-						.endVertex();
+					.uv(width / backgroundScale, 0.25F)
+					.color(0.5F, 0.5F, 0.5F, 1F)
+					.endVertex();
 				buffer.vertex(0, 8F, 0)
-						.uv(0F, 0.25F)
-						.color(0.5F, 0.5F, 0.5F, 1F)
-						.endVertex();
+					.uv(0F, 0.25F)
+					.color(0.5F, 0.5F, 0.5F, 1F)
+					.endVertex();
 				tessellator.end();
 
 				float halfScale = backgroundScale / 2F;
@@ -185,40 +184,40 @@ public class LoadingScreen extends Screen {
 
 				buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 				buffer.vertex(0, bottomGrid, 0F)
-						.uv(0F, 0.75F)
-						.color(0.5F, 0.5F, 0.5F, 1F)
-						.endVertex();
+					.uv(0F, 0.75F)
+					.color(0.5F, 0.5F, 0.5F, 1F)
+					.endVertex();
 				buffer.vertex(width, bottomGrid, 0F)
-						.uv(width / backgroundScale, 0.75F)
-						.color(0.5F, 0.5F, 0.5F, 1F)
-						.endVertex();
+					.uv(width / backgroundScale, 0.75F)
+					.color(0.5F, 0.5F, 0.5F, 1F)
+					.endVertex();
 				buffer.vertex(width, bottomGrid - halfScale, 0F)
-						.uv(width / backgroundScale, 0.25F)
-						.color(0.5F, 0.5F, 0.5F, 1F)
-						.endVertex();
+					.uv(width / backgroundScale, 0.25F)
+					.color(0.5F, 0.5F, 0.5F, 1F)
+					.endVertex();
 				buffer.vertex(0, bottomGrid - halfScale, 0)
-						.uv(0F, 0.25F)
-						.color(0.5F, 0.5F, 0.5F, 1F)
-						.endVertex();
+					.uv(0F, 0.25F)
+					.color(0.5F, 0.5F, 0.5F, 1F)
+					.endVertex();
 				tessellator.end();
 			}
 		},
 		STRONGHOLD(
-				TwilightForestMod.prefix("textures/block/underbrick.png"),
-				TwilightForestMod.prefix("textures/block/mossy_underbrick.png"),
-				TwilightForestMod.prefix("textures/block/cracked_underbrick.png")
+			TwilightForestMod.prefix("textures/block/underbrick.png"),
+			TwilightForestMod.prefix("textures/block/mossy_underbrick.png"),
+			TwilightForestMod.prefix("textures/block/cracked_underbrick.png")
 		),
 		DARKTOWER(
-				TwilightForestMod.prefix("textures/block/towerwood.png"),
-				TwilightForestMod.prefix("textures/block/towerwood.png"),
-				TwilightForestMod.prefix("textures/block/mossy_towerwood.png"),
-				TwilightForestMod.prefix("textures/block/cracked_towerwood.png"),
-				TwilightForestMod.prefix("textures/block/cracked_towerwood_alt.png")
+			TwilightForestMod.prefix("textures/block/towerwood.png"),
+			TwilightForestMod.prefix("textures/block/towerwood.png"),
+			TwilightForestMod.prefix("textures/block/mossy_towerwood.png"),
+			TwilightForestMod.prefix("textures/block/cracked_towerwood.png"),
+			TwilightForestMod.prefix("textures/block/cracked_towerwood_alt.png")
 		) {
 			private final ResourceLocation towerwoodEncased = TwilightForestMod.prefix("textures/block/encased_towerwood.png");
 
 			private final float stretch = 0.985F;
-            private final float depth = 1.15F;
+			private final float depth = 1.15F;
 
 			@Override
 			void renderBackground(float width, float height) {
@@ -234,21 +233,21 @@ public class LoadingScreen extends Screen {
 						RenderSystem.setShaderTexture(0, this.getBackgroundMaterials()[random.nextInt(this.getBackgroundMaterials().length)]);
 						buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 						buffer.vertex(x - backgroundScale, y, 0)
-								.uv(0, 1)
-								.color(0.5f, 0.5f, 0.5f, 1f)
-								.endVertex();
+							.uv(0, 1)
+							.color(0.5f, 0.5f, 0.5f, 1f)
+							.endVertex();
 						buffer.vertex(x, y, 0)
-								.uv(1, 1)
-								.color(0.5f, 0.5f, 0.5f, 1f)
-								.endVertex();
+							.uv(1, 1)
+							.color(0.5f, 0.5f, 0.5f, 1f)
+							.endVertex();
 						buffer.vertex(x, y - backgroundScale, 0)
-								.uv(1, 0)
-								.color(0.5f, 0.5f, 0.5f, 1f)
-								.endVertex();
+							.uv(1, 0)
+							.color(0.5f, 0.5f, 0.5f, 1f)
+							.endVertex();
 						buffer.vertex(x - backgroundScale, y - backgroundScale, 0)
-								.uv(0, 0)
-								.color(0.5f, 0.5f, 0.5f, 1f)
-								.endVertex();
+							.uv(0, 0)
+							.color(0.5f, 0.5f, 0.5f, 1f)
+							.endVertex();
 						tessellator.end();
 					}
 				}
@@ -260,8 +259,8 @@ public class LoadingScreen extends Screen {
 				BufferBuilder buffer = tessellator.getBuilder();
 				RenderSystem.setShaderTexture(0, towerwoodEncased);
 
-                float offset = 0.4F;
-                final float textureHeaderXMin = stretch * offset;
+				float offset = 0.4F;
+				final float textureHeaderXMin = stretch * offset;
 				final float textureHeaderXMax = ((width / backgroundScale) * stretch) + offset;
 
 				final float headerBottom = backgroundScale / stretch;
@@ -273,107 +272,107 @@ public class LoadingScreen extends Screen {
 				buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 				// BOTTOM VERTEXES
 				buffer.vertex(0F, headerBottom, 0F)
-						.uv(textureHeaderXMin, 1F)
-						.color(0.5F, 0.5F, 0.5F, 1F)
-						.endVertex();
+					.uv(textureHeaderXMin, 1F)
+					.color(0.5F, 0.5F, 0.5F, 1F)
+					.endVertex();
 				buffer.vertex(width, headerBottom, 0F)
-						.uv(textureHeaderXMax, 1F)
-						.color(0.5F, 0.5F, 0.5F, 1F)
-						.endVertex();
+					.uv(textureHeaderXMax, 1F)
+					.color(0.5F, 0.5F, 0.5F, 1F)
+					.endVertex();
 				// TOP VERTEXES
 				buffer.vertex(width, 0F, 0F)
-						.uv(textureHeaderXMax, 0F)
-						.color(0.5F, 0.5F, 0.5F, 1F)
-						.endVertex();
+					.uv(textureHeaderXMax, 0F)
+					.color(0.5F, 0.5F, 0.5F, 1F)
+					.endVertex();
 				buffer.vertex(0F, 0F, 0F)
-						.uv(textureHeaderXMin, 0F)
-						.color(0.5F, 0.5F, 0.5F, 1F)
-						.endVertex();
+					.uv(textureHeaderXMin, 0F)
+					.color(0.5F, 0.5F, 0.5F, 1F)
+					.endVertex();
 				tessellator.end();
 
 				buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 				// BOTTOM VERTEXES
 				buffer.vertex(0F, headerDepthHeight, 0F)
-						.uv(0F, 1F)
-						.color(0.25F, 0.25F, 0.25F, 1F)
-						.endVertex();
+					.uv(0F, 1F)
+					.color(0.25F, 0.25F, 0.25F, 1F)
+					.endVertex();
 				buffer.vertex(width, headerDepthHeight, 0F)
-						.uv((width / backgroundScale), 1F)
-						.color(0.25F, 0.25F, 0.25F, 1F)
-						.endVertex();
+					.uv((width / backgroundScale), 1F)
+					.color(0.25F, 0.25F, 0.25F, 1F)
+					.endVertex();
 				// TOP VERTEXES
 				buffer.vertex(width, headerBottom, 0F)
-						.uv(textureHeaderXMax, 0F)
-						.color(0.25F, 0.25F, 0.25F, 1F)
-						.endVertex();
+					.uv(textureHeaderXMax, 0F)
+					.color(0.25F, 0.25F, 0.25F, 1F)
+					.endVertex();
 				buffer.vertex(0F, headerBottom, 0F)
-						.uv(textureHeaderXMin, 0F)
-						.color(0.25F, 0.25F, 0.25F, 1F)
-						.endVertex();
+					.uv(textureHeaderXMin, 0F)
+					.color(0.25F, 0.25F, 0.25F, 1F)
+					.endVertex();
 				tessellator.end();
 
 				buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 				// BOTTOM VERTEXES
 				buffer.vertex(0F, height, 0F)
-						.uv(textureHeaderXMin, 1F)
-						.color(0.5F, 0.5F, 0.5F, 1F)
-						.endVertex();
+					.uv(textureHeaderXMin, 1F)
+					.color(0.5F, 0.5F, 0.5F, 1F)
+					.endVertex();
 				buffer.vertex(width, height, 0F)
-						.uv(textureHeaderXMax, 1F)
-						.color(0.5F, 0.5F, 0.5F, 1F)
-						.endVertex();
+					.uv(textureHeaderXMax, 1F)
+					.color(0.5F, 0.5F, 0.5F, 1F)
+					.endVertex();
 				// TOP VERTEXES
 				buffer.vertex(width, footerTop, 0F)
-						.uv(textureHeaderXMax, 0F)
-						.color(0.5F, 0.5F, 0.5F, 1F)
-						.endVertex();
+					.uv(textureHeaderXMax, 0F)
+					.color(0.5F, 0.5F, 0.5F, 1F)
+					.endVertex();
 				buffer.vertex(0F, footerTop, 0F)
-						.uv(textureHeaderXMin, 0F)
-						.color(0.5F, 0.5F, 0.5F, 1F)
-						.endVertex();
+					.uv(textureHeaderXMin, 0F)
+					.color(0.5F, 0.5F, 0.5F, 1F)
+					.endVertex();
 				tessellator.end();
 
 				buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 				// BOTTOM VERTEXES
 				buffer.vertex(0F, footerTop, 0F)
-						.uv(textureHeaderXMin, 1F)
-						.color(0.75F, 0.75F, 0.75F, 1F)
-						.endVertex();
+					.uv(textureHeaderXMin, 1F)
+					.color(0.75F, 0.75F, 0.75F, 1F)
+					.endVertex();
 				buffer.vertex(width, footerTop, 0F)
-						.uv(textureHeaderXMax, 1F)
-						.color(0.75F, 0.75F, 0.75F, 1F)
-						.endVertex();
+					.uv(textureHeaderXMax, 1F)
+					.color(0.75F, 0.75F, 0.75F, 1F)
+					.endVertex();
 				// TOP VERTEXES
 				buffer.vertex(width, footerDepthHeight, 0F)
-						.uv(width / backgroundScale, 0F)
-						.color(0.75F, 0.75F, 0.75F, 1F)
-						.endVertex();
+					.uv(width / backgroundScale, 0F)
+					.color(0.75F, 0.75F, 0.75F, 1F)
+					.endVertex();
 				buffer.vertex(0F, footerDepthHeight, 0F)
-						.uv(0F, 0F)
-						.color(0.75F, 0.75F, 0.75F, 1F)
-						.endVertex();
+					.uv(0F, 0F)
+					.color(0.75F, 0.75F, 0.75F, 1F)
+					.endVertex();
 				tessellator.end();
 			}
 		},
 		FINALCASTLE(
-				TwilightForestMod.prefix("textures/block/castle_brick.png"),
-				TwilightForestMod.prefix("textures/block/castle_brick.png"),
-				TwilightForestMod.prefix("textures/block/castle_brick.png"),
-				TwilightForestMod.prefix("textures/block/castle_brick.png"),
-				TwilightForestMod.prefix("textures/block/castle_brick.png"),
-				//TwilightForestMod.prefix("textures/block/mossy_castle_brick.png"   ), // Jeez this one does not fit at ALL. Out!
-				TwilightForestMod.prefix("textures/block/cracked_castle_brick.png"),
-				TwilightForestMod.prefix("textures/block/worn_castle_brick.png")
+			TwilightForestMod.prefix("textures/block/castle_brick.png"),
+			TwilightForestMod.prefix("textures/block/castle_brick.png"),
+			TwilightForestMod.prefix("textures/block/castle_brick.png"),
+			TwilightForestMod.prefix("textures/block/castle_brick.png"),
+			TwilightForestMod.prefix("textures/block/castle_brick.png"),
+			//TwilightForestMod.prefix("textures/block/mossy_castle_brick.png"   ), // Jeez this one does not fit at ALL. Out!
+			TwilightForestMod.prefix("textures/block/cracked_castle_brick.png"),
+			TwilightForestMod.prefix("textures/block/worn_castle_brick.png")
 		) {
 			private final ResourceLocation[] magic = new ResourceLocation[]{
-					TwilightForestMod.prefix("textures/block/castleblock_magic_0.png"),
-					TwilightForestMod.prefix("textures/block/castleblock_magic_1.png"),
-					TwilightForestMod.prefix("textures/block/castleblock_magic_2.png"),
-					TwilightForestMod.prefix("textures/block/castleblock_magic_3.png"),
-					TwilightForestMod.prefix("textures/block/castleblock_magic_4.png"),
-					TwilightForestMod.prefix("textures/block/castleblock_magic_5.png"),
-					TwilightForestMod.prefix("textures/block/castleblock_magic_6.png"),
-					TwilightForestMod.prefix("textures/block/castleblock_magic_7.png")
+				TwilightForestMod.prefix("textures/block/castleblock_magic_0.png"),
+				TwilightForestMod.prefix("textures/block/castleblock_magic_1.png"),
+				TwilightForestMod.prefix("textures/block/castleblock_magic_2.png"),
+				TwilightForestMod.prefix("textures/block/castleblock_magic_3.png"),
+				TwilightForestMod.prefix("textures/block/castleblock_magic_4.png"),
+				TwilightForestMod.prefix("textures/block/castleblock_magic_5.png"),
+				TwilightForestMod.prefix("textures/block/castleblock_magic_6.png"),
+				TwilightForestMod.prefix("textures/block/castleblock_magic_7.png")
 			};
 
 			private final int[] colors = new int[]{0xFF00FF, 0x00FFFF, 0xFFFF00, 0x4B0082};
@@ -393,21 +392,21 @@ public class LoadingScreen extends Screen {
 					RenderSystem.setShaderTexture(0, this.magic[random.nextInt(this.magic.length)]);
 					buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 					buffer.vertex(x - backgroundScale, backgroundScale + (backgroundScale / 2), 0)
-							.uv(0, 1)
-							.color(r, g, b, 255)
-							.endVertex();
+						.uv(0, 1)
+						.color(r, g, b, 255)
+						.endVertex();
 					buffer.vertex(x, backgroundScale + (backgroundScale / 2), 0)
-							.uv(1, 1)
-							.color(r, g, b, 255)
-							.endVertex();
+						.uv(1, 1)
+						.color(r, g, b, 255)
+						.endVertex();
 					buffer.vertex(x, backgroundScale / 2, 0)
-							.uv(1, 0)
-							.color(r, g, b, 255)
-							.endVertex();
+						.uv(1, 0)
+						.color(r, g, b, 255)
+						.endVertex();
 					buffer.vertex(x - backgroundScale, backgroundScale / 2, 0)
-							.uv(0, 0)
-							.color(r, g, b, 255)
-							.endVertex();
+						.uv(0, 0)
+						.color(r, g, b, 255)
+						.endVertex();
 					tessellator.end();
 				}
 
@@ -415,21 +414,21 @@ public class LoadingScreen extends Screen {
 					RenderSystem.setShaderTexture(0, this.magic[random.nextInt(this.magic.length)]);
 					buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 					buffer.vertex(x - backgroundScale, height - (backgroundScale / 2), 0)
-							.uv(0, 1)
-							.color(r, g, b, 255)
-							.endVertex();
+						.uv(0, 1)
+						.color(r, g, b, 255)
+						.endVertex();
 					buffer.vertex(x, height - (backgroundScale / 2), 0)
-							.uv(1, 1)
-							.color(r, g, b, 255)
-							.endVertex();
+						.uv(1, 1)
+						.color(r, g, b, 255)
+						.endVertex();
 					buffer.vertex(x, height - backgroundScale - (backgroundScale / 2), 0)
-							.uv(1, 0)
-							.color(r, g, b, 255)
-							.endVertex();
+						.uv(1, 0)
+						.color(r, g, b, 255)
+						.endVertex();
 					buffer.vertex(x - backgroundScale, height - backgroundScale - (backgroundScale / 2), 0)
-							.uv(0, 0)
-							.color(r, g, b, 255)
-							.endVertex();
+						.uv(0, 0)
+						.color(r, g, b, 255)
+						.endVertex();
 					tessellator.end();
 				}
 			}
@@ -456,21 +455,21 @@ public class LoadingScreen extends Screen {
 					RenderSystem.setShaderTexture(0, this.getBackgroundMaterials()[random.nextInt(this.getBackgroundMaterials().length)]);
 					buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 					buffer.vertex(x - backgroundScale, y, 0)
-							.uv(0, 1)
-							.color(0.5f, 0.5f, 0.5f, 1f)
-							.endVertex();
+						.uv(0, 1)
+						.color(0.5f, 0.5f, 0.5f, 1f)
+						.endVertex();
 					buffer.vertex(x, y, 0)
-							.uv(1, 1)
-							.color(0.5f, 0.5f, 0.5f, 1f)
-							.endVertex();
+						.uv(1, 1)
+						.color(0.5f, 0.5f, 0.5f, 1f)
+						.endVertex();
 					buffer.vertex(x, y - backgroundScale, 0)
-							.uv(1, 0)
-							.color(0.5f, 0.5f, 0.5f, 1f)
-							.endVertex();
+						.uv(1, 0)
+						.color(0.5f, 0.5f, 0.5f, 1f)
+						.endVertex();
 					buffer.vertex(x - backgroundScale, y - backgroundScale, 0)
-							.uv(0, 0)
-							.color(0.5f, 0.5f, 0.5f, 1f)
-							.endVertex();
+						.uv(0, 0)
+						.color(0.5f, 0.5f, 0.5f, 1f)
+						.endVertex();
 					tessellator.end();
 				}
 			}

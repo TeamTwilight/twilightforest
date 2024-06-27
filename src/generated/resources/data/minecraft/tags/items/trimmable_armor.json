@@ -1,31 +1,6 @@
 {
-  "values": [
-    "twilightforest:ironwood_helmet",
-    "twilightforest:ironwood_chestplate",
-    "twilightforest:ironwood_leggings",
-    "twilightforest:ironwood_boots",
-    "twilightforest:steeleaf_helmet",
-    "twilightforest:steeleaf_chestplate",
-    "twilightforest:steeleaf_leggings",
-    "twilightforest:steeleaf_boots",
-    "twilightforest:knightmetal_helmet",
-    "twilightforest:knightmetal_chestplate",
-    "twilightforest:knightmetal_leggings",
-    "twilightforest:knightmetal_boots",
-    "twilightforest:arctic_helmet",
-    "twilightforest:arctic_chestplate",
-    "twilightforest:arctic_leggings",
-    "twilightforest:arctic_boots",
-    "twilightforest:yeti_chestplate",
-    "twilightforest:yeti_leggings",
-    "twilightforest:yeti_boots",
-    "twilightforest:fiery_helmet",
-    "twilightforest:fiery_chestplate",
-    "twilightforest:fiery_leggings",
-    "twilightforest:fiery_boots",
-    "twilightforest:phantom_helmet",
-    "twilightforest:phantom_chestplate",
-    "twilightforest:naga_chestplate",
-    "twilightforest:naga_leggings"
-  ]
+  "remove": [
+    "twilightforest:yeti_helmet"
+  ],
+  "values": []
 }

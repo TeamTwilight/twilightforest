@@ -21,6 +21,7 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import net.minecraft.world.level.storage.loot.LootTable;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.FeatureLogic;
@@ -33,10 +34,10 @@ public class HollowTreeLargeBranch extends HollowTreeMedBranch {
 	private final BlockStateProvider dungeonWood;
 	private final BlockStateProvider dungeonAir;
 	private final BlockStateProvider dungeonLootBlock;
-	private final ResourceLocation dungeonLootTable;
+	private final ResourceKey<LootTable> dungeonLootTable;
 	private final Holder<EntityType<?>> dungeonMonster;
 
-	protected HollowTreeLargeBranch(int i, BlockPos src, double length, double angle, double tilt, boolean leafy, RandomSource rand, BlockStateProvider wood, BlockStateProvider leaves, BlockStateProvider dungeonWood, BlockStateProvider dungeonAir, BlockStateProvider dungeonLootBlock, ResourceLocation dungeonLootTable, Holder<EntityType<?>> dungeonMonster) {
+	protected HollowTreeLargeBranch(int i, BlockPos src, double length, double angle, double tilt, boolean leafy, RandomSource rand, BlockStateProvider wood, BlockStateProvider leaves, BlockStateProvider dungeonWood, BlockStateProvider dungeonAir, BlockStateProvider dungeonLootBlock, ResourceKey<LootTable> dungeonLootTable, Holder<EntityType<?>> dungeonMonster) {
 		super(TFStructurePieceTypes.TFHTLB.value(), i, src, FeatureLogic.translate(src, length, angle, tilt), length, angle, tilt, leafy, wood, leaves);
 
 		this.hasLeafDungeon = rand.nextInt(LEAF_DUNGEON_CHANCE) == 0;
@@ -59,12 +60,12 @@ public class HollowTreeLargeBranch extends HollowTreeMedBranch {
 		this.dungeonAir = BlockStateProvider.CODEC.parse(ops, tag.getCompound("dungeon_air")).result().orElse(HollowTreePiece.DEFAULT_DUNGEON_AIR);
 		this.dungeonLootBlock = BlockStateProvider.CODEC.parse(ops, tag.getCompound("dungeon_loot_block")).result().orElse(HollowTreePiece.DEFAULT_DUNGEON_LOOT_BLOCK);
 
-		this.dungeonLootTable = new ResourceLocation(tag.getString("dungeon_loot_table"));
+		this.dungeonLootTable = ResourceKey.create(Registries.LOOT_TABLE, new ResourceLocation(tag.getString("dungeon_loot_table")));
 
 		ResourceKey<EntityType<?>> dungeonMonster = ResourceKey.create(Registries.ENTITY_TYPE, new ResourceLocation(tag.getString("dungeon_monster")));
 		this.dungeonMonster = context.registryAccess().registry(Registries.ENTITY_TYPE)
-				.<Holder<EntityType<?>>>flatMap(reg -> reg.getHolder(dungeonMonster))
-				.orElse(HollowTreePiece.DEFAULT_DUNGEON_MONSTER);
+			.<Holder<EntityType<?>>>flatMap(reg -> reg.getHolder(dungeonMonster))
+			.orElse(HollowTreePiece.DEFAULT_DUNGEON_MONSTER);
 	}
 
 	@Override
@@ -77,7 +78,7 @@ public class HollowTreeLargeBranch extends HollowTreeMedBranch {
 		tag.put("dungeon_air", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.dungeonAir).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
 		tag.put("dungeon_loot_block", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.dungeonLootBlock).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
 
-		tag.putString("dungeon_loot_table", this.dungeonLootTable.toString());
+		tag.putString("dungeon_loot_table", this.dungeonLootTable.location().toString());
 
 		tag.putString("dungeon_monster", BuiltInRegistries.ENTITY_TYPE.getKey(this.dungeonMonster.value()).toString());
 	}
@@ -92,9 +93,9 @@ public class HollowTreeLargeBranch extends HollowTreeMedBranch {
 		// go about halfway out and make a few medium branches.
 		// the number of medium branches we can support depends on the length of the big branch
 		// every other branch switches sides
-		int numMedBranches = rand.nextInt((int)(this.length / 6)) + (int)(this.length / 8);
+		int numMedBranches = rand.nextInt((int) (this.length / 6)) + (int) (this.length / 8);
 
-		for(int i = 0; i <= numMedBranches; i++) {
+		for (int i = 0; i <= numMedBranches; i++) {
 			double outVar = (rand.nextDouble() * 0.3) + 0.3;
 			double angleVar = rand.nextDouble() * 0.225 * ((i & 1) == 0 ? 1.0 : -1.0);
 
@@ -132,7 +133,7 @@ public class HollowTreeLargeBranch extends HollowTreeMedBranch {
 
 		// reinforce it
 		int reinforcements = 4;
-		for(int i = 0; i <= reinforcements; i++) {
+		for (int i = 0; i <= reinforcements; i++) {
 			int vx = (i & 2) == 0 ? 1 : 0;
 			int vy = (i & 1) == 0 ? 1 : -1;
 			int vz = (i & 2) == 0 ? 0 : 1;
@@ -142,7 +143,7 @@ public class HollowTreeLargeBranch extends HollowTreeMedBranch {
 		// make 1-2 small branches near the base
 		//Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX() * 321534781) ^ (this.boundingBox.minZ() * 756839));
 		int numSmallBranches = decoRNG.nextInt(2) + 1;
-		for(int i = 0; i <= numSmallBranches; i++) {
+		for (int i = 0; i <= numSmallBranches; i++) {
 			double outVar = (decoRNG.nextFloat() * 0.25F) + 0.25F;
 			double angleVar = decoRNG.nextFloat() * 0.25F * ((i & 1) == 0 ? 1.0F : -1.0F);
 
@@ -153,7 +154,7 @@ public class HollowTreeLargeBranch extends HollowTreeMedBranch {
 
 		if (this.leafy && !this.hasLeafDungeon) {
 			// leaf blob at the end
-			this.drawBlockBlob(level, writeableBounds, this.dest.getX() - this.boundingBox.minX(), this.dest.getY() - this.boundingBox.minY(), this.dest.getZ() - this.boundingBox.minZ(), 3, decoRNG, this.leaves, false, false);
+			this.drawBlockBlob(level, writeableBounds, this.dest.getX() - this.boundingBox.minX(), this.dest.getY() - this.boundingBox.minY(), this.dest.getZ() - this.boundingBox.minZ(), 3, decoRNG, this.leaves, false, false, true);
 		}
 	}
 }

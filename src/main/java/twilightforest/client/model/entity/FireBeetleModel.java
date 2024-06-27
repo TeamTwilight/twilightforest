@@ -43,99 +43,99 @@ public class FireBeetleModel extends HierarchicalModel<FireBeetle> {
 		PartDefinition definition = mesh.getRoot();
 
 		var head = definition.addOrReplaceChild("head", CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(-4F, -4F, -6F, 8, 6, 6),
-				PartPose.offset(0F, 19F, -5F));
+				.texOffs(0, 0)
+				.addBox(-4F, -4F, -6F, 8, 6, 6),
+			PartPose.offset(0F, 19F, -5F));
 
 		head.addOrReplaceChild("right_antenna", CubeListBuilder.create()
-						.texOffs(42, 4)
-						.addBox(0F, -0.5F, -0.5F, 10, 1, 1),
-				PartPose.offsetAndRotation(1F, -3F, -5F, 0F, 1.047198F, -0.296706F));
+				.texOffs(42, 4)
+				.addBox(0F, -0.5F, -0.5F, 10, 1, 1),
+			PartPose.offsetAndRotation(1F, -3F, -5F, 0F, 1.047198F, -0.296706F));
 
 		head.addOrReplaceChild("left_antenna", CubeListBuilder.create()
-						.texOffs(42, 4)
-						.addBox(0F, -0.5F, -0.5F, 10, 1, 1),
-				PartPose.offsetAndRotation(-1F, -3F, -5F, 0F, 2.094395F, 0.296706F));
+				.texOffs(42, 4)
+				.addBox(0F, -0.5F, -0.5F, 10, 1, 1),
+			PartPose.offsetAndRotation(-1F, -3F, -5F, 0F, 2.094395F, 0.296706F));
 
 		head.addOrReplaceChild("right_eye", CubeListBuilder.create()
-						.texOffs(15, 12)
-						.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3),
-				PartPose.offset(-3F, -2F, -5F));
+				.texOffs(15, 12)
+				.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3),
+			PartPose.offset(-3F, -2F, -5F));
 
 		head.addOrReplaceChild("left_eye", CubeListBuilder.create()
-						.texOffs(15, 12)
-						.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3),
-				PartPose.offset(3F, -2F, -5F));
+				.texOffs(15, 12)
+				.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3),
+			PartPose.offset(3F, -2F, -5F));
 
 		var jaw1a = head.addOrReplaceChild("jaw_1a", CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(0F, 0F, -2F, 1, 1, 2),
-				PartPose.offsetAndRotation(-3F, 0F, -6F, 0.3490659F, 0F, 0F));
+				.texOffs(0, 0)
+				.addBox(0F, 0F, -2F, 1, 1, 2),
+			PartPose.offsetAndRotation(-3F, 0F, -6F, 0.3490659F, 0F, 0F));
 
 		jaw1a.addOrReplaceChild("jaw_1b", CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(0F, 0F, 0F, 1, 1, 2),
-				PartPose.offsetAndRotation(0F, 0F, -2F, 0F, 1.570796F, 0F));
+				.texOffs(0, 0)
+				.addBox(0F, 0F, 0F, 1, 1, 2),
+			PartPose.offsetAndRotation(0F, 0F, -2F, 0F, 1.570796F, 0F));
 
 		var jaw1b = head.addOrReplaceChild("jaw_2a", CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(-1F, 0F, -2F, 1, 1, 2),
-				PartPose.offsetAndRotation(3F, 0F, -6F, 0.3490659F, 0F, 0F));
+				.texOffs(0, 0)
+				.addBox(-1F, 0F, -2F, 1, 1, 2),
+			PartPose.offsetAndRotation(3F, 0F, -6F, 0.3490659F, 0F, 0F));
 
 		jaw1b.addOrReplaceChild("jaw_2b", CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(0F, 0F, -2F, 1, 1, 2),
-				PartPose.offsetAndRotation(0F, 0F, -2F, 0F, 1.570796F, 0F));
+				.texOffs(0, 0)
+				.addBox(0F, 0F, -2F, 1, 1, 2),
+			PartPose.offsetAndRotation(0F, 0F, -2F, 0F, 1.570796F, 0F));
 
 		definition.addOrReplaceChild("thorax", CubeListBuilder.create()
-						.texOffs(0, 22)
-						.addBox(-4.5F, -4F, 0F, 9, 8, 2),
-				PartPose.offset(0F, 18F, -4.5F));
+				.texOffs(0, 22)
+				.addBox(-4.5F, -4F, 0F, 9, 8, 2),
+			PartPose.offset(0F, 18F, -4.5F));
 
 		definition.addOrReplaceChild("connector_1", CubeListBuilder.create()
-						.texOffs(0, 12)
-						.addBox(-3F, -3F, 0F, 6, 6, 1),
-				PartPose.offset(0F, 18F, -3F));
+				.texOffs(0, 12)
+				.addBox(-3F, -3F, 0F, 6, 6, 1),
+			PartPose.offset(0F, 18F, -3F));
 
 		definition.addOrReplaceChild("connector_2", CubeListBuilder.create()
-						.texOffs(0, 12)
-						.addBox(-3F, -3F, -1F, 6, 6, 1),
-				PartPose.offset(0F, 18F, -4F));
+				.texOffs(0, 12)
+				.addBox(-3F, -3F, -1F, 6, 6, 1),
+			PartPose.offset(0F, 18F, -4F));
 
 		definition.addOrReplaceChild("rear", CubeListBuilder.create()
-						.texOffs(22, 9)
-						.addBox(-6F, -9F, -4F, 12, 14, 9),
-				PartPose.offsetAndRotation(0F, 18F, 7F, 1.570796F, 0F, 0F));
+				.texOffs(22, 9)
+				.addBox(-6F, -9F, -4F, 12, 14, 9),
+			PartPose.offsetAndRotation(0F, 18F, 7F, 1.570796F, 0F, 0F));
 
 		definition.addOrReplaceChild("leg_1", CubeListBuilder.create().mirror()
-						.texOffs(40, 0)
-						.addBox(-9F, -1F, -1F, 10, 2, 2),
-				PartPose.offsetAndRotation(-4F, 21F, 4F, 0F, 0.6981317F, -0.3490659F));
+				.texOffs(40, 0)
+				.addBox(-9F, -1F, -1F, 10, 2, 2),
+			PartPose.offsetAndRotation(-4F, 21F, 4F, 0F, 0.6981317F, -0.3490659F));
 
 		definition.addOrReplaceChild("leg_2", CubeListBuilder.create()
-						.texOffs(40, 0)
-						.addBox(-1F, -1F, -1F, 10, 2, 2),
-				PartPose.offsetAndRotation(4F, 21F, 4F, 0F, -0.6981317F, 0.3490659F));
+				.texOffs(40, 0)
+				.addBox(-1F, -1F, -1F, 10, 2, 2),
+			PartPose.offsetAndRotation(4F, 21F, 4F, 0F, -0.6981317F, 0.3490659F));
 
 		definition.addOrReplaceChild("leg_3", CubeListBuilder.create().mirror()
-						.texOffs(40, 0)
-						.addBox(-9F, -1F, -1F, 10, 2, 2),
-				PartPose.offsetAndRotation(-4F, 21F, -1F, 0F, 0.2792527F, -0.3490659F));
+				.texOffs(40, 0)
+				.addBox(-9F, -1F, -1F, 10, 2, 2),
+			PartPose.offsetAndRotation(-4F, 21F, -1F, 0F, 0.2792527F, -0.3490659F));
 
 		definition.addOrReplaceChild("leg_4", CubeListBuilder.create()
-						.texOffs(40, 0)
-						.addBox(-1F, -1F, -1F, 10, 2, 2),
-				PartPose.offsetAndRotation(4F, 21F, -1F, 0F, -0.2792527F, 0.3490659F));
+				.texOffs(40, 0)
+				.addBox(-1F, -1F, -1F, 10, 2, 2),
+			PartPose.offsetAndRotation(4F, 21F, -1F, 0F, -0.2792527F, 0.3490659F));
 
 		definition.addOrReplaceChild("leg_5", CubeListBuilder.create().mirror()
-						.texOffs(40, 0)
-						.addBox(-9F, -1F, -1F, 10, 2, 2),
-				PartPose.offsetAndRotation(-4F, 21F, -4F, 0F, -0.2792527F, -0.3490659F));
+				.texOffs(40, 0)
+				.addBox(-9F, -1F, -1F, 10, 2, 2),
+			PartPose.offsetAndRotation(-4F, 21F, -4F, 0F, -0.2792527F, -0.3490659F));
 
 		definition.addOrReplaceChild("leg_6", CubeListBuilder.create()
-						.texOffs(40, 0)
-						.addBox(-1F, -1F, -1F, 10, 2, 2),
-				PartPose.offsetAndRotation(4F, 21F, -4F, 0F, 0.2792527F, 0.3490659F));
+				.texOffs(40, 0)
+				.addBox(-1F, -1F, -1F, 10, 2, 2),
+			PartPose.offsetAndRotation(4F, 21F, -4F, 0F, 0.2792527F, 0.3490659F));
 
 		return LayerDefinition.create(mesh, 64, 32);
 	}

@@ -27,6 +27,7 @@ public class JarBlock extends Block implements SimpleWaterloggedBlock {
 	private static final VoxelShape AABB = Shapes.or(JAR, LID);
 	private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
+	@SuppressWarnings("this-escape")
 	public JarBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(WATERLOGGED, false));

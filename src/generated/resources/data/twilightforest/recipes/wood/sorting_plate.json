@@ -1,6 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
+  "group": "wooden_pressure_plate",
   "key": {
     "#": {
       "item": "twilightforest:sorting_planks"
@@ -10,6 +11,7 @@
     "##"
   ],
   "result": {
-    "item": "twilightforest:sorting_pressure_plate"
+    "count": 1,
+    "id": "twilightforest:sorting_pressure_plate"
   }
 }

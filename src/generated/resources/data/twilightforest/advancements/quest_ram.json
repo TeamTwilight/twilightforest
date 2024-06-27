@@ -16,7 +16,8 @@
     },
     "frame": "goal",
     "icon": {
-      "item": "twilightforest:quest_ram_trophy"
+      "count": 1,
+      "id": "twilightforest:quest_ram_trophy"
     },
     "title": {
       "translate": "advancement.twilightforest.quest_ram"

@@ -63,7 +63,7 @@ public class BlockChainRenderer extends EntityRenderer<ChainBlock> {
 
 		stack.pushPose();
 		VertexConsumer vertexConsumer;
-		if(chainBlock instanceof ChainBlock block) {
+		if (chainBlock instanceof ChainBlock block) {
 			vertexConsumer = ItemRenderer.getFoilBufferDirect(buffer, chainModel.renderType(TEXTURE), false, block.isFoil());
 		} else {
 			vertexConsumer = buffer.getBuffer(chainModel.renderType(TEXTURE));

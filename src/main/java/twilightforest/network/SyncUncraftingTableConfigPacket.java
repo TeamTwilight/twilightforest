@@ -1,30 +1,34 @@
 package twilightforest.network;
 
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
-import twilightforest.TFConfig;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
+import twilightforest.config.ConfigSetup;
+import twilightforest.config.TFCommonConfig;
+import twilightforest.config.TFConfig;
 import twilightforest.TwilightForestMod;
 
 import java.util.List;
 
 public record SyncUncraftingTableConfigPacket(
-		double uncraftingMultiplier, double repairingMultiplier,
-		boolean allowShapeless, boolean disableIngredientSwitching, boolean disabledUncrafting, boolean disabledTable,
-		List<? extends String> disabledRecipes, boolean flipRecipeList,
-		List<? extends String> disabledModids, boolean flipModidList) implements CustomPacketPayload {
+	double uncraftingMultiplier, double repairingMultiplier,
+	boolean allowShapeless, boolean disableIngredientSwitching, boolean disabledUncrafting, boolean disabledTable,
+	List<? extends String> disabledRecipes, boolean flipRecipeList,
+	List<? extends String> disabledModids, boolean flipModidList) implements CustomPacketPayload {
 
-	public static final ResourceLocation ID = TwilightForestMod.prefix("sync_uncrafting_config");
+	public static final Type<SyncUncraftingTableConfigPacket> TYPE = new Type<>(TwilightForestMod.prefix("sync_uncrafting_config"));
+	public static final StreamCodec<RegistryFriendlyByteBuf, SyncUncraftingTableConfigPacket> STREAM_CODEC = CustomPacketPayload.codec(SyncUncraftingTableConfigPacket::write, SyncUncraftingTableConfigPacket::new);
 
 	public SyncUncraftingTableConfigPacket(FriendlyByteBuf buf) {
 		this(buf.readDouble(), buf.readDouble(),
-				buf.readBoolean(), buf.readBoolean(), buf.readBoolean(), buf.readBoolean(),
-				buf.readList(FriendlyByteBuf::readUtf), buf.readBoolean(),
-				buf.readList(FriendlyByteBuf::readUtf), buf.readBoolean());
+			buf.readBoolean(), buf.readBoolean(), buf.readBoolean(), buf.readBoolean(),
+			buf.readList(FriendlyByteBuf::readUtf), buf.readBoolean(),
+			buf.readList(FriendlyByteBuf::readUtf), buf.readBoolean());
 	}
 
-	@Override
 	public void write(FriendlyByteBuf buf) {
 		buf.writeDouble(this.uncraftingMultiplier());
 		buf.writeDouble(this.repairingMultiplier());
@@ -39,22 +43,22 @@ public record SyncUncraftingTableConfigPacket(
 	}
 
 	@Override
-	public ResourceLocation id() {
-		return ID;
+	public Type<? extends CustomPacketPayload> type() {
+		return TYPE;
 	}
 
-	public static void handle(SyncUncraftingTableConfigPacket message, PlayPayloadContext ctx) {
-		ctx.workHandler().execute(() -> {
-			TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.uncraftingXpCostMultiplier.set(message.uncraftingMultiplier());
-			TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.repairingXpCostMultiplier.set(message.repairingMultiplier());
-			TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.allowShapelessUncrafting.set(message.allowShapeless());
-			TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableIngredientSwitching.set(message.disableIngredientSwitching());
-			TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingOnly.set(message.disabledUncrafting());
-			TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableEntireTable.set(message.disabledTable());
-			TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingRecipes.set(message.disabledRecipes());
-			TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.reverseRecipeBlacklist.set(message.flipRecipeList());
-			TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.blacklistedUncraftingModIds.set(message.disabledModids());
-			TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.flipUncraftingModIdList.set(message.flipModidList());
+	public static void handle(SyncUncraftingTableConfigPacket message, IPayloadContext ctx) {
+		ctx.enqueueWork(() -> {
+			TFConfig.uncraftingXpCostMultiplier = message.uncraftingMultiplier();
+			TFConfig.repairingXpCostMultiplier = message.repairingMultiplier();
+			TFConfig.allowShapelessUncrafting = message.allowShapeless();
+			TFConfig.disableIngredientSwitching = message.disableIngredientSwitching();
+			TFConfig.disableUncraftingOnly = message.disabledUncrafting();
+			TFConfig.disableEntireTable = message.disabledTable();
+			TFConfig.disableUncraftingRecipes = message.disabledRecipes();
+			TFConfig.reverseRecipeBlacklist = message.flipRecipeList();
+			TFConfig.blacklistedUncraftingModIds = message.disabledModids();
+			TFConfig.flipUncraftingModIdList = message.flipModidList();
 		});
 	}
 }

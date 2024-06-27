@@ -1,40 +1,42 @@
 package twilightforest.util;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.items.IItemHandler;
-import twilightforest.TwilightForestMod;
+import net.minecraft.world.item.component.BlockItemStateProperties;
+import net.minecraft.world.item.component.CustomData;
+import org.codehaus.plexus.util.StringUtils;
 import twilightforest.block.KeepsakeCasketBlock;
 import twilightforest.events.CharmEvents;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Predicate;
 
 public class TFItemStackUtils {
 
 	public static boolean consumeInventoryItem(final Player player, final Item item, CompoundTag persistentTag, boolean saveItemToTag) {
-		return consumeInventoryItem(player.getInventory().armor, item, persistentTag, saveItemToTag) || consumeInventoryItem(player.getInventory().items, item, persistentTag, saveItemToTag) || consumeInventoryItem(player.getInventory().offhand, item, persistentTag, saveItemToTag);
+		return consumeInventoryItem(player.getInventory().armor, item, persistentTag, saveItemToTag, player.registryAccess())
+			|| consumeInventoryItem(player.getInventory().items, item, persistentTag, saveItemToTag, player.registryAccess())
+			|| consumeInventoryItem(player.getInventory().offhand, item, persistentTag, saveItemToTag, player.registryAccess());
 	}
 
-	public static boolean consumeInventoryItem(final NonNullList<ItemStack> stacks, final Item item, CompoundTag persistentTag, boolean saveItemToTag) {
+	public static boolean consumeInventoryItem(final NonNullList<ItemStack> stacks, final Item item, CompoundTag persistentTag, boolean saveItemToTag, HolderLookup.Provider provider) {
 		for (ItemStack stack : stacks) {
 			if (stack.is(item)) {
-				if (saveItemToTag) persistentTag.put(CharmEvents.CONSUMED_CHARM_TAG, stack.save(new CompoundTag()));
+				if (saveItemToTag) persistentTag.put(CharmEvents.CONSUMED_CHARM_TAG, stack.save(provider));
 				stack.shrink(1);
-				CompoundTag nbt = stack.getTag();
-				if (nbt != null && nbt.contains(BlockItem.BLOCK_STATE_TAG)) {
-					CompoundTag damageNbt = nbt.getCompound(BlockItem.BLOCK_STATE_TAG);
-					if (damageNbt.contains(KeepsakeCasketBlock.BREAKAGE.getName())) {
-						persistentTag.putInt(CharmEvents.CASKET_DAMAGE_TAG, damageNbt.getInt(KeepsakeCasketBlock.BREAKAGE.getName()));
-					}
+				BlockItemStateProperties blockItemStateProperties = stack.get(DataComponents.BLOCK_STATE);
+				if (blockItemStateProperties != null && blockItemStateProperties.properties().containsKey(KeepsakeCasketBlock.BREAKAGE.getName())) {
+					String propertyValueString = blockItemStateProperties.properties().get(KeepsakeCasketBlock.BREAKAGE.getName());
+
+					persistentTag.putInt(CharmEvents.CASKET_DAMAGE_TAG, StringUtils.isNumeric(propertyValueString) ? Integer.parseInt(propertyValueString) : 0);
 				}
 				return true;
 			}
@@ -86,26 +88,38 @@ public class TFItemStackUtils {
 		return item instanceof HoeItem hoe && tier.equals(hoe.getTier());
 	}
 
+
+	public static boolean hasInfoTag(ItemStack stack, String key) {
+		CustomData customData = stack.get(DataComponents.CUSTOM_DATA);
+		return customData != null && customData.contains(key);
+	}
+
+	public static void addInfoTag(ItemStack stack, String key) {
+		CustomData customData = stack.get(DataComponents.CUSTOM_DATA);
+		CompoundTag nbt = customData == null ? new CompoundTag() : customData.copyTag();
+		nbt.putBoolean(key, true);
+		stack.set(DataComponents.CUSTOM_DATA, CustomData.of(nbt));
+	}
+
 	public static void clearInfoTag(ItemStack stack, String key) {
-		CompoundTag nbt = stack.getTag();
-		if (nbt != null) {
+		CustomData customData = stack.get(DataComponents.CUSTOM_DATA);
+		if (customData != null) {
+			CompoundTag nbt = customData.copyTag();
 			nbt.remove(key);
-			if (nbt.isEmpty()) {
-				stack.setTag(null);
-			}
+			stack.set(DataComponents.CUSTOM_DATA, CustomData.of(nbt));
 		}
 	}
 
 	//[VanillaCopy] of Inventory.load, but removed clearing all slots
 	//also add a handler to move items to the next available slot if the slot they want to go to isnt available
-	public static void loadNoClear(ListTag tag, Inventory inventory) {
+	public static void loadNoClear(RegistryAccess registryAccess, ListTag tag, Inventory inventory) {
 
 		List<ItemStack> blockedItems = new ArrayList<>();
 
 		for (int i = 0; i < tag.size(); ++i) {
 			CompoundTag compoundtag = tag.getCompound(i);
 			int j = compoundtag.getByte("Slot") & 255;
-			ItemStack itemstack = ItemStack.of(compoundtag);
+			ItemStack itemstack = ItemStack.parseOptional(registryAccess, compoundtag);
 			if (!itemstack.isEmpty()) {
 				if (j < inventory.items.size()) {
 					if (inventory.items.get(j).isEmpty()) {
@@ -129,6 +143,6 @@ public class TFItemStackUtils {
 			}
 		}
 
-		if(!blockedItems.isEmpty()) blockedItems.forEach(inventory::add);
+		if (!blockedItems.isEmpty()) blockedItems.forEach(inventory::add);
 	}
 }

@@ -44,7 +44,7 @@ public class TrophyTileEntityRenderer implements BlockEntityRenderer<TrophyBlock
 	private static final ResourceLocation textureLocSnowQueen = TwilightForestMod.getModelTexture("snowqueen.png");
 	private static final ResourceLocation textureLocMinoshroom = TwilightForestMod.getModelTexture("minoshroomtaur.png");
 	private static final ResourceLocation textureLocKnightPhantom = TwilightForestMod.getModelTexture("phantomskeleton.png");
-	private static final ResourceLocation textureLocKnightPhantomArmor = new ResourceLocation(TwilightForestMod.ARMOR_DIR + "phantom_1.png");
+	private static final ResourceLocation textureLocKnightPhantomArmor = TwilightForestMod.prefix("textures/models/armor/phantom_layer_1.png");
 	private static final ResourceLocation textureLocYeti = TwilightForestMod.getModelTexture("yetialpha.png");
 	private static final ResourceLocation textureLocQuestRam = TwilightForestMod.getModelTexture("questram.png");
 	private static final ResourceLocation textureLocQuestRamLines = TwilightForestMod.getModelTexture("questram_lines.png");
@@ -84,6 +84,7 @@ public class TrophyTileEntityRenderer implements BlockEntityRenderer<TrophyBlock
 	}
 
 	public static final ItemStack stack = new ItemStack(TFBlocks.NAGA_TROPHY.get());
+
 	@Override
 	public void render(TrophyBlockEntity tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 		float f = tileEntityIn.getAnimationProgress(partialTicks);
@@ -98,7 +99,7 @@ public class TrophyTileEntityRenderer implements BlockEntityRenderer<TrophyBlock
 			trophy.openMouthForTrophy(flag ? 0.5F : 0.0F);
 		}
 		if (variant == BossVariant.UR_GHAST) {
-			((UrGhastTrophyModel)trophy).setTranslate(matrixStackIn, 0F, 1.0F, 0F);
+			((UrGhastTrophyModel) trophy).setTranslate(matrixStackIn, 0F, 1.0F, 0F);
 		}
 		render(direction, f1, trophy, variant, f, matrixStackIn, bufferIn, combinedLightIn, ItemDisplayContext.NONE);
 		matrixStackIn.popPose();
@@ -108,7 +109,7 @@ public class TrophyTileEntityRenderer implements BlockEntityRenderer<TrophyBlock
 		BooleanSupplier jappa = JappaPackReloadListener.INSTANCE::isJappaPackLoaded;
 		matrixStackIn.pushPose();
 		if (directionIn == null || variant == BossVariant.UR_GHAST) {
-			matrixStackIn.translate(0.5D, 0.01D, 0.5D);
+			matrixStackIn.translate(0.5D, 0.0D, 0.5D);
 		} else {
 			matrixStackIn.translate(0.5F - directionIn.getStepX() * 0.249F, 0.25D, 0.5F - directionIn.getStepZ() * 0.249F);
 		}

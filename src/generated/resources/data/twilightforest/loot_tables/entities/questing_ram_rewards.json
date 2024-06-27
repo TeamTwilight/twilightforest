@@ -18,8 +18,18 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:set_nbt",
-              "tag": "{Items:[{Count:1b,id:\"twilightforest:quest_ram_trophy\"},{Count:1b,id:\"minecraft:coal_block\"},{Count:1b,id:\"minecraft:iron_block\"},{Count:1b,id:\"minecraft:copper_block\"},{Count:1b,id:\"minecraft:lapis_block\"},{Count:1b,id:\"minecraft:gold_block\"},{Count:1b,id:\"minecraft:diamond_block\"},{Count:1b,id:\"minecraft:emerald_block\"}]}"
+              "component": "minecraft:bundle_contents",
+              "entries": [
+                {
+                  "type": "minecraft:item",
+                  "name": "twilightforest:quest_ram_trophy"
+                },
+                {
+                  "type": "minecraft:loot_table",
+                  "value": "twilightforest:entities/questing_ram_reward_blocks"
+                }
+              ],
+              "function": "minecraft:set_contents"
             }
           ],
           "name": "minecraft:bundle"

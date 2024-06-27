@@ -27,6 +27,7 @@ public class BreathAttackGoal<T extends Mob & IBreathAttacker> extends Goal {
 
 	private int durationLeft;
 
+	@SuppressWarnings("this-escape")
 	public BreathAttackGoal(T living, float range, int time, float chance) {
 		this.entityHost = living;
 		this.breathRange = range;
@@ -64,9 +65,9 @@ public class BreathAttackGoal<T extends Mob & IBreathAttacker> extends Goal {
 	@Override
 	public boolean canContinueToUse() {
 		return this.durationLeft > 0 && this.entityHost.isAlive() && this.attackTarget.isAlive()
-				&& this.entityHost.distanceTo(this.attackTarget) <= this.breathRange
-				&& this.entityHost.getSensing().hasLineOfSight(this.attackTarget)
-				&& EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(EntitySelector.LIVING_ENTITY_STILL_ALIVE).test(attackTarget);
+			&& this.entityHost.distanceTo(this.attackTarget) <= this.breathRange
+			&& this.entityHost.getSensing().hasLineOfSight(this.attackTarget)
+			&& EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(EntitySelector.LIVING_ENTITY_STILL_ALIVE).test(attackTarget);
 	}
 
 	/**

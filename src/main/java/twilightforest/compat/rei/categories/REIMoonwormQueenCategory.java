@@ -39,12 +39,12 @@ public class REIMoonwormQueenCategory implements DisplayCategory<DefaultCrafting
 
 	public static DefaultCraftingDisplay<MoonwormQueenRepairRecipe> createDisplay() {
 		return new DefaultCraftingDisplay<>(List.of(EntryIngredient.of(EntryStacks.of(RecipeViewerConstants.DAMAGED_MOONWORM_QUEEN)),
-				EntryIngredient.of(EntryStacks.of(TFItems.TORCHBERRIES)),
-				EntryIngredient.of(RecipeViewerConstants.BERRY_2_LIST.stream().map(EntryStacks::of).toList()),
-				EntryIngredient.of(RecipeViewerConstants.BERRY_3_LIST.stream().map(EntryStacks::of).toList()),
-				EntryIngredient.of(RecipeViewerConstants.BERRY_4_LIST.stream().map(EntryStacks::of).toList())),
-				List.of(EntryIngredient.of(RecipeViewerConstants.MOONWORM_QUEEN_LIST.stream().map(EntryStacks::of).toList())),
-				Optional.of(new RecipeHolder<>(TFRecipes.MOONWORM_QUEEN_REPAIR_RECIPE.getId(), new MoonwormQueenRepairRecipe(CraftingBookCategory.MISC)))) {
+			EntryIngredient.of(EntryStacks.of(TFItems.TORCHBERRIES)),
+			EntryIngredient.of(RecipeViewerConstants.BERRY_2_LIST.stream().map(EntryStacks::of).toList()),
+			EntryIngredient.of(RecipeViewerConstants.BERRY_3_LIST.stream().map(EntryStacks::of).toList()),
+			EntryIngredient.of(RecipeViewerConstants.BERRY_4_LIST.stream().map(EntryStacks::of).toList())),
+			List.of(EntryIngredient.of(RecipeViewerConstants.MOONWORM_QUEEN_LIST.stream().map(EntryStacks::of).toList())),
+			Optional.of(new RecipeHolder<>(TFRecipes.MOONWORM_QUEEN_REPAIR_RECIPE.getId(), new MoonwormQueenRepairRecipe(CraftingBookCategory.MISC)))) {
 
 			@Override
 			public int getWidth() {

@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "twilightforest:canopy_logs"
+            "items": "#twilightforest:canopy_logs"
           }
         ]
       },

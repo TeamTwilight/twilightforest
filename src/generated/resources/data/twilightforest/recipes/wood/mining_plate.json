@@ -1,6 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
+  "group": "wooden_pressure_plate",
   "key": {
     "#": {
       "item": "twilightforest:mining_planks"
@@ -10,6 +11,7 @@
     "##"
   ],
   "result": {
-    "item": "twilightforest:mining_pressure_plate"
+    "count": 1,
+    "id": "twilightforest:mining_pressure_plate"
   }
 }

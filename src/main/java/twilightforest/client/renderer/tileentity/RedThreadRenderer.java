@@ -31,14 +31,14 @@ public class RedThreadRenderer<T extends RedThreadBlockEntity> implements BlockE
 	private final RedThreadModel redThreadModel;
 
 	private static final RenderType GLOW = RenderType
-			.create(TwilightForestMod.ID + ":glow", DefaultVertexFormat.BLOCK, VertexFormat.Mode.QUADS, 2097152, true, false, RenderType.CompositeState
-					.builder()
-					.setLightmapState(new RenderStateShard.LightmapStateShard(true))
-					.setCullState(new RenderStateShard.CullStateShard(true))
-					.setDepthTestState(new RenderStateShard.DepthTestStateShard("always", 519))
-					.setShaderState(new RenderStateShard.ShaderStateShard(() -> TFShaders.RED_THREAD))
-					.setTextureState(new RenderStateShard.TextureStateShard(textureLoc, false, true))
-					.createCompositeState(true));
+		.create(TwilightForestMod.ID + ":glow", DefaultVertexFormat.BLOCK, VertexFormat.Mode.QUADS, 2097152, true, false, RenderType.CompositeState
+			.builder()
+			.setLightmapState(new RenderStateShard.LightmapStateShard(true))
+			.setCullState(new RenderStateShard.CullStateShard(true))
+			.setDepthTestState(new RenderStateShard.DepthTestStateShard("always", 519))
+			.setShaderState(new RenderStateShard.ShaderStateShard(() -> TFShaders.RED_THREAD))
+			.setTextureState(new RenderStateShard.TextureStateShard(textureLoc, false, true))
+			.createCompositeState(true));
 
 	public RedThreadRenderer(BlockEntityRendererProvider.Context context) {
 		this.redThreadModel = new RedThreadModel(context.bakeLayer(TFModelLayers.RED_THREAD));
@@ -97,9 +97,9 @@ public class RedThreadRenderer<T extends RedThreadBlockEntity> implements BlockE
 	 */
 	private static Vec3 getXYZ(Direction face) {
 		return new Vec3(
-				face == Direction.EAST || face == Direction.UP ? 1D : 0D,
-				face == Direction.WEST || face == Direction.UP || face == Direction.NORTH ? 1D : 0D,
-				face == Direction.SOUTH ? 1D : 0D);
+			face == Direction.EAST || face == Direction.UP ? 1D : 0D,
+			face == Direction.WEST || face == Direction.UP || face == Direction.NORTH ? 1D : 0D,
+			face == Direction.SOUTH ? 1D : 0D);
 	}
 
 	/**

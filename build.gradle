@@ -1,191 +1,211 @@
 plugins {
-    id 'java-library'
-    id 'eclipse'
-    id 'idea'
-    id 'maven-publish'
-    id 'net.neoforged.gradle.userdev' version '7.0.+'
+	id 'java-library'
+	id 'eclipse'
+	id 'idea'
+	id 'maven-publish'
+	id 'net.neoforged.gradle.userdev' version '7.0.142'
 }
 
 def secrets = new Properties()
 def secretsFile = file('secrets.properties')
 if (secretsFile.exists()) {
-    secretsFile.withInputStream {
-        stream -> secrets.load(stream)
-    }
+	secretsFile.withInputStream {
+		stream -> secrets.load(stream)
+	}
 
-    fileTree("secrets").matching {
-        include "**/*.properties"
-    }.each {
-        File file ->
-            file.withInputStream {
-                stream -> secrets.load(stream)
-            }
-    }
+	fileTree("secrets").matching {
+		include "**/*.properties"
+	}.each {
+		File file ->
+			file.withInputStream {
+				stream -> secrets.load(stream)
+			}
+	}
 }
+
+idea {
+	// Tell IDEA to always download sources/javadoc artifacts from maven.
+	module {
+		downloadJavadoc = true
+		downloadSources = true
+	}
+}
+
+jarJar.enable()
 
 version = (hasProperty("CIRevision") ? CIRevision : project.mod_version)
 group = group_name
 
-base {
-    archivesName = "${project.mod_id}-${project.minecraft_version}"
+java {
+	toolchain {
+		languageVersion.set(JavaLanguageVersion.of(21))
+	}
 }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+compileJava.options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation,-this-escape" << "-Werror"
+
+base {
+	archivesName = "${project.mod_id}-${project.minecraft_version}"
+}
+
+subprojects {
+	version = project(":").version
+	group = project(":").group
+}
+
 minecraft.accessTransformers.file rootProject.file('src/main/resources/META-INF/accesstransformer.cfg')
-compileJava.options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation" << "-Werror"
 
 runs {
-    configureEach {
-        workingDirectory project.file('run')
-        systemProperty 'forge.logging.console.level', 'debug'
-        systemProperty 'fml.earlyprogresswindow', 'false'
-        systemProperty 'mixin.env.disableRefMap', 'true'
+	configureEach {
+		workingDirectory project.file('run')
+		systemProperty 'forge.logging.console.level', 'debug'
+		systemProperty 'fml.earlyprogresswindow', 'false'
+		systemProperty 'mixin.env.disableRefMap', 'true'
 
-        modSource project.sourceSets.main
-    }
+		modSource project.sourceSets.main
 
-    client {
-//      name "Minecraft_Client_${project.minecraft_version}"
-        systemProperty 'forge.enabledGameTestNamespaces', mod_id
-        programArguments.addAll '--username', secrets.getProperty("username")?: 'Dev', secrets.getProperty("uuid") ? '--uuid' : '', secrets.getProperty("uuid")?: ''
-    }
+		dependencies {
+			runtime project(":tf-asm")
+		}
+	}
 
-    server {
-//      name "Minecraft_Server_${project.minecraft_version}"
-        systemProperty 'forge.enabledGameTestNamespaces', mod_id
-        programArgument '--nogui'
-    }
+	client {
+		systemProperty 'forge.enabledGameTestNamespaces', mod_id
+		programArguments.addAll '--username', secrets.getProperty("username") ?: 'Dev', secrets.getProperty("uuid") ? '--uuid' : '', secrets.getProperty("uuid") ?: ''
+	}
 
-    gameTestServer {
-//      name "Minecraft_GameTestServer_${project.minecraft_version}"
-        systemProperty 'forge.enabledGameTestNamespaces', mod_id
-    }
+	server {
+		systemProperty 'forge.enabledGameTestNamespaces', mod_id
+		programArgument '--nogui'
+	}
 
-    data {
-//      name "Minecraft_Data_${project.minecraft_version}"
-        workingDirectory project.file('run-data')
-        programArguments.addAll '--mod', mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
-    }
+	gameTestServer {
+		systemProperty 'forge.enabledGameTestNamespaces', mod_id
+	}
+
+	data {
+		workingDirectory project.file('run-data')
+		programArguments.addAll '--mod', mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+	}
 }
 
-subsystems {
-    parchment {
-        minecraftVersion = "1.20.3" //parchment doesnt support 1.20.4 yet????
-        mappingsVersion = project.parchment_version
-    }
+jar {
+	exclude 'data/twilightforest/functions/**'
 }
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
-    maven {
-        name 'Jared\'s Maven' // JEI
-        url 'https://maven.blamejared.com/'
-    }
-    maven {
-        name 'tterrag\'s Maven' // CTM
-        url 'https://maven.tterrag.com/'
-    }
-    maven {
-        name 'theillusivec4\'s Maven' // Curios
-        url 'https://maven.theillusivec4.top/'
-    }
-    maven {
-        name 'Tama\'s Maven' // Cross-Dim Commands
-        url "https://maven.tamaized.com/releases"
-    }
-    maven {
-        name 'Shedaniel\'s Maven' //REI
-        url "https://maven.shedaniel.me"
-    }
-    maven {
-        name = "TerraformersMC" //EMI
-        url = "https://maven.terraformersmc.com/"
-    }
-    maven {
-        name 'Curseforge Maven' // Jade
-        url "https://www.cursemaven.com"
-        content {
-            includeGroup "curse.maven"
-        }
-    }
+	mavenLocal()
+	maven {
+		name 'Jared\'s Maven' // JEI
+		url 'https://maven.blamejared.com/'
+	}
+	maven {
+		name 'tterrag\'s Maven' // CTM
+		url 'https://maven.tterrag.com/'
+	}
+	maven {
+		name 'theillusivec4\'s Maven' // Curios
+		url 'https://maven.theillusivec4.top/'
+	}
+	maven {
+		name 'Tama\'s Maven' // Cross-Dim Commands
+		url "https://maven.tamaized.com/releases"
+	}
+	maven {
+		name 'Shedaniel\'s Maven' //REI
+		url "https://maven.shedaniel.me"
+	}
+	maven {
+		name = "TerraformersMC" //EMI
+		url = "https://maven.terraformersmc.com/"
+	}
+	maven { // TOP
+		url "https://maven.k-4u.nl"
+	}
+	maven {
+		name 'Curseforge Maven' // Jade
+		url "https://www.cursemaven.com"
+		content {
+			includeGroup "curse.maven"
+		}
+	}
 }
 
 dependencies {
-    //make sure to only pick one of these when testing (switch others to compileOnly)
-    implementation "mezz.jei:jei-${project.minecraft_version}-neoforge:${project.jei_version}"
-    compileOnly "me.shedaniel:RoughlyEnoughItems-neoforge:${project.rei_version}"
-    compileOnly "dev.emi:emi-neoforge:${project.emi_version}+${project.minecraft_version}"
+	//minecraft
+	implementation "net.neoforged:neoforge:${project.neo_version}"
 
-    // theillusivec4
-    implementation "top.theillusivec4.curios:curios-neoforge:${project.curios_version}+${project.minecraft_version}"
+	jarJar project(":tf-asm")
 
-    //curse maven
-    compileOnly "curse.maven:jade-324717:4980188"
-    //runtimeOnly "curse.maven:jeed-532286:4599236"
-    //runtimeOnly "curse.maven:museum-curator-859070:4629894"
+	//make sure to only pick one of these when testing (switch others to compileOnly)
+//  compileOnly "mezz.jei:jei-${project.minecraft_version}-neoforge:${project.jei_version}"
+	compileOnly "me.shedaniel:RoughlyEnoughItems-neoforge:${project.rei_version}"
+	implementation "dev.emi:emi-neoforge:${project.emi_version}+${project.minecraft_version}"
 
-    compileOnly"curse.maven:the-one-probe-245211:5084077"
+	// theillusivec4
+	implementation "top.theillusivec4.curios:curios-neoforge:${project.curios_version}+${project.minecraft_version}"
 
-    //mods we dont have compat with but are nice to have
-    //runtimeOnly "team-twilight:crossdimcommands:${project.base_minecraft_version}-1.0"
+	//curse maven
+	implementation "curse.maven:jade-324717:5366595"
+//	runtimeOnly "curse.maven:jeed-532286:4599236"
+//	runtimeOnly "curse.maven:museum-curator-859070:4629894"
 
-    //minecraft
-    implementation "net.neoforged:neoforge:${project.neo_version}"
+	implementation  "mcjty.theoneprobe:theoneprobe:${project.top_version}"
+
+	//mods we dont have compat with but are nice to have
+//	runtimeOnly "team-twilight:crossdimcommands:${project.base_minecraft_version}-1.0"
 }
 
 tasks.named('jar', Jar).configure {
-    manifest {
-        archiveClassifier = 'universal'
-        attributes([
-                'Specification-Title'     : mod_id,
-                'Specification-Vendor'    : "TeamTwilight",
-                'Specification-Version'   : "1",
-                'Implementation-Title'    : project.name,
-                'Implementation-Version'  : project.jar.archiveVersion,
-                'Implementation-Vendor'   : "TeamTwilight",
-                'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
-        ])
-    }
+	manifest {
+		archiveClassifier = 'slim'
+		attributes([
+			'Specification-Title'     : mod_id,
+			'Specification-Vendor'    : "TeamTwilight",
+			'Specification-Version'   : "1",
+			'Implementation-Title'    : project.name,
+			'Implementation-Version'  : project.jar.archiveVersion,
+			'Implementation-Vendor'   : "TeamTwilight",
+			'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+		])
+	}
+}
+
+tasks.named('jarJar') {
+	archiveClassifier = 'universal'
 }
 
 publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            afterEvaluate {
-                artifact project.jar
-                artifact project.sourceJar
-            }
-            setGroupId 'teamtwilight'
-            setArtifactId project.mod_id
-        }
-    }
-    repositories {
-        maven {
-            //url "file:///${project.projectDir}/mcmodsrepo"
-            url "https://modmaven.dev:443/artifactory/local-releases"
-            credentials {
-                username System.getenv('ARTIFACTORY_USER')
-                password System.getenv('ARTIFACTORY_PASS')
-            }
-        }
-    }
+	publications {
+		mavenJava(MavenPublication) {
+			afterEvaluate {
+				artifact source: project.tasks.jarJar.outputs.getFiles().getSingleFile(), classifier: 'universal'
+				artifact project.sourceJar
+			}
+			setGroupId 'team-twilight'
+			setArtifactId project.mod_id
+		}
+	}
+	repositories {
+		maven {
+			//url "file:///${project.projectDir}/mcmodsrepo"
+			url "https://maven.tamaized.com/releases"
+			credentials {
+				username System.getenv('ARTIFACTORY_USER')
+				password System.getenv('ARTIFACTORY_PASS')
+			}
+		}
+	}
 }
 
 tasks.register('sourceJar', Jar) {
-    dependsOn 'classes'
-    from sourceSets.main.allSource
-    archiveClassifier = 'sources'
+	dependsOn 'classes'
+	from sourceSets.main.allSource
+	archiveClassifier = 'sources'
 }
 
 tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8'
-}
-
-idea {
-    // Tell IDEA to always download sources/javadoc artifacts from maven.
-    module {
-        downloadJavadoc = true
-        downloadSources = true
-    }
+	options.encoding = 'UTF-8'
 }

@@ -3,13 +3,14 @@
   "category": "misc",
   "ingredients": [
     {
-      "tag": "forge:paper"
+      "tag": "c:paper"
     },
     {
       "item": "twilightforest:minoshroom_trophy"
     }
   ],
   "result": {
-    "item": "twilightforest:minoshroom_banner_pattern"
+    "count": 1,
+    "id": "twilightforest:minoshroom_banner_pattern"
   }
 }

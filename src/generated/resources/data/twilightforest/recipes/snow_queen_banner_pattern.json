@@ -3,13 +3,14 @@
   "category": "misc",
   "ingredients": [
     {
-      "tag": "forge:paper"
+      "tag": "c:paper"
     },
     {
       "item": "twilightforest:snow_queen_trophy"
     }
   ],
   "result": {
-    "item": "twilightforest:snow_queen_banner_pattern"
+    "count": 1,
+    "id": "twilightforest:snow_queen_banner_pattern"
   }
 }

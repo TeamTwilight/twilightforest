@@ -14,12 +14,10 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.CarminiteReactorBlockEntity;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFBlocks;
-import twilightforest.util.WorldUtil;
 
 import java.util.Arrays;
 
@@ -28,6 +26,7 @@ public class CarminiteReactorBlock extends BaseEntityBlock {
 	public static final MapCodec<CarminiteReactorBlock> CODEC = simpleCodec(CarminiteReactorBlock::new);
 	public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
+	@SuppressWarnings("this-escape")
 	public CarminiteReactorBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(ACTIVE, false));
@@ -65,7 +64,7 @@ public class CarminiteReactorBlock extends BaseEntityBlock {
 	 */
 	private boolean isReactorReady(Level level, BlockPos pos) {
 		return Arrays.stream(Direction.values())
-				.allMatch(e -> level.getBlockState(pos.relative(e)).getBlock() == Blocks.REDSTONE_BLOCK);
+			.allMatch(e -> level.getBlockState(pos.relative(e)).getBlock() == Blocks.REDSTONE_BLOCK);
 	}
 
 	@Override

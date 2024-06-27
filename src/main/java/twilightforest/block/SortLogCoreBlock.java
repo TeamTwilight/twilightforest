@@ -13,15 +13,18 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.network.PacketDistributor;
-import twilightforest.TFConfig;
+import twilightforest.config.TFConfig;
 import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.init.TFParticleType;
 import twilightforest.network.ParticlePacket;
+import twilightforest.util.BlockCapabilityDirectionalCache;
 import twilightforest.util.WorldUtil;
 
 import java.util.*;
 
 public class SortLogCoreBlock extends SpecialMagicLogBlock {
+
+	private final BlockCapabilityDirectionalCache<IItemHandler> capabilityCache = new BlockCapabilityDirectionalCache<>();
 
 	public SortLogCoreBlock(Properties properties) {
 		super(properties);
@@ -29,7 +32,7 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 
 	@Override
 	public boolean doesCoreFunction() {
-		return !TFConfig.Common.MagicTrees.disableSortingCore;
+		return !TFConfig.disableSortingCore;
 	}
 
 	@Override
@@ -37,7 +40,7 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 		Map<List<IItemHandler>, Vec3> inputMap = new HashMap<>();
 		Map<IItemHandler, Vec3> outputMap = new HashMap<>();
 
-		for (BlockPos blockPos : WorldUtil.getAllAround(pos, TFConfig.Common.MagicTrees.sortingCoreRange)) { // Get every itemHandler from every block in the area
+		for (BlockPos blockPos : WorldUtil.getAllAround(pos, TFConfig.sortingCoreRange)) { // Get every itemHandler from every block in the area
 			if (!blockPos.equals(pos)) {
 				BlockEntity blockEntity = level.getBlockEntity(blockPos);
 				if (blockEntity != null) {
@@ -45,7 +48,7 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 					if (Math.abs(blockPos.getX() - pos.getX()) <= 2 && Math.abs(blockPos.getY() - pos.getY()) <= 2 && Math.abs(blockPos.getZ() - pos.getZ()) <= 2) {
 						List<IItemHandler> handlers = new ArrayList<>();
 						for (Direction side : Direction.values()) {
-							IItemHandler handler = level.getCapability(Capabilities.ItemHandler.BLOCK, blockPos, side);
+							IItemHandler handler = this.capabilityCache.get(Capabilities.ItemHandler.BLOCK, level, blockPos, side);
 							if (handler != null) handlers.add(handler);
 						}
 						if (!handlers.isEmpty()) {
@@ -53,10 +56,8 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 						}
 					} else { // Output if its outside that range
 						for (Direction side : Direction.values()) {
-							IItemHandler handler = level.getCapability(Capabilities.ItemHandler.BLOCK, blockPos, side);
-							if (handler != null) {
-								outputMap.put(handler, Vec3.upFromBottomCenterOf(blockPos, 1.9D));
-							}
+							IItemHandler handler = this.capabilityCache.get(Capabilities.ItemHandler.BLOCK, level, blockPos, side);
+							if (handler != null) outputMap.put(handler, Vec3.upFromBottomCenterOf(blockPos, 1.9D));
 						}
 					}
 				}
@@ -114,9 +115,9 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 
 									if (firstProperStack == -1 && outputStack.isEmpty()) {
 										firstProperStack = j; //We reference the index of the first empty slot, in case there is no stacks that aren't at max size
-									} else if (ItemStack.isSameItemSameTags(inputStack, outputStack)
-											&& outputStack.getCount() < outputStack.getMaxStackSize()
-											&& outputStack.getCount() < outputIItemHandler.getSlotLimit(j)) {
+									} else if (ItemStack.isSameItemSameComponents(inputStack, outputStack)
+										&& outputStack.getCount() < outputStack.getMaxStackSize()
+										&& outputStack.getCount() < outputIItemHandler.getSlotLimit(j)) {
 										firstProperStack = j;
 										break;
 									}
@@ -138,7 +139,7 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 											double y = diff.y - 1.75D + rand.nextDouble() * 0.5D;
 											double z = diff.z - 0.25D + rand.nextDouble() * 0.5D;
 											particlePacket.queueParticle(TFParticleType.SORTING_PARTICLE.get(), false, xyz, new Vec3(x, y, z).scale(1D / diff.length()));
-											PacketDistributor.PLAYER.with(serverplayer).send(particlePacket);
+											PacketDistributor.sendToPlayer(serverplayer, particlePacket);
 										}
 									}
 									break;

@@ -31,6 +31,7 @@ public abstract class FlyingBird extends Bird {
 	private BlockPos targetPosition;
 	private int currentFlightTime;
 
+	@SuppressWarnings("this-escape")
 	public FlyingBird(EntityType<? extends Bird> entity, Level world) {
 		super(entity, world);
 		this.setIsBirdLanded(true);
@@ -38,9 +39,9 @@ public abstract class FlyingBird extends Bird {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(DATA_BIRDFLAGS, (byte) 0);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(DATA_BIRDFLAGS, (byte) 0);
 	}
 
 	@Override
@@ -52,11 +53,6 @@ public abstract class FlyingBird extends Bird {
 		this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
 		this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6F));
 		this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
-	}
-
-	@Override
-	public float getStepHeight() {
-		return 1.0F;
 	}
 
 	@Override
@@ -117,9 +113,9 @@ public abstract class FlyingBird extends Bird {
 				// TF - modify shift factor of Y
 				int yTarget = this.currentFlightTime < 100 ? 2 : 4;
 				this.targetPosition = BlockPos.containing(
-						this.getX() + (double) this.getRandom().nextInt(7) - (double) this.getRandom().nextInt(7),
-						this.getY() + (double) this.getRandom().nextInt(6) - yTarget,
-						this.getZ() + (double) this.getRandom().nextInt(7) - (double) this.getRandom().nextInt(7));
+					this.getX() + (double) this.getRandom().nextInt(7) - (double) this.getRandom().nextInt(7),
+					this.getY() + (double) this.getRandom().nextInt(6) - yTarget,
+					this.getZ() + (double) this.getRandom().nextInt(7) - (double) this.getRandom().nextInt(7));
 			}
 
 			double d2 = (double) this.targetPosition.getX() + 0.5D - this.getX();
@@ -145,7 +141,7 @@ public abstract class FlyingBird extends Bird {
 	public boolean isLandableBlock(BlockPos pos) {
 		BlockState state = this.level().getBlockState(pos);
 		return !state.isAir()
-				&& (state.is(BlockTags.LEAVES) || state.isFaceSturdy(this.level(), pos, Direction.UP));
+			&& (state.is(BlockTags.LEAVES) || state.isFaceSturdy(this.level(), pos, Direction.UP));
 	}
 
 	@Override

@@ -10,7 +10,7 @@
             "predicate": {
               "type": "twilightforest:troll",
               "location": {
-                "structure": "twilightforest:troll_cave"
+                "structures": "twilightforest:troll_cave"
               }
             }
           }
@@ -29,7 +29,8 @@
       ]
     },
     "icon": {
-      "item": "twilightforest:magic_beans"
+      "count": 1,
+      "id": "twilightforest:magic_beans"
     },
     "title": {
       "translate": "advancement.twilightforest.troll"

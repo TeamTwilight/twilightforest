@@ -57,8 +57,7 @@
     ],
     [
       "twilightforest:plant_roots",
-      "twilightforest:torch_berries",
-      "twilightforest:vanilla_roots"
+      "twilightforest:torch_berries"
     ],
     [],
     [
@@ -87,7 +86,8 @@
       "twilightforest:mushroom/canopy_mushrooms_sparse",
       "twilightforest:mushgloom_cluster",
       "twilightforest:tree/selector/canopy_trees",
-      "twilightforest:default_fallen_logs"
+      "twilightforest:default_fallen_logs",
+      "twilightforest:tree/mega_canopy_tree"
     ],
     [
       "minecraft:freeze_top_layer"

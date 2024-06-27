@@ -3,7 +3,7 @@
   "category": "building",
   "key": {
     "#": {
-      "tag": "forge:ingots/ironwood"
+      "tag": "c:ingots/ironwood"
     }
   },
   "pattern": [
@@ -12,6 +12,7 @@
     "###"
   ],
   "result": {
-    "item": "twilightforest:ironwood_block"
+    "count": 1,
+    "id": "twilightforest:ironwood_block"
   }
 }

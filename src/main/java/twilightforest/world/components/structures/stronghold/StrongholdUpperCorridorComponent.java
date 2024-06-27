@@ -43,7 +43,8 @@ public class StrongholdUpperCorridorComponent extends KnightStrongholdComponent 
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		/*if (this.edgesLiquid(world, sbb)) {
 			return false;
-		} else */{
+		} else */
+		{
 			placeUpperStrongholdWalls(world, sbb, 0, 0, 0, 4, 4, 8, rand, deco.randomBlocks);
 
 			// entrance doorway

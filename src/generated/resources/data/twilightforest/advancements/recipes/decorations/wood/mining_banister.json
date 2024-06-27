@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:mining_slab"
-            ]
+            "items": "twilightforest:mining_slab"
           }
         ]
       },

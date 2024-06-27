@@ -19,6 +19,6 @@ public class AuroralizedGlassBlock extends TransparentBlock {
 		int red = (color & 16711680) >> 16;
 		int green = (color & '\uff00') >> 8;
 		int blue = (color & 255);
-		return new float[] {red / 255.0F, green / 255.0F, blue / 255.0F};
+		return new float[]{red / 255.0F, green / 255.0F, blue / 255.0F};
 	}
 }

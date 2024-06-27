@@ -8,6 +8,8 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityAttachment;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.ClientHooks;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
@@ -50,27 +52,29 @@ public class HydraHeadRenderer extends TFPartRenderer<HydraHead, HydraHeadModel>
 	}
 
 	@Override
-	protected void renderNameTag(HydraHead head, Component component, PoseStack stack, MultiBufferSource source, int light) {
+	protected void renderNameTag(HydraHead head, Component component, PoseStack stack, MultiBufferSource source, int light, float scale) {
 		double d0 = this.entityRenderDispatcher.distanceToSqr(head);
 		if (ClientHooks.isNameplateInRenderDistance(head, d0)) {
-			boolean flag = !head.isDiscrete();
-			float f = head.getNameTagOffsetY();
-			stack.pushPose();
-			stack.translate(0.0F, f, 0.0F);
-			stack.mulPose(Axis.YP.rotationDegrees(180.0F));
-			stack.mulPose(this.entityRenderDispatcher.cameraOrientation());
-			stack.scale(-0.05F, -0.05F, 0.05F);
-			Matrix4f matrix4f = stack.last().pose();
-			float f1 = Minecraft.getInstance().options.getBackgroundOpacity(0.25F);
-			int j = (int)(f1 * 255.0F) << 24;
-			Font font = this.getFont();
-			float f2 = (float)(-font.width(component) / 2);
-			font.drawInBatch(component, f2, (float)0, 553648127, false, matrix4f, source, flag ? Font.DisplayMode.SEE_THROUGH : Font.DisplayMode.NORMAL, j, light);
-			if (flag) {
-				font.drawInBatch(component, f2, (float)0, -1, false, matrix4f, source, Font.DisplayMode.NORMAL, 0, light);
-			}
+			Vec3 vec3 = head.getAttachments().getNullable(EntityAttachment.NAME_TAG, 0, head.getViewYRot(scale));
+			if (vec3 != null) {
+				boolean flag = !head.isDiscrete();
+				stack.pushPose();
+				stack.translate(vec3.x, vec3.y + 0.5, vec3.z);
+				stack.mulPose(Axis.YP.rotationDegrees(180.0F));
+				stack.mulPose(this.entityRenderDispatcher.cameraOrientation());
+				stack.scale(-0.05F, -0.05F, 0.05F);
+				Matrix4f matrix4f = stack.last().pose();
+				float f1 = Minecraft.getInstance().options.getBackgroundOpacity(0.25F);
+				int j = (int) (f1 * 255.0F) << 24;
+				Font font = this.getFont();
+				float f2 = (float) (-font.width(component) / 2);
+				font.drawInBatch(component, f2, (float) 0, 553648127, false, matrix4f, source, flag ? Font.DisplayMode.SEE_THROUGH : Font.DisplayMode.NORMAL, j, light);
+				if (flag) {
+					font.drawInBatch(component, f2, (float) 0, -1, false, matrix4f, source, Font.DisplayMode.NORMAL, 0, light);
+				}
 
-			stack.popPose();
+				stack.popPose();
+			}
 		}
 	}
 

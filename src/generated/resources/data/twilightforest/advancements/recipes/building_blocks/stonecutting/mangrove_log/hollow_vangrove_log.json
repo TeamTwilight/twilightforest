@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:mangrove_log"
-            ]
+            "items": "minecraft:mangrove_log"
           }
         ]
       },

@@ -28,8 +28,8 @@ import java.util.List;
 public class SkullCandleBlock extends AbstractSkullCandleBlock {
 
 	public static final MapCodec<SkullCandleBlock> CODEC = RecordCodecBuilder.mapCodec(
-			instance -> instance.group(SkullBlock.Type.CODEC.fieldOf("kind").forGetter(AbstractSkullCandleBlock::getType), propertiesCodec())
-					.apply(instance, SkullCandleBlock::new)
+		instance -> instance.group(SkullBlock.Type.CODEC.fieldOf("kind").forGetter(AbstractSkullCandleBlock::getType), propertiesCodec())
+			.apply(instance, SkullCandleBlock::new)
 	);
 	public static final IntegerProperty ROTATION = BlockStateProperties.ROTATION_16;
 
@@ -59,6 +59,7 @@ public class SkullCandleBlock extends AbstractSkullCandleBlock {
 		return Int2ObjectMaps.unmodifiable(var0);
 	});
 
+	@SuppressWarnings("this-escape")
 	public SkullCandleBlock(SkullBlock.Type type, Properties properties) {
 		super(type, properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(ROTATION, 0));
@@ -91,11 +92,13 @@ public class SkullCandleBlock extends AbstractSkullCandleBlock {
 	}
 
 	@Override
+	@SuppressWarnings("deprecation") // Fine for override
 	public BlockState rotate(BlockState state, Rotation rot) {
 		return state.setValue(ROTATION, rot.rotate(state.getValue(ROTATION), 16));
 	}
 
 	@Override
+	@SuppressWarnings("deprecation") // Fine for override
 	public BlockState mirror(BlockState state, Mirror mirror) {
 		return state.setValue(ROTATION, mirror.mirror(state.getValue(ROTATION), 16));
 	}

@@ -5,7 +5,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -15,13 +14,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFSounds;
@@ -43,6 +39,7 @@ public class SlideBlock extends Entity {
 		this.myState = TFBlocks.SLIDER.get().defaultBlockState();
 	}
 
+	@SuppressWarnings("this-escape")
 	public SlideBlock(EntityType<? extends SlideBlock> type, Level world, double x, double y, double z, BlockState state) {
 		super(type, world);
 
@@ -62,11 +59,11 @@ public class SlideBlock extends Entity {
 
 		Direction[] toCheck = switch (myState.getValue(RotatedPillarBlock.AXIS)) {
 			case X -> // horizontal blocks will go up or down if there is a block on one side and air on the other
-					new Direction[]{Direction.DOWN, Direction.UP, Direction.NORTH, Direction.SOUTH};
+				new Direction[]{Direction.DOWN, Direction.UP, Direction.NORTH, Direction.SOUTH};
 			case Z -> // horizontal blocks will go up or down if there is a block on one side and air on the other
-					new Direction[]{Direction.DOWN, Direction.UP, Direction.WEST, Direction.EAST};
+				new Direction[]{Direction.DOWN, Direction.UP, Direction.WEST, Direction.EAST};
 			case Y -> // vertical blocks priority is -x, +x, -z, +z
-					new Direction[]{Direction.WEST, Direction.EAST, Direction.NORTH, Direction.SOUTH};
+				new Direction[]{Direction.WEST, Direction.EAST, Direction.NORTH, Direction.SOUTH};
 		};
 
 		for (Direction e : toCheck) {
@@ -86,8 +83,8 @@ public class SlideBlock extends Entity {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		this.getEntityData().define(MOVE_DIRECTION, Direction.DOWN);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		builder.define(MOVE_DIRECTION, Direction.DOWN);
 	}
 
 	@Override
@@ -175,7 +172,6 @@ public class SlideBlock extends Entity {
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public boolean displayFireAnimation() {
 		return false;
 	}

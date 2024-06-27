@@ -3,11 +3,11 @@
   "category": "misc",
   "ingredients": [
     {
-      "tag": "forge:storage_blocks/knightmetal"
+      "tag": "c:storage_blocks/knightmetal"
     }
   ],
   "result": {
     "count": 9,
-    "item": "twilightforest:knightmetal_ingot"
+    "id": "twilightforest:knightmetal_ingot"
   }
 }

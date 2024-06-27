@@ -1,22 +1,22 @@
 package twilightforest.item.recipe;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import net.neoforged.neoforge.common.conditions.ICondition;
-import twilightforest.TFConfig;
+import twilightforest.config.TFConfig;
 
 public class UncraftingTableCondition implements ICondition {
 
 	public static final UncraftingTableCondition INSTANCE = new UncraftingTableCondition();
-	public static final Codec<UncraftingTableCondition> CODEC = Codec.unit(INSTANCE).stable();
+	public static final MapCodec<UncraftingTableCondition> CODEC = MapCodec.unit(INSTANCE);
 
 	@Override
-	public Codec<? extends ICondition> codec() {
+	public MapCodec<? extends ICondition> codec() {
 		return CODEC;
 	}
 
 	@Override
 	public boolean test(IContext context) {
-		return !TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableEntireTable.get();
+		return !TFConfig.disableEntireTable;
 	}
 
 	@Override

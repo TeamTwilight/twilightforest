@@ -19,8 +19,17 @@
     "frame": "challenge",
     "hidden": true,
     "icon": {
-      "item": "twilightforest:greater_potion_flask",
-      "nbt": "{Potion:\"minecraft:strong_harming\",Uses:4}"
+      "components": {
+        "twilightforest:flask_contents": {
+          "breakable": false,
+          "doses": 4,
+          "potion": {
+            "potion": "minecraft:strong_harming"
+          }
+        }
+      },
+      "count": 1,
+      "id": "twilightforest:greater_potion_flask"
     },
     "title": {
       "translate": "advancement.twilightforest.full_mettle_alchemist"

@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:giant_cobblestone"
-            ]
+            "items": "twilightforest:giant_cobblestone"
           }
         ]
       },

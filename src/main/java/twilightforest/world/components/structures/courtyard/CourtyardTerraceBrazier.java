@@ -19,21 +19,21 @@ import twilightforest.world.components.processors.StoneBricksVariants;
 import twilightforest.world.components.structures.TwilightTemplateStructurePiece;
 
 public class CourtyardTerraceBrazier extends TwilightTemplateStructurePiece {
-    public CourtyardTerraceBrazier(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-        super(TFStructurePieceTypes.TFNCTr.get(), nbt, ctx, readSettings(nbt).addProcessor(CourtyardTerraceTemplateProcessor.INSTANCE).addProcessor(NagastoneVariants.INSTANCE).addProcessor(StoneBricksVariants.INSTANCE));
-    }
+	public CourtyardTerraceBrazier(StructurePieceSerializationContext ctx, CompoundTag nbt) {
+		super(TFStructurePieceTypes.TFNCTr.get(), nbt, ctx, readSettings(nbt).addProcessor(CourtyardTerraceTemplateProcessor.INSTANCE).addProcessor(NagastoneVariants.INSTANCE).addProcessor(StoneBricksVariants.INSTANCE));
+	}
 
-    public CourtyardTerraceBrazier(int i, int x, int y, int z, Rotation rotation, StructureTemplateManager structureManager) {
-        super(TFStructurePieceTypes.TFNCTr.get(), i, structureManager, TwilightForestMod.prefix("courtyard/terrace_fire"), makeSettings(rotation).addProcessor(CourtyardTerraceTemplateProcessor.INSTANCE).addProcessor(NagastoneVariants.INSTANCE).addProcessor(StoneBricksVariants.INSTANCE), new BlockPos(x, y + 3, z));
-    }
+	public CourtyardTerraceBrazier(int i, int x, int y, int z, Rotation rotation, StructureTemplateManager structureManager) {
+		super(TFStructurePieceTypes.TFNCTr.get(), i, structureManager, TwilightForestMod.prefix("courtyard/terrace_fire"), makeSettings(rotation).addProcessor(CourtyardTerraceTemplateProcessor.INSTANCE).addProcessor(NagastoneVariants.INSTANCE).addProcessor(StoneBricksVariants.INSTANCE), new BlockPos(x, y + 3, z));
+	}
 
-    @Override
-    public void postProcess(WorldGenLevel level, StructureManager structureFeatureManager, ChunkGenerator chunkGenerator, RandomSource random, BoundingBox boundingBox, ChunkPos chunkPos, BlockPos pos) {
-        this.placePieceAdjusted(level, structureFeatureManager, chunkGenerator, random, boundingBox, chunkPos, pos, -3);
-    }
+	@Override
+	public void postProcess(WorldGenLevel level, StructureManager structureFeatureManager, ChunkGenerator chunkGenerator, RandomSource random, BoundingBox boundingBox, ChunkPos chunkPos, BlockPos pos) {
+		this.placePieceAdjusted(level, structureFeatureManager, chunkGenerator, random, boundingBox, chunkPos, pos, -3);
+	}
 
-    @Override
-    protected void handleDataMarker(String label, BlockPos pos, ServerLevelAccessor levelAccessor, RandomSource random, BoundingBox boundingBox) {
+	@Override
+	protected void handleDataMarker(String label, BlockPos pos, ServerLevelAccessor levelAccessor, RandomSource random, BoundingBox boundingBox) {
 
-    }
+	}
 }

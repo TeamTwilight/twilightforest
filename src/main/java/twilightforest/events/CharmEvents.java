@@ -23,28 +23,29 @@ import net.minecraft.world.level.material.FluidState;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
-import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
-import org.jetbrains.annotations.Nullable;
-import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.KeepsakeCasketBlock;
 import twilightforest.block.entity.KeepsakeCasketBlockEntity;
 import twilightforest.compat.curios.CuriosCompat;
+import twilightforest.config.TFConfig;
 import twilightforest.data.tags.ItemTagGenerator;
-import twilightforest.entity.CharmEffect;
 import twilightforest.enums.BlockLoggingEnum;
-import twilightforest.init.*;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFItems;
+import twilightforest.init.TFSounds;
+import twilightforest.init.TFStats;
 import twilightforest.network.SpawnCharmPacket;
 import twilightforest.util.TFItemStackUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
+@EventBusSubscriber(modid = TwilightForestMod.ID)
 public class CharmEvents {
 
 	public static final String CHARM_INV_TAG = "TFCharmInventory";
@@ -113,7 +114,7 @@ public class CharmEvents {
 			}
 
 			if (player instanceof ServerPlayer serverPlayer) {
-				PacketDistributor.PLAYER.with(serverPlayer).send(new SpawnCharmPacket(new ItemStack(charm1 ? TFItems.CHARM_OF_LIFE_1.get() : TFItems.CHARM_OF_LIFE_2.get()), TFSounds.CHARM_LIFE.getKey()));
+				PacketDistributor.sendToPlayer(serverPlayer, new SpawnCharmPacket(new ItemStack(charm1 ? TFItems.CHARM_OF_LIFE_1.get() : TFItems.CHARM_OF_LIFE_2.get()), TFSounds.CHARM_LIFE.getKey()));
 				serverPlayer.awardStat(TFStats.LIFE_CHARMS_ACTIVATED.get());
 			}
 
@@ -218,21 +219,18 @@ public class CharmEvents {
 				BlockEntity te = level.getBlockEntity(immutablePos);
 
 				if (te instanceof KeepsakeCasketBlockEntity casket) {
-					if (TFConfig.COMMON_CONFIG.casketUUIDLocking.get()) {
+					if (TFConfig.casketUUIDLocking) {
 						//make it so only the player who died can open the chest if our config allows us
 						casket.playeruuid = player.getGameProfile().getId();
 					} else {
 						casket.playeruuid = null;
 					}
 
+					casket.playerName = player.getName().getString();
 					//some names are way too long for the casket so we'll cut them down
-					String modifiedName;
-					if (player.getName().getString().length() > 12)
-						modifiedName = player.getName().getString().substring(0, 12);
-					else modifiedName = player.getName().getString();
-					casket.name = player.getName().getString();
+					String modifiedName = casket.playerName.substring(0, Math.min(12, player.getName().getString().length()));
 					casket.casketname = modifiedName;
-					casket.setCustomName(Component.literal(modifiedName + "'s " + (level.getRandom().nextInt(1000) == 0 ? "Costco Casket" : casket.getDisplayName().getString())));
+					casket.name = (Component.literal(modifiedName + "'s " + (level.getRandom().nextInt(1000) == 0 ? "Costco Casket" : casket.getDisplayName().getString())));
 					int damage = level.getBlockState(immutablePos).getValue(KeepsakeCasketBlock.BREAKAGE);
 					if (level.getRandom().nextFloat() <= 1.0F) {
 						if (damage >= 2) {
@@ -279,17 +277,17 @@ public class CharmEvents {
 		CompoundTag playerData = getPlayerData(player);
 		if (!player.level().isClientSide() && playerData.contains(CHARM_INV_TAG)) {
 			ListTag tagList = playerData.getList(CHARM_INV_TAG, 10);
-			TFItemStackUtils.loadNoClear(tagList, player.getInventory());
+			TFItemStackUtils.loadNoClear(player.registryAccess(), tagList, player.getInventory());
 			getPlayerData(player).getList(CHARM_INV_TAG, 10).clear();
 			getPlayerData(player).remove(CHARM_INV_TAG);
 		}
 
 		// spawn effect thingers
 		if (getPlayerData(player).contains(CONSUMED_CHARM_TAG)) {
-			ItemStack stack = ItemStack.of((CompoundTag) getPlayerData(player).get(CONSUMED_CHARM_TAG));
+			ItemStack stack = ItemStack.parseOptional(player.registryAccess(), (CompoundTag) getPlayerData(player).get(CONSUMED_CHARM_TAG));
 
 			if (player instanceof ServerPlayer serverPlayer) {
-				PacketDistributor.PLAYER.with(serverPlayer).send(new SpawnCharmPacket(stack, TFSounds.CHARM_KEEP.getKey()));
+				PacketDistributor.sendToPlayer(serverPlayer, new SpawnCharmPacket(stack, TFSounds.CHARM_KEEP.getKey()));
 				serverPlayer.awardStat(TFStats.KEEPING_CHARMS_ACTIVATED.get());
 			}
 			getPlayerData(player).remove(CONSUMED_CHARM_TAG);
@@ -318,5 +316,4 @@ public class CharmEvents {
 
 		return false;
 	}
-
 }

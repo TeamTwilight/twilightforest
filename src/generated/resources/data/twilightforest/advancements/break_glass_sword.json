@@ -5,9 +5,7 @@
       "conditions": {
         "durability": -1,
         "item": {
-          "items": [
-            "twilightforest:glass_sword"
-          ]
+          "items": "twilightforest:glass_sword"
         }
       },
       "trigger": "minecraft:item_durability_changed"
@@ -20,8 +18,8 @@
     "frame": "challenge",
     "hidden": true,
     "icon": {
-      "item": "twilightforest:glass_sword",
-      "nbt": "{Damage:0}"
+      "count": 1,
+      "id": "twilightforest:glass_sword"
     },
     "title": {
       "translate": "advancement.twilightforest.glass_sword"

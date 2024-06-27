@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:magic_beans"
-            ]
+            "items": "twilightforest:magic_beans"
           }
         ]
       },
@@ -20,18 +18,14 @@
             "condition": "minecraft:location_check",
             "predicate": {
               "block": {
-                "blocks": [
-                  "twilightforest:uberous_soil"
-                ]
+                "blocks": "twilightforest:uberous_soil"
               }
             }
           },
           {
             "condition": "minecraft:match_tool",
             "predicate": {
-              "items": [
-                "twilightforest:magic_beans"
-              ]
+              "items": "twilightforest:magic_beans"
             }
           }
         ]
@@ -50,7 +44,8 @@
     },
     "frame": "goal",
     "icon": {
-      "item": "twilightforest:huge_stalk"
+      "count": 1,
+      "id": "twilightforest:huge_stalk"
     },
     "title": {
       "translate": "advancement.twilightforest.beanstalk"

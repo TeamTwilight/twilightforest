@@ -1,6 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
+  "group": "wooden_door",
   "key": {
     "#": {
       "item": "twilightforest:mangrove_planks"
@@ -13,6 +14,6 @@
   ],
   "result": {
     "count": 3,
-    "item": "twilightforest:mangrove_door"
+    "id": "twilightforest:mangrove_door"
   }
 }

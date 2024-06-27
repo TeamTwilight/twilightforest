@@ -1,8 +1,7 @@
 {
   "neoforge:conditions": [
     {
-      "type": "twilightforest:uncrafting_table_enabled",
-      "value": {}
+      "type": "twilightforest:uncrafting_table_enabled"
     }
   ],
   "parent": "minecraft:recipes/root",
@@ -17,9 +16,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:uncrafting_table"
-            ]
+            "items": "twilightforest:uncrafting_table"
           }
         ]
       },

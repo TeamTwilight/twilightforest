@@ -18,6 +18,7 @@ import twilightforest.entity.monster.Kobold;
 
 public class NewKoboldRenderer extends TFBipedRenderer<Kobold, NewKoboldModel> {
 
+	@SuppressWarnings("this-escape")
 	public NewKoboldRenderer(EntityRendererProvider.Context context, NewKoboldModel model, float shadowSize, String textureName) {
 		super(context, model, shadowSize, textureName);
 

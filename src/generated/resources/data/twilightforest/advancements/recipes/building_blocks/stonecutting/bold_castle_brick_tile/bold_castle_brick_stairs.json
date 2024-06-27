@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:bold_castle_brick_tile"
-            ]
+            "items": "twilightforest:bold_castle_brick_tile"
           }
         ]
       },

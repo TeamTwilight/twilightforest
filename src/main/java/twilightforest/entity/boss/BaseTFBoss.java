@@ -9,55 +9,55 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.neoforged.neoforge.fluids.FluidType;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TFConfig;
+import twilightforest.config.TFConfig;
 import twilightforest.entity.EnforcedHomePoint;
+import twilightforest.entity.boss.bar.ServerTFBossBar;
 import twilightforest.loot.TFLootTables;
+import twilightforest.network.UpdateDeathTimePacket;
 import twilightforest.util.EntityUtil;
 import twilightforest.util.LandmarkUtil;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, EnforcedHomePoint {
 	private static final EntityDataAccessor<Optional<GlobalPos>> HOME_POINT = SynchedEntityData.defineId(BaseTFBoss.class, EntityDataSerializers.OPTIONAL_GLOBAL_POS);
+
+	private final ServerTFBossBar bossEvent;
 	private final NonNullList<ItemStack> dyingInventory = NonNullList.withSize(27, ItemStack.EMPTY);
 
 	protected BaseTFBoss(EntityType<? extends Monster> type, Level level) {
 		super(type, level);
+		this.bossEvent = this.createBossBar();
 	}
 
 	public abstract ResourceKey<Structure> getHomeStructure();
-
-	public abstract ServerBossEvent getBossBar();
 
 	public abstract Block getDeathContainer(RandomSource random);
 
 	public abstract Block getBossSpawner();
 
 	protected boolean shouldSpawnLoot() {
-		return true;
+		return this.level().getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT);
 	}
 
 	protected boolean shouldCreateSpawner() {
@@ -65,29 +65,16 @@ public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, Enf
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(HOME_POINT, Optional.empty());
-	}
-
-	@Override
-	protected void customServerAiStep() {
-		super.customServerAiStep();
-		if (!this.level().isClientSide()) {
-			this.getBossBar().setProgress(this.getHealth() / this.getMaxHealth());
-		}
-	}
-
-	@Override
-	public void setCustomName(@Nullable Component name) {
-		super.setCustomName(name);
-		this.getBossBar().setName(this.getDisplayName());
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(HOME_POINT, Optional.empty());
 	}
 
 	@Override
 	public void startSeenByPlayer(ServerPlayer player) {
 		super.startSeenByPlayer(player);
 		this.getBossBar().addPlayer(player);
+		if (this.deathTime > 0) PacketDistributor.sendToPlayersTrackingEntity(this, new UpdateDeathTimePacket(this.getId(), this.deathTime));
 	}
 
 	@Override
@@ -99,24 +86,21 @@ public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, Enf
 	@Override
 	public void addAdditionalSaveData(CompoundTag compound) {
 		this.saveHomePointToNbt(compound);
-		this.addDeathItemsSaveData(compound);
+		this.addDeathItemsSaveData(compound, this.registryAccess());
 		super.addAdditionalSaveData(compound);
 	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
-		this.readDeathItemsSaveData(compound);
+		this.readDeathItemsSaveData(compound, this.registryAccess());
 		this.loadHomePointFromNbt(compound);
-		if (this.hasCustomName()) {
-			this.getBossBar().setName(this.getDisplayName());
-		}
 	}
 
 	@Override
 	public void lavaHurt() {
 		if (!this.fireImmune()) {
-			this.setSecondsOnFire(5);
+			this.igniteForSeconds(5);
 			if (this.hurt(this.damageSources().lava(), 4.0F)) {
 				this.playSound(SoundEvents.GENERIC_BURN, 0.4F, 2.0F + this.getRandom().nextFloat() * 0.4F);
 				EntityUtil.killLavaAround(this);
@@ -127,22 +111,27 @@ public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, Enf
 	@Override
 	public void die(DamageSource cause) {
 		super.die(cause);
-		if (this.shouldSpawnLoot()) {
-			// mark the boss structure as conquered
-			if (this.level() instanceof ServerLevel server) {
-				this.getBossBar().setProgress(0.0F);
-				IBossLootBuffer.saveDropsIntoBoss(this, TFLootTables.createLootParams(this, true, cause).create(LootContextParamSets.ENTITY), server);
-				LandmarkUtil.markStructureConquered(this.level(), this, this.getHomeStructure(), true);
-			}
-		}
+		if (this.shouldSpawnLoot() && this.level() instanceof ServerLevel server) this.postmortem(server, cause);
+	}
+
+	// mark the boss structure as conquered, separate method, so it can be overridden
+	protected void postmortem(ServerLevel serverLevel, DamageSource cause) {
+		this.getBossBar().setProgress(0.0F);
+		IBossLootBuffer.saveDropsIntoBoss(this, TFLootTables.createLootParams(this, true, cause).create(LootContextParamSets.ENTITY), serverLevel);
+		LandmarkUtil.markStructureConquered(serverLevel, this, this.getHomeStructure(), true);
 	}
 
 	@Override
 	public void remove(RemovalReason reason) {
-		if (reason.equals(RemovalReason.KILLED) && this.shouldSpawnLoot() && this.level() instanceof ServerLevel serverLevel) {
+		if (this.level() instanceof ServerLevel serverLevel) this.postRemoval(serverLevel, reason);
+		super.remove(reason);
+	}
+
+	// drop loot into a chest after removal, separate method, so it can be overridden
+	protected void postRemoval(ServerLevel serverLevel, RemovalReason reason) {
+		if (reason.equals(RemovalReason.KILLED) && this.shouldSpawnLoot()) {
 			IBossLootBuffer.depositDropsIntoChest(this, this.getDeathContainer(this.getRandom()).defaultBlockState().setValue(ChestBlock.FACING, Direction.Plane.HORIZONTAL.getRandomDirection(this.level().getRandom())), EntityUtil.bossChestLocation(this), serverLevel);
 		}
-		super.remove(reason);
 	}
 
 	@Override
@@ -164,7 +153,7 @@ public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, Enf
 
 	@Override
 	protected boolean shouldDropLoot() {
-		return !TFConfig.COMMON_CONFIG.bossDropChests.get();
+		return !TFConfig.bossDropChests;
 	}
 
 	@Override
@@ -205,5 +194,60 @@ public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, Enf
 	@Override
 	public NonNullList<ItemStack> getItemStacks() {
 		return this.dyingInventory;
+	}
+
+	@Override
+	protected void tickDeath() {
+		this.deathTime++;
+		if (!this.isRemoved()) {
+            if (!this.level().isClientSide()) {
+                if (this.isDeathAnimationFinished()) {
+                    this.level().broadcastEntityEvent(this, (byte) 60); // makePoofParticles()
+                    this.remove(RemovalReason.KILLED);
+                } else this.tickBossBar();
+            } else this.tickDeathAnimation();
+		}
+	}
+
+	public boolean isDeathAnimationFinished() {
+		return this.deathTime >= 20;
+	}
+
+	public void tickDeathAnimation() {
+
+	}
+
+	public ServerTFBossBar getBossBar() {
+		return this.bossEvent;
+	}
+
+	@Override
+	protected void customServerAiStep() {
+		super.customServerAiStep();
+		if (!this.level().isClientSide()) this.tickBossBar();
+	}
+
+	protected void tickBossBar() {
+		this.getBossBar().setProgress(this.getHealth() / this.getMaxHealth());
+	}
+
+	protected ServerTFBossBar createBossBar() {
+		return new ServerTFBossBar(this.getBossBarTitle(), this.getBossBarColor(), this.getBossBarOverlay());
+	}
+
+	public Component getBossBarTitle() {
+		return this.getDisplayName() != null ? this.getDisplayName() : this.getTypeName();
+	}
+
+	public abstract int getBossBarColor();
+
+	public BossEvent.BossBarOverlay getBossBarOverlay() {
+		return BossEvent.BossBarOverlay.PROGRESS;
+	}
+
+	@Override
+	public void setCustomName(@Nullable Component name) {
+		super.setCustomName(name);
+		this.bossEvent.setName(this.getBossBarTitle());
 	}
 }

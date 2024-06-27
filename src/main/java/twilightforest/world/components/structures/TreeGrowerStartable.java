@@ -14,13 +14,13 @@ public interface TreeGrowerStartable {
 	boolean checkSaplingClearance(ServerLevel level, BlockPos pos);
 
 	StructureStart generateFromSapling(
-			RegistryAccess registryAccess,
-			ChunkGenerator generator,
-			BiomeSource biomeSource,
-			RandomState randomState,
-			StructureTemplateManager templateManager,
-			long seed,
-			BlockPos blockPos,
-			LevelHeightAccessor heightAccessor
+		RegistryAccess registryAccess,
+		ChunkGenerator generator,
+		BiomeSource biomeSource,
+		RandomState randomState,
+		StructureTemplateManager templateManager,
+		long seed,
+		BlockPos blockPos,
+		LevelHeightAccessor heightAccessor
 	);
 }

@@ -13,18 +13,19 @@ import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import org.joml.Matrix4f;
+import org.joml.Matrix4fStack;
 
-@OnlyIn(Dist.CLIENT)
 public class TFSkyRenderer {
 
 	private static VertexBuffer starBuffer;
 
 	// [VanillaCopy] LevelRenderer.renderSky's overworld branch, without sun/moon/sunrise/sunset, using our own stars at full brightness, and lowering void horizon threshold height from getHorizonHeight (63) to 0
-	public static boolean renderSky(ClientLevel level, float partialTicks, PoseStack stack, Camera camera, Matrix4f projectionMatrix, Runnable setupFog) {
+	public static boolean renderSky(ClientLevel level, float partialTicks, Matrix4f modelViewMatrix, Camera camera, Matrix4f projectionMatrix, Runnable setupFog) {
 		LevelRenderer levelRenderer = Minecraft.getInstance().levelRenderer;
+		// Stack size won't go far, can set to 2. Make sure to increase the number if more is pushed to the stack
+		Matrix4fStack stack = new Matrix4fStack(2);
+		stack.set(modelViewMatrix);
 
 		setupFog.run();
 		Vec3 vec3 = level.getSkyColor(camera.getPosition(), partialTicks);
@@ -37,7 +38,7 @@ public class TFSkyRenderer {
 		RenderSystem.setShaderColor(f, f1, f2, 1.0F);
 		ShaderInstance shaderinstance = RenderSystem.getShader();
 		levelRenderer.skyBuffer.bind();
-		levelRenderer.skyBuffer.drawWithShader(stack.last().pose(), projectionMatrix, shaderinstance);
+		levelRenderer.skyBuffer.drawWithShader(stack, projectionMatrix, shaderinstance);
 		VertexBuffer.unbind();
 		RenderSystem.enableBlend();
 		/* TF - snip out sunrise/sunset since that doesn't happen here
@@ -46,11 +47,11 @@ public class TFSkyRenderer {
 		 */
 
 		RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-		stack.pushPose();
+		stack.pushMatrix();
 		float f11 = 1.0F - level.getRainLevel(partialTicks);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, f11);
-		stack.mulPose(Axis.YP.rotationDegrees(-90.0F));
-		stack.mulPose(Axis.XP.rotationDegrees(level.getTimeOfDay(partialTicks) * 360.0F));
+		stack.rotate(Axis.YP.rotationDegrees(-90.0F));
+		stack.rotate(Axis.XP.rotationDegrees(level.getTimeOfDay(partialTicks) * 360.0F));
 		/* TF - snip out sun/moon
 		 * Matrix4f matrix4f1 = stack.last().pose();
 		 * float f12 = 30.0F;
@@ -64,7 +65,7 @@ public class TFSkyRenderer {
 		RenderSystem.setShaderColor(f10, f10, f10, f10);
 		FogRenderer.setupNoFog();
 		starBuffer.bind();
-		starBuffer.drawWithShader(stack.last().pose(), projectionMatrix, GameRenderer.getPositionShader());
+		starBuffer.drawWithShader(stack, projectionMatrix, GameRenderer.getPositionShader());
 		VertexBuffer.unbind();
 		setupFog.run();
 		//}
@@ -72,16 +73,16 @@ public class TFSkyRenderer {
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderSystem.disableBlend();
 		RenderSystem.defaultBlendFunc();
-		stack.popPose();
+		stack.popMatrix();
 		RenderSystem.setShaderColor(0.0F, 0.0F, 0.0F, 1.0F);
 		double d0 = camera.getEntity().getEyePosition(partialTicks).y(); // - level.getLevelData().getHorizonHeight(level); // TF: Lower Void Horizon Y-Threshold from 63 to 0
 		if (d0 < 0.0D) {
-			stack.pushPose();
+			stack.pushMatrix();
 			stack.translate(0.0F, 12.0F, 0.0F);
 			levelRenderer.darkBuffer.bind();
-			levelRenderer.darkBuffer.drawWithShader(stack.last().pose(), projectionMatrix, shaderinstance);
+			levelRenderer.darkBuffer.drawWithShader(stack, projectionMatrix, shaderinstance);
 			VertexBuffer.unbind();
-			stack.popPose();
+			stack.popMatrix();
 		}
 
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);

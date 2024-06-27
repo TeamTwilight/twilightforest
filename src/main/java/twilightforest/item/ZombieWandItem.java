@@ -16,9 +16,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
-import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.monster.LoyalZombie;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
@@ -36,7 +33,7 @@ public class ZombieWandItem extends Item {
 
 		ItemStack stack = player.getItemInHand(hand);
 
-		if (stack.getDamageValue() == stack.getMaxDamage()) {
+		if (stack.getDamageValue() == stack.getMaxDamage() && !player.getAbilities().instabuild) {
 			return InteractionResultHolder.fail(stack);
 		}
 
@@ -51,14 +48,17 @@ public class ZombieWandItem extends Item {
 					return InteractionResultHolder.pass(stack);
 				}
 				zombie.spawnAnim();
-				zombie.setTame(true);
+				zombie.setTame(true, false);
 				zombie.setOwnerUUID(player.getUUID());
 				zombie.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 1200, 1));
 				level.addFreshEntity(zombie);
 				level.gameEvent(player, GameEvent.ENTITY_PLACE, result.getBlockPos());
 
-				stack.hurt(1, level.getRandom(), null);
-				zombie.playSound(TFSounds.LOYAL_ZOMBIE_SUMMON.get(), 1.0F, zombie.getVoicePitch());
+				if (!player.getAbilities().instabuild) {
+					stack.hurtAndBreak(1, level.getRandom(), player, () -> {
+					});
+				}
+				zombie.playSound(TFSounds.ZOMBIE_SCEPTER_USE.get(), 1.0F, 1.0F);
 			}
 		}
 
@@ -81,9 +81,8 @@ public class ZombieWandItem extends Item {
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-		super.appendHoverText(stack, level, tooltip, flag);
+	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+		super.appendHoverText(stack, context, tooltip, flag);
 		tooltip.add(Component.translatable("item.twilightforest.scepter.desc", stack.getMaxDamage() - stack.getDamageValue()).withStyle(ChatFormatting.GRAY));
 	}
 }

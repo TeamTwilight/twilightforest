@@ -1,6 +1,7 @@
 package twilightforest.entity.projectile;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Position;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;
@@ -8,6 +9,9 @@ import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ProjectileItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -29,20 +33,20 @@ public class IceBomb extends TFThrowable {
 	private int zoneTimer = 101;
 	private boolean hasHit;
 
-	public IceBomb(EntityType<? extends IceBomb> type, Level world) {
-		super(type, world);
+	public IceBomb(EntityType<? extends IceBomb> type, Level level) {
+		super(type, level);
 	}
 
-	public IceBomb(EntityType<? extends IceBomb> type, Level world, LivingEntity thrower) {
-		super(type, world, thrower);
+	public IceBomb(EntityType<? extends IceBomb> type, Level level, LivingEntity thrower) {
+		super(type, level, thrower);
 	}
 
-	public IceBomb(Level world, Position pos) {
-		super(TFEntities.THROWN_ICE.get(), world, pos.x(), pos.y(), pos.z());
+	public IceBomb(Level level, Position pos) {
+		super(TFEntities.THROWN_ICE.get(), level, pos.x(), pos.y(), pos.z());
 	}
 
 	@Override
-	protected void onHitBlock(BlockHitResult pResult) {
+	protected void onHitBlock(BlockHitResult result) {
 		this.setDeltaMovement(0.0D, 0.0D, 0.0D);
 		this.hasHit = true;
 		this.doTerrainEffects(2);
@@ -157,7 +161,7 @@ public class IceBomb extends TFThrowable {
 	private void inflictDamage(LivingEntity entity, int dmgMultiplier) {
 		if (!entity.getType().is(EntityTypeTags.FREEZE_IMMUNE_ENTITY_TYPES)) {
 			entity.hurt(TFDamageTypes.getIndirectEntityDamageSource(this.level(), TFDamageTypes.FROZEN, this, this.getOwner()),
-					(entity.getType().is(EntityTypeTags.FREEZE_HURTS_EXTRA_TYPES) ? 5.0F : 1.0F) * dmgMultiplier);
+				(entity.getType().is(EntityTypeTags.FREEZE_HURTS_EXTRA_TYPES) ? 5.0F : 1.0F) * dmgMultiplier);
 			ChillAuraEnchantment.doChillAuraEffect(entity, 100 * dmgMultiplier, 0, true);
 		}
 	}
@@ -167,7 +171,7 @@ public class IceBomb extends TFThrowable {
 	}
 
 	@Override
-	protected float getGravity() {
+	protected double getDefaultGravity() {
 		return this.hasHit ? 0F : 0.025F;
 	}
 

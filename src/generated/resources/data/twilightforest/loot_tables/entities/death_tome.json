@@ -42,7 +42,7 @@
         },
         {
           "type": "minecraft:loot_table",
-          "name": "twilightforest:entities/death_tome_books"
+          "value": "twilightforest:entities/death_tome_books"
         }
       ],
       "rolls": 1.0

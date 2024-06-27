@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:torchberries"
-            ]
+            "items": "twilightforest:torchberries"
           }
         ]
       },
@@ -17,9 +15,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:raven_feather"
-            ]
+            "items": "twilightforest:raven_feather"
           }
         ]
       },

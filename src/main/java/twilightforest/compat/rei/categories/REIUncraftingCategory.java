@@ -73,8 +73,8 @@ public class REIUncraftingCategory implements DisplayCategory<REIUncraftingDispl
 		widgets.add(Widgets.createTexturedWidget(TEXTURE.apply(REIRuntime.getInstance().isDarkThemeEnabled()), bounds));
 		List<Ingredient> outputs = new ArrayList<>(display.getRecipe().getIngredients()); //Collect each ingredient
 		outputs.replaceAll(ingredient -> Ingredient.of(Arrays.stream(ingredient.getItems())
-				.filter(o -> !o.is(ItemTagGenerator.BANNED_UNCRAFTING_INGREDIENTS))
-				.filter(o -> !o.hasCraftingRemainingItem())));
+			.filter(o -> !o.is(ItemTagGenerator.BANNED_UNCRAFTING_INGREDIENTS))
+			.filter(o -> !o.hasCraftingRemainingItem())));
 
 		CraftingRecipe recipe = display.getRecipe();
 

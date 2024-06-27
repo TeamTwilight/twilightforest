@@ -15,16 +15,16 @@ import java.util.List;
  */
 public class TFTreeFeatureConfig implements FeatureConfiguration {
 	public static final Codec<TFTreeFeatureConfig> codecTFTreeConfig = RecordCodecBuilder.create(instance -> instance.group(
-			BlockStateProvider.CODEC.fieldOf("trunk_provider").forGetter(obj -> obj.trunkProvider),
-			BlockStateProvider.CODEC.fieldOf("leaves_provider").forGetter(obj -> obj.leavesProvider),
-			BlockStateProvider.CODEC.fieldOf("branch_provider").forGetter(obj -> obj.branchProvider),
-			BlockStateProvider.CODEC.fieldOf("roots_provider").forGetter(obj -> obj.rootsProvider),
-			Codec.INT.fieldOf("minimum_size").orElse(20).forGetter(obj -> obj.minHeight),
-			Codec.INT.fieldOf("add_first_five_chance").orElse(1).forGetter(obj -> obj.chanceAddFiveFirst),
-			Codec.INT.fieldOf("add_second_five_chance").orElse(1).forGetter(obj -> obj.chanceAddFiveSecond),
-			Codec.BOOL.fieldOf("has_leaves").orElse(true).forGetter(obj -> obj.hasLeaves),
-			Codec.BOOL.fieldOf("check_water").orElse(false).forGetter(obj -> obj.checkWater),
-			TreeDecorator.CODEC.listOf().fieldOf("decorators").orElseGet(ImmutableList::of).forGetter(obj -> obj.decorators)
+		BlockStateProvider.CODEC.fieldOf("trunk_provider").forGetter(obj -> obj.trunkProvider),
+		BlockStateProvider.CODEC.fieldOf("leaves_provider").forGetter(obj -> obj.leavesProvider),
+		BlockStateProvider.CODEC.fieldOf("branch_provider").forGetter(obj -> obj.branchProvider),
+		BlockStateProvider.CODEC.fieldOf("roots_provider").forGetter(obj -> obj.rootsProvider),
+		Codec.INT.fieldOf("minimum_size").orElse(20).forGetter(obj -> obj.minHeight),
+		Codec.INT.fieldOf("add_first_five_chance").orElse(1).forGetter(obj -> obj.chanceAddFiveFirst),
+		Codec.INT.fieldOf("add_second_five_chance").orElse(1).forGetter(obj -> obj.chanceAddFiveSecond),
+		Codec.BOOL.fieldOf("has_leaves").orElse(true).forGetter(obj -> obj.hasLeaves),
+		Codec.BOOL.fieldOf("check_water").orElse(false).forGetter(obj -> obj.checkWater),
+		TreeDecorator.CODEC.listOf().fieldOf("decorators").orElseGet(ImmutableList::of).forGetter(obj -> obj.decorators)
 	).apply(instance, TFTreeFeatureConfig::new));
 
 	public final BlockStateProvider trunkProvider;

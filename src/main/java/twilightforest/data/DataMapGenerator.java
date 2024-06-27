@@ -78,7 +78,7 @@ public class DataMapGenerator extends DataMapProvider {
 
 		var fuels = this.builder(NeoForgeDataMaps.FURNACE_FUELS);
 		fuels.add(ItemTagGenerator.BANISTERS, new FurnaceFuel(300), false);
-		
+
 		var parrot = this.builder(NeoForgeDataMaps.PARROT_IMITATIONS);
 		parrot.add(TFEntities.ALPHA_YETI, new ParrotImitation(TFSounds.ALPHA_YETI_PARROT.get()), false);
 		parrot.add(TFEntities.BLOCKCHAIN_GOBLIN, new ParrotImitation(TFSounds.REDCAP_PARROT.get()), false);

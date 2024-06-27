@@ -1,40 +1,88 @@
 package twilightforest.item;
 
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.InteractionHand;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.stats.Stats;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.enchantment.DigDurabilityEnchantment;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.gameevent.GameEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
+import org.jetbrains.annotations.Nullable;
+import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFSounds;
+import twilightforest.network.ParticlePacket;
+
+import java.util.function.Consumer;
 
 public class GlassSwordItem extends SwordItem {
-	protected final BlockParticleOption whiteGlass = new BlockParticleOption(ParticleTypes.BLOCK, Blocks.WHITE_STAINED_GLASS.defaultBlockState());
+	protected static final BlockParticleOption GLASS_PARTICLE = new BlockParticleOption(ParticleTypes.BLOCK, Blocks.WHITE_STAINED_GLASS.defaultBlockState());
 
 	public GlassSwordItem(Tier toolMaterial, Properties properties) {
-		super(toolMaterial, 3, -2.4F, properties);
+		super(toolMaterial, properties);
 	}
 
 	@Override
 	public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-		if(target.level() instanceof ServerLevel server) {
+		if (target.level() instanceof ServerLevel server) {
+			ParticlePacket particlePacket = new ParticlePacket();
 			for (int i = 0; i < 20; i++) {
-				double px = target.getX() + target.getRandom().nextFloat() * target.getBbWidth() * 2.0F - target.getBbWidth();
-				double py = target.getY() + target.getRandom().nextFloat() * target.getBbHeight();
-				double pz = target.getZ() + target.getRandom().nextFloat() * target.getBbWidth() * 2.0F - target.getBbWidth();
-				server.sendParticles(whiteGlass, px, py, pz, 1, 0, 0, 0, 0);
+				particlePacket.queueParticle(GLASS_PARTICLE, false,
+				target.getX() + target.getRandom().nextFloat() * target.getBbWidth() * 2.0F - target.getBbWidth(),
+				target.getY() + target.getRandom().nextFloat() * target.getBbHeight(),
+				target.getZ() + target.getRandom().nextFloat() * target.getBbWidth() * 2.0F - target.getBbWidth(),
+				0, 0, 0);
 			}
+			PacketDistributor.sendToPlayersTrackingEntity(target, particlePacket);
 		}
 
-		stack.hurtAndBreak(stack.getMaxDamage() + 1, attacker, (user) -> {
+		this.hurtAndBreak(stack, attacker, (user) -> {
 			user.level().playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), TFSounds.GLASS_SWORD_BREAK.get(), attacker.getSoundSource(), 1F, 0.5F);
-			user.broadcastBreakEvent(InteractionHand.MAIN_HAND);
-			user.gameEvent(GameEvent.ITEM_INTERACT_FINISH);
+			user.broadcastBreakEvent(EquipmentSlot.MAINHAND);
 		});
 		return true;
 	}
+
+	private <T extends LivingEntity> void hurtAndBreak(ItemStack stack, T entity, Consumer<T> onBroken) {
+		if (!entity.level().isClientSide() && (!(entity instanceof Player player) || !player.getAbilities().instabuild)) {
+			if (this.hurt(stack, entity.getRandom(), entity instanceof ServerPlayer sp ? sp : null)) {
+				onBroken.accept(entity);
+				stack.shrink(1);
+				if (entity instanceof Player player) {
+					player.awardStat(Stats.ITEM_BROKEN.get(this));
+				}
+			}
+		}
+	}
+
+	private boolean hurt(ItemStack stack, RandomSource random, @Nullable ServerPlayer player) {
+		if (stack.get(TFDataComponents.INFINITE_GLASS_SWORD) != null) {
+			return false;
+		} else {
+			if (DigDurabilityEnchantment.shouldIgnoreDurabilityDrop(stack, Math.min(3, stack.getEnchantmentLevel(Enchantments.UNBREAKING)), random)) {
+				return false;
+			}
+
+			if (player != null) {
+				CriteriaTriggers.ITEM_DURABILITY_CHANGED.trigger(player, stack, 0);
+			}
+
+			return true;
+		}
+	}
+
+	//TODO
+//	@Override
+//	public int getDefaultTooltipHideFlags(ItemStack stack) {
+//		return stack.get(TFDataComponents.INFINITE_GLASS_SWORD) != null ? super.getDefaultTooltipHideFlags(stack) : ItemStack.TooltipPart.UNBREAKABLE.getMask();
+//	}
 }

@@ -23,11 +23,11 @@ public class NewHydraNeckModel extends ListModel<HydraNeck> {
 		PartDefinition definition = mesh.getRoot();
 
 		definition.addOrReplaceChild("neck", CubeListBuilder.create()
-						.texOffs(260, 0)
-						.addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
-						.texOffs(0, 0)
-						.addBox(-2.0F, -24.0F, 0.0F, 4.0F, 8.0F, 16.0F),
-				PartPose.ZERO);
+				.texOffs(260, 0)
+				.addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
+				.texOffs(0, 0)
+				.addBox(-2.0F, -24.0F, 0.0F, 4.0F, 8.0F, 16.0F),
+			PartPose.ZERO);
 
 		return LayerDefinition.create(mesh, 512, 256);
 	}

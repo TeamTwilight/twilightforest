@@ -1,7 +1,6 @@
 package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -21,13 +20,13 @@ public class SpecialFlowerPotBlock extends FlowerPotBlock {
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
-		if(!this.isEmpty()) {
+	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult result) {
+		if (!this.isEmpty()) {
 			level.setBlock(pos, getEmptyPot().defaultBlockState(), 3);
 			level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
 			return InteractionResult.sidedSuccess(level.isClientSide());
 		} else {
-			return super.use(state, level, pos, player, hand, result);
+			return super.useWithoutItem(state, level, pos, player, result);
 		}
 	}
 }

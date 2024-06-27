@@ -1,25 +1,26 @@
 package twilightforest.network;
 
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFDataAttachments;
 
 public record UpdateThrownPacket(int entityID, boolean thrown, int thrower, int throwCooldown) implements CustomPacketPayload {
 
-	public static final ResourceLocation ID = TwilightForestMod.prefix("update_thrown_attachment");
+	public static final Type<UpdateThrownPacket> TYPE = new Type<>(TwilightForestMod.prefix("update_thrown_attachment"));
+	public static final StreamCodec<RegistryFriendlyByteBuf, UpdateThrownPacket> STREAM_CODEC = CustomPacketPayload.codec(UpdateThrownPacket::write, UpdateThrownPacket::new);
 
 	public UpdateThrownPacket(FriendlyByteBuf buf) {
 		this(buf.readInt(), buf.readBoolean(), buf.readInt(), buf.readInt());
 	}
 
-	@Override
 	public void write(FriendlyByteBuf buf) {
 		buf.writeInt(this.entityID());
 		buf.writeBoolean(this.thrown());
@@ -28,13 +29,13 @@ public record UpdateThrownPacket(int entityID, boolean thrown, int thrower, int 
 	}
 
 	@Override
-	public ResourceLocation id() {
-		return ID;
+	public Type<? extends CustomPacketPayload> type() {
+		return TYPE;
 	}
 
-	public static void handle(UpdateThrownPacket message, PlayPayloadContext ctx) {
-		ctx.workHandler().execute(() -> {
-			Level level = ctx.level().orElseThrow();
+	public static void handle(UpdateThrownPacket message, IPayloadContext ctx) {
+		ctx.enqueueWork(() -> {
+			Level level = ctx.player().level();
 			Entity entity = level.getEntity(message.entityID());
 			if (entity instanceof Player player) {
 				var attachment = player.getData(TFDataAttachments.YETI_THROWING);

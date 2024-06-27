@@ -1,6 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
+  "group": "wooden_trapdoor",
   "key": {
     "#": {
       "item": "twilightforest:transformation_planks"
@@ -12,6 +13,6 @@
   ],
   "result": {
     "count": 2,
-    "item": "twilightforest:transformation_trapdoor"
+    "id": "twilightforest:transformation_trapdoor"
   }
 }

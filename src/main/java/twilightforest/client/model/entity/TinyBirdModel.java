@@ -44,44 +44,44 @@ public class TinyBirdModel extends AgeableListModel<TinyBird> {
 		PartDefinition definition = mesh.getRoot();
 
 		var head = definition.addOrReplaceChild("head", CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3),
-				PartPose.offset(0F, 20.5F, -0.5F));
+				.texOffs(0, 0)
+				.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3),
+			PartPose.offset(0F, 20.5F, -0.5F));
 
 		head.addOrReplaceChild("beak", CubeListBuilder.create()
-						.texOffs(12, 0)
-						.addBox(-0.5F, -0.5F, -0.5F, 1, 1, 1),
-				PartPose.offset(0F, 0.5F, -2F));
+				.texOffs(12, 0)
+				.addBox(-0.5F, -0.5F, -0.5F, 1, 1, 1),
+			PartPose.offset(0F, 0.5F, -2F));
 
 		definition.addOrReplaceChild("body", CubeListBuilder.create()
-						.texOffs(0, 6)
-						.addBox(-1.5F, 0F, -1F, 3, 3, 3),
-				PartPose.offset(0F, 20F, 0F));
+				.texOffs(0, 6)
+				.addBox(-1.5F, 0F, -1F, 3, 3, 3),
+			PartPose.offset(0F, 20F, 0F));
 
 		definition.addOrReplaceChild("right_arm", CubeListBuilder.create()
-						.texOffs(12, 2)
-						.addBox(-1F, 0F, -1.5F, 1, 2, 3),
-				PartPose.offset(-1.5F, 20.5F, 1F));
+				.texOffs(12, 2)
+				.addBox(-1F, 0F, -1.5F, 1, 2, 3),
+			PartPose.offset(-1.5F, 20.5F, 1F));
 
 		definition.addOrReplaceChild("left_arm", CubeListBuilder.create().mirror()
-						.texOffs(12, 2)
-						.addBox(0F, 0F, -1.5F, 1, 2, 3),
-				PartPose.offset(1.5F, 20.5F, 1F));
+				.texOffs(12, 2)
+				.addBox(0F, 0F, -1.5F, 1, 2, 3),
+			PartPose.offset(1.5F, 20.5F, 1F));
 
 		definition.addOrReplaceChild("right_leg", CubeListBuilder.create()
-						.texOffs(0, 12)
-						.addBox(0F, 0F, 0F, 1, 1, 1),
-				PartPose.offset(-1.5F, 23F, 0F));
+				.texOffs(0, 12)
+				.addBox(0F, 0F, 0F, 1, 1, 1),
+			PartPose.offset(-1.5F, 23F, 0F));
 
 		definition.addOrReplaceChild("left_leg", CubeListBuilder.create().mirror()
-						.texOffs(0, 12)
-						.addBox(0F, 0F, 0F, 1, 1, 1),
-				PartPose.offset(0F, 23F, 0F));
+				.texOffs(0, 12)
+				.addBox(0F, 0F, 0F, 1, 1, 1),
+			PartPose.offset(0F, 23F, 0F));
 
 		definition.addOrReplaceChild("tail", CubeListBuilder.create()
-						.texOffs(0, 14)
-						.addBox(-1.5F, -0.5F, 0F, 3, 1, 2),
-				PartPose.offset(0F, 22F, 2F));
+				.texOffs(0, 14)
+				.addBox(-1.5F, -0.5F, 0F, 3, 1, 2),
+			PartPose.offset(0F, 22F, 2F));
 
 		return LayerDefinition.create(mesh, 32, 32);
 	}
@@ -94,13 +94,13 @@ public class TinyBirdModel extends AgeableListModel<TinyBird> {
 	@Override
 	protected Iterable<ModelPart> bodyParts() {
 		return ImmutableList.of(
-				head,
-				body,
-				rightleg,
-				leftleg,
-				rightarm,
-				leftarm,
-				tail
+			head,
+			body,
+			rightleg,
+			leftleg,
+			rightarm,
+			leftarm,
+			tail
 		);
 	}
 

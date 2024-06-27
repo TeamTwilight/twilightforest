@@ -3,7 +3,7 @@
   "category": "building",
   "key": {
     "#": {
-      "tag": "forge:gems/carminite"
+      "tag": "c:gems/carminite"
     }
   },
   "pattern": [
@@ -12,6 +12,7 @@
     "###"
   ],
   "result": {
-    "item": "twilightforest:carminite_block"
+    "count": 1,
+    "id": "twilightforest:carminite_block"
   }
 }

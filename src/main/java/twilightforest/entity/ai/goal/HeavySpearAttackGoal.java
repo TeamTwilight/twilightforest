@@ -10,6 +10,7 @@ public class HeavySpearAttackGoal extends Goal {
 
 	private final UpperGoblinKnight entity;
 
+	@SuppressWarnings("this-escape")
 	public HeavySpearAttackGoal(UpperGoblinKnight upperKnight) {
 		this.entity = upperKnight;
 		this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));

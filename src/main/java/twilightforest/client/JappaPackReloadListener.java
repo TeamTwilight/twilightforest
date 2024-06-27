@@ -6,7 +6,7 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import twilightforest.TwilightForestMod;
 
@@ -16,7 +16,7 @@ import java.util.function.BooleanSupplier;
 // I would like to look at migrating the models to using EntityModelJson (https://www.curseforge.com/minecraft/mc-mods/entity-model-json) in the future.
 // we can make the pack depend on it to load the new models instead of having them hardcoded here.
 // could also shade the mod since I dont trust people to actually download the mod. I can already see the bug reports flooding in, yikes
-@Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD, modid = TwilightForestMod.ID)
+@EventBusSubscriber(value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD, modid = TwilightForestMod.ID)
 public class JappaPackReloadListener implements ResourceManagerReloadListener {
 
 	private static boolean jappaPackLoaded = false;

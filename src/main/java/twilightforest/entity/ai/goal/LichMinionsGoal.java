@@ -23,6 +23,7 @@ public class LichMinionsGoal extends Goal {
 
 	private final Lich lich;
 
+	@SuppressWarnings("this-escape")
 	public LichMinionsGoal(Lich boss) {
 		this.lich = boss;
 		this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
@@ -94,7 +95,7 @@ public class LichMinionsGoal extends Goal {
 			// put a clone there
 			LichMinion minion = new LichMinion(this.lich.level(), this.lich);
 			minion.setPos(minionSpot.x(), minionSpot.y(), minionSpot.z());
-			EventHooks.onFinalizeSpawn(minion, accessor, this.lich.level().getCurrentDifficultyAt(BlockPos.containing(minionSpot)), MobSpawnType.MOB_SUMMONED, null, null);
+			EventHooks.finalizeMobSpawn(minion, accessor, this.lich.level().getCurrentDifficultyAt(BlockPos.containing(minionSpot)), MobSpawnType.MOB_SUMMONED, null);
 			this.lich.level().addFreshEntity(minion);
 
 			minion.setTarget(targetedEntity);

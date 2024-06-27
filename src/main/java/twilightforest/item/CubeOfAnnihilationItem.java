@@ -1,6 +1,5 @@
 package twilightforest.item;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -14,13 +13,12 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.projectile.CubeOfAnnihilation;
+import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFEntities;
 
 import java.util.UUID;
 
 public class CubeOfAnnihilationItem extends Item {
-
-	private static final String THROWN_UUID_KEY = "cubeEntity";
 
 	public CubeOfAnnihilationItem(Properties properties) {
 		super(properties);
@@ -28,8 +26,8 @@ public class CubeOfAnnihilationItem extends Item {
 
 	@Override
 	public void inventoryTick(ItemStack stack, Level level, Entity holder, int slot, boolean isSelected) {
-		if (!level.isClientSide() && getThrownUuid(stack) != null && getThrownEntity(level, stack) == null) {
-			stack.getTag().remove(THROWN_UUID_KEY);
+		if (!level.isClientSide() && stack.get(TFDataComponents.THROWN_PROJECTILE) != null && getThrownEntity(level, stack) == null) {
+			stack.remove(TFDataComponents.THROWN_PROJECTILE);
 		}
 	}
 
@@ -37,13 +35,13 @@ public class CubeOfAnnihilationItem extends Item {
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 
-		if (getThrownUuid(stack) != null)
+		if (stack.get(TFDataComponents.THROWN_PROJECTILE) != null)
 			return new InteractionResultHolder<>(InteractionResult.PASS, stack);
 
 		if (!level.isClientSide()) {
 			CubeOfAnnihilation launchedCube = new CubeOfAnnihilation(TFEntities.CUBE_OF_ANNIHILATION.get(), level, player, stack);
 			level.addFreshEntity(launchedCube);
-			setThrownEntity(stack, launchedCube);
+			stack.set(TFDataComponents.THROWN_PROJECTILE, launchedCube.getUUID());
 		}
 
 		player.startUsingItem(hand);
@@ -51,18 +49,9 @@ public class CubeOfAnnihilationItem extends Item {
 	}
 
 	@Nullable
-	public static UUID getThrownUuid(ItemStack stack) {
-		if (stack.hasTag() && stack.getTag().hasUUID(THROWN_UUID_KEY)) {
-			return stack.getTag().getUUID(THROWN_UUID_KEY);
-		}
-
-		return null;
-	}
-
-	@Nullable
 	private static CubeOfAnnihilation getThrownEntity(Level level, ItemStack stack) {
 		if (level instanceof ServerLevel server) {
-			UUID id = getThrownUuid(stack);
+			UUID id = stack.get(TFDataComponents.THROWN_PROJECTILE);
 			if (id != null) {
 				Entity e = server.getEntity(id);
 				if (e instanceof CubeOfAnnihilation) {
@@ -72,13 +61,6 @@ public class CubeOfAnnihilationItem extends Item {
 		}
 
 		return null;
-	}
-
-	private static void setThrownEntity(ItemStack stack, CubeOfAnnihilation cube) {
-		if (!stack.hasTag()) {
-			stack.setTag(new CompoundTag());
-		}
-		stack.getTag().putUUID(THROWN_UUID_KEY, cube.getUUID());
 	}
 
 	@Override

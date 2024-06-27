@@ -4,9 +4,7 @@
     "eat_experiment_115": {
       "conditions": {
         "item": {
-          "items": [
-            "twilightforest:experiment_115"
-          ]
+          "items": "twilightforest:experiment_115"
         }
       },
       "trigger": "minecraft:consume_item"
@@ -17,7 +15,8 @@
       "translate": "advancement.twilightforest.experiment_115.desc"
     },
     "icon": {
-      "item": "twilightforest:experiment_115"
+      "count": 1,
+      "id": "twilightforest:experiment_115"
     },
     "title": {
       "translate": "advancement.twilightforest.experiment_115"

@@ -26,41 +26,41 @@ public class PenguinModel extends HumanoidModel<Penguin> {
 		PartDefinition definition = mesh.getRoot();
 
 		definition.addOrReplaceChild("body", CubeListBuilder.create()
-						.texOffs(32, 0)
-						.addBox(-4.0F, 0.0F, -4.0F, 8.0F, 9.0F, 8.0F),
-				PartPose.offset(0.0F, 14.0F, 0.0F));
+				.texOffs(32, 0)
+				.addBox(-4.0F, 0.0F, -4.0F, 8.0F, 9.0F, 8.0F),
+			PartPose.offset(0.0F, 14.0F, 0.0F));
 
 		var head = definition.addOrReplaceChild("head", CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(-3.5F, -4.0F, -3.5F, 7.0F, 5.0F, 7.0F),
-				PartPose.offset(0.0F, 13.0F, 0.0F));
+				.texOffs(0, 0)
+				.addBox(-3.5F, -4.0F, -3.5F, 7.0F, 5.0F, 7.0F),
+			PartPose.offset(0.0F, 13.0F, 0.0F));
 
 		definition.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
 
 		head.addOrReplaceChild("beak", CubeListBuilder.create()
-						.texOffs(0, 13)
-						.addBox(-1.0F, 0.0F, -1.0F, 2.0F, 1.0F, 2.0F),
-				PartPose.offset(0.0F, -1.0F, -4.0F));
+				.texOffs(0, 13)
+				.addBox(-1.0F, 0.0F, -1.0F, 2.0F, 1.0F, 2.0F),
+			PartPose.offset(0.0F, -1.0F, -4.0F));
 
 		definition.addOrReplaceChild("right_arm", CubeListBuilder.create()
-						.texOffs(34, 18)
-						.addBox(-1.0F, -1.0F, -2.0F, 1.0F, 8.0F, 4.0F),
-				PartPose.offset(-4.0F, 15.0F, 0.0F));
+				.texOffs(34, 18)
+				.addBox(-1.0F, -1.0F, -2.0F, 1.0F, 8.0F, 4.0F),
+			PartPose.offset(-4.0F, 15.0F, 0.0F));
 
 		definition.addOrReplaceChild("left_arm", CubeListBuilder.create()
-						.texOffs(24, 18)
-						.addBox(0.0F, -1.0F, -2.0F, 1.0F, 8.0F, 4.0F),
-				PartPose.offset(4.0F, 15.0F, 0.0F));
+				.texOffs(24, 18)
+				.addBox(0.0F, -1.0F, -2.0F, 1.0F, 8.0F, 4.0F),
+			PartPose.offset(4.0F, 15.0F, 0.0F));
 
 		definition.addOrReplaceChild("right_leg", CubeListBuilder.create()
-						.texOffs(0, 16)
-						.addBox(-2.0F, 0.0F, -5.0F, 4.0F, 1.0F, 8.0F),
-				PartPose.offset(-2.0F, 23.0F, 0.0F));
+				.texOffs(0, 16)
+				.addBox(-2.0F, 0.0F, -5.0F, 4.0F, 1.0F, 8.0F),
+			PartPose.offset(-2.0F, 23.0F, 0.0F));
 
 		definition.addOrReplaceChild("left_leg", CubeListBuilder.create()
-						.texOffs(0, 16)
-						.addBox(-2.0F, 0.0F, -5.0F, 4.0F, 1.0F, 8.0F),
-				PartPose.offset(2.0F, 23.0F, 0.0F));
+				.texOffs(0, 16)
+				.addBox(-2.0F, 0.0F, -5.0F, 4.0F, 1.0F, 8.0F),
+			PartPose.offset(2.0F, 23.0F, 0.0F));
 
 		return LayerDefinition.create(mesh, 64, 32);
 	}

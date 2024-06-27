@@ -43,104 +43,106 @@ public class BiomeTagGenerator extends BiomeTagsProvider {
 	@Override
 	protected void addTags(HolderLookup.Provider provider) {
 
-		tag(IS_TWILIGHT).add(
-				TFBiomes.CLEARING, TFBiomes.DENSE_FOREST,
-				TFBiomes.DENSE_MUSHROOM_FOREST, TFBiomes.FIREFLY_FOREST,
-				TFBiomes.FOREST, TFBiomes.MUSHROOM_FOREST,
-				TFBiomes.OAK_SAVANNAH, TFBiomes.SPOOKY_FOREST,
-				TFBiomes.ENCHANTED_FOREST, TFBiomes.DENSE_MUSHROOM_FOREST,
-				TFBiomes.LAKE, TFBiomes.STREAM, TFBiomes.UNDERGROUND,
-				TFBiomes.SWAMP, TFBiomes.FIRE_SWAMP,
-				TFBiomes.DARK_FOREST, TFBiomes.DARK_FOREST_CENTER,
-				TFBiomes.SNOWY_FOREST, TFBiomes.GLACIER,
-				TFBiomes.HIGHLANDS, TFBiomes.THORNLANDS, TFBiomes.FINAL_PLATEAU
+		this.tag(IS_TWILIGHT).add(
+			TFBiomes.CLEARING, TFBiomes.DENSE_FOREST,
+			TFBiomes.DENSE_MUSHROOM_FOREST, TFBiomes.FIREFLY_FOREST,
+			TFBiomes.FOREST, TFBiomes.MUSHROOM_FOREST,
+			TFBiomes.OAK_SAVANNAH, TFBiomes.SPOOKY_FOREST,
+			TFBiomes.ENCHANTED_FOREST, TFBiomes.DENSE_MUSHROOM_FOREST,
+			TFBiomes.LAKE, TFBiomes.STREAM, TFBiomes.UNDERGROUND,
+			TFBiomes.SWAMP, TFBiomes.FIRE_SWAMP,
+			TFBiomes.DARK_FOREST, TFBiomes.DARK_FOREST_CENTER,
+			TFBiomes.SNOWY_FOREST, TFBiomes.GLACIER,
+			TFBiomes.HIGHLANDS, TFBiomes.THORNLANDS, TFBiomes.FINAL_PLATEAU
 		);
 
-		tag(VALID_QUEST_GROVE_BIOMES).add(TFBiomes.ENCHANTED_FOREST);
-		tag(VALID_MUSHROOM_TOWER_BIOMES).add(TFBiomes.DENSE_MUSHROOM_FOREST);
+		this.tag(VALID_QUEST_GROVE_BIOMES).add(TFBiomes.ENCHANTED_FOREST);
+		this.tag(VALID_MUSHROOM_TOWER_BIOMES).add(TFBiomes.DENSE_MUSHROOM_FOREST);
 
-		tag(VALID_HOLLOW_TREE_BIOMES).add(
-				TFBiomes.DENSE_FOREST, TFBiomes.SWAMP, TFBiomes.FIRE_SWAMP,
-				TFBiomes.DENSE_MUSHROOM_FOREST, TFBiomes.FIREFLY_FOREST,
-				TFBiomes.FOREST, TFBiomes.MUSHROOM_FOREST,
-				TFBiomes.OAK_SAVANNAH, TFBiomes.ENCHANTED_FOREST
+		this.tag(VALID_HOLLOW_TREE_BIOMES).add(
+			TFBiomes.DENSE_FOREST, TFBiomes.SWAMP, TFBiomes.FIRE_SWAMP,
+			TFBiomes.DENSE_MUSHROOM_FOREST, TFBiomes.FIREFLY_FOREST,
+			TFBiomes.FOREST, TFBiomes.MUSHROOM_FOREST,
+			TFBiomes.OAK_SAVANNAH, TFBiomes.ENCHANTED_FOREST
 		);
-		tag(VALID_HEDGE_MAZE_BIOMES).add(
-				TFBiomes.CLEARING, TFBiomes.DENSE_FOREST,
-				TFBiomes.DENSE_MUSHROOM_FOREST, TFBiomes.FIREFLY_FOREST,
-				TFBiomes.FOREST, TFBiomes.MUSHROOM_FOREST,
-				TFBiomes.OAK_SAVANNAH, TFBiomes.SPOOKY_FOREST
+		this.tag(VALID_HEDGE_MAZE_BIOMES).add(
+			TFBiomes.CLEARING, TFBiomes.DENSE_FOREST,
+			TFBiomes.DENSE_MUSHROOM_FOREST, TFBiomes.FIREFLY_FOREST,
+			TFBiomes.FOREST, TFBiomes.MUSHROOM_FOREST,
+			TFBiomes.OAK_SAVANNAH, TFBiomes.SPOOKY_FOREST
 		);
-		tag(VALID_HOLLOW_HILL_BIOMES).add(
-				TFBiomes.CLEARING, TFBiomes.DENSE_FOREST,
-				TFBiomes.DENSE_MUSHROOM_FOREST, TFBiomes.FIREFLY_FOREST,
-				TFBiomes.FOREST, TFBiomes.MUSHROOM_FOREST,
-				TFBiomes.OAK_SAVANNAH, TFBiomes.SPOOKY_FOREST
+		this.tag(VALID_HOLLOW_HILL_BIOMES).add(
+			TFBiomes.CLEARING, TFBiomes.DENSE_FOREST,
+			TFBiomes.DENSE_MUSHROOM_FOREST, TFBiomes.FIREFLY_FOREST,
+			TFBiomes.FOREST, TFBiomes.MUSHROOM_FOREST,
+			TFBiomes.OAK_SAVANNAH, TFBiomes.SPOOKY_FOREST
 		);
-		tag(VALID_NAGA_COURTYARD_BIOMES).add(
-				TFBiomes.CLEARING, TFBiomes.DENSE_FOREST,
-				TFBiomes.DENSE_MUSHROOM_FOREST, TFBiomes.FIREFLY_FOREST,
-				TFBiomes.FOREST, TFBiomes.MUSHROOM_FOREST,
-				TFBiomes.OAK_SAVANNAH, TFBiomes.SPOOKY_FOREST
+		this.tag(VALID_NAGA_COURTYARD_BIOMES).add(
+			TFBiomes.CLEARING, TFBiomes.DENSE_FOREST,
+			TFBiomes.DENSE_MUSHROOM_FOREST, TFBiomes.FIREFLY_FOREST,
+			TFBiomes.FOREST, TFBiomes.MUSHROOM_FOREST,
+			TFBiomes.OAK_SAVANNAH, TFBiomes.SPOOKY_FOREST
 		);
-		tag(VALID_LICH_TOWER_BIOMES).add(
-				TFBiomes.CLEARING, TFBiomes.DENSE_FOREST,
-				TFBiomes.DENSE_MUSHROOM_FOREST, TFBiomes.FIREFLY_FOREST,
-				TFBiomes.FOREST, TFBiomes.MUSHROOM_FOREST,
-				TFBiomes.OAK_SAVANNAH, TFBiomes.SPOOKY_FOREST
+		this.tag(VALID_LICH_TOWER_BIOMES).add(
+			TFBiomes.CLEARING, TFBiomes.DENSE_FOREST,
+			TFBiomes.DENSE_MUSHROOM_FOREST, TFBiomes.FIREFLY_FOREST,
+			TFBiomes.FOREST, TFBiomes.MUSHROOM_FOREST,
+			TFBiomes.OAK_SAVANNAH, TFBiomes.SPOOKY_FOREST
 		);
-		tag(VALID_LABYRINTH_BIOMES).add(TFBiomes.SWAMP);
-		tag(VALID_HYDRA_LAIR_BIOMES).add(TFBiomes.FIRE_SWAMP);
-		tag(VALID_KNIGHT_STRONGHOLD_BIOMES).add(TFBiomes.DARK_FOREST);
-		tag(VALID_DARK_TOWER_BIOMES).add(TFBiomes.DARK_FOREST_CENTER);
-		tag(VALID_YETI_CAVE_BIOMES).add(TFBiomes.SNOWY_FOREST);
-		tag(VALID_AURORA_PALACE_BIOMES).add(TFBiomes.GLACIER);
-		tag(VALID_TROLL_CAVE_BIOMES).add(TFBiomes.HIGHLANDS);
-		tag(VALID_GIANT_HOUSE_BIOMES).add(TFBiomes.HIGHLANDS);
-		tag(VALID_FINAL_CASTLE_BIOMES).add(TFBiomes.FINAL_PLATEAU);
+		this.tag(VALID_LABYRINTH_BIOMES).add(TFBiomes.SWAMP);
+		this.tag(VALID_HYDRA_LAIR_BIOMES).add(TFBiomes.FIRE_SWAMP);
+		this.tag(VALID_KNIGHT_STRONGHOLD_BIOMES).add(TFBiomes.DARK_FOREST);
+		this.tag(VALID_DARK_TOWER_BIOMES).add(TFBiomes.DARK_FOREST_CENTER);
+		this.tag(VALID_YETI_CAVE_BIOMES).add(TFBiomes.SNOWY_FOREST);
+		this.tag(VALID_AURORA_PALACE_BIOMES).add(TFBiomes.GLACIER);
+		this.tag(VALID_TROLL_CAVE_BIOMES).add(TFBiomes.HIGHLANDS);
+		this.tag(VALID_GIANT_HOUSE_BIOMES).add(TFBiomes.HIGHLANDS);
+		this.tag(VALID_FINAL_CASTLE_BIOMES).add(TFBiomes.FINAL_PLATEAU);
 
 		//apparently using forge and vanilla tags allows other mods to spawn stuff in our biomes. Will keep these commented out here just in case we need to reference them later.
 		//vanilla biome categories
-//		tag(BiomeTags.IS_FOREST).add(
+//		this.tag(BiomeTags.IS_FOREST).add(
 //				TFBiomes.FOREST, TFBiomes.DENSE_FOREST, TFBiomes.FIREFLY_FOREST,
 //				TFBiomes.OAK_SAVANNAH, TFBiomes.MUSHROOM_FOREST, TFBiomes.DENSE_MUSHROOM_FOREST,
 //				TFBiomes.DARK_FOREST, TFBiomes.DARK_FOREST_CENTER,
 //				TFBiomes.SNOWY_FOREST, TFBiomes.HIGHLANDS
 //		);
-//		tag(BiomeTags.IS_MOUNTAIN).add(TFBiomes.HIGHLANDS);
-//		tag(BiomeTags.IS_HILL).add(TFBiomes.THORNLANDS);
+//		this.tag(BiomeTags.IS_MOUNTAIN).add(TFBiomes.HIGHLANDS);
+//		this.tag(BiomeTags.IS_HILL).add(TFBiomes.THORNLANDS);
 
 		//forge biome categories
-//		tag(Tags.Biomes.IS_DENSE).add(TFBiomes.DENSE_FOREST, TFBiomes.DENSE_MUSHROOM_FOREST, TFBiomes.DARK_FOREST, TFBiomes.DARK_FOREST_CENTER, TFBiomes.SNOWY_FOREST, TFBiomes.THORNLANDS);
-//		tag(Tags.Biomes.IS_SPARSE).add(TFBiomes.CLEARING, TFBiomes.OAK_SAVANNAH, TFBiomes.GLACIER, TFBiomes.FINAL_PLATEAU);
-//		tag(Tags.Biomes.IS_PLAINS).add(TFBiomes.CLEARING);
-//		tag(Tags.Biomes.IS_MUSHROOM).add(TFBiomes.MUSHROOM_FOREST, TFBiomes.DENSE_MUSHROOM_FOREST);
-//		tag(Tags.Biomes.IS_RARE).add(TFBiomes.ENCHANTED_FOREST, TFBiomes.SPOOKY_FOREST, TFBiomes.CLEARING, TFBiomes.DENSE_MUSHROOM_FOREST, TFBiomes.LAKE);
-//		tag(Tags.Biomes.IS_WATER).add(TFBiomes.LAKE, TFBiomes.STREAM);
-//		tag(Tags.Biomes.IS_MAGICAL).add(TFBiomes.ENCHANTED_FOREST, TFBiomes.DARK_FOREST_CENTER);
-//		tag(Tags.Biomes.IS_SPOOKY).add(TFBiomes.SPOOKY_FOREST, TFBiomes.DARK_FOREST, TFBiomes.DARK_FOREST_CENTER);
-//		tag(Tags.Biomes.IS_DEAD).add(TFBiomes.SPOOKY_FOREST, TFBiomes.THORNLANDS, TFBiomes.FINAL_PLATEAU);
-//		tag(Tags.Biomes.IS_SWAMP).add(TFBiomes.SWAMP, TFBiomes.FIRE_SWAMP);
-//		tag(Tags.Biomes.IS_SNOWY).add(TFBiomes.SNOWY_FOREST);
-//		tag(Tags.Biomes.IS_CONIFEROUS).add(TFBiomes.SNOWY_FOREST, TFBiomes.HIGHLANDS);
-//		tag(Tags.Biomes.IS_COLD).add(TFBiomes.SNOWY_FOREST, TFBiomes.GLACIER);
-//		tag(Tags.Biomes.IS_WASTELAND).add(TFBiomes.GLACIER, TFBiomes.THORNLANDS, TFBiomes.FINAL_PLATEAU);
-//		tag(Tags.Biomes.IS_DRY).add(TFBiomes.THORNLANDS, TFBiomes.FINAL_PLATEAU);
-//		tag(Tags.Biomes.IS_PLATEAU).add(TFBiomes.FINAL_PLATEAU);
-//		tag(Tags.Biomes.IS_UNDERGROUND).add(TFBiomes.UNDERGROUND);
+//		this.tag(Tags.Biomes.IS_DENSE).add(TFBiomes.DENSE_FOREST, TFBiomes.DENSE_MUSHROOM_FOREST, TFBiomes.DARK_FOREST, TFBiomes.DARK_FOREST_CENTER, TFBiomes.SNOWY_FOREST, TFBiomes.THORNLANDS);
+//		this.tag(Tags.Biomes.IS_SPARSE).add(TFBiomes.CLEARING, TFBiomes.OAK_SAVANNAH, TFBiomes.GLACIER, TFBiomes.FINAL_PLATEAU);
+//		this.tag(Tags.Biomes.IS_PLAINS).add(TFBiomes.CLEARING);
+//		this.tag(Tags.Biomes.IS_MUSHROOM).add(TFBiomes.MUSHROOM_FOREST, TFBiomes.DENSE_MUSHROOM_FOREST);
+//		this.tag(Tags.Biomes.IS_RARE).add(TFBiomes.ENCHANTED_FOREST, TFBiomes.SPOOKY_FOREST, TFBiomes.CLEARING, TFBiomes.DENSE_MUSHROOM_FOREST, TFBiomes.LAKE);
+//		this.tag(Tags.Biomes.IS_WATER).add(TFBiomes.LAKE, TFBiomes.STREAM);
+//		this.tag(Tags.Biomes.IS_MAGICAL).add(TFBiomes.ENCHANTED_FOREST, TFBiomes.DARK_FOREST_CENTER);
+//		this.tag(Tags.Biomes.IS_SPOOKY).add(TFBiomes.SPOOKY_FOREST, TFBiomes.DARK_FOREST, TFBiomes.DARK_FOREST_CENTER);
+//		this.tag(Tags.Biomes.IS_DEAD).add(TFBiomes.SPOOKY_FOREST, TFBiomes.THORNLANDS, TFBiomes.FINAL_PLATEAU);
+//		this.tag(Tags.Biomes.IS_SWAMP).add(TFBiomes.SWAMP, TFBiomes.FIRE_SWAMP);
+//		this.tag(Tags.Biomes.IS_SNOWY).add(TFBiomes.SNOWY_FOREST);
+//		this.tag(Tags.Biomes.IS_CONIFEROUS).add(TFBiomes.SNOWY_FOREST, TFBiomes.HIGHLANDS);
+//		this.tag(Tags.Biomes.IS_COLD).add(TFBiomes.SNOWY_FOREST, TFBiomes.GLACIER);
+//		this.tag(Tags.Biomes.IS_WASTELAND).add(TFBiomes.GLACIER, TFBiomes.THORNLANDS, TFBiomes.FINAL_PLATEAU);
+//		this.tag(Tags.Biomes.IS_DRY).add(TFBiomes.THORNLANDS, TFBiomes.FINAL_PLATEAU);
+//		this.tag(Tags.Biomes.IS_PLATEAU).add(TFBiomes.FINAL_PLATEAU);
+//		this.tag(Tags.Biomes.IS_UNDERGROUND).add(TFBiomes.UNDERGROUND);
 
 		//other vanilla tags
-		tag(BiomeTags.WITHOUT_WANDERING_TRADER_SPAWNS).addTag(IS_TWILIGHT);
-		tag(BiomeTags.WITHOUT_PATROL_SPAWNS).addTag(IS_TWILIGHT);
-		tag(BiomeTags.WITHOUT_ZOMBIE_SIEGES).addTag(IS_TWILIGHT);
+		this.tag(BiomeTags.WITHOUT_WANDERING_TRADER_SPAWNS).addTag(IS_TWILIGHT);
+		this.tag(BiomeTags.WITHOUT_PATROL_SPAWNS).addTag(IS_TWILIGHT);
+		this.tag(BiomeTags.WITHOUT_ZOMBIE_SIEGES).addTag(IS_TWILIGHT);
 
 		//even though we won't spawn vanilla frogs, we'll still add support for the variants
-		tag(BiomeTags.SPAWNS_COLD_VARIANT_FROGS).add(TFBiomes.SNOWY_FOREST, TFBiomes.GLACIER);
-		tag(BiomeTags.SPAWNS_SNOW_FOXES).add(TFBiomes.SNOWY_FOREST, TFBiomes.GLACIER);
-		tag(BiomeTags.SNOW_GOLEM_MELTS).add(TFBiomes.OAK_SAVANNAH, TFBiomes.FIRE_SWAMP);
-		tag(BiomeTags.SPAWNS_WARM_VARIANT_FROGS).add(TFBiomes.OAK_SAVANNAH, TFBiomes.FIRE_SWAMP);
+		this.tag(BiomeTags.SPAWNS_COLD_VARIANT_FROGS).add(TFBiomes.SNOWY_FOREST, TFBiomes.GLACIER);
+		this.tag(BiomeTags.SPAWNS_WARM_VARIANT_FROGS).add(TFBiomes.OAK_SAVANNAH, TFBiomes.FIRE_SWAMP);
 
-		tag(BiomeTags.HAS_CLOSER_WATER_FOG).add(TFBiomes.SPOOKY_FOREST, TFBiomes.SWAMP, TFBiomes.FIRE_SWAMP);
+		this.tag(BiomeTags.SPAWNS_SNOW_FOXES).add(TFBiomes.SNOWY_FOREST, TFBiomes.GLACIER);
+		this.tag(BiomeTags.SPAWNS_WHITE_RABBITS).add(TFBiomes.SNOWY_FOREST, TFBiomes.GLACIER);
+		this.tag(BiomeTags.SNOW_GOLEM_MELTS).add(TFBiomes.OAK_SAVANNAH, TFBiomes.FIRE_SWAMP);
+
+		this.tag(BiomeTags.HAS_CLOSER_WATER_FOG).add(TFBiomes.SPOOKY_FOREST, TFBiomes.SWAMP, TFBiomes.FIRE_SWAMP);
 	}
 
 	@Override

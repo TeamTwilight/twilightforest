@@ -1,6 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "building",
+  "group": "bark",
   "key": {
     "#": {
       "item": "twilightforest:sorting_log"
@@ -12,6 +13,6 @@
   ],
   "result": {
     "count": 3,
-    "item": "twilightforest:sorting_wood"
+    "id": "twilightforest:sorting_wood"
   }
 }

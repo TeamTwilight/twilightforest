@@ -5,7 +5,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -44,8 +43,8 @@ public class UnstableIceCore extends BaseIceMob {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Monster.createMonsterAttributes()
-				.add(Attributes.MOVEMENT_SPEED, 0.23D)
-				.add(Attributes.ATTACK_DAMAGE, 3.0D);
+			.add(Attributes.MOVEMENT_SPEED, 0.23D)
+			.add(Attributes.ATTACK_DAMAGE, 3.0D);
 	}
 
 	@Override
@@ -64,17 +63,12 @@ public class UnstableIceCore extends BaseIceMob {
 	}
 
 	@Override
-	public float getEyeHeight(Pose pose) {
-		return this.getBbHeight() * 0.6F;
-	}
-
-	@Override
 	protected void tickDeath() {
 		++this.deathTime;
 
 		if (this.deathTime == 60) { // delay until 3 seconds
 			if (!this.level().isClientSide()) {
-				boolean mobGriefing = EventHooks.getMobGriefingEvent(this.level(), this);
+				boolean mobGriefing = EventHooks.canEntityGrief(this.level(), this);
 				this.level().explode(this, this.getX(), this.getY(), this.getZ(), UnstableIceCore.EXPLOSION_RADIUS, Level.ExplosionInteraction.MOB);
 
 				if (mobGriefing) {

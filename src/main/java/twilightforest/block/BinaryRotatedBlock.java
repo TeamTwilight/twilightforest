@@ -15,25 +15,25 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
  * - Drull
  */
 public class BinaryRotatedBlock extends Block {
-    public static final MapCodec<BinaryRotatedBlock> CODEC = simpleCodec(BinaryRotatedBlock::new);
-    public static final BooleanProperty ROTATED = BooleanProperty.create("rotated");
+	public static final MapCodec<BinaryRotatedBlock> CODEC = simpleCodec(BinaryRotatedBlock::new);
+	public static final BooleanProperty ROTATED = BooleanProperty.create("rotated");
 
-    @Override
-    public MapCodec<BinaryRotatedBlock> codec() {
-        return CODEC;
-    }
+	@Override
+	public MapCodec<BinaryRotatedBlock> codec() {
+		return CODEC;
+	}
 
-    public BinaryRotatedBlock(Properties properties) {
-        super(properties);
-    }
+	public BinaryRotatedBlock(Properties properties) {
+		super(properties);
+	}
 
-    @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(ROTATED);
-    }
+	@Override
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+		builder.add(ROTATED);
+	}
 
-    @Override
-    public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return this.defaultBlockState().setValue(ROTATED, context.getHorizontalDirection().getAxis() == Direction.Axis.Z);
-    }
+	@Override
+	public BlockState getStateForPlacement(BlockPlaceContext context) {
+		return this.defaultBlockState().setValue(ROTATED, context.getHorizontalDirection().getAxis() == Direction.Axis.Z);
+	}
 }

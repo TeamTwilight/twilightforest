@@ -4,9 +4,9 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import org.jetbrains.annotations.NotNull;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -26,12 +26,12 @@ public class BoundingBoxUtils {
 			return null;
 
 		return new BoundingBox(
-				Math.max(box1.minX(), box2.minX()),
-				Math.max(box1.minY(), box2.minY()),
-				Math.max(box1.minZ(), box2.minZ()),
-				Math.min(box1.maxX(), box2.maxX()),
-				Math.min(box1.maxY(), box2.maxY()),
-				Math.min(box1.maxZ(), box2.maxZ()));
+			Math.max(box1.minX(), box2.minX()),
+			Math.max(box1.minY(), box2.minY()),
+			Math.max(box1.minZ(), box2.minZ()),
+			Math.min(box1.maxX(), box2.maxX()),
+			Math.min(box1.maxY(), box2.maxY()),
+			Math.min(box1.maxZ(), box2.maxZ()));
 	}
 
 	public static CompoundTag boundingBoxToNBT(BoundingBox box) {
@@ -51,12 +51,12 @@ public class BoundingBoxUtils {
 
 	public static BoundingBox NBTToBoundingBox(CompoundTag nbt) {
 		return new BoundingBox(
-				nbt.getInt("minX"),
-				nbt.getInt("minY"),
-				nbt.getInt("minZ"),
-				nbt.getInt("maxX"),
-				nbt.getInt("maxY"),
-				nbt.getInt("maxZ")
+			nbt.getInt("minX"),
+			nbt.getInt("minY"),
+			nbt.getInt("minZ"),
+			nbt.getInt("maxX"),
+			nbt.getInt("maxY"),
+			nbt.getInt("maxZ")
 		);
 	}
 
@@ -79,13 +79,13 @@ public class BoundingBoxUtils {
 
 		return switch (dir) {
 			case WEST -> // '\001'
-					new BoundingBox(x - spanZ + minZ, y + minY, z + minX, x + minZ, y + spanY + minY, z + spanX + minX);
+				new BoundingBox(x - spanZ + minZ, y + minY, z + minX, x + minZ, y + spanY + minY, z + spanX + minX);
 			case NORTH -> // '\002'
-					new BoundingBox(x - spanX - minX, y + minY, z - spanZ - minZ, x - minX, y + spanY + minY, z - minZ);
+				new BoundingBox(x - spanX - minX, y + minY, z - spanZ - minZ, x - minX, y + spanY + minY, z - minZ);
 			case EAST -> // '\003'
-					new BoundingBox(x + minZ, y + minY, z - spanX, x + spanZ + minZ, y + spanY + minY, z + minX);
+				new BoundingBox(x + minZ, y + minY, z - spanX, x + spanZ + minZ, y + spanY + minY, z + minX);
 			default -> // '\0'
-					new BoundingBox(x + minX, y + minY, z + minZ, x + spanX + minX, y + spanY + minY, z + spanZ + minZ);
+				new BoundingBox(x + minX, y + minY, z + minZ, x + spanX + minX, y + spanY + minY, z + spanZ + minZ);
 		};
 	}
 
@@ -96,12 +96,12 @@ public class BoundingBoxUtils {
 		Vec3 first = vec3List.get(0);
 
 		return new AABB(
-				vec3List.stream().mapToDouble(Vec3::x).reduce(first.x, Math::min) - expand,
-				vec3List.stream().mapToDouble(Vec3::y).reduce(first.y, Math::min) - expand,
-				vec3List.stream().mapToDouble(Vec3::z).reduce(first.z, Math::min) - expand,
-				vec3List.stream().mapToDouble(Vec3::x).reduce(first.x, Math::max) + expand,
-				vec3List.stream().mapToDouble(Vec3::y).reduce(first.y, Math::max) + expand,
-				vec3List.stream().mapToDouble(Vec3::z).reduce(first.z, Math::max) + expand
+			vec3List.stream().mapToDouble(Vec3::x).reduce(first.x, Math::min) - expand,
+			vec3List.stream().mapToDouble(Vec3::y).reduce(first.y, Math::min) - expand,
+			vec3List.stream().mapToDouble(Vec3::z).reduce(first.z, Math::min) - expand,
+			vec3List.stream().mapToDouble(Vec3::x).reduce(first.x, Math::max) + expand,
+			vec3List.stream().mapToDouble(Vec3::y).reduce(first.y, Math::max) + expand,
+			vec3List.stream().mapToDouble(Vec3::z).reduce(first.z, Math::max) + expand
 		);
 	}
 }

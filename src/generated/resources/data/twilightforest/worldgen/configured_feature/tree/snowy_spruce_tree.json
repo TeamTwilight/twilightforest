@@ -12,24 +12,18 @@
       "type": "minecraft:spruce_foliage_placer",
       "offset": {
         "type": "minecraft:uniform",
-        "value": {
-          "max_inclusive": 2,
-          "min_inclusive": 0
-        }
+        "max_inclusive": 2,
+        "min_inclusive": 0
       },
       "radius": {
         "type": "minecraft:uniform",
-        "value": {
-          "max_inclusive": 3,
-          "min_inclusive": 2
-        }
+        "max_inclusive": 3,
+        "min_inclusive": 2
       },
       "trunk_height": {
         "type": "minecraft:uniform",
-        "value": {
-          "max_inclusive": 2,
-          "min_inclusive": 1
-        }
+        "max_inclusive": 2,
+        "min_inclusive": 1
       }
     },
     "foliage_provider": {

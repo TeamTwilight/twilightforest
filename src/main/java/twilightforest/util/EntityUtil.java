@@ -8,22 +8,20 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.PaintingVariantTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.decoration.HangingEntity;
 import net.minecraft.world.entity.decoration.Painting;
 import net.minecraft.world.entity.decoration.PaintingVariant;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -32,13 +30,12 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
-import net.minecraft.world.level.chunk.ChunkStatus;
 import net.minecraft.world.level.chunk.ProtoChunk;
+import net.minecraft.world.level.chunk.status.ChunkStatus;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.fml.util.ObfuscationReflectionHelper;
-import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.event.EventHooks;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.EnforcedHomePoint;
@@ -64,10 +61,10 @@ public class EntityUtil {
 	public static boolean canDestroyBlock(Level world, BlockPos pos, BlockState state, Entity entity) {
 		float hardness = state.getDestroySpeed(world, pos);
 		return hardness >= 0f && hardness < 50f && !state.isAir()
-				&& !(world.getBlockEntity(pos) instanceof Container)
-				&& state.getBlock().canEntityDestroy(state, world, pos, entity)
-				&& (/* rude type limit */!(entity instanceof LivingEntity)
-				|| EventHooks.onEntityDestroyBlock((LivingEntity) entity, pos, state));
+			&& !(world.getBlockEntity(pos) instanceof Container)
+			&& state.getBlock().canEntityDestroy(state, world, pos, entity)
+			&& (/* rude type limit */!(entity instanceof LivingEntity)
+			|| EventHooks.onEntityDestroyBlock((LivingEntity) entity, pos, state));
 	}
 
 	/**
@@ -85,7 +82,7 @@ public class EntityUtil {
 	}
 
 	public static BlockHitResult rayTrace(Player player, @Nullable DoubleUnaryOperator modifier) {
-		double range = player.getAttribute(NeoForgeMod.BLOCK_REACH.value()).getValue();
+		double range = player.getAttribute(Attributes.BLOCK_INTERACTION_RANGE).getValue();
 		return rayTrace(player, modifier == null ? range : modifier.applyAsDouble(range));
 	}
 
@@ -139,22 +136,22 @@ public class EntityUtil {
 
 	//copy of Mob.doHurtTarget, allows for using a custom DamageSource instead of the generic Mob Attack one
 	public static boolean properlyApplyCustomDamageSource(Mob entity, Entity victim, DamageSource source, @Nullable SoundEvent flingSound) {
-		float f = (float)entity.getAttributeValue(Attributes.ATTACK_DAMAGE);
-		float f1 = (float)entity.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
+		float f = (float) entity.getAttributeValue(Attributes.ATTACK_DAMAGE);
+		float f1 = (float) entity.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
 		if (victim instanceof LivingEntity) {
-			f += EnchantmentHelper.getDamageBonus(entity.getMainHandItem(), ((LivingEntity)victim).getMobType());
-			f1 += (float)EnchantmentHelper.getKnockbackBonus(entity);
+			f += EnchantmentHelper.getDamageBonus(entity.getMainHandItem(), victim.getType());
+			f1 += (float) EnchantmentHelper.getKnockbackBonus(entity);
 		}
 
 		int i = EnchantmentHelper.getFireAspect(entity);
 		if (i > 0) {
-			victim.setSecondsOnFire(i * 4);
+			victim.igniteForSeconds(i * 4);
 		}
 
 		boolean flag = victim.hurt(source, f);
 		if (flag) {
 			if (f1 > 0.0F && victim instanceof LivingEntity) {
-				((LivingEntity)victim).knockback(f1 * 0.5F, Mth.sin(entity.getYRot() * ((float)Math.PI / 180F)), -Mth.cos(entity.getYRot() * ((float)Math.PI / 180F)));
+				((LivingEntity) victim).knockback(f1 * 0.5F, Mth.sin(entity.getYRot() * ((float) Math.PI / 180F)), -Mth.cos(entity.getYRot() * ((float) Math.PI / 180F)));
 				entity.setDeltaMovement(entity.getDeltaMovement().multiply(0.6D, 1.0D, 0.6D));
 			}
 
@@ -164,7 +161,7 @@ public class EntityUtil {
 			}
 
 			if (victim instanceof Player player) {
-				entity.maybeDisableShield(player, entity.getMainHandItem(), player.isUsingItem() ? player.getUseItem() : ItemStack.EMPTY);
+				maybeDisableShield(entity, player, entity.getMainHandItem(), player.isUsingItem() ? player.getUseItem() : ItemStack.EMPTY);
 			}
 
 			entity.doEnchantDamageEffects(entity, victim);
@@ -172,6 +169,17 @@ public class EntityUtil {
 		}
 
 		return flag;
+	}
+
+	// [VanillaCopy] Method deleted between 1.20.4 and 1.20.5
+	private static void maybeDisableShield(Mob self, Player pPlayer, ItemStack pMobItemStack, ItemStack pPlayerItemStack) {
+		if (!pMobItemStack.isEmpty() && !pPlayerItemStack.isEmpty() && pMobItemStack.getItem() instanceof AxeItem && pPlayerItemStack.is(Items.SHIELD)) {
+			float f = 0.25F + (float) EnchantmentHelper.getBlockEfficiency(self) * 0.05F;
+			if (self.getRandom().nextFloat() < f) {
+				pPlayer.getCooldowns().addCooldown(Items.SHIELD, 100);
+				self.level().broadcastEntityEvent(pPlayer, EntityEvent.SHIELD_DISABLED);
+			}
+		}
 	}
 
 	// [VanillaCopy] with modifications: StructureTemplate.createEntityIgnoreException
@@ -200,6 +208,7 @@ public class EntityUtil {
 		if (checkValidPaintingPosition(world, painting))
 			world.addFreshEntity(painting);
 	}
+
 	@Nullable
 	public static ResourceKey<PaintingVariant> getPaintingOfSize(RandomSource rand, int minSize) {
 		return getPaintingOfSize(rand, minSize, minSize, false);

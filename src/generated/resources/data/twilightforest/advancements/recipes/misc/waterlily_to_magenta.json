@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:huge_water_lily"
-            ]
+            "items": "twilightforest:huge_water_lily"
           }
         ]
       },

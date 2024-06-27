@@ -32,6 +32,7 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 		super(TFStructurePieceTypes.TFFCMain.get(), nbt);
 	}
 
+	@SuppressWarnings("this-escape")
 	public FinalCastleMainComponent(int i, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFFCMain.get(), i, x, y, z);
 		this.setOrientation(Direction.SOUTH);
@@ -206,7 +207,8 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 			case WEST -> dz += howFar;
 			case NORTH -> dx -= howFar;
 			case EAST -> dz -= howFar;
-			default -> { }
+			default -> {
+			}
 		}
 
 		// ugh?

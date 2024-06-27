@@ -3,10 +3,10 @@
   "category": "equipment",
   "key": {
     "#": {
-      "tag": "forge:ingots/knightmetal"
+      "tag": "c:ingots/knightmetal"
     },
     "X": {
-      "tag": "forge:rods/wooden"
+      "tag": "c:rods/wooden"
     }
   },
   "pattern": [
@@ -15,6 +15,7 @@
     "X"
   ],
   "result": {
-    "item": "twilightforest:knightmetal_sword"
+    "count": 1,
+    "id": "twilightforest:knightmetal_sword"
   }
 }

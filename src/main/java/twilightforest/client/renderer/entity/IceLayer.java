@@ -36,7 +36,7 @@ public class IceLayer<T extends LivingEntity, M extends EntityModel<T>> extends 
 
 		this.random.setSeed(entity.getId() * entity.getId() * 3121L + entity.getId() * 45238971L);
 
-		int numCubes = (int) (entity.getBbHeight() / 0.4F) + (int) (frost.getAmount() / FrostedEffect.FROST_MULTIPLIER) + 1; //Number of cubes, adds more cubes based on the level of the effect
+		int numCubes = (int) (entity.getBbHeight() / 0.4F) + (int) (frost.amount() / FrostedEffect.FROST_MULTIPLIER) + 1; //Number of cubes, adds more cubes based on the level of the effect
 
 		float specialOffset = this.getParentModel() instanceof DeathTomeModel ? 1.0F : 0.0F;
 

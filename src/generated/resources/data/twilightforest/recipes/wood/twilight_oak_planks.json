@@ -1,6 +1,7 @@
 {
   "type": "minecraft:crafting_shapeless",
   "category": "building",
+  "group": "planks",
   "ingredients": [
     {
       "tag": "twilightforest:twilight_oak_logs"
@@ -8,6 +9,6 @@
   ],
   "result": {
     "count": 4,
-    "item": "twilightforest:twilight_oak_planks"
+    "id": "twilightforest:twilight_oak_planks"
   }
 }

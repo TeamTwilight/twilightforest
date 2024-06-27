@@ -22,6 +22,7 @@ public class NewMinoshroomRenderer extends HumanoidMobRenderer<Minoshroom, NewMi
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("minoshroomtaur.png");
 
+	@SuppressWarnings("this-escape")
 	public NewMinoshroomRenderer(EntityRendererProvider.Context manager, NewMinoshroomModel model, float shadowSize) {
 		super(manager, model, shadowSize);
 		this.addLayer(new LayerMinoshroomMushroom(this));

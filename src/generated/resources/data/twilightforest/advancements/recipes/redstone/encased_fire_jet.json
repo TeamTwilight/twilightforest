@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:fire_jet"
-            ]
+            "items": "twilightforest:fire_jet"
           }
         ]
       },

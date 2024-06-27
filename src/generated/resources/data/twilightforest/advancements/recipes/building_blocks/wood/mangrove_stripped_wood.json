@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:stripped_mangrove_log"
-            ]
+            "items": "twilightforest:stripped_mangrove_log"
           }
         ]
       },

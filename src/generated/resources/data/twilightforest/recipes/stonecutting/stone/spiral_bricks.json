@@ -1,8 +1,10 @@
 {
   "type": "minecraft:stonecutting",
-  "count": 1,
   "ingredient": {
     "item": "minecraft:stone"
   },
-  "result": "twilightforest:spiral_bricks"
+  "result": {
+    "count": 1,
+    "id": "twilightforest:spiral_bricks"
+  }
 }

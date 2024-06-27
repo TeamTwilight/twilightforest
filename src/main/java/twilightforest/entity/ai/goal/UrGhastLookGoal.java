@@ -12,6 +12,7 @@ import java.util.EnumSet;
 public class UrGhastLookGoal extends Goal {
 	private final UrGhast ghast;
 
+	@SuppressWarnings("this-escape")
 	public UrGhastLookGoal(UrGhast pGhast) {
 		this.ghast = pGhast;
 		this.setFlags(EnumSet.of(Goal.Flag.LOOK));
@@ -31,14 +32,14 @@ public class UrGhastLookGoal extends Goal {
 	public void tick() {
 		if (this.ghast.getTarget() == null) {
 			Vec3 vec3 = this.ghast.getDeltaMovement();
-			this.ghast.setYRot(-((float) Mth.atan2(vec3.x(), vec3.z())) * (180.0F / (float)Math.PI));
+			this.ghast.setYRot(-((float) Mth.atan2(vec3.x(), vec3.z())) * (180.0F / (float) Math.PI));
 			this.ghast.yBodyRot = this.ghast.getYRot();
 		} else {
 			LivingEntity livingentity = this.ghast.getTarget();
 			if (livingentity.distanceToSqr(this.ghast) < 4096.0) {
 				double d1 = livingentity.getX() - this.ghast.getX();
 				double d2 = livingentity.getZ() - this.ghast.getZ();
-				this.ghast.setYRot(-((float)Mth.atan2(d1, d2)) * (180.0F / (float)Math.PI));
+				this.ghast.setYRot(-((float) Mth.atan2(d1, d2)) * (180.0F / (float) Math.PI));
 				this.ghast.yBodyRot = this.ghast.getYRot();
 			}
 		}

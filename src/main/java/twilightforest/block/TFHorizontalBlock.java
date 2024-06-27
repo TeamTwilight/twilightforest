@@ -12,9 +12,9 @@ public class TFHorizontalBlock extends HorizontalDirectionalBlock {
 
 	public static final MapCodec<TFHorizontalBlock> CODEC = simpleCodec(TFHorizontalBlock::new);
 
-    public TFHorizontalBlock(Properties properties) {
-        super(properties);
-    }
+	public TFHorizontalBlock(Properties properties) {
+		super(properties);
+	}
 
 	@Override
 	protected MapCodec<? extends HorizontalDirectionalBlock> codec() {

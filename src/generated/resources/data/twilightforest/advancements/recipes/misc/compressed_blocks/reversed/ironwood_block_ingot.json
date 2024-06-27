@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "forge:storage_blocks/ironwood"
+            "items": "#c:storage_blocks/ironwood"
           }
         ]
       },

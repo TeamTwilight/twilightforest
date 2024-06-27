@@ -6,10 +6,10 @@
       "item": "twilightforest:encased_towerwood"
     },
     "%": {
-      "tag": "forge:ores/redstone"
+      "tag": "c:ores/redstone"
     },
     "6": {
-      "tag": "forge:gems/carminite"
+      "tag": "c:gems/carminite"
     }
   },
   "pattern": [
@@ -18,6 +18,7 @@
     "#6#"
   ],
   "result": {
-    "item": "twilightforest:carminite_reactor"
+    "count": 1,
+    "id": "twilightforest:carminite_reactor"
   }
 }

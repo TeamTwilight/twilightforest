@@ -45,9 +45,9 @@ public class TransformPowderItem extends Item {
 			// particle effect
 			for (int i = 0; i < 30; i++) {
 				level.addParticle(ParticleTypes.CRIT, area.minX + level.getRandom().nextFloat() * (area.maxX - area.minX),
-						area.minY + level.getRandom().nextFloat() * (area.maxY - area.minY),
-						area.minZ + level.getRandom().nextFloat() * (area.maxZ - area.minZ),
-						0, 0, 0);
+					area.minY + level.getRandom().nextFloat() * (area.maxY - area.minY),
+					area.minZ + level.getRandom().nextFloat() * (area.maxZ - area.minZ),
+					0, 0, 0);
 			}
 
 		}
@@ -69,13 +69,16 @@ public class TransformPowderItem extends Item {
 
 			newEntity.moveTo(target.getX(), target.getY(), target.getZ(), target.getYRot(), target.getXRot());
 			if (newEntity instanceof Mob mob && target.level() instanceof ServerLevelAccessor world) {
-				EventHooks.onFinalizeSpawn(mob, world, target.level().getCurrentDifficultyAt(target.blockPosition()), MobSpawnType.CONVERSION, null, null);
+				EventHooks.finalizeMobSpawn(mob, world, target.level().getCurrentDifficultyAt(target.blockPosition()), MobSpawnType.CONVERSION, null);
 			}
 
 			try { // try copying what can be copied
 				UUID uuid = newEntity.getUUID();
 				newEntity.load(target.saveWithoutId(newEntity.saveWithoutId(new CompoundTag())));
 				newEntity.setUUID(uuid);
+				if (newEntity instanceof LivingEntity living) {
+					living.setHealth(living.getMaxHealth());
+				}
 			} catch (Exception e) {
 				TwilightForestMod.LOGGER.warn("Couldn't transform entity NBT data", e);
 			}

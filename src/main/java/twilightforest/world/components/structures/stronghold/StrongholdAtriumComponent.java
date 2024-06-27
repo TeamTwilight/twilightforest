@@ -23,7 +23,6 @@ import twilightforest.init.TFConfiguredFeatures;
 import twilightforest.init.TFStructurePieceTypes;
 
 
-
 public class StrongholdAtriumComponent extends KnightStrongholdComponent {
 
 	private boolean enterBottom;
@@ -137,16 +136,16 @@ public class StrongholdAtriumComponent extends KnightStrongholdComponent {
 		if (sbb.isInside(pos)) {
 			ResourceKey<ConfiguredFeature<?, ?>> treeGen = switch (treeNum) {
 				case 1 ->
-						// jungle tree
-						TreeFeatures.JUNGLE_TREE;
+					// jungle tree
+					TreeFeatures.JUNGLE_TREE;
 				case 2 ->
-						// birch
-						TreeFeatures.BIRCH;
+					// birch
+					TreeFeatures.BIRCH;
 				case 3 -> TFConfiguredFeatures.TWILIGHT_OAK_TREE;
 				case 4 -> TFConfiguredFeatures.RAINBOW_OAK_TREE;
 				default ->
-						// oak tree
-						TreeFeatures.OAK;
+					// oak tree
+					TreeFeatures.OAK;
 			};
 			// grow a tree
 

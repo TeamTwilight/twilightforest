@@ -20,7 +20,7 @@ public class NagaSmashGoal extends Goal {
 
 	@Override
 	public boolean canUse() {
-		return this.naga.horizontalCollision && EventHooks.getMobGriefingEvent(this.naga.level(), this.naga);
+		return this.naga.horizontalCollision && EventHooks.canEntityGrief(this.naga.level(), this.naga);
 	}
 
 	@Override

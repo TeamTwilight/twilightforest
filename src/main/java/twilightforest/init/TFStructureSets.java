@@ -3,7 +3,7 @@ package twilightforest.init;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
@@ -45,7 +45,7 @@ public class TFStructureSets {
 		return ResourceKey.create(Registries.STRUCTURE_SET, TwilightForestMod.prefix(name));
 	}
 
-	public static void bootstrap(BootstapContext<StructureSet> context) {
+	public static void bootstrap(BootstrapContext<StructureSet> context) {
 		HolderGetter<Structure> structures = context.lookup(Registries.STRUCTURE);
 
 		context.register(HOLLOW_TREE, new StructureSet(structures.getOrThrow(TFStructures.HOLLOW_TREE), new AvoidLandmarkGridPlacement(Vec3i.ZERO, StructurePlacement.FrequencyReductionMethod.DEFAULT, 0.5F, 34481210, Optional.empty(), 7, 5, RandomSpreadType.TRIANGULAR)));

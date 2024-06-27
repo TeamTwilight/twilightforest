@@ -19,9 +19,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:naga_scale"
-            ]
+            "items": "twilightforest:naga_scale"
           }
         ]
       },
@@ -31,9 +29,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:naga_trophy"
-            ]
+            "items": "twilightforest:naga_trophy"
           }
         ]
       },
@@ -68,7 +64,8 @@
     },
     "frame": "goal",
     "icon": {
-      "item": "twilightforest:naga_courtyard_miniature_structure"
+      "count": 1,
+      "id": "twilightforest:naga_courtyard_miniature_structure"
     },
     "title": {
       "translate": "advancement.twilightforest.kill_naga"

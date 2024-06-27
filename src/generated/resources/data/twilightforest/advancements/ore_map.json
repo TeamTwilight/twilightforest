@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:filled_ore_map"
-            ]
+            "items": "twilightforest:filled_ore_map"
           }
         ]
       },
@@ -26,7 +24,8 @@
     "frame": "challenge",
     "hidden": true,
     "icon": {
-      "item": "twilightforest:filled_ore_map"
+      "count": 1,
+      "id": "twilightforest:filled_ore_map"
     },
     "title": {
       "translate": "advancement.twilightforest.ore_map"

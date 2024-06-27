@@ -29,7 +29,7 @@ public class CarminiteBuilderBlockEntity extends BlockEntity {
 
 	private BlockPos lastBlockCoords;
 
-    private Player trackedPlayer;
+	private Player trackedPlayer;
 
 	private final BlockState blockBuiltState = TFBlocks.BUILT_BLOCK.get().defaultBlockState().setValue(TranslucentBuiltBlock.ACTIVE, false);
 
@@ -60,7 +60,7 @@ public class CarminiteBuilderBlockEntity extends BlockEntity {
 			}
 
 			// find player facing
-            Direction nextFacing = te.findNextFacing();
+			Direction nextFacing = te.findNextFacing();
 
 			++te.ticksRunning;
 

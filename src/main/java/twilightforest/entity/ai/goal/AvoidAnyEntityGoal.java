@@ -36,13 +36,14 @@ public class AvoidAnyEntityGoal<T extends Entity> extends Goal {
 		this(entityIn, classToAvoidIn, (entity) -> true, avoidDistanceIn, farSpeedIn, nearSpeedIn);
 	}
 
+	@SuppressWarnings("this-escape")
 	public AvoidAnyEntityGoal(PathfinderMob entityIn, Class<T> avoidClass, Predicate<Entity> targetPredicate, float distance, double nearSpeedIn, double farSpeedIn) {
 		this.builtTargetSelector = new Predicate<>() {
 			@Override
 			public boolean test(@Nullable Entity input) {
 				return input != null && input.isAlive() &&
-						AvoidAnyEntityGoal.this.entity.getSensing().hasLineOfSight(input) &&
-						!AvoidAnyEntityGoal.this.entity.isAlliedTo(input);
+					AvoidAnyEntityGoal.this.entity.getSensing().hasLineOfSight(input) &&
+					!AvoidAnyEntityGoal.this.entity.isAlliedTo(input);
 			}
 		};
 

@@ -19,6 +19,7 @@ public class NewSlimeBeetleRenderer extends MobRenderer<SlimeBeetle, NewSlimeBee
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("slimebeetle.png");
 
+	@SuppressWarnings("this-escape")
 	public NewSlimeBeetleRenderer(EntityRendererProvider.Context manager, NewSlimeBeetleModel model, float shadowSize) {
 		super(manager, model, shadowSize);
 		this.addLayer(new LayerInner(this, manager));
@@ -34,7 +35,7 @@ public class NewSlimeBeetleRenderer extends MobRenderer<SlimeBeetle, NewSlimeBee
 
 		public LayerInner(RenderLayerParent<SlimeBeetle, NewSlimeBeetleModel> renderer, EntityRendererProvider.Context manager) {
 			super(renderer);
-			innerModel =  new NewSlimeBeetleModel(manager.bakeLayer(TFModelLayers.SLIME_BEETLE_TAIL));
+			innerModel = new NewSlimeBeetleModel(manager.bakeLayer(TFModelLayers.SLIME_BEETLE_TAIL));
 		}
 
 		@Override

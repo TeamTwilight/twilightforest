@@ -10,7 +10,7 @@
             "predicate": {
               "type": "twilightforest:wraith",
               "location": {
-                "structure": "twilightforest:large_hollow_hill"
+                "structures": "twilightforest:large_hollow_hill"
               }
             }
           }
@@ -29,7 +29,8 @@
       ]
     },
     "icon": {
-      "item": "minecraft:glowstone_dust"
+      "count": 1,
+      "id": "minecraft:glowstone_dust"
     },
     "title": {
       "translate": "advancement.twilightforest.hill3"

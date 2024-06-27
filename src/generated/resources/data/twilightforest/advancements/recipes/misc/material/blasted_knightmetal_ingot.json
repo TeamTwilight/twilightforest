@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:armor_shard_cluster"
-            ]
+            "items": "twilightforest:armor_shard_cluster"
           }
         ]
       },

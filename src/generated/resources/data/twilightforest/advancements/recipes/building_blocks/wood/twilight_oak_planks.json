@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "twilightforest:twilight_oak_logs"
+            "items": "#twilightforest:twilight_oak_logs"
           }
         ]
       },

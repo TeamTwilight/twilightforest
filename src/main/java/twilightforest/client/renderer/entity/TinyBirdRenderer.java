@@ -13,6 +13,6 @@ public class TinyBirdRenderer extends BirdRenderer<TinyBird, TinyBirdModel> {
 
 	@Override
 	public ResourceLocation getTextureLocation(TinyBird entity) {
-		return entity.getVariant().texture();
+		return entity.getVariant().value().texture();
 	}
 }

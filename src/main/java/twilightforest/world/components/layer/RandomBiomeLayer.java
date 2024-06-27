@@ -1,6 +1,7 @@
 package twilightforest.world.components.layer;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -45,11 +46,11 @@ public class RandomBiomeLayer implements AreaTransformer0 {
 	}
 
 	public static final class Factory implements BiomeLayerFactory {
-		public static final Codec<Factory> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-				Codec.LONG.fieldOf("salt").forGetter(Factory::salt),
-				Codec.INT.fieldOf("rare_biome_chance").forGetter(Factory::rareBiomeChance),
-				ResourceKey.codec(Registries.BIOME).listOf().fieldOf("common_biomes").forGetter(Factory::commonBiomes),
-				ResourceKey.codec(Registries.BIOME).listOf().fieldOf("rare_biomes").forGetter(Factory::rareBiomes)
+		public static final MapCodec<Factory> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
+			Codec.LONG.fieldOf("salt").forGetter(Factory::salt),
+			Codec.INT.fieldOf("rare_biome_chance").forGetter(Factory::rareBiomeChance),
+			ResourceKey.codec(Registries.BIOME).listOf().fieldOf("common_biomes").forGetter(Factory::commonBiomes),
+			ResourceKey.codec(Registries.BIOME).listOf().fieldOf("rare_biomes").forGetter(Factory::rareBiomes)
 		).apply(inst, Factory::new));
 		private final long salt;
 		private final int rareBiomeChance;

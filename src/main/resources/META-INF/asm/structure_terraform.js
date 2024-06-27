@@ -32,10 +32,10 @@ function initializeCoreMod() {
         },
         'attach': {
             'target': {
-               'type': 'METHOD',
-               'class': 'net.minecraft.world.level.levelgen.Beardifier',
-               'methodName': 'forStructuresInChunk',
-               'methodDesc': '(Lnet/minecraft/world/level/StructureManager;Lnet/minecraft/world/level/ChunkPos;)Lnet/minecraft/world/level/levelgen/Beardifier;'
+                'type': 'METHOD',
+                'class': 'net.minecraft.world.level.levelgen.Beardifier',
+                'methodName': 'forStructuresInChunk',
+                'methodDesc': '(Lnet/minecraft/world/level/StructureManager;Lnet/minecraft/world/level/ChunkPos;)Lnet/minecraft/world/level/levelgen/Beardifier;'
             },
             'transformer': function (/*org.objectweb.asm.tree.MethodNode*/ methodNode) {
                 var /*org.objectweb.asm.tree.InsnList*/ instructions = methodNode.instructions;

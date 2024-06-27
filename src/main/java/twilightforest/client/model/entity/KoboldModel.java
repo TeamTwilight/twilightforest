@@ -18,6 +18,7 @@ public class KoboldModel extends HumanoidModel<Kobold> {
 	final ModelPart jaw;
 	boolean isJumping;
 
+	@SuppressWarnings("this-escape")
 	public KoboldModel(ModelPart root) {
 		super(root);
 		this.isJumping = false;
@@ -29,56 +30,56 @@ public class KoboldModel extends HumanoidModel<Kobold> {
 		PartDefinition definition = mesh.getRoot();
 
 		var head = definition.addOrReplaceChild("head", CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(-3.5F, -7F, -3F, 7, 6, 6),
-				PartPose.offset(0F, 13F, 0F));
+				.texOffs(0, 0)
+				.addBox(-3.5F, -7F, -3F, 7, 6, 6),
+			PartPose.offset(0F, 13F, 0F));
 
 		definition.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
 
 		head.addOrReplaceChild("right_ear", CubeListBuilder.create()
-						.texOffs(48, 20)
-						.addBox(0F, -4F, 0F, 4, 4, 1),
-				PartPose.offsetAndRotation(3.5F, -3F, -1F, 0.0F, 0.2617994F, -0.3490659F));
+				.texOffs(48, 20)
+				.addBox(0F, -4F, 0F, 4, 4, 1),
+			PartPose.offsetAndRotation(3.5F, -3F, -1F, 0.0F, 0.2617994F, -0.3490659F));
 
 		head.addOrReplaceChild("left_ear", CubeListBuilder.create()
-						.texOffs(48, 25)
-						.addBox(-4F, -4F, 0F, 4, 4, 1),
-				PartPose.offsetAndRotation(-3.5F, -3F, -1F, 0.0F, -0.2617994F, 0.3490659F));
+				.texOffs(48, 25)
+				.addBox(-4F, -4F, 0F, 4, 4, 1),
+			PartPose.offsetAndRotation(-3.5F, -3F, -1F, 0.0F, -0.2617994F, 0.3490659F));
 
 		head.addOrReplaceChild("snout", CubeListBuilder.create()
-						.texOffs(28, 0)
-						.addBox(-1.5F, -2F, -2F, 3, 2, 3),
-				PartPose.offset(0F, -2F, -3F));
+				.texOffs(28, 0)
+				.addBox(-1.5F, -2F, -2F, 3, 2, 3),
+			PartPose.offset(0F, -2F, -3F));
 
 		head.addOrReplaceChild("jaw", CubeListBuilder.create()
-						.texOffs(28, 5)
-						.addBox(-1.5F, 0F, -2F, 3, 1, 3),
-				PartPose.offsetAndRotation(0F, -2F, -3F, 0.20944F, 0.0F, 0.0F));
+				.texOffs(28, 5)
+				.addBox(-1.5F, 0F, -2F, 3, 1, 3),
+			PartPose.offsetAndRotation(0F, -2F, -3F, 0.20944F, 0.0F, 0.0F));
 
 		definition.addOrReplaceChild("body", CubeListBuilder.create()
-						.texOffs(12, 19)
-						.addBox(0F, 0F, 0F, 7, 7, 4),
-				PartPose.offset(-3.5F, 12F, -2F));
+				.texOffs(12, 19)
+				.addBox(0F, 0F, 0F, 7, 7, 4),
+			PartPose.offset(-3.5F, 12F, -2F));
 
 		definition.addOrReplaceChild("right_arm", CubeListBuilder.create()
-						.texOffs(36, 17)
-						.addBox(-3F, -1F, -1.5F, 3, 7, 3),
-				PartPose.offset(-3.5F, 12F, 0F));
+				.texOffs(36, 17)
+				.addBox(-3F, -1F, -1.5F, 3, 7, 3),
+			PartPose.offset(-3.5F, 12F, 0F));
 
 		definition.addOrReplaceChild("left_arm", CubeListBuilder.create().mirror()
-						.texOffs(36, 17)
-						.addBox(0F, -1F, -1.5F, 3, 7, 3),
-				PartPose.offset(3.5F, 12F, 0F));
+				.texOffs(36, 17)
+				.addBox(0F, -1F, -1.5F, 3, 7, 3),
+			PartPose.offset(3.5F, 12F, 0F));
 
 		definition.addOrReplaceChild("right_leg", CubeListBuilder.create()
-						.texOffs(0, 20)
-						.addBox(-1.5F, 0F, -1.5F, 3, 5, 3),
-				PartPose.offset(-2F, 19F, 0F));
+				.texOffs(0, 20)
+				.addBox(-1.5F, 0F, -1.5F, 3, 5, 3),
+			PartPose.offset(-2F, 19F, 0F));
 
 		definition.addOrReplaceChild("left_leg", CubeListBuilder.create().mirror()
-						.texOffs(0, 20)
-						.addBox(-1.5F, 0F, -1.5F, 3, 5, 3),
-				PartPose.offset(2F, 19F, 0F));
+				.texOffs(0, 20)
+				.addBox(-1.5F, 0F, -1.5F, 3, 5, 3),
+			PartPose.offset(2F, 19F, 0F));
 
 		return LayerDefinition.create(mesh, 64, 32);
 	}

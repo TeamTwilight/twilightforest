@@ -19,6 +19,7 @@ public class TowerRoofFenceComponent extends TowerRoofComponent {
 		super(TFStructurePieceTypes.TFLTRF.get(), nbt);
 	}
 
+	@SuppressWarnings("this-escape")
 	public TowerRoofFenceComponent(int i, TowerWingComponent wing, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFLTRF.get(), i, x, y, z);
 

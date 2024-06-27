@@ -39,22 +39,22 @@ public class UnstableIceCoreModel<T extends BaseIceMob> extends HierarchicalMode
 		PartDefinition definition = mesh.getRoot();
 
 		definition.addOrReplaceChild("head", CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(-4.0F, 0.0F, -4.0F, 8.0F, 8.0F, 8.0F),
-				PartPose.ZERO);
+				.texOffs(0, 0)
+				.addBox(-4.0F, 0.0F, -4.0F, 8.0F, 8.0F, 8.0F),
+			PartPose.ZERO);
 
 		for (int i = 0; i < 16; i++) {
 			int spikeLength = i % 2 == 0 ? 6 : 8;
 
 			var spike = definition.addOrReplaceChild("spike_" + i, CubeListBuilder.create()
-							.texOffs(0, 16)
-							.addBox(-1.0F, 4.0F, -1.0F, 2, spikeLength, 2),
-					PartPose.offset(0.0F, 4.0F, 0.0F));
+					.texOffs(0, 16)
+					.addBox(-1.0F, 4.0F, -1.0F, 2, spikeLength, 2),
+				PartPose.offset(0.0F, 4.0F, 0.0F));
 
 			spike.addOrReplaceChild("cube_" + i, CubeListBuilder.create()
-							.texOffs(8, 16)
-							.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3),
-					PartPose.offsetAndRotation(0.0F, 8.0F, 0.0F, 0.0F, 0.0F, Mth.PI / 4.0F));
+					.texOffs(8, 16)
+					.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3),
+				PartPose.offsetAndRotation(0.0F, 8.0F, 0.0F, 0.0F, 0.0F, Mth.PI / 4.0F));
 		}
 
 		return LayerDefinition.create(mesh, 32, 32);

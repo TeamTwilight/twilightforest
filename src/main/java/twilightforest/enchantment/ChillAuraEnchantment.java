@@ -9,38 +9,26 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.Enchantments;
+import twilightforest.init.TFArmorMaterials;
 import twilightforest.init.TFEnchantments;
 import twilightforest.init.TFMobEffects;
 
 public class ChillAuraEnchantment extends LootOnlyEnchantment {
-
-	public ChillAuraEnchantment(Rarity rarity) {
-		super(rarity, EnchantmentCategory.ARMOR, new EquipmentSlot[]{EquipmentSlot.HEAD, EquipmentSlot.CHEST,
-				EquipmentSlot.LEGS, EquipmentSlot.FEET});
+	public ChillAuraEnchantment(int weight) {
+		super(ItemTags.ARMOR_ENCHANTABLE, weight, 3, Enchantment.dynamicCost(5, 9), Enchantment.dynamicCost(20, 9), 3, EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET);
 	}
 
 	@Override
 	public boolean canEnchant(ItemStack stack) {
-		return stack.getItem() instanceof ArmorItem || super.canEnchant(stack);
-	}
-
-	@Override
-	public int getMinCost(int level) {
-		return 5 + (level - 1) * 9;
-	}
-
-	@Override
-	public int getMaxCost(int level) {
-		return this.getMinCost(level) + 15;
-	}
-
-	@Override
-	public int getMaxLevel() {
-		return 3;
+		if (stack.getItem() instanceof ArmorItem armorItem) {
+			ArmorMaterial material = armorItem.getMaterial().value();
+			return material != TFArmorMaterials.FIERY.get();
+		}
+		return super.canEnchant(stack);
 	}
 
 	@Override
@@ -53,11 +41,11 @@ public class ChillAuraEnchantment extends LootOnlyEnchantment {
 	public static void doChillAuraEffect(LivingEntity victim, int duration, int amplifier, boolean shouldHit) {
 		if (shouldHit && !victim.getType().is(EntityTypeTags.FREEZE_IMMUNE_ENTITY_TYPES)) {
 			if (!victim.getItemBySlot(EquipmentSlot.HEAD).is(ItemTags.FREEZE_IMMUNE_WEARABLES) &&
-					!victim.getItemBySlot(EquipmentSlot.CHEST).is(ItemTags.FREEZE_IMMUNE_WEARABLES) &&
-					!victim.getItemBySlot(EquipmentSlot.LEGS).is(ItemTags.FREEZE_IMMUNE_WEARABLES) &&
-					!victim.getItemBySlot(EquipmentSlot.FEET).is(ItemTags.FREEZE_IMMUNE_WEARABLES)) {
+				!victim.getItemBySlot(EquipmentSlot.CHEST).is(ItemTags.FREEZE_IMMUNE_WEARABLES) &&
+				!victim.getItemBySlot(EquipmentSlot.LEGS).is(ItemTags.FREEZE_IMMUNE_WEARABLES) &&
+				!victim.getItemBySlot(EquipmentSlot.FEET).is(ItemTags.FREEZE_IMMUNE_WEARABLES)) {
 				if (!(victim instanceof Player player) || !player.isCreative()) {
-					victim.addEffect(new MobEffectInstance(TFMobEffects.FROSTY.get(), duration, amplifier));
+					victim.addEffect(new MobEffectInstance(TFMobEffects.FROSTY, duration, amplifier));
 				}
 			}
 		}

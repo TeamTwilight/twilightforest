@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "forge:storage_blocks/fiery"
+            "items": "#c:storage_blocks/fiery"
           }
         ]
       },

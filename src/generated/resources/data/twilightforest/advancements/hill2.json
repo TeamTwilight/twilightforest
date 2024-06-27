@@ -10,7 +10,7 @@
             "predicate": {
               "type": "twilightforest:redcap_sapper",
               "location": {
-                "structure": "twilightforest:medium_hollow_hill"
+                "structures": "twilightforest:medium_hollow_hill"
               }
             }
           }
@@ -29,8 +29,8 @@
       ]
     },
     "icon": {
-      "item": "twilightforest:ironwood_pickaxe",
-      "nbt": "{Damage:0}"
+      "count": 1,
+      "id": "twilightforest:ironwood_pickaxe"
     },
     "title": {
       "translate": "advancement.twilightforest.hill2"

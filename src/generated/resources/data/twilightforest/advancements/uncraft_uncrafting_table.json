@@ -4,9 +4,7 @@
     "uncraft_table": {
       "conditions": {
         "item": {
-          "items": [
-            "twilightforest:uncrafting_table"
-          ]
+          "items": "twilightforest:uncrafting_table"
         }
       },
       "trigger": "twilightforest:uncraft_item"
@@ -18,7 +16,8 @@
     },
     "hidden": true,
     "icon": {
-      "item": "twilightforest:uncrafting_table"
+      "count": 1,
+      "id": "twilightforest:uncrafting_table"
     },
     "title": {
       "translate": "advancement.twilightforest.uncraft_uncrafting_table"

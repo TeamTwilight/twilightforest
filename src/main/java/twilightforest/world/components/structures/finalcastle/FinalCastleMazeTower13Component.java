@@ -45,6 +45,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 		this(TFStructurePieceTypes.TFFCSiTo.get(), nbt);
 	}
 
+	@SuppressWarnings("this-escape")
 	public FinalCastleMazeTower13Component(StructurePieceType piece, RandomSource rand, int i, int x, int y, int z, BlockState color, Direction direction) {
 		super(piece, i, x, y, z);
 		this.setOrientation(direction);
@@ -75,6 +76,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 		addOpening(0, entranceFloor * 8 + 1, size / 2, Rotation.CLOCKWISE_180);
 	}
 
+	@SuppressWarnings("this-escape")
 	public FinalCastleMazeTower13Component(StructurePieceType piece, int i, int x, int y, int z, int floors, int entranceFloor, BlockState color, Direction direction) {
 		super(piece, i, x, y, z);
 		this.setOrientation(direction);
@@ -92,7 +94,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent,StructurePieceAccessor list, RandomSource rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
@@ -235,9 +237,9 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 		int adjustmentRange = 60;
 		if (this.isWithinRange(dest.getX(), dest.getZ(), this.boundingBox.minX() + 6, this.boundingBox.minZ() + 6, adjustmentRange)) {
 			opening = new BlockPos(
-					opening.getX(),
-					this.adjustOpening(opening.getY(), dest),
-					opening.getZ()
+				opening.getX(),
+				this.adjustOpening(opening.getY(), dest),
+				opening.getZ()
 			);
 		}
 
@@ -261,8 +263,8 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 				FinalCastleMazeTower13Component sTower = new FinalCastleMazeTower13Component(TFStructurePieceTypes.TFFCSiTo.get(), rand, this.getGenDepth() + 1, tc.getX(), tc.getY(), tc.getZ(), this.color, facing);
 
 				BoundingBox largerBB = new BoundingBox(
-						sTower.getBoundingBox().minX() - 6, 0, sTower.getBoundingBox().minZ() - 6,
-						sTower.getBoundingBox().maxX() + 6, 255, sTower.getBoundingBox().maxZ() + 6
+					sTower.getBoundingBox().minX() - 6, 0, sTower.getBoundingBox().minZ() - 6,
+					sTower.getBoundingBox().maxX() + 6, 255, sTower.getBoundingBox().maxZ() + 6
 				);
 
 				StructurePiece intersect = list.findCollisionPiece(largerBB);
@@ -291,7 +293,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 				return false;
 			}
 		}
-		 return false;
+		return false;
 	}
 
 	protected boolean buildDamagedTower(StructurePieceAccessor list, RandomSource rand, Direction facing) {
@@ -350,10 +352,10 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 	private boolean buildEndTowerTowards(StructurePieceAccessor list, RandomSource rand, BlockPos dest, Direction facing, int howFar) {
 		BlockPos opening = this.getValidOpeningCC(rand, facing);
 		opening = new BlockPos(
-				opening.getX(),
-				// adjust opening towards dest.getY()
-				this.adjustOpening(opening.getY(), dest),
-				opening.getZ()
+			opening.getX(),
+			// adjust opening towards dest.getY()
+			this.adjustOpening(opening.getY(), dest),
+			opening.getZ()
 		);
 
 		// build towards
@@ -440,7 +442,8 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 			case WEST -> dz += howFar;
 			case NORTH -> dx -= howFar;
 			case EAST -> dz -= howFar;
-			default -> { }
+			default -> {
+			}
 		}
 
 		// ugh?

@@ -10,7 +10,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.init.TFDataMaps;
-import twilightforest.init.TFRecipes;
 
 public class CrumbleDispenseBehavior extends DefaultDispenseItemBehavior {
 
@@ -32,7 +31,7 @@ public class CrumbleDispenseBehavior extends DefaultDispenseItemBehavior {
 						level.levelEvent(2001, pos, Block.getId(state));
 					}
 
-					stack.hurt(1, level.getRandom(), null);
+					stack.hurtAndBreak(1, level.getRandom(), null, () -> stack.setCount(0));
 					this.fired = true;
 				}
 			}

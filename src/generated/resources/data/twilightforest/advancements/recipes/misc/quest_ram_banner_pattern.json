@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:quest_ram_trophy"
-            ]
+            "items": "twilightforest:quest_ram_trophy"
           }
         ]
       },

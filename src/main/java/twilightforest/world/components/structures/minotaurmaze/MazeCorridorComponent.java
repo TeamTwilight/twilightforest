@@ -26,6 +26,7 @@ public class MazeCorridorComponent extends TFStructureComponentOld {
 		super(piece, nbt);
 	}
 
+	@SuppressWarnings("this-escape")
 	public MazeCorridorComponent(StructurePieceType type, int i, int x, int y, int z, Direction rotation) {
 		super(type, i, x, y, z);
 		this.setOrientation(rotation);

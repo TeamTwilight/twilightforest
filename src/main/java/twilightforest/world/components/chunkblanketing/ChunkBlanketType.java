@@ -1,8 +1,8 @@
 package twilightforest.world.components.chunkblanketing;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 
 @FunctionalInterface
 public interface ChunkBlanketType {
-    Codec<? extends ChunkBlanketProcessor> getCodec();
+	MapCodec<? extends ChunkBlanketProcessor> getCodec();
 }

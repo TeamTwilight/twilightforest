@@ -1,6 +1,7 @@
 {
   "type": "minecraft:crafting_shapeless",
   "category": "building",
+  "group": "planks",
   "ingredients": [
     {
       "tag": "twilightforest:transwood_logs"
@@ -8,6 +9,6 @@
   ],
   "result": {
     "count": 4,
-    "item": "twilightforest:transformation_planks"
+    "id": "twilightforest:transformation_planks"
   }
 }

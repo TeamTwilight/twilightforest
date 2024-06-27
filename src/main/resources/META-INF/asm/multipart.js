@@ -28,9 +28,9 @@ function initializeCoreMod() {
                             'updateMultiparts',
                             '(Lnet/minecraft/world/entity/Entity;)Lnet/minecraft/world/entity/Entity;',
                             false
-                            )
                         )
-                    );
+                    )
+                );
                 return methodNode;
             }
         },
@@ -52,9 +52,9 @@ function initializeCoreMod() {
                             'bakeMultipartRenders',
                             '(Lnet/minecraft/client/renderer/entity/EntityRendererProvider$Context;)Lnet/minecraft/client/renderer/entity/EntityRendererProvider$Context;',
                             false
-                            )
                         )
-                    );
+                    )
+                );
                 return methodNode;
             }
         },
@@ -77,9 +77,9 @@ function initializeCoreMod() {
                             'getMultipartRenderer',
                             '(Lnet/minecraft/client/renderer/entity/EntityRenderer;Lnet/minecraft/world/entity/Entity;)Lnet/minecraft/client/renderer/entity/EntityRenderer;',
                             false
-                            )
                         )
-                    );
+                    )
+                );
                 return methodNode;
             }
         },
@@ -88,7 +88,7 @@ function initializeCoreMod() {
                 'type': 'METHOD',
                 'class': 'net.minecraft.client.renderer.LevelRenderer',
                 'methodName': 'renderLevel',
-                'methodDesc': '(Lcom/mojang/blaze3d/vertex/PoseStack;FJZLnet/minecraft/client/Camera;Lnet/minecraft/client/renderer/GameRenderer;Lnet/minecraft/client/renderer/LightTexture;Lorg/joml/Matrix4f;)V'
+                'methodDesc': '(FJZLnet/minecraft/client/Camera;Lnet/minecraft/client/renderer/GameRenderer;Lnet/minecraft/client/renderer/LightTexture;Lorg/joml/Matrix4f;Lorg/joml/Matrix4f;)V'
             },
             'transformer': function (/*org.objectweb.asm.tree.MethodNode*/ methodNode) {
                 var /*org.objectweb.asm.tree.InsnList*/ instructions = methodNode.instructions;
@@ -101,9 +101,9 @@ function initializeCoreMod() {
                             'renderMultiparts',
                             '(Ljava/lang/Iterable;)Ljava/lang/Iterable;',
                             false
-                            )
                         )
-                    );
+                    )
+                );
                 return methodNode;
             }
         }

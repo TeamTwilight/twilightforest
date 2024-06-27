@@ -1,6 +1,7 @@
 package twilightforest.data;
 
 import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
@@ -12,9 +13,11 @@ import twilightforest.loot.conditions.GiantPickUsedCondition;
 import twilightforest.loot.modifiers.FieryToolSmeltingModifier;
 import twilightforest.loot.modifiers.GiantToolGroupingModifier;
 
+import java.util.concurrent.CompletableFuture;
+
 public class LootModifierGenerator extends GlobalLootModifierProvider {
-	public LootModifierGenerator(PackOutput output) {
-		super(output, TwilightForestMod.ID);
+	public LootModifierGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
+		super(output, provider, TwilightForestMod.ID);
 	}
 
 	@Override

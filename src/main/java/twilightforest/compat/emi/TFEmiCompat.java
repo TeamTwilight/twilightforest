@@ -8,13 +8,15 @@ import dev.emi.emi.api.recipe.EmiPatternCraftingRecipe;
 import dev.emi.emi.api.recipe.VanillaEmiRecipeCategories;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
+import dev.emi.emi.recipe.EmiAnvilRecipe;
 import dev.emi.emi.recipe.EmiGrindstoneRecipe;
 import dev.emi.emi.recipe.special.EmiAnvilEnchantRecipe;
+import dev.emi.emi.recipe.special.EmiAnvilRepairItemRecipe;
 import dev.emi.emi.recipe.special.EmiGrindstoneDisenchantingRecipe;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.block.Block;
-import twilightforest.TFConfig;
+import twilightforest.config.TFConfig;
 import twilightforest.compat.RecipeViewerConstants;
 import twilightforest.compat.emi.recipes.*;
 import twilightforest.init.TFBlocks;
@@ -33,9 +35,12 @@ public class TFEmiCompat implements EmiPlugin {
 	public static final TFEmiRecipeCategory MOONWORM_QUEEN = new TFEmiRecipeCategory("moonworm_queen", TFItems.MOONWORM_QUEEN);
 
 	private static final Function<List<EmiIngredient>, Boolean> CANT_USE_ENCHANTS = stack ->
-			stack.contains(EmiStack.of(TFItems.MOONWORM_QUEEN)) || stack.contains(EmiStack.of(TFItems.LAMP_OF_CINDERS)) || stack.contains(EmiStack.of(TFItems.ORE_MAGNET)) ||
-					stack.contains(EmiStack.of(TFItems.TWILIGHT_SCEPTER)) || stack.contains(EmiStack.of(TFItems.LIFEDRAIN_SCEPTER)) ||
-					stack.contains(EmiStack.of(TFItems.ZOMBIE_SCEPTER)) || stack.contains(EmiStack.of(TFItems.FORTIFICATION_SCEPTER));
+		stack.contains(EmiStack.of(TFItems.MOONWORM_QUEEN)) || stack.contains(EmiStack.of(TFItems.LAMP_OF_CINDERS)) || stack.contains(EmiStack.of(TFItems.ORE_MAGNET)) ||
+			stack.contains(EmiStack.of(TFItems.TWILIGHT_SCEPTER)) || stack.contains(EmiStack.of(TFItems.LIFEDRAIN_SCEPTER)) ||
+			stack.contains(EmiStack.of(TFItems.ZOMBIE_SCEPTER)) || stack.contains(EmiStack.of(TFItems.FORTIFICATION_SCEPTER));
+
+	private static final Function<List<EmiIngredient>, Boolean> NO_REPAIRING = stack ->
+		stack.contains(EmiStack.of(TFItems.LAMP_OF_CINDERS)) || stack.contains(EmiStack.of(TFItems.GLASS_SWORD)) || stack.contains(EmiStack.of(TFItems.MAZEBREAKER_PICKAXE));
 
 	@Override
 	public void register(EmiRegistry registry) {
@@ -51,7 +56,7 @@ public class TFEmiCompat implements EmiPlugin {
 		registry.addWorkstation(MOONWORM_QUEEN, EmiStack.of(TFItems.MOONWORM_QUEEN));
 
 		RecipeManager manager = Objects.requireNonNull(Minecraft.getInstance().level).getRecipeManager();
-		if (!TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableEntireTable.get()) {
+		if (!TFConfig.disableEntireTable) {
 			List<RecipeHolder<? extends CraftingRecipe>> recipes = RecipeViewerConstants.getAllUncraftingRecipes(manager);
 			recipes.forEach(recipe -> registry.addRecipe(new EmiUncraftingRecipe<>(recipe)));
 		}
@@ -74,11 +79,11 @@ public class TFEmiCompat implements EmiPlugin {
 		//emi makes a few assumptions about damageable items that it honestly shouldnt
 		registry.removeRecipes(recipe -> {
 			if (recipe instanceof EmiPatternCraftingRecipe || recipe instanceof EmiGrindstoneRecipe) {
-				return recipe.getInputs().contains(EmiStack.of(TFItems.MOONWORM_QUEEN));
-			} else if (recipe instanceof EmiGrindstoneDisenchantingRecipe) {
+				return recipe.getInputs().contains(EmiStack.of(TFItems.MOONWORM_QUEEN)) || NO_REPAIRING.apply(recipe.getInputs());
+			} else if (recipe instanceof EmiGrindstoneDisenchantingRecipe || recipe instanceof EmiAnvilEnchantRecipe) {
 				return CANT_USE_ENCHANTS.apply(recipe.getInputs());
-			} else if (recipe instanceof EmiAnvilEnchantRecipe) {
-				return CANT_USE_ENCHANTS.apply(recipe.getInputs());
+			} else if (recipe instanceof EmiAnvilRepairItemRecipe || recipe instanceof EmiAnvilRecipe) {
+				return NO_REPAIRING.apply(recipe.getInputs());
 			}
 			return false;
 		});

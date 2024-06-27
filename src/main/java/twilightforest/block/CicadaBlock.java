@@ -3,7 +3,7 @@ package twilightforest.block;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -12,6 +12,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.loot.LootTable;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.CicadaBlockEntity;
 import twilightforest.init.TFBlockEntities;
@@ -44,7 +45,7 @@ public class CicadaBlock extends CritterBlock {
 	}
 
 	@Override
-	public @Nullable ResourceLocation getSquishLootTable() {
+	public @Nullable ResourceKey<LootTable> getSquishLootTable() {
 		return TFLootTables.CICADA_SQUISH_DROPS;
 	}
 

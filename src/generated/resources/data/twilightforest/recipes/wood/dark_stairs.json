@@ -1,6 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "building",
+  "group": "wooden_stairs",
   "key": {
     "#": {
       "item": "twilightforest:dark_planks"
@@ -13,6 +14,6 @@
   ],
   "result": {
     "count": 8,
-    "item": "twilightforest:dark_stairs"
+    "id": "twilightforest:dark_stairs"
   }
 }

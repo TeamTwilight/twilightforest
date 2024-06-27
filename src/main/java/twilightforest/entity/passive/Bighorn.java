@@ -1,8 +1,7 @@
 package twilightforest.entity.passive;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
@@ -19,6 +18,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.loot.LootTable;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFEntities;
@@ -32,7 +32,7 @@ public class Bighorn extends Sheep {
 	}
 
 	@Override
-	public ResourceLocation getDefaultLootTable() {
+	public ResourceKey<LootTable> getDefaultLootTable() {
 		if (this.isSheared()) {
 			return this.getType().getDefaultLootTable();
 		} else {
@@ -59,14 +59,14 @@ public class Bighorn extends Sheep {
 
 	private static DyeColor getRandomFleeceColor(RandomSource random) {
 		return random.nextBoolean()
-				? DyeColor.BROWN
-				: DyeColor.byId(random.nextInt(16));
+			? DyeColor.BROWN
+			: DyeColor.byId(random.nextInt(16));
 	}
 
 	@Nullable
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag dataTag) {
-		livingdata = super.finalizeSpawn(accessor, difficulty, reason, livingdata, dataTag);
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata) {
+		livingdata = super.finalizeSpawn(accessor, difficulty, reason, livingdata);
 		this.setColor(getRandomFleeceColor(accessor.getRandom()));
 		return livingdata;
 	}

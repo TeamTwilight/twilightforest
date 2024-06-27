@@ -51,10 +51,11 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 		this.size = nbt.getInt("size");
 		this.height = nbt.getInt("height");
 
-        this.speleothemConfigHolder = StructureSpeleothemConfigs.getConfigHolder(ctx.registryAccess(), nbt.getString("config_id"));
+		this.speleothemConfigHolder = StructureSpeleothemConfigs.getConfigHolder(ctx.registryAccess(), nbt.getString("config_id"));
 		this.speleothemConfig = this.speleothemConfigHolder.value();
 	}
 
+	@SuppressWarnings("this-escape")
 	public TrollCaveMainComponent(StructurePieceType type, int i, int x, int y, int z, Holder.Reference<StructureSpeleothemConfig> speleothemConfig) {
 		super(type, i, x, y, z);
 		this.setOrientation(Direction.SOUTH); // DEPTH_AVERAGE
@@ -114,7 +115,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 		// clear inside
 		hollowCaveMiddle(world, sbb, rand, 0, 0, 0, this.size - 1, this.height - 1, this.size - 1);
 
-        this.placeSpeleothems(world, rand, sbb, decoRNG);
+		this.placeSpeleothems(world, rand, sbb, decoRNG);
 
 		// uberous!
 		for (int i = 0; i < 32; i++) {
@@ -132,13 +133,13 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 		for (BlockPos pos : this.speleothemConfig.latticeIterator(BoundingBoxUtils.getIntersectionOfSBBs(sbb, this.boundingBox), ceilingY)) {
 			// stone stalactites!
 			if (!world.getBlockState(pos.above()).isAir() && this.speleothemConfig.shouldDoAStalactite(rand)) {
-                BlockSpikeFeature.startSpike(world, pos, this.speleothemConfig.getStalactite(decoRNG), decoRNG, true);
-            }
+				BlockSpikeFeature.startSpike(world, pos, this.speleothemConfig.getStalactite(decoRNG), decoRNG, true);
+			}
 
 			// stone stalagmites!
 			if (this.speleothemConfig.shouldDoAStalagmite(rand)) {
-                BlockSpikeFeature.startSpike(world, pos.atY(floorY), this.speleothemConfig.getStalagmite(decoRNG), decoRNG, false);
-            }
+				BlockSpikeFeature.startSpike(world, pos.atY(floorY), this.speleothemConfig.getStalagmite(decoRNG), decoRNG, false);
+			}
 		}
 	}
 
@@ -233,7 +234,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 
 		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(dx, generator.getSeaLevel() + 15, dz);
 
-		for(int i = 0; i < 15; i++) {
+		for (int i = 0; i < 15; i++) {
 			pos.move(0, 1, 0);
 			if (sbb.isInside(pos) && world.getBlockState(pos.above()).isAir()) {
 				world.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE).get(feature).place(world, generator, rand, pos);

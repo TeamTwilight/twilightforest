@@ -33,6 +33,7 @@ public abstract class KnightStrongholdComponent extends TFStructureComponentOld 
 		this.readOpeningsFromArray(nbt.getIntArray("doorInts"));
 	}
 
+	@SuppressWarnings("this-escape")
 	public KnightStrongholdComponent(StructurePieceType type, int i, Direction facing, int x, int y, int z) {
 		super(type, i, x, y, z);
 		this.boundingBox = generateBoundingBox(facing, x, y, z);
@@ -183,7 +184,7 @@ public abstract class KnightStrongholdComponent extends TFStructureComponentOld 
 	private boolean isOutOfRange(StructurePiece parent, int nx, int nz, int range) {
 
 		return Math.abs(nx - parent.getBoundingBox().minX()) > range
-				|| Math.abs(nz - parent.getBoundingBox().minZ()) > range;
+			|| Math.abs(nz - parent.getBoundingBox().minZ()) > range;
 	}
 
 	/**
@@ -482,7 +483,7 @@ public abstract class KnightStrongholdComponent extends TFStructureComponentOld 
 					BlockState state = this.getBlock(world, x, y, z, sbb);
 
 					if ((!state.isAir() && (state.is(BlockTags.BASE_STONE_OVERWORLD) || state.is(BlockTags.DIRT)))
-							|| (state.isAir() && rand.nextInt(3) == 0) && this.getBlock(world, x, y - 1, z, sbb).getBlock() == Blocks.STONE_BRICKS) {
+						|| (state.isAir() && rand.nextInt(3) == 0) && this.getBlock(world, x, y - 1, z, sbb).getBlock() == Blocks.STONE_BRICKS) {
 						if (y == sy || y == dy) {
 							// do stronghold bricks for floor/ceiling
 							StructurePiece.BlockSelector strongBlocks = TFStructureComponentOld.getStrongholdStones();

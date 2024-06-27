@@ -37,22 +37,22 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.event.EventHooks;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TFConfig;
+import twilightforest.components.entity.TFPortalAttachment;
+import twilightforest.config.TFConfig;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.TFDataAttachments;
+import twilightforest.init.TFDimension;
 import twilightforest.init.TFSounds;
 import twilightforest.network.MissingAdvancementToastPacket;
 import twilightforest.util.LandmarkUtil;
 import twilightforest.util.PlayerHelper;
 import twilightforest.world.NoReturnTeleporter;
 import twilightforest.world.TFTeleporter;
-import twilightforest.init.TFDimension;
 
 import java.util.*;
 
@@ -69,6 +69,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 	private static final int MIN_PORTAL_SIZE = 4;
 	private static final HashSet<ServerPlayer> playersNotified = new HashSet<>();
 
+	@SuppressWarnings("this-escape")
 	public TFPortalBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(DISALLOW_RETURN, false));
@@ -110,7 +111,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 
 			if (recursivelyValidatePortal(level, pos, blocksChecked, size, state) && size.intValue() >= MIN_PORTAL_SIZE) {
 
-				if (TFConfig.COMMON_CONFIG.checkPortalDestination.get()) {
+				if (!TFConfig.checkPortalPlacement) {
 					boolean checkProgression = LandmarkUtil.isProgressionEnforced(catalyst.level());
 					if (!TFTeleporter.isSafeAround(level, pos, catalyst, checkProgression)) {
 						// TODO: "failure" effect - particles?
@@ -122,7 +123,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 				}
 
 				catalyst.getItem().shrink(1);
-				causeLightning(level, pos, TFConfig.COMMON_CONFIG.portalLightning.get());
+				causeLightning(level, pos, TFConfig.destructivePortalLightning);
 
 				for (Map.Entry<BlockPos, Boolean> checkedPos : blocksChecked.entrySet()) {
 					if (checkedPos.getValue()) {
@@ -141,13 +142,13 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 		return state.is(BlockTagGenerator.PORTAL_POOL) || state.getBlock() == this && state.getValue(DISALLOW_RETURN);
 	}
 
-	private static void causeLightning(Level level, BlockPos pos, boolean fake) {
+	private static void causeLightning(Level level, BlockPos pos, boolean destructive) {
 		LightningBolt bolt = new LightningBolt(EntityType.LIGHTNING_BOLT, level);
 		bolt.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
-		bolt.setVisualOnly(fake);
+		bolt.setVisualOnly(destructive);
 		level.addFreshEntity(bolt);
 
-		if (fake && level instanceof ServerLevel) {
+		if (destructive && level instanceof ServerLevel) {
 			double range = 3.0D;
 			List<Entity> list = level.getEntitiesOfClass(Entity.class, new AABB(pos).inflate(range));
 
@@ -160,11 +161,11 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 	}
 
 	public static boolean recursivelyValidatePortal(Level level, BlockPos pos, Map<BlockPos, Boolean> blocksChecked, MutableInt portalSize, BlockState poolBlock) {
-		if (portalSize.incrementAndGet() > TFConfig.COMMON_CONFIG.maxPortalSize.get()) return false;
+		if (portalSize.incrementAndGet() > TFConfig.maxPortalSize) return false;
 
 		boolean isPoolProbablyEnclosed = true;
 
-		for (int i = 0; i < 4 && portalSize.intValue() <= TFConfig.COMMON_CONFIG.maxPortalSize.get(); i++) {
+		for (int i = 0; i < 4 && portalSize.intValue() <= TFConfig.maxPortalSize; i++) {
 			BlockPos positionCheck = pos.relative(Direction.from2DDataValue(i));
 
 			if (!blocksChecked.containsKey(positionCheck)) {
@@ -225,7 +226,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 					if (!TFPortalBlock.isPlayerNotifiedOfRequirement(player)) {
 						// .doesPlayerHaveRequiredAdvancement null-checks already, so we can skip null-checking the `requirement`
 						DisplayInfo info = requirement.value().display().orElse(null);
-						PacketDistributor.PLAYER.with(player).send(info == null ? new MissingAdvancementToastPacket(Component.translatable("twilightforest.ui.advancement.no_title"), new ItemStack(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get())) : new MissingAdvancementToastPacket(info.getTitle(), info.getIcon()));
+						PacketDistributor.sendToPlayer(player, info == null ? new MissingAdvancementToastPacket(Component.translatable("twilightforest.ui.advancement.no_title"), new ItemStack(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get())) : new MissingAdvancementToastPacket(info.getTitle(), info.getIcon()));
 						TFPortalBlock.playerNotifiedOfRequirement(player);
 					}
 
@@ -235,6 +236,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 
 			attemptSendEntity(entity, false, true);
 		}
+		entity.getData(TFDataAttachments.TF_PORTAL_COOLDOWN).setInPortal(true);
 	}
 
 	public static boolean isPlayerNotifiedOfRequirement(ServerPlayer player) {
@@ -246,9 +248,9 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 	}
 
 	private static ResourceKey<Level> getDestination(Entity entity) {
-		if (cachedOriginDimension == null) cachedOriginDimension = ResourceKey.create(Registries.DIMENSION, new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get()));
+		if (cachedOriginDimension == null) cachedOriginDimension = ResourceKey.create(Registries.DIMENSION, new ResourceLocation(TFConfig.originDimension));
 		return !entity.getCommandSenderWorld().dimension().location().equals(TFDimension.DIMENSION)
-				? TFDimension.DIMENSION_KEY : cachedOriginDimension;
+			? TFDimension.DIMENSION_KEY : cachedOriginDimension;
 	}
 
 	public static void attemptSendEntity(Entity entity, boolean forcedEntry, boolean makeReturnPortal) {
@@ -266,18 +268,20 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 		if (serverWorld == null)
 			return;
 
+		TFPortalAttachment portalAttachment = entity.getData(TFDataAttachments.TF_PORTAL_COOLDOWN);
+
+		if (portalAttachment.getPortalTimer() > 0) return;
+
 		entity.changeDimension(serverWorld, makeReturnPortal ? new TFTeleporter(forcedEntry) : new NoReturnTeleporter());
 
 		if (destination == TFDimension.DIMENSION_KEY && entity instanceof ServerPlayer playerMP && forcedEntry) {
 			// set respawn point for TF dimension to near the arrival portal, only if we spawn here on world creation
 			playerMP.setRespawnPosition(destination, playerMP.blockPosition(), playerMP.getYRot(), true, false);
 		}
-
 	}
 
-	// Full [VanillaCopy] of BlockPortal.randomDisplayTick
+	// Full [VanillaCopy] of NetherPortalBlock.animateTick
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource rand) {
 		int random = rand.nextInt(100);
 		if (state.getValue(DISALLOW_RETURN) && random < 80) return;

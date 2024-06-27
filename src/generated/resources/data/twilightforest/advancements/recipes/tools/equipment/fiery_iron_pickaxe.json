@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "twilightforest:fiery_vial"
+            "items": "#twilightforest:fiery_vial"
           }
         ]
       },

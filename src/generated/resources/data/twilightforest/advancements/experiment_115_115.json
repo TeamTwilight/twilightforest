@@ -9,7 +9,7 @@
             "entity": "this",
             "predicate": {
               "type_specific": {
-                "type": "player",
+                "type": "minecraft:player",
                 "stats": [
                   {
                     "type": "minecraft:custom",
@@ -34,8 +34,11 @@
     "frame": "challenge",
     "hidden": true,
     "icon": {
-      "item": "twilightforest:experiment_115",
-      "nbt": "{think:{think:1}}"
+      "components": {
+        "twilightforest:e115_variant": "think"
+      },
+      "count": 1,
+      "id": "twilightforest:experiment_115"
     },
     "title": {
       "translate": "advancement.twilightforest.experiment_115_3"

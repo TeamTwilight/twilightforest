@@ -9,11 +9,11 @@
       "item": "minecraft:raw_iron"
     },
     {
-      "tag": "forge:nuggets/gold"
+      "tag": "c:nuggets/gold"
     }
   ],
   "result": {
     "count": 2,
-    "item": "twilightforest:raw_ironwood"
+    "id": "twilightforest:raw_ironwood"
   }
 }

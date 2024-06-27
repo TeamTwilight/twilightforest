@@ -1,6 +1,7 @@
 package twilightforest.item.mapdata;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.common.ClientboundCustomPayloadPacket;
@@ -11,6 +12,7 @@ import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.SavedData;
+import net.minecraft.world.level.saveddata.maps.MapId;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFStructures;
@@ -30,8 +32,8 @@ public class TFMazeMapData extends MapItemSavedData {
 		super(x, z, scale, trackpos, unlimited, locked, dim);
 	}
 
-	public static TFMazeMapData load(CompoundTag nbt) {
-		MapItemSavedData data = MapItemSavedData.load(nbt);
+	public static TFMazeMapData load(CompoundTag nbt, HolderLookup.Provider provider) {
+		MapItemSavedData data = MapItemSavedData.load(nbt, provider);
 		final boolean trackingPosition = !nbt.contains("trackingPosition", 1) || nbt.getBoolean("trackingPosition");
 		final boolean unlimitedTracking = nbt.getBoolean("unlimitedTracking");
 		final boolean locked = nbt.getBoolean("locked");
@@ -50,8 +52,8 @@ public class TFMazeMapData extends MapItemSavedData {
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag nbt) {
-		CompoundTag ret = super.save(nbt);
+	public CompoundTag save(CompoundTag nbt, HolderLookup.Provider provider) {
+		CompoundTag ret = super.save(nbt, provider);
 		ret.putInt("yCenter", this.yCenter);
 		ret.putBoolean("mapOres", this.ore);
 		return ret;
@@ -74,7 +76,7 @@ public class TFMazeMapData extends MapItemSavedData {
 	@Nullable
 	public static TFMazeMapData getMazeMapData(Level level, String name) {
 		if (level.isClientSide()) return CLIENT_DATA.get(name);
-		else return (TFMazeMapData) ((ServerLevel)level).getServer().overworld().getDataStorage().get(TFMazeMapData.factory(), name);
+		else return (TFMazeMapData) ((ServerLevel) level).getServer().overworld().getDataStorage().get(TFMazeMapData.factory(), name);
 	}
 
 	public static SavedData.Factory<MapItemSavedData> factory() {
@@ -91,7 +93,7 @@ public class TFMazeMapData extends MapItemSavedData {
 
 	@Nullable
 	@Override
-	public Packet<?> getUpdatePacket(int mapId, Player player) {
+	public Packet<?> getUpdatePacket(MapId mapId, Player player) {
 		Packet<?> packet = super.getUpdatePacket(mapId, player);
 		return packet instanceof ClientboundMapItemDataPacket mapItemDataPacket ? new ClientboundCustomPayloadPacket(new MazeMapPacket(mapItemDataPacket, this.ore, this.yCenter)) : packet;
 	}

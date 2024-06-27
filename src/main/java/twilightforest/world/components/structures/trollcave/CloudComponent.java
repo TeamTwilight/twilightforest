@@ -46,10 +46,11 @@ public class CloudComponent extends StructurePiece {
 		int genCenterX = this.boundingBox.minX() - OFFSET - chunkWorldPos.getX() + 16;
 		int genCenterZ = this.boundingBox.minZ() - OFFSET - chunkWorldPos.getZ() + 16;
 
-		generateTrollCloud(level.getChunk(chunkPos.x, chunkPos.z), genCenterX, genCenterZ, this.boundingBox.maxY(), randomSource);
+		generateCloud(level.getChunk(chunkPos.x, chunkPos.z), genCenterX, genCenterZ, this.boundingBox.maxY(), randomSource);
 	}
 
-	private static void generateTrollCloud(ChunkAccess chunkAccess, int hx, int hz, int cloudHeight, RandomSource random) {
+	private static void generateCloud(ChunkAccess chunkAccess, int hx, int hz, int cloudHeight, RandomSource random) {
+		boolean isCenter = hx == 0 && hz == 0;
 		ChunkPos center = chunkAccess.getPos();
 		BlockPos chunkBlockPos = center.getWorldPosition();
 
@@ -93,7 +94,7 @@ public class CloudComponent extends StructurePiece {
 				int y = cloudHeight;
 				int depth = 4;
 
-				if (pr < 0.1F) {
+				if (!isCenter && pr < 0.1F) {
 					y++;
 				}
 				if (pr > 0.6F) {
@@ -104,12 +105,14 @@ public class CloudComponent extends StructurePiece {
 				}
 
 				// generate cloud
-				gen4x4Cloud(chunkAccess, bx, bz, chunkBlockPos, dist, cv, y, wispyCloud, depth, fluffyCloud);
+				gen4x4Cloud(chunkAccess, bx, bz, chunkBlockPos, dist, cv, y, wispyCloud, depth, fluffyCloud, isCenter);
 			}
 		}
 	}
 
-	private static void gen4x4Cloud(ChunkAccess chunkAccess, int bx, int bz, BlockPos chunkBlockPos, double dist, double cv, int y, BlockState wispyCloud, int depth, BlockState fluffyCloud) {
+	private static void gen4x4Cloud(ChunkAccess chunkAccess, int bx, int bz, BlockPos chunkBlockPos, double dist, double cv, int y, BlockState wispyCloud, int depth, BlockState fluffyCloud, boolean isCenterChunk) {
+		BlockState topBlock = isCenterChunk ? fluffyCloud : wispyCloud;
+
 		for (int sx = 0; sx < 4; sx++) {
 			int lx = bx * 4 + sx;
 
@@ -119,7 +122,7 @@ public class CloudComponent extends StructurePiece {
 				BlockPos columnPos = chunkBlockPos.offset(lx, 0, lz);
 
 				if (dist < 7 || cv < 0.05F) {
-					setIfAir(chunkAccess, columnPos.atY(y), wispyCloud);
+					setIfAir(chunkAccess, columnPos.atY(y), topBlock);
 
 					for (int d = 1; d < depth; d++) {
 						setIfAir(chunkAccess, columnPos.atY(y - d), fluffyCloud);

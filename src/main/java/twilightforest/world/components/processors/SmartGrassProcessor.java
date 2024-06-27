@@ -1,6 +1,6 @@
 package twilightforest.world.components.processors;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
@@ -17,37 +17,37 @@ import twilightforest.init.TFStructureProcessors;
 import twilightforest.util.RotationUtil;
 
 public class SmartGrassProcessor extends StructureProcessor {
-    public static final SmartGrassProcessor INSTANCE = new SmartGrassProcessor();
-    public static final Codec<SmartGrassProcessor> CODEC = Codec.unit(() -> INSTANCE);
+	public static final SmartGrassProcessor INSTANCE = new SmartGrassProcessor();
+	public static final MapCodec<SmartGrassProcessor> CODEC = MapCodec.unit(() -> INSTANCE);
 
-    private SmartGrassProcessor() {
-    }
+	private SmartGrassProcessor() {
+	}
 
-    @Nullable
-    @Override
-    public StructureTemplate.StructureBlockInfo process(LevelReader level, BlockPos origin, BlockPos centerBottom, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo modifiedBlockInfo, StructurePlaceSettings settings, @Nullable StructureTemplate template) {
-        if (originalBlockInfo.state().getBlock() != Blocks.GRASS_BLOCK)
-            return modifiedBlockInfo;
+	@Nullable
+	@Override
+	public StructureTemplate.StructureBlockInfo process(LevelReader level, BlockPos origin, BlockPos centerBottom, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo modifiedBlockInfo, StructurePlaceSettings settings, @Nullable StructureTemplate template) {
+		if (originalBlockInfo.state().getBlock() != Blocks.GRASS_BLOCK)
+			return modifiedBlockInfo;
 
-        if (level.getBlockState(modifiedBlockInfo.pos()).is(BlockTags.DIRT) || !level.isEmptyBlock(modifiedBlockInfo.pos().above()))
-            return null;
+		if (level.getBlockState(modifiedBlockInfo.pos()).is(BlockTags.DIRT) || !level.isEmptyBlock(modifiedBlockInfo.pos().above()))
+			return null;
 
-        for (Direction direction : RotationUtil.CARDINALS) {
-            BlockState stateAt = level.getBlockState(modifiedBlockInfo.pos().relative(direction));
+		for (Direction direction : RotationUtil.CARDINALS) {
+			BlockState stateAt = level.getBlockState(modifiedBlockInfo.pos().relative(direction));
 
-            if (stateAt.getBlock() == Blocks.PODZOL) return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos(), Blocks.PODZOL.defaultBlockState(), null);
-            if (stateAt.getBlock() == Blocks.GRASS_BLOCK) return modifiedBlockInfo;
-            if (stateAt.getBlock() == Blocks.MYCELIUM) return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos(), Blocks.MYCELIUM.defaultBlockState(), null);
-            if (stateAt.getBlock() == Blocks.DIRT_PATH) return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos(), Blocks.DIRT_PATH.defaultBlockState(), null);
-            if (stateAt.getBlock() == Blocks.COARSE_DIRT) return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos(), Blocks.COARSE_DIRT.defaultBlockState(), null);
-            if (stateAt.getBlock() == TFBlocks.UBEROUS_SOIL.get()) return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos(), TFBlocks.UBEROUS_SOIL.get().defaultBlockState(), null);
-        }
+			if (stateAt.getBlock() == Blocks.PODZOL) return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos(), Blocks.PODZOL.defaultBlockState(), null);
+			if (stateAt.getBlock() == Blocks.GRASS_BLOCK) return modifiedBlockInfo;
+			if (stateAt.getBlock() == Blocks.MYCELIUM) return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos(), Blocks.MYCELIUM.defaultBlockState(), null);
+			if (stateAt.getBlock() == Blocks.DIRT_PATH) return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos(), Blocks.DIRT_PATH.defaultBlockState(), null);
+			if (stateAt.getBlock() == Blocks.COARSE_DIRT) return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos(), Blocks.COARSE_DIRT.defaultBlockState(), null);
+			if (stateAt.getBlock() == TFBlocks.UBEROUS_SOIL.get()) return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos(), TFBlocks.UBEROUS_SOIL.get().defaultBlockState(), null);
+		}
 
-        return modifiedBlockInfo;
-    }
+		return modifiedBlockInfo;
+	}
 
-    @Override
-    protected StructureProcessorType<?> getType() {
-        return TFStructureProcessors.SMART_GRASS.get();
-    }
+	@Override
+	protected StructureProcessorType<?> getType() {
+		return TFStructureProcessors.SMART_GRASS.get();
+	}
 }

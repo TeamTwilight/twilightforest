@@ -177,5 +177,6 @@ public class GiantBlockModel implements IDynamicBakedModel {
 	}
 
 	//modeldata holder
-	public record GiantBlockData(BlockAndTintGetter getter, BlockPos pos) {}
+	public record GiantBlockData(BlockAndTintGetter getter, BlockPos pos) {
+	}
 }

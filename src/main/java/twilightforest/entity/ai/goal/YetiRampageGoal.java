@@ -18,6 +18,7 @@ public class YetiRampageGoal extends Goal {
 	private final int maxTantrumTimeOut;
 	private final int tantrumDuration;
 
+	@SuppressWarnings("this-escape")
 	public YetiRampageGoal(AlphaYeti yeti, int timeout, int duration) {
 		this.yeti = yeti;
 		this.currentTimeOut = timeout;
@@ -62,12 +63,12 @@ public class YetiRampageGoal extends Goal {
 	public void tick() {
 		this.currentDuration--;
 
-        if (this.yeti.getTarget() != null) {
+		if (this.yeti.getTarget() != null) {
 			this.yeti.getLookControl().setLookAt(this.yeti.getTarget(), 10.0F, this.yeti.getMaxHeadXRot());
 		}
 
 		if (this.yeti.onGround()) {
-            this.yeti.setDeltaMovement(0, 0.4D, 0);
+			this.yeti.setDeltaMovement(0, 0.4D, 0);
 			this.yeti.gameEvent(GameEvent.HIT_GROUND);
 		}
 

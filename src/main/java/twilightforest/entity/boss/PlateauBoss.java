@@ -1,9 +1,7 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.BossEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.monster.Monster;
@@ -15,8 +13,6 @@ import twilightforest.init.TFStructures;
 
 public class PlateauBoss extends BaseTFBoss {
 
-	private final ServerBossEvent bossInfo = new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.PROGRESS);
-
 	public PlateauBoss(EntityType<? extends PlateauBoss> type, Level level) {
 		super(type, level);
 		this.xpReward = 647;
@@ -24,10 +20,6 @@ public class PlateauBoss extends BaseTFBoss {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Monster.createMonsterAttributes();
-	}
-
-	@Override
-	protected void registerGoals() {
 	}
 
 	@Override
@@ -41,11 +33,6 @@ public class PlateauBoss extends BaseTFBoss {
 	}
 
 	@Override
-	public ServerBossEvent getBossBar() {
-		return this.bossInfo;
-	}
-
-	@Override
 	public Block getDeathContainer(RandomSource random) {
 		return TFBlocks.CANOPY_CHEST.get();
 	}
@@ -53,5 +40,10 @@ public class PlateauBoss extends BaseTFBoss {
 	@Override
 	public Block getBossSpawner() {
 		return TFBlocks.FINAL_BOSS_BOSS_SPAWNER.get();
+	}
+
+	@Override
+	public int getBossBarColor() {
+		return 0xFFFFFF;
 	}
 }

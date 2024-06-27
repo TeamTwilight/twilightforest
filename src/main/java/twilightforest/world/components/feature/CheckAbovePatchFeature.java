@@ -29,7 +29,7 @@ public class CheckAbovePatchFeature extends Feature<DiskConfiguration> {
 		int l = diskconfiguration.radius().sample(randomsource);
 		BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
 
-		for(BlockPos blockpos1 : BlockPos.betweenClosed(blockpos.offset(-l, 0, -l), blockpos.offset(l, 0, l))) {
+		for (BlockPos blockpos1 : BlockPos.betweenClosed(blockpos.offset(-l, 0, -l), blockpos.offset(l, 0, l))) {
 			int i1 = blockpos1.getX() - blockpos.getX();
 			int j1 = blockpos1.getZ() - blockpos.getZ();
 			if (i1 * i1 + j1 * j1 <= l * l) {
@@ -43,7 +43,7 @@ public class CheckAbovePatchFeature extends Feature<DiskConfiguration> {
 	protected boolean placeColumn(DiskConfiguration config, WorldGenLevel level, RandomSource random, int start, int end, BlockPos.MutableBlockPos mutablePos) {
 		boolean flag = false;
 
-		for(int i = start; i > end; --i) {
+		for (int i = start; i > end; --i) {
 			mutablePos.setY(i);
 			if (config.target().test(level, mutablePos) && level.getBlockState(mutablePos.above()).canBeReplaced()) {
 				BlockState blockstate1 = config.stateProvider().getState(level, random, mutablePos);

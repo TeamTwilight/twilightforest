@@ -20,7 +20,7 @@ public class StableIceCoreModel extends UnstableIceCoreModel<StableIceCore> {
 			this.spikes[i].xRot = (entity.tickCount + partialTicks) / 5.0F;
 			this.spikes[i].zRot = Mth.cos(i / 5.0F) / 4.0F;
 
-			this.spikes[i].xRot += i * (Math.PI / 8F);
+			this.spikes[i].xRot += i * (Mth.PI / 8F);
 
 			this.cubes[i].y = 9.5F + Mth.sin((i + entity.tickCount + partialTicks) / 3F) * 3F;
 		}

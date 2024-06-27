@@ -20,6 +20,7 @@ public class UrGhastFlightGoal extends Goal {
 	private List<BlockPos> pointsToVisit = new ArrayList<>();
 	private int currentPoint = 0;
 
+	@SuppressWarnings("this-escape")
 	public UrGhastFlightGoal(UrGhast ghast) {
 		this.ghast = ghast;
 		setFlags(EnumSet.of(Flag.MOVE));
