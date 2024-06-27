@@ -135,6 +135,11 @@ public class DataMapGenerator extends DataMapProvider {
 		this.add2WayTransform(transformation, TFEntities.CARMINITE_GHASTGUARD, EntityType.GHAST);
 		this.add2WayTransform(transformation, TFEntities.TOWERWOOD_BORER, EntityType.SILVERFISH);
 		this.add2WayTransform(transformation, TFEntities.MAZE_SLIME, EntityType.SLIME);
+		this.add2WayTransform(transformation, TFEntities.CARMINITE_GOLEM, EntityType.IRON_GOLEM);
+		this.add2WayTransform(transformation, TFEntities.STABLE_ICE_CORE, EntityType.SNOW_GOLEM);
+		this.add2WayTransform(transformation, TFEntities.SQUIRREL, EntityType.FOX);
+		this.add2WayTransform(transformation, TFEntities.HEDGE_SPIDER, EntityType.SPIDER);
+		this.add2WayTransform(transformation, TFEntities.CARMINITE_BROODLING, EntityType.CAVE_SPIDER);
 
 		var crumble = this.builder(TFDataMaps.CRUMBLE_HORN);
 		crumble.add(Blocks.STONE_BRICKS.builtInRegistryHolder(), new CrumbledBlock(Blocks.CRACKED_STONE_BRICKS, 0.2F), false);
