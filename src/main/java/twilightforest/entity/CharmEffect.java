@@ -84,7 +84,7 @@ public class CharmEffect extends Entity implements ItemSupplier {
 			this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, this.displayItem), dx, dy, dz, 0, 0.2, 0);
 		}
 
-		if (this.tickCount > 200 || (this.orbiter != null && !this.orbiter.isAlive())) {
+		if (this.tickCount > 200 || (this.orbiter != null && (!this.orbiter.isAlive() || this.orbiter.isInvisible()))) {
 			this.discard();
 		}
 	}
