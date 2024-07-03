@@ -4,7 +4,6 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -39,6 +38,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.JarBlockEntity;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.TFSounds;
 
 import java.util.List;
 
@@ -120,7 +120,7 @@ public class JarBlock extends BaseEntityBlock implements SimpleWaterloggedBlock 
 		if (level.getBlockEntity(pos) instanceof JarBlockEntity jarBlockEntity && hitResult.getLocation().y >= pos.getY() + (14.0D / 16.0D) && JarBlockEntity.REGISTERED_LOG_LIDS.contains(stack.getItem())) {
 			jarBlockEntity.lid = stack.getItem();
 			if (level instanceof ServerLevel serverLevel) {
-				serverLevel.playSound(null, pos, SoundEvents.DECORATED_POT_INSERT, SoundSource.BLOCKS, 1.0F, 1.0F);
+				serverLevel.playSound(null, pos, TFSounds.JAR_LID_SWAP.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
 				jarBlockEntity.wobble(DecoratedPotBlockEntity.WobbleStyle.POSITIVE);
 				jarBlockEntity.setChanged();
 			}
@@ -133,7 +133,7 @@ public class JarBlock extends BaseEntityBlock implements SimpleWaterloggedBlock 
 	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
 		if (level.getBlockEntity(pos) instanceof JarBlockEntity blockEntity) {
 			if (level instanceof ServerLevel serverLevel) {
-				serverLevel.playSound(null, pos, SoundEvents.DECORATED_POT_INSERT_FAIL, SoundSource.BLOCKS, 1.0F, 1.0F);
+				serverLevel.playSound(null, pos, TFSounds.JAR_WIGGLE.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
 				blockEntity.wobble(DecoratedPotBlockEntity.WobbleStyle.NEGATIVE);
 			}
 			return InteractionResult.SUCCESS;

@@ -1,7 +1,6 @@
 package twilightforest.data;
 
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.common.data.SoundDefinition;
@@ -98,7 +97,7 @@ public class SoundGenerator extends TFSoundProvider {
 		this.generateNewSoundWithSubtitle(TFSounds.HELMET_CRAB_AMBIENT, "mob/helmet_crab/idle", 3, "Helmet Crab snips");
 		this.generateNewSoundWithSubtitle(TFSounds.HELMET_CRAB_DEATH, "mob/helmet_crab/hurt", 3, "Helmet Crab dies");
 		this.generateNewSoundWithSubtitle(TFSounds.HELMET_CRAB_HURT, "mob/helmet_crab/hurt", 3, "Helmet Crab hurts");
-		this.makeNewStepSound(TFSounds.HELMET_CRAB_STEP, "mob/helmet_crab/step", 6);
+		this.makeNewGenericSound(TFSounds.HELMET_CRAB_STEP, "mob/helmet_crab/step", 6, "footsteps");
 
 		this.generateNewSoundWithSubtitle(TFSounds.HOSTILE_WOLF_AMBIENT, "mob/mist_wolf/idle", 3, "Hostile Wolf growls");
 		this.generateExistingSoundWithSubtitle(TFSounds.HOSTILE_WOLF_DEATH, SoundEvents.WOLF_DEATH, "Hostile Wolf dies");
@@ -373,6 +372,17 @@ public class SoundGenerator extends TFSoundProvider {
 		this.makeMusicDisc(TFSounds.MUSIC_DISC_MAKER, "maker");
 		this.makeMusicDisc(TFSounds.MUSIC_DISC_THREAD, "thread");
 		this.makeMusicDisc(TFSounds.MUSIC_DISC_MOTION, "motion");
+
+		this.makeNewGenericSound(TFSounds.JAR_BREAK, "random/jar/jar", 3, "break");
+		this.makeNewGenericSound(TFSounds.JAR_STEP, "random/jar/jar", 3, "footsteps");
+		this.makeNewGenericSound(TFSounds.JAR_PLACE, "random/jar/jar_place", 1, "place");
+		this.makeNewGenericSound(TFSounds.JAR_HIT, "random/jar/jar", 3, "hit");
+		this.makeNewGenericSound(TFSounds.JAR_FALL, "random/jar/jar", 3, null);
+
+		this.generateNewSoundWithSubtitle(TFSounds.JAR_INSERT, "random/jar/jar_in", 1, "Item inserted into jar");
+		this.generateNewSoundWithSubtitle(TFSounds.JAR_REMOVE, "random/jar/jar_out", 1, "Item removed from jar");
+		this.generateNewSoundWithSubtitle(TFSounds.JAR_LID_SWAP, "random/jar/jar_swap", 1, "Changed jar lid");
+		this.generateNewSoundWithSubtitle(TFSounds.JAR_WIGGLE, "random/jar/jar_wiggle", 3, "Jar wiggles");
 
 		this.add(TFSounds.MUSIC, SoundDefinition.definition().with(
 			SoundDefinition.Sound.sound(TwilightForestMod.prefix("music/superstitious"), SoundDefinition.SoundType.SOUND).stream().volume(0.5F),
