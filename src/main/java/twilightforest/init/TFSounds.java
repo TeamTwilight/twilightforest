@@ -304,6 +304,17 @@ public final class TFSounds {
 	public static final DeferredHolder<SoundEvent, SoundEvent> REDCAP_PARROT = createEvent("entity.twilightforest.parrot.imitate.redcap");
 	public static final DeferredHolder<SoundEvent, SoundEvent> WRAITH_PARROT = createEvent("entity.twilightforest.parrot.imitate.wraith");
 
+	public static final DeferredHolder<SoundEvent, SoundEvent> JAR_BREAK = createEvent("block.twilightforest.jar.break");
+	public static final DeferredHolder<SoundEvent, SoundEvent> JAR_STEP = createEvent("block.twilightforest.jar.step");
+	public static final DeferredHolder<SoundEvent, SoundEvent> JAR_PLACE = createEvent("block.twilightforest.jar.place");
+	public static final DeferredHolder<SoundEvent, SoundEvent> JAR_HIT = createEvent("block.twilightforest.jar.hit");
+	public static final DeferredHolder<SoundEvent, SoundEvent> JAR_FALL = createEvent("block.twilightforest.jar.fall");
+
+	public static final DeferredHolder<SoundEvent, SoundEvent> JAR_INSERT = createEvent("block.twilightforest.jar.insert");
+	public static final DeferredHolder<SoundEvent, SoundEvent> JAR_REMOVE = createEvent("block.twilightforest.jar.remove");
+	public static final DeferredHolder<SoundEvent, SoundEvent> JAR_LID_SWAP = createEvent("block.twilightforest.jar.lid_swap");
+	public static final DeferredHolder<SoundEvent, SoundEvent> JAR_WIGGLE = createEvent("block.twilightforest.jar.wiggle");
+
 	public static final DeferredHolder<SoundEvent, SoundEvent> MUSIC = createEvent("music.twilightforest.twilight_forest");
 
 	public static final DeferredHolder<SoundEvent, SoundEvent> MUSIC_DISC_RADIANCE = createEvent("music_disc.twilightforest.radiance");

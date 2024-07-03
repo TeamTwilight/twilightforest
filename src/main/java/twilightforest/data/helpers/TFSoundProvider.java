@@ -72,12 +72,20 @@ public abstract class TFSoundProvider extends SoundDefinitionsProvider {
 			.with(SoundDefinition.Sound.sound(referencedSound.getLocation(), SoundDefinition.SoundType.EVENT)));
 	}
 
-	public void makeNewStepSound(DeferredHolder<SoundEvent, SoundEvent> event, String baseSoundDirectory, int numberOfSounds) {
+	public void makeNewStepjSound(DeferredHolder<SoundEvent, SoundEvent> event, String baseSoundDirectory, int numberOfSounds) {
 		SoundDefinition definition = SoundDefinition.definition();
 		for (int i = 1; i <= numberOfSounds; i++) {
 			definition.with(SoundDefinition.Sound.sound(TwilightForestMod.prefix(baseSoundDirectory + (numberOfSounds > 1 ? i : "")), SoundDefinition.SoundType.SOUND));
 		}
 		this.add(event, definition.subtitle("subtitles.block.generic.footsteps"));
+	}
+
+	public void makeNewGenericSound(DeferredHolder<SoundEvent, SoundEvent> event, String baseSoundDirectory, int numberOfSounds, @Nullable String type) {
+		SoundDefinition definition = SoundDefinition.definition();
+		for (int i = 1; i <= numberOfSounds; i++) {
+			definition.with(SoundDefinition.Sound.sound(TwilightForestMod.prefix(baseSoundDirectory + (numberOfSounds > 1 ? i : "")), SoundDefinition.SoundType.SOUND));
+		}
+		this.add(event, type != null ? definition.subtitle("subtitles.block.generic." + type) : definition);
 	}
 
 	public void makeMusicDisc(DeferredHolder<SoundEvent, SoundEvent> event, String discName) {

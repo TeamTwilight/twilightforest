@@ -4,7 +4,6 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
@@ -30,6 +29,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.common.world.AuxiliaryLightManager;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.MasonJarBlockEntity;
+import twilightforest.init.TFSounds;
 
 import java.util.List;
 
@@ -63,30 +63,31 @@ public class MasonJarBlock extends JarBlock implements SimpleWaterloggedBlock {
 						if (!test.isEmpty()) {
 							if (player.isSecondaryUseActive()) {
 								player.displayClientMessage(Component.literal(test.getItem().getName(test).getString() + " x" + test.getCount()), true);
-								serverLevel.playSound(null, pos, SoundEvents.DECORATED_POT_INSERT_FAIL, SoundSource.BLOCKS, 1.0F, 1.0F);
+								serverLevel.playSound(null, pos, TFSounds.JAR_WIGGLE.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
 								blockEntity.wobble(DecoratedPotBlockEntity.WobbleStyle.NEGATIVE);
 							} else {
 								ItemStack attainedStack = handler.extractItem(0, Integer.MAX_VALUE, false);
 								player.setItemInHand(hand, attainedStack);
+								serverLevel.playSound(null, pos, TFSounds.JAR_REMOVE.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
 								serverLevel.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
 							}
 						} else {
-							serverLevel.playSound(null, pos, SoundEvents.DECORATED_POT_INSERT_FAIL, SoundSource.BLOCKS, 1.0F, 1.0F);
+							serverLevel.playSound(null, pos, TFSounds.JAR_WIGGLE.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
 							blockEntity.wobble(DecoratedPotBlockEntity.WobbleStyle.NEGATIVE);
 						}
 					} else if (handler.insertItem(0, stack, true).getCount() < stack.getCount()) {
-						blockEntity.setItemRotation(RotationSegment.convertToSegment(player.getYRot() + 180.0F)); // TODO
+						blockEntity.setItemRotation(RotationSegment.convertToSegment(player.getYRot() + 180.0F));
 						player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
 						ItemStack inserted = stack.copy();
 						ItemStack returned = handler.insertItem(0, stack, false);
 
 						player.setItemInHand(hand, returned);
 						float pitch = (float) (inserted.getCount() - returned.getCount()) / (float) inserted.getMaxStackSize();
-						serverLevel.playSound(null, pos, SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 1.0F, 0.7F + 0.5F * pitch); // FIXME
+						serverLevel.playSound(null, pos, TFSounds.JAR_INSERT.get(), SoundSource.BLOCKS, 1.0F, 0.7F + 0.5F * pitch); // FIXME
 
 						serverLevel.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
 					} else {
-						serverLevel.playSound(null, pos, SoundEvents.DECORATED_POT_INSERT_FAIL, SoundSource.BLOCKS, 1.0F, 1.0F);
+						serverLevel.playSound(null, pos, TFSounds.JAR_WIGGLE.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
 						blockEntity.wobble(DecoratedPotBlockEntity.WobbleStyle.NEGATIVE);
 					}
 				}
