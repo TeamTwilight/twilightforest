@@ -279,13 +279,16 @@ public class ASMHooks {
 	}
 
 	/**
-	 * Injection Point:<br>
-	 * {@link net.minecraft.world.entity.decoration.LeashFenceKnotEntity#survives()}<br>
-	 * [BEFORE IRETURN]
+	 * {@link twilightforest.asm.transformers.lead.LeashFenceKnotSurvivesTransformer}<p/>
+	 *
+	 * Injection Point:<br/>
+	 * {@link net.minecraft.world.entity.decoration.LeashFenceKnotEntity#survives()}
 	 */
-	public static boolean lead(boolean o, LeashFenceKnotEntity entity) {
+	public static boolean leashFenceKnotSurvives(boolean o, LeashFenceKnotEntity entity) {
+		if (o)
+			return true; // Short-circuit to avoid an unnecessary #getBlockState call
 		BlockState fenceState = entity.level().getBlockState(entity.getPos());
-		return o || (fenceState.is(TFBlocks.WROUGHT_IRON_FENCE) && fenceState.getValue(WroughtIronFenceBlock.POST) != WroughtIronFenceBlock.PostState.NONE);
+		return fenceState.is(TFBlocks.WROUGHT_IRON_FENCE) && fenceState.getValue(WroughtIronFenceBlock.POST) != WroughtIronFenceBlock.PostState.NONE;
 	}
 
 	/**

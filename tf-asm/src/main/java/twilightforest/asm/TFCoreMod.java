@@ -10,6 +10,7 @@ import twilightforest.asm.transformers.chunk.ChunkStatusTaskTransformer;
 import twilightforest.asm.transformers.cloud.IsRainingAtTransformer;
 import twilightforest.asm.transformers.conquered.StructureStartLoadStaticTransformer;
 import twilightforest.asm.transformers.foliage.FoliageColorResolverTransformer;
+import twilightforest.asm.transformers.lead.LeashFenceKnotSurvivesTransformer;
 
 import java.util.List;
 
@@ -35,7 +36,10 @@ public class TFCoreMod implements ICoreMod {
 			new StructureStartLoadStaticTransformer(),
 
 			// foliage
-			new FoliageColorResolverTransformer()
+			new FoliageColorResolverTransformer(),
+
+			// lead
+			new LeashFenceKnotSurvivesTransformer()
 		);
 	}
 }

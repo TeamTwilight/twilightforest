@@ -5,7 +5,6 @@
   "multipart": "META-INF/asm/multipart.js",
   "mount": "META-INF/asm/mount.js",
   "shroom": "META-INF/asm/shroom.js",
-  "lead": "META-INF/asm/lead.js",
   "structure_terraform": "META-INF/asm/structure_terraform.js",
   "structure_scan": "META-INF/asm/structure_scan.js"
 }
