@@ -193,11 +193,12 @@ public class ASMHooks {
 	}
 
 	/**
-	 * Injection Point:<br>
-	 * {@link net.minecraft.client.renderer.BiomeColors#FOLIAGE_COLOR_RESOLVER}<br>
-	 * [BEFORE IRETURN]
+	 * {@link twilightforest.asm.transformers.foliage.FoliageColorResolverTransformer}<p/>
+	 *
+	 * Injection Point:<br/>
+	 * {@link net.minecraft.client.renderer.BiomeColors#FOLIAGE_COLOR_RESOLVER}
 	 */
-	public static int foliage(int o, Biome biome, double x, double z) {
+	public static int resolveFoliageColor(int o, Biome biome, double x, double z) {
 		return FoliageColorHandler.get(o, biome, x, z);
 	}
 

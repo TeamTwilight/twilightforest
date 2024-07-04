@@ -3,7 +3,6 @@
   "maprendercontext": "META-INF/asm/maprender.js",
   "music": "META-INF/asm/music.js",
   "multipart": "META-INF/asm/multipart.js",
-  "foliage": "META-INF/asm/foliage.js",
   "mount": "META-INF/asm/mount.js",
   "shroom": "META-INF/asm/shroom.js",
   "lead": "META-INF/asm/lead.js",

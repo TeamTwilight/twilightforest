@@ -9,6 +9,7 @@ import twilightforest.asm.transformers.book.ModifyWrittenBookNameTransformer;
 import twilightforest.asm.transformers.chunk.ChunkStatusTaskTransformer;
 import twilightforest.asm.transformers.cloud.IsRainingAtTransformer;
 import twilightforest.asm.transformers.conquered.StructureStartLoadStaticTransformer;
+import twilightforest.asm.transformers.foliage.FoliageColorResolverTransformer;
 
 import java.util.List;
 
@@ -31,7 +32,10 @@ public class TFCoreMod implements ICoreMod {
 			new IsRainingAtTransformer(),
 
 			// conquered
-			new StructureStartLoadStaticTransformer()
+			new StructureStartLoadStaticTransformer(),
+
+			// foliage
+			new FoliageColorResolverTransformer()
 		);
 	}
 }
