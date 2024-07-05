@@ -24,7 +24,7 @@
       "parallax": {
         "type": "view_angle",
         "height": 32,
-        "multiplier": 0.02,
+        "multiplier": 0.005,
         "width": 44
       },
       "path": "agate_jungle"
@@ -34,10 +34,14 @@
       "parallax": {
         "type": "view_angle",
         "height": 32,
-        "multiplier": 0.025,
+        "multiplier": 0.006,
         "width": 58
       },
       "path": "crystal_plains"
+    },
+    {
+      "fullbright": false,
+      "path": "frame"
     }
   ],
   "width": 32

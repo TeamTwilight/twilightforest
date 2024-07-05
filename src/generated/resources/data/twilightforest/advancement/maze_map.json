@@ -1,0 +1,39 @@
+{
+  "parent": "twilightforest:magic_map",
+  "criteria": {
+    "maze_map": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:filled_maze_map"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.twilightforest.maze_map.desc",
+      "with": [
+        {
+          "translate": "item.twilightforest.filled_maze_map"
+        }
+      ]
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "twilightforest:filled_maze_map"
+    },
+    "title": {
+      "translate": "advancement.twilightforest.maze_map"
+    }
+  },
+  "requirements": [
+    [
+      "maze_map"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

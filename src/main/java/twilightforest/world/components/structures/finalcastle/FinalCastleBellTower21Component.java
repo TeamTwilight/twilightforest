@@ -28,6 +28,7 @@ public class FinalCastleBellTower21Component extends FinalCastleMazeTower13Compo
 		super(TFStructurePieceTypes.TFFCBelTo.get(), nbt);
 	}
 
+	@SuppressWarnings("this-escape")
 	public FinalCastleBellTower21Component(int i, int x, int y, int z, Direction direction) {
 		super(TFStructurePieceTypes.TFFCBelTo.get(), i, x, y, z, FLOORS, 1, TFBlocks.BLUE_CASTLE_RUNE_BRICK.get().defaultBlockState(), direction);
 		this.size = 21;

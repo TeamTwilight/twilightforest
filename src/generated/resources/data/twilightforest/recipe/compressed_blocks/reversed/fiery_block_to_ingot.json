@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "fiery_ingot",
+  "ingredients": [
+    {
+      "tag": "c:storage_blocks/fiery"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "id": "twilightforest:fiery_ingot"
+  }
+}

@@ -19,6 +19,7 @@ public class LichPopMobsGoal extends Goal {
 
 	private final Lich lich;
 
+	@SuppressWarnings("this-escape")
 	public LichPopMobsGoal(Lich lich) {
 		this.lich = lich;
 		this.setFlags(EnumSet.of(Flag.LOOK, Flag.MOVE));
@@ -44,40 +45,38 @@ public class LichPopMobsGoal extends Goal {
 	@Override
 	public boolean canUse() {
 		return !this.lich.isShadowClone() &&
-				this.lich.getHealth() < this.lich.getMaxHealth() &&
-				this.lich.getPopCooldown() == 0 &&
-				!this.lich.level().getEntitiesOfClass(Mob.class,
-						this.lich.getBoundingBox().inflate(32.0D, 16.0D, 32.0D),
-						e -> e.getType().is(EntityTagGenerator.LICH_POPPABLES) && this.lich.hasLineOfSight(e)).isEmpty();
+			this.lich.getHealth() < this.lich.getMaxHealth() &&
+			this.lich.getPopCooldown() == 0 &&
+			!this.lich.level().getEntitiesOfClass(Mob.class,
+				this.lich.getBoundingBox().inflate(32.0D, 16.0D, 32.0D),
+				e -> e.getType().is(EntityTagGenerator.LICH_POPPABLES) && this.lich.hasLineOfSight(e)).isEmpty();
 	}
 
 	@Override
 	public void tick() {
 		super.tick();
-		if (this.lich.getScepterTimeLeft() > 0) return;
-		for (Mob mob : this.lich.level().getEntitiesOfClass(Mob.class, this.lich.getBoundingBox().inflate(32.0D, 16.0D, 32.0D), e -> e.getType().is(EntityTagGenerator.LICH_POPPABLES))) {
+		if (this.lich.getScepterTimeLeft() > 0 || this.lich.level().isClientSide()) return;
+		for (Mob mob : this.lich.level().getEntitiesOfClass(Mob.class, this.lich.getBoundingBox().inflate(32.0D, 16.0D, 32.0D), e -> e.getType().is(EntityTagGenerator.LICH_POPPABLES) && e != this.lich)) {
 			if (this.lich.getSensing().hasLineOfSight(mob)) {
-				if (!this.lich.level().isClientSide()) {
-					mob.discard();
-					//rain particles
-					LifedrainScepterItem.animateTargetShatter((ServerLevel) this.lich.level(), mob);
-					// play death sound
-					SoundEvent deathSound = EntityUtil.getDeathSound(mob);
-					if (deathSound != null) {
-						this.lich.level().playSound(null, mob.blockPosition(), deathSound, SoundSource.HOSTILE, 1.0F, mob.getVoicePitch());
-					}
-					//funny pop sound
-					this.lich.playSound(TFSounds.LICH_POP_MOB.get(), 3.0F, 0.4F + this.lich.getRandom().nextFloat() * 0.2F);
-					mob.playSound(TFSounds.LICH_POP_MOB.get(), 3.0F, 0.4F + this.lich.getRandom().nextFloat() * 0.2F);
-					// make trail so it's clear that we did it
-					this.lich.makeMagicTrail(mob.getEyePosition(), this.lich.getEyePosition(), 1.0F, 0.5F, 0.5F);
-					//heal a little health
-					this.lich.heal(2.0F);
-					this.lich.swing(InteractionHand.MAIN_HAND);
-					this.lich.setPopCooldown(40);
-					this.lich.gameEvent(GameEvent.ENTITY_DIE);
-					break;
+				mob.discard();
+				//rain particles
+				LifedrainScepterItem.animateTargetShatter((ServerLevel) this.lich.level(), mob);
+				// play death sound
+				SoundEvent deathSound = EntityUtil.getDeathSound(mob);
+				if (deathSound != null) {
+					this.lich.level().playSound(null, mob.blockPosition(), deathSound, SoundSource.HOSTILE, 1.0F, mob.getVoicePitch());
 				}
+				//funny pop sound
+				this.lich.playSound(TFSounds.LICH_POP_MOB.get(), 3.0F, 0.4F + this.lich.getRandom().nextFloat() * 0.2F);
+				mob.playSound(TFSounds.LICH_POP_MOB.get(), 3.0F, 0.4F + this.lich.getRandom().nextFloat() * 0.2F);
+				// make trail so it's clear that we did it
+				this.lich.makeMagicTrail(mob.getEyePosition(), this.lich.getEyePosition(), 1.0F, 0.5F, 0.5F);
+				//heal a little health
+				this.lich.heal(2.0F);
+				this.lich.swing(InteractionHand.MAIN_HAND);
+				this.lich.setPopCooldown(40);
+				this.lich.gameEvent(GameEvent.ENTITY_DIE);
+				break;
 			}
 		}
 	}

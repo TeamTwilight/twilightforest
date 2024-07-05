@@ -4,9 +4,9 @@ import com.google.common.collect.ImmutableSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.Display;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.Sheep;
-import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.WorldGenLevel;
@@ -20,11 +20,13 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.phys.Vec3;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
 import twilightforest.util.ColorUtil;
 
 import java.util.Set;
+import java.util.function.Consumer;
 
 @Deprecated
 // We keep rehashing Vanillacopies and they'll keep breaking between ports, we should be adding TwilightFeature to the
@@ -34,42 +36,43 @@ public abstract class TFStructureComponent extends StructurePiece {
 	public TFStructureDecorator deco = null;
 	public int spawnListIndex = 0;
 	private static final Set<Block> BLOCKS_NEEDING_POSTPROCESSING = ImmutableSet.<Block>builder()
-			.add(Blocks.NETHER_BRICK_FENCE)
-			.add(Blocks.TORCH)
-			.add(Blocks.WALL_TORCH)
-			.add(Blocks.OAK_FENCE)
-			.add(Blocks.SPRUCE_FENCE)
-			.add(Blocks.DARK_OAK_FENCE)
-			.add(Blocks.ACACIA_FENCE)
-			.add(Blocks.BIRCH_FENCE)
-			.add(Blocks.JUNGLE_FENCE)
-			.add(Blocks.LADDER)
-			.add(Blocks.IRON_BARS)
-			.add(Blocks.GLASS_PANE)
-			.add(Blocks.OAK_STAIRS)
-			.add(Blocks.SPRUCE_STAIRS)
-			.add(Blocks.BIRCH_STAIRS)
-			.add(Blocks.COBBLESTONE_WALL)
-			.add(Blocks.RED_MUSHROOM_BLOCK)
-			.add(Blocks.BROWN_MUSHROOM_BLOCK)
-			.add(Blocks.REDSTONE_WIRE)
-			.add(Blocks.TRIPWIRE)
-			.add(Blocks.TRIPWIRE_HOOK)
-			.add(Blocks.CHEST)
-			.add(Blocks.TRAPPED_CHEST)
-			.add(Blocks.STONE_BRICK_STAIRS)
-			.add(Blocks.LAVA)
-			.add(Blocks.WATER)
-			.add(Blocks.QUARTZ_STAIRS)
-			.add(TFBlocks.CASTLE_BRICK_STAIRS.get())
-			.add(TFBlocks.BLUE_FORCE_FIELD.get())
-			.add(TFBlocks.GREEN_FORCE_FIELD.get())
-			.add(TFBlocks.PINK_FORCE_FIELD.get())
-			.add(TFBlocks.VIOLET_FORCE_FIELD.get())
-			.add(TFBlocks.ORANGE_FORCE_FIELD.get())
-			.add(TFBlocks.BROWN_THORNS.get())
-			.add(TFBlocks.GREEN_THORNS.get())
-			.build();
+		.add(Blocks.NETHER_BRICK_FENCE)
+		.add(Blocks.TORCH)
+		.add(Blocks.WALL_TORCH)
+		.add(Blocks.OAK_FENCE)
+		.add(Blocks.SPRUCE_FENCE)
+		.add(Blocks.DARK_OAK_FENCE)
+		.add(Blocks.ACACIA_FENCE)
+		.add(Blocks.BIRCH_FENCE)
+		.add(Blocks.JUNGLE_FENCE)
+		.add(Blocks.LADDER)
+		.add(Blocks.IRON_BARS)
+		.add(Blocks.GLASS_PANE)
+		.add(Blocks.OAK_STAIRS)
+		.add(Blocks.SPRUCE_STAIRS)
+		.add(Blocks.BIRCH_STAIRS)
+		.add(Blocks.COBBLESTONE_WALL)
+		.add(Blocks.RED_MUSHROOM_BLOCK)
+		.add(Blocks.BROWN_MUSHROOM_BLOCK)
+		.add(Blocks.REDSTONE_WIRE)
+		.add(Blocks.TRIPWIRE)
+		.add(Blocks.TRIPWIRE_HOOK)
+		.add(Blocks.CHEST)
+		.add(Blocks.TRAPPED_CHEST)
+		.add(Blocks.STONE_BRICK_STAIRS)
+		.add(Blocks.LAVA)
+		.add(Blocks.WATER)
+		.add(Blocks.QUARTZ_STAIRS)
+		.add(TFBlocks.CASTLE_BRICK_STAIRS.get())
+		.add(TFBlocks.BLUE_FORCE_FIELD.get())
+		.add(TFBlocks.GREEN_FORCE_FIELD.get())
+		.add(TFBlocks.PINK_FORCE_FIELD.get())
+		.add(TFBlocks.VIOLET_FORCE_FIELD.get())
+		.add(TFBlocks.ORANGE_FORCE_FIELD.get())
+		.add(TFBlocks.BROWN_THORNS.get())
+		.add(TFBlocks.GREEN_THORNS.get())
+		.add(Blocks.GRAVEL)
+		.build();
 
 
 	public TFStructureComponent(StructurePieceType piece, CompoundTag nbt) {
@@ -108,26 +111,18 @@ public abstract class TFStructureComponent extends StructurePiece {
 		}
 	}
 
-	@SuppressWarnings({"SameParameterValue", "unused"})
-	protected void setDebugEntity(WorldGenLevel world, int x, int y, int z, BoundingBox sbb, String s) {
-		setInvisibleTextEntity(world, x, y, z, sbb, s, shouldDebug(), 0f);
-	}
-
-	protected void setInvisibleTextEntity(WorldGenLevel world, int x, int y, int z, BoundingBox sbb, String s, boolean forcePlace, float additionalYOffset) {
+	protected void setInvisibleTextEntity(WorldGenLevel world, int x, int y, int z, BoundingBox sbb, String s, boolean forcePlace, float additionalYOffset, Consumer<Vec3> positionAccumulator, Display.BillboardConstraints billboardConstraint) {
 		if (forcePlace) {
 			final BlockPos pos = new BlockPos(this.getWorldX(x, z), this.getWorldY(y), this.getWorldZ(x, z));
 
 			if (sbb.isInside(pos)) {
-				final ArmorStand armorStand = new ArmorStand(EntityType.ARMOR_STAND, world.getLevel());
-				armorStand.setCustomName(Component.literal(s));
-				armorStand.moveTo(pos.getX() + 0.5, pos.getY() + additionalYOffset, pos.getZ() + 0.5, 0, 0);
-				armorStand.setInvisible(true);
-				armorStand.setCustomNameVisible(true);
-				armorStand.setSilent(true);
-				armorStand.setNoGravity(true);
-				// set marker flag
-				armorStand.getEntityData().set(ArmorStand.DATA_CLIENT_FLAGS, (byte) (armorStand.getEntityData().get(ArmorStand.DATA_CLIENT_FLAGS) | 16));
-				world.addFreshEntity(armorStand);
+				final Display.TextDisplay display = new Display.TextDisplay(EntityType.TEXT_DISPLAY, world.getLevel());
+				display.setText(Component.literal(s));
+				display.setBillboardConstraints(billboardConstraint);
+				display.moveTo(pos.getX() + 0.5, pos.getY() + additionalYOffset, pos.getZ() + 0.5, 0, 0);
+
+				if (world.addFreshEntity(display))
+					positionAccumulator.accept(display.position());
 			}
 		}
 	}

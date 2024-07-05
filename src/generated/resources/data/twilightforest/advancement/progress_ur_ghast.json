@@ -1,0 +1,91 @@
+{
+  "parent": "twilightforest:ghast_trap",
+  "criteria": {
+    "ghast": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "twilightforest:ur_ghast"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "previous_progression": {
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type_specific": {
+                "type": "minecraft:player",
+                "advancements": {
+                  "twilightforest:progress_knights": true
+                }
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:tick"
+    },
+    "trophy": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:ur_ghast_trophy"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "was_in_fight": {
+      "conditions": {
+        "hurt_entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "twilightforest:ur_ghast"
+            }
+          }
+        ]
+      },
+      "trigger": "twilightforest:hurt_boss"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.twilightforest.progress_ur_ghast.desc",
+      "with": [
+        {
+          "translate": "entity.twilightforest.ur_ghast"
+        }
+      ]
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "twilightforest:ur_ghast_trophy"
+    },
+    "title": {
+      "translate": "advancement.twilightforest.progress_ur_ghast"
+    }
+  },
+  "requirements": [
+    [
+      "ghast",
+      "trophy",
+      "was_in_fight"
+    ],
+    [
+      "previous_progression"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,8 +1,9 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
 import twilightforest.TwilightForestMod;
 
 public class HydraNeck extends HydraPart {
@@ -16,7 +17,12 @@ public class HydraNeck extends HydraPart {
 		this.head = head;
 	}
 
-	@OnlyIn(Dist.CLIENT)
+	@Override
+	public InteractionResult interact(Player player, InteractionHand hand) {
+		return this.head.interact(player, hand);
+	}
+
+	@Override
 	public ResourceLocation renderer() {
 		return RENDERER;
 	}

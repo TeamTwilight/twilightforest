@@ -11,8 +11,8 @@ import twilightforest.init.TFParticleType;
 
 public class MagicLeavesBlock extends TFLeavesBlock {
 
-	public MagicLeavesBlock(BlockBehaviour.Properties props) {
-		super(props);
+	public MagicLeavesBlock(BlockBehaviour.Properties properties) {
+		super(properties);
 	}
 
 	@Override

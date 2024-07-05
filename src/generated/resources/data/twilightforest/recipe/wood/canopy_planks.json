@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "planks",
+  "ingredients": [
+    {
+      "tag": "twilightforest:canopy_logs"
+    }
+  ],
+  "result": {
+    "count": 4,
+    "id": "twilightforest:canopy_planks"
+  }
+}

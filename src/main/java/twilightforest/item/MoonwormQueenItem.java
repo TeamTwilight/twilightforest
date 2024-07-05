@@ -2,7 +2,8 @@ package twilightforest.item;
 
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -15,6 +16,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.component.BlockItemStateProperties;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -22,8 +24,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.projectile.MoonwormShot;
@@ -53,11 +53,6 @@ public class MoonwormQueenItem extends Item {
 	}
 
 	@Override
-	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-		return false;
-	}
-
-	@Override
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 		if (stack.getDamageValue() + 1 >= this.getMaxDamage(stack)) {
@@ -81,31 +76,34 @@ public class MoonwormQueenItem extends Item {
 			pos = pos.relative(context.getClickedFace());
 		}
 
-		ItemStack itemstack = player.getItemInHand(context.getHand());
+		if (player != null) {
+			ItemStack itemstack = player.getItemInHand(context.getHand());
 
-		if (itemstack.getDamageValue() < itemstack.getMaxDamage() && player.mayUseItemAt(pos, context.getClickedFace(), itemstack) && level.isUnobstructed(TFBlocks.MOONWORM.get().defaultBlockState(), pos, CollisionContext.empty())) {
-			if (this.tryPlace(blockItemUseContext).shouldSwing()) {
-				SoundType soundtype = level.getBlockState(pos).getBlock().getSoundType(level.getBlockState(pos), level, pos, player);
-				level.playSound(player, pos, soundtype.getPlaceSound(), SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
-				// TF - damage stack instead of shrinking
-				player.stopUsingItem();
+			if (itemstack.getDamageValue() < itemstack.getMaxDamage() && player.mayUseItemAt(pos, context.getClickedFace(), itemstack) && level.isUnobstructed(TFBlocks.MOONWORM.get().defaultBlockState(), pos, CollisionContext.empty())) {
+				if (this.tryPlace(blockItemUseContext).shouldSwing()) {
+					SoundType soundtype = level.getBlockState(pos).getBlock().getSoundType(level.getBlockState(pos), level, pos, player);
+					level.playSound(player, pos, soundtype.getPlaceSound(), SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
+					// TF - damage stack instead of shrinking
+					player.stopUsingItem();
+				}
+
+				return InteractionResult.SUCCESS;
+			} else {
+				return InteractionResult.FAIL;
 			}
-
-			return InteractionResult.SUCCESS;
-		} else {
-			return InteractionResult.FAIL;
 		}
+		return InteractionResult.FAIL;
 	}
 
 
 	@Override
 	public void releaseUsing(ItemStack stack, Level level, LivingEntity living, int useRemaining) {
-		int useTime = this.getUseDuration(stack) - useRemaining;
+		int useTime = this.getUseDuration(stack, living) - useRemaining;
 
 		if (!level.isClientSide() && useTime > FIRING_TIME && (stack.getDamageValue() + 1) < stack.getMaxDamage()) {
 
 			if (level.addFreshEntity(new MoonwormShot(TFEntities.MOONWORM_SHOT.get(), level, living))) {
-				if (living instanceof Player player && !player.getAbilities().instabuild) stack.hurt(2, level.getRandom(), null);
+				if (living instanceof Player player && !player.getAbilities().instabuild) stack.hurtAndBreak(2, (ServerLevel) level, player, item -> {});
 
 				level.playSound(null, living.getX(), living.getY(), living.getZ(), TFSounds.MOONWORM_SQUISH.get(), living instanceof Player ? SoundSource.PLAYERS : SoundSource.NEUTRAL, 1.0F, 1.0F);
 			}
@@ -120,7 +118,7 @@ public class MoonwormQueenItem extends Item {
 	}
 
 	@Override
-	public int getUseDuration(ItemStack stack) {
+	public int getUseDuration(ItemStack stack, LivingEntity user) {
 		return 72000;
 	}
 
@@ -157,7 +155,7 @@ public class MoonwormQueenItem extends Item {
 					SoundType soundtype = blockstate1.getSoundType(world, blockpos, context.getPlayer());
 					world.playSound(playerentity, blockpos, this.getPlaceSound(blockstate1, world, blockpos, Objects.requireNonNull(context.getPlayer())), SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
 					if (playerentity == null || !playerentity.getAbilities().instabuild) {
-						itemstack.hurt(1, world.random, null);
+						itemstack.hurtAndBreak(1, (ServerLevel) world, playerentity, item -> {});
 					}
 
 					return InteractionResult.SUCCESS;
@@ -192,30 +190,17 @@ public class MoonwormQueenItem extends Item {
 	}
 
 	private BlockState updateBlockStateFromTag(BlockPos pos, Level level, ItemStack stack, BlockState state) {
-		BlockState blockstate = state;
-		CompoundTag compoundnbt = stack.getTag();
-		if (compoundnbt != null) {
-			CompoundTag compoundnbt1 = compoundnbt.getCompound("BlockStateTag");
-			StateDefinition<Block, BlockState> statecontainer = state.getBlock().getStateDefinition();
-
-			for (String s : compoundnbt1.getAllKeys()) {
-				Property<?> property = statecontainer.getProperty(s);
-				if (property != null) {
-					String s1 = compoundnbt1.get(s).getAsString();
-					blockstate = updateState(blockstate, property, s1);
-				}
+		BlockItemStateProperties blockitemstateproperties = stack.getOrDefault(DataComponents.BLOCK_STATE, BlockItemStateProperties.EMPTY);
+		if (blockitemstateproperties.isEmpty()) {
+			return state;
+		} else {
+			BlockState blockstate = blockitemstateproperties.apply(state);
+			if (blockstate != state) {
+				level.setBlock(pos, blockstate, 2);
 			}
+
+			return blockstate;
 		}
-
-		if (blockstate != state) {
-			level.setBlock(pos, blockstate, 2);
-		}
-
-		return blockstate;
-	}
-
-	private static <T extends Comparable<T>> BlockState updateState(BlockState state, Property<T> property, String name) {
-		return property.getValue(name).map(value -> state.setValue(property, value)).orElse(state);
 	}
 
 	protected boolean placeBlock(BlockPlaceContext context, BlockState state) {

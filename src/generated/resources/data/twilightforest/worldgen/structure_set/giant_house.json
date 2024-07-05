@@ -1,0 +1,11 @@
+{
+  "placement": {
+    "type": "twilightforest:landmark_grid"
+  },
+  "structures": [
+    {
+      "structure": "twilightforest:giant_house",
+      "weight": 1
+    }
+  ]
+}

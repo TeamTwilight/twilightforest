@@ -1,6 +1,0 @@
-{
-  "type": "twilightforest:transformation_powder",
-  "from": "twilightforest:swarm_spider",
-  "reversible": true,
-  "to": "minecraft:cave_spider"
-}

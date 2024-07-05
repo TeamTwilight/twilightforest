@@ -19,6 +19,9 @@
     {
       "type": "minecraft:count",
       "count": 20
+    },
+    {
+      "type": "minecraft:biome"
     }
   ]
 }

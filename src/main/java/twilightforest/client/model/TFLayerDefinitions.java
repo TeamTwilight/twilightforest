@@ -4,10 +4,10 @@ import net.minecraft.client.model.*;
 import net.minecraft.client.model.geom.LayerDefinitions;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.armor.*;
 import twilightforest.client.model.entity.*;
@@ -18,13 +18,13 @@ import twilightforest.client.renderer.entity.TwilightBoatRenderer;
 import twilightforest.client.renderer.tileentity.CasketTileEntityRenderer;
 import twilightforest.entity.TwilightBoat;
 
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
 public class TFLayerDefinitions {
 
 	@SubscribeEvent
 	public static void registerLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
 
-		for(TwilightBoat.Type boatType : TwilightBoat.Type.values()) {
+		for (TwilightBoat.Type boatType : TwilightBoat.Type.values()) {
 			event.registerLayerDefinition(TwilightBoatRenderer.createBoatModelName(boatType), BoatModel::createBodyModel);
 			event.registerLayerDefinition(TwilightBoatRenderer.createChestBoatModelName(boatType), ChestBoatModel::createBodyModel);
 		}
@@ -77,7 +77,7 @@ public class TFLayerDefinitions {
 		event.registerLayerDefinition(TFModelLayers.HARBINGER_CUBE, HarbingerCubeModel::create);
 		event.registerLayerDefinition(TFModelLayers.HEDGE_SPIDER, SpiderModel::createSpiderBodyLayer);
 		event.registerLayerDefinition(TFModelLayers.HELMET_CRAB, NewHelmetCrabModel::create);
-		event.registerLayerDefinition(TFModelLayers.HOSTILE_WOLF, HostileWolfModel::create);
+		event.registerLayerDefinition(TFModelLayers.HOSTILE_WOLF, () -> LayerDefinition.create(WolfModel.createMeshDefinition(CubeDeformation.NONE), 64, 32));
 		event.registerLayerDefinition(TFModelLayers.HYDRA_HEAD, NewHydraHeadModel::create);
 		event.registerLayerDefinition(TFModelLayers.HYDRA, NewHydraModel::create);
 		event.registerLayerDefinition(TFModelLayers.HYDRA_MORTAR, HydraMortarModel::create);
@@ -94,7 +94,7 @@ public class TFLayerDefinitions {
 		event.registerLayerDefinition(TFModelLayers.MAZE_SLIME_OUTER, SlimeModel::createOuterBodyLayer);
 		event.registerLayerDefinition(TFModelLayers.MINOSHROOM, NewMinoshroomModel::create);
 		event.registerLayerDefinition(TFModelLayers.MINOTAUR, NewMinotaurModel::create);
-		event.registerLayerDefinition(TFModelLayers.MIST_WOLF, WolfModel::createBodyLayer);
+		event.registerLayerDefinition(TFModelLayers.MIST_WOLF, () -> LayerDefinition.create(WolfModel.createMeshDefinition(CubeDeformation.NONE), 64, 32));
 		event.registerLayerDefinition(TFModelLayers.MOSQUITO_SWARM, MosquitoSwarmModel::create);
 		event.registerLayerDefinition(TFModelLayers.NAGA, NewNagaModel::create);
 		event.registerLayerDefinition(TFModelLayers.NAGA_BODY, NewNagaModel::create);
@@ -123,7 +123,7 @@ public class TFLayerDefinitions {
 		event.registerLayerDefinition(TFModelLayers.UNSTABLE_ICE_CORE, UnstableIceCoreModel::create);
 		event.registerLayerDefinition(TFModelLayers.UPPER_GOBLIN_KNIGHT, NewUpperGoblinKnightModel::create);
 		event.registerLayerDefinition(TFModelLayers.UR_GHAST, NewUrGhastModel::create);
-		event.registerLayerDefinition(TFModelLayers.WINTER_WOLF, WolfModel::createBodyLayer);
+		event.registerLayerDefinition(TFModelLayers.WINTER_WOLF, () -> LayerDefinition.create(WolfModel.createMeshDefinition(CubeDeformation.NONE), 64, 32));
 		event.registerLayerDefinition(TFModelLayers.WRAITH, WraithModel::create);
 		event.registerLayerDefinition(TFModelLayers.YETI, YetiModel::create);
 

@@ -1,7 +1,6 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
@@ -19,23 +18,20 @@ import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.resources.DefaultPlayerSkin;
-import net.minecraft.core.UUIDUtil;
+import net.minecraft.client.resources.PlayerSkin;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import twilightforest.TFConfig;
+import twilightforest.config.TFConfig;
 import twilightforest.entity.monster.GiantMiner;
-
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
 
 public class TFGiantRenderer<T extends GiantMiner> extends MobRenderer<T, PlayerModel<T>> {
 	private final PlayerModel<T> normalModel;
 	private final PlayerModel<T> slimModel;
 
+	@SuppressWarnings("this-escape")
 	public TFGiantRenderer(EntityRendererProvider.Context context) {
 		super(context, new PlayerModel<>(context.bakeLayer(ModelLayers.PLAYER), false), 1.8F);
 		this.normalModel = this.getModel();
@@ -48,26 +44,18 @@ public class TFGiantRenderer<T extends GiantMiner> extends MobRenderer<T, Player
 	@Override
 	public ResourceLocation getTextureLocation(GiantMiner entity) {
 		Minecraft mc = Minecraft.getInstance();
-		ResourceLocation texture = DefaultPlayerSkin.getDefaultSkin();
+		ResourceLocation texture = DefaultPlayerSkin.getDefaultTexture();
 		this.model = this.normalModel;
 
-		GameProfile profile = TFConfig.GAME_PROFILES.isEmpty() ? null : TFConfig.GAME_PROFILES.get(Math.abs((int)entity.getUUID().getMostSignificantBits()) % TFConfig.GAME_PROFILES.size());
+		GameProfile profile = TFConfig.GAME_PROFILES.isEmpty() ? null : TFConfig.GAME_PROFILES.get(Math.abs((int) entity.getUUID().getMostSignificantBits()) % TFConfig.GAME_PROFILES.size());
 
 		if (profile != null) {
-			Map<MinecraftProfileTexture.Type, MinecraftProfileTexture> map = mc.getSkinManager().getInsecureSkinInformation(profile);
-
-			if (map.containsKey(MinecraftProfileTexture.Type.SKIN)) {
-				MinecraftProfileTexture profileTexture = map.get(MinecraftProfileTexture.Type.SKIN);
-				texture = mc.getSkinManager().registerTexture(map.get(MinecraftProfileTexture.Type.SKIN), MinecraftProfileTexture.Type.SKIN);
-				if (Objects.equals(profileTexture.getMetadata("model"), "slim")) this.model = this.slimModel;
-			} else {
-				UUID uuid = UUIDUtil.getOrCreatePlayerUUID(profile);
-				texture = DefaultPlayerSkin.getDefaultSkin(uuid);
-				if (DefaultPlayerSkin.getSkinModelName(uuid).equals("slim")) this.model = this.slimModel;
-			}
+			PlayerSkin skin = mc.getSkinManager().getInsecureSkin(profile);
+			texture = skin.texture();
+			if (skin.model().id().equals("slim")) this.model = this.slimModel;
 		} else if (mc.getCameraEntity() instanceof AbstractClientPlayer client) {
-			texture = client.getSkinTextureLocation();
-			if (client.getModelName().equals("slim")) this.model = this.slimModel;
+			texture = client.getSkin().texture();
+			if (client.getSkin().model().id().equals("slim")) this.model = this.slimModel;
 		}
 
 		return texture;
@@ -87,6 +75,7 @@ public class TFGiantRenderer<T extends GiantMiner> extends MobRenderer<T, Player
 			super(renderer);
 			this.handRenderer = handRenderer;
 		}
+
 		public void render(PoseStack stack, MultiBufferSource buffer, int light, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
 			boolean flag = entity.getMainArm() == HumanoidArm.RIGHT;
 			ItemStack itemstack = flag ? entity.getOffhandItem() : entity.getMainHandItem();
@@ -112,7 +101,7 @@ public class TFGiantRenderer<T extends GiantMiner> extends MobRenderer<T, Player
 				ms.mulPose(Axis.YP.rotationDegrees(180.0F));
 				boolean flag = arm == HumanoidArm.LEFT;
 				// TF - move item a bit to actually fit in the giant's hand (y and z changes)
-				ms.translate((float)(flag ? -1 : 1) / 16.0F, 0.0D, -0.5D);
+				ms.translate((float) (flag ? -1 : 1) / 16.0F, 0.0D, -0.5D);
 				// TF - scale items down to accurately match the actual size it would be in a giant's hand
 				ms.scale(0.25F, 0.25F, 0.25F);
 				this.handRenderer.renderItem(entity, stack, type, flag, ms, buffer, light);

@@ -1,6 +1,6 @@
 package twilightforest.world.components.processors;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelReader;
@@ -10,18 +10,17 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import twilightforest.init.TFBlocks;
-import twilightforest.util.FeaturePlacers;
-import twilightforest.init.TFStructureProcessors;
-
 import org.jetbrains.annotations.Nullable;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFStructureProcessors;
+import twilightforest.util.FeaturePlacers;
 
 public final class NagastoneVariants extends StructureProcessor {
 	public static final NagastoneVariants INSTANCE = new NagastoneVariants();
-	public static final Codec<NagastoneVariants> CODEC = Codec.unit(() -> INSTANCE);
+	public static final MapCodec<NagastoneVariants> CODEC = MapCodec.unit(() -> INSTANCE);
 
 	private NagastoneVariants() {
-    }
+	}
 
 	@Override
 	public StructureTemplate.StructureBlockInfo process(LevelReader worldIn, BlockPos pos, BlockPos piecepos, StructureTemplate.StructureBlockInfo oldInfo, StructureTemplate.StructureBlockInfo modifiedBlockInfo, StructurePlaceSettings settings, @Nullable StructureTemplate template) {

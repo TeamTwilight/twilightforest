@@ -1,21 +1,25 @@
 package twilightforest.client.renderer.entity.newmodels;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.newmodels.NewUrGhastModel;
 import twilightforest.client.renderer.entity.CarminiteGhastRenderer;
 import twilightforest.entity.boss.UrGhast;
 
-public class NewUrGhastRenderer extends CarminiteGhastRenderer<UrGhast, NewUrGhastModel> {
+public class NewUrGhastRenderer extends MobRenderer<UrGhast, NewUrGhastModel> {
 
 	private final ResourceLocation textureLocClosed = TwilightForestMod.getModelTexture("towerboss.png");
-	private final ResourceLocation textureLocOpen   = TwilightForestMod.getModelTexture("towerboss_openeyes.png");
+	private final ResourceLocation textureLocOpen = TwilightForestMod.getModelTexture("towerboss_openeyes.png");
 	private final ResourceLocation textureLocAttack = TwilightForestMod.getModelTexture("towerboss_fire.png");
+	private final float scale;
 
 	public NewUrGhastRenderer(EntityRendererProvider.Context manager, NewUrGhastModel modelTFGhast, float shadowSize, float scale) {
-		super(manager, modelTFGhast, shadowSize, scale);
+		super(manager, modelTFGhast, shadowSize);
+		this.scale = scale;
 	}
 
 	@Override
@@ -25,6 +29,21 @@ public class NewUrGhastRenderer extends CarminiteGhastRenderer<UrGhast, NewUrGha
 			case 2 -> textureLocAttack;
 			default -> textureLocClosed;
 		};
+	}
+
+	@Override
+	protected void scale(UrGhast ghast, PoseStack stack, float partialTicks) {
+		int attackTimer = ghast.getAttackTimer();
+		int prevAttackTimer = ghast.getPrevAttackTimer();
+		float scaleVariable = (prevAttackTimer + (attackTimer - prevAttackTimer) * partialTicks) / 20.0F;
+		if (scaleVariable < 0.0F) {
+			scaleVariable = 0.0F;
+		}
+
+		scaleVariable = 1.0F / (scaleVariable * scaleVariable * scaleVariable * scaleVariable * scaleVariable * 2.0F + 1.0F);
+		float yScale = (this.scale + scaleVariable) / 2.0F;
+		float xzScale = (this.scale + 1.0F / scaleVariable) / 2.0F;
+		stack.scale(xzScale, yScale, xzScale);
 	}
 
 	@Override

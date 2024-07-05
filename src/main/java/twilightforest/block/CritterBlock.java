@@ -5,17 +5,19 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.item.Equipable;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -33,6 +35,7 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.AABB;
@@ -41,15 +44,15 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import twilightforest.advancements.TFAdvancements;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.data.tags.EntityTagGenerator;
+import twilightforest.init.TFAdvancements;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFSounds;
 import twilightforest.init.TFStats;
 
-import org.jetbrains.annotations.Nullable;
+public abstract class CritterBlock extends BaseEntityBlock implements SimpleWaterloggedBlock, Equipable {
 
-public abstract class CritterBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
 	public static final DirectionProperty FACING = DirectionalBlock.FACING;
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	private final VoxelShape DOWN_BB = Shapes.create(new AABB(0.2F, 0.85F, 0.2F, 0.8F, 1.0F, 0.8F));
@@ -59,6 +62,7 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 	private final VoxelShape WEST_BB = Shapes.create(new AABB(0.85F, 0.2F, 0.2F, 1.0F, 0.8F, 0.8F));
 	private final VoxelShape EAST_BB = Shapes.create(new AABB(0.0F, 0.2F, 0.2F, 0.15F, 0.8F, 0.8F));
 
+	@SuppressWarnings("this-escape")
 	protected CritterBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.UP).setValue(WATERLOGGED, Boolean.FALSE));
@@ -119,8 +123,12 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 	@Deprecated
 	public boolean canSurvive(BlockState state, LevelReader reader, BlockPos pos) {
 		Direction facing = state.getValue(DirectionalBlock.FACING);
+		return canSurvive(reader, pos, facing);
+	}
+
+	public static boolean canSurvive(LevelReader reader, BlockPos pos, Direction facing) {
 		BlockPos restingPos = pos.relative(facing.getOpposite());
-		return canSupportCenter(reader, restingPos, facing);
+		return canSupportCenter(reader, restingPos, facing) || reader.getBlockState(restingPos).getBlock() instanceof LeavesBlock;
 	}
 
 	@Override
@@ -129,24 +137,23 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
-		ItemStack stack = player.getItemInHand(hand);
+	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
 		if (stack.getItem() == Items.GLASS_BOTTLE) {
 			if (this == TFBlocks.FIREFLY.get()) {
 				if (!player.isCreative()) stack.shrink(1);
 				player.getInventory().add(new ItemStack(TFBlocks.FIREFLY_JAR.get()));
 				level.setBlockAndUpdate(pos, state.getValue(WATERLOGGED) ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState());
-				return InteractionResult.sidedSuccess(level.isClientSide());
+				return ItemInteractionResult.sidedSuccess(level.isClientSide());
 			} else if (this == TFBlocks.CICADA.get()) {
 				if (!player.isCreative()) stack.shrink(1);
 				player.getInventory().add(new ItemStack(TFBlocks.CICADA_JAR.get()));
 				if (level.isClientSide())
 					Minecraft.getInstance().getSoundManager().stop(TFSounds.CICADA.get().getLocation(), SoundSource.NEUTRAL);
 				level.setBlockAndUpdate(pos, state.getValue(WATERLOGGED) ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState());
-				return InteractionResult.sidedSuccess(level.isClientSide());
+				return ItemInteractionResult.sidedSuccess(level.isClientSide());
 			}
 		}
-		return InteractionResult.PASS;
+		return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 	}
 
 	@Override
@@ -160,29 +167,34 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 
 			if (level instanceof ServerLevel serverLevel && this.getSquishLootTable() != null) {
 				LootParams ctx = new LootParams.Builder(serverLevel).withParameter(LootContextParams.BLOCK_STATE, state).withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos)).withParameter(LootContextParams.TOOL, ItemStack.EMPTY).create(LootContextParamSets.BLOCK);
-				serverLevel.getServer().getLootData().getLootTable(this.getSquishLootTable()).getRandomItems(ctx).forEach((stack) -> popResource(serverLevel, pos, stack));
+				serverLevel.getServer().reloadableRegistries().getLootTable(this.getSquishLootTable()).getRandomItems(ctx).forEach((stack) -> popResource(serverLevel, pos, stack));
 			}
 
 			for (int i = 0; i < 50; i++) {
 				boolean wallBug = state.getValue(FACING) != Direction.UP;
 				level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.SLIME_BLOCK.defaultBlockState()), true,
-						pos.getX() + Mth.nextFloat(level.getRandom(), 0.25F, 0.75F),
-						pos.getY() + (wallBug ? 0.5F : 0.0F),
-						pos.getZ() + Mth.nextFloat(level.getRandom(), 0.25F, 0.75F),
-						0.0D, 0.0D, 0.0D);
+					pos.getX() + Mth.nextFloat(level.getRandom(), 0.25F, 0.75F),
+					pos.getY() + (wallBug ? 0.5F : 0.0F),
+					pos.getZ() + Mth.nextFloat(level.getRandom(), 0.25F, 0.75F),
+					0.0D, 0.0D, 0.0D);
 			}
 			if (entity instanceof Projectile projectile && projectile.getOwner() instanceof ServerPlayer player) {
 				player.awardStat(TFStats.BUGS_SQUISHED.get());
-				TFAdvancements.KILL_BUG.trigger(player, state);
+				TFAdvancements.KILL_BUG.get().trigger(player, state);
 			}
 		}
 	}
 
-	public abstract @Nullable ResourceLocation getSquishLootTable(); // Oh, no!
+	public abstract @Nullable ResourceKey<LootTable> getSquishLootTable(); // Oh, no!
 
 	@Nullable
 	@Override
 	public abstract BlockEntity newBlockEntity(BlockPos pos, BlockState state);
+
+	@Override
+	public EquipmentSlot getEquipmentSlot() {
+		return EquipmentSlot.HEAD;
+	}
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {

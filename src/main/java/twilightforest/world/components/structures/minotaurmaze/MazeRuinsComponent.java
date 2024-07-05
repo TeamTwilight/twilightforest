@@ -12,9 +12,9 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.util.BoundingBoxUtils;
+import twilightforest.world.components.structures.TFStructureComponentOld;
 
 
 /**
@@ -28,8 +28,9 @@ public class MazeRuinsComponent extends TFStructureComponentOld {
 		super(TFStructurePieceTypes.TFMMRuins.get(), nbt);
 	}
 
+	@SuppressWarnings("this-escape")
 	public MazeRuinsComponent(int i, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFMMRuins.get(), i, TFLandmark.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, 0, 0, 0, Direction.SOUTH, false));
+		super(TFStructurePieceTypes.TFMMRuins.get(), i, BoundingBoxUtils.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, 0, 0, 0, Direction.SOUTH, false));
 		this.setOrientation(Direction.SOUTH);
 	}
 

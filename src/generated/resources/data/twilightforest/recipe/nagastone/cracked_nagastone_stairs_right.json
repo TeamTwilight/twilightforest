@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "#": {
+      "item": "twilightforest:cracked_etched_nagastone"
+    }
+  },
+  "pattern": [
+    "###",
+    " ##",
+    "  #"
+  ],
+  "result": {
+    "count": 8,
+    "id": "twilightforest:cracked_nagastone_stairs_right"
+  }
+}

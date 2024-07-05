@@ -14,7 +14,7 @@ public class NagaMoveControl extends MoveControl {
 	@Override
 	public void tick() {
 		// TF - slither!
-		NagaMovementPattern.MovementState currentState = ((Naga) this.mob).getMovementAI().getState();
+		NagaMovementPattern.MovementState currentState = ((Naga) this.mob).getMovementPattern().getState();
 		if (currentState == NagaMovementPattern.MovementState.DAZE) {
 			this.mob.xxa = 0F;
 		} else if (currentState != NagaMovementPattern.MovementState.CHARGE && currentState != NagaMovementPattern.MovementState.INTIMIDATE) {

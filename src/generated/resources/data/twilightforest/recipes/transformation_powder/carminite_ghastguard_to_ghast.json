@@ -1,6 +1,0 @@
-{
-  "type": "twilightforest:transformation_powder",
-  "from": "twilightforest:carminite_ghastguard",
-  "reversible": true,
-  "to": "minecraft:ghast"
-}

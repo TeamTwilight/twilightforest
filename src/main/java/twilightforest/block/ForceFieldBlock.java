@@ -56,12 +56,13 @@ public class ForceFieldBlock extends Block implements SimpleWaterloggedBlock {
 	protected static final VoxelShape SOUTH_WEST_SHAPE = Block.box(0.0D, 7.0D, 9.0D, 7.0D, 9.0D, 16.0D);
 	protected static final VoxelShape SOUTH_EAST_SHAPE = Block.box(9.0D, 7.0D, 9.0D, 16.0D, 9.0D, 16.0D);
 
+	@SuppressWarnings("this-escape")
 	public ForceFieldBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(WATERLOGGED, false)
-				.setValue(DOWN, false).setValue(UP, false)
-				.setValue(NORTH, false).setValue(SOUTH, false)
-				.setValue(WEST, false).setValue(EAST, false));
+			.setValue(DOWN, false).setValue(UP, false)
+			.setValue(NORTH, false).setValue(SOUTH, false)
+			.setValue(WEST, false).setValue(EAST, false));
 	}
 
 	@Override
@@ -115,14 +116,14 @@ public class ForceFieldBlock extends Block implements SimpleWaterloggedBlock {
 		Vec3i vec31 = dir1.getNormal();
 		Vec3i vec32 = dir2.getNormal();
 
-		return  fullFaceOrSimilarForceField(getter, pos.offset(vec31), dir1, dir2) ||
-				fullFaceOrSimilarForceField(getter, pos.offset(vec32), dir2, dir1);
+		return fullFaceOrSimilarForceField(getter, pos.offset(vec31), dir1, dir2) ||
+			fullFaceOrSimilarForceField(getter, pos.offset(vec32), dir2, dir1);
 	}
 
 	private static boolean fullFaceOrSimilarForceField(BlockGetter getter, BlockPos pos, Direction relative, Direction similar) {
 		BlockState state = getter.getBlockState(pos);
 		return state.isFaceSturdy(getter, pos, relative.getOpposite()) ||
-				(state.getBlock() instanceof ForceFieldBlock && state.getValue(PipeBlock.PROPERTY_BY_DIRECTION.get(similar)));
+			(state.getBlock() instanceof ForceFieldBlock && state.getValue(PipeBlock.PROPERTY_BY_DIRECTION.get(similar)));
 	}
 
 	@Override
@@ -172,7 +173,7 @@ public class ForceFieldBlock extends Block implements SimpleWaterloggedBlock {
 
 		for (Direction dir : Direction.values()) {
 			state = state.setValue(PipeBlock.PROPERTY_BY_DIRECTION.get(dir), clicked.getOpposite() == dir ||
-					(clicked != dir ? this.canConnectTo(null, level, pos, dir) : !context.isSecondaryUseActive()));
+				(clicked != dir ? this.canConnectTo(null, level, pos, dir) : !context.isSecondaryUseActive()));
 		}
 
 		return state;

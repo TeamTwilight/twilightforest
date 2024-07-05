@@ -1,0 +1,18 @@
+{
+  "type": "twilightforest:uncrafting",
+  "cost": 4,
+  "input": {
+    "item": "minecraft:tipped_arrow"
+  },
+  "input_count": 8,
+  "key": {
+    "A": {
+      "item": "minecraft:arrow"
+    }
+  },
+  "pattern": [
+    "AAA",
+    "A A",
+    "AAA"
+  ]
+}

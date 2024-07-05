@@ -30,11 +30,9 @@
     },
     {
       "type": "twilightforest:no_structure",
-      "value": {
-        "additional_clearance": 0,
-        "occupies_surface": true,
-        "occupies_underground": false
-      }
+      "additional_clearance": 0,
+      "occupies_surface": true,
+      "occupies_underground": false
     },
     {
       "type": "minecraft:environment_scan",

@@ -2,13 +2,12 @@ package twilightforest.init.custom;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.RegistryFileCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.registries.DeferredRegister;
+import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
 import twilightforest.util.WoodPalette;
@@ -16,19 +15,17 @@ import twilightforest.util.WoodPalette;
 import java.util.Locale;
 
 public class WoodPalettes {
-	public static final ResourceKey<Registry<WoodPalette>> WOOD_PALETTE_TYPE_KEY = ResourceKey.createRegistryKey(TwilightForestMod.namedRegistry("wood_palettes"));
-	public static final DeferredRegister<WoodPalette> WOOD_PALETTES = DeferredRegister.create(WOOD_PALETTE_TYPE_KEY, TwilightForestMod.ID);
-	public static final Codec<Holder<WoodPalette>> CODEC = RegistryFileCodec.create(WoodPalettes.WOOD_PALETTE_TYPE_KEY, WoodPalette.CODEC, false);
+	public static final Codec<Holder<WoodPalette>> CODEC = RegistryFileCodec.create(TFRegistries.Keys.WOOD_PALETTES, WoodPalette.CODEC, false);
 
-	public static final ResourceKey<WoodPalette> OAK = makeKey(new ResourceLocation("oak"));
-	public static final ResourceKey<WoodPalette> SPRUCE = makeKey(new ResourceLocation("spruce"));
-	public static final ResourceKey<WoodPalette> BIRCH = makeKey(new ResourceLocation("birch"));
-	public static final ResourceKey<WoodPalette> JUNGLE = makeKey(new ResourceLocation("jungle"));
-	public static final ResourceKey<WoodPalette> ACACIA = makeKey(new ResourceLocation("acacia"));
-	public static final ResourceKey<WoodPalette> DARK_OAK = makeKey(new ResourceLocation("dark_oak"));
-	public static final ResourceKey<WoodPalette> CRIMSON = makeKey(new ResourceLocation("crimson"));
-	public static final ResourceKey<WoodPalette> WARPED = makeKey(new ResourceLocation("warped"));
-	public static final ResourceKey<WoodPalette> VANGROVE = makeKey(new ResourceLocation("mangrove"));
+	public static final ResourceKey<WoodPalette> OAK = makeKey(ResourceLocation.withDefaultNamespace("oak"));
+	public static final ResourceKey<WoodPalette> SPRUCE = makeKey(ResourceLocation.withDefaultNamespace("spruce"));
+	public static final ResourceKey<WoodPalette> BIRCH = makeKey(ResourceLocation.withDefaultNamespace("birch"));
+	public static final ResourceKey<WoodPalette> JUNGLE = makeKey(ResourceLocation.withDefaultNamespace("jungle"));
+	public static final ResourceKey<WoodPalette> ACACIA = makeKey(ResourceLocation.withDefaultNamespace("acacia"));
+	public static final ResourceKey<WoodPalette> DARK_OAK = makeKey(ResourceLocation.withDefaultNamespace("dark_oak"));
+	public static final ResourceKey<WoodPalette> CRIMSON = makeKey(ResourceLocation.withDefaultNamespace("crimson"));
+	public static final ResourceKey<WoodPalette> WARPED = makeKey(ResourceLocation.withDefaultNamespace("warped"));
+	public static final ResourceKey<WoodPalette> VANGROVE = makeKey(ResourceLocation.withDefaultNamespace("mangrove"));
 
 	public static final ResourceKey<WoodPalette> TWILIGHT_OAK = makeKey("twilight_oak");
 	public static final ResourceKey<WoodPalette> CANOPY = makeKey("canopy");
@@ -44,10 +41,10 @@ public class WoodPalettes {
 	}
 
 	private static ResourceKey<WoodPalette> makeKey(ResourceLocation name) {
-		return ResourceKey.create(WOOD_PALETTE_TYPE_KEY, name);
+		return ResourceKey.create(TFRegistries.Keys.WOOD_PALETTES, name);
 	}
 
-	public static void bootstrap(BootstapContext<WoodPalette> context) {
+	public static void bootstrap(BootstrapContext<WoodPalette> context) {
 		context.register(OAK, new WoodPalette(Blocks.OAK_PLANKS, Blocks.OAK_STAIRS, Blocks.OAK_SLAB, Blocks.OAK_BUTTON, Blocks.OAK_FENCE, Blocks.OAK_FENCE_GATE, Blocks.OAK_PRESSURE_PLATE, TFBlocks.OAK_BANISTER.get()));
 		context.register(SPRUCE, new WoodPalette(Blocks.SPRUCE_PLANKS, Blocks.SPRUCE_STAIRS, Blocks.SPRUCE_SLAB, Blocks.SPRUCE_BUTTON, Blocks.SPRUCE_FENCE, Blocks.SPRUCE_FENCE_GATE, Blocks.SPRUCE_PRESSURE_PLATE, TFBlocks.SPRUCE_BANISTER.get()));
 		context.register(BIRCH, new WoodPalette(Blocks.BIRCH_PLANKS, Blocks.BIRCH_STAIRS, Blocks.BIRCH_SLAB, Blocks.BIRCH_BUTTON, Blocks.BIRCH_FENCE, Blocks.BIRCH_FENCE_GATE, Blocks.BIRCH_PRESSURE_PLATE, TFBlocks.BIRCH_BANISTER.get()));

@@ -19,14 +19,13 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDamageTypes;
-
-import org.jetbrains.annotations.Nullable;
 
 public class ThornsBlock extends ConnectableRotatedPillarBlock implements SimpleWaterloggedBlock {
 
@@ -43,20 +42,21 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 
 	private static final float THORN_DAMAGE = 4.0F;
 
-	public ThornsBlock(Properties props) {
-		super(props, 10);
+	@SuppressWarnings("this-escape")
+	public ThornsBlock(Properties properties) {
+		super(properties, 10);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(WATERLOGGED, false).setValue(AXIS, Direction.Axis.Y)
-				.setValue(DOWN, false).setValue(UP, false)
-				.setValue(NORTH, false).setValue(SOUTH, false)
-				.setValue(WEST, false).setValue(EAST, false));
+			.setValue(DOWN, false).setValue(UP, false)
+			.setValue(NORTH, false).setValue(SOUTH, false)
+			.setValue(WEST, false).setValue(EAST, false));
 	}
 
 	@Override
 	public boolean canConnectTo(Direction.Axis thisAxis, Direction facing, BlockState facingState, boolean solidSide) {
 		return (facingState.getBlock() instanceof ThornsBlock
-						|| facingState.getBlock().equals(TFBlocks.THORN_ROSE.get())
-						|| facingState.getBlock().equals(TFBlocks.THORN_LEAVES.get())
-						|| facingState.getBlock().equals(TFBlocks.WEATHERED_DEADROCK.get()));
+			|| facingState.getBlock().equals(TFBlocks.THORN_ROSE.get())
+			|| facingState.getBlock().equals(TFBlocks.THORN_LEAVES.get())
+			|| facingState.getBlock().equals(TFBlocks.WEATHERED_DEADROCK.get()));
 	}
 
 	@Override
@@ -74,10 +74,9 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 		return shape;
 	}
 
-	@Nullable
 	@Override
-	public BlockPathTypes getBlockPathType(BlockState state, BlockGetter getter, BlockPos pos, @Nullable Mob entity) {
-		return BlockPathTypes.DAMAGE_OTHER;
+	public @Nullable PathType getBlockPathType(BlockState state, BlockGetter getter, BlockPos pos, @Nullable Mob entity) {
+		return PathType.DAMAGE_OTHER;
 	}
 
 	@Override

@@ -1,0 +1,30 @@
+{
+    "parent": "block/block",
+    "render_type": "minecraft:cutout",
+    "textures": {
+        "particle": "twilightforest:block/rope",
+        "all": "twilightforest:block/rope"
+    },
+    "elements": [
+        {
+            "from": [ 0, 0, 8 ],
+            "to": [ 16, 16, 8 ],
+            "rotation": { "origin": [ 8, 8, 8 ], "axis": "y", "angle": 45},
+            "shade": false,
+            "faces": {
+                "north": { "texture": "#all" },
+                "south": { "texture": "#all" }
+            }
+        },
+        {
+            "from": [ 8, 0, 0 ],
+            "to": [ 8, 16, 16 ],
+            "rotation": { "origin": [ 8, 8, 8 ], "axis": "y", "angle": 45},
+            "shade": false,
+            "faces": {
+                "west": { "texture": "#all" },
+                "east": { "texture": "#all" }
+            }
+        }
+    ]
+}

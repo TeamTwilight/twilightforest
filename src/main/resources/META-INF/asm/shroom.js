@@ -1,6 +1,6 @@
 // noinspection ES6ConvertVarToLetConst
 
-var ASM = Java.type('net.minecraftforge.coremod.api.ASMAPI');
+var ASM = Java.type('net.neoforged.coremod.api.ASMAPI');
 var Opcodes = Java.type('org.objectweb.asm.Opcodes');
 
 var MethodInsnNode = Java.type('org.objectweb.asm.tree.MethodInsnNode');
@@ -13,7 +13,7 @@ function initializeCoreMod() {
             'target': {
                 'type': 'METHOD',
                 'class': 'net.minecraft.world.level.block.MushroomBlock',
-                'methodName': ASM.mapMethod('m_7898_'), // canSurvive
+                'methodName': 'canSurvive',
                 'methodDesc': '(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/LevelReader;Lnet/minecraft/core/BlockPos;)Z'
             },
             'transformer': function (/*org.objectweb.asm.tree.MethodNode*/ methodNode) {
@@ -23,7 +23,7 @@ function initializeCoreMod() {
                         methodNode,
                         ASM.MethodType.INTERFACE,
                         'net/minecraft/world/level/LevelReader',
-                        ASM.mapMethod('m_45524_'), // getRawBrightness
+                        'getRawBrightness',
                         '(Lnet/minecraft/core/BlockPos;I)I'
                     ),
                     ASM.listOf(

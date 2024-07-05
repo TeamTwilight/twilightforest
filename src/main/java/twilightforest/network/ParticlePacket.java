@@ -1,46 +1,45 @@
 package twilightforest.network;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
+import twilightforest.TwilightForestMod;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Supplier;
 
-public class ParticlePacket {
+public class ParticlePacket implements CustomPacketPayload {
+
+	public static final Type<ParticlePacket> TYPE = new Type<>(TwilightForestMod.prefix("particle_queue"));
+	public static final StreamCodec<RegistryFriendlyByteBuf, ParticlePacket> STREAM_CODEC = CustomPacketPayload.codec(ParticlePacket::write, ParticlePacket::new);
+
 	private final List<QueuedParticle> queuedParticles = new ArrayList<>();
 
 	public ParticlePacket() {
 	}
 
-	@SuppressWarnings("deprecation")
-	public ParticlePacket(FriendlyByteBuf buf) {
+	public ParticlePacket(RegistryFriendlyByteBuf buf) {
 		int size = buf.readInt();
 		for (int i = 0; i < size; i++) {
 			ParticleType<?> type = BuiltInRegistries.PARTICLE_TYPE.byId(buf.readInt());
 			if (type == null)
 				break; // Fail silently and end execution entirely. Due to Type serialization we now have completely unknown data in the pipeline without any way to safely read it all
-			this.queuedParticles.add(new QueuedParticle(readParticle(type, buf), buf.readBoolean(), buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readDouble()));
+			this.queuedParticles.add(new QueuedParticle(ParticleTypes.STREAM_CODEC.decode(buf), buf.readBoolean(), buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readDouble()));
 		}
 	}
 
-	private <T extends ParticleOptions> T readParticle(ParticleType<T> particleType, FriendlyByteBuf buf) {
-		return particleType.getDeserializer().fromNetwork(particleType, buf);
-	}
-
-	@SuppressWarnings("deprecation")
-	public void encode(FriendlyByteBuf buf) {
+	public void write(RegistryFriendlyByteBuf buf) {
 		buf.writeInt(this.queuedParticles.size());
 		for (QueuedParticle queuedParticle : this.queuedParticles) {
 			int d = BuiltInRegistries.PARTICLE_TYPE.getId(queuedParticle.particleOptions.getType());
 			buf.writeInt(d);
-			queuedParticle.particleOptions.writeToNetwork(buf);
+			ParticleTypes.STREAM_CODEC.encode(buf, queuedParticle.particleOptions);
 			buf.writeBoolean(queuedParticle.b);
 			buf.writeDouble(queuedParticle.x);
 			buf.writeDouble(queuedParticle.y);
@@ -49,6 +48,11 @@ public class ParticlePacket {
 			buf.writeDouble(queuedParticle.y2);
 			buf.writeDouble(queuedParticle.z2);
 		}
+	}
+
+	@Override
+	public Type<? extends CustomPacketPayload> type() {
+		return TYPE;
 	}
 
 	public void queueParticle(ParticleOptions particleOptions, boolean b, double x, double y, double z, double x2, double y2, double z2) {
@@ -63,18 +67,11 @@ public class ParticlePacket {
 								  double y2, double z2) {
 	}
 
-	public static class Handler {
-		public static boolean onMessage(ParticlePacket message, Supplier<NetworkEvent.Context> ctx) {
-			ctx.get().enqueueWork(() -> {
-				ClientLevel level = Minecraft.getInstance().level;
-				if (level == null)
-					return;
-				for (QueuedParticle queuedParticle : message.queuedParticles) {
-					level.addParticle(queuedParticle.particleOptions, queuedParticle.b, queuedParticle.x, queuedParticle.y, queuedParticle.z, queuedParticle.x2, queuedParticle.y2, queuedParticle.z2);
-				}
-			});
-			ctx.get().setPacketHandled(true);
-			return true;
-		}
+	public static void handle(ParticlePacket message, IPayloadContext ctx) {
+		ctx.enqueueWork(() -> {
+			for (QueuedParticle queuedParticle : message.queuedParticles) {
+				ctx.player().level().addParticle(queuedParticle.particleOptions, queuedParticle.b, queuedParticle.x, queuedParticle.y, queuedParticle.z, queuedParticle.x2, queuedParticle.y2, queuedParticle.z2);
+			}
+		});
 	}
 }

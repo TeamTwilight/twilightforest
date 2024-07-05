@@ -16,7 +16,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import twilightforest.init.TFStructurePieceTypes;
 
 
-public class StrongholdUpperLeftTurnComponent extends StructureTFStrongholdComponent {
+public class StrongholdUpperLeftTurnComponent extends KnightStrongholdComponent {
 
 	public StrongholdUpperLeftTurnComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(TFStructurePieceTypes.TFSULT.get(), nbt);
@@ -43,7 +43,8 @@ public class StrongholdUpperLeftTurnComponent extends StructureTFStrongholdCompo
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		/*if (this.edgesLiquid(world, sbb)) {
 			return false;
-		} else */{
+		} else */
+		{
 			placeUpperStrongholdWalls(world, sbb, 0, 0, 0, 4, 4, 4, rand, deco.randomBlocks);
 
 			// entrance doorway

@@ -16,9 +16,9 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import twilightforest.TwilightForestMod;
-import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.util.BoundingBoxUtils;
+import twilightforest.world.components.structures.TFStructureComponentOld;
 
 
 public class MushroomTowerBridgeComponent extends MushroomTowerWingComponent {
@@ -39,7 +39,7 @@ public class MushroomTowerBridgeComponent extends MushroomTowerWingComponent {
 	protected MushroomTowerBridgeComponent(StructurePieceType piece, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
 		super(piece, i, x, y, z, pSize, pHeight, direction);
 
-		this.boundingBox = TFLandmark.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, size - 1, height - 1, 3, direction, false);
+		this.boundingBox = BoundingBoxUtils.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, size - 1, height - 1, 3, direction, false);
 
 		this.dSize = pSize;
 		this.dHeight = pHeight;
@@ -69,7 +69,7 @@ public class MushroomTowerBridgeComponent extends MushroomTowerWingComponent {
 
 	public BoundingBox getWingBB() {
 		int[] dest = offsetTowerCoords(dSize - 1, 1, 1, dSize, this.getOrientation());
-		return TFLandmark.getComponentToAddBoundingBox(dest[0], dest[1], dest[2], 0, 0, 0, dSize - 1, dHeight - 1, dSize - 1, this.getOrientation(), false);
+		return BoundingBoxUtils.getComponentToAddBoundingBox(dest[0], dest[1], dest[2], 0, 0, 0, dSize - 1, dHeight - 1, dSize - 1, this.getOrientation(), false);
 	}
 
 	@Override

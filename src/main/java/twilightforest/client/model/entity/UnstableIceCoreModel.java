@@ -10,6 +10,7 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import twilightforest.entity.monster.BaseIceMob;
 
@@ -36,25 +37,25 @@ public class UnstableIceCoreModel<T extends BaseIceMob> extends HierarchicalMode
 
 	public static LayerDefinition create() {
 		MeshDefinition mesh = new MeshDefinition();
-		PartDefinition partRoot = mesh.getRoot();
+		PartDefinition definition = mesh.getRoot();
 
-		partRoot.addOrReplaceChild("head", CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(-4.0F, 0.0F, -4.0F, 8.0F, 8.0F, 8.0F),
-				PartPose.ZERO);
+		definition.addOrReplaceChild("head", CubeListBuilder.create()
+				.texOffs(0, 0)
+				.addBox(-4.0F, 0.0F, -4.0F, 8.0F, 8.0F, 8.0F),
+			PartPose.ZERO);
 
 		for (int i = 0; i < 16; i++) {
 			int spikeLength = i % 2 == 0 ? 6 : 8;
 
-			var spike = partRoot.addOrReplaceChild("spike_" + i, CubeListBuilder.create()
-							.texOffs(0, 16)
-							.addBox(-1.0F, 6.0F, -1.0F, 2, spikeLength, 2),
-					PartPose.offset(0.0F, 4.0F, 0.0F));
+			var spike = definition.addOrReplaceChild("spike_" + i, CubeListBuilder.create()
+					.texOffs(0, 16)
+					.addBox(-1.0F, 4.0F, -1.0F, 2, spikeLength, 2),
+				PartPose.offset(0.0F, 4.0F, 0.0F));
 
 			spike.addOrReplaceChild("cube_" + i, CubeListBuilder.create()
-							.texOffs(8, 16)
-							.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3),
-					PartPose.offsetAndRotation(0.0F, 8.0F, 0.0F, 0.0F, 0.0F, (Mth.PI / 4F)));
+					.texOffs(8, 16)
+					.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3),
+				PartPose.offsetAndRotation(0.0F, 8.0F, 0.0F, 0.0F, 0.0F, Mth.PI / 4.0F));
 		}
 
 		return LayerDefinition.create(mesh, 32, 32);
@@ -66,8 +67,8 @@ public class UnstableIceCoreModel<T extends BaseIceMob> extends HierarchicalMode
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, float red, float green, float blue, float alpha) {
-		this.root().render(stack, builder, light, overlay, red, green, blue, alive ? 0.6F : alpha);
+	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, int color) {
+		this.root().render(stack, builder, light, overlay, FastColor.ARGB32.color((int) (FastColor.ARGB32.alpha(color) * (alive ? 0.6F : 1.0F)), FastColor.ARGB32.red(color), FastColor.ARGB32.green(color), FastColor.ARGB32.blue(color)));
 	}
 
 	@Override
@@ -79,7 +80,7 @@ public class UnstableIceCoreModel<T extends BaseIceMob> extends HierarchicalMode
 	public void prepareMobModel(T entity, float limbSwing, float limbSwingAmount, float partialTicks) {
 		this.alive = entity.isAlive();
 
-		for (int i = 0; i < spikes.length; i++) {
+		for (int i = 0; i < this.spikes.length; i++) {
 			// rotate the spikes
 			this.spikes[i].yRot = (entity.tickCount + partialTicks) / 5.0F;
 			this.spikes[i].xRot = Mth.sin((entity.tickCount + partialTicks) / 5.0F) / 4.0F;

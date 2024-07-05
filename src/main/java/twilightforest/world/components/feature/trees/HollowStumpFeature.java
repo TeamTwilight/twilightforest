@@ -3,9 +3,11 @@ package twilightforest.world.components.feature.trees;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import twilightforest.util.FeatureLogic;
 import twilightforest.util.FeaturePlacers;
 import twilightforest.util.FeatureUtil;
 import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
@@ -31,6 +33,8 @@ public class HollowStumpFeature extends HollowTreeFeature {
 			return false;
 		}
 
+		this.buildSmallTrunk(world, trunkPlacer, decorationPlacer, random, pos, radius, 6, config);
+
 		// Start with roots first, so they don't fail placement because they intersect the trunk shell first
 		// 3-5 roots at the bottom
 		buildBranchRing(world, trunkPlacer, leavesPlacer, random, pos, radius, 3, 2, 6, 0.75D, 3, 5, 3, false, config);
@@ -38,13 +42,10 @@ public class HollowStumpFeature extends HollowTreeFeature {
 		// several more taproots
 		buildBranchRing(world, trunkPlacer, leavesPlacer, random, pos, radius, 1, 2, 8, 0.9D, 3, 5, 3, false, config);
 
-		buildTrunk(world, trunkPlacer, decorationPlacer, random, pos, radius, 6, config);
-
 		return true;
 	}
 
-	@Override
-	protected void buildTrunk(LevelAccessor world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> decoPlacer, RandomSource  random, BlockPos pos, int diameter, int maxheight, TFTreeFeatureConfig config) {
+	protected void buildSmallTrunk(LevelAccessor world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> decoPlacer, RandomSource random, BlockPos pos, int diameter, int maxheight, TFTreeFeatureConfig config) {
 		int hollow = diameter >> 1;
 
 		// go down 4 squares and fill in extra trunk as needed, in case we're on uneven terrain
@@ -58,8 +59,9 @@ public class HollowStumpFeature extends HollowTreeFeature {
 
 					if (dist <= diameter) {
 						BlockPos dPos = pos.offset(dx, dy, dz);
-						if (FeatureUtil.hasAirAround(world, dPos)) {
-							FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, random, dPos, config.trunkProvider);
+						if (FeatureLogic.hasEmptyNeighborExceptBelow(world, dPos)) {
+							BlockStateProvider trunkProvider = dist > hollow ? config.trunkProvider : config.branchProvider;
+							trunkPlacer.accept(dPos, trunkProvider.getState(random, dPos));
 						} else {
 							FeaturePlacers.placeIfValidRootPos(world, decoPlacer, random, dPos, config.rootsProvider);
 						}

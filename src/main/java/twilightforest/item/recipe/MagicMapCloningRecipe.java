@@ -1,29 +1,29 @@
 package twilightforest.item.recipe;
 
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
+import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
-import twilightforest.init.TFRecipes;
 import twilightforest.init.TFItems;
+import twilightforest.init.TFRecipes;
 
 public class MagicMapCloningRecipe extends CustomRecipe {
 
-	public MagicMapCloningRecipe(ResourceLocation id, CraftingBookCategory category) {
-		super(id, category);
+	public MagicMapCloningRecipe(CraftingBookCategory category) {
+		super(category);
 	}
 
 	@Override
-	public boolean matches(CraftingContainer container, Level level) {
+	public boolean matches(CraftingInput input, Level level) {
 		int i = 0;
 		ItemStack itemstack = ItemStack.EMPTY;
 
-		for(int j = 0; j < container.getContainerSize(); j++) {
-			ItemStack itemstack1 = container.getItem(j);
+		for (int j = 0; j < input.size(); j++) {
+			ItemStack itemstack1 = input.getItem(j);
 			if (!itemstack1.isEmpty()) {
 				if (itemstack1.is(TFItems.FILLED_MAGIC_MAP.get())) {
 					if (!itemstack.isEmpty()) {
@@ -45,12 +45,12 @@ public class MagicMapCloningRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public ItemStack assemble(CraftingContainer container, RegistryAccess access) {
+	public ItemStack assemble(CraftingInput input, HolderLookup.Provider access) {
 		int i = 0;
 		ItemStack itemstack = ItemStack.EMPTY;
 
-		for(int j = 0; j < container.getContainerSize(); j++) {
-			ItemStack itemstack1 = container.getItem(j);
+		for (int j = 0; j < input.size(); j++) {
+			ItemStack itemstack1 = input.getItem(j);
 			if (!itemstack1.isEmpty()) {
 				if (itemstack1.is(TFItems.FILLED_MAGIC_MAP.get())) {
 					if (!itemstack.isEmpty()) {

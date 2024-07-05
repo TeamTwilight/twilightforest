@@ -1,14 +1,14 @@
 package twilightforest.world.components.feature;
 
 import com.mojang.serialization.Codec;
+import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
 import twilightforest.util.FeatureUtil;
 
 public class FireJetFeature extends Feature<BlockStateConfiguration> {
@@ -24,18 +24,18 @@ public class FireJetFeature extends Feature<BlockStateConfiguration> {
 		RandomSource rand = ctx.random();
 		BlockStateConfiguration config = ctx.config();
 
-		if(!FeatureUtil.isAreaSuitable(world, pos, 5, 2, 5)) return false;
+		if (!FeatureUtil.isAreaSuitable(world, pos, 5, 2, 5)) return false;
 
 		for (int i = 0; i < 4; ++i) {
 			BlockPos dPos = pos.offset(
-					rand.nextInt(8) - rand.nextInt(8),
-					rand.nextInt(4) - rand.nextInt(4),
-					rand.nextInt(8) - rand.nextInt(8)
+				rand.nextInt(8) - rand.nextInt(8),
+				rand.nextInt(4) - rand.nextInt(4),
+				rand.nextInt(8) - rand.nextInt(8)
 			);
 
 			if (world.isEmptyBlock(dPos) && world.canSeeSkyFromBelowWater(dPos) && world.getBlockState(dPos.below()).is(BlockTags.DIRT)
-					&& world.getBlockState(dPos.east().below()).is(BlockTags.DIRT) && world.getBlockState(dPos.west().below()).is(BlockTags.DIRT)
-					&& world.getBlockState(dPos.south().below()).is(BlockTags.DIRT) && world.getBlockState(dPos.north().below()).is(BlockTags.DIRT)) {
+				&& world.getBlockState(dPos.east().below()).is(BlockTags.DIRT) && world.getBlockState(dPos.west().below()).is(BlockTags.DIRT)
+				&& world.getBlockState(dPos.south().below()).is(BlockTags.DIRT) && world.getBlockState(dPos.north().below()).is(BlockTags.DIRT)) {
 
 				//create blocks around the jet/smoker, just in case
 				for (int gx = -2; gx <= 2; gx++) {

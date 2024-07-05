@@ -1,26 +1,24 @@
 package twilightforest.client.renderer.entity;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.UrGhastModel;
-import twilightforest.client.renderer.entity.CarminiteGhastRenderer;
-import twilightforest.entity.boss.Naga;
 import twilightforest.entity.boss.UrGhast;
 
-public class UrGhastRenderer extends CarminiteGhastRenderer<UrGhast, UrGhastModel> {
+public class UrGhastRenderer extends MobRenderer<UrGhast, UrGhastModel> {
 
 	private final ResourceLocation textureLocClosed = TwilightForestMod.getModelTexture("towerboss.png");
-	private final ResourceLocation textureLocOpen   = TwilightForestMod.getModelTexture("towerboss_openeyes.png");
+	private final ResourceLocation textureLocOpen = TwilightForestMod.getModelTexture("towerboss_openeyes.png");
 	private final ResourceLocation textureLocAttack = TwilightForestMod.getModelTexture("towerboss_fire.png");
+	private final float scale;
 
 	public UrGhastRenderer(EntityRendererProvider.Context manager, UrGhastModel model, float shadowSize, float scale) {
-		super(manager, model, shadowSize, scale);
-	}
-
-	@Override
-	protected float getFlipDegrees(UrGhast ghast) { //Prevent the body from keeling over
-		return ghast.isDeadOrDying() ? 0.0F : super.getFlipDegrees(ghast);
+		super(manager, model, shadowSize);
+		this.scale = scale;
 	}
 
 	@Override
@@ -30,5 +28,31 @@ public class UrGhastRenderer extends CarminiteGhastRenderer<UrGhast, UrGhastMode
 			case 2 -> textureLocAttack;
 			default -> textureLocClosed;
 		};
+	}
+
+	@Override
+	protected void scale(UrGhast ghast, PoseStack stack, float partialTicks) {
+		int attackTimer = ghast.getAttackTimer();
+		int prevAttackTimer = ghast.getPrevAttackTimer();
+		float scaleVariable = (prevAttackTimer + (attackTimer - prevAttackTimer) * partialTicks) / 20.0F;
+		if (scaleVariable < 0.0F) {
+			scaleVariable = 0.0F;
+		}
+
+		scaleVariable = 1.0F / (scaleVariable * scaleVariable * scaleVariable * scaleVariable * scaleVariable * 2.0F + 1.0F);
+		float yScale = (this.scale + scaleVariable) / 2.0F;
+		float xzScale = (this.scale + 1.0F / scaleVariable) / 2.0F;
+		stack.scale(xzScale, yScale, xzScale);
+	}
+
+	@Override
+	public boolean shouldRender(UrGhast pLivingEntity, Frustum pCamera, double pCamX, double pCamY, double pCamZ) {
+		if (pLivingEntity.deathTime > UrGhast.DEATH_ANIMATION_DURATION / 3) return false;
+		return super.shouldRender(pLivingEntity, pCamera, pCamX, pCamY, pCamZ);
+	}
+
+	@Override
+	protected float getFlipDegrees(UrGhast urGhast) { //Prevent the body from keeling over
+		return urGhast.isDeadOrDying() ? 0.0F : super.getFlipDegrees(urGhast);
 	}
 }

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    [
+      {
+        "item": "minecraft:vine"
+      },
+      {
+        "item": "minecraft:moss_block"
+      }
+    ],
+    {
+      "item": "twilightforest:underbrick"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "twilightforest:mossy_underbrick"
+  }
+}

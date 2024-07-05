@@ -31,9 +31,9 @@ public enum ConnectionLogic {
 	private final int v1;
 
 	public static final Direction[][] AXIS_PLANE_DIRECTIONS = new Direction[][]{
-			{Direction.UP, Direction.NORTH, Direction.DOWN, Direction.SOUTH},
-			{Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST},
-			{Direction.UP, Direction.EAST, Direction.DOWN, Direction.WEST}
+		{Direction.UP, Direction.NORTH, Direction.DOWN, Direction.SOUTH},
+		{Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST},
+		{Direction.UP, Direction.EAST, Direction.DOWN, Direction.WEST}
 	};
 
 	ConnectionLogic(int texture, int u0, int v0, int u1, int v1) {

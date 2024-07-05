@@ -20,7 +20,7 @@ public class NewNagaSegmentRenderer<T extends NagaSegment> extends TFPartRendere
 
 	@Override
 	public void render(T entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
-		if(!entityIn.isInvisible()) {
+		if (!entityIn.isInvisible()) {
 			matrixStackIn.pushPose();
 
 			float yawDiff = entityIn.getYRot() - entityIn.yRotO;

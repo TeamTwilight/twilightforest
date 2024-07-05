@@ -27,7 +27,7 @@ public class UndergroundPlantFeature extends Feature<BlockStateConfiguration> {
 		for (; pos.getY() > world.getMinBuildHeight(); pos = pos.below()) {
 			if (world.isEmptyBlock(pos) && random.nextInt(6) > 0) {
 				if (ctx.config().state.canSurvive(ctx.level(), pos)) {
-					if (ctx.config().state.is(TFBlocks.TROLLVIDR.get()) && random.nextInt(10) == 0) {
+					if (ctx.config().state.is(TFBlocks.TROLLVIDR) && random.nextInt(10) == 0) {
 						world.setBlock(pos, TFBlocks.UNRIPE_TROLLBER.get().defaultBlockState(), 16 | 2);
 					} else {
 						world.setBlock(pos, ctx.config().state, 16 | 2);
@@ -35,9 +35,9 @@ public class UndergroundPlantFeature extends Feature<BlockStateConfiguration> {
 				}
 			} else {
 				pos = new BlockPos(
-						copyX + random.nextInt(4) - random.nextInt(4),
-						pos.getY(),
-						copyZ + random.nextInt(4) - random.nextInt(4)
+					copyX + random.nextInt(4) - random.nextInt(4),
+					pos.getY(),
+					copyZ + random.nextInt(4) - random.nextInt(4)
 				);
 			}
 		}

@@ -11,19 +11,19 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.entity.FurnaceBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.Tags;
+import net.neoforged.neoforge.common.Tags;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.block.CinderFurnaceBlock;
 import twilightforest.init.TFBlocks;
-
-import org.jetbrains.annotations.Nullable;
 
 public class CinderFurnaceBlockEntity extends FurnaceBlockEntity {
 	private static final int SMELT_LOG_FACTOR = 10;
@@ -45,8 +45,8 @@ public class CinderFurnaceBlockEntity extends FurnaceBlockEntity {
 			ItemStack itemstack = te.items.get(1);
 
 			if (te.isBurning() || !itemstack.isEmpty() && !te.items.get(0).isEmpty()) {
-				Recipe<?> irecipe = level.getRecipeManager().getRecipeFor(RecipeType.SMELTING, te, level).orElse(null);
-				if (!te.isBurning() && te.canBurn(irecipe)) {
+				RecipeHolder<?> irecipe = level.getRecipeManager().getRecipeFor(RecipeType.SMELTING, new SingleRecipeInput(te.items.getFirst()), level).orElse(null);
+				if (irecipe != null && !te.isBurning() && te.canBurn(irecipe.value())) {
 					te.litTime = te.getBurnDuration(itemstack);
 					te.litDuration = te.litTime;
 
@@ -65,14 +65,14 @@ public class CinderFurnaceBlockEntity extends FurnaceBlockEntity {
 					}
 				}
 
-				if (te.isBurning() && te.canBurn(irecipe)) {
+				if (irecipe != null && te.isBurning() && te.canBurn(irecipe.value())) {
 					// TF - cook faster
 					te.cookingProgress += te.getCurrentSpeedMultiplier();
 
 					if (te.cookingProgress >= te.cookingTotalTime) { // TF - change to geq since we can increment by >1
 						te.cookingProgress = 0;
 						te.cookingTotalTime = te.getRecipeBurnTime();
-						te.smeltItem(irecipe);
+						te.smeltItem(irecipe.value());
 						flag1 = true;
 					}
 				} else {
@@ -105,7 +105,7 @@ public class CinderFurnaceBlockEntity extends FurnaceBlockEntity {
 
 	// [VanillaCopy] of super, only using SMELTING IRecipeType
 	protected int getRecipeBurnTime() {
-		return this.getLevel().getRecipeManager().getRecipeFor(RecipeType.SMELTING, this, this.getLevel()).map(AbstractCookingRecipe::getCookingTime).orElse(200);
+		return this.getLevel().getRecipeManager().getRecipeFor(RecipeType.SMELTING, new SingleRecipeInput(this.items.getFirst()), this.getLevel()).map(recipeHolder -> recipeHolder.value().getCookingTime()).orElse(200);
 	}
 
 	private void cinderizeNearbyLog() {
@@ -119,7 +119,7 @@ public class CinderFurnaceBlockEntity extends FurnaceBlockEntity {
 		if (this.getLevel().hasChunkAt(pos)) {
 			BlockState nearbyBlock = this.getLevel().getBlockState(pos);
 
-			if (!nearbyBlock.is(TFBlocks.CINDER_LOG.get()) && nearbyBlock.is(BlockTags.LOGS)) {
+			if (!nearbyBlock.is(TFBlocks.CINDER_LOG) && nearbyBlock.is(BlockTags.LOGS)) {
 				this.getLevel().setBlock(pos, this.getCinderLog(dx, dy, dz), 2);
 				this.getLevel().levelEvent(2004, pos, 0);
 				this.getLevel().levelEvent(2004, pos, 0);
@@ -144,7 +144,7 @@ public class CinderFurnaceBlockEntity extends FurnaceBlockEntity {
 		}
 
 		return direction != null ? TFBlocks.CINDER_LOG.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, direction)
-				: TFBlocks.CINDER_WOOD.get().defaultBlockState();
+			: TFBlocks.CINDER_WOOD.get().defaultBlockState();
 	}
 
 	/**

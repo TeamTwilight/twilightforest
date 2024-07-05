@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smoking",
+  "category": "food",
+  "cookingtime": 100,
+  "experience": 0.3,
+  "ingredient": {
+    "item": "twilightforest:raw_venison"
+  },
+  "result": {
+    "count": 1,
+    "id": "twilightforest:cooked_venison"
+  }
+}

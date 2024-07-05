@@ -2,34 +2,33 @@ package twilightforest.network;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 import twilightforest.TwilightForestMod;
 
-import java.util.function.Supplier;
+public record EnforceProgressionStatusPacket(boolean enforce) implements CustomPacketPayload {
 
-public class EnforceProgressionStatusPacket {
-
-	private final boolean enforce;
+	public static final Type<EnforceProgressionStatusPacket> TYPE = new Type<>(TwilightForestMod.prefix("sync_progression_status"));
+	public static final StreamCodec<RegistryFriendlyByteBuf, EnforceProgressionStatusPacket> STREAM_CODEC = CustomPacketPayload.codec(EnforceProgressionStatusPacket::write, EnforceProgressionStatusPacket::new);
 
 	public EnforceProgressionStatusPacket(FriendlyByteBuf buf) {
-		this.enforce = buf.readBoolean();
+		this(buf.readBoolean());
 	}
 
-	public EnforceProgressionStatusPacket(boolean enforce) {
-		this.enforce = enforce;
-	}
-
-	public void encode(FriendlyByteBuf buf) {
+	public void write(FriendlyByteBuf buf) {
 		buf.writeBoolean(this.enforce);
 	}
 
-	public static class Handler {
+	@Override
+	public Type<? extends CustomPacketPayload> type() {
+		return TYPE;
+	}
 
-		public static boolean onMessage(EnforceProgressionStatusPacket message, Supplier<NetworkEvent.Context> ctx) {
-			ctx.get().enqueueWork(() ->
-					Minecraft.getInstance().level.getGameRules().getRule(TwilightForestMod.ENFORCED_PROGRESSION_RULE).set(message.enforce, null));
-			ctx.get().setPacketHandled(true);
-			return true;
-		}
+	public static void handle(EnforceProgressionStatusPacket message, IPayloadContext ctx) {
+		ctx.enqueueWork(() ->
+			Minecraft.getInstance().level.getGameRules().getRule(TwilightForestMod.ENFORCED_PROGRESSION_RULE).set(message.enforce(), null)
+		);
 	}
 }

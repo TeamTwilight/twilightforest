@@ -10,15 +10,14 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-
 import org.jetbrains.annotations.Nullable;
 
 public class DiagonalBlock extends Block {
 
 	public static final BooleanProperty IS_ROTATED = BooleanProperty.create("is_rotated");
 
-	public DiagonalBlock(Properties props) {
-		super(props);
+	public DiagonalBlock(Properties properties) {
+		super(properties);
 	}
 
 	@Override

@@ -11,13 +11,10 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.entity.boss.Lich;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
 
-@OnlyIn(value = Dist.CLIENT, _interface = ItemSupplier.class)
 public class LichBomb extends TFThrowable implements ItemSupplier {
 
 	public LichBomb(EntityType<? extends LichBomb> type, Level world) {
@@ -84,7 +81,7 @@ public class LichBomb extends TFThrowable implements ItemSupplier {
 	}
 
 	@Override
-	protected float getGravity() {
+	protected double getDefaultGravity() {
 		return 0.001F;
 	}
 

@@ -1,0 +1,26 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "twilightforest:uncrafting_table_enabled"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "minecraft:crafting_table"
+    },
+    "X": {
+      "item": "twilightforest:maze_map_focus"
+    }
+  },
+  "pattern": [
+    "###",
+    "#X#",
+    "###"
+  ],
+  "result": {
+    "count": 1,
+    "id": "twilightforest:uncrafting_table"
+  }
+}

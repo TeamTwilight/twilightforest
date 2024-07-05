@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.PlantType;
+import net.neoforged.neoforge.common.PlantType;
 import twilightforest.data.tags.BlockTagGenerator;
 
 public abstract class TFPlantBlock extends BushBlock implements BonemealableBlock {
@@ -30,7 +30,7 @@ public abstract class TFPlantBlock extends BushBlock implements BonemealableBloc
 	}
 
 	@Override
-	public boolean isValidBonemealTarget(LevelReader reader, BlockPos pos, BlockState state, boolean client) {
+	public boolean isValidBonemealTarget(LevelReader reader, BlockPos pos, BlockState state) {
 		return false;
 	}
 

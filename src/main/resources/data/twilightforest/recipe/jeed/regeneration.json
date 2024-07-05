@@ -1,0 +1,18 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "jeed"
+    }
+  ],
+  "type": "jeed:effect_provider",
+  "effect": "minecraft:regeneration",
+  "providers": [
+    {
+      "item": "twilightforest:charm_of_life_1"
+    },
+    {
+      "item": "twilightforest:charm_of_life_2"
+    }
+  ]
+}

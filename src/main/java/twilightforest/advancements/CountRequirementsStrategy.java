@@ -1,26 +1,27 @@
 package twilightforest.advancements;
 
-import net.minecraft.advancements.RequirementsStrategy;
+import net.minecraft.advancements.AdvancementRequirements;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-//Borrowed from TCon to allow us to have multiple requirement groupings
-public record CountRequirementsStrategy(int... sizes) implements RequirementsStrategy {
+public record CountRequirementsStrategy(int... sizes) implements AdvancementRequirements.Strategy {
 
 	@Override
-	public String[][] createRequirements(Collection<String> strings) {
-		String[][] requirements = new String[sizes.length][];
-		List<String> list = new ArrayList<>(strings);
+	public AdvancementRequirements create(Collection<String> strings) {
+		List<List<String>> requirements = new ArrayList<>();
+		List<String> criteriaCopy = new ArrayList<>(strings);
 		int nextIndex = 0;
-		for (int i = 0; i < sizes.length; i++) {
-			requirements[i] = new String[sizes[i]];
-			for (int j = 0; j < sizes[i]; j++) {
-				requirements[i][j] = list.get(nextIndex);
+		for (int size : this.sizes) {
+			List<String> section = new ArrayList<>();
+			for (int j = 0; j < size; j++) {
+				section.add(criteriaCopy.get(nextIndex));
 				nextIndex++;
 			}
+			requirements.add(section);
 		}
-		return requirements;
+		return new AdvancementRequirements(requirements);
 	}
 }
+

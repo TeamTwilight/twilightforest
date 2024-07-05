@@ -6,7 +6,6 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import twilightforest.init.TFBlocks;
 
 
-
 public class MazestoneProcessor extends StructurePiece.BlockSelector {
 
 	@Override

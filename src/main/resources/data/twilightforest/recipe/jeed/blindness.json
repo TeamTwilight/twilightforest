@@ -1,0 +1,15 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "jeed"
+    }
+  ],
+  "type": "jeed:effect_provider",
+  "effect": "minecraft:blindness",
+  "providers": [
+    {
+      "item": "twilightforest:mist_wolf_spawn_egg"
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/template_chiseled_bookshelf_slot_bottom_mid",
+  "textures": {
+    "texture": "twilightforest:block/wood/chiseled_canopy_bookshelf_empty"
+  }
+}

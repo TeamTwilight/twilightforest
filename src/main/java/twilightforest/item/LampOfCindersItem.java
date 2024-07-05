@@ -4,7 +4,6 @@ import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -27,8 +26,8 @@ public class LampOfCindersItem extends Item {
 
 	private static final int FIRING_TIME = 12;
 
-	public LampOfCindersItem(Properties props) {
-		super(props);
+	public LampOfCindersItem(Properties properties) {
+		super(properties);
 	}
 
 	@Override
@@ -38,11 +37,6 @@ public class LampOfCindersItem extends Item {
 
 	@Override
 	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-		return false;
-	}
-
-	@Override
-	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
 		return false;
 	}
 
@@ -61,8 +55,7 @@ public class LampOfCindersItem extends Item {
 		Player player = context.getPlayer();
 
 		if (this.burnBlock(world, pos)) {
-			if (player instanceof ServerPlayer)
-				CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayer) player, pos, player.getItemInHand(context.getHand()));
+			if (player instanceof ServerPlayer serverPlayer) CriteriaTriggers.PLACED_BLOCK.trigger(serverPlayer, pos, player.getItemInHand(context.getHand()));
 
 			if (player != null) player.playSound(TFSounds.LAMP_BURN.get(), 0.5F, 1.5F);
 
@@ -81,7 +74,7 @@ public class LampOfCindersItem extends Item {
 
 	private boolean burnBlock(Level level, BlockPos pos) {
 		BlockState state = level.getBlockState(pos);
-		if (state.is(TFBlocks.BROWN_THORNS.get()) || state.is(TFBlocks.GREEN_THORNS.get())) {
+		if (state.is(TFBlocks.BROWN_THORNS) || state.is(TFBlocks.GREEN_THORNS)) {
 			level.setBlockAndUpdate(pos, TFBlocks.BURNT_THORNS.get().withPropertiesOf(state));
 			return true;
 		} else return false;
@@ -89,7 +82,7 @@ public class LampOfCindersItem extends Item {
 
 	@Override
 	public void releaseUsing(ItemStack stack, Level level, LivingEntity living, int useRemaining) {
-		int useTime = this.getUseDuration(stack) - useRemaining;
+		int useTime = this.getUseDuration(stack, living) - useRemaining;
 
 		if (useTime > FIRING_TIME && (stack.getDamageValue() + 1) < this.getMaxDamage(stack)) {
 			this.doBurnEffect(level, living);
@@ -97,12 +90,7 @@ public class LampOfCindersItem extends Item {
 	}
 
 	private void doBurnEffect(Level level, LivingEntity living) {
-		BlockPos pos = new BlockPos(
-				Mth.floor(living.xOld),
-				Mth.floor(living.yOld + living.getEyeHeight()),
-				Mth.floor(living.zOld)
-		);
-
+		BlockPos pos = BlockPos.containing(living.getEyePosition().add(living.getLookAngle().scale(2.0D)));
 		int range = 4;
 
 		if (!level.isClientSide()) {
@@ -118,22 +106,20 @@ public class LampOfCindersItem extends Item {
 			}
 		}
 
-		if (living instanceof Player) {
+		if (living instanceof Player player) {
 			for (int i = 0; i < 6; i++) {
 				BlockPos rPos = pos.offset(
-						level.getRandom().nextInt(range) - level.getRandom().nextInt(range),
-						level.getRandom().nextInt(2),
-						level.getRandom().nextInt(range) - level.getRandom().nextInt(range)
+					level.getRandom().nextInt(range) - level.getRandom().nextInt(range),
+					level.getRandom().nextInt(2),
+					level.getRandom().nextInt(range) - level.getRandom().nextInt(range)
 				);
 
-				level.levelEvent((Player) living, 2004, rPos, 0);
+				level.levelEvent(player, 2004, rPos, 0);
 			}
 
 			//burn mobs!
-			for (LivingEntity targets : level.getEntitiesOfClass(LivingEntity.class, new AABB(living.blockPosition()).inflate(4.0D))) {
-				if (!(targets instanceof Player)) {
-					targets.setSecondsOnFire(5);
-				}
+			for (LivingEntity targets : level.getEntitiesOfClass(LivingEntity.class, new AABB(pos.below(2)).inflate(4.0D))) {
+				if (!(targets instanceof Player)) targets.igniteForSeconds(5);
 			}
 		}
 	}
@@ -144,7 +130,7 @@ public class LampOfCindersItem extends Item {
 	}
 
 	@Override
-	public int getUseDuration(ItemStack stack) {
+	public int getUseDuration(ItemStack stack, LivingEntity user) {
 		return 72000;
 	}
 }

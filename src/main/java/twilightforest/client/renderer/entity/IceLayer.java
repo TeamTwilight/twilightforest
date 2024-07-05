@@ -15,7 +15,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.client.model.data.ModelData;
+import net.neoforged.neoforge.client.model.data.ModelData;
 import twilightforest.client.model.entity.DeathTomeModel;
 import twilightforest.potions.FrostedEffect;
 
@@ -31,12 +31,12 @@ public class IceLayer<T extends LivingEntity, M extends EntityModel<T>> extends 
 		AttributeInstance speed = entity.getAttribute(Attributes.MOVEMENT_SPEED);
 		if (speed == null) return;
 
-		AttributeModifier frost = speed.getModifier(FrostedEffect.MOVEMENT_SPEED_MODIFIER_UUID);
+		AttributeModifier frost = speed.getModifier(FrostedEffect.MOVEMENT_SPEED_MODIFIER);
 		if (frost == null) return;
 
 		this.random.setSeed(entity.getId() * entity.getId() * 3121L + entity.getId() * 45238971L);
 
-		int numCubes = (int) (entity.getBbHeight() / 0.4F) + (int) (frost.getAmount() / FrostedEffect.FROST_MULTIPLIER) + 1; //Number of cubes, adds more cubes based on the level of the effect
+		int numCubes = (int) (entity.getBbHeight() / 0.4F) + (int) (frost.amount() / FrostedEffect.FROST_MULTIPLIER) + 1; //Number of cubes, adds more cubes based on the level of the effect
 
 		float specialOffset = this.getParentModel() instanceof DeathTomeModel ? 1.0F : 0.0F;
 

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": "minecraft:empty"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:paper"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "twilightforest:entities/death_tome_hurt"
+}

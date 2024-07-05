@@ -23,16 +23,15 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
-import twilightforest.advancements.TFAdvancements;
 import twilightforest.data.tags.BlockTagGenerator;
+import twilightforest.init.TFAdvancements;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFSounds;
 import twilightforest.init.TFStats;
 import twilightforest.util.LandmarkUtil;
 import twilightforest.util.PlayerHelper;
-
-import org.jetbrains.annotations.Nullable;
 
 public class TrophyPedestalBlock extends Block implements SimpleWaterloggedBlock {
 
@@ -49,6 +48,7 @@ public class TrophyPedestalBlock extends Block implements SimpleWaterloggedBlock
 
 	private static final VoxelShape FINAL = Shapes.or(BOTTOM, MID, TOP, CORNER1, CORNER2, CORNER3, CORNER4);
 
+	@SuppressWarnings("this-escape")
 	public TrophyPedestalBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(ACTIVE, false).setValue(WATERLOGGED, false));
@@ -126,7 +126,7 @@ public class TrophyPedestalBlock extends Block implements SimpleWaterloggedBlock
 	}
 
 	private boolean isPlayerEligible(Player player) {
-		return PlayerHelper.doesPlayerHaveRequiredAdvancements(player, TwilightForestMod.prefix("progress_lich"));
+		return PlayerHelper.doesPlayerHaveRequiredAdvancements(player, TwilightForestMod.prefix("progress_lich")) || player.getAbilities().instabuild;
 	}
 
 	private void doPedestalEffect(Level level, BlockPos pos, BlockState state) {
@@ -137,7 +137,7 @@ public class TrophyPedestalBlock extends Block implements SimpleWaterloggedBlock
 
 	private void rewardNearbyPlayers(Level level, BlockPos pos) {
 		for (ServerPlayer player : level.getEntitiesOfClass(ServerPlayer.class, new AABB(pos).inflate(16.0D))) {
-			TFAdvancements.PLACED_TROPHY_ON_PEDESTAL.trigger(player);
+			TFAdvancements.PLACED_TROPHY_ON_PEDESTAL.get().trigger(player);
 			player.awardStat(TFStats.TROPHY_PEDESTALS_ACTIVATED.get());
 		}
 	}

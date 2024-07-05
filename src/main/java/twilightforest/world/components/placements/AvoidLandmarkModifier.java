@@ -2,6 +2,7 @@ package twilightforest.world.components.placements;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
@@ -13,7 +14,6 @@ import net.minecraft.world.level.levelgen.structure.StructureStart;
 import twilightforest.init.TFFeatureModifiers;
 import twilightforest.util.LandmarkUtil;
 import twilightforest.util.LegacyLandmarkPlacements;
-import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.world.components.structures.util.DecorationClearance;
 
 import java.util.Optional;
@@ -21,11 +21,11 @@ import java.util.stream.Stream;
 
 public class AvoidLandmarkModifier extends PlacementModifier {
 
-	public static final Codec<AvoidLandmarkModifier> CODEC = RecordCodecBuilder.<AvoidLandmarkModifier>create(instance -> instance.group(
-			Codec.BOOL.fieldOf("occupies_surface").forGetter(o -> o.occupiesSurface),
-			Codec.BOOL.fieldOf("occupies_underground").forGetter(o -> o.occupiesUnderground),
-			Codec.INT.fieldOf("additional_clearance").forGetter(o -> o.additionalClearance)
-	).apply(instance, AvoidLandmarkModifier::new)).flatXmap(AvoidLandmarkModifier::validate, AvoidLandmarkModifier::validate);
+	public static final MapCodec<AvoidLandmarkModifier> CODEC = RecordCodecBuilder.<AvoidLandmarkModifier>mapCodec(instance -> instance.group(
+		Codec.BOOL.fieldOf("occupies_surface").forGetter(o -> o.occupiesSurface),
+		Codec.BOOL.fieldOf("occupies_underground").forGetter(o -> o.occupiesUnderground),
+		Codec.INT.fieldOf("additional_clearance").forGetter(o -> o.additionalClearance)
+	).apply(instance, AvoidLandmarkModifier::new)).validate(AvoidLandmarkModifier::validate);
 
 	private final boolean occupiesSurface;
 	private final boolean occupiesUnderground;
@@ -51,9 +51,6 @@ public class AvoidLandmarkModifier extends PlacementModifier {
 
 	@Override
 	public Stream<BlockPos> getPositions(PlacementContext worldDecoratingHelper, RandomSource random, BlockPos blockPos) {
-		if (!(worldDecoratingHelper.getLevel().getLevel().getChunkSource().getGenerator() instanceof ChunkGeneratorTwilight))
-			return Stream.of(blockPos);
-
 		// Feature Center
 		BlockPos.MutableBlockPos featurePos = LegacyLandmarkPlacements.getNearestCenterXZ(blockPos.getX() >> 4, blockPos.getZ() >> 4).mutable();
 

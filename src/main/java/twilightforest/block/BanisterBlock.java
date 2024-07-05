@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -7,14 +8,16 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
@@ -25,23 +28,26 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.ToolActions;
+import net.neoforged.neoforge.common.ToolActions;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.enums.BanisterShape;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class BanisterBlock extends HorizontalDirectionalBlock implements SimpleWaterloggedBlock {
+
+	public static final MapCodec<BanisterBlock> CODEC = simpleCodec(BanisterBlock::new);
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	public static final EnumProperty<BanisterShape> SHAPE = EnumProperty.create("shape", BanisterShape.class);
 	public static final BooleanProperty EXTENDED = BooleanProperty.create("extended");
 
+	@SuppressWarnings("this-escape")
 	public BanisterBlock(Properties properties) {
 		super(properties);
 
@@ -49,13 +55,18 @@ public class BanisterBlock extends HorizontalDirectionalBlock implements SimpleW
 	}
 
 	@Override
+	protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
+		return CODEC;
+	}
+
+	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		BlockPos pos = context.getClickedPos();
 
 		return this.defaultBlockState()
-				.setValue(FACING, context.getHorizontalDirection())
-				.setValue(SHAPE, context.getLevel().getBlockState(pos.above()).is(BlockTagGenerator.BANISTERS) ? BanisterShape.CONNECTED : BanisterShape.TALL)
-				.setValue(WATERLOGGED, context.getLevel().getFluidState(pos).getType() == Fluids.WATER);
+			.setValue(FACING, context.getHorizontalDirection())
+			.setValue(SHAPE, context.getLevel().getBlockState(pos.above()).is(BlockTagGenerator.BANISTERS) ? BanisterShape.CONNECTED : BanisterShape.TALL)
+			.setValue(WATERLOGGED, context.getLevel().getFluidState(pos).getType() == Fluids.WATER);
 	}
 
 	@Override
@@ -115,14 +126,13 @@ public class BanisterBlock extends HorizontalDirectionalBlock implements SimpleW
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable BlockGetter getter, List<Component> tooltip, TooltipFlag flag) {
+	public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
 		tooltip.add(Component.translatable("block.twilightforest.banister.cycle").withStyle(ChatFormatting.GRAY));
 	}
 
-	@Nullable
 	@Override
-	public BlockPathTypes getBlockPathType(BlockState state, BlockGetter getter, BlockPos pos, @Nullable Mob mob) {
-		return BlockPathTypes.BLOCKED;
+	public @Nullable PathType getBlockPathType(BlockState state, BlockGetter level, BlockPos pos, @Nullable Mob mob) {
+		return PathType.BLOCKED;
 	}
 
 	@Override
@@ -136,20 +146,34 @@ public class BanisterBlock extends HorizontalDirectionalBlock implements SimpleW
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
-		ItemStack held = player.getItemInHand(hand);
-
+	protected ItemInteractionResult useItemOn(ItemStack held, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
 		if (held.canPerformAction(ToolActions.AXE_WAX_OFF)) {
 			BlockState newState = state.cycle(SHAPE);
+			BlockState belowState = level.getBlockState(pos.below());
 
-			// If we reach BanisterShape.TALL it means we went a full cycle, so we'll also cycle the extension
 			level.playSound(null, pos, SoundEvents.AXE_STRIP, SoundSource.BLOCKS, 1.0F, 1.0F);
-			level.setBlock(pos, newState.getValue(SHAPE) == BanisterShape.TALL ? newState.cycle(EXTENDED) : newState, 3);
+			if (belowState.getBlock() instanceof BanisterBlock && belowState.getValue(SHAPE) != BanisterShape.SHORT) {
+				// If the state below is a non-short banister, we never use extended banisters
+				level.setBlock(pos, newState.setValue(EXTENDED, false), 3);
+			} else {
+				// If we reach BanisterShape.TALL it means we went a full cycle, so we'll also cycle the extension
+				level.setBlock(pos, newState.getValue(SHAPE) == BanisterShape.TALL ? newState.cycle(EXTENDED) : newState, 3);
+			}
 
-			return InteractionResult.SUCCESS;
+
+			return ItemInteractionResult.SUCCESS;
 		}
 
-		return super.use(state, level, pos, player, hand, result);
+		return super.useItemOn(held, state, level, pos, player, hand, result);
+	}
+
+	@Override
+	protected BlockState updateShape(BlockState thisState, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos thisPos, BlockPos neighborPos) {
+		// If a non-short banister gets placed below this banister, while it is extended, un-extend
+		if (direction == Direction.DOWN && neighborState.getBlock() instanceof BanisterBlock && neighborState.getValue(SHAPE) != BanisterShape.SHORT && thisState.getValue(EXTENDED)) {
+			return thisState.setValue(EXTENDED, false);
+		}
+		return super.updateShape(thisState, direction, neighborState, level, thisPos, neighborPos);
 	}
 
 	@Override
@@ -164,54 +188,54 @@ public class BanisterBlock extends HorizontalDirectionalBlock implements SimpleW
 
 	// These extend upwards to 16 instead of 12 because they're used on both the Tall and Connected shapes
 	private static final VoxelShape NORTH_SUPPORTS_TALL = Shapes.or(
-			Block.box(2.5D, 0.0D, 0.0D, 5.5D, 16.0D, 3.0D),
-			Block.box(10.5D, 0.0D, 0.0D, 13.5D, 16.0D, 3.0D)
+		Block.box(2.5D, 0.0D, 0.0D, 5.5D, 16.0D, 3.0D),
+		Block.box(10.5D, 0.0D, 0.0D, 13.5D, 16.0D, 3.0D)
 	);
 	private static final VoxelShape EAST_SUPPORTS_TALL = Shapes.or(
-			Block.box(13.0D, 0.0D, 2.5D, 16.0D, 16.0D, 5.5D),
-			Block.box(13.0D, 0.0D, 10.5D, 16.0D, 16.0D, 13.5D)
+		Block.box(13.0D, 0.0D, 2.5D, 16.0D, 16.0D, 5.5D),
+		Block.box(13.0D, 0.0D, 10.5D, 16.0D, 16.0D, 13.5D)
 	);
 	private static final VoxelShape SOUTH_SUPPORTS_TALL = Shapes.or(
-			Block.box(2.5D, 0.0D, 13.0D, 5.5D, 16.0D, 16.0D),
-			Block.box(10.5D, 0.0D, 13.0D, 13.5D, 16.0D, 16.0D)
+		Block.box(2.5D, 0.0D, 13.0D, 5.5D, 16.0D, 16.0D),
+		Block.box(10.5D, 0.0D, 13.0D, 13.5D, 16.0D, 16.0D)
 	);
 	private static final VoxelShape WEST_SUPPORTS_TALL = Shapes.or(
-			Block.box(0.0D, 0.0D, 2.5D, 3.0D, 16.0D, 5.5D),
-			Block.box(0.0D, 0.0D, 10.5D, 3.0D, 16.0D, 13.5D)
+		Block.box(0.0D, 0.0D, 2.5D, 3.0D, 16.0D, 5.5D),
+		Block.box(0.0D, 0.0D, 10.5D, 3.0D, 16.0D, 13.5D)
 	);
 
 	private static final VoxelShape NORTH_SUPPORTS_SHORT = Shapes.or(
-			Block.box(2.5D, 0.0D, 0.0D, 5.5D, 4.0D, 3.0D),
-			Block.box(10.5D, 0.0D, 0.0D, 13.5D, 4.0D, 3.0D)
+		Block.box(2.5D, 0.0D, 0.0D, 5.5D, 4.0D, 3.0D),
+		Block.box(10.5D, 0.0D, 0.0D, 13.5D, 4.0D, 3.0D)
 	);
 	private static final VoxelShape EAST_SUPPORTS_SHORT = Shapes.or(
-			Block.box(13.0D, 0.0D, 2.5D, 16.0D, 4.0D, 5.5D),
-			Block.box(13.0D, 0.0D, 10.5D, 16.0D, 4.0D, 13.5D)
+		Block.box(13.0D, 0.0D, 2.5D, 16.0D, 4.0D, 5.5D),
+		Block.box(13.0D, 0.0D, 10.5D, 16.0D, 4.0D, 13.5D)
 	);
 	private static final VoxelShape SOUTH_SUPPORTS_SHORT = Shapes.or(
-			Block.box(2.5D, 0.0D, 13.0D, 5.5D, 4.0D, 16.0D),
-			Block.box(10.5D, 0.0D, 13.0D, 13.5D, 4.0D, 16.0D)
+		Block.box(2.5D, 0.0D, 13.0D, 5.5D, 4.0D, 16.0D),
+		Block.box(10.5D, 0.0D, 13.0D, 13.5D, 4.0D, 16.0D)
 	);
 	private static final VoxelShape WEST_SUPPORTS_SHORT = Shapes.or(
-			Block.box(0.0D, 0.0D, 2.5D, 3.0D, 4.0D, 5.5D),
-			Block.box(0.0D, 0.0D, 10.5D, 3.0D, 4.0D, 13.5D)
+		Block.box(0.0D, 0.0D, 2.5D, 3.0D, 4.0D, 5.5D),
+		Block.box(0.0D, 0.0D, 10.5D, 3.0D, 4.0D, 13.5D)
 	);
 
 	private static final VoxelShape NORTH_EXTENSION = Shapes.or(
-			Block.box(2.5D, -8.0D, 0.0D, 5.5D, 0.0D, 3.0D),
-			Block.box(10.5D, -8.0D, 0.0D, 13.5D, 0.0D, 3.0D)
+		Block.box(2.5D, -8.0D, 0.0D, 5.5D, 0.0D, 3.0D),
+		Block.box(10.5D, -8.0D, 0.0D, 13.5D, 0.0D, 3.0D)
 	);
 	private static final VoxelShape EAST_EXTENSION = Shapes.or(
-			Block.box(13.0D, -8.0D, 2.5D, 16.0D, 0.0D, 5.5D),
-			Block.box(13.0D, -8.0D, 10.5D, 16.0D, 0.0D, 13.5D)
+		Block.box(13.0D, -8.0D, 2.5D, 16.0D, 0.0D, 5.5D),
+		Block.box(13.0D, -8.0D, 10.5D, 16.0D, 0.0D, 13.5D)
 	);
 	private static final VoxelShape SOUTH_EXTENSION = Shapes.or(
-			Block.box(2.5D, -8.0D, 13.0D, 5.5D, 0.0D, 16.0D),
-			Block.box(10.5D, -8.0D, 13.0D, 13.5D, 0.0D, 16.0D)
+		Block.box(2.5D, -8.0D, 13.0D, 5.5D, 0.0D, 16.0D),
+		Block.box(10.5D, -8.0D, 13.0D, 13.5D, 0.0D, 16.0D)
 	);
 	private static final VoxelShape WEST_EXTENSION = Shapes.or(
-			Block.box(0.0D, -8.0D, 2.5D, 3.0D, 0.0D, 5.5D),
-			Block.box(0.0D, -8.0D, 10.5D, 3.0D, 0.0D, 13.5D)
+		Block.box(0.0D, -8.0D, 2.5D, 3.0D, 0.0D, 5.5D),
+		Block.box(0.0D, -8.0D, 10.5D, 3.0D, 0.0D, 13.5D)
 	);
 
 	private static final VoxelShape NORTH_TALL = Shapes.or(Block.box(0.0D, 12.0D, 0.0D, 16.0D, 16.0D, 4.0D), NORTH_SUPPORTS_TALL);

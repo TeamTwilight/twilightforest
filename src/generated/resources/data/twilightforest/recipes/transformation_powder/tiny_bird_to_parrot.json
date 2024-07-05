@@ -1,6 +1,0 @@
-{
-  "type": "twilightforest:transformation_powder",
-  "from": "twilightforest:tiny_bird",
-  "reversible": true,
-  "to": "minecraft:parrot"
-}

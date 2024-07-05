@@ -1,5 +1,25 @@
 {
   "parent": "minecraft:item/generated",
+  "overrides": [
+    {
+      "model": "twilightforest:item/red_thread_bundle",
+      "predicate": {
+        "twilightforest:size": 0.25
+      }
+    },
+    {
+      "model": "twilightforest:item/red_thread_spool",
+      "predicate": {
+        "twilightforest:size": 0.5
+      }
+    },
+    {
+      "model": "twilightforest:item/red_thread_large_spool",
+      "predicate": {
+        "twilightforest:size": 1.0
+      }
+    }
+  ],
   "textures": {
     "layer0": "twilightforest:item/red_thread"
   }

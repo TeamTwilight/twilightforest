@@ -1,8 +1,8 @@
 package twilightforest.world.components.structures.icetower;
 
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RotatedPillarBlock;
-import net.minecraft.core.Direction;
 import twilightforest.init.TFBlocks;
 import twilightforest.world.components.structures.TFStructureDecorator;
 

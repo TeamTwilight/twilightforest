@@ -26,6 +26,7 @@ public class FinalCastleEntranceStairsComponent extends TFStructureComponentOld 
 		super(TFStructurePieceTypes.TFFCEnSt.get(), nbt);
 	}
 
+	@SuppressWarnings("this-escape")
 	public FinalCastleEntranceStairsComponent(int index, int x, int y, int z, Direction direction) {
 		super(TFStructurePieceTypes.TFFCEnSt.get(), index, x, y, z);
 		this.setOrientation(direction);

@@ -8,16 +8,17 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.entity.HumanoidArm;
 import twilightforest.client.model.entity.newmodels.NewKoboldModel;
 import twilightforest.client.renderer.entity.TFBipedRenderer;
 import twilightforest.entity.monster.Kobold;
 
 public class NewKoboldRenderer extends TFBipedRenderer<Kobold, NewKoboldModel> {
 
+	@SuppressWarnings("this-escape")
 	public NewKoboldRenderer(EntityRendererProvider.Context context, NewKoboldModel model, float shadowSize, String textureName) {
 		super(context, model, shadowSize, textureName);
 

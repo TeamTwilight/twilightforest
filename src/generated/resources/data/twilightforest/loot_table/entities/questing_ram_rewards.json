@@ -1,0 +1,42 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "twilightforest:crumble_horn"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "component": "minecraft:bundle_contents",
+              "entries": [
+                {
+                  "type": "minecraft:item",
+                  "name": "twilightforest:quest_ram_trophy"
+                },
+                {
+                  "type": "minecraft:loot_table",
+                  "value": "twilightforest:entities/questing_ram_reward_blocks"
+                }
+              ],
+              "function": "minecraft:set_contents"
+            }
+          ],
+          "name": "minecraft:bundle"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "twilightforest:entities/questing_ram_rewards"
+}

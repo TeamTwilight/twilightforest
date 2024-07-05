@@ -3,10 +3,7 @@ package twilightforest.client.particle;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
 public class LargeFlameParticle extends TextureSheetParticle {
 
 	private final float flameScale;
@@ -16,7 +13,7 @@ public class LargeFlameParticle extends TextureSheetParticle {
 		this.xd = this.xd * 0.01D + vx;
 		this.yd = this.yd * 0.01D + vy;
 		this.zd = this.zd * 0.01D + vz;
-		this.quadSize *= 5.0D;
+		this.quadSize *= 5.0F;
 		this.flameScale = this.quadSize;
 		this.rCol = this.gCol = this.bCol = 1.0F;
 		this.lifetime = (int) (8.0D / (Math.random() * 0.8D + 0.2D)) + 4;
@@ -81,7 +78,6 @@ public class LargeFlameParticle extends TextureSheetParticle {
 		}
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	public record Factory(SpriteSet sprite) implements ParticleProvider<SimpleParticleType> {
 
 		@Override

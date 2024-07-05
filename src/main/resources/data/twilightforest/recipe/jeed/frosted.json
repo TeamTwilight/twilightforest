@@ -1,0 +1,24 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "jeed"
+    }
+  ],
+  "type": "jeed:effect_provider",
+  "effect": "twilightforest:frosted",
+  "providers": [
+    {
+      "item": "twilightforest:alpha_yeti_spawn_egg"
+    },
+    {
+      "item": "twilightforest:ice_bomb"
+    },
+    {
+      "item": "twilightforest:ice_bow"
+    },
+    {
+      "item": "twilightforest:ice_sword"
+    }
+  ]
+}

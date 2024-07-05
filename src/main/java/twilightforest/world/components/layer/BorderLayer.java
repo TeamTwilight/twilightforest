@@ -1,6 +1,7 @@
 package twilightforest.world.components.layer;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
@@ -37,11 +38,11 @@ public record BorderLayer(ResourceKey<Biome> targetBiome, ResourceKey<Biome> bor
 	}
 
 	public static final class Factory implements BiomeLayerFactory {
-		public static final Codec<Factory> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-				Codec.LONG.fieldOf("salt").forGetter(Factory::salt),
-				ResourceKey.codec(Registries.BIOME).fieldOf("target_biome").forGetter(Factory::target),
-				ResourceKey.codec(Registries.BIOME).fieldOf("bordering_biome").forGetter(Factory::borderingBiome),
-				BiomeLayerStack.HOLDER_CODEC.fieldOf("parent").forGetter(Factory::parent)
+		public static final MapCodec<Factory> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
+			Codec.LONG.fieldOf("salt").forGetter(Factory::salt),
+			ResourceKey.codec(Registries.BIOME).fieldOf("target_biome").forGetter(Factory::target),
+			ResourceKey.codec(Registries.BIOME).fieldOf("bordering_biome").forGetter(Factory::borderingBiome),
+			BiomeLayerStack.HOLDER_CODEC.fieldOf("parent").forGetter(Factory::parent)
 		).apply(inst, Factory::new));
 		private final long salt;
 		private final ResourceKey<Biome> target;
@@ -61,7 +62,7 @@ public record BorderLayer(ResourceKey<Biome> targetBiome, ResourceKey<Biome> bor
 
 		@Override
 		public LazyArea build(LongFunction<LazyAreaContext> contextFactory) {
-			return this.instance.run(contextFactory.apply(this.salt), this.parent.get().build(contextFactory));
+			return this.instance.run(contextFactory.apply(this.salt), this.parent.value().build(contextFactory));
 		}
 
 		@Override

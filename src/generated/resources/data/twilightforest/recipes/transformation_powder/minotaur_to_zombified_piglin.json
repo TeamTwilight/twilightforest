@@ -1,6 +1,0 @@
-{
-  "type": "twilightforest:transformation_powder",
-  "from": "twilightforest:minotaur",
-  "reversible": true,
-  "to": "minecraft:zombified_piglin"
-}

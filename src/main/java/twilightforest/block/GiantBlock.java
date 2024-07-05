@@ -7,7 +7,6 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-
 import org.jetbrains.annotations.Nullable;
 
 public class GiantBlock extends Block {
@@ -71,8 +70,8 @@ public class GiantBlock extends Block {
 
 	public static Iterable<BlockPos> getVolume(BlockPos pos) {
 		return BlockPos.betweenClosed(
-				pos.getX() & ~0b11, pos.getY() & ~0b11, pos.getZ() & ~0b11,
-				pos.getX() | 0b11, pos.getY() | 0b11, pos.getZ() | 0b11
+			pos.getX() & ~0b11, pos.getY() & ~0b11, pos.getZ() & ~0b11,
+			pos.getX() | 0b11, pos.getY() | 0b11, pos.getZ() | 0b11
 		);
 	}
 }

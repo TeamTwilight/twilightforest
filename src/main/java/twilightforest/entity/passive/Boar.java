@@ -18,12 +18,11 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
 
 public class Boar extends Animal {
-
-	private static final Ingredient FOOD_ITEMS = Ingredient.of(Items.CARROT, Items.POTATO, Items.BEETROOT);
 
 	public Boar(EntityType<? extends Boar> type, Level world) {
 		super(type, world);
@@ -35,7 +34,7 @@ public class Boar extends Animal {
 		this.goalSelector.addGoal(1, new PanicGoal(this, 1.25D));
 		this.goalSelector.addGoal(3, new BreedGoal(this, 1.0D));
 		this.goalSelector.addGoal(4, new TemptGoal(this, 1.2D, Ingredient.of(Items.CARROT_ON_A_STICK), false));
-		this.goalSelector.addGoal(4, new TemptGoal(this, 1.2D, FOOD_ITEMS, false));
+		this.goalSelector.addGoal(4, new TemptGoal(this, 1.2D, Ingredient.of(ItemTagGenerator.BOAR_TEMPT_ITEMS), false));
 		this.goalSelector.addGoal(5, new FollowParentGoal(this, 1.1D));
 		this.goalSelector.addGoal(6, new WaterAvoidingRandomStrollGoal(this, 1.0D));
 		this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 6.0F));
@@ -73,7 +72,7 @@ public class Boar extends Animal {
 
 	@Override
 	public boolean isFood(ItemStack stack) {
-		return FOOD_ITEMS.test(stack);
+		return stack.is(ItemTagGenerator.BOAR_TEMPT_ITEMS);
 	}
 
 	@Override

@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:item/generated",
+  "parent": "twilightforest:item/special_handheld",
   "textures": {
     "layer0": "twilightforest:item/ore_magnet_pulling_1"
   }

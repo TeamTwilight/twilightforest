@@ -10,7 +10,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -22,7 +21,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.entity.Chain;
 import twilightforest.entity.SpikeBlock;
 import twilightforest.entity.TFPart;
 import twilightforest.entity.ai.goal.AvoidAnyEntityGoal;
@@ -48,21 +46,14 @@ public class BlockChainGoblin extends Monster {
 
 	private float chainMoveLength;
 
+	@SuppressWarnings("this-escape")
 	public final SpikeBlock block = new SpikeBlock(this);
-	public final Chain chain1;
-	public final Chain chain2;
-	public final Chain chain3;
 
 	private final MultipartGenericsAreDumb[] partsArray;
 
-	public BlockChainGoblin(EntityType<? extends BlockChainGoblin> type, Level world) {
-		super(type, world);
-
-		this.chain1 = new Chain(this);
-		this.chain2 = new Chain(this);
-		this.chain3 = new Chain(this);
-
-		this.partsArray = new MultipartGenericsAreDumb[]{this.block, this.chain1, this.chain2, this.chain3};
+	public BlockChainGoblin(EntityType<? extends BlockChainGoblin> type, Level level) {
+		super(type, level);
+		this.partsArray = new MultipartGenericsAreDumb[]{this.block};
 	}
 
 	public static abstract class MultipartGenericsAreDumb extends TFPart<Entity> {
@@ -86,24 +77,19 @@ public class BlockChainGoblin extends Monster {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(DATA_CHAINLENGTH, (byte) 0);
-		this.getEntityData().define(DATA_CHAINPOS, (byte) 0);
-		this.getEntityData().define(IS_THROWING, false);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(DATA_CHAINLENGTH, (byte) 0);
+		builder.define(DATA_CHAINPOS, (byte) 0);
+		builder.define(IS_THROWING, false);
 	}
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Monster.createMonsterAttributes()
-				.add(Attributes.MAX_HEALTH, 20.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.28D)
-				.add(Attributes.ATTACK_DAMAGE, 8.0D)
-				.add(Attributes.ARMOR, 11.0D);
-	}
-
-	@Override
-	public float getEyeHeight(Pose pose) {
-		return this.getBbHeight() * 0.78F;
+			.add(Attributes.MAX_HEALTH, 20.0D)
+			.add(Attributes.MOVEMENT_SPEED, 0.28D)
+			.add(Attributes.ATTACK_DAMAGE, 8.0D)
+			.add(Attributes.ARMOR, 11.0D);
 	}
 
 	@Override
@@ -151,16 +137,13 @@ public class BlockChainGoblin extends Monster {
 
 	@Override
 	public boolean doHurtTarget(Entity entity) {
-		return EntityUtil.properlyApplyCustomDamageSource(this, entity, TFDamageTypes.getIndirectEntityDamageSource(this.level(), TFDamageTypes.SPIKED, this, this.block));
+		return EntityUtil.properlyApplyCustomDamageSource(this, entity, TFDamageTypes.getIndirectEntityDamageSource(this.level(), TFDamageTypes.SPIKED, this, this.block), null);
 	}
 
 	@Override
 	public void tick() {
 		super.tick();
 		this.block.tick();
-		this.chain1.tick();
-		this.chain2.tick();
-		this.chain3.tick();
 
 		if (this.recoilCounter > 0) {
 			this.recoilCounter--;
@@ -198,10 +181,6 @@ public class BlockChainGoblin extends Monster {
 					this.setThrowing(false);
 				}
 
-				this.chain1.setPos(sx2 - ox2 * 0.25D, sy2 - oy2 * 0.25D, sz2 - oz2 * 0.25D);
-				this.chain2.setPos(sx2 - ox2 * 0.5D, sy2 - oy2 * 0.5D, sz2 - oz2 * 0.5D);
-				this.chain3.setPos(sx2 - ox2 * 0.85D, sy2 - oy2 * 0.85D, sz2 - oz2 * 0.85D);
-
 				this.block.setPos(sx2 - ox2, sy2 - oy2, sz2 - oz2);
 			} else {
 
@@ -209,19 +188,6 @@ public class BlockChainGoblin extends Monster {
 				Vec3 blockPos = this.getChainPosition();
 				this.block.setPos(blockPos.x(), blockPos.y(), blockPos.z());
 				this.block.setYRot(getChainAngle());
-
-				// interpolate chain position
-				double sx = this.getX();
-				double sy = this.getY() + this.getBbHeight() - 0.1D;
-				double sz = this.getZ();
-
-				double ox = sx - blockPos.x();
-				double oy = sy - blockPos.y() - (this.block.getBbHeight() / 3.0D);
-				double oz = sz - blockPos.z();
-
-				this.chain1.setPos(sx - ox * 0.4D, sy - oy * 0.4D, sz - oz * 0.4D);
-				this.chain2.setPos(sx - ox * 0.5D, sy - oy * 0.5D, sz - oz * 0.5D);
-				this.chain3.setPos(sx - ox * 0.6D, sy - oy * 0.6D, sz - oz * 0.6D);
 			}
 		}
 

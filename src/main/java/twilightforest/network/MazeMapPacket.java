@@ -2,66 +2,57 @@ package twilightforest.network;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.MapRenderer;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
-import net.minecraftforge.network.NetworkEvent;
-import twilightforest.TFMazeMapData;
+import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
+import twilightforest.TwilightForestMod;
 import twilightforest.item.MazeMapItem;
+import twilightforest.item.mapdata.TFMazeMapData;
 
-import java.util.function.Supplier;
+// Rewraps vanilla ClientboundMapItemDataPacket to properly add our own data
+public record MazeMapPacket(ClientboundMapItemDataPacket inner, boolean ore, int yCenter) implements CustomPacketPayload {
 
-/**
- * Vanilla's SPacketMaps handler looks for and loads the vanilla MapData instances.
- * We rewrap the packet here in order to load our own MapData instances properly.
- */
-public class MazeMapPacket {
+	public static final Type<MazeMapPacket> TYPE = new Type<>(TwilightForestMod.prefix("maze_map"));
 
-	private final ClientboundMapItemDataPacket inner;
-	private final boolean ore;
-	private final int yCenter;
+	public static final StreamCodec<RegistryFriendlyByteBuf, MazeMapPacket> STREAM_CODEC = StreamCodec.composite(
+		ClientboundMapItemDataPacket.STREAM_CODEC, MazeMapPacket::inner,
+		ByteBufCodecs.BOOL, MazeMapPacket::ore,
+		ByteBufCodecs.INT, MazeMapPacket::yCenter,
+		MazeMapPacket::new
+	);
 
-	public MazeMapPacket(ClientboundMapItemDataPacket inner, boolean ore, int yCenter) {
-		this.inner = inner;
-		this.ore = ore;
-		this.yCenter = yCenter;
+	@Override
+	public Type<? extends CustomPacketPayload> type() {
+		return TYPE;
 	}
 
-	public MazeMapPacket(FriendlyByteBuf buf) {
-		this.inner = new ClientboundMapItemDataPacket(buf);
-		this.ore = buf.readBoolean();
-		this.yCenter = buf.readVarInt();
-	}
-
-	public void encode(FriendlyByteBuf buf) {
-		this.inner.write(buf);
-		buf.writeBoolean(ore);
-		buf.writeVarInt(yCenter);
-	}
-
-	public static class Handler {
-
-		@SuppressWarnings("Convert2Lambda")
-		public static boolean onMessage(MazeMapPacket message, Supplier<NetworkEvent.Context> ctx) {
-			ctx.get().enqueueWork(new Runnable() {
+	@SuppressWarnings("Convert2Lambda")
+	public static void handle(MazeMapPacket message, IPayloadContext ctx) {
+		//ensure this is only done on clients as this uses client only code
+		if (ctx.flow().isClientbound()) {
+			ctx.enqueueWork(new Runnable() {
 				@Override
 				public void run() {
+					Level level = ctx.player().level();
 					// [VanillaCopy] ClientPlayNetHandler#handleMaps with our own mapdatas
 					MapRenderer mapitemrenderer = Minecraft.getInstance().gameRenderer.getMapRenderer();
-					String s = MazeMapItem.getMapName(message.inner.getMapId());
-					TFMazeMapData mapdata = TFMazeMapData.getMazeMapData(Minecraft.getInstance().level, s);
+					String s = MazeMapItem.getMapName(message.inner().mapId().id());
+					TFMazeMapData mapdata = TFMazeMapData.getMazeMapData(level, s);
 					if (mapdata == null) {
-						mapdata = new TFMazeMapData(0, 0, message.inner.getScale(), false, false, message.inner.isLocked(), Minecraft.getInstance().level.dimension());
-						TFMazeMapData.registerMazeMapData(Minecraft.getInstance().level, mapdata, s);
+						mapdata = new TFMazeMapData(0, 0, message.inner().scale(), false, false, message.inner().locked(), level.dimension());
+						TFMazeMapData.registerMazeMapData(level, mapdata, s);
 					}
 
-					mapdata.ore = message.ore;
-					mapdata.yCenter = message.yCenter;
-					message.inner.applyToMap(mapdata);
-					mapitemrenderer.update(message.inner.getMapId(), mapdata);
+					mapdata.ore = message.ore();
+					mapdata.yCenter = message.yCenter();
+					message.inner().applyToMap(mapdata);
+					mapitemrenderer.update(message.inner().mapId(), mapdata);
 				}
 			});
-			ctx.get().setPacketHandled(true);
-			return true;
 		}
 	}
 }

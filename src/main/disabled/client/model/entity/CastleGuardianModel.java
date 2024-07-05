@@ -563,9 +563,9 @@ public class CastleGuardianModel extends ListModel<CastleGuardianEntity> {
 	@Override
 	public Iterable<ModelPart> parts() {
 		return ImmutableList.of(
-				this.MainBody,
-				this.MidBody,
-				this.Head
+			this.MainBody,
+			this.MidBody,
+			this.Head
 		);
 	}
 

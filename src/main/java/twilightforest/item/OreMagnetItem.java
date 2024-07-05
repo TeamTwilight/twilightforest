@@ -2,8 +2,11 @@ package twilightforest.item;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -15,27 +18,31 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.AddReloadListenerEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.TagsUpdatedEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.BlockTagGenerator;
+import twilightforest.init.TFParticleType;
 import twilightforest.init.TFSounds;
+import twilightforest.network.ParticlePacket;
 import twilightforest.util.VoxelBresenhamIterator;
 
 import javax.annotation.Nonnull;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
+@EventBusSubscriber(modid = TwilightForestMod.ID)
 public class OreMagnetItem extends Item {
 
 	private static final float WIGGLE = 10F;
@@ -52,18 +59,13 @@ public class OreMagnetItem extends Item {
 	@Override
 	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
 		AtomicBoolean badEnchant = new AtomicBoolean();
-		EnchantmentHelper.getEnchantments(book).forEach((enchantment, integer) -> {
+		book.getEnchantments().entrySet().forEach(enchantment -> {
 			if (!Objects.equals(Enchantments.UNBREAKING, enchantment)) {
 				badEnchant.set(true);
 			}
 		});
 
 		return !badEnchant.get() && super.isBookEnchantable(stack, book);
-	}
-
-	@Override
-	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-		return false;
 	}
 
 	@Nonnull
@@ -75,7 +77,7 @@ public class OreMagnetItem extends Item {
 
 	@Override
 	public void releaseUsing(ItemStack stack, Level level, LivingEntity living, int useRemaining) {
-		int useTime = this.getUseDuration(stack) - useRemaining;
+		int useTime = this.getUseDuration(stack, living) - useRemaining;
 
 		if (!level.isClientSide() && useTime > 10) {
 			int moved = this.doMagnet(level, living, 0, 0);
@@ -106,7 +108,7 @@ public class OreMagnetItem extends Item {
 			}
 
 			if (moved > 0) {
-				stack.hurtAndBreak(moved, living, user -> user.broadcastBreakEvent(living.getUsedItemHand()));
+				stack.hurtAndBreak(moved, living, LivingEntity.getSlotForHand(living.getUsedItemHand()));
 				level.playSound(null, living.getX(), living.getY(), living.getZ(), TFSounds.MAGNET_GRAB.get(), living.getSoundSource(), 1.0F, 1.0F);
 			}
 		}
@@ -119,7 +121,7 @@ public class OreMagnetItem extends Item {
 	}
 
 	@Override
-	public int getUseDuration(ItemStack stack) {
+	public int getUseDuration(ItemStack stack, LivingEntity user) {
 		return 72000;
 	}
 
@@ -133,13 +135,10 @@ public class OreMagnetItem extends Item {
 		Vec3 lookVec = getOffsetLook(living, yawOffset, pitchOffset);
 		Vec3 destVec = srcVec.add(lookVec.x() * range, lookVec.y() * range, lookVec.z() * range);
 
-		return doMagnet(level, BlockPos.containing(srcVec), BlockPos.containing(destVec));
+		return doMagnet(level, BlockPos.containing(srcVec), BlockPos.containing(destVec), false);
 	}
 
-	public static int doMagnet(Level level, BlockPos usePos, BlockPos destPos) {
-		// FIXME Find a better place to invoke this!
-		initOre2BlockMap();
-
+	public static int doMagnet(Level level, BlockPos usePos, BlockPos destPos, boolean sourceIsMineCore) {
 		int blocksMoved = 0;
 
 		// find some ore?
@@ -180,6 +179,20 @@ public class OreMagnetItem extends Item {
 
 				if (isReplaceable(replaceState) || replaceState.canBeReplaced() || replaceState.isAir()) {
 					level.setBlock(coord, replacementBlock, 2);
+
+					if (sourceIsMineCore && level instanceof ServerLevel serverLevel) {
+						Vec3 xyz = Vec3.atCenterOf(replacePos);
+						for (ServerPlayer serverplayer : serverLevel.players()) { // This is just particle math, we send a particle packet to every player in range
+							if (serverplayer.distanceToSqr(xyz) < 4096.0D) {
+								ParticlePacket particlePacket = new ParticlePacket();
+								for (int i = 0; i < 16; i++) {
+									Vec3 offset = new Vec3((level.random.nextDouble() - 0.5D) * 1.25D, (level.random.nextDouble() - 0.5D) * 1.25D, (level.random.nextDouble() - 0.5D) * 1.25D);
+									particlePacket.queueParticle(TFParticleType.LOG_CORE_PARTICLE.get(), false, xyz.add(offset), new Vec3(0.8, 0.9, 0.2));
+								}
+								PacketDistributor.sendToPlayer(serverplayer, particlePacket);
+							}
+						}
+					}
 
 					// set close to ore material
 					level.setBlock(replacePos, attactedOreBlock, 2);
@@ -238,52 +251,37 @@ public class OreMagnetItem extends Item {
 		return ORE_TO_BLOCK_REPLACEMENTS.containsKey(ore);
 	}
 
-	// So it looks like we can't really access BlockTag contents until Datapack loading is complete (see `buildOreMagnetCache` method below)
-	// Instead let's opt for only clearing that particular cache on reload, and lazy-init the map when the magnet is used
-
 	// Switch over to ConcurrentHashMap if we run into any concurrency problems
-	private static boolean cacheNeedsBuild = true;
-	private static final HashMap<Block, Block> ORE_TO_BLOCK_REPLACEMENTS = new HashMap<>();
+	public static final HashMap<Block, Block> ORE_TO_BLOCK_REPLACEMENTS = new HashMap<>();
 
-	private static void initOre2BlockMap() {
-		if (!cacheNeedsBuild)
-			return;
-
-		TwilightForestMod.LOGGER.info("GENERATING ORE TO BLOCK MAPPING");
+	@SubscribeEvent
+	public static void onTagsUpdatedEvent(TagsUpdatedEvent event) {
+		ORE_TO_BLOCK_REPLACEMENTS.clear();
 
 		//collect all tags
-		for (TagKey<Block> tag : Objects.requireNonNull(ForgeRegistries.BLOCKS.tags()).getTagNames().filter(location -> location.location().getNamespace().equals("forge")).toList()) {
+		for (TagKey<Block> tag : BuiltInRegistries.BLOCK.getTagNames().filter(location -> location.location().getNamespace().equals("c")).toList()) {
 			//check if the tag is a valid ore tag
 			if (tag.location().getPath().contains("ores_in_ground/")) {
 				//grab the part after the slash for use later
 				String oreground = tag.location().getPath().substring(15);
 				//check if a tag for ore grounds matches up with our ores in ground tag
-				if (Objects.requireNonNull(ForgeRegistries.BLOCKS.tags()).getTagNames().filter(location -> location.location().getNamespace().equals("forge")).anyMatch(blockTagKey -> blockTagKey.location().getPath().equals("ore_bearing_ground/" + oreground))) {
+				if (BuiltInRegistries.BLOCK.getTagNames().filter(location -> location.location().getNamespace().equals("c")).anyMatch(blockTagKey -> blockTagKey.location().getPath().equals("ore_bearing_ground/" + oreground))) {
 					//add each ground type to each ore
-					Objects.requireNonNull(ForgeRegistries.BLOCKS.tags()).getTag(TagKey.create(Registries.BLOCK, new ResourceLocation("forge", "ore_bearing_ground/" + oreground))).forEach(ground ->
-							Objects.requireNonNull(ForgeRegistries.BLOCKS.tags()).getTag(tag).forEach(ore -> {
-								//exclude ignored ores
-								if (!ore.defaultBlockState().is(BlockTagGenerator.ORE_MAGNET_IGNORE)) {
-									ORE_TO_BLOCK_REPLACEMENTS.put(ore, ground);
-								}
-							}));
+					BuiltInRegistries.BLOCK.getTag(TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("c", "ore_bearing_ground/" + oreground))).get().forEach(ground ->
+						BuiltInRegistries.BLOCK.getTag(tag).get().forEach(ore -> {
+							//exclude ignored ores
+							if (!ore.value().defaultBlockState().is(BlockTagGenerator.ORE_MAGNET_IGNORE)) {
+								ORE_TO_BLOCK_REPLACEMENTS.put(ore.value(), ground.value());
+							}
+						}));
 				}
 			}
 		}
 
-		cacheNeedsBuild = false;
-	}
-
-	@SubscribeEvent
-	public static void buildOreMagnetCache(AddReloadListenerEvent event) {
-		event.addListener((stage, resourceManager, preparationsProfiler, reloadProfiler, backgroundExecutor, gameExecutor) -> {
-			if (!cacheNeedsBuild) {
-				ORE_TO_BLOCK_REPLACEMENTS.clear();
-				cacheNeedsBuild = true;
-			}
-
-			return stage.wait(null).thenRun(() -> {
-			}); // Nothing to do here
-		});
+		//Gonna need to special case this one as it isn't covered by tags.
+		//Ancient debris isn't exactly an ore, so it makes sense that the tag doesn't include it
+		if (!Blocks.ANCIENT_DEBRIS.defaultBlockState().is(BlockTagGenerator.ORE_MAGNET_IGNORE) && !ORE_TO_BLOCK_REPLACEMENTS.containsKey(Blocks.ANCIENT_DEBRIS)) {
+			ORE_TO_BLOCK_REPLACEMENTS.put(Blocks.ANCIENT_DEBRIS, Blocks.NETHERRACK);
+		}
 	}
 }

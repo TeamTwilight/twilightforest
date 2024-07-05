@@ -13,7 +13,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.levelgen.structure.Structure;
-import net.minecraftforge.common.util.FakePlayer;
+import net.neoforged.neoforge.common.util.FakePlayer;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.world.components.structures.util.StructureHints;
 
@@ -23,10 +23,10 @@ public class GenerateBookCommand {
 
 	public static LiteralArgumentBuilder<CommandSourceStack> register() {
 		return Commands.literal("genbook")
-				.executes(context -> generateBook(context.getSource(), null))
-				.requires(cs -> cs.hasPermission(3))
-				.then(Commands.argument("structure", ResourceKeyArgument.key(Registries.STRUCTURE))
-						.executes(context -> generateBook(context.getSource(), ResourceKeyArgument.getStructure(context, "structure"))));
+			.executes(context -> generateBook(context.getSource(), null))
+			.requires(cs -> cs.hasPermission(3))
+			.then(Commands.argument("structure", ResourceKeyArgument.key(Registries.STRUCTURE))
+				.executes(context -> generateBook(context.getSource(), ResourceKeyArgument.getStructure(context, "structure"))));
 	}
 
 	private static int generateBook(CommandSourceStack source, @Nullable Holder.Reference<Structure> structureKey) throws CommandSyntaxException {
@@ -34,15 +34,15 @@ public class GenerateBookCommand {
 		if (structureKey == null) {
 			for (Structure structure : source.getLevel().registryAccess().registryOrThrow(Registries.STRUCTURE).stream().toList()) {
 				if (structure instanceof StructureHints hint) {
-					if (!player.addItem(hint.createHintBook())) {
-						player.drop(hint.createHintBook(), true);
+					if (!player.addItem(hint.createHintBook(source.registryAccess()))) {
+						player.drop(hint.createHintBook(source.registryAccess()), true);
 					}
 				}
 			}
 		} else {
 			if (source.getLevel().registryAccess().registryOrThrow(Registries.STRUCTURE).get(structureKey.key()) instanceof StructureHints hint) {
-				if (!player.addItem(hint.createHintBook())) {
-					player.drop(hint.createHintBook(), true);
+				if (!player.addItem(hint.createHintBook(source.registryAccess()))) {
+					player.drop(hint.createHintBook(source.registryAccess()), true);
 				}
 			} else {
 				ItemStack book = StructureHints.HintConfig.defaultBook();

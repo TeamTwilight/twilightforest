@@ -1,0 +1,172 @@
+{
+  "values": {
+    "minecraft:andesite": {
+      "crumble_chance": 0.05,
+      "crumble_to": "minecraft:air"
+    },
+    "minecraft:clay": {
+      "crumble_chance": 0.05,
+      "crumble_to": "minecraft:air"
+    },
+    "minecraft:coarse_dirt": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:dirt"
+    },
+    "minecraft:cobblestone": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:gravel"
+    },
+    "minecraft:cracked_polished_blackstone_bricks": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:blackstone"
+    },
+    "minecraft:deepslate_bricks": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:cracked_deepslate_bricks"
+    },
+    "minecraft:deepslate_tiles": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:cracked_deepslate_tiles"
+    },
+    "minecraft:diorite": {
+      "crumble_chance": 0.05,
+      "crumble_to": "minecraft:air"
+    },
+    "minecraft:dirt": {
+      "crumble_chance": 0.05,
+      "crumble_to": "minecraft:air"
+    },
+    "minecraft:exposed_copper": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:copper_block"
+    },
+    "minecraft:exposed_cut_copper": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:cut_copper"
+    },
+    "minecraft:granite": {
+      "crumble_chance": 0.05,
+      "crumble_to": "minecraft:air"
+    },
+    "minecraft:grass_block": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:dirt"
+    },
+    "minecraft:gravel": {
+      "crumble_chance": 0.05,
+      "crumble_to": "minecraft:air"
+    },
+    "minecraft:infested_stone_bricks": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:infested_cracked_stone_bricks"
+    },
+    "minecraft:mycelium": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:dirt"
+    },
+    "minecraft:nether_bricks": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:cracked_nether_bricks"
+    },
+    "minecraft:oxidized_copper": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:weathered_copper"
+    },
+    "minecraft:oxidized_cut_copper": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:weathered_cut_copper"
+    },
+    "minecraft:podzol": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:dirt"
+    },
+    "minecraft:polished_blackstone_bricks": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:cracked_polished_blackstone_bricks"
+    },
+    "minecraft:red_sand": {
+      "crumble_chance": 0.05,
+      "crumble_to": "minecraft:air"
+    },
+    "minecraft:red_sandstone": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:red_sand"
+    },
+    "minecraft:rooted_dirt": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:dirt"
+    },
+    "minecraft:sand": {
+      "crumble_chance": 0.05,
+      "crumble_to": "minecraft:air"
+    },
+    "minecraft:sandstone": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:sand"
+    },
+    "minecraft:stone": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:cobblestone"
+    },
+    "minecraft:stone_bricks": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:cracked_stone_bricks"
+    },
+    "minecraft:weathered_copper": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:exposed_copper"
+    },
+    "minecraft:weathered_cut_copper": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:exposed_cut_copper"
+    },
+    "twilightforest:castle_brick": {
+      "crumble_chance": 0.2,
+      "crumble_to": "twilightforest:cracked_castle_brick"
+    },
+    "twilightforest:castle_brick_stairs": {
+      "crumble_chance": 0.2,
+      "crumble_to": "twilightforest:cracked_castle_brick_stairs"
+    },
+    "twilightforest:cracked_castle_brick": {
+      "crumble_chance": 0.2,
+      "crumble_to": "twilightforest:worn_castle_brick"
+    },
+    "twilightforest:cracked_deadrock": {
+      "crumble_chance": 0.2,
+      "crumble_to": "twilightforest:weathered_deadrock"
+    },
+    "twilightforest:deadrock": {
+      "crumble_chance": 0.2,
+      "crumble_to": "twilightforest:cracked_deadrock"
+    },
+    "twilightforest:etched_nagastone": {
+      "crumble_chance": 0.2,
+      "crumble_to": "twilightforest:cracked_etched_nagastone"
+    },
+    "twilightforest:mazestone_brick": {
+      "crumble_chance": 0.2,
+      "crumble_to": "twilightforest:cracked_mazestone"
+    },
+    "twilightforest:nagastone_pillar": {
+      "crumble_chance": 0.2,
+      "crumble_to": "twilightforest:cracked_nagastone_pillar"
+    },
+    "twilightforest:nagastone_stairs_left": {
+      "crumble_chance": 0.2,
+      "crumble_to": "twilightforest:cracked_nagastone_stairs_left"
+    },
+    "twilightforest:nagastone_stairs_right": {
+      "crumble_chance": 0.2,
+      "crumble_to": "twilightforest:cracked_nagastone_stairs_right"
+    },
+    "twilightforest:towerwood": {
+      "crumble_chance": 0.2,
+      "crumble_to": "twilightforest:cracked_towerwood"
+    },
+    "twilightforest:underbrick": {
+      "crumble_chance": 0.2,
+      "crumble_to": "twilightforest:cracked_underbrick"
+    }
+  }
+}

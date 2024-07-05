@@ -1,6 +1,0 @@
-{
-  "type": "twilightforest:transformation_powder",
-  "from": "twilightforest:dwarf_rabbit",
-  "reversible": true,
-  "to": "minecraft:rabbit"
-}

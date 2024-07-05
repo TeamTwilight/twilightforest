@@ -1,0 +1,44 @@
+{
+  "anvil_cost": 8,
+  "description": {
+    "translate": "enchantment.twilightforest.destruction"
+  },
+  "effects": {
+    "minecraft:damage": [
+      {
+        "effect": {
+          "type": "minecraft:add",
+          "value": {
+            "type": "minecraft:linear",
+            "base": -1.5,
+            "per_level_above_first": -1.5
+          }
+        }
+      }
+    ],
+    "minecraft:hit_block": [
+      {
+        "effect": {
+          "type": "twilightforest:smash_blocks",
+          "immune_blocks": "#twilightforest:block_and_chain_never_breaks",
+          "max_smash": 12.0,
+          "radius": 2.0
+        }
+      }
+    ]
+  },
+  "max_cost": {
+    "base": 20,
+    "per_level_above_first": 9
+  },
+  "max_level": 3,
+  "min_cost": {
+    "base": 5,
+    "per_level_above_first": 9
+  },
+  "slots": [
+    "hand"
+  ],
+  "supported_items": "#twilightforest:enchantable/block_and_chain",
+  "weight": 1
+}

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "twilightforest:giant_log"
+    }
+  ],
+  "result": {
+    "count": 64,
+    "id": "minecraft:oak_planks"
+  }
+}

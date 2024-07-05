@@ -44,7 +44,7 @@ public class TrophyTileEntityRenderer implements BlockEntityRenderer<TrophyBlock
 	private static final ResourceLocation textureLocSnowQueen = TwilightForestMod.getModelTexture("snowqueen.png");
 	private static final ResourceLocation textureLocMinoshroom = TwilightForestMod.getModelTexture("minoshroomtaur.png");
 	private static final ResourceLocation textureLocKnightPhantom = TwilightForestMod.getModelTexture("phantomskeleton.png");
-	private static final ResourceLocation textureLocKnightPhantomArmor = new ResourceLocation(TwilightForestMod.ARMOR_DIR + "phantom_1.png");
+	private static final ResourceLocation textureLocKnightPhantomArmor = TwilightForestMod.prefix("textures/models/armor/phantom_layer_1.png");
 	private static final ResourceLocation textureLocYeti = TwilightForestMod.getModelTexture("yetialpha.png");
 	private static final ResourceLocation textureLocQuestRam = TwilightForestMod.getModelTexture("questram.png");
 	private static final ResourceLocation textureLocQuestRamLines = TwilightForestMod.getModelTexture("questram_lines.png");
@@ -84,6 +84,7 @@ public class TrophyTileEntityRenderer implements BlockEntityRenderer<TrophyBlock
 	}
 
 	public static final ItemStack stack = new ItemStack(TFBlocks.NAGA_TROPHY.get());
+
 	@Override
 	public void render(TrophyBlockEntity tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 		float f = tileEntityIn.getAnimationProgress(partialTicks);
@@ -98,7 +99,7 @@ public class TrophyTileEntityRenderer implements BlockEntityRenderer<TrophyBlock
 			trophy.openMouthForTrophy(flag ? 0.5F : 0.0F);
 		}
 		if (variant == BossVariant.UR_GHAST) {
-			((UrGhastTrophyModel)trophy).setTranslate(matrixStackIn, 0F, 1.0F, 0F);
+			((UrGhastTrophyModel) trophy).setTranslate(matrixStackIn, 0F, 1.0F, 0F);
 		}
 		render(direction, f1, trophy, variant, f, matrixStackIn, bufferIn, combinedLightIn, ItemDisplayContext.NONE);
 		matrixStackIn.popPose();
@@ -108,7 +109,7 @@ public class TrophyTileEntityRenderer implements BlockEntityRenderer<TrophyBlock
 		BooleanSupplier jappa = JappaPackReloadListener.INSTANCE::isJappaPackLoaded;
 		matrixStackIn.pushPose();
 		if (directionIn == null || variant == BossVariant.UR_GHAST) {
-			matrixStackIn.translate(0.5D, 0.01D, 0.5D);
+			matrixStackIn.translate(0.5D, 0.0D, 0.5D);
 		} else {
 			matrixStackIn.translate(0.5F - directionIn.getStepX() * 0.249F, 0.25D, 0.5F - directionIn.getStepZ() * 0.249F);
 		}
@@ -122,62 +123,62 @@ public class TrophyTileEntityRenderer implements BlockEntityRenderer<TrophyBlock
 				trophy.setRotations(animationProgress * 4.5F, y, 0.0F);
 				matrixStackIn.translate(!jappa.getAsBoolean() ? 1.0F : 0.0F, !jappa.getAsBoolean() ? -1.15F : -1.0F, 0.0F);
 				VertexConsumer hydraVertex = buffer.getBuffer(RenderType.entityCutoutNoCull(textureLocHydra));
-				trophy.renderToBuffer(matrixStackIn, hydraVertex, combinedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+				trophy.renderToBuffer(matrixStackIn, hydraVertex, combinedLight, OverlayTexture.NO_OVERLAY);
 			}
 			case NAGA -> {
 				matrixStackIn.scale(0.5f, 0.5f, 0.5f);
 				trophy.setRotations(animationProgress * 4.5F, y, 0.0F);
 				matrixStackIn.translate(0F, .25F, 0F);
 				VertexConsumer nagaVertex = buffer.getBuffer(RenderType.entityCutoutNoCull(textureLocNaga));
-				trophy.renderToBuffer(matrixStackIn, nagaVertex, combinedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+				trophy.renderToBuffer(matrixStackIn, nagaVertex, combinedLight, OverlayTexture.NO_OVERLAY);
 			}
 			case LICH -> {
 				matrixStackIn.translate(0.0F, .25F, 0.0F);
 				trophy.setRotations(animationProgress * 4.5F, y, 0.0F);
 				VertexConsumer lichVertex = buffer.getBuffer(RenderType.entityCutoutNoCull(textureLocLich));
-				trophy.renderToBuffer(matrixStackIn, lichVertex, combinedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+				trophy.renderToBuffer(matrixStackIn, lichVertex, combinedLight, OverlayTexture.NO_OVERLAY);
 			}
 			case UR_GHAST -> {
 				matrixStackIn.scale(0.5F, 0.5F, 0.5F);
 				trophy.setRotations(animationProgress * 4.5F, y, 0.0F);
 				VertexConsumer ghastVertex = buffer.getBuffer(RenderType.entityCutoutNoCull(textureLocUrGhast));
-				trophy.renderToBuffer(matrixStackIn, ghastVertex, combinedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+				trophy.renderToBuffer(matrixStackIn, ghastVertex, combinedLight, OverlayTexture.NO_OVERLAY);
 			}
 			case SNOW_QUEEN -> {
 				trophy.setRotations(animationProgress * 4.5F, y, 0.0F);
 				matrixStackIn.translate(0.0F, !jappa.getAsBoolean() ? 0.25F : 0.0F, 0.0F);
 				VertexConsumer waifuVertex = buffer.getBuffer(RenderType.entityCutoutNoCull(textureLocSnowQueen));
-				trophy.renderToBuffer(matrixStackIn, waifuVertex, combinedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+				trophy.renderToBuffer(matrixStackIn, waifuVertex, combinedLight, OverlayTexture.NO_OVERLAY);
 			}
 			case MINOSHROOM -> {
 				trophy.setRotations(animationProgress * 4.5F, y, 0.0F);
 				matrixStackIn.translate(0.0F, !jappa.getAsBoolean() ? 0.12F : 0.065F, !jappa.getAsBoolean() ? 0.56F : 0.0F);
 				VertexConsumer minoVertex = buffer.getBuffer(RenderType.entityCutoutNoCull(textureLocMinoshroom));
-				trophy.renderToBuffer(matrixStackIn, minoVertex, combinedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+				trophy.renderToBuffer(matrixStackIn, minoVertex, combinedLight, OverlayTexture.NO_OVERLAY);
 			}
 			case KNIGHT_PHANTOM -> {
 				trophy.setRotations(animationProgress * 4.5F, y, 0.0F);
 				matrixStackIn.translate(0.0F, 0.25F, 0.0F);
 				VertexConsumer phantomVertex = buffer.getBuffer(RenderType.entityCutoutNoCull(textureLocKnightPhantom));
-				trophy.renderToBuffer(matrixStackIn, phantomVertex, combinedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+				trophy.renderToBuffer(matrixStackIn, phantomVertex, combinedLight, OverlayTexture.NO_OVERLAY);
 				matrixStackIn.scale(1.1F, 1.1F, 1.1F);
 				matrixStackIn.translate(0.0F, 0.05F, 0.0F);
 				trophy.setRotations(animationProgress * 4.5F, y, 0.0F);
 				VertexConsumer phantomArmorVertex = buffer.getBuffer(RenderType.entityCutoutNoCull(textureLocKnightPhantomArmor));
-				trophy.renderHelmToBuffer(matrixStackIn, phantomArmorVertex, combinedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 0.0625F);
+				trophy.renderHelmToBuffer(matrixStackIn, phantomArmorVertex, combinedLight, OverlayTexture.NO_OVERLAY, -1);
 			}
 			case ALPHA_YETI -> {
 				matrixStackIn.scale(0.2F, 0.2F, 0.2F);
 				trophy.setRotations(animationProgress * 4.5F, y, 0.0F);
 				matrixStackIn.translate(0.0F, -1.5F, 0.0F);
 				VertexConsumer yetiVertex = buffer.getBuffer(RenderType.entityCutoutNoCull(textureLocYeti));
-				trophy.renderToBuffer(matrixStackIn, yetiVertex, combinedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+				trophy.renderToBuffer(matrixStackIn, yetiVertex, combinedLight, OverlayTexture.NO_OVERLAY);
 			}
 			case QUEST_RAM -> {
 				matrixStackIn.scale(0.7f, 0.7f, 0.7f);
 				trophy.setRotations(animationProgress * 4.5F, y, 0.0F);
 				VertexConsumer ramVertex = buffer.getBuffer(RenderType.entityCutoutNoCull(textureLocQuestRam));
-				trophy.renderToBuffer(matrixStackIn, ramVertex, combinedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+				trophy.renderToBuffer(matrixStackIn, ramVertex, combinedLight, OverlayTexture.NO_OVERLAY);
 			}
 			default -> {
 			}

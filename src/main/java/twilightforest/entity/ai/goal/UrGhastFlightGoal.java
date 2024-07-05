@@ -1,6 +1,7 @@
 package twilightforest.entity.ai.goal;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.Goal;
 import twilightforest.entity.boss.UrGhast;
@@ -16,9 +17,10 @@ public class UrGhastFlightGoal extends Goal {
 	private static final int HOVER_ALTITUDE = 20; // how far, relatively, do we hover over ghast traps?
 	private final UrGhast ghast;
 
-	private List<BlockPos> pointsToVisit;
+	private List<BlockPos> pointsToVisit = new ArrayList<>();
 	private int currentPoint = 0;
 
+	@SuppressWarnings("this-escape")
 	public UrGhastFlightGoal(UrGhast ghast) {
 		this.ghast = ghast;
 		setFlags(EnumSet.of(Flag.MOVE));
@@ -58,7 +60,7 @@ public class UrGhastFlightGoal extends Goal {
 
 				// when we're in tantrum mode, this is a good time to check if we need to spawn more ghasts
 				if (!this.ghast.checkGhastsAtTraps()) {
-					this.ghast.spawnGhastsAtTraps();
+					this.ghast.spawnGhastsAtTraps((ServerLevel) this.ghast.level());
 				}
 			}
 

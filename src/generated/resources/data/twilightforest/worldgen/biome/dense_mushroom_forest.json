@@ -2,6 +2,7 @@
   "carvers": {
     "air": "twilightforest:tf_caves"
   },
+  "creature_spawn_probability": 0.15,
   "downfall": 1.0,
   "effects": {
     "fog_color": 12648408,
@@ -29,12 +30,15 @@
   },
   "features": [
     [],
-    [],
+    [
+      "twilightforest:water_lake"
+    ],
     [],
     [],
     [
       "twilightforest:druid_hut",
-      "twilightforest:well_placer"
+      "twilightforest:well_placer",
+      "twilightforest:foundation"
     ],
     [],
     [
@@ -55,21 +59,18 @@
     ],
     [
       "twilightforest:plant_roots",
-      "twilightforest:torch_berries",
-      "twilightforest:vanilla_roots"
+      "twilightforest:torch_berries"
     ],
     [],
     [
-      "minecraft:patch_grass_forest",
       "minecraft:patch_tall_grass",
       "minecraft:patch_grass_badlands",
       "minecraft:patch_grass_savanna",
       "minecraft:patch_sugar_cane",
-      "twilightforest:tree/hollow_oak",
+      "minecraft:patch_grass_jungle",
       "twilightforest:mayapple",
       "twilightforest:flower_placer_alt",
       "twilightforest:grove_ruins",
-      "twilightforest:foundation",
       "twilightforest:stone_circle",
       "twilightforest:outside_stalagmite",
       "twilightforest:monolith",
@@ -87,7 +88,8 @@
       "twilightforest:mushroom/canopy_mushrooms_dense",
       "twilightforest:mushgloom_cluster",
       "twilightforest:tree/selector/canopy_trees",
-      "twilightforest:default_fallen_logs"
+      "twilightforest:default_fallen_logs",
+      "twilightforest:tree/mega_canopy_tree"
     ],
     [
       "minecraft:freeze_top_layer"

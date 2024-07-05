@@ -69,8 +69,8 @@ public class FallenLeavesFeature extends Feature<NoneFeatureConfiguration> {
 	}
 
 	private void generateCircleOfLeaves(WorldGenLevel level, BlockPos origin, RandomSource random, int radius, int height) {
-		for(int i1 = origin.getX() - radius; i1 <= origin.getX() + radius; ++i1) {
-			for(int j1 = origin.getZ() - radius; j1 <= origin.getZ() + radius; ++j1) {
+		for (int i1 = origin.getX() - radius; i1 <= origin.getX() + radius; ++i1) {
+			for (int j1 = origin.getZ() - radius; j1 <= origin.getZ() + radius; ++j1) {
 				int k1 = i1 - origin.getX();
 				int l1 = j1 - origin.getZ();
 				if (k1 * k1 + l1 * l1 <= radius * radius) {
@@ -97,12 +97,12 @@ public class FallenLeavesFeature extends Feature<NoneFeatureConfiguration> {
 		if (!flag)
 			return;
 		BlockPos finalPos = pos.offset(0, y, 0);
-		if (this.state.getBlock().canSurvive(this.state, level, finalPos))
+		if (this.state.canSurvive(level, finalPos))
 			level.setBlock(finalPos, this.state.setValue(FallenLeavesBlock.LAYERS, pileLayer), 16 | 2);
 	}
 
 	private boolean canPlace(BlockPos pos, WorldGenLevel level) {
 		BlockState state = level.getBlockState(pos.below());
-		return !level.getBlockState(pos).is(this.state.getBlock()) && (level.isEmptyBlock(pos) || level.getBlockState(pos).is(TFBlocks.MAYAPPLE.get()) || level.getBlockState(pos).canBeReplaced()) && (state.is(BlockTags.DIRT) || level.getFluidState(pos.below()).is(Fluids.WATER));
+		return !level.getBlockState(pos).is(this.state.getBlock()) && (level.isEmptyBlock(pos) || level.getBlockState(pos).is(TFBlocks.MAYAPPLE) || level.getBlockState(pos).canBeReplaced()) && (state.is(BlockTags.DIRT) || level.getFluidState(pos.below()).is(Fluids.WATER));
 	}
 }

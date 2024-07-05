@@ -1,7 +1,6 @@
 package twilightforest.entity.monster;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.*;
@@ -26,6 +25,7 @@ import java.util.List;
 
 public class GiantMiner extends Monster {
 
+	@SuppressWarnings("this-escape")
 	public GiantMiner(EntityType<? extends GiantMiner> type, Level world) {
 		super(type, world);
 
@@ -37,18 +37,7 @@ public class GiantMiner extends Monster {
 	@Override
 	protected void registerGoals() {
 		this.goalSelector.addGoal(1, new FloatGoal(this));
-		this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, false) {
-			@Override
-			protected double getAttackReachSqr(LivingEntity attackTarget) {
-				return this.mob.getBbWidth() * this.mob.getBbHeight();
-			}
-
-			@Override
-			protected void checkAndPerformAttack(LivingEntity pEnemy, double pDistToEnemySqr) {
-				double eyeHeightDistToEnemySqr = this.mob.distanceToSqr(pEnemy.getX(), pEnemy.getY() - this.mob.getEyeHeight() + pEnemy.getEyeHeight(), pEnemy.getZ());
-				super.checkAndPerformAttack(pEnemy, Math.min(pDistToEnemySqr, eyeHeightDistToEnemySqr * 0.8D));
-			}
-		});
+		this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, false));
 		this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
 		this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
 		this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
@@ -58,23 +47,19 @@ public class GiantMiner extends Monster {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Monster.createMonsterAttributes()
-				.add(Attributes.MAX_HEALTH, 80.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.23D)
-				.add(Attributes.ATTACK_DAMAGE, 2.0D)
-				.add(Attributes.FOLLOW_RANGE, 40.0D);
-	}
-
-	@Override
-	public float getStepHeight() {
-		return 1.2F;
+			.add(Attributes.MAX_HEALTH, 80.0D)
+			.add(Attributes.MOVEMENT_SPEED, 0.23D)
+			.add(Attributes.ATTACK_DAMAGE, 2.0D)
+			.add(Attributes.FOLLOW_RANGE, 40.0D)
+			.add(Attributes.STEP_HEIGHT, 1.2D);
 	}
 
 	@Nullable
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
-		SpawnGroupData data = super.finalizeSpawn(accessor, difficulty, reason, spawnDataIn, dataTag);
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn) {
+		SpawnGroupData data = super.finalizeSpawn(accessor, difficulty, reason, spawnDataIn);
 		populateDefaultEquipmentSlots(accessor.getRandom(), difficulty);
-		populateDefaultEquipmentEnchantments(accessor.getRandom(), difficulty);
+		populateDefaultEquipmentEnchantments(accessor, accessor.getRandom(), difficulty);
 
 		return data;
 	}
@@ -85,23 +70,17 @@ public class GiantMiner extends Monster {
 	}
 
 	@Override
-	protected void enchantSpawnedWeapon(RandomSource random, float chance) {
-
+	protected void enchantSpawnedWeapon(ServerLevelAccessor accessor, RandomSource random, DifficultyInstance instance) {
 	}
 
 	@Override
-	protected void enchantSpawnedArmor(RandomSource random, float chance, EquipmentSlot slot) {
+	protected void enchantSpawnedArmor(ServerLevelAccessor accessor, RandomSource random, EquipmentSlot slot, DifficultyInstance instance) {
 
 	}
 
 	@Override
 	public boolean doHurtTarget(Entity entity) {
-		return EntityUtil.properlyApplyCustomDamageSource(this, entity, TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.ANT, this));
-	}
-
-	@Override
-	public double getMyRidingOffset() {
-		return -2.5D;
+		return EntityUtil.properlyApplyCustomDamageSource(this, entity, TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.ANT, this), null);
 	}
 
 	@Override

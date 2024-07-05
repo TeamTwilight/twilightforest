@@ -1,0 +1,45 @@
+{
+  "parent": "twilightforest:hill2",
+  "criteria": {
+    "redcap": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "twilightforest:wraith",
+              "location": {
+                "structures": "twilightforest:large_hollow_hill"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.twilightforest.hill3.desc",
+      "with": [
+        {
+          "translate": "entity.twilightforest.wraith"
+        }
+      ]
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:glowstone_dust"
+    },
+    "title": {
+      "translate": "advancement.twilightforest.hill3"
+    }
+  },
+  "requirements": [
+    [
+      "redcap"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -10,19 +10,30 @@
   "biomes": "#twilightforest:valid_aurora_palace_biomes",
   "chunk_clearance_radius": 2,
   "hint_item": {
-    "Count": 1,
-    "id": "minecraft:written_book",
-    "tag": {
-      "author": "twilightforest.book.author",
-      "generation": 3,
-      "pages": [
-        "{\"translate\":\"twilightforest.book.icetower.1\"}",
-        "{\"translate\":\"twilightforest.book.icetower.2\"}",
-        "{\"translate\":\"twilightforest.book.icetower.3\"}"
-      ],
-      "title": "twilightforest.book.icetower",
-      "twilightforest:book": 1
-    }
+    "components": {
+      "minecraft:written_book_content": {
+        "author": "twilightforest.book.author",
+        "generation": 3,
+        "pages": [
+          {
+            "raw": "{\"translate\":\"twilightforest.book.icetower.1\"}"
+          },
+          {
+            "raw": "{\"translate\":\"twilightforest.book.icetower.2\"}"
+          },
+          {
+            "raw": "{\"translate\":\"twilightforest.book.icetower.3\"}"
+          }
+        ],
+        "resolved": true,
+        "title": {
+          "raw": "twilightforest.book.icetower"
+        }
+      },
+      "twilightforest:translatable_book": {}
+    },
+    "count": 1,
+    "id": "minecraft:written_book"
   },
   "hint_mob": "twilightforest:kobold",
   "labelled_monster_spawns": {

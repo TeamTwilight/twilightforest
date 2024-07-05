@@ -10,10 +10,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -30,19 +27,20 @@ import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
+import twilightforest.TwilightForestMod;
 import twilightforest.entity.IHostileMount;
 import twilightforest.entity.ai.goal.ThrowRiderGoal;
 import twilightforest.init.TFBiomes;
 import twilightforest.init.TFSounds;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 import java.util.Optional;
 
 public class Yeti extends Monster implements IHostileMount {
 
 	private static final EntityDataAccessor<Boolean> ANGER_FLAG = SynchedEntityData.defineId(Yeti.class, EntityDataSerializers.BOOLEAN);
-	private static final AttributeModifier ANGRY_MODIFIER = new AttributeModifier("Angry follow range boost", 24, AttributeModifier.Operation.ADDITION);
+	private static final AttributeModifier ANGRY_MODIFIER = new AttributeModifier(TwilightForestMod.prefix("anger_follow_boost"), 8, AttributeModifier.Operation.ADD_VALUE);
 
 	public Yeti(EntityType<? extends Yeti> type, Level world) {
 		super(type, world);
@@ -53,8 +51,8 @@ public class Yeti extends Monster implements IHostileMount {
 		this.goalSelector.addGoal(0, new FloatGoal(this));
 		this.goalSelector.addGoal(1, new ThrowRiderGoal(this, 1.0D, false) {
 			@Override
-			protected void checkAndPerformAttack(LivingEntity victim, double p_190102_2_) {
-				super.checkAndPerformAttack(victim, p_190102_2_);
+			protected void checkAndPerformAttack(LivingEntity victim) {
+				super.checkAndPerformAttack(victim);
 				if (!getPassengers().isEmpty())
 					playSound(TFSounds.YETI_GRAB.get(), 1F, 1.25F + getRandom().nextFloat() * 0.5F);
 			}
@@ -75,27 +73,21 @@ public class Yeti extends Monster implements IHostileMount {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Monster.createMonsterAttributes()
-				.add(Attributes.MAX_HEALTH, 20.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.38D)
-				.add(Attributes.ATTACK_DAMAGE, 0.0D)
-				.add(Attributes.FOLLOW_RANGE, 4.0D);
+			.add(Attributes.MAX_HEALTH, 20.0D)
+			.add(Attributes.MOVEMENT_SPEED, 0.38D)
+			.add(Attributes.ATTACK_DAMAGE, 0.0D)
+			.add(Attributes.FOLLOW_RANGE, 4.0D);
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(ANGER_FLAG, false);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(ANGER_FLAG, false);
 	}
 
 	@Override
 	public void aiStep() {
-
 		super.aiStep();
-
-		// if we no longer have a target, lets calm down
-		if (this.getTarget() == null && this.isAngry()) {
-			this.setAngry(false);
-		}
 
 		// look at things in our jaws
 		if (!this.getPassengers().isEmpty()) {
@@ -122,11 +114,11 @@ public class Yeti extends Monster implements IHostileMount {
 
 		if (!this.level().isClientSide()) {
 			if (anger) {
-				if (!Objects.requireNonNull(getAttribute(Attributes.FOLLOW_RANGE)).hasModifier(ANGRY_MODIFIER)) {
+				if (!Objects.requireNonNull(getAttribute(Attributes.FOLLOW_RANGE)).hasModifier(ANGRY_MODIFIER.id())) {
 					Objects.requireNonNull(this.getAttribute(Attributes.FOLLOW_RANGE)).addTransientModifier(ANGRY_MODIFIER);
 				}
 			} else {
-				Objects.requireNonNull(this.getAttribute(Attributes.FOLLOW_RANGE)).removeModifier(ANGRY_MODIFIER);
+				Objects.requireNonNull(this.getAttribute(Attributes.FOLLOW_RANGE)).removeModifier(ANGRY_MODIFIER.id());
 			}
 		}
 	}
@@ -143,37 +135,9 @@ public class Yeti extends Monster implements IHostileMount {
 		this.setAngry(compound.getBoolean("Angry"));
 	}
 
-	/**
-	 * Put the player out in front of where we are
-	 */
 	@Override
-	public void positionRider(Entity passenger, Entity.MoveFunction callback) {
-		Vec3 riderPos = this.getRiderPosition(passenger);
-		callback.accept(passenger, riderPos.x(), riderPos.y(), riderPos.z());
-	}
-
-	/**
-	 * Returns the Y offset from the entity's position for any entity riding this one.
-	 */
-	@Override
-	public double getPassengersRidingOffset() {
-		return 2.25D;
-	}
-
-	/**
-	 * Used to both get a rider position and to push out of blocks
-	 */
-	private Vec3 getRiderPosition(@Nullable Entity passenger) {
-		if (passenger != null) {
-			float distance = 0.4F;
-
-			double dx = Math.cos((this.getYRot() + 90) * Math.PI / 180.0D) * distance;
-			double dz = Math.sin((this.getYRot() + 90) * Math.PI / 180.0D) * distance;
-
-			return new Vec3(this.getX() + dx, this.getY() + this.getPassengersRidingOffset() + passenger.getMyRidingOffset(), this.getZ() + dz);
-		} else {
-			return new Vec3(this.getX(), this.getY(), this.getZ());
-		}
+	protected Vec3 getPassengerAttachmentPoint(Entity entity, EntityDimensions dimensions, float yRot) {
+		return new Vec3(0.0F, dimensions.height(), 0.4F);
 	}
 
 	@Override

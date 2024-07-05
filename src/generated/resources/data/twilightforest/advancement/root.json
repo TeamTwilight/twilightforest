@@ -1,0 +1,44 @@
+{
+  "criteria": {
+    "in_tf": {
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:location"
+    },
+    "make_portal": {
+      "trigger": "twilightforest:make_tf_portal"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "background": "twilightforest:textures/block/mazestone_large_brick.png",
+    "description": {
+      "translate": "advancement.twilightforest.root.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "twilightforest:twilight_portal_miniature_structure"
+    },
+    "title": {
+      "translate": "advancement.twilightforest.root"
+    }
+  },
+  "requirements": [
+    [
+      "in_tf",
+      "make_portal"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

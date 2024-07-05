@@ -41,47 +41,47 @@ public class TinyBirdModel extends AgeableListModel<TinyBird> {
 
 	public static LayerDefinition create() {
 		MeshDefinition mesh = new MeshDefinition();
-		PartDefinition partRoot = mesh.getRoot();
+		PartDefinition definition = mesh.getRoot();
 
-		var head = partRoot.addOrReplaceChild("head", CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3),
-				PartPose.offset(0F, 20.5F, -0.5F));
+		var head = definition.addOrReplaceChild("head", CubeListBuilder.create()
+				.texOffs(0, 0)
+				.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3),
+			PartPose.offset(0F, 20.5F, -0.5F));
 
 		head.addOrReplaceChild("beak", CubeListBuilder.create()
-						.texOffs(12, 0)
-						.addBox(-0.5F, -0.5F, -0.5F, 1, 1, 1),
-				PartPose.offset(0F, 0.5F, -2F));
+				.texOffs(12, 0)
+				.addBox(-0.5F, -0.5F, -0.5F, 1, 1, 1),
+			PartPose.offset(0F, 0.5F, -2F));
 
-		partRoot.addOrReplaceChild("body", CubeListBuilder.create()
-						.texOffs(0, 6)
-						.addBox(-1.5F, 0F, -1F, 3, 3, 3),
-				PartPose.offset(0F, 20F, 0F));
+		definition.addOrReplaceChild("body", CubeListBuilder.create()
+				.texOffs(0, 6)
+				.addBox(-1.5F, 0F, -1F, 3, 3, 3),
+			PartPose.offset(0F, 20F, 0F));
 
-		partRoot.addOrReplaceChild("right_arm", CubeListBuilder.create()
-						.texOffs(12, 2)
-						.addBox(-1F, 0F, -1.5F, 1, 2, 3),
-				PartPose.offset(-1.5F, 20.5F, 1F));
+		definition.addOrReplaceChild("right_arm", CubeListBuilder.create()
+				.texOffs(12, 2)
+				.addBox(-1F, 0F, -1.5F, 1, 2, 3),
+			PartPose.offset(-1.5F, 20.5F, 1F));
 
-		partRoot.addOrReplaceChild("left_arm", CubeListBuilder.create().mirror()
-						.texOffs(12, 2)
-						.addBox(0F, 0F, -1.5F, 1, 2, 3),
-				PartPose.offset(1.5F, 20.5F, 1F));
+		definition.addOrReplaceChild("left_arm", CubeListBuilder.create().mirror()
+				.texOffs(12, 2)
+				.addBox(0F, 0F, -1.5F, 1, 2, 3),
+			PartPose.offset(1.5F, 20.5F, 1F));
 
-		partRoot.addOrReplaceChild("right_leg", CubeListBuilder.create()
-						.texOffs(0, 12)
-						.addBox(0F, 0F, 0F, 1, 1, 1),
-				PartPose.offset(-1.5F, 23F, 0F));
+		definition.addOrReplaceChild("right_leg", CubeListBuilder.create()
+				.texOffs(0, 12)
+				.addBox(0F, 0F, 0F, 1, 1, 1),
+			PartPose.offset(-1.5F, 23F, 0F));
 
-		partRoot.addOrReplaceChild("left_leg", CubeListBuilder.create().mirror()
-						.texOffs(0, 12)
-						.addBox(0F, 0F, 0F, 1, 1, 1),
-				PartPose.offset(0F, 23F, 0F));
+		definition.addOrReplaceChild("left_leg", CubeListBuilder.create().mirror()
+				.texOffs(0, 12)
+				.addBox(0F, 0F, 0F, 1, 1, 1),
+			PartPose.offset(0F, 23F, 0F));
 
-		partRoot.addOrReplaceChild("tail", CubeListBuilder.create()
-						.texOffs(0, 14)
-						.addBox(-1.5F, -0.5F, 0F, 3, 1, 2),
-				PartPose.offset(0F, 22F, 2F));
+		definition.addOrReplaceChild("tail", CubeListBuilder.create()
+				.texOffs(0, 14)
+				.addBox(-1.5F, -0.5F, 0F, 3, 1, 2),
+			PartPose.offset(0F, 22F, 2F));
 
 		return LayerDefinition.create(mesh, 32, 32);
 	}
@@ -94,32 +94,32 @@ public class TinyBirdModel extends AgeableListModel<TinyBird> {
 	@Override
 	protected Iterable<ModelPart> bodyParts() {
 		return ImmutableList.of(
-				head,
-				body,
-				rightleg,
-				leftleg,
-				rightarm,
-				leftarm,
-				tail
+			head,
+			body,
+			rightleg,
+			leftleg,
+			rightarm,
+			leftarm,
+			tail
 		);
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, float red, float green, float blue, float scale) {
+	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, int color) {
 		if (young) {
 			float f = 2.0F;
 			stack.pushPose();
-			stack.translate(0.0F, 5F * scale, 0.75F * scale);
-			this.headParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, scale));
+			stack.translate(0.0F, 5F, 0.75F);
+			this.headParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, color));
 			stack.popPose();
 			stack.pushPose();
 			stack.scale(1.0F / f, 1.0F / f, 1.0F / f);
-			stack.translate(0.0F, 24F * scale, 0.0F);
-			this.bodyParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, scale));
+			stack.translate(0.0F, 24F, 0.0F);
+			this.bodyParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, color));
 			stack.popPose();
 		} else {
-			this.headParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, scale));
-			this.bodyParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, scale));
+			this.headParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, color));
+			this.bodyParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, color));
 		}
 	}
 

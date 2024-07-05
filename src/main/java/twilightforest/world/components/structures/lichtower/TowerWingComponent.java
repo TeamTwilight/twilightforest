@@ -22,9 +22,9 @@ import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFEntities;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.loot.TFLootTables;
+import twilightforest.util.BoundingBoxUtils;
 import twilightforest.util.EntityUtil;
 import twilightforest.util.RotationUtil;
 import twilightforest.util.TFStructureHelper;
@@ -70,6 +70,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 		this.highestOpening = 0;
 	}
 
+	@SuppressWarnings("this-escape")
 	protected TowerWingComponent(StructurePieceType type, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
 		super(type, i, x, y, z);
 
@@ -79,7 +80,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 
 		this.highestOpening = 0;
 
-		this.boundingBox = TFLandmark.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, size - 1, height - 1, size - 1, direction, false);
+		this.boundingBox = BoundingBoxUtils.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, size - 1, height - 1, size - 1, direction, false);
 	}
 
 	/**
@@ -161,7 +162,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 
 		if (rand.nextInt(6) == 0) {
 			return makeBridge(list, rand, index, x, y, z, wingSize, wingHeight, rotation);
-			// or I don't know if we just want to continue instead if the bridge fails. 
+			// or I don't know if we just want to continue instead if the bridge fails.
 			// I think there are very few circumstances where we can make a wing and not a bridge
 		}
 
@@ -671,11 +672,11 @@ public class TowerWingComponent extends TFStructureComponentOld {
 		final BlockState topStoneBrickStairs = stoneBrickStairs.setValue(StairBlock.HALF, Half.TOP);
 
 		placeBlock(world, stoneBrick, cx, bottom, cx, sbb);
-		placeBlock(world, stoneBrick, cx, top-1, cx, sbb);
-		if(size < 6) {
+		placeBlock(world, stoneBrick, cx, top - 1, cx, sbb);
+		if (size < 6) {
 			surroundBlockCardinalRotated(world, stoneBrickStairs, cx, bottom, cx, sbb);
 
-			surroundBlockCardinalRotated(world, topStoneBrickStairs, cx, top-1, cx, sbb);
+			surroundBlockCardinalRotated(world, topStoneBrickStairs, cx, top - 1, cx, sbb);
 		} else {
 			surroundBlockCardinalRotated(world, stoneBrickStairs, cx, bottom, cx, sbb);
 			surroundBlockCorners(world, stoneBrick, cx, bottom, cx, sbb);
@@ -685,8 +686,8 @@ public class TowerWingComponent extends TFStructureComponentOld {
 				surroundBlockCorners(world, stoneBrick, cx, cy, cx, sbb);
 			}
 
-			surroundBlockCardinalRotated(world, topStoneBrickStairs, cx, top-1, cx, sbb);
-			surroundBlockCorners(world, stoneBrick, cx, top-1, cx, sbb);
+			surroundBlockCardinalRotated(world, topStoneBrickStairs, cx, top - 1, cx, sbb);
+			surroundBlockCorners(world, stoneBrick, cx, top - 1, cx, sbb);
 		}
 
 		placeTreasureAtCurrentPosition(world, cx, bottom + 1, cx, TFLootTables.TOWER_ROOM, sbb);
@@ -834,7 +835,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 			for (int dz = 1; dz <= size - 2; dz++) {
 				for (int dy = bottom; dy < top; dy++) {
 					if (dx % 2 != 0 && ((dz >= dx && dz <= size - dx - 1) || (dz >= size - dx - 1 && dz <= dx))
-							|| dz % 2 != 0 && ((dx >= dz && dx <= size - dz - 1) || (dx >= size - dz - 1 && dx <= dz))) {
+						|| dz % 2 != 0 && ((dx >= dz && dx <= size - dz - 1) || (dx >= size - dz - 1 && dx <= dz))) {
 						// concentric rings
 						if (!isWindowPos(dx, dy, dz) && !isOpeningPos(dx, dy, dz) && !isLadderPos(dx, dz, ladderUpDir, ladderDownDir)) {
 							// not an occupied position
@@ -1520,11 +1521,11 @@ public class TowerWingComponent extends TFStructureComponentOld {
 		this.setOrientation(rotation.rotate(temp));
 
 		final BlockState bottomSlab = useBirchWood ?
-				TFStructureHelper.birchSlab :
-				TFStructureHelper.stoneSlab;
+			TFStructureHelper.birchSlab :
+			TFStructureHelper.stoneSlab;
 		final BlockState topSlab = useBirchWood ?
-				TFStructureHelper.birchSlabTop :
-				TFStructureHelper.stoneSlabTop;
+			TFStructureHelper.birchSlabTop :
+			TFStructureHelper.stoneSlabTop;
 
 		placeBlock(world, bottomSlab, 2, 1 + height, 3, sbb);
 		placeBlock(world, topSlab, 3, 1 + height, 3, sbb);
@@ -1562,11 +1563,11 @@ public class TowerWingComponent extends TFStructureComponentOld {
 
 		this.setOrientation(rotation.rotate(temp));
 		final BlockState slabBottom = useBirchWood ?
-				TFStructureHelper.birchSlab :
-				TFStructureHelper.stoneSlab;
+			TFStructureHelper.birchSlab :
+			TFStructureHelper.stoneSlab;
 		final BlockState slabTop = useBirchWood ?
-				TFStructureHelper.birchSlabTop :
-				TFStructureHelper.stoneSlabTop;
+			TFStructureHelper.birchSlabTop :
+			TFStructureHelper.stoneSlabTop;
 
 		placeBlock(world, slabBottom, 2, 1 + height, 5, sbb);
 		placeBlock(world, slabTop, 3, 1 + height, 5, sbb);
@@ -1608,11 +1609,11 @@ public class TowerWingComponent extends TFStructureComponentOld {
 		this.setOrientation(rotation.rotate(temp));
 
 		final BlockState slabBot = useBirchWood ?
-				TFStructureHelper.birchSlab :
-				TFStructureHelper.stoneSlab;
+			TFStructureHelper.birchSlab :
+			TFStructureHelper.stoneSlab;
 		final BlockState slabTop = useBirchWood ?
-				TFStructureHelper.birchSlabTop :
-				TFStructureHelper.stoneSlabTop;
+			TFStructureHelper.birchSlabTop :
+			TFStructureHelper.stoneSlabTop;
 
 		placeBlock(world, slabBot, 2, 1 + height, 7, sbb);
 		placeBlock(world, slabTop, 3, 1 + height, 7, sbb);
@@ -1704,14 +1705,14 @@ public class TowerWingComponent extends TFStructureComponentOld {
 		final BlockState oakFence = Blocks.OAK_FENCE.defaultBlockState();
 
 		final BlockState slabBot = useBirchWood ?
-				TFStructureHelper.birchSlab :
-				TFStructureHelper.stoneSlab;
+			TFStructureHelper.birchSlab :
+			TFStructureHelper.stoneSlab;
 		final BlockState slabTop = useBirchWood ?
-				TFStructureHelper.birchSlabTop :
-				TFStructureHelper.stoneSlabTop;
+			TFStructureHelper.birchSlabTop :
+			TFStructureHelper.stoneSlabTop;
 		final BlockState slabDoub = useBirchWood ?
-				TFStructureHelper.birchPlanks :
-				TFStructureHelper.stoneSlabDouble;
+			TFStructureHelper.birchPlanks :
+			TFStructureHelper.stoneSlabDouble;
 
 		placeBlock(world, slabBot, 3, 1 + height, 13, sbb);
 		maybeGenerateBlock(world, sbb, rand, 0.9F, 4, 1 + height, 13, slabTop);
@@ -1774,7 +1775,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 
 			if (pCoords == null) continue;
 			// initialize a painting object
-			EntityUtil.tryHangPainting(world, pCoords, direction, EntityUtil.getPaintingOfSize(rand, minSize));
+			EntityUtil.tryHangPainting(world, pCoords, direction, EntityUtil.getPaintingOfSize(world, rand, minSize));
 		}
 	}
 
@@ -1797,16 +1798,13 @@ public class TowerWingComponent extends TFStructureComponentOld {
 		if (direction == Direction.SOUTH) {
 			minZ = this.boundingBox.minZ();
 			maxZ = this.boundingBox.minZ();
-		}
-		else if (direction == Direction.WEST) {
+		} else if (direction == Direction.WEST) {
 			maxX = this.boundingBox.maxX();
 			minX = this.boundingBox.maxX();
-		}
-		else if (direction == Direction.NORTH) {
+		} else if (direction == Direction.NORTH) {
 			maxZ = this.boundingBox.maxZ();
 			minZ = this.boundingBox.maxZ();
-		}
-		else if (direction == Direction.EAST) {
+		} else if (direction == Direction.EAST) {
 			minX = this.boundingBox.minX();
 			maxX = this.boundingBox.minX();
 		}
@@ -1879,5 +1877,10 @@ public class TowerWingComponent extends TFStructureComponentOld {
 				this.setBlockStateRotated(world, colour, 0, y, rightOffset, rotation, sbb);
 			}
 		}
+	}
+
+	@Override
+	public int getGroundLevelDelta() {
+		return 1;
 	}
 }

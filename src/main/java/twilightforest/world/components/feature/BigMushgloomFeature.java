@@ -1,11 +1,11 @@
 package twilightforest.world.components.feature;
 
 import com.mojang.serialization.Codec;
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.HugeMushroomBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.levelgen.feature.AbstractHugeMushroomFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.HugeMushroomFeatureConfiguration;
 
@@ -43,11 +43,11 @@ public class BigMushgloomFeature extends AbstractHugeMushroomFeature {
 
 						if (blockstate.hasProperty(HugeMushroomBlock.WEST) && blockstate.hasProperty(HugeMushroomBlock.EAST) && blockstate.hasProperty(HugeMushroomBlock.NORTH) && blockstate.hasProperty(HugeMushroomBlock.SOUTH) && blockstate.hasProperty(HugeMushroomBlock.UP)) {
 							blockstate = blockstate
-									.setValue(HugeMushroomBlock.UP, y == 1 || capHeight == 1)
-									.setValue(HugeMushroomBlock.WEST, x == -i)
-									.setValue(HugeMushroomBlock.EAST, x == i)
-									.setValue(HugeMushroomBlock.NORTH, z == -i)
-									.setValue(HugeMushroomBlock.SOUTH, z == i);
+								.setValue(HugeMushroomBlock.UP, y == 1 || capHeight == 1)
+								.setValue(HugeMushroomBlock.WEST, x == -i)
+								.setValue(HugeMushroomBlock.EAST, x == i)
+								.setValue(HugeMushroomBlock.NORTH, z == -i)
+								.setValue(HugeMushroomBlock.SOUTH, z == i);
 						}
 
 						this.setBlock(levelAccessor, mutableBlockPos, blockstate);

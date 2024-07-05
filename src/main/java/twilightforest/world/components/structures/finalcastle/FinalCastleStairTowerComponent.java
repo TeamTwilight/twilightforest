@@ -15,10 +15,10 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.util.BoundingBoxUtils;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
-import twilightforest.init.TFLandmark;
-import twilightforest.init.TFStructurePieceTypes;
 
 
 public class FinalCastleStairTowerComponent extends TowerWingComponent {
@@ -27,12 +27,13 @@ public class FinalCastleStairTowerComponent extends TowerWingComponent {
 		super(TFStructurePieceTypes.TFFCStTo.get(), nbt);
 	}
 
+	@SuppressWarnings("this-escape")
 	public FinalCastleStairTowerComponent(int i, int x, int y, int z, Direction rotation) {
 		super(TFStructurePieceTypes.TFFCStTo.get(), i, x, y, z);
 		this.setOrientation(rotation);
 		this.size = 9;
 		this.height = 51;
-		this.boundingBox = TFLandmark.getComponentToAddBoundingBox(x, y, z, -4, 0, -4, 8, 50, 8, Direction.SOUTH, false);
+		this.boundingBox = BoundingBoxUtils.getComponentToAddBoundingBox(x, y, z, -4, 0, -4, 8, 50, 8, Direction.SOUTH, false);
 	}
 
 	@Override

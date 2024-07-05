@@ -2,7 +2,7 @@
   "collection": "museumcurator.collection.botany",
   "name": "museumcurator.botany.twilightforest.mangrovetree",
   "relativeTo": "museumcurator.botany.mangrovetree",
-  "placement" : "before",
+  "placement": "before",
   "items": [
     "twilightforest:mangrove_sapling",
     "twilightforest:mangrove_leaves",

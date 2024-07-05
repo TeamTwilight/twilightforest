@@ -1,8 +1,6 @@
 package twilightforest.entity;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -11,7 +9,6 @@ import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.network.NetworkHooks;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFItems;
@@ -25,6 +22,7 @@ public class TwilightBoat extends Boat {
 		this.blocksBuilding = true;
 	}
 
+	@SuppressWarnings("this-escape")
 	public TwilightBoat(Level level, double x, double y, double z) {
 		this(TFEntities.BOAT.get(), level);
 		this.setPos(x, y, z);
@@ -56,9 +54,9 @@ public class TwilightBoat extends Boat {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(BOAT_TYPE, TwilightBoat.Type.TWILIGHT_OAK.ordinal());
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(BOAT_TYPE, TwilightBoat.Type.TWILIGHT_OAK.ordinal());
 	}
 
 	@Override
@@ -71,11 +69,6 @@ public class TwilightBoat extends Boat {
 		if (tag.contains("Type", 8)) {
 			this.setTwilightBoatType(TwilightBoat.Type.getTypeFromString(tag.getString("Type")));
 		}
-	}
-
-	@Override
-	public Packet<ClientGamePacketListener> getAddEntityPacket() {
-		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 
 	public enum Type {

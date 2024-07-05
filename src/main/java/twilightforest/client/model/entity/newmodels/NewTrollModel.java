@@ -15,42 +15,42 @@ public class NewTrollModel extends HumanoidModel<Troll> {
 
 	public static LayerDefinition create() {
 		MeshDefinition mesh = HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F);
-		PartDefinition partRoot = mesh.getRoot();
+		PartDefinition definition = mesh.getRoot();
 
-		partRoot.addOrReplaceChild("head", CubeListBuilder.create()
-						.texOffs(52, 31)
-						.addBox(-5.0F, -8.0F, -8.0F, 10.0F, 10.0F, 10.0F)
-						.texOffs(36, 41)
-						.addBox(-2.0F, -4.0F, -11.0F, 4.0F, 8.0F, 4.0F),
-				PartPose.offset(0.0F, -11.0F, -1.0F));
+		definition.addOrReplaceChild("head", CubeListBuilder.create()
+				.texOffs(52, 31)
+				.addBox(-5.0F, -8.0F, -8.0F, 10.0F, 10.0F, 10.0F)
+				.texOffs(36, 41)
+				.addBox(-2.0F, -4.0F, -11.0F, 4.0F, 8.0F, 4.0F),
+			PartPose.offset(0.0F, -11.0F, -1.0F));
 
-		partRoot.addOrReplaceChild("hat", CubeListBuilder.create(),
-				PartPose.ZERO);
+		definition.addOrReplaceChild("hat", CubeListBuilder.create(),
+			PartPose.ZERO);
 
-		partRoot.addOrReplaceChild("body", CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(-8.0F, -37.0F, -6.0F, 16.0F, 26.0F, 15.0F),
-				PartPose.offset(0.0F, 24.0F, 0.0F));
+		definition.addOrReplaceChild("body", CubeListBuilder.create()
+				.texOffs(0, 0)
+				.addBox(-8.0F, -37.0F, -6.0F, 16.0F, 26.0F, 15.0F),
+			PartPose.offset(0.0F, 24.0F, 0.0F));
 
-		partRoot.addOrReplaceChild("right_arm", CubeListBuilder.create()
-						.texOffs(0, 41)
-						.addBox(-6.0F, -1.0F, -4.0F, 6.0F, 25.0F, 8.0F),
-				PartPose.offset(-8.0F, -9.0F, 0.0F));
+		definition.addOrReplaceChild("right_arm", CubeListBuilder.create()
+				.texOffs(0, 41)
+				.addBox(-6.0F, -1.0F, -4.0F, 6.0F, 25.0F, 8.0F),
+			PartPose.offset(-8.0F, -9.0F, 0.0F));
 
-		partRoot.addOrReplaceChild("left_arm", CubeListBuilder.create().mirror()
-						.texOffs(0, 41)
-						.addBox(0.0F, -1.0F, -4.0F, 6.0F, 25.0F, 8.0F),
-				PartPose.offset(8.0F, -9.0F, 0.0F));
+		definition.addOrReplaceChild("left_arm", CubeListBuilder.create().mirror()
+				.texOffs(0, 41)
+				.addBox(0.0F, -1.0F, -4.0F, 6.0F, 25.0F, 8.0F),
+			PartPose.offset(8.0F, -9.0F, 0.0F));
 
-		partRoot.addOrReplaceChild("right_leg", CubeListBuilder.create()
-						.texOffs(28, 54)
-						.addBox(-3.0F, -1.0F, -4.0F, 6.0F, 12.0F, 8.0F),
-				PartPose.offset(-4.0F, 13.0F, 0.0F));
+		definition.addOrReplaceChild("right_leg", CubeListBuilder.create()
+				.texOffs(28, 54)
+				.addBox(-3.0F, -1.0F, -4.0F, 6.0F, 12.0F, 8.0F),
+			PartPose.offset(-4.0F, 13.0F, 0.0F));
 
-		partRoot.addOrReplaceChild("left_leg", CubeListBuilder.create().mirror()
-						.texOffs(28, 54)
-						.addBox(-3.0F, -1.0F, -4.0F, 6.0F, 12.0F, 8.0F),
-				PartPose.offset(4.0F, 13.0F, 0.0F));
+		definition.addOrReplaceChild("left_leg", CubeListBuilder.create().mirror()
+				.texOffs(28, 54)
+				.addBox(-3.0F, -1.0F, -4.0F, 6.0F, 12.0F, 8.0F),
+			PartPose.offset(4.0F, 13.0F, 0.0F));
 
 		return LayerDefinition.create(mesh, 128, 128);
 	}
@@ -72,22 +72,22 @@ public class NewTrollModel extends HumanoidModel<Troll> {
 
 		if (entity.isVehicle()) {
 			// arms up!
-			this.rightArm.xRot += Math.PI;
-			this.leftArm.xRot += Math.PI;
+			this.rightArm.xRot += Mth.PI;
+			this.leftArm.xRot += Mth.PI;
 		}
 
 		if (this.leftArmPose != ArmPose.EMPTY) {
-			this.rightArm.xRot += Math.PI;
+			this.rightArm.xRot += Mth.PI;
 		}
 		if (this.rightArmPose != ArmPose.EMPTY) {
-			this.leftArm.xRot += Math.PI;
+			this.leftArm.xRot += Mth.PI;
 		}
 
 		if (this.attackTime > 0F) {
 			float swing = 1.0F - this.attackTime;
 
-			this.rightArm.xRot -= (Math.PI * swing);
-			this.leftArm.xRot -= (Math.PI * swing);
+			this.rightArm.xRot -= (Mth.PI * swing);
+			this.leftArm.xRot -= (Mth.PI * swing);
 		}
 
 		this.rightArm.yRot = 0.0F;
@@ -102,8 +102,8 @@ public class NewTrollModel extends HumanoidModel<Troll> {
 	@Override
 	public void prepareMobModel(Troll entity, float limbSwing, float limbSwingAmount, float partialTicks) {
 		if (entity.getTarget() != null) {
-			this.rightArm.xRot += Math.PI;
-			this.leftArm.xRot += Math.PI;
+			this.rightArm.xRot += Mth.PI;
+			this.leftArm.xRot += Mth.PI;
 		}
 	}
 }

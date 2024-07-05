@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "hanging_sign",
+  "key": {
+    "#": {
+      "item": "twilightforest:stripped_transformation_log"
+    },
+    "|": {
+      "item": "minecraft:chain"
+    }
+  },
+  "pattern": [
+    "| |",
+    "###",
+    "###"
+  ],
+  "result": {
+    "count": 6,
+    "id": "twilightforest:transformation_hanging_sign"
+  }
+}

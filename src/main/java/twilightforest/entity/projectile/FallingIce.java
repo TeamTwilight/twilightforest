@@ -15,6 +15,7 @@ import net.minecraft.network.protocol.game.ClientboundBlockUpdatePacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerEntity;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
@@ -42,7 +43,6 @@ import twilightforest.TwilightForestMod;
 import twilightforest.entity.boss.AlphaYeti;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
-import twilightforest.init.TFParticleType;
 
 import java.util.Objects;
 
@@ -53,7 +53,7 @@ public class FallingIce extends Entity {
 	private BlockState blockState = Blocks.PACKED_ICE.defaultBlockState(); //TF: change default block to packed ice
 	public int time;
 	protected final int fallDamageMax = 100; //TF: change max damage to 100 damage from 40
-	public final float[] damagePerDifficulty = { 0.0F, 0.5F, 1.0F, 2.0F }; //TF: change the damage done per block fallen based on difficulty
+	public final float[] damagePerDifficulty = {0.0F, 0.5F, 1.0F, 2.0F}; //TF: change the damage done per block fallen based on difficulty
 	@Nullable
 	public CompoundTag blockData;
 	protected static final EntityDataAccessor<BlockPos> DATA_START_POS = SynchedEntityData.defineId(FallingIce.class, EntityDataSerializers.BLOCK_POS);
@@ -62,6 +62,7 @@ public class FallingIce extends Entity {
 		super(type, level);
 	}
 
+	@SuppressWarnings("this-escape")
 	public FallingIce(Level level, double x, double y, double z, BlockState state, int hangTime) {
 		this(TFEntities.FALLING_ICE.get(), level);
 		this.hangTime = hangTime;
@@ -94,8 +95,8 @@ public class FallingIce extends Entity {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		this.getEntityData().define(DATA_START_POS, BlockPos.ZERO);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		builder.define(DATA_START_POS, BlockPos.ZERO);
 	}
 
 	@Override
@@ -151,14 +152,14 @@ public class FallingIce extends Entity {
 								if (this.blockData != null && this.blockState.hasBlockEntity()) {
 									BlockEntity blockentity = this.level().getBlockEntity(blockpos);
 									if (blockentity != null) {
-										CompoundTag compoundtag = blockentity.saveWithoutMetadata();
+										CompoundTag compoundtag = blockentity.saveWithoutMetadata(this.level().registryAccess());
 
 										for (String s : this.blockData.getAllKeys()) {
 											compoundtag.put(s, Objects.requireNonNull(this.blockData.get(s)).copy());
 										}
 
 										try {
-											blockentity.load(compoundtag);
+											blockentity.loadWithComponents(compoundtag, this.level().registryAccess());
 										} catch (Exception exception) {
 											TwilightForestMod.LOGGER.error("Failed to load block entity from falling block", exception);
 										}
@@ -263,8 +264,8 @@ public class FallingIce extends Entity {
 	}
 
 	@Override
-	public Packet<ClientGamePacketListener> getAddEntityPacket() {
-		return new ClientboundAddEntityPacket(this, Block.getId(this.getBlockState()));
+	public Packet<ClientGamePacketListener> getAddEntityPacket(ServerEntity entity) {
+		return new ClientboundAddEntityPacket(this, entity, Block.getId(this.getBlockState()));
 	}
 
 	@Override

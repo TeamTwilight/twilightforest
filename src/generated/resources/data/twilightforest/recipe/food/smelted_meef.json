@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smelting",
+  "category": "food",
+  "cookingtime": 200,
+  "experience": 0.3,
+  "ingredient": {
+    "item": "twilightforest:raw_meef"
+  },
+  "result": {
+    "count": 1,
+    "id": "twilightforest:cooked_meef"
+  }
+}

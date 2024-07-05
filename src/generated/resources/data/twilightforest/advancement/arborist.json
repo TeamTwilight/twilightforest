@@ -1,0 +1,2702 @@
+{
+  "parent": "twilightforest:root",
+  "criteria": {
+    "beanstalk_leaves": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:beanstalk_leaves"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "canopy_banister": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:canopy_banister"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "canopy_boat": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:canopy_boat"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "canopy_bookshelf": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:canopy_bookshelf"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "canopy_button": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:canopy_button"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "canopy_chest": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:canopy_chest"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "canopy_chest_boat": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:canopy_chest_boat"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "canopy_door": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:canopy_door"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "canopy_fence": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:canopy_fence"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "canopy_fence_gate": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:canopy_fence_gate"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "canopy_hanging_sign": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:canopy_hanging_sign"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "canopy_leaves": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:canopy_leaves"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "canopy_log": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:canopy_log"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "canopy_planks": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:canopy_planks"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "canopy_pressure_plate": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:canopy_pressure_plate"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "canopy_sapling": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:canopy_sapling"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "canopy_sign": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:canopy_sign"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "canopy_slab": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:canopy_slab"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "canopy_stairs": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:canopy_stairs"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "canopy_trapdoor": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:canopy_trapdoor"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "canopy_trapped_chest": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:canopy_trapped_chest"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "canopy_wood": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:canopy_wood"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "chiseled_canopy_bookshelf": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:chiseled_canopy_bookshelf"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "cracked_towerwood": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:cracked_towerwood"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "dark_banister": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:dark_banister"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "dark_boat": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:dark_boat"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "dark_button": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:dark_button"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "dark_chest": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:dark_chest"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "dark_chest_boat": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:dark_chest_boat"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "dark_door": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:dark_door"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "dark_fence": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:dark_fence"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "dark_fence_gate": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:dark_fence_gate"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "dark_hanging_sign": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:dark_hanging_sign"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "dark_leaves": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:dark_leaves"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "dark_log": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:dark_log"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "dark_planks": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:dark_planks"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "dark_pressure_plate": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:dark_pressure_plate"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "dark_sign": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:dark_sign"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "dark_slab": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:dark_slab"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "dark_stairs": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:dark_stairs"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "dark_trapdoor": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:dark_trapdoor"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "dark_trapped_chest": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:dark_trapped_chest"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "dark_wood": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:dark_wood"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "darkwood_sapling": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:darkwood_sapling"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "encased_towerwood": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:encased_towerwood"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "fallen_leaves": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:fallen_leaves"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "giant_leaves": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:giant_leaves"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "giant_log": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:giant_log"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "hedge": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:hedge"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "hollow_canopy_log": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:hollow_canopy_log"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "hollow_dark_log": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:hollow_dark_log"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "hollow_mangrove_log": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:hollow_mangrove_log"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "hollow_mining_log": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:hollow_mining_log"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "hollow_oak_sapling": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:hollow_oak_sapling"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "hollow_sorting_log": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:hollow_sorting_log"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "hollow_time_log": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:hollow_time_log"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "hollow_transformation_log": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:hollow_transformation_log"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "hollow_twilight_oak_log": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:hollow_twilight_oak_log"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "huge_stalk": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:huge_stalk"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "liveroot": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:liveroot"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "liveroot_block": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:liveroot_block"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "mangrove_banister": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:mangrove_banister"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "mangrove_boat": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:mangrove_boat"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "mangrove_button": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:mangrove_button"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "mangrove_chest": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:mangrove_chest"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "mangrove_chest_boat": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:mangrove_chest_boat"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "mangrove_door": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:mangrove_door"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "mangrove_fence": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:mangrove_fence"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "mangrove_fence_gate": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:mangrove_fence_gate"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "mangrove_hanging_sign": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:mangrove_hanging_sign"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "mangrove_leaves": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:mangrove_leaves"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "mangrove_log": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:mangrove_log"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "mangrove_planks": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:mangrove_planks"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "mangrove_pressure_plate": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:mangrove_pressure_plate"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "mangrove_root": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:mangrove_root"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "mangrove_sapling": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:mangrove_sapling"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "mangrove_sign": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:mangrove_sign"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "mangrove_slab": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:mangrove_slab"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "mangrove_stairs": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:mangrove_stairs"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "mangrove_trapdoor": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:mangrove_trapdoor"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "mangrove_trapped_chest": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:mangrove_trapped_chest"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "mangrove_wood": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:mangrove_wood"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "mining_banister": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:mining_banister"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "mining_boat": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:mining_boat"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "mining_button": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:mining_button"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "mining_chest": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:mining_chest"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "mining_chest_boat": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:mining_chest_boat"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "mining_door": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:mining_door"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "mining_fence": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:mining_fence"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "mining_fence_gate": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:mining_fence_gate"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "mining_hanging_sign": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:mining_hanging_sign"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "mining_leaves": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:mining_leaves"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "mining_log": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:mining_log"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "mining_planks": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:mining_planks"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "mining_pressure_plate": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:mining_pressure_plate"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "mining_sapling": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:mining_sapling"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "mining_sign": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:mining_sign"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "mining_slab": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:mining_slab"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "mining_stairs": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:mining_stairs"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "mining_trapdoor": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:mining_trapdoor"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "mining_trapped_chest": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:mining_trapped_chest"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "mining_wood": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:mining_wood"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "mossy_towerwood": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:mossy_towerwood"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "rainbow_oak_leaves": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:rainbow_oak_leaves"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "rainbow_oak_sapling": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:rainbow_oak_sapling"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "root": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:root"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "root_strand": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:root_strand"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "sorting_banister": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:sorting_banister"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "sorting_boat": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:sorting_boat"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "sorting_button": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:sorting_button"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "sorting_chest": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:sorting_chest"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "sorting_chest_boat": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:sorting_chest_boat"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "sorting_door": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:sorting_door"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "sorting_fence": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:sorting_fence"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "sorting_fence_gate": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:sorting_fence_gate"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "sorting_hanging_sign": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:sorting_hanging_sign"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "sorting_leaves": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:sorting_leaves"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "sorting_log": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:sorting_log"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "sorting_planks": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:sorting_planks"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "sorting_pressure_plate": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:sorting_pressure_plate"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "sorting_sapling": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:sorting_sapling"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "sorting_sign": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:sorting_sign"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "sorting_slab": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:sorting_slab"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "sorting_stairs": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:sorting_stairs"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "sorting_trapdoor": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:sorting_trapdoor"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "sorting_trapped_chest": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:sorting_trapped_chest"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "sorting_wood": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:sorting_wood"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "stripped_canopy_log": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:stripped_canopy_log"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "stripped_canopy_wood": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:stripped_canopy_wood"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "stripped_dark_log": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:stripped_dark_log"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "stripped_dark_wood": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:stripped_dark_wood"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "stripped_mangrove_log": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:stripped_mangrove_log"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "stripped_mangrove_wood": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:stripped_mangrove_wood"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "stripped_mining_log": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:stripped_mining_log"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "stripped_mining_wood": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:stripped_mining_wood"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "stripped_sorting_log": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:stripped_sorting_log"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "stripped_sorting_wood": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:stripped_sorting_wood"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "stripped_time_log": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:stripped_time_log"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "stripped_time_wood": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:stripped_time_wood"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "stripped_transformation_log": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:stripped_transformation_log"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "stripped_transformation_wood": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:stripped_transformation_wood"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "stripped_twilight_oak_log": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:stripped_twilight_oak_log"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "stripped_twilight_oak_wood": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:stripped_twilight_oak_wood"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "thorn_leaves": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:thorn_leaves"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "thorn_rose": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:thorn_rose"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "time_banister": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:time_banister"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "time_boat": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:time_boat"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "time_button": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:time_button"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "time_chest": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:time_chest"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "time_chest_boat": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:time_chest_boat"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "time_door": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:time_door"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "time_fence": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:time_fence"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "time_fence_gate": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:time_fence_gate"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "time_hanging_sign": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:time_hanging_sign"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "time_leaves": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:time_leaves"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "time_log": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:time_log"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "time_planks": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:time_planks"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "time_pressure_plate": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:time_pressure_plate"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "time_sapling": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:time_sapling"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "time_sign": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:time_sign"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "time_slab": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:time_slab"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "time_stairs": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:time_stairs"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "time_trapdoor": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:time_trapdoor"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "time_trapped_chest": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:time_trapped_chest"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "time_wood": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:time_wood"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "towerwood": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:towerwood"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "transformation_banister": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:transformation_banister"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "transformation_boat": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:transformation_boat"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "transformation_button": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:transformation_button"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "transformation_chest": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:transformation_chest"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "transformation_chest_boat": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:transformation_chest_boat"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "transformation_door": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:transformation_door"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "transformation_fence": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:transformation_fence"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "transformation_fence_gate": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:transformation_fence_gate"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "transformation_hanging_sign": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:transformation_hanging_sign"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "transformation_leaves": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:transformation_leaves"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "transformation_log": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:transformation_log"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "transformation_planks": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:transformation_planks"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "transformation_pressure_plate": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:transformation_pressure_plate"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "transformation_sapling": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:transformation_sapling"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "transformation_sign": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:transformation_sign"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "transformation_slab": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:transformation_slab"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "transformation_stairs": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:transformation_stairs"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "transformation_trapdoor": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:transformation_trapdoor"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "transformation_trapped_chest": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:transformation_trapped_chest"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "transformation_wood": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:transformation_wood"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "twilight_oak_banister": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:twilight_oak_banister"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "twilight_oak_boat": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:twilight_oak_boat"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "twilight_oak_button": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:twilight_oak_button"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "twilight_oak_chest": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:twilight_oak_chest"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "twilight_oak_chest_boat": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:twilight_oak_chest_boat"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "twilight_oak_door": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:twilight_oak_door"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "twilight_oak_fence": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:twilight_oak_fence"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "twilight_oak_fence_gate": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:twilight_oak_fence_gate"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "twilight_oak_hanging_sign": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:twilight_oak_hanging_sign"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "twilight_oak_leaves": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:twilight_oak_leaves"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "twilight_oak_log": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:twilight_oak_log"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "twilight_oak_planks": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:twilight_oak_planks"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "twilight_oak_pressure_plate": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:twilight_oak_pressure_plate"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "twilight_oak_sapling": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:twilight_oak_sapling"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "twilight_oak_sign": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:twilight_oak_sign"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "twilight_oak_slab": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:twilight_oak_slab"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "twilight_oak_stairs": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:twilight_oak_stairs"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "twilight_oak_trapdoor": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:twilight_oak_trapdoor"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "twilight_oak_trapped_chest": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:twilight_oak_trapped_chest"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "twilight_oak_wood": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:twilight_oak_wood"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.twilightforest.arborist.desc"
+    },
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "id": "twilightforest:twilight_oak_fence"
+    },
+    "title": {
+      "translate": "advancement.twilightforest.arborist"
+    }
+  },
+  "requirements": [
+    [
+      "twilight_oak_log"
+    ],
+    [
+      "twilight_oak_wood"
+    ],
+    [
+      "stripped_twilight_oak_log"
+    ],
+    [
+      "stripped_twilight_oak_wood"
+    ],
+    [
+      "hollow_twilight_oak_log"
+    ],
+    [
+      "twilight_oak_leaves"
+    ],
+    [
+      "twilight_oak_sapling"
+    ],
+    [
+      "twilight_oak_planks"
+    ],
+    [
+      "twilight_oak_slab"
+    ],
+    [
+      "twilight_oak_stairs"
+    ],
+    [
+      "twilight_oak_button"
+    ],
+    [
+      "twilight_oak_fence"
+    ],
+    [
+      "twilight_oak_fence_gate"
+    ],
+    [
+      "twilight_oak_pressure_plate"
+    ],
+    [
+      "twilight_oak_door"
+    ],
+    [
+      "twilight_oak_trapdoor"
+    ],
+    [
+      "twilight_oak_sign"
+    ],
+    [
+      "twilight_oak_hanging_sign"
+    ],
+    [
+      "twilight_oak_chest"
+    ],
+    [
+      "twilight_oak_trapped_chest"
+    ],
+    [
+      "twilight_oak_banister"
+    ],
+    [
+      "twilight_oak_boat"
+    ],
+    [
+      "twilight_oak_chest_boat"
+    ],
+    [
+      "canopy_log"
+    ],
+    [
+      "canopy_wood"
+    ],
+    [
+      "stripped_canopy_log"
+    ],
+    [
+      "stripped_canopy_wood"
+    ],
+    [
+      "hollow_canopy_log"
+    ],
+    [
+      "canopy_leaves"
+    ],
+    [
+      "canopy_sapling"
+    ],
+    [
+      "canopy_planks"
+    ],
+    [
+      "canopy_slab"
+    ],
+    [
+      "canopy_stairs"
+    ],
+    [
+      "canopy_button"
+    ],
+    [
+      "canopy_fence"
+    ],
+    [
+      "canopy_fence_gate"
+    ],
+    [
+      "canopy_pressure_plate"
+    ],
+    [
+      "canopy_door"
+    ],
+    [
+      "canopy_trapdoor"
+    ],
+    [
+      "canopy_sign"
+    ],
+    [
+      "canopy_hanging_sign"
+    ],
+    [
+      "canopy_chest"
+    ],
+    [
+      "canopy_trapped_chest"
+    ],
+    [
+      "canopy_banister"
+    ],
+    [
+      "canopy_bookshelf"
+    ],
+    [
+      "chiseled_canopy_bookshelf"
+    ],
+    [
+      "canopy_boat"
+    ],
+    [
+      "canopy_chest_boat"
+    ],
+    [
+      "mangrove_log"
+    ],
+    [
+      "mangrove_wood"
+    ],
+    [
+      "stripped_mangrove_log"
+    ],
+    [
+      "stripped_mangrove_wood"
+    ],
+    [
+      "hollow_mangrove_log"
+    ],
+    [
+      "mangrove_leaves"
+    ],
+    [
+      "mangrove_sapling"
+    ],
+    [
+      "mangrove_planks"
+    ],
+    [
+      "mangrove_slab"
+    ],
+    [
+      "mangrove_stairs"
+    ],
+    [
+      "mangrove_button"
+    ],
+    [
+      "mangrove_fence"
+    ],
+    [
+      "mangrove_fence_gate"
+    ],
+    [
+      "mangrove_pressure_plate"
+    ],
+    [
+      "mangrove_door"
+    ],
+    [
+      "mangrove_trapdoor"
+    ],
+    [
+      "mangrove_sign"
+    ],
+    [
+      "mangrove_hanging_sign"
+    ],
+    [
+      "mangrove_chest"
+    ],
+    [
+      "mangrove_trapped_chest"
+    ],
+    [
+      "mangrove_banister"
+    ],
+    [
+      "mangrove_boat"
+    ],
+    [
+      "mangrove_chest_boat"
+    ],
+    [
+      "dark_log"
+    ],
+    [
+      "dark_wood"
+    ],
+    [
+      "stripped_dark_log"
+    ],
+    [
+      "stripped_dark_wood"
+    ],
+    [
+      "hollow_dark_log"
+    ],
+    [
+      "dark_leaves"
+    ],
+    [
+      "darkwood_sapling"
+    ],
+    [
+      "dark_planks"
+    ],
+    [
+      "dark_slab"
+    ],
+    [
+      "dark_stairs"
+    ],
+    [
+      "dark_button"
+    ],
+    [
+      "dark_fence"
+    ],
+    [
+      "dark_fence_gate"
+    ],
+    [
+      "dark_pressure_plate"
+    ],
+    [
+      "dark_door"
+    ],
+    [
+      "dark_trapdoor"
+    ],
+    [
+      "dark_sign"
+    ],
+    [
+      "dark_hanging_sign"
+    ],
+    [
+      "dark_chest"
+    ],
+    [
+      "dark_trapped_chest"
+    ],
+    [
+      "dark_banister"
+    ],
+    [
+      "dark_boat"
+    ],
+    [
+      "dark_chest_boat"
+    ],
+    [
+      "time_log"
+    ],
+    [
+      "time_wood"
+    ],
+    [
+      "stripped_time_log"
+    ],
+    [
+      "stripped_time_wood"
+    ],
+    [
+      "hollow_time_log"
+    ],
+    [
+      "time_leaves"
+    ],
+    [
+      "time_sapling"
+    ],
+    [
+      "time_planks"
+    ],
+    [
+      "time_slab"
+    ],
+    [
+      "time_stairs"
+    ],
+    [
+      "time_button"
+    ],
+    [
+      "time_fence"
+    ],
+    [
+      "time_fence_gate"
+    ],
+    [
+      "time_pressure_plate"
+    ],
+    [
+      "time_door"
+    ],
+    [
+      "time_trapdoor"
+    ],
+    [
+      "time_sign"
+    ],
+    [
+      "time_hanging_sign"
+    ],
+    [
+      "time_chest"
+    ],
+    [
+      "time_trapped_chest"
+    ],
+    [
+      "time_banister"
+    ],
+    [
+      "time_boat"
+    ],
+    [
+      "time_chest_boat"
+    ],
+    [
+      "transformation_log"
+    ],
+    [
+      "transformation_wood"
+    ],
+    [
+      "stripped_transformation_log"
+    ],
+    [
+      "stripped_transformation_wood"
+    ],
+    [
+      "hollow_transformation_log"
+    ],
+    [
+      "transformation_leaves"
+    ],
+    [
+      "transformation_sapling"
+    ],
+    [
+      "transformation_planks"
+    ],
+    [
+      "transformation_slab"
+    ],
+    [
+      "transformation_stairs"
+    ],
+    [
+      "transformation_button"
+    ],
+    [
+      "transformation_fence"
+    ],
+    [
+      "transformation_fence_gate"
+    ],
+    [
+      "transformation_pressure_plate"
+    ],
+    [
+      "transformation_door"
+    ],
+    [
+      "transformation_trapdoor"
+    ],
+    [
+      "transformation_sign"
+    ],
+    [
+      "transformation_hanging_sign"
+    ],
+    [
+      "transformation_chest"
+    ],
+    [
+      "transformation_trapped_chest"
+    ],
+    [
+      "transformation_banister"
+    ],
+    [
+      "transformation_boat"
+    ],
+    [
+      "transformation_chest_boat"
+    ],
+    [
+      "mining_log"
+    ],
+    [
+      "mining_wood"
+    ],
+    [
+      "stripped_mining_log"
+    ],
+    [
+      "stripped_mining_wood"
+    ],
+    [
+      "hollow_mining_log"
+    ],
+    [
+      "mining_leaves"
+    ],
+    [
+      "mining_sapling"
+    ],
+    [
+      "mining_planks"
+    ],
+    [
+      "mining_slab"
+    ],
+    [
+      "mining_stairs"
+    ],
+    [
+      "mining_button"
+    ],
+    [
+      "mining_fence"
+    ],
+    [
+      "mining_fence_gate"
+    ],
+    [
+      "mining_pressure_plate"
+    ],
+    [
+      "mining_door"
+    ],
+    [
+      "mining_trapdoor"
+    ],
+    [
+      "mining_sign"
+    ],
+    [
+      "mining_hanging_sign"
+    ],
+    [
+      "mining_chest"
+    ],
+    [
+      "mining_trapped_chest"
+    ],
+    [
+      "mining_banister"
+    ],
+    [
+      "mining_boat"
+    ],
+    [
+      "mining_chest_boat"
+    ],
+    [
+      "sorting_log"
+    ],
+    [
+      "sorting_wood"
+    ],
+    [
+      "stripped_sorting_log"
+    ],
+    [
+      "stripped_sorting_wood"
+    ],
+    [
+      "hollow_sorting_log"
+    ],
+    [
+      "sorting_leaves"
+    ],
+    [
+      "sorting_sapling"
+    ],
+    [
+      "sorting_planks"
+    ],
+    [
+      "sorting_slab"
+    ],
+    [
+      "sorting_stairs"
+    ],
+    [
+      "sorting_button"
+    ],
+    [
+      "sorting_fence"
+    ],
+    [
+      "sorting_fence_gate"
+    ],
+    [
+      "sorting_pressure_plate"
+    ],
+    [
+      "sorting_door"
+    ],
+    [
+      "sorting_trapdoor"
+    ],
+    [
+      "sorting_sign"
+    ],
+    [
+      "sorting_hanging_sign"
+    ],
+    [
+      "sorting_chest"
+    ],
+    [
+      "sorting_trapped_chest"
+    ],
+    [
+      "sorting_banister"
+    ],
+    [
+      "sorting_boat"
+    ],
+    [
+      "sorting_chest_boat"
+    ],
+    [
+      "towerwood"
+    ],
+    [
+      "cracked_towerwood"
+    ],
+    [
+      "mossy_towerwood"
+    ],
+    [
+      "encased_towerwood"
+    ],
+    [
+      "root"
+    ],
+    [
+      "root_strand"
+    ],
+    [
+      "liveroot_block"
+    ],
+    [
+      "liveroot"
+    ],
+    [
+      "hollow_oak_sapling"
+    ],
+    [
+      "rainbow_oak_sapling"
+    ],
+    [
+      "rainbow_oak_leaves"
+    ],
+    [
+      "giant_log"
+    ],
+    [
+      "giant_leaves"
+    ],
+    [
+      "huge_stalk"
+    ],
+    [
+      "beanstalk_leaves"
+    ],
+    [
+      "thorn_leaves"
+    ],
+    [
+      "thorn_rose"
+    ],
+    [
+      "hedge"
+    ],
+    [
+      "fallen_leaves"
+    ],
+    [
+      "mangrove_root"
+    ]
+  ],
+  "rewards": {
+    "experience": 1000
+  },
+  "sends_telemetry_event": true
+}

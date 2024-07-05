@@ -43,10 +43,10 @@ public class HugeLilyPadItem extends PlaceOnWaterBlockItem {
 				BlockPos blockpos = raytraceresult.getBlockPos();
 				Direction direction = raytraceresult.getDirection();
 				if (!level.mayInteract(player, blockpos) || !player.mayUseItemAt(blockpos.relative(direction), direction, itemstack)
-						// TF - check east, south, southeast as well
-						|| !level.mayInteract(player, blockpos.east()) || !player.mayUseItemAt(blockpos.relative(direction).east(), direction, itemstack)
-						|| !level.mayInteract(player, blockpos.south()) || !player.mayUseItemAt(blockpos.relative(direction).south(), direction, itemstack)
-						|| !level.mayInteract(player, blockpos.east().south()) || !player.mayUseItemAt(blockpos.relative(direction).east().south(), direction, itemstack)
+					// TF - check east, south, southeast as well
+					|| !level.mayInteract(player, blockpos.east()) || !player.mayUseItemAt(blockpos.relative(direction).east(), direction, itemstack)
+					|| !level.mayInteract(player, blockpos.south()) || !player.mayUseItemAt(blockpos.relative(direction).south(), direction, itemstack)
+					|| !level.mayInteract(player, blockpos.east().south()) || !player.mayUseItemAt(blockpos.relative(direction).east().south(), direction, itemstack)
 				) {
 					return InteractionResultHolder.fail(itemstack);
 				}
@@ -55,10 +55,10 @@ public class HugeLilyPadItem extends PlaceOnWaterBlockItem {
 				BlockState blockstate = level.getBlockState(blockpos);
 				FluidState ifluidstate = level.getFluidState(blockpos);
 				if ((ifluidstate.getType() == Fluids.WATER || blockstate.is(BlockTags.ICE)) && level.isEmptyBlock(blockpos1)
-						// TF - check east, south, southeast as well
-						&& (level.getFluidState(blockpos.east()).getType() == Fluids.WATER || level.getBlockState(blockpos.east()).is(BlockTags.ICE)) && level.isEmptyBlock(blockpos1.east())
-						&& (level.getFluidState(blockpos.south()).getType() == Fluids.WATER || level.getBlockState(blockpos.south()).is(BlockTags.ICE)) && level.isEmptyBlock(blockpos1.south())
-						&& (level.getFluidState(blockpos.east().south()).getType() == Fluids.WATER || level.getBlockState(blockpos.east().south()).is(BlockTags.ICE)) && level.isEmptyBlock(blockpos1.east().south())
+					// TF - check east, south, southeast as well
+					&& (level.getFluidState(blockpos.east()).getType() == Fluids.WATER || level.getBlockState(blockpos.east()).is(BlockTags.ICE)) && level.isEmptyBlock(blockpos1.east())
+					&& (level.getFluidState(blockpos.south()).getType() == Fluids.WATER || level.getBlockState(blockpos.south()).is(BlockTags.ICE)) && level.isEmptyBlock(blockpos1.south())
+					&& (level.getFluidState(blockpos.east().south()).getType() == Fluids.WATER || level.getBlockState(blockpos.east().south()).is(BlockTags.ICE)) && level.isEmptyBlock(blockpos1.east().south())
 				) {
 					// TF - use our own block. dispense with the blocksnapshot stuff for now due to complexity. FIXME: Implement it
 					final BlockState lilypad = getBlock().defaultBlockState().setValue(FACING, player.getDirection());

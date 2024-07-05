@@ -9,32 +9,14 @@ import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.common.Mod;
-import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
 
 import java.util.List;
 
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class FierySwordItem extends SwordItem {
 
 	public FierySwordItem(Tier toolMaterial, Properties properties) {
-		super(toolMaterial, 3, -2.4F, properties);
-	}
-
-	@Override
-	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-		return enchantment != Enchantments.FIRE_ASPECT && super.canApplyAtEnchantingTable(stack, enchantment);
-	}
-
-	@Override
-	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-		return !EnchantmentHelper.getEnchantments(book).containsKey(Enchantments.FIRE_ASPECT) && super.isBookEnchantable(stack, book);
+		super(toolMaterial, properties);
 	}
 
 	@Override
@@ -42,7 +24,7 @@ public class FierySwordItem extends SwordItem {
 		boolean result = super.hurtEnemy(stack, target, attacker);
 
 		if (result && !target.level().isClientSide() && !target.fireImmune()) {
-			target.setSecondsOnFire(15);
+			target.igniteForSeconds(15);
 		} else {
 			for (int var1 = 0; var1 < 20; ++var1) {
 				double px = target.getX() + target.level().getRandom().nextFloat() * target.getBbWidth() * 2.0F - target.getBbWidth();
@@ -56,9 +38,8 @@ public class FierySwordItem extends SwordItem {
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-		super.appendHoverText(stack, level, tooltip, flag);
-		tooltip.add(Component.translatable(getDescriptionId() + ".desc").withStyle(ChatFormatting.GRAY));
+	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+		super.appendHoverText(stack, context, tooltip, flag);
+		tooltip.add(Component.translatable(this.getDescriptionId() + ".desc").withStyle(ChatFormatting.GRAY));
 	}
 }

@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.ChestType;
 import net.minecraft.world.level.block.state.properties.StructureMode;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
@@ -30,40 +31,40 @@ public class DruidHutFeature extends TemplateFeature<SwizzleConfig> {
 	}
 
 	@Override
-    protected StructureTemplate getTemplate(StructureTemplateManager templateManager, RandomSource random) {
-	    return templateManager.getOrCreate(Util.getRandom(DruidHutFeature.HutType.values(), random).resourceLocation);
-    }
+	protected StructureTemplate getTemplate(StructureTemplateManager templateManager, RandomSource random) {
+		return templateManager.getOrCreate(Util.getRandom(DruidHutFeature.HutType.values(), random).resourceLocation);
+	}
 
-    @Override
-    protected void modifySettings(StructurePlaceSettings settings, RandomSource random, SwizzleConfig config) {
-        config.buildAddProcessors(settings, random);
-    }
+	@Override
+	protected void modifySettings(StructurePlaceSettings settings, RandomSource random, SwizzleConfig config) {
+		config.buildAddProcessors(settings, random);
+	}
 
-    @Override
-    protected void postPlacement(WorldGenLevel world, RandomSource random, StructureTemplateManager templateManager, Rotation rotation, Mirror mirror, StructurePlaceSettings placementSettings, BlockPos placementPos, SwizzleConfig config) {
-        if (random.nextBoolean()) {
-            StructureTemplate template = templateManager.getOrCreate(DruidHutFeature.BasementType.values()[random.nextInt(DruidHutFeature.BasementType.size)].getBasement(random.nextBoolean()));
+	@Override
+	protected void postPlacement(WorldGenLevel world, RandomSource random, StructureTemplateManager templateManager, Rotation rotation, Mirror mirror, StructurePlaceSettings placementSettings, BlockPos placementPos, SwizzleConfig config) {
+		if (random.nextBoolean()) {
+			StructureTemplate template = templateManager.getOrCreate(DruidHutFeature.BasementType.values()[random.nextInt(DruidHutFeature.BasementType.size)].getBasement(random.nextBoolean()));
 
-            if(template == null) return;
+			if (template == null) return;
 
-            placementPos = placementPos.below(12).relative(rotation.rotate(mirror.mirror(Direction.NORTH)), 1).relative(rotation.rotate(mirror.mirror(Direction.EAST)), 1);
+			placementPos = placementPos.below(12).relative(rotation.rotate(mirror.mirror(Direction.NORTH)), 1).relative(rotation.rotate(mirror.mirror(Direction.EAST)), 1);
 
-            placementSettings.clearProcessors();
-            config.buildAddProcessors(placementSettings, random);
-            placementSettings.addProcessor(CobbleVariants.INSTANCE).addProcessor(StoneBricksVariants.INSTANCE);
+			placementSettings.clearProcessors();
+			config.buildAddProcessors(placementSettings, random);
+			placementSettings.addProcessor(CobbleVariants.INSTANCE).addProcessor(StoneBricksVariants.INSTANCE);
 
-            template.placeInWorld(world, placementPos, placementPos, placementSettings, random, 20);
+			template.placeInWorld(world, placementPos, placementPos, placementSettings, random, 20);
 
-            for (StructureTemplate.StructureBlockInfo info : template.filterBlocks(placementPos, placementSettings, Blocks.STRUCTURE_BLOCK))
-                if (info.nbt() != null && StructureMode.valueOf(info.nbt().getString("mode")) == StructureMode.DATA)
-                    this.processMarkers(info, world, rotation, mirror, random);
-        }
-    }
+			for (StructureTemplate.StructureBlockInfo info : template.filterBlocks(placementPos, placementSettings, Blocks.STRUCTURE_BLOCK))
+				if (info.nbt() != null && StructureMode.valueOf(info.nbt().getString("mode")) == StructureMode.DATA)
+					this.processMarkers(info, world, rotation, mirror, random);
+		}
+	}
 
 	@Override
 	protected void processMarkers(StructureTemplate.StructureBlockInfo info, WorldGenLevel world, Rotation rotation, Mirror mirror, RandomSource random) {
-        String s = info.nbt().getString("metadata");
-        BlockPos blockPos = info.pos();
+		String s = info.nbt().getString("metadata");
+		BlockPos blockPos = info.pos();
         /*
          `spawner` will place a Druid spawner.
 
@@ -77,88 +78,101 @@ public class DruidHutFeature extends TemplateFeature<SwizzleConfig> {
          `lootET` will place a trapped chest facing the was-East.
          `lootNT` will place a trapped chest facing the was-North.
          */
-        // removeBlock calls are required due to WorldGenRegion jank with cached TEs, this ensures the correct TE is used
-        if ("spawner".equals(s)) {
-            if (world.removeBlock(blockPos, false) && world.setBlock(blockPos, Blocks.SPAWNER.defaultBlockState(), 16 | 2)) {
-                BlockEntity tile = world.getBlockEntity(blockPos);
+		// removeBlock calls are required due to WorldGenRegion jank with cached TEs, this ensures the correct TE is used
+		if ("spawner".equals(s)) {
+			if (world.removeBlock(blockPos, false) && world.setBlock(blockPos, Blocks.SPAWNER.defaultBlockState(), 16 | 2)) {
+				BlockEntity tile = world.getBlockEntity(blockPos);
 
-                if (tile instanceof SpawnerBlockEntity ms) {
-                    ms.setEntityId(TFEntities.SKELETON_DRUID.get(), random);
-                }
-            }
-        } else if (s.startsWith("loot")) {
-            world.removeBlock(blockPos, false);
-            BlockState chest = s.endsWith("T") ? Blocks.TRAPPED_CHEST.defaultBlockState() : Blocks.CHEST.defaultBlockState();
+				if (tile instanceof SpawnerBlockEntity ms) {
+					ms.setEntityId(TFEntities.SKELETON_DRUID.get(), random);
+				}
+			}
+		} else if (s.startsWith("loot")) {
+			world.removeBlock(blockPos, false);
+			BlockState chest = s.endsWith("T") ? Blocks.TRAPPED_CHEST.defaultBlockState() : Blocks.CHEST.defaultBlockState();
 
-            chest = switch (s.substring(5, 6)) {
-                case "L" -> chest.setValue(ChestBlock.TYPE, mirror != Mirror.NONE ? ChestType.RIGHT : ChestType.LEFT);
-                case "R" -> chest.setValue(ChestBlock.TYPE, mirror != Mirror.NONE ? ChestType.LEFT : ChestType.RIGHT);
-                default -> chest.setValue(ChestBlock.TYPE, ChestType.SINGLE);
-            };
+			chest = switch (s.substring(5, 6)) {
+				case "L" -> chest.setValue(ChestBlock.TYPE, mirror != Mirror.NONE ? ChestType.RIGHT : ChestType.LEFT);
+				case "R" -> chest.setValue(ChestBlock.TYPE, mirror != Mirror.NONE ? ChestType.LEFT : ChestType.RIGHT);
+				default -> chest.setValue(ChestBlock.TYPE, ChestType.SINGLE); // S
+			};
 
-            chest = switch (s.substring(4, 5)) {
-                case "W" -> chest.setValue(HorizontalDirectionalBlock.FACING, rotation.rotate(mirror.mirror(Direction.WEST)));
-                case "E" -> chest.setValue(HorizontalDirectionalBlock.FACING, rotation.rotate(mirror.mirror(Direction.EAST)));
-                case "S" -> chest.setValue(HorizontalDirectionalBlock.FACING, rotation.rotate(mirror.mirror(Direction.SOUTH)));
-                default -> chest.setValue(HorizontalDirectionalBlock.FACING, rotation.rotate(mirror.mirror(Direction.NORTH)));
-            };
+			chest = switch (s.substring(4, 5)) {
+				case "W" -> chest.setValue(HorizontalDirectionalBlock.FACING, rotation.rotate(mirror.mirror(Direction.WEST)));
+				case "E" -> chest.setValue(HorizontalDirectionalBlock.FACING, rotation.rotate(mirror.mirror(Direction.EAST)));
+				case "S" -> chest.setValue(HorizontalDirectionalBlock.FACING, rotation.rotate(mirror.mirror(Direction.SOUTH)));
+				default -> chest.setValue(HorizontalDirectionalBlock.FACING, rotation.rotate(mirror.mirror(Direction.NORTH)));
+			};
 
-            TFLootTables.BASEMENT.generateLootContainer(world, blockPos, chest, 16 | 2);
-        } else if (s.startsWith("painting")) {
-            world.removeBlock(blockPos, false);
+			TFLootTables.generateLootContainer(world, blockPos, chest, 16 | 2, (s.endsWith("J") ? TFLootTables.HUT_JUNK : TFLootTables.BASEMENT));
+		} else if (s.startsWith("barrel")) {
+			world.removeBlock(blockPos, false);
+			BlockState chest = Blocks.BARREL.defaultBlockState();
 
+			chest = switch (s.substring(6, 7)) {
+				case "D" -> chest.setValue(BlockStateProperties.FACING, rotation.rotate(mirror.mirror(Direction.DOWN)));
+				case "W" -> chest.setValue(BlockStateProperties.FACING, rotation.rotate(mirror.mirror(Direction.WEST)));
+				case "E" -> chest.setValue(BlockStateProperties.FACING, rotation.rotate(mirror.mirror(Direction.EAST)));
+				case "N" -> chest.setValue(BlockStateProperties.FACING, rotation.rotate(mirror.mirror(Direction.NORTH)));
+				case "S" -> chest.setValue(BlockStateProperties.FACING, rotation.rotate(mirror.mirror(Direction.SOUTH)));
+				default -> chest.setValue(BlockStateProperties.FACING, rotation.rotate(mirror.mirror(Direction.UP)));
+			};
 
-            Direction direction = rotation.rotate(mirror.mirror(switch (s.substring(8, 9)) {
-                case "W" -> Direction.WEST;
-                case "E" -> Direction.EAST;
-                case "S" -> Direction.SOUTH;
-                default -> Direction.NORTH;
-            }));
+			TFLootTables.generateLootContainer(world, blockPos, chest, 16 | 2, TFLootTables.HUT_JUNK);
+		} else if (s.startsWith("painting")) {
+			world.removeBlock(blockPos, false);
 
-            String widthS = s.substring(9, 10);
-            int paintingWidth = widthS.matches("\\d+") ? Integer.parseInt(widthS) << 4 : 16;
+			Direction direction = rotation.rotate(mirror.mirror(switch (s.substring(8, 9)) {
+				case "W" -> Direction.WEST;
+				case "E" -> Direction.EAST;
+				case "S" -> Direction.SOUTH;
+				default -> Direction.NORTH;
+			}));
 
-            boolean hasFlipped = mirror != Mirror.NONE;
-            BlockPos hangPos = hasFlipped ? blockPos.relative(direction.getClockWise()) : blockPos;
+			String widthS = s.substring(9, 10);
+			int paintingWidth = widthS.matches("\\d+") ? Integer.parseInt(widthS) << 4 : 16;
 
-            EntityUtil.tryHangPainting(world, hangPos, direction, EntityUtil.getPaintingOfSize(random, paintingWidth, paintingWidth == 32 || paintingWidth == 64 ? 32 : 16, true));
-        }
-    }
+			boolean hasFlipped = mirror != Mirror.NONE;
+			BlockPos hangPos = hasFlipped ? blockPos.relative(direction.getClockWise()) : blockPos;
 
-    private enum HutType {
-        REGULAR    (TwilightForestMod.prefix("feature/druid_hut/druid_hut"       )),
-        SIDEWAYS   (TwilightForestMod.prefix("feature/druid_hut/druid_sideways"  )),
-        DOUBLE_DECK(TwilightForestMod.prefix("feature/druid_hut/druid_doubledeck"));
+			EntityUtil.tryHangPainting(world, hangPos, direction, EntityUtil.getPaintingOfSize(world, random, paintingWidth, paintingWidth == 32 || paintingWidth == 64 ? 32 : 16, true));
+		}
+	}
 
-        private final ResourceLocation resourceLocation;
+	private enum HutType {
+		REGULAR(TwilightForestMod.prefix("feature/druid_hut/druid_hut")),
+		SIDEWAYS(TwilightForestMod.prefix("feature/druid_hut/druid_sideways")),
+		DOUBLE_DECK(TwilightForestMod.prefix("feature/druid_hut/druid_doubledeck"));
 
-        HutType(ResourceLocation rl) {
-            this.resourceLocation = rl;
-        }
-    }
+		private final ResourceLocation resourceLocation;
 
-    private enum BasementType {
-        STUDY  (TwilightForestMod.prefix("feature/druid_hut/basement_study"  ), TwilightForestMod.prefix("feature/druid_hut/basement_study_trap"  )),
-        SHELVES(TwilightForestMod.prefix("feature/druid_hut/basement_shelves"), TwilightForestMod.prefix("feature/druid_hut/basement_shelves_trap")),
-        GALLERY(TwilightForestMod.prefix("feature/druid_hut/basement_gallery"), TwilightForestMod.prefix("feature/druid_hut/basement_gallery_trap"));
+		HutType(ResourceLocation rl) {
+			this.resourceLocation = rl;
+		}
+	}
 
-        private final ResourceLocation resourceLocation;
-        private final ResourceLocation resourceLocationTrap;
+	private enum BasementType {
+		STUDY(TwilightForestMod.prefix("feature/druid_hut/basement_study"), TwilightForestMod.prefix("feature/druid_hut/basement_study_trap")),
+		SHELVES(TwilightForestMod.prefix("feature/druid_hut/basement_shelves"), TwilightForestMod.prefix("feature/druid_hut/basement_shelves_trap")),
+		GALLERY(TwilightForestMod.prefix("feature/druid_hut/basement_gallery"), TwilightForestMod.prefix("feature/druid_hut/basement_gallery_trap"));
 
-        BasementType(ResourceLocation rl, ResourceLocation rlTrap) {
-            this.resourceLocation = rl;
-            this.resourceLocationTrap = rlTrap;
-            increment();
-        }
+		private final ResourceLocation resourceLocation;
+		private final ResourceLocation resourceLocationTrap;
 
-        private static int size;
+		BasementType(ResourceLocation rl, ResourceLocation rlTrap) {
+			this.resourceLocation = rl;
+			this.resourceLocationTrap = rlTrap;
+			increment();
+		}
 
-        private static void increment() {
-            ++size;
-        }
+		private static int size;
 
-        private ResourceLocation getBasement(boolean trapped) {
-            return trapped ? resourceLocationTrap : resourceLocation;
-        }
-    }
+		private static void increment() {
+			++size;
+		}
+
+		private ResourceLocation getBasement(boolean trapped) {
+			return trapped ? resourceLocationTrap : resourceLocation;
+		}
+	}
 }

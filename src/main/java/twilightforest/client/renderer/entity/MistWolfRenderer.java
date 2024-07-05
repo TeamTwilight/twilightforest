@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FastColor;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
@@ -22,11 +23,11 @@ public class MistWolfRenderer extends MobRenderer<HostileWolf, HostileWolfModel<
 	public MistWolfRenderer(EntityRendererProvider.Context manager) {
 		super(manager, new HostileWolfModel<>(manager.bakeLayer(TFModelLayers.HOSTILE_WOLF)) {
 			@Override
-			public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int light, int overlay, float r, float g, float b, float a) {
+			public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int light, int overlay, int color) {
 				float brightness = parent.level().getMaxLocalRawBrightness(parent.blockPosition());
 				float misty = Math.min(1F, brightness * 3F + 0.25F);
 				float smoky = brightness * 2F + 0.6F;
-				super.renderToBuffer(poseStack, buffer, light, overlay, misty, misty, misty, smoky);
+				super.renderToBuffer(poseStack, buffer, light, overlay, FastColor.ARGB32.colorFromFloat(smoky, misty, misty, misty));
 			}
 		}, 0.5F);
 		this.shadowRadius = 1.0F;

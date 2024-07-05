@@ -6,7 +6,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.minecraft.client.renderer.block.model.BlockElement;
 import net.minecraft.util.GsonHelper;
-import net.minecraftforge.client.model.geometry.IGeometryLoader;
+import net.neoforged.neoforge.client.model.geometry.IGeometryLoader;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.client.model.block.forcefield.ForceFieldModel.ExtraDirection;
 

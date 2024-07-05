@@ -1,0 +1,83 @@
+{
+  "parent": "twilightforest:root",
+  "criteria": {
+    "naga": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "twilightforest:naga"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "scale": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:naga_scale"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "trophy": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:naga_trophy"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "was_in_fight": {
+      "conditions": {
+        "hurt_entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "twilightforest:naga"
+            }
+          }
+        ]
+      },
+      "trigger": "twilightforest:hurt_boss"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.twilightforest.kill_naga.desc",
+      "with": [
+        {
+          "translate": "entity.twilightforest.naga"
+        },
+        {
+          "translate": "item.twilightforest.naga_scale"
+        }
+      ]
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "twilightforest:naga_courtyard_miniature_structure"
+    },
+    "title": {
+      "translate": "advancement.twilightforest.kill_naga"
+    }
+  },
+  "requirements": [
+    [
+      "naga",
+      "trophy",
+      "scale",
+      "was_in_fight"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

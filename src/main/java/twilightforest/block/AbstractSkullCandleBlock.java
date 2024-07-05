@@ -1,9 +1,9 @@
 package twilightforest.block;
 
-import com.mojang.authlib.GameProfile;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -12,37 +12,44 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.item.Equipable;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ResolvableProfile;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.registries.ForgeRegistries;
-import org.apache.commons.lang3.StringUtils;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.SkullCandleBlockEntity;
+import twilightforest.components.item.SkullCandles;
 import twilightforest.init.TFBlockEntities;
+import twilightforest.init.TFDataComponents;
 
 import java.util.*;
 
-public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implements LightableBlock {
+public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implements LightableBlock, Equipable {
 
 	private final SkullBlock.Type type;
 
+	@SuppressWarnings("this-escape")
 	public AbstractSkullCandleBlock(SkullBlock.Type type, Properties properties) {
 		super(properties);
 		this.type = type;
@@ -80,7 +87,7 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 	//input one of the enum names to convert it into a candle block
 	public static Block candleColorToCandle(CandleColors color) {
 		if (color != CandleColors.PLAIN) {
-			return Objects.requireNonNull(ForgeRegistries.BLOCKS.getValue(new ResourceLocation(color.getSerializedName() + "_candle")));
+			return Objects.requireNonNull(BuiltInRegistries.BLOCK.get(ResourceLocation.withDefaultNamespace(color.getSerializedName() + "_candle")));
 		}
 		return Blocks.CANDLE;
 	}
@@ -88,12 +95,13 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 	//inverse of above
 	public static CandleColors candleToCandleColor(Item candle) {
 		if (!(candle == Blocks.CANDLE.asItem())) {
-			return CandleColors.valueOf(ForgeRegistries.ITEMS.getKey(candle).getPath().replace("_candle", "").replace("\"", "").toUpperCase(Locale.ROOT));
+			return CandleColors.valueOf(BuiltInRegistries.ITEM.getKey(candle).getPath().replace("_candle", "").replace("\"", "").toUpperCase(Locale.ROOT));
 		}
 		return CandleColors.PLAIN;
 	}
 
 	@Override
+	@SuppressWarnings("deprecation") // Fine for override
 	public RenderShape getRenderShape(BlockState state) {
 		return RenderShape.INVISIBLE;
 	}
@@ -103,41 +111,31 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 		super.setPlacedBy(level, pos, state, placer, stack);
 		BlockEntity blockentity = level.getBlockEntity(pos);
 		if (blockentity instanceof SkullCandleBlockEntity sc) {
-			if (stack.hasTag() && stack.getTag() != null) {
-				CompoundTag tag = stack.getTagElement("BlockEntityTag");
-				if (tag != null) {
-					if (tag.contains("CandleAmount")) sc.setCandleAmount(tag.getInt("CandleAmount"));
-					if (tag.contains("CandleColor")) sc.setCandleColor(tag.getInt("CandleColor"));
-				}
-				if (this.type == SkullBlock.Types.PLAYER) {
-					GameProfile gameprofile = null;
-					CompoundTag compoundtag = stack.getTag();
-					if (compoundtag.contains("SkullOwner", 10)) {
-						gameprofile = NbtUtils.readGameProfile(compoundtag.getCompound("SkullOwner"));
-					} else if (compoundtag.contains("SkullOwner", 8) && !StringUtils.isBlank(compoundtag.getString("SkullOwner"))) {
-						gameprofile = new GameProfile(null, compoundtag.getString("SkullOwner"));
-					}
-					sc.setOwner(gameprofile);
-				}
+			SkullCandles skullCandles = stack.getOrDefault(TFDataComponents.SKULL_CANDLES, SkullCandles.DEFAULT);
+			sc.setCandleColor(skullCandles.color());
+			sc.setCandleAmount(skullCandles.count());
+
+			if (this.type == SkullBlock.Types.PLAYER && stack.has(DataComponents.PROFILE)) {
+				sc.setOwner(stack.get(DataComponents.PROFILE));
 			}
 		}
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
 	public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
 		List<ItemStack> drops = super.getDrops(state, builder);
-		Optional<ItemStack> skullStack = drops.stream().filter(item -> item.is(Tags.Items.HEADS) && !item.is(this.asItem())).findFirst();
+		Optional<ItemStack> skullStack = drops.stream().filter(item -> item.is(ItemTags.SKULLS) && !item.is(this.asItem())).findFirst();
 		if (skullStack.isPresent()) {
 			BlockEntity blockEntity = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
 			if (blockEntity instanceof SkullCandleBlockEntity sc) {
-				if (!builder.getParameter(LootContextParams.TOOL).isEmpty() && builder.getParameter(LootContextParams.TOOL).getEnchantmentLevel(Enchantments.SILK_TOUCH) > 0) {
+				if (!builder.getParameter(LootContextParams.TOOL).isEmpty() && builder.getParameter(LootContextParams.TOOL).getEnchantmentLevel(sc.getLevel().registryAccess().registryOrThrow(Registries.ENCHANTMENT).getHolderOrThrow(Enchantments.SILK_TOUCH)) > 0) {
 					ItemStack newStack = new ItemStack(this);
-					CompoundTag tag = new CompoundTag();
-					tag.putInt("CandleColor", sc.getCandleColor());
-					tag.putInt("CandleAmount", sc.getCandleAmount());
-					newStack.addTagElement("BlockEntityTag", tag);
-					if (sc.getOwnerProfile() != null) newStack.getOrCreateTag().put("SkullOwner", NbtUtils.writeGameProfile(new CompoundTag(), sc.getOwnerProfile()));
+
+					newStack.set(TFDataComponents.SKULL_CANDLES, new SkullCandles(sc.getCandleColor(), sc.getCandleAmount()));
+
+					if (this.type == SkullBlock.Types.PLAYER && sc.getOwnerProfile() != null)
+						newStack.set(DataComponents.PROFILE, sc.getOwnerProfile());
+
 					drops.remove(skullStack.get());
 					drops.add(newStack);
 				} else {
@@ -150,36 +148,99 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 	}
 
 	@Override
-	public ItemStack getCloneItemStack(BlockState state, HitResult result, BlockGetter getter, BlockPos pos, Player player) {
+	public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
 		ItemStack newStack = new ItemStack(this);
-		CompoundTag tag = new CompoundTag();
-		if (getter.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) {
-			if (sc.getOwnerProfile() != null)
-				newStack.getOrCreateTag().put("SkullOwner", NbtUtils.writeGameProfile(new CompoundTag(), sc.getOwnerProfile()));
-			tag.putInt("CandleColor", sc.getCandleColor());
-			tag.putInt("CandleAmount", sc.getCandleAmount());
-			newStack.addTagElement("BlockEntityTag", tag);
+
+		if (level.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) {
+			newStack.set(TFDataComponents.SKULL_CANDLES, new SkullCandles(sc.getCandleColor(), sc.getCandleAmount()));
+
+			if (this.type == SkullBlock.Types.PLAYER && sc.getOwnerProfile() != null)
+				newStack.set(DataComponents.PROFILE, sc.getOwnerProfile());
 		}
+
 		return newStack;
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
+	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
 		if (level.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) {
-			if (player.getItemInHand(hand).is(ItemTags.CANDLES)
-					&& player.getItemInHand(hand).is(candleColorToCandle(CandleColors.colorFromInt(sc.getCandleColor())).asItem())
-					&& !player.isShiftKeyDown()) {
+			if (stack.is(ItemTags.CANDLES)
+				&& stack.is(candleColorToCandle(CandleColors.colorFromInt(sc.getCandleColor())).asItem())
+				&& !player.isShiftKeyDown()) {
 				if (sc.getCandleAmount() < 4) {
 					sc.incrementCandleAmount();
 					level.playSound(null, pos, SoundEvents.CANDLE_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
-					if (!player.getAbilities().instabuild) player.getItemInHand(hand).shrink(1);
+					if (!player.getAbilities().instabuild) stack.shrink(1);
 					level.getLightEngine().checkBlock(pos);
-					return InteractionResult.sidedSuccess(level.isClientSide());
+					return ItemInteractionResult.sidedSuccess(level.isClientSide());
 				}
 
 			}
 		}
-		return this.lightCandles(state, level, pos, player, hand, result);
+		return this.lightCandles(state, level, pos, player, hand);
+	}
+
+	@Override
+	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+		if (level.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc && player.isSecondaryUseActive() && sc.getCandleAmount() > 0) {
+			int newCandleAmount = sc.getCandleAmount() - 1;
+			if (newCandleAmount > 0) {
+				sc.setCandleAmount(newCandleAmount);
+			} else {
+				boolean wall = state.getBlock() instanceof WallSkullCandleBlock;
+				Block newBlock = getNoCandleSkull(wall);
+				if (newBlock != null) {
+					ResolvableProfile profile = sc.getOwnerProfile();
+                    BlockState newState;
+                    if (wall) {
+                        newState = newBlock.defaultBlockState().setValue(WallSkullBlock.FACING, state.getValue(WallSkullCandleBlock.FACING));
+                    } else {
+                        newState = newBlock.defaultBlockState().setValue(SkullBlock.ROTATION, state.getValue(SkullCandleBlock.ROTATION));
+                    }
+                    level.setBlockAndUpdate(pos, newState);
+                    level.setBlockEntity(new SkullBlockEntity(pos, newState));
+                    if (level.getBlockEntity(pos) instanceof SkullBlockEntity sc1) sc1.setOwner(profile);
+				}
+			}
+			level.playSound(null, pos, SoundEvents.CANDLE_BREAK, SoundSource.BLOCKS, 1.0F, 1.0F);
+			level.getLightEngine().checkBlock(pos);
+			player.setItemInHand(player.getMainHandItem().isEmpty() ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND, new ItemStack(candleColorToCandle(CandleColors.colorFromInt(sc.getCandleColor()))));
+			return InteractionResult.sidedSuccess(level.isClientSide());
+		}
+		return super.useWithoutItem(state, level, pos, player, hitResult);
+	}
+
+	@Nullable
+	private Block getNoCandleSkull(boolean wall) {
+		Block newBlock;
+		switch ((SkullBlock.Types) this.getType()) {
+			case SKELETON -> {
+				if (wall) newBlock = Blocks.SKELETON_WALL_SKULL;
+				else newBlock = Blocks.SKELETON_SKULL;
+			}
+			case WITHER_SKELETON -> {
+				if (wall) newBlock = Blocks.WITHER_SKELETON_WALL_SKULL;
+				else newBlock = Blocks.WITHER_SKELETON_SKULL;
+			}
+			case PLAYER -> {
+				if (wall) newBlock = Blocks.PLAYER_WALL_HEAD;
+				else newBlock = Blocks.PLAYER_HEAD;
+			}
+			case ZOMBIE -> {
+				if (wall) newBlock = Blocks.ZOMBIE_WALL_HEAD;
+				else newBlock = Blocks.ZOMBIE_HEAD;
+			}
+			case CREEPER -> {
+				if (wall) newBlock = Blocks.CREEPER_WALL_HEAD;
+				else newBlock = Blocks.CREEPER_HEAD;
+			}
+			case PIGLIN -> {
+				if (wall) newBlock = Blocks.PIGLIN_WALL_HEAD;
+				else newBlock = Blocks.PIGLIN_HEAD;
+			}
+			default -> newBlock = null;
+		}
+		return newBlock;
 	}
 
 	@Override
@@ -190,8 +251,10 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 	@Override
 	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource rand) {
 		if (state.getValue(LIGHTING) != Lighting.NONE) {
-			this.getParticleOffsets(state, level, pos).forEach((offset) ->
-					addParticlesAndSound(level, offset.add(pos.getX(), pos.getY(), pos.getZ()), rand, state.getValue(LIGHTING) == Lighting.OMINOUS));
+			this.getParticleOffsets(state, level, pos).forEach(offset -> {
+				Vec3 trueOffset = offset.add(pos.getX(), pos.getY(), pos.getZ());
+				this.addParticlesAndSound(level, trueOffset.x(), trueOffset.y(), trueOffset.z(), rand, state.getValue(LIGHTING));
+			});
 		}
 	}
 
@@ -204,6 +267,11 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
 		return createTickerHelper(type, TFBlockEntities.SKULL_CANDLE.get(), SkullCandleBlockEntity::tick);
+	}
+
+	@Override
+	public EquipmentSlot getEquipmentSlot() {
+		return EquipmentSlot.HEAD;
 	}
 
 	public enum CandleColors implements StringRepresentable {

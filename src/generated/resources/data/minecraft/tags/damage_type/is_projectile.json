@@ -1,15 +1,15 @@
 {
   "values": [
-    "twilightforest:twilight_scepter",
     "twilightforest:lich_bolt",
     "twilightforest:lich_bomb",
-    "twilightforest:thrown_pickaxe",
     "twilightforest:thrown_axe",
+    "twilightforest:thrown_pickaxe",
     "twilightforest:thrown_block",
     "twilightforest:leaf_brain",
     "twilightforest:lost_words",
     "twilightforest:schooled",
     "twilightforest:snowball_fight",
+    "twilightforest:twilight_scepter",
     "twilightforest:lifedrain"
   ]
 }

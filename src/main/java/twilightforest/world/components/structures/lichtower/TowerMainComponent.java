@@ -18,6 +18,7 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
+import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.phys.AABB;
 import twilightforest.init.TFBlocks;
@@ -320,7 +321,7 @@ public class TowerMainComponent extends TowerWingComponent {
 		this.setOrientation(getStructureRelativeRotation(rotation));
 
 		BlockState birchSlab = Blocks.BIRCH_SLAB.defaultBlockState()
-				.setValue(SlabBlock.TYPE, SlabType.TOP);
+			.setValue(SlabBlock.TYPE, SlabType.TOP);
 		BlockState birchPlank = Blocks.BIRCH_PLANKS.defaultBlockState();
 
 		// place a platform there
@@ -449,7 +450,7 @@ public class TowerMainComponent extends TowerWingComponent {
 			// get some random coordinates on the wall in the chunk
 			BlockPos wCoords = getRandomWallSpot(rand, floorLevel, direction, sbb);
 
-			if(wCoords == null)
+			if (wCoords == null)
 				continue;
 
 			// offset to see where the fence should be
@@ -464,5 +465,10 @@ public class TowerMainComponent extends TowerWingComponent {
 				world.setBlock(tCoords.above(), Blocks.TORCH.defaultBlockState(), 2);
 			}
 		}
+	}
+
+	@Override
+	public TerrainAdjustment getTerrainAdjustment() {
+		return TerrainAdjustment.BEARD_BOX;
 	}
 }

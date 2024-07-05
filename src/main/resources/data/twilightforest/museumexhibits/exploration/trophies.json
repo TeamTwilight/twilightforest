@@ -36,8 +36,8 @@
           "id": "twilightforest:skeleton_skull_candle",
           "tags": {
             "BlockEntityTag": {
-                "CandleColor": 0,
-                "CandleAmount": 1
+              "CandleColor": 0,
+              "CandleAmount": 1
             }
           }
         }

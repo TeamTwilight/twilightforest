@@ -43,6 +43,7 @@ public class SliderBlock extends RotatedPillarBlock implements SimpleWaterlogged
 	private static final VoxelShape Z_BB = Shapes.create(new AABB(0.3125, 0.3125, 0, 0.6875, 0.6875, 1F));
 	private static final VoxelShape X_BB = Shapes.create(new AABB(0, 0.3125, 0.3125, 1F, 0.6875, 0.6875));
 
+	@SuppressWarnings("this-escape")
 	public SliderBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(AXIS, Direction.Axis.Y).setValue(DELAY, 0).setValue(WATERLOGGED, false));

@@ -1,0 +1,40 @@
+{
+  "height": 64,
+  "layers": [
+    {
+      "fullbright": true,
+      "parallax": {
+        "type": "view_angle",
+        "height": 64,
+        "multiplier": 0.01,
+        "width": 64
+      },
+      "path": "sunset"
+    },
+    {
+      "fullbright": true,
+      "path": "sun"
+    },
+    {
+      "fullbright": false,
+      "path": "faraway_palm"
+    },
+    {
+      "fullbright": false,
+      "path": "ocean"
+    },
+    {
+      "fullbright": false,
+      "path": "deckchair"
+    },
+    {
+      "fullbright": false,
+      "path": "palm_tree"
+    },
+    {
+      "fullbright": false,
+      "path": "frame"
+    }
+  ],
+  "width": 32
+}

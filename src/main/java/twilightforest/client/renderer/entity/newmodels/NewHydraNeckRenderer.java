@@ -9,8 +9,8 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.newmodels.NewHydraNeckModel;
 import twilightforest.client.renderer.entity.TFPartRenderer;
-import twilightforest.entity.boss.HydraNeck;
 import twilightforest.entity.boss.HydraHeadContainer;
+import twilightforest.entity.boss.HydraNeck;
 
 public class NewHydraNeckRenderer extends TFPartRenderer<HydraNeck, NewHydraNeckModel> {
 
@@ -22,21 +22,26 @@ public class NewHydraNeckRenderer extends TFPartRenderer<HydraNeck, NewHydraNeck
 	}
 
 	@Override
-	public void render(HydraNeck entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int light) {
-		HydraHeadContainer headCon = NewHydraHeadRenderer.getHeadObject(entityIn.head);
+	public void render(HydraNeck neck, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light) {
+		HydraHeadContainer headCon = NewHydraHeadRenderer.getHeadObject(neck.head);
 		if (headCon != null)
-			if (headCon.shouldRenderHead()) {
-				float yawDiff = entityIn.getYRot() - entityIn.yRotO;
+			if (neck.isActive()) {
+				float yawDiff = neck.getYRot() - neck.yRotO;
 				if (yawDiff > 180) {
 					yawDiff -= 360;
 				} else if (yawDiff < -180) {
 					yawDiff += 360;
 				}
-				float yaw2 = entityIn.yRotO + yawDiff * partialTicks;
+				float yaw2 = neck.yRotO + yawDiff * partialTicks;
 
-				matrixStackIn.mulPose(Axis.YN.rotationDegrees(yaw2 + 180));
-				super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, light);
+				stack.mulPose(Axis.YN.rotationDegrees(yaw2 + 180));
+				super.render(neck, entityYaw, partialTicks, stack, buffer, light);
 			}
+	}
+
+	@Override
+	protected float getFlipDegrees(HydraNeck entity) {
+		return 0.0F;
 	}
 
 	@Override

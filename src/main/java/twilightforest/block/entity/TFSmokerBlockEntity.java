@@ -29,7 +29,7 @@ public class TFSmokerBlockEntity extends BlockEntity {
 
 	public void particles(Level level, BlockPos pos, TFSmokerBlockEntity te) {
 		level.addParticle(TFParticleType.HUGE_SMOKE.get(), pos.getX() + 0.5, pos.getY() + 0.95, pos.getZ() + 0.5,
-				Math.cos(te.counter / 10.0) * 0.05, 0.25D, Math.sin(te.counter / 10.0) * 0.05
+			Math.cos(te.counter / 10.0) * 0.05, 0.25D, Math.sin(te.counter / 10.0) * 0.05
 		);
 	}
 }

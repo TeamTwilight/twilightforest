@@ -1,9 +1,0 @@
-{
-  "values": [
-    "twilightforest:root",
-    "twilightforest:liveroot_block",
-    "twilightforest:mangrove_root",
-    "twilightforest:time_wood",
-    "#minecraft:features_cannot_replace"
-  ]
-}

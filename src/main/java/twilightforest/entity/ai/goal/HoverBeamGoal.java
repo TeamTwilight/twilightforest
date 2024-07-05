@@ -23,6 +23,7 @@ public class HoverBeamGoal extends HoverBaseGoal<SnowQueen> {
 	private double beamY;
 	private boolean isInPosition;
 
+	@SuppressWarnings("this-escape")
 	public HoverBeamGoal(SnowQueen snowQueen, int hoverTime, int dropTime) {
 		super(snowQueen, 3F, 4F);
 

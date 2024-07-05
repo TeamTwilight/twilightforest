@@ -22,6 +22,7 @@ public class TowerRoofGableForwardsComponent extends TowerRoofComponent {
 		super(TFStructurePieceTypes.TFLTRGF.get(), nbt);
 	}
 
+	@SuppressWarnings("this-escape")
 	public TowerRoofGableForwardsComponent(int i, TowerWingComponent wing, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFLTRGF.get(), i, x, y, z);
 

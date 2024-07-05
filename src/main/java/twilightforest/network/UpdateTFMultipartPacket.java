@@ -1,140 +1,118 @@
 package twilightforest.network;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.Level;
-import net.minecraftforge.entity.PartEntity;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.entity.PartEntity;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
+import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFPart;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Supplier;
+import javax.annotation.Nullable;
+import java.util.*;
+import java.util.stream.Collectors;
 
-public class UpdateTFMultipartPacket {
+public record UpdateTFMultipartPacket(int entityId, @Nullable Entity entity, @Nullable Map<Integer, PartDataHolder> data) implements CustomPacketPayload {
 
-	private int id;
-	private Entity entity;
-	private int len;
-	private final List<PartDataHolder> data = new ArrayList<>();
+	public static final Type<UpdateTFMultipartPacket> TYPE = new Type<>(TwilightForestMod.prefix("update_multipart_entity"));
+	public static final StreamCodec<RegistryFriendlyByteBuf, UpdateTFMultipartPacket> STREAM_CODEC = CustomPacketPayload.codec(UpdateTFMultipartPacket::write, UpdateTFMultipartPacket::new);
 
-	public UpdateTFMultipartPacket(FriendlyByteBuf buf) {
-		this.id = buf.readInt();
-		this.len = buf.readInt();
-		for (int i = 0; i < len; i++) {
-			if (buf.readBoolean()) {
-				data.add(PartDataHolder.decode(buf));
-			}
+	public UpdateTFMultipartPacket(RegistryFriendlyByteBuf buf) {
+		this(buf.readInt(), null, new HashMap<>());
+		int id;
+		while ((id = buf.readInt()) > 0) {
+			this.data.put(id, PartDataHolder.decode(buf));
 		}
 	}
 
 	public UpdateTFMultipartPacket(Entity entity) {
-		this.entity = entity;
+		this(-1, entity, Arrays.stream(entity.getParts()).filter(part -> part instanceof TFPart<?>).map(part -> (TFPart<?>) part).collect(Collectors.toMap(TFPart::getId, TFPart::writeData)));
 	}
 
-	public void encode(FriendlyByteBuf buf) {
+	public void write(RegistryFriendlyByteBuf buf) {
+		if (this.entity == null)
+			throw new IllegalStateException("Null Entity while encoding UpdateTFMultipartPacket");
+		if (this.data == null)
+			throw new IllegalStateException("Null Data while encoding UpdateTFMultipartPacket");
 		buf.writeInt(this.entity.getId());
-		PartEntity<?>[] parts = this.entity.getParts();
-		// We assume the client and server part arrays are identical, else everything will crash and burn. Don't even bother handling it.
-		if (parts != null) {
-			buf.writeInt(parts.length);
-			for (PartEntity<?> part : parts) {
-				if (part instanceof TFPart<?> tfPart) {
-					buf.writeBoolean(true);
-					tfPart.writeData().encode(buf);
-				} else {
-					buf.writeBoolean(false);
-				}
-			}
-		} else {
-			buf.writeInt(0);
-		}
+		this.data.forEach((id, data) -> {
+			buf.writeInt(id);
+			data.encode(buf);
+		});
+		buf.writeInt(-1);
 	}
 
-	public static class Handler {
+	@Override
+	public Type<? extends CustomPacketPayload> type() {
+		return TYPE;
+	}
 
-		@SuppressWarnings("Convert2Lambda")
-		public static boolean onMessage(UpdateTFMultipartPacket message, Supplier<NetworkEvent.Context> ctx) {
-			ctx.get().enqueueWork(new Runnable() {
-				@Override
-				public void run() {
-					Level world = Minecraft.getInstance().level;
-					if (world == null)
-						return;
-					Entity ent = world.getEntity(message.id);
-					if (ent != null && ent.isMultipartEntity()) {
-						PartEntity<?>[] parts = ent.getParts();
-						if (parts == null)
-							return;
-						int index = 0;
-						for (PartEntity<?> part : parts) {
-							if (part instanceof TFPart<?> tfPart) {
-								tfPart.readData(message.data.get(index));
-								index++;
-							}
+	public static void handle(UpdateTFMultipartPacket message, IPayloadContext ctx) {
+		ctx.enqueueWork(() -> {
+			int eId = message.entity != null && message.entityId <= 0 ? message.entity.getId() : message.entityId; // Account for Singleplayer
+			Entity ent = ctx.player().level().getEntity(eId);
+			if (ent != null && ent.isMultipartEntity()) {
+				PartEntity<?>[] parts = ent.getParts();
+				if (parts == null)
+					return;
+				for (PartEntity<?> part : parts) {
+					if (part instanceof TFPart<?> tfPart) {
+						if (message.data == null && message.entity != null) // Account for Singleplayer
+							Arrays.stream(message.entity.getParts())
+								.filter(p -> p instanceof TFPart<?> && p.getId() == part.getId())
+								.map(p -> (TFPart<?>) p)
+								.findFirst().ifPresent(p -> tfPart.readData(p.writeData()));
+						else if (message.data != null) {
+							PartDataHolder data = message.data.get(tfPart.getId());
+							if (data != null)
+								tfPart.readData(data);
 						}
 					}
 				}
-			});
-			ctx.get().setPacketHandled(true);
-			return true;
-		}
+			}
+		});
 	}
 
-	public record PartDataHolder(double x,
-								 double y,
-								 double z,
-								 float yRot,
-								 float xRot,
-								 float width,
-								 float height,
+	public record PartDataHolder(double x, double y, double z,
+								 float yRot, float xRot,
+								 float width, float height,
 								 boolean fixed,
-								 boolean dirty,
-								 List<SynchedEntityData.DataValue<?>> data) {
+								 @Nullable List<SynchedEntityData.DataValue<?>> data) {
 
 
-		public void encode(FriendlyByteBuf buffer) {
-			buffer.writeDouble(this.x);
-			buffer.writeDouble(this.y);
-			buffer.writeDouble(this.z);
-			buffer.writeFloat(this.yRot);
-			buffer.writeFloat(this.xRot);
-			buffer.writeFloat(this.width);
-			buffer.writeFloat(this.height);
-			buffer.writeBoolean(this.fixed);
-			buffer.writeBoolean(this.dirty);
-			if (this.dirty) {
-				for(SynchedEntityData.DataValue<?> datavalue : this.data) {
+		public void encode(RegistryFriendlyByteBuf buffer) {
+			buffer.writeDouble(this.x());
+			buffer.writeDouble(this.y());
+			buffer.writeDouble(this.z());
+			buffer.writeFloat(this.yRot());
+			buffer.writeFloat(this.xRot());
+			buffer.writeFloat(this.width());
+			buffer.writeFloat(this.height());
+			buffer.writeBoolean(this.fixed());
+			if (this.data() != null) {
+				for (SynchedEntityData.DataValue<?> datavalue : this.data()) {
 					datavalue.write(buffer);
 				}
-
-				buffer.writeByte(255);
 			}
+			buffer.writeByte(255);
 		}
 
-		static PartDataHolder decode(FriendlyByteBuf buffer) {
-			boolean dirty;
-			return new PartDataHolder(
-					buffer.readDouble(),
-					buffer.readDouble(),
-					buffer.readDouble(),
-					buffer.readFloat(),
-					buffer.readFloat(),
-					buffer.readFloat(),
-					buffer.readFloat(),
-					buffer.readBoolean(),
-					dirty = buffer.readBoolean(),
-					dirty ? unpack(buffer) : null
+		static PartDataHolder decode(RegistryFriendlyByteBuf buffer) {
+			return new PartDataHolder(buffer.readDouble(), buffer.readDouble(), buffer.readDouble(),
+				buffer.readFloat(), buffer.readFloat(),
+				buffer.readFloat(), buffer.readFloat(),
+				buffer.readBoolean(),
+				unpack(buffer)
 			);
 		}
 
-		private static List<SynchedEntityData.DataValue<?>> unpack(FriendlyByteBuf buf) {
+		private static List<SynchedEntityData.DataValue<?>> unpack(RegistryFriendlyByteBuf buf) {
 			List<SynchedEntityData.DataValue<?>> list = new ArrayList<>();
 
 			int i;
-			while((i = buf.readUnsignedByte()) != 255) {
+			while ((i = buf.readUnsignedByte()) != 255) {
 				list.add(SynchedEntityData.DataValue.read(buf, i));
 			}
 

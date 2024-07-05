@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/template_glass_pane_side",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "edge": "twilightforest:block/canopy_window",
+    "pane": "twilightforest:block/canopy_window"
+  }
+}

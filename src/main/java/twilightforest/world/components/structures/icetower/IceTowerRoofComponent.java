@@ -21,6 +21,7 @@ public class IceTowerRoofComponent extends TowerRoofComponent {
 		super(TFStructurePieceTypes.TFITRoof.get(), nbt);
 	}
 
+	@SuppressWarnings("this-escape")
 	public IceTowerRoofComponent(int i, TowerWingComponent wing, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFITRoof.get(), i, x, y, z);
 

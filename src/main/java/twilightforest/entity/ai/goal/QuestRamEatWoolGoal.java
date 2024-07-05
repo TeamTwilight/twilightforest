@@ -20,6 +20,7 @@ public class QuestRamEatWoolGoal extends Goal {
 	@Nullable
 	private ItemEntity targetItem = null;
 
+	@SuppressWarnings("this-escape")
 	public QuestRamEatWoolGoal(QuestRam ram) {
 		this.ram = ram;
 		this.navigation = ram.getNavigation();
@@ -31,8 +32,8 @@ public class QuestRamEatWoolGoal extends Goal {
 		//sort through valid items, get the closest one
 		//we want to check if the item is valid and not in the air, that the ram can see it, and that its actually wool
 		List<ItemEntity> items = this.ram.level().getEntitiesOfClass(ItemEntity.class, this.ram.getBoundingBox().inflate(16.0D), item ->
-				(item.onGround() || item.isInWater()) && item.isAlive() &&
-						!item.getItem().isEmpty() && this.ram.hasLineOfSight(item) && this.isTempting(item.getItem()));
+			(item.onGround() || item.isInWater()) && item.isAlive() &&
+				!item.getItem().isEmpty() && this.ram.hasLineOfSight(item) && this.isTempting(item.getItem()));
 		items.sort(Comparator.comparingDouble(this.ram::distanceToSqr));
 
 		if (!items.isEmpty()) {
@@ -53,7 +54,7 @@ public class QuestRamEatWoolGoal extends Goal {
 	@Override
 	public boolean canContinueToUse() {
 		return this.ram.isAlive() && !this.navigation.isStuck() && !this.navigation.isDone() &&
-				this.targetItem != null && this.targetItem.isAlive() && this.isTempting(this.targetItem.getItem());
+			this.targetItem != null && this.targetItem.isAlive() && this.isTempting(this.targetItem.getItem());
 	}
 
 	@Override

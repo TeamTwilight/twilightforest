@@ -12,20 +12,18 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.model.data.ModelData;
+import net.neoforged.neoforge.client.model.data.ModelData;
 import org.apache.commons.lang3.ArrayUtils;
 import twilightforest.TwilightForestMod;
-import twilightforest.capabilities.CapabilityList;
-import twilightforest.capabilities.shield.IShieldCapability;
 import twilightforest.entity.boss.Lich;
+import twilightforest.init.TFDataAttachments;
 
 public class ShieldLayer<T extends LivingEntity, M extends EntityModel<T>> extends RenderLayer<T, M> {
 
-	public static final ModelResourceLocation LOC = new ModelResourceLocation(new ResourceLocation(TwilightForestMod.ID, "shield"), "inventory");
+	public static final ModelResourceLocation LOC = ModelResourceLocation.standalone(TwilightForestMod.prefix("item/shield"));
 	private static final Direction[] DIRS = ArrayUtils.add(Direction.values(), null);
 
 	public ShieldLayer(RenderLayerParent<T, M> renderer) {
@@ -33,14 +31,14 @@ public class ShieldLayer<T extends LivingEntity, M extends EntityModel<T>> exten
 	}
 
 	private int getShieldCount(T entity) {
-		return entity instanceof Lich
-						? ((Lich) entity).getShieldStrength()
-						: entity.getCapability(CapabilityList.SHIELDS).map(IShieldCapability::shieldsLeft).orElse(0);
+		return entity instanceof Lich lich
+			? lich.getShieldStrength()
+			: entity.getData(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft();
 	}
 
 	private void renderShields(PoseStack stack, MultiBufferSource buffer, T entity, float partialTicks) {
 		float age = entity.tickCount + partialTicks;
-		float rotateAngleY = age / 5.0F;
+		float rotateAngleY = age / -5.0F;
 		float rotateAngleX = Mth.sin(age / 5.0F) / 4.0F;
 		float rotateAngleZ = Mth.cos(age / 5.0F) / 4.0F;
 
@@ -48,18 +46,12 @@ public class ShieldLayer<T extends LivingEntity, M extends EntityModel<T>> exten
 		for (int c = 0; c < count; c++) {
 			stack.pushPose();
 
-			// shift to the torso
-			stack.translate(-0.5, 0.5, -0.5);
-
-			// invert Y
-			stack.scale(1, -1, 1);
-
 			// perform the rotations, accounting for the fact that baked models are corner-based
-			stack.translate(0.5, 0.5, 0.5);
-			stack.mulPose(Axis.ZP.rotationDegrees(rotateAngleZ * (180F / (float) Math.PI)));
+			// Z gets extra 180 degrees to flip visual upside-down, since scaling y by -1 will cause back-faces to render instead
+			stack.mulPose(Axis.ZP.rotationDegrees(180 + rotateAngleZ * (180F / (float) Math.PI)));
 			stack.mulPose(Axis.YP.rotationDegrees(rotateAngleY * (180F / (float) Math.PI) + (c * (360F / count))));
 			stack.mulPose(Axis.XP.rotationDegrees(rotateAngleX * (180F / (float) Math.PI)));
-			stack.translate(-0.5, -0.5, -0.5);
+			stack.translate(-0.5, -0.65, -0.5);
 
 			// push the shields outwards from the center of rotation
 			stack.translate(0F, 0F, -0.7F);
@@ -67,12 +59,12 @@ public class ShieldLayer<T extends LivingEntity, M extends EntityModel<T>> exten
 			BakedModel model = Minecraft.getInstance().getModelManager().getModel(LOC);
 			for (Direction dir : DIRS) {
 				Minecraft.getInstance().getItemRenderer().renderQuadList(
-						stack,
-						buffer.getBuffer(Sheets.translucentCullBlockSheet()),
-						model.getQuads(null, dir, entity.getRandom(), ModelData.EMPTY, Sheets.translucentCullBlockSheet()),
-						ItemStack.EMPTY,
-						0xF000F0,
-						OverlayTexture.NO_OVERLAY
+					stack,
+					buffer.getBuffer(Sheets.translucentCullBlockSheet()),
+					model.getQuads(null, dir, entity.getRandom(), ModelData.EMPTY, Sheets.translucentCullBlockSheet()),
+					ItemStack.EMPTY,
+					0xF000F0,
+					OverlayTexture.NO_OVERLAY
 				);
 			}
 

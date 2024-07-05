@@ -1,6 +1,5 @@
 package twilightforest.entity.monster;
 
-import org.joml.Vector3f;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.sounds.SoundEvent;
@@ -19,18 +18,18 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraft.world.level.pathfinder.PathType;
+import org.joml.Vector3f;
 import twilightforest.init.TFSounds;
 
 public class CarminiteGolem extends Monster {
 
 	private int attackTimer;
 
+	@SuppressWarnings("this-escape")
 	public CarminiteGolem(EntityType<? extends CarminiteGolem> type, Level world) {
 		super(type, world);
-		this.setPathfindingMalus(BlockPathTypes.WATER, -1.0F);
+		this.setPathfindingMalus(PathType.WATER, -1.0F);
 	}
 
 	@Override
@@ -45,10 +44,10 @@ public class CarminiteGolem extends Monster {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Monster.createMonsterAttributes()
-				.add(Attributes.MAX_HEALTH, 40.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.25D)
-				.add(Attributes.ATTACK_DAMAGE, 9.0D)
-				.add(Attributes.ARMOR, 2.0D);
+			.add(Attributes.MAX_HEALTH, 40.0D)
+			.add(Attributes.MOVEMENT_SPEED, 0.25D)
+			.add(Attributes.ATTACK_DAMAGE, 9.0D)
+			.add(Attributes.ARMOR, 2.0D);
 	}
 
 	@Override
@@ -92,7 +91,6 @@ public class CarminiteGolem extends Monster {
 		}
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void handleEntityEvent(byte id) {
 		if (id == 4) {
@@ -114,6 +112,6 @@ public class CarminiteGolem extends Monster {
 
 	@Override
 	public boolean canSpawnSprintParticle() {
-		return this.getDeltaMovement().horizontalDistanceSqr() > (double)2.5000003E-7F && this.getRandom().nextInt(5) == 0;
+		return this.getDeltaMovement().horizontalDistanceSqr() > (double) 2.5000003E-7F && this.getRandom().nextInt(5) == 0;
 	}
 }

@@ -1,0 +1,115 @@
+{
+  "values": {
+    "twilightforest:alpha_yeti": {
+      "sound": "twilightforest:entity.twilightforest.parrot.imitate.alpha_yeti"
+    },
+    "twilightforest:blockchain_goblin": {
+      "sound": "twilightforest:entity.twilightforest.parrot.imitate.redcap"
+    },
+    "twilightforest:carminite_broodling": {
+      "sound": "minecraft:entity.parrot.imitate.spider"
+    },
+    "twilightforest:carminite_ghastguard": {
+      "sound": "minecraft:entity.parrot.imitate.ghast"
+    },
+    "twilightforest:carminite_ghastling": {
+      "sound": "minecraft:entity.parrot.imitate.ghast"
+    },
+    "twilightforest:carminite_golem": {
+      "sound": "twilightforest:entity.twilightforest.parrot.imitate.carminite_golem"
+    },
+    "twilightforest:death_tome": {
+      "sound": "twilightforest:entity.twilightforest.parrot.imitate.death_tome"
+    },
+    "twilightforest:fire_beetle": {
+      "sound": "minecraft:entity.parrot.imitate.spider"
+    },
+    "twilightforest:hedge_spider": {
+      "sound": "minecraft:entity.parrot.imitate.spider"
+    },
+    "twilightforest:helmet_crab": {
+      "sound": "minecraft:entity.parrot.imitate.spider"
+    },
+    "twilightforest:hostile_wolf": {
+      "sound": "twilightforest:entity.twilightforest.parrot.imitate.hostile_wolf"
+    },
+    "twilightforest:hydra": {
+      "sound": "twilightforest:entity.twilightforest.parrot.imitate.hydra"
+    },
+    "twilightforest:king_spider": {
+      "sound": "minecraft:entity.parrot.imitate.spider"
+    },
+    "twilightforest:knight_phantom": {
+      "sound": "twilightforest:entity.twilightforest.parrot.imitate.wraith"
+    },
+    "twilightforest:kobold": {
+      "sound": "twilightforest:entity.twilightforest.parrot.imitate.kobold"
+    },
+    "twilightforest:lich": {
+      "sound": "minecraft:entity.parrot.imitate.blaze"
+    },
+    "twilightforest:lich_minion": {
+      "sound": "minecraft:entity.parrot.imitate.zombie"
+    },
+    "twilightforest:maze_slime": {
+      "sound": "minecraft:entity.parrot.imitate.slime"
+    },
+    "twilightforest:minoshroom": {
+      "sound": "twilightforest:entity.twilightforest.parrot.imitate.minotaur"
+    },
+    "twilightforest:minotaur": {
+      "sound": "twilightforest:entity.twilightforest.parrot.imitate.minotaur"
+    },
+    "twilightforest:mist_wolf": {
+      "sound": "twilightforest:entity.twilightforest.parrot.imitate.hostile_wolf"
+    },
+    "twilightforest:mosquito_swarm": {
+      "sound": "twilightforest:entity.twilightforest.parrot.imitate.mosquito"
+    },
+    "twilightforest:naga": {
+      "sound": "twilightforest:entity.twilightforest.parrot.imitate.naga"
+    },
+    "twilightforest:pinch_beetle": {
+      "sound": "minecraft:entity.parrot.imitate.spider"
+    },
+    "twilightforest:redcap": {
+      "sound": "twilightforest:entity.twilightforest.parrot.imitate.redcap"
+    },
+    "twilightforest:redcap_sapper": {
+      "sound": "twilightforest:entity.twilightforest.parrot.imitate.redcap"
+    },
+    "twilightforest:skeleton_druid": {
+      "sound": "minecraft:entity.parrot.imitate.skeleton"
+    },
+    "twilightforest:slime_beetle": {
+      "sound": "minecraft:entity.parrot.imitate.slime"
+    },
+    "twilightforest:snow_guardian": {
+      "sound": "twilightforest:entity.twilightforest.parrot.imitate.ice_core"
+    },
+    "twilightforest:snow_queen": {
+      "sound": "twilightforest:entity.twilightforest.parrot.imitate.ice_core"
+    },
+    "twilightforest:stable_ice_core": {
+      "sound": "twilightforest:entity.twilightforest.parrot.imitate.ice_core"
+    },
+    "twilightforest:swarm_spider": {
+      "sound": "minecraft:entity.parrot.imitate.spider"
+    },
+    "twilightforest:towerwood_borer": {
+      "sound": "minecraft:entity.parrot.imitate.silverfish"
+    },
+    "twilightforest:ur_ghast": {
+      "sound": "minecraft:entity.parrot.imitate.ghast"
+    },
+    "twilightforest:winter_wolf": {
+      "sound": "twilightforest:entity.twilightforest.parrot.imitate.hostile_wolf"
+    },
+    "twilightforest:wraith": {
+      "sound": "twilightforest:entity.twilightforest.parrot.imitate.wraith"
+    },
+    "twilightforest:yeti": {
+      "sound": "twilightforest:entity.twilightforest.parrot.imitate.alpha_yeti"
+    }
+  }
+}

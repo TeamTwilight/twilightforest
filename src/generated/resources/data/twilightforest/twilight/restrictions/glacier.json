@@ -4,9 +4,9 @@
   ],
   "enforcement": "twilightforest:frost",
   "locked_biome_toast": {
-    "Count": 1,
+    "count": 1,
     "id": "twilightforest:alpha_yeti_fur"
   },
-  "multiplier": 3.0,
+  "multiplier": 1.0,
   "structure_key": "twilightforest:aurora_palace"
 }

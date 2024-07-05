@@ -3,8 +3,11 @@ package twilightforest.util;
 import com.google.common.collect.Lists;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.PaintingVariantTags;
 import net.minecraft.util.Mth;
@@ -17,7 +20,9 @@ import net.minecraft.world.entity.decoration.HangingEntity;
 import net.minecraft.world.entity.decoration.Painting;
 import net.minecraft.world.entity.decoration.PaintingVariant;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -26,16 +31,13 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
-import net.minecraft.world.level.chunk.ChunkStatus;
 import net.minecraft.world.level.chunk.ProtoChunk;
+import net.minecraft.world.level.chunk.status.ChunkStatus;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.fml.util.ObfuscationReflectionHelper;
+import net.neoforged.neoforge.event.EventHooks;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.EnforcedHomePoint;
 
@@ -60,10 +62,10 @@ public class EntityUtil {
 	public static boolean canDestroyBlock(Level world, BlockPos pos, BlockState state, Entity entity) {
 		float hardness = state.getDestroySpeed(world, pos);
 		return hardness >= 0f && hardness < 50f && !state.isAir()
-				&& !(world.getBlockEntity(pos) instanceof Container)
-				&& state.getBlock().canEntityDestroy(state, world, pos, entity)
-				&& (/* rude type limit */!(entity instanceof LivingEntity)
-				|| ForgeEventFactory.onEntityDestroyBlock((LivingEntity) entity, pos, state));
+			&& !(world.getBlockEntity(pos) instanceof Container)
+			&& state.getBlock().canEntityDestroy(state, world, pos, entity)
+			&& (/* rude type limit */!(entity instanceof LivingEntity)
+			|| EventHooks.onEntityDestroyBlock((LivingEntity) entity, pos, state));
 	}
 
 	/**
@@ -81,14 +83,14 @@ public class EntityUtil {
 	}
 
 	public static BlockHitResult rayTrace(Player player, @Nullable DoubleUnaryOperator modifier) {
-		double range = player.getAttribute(ForgeMod.BLOCK_REACH.get()).getValue();
+		double range = player.getAttribute(Attributes.BLOCK_INTERACTION_RANGE).getValue();
 		return rayTrace(player, modifier == null ? range : modifier.applyAsDouble(range));
 	}
 
 	private static final MethodHandles.Lookup LOOKUP = MethodHandles.lookup();
-	private static final Method LivingEntity_getDeathSound = ObfuscationReflectionHelper.findMethod(LivingEntity.class, "m_5592_");
+	private static final Method LivingEntity_getDeathSound = ObfuscationReflectionHelper.findMethod(LivingEntity.class, "getDeathSound");
 	private static final MethodHandle handle_LivingEntity_getDeathSound;
-	private static final Method HangingEntity_setDirection = ObfuscationReflectionHelper.findMethod(HangingEntity.class, "m_6022_", Direction.class);
+	private static final Method HangingEntity_setDirection = ObfuscationReflectionHelper.findMethod(HangingEntity.class, "setDirection", Direction.class);
 	private static final MethodHandle handle_HangingEntity_setDirection;
 
 	static {
@@ -134,35 +136,36 @@ public class EntityUtil {
 	}
 
 	//copy of Mob.doHurtTarget, allows for using a custom DamageSource instead of the generic Mob Attack one
-	public static boolean properlyApplyCustomDamageSource(Mob entity, Entity victim, DamageSource source) {
+	public static boolean properlyApplyCustomDamageSource(Mob entity, Entity victim, DamageSource source, @Nullable SoundEvent flingSound) {
 		float f = (float)entity.getAttributeValue(Attributes.ATTACK_DAMAGE);
-		float f1 = (float)entity.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
-		if (victim instanceof LivingEntity) {
-			f += EnchantmentHelper.getDamageBonus(entity.getMainHandItem(), ((LivingEntity)victim).getMobType());
-			f1 += (float)EnchantmentHelper.getKnockbackBonus(entity);
-		}
-
-		int i = EnchantmentHelper.getFireAspect(entity);
-		if (i > 0) {
-			victim.setSecondsOnFire(i * 4);
+		if (entity.level() instanceof ServerLevel serverlevel) {
+			f = EnchantmentHelper.modifyDamage(serverlevel, entity.getWeaponItem(), entity, source, f);
 		}
 
 		boolean flag = victim.hurt(source, f);
 		if (flag) {
-			if (f1 > 0.0F && victim instanceof LivingEntity) {
-				((LivingEntity)victim).knockback(f1 * 0.5F, Mth.sin(entity.getYRot() * ((float)Math.PI / 180F)), -Mth.cos(entity.getYRot() * ((float)Math.PI / 180F)));
+			float f1 = getKnockback(entity, victim, source);
+			if (f1 > 0.0F && victim instanceof LivingEntity livingentity) {
+				if (flingSound != null) {
+					entity.playSound(flingSound, 1.0F, 1.0F);
+				}
+				livingentity.knockback(f1 * 0.5F, Mth.sin(entity.getYRot() * Mth.DEG_TO_RAD), -Mth.cos(entity.getYRot() * Mth.DEG_TO_RAD));
 				entity.setDeltaMovement(entity.getDeltaMovement().multiply(0.6D, 1.0D, 0.6D));
 			}
 
-			if (victim instanceof Player player) {
-				entity.maybeDisableShield(player, entity.getMainHandItem(), player.isUsingItem() ? player.getUseItem() : ItemStack.EMPTY);
+			if (entity.level() instanceof ServerLevel level) {
+				EnchantmentHelper.doPostAttackEffects(level, victim, source);
 			}
 
-			entity.doEnchantDamageEffects(entity, victim);
-			entity.setLastHurtMob(victim);
+			entity.setLastHurtMob(entity);
 		}
 
 		return flag;
+	}
+
+	protected static float getKnockback(Mob entity, Entity victim, DamageSource source) {
+		float f = (float)entity.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
+		return entity.level() instanceof ServerLevel serverlevel ? EnchantmentHelper.modifyKnockback(serverlevel, entity.getWeaponItem(), victim, source, f) : f;
 	}
 
 	// [VanillaCopy] with modifications: StructureTemplate.createEntityIgnoreException
@@ -175,7 +178,7 @@ public class EntityUtil {
 		}
 	}
 
-	public static void tryHangPainting(WorldGenLevel world, BlockPos pos, Direction direction, @Nullable ResourceKey<PaintingVariant> chosenPainting) {
+	public static void tryHangPainting(WorldGenLevel world, BlockPos pos, Direction direction, @Nullable Holder<PaintingVariant> chosenPainting) {
 		if (chosenPainting == null) return;
 
 		Painting painting = createEntityIgnoreException(EntityType.PAINTING, world);
@@ -186,33 +189,34 @@ public class EntityUtil {
 		} catch (Throwable throwable) {
 			throwable.printStackTrace();
 		}
-		painting.setVariant(ForgeRegistries.PAINTING_VARIANTS.getHolder(chosenPainting).get());
+		painting.setVariant(chosenPainting);
 
 		if (checkValidPaintingPosition(world, painting))
 			world.addFreshEntity(painting);
 	}
+
 	@Nullable
-	public static ResourceKey<PaintingVariant> getPaintingOfSize(RandomSource rand, int minSize) {
-		return getPaintingOfSize(rand, minSize, minSize, false);
+	public static Holder<PaintingVariant> getPaintingOfSize(WorldGenLevel level, RandomSource rand, int minSize) {
+		return getPaintingOfSize(level, rand, minSize, minSize, false);
 	}
 
 	@Nullable
-	public static ResourceKey<PaintingVariant> getPaintingOfSize(RandomSource rand, int width, int height, boolean exactMeasurements) {
-		List<ResourceKey<PaintingVariant>> valid = new ArrayList<>();
+	public static Holder<PaintingVariant> getPaintingOfSize(WorldGenLevel level, RandomSource rand, int width, int height, boolean exactMeasurements) {
+		List<Holder<PaintingVariant>> valid = new ArrayList<>();
 
-		for (PaintingVariant art : ForgeRegistries.PAINTING_VARIANTS.tags().getTag(PaintingVariantTags.PLACEABLE)) {
+		for (Holder<PaintingVariant> art : level.registryAccess().registryOrThrow(Registries.PAINTING_VARIANT).holders().toList()) {
 			if (exactMeasurements) {
-				if (art.getWidth() == width && art.getHeight() == height) {
-					valid.add(ResourceKey.create(Registries.PAINTING_VARIANT, Objects.requireNonNull(ForgeRegistries.PAINTING_VARIANTS.getKey(art))));
+				if (art.value().width() == width && art.value().height() == height) {
+					valid.add(art);
 				}
 			} else {
-				if (art.getWidth() >= width || art.getHeight() >= height) {
-					valid.add(ResourceKey.create(Registries.PAINTING_VARIANT, Objects.requireNonNull(ForgeRegistries.PAINTING_VARIANTS.getKey(art))));
+				if (art.value().width() >= width || art.value().height() >= height) {
+					valid.add(art);
 				}
 			}
 		}
 
-		if (valid.size() > 0) {
+		if (!valid.isEmpty()) {
 			return valid.get(rand.nextInt(valid.size()));
 		} else {
 			return null;

@@ -5,6 +5,7 @@ import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.newmodels.NewHydraHeadModel;
@@ -12,8 +13,6 @@ import twilightforest.client.renderer.entity.TFPartRenderer;
 import twilightforest.entity.boss.Hydra;
 import twilightforest.entity.boss.HydraHead;
 import twilightforest.entity.boss.HydraHeadContainer;
-
-import org.jetbrains.annotations.Nullable;
 
 public class NewHydraHeadRenderer extends TFPartRenderer<HydraHead, NewHydraHeadModel> {
 
@@ -31,7 +30,7 @@ public class NewHydraHeadRenderer extends TFPartRenderer<HydraHead, NewHydraHead
 
 		if (headCon != null) {
 			// see whether we want to render these
-			if (headCon.shouldRenderHead()) {
+			if (entity.isActive()) {
 				stack.mulPose(Axis.YP.rotationDegrees(-180));
 				super.render(entity, yaw, partialTicks, stack, buffer, light);
 			}
@@ -46,7 +45,7 @@ public class NewHydraHeadRenderer extends TFPartRenderer<HydraHead, NewHydraHead
 		Hydra hydra = entity.getParent();
 
 		if (hydra != null) {
-			for (int i = 0; i < hydra.numHeads; i++) {
+			for (int i = 0; i < Hydra.MAX_HEADS; i++) {
 				if (hydra.hc[i].headEntity == entity) {
 					return hydra.hc[i];
 				}

@@ -19,9 +19,9 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
-import twilightforest.client.model.entity.newmodels.NewBlockChainGoblinModel;
 import twilightforest.client.model.entity.ChainModel;
 import twilightforest.client.model.entity.SpikeBlockModel;
+import twilightforest.client.model.entity.newmodels.NewBlockChainGoblinModel;
 import twilightforest.client.renderer.entity.BlockChainRenderer;
 import twilightforest.entity.monster.BlockChainGoblin;
 
@@ -56,13 +56,18 @@ public class NewBlockChainGoblinRenderer<T extends BlockChainGoblin, M extends N
 		stack.mulPose(Axis.XP.rotationDegrees(pitch));
 
 		stack.scale(-1.0F, -1.0F, 1.0F);
-		this.model.renderToBuffer(stack, ivertexbuilder, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		this.model.renderToBuffer(stack, ivertexbuilder, light, OverlayTexture.NO_OVERLAY);
 		stack.popPose();
 
 		if (goblin.isAlive()) {
-			BlockChainRenderer.renderChain(goblin, goblin.chain1, yaw, partialTicks, stack, buffer, light, chainModel);
-			BlockChainRenderer.renderChain(goblin, goblin.chain2, yaw, partialTicks, stack, buffer, light, chainModel);
-			BlockChainRenderer.renderChain(goblin, goblin.chain3, yaw, partialTicks, stack, buffer, light, chainModel);
+			stack.pushPose();
+			stack.translate(0.0D, goblin.getEyeHeight(), 0.0D);
+			Vec3 xyz = goblin.block.getEyePosition(partialTicks).subtract(goblin.getEyePosition(partialTicks)).multiply(1.0D, 0.5D, 1.0D);
+			BlockChainRenderer.renderChain(goblin.block, xyz, 0.00D, yaw, partialTicks, stack, buffer, light, this.chainModel);
+			BlockChainRenderer.renderChain(goblin.block, xyz, 0.25D, yaw, partialTicks, stack, buffer, light, this.chainModel);
+			BlockChainRenderer.renderChain(goblin.block, xyz, 0.50D, yaw, partialTicks, stack, buffer, light, this.chainModel);
+			BlockChainRenderer.renderChain(goblin.block, xyz, 0.75D, yaw, partialTicks, stack, buffer, light, this.chainModel);
+			stack.popPose();
 		}
 		//when you allowed debugBoundingBox, you can see Hitbox
 		if (this.entityRenderDispatcher.shouldRenderHitBoxes() && !goblin.block.isInvisible() && !Minecraft.getInstance().showOnlyReducedInfo()) {

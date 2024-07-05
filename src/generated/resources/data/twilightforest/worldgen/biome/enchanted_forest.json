@@ -2,6 +2,7 @@
   "carvers": {
     "air": "twilightforest:tf_caves"
   },
+  "creature_spawn_probability": 0.15,
   "downfall": 0.5,
   "effects": {
     "fog_color": 12648408,
@@ -37,7 +38,8 @@
     [],
     [
       "twilightforest:druid_hut",
-      "twilightforest:well_placer"
+      "twilightforest:well_placer",
+      "twilightforest:foundation"
     ],
     [],
     [
@@ -58,21 +60,19 @@
     ],
     [
       "twilightforest:plant_roots",
-      "twilightforest:torch_berries",
-      "twilightforest:vanilla_roots"
+      "twilightforest:torch_berries"
     ],
     [],
     [
-      "minecraft:patch_grass_forest",
       "minecraft:patch_tall_grass",
       "minecraft:patch_grass_badlands",
       "minecraft:patch_grass_savanna",
       "minecraft:patch_sugar_cane",
-      "twilightforest:tree/hollow_oak",
+      "minecraft:patch_grass_jungle",
+      "minecraft:patch_large_fern",
       "twilightforest:mayapple",
       "twilightforest:flower_placer",
       "twilightforest:grove_ruins",
-      "twilightforest:foundation",
       "twilightforest:stone_circle",
       "twilightforest:outside_stalagmite",
       "twilightforest:monolith",

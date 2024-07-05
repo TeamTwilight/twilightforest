@@ -1,0 +1,22 @@
+{
+  "parent": "minecraft:block/block",
+  "loader": "twilightforest:noise_varying",
+  "variants": [
+    "twilightforest:block/aurora_block_0",
+    "twilightforest:block/aurora_block_1",
+    "twilightforest:block/aurora_block_2",
+    "twilightforest:block/aurora_block_3",
+    "twilightforest:block/aurora_block_4",
+    "twilightforest:block/aurora_block_5",
+    "twilightforest:block/aurora_block_6",
+    "twilightforest:block/aurora_block_7",
+    "twilightforest:block/aurora_block_8",
+    "twilightforest:block/aurora_block_9",
+    "twilightforest:block/aurora_block_10",
+    "twilightforest:block/aurora_block_11",
+    "twilightforest:block/aurora_block_12",
+    "twilightforest:block/aurora_block_13",
+    "twilightforest:block/aurora_block_14",
+    "twilightforest:block/aurora_block_15"
+  ]
+}

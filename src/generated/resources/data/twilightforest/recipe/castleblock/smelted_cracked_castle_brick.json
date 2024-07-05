@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smelting",
+  "category": "blocks",
+  "cookingtime": 200,
+  "experience": 0.3,
+  "ingredient": {
+    "item": "twilightforest:castle_brick"
+  },
+  "result": {
+    "count": 1,
+    "id": "twilightforest:cracked_castle_brick"
+  }
+}

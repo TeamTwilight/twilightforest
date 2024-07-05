@@ -4,8 +4,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFBlocks;
 
@@ -19,13 +17,12 @@ public class TrophyBlockEntity extends BlockEntity {
 	}
 
 	public static void tick(Level level, BlockPos pos, BlockState state, TrophyBlockEntity te) {
-		if (state.is(TFBlocks.UR_GHAST_TROPHY.get()) || state.is(TFBlocks.UR_GHAST_WALL_TROPHY.get())) {
+		if (state.is(TFBlocks.UR_GHAST_TROPHY) || state.is(TFBlocks.UR_GHAST_WALL_TROPHY)) {
 			te.animated = true;
 			++te.animatedTicks;
 		}
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	public float getAnimationProgress(float time) {
 		return this.animated ? this.animatedTicks + time : (float) this.animatedTicks;
 	}

@@ -1,0 +1,37 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "twilightforest:borer_essence"
+    },
+    {
+      "tag": "c:dusts/redstone"
+    },
+    {
+      "item": "twilightforest:borer_essence"
+    },
+    {
+      "tag": "c:dusts/redstone"
+    },
+    {
+      "item": "minecraft:ghast_tear"
+    },
+    {
+      "tag": "c:dusts/redstone"
+    },
+    {
+      "item": "twilightforest:borer_essence"
+    },
+    {
+      "tag": "c:dusts/redstone"
+    },
+    {
+      "item": "twilightforest:borer_essence"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "twilightforest:carminite"
+  }
+}

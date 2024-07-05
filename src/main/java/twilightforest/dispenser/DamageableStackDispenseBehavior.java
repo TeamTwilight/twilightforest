@@ -1,9 +1,10 @@
 package twilightforest.dispenser;
 
-import net.minecraft.core.BlockSource;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Position;
+import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -18,29 +19,25 @@ public abstract class DamageableStackDispenseBehavior extends DefaultDispenseIte
 
 	@Override
 	public ItemStack execute(BlockSource source, ItemStack stack) {
-		Level level = source.getLevel();
+		ServerLevel level = source.level();
 		Position pos = DispenserBlock.getDispensePosition(source);
-		Direction direction = source.getBlockState().getValue(DispenserBlock.FACING);
-		if (!level.isClientSide()) {
-			if (!(stack.getMaxDamage() == stack.getDamageValue() + this.getDamageAmount())) {
-				Projectile projectileentity = this.getProjectileEntity(level, pos, stack);
-				projectileentity.shoot(direction.getStepX(), (float) direction.getStepY() + 0.1F, direction.getStepZ(), this.getProjectileVelocity(), this.getProjectileInaccuracy());
-				level.addFreshEntity(projectileentity);
-				if (stack.hurt(this.getDamageAmount(), level.getRandom(), null)) {
-					stack.setCount(0);
-				}
-				this.fired = true;
-			}
+		Direction direction = source.state().getValue(DispenserBlock.FACING);
+		if (stack.getMaxDamage() >= stack.getDamageValue() + this.getDamageAmount()) {
+			Projectile projectileentity = this.getProjectileEntity(level, pos, stack);
+			projectileentity.shoot(direction.getStepX(), (float) direction.getStepY() + 0.1F, direction.getStepZ(), this.getProjectileVelocity(), this.getProjectileInaccuracy());
+			level.addFreshEntity(projectileentity);
+			stack.hurtAndBreak(1, level, null, item -> {});
+			this.fired = true;
 		}
 		return stack;
 	}
 
 	protected void playSound(BlockSource source) {
 		if (this.fired) {
-			source.getLevel().playSound(null, source.x(), source.y(), source.z(), this.getFiredSound(), SoundSource.NEUTRAL, 1.0F, 1.0F);
+			source.level().playSound(null, source.center().x(), source.center().y(), source.center().z(), this.getFiredSound(), SoundSource.NEUTRAL, 1.0F, 1.0F);
 			this.fired = false;
 		} else {
-			source.getLevel().levelEvent(1001, source.getPos(), 0);
+			source.level().levelEvent(1001, source.pos(), 0);
 		}
 	}
 

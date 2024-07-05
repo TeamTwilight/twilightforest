@@ -21,24 +21,20 @@ import twilightforest.util.BoundingBoxUtils;
 import java.util.List;
 
 
-public class StrongholdEntranceComponent extends StructureTFStrongholdComponent {
+public class StrongholdEntranceComponent extends KnightStrongholdComponent {
 
 	public final StrongholdPieces lowerPieces;
 
 	public StrongholdEntranceComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(TFStructurePieceTypes.TFSEnter.get(), nbt);
-
 		this.deco = new StrongholdDecorator();
-
-		lowerPieces = new StrongholdPieces();
+		this.lowerPieces = new StrongholdPieces();
 	}
 
 	public StrongholdEntranceComponent(int i, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFSEnter.get(), i, Direction.SOUTH, x, y - 10, z);
-
 		this.deco = new StrongholdDecorator();
-
-		lowerPieces = new StrongholdPieces();
+		this.lowerPieces = new StrongholdPieces();
 	}
 
 	@Override
@@ -49,64 +45,29 @@ public class StrongholdEntranceComponent extends StructureTFStrongholdComponent 
 			List<StructurePiece> list = start.pieces;
 
 			// make a random component in each direction
-			lowerPieces.prepareStructurePieces();
-			addNewComponent(parent, old, random, Rotation.NONE, 4, 1, 18);
-			lowerPieces.prepareStructurePieces();
-			if (listContainsBossRoom(list)) {
-				lowerPieces.markBossRoomUsed();
+			this.lowerPieces.prepareStructurePieces();
+			this.addNewComponent(parent, old, random, Rotation.NONE, 4, 1, 18);
+			this.lowerPieces.prepareStructurePieces();
+			if (this.listContainsBossRoom(list)) {
+				this.lowerPieces.markBossRoomUsed();
 			}
-			addNewComponent(parent, old, random, Rotation.CLOCKWISE_90, -1, 1, 13);
-			lowerPieces.prepareStructurePieces();
-			if (listContainsBossRoom(list)) {
-				lowerPieces.markBossRoomUsed();
+			this.addNewComponent(parent, old, random, Rotation.CLOCKWISE_90, -1, 1, 13);
+			this.lowerPieces.prepareStructurePieces();
+			if (this.listContainsBossRoom(list)) {
+				this.lowerPieces.markBossRoomUsed();
 			}
-			addNewComponent(parent, old, random, Rotation.CLOCKWISE_180, 13, 1, -1);
-			lowerPieces.prepareStructurePieces();
-			if (listContainsBossRoom(list)) {
-				lowerPieces.markBossRoomUsed();
+			this.addNewComponent(parent, old, random, Rotation.CLOCKWISE_180, 13, 1, -1);
+			this.lowerPieces.prepareStructurePieces();
+			if (this.listContainsBossRoom(list)) {
+				this.lowerPieces.markBossRoomUsed();
 			}
-			addNewComponent(parent, old, random, Rotation.COUNTERCLOCKWISE_90, 18, 1, 4);
-			if (!listContainsBossRoom(list)) {
+			this.addNewComponent(parent, old, random, Rotation.COUNTERCLOCKWISE_90, 18, 1, 4);
+			if (!this.listContainsBossRoom(list)) {
 				TwilightForestMod.LOGGER.fatal("Did not find boss room from exit 3 - EPIC FAIL");
 			}
-			BoundingBox shieldBox = BoundingBoxUtils.clone(this.boundingBox);
-
-			int tStairs = 0;
-			int tCorridors = 0;
-			int deadEnd = 0;
-			int tRooms = 0;
-			int bossRooms = 0;
-
-			// compute and generate MEGASHIELD
-			for (StructurePiece component : list) {
-				shieldBox.encapsulate(component.getBoundingBox());
-
-
-				if (component instanceof StrongholdSmallStairsComponent && ((StrongholdSmallStairsComponent) component).hasTreasure) {
-					tStairs++;
-				}
-				if (component instanceof StrongholdTreasureCorridorComponent) {
-					tCorridors++;
-				}
-				if (component instanceof StrongholdDeadEndComponent) {
-					deadEnd++;
-				}
-				if (component instanceof StrongholdTreasureRoomComponent) {
-					tRooms++;
-				}
-				if (component instanceof StrongholdBossRoomComponent) {
-					bossRooms++;
-				}
-			}
-
-//		System.out.printf("MEGASHIELD computed!  %d, %d, %d to %d, %d, %d.\n", shieldBox.minX, shieldBox.minY, shieldBox.minZ, shieldBox.maxX, shieldBox.maxY, shieldBox.maxZ);
-//		System.out.printf("Stronghold at this point contains %d elements.\n", pieceList.size());
-//
-//		StructureTFStrongholdShield shield = new StructureTFStrongholdShield(shieldBox.minX - 1, shieldBox.minY, shieldBox.minZ - 1, shieldBox.maxX, shieldBox.maxY, shieldBox.maxZ);
-//		list.add(shield);
 
 			// add the upper stronghold
-			StructureTFStrongholdComponent accessChamber = new StrongholdAccessChamberComponent(2, this.getOrientation(), boundingBox.minX() + 8, boundingBox.minY() + 7, boundingBox.minZ() + 4);
+			KnightStrongholdComponent accessChamber = new StrongholdAccessChamberComponent(2, this.getOrientation(), boundingBox.minX() + 8, boundingBox.minY() + 7, boundingBox.minZ() + 4);
 			list.add(accessChamber);
 			accessChamber.addChildren(this, old, random);
 		}
@@ -129,13 +90,13 @@ public class StrongholdEntranceComponent extends StructureTFStrongholdComponent 
 
 	@Override
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		placeStrongholdWalls(world, sbb, 0, 0, 0, 17, 6, 17, rand, deco.randomBlocks);
+		this.placeStrongholdWalls(world, sbb, 0, 0, 0, 17, 6, 17, rand, this.deco.randomBlocks);
 
 		// statues
-		placeCornerStatue(world, 5, 1, 5, 0, sbb);
-		placeCornerStatue(world, 5, 1, 12, 1, sbb);
-		placeCornerStatue(world, 12, 1, 5, 2, sbb);
-		placeCornerStatue(world, 12, 1, 12, 3, sbb);
+		this.placeCornerStatue(world, 5, 1, 5, 0, sbb);
+		this.placeCornerStatue(world, 5, 1, 12, 1, sbb);
+		this.placeCornerStatue(world, 12, 1, 5, 2, sbb);
+		this.placeCornerStatue(world, 12, 1, 12, 3, sbb);
 
 		// statues
 		this.placeWallStatue(world, 9, 1, 16, Rotation.NONE, sbb);

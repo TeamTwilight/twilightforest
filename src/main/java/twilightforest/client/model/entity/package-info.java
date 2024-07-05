@@ -1,6 +1,6 @@
-@ParametersAreNonnullByDefault
-@MethodsReturnNonnullByDefault
 @FieldsAreNonnullByDefault
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 package twilightforest.client.model.entity;
 
 import net.minecraft.FieldsAreNonnullByDefault;

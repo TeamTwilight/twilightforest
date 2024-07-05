@@ -1,0 +1,47 @@
+{
+  "parent": "twilightforest:progress_lich",
+  "criteria": {
+    "drink_4_harming": {
+      "conditions": {
+        "doses": 4,
+        "potion": "minecraft:strong_harming",
+        "seconds": {
+          "max": 7
+        }
+      },
+      "trigger": "twilightforest:drink_from_flask"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.twilightforest.full_mettle_alchemist.desc"
+    },
+    "frame": "challenge",
+    "hidden": true,
+    "icon": {
+      "components": {
+        "twilightforest:flask_contents": {
+          "breakable": false,
+          "doses": 4,
+          "potion": {
+            "potion": "minecraft:strong_harming"
+          }
+        }
+      },
+      "count": 1,
+      "id": "twilightforest:greater_potion_flask"
+    },
+    "title": {
+      "translate": "advancement.twilightforest.full_mettle_alchemist"
+    }
+  },
+  "requirements": [
+    [
+      "drink_4_harming"
+    ]
+  ],
+  "rewards": {
+    "experience": 100
+  },
+  "sends_telemetry_event": true
+}

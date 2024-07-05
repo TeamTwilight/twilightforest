@@ -2,18 +2,15 @@ package twilightforest.client.particle;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import org.joml.Quaternionf;
-import org.joml.Vector3f;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 import twilightforest.client.particle.data.LeafParticleData;
 
-@OnlyIn(Dist.CLIENT)
 public class LeafParticle extends TextureSheetParticle {
 
 	private final Vec3 target;
@@ -107,10 +104,10 @@ public class LeafParticle extends TextureSheetParticle {
 		float v = this.getV0();
 		float v1 = this.getV1();
 		int light = this.getLightColor(partialTicks);
-		buffer.vertex(vecList[0].x(), vecList[0].y(), vecList[0].z()).uv(u1, v1).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(light).endVertex();
-		buffer.vertex(vecList[1].x(), vecList[1].y(), vecList[1].z()).uv(u1, v).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(light).endVertex();
-		buffer.vertex(vecList[2].x(), vecList[2].y(), vecList[2].z()).uv(u, v).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(light).endVertex();
-		buffer.vertex(vecList[3].x(), vecList[3].y(), vecList[3].z()).uv(u, v1).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(light).endVertex();
+		buffer.addVertex(vecList[0].x(), vecList[0].y(), vecList[0].z()).setUv(u1, v1).setColor(this.rCol, this.gCol, this.bCol, this.alpha).setLight(light);
+		buffer.addVertex(vecList[1].x(), vecList[1].y(), vecList[1].z()).setUv(u1, v).setColor(this.rCol, this.gCol, this.bCol, this.alpha).setLight(light);
+		buffer.addVertex(vecList[2].x(), vecList[2].y(), vecList[2].z()).setUv(u, v).setColor(this.rCol, this.gCol, this.bCol, this.alpha).setLight(light);
+		buffer.addVertex(vecList[3].x(), vecList[3].y(), vecList[3].z()).setUv(u, v1).setColor(this.rCol, this.gCol, this.bCol, this.alpha).setLight(light);
 	}
 
 	@Override
@@ -118,7 +115,6 @@ public class LeafParticle extends TextureSheetParticle {
 		return 240 | 240 << 16;
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	public record Factory(SpriteSet sprite) implements ParticleProvider<LeafParticleData> {
 
 		@Override

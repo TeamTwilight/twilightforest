@@ -1,6 +1,0 @@
-{
-  "type": "twilightforest:transformation_powder",
-  "from": "twilightforest:raven",
-  "reversible": true,
-  "to": "minecraft:bat"
-}

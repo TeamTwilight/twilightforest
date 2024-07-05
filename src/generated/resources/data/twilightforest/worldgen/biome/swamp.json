@@ -31,7 +31,8 @@
     [],
     [
       "twilightforest:druid_hut",
-      "twilightforest:well_placer"
+      "twilightforest:well_placer",
+      "twilightforest:foundation"
     ],
     [],
     [
@@ -52,19 +53,16 @@
     ],
     [
       "twilightforest:plant_roots",
-      "twilightforest:torch_berries",
-      "twilightforest:vanilla_roots"
+      "twilightforest:torch_berries"
     ],
     [],
     [
-      "minecraft:patch_grass_forest",
       "minecraft:patch_tall_grass",
       "minecraft:patch_grass_badlands",
       "minecraft:patch_grass_savanna",
       "minecraft:patch_sugar_cane",
-      "twilightforest:tree/hollow_oak",
+      "minecraft:patch_grass_taiga_2",
       "twilightforest:grove_ruins",
-      "twilightforest:foundation",
       "twilightforest:stone_circle",
       "twilightforest:outside_stalagmite",
       "twilightforest:monolith",
@@ -87,12 +85,12 @@
   "has_precipitation": true,
   "spawn_costs": {
     "minecraft:zombie": {
-      "charge": 0.75,
-      "energy_budget": 0.2
+      "charge": 0.7,
+      "energy_budget": 0.15
     },
     "twilightforest:mosquito_swarm": {
-      "charge": 0.75,
-      "energy_budget": 0.2
+      "charge": 0.7,
+      "energy_budget": 0.15
     }
   },
   "spawners": {

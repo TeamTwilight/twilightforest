@@ -22,36 +22,39 @@ public class KnightPhantomModel extends HumanoidModel<KnightPhantom> {
 
 	public static LayerDefinition create() {
 		MeshDefinition mesh = HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F);
-		PartDefinition partRoot = mesh.getRoot();
+		PartDefinition definition = mesh.getRoot();
 
-		partRoot.addOrReplaceChild("right_arm", CubeListBuilder.create()
-						.texOffs(40, 16)
-						.addBox(-1.0F, -2.0F, -1.0F, 2.0F, 12.0F, 2.0F),
-				PartPose.offset(-5.0F, 2.0F, 0.0F));
+		definition.addOrReplaceChild("hat", CubeListBuilder.create(),
+			PartPose.ZERO);
 
-		partRoot.addOrReplaceChild("left_arm", CubeListBuilder.create().mirror()
-						.texOffs(40, 16)
-						.addBox(-1.0F, -2.0F, -1.0F, 2.0F, 12.0F, 2.0F),
-				PartPose.offset(5.0F, 2.0F, 0.0F));
+		definition.addOrReplaceChild("right_arm", CubeListBuilder.create()
+				.texOffs(40, 16)
+				.addBox(-1.0F, -2.0F, -1.0F, 2.0F, 12.0F, 2.0F),
+			PartPose.offset(-5.0F, 2.0F, 0.0F));
 
-		partRoot.addOrReplaceChild("right_leg", CubeListBuilder.create().mirror()
-						.texOffs(0, 16)
-						.addBox(-1.0F, 0.0F, -1.0F, 2.0F, 12.0F, 2.0F),
-				PartPose.offset(-2.0F, 12.0F, 0.0F));
+		definition.addOrReplaceChild("left_arm", CubeListBuilder.create().mirror()
+				.texOffs(40, 16)
+				.addBox(-1.0F, -2.0F, -1.0F, 2.0F, 12.0F, 2.0F),
+			PartPose.offset(5.0F, 2.0F, 0.0F));
 
-		partRoot.addOrReplaceChild("left_leg", CubeListBuilder.create().mirror()
-						.texOffs(0, 16)
-						.addBox(-1.0F, 0.0F, -1.0F, 2.0F, 12.0F, 2.0F),
-				PartPose.offset(2.0F, 12.0F, 0.0F));
+		definition.addOrReplaceChild("right_leg", CubeListBuilder.create().mirror()
+				.texOffs(0, 16)
+				.addBox(-1.0F, 0.0F, -1.0F, 2.0F, 12.0F, 2.0F),
+			PartPose.offset(-2.0F, 12.0F, 0.0F));
+
+		definition.addOrReplaceChild("left_leg", CubeListBuilder.create().mirror()
+				.texOffs(0, 16)
+				.addBox(-1.0F, 0.0F, -1.0F, 2.0F, 12.0F, 2.0F),
+			PartPose.offset(2.0F, 12.0F, 0.0F));
 
 		return LayerDefinition.create(mesh, 64, 32);
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, float red, float green, float blue, float scale) {
+	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, int color) {
 		if (this.knight != null && this.knight.isChargingAtPlayer()) {
 			// render full skeleton
-			super.renderToBuffer(stack, builder, light, overlay, red, green, blue, scale);
+			super.renderToBuffer(stack, builder, light, overlay, color);
 		}
 		this.knight = null;
 	}

@@ -6,6 +6,8 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -30,7 +32,7 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.ToolActions;
+import net.neoforged.neoforge.common.ToolActions;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.enums.HollowLogVariants;
 import twilightforest.init.TFBlocks;
@@ -47,6 +49,7 @@ public class HollowLogHorizontal extends Block implements WaterloggedBlock {
 	private static final VoxelShape COLLISION_SHAPE_X = Shapes.join(Shapes.block(), Block.box(0, 1, 1, 16, 15, 15), BooleanOp.ONLY_FIRST);
 	private static final VoxelShape COLLISION_SHAPE_Z = Shapes.join(Shapes.block(), Block.box(1, 1, 0, 15, 15, 16), BooleanOp.ONLY_FIRST);
 
+	@SuppressWarnings("this-escape")
 	public HollowLogHorizontal(Properties properties) {
 		super(properties);
 
@@ -115,32 +118,27 @@ public class HollowLogHorizontal extends Block implements WaterloggedBlock {
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		Direction.Axis stateAxis = state.getValue(HORIZONTAL_AXIS);
-		if (!isInside(hit, stateAxis, pos)) return super.use(state, level, pos, player, hand, hit);
-
-		ItemStack stack = player.getItemInHand(hand);
+		if (!isInside(hit, stateAxis, pos)) return super.useItemOn(stack, state, level, pos, player, hand, hit);
 
 		HollowLogVariants.Horizontal variant = state.getValue(VARIANT);
 
-		if (stack.isEmpty() && player.isSecondaryUseActive() && player.getDirection().getAxis().equals(stateAxis) &&
-				player.blockPosition().getY() == pos.getY() && !player.isFallFlying() && player.position().distanceTo(Vec3.atBottomCenterOf(pos)) < 0.81D) {
-			player.setPose(Pose.SWIMMING);
-		} else if (stack.is(TFBlocks.MOSS_PATCH.get().asItem())) {
+		if (stack.is(TFBlocks.MOSS_PATCH.asItem())) {
 			if (canChangeVariant(variant, level, pos, stateAxis)) {
 				level.setBlock(pos, state.setValue(VARIANT, HollowLogVariants.Horizontal.MOSS), 3);
 				level.playSound(null, pos, SoundEvents.MOSS_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
 				if (!player.isCreative()) stack.shrink(1);
 
-				return InteractionResult.sidedSuccess(level.isClientSide());
+				return ItemInteractionResult.sidedSuccess(level.isClientSide());
 			}
-		} else if (stack.is(Blocks.GRASS.asItem())) {
+		} else if (stack.is(Blocks.SHORT_GRASS.asItem())) {
 			if (variant == HollowLogVariants.Horizontal.MOSS) {
 				level.setBlock(pos, state.setValue(VARIANT, HollowLogVariants.Horizontal.MOSS_AND_GRASS), 3);
 				level.playSound(null, pos, SoundEvents.GRASS_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
 				if (!player.isCreative()) stack.shrink(1);
 
-				return InteractionResult.sidedSuccess(level.isClientSide());
+				return ItemInteractionResult.sidedSuccess(level.isClientSide());
 			}
 		} else if (stack.is(Items.SNOWBALL)) {
 			if (canChangeVariant(variant, level, pos, stateAxis)) {
@@ -148,18 +146,18 @@ public class HollowLogHorizontal extends Block implements WaterloggedBlock {
 				level.playSound(null, pos, SoundEvents.SNOW_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
 				if (!player.isCreative()) stack.shrink(1);
 
-				return InteractionResult.sidedSuccess(level.isClientSide());
+				return ItemInteractionResult.sidedSuccess(level.isClientSide());
 			}
 		} else if (stack.canPerformAction(ToolActions.SHOVEL_DIG)) {
 			if (variant == HollowLogVariants.Horizontal.SNOW) {
 				level.setBlock(pos, state.setValue(VARIANT, HollowLogVariants.Horizontal.EMPTY), 3);
 				level.playSound(null, pos, SoundEvents.SNOW_BREAK, SoundSource.BLOCKS, 1.0F, 1.0F);
 				if (!player.isCreative()) {
-					stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
+					stack.hurtAndBreak(1, player, hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
 					level.addFreshEntity(new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(Items.SNOWBALL)));
 				}
 
-				return InteractionResult.sidedSuccess(level.isClientSide());
+				return ItemInteractionResult.sidedSuccess(level.isClientSide());
 			}
 		} else if (stack.canPerformAction(ToolActions.SHEARS_HARVEST)) {
 			if (variant == HollowLogVariants.Horizontal.MOSS || variant == HollowLogVariants.Horizontal.MOSS_AND_GRASS) {
@@ -167,17 +165,28 @@ public class HollowLogHorizontal extends Block implements WaterloggedBlock {
 				level.playSound(null, pos, SoundEvents.SHEEP_SHEAR, SoundSource.BLOCKS, 1.0F, 1.0F);
 
 				if (!player.isCreative()) {
-					stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
+					stack.hurtAndBreak(1, player, hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
 					level.addFreshEntity(new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(TFBlocks.MOSS_PATCH.get())));
 					if (variant == HollowLogVariants.Horizontal.MOSS_AND_GRASS)
-						level.addFreshEntity(new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(Blocks.GRASS)));
+						level.addFreshEntity(new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(Blocks.SHORT_GRASS)));
 				}
 
-				return InteractionResult.sidedSuccess(level.isClientSide());
+				return ItemInteractionResult.sidedSuccess(level.isClientSide());
 			}
 		}
 
-		return super.use(state, level, pos, player, hand, hit);
+		return super.useItemOn(stack, state, level, pos, player, hand, hit);
+	}
+
+	@Override
+	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
+		Direction.Axis stateAxis = state.getValue(HORIZONTAL_AXIS);
+		if (!isInside(hit, stateAxis, pos)) return super.useWithoutItem(state, level, pos, player, hit);
+		if (player.isSecondaryUseActive() && player.getDirection().getAxis().equals(stateAxis) &&
+			player.blockPosition().getY() == pos.getY() && !player.isFallFlying() && player.position().distanceTo(Vec3.atBottomCenterOf(pos)) < 0.81D) {
+			player.setPose(Pose.SWIMMING);
+		}
+		return super.useWithoutItem(state, level, pos, player, hit);
 	}
 
 	private static boolean canChangeVariant(HollowLogVariants.Horizontal variant, Level level, BlockPos pos, Direction.Axis axis) {

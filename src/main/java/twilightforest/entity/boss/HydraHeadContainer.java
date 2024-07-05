@@ -3,6 +3,7 @@ package twilightforest.entity.boss;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -16,20 +17,19 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.ToolActions;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.PacketDistributor;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFParticleType;
 import twilightforest.init.TFSounds;
-import twilightforest.network.TFPacketHandler;
-import twilightforest.network.ThrowPlayerPacket;
+import twilightforest.network.MovePlayerPacket;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 /**
  * This class holds the state data for a single hydra head
@@ -44,6 +44,7 @@ public class HydraHeadContainer {
 	private static final int BITE_DAMAGE = 48;
 	private static double FLAME_BREATH_TRACKING_SPEED = 0.04D;
 
+	@Nullable
 	private static final State NEXT_AUTOMATIC = null;
 
 	enum State {
@@ -115,14 +116,17 @@ public class HydraHeadContainer {
 	public final HydraNeck neckd;
 	public final HydraNeck necke;
 
+	@Nullable
 	public Entity targetEntity;
 
 	private double targetX;
 	private double targetY;
 	private double targetZ;
 
+	@Nullable
 	private State prevState;
 	private State currentState;
+	@Nullable
 	private State nextState;
 
 	public boolean isSecondaryAttacking;
@@ -134,6 +138,7 @@ public class HydraHeadContainer {
 
 	private int damageTaken;
 	private int respawnCounter;
+	private int deathTime;
 
 	private final Hydra hydra;
 
@@ -142,7 +147,7 @@ public class HydraHeadContainer {
 	private final Map<State, Float>[] stateYRotations;
 	private final Map<State, Float>[] stateMouthOpen;
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"this-escape", "unchecked"})
 	public HydraHeadContainer(Hydra hydra, int number, boolean startActive) {
 		this.headNum = number;
 		this.hydra = hydra;
@@ -160,12 +165,12 @@ public class HydraHeadContainer {
 		this.necke = new HydraNeck(this.headEntity);
 
 		// state positions, where is each state positioned?
-		this.stateNeckLength = (Map<State, Float>[]) new Map<?, ?>[this.hydra.numHeads];
-		this.stateXRotations = (Map<State, Float>[]) new Map<?, ?>[this.hydra.numHeads];
-		this.stateYRotations = (Map<State, Float>[]) new Map<?, ?>[this.hydra.numHeads];
-		this.stateMouthOpen = (Map<State, Float>[]) new Map<?, ?>[this.hydra.numHeads];
+		this.stateNeckLength = (Map<State, Float>[]) new Map<?, ?>[Hydra.MAX_HEADS];
+		this.stateXRotations = (Map<State, Float>[]) new Map<?, ?>[Hydra.MAX_HEADS];
+		this.stateYRotations = (Map<State, Float>[]) new Map<?, ?>[Hydra.MAX_HEADS];
+		this.stateMouthOpen = (Map<State, Float>[]) new Map<?, ?>[Hydra.MAX_HEADS];
 
-		for (int i = 0; i < this.hydra.numHeads; i++) {
+		for (int i = 0; i < Hydra.MAX_HEADS; i++) {
 			this.stateNeckLength[i] = new EnumMap<>(State.class);
 			this.stateXRotations[i] = new EnumMap<>(State.class);
 			this.stateYRotations[i] = new EnumMap<>(State.class);
@@ -324,6 +329,12 @@ public class HydraHeadContainer {
 		return new HydraNeck[]{this.necka, this.neckb, this.neckc, this.neckd, this.necke};
 	}
 
+	public void performOnAllNecks(Consumer<HydraNeck> consumer) {
+		for (int i = 0; i < this.getNeckArray().length; i++) {
+			consumer.accept(this.getNeckArray()[i]);
+		}
+	}
+
 	/**
 	 * Called once per tick as part of the hydra entity update loop.
 	 */
@@ -331,32 +342,20 @@ public class HydraHeadContainer {
 
 		this.headEntity.tick();
 		// neck updates
-		this.necka.tick();
-		this.neckb.tick();
-		this.neckc.tick();
-		this.neckd.tick();
-		this.necke.tick();
+		this.performOnAllNecks(HydraPart::tick);
 
 		// adjust for difficulty
-		setDifficultyVariables();
+		this.setDifficultyVariables();
 
 		// only actually do these things on the server
 		if (!this.hydra.level().isClientSide()) {
 			// make sure this is set up
-			if (this.isActive() && this.headEntity.dimensions.width == 0) {
+			if (!this.isDead() && this.headEntity.dimensions.width() == 0) {
 				this.headEntity.activate();
-				this.necka.activate();
-				this.neckb.activate();
-				this.neckc.activate();
-				this.neckd.activate();
-				this.necke.activate();
-			} else if (!this.isActive() && this.headEntity.dimensions.width > 0) {
+				this.performOnAllNecks(HydraPart::activate);
+			} else if (!this.isActive() && this.headEntity.dimensions.width() > 0) {
 				this.headEntity.deactivate();
-				this.necka.deactivate();
-				this.neckb.deactivate();
-				this.neckc.deactivate();
-				this.neckd.deactivate();
-				this.necke.deactivate();
+				this.performOnAllNecks(HydraPart::deactivate);
 			}
 			this.advanceRespawnCounter();
 			this.advanceHeadState();
@@ -365,10 +364,9 @@ public class HydraHeadContainer {
 			this.executeAttacks();
 			this.playSounds();
 		} else {
-			this.clientAnimateHeadDeath();
 			this.addMouthParticles();
 		}
-
+		this.animateHeadDeath();
 		this.setNeckPosition();
 	}
 
@@ -387,48 +385,35 @@ public class HydraHeadContainer {
 		}
 	}
 
-	private void clientAnimateHeadDeath() {
+	private void animateHeadDeath() {
 		// this will start the animation
+		// we need to use the head state as that one is actually synced to the client
 		if (this.headEntity.getState() == State.DYING) {
-			// several things, like head visibility animate off this
-			this.headEntity.deathTime++;
+			this.deathTime++;
 
-			// make explosion particles and stuff
-			if (this.headEntity.deathTime > 0) {
-				if (this.headEntity.deathTime < 20) {
-					this.doExplosionOn(this.headEntity, true);
-				} else if (this.headEntity.deathTime < 30) {
-					this.doExplosionOn(this.necka, false);
-				} else if (this.headEntity.deathTime < 40) {
-					this.doExplosionOn(this.neckb, false);
-				} else if (this.headEntity.deathTime < 50) {
-					this.doExplosionOn(this.neckc, false);
-				} else if (this.headEntity.deathTime < 60) {
-					this.doExplosionOn(this.neckd, false);
-				} else if (this.headEntity.deathTime < 70) {
-					this.doExplosionOn(this.necke, false);
-				}
+			// mark parts as dead so they explode and die off
+			if (this.deathTime == 1) {
+				this.headEntity.markedDead = true;
+				//clear name. The head died, so the name shouldn't persist
+				this.hydra.setHeadNameFor(this.headNum, "");
+				this.headEntity.setCustomName(Component.literal(""));
+			} else if (this.deathTime == 10) {
+				this.getNeckArray()[0].markedDead = true;
+			} else if (this.deathTime == 20) {
+				this.getNeckArray()[1].markedDead = true;
+			} else if (this.deathTime == 30) {
+				this.getNeckArray()[2].markedDead = true;
+			} else if (this.deathTime == 40) {
+				this.getNeckArray()[3].markedDead = true;
+			} else if (this.deathTime == 50) {
+				this.getNeckArray()[4].markedDead = true;
 			}
 
 			// turn necks red
-			this.necka.hurtTime = 20;
-			this.neckb.hurtTime = 20;
-			this.neckc.hurtTime = 20;
-			this.neckd.hurtTime = 20;
-			this.necke.hurtTime = 20;
-
+			this.headEntity.hurtTime = 20;
+			this.performOnAllNecks(neck -> neck.hurtTime = 20);
 		} else {
-			this.headEntity.deathTime = 0;
-			this.headEntity.health = this.headEntity.maxHealth;
-		}
-	}
-
-	private void doExplosionOn(HydraPart part, boolean large) {
-		for (int i = 0; i < 5; ++i) {
-			double vx = part.level().getRandom().nextGaussian() * 0.02D;
-			double vy = part.level().getRandom().nextGaussian() * 0.02D;
-			double vz = part.level().getRandom().nextGaussian() * 0.02D;
-			part.level().addParticle((part.level().getRandom().nextInt(5) == 0 || large ? ParticleTypes.EXPLOSION : ParticleTypes.POOF), part.getX() + part.level().getRandom().nextFloat() * 2.0F, part.getY() + part.level().getRandom().nextFloat() * 2.0F, part.getZ() + part.level().getRandom().nextFloat() * 2.0F, vx, vy, vz);
+			this.deathTime = 0;
 		}
 	}
 
@@ -510,7 +495,7 @@ public class HydraHeadContainer {
 			this.faceVec(this.targetX, this.targetY, this.targetZ, 5.0F, this.hydra.getMaxHeadXRot());
 
 		} else {
-			if (this.isActive()) {
+			if (!this.isDead()) {
 				if (this.targetEntity != null) {
 					// watch the target entity
 					this.faceEntity(this.targetEntity, 5.0F, this.hydra.getMaxHeadXRot());
@@ -586,7 +571,7 @@ public class HydraHeadContainer {
 		}
 		if (this.headEntity.getState() == State.ROAR_RAWR) {
 			this.headEntity.playSound(TFSounds.HYDRA_ROAR.get(), 1.25F, this.headEntity.level().getRandom().nextFloat() * 0.3F + 0.7F);
-			this.headEntity.gameEvent(GameEvent.ENTITY_ROAR);
+			this.headEntity.gameEvent(GameEvent.ENTITY_ACTION);
 		}
 		if (this.headEntity.getState() == State.BITE_READY && this.ticksProgress == 60) {
 			this.headEntity.playSound(TFSounds.HYDRA_WARN.get(), 2.0F, this.headEntity.level().getRandom().nextFloat() * 0.3F + 0.7F);
@@ -653,7 +638,7 @@ public class HydraHeadContainer {
 		float xSwing = Mth.sin(this.hydra.tickCount / periodX) * 3.0F;
 		float ySwing = Mth.sin(this.hydra.tickCount / periodY) * 5.0F;
 
-		if (!this.isActive()) {
+		if (this.isDead()) {
 			xSwing = ySwing = 0;
 		}
 
@@ -693,12 +678,12 @@ public class HydraHeadContainer {
 						if (!player.getCooldowns().isOnCooldown(player.getUseItem().getItem())) {
 							//cause severe damage and play a shatter sound
 							this.headEntity.level().playSound(null, player.blockPosition(), player.getUseItem().is(Items.SHIELD) ? TFSounds.WOOD_SHIELD_SHATTERS.get() : TFSounds.METAL_SHIELD_SHATTERS.get(), SoundSource.PLAYERS, 1.0F, player.getVoicePitch());
-							player.getUseItem().hurtAndBreak(112, player, event -> event.broadcastBreakEvent(player.getUsedItemHand()));
+							player.getUseItem().hurtAndBreak(112, player, LivingEntity.getSlotForHand(player.getUsedItemHand()));
 						}
 						//add cooldown and knockback
 						player.getCooldowns().addCooldown(player.getUseItem().getItem(), 200);
 						player.stopUsingItem();
-						TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new ThrowPlayerPacket(-this.headEntity.getDirection().getStepX() * 0.5F, 0.15F, -this.headEntity.getDirection().getStepZ() * 0.5F));
+						PacketDistributor.sendToPlayer((ServerPlayer) player, new MovePlayerPacket(-this.headEntity.getDirection().getStepX() * 0.5F, 0.15F, -this.headEntity.getDirection().getStepZ() * 0.5F));
 					}
 
 					// bite it!
@@ -706,7 +691,7 @@ public class HydraHeadContainer {
 
 					//knockback!
 					if (living instanceof Player player) {
-						TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new ThrowPlayerPacket(-this.headEntity.getDirection().getStepX() * 0.5F, 0.1F, -this.headEntity.getDirection().getStepZ() * 0.5F));
+						PacketDistributor.sendToPlayer((ServerPlayer) player, new MovePlayerPacket(-this.headEntity.getDirection().getStepX() * 0.5F, 0.1F, -this.headEntity.getDirection().getStepZ() * 0.5F));
 					} else {
 						living.knockback(-this.headEntity.getDirection().getStepX(), 0.1F, -this.headEntity.getDirection().getStepZ());
 					}
@@ -719,7 +704,7 @@ public class HydraHeadContainer {
 
 			if (target != null && target != this.headEntity.getParent() && (!(target instanceof HydraPart) || ((HydraPart) target).getParent() != this.headEntity.getParent())) {
 				if (!target.fireImmune() && target.hurt(TFDamageTypes.getEntityDamageSource(target.level(), TFDamageTypes.HYDRA_FIRE, this.hydra, TFEntities.HYDRA.get()), FLAME_DAMAGE)) {
-					target.setSecondsOnFire(FLAME_BURN_FACTOR);
+					target.igniteForSeconds(FLAME_BURN_FACTOR);
 				}
 			}
 		}
@@ -893,7 +878,7 @@ public class HydraHeadContainer {
 		faceVec(dx, dy, dz, yawConstraint, pitchConstraint);
 	}
 
-	public void faceEntity(Entity entity, float yawConstraint, float pitchConstraint) {
+	public void faceEntity(@Nullable Entity entity, float yawConstraint, float pitchConstraint) {
 		double yTarget;
 		if (entity instanceof LivingEntity entityliving) {
 			yTarget = entityliving.getY() + entityliving.getEyeHeight();
@@ -943,25 +928,18 @@ public class HydraHeadContainer {
 		if (this.headEntity != null) {
 			this.headEntity.hurtTime = hurtTime;
 		}
-		this.necka.hurtTime = hurtTime;
-		this.neckb.hurtTime = hurtTime;
-		this.neckc.hurtTime = hurtTime;
-		this.neckd.hurtTime = hurtTime;
-		this.necke.hurtTime = hurtTime;
+		this.performOnAllNecks(neck -> neck.hurtTime = hurtTime);
 	}
 
 	/**
-	 * At certain times, some of the heads are "dead" and hidden
-	 */
-	public boolean shouldRenderHead() {
-		return this.headEntity.getState() != State.DEAD && this.headEntity.deathTime < 20;
-	}
-
-	/**
-	 * Is this head active, that is, not dying or dead?
+	 * Is this head active, that is, not dead?
 	 */
 	public boolean isActive() {
-		return this.currentState != State.DYING && this.currentState != State.DEAD;
+		return this.currentState != State.DEAD;
+	}
+
+	public boolean isDead() {
+		return this.currentState == State.DYING || this.currentState == State.DEAD;
 	}
 
 	public boolean isIdle() {
@@ -970,21 +948,21 @@ public class HydraHeadContainer {
 
 	public boolean isAttacking() {
 		return this.currentState == State.BITE_BEGINNING || this.currentState == State.BITE_READY
-				|| this.currentState == State.BITING || this.currentState == State.FLAME_BEGINNING
-				|| this.currentState == State.FLAMING || this.currentState == State.MORTAR_BEGINNING
-				|| this.currentState == State.MORTAR_SHOOTING;
+			|| this.currentState == State.BITING || this.currentState == State.FLAME_BEGINNING
+			|| this.currentState == State.FLAMING || this.currentState == State.MORTAR_BEGINNING
+			|| this.currentState == State.MORTAR_SHOOTING;
 	}
 
 	public boolean isBiting() {
 		return this.currentState == State.BITE_BEGINNING || this.currentState == State.BITE_READY
-				|| this.currentState == State.BITING || this.nextState == State.BITE_BEGINNING;
+			|| this.currentState == State.BITING || this.nextState == State.BITE_BEGINNING;
 	}
 
 	/**
 	 * Add to our damage taken counter
 	 */
 	public void addDamage(float damageAmount) {
-		this.damageTaken += damageAmount;
+		this.damageTaken += (int) damageAmount;
 	}
 
 	/**

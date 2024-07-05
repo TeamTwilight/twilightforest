@@ -26,12 +26,12 @@ public class ProtectionBoxModel<T extends ProtectionBox> extends ListModel<T> {
 
 	public static MeshDefinition createMesh() {
 		MeshDefinition mesh = new MeshDefinition();
-		PartDefinition partRoot = mesh.getRoot();
+		PartDefinition definition = mesh.getRoot();
 
-		partRoot.addOrReplaceChild("box", CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(0.0F, 0.0F, 0.0F, 16.0F, 16.0F, 16.0F),
-				PartPose.ZERO);
+		definition.addOrReplaceChild("box", CubeListBuilder.create()
+				.texOffs(0, 0)
+				.addBox(0.0F, 0.0F, 0.0F, 16.0F, 16.0F, 16.0F),
+			PartPose.ZERO);
 
 		return mesh;
 	}
@@ -42,7 +42,7 @@ public class ProtectionBoxModel<T extends ProtectionBox> extends ListModel<T> {
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, float red, float green, float blue, float alpha) {
+	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, int color) {
 		ProtectionBox boxEntity = entity;
 
 		int pixelsX = boxEntity.sizeX * 16 + 2;
@@ -53,7 +53,7 @@ public class ProtectionBoxModel<T extends ProtectionBox> extends ListModel<T> {
 			resizeBoxElement(pixelsX, pixelsY, pixelsZ);
 		}
 
-		super.renderToBuffer(stack, builder, light, overlay, red, green, blue, alpha);
+		super.renderToBuffer(stack, builder, light, overlay, color);
 	}
 
 	@Override
@@ -69,13 +69,13 @@ public class ProtectionBoxModel<T extends ProtectionBox> extends ListModel<T> {
 	private void resizeBoxElement(int pixelsX, int pixelsY, int pixelsZ) {
 
 		MeshDefinition mesh = createMesh();
-		PartDefinition partRoot = mesh.getRoot();
+		PartDefinition definition = mesh.getRoot();
 
-		partRoot.addOrReplaceChild("box", CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(-1.0F, -1.0F, -1.0F, pixelsX, pixelsY, pixelsZ),
-				PartPose.ZERO);
-		box = partRoot.getChild("box").bake(16, 16);
+		definition.addOrReplaceChild("box", CubeListBuilder.create()
+				.texOffs(0, 0)
+				.addBox(-1.0F, -1.0F, -1.0F, pixelsX, pixelsY, pixelsZ),
+			PartPose.ZERO);
+		box = definition.getChild("box").bake(16, 16);
 
 		this.lastPixelsX = pixelsX;
 		this.lastPixelsY = pixelsY;

@@ -2,7 +2,7 @@ package twilightforest.entity;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -21,6 +21,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.storage.loot.LootTable;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFItems;
@@ -28,14 +29,15 @@ import twilightforest.init.TFItems;
 public class TwilightChestBoat extends TwilightBoat implements HasCustomInventoryScreen, ContainerEntity {
 
 	private NonNullList<ItemStack> itemStacks = NonNullList.withSize(27, ItemStack.EMPTY);
-	@Nullable
-	private ResourceLocation lootTable;
+	@javax.annotation.Nullable
+	private ResourceKey<LootTable> lootTable;
 	private long lootTableSeed;
 
 	public TwilightChestBoat(EntityType<? extends TwilightBoat> type, Level level) {
 		super(type, level);
 	}
 
+	@SuppressWarnings("this-escape")
 	public TwilightChestBoat(Level level, double x, double y, double z) {
 		this(TFEntities.CHEST_BOAT.get(), level);
 		this.setPos(x, y, z);
@@ -57,13 +59,13 @@ public class TwilightChestBoat extends TwilightBoat implements HasCustomInventor
 	@Override
 	protected void addAdditionalSaveData(CompoundTag tag) {
 		super.addAdditionalSaveData(tag);
-		this.addChestVehicleSaveData(tag);
+		this.addChestVehicleSaveData(tag, this.registryAccess());
 	}
 
 	@Override
 	protected void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
-		this.readChestVehicleSaveData(tag);
+		this.readChestVehicleSaveData(tag, this.registryAccess());
 	}
 
 	@Override
@@ -179,14 +181,13 @@ public class TwilightChestBoat extends TwilightBoat implements HasCustomInventor
 		this.unpackChestVehicleLootTable(player);
 	}
 
-	@Nullable
 	@Override
-	public ResourceLocation getLootTable() {
+	public ResourceKey<LootTable> getLootTable() {
 		return this.lootTable;
 	}
 
 	@Override
-	public void setLootTable(@Nullable ResourceLocation location) {
+	public void setLootTable(@Nullable ResourceKey<LootTable> location) {
 		this.lootTable = location;
 	}
 

@@ -3,7 +3,7 @@ package twilightforest.init;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.data.worldgen.features.TreeFeatures;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
@@ -17,7 +17,6 @@ import net.minecraft.world.level.block.HugeMushroomBlock;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.LakeFeature;
 import net.minecraft.world.level.levelgen.feature.WeightedPlacedFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.*;
 import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize;
@@ -27,17 +26,18 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 import net.minecraft.world.level.levelgen.feature.stateproviders.NoiseProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.RuleBasedBlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlacer;
-import net.minecraft.world.level.levelgen.structure.templatesystem.*;
+import net.minecraft.world.level.levelgen.structure.templatesystem.AlwaysTrueTest;
+import net.minecraft.world.level.levelgen.structure.templatesystem.ProcessorRule;
+import net.minecraft.world.level.levelgen.structure.templatesystem.RandomBlockMatchTest;
+import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
+import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TorchberryPlantBlock;
 import twilightforest.data.tags.CustomTagGenerator;
-import twilightforest.init.custom.WoodPalettes;
 import twilightforest.util.WoodPalette;
-import twilightforest.world.components.feature.config.HollowLogConfig;
-import twilightforest.world.components.feature.config.RootConfig;
-import twilightforest.world.components.feature.config.SwizzleConfig;
-import twilightforest.world.components.feature.config.ThornsConfig;
+import twilightforest.world.components.feature.TFSmallLakeFeature;
+import twilightforest.world.components.feature.config.*;
 import twilightforest.world.registration.TreeConfigurations;
 import twilightforest.world.registration.TreeDecorators;
 
@@ -48,6 +48,7 @@ public final class TFConfiguredFeatures {
 	//vanilla features with custom placement code
 	public static final ResourceKey<ConfiguredFeature<?, ?>> LAKE_LAVA = registerKey("lava_lake");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> LAKE_WATER = registerKey("water_lake");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> LAKE_FROZEN = registerKey("water_frozen");
 
 	//"structures" that arent actually structures
 	public static final ResourceKey<ConfiguredFeature<?, ?>> SIMPLE_WELL = registerKey("simple_well");
@@ -94,9 +95,9 @@ public final class TFConfiguredFeatures {
 	public static final ResourceKey<ConfiguredFeature<?, ?>> BIRCH_FALLEN_LOG = registerKey("birch_fallen_log");
 
 	//smol stone veins
-	public static final ResourceKey<ConfiguredFeature<?,?>> SMALL_GRANITE = registerKey("small_granite");
-	public static final ResourceKey<ConfiguredFeature<?,?>> SMALL_DIORITE = registerKey("small_diorite");
-	public static final ResourceKey<ConfiguredFeature<?,?>> SMALL_ANDESITE = registerKey("small_andesite");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> SMALL_GRANITE = registerKey("small_granite");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> SMALL_DIORITE = registerKey("small_diorite");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> SMALL_ANDESITE = registerKey("small_andesite");
 
 	//Ores! Lets keep pre 1.18 ore rates :)
 	public static final ResourceKey<ConfiguredFeature<?, ?>> LEGACY_COAL_ORE = registerKey("legacy_coal_ore");
@@ -117,7 +118,7 @@ public final class TFConfiguredFeatures {
 
 	//troll caves special stuff
 	public static final ResourceKey<ConfiguredFeature<?, ?>> UBEROUS_SOIL_PATCH_BIG = registerKey("uberous_soil_patch_big");
-	public static final ResourceKey<ConfiguredFeature<?, ?>> TROLL_CAVE_MYCELIUM =  registerKey("troll_cave_mycelium");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> TROLL_CAVE_MYCELIUM = registerKey("troll_cave_mycelium");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> TROLL_CAVE_DIRT = registerKey("troll_cave_dirt");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> UBEROUS_SOIL_PATCH_SMALL = registerKey("uberous_soil_patch_small");
 
@@ -126,6 +127,7 @@ public final class TFConfiguredFeatures {
 	public static final ResourceKey<ConfiguredFeature<?, ?>> LARGE_TWILIGHT_OAK_TREE = registerKey("tree/large_twilight_oak_tree");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> SWAMPY_OAK_TREE = registerKey("tree/swampy_oak_tree");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> CANOPY_TREE = registerKey("tree/canopy_tree");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> MEGA_CANOPY_TREE = registerKey("tree/mega_canopy_tree");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> FIREFLY_CANOPY_TREE = registerKey("tree/firefly_canopy_tree");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> DEAD_CANOPY_TREE = registerKey("tree/dead_canopy_tree");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> MANGROVE_TREE = registerKey("tree/mangrove_tree");
@@ -136,9 +138,8 @@ public final class TFConfiguredFeatures {
 	public static final ResourceKey<ConfiguredFeature<?, ?>> TRANSFORMATION_TREE = registerKey("tree/transformation_tree");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> MINING_TREE = registerKey("tree/mining_tree");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> SORTING_TREE = registerKey("tree/sorting_tree");
-	public static final ResourceKey<ConfiguredFeature<?, ?>> FOREST_CANOPY_OAK_TREE = registerKey("tree/forest_canopy_oak_tree");
-	public static final ResourceKey<ConfiguredFeature<?, ?>> SAVANNAH_CANOPY_OAK_TREE = registerKey("tree/savannah_canopy_oak_tree");
-	public static final ResourceKey<ConfiguredFeature<?, ?>> HOLLOW_TREE = registerKey("tree/hollow_tree");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> FOREST_MEGA_OAK_TREE = registerKey("tree/forest_mega_oak_tree");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> SAVANNAH_MEGA_OAK_TREE = registerKey("tree/savannah_mega_oak_tree");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> RAINBOW_OAK_TREE = registerKey("tree/rainbow_oak");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> LARGE_RAINBOW_OAK_TREE = registerKey("tree/large_rainbow_oak");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> BROWN_CANOPY_MUSHROOM_TREE = registerKey("mushroom/brown_canopy_mushroom");
@@ -174,54 +175,55 @@ public final class TFConfiguredFeatures {
 
 	//ground decoration
 	public static final RandomPatchConfiguration SMALL_FLOWER_CONFIG = (new RandomPatchConfiguration(32, 7, 7,
-			PlacementUtils.filtered(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(
-					new NoiseProvider(2345L, new NormalNoise.NoiseParameters(0, 1.0D), 0.020833334F, List.of(
-							Blocks.POPPY.defaultBlockState(),
-							Blocks.DANDELION.defaultBlockState(),
-							Blocks.RED_TULIP.defaultBlockState(),
-							Blocks.ORANGE_TULIP.defaultBlockState(),
-							Blocks.PINK_TULIP.defaultBlockState(),
-							Blocks.WHITE_TULIP.defaultBlockState(),
-							Blocks.CORNFLOWER.defaultBlockState(),
-							Blocks.LILY_OF_THE_VALLEY.defaultBlockState(),
-							Blocks.BLUE_ORCHID.defaultBlockState(),
-							Blocks.ALLIUM.defaultBlockState(),
-							Blocks.AZURE_BLUET.defaultBlockState(),
-							Blocks.OXEYE_DAISY.defaultBlockState())
-					)), BlockPredicate.ONLY_IN_AIR_PREDICATE)));
+		PlacementUtils.filtered(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(
+			new NoiseProvider(2345L, new NormalNoise.NoiseParameters(0, 1.0D), 0.020833334F, List.of(
+				Blocks.POPPY.defaultBlockState(),
+				Blocks.DANDELION.defaultBlockState(),
+				Blocks.RED_TULIP.defaultBlockState(),
+				Blocks.ORANGE_TULIP.defaultBlockState(),
+				Blocks.PINK_TULIP.defaultBlockState(),
+				Blocks.WHITE_TULIP.defaultBlockState(),
+				Blocks.CORNFLOWER.defaultBlockState(),
+				Blocks.LILY_OF_THE_VALLEY.defaultBlockState(),
+				Blocks.BLUE_ORCHID.defaultBlockState(),
+				Blocks.ALLIUM.defaultBlockState(),
+				Blocks.AZURE_BLUET.defaultBlockState(),
+				Blocks.OXEYE_DAISY.defaultBlockState())
+			)), BlockPredicate.ONLY_IN_AIR_PREDICATE)));
 
 	public static final ResourceKey<ConfiguredFeature<?, ?>> FLOWER_PLACER = registerKey("flower_placer");
 
 	public static final RandomPatchConfiguration SMALL_FLOWER_CONFIG_ALT = (new RandomPatchConfiguration(32, 7, 7,
-			PlacementUtils.filtered(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(
-					new NoiseProvider(2345L, new NormalNoise.NoiseParameters(0, 1.0D), 0.020833334F, List.of(
-							Blocks.WHITE_TULIP.defaultBlockState(),
-							Blocks.PINK_TULIP.defaultBlockState(),
-							Blocks.ORANGE_TULIP.defaultBlockState(),
-							Blocks.RED_TULIP.defaultBlockState(),
-							Blocks.DANDELION.defaultBlockState(),
-							Blocks.POPPY.defaultBlockState(),
-							Blocks.OXEYE_DAISY.defaultBlockState(),
-							Blocks.AZURE_BLUET.defaultBlockState(),
-							Blocks.ALLIUM.defaultBlockState(),
-							Blocks.BLUE_ORCHID.defaultBlockState(),
-							Blocks.LILY_OF_THE_VALLEY.defaultBlockState(),
-							Blocks.CORNFLOWER.defaultBlockState())
-					)), BlockPredicate.ONLY_IN_AIR_PREDICATE)));
+		PlacementUtils.filtered(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(
+			new NoiseProvider(2345L, new NormalNoise.NoiseParameters(0, 1.0D), 0.020833334F, List.of(
+				Blocks.WHITE_TULIP.defaultBlockState(),
+				Blocks.PINK_TULIP.defaultBlockState(),
+				Blocks.ORANGE_TULIP.defaultBlockState(),
+				Blocks.RED_TULIP.defaultBlockState(),
+				Blocks.DANDELION.defaultBlockState(),
+				Blocks.POPPY.defaultBlockState(),
+				Blocks.OXEYE_DAISY.defaultBlockState(),
+				Blocks.AZURE_BLUET.defaultBlockState(),
+				Blocks.ALLIUM.defaultBlockState(),
+				Blocks.BLUE_ORCHID.defaultBlockState(),
+				Blocks.LILY_OF_THE_VALLEY.defaultBlockState(),
+				Blocks.CORNFLOWER.defaultBlockState())
+			)), BlockPredicate.ONLY_IN_AIR_PREDICATE)));
 
 	public static final ResourceKey<ConfiguredFeature<?, ?>> FLOWER_PLACER_ALT = registerKey("flower_placer_alt");
 
 	//music!
-	public static final Music TFMUSICTYPE = new Music(TFSounds.MUSIC.getHolder().orElseThrow(), 1200, 12000, true);
+	public static final Music TFMUSICTYPE = new Music(TFSounds.MUSIC, 1200, 12000, true);
 
 	public static ResourceKey<ConfiguredFeature<?, ?>> registerKey(String name) {
 		return ResourceKey.create(Registries.CONFIGURED_FEATURE, TwilightForestMod.prefix(name));
 	}
 
-	public static void bootstrap(BootstapContext<ConfiguredFeature<?, ?>> context) {
+	public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
 		HolderGetter<ConfiguredFeature<?, ?>> features = context.lookup(Registries.CONFIGURED_FEATURE);
-		context.register(LAKE_LAVA, new ConfiguredFeature<>(Feature.LAKE, new LakeFeature.Configuration(BlockStateProvider.simple(Blocks.LAVA), BlockStateProvider.simple(Blocks.STONE))));
-		context.register(LAKE_WATER, new ConfiguredFeature<>(Feature.LAKE, new LakeFeature.Configuration(BlockStateProvider.simple(Blocks.WATER), BlockStateProvider.simple(Blocks.STONE))));
+		context.register(LAKE_LAVA, new ConfiguredFeature<>(TFFeatures.SMALL_LAKE.get(), new TFSmallLakeFeature.Configuration(BlockStateProvider.simple(Blocks.LAVA), BlockStateProvider.simple(Blocks.STONE), null)));
+		context.register(LAKE_WATER, new ConfiguredFeature<>(TFFeatures.SMALL_LAKE.get(), new TFSmallLakeFeature.Configuration(BlockStateProvider.simple(Blocks.WATER), null, null)));
+		context.register(LAKE_FROZEN, new ConfiguredFeature<>(TFFeatures.SMALL_LAKE.get(), new TFSmallLakeFeature.Configuration(BlockStateProvider.simple(Blocks.WATER), null, BlockStateProvider.simple(Blocks.ICE))));
 
 		registerTemplateFeatures(context);
 
@@ -230,7 +232,7 @@ public final class TFConfiguredFeatures {
 		context.register(MAYAPPLE, new ConfiguredFeature<>(Feature.RANDOM_PATCH, FeatureUtils.simplePatchConfiguration(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(TFBlocks.MAYAPPLE.get())))));
 		context.register(FIDDLEHEAD, new ConfiguredFeature<>(Feature.RANDOM_PATCH, FeatureUtils.simplePatchConfiguration(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(TFBlocks.FIDDLEHEAD.get())))));
 		context.register(FIRE_JET, new ConfiguredFeature<>(TFFeatures.FIRE_JET.get(), new BlockStateConfiguration(TFBlocks.FIRE_JET.get().defaultBlockState())));
-		context.register(FOUNDATION, new ConfiguredFeature<>(TFFeatures.FOUNDATION.get(), NoneFeatureConfiguration.NONE));
+		context.register(FOUNDATION, new ConfiguredFeature<>(TFFeatures.FOUNDATION.get(), RuinedFoundationConfig.withDefaultBlocks(false)));
 		context.register(GROVE_RUINS, new ConfiguredFeature<>(TFFeatures.GROVE_RUINS.get(), NoneFeatureConfiguration.NONE));
 		context.register(HOLLOW_LOG, new ConfiguredFeature<>(TFFeatures.FALLEN_HOLLOW_LOG.get(), NoneFeatureConfiguration.NONE));
 		context.register(HOLLOW_STUMP, new ConfiguredFeature<>(TFFeatures.HOLLOW_STUMP.get(), TreeConfigurations.HOLLOW_TREE));
@@ -275,7 +277,7 @@ public final class TFConfiguredFeatures {
 
 		context.register(DARK_MUSHGLOOMS, new ConfiguredFeature<>(TFFeatures.DARK_FOREST_PLACER.get(), FeatureUtils.simplePatchConfiguration(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(TFBlocks.MUSHGLOOM.get())), List.of(Blocks.GRASS_BLOCK), 50)));
 		context.register(DARK_PUMPKINS, new ConfiguredFeature<>(TFFeatures.DARK_FOREST_PLACER.get(), FeatureUtils.simplePatchConfiguration(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(Blocks.PUMPKIN)), List.of(Blocks.GRASS_BLOCK), 50)));
-		context.register(DARK_GRASS, new ConfiguredFeature<>(TFFeatures.DARK_FOREST_PLACER.get(), FeatureUtils.simplePatchConfiguration(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(Blocks.GRASS)), List.of(Blocks.GRASS_BLOCK), 128)));
+		context.register(DARK_GRASS, new ConfiguredFeature<>(TFFeatures.DARK_FOREST_PLACER.get(), FeatureUtils.simplePatchConfiguration(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(Blocks.SHORT_GRASS)), List.of(Blocks.GRASS_BLOCK), 128)));
 		context.register(DARK_FERNS, new ConfiguredFeature<>(TFFeatures.DARK_FOREST_PLACER.get(), FeatureUtils.simplePatchConfiguration(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(Blocks.FERN)), List.of(Blocks.GRASS_BLOCK), 128)));
 		context.register(DARK_MUSHROOMS, new ConfiguredFeature<>(TFFeatures.DARK_FOREST_PLACER.get(), FeatureUtils.simplePatchConfiguration(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(Blocks.BROWN_MUSHROOM)), List.of(Blocks.GRASS_BLOCK), 50)));
 		context.register(DARK_DEAD_BUSHES, new ConfiguredFeature<>(TFFeatures.DARK_FOREST_PLACER.get(), FeatureUtils.simplePatchConfiguration(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(Blocks.DEAD_BUSH)), List.of(Blocks.GRASS_BLOCK), 50)));
@@ -289,6 +291,7 @@ public final class TFConfiguredFeatures {
 		context.register(LARGE_TWILIGHT_OAK_TREE, new ConfiguredFeature<>(Feature.TREE, TreeConfigurations.LARGE_TWILIGHT_OAK));
 		context.register(SWAMPY_OAK_TREE, new ConfiguredFeature<>(Feature.TREE, TreeConfigurations.SWAMPY_OAK));
 		context.register(CANOPY_TREE, new ConfiguredFeature<>(Feature.TREE, TreeConfigurations.CANOPY_TREE));
+		context.register(MEGA_CANOPY_TREE, new ConfiguredFeature<>(TFFeatures.MEGA_CANOPY.get(), TreeConfigurations.MEGA_CANOPY));
 		context.register(FIREFLY_CANOPY_TREE, new ConfiguredFeature<>(Feature.TREE, TreeConfigurations.CANOPY_TREE_FIREFLY));
 		context.register(DEAD_CANOPY_TREE, new ConfiguredFeature<>(Feature.TREE, TreeConfigurations.CANOPY_TREE_DEAD));
 		context.register(MANGROVE_TREE, new ConfiguredFeature<>(Feature.TREE, TreeConfigurations.MANGROVE_TREE));
@@ -299,9 +302,8 @@ public final class TFConfiguredFeatures {
 		context.register(TRANSFORMATION_TREE, new ConfiguredFeature<>(Feature.TREE, TreeConfigurations.TRANSFORM_TREE));
 		context.register(MINING_TREE, new ConfiguredFeature<>(TFFeatures.MINERS_TREE.get(), TreeConfigurations.MINING_TREE));
 		context.register(SORTING_TREE, new ConfiguredFeature<>(Feature.TREE, TreeConfigurations.SORT_TREE));
-		context.register(FOREST_CANOPY_OAK_TREE, new ConfiguredFeature<>(TFFeatures.CANOPY_OAK.get(), TreeConfigurations.FOREST_CANOPY_OAK));
-		context.register(SAVANNAH_CANOPY_OAK_TREE, new ConfiguredFeature<>(TFFeatures.CANOPY_OAK.get(), TreeConfigurations.SAVANNAH_CANOPY_OAK));
-		context.register(HOLLOW_TREE, new ConfiguredFeature<>(TFFeatures.HOLLOW_TREE.get(), TreeConfigurations.HOLLOW_TREE));
+		context.register(FOREST_MEGA_OAK_TREE, new ConfiguredFeature<>(TFFeatures.MEGA_OAK.get(), TreeConfigurations.FOREST_MEGA_OAK));
+		context.register(SAVANNAH_MEGA_OAK_TREE, new ConfiguredFeature<>(TFFeatures.MEGA_OAK.get(), TreeConfigurations.SAVANNAH_MEGA_OAK));
 		context.register(RAINBOW_OAK_TREE, new ConfiguredFeature<>(Feature.TREE, TreeConfigurations.RAINBOAK_TREE));
 		context.register(LARGE_RAINBOW_OAK_TREE, new ConfiguredFeature<>(Feature.TREE, TreeConfigurations.LARGE_RAINBOAK_TREE));
 		context.register(BROWN_CANOPY_MUSHROOM_TREE, new ConfiguredFeature<>(TFFeatures.CANOPY_BROWN_MUSHROOM.get(), new HugeMushroomFeatureConfiguration(BlockStateProvider.simple(Blocks.BROWN_MUSHROOM_BLOCK.defaultBlockState().setValue(HugeMushroomBlock.UP, Boolean.TRUE).setValue(HugeMushroomBlock.DOWN, Boolean.FALSE)), BlockStateProvider.simple(Blocks.MUSHROOM_STEM.defaultBlockState().setValue(HugeMushroomBlock.UP, Boolean.FALSE).setValue(HugeMushroomBlock.DOWN, Boolean.FALSE)), 3)));
@@ -324,7 +326,7 @@ public final class TFConfiguredFeatures {
 		context.register(DENSE_CANOPY_TREES, new ConfiguredFeature<>(Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(CANOPY_TREE)), 0.7F)), PlacementUtils.inlinePlaced(features.getOrThrow(TWILIGHT_OAK_TREE)))));
 		context.register(FIREFLY_FOREST_TREES, new ConfiguredFeature<>(Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(CANOPY_TREE)), 0.33F), new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(FIREFLY_CANOPY_TREE)), 0.45F)), PlacementUtils.inlinePlaced(features.getOrThrow(TWILIGHT_OAK_TREE)))));
 		context.register(DARK_FOREST_TREES, new ConfiguredFeature<>(Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(DARK_FOREST_BIRCH_TREE)), 0.2F), new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(DARK_FOREST_OAK_TREE)), 0.2F)), PlacementUtils.inlinePlaced(features.getOrThrow(DARKWOOD_TREE)))));
-		context.register(HIGHLANDS_TREES, new ConfiguredFeature<>(Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TreeFeatures.SPRUCE)), 0.25F), new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TreeFeatures.PINE)), 0.1F)), PlacementUtils.inlinePlaced(features.getOrThrow(MEGA_SPRUCE_TREE)))));
+		context.register(HIGHLANDS_TREES, new ConfiguredFeature<>(Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(VANILLA_BIRCH_TREE)), 0.25F), new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TreeFeatures.SPRUCE)), 0.25F), new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(TreeFeatures.PINE)), 0.1F)), PlacementUtils.inlinePlaced(features.getOrThrow(MEGA_SPRUCE_TREE)))));
 		context.register(ENCHANTED_FOREST_TREES, new ConfiguredFeature<>(Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(VANILLA_OAK_TREE)), 0.15F), new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(VANILLA_BIRCH_TREE)), 0.15F), new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(LARGE_RAINBOW_OAK_TREE)), 0.1F)), PlacementUtils.inlinePlaced(features.getOrThrow(RAINBOW_OAK_TREE)))));
 		context.register(SNOWY_FOREST_TREES, new ConfiguredFeature<>(Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(MEGA_SPRUCE_TREE)), 0.1F), new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(LARGE_WINTER_TREE)), 0.01F)), PlacementUtils.inlinePlaced(features.getOrThrow(SNOWY_SPRUCE_TREE)))));
 		context.register(VANILLA_TF_TREES, new ConfiguredFeature<>(Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(VANILLA_BIRCH_TREE)), 0.25F), new WeightedPlacedFeature(PlacementUtils.inlinePlaced(features.getOrThrow(VANILLA_OAK_TREE)), 0.25F)), PlacementUtils.inlinePlaced(features.getOrThrow(TWILIGHT_OAK_TREE)))));
@@ -336,8 +338,8 @@ public final class TFConfiguredFeatures {
 		context.register(FLOWER_PLACER_ALT, new ConfiguredFeature<>(Feature.FLOWER, SMALL_FLOWER_CONFIG_ALT));
 	}
 
-	private static void registerTemplateFeatures(BootstapContext<ConfiguredFeature<?, ?>> context) {
-		HolderGetter<WoodPalette> paletteHolders = context.lookup(WoodPalettes.WOOD_PALETTE_TYPE_KEY);
+	private static void registerTemplateFeatures(BootstrapContext<ConfiguredFeature<?, ?>> context) {
+		HolderGetter<WoodPalette> paletteHolders = context.lookup(TFRegistries.Keys.WOOD_PALETTES);
 		var paletteChoices = SwizzleConfig.buildRarityPalette(paletteHolders);
 
 		ProcessorRule processorCobbleBlock = new ProcessorRule(new RandomBlockMatchTest(Blocks.COBBLESTONE, 0.5f), AlwaysTrueTest.INSTANCE, Blocks.MOSSY_COBBLESTONE.defaultBlockState());

@@ -1,0 +1,16 @@
+{
+  "placement": {
+    "type": "twilightforest:avoid_landmark_grid",
+    "frequency": 0.5,
+    "salt": 34481210,
+    "separation": 5,
+    "spacing": 7,
+    "spread_type": "triangular"
+  },
+  "structures": [
+    {
+      "structure": "twilightforest:hollow_tree",
+      "weight": 1
+    }
+  ]
+}

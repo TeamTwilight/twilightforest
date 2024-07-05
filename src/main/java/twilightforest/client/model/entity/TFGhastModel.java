@@ -8,14 +8,11 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.entity.monster.CarminiteGhastguard;
+import net.minecraft.world.entity.Mob;
 
 import java.util.Random;
 
-@OnlyIn(Dist.CLIENT)
-public class TFGhastModel<T extends CarminiteGhastguard> extends HierarchicalModel<T> {
+public class TFGhastModel<T extends Mob> extends HierarchicalModel<T> {
 	protected final static int tentacleCount = 9;
 	private final ModelPart root, body;
 	private final ModelPart[] tentacles = new ModelPart[tentacleCount];
@@ -31,12 +28,12 @@ public class TFGhastModel<T extends CarminiteGhastguard> extends HierarchicalMod
 
 	public static LayerDefinition create() {
 		MeshDefinition mesh = new MeshDefinition();
-		PartDefinition partRoot = mesh.getRoot();
+		PartDefinition definition = mesh.getRoot();
 
-		var body = partRoot.addOrReplaceChild("body", CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(-8.0F, -8.0F, -8.0F, 16, 16, 16),
-				PartPose.offset(0, 8, 0));
+		var body = definition.addOrReplaceChild("body", CubeListBuilder.create()
+				.texOffs(0, 0)
+				.addBox(-8.0F, -8.0F, -8.0F, 16, 16, 16),
+			PartPose.offset(0, 8, 0));
 
 		Random rand = new Random(1660L);
 
@@ -57,11 +54,11 @@ public class TFGhastModel<T extends CarminiteGhastguard> extends HierarchicalMod
 
 		// Please ensure the model is working accurately before we port
 		float xPoint = ((i % 3 - i / 3.0F % 2 * 0.5F + 0.25F) / 2.0F * 2.0F - 1.0F) * 5.0F;
-		float zPoint = (i / 3.0F / 2.0F * 2.0F - 1.0F) * 5.0F;
+		float zPoint = ((i % 3 - i)) * 1.5F + 4.0F;
 
 		return parent.addOrReplaceChild(name, CubeListBuilder.create()
-						.addBox(-1.0F, 0.0F, -1.0F, 2, length, 2),
-				PartPose.offset(xPoint, 7, zPoint));
+				.addBox(-1.0F, 0.0F, -1.0F, 2, length, 2),
+			PartPose.offset(xPoint, 7, zPoint));
 	}
 
 	/**

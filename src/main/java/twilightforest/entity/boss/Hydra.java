@@ -1,99 +1,86 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.GlobalPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.StringTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerBossEvent;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
-import net.minecraft.world.BossEvent;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.levelgen.structure.Structure;
+import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.entity.PartEntity;
-import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.fluids.FluidType;
+import net.neoforged.neoforge.entity.PartEntity;
+import net.neoforged.neoforge.event.EventHooks;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TFConfig;
-import twilightforest.advancements.TFAdvancements;
-import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.entity.TFPart;
-import twilightforest.init.TFBlocks;
-import twilightforest.init.TFDamageTypes;
-import twilightforest.init.TFSounds;
-import twilightforest.init.TFStructures;
-import twilightforest.loot.TFLootTables;
+import twilightforest.init.*;
 import twilightforest.util.EntityUtil;
-import twilightforest.util.LandmarkUtil;
 import twilightforest.util.WorldUtil;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
-public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
+@SuppressWarnings("this-escape")
+public class Hydra extends BaseTFBoss {
 
 	private static final int TICKS_BEFORE_HEALING = 1000;
-	private static final int HEAD_RESPAWN_TICKS = 100;
+	private static final int HEAD_RESPAWN_TICKS = 140;
 	private static final int HEAD_MAX_DAMAGE = 120;
 	private static final float ARMOR_MULTIPLIER = 8.0F;
 	private static final int MAX_HEALTH = 360;
 	private static float HEADS_ACTIVITY_FACTOR = 0.3F;
+	public static final int MAX_HEADS = 7;
 
 	private static final int SECONDARY_FLAME_CHANCE = 10;
 	private static final int SECONDARY_MORTAR_CHANCE = 16;
 
-	private static final EntityDataAccessor<Optional<GlobalPos>> HOME_POINT = SynchedEntityData.defineId(Hydra.class, EntityDataSerializers.OPTIONAL_GLOBAL_POS);
+	private static final EntityDataAccessor<List<String>> HEAD_NAMES = SynchedEntityData.defineId(Hydra.class, TFDataSerializers.STRING_LIST.get());
+	public final HydraHeadContainer[] hc = new HydraHeadContainer[MAX_HEADS];
 
 	private final HydraPart[] partArray;
-
-	public final int numHeads = 7;
-	public final HydraHeadContainer[] hc = new HydraHeadContainer[numHeads];
-
 	public final HydraSmallPart body;
 	private final HydraSmallPart leftLeg;
 	private final HydraSmallPart rightLeg;
 	private final HydraSmallPart tail;
-	private final ServerBossEvent bossInfo = new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.BLUE, BossEvent.BossBarOverlay.PROGRESS);
 	private float randomYawVelocity = 0f;
-
 	private int ticksSinceDamaged = 0;
-	private final List<ServerPlayer> hurtBy = new ArrayList<>();
-
 	public boolean renderFakeHeads = true;
 
-	public Hydra(EntityType<? extends Hydra> type, Level world) {
-		super(type, world);
+	public Hydra(EntityType<? extends Hydra> type, Level level) {
+		super(type, level);
 
 		List<HydraPart> parts = new ArrayList<>();
 
-		this.body = new HydraSmallPart(this, 6F, 6F);
-		this.leftLeg = new HydraSmallPart(this, 2F, 3F);
-		this.rightLeg = new HydraSmallPart(this, 2F, 3F);
-		this.tail = new HydraSmallPart(this, 6.0f, 2.0f);
+		parts.add(this.body = new HydraSmallPart(this, 6.0F, 6.0F));
+		parts.add(this.leftLeg = new HydraSmallPart(this, 2.0F, 3.0F));
+		parts.add(this.rightLeg = new HydraSmallPart(this, 2.0F, 3.0F));
+		parts.add(this.tail = new HydraSmallPart(this, 6.0f, 2.0f));
 
-		parts.add(this.body);
-		parts.add(this.leftLeg);
-		parts.add(this.rightLeg);
-		parts.add(this.tail);
-
-		for (int i = 0; i < this.numHeads; i++) {
+		for (int i = 0; i < MAX_HEADS; i++) {
 			this.hc[i] = new HydraHeadContainer(this, i, i < 3);
+			this.hc[i].headEntity.setCustomName(Component.literal(this.getHeadNameFor(i)));
 			parts.add(this.hc[i].headEntity);
 			Collections.addAll(parts, this.hc[i].getNeckArray());
 		}
@@ -102,81 +89,48 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 
 		this.noCulling = true;
 		this.xpReward = 511;
-
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(HOME_POINT, Optional.empty());
-	}
-
-	@Override
-	public void setCustomName(@Nullable Component name) {
-		super.setCustomName(name);
-		this.bossInfo.setName(this.getDisplayName());
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(HEAD_NAMES, List.of("", "", "", "", "", "", ""));
 	}
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Mob.createMobAttributes()
-				.add(Attributes.MAX_HEALTH, MAX_HEALTH)
-				.add(Attributes.MOVEMENT_SPEED, 0.28D);
-	}
-
-	@Override
-	public void startSeenByPlayer(ServerPlayer player) {
-		super.startSeenByPlayer(player);
-		this.bossInfo.addPlayer(player);
-	}
-
-	@Override
-	public void stopSeenByPlayer(ServerPlayer player) {
-		super.stopSeenByPlayer(player);
-		this.bossInfo.removePlayer(player);
+			.add(Attributes.MAX_HEALTH, MAX_HEALTH)
+			.add(Attributes.MOVEMENT_SPEED, 0.28D);
 	}
 
 	@Override
 	public void checkDespawn() {
 		if (this.level().getDifficulty() == Difficulty.PEACEFUL) {
-			this.level().setBlockAndUpdate(this.blockPosition().offset(0, 1, 0), TFBlocks.HYDRA_BOSS_SPAWNER.get().defaultBlockState());
-			this.discard();
-			for (HydraHeadContainer container : hc) {
-				if (container.headEntity != null) {
-					container.headEntity.discard();
-				}
+			for (HydraHeadContainer container : this.hc) {
+				container.headEntity.discard();
 			}
-		} else {
-			super.checkDespawn();
 		}
+		super.checkDespawn();
 	}
 
-	// [Vanilla Copy] from LivingEntity. Hydra doesn't like the one from EntityLiving for whatever reason
 	@Override
-	protected float tickHeadTurn(float p_110146_1_, float p_110146_2_) {
-		float f = Mth.wrapDegrees(p_110146_1_ - this.yBodyRot);
-		this.yBodyRot += f * 0.3F;
-		float f1 = Mth.wrapDegrees(this.getYRot() - this.yBodyRot);
-		boolean flag = f1 < -90.0F || f1 >= 90.0F;
+	public boolean isPathFinding() {
+		return false;
+	}
 
-		if (f1 < -75.0F) {
-			f1 = -75.0F;
-		}
+	@Override
+	protected PathNavigation createNavigation(Level level) {
+		return new GroundPathNavigation(this, level) {
+			@Override
+			public Path createPath(BlockPos pPos, int pAccuracy) {
+				return null;
+			}
 
-		if (f1 >= 75.0F) {
-			f1 = 75.0F;
-		}
-
-		this.yBodyRot = this.getYRot() - f1;
-
-		if (f1 * f1 > 2500.0F) {
-			this.yBodyRot += f1 * 0.2F;
-		}
-
-		if (flag) {
-			p_110146_2_ *= -1.0F;
-		}
-
-		return p_110146_2_;
+			@Override
+			protected boolean canUpdatePath() {
+				return false;
+			}
+		};
 	}
 
 	@Override
@@ -187,22 +141,18 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 		this.leftLeg.tick();
 		this.rightLeg.tick();
 
-		// update all heads (maybe we should change to only active ones
-		for (int i = 0; i < this.numHeads; i++) {
+		// update all heads
+		for (int i = 0; i < MAX_HEADS; i++) {
 			this.hc[i].tick();
 		}
 
 		if (this.hurtTime > 0) {
-			for (int i = 0; i < this.numHeads; i++) {
+			for (int i = 0; i < MAX_HEADS; i++) {
 				this.hc[i].setHurtTime(this.hurtTime);
 			}
 		}
 
 		this.ticksSinceDamaged++;
-
-		if (!this.level().isClientSide() && this.ticksSinceDamaged > TICKS_BEFORE_HEALING && this.ticksSinceDamaged % 5 == 0) {
-			this.heal(1);
-		}
 
 		// update fight variables for difficulty setting
 		this.setDifficultyVariables();
@@ -216,58 +166,65 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 		// body goes behind the actual position of the hydra
 		angle = (((this.yBodyRot + 180.0F) * Mth.PI) / 180.0F);
 
-		dx = getX() - Mth.sin(angle) * 3.0D;
-		dy = getY() + 0.1D;
-		dz = getZ() + Mth.cos(angle) * 3.0D;
+		dx = this.getX() - Mth.sin(angle) * 3.0D;
+		dy = this.getY() + 0.1D;
+		dz = this.getZ() + Mth.cos(angle) * 3.0D;
 		this.body.setPos(dx, dy, dz);
 
-		dx = getX() - Mth.sin(angle) * 10.5D;
-		dy = getY() + 0.1D;
-		dz = getZ() + Mth.cos(angle) * 10.5D;
+		dx = this.getX() - Mth.sin(angle) * 10.5D;
+		dy = this.getY() + 0.1D;
+		dz = this.getZ() + Mth.cos(angle) * 10.5D;
 		this.tail.setPos(dx, dy, dz);
 
-		if (hurtTime == 0) {
+		if (this.hurtTime == 0) {
 			this.collideWithEntities(this.level().getEntities(this, this.body.getBoundingBox()), this.body);
 			this.collideWithEntities(this.level().getEntities(this, this.tail.getBoundingBox()), this.tail);
-		}
-
-		// destroy blocks
-		if (!this.level().isClientSide()) {
-			this.destroyBlocksInAABB(this.body.getBoundingBox());
-			this.destroyBlocksInAABB(this.tail.getBoundingBox());
-
-			for (int i = 0; i < this.numHeads; i++) {
-				if (this.hc[i].headEntity != null && this.hc[i].isActive()) {
-					this.destroyBlocksInAABB(this.hc[i].headEntity.getBoundingBox());
-				}
-			}
-
-			// smash blocks beneath us too
-			if (this.tickCount % 20 == 0) {
-				if (this.isUnsteadySurfaceBeneath()) {
-					this.destroyBlocksInAABB(this.getBoundingBox().move(0, -1, 0));
-
-				}
-			}
-
-			this.bossInfo.setProgress(this.getHealth() / this.getMaxHealth());
 		}
 	}
 
 	@Override
 	public void addAdditionalSaveData(CompoundTag compound) {
-		this.saveHomePointToNbt(compound);
-		compound.putByte("NumHeads", (byte) this.countActiveHeads());
+		byte headData = 0;
+		for (int i = 0; i < MAX_HEADS; i++) {
+			if (this.hc[i].isActive()) {
+				headData |= (byte) (1 << i);
+			}
+		}
+		compound.putByte("NumHeads", headData);
+		ListTag headNames = new ListTag();
+		for (int i = 0; i < MAX_HEADS; i++) {
+			headNames.add(StringTag.valueOf(this.getEntityData().get(HEAD_NAMES).get(i)));
+		}
+		compound.put("HeadNames", headNames);
 		super.addAdditionalSaveData(compound);
 	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
-		this.loadHomePointFromNbt(compound);
-		this.activateNumberOfHeads(compound.getByte("NumHeads"));
-		if (this.hasCustomName()) {
-			this.bossInfo.setName(this.getDisplayName());
+		this.activateHeadsOnLoad(compound.getByte("NumHeads"));
+		if (compound.contains("HeadNames", Tag.TAG_LIST)) {
+			List<String> names = new ArrayList<>();
+			ListTag list = compound.getList("HeadNames", Tag.TAG_STRING);
+			for (int i = 0; i < list.size(); i++) {
+				String name = list.getString(i);
+				names.add(name);
+				this.hc[i].headEntity.setCustomName(Component.literal(name));
+			}
+			this.getEntityData().set(HEAD_NAMES, names);
+		}
+	}
+
+	/**
+	 * Activates heads based on a byte saved to nbt.
+	 * This allows all the same heads to activate on world reload as heads are randomly chosen when one is killed
+	 */
+	private void activateHeadsOnLoad(byte heads) {
+		for (int i = 0; i < MAX_HEADS; i++) {
+			if ((heads & 1 << i) != 0) {
+				this.hc[i].setNextState(HydraHeadContainer.State.IDLE);
+				this.hc[i].endCurrentAction();
+			}
 		}
 	}
 
@@ -276,13 +233,19 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 
 	@Override
 	protected void customServerAiStep() {
+		super.customServerAiStep();
 		this.xxa = 0.0F;
 		this.zza = 0.0F;
 		float f = 48.0F;
 
+
+		if (this.ticksSinceDamaged > TICKS_BEFORE_HEALING && this.ticksSinceDamaged % 5 == 0) {
+			this.heal(1);
+		}
+
 		// kill heads that have taken too much damage
-		for (int i = 0; i < this.numHeads; i++) {
-			if (this.hc[i].isActive() && this.hc[i].getDamageTaken() > HEAD_MAX_DAMAGE) {
+		for (int i = 0; i < MAX_HEADS; i++) {
+			if (!this.hc[i].isDead() && this.hc[i].getDamageTaken() > HEAD_MAX_DAMAGE) {
 				this.hc[i].setNextState(HydraHeadContainer.State.DYING);
 				this.hc[i].endCurrentAction();
 
@@ -306,11 +269,28 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 			}
 		}
 
+		// destroy blocks
+		this.destroyBlocksInAABB(this.body.getBoundingBox());
+		this.destroyBlocksInAABB(this.tail.getBoundingBox());
+
+		for (int i = 0; i < MAX_HEADS; i++) {
+			if (!this.hc[i].isDead()) {
+				this.destroyBlocksInAABB(this.hc[i].headEntity.getBoundingBox());
+			}
+		}
+
+		// smash blocks beneath us too
+		if (this.tickCount % 20 == 0) {
+			if (this.isUnsteadySurfaceBeneath()) {
+				this.destroyBlocksInAABB(this.getBoundingBox().move(0, -1, 0));
+			}
+		}
+
 		if (this.getTarget() != null) {
 			this.lookAt(this.getTarget(), 10.0F, this.getMaxHeadXRot());
 
 			// have any heads not currently attacking switch to the primary target
-			for (int i = 0; i < this.numHeads; i++) {
+			for (int i = 0; i < MAX_HEADS; i++) {
 				if (!this.hc[i].isAttacking() && !this.hc[i].isSecondaryAttacking) {
 					this.hc[i].setTargetEntity(this.getTarget());
 				}
@@ -339,7 +319,7 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 			// TODO: while we are idle, consider having the heads breathe fire on passive mobs
 
 			// set idle heads to no target
-			for (int i = 0; i < this.numHeads; i++) {
+			for (int i = 0; i < MAX_HEADS; i++) {
 				if (this.hc[i].isIdle()) {
 					this.hc[i].setTargetEntity(null);
 				}
@@ -360,26 +340,10 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 
 	private int getRandomDeadHead() {
 		List<Integer> headIDs = new ArrayList<>();
-		for (int i = 0; i < this.numHeads; i++) {
+		for (int i = 0; i < MAX_HEADS; i++) {
 			if (this.hc[i].canRespawn()) headIDs.add(i);
 		}
 		return headIDs.isEmpty() ? -1 : headIDs.get(this.random.nextInt(headIDs.size()));
-	}
-
-	/**
-	 * Used when re-loading from save.  Assumes three heads are active and activates more if necessary.
-	 */
-	private void activateNumberOfHeads(int howMany) {
-		int moreHeads = howMany - this.countActiveHeads();
-
-		for (int i = 0; i < moreHeads; i++) {
-			int otherHead = this.getRandomDeadHead();
-			if (otherHead != -1) {
-				// move directly into not dead
-				this.hc[otherHead].setNextState(HydraHeadContainer.State.IDLE);
-				this.hc[otherHead].endCurrentAction();
-			}
-		}
 	}
 
 	/**
@@ -395,7 +359,7 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 
 		// three main heads can do these kinds of attacks
 		for (int i = 0; i < 3; i++) {
-			if (this.hc[i].isIdle() && !areTooManyHeadsAttacking(i)) {
+			if (this.hc[i].isIdle() && !this.areTooManyHeadsAttacking(i)) {
 				if (distance > 4 && distance < 10 && this.getRandom().nextInt(BITE_CHANCE) == 0 && this.countActiveHeads() > 2 && !this.areOtherHeadsBiting(i)) {
 					this.hc[i].setNextState(HydraHeadContainer.State.BITE_BEGINNING);
 				} else if (distance > 0 && distance < 20 && this.getRandom().nextInt(FLAME_CHANCE) == 0) {
@@ -407,7 +371,7 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 		}
 
 		// heads 4-7 can do everything but bite
-		for (int i = 3; i < numHeads; i++) {
+		for (int i = 3; i < MAX_HEADS; i++) {
 			if (this.hc[i].isIdle() && !this.areTooManyHeadsAttacking(i)) {
 				if (distance > 0 && distance < 20 && this.getRandom().nextInt(FLAME_CHANCE) == 0) {
 					this.hc[i].setNextState(HydraHeadContainer.State.FLAME_BEGINNING);
@@ -421,7 +385,7 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 	private boolean areTooManyHeadsAttacking(int testHead) {
 		int otherAttacks = 0;
 
-		for (int i = 0; i < this.numHeads; i++) {
+		for (int i = 0; i < MAX_HEADS; i++) {
 			if (i != testHead && this.hc[i].isAttacking()) {
 				otherAttacks++;
 
@@ -432,14 +396,14 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 			}
 		}
 
-		return otherAttacks >= 1 + (countActiveHeads() * HEADS_ACTIVITY_FACTOR);
+		return otherAttacks >= 1 + (this.countActiveHeads() * HEADS_ACTIVITY_FACTOR);
 	}
 
 	private int countActiveHeads() {
 		int count = 0;
 
-		for (int i = 0; i < this.numHeads; i++) {
-			if (this.hc[i].isActive()) {
+		for (int i = 0; i < MAX_HEADS; i++) {
+			if (!this.hc[i].isDead()) {
 				count++;
 			}
 		}
@@ -448,7 +412,7 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 	}
 
 	private boolean areOtherHeadsBiting(int testHead) {
-		for (int i = 0; i < this.numHeads; i++) {
+		for (int i = 0; i < MAX_HEADS; i++) {
 			if (i != testHead && this.hc[i].isBiting()) {
 				return true;
 			}
@@ -462,19 +426,13 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 	 * The center head (head 0) does not make secondary attacks
 	 */
 	private void secondaryAttacks() {
-		for (int i = 0; i < this.numHeads; i++) {
-			if (this.hc[i].headEntity == null) {
-				return;
-			}
-		}
-
-		LivingEntity secondaryTarget = findSecondaryTarget(20);
+		LivingEntity secondaryTarget = this.findSecondaryTarget(20);
 
 		if (secondaryTarget != null) {
 			float distance = secondaryTarget.distanceTo(this);
 
-			for (int i = 1; i < this.numHeads; i++) {
-				if (this.hc[i].isActive() && this.hc[i].isIdle() && isTargetOnThisSide(i, secondaryTarget)) {
+			for (int i = 1; i < MAX_HEADS; i++) {
+				if (!this.hc[i].isDead() && this.hc[i].isIdle() && isTargetOnThisSide(i, secondaryTarget)) {
 					if (distance > 0 && distance < 20 && this.getRandom().nextInt(SECONDARY_FLAME_CHANCE) == 0) {
 						this.hc[i].setTargetEntity(secondaryTarget);
 						this.hc[i].isSecondaryAttacking = true;
@@ -493,8 +451,8 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 	 * Used to make sure heads don't attack across the whole body
 	 */
 	private boolean isTargetOnThisSide(int headNum, Entity target) {
-		double headDist = distanceSqXZ(this.hc[headNum].headEntity, target);
-		double middleDist = distanceSqXZ(this, target);
+		double headDist = this.distanceSqXZ(this.hc[headNum].headEntity, target);
+		double middleDist = this.distanceSqXZ(this, target);
 		return headDist < middleDist;
 	}
 
@@ -510,14 +468,14 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 	@Nullable
 	private LivingEntity findSecondaryTarget(double range) {
 		return this.level().getEntitiesOfClass(LivingEntity.class, new AABB(this.getX(), this.getY(), this.getZ(), this.getX() + 1, this.getY() + 1, this.getZ() + 1).inflate(range, range, range))
-				.stream()
-				.filter(e -> !(e instanceof Hydra))
-				.filter(e -> e != getTarget() && !isAnyHeadTargeting(e) && getSensing().hasLineOfSight(e) && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(e))
-				.min(Comparator.comparingDouble(this::distanceToSqr)).orElse(null);
+			.stream()
+			.filter(e -> !(e instanceof Hydra))
+			.filter(e -> e != this.getTarget() && !this.isAnyHeadTargeting(e) && this.getSensing().hasLineOfSight(e) && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(e))
+			.min(Comparator.comparingDouble(this::distanceToSqr)).orElse(null);
 	}
 
 	private boolean isAnyHeadTargeting(Entity targetEntity) {
-		for (int i = 0; i < this.numHeads; i++) {
+		for (int i = 0; i < MAX_HEADS; i++) {
 			if (this.hc[i].targetEntity != null && this.hc[i].targetEntity.equals(targetEntity)) {
 				return true;
 			}
@@ -570,7 +528,7 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 	}
 
 	private void destroyBlocksInAABB(AABB box) {
-		if (this.deathTime <= 0 && ForgeEventFactory.getMobGriefingEvent(this.level(), this)) {
+		if (this.deathTime <= 0 && EventHooks.canEntityGrief(this.level(), this)) {
 			for (BlockPos pos : WorldUtil.getAllInBB(box)) {
 				if (EntityUtil.canDestroyBlock(this.level(), pos, this)) {
 					this.level().destroyBlock(pos, false);
@@ -599,14 +557,14 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 
 		HydraHeadContainer headCon = null;
 
-		for (int i = 0; i < this.numHeads; i++) {
+		for (int i = 0; i < MAX_HEADS; i++) {
 			if (this.hc[i].headEntity == part) {
 				headCon = this.hc[i];
-			} else if (part instanceof HydraNeck neck && this.hc[i].headEntity == neck.head && !this.hc[i].isActive())
+			} else if (part instanceof HydraNeck neck && this.hc[i].headEntity == neck.head && this.hc[i].isDead())
 				return false;
 		}
 
-		double range = calculateRange(source);
+		double range = this.calculateRange(source);
 
 		// Give some leeway for reflected mortars
 		if (range > 400 + (source.getDirectEntity() instanceof HydraMortar ? 200 : 0)) {
@@ -614,7 +572,7 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 		}
 
 		// ignore hits on dying heads, it's weird
-		if (headCon != null && !headCon.isActive()) {
+		if (headCon != null && headCon.isDead()) {
 			return false;
 		}
 
@@ -644,9 +602,6 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 
 	@Override
 	public boolean hurt(DamageSource src, float damage) {
-		if (src.getEntity() instanceof ServerPlayer player && !this.hurtBy.contains(player)) {
-			this.hurtBy.add(player);
-		}
 		return src.is(DamageTypeTags.BYPASSES_INVULNERABILITY) && super.hurt(src, damage);
 	}
 
@@ -716,37 +671,43 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 
 	@Override
 	protected float getSoundVolume() {
-		return 2F;
-	}
-
-	@Override
-	public void die(DamageSource cause) {
-		super.die(cause);
-		// mark the lair as defeated
-		if (!this.level().isClientSide()) {
-			this.bossInfo.setProgress(0.0F);
-			LandmarkUtil.markStructureConquered(this.level(), this, TFStructures.HYDRA_LAIR, true);
-			for (ServerPlayer player : this.hurtBy) {
-				TFAdvancements.HURT_BOSS.trigger(player, this);
-			}
-
-			TFLootTables.entityDropsIntoContainer(this, cause, TFBlocks.MANGROVE_CHEST.get().defaultBlockState(), EntityUtil.bossChestLocation(this));
-		}
-	}
-
-	@Override
-	protected boolean shouldDropLoot() {
-		return !TFConfig.COMMON_CONFIG.bossDropChests.get();
-	}
-
-	@Override
-	public boolean removeWhenFarAway(double distance) {
-		return false;
+		return 2.0F;
 	}
 
 	@Override
 	public boolean isOnFire() {
 		return false;
+	}
+
+	public String getHeadNameFor(int index) {
+		return this.getEntityData().get(HEAD_NAMES).get(index);
+	}
+
+	public void setHeadNameFor(int index, String name) {
+		//we're working with an ImmutableList here so we need to copy and modify it
+		List<String> nameCopy = new ArrayList<>(this.getEntityData().get(HEAD_NAMES));
+		nameCopy.set(index, name);
+		this.getEntityData().set(HEAD_NAMES, nameCopy);
+	}
+
+	@Override
+	public int getHomeRadius() {
+		return 20;
+	}
+
+	@Override
+	public ResourceKey<Structure> getHomeStructure() {
+		return TFStructures.HYDRA_LAIR;
+	}
+
+	@Override
+	public Block getDeathContainer(RandomSource random) {
+		return TFBlocks.MANGROVE_CHEST.get();
+	}
+
+	@Override
+	public Block getBossSpawner() {
+		return TFBlocks.HYDRA_BOSS_SPAWNER.get();
 	}
 
 	@Override
@@ -755,9 +716,9 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 
 		// stop any head actions on death
 		if (this.deathTime == 1) {
-			for (int i = 0; i < this.numHeads; i++) {
+			for (int i = 0; i < MAX_HEADS; i++) {
 				this.hc[i].setRespawnCounter(-1);
-				if (this.hc[i].isActive()) {
+				if (!this.hc[i].isDead()) {
 					this.hc[i].setNextState(HydraHeadContainer.State.IDLE);
 					this.hc[i].endCurrentAction();
 					this.hc[i].setHurtTime(200);
@@ -769,66 +730,36 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 		if (this.deathTime <= 140 && this.deathTime % 20 == 0) {
 			int headToDie = (this.deathTime / 20) - 1;
 
-			if (this.hc[headToDie].isActive()) {
+			if (!this.hc[headToDie].isDead()) {
 				this.hc[headToDie].setNextState(HydraHeadContainer.State.DYING);
 				this.hc[headToDie].endCurrentAction();
 			}
 		}
 
 		if (this.deathTime == 200) {
-			if (this.level() instanceof ServerLevel && !this.wasExperienceConsumed() && (this.isAlwaysExperienceDropper() || this.lastHurtByPlayerTime > 0 && this.shouldDropExperience() && this.level().getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT))) {
-				int reward = ForgeEventFactory.getExperienceDrop(this, this.lastHurtByPlayer, this.getExperienceReward());
-				ExperienceOrb.award((ServerLevel) this.level(), this.position(), reward);
-			}
-
-			this.discard();
+			this.remove(RemovalReason.KILLED);
 		}
 
+		if (this.level().isClientSide()) this.tickDeathAnimation();
+	}
+
+	@Override
+	public void tickDeathAnimation() {
 		for (int i = 0; i < 10; ++i) {
 			double vx = this.getRandom().nextGaussian() * 0.02D;
 			double vy = this.getRandom().nextGaussian() * 0.02D;
 			double vz = this.getRandom().nextGaussian() * 0.02D;
 			this.level().addParticle((this.getRandom().nextInt(2) == 0 ? ParticleTypes.EXPLOSION : ParticleTypes.POOF),
-					this.getX() + this.getRandom().nextFloat() * this.body.getBbWidth() * 2.0F - this.body.getBbWidth(),
-					this.getY() + this.getRandom().nextFloat() * this.body.getBbHeight(),
-					this.getZ() + this.getRandom().nextFloat() * this.body.getBbWidth() * 2.0F - this.body.getBbWidth(),
-					vx, vy, vz
+				this.getX() + this.getRandom().nextFloat() * this.body.getBbWidth() * 2.0F - this.body.getBbWidth(),
+				this.getY() + this.getRandom().nextFloat() * this.body.getBbHeight(),
+				this.getZ() + this.getRandom().nextFloat() * this.body.getBbWidth() * 2.0F - this.body.getBbWidth(),
+				vx, vy, vz
 			);
 		}
 	}
 
 	@Override
-	public boolean isPushedByFluid(FluidType type) {
-		return false;
-	}
-
-	@Override
-	protected float getWaterSlowDown() {
-		return 1.0F;
-	}
-
-	@Override
-	protected boolean canRide(Entity entity) {
-		return false;
-	}
-
-	@Override
-	public boolean canChangeDimensions() {
-		return false;
-	}
-
-	@Override
-	public @Nullable GlobalPos getRestrictionPoint() {
-		return this.getEntityData().get(HOME_POINT).orElse(null);
-	}
-
-	@Override
-	public void setRestrictionPoint(@Nullable GlobalPos pos) {
-		this.getEntityData().set(HOME_POINT, Optional.ofNullable(pos));
-	}
-
-	@Override
-	public int getHomeRadius() {
-		return 20;
+	public int getBossBarColor() {
+		return 0x05EBB9;
 	}
 }

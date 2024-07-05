@@ -1,5 +1,6 @@
 package twilightforest.entity.projectile;
 
+import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.damagesource.DamageSource;
@@ -12,8 +13,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.entity.boss.Lich;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
@@ -35,11 +34,11 @@ public class LichBolt extends TFThrowable {
 	}
 
 	private void makeTrail() {
-		double s1 = ((this.random.nextFloat() * 0.5F) + 0.5F) * 0.17F;
-		double s2 = ((this.random.nextFloat() * 0.5F) + 0.5F) * 0.80F;
-		double s3 = ((this.random.nextFloat() * 0.5F) + 0.5F) * 0.69F;
+		float s1 = ((this.random.nextFloat() * 0.5F) + 0.5F) * 0.17F;
+		float s2 = ((this.random.nextFloat() * 0.5F) + 0.5F) * 0.80F;
+		float s3 = ((this.random.nextFloat() * 0.5F) + 0.5F) * 0.69F;
 
-		this.makeTrail(ParticleTypes.ENTITY_EFFECT, s1, s2, s3, 5);
+		this.makeTrail(ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, s1, s2, s3), 5);
 	}
 
 	@Override
@@ -71,11 +70,10 @@ public class LichBolt extends TFThrowable {
 	}
 
 	@Override
-	protected float getGravity() {
+	protected double getDefaultGravity() {
 		return 0.001F;
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void handleEntityEvent(byte id) {
 		if (id == 3) {

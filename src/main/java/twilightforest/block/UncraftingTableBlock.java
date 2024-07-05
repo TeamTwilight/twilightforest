@@ -4,15 +4,14 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -23,7 +22,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TFConfig;
+import twilightforest.config.TFConfig;
 import twilightforest.init.TFSounds;
 import twilightforest.init.TFStats;
 import twilightforest.inventory.UncraftingMenu;
@@ -34,15 +33,15 @@ public class UncraftingTableBlock extends Block {
 
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
+	@SuppressWarnings("this-escape")
 	public UncraftingTableBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(POWERED, false));
 	}
 
 	@Override
-	@Deprecated
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
-		if (TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableEntireTable.get()) {
+	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult result) {
+		if (TFConfig.disableEntireTable) {
 			player.displayClientMessage(Component.translatable("block.twilightforest.uncrafting_table.disabled"), true);
 			return InteractionResult.PASS;
 		}
@@ -79,12 +78,12 @@ public class UncraftingTableBlock extends Block {
 	@Override
 	public MenuProvider getMenuProvider(BlockState state, Level level, BlockPos pos) {
 		return new SimpleMenuProvider((id, inv, player) -> new UncraftingMenu(id, inv, player.level(), ContainerLevelAccess.create(level, pos)),
-				Component.translatable("container.twilightforest.uncrafting_table"));
+			Component.translatable("container.twilightforest.uncrafting_table"));
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable BlockGetter getter, List<Component> tooltip, TooltipFlag flag) {
-		if (TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableEntireTable.get()) {
+	public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+		if (TFConfig.disableEntireTable) {
 			tooltip.add(Component.translatable("block.twilightforest.uncrafting_table.disabled").withStyle(ChatFormatting.RED));
 		}
 	}

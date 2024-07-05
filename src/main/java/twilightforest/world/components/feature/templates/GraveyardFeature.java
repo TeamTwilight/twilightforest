@@ -2,37 +2,37 @@ package twilightforest.world.components.feature.templates;
 
 import com.google.common.math.StatsAccumulator;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.structure.templatesystem.*;
-import net.minecraft.world.level.block.state.properties.StructureMode;
-import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
-import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.Mirror;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Rotation;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.StructureMode;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.templatesystem.*;
+import net.neoforged.neoforge.event.EventHooks;
 import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.monster.Wraith;
 import twilightforest.init.TFEntities;
-import twilightforest.loot.TFLootTables;
 import twilightforest.init.TFStructureProcessors;
-
-import org.jetbrains.annotations.Nullable;
+import twilightforest.loot.TFLootTables;
 import twilightforest.util.FeatureLogic;
 
 import java.util.ArrayList;
@@ -149,11 +149,11 @@ public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 		BlockPos innerSize = new BlockPos(bound.getX() - inner.getX(), bound.getY() - inner.getY(), bound.getZ() - inner.getZ());
 		BlockPos fixed = inner.offset(
 
-				(rotation == Rotation.CLOCKWISE_180 ? graveSize.getX() : 0) + (mirror == Mirror.FRONT_BACK ? transformedGraveSize.getX() - 1 : 0) * (rotation == Rotation.CLOCKWISE_180 ? -1 : 1),
+			(rotation == Rotation.CLOCKWISE_180 ? graveSize.getX() : 0) + (mirror == Mirror.FRONT_BACK ? transformedGraveSize.getX() - 1 : 0) * (rotation == Rotation.CLOCKWISE_180 ? -1 : 1),
 
-				0,
+			0,
 
-				(rotation == Rotation.COUNTERCLOCKWISE_90 ? graveSize.getZ() : 0) + (mirror == Mirror.FRONT_BACK ? transformedGraveSize.getZ() - 1 : 0) * (rotation == Rotation.COUNTERCLOCKWISE_90 ? -1 : 1)
+			(rotation == Rotation.COUNTERCLOCKWISE_90 ? graveSize.getZ() : 0) + (mirror == Mirror.FRONT_BACK ? transformedGraveSize.getZ() - 1 : 0) * (rotation == Rotation.COUNTERCLOCKWISE_90 ? -1 : 1)
 
 		);
 		BlockPos fixedSize = innerSize.offset(-graveSize.getX(), 0, -graveSize.getZ());
@@ -175,12 +175,12 @@ public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 						}
 						data.addAll(trap.filterBlocks(placementPos, placementsettings, Blocks.STRUCTURE_BLOCK));
 						if (world.setBlock(placement.offset(chestloc), Blocks.TRAPPED_CHEST.defaultBlockState().setValue(ChestBlock.FACING, Direction.WEST).rotate(rotation).mirror(mirror), flags)) {
-							TFLootTables.GRAVEYARD.generateChestContents(world, placement.offset(chestloc));
+							TFLootTables.generateChestContents(world, placement.offset(chestloc), TFLootTables.GRAVEYARD);
 							world.setBlock(placement.offset(chestloc).below(), Blocks.MOSSY_COBBLESTONE.defaultBlockState(), 3);
 						}
 						Wraith wraith = new Wraith(TFEntities.WRAITH.get(), world.getLevel());
 						wraith.setPos(placement.getX(), placement.getY(), placement.getZ());
-						ForgeEventFactory.onFinalizeSpawn(wraith, world, world.getCurrentDifficultyAt(placement), MobSpawnType.STRUCTURE, null, null);
+						EventHooks.finalizeMobSpawn(wraith, world, world.getCurrentDifficultyAt(placement), MobSpawnType.STRUCTURE, null);
 						world.addFreshEntity(wraith);
 					}
 				}
@@ -225,7 +225,7 @@ public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 
 	public static class WebTemplateProcessor extends StructureProcessor {
 		public static final WebTemplateProcessor INSTANCE = new WebTemplateProcessor();
-		public static final Codec<WebTemplateProcessor> CODEC = Codec.unit(() -> INSTANCE);
+		public static final MapCodec<WebTemplateProcessor> CODEC = MapCodec.unit(() -> INSTANCE);
 
 		private WebTemplateProcessor() {
 		}

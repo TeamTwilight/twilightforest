@@ -1,8 +1,7 @@
 {
   "placement": {
-    "type": "twilightforest:forced_landmark",
-    "landmark_set": "naga_courtyard",
-    "scan_elevation": 256
+    "type": "twilightforest:landmark_grid",
+    "structure_grid_lock": "twilightforest:naga_courtyard"
   },
   "structures": [
     {

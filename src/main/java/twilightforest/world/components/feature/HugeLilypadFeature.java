@@ -36,9 +36,9 @@ public class HugeLilypadFeature extends Feature<NoneFeatureConfiguration> {
 
 		for (int i = 0; i < 10; i++) {
 			BlockPos dPos = pos.offset(
-					random.nextInt(8) - random.nextInt(8),
-					random.nextInt(4) - random.nextInt(4),
-					random.nextInt(8) - random.nextInt(8)
+				random.nextInt(8) - random.nextInt(8),
+				random.nextInt(4) - random.nextInt(4),
+				random.nextInt(8) - random.nextInt(8)
 			);
 
 			if (shouldPlacePadAt(world, dPos) && world.isAreaLoaded(dPos, 1)) {
@@ -57,8 +57,8 @@ public class HugeLilypadFeature extends Feature<NoneFeatureConfiguration> {
 
 	private boolean shouldPlacePadAt(LevelAccessor world, BlockPos pos) {
 		return world.isEmptyBlock(pos) && world.getBlockState(pos.below()).is(Blocks.WATER)
-				&& world.isEmptyBlock(pos.east()) && world.getBlockState(pos.east().below()).is(Blocks.WATER)
-				&& world.isEmptyBlock(pos.south()) && world.getBlockState(pos.south().below()).is(Blocks.WATER)
-				&& world.isEmptyBlock(pos.east().south()) && world.getBlockState(pos.east().south().below()).is(Blocks.WATER);
+			&& world.isEmptyBlock(pos.east()) && world.getBlockState(pos.east().below()).is(Blocks.WATER)
+			&& world.isEmptyBlock(pos.south()) && world.getBlockState(pos.south().below()).is(Blocks.WATER)
+			&& world.isEmptyBlock(pos.east().south()) && world.getBlockState(pos.east().south().below()).is(Blocks.WATER);
 	}
 }

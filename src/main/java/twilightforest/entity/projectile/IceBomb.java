@@ -2,8 +2,8 @@ package twilightforest.entity.projectile;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Position;
-import net.minecraft.core.particles.BlockParticleOption;
-import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
@@ -13,52 +13,55 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
 import twilightforest.data.tags.BlockTagGenerator;
-import twilightforest.enchantment.ChillAuraEnchantment;
+import twilightforest.enchantment.ApplyFrostedEffect;
 import twilightforest.entity.boss.AlphaYeti;
 import twilightforest.entity.monster.Yeti;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
+import twilightforest.init.TFParticleType;
 
 import java.util.List;
 
 public class IceBomb extends TFThrowable {
-
-	private int zoneTimer = 80;
+	private int zoneTimer = 101;
 	private boolean hasHit;
 
-	public IceBomb(EntityType<? extends IceBomb> type, Level world) {
-		super(type, world);
+	public IceBomb(EntityType<? extends IceBomb> type, Level level) {
+		super(type, level);
 	}
 
-	public IceBomb(EntityType<? extends IceBomb> type, Level world, LivingEntity thrower) {
-		super(type, world, thrower);
+	public IceBomb(EntityType<? extends IceBomb> type, Level level, LivingEntity thrower) {
+		super(type, level, thrower);
 	}
 
-	public IceBomb(Level world, Position pos) {
-		super(TFEntities.THROWN_ICE.get(), world, pos.x(), pos.y(), pos.z());
+	public IceBomb(Level level, Position pos) {
+		super(TFEntities.THROWN_ICE.get(), level, pos.x(), pos.y(), pos.z());
 	}
 
 	@Override
-	protected void onHit(HitResult result) {
+	protected void onHitBlock(BlockHitResult result) {
 		this.setDeltaMovement(0.0D, 0.0D, 0.0D);
 		this.hasHit = true;
-
-		this.doTerrainEffects();
+		this.doTerrainEffects(2);
 	}
 
-	private void doTerrainEffects() {
+	@Override
+	protected void onHitEntity(EntityHitResult pResult) {
+		if (pResult.getEntity() instanceof LivingEntity entity) inflictDamage(entity, 2);
+	}
 
-		final int range = 3;
-
+	private void doTerrainEffects(int range) {
 		int ix = Mth.floor(this.xOld);
 		int iy = Mth.floor(this.yOld);
 		int iz = Mth.floor(this.zOld);
 
 		for (int x = -range; x <= range; x++) {
-			for (int y = -range; y <= range; y++) {
-				for (int z = -range; z <= range; z++) {
+			for (int z = -range; z <= range; z++) {
+				if (Math.abs(x) == range && Math.abs(z) == range) continue;
+				for (int y = -range; y <= range; y++) {
 					BlockPos pos = new BlockPos(ix + x, iy + y, iz + z);
 					this.doTerrainEffect(pos);
 				}
@@ -105,25 +108,32 @@ public class IceBomb extends TFThrowable {
 				this.discard();
 			}
 		} else {
-			this.makeTrail(new BlockParticleOption(ParticleTypes.FALLING_DUST, Blocks.SNOW.defaultBlockState()), this.getOwner() instanceof AlphaYeti ? 2 : 5);
+			this.makeTrail(TFParticleType.SNOW_GUARDIAN.get(), this.getOwner() instanceof AlphaYeti ? 2 : 5);
+		}
+	}
+
+	@Override
+	public void makeTrail(ParticleOptions particle, double r, double g, double b, int amount) {
+		for (int i = 0; i < amount; i++) {
+			double dx = this.getX() + 0.5D * (this.random.nextDouble() - this.random.nextDouble());
+			double dy = this.getY() + 0.5D * (this.random.nextDouble() - this.random.nextDouble()) + 0.5D;
+			double dz = this.getZ() + 0.5D * (this.random.nextDouble() - this.random.nextDouble());
+			this.level().addParticle(particle, dx, dy, dz, r, g, b);
 		}
 	}
 
 	private void makeIceZone() {
 		if (this.level().isClientSide()) {
-			// sparkles
-			BlockState stateId = Blocks.SNOW.defaultBlockState();
-			for (int i = 0; i < 15; i++) {
-				double dx = this.getX() + (this.random.nextFloat() - this.random.nextFloat()) * 3.0F;
-				double dy = this.getY() + (this.random.nextFloat() - this.random.nextFloat()) * 3.0F;
-				double dz = this.getZ() + (this.random.nextFloat() - this.random.nextFloat()) * 3.0F;
+			for (int i = 0; i < 16; i++) {
+				double dx = this.getX() + (this.random.nextFloat() - this.random.nextFloat()) * 3.5F;
+				double dy = this.getY() + (this.random.nextFloat() - this.random.nextFloat()) * 3.5F;
+				double dz = this.getZ() + (this.random.nextFloat() - this.random.nextFloat()) * 3.5F;
 
-				this.level().addParticle(new BlockParticleOption(ParticleTypes.FALLING_DUST, stateId), dx, dy, dz, 0, 0, 0);
+				this.level().addParticle(TFParticleType.SNOW_GUARDIAN.get(), dx, dy, dz, 0, 0, 0);
 			}
 		} else {
-			if (this.zoneTimer % 20 == 0) {
-				this.hitNearbyEntities();
-			}
+			if (this.zoneTimer == 99) this.doTerrainEffects(3);
+			if (this.zoneTimer % 20 == 0) this.hitNearbyEntities();
 		}
 	}
 
@@ -139,13 +149,16 @@ public class IceBomb extends TFThrowable {
 					this.level().setBlockAndUpdate(pos.above(), Blocks.ICE.defaultBlockState());
 
 					entity.discard();
-				} else {
-					if (!entity.getType().is(EntityTypeTags.FREEZE_IMMUNE_ENTITY_TYPES)) {
-						entity.hurt(TFDamageTypes.getIndirectEntityDamageSource(this.level(), TFDamageTypes.FROZEN, this, this.getOwner()), entity.getType().is(EntityTypeTags.FREEZE_HURTS_EXTRA_TYPES) ? 5 : 1);
-						ChillAuraEnchantment.doChillAuraEffect(entity, 100, 0, true);
-					}
-				}
+				} else this.inflictDamage(entity, 1);
 			}
+		}
+	}
+
+	private void inflictDamage(LivingEntity entity, int dmgMultiplier) {
+		if (!entity.getType().is(EntityTypeTags.FREEZE_IMMUNE_ENTITY_TYPES)) {
+			entity.hurt(TFDamageTypes.getIndirectEntityDamageSource(this.level(), TFDamageTypes.FROZEN, this, this.getOwner()),
+				(entity.getType().is(EntityTypeTags.FREEZE_HURTS_EXTRA_TYPES) ? 5.0F : 1.0F) * dmgMultiplier);
+			ApplyFrostedEffect.doChillAuraEffect(entity, 100 * dmgMultiplier, 0, true);
 		}
 	}
 
@@ -154,7 +167,19 @@ public class IceBomb extends TFThrowable {
 	}
 
 	@Override
-	protected float getGravity() {
+	protected double getDefaultGravity() {
 		return this.hasHit ? 0F : 0.025F;
+	}
+
+	@Override
+	protected void addAdditionalSaveData(CompoundTag pCompound) {
+		pCompound.putInt("zone_timer", this.zoneTimer);
+		pCompound.putBoolean("has_hit", this.hasHit);
+	}
+
+	@Override
+	protected void readAdditionalSaveData(CompoundTag pCompound) {
+		this.zoneTimer = pCompound.getInt("zone_timer");
+		this.hasHit = pCompound.getBoolean("has_hit");
 	}
 }

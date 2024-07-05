@@ -5,9 +5,9 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
@@ -19,6 +19,7 @@ public class NewSlimeBeetleRenderer extends MobRenderer<SlimeBeetle, NewSlimeBee
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("slimebeetle.png");
 
+	@SuppressWarnings("this-escape")
 	public NewSlimeBeetleRenderer(EntityRendererProvider.Context manager, NewSlimeBeetleModel model, float shadowSize) {
 		super(manager, model, shadowSize);
 		this.addLayer(new LayerInner(this, manager));
@@ -34,7 +35,7 @@ public class NewSlimeBeetleRenderer extends MobRenderer<SlimeBeetle, NewSlimeBee
 
 		public LayerInner(RenderLayerParent<SlimeBeetle, NewSlimeBeetleModel> renderer, EntityRendererProvider.Context manager) {
 			super(renderer);
-			innerModel =  new NewSlimeBeetleModel(manager.bakeLayer(TFModelLayers.SLIME_BEETLE_TAIL));
+			innerModel = new NewSlimeBeetleModel(manager.bakeLayer(TFModelLayers.SLIME_BEETLE_TAIL));
 		}
 
 		@Override
@@ -44,7 +45,7 @@ public class NewSlimeBeetleRenderer extends MobRenderer<SlimeBeetle, NewSlimeBee
 				innerModel.prepareMobModel(entity, limbSwing, limbSwingAmount, partialTicks);
 				innerModel.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 				VertexConsumer buffer = buffers.getBuffer(RenderType.entityTranslucent(getTextureLocation(entity)));
-				innerModel.renderTail(ms, buffer, light, LivingEntityRenderer.getOverlayCoords(entity, 0), 1, 1, 1, 1);
+				innerModel.renderTail(ms, buffer, light, LivingEntityRenderer.getOverlayCoords(entity, 0));
 			}
 		}
 	}

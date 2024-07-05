@@ -41,7 +41,7 @@ public class UnstableIceCoreRenderer<T extends UnstableIceCore, M extends Unstab
 	}
 
 	@Override
-	protected void setupRotations(T entity, PoseStack stack, float ageInTicks, float rotationYaw, float partialTicks) {
+	protected void setupRotations(T entity, PoseStack stack, float ageInTicks, float rotationYaw, float partialTicks, float scale) {
 		stack.mulPose(Axis.YP.rotationDegrees(180 - rotationYaw));
 	}
 

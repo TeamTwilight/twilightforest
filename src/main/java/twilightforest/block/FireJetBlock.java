@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -16,22 +17,28 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.FireJetBlockEntity;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.data.tags.FluidTagGenerator;
 import twilightforest.enums.FireJetVariant;
 import twilightforest.init.TFBlockEntities;
 
-import org.jetbrains.annotations.Nullable;
-
 public class FireJetBlock extends BaseEntityBlock {
 
+	public static final MapCodec<FireJetBlock> CODEC = simpleCodec(FireJetBlock::new);
 	public static final EnumProperty<FireJetVariant> STATE = EnumProperty.create("state", FireJetVariant.class);
 
+	@SuppressWarnings("this-escape")
 	public FireJetBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(STATE, FireJetVariant.IDLE));
+	}
+
+	@Override
+	protected MapCodec<? extends BaseEntityBlock> codec() {
+		return CODEC;
 	}
 
 	@Override
@@ -45,10 +52,9 @@ public class FireJetBlock extends BaseEntityBlock {
 		builder.add(STATE);
 	}
 
-	@Nullable
 	@Override
-	public BlockPathTypes getBlockPathType(BlockState state, BlockGetter getter, BlockPos pos, @Nullable Mob entity) {
-		return state.getValue(STATE) == FireJetVariant.IDLE ? null : BlockPathTypes.DAMAGE_FIRE;
+	public @Nullable PathType getBlockPathType(BlockState state, BlockGetter getter, BlockPos pos, @Nullable Mob mob) {
+		return state.getValue(STATE) == FireJetVariant.IDLE ? null : PathType.DAMAGE_FIRE;
 	}
 
 	@Override
@@ -84,7 +90,7 @@ public class FireJetBlock extends BaseEntityBlock {
 
 	private boolean isLava(Level level, BlockPos pos) {
 		BlockState state = level.getBlockState(pos);
-		return state.is(BlockTagGenerator.FIRE_JET_FUEL) || state.getBlock().getFluidState(state).is(FluidTagGenerator.FIRE_JET_FUEL);
+		return state.is(BlockTagGenerator.FIRE_JET_FUEL) || state.getFluidState().is(FluidTagGenerator.FIRE_JET_FUEL);
 	}
 
 	@Nullable

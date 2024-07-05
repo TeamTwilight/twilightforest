@@ -4,20 +4,20 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.monster.Ghast;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import twilightforest.init.TFBlockEntities;
-import twilightforest.init.TFSounds;
+import net.minecraft.world.phys.Vec3;
 import twilightforest.block.GhastTrapBlock;
+import twilightforest.entity.boss.UrGhast;
+import twilightforest.entity.monster.CarminiteGhastling;
+import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFParticleType;
-import twilightforest.entity.boss.UrGhast;
-import twilightforest.entity.monster.CarminiteGhastguard;
-import twilightforest.entity.monster.CarminiteGhastling;
+import twilightforest.init.TFSounds;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,31 +35,24 @@ public class GhastTrapBlockEntity extends BlockEntity {
 	private void tickInactive(Level level, BlockPos pos, BlockState state, GhastTrapBlockEntity te) {
 		// check to see if there are any dying mini ghasts within our scan range
 		AABB aabb = new AABB(pos).inflate(10D, 16D, 10D);
-
 		List<CarminiteGhastling> nearbyGhasts = level.getEntitiesOfClass(CarminiteGhastling.class, aabb);
 
 		for (CarminiteGhastling ghast : nearbyGhasts) {
 			if (ghast.deathTime > 0) {
-				te.makeParticlesTo(ghast);
-
-				if (!te.dyingGhasts.contains(ghast)) {
-					te.dyingGhasts.add(ghast);
-				}
+				te.makeParticlesTo(level, ghast.getEyePosition());
+				if (!te.dyingGhasts.contains(ghast)) te.dyingGhasts.add(ghast);
 			}
 		}
 
 		// display charge level, up to 3
 		int chargeLevel = Math.min(3, te.dyingGhasts.size());
-
 		te.counter++;
 
 		if (level.isClientSide()) {
 			// occasionally make a redstone line to a mini ghast
-			if (te.counter % 20 == 0 && nearbyGhasts.size() > 0) {
-				CarminiteGhastling highlight = nearbyGhasts.get(te.rand.nextInt(nearbyGhasts.size()));
-				te.makeParticlesTo(highlight);
+			if (te.counter % 20 == 0 && !nearbyGhasts.isEmpty()) {
+				te.makeParticlesTo(level, nearbyGhasts.get(te.rand.nextInt(nearbyGhasts.size())).getEyePosition());
 			}
-
 			if (chargeLevel >= 1 && te.counter % 10 == 0) {
 				TFBlocks.GHAST_TRAP.get().sparkle(level, pos);
 				level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D, TFSounds.GHAST_TRAP_AMBIENT.get(), SoundSource.BLOCKS, 1.0F, 1.0F, false);
@@ -80,18 +73,12 @@ public class GhastTrapBlockEntity extends BlockEntity {
 		}
 	}
 
-	private void makeParticlesTo(Entity highlight) {
-
-		double sx = this.getBlockPos().getX() + 0.5D;
-		double sy = this.getBlockPos().getY() + 1.0D;
-		double sz = this.getBlockPos().getZ() + 0.5D;
-
-		double dx = sx - highlight.getX();
-		double dy = sy - highlight.getY() - highlight.getEyeHeight();
-		double dz = sz - highlight.getZ();
+	private void makeParticlesTo(Level level, Vec3 to) {
+		Vec3 top = Vec3.atBottomCenterOf(this.getBlockPos().above());
+		Vec3 diff = top.subtract(to);
 
 		for (int i = 0; i < 5; i++) {
-			this.getLevel().addParticle(TFParticleType.GHAST_TRAP.get(), sx, sy, sz, -dx, -dy, -dz);
+			level.addParticle(TFParticleType.GHAST_TRAP.get(), top.x, top.y, top.z, -diff.x, -diff.y, -diff.z);
 		}
 	}
 
@@ -101,11 +88,8 @@ public class GhastTrapBlockEntity extends BlockEntity {
 
 	public static void tick(Level level, BlockPos pos, BlockState state, GhastTrapBlockEntity te) {
 		if (!level.isDebug()) {
-			if (state.getValue(GhastTrapBlock.ACTIVE)) {
-				te.tickActive(level, pos, state, te);
-			} else {
-				te.tickInactive(level, pos, state, te);
-			}
+			if (state.getValue(GhastTrapBlock.ACTIVE)) te.tickActive(level, pos, state, te);
+			else te.tickInactive(level, pos, state, te);
 		}
 	}
 
@@ -130,9 +114,7 @@ public class GhastTrapBlockEntity extends BlockEntity {
 			// smoke when done
 			if (te.counter > 100 && te.counter % 4 == 0) {
 				level.addParticle(TFParticleType.HUGE_SMOKE.get(), pos.getX() + 0.5, pos.getY() + 0.95, pos.getZ() + 0.5, Math.cos(te.counter / 10.0) * 0.05, 0.25D, Math.sin(te.counter / 10.0) * 0.05);
-
 			} else if (te.counter < 100) {
-
 				double x = pos.getX() + 0.5D;
 				double y = pos.getY() + 1.0D;
 				double z = pos.getZ() + 0.5D;
@@ -159,14 +141,14 @@ public class GhastTrapBlockEntity extends BlockEntity {
 			}
 		} else {
 			// trap nearby ghasts
-			AABB aabb = new AABB(pos.above(16), pos.above(16).offset(1, 1, 1)).inflate(6D, 16D, 6D);
+			AABB aabb = new AABB(pos.above(16).getCenter(), pos.above(16).offset(1, 1, 1).getCenter()).inflate(6D, 16D, 6D);
+			List<Mob> nearbyGhasts = level.getEntitiesOfClass(Mob.class, aabb, mob -> mob instanceof Ghast || mob instanceof UrGhast);
 
-			List<Ghast> nearbyGhasts = level.getEntitiesOfClass(Ghast.class, aabb);
-
-			for (Ghast ghast : nearbyGhasts) {
+			for (Mob ghast : nearbyGhasts) {
 				//stop boss tantrum
 				if (ghast instanceof UrGhast urghast) {
 					urghast.setInTantrum(false);
+					urghast.setInTrap();
 					ghast.noPhysics = true; // turn this on so we can pull it in close
 
 					// move boss to this point
@@ -190,10 +172,6 @@ public class GhastTrapBlockEntity extends BlockEntity {
 					if (te.rand.nextInt(10) == 0) {
 						ghast.hurt(level.damageSources().generic(), 10);
 					}
-				}
-
-				if (ghast instanceof CarminiteGhastguard) {
-					((CarminiteGhastguard) ghast).setInTrap();
 				}
 
 			}

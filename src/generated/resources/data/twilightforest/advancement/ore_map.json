@@ -1,0 +1,40 @@
+{
+  "parent": "twilightforest:maze_map",
+  "criteria": {
+    "ore_map": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:filled_ore_map"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.twilightforest.ore_map.desc",
+      "with": [
+        {
+          "translate": "item.twilightforest.filled_ore_map"
+        }
+      ]
+    },
+    "frame": "challenge",
+    "hidden": true,
+    "icon": {
+      "count": 1,
+      "id": "twilightforest:filled_ore_map"
+    },
+    "title": {
+      "translate": "advancement.twilightforest.ore_map"
+    }
+  },
+  "requirements": [
+    [
+      "ore_map"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

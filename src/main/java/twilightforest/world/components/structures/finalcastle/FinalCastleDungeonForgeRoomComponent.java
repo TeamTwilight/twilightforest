@@ -20,6 +20,7 @@ public class FinalCastleDungeonForgeRoomComponent extends TFStructureComponentOl
 		super(TFStructurePieceTypes.TFFCDunBoR.get(), nbt);
 	}
 
+	@SuppressWarnings("this-escape")
 	public FinalCastleDungeonForgeRoomComponent(int i, int x, int y, int z, Direction direction) {
 		super(TFStructurePieceTypes.TFFCDunBoR.get(), i, x, y, z);
 		this.spawnListIndex = 3; // forge monsters

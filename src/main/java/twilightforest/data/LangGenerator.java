@@ -4,6 +4,8 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.data.helpers.TFLangProvider;
+import twilightforest.data.tags.FluidTagGenerator;
+import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.*;
 
 import java.util.HashMap;
@@ -11,6 +13,7 @@ import java.util.Map;
 
 public class LangGenerator extends TFLangProvider {
 	public static final Map<ResourceLocation, Pair<String, String>> MAGIC_PAINTING_HELPER = new HashMap<>();
+	public static final Map<String, String> SUBTITLE_GENERATOR = new HashMap<>();
 
 	public LangGenerator(PackOutput output) {
 		super(output);
@@ -78,6 +81,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addCommand("structure.conquer.update", "Structure conquer flag was %s, changing to %s");
 		this.addCommand("structure.spawn_list", "Spawn list for this area is:");
 		this.addCommand("structure.spawn_info", "%s, Weight %s");
+		this.addCommand("structure.boundaries", "Structure boundaries: %s");
 
 		this.add("gamerule.tfEnforcedProgression", "Twilight Forest: Enforced Progression");
 		this.add("gamerule.tfEnforcedProgression.description", "Some Twilight Forest biomes will be locked until you defeat certain bosses in the dimension. (You can check the progression order in your advancements)");
@@ -141,8 +145,18 @@ public class LangGenerator extends TFLangProvider {
 		this.addMessage("firefly_spawner_radius", "Firefly Particle Radius: %s Blocks");
 		this.addMessage("magic_map_fail", "The Magic faltered. Perhaps it doesn't work here?");
 		this.addMessage("nyi", "This feature has effects that are not yet implemented.");
-		this.addMessage("ore_meter_exposed", "Exposed: %s");
+		this.addMessage("ore_meter_separator", "-");
+		this.addMessage("ore_meter_ratio", "(%s%%)");
+		this.addMessage("ore_meter_header_block", "Block");
+		this.addMessage("ore_meter_header_count", "Count");
+		this.addMessage("ore_meter_header_ratio", "Ratio");
+		this.addMessage("ore_meter_loading", "Loading");
+		this.addMessage("ore_meter_new_range", "Range set to %s chunks");
+		this.addMessage("ore_meter_no_blocks", "No blocks found nearby");
 		this.addMessage("ore_meter_range", "Radius: %s, Origin: [%s, %s]");
+		this.addMessage("ore_meter_set_block", "Targeted block set to %s");
+		this.addMessage("ore_meter_targeted_block", "Targeted block: %s");
+		this.addMessage("ore_meter_total", "Total blocks scanned: %s");
 		this.addMessage("pedestal_ineligible", "You are unworthy.");
 		this.addMessage("portal_unsafe", "It doesn't seem safe here...");
 		this.addMessage("portal_unworthy", "The Portal pool is unresponsive. Perhaps something was neglected?");
@@ -178,6 +192,8 @@ public class LangGenerator extends TFLangProvider {
 		this.addBlock(TFBlocks.CANDELABRA, "Candelabra");
 		this.addBlock(TFBlocks.WROUGHT_IRON_FENCE, "Wrought Iron Fence");
 		this.add("block.twilightforest.wrought_iron_fence.cap", "Right-click with an Iron Ingot or Nugget to add a finial");
+		this.addBlock(TFBlocks.TERRORCOTTA_LINES, "Terrorcotta Lines");
+		this.addBlock(TFBlocks.TERRORCOTTA_CURVES, "Terrorcotta Curves");
 
 		this.addBlock(TFBlocks.KEEPSAKE_CASKET, "Keepsake Casket");
 		this.add("block.twilightforest.casket.broken", "Your Keepsake Casket was too damaged to hold any more items. All items that would be stored in your casket were dropped on the ground.");
@@ -303,6 +319,9 @@ public class LangGenerator extends TFLangProvider {
 		this.addBlock(TFBlocks.CINDER_WOOD, "Cinder Wood");
 
 		this.addBlock(TFBlocks.IRON_LADDER, "Iron Ladder");
+		this.addBlock(TFBlocks.ROPE, "Rope");
+		this.addBlock(TFBlocks.CANOPY_WINDOW, "Canopy Window");
+		this.addBlock(TFBlocks.CANOPY_WINDOW_PANE, "Canopy Window Pane");
 		this.addBlock(TFBlocks.SLIDER, "Slide Trap");
 
 		this.addBlock(TFBlocks.TWILIGHT_OAK_LEAVES, "Twilight Oak Leaves");
@@ -315,8 +334,7 @@ public class LangGenerator extends TFLangProvider {
 		this.createLogs("canopy", "Canopy Tree");
 		this.createWoodSet("canopy", "Canopy");
 		this.addBlock(TFBlocks.CANOPY_BOOKSHELF, "Canopy Bookshelf");
-		this.addBlock(TFBlocks.EMPTY_CANOPY_BOOKSHELF, "Empty Canopy Bookshelf");
-		this.addBlock(TFBlocks.DEATH_TOME_SPAWNER, "Death Tome Spawner");
+		this.addBlock(TFBlocks.CHISELED_CANOPY_BOOKSHELF, "Chiseled Canopy Bookshelf");
 
 		this.addBlock(TFBlocks.MANGROVE_LEAVES, "Mangrove Leaves");
 		this.addSapling("mangrove", "Mangrove Sapling");
@@ -379,7 +397,7 @@ public class LangGenerator extends TFLangProvider {
 		this.createHollowLogs("warped", "Warped", true);
 		this.createHollowLogs("vangrove", "Mangrove", false);
 		this.createHollowLogs("cherry", "Cherry", false);
-		this.add("block.twilightforest.banister.cycle", "Right click with an axe to cycle");
+		this.add("block.twilightforest.banister.cycle", "Right-click with axe to cycle");
 
 		this.addBlock(TFBlocks.MOSS_PATCH, "Moss Patch");
 		this.addBlock(TFBlocks.CLOVER_PATCH, "Clover Patch");
@@ -409,13 +427,13 @@ public class LangGenerator extends TFLangProvider {
 		this.addBlock(TFBlocks.UR_GHAST_TROPHY, "Ur-Ghast Trophy");
 		this.addBlock(TFBlocks.ALPHA_YETI_TROPHY, "Alpha Yeti Trophy");
 		this.addBlock(TFBlocks.SNOW_QUEEN_TROPHY, "Snow Queen Trophy");
-		this.addBlock(TFBlocks.QUEST_RAM_TROPHY, "Quest Ram Trophy");
+		this.addBlock(TFBlocks.QUEST_RAM_TROPHY, "Questing Ram Trophy");
 
 		this.addBlock(TFBlocks.NAGA_BOSS_SPAWNER, "Naga Boss Spawner");
 		this.addBlock(TFBlocks.LICH_BOSS_SPAWNER, "Lich Boss Spawner");
 		this.addBlock(TFBlocks.MINOSHROOM_BOSS_SPAWNER, "Minoshroom Boss Spawner");
 		this.addBlock(TFBlocks.HYDRA_BOSS_SPAWNER, "Hydra Boss Spawner");
-		this.addBlock(TFBlocks.KNIGHT_PHANTOM_BOSS_SPAWNER, "Knight Phantom Boss Spawner");
+		this.addBlock(TFBlocks.KNIGHT_PHANTOM_BOSS_SPAWNER, "Knight Phantoms Boss Spawner");
 		this.addBlock(TFBlocks.UR_GHAST_BOSS_SPAWNER, "Ur-Ghast Boss Spawner");
 		this.addBlock(TFBlocks.ALPHA_YETI_BOSS_SPAWNER, "Alpha Yeti Boss Spawner");
 		this.addBlock(TFBlocks.SNOW_QUEEN_BOSS_SPAWNER, "Snow Queen Boss Spawner");
@@ -428,8 +446,8 @@ public class LangGenerator extends TFLangProvider {
 		this.addBannerPattern("knight_phantom", "Knight Helmet");
 		this.addBannerPattern("ur_ghast", "Carminite Border");
 		this.addBannerPattern("alpha_yeti", "Alpha Yeti Face");
-		this.addBannerPattern("snow_queen", "Snow Queen Crown");
-		this.addBannerPattern("quest_ram", "Quest Ram Swirls");
+		this.addBannerPattern("snow_queen", "Snowflake");
+		this.addBannerPattern("quest_ram", "Questing Ram Swirls");
 
 		this.addBlock(TFBlocks.ZOMBIE_SKULL_CANDLE, "Zombie Skull Candle");
 		this.addBlock(TFBlocks.ZOMBIE_WALL_SKULL_CANDLE, "Zombie Wall Skull Candle");
@@ -450,6 +468,12 @@ public class LangGenerator extends TFLangProvider {
 		this.add("container.twilightforest.uncrafting_table", "Uncrafting Table");
 		this.add("container.twilightforest.uncrafting_table.disabled_item", "Uncrafting this item is disabled.");
 		this.add("container.twilightforest.uncrafting_table.uncrafting_disabled", "Uncrafting is disabled via config");
+		this.add("container.twilightforest.uncrafting_table.cycle_next_recipe", "Next Crafting Recipe");
+		this.add("container.twilightforest.uncrafting_table.cycle_back_recipe", "Previous Crafting Recipe");
+		this.add("container.twilightforest.uncrafting_table.cycle_next_ingredient", "Next Uncrafting Ingredients");
+		this.add("container.twilightforest.uncrafting_table.cycle_back_ingredient", "Previous Uncrafting Ingredients");
+		this.add("container.twilightforest.uncrafting_table.cycle_next_uncraft", "Next Uncrafting Recipe");
+		this.add("container.twilightforest.uncrafting_table.cycle_back_uncraft", "Previous Uncrafting Recipe");
 
 		this.add("item.twilightforest.boarkchop", "Raw Boarkchop");
 		this.addItem(TFItems.NAGA_SCALE, "Naga Scale");
@@ -562,6 +586,10 @@ public class LangGenerator extends TFLangProvider {
 		this.add("item.twilightforest.moon_dial.phase_unknown", "Moon phase indeterminate");
 		this.add("item.twilightforest.moon_dial.phase_unknown_fools", "404 moon not found");
 
+		this.addItem(TFItems.POCKET_WATCH, "Rabbit's Pocket Watch");
+		this.add("item.twilightforest.pocket_watch.desc", "It seems to always be running late");
+		this.addItem(TFItems.EMPERORS_CLOTH, "Emperor's Cloth");
+		this.add("item.twilightforest.emperors_cloth.desc", "Shrouded");
 		this.addItem(TFItems.ORE_MAGNET, "Ore Magnet");
 		this.addItem(TFItems.CRUMBLE_HORN, "Crumble Horn");
 		this.addItem(TFItems.MOONWORM_QUEEN, "Moonworm Queen");
@@ -625,6 +653,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addEntityAndEgg(TFEntities.ICE_CRYSTAL, "Ice Crystal");
 		this.addEntityAndEgg(TFEntities.KING_SPIDER, "King Spider");
 		this.addEntityAndEgg(TFEntities.KNIGHT_PHANTOM, "Knight Phantom");
+		this.add("entity.twilightforest.knight_phantom.plural", "Knight Phantoms");
 		this.addEntityAndEgg(TFEntities.KOBOLD, "Kobold");
 		this.addEntityAndEgg(TFEntities.LICH, "Lich");
 		this.addEntityAndEgg(TFEntities.MAZE_SLIME, "Maze Slime");
@@ -635,7 +664,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addEntityAndEgg(TFEntities.NAGA, "Naga");
 		this.addEntityAndEgg(TFEntities.PENGUIN, "Penguin");
 		this.addEntityAndEgg(TFEntities.PINCH_BEETLE, "Pinch Beetle");
-		this.addEntityAndEgg(TFEntities.QUEST_RAM, "Quest Ram");
+		this.addEntityAndEgg(TFEntities.QUEST_RAM, "Questing Ram");
 		this.addEntityAndEgg(TFEntities.RAVEN, "Raven");
 		this.addEntityAndEgg(TFEntities.REDCAP, "Redcap");
 		this.addEntityAndEgg(TFEntities.REDCAP_SAPPER, "Redcap Sapper");
@@ -686,302 +715,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addEntityType(TFEntities.CHEST_BOAT, "Boat with Chest");
 		this.addEntityType(TFEntities.MAGIC_PAINTING, "Magic Painting");
 
-		this.addSubtitle(TFSounds.ACID_RAIN_BURNS, "Acid rain scalds");
-
-		this.addSubtitle(TFSounds.ALPHA_YETI_ALERT, "Alpha Yeti takes notice");
-		this.addSubtitle(TFSounds.ALPHA_YETI_DEATH, "Alpha Yeti dies");
-		this.addSubtitle(TFSounds.ALPHA_YETI_GRAB, "Alpha Yeti grabs");
-		this.addSubtitle(TFSounds.ALPHA_YETI_GROWL, "Alpha Yeti growls");
-		this.addSubtitle(TFSounds.ALPHA_YETI_HURT, "Alpha Yeti hurts");
-		this.addSubtitle(TFSounds.ALPHA_YETI_ICE, "Alpha Yeti throws ice");
-		this.addSubtitle(TFSounds.ALPHA_YETI_PANT, "Alpha Yeti pants");
-		this.addSubtitle(TFSounds.ALPHA_YETI_ROAR, "Alpha Yeti roars");
-		this.addSubtitle(TFSounds.ALPHA_YETI_THROW, "Alpha Yeti throws");
-
-		this.addSubtitle(TFSounds.BIGHORN_SHEEP_AMBIENT, "Bighorn Sheep bleats");
-		this.addSubtitle(TFSounds.BIGHORN_SHEEP_DEATH, "Bighorn Sheep dies");
-		this.addSubtitle(TFSounds.BIGHORN_SHEEP_HURT, "Bighorn Sheep hurts");
-
-		this.addSubtitle(TFSounds.BLOCKCHAIN_GOBLIN_AMBIENT, "Block and Chain Goblin chuckles");
-		this.addSubtitle(TFSounds.BLOCKCHAIN_GOBLIN_DEATH, "Block and Chain Goblin dies");
-		this.addSubtitle(TFSounds.BLOCKCHAIN_GOBLIN_HURT, "Block and Chain Goblin screams");
-
-		this.addSubtitle(TFSounds.BOAR_AMBIENT, "Boar oinks");
-		this.addSubtitle(TFSounds.BOAR_DEATH, "Boar dies");
-		this.addSubtitle(TFSounds.BOAR_HURT, "Boar hurts");
-
-		this.addSubtitle(TFSounds.CARMINITE_BROODLING_AMBIENT, "Carminite Broodling hisses");
-		this.addSubtitle(TFSounds.CARMINITE_BROODLING_DEATH, "Carminite Broodling dies");
-		this.addSubtitle(TFSounds.CARMINITE_BROODLING_HURT, "Carminite Broodling hurts");
-
-		this.addSubtitle(TFSounds.CARMINITE_GHASTGUARD_AMBIENT, "Carminite Ghastguard cries");
-		this.addSubtitle(TFSounds.CARMINITE_GHASTGUARD_DEATH, "Carminite Ghastguard dies");
-		this.addSubtitle(TFSounds.CARMINITE_GHASTGUARD_HURT, "Carminite Ghastguard screams");
-		this.addSubtitle(TFSounds.CARMINITE_GHASTGUARD_SHOOT, "Carminite Ghastguard shoots");
-
-		this.addSubtitle(TFSounds.CARMINITE_GHASTLING_AMBIENT, "Carminite Ghastling cries");
-		this.addSubtitle(TFSounds.CARMINITE_GHASTLING_DEATH, "Carminite Ghastling dies");
-		this.addSubtitle(TFSounds.CARMINITE_GHASTLING_HURT, "Carminite Ghastling screams");
-		this.addSubtitle(TFSounds.CARMINITE_GHASTLING_SHOOT, "Carminite Ghastling shoots");
-
-		this.addSubtitle(TFSounds.CARMINITE_GOLEM_ATTACK, "Carminite Golem swings");
-		this.addSubtitle(TFSounds.CARMINITE_GOLEM_DEATH, "Carminite Golem dies");
-		this.addSubtitle(TFSounds.CARMINITE_GOLEM_HURT, "Carminite Golem hurts");
-
-		this.addSubtitle(TFSounds.DEATH_TOME_AMBIENT, "Death Tome flips pages");
-		this.addSubtitle(TFSounds.DEATH_TOME_DEATH, "Death Tome falls apart");
-		this.addSubtitle(TFSounds.DEATH_TOME_HURT, "Death Tome creases");
-
-		this.addSubtitle(TFSounds.DEER_AMBIENT, "Deer moos");
-		this.addSubtitle(TFSounds.DEER_DEATH, "Deer dies");
-		this.addSubtitle(TFSounds.DEER_HURT, "Deer hurts");
-
-		this.addSubtitle(TFSounds.DWARF_RABBIT_AMBIENT, "Dwarf Rabbit squeaks");
-		this.addSubtitle(TFSounds.DWARF_RABBIT_DEATH, "Dwarf Rabbit dies");
-		this.addSubtitle(TFSounds.DWARF_RABBIT_HURT, "Dwarf Rabbit hurts");
-
-		this.addSubtitle(TFSounds.SKELETON_DRUID_AMBIENT, "Skeleton Druid rattles");
-		this.addSubtitle(TFSounds.SKELETON_DRUID_DEATH, "Skeleton Druid dies");
-		this.addSubtitle(TFSounds.SKELETON_DRUID_HURT, "Skeleton Druid hurts");
-		this.addSubtitle(TFSounds.SKELETON_DRUID_SHOOT, "Skeleton Druid shoots");
-
-		this.addSubtitle(TFSounds.FIRE_BEETLE_DEATH, "Fire Beetle dies");
-		this.addSubtitle(TFSounds.FIRE_BEETLE_HURT, "Fire Beetle hurts");
-		this.addSubtitle(TFSounds.FIRE_BEETLE_SHOOT, "Fire Beetle spews flames");
-
-		this.addSubtitle(TFSounds.GOBLIN_KNIGHT_AMBIENT, "Goblin Knight chuckles");
-		this.addSubtitle(TFSounds.GOBLIN_KNIGHT_DEATH, "Goblin Knight groans in agony");
-		this.addSubtitle(TFSounds.GOBLIN_KNIGHT_HURT, "Goblin Knight screeches in pain");
-
-		this.addSubtitle(TFSounds.GOBLIN_KNIGHT_MUFFLED_AMBIENT, "Muffled Goblin Knight chuckles");
-		this.addSubtitle(TFSounds.GOBLIN_KNIGHT_MUFFLED_DEATH, "Muffled Goblin Knight groans in agony");
-		this.addSubtitle(TFSounds.GOBLIN_KNIGHT_MUFFLED_HURT, "Muffled Goblin Knight screeches in pain");
-
-		this.addSubtitle(TFSounds.HEDGE_SPIDER_AMBIENT, "Hedge Spider hisses");
-		this.addSubtitle(TFSounds.HEDGE_SPIDER_DEATH, "Hedge Spider dies");
-		this.addSubtitle(TFSounds.HEDGE_SPIDER_HURT, "Hedge Spider hurts");
-
-		this.addSubtitle(TFSounds.HELMET_CRAB_DEATH, "Helmet Crab dies");
-		this.addSubtitle(TFSounds.HELMET_CRAB_HURT, "Helmet Crab hurts");
-
-		this.addSubtitle(TFSounds.HOSTILE_WOLF_AMBIENT, "Hostile Wolf growls");
-		this.addSubtitle(TFSounds.HOSTILE_WOLF_DEATH, "Hostile Wolf dies");
-		this.addSubtitle(TFSounds.HOSTILE_WOLF_HURT, "Hostile Wolf hurts");
-		this.addSubtitle(TFSounds.HOSTILE_WOLF_TARGET, "Hostile Wolf takes notice");
-
-		this.addSubtitle(TFSounds.HYDRA_DEATH, "Hydra roars in defeat");
-		this.addSubtitle(TFSounds.HYDRA_GROWL, "Hydra growls");
-		this.addSubtitle(TFSounds.HYDRA_HURT, "Hydra hurts");
-		this.addSubtitle(TFSounds.HYDRA_ROAR, "Hydra roars");
-		this.addSubtitle(TFSounds.HYDRA_SHOOT, "Hydra shoots mortar");
-		this.addSubtitle(TFSounds.HYDRA_SHOOT_FIRE, "Hydra shoots fire");
-		this.addSubtitle(TFSounds.HYDRA_WARN, "Hydra prepares to bite");
-
-		this.addSubtitle(TFSounds.ICE_CORE_AMBIENT, "Ice Core crackles");
-		this.addSubtitle(TFSounds.ICE_CORE_DEATH, "Ice Core dies");
-		this.addSubtitle(TFSounds.ICE_CORE_HURT, "Ice Core hurts");
-		this.addSubtitle(TFSounds.ICE_CORE_SHOOT, "Ice Core shoots snowball");
-
-		this.addSubtitle(TFSounds.KING_SPIDER_AMBIENT, "King Spider hisses");
-		this.addSubtitle(TFSounds.KING_SPIDER_DEATH, "King Spider dies");
-		this.addSubtitle(TFSounds.KING_SPIDER_HURT, "King Spider hurts");
-
-		this.addSubtitle(TFSounds.KNIGHT_PHANTOM_AMBIENT, "Knight Phantom gasps");
-		this.addSubtitle(TFSounds.KNIGHT_PHANTOM_DEATH, "Knight Phantom dies");
-		this.addSubtitle(TFSounds.KNIGHT_PHANTOM_HURT, "Knight Phantom hurts");
-		this.addSubtitle(TFSounds.KNIGHT_PHANTOM_THROW_PICK, "Knight Phantom throws axe");
-		this.addSubtitle(TFSounds.KNIGHT_PHANTOM_THROW_AXE, "Knight Phantom throws pickaxe");
-
-		this.addSubtitle(TFSounds.KOBOLD_AMBIENT, "Kobold grumbles");
-		this.addSubtitle(TFSounds.KOBOLD_DEATH, "Kobold dies");
-		this.addSubtitle(TFSounds.KOBOLD_HURT, "Kobold hurts");
-		this.addSubtitle(TFSounds.KOBOLD_MUNCH, "Kobold munches on food");
-
-		this.addSubtitle(TFSounds.LICH_AMBIENT, "Lich breathes");
-		this.addSubtitle(TFSounds.LICH_CLONE_HURT, "Lich shadow clone bypasses attack");
-		this.addSubtitle(TFSounds.LICH_DEATH, "Lich dies");
-		this.addSubtitle(TFSounds.LICH_HURT, "Lich hurts");
-		this.addSubtitle(TFSounds.LICH_POP_MOB, "Lich absorbs mob");
-		this.addSubtitle(TFSounds.LICH_SHOOT, "Lich shoots");
-		this.addSubtitle(TFSounds.LICH_TELEPORT, "Lich teleports");
-
-		this.addSubtitle(TFSounds.LOYAL_ZOMBIE_AMBIENT, "Loyal Zombie groans");
-		this.addSubtitle(TFSounds.LOYAL_ZOMBIE_DEATH, "Loyal Zombie dies");
-		this.addSubtitle(TFSounds.LOYAL_ZOMBIE_HURT, "Loyal Zombie hurts");
-		this.addSubtitle(TFSounds.LOYAL_ZOMBIE_SUMMON, "Loyal Zombie summoned");
-
-		this.addSubtitle(TFSounds.MAZE_SLIME_DEATH, "Maze Slime dies");
-		this.addSubtitle(TFSounds.MAZE_SLIME_HURT, "Maze Slime hurts");
-		this.addSubtitle(TFSounds.MAZE_SLIME_SQUISH, "Maze Slime squishes");
-
-		this.addSubtitle(TFSounds.MINION_AMBIENT, "Lich Minion groans");
-		this.addSubtitle(TFSounds.MINION_DEATH, "Lich Minion dies");
-		this.addSubtitle(TFSounds.MINION_HURT, "Lich Minion hurts");
-		this.addSubtitle(TFSounds.MINION_SUMMON, "Lich summons new Minion");
-
-		this.addSubtitle(TFSounds.MINOSHROOM_AMBIENT, "Minoshroom moos");
-		this.addSubtitle(TFSounds.MINOSHROOM_ATTACK, "Minoshroom attacks");
-		this.addSubtitle(TFSounds.MINOSHROOM_DEATH, "Minoshroom dies");
-		this.addSubtitle(TFSounds.MINOSHROOM_HURT, "Minoshroom hurts");
-		this.addSubtitle(TFSounds.MINOSHROOM_SLAM, "Minoshroom slams ground");
-
-		this.addSubtitle(TFSounds.MINOTAUR_AMBIENT, "Minotaur moos");
-		this.addSubtitle(TFSounds.MINOTAUR_ATTACK, "Minotaur attacks");
-		this.addSubtitle(TFSounds.MINOTAUR_DEATH, "Minotaur dies");
-		this.addSubtitle(TFSounds.MINOTAUR_HURT, "Minotaur hurts");
-
-		this.addSubtitle(TFSounds.MIST_WOLF_AMBIENT, "Mist Wolf growls");
-		this.addSubtitle(TFSounds.MIST_WOLF_DEATH, "Mist Wolf dies");
-		this.addSubtitle(TFSounds.MIST_WOLF_HURT, "Mist Wolf hurts");
-		this.addSubtitle(TFSounds.MIST_WOLF_TARGET, "Mist Wolf takes notice");
-
-		this.addSubtitle(TFSounds.MOSQUITO, "Mosquitoes buzz");
-
-		this.addSubtitle(TFSounds.NAGA_HISS, "Naga hisses");
-		this.addSubtitle(TFSounds.NAGA_HURT, "Naga hurts");
-		this.addSubtitle(TFSounds.NAGA_RATTLE, "Naga rattles");
-
-		this.addSubtitle(TFSounds.PINCH_BEETLE_DEATH, "Pinch Beetle dies");
-		this.addSubtitle(TFSounds.PINCH_BEETLE_HURT, "Pinch Beetle hurts");
-
-		this.addSubtitle(TFSounds.QUEST_RAM_AMBIENT, "Quest Ram bleats");
-		this.addSubtitle(TFSounds.QUEST_RAM_DEATH, "Quest Ram dies");
-		this.addSubtitle(TFSounds.QUEST_RAM_HURT, "Quest Ram hurts");
-
-		this.addSubtitle(TFSounds.RAVEN_CAW, "Raven caws");
-		this.addSubtitle(TFSounds.RAVEN_SQUAWK, "Raven squawks in pain");
-
-		this.addSubtitle(TFSounds.REDCAP_AMBIENT, "Redcap chuckles");
-		this.addSubtitle(TFSounds.REDCAP_DEATH, "Redcap groans in agony");
-		this.addSubtitle(TFSounds.REDCAP_HURT, "Redcap screeches in pain");
-
-		this.addSubtitle(TFSounds.SHIELD_ADD, "Fortification Shield spawns");
-		this.addSubtitle(TFSounds.SHIELD_BREAK, "Fortification Shield breaks");
-
-		this.addSubtitle(TFSounds.SLIME_BEETLE_DEATH, "Slime Beetle dies");
-		this.addSubtitle(TFSounds.SLIME_BEETLE_HURT, "Slime Beetle hurts");
-		this.addSubtitle(TFSounds.SLIME_BEETLE_SQUISH, "Slime Beetle shoots");
-
-		this.addSubtitle(TFSounds.SNOW_GUARDIAN_AMBIENT, "Snow Guardian crackles");
-		this.addSubtitle(TFSounds.SNOW_GUARDIAN_DEATH, "Snow Guardian dies");
-		this.addSubtitle(TFSounds.SNOW_GUARDIAN_HURT, "Snow Guardian hurts");
-
-		this.addSubtitle(TFSounds.SNOW_QUEEN_AMBIENT, "Snow Queen crackles");
-		this.addSubtitle(TFSounds.SNOW_QUEEN_ATTACK, "Snow Queen attacks");
-		this.addSubtitle(TFSounds.SNOW_QUEEN_BREAK, "Snow Queen deflects attack");
-		this.addSubtitle(TFSounds.SNOW_QUEEN_DEATH, "Snow Queen dies");
-		this.addSubtitle(TFSounds.SNOW_QUEEN_HURT, "Snow Queen hurts");
-
-		this.addSubtitle(TFSounds.SWARM_SPIDER_AMBIENT, "Swarm Spider hisses");
-		this.addSubtitle(TFSounds.SWARM_SPIDER_DEATH, "Swarm Spider dies");
-		this.addSubtitle(TFSounds.SWARM_SPIDER_HURT, "Swarm Spider hurts");
-
-		this.addSubtitle(TFSounds.TEAR_BREAK, "Ur-Ghast tear shatters");
-
-		this.addSubtitle(TFSounds.TINY_BIRD_CHIRP, "Bird chirps");
-		this.addSubtitle(TFSounds.TINY_BIRD_HURT, "Bird squeaks in pain");
-		this.addSubtitle(TFSounds.TINY_BIRD_SONG, "Bird sings");
-		this.addSubtitle(TFSounds.TINY_BIRD_TAKEOFF, "Bird takes off");
-
-		this.addSubtitle(TFSounds.TOWERWOOD_BORER_AMBIENT, "Towerwood Borer hisses");
-		this.addSubtitle(TFSounds.TOWERWOOD_BORER_DEATH, "Towerwood Borer dies");
-		this.addSubtitle(TFSounds.TOWERWOOD_BORER_HURT, "Towerwood Borer hurts");
-
-		this.addSubtitle(TFSounds.TROLL_THROWS_ROCK, "Troll chucks block");
-
-		this.addSubtitle(TFSounds.UR_GHAST_AMBIENT, "Ur-Ghast cries");
-		this.addSubtitle(TFSounds.UR_GHAST_DEATH, "Ur-Ghast dies");
-		this.addSubtitle(TFSounds.UR_GHAST_HURT, "Ur-Ghast screams");
-		this.addSubtitle(TFSounds.UR_GHAST_SHOOT, "Ur-Ghast shoots");
-		this.addSubtitle(TFSounds.UR_GHAST_TANTRUM, "Ur-Ghast wails");
-
-		this.addSubtitle(TFSounds.WINTER_WOLF_AMBIENT, "Winter Wolf growls");
-		this.addSubtitle(TFSounds.WINTER_WOLF_DEATH, "Winter Wolf dies");
-		this.addSubtitle(TFSounds.WINTER_WOLF_HURT, "Winter Wolf hurts");
-		this.addSubtitle(TFSounds.WINTER_WOLF_SHOOT, "Winter Wolf shoots");
-		this.addSubtitle(TFSounds.WINTER_WOLF_TARGET, "Winter Wolf takes notice");
-
-		this.addSubtitle(TFSounds.WRAITH_AMBIENT, "Wraith gasps");
-		this.addSubtitle(TFSounds.WRAITH_DEATH, "Wraith dies");
-		this.addSubtitle(TFSounds.WRAITH_HURT, "Wraith hurts");
-
-		this.addSubtitle(TFSounds.YETI_DEATH, "Yeti dies");
-		this.addSubtitle(TFSounds.YETI_GRAB, "Yeti grabs");
-		this.addSubtitle(TFSounds.YETI_GROWL, "Yeti growls");
-		this.addSubtitle(TFSounds.YETI_HURT, "Yeti hurts");
-		this.addSubtitle(TFSounds.YETI_THROW, "Yeti throws");
-
-		this.addSubtitle(TFSounds.ALPHA_YETI_PARROT, "Parrot coldly growls");
-		this.addSubtitle(TFSounds.CARMINITE_GOLEM_PARROT, "Parrot thunks");
-		this.addSubtitle(TFSounds.DEATH_TOME_PARROT, "Parrot makes book noises");
-		this.addSubtitle(TFSounds.HOSTILE_WOLF_PARROT, "Parrot growls");
-		this.addSubtitle(TFSounds.HYDRA_PARROT, "Parrot roars");
-		this.addSubtitle(TFSounds.ICE_CORE_PARROT, "Parrot crackles");
-		this.addSubtitle(TFSounds.KOBOLD_PARROT, "Parrot grumbles");
-		this.addSubtitle(TFSounds.MINOTAUR_PARROT, "Parrot moos angrily");
-		this.addSubtitle(TFSounds.MOSQUITO_PARROT, "Parrot buzzes");
-		this.addSubtitle(TFSounds.NAGA_PARROT, "Parrot rattles");
-		this.addSubtitle(TFSounds.REDCAP_PARROT, "Parrot chuckles");
-		this.addSubtitle(TFSounds.WRAITH_PARROT, "Parrot gasps");
-
-		this.addSubtitle(TFSounds.BEANSTALK_GROWTH, "Ground rumbles");
-		this.addSubtitle(TFSounds.BLOCK_ANNIHILATED, "Block dissolves");
-		this.addSubtitle(TFSounds.BOSS_CHEST_APPEAR, "Boss Chest appears");
-		this.addSubtitle(TFSounds.BUG_SQUISH, "Bug gets squished :(");
-		this.addSubtitle(TFSounds.BUILDER_CREATE, "Carminite Builder creates block");
-		this.addSubtitle(TFSounds.BUILDER_OFF, "Carminite Builder deactivates");
-		this.addSubtitle(TFSounds.BUILDER_ON, "Carminite Builder activates");
-		this.addSubtitle(TFSounds.BUILDER_REPLACE, "Built Block expires");
-		this.addSubtitle(TFSounds.CASKET_CLOSE, "Keepsake Casket closes");
-		this.addSubtitle(TFSounds.CASKET_LOCKED, "Keepsake Casket clicks");
-		this.addSubtitle(TFSounds.CASKET_OPEN, "Keepsake Casket opens");
-		this.addSubtitle(TFSounds.CASKET_REPAIR, "Keepsake Casket repaired");
-		this.addSubtitle(TFSounds.CICADA, "Cicada screams");
-		this.addSubtitle(TFSounds.DOOR_ACTIVATED, "Castle Door clicks");
-		this.addSubtitle(TFSounds.DOOR_REAPPEAR, "Castle Door reappears");
-		this.addSubtitle(TFSounds.DOOR_VANISH, "Castle Door vanishes");
-		this.addSubtitle(TFSounds.GHAST_TRAP_AMBIENT, "Ghast Trap dings");
-		this.addSubtitle(TFSounds.GHAST_TRAP_ON, "Ghast Trap buzzes");
-		this.addSubtitle(TFSounds.GHAST_TRAP_SPINDOWN, "Ghast Trap shuts off");
-		this.addSubtitle(TFSounds.GHAST_TRAP_WARMUP, "Ghast Trap warms up");
-		this.addSubtitle(TFSounds.JET_ACTIVE, "Fire Jet flares");
-		this.addSubtitle(TFSounds.JET_POP, "Fire Jet pops");
-		this.addSubtitle(TFSounds.JET_START, "Fire Jet activates");
-		this.addSubtitle(TFSounds.LOCKED_VANISHING_BLOCK, "Towerwood door clicks");
-		this.addSubtitle(TFSounds.PEDESTAL_ACTIVATE, "Trophy Pedestal accepts trophy");
-		this.addSubtitle(TFSounds.PICKED_TORCHBERRIES, "Torchberries pop");
-		this.addSubtitle(TFSounds.PORTAL_WHOOSH, "Twilight Forest Portal beckons");
-		this.addSubtitle(TFSounds.REACTOR_AMBIENT, "Carminite Reactor whooshes");
-		this.addSubtitle(TFSounds.REAPPEAR_BLOCK, "Reappearing Block reappears");
-		this.addSubtitle(TFSounds.REAPPEAR_POOF, "Reappearing Block disappears");
-		this.addSubtitle(TFSounds.SLIDER, "Sliding Trap creaks");
-		this.addSubtitle(TFSounds.SMOKER_START, "Smoker activates");
-		this.addSubtitle(TFSounds.TIME_CORE, "Tree of Time ticks");
-		this.addSubtitle(TFSounds.TRANSFORMATION_CORE, "Tree of Transformation hums");
-		this.addSubtitle(TFSounds.UNLOCK_VANISHING_BLOCK, "Towerwood door unlocks");
-		this.addSubtitle(TFSounds.VANISHING_BLOCK, "Vanishing Block vanishes");
-		this.addSubtitle(TFSounds.WROUGHT_IRON_FENCE_EXTENDED, "Iron clanks");
-
-		this.addSubtitle(TFSounds.BLOCK_AND_CHAIN_COLLIDE, "Block and Chain hits block");
-		this.addSubtitle(TFSounds.BLOCK_AND_CHAIN_FIRED, "Block and Chain fires");
-		this.addSubtitle(TFSounds.BLOCK_AND_CHAIN_HIT, "Block and Chain hits entity");
-		this.addSubtitle(TFSounds.BRITTLE_FLASK_BREAK, "Brittle Flask shatters");
-		this.addSubtitle(TFSounds.BRITTLE_FLASK_CRACK, "Brittle Flask cracks");
-		this.addSubtitle(TFSounds.CHARM_KEEP, "Charm of Keeping returns items");
-		this.addSubtitle(TFSounds.CHARM_LIFE, "Charm of Keeping regenerates");
-		this.addSubtitle(TFSounds.FAN_WHOOSH, "Peacock Feather Fan blows");
-		this.addSubtitle(TFSounds.FLASK_FILL, "Potion Flask fills");
-		this.addSubtitle(TFSounds.GLASS_SWORD_BREAK, "Glass Sword shatters");
-		this.addSubtitle(TFSounds.ICE_BOMB_FIRED, "Ice Bomb thrown");
-		this.addSubtitle(TFSounds.KNIGHTMETAL_EQUIP, "Knightmetal Armor clanks");
-		this.addSubtitle(TFSounds.LAMP_BURN, "Lamp of Cinders ignites area");
-		this.addSubtitle(TFSounds.MAGNET_GRAB, "Ore Magnet pulls up ore");
-		this.addSubtitle(TFSounds.METAL_SHIELD_SHATTERS, "Metal Shield shatters");
-		this.addSubtitle(TFSounds.MOONWORM_SQUISH, "Moonworm fires");
-		this.addSubtitle(TFSounds.POWDER_USE, "Mob Transforms");
-		this.addSubtitle(TFSounds.SCEPTER_DRAIN, "Life Scepter drains");
-		this.addSubtitle(TFSounds.SCEPTER_PEARL, "Twilight Scepter throws pearl");
-		this.addSubtitle(TFSounds.WOOD_SHIELD_SHATTERS, "Wooden Shield shatters");
+		SUBTITLE_GENERATOR.forEach(this::add);
 
 		this.addDeathMessage("ghastTear", "%1$s was scalded by fiery tears");
 		this.addDeathMessage("ghastTear.player", "%1$s was scalded by fiery tears while escaping %2$s");
@@ -1059,58 +793,59 @@ public class LangGenerator extends TFLangProvider {
 		this.addStat("trophy_pedestals_activated", "Trophy Pedestals Activated");
 		this.addStat("uncrafting_table_interactions", "Interactions with Uncrafting Table");
 
-		this.add("config.jade.plugin_twilightforest.quest_ram_wool", "Quest Ram Wool");
+		this.add("config.jade.plugin_twilightforest.quest_ram_wool", "Questing Ram Wool");
+		this.add("config.jade.plugin_twilightforest.chiseled_bookshelf_spawner", "Chiseled Canopy Bookshelf Spawns");
 
 		this.add("twilightforest.book.author", "a forgotten explorer");
 
 		this.addBookAndContents("lichtower", "Notes on a Pointy Tower",
-				"§8[An explorer's notebook, gnawed on by monsters]§0\n\nI have begun examining the strange aura surrounding this tower. The bricks of the tower are protected by a curse, stronger than any I've seen before. The magic from the curse is boiling off into the",
-				"surrounding area.\n\nIn my homeland I would have many options for dealing with this magic, but here my supplies are limited. I shall have to research...",
-				"§8[[Many entries later]]§0\n\nA breakthrough! In my journeys I sighted a huge snake-like monster in a decorated courtyard. Nearby, I picked up a worn down, discarded green scale.\n\nThe magic in the scale seems to have the curse-breaking",
-				"properties I need, but the magic is too dim. I may need to acquire a fresher specimen, directly from the creature.");
+			"§8[An explorer's notebook, gnawed on by monsters]§0\n\nI have begun examining the strange aura surrounding this tower. The bricks of the tower are protected by a curse, stronger than any I've seen before. The magic from the curse is boiling off into the",
+			"surrounding area.\n\nIn my homeland I would have many options for dealing with this magic, but here my supplies are limited. I shall have to research...",
+			"§8[[Many entries later]]§0\n\nA breakthrough! In my journeys I sighted a huge snake-like monster in a decorated courtyard. Nearby, I picked up a worn down, discarded green scale.\n\nThe magic in the scale seems to have the curse-breaking",
+			"properties I need, but the magic is too dim. I may need to acquire a fresher specimen, directly from the creature.");
 
 		this.addBookAndContents("labyrinth", "Notes on a Swampy Labyrinth",
-				"§8[[An explorer's notebook, written on waterproof paper]]§0\n\nThe mosquitoes in this swamp are vexing, but strange. The vast majority of them seem to have no natural source, nor do they seem to have a role in the local ecology. I have begun to suspect that they are",
-				"some kind of magical curse.\n\n§8[[Next entry]]§0\n\nNow that I have encountered a protection spell on the ruined labyrinth here, I consider my suspicions confirmed. Both the protection spell and the mosquitoes are a",
-				"curse. This curse seems to have a different source from the others I have encountered. I will have to research further...\n\n§8[[Next entry]]§0\n\nThe curse seems to be of a type too powerful for one being alone to",
-				"produce. Several wizards working in combination would be necessary.\n\nIf one of the wizards stopped contributing, the whole of the curse over the entire swamp would fall. Strangely, my divinations do not show signs of any nearby living wizards.",
-				"I did see something interesting in one of the nearby pointy-roofed towers though...");
+			"§8[[An explorer's notebook, written on waterproof paper]]§0\n\nThe mosquitoes in this swamp are vexing, but strange. The vast majority of them seem to have no natural source, nor do they seem to have a role in the local ecology. I have begun to suspect that they are",
+			"some kind of magical curse.\n\n§8[[Next entry]]§0\n\nNow that I have encountered a protection spell on the ruined labyrinth here, I consider my suspicions confirmed. Both the protection spell and the mosquitoes are a",
+			"curse. This curse seems to have a different source from the others I have encountered. I will have to research further...\n\n§8[[Next entry]]§0\n\nThe curse seems to be of a type too powerful for one being alone to",
+			"produce. Several wizards working in combination would be necessary.\n\nIf one of the wizards stopped contributing, the whole of the curse over the entire swamp would fall. Strangely, my divinations do not show signs of any nearby living wizards.",
+			"I did see something interesting in one of the nearby pointy-roofed towers though...");
 
 		this.addBookAndContents("hydralair", "Notes on the Fire Swamp",
-				"§8[[An explorer's notebook, written on fireproof paper]]§0\n\nFire is a trivial obstacle for a master explorer such as myself. I have traversed seas of fire, and swam through oceans of lava. The burning air here is an interesting variation, but",
-				"ultimately no hindrance.\n\nWhat does stop me though is that I have encountered another protection spell, this time surrounding a mighty creature that must be king of this fire swamp. This is not the first protection spell I have encountered, and I am",
-				"beginning to unravel the mysteries of how they work.\n\nIf this spell is like the others, it will be sustained by a powerful creature nearby. Surrounding the fire swamp are several wet swamps, and under those swamps are labyrinths full of minotaurs.",
-				"The logical choice to bind such a spell to would be some sort of powerful minotaur, different in some way from the others that surround it...");
+			"§8[[An explorer's notebook, written on fireproof paper]]§0\n\nFire is a trivial obstacle for a master explorer such as myself. I have traversed seas of fire, and swam through oceans of lava. The burning air here is an interesting variation, but",
+			"ultimately no hindrance.\n\nWhat does stop me though is that I have encountered another protection spell, this time surrounding a mighty creature that must be king of this fire swamp. This is not the first protection spell I have encountered, and I am",
+			"beginning to unravel the mysteries of how they work.\n\nIf this spell is like the others, it will be sustained by a powerful creature nearby. Surrounding the fire swamp are several wet swamps, and under those swamps are labyrinths full of minotaurs.",
+			"The logical choice to bind such a spell to would be some sort of powerful minotaur, different in some way from the others that surround it...");
 
 		this.addBookAndContents("tfstronghold", "Notes on a Stronghold",
-				"§8[[An explorer's notebook, written on faintly glowing paper]]§0\n\nThe tendrils of darkness surrounding this area are just a manifestation of a protective spell over the entire dark forest. The spell causes blindness, which is quite vexing. I have seen several",
-				"interesting things in the area and would like to keep exploring.\n\n§8[[Next entry]]§0\n\nI have found ruins in the dark forest. They belong to a stronghold, of a type usually inhabited by knights. Rather than knights though, this stronghold is full of",
-				"goblins. They wear knightly armor, but their behavior is most un-knightly.\n\n§8[[Next entry]]§0\n\nDeep in the ruins, I have found a pedestal. The pedestal seems to be of a type that knights would place trophies on to prove their strength.",
-				"Obtaining a powerful scepter would seem to weaken the curse on the dark forest, and placing a trophy associated with a powerful creature on the pedestal would likely grant access into the main part of the stronghold.");
+			"§8[[An explorer's notebook, written on faintly glowing paper]]§0\n\nThe tendrils of darkness surrounding this area are just a manifestation of a protective spell over the entire dark forest. The spell causes blindness, which is quite vexing. I have seen several",
+			"interesting things in the area and would like to keep exploring.\n\n§8[[Next entry]]§0\n\nI have found ruins in the dark forest. They belong to a stronghold, of a type usually inhabited by knights. Rather than knights though, this stronghold is full of",
+			"goblins. They wear knightly armor, but their behavior is most un-knightly.\n\n§8[[Next entry]]§0\n\nDeep in the ruins, I have found a pedestal. The pedestal seems to be of a type that knights would place trophies on to prove their strength.",
+			"Obtaining a powerful scepter would seem to weaken the curse on the dark forest, and placing a trophy associated with a powerful creature on the pedestal would likely grant access into the main part of the stronghold.");
 
 		this.addBookAndContents("darktower", "Notes on a Wooden Tower",
-				"§8[[An explorer's notebook that seems to have survived an explosion]]§0\n\nThis tower clearly has mechanisms that are not responding to me. Their magic almost yearns to acknowledge my touch, but it cannot. It is if the devices of the tower are being",
-				"suppressed by a powerful group of beings nearby.\n\n§8[[Next entry]]§0\n\nThe magic seems to emanate from deep within the strongholds nearby. It can't come from the goblins, as their magic is charming, but unfocused. There",
-				"must still be some force still active in the strongholds.\n\n§8[[Next entry]]§0\n\nMy analysis indicates that it comes from several sources, operating as a group. I will head back to the stronghold after I resupply...");
+			"§8[[An explorer's notebook that seems to have survived an explosion]]§0\n\nThis tower clearly has mechanisms that are not responding to me. Their magic almost yearns to acknowledge my touch, but it cannot. It is if the devices of the tower are being",
+			"suppressed by a powerful group of beings nearby.\n\n§8[[Next entry]]§0\n\nThe magic seems to emanate from deep within the strongholds nearby. It can't come from the goblins, as their magic is charming, but unfocused. There",
+			"must still be some force still active in the strongholds.\n\n§8[[Next entry]]§0\n\nMy analysis indicates that it comes from several sources, operating as a group. I will head back to the stronghold after I resupply...");
 
 		this.addBookAndContents("yeticave", "Notes on an Icy Cave",
-				"§8[[An explorer's notebook, covered in frost]]§0\n\nThe blizzard surrounding these snowy lands is unceasing. This is no ordinary snowfall--this is a magical phenomenon. I will have to conduct experiments to find what is capable of",
-				"causing such an effect.\n\n§8[[Next entry]]§0\n\nThe curse seems to be of a type too powerful for one being alone to produce. Several wizards working in combination would be necessary. If one of the wizards stopped",
-				"contributing, the blizzard would calm. Strangely, my divinations do not show signs of any nearby living wizards. I did see something interesting in one of the nearby pointy-roofed towers though...");
+			"§8[[An explorer's notebook, covered in frost]]§0\n\nThe blizzard surrounding these snowy lands is unceasing. This is no ordinary snowfall--this is a magical phenomenon. I will have to conduct experiments to find what is capable of",
+			"causing such an effect.\n\n§8[[Next entry]]§0\n\nThe curse seems to be of a type too powerful for one being alone to produce. Several wizards working in combination would be necessary. If one of the wizards stopped",
+			"contributing, the blizzard would calm. Strangely, my divinations do not show signs of any nearby living wizards. I did see something interesting in one of the nearby pointy-roofed towers though...");
 
 		this.addBookAndContents("icetower", "Notes on Auroral Fortification",
-				"§8[[An explorer's notebook, caked in ice]]§0\n\nI overcame one blizzard, only to run into this terrible ice storm atop the glacier. My explorations have shown me the splendor of an ice palace, shining with the colors of the",
-				"polar aurora. It all seems protected by some sort of curse.\n\n§8[[Next entry]]§0\n\nI am no novice. This curse is fed by the power of a creature nearby. The cause of the curse surrounding the fire swamp was built off the power of the",
-				"leader of the minotaurs nearby.\n\nSurrounding this glacier, there are masses of yetis. Perhaps the yetis have some sort of leader...");
+			"§8[[An explorer's notebook, caked in ice]]§0\n\nI overcame one blizzard, only to run into this terrible ice storm atop the glacier. My explorations have shown me the splendor of an ice palace, shining with the colors of the",
+			"polar aurora. It all seems protected by some sort of curse.\n\n§8[[Next entry]]§0\n\nI am no novice. This curse is fed by the power of a creature nearby. The cause of the curse surrounding the fire swamp was built off the power of the",
+			"leader of the minotaurs nearby.\n\nSurrounding this glacier, there are masses of yetis. Perhaps the yetis have some sort of leader...");
 
 		this.addBookAndContents("trollcave", "Notes on the Highlands",
-				"§8[[An explorer's notebook, damaged by acid]]§0\n\nThere seems to be no way to protect myself from the toxic rainstorm surrounding this area. In my brief excursions, I have also encountered another protection spell, similar to the others I have",
-				"witnessed. The spell must be connected to the toxic storm in some way. Further research to follow...\n\n§8[[Next entry]]§0\n\nSuch supreme weather magic must be the result of multiple undefeated great evils in this world. My studies contain",
-				"several clues pointing at a searing swamp, a forest coated in deep darkness, and a realm coated in snow.");
+			"§8[[An explorer's notebook, damaged by acid]]§0\n\nThere seems to be no way to protect myself from the toxic rainstorm surrounding this area. In my brief excursions, I have also encountered another protection spell, similar to the others I have",
+			"witnessed. The spell must be connected to the toxic storm in some way. Further research to follow...\n\n§8[[Next entry]]§0\n\nSuch supreme weather magic must be the result of multiple undefeated great evils in this world. My studies contain",
+			"several clues pointing at a searing swamp, a forest coated in deep darkness, and a realm coated in snow.");
 
 		this.addBookAndContents("unknown", "Notes on the Unexplained",
-				"§8[[This book shows signs of having been copied many times]]§0\n\nI cannot explain the field surrounding this structure, but the magic is powerful. If this curse is like the others, then the answer to unlocking it lies elsewhere. Perhaps there is something I have left",
-				"undone, or some monster I have yet to defeat. I will have to turn back. I will return to this place later, to see if anything has changed.");
+			"§8[[This book shows signs of having been copied many times]]§0\n\nI cannot explain the field surrounding this structure, but the magic is powerful. If this curse is like the others, then the answer to unlocking it lies elsewhere. Perhaps there is something I have left",
+			"undone, or some monster I have yet to defeat. I will have to turn back. I will return to this place later, to see if anything has changed.");
 
 		this.addScreenMessage("optifine.title", "WARNING: OPTIFINE DETECTED");
 		this.addScreenMessage("optifine.message", "Before proceeding, please note that Optifine is known to cause crashes, multipart entity visual bugs and many other issues.\n\nBefore reporting a bug, please remove Optifine first and check again to see if the bug is still present.\n\nOptifine-related issues are not solvable on Twilight Forest's end!\n\nThis screen may be disabled in the Client Config.");
@@ -1122,6 +857,8 @@ public class LangGenerator extends TFLangProvider {
 		this.addScreenMessage("crumble_horn_jei", "Crumble Horn");
 		this.addScreenMessage("transformation_jei", "Transformation Powder");
 		this.addScreenMessage("uncrafting_jei", "Uncrafting");
+		this.addScreenMessage("moonworm_queen_jei", "Moonworm Queen Repairing");
+		this.add("item.twilightforest.moonworm_queen.jei_info_message", "Torchberries restore 64 durability each");
 
 		this.addTrim("carminite", "Carminite");
 		this.addTrim("fiery", "Fiery");
@@ -1157,5 +894,121 @@ public class LangGenerator extends TFLangProvider {
 			this.add(location.toLanguageKey("magic_painting", "title"), stringStringPair.getFirst());
 			this.add(location.toLanguageKey("magic_painting", "author"), stringStringPair.getSecond());
 		});
+
+		this.createTip("anvil_squashing", "Bugs can be squashed by Anvils.");
+		this.createTip("arctic_armor", "Arctic Armor can be dyed any color.");
+		this.createTip("banister_shape", "Banisters can be right-clicked with an axe to change their height.");
+		this.createTip("block_and_chain", "Enchanting a Block and Chain with Destruction allows it to break blocks.");
+		this.createTip("boggard", "What the heck is a Boggard?");
+		this.createTip("bugs_on_head", "Bugs will happily sit on your head.");
+		this.createTip("burnt_thorns", "Burnt Thorns will disintegrate when stepped on.");
+		this.createTip("carminite_builder", "Carminite Builders place temporary blocks in the direction you're looking.");
+		this.createTip("charm_of_keeping", "A Charm of Keeping will return parts of your inventory after death.");
+		this.createTip("charm_of_life", "A Charm of Life can save you from a fatal blow.");
+		this.createTip("crumble_horn", "The Crumble Horn will deteriorate nearby blocks when used.");
+		this.createTip("druid_hut", "Druid huts sometimes have hidden basements.");
+		this.createTip("e115_pickup", "Sneak + right-click placed Experiment 115 to pick it back up.");
+		this.createTip("e115_sprinkle", "Redstone can be sprinkled on top of Experiment 115.");
+		this.createTip("experiment_115", "Does anyone know what Experiment 115 really is?");
+		this.createTip("fiery_pickaxe", "A Fiery Pickaxe will smelt any blocks it breaks.");
+		this.createTip("ghast_trap", "Killing Carminite Ghastlings near a Ghast Trap will charge it.");
+		this.createTip("glass_sword", "Glass Swords break after a single hit.");
+		this.createTip("hollow_log", "Various things can be placed inside Hollow Logs such as snow, moss, or ladders.");
+		this.createTip("hollow_oak_sapling", "Saplings that grow into giant hollow trees can be found in Druid Huts.");
+		this.createTip("hollow_oak_tree", "Hollow Oak trees sometimes have dungeon-like rooms with unique loot in their leaves.");
+		this.createTip("hydra_chop", "Hydra Chops fill up your hunger bar completely when eaten.");
+		this.createTip("hydra_heads", "For each head slain, the Hydra will regrow two in its place!");
+		this.createTip("hydra_mortars", "You can deflect the Hydra's mortar attack.");
+		this.createTip("ice_core", "Ice Cores and Snow Guardians melt in hot biomes.");
+		this.createTip("jars", "Fireflies and Cicadas can be put into jars.");
+		this.createTip("kobold", "Kobold");
+		this.createTip("labyrinth_vault", "The Labyrinth contains a secret room.");
+		this.createTip("lich_scepters", "The Lich drops a variety of magic-based scepters.");
+		this.createTip("liveroot", "Liveroot is found under most trees.");
+		this.createTip("magic_beans", "Planting Magic Beans on Uberous Soil sprouts a mighty beanstalk.");
+		this.createTip("magic_leaves", "Magic Tree Leaves won't drop saplings when broken.");
+		this.createTip("magic_map", "Magic Maps are used to easily locate structures.");
+		this.createTip("magic_saplings", "Special magic saplings can be found inside Hollow Oak trees.");
+		this.createTip("mazebreaker", "The Mazebreaker can break Mazestone blocks 16 times faster and doesn't take extra durability damage.");
+		this.createTip("mining_tree", "The Miner's Tree will pull ores up to the surface.");
+		this.createTip("moon_dial", "The Moon Dial shows the current phase of the moon.");
+		this.createTip("moonworm_queen", "The Moonworm Queen can be fed Torchberries.");
+		this.createTip("mushglooms", "Mushglooms cannot be bonemealed into giant mushrooms. However, placing them on Uberous Soil will make them grow.");
+		this.createTip("music_disc", "Music Discs are found outside of dungeons.");
+		this.createTip("naga", "The Naga can be stunned by making it ram something hard!");
+		this.createTip("netherite_axe", "There will never be a Netherite Minotaur Axe.");
+		this.createTip("ore_magnet", "The Ore Magnet can pull ore veins up to the surface.");
+		this.createTip("peacock_feather_fan", "The Peacock Feather Fan can be used to extinguish Candles.");
+		this.createTip("phantom_armor", "Phantom Armor is automatically kept on death.");
+		this.createTip("quest_ram", "The Questing Ram will reward anyone who gives it what it's missing.");
+		this.createTip("red_thread", "Red Thread can be seen through walls.");
+		this.createTip("redcap", "Redcaps can place and light TNT.");
+		this.createTip("skull_candle", "Candles can be placed on top of mob heads to create a fancy light source.");
+		this.createTip("sorting_tree", "The Sorting Tree will sort chests next to it into other chests nearby.");
+		this.createTip("spooky_forest", "The Spooky Forest is not Halloween themed.");
+		this.createTip("structure_conquering", "Killing a boss will make mobs stop spawning in that structure.");
+		this.createTip("structure_spawning", "Structures spawn in a grid-like pattern.");
+		this.createTip("time_tree", "The Tree of Time will accelerate the growth of nearby crops.");
+		this.createTip("torchberries", "We did glow berries first!");
+		this.createTip("towerwood", "Towerwood Planks are very resistant, but not immune, to fire.");
+		this.createTip("transformation_tree", "The Tree of Transformation will convert the area around it into an Enchanted Forest.");
+		this.createTip("trollber_ripening", "Killing a Troll will ripen nearby Trollber.");
+		this.createTip("twilight_portal", "Throw a diamond into a pool of water surrounded by flowers.");
+		this.createTip("ur_ghast", "The Ur-Ghast can be pulled down from the sky using Ghast Traps.");
+		this.createTip("vanishing_block", "Vanishing Blocks will disappear forever when activated.");
+		this.createTip("worldgen_features", "The forest is filled with many ruins. Some may even contain unique items.");
+		this.createTip("yeti", "Yetis love throwing things.");
+		this.createTip("zombie_healing", "Zombies summoned with a Zombie Scepter can be healed with Rotten Flesh.");
+
+		this.translateTag(ItemTagGenerator.CARMINITE_GEMS, "Carminite Gems");
+		this.translateTag(ItemTagGenerator.FIERY_INGOTS, "Fiery Ingots");
+		this.translateTag(ItemTagGenerator.IRONWOOD_INGOTS, "Ironwood Ingots");
+		this.translateTag(ItemTagGenerator.KNIGHTMETAL_INGOTS, "Knightmetal Ingots");
+		this.translateTag(ItemTagGenerator.STEELEAF_INGOTS, "Steeleaf Ingots");
+		this.translateTag(ItemTagGenerator.PAPER, "Papers");
+		this.translateTag(ItemTagGenerator.RAW_MATERIALS_IRONWOOD, "Raw Ironwood");
+		this.translateTag(ItemTagGenerator.RAW_MATERIALS_KNIGHTMETAL, "Raw Knightmetal");
+		this.translateTag(ItemTagGenerator.STORAGE_BLOCKS_ARCTIC_FUR, "Arctic Fur Storage Blocks");
+		this.translateTag(ItemTagGenerator.STORAGE_BLOCKS_CARMINITE, "Carminite Storage Blocks");
+		this.translateTag(ItemTagGenerator.STORAGE_BLOCKS_FIERY, "Fiery Storage Blocks");
+		this.translateTag(ItemTagGenerator.STORAGE_BLOCKS_IRONWOOD, "Ironwood Storage Blocks");
+		this.translateTag(ItemTagGenerator.STORAGE_BLOCKS_KNIGHTMETAL, "Knightmetal Storage Blocks");
+		this.translateTag(ItemTagGenerator.STORAGE_BLOCKS_STEELEAF, "Steeleaf Storage Blocks");
+		this.translateTag(ItemTagGenerator.ARCTIC_FUR, "Arctic Fur");
+		this.translateTag(ItemTagGenerator.BANNED_UNCRAFTABLES, "Can't be Uncrafted");
+		this.translateTag(ItemTagGenerator.BANNED_UNCRAFTING_INGREDIENTS, "Banned Uncrafting Ingredients");
+		this.translateTag(ItemTagGenerator.BANISTERS, "Banisters");
+		this.translateTag(ItemTagGenerator.CANOPY_LOGS, "Canopy Logs");
+		this.translateTag(ItemTagGenerator.DARKWOOD_LOGS, "Darkwood Logs");
+		this.translateTag(ItemTagGenerator.FIERY_VIAL, "Fiery Vials");
+		this.translateTag(ItemTagGenerator.KEPT_ON_DEATH, "Kept on Death");
+		this.translateTag(ItemTagGenerator.BLOCK_AND_CHAIN_ENCHANTABLE, "Block and Chain Enchantable");
+		this.translateTag(ItemTagGenerator.KOBOLD_PACIFICATION_BREADS, "Kobold Pacification Items");
+		this.translateTag(ItemTagGenerator.BOAR_TEMPT_ITEMS, "Boar Temptables");
+		this.translateTag(ItemTagGenerator.DEER_TEMPT_ITEMS, "Deer Temptables");
+		this.translateTag(ItemTagGenerator.DWARF_RABBIT_TEMPT_ITEMS, "Dwarf Rabbit Temptables");
+		this.translateTag(ItemTagGenerator.PENGUIN_TEMPT_ITEMS, "Penguin Temptables");
+		this.translateTag(ItemTagGenerator.RAVEN_TEMPT_ITEMS, "Raven Temptables");
+		this.translateTag(ItemTagGenerator.SQUIRREL_TEMPT_ITEMS, "Squirrel Temptables");
+		this.translateTag(ItemTagGenerator.TINY_BIRD_TEMPT_ITEMS, "Tiny Bird Temptables");
+		this.translateTag(ItemTagGenerator.TWILIGHT_LOGS, "Twilight Forest Logs");
+		this.translateTag(ItemTagGenerator.MANGROVE_LOGS, "Mangrove Logs");
+		this.translateTag(ItemTagGenerator.MINING_LOGS, "Miningwood Logs");
+		this.translateTag(ItemTagGenerator.NYI, "Not Yet Implemented Items");
+		this.translateTag(ItemTagGenerator.PORTAL_ACTIVATOR, "Twilight Forest Portal Activators");
+		this.translateTag(ItemTagGenerator.REPAIRS_FIERY_TOOLS, "Repairs Fiery Tools");
+		this.translateTag(ItemTagGenerator.REPAIRS_GIANT_TOOLS, "Repairs Giant Tools");
+		this.translateTag(ItemTagGenerator.REPAIRS_ICE_TOOLS, "Repairs Ice Tools");
+		this.translateTag(ItemTagGenerator.REPAIRS_IRONWOOD_TOOLS, "Repairs Ironwood Tools");
+		this.translateTag(ItemTagGenerator.REPAIRS_KNIGHTMETAL_TOOLS, "Repairs Knightmetal Tools");
+		this.translateTag(ItemTagGenerator.REPAIRS_STEELEAF_TOOLS, "Repairs Steeleaf Tools");
+		this.translateTag(ItemTagGenerator.SORTING_LOGS, "Sortingwood Logs");
+		this.translateTag(ItemTagGenerator.TIME_LOGS, "Timewood Logs");
+		this.translateTag(ItemTagGenerator.TOWERWOOD, "Towerwood Blocks");
+		this.translateTag(ItemTagGenerator.TRANSFORMATION_LOGS, "Transformation Logs");
+		this.translateTag(ItemTagGenerator.TWILIGHT_OAK_LOGS, "Twilight Oak Logs");
+		this.translateTag(ItemTagGenerator.UNCRAFTING_IGNORES_COST, "Uncrafting Table Ignores Cost");
+		this.translateTag(ItemTagGenerator.WIP, "Work In Progress Items");
+		this.translateTag(FluidTagGenerator.FIRE_JET_FUEL, "Fire Jet Fuel");
 	}
 }

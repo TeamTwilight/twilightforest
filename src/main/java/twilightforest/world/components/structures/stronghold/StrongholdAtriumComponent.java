@@ -23,8 +23,7 @@ import twilightforest.init.TFConfiguredFeatures;
 import twilightforest.init.TFStructurePieceTypes;
 
 
-
-public class StrongholdAtriumComponent extends StructureTFStrongholdComponent {
+public class StrongholdAtriumComponent extends KnightStrongholdComponent {
 
 	private boolean enterBottom;
 
@@ -55,10 +54,10 @@ public class StrongholdAtriumComponent extends StructureTFStrongholdComponent {
 		}
 
 		if (enterBottom) {
-			return StructureTFStrongholdComponent.getComponentToAddBoundingBox(x, y, z, -4, -1, 0, 18, 14, 18, facing);
+			return KnightStrongholdComponent.getComponentToAddBoundingBox(x, y, z, -4, -1, 0, 18, 14, 18, facing);
 		} else {
 			// enter on the top
-			return StructureTFStrongholdComponent.getComponentToAddBoundingBox(x, y, z, -13, -8, 0, 18, 14, 18, facing);
+			return KnightStrongholdComponent.getComponentToAddBoundingBox(x, y, z, -13, -8, 0, 18, 14, 18, facing);
 		}
 	}
 
@@ -137,16 +136,16 @@ public class StrongholdAtriumComponent extends StructureTFStrongholdComponent {
 		if (sbb.isInside(pos)) {
 			ResourceKey<ConfiguredFeature<?, ?>> treeGen = switch (treeNum) {
 				case 1 ->
-						// jungle tree
-						TreeFeatures.JUNGLE_TREE;
+					// jungle tree
+					TreeFeatures.JUNGLE_TREE;
 				case 2 ->
-						// birch
-						TreeFeatures.BIRCH;
+					// birch
+					TreeFeatures.BIRCH;
 				case 3 -> TFConfiguredFeatures.TWILIGHT_OAK_TREE;
 				case 4 -> TFConfiguredFeatures.RAINBOW_OAK_TREE;
 				default ->
-						// oak tree
-						TreeFeatures.OAK;
+					// oak tree
+					TreeFeatures.OAK;
 			};
 			// grow a tree
 

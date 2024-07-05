@@ -150,6 +150,6 @@ public class TFModelLayers {
 	}
 
 	private static ModelLayerLocation register(String p_171301_, String p_171302_) {
-		return new ModelLayerLocation(new ResourceLocation(TwilightForestMod.ID, p_171301_), p_171302_);
+		return new ModelLayerLocation(TwilightForestMod.prefix(p_171301_), p_171302_);
 	}
 }

@@ -4,7 +4,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import twilightforest.world.components.layer.vanillalegacy.Area;
 
-public interface BigContext <R extends Area> extends Context {
+public interface BigContext<R extends Area> extends Context {
 	void initRandom(long x, long z);
 
 	R createResult(Area transformer);

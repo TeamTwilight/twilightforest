@@ -1,23 +1,51 @@
 package twilightforest.data.helpers;
 
+import com.google.common.collect.ImmutableList;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.mojang.serialization.JsonOps;
+import net.minecraft.ChatFormatting;
+import net.minecraft.data.CachedOutput;
+import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.structure.Structure;
-import net.minecraftforge.common.data.LanguageProvider;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.common.data.LanguageProvider;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredItem;
 import org.apache.commons.lang3.text.WordUtils;
 import twilightforest.TwilightForestMod;
 
-import java.util.function.Supplier;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 public abstract class TFLangProvider extends LanguageProvider {
+
+	private final Map<String, String> TF_TIPS = new HashMap<>();
+	public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+	private final PackOutput output;
+	public final Map<String, String> upsideDownEntries = new HashMap<>();
+
 	public TFLangProvider(PackOutput output) {
 		super(output, TwilightForestMod.ID, "en_us");
+		this.output = output;
+	}
+
+	@Override
+	public void add(String key, String value) {
+		super.add(key, value);
+		List<LangFormatSplitter.Component> splitEnglish = LangFormatSplitter.split(value);
+		this.upsideDownEntries.put(key, LangConversionHelper.convertComponents(splitEnglish));
 	}
 
 	public void addBiome(ResourceKey<Biome> biome, String name) {
@@ -57,6 +85,7 @@ public abstract class TFLangProvider extends LanguageProvider {
 		this.add("block.twilightforest." + woodPrefix + "_wall_sign", woodName + " Wall Sign");
 		this.add("block.twilightforest." + woodPrefix + "_banister", woodName + " Banister");
 		this.add("block.twilightforest." + woodPrefix + "_chest", woodName + " Chest");
+		this.add("block.twilightforest." + woodPrefix + "_trapped_chest", "Trapped " + woodName + " Chest");
 		this.add("item.twilightforest." + woodPrefix + "_boat", woodName + " Boat");
 		this.add("item.twilightforest." + woodPrefix + "_chest_boat", woodName + " Chest Boat");
 		this.add("block.twilightforest." + woodPrefix + "_hanging_sign", woodName + " Hanging Sign");
@@ -92,7 +121,7 @@ public abstract class TFLangProvider extends LanguageProvider {
 		this.add("item.twilightforest." + itemKey + "_hoe", item + " Hoe");
 	}
 
-	public void addMusicDisc(Supplier<Item> disc, String description) {
+	public void addMusicDisc(DeferredItem<Item> disc, String description) {
 		this.addItem(disc, "Music Disc");
 		this.add(disc.get().getDescriptionId() + ".desc", description);
 	}
@@ -111,14 +140,9 @@ public abstract class TFLangProvider extends LanguageProvider {
 		this.add("enchantment.twilightforest." + key + ".desc", desc);
 	}
 
-	public void addEntityAndEgg(RegistryObject<? extends EntityType<?>> entity, String name) {
+	public void addEntityAndEgg(DeferredHolder<EntityType<?>, ? extends EntityType<?>> entity, String name) {
 		this.addEntityType(entity, name);
 		this.add("item.twilightforest." + entity.getId().getPath() + "_spawn_egg", name + " Spawn Egg");
-	}
-
-	public void addSubtitle(RegistryObject<SoundEvent> sound, String name) {
-		String[] splitSoundName  = sound.getId().getPath().split("\\.", 3);
-		this.add("subtitles.twilightforest." + splitSoundName[0] + "." + splitSoundName[2], name);
 	}
 
 	public void addDeathMessage(String key, String name) {
@@ -152,5 +176,39 @@ public abstract class TFLangProvider extends LanguageProvider {
 
 	public void addScreenMessage(String key, String name) {
 		this.add("gui.twilightforest." + key, name);
+	}
+
+	public void createTip(String key, String translation) {
+		String fullKey = "twilightforest.tips." + key;
+		this.add(fullKey, translation);
+		TF_TIPS.put(fullKey, key);
+	}
+
+	public void translateTag(TagKey<?> tag, String name) {
+		this.add(String.format("tag.%s.%s.%s", tag.registry().location().getPath(), tag.location().getNamespace(), tag.location().getPath().replace('/', '.')), name);
+	}
+
+
+	@Override
+	public CompletableFuture<?> run(CachedOutput cache) {
+		//generate normal lang file
+		CompletableFuture<?> languageGen = super.run(cache);
+		ImmutableList.Builder<CompletableFuture<?>> futuresBuilder = new ImmutableList.Builder<>();
+		futuresBuilder.add(languageGen);
+
+		//generate en_ud file
+		JsonObject upsideDownFile = new JsonObject();
+		this.upsideDownEntries.forEach(upsideDownFile::addProperty);
+		futuresBuilder.add(DataProvider.saveStable(cache, upsideDownFile, this.output.getOutputFolder(PackOutput.Target.RESOURCE_PACK).resolve(TwilightForestMod.ID).resolve("lang").resolve("en_ud.json")));
+
+		//generate tips
+		for (Map.Entry<String, String> entry : TF_TIPS.entrySet()) {
+			JsonObject object = new JsonObject();
+
+			Component tooltipText = Component.translatable(entry.getKey()).withStyle(ChatFormatting.GREEN);
+			object.add("tip", ComponentSerialization.CODEC.encodeStart(JsonOps.INSTANCE, tooltipText).getOrThrow());
+			futuresBuilder.add(DataProvider.saveStable(cache, GSON.toJsonTree(object), this.output.getOutputFolder().resolve("assets/twilightforest/tips/" + entry.getValue() + ".json")));
+		}
+		return CompletableFuture.allOf(futuresBuilder.build().toArray(CompletableFuture[]::new));
 	}
 }

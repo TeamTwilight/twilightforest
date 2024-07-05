@@ -1,16 +1,16 @@
 package twilightforest.util;
 
-import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.AdvancementProgress;
-import net.minecraft.server.PlayerAdvancements;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.multiplayer.ClientAdvancements;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.PlayerAdvancements;
 import net.minecraft.server.level.ServerLevel;
-
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Nullable;
+
 import java.util.List;
 
 public class PlayerHelper {
@@ -20,10 +20,10 @@ public class PlayerHelper {
 	@Deprecated
 	public static void grantAdvancement(ServerPlayer player, ResourceLocation id) {
 		PlayerAdvancements advancements = player.getAdvancements();
-		Advancement advancement = player.getServer().getAdvancements().getAdvancement(id);
-		if (advancement != null) {
-			for (String criterion : advancements.getOrStartProgress(advancement).getRemainingCriteria()) {
-				advancements.award(advancement, criterion);
+		AdvancementHolder holder = player.getServer().getAdvancements().get(id);
+		if (holder != null) {
+			for (String criterion : advancements.getOrStartProgress(holder).getRemainingCriteria()) {
+				advancements.award(holder, criterion);
 			}
 		}
 	}
@@ -31,38 +31,38 @@ public class PlayerHelper {
 	@Deprecated
 	public static void grantCriterion(ServerPlayer player, ResourceLocation id, String criterion) {
 		PlayerAdvancements advancements = player.getAdvancements();
-		Advancement advancement = player.getServer().getAdvancements().getAdvancement(id);
-		if (advancement != null) {
-			advancements.award(advancement, criterion);
+		AdvancementHolder holder = player.getServer().getAdvancements().get(id);
+		if (holder != null) {
+			advancements.award(holder, criterion);
 		}
 	}
 
 	@Nullable
-	public static Advancement getAdvancement(Player player, ResourceLocation advancementLocation) {
+	public static AdvancementHolder getAdvancement(Player player, ResourceLocation advancementLocation) {
 		if (player.level().isClientSide() && player instanceof LocalPlayer localPlayer) {
 			ClientAdvancements manager = localPlayer.connection.getAdvancements();
-			return manager.getAdvancements().get(advancementLocation);
+			return manager.get(advancementLocation);
 		} else if (player instanceof ServerPlayer serverPlayer) {
 			ServerLevel world = (ServerLevel) serverPlayer.level();
-			return world.getServer().getAdvancements().getAdvancement(advancementLocation);
+			return world.getServer().getAdvancements().get(advancementLocation);
 		}
 
 		return null;
 	}
 
-	public static boolean doesPlayerHaveRequiredAdvancement(Player player, Advancement advancement) {
+	public static boolean doesPlayerHaveRequiredAdvancement(Player player, @Nullable AdvancementHolder holder) {
 		if (player.level().isClientSide()) {
 			if (player instanceof LocalPlayer) {
 				ClientAdvancements manager = ((LocalPlayer) player).connection.getAdvancements();
-				if (advancement == null) return false;
+				if (holder == null) return false;
 
-				AdvancementProgress progress = manager.progress.get(advancement);
+				AdvancementProgress progress = manager.progress.get(holder);
 				return progress != null && progress.isDone();
 			}
 			return false;
 		} else {
 			if (player instanceof ServerPlayer) {
-				return advancement != null && ((ServerPlayer) player).getAdvancements().getOrStartProgress(advancement).isDone();
+				return holder != null && ((ServerPlayer) player).getAdvancements().getOrStartProgress(holder).isDone();
 			}
 			return false;
 		}
@@ -81,7 +81,7 @@ public class PlayerHelper {
 			if (player.level().isClientSide()) {
 				if (player instanceof LocalPlayer local) {
 					ClientAdvancements manager = local.connection.getAdvancements();
-					Advancement adv = manager.getAdvancements().get(advancementLocation);
+					AdvancementHolder adv = manager.get(advancementLocation);
 					if (adv == null)
 						return false;
 					AdvancementProgress progress = manager.progress.get(adv);
@@ -90,7 +90,7 @@ public class PlayerHelper {
 			} else {
 				if (player instanceof ServerPlayer sp) {
 					ServerLevel world = (ServerLevel) player.level();
-					Advancement adv = world.getServer().getAdvancements().getAdvancement(advancementLocation);
+					AdvancementHolder adv = world.getServer().getAdvancements().get(advancementLocation);
 					return adv != null && sp.getAdvancements().getOrStartProgress(adv).isDone();
 				}
 			}

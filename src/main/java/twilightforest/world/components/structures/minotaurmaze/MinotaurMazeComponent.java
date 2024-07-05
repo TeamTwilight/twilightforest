@@ -15,10 +15,10 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.util.BoundingBoxUtils;
 import twilightforest.world.components.structures.TFMaze;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.init.TFLandmark;
-import twilightforest.init.TFStructurePieceTypes;
 
 
 public class MinotaurMazeComponent extends TFStructureComponentOld {
@@ -27,6 +27,7 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 	final int[] rcoords;
 	private final int level;
 
+	@SuppressWarnings("this-escape")
 	public MinotaurMazeComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(TFStructurePieceTypes.TFMMaze.get(), nbt);
 
@@ -50,11 +51,12 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 		maze.generateRecursiveBacktracker(0, 0);
 	}
 
+	@SuppressWarnings("this-escape")
 	public MinotaurMazeComponent(int index, int x, int y, int z, int entranceX, int entranceZ, int level, RandomSource random) {
 		super(TFStructurePieceTypes.TFMMaze.get(), index, x, y, z);
 		this.setOrientation(Direction.SOUTH);
 		this.level = level;
-		this.boundingBox = TFLandmark.getComponentToAddBoundingBox(x, y, z, -getRadius(), 0, -getRadius(), getRadius() * 2 + 2, 5, getRadius() * 2 + 2, Direction.SOUTH, false);
+		this.boundingBox = BoundingBoxUtils.getComponentToAddBoundingBox(x, y, z, -getRadius(), 0, -getRadius(), getRadius() * 2 + 2, 5, getRadius() * 2 + 2, Direction.SOUTH, false);
 
 		// make maze object
 		maze = new TFMaze(getMazeSize(), getMazeSize(), random);
@@ -152,7 +154,6 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 
 	/**
 	 * Find dead ends and put something there
-	 *
 	 */
 	protected void decorateDeadEndsCorridors(RandomSource random, StructurePieceAccessor list) {
 		for (int x = 0; x < maze.width; x++) {
@@ -175,11 +176,11 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 
 				// corridors
 				if (!maze.isWall(x, z, x - 1, z) && !maze.isWall(x, z, x + 1, z) && maze.isWall(x, z, x, z - 1) && maze.isWall(x, z, x, z + 1)
-						&& maze.isWall(x - 1, z, x - 1, z - 1) && maze.isWall(x - 1, z, x - 1, z + 1) && maze.isWall(x + 1, z, x + 1, z - 1) && maze.isWall(x + 1, z, x + 1, z + 1)) {
+					&& maze.isWall(x - 1, z, x - 1, z - 1) && maze.isWall(x - 1, z, x - 1, z + 1) && maze.isWall(x + 1, z, x + 1, z - 1) && maze.isWall(x + 1, z, x + 1, z + 1)) {
 					component = makeCorridor(random, x, z, Direction.WEST);
 				}
 				if (!maze.isWall(x, z, x, z - 1) && !maze.isWall(x, z, x, z + 1) && maze.isWall(x, z, x - 1, z) && maze.isWall(x, z, x + 1, z)
-						&& maze.isWall(x, z - 1, x - 1, z - 1) && maze.isWall(x, z - 1, x + 1, z - 1) && maze.isWall(x, z + 1, x - 1, z + 1) && maze.isWall(x, z + 1, x + 1, z + 1)) {
+					&& maze.isWall(x, z - 1, x - 1, z - 1) && maze.isWall(x, z - 1, x + 1, z - 1) && maze.isWall(x, z + 1, x - 1, z + 1) && maze.isWall(x, z + 1, x + 1, z + 1)) {
 					component = makeCorridor(random, x, z, Direction.SOUTH);
 				}
 
@@ -212,7 +213,7 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 			case 6 -> new MazeDeadEndPaintingComponent(4, worldX, worldY, worldZ, rotation);
 			case 7 -> this.level == 1 ? new MazeDeadEndRootsComponent(TFStructurePieceTypes.TFMMDER.get(), 4, worldX, worldY, worldZ, rotation) : new MazeDeadEndShroomsComponent(4, worldX, worldY, worldZ, rotation);
 			default -> // blank with fence doorway
-					new MazeDeadEndComponent(TFStructurePieceTypes.TFMMDE.get(), 4, worldX, worldY, worldZ, rotation);
+				new MazeDeadEndComponent(TFStructurePieceTypes.TFMMDE.get(), 4, worldX, worldY, worldZ, rotation);
 		};
 	}
 
@@ -278,8 +279,8 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 		// clear the area
 		generateAirBox(world, sbb, 1, 1, 1, getDiameter(), 4, getDiameter());
 		boolean onlyReplaceCeiling = this.level == 1;
-		generateBox(world, sbb, 1, 5, 1, getDiameter(), 5, getDiameter(), TFBlocks.MAZESTONE.get().defaultBlockState(), stone, onlyReplaceCeiling);
-		generateBox(world, sbb, 1, 0, 1, getDiameter(), 0, getDiameter(), TFBlocks.MAZESTONE_MOSAIC.get().defaultBlockState(), stone, false);
+		generateBox(world, sbb, 1, 5, 1, getDiameter() + 1, 5, getDiameter() + 1, TFBlocks.MAZESTONE.get().defaultBlockState(), stone, onlyReplaceCeiling);
+		generateBox(world, sbb, 1, 0, 1, getDiameter() + 1, 0, getDiameter() + 1, TFBlocks.MAZESTONE_MOSAIC.get().defaultBlockState(), stone, false);
 
 		maze.headBlockState = TFBlocks.DECORATIVE_MAZESTONE.get().defaultBlockState();
 		maze.wallBlockState = TFBlocks.MAZESTONE_BRICK.get().defaultBlockState();

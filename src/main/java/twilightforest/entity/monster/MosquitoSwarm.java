@@ -4,7 +4,9 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
@@ -34,14 +36,10 @@ public class MosquitoSwarm extends Monster {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Monster.createMonsterAttributes()
-				.add(Attributes.MAX_HEALTH, 12.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.23D)
-				.add(Attributes.ATTACK_DAMAGE, 3.0D);
-	}
-
-	@Override
-	public float getStepHeight() {
-		return 2.1F;
+			.add(Attributes.MAX_HEALTH, 12.0D)
+			.add(Attributes.MOVEMENT_SPEED, 0.23D)
+			.add(Attributes.ATTACK_DAMAGE, 3.0D)
+			.add(Attributes.STEP_HEIGHT, 2.1D);
 	}
 
 	@Override

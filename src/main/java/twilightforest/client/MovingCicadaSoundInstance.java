@@ -5,9 +5,7 @@ import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraftforge.fml.ModList;
-import twilightforest.TFConfig;
-import twilightforest.compat.curios.CuriosCompat;
+import twilightforest.config.TFConfig;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFSounds;
 
@@ -27,24 +25,24 @@ public class MovingCicadaSoundInstance extends AbstractTickableSoundInstance {
 
 	@Override
 	public void tick() {
-		if (!this.wearer.isRemoved() && (this.wearer.getItemBySlot(EquipmentSlot.HEAD).is(TFBlocks.CICADA.get().asItem()) || this.isWearingCicadaCurio())) {
-			this.x = (float)this.wearer.getX();
-			this.y = (float)this.wearer.getY();
-			this.z = (float)this.wearer.getZ();
+		if (!this.wearer.isRemoved() && (this.wearer.getItemBySlot(EquipmentSlot.HEAD).is(TFBlocks.CICADA.asItem()) || this.isWearingCicadaCurio())) {
+			this.x = (float) this.wearer.getX();
+			this.y = (float) this.wearer.getY();
+			this.z = (float) this.wearer.getZ();
 		} else {
 			this.stop();
 		}
 	}
 
 	private boolean isWearingCicadaCurio() {
-		if (ModList.get().isLoaded("curios")) {
-			return CuriosCompat.isCicadaEquipped(this.wearer);
-		}
+		//if (ModList.get().isLoaded("curios")) {
+		//	return CuriosCompat.isCurioEquipped(this.wearer, stack -> stack.is(TFBlocks.CICADA.asItem()));
+		//}
 		return false;
 	}
 
 	@Override
 	public boolean canPlaySound() {
-		return !TFConfig.CLIENT_CONFIG.silentCicadas.get() && !TFConfig.CLIENT_CONFIG.silentCicadasOnHead.get();
+		return !TFConfig.silentCicadas && !TFConfig.silentCicadasOnHead;
 	}
 }

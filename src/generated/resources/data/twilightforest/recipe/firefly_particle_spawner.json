@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "twilightforest:firefly_jar"
+    },
+    {
+      "item": "twilightforest:firefly"
+    },
+    {
+      "item": "minecraft:poppy"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "twilightforest:firefly_particle_spawner"
+  }
+}

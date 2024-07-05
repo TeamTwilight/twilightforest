@@ -1,0 +1,10 @@
+{
+  "type": "twilightforest:biome_driven",
+  "base_factor": 8.0,
+  "base_offset": -1.25,
+  "depth_scalar": 1.0,
+  "lower_density_bound": -31.0,
+  "noise": "minecraft:surface",
+  "terrain_source": "twilightforest:biome_grid",
+  "upper_density_bound": 64.0
+}

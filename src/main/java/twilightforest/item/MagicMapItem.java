@@ -2,13 +2,14 @@ package twilightforest.item;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ColumnPos;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -18,22 +19,23 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.saveddata.maps.MapId;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TFMagicMapData;
+import twilightforest.data.tags.StructureTagGenerator;
 import twilightforest.init.TFBiomes;
 import twilightforest.init.TFItems;
-import twilightforest.init.TFLandmark;
+import twilightforest.item.mapdata.TFMagicMapData;
+import twilightforest.util.LandmarkUtil;
 import twilightforest.util.LegacyLandmarkPlacements;
-import twilightforest.world.registration.TFGenerationSettings;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 // [VanillaCopy] super everything, but with appropriate redirections to our own datastructures. finer details noted
-
 public class MagicMapItem extends MapItem {
 
 	public static final String STR_ID = "magicmap";
@@ -66,8 +68,14 @@ public class MagicMapItem extends MapItem {
 
 	@Nullable
 	public static TFMagicMapData getData(ItemStack stack, Level level) {
-		Integer id = getMapId(stack);
-		return id == null ? null : TFMagicMapData.getMagicMapData(level, getMapName(id));
+		MapId mapid = stack.get(DataComponents.MAP_ID);
+		return mapid == null ? null : TFMagicMapData.getMagicMapData(level, getMapName(mapid.id()));
+	}
+
+	@Nullable
+	public static TFMagicMapData getData(ItemStack stack, TooltipContext context) {
+		MapId mapid = stack.get(DataComponents.MAP_ID);
+		return mapid != null && context.mapData(mapid) instanceof TFMagicMapData mapData ? mapData : null;
 	}
 
 	@Nullable
@@ -75,7 +83,8 @@ public class MagicMapItem extends MapItem {
 	protected TFMagicMapData getCustomMapData(ItemStack stack, Level level) {
 		TFMagicMapData mapdata = getData(stack, level);
 		if (mapdata == null && !level.isClientSide()) {
-			mapdata = MagicMapItem.createMapData(stack, level, level.getLevelData().getXSpawn(), level.getLevelData().getZSpawn(), 3, false, false, level.dimension());
+			BlockPos sharedSpawnPos = level.getSharedSpawnPos();
+			mapdata = MagicMapItem.createMapData(stack, level, sharedSpawnPos.getX(), sharedSpawnPos.getZ(), 3, false, false, level.dimension());
 		}
 
 		return mapdata;
@@ -92,12 +101,12 @@ public class MagicMapItem extends MapItem {
 	}
 
 	private static TFMagicMapData createMapData(ItemStack stack, Level level, int x, int z, int scale, boolean trackingPosition, boolean unlimitedTracking, ResourceKey<Level> dimension) {
-		int i = level.getFreeMapId();
+		MapId freeMapId = level.getFreeMapId();
 		ColumnPos pos = getMagicMapCenter(x, z);
 
 		TFMagicMapData mapdata = new TFMagicMapData(pos.x(), pos.z(), (byte) scale, trackingPosition, unlimitedTracking, false, dimension);
-		TFMagicMapData.registerMagicMapData(level, mapdata, getMapName(i)); // call our own register method
-		stack.getOrCreateTag().putInt("map", i);
+		TFMagicMapData.registerMagicMapData(level, mapdata, getMapName(freeMapId.id())); // call our own register method
+		stack.set(DataComponents.MAP_ID, freeMapId);
 		return mapdata;
 	}
 
@@ -106,11 +115,11 @@ public class MagicMapItem extends MapItem {
 	}
 
 	private static final Map<ChunkPos, ResourceLocation[]> CACHE = new HashMap<>();
-	private static final ResourceLocation NULL_BIOME = new ResourceLocation("null");
+	private static final ResourceLocation NULL_BIOME = ResourceLocation.withDefaultNamespace("null");
 
 	@Override
 	public void update(Level level, Entity viewer, MapItemSavedData data) {
-		if (level.dimension() == data.dimension && viewer instanceof Player && level instanceof ServerLevel serverLevel && TFGenerationSettings.usesTwilightChunkGenerator(serverLevel)) {
+		if (level.dimension() == data.dimension && viewer instanceof Player && !level.isClientSide) {
 			int biomesPerPixel = 4;
 			int blocksPerPixel = 16; // don't even bother with the scale, just hardcode it
 			int centerX = data.centerX;
@@ -126,14 +135,16 @@ public class MagicMapItem extends MapItem {
 				for (int l = 0; l < 128 * biomesPerPixel; ++l) {
 					for (int i1 = 0; i1 < 128 * biomesPerPixel; ++i1) {
 						array[l * 128 * biomesPerPixel + i1] = level
-								.getBiome(new BlockPos(startX * biomesPerPixel + i1 * biomesPerPixel, 0, startZ * biomesPerPixel + l * biomesPerPixel))
-								.unwrapKey()
-								.map(ResourceKey::location)
-								.orElse(NULL_BIOME);
+							.getBiome(new BlockPos(startX * biomesPerPixel + i1 * biomesPerPixel, 0, startZ * biomesPerPixel + l * biomesPerPixel))
+							.unwrapKey()
+							.map(ResourceKey::location)
+							.orElse(NULL_BIOME);
 					}
 				}
 				return array;
 			});
+
+			Registry<Structure> structureRegistry = level.registryAccess().registryOrThrow(Registries.STRUCTURE);
 
 			for (int xPixel = viewerX - viewRadiusPixels + 1; xPixel < viewerX + viewRadiusPixels; ++xPixel) {
 				for (int zPixel = viewerZ - viewRadiusPixels - 1; zPixel < viewerZ + viewRadiusPixels; ++zPixel) {
@@ -169,10 +180,16 @@ public class MagicMapItem extends MapItem {
 							if (LegacyLandmarkPlacements.blockIsInLandmarkCenter(worldX, worldZ)) {
 								byte mapX = (byte) ((worldX - centerX) / (float) blocksPerPixel * 2F);
 								byte mapZ = (byte) ((worldZ - centerZ) / (float) blocksPerPixel * 2F);
-								TFLandmark feature = LegacyLandmarkPlacements.pickLandmarkAtBlock(worldX, worldZ, (ServerLevel) level);
-								TFMagicMapData tfData = (TFMagicMapData) data;
-								tfData.tfDecorations.add(new TFMagicMapData.TFMapDecoration(feature, mapX, mapZ, (byte) 8));
-								//TwilightForestMod.LOGGER.info("Found feature at {}, {}. Placing it on the map at {}, {}", worldX, worldZ, mapX, mapZ);
+
+								ResourceKey<Structure> structureKey = LegacyLandmarkPlacements.pickLandmarkAtBlock(worldX, worldZ, level);
+								// Filters by structures we want to give icons for
+								if (structureRegistry.getHolder(structureKey).map(structureRef -> structureRef.is(StructureTagGenerator.LANDMARK)).orElse(false)) {
+									boolean isConquered = LandmarkUtil.isConquered(level, worldX, worldZ);
+
+									TFMagicMapData tfData = (TFMagicMapData) data;
+									tfData.putMapData(new TFMagicMapData.TFMapDecoration(structureKey, mapX, mapZ, isConquered));
+									//TwilightForestMod.LOGGER.info("Found feature at {}, {}. Placing it on the map at {}, {}", worldX, worldZ, mapX, mapZ);
+								}
 							}
 						}
 					}
@@ -253,28 +270,25 @@ public class MagicMapItem extends MapItem {
 	@Override
 	@Nullable
 	public Packet<?> getUpdatePacket(ItemStack stack, Level world, Player player) {
-		Integer id = getMapId(stack);
+		MapId mapId = stack.get(DataComponents.MAP_ID);
 		TFMagicMapData mapdata = getCustomMapData(stack, world);
-		return id == null || mapdata == null ? null : mapdata.getUpdatePacket(id, player);
+		return mapId == null || mapdata == null ? null : mapdata.getUpdatePacket(mapId, player);
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-		Integer integer = getMapId(stack);
-		TFMagicMapData mapitemsaveddata = level == null ? null : getData(stack, level);
-		if (flag.isAdvanced()) {
-			if (mapitemsaveddata != null) {
-				tooltip.add((Component.translatable("filled_map.id", integer)).withStyle(ChatFormatting.GRAY));
-				tooltip.add((Component.translatable("filled_map.scale", 1 << mapitemsaveddata.scale)).withStyle(ChatFormatting.GRAY));
-				tooltip.add((Component.translatable("filled_map.level", mapitemsaveddata.scale, 4)).withStyle(ChatFormatting.GRAY));
-			} else {
-				tooltip.add((Component.translatable("filled_map.unknown")).withStyle(ChatFormatting.GRAY));
-			}
-		} else {
-			if (integer != null) {
-				tooltip.add(Component.literal("#" + integer).withStyle(ChatFormatting.GRAY));
-			}
+	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+		MapId mapId = stack.get(DataComponents.MAP_ID);
+		if (mapId != null) {
+			if (flag.isAdvanced()) {
+				MapItemSavedData mapitemsaveddata = TFMagicMapData.getClientMagicMapData(getMapName(mapId.id()));
+				if (mapitemsaveddata != null) {
+					tooltip.add((Component.translatable("filled_map.id", mapId.id())).withStyle(ChatFormatting.GRAY));
+					tooltip.add((Component.translatable("filled_map.scale", 1 << mapitemsaveddata.scale)).withStyle(ChatFormatting.GRAY));
+					tooltip.add((Component.translatable("filled_map.level", mapitemsaveddata.scale, 4)).withStyle(ChatFormatting.GRAY));
+				} else {
+					tooltip.add((Component.translatable("filled_map.unknown")).withStyle(ChatFormatting.GRAY));
+				}
+			} else tooltip.add(MapItem.getTooltipForId(mapId));
 		}
-
 	}
 }

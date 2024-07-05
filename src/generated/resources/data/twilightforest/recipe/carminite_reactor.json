@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "#": {
+      "item": "twilightforest:encased_towerwood"
+    },
+    "%": {
+      "tag": "c:ores/redstone"
+    },
+    "6": {
+      "tag": "c:gems/carminite"
+    }
+  },
+  "pattern": [
+    "#6#",
+    "6%6",
+    "#6#"
+  ],
+  "result": {
+    "count": 1,
+    "id": "twilightforest:carminite_reactor"
+  }
+}

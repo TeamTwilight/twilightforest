@@ -26,6 +26,7 @@ public class MazeDeadEndComponent extends TFStructureComponentOld {
 		super(piece, nbt);
 	}
 
+	@SuppressWarnings("this-escape")
 	public MazeDeadEndComponent(StructurePieceType type, int i, int x, int y, int z, Direction rotation) {
 		super(type, i, x, y, z);
 		this.setOrientation(rotation);

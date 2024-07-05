@@ -1,22 +1,28 @@
 package twilightforest.client.model.block.doors;
 
 import com.mojang.math.Transformation;
-import net.minecraftforge.client.model.ForgeFaceData;
-import org.joml.Vector3f;
 import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.model.*;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.Material;
+import net.minecraft.client.resources.model.ModelBaker;
+import net.minecraft.client.resources.model.ModelState;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.client.RenderTypeGroup;
-import net.minecraftforge.client.model.SimpleModelState;
-import net.minecraftforge.client.model.geometry.IGeometryBakingContext;
-import net.minecraftforge.client.model.geometry.IUnbakedGeometry;
-import net.minecraftforge.client.model.geometry.UnbakedGeometryHelper;
+import net.neoforged.neoforge.client.RenderTypeGroup;
+import net.neoforged.neoforge.client.model.ExtraFaceData;
+import net.neoforged.neoforge.client.model.SimpleModelState;
+import net.neoforged.neoforge.client.model.geometry.IGeometryBakingContext;
+import net.neoforged.neoforge.client.model.geometry.IUnbakedGeometry;
+import net.neoforged.neoforge.client.model.geometry.UnbakedGeometryHelper;
+import org.apache.commons.lang3.mutable.MutableObject;
+import org.joml.Vector3f;
 
 import java.lang.reflect.Array;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 
 //for now, im keeping this hardcoded to a 2 layer block, with the overlay layer being fullbright and tinted.
@@ -44,17 +50,17 @@ public class UnbakedCastleDoorModel implements IUnbakedGeometry<UnbakedCastleDoo
 			for (int quad = 0; quad < 4; quad++) {
 				Vec3i corner = face.getNormal().offset(planeDirections[quad].getNormal()).offset(planeDirections[(quad + 1) % 4].getNormal()).offset(1, 1, 1).multiply(8);
 				BlockElement element = new BlockElement(new Vector3f((float) Math.min(center.getX(), corner.getX()), (float) Math.min(center.getY(), corner.getY()), (float) Math.min(center.getZ(), corner.getZ())), new Vector3f((float) Math.max(center.getX(), corner.getX()), (float) Math.max(center.getY(), corner.getY()), (float) Math.max(center.getZ(), corner.getZ())), Map.of(), null, true);
-				this.baseElements[face.get3DDataValue()][quad] = new BlockElement(element.from, element.to, Map.of(face, new BlockElementFace(face, -1, "", new BlockFaceUV(ConnectionLogic.NONE.remapUVs(element.uvsByFace(face)), 0), null)), null, true);
+				this.baseElements[face.get3DDataValue()][quad] = new BlockElement(element.from, element.to, Map.of(face, new BlockElementFace(face, -1, "", new BlockFaceUV(ConnectionLogic.NONE.remapUVs(element.uvsByFace(face)), 0))), null, true);
 
 				for (ConnectionLogic connectionType : ConnectionLogic.values()) {
-					this.faceElements[face.get3DDataValue()][quad][connectionType.ordinal()] = new BlockElement(element.from, element.to, Map.of(face, new BlockElementFace(face, 0, "", new BlockFaceUV(connectionType.remapUVs(element.uvsByFace(face)), 0), new ForgeFaceData(0xFFFFFFFF, 15, 15, true))), null, true);
+					this.faceElements[face.get3DDataValue()][quad][connectionType.ordinal()] = new BlockElement(element.from, element.to, Map.of(face, new BlockElementFace(face, 0, "", new BlockFaceUV(connectionType.remapUVs(element.uvsByFace(face)), 0), new ExtraFaceData(0xFFFFFFFF, 15, 15, true), new MutableObject<>())), null, true);
 				}
 			}
 		}
 	}
 
 	@Override
-	public BakedModel bake(IGeometryBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides, ResourceLocation modelLocation) {
+	public BakedModel bake(IGeometryBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides) {
 		Transformation transformation = context.getRootTransform();
 		if (!transformation.isIdentity()) {
 			modelState = new SimpleModelState(modelState.getRotation().compose(transformation), modelState.isUvLocked());
@@ -69,7 +75,7 @@ public class UnbakedCastleDoorModel implements IUnbakedGeometry<UnbakedCastleDoo
 			baseQuads[dir] = new ArrayList<>();
 
 			for (BlockElement element : this.baseElements[dir]) {
-				baseQuads[dir].add(UnbakedGeometryHelper.bakeElementFace(element, element.faces.values().iterator().next(), baseTexture, Direction.values()[dir], modelState, modelLocation));
+				baseQuads[dir].add(UnbakedGeometryHelper.bakeElementFace(element, element.faces.values().iterator().next(), baseTexture, Direction.values()[dir], modelState));
 			}
 		}
 
@@ -83,7 +89,7 @@ public class UnbakedCastleDoorModel implements IUnbakedGeometry<UnbakedCastleDoo
 			for (int quad = 0; quad < 4; quad++) {
 				for (int type = 0; type < 5; type++) {
 					BlockElement element = this.faceElements[dir][quad][type];
-					quads[dir][quad][type] = UnbakedGeometryHelper.bakeElementFace(element, element.faces.values().iterator().next(), ConnectionLogic.values()[type].chooseTexture(sprites), Direction.values()[dir], modelState, modelLocation);
+					quads[dir][quad][type] = UnbakedGeometryHelper.bakeElementFace(element, element.faces.values().iterator().next(), ConnectionLogic.values()[type].chooseTexture(sprites), Direction.values()[dir], modelState);
 				}
 			}
 		}

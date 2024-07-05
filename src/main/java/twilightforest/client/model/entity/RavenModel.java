@@ -40,50 +40,50 @@ public class RavenModel extends HierarchicalModel<Raven> {
 		PartDefinition base = mesh.getRoot();
 
 		PartDefinition headpart = base.addOrReplaceChild("head", CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(-1.5F, -1.5F, -3F, 3, 3, 3)
-						.mirror(),
-				PartPose.offset(0F, 18F, 0F));
+				.texOffs(0, 0)
+				.addBox(-1.5F, -1.5F, -3F, 3, 3, 3)
+				.mirror(),
+			PartPose.offset(0F, 18F, 0F));
 		headpart.addOrReplaceChild("beak1", CubeListBuilder.create()
-						.texOffs(12, 0)
-						.addBox(-0.5F, -1F, -2F, 1, 1, 2),
-				PartPose.offsetAndRotation(0F, 0F, -2.5F, 0.2617994F, 0.0F, 0.0F));
+				.texOffs(12, 0)
+				.addBox(-0.5F, -1F, -2F, 1, 1, 2),
+			PartPose.offsetAndRotation(0F, 0F, -2.5F, 0.2617994F, 0.0F, 0.0F));
 		headpart.addOrReplaceChild("beak2", CubeListBuilder.create()
-						.texOffs(12, 0)
-						.addBox(-0.5F, 0F, -2F, 1, 1, 2),
-				PartPose.offsetAndRotation(0F, 0F, -2.5F, -0.2617994F, 0.0F, 0.0F));
+				.texOffs(12, 0)
+				.addBox(-0.5F, 0F, -2F, 1, 1, 2),
+			PartPose.offsetAndRotation(0F, 0F, -2.5F, -0.2617994F, 0.0F, 0.0F));
 		base.addOrReplaceChild("body", CubeListBuilder.create()
-						.texOffs(0, 6)
-						.addBox(-1.5F, 0F, -1F, 3, 4, 6),
-				PartPose.offsetAndRotation(0F, 17F, 1F, -0.5235988F, 0F, 0F));
+				.texOffs(0, 6)
+				.addBox(-1.5F, 0F, -1F, 3, 4, 6),
+			PartPose.offsetAndRotation(0F, 17F, 1F, -0.5235988F, 0F, 0F));
 		base.addOrReplaceChild("right_wing", CubeListBuilder.create()
-						.texOffs(0, 16)
-						.addBox(-1F, 0F, -1.5F, 1, 3, 6),
-				PartPose.offset(-1.5F, 18F, 1F));
+				.texOffs(0, 16)
+				.addBox(-1F, 0F, -1.5F, 1, 3, 6),
+			PartPose.offset(-1.5F, 18F, 1F));
 		base.addOrReplaceChild("left_wing", CubeListBuilder.create()
-						.texOffs(0, 16)
-						.addBox(0F, 0F, -1.5F, 1, 3, 6),
-				PartPose.offset(1.5F, 18F, 1F));
+				.texOffs(0, 16)
+				.addBox(0F, 0F, -1.5F, 1, 3, 6),
+			PartPose.offset(1.5F, 18F, 1F));
 		PartDefinition rightlegpart = base.addOrReplaceChild("right_leg", CubeListBuilder.create()
-						.texOffs(14, 16)
-						.addBox(0F, 0F, 0F, 1, 2, 1),
-				PartPose.offset(-1.5F, 21F, 1F));
+				.texOffs(14, 16)
+				.addBox(0F, 0F, 0F, 1, 2, 1),
+			PartPose.offset(-1.5F, 21F, 1F));
 		rightlegpart.addOrReplaceChild("right_foot", CubeListBuilder.create()
-						.texOffs(14, 20)
-						.addBox(0F, -1F, -2F, 1, 1, 2),
-				PartPose.offsetAndRotation(0F, 2F, 1F, 0.5235988F, 0F, 0F));
+				.texOffs(14, 20)
+				.addBox(0F, -1F, -2F, 1, 1, 2),
+			PartPose.offsetAndRotation(0F, 2F, 1F, 0.5235988F, 0F, 0F));
 		PartDefinition leftlegpart = base.addOrReplaceChild("left_leg", CubeListBuilder.create()
-						.texOffs(14, 16)
-						.addBox(0F, 0F, 0F, 1, 2, 1),
-				PartPose.offset(0.5F, 21F, 1F));
+				.texOffs(14, 16)
+				.addBox(0F, 0F, 0F, 1, 2, 1),
+			PartPose.offset(0.5F, 21F, 1F));
 		leftlegpart.addOrReplaceChild("left_foot", CubeListBuilder.create()
-						.texOffs(14, 20)
-						.addBox(0F, -1F, -2F, 1, 1, 2),
-				PartPose.offsetAndRotation(0F, 2F, 1F, 0.5235988F, 0F, 0F));
+				.texOffs(14, 20)
+				.addBox(0F, -1F, -2F, 1, 1, 2),
+			PartPose.offsetAndRotation(0F, 2F, 1F, 0.5235988F, 0F, 0F));
 		base.addOrReplaceChild("tail", CubeListBuilder.create()
-						.texOffs(0, 25)
-						.addBox(-1.5F, -0.5F, 0F, 3, 1, 3),
-				PartPose.offsetAndRotation(0F, 21F, 4F, -0.5235988F, 0F, 0F));
+				.texOffs(0, 25)
+				.addBox(-1.5F, -0.5F, 0F, 3, 1, 3),
+			PartPose.offsetAndRotation(0F, 21F, 4F, -0.5235988F, 0F, 0F));
 
 		return LayerDefinition.create(mesh, 32, 32);
 	}

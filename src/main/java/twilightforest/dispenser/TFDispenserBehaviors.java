@@ -1,8 +1,7 @@
 package twilightforest.dispenser;
 
-import net.minecraft.core.BlockSource;
 import net.minecraft.core.Position;
-import net.minecraft.core.dispenser.AbstractProjectileDispenseBehavior;
+import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
 import net.minecraft.sounds.SoundEvent;
@@ -12,7 +11,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DispenserBlock;
-import twilightforest.entity.projectile.IceBomb;
 import twilightforest.entity.projectile.MoonwormShot;
 import twilightforest.entity.projectile.TwilightWandBolt;
 import twilightforest.init.TFBlocks;
@@ -81,7 +79,7 @@ public class TFDispenserBehaviors {
 
 			@Override
 			protected SoundEvent getFiredSound() {
-				return TFSounds.SCEPTER_PEARL.get();
+				return TFSounds.TWILIGHT_SCEPTER_USE.get();
 			}
 
 			@Override
@@ -90,12 +88,7 @@ public class TFDispenserBehaviors {
 			}
 		});
 
-		DispenserBlock.registerBehavior(TFItems.ICE_BOMB.get(), new AbstractProjectileDispenseBehavior() {
-			@Override
-			protected Projectile getProjectile(Level level, Position pos, ItemStack stack) {
-				return new IceBomb(level, pos);
-			}
-		});
+		DispenserBlock.registerProjectileBehavior(TFItems.ICE_BOMB.get());
 
 		//store the vanilla values so we can use them in case our stuff fails
 		DispenseItemBehavior cachedFlintBehavior = DispenserBlock.DISPENSER_REGISTRY.get(Items.FLINT_AND_STEEL);

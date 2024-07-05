@@ -6,7 +6,10 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
@@ -23,6 +26,7 @@ public class CarminiteGhastling extends CarminiteGhastguard {
 
 	private boolean isMinion = false;
 
+	@SuppressWarnings("this-escape")
 	public CarminiteGhastling(EntityType<? extends CarminiteGhastling> type, Level world) {
 		super(type, world);
 		this.wanderFactor = 4.0F;
@@ -40,13 +44,8 @@ public class CarminiteGhastling extends CarminiteGhastguard {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return CarminiteGhastguard.registerAttributes()
-				.add(Attributes.MAX_HEALTH, 10)
-				.add(Attributes.FOLLOW_RANGE, 16.0D);
-	}
-
-	@Override
-	protected float getStandingEyeHeight(Pose pose, EntityDimensions size) {
-		return 0.5F;
+			.add(Attributes.MAX_HEALTH, 10)
+			.add(Attributes.FOLLOW_RANGE, 16.0D);
 	}
 
 	@Override

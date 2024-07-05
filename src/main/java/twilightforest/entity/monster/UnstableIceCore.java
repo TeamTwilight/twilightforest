@@ -3,9 +3,9 @@ package twilightforest.entity.monster;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.FastColor;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -18,7 +18,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.neoforged.neoforge.event.EventHooks;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFSounds;
 import twilightforest.util.ColorUtil;
@@ -44,8 +44,8 @@ public class UnstableIceCore extends BaseIceMob {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Monster.createMonsterAttributes()
-				.add(Attributes.MOVEMENT_SPEED, 0.23D)
-				.add(Attributes.ATTACK_DAMAGE, 3.0D);
+			.add(Attributes.MOVEMENT_SPEED, 0.23D)
+			.add(Attributes.ATTACK_DAMAGE, 3.0D);
 	}
 
 	@Override
@@ -64,17 +64,12 @@ public class UnstableIceCore extends BaseIceMob {
 	}
 
 	@Override
-	public float getEyeHeight(Pose pose) {
-		return this.getBbHeight() * 0.6F;
-	}
-
-	@Override
 	protected void tickDeath() {
 		++this.deathTime;
 
 		if (this.deathTime == 60) { // delay until 3 seconds
 			if (!this.level().isClientSide()) {
-				boolean mobGriefing = ForgeEventFactory.getMobGriefingEvent(this.level(), this);
+				boolean mobGriefing = EventHooks.canEntityGrief(this.level(), this);
 				this.level().explode(this, this.getX(), this.getY(), this.getZ(), UnstableIceCore.EXPLOSION_RADIUS, Level.ExplosionInteraction.MOB);
 
 				if (mobGriefing) {
@@ -127,7 +122,7 @@ public class UnstableIceCore extends BaseIceMob {
 	}
 
 	private boolean shouldTransformGlass(BlockState state, BlockPos pos) {
-		return !state.isAir() && isBlockNormalBounds(state, pos) && (!state.isSolid() || state.is(BlockTags.LEAVES) || state.is(Blocks.ICE) || state.is(TFBlocks.AURORA_BLOCK.get()));
+		return !state.isAir() && isBlockNormalBounds(state, pos) && (!state.isSolid() || state.is(BlockTags.LEAVES) || state.is(Blocks.ICE) || state.is(TFBlocks.AURORA_BLOCK));
 	}
 
 	private boolean isBlockNormalBounds(BlockState state, BlockPos pos) {
@@ -144,11 +139,11 @@ public class UnstableIceCore extends BaseIceMob {
 		int bestDifference = 1024;
 
 		for (DyeColor color : DyeColor.values()) {
-			float[] iColor = color.getTextureDiffuseColors();
+			int iColor = color.getTextureDiffuseColor();
 
-			int iRed = (int) (iColor[0] * 255F);
-			int iGreen = (int) (iColor[1] * 255F);
-			int iBlue = (int) (iColor[2] * 255F);
+			int iRed = FastColor.ARGB32.red(iColor);
+			int iGreen = FastColor.ARGB32.green(iColor);
+			int iBlue = FastColor.ARGB32.blue(iColor);
 
 			int difference = Math.abs(red - iRed) + Math.abs(green - iGreen) + Math.abs(blue - iBlue);
 

@@ -14,10 +14,11 @@ import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraftforge.client.model.ForgeFaceData;
-import net.minecraftforge.client.model.generators.CustomLoaderBuilder;
-import net.minecraftforge.client.model.generators.ModelBuilder;
-import net.minecraftforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.client.model.ExtraFaceData;
+import net.neoforged.neoforge.client.model.generators.CustomLoaderBuilder;
+import net.neoforged.neoforge.client.model.generators.ModelBuilder;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import org.apache.commons.lang3.mutable.MutableObject;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import twilightforest.TwilightForestMod;
@@ -39,7 +40,7 @@ public class ForceFieldModelBuilder<T extends ModelBuilder<T>> extends CustomLoa
 	}
 
 	protected ForceFieldModelBuilder(T parent, ExistingFileHelper helper) {
-		super(TwilightForestMod.prefix("force_field"), parent, helper);
+		super(TwilightForestMod.prefix("force_field"), parent, helper, false);
 	}
 
 	public ForceFieldElementBuilder forceFieldElement() {
@@ -96,21 +97,21 @@ public class ForceFieldModelBuilder<T extends ModelBuilder<T>> extends CustomLoa
 					if (face == null) continue;
 
 					JsonObject faceObj = new JsonObject();
-					faceObj.addProperty("texture", serializeLocOrKey(face.texture));
-					if (!Arrays.equals(face.uv.uvs, part.uvsByFace(dir))) {
-						faceObj.add("uv", new Gson().toJsonTree(face.uv.uvs));
+					faceObj.addProperty("texture", serializeLocOrKey(face.texture()));
+					if (!Arrays.equals(face.uv().uvs, part.uvsByFace(dir))) {
+						faceObj.add("uv", new Gson().toJsonTree(face.uv().uvs));
 					}
-					if (face.cullForDirection != null) {
-						faceObj.addProperty("cullface", face.cullForDirection.getSerializedName());
+					if (face.cullForDirection() != null) {
+						faceObj.addProperty("cullface", face.cullForDirection().getSerializedName());
 					}
-					if (face.uv.rotation != 0) {
-						faceObj.addProperty("rotation", face.uv.rotation);
+					if (face.uv().rotation != 0) {
+						faceObj.addProperty("rotation", face.uv().rotation);
 					}
-					if (face.tintIndex != -1) {
-						faceObj.addProperty("tintindex", face.tintIndex);
+					if (face.tintIndex() != -1) {
+						faceObj.addProperty("tintindex", face.tintIndex());
 					}
-					if (!face.getFaceData().equals(ForgeFaceData.DEFAULT)) {
-						faceObj.add("forge_data", ForgeFaceData.CODEC.encodeStart(JsonOps.INSTANCE, face.getFaceData()).result().get());
+					if (!face.faceData().equals(ExtraFaceData.DEFAULT)) {
+						faceObj.add("neoforge_data", ExtraFaceData.CODEC.encodeStart(JsonOps.INSTANCE, face.faceData()).result().get());
 					}
 					faces.add(dir.getSerializedName(), faceObj);
 				}
@@ -128,7 +129,7 @@ public class ForceFieldModelBuilder<T extends ModelBuilder<T>> extends CustomLoa
 		if (tex.charAt(0) == '#') {
 			return tex;
 		}
-		return new ResourceLocation(tex).toString();
+		return ResourceLocation.parse(tex).toString();
 	}
 
 	private JsonArray serializeVector3f(Vector3f vec) {
@@ -201,7 +202,7 @@ public class ForceFieldModelBuilder<T extends ModelBuilder<T>> extends CustomLoa
 
 		public ForceFieldElementBuilder allFaces(BiConsumer<Direction, ForceFieldElementBuilder.FaceBuilder> action) {
 			Arrays.stream(Direction.values())
-					.forEach(d -> action.accept(d, face(d)));
+				.forEach(d -> action.accept(d, face(d)));
 			return this;
 		}
 
@@ -268,8 +269,10 @@ public class ForceFieldModelBuilder<T extends ModelBuilder<T>> extends CustomLoa
 
 		BlockElement build() {
 			Map<Direction, BlockElementFace> faces = this.faces.entrySet().stream()
-					.collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().build(), (k1, k2) -> { throw new IllegalArgumentException(); }, LinkedHashMap::new));
-			return new BlockElement(from, to, faces, rotation == null ? null : rotation.build(), shade, new ForgeFaceData(this.color, this.blockLight, this.skyLight, this.hasAmbientOcclusion));
+				.collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().build(), (k1, k2) -> {
+					throw new IllegalArgumentException();
+				}, LinkedHashMap::new));
+			return new BlockElement(from, to, faces, rotation == null ? null : rotation.build(), shade, new ExtraFaceData(this.color, this.blockLight, this.skyLight, this.hasAmbientOcclusion));
 		}
 
 		public ForceFieldModelBuilder<T> end() {
@@ -307,7 +310,7 @@ public class ForceFieldModelBuilder<T extends ModelBuilder<T>> extends CustomLoa
 			}
 
 			public ForceFieldElementBuilder.FaceBuilder uvs(float u1, float v1, float u2, float v2) {
-				this.uvs = new float[] { u1, v1, u2, v2 };
+				this.uvs = new float[]{u1, v1, u2, v2};
 				return this;
 			}
 
@@ -337,7 +340,7 @@ public class ForceFieldModelBuilder<T extends ModelBuilder<T>> extends CustomLoa
 				if (this.texture == null) {
 					throw new IllegalStateException("A model face must have a texture");
 				}
-				return new BlockElementFace(cullface, tintindex, texture, new BlockFaceUV(uvs, rotation.rotation), new ForgeFaceData(this.color, this.blockLight, this.skyLight, this.hasAmbientOcclusion));
+				return new BlockElementFace(cullface, tintindex, texture, new BlockFaceUV(uvs, rotation.rotation), new ExtraFaceData(this.color, this.blockLight, this.skyLight, this.hasAmbientOcclusion), new MutableObject<>());
 			}
 
 			public ForceFieldElementBuilder end() {

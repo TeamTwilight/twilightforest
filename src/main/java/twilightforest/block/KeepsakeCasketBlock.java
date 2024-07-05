@@ -1,9 +1,11 @@
 package twilightforest.block;
 
+import com.google.common.collect.ImmutableMap;
+import com.mojang.serialization.MapCodec;
 import it.unimi.dsi.fastutil.floats.Float2FloatFunction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -15,6 +17,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.BlockItemStateProperties;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Explosion;
@@ -31,23 +34,24 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.material.*;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.KeepsakeCasketBlockEntity;
 import twilightforest.enums.BlockLoggingEnum;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFSounds;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 
 public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLoggingEnum.IMultiLoggable {
+
+	public static final MapCodec<KeepsakeCasketBlock> CODEC = simpleCodec(KeepsakeCasketBlock::new);
 
 	public static final DirectionProperty FACING = TFHorizontalBlock.FACING;
 	public static final IntegerProperty BREAKAGE = IntegerProperty.create("damage", 0, 2);
@@ -65,9 +69,15 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 	private static final VoxelShape SOLID_X = Shapes.or(SOLID, TOPPER_X);
 	private static final VoxelShape SOLID_Z = Shapes.or(SOLID, TOPPER_Z);
 
+	@SuppressWarnings("this-escape")
 	public KeepsakeCasketBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH).setValue(BREAKAGE, 0));
+	}
+
+	@Override
+	protected MapCodec<? extends BaseEntityBlock> codec() {
+		return CODEC;
 	}
 
 	@Override
@@ -117,13 +127,12 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
+	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
 		boolean flag = false;
 		if (state.getValue(BlockLoggingEnum.MULTILOGGED).getBlock() == Blocks.AIR || state.getValue(BlockLoggingEnum.MULTILOGGED).getFluid() != Fluids.EMPTY) {
-			ItemStack stack = player.getItemInHand(hand);
 			if (!(stack.getItem() == TFItems.CHARM_OF_KEEPING_3.get())) {
 				if (level.isClientSide()) {
-					return InteractionResult.SUCCESS;
+					return ItemInteractionResult.SUCCESS;
 				} else {
 					MenuProvider inamedcontainerprovider = this.getMenuProvider(state, level, pos);
 
@@ -141,20 +150,18 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 				}
 			}
 		}
-		return flag ? InteractionResult.sidedSuccess(level.isClientSide()) : InteractionResult.PASS;
+		return flag ? ItemInteractionResult.sidedSuccess(level.isClientSide()) : ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 	}
 
 	@Override
-	public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+	public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
 		if (!level.isClientSide() && !player.isCreative() && level.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS)) {
 			BlockEntity tile = level.getBlockEntity(pos);
 			if (tile instanceof KeepsakeCasketBlockEntity casket) {
 				ItemStack stack = new ItemStack(this);
-				String nameCheck = Component.literal(casket.name + "'s " + casket.getDisplayName()).getString();
+				String nameCheck = Component.literal(casket.playerName + "'s " + casket.getDisplayName()).getString();
 				ItemEntity itementity = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), stack);
-				CompoundTag nbt = new CompoundTag();
-				nbt.putInt("damage", state.getValue(BREAKAGE));
-				stack.addTagElement("BlockStateTag", nbt);
+				stack.set(DataComponents.BLOCK_STATE, new BlockItemStateProperties(ImmutableMap.of("damage", String.valueOf(state.getValue(BREAKAGE)))));
 				if (casket.hasCustomName()) {
 					if (nameCheck.equals(casket.getCustomName().getString()))
 						itementity.setCustomName(casket.getDisplayName());
@@ -173,22 +180,23 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 				level.addFreshEntity(itementity);
 			}
 		}
-		super.playerWillDestroy(level, pos, state, player);
+		return super.playerWillDestroy(level, pos, state, player);
 	}
 
 	@Override
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-		CompoundTag nbt = stack.getOrCreateTag();
-		if (nbt.contains("BlockStateTag")) {
-			CompoundTag damageNbt = nbt.getCompound("BlockStateTag");
-			if (damageNbt.contains("damage")) {
-				level.setBlock(pos, state.setValue(BREAKAGE, damageNbt.getInt("damage")), 2);
-			}
+		BlockItemStateProperties blockItemStateProperties = stack.get(DataComponents.BLOCK_STATE);
+		if (blockItemStateProperties != null) {
+			level.setBlock(pos, blockItemStateProperties.apply(state), 2);
 		}
-		if (stack.hasCustomHoverName()) {
-			BlockEntity tileentity = level.getBlockEntity(pos);
-			if (tileentity instanceof KeepsakeCasketBlockEntity) {
-				((KeepsakeCasketBlockEntity) tileentity).setCustomName(stack.getHoverName());
+
+		Component customName = stack.get(DataComponents.CUSTOM_NAME);
+		if (customName == null)
+			customName = stack.get(DataComponents.ITEM_NAME);
+
+		if (customName != null) {
+			if (level.getBlockEntity(pos) instanceof KeepsakeCasketBlockEntity casket) {
+				casket.name = customName;
 			}
 		}
 	}
@@ -262,7 +270,6 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 		return false;
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	public static DoubleBlockCombiner.Combiner<KeepsakeCasketBlockEntity, Float2FloatFunction> getLidRotationCallback(final LidBlockEntity lid) {
 		return new DoubleBlockCombiner.Combiner<>() {
 			public Float2FloatFunction acceptDouble(KeepsakeCasketBlockEntity casket, KeepsakeCasketBlockEntity oldCasket) {

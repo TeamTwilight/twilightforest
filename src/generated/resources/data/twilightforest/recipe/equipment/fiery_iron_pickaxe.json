@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "group": "fiery_pickaxe",
+  "ingredients": [
+    {
+      "item": "minecraft:iron_pickaxe"
+    },
+    {
+      "tag": "twilightforest:fiery_vial"
+    },
+    {
+      "tag": "twilightforest:fiery_vial"
+    },
+    {
+      "tag": "twilightforest:fiery_vial"
+    },
+    {
+      "tag": "c:rods/blaze"
+    },
+    {
+      "tag": "c:rods/blaze"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "twilightforest:fiery_pickaxe"
+  }
+}

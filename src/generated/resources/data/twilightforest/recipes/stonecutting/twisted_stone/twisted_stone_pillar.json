@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "count": 1,
-  "ingredient": {
-    "item": "twilightforest:twisted_stone"
-  },
-  "result": "twilightforest:twisted_stone_pillar"
-}

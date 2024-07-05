@@ -1,0 +1,49 @@
+{
+  "parent": "twilightforest:progress_lich",
+  "criteria": {
+    "kill_lich": {
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type_specific": {
+                "type": "minecraft:player",
+                "advancements": {
+                  "twilightforest:progress_lich": true
+                }
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:tick"
+    },
+    "trophy_pedestal": {
+      "trigger": "twilightforest:placed_on_trophy_pedestal"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.twilightforest.progress_trophy_pedestal.desc"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "twilightforest:trophy_pedestal"
+    },
+    "title": {
+      "translate": "advancement.twilightforest.progress_trophy_pedestal"
+    }
+  },
+  "requirements": [
+    [
+      "trophy_pedestal"
+    ],
+    [
+      "kill_lich"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

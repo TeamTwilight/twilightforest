@@ -15,6 +15,7 @@ public abstract class AbstractParticleSpawnerBlock extends Block {
 
 	public static final IntegerProperty RADIUS = IntegerProperty.create("particle_radius", 1, 10);
 
+	@SuppressWarnings("this-escape")
 	public AbstractParticleSpawnerBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(RADIUS, 1));

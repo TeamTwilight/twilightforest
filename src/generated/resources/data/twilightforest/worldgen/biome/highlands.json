@@ -2,6 +2,7 @@
   "carvers": {
     "air": "twilightforest:highland_caves"
   },
+  "creature_spawn_probability": 0.15,
   "downfall": 0.7,
   "effects": {
     "fog_color": 12648408,
@@ -28,7 +29,8 @@
     [],
     [
       "twilightforest:druid_hut",
-      "twilightforest:well_placer"
+      "twilightforest:well_placer",
+      "twilightforest:foundation"
     ],
     [],
     [
@@ -48,8 +50,9 @@
     ],
     [],
     [
+      "minecraft:patch_grass_taiga",
+      "minecraft:patch_large_fern",
       "twilightforest:grove_ruins",
-      "twilightforest:foundation",
       "twilightforest:stone_circle",
       "twilightforest:outside_stalagmite",
       "twilightforest:monolith",
@@ -57,8 +60,9 @@
       "twilightforest:hollow_log",
       "twilightforest:tree/selector/highlands_trees",
       "minecraft:forest_rock",
-      "minecraft:patch_grass_taiga",
-      "twilightforest:spruce_fallen_log"
+      "twilightforest:sparse_mushglooms",
+      "twilightforest:spruce_fallen_log",
+      "twilightforest:dark_ferns"
     ]
   ],
   "has_precipitation": true,

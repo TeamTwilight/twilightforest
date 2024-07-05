@@ -13,14 +13,14 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import net.minecraftforge.event.ForgeEventFactory;
-import twilightforest.init.TFBlocks;
-import twilightforest.init.TFEntities;
+import net.neoforged.neoforge.event.EventHooks;
 import twilightforest.entity.monster.ArmoredGiant;
 import twilightforest.entity.monster.GiantMiner;
-import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.init.TFLandmark;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFEntities;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.util.BoundingBoxUtils;
+import twilightforest.world.components.structures.TFStructureComponentOld;
 
 
 public class CloudCastleComponent extends TFStructureComponentOld {
@@ -34,6 +34,7 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 		this.warriorPlaced = nbt.getBoolean("warriorPlaced");
 	}
 
+	@SuppressWarnings("this-escape")
 	public CloudCastleComponent(int index, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFClCa.get(), index, x, y, z);
 		this.setOrientation(Direction.SOUTH);
@@ -43,10 +44,7 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 		y &= ~0b11;
 		z &= ~0b11;
 
-		// spawn list!
-		this.spawnListIndex = 1;
-
-		this.boundingBox = TFLandmark.getComponentToAddBoundingBox(x, y, z, -8, -4, -8, 64, 16, 64, Direction.SOUTH, false);
+		this.boundingBox = BoundingBoxUtils.getComponentToAddBoundingBox(x, y, z, -8, -4, -8, 64, 16, 64, Direction.SOUTH, false);
 	}
 
 	@Override
@@ -58,6 +56,11 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 
 	@Override
 	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
+		// The literal cloud
+		CloudComponent cloudComponent = new CloudComponent(this.getGenDepth() + 1, this.boundingBox.minX(), this.boundingBox.minY() + 3, this.boundingBox.minZ());
+		list.addPiece(cloudComponent);
+		cloudComponent.addChildren(this, list, rand);
+
 		// up to two trees
 		// tree in x direction
 		boolean plus = rand.nextBoolean();
@@ -72,7 +75,6 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 		CloudTreeComponent treeZ = new CloudTreeComponent(this.getGenDepth() + 1, boundingBox.minX() + (offset * 4), 168, boundingBox.minZ() + 8 + (plus ? 32 : -16));
 		list.addPiece(treeZ);
 		treeZ.addChildren(this, list, rand);
-
 	}
 
 	@Override
@@ -102,7 +104,7 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 				GiantMiner miner = TFEntities.GIANT_MINER.get().create(world.getLevel());
 				miner.setPos(bx, by, bz);
 				miner.setPersistenceRequired();
-				ForgeEventFactory.onFinalizeSpawn(miner, world, world.getCurrentDifficultyAt(pos), MobSpawnType.STRUCTURE, null, null);
+				EventHooks.finalizeMobSpawn(miner, world, world.getCurrentDifficultyAt(pos), MobSpawnType.STRUCTURE, null);
 
 				world.addFreshEntity(miner);
 			}
@@ -119,7 +121,7 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 				ArmoredGiant warrior = TFEntities.ARMORED_GIANT.get().create(world.getLevel());
 				warrior.setPos(bx, by, bz);
 				warrior.setPersistenceRequired();
-				ForgeEventFactory.onFinalizeSpawn(warrior, world, world.getCurrentDifficultyAt(pos), MobSpawnType.STRUCTURE, null, null);
+				EventHooks.finalizeMobSpawn(warrior, world, world.getCurrentDifficultyAt(pos), MobSpawnType.STRUCTURE, null);
 
 				world.addFreshEntity(warrior);
 			}

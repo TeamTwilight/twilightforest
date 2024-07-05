@@ -3,7 +3,6 @@ package twilightforest.world.components.structures.icetower;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import twilightforest.block.AuroraBrickBlock;
 import twilightforest.init.TFBlocks;
 
 public class IceTowerProcessor extends StructurePiece.BlockSelector {
@@ -13,11 +12,7 @@ public class IceTowerProcessor extends StructurePiece.BlockSelector {
 		if (!wall) {
 			this.next = Blocks.AIR.defaultBlockState();
 		} else {
-			this.next = TFBlocks.AURORA_BLOCK.get().defaultBlockState().setValue(
-					AuroraBrickBlock.VARIANT,
-					Math.abs(x + z) % 16
-			);
+			this.next = TFBlocks.AURORA_BLOCK.get().defaultBlockState();
 		}
 	}
-
 }

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "c:storage_blocks/steeleaf"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "id": "twilightforest:steeleaf_ingot"
+  }
+}

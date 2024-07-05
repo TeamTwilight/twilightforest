@@ -6,13 +6,14 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFEntities;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class SeekerArrow extends TFArrow {
@@ -24,20 +25,21 @@ public class SeekerArrow extends TFArrow {
 	private static final double seekAngle = Math.PI / 6.0;
 	private static final double seekThreshold = 0.5;
 
+	@SuppressWarnings("this-escape")
 	public SeekerArrow(EntityType<? extends SeekerArrow> type, Level world) {
 		super(type, world);
 		this.setBaseDamage(1.0D);
 	}
 
-	public SeekerArrow(Level world, Entity shooter) {
-		super(TFEntities.SEEKER_ARROW.get(), world, shooter);
+	public SeekerArrow(Level world, LivingEntity shooter, ItemStack stack, ItemStack weapon) {
+		super(TFEntities.SEEKER_ARROW.get(), world, shooter, stack, weapon);
 		this.setBaseDamage(1.0D);
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(TARGET, -1);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(TARGET, -1);
 	}
 
 	@Override

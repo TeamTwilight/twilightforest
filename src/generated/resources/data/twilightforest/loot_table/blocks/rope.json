@@ -1,0 +1,68 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": true,
+              "conditions": [
+                {
+                  "block": "twilightforest:rope",
+                  "condition": "minecraft:block_state_property",
+                  "properties": {
+                    "x": "true"
+                  }
+                }
+              ],
+              "count": 1.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "add": true,
+              "conditions": [
+                {
+                  "block": "twilightforest:rope",
+                  "condition": "minecraft:block_state_property",
+                  "properties": {
+                    "y": "true"
+                  }
+                }
+              ],
+              "count": 1.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "add": true,
+              "conditions": [
+                {
+                  "block": "twilightforest:rope",
+                  "condition": "minecraft:block_state_property",
+                  "properties": {
+                    "z": "true"
+                  }
+                }
+              ],
+              "count": 1.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "add": true,
+              "count": -1.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "function": "minecraft:explosion_decay"
+            }
+          ],
+          "name": "twilightforest:rope"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "twilightforest:blocks/rope"
+}

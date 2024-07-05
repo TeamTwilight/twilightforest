@@ -3,7 +3,6 @@ package twilightforest.entity.monster;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -22,14 +21,14 @@ import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
+import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFSounds;
 
-import org.jetbrains.annotations.Nullable;
-
 public class MazeSlime extends Slime {
 
-	private static final AttributeModifier DOUBLE_HEALTH = new AttributeModifier("Maze slime double health", 1, AttributeModifier.Operation.MULTIPLY_BASE);
+	private static final AttributeModifier DOUBLE_HEALTH = new AttributeModifier(TwilightForestMod.prefix("double_health"), 2, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
 
 	public MazeSlime(EntityType<? extends MazeSlime> type, Level world) {
 		super(type, world);
@@ -38,7 +37,7 @@ public class MazeSlime extends Slime {
 	@Override
 	public void setSize(int size, boolean resetHealth) {
 		super.setSize(size, resetHealth);
-		this.xpReward += 3;
+		this.xpReward = size + 3;
 	}
 
 	public static boolean getCanSpawnHere(EntityType<MazeSlime> entity, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, RandomSource random) {
@@ -47,21 +46,16 @@ public class MazeSlime extends Slime {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Monster.createMonsterAttributes()
-				.add(Attributes.MAX_HEALTH);
+			.add(Attributes.MAX_HEALTH);
 	}
 
 	@Nullable
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn) {
 		AttributeInstance health = this.getAttribute(Attributes.MAX_HEALTH);
 		assert health != null;
 		health.addPermanentModifier(DOUBLE_HEALTH);
-		return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
-	}
-
-	@Override
-	public double getMyRidingOffset() {
-		return 0.25D;
+		return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn);
 	}
 
 	@Override

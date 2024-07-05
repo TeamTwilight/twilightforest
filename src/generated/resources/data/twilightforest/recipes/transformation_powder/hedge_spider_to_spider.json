@@ -1,6 +1,0 @@
-{
-  "type": "twilightforest:transformation_powder",
-  "from": "twilightforest:hedge_spider",
-  "reversible": true,
-  "to": "minecraft:spider"
-}

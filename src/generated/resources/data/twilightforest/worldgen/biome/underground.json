@@ -46,8 +46,7 @@
     ],
     [
       "twilightforest:plant_roots",
-      "twilightforest:torch_berries",
-      "twilightforest:vanilla_roots"
+      "twilightforest:torch_berries"
     ],
     [],
     [],
@@ -58,32 +57,32 @@
   "has_precipitation": true,
   "spawn_costs": {
     "minecraft:creeper": {
-      "charge": 0.5,
-      "energy_budget": 0.1
+      "charge": 0.35,
+      "energy_budget": 0.15
     },
     "minecraft:enderman": {
-      "charge": 0.3,
-      "energy_budget": 0.1
+      "charge": 0.4,
+      "energy_budget": 0.15
     },
     "minecraft:skeleton": {
-      "charge": 0.7,
-      "energy_budget": 0.1
+      "charge": 0.3,
+      "energy_budget": 0.15
     },
     "minecraft:slime": {
       "charge": 0.2,
-      "energy_budget": 0.1
+      "energy_budget": 0.15
     },
     "minecraft:spider": {
-      "charge": 0.6,
-      "energy_budget": 0.1
+      "charge": 0.2,
+      "energy_budget": 0.15
     },
     "minecraft:zombie": {
-      "charge": 0.7,
-      "energy_budget": 0.1
+      "charge": 0.2,
+      "energy_budget": 0.15
     },
     "twilightforest:kobold": {
       "charge": 0.2,
-      "energy_budget": 0.1
+      "energy_budget": 0.15
     }
   },
   "spawners": {

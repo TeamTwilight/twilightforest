@@ -1,9 +1,0 @@
-{
-  "replace": false,
-  "stalactites": [
-    "twilightforest:coal_ore_stalactite",
-    "twilightforest:copper_ore_raw_copper_block_stalactite",
-    "twilightforest:glowstone_stalactite",
-    "twilightforest:iron_ore_raw_iron_block_stalactite"
-  ]
-}

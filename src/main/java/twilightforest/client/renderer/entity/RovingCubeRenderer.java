@@ -3,10 +3,10 @@ package twilightforest.client.renderer.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -34,7 +34,7 @@ public class RovingCubeRenderer<T extends RovingCube> extends EntityRenderer<T> 
 		stack.scale(2.0F, 2.0F, 2.0F);
 		stack.mulPose(Axis.YP.rotationDegrees(Mth.wrapDegrees(entity.tickCount + partialTicks) * 11F));
 		stack.translate(0F, 0.75F, 0F);
-		this.model.renderToBuffer(stack, builder, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		this.model.renderToBuffer(stack, builder, light, OverlayTexture.NO_OVERLAY);
 
 		stack.popPose();
 	}

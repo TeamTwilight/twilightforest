@@ -125,7 +125,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 		final int centerZ = sbb.minZ() + (sbb.maxZ() - sbb.minZ() + 1) / 2;
 
 		return Math.abs(nx - centerX) > range
-				|| Math.abs(nz - centerZ) > range;
+			|| Math.abs(nz - centerZ) > range;
 	}
 
 	/**
@@ -270,7 +270,6 @@ public class IceTowerWingComponent extends TowerWingComponent {
 
 	/**
 	 * Called to decorate each floor.  This is responsible for adding a ladder up, the stub of the ladder going down, then picking a theme for each floor and executing it.
-	 *
 	 */
 	@Override
 	@SuppressWarnings("fallthrough")

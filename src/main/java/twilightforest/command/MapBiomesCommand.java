@@ -5,7 +5,6 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -15,15 +14,15 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraftforge.fml.loading.FMLEnvironment;
+import net.minecraft.world.level.storage.LevelResource;
+import net.neoforged.fml.loading.FMLEnvironment;
 import twilightforest.init.TFBiomes;
 import twilightforest.item.MagicMapItem;
 import twilightforest.util.ColorUtil;
-import twilightforest.world.registration.TFGenerationSettings;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
@@ -65,22 +64,18 @@ public class MapBiomesCommand {
 
 	public static LiteralArgumentBuilder<CommandSourceStack> register() {
 		return Commands.literal("biomepng").requires(cs -> cs.hasPermission(2)).executes(context -> createMap(context.getSource(), 4096, 4096, true))
-				.then(Commands.argument("width", IntegerArgumentType.integer(0))
-						.executes(context -> createMap(context.getSource(), IntegerArgumentType.getInteger(context, "width"), IntegerArgumentType.getInteger(context, "width"), true))
-						.then(Commands.argument("height", IntegerArgumentType.integer(0))
-								.executes(context -> createMap(context.getSource(), IntegerArgumentType.getInteger(context, "width"), IntegerArgumentType.getInteger(context, "height"), true))
-								.then(Commands.argument("showBiomePercents", BoolArgumentType.bool())
-										.executes(context -> createMap(context.getSource(), IntegerArgumentType.getInteger(context, "width"), IntegerArgumentType.getInteger(context, "height"), BoolArgumentType.getBool(context, "showBiomePercents"))))));
+			.then(Commands.argument("width", IntegerArgumentType.integer(0))
+				.executes(context -> createMap(context.getSource(), IntegerArgumentType.getInteger(context, "width"), IntegerArgumentType.getInteger(context, "width"), true))
+				.then(Commands.argument("height", IntegerArgumentType.integer(0))
+					.executes(context -> createMap(context.getSource(), IntegerArgumentType.getInteger(context, "width"), IntegerArgumentType.getInteger(context, "height"), true))
+					.then(Commands.argument("showBiomePercents", BoolArgumentType.bool())
+						.executes(context -> createMap(context.getSource(), IntegerArgumentType.getInteger(context, "width"), IntegerArgumentType.getInteger(context, "height"), BoolArgumentType.getBool(context, "showBiomePercents"))))));
 
 	}
 
-	private static int createMap(CommandSourceStack source, int width, int height, boolean showBiomePercents) throws CommandSyntaxException {
+	private static int createMap(CommandSourceStack source, int width, int height, boolean showBiomePercents) {
 		if (FMLEnvironment.dist.isDedicatedServer())
 			return -1;
-
-		if (!TFGenerationSettings.usesTwilightChunkGenerator(source.getLevel())) {
-			throw TFCommand.NOT_IN_TF.create();
-		}
 
 		if (BIOME2COLOR.isEmpty()) {
 			init();
@@ -129,18 +124,20 @@ public class MapBiomesCommand {
 			source.sendSuccess(() -> Component.literal("Approximate biome-block counts within a " + (width + "x" + height) + " region"), false);
 			int totalCount = biomeCount.values().stream().mapToInt(i -> i).sum();
 			biomeCount.forEach((biome, integer) -> source.sendSuccess(() -> Component.literal(
-							source.getLevel().registryAccess().registryOrThrow(Registries.BIOME).getKey(biome).toString())
-					.append(": " + (integer) + ChatFormatting.GRAY + " (" + numberFormat.format(((double) integer / totalCount) * 100) + "%)"), false));
+					source.getLevel().registryAccess().registryOrThrow(Registries.BIOME).getKey(biome).toString())
+				.append(": " + (integer) + ChatFormatting.GRAY + " (" + numberFormat.format(((double) integer / totalCount) * 100) + "%)"), false));
 		}
 
 		int startX = Mth.floor(source.getPosition().x()) - (img.getWidth() / 2);
 		int startZ = Mth.floor(source.getPosition().z()) - (img.getHeight() / 2);
 		//file name is formatted as: biomemap-seed-(startX.startZ)-(endX.endZ)
-		//I wanted to put generated maps in the path generated/biomemaps/seed, but it doesnt like when I add more params to the method
-		Path p = Paths.get("biome_map-" + source.getLevel().getSeed() + "-(" + startX + "." + startZ + ")-(" + (startX + width) + "." + (startZ + height) + ").png");
+		Path path = source.getLevel().getServer().getWorldPath(LevelResource.GENERATED_DIR).resolve("biomemaps").resolve(String.valueOf(source.getLevel().getSeed())).resolve("biome_map-" + source.getLevel().getSeed() + "-(" + startX + "." + startZ + ")-(" + (startX + width) + "." + (startZ + height) + ").png").normalize();
 		//save the biome map
 		try {
-			img.writeToFile(p.toAbsolutePath().toFile());
+			if (!Files.exists(path)) {
+				Files.createDirectories(path.getParent());
+				Files.write(path, img.asByteArray());
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 			source.sendFailure(Component.literal("Could not save image! Please report this!"));
@@ -162,9 +159,9 @@ public class MapBiomesCommand {
 
 		public BiomeMapColor(int r, int g, int b, int a) {
 			this.value = ((a & 0xFF) << 24) |
-					((r & 0xFF) << 16) |
-					((g & 0xFF) << 8) |
-					((b & 0xFF));
+				((r & 0xFF) << 16) |
+				((g & 0xFF) << 8) |
+				((b & 0xFF));
 		}
 
 		public BiomeMapColor(int rgb) {

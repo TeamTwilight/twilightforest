@@ -3,7 +3,6 @@ package twilightforest.command;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -16,30 +15,27 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.MobSpawnSettings;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
-import net.minecraftforge.fml.loading.FMLLoader;
+import net.neoforged.fml.loading.FMLLoader;
+import twilightforest.events.EntityEvents;
 import twilightforest.util.LandmarkUtil;
-import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.world.components.structures.start.TFStructureStart;
 import twilightforest.world.components.structures.util.LandmarkStructure;
-import twilightforest.world.registration.TFGenerationSettings;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.StringJoiner;
 
 public class InfoCommand {
 	public static LiteralArgumentBuilder<CommandSourceStack> register() {
 		return Commands.literal("info").requires(cs -> cs.hasPermission(2)).executes(InfoCommand::run);
 	}
 
-	private static int run(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
+	private static int run(CommandContext<CommandSourceStack> ctx) {
 		CommandSourceStack source = ctx.getSource();
 		ServerLevel level = source.getLevel();
-
-		if (!TFGenerationSettings.usesTwilightChunkGenerator(level)) {
-			throw TFCommand.NOT_IN_TF.create();
-		}
 
 		BlockPos pos = BlockPos.containing(source.getPosition());
 
@@ -58,7 +54,18 @@ public class InfoCommand {
 		String structureName = Component.translatable("structure." + key.getNamespace() + "." + key.getPath()).getString();
 		source.sendSuccess(() -> Component.translatable("commands.tffeature.nearest", structureName), false);
 
-		if (structureStart.getBoundingBox().isInside(pos)) {
+		BoundingBox boundingBox = structureStart.getBoundingBox();
+
+		StringJoiner boxInfo = new StringJoiner(", ", "[", "]");
+		boxInfo.add("" + boundingBox.minX());
+		boxInfo.add("" + boundingBox.minY());
+		boxInfo.add("" + boundingBox.minZ());
+		boxInfo.add("" + boundingBox.maxX());
+		boxInfo.add("" + boundingBox.maxY());
+		boxInfo.add("" + boundingBox.maxZ());
+		source.sendSuccess(() -> Component.translatable("commands.tffeature.structure.boundaries", boxInfo), false);
+
+		if (boundingBox.isInside(pos)) {
 			source.sendSuccess(() -> Component.translatable("commands.tffeature.structure.inside").withStyle(ChatFormatting.BOLD, ChatFormatting.GREEN), false);
 
 			if (structureStart instanceof TFStructureStart tfStructureStart) {
@@ -66,7 +73,7 @@ public class InfoCommand {
 			}
 
 			// what is the spawn list
-			List<MobSpawnSettings.SpawnerData> spawnList = ChunkGeneratorTwilight.gatherPotentialSpawns(null, level.structureManager(), MobCategory.MONSTER, pos);
+			List<MobSpawnSettings.SpawnerData> spawnList = EntityEvents.gatherPotentialSpawns(level.structureManager(), MobCategory.MONSTER, pos);
 			source.sendSuccess(() -> Component.translatable("commands.tffeature.structure.spawn_list").withStyle(ChatFormatting.UNDERLINE), false);
 			if (spawnList != null)
 				for (MobSpawnSettings.SpawnerData entry : spawnList)

@@ -7,7 +7,7 @@
       "top": "minecraft:block/oak_log_top"
     }
   },
-  "loader": "forge:separate_transforms",
+  "loader": "neoforge:separate_transforms",
   "perspectives": {
     "gui": {
       "parent": "twilightforest:item/giant_block_gui",

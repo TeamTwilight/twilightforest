@@ -18,7 +18,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import twilightforest.init.TFStructurePieceTypes;
 
 
-public class StrongholdTrainingRoomComponent extends StructureTFStrongholdComponent {
+public class StrongholdTrainingRoomComponent extends KnightStrongholdComponent {
 
 	public StrongholdTrainingRoomComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(TFStructurePieceTypes.TFSTR.get(), nbt);
@@ -30,7 +30,7 @@ public class StrongholdTrainingRoomComponent extends StructureTFStrongholdCompon
 
 	@Override
 	public BoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
-		return StructureTFStrongholdComponent.getComponentToAddBoundingBox(x, y, z, -13, -1, 0, 18, 7, 18, facing);
+		return KnightStrongholdComponent.getComponentToAddBoundingBox(x, y, z, -13, -1, 0, 18, 7, 18, facing);
 	}
 
 	@Override

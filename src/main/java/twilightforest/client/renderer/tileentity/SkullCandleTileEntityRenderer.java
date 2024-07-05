@@ -2,8 +2,6 @@ package twilightforest.client.renderer.tileentity;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.Util;
@@ -19,16 +17,17 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.DefaultPlayerSkin;
+import net.minecraft.client.resources.SkinManager;
 import net.minecraft.core.Direction;
-import net.minecraft.core.UUIDUtil;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.component.ResolvableProfile;
 import net.minecraft.world.level.block.CandleBlock;
 import net.minecraft.world.level.block.SkullBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RotationSegment;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.block.LightableBlock;
 import twilightforest.block.AbstractSkullCandleBlock;
+import twilightforest.block.LightableBlock;
 import twilightforest.block.SkullCandleBlock;
 import twilightforest.block.WallSkullCandleBlock;
 import twilightforest.block.entity.SkullCandleBlockEntity;
@@ -41,12 +40,12 @@ public class SkullCandleTileEntityRenderer<T extends SkullCandleBlockEntity> imp
 	private final Map<SkullBlock.Type, SkullModelBase> modelByType;
 
 	public static final Map<SkullBlock.Type, ResourceLocation> SKIN_BY_TYPE = Util.make(Maps.newHashMap(), map -> {
-		map.put(SkullBlock.Types.SKELETON, new ResourceLocation("textures/entity/skeleton/skeleton.png"));
-		map.put(SkullBlock.Types.WITHER_SKELETON, new ResourceLocation("textures/entity/skeleton/wither_skeleton.png"));
-		map.put(SkullBlock.Types.ZOMBIE, new ResourceLocation("textures/entity/zombie/zombie.png"));
-		map.put(SkullBlock.Types.CREEPER, new ResourceLocation("textures/entity/creeper/creeper.png"));
-		map.put(SkullBlock.Types.PIGLIN, new ResourceLocation("textures/entity/piglin/piglin.png"));
-		map.put(SkullBlock.Types.PLAYER, DefaultPlayerSkin.getDefaultSkin());
+		map.put(SkullBlock.Types.SKELETON, ResourceLocation.withDefaultNamespace("textures/entity/skeleton/skeleton.png"));
+		map.put(SkullBlock.Types.WITHER_SKELETON, ResourceLocation.withDefaultNamespace("textures/entity/skeleton/wither_skeleton.png"));
+		map.put(SkullBlock.Types.ZOMBIE, ResourceLocation.withDefaultNamespace("textures/entity/zombie/zombie.png"));
+		map.put(SkullBlock.Types.CREEPER, ResourceLocation.withDefaultNamespace("textures/entity/creeper/creeper.png"));
+		map.put(SkullBlock.Types.PIGLIN, ResourceLocation.withDefaultNamespace("textures/entity/piglin/piglin.png"));
+		map.put(SkullBlock.Types.PLAYER, DefaultPlayerSkin.getDefaultTexture());
 	});
 
 	public static Map<SkullBlock.Type, SkullModelBase> createSkullRenderers(EntityModelSet set) {
@@ -72,7 +71,7 @@ public class SkullCandleTileEntityRenderer<T extends SkullCandleBlockEntity> imp
 		Direction direction = wallSkull ? state.getValue(WallSkullCandleBlock.FACING) : null;
 		int rotation = wallSkull ? RotationSegment.convertToSegment(direction.getOpposite()) : state.getValue(SkullCandleBlock.ROTATION);
 		float rotDegrees = RotationSegment.convertToDegrees(rotation);
-		SkullBlock.Type type = ((AbstractSkullCandleBlock)state.getBlock()).getType();
+		SkullBlock.Type type = ((AbstractSkullCandleBlock) state.getBlock()).getType();
 		SkullModelBase base = this.modelByType.get(type);
 		RenderType rendertype = getRenderType(type, entity.getOwnerProfile());
 		renderSkull(direction, rotDegrees, animationTime, stack, buffer, light, base, rendertype);
@@ -83,10 +82,10 @@ public class SkullCandleTileEntityRenderer<T extends SkullCandleBlockEntity> imp
 			stack.translate(0.0F, 0.45F, 0.0F);
 		}
 		Minecraft.getInstance().getBlockRenderer().renderSingleBlock(
-				AbstractSkullCandleBlock.candleColorToCandle(AbstractSkullCandleBlock.CandleColors.colorFromInt(entity.getCandleColor()))
-						.defaultBlockState()
-						.setValue(CandleBlock.CANDLES, Math.max(1, entity.getCandleAmount()))
-						.setValue(CandleBlock.LIT, state.getValue(AbstractSkullCandleBlock.LIGHTING) == LightableBlock.Lighting.NORMAL), stack, buffer, light, overlay);
+			AbstractSkullCandleBlock.candleColorToCandle(AbstractSkullCandleBlock.CandleColors.colorFromInt(entity.getCandleColor()))
+				.defaultBlockState()
+				.setValue(CandleBlock.CANDLES, Math.max(1, entity.getCandleAmount()))
+				.setValue(CandleBlock.LIT, state.getValue(AbstractSkullCandleBlock.LIGHTING) == LightableBlock.Lighting.NORMAL), stack, buffer, light, overlay);
 	}
 
 	public static void renderSkull(@Nullable Direction direction, float pYRot, float animationTime, PoseStack stack, MultiBufferSource buffer, int light, SkullModelBase base, RenderType type) {
@@ -94,22 +93,21 @@ public class SkullCandleTileEntityRenderer<T extends SkullCandleBlockEntity> imp
 		if (direction == null) {
 			stack.translate(0.5F, 0.0F, 0.5F);
 		} else {
-			stack.translate(0.5F - (float)direction.getStepX() * 0.25F, 0.25F, 0.5F - (float)direction.getStepZ() * 0.25F);
+			stack.translate(0.5F - (float) direction.getStepX() * 0.25F, 0.25F, 0.5F - (float) direction.getStepZ() * 0.25F);
 		}
 
 		stack.scale(-1.0F, -1.0F, 1.0F);
 		VertexConsumer consumer = buffer.getBuffer(type);
 		base.setupAnim(animationTime, pYRot, 0.0F);
-		base.renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		base.renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY);
 		stack.popPose();
 	}
 
-	public static RenderType getRenderType(SkullBlock.Type type, @Nullable GameProfile profile) {
+	public static RenderType getRenderType(SkullBlock.Type type, @Nullable ResolvableProfile profile) {
 		ResourceLocation resourcelocation = SKIN_BY_TYPE.get(type);
 		if (type == SkullBlock.Types.PLAYER && profile != null) {
-			Minecraft minecraft = Minecraft.getInstance();
-			Map<MinecraftProfileTexture.Type, MinecraftProfileTexture> map = minecraft.getSkinManager().getInsecureSkinInformation(profile);
-			return map.containsKey(MinecraftProfileTexture.Type.SKIN) ? RenderType.entityTranslucent(minecraft.getSkinManager().registerTexture(map.get(MinecraftProfileTexture.Type.SKIN), MinecraftProfileTexture.Type.SKIN)) : RenderType.entityCutoutNoCull(DefaultPlayerSkin.getDefaultSkin(UUIDUtil.getOrCreatePlayerUUID(profile)));
+			SkinManager skinmanager = Minecraft.getInstance().getSkinManager();
+			return RenderType.entityTranslucent(skinmanager.getInsecureSkin(profile.gameProfile()).texture());
 		} else {
 			return RenderType.entityCutoutNoCullZOffset(resourcelocation);
 		}

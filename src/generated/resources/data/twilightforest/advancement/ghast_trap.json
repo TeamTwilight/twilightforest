@@ -1,0 +1,37 @@
+{
+  "parent": "twilightforest:progress_knights",
+  "criteria": {
+    "activate_ghast_trap": {
+      "trigger": "twilightforest:activate_ghast_trap"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.twilightforest.ghast_trap.desc",
+      "with": [
+        {
+          "translate": "entity.twilightforest.carminite_ghastling"
+        },
+        {
+          "translate": "block.twilightforest.ghast_trap"
+        },
+        {
+          "translate": "entity.twilightforest.ur_ghast"
+        }
+      ]
+    },
+    "icon": {
+      "count": 1,
+      "id": "twilightforest:ghast_trap"
+    },
+    "title": {
+      "translate": "advancement.twilightforest.ghast_trap"
+    }
+  },
+  "requirements": [
+    [
+      "activate_ghast_trap"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

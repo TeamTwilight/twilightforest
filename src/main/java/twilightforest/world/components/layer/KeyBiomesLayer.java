@@ -1,13 +1,14 @@
 package twilightforest.world.components.layer;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
-import twilightforest.init.TFDimensionSettings;
+import twilightforest.ASMHooks;
 import twilightforest.init.custom.BiomeLayerStack;
 import twilightforest.init.custom.BiomeLayerTypes;
 import twilightforest.world.components.layer.vanillalegacy.Area;
@@ -43,10 +44,10 @@ public record KeyBiomesLayer(List<ResourceKey<Biome>> keyBiomes) implements Area
 
 	@Override
 	public ResourceKey<Biome> applyPixel(BigContext<?> context, Area layer, int x, int z) {
-		RANDOM.setSeed(TFDimensionSettings.seed + (x & -4) * 25117L + (z & -4) * 151121L);
+		RANDOM.setSeed(ASMHooks.seed + (x & -4) * 25117L + (z & -4) * 151121L);
 		int ox = RANDOM.nextInt(2) + 1;
 		int oz = RANDOM.nextInt(2) + 1;
-		RANDOM.setSeed(TFDimensionSettings.seed + (x / 8) * 25117L + (z / 8) * 151121L);
+		RANDOM.setSeed(ASMHooks.seed + (x / 8) * 25117L + (z / 8) * 151121L);
 		int offset = RANDOM.nextInt(3);
 		if ((x & 3) == ox && (z & 3) == oz) {
 			// determine which of the 4
@@ -79,10 +80,10 @@ public record KeyBiomesLayer(List<ResourceKey<Biome>> keyBiomes) implements Area
 	}
 
 	public static final class Factory implements BiomeLayerFactory {
-		public static final Codec<Factory> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-				Codec.LONG.fieldOf("salt").forGetter(Factory::salt),
-				ResourceKey.codec(Registries.BIOME).listOf().comapFlatMap(list -> Util.fixedSize(list, 4), Function.identity()).fieldOf("key_biomes").forGetter(Factory::keyBiomes),
-				BiomeLayerStack.HOLDER_CODEC.fieldOf("parent").forGetter(Factory::parent)
+		public static final MapCodec<Factory> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
+			Codec.LONG.fieldOf("salt").forGetter(Factory::salt),
+			ResourceKey.codec(Registries.BIOME).listOf().comapFlatMap(list -> Util.fixedSize(list, 4), Function.identity()).fieldOf("key_biomes").forGetter(Factory::keyBiomes),
+			BiomeLayerStack.HOLDER_CODEC.fieldOf("parent").forGetter(Factory::parent)
 		).apply(inst, Factory::new));
 		private final long salt;
 		private final List<ResourceKey<Biome>> keyBiomes;
@@ -100,7 +101,7 @@ public record KeyBiomesLayer(List<ResourceKey<Biome>> keyBiomes) implements Area
 
 		@Override
 		public LazyArea build(LongFunction<LazyAreaContext> contextFactory) {
-			return this.instance.run(contextFactory.apply(this.salt), this.parent.get().build(contextFactory));
+			return this.instance.run(contextFactory.apply(this.salt), this.parent.value().build(contextFactory));
 		}
 
 		@Override

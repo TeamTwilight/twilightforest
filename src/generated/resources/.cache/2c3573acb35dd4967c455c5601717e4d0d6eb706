@@ -1,4 +1,3 @@
-// 1.20.1	2023-08-31T10:36:51.8864202	atlases generator for twilightforest
-aebef09d33f3500705949d8b6494d661eb6c306d assets/minecraft/atlases/chests.json
-9b9863e749de20bf979cdced9022ed2b96753460 assets/minecraft/atlases/magic_paintings.json
-91ec0b65040a29530fb79145fa81b3636a3885b1 assets/minecraft/atlases/shield_patterns.json
+// 1.21	2024-06-18T11:46:58.0343888	atlases generator for twilightforest
+205afdad55ca996f2c0aef8e92e405f627338d6d assets/minecraft/atlases/magic_paintings.json
+12d940f0ad9e725c31f186f1c14a637e20ab47da assets/minecraft/atlases/shield_patterns.json

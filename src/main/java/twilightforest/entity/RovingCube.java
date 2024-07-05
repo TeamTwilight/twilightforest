@@ -35,9 +35,9 @@ public class RovingCube extends Monster {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Monster.createMonsterAttributes()
-				.add(Attributes.MAX_HEALTH, 10.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.23D)
-				.add(Attributes.ATTACK_DAMAGE, 5.0D);
+			.add(Attributes.MAX_HEALTH, 10.0D)
+			.add(Attributes.MOVEMENT_SPEED, 0.23D)
+			.add(Attributes.ATTACK_DAMAGE, 5.0D);
 	}
 
 	@Override

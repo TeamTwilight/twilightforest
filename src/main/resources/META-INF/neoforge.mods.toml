@@ -1,0 +1,36 @@
+modLoader = "javafml"
+loaderVersion = "[4,)"
+issueTrackerURL = "https://github.com/TeamTwilight/twilightforest/issues"
+license = "GNU LESSER GENERAL PUBLIC LICENSE Version 2.1"
+
+[[mods]]
+modId = "twilightforest"
+version = "${file.jarVersion}"
+displayName = "The Twilight Forest"
+itemIcon = "twilightforest:twilight_portal_miniature_structure"
+displayURL = "https://www.curseforge.com/minecraft/mc-mods/the-twilight-forest"
+updateJSONURL = "https://gh.tamaized.com/TeamTwilight/twilightforest/update.json"
+logoFile = "twilightforest_logo.png"
+credits = "By Benimatic (Ben Mazur)"
+authors = "Benimatic, AtomicBlom, Drullkus, Killer_Demon, quadraxis, Tamaized, williewillus, Andromander, GizmoTheMoonPig, jodlodi"
+description = '''
+An enchanted forest dimension.
+'''
+enumExtensions="META-INF/enumextensions.json"
+
+[[dependencies.twilightforest]]
+modId = "neoforge"
+type = "required"
+versionRange = "[21.0.17-beta,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.twilightforest]]
+modId = "minecraft"
+type = "required"
+versionRange = "[1.21,)"
+ordering = "NONE"
+side = "BOTH"
+
+[modproperties.twilightforest]
+configuredBackground = "twilightforest:textures/block/mazestone_large_brick.png"

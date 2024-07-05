@@ -13,6 +13,7 @@ public class IronLadderBlock extends LadderBlock {
 	public static final BooleanProperty LEFT = BooleanProperty.create("left");
 	public static final BooleanProperty RIGHT = BooleanProperty.create("right");
 
+	@SuppressWarnings("this-escape")
 	public IronLadderBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(LEFT, false).setValue(RIGHT, false));
@@ -36,6 +37,6 @@ public class IronLadderBlock extends LadderBlock {
 		BlockState rightState = accessor.getBlockState(currentPos.relative(facing.getClockWise()));
 
 		return superUpdated.setValue(LEFT, leftState.getBlock() instanceof IronLadderBlock && leftState.getValue(LadderBlock.FACING) == facing)
-				.setValue(RIGHT, rightState.getBlock() instanceof IronLadderBlock && rightState.getValue(LadderBlock.FACING) == facing);
+			.setValue(RIGHT, rightState.getBlock() instanceof IronLadderBlock && rightState.getValue(LadderBlock.FACING) == facing);
 	}
 }

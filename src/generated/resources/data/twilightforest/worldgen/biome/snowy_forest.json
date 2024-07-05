@@ -27,7 +27,7 @@
   "features": [
     [],
     [
-      "twilightforest:water_lake"
+      "twilightforest:frozen_lake"
     ],
     [],
     [],
@@ -44,8 +44,7 @@
     ],
     [
       "twilightforest:plant_roots",
-      "twilightforest:torch_berries",
-      "twilightforest:vanilla_roots"
+      "twilightforest:torch_berries"
     ],
     [],
     [
@@ -58,7 +57,16 @@
     ]
   ],
   "has_precipitation": true,
-  "spawn_costs": {},
+  "spawn_costs": {
+    "twilightforest:winter_wolf": {
+      "charge": 0.6,
+      "energy_budget": 0.15
+    },
+    "twilightforest:yeti": {
+      "charge": 0.6,
+      "energy_budget": 0.15
+    }
+  },
   "spawners": {
     "ambient": [],
     "axolotls": [],

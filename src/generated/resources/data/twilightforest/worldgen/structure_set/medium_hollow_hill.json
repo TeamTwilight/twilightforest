@@ -1,8 +1,7 @@
 {
   "placement": {
-    "type": "twilightforest:forced_landmark",
-    "landmark_set": "medium_hollow_hill",
-    "scan_elevation": 256
+    "type": "twilightforest:landmark_grid",
+    "structure_grid_lock": "twilightforest:medium_hollow_hill"
   },
   "structures": [
     {

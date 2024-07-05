@@ -1,7 +1,7 @@
 package twilightforest.world.components.structures;
 
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import twilightforest.world.components.structures.darktower.StructureDecoratorDarkTower;
 import twilightforest.world.components.structures.finalcastle.StructureTFDecoratorCastle;

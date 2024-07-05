@@ -114,7 +114,7 @@ public class MushroomTowerWingComponent extends TowerWingComponent {
 		final int centerX = sbb.minX() + (sbb.maxX() - sbb.minX() + 1) / 2;
 		final int centerZ = sbb.minZ() + (sbb.maxZ() - sbb.minZ() + 1) / 2;
 		return Math.abs(nx - centerX) > range
-				|| Math.abs(nz - centerZ) > range;
+			|| Math.abs(nz - centerZ) > range;
 	}
 
 	/**
@@ -188,8 +188,8 @@ public class MushroomTowerWingComponent extends TowerWingComponent {
 		// go through list.  if there are any same size towers within wingSize, return their xyz instead
 
 		BoundingBox boxAbove = new BoundingBox(
-				boundingBox.minX(), boundingBox.minY(), boundingBox.minZ(),
-				boundingBox.maxX(), 256, boundingBox.maxZ()
+			boundingBox.minX(), boundingBox.minY(), boundingBox.minZ(),
+			boundingBox.maxX(), 256, boundingBox.maxZ()
 		);
 
 		if (list instanceof StructurePiecesBuilder start) {
@@ -385,7 +385,8 @@ public class MushroomTowerWingComponent extends TowerWingComponent {
 				int dist = (int) (Math.max(ax, az) + (Math.min(ax, az) * 0.4));
 
 				// make a floor!
-				if (dist <= hollow) { {
+				if (dist <= hollow) {
+					{
 						placeBlock(world, this.isAscender ? Blocks.JUNGLE_PLANKS.defaultBlockState() : deco.floorState, dx + diameter, dy, dz + diameter, sbb);
 					}
 				}
@@ -407,7 +408,6 @@ public class MushroomTowerWingComponent extends TowerWingComponent {
 
 	/**
 	 * Called to decorate each floor.  This is responsible for adding a ladder up, the stub of the ladder going down, then picking a theme for each floor and executing it.
-	 *
 	 */
 	@Override
 	protected void decorateFloor(WorldGenLevel world, RandomSource rand, int floor, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, BoundingBox sbb) {

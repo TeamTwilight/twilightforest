@@ -1,0 +1,145 @@
+{
+  "values": {
+    "twilightforest:beanstalk_leaves": {
+      "chance": 0.5
+    },
+    "twilightforest:canopy_leaves": {
+      "chance": 0.3
+    },
+    "twilightforest:canopy_sapling": {
+      "chance": 0.3
+    },
+    "twilightforest:clover_patch": {
+      "chance": 0.3
+    },
+    "twilightforest:dark_leaves": {
+      "chance": 0.3
+    },
+    "twilightforest:darkwood_sapling": {
+      "chance": 0.3
+    },
+    "twilightforest:experiment_115": {
+      "chance": 0.85
+    },
+    "twilightforest:fallen_leaves": {
+      "chance": 0.0
+    },
+    "twilightforest:fiddlehead": {
+      "chance": 0.3
+    },
+    "twilightforest:hedge": {
+      "chance": 0.3
+    },
+    "twilightforest:hollow_oak_sapling": {
+      "chance": 0.5
+    },
+    "twilightforest:huge_lily_pad": {
+      "chance": 0.85
+    },
+    "twilightforest:huge_mushgloom": {
+      "chance": 0.85
+    },
+    "twilightforest:huge_mushgloom_stem": {
+      "chance": 0.65
+    },
+    "twilightforest:huge_stalk": {
+      "chance": 0.65
+    },
+    "twilightforest:huge_water_lily": {
+      "chance": 0.65
+    },
+    "twilightforest:liveroot": {
+      "chance": 0.5
+    },
+    "twilightforest:liveroot_block": {
+      "chance": 0.65
+    },
+    "twilightforest:magic_beans": {
+      "chance": 0.85
+    },
+    "twilightforest:mangrove_leaves": {
+      "chance": 0.3
+    },
+    "twilightforest:mangrove_sapling": {
+      "chance": 0.3
+    },
+    "twilightforest:mayapple": {
+      "chance": 0.3
+    },
+    "twilightforest:maze_wafer": {
+      "chance": 0.65
+    },
+    "twilightforest:mining_leaves": {
+      "chance": 0.3
+    },
+    "twilightforest:mining_sapling": {
+      "chance": 0.5
+    },
+    "twilightforest:moss_patch": {
+      "chance": 0.5
+    },
+    "twilightforest:mushgloom": {
+      "chance": 0.65
+    },
+    "twilightforest:rainbow_oak_leaves": {
+      "chance": 0.3
+    },
+    "twilightforest:rainbow_oak_sapling": {
+      "chance": 0.3
+    },
+    "twilightforest:root": {
+      "chance": 0.5
+    },
+    "twilightforest:root_strand": {
+      "chance": 0.3
+    },
+    "twilightforest:sorting_leaves": {
+      "chance": 0.3
+    },
+    "twilightforest:sorting_sapling": {
+      "chance": 0.5
+    },
+    "twilightforest:thorn_leaves": {
+      "chance": 0.3
+    },
+    "twilightforest:thorn_rose": {
+      "chance": 0.5
+    },
+    "twilightforest:time_leaves": {
+      "chance": 0.3
+    },
+    "twilightforest:time_sapling": {
+      "chance": 0.5
+    },
+    "twilightforest:torchberries": {
+      "chance": 0.3
+    },
+    "twilightforest:torchberry_plant": {
+      "chance": 0.5
+    },
+    "twilightforest:transformation_leaves": {
+      "chance": 0.3
+    },
+    "twilightforest:transformation_sapling": {
+      "chance": 0.5
+    },
+    "twilightforest:trollber": {
+      "chance": 0.65
+    },
+    "twilightforest:trollvidr": {
+      "chance": 0.5
+    },
+    "twilightforest:twilight_oak_leaves": {
+      "chance": 0.3
+    },
+    "twilightforest:twilight_oak_sapling": {
+      "chance": 0.3
+    },
+    "twilightforest:uberous_soil": {
+      "chance": 0.65
+    },
+    "twilightforest:unripe_trollber": {
+      "chance": 0.65
+    }
+  }
+}

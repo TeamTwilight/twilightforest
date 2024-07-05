@@ -3,28 +3,21 @@ package twilightforest.entity;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ItemSupplier;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-
-import javax.annotation.Nonnull;
 import org.jetbrains.annotations.Nullable;
 
-@OnlyIn(value = Dist.CLIENT, _interface = ItemSupplier.class)
+import javax.annotation.Nonnull;
+
 public class CharmEffect extends Entity implements ItemSupplier {
-	private static final EntityDataAccessor<Integer> DATA_OWNER = SynchedEntityData.defineId(CharmEffect.class, EntityDataSerializers.INT);
-	private static final EntityDataAccessor<ItemStack> DATA_ITEMID = SynchedEntityData.defineId(CharmEffect.class, EntityDataSerializers.ITEM_STACK);
 	private static final double DISTANCE = 0.75D;
 	private double interpTargetX;
 	private double interpTargetY;
@@ -35,15 +28,19 @@ public class CharmEffect extends Entity implements ItemSupplier {
 
 	public float offset;
 
-	public CharmEffect(EntityType<? extends CharmEffect> type, Level world) {
-		super(type, world);
+	@Nullable
+	private LivingEntity orbiter;
+	private ItemStack displayItem = new ItemStack(Items.BARRIER);
+
+	public CharmEffect(EntityType<? extends CharmEffect> type, Level level) {
+		super(type, level);
 	}
 
-	public CharmEffect(EntityType<? extends CharmEffect> type, Level world, LivingEntity owner, Item item) {
-		this(type, world);
-
-		this.setOwner(owner);
-		this.setItemID(item);
+	@SuppressWarnings("this-escape")
+	public CharmEffect(EntityType<? extends CharmEffect> type, Level level, LivingEntity owner, ItemStack item) {
+		this(type, level);
+		this.orbiter = owner;
+		this.displayItem = item;
 
 		this.moveTo(owner.getX(), owner.getY() + owner.getEyeHeight(), owner.getZ(), owner.getYRot(), owner.getXRot());
 
@@ -73,29 +70,27 @@ public class CharmEffect extends Entity implements ItemSupplier {
 			this.setRot(this.getYRot(), this.getXRot());
 		}
 
-		LivingEntity orbiting = this.getOwner();
-
-		if (orbiting != null) {
+		if (this.orbiter != null) {
 			float rotation = this.tickCount / 10.0F + this.offset;
 			Vec3 look = new Vec3(DISTANCE, 0, 0).yRot(rotation);
-			this.moveTo(orbiting.getX() + look.x(), orbiting.getY() + orbiting.getEyeHeight(), orbiting.getZ() + look.z(), orbiting.getYRot(), orbiting.getXRot());
+			this.moveTo(this.orbiter.getX() + look.x(), this.orbiter.getY() + this.orbiter.getEyeHeight(), this.orbiter.getZ() + look.z(), this.orbiter.getYRot(), this.orbiter.getXRot());
 		}
 
-		if (!this.getItemID().isEmpty()) {
+		if (!this.displayItem.isEmpty()) {
 			double dx = getX() + 0.25 * (this.random.nextDouble() - this.random.nextDouble());
 			double dy = getY() + 0.25 * (this.random.nextDouble() - this.random.nextDouble());
 			double dz = getZ() + 0.25 * (this.random.nextDouble() - this.random.nextDouble());
 
-			this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, getItemID()), dx, dy, dz, 0, 0.2, 0);
+			this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, this.displayItem), dx, dy, dz, 0, 0.2, 0);
 		}
 
-		if (!this.level().isClientSide() && (this.tickCount > 200 || (orbiting != null && !orbiting.isAlive()))) {
+		if (this.tickCount > 200 || (this.orbiter != null && (!this.orbiter.isAlive() || this.orbiter.isInvisible()))) {
 			this.discard();
 		}
 	}
 
 	@Override
-	public void lerpTo(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport) {
+	public void lerpTo(double x, double y, double z, float yaw, float pitch, int posRotationIncrements) {
 		this.interpTargetX = x;
 		this.interpTargetY = y;
 		this.interpTargetZ = z;
@@ -105,29 +100,8 @@ public class CharmEffect extends Entity implements ItemSupplier {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		this.getEntityData().define(DATA_ITEMID, ItemStack.EMPTY);
-		this.getEntityData().define(DATA_OWNER, -1);
-	}
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
 
-	public void setOwner(LivingEntity owner) {
-		this.getEntityData().set(DATA_OWNER, owner.getId());
-	}
-
-	@Nullable
-	public LivingEntity getOwner() {
-		Entity e = this.level().getEntity(this.getEntityData().get(DATA_OWNER));
-		if (e instanceof LivingEntity living)
-			return living;
-		else return null;
-	}
-
-	public ItemStack getItemID() {
-		return this.getEntityData().get(DATA_ITEMID);
-	}
-
-	public void setItemID(Item item) {
-		this.getEntityData().set(DATA_ITEMID, new ItemStack(item));
 	}
 
 	@Override
@@ -141,6 +115,16 @@ public class CharmEffect extends Entity implements ItemSupplier {
 	@Nonnull
 	@Override
 	public ItemStack getItem() {
-		return this.getItemID();
+		return this.displayItem;
+	}
+
+	@Override
+	public boolean displayFireAnimation() {
+		return false;
+	}
+
+	@Override
+	protected boolean canRide(Entity entity) {
+		return false;
 	}
 }

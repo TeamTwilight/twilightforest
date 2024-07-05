@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "group": "fiery_chestplate",
+  "key": {
+    "#": {
+      "tag": "c:ingots/fiery"
+    }
+  },
+  "pattern": [
+    "# #",
+    "###",
+    "###"
+  ],
+  "result": {
+    "count": 1,
+    "id": "twilightforest:fiery_chestplate"
+  }
+}

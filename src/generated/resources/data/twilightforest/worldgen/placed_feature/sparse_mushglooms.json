@@ -1,0 +1,19 @@
+{
+  "feature": "twilightforest:mushgloom_cluster",
+  "placement": [
+    {
+      "type": "minecraft:heightmap",
+      "heightmap": "WORLD_SURFACE_WG"
+    },
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 15
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

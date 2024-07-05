@@ -1,0 +1,19 @@
+{
+  "type": "hydra_lair",
+  "base_stalactites": [],
+  "ore_chance": 1.0,
+  "ore_stalactites": [
+    "twilightforest:entries/iron_stalactite",
+    "twilightforest:entries/coal_stalactite",
+    "twilightforest:entries/copper_stalactite",
+    "twilightforest:entries/glowstone_stalactite",
+    "twilightforest:entries/gold_stalactite",
+    "twilightforest:entries/redstone_stalactite"
+  ],
+  "replace": false,
+  "stalactite_chance": 1.0,
+  "stalagmite_chance": 0.0625,
+  "stalagmites": [
+    "twilightforest:entries/hill_stone_stalactite"
+  ]
+}

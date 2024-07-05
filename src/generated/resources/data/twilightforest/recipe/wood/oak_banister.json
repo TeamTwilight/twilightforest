@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "wooden_banister",
+  "key": {
+    "-": {
+      "item": "minecraft:oak_slab"
+    },
+    "|": {
+      "tag": "c:rods/wooden"
+    }
+  },
+  "pattern": [
+    "---",
+    "| |"
+  ],
+  "result": {
+    "count": 3,
+    "id": "twilightforest:oak_banister"
+  }
+}

@@ -21,8 +21,8 @@ public class CarminiteGolemRenderer<T extends CarminiteGolem, M extends Carminit
 	 * [VanillaCopy] {@link net.minecraft.client.renderer.entity.IronGolemRenderer}
 	 */
 	@Override
-	protected void setupRotations(T entity, PoseStack ms, float ageInTicks, float rotationYaw, float partialTicks) {
-		super.setupRotations(entity, ms, ageInTicks, rotationYaw, partialTicks);
+	protected void setupRotations(T entity, PoseStack ms, float ageInTicks, float rotationYaw, float partialTicks, float scale) {
+		super.setupRotations(entity, ms, ageInTicks, rotationYaw, partialTicks, scale);
 
 		if (!(entity.walkAnimation.speed() < 0.01D)) {
 			float f1 = entity.walkAnimation.position() - entity.walkAnimation.speed() * (1.0F - partialTicks) + 6.0F;

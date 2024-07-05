@@ -18,71 +18,71 @@ import twilightforest.world.components.feature.config.SwizzleConfig;
 import twilightforest.world.components.processors.SmartGrassProcessor;
 
 public class SimpleWellFeature extends TemplateFeature<SwizzleConfig> {
-    private static final ResourceLocation WELL_TOP = TwilightForestMod.prefix("feature/well/simple_well_top");
-    private static final ResourceLocation WELL_BOTTOM = TwilightForestMod.prefix("feature/well/simple_well_bottom");
+	private static final ResourceLocation WELL_TOP = TwilightForestMod.prefix("feature/well/simple_well_top");
+	private static final ResourceLocation WELL_BOTTOM = TwilightForestMod.prefix("feature/well/simple_well_bottom");
 
-    public SimpleWellFeature(Codec<SwizzleConfig> config) {
-        super(config);
-    }
+	public SimpleWellFeature(Codec<SwizzleConfig> config) {
+		super(config);
+	}
 
-    @Nullable
-    @Override
-    protected StructureTemplate getTemplate(StructureTemplateManager templateManager, RandomSource random) {
-        return templateManager.getOrCreate(WELL_TOP);
-    }
+	@Nullable
+	@Override
+	protected StructureTemplate getTemplate(StructureTemplateManager templateManager, RandomSource random) {
+		return templateManager.getOrCreate(WELL_TOP);
+	}
 
-    @Override
-    protected int yLevelOffset() {
-        return 1;
-    }
+	@Override
+	protected int yLevelOffset() {
+		return 1;
+	}
 
-    @Override
-    protected void modifySettings(StructurePlaceSettings settings, RandomSource random, SwizzleConfig config) {
-        config.buildAddProcessors(settings, random);
-    }
+	@Override
+	protected void modifySettings(StructurePlaceSettings settings, RandomSource random, SwizzleConfig config) {
+		config.buildAddProcessors(settings, random);
+	}
 
-    @Override
-    protected void postPlacement(WorldGenLevel world, RandomSource random, StructureTemplateManager templateManager, Rotation rotation, Mirror mirror, StructurePlaceSettings placementSettings, BlockPos placementPos, SwizzleConfig config) {
-        StructureTemplate template = templateManager.getOrCreate(WELL_BOTTOM);
+	@Override
+	protected void postPlacement(WorldGenLevel world, RandomSource random, StructureTemplateManager templateManager, Rotation rotation, Mirror mirror, StructurePlaceSettings placementSettings, BlockPos placementPos, SwizzleConfig config) {
+		StructureTemplate template = templateManager.getOrCreate(WELL_BOTTOM);
 
-        if (template == null) return;
+		if (template == null) return;
 
-        placementPos = placementPos.below(template.getSize().getY());//.relative(rotation.rotate(mirror.mirror(Direction.SOUTH)), 1).relative(rotation.rotate(mirror.mirror(Direction.EAST)), 1);
-        placementSettings.addProcessor(SmartGrassProcessor.INSTANCE);
+		placementPos = placementPos.below(template.getSize().getY());//.relative(rotation.rotate(mirror.mirror(Direction.SOUTH)), 1).relative(rotation.rotate(mirror.mirror(Direction.EAST)), 1);
+		placementSettings.addProcessor(SmartGrassProcessor.INSTANCE);
 
-        template.placeInWorld(world, placementPos, placementPos, placementSettings, random, 20);
+		template.placeInWorld(world, placementPos, placementPos, placementSettings, random, 20);
 
-        for (StructureTemplate.StructureBlockInfo info : template.filterBlocks(placementPos, placementSettings, Blocks.STRUCTURE_BLOCK))
-            if (info.nbt() != null && StructureMode.valueOf(info.nbt().getString("mode")) == StructureMode.DATA)
-                this.processMarkers(info, world, rotation, mirror, random);
-    }
+		for (StructureTemplate.StructureBlockInfo info : template.filterBlocks(placementPos, placementSettings, Blocks.STRUCTURE_BLOCK))
+			if (info.nbt() != null && StructureMode.valueOf(info.nbt().getString("mode")) == StructureMode.DATA)
+				this.processMarkers(info, world, rotation, mirror, random);
+	}
 
-    @Override
-    protected void processMarkers(StructureTemplate.StructureBlockInfo info, WorldGenLevel world, Rotation rotation, Mirror mirror, RandomSource random) {
-        String s = info.nbt().getString("metadata");
-        BlockPos blockPos = info.pos();
+	@Override
+	protected void processMarkers(StructureTemplate.StructureBlockInfo info, WorldGenLevel world, Rotation rotation, Mirror mirror, RandomSource random) {
+		String s = info.nbt().getString("metadata");
+		BlockPos blockPos = info.pos();
 
-        // removeBlock calls are required due to WorldGenRegion jank with cached TEs, this ensures the correct TE is used
-        if (!s.startsWith("loot")) return;
+		// removeBlock calls are required due to WorldGenRegion jank with cached TEs, this ensures the correct TE is used
+		if (!s.startsWith("loot")) return;
 
-        if (random.nextBoolean()) {
-            world.setBlock(blockPos, random.nextBoolean() ? Blocks.COBBLESTONE.defaultBlockState() : Blocks.MOSSY_COBBLESTONE.defaultBlockState(), 16 | 2);
-            return;
-        }
+		if (random.nextBoolean()) {
+			world.setBlock(blockPos, random.nextBoolean() ? Blocks.COBBLESTONE.defaultBlockState() : Blocks.MOSSY_COBBLESTONE.defaultBlockState(), 16 | 2);
+			return;
+		}
 
-        world.removeBlock(blockPos, false);
+		world.removeBlock(blockPos, false);
 
-        Direction dir = switch (s.substring(4, 5)) {
-            case "W" -> rotation.rotate(mirror.mirror(Direction.WEST));
-            case "E" -> rotation.rotate(mirror.mirror(Direction.EAST));
-            case "S" -> rotation.rotate(mirror.mirror(Direction.SOUTH));
-            default  -> rotation.rotate(mirror.mirror(Direction.NORTH));
-        };
+		Direction dir = switch (s.substring(4, 5)) {
+			case "W" -> rotation.rotate(mirror.mirror(Direction.WEST));
+			case "E" -> rotation.rotate(mirror.mirror(Direction.EAST));
+			case "S" -> rotation.rotate(mirror.mirror(Direction.SOUTH));
+			default -> rotation.rotate(mirror.mirror(Direction.NORTH));
+		};
 
-        TFLootTables.WELL.generateLootContainer(world, blockPos, Blocks.BARREL.defaultBlockState().setValue(BarrelBlock.FACING, dir), 16 | 2);
+		TFLootTables.generateLootContainer(world, blockPos, Blocks.BARREL.defaultBlockState().setValue(BarrelBlock.FACING, dir), 16 | 2, TFLootTables.WELL);
 
-        if (random.nextBoolean()) return;
+		if (random.nextBoolean()) return;
 
-        world.setBlock(blockPos.relative(dir), Blocks.HOPPER.defaultBlockState().setValue(HopperBlock.FACING, dir.getOpposite()), 16 | 2);
-    }
+		world.setBlock(blockPos.relative(dir), Blocks.HOPPER.defaultBlockState().setValue(HopperBlock.FACING, dir.getOpposite()), 16 | 2);
+	}
 }

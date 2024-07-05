@@ -10,18 +10,27 @@
   "biomes": "#twilightforest:valid_final_castle_biomes",
   "chunk_clearance_radius": 4,
   "hint_item": {
-    "Count": 1,
-    "id": "minecraft:written_book",
-    "tag": {
-      "author": "twilightforest.book.author",
-      "generation": 3,
-      "pages": [
-        "{\"translate\":\"twilightforest.book.unknown.1\"}",
-        "{\"translate\":\"twilightforest.book.unknown.2\"}"
-      ],
-      "title": "twilightforest.book.unknown",
-      "twilightforest:book": 1
-    }
+    "components": {
+      "minecraft:written_book_content": {
+        "author": "twilightforest.book.author",
+        "generation": 3,
+        "pages": [
+          {
+            "raw": "{\"translate\":\"twilightforest.book.unknown.1\"}"
+          },
+          {
+            "raw": "{\"translate\":\"twilightforest.book.unknown.2\"}"
+          }
+        ],
+        "resolved": true,
+        "title": {
+          "raw": "twilightforest.book.unknown"
+        }
+      },
+      "twilightforest:translatable_book": {}
+    },
+    "count": 1,
+    "id": "minecraft:written_book"
   },
   "hint_mob": "twilightforest:kobold",
   "labelled_monster_spawns": {
@@ -65,6 +74,6 @@
     }
   },
   "step": "surface_structures",
-  "terrain_adaptation": "beard_thin",
+  "terrain_adaptation": "beard_box",
   "water_spawns": []
 }

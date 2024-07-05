@@ -4,7 +4,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import twilightforest.client.model.entity.UpperGoblinKnightModel;
-import twilightforest.client.renderer.entity.TFBipedRenderer;
 import twilightforest.entity.monster.UpperGoblinKnight;
 
 public class UpperGoblinKnightRenderer extends TFBipedRenderer<UpperGoblinKnight, UpperGoblinKnightModel> {
@@ -13,8 +12,8 @@ public class UpperGoblinKnightRenderer extends TFBipedRenderer<UpperGoblinKnight
 	}
 
 	@Override
-	protected void setupRotations(UpperGoblinKnight upperKnight, PoseStack stack, float ageInTicks, float rotationYaw, float partialTicks) {
-		super.setupRotations(upperKnight, stack, ageInTicks, rotationYaw, partialTicks);
+	protected void setupRotations(UpperGoblinKnight upperKnight, PoseStack stack, float ageInTicks, float rotationYaw, float partialTicks, float scale) {
+		super.setupRotations(upperKnight, stack, ageInTicks, rotationYaw, partialTicks, scale);
 
 		if (upperKnight.heavySpearTimer > 0) {
 			stack.mulPose(Axis.XP.rotationDegrees(getPitchForAttack((60 - upperKnight.heavySpearTimer) + partialTicks)));

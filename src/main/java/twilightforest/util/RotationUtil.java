@@ -6,7 +6,7 @@ import net.minecraft.world.level.block.Rotation;
 
 public final class RotationUtil {
 	public static final Rotation[] ROTATIONS = Rotation.values();
-	public static final Direction[] CARDINALS = { Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST };
+	public static final Direction[] CARDINALS = {Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST};
 
 	private RotationUtil() {
 	}
