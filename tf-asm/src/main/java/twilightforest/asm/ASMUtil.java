@@ -7,9 +7,9 @@ import java.util.Spliterators;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-public class AsmUtil {
+public class ASMUtil {
 
-	private AsmUtil() {
+	private ASMUtil() {
 
 	}
 
