@@ -18,15 +18,21 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureCheckResult;
 import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement;
 import net.minecraft.world.phys.AABB;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFDimensionData;
 import twilightforest.world.components.structures.placements.LandmarkGridPlacement;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 public final class WorldUtil {
 	private WorldUtil() {
+	}
+
+	public static long getOverworldSeed() {
+		return Objects.requireNonNull(ServerLifecycleHooks.getCurrentServer()).getWorldData().worldGenOptions().seed();
 	}
 
 	/**
