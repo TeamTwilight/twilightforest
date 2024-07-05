@@ -114,10 +114,6 @@ public class ASMHooks {
 	 * Injection Point:<br>
 	 * {@link net.minecraft.client.renderer.ItemInHandRenderer#renderArmWithItem(AbstractClientPlayer, float, float, InteractionHand, float, ItemStack, float, PoseStack, MultiBufferSource, int)} <br>
 	 * [AFTER FIRST GETSTATIC {@link net.minecraft.world.item.Items#FILLED_MAP}]
-	 * <p></p>
-	 * Injection Point:<br>
-	 * {@link ItemFrame#getFramedMapId(ItemStack)} <br>
-	 * [BEFORE FIRST IFEQ]
 	 */
 	public static boolean shouldMapRender(boolean o, ItemStack stack) {
 		return o || isOurMap(stack);
@@ -127,10 +123,6 @@ public class ASMHooks {
 	 * Injection Point:<br>
 	 * {@link net.minecraft.client.renderer.ItemInHandRenderer#renderMap(PoseStack, MultiBufferSource, int, ItemStack)}<br>
 	 * [BEFORE FIRST ASTORE 6]
-	 * <p></p>
-	 * Injection Point:<br>
-	 * {@link net.minecraft.world.item.MapItem#appendHoverText(ItemStack, Item.TooltipContext, List, TooltipFlag)}<br>
-	 * [AFTER INVOKESTATIC {@link net.minecraft.world.item.MapItem#getSavedData(Integer, Level)}]
 	 */
 	@Nullable
 	public static MapItemSavedData renderMapData(@Nullable MapItemSavedData o, ItemStack stack, @Nullable Level level) {
