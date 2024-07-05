@@ -212,17 +212,6 @@ public class ASMHooks {
 	}
 
 	/**
-	 * Injection Point:<br>
-	 * {@link net.minecraft.client.player.LocalPlayer#rideTick()} <br>
-	 * [AFTER FIRST INVOKESPECIAL]
-	 */
-	public static boolean mountFix(boolean o, boolean wantsToStopRiding, boolean isPassenger) {
-		if (wantsToStopRiding && isPassenger)
-			return false;
-		return o;
-	}
-
-	/**
 	 * {@link twilightforest.asm.transformers.book.ModifyWrittenBookNameTransformer}<p/>
 	 *
 	 * Injection Point:<br/>
