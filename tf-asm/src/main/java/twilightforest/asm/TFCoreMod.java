@@ -11,6 +11,9 @@ import twilightforest.asm.transformers.cloud.IsRainingAtTransformer;
 import twilightforest.asm.transformers.conquered.StructureStartLoadStaticTransformer;
 import twilightforest.asm.transformers.foliage.FoliageColorResolverTransformer;
 import twilightforest.asm.transformers.lead.LeashFenceKnotSurvivesTransformer;
+import twilightforest.asm.transformers.map.RenderMapDecorationsTransformer;
+import twilightforest.asm.transformers.map.ResolveMapDataForRenderTransformer;
+import twilightforest.asm.transformers.map.ShouldMapRenderInArmTransformer;
 
 import java.util.List;
 
@@ -19,9 +22,9 @@ public class TFCoreMod implements ICoreMod {
 	public Iterable<? extends ITransformer<?>> getTransformers() {
 		return List.of(
 			// armor
-			new CancelArmorRenderingTransformer(),
 			new ArmorColorRenderingTransformer(),
 			new ArmorVisibilityRenderingTransformer(),
+			new CancelArmorRenderingTransformer(),
 
 			// book
 			new ModifyWrittenBookNameTransformer(),
@@ -39,7 +42,12 @@ public class TFCoreMod implements ICoreMod {
 			new FoliageColorResolverTransformer(),
 
 			// lead
-			new LeashFenceKnotSurvivesTransformer()
+			new LeashFenceKnotSurvivesTransformer(),
+
+			// map
+			new RenderMapDecorationsTransformer(),
+			new ResolveMapDataForRenderTransformer(),
+			new ShouldMapRenderInArmTransformer()
 		);
 	}
 }

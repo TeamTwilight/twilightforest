@@ -92,11 +92,12 @@ public class ASMHooks {
 	}
 
 	/**
-	 * Injection Point:<br>
-	 * {@link net.minecraft.client.gui.MapRenderer.MapInstance#draw(PoseStack, MultiBufferSource, boolean, int)}<br>
-	 * [BEFORE ISTORE 10]
+	 * {@link twilightforest.asm.transformers.map.RenderMapDecorationsTransformer}<p/>
+	 *
+	 * Injection Point:<br/>
+	 * {@link net.minecraft.client.gui.MapRenderer.MapInstance#draw(PoseStack, MultiBufferSource, boolean, int)}
 	 */
-	public static int mapRenderDecorations(int o, MapItemSavedData data, PoseStack stack, MultiBufferSource buffer, int light) {
+	public static int renderMapDecorations(int o, MapItemSavedData data, PoseStack stack, MultiBufferSource buffer, int light) {
 		if (data instanceof TFMagicMapData mapData) {
 			for (TFMagicMapData.TFMapDecoration decoration : mapData.tfDecorations.values()) {
 				decoration.render(o, stack, buffer, light);
@@ -111,11 +112,13 @@ public class ASMHooks {
 	}
 
 	/**
-	 * Injection Point:<br>
-	 * {@link net.minecraft.client.renderer.ItemInHandRenderer#renderArmWithItem(AbstractClientPlayer, float, float, InteractionHand, float, ItemStack, float, PoseStack, MultiBufferSource, int)} <br>
-	 * [AFTER FIRST GETSTATIC {@link net.minecraft.world.item.Items#FILLED_MAP}]
+	 * {@link twilightforest.asm.transformers.map.ShouldMapRenderInArmTransformer}<p/>
+	 *
+	 * Injection Point:<br/>
+	 * {@link net.minecraft.client.renderer.ItemInHandRenderer#renderArmWithItem(AbstractClientPlayer, float, float, InteractionHand, float, ItemStack, float, PoseStack, MultiBufferSource, int)}<br/>
+	 * Targets: {@link net.minecraft.world.item.Items#FILLED_MAP} and {@link net.minecraft.world.item.ItemStack#is(Item)}
 	 */
-	public static boolean shouldMapRender(boolean o, ItemStack stack) {
+	public static boolean shouldMapRenderInArm(boolean o, ItemStack stack) {
 		return o || isOurMap(stack);
 	}
 
@@ -125,7 +128,7 @@ public class ASMHooks {
 	 * [BEFORE FIRST ASTORE 6]
 	 */
 	@Nullable
-	public static MapItemSavedData renderMapData(@Nullable MapItemSavedData o, ItemStack stack, @Nullable Level level) {
+	public static MapItemSavedData resolveMapDataForRender(@Nullable MapItemSavedData o, ItemStack stack, @Nullable Level level) {
 		return isOurMap(stack) && level != null ? MapItem.getSavedData(stack, level) : o;
 	}
 
