@@ -1,7 +1,6 @@
 package twilightforest.entity.projectile;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -11,7 +10,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -20,27 +18,19 @@ import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.pattern.BlockInWorld;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.common.ToolActions;
+import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
 import net.neoforged.neoforge.entity.PartEntity;
-import net.neoforged.neoforge.event.EventHooks;
-import net.neoforged.neoforge.event.level.BlockEvent;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFDamageTypes;
-import twilightforest.init.TFEnchantments;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFSounds;
-import twilightforest.util.WorldUtil;
 
 public class ChainBlock extends ThrowableProjectile implements IEntityWithComplexSpawn {
 
@@ -119,7 +109,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 			}
 
 			//properly disable shields
-			if (result.getEntity() instanceof Player player && player.isUsingItem() && player.getUseItem().canPerformAction(ToolActions.SHIELD_BLOCK)) {
+			if (result.getEntity() instanceof Player player && player.isUsingItem() && player.getUseItem().canPerformAction(ItemAbilities.SHIELD_BLOCK)) {
 				player.getUseItem().hurtAndBreak(5, player, LivingEntity.getSlotForHand(player.getUsedItemHand()));
 				player.disableShield();
 			}

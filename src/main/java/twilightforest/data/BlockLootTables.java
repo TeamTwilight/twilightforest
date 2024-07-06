@@ -29,8 +29,8 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePrope
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
-import net.neoforged.neoforge.common.ToolActions;
-import net.neoforged.neoforge.common.loot.CanToolPerformAction;
+import net.neoforged.neoforge.common.ItemAbilities;
+import net.neoforged.neoforge.common.loot.CanItemPerformAbility;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import twilightforest.block.*;
 import twilightforest.enums.HollowLogVariants;
@@ -44,7 +44,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 	// [VanillaCopy] of BlockLoot fields, just changed shears to work with modded ones
 	private static final float[] DEFAULT_SAPLING_DROP_RATES = new float[]{0.05F, 0.0625F, 0.083333336F, 0.1F};
 	private static final float[] RARE_SAPLING_DROP_RATES = new float[]{0.025F, 0.027777778F, 0.03125F, 0.041666668F, 0.1F};
-	private static final LootItemCondition.Builder HAS_SHEARS = CanToolPerformAction.canToolPerformAction(ToolActions.SHEARS_DIG);
+	private static final LootItemCondition.Builder HAS_SHEARS = CanItemPerformAbility.canItemPerformAbility(ItemAbilities.SHEARS_DIG);
 
 	public BlockLootTables(HolderLookup.Provider provider) {
 		super(Set.of(), FeatureFlags.REGISTRY.allFlags(), provider);

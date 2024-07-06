@@ -32,7 +32,7 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.common.ToolActions;
+import net.neoforged.neoforge.common.ItemAbilities;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.enums.HollowLogVariants;
 import twilightforest.init.TFBlocks;
@@ -148,7 +148,7 @@ public class HollowLogHorizontal extends Block implements WaterloggedBlock {
 
 				return ItemInteractionResult.sidedSuccess(level.isClientSide());
 			}
-		} else if (stack.canPerformAction(ToolActions.SHOVEL_DIG)) {
+		} else if (stack.canPerformAction(ItemAbilities.SHOVEL_DIG)) {
 			if (variant == HollowLogVariants.Horizontal.SNOW) {
 				level.setBlock(pos, state.setValue(VARIANT, HollowLogVariants.Horizontal.EMPTY), 3);
 				level.playSound(null, pos, SoundEvents.SNOW_BREAK, SoundSource.BLOCKS, 1.0F, 1.0F);
@@ -159,7 +159,7 @@ public class HollowLogHorizontal extends Block implements WaterloggedBlock {
 
 				return ItemInteractionResult.sidedSuccess(level.isClientSide());
 			}
-		} else if (stack.canPerformAction(ToolActions.SHEARS_HARVEST)) {
+		} else if (stack.canPerformAction(ItemAbilities.SHEARS_HARVEST)) {
 			if (variant == HollowLogVariants.Horizontal.MOSS || variant == HollowLogVariants.Horizontal.MOSS_AND_GRASS) {
 				level.setBlock(pos, state.setValue(VARIANT, HollowLogVariants.Horizontal.EMPTY), 3);
 				level.playSound(null, pos, SoundEvents.SHEEP_SHEAR, SoundSource.BLOCKS, 1.0F, 1.0F);

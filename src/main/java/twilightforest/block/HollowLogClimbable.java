@@ -32,7 +32,7 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.common.ToolActions;
+import net.neoforged.neoforge.common.ItemAbilities;
 import twilightforest.enums.HollowLogVariants;
 
 public class HollowLogClimbable extends HorizontalDirectionalBlock implements WaterloggedBlock {
@@ -128,7 +128,7 @@ public class HollowLogClimbable extends HorizontalDirectionalBlock implements Wa
 	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		if (!isInside(hit, pos)) return super.useItemOn(stack, state, level, pos, player, hand, hit);
 
-		if (stack.canPerformAction(ToolActions.SHEARS_HARVEST)) {
+		if (stack.canPerformAction(ItemAbilities.SHEARS_HARVEST)) {
 			HollowLogVariants.Climbable variant = state.getValue(VARIANT);
 			level.setBlock(pos, this.vertical.value().defaultBlockState().setValue(HollowLogVertical.WATERLOGGED, variant == HollowLogVariants.Climbable.LADDER_WATERLOGGED), 3);
 			level.playSound(null, pos, SoundEvents.SHEEP_SHEAR, SoundSource.BLOCKS, 1.0F, 1.0F);

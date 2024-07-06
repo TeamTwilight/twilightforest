@@ -15,7 +15,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.neoforged.neoforge.common.ToolActions;
+import net.neoforged.neoforge.common.ItemAbilities;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
 
@@ -27,7 +27,7 @@ public class LiverootBlock extends Block {
 
 	@Override
 	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
-		if (stack.getItem().canPerformAction(stack, ToolActions.AXE_STRIP)) {
+		if (stack.getItem().canPerformAction(stack, ItemAbilities.AXE_STRIP)) {
 			level.setBlockAndUpdate(pos, TFBlocks.ROOT_BLOCK.get().defaultBlockState());
 			int amountOfRoots = 1;
 			//fortune formula copied from ApplyBonusCount.OreDrops.calculateNewCount so it acts exactly like the loot table
