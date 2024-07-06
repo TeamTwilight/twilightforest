@@ -29,8 +29,7 @@ public class MiningTreeFeature extends TFTreeFeature<TFTreeFeatureConfig> {
 		}
 
 		// check soil
-		BlockState state = world.getBlockState(pos.below());
-		if (!state.getBlock().canSustainPlant(state, world, pos.below(), Direction.UP, TFBlocks.MINING_SAPLING.get())) {
+		if (world.getBlockState(pos.below()).canSustainPlant(world, pos.below(), Direction.UP, TFBlocks.MINING_SAPLING.get().defaultBlockState()).isFalse()) {
 			return false;
 		}
 

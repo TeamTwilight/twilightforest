@@ -12,7 +12,6 @@ import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.common.PlantType;
 
 public class RootStrandBlock extends TFPlantBlock {
 
@@ -29,13 +28,8 @@ public class RootStrandBlock extends TFPlantBlock {
 	}
 
 	@Override
-	public boolean canSurvive(BlockState state, LevelReader reader, BlockPos pos) {
+	public boolean mayPlaceOn(BlockState state, BlockGetter reader, BlockPos pos) {
 		return TFPlantBlock.canPlaceRootAt(reader, pos) || reader.getBlockState(pos.above()).is(this);
-	}
-
-	@Override
-	public PlantType getPlantType(BlockGetter getter, BlockPos pos) {
-		return PlantType.CAVE;
 	}
 
 	@Override
