@@ -42,21 +42,19 @@ public record SmashBlocksEffect(LevelBasedValue maxSmash, LevelBasedValue radius
 			int radius = Math.round(this.radius.calculate(enchantmentLevel));
 			int maxSmash = Math.round(this.maxSmash.calculate(enchantmentLevel));
 
-			for (BlockPos pos : BlockPos.betweenClosed(start.offset(radius, 0, radius), start.offset(radius, 0, radius))) {
+			for (BlockPos pos : BlockPos.betweenClosed(start.offset(-radius, 0, -radius), start.offset(radius, 0, radius))) {
 				BlockState state = level.getBlockState(pos);
 				if (this.immuneBlocks().isPresent() && this.immuneBlocks().get().contains(state.getBlockHolder())) continue;
 				if (!state.isAir() && ChainBlock.canBreakBlockAt(level, pos, state, item.itemStack(), player.gameMode.getGameModeForPlayer().isBlockPlacingRestricted()) && state.canEntityDestroy(level, pos, player)) {
 					if (!NeoForge.EVENT_BUS.post(new BlockEvent.BreakEvent(level, pos, state, player)).isCanceled()) {
-						if (item.itemStack().isCorrectToolForDrops(state) || (this.vulnerableBlocks().isPresent() && this.vulnerableBlocks().get().contains(state.getBlockHolder()))) {
-							level.destroyBlock(pos, false);
-							if (!player.isCreative()) state.getBlock().playerDestroy(level, player, pos, state, level.getBlockEntity(pos), item.itemStack());
-							if (this.smashSound().isPresent()) {
-								level.playSound(null, pos, this.smashSound().get().value(), SoundSource.BLOCKS, 1.0F, 1.0F);
-							}
-							blocksSmashed++;
-							if (blocksSmashed > maxSmash) {
-								break;
-							}
+						level.destroyBlock(pos, true);
+						if (!player.isCreative()) state.getBlock().playerDestroy(level, player, pos, state, level.getBlockEntity(pos), item.itemStack());
+						if (this.smashSound().isPresent()) {
+							level.playSound(null, pos, this.smashSound().get().value(), SoundSource.BLOCKS, 1.0F, 1.0F);
+						}
+						blocksSmashed++;
+						if (blocksSmashed >= maxSmash) {
+							break;
 						}
 					}
 				}

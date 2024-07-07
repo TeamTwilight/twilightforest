@@ -137,7 +137,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 		if (!level.isClientSide()) {
 			BlockState state = level.getBlockState(pos);
 			boolean restrictedPlaceMode = this.getOwner() instanceof ServerPlayer player && player.gameMode.getGameModeForPlayer().isBlockPlacingRestricted();
-			if (!state.isAir() && this.stack != null && !canBreakBlockAt(level, pos, state, this.stack, restrictedPlaceMode)) {
+			if (!state.isAir() && this.stack != null) {
 				if (this.level() instanceof ServerLevel serverlevel) {
 					Vec3 vec3 = result.getBlockPos().clampLocationWithin(result.getLocation());
 					EnchantmentHelper.onHitBlock(
@@ -151,52 +151,53 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 						item -> this.kill()
 					);
 				}
+				if (!canBreakBlockAt(level, pos, state, this.stack, restrictedPlaceMode)) {
+					if (!this.isReturning && !this.hitEntity) {
+						this.playSound(TFSounds.BLOCK_AND_CHAIN_COLLIDE.get(), 0.125F, this.random.nextFloat());
+						this.gameEvent(GameEvent.HIT_GROUND);
+					}
 
-				if (!this.isReturning && !this.hitEntity) {
-					this.playSound(TFSounds.BLOCK_AND_CHAIN_COLLIDE.get(), 0.125F, this.random.nextFloat());
-					this.gameEvent(GameEvent.HIT_GROUND);
-				}
+					this.isReturning = true;
 
-				this.isReturning = true;
-
-				// riccochet
-				double bounce = 0.6;
-				this.velX *= bounce;
-				this.velY *= bounce;
-				this.velZ *= bounce;
+					// riccochet
+					double bounce = 0.6;
+					this.velX *= bounce;
+					this.velY *= bounce;
+					this.velZ *= bounce;
 
 
-				switch (result.getDirection()) {
-					case DOWN:
-						if (this.velY > 0) {
-							this.velY *= -bounce;
-						}
-						break;
-					case UP:
-						if (this.velY < 0) {
-							this.velY *= -bounce;
-						}
-						break;
-					case NORTH:
-						if (this.velZ > 0) {
-							this.velZ *= -bounce;
-						}
-						break;
-					case SOUTH:
-						if (this.velZ < 0) {
-							this.velZ *= -bounce;
-						}
-						break;
-					case WEST:
-						if (this.velX > 0) {
-							this.velX *= -bounce;
-						}
-						break;
-					case EAST:
-						if (this.velX < 0) {
-							this.velX *= -bounce;
-						}
-						break;
+					switch (result.getDirection()) {
+						case DOWN:
+							if (this.velY > 0) {
+								this.velY *= -bounce;
+							}
+							break;
+						case UP:
+							if (this.velY < 0) {
+								this.velY *= -bounce;
+							}
+							break;
+						case NORTH:
+							if (this.velZ > 0) {
+								this.velZ *= -bounce;
+							}
+							break;
+						case SOUTH:
+							if (this.velZ < 0) {
+								this.velZ *= -bounce;
+							}
+							break;
+						case WEST:
+							if (this.velX > 0) {
+								this.velX *= -bounce;
+							}
+							break;
+						case EAST:
+							if (this.velX < 0) {
+								this.velX *= -bounce;
+							}
+							break;
+					}
 				}
 			}
 		}
