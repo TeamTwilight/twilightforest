@@ -18,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
 import twilightforest.client.model.block.aurorablock.NoiseVaryingModelBuilder;
-import twilightforest.client.model.block.doors.CastleDoorBuilder;
+import twilightforest.client.model.block.connected.ConnectedTextureBuilder;
 import twilightforest.client.model.block.forcefield.ForceFieldModel;
 import twilightforest.client.model.block.forcefield.ForceFieldModelBuilder;
 import twilightforest.client.model.block.giantblock.GiantBlockBuilder;
@@ -279,7 +279,10 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		simpleBlockExisting(TFBlocks.KNIGHTMETAL_BLOCK.get());
 		simpleBlock(TFBlocks.IRONWOOD_BLOCK.get());
 		simpleBlockExisting(TFBlocks.FIERY_BLOCK.get());
-		simpleBlock(TFBlocks.ARCTIC_FUR_BLOCK.get());
+		simpleBlock(TFBlocks.ARCTIC_FUR_BLOCK.get(), models().withExistingParent(TFBlocks.ARCTIC_FUR_BLOCK.getId().getPath(), "block/block")
+			.texture("overlay_texture", blockTexture(TFBlocks.ARCTIC_FUR_BLOCK.get()))
+			.texture("overlay_connected", blockTexture(TFBlocks.ARCTIC_FUR_BLOCK.get()).withSuffix("_ctm"))
+			.customLoader(ConnectedTextureBuilder::begin).connectsTo(TFBlocks.ARCTIC_FUR_BLOCK.get()).end());
 		ModelFile steeleafBlock = models().cubeAll(TFBlocks.STEELEAF_BLOCK.getId().getPath(), prefix("block/" + TFBlocks.STEELEAF_BLOCK.getId().getPath()));
 		allRotations(TFBlocks.STEELEAF_BLOCK.get(), steeleafBlock);
 		ModelFile carminiteBlock = this.make2LayerCubeAllSidesSame(TFBlocks.CARMINITE_BLOCK.getId().getPath(), SOLID, 4, 7, true)
@@ -974,20 +977,20 @@ public class BlockstateGenerator extends BlockModelBuilders {
 
 	private void castleDoor(Block b) {
 		ModelFile vanished = models().withExistingParent(BuiltInRegistries.BLOCK.getKey(b).getPath() + "_vanished", "block/block")
-			.texture("base", TwilightForestMod.prefix("block/castle_door_vanished"))
+			.texture("base_texture", TwilightForestMod.prefix("block/castle_door_vanished"))
 			.texture("particle", TwilightForestMod.prefix("block/castle_door_vanished"))
-			.texture("overlay", TwilightForestMod.prefix("block/castle_door_rune_corners"))
+			.texture("overlay_texture", TwilightForestMod.prefix("block/castle_door_rune_corners"))
 			.texture("overlay_connected", TwilightForestMod.prefix("block/castle_door_rune_ctm"))
 			.renderType(CUTOUT)
-			.customLoader(CastleDoorBuilder::begin).end();
+			.customLoader(ConnectedTextureBuilder::begin).connectsTo(TFBlocks.PINK_CASTLE_DOOR.get(), TFBlocks.YELLOW_CASTLE_DOOR.get(), TFBlocks.BLUE_CASTLE_DOOR.get(), TFBlocks.VIOLET_CASTLE_DOOR.get()).setOverlayTintIndex(0).setOverlayEmissivity(15).end();
 
 		ModelFile main = models().withExistingParent(BuiltInRegistries.BLOCK.getKey(b).getPath(), "block/block")
-			.texture("base", TwilightForestMod.prefix("block/castle_door"))
+			.texture("base_texture", TwilightForestMod.prefix("block/castle_door"))
 			.texture("particle", TwilightForestMod.prefix("block/castle_door"))
-			.texture("overlay", TwilightForestMod.prefix("block/castle_door_rune_corners"))
+			.texture("overlay_texture", TwilightForestMod.prefix("block/castle_door_rune_corners"))
 			.texture("overlay_connected", TwilightForestMod.prefix("block/castle_door_rune_ctm"))
 			.renderType(CUTOUT)
-			.customLoader(CastleDoorBuilder::begin).end();
+			.customLoader(ConnectedTextureBuilder::begin).connectsTo(TFBlocks.PINK_CASTLE_DOOR.get(), TFBlocks.YELLOW_CASTLE_DOOR.get(), TFBlocks.BLUE_CASTLE_DOOR.get(), TFBlocks.VIOLET_CASTLE_DOOR.get()).setOverlayTintIndex(0).setOverlayEmissivity(15).end();
 
 		getVariantBuilder(b).forAllStates(state -> ConfiguredModel.builder().modelFile(state.getValue(CastleDoorBlock.VANISHED) ? vanished : main).build());
 	}
@@ -1326,8 +1329,11 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		getVariantBuilder(TFBlocks.AURORA_SLAB.get()).partialState()
 			.with(SlabBlock.TYPE, SlabType.DOUBLE).setModels(new ConfiguredModel(doubleSlabModel));
 
-		ModelFile auroraGlass = this.makeTintedBlockAll(TFBlocks.AURORALIZED_GLASS.getId().getPath(), TRANSLUCENT)
-			.texture("all", blockTexture(TFBlocks.AURORALIZED_GLASS.get()));
+		ModelFile auroraGlass = models().withExistingParent(TFBlocks.AURORALIZED_GLASS.getId().getPath(), "block/block")
+			.texture("overlay_texture", blockTexture(TFBlocks.AURORALIZED_GLASS.get()))
+			.texture("overlay_connected", blockTexture(TFBlocks.AURORALIZED_GLASS.get()).withSuffix("_ct"))
+			.renderType(TRANSLUCENT)
+			.customLoader(ConnectedTextureBuilder::begin).connectsTo(TFBlocks.AURORALIZED_GLASS.get()).setOverlayTintIndex(0).end();
 		simpleBlock(TFBlocks.AURORALIZED_GLASS.get(), auroraGlass);
 	}
 

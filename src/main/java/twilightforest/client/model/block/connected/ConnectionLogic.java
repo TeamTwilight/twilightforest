@@ -1,4 +1,4 @@
-package twilightforest.client.model.block.doors;
+package twilightforest.client.model.block.connected;
 
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;

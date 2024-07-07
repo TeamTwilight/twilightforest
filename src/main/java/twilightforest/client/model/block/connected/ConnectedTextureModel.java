@@ -1,4 +1,4 @@
-package twilightforest.client.model.block.doors;
+package twilightforest.client.model.block.connected;
 
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -19,28 +19,36 @@ import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.client.model.data.ModelProperty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.init.TFBlocks;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.List;
 
 @SuppressWarnings("deprecation")
-public class CastleDoorModel implements IDynamicBakedModel {
+public class ConnectedTextureModel implements IDynamicBakedModel {
+
+	private final EnumSet<Direction> enabledFaces;
+	private final boolean renderOnDisabledFaces;
 	@Nullable
 	private final List<BakedQuad>[] baseQuads;
 	private final BakedQuad[][][] quads;
 	private final TextureAtlasSprite particle;
 	private final ItemOverrides overrides;
 	private final ItemTransforms transforms;
+	@Nullable
 	private final ChunkRenderTypeSet blockRenderTypes;
+	@Nullable
 	private final List<RenderType> itemRenderTypes;
+	@Nullable
 	private final List<RenderType> fabulousItemRenderTypes;
 	//if we ever expand this model to be more flexible, I think we'll need a list of blocks that can connect together defined in the json instead of hardcoding this (tags may be nice for this)
-	private final Block[] validConnectors = {TFBlocks.PINK_CASTLE_DOOR.get(), TFBlocks.YELLOW_CASTLE_DOOR.get(), TFBlocks.BLUE_CASTLE_DOOR.get(), TFBlocks.VIOLET_CASTLE_DOOR.get()};
+	private final List<Block> validConnectors;
 	private static final ModelProperty<CastleDoorData> DATA = new ModelProperty<>();
 
-	public CastleDoorModel(@Nullable List<BakedQuad>[] baseQuads, BakedQuad[][][] quads, TextureAtlasSprite particle, ItemOverrides overrides, ItemTransforms transforms, RenderTypeGroup group) {
+	public ConnectedTextureModel(EnumSet<Direction> enabledFaces, boolean renderOnDisabledFaces, List<Block> connectableBlocks, @Nullable List<BakedQuad>[] baseQuads, BakedQuad[][][] quads, TextureAtlasSprite particle, ItemOverrides overrides, ItemTransforms transforms, RenderTypeGroup group) {
+		this.enabledFaces = enabledFaces;
+		this.renderOnDisabledFaces = renderOnDisabledFaces;
+		this.validConnectors = connectableBlocks;
 		this.baseQuads = baseQuads;
 		this.quads = quads;
 		this.particle = particle;
@@ -62,11 +70,13 @@ public class CastleDoorModel implements IDynamicBakedModel {
 				quads.addAll(this.baseQuads[faceIndex]);
 			}
 
-			for (int quad = 0; quad < 4; ++quad) {
-				//if our model data is null (I really hope it isn't) we can skip connected textures since we dont have the info we need
-				//i'd rather do this than crash the game or skip rendering the block entirely
-				ConnectionLogic connectionType = data != null ? data.logic[faceIndex][quad] : ConnectionLogic.NONE;
-				quads.add(this.quads[faceIndex][quad][connectionType.ordinal()]);
+			if (this.enabledFaces.contains(side) || this.renderOnDisabledFaces) {
+				for (int quad = 0; quad < 4; ++quad) {
+					//if our model data is null (I really hope it isn't) we can skip connected textures since we dont have the info we need
+					//i'd rather do this than crash the game or skip rendering the block entirely
+					ConnectionLogic connectionType = data != null && this.enabledFaces.contains(side) ? data.logic[faceIndex][quad] : ConnectionLogic.NONE;
+					quads.add(this.quads[faceIndex][quad][connectionType.ordinal()]);
+				}
 			}
 
 			return quads;
@@ -105,12 +115,12 @@ public class CastleDoorModel implements IDynamicBakedModel {
 
 	private boolean shouldConnectSide(BlockAndTintGetter getter, BlockPos pos, Direction face, Direction side) {
 		BlockState neighborState = getter.getBlockState(pos.relative(side));
-		return Arrays.stream(this.validConnectors).anyMatch(neighborState::is) && Block.shouldRenderFace(neighborState, getter, pos, face, pos.relative(face));
+		return this.validConnectors.stream().anyMatch(neighborState::is) && Block.shouldRenderFace(neighborState, getter, pos, face, pos.relative(face));
 	}
 
 	private boolean isCornerBlockPresent(BlockAndTintGetter getter, BlockPos pos, Direction face, Direction side1, Direction side2) {
 		BlockState neighborState = getter.getBlockState(pos.relative(side1).relative(side2));
-		return Arrays.stream(this.validConnectors).anyMatch(neighborState::is) && Block.shouldRenderFace(neighborState, getter, pos, face, pos.relative(face));
+		return this.validConnectors.stream().anyMatch(neighborState::is) && Block.shouldRenderFace(neighborState, getter, pos, face, pos.relative(face));
 	}
 
 	@Override
