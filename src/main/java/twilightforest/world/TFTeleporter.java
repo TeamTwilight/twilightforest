@@ -50,8 +50,8 @@ public class TFTeleporter {
 		}
 
 		if (transition != null) return transition;
-        return new DimensionTransition(dest, Vec3.atCenterOf(pos.atY(dest.getSeaLevel())), Vec3.ZERO, entity.getYRot(), entity.getXRot(), DimensionTransition.PLACE_PORTAL_TICKET);
-    }
+		return new DimensionTransition(dest, Vec3.atCenterOf(pos.atY(dest.getSeaLevel())), Vec3.ZERO, entity.getYRot(), entity.getXRot(), DimensionTransition.PLACE_PORTAL_TICKET);
+	}
 
 	@Nullable
 	protected static DimensionTransition createPosition(ServerLevel dest, Entity entity, BlockPos destPos, TeleporterCache cache, boolean locked) {
@@ -355,7 +355,7 @@ public class TFTeleporter {
 
 		TwilightForestMod.LOGGER.debug("Did not even find an okay portal spot, just making a fallback one for {}", name);
 
-		spot = findPortalCoords(world, pos, blockpos -> isOkayForFallbackPortal(world, 	blockpos), true);
+		spot = findPortalCoords(world, pos, blockpos -> isOkayForFallbackPortal(world, blockpos), true);
 		if (spot != null) {
 			TwilightForestMod.LOGGER.debug("Found fallback portal spot for {} at {}", name, spot);
 			cacheNewPortalCoords(cache, src, makePortalAt(world, spot, locked), entity.blockPosition());
@@ -421,8 +421,7 @@ public class TFTeleporter {
 							ry--;
 						}
 						pos.set(rx, ry, rz);
-					}
-					else {
+					} else {
 						while (ry > world.getMinBuildHeight() && world.isEmptyBlock(pos.set(rx, ry - 1, rz))) {
 							ry--;
 						}
@@ -508,8 +507,8 @@ public class TFTeleporter {
 
 		// dirt under it
 		BlockState dirt = Blocks.DIRT.defaultBlockState();
-		for (BlockPos blockpos: positions) {
-			if(world.getBlockState(pos).is(BlockTags.FEATURES_CANNOT_REPLACE))
+		for (BlockPos blockpos : positions) {
+			if (world.getBlockState(pos).is(BlockTags.FEATURES_CANNOT_REPLACE))
 				world.setBlockAndUpdate(blockpos, dirt);
 		}
 

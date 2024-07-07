@@ -1,5 +1,4 @@
 {
-  "music": "META-INF/asm/music.js",
   "multipart": "META-INF/asm/multipart.js",
   "shroom": "META-INF/asm/shroom.js",
   "structure_terraform": "META-INF/asm/structure_terraform.js",

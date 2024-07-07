@@ -396,10 +396,10 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 		this.tag(ItemTags.EQUIPPABLE_ENCHANTABLE).remove(TFItems.PHANTOM_HELMET.get(), TFItems.PHANTOM_CHESTPLATE.get());
 		this.tag(ItemTags.BREAKS_DECORATED_POTS).add(TFItems.BLOCK_AND_CHAIN.get());
 
-		this.tag(Tags.Items.FOODS_BERRIES).add(TFItems.TORCHBERRIES.get());
-		this.tag(Tags.Items.FOODS_RAW_MEATS).add(TFItems.RAW_VENISON.get(), TFItems.RAW_MEEF.get());
-		this.tag(Tags.Items.FOODS_COOKED_MEATS).add(TFItems.COOKED_VENISON.get(), TFItems.COOKED_MEEF.get(), TFItems.HYDRA_CHOP.get());
-		this.tag(Tags.Items.FOODS_SOUPS).add(TFItems.MEEF_STROGANOFF.get());
+		this.tag(Tags.Items.FOODS_BERRY).add(TFItems.TORCHBERRIES.get());
+		this.tag(Tags.Items.FOODS_RAW_MEAT).add(TFItems.RAW_VENISON.get(), TFItems.RAW_MEEF.get());
+		this.tag(Tags.Items.FOODS_COOKED_MEAT).add(TFItems.COOKED_VENISON.get(), TFItems.COOKED_MEEF.get(), TFItems.HYDRA_CHOP.get());
+		this.tag(Tags.Items.FOODS_SOUP).add(TFItems.MEEF_STROGANOFF.get());
 		this.tag(Tags.Items.FOODS_EDIBLE_WHEN_PLACED).add(TFItems.EXPERIMENT_115.get());
 	}
 

@@ -22,7 +22,7 @@
           "type": "twilightforest:smash_blocks",
           "immune_blocks": "#twilightforest:block_and_chain_never_breaks",
           "max_smash": 12.0,
-          "radius": 2.0
+          "radius": 1.0
         }
       }
     ]

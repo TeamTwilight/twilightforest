@@ -4,7 +4,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.common.ClientboundCustomPayloadPacket;
 import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
@@ -95,6 +94,6 @@ public class TFMazeMapData extends MapItemSavedData {
 	@Override
 	public Packet<?> getUpdatePacket(MapId mapId, Player player) {
 		Packet<?> packet = super.getUpdatePacket(mapId, player);
-		return packet instanceof ClientboundMapItemDataPacket mapItemDataPacket ? new ClientboundCustomPayloadPacket(new MazeMapPacket(mapItemDataPacket, this.ore, this.yCenter)) : packet;
+		return packet instanceof ClientboundMapItemDataPacket mapItemDataPacket ? new MazeMapPacket(mapItemDataPacket, this.ore, this.yCenter).toVanillaClientbound() : packet;
 	}
 }

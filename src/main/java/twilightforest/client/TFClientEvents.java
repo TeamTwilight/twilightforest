@@ -26,6 +26,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.Music;
+import net.minecraft.sounds.Musics;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -226,8 +228,6 @@ public class TFClientEvents {
 				entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F
 			);
 
-
-
 			Map<ModelResourceLocation, BakedModel> models = event.getModels();
 			List<Map.Entry<ModelResourceLocation, BakedModel>> leavesModels = models.entrySet().stream()
 				.filter(entry -> entry.getKey().id().getNamespace().equals(TwilightForestMod.ID) && entry.getKey().id().getPath().contains("leaves") && !entry.getKey().id().getPath().contains("dark")).toList();
@@ -251,6 +251,14 @@ public class TFClientEvents {
 		public static void registerDimEffects(RegisterDimensionSpecialEffectsEvent event) {
 			TFSkyRenderer.createStars();
 			event.register(TFDimension.DIMENSION_RENDERER, new TwilightForestRenderInfo(128.0F, false, DimensionSpecialEffects.SkyType.NONE, false, false));
+		}
+	}
+
+	@SubscribeEvent
+	public static void setMusic(SelectMusicEvent event) {
+		Music music = event.getOriginalMusic();
+		if (Minecraft.getInstance().level != null && Minecraft.getInstance().player != null && (music == Musics.CREATIVE || music == Musics.UNDER_WATER) && TFDimension.isTwilightWorldOnClient(Minecraft.getInstance().level)) {
+			event.setMusic(Minecraft.getInstance().level.getBiomeManager().getNoiseBiomeAtPosition(Minecraft.getInstance().player.blockPosition()).value().getBackgroundMusic().orElse(Musics.GAME));
 		}
 	}
 

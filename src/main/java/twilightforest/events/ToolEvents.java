@@ -14,6 +14,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.damagesource.DamageContainer;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
@@ -39,7 +40,7 @@ public class ToolEvents {
 		if (arrow.getOwner() instanceof Player player
 			&& evt.getRayTraceResult() instanceof EntityHitResult result
 			&& result.getEntity() instanceof LivingEntity living
-			&& arrow.getOwner() != result.getEntity()) {
+			&& arrow.getOwner() != result.getEntity() && !result.getEntity().getType().is(Tags.EntityTypes.BOSSES)) {
 
 			if (arrow.getPersistentData().contains(EnderBowItem.KEY)) {
 				double sourceX = player.getX(), sourceY = player.getY(), sourceZ = player.getZ();

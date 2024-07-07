@@ -118,19 +118,6 @@ public class ASMHooks {
 
 	/**
 	 * Injection Point:<br>
-	 * {@link net.minecraft.client.sounds.MusicManager#tick()}<br>
-	 * [AFTER FIRST INVOKEVIRTUAL]
-	 */
-	@OnlyIn(Dist.CLIENT)
-	public static Music music(Music music) {
-		if (Minecraft.getInstance().level != null && Minecraft.getInstance().player != null && (music == Musics.CREATIVE || music == Musics.UNDER_WATER) && TFDimension.isTwilightWorldOnClient(Minecraft.getInstance().level))
-			return Minecraft.getInstance().level.getBiomeManager().getNoiseBiomeAtPosition(Minecraft.getInstance().player.blockPosition()).value().getBackgroundMusic().orElse(Musics.GAME);
-		return music;
-	}
-
-
-	/**
-	 * Injection Point:<br>
 	 * {@link net.minecraft.server.level.ServerEntity#sendDirtyEntityData}<br>
 	 * [AFTER GETFIELD]
 	 */

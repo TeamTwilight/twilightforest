@@ -14,7 +14,6 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.common.ClientboundCustomPayloadPacket;
 import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
@@ -163,7 +162,7 @@ public class TFMagicMapData extends MapItemSavedData {
 	@Override
 	public Packet<?> getUpdatePacket(MapId mapId, Player player) {
 		Packet<?> packet = super.getUpdatePacket(mapId, player);
-		return packet instanceof ClientboundMapItemDataPacket mapItemDataPacket ? new ClientboundCustomPayloadPacket(new MagicMapPacket(this, mapItemDataPacket)) : packet;
+		return packet instanceof ClientboundMapItemDataPacket mapItemDataPacket ? new MagicMapPacket(this, mapItemDataPacket).toVanillaClientbound() : packet;
 	}
 
 	public void putMapData(TFMapDecoration info) {
