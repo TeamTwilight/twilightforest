@@ -64,11 +64,6 @@ neoForge {
 		}
 	}
 
-	parchment {
-		minecraftVersion = project.'neogradle.subsystems.parchment.minecraftVersion'
-		mappingsVersion = project.'neogradle.subsystems.parchment.mappingsVersion'
-	}
-
 	unitTest {
 		enable()
 		testedMod = mods.twilightforest
