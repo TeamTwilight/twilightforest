@@ -206,11 +206,11 @@ publishing {
 	publications {
 		mavenJava(MavenPublication) {
 			afterEvaluate {
-				artifact source: project.tasks.jarJar.outputs.getFiles().getSingleFile(), classifier: 'universal'
+				artifact project.jar
 				artifact project.sourceJar
 			}
-			setGroupId 'team-twilight'
-			setArtifactId project.mod_id
+			groupId 'team-twilight'
+			artifactId project.mod_id
 		}
 	}
 	repositories {
