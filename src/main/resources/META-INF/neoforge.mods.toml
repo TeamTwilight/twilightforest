@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[1,)"
+loaderVersion = "[4,)"
 issueTrackerURL = "https://github.com/TeamTwilight/twilightforest/issues"
 license = "GNU LESSER GENERAL PUBLIC LICENSE Version 2.1"
 
@@ -16,18 +16,19 @@ authors = "Benimatic, AtomicBlom, Drullkus, Killer_Demon, quadraxis, Tamaized, w
 description = '''
 An enchanted forest dimension.
 '''
+enumExtensions="META-INF/enumextensions.json"
 
 [[dependencies.twilightforest]]
 modId = "neoforge"
 type = "required"
-versionRange = "[20.6.78-beta,)"
+versionRange = "[21.0.75-beta,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.twilightforest]]
 modId = "minecraft"
 type = "required"
-versionRange = "[1.20.5,)"
+versionRange = "[1.21,)"
 ordering = "NONE"
 side = "BOTH"
 

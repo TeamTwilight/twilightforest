@@ -31,7 +31,6 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.KeepsakeCasketBlock;
 import twilightforest.block.entity.KeepsakeCasketBlockEntity;
-import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.config.TFConfig;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.enums.BlockLoggingEnum;
@@ -122,7 +121,7 @@ public class CharmEvents {
 		boolean tier1 = tier2 || TFItemStackUtils.consumeInventoryItem(player, TFItems.CHARM_OF_KEEPING_1.get(), getPlayerData(player), true) || hasCharmCurio(TFItems.CHARM_OF_KEEPING_1.get(), player);
 
 		//create a fake inventory to organize our kept inventory in
-		Inventory keepInventory = new Inventory(null);
+		Inventory keepInventory = new Inventory(player);
 		ListTag tagList = new ListTag();
 
 		//if we have any charm of keeping, all armor and offhand items are kept, so add those
@@ -300,9 +299,9 @@ public class CharmEvents {
 	}
 
 	private static boolean hasCharmCurio(Item item, Player player) {
-		if (ModList.get().isLoaded("curios")) {
-			return CuriosCompat.findAndConsumeCurio(item, player);
-		}
+//		if (ModList.get().isLoaded("curios")) {
+//			return CuriosCompat.findAndConsumeCurio(item, player);
+//		}
 
 		return false;
 	}

@@ -13,6 +13,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.util.FastColor;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -219,10 +220,7 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 	}
 
 	private void animateAddColor(DyeColor color, int iterations) {
-		float[] colorVal = color.getTextureDiffuseColors();
-		float red = colorVal[0];
-		float green = colorVal[1];
-		float blue = colorVal[2];
+		int colorVal = color.getTextureDiffuseColor();
 
 		if (!this.level().isClientSide()) {
 			for (ServerPlayer serverplayer : ((ServerLevel) this.level()).players()) {
@@ -230,7 +228,7 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 					ParticlePacket packet = new ParticlePacket();
 
 					for (int i = 0; i < iterations; i++) {
-						packet.queueParticle(ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, red, green, blue), false,
+						packet.queueParticle(ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, FastColor.ARGB32.red(colorVal), FastColor.ARGB32.green(colorVal), FastColor.ARGB32.blue(colorVal)), false,
 							this.getX() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 1.5D,
 							this.getY() + this.getRandom().nextDouble() * this.getBbHeight() * 1.5D,
 							this.getZ() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 1.5D,

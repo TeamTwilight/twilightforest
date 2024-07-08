@@ -39,7 +39,7 @@ public class QuestRamRenderer<T extends QuestRam, M extends QuestRamModel<T>> ex
 		public void render(PoseStack stack, MultiBufferSource buffer, int i, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
 			VertexConsumer consumer = buffer.getBuffer(RenderType.entityTranslucent(LINE_TEXTURE));
 			stack.scale(1.025F, 1.025F, 1.025F);
-			this.getParentModel().renderToBuffer(stack, consumer, 0xF000F0, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+			this.getParentModel().renderToBuffer(stack, consumer, 0xF000F0, OverlayTexture.NO_OVERLAY);
 		}
 	}
 }

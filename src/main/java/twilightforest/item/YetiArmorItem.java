@@ -38,26 +38,6 @@ public class YetiArmorItem extends ArmorItem {
 	}
 
 	@Override
-	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-		AtomicBoolean badEnchant = new AtomicBoolean();
-		book.getEnchantments().entrySet().forEach(enchantment -> {
-			if (Objects.equals(Enchantments.THORNS, enchantment) || Objects.equals(TFEnchantments.FIRE_REACT.get(), enchantment) || Objects.equals(TFEnchantments.CHILL_AURA.get(), enchantment)) {
-				badEnchant.set(true);
-			}
-		});
-
-		return !badEnchant.get();
-	}
-
-	@Override
-	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-		return !TFEnchantments.FIRE_REACT.get().equals(enchantment) &&
-			!Enchantments.THORNS.equals(enchantment) &&
-			!TFEnchantments.CHILL_AURA.get().equals(enchantment) &&
-			super.canApplyAtEnchantingTable(stack, enchantment);
-	}
-
-	@Override
 	public void appendHoverText(ItemStack stack, @Nullable TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
 		super.appendHoverText(stack, context, tooltip, flag);
 		tooltip.add(TOOLTIP);

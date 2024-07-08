@@ -26,7 +26,7 @@ public record MagicPaintingVariant(int width, int height, List<Layer> layers) {
 	).apply(recordCodecBuilder, MagicPaintingVariant::new));
 
 	public static Optional<MagicPaintingVariant> getVariant(@Nullable HolderLookup.Provider regAccess, String id) {
-		return getVariant(regAccess, new ResourceLocation(id));
+		return getVariant(regAccess, ResourceLocation.withDefaultNamespace(id));
 	}
 
 	public static Optional<MagicPaintingVariant> getVariant(@Nullable HolderLookup.Provider regAccess, ResourceLocation id) {

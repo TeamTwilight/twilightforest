@@ -43,6 +43,6 @@ public class ModdedBlockTagGenerator extends IntrinsicHolderTagsProvider<Block> 
 	}
 
 	private static TagKey<Block> createTagFor(String modid, String tagName) {
-		return BlockTags.create(new ResourceLocation(modid, tagName));
+		return BlockTags.create(ResourceLocation.fromNamespaceAndPath(modid, tagName));
 	}
 }

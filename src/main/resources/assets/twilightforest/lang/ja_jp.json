@@ -726,6 +726,7 @@
   "commands.tffeature.structure.spawn_info": "%s, 重量 %s",
   "commands.tffeature.structure.spawn_list": "このエリアのスポーンリスト：",
   "commands.tffeature.usage": "/%s <info | reactivate | conquer | center>",
+  "config.jade.plugin_twilightforest.chiseled_bookshelf_spawner": "模様入りの林冠木の本棚のスポーン",
   "config.jade.plugin_twilightforest.quest_ram_wool": "色食みの羊の羊毛",
   "container.twilightforest.uncrafting_table": "解体作業台",
   "container.twilightforest.uncrafting_table.cycle_back_ingredient": "前の解体クラフトの材料",

@@ -7,6 +7,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.PaintingVariantTags;
 import net.minecraft.util.Mth;
@@ -136,50 +137,35 @@ public class EntityUtil {
 
 	//copy of Mob.doHurtTarget, allows for using a custom DamageSource instead of the generic Mob Attack one
 	public static boolean properlyApplyCustomDamageSource(Mob entity, Entity victim, DamageSource source, @Nullable SoundEvent flingSound) {
-		float f = (float) entity.getAttributeValue(Attributes.ATTACK_DAMAGE);
-		float f1 = (float) entity.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
-		if (victim instanceof LivingEntity) {
-			f += EnchantmentHelper.getDamageBonus(entity.getMainHandItem(), victim.getType());
-			f1 += (float) EnchantmentHelper.getKnockbackBonus(entity);
-		}
-
-		int i = EnchantmentHelper.getFireAspect(entity);
-		if (i > 0) {
-			victim.igniteForSeconds(i * 4);
+		float f = (float)entity.getAttributeValue(Attributes.ATTACK_DAMAGE);
+		if (entity.level() instanceof ServerLevel serverlevel) {
+			f = EnchantmentHelper.modifyDamage(serverlevel, entity.getWeaponItem(), entity, source, f);
 		}
 
 		boolean flag = victim.hurt(source, f);
 		if (flag) {
-			if (f1 > 0.0F && victim instanceof LivingEntity) {
-				((LivingEntity) victim).knockback(f1 * 0.5F, Mth.sin(entity.getYRot() * ((float) Math.PI / 180F)), -Mth.cos(entity.getYRot() * ((float) Math.PI / 180F)));
+			float f1 = getKnockback(entity, victim, source);
+			if (f1 > 0.0F && victim instanceof LivingEntity livingentity) {
+				if (flingSound != null) {
+					entity.playSound(flingSound, 1.0F, 1.0F);
+				}
+				livingentity.knockback(f1 * 0.5F, Mth.sin(entity.getYRot() * Mth.DEG_TO_RAD), -Mth.cos(entity.getYRot() * Mth.DEG_TO_RAD));
 				entity.setDeltaMovement(entity.getDeltaMovement().multiply(0.6D, 1.0D, 0.6D));
 			}
 
-			if (flingSound != null) {
-				victim.push(entity.getDirection().getStepX(), 0.35D, entity.getDirection().getStepZ());
-				entity.playSound(flingSound, 1.0F, 1.0F);
+			if (entity.level() instanceof ServerLevel level) {
+				EnchantmentHelper.doPostAttackEffects(level, victim, source);
 			}
 
-			if (victim instanceof Player player) {
-				maybeDisableShield(entity, player, entity.getMainHandItem(), player.isUsingItem() ? player.getUseItem() : ItemStack.EMPTY);
-			}
-
-			entity.doEnchantDamageEffects(entity, victim);
-			entity.setLastHurtMob(victim);
+			entity.setLastHurtMob(entity);
 		}
 
 		return flag;
 	}
 
-	// [VanillaCopy] Method deleted between 1.20.4 and 1.20.5
-	private static void maybeDisableShield(Mob self, Player pPlayer, ItemStack pMobItemStack, ItemStack pPlayerItemStack) {
-		if (!pMobItemStack.isEmpty() && !pPlayerItemStack.isEmpty() && pMobItemStack.getItem() instanceof AxeItem && pPlayerItemStack.is(Items.SHIELD)) {
-			float f = 0.25F + (float) EnchantmentHelper.getBlockEfficiency(self) * 0.05F;
-			if (self.getRandom().nextFloat() < f) {
-				pPlayer.getCooldowns().addCooldown(Items.SHIELD, 100);
-				self.level().broadcastEntityEvent(pPlayer, EntityEvent.SHIELD_DISABLED);
-			}
-		}
+	protected static float getKnockback(Mob entity, Entity victim, DamageSource source) {
+		float f = (float)entity.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
+		return entity.level() instanceof ServerLevel serverlevel ? EnchantmentHelper.modifyKnockback(serverlevel, entity.getWeaponItem(), victim, source, f) : f;
 	}
 
 	// [VanillaCopy] with modifications: StructureTemplate.createEntityIgnoreException
@@ -192,7 +178,7 @@ public class EntityUtil {
 		}
 	}
 
-	public static void tryHangPainting(WorldGenLevel world, BlockPos pos, Direction direction, @Nullable ResourceKey<PaintingVariant> chosenPainting) {
+	public static void tryHangPainting(WorldGenLevel world, BlockPos pos, Direction direction, @Nullable Holder<PaintingVariant> chosenPainting) {
 		if (chosenPainting == null) return;
 
 		Painting painting = createEntityIgnoreException(EntityType.PAINTING, world);
@@ -203,34 +189,34 @@ public class EntityUtil {
 		} catch (Throwable throwable) {
 			throwable.printStackTrace();
 		}
-		painting.setVariant(BuiltInRegistries.PAINTING_VARIANT.getHolder(chosenPainting).get());
+		painting.setVariant(chosenPainting);
 
 		if (checkValidPaintingPosition(world, painting))
 			world.addFreshEntity(painting);
 	}
 
 	@Nullable
-	public static ResourceKey<PaintingVariant> getPaintingOfSize(RandomSource rand, int minSize) {
-		return getPaintingOfSize(rand, minSize, minSize, false);
+	public static Holder<PaintingVariant> getPaintingOfSize(WorldGenLevel level, RandomSource rand, int minSize) {
+		return getPaintingOfSize(level, rand, minSize, minSize, false);
 	}
 
 	@Nullable
-	public static ResourceKey<PaintingVariant> getPaintingOfSize(RandomSource rand, int width, int height, boolean exactMeasurements) {
-		List<ResourceKey<PaintingVariant>> valid = new ArrayList<>();
+	public static Holder<PaintingVariant> getPaintingOfSize(WorldGenLevel level, RandomSource rand, int width, int height, boolean exactMeasurements) {
+		List<Holder<PaintingVariant>> valid = new ArrayList<>();
 
-		for (Holder<PaintingVariant> art : BuiltInRegistries.PAINTING_VARIANT.getTag(PaintingVariantTags.PLACEABLE).get()) {
+		for (Holder<PaintingVariant> art : level.registryAccess().registryOrThrow(Registries.PAINTING_VARIANT).holders().toList()) {
 			if (exactMeasurements) {
-				if (art.value().getWidth() == width && art.value().getHeight() == height) {
-					valid.add(ResourceKey.create(Registries.PAINTING_VARIANT, Objects.requireNonNull(BuiltInRegistries.PAINTING_VARIANT.getKey(art.value()))));
+				if (art.value().width() == width && art.value().height() == height) {
+					valid.add(art);
 				}
 			} else {
-				if (art.value().getWidth() >= width || art.value().getHeight() >= height) {
-					valid.add(ResourceKey.create(Registries.PAINTING_VARIANT, Objects.requireNonNull(BuiltInRegistries.PAINTING_VARIANT.getKey(art.value()))));
+				if (art.value().width() >= width || art.value().height() >= height) {
+					valid.add(art);
 				}
 			}
 		}
 
-		if (valid.size() > 0) {
+		if (!valid.isEmpty()) {
 			return valid.get(rand.nextInt(valid.size()));
 		} else {
 			return null;

@@ -16,6 +16,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.SmithingRecipe;
+import net.minecraft.world.item.crafting.SmithingRecipeInput;
 import net.minecraft.world.level.Level;
 import twilightforest.init.TFRecipes;
 
@@ -38,9 +39,9 @@ public class NoTemplateSmithingRecipe implements SmithingRecipe {
 	 * Used to check if a recipe matches current crafting inventory
 	 */
 	@Override
-	public boolean matches(Container container, Level level) {
-		if (!container.getItem(0).isEmpty() || !this.base.test(container.getItem(1)) || !this.addition.test(container.getItem(2))) return false;
-		ItemStack armor = container.getItem(1);
+	public boolean matches(SmithingRecipeInput input, Level level) {
+		if (!input.getItem(0).isEmpty() || !this.base.test(input.getItem(1)) || !this.addition.test(input.getItem(2))) return false;
+		ItemStack armor = input.getItem(1);
 
 		for (TypedDataComponent<?> data : this.additionalData)
 			if (armor.has(data.type()))
@@ -50,8 +51,8 @@ public class NoTemplateSmithingRecipe implements SmithingRecipe {
 	}
 
 	@Override
-	public ItemStack assemble(Container container, HolderLookup.Provider access) {
-		return Util.make(container.getItem(1).copy(), this::setComponents);
+	public ItemStack assemble(SmithingRecipeInput input, HolderLookup.Provider access) {
+		return Util.make(input.getItem(1).copy(), this::setComponents);
 	}
 
 	@Override

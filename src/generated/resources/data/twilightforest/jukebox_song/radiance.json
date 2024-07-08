@@ -1,0 +1,8 @@
+{
+  "comparator_output": 15,
+  "description": {
+    "translate": "jukebox_song.twilightforest.radiance"
+  },
+  "length_in_seconds": 123.0,
+  "sound_event": "twilightforest:music_disc.twilightforest.radiance"
+}

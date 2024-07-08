@@ -34,7 +34,7 @@ public class RovingCubeRenderer<T extends RovingCube> extends EntityRenderer<T> 
 		stack.scale(2.0F, 2.0F, 2.0F);
 		stack.mulPose(Axis.YP.rotationDegrees(Mth.wrapDegrees(entity.tickCount + partialTicks) * 11.0F));
 		stack.translate(0.0F, 0.75F, 0.0F);
-		this.model.renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		this.model.renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY);
 
 		stack.popPose();
 	}

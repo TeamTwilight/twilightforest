@@ -121,6 +121,7 @@ public class EntityTagGenerator extends ModdedEntityTagGenerator {
 
 		this.tag(LIFEDRAIN_DROPS_NO_FLESH).addTag(EntityTypeTags.SKELETONS).addTag(EntityTypeTags.FROG_FOOD).add(
 			EntityType.BLAZE,
+			EntityType.BREEZE,
 			EntityType.IRON_GOLEM,
 			EntityType.PHANTOM,
 			EntityType.SHULKER,

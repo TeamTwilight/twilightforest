@@ -4,29 +4,19 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import it.unimi.dsi.fastutil.objects.ObjectArraySet;
 import net.minecraft.core.*;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.WorldGenRegion;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.LevelChunkSection;
-import net.minecraft.world.level.chunk.status.ChunkStatus;
-import net.minecraft.world.level.chunk.status.ChunkType;
-import net.minecraft.world.level.chunk.status.ToFullChunk;
-import net.minecraft.world.level.chunk.status.WorldGenContext;
-import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import org.jetbrains.annotations.NotNull;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBiomes;
@@ -37,12 +27,8 @@ import twilightforest.world.components.chunkblanketing.ChunkBlanketProcessor;
 import twilightforest.world.components.chunkblanketing.ChunkBlanketType;
 import twilightforest.world.components.chunkblanketing.GlacierBlanketProcessor;
 
-import java.util.EnumSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -69,49 +55,8 @@ public final class ChunkBlanketProcessors {
 		context.register(SNOWY_FOREST_GLACIER, new GlacierBlanketProcessor(HolderSet.direct(biomes.getOrThrow(TFBiomes.GLACIER)), BlockStateProvider.simple(Blocks.PACKED_ICE), BlockStateProvider.simple(Blocks.ICE), 32));
 	}
 
-	public static void init() {
-		// Ensures a once-execution of the static ChunkStatus initializer below, injecting a custom Chunk Status as a side effect of class-loading.
-		// On subsequent executes, expect no side effects to happen.
-	}
-
-	static {
-		registerInjectChunkStatus(TwilightForestMod.prefix("surface_blanketing"), ChunkStatus.CARVERS, false, ChunkStatus.POST_FEATURES, ChunkType.PROTOCHUNK, ChunkBlanketProcessors::chunkBlanketing, ChunkBlanketProcessors::passThrough);
-	}
-
-	@SuppressWarnings("SameParameterValue")
-	@NotNull
-	private static ChunkStatus registerInjectChunkStatus(ResourceLocation name, ChunkStatus injectBefore, boolean hasLoadDependencies, EnumSet<Heightmap.Types> oceanFloor, ChunkType chunkType, ChunkStatus.GenerationTask simpleGenerationTask, ChunkStatus.LoadingTask loadingTask) {
-		// Given the ASM works, this should execute while the registries are still unfrozen - to allow registration here
-		final ChunkStatus forInjection = Registry.register(BuiltInRegistries.CHUNK_STATUS, name, new ChunkStatus(injectBefore.getParent(), injectBefore.getParent().range, hasLoadDependencies, oceanFloor, chunkType, simpleGenerationTask, loadingTask));
-
-		injectBefore.parent = forInjection;
-
-		shiftSequentialStatuses(forInjection);
-
-		return forInjection;
-	}
-
-	private static void shiftSequentialStatuses(ChunkStatus forInjection) {
-		var name = forInjection.toString();
-		var status = ChunkStatus.FULL;
-		while (status != status.parent && status != forInjection) {
-			status.index++;
-			TwilightForestMod.LOGGER.debug(status + " → " + status.index + " (After +1)");
-			status = status.parent;
-		}
-		while (status != status.parent) {
-			TwilightForestMod.LOGGER.debug(status + " → " + status.index + " (Unadjusted)");
-			status = status.parent;
-		}
-		TwilightForestMod.LOGGER.info("Successfully processed injection for custom Chunk Status '" + name + "'");
-	}
-
-	private static final ResourceLocation WORLDGEN_REGION_RANDOM = new ResourceLocation("worldgen_region_random");
-
-	private static CompletableFuture<ChunkAccess> chunkBlanketing(WorldGenContext worldGenContext, ChunkStatus status, Executor executor, ToFullChunk toFullChunk, List<ChunkAccess> chunkAccesses, ChunkAccess chunkAccess) {
+	public static void chunkBlanketing(ChunkAccess chunkAccess, WorldGenRegion worldGenRegion) {
 		ChunkPos chunkPos = chunkAccess.getPos();
-		ServerLevel serverLevel = worldGenContext.level();
-		WorldGenRegion worldGenRegion = new WorldGenRegion(serverLevel, chunkAccesses, status, 0);
 
 		Set<Holder<Biome>> biomesInChunk = new ObjectArraySet<>();
 
@@ -119,27 +64,17 @@ public final class ChunkBlanketProcessors {
 			levelchunksection.getBiomes().getAll(biomesInChunk::add);
 		}
 
-		Iterator<ChunkBlanketProcessor> modifierIterator = serverLevel
-			.registryAccess()
+		Iterator<ChunkBlanketProcessor> modifierIterator = worldGenRegion.registryAccess()
 			.registry(TFRegistries.Keys.CHUNK_BLANKET_PROCESSORS)
 			.map(Registry::stream)
 			.orElseGet(Stream::empty)
 			.filter(modifier -> modifier.biomesForApplication().stream().anyMatch(biomesInChunk::contains))
 			.iterator();
 
-		Function<BlockPos, Holder<Biome>> biomeGetter = serverLevel.getBiomeManager()::getBiome;
-
+		Function<BlockPos, Holder<Biome>> biomeGetter = worldGenRegion::getBiome;
 
 		while (modifierIterator.hasNext()) {
-			// Hopefully, for keeping some level of parity with the WorldGenRegion's RandomSource setup
-			RandomSource random = serverLevel.getChunkSource().randomState().getOrCreateRandomFactory(WORLDGEN_REGION_RANDOM).at(chunkPos.getWorldPosition());
-			modifierIterator.next().processChunk(random, biomeGetter, chunkAccess);
+			modifierIterator.next().processChunk(worldGenRegion.getRandom().fork(), biomeGetter, chunkAccess);
 		}
-
-		return CompletableFuture.completedFuture(chunkAccess);
-	}
-
-	private static CompletableFuture<ChunkAccess> passThrough(WorldGenContext worldGenContext, ChunkStatus chunkStatus, ToFullChunk toFullChunk, ChunkAccess chunkAccess) {
-		return CompletableFuture.completedFuture(chunkAccess);
 	}
 }

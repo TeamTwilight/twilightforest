@@ -20,9 +20,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
-import net.minecraft.world.level.portal.PortalInfo;
+import net.minecraft.world.level.portal.DimensionTransition;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.util.ITeleporter;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
@@ -37,45 +36,33 @@ import twilightforest.util.LegacyLandmarkPlacements;
 import twilightforest.util.Restriction;
 
 import java.util.*;
-import java.util.function.Function;
 import java.util.function.Predicate;
 
-public class TFTeleporter implements ITeleporter {
+public class TFTeleporter {
 
-	private final boolean locked;
+	public static DimensionTransition createTransition(Entity entity, ServerLevel dest, BlockPos pos, boolean forcedEntry) {
+		DimensionTransition transition;
+		TeleporterCache cache = TeleporterCache.get(dest);
 
-	public TFTeleporter(boolean locked) {
-		this.locked = locked;
+		if ((transition = placeInExistingPortal(cache, dest, entity, pos)) == null) {
+			TwilightForestMod.LOGGER.debug("Did not find existing portal, making a new one.");
+			transition = createPosition(dest, entity, pos, cache, forcedEntry);
+		}
+
+		if (transition != null) return transition;
+		return new DimensionTransition(dest, Vec3.atCenterOf(pos.atY(dest.getSeaLevel())), Vec3.ZERO, entity.getYRot(), entity.getXRot(), DimensionTransition.PLACE_PORTAL_TICKET);
 	}
 
 	@Nullable
-	@Override
-	public PortalInfo getPortalInfo(Entity entity, ServerLevel dest, Function<ServerLevel, PortalInfo> defaultPortalInfo) {
-		PortalInfo pos;
-		TeleporterCache cache = TeleporterCache.get(dest);
-
-		double scale = getHorizontalScale(dest);
-		BlockPos destPos = dest.getWorldBorder().clampToBounds(entity.blockPosition().getX() * scale, entity.blockPosition().getY(), entity.blockPosition().getZ() * scale);
-
-		if ((pos = placeInExistingPortal(cache, dest, entity, destPos)) == null) {
-			TwilightForestMod.LOGGER.debug("Did not find existing portal, making a new one.");
-			pos = createPosition(dest, entity, destPos, cache);
-		}
-
-		if (pos != null) return pos;
-        return this.isVanilla() ? defaultPortalInfo.apply(dest) : new PortalInfo(Vec3.atCenterOf(destPos.atY(dest.getSeaLevel())), Vec3.ZERO, entity.getYRot(), entity.getXRot());
-    }
-
-	@Nullable
-	protected PortalInfo createPosition(ServerLevel dest, Entity entity, BlockPos destPos, TeleporterCache cache) {
-		PortalInfo info = moveToSafeCoords(dest, entity, destPos);
-		this.makePortal(cache, entity, dest, info.pos);
-		info = placeInExistingPortal(cache, dest, entity, BlockPos.containing(info.pos));
+	protected static DimensionTransition createPosition(ServerLevel dest, Entity entity, BlockPos destPos, TeleporterCache cache, boolean locked) {
+		DimensionTransition info = moveToSafeCoords(dest, entity, destPos);
+		makePortal(cache, entity, dest, info.pos(), locked);
+		info = placeInExistingPortal(cache, dest, entity, BlockPos.containing(info.pos()));
 		return info;
 	}
 
 	@Nullable
-	protected static PortalInfo placeInExistingPortal(TeleporterCache cache, ServerLevel destDim, Entity entity, BlockPos pos) {
+	protected static DimensionTransition placeInExistingPortal(TeleporterCache cache, ServerLevel destDim, Entity entity, BlockPos pos) {
 		boolean flag = true;
 		BlockPos blockpos;
 		ColumnPos columnPos = new ColumnPos(entity.blockPosition().getX(), entity.blockPosition().getZ()); // Must be the position from the src dim
@@ -125,7 +112,7 @@ public class TFTeleporter implements ITeleporter {
 			double portalY = borderPos.getY() + 1.0;
 			double portalZ = borderPos.getZ() + 0.5;
 
-			return makePortalInfo(entity, portalX, portalY, portalZ);
+			return makePortalInfo(destDim, entity, portalX, portalY, portalZ);
 		}
 	}
 
@@ -229,50 +216,50 @@ public class TFTeleporter implements ITeleporter {
 		return destination.dimension().equals(TFDimension.DIMENSION_KEY) ? 1F / scale : scale;
 	}
 
-	protected static PortalInfo moveToSafeCoords(ServerLevel world, Entity entity, BlockPos pos) {
+	protected static DimensionTransition moveToSafeCoords(ServerLevel level, Entity entity, BlockPos pos) {
 		// if we're in enforced progression mode, check the biomes for safety
-		boolean checkProgression = LandmarkUtil.isProgressionEnforced(world);
+		boolean checkProgression = LandmarkUtil.isProgressionEnforced(level);
 
-		if (isSafeAround(world, pos, entity, checkProgression)) {
+		if (isSafeAround(level, pos, entity, checkProgression)) {
 			TwilightForestMod.LOGGER.debug("Portal destination looks safe!");
-			return makePortalInfo(entity, Vec3.atCenterOf(pos));
+			return makePortalInfo(level, entity, Vec3.atCenterOf(pos));
 		}
 
 		TwilightForestMod.LOGGER.debug("Portal destination looks unsafe, rerouting!");
 
-		BlockPos safeCoords = findSafeCoords(world, 200, pos, entity, checkProgression);
+		BlockPos safeCoords = findSafeCoords(level, 200, pos, entity, checkProgression);
 		if (safeCoords != null) {
 			TwilightForestMod.LOGGER.debug("Safely rerouted!");
-			return makePortalInfo(entity, safeCoords.getX(), entity.getY(), safeCoords.getZ());
+			return makePortalInfo(level, entity, safeCoords.getX(), entity.getY(), safeCoords.getZ());
 		}
 
 		TwilightForestMod.LOGGER.info("Did not find a safe portal spot first try, trying again with longer range.");
-		safeCoords = findSafeCoords(world, 400, pos, entity, checkProgression);
+		safeCoords = findSafeCoords(level, 400, pos, entity, checkProgression);
 
 		if (safeCoords != null) {
 			TwilightForestMod.LOGGER.info("Safely rerouted to long range portal. Return trip not guaranteed.");
-			return makePortalInfo(entity, safeCoords.getX(), entity.getY(), safeCoords.getZ());
+			return makePortalInfo(level, entity, safeCoords.getX(), entity.getY(), safeCoords.getZ());
 		}
 
 		TwilightForestMod.LOGGER.info("Did not find a safe portal spot second try, trying to move slightly towards the center between key biomes.");
-		safeCoords = findSafeCoords(world, 400, moveTowardsCenter(pos, 0.5F), entity, checkProgression);
+		safeCoords = findSafeCoords(level, 400, moveTowardsCenter(pos, 0.5F), entity, checkProgression);
 
 		if (safeCoords != null) {
 			TwilightForestMod.LOGGER.info("Safely rerouted to slightly centered portal. Return trip not guaranteed.");
-			return makePortalInfo(entity, safeCoords.getX(), entity.getY(), safeCoords.getZ());
+			return makePortalInfo(level, entity, safeCoords.getX(), entity.getY(), safeCoords.getZ());
 		}
 
 		TwilightForestMod.LOGGER.info("Did not find a safe portal spot third try, trying to move further towards the center between key biomes.");
-		safeCoords = findSafeCoords(world, 400, moveTowardsCenter(pos, 0.9F), entity, checkProgression);
+		safeCoords = findSafeCoords(level, 400, moveTowardsCenter(pos, 0.9F), entity, checkProgression);
 
 		if (safeCoords != null) {
 			TwilightForestMod.LOGGER.info("Safely rerouted to very centered portal. Return trip not guaranteed.");
-			return makePortalInfo(entity, safeCoords.getX(), entity.getY(), safeCoords.getZ());
+			return makePortalInfo(level, entity, safeCoords.getX(), entity.getY(), safeCoords.getZ());
 		}
 
 		TwilightForestMod.LOGGER.warn("Still did not find a safe portal spot.");
 
-		return makePortalInfo(entity, Vec3.atCenterOf(pos));
+		return makePortalInfo(level, entity, Vec3.atCenterOf(pos));
 	}
 
 	private static BlockPos moveTowardsCenter(BlockPos pos, float lerp) {
@@ -334,7 +321,7 @@ public class TFTeleporter implements ITeleporter {
 		return null;
 	}
 
-	protected void makePortal(TeleporterCache cache, Entity entity, ServerLevel world, Vec3 pos) {
+	protected static void makePortal(TeleporterCache cache, Entity entity, ServerLevel world, Vec3 pos, boolean locked) {
 		ServerLevel src = entity.level() instanceof ServerLevel serverLevel ? serverLevel : null;
 
 		// ensure area is populated first
@@ -353,7 +340,7 @@ public class TFTeleporter implements ITeleporter {
 
 		if (spot != null) {
 			TwilightForestMod.LOGGER.debug("Found ideal portal spot for {} at {}", name, spot);
-			cacheNewPortalCoords(cache, src, this.makePortalAt(world, spot), entity.blockPosition());
+			cacheNewPortalCoords(cache, src, makePortalAt(world, spot, locked), entity.blockPosition());
 			return;
 		}
 
@@ -362,16 +349,16 @@ public class TFTeleporter implements ITeleporter {
 
 		if (spot != null) {
 			TwilightForestMod.LOGGER.debug("Found okay portal spot for {} at {}", name, spot);
-			cacheNewPortalCoords(cache, src, this.makePortalAt(world, spot), entity.blockPosition());
+			cacheNewPortalCoords(cache, src, makePortalAt(world, spot, locked), entity.blockPosition());
 			return;
 		}
 
 		TwilightForestMod.LOGGER.debug("Did not even find an okay portal spot, just making a fallback one for {}", name);
 
-		spot = findPortalCoords(world, pos, blockpos -> isOkayForFallbackPortal(world, 	blockpos), true);
+		spot = findPortalCoords(world, pos, blockpos -> isOkayForFallbackPortal(world, blockpos), true);
 		if (spot != null) {
 			TwilightForestMod.LOGGER.debug("Found fallback portal spot for {} at {}", name, spot);
-			cacheNewPortalCoords(cache, src, this.makePortalAt(world, spot), entity.blockPosition());
+			cacheNewPortalCoords(cache, src, makePortalAt(world, spot, locked), entity.blockPosition());
 			return;
 		}
 
@@ -382,7 +369,7 @@ public class TFTeleporter implements ITeleporter {
 		double yFactor = getYFactor(world);
 
 		// + 2 to make it above bedrock
-		cacheNewPortalCoords(cache, src, this.makePortalAt(world, BlockPos.containing(entity.getX() * getHorizontalScale(world), (entity.getY() * yFactor) + 2, entity.getZ() * getHorizontalScale(world))), entity.blockPosition());
+		cacheNewPortalCoords(cache, src, makePortalAt(world, BlockPos.containing(entity.getX() * getHorizontalScale(world), (entity.getY() * yFactor) + 2, entity.getZ() * getHorizontalScale(world)), locked), entity.blockPosition());
 	}
 
 	protected static void loadSurroundingArea(ServerLevel world, Vec3 pos) {
@@ -434,8 +421,7 @@ public class TFTeleporter implements ITeleporter {
 							ry--;
 						}
 						pos.set(rx, ry, rz);
-					}
-					else {
+					} else {
 						while (ry > world.getMinBuildHeight() && world.isEmptyBlock(pos.set(rx, ry - 1, rz))) {
 							ry--;
 						}
@@ -493,7 +479,7 @@ public class TFTeleporter implements ITeleporter {
 		return true;
 	}
 
-	protected BlockPos makePortalAt(Level world, BlockPos pos) {
+	protected static BlockPos makePortalAt(Level world, BlockPos pos, boolean locked) {
 		// grass all around it
 		BlockState grass = Blocks.GRASS_BLOCK.defaultBlockState();
 
@@ -521,13 +507,13 @@ public class TFTeleporter implements ITeleporter {
 
 		// dirt under it
 		BlockState dirt = Blocks.DIRT.defaultBlockState();
-		for (BlockPos blockpos: positions) {
-			if(world.getBlockState(pos).is(BlockTags.FEATURES_CANNOT_REPLACE))
+		for (BlockPos blockpos : positions) {
+			if (world.getBlockState(pos).is(BlockTags.FEATURES_CANNOT_REPLACE))
 				world.setBlockAndUpdate(blockpos, dirt);
 		}
 
 		// portal in it
-		BlockState portal = TFBlocks.TWILIGHT_PORTAL.get().defaultBlockState().setValue(TFPortalBlock.DISALLOW_RETURN, (this.locked || !TFConfig.shouldReturnPortalBeUsable));
+		BlockState portal = TFBlocks.TWILIGHT_PORTAL.get().defaultBlockState().setValue(TFPortalBlock.DISALLOW_RETURN, (locked || !TFConfig.shouldReturnPortalBeUsable));
 
 		world.setBlock(pos, portal, 2);
 		world.setBlock(pos.east(), portal, 2);
@@ -605,18 +591,12 @@ public class TFTeleporter implements ITeleporter {
 		return true;
 	}
 
-	protected static PortalInfo makePortalInfo(Entity entity, double x, double y, double z) {
-		return makePortalInfo(entity, new Vec3(x, y, z));
+	protected static DimensionTransition makePortalInfo(ServerLevel level, Entity entity, double x, double y, double z) {
+		return makePortalInfo(level, entity, new Vec3(x, y, z));
 	}
 
-	protected static PortalInfo makePortalInfo(Entity entity, Vec3 pos) {
-		return new PortalInfo(pos, Vec3.ZERO, entity.getYRot(), entity.getXRot());
-	}
-
-	@Override
-	public Entity placeEntity(Entity entity, ServerLevel currentWorld, ServerLevel destWorld, float yaw, Function<Boolean, Entity> repositionEntity) {
-		entity.fallDistance = 0;
-		return repositionEntity.apply(false);
+	protected static DimensionTransition makePortalInfo(ServerLevel level, Entity entity, Vec3 pos) {
+		return new DimensionTransition(level, pos, Vec3.ZERO, entity.getXRot(), entity.getYRot(), DimensionTransition.PLACE_PORTAL_TICKET);
 	}
 
 	static class PortalPosition {

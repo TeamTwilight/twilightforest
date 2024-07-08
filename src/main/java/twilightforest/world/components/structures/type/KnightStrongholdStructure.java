@@ -4,6 +4,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.entity.EntityType;
@@ -12,11 +13,14 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.*;
+import net.minecraft.world.level.levelgen.structure.pieces.PiecesContainer;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFStructureTypes;
+import twilightforest.world.components.structures.start.TFStructureStart;
 import twilightforest.world.components.structures.stronghold.StrongholdEntranceComponent;
 import twilightforest.world.components.structures.util.ControlledSpawningStructure;
 
@@ -65,5 +69,48 @@ public class KnightStrongholdStructure extends ControlledSpawningStructure {
 				TerrainAdjustment.BURY
 			)
 		);
+	}
+
+	@Override
+	protected StructureStart createStart(ChunkPos chunkPos, int reference, GenerationStub generationStub) {
+		KnightStructureStart start = new KnightStructureStart(this, chunkPos, reference, generationStub.getPiecesBuilder().build());
+		start.setStartY(generationStub.position().getY() - 1);
+		return start;
+	}
+
+	public static class KnightStructureStart extends TFStructureStart {
+		private int startY = 0;
+
+		public KnightStructureStart(Structure structure, ChunkPos chunkPos, int references, PiecesContainer pieces) {
+			super(structure, chunkPos, references, pieces);
+		}
+
+		public void setStartY(int startY) {
+			this.startY = startY;
+		}
+
+		@Override
+		public BoundingBox getBoundingBox() {
+			BoundingBox boundingbox = this.cachedBoundingBox;
+			if (boundingbox == null) {
+				BoundingBox bBox = super.getBoundingBox();
+				boundingbox = new BoundingBox(bBox.minX(), bBox.minY(), bBox.minZ(), bBox.maxX(), Math.min(bBox.maxY(), this.startY), bBox.maxZ());
+				this.cachedBoundingBox = boundingbox; // Cache that shit since it may get called like every tick
+			}
+			return boundingbox;
+		}
+
+		@Override
+		public CompoundTag createTag(StructurePieceSerializationContext level, ChunkPos chunkPos) {
+			CompoundTag tag = super.createTag(level, chunkPos);
+			tag.putInt("knight_y", this.startY);
+			return tag;
+		}
+
+		@Override
+		public void loadFromTag(CompoundTag nbt) {
+			super.loadFromTag(nbt);
+			this.startY = nbt.getInt("knight_y");
+		}
 	}
 }

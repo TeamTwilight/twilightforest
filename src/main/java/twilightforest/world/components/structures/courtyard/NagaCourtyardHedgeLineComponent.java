@@ -10,10 +10,10 @@ import twilightforest.init.TFStructurePieceTypes;
 
 public class NagaCourtyardHedgeLineComponent extends NagaCourtyardHedgeAbstractComponent {
 	public NagaCourtyardHedgeLineComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(ctx, TFStructurePieceTypes.TFNCLn.get(), nbt, new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_line"), new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_line_big"));
+		super(ctx, TFStructurePieceTypes.TFNCLn.get(), nbt, TwilightForestMod.prefix("courtyard/hedge_line"), TwilightForestMod.prefix("courtyard/hedge_line_big"));
 	}
 
 	public NagaCourtyardHedgeLineComponent(StructureTemplateManager manager, int i, int x, int y, int z, Rotation rotation) {
-		super(manager, TFStructurePieceTypes.TFNCLn.get(), i, x, y, z, rotation, new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_line"), new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_line_big"));
+		super(manager, TFStructurePieceTypes.TFNCLn.get(), i, x, y, z, rotation, TwilightForestMod.prefix("courtyard/hedge_line"), TwilightForestMod.prefix("courtyard/hedge_line_big"));
 	}
 }

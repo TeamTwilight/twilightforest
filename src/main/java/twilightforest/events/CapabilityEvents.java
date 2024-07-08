@@ -1,6 +1,7 @@
 package twilightforest.events;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.entity.Entity;
@@ -8,15 +9,17 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.entity.living.LivingAttackEvent;
+import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.TFPortalBlock;
+import twilightforest.world.NoReturnTeleporter;
+import twilightforest.world.TFTeleporter;
 import twilightforest.config.TFConfig;
 import twilightforest.init.TFDataAttachments;
+import twilightforest.init.TFDimension;
 import twilightforest.network.UpdateShieldPacket;
 
 @EventBusSubscriber(modid = TwilightForestMod.ID)
@@ -34,7 +37,7 @@ public class CapabilityEvents {
 	@SubscribeEvent
 	public static void updatePlayerCaps(PlayerTickEvent.Post event) {
 		if (event.getEntity().getData(TFDataAttachments.FEATHER_FAN)) {
-			event.getEntity().ignoreFallDamageFromCurrentImpulse = true;
+			event.getEntity().setIgnoreFallDamageFromCurrentImpulse(true);
 			event.getEntity().currentImpulseImpactPos = event.getEntity().position();
 
 			if (event.getEntity().onGround() || event.getEntity().isSwimming() || event.getEntity().isInWater()) {
@@ -46,7 +49,7 @@ public class CapabilityEvents {
 	}
 
 	@SubscribeEvent
-	public static void livingAttack(LivingAttackEvent event) {
+	public static void livingAttack(LivingIncomingDamageEvent event) {
 		LivingEntity living = event.getEntity();
 		// shields
 		if (!living.level().isClientSide() && !event.getSource().is(DamageTypeTags.BYPASSES_ARMOR)) {
@@ -76,9 +79,9 @@ public class CapabilityEvents {
 	 */
 	@SubscribeEvent
 	public static void playerLogsIn(PlayerEvent.PlayerLoggedInEvent event) {
-		if (!event.getEntity().level().isClientSide() && event.getEntity() instanceof ServerPlayer) {
-			updateCapabilities((ServerPlayer) event.getEntity(), event.getEntity());
-			banishNewbieToTwilightZone(event.getEntity());
+		if (!event.getEntity().level().isClientSide() && event.getEntity() instanceof ServerPlayer player) {
+			updateCapabilities(player, event.getEntity());
+			banishNewbieToTwilightZone(player);
 		}
 	}
 
@@ -103,7 +106,7 @@ public class CapabilityEvents {
 	}
 
 	// Teleport first-time players to Twilight Forest
-	private static void banishNewbieToTwilightZone(Player player) {
+	private static void banishNewbieToTwilightZone(ServerPlayer player) {
 		CompoundTag tagCompound = player.getPersistentData();
 		CompoundTag playerData = tagCompound.getCompound(Player.PERSISTED_NBT_TAG);
 
@@ -113,7 +116,16 @@ public class CapabilityEvents {
 		playerData.putBoolean(NBT_TAG_TWILIGHT, true); // set true once player has spawned either way
 		tagCompound.put(Player.PERSISTED_NBT_TAG, playerData); // commit
 
-		if (shouldBanishPlayer)
-			TFPortalBlock.attemptSendEntity(player, true, TFConfig.portalForNewPlayerSpawn); // See ya hate to be ya
+		if (shouldBanishPlayer) {
+			ServerLevel level = player.getServer().getLevel(TFDimension.DIMENSION_KEY);
+
+			if (level == null)
+				return;
+
+			player.changeDimension(TFConfig.portalForNewPlayerSpawn ?
+				TFTeleporter.createTransition(player, level, player.blockPosition(), true) :
+				NoReturnTeleporter.createNoPortalTransition(level, player, player.blockPosition()));
+			player.setRespawnPosition(TFDimension.DIMENSION_KEY, player.blockPosition(), player.getYRot(), true, false);
+		}
 	}
 }

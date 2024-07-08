@@ -9,7 +9,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.EntityMountEvent;
 import net.neoforged.neoforge.event.entity.EntityTeleportEvent;
-import net.neoforged.neoforge.event.entity.living.LivingAttackEvent;
+import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.IHostileMount;
@@ -22,7 +22,7 @@ public class HostileMountEvents {
 	public static volatile boolean allowDismount = false;
 
 	@SubscribeEvent
-	public static void entityHurts(LivingAttackEvent event) {
+	public static void entityHurts(LivingIncomingDamageEvent event) {
 		LivingEntity living = event.getEntity();
 		DamageSource damageSource = event.getSource();
 		// lets not make the player take suffocation damage if riding something

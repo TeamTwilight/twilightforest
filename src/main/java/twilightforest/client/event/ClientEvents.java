@@ -9,8 +9,17 @@ import net.minecraft.client.gui.components.SplashRenderer;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.DimensionSpecialEffects;
+import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
@@ -20,6 +29,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.server.packs.resources.ReloadableResourceManager;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.Music;
+import net.minecraft.sounds.Musics;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -29,6 +41,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.WrittenBookItem;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -37,16 +50,31 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.fml.ModList;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.GiantBlock;
 import twilightforest.block.MiniatureStructureBlock;
 import twilightforest.block.entity.GrowingBeanstalkBlockEntity;
 import twilightforest.client.*;
 import twilightforest.compat.curios.CuriosCompat;
+import twilightforest.client.model.block.aurorablock.NoiseVaryingModelLoader;
+import twilightforest.client.model.block.connected.ConnectedTextureModelLoader;
+import twilightforest.client.model.block.forcefield.ForceFieldModelLoader;
+import twilightforest.client.model.block.giantblock.GiantBlockModelLoader;
+import twilightforest.client.model.block.leaves.BakedLeavesModel;
+import twilightforest.client.model.block.patch.PatchModelLoader;
+import twilightforest.client.model.item.TrollsteinnModel;
+import twilightforest.client.renderer.TFSkyRenderer;
+import twilightforest.client.renderer.entity.ShieldLayer;
+import twilightforest.components.entity.TFPortalAttachment;
+import twilightforest.components.item.PotionFlaskComponent;
 import twilightforest.config.TFConfig;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.entity.boss.bar.ClientTFBossBar;
@@ -83,6 +111,7 @@ public class ClientEvents {
 		NeoForge.EVENT_BUS.addListener(ClientEvents::renderAurora);
 		NeoForge.EVENT_BUS.addListener(ClientEvents::renderCustomBossbars);
 		NeoForge.EVENT_BUS.addListener(ClientEvents::renderGiantBlockOutlines);
+		NeoForge.EVENT_BUS.addListener(ClientEvents::setMusicInDimension);
 		NeoForge.EVENT_BUS.addListener(ClientEvents::shakeCamera);
 		NeoForge.EVENT_BUS.addListener(ClientEvents::translateBookAuthor);
 		NeoForge.EVENT_BUS.addListener(ClientEvents::unrenderHeadWithTrophies);
@@ -128,6 +157,13 @@ public class ClientEvents {
 		}
 	}
 
+	private static void setMusicInDimension(SelectMusicEvent event) {
+		Music music = event.getOriginalMusic();
+		if (Minecraft.getInstance().level != null && Minecraft.getInstance().player != null && (music == Musics.CREATIVE || music == Musics.UNDER_WATER) && TFDimension.isTwilightWorldOnClient(Minecraft.getInstance().level)) {
+			event.setMusic(Minecraft.getInstance().level.getBiomeManager().getNoiseBiomeAtPosition(Minecraft.getInstance().player.blockPosition()).value().getBackgroundMusic().orElse(Musics.GAME));
+		}
+	}
+
 	/**
 	 * Stop the game from rendering the mount health for unfriendly creatures
 	 */
@@ -146,24 +182,23 @@ public class ClientEvents {
 		if (Minecraft.getInstance().level == null) return;
 
 		if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_WEATHER && (aurora > 0 || lastAurora > 0) && TFShaders.AURORA != null) {
-			BufferBuilder buffer = Tesselator.getInstance().getBuilder();
-			buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+			Tesselator tesselator = Tesselator.getInstance();
+			BufferBuilder buffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 
-			final double scale = 2048F * (Minecraft.getInstance().gameRenderer.getRenderDistance() / 32F);
+			final float scale = 2048F * (Minecraft.getInstance().gameRenderer.getRenderDistance() / 32F);
 			Vec3 pos = event.getCamera().getPosition();
-			double y = 256D - pos.y();
-			buffer.vertex(-scale, y, scale).color(1F, 1F, 1F, 1F).endVertex();
-			buffer.vertex(-scale, y, -scale).color(1F, 1F, 1F, 1F).endVertex();
-			buffer.vertex(scale, y, -scale).color(1F, 1F, 1F, 1F).endVertex();
-			buffer.vertex(scale, y, scale).color(1F, 1F, 1F, 1F).endVertex();
+			float y = (float) (256F - pos.y());
+			buffer.addVertex(-scale, y, scale).setColor(1F, 1F, 1F, 1F);
+			buffer.addVertex(-scale, y, -scale).setColor(1F, 1F, 1F, 1F);
+			buffer.addVertex(scale, y, -scale).setColor(1F, 1F, 1F, 1F);
+			buffer.addVertex(scale, y, scale).setColor(1F, 1F, 1F, 1F);
 
 			RenderSystem.enableBlend();
 			RenderSystem.enableDepthTest();
-			RenderSystem.setShaderColor(1F, 1F, 1F, (Mth.lerp(event.getPartialTick(), lastAurora, aurora)) / 60F * 0.5F);
+			RenderSystem.setShaderColor(1F, 1F, 1F, (Mth.lerp(event.getPartialTick().getGameTimeDeltaTicks(), lastAurora, aurora)) / 60F * 0.5F);
 			TFShaders.AURORA.invokeThenEndTesselator(
 				Minecraft.getInstance().level == null ? 0 : Mth.abs((int) Minecraft.getInstance().level.getBiomeManager().biomeZoomSeed),
-				(float) pos.x(), (float) pos.y(), (float) pos.z()
-			);
+				(float) pos.x(), (float) pos.y(), (float) pos.z(), buffer);
 			RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
 			RenderSystem.disableDepthTest();
 			RenderSystem.disableBlend();
@@ -184,6 +219,8 @@ public class ClientEvents {
 
 	private static void clientTick(ClientTickEvent.Post event) {
 		Minecraft mc = Minecraft.getInstance();
+		float partial = mc.getTimer().getRealtimeDeltaTicks();
+
 		if (!mc.isPaused()) {
 			time++;
 
@@ -277,18 +314,18 @@ public class ClientEvents {
 		ItemStack stack = event.getEntity().getItemBySlot(EquipmentSlot.HEAD);
 		boolean visible = !(stack.getItem() instanceof TrophyItem) && !(stack.getItem() instanceof SkullCandleItem) && !areCuriosEquipped(event.getEntity());
 
-		if (!visible && event.getRenderer().getModel() instanceof HeadedModel headedModel) {
-			headedModel.getHead().visible = false;
+		if (event.getRenderer().getModel() instanceof HeadedModel headedModel) {
+			headedModel.getHead().visible = visible;
 			if (event.getRenderer().getModel() instanceof HumanoidModel<?> humanoidModel) {
-				humanoidModel.hat.visible = false;
+				humanoidModel.hat.visible = visible;
 			}
 		}
 	}
 
 	private static boolean areCuriosEquipped(LivingEntity entity) {
-		if (ModList.get().isLoaded("curios")) {
-			return CuriosCompat.isCurioEquippedAndVisible(entity, stack -> stack.getItem() instanceof TrophyItem) || CuriosCompat.isCurioEquippedAndVisible(entity, stack -> stack.getItem() instanceof SkullCandleItem);
-		}
+//		if (ModList.get().isLoaded("curios")) {
+//			return CuriosCompat.isCurioEquippedAndVisible(entity, stack -> stack.getItem() instanceof TrophyItem) || CuriosCompat.isCurioEquippedAndVisible(entity, stack -> stack.getItem() instanceof SkullCandleItem);
+//		}
 		return false;
 	}
 
@@ -321,11 +358,12 @@ public class ClientEvents {
 			event.setCanceled(true);
 			if (!state.isAir() && player.level().getWorldBorder().isWithinBounds(pos)) {
 				BlockPos offsetPos = new BlockPos(pos.getX() & ~0b11, pos.getY() & ~0b11, pos.getZ() & ~0b11);
-				renderGiantHitOutline(event.getPoseStack(), event.getMultiBufferSource().getBuffer(RenderType.lines()), event.getCamera().getPosition(), offsetPos);
+				VertexConsumer consumer = event.getMultiBufferSource().getBuffer(RenderType.lines());
+				Vec3 xyz = Vec3.atLowerCornerOf(offsetPos).subtract(event.getCamera().getPosition());
+				LevelRenderer.renderShape(event.getPoseStack(), consumer, GIANT_BLOCK, xyz.x(), xyz.y(), xyz.z(), 0.0F, 0.0F, 0.0F, 0.45F);
 			}
 		}
 	}
-
 
 	private static void renderGiantHitOutline(PoseStack poseStack, VertexConsumer consumer, Vec3 cam, BlockPos pos) {
 		PoseStack.Pose last = poseStack.last();

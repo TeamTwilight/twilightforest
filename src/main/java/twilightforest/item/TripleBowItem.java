@@ -1,6 +1,7 @@
 package twilightforest.item;
 
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -29,7 +30,7 @@ public class TripleBowItem extends BowItem {
 		if (living instanceof Player player) {
 			ItemStack arrowStack = player.getProjectile(stack);
 
-			int i = this.getUseDuration(stack) - timeLeft;
+			int i = this.getUseDuration(stack, player) - timeLeft;
 			i = EventHooks.onArrowLoose(stack, level, player, i, !arrowStack.isEmpty());
 			if (i < 0) return;
 
@@ -38,7 +39,7 @@ public class TripleBowItem extends BowItem {
 				if (f >= 0.1D) {
 					List<ItemStack> list = draw(stack, arrowStack, player);
 					if (!level.isClientSide() && !list.isEmpty()) {
-						this.shoot(level, player, player.getUsedItemHand(), stack, list, f * 2.5F, 1.0F, f == 1.0F, null);
+						this.shoot((ServerLevel) level, player, player.getUsedItemHand(), stack, list, f * 2.5F, 1.0F, f == 1.0F, null);
 					}
 
 					level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ARROW_SHOOT, SoundSource.PLAYERS, 1.0F, 1.0F / (level.getRandom().nextFloat() * 0.4F + 1.2F) + f * 0.5F);
@@ -49,7 +50,7 @@ public class TripleBowItem extends BowItem {
 	}
 
 	@Override
-	protected void shoot(Level level, LivingEntity living, InteractionHand hand, ItemStack stack, List<ItemStack> arrows, float speed, float accuracy, boolean crit, @Nullable LivingEntity target) {
+	protected void shoot(ServerLevel level, LivingEntity living, InteractionHand hand, ItemStack stack, List<ItemStack> arrows, float speed, float accuracy, boolean crit, @Nullable LivingEntity target) {
 		float f1 = arrows.size() == 1 ? 0.0F : 20.0F / (float)(arrows.size() - 1);
 		float f2 = (float)((arrows.size() - 1) % 2) * f1 / 2.0F;
 		float f3 = 1.0F;

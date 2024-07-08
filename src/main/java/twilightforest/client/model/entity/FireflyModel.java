@@ -34,7 +34,7 @@ public class FireflyModel extends Model {
 		partdefinition.addOrReplaceChild("legs",
 			CubeListBuilder.create()
 				.texOffs(0, 21)
-				.addBox(-4.0F, 7.9F, -5.0F, 8.0F, 1.0F, 10.0F),
+				.addBox(-4.0F, 7.9F, -5.0F, 8.0F, 0.0F, 10.0F),
 			PartPose.ZERO);
 		partdefinition.addOrReplaceChild("fat_body",
 			CubeListBuilder.create()
@@ -56,10 +56,10 @@ public class FireflyModel extends Model {
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack stack, VertexConsumer consumer, int light, int overlay, float red, float green, float blue, float alpha) {
-		this.legs.render(stack, consumer, light, overlay, red, green, blue, alpha);
-		this.fatbody.render(stack, consumer, light, overlay, red, green, blue, alpha);
-		this.skinnybody.render(stack, consumer, light, overlay, red, green, blue, alpha);
+	public void renderToBuffer(PoseStack stack, VertexConsumer consumer, int light, int overlay, int color) {
+		this.legs.render(stack, consumer, light, overlay, color);
+		this.fatbody.render(stack, consumer, light, overlay, color);
+		this.skinnybody.render(stack, consumer, light, overlay, color);
 	}
 
 	public void renderGlow(PoseStack stack, VertexConsumer consumer, float alpha) {

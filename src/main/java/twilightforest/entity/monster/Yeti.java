@@ -28,6 +28,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.TwilightForestMod;
 import twilightforest.entity.IHostileMount;
 import twilightforest.entity.ai.goal.ThrowRiderGoal;
 import twilightforest.init.TFBiomes;
@@ -39,7 +40,7 @@ import java.util.Optional;
 public class Yeti extends Monster implements IHostileMount {
 
 	private static final EntityDataAccessor<Boolean> ANGER_FLAG = SynchedEntityData.defineId(Yeti.class, EntityDataSerializers.BOOLEAN);
-	private static final AttributeModifier ANGRY_MODIFIER = new AttributeModifier("Angry follow range boost", 8, AttributeModifier.Operation.ADD_VALUE);
+	private static final AttributeModifier ANGRY_MODIFIER = new AttributeModifier(TwilightForestMod.prefix("anger_follow_boost"), 8, AttributeModifier.Operation.ADD_VALUE);
 
 	public Yeti(EntityType<? extends Yeti> type, Level world) {
 		super(type, world);
@@ -113,7 +114,7 @@ public class Yeti extends Monster implements IHostileMount {
 
 		if (!this.level().isClientSide()) {
 			if (anger) {
-				if (!Objects.requireNonNull(getAttribute(Attributes.FOLLOW_RANGE)).hasModifier(ANGRY_MODIFIER)) {
+				if (!Objects.requireNonNull(getAttribute(Attributes.FOLLOW_RANGE)).hasModifier(ANGRY_MODIFIER.id())) {
 					Objects.requireNonNull(this.getAttribute(Attributes.FOLLOW_RANGE)).addTransientModifier(ANGRY_MODIFIER);
 				}
 			} else {

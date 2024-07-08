@@ -5,6 +5,7 @@ import com.mojang.datafixers.util.Pair;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectListIterator;
 import net.minecraft.client.Camera;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -12,21 +13,19 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.sounds.Music;
 import net.minecraft.sounds.Musics;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.decoration.ItemFrame;
 import net.minecraft.world.entity.decoration.LeashFenceKnotEntity;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.DyedItemColor;
@@ -36,6 +35,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -70,32 +70,17 @@ import twilightforest.world.components.structures.util.CustomStructureData;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @SuppressWarnings({"JavadocReference", "unused", "RedundantSuppression", "deprecation"})
 public class ASMHooks {
 
 	/**
-	 * Minecraft Overworld seed, unique and from the save's WorldOptions. A deep bastion for supporting many features unique to the Twilight Forest dimension.
+	 * {@link twilightforest.asm.transformers.map.RenderMapDecorationsTransformer}<p/>
+	 *
+	 * Injection Point:<br/>
+	 * {@link net.minecraft.client.gui.MapRenderer.MapInstance#draw(PoseStack, MultiBufferSource, boolean, int)}
 	 */
-	public static long seed;
-
-	/**
-	 * Injection Point:<br>
-	 * {@link net.minecraft.world.level.levelgen.WorldOptions#WorldOptions(long, boolean, boolean, Optional)} <br>
-	 * [BEFORE FIRST PUTFIELD]
-	 */
-	public static long seed(long seed) {
-		ASMHooks.seed = seed;
-		return seed;
-	}
-
-	/**
-	 * Injection Point:<br>
-	 * {@link net.minecraft.client.gui.MapRenderer.MapInstance#draw(PoseStack, MultiBufferSource, boolean, int)}<br>
-	 * [BEFORE ISTORE 10]
-	 */
-	public static int mapRenderDecorations(int o, MapItemSavedData data, PoseStack stack, MultiBufferSource buffer, int light) {
+	public static int renderMapDecorations(int o, MapItemSavedData data, PoseStack stack, MultiBufferSource buffer, int light) {
 		if (data instanceof TFMagicMapData mapData) {
 			for (TFMagicMapData.TFMapDecoration decoration : mapData.tfDecorations.values()) {
 				decoration.render(o, stack, buffer, light);
@@ -110,44 +95,26 @@ public class ASMHooks {
 	}
 
 	/**
-	 * Injection Point:<br>
-	 * {@link net.minecraft.client.renderer.ItemInHandRenderer#renderArmWithItem(AbstractClientPlayer, float, float, InteractionHand, float, ItemStack, float, PoseStack, MultiBufferSource, int)} <br>
-	 * [AFTER FIRST GETSTATIC {@link net.minecraft.world.item.Items#FILLED_MAP}]
-	 * <p></p>
-	 * Injection Point:<br>
-	 * {@link ItemFrame#getFramedMapId()} <br>
-	 * [BEFORE FIRST IFEQ]
+	 * {@link twilightforest.asm.transformers.map.ShouldMapRenderInArmTransformer}<p/>
+	 *
+	 * Injection Point:<br/>
+	 * {@link net.minecraft.client.renderer.ItemInHandRenderer#renderArmWithItem(AbstractClientPlayer, float, float, InteractionHand, float, ItemStack, float, PoseStack, MultiBufferSource, int)}<br/>
+	 * Targets: {@link net.minecraft.world.item.Items#FILLED_MAP} and {@link net.minecraft.world.item.ItemStack#is(Item)}
 	 */
-	public static boolean shouldMapRender(boolean o, ItemStack stack) {
+	public static boolean shouldMapRenderInArm(boolean o, ItemStack stack) {
 		return o || isOurMap(stack);
 	}
 
 	/**
-	 * Injection Point:<br>
-	 * {@link net.minecraft.client.renderer.ItemInHandRenderer#renderMap(PoseStack, MultiBufferSource, int, ItemStack)}<br>
-	 * [BEFORE FIRST ASTORE 6]
-	 * <p></p>
-	 * Injection Point:<br>
-	 * {@link net.minecraft.world.item.MapItem#appendHoverText(ItemStack, Item.TooltipContext, List, TooltipFlag)}<br>
-	 * [AFTER INVOKESTATIC {@link net.minecraft.world.item.MapItem#getSavedData(Integer, Level)}]
+	 * {@link twilightforest.asm.transformers.map.ResolveMapDataForRenderTransformer}<p/>
+	 *
+	 * Injection Point:<br/>
+	 * {@link net.minecraft.client.renderer.ItemInHandRenderer#renderMap(PoseStack, MultiBufferSource, int, ItemStack)}
 	 */
 	@Nullable
-	public static MapItemSavedData renderMapData(@Nullable MapItemSavedData o, ItemStack stack, @Nullable Level level) {
+	public static MapItemSavedData resolveMapDataForRender(@Nullable MapItemSavedData o, ItemStack stack, @Nullable Level level) {
 		return isOurMap(stack) && level != null ? MapItem.getSavedData(stack, level) : o;
 	}
-
-	/**
-	 * Injection Point:<br>
-	 * {@link net.minecraft.client.sounds.MusicManager#tick()}<br>
-	 * [AFTER FIRST INVOKEVIRTUAL]
-	 */
-	@OnlyIn(Dist.CLIENT)
-	public static Music music(Music music) {
-		if (Minecraft.getInstance().level != null && Minecraft.getInstance().player != null && (music == Musics.CREATIVE || music == Musics.UNDER_WATER) && TFDimension.isTwilightWorldOnClient(Minecraft.getInstance().level))
-			return Minecraft.getInstance().level.getBiomeManager().getNoiseBiomeAtPosition(Minecraft.getInstance().player.blockPosition()).value().getBackgroundMusic().orElse(Musics.GAME);
-		return music;
-	}
-
 
 	/**
 	 * Injection Point:<br>
@@ -174,17 +141,8 @@ public class ASMHooks {
 
 	/**
 	 * Injection Point:<br>
-	 * {@link net.minecraft.client.renderer.entity.EntityRenderDispatcher#onResourceManagerReload(ResourceManager)}<br>
-	 * [AFTER FIRST INVOKESPECIAL]
-	 */
-	public static EntityRendererProvider.Context bakeMultipartRenders(EntityRendererProvider.Context context) {
-		BakedMultiPartRenderers.bakeMultiPartRenderers(context);
-		return context;
-	}
-
-	/**
-	 * Injection Point:<br>
-	 * {@link net.minecraft.client.renderer.LevelRenderer#renderLevel(float, long, boolean, Camera, GameRenderer, LightTexture, Matrix4f, Matrix4f)}<br>
+	 *
+	 * {@link net.minecraft.client.renderer.LevelRenderer#renderLevel(DeltaTracker, boolean, Camera, GameRenderer, LightTexture, Matrix4f, Matrix4f)}<br>
 	 * [AFTER {@link net.minecraft.client.multiplayer.ClientLevel#entitiesForRendering}]
 	 */
 	public static Iterable<Entity> renderMultiparts(Iterable<Entity> iter) {
@@ -202,42 +160,35 @@ public class ASMHooks {
 	}
 
 	/**
-	 * Injection Point:<br>
-	 * {@link net.minecraft.client.renderer.BiomeColors#FOLIAGE_COLOR_RESOLVER}<br>
-	 * [BEFORE IRETURN]
+	 * {@link twilightforest.asm.transformers.foliage.FoliageColorResolverTransformer}<p/>
+	 *
+	 * Injection Point:<br/>
+	 * {@link net.minecraft.client.renderer.BiomeColors#FOLIAGE_COLOR_RESOLVER}
 	 */
-	public static int foliage(int o, Biome biome, double x, double z) {
+	public static int resolveFoliageColor(int o, Biome biome, double x, double z) {
 		return FoliageColorHandler.get(o, biome, x, z);
 	}
 
 	/**
-	 * Injection Point:<br>
-	 * {@link net.minecraft.world.level.levelgen.structure.StructureStart#loadStaticStart(StructurePieceSerializationContext, CompoundTag, long)} <br>
-	 * [AFTER INVOKESPECIAL {@link net.minecraft.world.level.levelgen.structure.StructureStart#StructureStart(Structure, ChunkPos, int, PiecesContainer)}]
+	 * {@link twilightforest.asm.transformers.conquered.StructureStartLoadStaticTransformer}<p/>
+	 *
+	 * Injection Point:<br/>
+	 * {@link net.minecraft.world.level.levelgen.structure.StructureStart#loadStaticStart(StructurePieceSerializationContext, CompoundTag, long)}<br/>
+	 * Targets: {@link net.minecraft.world.level.levelgen.structure.StructureStart#StructureStart(Structure, ChunkPos, int, PiecesContainer)}
 	 */
-	public static StructureStart conquered(StructureStart start, PiecesContainer piecesContainer, CompoundTag nbt) {
+	public static StructureStart loadStaticStart(StructureStart start, PiecesContainer piecesContainer, CompoundTag nbt) {
 		if (start.getStructure() instanceof CustomStructureData s)
 			return s.forDeserialization(start.getStructure(), start.getChunkPos(), start.getReferences(), piecesContainer, nbt);
 		return start;
 	}
 
 	/**
-	 * Injection Point:<br>
-	 * {@link net.minecraft.client.player.LocalPlayer#rideTick()} <br>
-	 * [AFTER FIRST INVOKESPECIAL]
+	 * {@link twilightforest.asm.transformers.book.ModifyWrittenBookNameTransformer}<p/>
+	 *
+	 * Injection Point:<br/>
+	 * {@link net.minecraft.world.item.WrittenBookItem#getName(net.minecraft.world.item.ItemStack)}
 	 */
-	public static boolean mountFix(boolean o, boolean wantsToStopRiding, boolean isPassenger) {
-		if (wantsToStopRiding && isPassenger)
-			return false;
-		return o;
-	}
-
-	/**
-	 * Injection Point:<br>
-	 * {@link net.minecraft.world.item.WrittenBookItem#getName(net.minecraft.world.item.ItemStack)}<br>
-	 * [BEFORE ARETURN]
-	 */
-	public static Component book(Component component, ItemStack stack) {
+	public static Component modifyWrittenBookName(Component component, ItemStack stack) {
 		if (stack.has(TFDataComponents.TRANSLATABLE_BOOK)) {
 			return Component.translatable(component.getString());
 		} else return component;
@@ -261,11 +212,12 @@ public class ASMHooks {
 	}
 
 	/**
-	 * Injection Point:<br>
-	 * {@link net.minecraft.world.level.Level#isRainingAt(BlockPos)}<br>
-	 * [BEFORE ALOAD]
+	 * {@link twilightforest.asm.transformers.cloud.IsRainingAtTransformer}<p/>
+	 *
+	 * Injection Point:<br/>
+	 * {@link net.minecraft.world.level.Level#isRainingAt(BlockPos)}
 	 */
-	public static boolean cloud(boolean isRaining, Level level, BlockPos pos) {
+	public static boolean isRainingAt(boolean isRaining, Level level, BlockPos pos) {
 		if (!isRaining && TFConfig.commonCloudBlockPrecipitationDistance > 0) {
 			LevelChunk chunk = level.getChunkAt(pos);
 			for (int y = pos.getY(); y < pos.getY() + TFConfig.commonCloudBlockPrecipitationDistance; y++) {
@@ -283,23 +235,26 @@ public class ASMHooks {
 	}
 
 	/**
-	 * Injection Point:<br>
-	 * {@link net.minecraft.world.entity.decoration.LeashFenceKnotEntity#survives()}<br>
-	 * [BEFORE IRETURN]
+	 * {@link twilightforest.asm.transformers.lead.LeashFenceKnotSurvivesTransformer}<p/>
+	 *
+	 * Injection Point:<br/>
+	 * {@link net.minecraft.world.entity.decoration.LeashFenceKnotEntity#survives()}
 	 */
-	public static boolean lead(boolean o, LeashFenceKnotEntity entity) {
+	public static boolean leashFenceKnotSurvives(boolean o, LeashFenceKnotEntity entity) {
+		if (o)
+			return true; // Short-circuit to avoid an unnecessary #getBlockState call
 		BlockState fenceState = entity.level().getBlockState(entity.getPos());
-		return o || (fenceState.is(TFBlocks.WROUGHT_IRON_FENCE) && fenceState.getValue(WroughtIronFenceBlock.POST) != WroughtIronFenceBlock.PostState.NONE);
+		return fenceState.is(TFBlocks.WROUGHT_IRON_FENCE) && fenceState.getValue(WroughtIronFenceBlock.POST) != WroughtIronFenceBlock.PostState.NONE;
 	}
 
 	/**
-	 * Injection Point:<br>
-	 * {@link net.minecraft.world.level.chunk.status.ChunkStatus#getStatusList()}<br>
-	 * [HEAD]
+	 * {@link twilightforest.asm.transformers.chunk.ChunkStatusTaskTransformer}<p/>
+	 *
+	 * Injection Point:<br/>
+	 * {@link net.minecraft.world.level.chunk.status.ChunkStatusTasks#generateSurface}
 	 */
-	public static void assertChunkBlanketing() {
-		// Only need to touch this class to ensure it's classloaded before other classes cache our reconstructed ChunkStatus sequence
-		ChunkBlanketProcessors.init();
+	public static void chunkBlanketing(ChunkAccess chunkAccess, WorldGenRegion worldGenRegion) {
+		ChunkBlanketProcessors.chunkBlanketing(chunkAccess, worldGenRegion);
 	}
 
 	/**
@@ -348,9 +303,10 @@ public class ASMHooks {
 	}
 
 	/**
-	 * Injection Point:<br>
-	 * {@link net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer#renderArmorPiece(PoseStack, MultiBufferSource, LivingEntity, EquipmentSlot, int, HumanoidModel)} <br>
-	 * [AFTER FIRST INSTANCEOF CHECK]
+	 * {@link twilightforest.asm.transformers.armor.CancelArmorRenderingTransformer}<p/>
+	 *
+	 * Injection Point:<br/>
+	 * {@link net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer#renderArmorPiece(PoseStack, MultiBufferSource, LivingEntity, EquipmentSlot, int, HumanoidModel)}
 	 */
 	public static boolean cancelArmorRendering(boolean o, ItemStack stack) {
 		if (o && stack.get(TFDataComponents.EMPERORS_CLOTH) != null) {
@@ -360,11 +316,12 @@ public class ASMHooks {
 	}
 
 	/**
-	 * Injection Point:<br>
-	 * {@link net.minecraft.world.entity.LivingEntity#getVisibilityPercent(Entity)} <br>
-	 * [BEFORE FIRST FSTORE 4]
+	 * {@link twilightforest.asm.transformers.armor.ArmorVisibilityRenderingTransformer}<p/>
+	 *
+	 * Injection Point:<br/>
+	 * {@link net.minecraft.world.entity.LivingEntity#getVisibilityPercent(Entity)}
 	 */
-	public static float modifyClothVisibility(float o, LivingEntity entity) {
+	public static float modifyArmorVisibility(float o, LivingEntity entity) {
 		return o - getShroudedArmorPercentage(entity);
 	}
 
@@ -385,11 +342,13 @@ public class ASMHooks {
 	}
 
 	/**
-	 * Injection Point:<br>
-	 * {@link net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer#renderArmorPiece(PoseStack, MultiBufferSource, LivingEntity, EquipmentSlot, int, HumanoidModel)} <br>
-	 * [AFTER FIRST INVOKESTATIC of {@link net.minecraft.world.item.component.DyedItemColor#getOrDefault(net.minecraft.world.item.ItemStack, int)}]
+	 * {@link twilightforest.asm.transformers.armor.ArmorColorRenderingTransformer}<p/>
+	 *
+	 * Injection Point:<br/>
+	 * {@link net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer#renderArmorPiece(PoseStack, MultiBufferSource, LivingEntity, EquipmentSlot, int, HumanoidModel)} <br/>
+	 * Targets: {@link net.minecraft.world.item.component.DyedItemColor#getOrDefault(net.minecraft.world.item.ItemStack, int)}
 	 */
-	public static int getArcticArmorColor(int color, ArmorItem armorItem, ItemStack armorStack) {
+	public static int armorColorRendering(int color, ArmorItem armorItem, ItemStack armorStack) {
 		if (armorItem instanceof ArcticArmorItem) return DyedItemColor.getOrDefault(armorStack, ArcticArmorItem.DEFAULT_COLOR);
 		return color;
 	}

@@ -17,15 +17,15 @@ import java.util.Locale;
 public class WoodPalettes {
 	public static final Codec<Holder<WoodPalette>> CODEC = RegistryFileCodec.create(TFRegistries.Keys.WOOD_PALETTES, WoodPalette.CODEC, false);
 
-	public static final ResourceKey<WoodPalette> OAK = makeKey(new ResourceLocation("oak"));
-	public static final ResourceKey<WoodPalette> SPRUCE = makeKey(new ResourceLocation("spruce"));
-	public static final ResourceKey<WoodPalette> BIRCH = makeKey(new ResourceLocation("birch"));
-	public static final ResourceKey<WoodPalette> JUNGLE = makeKey(new ResourceLocation("jungle"));
-	public static final ResourceKey<WoodPalette> ACACIA = makeKey(new ResourceLocation("acacia"));
-	public static final ResourceKey<WoodPalette> DARK_OAK = makeKey(new ResourceLocation("dark_oak"));
-	public static final ResourceKey<WoodPalette> CRIMSON = makeKey(new ResourceLocation("crimson"));
-	public static final ResourceKey<WoodPalette> WARPED = makeKey(new ResourceLocation("warped"));
-	public static final ResourceKey<WoodPalette> VANGROVE = makeKey(new ResourceLocation("mangrove"));
+	public static final ResourceKey<WoodPalette> OAK = makeKey(ResourceLocation.withDefaultNamespace("oak"));
+	public static final ResourceKey<WoodPalette> SPRUCE = makeKey(ResourceLocation.withDefaultNamespace("spruce"));
+	public static final ResourceKey<WoodPalette> BIRCH = makeKey(ResourceLocation.withDefaultNamespace("birch"));
+	public static final ResourceKey<WoodPalette> JUNGLE = makeKey(ResourceLocation.withDefaultNamespace("jungle"));
+	public static final ResourceKey<WoodPalette> ACACIA = makeKey(ResourceLocation.withDefaultNamespace("acacia"));
+	public static final ResourceKey<WoodPalette> DARK_OAK = makeKey(ResourceLocation.withDefaultNamespace("dark_oak"));
+	public static final ResourceKey<WoodPalette> CRIMSON = makeKey(ResourceLocation.withDefaultNamespace("crimson"));
+	public static final ResourceKey<WoodPalette> WARPED = makeKey(ResourceLocation.withDefaultNamespace("warped"));
+	public static final ResourceKey<WoodPalette> VANGROVE = makeKey(ResourceLocation.withDefaultNamespace("mangrove"));
 
 	public static final ResourceKey<WoodPalette> TWILIGHT_OAK = makeKey("twilight_oak");
 	public static final ResourceKey<WoodPalette> CANOPY = makeKey("canopy");

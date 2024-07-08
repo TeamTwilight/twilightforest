@@ -9,6 +9,7 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import twilightforest.entity.monster.Wraith;
 
@@ -55,8 +56,8 @@ public class WraithModel extends HumanoidModel<Wraith> {
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack stack, VertexConsumer consumer, int light, int overlay, float red, float green, float blue, float alpha) {
-		super.renderToBuffer(stack, consumer, light, overlay, red, green, blue, 0.6F);
+	public void renderToBuffer(PoseStack stack, VertexConsumer consumer, int light, int overlay, int color) {
+		super.renderToBuffer(stack, consumer, light, overlay, FastColor.ARGB32.color((int) (FastColor.ARGB32.alpha(color) * 0.6F), FastColor.ARGB32.red(color), FastColor.ARGB32.green(color), FastColor.ARGB32.blue(color)));
 	}
 
 	@Override

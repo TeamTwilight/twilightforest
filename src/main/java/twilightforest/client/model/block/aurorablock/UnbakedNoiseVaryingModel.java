@@ -33,7 +33,7 @@ public class UnbakedNoiseVaryingModel implements IUnbakedGeometry<UnbakedNoiseVa
 
 	@NotNull
 	private static BlockModel resolveParent(Function<ResourceLocation, UnbakedModel> modelGetter, String variant) {
-		if (modelGetter.apply(new ResourceLocation(variant)) instanceof BlockModel blockModel) {
+		if (modelGetter.apply(ResourceLocation.parse(variant)) instanceof BlockModel blockModel) {
 			blockModel.resolveParents(modelGetter);
 			return blockModel;
 		}
@@ -42,12 +42,12 @@ public class UnbakedNoiseVaryingModel implements IUnbakedGeometry<UnbakedNoiseVa
 	}
 
 	@Override
-	public BakedModel bake(IGeometryBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides, ResourceLocation modelLocation) {
+	public BakedModel bake(IGeometryBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides) {
 		BakedModel[] bakedVariants = new BakedModel[this.importVariants.length];
 
 		for (int i = 0; i < bakedVariants.length; i++) {
 			BlockModel variant = this.variants.get(i);
-			bakedVariants[i] = variant.bake(baker, variant, spriteGetter, modelState, modelLocation, variant.getGuiLight().lightLikeBlock());
+			bakedVariants[i] = variant.bake(baker, variant, spriteGetter, modelState, variant.getGuiLight().lightLikeBlock());
 		}
 
 		return new NoiseVaryingModel(bakedVariants);

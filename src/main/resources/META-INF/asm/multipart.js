@@ -34,30 +34,6 @@ function initializeCoreMod() {
                 return methodNode;
             }
         },
-        'bake': {
-            'target': {
-                'type': 'METHOD',
-                'class': 'net.minecraft.client.renderer.entity.EntityRenderDispatcher',
-                'methodName': 'onResourceManagerReload',
-                'methodDesc': '(Lnet/minecraft/server/packs/resources/ResourceManager;)V'
-            },
-            'transformer': function (/*org.objectweb.asm.tree.MethodNode*/ methodNode) {
-                var /*org.objectweb.asm.tree.InsnList*/ instructions = methodNode.instructions;
-                instructions.insert(
-                    ASM.findFirstInstruction(methodNode, Opcodes.INVOKESPECIAL),
-                    ASM.listOf(
-                        new MethodInsnNode(
-                            Opcodes.INVOKESTATIC,
-                            'twilightforest/ASMHooks',
-                            'bakeMultipartRenders',
-                            '(Lnet/minecraft/client/renderer/entity/EntityRendererProvider$Context;)Lnet/minecraft/client/renderer/entity/EntityRendererProvider$Context;',
-                            false
-                        )
-                    )
-                );
-                return methodNode;
-            }
-        },
         'renderer': {
             'target': {
                 'type': 'METHOD',
@@ -88,7 +64,7 @@ function initializeCoreMod() {
                 'type': 'METHOD',
                 'class': 'net.minecraft.client.renderer.LevelRenderer',
                 'methodName': 'renderLevel',
-                'methodDesc': '(FJZLnet/minecraft/client/Camera;Lnet/minecraft/client/renderer/GameRenderer;Lnet/minecraft/client/renderer/LightTexture;Lorg/joml/Matrix4f;Lorg/joml/Matrix4f;)V'
+                'methodDesc': '(Lnet/minecraft/client/DeltaTracker;ZLnet/minecraft/client/Camera;Lnet/minecraft/client/renderer/GameRenderer;Lnet/minecraft/client/renderer/LightTexture;Lorg/joml/Matrix4f;Lorg/joml/Matrix4f;)V'
             },
             'transformer': function (/*org.objectweb.asm.tree.MethodNode*/ methodNode) {
                 var /*org.objectweb.asm.tree.InsnList*/ instructions = methodNode.instructions;

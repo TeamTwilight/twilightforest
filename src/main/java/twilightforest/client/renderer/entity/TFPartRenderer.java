@@ -46,8 +46,8 @@ public abstract class TFPartRenderer<T extends TFPart<?>, M extends ListModel<T>
 		RenderType rendertype = this.getRenderType(entity, visible, ghostly, glowing);
 		if (rendertype != null) {
 			VertexConsumer consumer = buffer.getBuffer(rendertype);
-			int overlay = this.getOverlayCoords(entity, 0.0F);
-			this.model.renderToBuffer(stack, consumer, light, overlay, 1.0F, 1.0F, 1.0F, ghostly ? 0.15F : 1.0F);
+			int overlay = this.getOverlayCoords(entity, this.getWhiteOverlayProgress(entity, partialTicks));
+			this.model.renderToBuffer(stack, consumer, light, overlay, ghostly ? 654311423 : -1);
 		}
 
 		stack.popPose();

@@ -5,6 +5,7 @@ import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
+import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
@@ -21,12 +22,12 @@ public class MoonwormQueenRepairRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public boolean matches(CraftingContainer inv, Level level) {
+	public boolean matches(CraftingInput input, Level level) {
 		ItemStack queen = null;
 		List<ItemStack> berries = new ArrayList<>();
 
-		for (int i = 0; i < inv.getContainerSize(); ++i) {
-			ItemStack stackInQuestion = inv.getItem(i);
+		for (int i = 0; i < input.size(); ++i) {
+			ItemStack stackInQuestion = input.getItem(i);
 			if (!stackInQuestion.isEmpty()) {
 				if (stackInQuestion.is(TFItems.MOONWORM_QUEEN.get()) && stackInQuestion.isDamaged()) {
 					queen = stackInQuestion;
@@ -40,11 +41,11 @@ public class MoonwormQueenRepairRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public ItemStack assemble(CraftingContainer inv, HolderLookup.Provider access) {
+	public ItemStack assemble(CraftingInput input, HolderLookup.Provider access) {
 		List<Item> berries = new ArrayList<>();
 		ItemStack queen = null;
-		for (int i = 0; i < inv.getContainerSize(); ++i) {
-			ItemStack itemstack = inv.getItem(i);
+		for (int i = 0; i < input.size(); ++i) {
+			ItemStack itemstack = input.getItem(i);
 			if (!itemstack.isEmpty()) {
 				if (itemstack.is(TFItems.MOONWORM_QUEEN.get())) {
 					if (queen == null) {

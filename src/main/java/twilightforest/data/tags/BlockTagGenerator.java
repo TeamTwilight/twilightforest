@@ -11,7 +11,6 @@ import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.compat.ModdedBlockTagGenerator;
-import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFBlocks;
 
 import java.util.concurrent.CompletableFuture;
@@ -96,6 +95,8 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 
 	public static final TagKey<Block> MINEABLE_WITH_BLOCK_AND_CHAIN = create("mineable_with_block_and_chain");
 	public static final TagKey<Block> BLOCK_AND_CHAIN_NEVER_BREAKS = create("block_and_chain_never_breaks");
+
+	public static final TagKey<Block> SMALL_LAKES_DONT_REPLACE = create("small_lakes_dont_replace");
 
 	public BlockTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> future, ExistingFileHelper helper) {
 		super(output, future, helper);
@@ -455,14 +456,14 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			TFBlocks.GHAST_TRAP.get(),
 			TFBlocks.FAKE_DIAMOND.get(),
 			TFBlocks.FAKE_GOLD.get()
-		).addTag(COMMON_PROTECTIONS).addOptional(new ResourceLocation("gravestone:gravestone"));
+		).addTag(COMMON_PROTECTIONS).addOptional(ResourceLocation.parse("gravestone:gravestone"));
 
 		this.tag(STRUCTURE_BANNED_INTERACTIONS).add(Blocks.LEVER).add(TFBlocks.ANTIBUILDER.get()).addTags(BlockTags.BUTTONS, Tags.Blocks.CHESTS);
 
 		// TODO add more grave mods to this list
 		this.tag(PROGRESSION_ALLOW_BREAKING)
 			.add(TFBlocks.KEEPSAKE_CASKET.get())
-			.addOptional(new ResourceLocation("gravestone", "gravestone"));
+			.addOptional(ResourceLocation.fromNamespaceAndPath("gravestone", "gravestone"));
 
 		this.tag(ORE_MAGNET_SAFE_REPLACE_BLOCK).addTags(
 			BlockTags.DIRT,
@@ -563,7 +564,8 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			TFBlocks.TIME_CHEST.get(),
 			TFBlocks.TRANSFORMATION_CHEST.get(),
 			TFBlocks.MINING_CHEST.get(),
-			TFBlocks.SORTING_CHEST.get()
+			TFBlocks.SORTING_CHEST.get(),
+			TFBlocks.HUGE_LILY_PAD.get()
 		).addTags(BANISTERS, HOLLOW_LOGS, TOWERWOOD);
 
 		this.tag(BlockTags.MINEABLE_WITH_HOE).add(
@@ -735,6 +737,15 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 
 		this.tag(BLOCK_AND_CHAIN_NEVER_BREAKS).addTags(MAZESTONE, CASTLE_BLOCKS, DEADROCK, BlockTags.WITHER_IMMUNE)
 			.add(TFBlocks.TIME_LOG_CORE.get(), TFBlocks.TRANSFORMATION_LOG_CORE.get(), TFBlocks.MINING_LOG_CORE.get(), TFBlocks.SORTING_LOG_CORE.get());
+
+		this.tag(SMALL_LAKES_DONT_REPLACE).addTags(BlockTags.FEATURES_CANNOT_REPLACE, BlockTags.LOGS, BlockTags.LEAVES)
+			.add(TFBlocks.ROOT_BLOCK.get(), TFBlocks.LIVEROOT_BLOCK.get(), Blocks.MUSHROOM_STEM);
+
+		this.tag(BlockTags.INSIDE_STEP_SOUND_BLOCKS)
+			.add(TFBlocks.HUGE_LILY_PAD.get());
+
+		this.tag(BlockTags.SWORD_EFFICIENT)
+			.add(TFBlocks.HUGE_LILY_PAD.get());
 	}
 
 	public static TagKey<Block> create(String tagName) {
@@ -742,7 +753,7 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 	}
 
 	public static TagKey<Block> makeCommonTag(String tagName) {
-		return BlockTags.create(new ResourceLocation("c", tagName));
+		return BlockTags.create(ResourceLocation.fromNamespaceAndPath("c", tagName));
 	}
 
 	@Override

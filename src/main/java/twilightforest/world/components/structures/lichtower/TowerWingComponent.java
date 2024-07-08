@@ -1775,7 +1775,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 
 			if (pCoords == null) continue;
 			// initialize a painting object
-			EntityUtil.tryHangPainting(world, pCoords, direction, EntityUtil.getPaintingOfSize(rand, minSize));
+			EntityUtil.tryHangPainting(world, pCoords, direction, EntityUtil.getPaintingOfSize(world, rand, minSize));
 		}
 	}
 

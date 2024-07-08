@@ -7,7 +7,6 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.common.PlantType;
 import twilightforest.data.tags.BlockTagGenerator;
 
 public abstract class TFPlantBlock extends BushBlock {
@@ -16,12 +15,21 @@ public abstract class TFPlantBlock extends BushBlock {
 		super(properties);
 	}
 
-	public static boolean canPlaceRootAt(LevelReader reader, BlockPos pos) {
+	public static boolean canPlaceRootAt(BlockGetter reader, BlockPos pos) {
 		return reader.getBlockState(pos.above()).is(BlockTagGenerator.PLANTS_HANG_ON);
 	}
 
 	@Override
-	public PlantType getPlantType(BlockGetter getter, BlockPos pos) {
-		return PlantType.PLAINS;
+	public boolean isValidBonemealTarget(LevelReader reader, BlockPos pos, BlockState state) {
+		return false;
+	}
+
+	@Override
+	public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state) {
+		return false;
+	}
+
+	@Override
+	public void performBonemeal(ServerLevel level, RandomSource randomSource, BlockPos pos, BlockState state) {
 	}
 }

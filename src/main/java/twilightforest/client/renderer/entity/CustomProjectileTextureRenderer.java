@@ -42,7 +42,7 @@ public class CustomProjectileTextureRenderer extends EntityRenderer<TFThrowable>
 	}
 
 	private static void vertex(VertexConsumer consumer, PoseStack.Pose pose, int light, float xOffset, float zOffset, float u, float v) {
-		consumer.vertex(pose, xOffset - 0.5F, zOffset - 0.25F, 0.0F).color(255, 255, 255, 255).uv(u, v).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(pose, 0.0F, 1.0F, 0.0F).endVertex();
+		consumer.addVertex(pose, xOffset - 0.5F, zOffset - 0.25F, 0.0F).setColor(255, 255, 255, 255).setUv(u, v).setOverlay(OverlayTexture.NO_OVERLAY).setLight(light).setNormal(pose, 0.0F, 1.0F, 0.0F);
 	}
 
 	@Override

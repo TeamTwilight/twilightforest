@@ -62,6 +62,7 @@ public class BugModelAnimationHelper {
 		}
 		if (!glowing && glowIntensity <= 0f) {
 			glowing = true;
+			glowIntensity = 0.0F;
 			glowDelay = rand.nextInt(50);
 		}
 	}

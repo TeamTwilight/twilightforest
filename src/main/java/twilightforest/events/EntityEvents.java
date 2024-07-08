@@ -19,8 +19,8 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.entity.projectile.ProjectileDeflection;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.LeadItem;
@@ -40,15 +40,15 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.common.damagesource.DamageContainer;
 import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
 import net.neoforged.neoforge.event.entity.living.FinalizeSpawnEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEvent;
-import net.neoforged.neoforge.event.entity.living.LivingHurtEvent;
 import net.neoforged.neoforge.event.entity.player.AdvancementEvent;
 import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
@@ -64,7 +64,7 @@ import twilightforest.block.entity.KeepsakeCasketBlockEntity;
 import twilightforest.block.entity.SkullCandleBlockEntity;
 import twilightforest.config.TFConfig;
 import twilightforest.data.tags.EntityTagGenerator;
-import twilightforest.enchantment.ChillAuraEnchantment;
+import twilightforest.enchantment.ApplyFrostedEffect;
 import twilightforest.entity.projectile.ITFProjectile;
 import twilightforest.init.*;
 import twilightforest.item.FieryArmorItem;
@@ -88,7 +88,7 @@ public class EntityEvents {
 	@SubscribeEvent
 	public static void alertPlayerCastleIsWIP(AdvancementEvent.AdvancementEarnEvent event) {
 		if (event.getAdvancement().id().equals(TwilightForestMod.prefix("progression_end"))) {
-			event.getEntity().sendSystemMessage(Component.translatable("gui.twilightforest.progression_end.message", Component.translatable("gui.twilightforest.progression_end.discord").withStyle(style -> style.withColor(ChatFormatting.BLUE).applyFormat(ChatFormatting.UNDERLINE).withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://discord.gg/6v3z26B")))));
+			event.getEntity().sendSystemMessage(Component.translatable("gui.twilightforest.progression_end.message", Component.translatable("gui.twilightforest.progression_end.discord").withStyle(style -> style.withColor(ChatFormatting.BLUE).applyFormat(ChatFormatting.UNDERLINE).withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://discord.experiment115.com/")))));
 		}
 	}
 
@@ -121,13 +121,13 @@ public class EntityEvents {
 	}
 
 	@SubscribeEvent
-	public static void entityHurts(LivingHurtEvent event) {
+	public static void entityHurts(LivingDamageEvent.Post event) {
 		LivingEntity living = event.getEntity();
 		DamageSource source = event.getSource();
 		Entity trueSource = source.getEntity();
 
 		// fire react and chill aura
-		if (source.getEntity() != null && trueSource != null && event.getAmount() > 0) {
+		if (source.getEntity() != null && trueSource != null && event.getOriginalDamage() > 0) {
 			int fireLevel = getGearCoverage(living, false) * 5;
 			int chillLevel = getGearCoverage(living, true);
 
@@ -136,7 +136,7 @@ public class EntityEvents {
 			}
 
 			if (trueSource instanceof LivingEntity target) {
-				ChillAuraEnchantment.doChillAuraEffect(target, chillLevel * 5 + 5, chillLevel, chillLevel > 0);
+				ApplyFrostedEffect.doChillAuraEffect(target, chillLevel * 5 + 5, chillLevel, chillLevel > 0);
 			}
 		}
 
@@ -184,19 +184,19 @@ public class EntityEvents {
 	}
 
 	@SubscribeEvent
-	public static void onLivingHurtEvent(LivingHurtEvent event) {
+	@SuppressWarnings("UnstableApiUsage")
+	public static void onLivingHurtEvent(LivingDamageEvent.Pre event) {
 		LivingEntity living = event.getEntity();
-		if (living != null) {
-			Optional.ofNullable(living.getEffect(TFMobEffects.FROSTY)).ifPresent(mobEffectInstance -> {
-				if (event.getSource().is(DamageTypes.FREEZE)) {
-					event.setAmount(event.getAmount() + (float) (mobEffectInstance.getAmplifier() / 2));
-				} else if (event.getSource().is(DamageTypeTags.IS_FIRE)) {
-					living.removeEffect(TFMobEffects.FROSTY);
-					mobEffectInstance.amplifier -= 1;
-					if (mobEffectInstance.amplifier >= 0) living.addEffect(mobEffectInstance);
-				}
-			});
-		}
+		Optional.ofNullable(living.getEffect(TFMobEffects.FROSTY)).ifPresent(mobEffectInstance -> {
+			DamageContainer container = event.getContainer();
+			if (container.getSource().typeHolder().is(DamageTypes.FREEZE)) {
+				container.setNewDamage(container.getOriginalDamage() + (float) (mobEffectInstance.getAmplifier() / 2));
+			} else if (container.getSource().typeHolder().is(DamageTypeTags.IS_FIRE)) {
+				living.removeEffect(TFMobEffects.FROSTY);
+				mobEffectInstance.amplifier -= 1;
+				if (mobEffectInstance.amplifier >= 0) living.addEffect(mobEffectInstance);
+			}
+		});
 	}
 
 	// Parrying
@@ -208,17 +208,9 @@ public class EntityEvents {
 			if (event.getRayTraceResult() instanceof EntityHitResult result) {
 				Entity entity = result.getEntity();
 
-				if (event.getEntity() != null && entity instanceof LivingEntity entityBlocking) {
-					if (entityBlocking.isBlocking() && entityBlocking.getUseItem().getUseDuration() - entityBlocking.getUseItemRemainingTicks() <= TFConfig.shieldParryTicks) {
-						projectile.setOwner(entityBlocking);
-						Vec3 rebound = entityBlocking.getLookAngle();
-						projectile.shoot(rebound.x(), rebound.y(), rebound.z(), 1.1F, 0.1F);  // reflect faster and more accurately
-						if (projectile instanceof AbstractHurtingProjectile hurting) {
-							hurting.xPower = rebound.x() * 0.1D;
-							hurting.yPower = rebound.y() * 0.1D;
-							hurting.zPower = rebound.z() * 0.1D;
-						}
-
+				if (entity instanceof LivingEntity entityBlocking) {
+					if (entityBlocking.isBlocking() && entityBlocking.getUseItem().getUseDuration(entityBlocking) - entityBlocking.getUseItemRemainingTicks() <= TFConfig.shieldParryTicks) {
+						projectile.deflect(ProjectileDeflection.AIM_DEFLECT, entityBlocking, entityBlocking, true);
 						event.setCanceled(true);
 					}
 				}
@@ -419,7 +411,7 @@ public class EntityEvents {
 			if (TFConfig.multiplayerFightAdjuster.adjustsHealth()) {
 				List<ServerPlayer> nearbyPlayers = event.getLevel().getEntitiesOfClass(ServerPlayer.class, event.getEntity().getBoundingBox().inflate(32, 10, 32), player -> EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(EntitySelector.ENTITY_STILL_ALIVE).test(player));
 				if (nearbyPlayers.size() > 1 && event.getEntity().getAttribute(Attributes.MAX_HEALTH) != null) {
-					event.getEntity().getAttribute(Attributes.MAX_HEALTH).addPermanentModifier(new AttributeModifier(GROUP_HEALTH_UUID, "Multiplayer Bonus Health", getHealthBasedOnDifficulty(event.getDifficulty().getDifficulty()) * (nearbyPlayers.size() - 1), AttributeModifier.Operation.ADD_VALUE));
+					event.getEntity().getAttribute(Attributes.MAX_HEALTH).addPermanentModifier(new AttributeModifier(TwilightForestMod.prefix("group_health_boost"), getHealthBasedOnDifficulty(event.getDifficulty().getDifficulty()) * (nearbyPlayers.size() - 1), AttributeModifier.Operation.ADD_VALUE));
 				}
 			}
 		}
@@ -435,8 +427,8 @@ public class EntityEvents {
 	}
 
 	@SubscribeEvent
-	public static void addQualifiedPlayerIfNeeded(LivingHurtEvent event) {
-		if (!event.isCanceled() && event.getEntity().getType().is(EntityTagGenerator.MULTIPLAYER_INCLUSIVE_ENTITIES)) {
+	public static void addQualifiedPlayerIfNeeded(LivingDamageEvent.Post event) {
+		if (event.getEntity().getType().is(EntityTagGenerator.MULTIPLAYER_INCLUSIVE_ENTITIES)) {
 			var data = event.getEntity().getData(TFDataAttachments.MULTIPLAYER_FIGHT);
 			if (event.getSource().getEntity() != null) {
 				data.maybeAddQualifiedPlayer(event.getSource().getEntity());

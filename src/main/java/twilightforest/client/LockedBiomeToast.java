@@ -11,7 +11,7 @@ public record LockedBiomeToast(ItemStack item) implements Toast {
 
 	private static final Component TITLE = Component.translatable("misc.twilightforest.biome_locked");
 	private static final Component DESCRIPTION = Component.translatable("misc.twilightforest.biome_locked_2");
-	private static final ResourceLocation BACKGROUND_SPRITE = new ResourceLocation("toast/advancement");
+	private static final ResourceLocation BACKGROUND_SPRITE = ResourceLocation.withDefaultNamespace("toast/advancement");
 
 	@Override
 	public Visibility render(GuiGraphics graphics, ToastComponent component, long timer) {

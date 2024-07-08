@@ -26,10 +26,11 @@ public class Experiment115Item extends BlockItem {
 
 	@Override
 	public InteractionResult useOn(UseOnContext context) {
+		if ( context.getLevel().getBlockState(context.getClickedPos()).is(this.getBlock())) return InteractionResult.PASS;
 		Player player = context.getPlayer();
-		if (!player.isShiftKeyDown()) {
-			InteractionResult actionresulttype = this.place(new BlockPlaceContext(context));
-			return !actionresulttype.consumesAction() && context.getItemInHand().get(DataComponents.FOOD) != null ? this.use(context.getLevel(), context.getPlayer(), context.getHand()).getResult() : actionresulttype;
+		if (player != null && !player.isShiftKeyDown()) {
+			InteractionResult result = this.place(new BlockPlaceContext(context));
+			return !result.consumesAction() && context.getItemInHand().get(DataComponents.FOOD) != null ? this.use(context.getLevel(), context.getPlayer(), context.getHand()).getResult() : result;
 		}
 		return InteractionResult.PASS;
 	}

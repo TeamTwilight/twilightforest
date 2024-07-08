@@ -1,16 +1,11 @@
 package twilightforest.item;
 
-import net.minecraft.tags.BlockTags;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.Enchantments;
 import twilightforest.entity.projectile.IceArrow;
-
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
+import twilightforest.util.TFToolMaterials;
 
 public class IceBowItem extends BowItem {
 
@@ -19,29 +14,12 @@ public class IceBowItem extends BowItem {
 	}
 
 	@Override
-	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-		AtomicBoolean badEnchant = new AtomicBoolean();
-		book.getEnchantments().entrySet().forEach(enchantment -> {
-			if (Objects.equals(Enchantments.FLAME, enchantment)) {
-				badEnchant.set(true);
-			}
-		});
-
-		return !badEnchant.get();
-	}
-
-	@Override
-	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-		return !Enchantments.FLAME.equals(enchantment) && super.canApplyAtEnchantingTable(stack, enchantment);
-	}
-
-	@Override
-	public AbstractArrow customArrow(AbstractArrow arrow, ItemStack stack) {
-		return new IceArrow(arrow.level(), arrow.getOwner(), stack.copyWithCount(1));
+	public AbstractArrow customArrow(AbstractArrow arrow, ItemStack projectileStack, ItemStack weaponStack) {
+		return new IceArrow(arrow.level(), (LivingEntity) arrow.getOwner(), projectileStack.copyWithCount(1), weaponStack);
 	}
 
 	@Override
 	public boolean isValidRepairItem(ItemStack toRepair, ItemStack repairWith) {
-		return repairWith.getItem() instanceof BlockItem blockItem && blockItem.getBlock().defaultBlockState().is(BlockTags.ICE) || super.isValidRepairItem(toRepair, repairWith);
+		return TFToolMaterials.ICE.getRepairIngredient().test(repairWith);
 	}
 }

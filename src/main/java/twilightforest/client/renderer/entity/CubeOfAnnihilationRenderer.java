@@ -33,7 +33,7 @@ public class CubeOfAnnihilationRenderer extends EntityRenderer<CubeOfAnnihilatio
 		stack.scale(-1.0F, -1.0F, 1.0F);
 		stack.mulPose(Axis.YP.rotationDegrees(Mth.wrapDegrees((entity.tickCount + partialTicks) * 11.0F)));
 		stack.translate(0.0F, -0.5F, 0.0F);
-		this.model.renderToBuffer(stack, buffer.getBuffer(this.model.renderType(TEXTURE)), light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		this.model.renderToBuffer(stack, buffer.getBuffer(this.model.renderType(TEXTURE)), light, OverlayTexture.NO_OVERLAY);
 
 		stack.popPose();
 	}

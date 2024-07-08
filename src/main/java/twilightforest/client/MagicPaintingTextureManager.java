@@ -10,7 +10,7 @@ import twilightforest.entity.MagicPaintingVariant;
 public class MagicPaintingTextureManager extends TextureAtlasHolder {
 	public final static String MAGIC_PAINTING_PATH = "magic_paintings";
 	public static final ResourceLocation ATLAS_LOCATION = TwilightForestMod.prefix("textures/atlas/magic_paintings.png");
-	public static final ResourceLocation ATLAS_INFO_LOCATION = new ResourceLocation(MAGIC_PAINTING_PATH);
+	public static final ResourceLocation ATLAS_INFO_LOCATION = ResourceLocation.withDefaultNamespace(MAGIC_PAINTING_PATH);
 	public static final ResourceLocation BACK_SPRITE_LOCATION = TwilightForestMod.prefix(MAGIC_PAINTING_PATH + "/back");
 
 	public static MagicPaintingTextureManager instance;

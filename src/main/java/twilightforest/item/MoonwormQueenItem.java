@@ -3,6 +3,7 @@ package twilightforest.item;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -52,11 +53,6 @@ public class MoonwormQueenItem extends Item {
 	}
 
 	@Override
-	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-		return false;
-	}
-
-	@Override
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 		if (stack.getDamageValue() + 1 >= this.getMaxDamage(stack)) {
@@ -102,13 +98,12 @@ public class MoonwormQueenItem extends Item {
 
 	@Override
 	public void releaseUsing(ItemStack stack, Level level, LivingEntity living, int useRemaining) {
-		int useTime = this.getUseDuration(stack) - useRemaining;
+		int useTime = this.getUseDuration(stack, living) - useRemaining;
 
 		if (!level.isClientSide() && useTime > FIRING_TIME && (stack.getDamageValue() + 1) < stack.getMaxDamage()) {
 
 			if (level.addFreshEntity(new MoonwormShot(TFEntities.MOONWORM_SHOT.get(), level, living))) {
-				if (living instanceof Player player && !player.getAbilities().instabuild) stack.hurtAndBreak(2, level.getRandom(), player, () -> {
-				});
+				if (living instanceof Player player && !player.getAbilities().instabuild) stack.hurtAndBreak(2, (ServerLevel) level, player, item -> {});
 
 				level.playSound(null, living.getX(), living.getY(), living.getZ(), TFSounds.MOONWORM_SQUISH.get(), living instanceof Player ? SoundSource.PLAYERS : SoundSource.NEUTRAL, 1.0F, 1.0F);
 			}
@@ -123,7 +118,7 @@ public class MoonwormQueenItem extends Item {
 	}
 
 	@Override
-	public int getUseDuration(ItemStack stack) {
+	public int getUseDuration(ItemStack stack, LivingEntity user) {
 		return 72000;
 	}
 
@@ -160,8 +155,7 @@ public class MoonwormQueenItem extends Item {
 					SoundType soundtype = blockstate1.getSoundType(world, blockpos, context.getPlayer());
 					world.playSound(playerentity, blockpos, this.getPlaceSound(blockstate1, world, blockpos, Objects.requireNonNull(context.getPlayer())), SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
 					if (playerentity == null || !playerentity.getAbilities().instabuild) {
-						itemstack.hurtAndBreak(1, world.getRandom(), playerentity, () -> {
-						});
+						itemstack.hurtAndBreak(1, (ServerLevel) world, playerentity, item -> {});
 					}
 
 					return InteractionResult.SUCCESS;

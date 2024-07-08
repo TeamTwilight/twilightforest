@@ -112,6 +112,6 @@ public class ModdedItemTagGenerator extends ItemTagsProvider {
 	}
 
 	private static TagKey<Item> createTagFor(String modid, String tagName) {
-		return ItemTags.create(new ResourceLocation(modid, tagName));
+		return ItemTags.create(ResourceLocation.fromNamespaceAndPath(modid, tagName));
 	}
 }

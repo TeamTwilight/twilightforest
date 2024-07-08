@@ -30,7 +30,7 @@ public class MoonwormTileEntityRenderer implements BlockEntityRenderer<MoonwormB
 	@Override
 	public void render(@Nullable MoonwormBlockEntity entity, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light, int overlay) {
 		int yaw = entity != null ? entity.currentYaw : BugModelAnimationHelper.currentRotation;
-		if (entity == null) partialTicks = Minecraft.getInstance().getFrameTime();
+		if (entity == null) partialTicks = Minecraft.getInstance().getTimer().getGameTimeDeltaTicks();
 		float randRot = entity != null ? entity.randRot : 0.0F;
 
 		stack.pushPose();
@@ -44,7 +44,7 @@ public class MoonwormTileEntityRenderer implements BlockEntityRenderer<MoonwormB
 
 		VertexConsumer consumer = buffer.getBuffer(this.moonwormModel.renderType(TEXTURE));
 		this.moonwormModel.setRotationAngles(entity, partialTicks);
-		this.moonwormModel.renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		this.moonwormModel.renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY);
 
 		stack.popPose();
 	}

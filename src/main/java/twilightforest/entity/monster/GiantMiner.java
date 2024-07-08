@@ -59,7 +59,7 @@ public class GiantMiner extends Monster {
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn) {
 		SpawnGroupData data = super.finalizeSpawn(accessor, difficulty, reason, spawnDataIn);
 		populateDefaultEquipmentSlots(accessor.getRandom(), difficulty);
-		populateDefaultEquipmentEnchantments(accessor.getRandom(), difficulty);
+		populateDefaultEquipmentEnchantments(accessor, accessor.getRandom(), difficulty);
 
 		return data;
 	}
@@ -70,12 +70,11 @@ public class GiantMiner extends Monster {
 	}
 
 	@Override
-	protected void enchantSpawnedWeapon(RandomSource random, float chance) {
-
+	protected void enchantSpawnedWeapon(ServerLevelAccessor accessor, RandomSource random, DifficultyInstance instance) {
 	}
 
 	@Override
-	protected void enchantSpawnedArmor(RandomSource random, float chance, EquipmentSlot slot) {
+	protected void enchantSpawnedArmor(ServerLevelAccessor accessor, RandomSource random, EquipmentSlot slot, DifficultyInstance instance) {
 
 	}
 

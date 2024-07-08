@@ -18,6 +18,7 @@ import net.neoforged.neoforge.client.model.ExtraFaceData;
 import net.neoforged.neoforge.client.model.generators.CustomLoaderBuilder;
 import net.neoforged.neoforge.client.model.generators.ModelBuilder;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import org.apache.commons.lang3.mutable.MutableObject;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import twilightforest.TwilightForestMod;
@@ -96,21 +97,21 @@ public class ForceFieldModelBuilder<T extends ModelBuilder<T>> extends CustomLoa
 					if (face == null) continue;
 
 					JsonObject faceObj = new JsonObject();
-					faceObj.addProperty("texture", serializeLocOrKey(face.texture));
-					if (!Arrays.equals(face.uv.uvs, part.uvsByFace(dir))) {
-						faceObj.add("uv", new Gson().toJsonTree(face.uv.uvs));
+					faceObj.addProperty("texture", serializeLocOrKey(face.texture()));
+					if (!Arrays.equals(face.uv().uvs, part.uvsByFace(dir))) {
+						faceObj.add("uv", new Gson().toJsonTree(face.uv().uvs));
 					}
-					if (face.cullForDirection != null) {
-						faceObj.addProperty("cullface", face.cullForDirection.getSerializedName());
+					if (face.cullForDirection() != null) {
+						faceObj.addProperty("cullface", face.cullForDirection().getSerializedName());
 					}
-					if (face.uv.rotation != 0) {
-						faceObj.addProperty("rotation", face.uv.rotation);
+					if (face.uv().rotation != 0) {
+						faceObj.addProperty("rotation", face.uv().rotation);
 					}
-					if (face.tintIndex != -1) {
-						faceObj.addProperty("tintindex", face.tintIndex);
+					if (face.tintIndex() != -1) {
+						faceObj.addProperty("tintindex", face.tintIndex());
 					}
-					if (!face.getFaceData().equals(ExtraFaceData.DEFAULT)) {
-						faceObj.add("neoforge_data", ExtraFaceData.CODEC.encodeStart(JsonOps.INSTANCE, face.getFaceData()).result().get());
+					if (!face.faceData().equals(ExtraFaceData.DEFAULT)) {
+						faceObj.add("neoforge_data", ExtraFaceData.CODEC.encodeStart(JsonOps.INSTANCE, face.faceData()).result().get());
 					}
 					faces.add(dir.getSerializedName(), faceObj);
 				}
@@ -128,7 +129,7 @@ public class ForceFieldModelBuilder<T extends ModelBuilder<T>> extends CustomLoa
 		if (tex.charAt(0) == '#') {
 			return tex;
 		}
-		return new ResourceLocation(tex).toString();
+		return ResourceLocation.parse(tex).toString();
 	}
 
 	private JsonArray serializeVector3f(Vector3f vec) {
@@ -339,7 +340,7 @@ public class ForceFieldModelBuilder<T extends ModelBuilder<T>> extends CustomLoa
 				if (this.texture == null) {
 					throw new IllegalStateException("A model face must have a texture");
 				}
-				return new BlockElementFace(cullface, tintindex, texture, new BlockFaceUV(uvs, rotation.rotation), new ExtraFaceData(this.color, this.blockLight, this.skyLight, this.hasAmbientOcclusion));
+				return new BlockElementFace(cullface, tintindex, texture, new BlockFaceUV(uvs, rotation.rotation), new ExtraFaceData(this.color, this.blockLight, this.skyLight, this.hasAmbientOcclusion), new MutableObject<>());
 			}
 
 			public ForceFieldElementBuilder end() {

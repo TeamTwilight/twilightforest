@@ -131,7 +131,7 @@ public class NagaSegment extends TFPart<Naga> {
 	}
 
 	@Override
-	public boolean canChangeDimensions() {
+	public boolean canUsePortal(boolean force) {
 		return false;
 	}
 }

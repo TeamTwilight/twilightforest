@@ -154,7 +154,7 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 			biome == world.registryAccess().registryOrThrow(Registries.BIOME).get(TFBiomes.THORNLANDS) ||
 				biome == world.registryAccess().registryOrThrow(Registries.BIOME).get(TFBiomes.FINAL_PLATEAU);
 
-		if (this.isBoundingBoxOutsideBiomes(world, plateauBiomes)) {
+		if (this.isBoundingBoxOutsideBiomes(world, plateauBiomes, blockPos)) {
 			return;
 		}
 

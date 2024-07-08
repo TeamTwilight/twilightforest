@@ -75,9 +75,9 @@ public class HollowTreeLeafDungeon extends HollowTreePiece {
 		this.inside = BlockStateProvider.CODEC.parse(ops, tag.getCompound("air")).result().orElse(HollowTreePiece.DEFAULT_DUNGEON_AIR);
 		this.lootContainer = BlockStateProvider.CODEC.parse(ops, tag.getCompound("loot_block")).result().orElse(HollowTreePiece.DEFAULT_DUNGEON_LOOT_BLOCK);
 
-		this.lootTable = ResourceKey.create(Registries.LOOT_TABLE, new ResourceLocation(tag.getString("loot_table")));
+		this.lootTable = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.parse(tag.getString("loot_table")));
 
-		ResourceKey<EntityType<?>> dungeonMonster = ResourceKey.create(Registries.ENTITY_TYPE, new ResourceLocation(tag.getString("monster")));
+		ResourceKey<EntityType<?>> dungeonMonster = ResourceKey.create(Registries.ENTITY_TYPE, ResourceLocation.parse(tag.getString("monster")));
 		this.monster = context.registryAccess().registry(Registries.ENTITY_TYPE)
 			.<Holder<EntityType<?>>>flatMap(reg -> reg.getHolder(dungeonMonster))
 			.orElse(HollowTreePiece.DEFAULT_DUNGEON_MONSTER);

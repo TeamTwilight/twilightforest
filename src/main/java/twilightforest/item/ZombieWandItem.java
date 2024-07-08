@@ -2,6 +2,7 @@ package twilightforest.item;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -55,8 +56,7 @@ public class ZombieWandItem extends Item {
 				level.gameEvent(player, GameEvent.ENTITY_PLACE, result.getBlockPos());
 
 				if (!player.getAbilities().instabuild) {
-					stack.hurtAndBreak(1, level.getRandom(), player, () -> {
-					});
+					stack.hurtAndBreak(1, (ServerLevel) level, player, item -> {});
 				}
 				zombie.playSound(TFSounds.ZOMBIE_SCEPTER_USE.get(), 1.0F, 1.0F);
 			}
@@ -72,11 +72,6 @@ public class ZombieWandItem extends Item {
 
 	@Override
 	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-		return false;
-	}
-
-	@Override
-	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
 		return false;
 	}
 

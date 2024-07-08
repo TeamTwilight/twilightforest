@@ -223,23 +223,12 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 
 		this.tag(KOBOLD_PACIFICATION_BREADS).add(Items.BREAD);
 		this.tag(BOAR_TEMPT_ITEMS).addTag(Tags.Items.CROPS_CARROT).addTag(Tags.Items.CROPS_POTATO).addTag(Tags.Items.CROPS_BEETROOT);
-		this.tag(DEER_TEMPT_ITEMS).addTag(Tags.Items.CROPS_WHEAT);
+		this.tag(DEER_TEMPT_ITEMS).addTag(Tags.Items.CROPS_WHEAT).add(Items.APPLE);
 		this.tag(DWARF_RABBIT_TEMPT_ITEMS).addTag(Tags.Items.CROPS_CARROT).add(Items.GOLDEN_CARROT).add(Items.DANDELION);
 		this.tag(PENGUIN_TEMPT_ITEMS).addTag(ItemTags.FISHES);
 		this.tag(RAVEN_TEMPT_ITEMS).addTag(Tags.Items.SEEDS);
 		this.tag(SQUIRREL_TEMPT_ITEMS).addTag(Tags.Items.SEEDS);
 		this.tag(TINY_BIRD_TEMPT_ITEMS).addTag(Tags.Items.SEEDS);
-
-		this.tag(ItemTags.MUSIC_DISCS).add(
-			TFItems.MUSIC_DISC_FINDINGS.get(),
-			TFItems.MUSIC_DISC_HOME.get(),
-			TFItems.MUSIC_DISC_MAKER.get(),
-			TFItems.MUSIC_DISC_MOTION.get(),
-			TFItems.MUSIC_DISC_RADIANCE.get(),
-			TFItems.MUSIC_DISC_STEPS.get(),
-			TFItems.MUSIC_DISC_SUPERSTITIOUS.get(),
-			TFItems.MUSIC_DISC_THREAD.get(),
-			TFItems.MUSIC_DISC_WAYFARER.get());
 
 		this.tag(BANNED_UNCRAFTING_INGREDIENTS).add(
 			TFBlocks.INFESTED_TOWERWOOD.get().asItem(),
@@ -326,11 +315,11 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 			TFItems.FIERY_PICKAXE.get(),
 			TFItems.GIANT_PICKAXE.get());
 
-		this.tag(ItemTags.AXES).add(TFItems.IRONWOOD_AXE.get(), TFItems.STEELEAF_AXE.get(), TFItems.KNIGHTMETAL_AXE.get());
+		this.tag(ItemTags.AXES).add(TFItems.IRONWOOD_AXE.get(), TFItems.STEELEAF_AXE.get(), TFItems.KNIGHTMETAL_AXE.get(), TFItems.GOLDEN_MINOTAUR_AXE.get(), TFItems.DIAMOND_MINOTAUR_AXE.get());
 		this.tag(ItemTags.SHOVELS).add(TFItems.IRONWOOD_SHOVEL.get(), TFItems.STEELEAF_SHOVEL.get());
 		this.tag(ItemTags.HOES).add(TFItems.IRONWOOD_HOE.get(), TFItems.STEELEAF_HOE.get());
-		this.tag(Tags.Items.TOOLS_SHIELDS).add(TFItems.KNIGHTMETAL_SHIELD.get());
-		this.tag(Tags.Items.TOOLS_BOWS).add(TFItems.TRIPLE_BOW.get(), TFItems.SEEKER_BOW.get(), TFItems.ICE_BOW.get(), TFItems.ENDER_BOW.get());
+		this.tag(Tags.Items.TOOLS_SHIELD).add(TFItems.KNIGHTMETAL_SHIELD.get());
+		this.tag(Tags.Items.TOOLS_BOW).add(TFItems.TRIPLE_BOW.get(), TFItems.SEEKER_BOW.get(), TFItems.ICE_BOW.get(), TFItems.ENDER_BOW.get());
 
 		this.tag(ItemTags.CLUSTER_MAX_HARVESTABLES).add(
 			TFItems.IRONWOOD_PICKAXE.get(),
@@ -407,10 +396,10 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 		this.tag(ItemTags.EQUIPPABLE_ENCHANTABLE).remove(TFItems.PHANTOM_HELMET.get(), TFItems.PHANTOM_CHESTPLATE.get());
 		this.tag(ItemTags.BREAKS_DECORATED_POTS).add(TFItems.BLOCK_AND_CHAIN.get());
 
-		this.tag(Tags.Items.FOODS_BERRIES).add(TFItems.TORCHBERRIES.get());
-		this.tag(Tags.Items.FOODS_RAW_MEATS).add(TFItems.RAW_VENISON.get(), TFItems.RAW_MEEF.get());
-		this.tag(Tags.Items.FOODS_COOKED_MEATS).add(TFItems.COOKED_VENISON.get(), TFItems.COOKED_MEEF.get(), TFItems.HYDRA_CHOP.get());
-		this.tag(Tags.Items.FOODS_SOUPS).add(TFItems.MEEF_STROGANOFF.get());
+		this.tag(Tags.Items.FOODS_BERRY).add(TFItems.TORCHBERRIES.get());
+		this.tag(Tags.Items.FOODS_RAW_MEAT).add(TFItems.RAW_VENISON.get(), TFItems.RAW_MEEF.get());
+		this.tag(Tags.Items.FOODS_COOKED_MEAT).add(TFItems.COOKED_VENISON.get(), TFItems.COOKED_MEEF.get(), TFItems.HYDRA_CHOP.get());
+		this.tag(Tags.Items.FOODS_SOUP).add(TFItems.MEEF_STROGANOFF.get());
 		this.tag(Tags.Items.FOODS_EDIBLE_WHEN_PLACED).add(TFItems.EXPERIMENT_115.get());
 	}
 
@@ -419,7 +408,7 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 	}
 
 	public static TagKey<Item> makeCommonTag(String tagName) {
-		return ItemTags.create(new ResourceLocation("c", tagName));
+		return ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", tagName));
 	}
 
 	@Override

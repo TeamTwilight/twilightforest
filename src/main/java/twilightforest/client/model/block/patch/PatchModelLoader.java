@@ -18,6 +18,6 @@ public final class PatchModelLoader implements IGeometryLoader<UnbakedPatchModel
 		if (!object.has("texture"))
 			throw new JsonParseException("Patch model missing value for 'texture'.");
 
-		return new UnbakedPatchModel(new ResourceLocation(object.get("texture").getAsString()), JsonUtils.getBooleanOr("shaggify", object, false));
+		return new UnbakedPatchModel(ResourceLocation.parse(object.get("texture").getAsString()), JsonUtils.getBooleanOr("shaggify", object, false));
 	}
 }

@@ -3,6 +3,7 @@ package twilightforest.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -10,6 +11,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -18,6 +20,7 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Equipable;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ResolvableProfile;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -26,6 +29,7 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.storage.loot.LootParams;
@@ -45,26 +49,11 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 
 	private final SkullBlock.Type type;
 
+	@SuppressWarnings("this-escape")
 	public AbstractSkullCandleBlock(SkullBlock.Type type, Properties properties) {
 		super(properties);
 		this.type = type;
 		this.registerDefaultState(this.getStateDefinition().any().setValue(LIGHTING, Lighting.NONE));
-	}
-
-	//input one of the enum names to convert it into a candle block
-	public static Block candleColorToCandle(CandleColors color) {
-		if (color != CandleColors.PLAIN) {
-			return Objects.requireNonNull(BuiltInRegistries.BLOCK.get(new ResourceLocation(color.getSerializedName() + "_candle")));
-		}
-		return Blocks.CANDLE;
-	}
-
-	//inverse of above
-	public static CandleColors candleToCandleColor(Item candle) {
-		if (!(candle == Blocks.CANDLE.asItem())) {
-			return CandleColors.valueOf(BuiltInRegistries.ITEM.getKey(candle).getPath().replace("_candle", "").replace("\"", "").toUpperCase(Locale.ROOT));
-		}
-		return CandleColors.PLAIN;
 	}
 
 	public SkullBlock.Type getType() {
@@ -89,13 +78,30 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 		return 0;
 	}
 
+	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new SkullCandleBlockEntity(pos, state, 0, 0);
 	}
 
+	//input one of the enum names to convert it into a candle block
+	public static Block candleColorToCandle(CandleColors color) {
+		if (color != CandleColors.PLAIN) {
+			return Objects.requireNonNull(BuiltInRegistries.BLOCK.get(ResourceLocation.withDefaultNamespace(color.getSerializedName() + "_candle")));
+		}
+		return Blocks.CANDLE;
+	}
+
+	//inverse of above
+	public static CandleColors candleToCandleColor(Item candle) {
+		if (!(candle == Blocks.CANDLE.asItem())) {
+			return CandleColors.valueOf(BuiltInRegistries.ITEM.getKey(candle).getPath().replace("_candle", "").replace("\"", "").toUpperCase(Locale.ROOT));
+		}
+		return CandleColors.PLAIN;
+	}
+
 	@Override
-	@SuppressWarnings("deprecation")
+	@SuppressWarnings("deprecation") // Fine for override
 	public RenderShape getRenderShape(BlockState state) {
 		return RenderShape.INVISIBLE;
 	}
@@ -122,7 +128,7 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 		if (skullStack.isPresent()) {
 			BlockEntity blockEntity = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
 			if (blockEntity instanceof SkullCandleBlockEntity sc) {
-				if (!builder.getParameter(LootContextParams.TOOL).isEmpty() && builder.getParameter(LootContextParams.TOOL).getEnchantmentLevel(Enchantments.SILK_TOUCH) > 0) {
+				if (!builder.getParameter(LootContextParams.TOOL).isEmpty() && builder.getParameter(LootContextParams.TOOL).getEnchantmentLevel(sc.getLevel().registryAccess().registryOrThrow(Registries.ENCHANTMENT).getHolderOrThrow(Enchantments.SILK_TOUCH)) > 0) {
 					ItemStack newStack = new ItemStack(this);
 
 					newStack.set(TFDataComponents.SKULL_CANDLES, new SkullCandles(sc.getCandleColor(), sc.getCandleAmount()));
@@ -175,6 +181,69 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 	}
 
 	@Override
+	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+		if (level.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc && player.isSecondaryUseActive() && sc.getCandleAmount() > 0) {
+			int newCandleAmount = sc.getCandleAmount() - 1;
+			if (newCandleAmount > 0) {
+				sc.setCandleAmount(newCandleAmount);
+			} else {
+				boolean wall = state.getBlock() instanceof WallSkullCandleBlock;
+				Block newBlock = getNoCandleSkull(wall);
+				if (newBlock != null) {
+					ResolvableProfile profile = sc.getOwnerProfile();
+                    BlockState newState;
+                    if (wall) {
+                        newState = newBlock.defaultBlockState().setValue(WallSkullBlock.FACING, state.getValue(WallSkullCandleBlock.FACING));
+                    } else {
+                        newState = newBlock.defaultBlockState().setValue(SkullBlock.ROTATION, state.getValue(SkullCandleBlock.ROTATION));
+                    }
+                    level.setBlockAndUpdate(pos, newState);
+                    level.setBlockEntity(new SkullBlockEntity(pos, newState));
+                    if (level.getBlockEntity(pos) instanceof SkullBlockEntity sc1) sc1.setOwner(profile);
+				}
+			}
+			level.playSound(null, pos, SoundEvents.CANDLE_BREAK, SoundSource.BLOCKS, 1.0F, 1.0F);
+			level.getLightEngine().checkBlock(pos);
+			player.setItemInHand(player.getMainHandItem().isEmpty() ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND, new ItemStack(candleColorToCandle(CandleColors.colorFromInt(sc.getCandleColor()))));
+			return InteractionResult.sidedSuccess(level.isClientSide());
+		}
+		return super.useWithoutItem(state, level, pos, player, hitResult);
+	}
+
+	@Nullable
+	private Block getNoCandleSkull(boolean wall) {
+		Block newBlock;
+		switch ((SkullBlock.Types) this.getType()) {
+			case SKELETON -> {
+				if (wall) newBlock = Blocks.SKELETON_WALL_SKULL;
+				else newBlock = Blocks.SKELETON_SKULL;
+			}
+			case WITHER_SKELETON -> {
+				if (wall) newBlock = Blocks.WITHER_SKELETON_WALL_SKULL;
+				else newBlock = Blocks.WITHER_SKELETON_SKULL;
+			}
+			case PLAYER -> {
+				if (wall) newBlock = Blocks.PLAYER_WALL_HEAD;
+				else newBlock = Blocks.PLAYER_HEAD;
+			}
+			case ZOMBIE -> {
+				if (wall) newBlock = Blocks.ZOMBIE_WALL_HEAD;
+				else newBlock = Blocks.ZOMBIE_HEAD;
+			}
+			case CREEPER -> {
+				if (wall) newBlock = Blocks.CREEPER_WALL_HEAD;
+				else newBlock = Blocks.CREEPER_HEAD;
+			}
+			case PIGLIN -> {
+				if (wall) newBlock = Blocks.PIGLIN_WALL_HEAD;
+				else newBlock = Blocks.PIGLIN_HEAD;
+			}
+			default -> newBlock = null;
+		}
+		return newBlock;
+	}
+
+	@Override
 	public void onProjectileHit(Level level, BlockState state, BlockHitResult result, Projectile projectile) {
 		this.lightCandlesWithProjectile(level, state, result, projectile);
 	}
@@ -194,6 +263,7 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 		builder.add(LIGHTING);
 	}
 
+	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
 		return createTickerHelper(type, TFBlockEntities.SKULL_CANDLE.get(), SkullCandleBlockEntity::tick);
@@ -212,18 +282,17 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 		LIME(9), BLUE(10), CYAN(11), LIGHT_BLUE(12),
 		PURPLE(13), MAGENTA(14), PINK(15), BROWN(16);
 
+		private final int value;
 		private static final Map<Integer, CandleColors> map = new HashMap<>();
+
+		CandleColors(int value) {
+			this.value = value;
+		}
 
 		static {
 			for (CandleColors color : CandleColors.values()) {
 				map.put(color.value, color);
 			}
-		}
-
-		private final int value;
-
-		CandleColors(int value) {
-			this.value = value;
 		}
 
 		public static CandleColors colorFromInt(int value) {

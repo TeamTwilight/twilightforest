@@ -83,7 +83,7 @@ public class StalactiteReloadListener extends SimpleJsonResourceReloadListener {
 		if (config.replace()) stalactitesForType.clear();
 
 		for (ResourceLocation rl : rawEntries) {
-			rl = new ResourceLocation(rl.getNamespace(), String.format("%s/%s.json", STALACTITE_DIRECTORY, rl.getPath()));
+			rl = ResourceLocation.fromNamespaceAndPath(rl.getNamespace(), String.format("%s/%s.json", STALACTITE_DIRECTORY, rl.getPath()));
 			Optional<Resource> stalRes = manager.getResource(rl);
 			if (stalRes.isPresent()) {
 				try {

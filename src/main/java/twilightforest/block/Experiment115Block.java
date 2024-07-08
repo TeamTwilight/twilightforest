@@ -65,7 +65,8 @@ public class Experiment115Block extends Block {
 		int bitesTaken = state.getValue(BITES_TAKEN);
 
 		if (!player.isSecondaryUseActive()) {
-			if (bitesTaken > 0 && stack.is(TFItems.EXPERIMENT_115.get())) {
+			if (stack.is(TFItems.EXPERIMENT_115.get())) {
+				if (bitesTaken == 0) return ItemInteractionResult.FAIL;
 				level.setBlockAndUpdate(pos, state.setValue(BITES_TAKEN, bitesTaken - 1));
 				level.playSound(null, pos, state.getSoundType(level, pos, player).getPlaceSound(), SoundSource.BLOCKS, 1.0F, 1.0F);
 				if (!player.isCreative()) stack.shrink(1);
@@ -129,6 +130,7 @@ public class Experiment115Block extends Block {
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public boolean canSurvive(BlockState state, LevelReader reader, BlockPos pos) {
 		return reader.getBlockState(pos.below()).isSolid();
 	}
@@ -145,25 +147,25 @@ public class Experiment115Block extends Block {
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
+	@SuppressWarnings("deprecation") // Fine to override
 	public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
 		return (8 - state.getValue(BITES_TAKEN)) + (state.getValue(REGENERATE) ? 7 : 0);
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
+	@SuppressWarnings("deprecation") // Fine to override
 	public boolean hasAnalogOutputSignal(BlockState state) {
 		return true;
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
+	@SuppressWarnings("deprecation") // Fine to override
 	public boolean isSignalSource(BlockState state) {
 		return state.getValue(REGENERATE);
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
+	@SuppressWarnings("deprecation") // Fine to override
 	public int getSignal(BlockState state, BlockGetter blockAccess, BlockPos pos, Direction side) {
 		return state.getValue(REGENERATE) ? 15 - (state.getValue(BITES_TAKEN) * 2) : 0;
 	}

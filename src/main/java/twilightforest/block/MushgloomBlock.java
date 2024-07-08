@@ -8,7 +8,6 @@ import net.minecraft.world.level.block.MushroomBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.common.PlantType;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFConfiguredFeatures;
 
@@ -21,7 +20,7 @@ public class MushgloomBlock extends MushroomBlock {
 	}
 
 	@Override
-	public boolean canSurvive(BlockState state, LevelReader reader, BlockPos pos) {
+	public boolean mayPlaceOn(BlockState state, BlockGetter reader, BlockPos pos) {
 		return reader.getBlockState(pos.below()).isFaceSturdy(reader, pos, Direction.UP) || reader.getBlockState(pos.below()).is(TFBlocks.UBEROUS_SOIL);
 	}
 
@@ -33,10 +32,5 @@ public class MushgloomBlock extends MushroomBlock {
 	@Override
 	public boolean isValidBonemealTarget(LevelReader getter, BlockPos pos, BlockState state) {
 		return false;
-	}
-
-	@Override
-	public PlantType getPlantType(BlockGetter getter, BlockPos pos) {
-		return PlantType.CAVE;
 	}
 }

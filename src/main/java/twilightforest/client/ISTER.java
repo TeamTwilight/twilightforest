@@ -26,7 +26,6 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.component.ResolvableProfile;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.CandleBlock;
@@ -48,6 +47,7 @@ import twilightforest.client.model.entity.KnightmetalShieldModel;
 import twilightforest.client.model.entity.TrophyBlockModel;
 import twilightforest.client.renderer.tileentity.SkullCandleTileEntityRenderer;
 import twilightforest.client.renderer.tileentity.TrophyTileEntityRenderer;
+import twilightforest.components.item.CandelabraData;
 import twilightforest.components.item.SkullCandles;
 import twilightforest.config.TFConfig;
 import twilightforest.enums.BossVariant;
@@ -118,7 +118,7 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 				TrophyBlockModel trophy = this.trophies.get(variant);
 
 				if (camera == ItemDisplayContext.GUI) {
-					ModelResourceLocation back = new ModelResourceLocation(TwilightForestMod.prefix(((AbstractTrophyBlock) block).getVariant().getTrophyType().getModelName()), "inventory");
+					ModelResourceLocation back = ModelResourceLocation.standalone(TwilightForestMod.prefix("item/" + ((AbstractTrophyBlock) block).getVariant().getTrophyType().getModelName()));
 					BakedModel modelBack = minecraft.getItemRenderer().getItemModelShaper().getModelManager().getModel(back);
 
 					Lighting.setupForFlatItems();
@@ -139,10 +139,10 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 					ms.translate(0.0F, 0.25F, 0.0F);
 					if (trophyBlock.getVariant() == BossVariant.UR_GHAST) ms.translate(0.0F, 0.5F, 0.0F);
 					if (trophyBlock.getVariant() == BossVariant.ALPHA_YETI) ms.translate(0.0F, -0.15F, 0.0F);
-					TrophyTileEntityRenderer.render(null, 180.0F, trophy, variant, !minecraft.isPaused() ? ClientEvents.time + minecraft.getDeltaFrameTime() : 0, ms, buffers, light, camera);
+					TrophyTileEntityRenderer.render(null, 180.0F, trophy, variant, !minecraft.isPaused() ? ClientEvents.time + minecraft.getTimer().getRealtimeDeltaTicks() : 0, ms, buffers, light, camera);
 					ms.popPose();
 				} else {
-					TrophyTileEntityRenderer.render(null, 180.0F, trophy, variant, !minecraft.isPaused() ? ClientEvents.time + minecraft.getDeltaFrameTime() : 0, ms, buffers, light, camera);
+					TrophyTileEntityRenderer.render(null, 180.0F, trophy, variant, !minecraft.isPaused() ? ClientEvents.time + minecraft.getTimer().getRealtimeDeltaTicks() : 0, ms, buffers, light, camera);
 				}
 
 			} else if (block instanceof KeepsakeCasketBlock) {
@@ -178,10 +178,10 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 				//we need to render the candelabra block here since we have to use builtin/entity on the item.
 				//This doesnt allow us to set the item parent to the candelabra block, and without it, only the candles render, if any
 				minecraft.getBlockRenderer().renderSingleBlock(TFBlocks.CANDELABRA.get().defaultBlockState(), ms, buffers, light, overlay);
-				CustomData customData = stack.get(DataComponents.BLOCK_ENTITY_DATA);
-				if (customData != null && customData.contains("Candles")) {
+				CandelabraData candelabraData = stack.get(TFDataComponents.CANDELABRA_DATA);
+				if (candelabraData != null) {
 					CandelabraBlockEntity copy = this.candelabra;
-					copy.loadCustomOnly(customData.copyTag(), minecraft.player.registryAccess());
+					CandelabraData.setCandlesOf(copy, candelabraData);
 					minecraft.getBlockEntityRenderDispatcher().renderItem(copy, ms, buffers, light, overlay);
 				}
 			} else if (block instanceof CritterBlock critter) {
@@ -193,9 +193,9 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 		} else if (item instanceof KnightmetalShieldItem) {
 			ms.pushPose();
 			ms.scale(1.0F, -1.0F, -1.0F);
-			Material material = new Material(Sheets.SHIELD_SHEET, new ResourceLocation(TwilightForestMod.ID, "entity/knightmetal_shield"));
+			Material material = new Material(Sheets.SHIELD_SHEET, TwilightForestMod.prefix("entity/knightmetal_shield"));
 			VertexConsumer vertexconsumer = material.sprite().wrap(ItemRenderer.getFoilBufferDirect(buffers, this.shield.renderType(material.atlasLocation()), true, stack.hasFoil()));
-			this.shield.renderToBuffer(ms, vertexconsumer, light, overlay, 1.0F, 1.0F, 1.0F, 1.0F);
+			this.shield.renderToBuffer(ms, vertexconsumer, light, overlay);
 			ms.popPose();
 		}
 	}

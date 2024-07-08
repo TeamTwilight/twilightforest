@@ -41,7 +41,7 @@ public class StructureSpeleothemConfigs {
 
 	@NotNull
 	public static Holder.Reference<StructureSpeleothemConfig> getConfigHolder(HolderLookup.Provider registryAccess, String strRL) {
-		return getConfigHolder(registryAccess, makeKey(new ResourceLocation(strRL)));
+		return getConfigHolder(registryAccess, makeKey(ResourceLocation.parse(strRL)));
 	}
 
 	@NotNull

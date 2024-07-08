@@ -104,10 +104,10 @@ public class LeafParticle extends TextureSheetParticle {
 		float v = this.getV0();
 		float v1 = this.getV1();
 		int light = this.getLightColor(partialTicks);
-		buffer.vertex(vecList[0].x(), vecList[0].y(), vecList[0].z()).uv(u1, v1).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(light).endVertex();
-		buffer.vertex(vecList[1].x(), vecList[1].y(), vecList[1].z()).uv(u1, v).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(light).endVertex();
-		buffer.vertex(vecList[2].x(), vecList[2].y(), vecList[2].z()).uv(u, v).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(light).endVertex();
-		buffer.vertex(vecList[3].x(), vecList[3].y(), vecList[3].z()).uv(u, v1).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(light).endVertex();
+		buffer.addVertex(vecList[0].x(), vecList[0].y(), vecList[0].z()).setUv(u1, v1).setColor(this.rCol, this.gCol, this.bCol, this.alpha).setLight(light);
+		buffer.addVertex(vecList[1].x(), vecList[1].y(), vecList[1].z()).setUv(u1, v).setColor(this.rCol, this.gCol, this.bCol, this.alpha).setLight(light);
+		buffer.addVertex(vecList[2].x(), vecList[2].y(), vecList[2].z()).setUv(u, v).setColor(this.rCol, this.gCol, this.bCol, this.alpha).setLight(light);
+		buffer.addVertex(vecList[3].x(), vecList[3].y(), vecList[3].z()).setUv(u, v1).setColor(this.rCol, this.gCol, this.bCol, this.alpha).setLight(light);
 	}
 
 	@Override

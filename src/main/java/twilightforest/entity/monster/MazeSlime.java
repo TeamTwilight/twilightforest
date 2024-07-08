@@ -22,12 +22,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFSounds;
 
 public class MazeSlime extends Slime {
 
-	private static final AttributeModifier DOUBLE_HEALTH = new AttributeModifier("Maze slime double health", 1, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
+	private static final AttributeModifier DOUBLE_HEALTH = new AttributeModifier(TwilightForestMod.prefix("double_health"), 2, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
 
 	public MazeSlime(EntityType<? extends MazeSlime> type, Level world) {
 		super(type, world);
@@ -36,7 +37,7 @@ public class MazeSlime extends Slime {
 	@Override
 	public void setSize(int size, boolean resetHealth) {
 		super.setSize(size, resetHealth);
-		this.xpReward += 3;
+		this.xpReward = size + 3;
 	}
 
 	public static boolean getCanSpawnHere(EntityType<MazeSlime> entity, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, RandomSource random) {

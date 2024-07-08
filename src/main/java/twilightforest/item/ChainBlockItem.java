@@ -1,14 +1,17 @@
 package twilightforest.item;
 
+import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.data.tags.ItemTagGenerator;
@@ -21,8 +24,6 @@ import twilightforest.init.TFSounds;
 import java.util.UUID;
 
 public class ChainBlockItem extends Item {
-
-	private static final String THROWN_UUID_KEY = "chainEntity";
 
 	public ChainBlockItem(Properties properties) {
 		super(properties);
@@ -70,7 +71,7 @@ public class ChainBlockItem extends Item {
 	}
 
 	@Override
-	public int getUseDuration(ItemStack stack) {
+	public int getUseDuration(ItemStack stack, LivingEntity user) {
 		return 72000;
 	}
 
@@ -88,18 +89,17 @@ public class ChainBlockItem extends Item {
 	public boolean isCorrectToolForDrops(ItemStack stack, BlockState state) {
 		//dont try to check harvest level if we arent thrown
 		if (stack.get(TFDataComponents.THROWN_PROJECTILE) == null) return false;
-		if (stack.getEnchantmentLevel(TFEnchantments.DESTRUCTION.get()) > 0) {
+		if (ServerLifecycleHooks.getCurrentServer() != null && stack.getEnchantmentLevel(ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.ENCHANTMENT).getHolderOrThrow(TFEnchantments.DESTRUCTION)) > 0) {
             return state.is(BlockTagGenerator.MINEABLE_WITH_BLOCK_AND_CHAIN) && this.getHarvestLevel(stack).createToolProperties(BlockTagGenerator.MINEABLE_WITH_BLOCK_AND_CHAIN).isCorrectForDrops(state);
 		}
 		return false;
 	}
 
 	public Tier getHarvestLevel(ItemStack stack) {
-        return switch (stack.getEnchantmentLevel(TFEnchantments.DESTRUCTION.get())) {
+        return switch (stack.getEnchantmentLevel(ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.ENCHANTMENT).getHolderOrThrow(TFEnchantments.DESTRUCTION))) {
             case 1 -> Tiers.WOOD;
             case 2 -> Tiers.STONE;
-			case 3 -> Tiers.IRON;
-            default -> Tiers.DIAMOND;
+			default -> Tiers.IRON;
         };
 	}
 }

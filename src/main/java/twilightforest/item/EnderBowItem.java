@@ -12,7 +12,7 @@ public class EnderBowItem extends BowItem {
 	}
 
 	@Override
-	public AbstractArrow customArrow(AbstractArrow arrow, ItemStack stack) {
+	public AbstractArrow customArrow(AbstractArrow arrow, ItemStack projectileStack, ItemStack weaponStack) {
 		arrow.getPersistentData().putBoolean(KEY, true);
 		return arrow;
 	}

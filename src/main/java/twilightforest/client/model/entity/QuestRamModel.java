@@ -282,12 +282,12 @@ public class QuestRamModel<T extends QuestRam> extends HierarchicalModel<T> impl
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack stack, VertexConsumer consumer, int light, int overlay, float red, float green, float blue, float alpha) {
-		super.renderToBuffer(stack, consumer, light, overlay, red, green, blue, alpha);
+	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, int color) {
+		super.renderToBuffer(stack, builder, light, overlay, color);
 
 		for (int i = 0; i < 16; i++) {
-			final float[] dyeRgb = Sheep.getColorArray(DyeColor.byId(i));
-			this.segments[i].render(stack, consumer, light, overlay, dyeRgb[0], dyeRgb[1], dyeRgb[2], alpha);
+			final int dyeRgb = Sheep.getColor(DyeColor.byId(i));
+			segments[i].render(stack, builder, light, overlay, dyeRgb);
 		}
 	}
 

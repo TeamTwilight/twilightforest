@@ -45,7 +45,7 @@ public class TFRegistries {
 		public static final ResourceKey<Registry<ChunkBlanketProcessor>> CHUNK_BLANKET_PROCESSORS = ResourceKey.createRegistryKey(namedRegistry("chunk_blanket_processors"));
 
 		public static ResourceLocation namedRegistry(String name) {
-			return new ResourceLocation(REGISTRY_NAMESPACE, name.toLowerCase(Locale.ROOT));
+			return ResourceLocation.fromNamespaceAndPath(REGISTRY_NAMESPACE, name.toLowerCase(Locale.ROOT));
 		}
 	}
 }

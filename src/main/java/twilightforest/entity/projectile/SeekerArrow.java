@@ -31,9 +31,8 @@ public class SeekerArrow extends TFArrow {
 		this.setBaseDamage(1.0D);
 	}
 
-	@SuppressWarnings("this-escape")
-	public SeekerArrow(Level world, Entity shooter, ItemStack stack) {
-		super(TFEntities.SEEKER_ARROW.get(), world, shooter, stack);
+	public SeekerArrow(Level world, LivingEntity shooter, ItemStack stack, ItemStack weapon) {
+		super(TFEntities.SEEKER_ARROW.get(), world, shooter, stack, weapon);
 		this.setBaseDamage(1.0D);
 	}
 

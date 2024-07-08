@@ -23,7 +23,7 @@ import twilightforest.init.TFBlocks;
 import java.util.ArrayList;
 import java.util.List;
 
-public record PatchModel(ResourceLocation location, TextureAtlasSprite texture, boolean shaggify) implements BakedModel {
+public record PatchModel(TextureAtlasSprite texture, boolean shaggify) implements BakedModel {
 	private static final FaceBakery BAKERY = new FaceBakery();
 
 	@Override
@@ -153,7 +153,7 @@ public record PatchModel(ResourceLocation location, TextureAtlasSprite texture, 
 			default -> new BlockFaceUV(new float[]{minX, minZ, maxX, maxZ}, 0);
 		});
 
-		return BAKERY.bakeQuad(new Vector3f(minX, minY, minZ), new Vector3f(maxX, maxY, maxZ), face, this.texture, direction, new SimpleModelState(Transformation.identity()), null, true, this.location);
+		return BAKERY.bakeQuad(new Vector3f(minX, minY, minZ), new Vector3f(maxX, maxY, maxZ), face, this.texture, direction, new SimpleModelState(Transformation.identity()), null, true);
 	}
 
 	// --- Boilerplating ---------------------------------------------------

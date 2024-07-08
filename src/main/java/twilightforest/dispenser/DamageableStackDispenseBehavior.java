@@ -4,6 +4,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Position;
 import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -18,17 +19,15 @@ public abstract class DamageableStackDispenseBehavior extends DefaultDispenseIte
 
 	@Override
 	public ItemStack execute(BlockSource source, ItemStack stack) {
-		Level level = source.level();
+		ServerLevel level = source.level();
 		Position pos = DispenserBlock.getDispensePosition(source);
 		Direction direction = source.state().getValue(DispenserBlock.FACING);
-		if (!level.isClientSide()) {
-			if (stack.getMaxDamage() >= stack.getDamageValue() + this.getDamageAmount()) {
-				Projectile projectileentity = this.getProjectileEntity(level, pos, stack);
-				projectileentity.shoot(direction.getStepX(), (float) direction.getStepY() + 0.1F, direction.getStepZ(), this.getProjectileVelocity(), this.getProjectileInaccuracy());
-				level.addFreshEntity(projectileentity);
-				stack.hurtAndBreak(this.getDamageAmount(), level.getRandom(), null, () -> stack.setCount(1));
-				this.fired = true;
-			}
+		if (stack.getMaxDamage() >= stack.getDamageValue() + this.getDamageAmount()) {
+			Projectile projectileentity = this.getProjectileEntity(level, pos, stack);
+			projectileentity.shoot(direction.getStepX(), (float) direction.getStepY() + 0.1F, direction.getStepZ(), this.getProjectileVelocity(), this.getProjectileInaccuracy());
+			level.addFreshEntity(projectileentity);
+			stack.hurtAndBreak(1, level, null, item -> {});
+			this.fired = true;
 		}
 		return stack;
 	}

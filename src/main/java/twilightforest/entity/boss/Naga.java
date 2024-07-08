@@ -45,6 +45,7 @@ import net.neoforged.neoforge.entity.PartEntity;
 import net.neoforged.neoforge.event.EventHooks;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFPart;
 import twilightforest.entity.ai.control.NagaMoveControl;
 import twilightforest.entity.ai.goal.AttemptToGoHomeGoal;
@@ -197,8 +198,8 @@ public class Naga extends BaseTFBoss {
 
 		if (!this.level().isClientSide() && oldSegments != newSegments) {
 			double speedMod = ((float) MAX_SEGMENTS / newSegments * 0.02F);
-			AttributeModifier modifier = new AttributeModifier(MOVEMENT_SPEED_UUID, "Segment Count Speed Boost", speedMod, AttributeModifier.Operation.ADD_VALUE);
-			Objects.requireNonNull(this.getAttribute(Attributes.MOVEMENT_SPEED)).removeModifier(MOVEMENT_SPEED_UUID);
+			AttributeModifier modifier = new AttributeModifier(TwilightForestMod.prefix("segment_speed_boost"), speedMod, AttributeModifier.Operation.ADD_VALUE);
+			Objects.requireNonNull(this.getAttribute(Attributes.MOVEMENT_SPEED)).removeModifier(modifier.id());
 			Objects.requireNonNull(this.getAttribute(Attributes.MOVEMENT_SPEED)).addTransientModifier(modifier);
 		}
 	}
@@ -209,8 +210,8 @@ public class Naga extends BaseTFBoss {
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data) {
 		if (this.level().getDifficulty() != Difficulty.EASY && this.getAttribute(Attributes.MAX_HEALTH) != null) {
 			boolean hard = this.level().getDifficulty() == Difficulty.HARD;
-			AttributeModifier modifier = new AttributeModifier("Difficulty Health Boost", hard ? 130 : 80, AttributeModifier.Operation.ADD_VALUE);
-			if (!Objects.requireNonNull(this.getAttribute(Attributes.MAX_HEALTH)).hasModifier(modifier)) {
+			AttributeModifier modifier = new AttributeModifier(TwilightForestMod.prefix("difficulty_health_boost"), hard ? 130 : 80, AttributeModifier.Operation.ADD_VALUE);
+			if (!Objects.requireNonNull(this.getAttribute(Attributes.MAX_HEALTH)).hasModifier(modifier.id())) {
 				Objects.requireNonNull(this.getAttribute(Attributes.MAX_HEALTH)).addPermanentModifier(modifier);
 				this.setHealth(this.getMaxHealth());
 			}

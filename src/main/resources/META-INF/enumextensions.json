@@ -1,0 +1,67 @@
+{
+  "entries": [
+    {
+      "enum": "net/minecraft/world/damagesource/DamageEffects",
+      "name": "TWILIGHTFOREST_PINCH",
+      "constructor": "(Ljava/lang/String;Ljava/util/function/Supplier;)V",
+      "parameters": {
+        "class": "twilightforest/util/TFEnumExtensions",
+        "method": "pinchDamage"
+      }
+    },
+    {
+      "enum": "net/minecraft/world/item/Rarity",
+      "name": "TWILIGHTFOREST_TWILIGHT",
+      "constructor": "(ILjava/lang/String;Ljava/util/function/UnaryOperator;)V",
+      "parameters": {
+        "class": "twilightforest/util/TFEnumExtensions",
+        "method": "twilightRarity"
+      }
+    },
+    {
+      "enum": "net/minecraft/world/level/biome/BiomeSpecialEffects$GrassColorModifier",
+      "name": "TWILIGHTFOREST_ENCHANTED_FOREST",
+      "constructor": "(Ljava/lang/String;Lnet/minecraft/world/level/biome/BiomeSpecialEffects$GrassColorModifier$ColorModifier;)V",
+      "parameters": {
+        "class": "twilightforest/util/TFEnumExtensions",
+        "method": "enchantedForestBiomeGrassColor"
+      }
+    },
+    {
+      "enum": "net/minecraft/world/level/biome/BiomeSpecialEffects$GrassColorModifier",
+      "name": "TWILIGHTFOREST_SWAMP",
+      "constructor": "(Ljava/lang/String;Lnet/minecraft/world/level/biome/BiomeSpecialEffects$GrassColorModifier$ColorModifier;)V",
+      "parameters": {
+        "class": "twilightforest/util/TFEnumExtensions",
+        "method": "swampBiomeGrassColor"
+      }
+    },
+    {
+      "enum": "net/minecraft/world/level/biome/BiomeSpecialEffects$GrassColorModifier",
+      "name": "TWILIGHTFOREST_DARK_FOREST",
+      "constructor": "(Ljava/lang/String;Lnet/minecraft/world/level/biome/BiomeSpecialEffects$GrassColorModifier$ColorModifier;)V",
+      "parameters": {
+        "class": "twilightforest/util/TFEnumExtensions",
+        "method": "darkForestBiomeGrassColor"
+      }
+    },
+    {
+      "enum": "net/minecraft/world/level/biome/BiomeSpecialEffects$GrassColorModifier",
+      "name": "TWILIGHTFOREST_DARK_FOREST_CENTER",
+      "constructor": "(Ljava/lang/String;Lnet/minecraft/world/level/biome/BiomeSpecialEffects$GrassColorModifier$ColorModifier;)V",
+      "parameters": {
+        "class": "twilightforest/util/TFEnumExtensions",
+        "method": "darkForestCenterBiomeGrassColor"
+      }
+    },
+    {
+      "enum": "net/minecraft/world/level/biome/BiomeSpecialEffects$GrassColorModifier",
+      "name": "TWILIGHTFOREST_SPOOKY_FOREST",
+      "constructor": "(Ljava/lang/String;Lnet/minecraft/world/level/biome/BiomeSpecialEffects$GrassColorModifier$ColorModifier;)V",
+      "parameters": {
+        "class": "twilightforest/util/TFEnumExtensions",
+        "method": "spookyBiomeGrassColor"
+      }
+    }
+  ]
+}

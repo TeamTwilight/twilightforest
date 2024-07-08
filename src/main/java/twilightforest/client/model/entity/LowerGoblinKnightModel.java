@@ -115,9 +115,9 @@ public class LowerGoblinKnightModel extends HumanoidModel<LowerGoblinKnight> {
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack stack, VertexConsumer consumer, int light, int overlay, float red, float green, float blue, float alpha) {
-		super.renderToBuffer(stack, consumer, light, overlay, red, green, blue, alpha);
-		this.tunic.render(stack, consumer, light, overlay, red, green, blue, alpha);
+	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, int color) {
+		super.renderToBuffer(stack, builder, light, overlay, color);
+		this.tunic.render(stack, builder, light, overlay, color);
 	}
 
 	@Override

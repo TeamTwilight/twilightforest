@@ -37,7 +37,7 @@ public class TFPortalAttachment {
 			}
 		} else if (this.getPortalTimer() > 0) this.portalTimer -= 2;
 
-		if (player instanceof LocalPlayer local) {
+		if (player.level().isClientSide() && player instanceof LocalPlayer local) {
 			Minecraft minecraft = Minecraft.getInstance();
 			if (this.isInsidePortal()) {
 				if (minecraft.screen != null && !minecraft.screen.isPauseScreen() && !(minecraft.screen instanceof DeathScreen)) {

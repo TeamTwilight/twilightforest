@@ -66,18 +66,23 @@ public class PenguinModel extends HumanoidModel<Penguin> {
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack stack, VertexConsumer consumer, int light, int overlay, float red, float green, float blue, float scale) {
+	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, int color) {
 		if (this.young) {
 			float f = 2.0F;
 			stack.pushPose();
 			stack.scale(1.0F / f, 1.0F / f, 1.0F / f);
-			stack.translate(0.0F, 1.5F * scale, 0.0F);
-			this.headParts().forEach((renderer) -> renderer.render(stack, consumer, light, overlay, red, green, blue, scale));
-			this.bodyParts().forEach((renderer) -> renderer.render(stack, consumer, light, overlay, red, green, blue, scale));
+			stack.translate(0.0F, 1.5F, 0.0F);
+			this.headParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, color));
+			stack.popPose();
+
+			stack.pushPose();
+			stack.scale(1.0F / f, 1.0F / f, 1.0F / f);
+			stack.translate(0.0F, 1.5F, 0.0F);
+			this.bodyParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, color));
 			stack.popPose();
 		} else {
-			this.headParts().forEach((renderer) -> renderer.render(stack, consumer, light, overlay, red, green, blue, scale));
-			this.bodyParts().forEach((renderer) -> renderer.render(stack, consumer, light, overlay, red, green, blue, scale));
+			this.headParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, color));
+			this.bodyParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, color));
 		}
 	}
 

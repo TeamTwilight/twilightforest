@@ -24,6 +24,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LightLayer;
+import twilightforest.TwilightForestMod;
 import twilightforest.entity.projectile.NatureBolt;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
@@ -141,8 +142,7 @@ public class SkeletonDruid extends AbstractSkeleton {
 
 	// Below: VANILLACOPY Zombie Baby Code
 
-	private static final UUID SPEED_MODIFIER_BABY_UUID = UUID.fromString("3F508BEA-92F5-47B3-BCA2-B0FA84860574");
-	private static final AttributeModifier SPEED_MODIFIER_BABY = new AttributeModifier(SPEED_MODIFIER_BABY_UUID, "Baby speed boost", 0.5D, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
+	private static final AttributeModifier SPEED_MODIFIER_BABY = new AttributeModifier(TwilightForestMod.prefix("baby_speed_boost"), 0.5D, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
 	private static final EntityDataAccessor<Boolean> DATA_BABY_ID = SynchedEntityData.defineId(SkeletonDruid.class, EntityDataSerializers.BOOLEAN);
 	private static final EntityDimensions BABY_DIMENSIONS = TFEntities.SKELETON_DRUID.get().getDimensions().scale(0.5F).withEyeHeight(0.93F);
 
@@ -152,12 +152,12 @@ public class SkeletonDruid extends AbstractSkeleton {
 	}
 
 	@Override
-	public int getExperienceReward() {
+	public int getBaseExperienceReward() {
 		if (this.isBaby()) {
 			this.xpReward = (int) (this.xpReward * 2.5F);
 		}
 
-		return super.getExperienceReward();
+		return super.getBaseExperienceReward();
 	}
 
 	@Override

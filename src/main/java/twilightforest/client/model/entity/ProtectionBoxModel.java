@@ -44,19 +44,12 @@ public class ProtectionBoxModel<T extends ProtectionBox> extends ListModel<T> {
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack stack, VertexConsumer consumer, int light, int overlay, float red, float green, float blue, float alpha) {
-		if (this.entity != null) {
-			int pixelsX = this.entity.sizeX * 16 + 2;
-			int pixelsY = this.entity.sizeY * 16 + 2;
-			int pixelsZ = this.entity.sizeZ * 16 + 2;
-
-			if (pixelsX != this.lastPixelsX || pixelsY != this.lastPixelsY || pixelsZ != this.lastPixelsZ) {
-				this.resizeBoxElement(pixelsX, pixelsY, pixelsZ);
-			}
+	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, int color) {
+		ProtectionBox boxEntity = entity;
+		if (pixelsX != this.lastPixelsX || pixelsY != this.lastPixelsY || pixelsZ != this.lastPixelsZ) {
+			this.resizeBoxElement(pixelsX, pixelsY, pixelsZ);
 		}
-
-		super.renderToBuffer(stack, consumer, light, overlay, red, green, blue, alpha);
-		this.entity = null;
+		super.renderToBuffer(stack, builder, light, overlay, color);
 	}
 
 	@Override

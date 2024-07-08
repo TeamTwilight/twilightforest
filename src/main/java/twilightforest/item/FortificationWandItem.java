@@ -2,6 +2,7 @@ package twilightforest.item;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -34,8 +35,7 @@ public class FortificationWandItem extends Item {
 		if (!level.isClientSide()) {
 			player.getData(TFDataAttachments.FORTIFICATION_SHIELDS).setShields(player, 5, true);
 			if(!player.getAbilities().instabuild) {
-				stack.hurtAndBreak(1, level.getRandom(), player, () -> {
-				});
+				stack.hurtAndBreak(1, (ServerLevel) level, player, item -> {});
 			}
 		}
 		player.playSound(TFSounds.SHIELD_ADD.get(), 1.0F, (player.getRandom().nextFloat() - player.getRandom().nextFloat()) * 0.2F + 1.0F);
@@ -53,11 +53,6 @@ public class FortificationWandItem extends Item {
 
 	@Override
 	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-		return false;
-	}
-
-	@Override
-	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
 		return false;
 	}
 

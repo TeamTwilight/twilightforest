@@ -24,7 +24,7 @@ public class TFTrimMaterials {
 	public static final ResourceKey<TrimMaterial> CARMINITE = registerKey("carminite");
 
 	private static ResourceKey<TrimMaterial> registerKey(String name) {
-		return ResourceKey.create(Registries.TRIM_MATERIAL, new ResourceLocation(TwilightForestMod.ID, name));
+		return ResourceKey.create(Registries.TRIM_MATERIAL, TwilightForestMod.prefix(name));
 	}
 
 	public static void bootstrap(BootstrapContext<TrimMaterial> context) {

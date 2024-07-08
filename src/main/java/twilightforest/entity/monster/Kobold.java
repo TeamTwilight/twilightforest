@@ -193,7 +193,7 @@ public class Kobold extends Monster {
 
 	@Override
 	public boolean canTakeItem(ItemStack stack) {
-		EquipmentSlot equipmentslot = Mob.getEquipmentSlotForItem(stack);
+		EquipmentSlot equipmentslot = this.getEquipmentSlotForItem(stack);
 		if (!this.getItemBySlot(equipmentslot).isEmpty()) {
 			return false;
 		} else {

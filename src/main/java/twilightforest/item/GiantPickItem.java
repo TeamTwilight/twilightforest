@@ -14,13 +14,14 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import twilightforest.TwilightForestMod;
 import twilightforest.block.GiantBlock;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDataAttachments;
 
 import java.util.List;
 
-public class GiantPickItem extends PickaxeItem implements GiantItem {
+public class GiantPickItem extends PickaxeItem {
 
 	public GiantPickItem(Tier material, Properties properties) {
 		super(material, properties);
@@ -34,8 +35,8 @@ public class GiantPickItem extends PickaxeItem implements GiantItem {
 
 	public static ItemAttributeModifiers createGiantAttributes(Tier tier, int damage, float speed) {
 		return PickaxeItem.createAttributes(tier, damage, speed)
-			.withModifierAdded(Attributes.BLOCK_INTERACTION_RANGE, new AttributeModifier(GIANT_REACH_MODIFIER, "Reach modifier", 2.5, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.HAND)
-			.withModifierAdded(Attributes.ENTITY_INTERACTION_RANGE, new AttributeModifier(GIANT_RANGE_MODIFIER, "Range modifier", 2.5, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.HAND);
+			.withModifierAdded(Attributes.BLOCK_INTERACTION_RANGE, new AttributeModifier(TwilightForestMod.prefix("reach_modifier"), 2.5, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.HAND)
+			.withModifierAdded(Attributes.ENTITY_INTERACTION_RANGE, new AttributeModifier(TwilightForestMod.prefix("range_modifier"), 2.5, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.HAND);
 	}
 
 	@Override

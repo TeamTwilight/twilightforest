@@ -6,31 +6,26 @@ import it.unimi.dsi.fastutil.ints.IntList;
 import net.minecraft.network.protocol.game.ClientboundPlaceGhostRecipePacket;
 import net.minecraft.recipebook.ServerPlaceRecipe;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.Mth;
-import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.inventory.RecipeBookMenu;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeHolder;
-import net.neoforged.neoforge.common.crafting.IShapedRecipe;
+import net.minecraft.world.item.crafting.*;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Iterator;
 import java.util.List;
 
-public class UncrafterPlaceRecipe<C extends Container> extends ServerPlaceRecipe<C> implements UncraftingPlaceRecipe<Integer> {
+public class UncrafterPlaceRecipe<I extends RecipeInput, R extends Recipe<I>> extends ServerPlaceRecipe<I, R> implements UncraftingPlaceRecipe<Integer> {
 	// Slots 0 & 1 are Uncrafting input & crafting output
 	// Slots 2 to 10 are Uncrafting matrix
 	// Slots 11 to 19 are Crafting matrix
 	private static final int matrixOffset = 11;
 
-	public UncrafterPlaceRecipe(RecipeBookMenu<C> menu) {
+	public UncrafterPlaceRecipe(RecipeBookMenu<I, R> menu) {
 		super(menu);
 	}
 
 	@Override
-	public void recipeClicked(ServerPlayer player, @Nullable RecipeHolder<? extends Recipe<C>> recipe, boolean placeAll) {
+	public void recipeClicked(ServerPlayer player, @Nullable RecipeHolder<R> recipe, boolean placeAll) {
 		if (recipe != null && player.getRecipeBook().contains(recipe)) {
 			this.inventory = player.getInventory();
 			if (this.tryClearGrid() || player.isCreative()) {
@@ -50,7 +45,7 @@ public class UncrafterPlaceRecipe<C extends Container> extends ServerPlaceRecipe
 	}
 
 	@Override
-	protected void handleRecipeClicked(RecipeHolder<? extends Recipe<C>> recipeHolder, boolean placeAll) {
+	protected void handleRecipeClicked(RecipeHolder<R> recipeHolder, boolean placeAll) {
 		boolean flag = this.menu.recipeMatches(recipeHolder);
 		int i = this.stackedContents.getBiggestCraftableStack(recipeHolder, null);
 		if (flag) {

@@ -68,7 +68,7 @@ public class GhastguardAttackGoal extends Goal {
 		double d2 = this.ghast.getTarget().getX() - (this.ghast.getX() + vec3d.x() * 4.0D);
 		double d3 = this.ghast.getTarget().getBoundingBox().minY + this.ghast.getTarget().getBbHeight() / 2.0F - (0.5D + this.ghast.getY() + this.ghast.getBbHeight() / 2.0F);
 		double d4 = this.ghast.getTarget().getZ() - (this.ghast.getZ() + vec3d.z() * 4.0D);
-		LargeFireball fireball = new LargeFireball(this.ghast.level(), this.ghast, d2, d3, d4, this.ghast.getExplosionPower());
+		LargeFireball fireball = new LargeFireball(this.ghast.level(), this.ghast, new Vec3(d2, d3, d4).normalize(), this.ghast.getExplosionPower());
 		fireball.setPos(this.ghast.getX() + vec3d.x() * 4.0D, this.ghast.getY() + this.ghast.getBbHeight() / 2.0F + 0.5D, this.ghast.getZ() + vec3d.z() * 4.0D);
 		this.ghast.level().addFreshEntity(fireball);
 

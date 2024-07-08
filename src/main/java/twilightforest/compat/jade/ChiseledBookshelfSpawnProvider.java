@@ -28,7 +28,7 @@ public enum ChiseledBookshelfSpawnProvider implements IBlockComponentProvider {
 				if (te instanceof ChiseledCanopyShelfBlockEntity shelf) {
 					BookshelfSpawner logic = shelf.getSpawner();
 					CompoundTag tag = logic.getNextSpawnData().entityToSpawn();
-					EntityType.by(tag).ifPresent(type -> tooltip.replace(new ResourceLocation("jade", "object_name"), IThemeHelper.get().title(Component.translatable("jade.spawner", accessor.getBlock().getName().getString(), type.getDescription().getString()))));
+					EntityType.by(tag).ifPresent(type -> tooltip.replace(ResourceLocation.fromNamespaceAndPath("jade", "object_name"), IThemeHelper.get().title(Component.translatable("jade.spawner", accessor.getBlock().getName().getString(), type.getDescription().getString()))));
 				}
 			}
 		}

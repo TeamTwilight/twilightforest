@@ -75,7 +75,7 @@ public abstract class StalactiteProvider implements DataProvider {
 	protected abstract void createStalactites();
 
 	public ResourceLocation makeStalactiteName(String name) {
-		return new ResourceLocation(this.modid, "entries/" + name);
+		return ResourceLocation.fromNamespaceAndPath(this.modid, "entries/" + name);
 	}
 
 	public Stalactite buildStalactite(Block ore, float sizeVariation, int maxLength, int weight) {

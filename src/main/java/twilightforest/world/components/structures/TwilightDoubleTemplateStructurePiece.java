@@ -31,7 +31,7 @@ public abstract class TwilightDoubleTemplateStructurePiece extends TwilightTempl
 	public TwilightDoubleTemplateStructurePiece(StructurePieceType structurePieceType, CompoundTag compoundTag, StructurePieceSerializationContext ctx, StructurePlaceSettings rl2SettingsFunction, StructurePlaceSettings placeSettingsOverlay) {
 		super(structurePieceType, compoundTag, ctx, rl2SettingsFunction);
 
-		this.templateOverlayLocation = new ResourceLocation(compoundTag.getString("TemplateOverlay"));
+		this.templateOverlayLocation = ResourceLocation.parse(compoundTag.getString("TemplateOverlay"));
 		this.templateOverlay = this.structureManager.getOrCreate(this.templateOverlayLocation);
 		this.placeSettingsOverlay = placeSettingsOverlay;
 	}

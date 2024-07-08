@@ -1,6 +1,11 @@
 {
-  "parent": "minecraft:block/cube_all",
+  "parent": "minecraft:block/block",
+  "connectable_blocks": [
+    "twilightforest:arctic_fur_block"
+  ],
+  "loader": "twilightforest:connected_texture_block",
   "textures": {
-    "all": "twilightforest:block/arctic_fur_block"
+    "overlay_connected": "twilightforest:block/arctic_fur_block_ctm",
+    "overlay_texture": "twilightforest:block/arctic_fur_block"
   }
 }
