@@ -187,9 +187,9 @@ test {
 		.toList()
 }
 
-tasks.named('jar', Jar).configure {
+jar {
 	manifest {
-		archiveClassifier = 'slim'
+		archiveClassifier = 'universal'
 		attributes([
 			'Specification-Title'     : mod_id,
 			'Specification-Vendor'    : "TeamTwilight",
@@ -200,10 +200,6 @@ tasks.named('jar', Jar).configure {
 			'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
 		])
 	}
-}
-
-jarJar {
-	//archiveClassifier = 'universal'
 }
 
 publishing {
