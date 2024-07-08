@@ -7,5 +7,5 @@ public interface TrophyBlockModel {
 
 	void setupRotationsForTrophy(float x, float y, float z, float mouthAngle);
 
-	void renderTrophy(PoseStack stack, MultiBufferSource buffer, int light, int overlay, float red, float green, float blue, float alpha, boolean itemForm);
+	void renderTrophy(PoseStack stack, MultiBufferSource buffer, int light, int overlay, int color, boolean itemForm);
 }

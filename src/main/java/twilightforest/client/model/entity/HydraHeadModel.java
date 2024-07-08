@@ -150,11 +150,11 @@ public class HydraHeadModel<T extends HydraHead> extends ListModel<T> implements
 	}
 
 	@Override
-	public void renderTrophy(PoseStack stack, MultiBufferSource buffer, int light, int overlay, float red, float green, float blue, float alpha, boolean itemForm) {
+	public void renderTrophy(PoseStack stack, MultiBufferSource buffer, int light, int overlay, int color, boolean itemForm) {
 		stack.scale(0.25F, 0.25F, 0.25F);
 		if (itemForm) stack.scale(0.9F, 0.9F, 0.9F);
 		stack.translate(0.0F, -1.0F, itemForm && !JappaPackReloadListener.INSTANCE.isJappaPackLoaded() ? -1.0F : 0.0F);
 		VertexConsumer consumer = buffer.getBuffer(RenderType.entityCutoutNoCull(HydraRenderer.TEXTURE));
-		this.head.render(stack, consumer, light, overlay, red, green, blue, alpha);
+		this.head.render(stack, consumer, light, overlay, color);
 	}
 }

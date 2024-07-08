@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.renderer.entity.KnightPhantomRenderer;
@@ -144,13 +145,13 @@ public class KnightPhantomModel extends HumanoidModel<KnightPhantom> implements 
 	}
 
 	@Override
-	public void renderTrophy(PoseStack stack, MultiBufferSource buffer, int light, int overlay, float red, float green, float blue, float alpha, boolean itemForm) {
+	public void renderTrophy(PoseStack stack, MultiBufferSource buffer, int light, int overlay, int color, boolean itemForm) {
 		stack.translate(0.0F, 0.25F, 0.0F);
 		VertexConsumer consumer = buffer.getBuffer(RenderType.entityCutoutNoCull(KnightPhantomRenderer.TEXTURE));
-		this.head.render(stack, consumer, light, overlay, red, green, blue, alpha);
+		this.head.render(stack, consumer, light, overlay, color);
 		stack.scale(1.1F, 1.1F, 1.1F);
 		stack.translate(0.0F, 0.05F, 0.0F);
 		VertexConsumer armorConsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(PHANTOM_ARMOR_TEXTURE));
-		this.helmet.render(stack, armorConsumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 0.0625F);
+		this.helmet.render(stack, armorConsumer, light, OverlayTexture.NO_OVERLAY, FastColor.ARGB32.colorFromFloat(0.0625F, 1.0F, 1.0F, 1.0F));
 	}
 }

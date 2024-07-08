@@ -72,8 +72,6 @@ public class NagaModel<T extends Entity> extends ListModel<T> implements TrophyB
 	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, int color) {
 		if (this.entity instanceof Naga naga) {
 			this.head.render(stack, builder, light, overlay, FastColor.ARGB32.color(FastColor.ARGB32.alpha(color), FastColor.ARGB32.red(color), (int) (FastColor.ARGB32.green(color)- naga.stunlessRedOverlayProgress), (int) (FastColor.ARGB32.blue(color) - naga.stunlessRedOverlayProgress)));
-		} else if (this.entity instanceof NagaSegment) {
-			this.body.render(stack, builder, light, overlay, color);
 		} else {
 			this.head.render(stack, builder, light, overlay, color);
 		}
@@ -86,7 +84,7 @@ public class NagaModel<T extends Entity> extends ListModel<T> implements TrophyB
 	}
 
 	@Override
-	public void renderTrophy(PoseStack stack, MultiBufferSource buffer, int light, int overlay, float red, float green, float blue, float alpha, boolean itemForm) {
+	public void renderTrophy(PoseStack stack, MultiBufferSource buffer, int light, int overlay, int color, boolean itemForm) {
 		if (JappaPackReloadListener.INSTANCE.isJappaPackLoaded()) {
 			stack.scale(0.25F, 0.25F, 0.25F);
 			stack.translate(0.0F, -1.5F, 0.0F);
@@ -95,7 +93,7 @@ public class NagaModel<T extends Entity> extends ListModel<T> implements TrophyB
 			stack.translate(0.0F, -0.25F, 0.0F);
 		}
 		VertexConsumer consumer = buffer.getBuffer(RenderType.entityCutoutNoCull(NagaRenderer.TEXTURE));
-		this.head.render(stack, consumer, light, overlay, red, green, blue, alpha);
+		this.head.render(stack, consumer, light, overlay, color);
 	}
 
 	@Override

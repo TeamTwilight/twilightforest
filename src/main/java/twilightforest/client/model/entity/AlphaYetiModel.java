@@ -225,10 +225,10 @@ public class AlphaYetiModel extends HumanoidModel<AlphaYeti> implements TrophyBl
 	}
 
 	@Override
-	public void renderTrophy(PoseStack stack, MultiBufferSource buffer, int light, int overlay, float red, float green, float blue, float alpha, boolean itemForm) {
+	public void renderTrophy(PoseStack stack, MultiBufferSource buffer, int light, int overlay, int color, boolean itemForm) {
 		stack.scale(0.2F, 0.2F, 0.2F);
 		stack.translate(0.0F, -1.5F, 0.0F);
 		VertexConsumer consumer = buffer.getBuffer(RenderType.entityCutoutNoCull(ALPHA_YETI_TEXTURE));
-		this.head.render(stack, consumer, light, overlay, red, green, blue, alpha);
+		this.head.render(stack, consumer, light, overlay, color);
 	}
 }

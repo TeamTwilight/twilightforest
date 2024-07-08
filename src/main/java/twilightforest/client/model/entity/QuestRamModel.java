@@ -343,18 +343,18 @@ public class QuestRamModel<T extends QuestRam> extends HierarchicalModel<T> impl
 	}
 
 	@Override
-	public void renderTrophy(PoseStack stack, MultiBufferSource buffer, int light, int overlay, float red, float green, float blue, float alpha, boolean itemForm) {
+	public void renderTrophy(PoseStack stack, MultiBufferSource buffer, int light, int overlay, int color, boolean itemForm) {
 		stack.scale(0.67F, 0.67F, 0.67F);
 		if (!JappaPackReloadListener.INSTANCE.isJappaPackLoaded()) {
 			stack.translate(0.0F, 0.5F, itemForm ? 0.5F : 0.67F);
 		}
 
 		VertexConsumer consumer = buffer.getBuffer(RenderType.entityCutoutNoCull(QuestRamRenderer.TEXTURE));
-		this.head.render(stack, consumer, light, overlay, red, green, blue, alpha);
+		this.head.render(stack, consumer, light, overlay, color);
 		stack.pushPose();
 		stack.scale(1.025F, 1.025F, 1.025F);
 		consumer = buffer.getBuffer(RenderType.entityCutoutNoCull(QuestRamRenderer.LINE_TEXTURE));
-		this.head.render(stack, consumer, 0xF000F0, overlay, red, green, blue, alpha);
+		this.head.render(stack, consumer, 0xF000F0, overlay, color);
 		stack.popPose();
 	}
 }

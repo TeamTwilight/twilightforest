@@ -124,12 +124,12 @@ public class UrGhastModel extends TFGhastModel<UrGhast> implements TrophyBlockMo
 	}
 
 	@Override
-	public void renderTrophy(PoseStack stack, MultiBufferSource buffer, int light, int overlay, float red, float green, float blue, float alpha, boolean itemForm) {
+	public void renderTrophy(PoseStack stack, MultiBufferSource buffer, int light, int overlay, int color, boolean itemForm) {
 		if (!itemForm) {
 			stack.translate(0.0F, -1.0F, 0.0F);
 		}
 		stack.scale(0.5F, 0.5F, 0.5F);
 		VertexConsumer consumer = buffer.getBuffer(RenderType.entityCutoutNoCull(UrGhastRenderer.TEXTURE));
-		this.body.render(stack, consumer, light, overlay, red, green, blue, alpha);
+		this.body.render(stack, consumer, light, overlay, color);
 	}
 }

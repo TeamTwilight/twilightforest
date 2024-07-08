@@ -130,39 +130,6 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 		playersNotified.add(player);
 	}
 
-	private static ResourceKey<Level> getDestination(Entity entity) {
-		if (cachedOriginDimension == null) cachedOriginDimension = ResourceKey.create(Registries.DIMENSION, new ResourceLocation(TFConfig.originDimension));
-		return !entity.getCommandSenderWorld().dimension().location().equals(TFDimension.DIMENSION)
-			? TFDimension.DIMENSION_KEY : cachedOriginDimension;
-	}
-
-	public static void attemptSendEntity(Entity entity, boolean forcedEntry, boolean makeReturnPortal) {
-		if (!entity.isAlive() || entity.level().isClientSide()) {
-			return;
-		}
-
-		if (entity.isPassenger() || entity.isVehicle() || !entity.canChangeDimensions()) {
-			return;
-		}
-
-		ResourceKey<Level> destination = getDestination(entity);
-		ServerLevel serverWorld = entity.getCommandSenderWorld().getServer().getLevel(destination);
-
-		if (serverWorld == null)
-			return;
-
-		TFPortalAttachment portalAttachment = entity.getData(TFDataAttachments.TF_PORTAL_COOLDOWN);
-
-		if (portalAttachment.getPortalTimer() > 0) return;
-
-		entity.changeDimension(serverWorld, makeReturnPortal ? new TFTeleporter(forcedEntry) : new NoReturnTeleporter());
-
-		if (destination == TFDimension.DIMENSION_KEY && entity instanceof ServerPlayer playerMP && forcedEntry) {
-			// set respawn point for TF dimension to near the arrival portal, only if we spawn here on world creation
-			playerMP.setRespawnPosition(destination, playerMP.blockPosition(), playerMP.getYRot(), true, false);
-		}
-	}
-
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		super.createBlockStateDefinition(builder);
@@ -270,14 +237,6 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 				entity.setAsInsidePortal(this, entity.blockPosition());
 			}
 		}
-	}
-
-	public static boolean isPlayerNotifiedOfRequirement(ServerPlayer player) {
-		return playersNotified.contains(player);
-	}
-
-	public static void playerNotifiedOfRequirement(ServerPlayer player) {
-		playersNotified.add(player);
 	}
 
 	// Full [VanillaCopy] of NetherPortalBlock.animateTick

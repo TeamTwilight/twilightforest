@@ -18,18 +18,4 @@ public abstract class TFPlantBlock extends BushBlock {
 	public static boolean canPlaceRootAt(BlockGetter reader, BlockPos pos) {
 		return reader.getBlockState(pos.above()).is(BlockTagGenerator.PLANTS_HANG_ON);
 	}
-
-	@Override
-	public boolean isValidBonemealTarget(LevelReader reader, BlockPos pos, BlockState state) {
-		return false;
-	}
-
-	@Override
-	public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state) {
-		return false;
-	}
-
-	@Override
-	public void performBonemeal(ServerLevel level, RandomSource randomSource, BlockPos pos, BlockState state) {
-	}
 }

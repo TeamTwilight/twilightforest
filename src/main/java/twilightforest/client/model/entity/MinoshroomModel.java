@@ -290,13 +290,13 @@ public class MinoshroomModel<T extends Minoshroom> extends HumanoidModel<T> impl
 	}
 
 	@Override
-	public void renderTrophy(PoseStack stack, MultiBufferSource buffer, int light, int overlay, float red, float green, float blue, float alpha, boolean itemForm) {
+	public void renderTrophy(PoseStack stack, MultiBufferSource buffer, int light, int overlay, int color, boolean itemForm) {
 		if (!JappaPackReloadListener.INSTANCE.isJappaPackLoaded()) {
 			stack.translate(0.0F, 0.375F, 0.56F);
 		} else {
 			stack.translate(0.0F, 0.5625F, 0.4375F);
 		}
 		VertexConsumer consumer = buffer.getBuffer(RenderType.entityCutoutNoCull(MinoshroomRenderer.TEXTURE));
-		this.head.render(stack, consumer, light, overlay, red, green, blue, alpha);
+		this.head.render(stack, consumer, light, overlay, color);
 	}
 }

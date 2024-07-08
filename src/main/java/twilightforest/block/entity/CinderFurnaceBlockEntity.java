@@ -45,8 +45,8 @@ public class CinderFurnaceBlockEntity extends FurnaceBlockEntity {
 			ItemStack itemstack = te.items.get(1);
 
 			if (te.isBurning() || !itemstack.isEmpty() && !te.items.get(0).isEmpty()) {
-				RecipeHolder<?> irecipe = level.getRecipeManager().getRecipeFor(RecipeType.SMELTING, new SingleRecipeInput(te.items.getFirst()), level).orElse(null);
-				if (irecipe != null && !te.isBurning() && te.canBurn(irecipe.value())) {
+				RecipeHolder<?> recipe = level.getRecipeManager().getRecipeFor(RecipeType.SMELTING, new SingleRecipeInput(te.items.getFirst()), level).orElse(null);
+				if (recipe != null && !te.isBurning() && te.canBurn(level, recipe.value())) {
 					te.litTime = te.getBurnDuration(itemstack);
 					te.litDuration = te.litTime;
 
@@ -105,7 +105,7 @@ public class CinderFurnaceBlockEntity extends FurnaceBlockEntity {
 
 	// [VanillaCopy] of super, only using SMELTING IRecipeType
 	protected int getRecipeBurnTime(Level level) {
-		return this.getLevel().getRecipeManager().getRecipeFor(RecipeType.SMELTING, new SingleRecipeInput(this.items.getFirst()), level).map(recipeHolder -> recipeHolder.value().getCookingTime()).orElse(200);
+		return level.getRecipeManager().getRecipeFor(RecipeType.SMELTING, new SingleRecipeInput(this.items.getFirst()), level).map(recipeHolder -> recipeHolder.value().getCookingTime()).orElse(200);
 	}
 
 	@SuppressWarnings("deprecation")

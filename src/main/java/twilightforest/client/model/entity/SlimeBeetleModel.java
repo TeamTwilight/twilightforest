@@ -247,12 +247,12 @@ public class SlimeBeetleModel<T extends SlimeBeetle> extends HierarchicalModel<T
 
 	@Override
 	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, int color) {
-		this.slimeCube.visible = false;
-		root().render(stack, builder, light, overlay, color);
+		this.slime.visible = false;
+		this.root().render(stack, builder, light, overlay, color);
 	}
 
 	public void renderTail(PoseStack stack, VertexConsumer builder, int light, int overlay) {
-		this.tail1.render(stack, builder, light, overlay);
+		this.tailBottom.render(stack, builder, light, overlay);
 	}
 
 	@Override

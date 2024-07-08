@@ -11,6 +11,7 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.util.FastColor;
 
 public class FireflyModel extends Model {
 
@@ -63,6 +64,6 @@ public class FireflyModel extends Model {
 	}
 
 	public void renderGlow(PoseStack stack, VertexConsumer consumer, float alpha) {
-		this.glow.render(stack, consumer, 0xF000F0, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, alpha);
+		this.glow.render(stack, consumer, 0xF000F0, OverlayTexture.NO_OVERLAY, FastColor.ARGB32.colorFromFloat(alpha, 1.0F, 1.0F, 1.0F));
 	}
 }

@@ -6,7 +6,7 @@ import net.minecraft.world.entity.Entity;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.MockedStatic;
-import twilightforest.client.TFClientSetup;
+import twilightforest.client.BakedMultiPartRenderers;
 import twilightforest.entity.TFPart;
 import twilightforest.junit.MockitoFixer;
 
@@ -18,10 +18,10 @@ public class ASMHooksTests {
 
 	@Test
 	public void resolveEntityRenderer() {
-		try (MockedStatic<TFClientSetup.BakedMultiPartRenderers> lookup = mockStatic(TFClientSetup.BakedMultiPartRenderers.class)) {
+		try (MockedStatic<BakedMultiPartRenderers> lookup = mockStatic(BakedMultiPartRenderers.class)) {
 			ResourceLocation location = ResourceLocation.withDefaultNamespace("test");
 			EntityRenderer<?> partRenderer = mock(EntityRenderer.class);
-			lookup.when(() -> TFClientSetup.BakedMultiPartRenderers.lookup(location)).thenReturn(partRenderer);
+			lookup.when(() -> BakedMultiPartRenderers.lookup(location)).thenReturn(partRenderer);
 
 			TFPart<?> part = mock(TFPart.class);
 			when(part.renderer()).thenReturn(location);
@@ -38,9 +38,9 @@ public class ASMHooksTests {
 
 	@Test
 	public void resolveEntityRendererNonTFPart() {
-		try (MockedStatic<TFClientSetup.BakedMultiPartRenderers> lookup = mockStatic(TFClientSetup.BakedMultiPartRenderers.class)) {
+		try (MockedStatic<BakedMultiPartRenderers> lookup = mockStatic(BakedMultiPartRenderers.class)) {
 			EntityRenderer<?> partRenderer = mock(EntityRenderer.class);
-			lookup.when(() -> TFClientSetup.BakedMultiPartRenderers.lookup(any(ResourceLocation.class))).thenReturn(partRenderer);
+			lookup.when(() -> BakedMultiPartRenderers.lookup(any(ResourceLocation.class))).thenReturn(partRenderer);
 
 			EntityRenderer<?> originalRenderer = mock(EntityRenderer.class);
 

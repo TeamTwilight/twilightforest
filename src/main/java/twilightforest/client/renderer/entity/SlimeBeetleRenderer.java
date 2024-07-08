@@ -45,7 +45,7 @@ public class SlimeBeetleRenderer<T extends SlimeBeetle, M extends HierarchicalMo
 				this.tailModel.prepareMobModel(entity, limbSwing, limbSwingAmount, partialTicks);
 				this.tailModel.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 				VertexConsumer consumer = buffers.getBuffer(RenderType.entityTranslucent(this.getTextureLocation(entity)));
-				this.tailModel.renderTail(ms, consumer, light, LivingEntityRenderer.getOverlayCoords(entity, 0),);
+				this.tailModel.renderTail(ms, consumer, light, LivingEntityRenderer.getOverlayCoords(entity, 0));
 			}
 		}
 	}

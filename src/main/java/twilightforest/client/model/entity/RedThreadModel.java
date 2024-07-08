@@ -72,7 +72,7 @@ public class RedThreadModel extends Model {
 	}
 
 	public void renderCenterPiece(PoseStack stack, VertexConsumer consumer, int light) {
-		this.center.render(stack, consumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		this.center.render(stack, consumer, light, OverlayTexture.NO_OVERLAY);
 	}
 
 	/**

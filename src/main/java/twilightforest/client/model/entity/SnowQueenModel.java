@@ -207,13 +207,13 @@ public class SnowQueenModel extends HumanoidModel<SnowQueen> implements TrophyBl
 	}
 
 	@Override
-	public void renderTrophy(PoseStack stack, MultiBufferSource buffer, int light, int overlay, float red, float green, float blue, float alpha, boolean itemForm) {
+	public void renderTrophy(PoseStack stack, MultiBufferSource buffer, int light, int overlay, int color, boolean itemForm) {
 		if (!JappaPackReloadListener.INSTANCE.isJappaPackLoaded()) {
 			stack.translate(0.0F, 0.25F, 0.0F);
 		}
 		VertexConsumer consumer = buffer.getBuffer(RenderType.entityCutoutNoCull(SnowQueenRenderer.TEXTURE));
-		this.head.render(stack, consumer, light, overlay, red, green, blue, alpha);
-		this.hat.render(stack, consumer, light, overlay, red, green, blue, alpha);
+		this.head.render(stack, consumer, light, overlay, color);
+		this.hat.render(stack, consumer, light, overlay, color);
 	}
 
 	@Override

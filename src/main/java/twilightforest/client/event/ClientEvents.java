@@ -9,17 +9,9 @@ import net.minecraft.client.gui.components.SplashRenderer;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.client.renderer.LevelRenderer;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
-import net.minecraft.client.renderer.item.ItemProperties;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
@@ -29,7 +21,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.server.packs.resources.ReloadableResourceManager;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.Music;
 import net.minecraft.sounds.Musics;
 import net.minecraft.util.Mth;
@@ -41,7 +32,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.WrittenBookItem;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -49,32 +39,18 @@ import net.minecraft.world.level.chunk.status.ChunkStatus;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.fml.ModList;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
-import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.GiantBlock;
 import twilightforest.block.MiniatureStructureBlock;
 import twilightforest.block.entity.GrowingBeanstalkBlockEntity;
-import twilightforest.client.*;
-import twilightforest.compat.curios.CuriosCompat;
-import twilightforest.client.model.block.aurorablock.NoiseVaryingModelLoader;
-import twilightforest.client.model.block.connected.ConnectedTextureModelLoader;
-import twilightforest.client.model.block.forcefield.ForceFieldModelLoader;
-import twilightforest.client.model.block.giantblock.GiantBlockModelLoader;
-import twilightforest.client.model.block.leaves.BakedLeavesModel;
-import twilightforest.client.model.block.patch.PatchModelLoader;
-import twilightforest.client.model.item.TrollsteinnModel;
-import twilightforest.client.renderer.TFSkyRenderer;
-import twilightforest.client.renderer.entity.ShieldLayer;
-import twilightforest.components.entity.TFPortalAttachment;
-import twilightforest.components.item.PotionFlaskComponent;
+import twilightforest.client.BugModelAnimationHelper;
+import twilightforest.client.ISTER;
+import twilightforest.client.OptifineWarningScreen;
+import twilightforest.client.TFShaders;
 import twilightforest.config.TFConfig;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.entity.boss.bar.ClientTFBossBar;
@@ -363,24 +339,6 @@ public class ClientEvents {
 				LevelRenderer.renderShape(event.getPoseStack(), consumer, GIANT_BLOCK, xyz.x(), xyz.y(), xyz.z(), 0.0F, 0.0F, 0.0F, 0.45F);
 			}
 		}
-	}
-
-	private static void renderGiantHitOutline(PoseStack poseStack, VertexConsumer consumer, Vec3 cam, BlockPos pos) {
-		PoseStack.Pose last = poseStack.last();
-		float posX = pos.getX() - (float) cam.x();
-		float posY = pos.getY() - (float) cam.y();
-		float posZ = pos.getZ() - (float) cam.z();
-		GIANT_BLOCK.forAllEdges((x, y, z, x1, y1, z1) -> {
-			float xSize = (float) (x1 - x);
-			float ySize = (float) (y1 - y);
-			float zSize = (float) (z1 - z);
-			float sqrt = Mth.sqrt(xSize * xSize + ySize * ySize + zSize * zSize);
-			xSize /= sqrt;
-			ySize /= sqrt;
-			zSize /= sqrt;
-			consumer.vertex(last.pose(), (float) (x + posX), (float) (y + posY), (float) (z + posZ)).color(0.0F, 0.0F, 0.0F, 0.45F).normal(last, xSize, ySize, zSize).endVertex();
-			consumer.vertex(last.pose(), (float) (x1 + posX), (float) (y1 + posY), (float) (z1 + posZ)).color(0.0F, 0.0F, 0.0F, 0.45F).normal(last, xSize, ySize, zSize).endVertex();
-		});
 	}
 
 	private static void renderCustomBossbars(CustomizeGuiOverlayEvent.BossEventProgress event) {
