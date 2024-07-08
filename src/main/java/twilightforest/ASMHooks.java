@@ -69,7 +69,10 @@ import twilightforest.world.components.structures.CustomDensitySource;
 import twilightforest.world.components.structures.util.CustomStructureData;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 @SuppressWarnings({"JavadocReference", "unused", "RedundantSuppression", "deprecation"})
 public class ASMHooks {
@@ -117,25 +120,28 @@ public class ASMHooks {
 	}
 
 	/**
-	 * Injection Point:<br>
-	 * {@link net.minecraft.server.level.ServerEntity#sendDirtyEntityData}<br>
-	 * [AFTER GETFIELD]
+	 * {@link twilightforest.asm.transformers.multipart.SendDirtytEntityDataTransformer}<p/>
+	 *
+	 * Injection Point:<br/>
+	 * {@link net.minecraft.server.level.ServerEntity#sendDirtyEntityData}
 	 */
-	public static Entity updateMultiparts(Entity entity) {
+	public static Entity sendDirtyEntityData(Entity entity) {
 		if (entity.isMultipartEntity())
 			PacketDistributor.sendToPlayersTrackingEntity(entity, new UpdateTFMultipartPacket(entity));
 		return entity;
 	}
 
 	/**
-	 * Injection Point:<br>
-	 * {@link net.minecraft.client.renderer.entity.EntityRenderDispatcher#getRenderer(Entity)}<br>
-	 * [BEFORE LAST ARETURN]
+	 * {@link twilightforest.asm.transformers.multipart.ResolveEntityRendererTransformer}<p/>
+	 *
+	 * Injection Point:<br/>
+	 * {@link net.minecraft.client.renderer.entity.EntityRenderDispatcher#getRenderer(Entity)}<br/>
+	 * Targets: {@link net.minecraft.client.renderer.entity.EntityRenderDispatcher#renderers}
 	 */
 	@Nullable
-	public static EntityRenderer<?> getMultipartRenderer(@Nullable EntityRenderer<?> renderer, Entity entity) {
-		if (entity instanceof TFPart<?>)
-			return TFClientSetup.BakedMultiPartRenderers.lookup(((TFPart<?>) entity).renderer());
+	public static EntityRenderer<?> resolveEntityRenderer(@Nullable EntityRenderer<?> renderer, Entity entity) {
+		if (entity instanceof TFPart<?> part)
+			return TFClientSetup.BakedMultiPartRenderers.lookup(part.renderer());
 		return renderer;
 	}
 
@@ -156,6 +162,66 @@ public class ASMHooks {
 			}
 		});
 		return list;
+	}
+
+	private static class MultipartEntityIteratorWrapper implements Iterator<Entity> {
+
+		private final Iterator<Entity> delegate;
+		private @Nullable TFPart<?>[] parts;
+		private int partIndex;
+
+		MultipartEntityIteratorWrapper(Iterator<Entity> iter) {
+			this.delegate = iter;
+		}
+
+		@Override
+		public boolean hasNext() {
+			return parts != null || delegate.hasNext();
+		}
+
+		@Override
+		public Entity next() {
+			if (parts != null) {
+				Entity next = parts[partIndex];
+				partIndex++;
+				if (partIndex >= parts.length)
+					parts = null;
+				return next;
+			}
+			Entity next = delegate.next();
+			if (next.isMultipartEntity()) {
+				PartEntity<?>[] arr = next.getParts();
+				if (arr != null) {
+					int size = 0;
+					for (PartEntity<?> partEntity : arr) {
+						if (partEntity instanceof TFPart<?>)
+							size++;
+					}
+					parts = new TFPart<?>[size];
+					int index = 0;
+					for (PartEntity<?> partEntity : arr) {
+						if (partEntity instanceof TFPart<?> part) {
+							parts[index] = part;
+							index++;
+						}
+					}
+				}
+			}
+			return next;
+		}
+
+		@Override
+		public void remove() {
+			if (parts == null) {
+				delegate.remove();
+			} else {
+				if (partIndex + 1 >= parts.length) {
+					parts = null;
+				} else {
+					System.arraycopy(parts, partIndex + 1, parts, partIndex, parts.length - 1 - partIndex);
+				}
+			}
+		}
 	}
 
 	/**

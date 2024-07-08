@@ -10,55 +10,6 @@ var VarInsnNode = Java.type('org.objectweb.asm.tree.VarInsnNode')
 function initializeCoreMod() {
     ASM.loadFile('META-INF/asm/util/util.js');
     return {
-        'sync': {
-            'target': {
-                'type': 'METHOD',
-                'class': 'net.minecraft.server.level.ServerEntity',
-                'methodName': 'sendDirtyEntityData',
-                'methodDesc': '()V'
-            },
-            'transformer': function (/*org.objectweb.asm.tree.MethodNode*/ methodNode) {
-                var /*org.objectweb.asm.tree.InsnList*/ instructions = methodNode.instructions;
-                instructions.insert(
-                    ASM.findFirstInstruction(methodNode, Opcodes.GETFIELD),
-                    ASM.listOf(
-                        new MethodInsnNode(
-                            Opcodes.INVOKESTATIC,
-                            'twilightforest/ASMHooks',
-                            'updateMultiparts',
-                            '(Lnet/minecraft/world/entity/Entity;)Lnet/minecraft/world/entity/Entity;',
-                            false
-                        )
-                    )
-                );
-                return methodNode;
-            }
-        },
-        'renderer': {
-            'target': {
-                'type': 'METHOD',
-                'class': 'net.minecraft.client.renderer.entity.EntityRenderDispatcher',
-                'methodName': 'getRenderer',
-                'methodDesc': '(Lnet/minecraft/world/entity/Entity;)Lnet/minecraft/client/renderer/entity/EntityRenderer;'
-            },
-            'transformer': function (/*org.objectweb.asm.tree.MethodNode*/ methodNode) {
-                var /*org.objectweb.asm.tree.InsnList*/ instructions = methodNode.instructions;
-                instructions.insertBefore(
-                    findLastInstruction(methodNode, Opcodes.ARETURN),
-                    ASM.listOf(
-                        new VarInsnNode(Opcodes.ALOAD, 1),
-                        new MethodInsnNode(
-                            Opcodes.INVOKESTATIC,
-                            'twilightforest/ASMHooks',
-                            'getMultipartRenderer',
-                            '(Lnet/minecraft/client/renderer/entity/EntityRenderer;Lnet/minecraft/world/entity/Entity;)Lnet/minecraft/client/renderer/entity/EntityRenderer;',
-                            false
-                        )
-                    )
-                );
-                return methodNode;
-            }
-        },
         'render': {
             'target': {
                 'type': 'METHOD',
