@@ -21,6 +21,7 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import twilightforest.entity.projectile.ChainBlock;
+import twilightforest.init.TFDataAttachments;
 
 import java.util.Optional;
 
@@ -36,13 +37,15 @@ public record SmashBlocksEffect(LevelBasedValue maxSmash, LevelBasedValue radius
 
 	@Override
 	public void apply(ServerLevel level, int enchantmentLevel, EnchantedItemInUse item, Entity entity, Vec3 position) {
-		int blocksSmashed = 0;
 		if (item.owner() instanceof ServerPlayer player) {
+			int blocksSmashed = entity.getData(TFDataAttachments.SMASH_BLOCKS).getBlocksSmashed();
+			int maxSmash = Math.round(this.maxSmash.calculate(enchantmentLevel));
+			if (blocksSmashed >= maxSmash) return;
 			BlockPos start = BlockPos.containing(position);
 			int radius = Math.round(this.radius.calculate(enchantmentLevel));
-			int maxSmash = Math.round(this.maxSmash.calculate(enchantmentLevel));
 
 			for (BlockPos pos : BlockPos.betweenClosed(start.offset(-radius, 0, -radius), start.offset(radius, 0, radius))) {
+				if (blocksSmashed >= maxSmash) break;
 				BlockState state = level.getBlockState(pos);
 				if (this.immuneBlocks().isPresent() && this.immuneBlocks().get().contains(state.getBlockHolder())) continue;
 				if (!state.isAir() && ChainBlock.canBreakBlockAt(level, pos, state, item.itemStack(), player.gameMode.getGameModeForPlayer().isBlockPlacingRestricted()) && state.canEntityDestroy(level, pos, player)) {
@@ -53,12 +56,11 @@ public record SmashBlocksEffect(LevelBasedValue maxSmash, LevelBasedValue radius
 							level.playSound(null, pos, this.smashSound().get().value(), SoundSource.BLOCKS, 1.0F, 1.0F);
 						}
 						blocksSmashed++;
-						if (blocksSmashed >= maxSmash) {
-							break;
-						}
 					}
 				}
 			}
+
+			entity.getData(TFDataAttachments.SMASH_BLOCKS).setBlocksSmashed(blocksSmashed);
 			if (entity instanceof ChainBlock block && blocksSmashed >= maxSmash) {
 				block.retractBlock();
 			}

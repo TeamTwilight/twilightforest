@@ -1,6 +1,7 @@
 package twilightforest.item;
 
 import net.minecraft.core.registries.Registries;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -88,18 +89,20 @@ public class ChainBlockItem extends Item {
 	@Override
 	public boolean isCorrectToolForDrops(ItemStack stack, BlockState state) {
 		//dont try to check harvest level if we arent thrown
-		if (stack.get(TFDataComponents.THROWN_PROJECTILE) == null) return false;
-		if (ServerLifecycleHooks.getCurrentServer() != null && stack.getEnchantmentLevel(ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.ENCHANTMENT).getHolderOrThrow(TFEnchantments.DESTRUCTION)) > 0) {
-            return state.is(BlockTagGenerator.MINEABLE_WITH_BLOCK_AND_CHAIN) && this.getHarvestLevel(stack).createToolProperties(BlockTagGenerator.MINEABLE_WITH_BLOCK_AND_CHAIN).isCorrectForDrops(state);
+		if (stack.get(TFDataComponents.THROWN_PROJECTILE) == null || !state.is(BlockTagGenerator.MINEABLE_WITH_BLOCK_AND_CHAIN)) return false;
+		MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+		if (server != null) {
+			int destruction = stack.getEnchantmentLevel(server.registryAccess().registryOrThrow(Registries.ENCHANTMENT).getHolderOrThrow(TFEnchantments.DESTRUCTION));
+			if (destruction > 0) return this.getHarvestLevel(destruction).createToolProperties(BlockTagGenerator.MINEABLE_WITH_BLOCK_AND_CHAIN).isCorrectForDrops(state);
 		}
 		return false;
 	}
 
-	public Tier getHarvestLevel(ItemStack stack) {
-        return switch (stack.getEnchantmentLevel(ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.ENCHANTMENT).getHolderOrThrow(TFEnchantments.DESTRUCTION))) {
-            case 1 -> Tiers.WOOD;
-            case 2 -> Tiers.STONE;
+	public Tier getHarvestLevel(int destruction) {
+		return switch (destruction) {
+			case 1 -> Tiers.WOOD;
+			case 2 -> Tiers.STONE;
 			default -> Tiers.IRON;
-        };
+		};
 	}
 }
