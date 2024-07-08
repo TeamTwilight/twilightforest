@@ -182,6 +182,7 @@ dependencies {
 
 test {
 	useJUnitPlatform()
+	println(properties)
 }
 
 tasks.named('jar', Jar).configure {
