@@ -182,7 +182,9 @@ dependencies {
 
 test {
 	useJUnitPlatform()
-	println(properties)
+	jvmArgs = jvmArgs.stream()
+		.map(s -> s.startsWith("\"") && s.endsWith("\"") ? s.replaceAll("\"", "") : s)
+		.toList()
 }
 
 tasks.named('jar', Jar).configure {
@@ -200,7 +202,7 @@ tasks.named('jar', Jar).configure {
 	}
 }
 
-tasks.named('jarJar') {
+jarJar {
 	//archiveClassifier = 'universal'
 }
 
