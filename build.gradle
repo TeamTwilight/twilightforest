@@ -58,7 +58,7 @@ neoForge {
 
 	mods {
 		twilightforest {
-			sourceSet sourceSets.main
+			sourceSet this.sourceSets.main
 		}
 
 		'tf-asm' {
@@ -204,13 +204,13 @@ jar {
 
 publishing {
 	publications {
-		mavenJava(MavenPublication) {
+		create('mavenJava', MavenPublication) {
 			afterEvaluate {
-				artifact project.jar
-				artifact project.sourceJar
+				artifact this.project.jar
+				artifact this.project.sourceJar
 			}
 			groupId 'team-twilight'
-			artifactId project.mod_id
+			artifactId this.project.mod_id
 		}
 	}
 	repositories {
