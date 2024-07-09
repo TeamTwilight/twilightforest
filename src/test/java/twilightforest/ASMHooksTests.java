@@ -87,4 +87,9 @@ public class ASMHooksTests {
 		assertEquals(Entity.class, assertDoesNotThrow(result::next).getClass().getSuperclass());
 	}
 
+	@Test
+	public void failTest() {
+		assertTrue(false);
+	}
+
 }
