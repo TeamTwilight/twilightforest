@@ -27,8 +27,11 @@ dependencies {
 	compileOnly "net.neoforged.fancymodloader:loader:4.0.8"
 
 	// This is for javadoc, please do not actually classload anything from the main source set!!!!!!
-	def jankAssShit = RunUtils.getIntellijOutputDirectory(rootProject).apply(rootProject).toPath().resolve('production')
-	compileOnly files(jankAssShit.resolve('classes'), jankAssShit.resolve('resources'))
+	def jankAssShit = RunUtils.getIntellijOutputDirectory(rootProject)
+	if (jankAssShit != null) {
+		jankAssShit = jankAssShit.apply(rootProject).toPath().resolve('production')
+		compileOnly files(jankAssShit.resolve('classes'), jankAssShit.resolve('resources'))
+	}
 }
 
 jar {
