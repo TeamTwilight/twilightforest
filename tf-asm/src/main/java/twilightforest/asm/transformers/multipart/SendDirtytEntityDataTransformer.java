@@ -25,7 +25,7 @@ public class SendDirtytEntityDataTransformer implements ITransformer<MethodNode>
 			Opcodes.GETFIELD,
 			"net/minecraft/server/level/ServerEntity",
 			"entity"
-		).findFirst().ifPresent(target -> node.instructions.insertBefore(
+		).findFirst().ifPresent(target -> node.instructions.insert(
 			target,
 			ASMAPI.listOf(
 				new MethodInsnNode(

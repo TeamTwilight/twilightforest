@@ -41,7 +41,7 @@ public class ResolveEntitiesForRendereringTransformer implements ITransformer<Me
 					Opcodes.INVOKESTATIC,
 					"twilightforest/ASMHooks",
 					"resolveEntitiesForRendering",
-					"(Ljava/lang/Iterator;)Ljava/lang/Iterator;"
+					"(Ljava/util/Iterator;)Ljava/util/Iterator;"
 				)
 			)
 		));

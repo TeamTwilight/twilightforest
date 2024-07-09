@@ -148,22 +148,13 @@ public class ASMHooks {
 	}
 
 	/**
-	 * Injection Point:<br>
-	 * {@link net.minecraft.client.renderer.LevelRenderer#renderLevel(DeltaTracker, boolean, Camera, GameRenderer, LightTexture, Matrix4f, Matrix4f)}<br>
-	 * [AFTER {@link net.minecraft.client.multiplayer.ClientLevel#entitiesForRendering}]
+	 * {@link twilightforest.asm.transformers.multipart.ResolveEntitiesForRendereringTransformer}<p/>
+	 *
+	 * Injection Point:<br/>
+	 * {@link net.minecraft.client.renderer.LevelRenderer#renderLevel(DeltaTracker, boolean, Camera, GameRenderer, LightTexture, Matrix4f, Matrix4f)}<br/>
+	 * [Targets: {@link net.minecraft.client.multiplayer.ClientLevel#entitiesForRendering}]
 	 */
 	public static Iterator<Entity> resolveEntitiesForRendering(Iterator<Entity> iter) {
-		/*List<Entity> list = new ArrayList<>();
-		iter.forEach(entity -> {
-			list.add(entity);
-			if (entity.isMultipartEntity() && entity.getParts() != null) {
-				for (PartEntity<?> part : entity.getParts()) {
-					if (part instanceof TFPart)
-						list.add(part);
-				}
-			}
-		});
-		return list;*/
 		return new MultipartEntityIteratorWrapper(iter);
 	}
 

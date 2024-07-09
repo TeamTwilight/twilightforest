@@ -23,29 +23,34 @@ public class ResolveEntityRendererTransformer implements ITransformer<MethodNode
 	@Override
 	public @NotNull MethodNode transform(MethodNode node, ITransformerVotingContext context) {
 		ASMUtil.findFieldInstructions(
-			node,
-			Opcodes.GETFIELD,
-			"net/minecraft/client/renderer/entity/EntityRenderDispatcher",
-			"renderers"
-		).map(searchTarget -> ASMUtil.findMethodInstructions(
-			node,
-			searchTarget,
-			Opcodes.INVOKEINTERFACE,
-			"java/util/Map",
-			"get",
-			"(Ljava/lang/Object;)Ljava/lang/Object;"
-		).findFirst()).filter(Optional::isPresent).map(Optional::get).forEach(target -> node.instructions.insert(
-			target,
-			ASMAPI.listOf(
-				new VarInsnNode(Opcodes.ALOAD, 1),
-				new MethodInsnNode(
-					Opcodes.INVOKESTATIC,
-					"twilightforest/ASMHooks",
-					"resolveEntityRenderer",
-					"(Lnet/minecraft/client/renderer/entity/EntityRenderer;Lnet/minecraft/world/entity/Entity;)Lnet/minecraft/client/renderer/entity/EntityRenderer;"
+				node,
+				Opcodes.GETFIELD,
+				"net/minecraft/client/renderer/entity/EntityRenderDispatcher",
+				"renderers"
+			).map(searchTarget -> ASMUtil.findMethodInstructions(
+				node,
+				searchTarget,
+				Opcodes.INVOKEINTERFACE,
+				"java/util/Map",
+				"get",
+				"(Ljava/lang/Object;)Ljava/lang/Object;"
+			).findFirst().flatMap(searchTarget2 -> ASMUtil.findInstructions(
+				node,
+				searchTarget2,
+				Opcodes.CHECKCAST
+			).findFirst())).filter(Optional::isPresent).map(Optional::get)
+			.forEach(target -> node.instructions.insert(
+				target,
+				ASMAPI.listOf(
+					new VarInsnNode(Opcodes.ALOAD, 1),
+					new MethodInsnNode(
+						Opcodes.INVOKESTATIC,
+						"twilightforest/ASMHooks",
+						"resolveEntityRenderer",
+						"(Lnet/minecraft/client/renderer/entity/EntityRenderer;Lnet/minecraft/world/entity/Entity;)Lnet/minecraft/client/renderer/entity/EntityRenderer;"
+					)
 				)
-			)
-		));
+			));
 		return node;
 	}
 
