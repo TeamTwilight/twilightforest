@@ -48,6 +48,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.entity.PartEntity;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import twilightforest.block.CloudBlock;
@@ -71,6 +72,7 @@ import twilightforest.world.components.structures.util.CustomStructureData;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -150,8 +152,8 @@ public class ASMHooks {
 	 * {@link net.minecraft.client.renderer.LevelRenderer#renderLevel(DeltaTracker, boolean, Camera, GameRenderer, LightTexture, Matrix4f, Matrix4f)}<br>
 	 * [AFTER {@link net.minecraft.client.multiplayer.ClientLevel#entitiesForRendering}]
 	 */
-	public static Iterable<Entity> renderMultiparts(Iterable<Entity> iter) {
-		List<Entity> list = new ArrayList<>();
+	public static Iterator<Entity> resolveEntitiesForRendering(Iterator<Entity> iter) {
+		/*List<Entity> list = new ArrayList<>();
 		iter.forEach(entity -> {
 			list.add(entity);
 			if (entity.isMultipartEntity() && entity.getParts() != null) {
@@ -161,13 +163,14 @@ public class ASMHooks {
 				}
 			}
 		});
-		return list;
+		return list;*/
+		return new MultipartEntityIteratorWrapper(iter);
 	}
 
 	private static class MultipartEntityIteratorWrapper implements Iterator<Entity> {
 
 		private final Iterator<Entity> delegate;
-		private @Nullable TFPart<?>[] parts;
+		private TFPart<?> @Nullable [] parts;
 		private int partIndex;
 
 		MultipartEntityIteratorWrapper(Iterator<Entity> iter) {
@@ -191,18 +194,23 @@ public class ASMHooks {
 			Entity next = delegate.next();
 			if (next.isMultipartEntity()) {
 				PartEntity<?>[] arr = next.getParts();
+				// getParts is nullable, the annotation is used incorrectly
+				//noinspection ConstantValue
 				if (arr != null) {
 					int size = 0;
 					for (PartEntity<?> partEntity : arr) {
 						if (partEntity instanceof TFPart<?>)
 							size++;
 					}
-					parts = new TFPart<?>[size];
-					int index = 0;
-					for (PartEntity<?> partEntity : arr) {
-						if (partEntity instanceof TFPart<?> part) {
-							parts[index] = part;
-							index++;
+					if (size > 0) {
+						partIndex = 0;
+						parts = new TFPart<?>[size];
+						int index = 0;
+						for (PartEntity<?> partEntity : arr) {
+							if (partEntity instanceof TFPart<?> part) {
+								parts[index] = part;
+								index++;
+							}
 						}
 					}
 				}
@@ -212,13 +220,13 @@ public class ASMHooks {
 
 		@Override
 		public void remove() {
-			if (parts == null) {
+			if (parts == null || partIndex <= 0) {
 				delegate.remove();
 			} else {
-				if (partIndex + 1 >= parts.length) {
+				if (partIndex >= parts.length) {
 					parts = null;
 				} else {
-					System.arraycopy(parts, partIndex + 1, parts, partIndex, parts.length - 1 - partIndex);
+					System.arraycopy(parts, partIndex, parts, partIndex - 1, parts.length - 1 - partIndex - 1);
 				}
 			}
 		}

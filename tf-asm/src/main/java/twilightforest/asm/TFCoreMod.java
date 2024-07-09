@@ -14,6 +14,9 @@ import twilightforest.asm.transformers.lead.LeashFenceKnotSurvivesTransformer;
 import twilightforest.asm.transformers.map.RenderMapDecorationsTransformer;
 import twilightforest.asm.transformers.map.ResolveMapDataForRenderTransformer;
 import twilightforest.asm.transformers.map.ShouldMapRenderInArmTransformer;
+import twilightforest.asm.transformers.multipart.ResolveEntitiesForRendereringTransformer;
+import twilightforest.asm.transformers.multipart.ResolveEntityRendererTransformer;
+import twilightforest.asm.transformers.multipart.SendDirtytEntityDataTransformer;
 
 import java.util.List;
 
@@ -47,7 +50,12 @@ public class TFCoreMod implements ICoreMod {
 			// map
 			new RenderMapDecorationsTransformer(),
 			new ResolveMapDataForRenderTransformer(),
-			new ShouldMapRenderInArmTransformer()
+			new ShouldMapRenderInArmTransformer(),
+
+			// multipart
+			new ResolveEntitiesForRendereringTransformer(),
+			new ResolveEntityRendererTransformer(),
+			new SendDirtytEntityDataTransformer()
 		);
 	}
 }

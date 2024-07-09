@@ -1,3 +1,5 @@
+import org.jetbrains.gradle.ext.JUnit
+
 plugins {
 	id 'java-library'
 	id 'eclipse'
@@ -48,10 +50,11 @@ base {
 
 subprojects {
 	version = project(":").version
-	group = project(":").group
 }
 
 neoForge {
+	evaluationDependsOnChildren()
+
 	version = project.neo_version
 
 	validateAccessTransformers = true
@@ -62,7 +65,7 @@ neoForge {
 		}
 
 		'tf-asm' {
-			dependency project(":tf-asm")
+			sourceSet project(":tf-asm").sourceSets.main
 		}
 	}
 
@@ -74,7 +77,7 @@ neoForge {
 				project {
 					settings {
 						runConfigurations {
-							defaults(org.jetbrains.gradle.ext.JUnit) {
+							defaults(JUnit) {
 								workingDirectory = project.file("build/minecraft-junit").canonicalPath
 							}
 						}
@@ -157,7 +160,7 @@ repositories {
 }
 
 dependencies {
-	jarJar project(":tf-asm")
+	jarJar implementation(project(":tf-asm"))
 
 	//make sure to only pick one of these when testing (switch others to compileOnly)
 	implementation "mezz.jei:jei-${project.minecraft_version}-neoforge:${project.jei_version}"
@@ -180,10 +183,14 @@ dependencies {
 	testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '5.12.0'
 }
 
+configurations.testImplementation {
+	exclude module: 'tf-asm'
+}
+
 test {
 	useJUnitPlatform()
 	jvmArgs = jvmArgs.stream()
-		.map(s -> s.startsWith("\"") && s.endsWith("\"") ? s.replaceAll("\"", "") : s)
+		.map(s -> s.startsWith("\"") && s.endsWith("\"") ? s.substring(1, s.length() - 1) : s)
 		.toList()
 }
 
@@ -194,8 +201,8 @@ jar {
 			'Specification-Title'     : mod_id,
 			'Specification-Vendor'    : "TeamTwilight",
 			'Specification-Version'   : "1",
-			'Implementation-Title'    : project.name,
-			'Implementation-Version'  : project.jar.archiveVersion,
+			'Implementation-Title'    : this.project.name,
+			'Implementation-Version'  : this.project.jar.archiveVersion,
 			'Implementation-Vendor'   : "TeamTwilight",
 			'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
 		])
