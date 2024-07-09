@@ -14,14 +14,13 @@ import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.WorldGenRegion;
-import net.minecraft.sounds.Music;
-import net.minecraft.sounds.Musics;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -29,10 +28,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.decoration.LeashFenceKnotEntity;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.DyedItemColor;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.StructureManager;
+import net.minecraft.world.level.*;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
@@ -44,13 +40,12 @@ import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.pieces.PiecesContainer;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.entity.PartEntity;
 import net.neoforged.neoforge.network.PacketDistributor;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
+import twilightforest.asm.transformers.shroom.ModifySoilDecisionForMushroomBlockSurvivabilityTransformer;
 import twilightforest.block.CloudBlock;
 import twilightforest.block.WroughtIronFenceBlock;
 import twilightforest.client.FoliageColorHandler;
@@ -59,7 +54,6 @@ import twilightforest.config.TFConfig;
 import twilightforest.entity.TFPart;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDataComponents;
-import twilightforest.init.TFDimension;
 import twilightforest.init.TFItems;
 import twilightforest.init.custom.ChunkBlanketProcessors;
 import twilightforest.item.ArcticArmorItem;
@@ -69,12 +63,7 @@ import twilightforest.util.WorldUtil;
 import twilightforest.world.components.structures.CustomDensitySource;
 import twilightforest.world.components.structures.util.CustomStructureData;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 @SuppressWarnings({"JavadocReference", "unused", "RedundantSuppression", "deprecation"})
 public class ASMHooks {
@@ -259,17 +248,21 @@ public class ASMHooks {
 	}
 
 	/**
-	 * Injection Point:<br>
-	 * {@link net.minecraft.world.level.block.MushroomBlock#canSurvive(BlockState, LevelReader, BlockPos)}  }<br>
-	 * [AFTER INVOKEINTERFACE {@link LevelReader#getRawBrightness(BlockPos, int)}]
+	 * {@link ModifySoilDecisionForMushroomBlockSurvivabilityTransformer}<p/>
+	 *
+	 * Injection Point:<br/>
+	 * {@link net.minecraft.world.level.block.MushroomBlock#canSurvive(BlockState, LevelReader, BlockPos)}<br/>
+	 * Targets: {@link BlockState#canSustainPlant(BlockGetter, BlockPos, Direction, BlockState)}
 	 */
-	public static int shroom(int o, LevelReader level, BlockPos pos) {
+	public static TriState modifySoilDecisionForMushroomBlockSurvivability(TriState o, LevelReader level, BlockPos pos) {
+		if (!o.isDefault())
+			return o; // Short-circuit - We should not override non-default soil behaviour otherwise this would allow Mushrooms to survive on ALL blocks
 		for (int x = -1; x <= 1; x++) {
 			for (int z = -1; z <= 1; z++) {
 				if (x == 0 && z == 0)
 					continue;
 				if (level.getBlockState(pos.offset(x, -1, z)).is(TFBlocks.TWILIGHT_PORTAL))
-					return 0;
+					return TriState.TRUE;
 			}
 		}
 		return o;

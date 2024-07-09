@@ -17,6 +17,7 @@ import twilightforest.asm.transformers.map.ShouldMapRenderInArmTransformer;
 import twilightforest.asm.transformers.multipart.ResolveEntitiesForRendereringTransformer;
 import twilightforest.asm.transformers.multipart.ResolveEntityRendererTransformer;
 import twilightforest.asm.transformers.multipart.SendDirtytEntityDataTransformer;
+import twilightforest.asm.transformers.shroom.ModifySoilDecisionForMushroomBlockSurvivabilityTransformer;
 
 import java.util.List;
 
@@ -55,7 +56,10 @@ public class TFCoreMod implements ICoreMod {
 			// multipart
 			new ResolveEntitiesForRendereringTransformer(),
 			new ResolveEntityRendererTransformer(),
-			new SendDirtytEntityDataTransformer()
+			new SendDirtytEntityDataTransformer(),
+
+			// shroom
+			new ModifySoilDecisionForMushroomBlockSurvivabilityTransformer()
 		);
 	}
 }
