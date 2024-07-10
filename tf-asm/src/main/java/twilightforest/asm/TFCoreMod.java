@@ -5,6 +5,9 @@ import net.neoforged.neoforgespi.coremod.ICoreMod;
 import twilightforest.asm.transformers.armor.ArmorColorRenderingTransformer;
 import twilightforest.asm.transformers.armor.ArmorVisibilityRenderingTransformer;
 import twilightforest.asm.transformers.armor.CancelArmorRenderingTransformer;
+import twilightforest.asm.transformers.beardifier.BeardifierClassTransformer;
+import twilightforest.asm.transformers.beardifier.BeardifierComputeTransformer;
+import twilightforest.asm.transformers.beardifier.InitializeCustomBeardifierFieldsDuringForStructuresInChunkTransformer;
 import twilightforest.asm.transformers.book.ModifyWrittenBookNameTransformer;
 import twilightforest.asm.transformers.chunk.ChunkStatusTaskTransformer;
 import twilightforest.asm.transformers.cloud.IsRainingAtTransformer;
@@ -30,6 +33,11 @@ public class TFCoreMod implements ICoreMod {
 			new ArmorColorRenderingTransformer(),
 			new ArmorVisibilityRenderingTransformer(),
 			new CancelArmorRenderingTransformer(),
+
+			// beardifier
+			new BeardifierClassTransformer(),
+			new BeardifierComputeTransformer(),
+			new InitializeCustomBeardifierFieldsDuringForStructuresInChunkTransformer(),
 
 			// book
 			new ModifyWrittenBookNameTransformer(),
