@@ -111,6 +111,17 @@ public class ASMHooks {
 	}
 
 	/**
+	 * {@link twilightforest.asm.transformers.map.ResolveNearestNonRandomSpreadMapStructureTransformer}<p/>
+	 *
+	 * Injection Point:<br/>
+	 * {@link net.minecraft.world.level.chunk.ChunkGenerator#findNearestMapStructure(ServerLevel, HolderSet, BlockPos, int, boolean)}
+	 */
+	@Nullable
+	public static Pair<BlockPos, Holder<Structure>> resolveNearestNonRandomSpreadMapStructure(@Nullable Pair<BlockPos, Holder<Structure>> o, ServerLevel level, HolderSet<Structure> targetStructures, BlockPos pos, int searchRadius, boolean skipKnownStructures) {
+		return WorldUtil.findNearestMapLandmark(level, targetStructures, pos, searchRadius, skipKnownStructures).orElse(o);
+	}
+
+	/**
 	 * {@link twilightforest.asm.transformers.multipart.SendDirtytEntityDataTransformer}<p/>
 	 *
 	 * Injection Point:<br/>
@@ -345,18 +356,6 @@ public class ASMHooks {
 		customDensities.back(Integer.MAX_VALUE);
 
 		return densityBefore + newDensity;
-	}
-
-	/**
-	 * Injection Point:<br>
-	 * {@link net.minecraft.world.level.chunk.ChunkGenerator#findNearestMapStructure(ServerLevel, HolderSet, BlockPos, int, boolean)}<br>
-	 * [BEFORE LAST ARETURN]
-	 */
-	@Nullable
-	public static Pair<BlockPos, Holder<Structure>> findNearestMapLandmark(@Nullable Pair<BlockPos, Holder<Structure>> oldReturnable, ServerLevel level, HolderSet<Structure> targetStructures, BlockPos pos, int searchRadius, boolean skipKnownStructures) {
-		Pair<BlockPos, Holder<Structure>> nearestLandmark = WorldUtil.findNearestMapLandmark(level, targetStructures, pos, searchRadius, skipKnownStructures);
-
-		return nearestLandmark != null ? nearestLandmark : oldReturnable;
 	}
 
 	/**

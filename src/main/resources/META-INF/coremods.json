@@ -1,4 +1,3 @@
 {
-  "structure_terraform": "META-INF/asm/structure_terraform.js",
-  "structure_scan": "META-INF/asm/structure_scan.js"
+  "structure_terraform": "META-INF/asm/structure_terraform.js"
 }
