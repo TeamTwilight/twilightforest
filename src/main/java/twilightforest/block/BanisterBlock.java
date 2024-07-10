@@ -132,7 +132,7 @@ public class BanisterBlock extends HorizontalDirectionalBlock implements SimpleW
 
 	@Override
 	public @Nullable PathType getBlockPathType(BlockState state, BlockGetter level, BlockPos pos, @Nullable Mob mob) {
-		return PathType.BLOCKED;
+		return PathType.FENCE;
 	}
 
 	@Override
