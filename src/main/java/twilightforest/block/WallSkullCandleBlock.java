@@ -23,7 +23,8 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import twilightforest.block.entity.SkullCandleBlockEntity;
+import twilightforest.components.item.SkullCandles;
+import twilightforest.init.TFDataComponents;
 
 import java.util.List;
 import java.util.Map;
@@ -75,10 +76,7 @@ public class WallSkullCandleBlock extends AbstractSkullCandleBlock {
 
 	@Override
 	public Iterable<Vec3> getParticleOffsets(BlockState state, LevelAccessor accessor, BlockPos pos) {
-		if (accessor.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) {
-			return PARTICLE_OFFSETS.get(sc.getCandleAmount());
-		}
-		return PARTICLE_OFFSETS.get(1);
+		return PARTICLE_OFFSETS.get(state.getValue(CANDLES));
 	}
 
 	@Override
@@ -93,7 +91,7 @@ public class WallSkullCandleBlock extends AbstractSkullCandleBlock {
 				Direction var10 = dir.getOpposite();
 				state = state.setValue(FACING, var10);
 				if (!getter.getBlockState(pos.relative(dir)).canBeReplaced(ctx)) {
-					return state.setValue(LIGHTING, Lighting.NONE);
+					return state.setValue(LIGHTING, Lighting.NONE).setValue(CANDLES, ctx.getItemInHand().getOrDefault(TFDataComponents.SKULL_CANDLES, SkullCandles.DEFAULT).count());
 				}
 			}
 		}

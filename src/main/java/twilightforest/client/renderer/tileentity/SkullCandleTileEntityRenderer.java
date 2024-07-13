@@ -24,6 +24,7 @@ import net.minecraft.world.item.component.ResolvableProfile;
 import net.minecraft.world.level.block.CandleBlock;
 import net.minecraft.world.level.block.SkullBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.RotationSegment;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.block.AbstractSkullCandleBlock;
@@ -84,8 +85,8 @@ public class SkullCandleTileEntityRenderer<T extends SkullCandleBlockEntity> imp
 		Minecraft.getInstance().getBlockRenderer().renderSingleBlock(
 			AbstractSkullCandleBlock.candleColorToCandle(AbstractSkullCandleBlock.CandleColors.colorFromInt(entity.getCandleColor()))
 				.defaultBlockState()
-				.setValue(CandleBlock.CANDLES, Math.max(1, entity.getCandleAmount()))
-				.setValue(CandleBlock.LIT, state.getValue(AbstractSkullCandleBlock.LIGHTING) == LightableBlock.Lighting.NORMAL), stack, buffer, light, overlay);
+				.setValue(CandleBlock.CANDLES, Math.max(1, state.getValue(BlockStateProperties.CANDLES)))
+				.setValue(CandleBlock.LIT, state.getValue(AbstractSkullCandleBlock.LIGHTING) != LightableBlock.Lighting.NONE), stack, buffer, light, overlay);
 	}
 
 	public static void renderSkull(@Nullable Direction direction, float pYRot, float animationTime, PoseStack stack, MultiBufferSource buffer, int light, SkullModelBase base, RenderType type) {

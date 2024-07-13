@@ -21,7 +21,8 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import twilightforest.block.entity.SkullCandleBlockEntity;
+import twilightforest.components.item.SkullCandles;
+import twilightforest.init.TFDataComponents;
 
 import java.util.List;
 
@@ -73,7 +74,7 @@ public class SkullCandleBlock extends AbstractSkullCandleBlock {
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext ctx) {
 		boolean piglin = this.getType() == SkullBlock.Types.PIGLIN;
-		return switch (getter.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc ? sc.getCandleAmount() : 1) {
+		return switch (state.getValue(CANDLES)) {
 			default -> piglin ? PIGLIN_SKULL_WITH_ONE : SKULL_WITH_ONE;
 			case 2 -> piglin ? PIGLIN_SKULL_WITH_TWO : SKULL_WITH_TWO;
 			case 3 -> piglin ? PIGLIN_SKULL_WITH_THREE : SKULL_WITH_THREE;
@@ -83,12 +84,15 @@ public class SkullCandleBlock extends AbstractSkullCandleBlock {
 
 	@Override
 	public Iterable<Vec3> getParticleOffsets(BlockState state, LevelAccessor accessor, BlockPos pos) {
-		return PARTICLE_OFFSETS.get(accessor.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc ? sc.getCandleAmount() : 1);
+		return PARTICLE_OFFSETS.get(state.getValue(CANDLES));
 	}
 
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
-		return this.defaultBlockState().setValue(ROTATION, Mth.floor((double) (ctx.getRotation() * 16.0F / 360.0F) + 0.5D) & 15).setValue(LIGHTING, Lighting.NONE);
+		return this.defaultBlockState()
+			.setValue(ROTATION, Mth.floor((double) (ctx.getRotation() * 16.0F / 360.0F) + 0.5D) & 15)
+			.setValue(LIGHTING, Lighting.NONE)
+			.setValue(CANDLES, ctx.getItemInHand().getOrDefault(TFDataComponents.SKULL_CANDLES, SkullCandles.DEFAULT).count());
 	}
 
 	@Override
