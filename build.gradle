@@ -1,4 +1,4 @@
-import org.jetbrains.gradle.ext.JUnit
+import net.neoforged.moddevgradle.internal.RunGameTask
 
 plugins {
 	id 'java-library'
@@ -6,7 +6,8 @@ plugins {
 	id 'idea'
 	id 'maven-publish'
 	// Version List: https://projects.neoforged.net/neoforged/ModDevGradle
-	id 'net.neoforged.moddev' version '0.1.126'
+	id 'net.neoforged.moddev' version "${mdg_version}"
+	id "com.dorongold.task-tree" version "4.0.0"
 }
 
 def secrets = new Properties()
@@ -53,7 +54,7 @@ subprojects {
 }
 
 neoForge {
-	evaluationDependsOnChildren()
+	evaluationDependsOnChildren() // we need the subprojects to evaluate first so that the sourceSets are properly constructed
 
 	version = project.neo_version
 
@@ -72,27 +73,13 @@ neoForge {
 	unitTest {
 		enable()
 		testedMod = mods.twilightforest
-		project.afterEvaluate {
-			idea {
-				project {
-					settings {
-						runConfigurations {
-							defaults(JUnit) {
-								workingDirectory = project.file("build/minecraft-junit").canonicalPath
-							}
-						}
-					}
-				}
-			}
-		}
 	}
 
 	runs {
 		configureEach {
 			gameDirectory = project.file('run')
 			systemProperty 'forge.logging.console.level', 'debug'
-			systemProperty 'fml.earlyprogresswindow', 'false'
-			systemProperty 'mixin.env.disableRefMap', 'true'
+			logLevel = org.slf4j.event.Level.DEBUG
 		}
 
 		client {
@@ -112,6 +99,12 @@ neoForge {
 			gameDirectory = project.file('run-data')
 			programArguments.addAll '--mod', mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
 		}
+	}
+}
+
+afterEvaluate { // DO NOT ASK... it fixes the runClient and family tasks :harold:
+	tasks.withType(RunGameTask).configureEach {
+		classpathProvider.setFrom(classpathProvider.files.stream().filter(f -> !f.toString().contains('tf-asm')).toList())
 	}
 }
 
@@ -160,6 +153,9 @@ repositories {
 }
 
 dependencies {
+	// Purely so we can see MDG sources for debugging purposes
+	compileOnly "net.neoforged.moddev:net.neoforged.moddev.gradle.plugin:${project.mdg_version}"
+
 	jarJar implementation(project(":tf-asm"))
 
 	//make sure to only pick one of these when testing (switch others to compileOnly)
@@ -189,9 +185,6 @@ configurations.testImplementation {
 
 test {
 	useJUnitPlatform()
-	jvmArgs = jvmArgs.stream()
-		.map(s -> s.startsWith("\"") && s.endsWith("\"") ? s.substring(1, s.length() - 1) : s)
-		.toList()
 }
 
 jar {
