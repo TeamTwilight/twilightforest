@@ -42,7 +42,7 @@ import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.neoforged.neoforge.common.util.TriState;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
-import twilightforest.beans.multipart.MultipartEntityUtil;
+import twilightforest.util.multiparts.MultipartEntityUtil;
 import twilightforest.beans.TFBeanContext;
 import twilightforest.block.CloudBlock;
 import twilightforest.block.WroughtIronFenceBlock;
@@ -64,7 +64,7 @@ import java.util.Iterator;
 @SuppressWarnings({"JavadocReference", "unused", "RedundantSuppression", "deprecation"})
 public class ASMHooks {
 
-	private static final MultipartEntityUtil multipartEntityUtil = TFBeanContext.lookup(MultipartEntityUtil.class);
+	private static final MultipartEntityUtil multipartEntityUtil = TFBeanContext.inject(MultipartEntityUtil.class);
 
 	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// armor

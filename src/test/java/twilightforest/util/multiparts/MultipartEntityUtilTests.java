@@ -1,4 +1,4 @@
-package twilightforest.beans.multipart;
+package twilightforest.util.multiparts;
 
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.resources.ResourceLocation;

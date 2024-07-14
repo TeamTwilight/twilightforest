@@ -3,7 +3,7 @@ package twilightforest;
 import net.minecraft.world.entity.Entity;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import twilightforest.beans.multipart.MultipartEntityUtil;
+import twilightforest.util.multiparts.MultipartEntityUtil;
 import twilightforest.junit.MockBean;
 import twilightforest.junit.MockitoFixer;
 import twilightforest.junit.TFBeanContextJunitExtension;

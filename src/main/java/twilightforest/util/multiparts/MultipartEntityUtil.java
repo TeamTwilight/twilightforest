@@ -1,15 +1,17 @@
-package twilightforest.beans.multipart;
+package twilightforest.util.multiparts;
 
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.world.entity.Entity;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.beans.Component;
 import twilightforest.client.TFClientSetup;
 import twilightforest.entity.TFPart;
 import twilightforest.network.UpdateTFMultipartPacket;
 
 import java.util.Iterator;
 
+@Component
 public class MultipartEntityUtil {
 
 	public Iterator<Entity> injectTFPartEntities(Iterator<Entity> iter) {

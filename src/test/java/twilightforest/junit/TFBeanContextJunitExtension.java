@@ -19,16 +19,16 @@ public class TFBeanContextJunitExtension implements BeforeAllCallback, AfterAllC
 	@Nullable
 	private MockedStatic<TFBeanContext> beanContext;
 
-	public <T> T mockBean(Class<T> type) {
+	private <T> T mockBean(Class<T> type) {
 		return mockBean(type, null);
 	}
 
-	public <T> T mockBean(Class<T> type, @Nullable String name) {
+	private  <T> T mockBean(Class<T> type, @Nullable String name) {
 		assertNotNull(beanContext);
 		T bean = mock(type);
 		if (name == null)
-			beanContext.when(() -> TFBeanContext.lookup(type)).thenReturn(bean);
-		beanContext.when(() -> TFBeanContext.lookup(type, name)).thenReturn(bean);
+			beanContext.when(() -> TFBeanContext.inject(type)).thenReturn(bean);
+		beanContext.when(() -> TFBeanContext.inject(type, name)).thenReturn(bean);
 		return bean;
 	}
 

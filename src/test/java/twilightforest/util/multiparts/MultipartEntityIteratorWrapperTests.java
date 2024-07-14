@@ -1,4 +1,4 @@
-package twilightforest.beans.multipart;
+package twilightforest.util.multiparts;
 
 import net.minecraft.world.entity.Entity;
 import net.neoforged.neoforge.entity.PartEntity;
