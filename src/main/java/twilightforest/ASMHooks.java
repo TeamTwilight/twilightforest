@@ -40,23 +40,20 @@ import net.minecraft.world.level.levelgen.structure.pieces.PiecesContainer;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.neoforged.neoforge.common.util.TriState;
-import net.neoforged.neoforge.entity.PartEntity;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
+import twilightforest.beans.multipart.MultipartEntityUtil;
+import twilightforest.beans.TFBeanContext;
 import twilightforest.block.CloudBlock;
 import twilightforest.block.WroughtIronFenceBlock;
 import twilightforest.client.FoliageColorHandler;
-import twilightforest.client.TFClientSetup;
 import twilightforest.config.TFConfig;
-import twilightforest.entity.TFPart;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFItems;
 import twilightforest.init.custom.ChunkBlanketProcessors;
 import twilightforest.item.ArcticArmorItem;
 import twilightforest.item.mapdata.TFMagicMapData;
-import twilightforest.network.UpdateTFMultipartPacket;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.structures.CustomDensitySource;
 import twilightforest.world.components.structures.util.CustomStructureData;
@@ -66,6 +63,8 @@ import java.util.Iterator;
 // TODO: Think about reorganizing each group into their own class or subclass of ASMHooks
 @SuppressWarnings({"JavadocReference", "unused", "RedundantSuppression", "deprecation"})
 public class ASMHooks {
+
+	private static final MultipartEntityUtil multipartEntityUtil = TFBeanContext.lookup(MultipartEntityUtil.class);
 
 	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// armor
@@ -336,7 +335,7 @@ public class ASMHooks {
 	 * [Targets: {@link net.minecraft.client.multiplayer.ClientLevel#entitiesForRendering}]
 	 */
 	public static Iterator<Entity> resolveEntitiesForRendering(Iterator<Entity> iter) {
-		return new MultipartEntityIteratorWrapper(iter);
+		return multipartEntityUtil.injectTFPartEntities(iter);
 	}
 
 	/**
@@ -348,9 +347,7 @@ public class ASMHooks {
 	 */
 	@Nullable
 	public static EntityRenderer<?> resolveEntityRenderer(@Nullable EntityRenderer<?> renderer, Entity entity) {
-		if (entity instanceof TFPart<?> part)
-			return TFClientSetup.BakedMultiPartRenderers.lookup(part.renderer());
-		return renderer;
+		return multipartEntityUtil.tryLookupTFPartRenderer(renderer, entity);
 	}
 
 	/**
@@ -360,74 +357,7 @@ public class ASMHooks {
 	 * {@link net.minecraft.server.level.ServerEntity#sendDirtyEntityData}
 	 */
 	public static Entity sendDirtyEntityData(Entity entity) {
-		if (entity.isMultipartEntity())
-			PacketDistributor.sendToPlayersTrackingEntity(entity, new UpdateTFMultipartPacket(entity));
-		return entity;
-	}
-
-	private static class MultipartEntityIteratorWrapper implements Iterator<Entity> {
-
-		private final Iterator<Entity> delegate;
-		private TFPart<?> @Nullable [] parts;
-		private int partIndex;
-
-		MultipartEntityIteratorWrapper(Iterator<Entity> iter) {
-			this.delegate = iter;
-		}
-
-		@Override
-		public boolean hasNext() {
-			return parts != null || delegate.hasNext();
-		}
-
-		@Override
-		public Entity next() {
-			if (parts != null) {
-				Entity next = parts[partIndex];
-				partIndex++;
-				if (partIndex >= parts.length)
-					parts = null;
-				return next;
-			}
-			Entity next = delegate.next();
-			if (next.isMultipartEntity()) {
-				PartEntity<?>[] arr = next.getParts();
-				// getParts is nullable, the annotation is used incorrectly
-				//noinspection ConstantValue
-				if (arr != null) {
-					int size = 0;
-					for (PartEntity<?> partEntity : arr) {
-						if (partEntity instanceof TFPart<?>)
-							size++;
-					}
-					if (size > 0) {
-						partIndex = 0;
-						parts = new TFPart<?>[size];
-						int index = 0;
-						for (PartEntity<?> partEntity : arr) {
-							if (partEntity instanceof TFPart<?> part) {
-								parts[index] = part;
-								index++;
-							}
-						}
-					}
-				}
-			}
-			return next;
-		}
-
-		@Override
-		public void remove() {
-			if (parts == null || partIndex <= 0) {
-				delegate.remove();
-			} else {
-				if (partIndex >= parts.length) {
-					parts = null;
-				} else {
-					System.arraycopy(parts, partIndex, parts, partIndex - 1, parts.length - 1 - partIndex - 1);
-				}
-			}
-		}
+		return multipartEntityUtil.sendDirtyMultipartEntityData(entity);
 	}
 
 	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

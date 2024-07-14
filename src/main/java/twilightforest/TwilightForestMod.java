@@ -39,6 +39,7 @@ import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.beans.TFBeanContext;
 import twilightforest.block.entity.JarBlockEntity;
 import twilightforest.block.entity.TFChestBlockEntity;
 import twilightforest.client.TFClientSetup;
@@ -90,6 +91,7 @@ public final class TwilightForestMod {
 	//private static final Rarity RARITY = Rarity.valueOf("TWILIGHTFOREST_TWILIGHT"); Crashes if initialized for some reason, idk
 
 	public TwilightForestMod(IEventBus bus, Dist dist) {
+		TFBeanContext.init();
 		Reflection.initialize(ConfigSetup.class);
 		if (dist.isClient()) {
 			TFClientSetup.init(bus);
