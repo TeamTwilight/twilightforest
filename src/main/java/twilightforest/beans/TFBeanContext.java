@@ -7,6 +7,7 @@ import twilightforest.TwilightForestMod;
 import javax.annotation.Nullable;
 import java.lang.annotation.ElementType;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -22,8 +23,9 @@ public class TFBeanContext {
 	public static void init() {
 		BEANS.clear();
 		ModFileScanData scanData = ModList.get().getModContainerById(TwilightForestMod.ID).orElseThrow().getModInfo().getOwningFile().getFile().getScanResult();
-		scanData.getAnnotatedBy(Component.class, ElementType.TYPE).forEach(data -> {
-			try {
+		try {
+
+			for (ModFileScanData.AnnotationData data : scanData.getAnnotatedBy(Component.class, ElementType.TYPE).toList()) {
 				final String name = (String) data.annotationData().get("value");
 				Class<?> c = Class.forName(data.clazz().getClassName());
 				if (Objects.equals(Component.DEFAULT_VALUE, name)) {
@@ -31,10 +33,21 @@ public class TFBeanContext {
 				} else {
 					registerInternal(c, name, c.getConstructor().newInstance());
 				}
-			} catch (ClassNotFoundException | InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException e) {
-				throw new RuntimeException(e);
 			}
-		});
+
+			for (ModFileScanData.AnnotationData data : scanData.getAnnotatedBy(Bean.class, ElementType.METHOD).toList()) {
+				final String name = (String) data.annotationData().get("value");
+				Method method = Class.forName(data.clazz().getClassName()).getDeclaredMethod(data.memberName());
+				if (Objects.equals(Component.DEFAULT_VALUE, name)) {
+					registerInternal(method.getReturnType(), null, method.invoke(null));
+				} else {
+					registerInternal(method.getReturnType(), name, method.invoke(null));
+				}
+			}
+
+		} catch (ClassNotFoundException | InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public static <T> void register(Class<T> type, T instance) {

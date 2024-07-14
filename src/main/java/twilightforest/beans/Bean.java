@@ -6,16 +6,13 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotated methods will be automatically registered with {@link TFBeanContext#register(Class, Object)}.<br/>
+ * Annotated static methods will be automatically be invoked and the returned object will be registered with {@link TFBeanContext#register(Class, Object)}.<br/>
  * If a value is set then {@link TFBeanContext#register(Class, String, Object)} is used instead.<p/>
  *
  * The returned object class can extend/implement the method return type. The method return type is what's used for bean identification.<br/>
  * This for example allows for interfaces to be used as beans.<p/>
- *
- * NOT CURRENTLY IMPLEMENTED!
  */
-@Deprecated
-@Target(ElementType.FIELD)
+@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Bean {
 

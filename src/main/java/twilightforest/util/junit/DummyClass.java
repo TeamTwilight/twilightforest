@@ -13,4 +13,12 @@ public class DummyClass {
 	public static void reset() {
 		incr = 0;
 	}
+
+	public static DummyClass test() {
+		return new ExtendedDummyClass();
+	}
+
+	public static class ExtendedDummyClass extends DummyClass {
+
+	}
 }
