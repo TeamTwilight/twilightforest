@@ -6,7 +6,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotated classes will be automatically registered to {@link TFBeanContext}.<p/>
+ * Annotated classes will be automatically registered with {@link TFBeanContext#register(Class, Object)}.<br/>
+ * If a value is set then {@link TFBeanContext#register(Class, String, Object)} is used instead.<p/>
  *
  * Requires a no-arg constructor.
  */
