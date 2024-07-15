@@ -85,12 +85,12 @@ public class MagicPaintingVariants {
 			new Layer("bl_roots", new Parallax(Parallax.Type.VIEW_ANGLE, -0.015F, 78, 52), null, true),
 			new Layer("bl_lightning", new Parallax(Parallax.Type.VIEW_ANGLE, -0.015F, 78, 52), new OpacityModifier(OpacityModifier.Type.LIGHTNING, 1.0F, false, 0.0F, 1.0F), false),
 			new Layer("bl_mid", new Parallax(Parallax.Type.VIEW_ANGLE, -0.015F, 76, 52), null, false),
-			new Layer("bl_mid_lightning", new Parallax(Parallax.Type.VIEW_ANGLE, -0.015F, 76, 52), new OpacityModifier(OpacityModifier.Type.LIGHTNING, 1.0F / 10.0F, false, 0.0F, 1.0F), false),
+			new Layer("bl_mid_lightning", new Parallax(Parallax.Type.VIEW_ANGLE, -0.015F, 76, 52), new OpacityModifier(OpacityModifier.Type.LIGHTNING, 1.0F / 5.0F, false, 0.0F, 1.0F), false),
 			new Layer("bl_fog", new Parallax(Parallax.Type.VIEW_ANGLE, -0.015F, 76, 52), null, false),
 			new Layer("bl_foreground", new Parallax(Parallax.Type.VIEW_ANGLE, -0.015F, 74, 48), null, false),
-			new Layer("bl_foreground_lightning", new Parallax(Parallax.Type.VIEW_ANGLE, -0.015F, 74, 48), new OpacityModifier(OpacityModifier.Type.LIGHTNING, 1.0F / 11.0F, false, 0.0F, 1.0F), false),
+			new Layer("bl_foreground_lightning", new Parallax(Parallax.Type.VIEW_ANGLE, -0.015F, 74, 48), new OpacityModifier(OpacityModifier.Type.LIGHTNING, 1.0F / 6.0F, false, 0.0F, 1.0F), false),
 			new Layer("bl_greeblings", new Parallax(Parallax.Type.VIEW_ANGLE, -0.015F, 74, 48), null, false),
-			new Layer("bl_greeblings_lightning", new Parallax(Parallax.Type.VIEW_ANGLE, -0.015F, 74, 48), new OpacityModifier(OpacityModifier.Type.LIGHTNING, 1.0F / 12.0F, false, 0.0F, 1.0F), false),
+			new Layer("bl_greeblings_lightning", new Parallax(Parallax.Type.VIEW_ANGLE, -0.015F, 74, 48), new OpacityModifier(OpacityModifier.Type.LIGHTNING, 1.0F / 7.0F, false, 0.0F, 1.0F), false),
 			new Layer("bl_shade", new Parallax(Parallax.Type.VIEW_ANGLE, -0.015F, 80, 48), null, false),
 			new Layer("bl_frame", null, null, false)
 		));

@@ -14,7 +14,6 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -262,7 +261,6 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting> {
 				if (painting.level() instanceof ClientLevel clientLevel) {
 					a = 1.0F - ((float) (clientLevel.getGameTime() - lastLightning) - Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false)) * opacityModifier.multiplier();
 					if (a > 0.0F) a = a * a;
-					if (a > 0.0F) Minecraft.getInstance().player.displayClientMessage(Component.literal("" + a), true);
 				}
 			}
 			case DAY_TIME -> {
