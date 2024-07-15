@@ -1,5 +1,7 @@
 package twilightforest.beans;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -9,9 +11,11 @@ import java.lang.annotation.Target;
  * Annotated fields will be automatically injected with {@link TFBeanContext#inject(Class)}.<br/>
  * If a value is set then {@link TFBeanContext#inject(Class, String)} is used instead.<p/>
  *
- * NOT CURRENTLY IMPLEMENTED!
+ * Fields may be private.<br/>
+ * When used inside a Bean the field may be non-static.<br/>
+ * When used outside a Bean, the field <b>must</b> be <b>static</b>!
  */
-@Deprecated
+@Nullable
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Autowired {

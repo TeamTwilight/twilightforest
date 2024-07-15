@@ -6,18 +6,21 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectListIterator;
 import net.minecraft.client.Camera;
 import net.minecraft.client.DeltaTracker;
+import net.minecraft.client.gui.MapRenderer;
 import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.AbstractClientPlayer;
-import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerEntity;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.world.InteractionHand;
@@ -29,9 +32,13 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.MushroomBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.level.chunk.status.ChunkStatusTasks;
+import net.minecraft.world.level.levelgen.Beardifier;
 import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.Structure;
@@ -42,8 +49,28 @@ import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.neoforged.neoforge.common.util.TriState;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
-import twilightforest.util.multiparts.MultipartEntityUtil;
+import twilightforest.asm.transformers.armor.ArmorColorRenderingTransformer;
+import twilightforest.asm.transformers.armor.ArmorVisibilityRenderingTransformer;
+import twilightforest.asm.transformers.armor.CancelArmorRenderingTransformer;
+import twilightforest.asm.transformers.beardifier.BeardifierComputeTransformer;
+import twilightforest.asm.transformers.beardifier.InitializeCustomBeardifierFieldsDuringForStructuresInChunkTransformer;
+import twilightforest.asm.transformers.book.ModifyWrittenBookNameTransformer;
+import twilightforest.asm.transformers.chunk.ChunkStatusTaskTransformer;
+import twilightforest.asm.transformers.cloud.IsRainingAtTransformer;
+import twilightforest.asm.transformers.conquered.StructureStartLoadStaticTransformer;
+import twilightforest.asm.transformers.foliage.FoliageColorResolverTransformer;
+import twilightforest.asm.transformers.lead.LeashFenceKnotSurvivesTransformer;
+import twilightforest.asm.transformers.map.RenderMapDecorationsTransformer;
+import twilightforest.asm.transformers.map.ResolveMapDataForRenderTransformer;
+import twilightforest.asm.transformers.map.ResolveNearestNonRandomSpreadMapStructureTransformer;
+import twilightforest.asm.transformers.map.ShouldMapRenderInArmTransformer;
+import twilightforest.asm.transformers.multipart.ResolveEntitiesForRendereringTransformer;
+import twilightforest.asm.transformers.multipart.ResolveEntityRendererTransformer;
+import twilightforest.asm.transformers.multipart.SendDirtytEntityDataTransformer;
+import twilightforest.asm.transformers.shroom.ModifySoilDecisionForMushroomBlockSurvivabilityTransformer;
+import twilightforest.beans.Autowired;
 import twilightforest.beans.TFBeanContext;
+import twilightforest.util.multiparts.MultipartEntityUtil;
 import twilightforest.block.CloudBlock;
 import twilightforest.block.WroughtIronFenceBlock;
 import twilightforest.client.FoliageColorHandler;
@@ -64,18 +91,19 @@ import java.util.Iterator;
 @SuppressWarnings({"JavadocReference", "unused", "RedundantSuppression", "deprecation"})
 public class ASMHooks {
 
-	private static final MultipartEntityUtil multipartEntityUtil = TFBeanContext.inject(MultipartEntityUtil.class);
+	@Autowired
+	private static MultipartEntityUtil multipartEntityUtil = TFBeanContext.blank();
 
 	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// armor
 	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/**
-	 * {@link twilightforest.asm.transformers.armor.ArmorColorRenderingTransformer}<p/>
+	 * {@link ArmorColorRenderingTransformer}<p/>
 	 *
 	 * Injection Point:<br/>
-	 * {@link net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer#renderArmorPiece(PoseStack, MultiBufferSource, LivingEntity, EquipmentSlot, int, HumanoidModel)} <br/>
-	 * Targets: {@link net.minecraft.world.item.component.DyedItemColor#getOrDefault(net.minecraft.world.item.ItemStack, int)}
+	 * {@link HumanoidArmorLayer#renderArmorPiece(PoseStack, MultiBufferSource, LivingEntity, EquipmentSlot, int, HumanoidModel)} <br/>
+	 * Targets: {@link DyedItemColor#getOrDefault(ItemStack, int)}
 	 */
 	public static int armorColorRendering(int color, ArmorItem armorItem, ItemStack armorStack) {
 		if (armorItem instanceof ArcticArmorItem) return DyedItemColor.getOrDefault(armorStack, ArcticArmorItem.DEFAULT_COLOR);
@@ -83,10 +111,10 @@ public class ASMHooks {
 	}
 
 	/**
-	 * {@link twilightforest.asm.transformers.armor.ArmorVisibilityRenderingTransformer}<p/>
+	 * {@link ArmorVisibilityRenderingTransformer}<p/>
 	 *
 	 * Injection Point:<br/>
-	 * {@link net.minecraft.world.entity.LivingEntity#getVisibilityPercent(Entity)}
+	 * {@link LivingEntity#getVisibilityPercent(Entity)}
 	 */
 	public static float modifyArmorVisibility(float o, LivingEntity entity) {
 		return o - getShroudedArmorPercentage(entity);
@@ -109,10 +137,10 @@ public class ASMHooks {
 	}
 
 	/**
-	 * {@link twilightforest.asm.transformers.armor.CancelArmorRenderingTransformer}<p/>
+	 * {@link CancelArmorRenderingTransformer}<p/>
 	 *
 	 * Injection Point:<br/>
-	 * {@link net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer#renderArmorPiece(PoseStack, MultiBufferSource, LivingEntity, EquipmentSlot, int, HumanoidModel)}
+	 * {@link HumanoidArmorLayer#renderArmorPiece(PoseStack, MultiBufferSource, LivingEntity, EquipmentSlot, int, HumanoidModel)}
 	 */
 	public static boolean cancelArmorRendering(boolean o, ItemStack stack) {
 		if (o && stack.get(TFDataComponents.EMPERORS_CLOTH) != null) {
@@ -126,10 +154,10 @@ public class ASMHooks {
 	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/**
-	 * {@link twilightforest.asm.transformers.beardifier.InitializeCustomBeardifierFieldsDuringForStructuresInChunkTransformer}<p/>
+	 * {@link InitializeCustomBeardifierFieldsDuringForStructuresInChunkTransformer}<p/>
 	 *
 	 * Injection point:<br/>
-	 * {@link net.minecraft.world.level.levelgen.Beardifier#forStructuresInChunk(StructureManager, ChunkPos)}
+	 * {@link Beardifier#forStructuresInChunk(StructureManager, ChunkPos)}
 	 */
 	public static ObjectListIterator<DensityFunction> gatherCustomTerrain(StructureManager structureManager, ChunkPos chunkPos) {
 		ObjectArrayList<DensityFunction> customStructureTerraforms = new ObjectArrayList<>(10);
@@ -142,10 +170,10 @@ public class ASMHooks {
 	}
 
 	/**
-	 * {@link twilightforest.asm.transformers.beardifier.BeardifierComputeTransformer}<p/>
+	 * {@link BeardifierComputeTransformer}<p/>
 	 *
 	 * Injection point:<br/>
-	 * {@link net.minecraft.world.level.levelgen.Beardifier#compute(DensityFunction.FunctionContext)}
+	 * {@link Beardifier#compute(DensityFunction.FunctionContext)}
 	 */
 	public static double getCustomDensity(double o, DensityFunction.FunctionContext context, @Nullable ObjectListIterator<DensityFunction> customDensities) {
 		if (customDensities == null)
@@ -166,10 +194,10 @@ public class ASMHooks {
 	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/**
-	 * {@link twilightforest.asm.transformers.book.ModifyWrittenBookNameTransformer}<p/>
+	 * {@link ModifyWrittenBookNameTransformer}<p/>
 	 *
 	 * Injection Point:<br/>
-	 * {@link net.minecraft.world.item.WrittenBookItem#getName(net.minecraft.world.item.ItemStack)}
+	 * {@link WrittenBookItem#getName(ItemStack)}
 	 */
 	public static Component modifyWrittenBookName(Component component, ItemStack stack) {
 		if (stack.has(TFDataComponents.TRANSLATABLE_BOOK)) {
@@ -182,10 +210,10 @@ public class ASMHooks {
 	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/**
-	 * {@link twilightforest.asm.transformers.chunk.ChunkStatusTaskTransformer}<p/>
+	 * {@link ChunkStatusTaskTransformer}<p/>
 	 *
 	 * Injection Point:<br/>
-	 * {@link net.minecraft.world.level.chunk.status.ChunkStatusTasks#generateSurface}
+	 * {@link ChunkStatusTasks#generateSurface}
 	 */
 	public static void chunkBlanketing(ChunkAccess chunkAccess, WorldGenRegion worldGenRegion) {
 		ChunkBlanketProcessors.chunkBlanketing(chunkAccess, worldGenRegion);
@@ -196,10 +224,10 @@ public class ASMHooks {
 	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/**
-	 * {@link twilightforest.asm.transformers.cloud.IsRainingAtTransformer}<p/>
+	 * {@link IsRainingAtTransformer}<p/>
 	 *
 	 * Injection Point:<br/>
-	 * {@link net.minecraft.world.level.Level#isRainingAt(BlockPos)}
+	 * {@link Level#isRainingAt(BlockPos)}
 	 */
 	public static boolean isRainingAt(boolean isRaining, Level level, BlockPos pos) {
 		if (!isRaining && TFConfig.commonCloudBlockPrecipitationDistance > 0) {
@@ -223,11 +251,11 @@ public class ASMHooks {
 	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/**
-	 * {@link twilightforest.asm.transformers.conquered.StructureStartLoadStaticTransformer}<p/>
+	 * {@link StructureStartLoadStaticTransformer}<p/>
 	 *
 	 * Injection Point:<br/>
-	 * {@link net.minecraft.world.level.levelgen.structure.StructureStart#loadStaticStart(StructurePieceSerializationContext, CompoundTag, long)}<br/>
-	 * Targets: {@link net.minecraft.world.level.levelgen.structure.StructureStart#StructureStart(Structure, ChunkPos, int, PiecesContainer)}
+	 * {@link StructureStart#loadStaticStart(StructurePieceSerializationContext, CompoundTag, long)}<br/>
+	 * Targets: {@link StructureStart#StructureStart(Structure, ChunkPos, int, PiecesContainer)}
 	 */
 	public static StructureStart loadStaticStart(StructureStart start, PiecesContainer piecesContainer, CompoundTag nbt) {
 		if (start.getStructure() instanceof CustomStructureData s)
@@ -240,10 +268,10 @@ public class ASMHooks {
 	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/**
-	 * {@link twilightforest.asm.transformers.foliage.FoliageColorResolverTransformer}<p/>
+	 * {@link FoliageColorResolverTransformer}<p/>
 	 *
 	 * Injection Point:<br/>
-	 * {@link net.minecraft.client.renderer.BiomeColors#FOLIAGE_COLOR_RESOLVER}
+	 * {@link BiomeColors#FOLIAGE_COLOR_RESOLVER}
 	 */
 	public static int resolveFoliageColor(int o, Biome biome, double x, double z) {
 		return FoliageColorHandler.get(o, biome, x, z);
@@ -254,10 +282,10 @@ public class ASMHooks {
 	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/**
-	 * {@link twilightforest.asm.transformers.lead.LeashFenceKnotSurvivesTransformer}<p/>
+	 * {@link LeashFenceKnotSurvivesTransformer}<p/>
 	 *
 	 * Injection Point:<br/>
-	 * {@link net.minecraft.world.entity.decoration.LeashFenceKnotEntity#survives()}
+	 * {@link LeashFenceKnotEntity#survives()}
 	 */
 	public static boolean leashFenceKnotSurvives(boolean o, LeashFenceKnotEntity entity) {
 		if (o)
@@ -271,10 +299,10 @@ public class ASMHooks {
 	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/**
-	 * {@link twilightforest.asm.transformers.map.RenderMapDecorationsTransformer}<p/>
+	 * {@link RenderMapDecorationsTransformer}<p/>
 	 *
 	 * Injection Point:<br/>
-	 * {@link net.minecraft.client.gui.MapRenderer.MapInstance#draw(PoseStack, MultiBufferSource, boolean, int)}
+	 * {@link MapRenderer.MapInstance#draw(PoseStack, MultiBufferSource, boolean, int)}
 	 */
 	public static int renderMapDecorations(int o, MapItemSavedData data, PoseStack stack, MultiBufferSource buffer, int light) {
 		if (data instanceof TFMagicMapData mapData) {
@@ -287,10 +315,10 @@ public class ASMHooks {
 	}
 
 	/**
-	 * {@link twilightforest.asm.transformers.map.ResolveMapDataForRenderTransformer}<p/>
+	 * {@link ResolveMapDataForRenderTransformer}<p/>
 	 *
 	 * Injection Point:<br/>
-	 * {@link net.minecraft.client.renderer.ItemInHandRenderer#renderMap(PoseStack, MultiBufferSource, int, ItemStack)}
+	 * {@link ItemInHandRenderer#renderMap(PoseStack, MultiBufferSource, int, ItemStack)}
 	 */
 	@Nullable
 	public static MapItemSavedData resolveMapDataForRender(@Nullable MapItemSavedData o, ItemStack stack, @Nullable Level level) {
@@ -298,10 +326,10 @@ public class ASMHooks {
 	}
 
 	/**
-	 * {@link twilightforest.asm.transformers.map.ResolveNearestNonRandomSpreadMapStructureTransformer}<p/>
+	 * {@link ResolveNearestNonRandomSpreadMapStructureTransformer}<p/>
 	 *
 	 * Injection Point:<br/>
-	 * {@link net.minecraft.world.level.chunk.ChunkGenerator#findNearestMapStructure(ServerLevel, HolderSet, BlockPos, int, boolean)}
+	 * {@link ChunkGenerator#findNearestMapStructure(ServerLevel, HolderSet, BlockPos, int, boolean)}
 	 */
 	@Nullable
 	public static Pair<BlockPos, Holder<Structure>> resolveNearestNonRandomSpreadMapStructure(@Nullable Pair<BlockPos, Holder<Structure>> o, ServerLevel level, HolderSet<Structure> targetStructures, BlockPos pos, int searchRadius, boolean skipKnownStructures) {
@@ -309,11 +337,11 @@ public class ASMHooks {
 	}
 
 	/**
-	 * {@link twilightforest.asm.transformers.map.ShouldMapRenderInArmTransformer}<p/>
+	 * {@link ShouldMapRenderInArmTransformer}<p/>
 	 *
 	 * Injection Point:<br/>
-	 * {@link net.minecraft.client.renderer.ItemInHandRenderer#renderArmWithItem(AbstractClientPlayer, float, float, InteractionHand, float, ItemStack, float, PoseStack, MultiBufferSource, int)}<br/>
-	 * Targets: {@link net.minecraft.world.item.Items#FILLED_MAP} and {@link net.minecraft.world.item.ItemStack#is(Item)}
+	 * {@link ItemInHandRenderer#renderArmWithItem(AbstractClientPlayer, float, float, InteractionHand, float, ItemStack, float, PoseStack, MultiBufferSource, int)}<br/>
+	 * Targets: {@link Items#FILLED_MAP} and {@link ItemStack#is(Item)}
 	 */
 	public static boolean shouldMapRenderInArm(boolean o, ItemStack stack) {
 		return o || isOurMap(stack);
@@ -328,22 +356,22 @@ public class ASMHooks {
 	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/**
-	 * {@link twilightforest.asm.transformers.multipart.ResolveEntitiesForRendereringTransformer}<p/>
+	 * {@link ResolveEntitiesForRendereringTransformer}<p/>
 	 *
 	 * Injection Point:<br/>
-	 * {@link net.minecraft.client.renderer.LevelRenderer#renderLevel(DeltaTracker, boolean, Camera, GameRenderer, LightTexture, Matrix4f, Matrix4f)}<br/>
-	 * [Targets: {@link net.minecraft.client.multiplayer.ClientLevel#entitiesForRendering}]
+	 * {@link LevelRenderer#renderLevel(DeltaTracker, boolean, Camera, GameRenderer, LightTexture, Matrix4f, Matrix4f)}<br/>
+	 * [Targets: {@link ClientLevel#entitiesForRendering}]
 	 */
 	public static Iterator<Entity> resolveEntitiesForRendering(Iterator<Entity> iter) {
 		return multipartEntityUtil.injectTFPartEntities(iter);
 	}
 
 	/**
-	 * {@link twilightforest.asm.transformers.multipart.ResolveEntityRendererTransformer}<p/>
+	 * {@link ResolveEntityRendererTransformer}<p/>
 	 *
 	 * Injection Point:<br/>
-	 * {@link net.minecraft.client.renderer.entity.EntityRenderDispatcher#getRenderer(Entity)}<br/>
-	 * Targets: {@link net.minecraft.client.renderer.entity.EntityRenderDispatcher#renderers}
+	 * {@link EntityRenderDispatcher#getRenderer(Entity)}<br/>
+	 * Targets: {@link EntityRenderDispatcher#renderers}
 	 */
 	@Nullable
 	public static EntityRenderer<?> resolveEntityRenderer(@Nullable EntityRenderer<?> renderer, Entity entity) {
@@ -351,10 +379,10 @@ public class ASMHooks {
 	}
 
 	/**
-	 * {@link twilightforest.asm.transformers.multipart.SendDirtytEntityDataTransformer}<p/>
+	 * {@link SendDirtytEntityDataTransformer}<p/>
 	 *
 	 * Injection Point:<br/>
-	 * {@link net.minecraft.server.level.ServerEntity#sendDirtyEntityData}
+	 * {@link ServerEntity#sendDirtyEntityData}
 	 */
 	public static Entity sendDirtyEntityData(Entity entity) {
 		return multipartEntityUtil.sendDirtyMultipartEntityData(entity);
@@ -365,10 +393,10 @@ public class ASMHooks {
 	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/**
-	 * {@link twilightforest.asm.transformers.shroom.ModifySoilDecisionForMushroomBlockSurvivabilityTransformer}<p/>
+	 * {@link ModifySoilDecisionForMushroomBlockSurvivabilityTransformer}<p/>
 	 *
 	 * Injection Point:<br/>
-	 * {@link net.minecraft.world.level.block.MushroomBlock#canSurvive(BlockState, LevelReader, BlockPos)}<br/>
+	 * {@link MushroomBlock#canSurvive(BlockState, LevelReader, BlockPos)}<br/>
 	 * Targets: {@link BlockState#canSustainPlant(BlockGetter, BlockPos, Direction, BlockState)}
 	 */
 	public static TriState modifySoilDecisionForMushroomBlockSurvivability(TriState o, LevelReader level, BlockPos pos) {

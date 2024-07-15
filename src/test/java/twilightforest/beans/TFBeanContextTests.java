@@ -26,6 +26,7 @@ public class TFBeanContextTests {
 	@BeforeEach
 	public void setup() {
 		DummyClass.reset();
+		TFBeanContext.INSTANCE.frozen = false;
 	}
 
 	@Test
@@ -56,25 +57,24 @@ public class TFBeanContextTests {
 			when(container.getModInfo().getOwningFile().getFile().getScanResult()).thenReturn(scanData);
 			modList.when(() -> ModList.get().getModContainerById(TwilightForestMod.ID)).thenReturn(Optional.of(container));
 
-			TFBeanContext.init();
-			TFBeanContext.register(DummyClass.class, "manual", new DummyClass());
+			TFBeanContext.init(context -> context.register(DummyClass.class, "manual", new DummyClass()));
 
 			DummyClass resultNamed = TFBeanContext.inject(DummyClass.class, "name");
 			assertNotNull(resultNamed);
-			assertEquals(1, resultNamed.id);
+			assertEquals(2, resultNamed.id);
 
 			DummyClass result = TFBeanContext.inject(DummyClass.class);
 			assertNotNull(result);
-			assertEquals(0, result.id);
+			assertEquals(1, result.id);
 
 			DummyClass resultBeanMethod = TFBeanContext.inject(DummyClass.class, "bean_method");
 			assertNotNull(resultBeanMethod);
-			assertEquals(2, resultBeanMethod.id);
+			assertEquals(3, resultBeanMethod.id);
 			assertInstanceOf(DummyClass.ExtendedDummyClass.class, resultBeanMethod);
 
 			DummyClass resultManual = TFBeanContext.inject(DummyClass.class, "manual");
 			assertNotNull(resultManual);
-			assertEquals(3, resultManual.id);
+			assertEquals(0, resultManual.id);
 		}
 	}
 
