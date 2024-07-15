@@ -15,7 +15,7 @@ import java.util.function.Consumer;
 
 public class TFBeanContext {
 
-	static final TFBeanContext INSTANCE = new TFBeanContext();
+	static TFBeanContext INSTANCE = new TFBeanContext();
 
 	private final Map<BeanDefinition<?>, Object> BEANS = new HashMap<>();
 	boolean frozen = false;

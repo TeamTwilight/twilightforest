@@ -9,15 +9,19 @@ import twilightforest.beans.TFBeanContext;
 import javax.annotation.Nullable;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.*;
 
 public class TFBeanContextJunitExtension implements BeforeAllCallback, AfterAllCallback, TestInstancePostProcessor {
 
 	@Nullable
 	private MockedStatic<TFBeanContext> beanContext;
+
+	@Nullable
+	private TFBeanContext beanContextInstance;
 
 	private <T> T mockBean(Class<T> type) {
 		return mockBean(type, null);
@@ -25,15 +29,18 @@ public class TFBeanContextJunitExtension implements BeforeAllCallback, AfterAllC
 
 	private  <T> T mockBean(Class<T> type, @Nullable String name) {
 		assertNotNull(beanContext);
+		assertNotNull(beanContextInstance);
 		T bean = mock(type);
 		if (name == null)
 			beanContext.when(() -> TFBeanContext.inject(type)).thenReturn(bean);
 		beanContext.when(() -> TFBeanContext.inject(type, name)).thenReturn(bean);
+		doReturn(bean).when(beanContextInstance).injectInternal(type, name);
 		return bean;
 	}
 
 	@Override
 	public void beforeAll(ExtensionContext context) {
+		beanContextInstance = spy(TFBeanContext.class);
 		beanContext = mockStatic(TFBeanContext.class);
 	}
 
@@ -52,5 +59,12 @@ public class TFBeanContextJunitExtension implements BeforeAllCallback, AfterAllC
 				field.set(testInstance, name.equals(MockBean.DEFAULT_VALUE) ? mockBean(field.getType()) : mockBean(field.getType(), name));
 			}
 		}
+
+		Field f = TFBeanContext.class.getDeclaredField("INSTANCE");
+		f.trySetAccessible();
+		f.set(null, beanContextInstance);
+		Method init = TFBeanContext.class.getDeclaredMethod("initInternal", Consumer.class);
+		init.trySetAccessible();
+		init.invoke(beanContextInstance, (Consumer<TFBeanContext>) null);
 	}
 }
