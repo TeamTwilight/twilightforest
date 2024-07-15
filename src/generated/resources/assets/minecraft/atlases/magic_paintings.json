@@ -86,6 +86,54 @@
     },
     {
       "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/music_in_the_mire/bl_sky"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/music_in_the_mire/bl_roots"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/music_in_the_mire/bl_lightning"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/music_in_the_mire/bl_mid"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/music_in_the_mire/bl_mid_lightning"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/music_in_the_mire/bl_fog"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/music_in_the_mire/bl_foreground"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/music_in_the_mire/bl_foreground_lightning"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/music_in_the_mire/bl_greeblings"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/music_in_the_mire/bl_greeblings_lightning"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/music_in_the_mire/bl_shade"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/music_in_the_mire/bl_frame"
+    },
+    {
+      "type": "minecraft:single",
       "resource": "twilightforest:magic_paintings/lucid_lands/background"
     },
     {

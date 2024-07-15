@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -32,6 +33,8 @@ import javax.annotation.Nullable;
 import java.util.Optional;
 
 public class MagicPaintingRenderer extends EntityRenderer<MagicPainting> {
+	public static long lastLightning = 0L;
+
 	public MagicPaintingRenderer(EntityRendererProvider.Context pContext) {
 		super(pContext);
 	}
@@ -242,55 +245,60 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting> {
 	protected static final float DAY_LENGTH = 24000.0F;
 
 	protected float getAlpha(@Nullable OpacityModifier opacityModifier, MagicPainting painting) {
+		if (opacityModifier == null) return 1.0F;
+
 		float a = 1.0F;
-		if (opacityModifier != null) {
-			switch (opacityModifier.type()) {
-				case DISTANCE -> {
-					Vec3 camPos = Optional.ofNullable(Minecraft.getInstance().cameraEntity).map(Entity::getEyePosition).orElse(Minecraft.getInstance().gameRenderer.getMainCamera().getPosition());
-					a = fromTo(opacityModifier.from(), opacityModifier.to(), (float) camPos.distanceTo(painting.position()));
-				}
-				case WEATHER -> a = painting.level().getRainLevel(Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false));
-				case STORM -> {
-					float partialTick = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false);
-					a = (painting.level().getRainLevel(partialTick) + painting.level().getThunderLevel(partialTick)) * 0.5F;
-				}
-				case LIGHTNING -> {
-					if (painting.level() instanceof ClientLevel clientLevel) a = clientLevel.getSkyFlashTime();
-				}
-				case DAY_TIME -> {
-					float time = painting.level().getTimeOfDay(Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false)) * DAY_LENGTH;
-					if (opacityModifier.from() < opacityModifier.to()) {
-						a = 1.0F - Math.abs(((time - opacityModifier.from()) / (opacityModifier.to() - opacityModifier.from())) - 0.5F) * 2.0F;
-					} else {
-						if (time < opacityModifier.to()) time += DAY_LENGTH;
-						a = 1.0F - Math.abs(((time - opacityModifier.from()) / (opacityModifier.to() + DAY_LENGTH - opacityModifier.from())) - 0.5F) * 2.0F;
-					}
-				}
-				case SINE_TIME -> a = (float) (Math.sin((painting.tickCount + Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false)) * opacityModifier.multiplier())) * 0.5F + 0.5F;
-				case HEALTH -> {
-					if (Minecraft.getInstance().getCameraEntity() instanceof LivingEntity living) {
-						a = fromTo(opacityModifier.from(), opacityModifier.to(), living.getHealth());
-					}
-				}
-				case HUNGER -> {
-					if (Minecraft.getInstance().getCameraEntity() instanceof Player player) {
-						FoodData food = player.getFoodData();
-						a = fromTo(opacityModifier.from(), opacityModifier.to(), (float) food.getFoodLevel());
-					}
-				}
-				case HOLDING_ITEM -> {
-					if (Minecraft.getInstance().getCameraEntity() instanceof LivingEntity living) {
-						ItemStack key = opacityModifier.item();
-						if (key != null && !living.isHolding(stack -> ItemStack.isSameItemSameComponents(stack, key))) a = 0.0F;
-					}
+		switch (opacityModifier.type()) {
+			case DISTANCE -> {
+				Vec3 camPos = Optional.ofNullable(Minecraft.getInstance().cameraEntity).map(Entity::getEyePosition).orElse(Minecraft.getInstance().gameRenderer.getMainCamera().getPosition());
+				a = fromTo(opacityModifier.from(), opacityModifier.to(), (float) camPos.distanceTo(painting.position()));
+			}
+			case WEATHER -> a = painting.level().getRainLevel(Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false));
+			case STORM -> {
+				float partialTick = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false);
+				a = (painting.level().getRainLevel(partialTick) + painting.level().getThunderLevel(partialTick)) * 0.5F;
+			}
+			case LIGHTNING -> {
+				if (painting.level() instanceof ClientLevel clientLevel) {
+					a = 1.0F - ((float) (clientLevel.getGameTime() - lastLightning) - Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false)) * opacityModifier.multiplier();
+					if (a > 0.0F) a = a * a;
+					if (a > 0.0F) Minecraft.getInstance().player.displayClientMessage(Component.literal("" + a), true);
 				}
 			}
-
-			a = Mth.clamp(a, 0.0F, 1.0F);
-			if (opacityModifier.type() != OpacityModifier.Type.SINE_TIME) a = (float) Math.pow(a, opacityModifier.multiplier());
-			if (opacityModifier.invert()) a = 1.0F - a;
-			a = a * (opacityModifier.max() - opacityModifier.min()) + opacityModifier.min();
+			case DAY_TIME -> {
+				float time = painting.level().getTimeOfDay(Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false)) * DAY_LENGTH;
+				if (opacityModifier.from() < opacityModifier.to()) {
+					a = 1.0F - Math.abs(((time - opacityModifier.from()) / (opacityModifier.to() - opacityModifier.from())) - 0.5F) * 2.0F;
+				} else {
+					if (time < opacityModifier.to()) time += DAY_LENGTH;
+					a = 1.0F - Math.abs(((time - opacityModifier.from()) / (opacityModifier.to() + DAY_LENGTH - opacityModifier.from())) - 0.5F) * 2.0F;
+				}
+			}
+			case SINE_TIME -> a = (float) (Math.sin((painting.tickCount + Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false)) * opacityModifier.multiplier())) * 0.5F + 0.5F;
+			case HEALTH -> {
+				if (Minecraft.getInstance().getCameraEntity() instanceof LivingEntity living) {
+					a = fromTo(opacityModifier.from(), opacityModifier.to(), living.getHealth());
+				}
+			}
+			case HUNGER -> {
+				if (Minecraft.getInstance().getCameraEntity() instanceof Player player) {
+					FoodData food = player.getFoodData();
+					a = fromTo(opacityModifier.from(), opacityModifier.to(), (float) food.getFoodLevel());
+				}
+			}
+			case HOLDING_ITEM -> {
+				if (Minecraft.getInstance().getCameraEntity() instanceof LivingEntity living) {
+					ItemStack key = opacityModifier.item();
+					if (key != null && !living.isHolding(stack -> ItemStack.isSameItemSameComponents(stack, key)))
+						a = 0.0F;
+				}
+			}
 		}
+
+		a = Mth.clamp(a, 0.0F, 1.0F);
+		if (opacityModifier.type().powerOfMultiplier()) a = (float) Math.pow(a, opacityModifier.multiplier());
+		if (opacityModifier.invert()) a = 1.0F - a;
+		a = a * (opacityModifier.max() - opacityModifier.min()) + opacityModifier.min();
 		return a;
 	}
 

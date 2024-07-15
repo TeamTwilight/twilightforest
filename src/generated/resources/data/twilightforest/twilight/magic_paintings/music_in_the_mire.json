@@ -1,0 +1,148 @@
+{
+  "height": 48,
+  "layers": [
+    {
+      "fullbright": false,
+      "parallax": {
+        "type": "view_angle",
+        "height": 56,
+        "multiplier": -0.015,
+        "width": 80
+      },
+      "path": "bl_sky"
+    },
+    {
+      "fullbright": true,
+      "parallax": {
+        "type": "view_angle",
+        "height": 52,
+        "multiplier": -0.015,
+        "width": 78
+      },
+      "path": "bl_roots"
+    },
+    {
+      "fullbright": false,
+      "opacity_modifier": {
+        "type": "lightning",
+        "invert": false,
+        "max": 1.0,
+        "min": 0.0,
+        "multiplier": 1.0
+      },
+      "parallax": {
+        "type": "view_angle",
+        "height": 52,
+        "multiplier": -0.015,
+        "width": 78
+      },
+      "path": "bl_lightning"
+    },
+    {
+      "fullbright": false,
+      "parallax": {
+        "type": "view_angle",
+        "height": 52,
+        "multiplier": -0.015,
+        "width": 76
+      },
+      "path": "bl_mid"
+    },
+    {
+      "fullbright": false,
+      "opacity_modifier": {
+        "type": "lightning",
+        "invert": false,
+        "max": 1.0,
+        "min": 0.0,
+        "multiplier": 0.1
+      },
+      "parallax": {
+        "type": "view_angle",
+        "height": 52,
+        "multiplier": -0.015,
+        "width": 76
+      },
+      "path": "bl_mid_lightning"
+    },
+    {
+      "fullbright": false,
+      "parallax": {
+        "type": "view_angle",
+        "height": 52,
+        "multiplier": -0.015,
+        "width": 76
+      },
+      "path": "bl_fog"
+    },
+    {
+      "fullbright": false,
+      "parallax": {
+        "type": "view_angle",
+        "height": 48,
+        "multiplier": -0.015,
+        "width": 74
+      },
+      "path": "bl_foreground"
+    },
+    {
+      "fullbright": false,
+      "opacity_modifier": {
+        "type": "lightning",
+        "invert": false,
+        "max": 1.0,
+        "min": 0.0,
+        "multiplier": 0.09090909
+      },
+      "parallax": {
+        "type": "view_angle",
+        "height": 48,
+        "multiplier": -0.015,
+        "width": 74
+      },
+      "path": "bl_foreground_lightning"
+    },
+    {
+      "fullbright": false,
+      "parallax": {
+        "type": "view_angle",
+        "height": 48,
+        "multiplier": -0.015,
+        "width": 74
+      },
+      "path": "bl_greeblings"
+    },
+    {
+      "fullbright": false,
+      "opacity_modifier": {
+        "type": "lightning",
+        "invert": false,
+        "max": 1.0,
+        "min": 0.0,
+        "multiplier": 0.083333336
+      },
+      "parallax": {
+        "type": "view_angle",
+        "height": 48,
+        "multiplier": -0.015,
+        "width": 74
+      },
+      "path": "bl_greeblings_lightning"
+    },
+    {
+      "fullbright": false,
+      "parallax": {
+        "type": "view_angle",
+        "height": 48,
+        "multiplier": -0.015,
+        "width": 80
+      },
+      "path": "bl_shade"
+    },
+    {
+      "fullbright": false,
+      "path": "bl_frame"
+    }
+  ],
+  "width": 64
+}
