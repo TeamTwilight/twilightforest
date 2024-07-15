@@ -45,6 +45,7 @@ public class TFBeanContext {
 		if (context != null)
 			context.accept(this);
 		ModFileScanData scanData = ModList.get().getModContainerById(TwilightForestMod.ID).orElseThrow().getModInfo().getOwningFile().getFile().getScanResult();
+		Field currentInjection = null;
 		try {
 
 			List<Object> beans = new ArrayList<>(BEANS.values());
@@ -77,8 +78,10 @@ public class TFBeanContext {
 						String name = field.getAnnotation(Autowired.class).value();
 						field.trySetAccessible();
 						if (Objects.equals(Component.DEFAULT_VALUE, name)) {
+							currentInjection = field;
 							field.set(null, inject(field.getType()));
 						} else {
+							currentInjection = field;
 							field.set(null, inject(field.getType(), name));
 						}
 					}
@@ -91,8 +94,10 @@ public class TFBeanContext {
 				if (Modifier.isStatic(field.getModifiers())) {
 					field.trySetAccessible();
 					if (Objects.equals(Component.DEFAULT_VALUE, name)) {
+						currentInjection = field;
 						field.set(null, inject(field.getType()));
 					} else {
+						currentInjection = field;
 						field.set(null, inject(field.getType(), name));
 					}
 				}
@@ -100,6 +105,8 @@ public class TFBeanContext {
 
 		} catch (ClassNotFoundException | InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException | NoSuchFieldException e) {
 			throw new RuntimeException(e);
+		} catch (NullPointerException e) {
+			throw new RuntimeException("Injection failed." + (currentInjection == null ? "" : (" At: " + currentInjection.getDeclaringClass() + "#" + currentInjection.getName())), e);
 		}
 	}
 
@@ -137,7 +144,7 @@ public class TFBeanContext {
 	public <T> T injectInternal(Class<T> type, @Nullable String name) {
 		if (!frozen)
 			throw new IllegalStateException("Bean Context has not been initialized yet");
-		return type.cast(Objects.requireNonNull(BEANS.get(new BeanDefinition<>(type, name))));
+		return type.cast(Objects.requireNonNull(BEANS.get(new BeanDefinition<>(type, name)), "Trying to inject Bean: " + type + (name == null ? "" : " (" + name + ")")));
 	}
 
 	private record BeanDefinition<T>(Class<T> type, @Nullable String name) {
