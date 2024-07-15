@@ -140,11 +140,6 @@ public class TFBeanContext {
 		return type.cast(Objects.requireNonNull(BEANS.get(new BeanDefinition<>(type, name))));
 	}
 
-	@SuppressWarnings("DataFlowIssue")
-	public static <T> T blank() {
-		return null;
-	}
-
 	private record BeanDefinition<T>(Class<T> type, @Nullable String name) {
 
 		@Override

@@ -43,7 +43,6 @@ import net.neoforged.neoforge.common.util.TriState;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import twilightforest.beans.Autowired;
-import twilightforest.beans.TFBeanContext;
 import twilightforest.util.multiparts.MultipartEntityUtil;
 import twilightforest.block.CloudBlock;
 import twilightforest.block.WroughtIronFenceBlock;
@@ -66,7 +65,7 @@ import java.util.Iterator;
 public class ASMHooks {
 
 	@Autowired
-	private static MultipartEntityUtil multipartEntityUtil = TFBeanContext.blank();
+	private static MultipartEntityUtil multipartEntityUtil;
 
 	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// armor
