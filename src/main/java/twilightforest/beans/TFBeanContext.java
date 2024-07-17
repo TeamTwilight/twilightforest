@@ -13,7 +13,7 @@ import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.function.Consumer;
 
-public class TFBeanContext {
+public final class TFBeanContext {
 
 	static TFBeanContext INSTANCE = new TFBeanContext();
 
@@ -34,16 +34,20 @@ public class TFBeanContext {
 	/**
 	 * Should be called as early as possible to avoid null bean injections
 	 */
-	public static void init(@Nullable Consumer<TFBeanContext> context) {
+	public static void init(@Nullable Consumer<TFBeanContextRegistrar> context) {
 		INSTANCE.initInternal(context);
 	}
 
-	private void initInternal(@Nullable Consumer<TFBeanContext> context) {
+	private void initInternal(@Nullable Consumer<TFBeanContextRegistrar> context) {
 		if (frozen)
 			throw new IllegalStateException("Bean Context already frozen");
 		BEANS.clear();
+
+		registerInternal(TFBeanContext.class, null, this);
+
 		if (context != null)
-			context.accept(this);
+			context.accept(TFBeanContextRegistrar.SINGLETON);
+
 		ModFileScanData scanData = ModList.get().getModContainerById(TwilightForestMod.ID).orElseThrow().getModInfo().getOwningFile().getFile().getScanResult();
 		Field currentInjection = null;
 		try {
@@ -53,21 +57,13 @@ public class TFBeanContext {
 			for (ModFileScanData.AnnotationData data : scanData.getAnnotatedBy(Component.class, ElementType.TYPE).toList()) {
 				final String name = (String) data.annotationData().get("value");
 				Class<?> c = Class.forName(data.clazz().getClassName());
-				if (Objects.equals(Component.DEFAULT_VALUE, name)) {
-					beans.add(registerInternal(c, null, c.getConstructor().newInstance()));
-				} else {
-					beans.add(registerInternal(c, name, c.getConstructor().newInstance()));
-				}
+				beans.add(registerInternal(c, Objects.equals(Component.DEFAULT_VALUE, name) ? null : name, c.getConstructor().newInstance()));
 			}
 
 			for (ModFileScanData.AnnotationData data : scanData.getAnnotatedBy(Bean.class, ElementType.METHOD).toList()) {
 				final String name = (String) data.annotationData().get("value");
 				Method method = Class.forName(data.clazz().getClassName()).getDeclaredMethod(data.memberName());
-				if (Objects.equals(Component.DEFAULT_VALUE, name)) {
-					beans.add(registerInternal(method.getReturnType(), null, method.invoke(null)));
-				} else {
-					beans.add(registerInternal(method.getReturnType(), name, method.invoke(null)));
-				}
+				beans.add(registerInternal(method.getReturnType(), Objects.equals(Component.DEFAULT_VALUE, name) ? null : name, method.invoke(null)));
 			}
 
 			frozen = true;
@@ -77,13 +73,8 @@ public class TFBeanContext {
 					if (field.isAnnotationPresent(Autowired.class) && !Modifier.isStatic(field.getModifiers())) {
 						String name = field.getAnnotation(Autowired.class).value();
 						field.trySetAccessible();
-						if (Objects.equals(Component.DEFAULT_VALUE, name)) {
-							currentInjection = field;
-							field.set(null, inject(field.getType()));
-						} else {
-							currentInjection = field;
-							field.set(null, inject(field.getType(), name));
-						}
+						currentInjection = field;
+						field.set(null, inject(field.getType(), Objects.equals(Component.DEFAULT_VALUE, name) ? null : name));
 					}
 				}
 			}
@@ -93,13 +84,8 @@ public class TFBeanContext {
 				Field field = Class.forName(data.clazz().getClassName()).getDeclaredField(data.memberName());
 				if (Modifier.isStatic(field.getModifiers())) {
 					field.trySetAccessible();
-					if (Objects.equals(Component.DEFAULT_VALUE, name)) {
-						currentInjection = field;
-						field.set(null, inject(field.getType()));
-					} else {
-						currentInjection = field;
-						field.set(null, inject(field.getType(), name));
-					}
+					currentInjection = field;
+					field.set(null, inject(field.getType(), Objects.equals(Component.DEFAULT_VALUE, name) ? null : name));
 				}
 			}
 
@@ -108,14 +94,6 @@ public class TFBeanContext {
 		} catch (NullPointerException e) {
 			throw new RuntimeException("Injection failed." + (currentInjection == null ? "" : (" At: " + currentInjection.getDeclaringClass() + "#" + currentInjection.getName())), e);
 		}
-	}
-
-	public <T> void register(Class<T> type, T instance) {
-		register(type, null, instance);
-	}
-
-	public <T> void register(Class<T> type, @Nullable String name, T instance) {
-		registerInternal(type, name, instance);
 	}
 
 	private Object registerInternal(Class<?> type, @Nullable String name, Object instance) {
@@ -141,7 +119,7 @@ public class TFBeanContext {
 		return INSTANCE.injectInternal(type, name);
 	}
 
-	public <T> T injectInternal(Class<T> type, @Nullable String name) {
+	<T> T injectInternal(Class<T> type, @Nullable String name) {
 		if (!frozen)
 			throw new IllegalStateException("Bean Context has not been initialized yet");
 		return type.cast(Objects.requireNonNull(BEANS.get(new BeanDefinition<>(type, name)), "Trying to inject Bean: " + type + (name == null ? "" : " (" + name + ")")));
@@ -158,6 +136,24 @@ public class TFBeanContext {
 		public boolean equals(Object o) {
 			return o instanceof BeanDefinition<?> other && type.equals(other.type()) && (name == null || Objects.equals(name, other.name));
 		}
+	}
+
+	public static final class TFBeanContextRegistrar {
+
+		static final TFBeanContextRegistrar SINGLETON = new TFBeanContextRegistrar();
+
+		private TFBeanContextRegistrar() {
+
+		}
+
+		public <T> void register(Class<T> type, T instance) {
+			register(type, null, instance);
+		}
+
+		public <T> void register(Class<T> type, @Nullable String name, T instance) {
+			INSTANCE.registerInternal(type, name, instance);
+		}
+
 	}
 
 }

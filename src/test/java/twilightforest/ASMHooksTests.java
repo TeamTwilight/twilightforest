@@ -4,9 +4,9 @@ import net.minecraft.world.entity.Entity;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import twilightforest.util.multiparts.MultipartEntityUtil;
-import twilightforest.junit.MockBean;
+import twilightforest.beans.MockBean;
 import twilightforest.junit.MockitoFixer;
-import twilightforest.junit.TFBeanContextJunitExtension;
+import twilightforest.beans.TFBeanContextJunitExtension;
 
 
 import java.util.Collections;

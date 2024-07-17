@@ -1,10 +1,9 @@
-package twilightforest.junit;
+package twilightforest.beans;
 
 
 import org.junit.jupiter.api.extension.*;
 import org.junit.platform.commons.support.AnnotationSupport;
 import org.mockito.MockedStatic;
-import twilightforest.beans.TFBeanContext;
 
 import javax.annotation.Nullable;
 

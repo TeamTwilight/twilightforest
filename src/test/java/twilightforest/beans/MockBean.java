@@ -1,6 +1,4 @@
-package twilightforest.junit;
-
-import twilightforest.beans.Component;
+package twilightforest.beans;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
