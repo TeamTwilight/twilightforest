@@ -74,7 +74,7 @@ public final class TFBeanContext {
 						String name = field.getAnnotation(Autowired.class).value();
 						field.trySetAccessible();
 						currentInjection = field;
-						field.set(null, inject(field.getType(), Objects.equals(Component.DEFAULT_VALUE, name) ? null : name));
+						field.set(null, injectInternal(field.getType(), Objects.equals(Component.DEFAULT_VALUE, name) ? null : name));
 					}
 				}
 			}
@@ -85,7 +85,7 @@ public final class TFBeanContext {
 				if (Modifier.isStatic(field.getModifiers())) {
 					field.trySetAccessible();
 					currentInjection = field;
-					field.set(null, inject(field.getType(), Objects.equals(Component.DEFAULT_VALUE, name) ? null : name));
+					field.set(null, injectInternal(field.getType(), Objects.equals(Component.DEFAULT_VALUE, name) ? null : name));
 				}
 			}
 
