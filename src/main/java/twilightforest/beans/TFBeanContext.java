@@ -70,29 +70,37 @@ public final class TFBeanContext {
 
 			for (Object bean : beans) {
 				for (Field field : bean.getClass().getDeclaredFields()) {
-					if (field.isAnnotationPresent(Autowired.class) && !Modifier.isStatic(field.getModifiers())) {
+					if (field.isAnnotationPresent(Autowired.class)) {
+						currentInjection = field;
+						if (Modifier.isStatic(field.getModifiers())) {
+							throw new IllegalStateException("@Autowired fields must be non-static inside Beans");
+						}
 						String name = field.getAnnotation(Autowired.class).value();
 						field.trySetAccessible();
-						currentInjection = field;
 						field.set(null, injectInternal(field.getType(), Objects.equals(Component.DEFAULT_VALUE, name) ? null : name));
 					}
 				}
 			}
 
 			for (ModFileScanData.AnnotationData data : scanData.getAnnotatedBy(Autowired.class, ElementType.FIELD).toList()) {
-				final String name = (String) data.annotationData().get("value");
-				Field field = Class.forName(data.clazz().getClassName()).getDeclaredField(data.memberName());
+				final String value = (String) data.annotationData().get("value");
+				final @Nullable String name = Objects.equals(Component.DEFAULT_VALUE, value) ? null : value;
+				Class<?> type = Class.forName(data.clazz().getClassName());
+				Field field = type.getDeclaredField(data.memberName());
+				currentInjection = field;
 				if (Modifier.isStatic(field.getModifiers())) {
 					field.trySetAccessible();
-					currentInjection = field;
-					field.set(null, injectInternal(field.getType(), Objects.equals(Component.DEFAULT_VALUE, name) ? null : name));
+					field.set(null, injectInternal(field.getType(), name));
+				} else if (!BEANS.containsKey(new BeanDefinition<>(type, name))) {
+					throw new IllegalStateException("@Autowired fields must be static outside of Beans");
 				}
 			}
 
-		} catch (ClassNotFoundException | InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException | NoSuchFieldException e) {
-			throw new RuntimeException(e);
-		} catch (NullPointerException e) {
-			throw new RuntimeException("Injection failed." + (currentInjection == null ? "" : (" At: " + currentInjection.getDeclaringClass() + "#" + currentInjection.getName())), e);
+		} catch (Throwable e) {
+			throw new RuntimeException(
+				"Bean injection failed." + (currentInjection == null ? "" : (
+					" At field: " + currentInjection.getDeclaringClass() + "#" + currentInjection.getName()
+				)), e);
 		}
 	}
 
