@@ -17,9 +17,9 @@ public class BeanAnnotationDataProcessor implements AnnotationDataProcessor {
 	public void process(TFBeanContext.TFBeanContextInternalRegistrar context, ModContainer modContainer, ModFileScanData scanData) throws Throwable {
 		for (Iterator<ModFileScanData.AnnotationData> it = scanData.getAnnotatedBy(Bean.class, ElementType.METHOD).iterator(); it.hasNext(); ) {
 			ModFileScanData.AnnotationData data = it.next();
-			final String name = (String) data.annotationData().get("value");
 			Method method = Class.forName(data.clazz().getClassName()).getDeclaredMethod(data.memberName());
-			context.register(method.getReturnType(), Objects.equals(Component.DEFAULT_VALUE, name) ? null : name, method.invoke(null));
+			Bean annotation = method.getAnnotation(Bean.class);
+			context.register(method.getReturnType(), Objects.equals(Component.DEFAULT_VALUE, annotation.value()) ? null : annotation.value(), method.invoke(null));
 		}
 	}
 

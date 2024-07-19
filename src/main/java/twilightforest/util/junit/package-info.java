@@ -1,9 +1,0 @@
-@FieldsAreNonnullByDefault
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
-package twilightforest.util.junit;
-
-import net.minecraft.FieldsAreNonnullByDefault;
-import net.minecraft.MethodsReturnNonnullByDefault;
-
-import javax.annotation.ParametersAreNonnullByDefault;

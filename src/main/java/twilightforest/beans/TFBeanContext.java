@@ -3,6 +3,8 @@ package twilightforest.beans;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModList;
 import net.neoforged.neoforgespi.language.ModFileScanData;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import twilightforest.TwilightForestMod;
 import twilightforest.beans.processors.*;
 
@@ -16,10 +18,11 @@ public final class TFBeanContext {
 
 	static TFBeanContext INSTANCE = new TFBeanContext();
 
+	private final Logger logger = LogManager.getLogger(TFBeanContext.class);
+
 	private final AnnotationDataProcessor[] annotationDataProcessors = new AnnotationDataProcessor[] {
 		new ComponentAnnotationDataProcessor(),
-		new BeanAnnotationDataProcessor(),
-		new EventControllerAnnotationDataProcessor()
+		new BeanAnnotationDataProcessor()
 	};
 
 	private final AnnotationDataPostProcessor[] annotationDataPostProcessors = new AnnotationDataPostProcessor[] {
@@ -27,7 +30,7 @@ public final class TFBeanContext {
 	};
 
 	private final Map<BeanDefinition<?>, Object> BEANS = new HashMap<>();
-	boolean frozen = false;
+	private boolean frozen = false;
 
 	private TFBeanContext() {
 
@@ -48,6 +51,7 @@ public final class TFBeanContext {
 	}
 
 	private void initInternal(@Nullable Consumer<TFBeanContextRegistrar> context) {
+		logger.info("Starting Bean Context");
 		if (frozen)
 			throw new IllegalStateException("Bean Context already frozen");
 		BEANS.clear();
@@ -62,13 +66,19 @@ public final class TFBeanContext {
 		AtomicReference<Field> currentInjection = new AtomicReference<>();
 		try {
 			for (AnnotationDataProcessor annotationDataProcessor : annotationDataProcessors) {
+				logger.info("Running processor {}", annotationDataProcessor.getClass());
 				annotationDataProcessor.process(TFBeanContextInternalRegistrar.SINGLETON, modContainer, scanData);
 			}
 
 			frozen = true;
 
 			for (Object bean : BEANS.values()) {
+				boolean logged = false;
 				for (AnnotationDataPostProcessor annotationDataPostProcessor : annotationDataPostProcessors) {
+					if (!logged) {
+						logger.info("Running post processor {}", annotationDataPostProcessor.getClass());
+						logged = true;
+					}
 					annotationDataPostProcessor.process(TFBeanContextInternalInjector.SINGLETON, bean, currentInjection);
 				}
 			}
@@ -85,6 +95,7 @@ public final class TFBeanContext {
 	}
 
 	private void registerInternal(Class<?> type, @Nullable String name, Object instance) {
+		logger.info("Registering Bean {} {}", type, name == null ? "" : ("with name: " + name));
 		if (frozen)
 			throw new IllegalStateException("Bean Context already frozen");
 		BeanDefinition<?> beanDefinition = new BeanDefinition<>(type, name);

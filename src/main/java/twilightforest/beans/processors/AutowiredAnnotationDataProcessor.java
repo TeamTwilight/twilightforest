@@ -35,11 +35,11 @@ public class AutowiredAnnotationDataProcessor implements AnnotationDataPostProce
 	public void process(TFBeanContext.TFBeanContextInternalInjector context, ModContainer modContainer, ModFileScanData scanData, AtomicReference<Field> currentInjectionTarget) throws Throwable {
 		for (Iterator<ModFileScanData.AnnotationData> it = scanData.getAnnotatedBy(Autowired.class, ElementType.FIELD).iterator(); it.hasNext(); ) {
 			ModFileScanData.AnnotationData data = it.next();
-			final String value = (String) data.annotationData().get("value");
-			final @Nullable String name = Objects.equals(Component.DEFAULT_VALUE, value) ? null : value;
 			Class<?> type = Class.forName(data.clazz().getClassName());
 			Field field = type.getDeclaredField(data.memberName());
 			currentInjectionTarget.set(field);
+			Autowired annotation = field.getAnnotation(Autowired.class);
+			final @Nullable String name = Objects.equals(Component.DEFAULT_VALUE, annotation.value()) ? null : annotation.value();
 			if (Modifier.isStatic(field.getModifiers())) {
 				field.trySetAccessible();
 				field.set(null, context.inject(field.getType(), name));
