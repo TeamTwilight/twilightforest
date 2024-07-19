@@ -9,25 +9,18 @@ import twilightforest.TwilightForestMod;
 import twilightforest.beans.processors.*;
 
 import javax.annotation.Nullable;
+import java.lang.annotation.ElementType;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 public final class TFBeanContext {
 
 	static TFBeanContext INSTANCE = new TFBeanContext();
 
 	private final Logger logger = LogManager.getLogger(TFBeanContext.class);
-
-	private final AnnotationDataProcessor[] annotationDataProcessors = new AnnotationDataProcessor[] {
-		new ComponentAnnotationDataProcessor(),
-		new BeanAnnotationDataProcessor()
-	};
-
-	private final AnnotationDataPostProcessor[] annotationDataPostProcessors = new AnnotationDataPostProcessor[] {
-		new AutowiredAnnotationDataProcessor()
-	};
 
 	private final Map<BeanDefinition<?>, Object> BEANS = new HashMap<>();
 	private boolean frozen = false;
@@ -65,6 +58,21 @@ public final class TFBeanContext {
 		ModFileScanData scanData = modContainer.getModInfo().getOwningFile().getFile().getScanResult();
 		AtomicReference<Field> currentInjection = new AtomicReference<>();
 		try {
+			logger.info("Registering Bean annotation processors");
+			List<AnnotationDataProcessor> annotationDataProcessors = new ArrayList<>();
+			List<AnnotationDataPostProcessor> annotationDataPostProcessors = new ArrayList<>();
+
+			for (Iterator<ModFileScanData.AnnotationData> it = scanData.getAnnotatedBy(BeanProcessor.class, ElementType.TYPE).iterator(); it.hasNext(); ) {
+				Class<?> c = Class.forName(it.next().clazz().getClassName());
+				if (AnnotationDataProcessor.class.isAssignableFrom(c)) {
+					annotationDataProcessors.add((AnnotationDataProcessor) c.getConstructor().newInstance());
+					logger.info("Registered Bean annotation processor: {}", c);
+				} else if (AnnotationDataPostProcessor.class.isAssignableFrom(c)) {
+					annotationDataPostProcessors.add((AnnotationDataPostProcessor) c.getConstructor().newInstance());
+					logger.info("Registered Bean annotation post processor: {}", c);
+				}
+			}
+
 			for (AnnotationDataProcessor annotationDataProcessor : annotationDataProcessors) {
 				logger.info("Running processor {}", annotationDataProcessor.getClass());
 				annotationDataProcessor.process(TFBeanContextInternalRegistrar.SINGLETON, modContainer, scanData);
@@ -73,19 +81,17 @@ public final class TFBeanContext {
 			frozen = true;
 
 			for (Object bean : BEANS.values()) {
-				boolean logged = false;
 				for (AnnotationDataPostProcessor annotationDataPostProcessor : annotationDataPostProcessors) {
-					if (!logged) {
-						logger.info("Running post processor {}", annotationDataPostProcessor.getClass());
-						logged = true;
-					}
 					annotationDataPostProcessor.process(TFBeanContextInternalInjector.SINGLETON, bean, currentInjection);
 				}
 			}
 
 			for (AnnotationDataPostProcessor annotationDataPostProcessor : annotationDataPostProcessors) {
+				logger.info("Running post processor {}", annotationDataPostProcessor.getClass());
 				annotationDataPostProcessor.process(TFBeanContextInternalInjector.SINGLETON, modContainer, scanData, currentInjection);
 			}
+
+			logger.info("Bean Context loaded");
 		} catch (Throwable e) {
 			throw new RuntimeException(
 				"Bean injection failed." + (currentInjection.get() == null ? "" : (

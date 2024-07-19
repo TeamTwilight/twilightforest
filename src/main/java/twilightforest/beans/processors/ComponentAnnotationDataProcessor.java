@@ -9,6 +9,7 @@ import java.lang.annotation.ElementType;
 import java.util.Iterator;
 import java.util.Objects;
 
+@BeanProcessor
 public class ComponentAnnotationDataProcessor implements AnnotationDataProcessor {
 
 	@Override

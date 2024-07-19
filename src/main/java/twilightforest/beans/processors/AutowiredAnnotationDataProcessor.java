@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
+@BeanProcessor
 public class AutowiredAnnotationDataProcessor implements AnnotationDataPostProcessor {
 
 	@Override

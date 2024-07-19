@@ -1,6 +1,8 @@
 package twilightforest.beans;
 
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.extension.*;
 import org.junit.platform.commons.support.AnnotationSupport;
 import org.mockito.MockedStatic;
@@ -15,6 +17,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 public class TFBeanContextJunitExtension implements BeforeAllCallback, AfterAllCallback, TestInstancePostProcessor {
+
+	private static final Logger LOGGER = LogManager.getLogger(TFBeanContextJunitExtension.class);
 
 	@Nullable
 	private MockedStatic<TFBeanContext> beanContext;
@@ -59,6 +63,7 @@ public class TFBeanContextJunitExtension implements BeforeAllCallback, AfterAllC
 			}
 		}
 
+		LOGGER.info("Hijacking TFBeanContext, rerunning init");
 		Field f = TFBeanContext.class.getDeclaredField("INSTANCE");
 		f.trySetAccessible();
 		f.set(null, beanContextInstance);
