@@ -12,4 +12,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface BeanProcessor {
 
+	/**
+	 * Execution order: -1 -> 0 -> 1
+	 */
+	int priority() default 0;
+
 }

@@ -4,6 +4,7 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.neoforgespi.language.ModFileScanData;
 import twilightforest.beans.Autowired;
 import twilightforest.beans.Component;
+import twilightforest.beans.PostConstruct;
 import twilightforest.beans.TFBeanContext;
 
 import javax.annotation.Nullable;
@@ -15,11 +16,12 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
 @BeanProcessor
-public class AutowiredAnnotationDataProcessor implements AnnotationDataPostProcessor {
+public class AutowiredAnnotationDataPostProcessor implements AnnotationDataPostProcessor {
 
 	@Override
-	public void process(TFBeanContext.TFBeanContextInternalInjector context, Object bean, AtomicReference<Field> currentInjectionTarget) throws Throwable {
-		for (Field field : bean.getClass().getDeclaredFields()) {
+	public void process(TFBeanContext.TFBeanContextInternalInjector context, ModFileScanData scanData, Object bean, AtomicReference<Object> currentInjectionTarget) throws Throwable {
+		for (Iterator<ModFileScanData.AnnotationData> it = scanData.getAnnotatedBy(Autowired.class, ElementType.FIELD).filter(a -> a.clazz().getClass().equals(bean.getClass())).iterator(); it.hasNext(); ) {
+			Field field = bean.getClass().getDeclaredField(it.next().memberName());
 			if (field.isAnnotationPresent(Autowired.class)) {
 				currentInjectionTarget.set(field);
 				if (Modifier.isStatic(field.getModifiers())) {
@@ -33,7 +35,7 @@ public class AutowiredAnnotationDataProcessor implements AnnotationDataPostProce
 	}
 
 	@Override
-	public void process(TFBeanContext.TFBeanContextInternalInjector context, ModContainer modContainer, ModFileScanData scanData, AtomicReference<Field> currentInjectionTarget) throws Throwable {
+	public void process(TFBeanContext.TFBeanContextInternalInjector context, ModContainer modContainer, ModFileScanData scanData, AtomicReference<Object> currentInjectionTarget) throws Throwable {
 		for (Iterator<ModFileScanData.AnnotationData> it = scanData.getAnnotatedBy(Autowired.class, ElementType.FIELD).iterator(); it.hasNext(); ) {
 			ModFileScanData.AnnotationData data = it.next();
 			Class<?> type = Class.forName(data.clazz().getClassName());

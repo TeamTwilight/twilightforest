@@ -10,11 +10,9 @@ import twilightforest.beans.processors.*;
 
 import javax.annotation.Nullable;
 import java.lang.annotation.ElementType;
-import java.lang.reflect.Field;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 public final class TFBeanContext {
 
@@ -56,14 +54,23 @@ public final class TFBeanContext {
 
 		ModContainer modContainer = ModList.get().getModContainerById(TwilightForestMod.ID).orElseThrow();
 		ModFileScanData scanData = modContainer.getModInfo().getOwningFile().getFile().getScanResult();
-		AtomicReference<Field> currentInjection = new AtomicReference<>();
+		AtomicReference<Object> currentInjection = new AtomicReference<>();
 		try {
 			logger.info("Registering Bean annotation processors");
 			List<AnnotationDataProcessor> annotationDataProcessors = new ArrayList<>();
 			List<AnnotationDataPostProcessor> annotationDataPostProcessors = new ArrayList<>();
 
-			for (Iterator<ModFileScanData.AnnotationData> it = scanData.getAnnotatedBy(BeanProcessor.class, ElementType.TYPE).iterator(); it.hasNext(); ) {
-				Class<?> c = Class.forName(it.next().clazz().getClassName());
+			for (Iterator<? extends Class<?>> it = scanData.getAnnotatedBy(BeanProcessor.class, ElementType.TYPE)
+				.map(a -> {
+					try {
+						return Class.forName(a.clazz().getClassName());
+					} catch (ClassNotFoundException e) {
+						throw new RuntimeException(e);
+					}
+				})
+				.sorted(Comparator.comparingInt(c -> c.getAnnotation(BeanProcessor.class).priority()))
+				.iterator(); it.hasNext(); ) {
+				Class<?> c = it.next();
 				if (AnnotationDataProcessor.class.isAssignableFrom(c)) {
 					annotationDataProcessors.add((AnnotationDataProcessor) c.getConstructor().newInstance());
 					logger.info("Registered Bean annotation processor: {}", c);
@@ -82,7 +89,7 @@ public final class TFBeanContext {
 
 			for (Object bean : BEANS.values()) {
 				for (AnnotationDataPostProcessor annotationDataPostProcessor : annotationDataPostProcessors) {
-					annotationDataPostProcessor.process(TFBeanContextInternalInjector.SINGLETON, bean, currentInjection);
+					annotationDataPostProcessor.process(TFBeanContextInternalInjector.SINGLETON, scanData, bean, currentInjection);
 				}
 			}
 
@@ -94,9 +101,7 @@ public final class TFBeanContext {
 			logger.info("Bean Context loaded");
 		} catch (Throwable e) {
 			throw new RuntimeException(
-				"Bean injection failed." + (currentInjection.get() == null ? "" : (
-					" At field: " + currentInjection.get().getDeclaringClass() + "#" + currentInjection.get().getName()
-				)), e);
+				"Bean injection failed." + (currentInjection.get() == null ? "" : (" At: " + currentInjection)), e);
 		}
 	}
 
