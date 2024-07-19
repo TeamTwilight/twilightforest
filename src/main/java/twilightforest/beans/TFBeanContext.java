@@ -1,21 +1,30 @@
 package twilightforest.beans;
 
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModList;
 import net.neoforged.neoforgespi.language.ModFileScanData;
 import twilightforest.TwilightForestMod;
+import twilightforest.beans.processors.*;
 
 import javax.annotation.Nullable;
-import java.lang.annotation.ElementType;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 public final class TFBeanContext {
 
 	static TFBeanContext INSTANCE = new TFBeanContext();
+
+	private final AnnotationDataProcessor[] annotationDataProcessors = new AnnotationDataProcessor[] {
+		new ComponentAnnotationDataProcessor(),
+		new BeanAnnotationDataProcessor(),
+		new EventControllerAnnotationDataProcessor()
+	};
+
+	private final AnnotationDataPostProcessor[] annotationDataPostProcessors = new AnnotationDataPostProcessor[] {
+		new AutowiredAnnotationDataProcessor()
+	};
 
 	private final Map<BeanDefinition<?>, Object> BEANS = new HashMap<>();
 	boolean frozen = false;
@@ -48,63 +57,34 @@ public final class TFBeanContext {
 		if (context != null)
 			context.accept(TFBeanContextRegistrar.SINGLETON);
 
-		ModFileScanData scanData = ModList.get().getModContainerById(TwilightForestMod.ID).orElseThrow().getModInfo().getOwningFile().getFile().getScanResult();
-		Field currentInjection = null;
+		ModContainer modContainer = ModList.get().getModContainerById(TwilightForestMod.ID).orElseThrow();
+		ModFileScanData scanData = modContainer.getModInfo().getOwningFile().getFile().getScanResult();
+		AtomicReference<Field> currentInjection = new AtomicReference<>();
 		try {
-
-			List<Object> beans = new ArrayList<>(BEANS.values());
-
-			for (ModFileScanData.AnnotationData data : scanData.getAnnotatedBy(Component.class, ElementType.TYPE).toList()) {
-				final String name = (String) data.annotationData().get("value");
-				Class<?> c = Class.forName(data.clazz().getClassName());
-				beans.add(registerInternal(c, Objects.equals(Component.DEFAULT_VALUE, name) ? null : name, c.getConstructor().newInstance()));
-			}
-
-			for (ModFileScanData.AnnotationData data : scanData.getAnnotatedBy(Bean.class, ElementType.METHOD).toList()) {
-				final String name = (String) data.annotationData().get("value");
-				Method method = Class.forName(data.clazz().getClassName()).getDeclaredMethod(data.memberName());
-				beans.add(registerInternal(method.getReturnType(), Objects.equals(Component.DEFAULT_VALUE, name) ? null : name, method.invoke(null)));
+			for (AnnotationDataProcessor annotationDataProcessor : annotationDataProcessors) {
+				annotationDataProcessor.process(TFBeanContextInternalRegistrar.SINGLETON, modContainer, scanData);
 			}
 
 			frozen = true;
 
-			for (Object bean : beans) {
-				for (Field field : bean.getClass().getDeclaredFields()) {
-					if (field.isAnnotationPresent(Autowired.class)) {
-						currentInjection = field;
-						if (Modifier.isStatic(field.getModifiers())) {
-							throw new IllegalStateException("@Autowired fields must be non-static inside Beans");
-						}
-						String name = field.getAnnotation(Autowired.class).value();
-						field.trySetAccessible();
-						field.set(null, injectInternal(field.getType(), Objects.equals(Component.DEFAULT_VALUE, name) ? null : name));
-					}
+			for (Object bean : BEANS.values()) {
+				for (AnnotationDataPostProcessor annotationDataPostProcessor : annotationDataPostProcessors) {
+					annotationDataPostProcessor.process(TFBeanContextInternalInjector.SINGLETON, bean, currentInjection);
 				}
 			}
 
-			for (ModFileScanData.AnnotationData data : scanData.getAnnotatedBy(Autowired.class, ElementType.FIELD).toList()) {
-				final String value = (String) data.annotationData().get("value");
-				final @Nullable String name = Objects.equals(Component.DEFAULT_VALUE, value) ? null : value;
-				Class<?> type = Class.forName(data.clazz().getClassName());
-				Field field = type.getDeclaredField(data.memberName());
-				currentInjection = field;
-				if (Modifier.isStatic(field.getModifiers())) {
-					field.trySetAccessible();
-					field.set(null, injectInternal(field.getType(), name));
-				} else if (!BEANS.containsKey(new BeanDefinition<>(type, name))) {
-					throw new IllegalStateException("@Autowired fields must be static outside of Beans");
-				}
+			for (AnnotationDataPostProcessor annotationDataPostProcessor : annotationDataPostProcessors) {
+				annotationDataPostProcessor.process(TFBeanContextInternalInjector.SINGLETON, modContainer, scanData, currentInjection);
 			}
-
 		} catch (Throwable e) {
 			throw new RuntimeException(
-				"Bean injection failed." + (currentInjection == null ? "" : (
-					" At field: " + currentInjection.getDeclaringClass() + "#" + currentInjection.getName()
+				"Bean injection failed." + (currentInjection.get() == null ? "" : (
+					" At field: " + currentInjection.get().getDeclaringClass() + "#" + currentInjection.get().getName()
 				)), e);
 		}
 	}
 
-	private Object registerInternal(Class<?> type, @Nullable String name, Object instance) {
+	private void registerInternal(Class<?> type, @Nullable String name, Object instance) {
 		if (frozen)
 			throw new IllegalStateException("Bean Context already frozen");
 		BeanDefinition<?> beanDefinition = new BeanDefinition<>(type, name);
@@ -116,7 +96,6 @@ public final class TFBeanContext {
 			throw new RuntimeException("Attempted to register a duplicate Bean." + error);
 		}
 		BEANS.put(beanDefinition, instance);
-		return instance;
 	}
 
 	public static <T> T inject(Class<T> type) {
@@ -160,6 +139,38 @@ public final class TFBeanContext {
 
 		public <T> void register(Class<T> type, @Nullable String name, T instance) {
 			INSTANCE.registerInternal(type, name, instance);
+		}
+
+	}
+
+	public static final class TFBeanContextInternalRegistrar {
+
+		static final TFBeanContextInternalRegistrar SINGLETON = new TFBeanContextInternalRegistrar();
+
+		private TFBeanContextInternalRegistrar() {
+
+		}
+
+		public void register(Class<?> type, @Nullable String name, Object instance) {
+			INSTANCE.registerInternal(type, name, instance);
+		}
+
+	}
+
+	public static final class TFBeanContextInternalInjector {
+
+		static final TFBeanContextInternalInjector SINGLETON = new TFBeanContextInternalInjector();
+
+		private TFBeanContextInternalInjector() {
+
+		}
+
+		public <T> T inject(Class<T> type, @Nullable String name) {
+			return INSTANCE.injectInternal(type, name);
+		}
+
+		public boolean contains(Class<?> type, @Nullable String name) {
+			return INSTANCE.BEANS.containsKey(new BeanDefinition<>(type, name));
 		}
 
 	}
