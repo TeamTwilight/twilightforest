@@ -2,10 +2,8 @@ package twilightforest.beans.processors;
 
 import net.neoforged.fml.ModContainer;
 import net.neoforged.neoforgespi.language.ModFileScanData;
-import twilightforest.beans.Autowired;
-import twilightforest.beans.Component;
-import twilightforest.beans.PostConstruct;
-import twilightforest.beans.TFBeanContext;
+import org.objectweb.asm.Type;
+import twilightforest.beans.*;
 
 import javax.annotation.Nullable;
 import java.lang.annotation.ElementType;
@@ -20,7 +18,7 @@ public class AutowiredAnnotationDataPostProcessor implements AnnotationDataPostP
 
 	@Override
 	public void process(TFBeanContext.TFBeanContextInternalInjector context, ModFileScanData scanData, Object bean, AtomicReference<Object> currentInjectionTarget) throws Throwable {
-		for (Iterator<ModFileScanData.AnnotationData> it = scanData.getAnnotatedBy(Autowired.class, ElementType.FIELD).filter(a -> a.clazz().getClass().equals(bean.getClass())).iterator(); it.hasNext(); ) {
+		for (Iterator<ModFileScanData.AnnotationData> it = scanData.getAnnotatedBy(Autowired.class, ElementType.FIELD).filter(a -> a.clazz().equals(Type.getType(bean.getClass()))).iterator(); it.hasNext(); ) {
 			Field field = bean.getClass().getDeclaredField(it.next().memberName());
 			if (field.isAnnotationPresent(Autowired.class)) {
 				currentInjectionTarget.set(field);
@@ -29,7 +27,7 @@ public class AutowiredAnnotationDataPostProcessor implements AnnotationDataPostP
 				}
 				String name = field.getAnnotation(Autowired.class).value();
 				field.trySetAccessible();
-				field.set(null, context.inject(field.getType(), Objects.equals(Component.DEFAULT_VALUE, name) ? null : name));
+				field.set(bean, context.inject(field.getType(), Objects.equals(Component.DEFAULT_VALUE, name) ? null : name));
 			}
 		}
 	}
@@ -39,6 +37,8 @@ public class AutowiredAnnotationDataPostProcessor implements AnnotationDataPostP
 		for (Iterator<ModFileScanData.AnnotationData> it = scanData.getAnnotatedBy(Autowired.class, ElementType.FIELD).iterator(); it.hasNext(); ) {
 			ModFileScanData.AnnotationData data = it.next();
 			Class<?> type = Class.forName(data.clazz().getClassName());
+			if (type.isAnnotationPresent(Configurable.class))
+				continue;
 			Field field = type.getDeclaredField(data.memberName());
 			currentInjectionTarget.set(field);
 			Autowired annotation = field.getAnnotation(Autowired.class);

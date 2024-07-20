@@ -1,7 +1,9 @@
 package twilightforest.beans;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModList;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforgespi.language.ModFileScanData;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -93,16 +95,41 @@ public final class TFBeanContext {
 				}
 			}
 
+			currentInjection.set(null);
+
 			for (AnnotationDataPostProcessor annotationDataPostProcessor : annotationDataPostProcessors) {
 				logger.info("Running post processor {}", annotationDataPostProcessor.getClass());
 				annotationDataPostProcessor.process(TFBeanContextInternalInjector.SINGLETON, modContainer, scanData, currentInjection);
 			}
 
+			currentInjection.set(null);
+
+			Objects.requireNonNull(modContainer.getEventBus()).addListener(FMLCommonSetupEvent.class, event -> {
+				logger.info("Processing registry objects");
+				AtomicReference<Object> curInj = new AtomicReference<>();
+				BuiltInRegistries.REGISTRY.holders().flatMap(r -> r.value().holders()).forEach(holder -> {
+					try {
+						Object o = holder.value();
+						if (o.getClass().isAnnotationPresent(Configurable.class)) {
+							for (AnnotationDataPostProcessor annotationDataPostProcessor : annotationDataPostProcessors) {
+								annotationDataPostProcessor.process(TFBeanContextInternalInjector.SINGLETON, scanData, o, curInj);
+							}
+						}
+					} catch (Throwable e) {
+						throwInjectionFailedException(curInj, e);
+					}
+				});
+				logger.info("Finished processing registry objects");
+			});
+
 			logger.info("Bean Context loaded");
 		} catch (Throwable e) {
-			throw new RuntimeException(
-				"Bean injection failed." + (currentInjection.get() == null ? "" : (" At: " + currentInjection)), e);
+			throwInjectionFailedException(currentInjection, e);
 		}
+	}
+
+	private void throwInjectionFailedException(AtomicReference<Object> o, Throwable e) {
+		throw new RuntimeException("Bean injection failed." + (o.get() == null ? "" : (" At: " + o)), e);
 	}
 
 	private void registerInternal(Class<?> type, @Nullable String name, Object instance) {

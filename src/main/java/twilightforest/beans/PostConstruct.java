@@ -7,7 +7,9 @@ import java.lang.annotation.Target;
 
 /**
  * Annotated methods will be automatically invoked after bean construction has finished.<br/>
- * Runs after {@link twilightforest.beans.processors.AnnotationDataPostProcessor}
+ * Runs after {@link twilightforest.beans.processors.AnnotationDataPostProcessor}<p/>
+ *
+ * Works for {@link Configurable}
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

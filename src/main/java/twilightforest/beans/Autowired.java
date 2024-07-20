@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
  * If a value is set then {@link TFBeanContext#inject(Class, String)} is used instead.<p/>
  *
  * Fields may be private.<br/>
- * When used inside a Bean the field may be non-static.<br/>
+ * When used inside a Bean or {@link Configurable} the field must be non-static.<br/>
  * When used outside a Bean, the field <b>must</b> be <b>static</b>!
  */
 @Nullable

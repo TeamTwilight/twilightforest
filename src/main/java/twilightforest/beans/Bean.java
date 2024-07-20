@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
  * If a value is set then {@link twilightforest.beans.TFBeanContext.TFBeanContextRegistrar#register(Class, String, Object)} is used instead.<p/>
  *
  * The returned object class can extend/implement the method return type. The method return type is what's used for bean identification.<br/>
- * This for example allows for interfaces to be used as beans.<p/>
+ * This for example allows for interfaces to be used as beans.
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

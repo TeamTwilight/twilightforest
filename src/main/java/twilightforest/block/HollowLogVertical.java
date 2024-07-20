@@ -31,9 +31,11 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.beans.Autowired;
+import twilightforest.beans.Configurable;
 import twilightforest.enums.HollowLogVariants;
 import twilightforest.util.DirectionUtil;
 
+@Configurable
 public class HollowLogVertical extends Block implements SimpleWaterloggedBlock {
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
@@ -41,7 +43,7 @@ public class HollowLogVertical extends Block implements SimpleWaterloggedBlock {
 	private static final VoxelShape COLLISION_SHAPE = Shapes.join(Shapes.block(), Block.box(1, 0, 1, 15, 16, 15), BooleanOp.ONLY_FIRST);
 
 	@Autowired
-	private static DirectionUtil directionUtil;
+	private DirectionUtil directionUtil;
 
 	private final Holder<Block> climbable;
 

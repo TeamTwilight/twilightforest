@@ -2,6 +2,7 @@ package twilightforest.beans.processors;
 
 import net.neoforged.fml.ModContainer;
 import net.neoforged.neoforgespi.language.ModFileScanData;
+import org.objectweb.asm.Type;
 import twilightforest.beans.PostConstruct;
 import twilightforest.beans.TFBeanContext;
 
@@ -16,8 +17,8 @@ public class PostConstructAnnotationDataPostProcessor implements AnnotationDataP
 
 	@Override
 	public void process(TFBeanContext.TFBeanContextInternalInjector context, ModFileScanData scanData, Object bean, AtomicReference<Object> currentInjectionTarget) throws Throwable {
-		for (Iterator<ModFileScanData.AnnotationData> it = scanData.getAnnotatedBy(PostConstruct.class, ElementType.METHOD).filter(a -> a.clazz().getClass().equals(bean.getClass())).iterator(); it.hasNext(); ) {
-			Method method = bean.getClass().getDeclaredMethod(it.next().memberName());
+		for (Iterator<ModFileScanData.AnnotationData> it = scanData.getAnnotatedBy(PostConstruct.class, ElementType.METHOD).filter(a -> a.clazz().equals(Type.getType(bean.getClass()))).iterator(); it.hasNext(); ) {
+			Method method = bean.getClass().getDeclaredMethod(it.next().memberName().split("\\(")[0]);
 			if (method.isAnnotationPresent(PostConstruct.class)) {
 				currentInjectionTarget.set(method);
 
