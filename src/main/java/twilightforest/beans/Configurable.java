@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotated classes that exist as registry objects will be handled as psuedo-beans for {@link twilightforest.beans.processors.AnnotationDataPostProcessor}.<br/>
+ * Annotated classes that exist as registry objects will be handled as pseudo-beans for {@link twilightforest.beans.processors.AnnotationDataPostProcessor}.
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
