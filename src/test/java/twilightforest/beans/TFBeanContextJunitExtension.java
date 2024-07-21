@@ -43,6 +43,7 @@ public class TFBeanContextJunitExtension implements BeforeAllCallback, AfterAllC
 
 	@Override
 	public void beforeAll(ExtensionContext context) {
+		LOGGER.info("Dirtied TFBeanContext");
 		beanContextInstance = spy(TFBeanContext.class);
 		beanContext = mockStatic(TFBeanContext.class);
 	}
@@ -63,7 +64,9 @@ public class TFBeanContextJunitExtension implements BeforeAllCallback, AfterAllC
 			}
 		}
 
-		LOGGER.info("Hijacking TFBeanContext, rerunning init");
+		assertNotNull(beanContextInstance);
+		if (beanContextInstance.isFrozen())
+			return;
 		Field f = TFBeanContext.class.getDeclaredField("INSTANCE");
 		f.trySetAccessible();
 		f.set(null, beanContextInstance);

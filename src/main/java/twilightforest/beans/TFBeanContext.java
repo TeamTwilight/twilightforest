@@ -132,6 +132,10 @@ public final class TFBeanContext {
 		throw new RuntimeException("Bean injection failed." + (o.get() == null ? "" : (" At: " + o)), e);
 	}
 
+	public boolean isFrozen() {
+		return frozen;
+	}
+
 	private void registerInternal(Class<?> type, @Nullable String name, Object instance) {
 		logger.info("Registering Bean {} {}", type, name == null ? "" : ("with name: " + name));
 		if (frozen)
