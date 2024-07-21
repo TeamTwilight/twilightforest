@@ -40,10 +40,11 @@ public final class TFBeanContext {
 	 * Should be called as early as possible to avoid null bean injections
 	 */
 	public static void init(@Nullable Consumer<TFBeanContextRegistrar> context) {
-		INSTANCE.initInternal(context);
+		INSTANCE.initInternal(context, false);
 	}
 
-	private void initInternal(@Nullable Consumer<TFBeanContextRegistrar> context) {
+	@SuppressWarnings("SameParameterValue")
+	private void initInternal(@Nullable Consumer<TFBeanContextRegistrar> context, boolean forceInjectRegistries) {
 		logger.info("Starting Bean Context");
 		if (frozen)
 			throw new IllegalStateException("Bean Context already frozen");
@@ -104,23 +105,9 @@ public final class TFBeanContext {
 
 			currentInjection.set(null);
 
-			Objects.requireNonNull(modContainer.getEventBus()).addListener(FMLCommonSetupEvent.class, event -> {
-				logger.info("Processing registry objects");
-				AtomicReference<Object> curInj = new AtomicReference<>();
-				BuiltInRegistries.REGISTRY.holders().flatMap(r -> r.value().holders()).forEach(holder -> {
-					try {
-						Object o = holder.value();
-						if (o.getClass().isAnnotationPresent(Configurable.class)) {
-							for (AnnotationDataPostProcessor annotationDataPostProcessor : annotationDataPostProcessors) {
-								annotationDataPostProcessor.process(TFBeanContextInternalInjector.SINGLETON, scanData, o, curInj);
-							}
-						}
-					} catch (Throwable e) {
-						throwInjectionFailedException(curInj, e);
-					}
-				});
-				logger.info("Finished processing registry objects");
-			});
+			Objects.requireNonNull(modContainer.getEventBus()).addListener(FMLCommonSetupEvent.class, event -> injectRegistries(scanData, annotationDataPostProcessors));
+			if (forceInjectRegistries)
+				injectRegistries(scanData, annotationDataPostProcessors);
 
 			logger.info("Bean Context loaded");
 		} catch (Throwable e) {
@@ -130,6 +117,24 @@ public final class TFBeanContext {
 
 	private void throwInjectionFailedException(AtomicReference<Object> o, Throwable e) {
 		throw new RuntimeException("Bean injection failed." + (o.get() == null ? "" : (" At: " + o)), e);
+	}
+
+	private void injectRegistries(ModFileScanData scanData, List<AnnotationDataPostProcessor> annotationDataPostProcessors) {
+		logger.info("Processing registry objects");
+		AtomicReference<Object> curInj = new AtomicReference<>();
+		BuiltInRegistries.REGISTRY.holders().flatMap(r -> r.value().holders()).forEach(holder -> {
+			try {
+				Object o = holder.value();
+				if (o.getClass().isAnnotationPresent(Configurable.class)) {
+					for (AnnotationDataPostProcessor annotationDataPostProcessor : annotationDataPostProcessors) {
+						annotationDataPostProcessor.process(TFBeanContextInternalInjector.SINGLETON, scanData, o, curInj);
+					}
+				}
+			} catch (Throwable e) {
+				throwInjectionFailedException(curInj, e);
+			}
+		});
+		logger.info("Finished processing registry objects");
 	}
 
 	public boolean isFrozen() {
@@ -165,7 +170,7 @@ public final class TFBeanContext {
 		return type.cast(Objects.requireNonNull(BEANS.get(new BeanDefinition<>(type, name)), "Trying to inject Bean: " + type + (name == null ? "" : " (" + name + ")")));
 	}
 
-	private record BeanDefinition<T>(Class<T> type, @Nullable String name) {
+	record BeanDefinition<T>(Class<T> type, @Nullable String name) {
 
 		@Override
 		public int hashCode() {

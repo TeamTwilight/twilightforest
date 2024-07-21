@@ -11,6 +11,8 @@ import javax.annotation.Nullable;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -26,11 +28,13 @@ public class TFBeanContextJunitExtension implements BeforeAllCallback, AfterAllC
 	@Nullable
 	private TFBeanContext beanContextInstance;
 
+	private Map<TFBeanContext.BeanDefinition<?>, Object> mockedBeans = new HashMap<>();
+
 	private <T> T mockBean(Class<T> type) {
 		return mockBean(type, null);
 	}
 
-	private  <T> T mockBean(Class<T> type, @Nullable String name) {
+	private <T> T mockBean(Class<T> type, @Nullable String name) {
 		assertNotNull(beanContext);
 		assertNotNull(beanContextInstance);
 		T bean = mock(type);
@@ -60,7 +64,10 @@ public class TFBeanContextJunitExtension implements BeforeAllCallback, AfterAllC
 			field.trySetAccessible();
 			if (field.get(testInstance) == null) {
 				String name = field.getAnnotation(MockBean.class).value();
-				field.set(testInstance, name.equals(MockBean.DEFAULT_VALUE) ? mockBean(field.getType()) : mockBean(field.getType(), name));
+				field.set(testInstance, mockedBeans.computeIfAbsent(
+					new TFBeanContext.BeanDefinition<>(field.getType(), name),
+					k -> name.equals(MockBean.DEFAULT_VALUE) ? mockBean(field.getType()) : mockBean(field.getType(), name)
+				));
 			}
 		}
 
@@ -70,8 +77,8 @@ public class TFBeanContextJunitExtension implements BeforeAllCallback, AfterAllC
 		Field f = TFBeanContext.class.getDeclaredField("INSTANCE");
 		f.trySetAccessible();
 		f.set(null, beanContextInstance);
-		Method init = TFBeanContext.class.getDeclaredMethod("initInternal", Consumer.class);
+		Method init = TFBeanContext.class.getDeclaredMethod("initInternal", Consumer.class, boolean.class);
 		init.trySetAccessible();
-		init.invoke(beanContextInstance, (Consumer<TFBeanContext>) null);
+		init.invoke(beanContextInstance, null, true);
 	}
 }
