@@ -165,7 +165,7 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 					level.setBlockAndUpdate(pos, state.setValue(CANDLES, candles + 1));
 
 					level.playSound(null, pos, SoundEvents.CANDLE_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
-					if (!player.getAbilities().instabuild) stack.shrink(1);
+					stack.consume(1, player);
 					level.getLightEngine().checkBlock(pos);
 					return ItemInteractionResult.sidedSuccess(level.isClientSide());
 				}

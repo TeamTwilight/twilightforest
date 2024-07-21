@@ -138,9 +138,7 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 		ItemStack currentItem = player.getItemInHand(hand);
 
 		if (this.tryAccept(currentItem)) {
-			if (!player.getAbilities().instabuild) {
-				currentItem.shrink(1);
-			}
+			currentItem.consume(1, player);
 
 			return InteractionResult.SUCCESS;
 		} else {

@@ -26,9 +26,7 @@ public class IceBombItem extends Item implements ProjectileItem {
 		player.playSound(TFSounds.ICE_BOMB_FIRED.get(), 0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
 
 		if (!level.isClientSide()) {
-			if (!player.getAbilities().instabuild) {
-				player.getItemInHand(hand).shrink(1);
-			}
+			player.getItemInHand(hand).consume(1, player);
 			IceBomb ice = new IceBomb(TFEntities.THROWN_ICE.get(), level, player);
 			ice.shootFromRotation(player, player.getXRot(), player.getYRot(), -5.0F, 1.25F, 1.0F);
 			level.addFreshEntity(ice);

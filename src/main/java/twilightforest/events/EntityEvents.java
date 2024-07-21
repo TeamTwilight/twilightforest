@@ -263,7 +263,7 @@ public class EntityEvents {
 							return;
 						}
 					}
-					if (!event.getEntity().getAbilities().instabuild) stack.shrink(1);
+					stack.consume(1, event.getEntity());
 					event.getEntity().swing(event.getHand());
 					if (event.getEntity() instanceof ServerPlayer)
 						event.getEntity().awardStat(TFStats.SKULL_CANDLES_MADE.get());

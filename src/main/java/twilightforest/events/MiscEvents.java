@@ -99,7 +99,7 @@ public class MiscEvents {
 			if (level instanceof ServerLevel serverLevel) {
 				DeathTome tome = TFEntities.DEATH_TOME.get().spawn(serverLevel, stack, player, pos.below(), MobSpawnType.SPAWN_EGG, true, false);
 				if (tome != null) {
-					if (!player.getAbilities().instabuild) stack.shrink(1);
+					stack.consume(1, player);
 					serverLevel.gameEvent(player, GameEvent.ENTITY_PLACE, pos);
 					tome.setOnLectern(true);
 				}

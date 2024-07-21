@@ -128,7 +128,7 @@ public class HollowLogHorizontal extends Block implements WaterloggedBlock {
 			if (canChangeVariant(variant, level, pos, stateAxis)) {
 				level.setBlock(pos, state.setValue(VARIANT, HollowLogVariants.Horizontal.MOSS), 3);
 				level.playSound(null, pos, SoundEvents.MOSS_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
-				if (!player.isCreative()) stack.shrink(1);
+				stack.consume(1, player);
 
 				return ItemInteractionResult.sidedSuccess(level.isClientSide());
 			}
@@ -136,7 +136,7 @@ public class HollowLogHorizontal extends Block implements WaterloggedBlock {
 			if (variant == HollowLogVariants.Horizontal.MOSS) {
 				level.setBlock(pos, state.setValue(VARIANT, HollowLogVariants.Horizontal.MOSS_AND_GRASS), 3);
 				level.playSound(null, pos, SoundEvents.GRASS_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
-				if (!player.isCreative()) stack.shrink(1);
+				stack.consume(1, player);
 
 				return ItemInteractionResult.sidedSuccess(level.isClientSide());
 			}
@@ -144,7 +144,7 @@ public class HollowLogHorizontal extends Block implements WaterloggedBlock {
 			if (canChangeVariant(variant, level, pos, stateAxis)) {
 				level.setBlock(pos, state.setValue(VARIANT, HollowLogVariants.Horizontal.SNOW), 3);
 				level.playSound(null, pos, SoundEvents.SNOW_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
-				if (!player.isCreative()) stack.shrink(1);
+				stack.consume(1, player);
 
 				return ItemInteractionResult.sidedSuccess(level.isClientSide());
 			}
