@@ -24,7 +24,6 @@ import twilightforest.enums.HollowLogVariants;
 import twilightforest.init.TFBlocks;
 import twilightforest.junit.MockitoFixer;
 import twilightforest.util.DirectionUtil;
-import twilightforest.util.SurvivalStackShrinker;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -34,9 +33,6 @@ public class HollowLogVerticalTests {
 
 	@MockBean
 	private DirectionUtil directionUtil;
-
-	@MockBean
-	private SurvivalStackShrinker survivalStackShrinker;
 
 	private HollowLogVertical instance;
 
@@ -106,7 +102,7 @@ public class HollowLogVerticalTests {
 		assertSame(HollowLogVariants.Climbable.VINE, climbable.getValue().getValue(HollowLogClimbable.VARIANT));
 		assertSame(Direction.NORTH, climbable.getValue().getValue(HollowLogClimbable.FACING));
 		verify(level, times(1)).playSound(null, BlockPos.ZERO, SoundEvents.VINE_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
-		verify(survivalStackShrinker, times(1)).shrink(stack, player, 1);
+		verify(stack, times(1)).consume(1, player);
 
 		verify(stack, never()).is(Blocks.LADDER.asItem());
 	}
@@ -140,7 +136,7 @@ public class HollowLogVerticalTests {
 		assertSame(HollowLogVariants.Climbable.LADDER, climbable.getValue().getValue(HollowLogClimbable.VARIANT));
 		assertSame(Direction.NORTH, climbable.getValue().getValue(HollowLogClimbable.FACING));
 		verify(level, times(1)).playSound(null, BlockPos.ZERO, SoundEvents.LADDER_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
-		verify(survivalStackShrinker, times(1)).shrink(stack, player, 1);
+		verify(stack, times(1)).consume(1, player);
 	}
 
 	@Test
@@ -172,7 +168,7 @@ public class HollowLogVerticalTests {
 		assertSame(HollowLogVariants.Climbable.LADDER_WATERLOGGED, climbable.getValue().getValue(HollowLogClimbable.VARIANT));
 		assertSame(Direction.NORTH, climbable.getValue().getValue(HollowLogClimbable.FACING));
 		verify(level, times(1)).playSound(null, BlockPos.ZERO, SoundEvents.LADDER_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
-		verify(survivalStackShrinker, times(1)).shrink(stack, player, 1);
+		verify(stack, times(1)).consume(1, player);
 	}
 
 }
