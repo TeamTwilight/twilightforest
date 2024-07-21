@@ -8,7 +8,7 @@ import twilightforest.beans.Component;
 public class SurvivalStackShrinker {
 
 	public void shrink(ItemStack stack, Player player, int decrement) {
-		if (player.isCreative())
+		if (!player.isCreative())
 			stack.shrink(decrement);
 	}
 

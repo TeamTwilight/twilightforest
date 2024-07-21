@@ -24,7 +24,7 @@ public class SurvivalStackShrinkerTests {
 		ItemStack stack = mock(ItemStack.class);
 		Player player = mock(Player.class);
 
-		when(player.isCreative()).thenReturn(true);
+		when(player.isCreative()).thenReturn(false);
 
 		instance.shrink(stack, player, 1);
 
@@ -32,11 +32,11 @@ public class SurvivalStackShrinkerTests {
 	}
 
 	@Test
-	public void shrinkNotCreative() {
+	public void shrinkCreative() {
 		ItemStack stack = mock(ItemStack.class);
 		Player player = mock(Player.class);
 
-		when(player.isCreative()).thenReturn(false);
+		when(player.isCreative()).thenReturn(true);
 
 		instance.shrink(stack, player, 1);
 
