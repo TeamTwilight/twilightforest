@@ -51,7 +51,7 @@ public class TrollCaveGardenComponent extends TrollCaveMainComponent {
 	@Override
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		Predicate<Biome> highlands = biome -> biome == world.registryAccess().registryOrThrow(Registries.BIOME).get(TFBiomes.HIGHLANDS);
-		if (this.isBoundingBoxOutsideBiomes(world, highlands)) {
+		if (this.isBoundingBoxOutsideBiomes(world, highlands, blockPos)) {
 			return;
 		}
 

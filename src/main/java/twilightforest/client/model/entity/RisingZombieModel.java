@@ -17,27 +17,27 @@ public class RisingZombieModel extends ZombieModel<RisingZombie> {
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, float red, float green, float blue, float scale) {
+	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, int color) {
 		stack.pushPose();
 
 		if (this.young) {
 			stack.pushPose();
 			{
 				stack.scale(0.75F, 0.75F, 0.75F);
-				stack.translate(0.0F, 16.0F * scale, 0.0F);
-				this.headParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, scale));
+				stack.translate(0.0F, 16.0F, 0.0F);
+				this.headParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, color));
 				stack.popPose();
 				stack.pushPose();
 				stack.scale(0.5F, 0.5F, 0.5F);
-				stack.translate(0.0F, 24.0F * scale, 0.0F);
-				this.body.render(stack, builder, light, overlay, red, green, blue, scale);
-				this.rightArm.render(stack, builder, light, overlay, red, green, blue, scale);
-				this.leftArm.render(stack, builder, light, overlay, red, green, blue, scale);
-				this.hat.render(stack, builder, light, overlay, red, green, blue, scale);
+				stack.translate(0.0F, 24.0F, 0.0F);
+				this.body.render(stack, builder, light, overlay, color);
+				this.rightArm.render(stack, builder, light, overlay, color);
+				this.leftArm.render(stack, builder, light, overlay, color);
+				this.hat.render(stack, builder, light, overlay, color);
 			}
 			stack.popPose();
-			this.rightLeg.render(stack, builder, light, overlay, red, green, blue, scale);
-			this.leftLeg.render(stack, builder, light, overlay, red, green, blue, scale);
+			this.rightLeg.render(stack, builder, light, overlay, color);
+			this.leftLeg.render(stack, builder, light, overlay, color);
 		} else {
 			if (this.crouching) {
 				stack.translate(0.0F, 0.2F, 0.0F);
@@ -54,15 +54,15 @@ public class RisingZombieModel extends ZombieModel<RisingZombie> {
 				stack.mulPose(Axis.XP.rotationDegrees(-120F * (80F - Math.min(80F, tick)) / 80F));
 				stack.mulPose(Axis.XP.rotationDegrees(30F * (40F - Math.min(40F, Math.max(0F, tick - 80F))) / 40F));
 				stack.translate(0, -yOff, 0);
-				this.headParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, scale));
-				this.body.render(stack, builder, light, overlay, red, green, blue, scale);
-				this.rightArm.render(stack, builder, light, overlay, red, green, blue, scale);
-				this.leftArm.render(stack, builder, light, overlay, red, green, blue, scale);
-				this.hat.render(stack, builder, light, overlay, red, green, blue, scale);
+				this.headParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, color));
+				this.body.render(stack, builder, light, overlay, color);
+				this.rightArm.render(stack, builder, light, overlay, color);
+				this.leftArm.render(stack, builder, light, overlay, color);
+				this.hat.render(stack, builder, light, overlay, color);
 			}
 			stack.popPose();
-			this.rightLeg.render(stack, builder, light, overlay, red, green, blue, scale);
-			this.leftLeg.render(stack, builder, light, overlay, red, green, blue, scale);
+			this.rightLeg.render(stack, builder, light, overlay, color);
+			this.leftLeg.render(stack, builder, light, overlay, color);
 		}
 
 		stack.popPose();
@@ -71,6 +71,6 @@ public class RisingZombieModel extends ZombieModel<RisingZombie> {
 	@Override
 	protected void setupAttackAnimation(RisingZombie p_102858_, float p_102859_) {
 		super.setupAttackAnimation(p_102858_, p_102859_);
-		tick = p_102859_ + Minecraft.getInstance().getDeltaFrameTime();
+		tick = p_102859_ + Minecraft.getInstance().getTimer().getGameTimeDeltaTicks();
 	}
 }

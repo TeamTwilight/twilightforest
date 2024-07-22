@@ -14,6 +14,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RotatedPillarBlock;
@@ -44,7 +45,7 @@ public class CinderFurnaceBlockEntity extends FurnaceBlockEntity {
 			ItemStack itemstack = te.items.get(1);
 
 			if (te.isBurning() || !itemstack.isEmpty() && !te.items.get(0).isEmpty()) {
-				RecipeHolder<?> irecipe = level.getRecipeManager().getRecipeFor(RecipeType.SMELTING, te, level).orElse(null);
+				RecipeHolder<?> irecipe = level.getRecipeManager().getRecipeFor(RecipeType.SMELTING, new SingleRecipeInput(te.items.getFirst()), level).orElse(null);
 				if (irecipe != null && !te.isBurning() && te.canBurn(irecipe.value())) {
 					te.litTime = te.getBurnDuration(itemstack);
 					te.litDuration = te.litTime;
@@ -104,7 +105,7 @@ public class CinderFurnaceBlockEntity extends FurnaceBlockEntity {
 
 	// [VanillaCopy] of super, only using SMELTING IRecipeType
 	protected int getRecipeBurnTime() {
-		return this.getLevel().getRecipeManager().getRecipeFor(RecipeType.SMELTING, this, this.getLevel()).map(recipeHolder -> recipeHolder.value().getCookingTime()).orElse(200);
+		return this.getLevel().getRecipeManager().getRecipeFor(RecipeType.SMELTING, new SingleRecipeInput(this.items.getFirst()), this.getLevel()).map(recipeHolder -> recipeHolder.value().getCookingTime()).orElse(200);
 	}
 
 	private void cinderizeNearbyLog() {

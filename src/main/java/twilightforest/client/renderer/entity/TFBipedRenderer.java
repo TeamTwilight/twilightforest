@@ -16,7 +16,7 @@ public class TFBipedRenderer<T extends Mob, M extends HumanoidModel<T>> extends 
 		super(manager, modelBiped, shadowSize);
 
 		if (textureName.startsWith("textures")) {
-			textureLoc = new ResourceLocation(textureName);
+			textureLoc = ResourceLocation.withDefaultNamespace(textureName);
 		} else {
 			textureLoc = TwilightForestMod.getModelTexture(textureName);
 		}

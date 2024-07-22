@@ -19,9 +19,24 @@ Alternatively, grab your experimental builds from our [Discord](https://discord.
 Keep in touch with development on our [Discord server](https://discord.gg/6v3z26B). We also have a [Twitter account](https://twitter.com/teamtwilightdev) we post development and Twilight Forest-related content on.
 
 ## Translation
-Submitting translations for Twilight Forest can be done via our [Crowdin page](https://crowdin.com/project/twilight-forest). Consider helping us out if you're fluent in any language at all! Alternatively, translations can still be submitted via pull requests. 
+Submitting translations for Twilight Forest can be done via our [Crowdin page](https://crowdin.com/project/twilight-forest). Consider helping us out if you're fluent in any language at all! Alternatively, translations can still be submitted via pull requests.
 
 ## Maven
+### 1.20.6+
+https://maven.tamaized.com/#/releases/team-twilight/twilightforest/
+
+```
+repositories {
+    maven {
+        url = "https://maven.tamaized.com/releases"
+    }
+}
+
+dependencies {
+    implementation "team-twilight:twilightforest:{version}:universal"
+}
+```
+### 1.20.5 and below
 https://modmaven.dev/teamtwilight/twilightforest/
 
 ```
@@ -39,7 +54,7 @@ dependencies {
 ## YourKit
 ![](https://www.yourkit.com/images/yklogo.png)
 
-We appreciate YourKit, LLC for providing the project developers licenses of its profiler to help us improve performance! 
+We appreciate YourKit, LLC for providing the project developers licenses of its profiler to help us improve performance!
 
 YourKit supports open source projects with its full-featured Java Profiler.
 YourKit, LLC is the creator of [YourKit Java Profiler](https://www.yourkit.com/java/profiler/)

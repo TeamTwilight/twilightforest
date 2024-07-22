@@ -207,14 +207,14 @@ public class HydraModel extends HierarchicalModel<Hydra> {
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack stack, VertexConsumer consumer, int light, int overlay, float red, float green, float blue, float alpha) {
+	public void renderToBuffer(PoseStack stack, VertexConsumer consumer, int light, int overlay, int color) {
 		if (this.hydra != null && this.hydra.renderFakeHeads) {
-			super.renderToBuffer(stack, consumer, light, overlay, red, green, blue, alpha);
+			super.renderToBuffer(stack, consumer, light, overlay, color);
 		} else {
-			this.leg1.render(stack, consumer, light, overlay, red, green, blue, alpha);
-			this.leg2.render(stack, consumer, light, overlay, red, green, blue, alpha);
-			this.body.render(stack, consumer, light, overlay, red, green, blue, alpha);
-			this.tail.render(stack, consumer, light, overlay, red, green, blue, alpha);
+			this.leg1.render(stack, consumer, light, overlay, color);
+			this.leg2.render(stack, consumer, light, overlay, color);
+			this.body.render(stack, consumer, light, overlay, color);
+			this.tail.render(stack, consumer, light, overlay, color);
 		}
 	}
 

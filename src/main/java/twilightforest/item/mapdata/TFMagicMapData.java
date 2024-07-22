@@ -14,7 +14,6 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.common.ClientboundCustomPayloadPacket;
 import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
@@ -163,7 +162,7 @@ public class TFMagicMapData extends MapItemSavedData {
 	@Override
 	public Packet<?> getUpdatePacket(MapId mapId, Player player) {
 		Packet<?> packet = super.getUpdatePacket(mapId, player);
-		return packet instanceof ClientboundMapItemDataPacket mapItemDataPacket ? new ClientboundCustomPayloadPacket(new MagicMapPacket(this, mapItemDataPacket)) : packet;
+		return packet instanceof ClientboundMapItemDataPacket mapItemDataPacket ? new MagicMapPacket(this, mapItemDataPacket).toVanillaClientbound() : packet;
 	}
 
 	public void putMapData(TFMapDecoration info) {
@@ -227,10 +226,10 @@ public class TFMagicMapData extends MapItemSavedData {
 				Matrix4f matrix4f = stack.last().pose();
 				float depth = idx * -0.001F;
 				VertexConsumer mapIconVertices = buffer.getBuffer(DecorationRenderTypes.MAP_ICONS);
-				mapIconVertices.vertex(matrix4f, -1.0F, 1.0F, depth).color(255, 255, 255, 255).uv(uMin, vMin).uv2(light).endVertex();
-				mapIconVertices.vertex(matrix4f, 1.0F, 1.0F, depth).color(255, 255, 255, 255).uv(uMax, vMin).uv2(light).endVertex();
-				mapIconVertices.vertex(matrix4f, 1.0F, -1.0F, depth).color(255, 255, 255, 255).uv(uMax, vMax).uv2(light).endVertex();
-				mapIconVertices.vertex(matrix4f, -1.0F, -1.0F, depth).color(255, 255, 255, 255).uv(uMin, vMax).uv2(light).endVertex();
+				mapIconVertices.addVertex(matrix4f, -1.0F, 1.0F, depth).setColor(255, 255, 255, 255).setUv(uMin, vMin).setLight(light);
+				mapIconVertices.addVertex(matrix4f, 1.0F, 1.0F, depth).setColor(255, 255, 255, 255).setUv(uMax, vMin).setLight(light);
+				mapIconVertices.addVertex(matrix4f, 1.0F, -1.0F, depth).setColor(255, 255, 255, 255).setUv(uMax, vMax).setLight(light);
+				mapIconVertices.addVertex(matrix4f, -1.0F, -1.0F, depth).setColor(255, 255, 255, 255).setUv(uMin, vMax).setLight(light);
 
 				if (this.conquered) {
 					depth -= 0.002f;
@@ -240,10 +239,10 @@ public class TFMagicMapData extends MapItemSavedData {
 					float f4 = sprite.getU1();
 					float f5 = sprite.getV1();
 					VertexConsumer vertexconsumer1 = buffer.getBuffer(RenderType.text(sprite.atlasLocation()));
-					vertexconsumer1.vertex(matrix4f, -1.0F, 1.0F, depth).color(255, 255, 255, 255).uv(f2, f3).uv2(light).endVertex();
-					vertexconsumer1.vertex(matrix4f, 1.0F, 1.0F, depth).color(255, 255, 255, 255).uv(f4, f3).uv2(light).endVertex();
-					vertexconsumer1.vertex(matrix4f, 1.0F, -1.0F, depth).color(255, 255, 255, 255).uv(f4, f5).uv2(light).endVertex();
-					vertexconsumer1.vertex(matrix4f, -1.0F, -1.0F, depth).color(255, 255, 255, 255).uv(f2, f5).uv2(light).endVertex();
+					vertexconsumer1.addVertex(matrix4f, -1.0F, 1.0F, depth).setColor(255, 255, 255, 255).setUv(f2, f3).setLight(light);
+					vertexconsumer1.addVertex(matrix4f, 1.0F, 1.0F, depth).setColor(255, 255, 255, 255).setUv(f4, f3).setLight(light);
+					vertexconsumer1.addVertex(matrix4f, 1.0F, -1.0F, depth).setColor(255, 255, 255, 255).setUv(f4, f5).setLight(light);
+					vertexconsumer1.addVertex(matrix4f, -1.0F, -1.0F, depth).setColor(255, 255, 255, 255).setUv(f2, f5).setLight(light);
 				}
 				stack.popPose();
 			}

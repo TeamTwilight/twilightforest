@@ -3,7 +3,7 @@ package twilightforest.inventory;
 import net.minecraft.recipebook.PlaceRecipe;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.crafting.RecipeHolder;
-import net.neoforged.neoforge.common.crafting.IShapedRecipe;
+import net.minecraft.world.item.crafting.ShapedRecipe;
 
 import java.util.Iterator;
 
@@ -18,7 +18,7 @@ public interface UncraftingPlaceRecipe<C> extends PlaceRecipe<C> {
 	default void placeRecipe(int width, int height, int outputSlot, RecipeHolder<?> recipe, Iterator<C> ingredients, int maxAmount) {
 		int widthModified = width;
 		int heightModified = height;
-		if (recipe.value() instanceof IShapedRecipe<?> shapedRecipe) {
+		if (recipe.value() instanceof ShapedRecipe shapedRecipe) {
 			widthModified = shapedRecipe.getWidth();
 			heightModified = shapedRecipe.getHeight();
 		}
@@ -48,7 +48,7 @@ public interface UncraftingPlaceRecipe<C> extends PlaceRecipe<C> {
 				}
 
 				if (xOverfitted) {
-					this.addItemToSlot(ingredients, slotIndex, maxAmount, gridY, gridX);
+					this.addItemToSlot(ingredients.next(), slotIndex, maxAmount, gridY, gridX);
 				} else if (o == gridX) {
 					slotIndex += width - gridX;
 					break;

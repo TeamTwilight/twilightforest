@@ -24,6 +24,7 @@ import net.minecraft.world.item.component.ResolvableProfile;
 import net.minecraft.world.level.block.CandleBlock;
 import net.minecraft.world.level.block.SkullBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.RotationSegment;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.block.AbstractSkullCandleBlock;
@@ -40,11 +41,11 @@ public class SkullCandleTileEntityRenderer<T extends SkullCandleBlockEntity> imp
 	private final Map<SkullBlock.Type, SkullModelBase> modelByType;
 
 	public static final Map<SkullBlock.Type, ResourceLocation> SKIN_BY_TYPE = Util.make(Maps.newHashMap(), map -> {
-		map.put(SkullBlock.Types.SKELETON, new ResourceLocation("textures/entity/skeleton/skeleton.png"));
-		map.put(SkullBlock.Types.WITHER_SKELETON, new ResourceLocation("textures/entity/skeleton/wither_skeleton.png"));
-		map.put(SkullBlock.Types.ZOMBIE, new ResourceLocation("textures/entity/zombie/zombie.png"));
-		map.put(SkullBlock.Types.CREEPER, new ResourceLocation("textures/entity/creeper/creeper.png"));
-		map.put(SkullBlock.Types.PIGLIN, new ResourceLocation("textures/entity/piglin/piglin.png"));
+		map.put(SkullBlock.Types.SKELETON, ResourceLocation.withDefaultNamespace("textures/entity/skeleton/skeleton.png"));
+		map.put(SkullBlock.Types.WITHER_SKELETON, ResourceLocation.withDefaultNamespace("textures/entity/skeleton/wither_skeleton.png"));
+		map.put(SkullBlock.Types.ZOMBIE, ResourceLocation.withDefaultNamespace("textures/entity/zombie/zombie.png"));
+		map.put(SkullBlock.Types.CREEPER, ResourceLocation.withDefaultNamespace("textures/entity/creeper/creeper.png"));
+		map.put(SkullBlock.Types.PIGLIN, ResourceLocation.withDefaultNamespace("textures/entity/piglin/piglin.png"));
 		map.put(SkullBlock.Types.PLAYER, DefaultPlayerSkin.getDefaultTexture());
 	});
 
@@ -84,8 +85,8 @@ public class SkullCandleTileEntityRenderer<T extends SkullCandleBlockEntity> imp
 		Minecraft.getInstance().getBlockRenderer().renderSingleBlock(
 			AbstractSkullCandleBlock.candleColorToCandle(AbstractSkullCandleBlock.CandleColors.colorFromInt(entity.getCandleColor()))
 				.defaultBlockState()
-				.setValue(CandleBlock.CANDLES, Math.max(1, entity.getCandleAmount()))
-				.setValue(CandleBlock.LIT, state.getValue(AbstractSkullCandleBlock.LIGHTING) == LightableBlock.Lighting.NORMAL), stack, buffer, light, overlay);
+				.setValue(CandleBlock.CANDLES, Math.max(1, state.getValue(BlockStateProperties.CANDLES)))
+				.setValue(CandleBlock.LIT, state.getValue(AbstractSkullCandleBlock.LIGHTING) != LightableBlock.Lighting.NONE), stack, buffer, light, overlay);
 	}
 
 	public static void renderSkull(@Nullable Direction direction, float pYRot, float animationTime, PoseStack stack, MultiBufferSource buffer, int light, SkullModelBase base, RenderType type) {
@@ -99,7 +100,7 @@ public class SkullCandleTileEntityRenderer<T extends SkullCandleBlockEntity> imp
 		stack.scale(-1.0F, -1.0F, 1.0F);
 		VertexConsumer consumer = buffer.getBuffer(type);
 		base.setupAnim(animationTime, pYRot, 0.0F);
-		base.renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		base.renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY);
 		stack.popPose();
 	}
 

@@ -30,7 +30,7 @@ public class TwilightBoatRenderer extends EntityRenderer<TwilightBoat> {
 	public TwilightBoatRenderer(EntityRendererProvider.Context context, boolean chest) {
 		super(context);
 		this.shadowRadius = 0.8F;
-		this.boatResources = Stream.of(TwilightBoat.Type.values()).collect(ImmutableMap.toImmutableMap(type -> type, type -> Pair.of(new ResourceLocation(TwilightForestMod.ID, getTextureLocation(type, chest)), this.createBoatModel(context, type, chest))));
+		this.boatResources = Stream.of(TwilightBoat.Type.values()).collect(ImmutableMap.toImmutableMap(type -> type, type -> Pair.of(TwilightForestMod.prefix(getTextureLocation(type, chest)), this.createBoatModel(context, type, chest))));
 	}
 
 	private BoatModel createBoatModel(EntityRendererProvider.Context context, TwilightBoat.Type type, boolean chest) {
@@ -40,7 +40,7 @@ public class TwilightBoatRenderer extends EntityRenderer<TwilightBoat> {
 	}
 
 	private static ModelLayerLocation createLocation(String path) {
-		return new ModelLayerLocation(new ResourceLocation(TwilightForestMod.ID, path), "main");
+		return new ModelLayerLocation(TwilightForestMod.prefix(path), "main");
 	}
 
 	public static ModelLayerLocation createBoatModelName(TwilightBoat.Type type) {
@@ -82,7 +82,7 @@ public class TwilightBoatRenderer extends EntityRenderer<TwilightBoat> {
 		stack.mulPose(Axis.YP.rotationDegrees(90.0F));
 		model.setupAnim(boat, partialTicks, 0.0F, -0.1F, 0.0F, 0.0F);
 		VertexConsumer vertexconsumer = buffer.getBuffer(model.renderType(resourcelocation));
-		model.renderToBuffer(stack, vertexconsumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		model.renderToBuffer(stack, vertexconsumer, light, OverlayTexture.NO_OVERLAY);
 		if (!boat.isUnderWater()) {
 			VertexConsumer vertexconsumer1 = buffer.getBuffer(RenderType.waterMask());
 			model.waterPatch().render(stack, vertexconsumer1, light, OverlayTexture.NO_OVERLAY);

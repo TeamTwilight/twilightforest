@@ -17,7 +17,7 @@ import java.util.function.Function;
 public record UnbakedForceFieldModel(Map<BlockElement, ForceFieldModelLoader.Condition> elementsAndConditions) implements IUnbakedGeometry<UnbakedForceFieldModel> {
 
 	@Override
-	public BakedModel bake(IGeometryBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides, ResourceLocation modelLocation) {
+	public BakedModel bake(IGeometryBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides) {
 		return new ForceFieldModel(this.elementsAndConditions, spriteGetter, context, overrides);
 	}
 }

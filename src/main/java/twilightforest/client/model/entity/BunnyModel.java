@@ -72,24 +72,24 @@ public class BunnyModel extends QuadrupedModel<DwarfRabbit> {
 
 
 	@Override
-	public void renderToBuffer(PoseStack ms, VertexConsumer buffer, int light, int overlay, float red, float green, float blue, float alpha) {
+	public void renderToBuffer(PoseStack ms, VertexConsumer buffer, int light, int overlay, int color) {
 		if (this.young) {
 			ms.pushPose();
 			ms.scale(0.85F, 0.85F, 0.85F);
 			ms.translate(0.0F, 0.25F, 0.0F);
 			ImmutableList.of(this.head).forEach((p_103597_) -> {
-				p_103597_.render(ms, buffer, light, overlay, red, green, blue, alpha);
+				p_103597_.render(ms, buffer, light, overlay);
 			});
 			ms.popPose();
 			ms.pushPose();
 			ms.scale(0.8F, 0.8F, 0.8F);
 			ms.translate(0.0F, 0.37F, 0.0F);
 			ImmutableList.of(this.body, this.leftFrontLeg, this.rightFrontLeg, this.leftHindLeg, this.rightHindLeg).forEach((p_103587_) -> {
-				p_103587_.render(ms, buffer, light, overlay, red, green, blue, alpha);
+				p_103587_.render(ms, buffer, light, overlay);
 			});
 			ms.popPose();
 		} else {
-			super.renderToBuffer(ms, buffer, light, overlay, red, green, blue, alpha);
+			super.renderToBuffer(ms, buffer, light, overlay, color);
 		}
 	}
 

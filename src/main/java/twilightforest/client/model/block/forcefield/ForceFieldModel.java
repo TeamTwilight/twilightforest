@@ -72,10 +72,10 @@ public class ForceFieldModel implements IDynamicBakedModel {
 	public @NotNull List<BakedQuad> getQuads(List<BakedQuad> quads, Direction side, ForceFieldData data, boolean cull) {
 		for (Map.Entry<BlockElement, ForceFieldModelLoader.Condition> entry : this.parts.entrySet()) {
 			BlockElementFace blockelementface = entry.getKey().faces.get(side);
-			if (blockelementface != null && blockelementface.cullForDirection != null == cull) { // IntelliJ will try to tell you cullForDirection is never null, it's gaslighting you
+			if (blockelementface != null && blockelementface.cullForDirection() != null == cull) {
 				if (ForceFieldModel.skipRender(data.directions(), entry.getValue().direction(), entry.getValue().b(), entry.getValue().parents(), side)) continue;
 
-				TextureAtlasSprite sprite = this.spriteFunction.apply(context.getMaterial(blockelementface.texture));
+				TextureAtlasSprite sprite = this.spriteFunction.apply(context.getMaterial(blockelementface.texture()));
 				quads.add(FACE_BAKERY.bakeQuad(
 					entry.getKey().from,
 					entry.getKey().to,
@@ -84,8 +84,7 @@ public class ForceFieldModel implements IDynamicBakedModel {
 					side,
 					BlockModelRotation.X0_Y0,
 					null,
-					false,
-					new ResourceLocation(sprite.atlasLocation().getNamespace(), sprite.atlasLocation().getPath() + "_" + side.name().toLowerCase(Locale.ROOT)))
+					false)
 				);
 			}
 		}

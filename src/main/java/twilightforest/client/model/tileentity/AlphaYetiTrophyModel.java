@@ -98,7 +98,7 @@ public class AlphaYetiTrophyModel extends GenericTrophyModel {
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack matrixStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		this.main.render(matrixStack, buffer, packedLight, packedOverlay);
+	public void renderToBuffer(PoseStack matrixStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
+		this.main.render(matrixStack, buffer, packedLight, packedOverlay, color);
 	}
 }

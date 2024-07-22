@@ -112,10 +112,10 @@ public class UpperGoblinKnightModel extends HumanoidModel<UpperGoblinKnight> {
 	 * Sets the models various rotation angles then renders the model.
 	 */
 	@Override
-	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, float red, float green, float blue, float scale) {
-		super.renderToBuffer(stack, builder, light, overlay, red, green, blue, scale);
+	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, int color) {
+		super.renderToBuffer(stack, builder, light, overlay, color);
 
-		this.breastplate.render(stack, builder, light, overlay, red, green, blue, scale);
+		this.breastplate.render(stack, builder, light, overlay, color);
 	}
 
 	@Override

@@ -8,6 +8,7 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import twilightforest.entity.monster.Wraith;
 
@@ -58,8 +59,8 @@ public class WraithModel extends HumanoidModel<Wraith> {
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack p_102034_, VertexConsumer p_102035_, int p_102036_, int p_102037_, float p_102038_, float p_102039_, float p_102040_, float p_102041_) {
-		super.renderToBuffer(p_102034_, p_102035_, p_102036_, p_102037_, p_102038_, p_102039_, p_102040_, 0.6F);
+	public void renderToBuffer(PoseStack p_102034_, VertexConsumer p_102035_, int p_102036_, int p_102037_, int color) {
+		super.renderToBuffer(p_102034_, p_102035_, p_102036_, p_102037_, FastColor.ARGB32.color((int) (FastColor.ARGB32.alpha(color) * 0.6F), FastColor.ARGB32.red(color), FastColor.ARGB32.green(color), FastColor.ARGB32.blue(color)));
 	}
 
 	@Override

@@ -66,8 +66,8 @@ public class MinoshroomTrophyLegacyModel extends GenericTrophyModel {
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack matrix, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+	public void renderToBuffer(PoseStack matrix, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
 		matrix.translate(0.0F, .25F, 0.0F);
-		this.head.render(matrix, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+		this.head.render(matrix, buffer, packedLight, packedOverlay, color);
 	}
 }

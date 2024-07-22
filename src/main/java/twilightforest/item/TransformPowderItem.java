@@ -76,6 +76,9 @@ public class TransformPowderItem extends Item {
 				UUID uuid = newEntity.getUUID();
 				newEntity.load(target.saveWithoutId(newEntity.saveWithoutId(new CompoundTag())));
 				newEntity.setUUID(uuid);
+				if (newEntity instanceof LivingEntity living) {
+					living.setHealth(living.getMaxHealth());
+				}
 			} catch (Exception e) {
 				TwilightForestMod.LOGGER.warn("Couldn't transform entity NBT data", e);
 			}

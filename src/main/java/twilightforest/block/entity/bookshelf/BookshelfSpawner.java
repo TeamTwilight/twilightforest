@@ -78,7 +78,7 @@ public abstract class BookshelfSpawner implements IOwnedSpawner {
 				for (Pair<Integer, BooleanProperty> filledSlot : filledSlots) {
 					BooleanProperty property = filledSlot.getSecond();
 					if (state.hasProperty(property) && state.getValue(property)) {
-						if (this.attemptSpawnTome(filledSlot.getFirst(), level, pos, false, null)) {
+						if (this.attemptSpawnTome(filledSlot.getFirst(), level, pos, false, null, 0)) {
 							this.delay(level, pos);
 							break;
 						}
@@ -93,7 +93,7 @@ public abstract class BookshelfSpawner implements IOwnedSpawner {
 				}
 
 				if (fullSlots == 0) {
-					state.setValue(ChiseledCanopyShelfBlock.SPAWNER, false);
+					level.setBlockAndUpdate(pos, state.setValue(ChiseledCanopyShelfBlock.SPAWNER, false));
 				}
 			}
 		}
@@ -184,6 +184,11 @@ public abstract class BookshelfSpawner implements IOwnedSpawner {
 		this.nextSpawnData = data;
 	}
 
+	@Nullable
+	public SpawnData getNextSpawnData() {
+		return this.nextSpawnData;
+	}
+
 	private SpawnData getOrCreateNextSpawnData(@Nullable Level level, RandomSource pRandom, BlockPos pos) {
 		if (this.nextSpawnData == null) {
 			this.setNextSpawnData(level, pos, this.spawnPotentials.getRandom(pRandom).map(WeightedEntry.Wrapper::data).orElseGet(SpawnData::new));
@@ -193,7 +198,7 @@ public abstract class BookshelfSpawner implements IOwnedSpawner {
 
 	public abstract void broadcastEvent(Level level, BlockPos pos, int id);
 
-	public boolean attemptSpawnTome(int slot, ServerLevel level, BlockPos pos, boolean fire, @Nullable LivingEntity assailant) {
+	public boolean attemptSpawnTome(int slot, ServerLevel level, BlockPos pos, boolean fire, @Nullable LivingEntity assailant, int maxTries) {
 		RandomSource random = level.getRandom();
 		SpawnData data = this.getOrCreateNextSpawnData(level, random, pos);
 		CompoundTag tag = data.entityToSpawn();
@@ -201,7 +206,7 @@ public abstract class BookshelfSpawner implements IOwnedSpawner {
 		Direction facing = shelf.getValue(HorizontalDirectionalBlock.FACING);
 		Optional<EntityType<?>> optional = EntityType.by(tag);
 		//if the assigned entity doesn't exist or the bookshelf is blocked off, fail early
-		if (optional.isEmpty() || !level.isEmptyBlock(pos.relative(facing))) {
+		if (optional.isEmpty() || !level.getBlockState(pos.relative(facing)).canBeReplaced()) {
 			this.delay(level, pos);
 			return false;
 		}
@@ -220,7 +225,7 @@ public abstract class BookshelfSpawner implements IOwnedSpawner {
 				}
 
 				SpawnData.CustomSpawnRules rules = data.getCustomSpawnRules().get();
-				if (!rules.isValidPosition(blockpos, level)) {
+				if (!rules.isValidPosition(blockpos, level) && !fire) {
 					return false;
 				}
 			}
@@ -245,7 +250,7 @@ public abstract class BookshelfSpawner implements IOwnedSpawner {
 			}
 
 			int k = level.getEntities(EntityTypeTest.forExactClass(entity.getClass()), new AABB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).inflate(this.spawnRange), EntitySelector.NO_SPECTATORS).size();
-			if (k >= this.maxNearbyEntities) {
+			if (k >= this.maxNearbyEntities && !fire) {
 				this.delay(level, pos);
 				return false;
 			}
@@ -273,6 +278,10 @@ public abstract class BookshelfSpawner implements IOwnedSpawner {
 				be.setItem(slot, ItemStack.EMPTY);
 			}
 			return true;
+		} else {
+			if (maxTries != 0) {
+				this.attemptSpawnTome(slot, level, pos, fire, assailant, maxTries - 1);
+			}
 		}
 		return false;
 	}

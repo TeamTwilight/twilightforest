@@ -68,11 +68,6 @@ public class OreMagnetItem extends Item {
 		return !badEnchant.get() && super.isBookEnchantable(stack, book);
 	}
 
-	@Override
-	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-		return false;
-	}
-
 	@Nonnull
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, @Nonnull InteractionHand hand) {
@@ -82,7 +77,7 @@ public class OreMagnetItem extends Item {
 
 	@Override
 	public void releaseUsing(ItemStack stack, Level level, LivingEntity living, int useRemaining) {
-		int useTime = this.getUseDuration(stack) - useRemaining;
+		int useTime = this.getUseDuration(stack, living) - useRemaining;
 
 		if (!level.isClientSide() && useTime > 10) {
 			int moved = this.doMagnet(level, living, 0, 0);
@@ -126,7 +121,7 @@ public class OreMagnetItem extends Item {
 	}
 
 	@Override
-	public int getUseDuration(ItemStack stack) {
+	public int getUseDuration(ItemStack stack, LivingEntity user) {
 		return 72000;
 	}
 
@@ -272,7 +267,7 @@ public class OreMagnetItem extends Item {
 				//check if a tag for ore grounds matches up with our ores in ground tag
 				if (BuiltInRegistries.BLOCK.getTagNames().filter(location -> location.location().getNamespace().equals("c")).anyMatch(blockTagKey -> blockTagKey.location().getPath().equals("ore_bearing_ground/" + oreground))) {
 					//add each ground type to each ore
-					BuiltInRegistries.BLOCK.getTag(TagKey.create(Registries.BLOCK, new ResourceLocation("c", "ore_bearing_ground/" + oreground))).get().forEach(ground ->
+					BuiltInRegistries.BLOCK.getTag(TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("c", "ore_bearing_ground/" + oreground))).get().forEach(ground ->
 						BuiltInRegistries.BLOCK.getTag(tag).get().forEach(ore -> {
 							//exclude ignored ores
 							if (!ore.value().defaultBlockState().is(BlockTagGenerator.ORE_MAGNET_IGNORE)) {

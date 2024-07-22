@@ -83,7 +83,7 @@ public class TeleporterCache extends SavedData {
 	public static TeleporterCache load(CompoundTag tag, HolderLookup.Provider provider) {
 		TeleporterCache cache = new TeleporterCache();
 		tag.getList("dest", Tag.TAG_COMPOUND).stream().map(CompoundTag.class::cast).forEach(dest -> {
-			ResourceLocation name = new ResourceLocation(dest.getString("name"));
+			ResourceLocation name = ResourceLocation.parse(dest.getString("name"));
 			cache.destinationCoordinateCache.putIfAbsent(name, Maps.newHashMapWithExpectedSize(4096));
 			dest.getList("links", Tag.TAG_COMPOUND).stream().map(CompoundTag.class::cast).forEach(link -> {
 				CompoundTag column = link.getCompound("column");

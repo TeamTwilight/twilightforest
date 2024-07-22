@@ -1,11 +1,13 @@
 package twilightforest.data;
 
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potions;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.storage.loot.LootPool;
@@ -24,10 +26,11 @@ import twilightforest.loot.conditions.UncraftingTableEnabledCondition;
 
 import java.util.function.BiConsumer;
 
-public class ChestLootTables implements LootTableSubProvider {
+public record ChestLootTables(HolderLookup.Provider registries) implements LootTableSubProvider {
 
 	@Override
-	public void generate(HolderLookup.Provider provider, BiConsumer<ResourceKey<LootTable>, LootTable.Builder> register) {
+	public void generate(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> register) {
+		HolderLookup.RegistryLookup<Enchantment> lookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
 		register.accept(TFLootTables.USELESS_LOOT,
 			LootTable.lootTable()
 				.withPool(LootPool.lootPool()
@@ -422,7 +425,7 @@ public class ChestLootTables implements LootTableSubProvider {
 					.setRolls(ConstantValue.exactly(1))
 					//rare loot
 					.add(LootItem.lootTableItem(TFItems.TRANSFORMATION_POWDER).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 12))).setWeight(75))
-					.add(LootItem.lootTableItem(TFItems.IRONWOOD_PICKAXE).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(Enchantments.EFFICIENCY, ConstantValue.exactly(1)).withEnchantment(Enchantments.FORTUNE, ConstantValue.exactly(1))).setWeight(75))
+					.add(LootItem.lootTableItem(TFItems.IRONWOOD_PICKAXE).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(lookup.getOrThrow(Enchantments.EFFICIENCY), ConstantValue.exactly(1)).withEnchantment(lookup.getOrThrow(Enchantments.FORTUNE), ConstantValue.exactly(1))).setWeight(75))
 					.add(LootItem.lootTableItem(TFItems.MAGIC_MAP).setWeight(75))
 					//ultrarare loot
 					.add(LootItem.lootTableItem(Items.DIAMOND).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(25))
@@ -469,7 +472,7 @@ public class ChestLootTables implements LootTableSubProvider {
 				.withPool(LootPool.lootPool()
 					.setRolls(ConstantValue.exactly(2))
 					//uncommon loot
-					.add(LootItem.lootTableItem(Items.IRON_LEGGINGS).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(5))))
+					.add(LootItem.lootTableItem(Items.IRON_LEGGINGS).apply(EnchantWithLevelsFunction.enchantWithLevels(this.registries(), ConstantValue.exactly(5))))
 					.add(LootItem.lootTableItem(Items.FIRE_CHARGE).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))))
 					.add(LootItem.lootTableItem(Items.BOOK).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 5))))
 					.add(LootItem.lootTableItem(Items.MAP))
@@ -479,17 +482,17 @@ public class ChestLootTables implements LootTableSubProvider {
 				.withPool(LootPool.lootPool()
 					.setRolls(ConstantValue.exactly(1))
 					//rare loot
-					.add(LootItem.lootTableItem(Items.STONE_SWORD).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(10))).setWeight(75))
-					.add(LootItem.lootTableItem(Items.WOODEN_SWORD).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(15))).setWeight(75))
-					.add(LootItem.lootTableItem(Items.BOW).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(5))).setWeight(75))
+					.add(LootItem.lootTableItem(Items.STONE_SWORD).apply(EnchantWithLevelsFunction.enchantWithLevels(this.registries(), ConstantValue.exactly(10))).setWeight(75))
+					.add(LootItem.lootTableItem(Items.WOODEN_SWORD).apply(EnchantWithLevelsFunction.enchantWithLevels(this.registries(), ConstantValue.exactly(15))).setWeight(75))
+					.add(LootItem.lootTableItem(Items.BOW).apply(EnchantWithLevelsFunction.enchantWithLevels(this.registries(), ConstantValue.exactly(5))).setWeight(75))
 					.add(LootItem.lootTableItem(Items.SPLASH_POTION).apply(SetPotionFunction.setPotion(Potions.WEAKNESS)).setWeight(75))
 					.add(LootItem.lootTableItem(Items.POTION).apply(SetPotionFunction.setPotion(Potions.STRONG_REGENERATION)).setWeight(75))
 					.add(LootItem.lootTableItem(Items.POTION).apply(SetPotionFunction.setPotion(Potions.STRONG_HEALING)).setWeight(75))
 					.add(LootItem.lootTableItem(Items.POTION).apply(SetPotionFunction.setPotion(Potions.STRONG_SWIFTNESS)).setWeight(75))
 					//ultrarare loot
-					.add(LootItem.lootTableItem(Items.GOLDEN_PICKAXE).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(10))).setWeight(25))
-					.add(LootItem.lootTableItem(Items.IRON_SWORD).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(20))).setWeight(25))
-					.add(LootItem.lootTableItem(Items.BOW).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(30))).setWeight(25))
+					.add(LootItem.lootTableItem(Items.GOLDEN_PICKAXE).apply(EnchantWithLevelsFunction.enchantWithLevels(this.registries(), ConstantValue.exactly(10))).setWeight(25))
+					.add(LootItem.lootTableItem(Items.IRON_SWORD).apply(EnchantWithLevelsFunction.enchantWithLevels(this.registries(), ConstantValue.exactly(20))).setWeight(25))
+					.add(LootItem.lootTableItem(Items.BOW).apply(EnchantWithLevelsFunction.enchantWithLevels(this.registries(), ConstantValue.exactly(30))).setWeight(25))
 					.add(LootItem.lootTableItem(Items.BOOKSHELF).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 5))).setWeight(25))
 					.add(LootItem.lootTableItem(Items.ENDER_PEARL).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(25))
 					.add(LootItem.lootTableItem(Items.EXPERIENCE_BOTTLE).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 6))).setWeight(25))));
@@ -513,8 +516,8 @@ public class ChestLootTables implements LootTableSubProvider {
 				.withPool(LootPool.lootPool()
 					.setRolls(ConstantValue.exactly(2))
 					//uncommon loot
-					.add(LootItem.lootTableItem(Items.GOLDEN_SWORD).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(10))))
-					.add(LootItem.lootTableItem(Items.GOLDEN_SWORD).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(7))))
+					.add(LootItem.lootTableItem(Items.GOLDEN_SWORD).apply(EnchantWithLevelsFunction.enchantWithLevels(this.registries(), ConstantValue.exactly(10))))
+					.add(LootItem.lootTableItem(Items.GOLDEN_SWORD).apply(EnchantWithLevelsFunction.enchantWithLevels(this.registries(), ConstantValue.exactly(7))))
 					.add(LootItem.lootTableItem(Items.POTION).apply(SetPotionFunction.setPotion(Potions.SWIFTNESS)))
 					.add(LootItem.lootTableItem(Items.POTION).apply(SetPotionFunction.setPotion(Potions.HEALING)))
 					.add(LootItem.lootTableItem(Items.POTION).apply(SetPotionFunction.setPotion(Potions.FIRE_RESISTANCE)))
@@ -522,7 +525,7 @@ public class ChestLootTables implements LootTableSubProvider {
 				.withPool(LootPool.lootPool()
 					.setRolls(ConstantValue.exactly(1))
 					//rare loot
-					.add(LootItem.lootTableItem(Items.GOLDEN_HELMET).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(10))).setWeight(75))
+					.add(LootItem.lootTableItem(Items.GOLDEN_HELMET).apply(EnchantWithLevelsFunction.enchantWithLevels(this.registries(), ConstantValue.exactly(10))).setWeight(75))
 					.add(LootItem.lootTableItem(TFItems.TRANSFORMATION_POWDER).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 12))).setWeight(75))
 					.add(LootItem.lootTableItem(TFItems.CHARM_OF_KEEPING_1).setWeight(75))
 					.add(LootItem.lootTableItem(TFItems.CHARM_OF_LIFE_1).setWeight(75))
@@ -531,7 +534,7 @@ public class ChestLootTables implements LootTableSubProvider {
 					.add(LootItem.lootTableItem(Items.POTION).apply(SetPotionFunction.setPotion(Potions.STRONG_SWIFTNESS)).setWeight(75))
 					.add(LootItem.lootTableItem(Items.POTION).apply(SetPotionFunction.setPotion(Potions.STRONG_REGENERATION)).setWeight(75))
 					//ultrarare loot
-					.add(LootItem.lootTableItem(Items.GOLDEN_AXE).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(20))).setWeight(25))
+					.add(LootItem.lootTableItem(Items.GOLDEN_AXE).apply(EnchantWithLevelsFunction.enchantWithLevels(this.registries(), ConstantValue.exactly(20))).setWeight(25))
 					.add(LootItem.lootTableItem(Items.ENDER_PEARL).setWeight(25))
 					.add(LootItem.lootTableItem(Items.DIAMOND).setWeight(25))
 					.add(LootItem.lootTableItem(TFItems.MOONWORM_QUEEN).setWeight(25))
@@ -567,7 +570,7 @@ public class ChestLootTables implements LootTableSubProvider {
 					.add(LootItem.lootTableItem(Items.GOLDEN_APPLE))
 					.add(LootItem.lootTableItem(TFBlocks.RED_THREAD).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 18))))
 					.add(LootItem.lootTableItem(Items.BLAZE_ROD))
-					.add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withEnchantment(TFEnchantments.FIRE_REACT.get())))
+					.add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withEnchantment(lookup.getOrThrow(TFEnchantments.FIRE_REACT))))
 					.add(LootItem.lootTableItem(TFItems.STEELEAF_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4))))));
 
 		register.accept(TFLootTables.LABYRINTH_ROOM,
@@ -599,7 +602,7 @@ public class ChestLootTables implements LootTableSubProvider {
 					//rare loot
 					.add(LootItem.lootTableItem(TFItems.MAZE_MAP_FOCUS))
 					.add(LootItem.lootTableItem(Items.TNT).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))))
-					.add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withEnchantment(TFEnchantments.FIRE_REACT.get())))
+					.add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withEnchantment(lookup.getOrThrow(TFEnchantments.FIRE_REACT))))
 					.add(LootItem.lootTableItem(Items.POTION).apply(SetPotionFunction.setPotion(Potions.STRONG_HEALING)))));
 
 		register.accept(TFLootTables.LABYRINTH_VAULT,
@@ -617,24 +620,24 @@ public class ChestLootTables implements LootTableSubProvider {
 				.withPool(LootPool.lootPool()
 					.setRolls(ConstantValue.exactly(2))
 					//uncommon loot
-					.add(LootItem.lootTableItem(Items.BOW).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(Enchantments.INFINITY, ConstantValue.exactly(1)).withEnchantment(Enchantments.PUNCH, ConstantValue.exactly(2))))
-					.add(LootItem.lootTableItem(Items.BOW).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(Enchantments.POWER, ConstantValue.exactly(3)).withEnchantment(Enchantments.FLAME, ConstantValue.exactly(1))))
-					.add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withEnchantment(TFEnchantments.FIRE_REACT.get())))
+					.add(LootItem.lootTableItem(Items.BOW).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(lookup.getOrThrow(Enchantments.INFINITY), ConstantValue.exactly(1)).withEnchantment(lookup.getOrThrow(Enchantments.PUNCH), ConstantValue.exactly(2))))
+					.add(LootItem.lootTableItem(Items.BOW).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(lookup.getOrThrow(Enchantments.POWER), ConstantValue.exactly(3)).withEnchantment(lookup.getOrThrow(Enchantments.FLAME), ConstantValue.exactly(1))))
+					.add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withEnchantment(lookup.getOrThrow(TFEnchantments.FIRE_REACT))))
 					.add(LootItem.lootTableItem(TFItems.STEELEAF_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 12))))
-					.add(LootItem.lootTableItem(TFItems.STEELEAF_SHOVEL).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(Enchantments.EFFICIENCY, ConstantValue.exactly(4)).withEnchantment(Enchantments.UNBREAKING, ConstantValue.exactly(2))))
-					.add(LootItem.lootTableItem(TFItems.STEELEAF_AXE).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(Enchantments.EFFICIENCY, ConstantValue.exactly(5))))
-					.add(LootItem.lootTableItem(TFItems.STEELEAF_CHESTPLATE).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(Enchantments.PROTECTION, ConstantValue.exactly(3))))
-					.add(LootItem.lootTableItem(TFItems.STEELEAF_BOOTS).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(Enchantments.PROTECTION, ConstantValue.exactly(2))))
-					.add(LootItem.lootTableItem(TFItems.STEELEAF_LEGGINGS).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(Enchantments.FIRE_PROTECTION, ConstantValue.exactly(4))))
-					.add(LootItem.lootTableItem(TFItems.STEELEAF_HELMET).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(Enchantments.RESPIRATION, ConstantValue.exactly(3)))))
+					.add(LootItem.lootTableItem(TFItems.STEELEAF_SHOVEL).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(lookup.getOrThrow(Enchantments.EFFICIENCY), ConstantValue.exactly(4)).withEnchantment(lookup.getOrThrow(Enchantments.UNBREAKING), ConstantValue.exactly(2))))
+					.add(LootItem.lootTableItem(TFItems.STEELEAF_AXE).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(lookup.getOrThrow(Enchantments.EFFICIENCY), ConstantValue.exactly(5))))
+					.add(LootItem.lootTableItem(TFItems.STEELEAF_CHESTPLATE).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(lookup.getOrThrow(Enchantments.PROTECTION), ConstantValue.exactly(3))))
+					.add(LootItem.lootTableItem(TFItems.STEELEAF_BOOTS).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(lookup.getOrThrow(Enchantments.PROTECTION), ConstantValue.exactly(2))))
+					.add(LootItem.lootTableItem(TFItems.STEELEAF_LEGGINGS).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(lookup.getOrThrow(Enchantments.FIRE_PROTECTION), ConstantValue.exactly(4))))
+					.add(LootItem.lootTableItem(TFItems.STEELEAF_HELMET).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(lookup.getOrThrow(Enchantments.RESPIRATION), ConstantValue.exactly(3)))))
 				.withPool(LootPool.lootPool()
 					.setRolls(ConstantValue.exactly(1))
 					//rare loot
 					.add(LootItem.lootTableItem(Items.EMERALD_BLOCK))
 					.add(LootItem.lootTableItem(Items.ENDER_CHEST))
-					.add(LootItem.lootTableItem(TFItems.STEELEAF_PICKAXE).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(Enchantments.EFFICIENCY, ConstantValue.exactly(4)).withEnchantment(Enchantments.SILK_TOUCH, ConstantValue.exactly(1))))
-					.add(LootItem.lootTableItem(TFItems.STEELEAF_SWORD).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(Enchantments.SHARPNESS, ConstantValue.exactly(4)).withEnchantment(Enchantments.KNOCKBACK, ConstantValue.exactly(2))))
-					.add(LootItem.lootTableItem(TFItems.STEELEAF_SWORD).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(Enchantments.BANE_OF_ARTHROPODS, ConstantValue.exactly(5)).withEnchantment(Enchantments.FIRE_ASPECT, ConstantValue.exactly(2))))));
+					.add(LootItem.lootTableItem(TFItems.STEELEAF_PICKAXE).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(lookup.getOrThrow(Enchantments.EFFICIENCY), ConstantValue.exactly(4)).withEnchantment(lookup.getOrThrow(Enchantments.SILK_TOUCH), ConstantValue.exactly(1))))
+					.add(LootItem.lootTableItem(TFItems.STEELEAF_SWORD).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(lookup.getOrThrow(Enchantments.SHARPNESS), ConstantValue.exactly(4)).withEnchantment(lookup.getOrThrow(Enchantments.KNOCKBACK), ConstantValue.exactly(2))))
+					.add(LootItem.lootTableItem(TFItems.STEELEAF_SWORD).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(lookup.getOrThrow(Enchantments.BANE_OF_ARTHROPODS), ConstantValue.exactly(5)).withEnchantment(lookup.getOrThrow(Enchantments.FIRE_ASPECT), ConstantValue.exactly(2))))));
 
 		//Same as the one above, but with a 100% chance to get a mazebreaker
 		register.accept(TFLootTables.LABYRINTH_VAULT_JACKPOT,
@@ -645,7 +648,7 @@ public class ChestLootTables implements LootTableSubProvider {
 				.withPool(LootPool.lootPool()
 					.setRolls(ConstantValue.exactly(1))
 					//jackpot guaranteed mazebreaker
-					.add(LootItem.lootTableItem(TFItems.MAZEBREAKER_PICKAXE).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(Enchantments.EFFICIENCY, ConstantValue.exactly(4)).withEnchantment(Enchantments.UNBREAKING, ConstantValue.exactly(3)).withEnchantment(Enchantments.FORTUNE, ConstantValue.exactly(2))))));
+					.add(LootItem.lootTableItem(TFItems.MAZEBREAKER_PICKAXE).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(lookup.getOrThrow(Enchantments.EFFICIENCY), ConstantValue.exactly(4)).withEnchantment(lookup.getOrThrow(Enchantments.UNBREAKING), ConstantValue.exactly(3)).withEnchantment(lookup.getOrThrow(Enchantments.FORTUNE), ConstantValue.exactly(2))))));
 
 		register.accept(TFLootTables.STRONGHOLD_CACHE,
 			LootTable.lootTable()
@@ -671,19 +674,19 @@ public class ChestLootTables implements LootTableSubProvider {
 					.setRolls(ConstantValue.exactly(1))
 					//rare loot
 					.add(LootItem.lootTableItem(TFItems.KNIGHTMETAL_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 8))).setWeight(75))
-					.add(LootItem.lootTableItem(Items.BOW).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(20))).setWeight(75))
-					.add(LootItem.lootTableItem(Items.IRON_SWORD).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(20))).setWeight(75))
-					.add(LootItem.lootTableItem(TFItems.IRONWOOD_SWORD).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(15))).setWeight(75))
-					.add(LootItem.lootTableItem(TFItems.STEELEAF_SWORD).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(10))).setWeight(75))
+					.add(LootItem.lootTableItem(Items.BOW).apply(EnchantWithLevelsFunction.enchantWithLevels(this.registries(), ConstantValue.exactly(20))).setWeight(75))
+					.add(LootItem.lootTableItem(Items.IRON_SWORD).apply(EnchantWithLevelsFunction.enchantWithLevels(this.registries(), ConstantValue.exactly(20))).setWeight(75))
+					.add(LootItem.lootTableItem(TFItems.IRONWOOD_SWORD).apply(EnchantWithLevelsFunction.enchantWithLevels(this.registries(), ConstantValue.exactly(15))).setWeight(75))
+					.add(LootItem.lootTableItem(TFItems.STEELEAF_SWORD).apply(EnchantWithLevelsFunction.enchantWithLevels(this.registries(), ConstantValue.exactly(10))).setWeight(75))
 					//ultrarare loot
-					.add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(Enchantments.BANE_OF_ARTHROPODS, ConstantValue.exactly(4))).setWeight(25))
-					.add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(Enchantments.SHARPNESS, ConstantValue.exactly(4))).setWeight(25))
-					.add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(Enchantments.SMITE, ConstantValue.exactly(4))).setWeight(25))
-					.add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(Enchantments.UNBREAKING, ConstantValue.exactly(2))).setWeight(25))
-					.add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(Enchantments.PROTECTION, ConstantValue.exactly(3))).setWeight(25))
-					.add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(Enchantments.PROJECTILE_PROTECTION, ConstantValue.exactly(3))).setWeight(25))
-					.add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withEnchantment(TFEnchantments.DESTRUCTION.get())).setWeight(25))
-					.add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(Enchantments.FEATHER_FALLING, ConstantValue.exactly(3))).setWeight(25))));
+					.add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(lookup.getOrThrow(Enchantments.BANE_OF_ARTHROPODS), ConstantValue.exactly(4))).setWeight(25))
+					.add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(lookup.getOrThrow(Enchantments.SHARPNESS), ConstantValue.exactly(4))).setWeight(25))
+					.add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(lookup.getOrThrow(Enchantments.SMITE), ConstantValue.exactly(4))).setWeight(25))
+					.add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(lookup.getOrThrow(Enchantments.UNBREAKING), ConstantValue.exactly(2))).setWeight(25))
+					.add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(lookup.getOrThrow(Enchantments.PROTECTION), ConstantValue.exactly(3))).setWeight(25))
+					.add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(lookup.getOrThrow(Enchantments.PROJECTILE_PROTECTION), ConstantValue.exactly(3))).setWeight(25))
+					.add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withEnchantment(lookup.getOrThrow(TFEnchantments.DESTRUCTION))).setWeight(25))
+					.add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(lookup.getOrThrow(Enchantments.FEATHER_FALLING), ConstantValue.exactly(3))).setWeight(25))));
 
 		register.accept(TFLootTables.STRONGHOLD_ROOM,
 			LootTable.lootTable()
@@ -712,12 +715,12 @@ public class ChestLootTables implements LootTableSubProvider {
 				.withPool(LootPool.lootPool()
 					.setRolls(ConstantValue.exactly(1))
 					//rare loot
-					.add(LootItem.lootTableItem(TFItems.IRONWOOD_SWORD).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(25))))
-					.add(LootItem.lootTableItem(TFItems.STEELEAF_SWORD).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(20))))
-					.add(LootItem.lootTableItem(Items.IRON_SWORD).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(30))))
-					.add(LootItem.lootTableItem(Items.BOW).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(30))))
-					.add(LootItem.lootTableItem(Items.DIAMOND_SWORD).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(15))))
-					.add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withEnchantment(TFEnchantments.DESTRUCTION.get())))
+					.add(LootItem.lootTableItem(TFItems.IRONWOOD_SWORD).apply(EnchantWithLevelsFunction.enchantWithLevels(this.registries(), ConstantValue.exactly(25))))
+					.add(LootItem.lootTableItem(TFItems.STEELEAF_SWORD).apply(EnchantWithLevelsFunction.enchantWithLevels(this.registries(), ConstantValue.exactly(20))))
+					.add(LootItem.lootTableItem(Items.IRON_SWORD).apply(EnchantWithLevelsFunction.enchantWithLevels(this.registries(), ConstantValue.exactly(30))))
+					.add(LootItem.lootTableItem(Items.BOW).apply(EnchantWithLevelsFunction.enchantWithLevels(this.registries(), ConstantValue.exactly(30))))
+					.add(LootItem.lootTableItem(Items.DIAMOND_SWORD).apply(EnchantWithLevelsFunction.enchantWithLevels(this.registries(), ConstantValue.exactly(15))))
+					.add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withEnchantment(lookup.getOrThrow(TFEnchantments.DESTRUCTION))))
 					.add(LootItem.lootTableItem(TFItems.MAZE_MAP_FOCUS))));
 
 		register.accept(TFLootTables.DARKTOWER_CACHE,
@@ -775,9 +778,9 @@ public class ChestLootTables implements LootTableSubProvider {
 					.setRolls(ConstantValue.exactly(1))
 					//rare loot
 					.add(LootItem.lootTableItem(TFItems.CHARM_OF_LIFE_1))
-					.add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(Enchantments.FEATHER_FALLING, ConstantValue.exactly(3))))
-					.add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(Enchantments.KNOCKBACK, ConstantValue.exactly(2))))
-					.add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(Enchantments.EFFICIENCY, ConstantValue.exactly(3)))))
+					.add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(lookup.getOrThrow(Enchantments.FEATHER_FALLING), ConstantValue.exactly(3))))
+					.add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(lookup.getOrThrow(Enchantments.KNOCKBACK), ConstantValue.exactly(2))))
+					.add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(lookup.getOrThrow(Enchantments.EFFICIENCY), ConstantValue.exactly(3)))))
 				.withPool(LootPool.lootPool()
 					.setRolls(ConstantValue.exactly(1))
 					.add(LootItem.lootTableItem(TFItems.TOWER_KEY))));
@@ -824,12 +827,12 @@ public class ChestLootTables implements LootTableSubProvider {
 					.add(LootItem.lootTableItem(TFItems.ENDER_BOW).setWeight(75))
 					.add(LootItem.lootTableItem(TFItems.ICE_SWORD).setWeight(75))
 					//ultrarare loot
-					.add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(Enchantments.SHARPNESS, ConstantValue.exactly(4))).setWeight(25))
-					.add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(Enchantments.POWER, ConstantValue.exactly(4))).setWeight(25))
-					.add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(Enchantments.PUNCH, ConstantValue.exactly(2))).setWeight(25))
-					.add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(Enchantments.UNBREAKING, ConstantValue.exactly(2))).setWeight(25))
-					.add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withEnchantment(TFEnchantments.CHILL_AURA.get())).setWeight(25))
-					.add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(Enchantments.INFINITY, ConstantValue.exactly(1))).setWeight(25))));
+					.add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(lookup.getOrThrow(Enchantments.SHARPNESS), ConstantValue.exactly(4))).setWeight(25))
+					.add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(lookup.getOrThrow(Enchantments.POWER), ConstantValue.exactly(4))).setWeight(25))
+					.add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(lookup.getOrThrow(Enchantments.PUNCH), ConstantValue.exactly(2))).setWeight(25))
+					.add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(lookup.getOrThrow(Enchantments.UNBREAKING), ConstantValue.exactly(2))).setWeight(25))
+					.add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withEnchantment(lookup.getOrThrow(TFEnchantments.CHILL_AURA))).setWeight(25))
+					.add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(new SetEnchantmentsFunction.Builder(false).withEnchantment(lookup.getOrThrow(Enchantments.INFINITY), ConstantValue.exactly(1))).setWeight(25))));
 
 		register.accept(TFLootTables.AURORA_ROOM,
 			LootTable.lootTable()
@@ -855,11 +858,11 @@ public class ChestLootTables implements LootTableSubProvider {
 				.withPool(LootPool.lootPool()
 					.setRolls(ConstantValue.exactly(1))
 					//rare loot
-					.add(LootItem.lootTableItem(TFItems.ICE_BOW).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(30))))
-					.add(LootItem.lootTableItem(TFItems.ENDER_BOW).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(5))))
-					.add(LootItem.lootTableItem(TFItems.ICE_SWORD).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(25))))
-					.add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withEnchantment(TFEnchantments.CHILL_AURA.get())))
-					.add(LootItem.lootTableItem(TFItems.GLASS_SWORD).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(20))))));
+					.add(LootItem.lootTableItem(TFItems.ICE_BOW).apply(EnchantWithLevelsFunction.enchantWithLevels(this.registries(), ConstantValue.exactly(30))))
+					.add(LootItem.lootTableItem(TFItems.ENDER_BOW).apply(EnchantWithLevelsFunction.enchantWithLevels(this.registries(), ConstantValue.exactly(5))))
+					.add(LootItem.lootTableItem(TFItems.ICE_SWORD).apply(EnchantWithLevelsFunction.enchantWithLevels(this.registries(), ConstantValue.exactly(25))))
+					.add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withEnchantment(lookup.getOrThrow(TFEnchantments.CHILL_AURA))))
+					.add(LootItem.lootTableItem(TFItems.GLASS_SWORD).apply(EnchantWithLevelsFunction.enchantWithLevels(this.registries(), ConstantValue.exactly(20))))));
 
 		register.accept(TFLootTables.TROLL_GARDEN,
 			LootTable.lootTable()

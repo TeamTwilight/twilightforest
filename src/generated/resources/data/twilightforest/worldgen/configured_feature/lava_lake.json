@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:lake",
+  "type": "twilightforest:small_lake",
   "config": {
     "barrier": {
       "type": "minecraft:simple_state_provider",

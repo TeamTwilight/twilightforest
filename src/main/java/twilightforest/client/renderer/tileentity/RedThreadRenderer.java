@@ -69,7 +69,7 @@ public class RedThreadRenderer<T extends RedThreadBlockEntity> implements BlockE
 		Level level = thread.getLevel();
 		BlockPos pos = thread.getBlockPos();
 
-		this.redThreadModel.center.render(poseStack, consumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		this.redThreadModel.center.render(poseStack, consumer, light, OverlayTexture.NO_OVERLAY);
 		for (Direction direction : Direction.values()) {
 			if (!direction.getAxis().equals(face.getAxis())) {
 				//We check the blockState to see if the thread on this face is connecting to a different face of the same block.
@@ -87,7 +87,7 @@ public class RedThreadRenderer<T extends RedThreadBlockEntity> implements BlockE
 					}
 				}
 
-				if (flag) this.redThreadModel.getPart(face, direction).render(poseStack, consumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+				if (flag) this.redThreadModel.getPart(face, direction).render(poseStack, consumer, light, OverlayTexture.NO_OVERLAY);
 			}
 		}
 	}

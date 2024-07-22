@@ -57,7 +57,7 @@ public class ChiseledCanopyShelfBlock extends ChiseledBookShelfBlock {
 			for (int i = 0; i < ChiseledCanopyShelfBlock.SLOT_OCCUPIED_PROPERTIES.size(); i++) {
 				BooleanProperty property = ChiseledCanopyShelfBlock.SLOT_OCCUPIED_PROPERTIES.get(i);
 				if (state.hasProperty(property) && state.getValue(property)) {
-					shelf.getSpawner().attemptSpawnTome(i, serverLevel, pos, true, igniter);
+					shelf.getSpawner().attemptSpawnTome(i, serverLevel, pos, true, igniter, 5);
 				}
 			}
 			level.destroyBlock(pos, false);

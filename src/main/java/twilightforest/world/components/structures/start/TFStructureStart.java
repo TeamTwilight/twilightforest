@@ -25,7 +25,7 @@ public class TFStructureStart extends StructureStart {
 		return tag;
 	}
 
-	public void load(CompoundTag nbt) {
+	public void loadFromTag(CompoundTag nbt) {
 		this.conquered = nbt.getBoolean("conquered");
 	}
 

@@ -58,7 +58,7 @@ public class NagaRenderer<M extends NagaModel<Naga>> extends MobRenderer<Naga, M
 		public void render(PoseStack stack, MultiBufferSource buffer, int light, T naga, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
 			if (naga.isDazed()) {
 				VertexConsumer vertex = buffer.getBuffer(RenderType.entityCutoutNoCull(textureLocDazed));
-				this.getParentModel().renderToBuffer(stack, vertex, light, OverlayTexture.pack(0.0F, naga.hurtTime > 0), 1.0F, 1.0F, 1.0F, 1.0F);
+				this.getParentModel().renderToBuffer(stack, vertex, light, OverlayTexture.pack(0.0F, naga.hurtTime > 0));
 			}
 		}
 	}

@@ -85,7 +85,7 @@ public class HydraTrophyLegacyModel extends GenericTrophyModel {
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack stack, VertexConsumer consumer, int light, int overlay, float red, float green, float blue, float alpha) {
-		this.head.render(stack, consumer, light, overlay, red, green, blue, alpha);
+	public void renderToBuffer(PoseStack stack, VertexConsumer consumer, int light, int overlay, int color) {
+		this.head.render(stack, consumer, light, overlay, color);
 	}
 }

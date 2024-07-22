@@ -10,6 +10,7 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import twilightforest.entity.monster.IceCrystal;
 
@@ -58,9 +59,9 @@ public class IceCrystalModel extends HierarchicalModel<IceCrystal> {
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, float red, float green, float blue, float alpha) {
+	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, int color) {
 		for (ModelPart spike : spikes) {
-			spike.render(stack, builder, light, overlay, red, green, blue, alive ? 0.6F : alpha);
+			spike.render(stack, builder, light, overlay, FastColor.ARGB32.color((int) (FastColor.ARGB32.alpha(color) * (alive ? 0.6F : 1.0F)), FastColor.ARGB32.red(color), FastColor.ARGB32.green(color), FastColor.ARGB32.blue(color)));
 		}
 	}
 

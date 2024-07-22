@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
@@ -42,11 +43,11 @@ public class HydraMortarRenderer extends EntityRenderer<HydraMortar> {
 		float alpha = (1.0F - (mortar.fuse - partialTicks + 1.0F) / 100.0F) * 0.8F;
 
 		VertexConsumer builder = buffers.getBuffer(mortarModel.renderType(textureLoc));
-		mortarModel.renderToBuffer(stack, builder, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 0.075F);
+		mortarModel.renderToBuffer(stack, builder, light, OverlayTexture.NO_OVERLAY, FastColor.ARGB32.colorFromFloat(0.075F, 1.0F, 1.0F, 1.0F));
 
 		if (mortar.fuse / 5 % 2 == 0) {
 			builder = buffers.getBuffer(RenderType.entityTranslucent(textureLoc));
-			mortarModel.renderToBuffer(stack, builder, light, OverlayTexture.pack(OverlayTexture.u(1), 10), 1.0F, 1.0F, 1.0F, alpha);
+			mortarModel.renderToBuffer(stack, builder, light, OverlayTexture.pack(OverlayTexture.u(1), 10), FastColor.ARGB32.colorFromFloat(alpha, 1.0F, 1.0F, 1.0F));
 		}
 
 		stack.popPose();

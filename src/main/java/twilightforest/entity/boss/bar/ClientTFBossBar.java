@@ -32,8 +32,8 @@ public class ClientTFBossBar extends LerpingBossEvent {
 		this.setTime = setTime;
 	}
 
-	private static final ResourceLocation BAR_BACKGROUND = new ResourceLocation("boss_bar/white_background");
-	private static final ResourceLocation BAR_PROGRESS = new ResourceLocation("boss_bar/white_progress");
+	private static final ResourceLocation BAR_BACKGROUND = ResourceLocation.withDefaultNamespace("boss_bar/white_background");
+	private static final ResourceLocation BAR_PROGRESS = ResourceLocation.withDefaultNamespace("boss_bar/white_progress");
 
 	public void renderBossBar(GuiGraphics guiGraphics, int x, int y) {
 		RenderSystem.enableBlend();

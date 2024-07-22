@@ -1,10 +1,7 @@
 package twilightforest.client.renderer;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.ParticleStatus;
@@ -47,8 +44,8 @@ import java.util.Optional;
  */
 public class TFWeatherRenderer {
 
-	public static final ResourceLocation RAIN_TEXTURES = new ResourceLocation("textures/environment/rain.png");
-	public static final ResourceLocation SNOW_TEXTURES = new ResourceLocation("textures/environment/snow.png");
+	public static final ResourceLocation RAIN_TEXTURES = ResourceLocation.withDefaultNamespace("textures/environment/rain.png");
+	public static final ResourceLocation SNOW_TEXTURES = ResourceLocation.withDefaultNamespace("textures/environment/snow.png");
 
 	private static final ResourceLocation SPARKLES_TEXTURE = TwilightForestMod.getEnvTexture("sparkles.png");
 
@@ -99,7 +96,7 @@ public class TFWeatherRenderer {
 			int pz = Mth.floor(camera.z());
 
 			Tesselator tessellator = Tesselator.getInstance();
-			BufferBuilder bufferBuilder = tessellator.getBuilder();
+			BufferBuilder bufferBuilder = null;
 
 			RenderSystem.disableCull();
 			RenderSystem.enableBlend();
@@ -153,11 +150,11 @@ public class TFWeatherRenderer {
 
 							if (currentType != nextType) {
 								if (currentType != null) {
-									tessellator.end();
+									BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());
 								}
 								currentType = nextType;
 								RenderSystem.setShaderTexture(0, nextType.getTextureLocation());
-								bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
+								bufferBuilder = tessellator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
 							}
 
 							double xRange = (double) ((float) dx + 0.5F) - camera.x();
@@ -209,7 +206,7 @@ public class TFWeatherRenderer {
 			}
 
 			if (currentType != null) {
-				tessellator.end();
+				BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());
 			}
 
 			RenderSystem.enableCull();
@@ -226,7 +223,7 @@ public class TFWeatherRenderer {
 			int py = Mth.floor(camera.y());
 			int pz = Mth.floor(camera.z());
 			Tesselator tessellator = Tesselator.getInstance();
-			BufferBuilder bufferbuilder = tessellator.getBuilder();
+			BufferBuilder bufferbuilder = null;
 			RenderSystem.disableCull();
 			RenderSystem.enableBlend();
 			RenderSystem.defaultBlendFunc();
@@ -274,7 +271,7 @@ public class TFWeatherRenderer {
 							if (drawFlag != 0) {
 								drawFlag = 0;
 								RenderSystem.setShaderTexture(0, SPARKLES_TEXTURE);
-								bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
+								bufferbuilder = tessellator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
 							}
 
 							float countFactor = ((float) (ticks & 511) + partialTicks) / 512.0F;
@@ -291,7 +288,7 @@ public class TFWeatherRenderer {
 			}
 
 			if (drawFlag == 0) {
-				tessellator.end();
+				BufferUploader.drawWithShader(bufferbuilder.buildOrThrow());
 			}
 
 			RenderSystem.enableCull();
@@ -304,29 +301,25 @@ public class TFWeatherRenderer {
 		int blockLight = light >> 16 & 65535;
 		int skyLight = light & 65535;
 		bufferBuilder
-			.vertex(dx - camera.x() - rainX + 0.5D, minY - camera.y(), dz - camera.z() - rainZ + 0.5D)
-			.uv(0.0F + uFactor, minY * 0.25F + countFactor + vFactor)
-			.color(color[0], color[1], color[2], color[3])
-			.uv2(blockLight, skyLight)
-			.endVertex();
+			.addVertex((float) (dx - camera.x() - rainX + 0.5F), (float) (minY - camera.y()), (float) (dz - camera.z() - rainZ + 0.5F))
+			.setUv(0.0F + uFactor, minY * 0.25F + countFactor + vFactor)
+			.setColor(color[0], color[1], color[2], color[3])
+			.setUv2(blockLight, skyLight);
 		bufferBuilder
-			.vertex(dx - camera.x() + rainX + 0.5D, minY - camera.y(), dz - camera.z() + rainZ + 0.5D)
-			.uv(1.0F + uFactor, minY * 0.25F + countFactor + vFactor)
-			.color(color[0], color[1], color[2], color[3])
-			.uv2(blockLight, skyLight)
-			.endVertex();
+			.addVertex((float) (dx - camera.x() + rainX + 0.5F), (float) (minY - camera.y()), (float) (dz - camera.z() + rainZ + 0.5F))
+			.setUv(1.0F + uFactor, minY * 0.25F + countFactor + vFactor)
+			.setColor(color[0], color[1], color[2], color[3])
+			.setUv2(blockLight, skyLight);
 		bufferBuilder
-			.vertex(dx - camera.x() + rainX + 0.5D, maxY - camera.y(), dz - camera.z() + rainZ + 0.5D)
-			.uv(1.0F + uFactor, maxY * 0.25F + countFactor + vFactor)
-			.color(color[0], color[1], color[2], color[3])
-			.uv2(blockLight, skyLight)
-			.endVertex();
+			.addVertex((float) (dx - camera.x() + rainX + 0.5F), (float) (maxY - camera.y()), (float) (dz - camera.z() + rainZ + 0.5F))
+			.setUv(1.0F + uFactor, maxY * 0.25F + countFactor + vFactor)
+			.setColor(color[0], color[1], color[2], color[3])
+			.setUv2(blockLight, skyLight);
 		bufferBuilder
-			.vertex(dx - camera.x() - rainX + 0.5D, maxY - camera.y(), dz - camera.z() - rainZ + 0.5D)
-			.uv(0.0F + uFactor, maxY * 0.25F + countFactor + vFactor)
-			.color(color[0], color[1], color[2], color[3])
-			.uv2(blockLight, skyLight)
-			.endVertex();
+			.addVertex((float) (dx - camera.x() - rainX + 0.5F), (float) (maxY - camera.y()), (float) (dz - camera.z() - rainZ + 0.5F))
+			.setUv(0.0F + uFactor, maxY * 0.25F + countFactor + vFactor)
+			.setColor(color[0], color[1], color[2], color[3])
+			.setUv2(blockLight, skyLight);
 	}
 
 	private static boolean isNearLockedBiome(Level level, Entity viewEntity) {

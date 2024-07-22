@@ -17,11 +17,14 @@ import twilightforest.config.TFConfig;
 import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.init.TFParticleType;
 import twilightforest.network.ParticlePacket;
+import twilightforest.util.BlockCapabilityDirectionalCache;
 import twilightforest.util.WorldUtil;
 
 import java.util.*;
 
 public class SortLogCoreBlock extends SpecialMagicLogBlock {
+
+	private final BlockCapabilityDirectionalCache<IItemHandler> capabilityCache = new BlockCapabilityDirectionalCache<>();
 
 	public SortLogCoreBlock(Properties properties) {
 		super(properties);
@@ -45,7 +48,7 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 					if (Math.abs(blockPos.getX() - pos.getX()) <= 2 && Math.abs(blockPos.getY() - pos.getY()) <= 2 && Math.abs(blockPos.getZ() - pos.getZ()) <= 2) {
 						List<IItemHandler> handlers = new ArrayList<>();
 						for (Direction side : Direction.values()) {
-							IItemHandler handler = level.getCapability(Capabilities.ItemHandler.BLOCK, blockPos, side);
+							IItemHandler handler = this.capabilityCache.get(Capabilities.ItemHandler.BLOCK, level, blockPos, side);
 							if (handler != null) handlers.add(handler);
 						}
 						if (!handlers.isEmpty()) {
@@ -53,10 +56,8 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 						}
 					} else { // Output if its outside that range
 						for (Direction side : Direction.values()) {
-							IItemHandler handler = level.getCapability(Capabilities.ItemHandler.BLOCK, blockPos, side);
-							if (handler != null) {
-								outputMap.put(handler, Vec3.upFromBottomCenterOf(blockPos, 1.9D));
-							}
+							IItemHandler handler = this.capabilityCache.get(Capabilities.ItemHandler.BLOCK, level, blockPos, side);
+							if (handler != null) outputMap.put(handler, Vec3.upFromBottomCenterOf(blockPos, 1.9D));
 						}
 					}
 				}

@@ -24,7 +24,9 @@
   },
   "features": [
     [],
-    [],
+    [
+      "twilightforest:water_lake"
+    ],
     [],
     [],
     [

@@ -56,7 +56,7 @@ public class NewBlockChainGoblinRenderer<T extends BlockChainGoblin, M extends N
 		stack.mulPose(Axis.XP.rotationDegrees(pitch));
 
 		stack.scale(-1.0F, -1.0F, 1.0F);
-		this.model.renderToBuffer(stack, ivertexbuilder, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		this.model.renderToBuffer(stack, ivertexbuilder, light, OverlayTexture.NO_OVERLAY);
 		stack.popPose();
 
 		if (goblin.isAlive()) {

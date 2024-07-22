@@ -36,7 +36,7 @@ public class MoonwormShotRenderer extends EntityRenderer<MoonwormShot> {
 		stack.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTicks, entity.xRotO, entity.getXRot())));
 
 		VertexConsumer builder = buffer.getBuffer(this.wormModel.renderType(textureLoc));
-		this.wormModel.renderToBuffer(stack, builder, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		this.wormModel.renderToBuffer(stack, builder, light, OverlayTexture.NO_OVERLAY);
 
 		stack.popPose();
 	}

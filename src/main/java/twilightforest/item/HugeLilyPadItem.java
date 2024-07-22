@@ -74,9 +74,7 @@ public class HugeLilyPadItem extends PlaceOnWaterBlockItem {
 						CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayer) player, blockpos1.south(), itemstack);
 					}
 
-					if (!player.getAbilities().instabuild) {
-						itemstack.shrink(1);
-					}
+					itemstack.consume(1, player);
 
 					player.awardStat(Stats.ITEM_USED.get(this));
 					level.playSound(player, blockpos, SoundEvents.LILY_PAD_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);

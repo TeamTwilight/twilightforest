@@ -19,7 +19,7 @@ public record UnbakedPatchModel(Material material, boolean shaggify) implements 
 	}
 
 	@Override
-	public BakedModel bake(IGeometryBakingContext owner, ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelTransform, ItemOverrides overrides, ResourceLocation modelLocation) {
-		return new PatchModel(modelLocation, spriteGetter.apply(this.material()), this.shaggify());
+	public BakedModel bake(IGeometryBakingContext owner, ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelTransform, ItemOverrides overrides) {
+		return new PatchModel(spriteGetter.apply(this.material()), this.shaggify());
 	}
 }

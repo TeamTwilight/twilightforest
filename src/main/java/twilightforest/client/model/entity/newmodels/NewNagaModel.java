@@ -51,13 +51,13 @@ public class NewNagaModel<T extends Entity> extends ListModel<T> {
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, float red, float green, float blue, float alpha) {
+	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, int color) {
 		if (entity instanceof Naga) {
-			head.render(stack, builder, light, overlay, red, green, blue, alpha * 2);
+			head.render(stack, builder, light, overlay, color);
 		} else if (entity instanceof NagaSegment) {
-			body.render(stack, builder, light, overlay, red, green, blue, alpha * 2);
+			body.render(stack, builder, light, overlay, color);
 		} else {
-			head.render(stack, builder, light, overlay, red, green, blue, alpha * 2);
+			head.render(stack, builder, light, overlay, color);
 		}
 	}
 

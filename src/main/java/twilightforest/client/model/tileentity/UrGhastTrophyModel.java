@@ -102,8 +102,8 @@ public class UrGhastTrophyModel extends GenericTrophyModel {
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack matrix, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		this.body.render(matrix, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+	public void renderToBuffer(PoseStack matrix, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
+		this.body.render(matrix, buffer, packedLight, packedOverlay, color);
 	}
 
 }

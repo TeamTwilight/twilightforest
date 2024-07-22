@@ -42,7 +42,7 @@ public class ProtectionBoxModel<T extends ProtectionBox> extends ListModel<T> {
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, float red, float green, float blue, float alpha) {
+	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, int color) {
 		ProtectionBox boxEntity = entity;
 
 		int pixelsX = boxEntity.sizeX * 16 + 2;
@@ -53,7 +53,7 @@ public class ProtectionBoxModel<T extends ProtectionBox> extends ListModel<T> {
 			resizeBoxElement(pixelsX, pixelsY, pixelsZ);
 		}
 
-		super.renderToBuffer(stack, builder, light, overlay, red, green, blue, alpha);
+		super.renderToBuffer(stack, builder, light, overlay, color);
 	}
 
 	@Override

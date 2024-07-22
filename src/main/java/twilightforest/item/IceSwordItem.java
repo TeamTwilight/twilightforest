@@ -5,7 +5,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 import net.neoforged.neoforge.network.PacketDistributor;
-import twilightforest.enchantment.ChillAuraEnchantment;
+import twilightforest.enchantment.ApplyFrostedEffect;
 import twilightforest.init.TFParticleType;
 import twilightforest.network.ParticlePacket;
 
@@ -18,7 +18,7 @@ public class IceSwordItem extends SwordItem {
 	@Override
 	public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
 		if (super.hurtEnemy(stack, target, attacker)) {
-			ChillAuraEnchantment.doChillAuraEffect(target, 200, 2, true);
+			ApplyFrostedEffect.doChillAuraEffect(target, 200, 2, true);
 
 			ParticlePacket particlePacket = new ParticlePacket();
 			for (int i = 0; i < 20; i++) {

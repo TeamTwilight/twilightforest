@@ -54,7 +54,7 @@ public class BlockChainGoblinRenderer<T extends BlockChainGoblin, M extends Bloc
 
 		stack.scale(-1.0F, -1.0F, 1.0F);
 
-		this.model.renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		this.model.renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY);
 		stack.popPose();
 
 		stack.pushPose();

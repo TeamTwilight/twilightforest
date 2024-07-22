@@ -61,12 +61,12 @@ public class RedThreadModel extends Model {
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack stack, VertexConsumer consumer, int light, int overlay, float red, float green, float blue, float alpha) {
-		this.center.render(stack, consumer, light, overlay, red, green, blue, alpha);
-		this.up.render(stack, consumer, light, overlay, red, green, blue, alpha);
-		this.down.render(stack, consumer, light, overlay, red, green, blue, alpha);
-		this.left.render(stack, consumer, light, overlay, red, green, blue, alpha);
-		this.right.render(stack, consumer, light, overlay, red, green, blue, alpha);
+	public void renderToBuffer(PoseStack stack, VertexConsumer consumer, int light, int overlay, int color) {
+		this.center.render(stack, consumer, light, overlay, color);
+		this.up.render(stack, consumer, light, overlay, color);
+		this.down.render(stack, consumer, light, overlay, color);
+		this.left.render(stack, consumer, light, overlay, color);
+		this.right.render(stack, consumer, light, overlay, color);
 	}
 
 	/**

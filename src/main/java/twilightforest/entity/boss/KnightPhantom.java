@@ -48,6 +48,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.control.NoClipMoveControl;
 import twilightforest.entity.ai.goal.PhantomAttackStartGoal;
 import twilightforest.entity.ai.goal.PhantomThrowWeaponGoal;
@@ -70,8 +71,8 @@ public class KnightPhantom extends BaseTFBoss {
 
 	private static final EntityDataAccessor<Boolean> FLAG_CHARGING = SynchedEntityData.defineId(KnightPhantom.class, EntityDataSerializers.BOOLEAN);
 	private static final EntityDataAccessor<Boolean> IT_IS_OVER = SynchedEntityData.defineId(KnightPhantom.class, EntityDataSerializers.BOOLEAN);
-	private static final AttributeModifier CHARGING_MODIFIER = new AttributeModifier("Charging attack boost", 7, AttributeModifier.Operation.ADD_VALUE);
-	private static final AttributeModifier NON_CHARGING_ARMOR_MODIFIER = new AttributeModifier("Inactive Armor boost", 4.0D, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+	private static final AttributeModifier CHARGING_MODIFIER = new AttributeModifier(TwilightForestMod.prefix("charging_attack_boost"), 7, AttributeModifier.Operation.ADD_VALUE);
+	private static final AttributeModifier NON_CHARGING_ARMOR_MODIFIER = new AttributeModifier(TwilightForestMod.prefix("inactive_armor_boost"), 4.0D, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
 
 
 	private int number;
@@ -132,7 +133,7 @@ public class KnightPhantom extends BaseTFBoss {
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData data) {
 		data = super.finalizeSpawn(accessor, difficulty, reason, data);
 		this.populateDefaultEquipmentSlots(accessor.getRandom(), difficulty);
-		this.populateDefaultEquipmentEnchantments(accessor.getRandom(), difficulty);
+		this.populateDefaultEquipmentEnchantments(accessor, accessor.getRandom(), difficulty);
 		this.getAttribute(Attributes.ARMOR).addTransientModifier(NON_CHARGING_ARMOR_MODIFIER);
 		return data;
 	}
@@ -227,11 +228,11 @@ public class KnightPhantom extends BaseTFBoss {
 			}
 
 			if (cause.getEntity() != null) {
-				builder = builder.withParameter(LootContextParams.KILLER_ENTITY, cause.getEntity());
+				builder = builder.withParameter(LootContextParams.ATTACKING_ENTITY, cause.getEntity());
 			}
 
 			if (cause.getDirectEntity() != null) {
-				builder = builder.withParameter(LootContextParams.DIRECT_KILLER_ENTITY, cause.getDirectEntity());
+				builder = builder.withParameter(LootContextParams.DIRECT_ATTACKING_ENTITY, cause.getDirectEntity());
 			}
 
 			items.addAll(serverLevel.getServer().reloadableRegistries().getLootTable(TFLootTables.KNIGHT_PHANTOM_DEFEATED).getRandomItems(builder.create(LootContextParamSets.ENTITY)));
@@ -411,15 +412,15 @@ public class KnightPhantom extends BaseTFBoss {
 		this.getEntityData().set(FLAG_CHARGING, flag);
 		if (!this.level().isClientSide()) {
 			if (flag) {
-				if (!this.getAttribute(Attributes.ATTACK_DAMAGE).hasModifier(CHARGING_MODIFIER)) {
+				if (!this.getAttribute(Attributes.ATTACK_DAMAGE).hasModifier(CHARGING_MODIFIER.id())) {
 					this.getAttribute(Attributes.ATTACK_DAMAGE).addTransientModifier(CHARGING_MODIFIER);
 				}
-				if (this.getAttribute(Attributes.ARMOR).hasModifier(NON_CHARGING_ARMOR_MODIFIER)) {
+				if (this.getAttribute(Attributes.ARMOR).hasModifier(NON_CHARGING_ARMOR_MODIFIER.id())) {
 					this.getAttribute(Attributes.ARMOR).removeModifier(NON_CHARGING_ARMOR_MODIFIER.id());
 				}
 			} else {
 				this.getAttribute(Attributes.ATTACK_DAMAGE).removeModifier(CHARGING_MODIFIER.id());
-				if (!this.getAttribute(Attributes.ARMOR).hasModifier(NON_CHARGING_ARMOR_MODIFIER)) {
+				if (!this.getAttribute(Attributes.ARMOR).hasModifier(NON_CHARGING_ARMOR_MODIFIER.id())) {
 					this.getAttribute(Attributes.ARMOR).addTransientModifier(NON_CHARGING_ARMOR_MODIFIER);
 				}
 			}

@@ -24,6 +24,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.event.EventHooks;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.goal.RiderSpearAttackGoal;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
@@ -33,7 +34,7 @@ import java.util.Objects;
 public class LowerGoblinKnight extends Monster {
 
 	private static final EntityDataAccessor<Boolean> ARMOR = SynchedEntityData.defineId(LowerGoblinKnight.class, EntityDataSerializers.BOOLEAN);
-	private static final AttributeModifier ARMOR_MODIFIER = new AttributeModifier("Armor boost", 17, AttributeModifier.Operation.ADD_VALUE);
+	private static final AttributeModifier ARMOR_MODIFIER = new AttributeModifier(TwilightForestMod.prefix("armor_boost"), 17, AttributeModifier.Operation.ADD_VALUE);
 
 	@SuppressWarnings("this-escape")
 	public LowerGoblinKnight(EntityType<? extends LowerGoblinKnight> type, Level world) {
@@ -83,7 +84,7 @@ public class LowerGoblinKnight extends Monster {
 
 		if (!this.level().isClientSide()) {
 			if (flag) {
-				if (!Objects.requireNonNull(this.getAttribute(Attributes.ARMOR)).hasModifier(ARMOR_MODIFIER)) {
+				if (!Objects.requireNonNull(this.getAttribute(Attributes.ARMOR)).hasModifier(ARMOR_MODIFIER.id())) {
 					Objects.requireNonNull(this.getAttribute(Attributes.ARMOR)).addTransientModifier(ARMOR_MODIFIER);
 				}
 			} else {

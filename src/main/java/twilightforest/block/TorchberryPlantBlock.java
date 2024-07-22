@@ -22,7 +22,6 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.common.PlantType;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFSounds;
 import twilightforest.init.TFStats;
@@ -45,18 +44,13 @@ public class TorchberryPlantBlock extends TFPlantBlock implements BonemealableBl
 	}
 
 	@Override
-	public boolean canSurvive(BlockState state, LevelReader reader, BlockPos pos) {
+	public boolean mayPlaceOn(BlockState state, BlockGetter reader, BlockPos pos) {
 		return TFPlantBlock.canPlaceRootAt(reader, pos);
 	}
 
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 		return TORCHBERRY_SHAPE;
-	}
-
-	@Override
-	public PlantType getPlantType(BlockGetter getter, BlockPos pos) {
-		return PlantType.CAVE;
 	}
 
 	@Override

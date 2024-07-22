@@ -80,22 +80,22 @@ public class NewDeerModel extends QuadrupedModel<Deer> {
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, float red, float green, float blue, float scale) {
+	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, int color) {
 		if (this.young) {
 			stack.pushPose();
 			stack.scale(0.75F, 0.75F, 0.75F);
 			stack.translate(0.0F, 0.95F, 0.15F);
-			this.headParts().forEach((modelRenderer) -> modelRenderer.render(stack, builder, light, overlay, red, green, blue, scale));
+			this.headParts().forEach((modelRenderer) -> modelRenderer.render(stack, builder, light, overlay, color));
 			stack.popPose();
 
 			stack.pushPose();
 			stack.scale(0.5F, 0.5F, 0.5F);
 			stack.translate(0.0F, 1.5F, 0.0F);
-			this.bodyParts().forEach((modelRenderer) -> modelRenderer.render(stack, builder, light, overlay, red, green, blue, scale));
+			this.bodyParts().forEach((modelRenderer) -> modelRenderer.render(stack, builder, light, overlay, color));
 			stack.popPose();
 		} else {
-			this.headParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, scale));
-			this.bodyParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, scale));
+			this.headParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, color));
+			this.bodyParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, color));
 		}
 	}
 

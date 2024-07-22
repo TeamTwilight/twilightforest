@@ -34,6 +34,106 @@
     },
     {
       "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/the_hostile_paradise/1_background"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/the_hostile_paradise/2_distant_islands_par"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/the_hostile_paradise/3_gold_dungeon_par"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/the_hostile_paradise/4_fog_1_opa"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/the_hostile_paradise/5_silver_dungeon_par"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/the_hostile_paradise/6_fog_2_opa"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/the_hostile_paradise/7_portal_par"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/the_hostile_paradise/8_fog_3_opa"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/the_hostile_paradise/9_field_par"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/the_hostile_paradise/10_flowers_par"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/the_hostile_paradise/11_fog_4_opa"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/the_hostile_paradise/12_clouds_par"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/the_hostile_paradise/13_frame"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/music_in_the_mire/bl_sky"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/music_in_the_mire/bl_roots"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/music_in_the_mire/bl_lightning"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/music_in_the_mire/bl_mid"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/music_in_the_mire/bl_mid_lightning"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/music_in_the_mire/bl_fog"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/music_in_the_mire/bl_foreground"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/music_in_the_mire/bl_foreground_lightning"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/music_in_the_mire/bl_greeblings"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/music_in_the_mire/bl_greeblings_lightning"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/music_in_the_mire/bl_shade"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/music_in_the_mire/bl_frame"
+    },
+    {
+      "type": "minecraft:single",
       "resource": "twilightforest:magic_paintings/lucid_lands/background"
     },
     {
@@ -83,42 +183,6 @@
     {
       "type": "minecraft:single",
       "resource": "twilightforest:magic_paintings/castaway_paradise/frame"
-    },
-    {
-      "type": "minecraft:single",
-      "resource": "twilightforest:magic_paintings/untitled/1_background"
-    },
-    {
-      "type": "minecraft:single",
-      "resource": "twilightforest:magic_paintings/untitled/2_temple_par"
-    },
-    {
-      "type": "minecraft:single",
-      "resource": "twilightforest:magic_paintings/untitled/3_fog_1_opa"
-    },
-    {
-      "type": "minecraft:single",
-      "resource": "twilightforest:magic_paintings/untitled/4_portal_par"
-    },
-    {
-      "type": "minecraft:single",
-      "resource": "twilightforest:magic_paintings/untitled/5_fog_2_opa"
-    },
-    {
-      "type": "minecraft:single",
-      "resource": "twilightforest:magic_paintings/untitled/6_tree_par"
-    },
-    {
-      "type": "minecraft:single",
-      "resource": "twilightforest:magic_paintings/untitled/7_fog_3_opa"
-    },
-    {
-      "type": "minecraft:single",
-      "resource": "twilightforest:magic_paintings/untitled/8_foreground_par"
-    },
-    {
-      "type": "minecraft:single",
-      "resource": "twilightforest:magic_paintings/untitled/9_frame"
     }
   ]
 }

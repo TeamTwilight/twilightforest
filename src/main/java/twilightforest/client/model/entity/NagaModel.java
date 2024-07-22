@@ -10,6 +10,7 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.util.FastColor;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.boss.Naga;
@@ -50,13 +51,13 @@ public class NagaModel<T extends Entity> extends ListModel<T> {
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, float red, float green, float blue, float scale) {
+	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, int color) {
 		if (this.entity instanceof Naga naga) {
-			this.head.render(stack, builder, light, overlay, red, green - naga.stunlessRedOverlayProgress, blue - naga.stunlessRedOverlayProgress, scale * 2);
+			this.head.render(stack, builder, light, overlay, FastColor.ARGB32.color(FastColor.ARGB32.alpha(color), FastColor.ARGB32.red(color), (int) (FastColor.ARGB32.green(color)- naga.stunlessRedOverlayProgress), (int) (FastColor.ARGB32.blue(color) - naga.stunlessRedOverlayProgress)));
 		} else if (this.entity instanceof NagaSegment) {
-			this.body.render(stack, builder, light, overlay, red, green, blue, scale * 2);
+			this.body.render(stack, builder, light, overlay, color);
 		} else {
-			this.head.render(stack, builder, light, overlay, red, green, blue, scale * 2);
+			this.head.render(stack, builder, light, overlay, color);
 		}
 		this.entity = null;
 	}

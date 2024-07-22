@@ -177,7 +177,7 @@ public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, Enf
 	}
 
 	@Override
-	public boolean canChangeDimensions() {
+	public boolean canUsePortal(boolean force) {
 		return false;
 	}
 

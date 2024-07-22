@@ -135,7 +135,7 @@ public class DruidHutFeature extends TemplateFeature<SwizzleConfig> {
 			boolean hasFlipped = mirror != Mirror.NONE;
 			BlockPos hangPos = hasFlipped ? blockPos.relative(direction.getClockWise()) : blockPos;
 
-			EntityUtil.tryHangPainting(world, hangPos, direction, EntityUtil.getPaintingOfSize(random, paintingWidth, paintingWidth == 32 || paintingWidth == 64 ? 32 : 16, true));
+			EntityUtil.tryHangPainting(world, hangPos, direction, EntityUtil.getPaintingOfSize(world, random, paintingWidth, paintingWidth == 32 || paintingWidth == 64 ? 32 : 16, true));
 		}
 	}
 

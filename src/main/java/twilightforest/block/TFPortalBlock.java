@@ -22,17 +22,17 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.HalfTransparentBlock;
-import net.minecraft.world.level.block.LiquidBlockContainer;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.border.WorldBorder;
+import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.portal.DimensionTransition;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -41,23 +41,20 @@ import net.neoforged.neoforge.event.EventHooks;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.components.entity.TFPortalAttachment;
 import twilightforest.config.TFConfig;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFBlocks;
-import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFDimension;
 import twilightforest.init.TFSounds;
 import twilightforest.network.MissingAdvancementToastPacket;
 import twilightforest.util.LandmarkUtil;
 import twilightforest.util.PlayerHelper;
-import twilightforest.world.NoReturnTeleporter;
 import twilightforest.world.TFTeleporter;
 
 import java.util.*;
 
 // KelpBlock seems to use ILiquidContainer as it's a block that permanently has water, so I suppose in best practices we also use this interface as well?
-public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockContainer {
+public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockContainer, Portal {
 
 	public static final BooleanProperty DISALLOW_RETURN = BooleanProperty.create("is_one_way");
 
@@ -234,9 +231,10 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 				}
 			}
 
-			attemptSendEntity(entity, false, true);
+			if (entity.canUsePortal(false)) {
+				entity.setAsInsidePortal(this, entity.blockPosition());
+			}
 		}
-		entity.getData(TFDataAttachments.TF_PORTAL_COOLDOWN).setInPortal(true);
 	}
 
 	public static boolean isPlayerNotifiedOfRequirement(ServerPlayer player) {
@@ -245,39 +243,6 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 
 	public static void playerNotifiedOfRequirement(ServerPlayer player) {
 		playersNotified.add(player);
-	}
-
-	private static ResourceKey<Level> getDestination(Entity entity) {
-		if (cachedOriginDimension == null) cachedOriginDimension = ResourceKey.create(Registries.DIMENSION, new ResourceLocation(TFConfig.originDimension));
-		return !entity.getCommandSenderWorld().dimension().location().equals(TFDimension.DIMENSION)
-			? TFDimension.DIMENSION_KEY : cachedOriginDimension;
-	}
-
-	public static void attemptSendEntity(Entity entity, boolean forcedEntry, boolean makeReturnPortal) {
-		if (!entity.isAlive() || entity.level().isClientSide()) {
-			return;
-		}
-
-		if (entity.isPassenger() || entity.isVehicle() || !entity.canChangeDimensions()) {
-			return;
-		}
-
-		ResourceKey<Level> destination = getDestination(entity);
-		ServerLevel serverWorld = entity.getCommandSenderWorld().getServer().getLevel(destination);
-
-		if (serverWorld == null)
-			return;
-
-		TFPortalAttachment portalAttachment = entity.getData(TFDataAttachments.TF_PORTAL_COOLDOWN);
-
-		if (portalAttachment.getPortalTimer() > 0) return;
-
-		entity.changeDimension(serverWorld, makeReturnPortal ? new TFTeleporter(forcedEntry) : new NoReturnTeleporter());
-
-		if (destination == TFDimension.DIMENSION_KEY && entity instanceof ServerPlayer playerMP && forcedEntry) {
-			// set respawn point for TF dimension to near the arrival portal, only if we spawn here on world creation
-			playerMP.setRespawnPosition(destination, playerMP.blockPosition(), playerMP.getYRot(), true, false);
-		}
 	}
 
 	// Full [VanillaCopy] of NetherPortalBlock.animateTick
@@ -310,5 +275,26 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 	@Override
 	public boolean placeLiquid(LevelAccessor accessor, BlockPos pos, BlockState state, FluidState fluidState) {
 		return false;
+	}
+
+	@Override
+	public int getPortalTransitionTime(ServerLevel level, Entity entity) {
+		return 60;
+	}
+
+	@Nullable
+	@Override
+	public DimensionTransition getPortalDestination(ServerLevel level, Entity entity, BlockPos pos) {
+		if (cachedOriginDimension == null) cachedOriginDimension = ResourceKey.create(Registries.DIMENSION, ResourceLocation.parse(TFConfig.originDimension));
+		ResourceKey<Level> newDimension = !level.dimension().location().equals(TFDimension.DIMENSION) ? TFDimension.DIMENSION_KEY : cachedOriginDimension;
+		ServerLevel serverlevel = level.getServer().getLevel(newDimension);
+		if (serverlevel == null) {
+			return null;
+		} else {
+			WorldBorder worldborder = serverlevel.getWorldBorder();
+			double d0 = DimensionType.getTeleportationScale(level.dimensionType(), serverlevel.dimensionType());
+			BlockPos newPos = worldborder.clampToBounds(pos.getX() * d0, pos.getY(), pos.getZ() * d0);
+			return TFTeleporter.createTransition(entity, serverlevel, newPos, false);
+		}
 	}
 }

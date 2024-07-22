@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import twilightforest.entity.monster.LoyalZombie;
 
@@ -38,8 +39,8 @@ public class LoyalZombieModel extends HumanoidModel<LoyalZombie> {
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, float red, float green, float blue, float scale) {
+	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, int color) {
 		// GREEEEN
-		super.renderToBuffer(stack, builder, light, overlay, red * 0.25F, green, blue * 0.25F, scale);
+		super.renderToBuffer(stack, builder, light, overlay, FastColor.ARGB32.color(FastColor.ARGB32.alpha(color), (int) (FastColor.ARGB32.red(color) * 0.25F), FastColor.ARGB32.green(color), (int) (FastColor.ARGB32.blue(color) * 0.25F)));
 	}
 }

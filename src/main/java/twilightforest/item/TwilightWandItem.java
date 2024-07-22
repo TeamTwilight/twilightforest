@@ -2,6 +2,7 @@ package twilightforest.item;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -33,8 +34,7 @@ public class TwilightWandItem extends Item {
 			if (!level.isClientSide()) {
 				level.addFreshEntity(new TwilightWandBolt(level, player));
 				if (!player.getAbilities().instabuild) {
-					stack.hurtAndBreak(1, level.getRandom(), player, () -> {
-					});
+					stack.hurtAndBreak(1, (ServerLevel) level, player, item -> {});
 				}
 			}
 
@@ -49,11 +49,6 @@ public class TwilightWandItem extends Item {
 
 	@Override
 	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-		return false;
-	}
-
-	@Override
-	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
 		return false;
 	}
 

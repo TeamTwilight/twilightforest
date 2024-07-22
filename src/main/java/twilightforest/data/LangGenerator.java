@@ -163,6 +163,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addMessage("wip0", "This feature is a work in progress and may have bugs or unintended effects that may damage your world.");
 		this.addMessage("wip1", "Use with caution.");
 
+		this.addBlock(TFBlocks.MASON_JAR, "Mason Jar");
 		this.addBlock(TFBlocks.CICADA, "Cicada");
 		this.addBlock(TFBlocks.CICADA_JAR, "Cicada Jar");
 		this.addBlock(TFBlocks.FIREFLY, "Firefly");
@@ -794,6 +795,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addStat("uncrafting_table_interactions", "Interactions with Uncrafting Table");
 
 		this.add("config.jade.plugin_twilightforest.quest_ram_wool", "Questing Ram Wool");
+		this.add("config.jade.plugin_twilightforest.chiseled_bookshelf_spawner", "Chiseled Canopy Bookshelf Spawns");
 
 		this.add("twilightforest.book.author", "a forgotten explorer");
 

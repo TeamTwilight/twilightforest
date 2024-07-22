@@ -115,7 +115,7 @@ public class MagicMapItem extends MapItem {
 	}
 
 	private static final Map<ChunkPos, ResourceLocation[]> CACHE = new HashMap<>();
-	private static final ResourceLocation NULL_BIOME = new ResourceLocation("null");
+	private static final ResourceLocation NULL_BIOME = ResourceLocation.withDefaultNamespace("null");
 
 	@Override
 	public void update(Level level, Entity viewer, MapItemSavedData data) {

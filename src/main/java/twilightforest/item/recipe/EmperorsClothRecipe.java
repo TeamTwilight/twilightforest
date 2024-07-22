@@ -6,6 +6,7 @@ import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
+import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
@@ -20,12 +21,12 @@ public class EmperorsClothRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public boolean matches(CraftingContainer container, Level level) {
+	public boolean matches(CraftingInput input, Level level) {
 		boolean foundInk = false;
 		boolean foundItem = false;
 
-		for (int i = 0; i < container.getContainerSize(); i++) {
-			ItemStack stack = container.getItem(i);
+		for (int i = 0; i < input.size(); i++) {
+			ItemStack stack = input.getItem(i);
 			if (!stack.isEmpty()) {
 				if (stack.is(TFItems.EMPERORS_CLOTH.get()) && !foundInk) {
 					foundInk = true;
@@ -45,11 +46,11 @@ public class EmperorsClothRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public ItemStack assemble(CraftingContainer container, HolderLookup.Provider provider) {
+	public ItemStack assemble(CraftingInput input, HolderLookup.Provider provider) {
 		ItemStack item = ItemStack.EMPTY;
 
-		for (int i = 0; i < container.getContainerSize(); i++) {
-			ItemStack stack = container.getItem(i);
+		for (int i = 0; i < input.size(); i++) {
+			ItemStack stack = input.getItem(i);
 			if (!stack.isEmpty() && stack.getItem() instanceof ArmorItem && item.isEmpty()) {
 				item = stack;
 			}

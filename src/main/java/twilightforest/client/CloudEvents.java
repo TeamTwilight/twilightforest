@@ -2,10 +2,7 @@ package twilightforest.client;
 
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.ParticleStatus;
 import net.minecraft.client.renderer.GameRenderer;
@@ -163,7 +160,7 @@ public class CloudEvents {
 		if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_WEATHER && TFConfig.getClientCloudBlockPrecipitationDistance() > 0 && !RENDER_HELPER.isEmpty()) {
 			Minecraft minecraft = Minecraft.getInstance();
 			if (minecraft.level == null) return;
-			float partialTick = minecraft.getPartialTick();
+			float partialTick = minecraft.getTimer().getGameTimeDeltaPartialTick(false);
 			LightTexture lightTexture = minecraft.gameRenderer.lightTexture();
 			int ticks = minecraft.levelRenderer.getTicks();
 			lightTexture.turnOnLightLayer();
@@ -178,7 +175,7 @@ public class CloudEvents {
 			int floorZ = Mth.floor(camZ);
 
 			Tesselator tesselator = Tesselator.getInstance();
-			BufferBuilder bufferbuilder = tesselator.getBuilder();
+			BufferBuilder bufferbuilder = null;
 			RenderSystem.disableCull();
 			RenderSystem.enableBlend();
 			RenderSystem.enableDepthTest();
@@ -209,11 +206,11 @@ public class CloudEvents {
 				RandomSource random = RandomSource.create((long) roofX * roofX * 3121 + roofX * 45238971L ^ (long) roofZ * roofZ * 418711 + roofZ * 13761L);
 				if (helper.precipitation() == Biome.Precipitation.RAIN) {
 					if (tesselatorCheck != 0) {
-						if (tesselatorCheck >= 0) tesselator.end();
+						if (tesselatorCheck >= 0) BufferUploader.drawWithShader(bufferbuilder.buildOrThrow());
 
 						tesselatorCheck = 0;
 						RenderSystem.setShaderTexture(0, TFWeatherRenderer.RAIN_TEXTURES);
-						bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
+						bufferbuilder = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
 					}
 
 					int offset = ticks + roofX * roofX * 3121 + roofX * 45238971 + roofZ * roofZ * 418711 + roofZ * 13761 & 31;
@@ -225,17 +222,17 @@ public class CloudEvents {
 					mutableBlockPos.set(roofX, Math.max(helper.rainOnY(), floorY), roofZ);
 					int lightColor = LevelRenderer.getLightColor(minecraft.level, mutableBlockPos);
 
-					bufferbuilder.vertex((double) roofX - camX - rainX + 0.5D, (double) topY - camY, (double) roofZ - camZ - rainZ + 0.5D).uv(0.0F, (float) botY * 0.25F + uvOffset).color(1.0F, 1.0F, 1.0F, alpha).uv2(lightColor).endVertex();
-					bufferbuilder.vertex((double) roofX - camX + rainX + 0.5D, (double) topY - camY, (double) roofZ - camZ + rainZ + 0.5D).uv(1.0F, (float) botY * 0.25F + uvOffset).color(1.0F, 1.0F, 1.0F, alpha).uv2(lightColor).endVertex();
-					bufferbuilder.vertex((double) roofX - camX + rainX + 0.5D, (double) botY - camY, (double) roofZ - camZ + rainZ + 0.5D).uv(1.0F, (float) topY * 0.25F + uvOffset).color(1.0F, 1.0F, 1.0F, alpha).uv2(lightColor).endVertex();
-					bufferbuilder.vertex((double) roofX - camX - rainX + 0.5D, (double) botY - camY, (double) roofZ - camZ - rainZ + 0.5D).uv(0.0F, (float) topY * 0.25F + uvOffset).color(1.0F, 1.0F, 1.0F, alpha).uv2(lightColor).endVertex();
+					bufferbuilder.addVertex((float) (roofX - camX - rainX + 0.5D), (float) (topY - camY), (float) (roofZ - camZ - rainZ + 0.5D)).setUv(0.0F, (float) botY * 0.25F + uvOffset).setColor(1.0F, 1.0F, 1.0F, alpha).setLight(lightColor);
+					bufferbuilder.addVertex((float) (roofX - camX + rainX + 0.5D), (float) (topY - camY), (float) (roofZ - camZ + rainZ + 0.5D)).setUv(1.0F, (float) botY * 0.25F + uvOffset).setColor(1.0F, 1.0F, 1.0F, alpha).setLight(lightColor);
+					bufferbuilder.addVertex((float) (roofX - camX + rainX + 0.5D), (float) (botY - camY), (float) (roofZ - camZ + rainZ + 0.5D)).setUv(1.0F, (float) topY * 0.25F + uvOffset).setColor(1.0F, 1.0F, 1.0F, alpha).setLight(lightColor);
+					bufferbuilder.addVertex((float) (roofX - camX - rainX + 0.5D), (float) (botY - camY), (float) (roofZ - camZ - rainZ + 0.5D)).setUv(0.0F, (float) topY * 0.25F + uvOffset).setColor(1.0F, 1.0F, 1.0F, alpha).setLight(lightColor);
 				} else if (helper.precipitation() == Biome.Precipitation.SNOW) {
 					if (tesselatorCheck != 1) {
-						if (tesselatorCheck >= 0) tesselator.end();
+						if (tesselatorCheck == 0) BufferUploader.drawWithShader(bufferbuilder.buildOrThrow());
 
 						tesselatorCheck = 1;
 						RenderSystem.setShaderTexture(0, TFWeatherRenderer.SNOW_TEXTURES);
-						bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
+						bufferbuilder = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
 					}
 
 					float offset = -((float) (ticks & 511) + partialTick) / 512.0F;
@@ -253,14 +250,14 @@ public class CloudEvents {
 					v = (v * 3 + 240) / 4;
 					u = (u * 3 + 240) / 4;
 
-					bufferbuilder.vertex((double) roofX - camX - rainX + 0.5D, (double) topY - camY, (double) roofZ - camZ - rainZ + 0.5D).uv(0.0F + uOffset, (float) botY * 0.25F + offset + vOffset).color(1.0F, 1.0F, 1.0F, alpha).uv2(u, v).endVertex();
-					bufferbuilder.vertex((double) roofX - camX + rainX + 0.5D, (double) topY - camY, (double) roofZ - camZ + rainZ + 0.5D).uv(1.0F + uOffset, (float) botY * 0.25F + offset + vOffset).color(1.0F, 1.0F, 1.0F, alpha).uv2(u, v).endVertex();
-					bufferbuilder.vertex((double) roofX - camX + rainX + 0.5D, (double) botY - camY, (double) roofZ - camZ + rainZ + 0.5D).uv(1.0F + uOffset, (float) topY * 0.25F + offset + vOffset).color(1.0F, 1.0F, 1.0F, alpha).uv2(u, v).endVertex();
-					bufferbuilder.vertex((double) roofX - camX - rainX + 0.5D, (double) botY - camY, (double) roofZ - camZ - rainZ + 0.5D).uv(0.0F + uOffset, (float) topY * 0.25F + offset + vOffset).color(1.0F, 1.0F, 1.0F, alpha).uv2(u, v).endVertex();
+					bufferbuilder.addVertex((float) (roofX - camX - rainX + 0.5D), (float) (topY - camY), (float) (roofZ - camZ - rainZ + 0.5D)).setUv(0.0F + uOffset, (float) botY * 0.25F + offset + vOffset).setColor(1.0F, 1.0F, 1.0F, alpha).setUv2(u, v);
+					bufferbuilder.addVertex((float) (roofX - camX + rainX + 0.5D), (float) (topY - camY), (float) (roofZ - camZ + rainZ + 0.5D)).setUv(1.0F + uOffset, (float) botY * 0.25F + offset + vOffset).setColor(1.0F, 1.0F, 1.0F, alpha).setUv2(u, v);
+					bufferbuilder.addVertex((float) (roofX - camX + rainX + 0.5D), (float) (botY - camY), (float) (roofZ - camZ + rainZ + 0.5D)).setUv(1.0F + uOffset, (float) topY * 0.25F + offset + vOffset).setColor(1.0F, 1.0F, 1.0F, alpha).setUv2(u, v);
+					bufferbuilder.addVertex((float) (roofX - camX - rainX + 0.5D), (float) (botY - camY), (float) (roofZ - camZ - rainZ + 0.5D)).setUv(0.0F + uOffset, (float) topY * 0.25F + offset + vOffset).setColor(1.0F, 1.0F, 1.0F, alpha).setUv2(u, v);
 				}
 			}
 
-			if (tesselatorCheck >= 0) tesselator.end();
+			if (tesselatorCheck >= 0) BufferUploader.drawWithShader(bufferbuilder.buildOrThrow());;
 
 			RenderSystem.enableCull();
 			RenderSystem.disableBlend();

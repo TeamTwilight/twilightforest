@@ -15,7 +15,7 @@ public class TFGenericMobRenderer<T extends Mob, M extends EntityModel<T>> exten
 		super(manager, model, shadowSize);
 
 		if (textureName.startsWith("textures")) {
-			textureLoc = new ResourceLocation(textureName);
+			textureLoc = ResourceLocation.withDefaultNamespace(textureName);
 		} else {
 			textureLoc = TwilightForestMod.getModelTexture(textureName);
 		}

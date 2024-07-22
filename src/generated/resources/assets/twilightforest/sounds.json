@@ -178,6 +178,69 @@
     ],
     "subtitle": "subtitles.twilightforest.block.ghast_trap.warmup"
   },
+  "block.twilightforest.jar.break": {
+    "sounds": [
+      "twilightforest:random/jar/jar1",
+      "twilightforest:random/jar/jar2",
+      "twilightforest:random/jar/jar3"
+    ],
+    "subtitle": "subtitles.block.generic.break"
+  },
+  "block.twilightforest.jar.fall": {
+    "sounds": [
+      "twilightforest:random/jar/jar1",
+      "twilightforest:random/jar/jar2",
+      "twilightforest:random/jar/jar3"
+    ]
+  },
+  "block.twilightforest.jar.hit": {
+    "sounds": [
+      "twilightforest:random/jar/jar1",
+      "twilightforest:random/jar/jar2",
+      "twilightforest:random/jar/jar3"
+    ],
+    "subtitle": "subtitles.block.generic.hit"
+  },
+  "block.twilightforest.jar.insert": {
+    "sounds": [
+      "twilightforest:random/jar/jar_in"
+    ],
+    "subtitle": "subtitles.twilightforest.block.jar.insert"
+  },
+  "block.twilightforest.jar.lid_swap": {
+    "sounds": [
+      "twilightforest:random/jar/jar_swap"
+    ],
+    "subtitle": "subtitles.twilightforest.block.jar.lid_swap"
+  },
+  "block.twilightforest.jar.place": {
+    "sounds": [
+      "twilightforest:random/jar/jar_place"
+    ],
+    "subtitle": "subtitles.block.generic.place"
+  },
+  "block.twilightforest.jar.remove": {
+    "sounds": [
+      "twilightforest:random/jar/jar_out"
+    ],
+    "subtitle": "subtitles.twilightforest.block.jar.remove"
+  },
+  "block.twilightforest.jar.step": {
+    "sounds": [
+      "twilightforest:random/jar/jar1",
+      "twilightforest:random/jar/jar2",
+      "twilightforest:random/jar/jar3"
+    ],
+    "subtitle": "subtitles.block.generic.footsteps"
+  },
+  "block.twilightforest.jar.wiggle": {
+    "sounds": [
+      "twilightforest:random/jar/jar_wiggle1",
+      "twilightforest:random/jar/jar_wiggle2",
+      "twilightforest:random/jar/jar_wiggle3"
+    ],
+    "subtitle": "subtitles.twilightforest.block.jar.wiggle"
+  },
   "block.twilightforest.jet.active": {
     "sounds": [
       {

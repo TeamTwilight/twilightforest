@@ -83,7 +83,7 @@ public class Redcap extends Monster {
 		SpawnGroupData data = super.finalizeSpawn(accessor, difficulty, reason, spawnDataIn);
 
 		this.populateDefaultEquipmentSlots(accessor.getRandom(), difficulty);
-		this.populateDefaultEquipmentEnchantments(accessor.getRandom(), difficulty);
+		this.populateDefaultEquipmentEnchantments(accessor, accessor.getRandom(), difficulty);
 
 		this.setDropChance(EquipmentSlot.MAINHAND, 0.2F);
 		this.setDropChance(EquipmentSlot.FEET, 0.2F);

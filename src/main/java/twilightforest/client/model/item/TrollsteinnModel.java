@@ -10,6 +10,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.model.BakedModelWrapper;
 import org.jetbrains.annotations.NotNull;
+import twilightforest.TwilightForestMod;
 import twilightforest.block.TrollsteinnBlock;
 
 import javax.annotation.Nullable;
@@ -20,7 +21,7 @@ public class TrollsteinnModel extends BakedModelWrapper<BakedModel> {
 		@Override
 		public BakedModel resolve(@NotNull BakedModel model, @NotNull ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int seed) {
 			if (litTrollsteinnModel == null)
-				litTrollsteinnModel = Minecraft.getInstance().getModelManager().getModel(new ModelResourceLocation("twilightforest", "trollsteinn_light", "inventory"));
+				litTrollsteinnModel = Minecraft.getInstance().getModelManager().getModel(ModelResourceLocation.standalone(TwilightForestMod.prefix("item/trollsteinn_light")));
 
 			Entity itemEntity = (entity == null) ? stack.getEntityRepresentation() : entity;
 

@@ -519,20 +519,15 @@ public abstract class TFStructureComponentOld extends TFStructureComponent imple
 		return 0;
 	}
 
-	protected boolean isBoundingBoxOutsideBiomes(WorldGenLevel world, Predicate<Biome> predicate) {
-
+	protected boolean isBoundingBoxOutsideBiomes(WorldGenLevel world, Predicate<Biome> predicate, BlockPos structurePos) {
 		int minX = this.boundingBox.minX() - 1;
 		int minZ = this.boundingBox.minZ() - 1;
 		int maxX = this.boundingBox.maxX() + 1;
 		int maxZ = this.boundingBox.maxZ() + 1;
 
-		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
-
-		for (int x = minX; x <= maxX; x++) {
+        for (int x = minX; x <= maxX; x++) {
 			for (int z = minZ; z <= maxZ; z++) {
-				if (!predicate.test(world.getBiome(pos.set(x, 0, z)).value())) {
-					return true;
-				}
+				if (!predicate.test(world.getUncachedNoiseBiome(x, structurePos.getY(), z).value())) return true;
 			}
 		}
 

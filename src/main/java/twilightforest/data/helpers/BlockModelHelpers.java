@@ -21,10 +21,10 @@ import static twilightforest.TwilightForestMod.prefix;
 
 public abstract class BlockModelHelpers extends BlockStateProvider {
 
-	protected static final ResourceLocation SOLID = new ResourceLocation("solid");
-	protected static final ResourceLocation CUTOUT = new ResourceLocation("cutout");
-	protected static final ResourceLocation CUTOUT_MIPPED = new ResourceLocation("cutout_mipped");
-	protected static final ResourceLocation TRANSLUCENT = new ResourceLocation("translucent");
+	protected static final ResourceLocation SOLID = ResourceLocation.withDefaultNamespace("solid");
+	protected static final ResourceLocation CUTOUT = ResourceLocation.withDefaultNamespace("cutout");
+	protected static final ResourceLocation CUTOUT_MIPPED = ResourceLocation.withDefaultNamespace("cutout_mipped");
+	protected static final ResourceLocation TRANSLUCENT = ResourceLocation.withDefaultNamespace("translucent");
 
 	public BlockModelHelpers(PackOutput output, ExistingFileHelper exFileHelper) {
 		super(output, TwilightForestMod.ID, exFileHelper);
@@ -390,7 +390,7 @@ public abstract class BlockModelHelpers extends BlockStateProvider {
 
 	protected void banisterVanilla(BanisterBlock banister, String texName, String woodVariant) {
 		String banisterDir = "block/wood/banister/" + woodVariant + "/";
-		ResourceLocation tex0 = new ResourceLocation("block/" + texName);
+		ResourceLocation tex0 = ResourceLocation.withDefaultNamespace("block/" + texName);
 
 		getVariantBuilder(banister).forAllStatesExcept(state -> {
 			Direction facing = state.getValue(BanisterBlock.FACING);

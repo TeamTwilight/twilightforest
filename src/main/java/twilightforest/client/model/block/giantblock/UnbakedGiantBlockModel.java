@@ -19,7 +19,7 @@ import java.util.function.Function;
 public record UnbakedGiantBlockModel(ResourceLocation parent) implements IUnbakedGeometry<UnbakedGiantBlockModel> {
 
 	@Override
-	public BakedModel bake(IGeometryBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides, ResourceLocation modelLocation) {
+	public BakedModel bake(IGeometryBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides) {
 		TextureAtlasSprite[] sprites;
 		if (context.hasMaterial("all")) {
 			sprites = new TextureAtlasSprite[]{spriteGetter.apply(context.getMaterial("all"))};

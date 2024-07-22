@@ -1,0 +1,8 @@
+{
+  "comparator_output": 15,
+  "description": {
+    "translate": "jukebox_song.twilightforest.home"
+  },
+  "length_in_seconds": 215.0,
+  "sound_event": "twilightforest:music_disc.twilightforest.home"
+}

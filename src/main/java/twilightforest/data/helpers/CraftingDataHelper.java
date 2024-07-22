@@ -4,12 +4,15 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
@@ -223,10 +226,11 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 	}
 
 	@SafeVarargs
-	protected final DataComponentPatch.Builder buildEnchants(Pair<Enchantment, Integer>... enchantments) {
+	protected final DataComponentPatch.Builder buildEnchants(HolderLookup.Provider provider, Pair<ResourceKey<Enchantment>, Integer>... enchantments) {
+		HolderLookup.RegistryLookup<Enchantment> lookup = provider.lookupOrThrow(Registries.ENCHANTMENT);
 		var itemEnchants = new ItemEnchantments.Mutable(ItemEnchantments.EMPTY);
 		for (var pair : enchantments) {
-			itemEnchants.set(pair.getFirst(), pair.getSecond());
+			itemEnchants.set(lookup.getOrThrow(pair.getFirst()), pair.getSecond());
 		}
 		return DataComponentPatch.builder().set(DataComponents.ENCHANTMENTS, itemEnchants.toImmutable());
 	}

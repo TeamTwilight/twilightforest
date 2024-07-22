@@ -139,13 +139,13 @@ public class SlimeBeetleModel extends HierarchicalModel<SlimeBeetle> {
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, float red, float green, float blue, float alpha) {
+	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, int color) {
 		this.slimeCube.visible = false;
-		root().render(stack, builder, light, overlay, red, green, blue, alpha);
+		root().render(stack, builder, light, overlay, color);
 	}
 
-	public void renderTail(PoseStack stack, VertexConsumer builder, int light, int overlay, float red, float green, float blue, float alpha) {
-		this.tail1.render(stack, builder, light, overlay, red, green, blue, alpha);
+	public void renderTail(PoseStack stack, VertexConsumer builder, int light, int overlay) {
+		this.tail1.render(stack, builder, light, overlay);
 	}
 
 	@Override

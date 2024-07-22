@@ -14,7 +14,7 @@ public abstract class GenericTrophyModel extends Model {
 
 	public abstract void setRotations(float x, float y, float z);
 
-	public void renderHelmToBuffer(PoseStack matrix, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+	public void renderHelmToBuffer(PoseStack matrix, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
 	}
 
 	public void openMouthForTrophy(float mouthOpen) {

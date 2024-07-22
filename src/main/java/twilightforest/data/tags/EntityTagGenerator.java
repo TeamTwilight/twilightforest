@@ -60,7 +60,8 @@ public class EntityTagGenerator extends ModdedEntityTagGenerator {
 			TFEntities.THROWN_WEP.get(),
 			TFEntities.THROWN_ICE.get(),
 			TFEntities.FALLING_ICE.get(),
-			TFEntities.ICE_SNOWBALL.get()
+			TFEntities.ICE_SNOWBALL.get(),
+			TFEntities.CHAIN_BLOCK.get()
 		);
 
 		this.tag(EntityTypeTags.POWDER_SNOW_WALKABLE_MOBS).add(
@@ -120,6 +121,7 @@ public class EntityTagGenerator extends ModdedEntityTagGenerator {
 
 		this.tag(LIFEDRAIN_DROPS_NO_FLESH).addTag(EntityTypeTags.SKELETONS).addTag(EntityTypeTags.FROG_FOOD).add(
 			EntityType.BLAZE,
+			EntityType.BREEZE,
 			EntityType.IRON_GOLEM,
 			EntityType.PHANTOM,
 			EntityType.SHULKER,

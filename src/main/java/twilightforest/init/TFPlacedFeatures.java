@@ -26,6 +26,7 @@ public class TFPlacedFeatures {
 
 	public static final ResourceKey<PlacedFeature> PLACED_LAKE_LAVA = registerKey("lava_lake");
 	public static final ResourceKey<PlacedFeature> PLACED_LAKE_WATER = registerKey("water_lake");
+	public static final ResourceKey<PlacedFeature> PLACED_LAKE_FROZEN = registerKey("frozen_lake");
 	public static final ResourceKey<PlacedFeature> PLACED_DRUID_HUT = registerKey("druid_hut");
 	public static final ResourceKey<PlacedFeature> PLACED_GRAVEYARD = registerKey("graveyard");
 	public static final ResourceKey<PlacedFeature> PLACED_BIG_MUSHGLOOM = registerKey("big_mushgloom");
@@ -144,7 +145,8 @@ public class TFPlacedFeatures {
 		HolderGetter<Biome> biomes = context.lookup(Registries.BIOME);
 
 		context.register(PLACED_LAKE_LAVA, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.LAKE_LAVA), tfFeatureCheckArea(AvoidLandmarkModifier.checkBoth(), 10).build()));
-		context.register(PLACED_LAKE_WATER, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.LAKE_WATER), tfFeatureCheckArea(AvoidLandmarkModifier.checkBoth(), 4).build()));
+		context.register(PLACED_LAKE_WATER, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.LAKE_WATER), tfFeatureCheckArea(AvoidLandmarkModifier.checkBoth(), 32).build()));
+		context.register(PLACED_LAKE_FROZEN, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.LAKE_FROZEN), tfFeatureCheckArea(AvoidLandmarkModifier.checkBoth(), 4).build()));
 		context.register(PLACED_DRUID_HUT, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.DRUID_HUT), tfFeatureCheckArea(AvoidLandmarkModifier.checkBoth(), 105).build()));
 		context.register(PLACED_GRAVEYARD, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.GRAVEYARD), tfFeatureCheckArea(AvoidLandmarkModifier.checkSurface(), 70).build()));
 		context.register(PLACED_BIG_MUSHGLOOM, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.BIG_MUSHGLOOM), tfFeatureCheckArea(AvoidLandmarkModifier.checkSurface(), 1).build()));

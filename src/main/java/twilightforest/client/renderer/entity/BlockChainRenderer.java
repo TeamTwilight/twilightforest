@@ -43,7 +43,7 @@ public class BlockChainRenderer extends EntityRenderer<ChainBlock> {
 		stack.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTicks, chainBlock.xRotO, chainBlock.getXRot())));
 
 		stack.scale(-1.0F, -1.0F, 1.0F);
-		this.model.renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		this.model.renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY);
 		stack.popPose();
 
 		Entity owner = chainBlock.getOwner();
@@ -72,7 +72,7 @@ public class BlockChainRenderer extends EntityRenderer<ChainBlock> {
 		stack.translate(pos.x(), pos.y(), pos.z());
 
 		stack.scale(-1.0F, -1.0F, 1.0F);
-		chainModel.renderToBuffer(stack, vertexConsumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		chainModel.renderToBuffer(stack, vertexConsumer, light, OverlayTexture.NO_OVERLAY);
 		stack.popPose();
 	}
 

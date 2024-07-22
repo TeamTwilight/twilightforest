@@ -8,9 +8,10 @@ public final class ArrayUtil {
 	}
 
 	public static <T> T clamped(T[] array, int index) {
-		return array[Mth.clamp(index, 0, array.length)];
+		return array[Mth.clamp(index, 0, array.length - 1)];
 	}
 
+	// TODO: handle negatives
 	public static <T> T wrapped(T[] array, int index) {
 		return array[index % array.length];
 	}

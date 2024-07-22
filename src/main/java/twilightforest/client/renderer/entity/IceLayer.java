@@ -31,7 +31,7 @@ public class IceLayer<T extends LivingEntity, M extends EntityModel<T>> extends 
 		AttributeInstance speed = entity.getAttribute(Attributes.MOVEMENT_SPEED);
 		if (speed == null) return;
 
-		AttributeModifier frost = speed.getModifier(FrostedEffect.MOVEMENT_SPEED_MODIFIER_UUID);
+		AttributeModifier frost = speed.getModifier(FrostedEffect.MOVEMENT_SPEED_MODIFIER);
 		if (frost == null) return;
 
 		this.random.setSeed(entity.getId() * entity.getId() * 3121L + entity.getId() * 45238971L);

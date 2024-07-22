@@ -63,6 +63,7 @@ public class FireflyBlockEntity extends BlockEntity {
 				}
 				if (!te.glowing && te.glowIntensity <= 0) {
 					te.glowing = true;
+					te.glowIntensity = 0.0F;
 					te.glowDelay = level.getRandom().nextInt(50);
 				}
 			}

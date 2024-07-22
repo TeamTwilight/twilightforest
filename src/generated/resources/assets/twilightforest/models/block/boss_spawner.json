@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:block/cube_all",
+  "parent": "minecraft:block/spawner",
   "render_type": "minecraft:cutout",
   "textures": {
     "all": "twilightforest:block/boss_spawner"

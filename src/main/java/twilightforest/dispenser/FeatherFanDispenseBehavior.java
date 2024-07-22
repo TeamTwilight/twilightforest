@@ -6,6 +6,7 @@ import net.minecraft.core.Vec3i;
 import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
@@ -26,24 +27,22 @@ public class FeatherFanDispenseBehavior extends DefaultDispenseItemBehavior {
 
 	@Override
 	protected ItemStack execute(BlockSource source, ItemStack stack) {
-		Level level = source.level();
+		ServerLevel level = source.level();
 		BlockPos blockpos = source.pos().relative(source.state().getValue(DispenserBlock.FACING));
 		int damage = stack.getMaxDamage() - stack.getDamageValue();
-		if (!level.isClientSide()) {
-			List<LivingEntity> thingsToPush = level.getEntitiesOfClass(LivingEntity.class, new AABB(blockpos).inflate(3), EntitySelector.NO_SPECTATORS);
-			if (!(thingsToPush.size() >= damage)) {
-				for (Entity entity : thingsToPush) {
-					Vec3i lookVec = level.getBlockState(source.pos()).getValue(DispenserBlock.FACING).getNormal();
+		List<LivingEntity> thingsToPush = level.getEntitiesOfClass(LivingEntity.class, new AABB(blockpos).inflate(3), EntitySelector.NO_SPECTATORS);
+		if (!(thingsToPush.size() >= damage)) {
+			for (Entity entity : thingsToPush) {
+				Vec3i lookVec = level.getBlockState(source.pos()).getValue(DispenserBlock.FACING).getNormal();
 
-					if (entity.isPushable() || entity instanceof ItemEntity) {
-						entity.setDeltaMovement(lookVec.getX(), lookVec.getY(), lookVec.getZ());
-
-						stack.hurtAndBreak(1, level.getRandom(), null, () -> stack.setCount(0));
-					}
+				if (entity.isPushable() || entity instanceof ItemEntity) {
+					entity.setDeltaMovement(lookVec.getX(), lookVec.getY(), lookVec.getZ());
+					stack.hurtAndBreak(1, level, null, item -> {});
 				}
-				this.fired = true;
 			}
+			this.fired = true;
 		}
+
 		return stack;
 	}
 

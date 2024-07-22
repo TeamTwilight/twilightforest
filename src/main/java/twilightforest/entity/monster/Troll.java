@@ -32,6 +32,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.TwilightForestMod;
 import twilightforest.entity.projectile.ThrownBlock;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
@@ -43,7 +44,7 @@ import java.util.Objects;
 public class Troll extends Monster implements RangedAttackMob {
 
 	private static final EntityDataAccessor<Boolean> ROCK_FLAG = SynchedEntityData.defineId(Troll.class, EntityDataSerializers.BOOLEAN);
-	private static final AttributeModifier ROCK_MODIFIER = new AttributeModifier("Rock follow boost", 8, AttributeModifier.Operation.ADD_VALUE);
+	private static final AttributeModifier ROCK_MODIFIER = new AttributeModifier(TwilightForestMod.prefix("rock_follow_boost"), 8, AttributeModifier.Operation.ADD_VALUE);
 
 	private RangedAttackGoal aiArrowAttack;
 	private MeleeAttackGoal aiAttackOnCollide;
@@ -149,7 +150,7 @@ public class Troll extends Monster implements RangedAttackMob {
 
 		if (!this.level().isClientSide()) {
 			if (rock) {
-				if (!Objects.requireNonNull(getAttribute(Attributes.FOLLOW_RANGE)).hasModifier(ROCK_MODIFIER)) {
+				if (!Objects.requireNonNull(getAttribute(Attributes.FOLLOW_RANGE)).hasModifier(ROCK_MODIFIER.id())) {
 					Objects.requireNonNull(this.getAttribute(Attributes.FOLLOW_RANGE)).addTransientModifier(ROCK_MODIFIER);
 				}
 			} else {

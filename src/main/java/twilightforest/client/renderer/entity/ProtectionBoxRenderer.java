@@ -38,7 +38,7 @@ public class ProtectionBoxRenderer<T extends ProtectionBox> extends EntityRender
 
 		VertexConsumer vertexconsumer = buffer.getBuffer(TFRenderTypes.PROTECTION_BOX);
 		boxModel.prepareMobModel(entity, 0, 0, 0);
-		boxModel.renderToBuffer(stack, vertexconsumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, alpha);
+		boxModel.renderToBuffer(stack, vertexconsumer, light, OverlayTexture.NO_OVERLAY);
 	}
 
 	@Override

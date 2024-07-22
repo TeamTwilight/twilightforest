@@ -3,6 +3,7 @@ package twilightforest.entity.monster;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.FastColor;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -138,11 +139,11 @@ public class UnstableIceCore extends BaseIceMob {
 		int bestDifference = 1024;
 
 		for (DyeColor color : DyeColor.values()) {
-			float[] iColor = color.getTextureDiffuseColors();
+			int iColor = color.getTextureDiffuseColor();
 
-			int iRed = (int) (iColor[0] * 255F);
-			int iGreen = (int) (iColor[1] * 255F);
-			int iBlue = (int) (iColor[2] * 255F);
+			int iRed = FastColor.ARGB32.red(iColor);
+			int iGreen = FastColor.ARGB32.green(iColor);
+			int iBlue = FastColor.ARGB32.blue(iColor);
 
 			int difference = Math.abs(red - iRed) + Math.abs(green - iGreen) + Math.abs(blue - iBlue);
 

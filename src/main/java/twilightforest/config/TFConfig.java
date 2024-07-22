@@ -101,7 +101,8 @@ public class TFConfig {
 		//only run assigning logic if the config has an advancement set and the RL is null
 		if (portalLockingAdvancement == null && !ConfigSetup.COMMON_CONFIG.PORTAL.portalAdvancementLock.get().isEmpty()) {
 
-			if (!ResourceLocation.isValidResourceLocation(ConfigSetup.COMMON_CONFIG.PORTAL.portalAdvancementLock.get()) || PlayerHelper.getAdvancement(player, ResourceLocation.tryParse(ConfigSetup.COMMON_CONFIG.PORTAL.portalAdvancementLock.get())) == null) {
+			ResourceLocation lock = ResourceLocation.tryParse(ConfigSetup.COMMON_CONFIG.PORTAL.portalAdvancementLock.get());
+			if (lock == null || PlayerHelper.getAdvancement(player, lock) == null) {
 				//if the RL is not a valid advancement fail us
 				TwilightForestMod.LOGGER.fatal("The portal locking advancement is not a valid advancement! Setting to null!");
 				ConfigSetup.COMMON_CONFIG.PORTAL.portalAdvancementLock.set("");

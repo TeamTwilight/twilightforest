@@ -86,10 +86,10 @@ public class MoonwormModel extends Model {
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack ms, VertexConsumer buffer, int light, int overlay, float r, float g, float b, float a) {
-		this.shape1.render(ms, buffer, light, overlay, r, g, b, a);
-		this.shape2.render(ms, buffer, light, overlay, r, g, b, a);
-		this.shape3.render(ms, buffer, light, overlay, r, g, b, a);
-		this.head.render(ms, buffer, light, overlay, r, g, b, a);
+	public void renderToBuffer(PoseStack ms, VertexConsumer buffer, int light, int overlay, int color) {
+		this.shape1.render(ms, buffer, light, overlay, color);
+		this.shape2.render(ms, buffer, light, overlay, color);
+		this.shape3.render(ms, buffer, light, overlay, color);
+		this.head.render(ms, buffer, light, overlay, color);
 	}
 }

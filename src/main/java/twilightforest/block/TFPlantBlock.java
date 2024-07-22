@@ -11,7 +11,6 @@ import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.common.PlantType;
 import twilightforest.data.tags.BlockTagGenerator;
 
 public abstract class TFPlantBlock extends BushBlock implements BonemealableBlock {
@@ -20,13 +19,8 @@ public abstract class TFPlantBlock extends BushBlock implements BonemealableBloc
 		super(properties);
 	}
 
-	public static boolean canPlaceRootAt(LevelReader reader, BlockPos pos) {
+	public static boolean canPlaceRootAt(BlockGetter reader, BlockPos pos) {
 		return reader.getBlockState(pos.above()).is(BlockTagGenerator.PLANTS_HANG_ON);
-	}
-
-	@Override
-	public PlantType getPlantType(BlockGetter getter, BlockPos pos) {
-		return PlantType.PLAINS;
 	}
 
 	@Override

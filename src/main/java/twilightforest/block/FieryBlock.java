@@ -41,7 +41,6 @@ public class FieryBlock extends Block {
 	public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
 		if ((!entity.fireImmune())
 			&& entity instanceof LivingEntity living
-			&& (!EnchantmentHelper.hasFrostWalker(living))
 			&& !living.getItemBySlot(EquipmentSlot.FEET).is(TFItems.FIERY_BOOTS.get())) {
 			entity.hurt(TFDamageTypes.getDamageSource(level, TFDamageTypes.FIERY), 1.0F);
 		}

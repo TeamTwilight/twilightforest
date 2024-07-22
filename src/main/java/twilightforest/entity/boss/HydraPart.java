@@ -124,7 +124,7 @@ public abstract class HydraPart extends TFPart<Hydra> {
 	}
 
 	@Override
-	public boolean canChangeDimensions() {
+	public boolean canUsePortal(boolean force) {
 		return false;
 	}
 

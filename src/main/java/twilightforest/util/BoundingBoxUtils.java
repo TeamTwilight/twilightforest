@@ -6,7 +6,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -19,7 +18,6 @@ public class BoundingBoxUtils {
 
 	// This method has been renamed to be the intersection because it functionally is.
 	// If you're looking for the union equivalent, use `BoundingBox#encapsulate`
-	@SuppressWarnings("unused")
 	@Nullable
 	public static BoundingBox getIntersectionOfSBBs(BoundingBox box1, BoundingBox box2) {
 		if (!box1.intersects(box2))
@@ -68,7 +66,6 @@ public class BoundingBoxUtils {
 		return new BoundingBox(box.minX() + x1, box.minY() + y1, box.minZ() + z1, box.maxX() + x2, box.maxY() + y2, box.maxZ() + z2);
 	}
 
-	@NotNull
 	public static BoundingBox getComponentToAddBoundingBox(int x, int y, int z, int minX, int minY, int minZ, int spanX, int spanY, int spanZ, @Nullable Direction dir, boolean centerBounds) {
 		// CenterBounds is true for ONLY Hollow Hills, Hydra Lair, & Yeti Caves
 		if (centerBounds) {
@@ -84,7 +81,7 @@ public class BoundingBoxUtils {
 				new BoundingBox(x - spanX - minX, y + minY, z - spanZ - minZ, x - minX, y + spanY + minY, z - minZ);
 			case EAST -> // '\003'
 				new BoundingBox(x + minZ, y + minY, z - spanX, x + spanZ + minZ, y + spanY + minY, z + minX);
-			default -> // '\0'
+			case null, default -> // '\0'
 				new BoundingBox(x + minX, y + minY, z + minZ, x + spanX + minX, y + spanY + minY, z + spanZ + minZ);
 		};
 	}

@@ -2,9 +2,7 @@ package twilightforest.client;
 
 import com.mojang.blaze3d.shaders.Uniform;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceProvider;
@@ -70,12 +68,12 @@ public class TFShaders {
 			invokeThenClear(null, execPost);
 		}
 
-		public final void invokeThenEndTesselator(@Nullable Runnable execBind) {
-			invokeThenClear(execBind, () -> Tesselator.getInstance().end());
+		public final void invokeThenEndTesselator(@Nullable Runnable execBind, BufferBuilder builder) {
+			invokeThenClear(execBind, () -> BufferUploader.drawWithShader(builder.buildOrThrow()));
 		}
 
-		public final void invokeThenEndTesselator() {
-			invokeThenClear(() -> Tesselator.getInstance().end());
+		public final void invokeThenEndTesselator(BufferBuilder builder) {
+			invokeThenClear(() -> BufferUploader.drawWithShader(builder.buildOrThrow()));
 		}
 
 	}
@@ -122,8 +120,8 @@ public class TFShaders {
 			resetClear();
 		}
 
-		public final void invokeThenEndTesselator(int seed, float x, float y, float z) {
-			invokeThenClear(seed, x, y, z, () -> Tesselator.getInstance().end());
+		public final void invokeThenEndTesselator(int seed, float x, float y, float z, BufferBuilder builder) {
+			invokeThenClear(seed, x, y, z, () -> BufferUploader.drawWithShader(builder.buildOrThrow()));
 		}
 
 	}

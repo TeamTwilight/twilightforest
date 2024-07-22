@@ -7,9 +7,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
+import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
+import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
@@ -22,6 +26,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.Music;
+import net.minecraft.sounds.Musics;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -32,6 +38,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.WrittenBookItem;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -41,26 +48,28 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.GiantBlock;
 import twilightforest.block.MiniatureStructureBlock;
 import twilightforest.block.entity.GrowingBeanstalkBlockEntity;
 import twilightforest.client.model.block.aurorablock.NoiseVaryingModelLoader;
-import twilightforest.client.model.block.doors.CastleDoorModelLoader;
+import twilightforest.client.model.block.connected.ConnectedTextureModelLoader;
 import twilightforest.client.model.block.forcefield.ForceFieldModelLoader;
 import twilightforest.client.model.block.giantblock.GiantBlockModelLoader;
 import twilightforest.client.model.block.leaves.BakedLeavesModel;
 import twilightforest.client.model.block.patch.PatchModelLoader;
 import twilightforest.client.model.item.TrollsteinnModel;
 import twilightforest.client.renderer.TFSkyRenderer;
+import twilightforest.client.renderer.entity.MagicPaintingRenderer;
 import twilightforest.client.renderer.entity.ShieldLayer;
-import twilightforest.compat.curios.CuriosCompat;
+import twilightforest.client.renderer.tileentity.JarRenderer;
 import twilightforest.components.entity.TFPortalAttachment;
+import twilightforest.components.item.PotionFlaskComponent;
 import twilightforest.config.TFConfig;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.entity.boss.bar.ClientTFBossBar;
@@ -82,41 +91,191 @@ public class TFClientEvents {
 			event.register(TwilightForestMod.prefix("patch"), PatchModelLoader.INSTANCE);
 			event.register(TwilightForestMod.prefix("giant_block"), GiantBlockModelLoader.INSTANCE);
 			event.register(TwilightForestMod.prefix("force_field"), ForceFieldModelLoader.INSTANCE);
-			event.register(TwilightForestMod.prefix("castle_door"), CastleDoorModelLoader.INSTANCE);
+			event.register(TwilightForestMod.prefix("connected_texture_block"), ConnectedTextureModelLoader.INSTANCE);
 			event.register(TwilightForestMod.prefix("noise_varying"), NoiseVaryingModelLoader.INSTANCE);
 		}
 
 		@SubscribeEvent
 		public static void modelBake(ModelEvent.ModifyBakingResult event) {
-			TFItems.addItemModelProperties();
+			ItemProperties.register(TFItems.CUBE_OF_ANNIHILATION.get(), TwilightForestMod.prefix("thrown"), (stack, level, entity, idk) ->
+				stack.get(TFDataComponents.THROWN_PROJECTILE) != null ? 1 : 0);
 
-			Map<ResourceLocation, BakedModel> models = event.getModels();
-			List<Map.Entry<ResourceLocation, BakedModel>> leavesModels = models.entrySet().stream()
-				.filter(entry -> entry.getKey().getNamespace().equals(TwilightForestMod.ID) && entry.getKey().getPath().contains("leaves") && !entry.getKey().getPath().contains("dark")).toList();
+			ItemProperties.register(TFItems.KNIGHTMETAL_SHIELD.get(), ResourceLocation.parse("blocking"), (stack, level, entity, idk) ->
+				entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
+
+			ItemProperties.register(TFItems.MOON_DIAL.get(), ResourceLocation.parse("phase"), new ClampedItemPropertyFunction() {
+				@Override
+				public float unclampedCall(ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entityBase, int idk) {
+					boolean flag = entityBase != null;
+					Entity entity = flag ? entityBase : stack.getFrame();
+
+					if (level == null && entity != null) level = (ClientLevel) entity.level();
+
+					return level == null ? 0.0F : (float) (level.dimensionType().natural() ? Mth.frac(level.getMoonPhase() / 8.0f) : this.wobble(level, Math.random()));
+				}
+
+				double rotation;
+				double rota;
+				long lastUpdateTick;
+
+				private double wobble(Level level, double rotation) {
+					if (level.getGameTime() != this.lastUpdateTick) {
+						this.lastUpdateTick = level.getGameTime();
+						double delta = rotation - this.rotation;
+						delta = Mth.positiveModulo(delta + 0.5D, 1.0D) - 0.5D;
+						this.rota += delta * 0.1D;
+						this.rota *= 0.9D;
+						this.rotation = Mth.positiveModulo(this.rotation + this.rota, 1.0D);
+					}
+					return this.rotation;
+				}
+			});
+
+			ItemProperties.register(TFItems.ORE_METER.get(), TwilightForestMod.prefix("active"), (stack, level, entity, idk) -> {
+				if (OreMeterItem.isLoading(stack)) {
+					int totalLoadTime = OreMeterItem.LOAD_TIME + OreMeterItem.getRange(stack) * 25;
+					int progress = OreMeterItem.getLoadProgress(stack);
+					return progress % 5 >= 2 + (int) (Math.random() * 2) && progress <= totalLoadTime - 15 ? 1 : 0;
+				}
+				return stack.has(TFDataComponents.ORE_DATA) ? 1 : 0;
+			});
+
+			ItemProperties.register(TFItems.MOONWORM_QUEEN.get(), TwilightForestMod.prefix("alt"), (stack, level, entity, idk) -> {
+				if (entity != null && entity.getUseItem() == stack) {
+					int useTime = stack.getUseDuration(entity) - entity.getUseItemRemainingTicks();
+					if (useTime >= MoonwormQueenItem.FIRING_TIME && (useTime >>> 1) % 2 == 0) {
+						return 1;
+					}
+				}
+				return 0;
+			});
+
+			ItemProperties.register(TFItems.ENDER_BOW.get(), ResourceLocation.parse("pull"), (stack, level, entity, idk) -> {
+				if (entity == null) return 0.0F;
+				else
+					return entity.getUseItem() != stack ? 0.0F : (stack.getUseDuration(entity) - entity.getUseItemRemainingTicks()) / 20.0F;
+			});
+
+			ItemProperties.register(TFItems.ENDER_BOW.get(), ResourceLocation.parse("pulling"), (stack, level, entity, idk) ->
+				entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
+
+			ItemProperties.register(TFItems.ICE_BOW.get(), ResourceLocation.parse("pull"), (stack, level, entity, idk) -> {
+				if (entity == null) return 0.0F;
+				else
+					return entity.getUseItem() != stack ? 0.0F : (stack.getUseDuration(entity) - entity.getUseItemRemainingTicks()) / 20.0F;
+			});
+
+			ItemProperties.register(TFItems.ICE_BOW.get(), ResourceLocation.parse("pulling"), (stack, level, entity, idk) ->
+				entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
+
+			ItemProperties.register(TFItems.SEEKER_BOW.get(), ResourceLocation.parse("pull"), (stack, level, entity, idk) -> {
+				if (entity == null) return 0.0F;
+				else
+					return entity.getUseItem() != stack ? 0.0F : (stack.getUseDuration(entity) - entity.getUseItemRemainingTicks()) / 20.0F;
+			});
+
+			ItemProperties.register(TFItems.SEEKER_BOW.get(), ResourceLocation.parse("pulling"), (stack, level, entity, idk) ->
+				entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
+
+			ItemProperties.register(TFItems.TRIPLE_BOW.get(), ResourceLocation.parse("pull"), (stack, level, entity, idk) -> {
+				if (entity == null) return 0.0F;
+				else
+					return entity.getUseItem() != stack ? 0.0F : (stack.getUseDuration(entity) - entity.getUseItemRemainingTicks()) / 20.0F;
+			});
+
+			ItemProperties.register(TFItems.TRIPLE_BOW.get(), ResourceLocation.parse("pulling"), (stack, level, entity, idk) ->
+				entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
+
+			ItemProperties.register(TFItems.ORE_MAGNET.get(), ResourceLocation.parse("pull"), (stack, level, entity, idk) -> {
+				if (entity == null) return 0.0F;
+				else {
+					ItemStack itemstack = entity.getUseItem();
+					return !itemstack.isEmpty() ? (stack.getUseDuration(entity) - entity.getUseItemRemainingTicks()) / 20.0F : 0.0F;
+				}
+			});
+
+			ItemProperties.register(TFBlocks.RED_THREAD.get().asItem(), TwilightForestMod.prefix("size"), (stack, level, entity, idk) -> {
+				if (stack.getCount() >= 32) {
+					return 1.0F;
+				} else if (stack.getCount() >= 16) {
+					return 0.5F;
+				} else if (stack.getCount() >= 4) {
+					return 0.25F;
+				}
+				return 0.0F;
+			});
+
+			ItemProperties.register(TFItems.ORE_MAGNET.get(), ResourceLocation.parse("pulling"), (stack, level, entity, idk) ->
+				entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
+
+			ItemProperties.register(TFItems.BLOCK_AND_CHAIN.get(), TwilightForestMod.prefix("thrown"), (stack, level, entity, idk) ->
+				stack.get(TFDataComponents.THROWN_PROJECTILE) != null ? 1 : 0);
+
+			ItemProperties.register(TFItems.EXPERIMENT_115.get(), Experiment115Item.THINK, (stack, level, entity, idk) ->
+				stack.get(TFDataComponents.EXPERIMENT_115_VARIANTS) != null && stack.get(TFDataComponents.EXPERIMENT_115_VARIANTS).equals("think") ? 1 : 0);
+
+			ItemProperties.register(TFItems.EXPERIMENT_115.get(), Experiment115Item.FULL, (stack, level, entity, idk) ->
+				stack.get(TFDataComponents.EXPERIMENT_115_VARIANTS) != null && stack.get(TFDataComponents.EXPERIMENT_115_VARIANTS).equals("full") ? 1 : 0);
+
+			ItemProperties.register(TFItems.BRITTLE_FLASK.get(), TwilightForestMod.prefix("breakage"), (stack, level, entity, i) ->
+				stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY).breakage());
+
+			ItemProperties.register(TFItems.BRITTLE_FLASK.get(), TwilightForestMod.prefix("potion_level"), (stack, level, entity, i) ->
+				stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY).doses());
+
+			ItemProperties.register(TFItems.GREATER_FLASK.get(), TwilightForestMod.prefix("potion_level"), (stack, level, entity, i) ->
+				stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY).doses());
+
+			ItemProperties.register(TFItems.CRUMBLE_HORN.get(), TwilightForestMod.prefix("tooting"), (stack, world, entity, i) ->
+				entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F
+			);
+
+			Map<ModelResourceLocation, BakedModel> models = event.getModels();
+			List<Map.Entry<ModelResourceLocation, BakedModel>> leavesModels = models.entrySet().stream()
+				.filter(entry -> entry.getKey().id().getNamespace().equals(TwilightForestMod.ID) && entry.getKey().id().getPath().contains("leaves") && !entry.getKey().id().getPath().contains("dark")).toList();
 
 			leavesModels.forEach(entry -> models.put(entry.getKey(), new BakedLeavesModel(entry.getValue())));
 
-            BakedModel oldModel = event.getModels().get(new ModelResourceLocation("twilightforest", "trollsteinn", "inventory"));
-			models.put(new ModelResourceLocation("twilightforest", "trollsteinn", "inventory"), new TrollsteinnModel(oldModel));
+			BakedModel oldModel = event.getModels().get(ModelResourceLocation.inventory(TwilightForestMod.prefix("trollsteinn")));
+			models.put(ModelResourceLocation.inventory(TwilightForestMod.prefix("trollsteinn")), new TrollsteinnModel(oldModel));
 		}
 
 		@SubscribeEvent
 		public static void registerModels(ModelEvent.RegisterAdditional event) {
 			event.register(ShieldLayer.LOC);
-			event.register(new ModelResourceLocation(TwilightForestMod.prefix("trophy"), "inventory"));
-			event.register(new ModelResourceLocation(TwilightForestMod.prefix("trophy_minor"), "inventory"));
-			event.register(new ModelResourceLocation(TwilightForestMod.prefix("trophy_quest"), "inventory"));
-			event.register(new ModelResourceLocation(TwilightForestMod.prefix("trollsteinn_light"), "inventory"));
+			event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("item/trophy")));
+			event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("item/trophy_minor")));
+			event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("item/trophy_quest")));
+			event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("item/trollsteinn_light")));
 
-			event.register(TwilightForestMod.prefix("block/casket_obsidian"));
-			event.register(TwilightForestMod.prefix("block/casket_stone"));
-			event.register(TwilightForestMod.prefix("block/casket_basalt"));
+			for (ResourceLocation location : JarRenderer.LOG_LOCATION_MAP.values()) {
+				String name = location.getPath();
+				if ((name.equals("mangrove_log") || name.equals("stripped_mangrove_log")) && location.getNamespace().equals("minecraft")) name = "vanilla_" + name;
+				event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("block/" + name + "_lid")));
+			}
+		}
+
+		@SubscribeEvent
+		public static void cacheModels(ModelEvent.BakingCompleted event) {
+			JarRenderer.LOG_LOCATION_MAP.forEach((item, location) -> {
+				String name = location.getPath();
+				if ((name.equals("mangrove_log") || name.equals("stripped_mangrove_log")) && location.getNamespace().equals("minecraft")) name = "vanilla_" + name;
+				JarRenderer.LIDS.put(item, event.getModels().get(ModelResourceLocation.standalone(TwilightForestMod.prefix("block/" + name + "_lid"))));
+			});
 		}
 
 		@SubscribeEvent
 		public static void registerDimEffects(RegisterDimensionSpecialEffectsEvent event) {
 			TFSkyRenderer.createStars();
 			event.register(TFDimension.DIMENSION_RENDERER, new TwilightForestRenderInfo(128.0F, false, DimensionSpecialEffects.SkyType.NONE, false, false));
+		}
+	}
+
+	@SubscribeEvent
+	public static void setMusic(SelectMusicEvent event) {
+		Music music = event.getOriginalMusic();
+		if (Minecraft.getInstance().level != null && Minecraft.getInstance().player != null && (music == Musics.CREATIVE || music == Musics.UNDER_WATER) && TFDimension.isTwilightWorldOnClient(Minecraft.getInstance().level)) {
+			event.setMusic(Minecraft.getInstance().level.getBiomeManager().getNoiseBiomeAtPosition(Minecraft.getInstance().player.blockPosition()).value().getBackgroundMusic().orElse(Musics.GAME));
 		}
 	}
 
@@ -164,24 +323,23 @@ public class TFClientEvents {
 		if (Minecraft.getInstance().level == null) return;
 
 		if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_WEATHER && (aurora > 0 || lastAurora > 0) && TFShaders.AURORA != null) {
-			BufferBuilder buffer = Tesselator.getInstance().getBuilder();
-			buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+			Tesselator tesselator = Tesselator.getInstance();
+			BufferBuilder buffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 
-			final double scale = 2048F * (Minecraft.getInstance().gameRenderer.getRenderDistance() / 32F);
+			final float scale = 2048F * (Minecraft.getInstance().gameRenderer.getRenderDistance() / 32F);
 			Vec3 pos = event.getCamera().getPosition();
-			double y = 256D - pos.y();
-			buffer.vertex(-scale, y, scale).color(1F, 1F, 1F, 1F).endVertex();
-			buffer.vertex(-scale, y, -scale).color(1F, 1F, 1F, 1F).endVertex();
-			buffer.vertex(scale, y, -scale).color(1F, 1F, 1F, 1F).endVertex();
-			buffer.vertex(scale, y, scale).color(1F, 1F, 1F, 1F).endVertex();
+			float y = (float) (256F - pos.y());
+			buffer.addVertex(-scale, y, scale).setColor(1F, 1F, 1F, 1F);
+			buffer.addVertex(-scale, y, -scale).setColor(1F, 1F, 1F, 1F);
+			buffer.addVertex(scale, y, -scale).setColor(1F, 1F, 1F, 1F);
+			buffer.addVertex(scale, y, scale).setColor(1F, 1F, 1F, 1F);
 
 			RenderSystem.enableBlend();
 			RenderSystem.enableDepthTest();
-			RenderSystem.setShaderColor(1F, 1F, 1F, (Mth.lerp(event.getPartialTick(), lastAurora, aurora)) / 60F * 0.5F);
+			RenderSystem.setShaderColor(1F, 1F, 1F, (Mth.lerp(event.getPartialTick().getGameTimeDeltaTicks(), lastAurora, aurora)) / 60F * 0.5F);
 			TFShaders.AURORA.invokeThenEndTesselator(
 				Minecraft.getInstance().level == null ? 0 : Mth.abs((int) Minecraft.getInstance().level.getBiomeManager().biomeZoomSeed),
-				(float) pos.x(), (float) pos.y(), (float) pos.z()
-			);
+				(float) pos.x(), (float) pos.y(), (float) pos.z(), buffer);
 			RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
 			RenderSystem.disableDepthTest();
 			RenderSystem.disableBlend();
@@ -224,7 +382,7 @@ public class TFClientEvents {
 	@SubscribeEvent
 	public static void clientTick(ClientTickEvent.Post event) {
 		Minecraft mc = Minecraft.getInstance();
-		float partial = mc.getFrameTime();
+		float partial = mc.getTimer().getRealtimeDeltaTicks();
 
 		if (!mc.isPaused()) {
 			time++;
@@ -247,33 +405,37 @@ public class TFClientEvents {
 			} else {
 				aurora = 0;
 			}
-		}
 
-		if (!mc.isPaused()) {
 			BugModelAnimationHelper.animate();
 
-			if (TFConfig.firstPersonEffects && mc.level != null && mc.player != null) {
-				HashSet<ChunkPos> chunksInRange = new HashSet<>();
-				for (int x = -16; x <= 16; x += 16) {
-					for (int z = -16; z <= 16; z += 16) {
-						chunksInRange.add(new ChunkPos((int) (mc.player.getX() + x) >> 4, (int) (mc.player.getZ() + z) >> 4));
-					}
+			if (mc.level != null) {
+				if (mc.level.getSkyFlashTime() > 0) {
+					MagicPaintingRenderer.lastLightning = mc.level.getGameTime();
 				}
-				for (ChunkPos pos : chunksInRange) {
-					if (mc.level.getChunk(pos.x, pos.z, ChunkStatus.FULL, false) != null) {
-						List<BlockEntity> beanstalksInChunk = mc.level.getChunk(pos.x, pos.z).getBlockEntities().values().stream()
-							.filter(blockEntity -> blockEntity instanceof GrowingBeanstalkBlockEntity beanstalkBlock && beanstalkBlock.isBeanstalkRumbling())
-							.toList();
-						if (!beanstalksInChunk.isEmpty()) {
-							BlockEntity beanstalk = beanstalksInChunk.get(0);
-							Player player = mc.player;
-							intensity = (float) (1.0F - mc.player.distanceToSqr(Vec3.atCenterOf(beanstalk.getBlockPos())) / Math.pow(16, 2));
-							if (intensity > 0) {
-								player.moveTo(player.getX(), player.getY(), player.getZ(),
-									player.getYRot() + (player.getRandom().nextFloat() - 0.5F) * intensity,
-									player.getXRot() + (player.getRandom().nextFloat() * 2.5F - 1.25F) * intensity);
-								intensity = 0.0F;
-								break;
+
+				if (TFConfig.firstPersonEffects && mc.player != null) {
+					HashSet<ChunkPos> chunksInRange = new HashSet<>();
+					for (int x = -16; x <= 16; x += 16) {
+						for (int z = -16; z <= 16; z += 16) {
+							chunksInRange.add(new ChunkPos((int) (mc.player.getX() + x) >> 4, (int) (mc.player.getZ() + z) >> 4));
+						}
+					}
+					for (ChunkPos pos : chunksInRange) {
+						if (mc.level.getChunk(pos.x, pos.z, ChunkStatus.FULL, false) != null) {
+							List<BlockEntity> beanstalksInChunk = mc.level.getChunk(pos.x, pos.z).getBlockEntities().values().stream()
+								.filter(blockEntity -> blockEntity instanceof GrowingBeanstalkBlockEntity beanstalkBlock && beanstalkBlock.isBeanstalkRumbling())
+								.toList();
+							if (!beanstalksInChunk.isEmpty()) {
+								BlockEntity beanstalk = beanstalksInChunk.get(0);
+								Player player = mc.player;
+								intensity = (float) (1.0F - mc.player.distanceToSqr(Vec3.atCenterOf(beanstalk.getBlockPos())) / Math.pow(16, 2));
+								if (intensity > 0) {
+									player.moveTo(player.getX(), player.getY(), player.getZ(),
+										player.getYRot() + (player.getRandom().nextFloat() - 0.5F) * intensity,
+										player.getXRot() + (player.getRandom().nextFloat() * 2.5F - 1.25F) * intensity);
+									intensity = 0.0F;
+									break;
+								}
 							}
 						}
 					}
@@ -336,36 +498,38 @@ public class TFClientEvents {
 		ItemStack stack = event.getEntity().getItemBySlot(EquipmentSlot.HEAD);
 		boolean visible = !(stack.getItem() instanceof TrophyItem) && !(stack.getItem() instanceof SkullCandleItem) && !areCuriosEquipped(event.getEntity());
 
-		if (!visible && event.getRenderer().getModel() instanceof HeadedModel headedModel) {
-			headedModel.getHead().visible = false;
+		if (event.getRenderer().getModel() instanceof HeadedModel headedModel) {
+			headedModel.getHead().visible = visible;
 			if (event.getRenderer().getModel() instanceof HumanoidModel<?> humanoidModel) {
-				humanoidModel.hat.visible = false;
+				humanoidModel.hat.visible = visible;
 			}
 		}
 	}
 
 	private static boolean areCuriosEquipped(LivingEntity entity) {
-		if (ModList.get().isLoaded("curios")) {
-			return CuriosCompat.isCurioEquippedAndVisible(entity, stack -> stack.getItem() instanceof TrophyItem) || CuriosCompat.isCurioEquippedAndVisible(entity, stack -> stack.getItem() instanceof SkullCandleItem);
-		}
+//		if (ModList.get().isLoaded("curios")) {
+//			return CuriosCompat.isCurioEquippedAndVisible(entity, stack -> stack.getItem() instanceof TrophyItem) || CuriosCompat.isCurioEquippedAndVisible(entity, stack -> stack.getItem() instanceof SkullCandleItem);
+//		}
 		return false;
 	}
 
 	@SubscribeEvent
 	public static void translateBookAuthor(ItemTooltipEvent event) {
-		 ItemStack stack = event.getItemStack();
-		 if (stack.getItem() instanceof WrittenBookItem && stack.has(DataComponents.WRITTEN_BOOK_CONTENT)) {
-		 	if (stack.has(TFDataComponents.TRANSLATABLE_BOOK)) {
-		 		List<Component> components = event.getToolTip();
-		 		for (int i = 0; i < components.size(); i++) {
-		 			Component component = components.get(i);
-		 			if (component.toString().contains("book.byAuthor")) {
-		 				components.set(i, (Component.translatable("book.byAuthor", Component.translatable(TwilightForestMod.ID + ".book.author"))).withStyle(component.getStyle()));
-		 			}
-		 		}
-		 	}
-		 }
+		ItemStack stack = event.getItemStack();
+		if (stack.getItem() instanceof WrittenBookItem && stack.has(DataComponents.WRITTEN_BOOK_CONTENT)) {
+			if (stack.has(TFDataComponents.TRANSLATABLE_BOOK)) {
+				List<Component> components = event.getToolTip();
+				for (int i = 0; i < components.size(); i++) {
+					Component component = components.get(i);
+					if (component.toString().contains("book.byAuthor")) {
+						components.set(i, (Component.translatable("book.byAuthor", Component.translatable(TwilightForestMod.ID + ".book.author"))).withStyle(component.getStyle()));
+					}
+				}
+			}
+		}
 	}
+
+	private static final VoxelShape GIANT_BLOCK = Shapes.box(0.0D, 0.0D, 0.0D, 4.0D, 4.0D, 4.0D);
 
 	@SubscribeEvent
 	public static void onRenderBlockHighlightEvent(RenderHighlightEvent.Block event) {
@@ -382,29 +546,11 @@ public class TFClientEvents {
 			event.setCanceled(true);
 			if (!state.isAir() && player.level().getWorldBorder().isWithinBounds(pos)) {
 				BlockPos offsetPos = new BlockPos(pos.getX() & ~0b11, pos.getY() & ~0b11, pos.getZ() & ~0b11);
-				renderGiantHitOutline(event.getPoseStack(), event.getMultiBufferSource().getBuffer(RenderType.lines()), event.getCamera().getPosition(), offsetPos);
+				VertexConsumer consumer = event.getMultiBufferSource().getBuffer(RenderType.lines());
+				Vec3 xyz = Vec3.atLowerCornerOf(offsetPos).subtract(event.getCamera().getPosition());
+				LevelRenderer.renderShape(event.getPoseStack(), consumer, GIANT_BLOCK, xyz.x(), xyz.y(), xyz.z(), 0.0F, 0.0F, 0.0F, 0.45F);
 			}
 		}
-	}
-
-	private static final VoxelShape GIANT_BLOCK = Shapes.box(0.0D, 0.0D, 0.0D, 4.0D, 4.0D, 4.0D);
-
-	private static void renderGiantHitOutline(PoseStack poseStack, VertexConsumer consumer, Vec3 cam, BlockPos pos) {
-		PoseStack.Pose last = poseStack.last();
-		float posX = pos.getX() - (float) cam.x();
-		float posY = pos.getY() - (float) cam.y();
-		float posZ = pos.getZ() - (float) cam.z();
-		GIANT_BLOCK.forAllEdges((x, y, z, x1, y1, z1) -> {
-			float xSize = (float) (x1 - x);
-			float ySize = (float) (y1 - y);
-			float zSize = (float) (z1 - z);
-			float sqrt = Mth.sqrt(xSize * xSize + ySize * ySize + zSize * zSize);
-			xSize /= sqrt;
-			ySize /= sqrt;
-			zSize /= sqrt;
-			consumer.vertex(last.pose(), (float) (x + posX), (float) (y + posY), (float) (z + posZ)).color(0.0F, 0.0F, 0.0F, 0.45F).normal(last, xSize, ySize, zSize).endVertex();
-			consumer.vertex(last.pose(), (float) (x1 + posX), (float) (y1 + posY), (float) (z1 + posZ)).color(0.0F, 0.0F, 0.0F, 0.45F).normal(last, xSize, ySize, zSize).endVertex();
-		});
 	}
 
 	@SubscribeEvent

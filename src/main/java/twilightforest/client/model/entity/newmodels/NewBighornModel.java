@@ -70,23 +70,23 @@ public class NewBighornModel<T extends Bighorn> extends SheepModel<T> {
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack stack, VertexConsumer consumer, int light, int overlay, float red, float green, float blue, float alpha) {
+	public void renderToBuffer(PoseStack stack, VertexConsumer consumer, int light, int overlay, int color) {
 		if (this.young) {
 			stack.pushPose();
 			stack.translate(0.0D, 0.5D, 0.25D);
 			ImmutableList.of(this.head).forEach((modelRenderer) ->
-				modelRenderer.render(stack, consumer, light, overlay, red, green, blue, alpha));
+				modelRenderer.render(stack, consumer, light, overlay, color));
 			stack.popPose();
 
 			stack.pushPose();
 			stack.scale(0.5F, 0.5F, 0.5F);
 			stack.translate(0.0D, 1.5D, 0.0D);
 			ImmutableList.of(this.leftHindLeg, this.rightHindLeg, this.body, this.leftFrontLeg, this.rightFrontLeg).forEach((modelRenderer) ->
-				modelRenderer.render(stack, consumer, light, overlay, red, green, blue, alpha));
+				modelRenderer.render(stack, consumer, light, overlay, color));
 			stack.popPose();
 		} else {
 			ImmutableList.of(this.leftHindLeg, this.rightHindLeg, this.body, this.leftFrontLeg, this.rightFrontLeg, this.head).forEach((modelRenderer) ->
-				modelRenderer.render(stack, consumer, light, overlay, red, green, blue, alpha));
+				modelRenderer.render(stack, consumer, light, overlay, color));
 		}
 	}
 

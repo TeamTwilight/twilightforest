@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FastColor;
 import net.minecraft.world.level.block.DirectionalBlock;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
@@ -45,10 +46,10 @@ public class FireflyTileEntityRenderer implements BlockEntityRenderer<FireflyBlo
 		ms.pushPose();
 
 		VertexConsumer builder = buffer.getBuffer(RenderType.entityCutout(textureLoc));
-		fireflyModel.renderToBuffer(ms, builder, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		fireflyModel.renderToBuffer(ms, builder, light, OverlayTexture.NO_OVERLAY);
 
-		builder = buffer.getBuffer(RenderType.entityTranslucent(textureLoc));
-		fireflyModel.glow.render(ms, builder, 0xF000F0, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, glow);
+		builder = buffer.getBuffer(RenderType.entityTranslucentEmissive(textureLoc));
+		fireflyModel.glow.render(ms, builder, 0xF000F0, OverlayTexture.NO_OVERLAY, FastColor.ARGB32.colorFromFloat(glow, 1.0F, 1.0F, 1.0F));
 
 		ms.popPose();
 		ms.popPose();

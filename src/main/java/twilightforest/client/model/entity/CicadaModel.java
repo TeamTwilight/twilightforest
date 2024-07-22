@@ -70,12 +70,12 @@ public class CicadaModel extends Model {
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack ms, VertexConsumer buffer, int light, int overlay, float r, float g, float b, float a) {
-		this.legs.render(ms, buffer, light, overlay, r, g, b, a);
-		this.fatbody.render(ms, buffer, light, overlay, r, g, b, a);
-		this.skinnybody.render(ms, buffer, light, overlay, r, g, b, a);
-		this.eye1.render(ms, buffer, light, overlay, r, g, b, a);
-		this.eye2.render(ms, buffer, light, overlay, r, g, b, a);
-		this.wings.render(ms, buffer, light, overlay, r, g, b, a);
+	public void renderToBuffer(PoseStack ms, VertexConsumer buffer, int light, int overlay, int color) {
+		this.legs.render(ms, buffer, light, overlay, color);
+		this.fatbody.render(ms, buffer, light, overlay, color);
+		this.skinnybody.render(ms, buffer, light, overlay, color);
+		this.eye1.render(ms, buffer, light, overlay, color);
+		this.eye2.render(ms, buffer, light, overlay, color);
+		this.wings.render(ms, buffer, light, overlay, color);
 	}
 }

@@ -1,10 +1,14 @@
 package twilightforest.entity.projectile;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.entity.projectile.LargeFireball;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
@@ -19,7 +23,7 @@ public class UrGhastFireball extends LargeFireball implements ITFProjectile {
 	private final int power;
 
 	public UrGhastFireball(Level world, UrGhast entityTFTowerBoss, double x, double y, double z, int power) {
-		super(world, entityTFTowerBoss, x, y, z, power);
+		super(world, entityTFTowerBoss, new Vec3(x, y, z), power);
 		this.power = power;
 	}
 
@@ -40,10 +44,13 @@ public class UrGhastFireball extends LargeFireball implements ITFProjectile {
 
 	@Override
 	protected void onHitEntity(EntityHitResult result) {
-		if (!this.level().isClientSide() && !(result.getEntity() instanceof AbstractHurtingProjectile)) {
+		if (this.level() instanceof ServerLevel serverlevel && !(result.getEntity() instanceof AbstractHurtingProjectile)) {
+			Entity entity1 = result.getEntity();
+			Entity owner = this.getOwner();
+			DamageSource source = this.damageSources().fireball(this, owner);
 			// TF - up damage by 10
-			result.getEntity().hurt(this.damageSources().fireball(this, this.getOwner()), 16.0F);
-			this.doEnchantDamageEffects((LivingEntity) this.getOwner(), result.getEntity());
+			entity1.hurt(source, 16.0F);
+			EnchantmentHelper.doPostAttackEffects(serverlevel, entity1, source);
 
 			boolean flag = EventHooks.canEntityGrief(this.level(), this.getOwner());
 			this.level().explode(null, this.getX(), this.getY(), this.getZ(), this.power, flag, Level.ExplosionInteraction.NONE);

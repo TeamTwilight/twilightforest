@@ -7,6 +7,7 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
 import twilightforest.entity.boss.Lich;
@@ -73,12 +74,11 @@ public class LichModel extends HumanoidModel<Lich> {
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, float red, float green, float blue, float alpha) {
+	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, int color) {
 		if (!this.shadowClone) {
-			super.renderToBuffer(stack, builder, light, overlay, red, green, blue, alpha);
+			super.renderToBuffer(stack, builder, light, overlay, color);
 		} else {
-			float shadow = 0.25f;
-			super.renderToBuffer(stack, builder, light, overlay, red * shadow, green * shadow, blue * shadow, 0.75F);
+			super.renderToBuffer(stack, builder, light, overlay, FastColor.ARGB32.color((int) (FastColor.ARGB32.alpha(color) * 0.75F), (int) (FastColor.ARGB32.red(color) * 0.25F), (int) (FastColor.ARGB32.green(color) * 0.25F), (int) (FastColor.ARGB32.blue(color) * 0.25F)));
 		}
 	}
 

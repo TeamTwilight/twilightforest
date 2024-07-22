@@ -46,7 +46,7 @@ public class CubeOfAnnihilation extends ThrowableProjectile {
 	}
 
 	@Override
-	public boolean canChangeDimensions() {
+	public boolean canUsePortal(boolean force) {
 		return false;
 	}
 

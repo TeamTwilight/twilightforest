@@ -13,7 +13,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
-import net.minecraft.world.item.enchantment.DigDurabilityEnchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -33,7 +33,7 @@ public class GlassSwordItem extends SwordItem {
 
 	@Override
 	public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-		if (target.level() instanceof ServerLevel server) {
+		if (target.level() instanceof ServerLevel) {
 			ParticlePacket particlePacket = new ParticlePacket();
 			for (int i = 0; i < 20; i++) {
 				particlePacket.queueParticle(GLASS_PARTICLE, false,
@@ -47,7 +47,7 @@ public class GlassSwordItem extends SwordItem {
 
 		this.hurtAndBreak(stack, attacker, (user) -> {
 			user.level().playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), TFSounds.GLASS_SWORD_BREAK.get(), attacker.getSoundSource(), 1F, 0.5F);
-			user.broadcastBreakEvent(EquipmentSlot.MAINHAND);
+			user.onEquippedItemBroken(this, EquipmentSlot.MAINHAND);
 		});
 		return true;
 	}
@@ -68,7 +68,7 @@ public class GlassSwordItem extends SwordItem {
 		if (stack.get(TFDataComponents.INFINITE_GLASS_SWORD) != null) {
 			return false;
 		} else {
-			if (DigDurabilityEnchantment.shouldIgnoreDurabilityDrop(stack, Math.min(3, stack.getEnchantmentLevel(Enchantments.UNBREAKING)), random)) {
+			if (EnchantmentHelper.processDurabilityChange(player.serverLevel(), stack, 1) <= 0) {
 				return false;
 			}
 
@@ -79,10 +79,4 @@ public class GlassSwordItem extends SwordItem {
 			return true;
 		}
 	}
-
-	//TODO
-//	@Override
-//	public int getDefaultTooltipHideFlags(ItemStack stack) {
-//		return stack.get(TFDataComponents.INFINITE_GLASS_SWORD) != null ? super.getDefaultTooltipHideFlags(stack) : ItemStack.TooltipPart.UNBREAKABLE.getMask();
-//	}
 }

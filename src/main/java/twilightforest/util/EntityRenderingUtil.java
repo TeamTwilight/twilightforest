@@ -154,7 +154,7 @@ public class EntityRenderingUtil {
 		quaternion1.conjugate();
 		ItemEntity item = (ItemEntity) fetchEntity(EntityType.ITEM, level);
 		Objects.requireNonNull(item).setItem(stack);
-		RenderSystem.runAsFancy(() -> render(item, Minecraft.getInstance().getDeltaFrameTime(), posestack, graphics.bufferSource(), bobOffset));
+		RenderSystem.runAsFancy(() -> render(item, Minecraft.getInstance().getTimer().getGameTimeDeltaTicks(), posestack, graphics.bufferSource(), bobOffset));
 		graphics.flush();
 		posestack.popPose();
 		Lighting.setupFor3DItems();

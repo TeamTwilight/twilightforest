@@ -33,9 +33,8 @@ public class RopeItem extends BlockItem {
 		BlockPos blockpos = context.getClickedPos();
 		Level level = context.getLevel();
 		BlockState blockstate = level.getBlockState(blockpos);
-		Block block = this.getBlock();
 
-		if (!blockstate.is(block)) {
+		if (!blockstate.is(this.getBlock())) {
 			return context;
 		} else {
 			Direction direction = this.getForward(context, blockstate, blockpos, level);
@@ -101,10 +100,12 @@ public class RopeItem extends BlockItem {
 	}
 
 	protected @Nullable Direction getForward(BlockPlaceContext context, BlockState state, BlockPos pos, Level level) {
-		Direction clickedFace = context.getClickedFace();
-		if (RopeBlock.canConnectTo(state, clickedFace, level, pos)) return clickedFace;
-		Direction oppositeFace = context.getClickedFace().getOpposite();
-		if (RopeBlock.canConnectTo(level.getBlockState(pos.relative(oppositeFace)), oppositeFace, level, pos.relative(oppositeFace))) return oppositeFace;
+		Direction face = context.getClickedFace();
+		BlockPos relativePos = pos.relative(face);
+		if (RopeBlock.canConnectTo(level.getBlockState(relativePos), face, level, relativePos)) return face;
+		face = face.getOpposite();
+		relativePos = pos.relative(face);
+		if (RopeBlock.canConnectTo(level.getBlockState(relativePos), face, level, relativePos)) return face;
 
 		List<Direction> directions = Arrays.asList(context.getNearestLookingDirections());
 		if (context.isSecondaryUseActive()) Collections.reverse(directions);
@@ -119,7 +120,7 @@ public class RopeItem extends BlockItem {
 					for (int k = 1; k < EXTEND_RANGE; k++) {
 						mutableBlockPos.move(dir);
 						BlockState relativeState = level.getBlockState(mutableBlockPos);
-						if (relativeState.canBeReplaced()) return dir;
+						if (relativeState.canBeReplaced() || relativeState.is(this.getBlock())) return dir;
 						else if (!relativeState.is(this.getBlock())) break;
 					}
 				}

@@ -27,7 +27,7 @@ public abstract class TFSoundProvider extends SoundDefinitionsProvider {
 			this.createSubtitleAndLangEntry(event, definition, subtitle);
 		}
 		for (int i = 1; i <= numberOfSounds; i++) {
-			definition.with(SoundDefinition.Sound.sound(new ResourceLocation(TwilightForestMod.ID, baseSoundDirectory + (numberOfSounds > 1 ? i : "")), SoundDefinition.SoundType.SOUND));
+			definition.with(SoundDefinition.Sound.sound(TwilightForestMod.prefix(baseSoundDirectory + (numberOfSounds > 1 ? i : "")), SoundDefinition.SoundType.SOUND));
 		}
 		this.add(event, definition);
 	}
@@ -38,7 +38,7 @@ public abstract class TFSoundProvider extends SoundDefinitionsProvider {
 			this.createSubtitleAndLangEntry(event, definition, subtitle);
 		}
 		for (int i = 1; i <= numberOfSounds; i++) {
-			definition.with(SoundDefinition.Sound.sound(new ResourceLocation(baseSoundDirectory + (numberOfSounds > 1 ? i : "")), SoundDefinition.SoundType.SOUND));
+			definition.with(SoundDefinition.Sound.sound(ResourceLocation.withDefaultNamespace(baseSoundDirectory + (numberOfSounds > 1 ? i : "")), SoundDefinition.SoundType.SOUND));
 		}
 		this.add(event, definition);
 	}
@@ -72,17 +72,25 @@ public abstract class TFSoundProvider extends SoundDefinitionsProvider {
 			.with(SoundDefinition.Sound.sound(referencedSound.getLocation(), SoundDefinition.SoundType.EVENT)));
 	}
 
-	public void makeNewStepSound(DeferredHolder<SoundEvent, SoundEvent> event, String baseSoundDirectory, int numberOfSounds) {
+	public void makeNewStepjSound(DeferredHolder<SoundEvent, SoundEvent> event, String baseSoundDirectory, int numberOfSounds) {
 		SoundDefinition definition = SoundDefinition.definition();
 		for (int i = 1; i <= numberOfSounds; i++) {
-			definition.with(SoundDefinition.Sound.sound(new ResourceLocation(TwilightForestMod.ID, baseSoundDirectory + (numberOfSounds > 1 ? i : "")), SoundDefinition.SoundType.SOUND));
+			definition.with(SoundDefinition.Sound.sound(TwilightForestMod.prefix(baseSoundDirectory + (numberOfSounds > 1 ? i : "")), SoundDefinition.SoundType.SOUND));
 		}
 		this.add(event, definition.subtitle("subtitles.block.generic.footsteps"));
 	}
 
+	public void makeNewGenericSound(DeferredHolder<SoundEvent, SoundEvent> event, String baseSoundDirectory, int numberOfSounds, @Nullable String type) {
+		SoundDefinition definition = SoundDefinition.definition();
+		for (int i = 1; i <= numberOfSounds; i++) {
+			definition.with(SoundDefinition.Sound.sound(TwilightForestMod.prefix(baseSoundDirectory + (numberOfSounds > 1 ? i : "")), SoundDefinition.SoundType.SOUND));
+		}
+		this.add(event, type != null ? definition.subtitle("subtitles.block.generic." + type) : definition);
+	}
+
 	public void makeMusicDisc(DeferredHolder<SoundEvent, SoundEvent> event, String discName) {
 		this.add(event, SoundDefinition.definition()
-			.with(SoundDefinition.Sound.sound(new ResourceLocation(TwilightForestMod.ID, "music/" + discName), SoundDefinition.SoundType.SOUND)
+			.with(SoundDefinition.Sound.sound(TwilightForestMod.prefix("music/" + discName), SoundDefinition.SoundType.SOUND)
 				.stream()));
 	}
 

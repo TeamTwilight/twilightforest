@@ -57,7 +57,7 @@ public class ModdedEntityTagGenerator extends EntityTypeTagsProvider {
 	}
 
 	private static TagKey<EntityType<?>> createTagFor(String modid, String tagName) {
-		return TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation(modid, tagName));
+		return TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(modid, tagName));
 	}
 
 }

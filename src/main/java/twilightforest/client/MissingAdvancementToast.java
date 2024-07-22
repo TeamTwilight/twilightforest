@@ -11,7 +11,7 @@ import twilightforest.init.TFBlocks;
 public record MissingAdvancementToast(Component title, ItemStack icon) implements Toast {
 	public static final MissingAdvancementToast FALLBACK = new MissingAdvancementToast(Component.translatable("misc.twilightforest.advancement_hidden"), new ItemStack(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get()));
 	private static final Component UPPER_TEXT = Component.translatable("misc.twilightforest.advancement_required");
-	private static final ResourceLocation BACKGROUND_SPRITE = new ResourceLocation("toast/advancement");
+	private static final ResourceLocation BACKGROUND_SPRITE = ResourceLocation.withDefaultNamespace("toast/advancement");
 
 	@Override
 	public Toast.Visibility render(GuiGraphics graphics, ToastComponent component, long timer) {

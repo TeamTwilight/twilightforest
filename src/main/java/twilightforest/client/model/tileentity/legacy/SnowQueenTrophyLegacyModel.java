@@ -94,7 +94,7 @@ public class SnowQueenTrophyLegacyModel extends GenericTrophyModel {
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack matrix, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		this.head.render(matrix, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+	public void renderToBuffer(PoseStack matrix, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
+		this.head.render(matrix, buffer, packedLight, packedOverlay, color);
 	}
 }

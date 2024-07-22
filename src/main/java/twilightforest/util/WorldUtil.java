@@ -18,15 +18,22 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureCheckResult;
 import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement;
 import net.minecraft.world.phys.AABB;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFDimensionData;
 import twilightforest.world.components.structures.placements.LandmarkGridPlacement;
 
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 public final class WorldUtil {
 	private WorldUtil() {
+	}
+
+	public static long getOverworldSeed() {
+		return Objects.requireNonNull(ServerLifecycleHooks.getCurrentServer()).getWorldData().worldGenOptions().seed();
 	}
 
 	/**
@@ -61,8 +68,7 @@ public final class WorldUtil {
 			: TFDimensionData.SEALEVEL; // Should only ever hit if this method is called on client FIXME Fix causes
 	}
 
-	@Nullable
-	public static Pair<BlockPos, Holder<Structure>> findNearestMapLandmark(ServerLevel level, HolderSet<Structure> targetStructures, BlockPos pos, int chunkSearchRadius, boolean skipKnownStructures) {
+	public static Optional<Pair<BlockPos, Holder<Structure>>> findNearestMapLandmark(ServerLevel level, HolderSet<Structure> targetStructures, BlockPos pos, int chunkSearchRadius, boolean skipKnownStructures) {
 		ChunkGeneratorStructureState state = level.getChunkSource().getGeneratorState();
 
 		Map<LandmarkGridPlacement, Set<Holder<Structure>>> seekStructures = new Object2ObjectArrayMap<>();
@@ -75,7 +81,7 @@ public final class WorldUtil {
 			}
 		}
 
-		if (seekStructures.isEmpty()) return null;
+		if (seekStructures.isEmpty()) return Optional.empty();
 
 		double distance = Double.MAX_VALUE;
 
@@ -107,6 +113,6 @@ public final class WorldUtil {
 			}
 		}
 
-		return nearest;
+		return Optional.ofNullable(nearest);
 	}
 }

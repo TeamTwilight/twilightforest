@@ -47,7 +47,7 @@ public interface LightableBlock {
 			} else if (player.getItemInHand(hand).is(Items.FIRE_CHARGE)) {
 				this.setLit(level, state, pos, true);
 				level.playSound(null, pos, SoundEvents.FIRECHARGE_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
-				if (!player.getAbilities().instabuild) player.getItemInHand(hand).shrink(1);
+				player.getItemInHand(hand).consume(1, player);
 				return ItemInteractionResult.sidedSuccess(level.isClientSide());
 			}
 		}

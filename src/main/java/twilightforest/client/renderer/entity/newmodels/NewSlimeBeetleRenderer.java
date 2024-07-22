@@ -45,7 +45,7 @@ public class NewSlimeBeetleRenderer extends MobRenderer<SlimeBeetle, NewSlimeBee
 				innerModel.prepareMobModel(entity, limbSwing, limbSwingAmount, partialTicks);
 				innerModel.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 				VertexConsumer buffer = buffers.getBuffer(RenderType.entityTranslucent(getTextureLocation(entity)));
-				innerModel.renderTail(ms, buffer, light, LivingEntityRenderer.getOverlayCoords(entity, 0), 1, 1, 1, 1);
+				innerModel.renderTail(ms, buffer, light, LivingEntityRenderer.getOverlayCoords(entity, 0));
 			}
 		}
 	}

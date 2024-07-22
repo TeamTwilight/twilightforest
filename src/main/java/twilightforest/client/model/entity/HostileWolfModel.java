@@ -32,37 +32,22 @@ public class HostileWolfModel<T extends HostileWolf> extends AgeableListModel<T>
 		this.tail = p_171087_.getChild("tail");
 	}
 
-	public static LayerDefinition create() {
-		MeshDefinition meshdefinition = new MeshDefinition();
-		PartDefinition partdefinition = meshdefinition.getRoot();
-		float f = 13.5F;
-		PartDefinition partdefinition1 = partdefinition.addOrReplaceChild("head", CubeListBuilder.create(), PartPose.offset(-1.0F, 13.5F, -7.0F));
-		partdefinition1.addOrReplaceChild("real_head", CubeListBuilder.create().texOffs(0, 0).addBox(-2.0F, -3.0F, -2.0F, 6.0F, 6.0F, 4.0F).texOffs(16, 14).addBox(-2.0F, -5.0F, 0.0F, 2.0F, 2.0F, 1.0F).texOffs(16, 14).addBox(2.0F, -5.0F, 0.0F, 2.0F, 2.0F, 1.0F).texOffs(0, 10).addBox(-0.5F, 0.0F, -5.0F, 3.0F, 3.0F, 4.0F), PartPose.ZERO);
-		partdefinition.addOrReplaceChild("body", CubeListBuilder.create().texOffs(18, 14).addBox(-3.0F, -2.0F, -3.0F, 6.0F, 9.0F, 6.0F), PartPose.offsetAndRotation(0.0F, 14.0F, 2.0F, ((float) Math.PI / 2F), 0.0F, 0.0F));
-		partdefinition.addOrReplaceChild("upper_body", CubeListBuilder.create().texOffs(21, 0).addBox(-3.0F, -3.0F, -3.0F, 8.0F, 6.0F, 7.0F), PartPose.offsetAndRotation(-1.0F, 14.0F, -3.0F, ((float) Math.PI / 2F), 0.0F, 0.0F));
-		CubeListBuilder cubelistbuilder = CubeListBuilder.create().texOffs(0, 18).addBox(0.0F, 0.0F, -1.0F, 2.0F, 8.0F, 2.0F);
-		partdefinition.addOrReplaceChild("right_hind_leg", cubelistbuilder, PartPose.offset(-2.5F, 16.0F, 7.0F));
-		partdefinition.addOrReplaceChild("left_hind_leg", cubelistbuilder, PartPose.offset(0.5F, 16.0F, 7.0F));
-		partdefinition.addOrReplaceChild("right_front_leg", cubelistbuilder, PartPose.offset(-2.5F, 16.0F, -4.0F));
-		partdefinition.addOrReplaceChild("left_front_leg", cubelistbuilder, PartPose.offset(0.5F, 16.0F, -4.0F));
-		PartDefinition partdefinition2 = partdefinition.addOrReplaceChild("tail", CubeListBuilder.create(), PartPose.offsetAndRotation(-1.0F, 12.0F, 8.0F, ((float) Math.PI / 5F), 0.0F, 0.0F));
-		partdefinition2.addOrReplaceChild("real_tail", CubeListBuilder.create().texOffs(9, 18).addBox(0.0F, 0.0F, -1.0F, 2.0F, 8.0F, 2.0F), PartPose.ZERO);
-		return LayerDefinition.create(meshdefinition, 64, 32);
-	}
-
+	@Override
 	protected Iterable<ModelPart> headParts() {
 		return ImmutableList.of(this.head);
 	}
 
+	@Override
 	protected Iterable<ModelPart> bodyParts() {
 		return ImmutableList.of(this.body, this.rightHindLeg, this.leftHindLeg, this.rightFrontLeg, this.leftFrontLeg, this.tail, this.upperBody);
 	}
 
-	public void prepareMobModel(T p_104132_, float p_104133_, float p_104134_, float p_104135_) {
-		if (p_104132_.isAggressive()) {
+	@Override
+	public void prepareMobModel(T entity, float limbSwing, float limbSwingAmount, float partialTicks) {
+		if (entity.isAggressive()) {
 			this.tail.yRot = 0.0F;
 		} else {
-			this.tail.yRot = Mth.cos(p_104133_ * 0.6662F) * 1.4F * p_104134_;
+			this.tail.yRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
 		}
 
 		this.body.setPos(0.0F, 14.0F, 2.0F);
@@ -74,15 +59,16 @@ public class HostileWolfModel<T extends HostileWolf> extends AgeableListModel<T>
 		this.leftHindLeg.setPos(0.5F, 16.0F, 7.0F);
 		this.rightFrontLeg.setPos(-2.5F, 16.0F, -4.0F);
 		this.leftFrontLeg.setPos(0.5F, 16.0F, -4.0F);
-		this.rightHindLeg.xRot = Mth.cos(p_104133_ * 0.6662F) * 1.4F * p_104134_;
-		this.leftHindLeg.xRot = Mth.cos(p_104133_ * 0.6662F + (float) Math.PI) * 1.4F * p_104134_;
-		this.rightFrontLeg.xRot = Mth.cos(p_104133_ * 0.6662F + (float) Math.PI) * 1.4F * p_104134_;
-		this.leftFrontLeg.xRot = Mth.cos(p_104133_ * 0.6662F) * 1.4F * p_104134_;
+		this.rightHindLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+		this.leftHindLeg.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
+		this.rightFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
+		this.leftFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
 	}
 
-	public void setupAnim(T p_104137_, float p_104138_, float p_104139_, float p_104140_, float p_104141_, float p_104142_) {
-		this.head.xRot = p_104142_ * ((float) Math.PI / 180F);
-		this.head.yRot = p_104141_ * ((float) Math.PI / 180F);
-		this.tail.xRot = p_104140_;
+	@Override
+	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+		this.head.xRot = headPitch * ((float) Math.PI / 180F);
+		this.head.yRot = netHeadYaw * ((float) Math.PI / 180F);
+		this.tail.xRot = ageInTicks;
 	}
 }

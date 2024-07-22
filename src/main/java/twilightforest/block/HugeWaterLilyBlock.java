@@ -7,7 +7,6 @@ import net.minecraft.world.level.block.WaterlilyBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.common.PlantType;
 
 public class HugeWaterLilyBlock extends WaterlilyBlock {
 
@@ -22,8 +21,4 @@ public class HugeWaterLilyBlock extends WaterlilyBlock {
 		return AABB;
 	}
 
-	@Override
-	public PlantType getPlantType(BlockGetter level, BlockPos pos) {
-		return PlantType.WATER;
-	}
 }
