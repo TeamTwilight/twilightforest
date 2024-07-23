@@ -67,6 +67,15 @@
     },
     {
       "fullbright": false,
+      "opacity_modifier": {
+        "type": "day_time",
+        "from": 22331.0,
+        "invert": false,
+        "max": 1.0,
+        "min": 0.0,
+        "multiplier": 0.25,
+        "to": 2000.0
+      },
       "parallax": {
         "type": "view_angle",
         "height": 52,
@@ -128,10 +137,6 @@
         "width": 74
       },
       "path": "bl_greeblings_lightning"
-    },
-    {
-      "fullbright": false,
-      "path": "bl_shade"
     },
     {
       "fullbright": false,

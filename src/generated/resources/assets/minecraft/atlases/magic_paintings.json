@@ -126,10 +126,6 @@
     },
     {
       "type": "minecraft:single",
-      "resource": "twilightforest:magic_paintings/music_in_the_mire/bl_shade"
-    },
-    {
-      "type": "minecraft:single",
       "resource": "twilightforest:magic_paintings/music_in_the_mire/bl_frame"
     },
     {

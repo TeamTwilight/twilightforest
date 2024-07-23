@@ -1,4 +1,4 @@
-// 1.21	2024-07-19T20:17:14.6584494	Registries
+// 1.21	2024-07-23T15:24:36.4607968	Registries
 9089ada9ce06fd30adf8b10e50f02233c7d5a76e data/minecraft/twilight/wood_palettes/acacia.json
 dca1ef01d0df4e956fd414782de57c25dfddd290 data/minecraft/twilight/wood_palettes/birch.json
 01becb45438b7f2bfdc77baba72bc986341510c8 data/minecraft/twilight/wood_palettes/crimson.json
@@ -84,7 +84,7 @@ f8f3238511ccc3359f44b05df7b5d2cf1ec88fcb data/twilightforest/twilight/dwarf_rabb
 19a7d2411db6718be8a013ad8840fc577d34e35a data/twilightforest/twilight/magic_paintings/castaway_paradise.json
 4e2435a70361840eed424a06be2a6a8071794ee5 data/twilightforest/twilight/magic_paintings/darkness.json
 36882cb2f958b4f23897314388456fdea15ed267 data/twilightforest/twilight/magic_paintings/lucid_lands.json
-c041f99b6140023d6236c3b51ed221a5ea3802ba data/twilightforest/twilight/magic_paintings/music_in_the_mire.json
+78cc738737d44d063c4af36d2f172486e4e3463b data/twilightforest/twilight/magic_paintings/music_in_the_mire.json
 7427906865e7f91599077b7fa9e6e044229cd7b3 data/twilightforest/twilight/magic_paintings/the_hostile_paradise.json
 8a1e640cea4e094161230e7329fc7ba07bb3b8e0 data/twilightforest/twilight/restrictions/dark_forest.json
 36b999428506a2d4c1594de7a83fb302bfba4630 data/twilightforest/twilight/restrictions/dark_forest_center.json

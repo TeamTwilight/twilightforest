@@ -47,7 +47,7 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting> {
 		stack.scale(0.0625F, 0.0625F, 0.0625F);
 		VertexConsumer vertexconsumer = buffer.getBuffer(RenderType.entityTranslucent(this.getTextureLocation(painting)));
 
-		this.renderPainting(stack, vertexconsumer, painting, paintingVariant);
+		this.renderPainting(stack, vertexconsumer, painting, paintingVariant, partialTicks);
 		stack.popPose();
 		super.render(painting, yaw, partialTicks, stack, buffer, packedLight);
 	}
@@ -57,7 +57,7 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting> {
 		return MagicPaintingTextureManager.ATLAS_LOCATION;
 	}
 
-	private void renderPainting(PoseStack stack, VertexConsumer vertex, MagicPainting painting, MagicPaintingVariant variant) {
+	private void renderPainting(PoseStack stack, VertexConsumer vertex, MagicPainting painting, MagicPaintingVariant variant, float partialTicks) {
 		ResourceLocation textureLocation = MagicPaintingVariant.getVariantResourceLocation(painting.level().registryAccess(), variant);
 
 		int width = variant.width();
@@ -79,7 +79,7 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting> {
 		int posZ = painting.getBlockZ();
 
 		for (MagicPaintingVariant.Layer layer : variant.layers()) {
-			float alpha = this.getAlpha(layer.opacityModifier(), painting);
+			float alpha = this.getAlpha(layer.opacityModifier(), painting, partialTicks);
 			if (alpha <= 0.0F) continue;
 
 			Parallax parallax = layer.parallax();
@@ -94,10 +94,10 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting> {
 			double layerHeightFactor = 1.0D / layerHeightAsBlock;
 
 			double widthDiff = parallax != null ? (widthFactor - layerWidthFactor) * (double) widthAsBlock * 0.5D : 0.0D;
-			double widthOffset = widthDiff != 0.0D ? this.getWidthOffset(parallax, painting, widthDiff) : 0.0D;
+			double widthOffset = widthDiff != 0.0D ? this.getWidthOffset(parallax, painting, widthDiff, partialTicks) : 0.0D;
 
 			double heightDiff = parallax != null ? (heightFactor - layerHeightFactor) * (double) heightAsBlock * 0.5D : 0.0D;
-			double heightOffset = heightDiff != 0.0D ? this.getHeightOffset(parallax, painting, heightDiff) : 0.0D;
+			double heightOffset = heightDiff != 0.0D ? this.getHeightOffset(parallax, painting, heightDiff, partialTicks) : 0.0D;
 
 			TextureAtlasSprite layerTexture = MagicPaintingTextureManager.instance.getLayerSprite(textureLocation, layer);
 
@@ -186,11 +186,11 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting> {
 		vertex.addVertex(pose, x, y, z).setColor(255, 255, 255, (int) (255.0F * a)).setUv(u, v).setOverlay(OverlayTexture.NO_OVERLAY).setLight(light).setNormal(pose, normX, normY, normZ);
 	}
 
-	protected double getWidthOffset(@Nullable Parallax parallax, MagicPainting painting, double widthDiff) {
+	protected double getWidthOffset(@Nullable Parallax parallax, MagicPainting painting, double widthDiff, float partialTicks) {
 		if (parallax != null) switch (parallax.type()) {
 			case VIEW_ANGLE -> {
 				Vec3 camPos = Minecraft.getInstance().cameraEntity != null ?
-					Minecraft.getInstance().cameraEntity.getEyePosition(Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false)) :
+					Minecraft.getInstance().cameraEntity.getEyePosition(partialTicks) :
 					Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
 
 				Vec3 paintPos = painting.position().relative(painting.getDirection().getOpposite(), 1.0D);
@@ -201,10 +201,10 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting> {
 				return widthDiff + Mth.clamp(yRot * parallax.multiplier() * widthDiff, -widthDiff, widthDiff);
 			}
 			case SINE_TIME -> {
-				return widthDiff + (Math.sin((painting.tickCount + Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false)) * parallax.multiplier()) * widthDiff);
+				return widthDiff + (Math.sin((painting.tickCount + partialTicks) * parallax.multiplier()) * widthDiff);
 			}
 			case LINEAR_TIME -> {
-				double trueTick = (painting.tickCount + Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false)) * parallax.multiplier();
+				double trueTick = (painting.tickCount + partialTicks) * parallax.multiplier();
 				double wholeDiff = widthDiff * 2.0D;
 				return widthDiff + (parallax.multiplier() > 0.0D ? -widthDiff + (trueTick % wholeDiff) : widthDiff - (trueTick % wholeDiff));
 			}
@@ -212,11 +212,11 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting> {
 		return 0.0D;
 	}
 
-	protected double getHeightOffset(@Nullable Parallax parallax, MagicPainting painting, double heightDiff) {
+	protected double getHeightOffset(@Nullable Parallax parallax, MagicPainting painting, double heightDiff, float partialTicks) {
 		if (parallax != null) switch (parallax.type()) {
 			case VIEW_ANGLE -> {
 				Vec3 camPos = Minecraft.getInstance().cameraEntity != null ?
-					Minecraft.getInstance().cameraEntity.getEyePosition(Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false)) :
+					Minecraft.getInstance().cameraEntity.getEyePosition(partialTicks) :
 					Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
 
 				Vec3 paintPos = painting.position().relative(painting.getDirection().getOpposite(), 1.0D);
@@ -230,10 +230,10 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting> {
 				return heightDiff - Mth.clamp(xRot * parallax.multiplier() * heightDiff, -heightDiff, heightDiff);
 			}
 			case SINE_TIME -> {
-				return heightDiff - (Math.cos((painting.tickCount + Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false)) * parallax.multiplier()) * heightDiff);
+				return heightDiff - (Math.cos((painting.tickCount + partialTicks) * parallax.multiplier()) * heightDiff);
 			}
 			case LINEAR_TIME -> {
-				double trueTick = (painting.tickCount + Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false)) * parallax.multiplier();
+				double trueTick = (painting.tickCount + partialTicks) * parallax.multiplier();
 				double wholeDiff = heightDiff * 2.0D;
 				return heightDiff - (parallax.multiplier() > 0.0D ? -heightDiff + (trueTick % wholeDiff) : heightDiff - (trueTick % wholeDiff));
 			}
@@ -243,7 +243,7 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting> {
 
 	protected static final float DAY_LENGTH = 24000.0F;
 
-	protected float getAlpha(@Nullable OpacityModifier opacityModifier, MagicPainting painting) {
+	protected float getAlpha(@Nullable OpacityModifier opacityModifier, MagicPainting painting, float partialTicks) {
 		if (opacityModifier == null) return 1.0F;
 
 		float a = 1.0F;
@@ -252,27 +252,29 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting> {
 				Vec3 camPos = Optional.ofNullable(Minecraft.getInstance().cameraEntity).map(Entity::getEyePosition).orElse(Minecraft.getInstance().gameRenderer.getMainCamera().getPosition());
 				a = fromTo(opacityModifier.from(), opacityModifier.to(), (float) camPos.distanceTo(painting.position()));
 			}
-			case WEATHER -> a = painting.level().getRainLevel(Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false));
+			case WEATHER -> a = painting.level().getRainLevel(partialTicks);
 			case STORM -> {
-				float partialTick = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false);
-				a = (painting.level().getRainLevel(partialTick) + painting.level().getThunderLevel(partialTick)) * 0.5F;
+				a = (painting.level().getRainLevel(partialTicks) + painting.level().getThunderLevel(partialTicks)) * 0.5F;
 			}
 			case LIGHTNING -> {
 				if (painting.level() instanceof ClientLevel clientLevel) {
-					a = 1.0F - ((float) (clientLevel.getGameTime() - lastLightning) - Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false)) * opacityModifier.multiplier();
+					a = 1.0F - ((float) (clientLevel.getGameTime() - lastLightning) - partialTicks) * opacityModifier.multiplier();
 					if (a > 0.0F) a = a * a;
 				}
 			}
 			case DAY_TIME -> {
-				float time = painting.level().getTimeOfDay(Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false)) * DAY_LENGTH;
-				if (opacityModifier.from() < opacityModifier.to()) {
-					a = 1.0F - Math.abs(((time - opacityModifier.from()) / (opacityModifier.to() - opacityModifier.from())) - 0.5F) * 2.0F;
-				} else {
-					if (time < opacityModifier.to()) time += DAY_LENGTH;
-					a = 1.0F - Math.abs(((time - opacityModifier.from()) / (opacityModifier.to() + DAY_LENGTH - opacityModifier.from())) - 0.5F) * 2.0F;
+				if (painting.level() instanceof ClientLevel level) {
+					float time = level.dimensionType().fixedTime().orElse(level.dayTime()) + partialTicks;
+
+					if (opacityModifier.from() < opacityModifier.to()) {
+						a = 1.0F - Math.abs(((time - opacityModifier.from()) / (opacityModifier.to() - opacityModifier.from())) - 0.5F) * 2.0F;
+					} else {
+						if (time < opacityModifier.to()) time += DAY_LENGTH;
+						a = 1.0F - Math.abs(((time - opacityModifier.from()) / (opacityModifier.to() + DAY_LENGTH - opacityModifier.from())) - 0.5F) * 2.0F;
+					}
 				}
 			}
-			case SINE_TIME -> a = (float) (Math.sin((painting.tickCount + Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false)) * opacityModifier.multiplier())) * 0.5F + 0.5F;
+			case SINE_TIME -> a = (float) (Math.sin((painting.tickCount + partialTicks) * opacityModifier.multiplier())) * 0.5F + 0.5F;
 			case HEALTH -> {
 				if (Minecraft.getInstance().getCameraEntity() instanceof LivingEntity living) {
 					a = fromTo(opacityModifier.from(), opacityModifier.to(), living.getHealth());
