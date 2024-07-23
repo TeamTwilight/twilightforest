@@ -70,6 +70,7 @@ public class WallSkullCandleBlock extends AbstractSkullCandleBlock {
 		return CODEC;
 	}
 
+	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 		return this.getType() == SkullBlock.Types.PIGLIN ? PIGLIN_AABBS.get(state.getValue(FACING)) : AABBS.get(state.getValue(FACING));
 	}

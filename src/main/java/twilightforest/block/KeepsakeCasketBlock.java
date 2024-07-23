@@ -269,14 +269,17 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 
 	public static DoubleBlockCombiner.Combiner<KeepsakeCasketBlockEntity, Float2FloatFunction> getLidRotationCallback(final LidBlockEntity lid) {
 		return new DoubleBlockCombiner.Combiner<>() {
+			@Override
 			public Float2FloatFunction acceptDouble(KeepsakeCasketBlockEntity casket, KeepsakeCasketBlockEntity oldCasket) {
 				return (angle) -> Math.max(casket.getOpenNess(angle), oldCasket.getOpenNess(angle));
 			}
 
+			@Override
 			public Float2FloatFunction acceptSingle(KeepsakeCasketBlockEntity casket) {
 				return casket::getOpenNess;
 			}
 
+			@Override
 			public Float2FloatFunction acceptNone() {
 				return lid::getOpenNess;
 			}

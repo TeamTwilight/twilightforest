@@ -93,6 +93,7 @@ public class BrittleFlaskItem extends Item {
 		return 32;
 	}
 
+	@Override
 	public UseAnim getUseAnimation(ItemStack stack) {
 		return UseAnim.DRINK;
 	}

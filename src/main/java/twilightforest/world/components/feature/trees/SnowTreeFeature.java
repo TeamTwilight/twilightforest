@@ -96,10 +96,12 @@ public class SnowTreeFeature extends Feature<TreeConfiguration> {
 		return height;
 	}
 
+	@Override
 	protected void setBlock(LevelWriter writer, BlockPos pos, BlockState state) {
 		setBlockKnownShape(writer, pos, state);
 	}
 
+	@Override
 	public final boolean place(FeaturePlaceContext<TreeConfiguration> context) {
 		WorldGenLevel worldgenlevel = context.level();
 		RandomSource randomsource = context.random();
@@ -118,11 +120,13 @@ public class SnowTreeFeature extends Feature<TreeConfiguration> {
 			worldgenlevel.setBlock(p_160548_, p_160549_, 19);
 		};
 		FoliagePlacer.FoliageSetter setter = new FoliagePlacer.FoliageSetter() {
+			@Override
 			public void set(BlockPos pos, BlockState state) {
 				set2.add(pos.immutable());
 				worldgenlevel.setBlock(pos, state, 19);
 			}
 
+			@Override
 			public boolean isSet(BlockPos p_272999_) {
 				return set2.contains(p_272999_);
 			}

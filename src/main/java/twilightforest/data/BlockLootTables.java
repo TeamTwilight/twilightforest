@@ -692,10 +692,12 @@ public class BlockLootTables extends BlockLootSubProvider {
 	}
 
 	//[VanillaCopy] of a few different methods from BlockLoot. These are here just so we can use the modded shears thing
+	@Override
 	protected LootTable.Builder createShearsDispatchTable(Block block, LootPoolEntryContainer.Builder<?> builder) {
 		return createSelfDropDispatchTable(block, HAS_SHEARS, builder);
 	}
 
+	@Override
 	protected LootTable.Builder createSilkTouchOrShearsDispatchTable(Block block, LootPoolEntryContainer.Builder<?> builder) {
 		return createSelfDropDispatchTable(block, HAS_SHEARS.or(this.hasSilkTouch()), builder);
 	}

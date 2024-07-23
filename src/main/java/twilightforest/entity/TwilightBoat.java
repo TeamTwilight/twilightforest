@@ -97,6 +97,7 @@ public class TwilightBoat extends Boat {
 			return this.block;
 		}
 
+		@Override
 		public String toString() {
 			return this.name;
 		}

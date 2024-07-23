@@ -15,6 +15,7 @@ public interface UncraftingPlaceRecipe<C> extends PlaceRecipe<C> {
 	// Slots 11 to 19 are Crafting matrix
 	int matrixOffset = 11;
 
+	@Override
 	default void placeRecipe(int width, int height, int outputSlot, RecipeHolder<?> recipe, Iterator<C> ingredients, int maxAmount) {
 		int widthModified = width;
 		int heightModified = height;

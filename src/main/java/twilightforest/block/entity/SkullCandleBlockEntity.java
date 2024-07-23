@@ -74,6 +74,7 @@ public class SkullCandleBlockEntity extends SkullBlockEntity {
 		}
 	}
 
+	@Override
 	public float getAnimation(float partialTick) {
 		return this.isAnimating ? (float) this.animationTickCount + partialTick : (float) this.animationTickCount;
 	}

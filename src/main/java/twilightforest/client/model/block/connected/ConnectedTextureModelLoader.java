@@ -24,6 +24,7 @@ public class ConnectedTextureModelLoader implements IGeometryLoader<UnbakedConne
 	public ConnectedTextureModelLoader() {
 	}
 
+	@Override
 	public UnbakedConnectedTextureModel read(JsonObject jsonObject, JsonDeserializationContext deserializationContext) throws JsonParseException {
 		JsonObject baseTextureInfo = GsonHelper.getAsJsonObject(jsonObject, "base", new JsonObject());
 		int baseTintIndex = GsonHelper.getAsInt(baseTextureInfo, "tint_index", -1);
