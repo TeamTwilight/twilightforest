@@ -6,8 +6,8 @@
       "parallax": {
         "type": "view_angle",
         "height": 56,
-        "multiplier": -0.015,
-        "width": 80
+        "multiplier": 0.015,
+        "width": 88
       },
       "path": "bl_sky"
     },
@@ -16,8 +16,8 @@
       "parallax": {
         "type": "view_angle",
         "height": 52,
-        "multiplier": -0.015,
-        "width": 78
+        "multiplier": 0.015,
+        "width": 84
       },
       "path": "bl_roots"
     },
@@ -33,7 +33,7 @@
       "parallax": {
         "type": "view_angle",
         "height": 52,
-        "multiplier": -0.015,
+        "multiplier": 0.015,
         "width": 78
       },
       "path": "bl_lightning"
@@ -43,7 +43,7 @@
       "parallax": {
         "type": "view_angle",
         "height": 52,
-        "multiplier": -0.015,
+        "multiplier": 0.015,
         "width": 76
       },
       "path": "bl_mid"
@@ -60,7 +60,7 @@
       "parallax": {
         "type": "view_angle",
         "height": 52,
-        "multiplier": -0.015,
+        "multiplier": 0.015,
         "width": 76
       },
       "path": "bl_mid_lightning"
@@ -70,7 +70,7 @@
       "parallax": {
         "type": "view_angle",
         "height": 52,
-        "multiplier": -0.015,
+        "multiplier": 0.015,
         "width": 76
       },
       "path": "bl_fog"
@@ -80,7 +80,7 @@
       "parallax": {
         "type": "view_angle",
         "height": 48,
-        "multiplier": -0.015,
+        "multiplier": 0.015,
         "width": 74
       },
       "path": "bl_foreground"
@@ -97,7 +97,7 @@
       "parallax": {
         "type": "view_angle",
         "height": 48,
-        "multiplier": -0.015,
+        "multiplier": 0.015,
         "width": 74
       },
       "path": "bl_foreground_lightning"
@@ -107,7 +107,7 @@
       "parallax": {
         "type": "view_angle",
         "height": 48,
-        "multiplier": -0.015,
+        "multiplier": 0.015,
         "width": 74
       },
       "path": "bl_greeblings"
@@ -124,19 +124,13 @@
       "parallax": {
         "type": "view_angle",
         "height": 48,
-        "multiplier": -0.015,
+        "multiplier": 0.015,
         "width": 74
       },
       "path": "bl_greeblings_lightning"
     },
     {
       "fullbright": false,
-      "parallax": {
-        "type": "view_angle",
-        "height": 48,
-        "multiplier": -0.015,
-        "width": 80
-      },
       "path": "bl_shade"
     },
     {
