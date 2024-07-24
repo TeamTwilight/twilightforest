@@ -13,6 +13,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import twilightforest.block.AbstractSkullCandleBlock;
 import twilightforest.block.LightableBlock;
 import twilightforest.block.SkullCandleBlock;
@@ -42,11 +43,14 @@ public class SkullCandleDispenseBehavior extends OptionalDispenseItemBehavior {
 	private static boolean tryAddCandle(ServerLevel level, BlockPos pos, Item candle) {
 		if (level.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) {
 			if (candle == AbstractSkullCandleBlock.candleColorToCandle(AbstractSkullCandleBlock.CandleColors.colorFromInt(sc.getCandleColor())).asItem()) {
-				if (sc.getCandleAmount() < 4) {
-					sc.incrementCandleAmount();
+				BlockState state = level.getBlockState(pos);
+				int candles = state.getValue(BlockStateProperties.CANDLES);
+				if (candles < 4) {
+					level.setBlockAndUpdate(pos, state.setValue(BlockStateProperties.CANDLES, candles + 1));
+
 					level.playSound(null, pos, SoundEvents.CANDLE_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
 					level.getLightEngine().checkBlock(pos);
-					level.sendBlockUpdated(pos, level.getBlockState(pos), level.getBlockState(pos), 1);
+					level.sendBlockUpdated(pos, state, state, 1);
 					return true;
 				}
 			}
@@ -101,7 +105,7 @@ public class SkullCandleDispenseBehavior extends OptionalDispenseItemBehavior {
 			newBlock.defaultBlockState()
 				.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE)
 				.setValue(SkullCandleBlock.ROTATION, level.getBlockState(pos).getValue(SkullBlock.ROTATION)),
-			AbstractSkullCandleBlock.candleToCandleColor(candle).getValue(), 1));
+			AbstractSkullCandleBlock.candleToCandleColor(candle).getValue()));
 		if (level.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) sc.setOwner(profile);
 	}
 
@@ -115,7 +119,7 @@ public class SkullCandleDispenseBehavior extends OptionalDispenseItemBehavior {
 			newBlock.defaultBlockState()
 				.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE)
 				.setValue(WallSkullCandleBlock.FACING, level.getBlockState(pos).getValue(WallSkullBlock.FACING)),
-			AbstractSkullCandleBlock.candleToCandleColor(candle).getValue(), 1));
+			AbstractSkullCandleBlock.candleToCandleColor(candle).getValue()));
 		if (level.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) sc.setOwner(profile);
 	}
 }

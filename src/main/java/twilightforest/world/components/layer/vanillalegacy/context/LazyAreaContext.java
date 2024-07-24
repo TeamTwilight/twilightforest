@@ -5,7 +5,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.LinearCongruentialGenerator;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
-import twilightforest.ASMHooks;
+import twilightforest.util.WorldUtil;
 import twilightforest.world.components.layer.vanillalegacy.Area;
 import twilightforest.world.components.layer.vanillalegacy.area.LazyArea;
 
@@ -16,7 +16,7 @@ public class LazyAreaContext implements BigContext<LazyArea> {
 	private long rval;
 
 	public LazyAreaContext(int maxCache, long salt) {
-		this.seed = mixSeed(ASMHooks.seed, salt);
+		this.seed = mixSeed(WorldUtil.getOverworldSeed(), salt);
 		this.cache = new Long2ObjectLinkedOpenHashMap<>(16, 0.25F);
 		this.cache.defaultReturnValue(Biomes.THE_VOID);
 		this.maxCache = maxCache;

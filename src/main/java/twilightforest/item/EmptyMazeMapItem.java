@@ -23,9 +23,7 @@ public class EmptyMazeMapItem extends ComplexItem {
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		ItemStack itemstack = MazeMapItem.setupNewMap(level, Mth.floor(player.getX()), Mth.floor(player.getZ()), (byte) 0, true, false, Mth.floor(player.getY()), this.mapOres);
 		ItemStack itemstack1 = player.getItemInHand(hand);
-		if (!player.getAbilities().instabuild) {
-			itemstack1.shrink(1);
-		}
+		itemstack1.consume(1, player);
 
 		if (itemstack1.isEmpty()) {
 			return InteractionResultHolder.success(itemstack);

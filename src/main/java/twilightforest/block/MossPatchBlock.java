@@ -6,9 +6,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.common.PlantType;
 
 public class MossPatchBlock extends PatchBlock {
 
@@ -17,13 +15,8 @@ public class MossPatchBlock extends PatchBlock {
 	}
 
 	@Override
-	public boolean canSurvive(BlockState state, LevelReader reader, BlockPos pos) {
-		return reader.getBlockState(pos.below()).isFaceSturdy(reader, pos, Direction.UP);
-	}
-
-	@Override
-	public PlantType getPlantType(BlockGetter getter, BlockPos pos) {
-		return PlantType.CAVE;
+	protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos) {
+		return level.getBlockState(pos.below()).isFaceSturdy(level, pos, Direction.UP);
 	}
 
 	@Override

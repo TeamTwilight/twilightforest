@@ -10,7 +10,7 @@ import net.minecraft.world.item.component.ItemAttributeModifiers;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFItems;
 
-public class GiantSwordItem extends SwordItem implements GiantItem {
+public class GiantSwordItem extends SwordItem {
 
 	public GiantSwordItem(Tier material, Properties properties) {
 		super(material, properties);

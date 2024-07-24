@@ -76,6 +76,7 @@ public class TFGiantRenderer<T extends GiantMiner> extends MobRenderer<T, Player
 			this.handRenderer = handRenderer;
 		}
 
+		@Override
 		public void render(PoseStack stack, MultiBufferSource buffer, int light, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
 			boolean flag = entity.getMainArm() == HumanoidArm.RIGHT;
 			ItemStack itemstack = flag ? entity.getOffhandItem() : entity.getMainHandItem();

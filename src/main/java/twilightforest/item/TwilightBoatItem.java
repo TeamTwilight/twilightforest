@@ -62,9 +62,7 @@ public class TwilightBoatItem extends Item {
 					if (!level.isClientSide()) {
 						level.addFreshEntity(boat);
 						level.gameEvent(player, GameEvent.ENTITY_PLACE, result.getLocation());
-						if (!player.getAbilities().instabuild) {
-							itemstack.shrink(1);
-						}
+						itemstack.consume(1, player);
 					}
 
 					player.awardStat(Stats.ITEM_USED.get(this));

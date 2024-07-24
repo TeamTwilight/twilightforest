@@ -13,7 +13,6 @@ import twilightforest.init.TFBlockEntities;
 public class SkullCandleBlockEntity extends SkullBlockEntity {
 
 	private int candleColor;
-	private int candleAmount;
 
 	private int animationTickCount;
 	private boolean isAnimating;
@@ -22,10 +21,9 @@ public class SkullCandleBlockEntity extends SkullBlockEntity {
 		super(pos, state);
 	}
 
-	public SkullCandleBlockEntity(BlockPos pos, BlockState state, int color, int amount) {
+	public SkullCandleBlockEntity(BlockPos pos, BlockState state, int color) {
 		super(pos, state);
 		this.candleColor = color;
-		this.candleAmount = amount;
 	}
 
 	@Override
@@ -37,21 +35,18 @@ public class SkullCandleBlockEntity extends SkullBlockEntity {
 	protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
 		super.saveAdditional(tag, provider);
 		tag.putInt("CandleColor", this.candleColor);
-		if (this.candleAmount != 0) tag.putInt("CandleAmount", this.candleAmount);
 	}
 
 	@Override
 	protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
 		super.loadAdditional(tag, provider);
 		this.candleColor = tag.getInt("CandleColor");
-		this.candleAmount = tag.getInt("CandleAmount");
 	}
 
 	@Override
 	public CompoundTag getUpdateTag(HolderLookup.Provider provider) {
 		CompoundTag tag = super.getUpdateTag(provider);
 		tag.putInt("CandleColor", this.candleColor);
-		if (this.candleAmount != 0) tag.putInt("CandleAmount", this.candleAmount);
 		return tag;
 	}
 
@@ -64,24 +59,8 @@ public class SkullCandleBlockEntity extends SkullBlockEntity {
 		return this.candleColor;
 	}
 
-	public int getCandleAmount() {
-		return this.candleAmount;
-	}
-
 	public void setCandleColor(int color) {
 		this.candleColor = color;
-		this.setChanged();
-		this.getLevel().sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
-	}
-
-	public void setCandleAmount(int amount) {
-		this.candleAmount = amount;
-		this.setChanged();
-		this.getLevel().sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
-	}
-
-	public void incrementCandleAmount() {
-		this.candleAmount++;
 		this.setChanged();
 		this.getLevel().sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
 	}
@@ -93,9 +72,9 @@ public class SkullCandleBlockEntity extends SkullBlockEntity {
 		} else {
 			entity.isAnimating = false;
 		}
-
 	}
 
+	@Override
 	public float getAnimation(float partialTick) {
 		return this.isAnimating ? (float) this.animationTickCount + partialTick : (float) this.animationTickCount;
 	}

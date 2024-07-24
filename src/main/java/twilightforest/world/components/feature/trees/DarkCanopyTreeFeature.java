@@ -95,11 +95,13 @@ public class DarkCanopyTreeFeature extends Feature<TreeConfiguration> {
 			reader.setBlock(p_160548_, p_160549_, 19);
 		};
 		FoliagePlacer.FoliageSetter setter = new FoliagePlacer.FoliageSetter() {
+			@Override
 			public void set(BlockPos pos, BlockState state) {
 				set2.add(pos.immutable());
 				reader.setBlock(pos, state, 19);
 			}
 
+			@Override
 			public boolean isSet(BlockPos p_272999_) {
 				return set2.contains(p_272999_);
 			}
@@ -177,6 +179,7 @@ public class DarkCanopyTreeFeature extends Feature<TreeConfiguration> {
 		return trunkHeight;
 	}
 
+	@Override
 	protected void setBlock(LevelWriter world, BlockPos pos, BlockState state) {
 		setBlockKnownShape(world, pos, state);
 	}

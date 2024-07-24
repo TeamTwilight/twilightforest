@@ -263,7 +263,7 @@ public class EntityEvents {
 							return;
 						}
 					}
-					if (!event.getEntity().getAbilities().instabuild) stack.shrink(1);
+					stack.consume(1, event.getEntity());
 					event.getEntity().swing(event.getHand());
 					if (event.getEntity() instanceof ServerPlayer)
 						event.getEntity().awardStat(TFStats.SKULL_CANDLES_MADE.get());
@@ -288,7 +288,7 @@ public class EntityEvents {
 			newBlock.defaultBlockState()
 				.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE)
 				.setValue(SkullCandleBlock.ROTATION, level.getBlockState(event.getPos()).getValue(SkullBlock.ROTATION)),
-			AbstractSkullCandleBlock.candleToCandleColor(event.getItemStack().getItem()).getValue(), 1));
+			AbstractSkullCandleBlock.candleToCandleColor(event.getItemStack().getItem()).getValue()));
 		if (level.getBlockEntity(event.getPos()) instanceof SkullCandleBlockEntity sc) sc.setOwner(profile);
 	}
 
@@ -306,7 +306,7 @@ public class EntityEvents {
 			newBlock.defaultBlockState()
 				.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE)
 				.setValue(WallSkullCandleBlock.FACING, level.getBlockState(event.getPos()).getValue(WallSkullBlock.FACING)),
-			AbstractSkullCandleBlock.candleToCandleColor(event.getItemStack().getItem()).getValue(), 1));
+			AbstractSkullCandleBlock.candleToCandleColor(event.getItemStack().getItem()).getValue()));
 		if (level.getBlockEntity(event.getPos()) instanceof SkullCandleBlockEntity sc) sc.setOwner(profile);
 	}
 

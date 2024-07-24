@@ -29,9 +29,7 @@ public class EmptyMagicMapItem extends ComplexItem {
 
 		// TF - scale at 4
 		ItemStack newMapStack = MagicMapItem.setupNewMap(level, Mth.floor(player.getX()), Mth.floor(player.getZ()), (byte) 4, true, false);
-		if (!player.getAbilities().instabuild) {
-			emptyMapStack.shrink(1);
-		}
+		emptyMapStack.consume(1, player);
 
 		if (emptyMapStack.isEmpty()) {
 			return InteractionResultHolder.success(newMapStack);

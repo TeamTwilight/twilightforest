@@ -10,7 +10,7 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
-import twilightforest.asm.AsmUtil;
+import twilightforest.asm.ASMUtil;
 
 import java.util.Set;
 
@@ -21,7 +21,7 @@ public class ArmorColorRenderingTransformer implements ITransformer<MethodNode> 
 
 	@Override
 	public @NotNull MethodNode transform(MethodNode node, ITransformerVotingContext context) {
-		AsmUtil.findMethodInstructions(
+		ASMUtil.findMethodInstructions(
 			node,
 			Opcodes.INVOKESTATIC,
 			"net/minecraft/world/item/component/DyedItemColor",

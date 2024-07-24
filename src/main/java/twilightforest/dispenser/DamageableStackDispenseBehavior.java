@@ -32,6 +32,7 @@ public abstract class DamageableStackDispenseBehavior extends DefaultDispenseIte
 		return stack;
 	}
 
+	@Override
 	protected void playSound(BlockSource source) {
 		if (this.fired) {
 			source.level().playSound(null, source.center().x(), source.center().y(), source.center().z(), this.getFiredSound(), SoundSource.NEUTRAL, 1.0F, 1.0F);

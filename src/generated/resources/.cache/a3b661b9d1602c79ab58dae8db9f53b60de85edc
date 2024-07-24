@@ -1,19 +1,15 @@
-// 1.21	2024-06-24T18:52:28.4131444	Twilight Forest Item Tags
+// 1.21	2024-07-13T11:48:40.034952	Twilight Forest Item Tags
 3c5895c72cfffe09615ec2b28267a726fcbf52e8 data/alexscaves/tags/item/ferns.json
 4c5df8d60b8f068b482a22fd807ddea22e1bfe00 data/alexscaves/tags/item/ferromagnetic_items.json
 42afac82c004061587d5b1ae20c2e66c0d399c8c data/alexscaves/tags/item/raw_meats.json
-4dced7c5c98b183e1d94bafa23126914eb919706 data/createaddition/tags/item/plants.json
-932db6906454527b9d89f0655bd6071261e0ebd3 data/createaddition/tags/item/plant_foods.json
-3fd61fbbfac1e6fc37d3e6300cb548fdf13b2688 data/curios/tags/item/charm.json
-8c9bf988d87251fa01c2ebab384b3140345c0ef4 data/curios/tags/item/head.json
 3d56c0ea016f639fad4fae4272d928867251da04 data/c/tags/item/chests/wooden.json
 3fc964a8f6314a307c994f9481e1ad6ca6d39785 data/c/tags/item/feathers.json
 211134157771c86a72a0c5a1985c2b05da55729b data/c/tags/item/fence_gates/wooden.json
-932db6906454527b9d89f0655bd6071261e0ebd3 data/c/tags/item/foods/berries.json
-747e752a3e4621e7200c41e7206040978f2380e9 data/c/tags/item/foods/cooked_meats.json
+932db6906454527b9d89f0655bd6071261e0ebd3 data/c/tags/item/foods/berry.json
+747e752a3e4621e7200c41e7206040978f2380e9 data/c/tags/item/foods/cooked_meat.json
 a9956ad8e4792ffb57c8825a50c8715ad893ba0b data/c/tags/item/foods/edible_when_placed.json
-42afac82c004061587d5b1ae20c2e66c0d399c8c data/c/tags/item/foods/raw_meats.json
-c2ff4ca98832e35ed824828949998129f1e05f15 data/c/tags/item/foods/soups.json
+42afac82c004061587d5b1ae20c2e66c0d399c8c data/c/tags/item/foods/raw_meat.json
+c2ff4ca98832e35ed824828949998129f1e05f15 data/c/tags/item/foods/soup.json
 bdd0576fc21bdaef37e030e39e717039d885ad56 data/c/tags/item/gems.json
 59f0dea7ea969cac60bf1ef1576b47003387759e data/c/tags/item/gems/carminite.json
 16ede5ab05d9c3eccdef8cac15306de9f682ef0f data/c/tags/item/ingots.json
@@ -34,6 +30,10 @@ e1e1daa9f0fa727681cf4eb0a0a2cbde40e6708d data/c/tags/item/storage_blocks/knightm
 34bb5d122fd15f6d868a5ff3cfe8ac8eafc6e892 data/c/tags/item/storage_blocks/steeleaf.json
 2973abf7fe5598a763a9738ca24c06f80b1eb5b1 data/c/tags/item/tools/bow.json
 1b205b8add451aa431d3db9121828f233c2cbad2 data/c/tags/item/tools/shield.json
+932db6906454527b9d89f0655bd6071261e0ebd3 data/createaddition/tags/item/plant_foods.json
+4dced7c5c98b183e1d94bafa23126914eb919706 data/createaddition/tags/item/plants.json
+3fd61fbbfac1e6fc37d3e6300cb548fdf13b2688 data/curios/tags/item/charm.json
+8c9bf988d87251fa01c2ebab384b3140345c0ef4 data/curios/tags/item/head.json
 42afac82c004061587d5b1ae20c2e66c0d399c8c data/farmersdelight/tags/item/cabbage_roll_ingredients.json
 a60dbce39527970b03af723b64656128b26f70e6 data/minecraft/tags/item/axes.json
 6e4052d645637e55eca3bdbaebd8fbaf2a2cfbc4 data/minecraft/tags/item/beacon_payment_items.json
@@ -77,8 +77,8 @@ bb39f860aaf80d261eee2fc6cf18ee75a411d1c1 data/minecraft/tags/item/slabs.json
 4304b5a72638ce0626ae45be178a5669cea32d38 data/minecraft/tags/item/small_flowers.json
 60d2c0021214d67e32e5edc0ee008326caa52bf7 data/minecraft/tags/item/stairs.json
 931bc115353e6c267d36d480a5891285fde13487 data/minecraft/tags/item/swords.json
-8c1ea92416b4f7fc8d8f95638d2939ad2165356c data/minecraft/tags/item/trimmable_armor.json
 33e52f2e89c4cebba996ae0eae4b4974291b9d81 data/minecraft/tags/item/trim_materials.json
+8c1ea92416b4f7fc8d8f95638d2939ad2165356c data/minecraft/tags/item/trimmable_armor.json
 f0813a14ba178a941ba37c4059a25e6b19f77091 data/minecraft/tags/item/wooden_buttons.json
 3ff910b3376b5166da794689b1bf7569ad0b2e87 data/minecraft/tags/item/wooden_doors.json
 879fc86d9d7face7697fbbb62565885740fc7f41 data/minecraft/tags/item/wooden_fences.json
@@ -94,7 +94,7 @@ db3a933719c405a3ec1c7ba068704346c2eb30a0 data/twilightforest/tags/item/banned_un
 4f38a04e314d2d9244774aef16dc773b5870f883 data/twilightforest/tags/item/boar_tempt_items.json
 84101198c6b6d645c6e155abb5349d33e7279300 data/twilightforest/tags/item/canopy_logs.json
 97652f431059f64ffc5747f498cdcf278ddd0555 data/twilightforest/tags/item/darkwood_logs.json
-f1cb295ef002a69e313af22c886f0c53bea432ac data/twilightforest/tags/item/deer_tempt_items.json
+34361cff7fe1d4c78efc9ccb282be74dda8e0396 data/twilightforest/tags/item/deer_tempt_items.json
 13479a4922cba9026005d5176b48bae8b434b56d data/twilightforest/tags/item/dwarf_rabbit_tempt_items.json
 e69d5be074938c1ff9a1853ff8da6782500ff92f data/twilightforest/tags/item/enchantable/block_and_chain.json
 b428c7e83405bbb26b44a4f5e0471b9c8d8b3721 data/twilightforest/tags/item/fiery_vial.json
