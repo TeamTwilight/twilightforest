@@ -11,13 +11,17 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.alchemy.Potion;
+import twilightforest.beans.Autowired;
 import twilightforest.init.TFAdvancements;
+import twilightforest.util.HolderMatcher;
 
 import java.util.Optional;
 
 public class DrinkFromFlaskTrigger extends SimpleCriterionTrigger<DrinkFromFlaskTrigger.TriggerInstance> {
 
-	@Override
+	@Autowired
+	private static HolderMatcher holderMatcher;
+
 	public Codec<DrinkFromFlaskTrigger.TriggerInstance> codec() {
 		return DrinkFromFlaskTrigger.TriggerInstance.CODEC;
 	}
@@ -36,7 +40,7 @@ public class DrinkFromFlaskTrigger extends SimpleCriterionTrigger<DrinkFromFlask
 			.apply(instance, DrinkFromFlaskTrigger.TriggerInstance::new));
 
 		public boolean matches(int doses, int seconds, Holder<Potion> potion) {
-			return this.doses().matches(doses) && this.seconds().matches(seconds) && this.potion() == potion;
+			return this.doses().matches(doses) && this.seconds().matches(seconds) && holderMatcher.match(this.potion(), potion);
 		}
 
 		public static Criterion<DrinkFromFlaskTrigger.TriggerInstance> drankPotion(int doses, MinMaxBounds.Ints seconds, Holder<Potion> potion) {
