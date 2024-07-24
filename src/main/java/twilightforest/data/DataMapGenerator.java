@@ -135,8 +135,6 @@ public class DataMapGenerator extends DataMapProvider {
 		this.add2WayTransform(transformation, TFEntities.CARMINITE_GHASTGUARD, EntityType.GHAST);
 		this.add2WayTransform(transformation, TFEntities.TOWERWOOD_BORER, EntityType.SILVERFISH);
 		this.add2WayTransform(transformation, TFEntities.MAZE_SLIME, EntityType.SLIME);
-		this.add2WayTransform(transformation, TFEntities.CARMINITE_GOLEM, EntityType.IRON_GOLEM);
-		this.add2WayTransform(transformation, TFEntities.STABLE_ICE_CORE, EntityType.SNOW_GOLEM);
 		this.add2WayTransform(transformation, TFEntities.SQUIRREL, EntityType.FOX);
 		this.add2WayTransform(transformation, TFEntities.HEDGE_SPIDER, EntityType.SPIDER);
 		this.add2WayTransform(transformation, TFEntities.CARMINITE_BROODLING, EntityType.CAVE_SPIDER);
