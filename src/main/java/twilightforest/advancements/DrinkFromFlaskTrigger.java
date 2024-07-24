@@ -12,22 +12,24 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.alchemy.Potion;
 import twilightforest.beans.Autowired;
+import twilightforest.beans.Configurable;
 import twilightforest.init.TFAdvancements;
 import twilightforest.util.HolderMatcher;
 
 import java.util.Optional;
 
+@Configurable
 public class DrinkFromFlaskTrigger extends SimpleCriterionTrigger<DrinkFromFlaskTrigger.TriggerInstance> {
 
 	@Autowired
-	private static HolderMatcher holderMatcher;
+	private HolderMatcher holderMatcher;
 
 	public Codec<DrinkFromFlaskTrigger.TriggerInstance> codec() {
 		return DrinkFromFlaskTrigger.TriggerInstance.CODEC;
 	}
 
 	public void trigger(ServerPlayer player, int doses, int seconds, Holder<Potion> potion) {
-		this.trigger(player, (instance) -> instance.matches(doses, seconds, potion));
+		this.trigger(player, (instance) -> instance.matches(this, doses, seconds, potion));
 	}
 
 	public record TriggerInstance(Optional<ContextAwarePredicate> player, MinMaxBounds.Ints doses, MinMaxBounds.Ints seconds, Holder<Potion> potion) implements SimpleInstance {
@@ -39,8 +41,8 @@ public class DrinkFromFlaskTrigger extends SimpleCriterionTrigger<DrinkFromFlask
 				BuiltInRegistries.POTION.holderByNameCodec().fieldOf("potion").forGetter(DrinkFromFlaskTrigger.TriggerInstance::potion))
 			.apply(instance, DrinkFromFlaskTrigger.TriggerInstance::new));
 
-		public boolean matches(int doses, int seconds, Holder<Potion> potion) {
-			return this.doses().matches(doses) && this.seconds().matches(seconds) && holderMatcher.match(this.potion(), potion);
+		public boolean matches(DrinkFromFlaskTrigger parent, int doses, int seconds, Holder<Potion> potion) {
+			return this.doses().matches(doses) && this.seconds().matches(seconds) && parent.holderMatcher.match(this.potion(), potion);
 		}
 
 		public static Criterion<DrinkFromFlaskTrigger.TriggerInstance> drankPotion(int doses, MinMaxBounds.Ints seconds, Holder<Potion> potion) {
