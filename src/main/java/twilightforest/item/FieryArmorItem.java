@@ -15,12 +15,17 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.client.model.TFModelLayers;
-import twilightforest.client.model.armor.TFArmorModel;
+import twilightforest.client.model.armor.FieryArmorModel;
+import twilightforest.init.TFEnchantments;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
 public class FieryArmorItem extends ArmorItem {
@@ -48,7 +53,7 @@ public class FieryArmorItem extends ArmorItem {
 		public @NotNull HumanoidModel<?> getHumanoidArmorModel(LivingEntity living, ItemStack stack, EquipmentSlot slot, HumanoidModel<?> model) {
 			EntityModelSet models = Minecraft.getInstance().getEntityModels();
 			ModelPart root = models.bakeLayer(slot == EquipmentSlot.LEGS ? TFModelLayers.FIERY_ARMOR_INNER : TFModelLayers.FIERY_ARMOR_OUTER);
-			return new TFArmorModel(root);
+			return new FieryArmorModel(root);
 		}
 	}
 }
