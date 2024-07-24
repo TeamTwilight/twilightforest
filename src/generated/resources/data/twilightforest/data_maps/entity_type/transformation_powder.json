@@ -18,9 +18,6 @@
     "minecraft:ghast": {
       "transform_to": "twilightforest:carminite_ghastguard"
     },
-    "minecraft:iron_golem": {
-      "transform_to": "twilightforest:carminite_golem"
-    },
     "minecraft:parrot": {
       "transform_to": "twilightforest:tiny_bird"
     },
@@ -38,9 +35,6 @@
     },
     "minecraft:slime": {
       "transform_to": "twilightforest:maze_slime"
-    },
-    "minecraft:snow_golem": {
-      "transform_to": "twilightforest:stable_ice_core"
     },
     "minecraft:spider": {
       "transform_to": "twilightforest:hedge_spider"
@@ -68,9 +62,6 @@
     },
     "twilightforest:carminite_ghastguard": {
       "transform_to": "minecraft:ghast"
-    },
-    "twilightforest:carminite_golem": {
-      "transform_to": "minecraft:iron_golem"
     },
     "twilightforest:deer": {
       "transform_to": "minecraft:cow"
@@ -101,12 +92,6 @@
     },
     "twilightforest:squirrel": {
       "transform_to": "minecraft:fox"
-    },
-    "twilightforest:stable_ice_core": {
-      "transform_to": "minecraft:snow_golem"
-    },
-    "twilightforest:swarm_spider": {
-      "transform_to": "minecraft:cave_spider"
     },
     "twilightforest:tiny_bird": {
       "transform_to": "minecraft:parrot"
