@@ -54,6 +54,7 @@ import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
+import twilightforest.beans.Autowired;
 import twilightforest.block.GiantBlock;
 import twilightforest.block.MiniatureStructureBlock;
 import twilightforest.block.entity.GrowingBeanstalkBlockEntity;
@@ -76,6 +77,7 @@ import twilightforest.entity.boss.bar.ClientTFBossBar;
 import twilightforest.events.HostileMountEvents;
 import twilightforest.init.*;
 import twilightforest.item.*;
+import twilightforest.util.HolderMatcher;
 
 import java.util.HashSet;
 import java.util.List;
@@ -379,6 +381,9 @@ public class TFClientEvents {
 	private static int aurora = 0;
 	private static int lastAurora = 0;
 
+	@Autowired
+	private static HolderMatcher holderMatcher;
+
 	@SubscribeEvent
 	public static void clientTick(ClientTickEvent.Post event) {
 		Minecraft mc = Minecraft.getInstance();
@@ -397,7 +402,7 @@ public class TFClientEvents {
 			if (Minecraft.getInstance().level != null && Minecraft.getInstance().cameraEntity != null && !TFConfig.getValidAuroraBiomes(Minecraft.getInstance().level.registryAccess()).isEmpty()) {
 				RegistryAccess access = Minecraft.getInstance().level.registryAccess();
 				Holder<Biome> biome = Minecraft.getInstance().level.getBiome(Minecraft.getInstance().cameraEntity.blockPosition());
-				if (TFConfig.getValidAuroraBiomes(access).contains(access.registryOrThrow(Registries.BIOME).getKey(biome.value())))
+				if (TFConfig.getValidAuroraBiomes(access).stream().anyMatch(c -> holderMatcher.match(c, biome)))
 					aurora++;
 				else
 					aurora--;
