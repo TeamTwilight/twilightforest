@@ -99,6 +99,7 @@ public class NewDeerModel extends QuadrupedModel<Deer> {
 		}
 	}
 
+	@Override
 	public void setupAnim(Deer entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.realHead.getChild("right_antler").visible = !entity.isBaby();
 		this.realHead.getChild("left_antler").visible = !entity.isBaby();

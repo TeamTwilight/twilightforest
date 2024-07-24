@@ -28,6 +28,7 @@ public class MazeSlimeRenderer extends MobRenderer<MazeSlime, SlimeModel<MazeSli
 		super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
 	}
 
+	@Override
 	protected void scale(MazeSlime p_115983_, PoseStack p_115984_, float p_115985_) {
 		p_115984_.scale(0.999F, 0.999F, 0.999F);
 		p_115984_.translate(0.0D, 0.0010000000474974513D, 0.0D);

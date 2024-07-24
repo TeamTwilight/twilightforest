@@ -6,6 +6,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.inventory.ResultSlot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -71,23 +72,30 @@ public class UncraftingResultSlot extends ResultSlot {
 		//VanillaCopy of the super method, but altered to work with the assembly matrix
 		this.checkTakeAchievements(stack);
 
+		CraftingInput.Positioned positioned = this.assemblyMatrix.asPositionedCraftInput();
+		CraftingInput input = positioned.input();
+		int i = positioned.left();
+		int j = positioned.top();
 		CommonHooks.setCraftingPlayer(player);
-		NonNullList<ItemStack> remainingItems = player.level().getRecipeManager().getRemainingItemsFor(RecipeType.CRAFTING, this.assemblyMatrix.asCraftInput(), player.level());
+		NonNullList<ItemStack> remainingItems = player.level().getRecipeManager().getRemainingItemsFor(RecipeType.CRAFTING, input, player.level());
 		CommonHooks.setCraftingPlayer(null);
 
-		for (int i = 0; i < remainingItems.size(); ++i) {
-			ItemStack currentStack = this.assemblyMatrix.getItem(i);
-			ItemStack remainingStack = remainingItems.get(i);
-			if (!currentStack.isEmpty()) {
-				this.assemblyMatrix.removeItem(i, 1);
-				currentStack = this.assemblyMatrix.getItem(i);
-			}
+		for (int k = 0; k < input.height(); k++) {
+			for (int l = 0; l < input.width(); l++) {
+				int index = l + i + (k + j) * this.assemblyMatrix.getWidth();
+				ItemStack currentStack = this.assemblyMatrix.getItem(index);
+				ItemStack remainingStack = remainingItems.get(l + k * input.width());
+				if (!currentStack.isEmpty()) {
+					this.assemblyMatrix.removeItem(index, 1);
+					currentStack = this.assemblyMatrix.getItem(index);
+				}
 
-			if (!remainingStack.isEmpty()) {
-				if (currentStack.isEmpty()) {
-					this.assemblyMatrix.setItem(i, remainingStack);
-				} else if (!ItemStack.isSameItemSameComponents(currentStack, remainingStack) && !this.player.getInventory().add(remainingStack)) {
-					this.player.drop(remainingStack, false);
+				if (!remainingStack.isEmpty()) {
+					if (currentStack.isEmpty()) {
+						this.assemblyMatrix.setItem(index, remainingStack);
+					} else if (!ItemStack.isSameItemSameComponents(currentStack, remainingStack) && !this.player.getInventory().add(remainingStack)) {
+						this.player.drop(remainingStack, false);
+					}
 				}
 			}
 		}

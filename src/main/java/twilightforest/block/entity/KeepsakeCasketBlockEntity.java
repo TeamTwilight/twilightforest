@@ -186,6 +186,7 @@ public class KeepsakeCasketBlockEntity extends RandomizableContainerBlockEntity 
 		super.setRemoved();
 	}
 
+	@Override
 	public void startOpen(Player player) {
 		if (!player.isSpectator()) {
 			if (this.numPlayersUsing < 0) {
@@ -197,6 +198,7 @@ public class KeepsakeCasketBlockEntity extends RandomizableContainerBlockEntity 
 
 	}
 
+	@Override
 	public void stopOpen(Player player) {
 		if (!player.isSpectator()) {
 			--this.numPlayersUsing;

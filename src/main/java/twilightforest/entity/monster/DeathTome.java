@@ -92,6 +92,7 @@ public class DeathTome extends Monster implements RangedAttackMob {
 	@Override
 	protected PathNavigation createNavigation(Level level) {
 		FlyingPathNavigation flyingpathnavigation = new FlyingPathNavigation(this, level) {
+			@Override
 			public boolean isStableDestination(BlockPos pos) {
 				return !this.level.getBlockState(pos.below()).isAir();
 			}

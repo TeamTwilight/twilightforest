@@ -267,6 +267,7 @@ public class Wraith extends FlyingMob implements Enemy, EnforcedHomePoint {
 			this.setFlags(EnumSet.of(Goal.Flag.MOVE));
 		}
 
+		@Override
 		public boolean canUse() {
 			if (this.mob.isMobWithinHomeArea(this.mob) || this.mob.getTarget() != null) {
 				return false;
@@ -285,10 +286,12 @@ public class Wraith extends FlyingMob implements Enemy, EnforcedHomePoint {
 			}
 		}
 
+		@Override
 		public boolean canContinueToUse() {
 			return false;
 		}
 
+		@Override
 		public void start() {
 			this.mob.getMoveControl().setWantedPosition(this.wantedX, this.wantedY, this.wantedZ, this.speedModifier);
 		}

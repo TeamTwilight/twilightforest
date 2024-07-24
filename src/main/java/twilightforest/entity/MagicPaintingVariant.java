@@ -116,23 +116,25 @@ public record MagicPaintingVariant(int width, int height, List<Layer> layers) {
 			}
 
 			public enum Type implements StringRepresentable {
-				DISTANCE("distance", true),
-				WEATHER("weather", false),
-				STORM("storm", false),
-				LIGHTNING("lightning", false),
-				DAY_TIME("day_time", true),
-				SINE_TIME("sine_time", false),
-				HEALTH("health", true),
-				HUNGER("hunger", true),
-				HOLDING_ITEM("holding_item", false);
+				DISTANCE("distance", true, true),
+				WEATHER("weather", false, true),
+				STORM("storm", false, true),
+				LIGHTNING("lightning", false, false),
+				DAY_TIME("day_time", true, true),
+				SINE_TIME("sine_time", false, false),
+				HEALTH("health", true, true),
+				HUNGER("hunger", true, true),
+				HOLDING_ITEM("holding_item", false, true);
 
 				static final Codec<OpacityModifier.Type> CODEC = StringRepresentable.fromEnum(OpacityModifier.Type::values);
 				private final String name;
-				private final boolean usesRange;
+				private final boolean usesRange; // Is this modifier forced to have a defined range
+				private final boolean toThePowerOfItsMultiplier; // Is this modifier's alpha calculated to the power of its multiplier value
 
-				Type(String pName, boolean usesRange) {
+				Type(String pName, boolean usesRange, boolean toThePowerOfItsMultiplier) {
 					this.name = pName;
 					this.usesRange = usesRange;
+					this.toThePowerOfItsMultiplier = toThePowerOfItsMultiplier;
 				}
 
 				@Override
@@ -142,6 +144,10 @@ public record MagicPaintingVariant(int width, int height, List<Layer> layers) {
 
 				public boolean usesRange() {
 					return this.usesRange;
+				}
+
+				public boolean powerOfMultiplier() {
+					return this.toThePowerOfItsMultiplier;
 				}
 			}
 		}

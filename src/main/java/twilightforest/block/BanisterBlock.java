@@ -33,7 +33,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.common.ToolActions;
+import net.neoforged.neoforge.common.ItemAbilities;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.enums.BanisterShape;
@@ -132,7 +132,7 @@ public class BanisterBlock extends HorizontalDirectionalBlock implements SimpleW
 
 	@Override
 	public @Nullable PathType getBlockPathType(BlockState state, BlockGetter level, BlockPos pos, @Nullable Mob mob) {
-		return PathType.BLOCKED;
+		return PathType.FENCE;
 	}
 
 	@Override
@@ -147,7 +147,7 @@ public class BanisterBlock extends HorizontalDirectionalBlock implements SimpleW
 
 	@Override
 	protected ItemInteractionResult useItemOn(ItemStack held, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
-		if (held.canPerformAction(ToolActions.AXE_WAX_OFF)) {
+		if (held.canPerformAction(ItemAbilities.AXE_WAX_OFF)) {
 			BlockState newState = state.cycle(SHAPE);
 			BlockState belowState = level.getBlockState(pos.below());
 

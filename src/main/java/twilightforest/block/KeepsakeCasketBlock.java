@@ -19,10 +19,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.BlockItemStateProperties;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Explosion;
-import net.minecraft.world.level.GameRules;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -143,7 +140,7 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 				}
 			} else {
 				if (stack.getItem() == TFItems.CHARM_OF_KEEPING_3.get() && state.getValue(BREAKAGE) > 0) {
-					if (!player.isCreative()) stack.shrink(1);
+					stack.consume(1, player);
 					level.setBlockAndUpdate(pos, state.setValue(BREAKAGE, state.getValue(BREAKAGE) - 1));
 					level.playSound(null, pos, TFSounds.CASKET_REPAIR.get(), SoundSource.BLOCKS, 0.5F, level.getRandom().nextFloat() * 0.1F + 0.9F);
 					flag = true;
@@ -272,14 +269,17 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 
 	public static DoubleBlockCombiner.Combiner<KeepsakeCasketBlockEntity, Float2FloatFunction> getLidRotationCallback(final LidBlockEntity lid) {
 		return new DoubleBlockCombiner.Combiner<>() {
+			@Override
 			public Float2FloatFunction acceptDouble(KeepsakeCasketBlockEntity casket, KeepsakeCasketBlockEntity oldCasket) {
 				return (angle) -> Math.max(casket.getOpenNess(angle), oldCasket.getOpenNess(angle));
 			}
 
+			@Override
 			public Float2FloatFunction acceptSingle(KeepsakeCasketBlockEntity casket) {
 				return casket::getOpenNess;
 			}
 
+			@Override
 			public Float2FloatFunction acceptNone() {
 				return lid::getOpenNess;
 			}
@@ -289,5 +289,15 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 	@Override
 	public Optional<SoundEvent> getPickupSound() {
 		return Optional.empty();
+	}
+
+	@Override
+	protected BlockState rotate(BlockState state, Rotation rotation) {
+		return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
+	}
+
+	@Override
+	protected BlockState mirror(BlockState state, Mirror mirror) {
+		return state.setValue(FACING, mirror.mirror(state.getValue(FACING)));
 	}
 }

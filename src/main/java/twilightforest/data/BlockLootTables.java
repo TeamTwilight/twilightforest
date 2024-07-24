@@ -29,12 +29,13 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePrope
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
-import net.neoforged.neoforge.common.ToolActions;
-import net.neoforged.neoforge.common.loot.CanToolPerformAction;
+import net.neoforged.neoforge.common.ItemAbilities;
+import net.neoforged.neoforge.common.loot.CanItemPerformAbility;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import twilightforest.block.*;
 import twilightforest.enums.HollowLogVariants;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFItems;
 
 import java.util.Set;
@@ -44,7 +45,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 	// [VanillaCopy] of BlockLoot fields, just changed shears to work with modded ones
 	private static final float[] DEFAULT_SAPLING_DROP_RATES = new float[]{0.05F, 0.0625F, 0.083333336F, 0.1F};
 	private static final float[] RARE_SAPLING_DROP_RATES = new float[]{0.025F, 0.027777778F, 0.03125F, 0.041666668F, 0.1F};
-	private static final LootItemCondition.Builder HAS_SHEARS = CanToolPerformAction.canToolPerformAction(ToolActions.SHEARS_DIG);
+	private static final LootItemCondition.Builder HAS_SHEARS = CanItemPerformAbility.canItemPerformAbility(ItemAbilities.SHEARS_DIG);
 
 	public BlockLootTables(HolderLookup.Provider provider) {
 		super(Set.of(), FeatureFlags.REGISTRY.allFlags(), provider);
@@ -150,9 +151,57 @@ public class BlockLootTables extends BlockLootSubProvider {
 		add(TFBlocks.LIVEROOT_BLOCK.get(), createSilkTouchDispatchTable(TFBlocks.LIVEROOT_BLOCK.get(), applyExplosionCondition(TFBlocks.LIVEROOT_BLOCK.get(), LootItem.lootTableItem(TFItems.LIVEROOT.get()).apply(ApplyBonusCount.addOreBonusCount(registrylookup.getOrThrow(Enchantments.FORTUNE))))));
 		add(TFBlocks.MANGROVE_ROOT.get(), createSingleItemTableWithSilkTouch(TFBlocks.MANGROVE_ROOT.get(), Items.STICK, UniformGenerator.between(3, 5)));
 		dropSelf(TFBlocks.UNCRAFTING_TABLE.get());
-		dropSelf(TFBlocks.FIREFLY_JAR.get());
+
+		this.add(TFBlocks.MASON_JAR.get(), LootTable.lootTable().withPool(
+			this.applyExplosionCondition(
+				TFBlocks.MASON_JAR.get(),
+				LootPool.lootPool()
+					.setRolls(ConstantValue.exactly(1.0F))
+					.add(
+						LootItem.lootTableItem(TFBlocks.MASON_JAR.get())
+							.apply(
+								CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
+									.include(DataComponents.CUSTOM_NAME)
+									.include(DataComponents.CONTAINER)
+									.include(DataComponents.LOCK)
+									.include(DataComponents.CONTAINER_LOOT)
+									.include(TFDataComponents.JAR_LID.get())
+							)
+					)
+			)
+		));
+
+		this.add(TFBlocks.FIREFLY_JAR.get(), LootTable.lootTable().withPool(
+			this.applyExplosionCondition(
+				TFBlocks.FIREFLY_JAR.get(),
+				LootPool.lootPool()
+					.setRolls(ConstantValue.exactly(1.0F))
+					.add(
+						LootItem.lootTableItem(TFBlocks.FIREFLY_JAR.get())
+							.apply(
+								CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
+									.include(TFDataComponents.JAR_LID.get())
+							)
+					)
+			)
+		));
+
+		this.add(TFBlocks.CICADA_JAR.get(), LootTable.lootTable().withPool(
+			this.applyExplosionCondition(
+				TFBlocks.CICADA_JAR.get(),
+				LootPool.lootPool()
+					.setRolls(ConstantValue.exactly(1.0F))
+					.add(
+						LootItem.lootTableItem(TFBlocks.CICADA_JAR.get())
+							.apply(
+								CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
+									.include(TFDataComponents.JAR_LID.get())
+							)
+					)
+			)
+		));
+
 		add(TFBlocks.FIREFLY_SPAWNER.get(), particleSpawner());
-		dropSelf(TFBlocks.CICADA_JAR.get());
 		add(TFBlocks.MOSS_PATCH.get(), createShearsOnlyDrop(TFBlocks.MOSS_PATCH.get()));
 		add(TFBlocks.MAYAPPLE.get(), createShearsOnlyDrop(TFBlocks.MAYAPPLE.get()));
 		add(TFBlocks.CLOVER_PATCH.get(), createShearsOnlyDrop(TFBlocks.CLOVER_PATCH.get()));
@@ -643,10 +692,12 @@ public class BlockLootTables extends BlockLootSubProvider {
 	}
 
 	//[VanillaCopy] of a few different methods from BlockLoot. These are here just so we can use the modded shears thing
+	@Override
 	protected LootTable.Builder createShearsDispatchTable(Block block, LootPoolEntryContainer.Builder<?> builder) {
 		return createSelfDropDispatchTable(block, HAS_SHEARS, builder);
 	}
 
+	@Override
 	protected LootTable.Builder createSilkTouchOrShearsDispatchTable(Block block, LootPoolEntryContainer.Builder<?> builder) {
 		return createSelfDropDispatchTable(block, HAS_SHEARS.or(this.hasSilkTouch()), builder);
 	}

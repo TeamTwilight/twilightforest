@@ -21,7 +21,7 @@ import twilightforest.init.TFDataAttachments;
 
 import java.util.List;
 
-public class GiantPickItem extends PickaxeItem implements GiantItem {
+public class GiantPickItem extends PickaxeItem {
 
 	public GiantPickItem(Tier material, Properties properties) {
 		super(material, properties);

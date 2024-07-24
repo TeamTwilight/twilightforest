@@ -77,10 +77,12 @@ public class MagicMapCloningRecipe extends CustomRecipe {
 		}
 	}
 
+	@Override
 	public boolean canCraftInDimensions(int x, int y) {
 		return x >= 3 && y >= 3;
 	}
 
+	@Override
 	public RecipeSerializer<?> getSerializer() {
 		return TFRecipes.MAGIC_MAP_CLONING_RECIPE.get();
 	}

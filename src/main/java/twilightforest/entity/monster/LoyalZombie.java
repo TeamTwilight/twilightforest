@@ -97,7 +97,7 @@ public class LoyalZombie extends TamableAnimal {
 			this.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 1200, 1));
 			this.heal(1.0F);
 			this.playSound(SoundEvents.ZOMBIE_INFECT, this.getSoundVolume(), this.getVoicePitch());
-			if (!player.getAbilities().instabuild) player.getItemInHand(hand).shrink(1);
+			player.getItemInHand(hand).consume(1, player);
 			return InteractionResult.sidedSuccess(this.level().isClientSide());
 		}
 

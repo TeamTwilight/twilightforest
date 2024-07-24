@@ -53,6 +53,7 @@ public class HydraTrophyModel extends GenericTrophyModel {
 		this.head.xRot = z * ((float) Math.PI / 180F);
 	}
 
+	@Override
 	public void openMouthForTrophy(float mouthOpen) {
 		this.head.yRot = 0;
 		this.head.xRot = 0;

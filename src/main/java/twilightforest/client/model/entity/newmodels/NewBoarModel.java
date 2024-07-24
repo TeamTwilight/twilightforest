@@ -56,6 +56,7 @@ public class NewBoarModel<T extends Boar> extends PigModel<T> {
 		return LayerDefinition.create(mesh, 64, 64);
 	}
 
+	@Override
 	public void setupAnim(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.head.xRot = headPitch * ((float) Math.PI / 180F);
 		this.head.yRot = netHeadYaw * ((float) Math.PI / 180F);

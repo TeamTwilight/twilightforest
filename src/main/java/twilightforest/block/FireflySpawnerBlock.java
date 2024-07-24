@@ -60,7 +60,7 @@ public class FireflySpawnerBlock extends AbstractParticleSpawnerBlock implements
 	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
 		if (stack.getItem() == TFBlocks.FIREFLY.get().asItem() && !player.isShiftKeyDown() && state.getValue(RADIUS) < 10) {
 			level.setBlockAndUpdate(pos, state.setValue(RADIUS, state.getValue(RADIUS) + 1));
-			if (!player.isCreative()) stack.shrink(1);
+			stack.consume(1, player);
 			player.displayClientMessage(Component.translatable("misc.twilightforest.firefly_spawner_radius", state.getValue(RADIUS) + 1), true);
 			return ItemInteractionResult.sidedSuccess(level.isClientSide());
 		} else if (player.isShiftKeyDown() && state.getValue(RADIUS) > 1) {

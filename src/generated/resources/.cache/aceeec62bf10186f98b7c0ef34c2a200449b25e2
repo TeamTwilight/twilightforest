@@ -1,4 +1,4 @@
-// 1.21	2024-06-20T11:37:03.870937	Twilight Forest Block Tags
+// 1.21	2024-07-13T11:48:40.028948	Twilight Forest Block Tags
 9d529390443b5da5d71bd6e867c066632e1340b8 data/alexscaves/tags/block/ferromagnetic_blocks.json
 ddfcbead67bb9487c003af137a276963e5b20022 data/alexscaves/tags/block/gloomoth_light_sources.json
 c365018bd78f1335cd4508b5d74bc4500ae951bd data/alexscaves/tags/block/underzealot_light_sources.json
@@ -7,8 +7,8 @@ dbb45e0d36df554b46ceb4028ec61bc7b7a6315a data/c/tags/block/chests/trapped.json
 3d56c0ea016f639fad4fae4272d928867251da04 data/c/tags/block/chests/wooden.json
 211134157771c86a72a0c5a1985c2b05da55729b data/c/tags/block/fence_gates/wooden.json
 1c8be16360ba840051ed917f6b9667c66376d4ee data/c/tags/block/glass_blocks.json
-078ffd510c10188061614a42c5165e8a6b146fd7 data/c/tags/block/ores_in_ground/root.json
 092125a387f652f754cbd3e2eef2d3fe0a67bd55 data/c/tags/block/ore_bearing_ground/root.json
+078ffd510c10188061614a42c5165e8a6b146fd7 data/c/tags/block/ores_in_ground/root.json
 13ef2169fcd31b20ffd1e70c9f7b4855e786d936 data/c/tags/block/player_workstations/crafting_tables.json
 7088eeadc01cb4ee514f7c4fd5c25d66a2ee1a00 data/c/tags/block/relocation_not_supported.json
 d2e681a14efc494b83a43b07b35d26dad2fff850 data/c/tags/block/ropes.json
@@ -58,9 +58,9 @@ bb39f860aaf80d261eee2fc6cf18ee75a411d1c1 data/minecraft/tags/block/slabs.json
 0074c60e923669a4539ccbc5bd0c293f255ff5a5 data/minecraft/tags/block/standing_signs.json
 c15f20a0c7467da527d9bde3456b9eb9e6a86021 data/minecraft/tags/block/strider_warm_blocks.json
 89b1de786c6a6e577b7de5733e462baa124cd138 data/minecraft/tags/block/sword_efficient.json
-e67d2a0a3001de2207130c3fffff8d6665f26fbf data/minecraft/tags/block/walls.json
 f1654e579781c2bce8d458efa0cdb304b5ad052c data/minecraft/tags/block/wall_hanging_signs.json
 8b7e0d4d896e5e197798d761800abbb1510d92e8 data/minecraft/tags/block/wall_signs.json
+e67d2a0a3001de2207130c3fffff8d6665f26fbf data/minecraft/tags/block/walls.json
 21d68ed46d202a9b9c5b709deebf8105df972ec0 data/minecraft/tags/block/wither_immune.json
 f0813a14ba178a941ba37c4059a25e6b19f77091 data/minecraft/tags/block/wooden_buttons.json
 3ff910b3376b5166da794689b1bf7569ad0b2e87 data/minecraft/tags/block/wooden_doors.json
@@ -82,8 +82,8 @@ ecd0a9f97ab5b54a7c21ed4f6af6896d564ea5f0 data/twilightforest/tags/block/castle_b
 3d56c0ea016f639fad4fae4272d928867251da04 data/twilightforest/tags/block/chests.json
 63d6b8afab51c74ed26723c1e8a1588cbba120cb data/twilightforest/tags/block/clouds.json
 4955c5a75150132ea89493a413fbb4431eeba532 data/twilightforest/tags/block/common_protections.json
-97652f431059f64ffc5747f498cdcf278ddd0555 data/twilightforest/tags/block/darkwood_logs.json
 29d004c820708d44b1747a2f31f506646efb1a27 data/twilightforest/tags/block/dark_tower_allowed_pots.json
+97652f431059f64ffc5747f498cdcf278ddd0555 data/twilightforest/tags/block/darkwood_logs.json
 8ed2ef0f9a24051c4d152d5d47721e79f790e2eb data/twilightforest/tags/block/deadrock.json
 7caa25870567b18269192c1592a69bdd8558c275 data/twilightforest/tags/block/druid_projectile_replaceable.json
 db6195d77bd598771b111d12750ba39f41fe35c7 data/twilightforest/tags/block/fire_jet_fuel.json
@@ -120,8 +120,8 @@ cf3608bd187922aeb48c566c19e8482b0dca34c7 data/twilightforest/tags/block/portal/f
 e40d95a628eb206ce0b4bac90782bccc789cf8dc data/twilightforest/tags/block/sortwood_logs.json
 513552f34c4bbf125c67f4ba5b1dc6b34aa4d19f data/twilightforest/tags/block/structure_banned_interactions.json
 fe294f66f8396c4430eeb05932c598d8a86fbba0 data/twilightforest/tags/block/supports_stalagmites.json
-aa9ca0bf521d8c6b198f2c25e4d5528917308d9f data/twilightforest/tags/block/timewood_logs.json
 6ac229128975c2e8f70b767e08a76386b7bc81df data/twilightforest/tags/block/time_core_excluded.json
+aa9ca0bf521d8c6b198f2c25e4d5528917308d9f data/twilightforest/tags/block/timewood_logs.json
 6352667067c11a27cfc37713a8f8543507c1f18e data/twilightforest/tags/block/towerwood.json
 548dfc9d7e2225c6f7d761216b3fafc120978f73 data/twilightforest/tags/block/transwood_logs.json
 4fba579595d0eafa048882f138be9adc9e39b7b1 data/twilightforest/tags/block/tree_roots_skip.json

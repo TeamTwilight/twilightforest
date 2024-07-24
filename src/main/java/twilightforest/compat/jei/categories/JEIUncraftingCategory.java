@@ -76,9 +76,9 @@ public class JEIUncraftingCategory implements IRecipeCategory<CraftingRecipe> {
 		}
 
 		if (recipe instanceof UncraftingRecipe uncraftingRecipe) {
-			ItemStack[] stacks = uncraftingRecipe.input().getItems();
+			ItemStack[] stacks = uncraftingRecipe.getInput().getItems();
 			ItemStack[] stackedStacks = new ItemStack[stacks.length];
-			for (int i = 0; i < stacks.length; i++) stackedStacks[i] = new ItemStack(stacks[0].getItem(), uncraftingRecipe.count());
+			for (int i = 0; i < stacks.length; i++) stackedStacks[i] = new ItemStack(stacks[0].getItem(), uncraftingRecipe.getCount());
 			builder.addSlot(RecipeIngredientRole.INPUT, 5, 19).addIngredients(Ingredient.of(stackedStacks));//If the recipe is an uncrafting recipe, we need to get the ingredient instead of an itemStack
 		} else {
 			builder.addSlot(RecipeIngredientRole.INPUT, 5, 19).addItemStack(recipe.getResultItem(Minecraft.getInstance().level.registryAccess()));//Set the outputs as inputs and draw the item you're uncrafting in the right spot as well

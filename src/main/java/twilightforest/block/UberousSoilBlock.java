@@ -20,10 +20,9 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.common.IPlantable;
-import net.neoforged.neoforge.common.PlantType;
 import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.common.util.FakePlayerFactory;
+import net.neoforged.neoforge.common.util.TriState;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
@@ -54,10 +53,9 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 	}
 
 	@Override
-	public boolean canSustainPlant(BlockState state, BlockGetter getter, BlockPos pos, Direction direction, IPlantable plantable) {
-		if (direction.getAxis() != Direction.Axis.Y) return false;
-		PlantType plantType = plantable.getPlantType(getter, pos.relative(direction));
-		return plantType == PlantType.CROP || plantType == PlantType.PLAINS || plantType == PlantType.CAVE;
+	public TriState canSustainPlant(BlockState state, BlockGetter level, BlockPos soilPosition, Direction facing, BlockState plant) {
+		if (facing.getAxis() != Direction.Axis.Y) return TriState.FALSE;
+		return super.canSustainPlant(state, level, soilPosition, facing, plant);
 	}
 
 	@Override
@@ -78,7 +76,8 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 			BlockState newState;
 
             switch (bonemealableBlock) {
-                case IPlantable iPlantable when iPlantable.getPlantType(level, fromPos) == PlantType.CROP -> newState = Blocks.FARMLAND.defaultBlockState().setValue(FarmBlock.MOISTURE, 7);
+				// FIXME
+                //case IPlantable iPlantable when iPlantable.getPlantType(level, fromPos) == PlantType.CROP -> newState = Blocks.FARMLAND.defaultBlockState().setValue(FarmBlock.MOISTURE, 7);
                 case MushroomBlock ignored1 -> newState = Blocks.MYCELIUM.defaultBlockState();
                 case BushBlock ignored -> newState = Blocks.GRASS_BLOCK.defaultBlockState();
                 case MossBlock mossBlock -> newState = mossBlock.defaultBlockState();

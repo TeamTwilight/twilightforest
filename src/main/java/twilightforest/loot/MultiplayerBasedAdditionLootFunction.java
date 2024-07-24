@@ -64,6 +64,7 @@ public class MultiplayerBasedAdditionLootFunction extends LootItemConditionalFun
 			this.count = pLootingMultiplier;
 		}
 
+		@Override
 		protected MultiplayerBasedAdditionLootFunction.Builder getThis() {
 			return this;
 		}

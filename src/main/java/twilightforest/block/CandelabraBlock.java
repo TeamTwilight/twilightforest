@@ -173,9 +173,7 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 								player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
 								candelabra.setCandle(i, block.getBlock());
 								level.playSound(null, pos, SoundEvents.CANDLE_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
-								if (!player.getAbilities().instabuild) {
-									stack.shrink(1);
-								}
+								stack.consume(1, player);
 							}
 							return ItemInteractionResult.sidedSuccess(level.isClientSide());
 						}
@@ -185,9 +183,7 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 		}
 		if (stack.is(Tags.Items.DUSTS_REDSTONE) && state.getValue(LIGHTING) == Lighting.NORMAL) {
 			level.setBlockAndUpdate(pos, state.setValue(LIGHTING, Lighting.DIM));
-			if (!player.getAbilities().instabuild) {
-				stack.shrink(1);
-			}
+			stack.consume(1, player);
 			return ItemInteractionResult.sidedSuccess(level.isClientSide());
 		}
 		return this.lightCandles(state, level, pos, player, hand);
