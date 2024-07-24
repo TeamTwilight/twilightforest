@@ -21,7 +21,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
@@ -54,7 +53,7 @@ import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
-import twilightforest.beans.Autowired;
+import twilightforest.beans.TFBeanContext;
 import twilightforest.block.GiantBlock;
 import twilightforest.block.MiniatureStructureBlock;
 import twilightforest.block.entity.GrowingBeanstalkBlockEntity;
@@ -85,6 +84,8 @@ import java.util.Map;
 
 @EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT)
 public class TFClientEvents {
+
+	private static final HolderMatcher holderMatcher = TFBeanContext.inject(HolderMatcher.class); // TODO: solve client classloading issues
 
 	@EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
 	public static class ModBusEvents {
@@ -380,9 +381,6 @@ public class TFClientEvents {
 
 	private static int aurora = 0;
 	private static int lastAurora = 0;
-
-	@Autowired
-	private static HolderMatcher holderMatcher;
 
 	@SubscribeEvent
 	public static void clientTick(ClientTickEvent.Post event) {

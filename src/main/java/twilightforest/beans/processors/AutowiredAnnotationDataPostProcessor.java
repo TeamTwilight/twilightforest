@@ -36,6 +36,7 @@ public class AutowiredAnnotationDataPostProcessor implements AnnotationDataPostP
 	public void process(TFBeanContext.TFBeanContextInternalInjector context, ModContainer modContainer, ModFileScanData scanData, AtomicReference<Object> currentInjectionTarget) throws Throwable {
 		for (Iterator<ModFileScanData.AnnotationData> it = scanData.getAnnotatedBy(Autowired.class, ElementType.FIELD).iterator(); it.hasNext(); ) {
 			ModFileScanData.AnnotationData data = it.next();
+			currentInjectionTarget.set(data.clazz());
 			Class<?> type = Class.forName(data.clazz().getClassName());
 			if (type.isAnnotationPresent(Configurable.class))
 				continue;
