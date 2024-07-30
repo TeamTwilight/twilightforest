@@ -101,4 +101,46 @@ public class BoundingBoxUtils {
 			vec3List.stream().mapToDouble(Vec3::z).reduce(first.z, Math::max) + expand
 		);
 	}
+
+	public static int getVolume(BoundingBox box) {
+		return box.getXSpan() * box.getYSpan() * box.getZSpan();
+	}
+
+	public static boolean isEmpty(BoundingBox box) {
+		return getVolume(box) == 0;
+	}
+
+	public static BoundingBox extrusionFrom(int minX, int minY, int minZ, int maxX, int maxY, int maxZ, Direction direction, int length) {
+		return switch (direction) {
+			case WEST -> new BoundingBox(minX - length, minY, minZ, minX - 1, maxY, maxZ);
+			case EAST -> new BoundingBox(maxX + 1, minY, minZ, maxX + length, maxY, maxZ);
+			case DOWN -> new BoundingBox(minX, minY - length, minZ, maxX, minY - 1, maxZ);
+			case UP -> new BoundingBox(minX, maxY + 1, minZ, maxX, maxY + length, maxZ);
+			case NORTH -> new BoundingBox(minX, minY, minZ - length, maxX, maxY, minZ - 1);
+			case SOUTH -> new BoundingBox(minX, minY, maxZ + 1, maxX, maxY, maxZ + length);
+		};
+	}
+
+	public static int getSpan(BoundingBox box, Direction.Axis axis) {
+		return switch (axis) {
+			case X -> box.getXSpan();
+			case Y -> box.getYSpan();
+			case Z -> box.getZSpan();
+		};
+	}
+
+	public static BoundingBox safeRetract(BoundingBox box, Direction direction, int length) {
+		int span = getSpan(box, direction.getAxis());
+
+		if (span <= length) return box;
+
+		return switch (direction) {
+			case WEST -> cloneWithAdjustments(box, length, 0, 0, 0, 0, 0);
+			case EAST -> cloneWithAdjustments(box, 0, 0, 0, -length, 0, 0);
+			case DOWN -> cloneWithAdjustments(box, 0, length, 0, 0, 0, 0);
+			case UP -> cloneWithAdjustments(box, 0, 0, 0, 0, -length, 0);
+			case NORTH -> cloneWithAdjustments(box, 0, 0, length, 0, 0, 0);
+			case SOUTH -> cloneWithAdjustments(box, 0, 0, 0, 0, 0, -length);
+		};
+	}
 }

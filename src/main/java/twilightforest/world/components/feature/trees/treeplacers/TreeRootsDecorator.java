@@ -12,7 +12,7 @@ import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorTy
 import twilightforest.init.TFFeatureModifiers;
 import twilightforest.util.FeatureLogic;
 import twilightforest.util.FeaturePlacers;
-import twilightforest.util.VoxelBresenhamIterator;
+import twilightforest.util.iterators.VoxelBresenhamIterator;
 
 import java.util.Optional;
 

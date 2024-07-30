@@ -1,5 +1,6 @@
 package twilightforest.beans;
 
+import net.neoforged.api.distmarker.Dist;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.annotation.ElementType;
@@ -21,5 +22,7 @@ import java.lang.annotation.Target;
 public @interface Autowired {
 
 	String value() default Component.DEFAULT_VALUE;
+
+	Dist[] dist() default {};
 
 }

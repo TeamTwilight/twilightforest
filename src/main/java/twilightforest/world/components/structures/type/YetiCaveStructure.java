@@ -15,11 +15,13 @@ import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.DensityFunctions;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.*;
+import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFEntities;
+import twilightforest.init.TFMapDecorations;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.init.custom.StructureSpeleothemConfigs;
 import twilightforest.world.components.chunkgenerators.AbsoluteDifferenceFunction;
@@ -30,6 +32,7 @@ import twilightforest.world.components.structures.util.ControlledSpawningStructu
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class YetiCaveStructure extends ControlledSpawningStructure implements CustomDensitySource {
@@ -60,6 +63,11 @@ public class YetiCaveStructure extends ControlledSpawningStructure implements Cu
 	@Override
 	protected boolean dontCenter() {
 		return true;
+	}
+
+	@Override
+	public Optional<Holder<MapDecorationType>> getMapIcon() {
+		return Optional.of(TFMapDecorations.YETI_LAIR);
 	}
 
 	public static YetiCaveStructure buildYetiCaveConfig(BootstrapContext<Structure> context) {

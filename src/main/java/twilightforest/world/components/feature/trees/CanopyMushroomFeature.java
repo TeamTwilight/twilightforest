@@ -13,7 +13,7 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.HugeMushroomFeatureConfiguration;
 import twilightforest.init.TFBlocks;
 import twilightforest.util.FeatureLogic;
-import twilightforest.util.VoxelBresenhamIterator;
+import twilightforest.util.iterators.VoxelBresenhamIterator;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 

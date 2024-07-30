@@ -44,6 +44,7 @@ public class DataGenerators {
 		generator.addProvider(event.includeServer(), new CustomTagGenerator.BannerPatternTagGenerator(output, lookupProvider, helper));
 		generator.addProvider(event.includeServer(), new CustomTagGenerator.DimensionTypeTagGenerator(output, lookupProvider, helper));
 		generator.addProvider(event.includeServer(), new CustomTagGenerator.WoodPaletteTagGenerator(output, lookupProvider, helper));
+		generator.addProvider(event.includeServer(), new CustomTagGenerator.PaintingVariantTagGenerator(output, lookupProvider, helper));
 		generator.addProvider(event.includeServer(), new DamageTypeTagGenerator(output, lookupProvider, helper));
 		generator.addProvider(event.includeServer(), new StructureTagGenerator(output, lookupProvider, helper));
 		generator.addProvider(event.includeServer(), new TFAdvancementProvider(output, lookupProvider, helper));

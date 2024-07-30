@@ -11,6 +11,7 @@ import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import twilightforest.init.TFBiomes;
 import twilightforest.init.TFStructures;
+import twilightforest.util.iterators.XZQuadrantIterator;
 
 import java.util.Map;
 import java.util.Optional;

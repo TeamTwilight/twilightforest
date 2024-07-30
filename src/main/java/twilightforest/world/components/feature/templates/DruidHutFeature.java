@@ -130,12 +130,12 @@ public class DruidHutFeature extends TemplateFeature<SwizzleConfig> {
 			}));
 
 			String widthS = s.substring(9, 10);
-			int paintingWidth = widthS.matches("\\d+") ? Integer.parseInt(widthS) << 4 : 16;
+			int paintingWidth = widthS.matches("\\d+") ? Integer.parseInt(widthS) : 1;
 
 			boolean hasFlipped = mirror != Mirror.NONE;
 			BlockPos hangPos = hasFlipped ? blockPos.relative(direction.getClockWise()) : blockPos;
 
-			EntityUtil.tryHangPainting(world, hangPos, direction, EntityUtil.getPaintingOfSize(world, random, paintingWidth, paintingWidth == 32 || paintingWidth == 64 ? 32 : 16, true));
+			EntityUtil.tryHangPainting(world, hangPos, direction, EntityUtil.getPaintingOfSize(world, random, paintingWidth, paintingWidth == 2 || paintingWidth == 4 ? 2 : 1, true));
 		}
 	}
 

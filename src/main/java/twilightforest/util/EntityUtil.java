@@ -4,25 +4,23 @@ import com.google.common.collect.Lists;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.tags.PaintingVariantTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.decoration.HangingEntity;
 import net.minecraft.world.entity.decoration.Painting;
 import net.minecraft.world.entity.decoration.PaintingVariant;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.AxeItem;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -46,7 +44,6 @@ import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.DoubleUnaryOperator;
 
 public class EntityUtil {
@@ -178,8 +175,8 @@ public class EntityUtil {
 		}
 	}
 
-	public static void tryHangPainting(WorldGenLevel world, BlockPos pos, Direction direction, @Nullable Holder<PaintingVariant> chosenPainting) {
-		if (chosenPainting == null) return;
+	public static boolean tryHangPainting(WorldGenLevel world, BlockPos pos, Direction direction, @Nullable Holder<PaintingVariant> chosenPainting) {
+		if (chosenPainting == null) return false;
 
 		Painting painting = createEntityIgnoreException(EntityType.PAINTING, world);
 
@@ -188,11 +185,17 @@ public class EntityUtil {
 			handle_HangingEntity_setDirection.invoke(painting, direction);
 		} catch (Throwable throwable) {
 			throwable.printStackTrace();
+
+			return false;
 		}
 		painting.setVariant(chosenPainting);
 
-		if (checkValidPaintingPosition(world, painting))
+		if (checkValidPaintingPosition(world, painting)) {
 			world.addFreshEntity(painting);
+			return true;
+		}
+
+		return false;
 	}
 
 	@Nullable
@@ -221,6 +224,18 @@ public class EntityUtil {
 		} else {
 			return null;
 		}
+	}
+
+	public static List<Holder<PaintingVariant>> getPaintingsOfSizeOrSmaller(WorldGenLevel level, TagKey<PaintingVariant> lichTowerPaintings, int width, int height) {
+		List<Holder<PaintingVariant>> valid = new ArrayList<>();
+
+		for (Holder<PaintingVariant> art : level.registryAccess().registryOrThrow(Registries.PAINTING_VARIANT).getTagOrEmpty(lichTowerPaintings)) {
+			if (art.value().width() <= width && art.value().height() <= height) {
+				valid.add(art);
+			}
+		}
+
+		return valid;
 	}
 
 	public static boolean checkValidPaintingPosition(WorldGenLevel world, @Nullable Painting painting) {

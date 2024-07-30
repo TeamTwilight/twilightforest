@@ -12,7 +12,7 @@ public class FieryArmorModel extends TFArmorModel {
 
 	@Override
 	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, int color) {
-		super.renderToBuffer(stack, builder, 0xF000F0, overlay);
+		super.renderToBuffer(stack, builder, 0xF000F0, overlay, 0xFFFFFFFF);
 	}
 
 }

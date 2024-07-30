@@ -1,5 +1,5 @@
 {
-  "height": 32,
+  "height": 48,
   "layers": [
     {
       "fullbright": true,
@@ -8,24 +8,24 @@
     {
       "fullbright": true,
       "parallax": {
-        "type": "sine_time",
-        "height": 32,
-        "multiplier": 0.01,
-        "width": 48
+        "type": "linear_time",
+        "height": 48,
+        "multiplier": 7.5E-4,
+        "width": 122
       },
       "path": "clouds"
     },
     {
       "fullbright": true,
-      "path": "volcanic_lands"
+      "path": "mookaite_mesa"
     },
     {
       "fullbright": true,
       "parallax": {
         "type": "view_angle",
-        "height": 32,
+        "height": 48,
         "multiplier": 0.005,
-        "width": 44
+        "width": 58
       },
       "path": "agate_jungle"
     },
@@ -33,16 +33,199 @@
       "fullbright": true,
       "parallax": {
         "type": "view_angle",
-        "height": 32,
+        "height": 48,
         "multiplier": 0.006,
-        "width": 58
+        "width": 74
       },
       "path": "crystal_plains"
+    },
+    {
+      "fullbright": true,
+      "opacity_modifier": {
+        "type": "holding_item",
+        "invert": false,
+        "item_stack": {
+          "count": 1,
+          "id": "minecraft:gold_ingot"
+        },
+        "max": 1.0,
+        "min": 0.0,
+        "multiplier": 0.01
+      },
+      "path": "background_gold"
+    },
+    {
+      "fullbright": true,
+      "opacity_modifier": {
+        "type": "holding_item",
+        "invert": false,
+        "item_stack": {
+          "count": 1,
+          "id": "minecraft:gold_ingot"
+        },
+        "max": 1.0,
+        "min": 0.0,
+        "multiplier": 0.01
+      },
+      "parallax": {
+        "type": "linear_time",
+        "height": 48,
+        "multiplier": 7.5E-4,
+        "width": 122
+      },
+      "path": "clouds_gold"
+    },
+    {
+      "fullbright": true,
+      "opacity_modifier": {
+        "type": "holding_item",
+        "invert": false,
+        "item_stack": {
+          "count": 1,
+          "id": "minecraft:gold_ingot"
+        },
+        "max": 1.0,
+        "min": 0.0,
+        "multiplier": 0.01
+      },
+      "path": "golden_hills"
+    },
+    {
+      "fullbright": true,
+      "opacity_modifier": {
+        "type": "holding_item",
+        "invert": false,
+        "item_stack": {
+          "count": 1,
+          "id": "minecraft:gold_ingot"
+        },
+        "max": 1.0,
+        "min": 0.0,
+        "multiplier": 0.01
+      },
+      "parallax": {
+        "type": "view_angle",
+        "height": 48,
+        "multiplier": 0.005,
+        "width": 58
+      },
+      "path": "golden_forest"
+    },
+    {
+      "fullbright": true,
+      "opacity_modifier": {
+        "type": "holding_item",
+        "invert": false,
+        "item_stack": {
+          "count": 1,
+          "id": "minecraft:gold_ingot"
+        },
+        "max": 1.0,
+        "min": 0.0,
+        "multiplier": 0.01
+      },
+      "parallax": {
+        "type": "view_angle",
+        "height": 48,
+        "multiplier": 0.006,
+        "width": 74
+      },
+      "path": "golden_sands"
+    },
+    {
+      "fullbright": true,
+      "opacity_modifier": {
+        "type": "mob_effect_category",
+        "effect_category": "HARMFUL",
+        "invert": false,
+        "max": 1.0,
+        "min": 0.0,
+        "multiplier": 0.01
+      },
+      "path": "background_corrupt"
+    },
+    {
+      "fullbright": false,
+      "opacity_modifier": {
+        "type": "mob_effect_category",
+        "effect_category": "HARMFUL",
+        "invert": false,
+        "max": 1.0,
+        "min": 0.0,
+        "multiplier": 0.01
+      },
+      "parallax": {
+        "type": "linear_time",
+        "height": 48,
+        "multiplier": 7.5E-4,
+        "width": 122
+      },
+      "path": "clouds_corrupt"
+    },
+    {
+      "fullbright": false,
+      "opacity_modifier": {
+        "type": "mob_effect_category",
+        "effect_category": "HARMFUL",
+        "invert": false,
+        "max": 1.0,
+        "min": 0.0,
+        "multiplier": 0.01
+      },
+      "path": "goldstone_peaks"
+    },
+    {
+      "fullbright": true,
+      "opacity_modifier": {
+        "type": "mob_effect_category",
+        "effect_category": "HARMFUL",
+        "invert": false,
+        "max": 1.0,
+        "min": 0.0,
+        "multiplier": 0.01
+      },
+      "path": "goldstone_peaks_overlay"
+    },
+    {
+      "fullbright": false,
+      "opacity_modifier": {
+        "type": "mob_effect_category",
+        "effect_category": "HARMFUL",
+        "invert": false,
+        "max": 1.0,
+        "min": 0.0,
+        "multiplier": 0.01
+      },
+      "parallax": {
+        "type": "view_angle",
+        "height": 48,
+        "multiplier": 0.005,
+        "width": 58
+      },
+      "path": "goldstone_forest"
+    },
+    {
+      "fullbright": false,
+      "opacity_modifier": {
+        "type": "mob_effect_category",
+        "effect_category": "HARMFUL",
+        "invert": false,
+        "max": 1.0,
+        "min": 0.0,
+        "multiplier": 0.01
+      },
+      "parallax": {
+        "type": "view_angle",
+        "height": 48,
+        "multiplier": 0.006,
+        "width": 74
+      },
+      "path": "goldstone_plains"
     },
     {
       "fullbright": false,
       "path": "frame"
     }
   ],
-  "width": 32
+  "width": 48
 }

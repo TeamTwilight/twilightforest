@@ -1,73 +1,162 @@
 package twilightforest.world.components.structures.lichtowerrevamp;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.FrontAndTop;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
+import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
+import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import twilightforest.TwilightForestMod;
+import twilightforest.data.tags.CustomTagGenerator;
 import twilightforest.init.TFStructurePieceTypes;
-import twilightforest.util.BoundingBoxUtils;
-import twilightforest.world.components.processors.BoxCuttingProcessor;
+import twilightforest.util.jigsaw.JigsawPlaceContext;
+import twilightforest.util.jigsaw.JigsawRecord;
+import twilightforest.world.components.structures.TwilightJigsawPiece;
 import twilightforest.world.components.structures.TwilightTemplateStructurePiece;
 
 import java.util.ArrayList;
-import java.util.List;
 
-
-public final class CentralTowerSegment extends TwilightTemplateStructurePiece {
-	static final int SIDE_LENGTH = 30;
-	static final int HEIGHT = 4;
-	static final int ATTACHMENT_POINT_START = 6;
-	static final int ATTACHMENT_POINT_RANGE = 13;
+public final class CentralTowerSegment extends TwilightJigsawPiece implements PieceBeardifierModifier {
+	private final boolean putMobBridge;
+	private final boolean continueAbove;
 
 	public CentralTowerSegment(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
-		super(TFStructurePieceTypes.CENTRAL_TOWER.get(), compoundTag, ctx, readSettings(compoundTag).addProcessor(BoxCuttingProcessor.fromNBT(compoundTag.getList("cutouts", Tag.TAG_COMPOUND))));
+		super(TFStructurePieceTypes.CENTRAL_TOWER.get(), compoundTag, ctx, readSettings(compoundTag));
+
+		TowerUtil.addDefaultProcessors(this.placeSettings);
+		stairDecay(this.genDepth, this.placeSettings);
+
+		this.putMobBridge = compoundTag.getBoolean("put_bridge");
+		this.continueAbove = compoundTag.getBoolean("seg_above");
 	}
 
-	public CentralTowerSegment(StructureTemplateManager structureManager, Rotation rotation, BoxCuttingProcessor sideTowerStarts, BlockPos startPosition) {
-		this(structureManager, TwilightForestMod.prefix("lich_tower/central_tower"), makeSettings(rotation).addProcessor(sideTowerStarts), startPosition);
+	public CentralTowerSegment(StructureTemplateManager structureManager, int genDepth, JigsawPlaceContext jigsawContext, boolean putMobBridge, boolean continueAbove) {
+		super(TFStructurePieceTypes.CENTRAL_TOWER.get(), genDepth, structureManager, TwilightForestMod.prefix("lich_tower/tower_slice"), jigsawContext);
+
+		TowerUtil.addDefaultProcessors(this.placeSettings);
+		stairDecay(this.genDepth, this.placeSettings);
+
+		this.putMobBridge = putMobBridge;
+		this.continueAbove = continueAbove;
 	}
 
-	private CentralTowerSegment(StructureTemplateManager structureManager, ResourceLocation templateLocation, StructurePlaceSettings placeSettings, BlockPos startPosition) {
-		super(TFStructurePieceTypes.CENTRAL_TOWER.get(), 0, structureManager, templateLocation, placeSettings, startPosition);
-	}
+	private static void stairDecay(int depth, StructurePlaceSettings settings) {
+		int decayLevel = Mth.ceil((depth - 3) * 0.25);
 
-	@Override
-	protected void handleDataMarker(String label, BlockPos pos, ServerLevelAccessor levelAccessor, RandomSource random, BoundingBox boundingBox) {
-
+		if (decayLevel >= 0) {
+			decayLevel = Math.min(decayLevel, TowerUtil.STAIR_DECAY_PROCESSORS.length);
+			settings.addProcessor(TowerUtil.STAIR_DECAY_PROCESSORS[decayLevel]);
+		}
 	}
 
 	@Override
 	protected void addAdditionalSaveData(StructurePieceSerializationContext ctx, CompoundTag structureTag) {
 		super.addAdditionalSaveData(ctx, structureTag);
 
-		BoxCuttingProcessor cuttingProcessor = null;
-		for (StructureProcessor processor : this.placeSettings.getProcessors()) {
-			if (processor instanceof BoxCuttingProcessor first) {
-				// Welcome to jank
-				cuttingProcessor = first;
-				break;
-			}
+		structureTag.putBoolean("put_bridge", this.putMobBridge);
+		structureTag.putBoolean("seg_above", this.continueAbove);
+	}
+
+	public static void buildTowerBySegments(StructurePieceAccessor pieceAccessor, RandomSource random, final BlockPos sourceJigsawPos, final FrontAndTop sourceOrientation, final TwilightJigsawPiece parentBase, StructureTemplateManager structureManager, boolean putMobBridge, final int segments) {
+		ResourceLocation segmentId = TwilightForestMod.prefix("lich_tower/tower_slice");
+		ArrayList<TwilightTemplateStructurePiece> pieces = new ArrayList<>();
+
+		TwilightTemplateStructurePiece priorPiece = parentBase;
+		BlockPos priorJigsawOffset = sourceJigsawPos;
+		FrontAndTop priorOrientation = sourceOrientation;
+		for (int i = 0; i < segments; i++) {
+			JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(priorPiece.templatePosition(), priorJigsawOffset, priorOrientation, structureManager, segmentId, "twilightforest:lich_tower/tower_below", random);
+
+			if (placeableJunction == null) continue;
+
+			CentralTowerSegment towerSegment = new CentralTowerSegment(structureManager, priorPiece.getGenDepth() + 1, placeableJunction, putMobBridge, i != segments - 1);
+
+			pieceAccessor.addPiece(towerSegment);
+			pieces.add(towerSegment); // Add to list for adding children later, must build upwards to the boss room before beginning Sidetowers from the base & upwards too
+
+			JigsawRecord firstJunction = placeableJunction.findFirst("twilightforest:lich_tower/tower_above");
+
+			if (firstJunction == null) break;
+
+			priorPiece = towerSegment;
+			priorJigsawOffset = firstJunction.pos();
+			priorOrientation = firstJunction.orientation();
+			putMobBridge = !towerSegment.putMobBridge && random.nextInt(3) != 0;
 		}
 
-		if (cuttingProcessor == null) return;
+		// The boss room is wider than Main Tower segments, adding to piece list sooner will help prevent these collisions
+		JigsawPlaceContext bossRoomJunction = JigsawPlaceContext.pickPlaceableJunction(priorPiece.templatePosition(), priorJigsawOffset, priorOrientation, structureManager, TwilightForestMod.prefix("lich_tower/tower_boss_room"), "twilightforest:lich_tower/tower_below", random);
+		if (bossRoomJunction != null) {
+			StructurePiece bossRoom = new BossRoom(structureManager, bossRoomJunction);
+			pieceAccessor.addPiece(bossRoom);
+			bossRoom.addChildren(priorPiece, pieceAccessor, random);
+		}
 
-		List<BoundingBox> filtering = new ArrayList<>(cuttingProcessor.cutouts);
-		filtering.removeIf(bb -> bb.maxX() < this.templatePosition.getY() || bb.minY() > this.templatePosition.getY() + CentralTowerSegment.HEIGHT);
+		if (pieces.isEmpty())
+			return;
 
-		ListTag boxTagList = new ListTag();
+		// Call the topmost segment first, so that guaranteed generation of the Magic Gallery is better deterministic and not competing against side-tower clearances
+		priorPiece = pieces.removeLast();
+		priorPiece.addChildren(pieces.isEmpty() ? parentBase : pieces.getLast(), pieceAccessor, random);
 
-		for (BoundingBox box : filtering) boxTagList.add(BoundingBoxUtils.boundingBoxToNBT(box));
+		// Now call .addChildren of all segment pieces so that the side-towers generate their shapes
+		priorPiece = parentBase;
+		for (TwilightTemplateStructurePiece piece : pieces) {
+			piece.addChildren(priorPiece, pieceAccessor, random);
+			priorPiece = piece;
+		}
+	}
 
-		structureTag.put("cutouts", boxTagList);
+	@Override
+	protected void processJigsaw(StructurePiece parent, StructurePieceAccessor pieceAccessor, RandomSource random, JigsawRecord connection, int jigsawIndex) {
+		switch (connection.target()) {
+			case "twilightforest:lich_tower/bridge" -> {
+				int roomMaxSize = 3;
+				boolean genMagicGallery = !this.continueAbove && jigsawIndex == 2;// && random.nextInt(10) == 0;
+				TowerBridge.tryRoomAndBridge(this, pieceAccessor, random, connection, this.structureManager, true, roomMaxSize, false, this.genDepth + 1, genMagicGallery);
+			}
+			case "twilightforest:mob_bridge" -> {
+				if (this.putMobBridge) {
+					ResourceLocation mobBridgeLocation = TowerUtil.rollRandomMobBridge(random);
+					JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(this.templatePosition(), connection.pos(), connection.orientation(), this.structureManager, mobBridgeLocation, "twilightforest:mob_bridge", random);
+
+					if (placeableJunction != null) {
+						StructurePiece mobBridgePiece = new TowerMobBridge(this.genDepth + 1, this.structureManager, mobBridgeLocation, placeableJunction, random.nextBoolean());
+						pieceAccessor.addPiece(mobBridgePiece);
+						mobBridgePiece.addChildren(this, pieceAccessor, random);
+					}
+				}
+			}
+		}
+	}
+
+	@Override
+	protected void handleDataMarker(String label, BlockPos pos, WorldGenLevel level, RandomSource random, BoundingBox chunkBounds, ChunkGenerator chunkGen) {
+		BossRoom.placePainting(label, pos, level, random, chunkBounds, this.placeSettings.getRotation(), 1, 16, CustomTagGenerator.PaintingVariantTagGenerator.LICH_TOWER_PAINTINGS);
+	}
+
+	@Override
+	public BoundingBox getBeardifierBox() {
+		return this.boundingBox;
+	}
+
+	@Override
+	public TerrainAdjustment getTerrainAdjustment() {
+		return TerrainAdjustment.NONE;
+	}
+
+	@Override
+	public int getGroundLevelDelta() {
+		return 0;
 	}
 }

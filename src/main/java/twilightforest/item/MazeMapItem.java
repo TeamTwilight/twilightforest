@@ -8,7 +8,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -25,8 +24,10 @@ import net.minecraft.world.level.saveddata.maps.MapId;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.init.TFDataMaps;
 import twilightforest.init.TFItems;
 import twilightforest.item.mapdata.TFMazeMapData;
+import twilightforest.util.datamaps.OreMapOreColor;
 
 import java.util.Optional;
 
@@ -131,11 +132,10 @@ public class MazeMapItem extends MapItem {
 									l3 = l3 * l3 * 31287121 + l3 * 11;
 
 									if ((l3 >> 20 & 1) == 0) {
-										multiset.add(Blocks.DIRT.defaultBlockState().getMapColor(level, BlockPos.ZERO), 10);
+										multiset.add(MapColor.DIRT, 10);
 									} else {
-										multiset.add(Blocks.STONE.defaultBlockState().getMapColor(level, BlockPos.ZERO), 100);
+										multiset.add(MapColor.STONE, 100);
 									}
-
 								} else {
 									// TF - remove extra 2 levels of loops
 									// maze maps are always 0 scale, which is 1 pixel = 1 block, so the loops are unneeded
@@ -163,25 +163,12 @@ public class MazeMapItem extends MapItem {
 										}
 									}
 
-									if (mapOres) {
+									if (this.mapOres) {
 										// recolor ores
-										if (state.is(BlockTags.COAL_ORES)) {
-											multiset.add(MapColor.COLOR_BLACK, 1000);
-										} else if (state.is(BlockTags.GOLD_ORES)) {
-											multiset.add(MapColor.GOLD, 1000);
-										} else if (state.is(BlockTags.IRON_ORES)) {
-											multiset.add(MapColor.METAL, 1000);
-										} else if (state.is(BlockTags.LAPIS_ORES)) {
-											multiset.add(MapColor.LAPIS, 1000);
-										} else if (state.is(BlockTags.REDSTONE_ORES)) {
-											multiset.add(MapColor.COLOR_RED, 1000);
-										} else if (state.is(BlockTags.DIAMOND_ORES)) {
-											multiset.add(MapColor.DIAMOND, 1000);
-										} else if (state.is(BlockTags.EMERALD_ORES)) {
-											multiset.add(MapColor.EMERALD, 1000);
-										} else if (state.is(BlockTags.COPPER_ORES)) {
-											multiset.add(MapColor.COLOR_ORANGE, 1000);
-										} else if (state.getBlock() != Blocks.AIR && state.is(Tags.Blocks.ORES)) {
+										OreMapOreColor color = state.getBlock().builtInRegistryHolder().getData(TFDataMaps.ORE_MAP_ORE_COLOR);
+										if (color != null) {
+											multiset.add(color.color(), 1000);
+										} else if (!state.isAir() && state.is(Tags.Blocks.ORES)) {
 											multiset.add(MapColor.COLOR_PINK, 1000);
 										}
 									}

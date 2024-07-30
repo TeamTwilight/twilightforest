@@ -5,8 +5,10 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.MapColor;
 import net.neoforged.neoforge.common.data.DataMapProvider;
 import net.neoforged.neoforge.registries.datamaps.builtin.Compostable;
 import net.neoforged.neoforge.registries.datamaps.builtin.FurnaceFuel;
@@ -14,8 +16,11 @@ import net.neoforged.neoforge.registries.datamaps.builtin.NeoForgeDataMaps;
 import net.neoforged.neoforge.registries.datamaps.builtin.ParrotImitation;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.*;
+import twilightforest.item.MagicMapItem;
 import twilightforest.util.datamaps.CrumbledBlock;
 import twilightforest.util.datamaps.EntityTransformation;
+import twilightforest.util.datamaps.MagicMapBiomeColor;
+import twilightforest.util.datamaps.OreMapOreColor;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -180,6 +185,39 @@ public class DataMapGenerator extends DataMapProvider {
 		crumble.add(Blocks.ANDESITE.builtInRegistryHolder(), new CrumbledBlock(Blocks.AIR, 0.05F), false);
 		crumble.add(Blocks.DIORITE.builtInRegistryHolder(), new CrumbledBlock(Blocks.AIR, 0.05F), false);
 		crumble.add(Blocks.GRANITE.builtInRegistryHolder(), new CrumbledBlock(Blocks.AIR, 0.05F), false);
+
+		var magicMap = this.builder(TFDataMaps.MAGIC_MAP_BIOME_COLOR);
+		magicMap.add(TFBiomes.FOREST, new MagicMapBiomeColor(MapColor.PLANT, 1), false);
+		magicMap.add(TFBiomes.DENSE_FOREST, new MagicMapBiomeColor(MapColor.PLANT, 0), false);
+		magicMap.add(TFBiomes.LAKE, new MagicMapBiomeColor(MapColor.WATER, 3), false);
+		magicMap.add(TFBiomes.STREAM, new MagicMapBiomeColor(MapColor.WATER, 1), false);
+		magicMap.add(TFBiomes.SWAMP, new MagicMapBiomeColor(MapColor.DIAMOND, 3), false);
+		magicMap.add(TFBiomes.FIRE_SWAMP, new MagicMapBiomeColor(MapColor.NETHER, 1), false);
+		magicMap.add(TFBiomes.CLEARING, new MagicMapBiomeColor(MapColor.GRASS, 2), false);
+		magicMap.add(TFBiomes.OAK_SAVANNAH, new MagicMapBiomeColor(MapColor.GRASS, 0), false);
+		magicMap.add(TFBiomes.HIGHLANDS, new MagicMapBiomeColor(MapColor.DIRT, 0), false);
+		magicMap.add(TFBiomes.THORNLANDS, new MagicMapBiomeColor(MapColor.WOOD, 3), false);
+		magicMap.add(TFBiomes.FINAL_PLATEAU, new MagicMapBiomeColor(MapColor.COLOR_LIGHT_GRAY, 2), false);
+		magicMap.add(TFBiomes.FIREFLY_FOREST, new MagicMapBiomeColor(MapColor.EMERALD, 1), false);
+		magicMap.add(TFBiomes.DARK_FOREST, new MagicMapBiomeColor(MapColor.COLOR_GREEN, 3), false);
+		magicMap.add(TFBiomes.DARK_FOREST_CENTER, new MagicMapBiomeColor(MapColor.COLOR_ORANGE, 3), false);
+		magicMap.add(TFBiomes.SNOWY_FOREST, new MagicMapBiomeColor(MapColor.SNOW, 1), false);
+		magicMap.add(TFBiomes.GLACIER, new MagicMapBiomeColor(MapColor.ICE, 1), false);
+		magicMap.add(TFBiomes.MUSHROOM_FOREST, new MagicMapBiomeColor(MapColor.COLOR_ORANGE, 0), false);
+		magicMap.add(TFBiomes.DENSE_MUSHROOM_FOREST, new MagicMapBiomeColor(MapColor.COLOR_PINK, 0), false);
+		magicMap.add(TFBiomes.ENCHANTED_FOREST, new MagicMapBiomeColor(MapColor.COLOR_CYAN, 2), false);
+		magicMap.add(TFBiomes.SPOOKY_FOREST, new MagicMapBiomeColor(MapColor.COLOR_PURPLE, 0), false);
+
+		var oreMap = this.builder(TFDataMaps.ORE_MAP_ORE_COLOR);
+		oreMap.add(BlockTags.COPPER_ORES, new OreMapOreColor(MapColor.COLOR_ORANGE), false);
+		oreMap.add(BlockTags.COAL_ORES, new OreMapOreColor(MapColor.COLOR_BLACK), false);
+		oreMap.add(BlockTags.IRON_ORES, new OreMapOreColor(MapColor.RAW_IRON), false);
+		oreMap.add(BlockTags.LAPIS_ORES, new OreMapOreColor(MapColor.LAPIS), false);
+		oreMap.add(BlockTags.GOLD_ORES, new OreMapOreColor(MapColor.GOLD), false);
+		oreMap.add(BlockTags.REDSTONE_ORES, new OreMapOreColor(MapColor.COLOR_RED), false);
+		oreMap.add(BlockTags.DIAMOND_ORES, new OreMapOreColor(MapColor.DIAMOND), false);
+		oreMap.add(BlockTags.EMERALD_ORES, new OreMapOreColor(MapColor.EMERALD), false);
+		oreMap.add(Blocks.ANCIENT_DEBRIS.builtInRegistryHolder(), new OreMapOreColor(MapColor.TERRACOTTA_BROWN), false);
 	}
 
 	private void add2WayTransform(DataMapProvider.Builder<EntityTransformation, EntityType<?>> builder, Holder<EntityType<?>> tfMob, EntityType<?> vanillaMob) {

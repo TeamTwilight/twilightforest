@@ -18,9 +18,11 @@ import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.DensityFunctions;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.*;
+import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import twilightforest.TFRegistries;
 import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFEntities;
+import twilightforest.init.TFMapDecorations;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.init.custom.StructureSpeleothemConfigs;
@@ -34,6 +36,7 @@ import twilightforest.world.components.structures.util.LandmarkStructure;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class HollowHillStructure extends LandmarkStructure implements ConfigurableSpawns, CustomDensitySource {
@@ -85,6 +88,15 @@ public class HollowHillStructure extends LandmarkStructure implements Configurab
 	@Override
 	public ControlledSpawningConfig getConfig() {
 		return this.controlledSpawningConfig;
+	}
+
+	@Override
+	public Optional<Holder<MapDecorationType>> getMapIcon() {
+		return Optional.of(switch (this.size) {
+			case 1 -> TFMapDecorations.SMALL_HOLLOW_HILL;
+			case 2 -> TFMapDecorations.MEDIUM_HOLLOW_HILL;
+			default -> TFMapDecorations.LARGE_HOLLOW_HILL;
+		});
 	}
 
 	public static HollowHillStructure buildSmallHillConfig(BootstrapContext<Structure> context) {

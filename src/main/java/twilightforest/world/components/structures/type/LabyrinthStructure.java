@@ -3,6 +3,7 @@ package twilightforest.world.components.structures.type;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.util.RandomSource;
@@ -15,10 +16,12 @@ import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.DensityFunctions;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.*;
+import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFEntities;
+import twilightforest.init.TFMapDecorations;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.world.components.chunkgenerators.AbsoluteDifferenceFunction;
 import twilightforest.world.components.chunkgenerators.FocusedDensityFunction;
@@ -30,6 +33,7 @@ import twilightforest.world.components.structures.util.ControlledSpawningStructu
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class LabyrinthStructure extends ControlledSpawningStructure implements ConfigurableSpawns, CustomDensitySource {
@@ -54,6 +58,11 @@ public class LabyrinthStructure extends ControlledSpawningStructure implements C
 	@Override
 	public StructureType<?> type() {
 		return TFStructureTypes.LABYRINTH.get();
+	}
+
+	@Override
+	public Optional<Holder<MapDecorationType>> getMapIcon() {
+		return Optional.of(TFMapDecorations.LABYRINTH);
 	}
 
 	public static LabyrinthStructure buildLabyrinthConfig(BootstrapContext<Structure> context) {

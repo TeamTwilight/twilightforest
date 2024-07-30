@@ -4,6 +4,7 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.neoforgespi.language.ModFileScanData;
 import twilightforest.beans.Bean;
 import twilightforest.beans.Component;
+import twilightforest.beans.DistAnnotationRetriever;
 import twilightforest.beans.TFBeanContext;
 
 import java.lang.annotation.ElementType;
@@ -16,7 +17,7 @@ public class BeanAnnotationDataProcessor implements AnnotationDataProcessor {
 
 	@Override
 	public void process(TFBeanContext.TFBeanContextInternalRegistrar context, ModContainer modContainer, ModFileScanData scanData) throws Throwable {
-		for (Iterator<ModFileScanData.AnnotationData> it = scanData.getAnnotatedBy(Bean.class, ElementType.METHOD).iterator(); it.hasNext(); ) {
+		for (Iterator<ModFileScanData.AnnotationData> it = DistAnnotationRetriever.retrieve(scanData, Bean.class, ElementType.METHOD).iterator(); it.hasNext(); ) {
 			ModFileScanData.AnnotationData data = it.next();
 			Method method = Class.forName(data.clazz().getClassName()).getDeclaredMethod(data.memberName());
 			Bean annotation = method.getAnnotation(Bean.class);

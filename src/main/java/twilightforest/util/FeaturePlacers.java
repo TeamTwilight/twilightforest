@@ -24,6 +24,7 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.neoforged.neoforge.event.EventHooks;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.init.TFBlocks;
+import twilightforest.util.iterators.VoxelBresenhamIterator;
 
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;

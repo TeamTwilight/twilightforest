@@ -40,13 +40,8 @@ public class PhantomArmorItem extends ArmorItem {
 		tooltip.add(TOOLTIP);
 	}
 
-	@Override
-	public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-		consumer.accept(ArmorRender.INSTANCE);
-	}
-
-	private static final class ArmorRender implements IClientItemExtensions {
-		private static final ArmorRender INSTANCE = new ArmorRender();
+	public static final class ArmorRender implements IClientItemExtensions {
+		public static final ArmorRender INSTANCE = new ArmorRender();
 
 		@Override
 		public @NotNull HumanoidModel<?> getHumanoidArmorModel(LivingEntity living, ItemStack stack, EquipmentSlot slot, HumanoidModel<?> model) {

@@ -30,13 +30,12 @@ public class ArmorColorRenderingTransformer implements ITransformer<MethodNode> 
 		).findFirst().ifPresent(target -> node.instructions.insert(
 			target,
 			ASMAPI.listOf(
-				new VarInsnNode(Opcodes.ALOAD, 8),
 				new VarInsnNode(Opcodes.ALOAD, 7),
 				new MethodInsnNode(
 					Opcodes.INVOKESTATIC,
 					"twilightforest/ASMHooks",
 					"armorColorRendering",
-					"(ILnet/minecraft/world/item/ArmorItem;Lnet/minecraft/world/item/ItemStack;)I"
+					"(ILnet/minecraft/world/item/ItemStack;)I"
 				)
 			)
 		));

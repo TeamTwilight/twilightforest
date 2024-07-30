@@ -240,6 +240,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 
 		toBlockModel(TFBlocks.TERRORCOTTA_LINES.get(), prefix("block/terrorcotta_lines_0"));
 		toBlockModel(TFBlocks.TERRORCOTTA_CURVES.get(), prefix("block/terrorcotta_curves_90"));
+		carpet(TFBlocks.ROYAL_RAGS.getRegisteredName(), TFBlocks.ROYAL_RAGS.getId().withPrefix("block/"));
 
 		withExistingParent(TFBlocks.OAK_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "minecraft:block/oak_planks");
 		withExistingParent(TFBlocks.SPRUCE_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "minecraft:block/spruce_planks");

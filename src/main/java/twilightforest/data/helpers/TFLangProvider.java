@@ -23,6 +23,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import org.apache.commons.lang3.text.WordUtils;
 import twilightforest.TwilightForestMod;
+import twilightforest.config.TFConfig;
 
 import java.util.HashMap;
 import java.util.List;
@@ -188,6 +189,16 @@ public abstract class TFLangProvider extends LanguageProvider {
 		this.add(String.format("tag.%s.%s.%s", tag.registry().location().getPath(), tag.location().getNamespace(), tag.location().getPath().replace('/', '.')), name);
 	}
 
+	public void configEntry(String key, String name, String description) {
+		this.add(TFConfig.CONFIG_ID + key, name);
+		this.add(TFConfig.CONFIG_ID + key + ".tooltip", description);
+	}
+
+	public void configCategory(String key, String name, String description) {
+		this.add(TFConfig.CONFIG_ID + key, name);
+		this.add(TFConfig.CONFIG_ID + key + ".tooltip", description);
+		this.add(name + ".button", "Edit");
+	}
 
 	@Override
 	public CompletableFuture<?> run(CachedOutput cache) {

@@ -5,6 +5,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.biome.Biome;
+import twilightforest.beans.Component;
 import twilightforest.init.TFBiomes;
 import twilightforest.world.components.BiomeGrassColors;
 
@@ -12,11 +13,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.WeakHashMap;
 
+@Component
 public final class FoliageColorHandler {
 
-	private static final Map<Biome, Handler> HANDLES = new WeakHashMap<>();
+	private final Map<Biome, Handler> HANDLES = new WeakHashMap<>();
 
-	public static int get(int o, Biome biome, double x, double z) {
+	public int get(int o, Biome biome, double x, double z) {
 		Handler handler = HANDLES.get(biome);
 		if (handler == null) {
 			handler = Handler.REGISTRY.getOrDefault(

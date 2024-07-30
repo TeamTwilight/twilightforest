@@ -9,10 +9,12 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.structures.TFStructureComponentTemplate;
 
+import java.util.Comparator;
 import java.util.Optional;
 
 // Landmark structure without progression lock; Hollow Hills/Hedge Maze/Naga Courtyard/Quest Grove
@@ -35,6 +37,8 @@ public abstract class LandmarkStructure extends Structure implements DecorationC
 		return new GenerationStub(new BlockPos(x, y, z), structurePiecesBuilder -> {
 			structurePiecesBuilder.addPiece(startingPiece);
 			startingPiece.addChildren(startingPiece, structurePiecesBuilder, context.random());
+
+			structurePiecesBuilder.pieces.sort(Comparator.comparing(piece -> piece instanceof SortablePiece sortable ? sortable.getSortKey() : 0));
 
 			structurePiecesBuilder.pieces.stream()
 				.filter(TFStructureComponentTemplate.class::isInstance)
@@ -61,6 +65,10 @@ public abstract class LandmarkStructure extends Structure implements DecorationC
 	@Deprecated
 	protected boolean dontCenter() {
 		return false;
+	}
+
+	public Optional<Holder<MapDecorationType>> getMapIcon() {
+		return Optional.empty();
 	}
 
 	@Nullable

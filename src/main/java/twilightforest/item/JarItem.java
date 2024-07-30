@@ -28,14 +28,10 @@ public class JarItem extends BlockItem {
 	}
 
 	@Override
-	public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-		consumer.accept(ISTER.CLIENT_ITEM_EXTENSION);
-	}
-
-	@Override
 	public ItemStack getDefaultInstance() {
 		return Util.make(super.getDefaultInstance(), stack -> stack.set(TFDataComponents.JAR_LID.get(), new JarLid(this.getBlock().getDefaultLid())));
 	}
+
 	@Override
 	public JarBlock getBlock() {
 		return (JarBlock) super.getBlock();

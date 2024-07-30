@@ -15,11 +15,13 @@ import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.DensityFunctions;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.*;
+import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFEntities;
+import twilightforest.init.TFMapDecorations;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.init.custom.StructureSpeleothemConfigs;
 import twilightforest.world.components.chunkgenerators.FocusedDensityFunction;
@@ -31,6 +33,7 @@ import twilightforest.world.components.structures.util.ProgressionStructure;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class HydraLairStructure extends ProgressionStructure implements CustomDensitySource {
@@ -56,6 +59,11 @@ public class HydraLairStructure extends ProgressionStructure implements CustomDe
 	@Override
 	public StructureType<?> type() {
 		return TFStructureTypes.HYDRA_LAIR.get();
+	}
+
+	@Override
+	public Optional<Holder<MapDecorationType>> getMapIcon() {
+		return Optional.of(TFMapDecorations.HYDRA_LAIR);
 	}
 
 	public static HydraLairStructure buildHydraLairConfig(BootstrapContext<Structure> context) {

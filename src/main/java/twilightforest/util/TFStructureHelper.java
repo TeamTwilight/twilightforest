@@ -2,6 +2,7 @@ package twilightforest.util;
 
 import net.minecraft.data.worldgen.features.TreeFeatures;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SlabBlock;
@@ -34,6 +35,10 @@ public class TFStructureHelper {
 
 	public static BlockState getSlabTop(Block type) {
 		return getSlabType(type, SlabType.TOP);
+	}
+
+	public static BlockState randomPlant(RandomSource random) {
+		return randomPlant(random.nextInt(6));
 	}
 
 	public static BlockState randomPlant(int i) {

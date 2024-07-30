@@ -14,7 +14,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.data.custom.stalactites.entry.SpeleothemVarietyConfig;
 import twilightforest.data.custom.stalactites.entry.Stalactite;
 import twilightforest.data.custom.stalactites.entry.StalactiteReloadListener;
-import twilightforest.util.RectangleLatticeIterator;
+import twilightforest.util.iterators.RectangleLatticeIterator;
 import twilightforest.world.components.feature.BlockSpikeFeature;
 
 import javax.annotation.Nullable;

@@ -1,5 +1,7 @@
 package twilightforest.beans;
 
+import net.neoforged.api.distmarker.Dist;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -18,5 +20,7 @@ public @interface Component {
 	String DEFAULT_VALUE = "!twilightforest:internal:bean:DEFAULT!";
 
 	String value() default DEFAULT_VALUE;
+
+	Dist[] dist() default {};
 
 }

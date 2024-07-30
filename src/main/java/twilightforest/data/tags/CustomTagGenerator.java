@@ -6,6 +6,8 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.decoration.PaintingVariant;
+import net.minecraft.world.entity.decoration.PaintingVariants;
 import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.dimension.DimensionType;
@@ -156,6 +158,123 @@ public class CustomTagGenerator {
 		@Override
 		public String getName() {
 			return "Twilight Forest DimensionType Tags";
+		}
+	}
+
+	public static class PaintingVariantTagGenerator extends TagsProvider<PaintingVariant> {
+		public static final TagKey<PaintingVariant> LICH_TOWER_PAINTINGS = TagKey.create(Registries.PAINTING_VARIANT, TwilightForestMod.prefix("tower_paintings"));
+		public static final TagKey<PaintingVariant> LICH_BOSS_PAINTINGS = TagKey.create(Registries.PAINTING_VARIANT, TwilightForestMod.prefix("tower_boss_paintings"));
+
+		public PaintingVariantTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, @Nullable ExistingFileHelper helper) {
+			super(output, Registries.PAINTING_VARIANT, provider, TwilightForestMod.ID, helper);
+		}
+
+		@Override
+		protected void addTags(HolderLookup.Provider provider) {
+			// Every single painting except for Humble
+			tag(LICH_TOWER_PAINTINGS).add(
+				PaintingVariants.KEBAB,
+				PaintingVariants.AZTEC,
+				PaintingVariants.ALBAN,
+				PaintingVariants.AZTEC2,
+				PaintingVariants.BOMB,
+				PaintingVariants.PLANT,
+				PaintingVariants.WASTELAND,
+				PaintingVariants.POOL,
+				PaintingVariants.COURBET,
+				PaintingVariants.SEA,
+				PaintingVariants.SUNSET,
+				PaintingVariants.CREEBET,
+				PaintingVariants.WANDERER,
+				PaintingVariants.GRAHAM,
+				PaintingVariants.MATCH,
+				PaintingVariants.BUST,
+				PaintingVariants.STAGE,
+				PaintingVariants.VOID,
+				PaintingVariants.SKULL_AND_ROSES,
+				PaintingVariants.WITHER,
+				PaintingVariants.FIGHTERS,
+				PaintingVariants.POINTER,
+				PaintingVariants.PIGSCENE,
+				PaintingVariants.BURNING_SKULL,
+				PaintingVariants.SKELETON,
+				PaintingVariants.DONKEY_KONG,
+				PaintingVariants.EARTH,
+				PaintingVariants.WIND,
+				PaintingVariants.WATER,
+				PaintingVariants.FIRE,
+				PaintingVariants.BAROQUE,
+				PaintingVariants.MEDITATIVE,
+				PaintingVariants.PRAIRIE_RIDE,
+				PaintingVariants.UNPACKED,
+				PaintingVariants.BACKYARD,
+				PaintingVariants.BOUQUET,
+				PaintingVariants.CAVEBIRD,
+				PaintingVariants.CHANGING,
+				PaintingVariants.COTAN,
+				PaintingVariants.ENDBOSS,
+				PaintingVariants.FERN,
+				PaintingVariants.FINDING,
+				PaintingVariants.LOWMIST,
+				PaintingVariants.ORB,
+				PaintingVariants.OWLEMONS,
+				PaintingVariants.PASSAGE,
+				PaintingVariants.POND,
+				PaintingVariants.SUNFLOWERS,
+				PaintingVariants.TIDES
+			);
+			// Every single painting except for Humble, Unpacked, and the 4 elements
+			tag(LICH_BOSS_PAINTINGS).add(
+				PaintingVariants.KEBAB,
+				PaintingVariants.AZTEC,
+				PaintingVariants.ALBAN,
+				PaintingVariants.AZTEC2,
+				PaintingVariants.BOMB,
+				PaintingVariants.PLANT,
+				PaintingVariants.WASTELAND,
+				PaintingVariants.POOL,
+				PaintingVariants.COURBET,
+				PaintingVariants.SEA,
+				PaintingVariants.SUNSET,
+				PaintingVariants.CREEBET,
+				PaintingVariants.WANDERER,
+				PaintingVariants.GRAHAM,
+				PaintingVariants.MATCH,
+				PaintingVariants.BUST,
+				PaintingVariants.STAGE,
+				PaintingVariants.VOID,
+				PaintingVariants.SKULL_AND_ROSES,
+				PaintingVariants.WITHER,
+				PaintingVariants.FIGHTERS,
+				PaintingVariants.POINTER,
+				PaintingVariants.PIGSCENE,
+				PaintingVariants.BURNING_SKULL,
+				PaintingVariants.SKELETON,
+				PaintingVariants.DONKEY_KONG,
+				PaintingVariants.BAROQUE,
+				PaintingVariants.MEDITATIVE,
+				PaintingVariants.PRAIRIE_RIDE,
+				PaintingVariants.BACKYARD,
+				PaintingVariants.BOUQUET,
+				PaintingVariants.CAVEBIRD,
+				PaintingVariants.CHANGING,
+				PaintingVariants.COTAN,
+				PaintingVariants.ENDBOSS,
+				PaintingVariants.FERN,
+				PaintingVariants.FINDING,
+				PaintingVariants.LOWMIST,
+				PaintingVariants.ORB,
+				PaintingVariants.OWLEMONS,
+				PaintingVariants.PASSAGE,
+				PaintingVariants.POND,
+				PaintingVariants.SUNFLOWERS,
+				PaintingVariants.TIDES
+			);
+		}
+
+		@Override
+		public String getName() {
+			return "Twilight Forest PaintingVariant Tags";
 		}
 	}
 }

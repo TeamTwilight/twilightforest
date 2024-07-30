@@ -9,6 +9,8 @@ import java.lang.annotation.Target;
  * Annotated methods will be automatically invoked after bean construction has finished.<br/>
  * Runs after {@link twilightforest.beans.processors.AnnotationDataPostProcessor}<p/>
  *
+ * Must have no arguments or have a single IEventBus parameter for the Mod EventBus.<p/>
+ *
  * Works for {@link Configurable}
  */
 @Target(ElementType.METHOD)

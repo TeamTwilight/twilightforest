@@ -90,13 +90,6 @@ public class TFDispenserBehaviors {
 
 		DispenserBlock.registerProjectileBehavior(TFItems.ICE_BOMB.get());
 
-		//store the vanilla values so we can use them in case our stuff fails
-		DispenseItemBehavior cachedFlintBehavior = DispenserBlock.DISPENSER_REGISTRY.get(Items.FLINT_AND_STEEL);
-		DispenseItemBehavior cachedFireChargeBehavior = DispenserBlock.DISPENSER_REGISTRY.get(Items.FIRE_CHARGE);
-
-		DispenserBlock.registerBehavior(Items.FLINT_AND_STEEL, new IgniteLightableDispenseBehavior(cachedFlintBehavior));
-		DispenserBlock.registerBehavior(Items.FIRE_CHARGE, new IgniteLightableDispenseBehavior(cachedFireChargeBehavior));
-
 		//handling tags should be a thing smh
 		DispenserBlock.registerBehavior(Items.CANDLE, new SkullCandleDispenseBehavior());
 		DispenserBlock.registerBehavior(Items.BLACK_CANDLE, new SkullCandleDispenseBehavior());

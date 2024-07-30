@@ -11,7 +11,7 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import twilightforest.util.FeatureLogic;
 import twilightforest.util.FeaturePlacers;
-import twilightforest.util.VoxelBresenhamIterator;
+import twilightforest.util.iterators.VoxelBresenhamIterator;
 import twilightforest.world.components.feature.config.RootConfig;
 
 public class WoodRootFeature extends Feature<RootConfig> {

@@ -14,10 +14,7 @@ import twilightforest.asm.transformers.cloud.IsRainingAtTransformer;
 import twilightforest.asm.transformers.conquered.StructureStartLoadStaticTransformer;
 import twilightforest.asm.transformers.foliage.FoliageColorResolverTransformer;
 import twilightforest.asm.transformers.lead.LeashFenceKnotSurvivesTransformer;
-import twilightforest.asm.transformers.map.RenderMapDecorationsTransformer;
-import twilightforest.asm.transformers.map.ResolveMapDataForRenderTransformer;
 import twilightforest.asm.transformers.map.ResolveNearestNonRandomSpreadMapStructureTransformer;
-import twilightforest.asm.transformers.map.ShouldMapRenderInArmTransformer;
 import twilightforest.asm.transformers.multipart.ResolveEntitiesForRendereringTransformer;
 import twilightforest.asm.transformers.multipart.ResolveEntityRendererTransformer;
 import twilightforest.asm.transformers.multipart.SendDirtytEntityDataTransformer;
@@ -58,10 +55,7 @@ public class TFCoreMod implements ICoreMod {
 			new LeashFenceKnotSurvivesTransformer(),
 
 			// map
-			new RenderMapDecorationsTransformer(),
-			new ResolveMapDataForRenderTransformer(),
 			new ResolveNearestNonRandomSpreadMapStructureTransformer(),
-			new ShouldMapRenderInArmTransformer(),
 
 			// multipart
 			new ResolveEntitiesForRendereringTransformer(),
