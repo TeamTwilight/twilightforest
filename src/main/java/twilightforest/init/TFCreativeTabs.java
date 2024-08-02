@@ -6,6 +6,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.util.Unit;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -602,7 +603,8 @@ public class TFCreativeTabs {
 
 		ItemStack loreSword = new ItemStack(TFItems.GLASS_SWORD.get());
 
-		loreSword.set(DataComponents.LORE, new ItemLore(List.of(Component.translatable("item.twilightforest.glass_sword.desc").withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY))));
+		List<Component> GLASS_SWORD_COMPONENTS = List.of(Component.translatable("item.twilightforest.glass_sword.desc").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY)));
+		loreSword.set(DataComponents.LORE, new ItemLore(GLASS_SWORD_COMPONENTS, GLASS_SWORD_COMPONENTS));
 		loreSword.set(DataComponents.UNBREAKABLE, new Unbreakable(true));
 		loreSword.set(TFDataComponents.INFINITE_GLASS_SWORD, Unit.INSTANCE);
 
