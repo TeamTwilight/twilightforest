@@ -623,7 +623,6 @@
   "commands.tffeature.chunk": "Localizado no chunk do recurso: %s",
   "commands.tffeature.nearest": "O recurso mais perto é: %s",
   "commands.tffeature.none_nearby": "Não foi possível encontrar recursos por perto!",
-  "commands.tffeature.not_in_twilight_forest": "Você não está na dimensão da Floresta do Crepúsculo",
   "commands.tffeature.not_player": "Esse comando precisa ser ativado por um jogador válido",
   "commands.tffeature.structure.conquer.status": "Bandeira de conquista de estrutura: %s",
   "commands.tffeature.structure.conquer.update": "Bandeira de conquista de estrutura era %s, mudando para %s",
