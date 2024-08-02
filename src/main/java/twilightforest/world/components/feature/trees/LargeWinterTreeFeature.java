@@ -112,7 +112,7 @@ public class LargeWinterTreeFeature extends TFTreeFeature<TFTreeFeatureConfig> {
 		BiConsumer<BlockPos, Integer> placeTrunk = (offset, dy) -> {
 			BlockPos currentPos = pos.offset(offset.getX(), dy, offset.getZ());
 			if (FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, rand, currentPos, config.trunkProvider) && dy == 0) {
-				world.setBlock(pos.offset(offset.getX(), -1, offset.getZ()), Blocks.DIRT.defaultBlockState(), 3);
+				world.setBlock(pos.offset(offset.getX(), -1, offset.getZ()), Blocks.DIRT.defaultBlockState(), 19);
 			}
 		};
 
