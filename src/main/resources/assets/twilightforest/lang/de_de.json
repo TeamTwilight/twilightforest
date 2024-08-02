@@ -668,7 +668,6 @@
   "commands.tffeature.chunk": "In Feature Chunk sind: %s",
   "commands.tffeature.nearest": "Das nächstgelegene Merkmal ist %s",
   "commands.tffeature.none_nearby": "Konnte kein Feature in der Nähe finden!",
-  "commands.tffeature.not_in_twilight_forest": "Du befindest dich nicht in der Dimension Dämmerwald",
   "commands.tffeature.structure.conquer.status": "Struktur erobern Flagge: %s",
   "commands.tffeature.structure.conquer.update": "Struktureroberungsflagge war %s, Änderung auf %s",
   "commands.tffeature.structure.inside": "Sie befinden sich in einer Meilenstein-Struktur",
