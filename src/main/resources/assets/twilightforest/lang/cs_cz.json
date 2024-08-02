@@ -675,7 +675,6 @@
   "commands.tffeature.chunk": "Nalezeno v chunku lokace: %s",
   "commands.tffeature.nearest": "Nejbližší lokace je: %s",
   "commands.tffeature.none_nearby": "V okolí se nepodařilo najít žádnou lokaci!",
-  "commands.tffeature.not_in_twilight_forest": "Nejsi v dimenzi Twilight Forestu",
   "commands.tffeature.not_player": "Tento příkaz musí být spuštěn platným hráčem!",
   "commands.tffeature.structure.boundaries": "Hranice struktury: %s",
   "commands.tffeature.structure.inside": "Jsi v orientačním bodu struktury",
