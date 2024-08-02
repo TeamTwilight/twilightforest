@@ -6,12 +6,14 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.util.FeaturePlacers;
 import twilightforest.util.RootPlacer;
 import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
 
+import java.util.List;
 import java.util.function.BiConsumer;
 
 public class LargeWinterTreeFeature extends TFTreeFeature<TFTreeFeatureConfig> {
@@ -107,11 +109,23 @@ public class LargeWinterTreeFeature extends TFTreeFeature<TFTreeFeatureConfig> {
 	}
 
 	private void buildTrunk(LevelAccessor world, BiConsumer<BlockPos, BlockState> trunkPlacer, RandomSource rand, BlockPos pos, int treeHeight, TFTreeFeatureConfig config) {
+		BiConsumer<BlockPos, Integer> placeTrunk = (offset, dy) -> {
+			BlockPos currentPos = pos.offset(offset.getX(), dy, offset.getZ());
+			if (FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, rand, currentPos, config.trunkProvider) && dy == 0) {
+				world.setBlock(pos.offset(offset.getX(), -1, offset.getZ()), Blocks.DIRT.defaultBlockState(), 3);
+			}
+		};
+
+		List<BlockPos> offsets = List.of(
+			new BlockPos(0, 0, 0),
+			new BlockPos(1, 0, 0),
+			new BlockPos(0, 0, 1),
+			new BlockPos(1, 0, 1)
+		);
+
 		for (int dy = 0; dy < treeHeight; dy++) {
-			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, rand, pos.offset(0, dy, 0), config.trunkProvider);
-			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, rand, pos.offset(1, dy, 0), config.trunkProvider);
-			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, rand, pos.offset(0, dy, 1), config.trunkProvider);
-			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, rand, pos.offset(1, dy, 1), config.trunkProvider);
+			int finalDy = dy;
+			offsets.forEach(offset -> placeTrunk.accept(offset, finalDy));
 		}
 	}
 }
