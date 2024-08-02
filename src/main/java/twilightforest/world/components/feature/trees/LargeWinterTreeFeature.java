@@ -37,7 +37,7 @@ public class LargeWinterTreeFeature extends TFTreeFeature<TFTreeFeatureConfig> {
 		}
 
 		// check if we're on a valid block
-		if (!SnowTreeFeature.validTreePos(world, pos.below())) {
+		if (!SnowTreeFeature.validTreePos(world, pos)) {
 			return false;
 		}
 
