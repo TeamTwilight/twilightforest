@@ -680,7 +680,6 @@
   "commands.tffeature.chunk": "Об'єкт у чанку: %s",
   "commands.tffeature.nearest": "Найближчий об'єкт: %s",
   "commands.tffeature.none_nearby": "Не вдалося знайти об’єкт поблизу!",
-  "commands.tffeature.not_in_twilight_forest": "Ви знаходитесь поза Сутінковим Лісом",
   "commands.tffeature.not_player": "Цю команду має виконувати дійсний гравець!",
   "commands.tffeature.structure.conquer.status": "Структура відмічена: %s",
   "commands.tffeature.structure.conquer.update": "Відмітка структури %s, змінена на %s",
