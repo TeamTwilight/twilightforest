@@ -58,7 +58,7 @@ public class ReactorDebrisBlockEntity extends BlockEntity {
 		float lengthY = RANDOM.nextInt(1, (int) (17 - minY * 16)) / 16F;
 		float lengthZ = RANDOM.nextInt(1, (int) (17 - minZ * 16)) / 16F;
 
-		if (lengthX * lengthY * lengthZ < 1 / 6.0) {
+		if (lengthX * lengthY * lengthZ < 1 / 8.0) {
 			return calculateVoxelShape();
 		}
 
