@@ -242,6 +242,7 @@ public class TFClientSetup {
 		event.registerBlockEntityRenderer(TFBlockEntities.TF_TRAPPED_CHEST.get(), TFChestTileEntityRenderer::new);
 		event.registerBlockEntityRenderer(TFBlockEntities.KEEPSAKE_CASKET.get(), CasketTileEntityRenderer::new);
 		event.registerBlockEntityRenderer(TFBlockEntities.SKULL_CANDLE.get(), SkullCandleTileEntityRenderer::new);
+		event.registerBlockEntityRenderer(TFBlockEntities.REACTOR_DEBRIS.get(), ReactorDebrisRenderer::new);
 		event.registerBlockEntityRenderer(TFBlockEntities.RED_THREAD.get(), RedThreadRenderer::new);
 		event.registerBlockEntityRenderer(TFBlockEntities.CANDELABRA.get(), CandelabraTileEntityRenderer::new);
 		event.registerBlockEntityRenderer(TFBlockEntities.JAR.get(), JarRenderer::new);
