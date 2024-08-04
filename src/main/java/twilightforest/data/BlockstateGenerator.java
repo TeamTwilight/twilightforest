@@ -1194,7 +1194,6 @@ public class BlockstateGenerator extends BlockModelBuilders {
 			.with(CarminiteReactorBlock.ACTIVE, false).setModels(new ConfiguredModel(reactor));
 		getVariantBuilder(TFBlocks.CARMINITE_REACTOR.get()).partialState()
 			.with(CarminiteReactorBlock.ACTIVE, true).setModels(new ConfiguredModel(reactorActive));
-		simpleBlock(TFBlocks.REACTOR_DEBRIS.get(), models().cubeAll(TFBlocks.REACTOR_DEBRIS.getId().getPath(), ResourceLocation.withDefaultNamespace("block/destroy_stage_9")).renderType(CUTOUT));
 	}
 
 	private ModelFile pedestalModel(String name, String north, String south, String west, String east, boolean active) {
