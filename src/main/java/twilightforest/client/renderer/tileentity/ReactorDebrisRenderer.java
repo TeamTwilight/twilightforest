@@ -15,95 +15,87 @@ import org.joml.Matrix4f;
 import twilightforest.block.entity.ReactorDebrisBlockEntity;
 
 public class ReactorDebrisRenderer implements BlockEntityRenderer<ReactorDebrisBlockEntity> {
+
 	public ReactorDebrisRenderer(BlockEntityRendererProvider.Context context) {}
 
-	private record QuadRenderInfo(VertexConsumer builder, Matrix4f matrix4f, int packedLight, int packedOverlay) {}  // Reduce copy-paste, thanks to TFC for idea
+	private enum Axis {
+		X, Y, Z
+	}
 
-	private static void vertex(QuadRenderInfo info, float x, float y, float z, float u, float v, float nx, float ny, float nz)
-	{
-		info.builder.addVertex(info.matrix4f, x, y, z)
-			.setUv(u, v).setLight(info.packedLight)
-			.setOverlay(info.packedOverlay)
-			.setNormal(nx, ny, nz)
-			.setColor(1f, 1f, 1f, 1f);
+	private record QuadRenderInfo(VertexConsumer builder, Matrix4f matrix, int light, int overlay) {  // Reduce copy-paste, thanks to TFC for idea
+		private void vertex(float x, float y, float z, float u, float v, float nx, float ny, float nz)
+		{
+			this.builder.addVertex(this.matrix, x, y, z)
+				.setUv(u, v).setLight(this.light)
+				.setOverlay(this.overlay)
+				.setNormal(nx, ny, nz)
+				.setColor(1f, 1f, 1f, 1f);
+		}
 	}
 
 	@Override
-	public void render(ReactorDebrisBlockEntity reactorDebrisBlockEntity, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay)
-	{
-		if (reactorDebrisBlockEntity.getLevel() == null) return;
+	public void render(ReactorDebrisBlockEntity entity, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int light, int overlay) {
+		if (entity.getLevel() == null) return;
 
 		poseStack.pushPose();
-
 		VertexConsumer builder = buffer.getBuffer(RenderType.entityTranslucentCull(TextureAtlas.LOCATION_BLOCKS));
-		Matrix4f matrix4f = poseStack.last().pose();
+		Matrix4f matrix = poseStack.last().pose();
+		QuadRenderInfo info = new QuadRenderInfo(builder, matrix, light, overlay);
 
-		final QuadRenderInfo info = new QuadRenderInfo(builder, matrix4f, packedLight, packedOverlay);
-
-		renderBlock(info, reactorDebrisBlockEntity);
-
-
+		renderBlock(info, entity);
 		poseStack.popPose();
 	}
 
-	private void renderBlock(QuadRenderInfo info, ReactorDebrisBlockEntity reactorDebrisBlockEntity) {
-		float minX = (float) reactorDebrisBlockEntity.minPos.x;
-		float minY = (float) reactorDebrisBlockEntity.minPos.y;
-		float minZ = (float) reactorDebrisBlockEntity.minPos.z;
-		float maxX = (float) reactorDebrisBlockEntity.maxPos.x;
-		float maxY = (float) reactorDebrisBlockEntity.maxPos.y;
-		float maxZ = (float) reactorDebrisBlockEntity.maxPos.z;
+	private void renderBlock(QuadRenderInfo info, ReactorDebrisBlockEntity entity) {
+		float minX = (float) entity.minPos.x;
+		float minY = (float) entity.minPos.y;
+		float minZ = (float) entity.minPos.z;
+		float maxX = (float) entity.maxPos.x;
+		float maxY = (float) entity.maxPos.y;
+		float maxZ = (float) entity.maxPos.z;
 
-		renderXSides(info, getSprite(reactorDebrisBlockEntity.textures[0]), minX, minY, minZ, maxY, maxZ, -1);
-		renderXSides(info, getSprite(reactorDebrisBlockEntity.textures[1]), maxX, minY, maxZ, maxY, minZ, 1);
-		renderYSides(info, getSprite(reactorDebrisBlockEntity.textures[2]), minY, minX, maxZ, maxX, minZ, -1);
-		renderYSides(info, getSprite(reactorDebrisBlockEntity.textures[3]), maxY, minX, minZ, maxX, maxZ, 1);
-		renderZSides(info, getSprite(reactorDebrisBlockEntity.textures[4]), minZ, minX, minY, maxX, maxY, -1);
-		renderZSides(info, getSprite(reactorDebrisBlockEntity.textures[5]), maxZ, maxX, minY, minX, maxY, 1);
+		renderSide(info, getSprite(entity.textures[0]), Axis.X, minX, minY, minZ, maxY, maxZ, -1);
+		renderSide(info, getSprite(entity.textures[1]), Axis.X, maxX, minY, maxZ, maxY, minZ, 1);
+		renderSide(info, getSprite(entity.textures[2]), Axis.Y, minY, minX, maxZ, maxX, minZ, -1);
+		renderSide(info, getSprite(entity.textures[3]), Axis.Y, maxY, minX, minZ, maxX, maxZ, 1);
+		renderSide(info, getSprite(entity.textures[4]), Axis.Z, minZ, minX, minY, maxX, maxY, -1);
+		renderSide(info, getSprite(entity.textures[5]), Axis.Z, maxZ, maxX, minY, minX, maxY, 1);
 
 		// Duplication for inner side because portal is transparent
-		renderXSides(info, getSprite(reactorDebrisBlockEntity.textures[0]), minX, minY, maxZ, maxY, minZ, 1);
-		renderXSides(info, getSprite(reactorDebrisBlockEntity.textures[1]), maxX, minY, minZ, maxY, maxZ, -1);
-		renderYSides(info, getSprite(reactorDebrisBlockEntity.textures[2]), minY, minX, minZ, maxX, maxZ, 1);
-		renderYSides(info, getSprite(reactorDebrisBlockEntity.textures[3]), maxY, minX, maxZ, maxX, minZ, -1);
-		renderZSides(info, getSprite(reactorDebrisBlockEntity.textures[4]), minZ, maxX, minY, minX, maxY, 1);
-		renderZSides(info, getSprite(reactorDebrisBlockEntity.textures[5]), maxZ, minX, minY, maxX, maxY, -1);
+		renderSide(info, getSprite(entity.textures[0]), Axis.X, minX, minY, maxZ, maxY, minZ, 1);
+		renderSide(info, getSprite(entity.textures[1]), Axis.X, maxX, minY, minZ, maxY, maxZ, -1);
+		renderSide(info, getSprite(entity.textures[2]), Axis.Y, minY, minX, minZ, maxX, maxZ, 1);
+		renderSide(info, getSprite(entity.textures[3]), Axis.Y, maxY, minX, maxZ, maxX, minZ, -1);
+		renderSide(info, getSprite(entity.textures[4]), Axis.Z, minZ, maxX, minY, minX, maxY, 1);
+		renderSide(info, getSprite(entity.textures[5]), Axis.Z, maxZ, minX, minY, maxX, maxY, -1);
 	}
 
-	private void renderXSides(QuadRenderInfo info, TextureAtlasSprite sprite, float x, float minY, float minZ, float maxY, float maxZ, float n) {
-		float u0 = Mth.lerp(minY, sprite.getU0(), sprite.getU1());
-		float v0 = Mth.lerp(minZ, sprite.getV0(), sprite.getV1());
-		float u1 = Mth.lerp(maxY, sprite.getU0(), sprite.getU1());
-		float v1 = Mth.lerp(maxZ, sprite.getV0(), sprite.getV1());
+	private void renderSide(QuadRenderInfo info, TextureAtlasSprite sprite, Axis axis, float c1, float min1, float min2, float max1, float max2, float n) {
+		float u0 = Mth.lerp(min1, sprite.getU0(), sprite.getU1());
+		float v0 = Mth.lerp(min2, sprite.getV0(), sprite.getV1());
+		float u1 = Mth.lerp(max1, sprite.getU0(), sprite.getU1());
+		float v1 = Mth.lerp(max2, sprite.getV0(), sprite.getV1());
 
-		vertex(info, x, minY, minZ, u0, v0, n, 0, 0);
-		vertex(info, x, minY, maxZ, u0, v1, n, 0, 0);
-		vertex(info, x, maxY, maxZ, u1, v1, n, 0, 0);
-		vertex(info, x, maxY, minZ, u1, v0, n, 0, 0);
-	}
-
-	private void renderYSides(QuadRenderInfo info, TextureAtlasSprite sprite, float y, float minX, float minZ, float maxX, float maxZ, float n) {
-		float u0 = Mth.lerp(minX, sprite.getU0(), sprite.getU1());
-		float v0 = Mth.lerp(minZ, sprite.getV0(), sprite.getV1());
-		float u1 = Mth.lerp(maxX, sprite.getU0(), sprite.getU1());
-		float v1 = Mth.lerp(maxZ, sprite.getV0(), sprite.getV1());
-
-		vertex(info, minX, y, minZ, u0, v0, 0, n, 0);
-		vertex(info, minX, y, maxZ, u0, v1, 0, n, 0);
-		vertex(info, maxX, y, maxZ, u1, v1, 0, n, 0);
-		vertex(info, maxX, y, minZ, u1, v0, 0, n, 0);
-	}
-
-	private void renderZSides(QuadRenderInfo info, TextureAtlasSprite sprite, float z, float minX, float minY, float maxX, float maxY, float n) {
-		float u0 = Mth.lerp(minX, sprite.getU0(), sprite.getU1());
-		float v0 = Mth.lerp(minY, sprite.getV0(), sprite.getV1());
-		float u1 = Mth.lerp(maxX, sprite.getU0(), sprite.getU1());
-		float v1 = Mth.lerp(maxY, sprite.getV0(), sprite.getV1());
-
-		vertex(info, minX, minY, z, u0, v0, 0, 0, n);
-		vertex(info, minX, maxY, z, u0, v1, 0, 0, n);
-		vertex(info, maxX, maxY, z, u1, v1, 0, 0, n);
-		vertex(info, maxX, minY, z, u1, v0, 0, 0, n);
+		switch (axis) {
+			case X -> {
+				info.vertex(c1, min1, min2, u0, v0, n, 0, 0);
+				info.vertex(c1, min1, max2, u0, v1, n, 0, 0);
+				info.vertex(c1, max1, max2, u1, v1, n, 0, 0);
+				info.vertex(c1, max1, min2, u1, v0, n, 0, 0);
+			}
+			case Y -> {
+				info.vertex(min1, c1, min2, u0, v0, 0, n, 0);
+				info.vertex(min1, c1, max2, u0, v1, 0, n, 0);
+				info.vertex(max1, c1, max2, u1, v1, 0, n, 0);
+				info.vertex(max1, c1, min2, u1, v0, 0, n, 0);
+			}
+			case Z -> {
+				info.vertex(min1, min2, c1, u0, v0, 0, 0, n);
+				info.vertex(min1, max2, c1, u0, v1, 0, 0, n);
+				info.vertex(max1, max2, c1, u1, v1, 0, 0, n);
+				info.vertex(max1, min2, c1, u1, v0, 0, 0, n);
+			}
+		}
 	}
 
 	private TextureAtlasSprite getSprite(ResourceLocation location) {
