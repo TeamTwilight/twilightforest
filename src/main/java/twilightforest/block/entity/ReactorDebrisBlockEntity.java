@@ -22,7 +22,7 @@ public class ReactorDebrisBlockEntity extends BlockEntity {
 		ResourceLocation.withDefaultNamespace("block/bedrock"),
 		ResourceLocation.withDefaultNamespace("block/nether_portal")
 	};
-	private static final ResourceLocation DEFAULT_TEXTURE = TEXTURES[0];
+	public static final ResourceLocation DEFAULT_TEXTURE = TEXTURES[0];
 	private static final float Z_FIGHTING_MIN = 0.001F;
 	private static final float Z_FIGHTING_MAX = 0.999F;
 	private static final Random RANDOM = new Random();

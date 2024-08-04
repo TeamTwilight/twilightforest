@@ -99,7 +99,7 @@ public class ReactorDebrisRenderer implements BlockEntityRenderer<ReactorDebrisB
 		}
 	}
 
-	private TextureAtlasSprite getSprite(ResourceLocation location) {
+	public static TextureAtlasSprite getSprite(ResourceLocation location) {
 		return Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(location);
 	}
 }
