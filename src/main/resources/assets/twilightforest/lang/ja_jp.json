@@ -716,7 +716,6 @@
   "commands.tffeature.chunk": "チャンクにいるか：%s",
   "commands.tffeature.nearest": "一番近いダンジョンは%sです",
   "commands.tffeature.none_nearby": "近くにランドマークは見つかりませんでした！",
-  "commands.tffeature.not_in_twilight_forest": "ここは黄昏の森ディメンジョンではありません",
   "commands.tffeature.not_player": "このコマンドは有効なプレイヤーのみが使用できます！",
   "commands.tffeature.structure.boundaries": "構造物の境界：%s",
   "commands.tffeature.structure.conquer.status": "構造物の攻略済みフラグ：%s",

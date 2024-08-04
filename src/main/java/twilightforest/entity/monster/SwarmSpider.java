@@ -27,7 +27,7 @@ import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
 import twilightforest.init.TFStructures;
-import twilightforest.util.LegacyLandmarkPlacements;
+import twilightforest.util.landmarks.LegacyLandmarkPlacements;
 
 public class SwarmSpider extends Spider {
 

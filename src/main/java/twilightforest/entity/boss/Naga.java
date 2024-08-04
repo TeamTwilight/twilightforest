@@ -56,7 +56,7 @@ import twilightforest.init.TFBlocks;
 import twilightforest.init.TFSounds;
 import twilightforest.init.TFStructures;
 import twilightforest.network.MovePlayerPacket;
-import twilightforest.util.EntityUtil;
+import twilightforest.util.entities.EntityUtil;
 
 import java.util.Objects;
 import java.util.UUID;

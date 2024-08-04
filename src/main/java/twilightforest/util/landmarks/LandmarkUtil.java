@@ -1,4 +1,4 @@
-package twilightforest.util;
+package twilightforest.util.landmarks;
 
 import net.minecraft.core.*;
 import net.minecraft.core.registries.Registries;

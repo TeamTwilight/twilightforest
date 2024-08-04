@@ -1,10 +1,9 @@
-package twilightforest.util;
+package twilightforest.util.features;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.core.HolderSet;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -25,6 +24,8 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.neoforged.neoforge.event.EventHooks;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.init.TFBlocks;
+import twilightforest.util.BoundingBoxUtils;
+import twilightforest.util.RootPlacer;
 import twilightforest.util.iterators.VoxelBresenhamIterator;
 
 import java.util.function.BiConsumer;

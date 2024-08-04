@@ -160,6 +160,7 @@ dependencies {
 
 	//curse maven
 	implementation "curse.maven:jade-324717:5529595"
+	implementation "curse.maven:cosmetic-armor-reworked-237307:5427303"
 //	runtimeOnly "curse.maven:jeed-532286:5483315"
 //	runtimeOnly "curse.maven:museum-curator-859070:4629894"
 

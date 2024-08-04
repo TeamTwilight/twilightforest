@@ -17,8 +17,8 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.storage.loot.LootTable;
-import twilightforest.util.FeatureLogic;
-import twilightforest.util.FeatureUtil;
+import twilightforest.util.features.FeatureLogic;
+import twilightforest.util.features.FeatureUtil;
 import twilightforest.world.components.feature.config.RuinedFoundationConfig;
 
 public class FoundationFeature extends Feature<RuinedFoundationConfig> {

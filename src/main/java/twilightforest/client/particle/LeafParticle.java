@@ -78,36 +78,14 @@ public class LeafParticle extends TextureSheetParticle {
 	@Override
 	public void render(VertexConsumer buffer, Camera entity, float partialTicks) {
 		this.alpha = Math.min(Mth.clamp(this.age, 0, 20) / 20.0F, Mth.clamp(this.lifetime - this.age, 0, 20) / 20.0F);
-		Vec3 pos = entity.getPosition();
-		float lerpx = (float) (Mth.lerp(partialTicks, this.xo, this.x) - pos.x());
-		float lerpy = (float) (Mth.lerp(partialTicks, this.yo, this.y) - pos.y());
-		float lerpz = (float) (Mth.lerp(partialTicks, this.zo, this.z) - pos.z());
-		Quaternionf quaternion = new Quaternionf(entity.rotation());
+		Quaternionf quaternion = new Quaternionf();
 		if (this.roll != 0.0F) {
-			float roll = Mth.lerp(partialTicks, this.oRoll, this.roll);
-			quaternion.mul(Axis.ZP.rotation(roll));
+			quaternion.rotateZ(Mth.lerp(partialTicks, this.oRoll, this.roll));
 		}
-		quaternion.mul(Axis.YP.rotation(Mth.cos((float) Math.toRadians(rot % 360.0F))));
-		Vector3f vec = new Vector3f(-1.0F, -1.0F, 0.0F);
-		vec.rotate(quaternion);
-		Vector3f[] vecList = new Vector3f[]{new Vector3f(-1.0F, -1.0F, 0.0F), new Vector3f(-1.0F, 1.0F, 0.0F), new Vector3f(1.0F, 1.0F, 0.0F), new Vector3f(1.0F, -1.0F, 0.0F)};
-		float quadSize = this.getQuadSize(partialTicks);
-
-		for (int i = 0; i < 4; i++) {
-			Vector3f selectedVec = vecList[i];
-			selectedVec.rotate(quaternion);
-			selectedVec.mul(quadSize);
-			selectedVec.add(lerpx, lerpy, lerpz);
-		}
-		float u = this.getU0();
-		float u1 = this.getU1();
-		float v = this.getV0();
-		float v1 = this.getV1();
-		int light = this.getLightColor(partialTicks);
-		buffer.addVertex(vecList[0].x(), vecList[0].y(), vecList[0].z()).setUv(u1, v1).setColor(this.rCol, this.gCol, this.bCol, this.alpha).setLight(light);
-		buffer.addVertex(vecList[1].x(), vecList[1].y(), vecList[1].z()).setUv(u1, v).setColor(this.rCol, this.gCol, this.bCol, this.alpha).setLight(light);
-		buffer.addVertex(vecList[2].x(), vecList[2].y(), vecList[2].z()).setUv(u, v).setColor(this.rCol, this.gCol, this.bCol, this.alpha).setLight(light);
-		buffer.addVertex(vecList[3].x(), vecList[3].y(), vecList[3].z()).setUv(u, v1).setColor(this.rCol, this.gCol, this.bCol, this.alpha).setLight(light);
+		quaternion.rotateY(Mth.cos((float) Math.toRadians(this.rot % 360.0F)));
+		this.renderRotatedQuad(buffer, entity, quaternion, partialTicks);
+		quaternion.rotateY(-Mth.PI).rotateZ(Mth.HALF_PI);
+		this.renderRotatedQuad(buffer, entity, quaternion, partialTicks);
 	}
 
 	@Override

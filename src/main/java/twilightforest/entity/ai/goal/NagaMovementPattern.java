@@ -9,7 +9,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.neoforged.neoforge.event.EventHooks;
 import twilightforest.entity.boss.Naga;
 import twilightforest.init.TFSounds;
-import twilightforest.util.EntityUtil;
+import twilightforest.util.entities.EntityUtil;
 
 import java.util.EnumSet;
 

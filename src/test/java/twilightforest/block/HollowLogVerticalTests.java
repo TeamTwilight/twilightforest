@@ -18,8 +18,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
-import twilightforest.beans.MockBean;
-import twilightforest.beans.TFBeanContextJunitExtension;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import twilightforest.enums.HollowLogVariants;
 import twilightforest.init.TFBlocks;
 import twilightforest.junit.MockitoFixer;
@@ -28,17 +29,19 @@ import twilightforest.util.DirectionUtil;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@ExtendWith({MockitoFixer.class, TFBeanContextJunitExtension.class})
+@ExtendWith(MockitoFixer.class)
 public class HollowLogVerticalTests {
 
-	@MockBean
+	@Mock
 	private DirectionUtil directionUtil;
 
+	@InjectMocks
 	private HollowLogVertical instance;
 
 	@BeforeEach
 	public void setup() {
 		instance = TFBlocks.HOLLOW_ACACIA_LOG_VERTICAL.value();
+		MockitoAnnotations.openMocks(this);
 	}
 
 	@Test

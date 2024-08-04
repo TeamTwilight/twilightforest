@@ -31,7 +31,7 @@ import twilightforest.entity.ai.goal.ChargeAttackGoal;
 import twilightforest.entity.ai.goal.GroundAttackGoal;
 import twilightforest.entity.monster.Minotaur;
 import twilightforest.init.*;
-import twilightforest.util.EntityUtil;
+import twilightforest.util.entities.EntityUtil;
 
 public class Minoshroom extends BaseTFBoss implements ITFCharger {
 

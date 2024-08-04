@@ -1,4 +1,4 @@
-package twilightforest.util;
+package twilightforest.util.entities;
 
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;

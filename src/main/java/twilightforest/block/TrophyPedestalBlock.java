@@ -30,7 +30,7 @@ import twilightforest.init.TFAdvancements;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFSounds;
 import twilightforest.init.TFStats;
-import twilightforest.util.LandmarkUtil;
+import twilightforest.util.landmarks.LandmarkUtil;
 import twilightforest.util.PlayerHelper;
 
 public class TrophyPedestalBlock extends Block implements SimpleWaterloggedBlock {

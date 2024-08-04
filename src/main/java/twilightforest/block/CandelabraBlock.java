@@ -5,6 +5,7 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.Vec3i;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
@@ -15,11 +16,13 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.entity.ItemSteerable;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
@@ -162,34 +165,32 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
 		if (stack.is(ItemTags.CANDLES) || player.isSecondaryUseActive()) {
 			if (level.getBlockEntity(pos) instanceof CandelabraBlockEntity candelabra) {
-				Direction direction = state.getValue(HorizontalDirectionalBlock.FACING);
-				Optional<Double> optional = getRelativeHitCoordinatesForBlockFace(result, direction);
-				if (optional.isEmpty()) {
-					return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
-				} else {
-					int i = getHitSlot(optional.get(), direction == Direction.NORTH || direction == Direction.EAST);
-					if (state.getValue(CANDLES.get(i)) && player.isSecondaryUseActive()) {
-						if (!level.isClientSide()) {
-							ItemStack itemstack = new ItemStack(candelabra.removeCandle(i));
-							level.playSound(null, pos, SoundEvents.CANDLE_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
-							if (!player.getAbilities().instabuild) {
-								if (!player.getInventory().add(itemstack)) {
-									player.drop(itemstack, false);
-								}
+				int i = this.getSlot(state.getValue(FACING), result.getDirection(), result.getLocation().subtract(result.getBlockPos().getX(), result.getBlockPos().getY(), result.getBlockPos().getZ()));
+				if (state.getValue(CANDLES.get(i)) && player.isSecondaryUseActive()) {
+					if (!level.isClientSide()) {
+						ItemStack itemstack = new ItemStack(candelabra.removeCandle(i));
+						level.playSound(null, pos, SoundEvents.CANDLE_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
+						if (player.hasInfiniteMaterials()) {
+							if (!player.getInventory().contains(itemstack)) {
+								player.getInventory().add(itemstack);
 							}
-							level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
+						} else {
+							if (!player.getInventory().add(itemstack)) {
+								player.drop(itemstack, false);
+							}
+						}
+						level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
+					}
+					return ItemInteractionResult.sidedSuccess(level.isClientSide());
+				} else if (!state.getValue(CANDLES.get(i))) {
+					if (stack.is(ItemTags.CANDLES) && stack.getItem() instanceof BlockItem block) {
+						if (!level.isClientSide()) {
+							player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
+							candelabra.setCandle(i, block.getBlock());
+							level.playSound(null, pos, SoundEvents.CANDLE_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
+							stack.consume(1, player);
 						}
 						return ItemInteractionResult.sidedSuccess(level.isClientSide());
-					} else if (!state.getValue(CANDLES.get(i))) {
-						if (stack.is(ItemTags.CANDLES) && stack.getItem() instanceof BlockItem block) {
-							if (!level.isClientSide()) {
-								player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
-								candelabra.setCandle(i, block.getBlock());
-								level.playSound(null, pos, SoundEvents.CANDLE_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
-								stack.consume(1, player);
-							}
-							return ItemInteractionResult.sidedSuccess(level.isClientSide());
-						}
 					}
 				}
 			}
@@ -214,40 +215,21 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 		}
 	}
 
-	private static Optional<Double> getRelativeHitCoordinatesForBlockFace(BlockHitResult result, Direction facing) {
-		Direction direction = result.getDirection().getOpposite();
-		if (facing.getAxis() == direction.getAxis()) {
-			BlockPos blockpos = result.getBlockPos().relative(direction);
-			Vec3 vec3 = result.getLocation().subtract(blockpos.getX(), blockpos.getY(), blockpos.getZ());
-			double d0 = vec3.x();
-			double d2 = vec3.z();
+	protected int getSlot(Direction blockDir, Direction hitFace, Vec3 hitVec) {
+		Vec3i up = new Vec3i(0, 1, 0);
+		Vec3i dir = up.cross(blockDir.getNormal());
+		boolean reverse = blockDir.getAxis() == Direction.Axis.X && hitFace.getAxis() != blockDir.getAxis();
 
-			if (facing == direction) {
-				return switch (direction) {
-					case NORTH -> Optional.of(1.0 - d0);
-					case SOUTH -> Optional.of(d0);
-					case WEST -> Optional.of(d2);
-					case EAST -> Optional.of(1.0 - d2);
-					case DOWN, UP -> Optional.empty();
-				};
-			} else {
-				return switch (direction) {
-					case SOUTH -> Optional.of(1.0 - d0);
-					case NORTH -> Optional.of(d0);
-					case EAST -> Optional.of(d2);
-					case WEST -> Optional.of(1.0 - d2);
-					case DOWN, UP -> Optional.empty();
-				};
-			}
+		double cx = dir.getX() * hitVec.x() + dir.getZ() * hitVec.z();
+
+		if (cx <= 0.0D) {
+			cx = cx + 1;
 		}
-		return Optional.empty();
-	}
 
-	private static int getHitSlot(double xPos, boolean reverse) {
-		if (xPos < 0.375F) {
+		if (cx <= 0.375F) {
 			return reverse ? 2 : 0;
 		} else {
-			return xPos < 0.6875F ? 1 : reverse ? 0 : 2;
+			return cx <= 0.6875F ? 1 : reverse ? 0 : 2;
 		}
 	}
 

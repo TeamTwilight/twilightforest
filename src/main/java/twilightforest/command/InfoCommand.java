@@ -20,7 +20,7 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.neoforged.fml.loading.FMLLoader;
 import twilightforest.events.EntityEvents;
-import twilightforest.util.LandmarkUtil;
+import twilightforest.util.landmarks.LandmarkUtil;
 import twilightforest.world.components.structures.start.TFStructureStart;
 import twilightforest.world.components.structures.util.LandmarkStructure;
 

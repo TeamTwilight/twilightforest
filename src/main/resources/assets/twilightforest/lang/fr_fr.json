@@ -293,7 +293,6 @@
   "commands.tffeature.chunk": "Être dans le chunk de la fonctionnalité : %s",
   "commands.tffeature.nearest": "La structure la plus proche est %s",
   "commands.tffeature.none_nearby": "Impossible de trouver une fonctionnalité à proximité !",
-  "commands.tffeature.not_in_twilight_forest": "Vous n'êtes pas dans la dimension Twilight Forest",
   "commands.tffeature.structure.conquer.status": "Drapeau de conquête de structure : %s",
   "commands.tffeature.structure.conquer.update": "Le drapeau de conquête de structure était %s, changé pour %s",
   "commands.tffeature.structure.inside": "Vous êtes dans une structure repère",

@@ -4,40 +4,38 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.stream.StreamSupport;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class VoxelBresenhamIteratorTest {
-	@Test
-	public void parityTest() {
-		for (Direction facing : Direction.values()) {
-			parityTest(BlockPos.ZERO, BlockPos.ZERO.relative(facing));
-			parityTest(BlockPos.ZERO.relative(facing.getOpposite()), BlockPos.ZERO.relative(facing, 2));
-			parityTest(BlockPos.ZERO.relative(facing.getOpposite()), BlockPos.ZERO.relative(facing, 10).offset(5, 5, 5));
-			parityTest(BlockPos.ZERO.relative(facing.getOpposite(), 4), BlockPos.ZERO.relative(facing, 15).offset(32, 16, 64));
-		}
 
-		parityTest(BlockPos.ZERO, new BlockPos(1, 1, 1));
-		parityTest(new BlockPos(-1, -1, -1), new BlockPos(7, 12, 17));
+	@Test
+	public void parity() {
+		assertParity(BlockPos.ZERO, new BlockPos(1, 1, 1));
+		assertParity(new BlockPos(-1, -1, -1), new BlockPos(7, 12, 17));
 	}
 
-	private static void parityTest(BlockPos source, BlockPos destination) {
-		List<BlockPos> iterator = new ArrayList<>();
+	@Test
+	public void parityDirections() {
+		for (Direction facing : Direction.values()) {
+			assertParity(BlockPos.ZERO, BlockPos.ZERO.relative(facing));
+			assertParity(BlockPos.ZERO.relative(facing.getOpposite()), BlockPos.ZERO.relative(facing, 2));
+			assertParity(BlockPos.ZERO.relative(facing.getOpposite()), BlockPos.ZERO.relative(facing, 10).offset(5, 5, 5));
+			assertParity(BlockPos.ZERO.relative(facing.getOpposite(), 4), BlockPos.ZERO.relative(facing, 15).offset(32, 16, 64));
+		}
+	}
 
-		for (BlockPos pos : new VoxelBresenhamIterator(source, destination))
-			iterator.add(pos);
-
-		assertArrayEquals(getBresenhamArrays(source, destination), iterator.toArray(BlockPos[]::new));
+	private void assertParity(BlockPos source, BlockPos destination) {
+		assertArrayEquals(getBresenhamArrays(source, destination), StreamSupport.stream(new VoxelBresenhamIterator(source, destination).spliterator(), false).toArray(BlockPos[]::new));
 	}
 
 	// The old code as it used to exist in older versions. Existing only as an accuracy benchmark (100% parity)
-	private static BlockPos[] getBresenhamArrays(BlockPos src, BlockPos dest) {
+	private BlockPos[] getBresenhamArrays(BlockPos src, BlockPos dest) {
 		return getBresenhamArrays(src.getX(), src.getY(), src.getZ(), dest.getX(), dest.getY(), dest.getZ());
 	}
 
-	private static BlockPos[] getBresenhamArrays(int x1, int y1, int z1, int x2, int y2, int z2) {
+	private BlockPos[] getBresenhamArrays(int x1, int y1, int z1, int x2, int y2, int z2) {
 		int i, dx, dy, dz, absDx, absDy, absDz, x_inc, y_inc, z_inc, err_1, err_2, doubleAbsDx, doubleAbsDy, doubleAbsDz;
 
 		BlockPos pixel = new BlockPos(x1, y1, z1);

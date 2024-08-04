@@ -238,6 +238,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.CANOPY_WINDOW.value());
 		generated(TFBlocks.CANOPY_WINDOW_PANE.getId().getPath(), prefix("block/" + TFBlocks.CANOPY_WINDOW.getId().getPath()));
 
+		toBlockModel(TFBlocks.TERRORCOTTA_ARCS.get(), prefix("block/terrorcotta_arcs"));
 		toBlockModel(TFBlocks.TERRORCOTTA_LINES.get(), prefix("block/terrorcotta_lines_0"));
 		toBlockModel(TFBlocks.TERRORCOTTA_CURVES.get(), prefix("block/terrorcotta_curves_90"));
 		carpet(TFBlocks.ROYAL_RAGS.getRegisteredName(), TFBlocks.ROYAL_RAGS.getId().withPrefix("block/"));
@@ -570,6 +571,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		lamp(TFItems.LAMP_OF_CINDERS);
 		singleTex(TFItems.POCKET_WATCH);
 		singleTex(TFItems.EMPERORS_CLOTH);
+		singleTex(TFItems.FOUR_LEAF_CLOVER);
 		singleTex(TFItems.ALPHA_YETI_FUR);
 		//yeti helmets cant be trimmed
 		singleTex(TFItems.YETI_HELMET);

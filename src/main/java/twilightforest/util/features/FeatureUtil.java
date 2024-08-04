@@ -1,4 +1,4 @@
-package twilightforest.util;
+package twilightforest.util.features;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

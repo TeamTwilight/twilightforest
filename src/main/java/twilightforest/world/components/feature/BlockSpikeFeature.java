@@ -19,7 +19,7 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import twilightforest.data.custom.stalactites.entry.Stalactite;
 import twilightforest.data.tags.BlockTagGenerator;
-import twilightforest.util.FeatureLogic;
+import twilightforest.util.features.FeatureLogic;
 
 import java.util.List;
 

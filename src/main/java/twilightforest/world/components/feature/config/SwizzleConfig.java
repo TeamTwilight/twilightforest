@@ -16,7 +16,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TFRegistries;
 import twilightforest.data.tags.CustomTagGenerator;
-import twilightforest.util.WoodPalette;
+import twilightforest.util.woods.WoodPalette;
 import twilightforest.world.components.processors.StateTransfiguringProcessor;
 import twilightforest.world.components.processors.WoodPaletteSwizzle;
 

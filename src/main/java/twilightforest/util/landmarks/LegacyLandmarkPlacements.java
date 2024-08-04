@@ -1,4 +1,4 @@
-package twilightforest.util;
+package twilightforest.util.landmarks;
 
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.Util;
@@ -11,6 +11,7 @@ import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import twilightforest.init.TFBiomes;
 import twilightforest.init.TFStructures;
+import twilightforest.util.WorldUtil;
 import twilightforest.util.iterators.XZQuadrantIterator;
 
 import java.util.Map;

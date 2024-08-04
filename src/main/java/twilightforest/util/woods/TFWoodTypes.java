@@ -1,4 +1,4 @@
-package twilightforest.util;
+package twilightforest.util.woods;
 
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.WoodType;

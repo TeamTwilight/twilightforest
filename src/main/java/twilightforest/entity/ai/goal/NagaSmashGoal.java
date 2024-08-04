@@ -8,7 +8,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.event.EventHooks;
 import twilightforest.entity.boss.Naga;
-import twilightforest.util.EntityUtil;
+import twilightforest.util.entities.EntityUtil;
 
 public class NagaSmashGoal extends Goal {
 

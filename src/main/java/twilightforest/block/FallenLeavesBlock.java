@@ -23,7 +23,9 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.client.particle.data.LeafParticleData;
@@ -38,7 +40,6 @@ public class FallenLeavesBlock extends TFPlantBlock {
 	public static final IntegerProperty LAYERS = BlockStateProperties.LAYERS;
 	protected static final VoxelShape[] SHAPE_BY_LAYER = new VoxelShape[]{Block.box(0.0D, 0.0D, 0.0D, 16.0D, 0.2D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 4.0D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 6.0D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 8.0D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 10.0D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 12.0D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 14.0D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D)};
 
-	@SuppressWarnings("this-escape")
 	public FallenLeavesBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.stateDefinition.any().setValue(LAYERS, 1));
@@ -66,7 +67,7 @@ public class FallenLeavesBlock extends TFPlantBlock {
 
 	@Override
 	public VoxelShape getCollisionShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-		return SHAPE_BY_LAYER[0];
+		return Shapes.empty();
 	}
 
 	@Override
@@ -85,17 +86,22 @@ public class FallenLeavesBlock extends TFPlantBlock {
 	}
 
 	@Override
-	public boolean canBeReplaced(BlockState pState, BlockPlaceContext pUseContext) {
-		int i = pState.getValue(LAYERS);
-		if (pUseContext.getItemInHand().is(this.asItem()) && i < MAX_HEIGHT) {
-			if (pUseContext.replacingClickedOnBlock()) {
-				return pUseContext.getClickedFace() == Direction.UP;
+	public boolean canBeReplaced(BlockState state, BlockPlaceContext context) {
+		int i = state.getValue(LAYERS);
+		boolean waterBelow = context.getLevel().getBlockState(context.getClickedPos().below()).liquid();
+
+		if (!waterBelow) {
+			if (context.getItemInHand().is(this.asItem()) && i < MAX_HEIGHT) {
+				if (context.replacingClickedOnBlock()) {
+					return context.getClickedFace() == Direction.UP;
+				} else {
+					return true;
+				}
 			} else {
-				return true;
+				return i == 1;
 			}
-		} else {
-			return i == 1;
 		}
+		return false;
 	}
 
 	@Nullable
@@ -141,6 +147,9 @@ public class FallenLeavesBlock extends TFPlantBlock {
 	@Override
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
 		super.entityInside(state, level, pos, entity);
+		if (state.getValue(LAYERS) > 2) {
+			entity.makeStuckInBlock(state, new Vec3(1.0D - (0.05D * (state.getValue(LAYERS) - 2)), 1.0D, 1.0D - (0.05D * (state.getValue(LAYERS) - 2))));
+		}
 		if (entity instanceof LivingEntity && (entity.getDeltaMovement().x() != 0 || entity.getDeltaMovement().z() != 0) && level.getRandom().nextBoolean()) {
 			if (level.isClientSide()) {
 				int color = Minecraft.getInstance().getBlockColors().getColor(Blocks.OAK_LEAVES.defaultBlockState(), level, pos, 0);
@@ -157,7 +166,7 @@ public class FallenLeavesBlock extends TFPlantBlock {
 					(level.getRandom().nextFloat() * -0.5F) * entity.getDeltaMovement().z()
 				);
 			} else if (level instanceof ServerLevel)
-				PacketDistributor.sendToPlayersTrackingEntity(entity, new SpawnFallenLeafFromPacket(pos, entity.getDeltaMovement()));
+				PacketDistributor.sendToPlayersTrackingEntityAndSelf(entity, new SpawnFallenLeafFromPacket(pos, entity.getDeltaMovement()));
 		}
 	}
 }

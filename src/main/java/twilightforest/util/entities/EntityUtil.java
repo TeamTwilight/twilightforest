@@ -1,4 +1,4 @@
-package twilightforest.util;
+package twilightforest.util.entities;
 
 import com.google.common.collect.Lists;
 import net.minecraft.core.BlockPos;

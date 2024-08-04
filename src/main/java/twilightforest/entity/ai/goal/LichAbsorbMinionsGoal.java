@@ -10,7 +10,7 @@ import twilightforest.entity.boss.Lich;
 import twilightforest.entity.monster.LichMinion;
 import twilightforest.init.TFSounds;
 import twilightforest.item.LifedrainScepterItem;
-import twilightforest.util.EntityUtil;
+import twilightforest.util.entities.EntityUtil;
 
 import java.util.EnumSet;
 import java.util.List;

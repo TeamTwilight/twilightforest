@@ -21,6 +21,7 @@ import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFDimensionData;
+import twilightforest.util.landmarks.LegacyLandmarkPlacements;
 import twilightforest.world.components.structures.placements.LandmarkGridPlacement;
 
 import java.util.List;

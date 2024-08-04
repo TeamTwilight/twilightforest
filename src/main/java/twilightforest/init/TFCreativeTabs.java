@@ -313,8 +313,9 @@ public class TFCreativeTabs {
 			output.accept(TFBlocks.TWISTED_STONE_PILLAR);
 			output.accept(TFBlocks.CANDELABRA);
 			output.accept(TFBlocks.WROUGHT_IRON_FENCE);
-			output.accept(TFBlocks.TERRORCOTTA_LINES);
+			output.accept(TFBlocks.TERRORCOTTA_ARCS);
 			output.accept(TFBlocks.TERRORCOTTA_CURVES);
+			output.accept(TFBlocks.TERRORCOTTA_LINES);
 			makeSkullCandle(output, TFItems.ZOMBIE_SKULL_CANDLE);
 			makeSkullCandle(output, TFItems.SKELETON_SKULL_CANDLE);
 			makeSkullCandle(output, TFItems.WITHER_SKELETON_SKULL_CANDLE);

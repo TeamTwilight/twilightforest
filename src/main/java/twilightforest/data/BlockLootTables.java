@@ -281,8 +281,9 @@ public class BlockLootTables extends BlockLootSubProvider {
 		add(TFBlocks.KEEPSAKE_CASKET.get(), casketInfo(TFBlocks.KEEPSAKE_CASKET.get()));
 		dropSelf(TFBlocks.CANDELABRA.get());
 		dropSelf(TFBlocks.WROUGHT_IRON_FENCE.get());
-		dropSelf(TFBlocks.TERRORCOTTA_LINES.get());
-		dropSelf(TFBlocks.TERRORCOTTA_CURVES.get());
+		dropSelf(TFBlocks.TERRORCOTTA_ARCS.value());
+		dropSelf(TFBlocks.TERRORCOTTA_CURVES.value());
+		dropSelf(TFBlocks.TERRORCOTTA_LINES.value());
 		dropSelf(TFBlocks.ROYAL_RAGS.value());
 
 		dropPottedContents(TFBlocks.POTTED_TWILIGHT_OAK_SAPLING.get());

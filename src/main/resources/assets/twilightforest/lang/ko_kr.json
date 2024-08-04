@@ -716,7 +716,6 @@
   "commands.tffeature.chunk": "특징 청크: %s",
   "commands.tffeature.nearest": "가장 가까운 특징은 %s입니다.",
   "commands.tffeature.none_nearby": "주변 기능을 찾을 수 없습니다!",
-  "commands.tffeature.not_in_twilight_forest": "황혼의 숲 차원에 없습니다.",
   "commands.tffeature.not_player": "이 명령어는 플레이어부터로만 실행되어야 합니다!",
   "commands.tffeature.structure.boundaries": "구조물 경계: %s",
   "commands.tffeature.structure.conquer.status": "구조물 정복기: %s",
