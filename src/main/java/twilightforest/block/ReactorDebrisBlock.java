@@ -4,6 +4,7 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -38,8 +39,13 @@ public class ReactorDebrisBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	public void onPlace(BlockState state, Level level, BlockPos pos, BlockState newState, boolean mioving) {
+	public void onPlace(BlockState state, Level level, BlockPos pos, BlockState newState, boolean moving) {
 		//schedule this block to be removed 3 seconds after placement if not removed before then
+		if(!level.isClientSide()) {
+			ReactorDebrisBlockEntity blockEntity = (ReactorDebrisBlockEntity) level.getBlockEntity(pos);
+			blockEntity.randomizeDimensions();
+			blockEntity.randomizeTextures();
+		}
 //		level.scheduleTick(pos, this, 60);;
 	}
 

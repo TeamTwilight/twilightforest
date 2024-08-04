@@ -4,6 +4,7 @@ import com.google.common.base.MoreObjects;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.*;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -33,17 +34,15 @@ public class ReactorDebrisBlockEntity extends BlockEntity {
 
 	public ReactorDebrisBlockEntity(BlockPos pos, BlockState blockState) {
 		super(TFBlockEntities.REACTOR_DEBRIS.get(), pos, blockState);
-		randomizeTextures();
-		randomizeDimensions();
 	}
 
-	private void randomizeTextures() {
+	public void randomizeTextures() {
 		for (int i = 0; i < textures.length; i++) {
 			textures[i] = TEXTURES[RANDOM.nextInt(TEXTURES.length)];
 		}
 	}
 
-	private void randomizeDimensions() {
+	public void randomizeDimensions() {
 		this.SHAPE = calculateVoxelShape();
 		AABB aabb = SHAPE.bounds();
 		minPos = new Vector3f((float) aabb.minX, (float) aabb.minY, (float) aabb.minZ);
@@ -91,6 +90,8 @@ public class ReactorDebrisBlockEntity extends BlockEntity {
 		if (!new AABB(0, 0, 0, 1, 1, 1).contains(minPos.x, minPos.y, minPos.z)) {
 			maxPos = new Vector3f(1);
 		}
+
+		SHAPE = Shapes.box(minPos.x, minPos.y, minPos.z, maxPos.x, maxPos.y, maxPos.z);
 	}
 
 	@Override
@@ -109,5 +110,15 @@ public class ReactorDebrisBlockEntity extends BlockEntity {
 			listTag.add(FloatTag.valueOf(value));
 		}
 		return listTag;
+	}
+
+	@Override
+	public ClientboundBlockEntityDataPacket getUpdatePacket() {
+		return ClientboundBlockEntityDataPacket.create(this);
+	}
+
+	@Override
+	public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+		return this.saveCustomOnly(registries);
 	}
 }

@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.phys.shapes.Shapes;
 import org.joml.Matrix4f;
 import twilightforest.block.entity.ReactorDebrisBlockEntity;
 
