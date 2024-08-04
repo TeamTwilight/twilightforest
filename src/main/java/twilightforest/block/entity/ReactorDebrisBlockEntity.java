@@ -20,7 +20,8 @@ public class ReactorDebrisBlockEntity extends BlockEntity {
 	private static final ResourceLocation[] TEXTURES = {
 		ResourceLocation.withDefaultNamespace("block/netherrack"),
 		ResourceLocation.withDefaultNamespace("block/bedrock"),
-		ResourceLocation.withDefaultNamespace("block/nether_portal")
+		ResourceLocation.withDefaultNamespace("block/nether_portal"),
+		ResourceLocation.withDefaultNamespace("block/obsidian"),
 	};
 	public static final ResourceLocation DEFAULT_TEXTURE = TEXTURES[0];
 	private static final float Z_FIGHTING_MIN = 0.001F;
