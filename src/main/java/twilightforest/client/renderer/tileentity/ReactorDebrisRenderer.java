@@ -47,12 +47,12 @@ public class ReactorDebrisRenderer implements BlockEntityRenderer<ReactorDebrisB
 	}
 
 	private void renderBlock(QuadRenderInfo info, ReactorDebrisBlockEntity entity) {
-		float minX = (float) entity.minPos.x;
-		float minY = (float) entity.minPos.y;
-		float minZ = (float) entity.minPos.z;
-		float maxX = (float) entity.maxPos.x;
-		float maxY = (float) entity.maxPos.y;
-		float maxZ = (float) entity.maxPos.z;
+		float minX = entity.minPos.x;
+		float minY = entity.minPos.y;
+		float minZ = entity.minPos.z;
+		float maxX = entity.maxPos.x;
+		float maxY = entity.maxPos.y;
+		float maxZ = entity.maxPos.z;
 
 		renderSide(info, getSprite(entity.textures[0]), Axis.X, minX, minY, minZ, maxY, maxZ, -1);
 		renderSide(info, getSprite(entity.textures[1]), Axis.X, maxX, minY, maxZ, maxY, minZ, 1);
