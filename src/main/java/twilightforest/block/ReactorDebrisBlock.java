@@ -41,8 +41,7 @@ public class ReactorDebrisBlock extends BaseEntityBlock {
 	@Override
 	public void onPlace(BlockState state, Level level, BlockPos pos, BlockState newState, boolean moving) {
 		//schedule this block to be removed 3 seconds after placement if not removed before then
-		if(!level.isClientSide()) {
-			ReactorDebrisBlockEntity blockEntity = (ReactorDebrisBlockEntity) level.getBlockEntity(pos);
+		if(!level.isClientSide() && level.getBlockEntity(pos) instanceof ReactorDebrisBlockEntity blockEntity) {  //  blockEntity should always be
 			blockEntity.randomizeDimensions();
 			blockEntity.randomizeTextures();
 		}
