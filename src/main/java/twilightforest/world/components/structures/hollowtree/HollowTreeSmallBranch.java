@@ -13,7 +13,7 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.init.TFStructurePieceTypes;
-import twilightforest.util.FeatureLogic;
+import twilightforest.util.features.FeatureLogic;
 
 public class HollowTreeSmallBranch extends HollowTreeMedBranch {
 	protected HollowTreeSmallBranch(int i, BlockPos src, double length, double angle, double tilt, boolean leafy, BlockStateProvider wood, BlockStateProvider leaves) {

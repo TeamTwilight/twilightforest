@@ -15,7 +15,7 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructurePieceTypes;
-import twilightforest.util.FeaturePlacers;
+import twilightforest.util.features.FeaturePlacers;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 
 public class MazeUpperEntranceComponent extends TFStructureComponentOld {

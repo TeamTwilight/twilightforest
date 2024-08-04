@@ -26,7 +26,7 @@ import net.minecraft.world.level.levelgen.synth.ImprovedNoise;
 import net.minecraft.world.level.material.Fluids;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.util.LegacyLandmarkPlacements;
+import twilightforest.util.landmarks.LegacyLandmarkPlacements;
 
 import java.util.function.Function;
 

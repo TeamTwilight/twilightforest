@@ -47,7 +47,7 @@ import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDimension;
 import twilightforest.init.TFSounds;
 import twilightforest.network.MissingAdvancementToastPacket;
-import twilightforest.util.LandmarkUtil;
+import twilightforest.util.landmarks.LandmarkUtil;
 import twilightforest.util.PlayerHelper;
 import twilightforest.world.TFTeleporter;
 

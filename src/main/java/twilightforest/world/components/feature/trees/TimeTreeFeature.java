@@ -11,8 +11,7 @@ import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import twilightforest.init.TFBlocks;
-import twilightforest.util.FeatureLogic;
-import twilightforest.util.FeatureUtil;
+import twilightforest.util.features.FeatureUtil;
 import twilightforest.util.RootPlacer;
 import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
 

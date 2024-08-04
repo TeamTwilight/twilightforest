@@ -12,13 +12,12 @@ import java.util.Set;
 
 // TODO: Move to DataMaps if possible to obtain RegistryAccess
 public final class TowerPieces {
-	// TODO: more bridges?
 	static final ResourceLocation[] CENTER_BRIDGES = new ResourceLocation[] {
 		TwilightForestMod.prefix("lich_tower/central_bridge"),
 		TwilightForestMod.prefix("lich_tower/central_bridge_open")
 	};
 	public static final ResourceLocation DIRECT_ATTACHMENT = TwilightForestMod.prefix("lich_tower/no_bridge");
-	static final ResourceLocation[] BRIDGES = new ResourceLocation[] {
+	static final ResourceLocation[] ROOM_BRIDGES = new ResourceLocation[] {
 		TwilightForestMod.prefix("lich_tower/room_bridge_5"),
 		TwilightForestMod.prefix("lich_tower/room_bridge_3")
 	};

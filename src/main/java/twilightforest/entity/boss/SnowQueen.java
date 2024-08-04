@@ -41,7 +41,7 @@ import twilightforest.entity.ai.goal.HoverSummonGoal;
 import twilightforest.entity.ai.goal.HoverThenDropGoal;
 import twilightforest.entity.monster.IceCrystal;
 import twilightforest.init.*;
-import twilightforest.util.EntityUtil;
+import twilightforest.util.entities.EntityUtil;
 import twilightforest.util.WorldUtil;
 
 import java.util.List;

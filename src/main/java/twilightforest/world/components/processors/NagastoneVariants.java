@@ -13,7 +13,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructureProcessors;
-import twilightforest.util.FeaturePlacers;
+import twilightforest.util.features.FeaturePlacers;
 
 public final class NagastoneVariants extends StructureProcessor {
 	public static final NagastoneVariants INSTANCE = new NagastoneVariants();

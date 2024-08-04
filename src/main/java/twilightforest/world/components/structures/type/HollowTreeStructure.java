@@ -29,7 +29,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.minecraft.world.level.storage.loot.LootTable;
 import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFStructureTypes;
-import twilightforest.util.FeatureLogic;
+import twilightforest.util.features.FeatureLogic;
 import twilightforest.world.components.structures.TreeGrowerStartable;
 import twilightforest.world.components.structures.hollowtree.HollowTreePiece;
 import twilightforest.world.components.structures.hollowtree.HollowTreeTrunk;

@@ -16,7 +16,7 @@ import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFStructures;
 import twilightforest.network.MazeMapPacket;
-import twilightforest.util.LegacyLandmarkPlacements;
+import twilightforest.util.landmarks.LegacyLandmarkPlacements;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -76,6 +76,12 @@ public class TFMazeMapData extends MapItemSavedData {
 	public static TFMazeMapData getMazeMapData(Level level, String name) {
 		if (level.isClientSide()) return CLIENT_DATA.get(name);
 		else return (TFMazeMapData) ((ServerLevel) level).getServer().overworld().getDataStorage().get(TFMazeMapData.factory(), name);
+	}
+
+	// Like the method above, but if we know we're on client
+	@Nullable
+	public static TFMazeMapData getClientMagicMapData(String name) {
+		return CLIENT_DATA.get(name);
 	}
 
 	public static SavedData.Factory<MapItemSavedData> factory() {

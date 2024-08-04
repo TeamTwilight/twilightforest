@@ -715,7 +715,6 @@
   "commands.tffeature.chunk": "是否在地标区块中：%s",
   "commands.tffeature.nearest": "距离当前位置最近的地标：%s",
   "commands.tffeature.none_nearby": "附近无法找到地标！",
-  "commands.tffeature.not_in_twilight_forest": "你现在不在暮色森林维度中",
   "commands.tffeature.not_player": "此命令必须由玩家运行！",
   "commands.tffeature.structure.boundaries": "结构边界：%s",
   "commands.tffeature.structure.conquer.status": "当前结构征服标记：%s",

@@ -6,6 +6,7 @@ import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ResolvableProfile;
@@ -14,16 +15,14 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import twilightforest.block.AbstractSkullCandleBlock;
-import twilightforest.block.LightableBlock;
-import twilightforest.block.SkullCandleBlock;
-import twilightforest.block.WallSkullCandleBlock;
+import twilightforest.block.*;
+import twilightforest.block.entity.CandelabraBlockEntity;
 import twilightforest.block.entity.SkullCandleBlockEntity;
 import twilightforest.init.TFBlocks;
 
-public class SkullCandleDispenseBehavior extends OptionalDispenseItemBehavior {
+public class CandleDispenseBehavior extends OptionalDispenseItemBehavior {
 
-	public SkullCandleDispenseBehavior() {
+	public CandleDispenseBehavior() {
 	}
 
 	@Override
@@ -53,6 +52,20 @@ public class SkullCandleDispenseBehavior extends OptionalDispenseItemBehavior {
 					level.sendBlockUpdated(pos, state, state, 1);
 					return true;
 				}
+			}
+		} else if (level.getBlockEntity(pos) instanceof CandelabraBlockEntity candelabra) {
+			if (!(candle instanceof BlockItem block)) return false;
+			BlockState state = level.getBlockState(pos);
+			for (int i = 0; i < 3; i++) {
+				Block storedCandle = candelabra.getCandle(i);
+				if (storedCandle != Blocks.AIR) continue;
+				level.setBlockAndUpdate(pos, state.setValue(CandelabraBlock.CANDLES.get(i), true));
+				candelabra.setCandle(i, block.getBlock());
+
+				level.playSound(null, pos, SoundEvents.CANDLE_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
+				level.getLightEngine().checkBlock(pos);
+				level.sendBlockUpdated(pos, state, state, 1);
+				return true;
 			}
 		}
 		return false;

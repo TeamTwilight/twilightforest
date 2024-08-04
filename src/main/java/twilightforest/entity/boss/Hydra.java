@@ -34,7 +34,7 @@ import net.neoforged.neoforge.event.EventHooks;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.TFPart;
 import twilightforest.init.*;
-import twilightforest.util.EntityUtil;
+import twilightforest.util.entities.EntityUtil;
 import twilightforest.util.WorldUtil;
 
 import java.util.ArrayList;

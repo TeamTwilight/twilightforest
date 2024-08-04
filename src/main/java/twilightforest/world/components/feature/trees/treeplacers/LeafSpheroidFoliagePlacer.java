@@ -14,7 +14,7 @@ import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerType;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import twilightforest.init.TFFeatureModifiers;
-import twilightforest.util.FeaturePlacers;
+import twilightforest.util.features.FeaturePlacers;
 
 public class LeafSpheroidFoliagePlacer extends FoliagePlacer {
 	public static final MapCodec<LeafSpheroidFoliagePlacer> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(

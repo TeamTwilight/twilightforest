@@ -620,6 +620,7 @@ public record ChestLootTables(HolderLookup.Provider registries) implements LootT
 					.setRolls(ConstantValue.exactly(1))
 					//rare loot
 					.add(LootItem.lootTableItem(TFItems.MAZE_MAP_FOCUS))
+					.add(LootItem.lootTableItem(TFItems.MAZE_MAP))
 					.add(LootItem.lootTableItem(Items.TNT).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))))
 					.add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withEnchantment(lookup.getOrThrow(TFEnchantments.FIRE_REACT))))
 					.add(LootItem.lootTableItem(Items.POTION).apply(SetPotionFunction.setPotion(Potions.STRONG_HEALING)))));

@@ -10,7 +10,7 @@ import net.minecraft.world.level.block.Blocks;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
-import twilightforest.util.WoodPalette;
+import twilightforest.util.woods.WoodPalette;
 
 import java.util.Locale;
 

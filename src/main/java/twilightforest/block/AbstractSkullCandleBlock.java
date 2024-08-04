@@ -212,7 +212,16 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 			}
 			level.playSound(null, pos, SoundEvents.CANDLE_BREAK, SoundSource.BLOCKS, 1.0F, 1.0F);
 			level.getLightEngine().checkBlock(pos);
-			player.setItemInHand(player.getMainHandItem().isEmpty() ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND, new ItemStack(candleColorToCandle(CandleColors.colorFromInt(sc.getCandleColor()))));
+			ItemStack candle = new ItemStack(candleColorToCandle(CandleColors.colorFromInt(sc.getCandleColor())));
+			if (player.hasInfiniteMaterials()) {
+				if (!player.getInventory().contains(candle)) {
+					player.getInventory().add(candle);
+				}
+			} else {
+				if (!player.getInventory().add(candle)) {
+					player.drop(candle, false);
+				}
+			}
 			return InteractionResult.sidedSuccess(level.isClientSide());
 		}
 		return super.useWithoutItem(state, level, pos, player, hitResult);

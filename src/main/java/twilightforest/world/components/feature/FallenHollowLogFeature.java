@@ -14,7 +14,7 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import twilightforest.init.TFBlocks;
-import twilightforest.util.FeatureUtil;
+import twilightforest.util.features.FeatureUtil;
 
 public class FallenHollowLogFeature extends Feature<NoneFeatureConfiguration> {
 

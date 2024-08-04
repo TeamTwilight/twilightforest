@@ -13,7 +13,7 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.init.TFStructurePieceTypes;
-import twilightforest.util.FeatureLogic;
+import twilightforest.util.features.FeatureLogic;
 import twilightforest.util.iterators.VoxelBresenhamIterator;
 
 public class HollowTreeRoot extends HollowTreeMedBranch {

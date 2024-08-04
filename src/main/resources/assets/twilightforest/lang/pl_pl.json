@@ -704,7 +704,6 @@
   "commands.tffeature.chunk": "Zlokalizowane w kawałku funkcji: %s",
   "commands.tffeature.nearest": "Najbliższa funkcja to: %s",
   "commands.tffeature.none_nearby": "Nie można znaleźć funkcji w pobliżu!",
-  "commands.tffeature.not_in_twilight_forest": "Nie znajdujesz się w wymiarze Twilight Forest",
   "commands.tffeature.not_player": "To polecenie musi być wykonane przez prawidłowego gracza!",
   "commands.tffeature.structure.conquer.status": "Status flagi zdobycia struktury: %s",
   "commands.tffeature.structure.conquer.update": "Status flagi zdobycia struktury był %s, zmieniono na %s",

@@ -23,7 +23,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.util.FeatureLogic;
+import twilightforest.util.features.FeatureLogic;
 
 public abstract class TemplateFeature<T extends FeatureConfiguration> extends Feature<T> {
 	public TemplateFeature(Codec<T> config) {

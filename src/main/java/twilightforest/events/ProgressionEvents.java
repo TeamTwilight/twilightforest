@@ -27,8 +27,8 @@ import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.entity.monster.Kobold;
 import twilightforest.init.TFStructures;
 import twilightforest.network.AreaProtectionPacket;
-import twilightforest.util.LandmarkUtil;
-import twilightforest.util.LegacyLandmarkPlacements;
+import twilightforest.util.landmarks.LandmarkUtil;
+import twilightforest.util.landmarks.LegacyLandmarkPlacements;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.structures.util.ProgressionStructure;
 

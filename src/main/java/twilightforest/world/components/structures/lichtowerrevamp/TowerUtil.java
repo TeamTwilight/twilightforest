@@ -82,8 +82,12 @@ public final class TowerUtil {
 		return Util.getRandom(inCentralTower ? TowerPieces.CENTER_DECORS : TowerPieces.ROOM_DECORS, randomSource);
 	}
 
-	public static Iterable<ResourceLocation> shuffledBridges(boolean fromCentralTower, RandomSource randomSource) {
-		return Util.shuffledCopy(fromCentralTower ? TowerPieces.CENTER_BRIDGES : TowerPieces.BRIDGES, randomSource);
+	public static Iterable<ResourceLocation> shuffledCenterBridges(RandomSource randomSource) {
+		return Util.shuffledCopy(TowerPieces.CENTER_BRIDGES, randomSource);
+	}
+
+	public static Iterable<ResourceLocation> shuffledRoomBridges(RandomSource randomSource) {
+		return Util.shuffledCopy(TowerPieces.ROOM_BRIDGES, randomSource);
 	}
 
 	public static Iterable<ResourceLocation> shuffledRoofs(RandomSource randomSource, int size, boolean doSideRoofOnly) {

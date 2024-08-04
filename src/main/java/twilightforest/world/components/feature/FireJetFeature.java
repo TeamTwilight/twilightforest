@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
-import twilightforest.util.FeatureUtil;
+import twilightforest.util.features.FeatureUtil;
 
 public class FireJetFeature extends Feature<BlockStateConfiguration> {
 

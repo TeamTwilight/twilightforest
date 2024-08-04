@@ -10,8 +10,8 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.SimpleStateProv
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType;
 import twilightforest.init.TFFeatureModifiers;
-import twilightforest.util.FeatureLogic;
-import twilightforest.util.FeaturePlacers;
+import twilightforest.util.features.FeatureLogic;
+import twilightforest.util.features.FeaturePlacers;
 import twilightforest.util.RootPlacer;
 import twilightforest.util.iterators.VoxelBresenhamIterator;
 

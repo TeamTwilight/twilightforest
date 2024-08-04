@@ -27,7 +27,7 @@ import twilightforest.entity.ai.goal.AvoidAnyEntityGoal;
 import twilightforest.entity.ai.goal.ThrowSpikeBlockGoal;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFSounds;
-import twilightforest.util.EntityUtil;
+import twilightforest.util.entities.EntityUtil;
 
 import java.util.List;
 

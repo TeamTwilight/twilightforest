@@ -20,7 +20,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFEntities;
 import twilightforest.loot.TFLootTables;
-import twilightforest.util.EntityUtil;
+import twilightforest.util.entities.EntityUtil;
 import twilightforest.world.components.feature.config.SwizzleConfig;
 import twilightforest.world.components.processors.CobbleVariants;
 import twilightforest.world.components.processors.StoneBricksVariants;

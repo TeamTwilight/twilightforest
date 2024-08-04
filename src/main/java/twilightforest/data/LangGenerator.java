@@ -69,7 +69,6 @@ public class LangGenerator extends TFLangProvider {
 		this.addStructure(TFStructures.FINAL_CASTLE, "Final Plateau Castle");
 
 		this.addCommand("usage", "/%s <info | reactivate | conquer | center>");
-		this.addCommand("not_in_twilight_forest", "You are not in the Twilight Forest dimension");
 		this.addCommand("not_player", "This command must be run by a valid player!");
 		this.addCommand("none_nearby", "Couldn't find a feature nearby!");
 		this.addCommand("nearest", "The nearest feature is: %s");
@@ -194,8 +193,9 @@ public class LangGenerator extends TFLangProvider {
 		this.addBlock(TFBlocks.CANDELABRA, "Candelabra");
 		this.addBlock(TFBlocks.WROUGHT_IRON_FENCE, "Wrought Iron Fence");
 		this.add("block.twilightforest.wrought_iron_fence.cap", "Right-click with an Iron Ingot or Nugget to add a finial");
-		this.addBlock(TFBlocks.TERRORCOTTA_LINES, "Terrorcotta Lines");
+		this.addBlock(TFBlocks.TERRORCOTTA_ARCS, "Terrorcotta Arcs");
 		this.addBlock(TFBlocks.TERRORCOTTA_CURVES, "Terrorcotta Curves");
+		this.addBlock(TFBlocks.TERRORCOTTA_LINES, "Terrorcotta Lines");
 		this.addBlock(TFBlocks.ROYAL_RAGS, "Royal Rags");
 
 		this.addBlock(TFBlocks.KEEPSAKE_CASKET, "Keepsake Casket");
@@ -496,6 +496,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addItem(TFItems.ORE_METER, "Ore Meter");
 		this.addItem(TFItems.FILLED_MAGIC_MAP, "Magic Map");
 		this.addItem(TFItems.FILLED_MAZE_MAP, "Maze Map");
+		this.add("item.twilightforest.maze_map.y_level", "Y level %s");
 		this.addItem(TFItems.FILLED_ORE_MAP, "Maze/Ore Map");
 		this.addItem(TFItems.MAGIC_MAP, "Blank Magic Map");
 		this.addItem(TFItems.MAZE_MAP, "Blank Maze Map");
@@ -593,6 +594,7 @@ public class LangGenerator extends TFLangProvider {
 		this.add("item.twilightforest.pocket_watch.desc", "It seems to always be running late");
 		this.addItem(TFItems.EMPERORS_CLOTH, "Emperor's Cloth");
 		this.add("item.twilightforest.emperors_cloth.desc", "Shrouded");
+		this.addItem(TFItems.FOUR_LEAF_CLOVER, "Four-Leaf Clover");
 		this.addItem(TFItems.ORE_MAGNET, "Ore Magnet");
 		this.addItem(TFItems.CRUMBLE_HORN, "Crumble Horn");
 		this.addItem(TFItems.MOONWORM_QUEEN, "Moonworm Queen");

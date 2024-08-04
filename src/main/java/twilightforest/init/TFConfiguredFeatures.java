@@ -35,7 +35,7 @@ import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TorchberryPlantBlock;
 import twilightforest.data.tags.CustomTagGenerator;
-import twilightforest.util.WoodPalette;
+import twilightforest.util.woods.WoodPalette;
 import twilightforest.world.components.feature.TFSmallLakeFeature;
 import twilightforest.world.components.feature.config.*;
 import twilightforest.world.registration.TreeConfigurations;

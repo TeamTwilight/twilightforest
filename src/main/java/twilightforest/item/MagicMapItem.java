@@ -28,8 +28,8 @@ import twilightforest.init.TFBiomes;
 import twilightforest.init.TFDataMaps;
 import twilightforest.init.TFItems;
 import twilightforest.item.mapdata.TFMagicMapData;
-import twilightforest.util.LandmarkUtil;
-import twilightforest.util.LegacyLandmarkPlacements;
+import twilightforest.util.landmarks.LandmarkUtil;
+import twilightforest.util.landmarks.LegacyLandmarkPlacements;
 import twilightforest.util.datamaps.MagicMapBiomeColor;
 import twilightforest.world.components.structures.util.LandmarkStructure;
 

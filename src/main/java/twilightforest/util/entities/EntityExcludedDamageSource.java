@@ -1,4 +1,4 @@
-package twilightforest.util;
+package twilightforest.util.entities;
 
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;

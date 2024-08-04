@@ -6,6 +6,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.JsonOps;
 import net.minecraft.ChatFormatting;
+import net.minecraft.Util;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
@@ -124,7 +126,7 @@ public abstract class TFLangProvider extends LanguageProvider {
 
 	public void addMusicDisc(DeferredItem<Item> disc, String description) {
 		this.addItem(disc, "Music Disc");
-		this.add(disc.get().getDescriptionId() + ".desc", description);
+		this.add(Util.makeDescriptionId("jukebox_song", disc.get().components().get(DataComponents.JUKEBOX_PLAYABLE).song().key().location()), description);
 	}
 
 	public void addStructure(ResourceKey<Structure> biome, String name) {

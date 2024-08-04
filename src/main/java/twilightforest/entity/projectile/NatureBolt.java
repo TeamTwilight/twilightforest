@@ -25,7 +25,7 @@ import net.neoforged.neoforge.event.EventHooks;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
-import twilightforest.util.EntityUtil;
+import twilightforest.util.entities.EntityUtil;
 
 public class NatureBolt extends TFThrowable implements ITFProjectile, ItemSupplier {
 

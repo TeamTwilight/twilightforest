@@ -16,6 +16,9 @@ import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
 import twilightforest.loot.TFLootTables;
 import twilightforest.util.*;
+import twilightforest.util.features.FeatureLogic;
+import twilightforest.util.features.FeaturePlacers;
+import twilightforest.util.features.FeatureUtil;
 import twilightforest.util.iterators.VoxelBresenhamIterator;
 import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
 

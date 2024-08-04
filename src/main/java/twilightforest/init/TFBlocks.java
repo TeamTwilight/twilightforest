@@ -3,14 +3,10 @@ package twilightforest.init;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.DoubleHighBlockItem;
-import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.Item;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
@@ -24,7 +20,7 @@ import twilightforest.enums.BlockLoggingEnum;
 import twilightforest.enums.BossVariant;
 import twilightforest.enums.FireJetVariant;
 import twilightforest.enums.TowerDeviceVariant;
-import twilightforest.util.TFWoodTypes;
+import twilightforest.util.woods.TFWoodTypes;
 import twilightforest.world.components.feature.trees.growers.TFTreeGrowers;
 
 import java.util.function.Supplier;
@@ -88,7 +84,7 @@ public class TFBlocks {
 	public static final DeferredBlock<Block> TWISTED_STONE_PILLAR = register("twisted_stone_pillar", () -> new WallPillarBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASEDRUM).mapColor(MapColor.STONE).noOcclusion().requiresCorrectToolForDrops().sound(SoundType.STONE).strength(1.5F, 6.0F), 12, 16));
 	public static final DeferredBlock<Block> KEEPSAKE_CASKET = register("keepsake_casket", () -> new KeepsakeCasketBlock(BlockBehaviour.Properties.of().lightLevel(state -> state.getValue(BlockLoggingEnum.MULTILOGGED) == BlockLoggingEnum.LAVA ? 15 : 0).mapColor(MapColor.COLOR_BLACK).noOcclusion().pushReaction(PushReaction.BLOCK).requiresCorrectToolForDrops().sound(SoundType.NETHERITE_BLOCK).strength(50.0F, 1200.0F)));
 	public static final DeferredBlock<RotatedPillarBlock> BOLD_STONE_PILLAR = register("bold_stone_pillar", () -> new RotatedPillarBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASEDRUM).mapColor(MapColor.STONE).requiresCorrectToolForDrops().sound(SoundType.STONE).strength(1.5F, 6.0F)));
-	public static final DeferredBlock<Block> CHISELED_CANOPY_BOOKSHELF = register("chiseled_canopy_bookshelf", () -> new ChiseledCanopyShelfBlock(BlockBehaviour.Properties.of().ignitedByLava().instrument(NoteBlockInstrument.BASS).mapColor(MapColor.STONE).sound(SoundType.WOOD).strength(2.5F)));
+	public static final DeferredBlock<Block> CHISELED_CANOPY_BOOKSHELF = register("chiseled_canopy_bookshelf", () -> new ChiseledCanopyShelfBlock(BlockBehaviour.Properties.of().ignitedByLava().instrument(NoteBlockInstrument.BASS).mapColor(MapColor.COLOR_BROWN).sound(SoundType.CHISELED_BOOKSHELF).strength(2.5F)));
 	public static final DeferredBlock<Block> CANDELABRA = register("candelabra", () -> new CandelabraBlock(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(1.5F)));
 	public static final DeferredBlock<AbstractSkullCandleBlock> ZOMBIE_SKULL_CANDLE = BLOCKS.register("zombie_skull_candle", () -> new SkullCandleBlock(SkullBlock.Types.ZOMBIE, BlockBehaviour.Properties.ofFullCopy(Blocks.ZOMBIE_HEAD)));
 	public static final DeferredBlock<AbstractSkullCandleBlock> ZOMBIE_WALL_SKULL_CANDLE = BLOCKS.register("zombie_wall_skull_candle", () -> new WallSkullCandleBlock(SkullBlock.Types.ZOMBIE, BlockBehaviour.Properties.ofFullCopy(Blocks.ZOMBIE_WALL_HEAD)));
@@ -103,8 +99,9 @@ public class TFBlocks {
 	public static final DeferredBlock<AbstractSkullCandleBlock> PIGLIN_SKULL_CANDLE = BLOCKS.register("piglin_skull_candle", () -> new SkullCandleBlock(SkullBlock.Types.PIGLIN, BlockBehaviour.Properties.ofFullCopy(Blocks.PIGLIN_HEAD)));
 	public static final DeferredBlock<AbstractSkullCandleBlock> PIGLIN_WALL_SKULL_CANDLE = BLOCKS.register("piglin_wall_skull_candle", () -> new WallSkullCandleBlock(SkullBlock.Types.PIGLIN, BlockBehaviour.Properties.ofFullCopy(Blocks.PIGLIN_WALL_HEAD)));
 	public static final DeferredBlock<WroughtIronFenceBlock> WROUGHT_IRON_FENCE = register("wrought_iron_fence", () -> new WroughtIronFenceBlock(BlockBehaviour.Properties.of().strength(5.0F, 6.0F).sound(SoundType.METAL).requiresCorrectToolForDrops().noOcclusion()));
-	public static final DeferredBlock<BinaryRotatedBlock> TERRORCOTTA_LINES = register("terrorcotta_lines", () -> new BinaryRotatedBlock(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(1.5F, 6.0F)));
+	public static final DeferredBlock<RotatedPillarBlock> TERRORCOTTA_ARCS = register("terrorcotta_arcs", () -> new RotatedPillarBlock(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(1.5F, 6.0F)));
 	public static final DeferredBlock<GlazedTerracottaBlock> TERRORCOTTA_CURVES = register("terrorcotta_curves", () -> new GlazedTerracottaBlock(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(1.5F, 6.0F)));
+	public static final DeferredBlock<BinaryRotatedBlock> TERRORCOTTA_LINES = register("terrorcotta_lines", () -> new BinaryRotatedBlock(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(1.5F, 6.0F)));
 	public static final DeferredBlock<CarpetBlock> ROYAL_RAGS = register("royal_rags", () -> new WoolCarpetBlock(DyeColor.RED, BlockBehaviour.Properties.ofFullCopy(Blocks.RED_CARPET)));
 
 	//labyrinth
@@ -606,7 +603,7 @@ public class TFBlocks {
 
 	public static <T extends Block> DeferredBlock<T> registerFireResistantItem(String name, Supplier<T> block) {
 		DeferredBlock<T> ret = BLOCKS.register(name, block);
-		TFItems.ITEMS.register(name, () -> new BlockItem(ret.get(), new Item.Properties().fireResistant()));
+		TFItems.ITEMS.register(name, () -> new BlockItem(ret.get(), new Item.Properties().fireResistant().rarity(Rarity.UNCOMMON)));
 		return ret;
 	}
 

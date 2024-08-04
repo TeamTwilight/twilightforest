@@ -1,15 +1,13 @@
-package twilightforest.util;
+package twilightforest.util.woods;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import twilightforest.block.BanisterBlock;
+import twilightforest.util.features.FeaturePlacers;
 
 import java.util.HashSet;
 import java.util.List;

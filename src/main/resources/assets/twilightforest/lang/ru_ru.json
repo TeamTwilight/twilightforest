@@ -711,7 +711,6 @@
   "commands.tffeature.chunk": "Объект в чанке: %s",
   "commands.tffeature.nearest": "Ближайшии объект это %s",
   "commands.tffeature.none_nearby": "Не удалось найти объект поблизости!",
-  "commands.tffeature.not_in_twilight_forest": "Вы находитесь вне Сумеречного Леса",
   "commands.tffeature.not_player": "Эту команду должен выполнить действительный игрок!",
   "commands.tffeature.structure.boundaries": "Границы структуры: %s",
   "commands.tffeature.structure.conquer.status": "Завоеванный флаг структуры: %s",

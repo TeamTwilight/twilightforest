@@ -711,7 +711,6 @@
   "commands.tffeature.chunk": "Si trova nel chunk struttura: %s",
   "commands.tffeature.nearest": "La struttura più vicina è: %s",
   "commands.tffeature.none_nearby": "Impossibile trovare una struttura nelle vicinanze!",
-  "commands.tffeature.not_in_twilight_forest": "Non ti trovi nella dimensione della Foresta del Crepuscolo",
   "commands.tffeature.not_player": "Questo comando deve essere eseguito da un giocatore valido!",
   "commands.tffeature.structure.boundaries": "Confini della struttura: %s",
   "commands.tffeature.structure.conquer.status": "Bandiera di conquista della struttura: %s",

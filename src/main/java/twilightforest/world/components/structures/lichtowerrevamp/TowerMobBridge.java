@@ -19,7 +19,7 @@ import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import twilightforest.TFRegistries;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.init.custom.WoodPalettes;
-import twilightforest.util.WoodPalette;
+import twilightforest.util.woods.WoodPalette;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.util.jigsaw.JigsawRecord;
 import twilightforest.world.components.processors.WoodMultiPaletteSwizzle;

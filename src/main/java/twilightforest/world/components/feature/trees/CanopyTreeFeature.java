@@ -10,9 +10,9 @@ import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.init.TFBlocks;
-import twilightforest.util.FeatureLogic;
-import twilightforest.util.FeaturePlacers;
-import twilightforest.util.FeatureUtil;
+import twilightforest.util.features.FeatureLogic;
+import twilightforest.util.features.FeaturePlacers;
+import twilightforest.util.features.FeatureUtil;
 import twilightforest.util.RootPlacer;
 import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
 

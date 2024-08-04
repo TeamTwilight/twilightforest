@@ -9,6 +9,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.AABB;
@@ -70,6 +71,10 @@ public class TransformPowderItem extends Item {
 			newEntity.moveTo(target.getX(), target.getY(), target.getZ(), target.getYRot(), target.getXRot());
 			if (newEntity instanceof Mob mob && target.level() instanceof ServerLevelAccessor world) {
 				EventHooks.finalizeMobSpawn(mob, world, target.level().getCurrentDifficultyAt(target.blockPosition()), MobSpawnType.CONVERSION, null);
+			}
+
+			if (target instanceof Saddleable saddleable && saddleable.isSaddled() && !(newEntity instanceof Saddleable)) {
+				newEntity.spawnAtLocation(Items.SADDLE);
 			}
 
 			try { // try copying what can be copied

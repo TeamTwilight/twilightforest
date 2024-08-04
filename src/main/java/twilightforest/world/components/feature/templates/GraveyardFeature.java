@@ -33,7 +33,7 @@ import twilightforest.entity.monster.Wraith;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFStructureProcessors;
 import twilightforest.loot.TFLootTables;
-import twilightforest.util.FeatureLogic;
+import twilightforest.util.features.FeatureLogic;
 
 import java.util.ArrayList;
 import java.util.List;

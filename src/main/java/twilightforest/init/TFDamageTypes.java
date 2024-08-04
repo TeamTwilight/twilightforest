@@ -11,7 +11,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
-import twilightforest.util.EntityExcludedDamageSource;
+import twilightforest.util.entities.EntityExcludedDamageSource;
 
 public class TFDamageTypes {
 	public static final ResourceKey<DamageType> GHAST_TEAR = create("ghast_tear"); //Ur-Ghast

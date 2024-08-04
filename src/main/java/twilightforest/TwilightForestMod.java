@@ -49,6 +49,7 @@ import twilightforest.beans.TFBeanContext;
 import twilightforest.block.entity.JarBlockEntity;
 import twilightforest.client.TFClientSetup;
 import twilightforest.command.TFCommand;
+import twilightforest.compat.CosmeticArmorCompat;
 import twilightforest.config.ConfigSetup;
 import twilightforest.data.custom.stalactites.entry.Stalactite;
 import twilightforest.dispenser.TFDispenserBehaviors;
@@ -65,7 +66,7 @@ import twilightforest.network.*;
 import twilightforest.util.Restriction;
 import twilightforest.util.TFEnumExtensions;
 import twilightforest.util.TFRemapper;
-import twilightforest.util.WoodPalette;
+import twilightforest.util.woods.WoodPalette;
 import twilightforest.world.components.BiomeGrassColors;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.layer.BiomeDensitySource;
@@ -166,6 +167,7 @@ public final class TwilightForestMod {
 		NeoForge.EVENT_BUS.addListener(ConfigSetup::syncUncraftingConfig);
 
 		if (ModList.get().isLoaded("curios")) loadCuriosCompat(bus);
+		if (ModList.get().isLoaded("cosmeticarmorreworked")) NeoForge.EVENT_BUS.addListener(CosmeticArmorCompat::keepCosmeticArmor);
 
 		BiomeGrassColors.init();
 	}

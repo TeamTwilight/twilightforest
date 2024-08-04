@@ -8,7 +8,6 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.DamageTypeTags;
@@ -41,7 +40,7 @@ import twilightforest.entity.ai.goal.UrGhastLookGoal;
 import twilightforest.entity.monster.CarminiteGhastguard;
 import twilightforest.entity.monster.CarminiteGhastling;
 import twilightforest.init.*;
-import twilightforest.util.EntityUtil;
+import twilightforest.util.entities.EntityUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
