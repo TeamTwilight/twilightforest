@@ -105,8 +105,8 @@ public class ReactorDebrisBlockEntity extends BlockEntity {
 
 	protected ListTag newFloatList(float... values) {
 		ListTag listTag = new ListTag();
-		for (double value : values) {
-			listTag.add(DoubleTag.valueOf(value));
+		for (float value : values) {
+			listTag.add(FloatTag.valueOf(value));
 		}
 		return listTag;
 	}
