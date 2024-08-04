@@ -73,7 +73,7 @@ public class ReactorDebrisBlockEntity extends BlockEntity {
 	protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
 		super.loadAdditional(tag, registries);
 		for (int i = 0; i < textures.length; i++) {
-			textures[i] = MoreObjects.firstNonNull(ResourceLocation.tryParse(tag.getString("texture" + i)), DEFAULT_TEXTURE);
+			textures[i] = MoreObjects.firstNonNull(ResourceLocation.tryParse(tag.getList("textures", Tag.TAG_STRING).getString(i)), DEFAULT_TEXTURE);
 		}
 		ListTag posTag = tag.getList("pos", Tag.TAG_FLOAT);
 		if (posTag.size() == 3) {
@@ -97,9 +97,11 @@ public class ReactorDebrisBlockEntity extends BlockEntity {
 	@Override
 	protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
 		super.saveAdditional(tag, registries);
-		for (int i = 0; i < textures.length; i++) {
-			tag.putString("texture" + i, textures[i].toString());
+		ListTag listTag = new ListTag();
+		for (ResourceLocation texture : textures) {
+			listTag.add(StringTag.valueOf(texture.getPath()));
 		}
+		tag.put("textures", listTag);
 		tag.put("pos", newFloatList(minPos.x, minPos.y, minPos.z));
 		tag.put("sizes", newFloatList(maxPos.x - minPos.x, maxPos.y - minPos.y, maxPos.z - minPos.z));
 	}
