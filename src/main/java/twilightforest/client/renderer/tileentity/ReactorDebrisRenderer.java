@@ -15,9 +15,14 @@ import net.minecraft.world.phys.shapes.Shapes;
 import org.joml.Matrix4f;
 import twilightforest.block.entity.ReactorDebrisBlockEntity;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ReactorDebrisRenderer implements BlockEntityRenderer<ReactorDebrisBlockEntity> {
 
 	public ReactorDebrisRenderer(BlockEntityRendererProvider.Context context) {}
+
+	private static final Map<ResourceLocation, TextureAtlasSprite> spriteCache = new HashMap<>();
 
 	private enum Axis {
 		X, Y, Z
@@ -100,6 +105,10 @@ public class ReactorDebrisRenderer implements BlockEntityRenderer<ReactorDebrisB
 	}
 
 	public static TextureAtlasSprite getSprite(ResourceLocation location) {
-		return Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(location);
+		if (location == null)
+			return getSprite(ReactorDebrisBlockEntity.DEFAULT_TEXTURE);
+		return spriteCache.computeIfAbsent(location, loc ->
+			Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(loc)
+		);
 	}
 }
