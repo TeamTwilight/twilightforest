@@ -105,7 +105,7 @@ public class ReactorDebrisRenderer implements BlockEntityRenderer<ReactorDebrisB
 	}
 
 	public static TextureAtlasSprite getSprite(ResourceLocation location) {
-		if (location == null)
+		if (location == null)  // Handles cases with too many debris placed at once
 			return getSprite(ReactorDebrisBlockEntity.DEFAULT_TEXTURE);
 		return spriteCache.computeIfAbsent(location, loc ->
 			Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(loc)
