@@ -25,8 +25,8 @@ public class ReactorDebrisBlockEntity extends BlockEntity {
 		ResourceLocation.withDefaultNamespace("block/obsidian"),
 	};
 	public static final ResourceLocation DEFAULT_TEXTURE = TEXTURES[0];
-	private static final float Z_FIGHTING_MIN = 0.001F;
-	private static final float Z_FIGHTING_MAX = 0.999F;
+	private static final float Z_FIGHTING_MIN = 0.008F;
+	private static final float Z_FIGHTING_MAX = 1 - 0.008F;
 	private static final Random RANDOM = new Random();
 	private boolean REROLLS = true;
 	private boolean WILL_DISAPPEAR = true;
