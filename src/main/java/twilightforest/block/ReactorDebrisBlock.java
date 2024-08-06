@@ -9,15 +9,12 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.ReactorDebrisBlockEntity;
-import twilightforest.init.TFBlockEntities;
 
 public class ReactorDebrisBlock extends BaseEntityBlock {
 
@@ -56,12 +53,6 @@ public class ReactorDebrisBlock extends BaseEntityBlock {
 	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 		if (state.getBlock() == this)
 			level.destroyBlock(pos, false);
-	}
-
-	@Nullable
-	@Override
-	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFBlockEntities.REACTOR_DEBRIS.get(), ReactorDebrisBlockEntity::tick);
 	}
 
 	@Nullable
