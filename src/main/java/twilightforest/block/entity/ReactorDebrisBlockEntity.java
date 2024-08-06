@@ -72,8 +72,10 @@ public class ReactorDebrisBlockEntity extends BlockEntity {
 	}
 
 	public static void tick(Level level, BlockPos blockPos, BlockState blockState, ReactorDebrisBlockEntity reactorDebrisBlockEntity) {
-		reactorDebrisBlockEntity.randomizeDimensions();
-		reactorDebrisBlockEntity.randomizeTextures();
+		if (RANDOM.nextInt(5) == 0) {
+			reactorDebrisBlockEntity.randomizeDimensions();
+			reactorDebrisBlockEntity.randomizeTextures();
+		}
 	}
 
 	@Override
@@ -132,5 +134,10 @@ public class ReactorDebrisBlockEntity extends BlockEntity {
 	@Override
 	public ClientboundBlockEntityDataPacket getUpdatePacket() {
 		return ClientboundBlockEntityDataPacket.create(this);
+	}
+
+	@Override
+	public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+		return this.saveCustomOnly(registries);
 	}
 }
