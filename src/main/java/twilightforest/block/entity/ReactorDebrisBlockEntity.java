@@ -28,6 +28,9 @@ public class ReactorDebrisBlockEntity extends BlockEntity {
 	private static final float Z_FIGHTING_MIN = 0.001F;
 	private static final float Z_FIGHTING_MAX = 0.999F;
 	private static final Random RANDOM = new Random();
+	private boolean REROLLS = true;
+	private boolean WILL_DISAPPEAR = true;
+	private byte timeAlive = 0;
 	public VoxelShape SHAPE = Shapes.empty();
 
 	public ResourceLocation[] textures = new ResourceLocation[6];
@@ -72,9 +75,16 @@ public class ReactorDebrisBlockEntity extends BlockEntity {
 	}
 
 	public static void tick(Level level, BlockPos blockPos, BlockState blockState, ReactorDebrisBlockEntity reactorDebrisBlockEntity) {
-		if (RANDOM.nextInt(5) == 0) {
+		if (reactorDebrisBlockEntity.REROLLS && RANDOM.nextInt(5) == 0) {
 			reactorDebrisBlockEntity.randomizeDimensions();
 			reactorDebrisBlockEntity.randomizeTextures();
+		}
+
+		if (!reactorDebrisBlockEntity.WILL_DISAPPEAR)
+			return;
+		reactorDebrisBlockEntity.timeAlive++;
+		if (reactorDebrisBlockEntity.timeAlive >= 60) {
+			level.destroyBlock(blockPos, false);
 		}
 	}
 
@@ -106,6 +116,9 @@ public class ReactorDebrisBlockEntity extends BlockEntity {
 		}
 
 		SHAPE = Shapes.box(minPos.x, minPos.y, minPos.z, maxPos.x, maxPos.y, maxPos.z);
+		REROLLS = tag.getBoolean("rerolls");
+		WILL_DISAPPEAR = tag.getBoolean("will_disappear");
+		timeAlive = tag.getByte("timeAlive");
 	}
 
 	@Override
@@ -121,6 +134,9 @@ public class ReactorDebrisBlockEntity extends BlockEntity {
 		tag.put("textures", textures);
 		tag.put("pos", newFloatList(minPos.x, minPos.y, minPos.z));
 		tag.put("sizes", newFloatList(maxPos.x - minPos.x, maxPos.y - minPos.y, maxPos.z - minPos.z));
+		tag.putBoolean("rerolls", REROLLS);
+		tag.putBoolean("will_disappear", WILL_DISAPPEAR);
+		tag.putByte("timeAlive", timeAlive);
 	}
 
 	protected ListTag newFloatList(float... values) {

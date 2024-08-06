@@ -47,9 +47,6 @@ public class ReactorDebrisBlock extends BaseEntityBlock {
 			blockEntity.randomizeDimensions();
 			blockEntity.randomizeTextures();
 		}
-
-		//schedule this block to be removed 3 seconds after placement if not removed before then
-		level.scheduleTick(pos, this, 60);;
 	}
 
 	@Override
