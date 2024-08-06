@@ -79,9 +79,14 @@ public class ReactorDebrisBlockEntity extends BlockEntity {
 	@Override
 	protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
 		super.loadAdditional(tag, registries);
-		for (int i = 0; i < textures.length; i++) {
-			textures[i] = MoreObjects.firstNonNull(ResourceLocation.tryParse(tag.getList("textures", Tag.TAG_STRING).getString(i)), DEFAULT_TEXTURE);
-		}
+		CompoundTag textures = tag.getCompound("textures");
+		this.textures[0] = MoreObjects.firstNonNull(ResourceLocation.tryParse(textures.get("west").getAsString()), DEFAULT_TEXTURE);
+		this.textures[1] = MoreObjects.firstNonNull(ResourceLocation.tryParse(textures.get("east").getAsString()), DEFAULT_TEXTURE);
+		this.textures[2] = MoreObjects.firstNonNull(ResourceLocation.tryParse(textures.get("bottom").getAsString()), DEFAULT_TEXTURE);
+		this.textures[3] = MoreObjects.firstNonNull(ResourceLocation.tryParse(textures.get("top").getAsString()), DEFAULT_TEXTURE);
+		this.textures[4] = MoreObjects.firstNonNull(ResourceLocation.tryParse(textures.get("north").getAsString()), DEFAULT_TEXTURE);
+		this.textures[5] = MoreObjects.firstNonNull(ResourceLocation.tryParse(textures.get("south").getAsString()), DEFAULT_TEXTURE);
+
 		ListTag posTag = tag.getList("pos", Tag.TAG_FLOAT);
 		if (posTag.size() == 3) {
 			minPos = new Vector3f(posTag.getFloat(0), posTag.getFloat(1), posTag.getFloat(2));
@@ -104,11 +109,14 @@ public class ReactorDebrisBlockEntity extends BlockEntity {
 	@Override
 	protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
 		super.saveAdditional(tag, registries);
-		ListTag listTag = new ListTag();
-		for (ResourceLocation texture : textures) {
-			listTag.add(StringTag.valueOf(texture.getPath()));
-		}
-		tag.put("textures", listTag);
+		CompoundTag textures = new CompoundTag();
+		textures.put("west", StringTag.valueOf(this.textures[0].getPath()));
+		textures.put("east", StringTag.valueOf(this.textures[1].getPath()));
+		textures.put("bottom", StringTag.valueOf(this.textures[2].getPath()));
+		textures.put("top", StringTag.valueOf(this.textures[3].getPath()));
+		textures.put("north", StringTag.valueOf(this.textures[4].getPath()));
+		textures.put("south", StringTag.valueOf(this.textures[5].getPath()));
+		tag.put("textures", textures);
 		tag.put("pos", newFloatList(minPos.x, minPos.y, minPos.z));
 		tag.put("sizes", newFloatList(maxPos.x - minPos.x, maxPos.y - minPos.y, maxPos.z - minPos.z));
 	}
