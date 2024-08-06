@@ -44,6 +44,7 @@ import org.jetbrains.annotations.Nullable;
 import twilightforest.config.TFConfig;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFDimension;
 import twilightforest.init.TFSounds;
 import twilightforest.network.MissingAdvancementToastPacket;
@@ -235,6 +236,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 				entity.setAsInsidePortal(this, entity.blockPosition());
 			}
 		}
+		entity.getData(TFDataAttachments.TF_PORTAL_COOLDOWN).setInPortal(true);
 	}
 
 	public static boolean isPlayerNotifiedOfRequirement(ServerPlayer player) {
