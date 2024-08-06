@@ -6,6 +6,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.*;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -70,6 +71,11 @@ public class ReactorDebrisBlockEntity extends BlockEntity {
 		return Math.min(Math.max(value, Z_FIGHTING_MIN), Z_FIGHTING_MAX);
 	}
 
+	public static void tick(Level level, BlockPos blockPos, BlockState blockState, ReactorDebrisBlockEntity reactorDebrisBlockEntity) {
+		reactorDebrisBlockEntity.randomizeDimensions();
+		reactorDebrisBlockEntity.randomizeTextures();
+	}
+
 	@Override
 	protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
 		super.loadAdditional(tag, registries);
@@ -118,10 +124,5 @@ public class ReactorDebrisBlockEntity extends BlockEntity {
 	@Override
 	public ClientboundBlockEntityDataPacket getUpdatePacket() {
 		return ClientboundBlockEntityDataPacket.create(this);
-	}
-
-	@Override
-	public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
-		return this.saveCustomOnly(registries);
 	}
 }
