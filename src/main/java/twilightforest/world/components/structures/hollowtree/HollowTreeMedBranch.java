@@ -18,7 +18,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFStructurePieceTypes;
-import twilightforest.util.FeatureLogic;
+import twilightforest.util.features.FeatureLogic;
 
 public class HollowTreeMedBranch extends HollowTreePiece {
 	protected final BlockPos src, dest;  // source and destination of branch, array of 3 ints representing x, y, z

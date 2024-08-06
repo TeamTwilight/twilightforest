@@ -1,4 +1,4 @@
-// 1.21	2024-07-13T11:48:40.028948	Twilight Forest Block Tags
+// 1.21	2024-08-02T21:29:39.781823	Twilight Forest Block Tags
 9d529390443b5da5d71bd6e867c066632e1340b8 data/alexscaves/tags/block/ferromagnetic_blocks.json
 ddfcbead67bb9487c003af137a276963e5b20022 data/alexscaves/tags/block/gloomoth_light_sources.json
 c365018bd78f1335cd4508b5d74bc4500ae951bd data/alexscaves/tags/block/underzealot_light_sources.json
@@ -39,7 +39,7 @@ e121d38615572a340044db73e20622af4e2a0a7c data/minecraft/tags/block/flower_pots.j
 19bd74ce640c043c09053d7571fb7a9915d41417 data/minecraft/tags/block/logs_that_burn.json
 a0a081794273a24a6369307f2d26f6a3a3975f72 data/minecraft/tags/block/mineable/axe.json
 7177f5d8a3deacfcbfc12170902b73749e87213c data/minecraft/tags/block/mineable/hoe.json
-c49cf9252e927b6819b26f0f65d40ef9b7024f10 data/minecraft/tags/block/mineable/pickaxe.json
+71b26e2f6f499846c7d9b35789e1770c4953031c data/minecraft/tags/block/mineable/pickaxe.json
 944d5178d1a94490d123e31a73bc58d4eea852ab data/minecraft/tags/block/mineable/shovel.json
 44cc0123e6b6b654303a046d924b4e8fca617f41 data/minecraft/tags/block/moss_replaceable.json
 6be3f00e1fa63bb65b978bb8e2c63bbf79b5775e data/minecraft/tags/block/mushroom_grow_block.json
@@ -69,7 +69,7 @@ f0813a14ba178a941ba37c4059a25e6b19f77091 data/minecraft/tags/block/wooden_button
 e4144fc27ee121d3f7d17a5fdff02e93e1d7f7d8 data/minecraft/tags/block/wooden_slabs.json
 f3de4b0d6d2929c8fab124e75ff6269ca7642aa7 data/minecraft/tags/block/wooden_stairs.json
 8522d5d06fec7c30601264eb04aebaa58886a948 data/minecraft/tags/block/wooden_trapdoors.json
-df96e08b3ffd5a9ad9da4ab599e36a6644028dbc data/neoforge/tags/block/needs_wood_tool.json
+bf268104ef37c6ae11779d7ebac410abe4e9e399 data/neoforge/tags/block/needs_wood_tool.json
 da8d3633fcaeec13b64c7691a56ece30484ae0cd data/twilightforest/tags/block/annihilation_inclusions.json
 894771e557845fa22ca82b71283c23be8ab1847a data/twilightforest/tags/block/antibuilder_ignores.json
 af8520c845f14fb320bcefd284018a5ad57a7528 data/twilightforest/tags/block/banisters.json

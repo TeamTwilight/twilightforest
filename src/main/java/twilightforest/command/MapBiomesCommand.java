@@ -8,6 +8,7 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -17,8 +18,9 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.storage.LevelResource;
 import net.neoforged.fml.loading.FMLEnvironment;
 import twilightforest.init.TFBiomes;
-import twilightforest.item.MagicMapItem;
+import twilightforest.init.TFDataMaps;
 import twilightforest.util.ColorUtil;
+import twilightforest.util.datamaps.MagicMapBiomeColor;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -82,7 +84,7 @@ public class MapBiomesCommand {
 		}
 
 		//setup image
-		Map<Biome, Integer> biomeCount = new HashMap<>();
+		Map<Holder<Biome>, Integer> biomeCount = new HashMap<>();
 		NativeImage img = new NativeImage(width, height, false);
 
 		int progressUpdate = img.getHeight() / 8;
@@ -90,15 +92,15 @@ public class MapBiomesCommand {
 		for (int x = 0; x < img.getHeight(); x++) {
 			for (int z = 0; z < img.getWidth(); z++) {
 				ServerLevel level = source.getLevel();
-				Biome b = level.getNoiseBiome(x - (img.getWidth() / 2), 0, z - (img.getHeight() / 2)).value();
-				ResourceLocation key = level.registryAccess().registryOrThrow(Registries.BIOME).getKey(b);
+				Holder<Biome> b = level.getNoiseBiome(x - (img.getWidth() / 2), 0, z - (img.getHeight() / 2));
+				ResourceLocation key = level.registryAccess().registryOrThrow(Registries.BIOME).getKey(b.value());
 				BiomeMapColor color = BIOME2COLOR.get(key);
 
 				if (color == null) {
-					int colorInt = MagicMapItem.getBiomeColor(source.getLevel(), b);
+					int colorInt = getBiomeColor(b);
 
 					if (colorInt == 0)
-						colorInt = b.getGrassColor(0, 0);
+						colorInt = b.value().getGrassColor(0, 0);
 
 					BIOME2COLOR.put(key, color = new BiomeMapColor(colorInt | 0xFF000000));
 				}
@@ -124,7 +126,7 @@ public class MapBiomesCommand {
 			source.sendSuccess(() -> Component.literal("Approximate biome-block counts within a " + (width + "x" + height) + " region"), false);
 			int totalCount = biomeCount.values().stream().mapToInt(i -> i).sum();
 			biomeCount.forEach((biome, integer) -> source.sendSuccess(() -> Component.literal(
-					source.getLevel().registryAccess().registryOrThrow(Registries.BIOME).getKey(biome).toString())
+					source.getLevel().registryAccess().registryOrThrow(Registries.BIOME).getKey(biome.value()).toString())
 				.append(": " + (integer) + ChatFormatting.GRAY + " (" + numberFormat.format(((double) integer / totalCount) * 100) + "%)"), false));
 		}
 
@@ -147,6 +149,18 @@ public class MapBiomesCommand {
 		source.sendSuccess(() -> Component.literal("Image saved!"), false);
 
 		return Command.SINGLE_SUCCESS;
+	}
+
+	public static int getBiomeColor(Holder<Biome> biome) {
+		MagicMapBiomeColor c = biome.getData(TFDataMaps.MAGIC_MAP_BIOME_COLOR);
+		return c != null ? getMapColor(c) : 0xFF000000;
+	}
+
+	public static int getMapColor(MagicMapBiomeColor color) {
+		int j = (color.color().col >> 16 & 255);
+		int k = (color.color().col >> 8 & 255);
+		int l = (color.color().col & 255);
+		return 0xFF000000 | l << 16 | k << 8 | j;
 	}
 
 	public static class BiomeMapColor {

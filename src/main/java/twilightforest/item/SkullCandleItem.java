@@ -58,9 +58,4 @@ public class SkullCandleItem extends StandingAndWallBlockItem {
 			resolvableprofile.resolve().thenAcceptAsync(profile -> stack.set(DataComponents.PROFILE, profile), SkullBlockEntity.CHECKED_MAIN_THREAD_EXECUTOR);
 		}
 	}
-
-	@Override
-	public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-		consumer.accept(ISTER.CLIENT_ITEM_EXTENSION);
-	}
 }

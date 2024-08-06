@@ -17,8 +17,8 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.storage.loot.LootTable;
-import twilightforest.util.FeatureLogic;
-import twilightforest.util.FeatureUtil;
+import twilightforest.util.features.FeatureLogic;
+import twilightforest.util.features.FeatureUtil;
 import twilightforest.world.components.feature.config.RuinedFoundationConfig;
 
 public class FoundationFeature extends Feature<RuinedFoundationConfig> {
@@ -33,8 +33,10 @@ public class FoundationFeature extends Feature<RuinedFoundationConfig> {
 		BlockPos pos = ctx.origin();
 		RandomSource rand = ctx.random();
 		RuinedFoundationConfig config = ctx.config();
+		RuinedFoundationConfig.RuinedFoundationDimensions dimensions = ctx.config().dimensions();
+		RuinedFoundationConfig.RuinedFoundationBlocks blocks = ctx.config().blocks();
 
-		IntProvider wallWidths = config.wallWidth();
+		IntProvider wallWidths = dimensions.wallWidth();
 		int xWidth = wallWidths.sample(rand);
 		int zWidth = wallWidths.sample(rand);
 
@@ -43,14 +45,14 @@ public class FoundationFeature extends Feature<RuinedFoundationConfig> {
 		}
 
 		//okay!
-		generateFoundation(world, rand, pos, xWidth, zWidth, config.wallHeights(), config.placeFloorTest(), config.wallBlock(), config.wallTop(), config.decayedWall(), config.decayedTop(), config.floor());
+		generateFoundation(world, rand, pos, xWidth, zWidth, dimensions.wallHeights(), dimensions.placeFloorTest(), blocks.wallBlock(), blocks.wallTop(), blocks.decayedWall(), blocks.decayedTop(), blocks.floor());
 
 		//TODO: chimney?
 
-		int basementDepth = config.basementHeight().sample(rand);
+		int basementDepth = dimensions.basementHeight().sample(rand);
 		if (basementDepth > 0) {
 			BlockPos basementCeilingPos = pos.offset(1, -3, 1);
-			generateBasement(xWidth - 2, zWidth - 2, basementDepth, world, basementCeilingPos, rand, config.placeFloorTest(), config.floor(), config.basementPosts(), config.lootContainer(), config.lootTable());
+			generateBasement(xWidth - 2, zWidth - 2, basementDepth, world, basementCeilingPos, rand, dimensions.placeFloorTest(), blocks.floor(), blocks.basementPosts(), blocks.lootContainer(), config.lootTable());
 		}
 
 		return true;

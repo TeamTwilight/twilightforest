@@ -24,7 +24,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.storage.loot.LootTable;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFStructurePieceTypes;
-import twilightforest.util.FeatureLogic;
+import twilightforest.util.features.FeatureLogic;
 
 public class HollowTreeLargeBranch extends HollowTreeMedBranch {
 	private static final int LEAF_DUNGEON_CHANCE = 8;

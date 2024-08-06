@@ -10,6 +10,9 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.RegistryFileCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.AtlasGenerator;
@@ -48,12 +51,23 @@ public class MagicPaintingVariants {
 			new Layer("lightning", null, new OpacityModifier(OpacityModifier.Type.LIGHTNING, 1.0F, false, 0.0F, 1.0F), true),
 			new Layer("frame", null, null, false)
 		));
-		register(context, LUCID_LANDS, "Lucid Lands", "Androsa", 2, 2, List.of(
+		register(context, LUCID_LANDS, "Lucid Lands", "Androsa", 3, 3, List.of(
 			new Layer("background", null, null, true),
-			new Layer("clouds", new Parallax(Parallax.Type.SINE_TIME, 0.01F, 48, 32), null, true),
-			new Layer("volcanic_lands", null, null, true),
-			new Layer("agate_jungle", new Parallax(Parallax.Type.VIEW_ANGLE, 0.005F, 44, 32), null, true),
-			new Layer("crystal_plains", new Parallax(Parallax.Type.VIEW_ANGLE, 0.006F, 58, 32), null, true),
+			new Layer("clouds", new Parallax(Parallax.Type.LINEAR_TIME, 0.00075F, 122, 48), null, true),
+			new Layer("mookaite_mesa", null, null, true),
+			new Layer("agate_jungle", new Parallax(Parallax.Type.VIEW_ANGLE, 0.005F, 58, 48), null, true),
+			new Layer("crystal_plains", new Parallax(Parallax.Type.VIEW_ANGLE, 0.006F, 74, 48), null, true),
+			new Layer("background_gold", null, new OpacityModifier(OpacityModifier.Type.HOLDING_ITEM, 0.01F, false, 0.0F, 1.0F, new ItemStack(Items.GOLD_INGOT)), true),
+			new Layer("clouds_gold", new Parallax(Parallax.Type.LINEAR_TIME, 0.00075F, 122, 48), new OpacityModifier(OpacityModifier.Type.HOLDING_ITEM, 0.01F, false, 0.0F, 1.0F, new ItemStack(Items.GOLD_INGOT)), true),
+			new Layer("golden_hills", null, new OpacityModifier(OpacityModifier.Type.HOLDING_ITEM, 0.01F, false, 0.0F, 1.0F, new ItemStack(Items.GOLD_INGOT)), true),
+			new Layer("golden_forest", new Parallax(Parallax.Type.VIEW_ANGLE, 0.005F, 58, 48), new OpacityModifier(OpacityModifier.Type.HOLDING_ITEM, 0.01F, false, 0.0F, 1.0F, new ItemStack(Items.GOLD_INGOT)), true),
+			new Layer("golden_sands", new Parallax(Parallax.Type.VIEW_ANGLE, 0.006F, 74, 48), new OpacityModifier(OpacityModifier.Type.HOLDING_ITEM, 0.01F, false, 0.0F, 1.0F, new ItemStack(Items.GOLD_INGOT)), true),
+			new Layer("background_corrupt", null, new OpacityModifier(OpacityModifier.Type.MOB_EFFECT_CATEGORY, 0.01F, false, 0.0F, 1.0F, MobEffectCategory.HARMFUL), true),
+			new Layer("clouds_corrupt", new Parallax(Parallax.Type.LINEAR_TIME, 0.00075F, 122, 48), new OpacityModifier(OpacityModifier.Type.MOB_EFFECT_CATEGORY, 0.01F, false, 0.0F, 1.0F, MobEffectCategory.HARMFUL), false),
+			new Layer("goldstone_peaks", null, new OpacityModifier(OpacityModifier.Type.MOB_EFFECT_CATEGORY, 0.01F, false, 0.0F, 1.0F, MobEffectCategory.HARMFUL), false),
+			new Layer("goldstone_peaks_overlay", null, new OpacityModifier(OpacityModifier.Type.MOB_EFFECT_CATEGORY, 0.01F, false, 0.0F, 1.0F, MobEffectCategory.HARMFUL), true),
+			new Layer("goldstone_forest", new Parallax(Parallax.Type.VIEW_ANGLE, 0.005F, 58, 48), new OpacityModifier(OpacityModifier.Type.MOB_EFFECT_CATEGORY, 0.01F, false, 0.0F, 1.0F, MobEffectCategory.HARMFUL), false),
+			new Layer("goldstone_plains", new Parallax(Parallax.Type.VIEW_ANGLE, 0.006F, 74, 48), new OpacityModifier(OpacityModifier.Type.MOB_EFFECT_CATEGORY, 0.01F, false, 0.0F, 1.0F, MobEffectCategory.HARMFUL), false),
 			new Layer("frame", null, null, false)
 		));
 		register(context, THE_HOSTILE_PARADISE, "The Hostile Paradise", "Oz", 3, 2, List.of(

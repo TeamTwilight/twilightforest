@@ -9,6 +9,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
+import net.minecraft.util.InclusiveRange;
 import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.LevelReader;
@@ -41,7 +42,7 @@ public class SpawnerProcessor extends StructureProcessor {
 
 			entityInfo.putString("id", BuiltInRegistries.ENTITY_TYPE.getKey(entry.getKey()).toString());
 
-			entities.add(new SpawnData(entityInfo, Optional.empty(), Optional.empty()), entry.getValue());
+			entities.add(new SpawnData(entityInfo, Optional.of(new SpawnData.CustomSpawnRules(new InclusiveRange<>(0, 7), new InclusiveRange<>(0, 15))), Optional.empty()), entry.getValue());
 		}
 
 		return new SpawnerProcessor(range, entities.build());

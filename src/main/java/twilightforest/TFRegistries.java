@@ -9,7 +9,7 @@ import twilightforest.entity.passive.DwarfRabbitVariant;
 import twilightforest.entity.passive.TinyBirdVariant;
 import twilightforest.util.Enforcement;
 import twilightforest.util.Restriction;
-import twilightforest.util.WoodPalette;
+import twilightforest.util.woods.WoodPalette;
 import twilightforest.world.components.chunkblanketing.ChunkBlanketProcessor;
 import twilightforest.world.components.chunkblanketing.ChunkBlanketType;
 import twilightforest.world.components.layer.vanillalegacy.BiomeLayerFactory;

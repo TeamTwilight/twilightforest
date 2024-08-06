@@ -118,15 +118,21 @@ public class JarBlock extends BaseEntityBlock implements SimpleWaterloggedBlock 
 	@Override
 	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
 		if (level.getBlockEntity(pos) instanceof JarBlockEntity jarBlockEntity && hitResult.getLocation().y >= pos.getY() + (14.0D / 16.0D) && JarBlockEntity.REGISTERED_LOG_LIDS.contains(stack.getItem())) {
-			jarBlockEntity.lid = stack.getItem();
-			if (level instanceof ServerLevel serverLevel) {
-				serverLevel.playSound(null, pos, TFSounds.JAR_LID_SWAP.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
-				jarBlockEntity.wobble(DecoratedPotBlockEntity.WobbleStyle.POSITIVE);
-				jarBlockEntity.setChanged();
-			}
-			return ItemInteractionResult.SUCCESS;
-		}
-		return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
+			Item lid = stack.getItem();
+			if (lid != jarBlockEntity.lid) {
+				jarBlockEntity.lid = lid;
+				if (level instanceof ServerLevel serverLevel) {
+					serverLevel.playSound(null, pos, TFSounds.JAR_LID_SWAP.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+					jarBlockEntity.wobble(DecoratedPotBlockEntity.WobbleStyle.POSITIVE);
+					jarBlockEntity.setChanged();
+				}
+            } else {
+				level.playSound(null, pos, TFSounds.JAR_WIGGLE.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+				jarBlockEntity.wobble(DecoratedPotBlockEntity.WobbleStyle.NEGATIVE);
+            }
+            return ItemInteractionResult.SUCCESS;
+        }
+		return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 	}
 
 	@Override

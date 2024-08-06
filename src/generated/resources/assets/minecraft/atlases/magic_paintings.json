@@ -138,7 +138,7 @@
     },
     {
       "type": "minecraft:single",
-      "resource": "twilightforest:magic_paintings/lucid_lands/volcanic_lands"
+      "resource": "twilightforest:magic_paintings/lucid_lands/mookaite_mesa"
     },
     {
       "type": "minecraft:single",
@@ -147,6 +147,50 @@
     {
       "type": "minecraft:single",
       "resource": "twilightforest:magic_paintings/lucid_lands/crystal_plains"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/lucid_lands/background_gold"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/lucid_lands/clouds_gold"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/lucid_lands/golden_hills"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/lucid_lands/golden_forest"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/lucid_lands/golden_sands"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/lucid_lands/background_corrupt"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/lucid_lands/clouds_corrupt"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/lucid_lands/goldstone_peaks"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/lucid_lands/goldstone_peaks_overlay"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/lucid_lands/goldstone_forest"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/lucid_lands/goldstone_plains"
     },
     {
       "type": "minecraft:single",

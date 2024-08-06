@@ -129,6 +129,7 @@
     }
   },
   "step": "underground_structures",
+  "structure_icon": "twilightforest:labyrinth",
   "terrain_adaptation": "bury",
   "water_spawns": []
 }

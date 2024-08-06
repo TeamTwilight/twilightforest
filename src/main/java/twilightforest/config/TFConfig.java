@@ -7,11 +7,13 @@ import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
+import net.neoforged.neoforge.common.TranslatableEnum;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.Nullable;
@@ -20,14 +22,11 @@ import twilightforest.network.SyncUncraftingTableConfigPacket;
 import twilightforest.util.PlayerHelper;
 
 import java.net.Proxy;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 public class TFConfig {
 
-	protected static final String CONFIG_ID = "config." + TwilightForestMod.ID;
+	public static final String CONFIG_ID = "config." + TwilightForestMod.ID + ".";
 	@Nullable
 	private static ResourceLocation portalLockingAdvancement;
 	private static final List<Holder<Biome>> VALID_AURORA_BIOMES = new ArrayList<>();
@@ -236,7 +235,7 @@ public class TFConfig {
 		}
 	}
 
-	public enum MultiplayerFightAdjuster {
+	public enum MultiplayerFightAdjuster implements TranslatableEnum {
 		NONE(false, false),
 		MORE_LOOT(true, false),
 		MORE_HEALTH(false, true),
@@ -256,6 +255,11 @@ public class TFConfig {
 
 		public boolean adjustsHealth() {
 			return this.moreHealth;
+		}
+
+		@Override
+		public Component getTranslatedName() {
+			return Component.translatable("config.twilightforest.multiplayer_fight_adjuster." + this.name().toLowerCase(Locale.ROOT));
 		}
 	}
 }

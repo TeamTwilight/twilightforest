@@ -8,6 +8,7 @@
   "allow_biome_underground_decorations": true,
   "ambient_spawns": [],
   "biomes": "#twilightforest:valid_giant_house_biomes",
+  "center_in_chunk": false,
   "chunk_clearance_radius": 1,
   "hint_item": {
     "components": {

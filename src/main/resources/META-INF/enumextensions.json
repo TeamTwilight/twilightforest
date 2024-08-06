@@ -71,6 +71,78 @@
         "class": "twilightforest/util/TFEnumExtensions",
         "method": "jarred"
       }
+    },
+    {
+      "enum": "net/minecraft/world/entity/vehicle/Boat$Type",
+      "name": "TWILIGHTFOREST_TWILIGHT_OAK",
+      "constructor": "(Ljava/util/function/Supplier;Ljava/lang/String;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Z)V",
+      "parameters": {
+        "class": "twilightforest/util/TFEnumExtensions",
+        "method": "twilightOakBoat"
+      }
+    },
+    {
+      "enum": "net/minecraft/world/entity/vehicle/Boat$Type",
+      "name": "TWILIGHTFOREST_CANOPY",
+      "constructor": "(Ljava/util/function/Supplier;Ljava/lang/String;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Z)V",
+      "parameters": {
+        "class": "twilightforest/util/TFEnumExtensions",
+        "method": "canopyBoat"
+      }
+    },
+    {
+      "enum": "net/minecraft/world/entity/vehicle/Boat$Type",
+      "name": "TWILIGHTFOREST_MANGROVE",
+      "constructor": "(Ljava/util/function/Supplier;Ljava/lang/String;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Z)V",
+      "parameters": {
+        "class": "twilightforest/util/TFEnumExtensions",
+        "method": "mangroveBoat"
+      }
+    },
+    {
+      "enum": "net/minecraft/world/entity/vehicle/Boat$Type",
+      "name": "TWILIGHTFOREST_DARK",
+      "constructor": "(Ljava/util/function/Supplier;Ljava/lang/String;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Z)V",
+      "parameters": {
+        "class": "twilightforest/util/TFEnumExtensions",
+        "method": "darkBoat"
+      }
+    },
+    {
+      "enum": "net/minecraft/world/entity/vehicle/Boat$Type",
+      "name": "TWILIGHTFOREST_TIME",
+      "constructor": "(Ljava/util/function/Supplier;Ljava/lang/String;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Z)V",
+      "parameters": {
+        "class": "twilightforest/util/TFEnumExtensions",
+        "method": "timeBoat"
+      }
+    },
+    {
+      "enum": "net/minecraft/world/entity/vehicle/Boat$Type",
+      "name": "TWILIGHTFOREST_TRANSFORMATION",
+      "constructor": "(Ljava/util/function/Supplier;Ljava/lang/String;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Z)V",
+      "parameters": {
+        "class": "twilightforest/util/TFEnumExtensions",
+        "method": "transformationBoat"
+      }
+    },
+    {
+      "enum": "net/minecraft/world/entity/vehicle/Boat$Type",
+      "name": "TWILIGHTFOREST_MINING",
+      "constructor": "(Ljava/util/function/Supplier;Ljava/lang/String;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Z)V",
+      "parameters": {
+        "class": "twilightforest/util/TFEnumExtensions",
+        "method": "miningBoat"
+      }
+    },
+    {
+      "enum": "net/minecraft/world/entity/vehicle/Boat$Type",
+      "name": "TWILIGHTFOREST_SORTING",
+      "constructor": "(Ljava/util/function/Supplier;Ljava/lang/String;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Z)V",
+      "parameters": {
+        "class": "twilightforest/util/TFEnumExtensions",
+        "method": "sortingBoat"
+      }
     }
   ]
 }

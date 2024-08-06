@@ -1,0 +1,144 @@
+{
+  "values": {
+    "twilightforest:clearing": {
+      "brightness": 2,
+      "map_color": {
+        "color": 8368696,
+        "id": 1
+      }
+    },
+    "twilightforest:dark_forest": {
+      "brightness": 3,
+      "map_color": {
+        "color": 6717235,
+        "id": 27
+      }
+    },
+    "twilightforest:dark_forest_center": {
+      "brightness": 3,
+      "map_color": {
+        "color": 14188339,
+        "id": 15
+      }
+    },
+    "twilightforest:dense_forest": {
+      "brightness": 0,
+      "map_color": {
+        "color": 31744,
+        "id": 7
+      }
+    },
+    "twilightforest:dense_mushroom_forest": {
+      "brightness": 0,
+      "map_color": {
+        "color": 15892389,
+        "id": 20
+      }
+    },
+    "twilightforest:enchanted_forest": {
+      "brightness": 2,
+      "map_color": {
+        "color": 5013401,
+        "id": 23
+      }
+    },
+    "twilightforest:final_plateau": {
+      "brightness": 2,
+      "map_color": {
+        "color": 10066329,
+        "id": 22
+      }
+    },
+    "twilightforest:fire_swamp": {
+      "brightness": 1,
+      "map_color": {
+        "color": 7340544,
+        "id": 35
+      }
+    },
+    "twilightforest:firefly_forest": {
+      "brightness": 1,
+      "map_color": {
+        "color": 55610,
+        "id": 33
+      }
+    },
+    "twilightforest:forest": {
+      "brightness": 1,
+      "map_color": {
+        "color": 31744,
+        "id": 7
+      }
+    },
+    "twilightforest:glacier": {
+      "brightness": 1,
+      "map_color": {
+        "color": 10526975,
+        "id": 5
+      }
+    },
+    "twilightforest:highlands": {
+      "brightness": 0,
+      "map_color": {
+        "color": 9923917,
+        "id": 10
+      }
+    },
+    "twilightforest:lake": {
+      "brightness": 3,
+      "map_color": {
+        "color": 4210943,
+        "id": 12
+      }
+    },
+    "twilightforest:mushroom_forest": {
+      "brightness": 0,
+      "map_color": {
+        "color": 14188339,
+        "id": 15
+      }
+    },
+    "twilightforest:oak_savannah": {
+      "brightness": 0,
+      "map_color": {
+        "color": 8368696,
+        "id": 1
+      }
+    },
+    "twilightforest:snowy_forest": {
+      "brightness": 1,
+      "map_color": {
+        "color": 16777215,
+        "id": 8
+      }
+    },
+    "twilightforest:spooky_forest": {
+      "brightness": 0,
+      "map_color": {
+        "color": 8339378,
+        "id": 24
+      }
+    },
+    "twilightforest:stream": {
+      "brightness": 1,
+      "map_color": {
+        "color": 4210943,
+        "id": 12
+      }
+    },
+    "twilightforest:swamp": {
+      "brightness": 3,
+      "map_color": {
+        "color": 6085589,
+        "id": 31
+      }
+    },
+    "twilightforest:thornlands": {
+      "brightness": 3,
+      "map_color": {
+        "color": 9402184,
+        "id": 13
+      }
+    }
+  }
+}

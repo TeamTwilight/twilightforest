@@ -25,7 +25,7 @@ import twilightforest.init.TFEntities;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.loot.TFLootTables;
 import twilightforest.util.BoundingBoxUtils;
-import twilightforest.util.EntityUtil;
+import twilightforest.util.entities.EntityUtil;
 import twilightforest.util.RotationUtil;
 import twilightforest.util.TFStructureHelper;
 import twilightforest.world.components.structures.TFStructureComponentOld;

@@ -57,8 +57,8 @@ import twilightforest.entity.ai.goal.PhantomWatchAndAttackGoal;
 import twilightforest.init.*;
 import twilightforest.loot.TFLootTables;
 import twilightforest.network.UpdateDeathTimePacket;
-import twilightforest.util.EntityUtil;
-import twilightforest.util.LandmarkUtil;
+import twilightforest.util.entities.EntityUtil;
+import twilightforest.util.landmarks.LandmarkUtil;
 
 import java.util.Arrays;
 import java.util.List;

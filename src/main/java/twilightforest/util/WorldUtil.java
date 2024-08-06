@@ -21,8 +21,10 @@ import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFDimensionData;
+import twilightforest.util.landmarks.LegacyLandmarkPlacements;
 import twilightforest.world.components.structures.placements.LandmarkGridPlacement;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -60,6 +62,23 @@ public final class WorldUtil {
 		int dy = random.nextInt(ry * 2 + 1) - ry;
 		int dz = random.nextInt(rz * 2 + 1) - rz;
 		return pos.offset(dx, dy, dz);
+	}
+
+	public static <T> T getRandomElement(List<T> list, RandomSource rng) {
+		return list.get(rng.nextInt(list.size()));
+	}
+
+	public static <T> T getRandomElementWithWeights(List<Pair<T, Integer>> list, RandomSource rng) {
+		int totalWeight = list.stream().mapToInt(Pair::getSecond).sum();
+		int randomValue = rng.nextInt(totalWeight);
+
+		for (Pair<T, Integer> pair : list) {
+			randomValue -= pair.getSecond();
+			if (randomValue < 0) {
+				return pair.getFirst();
+			}
+		}
+		return getRandomElement(list, rng).getFirst(); // This line should never be reached if input list is valid
 	}
 
 	public static int getGeneratorSeaLevel(LevelAccessor level) {

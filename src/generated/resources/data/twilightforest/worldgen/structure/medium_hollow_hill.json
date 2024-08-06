@@ -107,5 +107,6 @@
   },
   "speleothem_config": "twilightforest:medium_hollow_hill",
   "step": "surface_structures",
+  "structure_icon": "twilightforest:medium_hollow_hill",
   "water_spawns": []
 }

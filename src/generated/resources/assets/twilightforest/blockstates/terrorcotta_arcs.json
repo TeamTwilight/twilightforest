@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "twilightforest:block/terrorcotta_arcs_x"
+    },
+    "axis=y": {
+      "model": "twilightforest:block/terrorcotta_arcs"
+    },
+    "axis=z": {
+      "model": "twilightforest:block/terrorcotta_arcs_z"
+    }
+  }
+}

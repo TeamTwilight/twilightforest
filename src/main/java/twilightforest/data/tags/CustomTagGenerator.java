@@ -19,7 +19,7 @@ import twilightforest.init.TFBannerPatterns;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFDimensionData;
 import twilightforest.init.custom.WoodPalettes;
-import twilightforest.util.WoodPalette;
+import twilightforest.util.woods.WoodPalette;
 
 import java.util.concurrent.CompletableFuture;
 

@@ -5,6 +5,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
@@ -12,6 +13,12 @@ import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.world.AuxiliaryLightManager;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -19,6 +26,7 @@ import twilightforest.init.TFBlockEntities;
 import twilightforest.network.SetMasonJarItemPacket;
 
 import java.util.List;
+import java.util.Optional;
 
 import static net.minecraft.world.level.block.entity.DecoratedPotBlockEntity.WobbleStyle;
 
@@ -50,6 +58,26 @@ public class MasonJarBlockEntity extends JarBlockEntity {
 		super.loadAdditional(tag, registries);
 		this.item.deserializeNBT(registries, tag.getCompound(TAG_ITEM));
 		this.itemRotation = tag.getInt(TAG_ANGLE);
+	}
+
+	public void fillFromLootTable(ResourceKey<LootTable> lootTableKey, long seed) {
+		if (this.level instanceof ServerLevel serverLevel) {
+			LootTable lootTable = serverLevel.getServer().reloadableRegistries().getLootTable(lootTableKey);
+			LootParams params = new LootParams.Builder(serverLevel).withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(this.getBlockPos())).create(LootContextParamSets.CHEST);
+
+			lootTable.getRandomItemsRaw(new LootContext.Builder(params).withOptionalRandomSeed(seed).create(Optional.of(lootTableKey.location())), stack -> {
+				MasonJarItemStackHandler jarInv = this.getItemHandler();
+				if (jarInv.isEmpty()) {
+					jarInv.setItem(stack);
+				} else {
+					ItemStack contained = jarInv.peekItem();
+					// Merge stack in if there's already an item inside
+					if (ItemStack.isSameItemSameComponents(contained, stack)) {
+						contained.setCount(Math.min(contained.getCount() + stack.getCount(), contained.getMaxStackSize()));
+					}
+				}
+			});
+		}
 	}
 
 	public void setFromItem(ItemStack stack) {
@@ -112,6 +140,11 @@ public class MasonJarBlockEntity extends JarBlockEntity {
 			return this.stacks.getFirst().copy();
 		}
 
+		// Peeks at the stored item, without cloning it
+		private ItemStack peekItem() {
+			return this.stacks.getFirst();
+		}
+
 		// Used when syncing to client and when placing a jar that already has stored items
 		public void setItem(ItemStack itemStack) {
 			this.stacks.set(0, itemStack);
@@ -143,6 +176,10 @@ public class MasonJarBlockEntity extends JarBlockEntity {
 				this.jarEntity.setChanged();
 			}
 			return returned;
+		}
+
+		public boolean isEmpty() {
+			return this.stacks.getFirst().isEmpty();
 		}
 	}
 }

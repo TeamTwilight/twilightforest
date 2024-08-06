@@ -52,6 +52,9 @@ public class TFAdvancementGenerator implements AdvancementProvider.AdvancementGe
 	@Autowired
 	private static AdvancementDataMultiRequirements advancementDataMultiRequirements;
 
+	@Autowired
+	private static DrinkFromFlaskTrigger.TriggerInstance.DrinkFromFlaskTriggerInstanceFactory drinkFromFlaskTriggerInstanceFactory;
+
 	@Override
 	public void generate(HolderLookup.Provider registries, Consumer<AdvancementHolder> consumer, ExistingFileHelper helper) {
 		HolderLookup.RegistryLookup<Biome> biomes = registries.lookupOrThrow(Registries.BIOME);
@@ -444,7 +447,7 @@ public class TFAdvancementGenerator implements AdvancementProvider.AdvancementGe
 				Component.translatable("advancement.twilightforest.full_mettle_alchemist"),
 				Component.translatable("advancement.twilightforest.full_mettle_alchemist.desc"),
 				null, AdvancementType.CHALLENGE, true, true, true)
-			.addCriterion("drink_4_harming", DrinkFromFlaskTrigger.TriggerInstance.drankPotion(4, MinMaxBounds.Ints.atMost(7), Potions.STRONG_HARMING))
+			.addCriterion("drink_4_harming", drinkFromFlaskTriggerInstanceFactory.drankPotion(4, MinMaxBounds.Ints.atMost(7), Potions.STRONG_HARMING))
 			.rewards(AdvancementRewards.Builder.experience(100))
 			.save(consumer, "twilightforest:full_mettle_alchemist");
 

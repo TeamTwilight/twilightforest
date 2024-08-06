@@ -29,8 +29,8 @@ import twilightforest.block.CritterBlock;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
 import twilightforest.loot.TFLootTables;
-import twilightforest.util.FeatureLogic;
-import twilightforest.util.VoxelBresenhamIterator;
+import twilightforest.util.features.FeatureLogic;
+import twilightforest.util.iterators.VoxelBresenhamIterator;
 
 public abstract class HollowTreePiece extends StructurePiece {
 	static final int PLACE_FLAG = 0b10011;

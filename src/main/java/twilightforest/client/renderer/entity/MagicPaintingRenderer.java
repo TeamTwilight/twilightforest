@@ -16,6 +16,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -291,6 +292,20 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting> {
 					ItemStack key = opacityModifier.item();
 					if (key != null && !living.isHolding(stack -> ItemStack.isSameItemSameComponents(stack, key)))
 						a = 0.0F;
+				}
+			}
+			case MOB_EFFECT_CATEGORY -> {
+				if (Minecraft.getInstance().getCameraEntity() instanceof LivingEntity living) {
+					boolean flag = false;
+					for (MobEffectInstance effect : living.getActiveEffects()) {
+						if (opacityModifier.effectCategory().isPresent()) {
+							if (effect.getEffect().value().getCategory() == opacityModifier.effectCategory().get()) {
+								flag = true;
+								break;
+							}
+						}
+					}
+					a = flag ? 1.0F : 0.0F;
 				}
 			}
 		}

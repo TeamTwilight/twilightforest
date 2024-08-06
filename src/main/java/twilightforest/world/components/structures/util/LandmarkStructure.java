@@ -1,14 +1,18 @@
 package twilightforest.world.components.structures.util;
 
 import com.mojang.datafixers.Products;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.saveddata.maps.MapDecoration;
+import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.structures.TFStructureComponentTemplate;
@@ -18,18 +22,24 @@ import java.util.Optional;
 
 // Landmark structure without progression lock; Hollow Hills/Hedge Maze/Naga Courtyard/Quest Grove
 public abstract class LandmarkStructure extends Structure implements DecorationClearance {
-	protected static <S extends LandmarkStructure> Products.P2<RecordCodecBuilder.Mu<S>, DecorationConfig, StructureSettings> landmarkCodec(RecordCodecBuilder.Instance<S> instance) {
+	protected static <S extends LandmarkStructure> Products.P4<RecordCodecBuilder.Mu<S>, DecorationConfig, Boolean, Optional<Holder<MapDecorationType>>, StructureSettings> landmarkCodec(RecordCodecBuilder.Instance<S> instance) {
 		return instance.group(
 			DecorationConfig.FLAT_CODEC.forGetter(s -> s.decorationConfig),
+			Codec.BOOL.optionalFieldOf("center_in_chunk", true).forGetter(s -> s.centerInChunk),
+			BuiltInRegistries.MAP_DECORATION_TYPE.holderByNameCodec().optionalFieldOf("structure_icon").forGetter(s -> s.structureIcon),
 			Structure.settingsCodec(instance)
 		);
 	}
 
 	protected final DecorationConfig decorationConfig;
+	protected final boolean centerInChunk;
+	protected Optional<Holder<MapDecorationType>> structureIcon;
 
-	public LandmarkStructure(DecorationConfig decorationConfig, StructureSettings structureSettings) {
+	public LandmarkStructure(DecorationConfig decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
 		super(structureSettings);
 		this.decorationConfig = decorationConfig;
+		this.centerInChunk = centerInChunk;
+		this.structureIcon = structureIcon;
 	}
 
 	private static Structure.GenerationStub getStructurePieceGenerationStubFunction(StructurePiece startingPiece, GenerationContext context, int x, int y, int z) {
@@ -47,23 +57,19 @@ public abstract class LandmarkStructure extends Structure implements DecorationC
 	}
 
 	@Override
-	protected Optional<GenerationStub> findGenerationPoint(GenerationContext context) {
+	public Optional<GenerationStub> findGenerationPoint(GenerationContext context) {
 		ChunkPos chunkPos = context.chunkPos();
-
-		boolean dontCenter = this.dontCenter();
-		int x = (chunkPos.x << 4) + (dontCenter ? 0 : 7);
-		int z = (chunkPos.z << 4) + (dontCenter ? 0 : 7);
+		int x = (chunkPos.x << 4) + (this.centerInChunk ? 7 : 0);
+		int z = (chunkPos.z << 4) + (this.centerInChunk ? 7 : 0);
 		int y = this.adjustForTerrain(context, x, z);
 
 		return Optional
 			.ofNullable(this.getFirstPiece(context, RandomSource.create(context.seed() + chunkPos.x * 25117L + chunkPos.z * 151121L), chunkPos, x, y, z))
-			.map(piece -> getStructurePieceGenerationStubFunction(piece, context, x, y, z))
-			;
+			.map(piece -> getStructurePieceGenerationStubFunction(piece, context, x, y, z));
 	}
 
-	@Deprecated
-	protected boolean dontCenter() {
-		return false;
+	public final Optional<Holder<MapDecorationType>> getMapIcon() {
+		return this.structureIcon;
 	}
 
 	@Nullable

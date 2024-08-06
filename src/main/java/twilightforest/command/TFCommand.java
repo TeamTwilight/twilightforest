@@ -6,13 +6,11 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.brigadier.tree.LiteralCommandNode;
-import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 
 public class TFCommand {
-	public static final SimpleCommandExceptionType NOT_IN_TF = new SimpleCommandExceptionType(Component.translatable("commands.tffeature.not_in_twilight_forest").withStyle(ChatFormatting.RED));
 
 	public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
 		LiteralArgumentBuilder<CommandSourceStack> builder = Commands.literal("twilightforest")

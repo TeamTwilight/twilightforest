@@ -2,15 +2,20 @@ package twilightforest.util;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Style;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSpecialEffects;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.renderer.tileentity.JarRenderer;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFItems;
 import twilightforest.init.TFSounds;
 import twilightforest.world.components.BiomeGrassColors;
 
+import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
 @SuppressWarnings("unused") // Referenced by enumextender.json
@@ -114,6 +119,102 @@ public class TFEnumExtensions {
 			case 2 -> "FIXED";
 			default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
 		});
+	}
+
+	public static Object twilightOakBoat(int idx, Class<?> type) {
+		return switch (idx) {
+			case 0 -> type.cast(TFBlocks.TWILIGHT_OAK_PLANKS);
+			case 1 -> type.cast("twilightforest:twilight_oak");
+			case 2 -> type.cast(TFItems.TWILIGHT_OAK_BOAT);
+			case 3 -> type.cast(TFItems.TWILIGHT_OAK_CHEST_BOAT);
+			case 4 -> type.cast((Supplier<Item>) () -> Items.STICK);
+			case 5 -> false;
+			default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
+		};
+	}
+
+	public static Object canopyBoat(int idx, Class<?> type) {
+		return switch (idx) {
+			case 0 -> type.cast(TFBlocks.CANOPY_PLANKS);
+			case 1 -> type.cast("twilightforest:canopy");
+			case 2 -> type.cast(TFItems.CANOPY_BOAT);
+			case 3 -> type.cast(TFItems.CANOPY_CHEST_BOAT);
+			case 4 -> type.cast((Supplier<Item>) () -> Items.STICK);
+			case 5 -> false;
+			default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
+		};
+	}
+
+	public static Object mangroveBoat(int idx, Class<?> type) {
+		return switch (idx) {
+			case 0 -> type.cast(TFBlocks.MANGROVE_PLANKS);
+			case 1 -> type.cast("twilightforest:mangrove");
+			case 2 -> type.cast(TFItems.MANGROVE_BOAT);
+			case 3 -> type.cast(TFItems.MANGROVE_CHEST_BOAT);
+			case 4 -> type.cast((Supplier<Item>) () -> Items.STICK);
+			case 5 -> false;
+			default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
+		};
+	}
+
+	public static Object darkBoat(int idx, Class<?> type) {
+		return switch (idx) {
+			case 0 -> type.cast(TFBlocks.DARK_PLANKS);
+			case 1 -> type.cast("twilightforest:dark");
+			case 2 -> type.cast(TFItems.DARK_BOAT);
+			case 3 -> type.cast(TFItems.DARK_CHEST_BOAT);
+			case 4 -> type.cast((Supplier<Item>) () -> Items.STICK);
+			case 5 -> false;
+			default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
+		};
+	}
+
+	public static Object timeBoat(int idx, Class<?> type) {
+		return switch (idx) {
+			case 0 -> type.cast(TFBlocks.TIME_PLANKS);
+			case 1 -> type.cast("twilightforest:time");
+			case 2 -> type.cast(TFItems.TIME_BOAT);
+			case 3 -> type.cast(TFItems.TIME_CHEST_BOAT);
+			case 4 -> type.cast((Supplier<Item>) () -> Items.STICK);
+			case 5 -> false;
+			default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
+		};
+	}
+
+	public static Object transformationBoat(int idx, Class<?> type) {
+		return switch (idx) {
+			case 0 -> type.cast(TFBlocks.TRANSFORMATION_PLANKS);
+			case 1 -> type.cast("twilightforest:transformation");
+			case 2 -> type.cast(TFItems.TRANSFORMATION_BOAT);
+			case 3 -> type.cast(TFItems.TRANSFORMATION_CHEST_BOAT);
+			case 4 -> type.cast((Supplier<Item>) () -> Items.STICK);
+			case 5 -> false;
+			default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
+		};
+	}
+
+	public static Object miningBoat(int idx, Class<?> type) {
+		return switch (idx) {
+			case 0 -> type.cast(TFBlocks.MINING_PLANKS);
+			case 1 -> type.cast("twilightforest:mining");
+			case 2 -> type.cast(TFItems.MINING_BOAT);
+			case 3 -> type.cast(TFItems.MINING_CHEST_BOAT);
+			case 4 -> type.cast((Supplier<Item>) () -> Items.STICK);
+			case 5 -> false;
+			default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
+		};
+	}
+
+	public static Object sortingBoat(int idx, Class<?> type) {
+		return switch (idx) {
+			case 0 -> type.cast(TFBlocks.SORTING_PLANKS);
+			case 1 -> type.cast("twilightforest:sorting");
+			case 2 -> type.cast(TFItems.SORTING_BOAT);
+			case 3 -> type.cast(TFItems.SORTING_CHEST_BOAT);
+			case 4 -> type.cast((Supplier<Item>) () -> Items.STICK);
+			case 5 -> false;
+			default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
+		};
 	}
 
 	private static String prefix(String id) {

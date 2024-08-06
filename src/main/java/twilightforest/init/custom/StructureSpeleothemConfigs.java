@@ -9,7 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TFRegistries;
 import twilightforest.init.TFStructures;
-import twilightforest.util.RectangleLatticeIterator;
+import twilightforest.util.iterators.RectangleLatticeIterator;
 import twilightforest.world.components.structures.StructureSpeleothemConfig;
 
 public class StructureSpeleothemConfigs {

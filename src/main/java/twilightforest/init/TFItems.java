@@ -6,6 +6,7 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
@@ -17,7 +18,6 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import twilightforest.TwilightForestMod;
 import twilightforest.components.item.PotionFlaskComponent;
 import twilightforest.data.tags.CustomTagGenerator;
-import twilightforest.entity.TwilightBoat;
 import twilightforest.item.*;
 import twilightforest.util.TFToolMaterials;
 
@@ -84,7 +84,7 @@ public class TFItems {
 	public static final DeferredItem<Item> TRANSFORMATION_POWDER = ITEMS.register("transformation_powder", () -> new TransformPowderItem(new Item.Properties()));
 	public static final DeferredItem<Item> RAW_MEEF = ITEMS.register("raw_meef", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(2).saturationModifier(0.3F).build())));
 	public static final DeferredItem<Item> COOKED_MEEF = ITEMS.register("cooked_meef", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(6).saturationModifier(0.6F).build())));
-	public static final DeferredItem<Item> MEEF_STROGANOFF = ITEMS.register("meef_stroganoff", () -> new Item(new Item.Properties().stacksTo(1).fireResistant().food(new FoodProperties.Builder().nutrition(8).saturationModifier(0.6F).alwaysEdible().usingConvertsTo(Items.BOWL).build())));
+	public static final DeferredItem<Item> MEEF_STROGANOFF = ITEMS.register("meef_stroganoff", () -> new Item(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON).fireResistant().food(new FoodProperties.Builder().nutrition(8).saturationModifier(0.6F).alwaysEdible().usingConvertsTo(Items.BOWL).build())));
 	public static final DeferredItem<Item> MAZE_WAFER = ITEMS.register("maze_wafer", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationModifier(0.6F).build())));
 	public static final DeferredItem<Item> ORE_MAGNET = ITEMS.register("ore_magnet", () -> new OreMagnetItem(new Item.Properties().durability(64)));
 	public static final DeferredItem<Item> CRUMBLE_HORN = ITEMS.register("crumble_horn", () -> new CrumbleHornItem(new Item.Properties().durability(1024).rarity(Rarity.RARE)));
@@ -146,6 +146,7 @@ public class TFItems {
 	public static final DeferredItem<Item> MOON_DIAL = ITEMS.register("moon_dial", () -> new MoonDialItem(new Item.Properties().rarity(Rarity.UNCOMMON)));
 	public static final DeferredItem<Item> POCKET_WATCH = ITEMS.register("pocket_watch", () -> new PocketWatchItem(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)));
 	public static final DeferredItem<Item> EMPERORS_CLOTH = ITEMS.register("emperors_cloth", () -> new Item(new Item.Properties().rarity(Rarity.UNCOMMON)));
+	public static final DeferredItem<Item> FOUR_LEAF_CLOVER = ITEMS.register("four_leaf_clover", () -> new Item(new Item.Properties()));
 
 	public static final DeferredItem<Item> HUGE_LILY_PAD = ITEMS.register("huge_lily_pad", () -> new HugeLilyPadItem(TFBlocks.HUGE_LILY_PAD.get(), new Item.Properties()));
 	public static final DeferredItem<Item> HUGE_WATER_LILY = ITEMS.register("huge_water_lily", () -> new PlaceOnWaterBlockItem(TFBlocks.HUGE_WATER_LILY.get(), new Item.Properties()));
@@ -218,22 +219,22 @@ public class TFItems {
 	public static final DeferredItem<Item> SORTING_SIGN = ITEMS.register("sorting_sign", () -> new SignItem(new Item.Properties().stacksTo(16), TFBlocks.SORTING_SIGN.get(), TFBlocks.SORTING_WALL_SIGN.get()));
 	public static final DeferredItem<Item> SORTING_HANGING_SIGN = ITEMS.register("sorting_hanging_sign", () -> new HangingSignItem(TFBlocks.SORTING_HANGING_SIGN.get(), TFBlocks.SORTING_WALL_HANGING_SIGN.get(), new Item.Properties().stacksTo(16)));
 
-	public static final DeferredItem<Item> TWILIGHT_OAK_BOAT = ITEMS.register("twilight_oak_boat", () -> new TwilightBoatItem(false, TwilightBoat.Type.TWILIGHT_OAK, new Item.Properties().stacksTo(1)));
-	public static final DeferredItem<Item> TWILIGHT_OAK_CHEST_BOAT = ITEMS.register("twilight_oak_chest_boat", () -> new TwilightBoatItem(true, TwilightBoat.Type.TWILIGHT_OAK, new Item.Properties().stacksTo(1)));
-	public static final DeferredItem<Item> CANOPY_BOAT = ITEMS.register("canopy_boat", () -> new TwilightBoatItem(false, TwilightBoat.Type.CANOPY, new Item.Properties().stacksTo(1)));
-	public static final DeferredItem<Item> CANOPY_CHEST_BOAT = ITEMS.register("canopy_chest_boat", () -> new TwilightBoatItem(true, TwilightBoat.Type.CANOPY, new Item.Properties().stacksTo(1)));
-	public static final DeferredItem<Item> MANGROVE_BOAT = ITEMS.register("mangrove_boat", () -> new TwilightBoatItem(false, TwilightBoat.Type.MANGROVE, new Item.Properties().stacksTo(1)));
-	public static final DeferredItem<Item> MANGROVE_CHEST_BOAT = ITEMS.register("mangrove_chest_boat", () -> new TwilightBoatItem(true, TwilightBoat.Type.MANGROVE, new Item.Properties().stacksTo(1)));
-	public static final DeferredItem<Item> DARK_BOAT = ITEMS.register("dark_boat", () -> new TwilightBoatItem(false, TwilightBoat.Type.DARKWOOD, new Item.Properties().stacksTo(1)));
-	public static final DeferredItem<Item> DARK_CHEST_BOAT = ITEMS.register("dark_chest_boat", () -> new TwilightBoatItem(true, TwilightBoat.Type.DARKWOOD, new Item.Properties().stacksTo(1)));
-	public static final DeferredItem<Item> TIME_BOAT = ITEMS.register("time_boat", () -> new TwilightBoatItem(false, TwilightBoat.Type.TIME, new Item.Properties().stacksTo(1)));
-	public static final DeferredItem<Item> TIME_CHEST_BOAT = ITEMS.register("time_chest_boat", () -> new TwilightBoatItem(true, TwilightBoat.Type.TIME, new Item.Properties().stacksTo(1)));
-	public static final DeferredItem<Item> TRANSFORMATION_BOAT = ITEMS.register("transformation_boat", () -> new TwilightBoatItem(false, TwilightBoat.Type.TRANSFORMATION, new Item.Properties().stacksTo(1)));
-	public static final DeferredItem<Item> TRANSFORMATION_CHEST_BOAT = ITEMS.register("transformation_chest_boat", () -> new TwilightBoatItem(true, TwilightBoat.Type.TRANSFORMATION, new Item.Properties().stacksTo(1)));
-	public static final DeferredItem<Item> MINING_BOAT = ITEMS.register("mining_boat", () -> new TwilightBoatItem(false, TwilightBoat.Type.MINING, new Item.Properties().stacksTo(1)));
-	public static final DeferredItem<Item> MINING_CHEST_BOAT = ITEMS.register("mining_chest_boat", () -> new TwilightBoatItem(true, TwilightBoat.Type.MINING, new Item.Properties().stacksTo(1)));
-	public static final DeferredItem<Item> SORTING_BOAT = ITEMS.register("sorting_boat", () -> new TwilightBoatItem(false, TwilightBoat.Type.SORTING, new Item.Properties().stacksTo(1)));
-	public static final DeferredItem<Item> SORTING_CHEST_BOAT = ITEMS.register("sorting_chest_boat", () -> new TwilightBoatItem(true, TwilightBoat.Type.SORTING, new Item.Properties().stacksTo(1)));
+	public static final DeferredItem<Item> TWILIGHT_OAK_BOAT = ITEMS.register("twilight_oak_boat", () -> new BoatItem(false, Boat.Type.byName("twilightforest:twilight_oak"), new Item.Properties().stacksTo(1)));
+	public static final DeferredItem<Item> TWILIGHT_OAK_CHEST_BOAT = ITEMS.register("twilight_oak_chest_boat", () -> new BoatItem(true, Boat.Type.byName("twilightforest:twilight_oak"), new Item.Properties().stacksTo(1)));
+	public static final DeferredItem<Item> CANOPY_BOAT = ITEMS.register("canopy_boat", () -> new BoatItem(false, Boat.Type.byName("twilightforest:canopy"), new Item.Properties().stacksTo(1)));
+	public static final DeferredItem<Item> CANOPY_CHEST_BOAT = ITEMS.register("canopy_chest_boat", () -> new BoatItem(true, Boat.Type.byName("twilightforest:canopy"), new Item.Properties().stacksTo(1)));
+	public static final DeferredItem<Item> MANGROVE_BOAT = ITEMS.register("mangrove_boat", () -> new BoatItem(false, Boat.Type.byName("twilightforest:mangrove"), new Item.Properties().stacksTo(1)));
+	public static final DeferredItem<Item> MANGROVE_CHEST_BOAT = ITEMS.register("mangrove_chest_boat", () -> new BoatItem(true, Boat.Type.byName("twilightforest:mangrove"), new Item.Properties().stacksTo(1)));
+	public static final DeferredItem<Item> DARK_BOAT = ITEMS.register("dark_boat", () -> new BoatItem(false, Boat.Type.byName("twilightforest:dark"), new Item.Properties().stacksTo(1)));
+	public static final DeferredItem<Item> DARK_CHEST_BOAT = ITEMS.register("dark_chest_boat", () -> new BoatItem(true, Boat.Type.byName("twilightforest:dark"), new Item.Properties().stacksTo(1)));
+	public static final DeferredItem<Item> TIME_BOAT = ITEMS.register("time_boat", () -> new BoatItem(false, Boat.Type.byName("twilightforest:time"), new Item.Properties().stacksTo(1)));
+	public static final DeferredItem<Item> TIME_CHEST_BOAT = ITEMS.register("time_chest_boat", () -> new BoatItem(true, Boat.Type.byName("twilightforest:time"), new Item.Properties().stacksTo(1)));
+	public static final DeferredItem<Item> TRANSFORMATION_BOAT = ITEMS.register("transformation_boat", () -> new BoatItem(false, Boat.Type.byName("twilightforest:transformation"), new Item.Properties().stacksTo(1)));
+	public static final DeferredItem<Item> TRANSFORMATION_CHEST_BOAT = ITEMS.register("transformation_chest_boat", () -> new BoatItem(true, Boat.Type.byName("twilightforest:transformation"), new Item.Properties().stacksTo(1)));
+	public static final DeferredItem<Item> MINING_BOAT = ITEMS.register("mining_boat", () -> new BoatItem(false, Boat.Type.byName("twilightforest:mining"), new Item.Properties().stacksTo(1)));
+	public static final DeferredItem<Item> MINING_CHEST_BOAT = ITEMS.register("mining_chest_boat", () -> new BoatItem(true, Boat.Type.byName("twilightforest:mining"), new Item.Properties().stacksTo(1)));
+	public static final DeferredItem<Item> SORTING_BOAT = ITEMS.register("sorting_boat", () -> new BoatItem(false, Boat.Type.byName("twilightforest:sorting"), new Item.Properties().stacksTo(1)));
+	public static final DeferredItem<Item> SORTING_CHEST_BOAT = ITEMS.register("sorting_chest_boat", () -> new BoatItem(true, Boat.Type.byName("twilightforest:sorting"), new Item.Properties().stacksTo(1)));
 
 	public static final DeferredItem<Item> MUSIC_DISC_RADIANCE = ITEMS.register("music_disc_radiance", () -> new Item(new Item.Properties().stacksTo(1).rarity(Rarity.RARE).jukeboxPlayable(TFJukeboxSongs.RADIANCE)));
 	public static final DeferredItem<Item> MUSIC_DISC_STEPS = ITEMS.register("music_disc_steps", () -> new Item(new Item.Properties().stacksTo(1).rarity(Rarity.RARE).jukeboxPlayable(TFJukeboxSongs.STEPS)));

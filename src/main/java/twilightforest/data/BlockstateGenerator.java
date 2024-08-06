@@ -1002,6 +1002,25 @@ public class BlockstateGenerator extends BlockModelBuilders {
 			.partialState().with(RotatedPillarBlock.AXIS, Direction.Axis.Z).setModels(zModel);
 	}
 
+	private void rotationallySpecialColumn(Block b) {
+		ResourceLocation sideA = prefix("block/" + name(b) + "_side_a");
+		ResourceLocation sideB = prefix("block/" + name(b) + "_side_b");
+		ResourceLocation end = prefix("block/" + name(b) + "_end");
+		ConfiguredModel yModel = new ConfiguredModel(models().cubeColumn(name(b), sideA, end));
+		ConfiguredModel xModel = ConfiguredModel.builder()
+			.modelFile(models().withExistingParent(name(b) + "_x", prefix("block/util/cube_column_rotationally_special_x"))
+				.texture("side_a", sideA).texture("side_b", sideB).texture("end", end))
+			.buildLast();
+		ConfiguredModel zModel = ConfiguredModel.builder()
+			.modelFile(models().withExistingParent(name(b) + "_z", prefix("block/util/cube_column_rotationally_special_z"))
+				.texture("side_a", sideA).texture("side_b", sideB).texture("end", end))
+			.buildLast();
+		getVariantBuilder(b)
+			.partialState().with(RotatedPillarBlock.AXIS, Direction.Axis.Y).setModels(yModel)
+			.partialState().with(RotatedPillarBlock.AXIS, Direction.Axis.X).setModels(xModel)
+			.partialState().with(RotatedPillarBlock.AXIS, Direction.Axis.Z).setModels(zModel);
+	}
+
 	private void castleDoor(Block b) {
 		ModelFile vanished = models().withExistingParent(BuiltInRegistries.BLOCK.getKey(b).getPath() + "_vanished", "block/block")
 			.texture("base_texture", TwilightForestMod.prefix("block/castle_door_vanished"))
@@ -1467,6 +1486,7 @@ public class BlockstateGenerator extends BlockModelBuilders {
 	}
 
 	private void terrorcotta() {
+		this.rotationallySpecialColumn(TFBlocks.TERRORCOTTA_ARCS.get());
 		this.getVariantBuilder(TFBlocks.TERRORCOTTA_CURVES.get()).forAllStates(state -> ConfiguredModel.builder().modelFile(this.makeTerrorcottaCurvesModel("terrorcotta_curves", state.getValue(GlazedTerracottaBlock.FACING).get2DDataValue())).build());
 		this.getVariantBuilder(TFBlocks.TERRORCOTTA_LINES.get()).forAllStates(state -> ConfiguredModel.builder().modelFile(this.makeTerrorcottaLinesModel("terrorcotta_lines", state.getValue(BinaryRotatedBlock.ROTATED))).build());
 	}

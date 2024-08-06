@@ -47,7 +47,7 @@ import twilightforest.init.TFSounds;
 import twilightforest.init.TFStructures;
 import twilightforest.loot.TFLootTables;
 import twilightforest.network.ParticlePacket;
-import twilightforest.util.LandmarkUtil;
+import twilightforest.util.landmarks.LandmarkUtil;
 
 import java.util.Optional;
 

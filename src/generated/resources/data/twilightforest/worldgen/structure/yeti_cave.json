@@ -8,6 +8,7 @@
   "allow_biome_underground_decorations": false,
   "ambient_spawns": [],
   "biomes": "#twilightforest:valid_yeti_cave_biomes",
+  "center_in_chunk": false,
   "chunk_clearance_radius": 2,
   "hint_item": {
     "components": {
@@ -82,5 +83,6 @@
   },
   "speleothem_config": "twilightforest:yeti_cave",
   "step": "surface_structures",
+  "structure_icon": "twilightforest:yeti_lair",
   "water_spawns": []
 }

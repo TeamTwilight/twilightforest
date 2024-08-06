@@ -10,14 +10,15 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
+import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import twilightforest.world.components.structures.start.TFStructureStart;
 
 import java.util.Optional;
 import java.util.function.Predicate;
 
 public abstract class ConquerableStructure extends LandmarkStructure implements CustomStructureData {
-	public ConquerableStructure(DecorationConfig decorationConfig, StructureSettings structureSettings) {
-		super(decorationConfig, structureSettings);
+	public ConquerableStructure(DecorationConfig decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
+		super(decorationConfig, centerInChunk, structureIcon, structureSettings);
 	}
 
 	@Override

@@ -56,7 +56,7 @@ import twilightforest.entity.ai.goal.*;
 import twilightforest.entity.monster.LichMinion;
 import twilightforest.init.*;
 import twilightforest.network.ParticlePacket;
-import twilightforest.util.EntityUtil;
+import twilightforest.util.entities.EntityUtil;
 
 import java.util.*;
 
