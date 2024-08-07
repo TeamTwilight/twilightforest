@@ -28,7 +28,7 @@ public class ReactorDebrisBlockEntity extends BlockEntity {
 	private static final float Z_FIGHTING_MIN = 0.008F;
 	private static final float Z_FIGHTING_MAX = 1 - 0.008F;
 	private static final Random RANDOM = new Random();
-	private boolean REROLLS = true;
+	private boolean REROLLS = false;
 	private boolean WILL_DISAPPEAR = true;
 	private byte timeAlive = 0;
 	public VoxelShape SHAPE = Shapes.empty();
@@ -75,7 +75,8 @@ public class ReactorDebrisBlockEntity extends BlockEntity {
 	}
 
 	public static void tick(Level level, BlockPos blockPos, BlockState blockState, ReactorDebrisBlockEntity reactorDebrisBlockEntity) {
-		if (reactorDebrisBlockEntity.REROLLS && RANDOM.nextInt(5) == 0) {
+		if (reactorDebrisBlockEntity.WILL_DISAPPEAR && reactorDebrisBlockEntity.timeAlive == 5 ||
+			reactorDebrisBlockEntity.REROLLS && RANDOM.nextInt(5) == 0) {
 			reactorDebrisBlockEntity.randomizeDimensions();
 			reactorDebrisBlockEntity.randomizeTextures();
 		}
