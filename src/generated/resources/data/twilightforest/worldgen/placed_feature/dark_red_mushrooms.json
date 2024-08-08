@@ -1,12 +1,9 @@
 {
-  "feature": "twilightforest:dark_grass",
+  "feature": "twilightforest:dark_red_mushrooms",
   "placement": [
     {
-      "type": "minecraft:count",
-      "count": 100
-    },
-    {
-      "type": "minecraft:in_square"
+      "type": "minecraft:rarity_filter",
+      "chance": 3
     },
     {
       "type": "minecraft:heightmap",

@@ -1,6 +1,10 @@
 {
-  "feature": "twilightforest:dark_mushrooms",
+  "feature": "twilightforest:dark_brown_mushrooms",
   "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 3
+    },
     {
       "type": "minecraft:heightmap",
       "heightmap": "WORLD_SURFACE_WG"

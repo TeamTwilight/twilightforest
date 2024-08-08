@@ -6,15 +6,10 @@
         "type": "minecraft:simple_block",
         "config": {
           "to_place": {
-            "type": "minecraft:weighted_state_provider",
-            "entries": [
-              {
-                "data": {
-                  "Name": "minecraft:short_grass"
-                },
-                "weight": 1
-              }
-            ]
+            "type": "minecraft:simple_state_provider",
+            "state": {
+              "Name": "minecraft:red_mushroom"
+            }
           }
         }
       },
@@ -27,14 +22,23 @@
               {
                 "type": "minecraft:matching_blocks",
                 "blocks": "minecraft:air"
+              },
+              {
+                "type": "minecraft:matching_blocks",
+                "blocks": "minecraft:grass_block",
+                "offset": [
+                  0,
+                  -1,
+                  0
+                ]
               }
             ]
           }
         }
       ]
     },
-    "tries": 128,
-    "xz_spread": 50,
+    "tries": 50,
+    "xz_spread": 7,
     "y_spread": 3
   }
 }
