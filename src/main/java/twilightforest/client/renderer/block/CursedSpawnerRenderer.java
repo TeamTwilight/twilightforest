@@ -13,11 +13,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import twilightforest.block.entity.spawner.CursedSpawnerEntity;
+import twilightforest.block.entity.spawner.CursedSpawnerBlockEntity;
 
 // [VANILLA COPY] SpawnerRenderer (Type bound changed to CursedSpawnerEntity)
 @OnlyIn(Dist.CLIENT)
-public class CursedSpawnerRenderer implements BlockEntityRenderer<CursedSpawnerEntity> {
+public class CursedSpawnerRenderer implements BlockEntityRenderer<CursedSpawnerBlockEntity> {
     private final EntityRenderDispatcher entityRenderer;
 
     public CursedSpawnerRenderer(BlockEntityRendererProvider.Context context) {
@@ -25,7 +25,7 @@ public class CursedSpawnerRenderer implements BlockEntityRenderer<CursedSpawnerE
     }
 
     @Override
-	public void render(CursedSpawnerEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+	public void render(CursedSpawnerBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
         Level level = blockEntity.getLevel();
         if (level != null) {
             BaseSpawner basespawner = blockEntity.getSpawner();
@@ -37,7 +37,7 @@ public class CursedSpawnerRenderer implements BlockEntityRenderer<CursedSpawnerE
     }
 
     @Override
-    public AABB getRenderBoundingBox(CursedSpawnerEntity blockEntity) {
+    public AABB getRenderBoundingBox(CursedSpawnerBlockEntity blockEntity) {
         BlockPos pos = blockEntity.getBlockPos();
         return new AABB(pos.getX() - 1.0, pos.getY() - 1.0, pos.getZ() - 1.0, pos.getX() + 2.0, pos.getY() + 2.0, pos.getZ() + 2.0);
     }

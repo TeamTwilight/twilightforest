@@ -100,7 +100,7 @@ public class HorizontalHollowLogBlock extends Block implements WaterloggedBlock 
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		super.createBlockStateDefinition(builder.add(HORIZONTAL_AXIS, VARIANT));
+		builder.add(HORIZONTAL_AXIS, VARIANT);
 	}
 
 	@Override

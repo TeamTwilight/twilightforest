@@ -29,8 +29,7 @@ public abstract class SpecialMagicLogBlock extends RotatedPillarBlock {
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		super.createBlockStateDefinition(builder);
-		builder.add(ACTIVE);
+		super.createBlockStateDefinition(builder.add(ACTIVE));
 	}
 
 	//No longer an override, but keep here for sanity

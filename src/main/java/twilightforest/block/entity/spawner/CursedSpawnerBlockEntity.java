@@ -20,7 +20,7 @@ import twilightforest.init.TFBlocks;
 
 import javax.annotation.Nullable;
 
-public class CursedSpawnerEntity extends BlockEntity implements Spawner {
+public class CursedSpawnerBlockEntity extends BlockEntity implements Spawner {
 	private final CursedSpawnerLogic spawner = new CursedSpawnerLogic() {
 		@Override
 		public void broadcastEvent(Level level, BlockPos pos, int eventId) {
@@ -38,11 +38,11 @@ public class CursedSpawnerEntity extends BlockEntity implements Spawner {
 
 		@Override
 		public Either<BlockEntity, Entity> getOwner() {
-			return Either.left(CursedSpawnerEntity.this);
+			return Either.left(CursedSpawnerBlockEntity.this);
 		}
 	};
 
-	public CursedSpawnerEntity(BlockPos pos, BlockState blockState) {
+	public CursedSpawnerBlockEntity(BlockPos pos, BlockState blockState) {
 		super(TFBlockEntities.CURSED_SPAWNER.value(), pos, blockState);
 	}
 
@@ -58,11 +58,11 @@ public class CursedSpawnerEntity extends BlockEntity implements Spawner {
 		this.spawner.save(tag);
 	}
 
-	public static void clientTick(Level level, BlockPos pos, BlockState state, CursedSpawnerEntity blockEntity) {
+	public static void clientTick(Level level, BlockPos pos, BlockState state, CursedSpawnerBlockEntity blockEntity) {
 		blockEntity.spawner.clientTick(level, pos);
 	}
 
-	public static void serverTick(Level level, BlockPos pos, BlockState state, CursedSpawnerEntity blockEntity) {
+	public static void serverTick(Level level, BlockPos pos, BlockState state, CursedSpawnerBlockEntity blockEntity) {
 		blockEntity.spawner.serverTick((ServerLevel) level, pos);
 	}
 

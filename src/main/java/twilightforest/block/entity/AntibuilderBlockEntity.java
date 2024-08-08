@@ -24,8 +24,7 @@ public class AntibuilderBlockEntity extends BlockEntity {
 	private int tickCount;
 	private boolean slowScan;
 	private int ticksSinceChange;
-	@Nullable
-	private BlockState[] blockData;
+	private BlockState @Nullable[] blockData;
 
 	public AntibuilderBlockEntity(BlockPos pos, BlockState state) {
 		super(TFBlockEntities.ANTIBUILDER.get(), pos, state);

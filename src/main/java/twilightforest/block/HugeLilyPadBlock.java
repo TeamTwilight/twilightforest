@@ -32,7 +32,7 @@ public class HugeLilyPadBlock extends WaterlilyBlock {
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		super.createBlockStateDefinition(builder.add(FACING, PIECE));
+		builder.add(FACING, PIECE);
 	}
 
 	@Override

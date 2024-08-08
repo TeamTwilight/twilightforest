@@ -44,8 +44,7 @@ public abstract class ConnectableRotatedPillarBlock extends RotatedPillarBlock {
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		super.createBlockStateDefinition(builder);
-		builder.add(NORTH, EAST, SOUTH, WEST, DOWN, UP);
+		super.createBlockStateDefinition(builder.add(NORTH, EAST, SOUTH, WEST, DOWN, UP));
 	}
 
 	@Override

@@ -97,7 +97,7 @@ public class ClimbableHollowLogBlock extends HorizontalDirectionalBlock implemen
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		super.createBlockStateDefinition(builder.add(VARIANT, FACING));
+		builder.add(VARIANT, FACING);
 	}
 
 	@Override

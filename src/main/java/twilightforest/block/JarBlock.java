@@ -107,7 +107,6 @@ public class JarBlock extends BaseEntityBlock implements SimpleWaterloggedBlock 
 		return super.getDrops(state, params);
 	}
 
-	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new JarBlockEntity(pos, state);

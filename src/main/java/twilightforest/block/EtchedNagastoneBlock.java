@@ -33,7 +33,6 @@ public class EtchedNagastoneBlock extends DirectionalBlock {
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		super.createBlockStateDefinition(builder);
 		builder.add(FACING);
 	}
 

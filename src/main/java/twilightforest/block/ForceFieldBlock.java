@@ -177,7 +177,6 @@ public class ForceFieldBlock extends Block implements SimpleWaterloggedBlock {
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		super.createBlockStateDefinition(builder);
 		builder.add(WATERLOGGED, NORTH, EAST, SOUTH, WEST, UP, DOWN);
 	}
 

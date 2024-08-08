@@ -70,8 +70,7 @@ public class SliderBlock extends RotatedPillarBlock implements SimpleWaterlogged
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		super.createBlockStateDefinition(builder);
-		builder.add(DELAY, WATERLOGGED);
+		super.createBlockStateDefinition(builder.add(DELAY, WATERLOGGED));
 	}
 
 	@Override

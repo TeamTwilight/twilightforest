@@ -20,8 +20,7 @@ public class DirectionalRotatedPillarBlock extends RotatedPillarBlock {
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		super.createBlockStateDefinition(builder);
-		builder.add(REVERSED);
+		super.createBlockStateDefinition(builder.add(REVERSED));
 	}
 
 	@Override

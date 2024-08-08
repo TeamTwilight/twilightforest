@@ -5,6 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
@@ -23,7 +24,7 @@ public class ThornRoseBlock extends BushBlock {
 
 	public ThornRoseBlock(Properties properties) {
 		super(properties);
-		this.registerDefaultState(this.stateDefinition.any().setValue(DirectionalBlock.FACING, Direction.UP));
+		this.registerDefaultState(this.getStateDefinition().any().setValue(DirectionalBlock.FACING, Direction.UP));
 	}
 
 	@Override
@@ -58,8 +59,7 @@ public class ThornRoseBlock extends BushBlock {
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
-	public BlockState rotate(BlockState state, Rotation rotation) {
+	public BlockState rotate(BlockState state, LevelAccessor level, BlockPos pos, Rotation rotation) {
 		return state.setValue(DirectionalBlock.FACING, rotation.rotate(state.getValue(DirectionalBlock.FACING)));
 	}
 

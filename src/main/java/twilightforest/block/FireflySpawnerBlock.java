@@ -2,7 +2,7 @@ package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
@@ -73,7 +73,7 @@ public class FireflySpawnerBlock extends AbstractParticleSpawnerBlock implements
 	}
 
 	@Override
-	public ParticleType<?> getParticlesToSpawn() {
+	public ParticleOptions getParticlesToSpawn() {
 		return TFParticleType.PARTICLE_SPAWNER_FIREFLY.get();
 	}
 
@@ -105,7 +105,6 @@ public class FireflySpawnerBlock extends AbstractParticleSpawnerBlock implements
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		super.createBlockStateDefinition(builder);
-		builder.add(WATERLOGGED);
+		super.createBlockStateDefinition(builder.add(WATERLOGGED));
 	}
 }

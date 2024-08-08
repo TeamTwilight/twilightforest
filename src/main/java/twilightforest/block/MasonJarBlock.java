@@ -36,7 +36,6 @@ import java.util.List;
 public class MasonJarBlock extends JarBlock implements SimpleWaterloggedBlock {
 	public static final MapCodec<MasonJarBlock> CODEC = simpleCodec(MasonJarBlock::new);
 
-	@SuppressWarnings("this-escape")
 	public MasonJarBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 	}
@@ -46,7 +45,6 @@ public class MasonJarBlock extends JarBlock implements SimpleWaterloggedBlock {
 		return CODEC;
 	}
 
-	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new MasonJarBlockEntity(pos, state);

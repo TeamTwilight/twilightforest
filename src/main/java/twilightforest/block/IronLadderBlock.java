@@ -20,8 +20,7 @@ public class IronLadderBlock extends LadderBlock {
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		super.createBlockStateDefinition(builder);
-		builder.add(LEFT, RIGHT);
+		super.createBlockStateDefinition(builder.add(LEFT, RIGHT));
 	}
 
 	@Override

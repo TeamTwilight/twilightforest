@@ -28,16 +28,16 @@ public abstract class AbstractParticleSpawnerBlock extends Block {
 		int radius = state.getValue(RADIUS);
 		BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
 
-		for (int partCount = 0; partCount < getParticleCountPerSpawn(state); ++partCount) {
+		for (int partCount = 0; partCount < this.getParticleCountPerSpawn(state); ++partCount) {
 			mutablePos.set(x + Mth.nextInt(random, -radius, radius), y + Mth.nextInt(random, -radius, radius), z + Mth.nextInt(random, -radius, radius));
 			BlockState offState = level.getBlockState(mutablePos);
 			if (!offState.isCollisionShapeFullBlock(level, mutablePos)) {
-				level.addParticle((ParticleOptions) getParticlesToSpawn(), (double) mutablePos.getX() + random.nextDouble(), (double) mutablePos.getY() + random.nextDouble(), (double) mutablePos.getZ() + random.nextDouble(), 0.0D, 0.0D, 0.0D);
+				level.addParticle(this.getParticlesToSpawn(), (double) mutablePos.getX() + random.nextDouble(), (double) mutablePos.getY() + random.nextDouble(), (double) mutablePos.getZ() + random.nextDouble(), 0.0D, 0.0D, 0.0D);
 			}
 		}
 	}
 
-	public abstract ParticleType<?> getParticlesToSpawn();
+	public abstract ParticleOptions getParticlesToSpawn();
 
 	public abstract int getParticleCountPerSpawn(BlockState state);
 

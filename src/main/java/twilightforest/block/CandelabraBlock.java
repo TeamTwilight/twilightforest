@@ -16,13 +16,11 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
-import net.minecraft.world.entity.ItemSteerable;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
@@ -101,43 +99,6 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 		return candleCount;
 	}
 
-	private static Optional<Double> getRelativeHitCoordinatesForBlockFace(BlockHitResult result, Direction facing) {
-		Direction direction = result.getDirection().getOpposite();
-		if (facing.getAxis() == direction.getAxis()) {
-			BlockPos blockpos = result.getBlockPos().relative(direction);
-			Vec3 vec3 = result.getLocation().subtract(blockpos.getX(), blockpos.getY(), blockpos.getZ());
-			double d0 = vec3.x();
-			double d2 = vec3.z();
-
-			if (facing == direction) {
-				return switch (direction) {
-					case NORTH -> Optional.of(1.0 - d0);
-					case SOUTH -> Optional.of(d0);
-					case WEST -> Optional.of(d2);
-					case EAST -> Optional.of(1.0 - d2);
-					case DOWN, UP -> Optional.empty();
-				};
-			} else {
-				return switch (direction) {
-					case SOUTH -> Optional.of(1.0 - d0);
-					case NORTH -> Optional.of(d0);
-					case EAST -> Optional.of(d2);
-					case WEST -> Optional.of(1.0 - d2);
-					case DOWN, UP -> Optional.empty();
-				};
-			}
-		}
-		return Optional.empty();
-	}
-
-	private static int getHitSlot(double xPos, boolean reverse) {
-		if (xPos < 0.375F) {
-			return reverse ? 2 : 0;
-		} else {
-			return xPos < 0.6875F ? 1 : reverse ? 0 : 2;
-		}
-	}
-
 	public static boolean canSurvive(LevelReader reader, BlockPos pos, boolean onWall, Direction facing) {
 		return canSupportCenter(reader, onWall ? pos.relative(facing) : pos.below(), Direction.UP);
 	}
@@ -185,7 +146,6 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 		}
 	}
 
-	@Nullable
 	@Override
 	public BlockState getToolModifiedState(BlockState state, UseOnContext context, ItemAbility itemAbility, boolean simulate) {
 		if (ItemAbilities.FIRESTARTER_LIGHT == itemAbility) {

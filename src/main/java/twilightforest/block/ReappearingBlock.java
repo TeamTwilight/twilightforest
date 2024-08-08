@@ -17,7 +17,6 @@ public class ReappearingBlock extends VanishingBlock {
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		super.createBlockStateDefinition(builder);
-		builder.add(VANISHED);
+		super.createBlockStateDefinition(builder.add(VANISHED));
 	}
 }

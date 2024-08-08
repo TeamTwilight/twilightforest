@@ -40,7 +40,7 @@ public class FallenLeavesBlock extends TFPlantBlock {
 
 	public FallenLeavesBlock(Properties properties) {
 		super(properties);
-		this.registerDefaultState(this.stateDefinition.any().setValue(LAYERS, 1));
+		this.registerDefaultState(this.getStateDefinition().any().setValue(LAYERS, 1));
 	}
 
 	@Override

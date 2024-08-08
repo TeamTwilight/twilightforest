@@ -12,7 +12,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SpawnEggItem;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ChiseledBookShelfBlock;
@@ -37,7 +36,7 @@ public class ChiseledCanopyShelfBlock extends ChiseledBookShelfBlock {
 
 	public ChiseledCanopyShelfBlock(Properties properties) {
 		super(properties);
-		BlockState blockstate = this.stateDefinition.any().setValue(HorizontalDirectionalBlock.FACING, Direction.NORTH).setValue(SPAWNER, false);
+		BlockState blockstate = this.getStateDefinition().any().setValue(HorizontalDirectionalBlock.FACING, Direction.NORTH).setValue(SPAWNER, false);
 
 		for (BooleanProperty booleanproperty : SLOT_OCCUPIED_PROPERTIES) {
 			blockstate = blockstate.setValue(booleanproperty, false);
