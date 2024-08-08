@@ -24,6 +24,7 @@ public class RedThreadBlock extends MultifaceBlock implements EntityBlock {
 		return CODEC;
 	}
 
+	@Override
 	public boolean canBeReplaced(BlockState state, BlockPlaceContext ctx) {
 		return ctx.getItemInHand().is(TFBlocks.RED_THREAD.asItem());
 	}

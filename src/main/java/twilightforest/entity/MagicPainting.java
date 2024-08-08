@@ -201,4 +201,9 @@ public class MagicPainting extends HangingEntity {
 		itemStack.set(TFDataComponents.MAGIC_PAINTING_VARIANT, this.getVariant());
 		return itemStack;
 	}
+
+	@Override
+	public void setDirection(Direction faceDirection) {
+		super.setDirection(faceDirection);
+	}
 }

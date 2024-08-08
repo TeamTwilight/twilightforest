@@ -163,6 +163,10 @@
         },
         {
           "type": "minecraft:item",
+          "name": "twilightforest:maze_map"
+        },
+        {
+          "type": "minecraft:item",
           "functions": [
             {
               "add": false,

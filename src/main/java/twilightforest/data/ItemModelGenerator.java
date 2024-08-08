@@ -18,6 +18,7 @@ import net.neoforged.neoforge.client.model.generators.loaders.SeparateTransforms
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.renderer.tileentity.JarRenderer;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFItems;
@@ -199,9 +200,9 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlockModel(TFBlocks.MINOSHROOM_BOSS_SPAWNER.get(), prefix("block/boss_spawner"));
 		toBlockModel(TFBlocks.ALPHA_YETI_BOSS_SPAWNER.get(), prefix("block/boss_spawner"));
 		toBlockModel(TFBlocks.FINAL_BOSS_BOSS_SPAWNER.get(), prefix("block/boss_spawner"));
-		toBlock(TFBlocks.FIREFLY_JAR.get());
+		toBlockModel(TFBlocks.FIREFLY_JAR.get(), prefix("item/mason_jar"));
 		toBlock(TFBlocks.FIREFLY_SPAWNER.get());
-		toBlock(TFBlocks.CICADA_JAR.get());
+		toBlockModel(TFBlocks.CICADA_JAR.get(), prefix("item/mason_jar"));
 		generated(TFBlocks.MOSS_PATCH.getId().getPath(), prefix("block/patch/moss"));
 		generated(TFBlocks.MAYAPPLE.getId().getPath(), prefix("block/mayapple"));
 		generated(TFBlocks.CLOVER_PATCH.getId().getPath(), prefix("block/patch/clover"));
@@ -237,8 +238,10 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.CANOPY_WINDOW.value());
 		generated(TFBlocks.CANOPY_WINDOW_PANE.getId().getPath(), prefix("block/" + TFBlocks.CANOPY_WINDOW.getId().getPath()));
 
+		toBlockModel(TFBlocks.TERRORCOTTA_ARCS.get(), prefix("block/terrorcotta_arcs"));
 		toBlockModel(TFBlocks.TERRORCOTTA_LINES.get(), prefix("block/terrorcotta_lines_0"));
 		toBlockModel(TFBlocks.TERRORCOTTA_CURVES.get(), prefix("block/terrorcotta_curves_90"));
+		carpet(TFBlocks.ROYAL_RAGS.getRegisteredName(), TFBlocks.ROYAL_RAGS.getId().withPrefix("block/"));
 
 		withExistingParent(TFBlocks.OAK_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "minecraft:block/oak_planks");
 		withExistingParent(TFBlocks.SPRUCE_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "minecraft:block/spruce_planks");
@@ -427,14 +430,26 @@ public class ItemModelGenerator extends ItemModelProvider {
 		withExistingParent(TFBlocks.SORTING_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_sort_0"));
 		withExistingParent(TFBlocks.SORTING_TRAPPED_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_sort_0"));
 
-		withExistingParent(TFItems.NAGA_TROPHY.getId().toString(), prefix("item/template_trophy"));
-		withExistingParent(TFItems.LICH_TROPHY.getId().toString(), prefix("item/template_trophy"));
-		withExistingParent(TFItems.MINOSHROOM_TROPHY.getId().toString(), prefix("item/template_trophy"));
-		withExistingParent(TFItems.HYDRA_TROPHY.getId().toString(), prefix("item/template_trophy"));
-		withExistingParent(TFItems.KNIGHT_PHANTOM_TROPHY.getId().toString(), prefix("item/template_trophy"));
-		//ur-ghast and alpha yeti need special transforms
-		withExistingParent(TFItems.SNOW_QUEEN_TROPHY.getId().toString(), prefix("item/template_trophy"));
-		withExistingParent(TFItems.QUEST_RAM_TROPHY.getId().toString(), prefix("item/template_trophy"));
+		ResourceLocation templateTrophy = prefix("item/template_trophy");
+		withExistingParent(TFItems.NAGA_TROPHY.getId().toString(), templateTrophy);
+		withExistingParent(TFItems.LICH_TROPHY.getId().toString(), templateTrophy);
+		withExistingParent(TFItems.MINOSHROOM_TROPHY.getId().toString(), templateTrophy);
+		withExistingParent(TFItems.HYDRA_TROPHY.getId().toString(), templateTrophy).transforms()
+			.transform(JarRenderer.MasonJarRenderer.JARRED).translation(0, 0, 1).rotation(0, 180, 0).end().end();
+		withExistingParent(TFItems.KNIGHT_PHANTOM_TROPHY.getId().toString(), templateTrophy).transforms()
+			.transform(JarRenderer.MasonJarRenderer.JARRED).scale(0.85F).rotation(0, 180, 0).end().end();
+		withExistingParent(TFItems.UR_GHAST_TROPHY.getId().toString(), templateTrophy).transforms()
+			.transform(ItemDisplayContext.HEAD).scale(1.6F).translation(0, 18, 0).rotation(180, 0, 180).end()
+			.transform(ItemDisplayContext.FIXED).translation(0, 14, -2).rotation(0, 180, 0).end()
+			.transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND).scale(0.5F).translation(0, 4, 3.6F).rotation(45, 135, 0).end()
+			.transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND).translation(0, 11, 0).rotation(0, 180, 0).end()
+			.transform(JarRenderer.MasonJarRenderer.JARRED).scale(0.85F).translation(0, 14, 0).rotation(0, 180, 0).end().end();
+		withExistingParent(TFItems.ALPHA_YETI_TROPHY.getId().toString(), templateTrophy).transforms()
+			.transform(ItemDisplayContext.HEAD).scale(1.5F).translation(0, 2, 0).rotation(180, 0, 180).end()
+			.transform(JarRenderer.MasonJarRenderer.JARRED).translation(0, 0, 1).rotation(0, 180, 0).end().end();
+		withExistingParent(TFItems.SNOW_QUEEN_TROPHY.getId().toString(), templateTrophy);
+		withExistingParent(TFItems.QUEST_RAM_TROPHY.getId().toString(), templateTrophy).transforms()
+			.transform(JarRenderer.MasonJarRenderer.JARRED).scale(0.85F).rotation(0, 180, 0).end().end();
 
 		withExistingParent(TFItems.CREEPER_SKULL_CANDLE.getId().toString(), prefix("item/template_skull_candle"));
 		withExistingParent(TFItems.PIGLIN_SKULL_CANDLE.getId().toString(), prefix("item/template_skull_candle"));
@@ -556,6 +571,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		lamp(TFItems.LAMP_OF_CINDERS);
 		singleTex(TFItems.POCKET_WATCH);
 		singleTex(TFItems.EMPERORS_CLOTH);
+		singleTex(TFItems.FOUR_LEAF_CLOVER);
 		singleTex(TFItems.ALPHA_YETI_FUR);
 		//yeti helmets cant be trimmed
 		singleTex(TFItems.YETI_HELMET);
@@ -687,6 +703,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 		generated("trophy_minor", prefix("item/trophy_minor"));
 		generated("trophy_quest", prefix("item/trophy_quest"));
 		generated("shield", prefix("item/lich_shield_frame"), prefix("item/lich_shield_fill"));
+
+		this.toBlock(TFBlocks.CURSED_SPAWNER.value());
 	}
 
 	private ItemModelBuilder fullbright(String name, ResourceLocation... layers) {

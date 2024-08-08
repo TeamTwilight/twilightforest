@@ -28,7 +28,7 @@ import twilightforest.init.TFDimension;
 import twilightforest.network.MissingAdvancementToastPacket;
 import twilightforest.network.StructureProtectionPacket;
 import twilightforest.util.Enforcement;
-import twilightforest.util.LandmarkUtil;
+import twilightforest.util.landmarks.LandmarkUtil;
 import twilightforest.util.PlayerHelper;
 import twilightforest.world.components.structures.util.AdvancementLockedStructure;
 

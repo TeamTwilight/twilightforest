@@ -8,7 +8,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.*;
 import twilightforest.init.TFStructureProcessors;
-import twilightforest.util.FeaturePlacers;
+import twilightforest.util.features.FeaturePlacers;
 
 import javax.annotation.Nullable;
 import java.util.Collections;

@@ -44,10 +44,11 @@ import org.jetbrains.annotations.Nullable;
 import twilightforest.config.TFConfig;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFDimension;
 import twilightforest.init.TFSounds;
 import twilightforest.network.MissingAdvancementToastPacket;
-import twilightforest.util.LandmarkUtil;
+import twilightforest.util.landmarks.LandmarkUtil;
 import twilightforest.util.PlayerHelper;
 import twilightforest.world.TFTeleporter;
 
@@ -237,6 +238,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 				entity.setAsInsidePortal(this, entity.blockPosition());
 			}
 		}
+		entity.getData(TFDataAttachments.TF_PORTAL_COOLDOWN).setInPortal(true);
 	}
 
 	// Full [VanillaCopy] of NetherPortalBlock.animateTick

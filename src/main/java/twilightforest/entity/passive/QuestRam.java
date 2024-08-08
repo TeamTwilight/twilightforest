@@ -47,7 +47,7 @@ import twilightforest.init.TFSounds;
 import twilightforest.init.TFStructures;
 import twilightforest.loot.TFLootTables;
 import twilightforest.network.ParticlePacket;
-import twilightforest.util.LandmarkUtil;
+import twilightforest.util.landmarks.LandmarkUtil;
 
 import java.util.Optional;
 
@@ -138,9 +138,7 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 		ItemStack currentItem = player.getItemInHand(hand);
 
 		if (this.tryAccept(currentItem)) {
-			if (!player.getAbilities().instabuild) {
-				currentItem.shrink(1);
-			}
+			currentItem.consume(1, player);
 
 			return InteractionResult.SUCCESS;
 		} else {

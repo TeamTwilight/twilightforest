@@ -126,6 +126,7 @@
     }
   },
   "step": "underground_structures",
+  "structure_icon": "twilightforest:knight_stronghold",
   "terrain_adaptation": "bury",
   "water_spawns": []
 }

@@ -25,6 +25,7 @@ import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.ChestBlock;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import twilightforest.TwilightForestMod;
@@ -386,7 +387,7 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 			.save(output, locWood(name + "_banister"));
 	}
 
-	protected final void chestBlock(RecipeOutput output, String name, DeferredHolder<Block, ? extends TFChestBlock> chest, DeferredHolder<Block, ? extends TFTrappedChestBlock> trapped, DeferredHolder<Block, ? extends Block> material) {
+	protected final void chestBlock(RecipeOutput output, String name, DeferredHolder<Block, ? extends ChestBlock> chest, DeferredHolder<Block, ? extends TFTrappedChestBlock> trapped, DeferredHolder<Block, ? extends Block> material) {
 		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, chest.get(), 2)
 			.pattern("###")
 			.pattern("#C#")

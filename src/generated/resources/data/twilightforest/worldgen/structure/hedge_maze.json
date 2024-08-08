@@ -40,5 +40,6 @@
     }
   },
   "step": "surface_structures",
+  "structure_icon": "twilightforest:hedge_maze",
   "terrain_adaptation": "beard_box"
 }

@@ -54,6 +54,7 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 	@Override
 	public TriState canSustainPlant(BlockState state, BlockGetter level, BlockPos soilPosition, Direction facing, BlockState plant) {
 		if (facing.getAxis() != Direction.Axis.Y) return TriState.FALSE;
+		if (plant.is(BlockTags.CROPS)) return TriState.TRUE;
 		return super.canSustainPlant(state, level, soilPosition, facing, plant);
 	}
 
@@ -72,16 +73,16 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 				return;
 			}
 
-			BlockState newState;
+			BlockState newState = Blocks.DIRT.defaultBlockState();
 
-            switch (bonemealableBlock) {
-				// FIXME
-                //case IPlantable iPlantable when iPlantable.getPlantType(level, fromPos) == PlantType.CROP -> newState = Blocks.FARMLAND.defaultBlockState().setValue(FarmBlock.MOISTURE, 7);
-                case MushroomBlock ignored1 -> newState = Blocks.MYCELIUM.defaultBlockState();
-                case BushBlock ignored -> newState = Blocks.GRASS_BLOCK.defaultBlockState();
-                case MossBlock mossBlock -> newState = mossBlock.defaultBlockState();
-				default -> newState = Blocks.DIRT.defaultBlockState();
-			}
+			if (above.is(BlockTags.CROPS))
+				newState = Blocks.FARMLAND.defaultBlockState().setValue(FarmBlock.MOISTURE, 7);
+			else if (bonemealableBlock instanceof MushroomBlock)
+				newState = Blocks.MYCELIUM.defaultBlockState();
+			else if (bonemealableBlock instanceof BushBlock)
+				newState = Blocks.GRASS_BLOCK.defaultBlockState();
+			else if (bonemealableBlock instanceof MossBlock mossBlock)
+				newState = mossBlock.defaultBlockState();
 
 			if (level instanceof ServerLevel serverLevel) {
 				if (bonemealableBlock instanceof MushgloomBlock mushgloomBlock) {

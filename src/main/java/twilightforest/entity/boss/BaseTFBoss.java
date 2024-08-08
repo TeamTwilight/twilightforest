@@ -34,8 +34,8 @@ import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.entity.boss.bar.ServerTFBossBar;
 import twilightforest.loot.TFLootTables;
 import twilightforest.network.UpdateDeathTimePacket;
-import twilightforest.util.EntityUtil;
-import twilightforest.util.LandmarkUtil;
+import twilightforest.util.entities.EntityUtil;
+import twilightforest.util.landmarks.LandmarkUtil;
 
 import java.util.Optional;
 

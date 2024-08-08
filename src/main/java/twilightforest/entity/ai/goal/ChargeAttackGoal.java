@@ -11,7 +11,7 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.event.EventHooks;
 import twilightforest.entity.ITFCharger;
 import twilightforest.entity.boss.Minoshroom;
-import twilightforest.util.EntityUtil;
+import twilightforest.util.entities.EntityUtil;
 
 import java.util.EnumSet;
 

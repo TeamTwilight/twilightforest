@@ -31,7 +31,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFSounds;
 import twilightforest.init.TFStructures;
-import twilightforest.util.LegacyLandmarkPlacements;
+import twilightforest.util.landmarks.LegacyLandmarkPlacements;
 
 import java.util.Optional;
 

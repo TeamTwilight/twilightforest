@@ -33,9 +33,4 @@ public class KnightmetalShieldItem extends ShieldItem {
 	public boolean canPerformAction(ItemStack stack, ItemAbility toolAction) {
 		return ItemAbilities.DEFAULT_SHIELD_ACTIONS.contains(toolAction) || super.canPerformAction(stack, toolAction);
 	}
-
-	@Override
-	public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-		consumer.accept(ISTER.CLIENT_ITEM_EXTENSION);
-	}
 }

@@ -43,6 +43,11 @@
       "rotation": [ 295, 180, -10 ],
       "translation": [ 3, 5, 0 ],
       "scale": [ 0.6, 0.6, 0.6 ]
+    },
+    "twilightforest:jarred": {
+      "rotation": [ 90, 0, 180 ],
+      "translation": [ 0, 0, 0 ],
+      "scale":[ 1, 1, 1 ]
     }
   }
 }

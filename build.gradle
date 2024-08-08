@@ -1,10 +1,13 @@
+import net.neoforged.moddevgradle.internal.RunGameTask
+
 plugins {
 	id 'java-library'
 	id 'eclipse'
 	id 'idea'
 	id 'maven-publish'
 	// Version List: https://projects.neoforged.net/neoforged/ModDevGradle
-	id 'net.neoforged.moddev' version '0.1.126'
+	id 'net.neoforged.moddev' version "${mdg_version}"
+	id "com.dorongold.task-tree" version "4.0.0"
 }
 
 def secrets = new Properties()
@@ -48,48 +51,35 @@ base {
 
 subprojects {
 	version = project(":").version
-	group = project(":").group
 }
 
 neoForge {
+	evaluationDependsOnChildren() // we need the subprojects to evaluate first so that the sourceSets are properly constructed
+
 	version = project.neo_version
 
 	validateAccessTransformers = true
 
 	mods {
 		twilightforest {
-			sourceSet sourceSets.main
+			sourceSet this.sourceSets.main
 		}
 
 		'tf-asm' {
-			dependency project(":tf-asm")
+			sourceSet project(":tf-asm").sourceSets.main
 		}
 	}
 
 	unitTest {
 		enable()
 		testedMod = mods.twilightforest
-		project.afterEvaluate {
-			idea {
-				project {
-					settings {
-						runConfigurations {
-							defaults(org.jetbrains.gradle.ext.JUnit) {
-								workingDirectory = project.file("build/minecraft-junit").canonicalPath
-							}
-						}
-					}
-				}
-			}
-		}
 	}
 
 	runs {
 		configureEach {
 			gameDirectory = project.file('run')
 			systemProperty 'forge.logging.console.level', 'debug'
-			systemProperty 'fml.earlyprogresswindow', 'false'
-			systemProperty 'mixin.env.disableRefMap', 'true'
+			logLevel = org.slf4j.event.Level.DEBUG
 		}
 
 		client {
@@ -112,6 +102,12 @@ neoForge {
 	}
 }
 
+afterEvaluate { // DO NOT ASK... it fixes the runClient and family tasks :harold:
+	tasks.withType(RunGameTask).configureEach {
+		classpathProvider.setFrom(classpathProvider.files.stream().filter(f -> !f.toString().contains('tf-asm')).toList())
+	}
+}
+
 jar {
 	exclude 'data/twilightforest/functions/**'
 }
@@ -125,16 +121,8 @@ repositories {
 		url 'https://maven.blamejared.com/'
 	}
 	maven {
-		name 'tterrag\'s Maven' // CTM
-		url 'https://maven.tterrag.com/'
-	}
-	maven {
-		name 'theillusivec4\'s Maven' // Curios
-		url 'https://maven.theillusivec4.top/'
-	}
-	maven {
-		name 'Tama\'s Maven' // Cross-Dim Commands
-		url "https://maven.tamaized.com/releases"
+		name = "OctoStudios" //Curios
+		url = uri("https://maven.octo-studios.com/releases")
 	}
 	maven {
 		name 'Shedaniel\'s Maven' //REI
@@ -160,22 +148,26 @@ repositories {
 }
 
 dependencies {
-	jarJar project(":tf-asm")
+	// Purely so we can see MDG sources for debugging purposes
+	compileOnly "net.neoforged.moddev:net.neoforged.moddev.gradle.plugin:${project.mdg_version}"
+
+	jarJar implementation(project(":tf-asm"))
 
 	//make sure to only pick one of these when testing (switch others to compileOnly)
 	implementation "mezz.jei:jei-${project.minecraft_version}-neoforge:${project.jei_version}"
-//	compileOnly "me.shedaniel:RoughlyEnoughItems-neoforge:${project.rei_version}"
-//	compileOnly "dev.emi:emi-neoforge:${project.emi_version}+${project.minecraft_version}"
+	compileOnly "me.shedaniel:RoughlyEnoughItems-neoforge:${project.rei_version}"
+	compileOnly "dev.emi:emi-neoforge:${project.emi_version}+${project.minecraft_version}"
 
 	// theillusivec4
-//	implementation "top.theillusivec4.curios:curios-neoforge:${project.curios_version}+${project.minecraft_version}"
+	implementation "top.theillusivec4.curios:curios-neoforge:${project.curios_version}+${project.minecraft_version}"
 
 	//curse maven
-	implementation "curse.maven:jade-324717:5444008"
-//	runtimeOnly "curse.maven:jeed-532286:4599236"
+	implementation "curse.maven:jade-324717:5529595"
+	implementation "curse.maven:cosmetic-armor-reworked-237307:5427303"
+//	runtimeOnly "curse.maven:jeed-532286:5483315"
 //	runtimeOnly "curse.maven:museum-curator-859070:4629894"
 
-//	implementation  "mcjty.theoneprobe:theoneprobe:${project.top_version}"
+	compileOnly "mcjty.theoneprobe:theoneprobe:${project.top_version}"
 
     //mods we dont have compat with but are nice to have
 	runtimeOnly "com.telepathicgrunt:CommandStructures-Neoforge:4.3.2+1.20.6"
@@ -186,38 +178,38 @@ dependencies {
 	testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '5.12.0'
 }
 
+configurations.testImplementation {
+	exclude module: 'tf-asm'
+}
+
 test {
 	useJUnitPlatform()
 }
 
-tasks.named('jar', Jar).configure {
+jar {
 	manifest {
-		archiveClassifier = 'slim'
+		archiveClassifier = 'universal'
 		attributes([
 			'Specification-Title'     : mod_id,
 			'Specification-Vendor'    : "TeamTwilight",
 			'Specification-Version'   : "1",
-			'Implementation-Title'    : project.name,
-			'Implementation-Version'  : project.jar.archiveVersion,
+			'Implementation-Title'    : this.project.name,
+			'Implementation-Version'  : this.project.jar.archiveVersion,
 			'Implementation-Vendor'   : "TeamTwilight",
 			'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
 		])
 	}
 }
 
-tasks.named('jarJar') {
-	//archiveClassifier = 'universal'
-}
-
 publishing {
 	publications {
-		mavenJava(MavenPublication) {
+		create('mavenJava', MavenPublication) {
 			afterEvaluate {
-				artifact source: project.tasks.jarJar.outputs.getFiles().getSingleFile(), classifier: 'universal'
-				artifact project.sourceJar
+				artifact this.project.jar
+				artifact this.project.sourceJar
 			}
-			setGroupId 'team-twilight'
-			setArtifactId project.mod_id
+			groupId 'team-twilight'
+			artifactId this.project.mod_id
 		}
 	}
 	repositories {

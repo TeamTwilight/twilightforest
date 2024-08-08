@@ -12,8 +12,8 @@ import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import twilightforest.init.TFFeatureModifiers;
-import twilightforest.util.LandmarkUtil;
-import twilightforest.util.LegacyLandmarkPlacements;
+import twilightforest.util.landmarks.LandmarkUtil;
+import twilightforest.util.landmarks.LegacyLandmarkPlacements;
 import twilightforest.world.components.structures.util.DecorationClearance;
 
 import java.util.Optional;

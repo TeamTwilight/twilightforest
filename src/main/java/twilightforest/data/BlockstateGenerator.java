@@ -10,7 +10,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.SlabType;
-import net.neoforged.neoforge.client.model.generators.*;
+import net.neoforged.neoforge.client.model.generators.BlockModelBuilder;
+import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
+import net.neoforged.neoforge.client.model.generators.MultiPartBlockStateBuilder;
 import net.neoforged.neoforge.client.model.generators.loaders.CompositeModelBuilder;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -19,9 +22,11 @@ import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
 import twilightforest.client.model.block.aurorablock.NoiseVaryingModelBuilder;
 import twilightforest.client.model.block.connected.ConnectedTextureBuilder;
+import twilightforest.client.model.block.carpet.RoyalRagsBuilder;
 import twilightforest.client.model.block.forcefield.ForceFieldModel;
 import twilightforest.client.model.block.forcefield.ForceFieldModelBuilder;
 import twilightforest.client.model.block.giantblock.GiantBlockBuilder;
+import twilightforest.client.renderer.tileentity.JarRenderer;
 import twilightforest.data.helpers.BlockModelBuilders;
 import twilightforest.enums.*;
 import twilightforest.init.TFBlocks;
@@ -315,11 +320,22 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		simpleBlock(TFBlocks.MINOSHROOM_BOSS_SPAWNER.get(), bigSpawner);
 		simpleBlock(TFBlocks.ALPHA_YETI_BOSS_SPAWNER.get(), bigSpawner);
 		simpleBlock(TFBlocks.FINAL_BOSS_BOSS_SPAWNER.get(), bigSpawner);
-		simpleBlock(TFBlocks.FIREFLY_JAR.get(), this.makeJar(TFBlocks.FIREFLY_JAR.getId().getPath())
-			.texture("cork", prefix("block/firefly_jar_cork")));
+
+		BlockModelBuilder masonJar = this.makeJar(TFBlocks.MASON_JAR.getId().getPath());
+		simpleBlock(TFBlocks.MASON_JAR.get(), masonJar);
+		simpleBlock(TFBlocks.CICADA_JAR.get(), masonJar);
+		simpleBlock(TFBlocks.FIREFLY_JAR.get(), masonJar);
 		simpleBlockExisting(TFBlocks.FIREFLY_SPAWNER.get());
-		simpleBlock(TFBlocks.CICADA_JAR.get(), this.makeJar(TFBlocks.CICADA_JAR.getId().getPath())
-			.texture("cork", prefix("block/cicada_jar_cork")));
+
+		ResourceLocation jarLid = TwilightForestMod.prefix("jar_lid");
+		for (ResourceLocation item : JarRenderer.LOG_LOCATION_MAP.values()) {
+			String name = item.getPath() + "_lid";
+			if ((name.equals("mangrove_log_lid") || name.equals("stripped_mangrove_log_lid")) && item.getNamespace().equals("minecraft")) name = "vanilla_" + name;
+			this.models().withExistingParent(name, jarLid)
+				.texture("1", item.getNamespace() + ":block/" + item.getPath() + "_top")
+				.texture("2", item.getNamespace() + ":block/" + item.getPath());
+		}
+
 		registerPlantBlocks();
 		simpleBlock(TFBlocks.ROOT_BLOCK.get());
 		simpleBlock(TFBlocks.LIVEROOT_BLOCK.get());
@@ -416,6 +432,8 @@ public class BlockstateGenerator extends BlockModelBuilders {
 			.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_middle"))).rotationY(270).addModel().condition(WroughtIronFenceBlock.WEST_FENCE, WroughtIronFenceBlock.FenceSide.MIDDLE).end()
 			.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_bottom"))).rotationY(270).addModel().condition(WroughtIronFenceBlock.WEST_FENCE, WroughtIronFenceBlock.FenceSide.BOTTOM).end();
 
+		registerLoftyCarpet();
+
 		registerWoodBlocks();
 		registerNagastone();
 		registerForceFields();
@@ -493,6 +511,17 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		candelabra();
 
 		this.terrorcotta();
+
+		this.simpleBlock(TFBlocks.CURSED_SPAWNER.value(), this.models().withExistingParent( "cursed_spawner", "block/spawner").texture("all", TwilightForestMod.prefix("block/cursed_spawner")).renderType(CUTOUT));
+	}
+
+	private void registerLoftyCarpet() {
+		ResourceLocation loftyCarpetTexture = TFBlocks.ROYAL_RAGS.getId().withPrefix("block/");
+		ResourceLocation loftyCarpetCTM = loftyCarpetTexture.withSuffix("_ctm");
+		simpleBlock(TFBlocks.ROYAL_RAGS.value(), this.models().carpet(TFBlocks.ROYAL_RAGS.getRegisteredName(), loftyCarpetTexture)
+			.texture("wool_ctm", loftyCarpetCTM)
+			.customLoader(RoyalRagsBuilder::begin)
+			.end());
 	}
 
 	private void registerForceFields() {
@@ -975,6 +1004,25 @@ public class BlockstateGenerator extends BlockModelBuilders {
 			.partialState().with(RotatedPillarBlock.AXIS, Direction.Axis.Z).setModels(zModel);
 	}
 
+	private void rotationallySpecialColumn(Block b) {
+		ResourceLocation sideA = prefix("block/" + name(b) + "_side_a");
+		ResourceLocation sideB = prefix("block/" + name(b) + "_side_b");
+		ResourceLocation end = prefix("block/" + name(b) + "_end");
+		ConfiguredModel yModel = new ConfiguredModel(models().cubeColumn(name(b), sideA, end));
+		ConfiguredModel xModel = ConfiguredModel.builder()
+			.modelFile(models().withExistingParent(name(b) + "_x", prefix("block/util/cube_column_rotationally_special_x"))
+				.texture("side_a", sideA).texture("side_b", sideB).texture("end", end))
+			.buildLast();
+		ConfiguredModel zModel = ConfiguredModel.builder()
+			.modelFile(models().withExistingParent(name(b) + "_z", prefix("block/util/cube_column_rotationally_special_z"))
+				.texture("side_a", sideA).texture("side_b", sideB).texture("end", end))
+			.buildLast();
+		getVariantBuilder(b)
+			.partialState().with(RotatedPillarBlock.AXIS, Direction.Axis.Y).setModels(yModel)
+			.partialState().with(RotatedPillarBlock.AXIS, Direction.Axis.X).setModels(xModel)
+			.partialState().with(RotatedPillarBlock.AXIS, Direction.Axis.Z).setModels(zModel);
+	}
+
 	private void castleDoor(Block b) {
 		ModelFile vanished = models().withExistingParent(BuiltInRegistries.BLOCK.getKey(b).getPath() + "_vanished", "block/block")
 			.texture("base_texture", TwilightForestMod.prefix("block/castle_door_vanished"))
@@ -1440,6 +1488,7 @@ public class BlockstateGenerator extends BlockModelBuilders {
 	}
 
 	private void terrorcotta() {
+		this.rotationallySpecialColumn(TFBlocks.TERRORCOTTA_ARCS.get());
 		this.getVariantBuilder(TFBlocks.TERRORCOTTA_CURVES.get()).forAllStates(state -> ConfiguredModel.builder().modelFile(this.makeTerrorcottaCurvesModel("terrorcotta_curves", state.getValue(GlazedTerracottaBlock.FACING).get2DDataValue())).build());
 		this.getVariantBuilder(TFBlocks.TERRORCOTTA_LINES.get()).forAllStates(state -> ConfiguredModel.builder().modelFile(this.makeTerrorcottaLinesModel("terrorcotta_lines", state.getValue(BinaryRotatedBlock.ROTATED))).build());
 	}

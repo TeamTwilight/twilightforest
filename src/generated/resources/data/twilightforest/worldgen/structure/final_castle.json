@@ -74,6 +74,7 @@
     }
   },
   "step": "surface_structures",
+  "structure_icon": "twilightforest:final_castle",
   "terrain_adaptation": "beard_box",
   "water_spawns": []
 }

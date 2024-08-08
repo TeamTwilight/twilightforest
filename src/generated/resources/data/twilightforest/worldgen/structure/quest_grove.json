@@ -40,5 +40,6 @@
     }
   },
   "step": "surface_structures",
+  "structure_icon": "twilightforest:quest_grove",
   "terrain_adaptation": "beard_thin"
 }

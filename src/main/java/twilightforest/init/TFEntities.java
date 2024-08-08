@@ -37,7 +37,6 @@ public class TFEntities {
 	public static final DeferredHolder<EntityType<?>, EntityType<Bighorn>> BIGHORN_SHEEP = make(TFEntityNames.BIGHORN_SHEEP, Bighorn::new, MobCategory.CREATURE, 0.9F, 1.3F, 0xdbceaf, 0xd7c771);
 	public static final DeferredHolder<EntityType<?>, EntityType<BlockChainGoblin>> BLOCKCHAIN_GOBLIN = make(TFEntityNames.BLOCKCHAIN_GOBLIN, BlockChainGoblin::new, MobCategory.MONSTER, 0.9F, 1.4F, 0xd3e7bc, 0x1f3fff);
 	public static final DeferredHolder<EntityType<?>, EntityType<Boar>> BOAR = make(TFEntityNames.BOAR, Boar::new, MobCategory.CREATURE, 0.9F, 0.9F, 0x83653b, 0xffefca);
-	public static final DeferredHolder<EntityType<?>, EntityType<TwilightBoat>> BOAT = buildNoEgg(TFEntityNames.BOAT, makeCastedBuilder(TwilightBoat.class, TwilightBoat::new, 1.375F, 0.5625F, 10, 3), false);
 	//public static final DeferredHolder<EntityType<?>, EntityType<Boggard>> BOGGARD = make(TFEntityNames.BOGGARD, Boggard::new, MobCategory.MONSTER, 0.8F, 1.1F);
 	public static final DeferredHolder<EntityType<?>, EntityType<TowerBroodling>> CARMINITE_BROODLING = make(TFEntityNames.CARMINITE_BROODLING, TowerBroodling::new, MobCategory.MONSTER, 0.7F, 0.5F, 0x343c14, 0xbaee02);
 	public static final DeferredHolder<EntityType<?>, EntityType<CarminiteGhastguard>> CARMINITE_GHASTGUARD = make(TFEntityNames.CARMINITE_GHASTGUARD, CarminiteGhastguard::new, MobCategory.MONSTER, 4.0F, 6.0F, true, 0xbcbcbc, 0xb77878);
@@ -45,7 +44,6 @@ public class TFEntities {
 	public static final DeferredHolder<EntityType<?>, EntityType<CarminiteGolem>> CARMINITE_GOLEM = make(TFEntityNames.CARMINITE_GOLEM, CarminiteGolem::new, MobCategory.MONSTER, 1.4F, 2.9F, 0x6b3d20, 0xe2ddda);
 	public static final DeferredHolder<EntityType<?>, EntityType<ChainBlock>> CHAIN_BLOCK = buildNoEgg(TFEntityNames.CHAIN_BLOCK, makeCastedBuilder(ChainBlock.class, ChainBlock::new, 0.6F, 0.6F, 80, 1), true);
 	public static final DeferredHolder<EntityType<?>, EntityType<CharmEffect>> CHARM_EFFECT = buildNoEgg(TFEntityNames.CHARM_EFFECT, makeCastedBuilder(CharmEffect.class, CharmEffect::new, 0.0F, 0.0F, 80, 3).noSave().noSummon(), true);
-	public static final DeferredHolder<EntityType<?>, EntityType<TwilightChestBoat>> CHEST_BOAT = buildNoEgg(TFEntityNames.CHEST_BOAT, makeCastedBuilder(TwilightChestBoat.class, TwilightChestBoat::new, 1.375F, 0.5625F, 10, 3), false);
 	public static final DeferredHolder<EntityType<?>, EntityType<CubeOfAnnihilation>> CUBE_OF_ANNIHILATION = buildNoEgg(TFEntityNames.CUBE_OF_ANNIHILATION, makeCastedBuilder(CubeOfAnnihilation.class, CubeOfAnnihilation::new, 1.0F, 1.0F, 80, 1), true);
 	public static final DeferredHolder<EntityType<?>, EntityType<DeathTome>> DEATH_TOME = make(TFEntityNames.DEATH_TOME, DeathTome::new, MobCategory.MONSTER, 0.6F, 1.1F, 0x774e22, 0xdbcdbe);
 	public static final DeferredHolder<EntityType<?>, EntityType<Deer>> DEER = make(TFEntityNames.DEER, Deer::new, MobCategory.CREATURE, 0.7F, 1.8F, 0x7b4d2e, 0x4b241d);

@@ -13,7 +13,7 @@ import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadType;
 import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement;
 import net.minecraft.world.level.levelgen.structure.placement.StructurePlacementType;
 import twilightforest.init.TFStructurePlacementTypes;
-import twilightforest.util.LegacyLandmarkPlacements;
+import twilightforest.util.landmarks.LegacyLandmarkPlacements;
 
 import java.util.Optional;
 
@@ -51,9 +51,9 @@ public class AvoidLandmarkGridPlacement extends RandomSpreadStructurePlacement {
 
 		// Turn Feature Center into Feature Offset
 		featurePos.set(Math.abs(featurePos.getX() - chunkpos.getWorldPosition().getX()), 0, Math.abs(featurePos.getZ() - chunkpos.getWorldPosition().getZ()));
-		int size = 48;
+		int size = 64;
 
-		return featurePos.getX() >= size && featurePos.getZ() >= size;
+		return featurePos.getX() >= size || featurePos.getZ() >= size;
 	}
 
 	@Override

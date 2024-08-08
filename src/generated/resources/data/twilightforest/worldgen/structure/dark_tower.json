@@ -131,6 +131,7 @@
     }
   },
   "step": "surface_structures",
+  "structure_icon": "twilightforest:dark_tower",
   "terrain_adaptation": "beard_thin",
   "water_spawns": [
     {

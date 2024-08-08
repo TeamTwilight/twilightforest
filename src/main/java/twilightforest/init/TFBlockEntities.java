@@ -9,6 +9,7 @@ import twilightforest.block.entity.*;
 import twilightforest.block.entity.bookshelf.ChiseledCanopyShelfBlockEntity;
 import twilightforest.block.entity.spawner.*;
 
+@SuppressWarnings("DataFlowIssue")
 public class TFBlockEntities {
 
 	public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, TwilightForestMod.ID);
@@ -62,28 +63,6 @@ public class TFBlockEntities {
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<KeepsakeCasketBlockEntity>> KEEPSAKE_CASKET = BLOCK_ENTITIES.register("keepsake_casket", () ->
 		BlockEntityType.Builder.of(KeepsakeCasketBlockEntity::new, TFBlocks.KEEPSAKE_CASKET.get()).build(null));
 
-	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TFSignBlockEntity>> TF_SIGN = BLOCK_ENTITIES.register("tf_sign", () ->
-		BlockEntityType.Builder.of(TFSignBlockEntity::new,
-			TFBlocks.TWILIGHT_OAK_SIGN.get(), TFBlocks.TWILIGHT_WALL_SIGN.get(),
-			TFBlocks.CANOPY_SIGN.get(), TFBlocks.CANOPY_WALL_SIGN.get(),
-			TFBlocks.MANGROVE_SIGN.get(), TFBlocks.MANGROVE_WALL_SIGN.get(),
-			TFBlocks.DARK_SIGN.get(), TFBlocks.DARK_WALL_SIGN.get(),
-			TFBlocks.TIME_SIGN.get(), TFBlocks.TIME_WALL_SIGN.get(),
-			TFBlocks.TRANSFORMATION_SIGN.get(), TFBlocks.TRANSFORMATION_WALL_SIGN.get(),
-			TFBlocks.MINING_SIGN.get(), TFBlocks.MINING_WALL_SIGN.get(),
-			TFBlocks.SORTING_SIGN.get(), TFBlocks.SORTING_WALL_SIGN.get()).build(null));
-
-	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TFHangingSignBlockEntity>> TF_HANGING_SIGN = BLOCK_ENTITIES.register("tf_hanging_sign", () ->
-		BlockEntityType.Builder.of(TFHangingSignBlockEntity::new,
-			TFBlocks.TWILIGHT_OAK_HANGING_SIGN.get(), TFBlocks.TWILIGHT_OAK_WALL_HANGING_SIGN.get(),
-			TFBlocks.CANOPY_HANGING_SIGN.get(), TFBlocks.CANOPY_WALL_HANGING_SIGN.get(),
-			TFBlocks.MANGROVE_HANGING_SIGN.get(), TFBlocks.MANGROVE_WALL_HANGING_SIGN.get(),
-			TFBlocks.DARK_HANGING_SIGN.get(), TFBlocks.DARK_WALL_HANGING_SIGN.get(),
-			TFBlocks.TIME_HANGING_SIGN.get(), TFBlocks.TIME_WALL_HANGING_SIGN.get(),
-			TFBlocks.TRANSFORMATION_HANGING_SIGN.get(), TFBlocks.TRANSFORMATION_WALL_HANGING_SIGN.get(),
-			TFBlocks.MINING_HANGING_SIGN.get(), TFBlocks.MINING_WALL_HANGING_SIGN.get(),
-			TFBlocks.SORTING_HANGING_SIGN.get(), TFBlocks.SORTING_WALL_HANGING_SIGN.get()).build(null));
-
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TFChestBlockEntity>> TF_CHEST = BLOCK_ENTITIES.register("tf_chest", () ->
 		BlockEntityType.Builder.of(TFChestBlockEntity::new,
 			TFBlocks.TWILIGHT_OAK_CHEST.get(), TFBlocks.CANOPY_CHEST.get(), TFBlocks.MANGROVE_CHEST.get(),
@@ -116,4 +95,13 @@ public class TFBlockEntities {
 
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CandelabraBlockEntity>> CANDELABRA = BLOCK_ENTITIES.register("candelabra", () ->
 		BlockEntityType.Builder.of(CandelabraBlockEntity::new, TFBlocks.CANDELABRA.get()).build(null));
+
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<JarBlockEntity>> JAR = BLOCK_ENTITIES.register("jar", () ->
+		BlockEntityType.Builder.of(JarBlockEntity::new, TFBlocks.FIREFLY_JAR.get(), TFBlocks.CICADA_JAR.get()).build(null));
+
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MasonJarBlockEntity>> MASON_JAR = BLOCK_ENTITIES.register("mason_jar", () ->
+		BlockEntityType.Builder.of(MasonJarBlockEntity::new, TFBlocks.MASON_JAR.get()).build(null));
+
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CursedSpawnerEntity>> CURSED_SPAWNER = BLOCK_ENTITIES.register("cursed_spawner", () ->
+		BlockEntityType.Builder.of(CursedSpawnerEntity::new, TFBlocks.CURSED_SPAWNER.value()).build(null));
 }

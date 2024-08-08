@@ -3,6 +3,7 @@ package twilightforest.world.components.structures.type;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.util.RandomSource;
@@ -15,10 +16,12 @@ import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.DensityFunctions;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.*;
+import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFEntities;
+import twilightforest.init.TFMapDecorations;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.world.components.chunkgenerators.AbsoluteDifferenceFunction;
 import twilightforest.world.components.chunkgenerators.FocusedDensityFunction;
@@ -30,6 +33,7 @@ import twilightforest.world.components.structures.util.ControlledSpawningStructu
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class LabyrinthStructure extends ControlledSpawningStructure implements ConfigurableSpawns, CustomDensitySource {
@@ -37,8 +41,8 @@ public class LabyrinthStructure extends ControlledSpawningStructure implements C
 		controlledSpawningCodec(instance).apply(instance, LabyrinthStructure::new)
 	);
 
-	public LabyrinthStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, DecorationConfig decorationConfig, StructureSettings structureSettings) {
-		super(controlledSpawningConfig, advancementLockConfig, hintConfig, decorationConfig, structureSettings);
+	public LabyrinthStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, DecorationConfig decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
+		super(controlledSpawningConfig, advancementLockConfig, hintConfig, decorationConfig, centerInChunk, structureIcon, structureSettings);
 	}
 
 	@Override
@@ -71,6 +75,7 @@ public class LabyrinthStructure extends ControlledSpawningStructure implements C
 			new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_lich"))),
 			new HintConfig(HintConfig.book("labyrinth", 5), TFEntities.KOBOLD.get()),
 			new DecorationConfig(3, true, false, false),
+			true, Optional.of(TFMapDecorations.LABYRINTH),
 			new StructureSettings(
 				context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_LABYRINTH_BIOMES),
 				Arrays.stream(MobCategory.values()).collect(Collectors.toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create()))), // Landmarks have Controlled Mob spawning

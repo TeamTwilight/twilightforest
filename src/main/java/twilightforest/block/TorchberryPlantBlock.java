@@ -43,7 +43,7 @@ public class TorchberryPlantBlock extends TFPlantBlock implements BonemealableBl
 	}
 
 	@Override
-	public boolean mayPlaceOn(BlockState state, BlockGetter reader, BlockPos pos) {
+	public boolean canSurvive(BlockState state, LevelReader reader, BlockPos pos) {
 		return TFPlantBlock.canPlaceRootAt(reader, pos);
 	}
 

@@ -18,9 +18,11 @@ import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.DensityFunctions;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.*;
+import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import twilightforest.TFRegistries;
 import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFEntities;
+import twilightforest.init.TFMapDecorations;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.init.custom.StructureSpeleothemConfigs;
@@ -34,6 +36,7 @@ import twilightforest.world.components.structures.util.LandmarkStructure;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class HollowHillStructure extends LandmarkStructure implements ConfigurableSpawns, CustomDensitySource {
@@ -52,8 +55,8 @@ public class HollowHillStructure extends LandmarkStructure implements Configurab
 	private final ControlledSpawningConfig controlledSpawningConfig;
 	private final Holder.Reference<StructureSpeleothemConfig> speleothemConfig;
 
-	public HollowHillStructure(int size, ControlledSpawningConfig controlledSpawningConfig, Holder<StructureSpeleothemConfig> speleothemConfig, DecorationConfig decorationConfig, StructureSettings structureSettings) {
-		super(decorationConfig, structureSettings);
+	public HollowHillStructure(int size, ControlledSpawningConfig controlledSpawningConfig, Holder<StructureSpeleothemConfig> speleothemConfig, DecorationConfig decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
+		super(decorationConfig, centerInChunk, structureIcon, structureSettings);
 		this.size = size;
 		this.controlledSpawningConfig = controlledSpawningConfig;
 		this.speleothemConfig = (Holder.Reference<StructureSpeleothemConfig>) speleothemConfig;
@@ -99,6 +102,7 @@ public class HollowHillStructure extends LandmarkStructure implements Configurab
 			)), List.of(), List.of()),
 			context.lookup(TFRegistries.Keys.STRUCTURE_SPELEOTHEM_SETTINGS).getOrThrow(StructureSpeleothemConfigs.SMALL_HILL),
 			new DecorationConfig(1, true, false, false),
+			true, Optional.of(TFMapDecorations.SMALL_HOLLOW_HILL),
 			new StructureSettings(
 				context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_HOLLOW_HILL_BIOMES),
 				Arrays.stream(MobCategory.values()).collect(Collectors.toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create()))), // Landmarks have Controlled Mob spawning
@@ -125,6 +129,7 @@ public class HollowHillStructure extends LandmarkStructure implements Configurab
 			)), List.of(), List.of()),
 			context.lookup(TFRegistries.Keys.STRUCTURE_SPELEOTHEM_SETTINGS).getOrThrow(StructureSpeleothemConfigs.MEDIUM_HILL),
 			new DecorationConfig(2, true, false, false),
+			true, Optional.of(TFMapDecorations.MEDIUM_HOLLOW_HILL),
 			new StructureSettings(
 				context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_HOLLOW_HILL_BIOMES),
 				Arrays.stream(MobCategory.values()).collect(Collectors.toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create()))), // Landmarks have Controlled Mob spawning
@@ -152,6 +157,7 @@ public class HollowHillStructure extends LandmarkStructure implements Configurab
 			),
 			context.lookup(TFRegistries.Keys.STRUCTURE_SPELEOTHEM_SETTINGS).getOrThrow(StructureSpeleothemConfigs.LARGE_HILL),
 			new DecorationConfig(3, true, false, false),
+			true, Optional.of(TFMapDecorations.LARGE_HOLLOW_HILL),
 			new StructureSettings(
 				context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_HOLLOW_HILL_BIOMES),
 				Arrays.stream(MobCategory.values()).collect(Collectors.toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create()))), // Landmarks have Controlled Mob spawning

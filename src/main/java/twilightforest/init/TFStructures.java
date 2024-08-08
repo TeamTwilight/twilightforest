@@ -1,10 +1,12 @@
 package twilightforest.init;
 
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import twilightforest.TwilightForestMod;
+import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.world.components.structures.type.*;
 
 public class TFStructures {
@@ -27,6 +29,7 @@ public class TFStructures {
 	public static final ResourceKey<Structure> FINAL_CASTLE = registerKey("final_castle");
 
 	public static final ResourceKey<Structure> HOLLOW_TREE = registerKey("hollow_tree");
+	public static final ResourceKey<Structure> SWAMP_HOLLOW_TREE = registerKey("swamp_hollow_tree");
 	public static final ResourceKey<Structure> MUSHROOM_TOWER = registerKey("mushroom_tower");
 	public static final ResourceKey<Structure> QUEST_ISLAND = registerKey("quest_island");
 	public static final ResourceKey<Structure> DRUID_GROVE = registerKey("druid_grove");
@@ -38,7 +41,8 @@ public class TFStructures {
 	}
 
 	public static void bootstrap(BootstrapContext<Structure> context) {
-		context.register(HOLLOW_TREE, HollowTreeStructure.buildStructureConfig(context));
+		context.register(HOLLOW_TREE, HollowTreeStructure.buildStructureConfig(false, context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_HOLLOW_TREE_BIOMES)));
+		context.register(SWAMP_HOLLOW_TREE, HollowTreeStructure.buildStructureConfig(true, HolderSet.direct(context.lookup(Registries.BIOME).getOrThrow(TFBiomes.SWAMP))));
 		context.register(HEDGE_MAZE, HedgeMazeStructure.buildStructureConfig(context));
 		context.register(QUEST_GROVE, QuestGroveStructure.buildStructureConfig(context));
 		context.register(HOLLOW_HILL_SMALL, HollowHillStructure.buildSmallHillConfig(context));

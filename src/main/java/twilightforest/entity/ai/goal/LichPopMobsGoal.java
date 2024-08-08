@@ -11,7 +11,7 @@ import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.entity.boss.Lich;
 import twilightforest.init.TFSounds;
 import twilightforest.item.LifedrainScepterItem;
-import twilightforest.util.EntityUtil;
+import twilightforest.util.entities.EntityUtil;
 
 import java.util.EnumSet;
 

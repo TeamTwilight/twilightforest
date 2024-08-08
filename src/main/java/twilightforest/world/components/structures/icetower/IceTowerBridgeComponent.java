@@ -21,25 +21,28 @@ import twilightforest.world.components.structures.TFStructureComponentOld;
 public class IceTowerBridgeComponent extends TFStructureComponentOld {
 
 	private final int length;
+	private final int extraZlength;
 
 	public IceTowerBridgeComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(TFStructurePieceTypes.TFITBri.get(), nbt);
 		this.length = nbt.getInt("bridgeLength");
+		this.extraZlength = nbt.getInt("extraZlength");
 	}
 
 	@SuppressWarnings("this-escape")
-	public IceTowerBridgeComponent(int index, int x, int y, int z, int length, Direction direction) {
+	public IceTowerBridgeComponent(int index, int x, int y, int z, int length, int zLength, Direction direction) {
 		super(TFStructurePieceTypes.TFITBri.get(), index, x, y, z);
 		this.length = length;
 		this.setOrientation(direction);
-
-		this.boundingBox = BoundingBoxUtils.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, length, 6, 5, direction, false);
+		this.extraZlength = zLength;
+		this.boundingBox = BoundingBoxUtils.getComponentToAddBoundingBox(x, y, z, 0, 0, -zLength, length, 6, 5 + zLength, direction, false);
 	}
 
 	@Override
 	protected void addAdditionalSaveData(StructurePieceSerializationContext ctx, CompoundTag tagCompound) {
 		super.addAdditionalSaveData(ctx, tagCompound);
 		tagCompound.putInt("bridgeLength", this.length);
+		tagCompound.putInt("extraZlength", this.extraZlength);
 	}
 
 	@Override
@@ -54,13 +57,13 @@ public class IceTowerBridgeComponent extends TFStructureComponentOld {
 		generateAirBox(world, sbb, 0, 1, 0, length, 5, 4);
 
 		// make floor/ceiling
-		generateBox(world, sbb, 0, 0, 0, length, 0, 4, deco.blockState, deco.blockState, false);
-		generateBox(world, sbb, 0, 6, 0, length, 6, 4, deco.blockState, deco.blockState, false);
+		generateBox(world, sbb, 0, 0, extraZlength, length, 0, extraZlength + 4, deco.blockState, deco.blockState, false);
+		generateBox(world, sbb, 0, 6, extraZlength, length, 6, extraZlength + 4, deco.blockState, deco.blockState, false);
 
 		// pillars
 		for (int x = 2; x < length; x += 3) {
-			generateBox(world, sbb, x, 1, 0, x, 5, 0, deco.pillarState, deco.pillarState, false);
-			generateBox(world, sbb, x, 1, 4, x, 5, 4, deco.pillarState, deco.pillarState, false);
+			generateBox(world, sbb, x, 1, extraZlength, x, 5, extraZlength, deco.pillarState, deco.pillarState, false);
+			generateBox(world, sbb, x, 1, extraZlength + 4, x, 5, extraZlength + 4, deco.pillarState, deco.pillarState, false);
 		}
 	}
 }

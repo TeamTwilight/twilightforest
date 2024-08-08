@@ -6,7 +6,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
@@ -20,7 +19,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.loot.TFLootTables;
-import twilightforest.util.FeaturePlacers;
+import twilightforest.util.features.FeaturePlacers;
 import twilightforest.world.components.processors.StoneBricksVariants;
 import twilightforest.world.components.processors.TargetedRotProcessor;
 
@@ -42,8 +41,8 @@ public class QuestGrove extends TwilightTemplateStructurePiece {
 	}
 
 	@Override
-	protected void handleDataMarker(String name, BlockPos pos, ServerLevelAccessor levelAccessor, RandomSource random, BoundingBox boundingBox) {
-		if (!boundingBox.isInside(pos)) return;
+	protected void handleDataMarker(String name, BlockPos pos, WorldGenLevel levelAccessor, RandomSource random, BoundingBox chunkBounds, ChunkGenerator chunkGen) {
+		if (!chunkBounds.isInside(pos)) return;
 
 		if ("quest_ram".equals(name)) {
 			FeaturePlacers.placeEntity(TFEntities.QUEST_RAM.get(), pos, levelAccessor);

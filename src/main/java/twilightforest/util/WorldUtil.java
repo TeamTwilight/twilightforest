@@ -6,9 +6,11 @@ import it.unimi.dsi.fastutil.objects.ObjectArraySet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.StructureManager;
@@ -21,10 +23,13 @@ import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFDimensionData;
+import twilightforest.util.landmarks.LegacyLandmarkPlacements;
 import twilightforest.world.components.structures.placements.LandmarkGridPlacement;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 public final class WorldUtil {
@@ -33,6 +38,14 @@ public final class WorldUtil {
 
 	public static long getOverworldSeed() {
 		return Objects.requireNonNull(ServerLifecycleHooks.getCurrentServer()).getWorldData().worldGenOptions().seed();
+	}
+
+	public static RegistryAccess getRegistryAccess() {
+		return Objects.requireNonNull(ServerLifecycleHooks.getCurrentServer()).registryAccess();
+	}
+
+	public static Difficulty getDifficulty() {
+		return Objects.requireNonNull(ServerLifecycleHooks.getCurrentServer()).getWorldData().getDifficulty();
 	}
 
 	/**
@@ -61,14 +74,30 @@ public final class WorldUtil {
 		return pos.offset(dx, dy, dz);
 	}
 
+	public static <T> T getRandomElement(List<T> list, RandomSource rng) {
+		return list.get(rng.nextInt(list.size()));
+	}
+
+	public static <T> T getRandomElementWithWeights(List<Pair<T, Integer>> list, RandomSource rng) {
+		int totalWeight = list.stream().mapToInt(Pair::getSecond).sum();
+		int randomValue = rng.nextInt(totalWeight);
+
+		for (Pair<T, Integer> pair : list) {
+			randomValue -= pair.getSecond();
+			if (randomValue < 0) {
+				return pair.getFirst();
+			}
+		}
+		return getRandomElement(list, rng).getFirst(); // This line should never be reached if input list is valid
+	}
+
 	public static int getGeneratorSeaLevel(LevelAccessor level) {
 		return level.getChunkSource() instanceof ServerChunkCache chunkSource
 			? chunkSource.chunkMap.generator().getSeaLevel()
 			: TFDimensionData.SEALEVEL; // Should only ever hit if this method is called on client FIXME Fix causes
 	}
 
-	@Nullable
-	public static Pair<BlockPos, Holder<Structure>> findNearestMapLandmark(ServerLevel level, HolderSet<Structure> targetStructures, BlockPos pos, int chunkSearchRadius, boolean skipKnownStructures) {
+	public static Optional<Pair<BlockPos, Holder<Structure>>> findNearestMapLandmark(ServerLevel level, HolderSet<Structure> targetStructures, BlockPos pos, int chunkSearchRadius, boolean skipKnownStructures) {
 		ChunkGeneratorStructureState state = level.getChunkSource().getGeneratorState();
 
 		Map<LandmarkGridPlacement, Set<Holder<Structure>>> seekStructures = new Object2ObjectArrayMap<>();
@@ -81,7 +110,7 @@ public final class WorldUtil {
 			}
 		}
 
-		if (seekStructures.isEmpty()) return null;
+		if (seekStructures.isEmpty()) return Optional.empty();
 
 		double distance = Double.MAX_VALUE;
 
@@ -113,6 +142,6 @@ public final class WorldUtil {
 			}
 		}
 
-		return nearest;
+		return Optional.ofNullable(nearest);
 	}
 }

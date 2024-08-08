@@ -88,10 +88,12 @@ public class BrittleFlaskItem extends Item {
 		return InteractionResultHolder.fail(player.getItemInHand(hand));
 	}
 
-	public int getUseDuration(ItemStack stack) {
+	@Override
+	public int getUseDuration(ItemStack stack, LivingEntity entity) {
 		return 32;
 	}
 
+	@Override
 	public UseAnim getUseAnimation(ItemStack stack) {
 		return UseAnim.DRINK;
 	}
@@ -102,8 +104,8 @@ public class BrittleFlaskItem extends Item {
 		if (flaskContents.potion() != PotionContents.EMPTY) {
 			if (entity instanceof Player player) {
 				if (!level.isClientSide()) {
-					if (!player.isCreative() && !player.isSpectator()) {
-						player.getData(TFDataAttachments.FLASK_DOSES).incrementDoses(flaskContents.potion().potion(), (ServerPlayer) player);
+					if (!player.isCreative() && !player.isSpectator() && player instanceof ServerPlayer serverPlayer) {
+						flaskContents.potion().potion().ifPresent(potion -> player.getData(TFDataAttachments.FLASK_DOSES).trackDrink(potion, serverPlayer));
 					}
 					for (MobEffectInstance mobeffectinstance : flaskContents.potion().getAllEffects()) {
 						if (mobeffectinstance.getEffect().value().isInstantenous()) {

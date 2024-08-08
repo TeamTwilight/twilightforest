@@ -4,12 +4,16 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.minecraft.MinecraftSessionService;
 import com.mojang.authlib.yggdrasil.ProfileResult;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
+import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.Biome;
+import net.neoforged.neoforge.common.TranslatableEnum;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.Nullable;
@@ -18,16 +22,14 @@ import twilightforest.network.SyncUncraftingTableConfigPacket;
 import twilightforest.util.PlayerHelper;
 
 import java.net.Proxy;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class TFConfig {
 
-	protected static final String CONFIG_ID = "config." + TwilightForestMod.ID;
+	public static final String CONFIG_ID = "config." + TwilightForestMod.ID + ".";
 	@Nullable
 	private static ResourceLocation portalLockingAdvancement;
-	private static final List<ResourceLocation> VALID_AURORA_BIOMES = new ArrayList<>();
+	private static final List<Holder<Biome>> VALID_AURORA_BIOMES = new ArrayList<>();
 	public static final List<GameProfile> GAME_PROFILES = new ArrayList<>();
 
 	/// --- CLIENT ---
@@ -116,14 +118,14 @@ public class TFConfig {
 	}
 
 	//Forge's biome registry doesn't contain biomes done via datapacks, so we have to use registryaccess
-	public static List<ResourceLocation> getValidAuroraBiomes(RegistryAccess access) {
+	public static List<Holder<Biome>> getValidAuroraBiomes(RegistryAccess access) {
 		if (VALID_AURORA_BIOMES.isEmpty() && !ConfigSetup.CLIENT_CONFIG.auroraBiomes.get().isEmpty()) {
 			ConfigSetup.CLIENT_CONFIG.auroraBiomes.get().forEach(s -> {
-				ResourceLocation key = ResourceLocation.tryParse(s);
-				if (key == null || !access.registryOrThrow(Registries.BIOME).containsKey(key)) {
+				Optional<Holder<Biome>> holder = Optional.ofNullable(ResourceLocation.tryParse(s)).flatMap(key -> access.registryOrThrow(Registries.BIOME).getHolder(key));
+				if (holder.isEmpty()) {
 					TwilightForestMod.LOGGER.warn("Biome {} in Twilight Forest's validAuroraBiomes config option is not a valid biome. Skipping!", s);
 				} else {
-					VALID_AURORA_BIOMES.add(key);
+					VALID_AURORA_BIOMES.add(holder.get());
 				}
 			});
 		}
@@ -233,7 +235,7 @@ public class TFConfig {
 		}
 	}
 
-	public enum MultiplayerFightAdjuster {
+	public enum MultiplayerFightAdjuster implements TranslatableEnum {
 		NONE(false, false),
 		MORE_LOOT(true, false),
 		MORE_HEALTH(false, true),
@@ -253,6 +255,11 @@ public class TFConfig {
 
 		public boolean adjustsHealth() {
 			return this.moreHealth;
+		}
+
+		@Override
+		public Component getTranslatedName() {
+			return Component.translatable("config.twilightforest.multiplayer_fight_adjuster." + this.name().toLowerCase(Locale.ROOT));
 		}
 	}
 }

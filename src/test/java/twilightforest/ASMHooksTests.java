@@ -1,55 +1,37 @@
 package twilightforest;
 
-import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.MockedStatic;
-import twilightforest.client.BakedMultiPartRenderers;
-import twilightforest.entity.TFPart;
+import twilightforest.util.multiparts.MultipartEntityUtil;
+import twilightforest.beans.MockBean;
 import twilightforest.junit.MockitoFixer;
+import twilightforest.beans.TFBeanContextJunitExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.Collections;
+import java.util.Iterator;
+
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoFixer.class)
+@ExtendWith({MockitoFixer.class, TFBeanContextJunitExtension.class})
 public class ASMHooksTests {
 
-	@Test
-	public void resolveEntityRenderer() {
-		try (MockedStatic<BakedMultiPartRenderers> lookup = mockStatic(BakedMultiPartRenderers.class)) {
-			ResourceLocation location = ResourceLocation.withDefaultNamespace("test");
-			EntityRenderer<?> partRenderer = mock(EntityRenderer.class);
-			lookup.when(() -> BakedMultiPartRenderers.lookup(location)).thenReturn(partRenderer);
-
-			TFPart<?> part = mock(TFPart.class);
-			when(part.renderer()).thenReturn(location);
-
-			EntityRenderer<?> originalRenderer = mock(EntityRenderer.class);
-
-			EntityRenderer<?> result = ASMHooks.resolveEntityRenderer(originalRenderer, part);
-
-			assertNotNull(result);
-			assertSame(partRenderer, result);
-			assertNotSame(originalRenderer, result);
-		}
-	}
+	@MockBean
+	private MultipartEntityUtil multipartEntityUtil;
 
 	@Test
-	public void resolveEntityRendererNonTFPart() {
-		try (MockedStatic<BakedMultiPartRenderers> lookup = mockStatic(BakedMultiPartRenderers.class)) {
-			EntityRenderer<?> partRenderer = mock(EntityRenderer.class);
-			lookup.when(() -> BakedMultiPartRenderers.lookup(any(ResourceLocation.class))).thenReturn(partRenderer);
+	public void multipartBean() {
+		Iterator<Entity> iter = Collections.emptyIterator();
+		Entity entity = mock(Entity.class);
 
-			EntityRenderer<?> originalRenderer = mock(EntityRenderer.class);
+		ASMHooks.resolveEntitiesForRendering(iter);
+		ASMHooks.resolveEntityRenderer(null, entity);
+		ASMHooks.sendDirtyEntityData(entity);
 
-			EntityRenderer<?> result = ASMHooks.resolveEntityRenderer(originalRenderer, mock(Entity.class));
-
-			assertNotNull(result);
-			assertNotSame(partRenderer, result);
-			assertSame(originalRenderer, result);
-		}
+		verify(multipartEntityUtil, times(1)).injectTFPartEntities(iter);
+		verify(multipartEntityUtil, times(1)).tryLookupTFPartRenderer(null, entity);
+		verify(multipartEntityUtil, times(1)).sendDirtyMultipartEntityData(entity);
 	}
 
 }

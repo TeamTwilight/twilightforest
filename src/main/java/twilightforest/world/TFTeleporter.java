@@ -31,8 +31,8 @@ import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDimension;
 import twilightforest.item.MagicMapItem;
-import twilightforest.util.LandmarkUtil;
-import twilightforest.util.LegacyLandmarkPlacements;
+import twilightforest.util.landmarks.LandmarkUtil;
+import twilightforest.util.landmarks.LegacyLandmarkPlacements;
 import twilightforest.util.Restriction;
 
 import java.util.*;

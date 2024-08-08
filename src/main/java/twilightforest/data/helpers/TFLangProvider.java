@@ -6,6 +6,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.JsonOps;
 import net.minecraft.ChatFormatting;
+import net.minecraft.Util;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
@@ -23,6 +25,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import org.apache.commons.lang3.text.WordUtils;
 import twilightforest.TwilightForestMod;
+import twilightforest.config.TFConfig;
 
 import java.util.HashMap;
 import java.util.List;
@@ -123,7 +126,7 @@ public abstract class TFLangProvider extends LanguageProvider {
 
 	public void addMusicDisc(DeferredItem<Item> disc, String description) {
 		this.addItem(disc, "Music Disc");
-		this.add(disc.get().getDescriptionId() + ".desc", description);
+		this.add(Util.makeDescriptionId("jukebox_song", disc.get().components().get(DataComponents.JUKEBOX_PLAYABLE).song().key().location()), description);
 	}
 
 	public void addStructure(ResourceKey<Structure> biome, String name) {
@@ -188,6 +191,16 @@ public abstract class TFLangProvider extends LanguageProvider {
 		this.add(String.format("tag.%s.%s.%s", tag.registry().location().getPath(), tag.location().getNamespace(), tag.location().getPath().replace('/', '.')), name);
 	}
 
+	public void configEntry(String key, String name, String description) {
+		this.add(TFConfig.CONFIG_ID + key, name);
+		this.add(TFConfig.CONFIG_ID + key + ".tooltip", description);
+	}
+
+	public void configCategory(String key, String name, String description) {
+		this.add(TFConfig.CONFIG_ID + key, name);
+		this.add(TFConfig.CONFIG_ID + key + ".tooltip", description);
+		this.add(name + ".button", "Edit");
+	}
 
 	@Override
 	public CompletableFuture<?> run(CachedOutput cache) {

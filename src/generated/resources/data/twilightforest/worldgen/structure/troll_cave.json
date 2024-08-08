@@ -8,6 +8,7 @@
   "allow_biome_underground_decorations": true,
   "ambient_spawns": [],
   "biomes": "#twilightforest:valid_troll_cave_biomes",
+  "center_in_chunk": false,
   "chunk_clearance_radius": 4,
   "hint_item": {
     "components": {
@@ -114,6 +115,7 @@
   },
   "speleothem_config": "twilightforest:troll_cave",
   "step": "underground_structures",
+  "structure_icon": "twilightforest:troll_caves",
   "terrain_adaptation": "bury",
   "water_spawns": []
 }

@@ -6,9 +6,9 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.util.Unit;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemLore;
@@ -259,8 +259,9 @@ public class TFCreativeTabs {
 			output.accept(TFBlocks.THORN_ROSE);
 			output.accept(TFBlocks.THORN_LEAVES);
 			output.accept(TFBlocks.HEDGE);
-			output.accept(TFBlocks.FIREFLY_JAR);
-			output.accept(TFBlocks.CICADA_JAR);
+			output.accept(TFItems.MASON_JAR.get().getDefaultInstance());
+			output.accept(TFItems.FIREFLY_JAR.get().getDefaultInstance());
+			output.accept(TFItems.CICADA_JAR.get().getDefaultInstance());
 			output.accept(TFBlocks.FIREFLY_SPAWNER);
 			output.accept(TFBlocks.FIREFLY);
 			output.accept(TFBlocks.CICADA);
@@ -312,8 +313,9 @@ public class TFCreativeTabs {
 			output.accept(TFBlocks.TWISTED_STONE_PILLAR);
 			output.accept(TFBlocks.CANDELABRA);
 			output.accept(TFBlocks.WROUGHT_IRON_FENCE);
-			output.accept(TFBlocks.TERRORCOTTA_LINES);
+			output.accept(TFBlocks.TERRORCOTTA_ARCS);
 			output.accept(TFBlocks.TERRORCOTTA_CURVES);
+			output.accept(TFBlocks.TERRORCOTTA_LINES);
 			makeSkullCandle(output, TFItems.ZOMBIE_SKULL_CANDLE);
 			makeSkullCandle(output, TFItems.SKELETON_SKULL_CANDLE);
 			makeSkullCandle(output, TFItems.WITHER_SKELETON_SKULL_CANDLE);
@@ -406,6 +408,9 @@ public class TFCreativeTabs {
 			output.accept(TFBlocks.UNCRAFTING_TABLE);
 			output.accept(TFBlocks.IRON_LADDER);
 			output.accept(TFBlocks.ROPE);
+			output.accept(TFBlocks.ROYAL_RAGS);
+
+			output.accept(TFBlocks.CURSED_SPAWNER);
 		}).build());
 
 	public static final DeferredHolder<CreativeModeTab, CreativeModeTab> ITEMS = TABS.register("items", () -> CreativeModeTab.builder()
@@ -601,7 +606,8 @@ public class TFCreativeTabs {
 
 		ItemStack loreSword = new ItemStack(TFItems.GLASS_SWORD.get());
 
-		loreSword.set(DataComponents.LORE, new ItemLore(List.of(Component.translatable("item.twilightforest.glass_sword.desc").withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY))));
+		List<Component> GLASS_SWORD_COMPONENTS = List.of(Component.translatable("item.twilightforest.glass_sword.desc").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY)));
+		loreSword.set(DataComponents.LORE, new ItemLore(GLASS_SWORD_COMPONENTS, GLASS_SWORD_COMPONENTS));
 		loreSword.set(DataComponents.UNBREAKABLE, new Unbreakable(true));
 		loreSword.set(TFDataComponents.INFINITE_GLASS_SWORD, Unit.INSTANCE);
 

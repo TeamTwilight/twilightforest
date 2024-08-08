@@ -27,7 +27,7 @@ import twilightforest.entity.ai.goal.ChargeAttackGoal;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFSounds;
-import twilightforest.util.EntityUtil;
+import twilightforest.util.entities.EntityUtil;
 
 public class Minotaur extends Monster implements ITFCharger {
 

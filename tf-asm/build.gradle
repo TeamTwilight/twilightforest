@@ -1,3 +1,5 @@
+import net.neoforged.moddevgradle.internal.RunUtils
+
 plugins {
 	id 'java-library'
 	id 'idea'
@@ -20,16 +22,16 @@ java {
 
 compileJava.options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation,-this-escape" << "-Werror"
 
-base {
-	archivesName = "${project.mod_id}-asm-${project.minecraft_version}"
-}
-
 dependencies {
 	compileOnly "org.jetbrains:annotations:24.0.1"
 	compileOnly "net.neoforged.fancymodloader:loader:4.0.8"
 
 	// This is for javadoc, please do not actually classload anything from the main source set!!!!!!
-	compileOnly project(":")
+	def jankAssShit = RunUtils.getIntellijOutputDirectory(rootProject)
+	if (jankAssShit != null) {
+		jankAssShit = jankAssShit.apply(rootProject).toPath().resolve('production')
+		compileOnly files(jankAssShit.resolve('classes'), jankAssShit.resolve('resources'))
+	}
 }
 
 jar {

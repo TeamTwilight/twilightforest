@@ -6,9 +6,11 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.util.FeaturePlacers;
+import twilightforest.util.features.FeaturePlacers;
+import twilightforest.util.RootPlacer;
 import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
 
 import java.util.function.BiConsumer;
@@ -20,7 +22,7 @@ public class LargeWinterTreeFeature extends TFTreeFeature<TFTreeFeatureConfig> {
 	}
 
 	@Override
-	protected boolean generate(WorldGenLevel world, RandomSource random, BlockPos pos, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, BiConsumer<BlockPos, BlockState> decorationPlacer, TFTreeFeatureConfig config) {
+	protected boolean generate(WorldGenLevel world, RandomSource random, BlockPos pos, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, RootPlacer decorationPlacer, TFTreeFeatureConfig config) {
 		// determine a height
 		int treeHeight = 35;
 		if (random.nextInt(3) == 0) {
@@ -36,7 +38,7 @@ public class LargeWinterTreeFeature extends TFTreeFeature<TFTreeFeatureConfig> {
 		}
 
 		// check if we're on a valid block
-		if (!SnowTreeFeature.validTreePos(world, pos.below())) {
+		if (!SnowTreeFeature.validTreePos(world, pos)) {
 			return false;
 		}
 
@@ -107,10 +109,14 @@ public class LargeWinterTreeFeature extends TFTreeFeature<TFTreeFeatureConfig> {
 
 	private void buildTrunk(LevelAccessor world, BiConsumer<BlockPos, BlockState> trunkPlacer, RandomSource rand, BlockPos pos, int treeHeight, TFTreeFeatureConfig config) {
 		for (int dy = 0; dy < treeHeight; dy++) {
-			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, rand, pos.offset(0, dy, 0), config.trunkProvider);
-			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, rand, pos.offset(1, dy, 0), config.trunkProvider);
-			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, rand, pos.offset(0, dy, 1), config.trunkProvider);
-			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, rand, pos.offset(1, dy, 1), config.trunkProvider);
+			if (FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, rand, pos.offset(0, dy, 0), config.trunkProvider) && dy == 0)
+				world.setBlock(pos.offset(0, -1, 0), Blocks.DIRT.defaultBlockState(), 19);
+			if (FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, rand, pos.offset(0, dy, 1), config.trunkProvider) && dy == 0)
+				world.setBlock(pos.offset(0, -1, 1), Blocks.DIRT.defaultBlockState(), 19);
+			if (FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, rand, pos.offset(1, dy, 0), config.trunkProvider) && dy == 0)
+				world.setBlock(pos.offset(1, -1, 0), Blocks.DIRT.defaultBlockState(), 19);
+			if (FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, rand, pos.offset(1, dy, 1), config.trunkProvider) && dy == 0)
+				world.setBlock(pos.offset(1, -1, 1), Blocks.DIRT.defaultBlockState(), 19);
 		}
 	}
 }

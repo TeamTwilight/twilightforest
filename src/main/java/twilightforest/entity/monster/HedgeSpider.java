@@ -18,7 +18,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.init.TFSounds;
 import twilightforest.init.TFStructures;
-import twilightforest.util.LegacyLandmarkPlacements;
+import twilightforest.util.landmarks.LegacyLandmarkPlacements;
 
 /**
  * The hedge spider is just like a normal spider, but it can spawn in the daytime.

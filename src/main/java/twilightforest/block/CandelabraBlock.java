@@ -5,6 +5,7 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.Vec3i;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
@@ -15,13 +16,16 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.entity.ItemSteerable;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -45,6 +49,8 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.neoforged.neoforge.common.ItemAbilities;
+import net.neoforged.neoforge.common.ItemAbility;
 import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.CandelabraBlockEntity;
@@ -179,49 +185,54 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 		}
 	}
 
+	@Nullable
+	@Override
+	public BlockState getToolModifiedState(BlockState state, UseOnContext context, ItemAbility itemAbility, boolean simulate) {
+		if (ItemAbilities.FIRESTARTER_LIGHT == itemAbility) {
+			if (this.canBeLit(state)) {
+				return state.setValue(LIGHTING, Lighting.NORMAL);
+			}
+		}
+		return super.getToolModifiedState(state, context, itemAbility, simulate);
+	}
+
 	@Override
 	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
 		if (stack.is(ItemTags.CANDLES) || player.isSecondaryUseActive()) {
 			if (level.getBlockEntity(pos) instanceof CandelabraBlockEntity candelabra) {
-				Direction direction = state.getValue(HorizontalDirectionalBlock.FACING);
-				Optional<Double> optional = getRelativeHitCoordinatesForBlockFace(result, direction);
-				if (optional.isEmpty()) {
-					return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
-				} else {
-					int i = getHitSlot(optional.get(), direction == Direction.NORTH || direction == Direction.EAST);
-					if (state.getValue(CANDLES.get(i)) && player.isSecondaryUseActive()) {
-						if (!level.isClientSide()) {
-							ItemStack itemstack = new ItemStack(candelabra.removeCandle(i));
-							level.playSound(null, pos, SoundEvents.CANDLE_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
-							if (!player.getAbilities().instabuild) {
-								if (!player.getInventory().add(itemstack)) {
-									player.drop(itemstack, false);
-								}
+				int i = this.getSlot(state.getValue(FACING), result.getDirection(), result.getLocation().subtract(result.getBlockPos().getX(), result.getBlockPos().getY(), result.getBlockPos().getZ()));
+				if (state.getValue(CANDLES.get(i)) && player.isSecondaryUseActive()) {
+					if (!level.isClientSide()) {
+						ItemStack itemstack = new ItemStack(candelabra.removeCandle(i));
+						level.playSound(null, pos, SoundEvents.CANDLE_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
+						if (player.hasInfiniteMaterials()) {
+							if (!player.getInventory().contains(itemstack)) {
+								player.getInventory().add(itemstack);
 							}
-							level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
+						} else {
+							if (!player.getInventory().add(itemstack)) {
+								player.drop(itemstack, false);
+							}
+						}
+						level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
+					}
+					return ItemInteractionResult.sidedSuccess(level.isClientSide());
+				} else if (!state.getValue(CANDLES.get(i))) {
+					if (stack.is(ItemTags.CANDLES) && stack.getItem() instanceof BlockItem block) {
+						if (!level.isClientSide()) {
+							player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
+							candelabra.setCandle(i, block.getBlock());
+							level.playSound(null, pos, SoundEvents.CANDLE_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
+							stack.consume(1, player);
 						}
 						return ItemInteractionResult.sidedSuccess(level.isClientSide());
-					} else if (!state.getValue(CANDLES.get(i))) {
-						if (stack.is(ItemTags.CANDLES) && stack.getItem() instanceof BlockItem block) {
-							if (!level.isClientSide()) {
-								player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
-								candelabra.setCandle(i, block.getBlock());
-								level.playSound(null, pos, SoundEvents.CANDLE_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
-								if (!player.getAbilities().instabuild) {
-									stack.shrink(1);
-								}
-							}
-							return ItemInteractionResult.sidedSuccess(level.isClientSide());
-						}
 					}
 				}
 			}
 		}
 		if (stack.is(Tags.Items.DUSTS_REDSTONE) && state.getValue(LIGHTING) == Lighting.NORMAL) {
 			level.setBlockAndUpdate(pos, state.setValue(LIGHTING, Lighting.DIM));
-			if (!player.getAbilities().instabuild) {
-				stack.shrink(1);
-			}
+			stack.consume(1, player);
 			return ItemInteractionResult.sidedSuccess(level.isClientSide());
 		}
 		return this.lightCandles(state, level, pos, player, hand);
@@ -236,6 +247,24 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 		} else {
 			level.neighborChanged(pos.below(), this, pos);
 			level.updateNeighborsAtExceptFromFacing(pos.below(), this, Direction.UP);
+		}
+	}
+
+	protected int getSlot(Direction blockDir, Direction hitFace, Vec3 hitVec) {
+		Vec3i up = new Vec3i(0, 1, 0);
+		Vec3i dir = up.cross(blockDir.getNormal());
+		boolean reverse = blockDir.getAxis() == Direction.Axis.X && hitFace.getAxis() != blockDir.getAxis();
+
+		double cx = dir.getX() * hitVec.x() + dir.getZ() * hitVec.z();
+
+		if (cx <= 0.0D) {
+			cx = cx + 1;
+		}
+
+		if (cx <= 0.375F) {
+			return reverse ? 2 : 0;
+		} else {
+			return cx <= 0.6875F ? 1 : reverse ? 0 : 2;
 		}
 	}
 

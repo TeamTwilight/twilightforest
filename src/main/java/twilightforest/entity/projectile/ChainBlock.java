@@ -133,24 +133,22 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 	protected void onHitBlock(BlockHitResult result) {
 		super.onHitBlock(result);
 		BlockPos pos = result.getBlockPos();
-		Level level = this.level();
-		if (!level.isClientSide()) {
+		if (this.level() instanceof ServerLevel level && this.stack != null) {
 			BlockState state = level.getBlockState(pos);
-			boolean restrictedPlaceMode = this.getOwner() instanceof ServerPlayer player && player.gameMode.getGameModeForPlayer().isBlockPlacingRestricted();
-			if (!state.isAir() && this.stack != null) {
-				if (this.level() instanceof ServerLevel serverlevel) {
-					Vec3 vec3 = result.getBlockPos().clampLocationWithin(result.getLocation());
-					EnchantmentHelper.onHitBlock(
-						serverlevel,
-						this.stack,
-						this.getOwner() instanceof LivingEntity livingentity ? livingentity : null,
-						this,
-						null,
-						vec3,
-						level.getBlockState(result.getBlockPos()),
-						item -> this.kill()
-					);
-				}
+			if (!state.isAir()) {
+				Vec3 vec3 = result.getBlockPos().clampLocationWithin(result.getLocation().add(-0.5D, 0D, 0D));
+				EnchantmentHelper.onHitBlock(
+					level,
+					this.stack,
+					this.getOwner() instanceof LivingEntity livingentity ? livingentity : null,
+					this,
+					null,
+					vec3,
+					level.getBlockState(result.getBlockPos()),
+					item -> this.kill()
+				);
+
+				boolean restrictedPlaceMode = this.getOwner() instanceof ServerPlayer player && player.gameMode.getGameModeForPlayer().isBlockPlacingRestricted();
 				if (!canBreakBlockAt(level, pos, state, this.stack, restrictedPlaceMode)) {
 					if (!this.isReturning && !this.hitEntity) {
 						this.playSound(TFSounds.BLOCK_AND_CHAIN_COLLIDE.get(), 0.125F, this.random.nextFloat());

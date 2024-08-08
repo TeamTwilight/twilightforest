@@ -44,8 +44,9 @@
             }
           ]
         },
+        "rootPenetrability": 1,
         "root_length": 12,
-        "y_offset": 1
+        "y_offset": 0
       },
       {
         "type": "minecraft:leave_vine",

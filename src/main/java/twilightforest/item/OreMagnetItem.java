@@ -17,7 +17,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
-import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -33,7 +32,7 @@ import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFParticleType;
 import twilightforest.init.TFSounds;
 import twilightforest.network.ParticlePacket;
-import twilightforest.util.VoxelBresenhamIterator;
+import twilightforest.util.iterators.VoxelBresenhamIterator;
 
 import javax.annotation.Nonnull;
 import java.util.HashMap;

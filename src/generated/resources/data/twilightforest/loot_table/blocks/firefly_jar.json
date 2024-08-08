@@ -11,6 +11,15 @@
       "entries": [
         {
           "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:copy_components",
+              "include": [
+                "twilightforest:jar_lid"
+              ],
+              "source": "block_entity"
+            }
+          ],
           "name": "twilightforest:firefly_jar"
         }
       ],

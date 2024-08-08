@@ -6,7 +6,7 @@ import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import twilightforest.client.LockedBiomeToast;
 import twilightforest.config.TFConfig;
-import twilightforest.util.LandmarkUtil;
+import twilightforest.util.landmarks.LandmarkUtil;
 import twilightforest.util.Restriction;
 
 import java.util.Optional;

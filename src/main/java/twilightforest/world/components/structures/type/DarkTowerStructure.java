@@ -2,6 +2,7 @@ package twilightforest.world.components.structures.type;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.util.RandomSource;
@@ -12,16 +13,19 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.*;
+import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFEntities;
+import twilightforest.init.TFMapDecorations;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.world.components.structures.darktower.DarkTowerMainComponent;
 import twilightforest.world.components.structures.util.ControlledSpawningStructure;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class DarkTowerStructure extends ControlledSpawningStructure {
@@ -29,8 +33,8 @@ public class DarkTowerStructure extends ControlledSpawningStructure {
 		controlledSpawningCodec(instance).apply(instance, DarkTowerStructure::new)
 	);
 
-	public DarkTowerStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, DecorationConfig decorationConfig, StructureSettings structureSettings) {
-		super(controlledSpawningConfig, advancementLockConfig, hintConfig, decorationConfig, structureSettings);
+	public DarkTowerStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, DecorationConfig decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
+		super(controlledSpawningConfig, advancementLockConfig, hintConfig, decorationConfig, centerInChunk, structureIcon, structureSettings);
 	}
 
 	@Override
@@ -64,6 +68,7 @@ public class DarkTowerStructure extends ControlledSpawningStructure {
 			new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_knights"))),
 			new HintConfig(HintConfig.book("darktower", 3), TFEntities.KOBOLD.get()),
 			new DecorationConfig(1, false, true, true),
+			true, Optional.of(TFMapDecorations.DARK_TOWER),
 			new StructureSettings(
 				context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_DARK_TOWER_BIOMES),
 				Arrays.stream(MobCategory.values()).collect(Collectors.toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create()))), // Landmarks have Controlled Mob spawning

@@ -438,14 +438,7 @@ public abstract class BlockModelBuilders extends BlockModelHelpers {
 			.face(Direction.NORTH).texture("#side").end()
 			.face(Direction.SOUTH).texture("#side").end()
 			.face(Direction.WEST).texture("#side").end()
-			.face(Direction.EAST).texture("#side").end().end()
-			.element().from(4.0F, 12.0F, 4.0F).to(12.0F, 16.0F, 12.0F)
-			.face(Direction.UP).uvs(4.0F, 4.0F, 12.0F, 12.0F).texture("#cork").cullface(Direction.UP).end()
-			.face(Direction.DOWN).uvs(4.0F, 4.0F, 12.0F, 12.0F).texture("#cork").end()
-			.face(Direction.NORTH).uvs(4.0F, 0.0F, 12.0F, 4.0F).texture("#cork").end()
-			.face(Direction.SOUTH).uvs(4.0F, 0.0F, 12.0F, 4.0F).texture("#cork").end()
-			.face(Direction.WEST).uvs(4.0F, 0.0F, 12.0F, 4.0F).texture("#cork").end()
-			.face(Direction.EAST).uvs(4.0F, 0.0F, 12.0F, 4.0F).texture("#cork").end().end();
+			.face(Direction.EAST).texture("#side").end().end();
 	}
 
 	protected BlockModelBuilder cubeAllTinted(String name, String all, boolean flipV) {

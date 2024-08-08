@@ -5,10 +5,13 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.state.properties.StructureMode;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.TemplateStructurePiece;
@@ -16,6 +19,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockIgnoreProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import twilightforest.util.ArrayUtil;
 import twilightforest.util.BoundingBoxUtils;
@@ -55,6 +59,10 @@ public abstract class TwilightTemplateStructurePiece extends TemplateStructurePi
 
 		structureTag.putInt("rotation", this.placeSettings.getRotation().ordinal());
 		structureTag.putInt("mirror", this.placeSettings.getMirror().ordinal());
+		BlockPos pivot = this.placeSettings.getRotationPivot();
+		structureTag.putInt("pivot_x", pivot.getX());
+		structureTag.putInt("pivot_y", pivot.getY());
+		structureTag.putInt("pivot_z", pivot.getZ());
 	}
 
 	// This will be required if you want to dig a piece into a noise beard
@@ -73,6 +81,7 @@ public abstract class TwilightTemplateStructurePiece extends TemplateStructurePi
 		return new StructurePlaceSettings()
 			.setRotation(ArrayUtil.wrapped(Rotation.values(), compoundTag.getInt("rotation")))
 			.setMirror(ArrayUtil.wrapped(Mirror.values(), compoundTag.getInt("mirror")))
+			.setRotationPivot(new BlockPos(compoundTag.getInt("pivot_x"), compoundTag.getInt("pivot_y"), compoundTag.getInt("pivot_z")))
 			.addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK);
 	}
 
@@ -88,6 +97,44 @@ public abstract class TwilightTemplateStructurePiece extends TemplateStructurePi
 		return makeSettings(Rotation.getRandom(random));
 	}
 
+	// VANILLACOPY: Same as the supercall except without the dumb jigsaw code
+	@Override
+	public void postProcess(WorldGenLevel level, StructureManager structureManager, ChunkGenerator chunkGen, RandomSource random, BoundingBox chunkBounds, ChunkPos chunkPos, BlockPos structureBottomCenter) {
+		this.placeSettings.setBoundingBox(chunkBounds);
+		this.boundingBox = this.template.getBoundingBox(this.placeSettings, this.templatePosition);
+		if (this.template.placeInWorld(level, this.templatePosition, structureBottomCenter, this.placeSettings, random, 2)) {
+			for (StructureTemplate.StructureBlockInfo structuretemplate$structureblockinfo : this.template
+				.filterBlocks(this.templatePosition, this.placeSettings, Blocks.STRUCTURE_BLOCK)) {
+				if (structuretemplate$structureblockinfo.nbt() != null) {
+					StructureMode structuremode = StructureMode.valueOf(structuretemplate$structureblockinfo.nbt().getString("mode"));
+					if (structuremode == StructureMode.DATA) {
+						this.handleDataMarker(
+							structuretemplate$structureblockinfo.nbt().getString("metadata"),
+							structuretemplate$structureblockinfo.pos(),
+							level,
+							random,
+							chunkBounds,
+							chunkGen // Additional param, new method callable
+						);
+					}
+				}
+			}
+		}
+	}
+
+	// Enhanced version of handleDataMarker() method that up-levels ServerLevelAccessor into WorldGenLevel while also adding ChunkGenerator parameter
+	protected void handleDataMarker(String label, BlockPos pos, WorldGenLevel level, RandomSource random, BoundingBox chunkBounds, ChunkGenerator chunkGen) {
+	}
+
+	@Deprecated
+	@Override
+	protected final void handleDataMarker(String label, BlockPos pos, ServerLevelAccessor level, RandomSource random, BoundingBox chunkBounds) {
+		// Deprecated - use above method as that is called instead
+	}
+
+	public String getTemplateName() {
+		return this.templateName;
+	}
 
 	// Worse case scenario if the terrain still isn't being risen for the Lich Tower,
 	// then we'll need to do via this. I still have other solutions I'd like to explore first

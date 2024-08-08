@@ -3,19 +3,22 @@ package twilightforest.world.components.structures.util;
 import com.mojang.datafixers.Products;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Optional;
 
 // Landmark structure with a progression lock; Lich Tower/Labyrinth/Hydra Lair/Final Castle/etc
 public abstract class ProgressionStructure extends ConquerableStructure implements AdvancementLockedStructure, StructureHints {
-	protected static <S extends ProgressionStructure> Products.P4<RecordCodecBuilder.Mu<S>, AdvancementLockConfig, HintConfig, DecorationConfig, StructureSettings> progressionCodec(RecordCodecBuilder.Instance<S> instance) {
+	protected static <S extends ProgressionStructure> Products.P6<RecordCodecBuilder.Mu<S>, AdvancementLockConfig, HintConfig, DecorationConfig, Boolean, Optional<Holder<MapDecorationType>>, StructureSettings> progressionCodec(RecordCodecBuilder.Instance<S> instance) {
 		return instance.group(
 			AdvancementLockConfig.CODEC.fieldOf("advancements_required").forGetter(s -> s.advancementLockConfig),
 			HintConfig.FLAT_CODEC.forGetter(s -> s.hintConfig)
@@ -25,8 +28,8 @@ public abstract class ProgressionStructure extends ConquerableStructure implemen
 	protected final AdvancementLockConfig advancementLockConfig;
 	protected final HintConfig hintConfig;
 
-	public ProgressionStructure(AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, DecorationConfig decorationConfig, StructureSettings structureSettings) {
-		super(decorationConfig, structureSettings);
+	public ProgressionStructure(AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, DecorationConfig decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
+		super(decorationConfig, centerInChunk, structureIcon, structureSettings);
 
 		this.advancementLockConfig = advancementLockConfig;
 		this.hintConfig = hintConfig;

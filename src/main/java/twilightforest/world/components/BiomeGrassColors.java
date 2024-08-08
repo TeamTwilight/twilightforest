@@ -3,7 +3,7 @@ package twilightforest.world.components;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.biome.BiomeSpecialEffects;
 import net.minecraft.world.level.biome.BiomeSpecialEffects.GrassColorModifier;
-import twilightforest.util.TFEnumExtensions;
+import twilightforest.TFEnumExtensions;
 
 public class BiomeGrassColors {
 

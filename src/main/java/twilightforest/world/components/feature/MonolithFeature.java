@@ -11,7 +11,7 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import twilightforest.entity.passive.Raven;
 import twilightforest.init.TFEntities;
-import twilightforest.util.FeatureUtil;
+import twilightforest.util.features.FeatureUtil;
 
 /**
  * A 2x2 monolith of obsidian

@@ -20,7 +20,7 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.neoforged.fml.loading.FMLLoader;
 import twilightforest.events.EntityEvents;
-import twilightforest.util.LandmarkUtil;
+import twilightforest.util.landmarks.LandmarkUtil;
 import twilightforest.world.components.structures.start.TFStructureStart;
 import twilightforest.world.components.structures.util.LandmarkStructure;
 
@@ -28,12 +28,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.StringJoiner;
 
+@twilightforest.beans.Component
 public class InfoCommand {
-	public static LiteralArgumentBuilder<CommandSourceStack> register() {
-		return Commands.literal("info").requires(cs -> cs.hasPermission(2)).executes(InfoCommand::run);
+
+	public LiteralArgumentBuilder<CommandSourceStack> register() {
+		return Commands.literal("info").requires(cs -> cs.hasPermission(2)).executes(this::run);
 	}
 
-	private static int run(CommandContext<CommandSourceStack> ctx) {
+	private int run(CommandContext<CommandSourceStack> ctx) {
 		CommandSourceStack source = ctx.getSource();
 		ServerLevel level = source.getLevel();
 

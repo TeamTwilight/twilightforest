@@ -9,6 +9,8 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.item.ItemStack;
 import twilightforest.TFRegistries;
 import twilightforest.init.custom.MagicPaintingVariants;
@@ -85,18 +87,25 @@ public record MagicPaintingVariant(int width, int height, List<Layer> layers) {
 			}
 		}
 
-		public record OpacityModifier(Type type, float multiplier, boolean invert, float min, float max, float from, float to, ItemStack item) {
+		public record OpacityModifier(Type type, float multiplier, boolean invert, float min, float max, float from, float to, ItemStack item, Optional<MobEffectCategory> effectCategory) {
 			public OpacityModifier(Type type, float multiplier, boolean invert, float min, float max) {
-				this(type, multiplier, invert, min, max, Float.NaN, Float.NaN, ItemStack.EMPTY);
+				this(type, multiplier, invert, min, max, Float.NaN, Float.NaN, ItemStack.EMPTY, Optional.empty());
 			}
 
 			public OpacityModifier(Type type, float multiplier, boolean invert, float min, float max, float from, float to) {
-				this(type, multiplier, invert, min, max, from, to, ItemStack.EMPTY);
+				this(type, multiplier, invert, min, max, from, to, ItemStack.EMPTY, Optional.empty());
 			}
 
 			public OpacityModifier(Type type, float multiplier, boolean invert, float min, float max, ItemStack item) {
-				this(type, multiplier, invert, min, max, Float.NaN, Float.NaN, item);
+				this(type, multiplier, invert, min, max, Float.NaN, Float.NaN, item, Optional.empty());
 			}
+
+			public OpacityModifier(Type type, float multiplier, boolean invert, float min, float max, MobEffectCategory effectCategory) {
+				this(type, multiplier, invert, min, max, Float.NaN, Float.NaN, ItemStack.EMPTY, Optional.of(effectCategory));
+			}
+
+			//Just so we can access MobEffectCategory in json
+			public static final Codec<MobEffectCategory> MOB_EFFECT_CATEGORY_CODEC = Codec.stringResolver(MobEffectCategory::toString, MobEffectCategory::valueOf);
 
 			public static final Codec<OpacityModifier> CODEC = RecordCodecBuilder.create((recordCodecBuilder) -> recordCodecBuilder.group(
 				OpacityModifier.Type.CODEC.fieldOf("type").forGetter(OpacityModifier::type),
@@ -106,33 +115,37 @@ public record MagicPaintingVariant(int width, int height, List<Layer> layers) {
 				ExtraCodecs.POSITIVE_FLOAT.fieldOf("max").forGetter(OpacityModifier::max),
 				Codec.FLOAT.optionalFieldOf("from").forGetter((modifier) -> Float.isNaN(modifier.from()) ? Optional.empty() : Optional.of(modifier.from())),
 				Codec.FLOAT.optionalFieldOf("to").forGetter((modifier) -> Float.isNaN(modifier.to()) ? Optional.empty() : Optional.of(modifier.to())),
-				ItemStack.CODEC.optionalFieldOf("item_stack").forGetter((modifier) -> modifier.item().isEmpty() ? Optional.empty() : Optional.of(modifier.item()))
+				ItemStack.CODEC.optionalFieldOf("item_stack").forGetter((modifier) -> modifier.item().isEmpty() ? Optional.empty() : Optional.of(modifier.item())),
+				MOB_EFFECT_CATEGORY_CODEC.optionalFieldOf("effect_category").forGetter((modifier) -> modifier.effectCategory().isEmpty() ? Optional.empty() : modifier.effectCategory())
 			).apply(recordCodecBuilder, OpacityModifier::create));
 
 			@SuppressWarnings("OptionalUsedAsFieldOrParameterType") // Vanilla does this too
-			private static OpacityModifier create(Type type, float multiplier, boolean invert, float min, float max, Optional<Float> from, Optional<Float> to, Optional<ItemStack> item) {
+			private static OpacityModifier create(Type type, float multiplier, boolean invert, float min, float max, Optional<Float> from, Optional<Float> to, Optional<ItemStack> item, Optional<MobEffectCategory> effectCategory) {
 				if (type.usesRange() && (from.isEmpty() || to.isEmpty())) throw new NoSuchElementException("Range for opacity modifier is not defined!");
-				return new OpacityModifier(type, multiplier, invert, min, max, from.orElse(Float.NaN), to.orElse(Float.NaN), item.orElse(ItemStack.EMPTY));
+				return new OpacityModifier(type, multiplier, invert, min, max, from.orElse(Float.NaN), to.orElse(Float.NaN), item.orElse(ItemStack.EMPTY), effectCategory);
 			}
 
 			public enum Type implements StringRepresentable {
-				DISTANCE("distance", true),
-				WEATHER("weather", false),
-				STORM("storm", false),
-				LIGHTNING("lightning", false),
-				DAY_TIME("day_time", true),
-				SINE_TIME("sine_time", false),
-				HEALTH("health", true),
-				HUNGER("hunger", true),
-				HOLDING_ITEM("holding_item", false);
+				DISTANCE("distance", true, true),
+				WEATHER("weather", false, true),
+				STORM("storm", false, true),
+				LIGHTNING("lightning", false, false),
+				DAY_TIME("day_time", true, true),
+				SINE_TIME("sine_time", false, false),
+				HEALTH("health", true, true),
+				HUNGER("hunger", true, true),
+				HOLDING_ITEM("holding_item", false, true),
+				MOB_EFFECT_CATEGORY("mob_effect_category", false, true);
 
 				static final Codec<OpacityModifier.Type> CODEC = StringRepresentable.fromEnum(OpacityModifier.Type::values);
 				private final String name;
-				private final boolean usesRange;
+				private final boolean usesRange; // Is this modifier forced to have a defined range
+				private final boolean toThePowerOfItsMultiplier; // Is this modifier's alpha calculated to the power of its multiplier value
 
-				Type(String pName, boolean usesRange) {
+				Type(String pName, boolean usesRange, boolean toThePowerOfItsMultiplier) {
 					this.name = pName;
 					this.usesRange = usesRange;
+					this.toThePowerOfItsMultiplier = toThePowerOfItsMultiplier;
 				}
 
 				@Override
@@ -142,6 +155,10 @@ public record MagicPaintingVariant(int width, int height, List<Layer> layers) {
 
 				public boolean usesRange() {
 					return this.usesRange;
+				}
+
+				public boolean powerOfMultiplier() {
+					return this.toThePowerOfItsMultiplier;
 				}
 			}
 		}
