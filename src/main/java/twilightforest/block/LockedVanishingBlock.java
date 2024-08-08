@@ -29,7 +29,7 @@ public class LockedVanishingBlock extends VanishingBlock {
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		builder.add(LOCKED);
+		super.createBlockStateDefinition(builder.add(LOCKED));
 	}
 
 	@Override
