@@ -43,6 +43,7 @@ import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.*;
 import twilightforest.client.model.entity.newmodels.*;
 import twilightforest.client.particle.*;
+import twilightforest.client.renderer.CursedSpawnerRenderer;
 import twilightforest.client.renderer.entity.*;
 import twilightforest.client.renderer.entity.newmodels.*;
 import twilightforest.client.renderer.map.ConqueredMapIconRenderer;
@@ -247,6 +248,7 @@ public class TFClientSetup {
 		event.registerBlockEntityRenderer(TFBlockEntities.CANDELABRA.get(), CandelabraTileEntityRenderer::new);
 		event.registerBlockEntityRenderer(TFBlockEntities.JAR.get(), JarRenderer::new);
 		event.registerBlockEntityRenderer(TFBlockEntities.MASON_JAR.get(), JarRenderer.MasonJarRenderer::new);
+		event.registerBlockEntityRenderer(TFBlockEntities.CURSED_SPAWNER.get(), CursedSpawnerRenderer::new);
 	}
 
 	@SuppressWarnings("deprecation")

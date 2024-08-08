@@ -18,17 +18,17 @@ import twilightforest.util.jigsaw.JigsawRecord;
 import twilightforest.world.components.processors.SoftReplaceProcessor;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
 
-public class TowerRoof extends TwilightJigsawPiece implements PieceBeardifierModifier {
-	public TowerRoof(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
-		super(TFStructurePieceTypes.TOWER_ROOF.get(), compoundTag, ctx, readSettings(compoundTag));
+public class LichTowerWingRoof extends TwilightJigsawPiece implements PieceBeardifierModifier {
+	public LichTowerWingRoof(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
+		super(TFStructurePieceTypes.LICH_WING_ROOF.get(), compoundTag, ctx, readSettings(compoundTag));
 
-		TowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(SoftReplaceProcessor.INSTANCE));
+		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(SoftReplaceProcessor.INSTANCE));
 	}
 
-	public TowerRoof(int genDepth, StructureTemplateManager structureManager, ResourceLocation templateLocation, JigsawPlaceContext jigsawContext) {
-		super(TFStructurePieceTypes.TOWER_ROOF.get(), genDepth, structureManager, templateLocation, jigsawContext);
+	public LichTowerWingRoof(int genDepth, StructureTemplateManager structureManager, ResourceLocation templateLocation, JigsawPlaceContext jigsawContext) {
+		super(TFStructurePieceTypes.LICH_WING_ROOF.get(), genDepth, structureManager, templateLocation, jigsawContext);
 
-		TowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(SoftReplaceProcessor.INSTANCE));
+		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(SoftReplaceProcessor.INSTANCE));
 	}
 
 	@Override

@@ -642,7 +642,8 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			TFBlocks.BOLD_STONE_PILLAR.get(),
 			TFBlocks.TERRORCOTTA_CURVES.value(),
 			TFBlocks.TERRORCOTTA_LINES.value(),
-			TFBlocks.TERRORCOTTA_ARCS.value()
+			TFBlocks.TERRORCOTTA_ARCS.value(),
+			TFBlocks.CURSED_SPAWNER.value()
 		).addTags(MAZESTONE, CASTLE_BLOCKS, DEADROCK);
 
 		this.tag(BlockTags.MINEABLE_WITH_SHOVEL).add(

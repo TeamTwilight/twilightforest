@@ -90,7 +90,7 @@ public class TreeRootsDecorator extends TreeDecorator {
 
 		int numBranches = this.strands + context.random().nextInt(this.addExtraStrands + 1);
 		float offset = context.random().nextFloat();
-		BlockPos startPos = context.logs().get(0).above(this.yOffset);
+		BlockPos startPos = context.logs().getFirst().above(this.yOffset);
 
 		if (this.hasSurfaceRoots) {
 			for (int i = 0; i < numBranches; i++) {

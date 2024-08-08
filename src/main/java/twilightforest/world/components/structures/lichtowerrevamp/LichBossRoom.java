@@ -38,17 +38,17 @@ import twilightforest.world.components.structures.TwilightJigsawPiece;
 
 import java.util.List;
 
-public final class BossRoom extends TwilightJigsawPiece implements PieceBeardifierModifier {
-	public BossRoom(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
-		super(TFStructurePieceTypes.TOWER_BOSS_ROOM.get(), compoundTag, ctx, readSettings(compoundTag));
+public final class LichBossRoom extends TwilightJigsawPiece implements PieceBeardifierModifier {
+	public LichBossRoom(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
+		super(TFStructurePieceTypes.LICH_BOSS_ROOM.get(), compoundTag, ctx, readSettings(compoundTag));
 
-		TowerUtil.addDefaultProcessors(this.placeSettings);
+		LichTowerUtil.addDefaultProcessors(this.placeSettings);
 	}
 
-	public BossRoom(StructureTemplateManager structureManager, JigsawPlaceContext jigsawContext) {
-		super(TFStructurePieceTypes.TOWER_BOSS_ROOM.get(), 1, structureManager, TwilightForestMod.prefix("lich_tower/tower_boss_room"), jigsawContext);
+	public LichBossRoom(StructureTemplateManager structureManager, JigsawPlaceContext jigsawContext) {
+		super(TFStructurePieceTypes.LICH_BOSS_ROOM.get(), 1, structureManager, TwilightForestMod.prefix("lich_tower/tower_boss_room"), jigsawContext);
 
-		TowerUtil.addDefaultProcessors(this.placeSettings);
+		LichTowerUtil.addDefaultProcessors(this.placeSettings);
 	}
 
 	@Override

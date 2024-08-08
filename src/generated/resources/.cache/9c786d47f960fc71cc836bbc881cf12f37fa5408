@@ -1,4 +1,4 @@
-// 1.21	2024-06-20T01:05:22.2297812	Twilight Forest Biome Tags
+// 1.21	2024-08-06T15:42:55.281116	Twilight Forest Biome Tags
 de7eae9ce12a34bc9ba7e9b0a080f206b7bf5ab8 data/minecraft/tags/worldgen/biome/has_closer_water_fog.json
 6fcfc9f11967d4486971cf630ce3613738d77290 data/minecraft/tags/worldgen/biome/snow_golem_melts.json
 d465db5120f478c5dbf3e4038d755aaec6ea9eed data/minecraft/tags/worldgen/biome/spawns_cold_variant_frogs.json
@@ -15,7 +15,7 @@ ffed46f1c73aadb1dec87c223b4930163ccd7036 data/twilightforest/tags/worldgen/biome
 314565d6885146dded331c51c43558f6992cd4f2 data/twilightforest/tags/worldgen/biome/valid_giant_house_biomes.json
 5dbc0593cfefd9710d1e409268dc18f9778ebaf9 data/twilightforest/tags/worldgen/biome/valid_hedge_maze_biomes.json
 5dbc0593cfefd9710d1e409268dc18f9778ebaf9 data/twilightforest/tags/worldgen/biome/valid_hollow_hill_biomes.json
-535a3a8317f5c062dbfcd94924fd56bb6969205d data/twilightforest/tags/worldgen/biome/valid_hollow_tree_biomes.json
+861baf1268b08dc8d0cd7228cb90e97515c403e0 data/twilightforest/tags/worldgen/biome/valid_hollow_tree_biomes.json
 5fd1719d0b22f0d7e010f4116f4eb77dee86b226 data/twilightforest/tags/worldgen/biome/valid_hydra_lair_biomes.json
 2a382bb5f70078ea9ba821ce46214def4f712510 data/twilightforest/tags/worldgen/biome/valid_knight_stronghold_biomes.json
 a14f9ef2cc3bd86f97831c44eea5ff0b28102c38 data/twilightforest/tags/worldgen/biome/valid_labyrinth_biomes.json

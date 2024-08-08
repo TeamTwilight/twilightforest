@@ -9,10 +9,13 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import twilightforest.beans.Component;
 import twilightforest.init.TFDataAttachments;
 
+@Component
 public class ShieldCommand {
-	public static LiteralArgumentBuilder<CommandSourceStack> register() {
+
+	public LiteralArgumentBuilder<CommandSourceStack> register() {
 		return Commands.literal("shield")
 			.requires(cs -> cs.hasPermission(2))
 			.then(Commands.argument("target", EntityArgument.entity())
@@ -28,14 +31,14 @@ public class ShieldCommand {
 							.executes(ctx -> add(EntityArgument.getEntity(ctx, "target"), IntegerArgumentType.getInteger(ctx, "amount"), BoolArgumentType.getBool(ctx, "temp")))))));
 	}
 
-	private static int add(Entity e, int num, boolean temporary) {
+	private int add(Entity e, int num, boolean temporary) {
 		if (e instanceof LivingEntity living) {
 			living.getData(TFDataAttachments.FORTIFICATION_SHIELDS).addShields(living, num, temporary);
 		}
 		return Command.SINGLE_SUCCESS;
 	}
 
-	private static int set(Entity e, int num, boolean temporary) {
+	private int set(Entity e, int num, boolean temporary) {
 		if (e instanceof LivingEntity living) {
 			living.getData(TFDataAttachments.FORTIFICATION_SHIELDS).setShields(living, num, temporary);
 		}

@@ -71,6 +71,7 @@ public class ProgressionEvents {
 		BlockPos pos = event.getPos();
 		if (isBlockProtectedFromBreaking(level, pos) && isAreaProtected(level, player, pos)) {
 			event.setCanceled(true);
+			player.inventoryMenu.sendAllDataToRemote();
 		}
 	}
 
@@ -90,6 +91,7 @@ public class ProgressionEvents {
 
 			if (isBlockProtectedFromBreaking(level, pos) && isAreaProtected(level, player, pos)) {
 				event.setCanceled(true);
+				player.inventoryMenu.sendAllDataToRemote();
 			}
 		}
 	}

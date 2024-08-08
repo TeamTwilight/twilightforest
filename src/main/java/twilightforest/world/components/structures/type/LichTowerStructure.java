@@ -2,7 +2,6 @@ package twilightforest.world.components.structures.type;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
@@ -12,7 +11,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.biome.MobSpawnSettings;
-import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
@@ -23,7 +21,6 @@ import twilightforest.init.TFEntities;
 import twilightforest.init.TFMapDecorations;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.world.components.structures.lichtower.TowerMainComponent;
-import twilightforest.world.components.structures.lichtowerrevamp.TowerFoyer;
 import twilightforest.world.components.structures.util.ControlledSpawningStructure;
 
 import java.util.Arrays;
@@ -43,7 +40,7 @@ public class LichTowerStructure extends ControlledSpawningStructure {
 	@Override
 	protected @Nullable StructurePiece getFirstPiece(GenerationContext context, RandomSource random, ChunkPos chunkPos, int x, int y, int z) {
 		return new TowerMainComponent(random, 0, x, y, z);
-		//return new TowerFoyer(context.structureTemplateManager(), new BlockPos(x, y, z), Rotation.getRandom(random), random.nextBoolean(), random.nextBoolean());
+		// return new LichTowerFoyer(context.structureTemplateManager(), new BlockPos(x, y, z), Rotation.getRandom(random), random.nextBoolean(), random.nextBoolean());
 	}
 
 	@Override

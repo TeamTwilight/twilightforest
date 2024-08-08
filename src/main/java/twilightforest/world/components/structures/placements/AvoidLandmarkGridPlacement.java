@@ -51,9 +51,9 @@ public class AvoidLandmarkGridPlacement extends RandomSpreadStructurePlacement {
 
 		// Turn Feature Center into Feature Offset
 		featurePos.set(Math.abs(featurePos.getX() - chunkpos.getWorldPosition().getX()), 0, Math.abs(featurePos.getZ() - chunkpos.getWorldPosition().getZ()));
-		int size = 48;
+		int size = 64;
 
-		return featurePos.getX() >= size && featurePos.getZ() >= size;
+		return featurePos.getX() >= size || featurePos.getZ() >= size;
 	}
 
 	@Override

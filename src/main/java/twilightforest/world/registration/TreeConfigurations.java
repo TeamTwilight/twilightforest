@@ -141,7 +141,7 @@ public class TreeConfigurations {
 	)
 		.decorators(ImmutableList.of(
 				TreeDecorators.FIREFLY,
-				new TreeRootsDecorator(3, 1, 12, 1, BlockStateProvider.simple(TFBlocks.MANGROVE_ROOT.get().defaultBlockState()), (new WeightedStateProvider(SimpleWeightedRandomList.<BlockState>builder()
+				new TreeRootsDecorator(3, 1, 12, 0, BlockStateProvider.simple(TFBlocks.MANGROVE_ROOT.get().defaultBlockState()), (new WeightedStateProvider(SimpleWeightedRandomList.<BlockState>builder()
 					.add(TFBlocks.ROOT_BLOCK.get().defaultBlockState(), 4)
 					.add(TFBlocks.LIVEROOT_BLOCK.get().defaultBlockState(), 1).build())), 1),
 				new LeaveVineDecorator(0.125F)

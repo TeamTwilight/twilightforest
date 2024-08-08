@@ -703,6 +703,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 		generated("trophy_minor", prefix("item/trophy_minor"));
 		generated("trophy_quest", prefix("item/trophy_quest"));
 		generated("shield", prefix("item/lich_shield_frame"), prefix("item/lich_shield_fill"));
+
+		this.toBlock(TFBlocks.CURSED_SPAWNER.value());
 	}
 
 	private ItemModelBuilder fullbright(String name, ResourceLocation... layers) {

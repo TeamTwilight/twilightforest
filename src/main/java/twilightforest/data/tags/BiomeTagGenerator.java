@@ -60,7 +60,7 @@ public class BiomeTagGenerator extends BiomeTagsProvider {
 		this.tag(VALID_MUSHROOM_TOWER_BIOMES).add(TFBiomes.DENSE_MUSHROOM_FOREST);
 
 		this.tag(VALID_HOLLOW_TREE_BIOMES).add(
-			TFBiomes.DENSE_FOREST, TFBiomes.SWAMP, TFBiomes.FIRE_SWAMP,
+			TFBiomes.DENSE_FOREST, TFBiomes.FIRE_SWAMP,
 			TFBiomes.DENSE_MUSHROOM_FOREST, TFBiomes.FIREFLY_FOREST,
 			TFBiomes.FOREST, TFBiomes.MUSHROOM_FOREST,
 			TFBiomes.OAK_SAVANNAH, TFBiomes.ENCHANTED_FOREST

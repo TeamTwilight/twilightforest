@@ -32,12 +32,14 @@ import java.util.Map;
 /**
  * Thank you @SuperCoder79 (from Twitter) for sharing the original code! Code sourced from a LGPL project
  */
+@twilightforest.beans.Component
 public class MapBiomesCommand {
-	private static final DecimalFormat numberFormat = new DecimalFormat("#.00");
 
-	private static final HashMap<ResourceLocation, BiomeMapColor> BIOME2COLOR = new HashMap<>();
+	private final DecimalFormat numberFormat = new DecimalFormat("#.00");
 
-	private static void init() {
+	private final HashMap<ResourceLocation, BiomeMapColor> BIOME2COLOR = new HashMap<>();
+
+	private void init() {
 		BIOME2COLOR.put(TFBiomes.STREAM.location(), new BiomeMapColor(0, 0, 255));
 		BIOME2COLOR.put(TFBiomes.LAKE.location(), new BiomeMapColor(0, 0, 255));
 		BIOME2COLOR.put(TFBiomes.CLEARING.location(), new BiomeMapColor(132, 245, 130));
@@ -64,7 +66,7 @@ public class MapBiomesCommand {
 		BIOME2COLOR.put(TFBiomes.FINAL_PLATEAU.location(), new BiomeMapColor(128, 128, 128));
 	}
 
-	public static LiteralArgumentBuilder<CommandSourceStack> register() {
+	public LiteralArgumentBuilder<CommandSourceStack> register() {
 		return Commands.literal("biomepng").requires(cs -> cs.hasPermission(2)).executes(context -> createMap(context.getSource(), 4096, 4096, true))
 			.then(Commands.argument("width", IntegerArgumentType.integer(0))
 				.executes(context -> createMap(context.getSource(), IntegerArgumentType.getInteger(context, "width"), IntegerArgumentType.getInteger(context, "width"), true))
@@ -75,7 +77,7 @@ public class MapBiomesCommand {
 
 	}
 
-	private static int createMap(CommandSourceStack source, int width, int height, boolean showBiomePercents) {
+	private int createMap(CommandSourceStack source, int width, int height, boolean showBiomePercents) {
 		if (FMLEnvironment.dist.isDedicatedServer())
 			return -1;
 

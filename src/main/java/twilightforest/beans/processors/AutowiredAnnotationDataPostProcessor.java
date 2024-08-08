@@ -1,6 +1,7 @@
 package twilightforest.beans.processors;
 
 import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforgespi.language.ModFileScanData;
 import org.objectweb.asm.Type;
 import twilightforest.beans.*;
@@ -63,7 +64,7 @@ public class AutowiredAnnotationDataPostProcessor implements AnnotationDataPostP
 			ModFileScanData.AnnotationData data = it.next();
 			currentInjectionTarget.set(data.clazz());
 			Class<?> type = Class.forName(data.clazz().getClassName());
-			if (type.isAnnotationPresent(Configurable.class) || type.isAnnotationPresent(Component.class))
+			if (type.isAnnotationPresent(Configurable.class) || type.isAnnotationPresent(Component.class) || type.isAnnotationPresent(Mod.class))
 				continue;
 			Field field = type.getDeclaredField(data.memberName());
 			currentInjectionTarget.set(field);

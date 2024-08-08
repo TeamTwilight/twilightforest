@@ -478,6 +478,8 @@ public class LangGenerator extends TFLangProvider {
 		this.add("container.twilightforest.uncrafting_table.cycle_next_uncraft", "Next Uncrafting Recipe");
 		this.add("container.twilightforest.uncrafting_table.cycle_back_uncraft", "Previous Uncrafting Recipe");
 
+		this.addBlock(TFBlocks.CURSED_SPAWNER, "Cursed Spawner");
+
 		this.add("item.twilightforest.boarkchop", "Raw Boarkchop");
 		this.addItem(TFItems.NAGA_SCALE, "Naga Scale");
 		this.addItem(TFItems.NAGA_CHESTPLATE, "Naga Scale Tunic");

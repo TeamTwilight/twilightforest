@@ -24,32 +24,32 @@ import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.util.jigsaw.JigsawRecord;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
 
-public final class CentralTowerBase extends TwilightJigsawPiece implements PieceBeardifierModifier {
-	public CentralTowerBase(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
-		super(TFStructurePieceTypes.CENTRAL_TOWER_BASE.get(), compoundTag, ctx, readSettings(compoundTag));
+public final class LichTowerBase extends TwilightJigsawPiece implements PieceBeardifierModifier {
+	public LichTowerBase(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
+		super(TFStructurePieceTypes.LICH_TOWER_BASE.get(), compoundTag, ctx, readSettings(compoundTag));
 
-		TowerUtil.addDefaultProcessors(this.placeSettings);
+		LichTowerUtil.addDefaultProcessors(this.placeSettings);
 	}
 
-	public CentralTowerBase(StructureTemplateManager structureManager, JigsawPlaceContext jigsawContext) {
-		super(TFStructurePieceTypes.CENTRAL_TOWER_BASE.get(), 1, structureManager, TwilightForestMod.prefix("lich_tower/tower_base"), jigsawContext);
+	public LichTowerBase(StructureTemplateManager structureManager, JigsawPlaceContext jigsawContext) {
+		super(TFStructurePieceTypes.LICH_TOWER_BASE.get(), 1, structureManager, TwilightForestMod.prefix("lich_tower/tower_base"), jigsawContext);
 
 		this.boundingBox = BoundingBoxUtils.cloneWithAdjustments(this.boundingBox, 0, 0, 0, 0, 30,0);
 
-		TowerUtil.addDefaultProcessors(this.placeSettings);
+		LichTowerUtil.addDefaultProcessors(this.placeSettings);
 	}
 
 	@Override
 	protected void processJigsaw(StructurePiece parent, StructurePieceAccessor pieceAccessor, RandomSource random, JigsawRecord connection, int jigsawIndex) {
 		switch (connection.target()) {
-			case "twilightforest:lich_tower/tower_below" -> CentralTowerSegment.buildTowerBySegments(pieceAccessor, random, connection.pos(), connection.orientation(), this, this.structureManager, true, random.nextInt(9, 11));
-			case "twilightforest:lich_tower/bridge" -> TowerBridge.tryRoomAndBridge(this, pieceAccessor, random, connection, this.structureManager, true, 4, true, this.genDepth + 1, false);
+			case "twilightforest:lich_tower/tower_below" -> LichTowerSegment.buildTowerBySegments(pieceAccessor, random, connection.pos(), connection.orientation(), this, this.structureManager, random.nextInt(9, 11));
+			case "twilightforest:lich_tower/bridge" -> LichTowerWingBridge.tryRoomAndBridge(this, pieceAccessor, random, connection, this.structureManager, true, 4, true, this.genDepth + 1, false);
 			case "twilightforest:lich_tower/decor" -> {
-				ResourceLocation decorId = TowerUtil.rollRandomDecor(random, true);
+				ResourceLocation decorId = LichTowerUtil.rollRandomDecor(random, true);
 				JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(this.templatePosition(), connection.pos(), connection.orientation(), structureManager, decorId, "twilightforest:lich_tower/decor", random);
 
 				if (placeableJunction != null) {
-					StructurePiece decor = new TowerWingDecorPiece(this.genDepth + 1, this.structureManager, decorId, placeableJunction, false);
+					StructurePiece decor = new LichTowerRoomDecor(this.genDepth + 1, this.structureManager, decorId, placeableJunction, false);
 					pieceAccessor.addPiece(decor);
 					decor.addChildren(this, pieceAccessor, random);
 				}

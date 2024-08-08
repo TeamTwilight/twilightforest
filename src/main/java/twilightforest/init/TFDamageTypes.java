@@ -11,9 +11,15 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
+import twilightforest.beans.Autowired;
+import twilightforest.enums.extensions.TFDamageEffectsEnumExtension;
 import twilightforest.util.entities.EntityExcludedDamageSource;
 
 public class TFDamageTypes {
+
+	@Autowired
+	private static TFDamageEffectsEnumExtension tfDamageEffectsEnumExtension;
+
 	public static final ResourceKey<DamageType> GHAST_TEAR = create("ghast_tear"); //Ur-Ghast
 	public static final ResourceKey<DamageType> HYDRA_BITE = create("hydra_bite"); //Hydra
 	public static final ResourceKey<DamageType> HYDRA_FIRE = create("hydra_fire"); //Hydra
@@ -91,7 +97,7 @@ public class TFDamageTypes {
 		context.register(YEETED, new DamageType("twilightforest.yeeted", 0.1F));
 		context.register(ANT, new DamageType("twilightforest.ant", 0.1F));
 		context.register(HAUNT, new DamageType("twilightforest.haunt", 0.1F));
-		context.register(CLAMPED, new DamageType("twilightforest.clamped", 0.1F, TwilightForestMod.PINCH));
+		context.register(CLAMPED, new DamageType("twilightforest.clamped", 0.1F, tfDamageEffectsEnumExtension.PINCH));
 		context.register(SCORCHED, new DamageType("twilightforest.scorched", 0.1F, DamageEffects.BURNING));
 		context.register(FROZEN, new DamageType("twilightforest.frozen", 0.1F, DamageEffects.FREEZING));
 		context.register(SPIKED, new DamageType("twilightforest.spiked", 0.1F));

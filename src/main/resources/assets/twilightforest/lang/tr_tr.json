@@ -1,4 +1,9 @@
 {
+  "Dimension Settings.button": "Düzenle",
+  "Magic Trees.button": "Düzenle",
+  "Portal Settings.button": "Düzenle",
+  "Shield Parrying.button": "Düzenle",
+  "Uncrafting Table.button": "Düzenle",
   "advancement.twilightforest.arborist": "Çılgın Dendrolog",
   "advancement.twilightforest.arborist.desc": "Baltalarınızı ve makaslarınızı hazırlayın. Her kuytu köşeyi arayın ve ağaçlardan gelen her şeyi ve her şeyi alın! İşleyin, yağmalayın, her basamağı elde edin... fidanı... yaprakları... daha fazlasını... her şeyi. HEPSİNİ!",
   "advancement.twilightforest.arctic_dyed": "Modaya Giriş",
@@ -39,6 +44,7 @@
   "advancement.twilightforest.progress_glacier": "Açık Gökyüzü",
   "advancement.twilightforest.root": "Alacakaranlık Ormanı",
   "advancement.twilightforest.twilight_hunter": "Ormanın Sessizliği",
+  "auroraBiomes.button": "Biyomları Düzenle",
   "biome.twilightforest.clearing": "Alacakaranlık Temizliği",
   "biome.twilightforest.dark_forest": "Karanlık Orman",
   "biome.twilightforest.dark_forest_center": "Karanlık Orman Merkezi",
@@ -214,5 +220,6 @@
   "block.twilightforest.aurora_block": "Aurora Bloğu",
   "block.twilightforest.aurora_pillar": "Aurora Sütunu",
   "block.twilightforest.aurora_slab": "Aurora Basamak",
+  "block.twilightforest.brown_thorns": "Dikenler",
   "item.twilightforest.snow_queen_banner_pattern.desc": "Kar Tanesi"
 }

@@ -1,4 +1,4 @@
-// 1.21	2024-08-03T14:49:07.051527	TwilightForest Item and BlockItem models
+// 1.21	2024-08-06T20:31:33.30961	TwilightForest Item and BlockItem models
 387b18dfa614fda790f7b8e8324e3b139fa177c2 assets/twilightforest/models/item/acacia_banister.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/adherent_spawn_egg.json
 0ca7dc7b4daec376dd0f85d57465830781584c7d assets/twilightforest/models/item/alpha_yeti_banner_pattern.json
@@ -153,6 +153,7 @@ fe2455115203978f14e2618c1cea45aada2ae3b0 assets/twilightforest/models/item/crumb
 e5bc6e6bd2d27099d01f8c97ef219a4490508ca4 assets/twilightforest/models/item/cube_of_annihilation.json
 1ce5d3fe1b3c3104bee4bab8dd23df16c5393881 assets/twilightforest/models/item/cube_of_annihilation_thrown.json
 a7c7d75939e66246dbb6064fad965191f4da748e assets/twilightforest/models/item/cube_talisman.json
+a0e9e0c713c1d297b1f2efa0bb735e86354914e2 assets/twilightforest/models/item/cursed_spawner.json
 226c3441a79c7ab365bf47892c6039e62e81a1b3 assets/twilightforest/models/item/cut_mazestone.json
 812fac756a5cd11bf20bf69bb67500cb411d861a assets/twilightforest/models/item/dark_banister.json
 8b091e6bdefce5c8702babeb30bd1e889ba085f0 assets/twilightforest/models/item/dark_boat.json
