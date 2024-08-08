@@ -1,4 +1,4 @@
-package twilightforest.client.renderer.tileentity;
+package twilightforest.client.renderer.block;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -16,12 +16,12 @@ import twilightforest.client.BugModelAnimationHelper;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.CicadaModel;
 
-public class CicadaTileEntityRenderer implements BlockEntityRenderer<CicadaBlockEntity> {
+public class CicadaRenderer implements BlockEntityRenderer<CicadaBlockEntity> {
 
 	private final CicadaModel cicadaModel;
 	private static final ResourceLocation TEXTURE = TwilightForestMod.getModelTexture("cicada-model.png");
 
-	public CicadaTileEntityRenderer(BlockEntityRendererProvider.Context context) {
+	public CicadaRenderer(BlockEntityRendererProvider.Context context) {
 		this.cicadaModel = new CicadaModel(context.bakeLayer(TFModelLayers.CICADA));
 	}
 

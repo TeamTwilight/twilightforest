@@ -1,4 +1,4 @@
-package twilightforest.client.renderer.tileentity;
+package twilightforest.client.renderer.block;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
@@ -35,7 +35,7 @@ import twilightforest.block.entity.SkullCandleBlockEntity;
 import java.util.Map;
 
 //[VanillaCopy] of SkullBlockRenderer, but render a candle or candles on top of the skull/head
-public class SkullCandleTileEntityRenderer<T extends SkullCandleBlockEntity> implements BlockEntityRenderer<T> {
+public class SkullCandleRenderer<T extends SkullCandleBlockEntity> implements BlockEntityRenderer<T> {
 
 	private final Map<SkullBlock.Type, SkullModelBase> modelByType;
 
@@ -59,7 +59,7 @@ public class SkullCandleTileEntityRenderer<T extends SkullCandleBlockEntity> imp
 		return map.build();
 	}
 
-	public SkullCandleTileEntityRenderer(BlockEntityRendererProvider.Context context) {
+	public SkullCandleRenderer(BlockEntityRendererProvider.Context context) {
 		this.modelByType = createSkullRenderers(context.getModelSet());
 	}
 

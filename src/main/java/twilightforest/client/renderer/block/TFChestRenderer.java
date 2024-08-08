@@ -1,4 +1,4 @@
-package twilightforest.client.renderer.tileentity;
+package twilightforest.client.renderer.block;
 
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.client.renderer.Sheets;
@@ -14,7 +14,7 @@ import twilightforest.init.TFBlocks;
 import java.util.EnumMap;
 import java.util.Map;
 
-public class TFChestTileEntityRenderer<T extends ChestBlockEntity> extends ChestRenderer<T> {
+public class TFChestRenderer<T extends ChestBlockEntity> extends ChestRenderer<T> {
 	public static final Map<Block, EnumMap<ChestType, Material>> MATERIALS;
 
 	static {
@@ -41,7 +41,7 @@ public class TFChestTileEntityRenderer<T extends ChestBlockEntity> extends Chest
 		MATERIALS = builder.build();
 	}
 
-	public TFChestTileEntityRenderer(BlockEntityRendererProvider.Context context) {
+	public TFChestRenderer(BlockEntityRendererProvider.Context context) {
 		super(context);
 	}
 

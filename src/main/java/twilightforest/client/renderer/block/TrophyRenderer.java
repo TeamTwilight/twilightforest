@@ -1,4 +1,4 @@
-package twilightforest.client.renderer.tileentity;
+package twilightforest.client.renderer.block;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -23,11 +23,11 @@ import twilightforest.init.TFBlocks;
 
 import java.util.Map;
 
-public class TrophyTileEntityRenderer implements BlockEntityRenderer<TrophyBlockEntity> {
+public class TrophyRenderer implements BlockEntityRenderer<TrophyBlockEntity> {
 
 	private final Map<BossVariant, TrophyBlockModel> trophies;
 
-	public TrophyTileEntityRenderer(BlockEntityRendererProvider.Context context) {
+	public TrophyRenderer(BlockEntityRendererProvider.Context context) {
 		this.trophies = createTrophyRenderers(context.getModelSet());
 	}
 

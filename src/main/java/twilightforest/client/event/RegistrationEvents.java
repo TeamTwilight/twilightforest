@@ -44,7 +44,7 @@ import twilightforest.client.model.entity.*;
 import twilightforest.client.model.item.TrollsteinnModel;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.entity.*;
-import twilightforest.client.renderer.tileentity.*;
+import twilightforest.client.renderer.block.*;
 import twilightforest.components.item.PotionFlaskComponent;
 import twilightforest.entity.TwilightBoat;
 import twilightforest.init.*;
@@ -235,10 +235,10 @@ public class RegistrationEvents {
 
 	private static void registerAdditionalModels(ModelEvent.RegisterAdditional event) {
 		event.register(ShieldLayer.LOC);
-		event.register(new ModelResourceLocation(TwilightForestMod.prefix("trophy"), "inventory"));
-		event.register(new ModelResourceLocation(TwilightForestMod.prefix("trophy_minor"), "inventory"));
-		event.register(new ModelResourceLocation(TwilightForestMod.prefix("trophy_quest"), "inventory"));
-		event.register(new ModelResourceLocation(TwilightForestMod.prefix("trollsteinn_light"), "inventory"));
+		event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("item/trophy")));
+		event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("item/trophy_minor")));
+		event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("item/trophy_quest")));
+		event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("item/trollsteinn_light")));
 	}
 
 	private static void registerDimEffects(RegisterDimensionSpecialEffectsEvent event) {
@@ -364,18 +364,18 @@ public class RegistrationEvents {
 		event.registerEntityRenderer(TFEntities.ICE_ARROW.get(), DefaultArrowRenderer::new);
 
 		// Block Entities
-		event.registerBlockEntityRenderer(TFBlockEntities.FIREFLY.get(), FireflyTileEntityRenderer::new);
-		event.registerBlockEntityRenderer(TFBlockEntities.CICADA.get(), CicadaTileEntityRenderer::new);
-		event.registerBlockEntityRenderer(TFBlockEntities.MOONWORM.get(), MoonwormTileEntityRenderer::new);
-		event.registerBlockEntityRenderer(TFBlockEntities.TROPHY.get(), TrophyTileEntityRenderer::new);
+		event.registerBlockEntityRenderer(TFBlockEntities.FIREFLY.get(), FireflyRenderer::new);
+		event.registerBlockEntityRenderer(TFBlockEntities.CICADA.get(), CicadaRenderer::new);
+		event.registerBlockEntityRenderer(TFBlockEntities.MOONWORM.get(), MoonwormRenderer::new);
+		event.registerBlockEntityRenderer(TFBlockEntities.TROPHY.get(), TrophyRenderer::new);
 		event.registerBlockEntityRenderer(TFBlockEntities.TF_SIGN.get(), SignRenderer::new);
 		event.registerBlockEntityRenderer(TFBlockEntities.TF_HANGING_SIGN.get(), HangingSignRenderer::new);
-		event.registerBlockEntityRenderer(TFBlockEntities.TF_CHEST.get(), TFChestTileEntityRenderer::new);
-		event.registerBlockEntityRenderer(TFBlockEntities.TF_TRAPPED_CHEST.get(), TFChestTileEntityRenderer::new);
-		event.registerBlockEntityRenderer(TFBlockEntities.KEEPSAKE_CASKET.get(), CasketTileEntityRenderer::new);
-		event.registerBlockEntityRenderer(TFBlockEntities.SKULL_CANDLE.get(), SkullCandleTileEntityRenderer::new);
+		event.registerBlockEntityRenderer(TFBlockEntities.TF_CHEST.get(), TFChestRenderer::new);
+		event.registerBlockEntityRenderer(TFBlockEntities.TF_TRAPPED_CHEST.get(), TFChestRenderer::new);
+		event.registerBlockEntityRenderer(TFBlockEntities.KEEPSAKE_CASKET.get(), KeepsakeCasketRenderer::new);
+		event.registerBlockEntityRenderer(TFBlockEntities.SKULL_CANDLE.get(), SkullCandleRenderer::new);
 		event.registerBlockEntityRenderer(TFBlockEntities.RED_THREAD.get(), RedThreadRenderer::new);
-		event.registerBlockEntityRenderer(TFBlockEntities.CANDELABRA.get(), CandelabraTileEntityRenderer::new);
+		event.registerBlockEntityRenderer(TFBlockEntities.CANDELABRA.get(), CandelabraRenderer::new);
 	}
 
 	private static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
@@ -477,7 +477,7 @@ public class RegistrationEvents {
 
 		event.registerLayerDefinition(TFModelLayers.CICADA, CicadaModel::create);
 		event.registerLayerDefinition(TFModelLayers.FIREFLY, FireflyModel::create);
-		event.registerLayerDefinition(TFModelLayers.KEEPSAKE_CASKET, CasketTileEntityRenderer::create);
+		event.registerLayerDefinition(TFModelLayers.KEEPSAKE_CASKET, KeepsakeCasketRenderer::create);
 		event.registerLayerDefinition(TFModelLayers.MOONWORM, MoonwormModel::create);
 
 		event.registerLayerDefinition(TFModelLayers.RED_THREAD, RedThreadModel::create);

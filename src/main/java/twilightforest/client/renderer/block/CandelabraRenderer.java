@@ -1,4 +1,4 @@
-package twilightforest.client.renderer.tileentity;
+package twilightforest.client.renderer.block;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
@@ -12,9 +12,9 @@ import twilightforest.block.CandelabraBlock;
 import twilightforest.block.LightableBlock;
 import twilightforest.block.entity.CandelabraBlockEntity;
 
-public class CandelabraTileEntityRenderer<T extends CandelabraBlockEntity> implements BlockEntityRenderer<T> {
+public class CandelabraRenderer<T extends CandelabraBlockEntity> implements BlockEntityRenderer<T> {
 
-	public CandelabraTileEntityRenderer(BlockEntityRendererProvider.Context context) {
+	public CandelabraRenderer(BlockEntityRendererProvider.Context context) {
 
 	}
 

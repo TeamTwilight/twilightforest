@@ -1,4 +1,4 @@
-package twilightforest.client.renderer.tileentity;
+package twilightforest.client.renderer.block;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -18,12 +18,12 @@ import twilightforest.client.BugModelAnimationHelper;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.MoonwormModel;
 
-public class MoonwormTileEntityRenderer implements BlockEntityRenderer<MoonwormBlockEntity> {
+public class MoonwormRenderer implements BlockEntityRenderer<MoonwormBlockEntity> {
 
 	private static final ResourceLocation TEXTURE = TwilightForestMod.getModelTexture("moonworm.png");
 	private final MoonwormModel moonwormModel;
 
-	public MoonwormTileEntityRenderer(BlockEntityRendererProvider.Context context) {
+	public MoonwormRenderer(BlockEntityRendererProvider.Context context) {
 		this.moonwormModel = new MoonwormModel(context.bakeLayer(TFModelLayers.MOONWORM));
 	}
 

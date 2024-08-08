@@ -35,13 +35,13 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.common.ItemAbilities;
 import twilightforest.enums.HollowLogVariants;
 
-public class HollowLogClimbable extends HorizontalDirectionalBlock implements WaterloggedBlock {
+public class ClimbableHollowLogBlock extends HorizontalDirectionalBlock implements WaterloggedBlock {
 
 	public static final EnumProperty<HollowLogVariants.Climbable> VARIANT = EnumProperty.create("variant", HollowLogVariants.Climbable.class);
-	public static final MapCodec<HollowLogClimbable> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+	public static final MapCodec<ClimbableHollowLogBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 			BuiltInRegistries.BLOCK.holderByNameCodec().fieldOf("vertical_log").forGetter(o -> o.vertical),
 			propertiesCodec())
-		.apply(instance, HollowLogClimbable::new)
+		.apply(instance, ClimbableHollowLogBlock::new)
 	);
 	private static final VoxelShape LADDER_EAST = Block.box(0, 0, 0, 3, 16, 16);
 	private static final VoxelShape LADDER_WEST = Block.box(13, 0, 0, 16, 16, 16);
@@ -62,7 +62,7 @@ public class HollowLogClimbable extends HorizontalDirectionalBlock implements Wa
 
 	private final Holder<Block> vertical;
 
-	public HollowLogClimbable(Holder<Block> vertical, Properties properties) {
+	public ClimbableHollowLogBlock(Holder<Block> vertical, Properties properties) {
 		super(properties);
 		this.vertical = vertical;
 
@@ -108,7 +108,7 @@ public class HollowLogClimbable extends HorizontalDirectionalBlock implements Wa
 	@Override
 	public BlockState setWaterlog(BlockState prior, boolean doWater) {
 		return switch (prior.getValue(VARIANT)) {
-			case VINE -> doWater ? this.vertical.value().defaultBlockState().setValue(HollowLogVertical.WATERLOGGED, true) : prior;
+			case VINE -> doWater ? this.vertical.value().defaultBlockState().setValue(VerticalHollowLogBlock.WATERLOGGED, true) : prior;
 			case LADDER -> prior.setValue(VARIANT, HollowLogVariants.Climbable.LADDER_WATERLOGGED);
 			case LADDER_WATERLOGGED -> prior.setValue(VARIANT, HollowLogVariants.Climbable.LADDER);
 		};
@@ -134,7 +134,7 @@ public class HollowLogClimbable extends HorizontalDirectionalBlock implements Wa
 
 		if (stack.canPerformAction(ItemAbilities.SHEARS_HARVEST)) {
 			HollowLogVariants.Climbable variant = state.getValue(VARIANT);
-			level.setBlock(pos, this.vertical.value().defaultBlockState().setValue(HollowLogVertical.WATERLOGGED, variant == HollowLogVariants.Climbable.LADDER_WATERLOGGED), 3);
+			level.setBlock(pos, this.vertical.value().defaultBlockState().setValue(VerticalHollowLogBlock.WATERLOGGED, variant == HollowLogVariants.Climbable.LADDER_WATERLOGGED), 3);
 			level.playSound(null, pos, SoundEvents.SHEEP_SHEAR, SoundSource.BLOCKS, 1.0F, 1.0F);
 			if (!player.isCreative()) {
 				stack.hurtAndBreak(1, player, hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);

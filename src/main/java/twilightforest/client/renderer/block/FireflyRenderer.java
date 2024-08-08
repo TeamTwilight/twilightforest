@@ -1,4 +1,4 @@
-package twilightforest.client.renderer.tileentity;
+package twilightforest.client.renderer.block;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -10,7 +10,6 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.FastColor;
 import net.minecraft.world.level.block.DirectionalBlock;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
@@ -19,12 +18,12 @@ import twilightforest.client.BugModelAnimationHelper;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.FireflyModel;
 
-public class FireflyTileEntityRenderer implements BlockEntityRenderer<FireflyBlockEntity> {
+public class FireflyRenderer implements BlockEntityRenderer<FireflyBlockEntity> {
 
 	private final FireflyModel fireflyModel;
 	private static final ResourceLocation TEXTURE = TwilightForestMod.getModelTexture("firefly-tiny.png");
 
-	public FireflyTileEntityRenderer(BlockEntityRendererProvider.Context context) {
+	public FireflyRenderer(BlockEntityRendererProvider.Context context) {
 		this.fireflyModel = new FireflyModel(context.bakeLayer(TFModelLayers.FIREFLY));
 	}
 

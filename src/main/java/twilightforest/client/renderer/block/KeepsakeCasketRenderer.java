@@ -1,4 +1,4 @@
-package twilightforest.client.renderer.tileentity;
+package twilightforest.client.renderer.block;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -33,12 +33,12 @@ import twilightforest.init.TFBlocks;
  * Created using Tabula 8.0.0
  */
 //Most of the other stuff is derived from ChestRenderer
-public class CasketTileEntityRenderer<T extends KeepsakeCasketBlockEntity & LidBlockEntity> implements BlockEntityRenderer<T> {
+public class KeepsakeCasketRenderer<T extends KeepsakeCasketBlockEntity & LidBlockEntity> implements BlockEntityRenderer<T> {
 
 	private final ModelPart base;
 	private final ModelPart lid;
 
-	public CasketTileEntityRenderer(BlockEntityRendererProvider.Context context) {
+	public KeepsakeCasketRenderer(BlockEntityRendererProvider.Context context) {
 		var root = context.bakeLayer(TFModelLayers.KEEPSAKE_CASKET);
 
 		this.base = root.getChild("base");
