@@ -179,21 +179,4 @@ public class CloudBlock extends Block {
 		}
 		return true;
 	}
-
-
-	public static void addEntityMovementParticles(Level level, BlockPos pos, Entity entity, boolean jumping) {
-		if (level.getRandom().nextBoolean()) return;
-		Vec3 deltaMovement = entity.getDeltaMovement();
-		BlockPos blockpos1 = entity.blockPosition();
-		double jumpMultiplier = jumping ? 2.0D : 1.0D;
-
-		double x = entity.getX() + (level.getRandom().nextDouble() - 0.5D) * (double) entity.dimensions.width() * jumpMultiplier;
-		double y = entity.getY() + 0.1D;
-		double z = entity.getZ() + (level.getRandom().nextDouble() - 0.5D) * (double) entity.dimensions.width() * jumpMultiplier;
-
-		if (blockpos1.getX() != pos.getX()) x = Mth.clamp(x, pos.getX(), (double) pos.getX() + 1.0D);
-		if (blockpos1.getZ() != pos.getZ()) z = Mth.clamp(z, pos.getZ(), (double) pos.getZ() + 1.0D);
-
-		level.addParticle(TFParticleType.CLOUD_PUFF.get(), x, y, z, deltaMovement.x * -0.5D, 0.015D * jumpMultiplier, deltaMovement.z * -0.5D);
-	}
 }

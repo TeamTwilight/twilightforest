@@ -44,6 +44,7 @@ import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import twilightforest.TwilightForestMod;
+import twilightforest.beans.Autowired;
 import twilightforest.block.GiantBlock;
 import twilightforest.block.MiniatureStructureBlock;
 import twilightforest.block.entity.GrowingBeanstalkBlockEntity;
@@ -57,6 +58,7 @@ import twilightforest.entity.boss.bar.ClientTFBossBar;
 import twilightforest.events.HostileMountEvents;
 import twilightforest.init.*;
 import twilightforest.item.*;
+import twilightforest.util.HolderMatcher;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -76,6 +78,9 @@ public class ClientEvents {
 
 	private static int aurora = 0;
 	private static int lastAurora = 0;
+
+	@Autowired
+	private static HolderMatcher holderMatcher;
 
 	public static void initGameEvents() {
 		NeoForge.EVENT_BUS.addListener(ClientEvents::addCustomTooltips);
@@ -195,7 +200,6 @@ public class ClientEvents {
 
 	private static void clientTick(ClientTickEvent.Post event) {
 		Minecraft mc = Minecraft.getInstance();
-		float partial = mc.getTimer().getRealtimeDeltaTicks();
 
 		if (!mc.isPaused()) {
 			time++;
@@ -204,7 +208,7 @@ public class ClientEvents {
 			if (mc.level != null && mc.cameraEntity != null && !TFConfig.getValidAuroraBiomes(mc.level.registryAccess()).isEmpty()) {
 				RegistryAccess access = mc.level.registryAccess();
 				Holder<Biome> biome = mc.level.getBiome(mc.cameraEntity.blockPosition());
-				if (TFConfig.getValidAuroraBiomes(access).contains(access.registryOrThrow(Registries.BIOME).getKey(biome.value())))
+				if (TFConfig.getValidAuroraBiomes(access).stream().anyMatch(c -> holderMatcher.match(c, biome)))
 					aurora++;
 				else
 					aurora--;

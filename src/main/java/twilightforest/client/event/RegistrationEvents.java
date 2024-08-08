@@ -7,16 +7,19 @@ import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.client.renderer.Sheets;
-import net.minecraft.client.renderer.blockentity.HangingSignRenderer;
-import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraft.util.Mth;
@@ -26,15 +29,25 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.saveddata.maps.MapDecorationTypes;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.*;
+import net.neoforged.neoforge.client.extensions.common.IClientBlockExtensions;
+import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
+import net.neoforged.neoforge.client.gui.map.RegisterMapDecorationRenderersEvent;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.*;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.*;
 import twilightforest.client.model.block.aurorablock.NoiseVaryingModelLoader;
+import twilightforest.client.model.block.carpet.RoyalRagsModelLoader;
 import twilightforest.client.model.block.connected.ConnectedTextureModelLoader;
 import twilightforest.client.model.block.forcefield.ForceFieldModelLoader;
 import twilightforest.client.model.block.giantblock.GiantBlockModelLoader;
@@ -42,16 +55,16 @@ import twilightforest.client.model.block.leaves.BakedLeavesModel;
 import twilightforest.client.model.block.patch.PatchModelLoader;
 import twilightforest.client.model.entity.*;
 import twilightforest.client.model.item.TrollsteinnModel;
+import twilightforest.client.renderer.block.CursedSpawnerRenderer;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.entity.*;
 import twilightforest.client.renderer.block.*;
+import twilightforest.client.renderer.map.ConqueredMapIconRenderer;
+import twilightforest.client.renderer.map.MagicMapPlayerIconRenderer;
 import twilightforest.components.item.PotionFlaskComponent;
-import twilightforest.entity.TwilightBoat;
 import twilightforest.init.*;
-import twilightforest.item.Experiment115Item;
-import twilightforest.item.MoonwormQueenItem;
-import twilightforest.item.OreMeterItem;
-import twilightforest.util.TFWoodTypes;
+import twilightforest.item.*;
+import twilightforest.util.woods.TFWoodTypes;
 
 import java.util.List;
 import java.util.Map;
@@ -64,6 +77,7 @@ public class RegistrationEvents {
 	public static void initModBusEvents(IEventBus bus) {
 		bus.addListener(EntityRenderersEvent.AddLayers.class, RegistrationEvents::attachRenderLayers);
 		bus.addListener(RegistrationEvents::bakeCustomModels);
+		bus.addListener(RegistrationEvents::cacheJarLids);
 		bus.addListener(RegistrationEvents::clientSetup);
 		bus.addListener(RegistrationEvents::registerAdditionalModels);
 		bus.addListener(RegistrationEvents::registerClientReloadListeners);
@@ -72,6 +86,8 @@ public class RegistrationEvents {
 		bus.addListener(RegistrationEvents::registerLayerDefinitions);
 		bus.addListener(RegistrationEvents::registerModelLoaders);
 		bus.addListener(RegistrationEvents::registerScreens);
+		bus.addListener(RegistrationEvents::registerClientExtensions);
+		bus.addListener(RegistrationEvents::registerMapDecorators);
 
 		bus.addListener(ColorHandler::registerBlockColors);
 		bus.addListener(ColorHandler::registerItemColors);
@@ -87,6 +103,7 @@ public class RegistrationEvents {
 		event.register(TwilightForestMod.prefix("force_field"), ForceFieldModelLoader.INSTANCE);
 		event.register(TwilightForestMod.prefix("connected_texture_block"), ConnectedTextureModelLoader.INSTANCE);
 		event.register(TwilightForestMod.prefix("noise_varying"), NoiseVaryingModelLoader.INSTANCE);
+		event.register(TwilightForestMod.prefix("royal_rags"), RoyalRagsModelLoader.INSTANCE);
 	}
 
 	private static void bakeCustomModels(ModelEvent.ModifyBakingResult event) {
@@ -238,7 +255,21 @@ public class RegistrationEvents {
 		event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("item/trophy")));
 		event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("item/trophy_minor")));
 		event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("item/trophy_quest")));
-		event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("item/trollsteinn_light")));
+		event.register(TrollsteinnModel.LIT_TROLLSTEINN);
+
+		for (ResourceLocation location : JarRenderer.LOG_LOCATION_MAP.values()) {
+			String name = location.getPath();
+			if ((name.equals("mangrove_log") || name.equals("stripped_mangrove_log")) && location.getNamespace().equals("minecraft")) name = "vanilla_" + name;
+			event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("block/" + name + "_lid")));
+		}
+	}
+
+	private static void cacheJarLids(ModelEvent.BakingCompleted event) {
+		JarRenderer.LOG_LOCATION_MAP.forEach((item, location) -> {
+			String name = location.getPath();
+			if ((name.equals("mangrove_log") || name.equals("stripped_mangrove_log")) && location.getNamespace().equals("minecraft")) name = "vanilla_" + name;
+			JarRenderer.LIDS.put(item, event.getModels().get(ModelResourceLocation.standalone(TwilightForestMod.prefix("block/" + name + "_lid"))));
+		});
 	}
 
 	private static void registerDimEffects(RegisterDimensionSpecialEffectsEvent event) {
@@ -277,8 +308,6 @@ public class RegistrationEvents {
 	}
 
 	private static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
-		event.registerEntityRenderer(TFEntities.BOAT.get(), m -> new TwilightBoatRenderer(m, false));
-		event.registerEntityRenderer(TFEntities.CHEST_BOAT.get(), m -> new TwilightBoatRenderer(m, true));
 		event.registerEntityRenderer(TFEntities.BOAR.get(), m -> new BoarRenderer<>(m, new BoarModel<>(m.bakeLayer(TFModelLayers.BOAR))));
 		event.registerEntityRenderer(TFEntities.BIGHORN_SHEEP.get(), m -> new BighornRenderer(m, new BighornModel<>(m.bakeLayer(TFModelLayers.BIGHORN_SHEEP)), 0.7F));
 		event.registerEntityRenderer(TFEntities.DEER.get(), m -> new TFGenericMobRenderer<>(m, new DeerModel(m.bakeLayer(TFModelLayers.DEER)), 0.7F, "wilddeer.png"));
@@ -368,22 +397,18 @@ public class RegistrationEvents {
 		event.registerBlockEntityRenderer(TFBlockEntities.CICADA.get(), CicadaRenderer::new);
 		event.registerBlockEntityRenderer(TFBlockEntities.MOONWORM.get(), MoonwormRenderer::new);
 		event.registerBlockEntityRenderer(TFBlockEntities.TROPHY.get(), TrophyRenderer::new);
-		event.registerBlockEntityRenderer(TFBlockEntities.TF_SIGN.get(), SignRenderer::new);
-		event.registerBlockEntityRenderer(TFBlockEntities.TF_HANGING_SIGN.get(), HangingSignRenderer::new);
 		event.registerBlockEntityRenderer(TFBlockEntities.TF_CHEST.get(), TFChestRenderer::new);
 		event.registerBlockEntityRenderer(TFBlockEntities.TF_TRAPPED_CHEST.get(), TFChestRenderer::new);
 		event.registerBlockEntityRenderer(TFBlockEntities.KEEPSAKE_CASKET.get(), KeepsakeCasketRenderer::new);
 		event.registerBlockEntityRenderer(TFBlockEntities.SKULL_CANDLE.get(), SkullCandleRenderer::new);
 		event.registerBlockEntityRenderer(TFBlockEntities.RED_THREAD.get(), RedThreadRenderer::new);
 		event.registerBlockEntityRenderer(TFBlockEntities.CANDELABRA.get(), CandelabraRenderer::new);
+		event.registerBlockEntityRenderer(TFBlockEntities.JAR.get(), JarRenderer::new);
+		event.registerBlockEntityRenderer(TFBlockEntities.MASON_JAR.get(), JarRenderer.MasonJarRenderer::new);
+		event.registerBlockEntityRenderer(TFBlockEntities.CURSED_SPAWNER.get(), CursedSpawnerRenderer::new);
 	}
 
 	private static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
-		for (TwilightBoat.Type boatType : TwilightBoat.Type.values()) {
-			event.registerLayerDefinition(TwilightBoatRenderer.createBoatModelName(boatType), BoatModel::createBodyModel);
-			event.registerLayerDefinition(TwilightBoatRenderer.createChestBoatModelName(boatType), ChestBoatModel::createBodyModel);
-		}
-
 		event.registerLayerDefinition(TFModelLayers.ARCTIC_ARMOR_INNER, () -> LayerDefinition.create(ArcticArmorModel.addPieces(LayerDefinitions.INNER_ARMOR_DEFORMATION), 64, 32));
 		event.registerLayerDefinition(TFModelLayers.ARCTIC_ARMOR_OUTER, () -> LayerDefinition.create(ArcticArmorModel.addPieces(LayerDefinitions.OUTER_ARMOR_DEFORMATION), 64, 32));
 		event.registerLayerDefinition(TFModelLayers.FIERY_ARMOR_INNER, () -> LayerDefinition.create(FieryArmorModel.createMesh(LayerDefinitions.INNER_ARMOR_DEFORMATION, 0.0F), 64, 32));
@@ -483,6 +508,112 @@ public class RegistrationEvents {
 		event.registerLayerDefinition(TFModelLayers.RED_THREAD, RedThreadModel::create);
 
 		event.registerLayerDefinition(TFModelLayers.KNIGHTMETAL_SHIELD, KnightmetalShieldModel::create);
+	}
+
+	private static void registerClientExtensions(RegisterClientExtensionsEvent event) {
+		event.registerBlock(new IClientBlockExtensions() {
+			@Override
+			public boolean addHitEffects(BlockState state, Level level, HitResult target, ParticleEngine manager) {
+				if (level.random.nextBoolean() && target instanceof BlockHitResult hitResult) { // No clue why the parameter isn't blockHitResult, this should be always true, but we check just in case
+					BlockPos pos = hitResult.getBlockPos();
+					BlockState blockstate = level.getBlockState(pos);
+					if (blockstate.getRenderShape() != RenderShape.INVISIBLE) {
+						Direction side = hitResult.getDirection();
+
+						int posX = pos.getX();
+						int posY = pos.getY();
+						int posZ = pos.getZ();
+
+						AABB aabb = blockstate.getShape(level, pos).bounds();
+						double x = (double) posX + level.random.nextDouble() * (aabb.maxX - aabb.minX - (double) 0.2F) + (double) 0.1F + aabb.minX;
+						double y = (double) posY + level.random.nextDouble() * (aabb.maxY - aabb.minY - (double) 0.2F) + (double) 0.1F + aabb.minY;
+						double z = (double) posZ + level.random.nextDouble() * (aabb.maxZ - aabb.minZ - (double) 0.2F) + (double) 0.1F + aabb.minZ;
+
+						if (side == Direction.DOWN) y = (double) posY + aabb.minY - (double) 0.1F;
+						if (side == Direction.UP) y = (double) posY + aabb.maxY + (double) 0.1F;
+
+						if (side == Direction.NORTH) z = (double) posZ + aabb.minZ - (double) 0.1F;
+						if (side == Direction.SOUTH) z = (double) posZ + aabb.maxZ + (double) 0.1F;
+
+						if (side == Direction.WEST) x = (double) posX + aabb.minX - (double) 0.1F;
+						if (side == Direction.EAST) x = (double) posX + aabb.maxX + (double) 0.1F;
+
+						Particle particle = Minecraft.getInstance().particleEngine.createParticle(TFParticleType.CLOUD_PUFF.get(), x, y, z, (double) side.getStepX() * 0.01D, (double) side.getStepY() * 0.01D, (double) side.getStepZ() * 0.01D);
+						if (particle == null) return true;
+						manager.add(particle);
+					}
+				}
+				return true;
+			}
+
+			@Override
+			public boolean addDestroyEffects(BlockState state, Level level, BlockPos pos, ParticleEngine manager) {
+				state.getShape(level, pos).forAllBoxes((boxX, boxY, boxZ, boxX1, boxY1, boxZ1) -> {
+					double xSize = Math.min(1.0D, boxX1 - boxX);
+					double ySize = Math.min(1.0D, boxY1 - boxY);
+					double zSize = Math.min(1.0D, boxZ1 - boxZ);
+
+					int xMax = Math.max(2, Mth.ceil(xSize / 0.25D));
+					int yMax = Math.max(2, Mth.ceil(ySize / 0.25D));
+					int zMax = Math.max(2, Mth.ceil(zSize / 0.25D));
+
+					for (int xSlice = 0; xSlice < xMax; ++xSlice) {
+						if (level.random.nextInt(3) == 1) continue;
+						for (int ySlice = 0; ySlice < yMax; ++ySlice) {
+							if (level.random.nextInt(3) == 1) continue;
+							for (int zSlice = 0; zSlice < zMax; ++zSlice) {
+								if (level.random.nextInt(3) == 1) continue;
+
+								double speedX = ((double) xSlice + 0.5D) / (double) xMax;
+								double speedY = ((double) ySlice + 0.5D) / (double) yMax;
+								double speedZ = ((double) zSlice + 0.5D) / (double) zMax;
+
+								double x = speedX * xSize + boxX;
+								double y = speedY * ySize + boxY;
+								double z = speedZ * zSize + boxZ;
+
+								speedX = (speedX - 0.5D) * 0.05D;
+								speedY = (speedY - 0.5D) * 0.05D;
+								speedZ = (speedZ - 0.5D) * 0.05D;
+
+								Particle particle = Minecraft.getInstance().particleEngine.createParticle(TFParticleType.CLOUD_PUFF.get(), (double) pos.getX() + x, (double) pos.getY() + y, (double) pos.getZ() + z, speedX, speedY, speedZ);
+								if (particle == null) return;
+								manager.add(particle);
+							}
+						}
+					}
+				});
+				return true;
+			}
+		}, TFBlocks.WISPY_CLOUD.get(), TFBlocks.RAINY_CLOUD.get(), TFBlocks.SNOWY_CLOUD.get(), TFBlocks.FLUFFY_CLOUD.get());
+
+		event.registerItem(ISTER.CLIENT_ITEM_EXTENSION,
+			TFBlocks.CICADA.asItem(), TFBlocks.FIREFLY.asItem(), TFBlocks.MOONWORM.asItem(), TFBlocks.KEEPSAKE_CASKET.asItem(), TFBlocks.CANDELABRA.asItem(),
+			TFItems.CICADA_JAR.get(), TFItems.FIREFLY_JAR.get(), TFItems.MASON_JAR.get(), TFItems.KNIGHTMETAL_SHIELD.get(),
+			TFBlocks.TWILIGHT_OAK_CHEST.asItem(), TFBlocks.CANOPY_CHEST.asItem(), TFBlocks.MANGROVE_CHEST.asItem(), TFBlocks.DARK_CHEST.asItem(), TFBlocks.TIME_CHEST.asItem(), TFBlocks.TRANSFORMATION_CHEST.asItem(), TFBlocks.MINING_CHEST.asItem(), TFBlocks.SORTING_CHEST.asItem(),
+			TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST.asItem(), TFBlocks.CANOPY_TRAPPED_CHEST.asItem(), TFBlocks.MANGROVE_TRAPPED_CHEST.asItem(), TFBlocks.DARK_TRAPPED_CHEST.asItem(), TFBlocks.TIME_TRAPPED_CHEST.asItem(), TFBlocks.TRANSFORMATION_TRAPPED_CHEST.asItem(), TFBlocks.MINING_TRAPPED_CHEST.asItem(), TFBlocks.SORTING_TRAPPED_CHEST.asItem(),
+			TFItems.NAGA_TROPHY.get(), TFItems.LICH_TROPHY.get(), TFItems.MINOSHROOM_TROPHY.get(), TFItems.HYDRA_TROPHY.get(), TFItems.KNIGHT_PHANTOM_TROPHY.get(), TFItems.UR_GHAST_TROPHY.get(), TFItems.ALPHA_YETI_TROPHY.get(), TFItems.SNOW_QUEEN_TROPHY.get(), TFItems.QUEST_RAM_TROPHY.get(),
+			TFItems.CREEPER_SKULL_CANDLE.get(), TFItems.PIGLIN_SKULL_CANDLE.get(), TFItems.PLAYER_SKULL_CANDLE.get(), TFItems.SKELETON_SKULL_CANDLE.get(), TFItems.WITHER_SKELETON_SKULL_CANDLE.get(), TFItems.ZOMBIE_SKULL_CANDLE.get());
+
+		event.registerItem(ArcticArmorItem.ArmorRender.INSTANCE, TFItems.ARCTIC_HELMET.get(), TFItems.ARCTIC_CHESTPLATE.get(), TFItems.ARCTIC_LEGGINGS.get(), TFItems.ARCTIC_BOOTS.get());
+		event.registerItem(FieryArmorItem.ArmorRender.INSTANCE, TFItems.FIERY_HELMET.get(), TFItems.FIERY_CHESTPLATE.get(), TFItems.FIERY_LEGGINGS.get(), TFItems.FIERY_BOOTS.get());
+		event.registerItem(KnightmetalArmorItem.ArmorRender.INSTANCE, TFItems.KNIGHTMETAL_HELMET.get(), TFItems.KNIGHTMETAL_CHESTPLATE.get(), TFItems.KNIGHTMETAL_LEGGINGS.get(), TFItems.KNIGHTMETAL_BOOTS.get());
+		event.registerItem(PhantomArmorItem.ArmorRender.INSTANCE, TFItems.PHANTOM_HELMET.get(), TFItems.PHANTOM_CHESTPLATE.get());
+		event.registerItem(YetiArmorItem.ArmorRender.INSTANCE, TFItems.YETI_HELMET.get(), TFItems.YETI_CHESTPLATE.get(), TFItems.YETI_LEGGINGS.get(), TFItems.YETI_BOOTS.get());
+	}
+
+	private static void registerMapDecorators(RegisterMapDecorationRenderersEvent event) {
+		event.register(MapDecorationTypes.PLAYER.value(), new MagicMapPlayerIconRenderer());
+		event.register(TFMapDecorations.QUEST_GROVE.get(), new ConqueredMapIconRenderer());
+		event.register(TFMapDecorations.NAGA_COURTYARD.get(), new ConqueredMapIconRenderer());
+		event.register(TFMapDecorations.LICH_TOWER.get(), new ConqueredMapIconRenderer());
+		event.register(TFMapDecorations.LABYRINTH.get(), new ConqueredMapIconRenderer());
+		event.register(TFMapDecorations.HYDRA_LAIR.get(), new ConqueredMapIconRenderer());
+		event.register(TFMapDecorations.KNIGHT_STRONGHOLD.get(), new ConqueredMapIconRenderer());
+		event.register(TFMapDecorations.DARK_TOWER.get(), new ConqueredMapIconRenderer());
+		event.register(TFMapDecorations.YETI_LAIR.get(), new ConqueredMapIconRenderer());
+		event.register(TFMapDecorations.AURORA_PALACE.get(), new ConqueredMapIconRenderer());
+		event.register(TFMapDecorations.FINAL_CASTLE.get(), new ConqueredMapIconRenderer());
 	}
 
 	private static void attachRenderLayers(EntityRenderersEvent.AddLayers event) {

@@ -8,7 +8,7 @@ import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSpecialEffects;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.client.renderer.tileentity.JarRenderer;
+import twilightforest.client.renderer.block.JarRenderer;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFSounds;

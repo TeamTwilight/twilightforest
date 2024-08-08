@@ -5,11 +5,11 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.neoforged.neoforge.client.model.geometry.IGeometryLoader;
 
-public class RoyalRagsModelBuilder implements IGeometryLoader<UnbakedRoyalRagsModel> {
+public class RoyalRagsModelLoader implements IGeometryLoader<UnbakedRoyalRagsModel> {
 	@Deprecated // FIXME: Generalize alongside with CastleDoor models
-	public static final RoyalRagsModelBuilder INSTANCE = new RoyalRagsModelBuilder();
+	public static final RoyalRagsModelLoader INSTANCE = new RoyalRagsModelLoader();
 
-	public RoyalRagsModelBuilder() {
+	public RoyalRagsModelLoader() {
 	}
 
 	public UnbakedRoyalRagsModel read(JsonObject jsonObject, JsonDeserializationContext deserializationContext) throws JsonParseException {

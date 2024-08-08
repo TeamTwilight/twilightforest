@@ -278,11 +278,6 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 	}
 
 	@Override
-	public Optional<SoundEvent> getPickupSound() {
-		return Optional.empty();
-	}
-
-	@Override
 	protected BlockState rotate(BlockState state, Rotation rotation) {
 		return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
 	}

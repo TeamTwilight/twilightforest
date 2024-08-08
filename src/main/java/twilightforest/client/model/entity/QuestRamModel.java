@@ -353,7 +353,7 @@ public class QuestRamModel<T extends QuestRam> extends HierarchicalModel<T> impl
 		this.head.render(stack, consumer, light, overlay, color);
 		stack.pushPose();
 		stack.scale(1.025F, 1.025F, 1.025F);
-		consumer = buffer.getBuffer(RenderType.entityCutoutNoCull(QuestRamRenderer.LINE_TEXTURE));
+		consumer = buffer.getBuffer(RenderType.entityTranslucent(QuestRamRenderer.LINE_TEXTURE));
 		this.head.render(stack, consumer, 0xF000F0, overlay, color);
 		stack.popPose();
 	}

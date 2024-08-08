@@ -26,7 +26,7 @@ import twilightforest.client.model.block.carpet.RoyalRagsBuilder;
 import twilightforest.client.model.block.forcefield.ForceFieldModel;
 import twilightforest.client.model.block.forcefield.ForceFieldModelBuilder;
 import twilightforest.client.model.block.giantblock.GiantBlockBuilder;
-import twilightforest.client.renderer.tileentity.JarRenderer;
+import twilightforest.client.renderer.block.JarRenderer;
 import twilightforest.data.helpers.BlockModelBuilders;
 import twilightforest.enums.*;
 import twilightforest.init.TFBlocks;

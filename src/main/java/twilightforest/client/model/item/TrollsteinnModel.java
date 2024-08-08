@@ -15,11 +15,15 @@ import twilightforest.TwilightForestMod;
 import twilightforest.block.TrollsteinnBlock;
 
 public class TrollsteinnModel extends BakedModelWrapper<BakedModel> {
-
-	private final BakedModel litTrollsteinnModel = Minecraft.getInstance().getModelManager().getModel(new ModelResourceLocation(TwilightForestMod.prefix("trollsteinn_light"), "inventory"));
+	public static final ModelResourceLocation LIT_TROLLSTEINN = ModelResourceLocation.standalone(TwilightForestMod.prefix("item/trollsteinn_light"));
+	@Nullable
+	private BakedModel litTrollsteinnModel;
 	private final ItemOverrides overrides = new ItemOverrides() {
 		@Override
 		public BakedModel resolve(@NotNull BakedModel model, @NotNull ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int seed) {
+			if (TrollsteinnModel.this.litTrollsteinnModel == null)
+				TrollsteinnModel.this.litTrollsteinnModel = Minecraft.getInstance().getModelManager().getModel(LIT_TROLLSTEINN);
+
 			Entity itemEntity = (entity == null) ? stack.getEntityRepresentation() : entity;
 
 			if (level == null || itemEntity == null) {

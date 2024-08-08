@@ -43,7 +43,7 @@ public class CloudEvents {
 
 	}
 
-	public static void tickWeatherEffects(ClientTickEvent.Post event) {
+	protected static void tickWeatherEffects(ClientTickEvent.Post event) {
 		Minecraft mc = Minecraft.getInstance();
 
 		if (!mc.isPaused()) {
@@ -149,7 +149,7 @@ public class CloudEvents {
 		}
 	}
 
-	public static void renderPrecipitation(RenderLevelStageEvent event) {
+	protected static void renderPrecipitation(RenderLevelStageEvent event) {
 		if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_WEATHER && TFConfig.getClientCloudBlockPrecipitationDistance() > 0 && !RENDER_HELPER.isEmpty()) {
 			Minecraft minecraft = Minecraft.getInstance();
 			if (minecraft.level == null) return;
