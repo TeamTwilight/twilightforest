@@ -39,6 +39,7 @@ import net.minecraft.world.level.chunk.status.ChunkStatus;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.common.NeoForge;
@@ -79,7 +80,7 @@ public class ClientEvents {
 	private static int aurora = 0;
 	private static int lastAurora = 0;
 
-	@Autowired
+	@Autowired(dist = Dist.CLIENT)
 	private static HolderMatcher holderMatcher;
 
 	public static void initGameEvents() {
