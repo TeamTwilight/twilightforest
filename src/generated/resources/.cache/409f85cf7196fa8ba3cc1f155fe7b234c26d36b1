@@ -1,4 +1,4 @@
-// 1.21	2024-08-05T01:42:27.214989667	TwilightForest blockstates and block models
+// 1.21	2024-08-09T02:45:21.140528212	TwilightForest blockstates and block models
 cab88029518a1647ec691d136328ed93c18108be assets/twilightforest/blockstates/acacia_banister.json
 9472090eea384d675fee73a90ed033b799c88820 assets/twilightforest/blockstates/alpha_yeti_boss_spawner.json
 94ee00eebd82061338b6db439a84b3fdf98f3942 assets/twilightforest/blockstates/alpha_yeti_trophy.json
@@ -75,6 +75,7 @@ b66481a27d37b515e3f11b9769d77ab1be6adfb9 assets/twilightforest/blockstates/crack
 94ee00eebd82061338b6db439a84b3fdf98f3942 assets/twilightforest/blockstates/creeper_skull_candle.json
 94ee00eebd82061338b6db439a84b3fdf98f3942 assets/twilightforest/blockstates/creeper_wall_skull_candle.json
 6f3813d2be5875746912e49293aed0a7b76403b0 assets/twilightforest/blockstates/crimson_banister.json
+6cf6563f8b20afc916bca69623fb3b877a585b26 assets/twilightforest/blockstates/cursed_spawner.json
 fadcab0f3a09e77d5520204bb9e4d712223a2483 assets/twilightforest/blockstates/cut_mazestone.json
 6c2e4f65f2ac6cac95c9f4d26e3befd8863048c3 assets/twilightforest/blockstates/dark_banister.json
 136fdf55d525160d3321baed5b89fa9aac036a9c assets/twilightforest/blockstates/dark_button.json
@@ -622,6 +623,7 @@ f67e83a8023518fa68474c65b98b6ea0818986d9 assets/twilightforest/models/block/crac
 5c8e1266844513438549edfbb5d4de2359d7ba6b assets/twilightforest/models/block/cracked_towerwood_flipped.json
 4d1988b8b507870b1c18dd435510898acdc849e6 assets/twilightforest/models/block/cracked_underbrick.json
 ef9e9f9f2e7681b43f4b281c140b611b4e134af1 assets/twilightforest/models/block/crimson_stem_lid.json
+765f2e8bd33db3fda202a9a3fbcff065968fa2bd assets/twilightforest/models/block/cursed_spawner.json
 55aa238d7809a9a3221806646896b091abb8c1cf assets/twilightforest/models/block/cut_mazestone.json
 42518bd0a21e50db51bd78aa3e26551975177bbc assets/twilightforest/models/block/dark_chest.json
 dd56dac3bed27860b2687f1d608a4c732f8ea2b0 assets/twilightforest/models/block/dark_hanging_sign.json

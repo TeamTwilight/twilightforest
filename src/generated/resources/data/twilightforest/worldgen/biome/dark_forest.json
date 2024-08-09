@@ -47,11 +47,10 @@
     ],
     [],
     [
-      "minecraft:patch_grass_jungle",
+      "minecraft:patch_grass_normal",
       "twilightforest:tree/selector/dark_forest_tree_mix",
       "twilightforest:tree/selector/dark_forest_trees",
       "twilightforest:tree/darkwood_tree",
-      "twilightforest:dark_ferns",
       "twilightforest:dark_dead_bushes",
       "twilightforest:dark_pumpkins",
       "twilightforest:dark_mushglooms",
