@@ -1,0 +1,155 @@
+{
+  "type": "twilightforest:hollow_tree",
+  "adjust_structure_elevation": true,
+  "allow_biome_surface_decorations": false,
+  "allow_biome_underground_decorations": true,
+  "allow_in_water": true,
+  "biomes": "twilightforest:swamp",
+  "bug": {
+    "type": "minecraft:weighted_state_provider",
+    "entries": [
+      {
+        "data": {
+          "Name": "twilightforest:firefly",
+          "Properties": {
+            "facing": "north",
+            "waterlogged": "false"
+          }
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "Name": "twilightforest:cicada",
+          "Properties": {
+            "facing": "north",
+            "waterlogged": "false"
+          }
+        },
+        "weight": 1
+      }
+    ]
+  },
+  "chunk_clearance_radius": 2,
+  "dungeon_air": {
+    "type": "minecraft:simple_state_provider",
+    "state": {
+      "Name": "minecraft:air"
+    }
+  },
+  "dungeon_loot_block": {
+    "type": "minecraft:simple_state_provider",
+    "state": {
+      "Name": "minecraft:chest",
+      "Properties": {
+        "type": "single",
+        "facing": "west",
+        "waterlogged": "false"
+      }
+    }
+  },
+  "dungeon_loot_table": "twilightforest:tree_cache",
+  "dungeon_monster": "twilightforest:swarm_spider",
+  "dungeon_wood": {
+    "type": "minecraft:simple_state_provider",
+    "state": {
+      "Name": "twilightforest:twilight_oak_wood",
+      "Properties": {
+        "axis": "y"
+      }
+    }
+  },
+  "height": {
+    "type": "minecraft:uniform",
+    "max_inclusive": 95,
+    "min_inclusive": 32
+  },
+  "leaves": {
+    "type": "minecraft:simple_state_provider",
+    "state": {
+      "Name": "twilightforest:twilight_oak_leaves",
+      "Properties": {
+        "distance": "7",
+        "persistent": "false",
+        "waterlogged": "false"
+      }
+    }
+  },
+  "log": {
+    "type": "minecraft:simple_state_provider",
+    "state": {
+      "Name": "twilightforest:twilight_oak_log",
+      "Properties": {
+        "axis": "y"
+      }
+    }
+  },
+  "radius": {
+    "type": "minecraft:uniform",
+    "max_inclusive": 4,
+    "min_inclusive": 1
+  },
+  "root": {
+    "type": "minecraft:simple_state_provider",
+    "state": {
+      "Name": "twilightforest:root"
+    }
+  },
+  "spawn_overrides": {
+    "ambient": {
+      "bounding_box": "full",
+      "spawns": []
+    },
+    "axolotls": {
+      "bounding_box": "full",
+      "spawns": []
+    },
+    "creature": {
+      "bounding_box": "full",
+      "spawns": []
+    },
+    "misc": {
+      "bounding_box": "full",
+      "spawns": []
+    },
+    "monster": {
+      "bounding_box": "full",
+      "spawns": []
+    },
+    "underground_water_creature": {
+      "bounding_box": "full",
+      "spawns": []
+    },
+    "water_ambient": {
+      "bounding_box": "full",
+      "spawns": []
+    },
+    "water_creature": {
+      "bounding_box": "full",
+      "spawns": []
+    }
+  },
+  "step": "surface_structures",
+  "vine": {
+    "type": "minecraft:simple_state_provider",
+    "state": {
+      "Name": "minecraft:vine",
+      "Properties": {
+        "east": "false",
+        "north": "false",
+        "south": "false",
+        "up": "false",
+        "west": "false"
+      }
+    }
+  },
+  "wood": {
+    "type": "minecraft:simple_state_provider",
+    "state": {
+      "Name": "twilightforest:twilight_oak_wood",
+      "Properties": {
+        "axis": "y"
+      }
+    }
+  }
+}

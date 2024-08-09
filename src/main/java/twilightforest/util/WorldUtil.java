@@ -6,9 +6,11 @@ import it.unimi.dsi.fastutil.objects.ObjectArraySet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.StructureManager;
@@ -36,6 +38,14 @@ public final class WorldUtil {
 
 	public static long getOverworldSeed() {
 		return Objects.requireNonNull(ServerLifecycleHooks.getCurrentServer()).getWorldData().worldGenOptions().seed();
+	}
+
+	public static RegistryAccess getRegistryAccess() {
+		return Objects.requireNonNull(ServerLifecycleHooks.getCurrentServer()).registryAccess();
+	}
+
+	public static Difficulty getDifficulty() {
+		return Objects.requireNonNull(ServerLifecycleHooks.getCurrentServer()).getWorldData().getDifficulty();
 	}
 
 	/**

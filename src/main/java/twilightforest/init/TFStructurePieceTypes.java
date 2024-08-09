@@ -85,19 +85,19 @@ public class TFStructurePieceTypes {
 	public static final DeferredHolder<StructurePieceType, StructurePieceType> TFLTRStO = registerPieceType("TFLTRStO", TowerRoofStairsOverhangComponent::new);
 	public static final DeferredHolder<StructurePieceType, StructurePieceType> TFLTWin = registerPieceType("TFLTWin", TowerWingComponent::new);
 
-	// New Lich Tower
-	public static final DeferredHolder<StructurePieceType, StructurePieceType> TOWER_FOYER = registerPieceType("TFLT" + "TFoy", TowerFoyer::new);
-	public static final DeferredHolder<StructurePieceType, StructurePieceType> CENTRAL_TOWER_BASE = registerPieceType("TFLT" + "CTBase", CentralTowerBase::new);
-	public static final DeferredHolder<StructurePieceType, StructurePieceType> CENTRAL_TOWER = registerPieceType("TFLT" + "CTSeg", CentralTowerSegment::new);
-	public static final DeferredHolder<StructurePieceType, StructurePieceType> MOB_BRIDGE = registerPieceType("TFLT" + "MobBridge", TowerMobBridge::new);
-	public static final DeferredHolder<StructurePieceType, StructurePieceType> TOWER_BRIDGE = registerPieceType("TFLT" + "Bridge", TowerBridge::new);
-	public static final DeferredHolder<StructurePieceType, StructurePieceType> TOWER_ROOF = registerPieceType("TFLT" + "TRoof", TowerRoof::new);
-	public static final DeferredHolder<StructurePieceType, StructurePieceType> TOWER_BEARD = registerPieceType("TFLT" + "TBeard", TowerBeard::new);
-	public static final DeferredHolder<StructurePieceType, StructurePieceType> TOWER_ROOM = registerPieceType("TFLT" + "TRoom", TowerRoom::new);
-	public static final DeferredHolder<StructurePieceType, StructurePieceType> TOWER_DECOR = registerPieceType("TFLT" + "TDecor", TowerWingDecorPiece::new);
-	public static final DeferredHolder<StructurePieceType, StructurePieceType> TOWER_GALLERY = registerPieceType("TFLT" + "TGallery", TowerGallery::new);
-	public static final DeferredHolder<StructurePieceType, StructurePieceType> FOYER_DECORATION = registerPieceType("TFLT" + "TFoyD", FoyerDecoration::new);
-	public static final DeferredHolder<StructurePieceType, StructurePieceType> TOWER_BOSS_ROOM = registerPieceType("TFLT" + "TBoss", BossRoom::new);
+	// Lich Tower
+	public static final DeferredHolder<StructurePieceType, StructurePieceType> LICH_TOWER_FOYER = registerPieceType("TFLT" + "TFoy", LichTowerFoyer::new);
+	public static final DeferredHolder<StructurePieceType, StructurePieceType> LICH_TOWER_BASE = registerPieceType("TFLT" + "CTBase", LichTowerBase::new);
+	public static final DeferredHolder<StructurePieceType, StructurePieceType> LICH_TOWER_SEGMENT = registerPieceType("TFLT" + "CTSeg", LichTowerSegment::new);
+	public static final DeferredHolder<StructurePieceType, StructurePieceType> LICH_SPAWNER_BRIDGE = registerPieceType("TFLT" + "MobBridge", LichTowerSpawnerBridge::new);
+	public static final DeferredHolder<StructurePieceType, StructurePieceType> LICH_WING_BRIDGE = registerPieceType("TFLT" + "Bridge", LichTowerWingBridge::new);
+	public static final DeferredHolder<StructurePieceType, StructurePieceType> LICH_WING_ROOF = registerPieceType("TFLT" + "TRoof", LichTowerWingRoof::new);
+	public static final DeferredHolder<StructurePieceType, StructurePieceType> LICH_WING_BEARD = registerPieceType("TFLT" + "TBeard", LichTowerWingBeard::new);
+	public static final DeferredHolder<StructurePieceType, StructurePieceType> LICH_WING_ROOM = registerPieceType("TFLT" + "TRoom", LichTowerWingRoom::new);
+	public static final DeferredHolder<StructurePieceType, StructurePieceType> LICH_TOWER_DECOR = registerPieceType("TFLT" + "TDecor", LichTowerRoomDecor::new);
+	public static final DeferredHolder<StructurePieceType, StructurePieceType> LICH_MAGIC_GALLERY = registerPieceType("TFLT" + "TGallery", LichTowerMagicGallery::new);
+	public static final DeferredHolder<StructurePieceType, StructurePieceType> LICH_FOYER_DECORATION = registerPieceType("TFLT" + "TFoyD", LichTowerFoyerDecor::new);
+	public static final DeferredHolder<StructurePieceType, StructurePieceType> LICH_BOSS_ROOM = registerPieceType("TFLT" + "TBoss", LichBossRoom::new);
 
 	// Labyrinth
 	//public static final DeferredHolder<StructurePieceType, StructurePieceType> TFLr = registerPieceType("TFLr", StructureStartLabyrinth::new);

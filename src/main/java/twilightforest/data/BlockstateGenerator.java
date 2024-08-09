@@ -511,6 +511,8 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		candelabra();
 
 		this.terrorcotta();
+
+		this.simpleBlock(TFBlocks.CURSED_SPAWNER.value(), this.models().withExistingParent( "cursed_spawner", "block/spawner").texture("all", TwilightForestMod.prefix("block/cursed_spawner")).renderType(CUTOUT));
 	}
 
 	private void registerLoftyCarpet() {

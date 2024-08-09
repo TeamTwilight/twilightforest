@@ -11,12 +11,14 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import twilightforest.util.landmarks.LegacyLandmarkPlacements;
 
+@twilightforest.beans.Component
 public class CenterCommand {
-	public static LiteralArgumentBuilder<CommandSourceStack> register() {
-		return Commands.literal("center").requires(cs -> cs.hasPermission(2)).executes(CenterCommand::run);
+
+	public LiteralArgumentBuilder<CommandSourceStack> register() {
+		return Commands.literal("center").requires(cs -> cs.hasPermission(2)).executes(this::run);
 	}
 
-	private static int run(CommandContext<CommandSourceStack> ctx) {
+	private int run(CommandContext<CommandSourceStack> ctx) {
 		CommandSourceStack source = ctx.getSource();
 
 		int dx = Mth.floor(source.getPosition().x());
@@ -27,7 +29,7 @@ public class CenterCommand {
 
 		String structurename = Component.translatable(closestFeature.toLanguageKey("structure")).withStyle(ChatFormatting.DARK_GREEN).getString();
 		source.sendSuccess(() -> Component.translatable("commands.tffeature.nearest", structurename), false);
-		source.sendSuccess(() -> Component.translatable("commands.tffeature.center", cc), false);
+		source.sendSuccess(() -> Component.translatable("commands.tffeature.center", cc.toShortString()), false);
 		source.sendSuccess(() -> Component.translatable("commands.tffeature.chunk", fc), false);
 
 		return Command.SINGLE_SUCCESS;

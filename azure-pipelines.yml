@@ -14,151 +14,183 @@ variables:
     revision: $[counter('release-number', 0)]
 
 steps:
-- task: Cache@2
-  inputs:
-    key: 'gradle | "$(Agent.OS)" | build.gradle | settings.gradle | gradle.properties | src/main/resources/META-INF/accesstransformer.cfg'
-    path: $(GRADLE_USER_HOME)
-  displayName: Restore Gradle Cache
-  condition: eq(variables.SKIP_BUILD, 'false')
+  - powershell: |
+      $json = [Ordered]@{
+          title = "Maven Publish Failed"
+          url = "$($env:SYSTEM_TEAMFOUNDATIONSERVERURI)Twilight%20Forest/_build/results?buildId=$($Env:BUILD_BUILDID)&view=results"
+          color = 16733440
+          fields = (
+              [Ordered]@{
+                  name = "Author"
+                  value = "$($env:BUILD_SOURCEVERSIONAUTHOR)"
+              },
+              [Ordered]@{
+                  name = "Commit"
+                  value = "[$(($env:BUILD_SOURCEVERSION).Substring(0, 7))]($($env:BUILD_REPOSITORY_URI)/commit/$($env:BUILD_SOURCEVERSION))"
+              }
+          )
+      }
+      Write-Host "##vso[task.setvariable variable=DiscordMessageMavenFailed]$($json | ConvertTo-Json -Compress)"
+    displayName: Format failed maven publish discord message
+    condition: always()
+    env:
+      SYSTEM_ACCESSTOKEN: $(System.AccessToken)
 
-- task: Cache@2
-  inputs:
-    key: 'gradleLocal | "$(Agent.OS)" | build.gradle | settings.gradle | gradle.properties | src/main/resources/META-INF/accesstransformer.cfg'
-    path: .gradle
-  displayName: Restore Project Level Gradle Cache
-  condition: eq(variables.SKIP_BUILD, 'false')
+  - task: Cache@2
+    inputs:
+      key: 'gradle | "$(Agent.OS)" | build.gradle | settings.gradle | gradle.properties | src/main/resources/META-INF/accesstransformer.cfg'
+      path: $(GRADLE_USER_HOME)
+    displayName: Restore Gradle Cache
+    condition: eq(variables.SKIP_BUILD, 'false')
 
-- task: Cache@2
-  inputs:
-    key: 'gradleBuildTmpLocal | "$(Agent.OS)" | build.gradle | settings.gradle | gradle.properties | src/main/resources/META-INF/accesstransformer.cfg'
-    path: build/tmp
-  displayName: Restore Project Level build/tmp Cache
-  condition: eq(variables.SKIP_BUILD, 'false')
+  - task: Cache@2
+    inputs:
+      key: 'gradleLocal | "$(Agent.OS)" | build.gradle | settings.gradle | gradle.properties | src/main/resources/META-INF/accesstransformer.cfg'
+      path: .gradle
+    displayName: Restore Project Level Gradle Cache
+    condition: eq(variables.SKIP_BUILD, 'false')
 
-- powershell: |
-    (Get-Content ./gradle.properties).Split([Environment]::NewLine) | % {
-        $kvp = $_.Split('=')
-        if ($kvp.Count -gt 1) {
-            $key = $kvp[0] -replace "\.", "_";
-            $value = $kvp[1];
-            Write-Host "##vso[task.setvariable variable=javaprops_$key]$value"
-        }
-    }
-  displayName: Create Azure DevOps variables from gradle properties file
-  condition: eq(variables.SKIP_BUILD, 'false')
+  - task: Cache@2
+    inputs:
+      key: 'gradleBuildTmpLocal | "$(Agent.OS)" | build.gradle | settings.gradle | gradle.properties | src/main/resources/META-INF/accesstransformer.cfg'
+      path: build/tmp
+    displayName: Restore Project Level build/tmp Cache
+    condition: eq(variables.SKIP_BUILD, 'false')
 
-- task: Gradle@2
-  displayName: Create Release Build
-  inputs:
-    workingDirectory: ''
-    options: '--build-cache --max-workers=1 -PCIRevision=$(javaprops_mod_version).$(revision) -PCIType=RELEASE'
-    gradleWrapperFile: 'gradlew'
-    gradleOptions: '-Xmx3072m'
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '21'
-    jdkArchitectureOption: 'x64'
-    publishJUnitResults: false
-    testResultsFiles: '**/TEST-*.xml'
-    tasks: 'build'
-  condition: eq(variables.SKIP_BUILD, 'false')
+  - powershell: |
+      (Get-Content ./gradle.properties).Split([Environment]::NewLine) | % {
+          $kvp = $_.Split('=')
+          if ($kvp.Count -gt 1) {
+              $key = $kvp[0] -replace "\.", "_";
+              $value = $kvp[1];
+              Write-Host "##vso[task.setvariable variable=javaprops_$key]$value"
+          }
+      }
+    displayName: Create Azure DevOps variables from gradle properties file
+    condition: eq(variables.SKIP_BUILD, 'false')
 
-- task: CopyFiles@2
-  displayName: Copy Release build to artifact staging
-  inputs:
-    sourceFolder: './build/libs/'
-    contents: 'twilightforest-*-universal.jar'
-    targetFolder: $(build.artifactStagingDirectory)
-  condition: and(and(succeeded(), eq(variables['CreateArtifacts'], 'True')), eq(variables.SKIP_BUILD, 'false'))
+  - task: Gradle@2
+    displayName: Create Release Build
+    inputs:
+      workingDirectory: ''
+      options: '--build-cache --max-workers=1 -PCIRevision=$(javaprops_mod_version).$(revision) -PCIType=RELEASE'
+      gradleWrapperFile: 'gradlew'
+      gradleOptions: '-Xmx3072m'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '21'
+      jdkArchitectureOption: 'x64'
+      publishJUnitResults: false
+      testResultsFiles: '**/TEST-*.xml'
+      tasks: 'build'
+    condition: eq(variables.SKIP_BUILD, 'false')
 
-- task: PublishPipelineArtifact@1
-  displayName: 'Publish Artifacts'
-  condition: and(and(succeeded(), eq(variables['CreateArtifacts'], 'True')), eq(variables.SKIP_BUILD, 'false'))
-  inputs:
-    targetPath: '$(Build.ArtifactStagingDirectory)'
-    artifact: '$(artifactName)'
-    publishLocation: 'pipeline'
+  - task: CopyFiles@2
+    displayName: Copy Release build to artifact staging
+    inputs:
+      sourceFolder: './build/libs/'
+      contents: 'twilightforest-*-universal.jar'
+      targetFolder: $(build.artifactStagingDirectory)
+    condition: and(and(succeeded(), eq(variables['CreateArtifacts'], 'True')), eq(variables.SKIP_BUILD, 'false'))
 
-- powershell: |
-    $rawpath = "pipelineartifact://teamtwilight/projectId/1ef09d39-06cf-41fa-ad98-7258b70c2a72/buildId/$($Env:BUILD_BUILDID)/artifactName/Release"
-    $path = [Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes($rawpath))
-    $jar = "twilightforest-$($env:JAVAPROPS_MINECRAFT_VERSION)-$($env:JAVAPROPS_MOD_VERSION).$($env:REVISION)-universal.jar"
-    $downloadUrl = "https://artprodcus3.artifacts.visualstudio.com/Abaabfa6c-deea-4587-ba05-c308c2597b7a/1ef09d39-06cf-41fa-ad98-7258b70c2a72/_apis/artifact/$($path)0/content?format=file&subPath=%2F$($jar)"
-    $jobResult = (Get-Culture).TextInfo.ToTitleCase(${env:agent.jobstatus})
-    $Colour = 65280
-    if ($jobResult -ne "Succeeded") {
-      $Colour = 16711680
-    }
-    Write-Host "##vso[task.setvariable variable=DiscordMessageColour]$Colour"
+  - task: PublishPipelineArtifact@1
+    displayName: 'Publish Artifacts'
+    condition: and(and(succeeded(), eq(variables['CreateArtifacts'], 'True')), eq(variables.SKIP_BUILD, 'false'))
+    inputs:
+      targetPath: '$(Build.ArtifactStagingDirectory)'
+      artifact: '$(artifactName)'
+      publishLocation: 'pipeline'
 
-    $json = [Ordered]@{
-        title = "Build $jobResult"
-        url = "$($env:SYSTEM_TEAMFOUNDATIONSERVERURI)Twilight%20Forest/_build/results?buildId=$($Env:BUILD_BUILDID)&view=results"
-        color = $Colour
-        fields = (
-            [Ordered]@{
-                name = "Author"
-                value = "$($env:BUILD_SOURCEVERSIONAUTHOR)"
-            },
-            [Ordered]@{
-                name = "Minecraft Version"
-                value = "$($env:JAVAPROPS_MINECRAFT_VERSION)"
-            },
-            [Ordered]@{
-                name = "Mod Version"
-                value = "$($env:JAVAPROPS_MOD_VERSION).$($env:REVISION)"
-            },
-            [Ordered]@{
-                name = "NeoForge Version"
-                value = "$($env:JAVAPROPS_NEO_VERSION)"
-            },
-            [Ordered]@{
-                name = "Commit"
-                value = "[$(($env:BUILD_SOURCEVERSION).Substring(0, 7))]($($env:BUILD_REPOSITORY_URI)/commit/$($env:BUILD_SOURCEVERSION))"
-            }
-        )
-    }
-    if ($jobResult -eq "Succeeded") {
-        $json["fields"] += [Ordered]@{
-            name = "Download"
-            value = "[$($downloadUrl.Split("subPath=%2F")[1])]($downloadUrl)"
-        }
-    }
-    Write-Host "##vso[task.setvariable variable=DiscordMessage]$($json | ConvertTo-Json -Compress)"
-  displayName: Format discord message
-  condition: eq(variables.SKIP_BUILD, 'false')
-  env:
-    SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+  - powershell: |
+      $rawpath = "pipelineartifact://teamtwilight/projectId/1ef09d39-06cf-41fa-ad98-7258b70c2a72/buildId/$($Env:BUILD_BUILDID)/artifactName/Release"
+      $path = [Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes($rawpath))
+      $jar = "twilightforest-$($env:JAVAPROPS_MINECRAFT_VERSION)-$($env:JAVAPROPS_MOD_VERSION).$($env:REVISION)-universal.jar"
+      $downloadUrl = "https://artprodcus3.artifacts.visualstudio.com/Abaabfa6c-deea-4587-ba05-c308c2597b7a/1ef09d39-06cf-41fa-ad98-7258b70c2a72/_apis/artifact/$($path)0/content?format=file&subPath=%2F$($jar)"
+      $jobResult = (Get-Culture).TextInfo.ToTitleCase(${env:agent.jobstatus})
+      $Colour = 65280
+      if ($jobResult -ne "Succeeded") {
+        $Colour = 16711680
+      }
+      Write-Host "##vso[task.setvariable variable=DiscordMessageColour]$Colour"
 
-- task: ado-discord-webhook@1
-  displayName: Announce Build to discord
-  inputs:
-    channelId: '$(DiscordChannelID)'
-    webhookKey: '$(DiscordChannelSecret)'
-    messageType: 'embeds'
-    embeds: |
-      [$(DiscordMessage)]
-  condition: and(eq(variables.SKIP_BUILD, 'false'), eq(variables['CreateArtifacts'], 'True'))
+      $json = [Ordered]@{
+          title = "Build $jobResult"
+          url = "$($env:SYSTEM_TEAMFOUNDATIONSERVERURI)Twilight%20Forest/_build/results?buildId=$($Env:BUILD_BUILDID)&view=results"
+          color = $Colour
+          fields = (
+              [Ordered]@{
+                  name = "Author"
+                  value = "$($env:BUILD_SOURCEVERSIONAUTHOR)"
+              },
+              [Ordered]@{
+                  name = "Minecraft Version"
+                  value = "$($env:JAVAPROPS_MINECRAFT_VERSION)"
+              },
+              [Ordered]@{
+                  name = "Mod Version"
+                  value = "$($env:JAVAPROPS_MOD_VERSION).$($env:REVISION)"
+              },
+              [Ordered]@{
+                  name = "NeoForge Version"
+                  value = "$($env:JAVAPROPS_NEO_VERSION)"
+              },
+              [Ordered]@{
+                  name = "Commit"
+                  value = "[$(($env:BUILD_SOURCEVERSION).Substring(0, 7))]($($env:BUILD_REPOSITORY_URI)/commit/$($env:BUILD_SOURCEVERSION))"
+              }
+          )
+      }
+      if ($jobResult -eq "Succeeded") {
+          $json["fields"] += [Ordered]@{
+              name = "Download"
+              value = "[$($downloadUrl.Split("subPath=%2F")[1])]($downloadUrl)"
+          }
+      }
+      Write-Host "##vso[task.setvariable variable=DiscordMessage]$($json | ConvertTo-Json -Compress)"
+    displayName: Format build status discord message
+    condition: eq(variables.SKIP_BUILD, 'false')
+    env:
+      SYSTEM_ACCESSTOKEN: $(System.AccessToken)
 
-- task: Gradle@2
-  displayName: Publish to Maven
-  inputs:
-    workingDirectory: ''
-    options: '-PCIRevision=$(javaprops_mod_version).$(revision) -PCIType=RELEASE'
-    gradleWrapperFile: 'gradlew'
-    gradleOptions: '-Xmx3072m'
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '21'
-    jdkArchitectureOption: 'x64'
-    publishJUnitResults: false
-    testResultsFiles: '**/TEST-*.xml'
-    tasks: 'publish'
-  condition: and(and(succeeded(), eq(variables['CreateArtifacts'], 'True')), eq(variables.SKIP_BUILD, 'false'))
-  env:
-    ARTIFACTORY_USER: $(Artifactory.User)
-    ARTIFACTORY_PASS: $(Artifactory.Password)
+  - task: ado-discord-webhook@1
+    displayName: Announce Build to discord
+    inputs:
+      channelId: '$(DiscordChannelID)'
+      webhookKey: '$(DiscordChannelSecret)'
+      messageType: 'embeds'
+      embeds: |
+        [$(DiscordMessage)]
+    condition: and(eq(variables.SKIP_BUILD, 'false'), eq(variables['CreateArtifacts'], 'True'))
 
-- script: |
-    # stop the Gradle daemon to ensure no files are left open (impacting the save cache operation later)
-    ./gradlew --stop
-  displayName: Kill Daemon
-  condition: eq(variables.SKIP_BUILD, 'false')
+  - task: Gradle@2
+    displayName: Publish to Maven
+    inputs:
+      workingDirectory: ''
+      options: '-PCIRevision=$(javaprops_mod_version).$(revision) -PCIType=RELEASE'
+      gradleWrapperFile: 'gradlew'
+      gradleOptions: '-Xmx3072m'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '21'
+      jdkArchitectureOption: 'x64'
+      publishJUnitResults: false
+      testResultsFiles: '**/TEST-*.xml'
+      tasks: 'publish'
+    condition: and(and(succeeded(), eq(variables['CreateArtifacts'], 'True')), eq(variables.SKIP_BUILD, 'false'))
+    env:
+      ARTIFACTORY_USER: $(Artifactory.User)
+      ARTIFACTORY_PASS: $(Artifactory.Password)
+
+  - task: ado-discord-webhook@1
+    displayName: Announce Failed Maven Publish to discord
+    inputs:
+      channelId: '$(DiscordChannelID)'
+      webhookKey: '$(DiscordChannelSecret)'
+      messageType: 'embeds'
+      embeds: |
+        [$(DiscordMessageMavenFailed)]
+    condition: failed()
+
+  - script: |
+      # stop the Gradle daemon to ensure no files are left open (impacting the save cache operation later)
+      ./gradlew --stop
+    displayName: Kill Daemon
+    condition: eq(variables.SKIP_BUILD, 'false')

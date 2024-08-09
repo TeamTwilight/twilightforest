@@ -22,7 +22,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-public final class TowerUtil {
+public final class LichTowerUtil {
 	public static final StructureProcessor ROOM_SPAWNERS = SpawnerProcessor.compile(1, Object2IntMaps.unmodifiable(Util.make(new Object2IntArrayMap<>(), map -> {
 		// 1/3 chance for any spider variant, 1/3 chance for skeleton, 1/3 chance for zombie
 		map.put(EntityType.SPIDER, 1);
@@ -56,53 +56,53 @@ public final class TowerUtil {
 
 	@Nullable
 	public static ResourceLocation rollRandomRoom(RandomSource randomSource, int size) {
-		return ArrayUtil.randomOrNull(ArrayUtil.orNull(TowerPieces.ROOMS, size), randomSource);
+		return ArrayUtil.randomOrNull(ArrayUtil.orNull(LichTowerPieces.ROOMS, size), randomSource);
 	}
 
 	@Nullable
 	public static ResourceLocation rollTowerGallery(RandomSource randomSource) {
-		return ArrayUtil.randomOrNull(TowerPieces.GALLERY_ROOMS, randomSource);
+		return ArrayUtil.randomOrNull(LichTowerPieces.GALLERY_ROOMS, randomSource);
 	}
 
 	@Nullable
 	public static ResourceLocation rollGalleryRoof(RandomSource randomSource, BoundingBox box) {
 		boolean odd = (Math.min(box.getXSpan(), box.getZSpan()) & 1) == 1;
-		return ArrayUtil.randomOrNull(odd ? TowerPieces.GALLERY_ROOFS_ODD : TowerPieces.GALLERY_ROOFS_EVEN, randomSource);
+		return ArrayUtil.randomOrNull(odd ? LichTowerPieces.GALLERY_ROOFS_ODD : LichTowerPieces.GALLERY_ROOFS_EVEN, randomSource);
 	}
 
 	public static ResourceLocation rollRandomMobBridge(RandomSource randomSource) {
-		return Util.getRandom(TowerPieces.MOB_BRIDGES, randomSource);
+		return Util.getRandom(LichTowerPieces.MOB_BRIDGES, randomSource);
 	}
 
 	public static ResourceLocation rollRandomCover(RandomSource randomSource) {
-		return Util.getRandom(TowerPieces.BRIDGE_COVERS, randomSource);
+		return Util.getRandom(LichTowerPieces.BRIDGE_COVERS, randomSource);
 	}
 
 	public static ResourceLocation rollRandomDecor(RandomSource randomSource, boolean inCentralTower) {
-		return Util.getRandom(inCentralTower ? TowerPieces.CENTER_DECORS : TowerPieces.ROOM_DECORS, randomSource);
+		return Util.getRandom(inCentralTower ? LichTowerPieces.CENTER_DECORS : LichTowerPieces.ROOM_DECORS, randomSource);
 	}
 
 	public static Iterable<ResourceLocation> shuffledCenterBridges(RandomSource randomSource) {
-		return Util.shuffledCopy(TowerPieces.CENTER_BRIDGES, randomSource);
+		return Util.shuffledCopy(LichTowerPieces.CENTER_BRIDGES, randomSource);
 	}
 
 	public static Iterable<ResourceLocation> shuffledRoomBridges(RandomSource randomSource) {
-		return Util.shuffledCopy(TowerPieces.ROOM_BRIDGES, randomSource);
+		return Util.shuffledCopy(LichTowerPieces.ROOM_BRIDGES, randomSource);
 	}
 
 	public static Iterable<ResourceLocation> shuffledRoofs(RandomSource randomSource, int size, boolean doSideRoofOnly) {
-		return ArrayUtil.safeShuffledCopy(ArrayUtil.orNull(doSideRoofOnly ? TowerPieces.SIDE_ROOFS : TowerPieces.ROOFS, size), randomSource);
+		return ArrayUtil.safeShuffledCopy(ArrayUtil.orNull(doSideRoofOnly ? LichTowerPieces.SIDE_ROOFS : LichTowerPieces.ROOFS, size), randomSource);
 	}
 
 	public static Iterable<ResourceLocation> shuffledBeards(RandomSource randomSource, int size) {
-		return ArrayUtil.safeShuffledCopy(ArrayUtil.orNull(TowerPieces.BEARDS, size - 1), randomSource);
+		return ArrayUtil.safeShuffledCopy(ArrayUtil.orNull(LichTowerPieces.BEARDS, size - 1), randomSource);
 	}
 
 	public static Set<String> getLadderPlacementsForSize(int size) {
 		return switch (size) {
-			case 1 -> TowerPieces.LADDER_PLACEMENTS_1;
-			case 2 -> TowerPieces.LADDER_PLACEMENTS_2;
-			case 3 -> TowerPieces.LADDER_PLACEMENTS_3;
+			case 1 -> LichTowerPieces.LADDER_PLACEMENTS_1;
+			case 2 -> LichTowerPieces.LADDER_PLACEMENTS_2;
+			case 3 -> LichTowerPieces.LADDER_PLACEMENTS_3;
 			default -> Collections.emptySet();
 		};
 	}
@@ -110,7 +110,7 @@ public final class TowerUtil {
 	@Nullable
 	public static ResourceLocation getRoomUpwards(RandomSource random, int size, int ladderOffset) {
 		if (size > 0 && size <= 3) {
-			Int2ObjectMap<List<ResourceLocation>> roomsForSize = TowerPieces.LADDER_ROOMS.get(size - 1);
+			Int2ObjectMap<List<ResourceLocation>> roomsForSize = LichTowerPieces.LADDER_ROOMS.get(size - 1);
 			List<ResourceLocation> roomsForLadderPlacement = roomsForSize.getOrDefault(ladderOffset, Collections.emptyList());
 			return roomsForLadderPlacement.isEmpty() ? null : roomsForLadderPlacement.get(random.nextInt(roomsForLadderPlacement.size()));
 		}
@@ -120,12 +120,12 @@ public final class TowerUtil {
 
 	@Nullable
 	public static ResourceLocation getFallbackRoof(int size, boolean sideAttachment) {
-		return ArrayUtil.orNull(sideAttachment ? TowerPieces.FLAT_SIDE_ROOFS : TowerPieces.FLAT_ROOFS, size);
+		return ArrayUtil.orNull(sideAttachment ? LichTowerPieces.FLAT_SIDE_ROOFS : LichTowerPieces.FLAT_ROOFS, size);
 	}
 
 	@Nullable
 	public static ResourceLocation getFallbackBeard(int size) {
-		return ArrayUtil.orNull(TowerPieces.FLAT_BEARDS, size - 1);
+		return ArrayUtil.orNull(LichTowerPieces.FLAT_BEARDS, size - 1);
 	}
 
 	public static void addDefaultProcessors(StructurePlaceSettings settings) {
@@ -135,7 +135,7 @@ public final class TowerUtil {
 			.addProcessor(UPDATE_MARKER);
 	}
 
-	private TowerUtil() {
+	private LichTowerUtil() {
 		throw new IllegalStateException("How did we get here?");
 	}
 }

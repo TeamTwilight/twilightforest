@@ -26,23 +26,23 @@ import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.util.jigsaw.JigsawRecord;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
 
-public final class TowerFoyer extends TwilightJigsawPiece implements PieceBeardifierModifier {
+public final class LichTowerFoyer extends TwilightJigsawPiece implements PieceBeardifierModifier {
 	private final boolean putChest;
 	private final boolean chestSide;
 
-	public TowerFoyer(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
-		super(TFStructurePieceTypes.TOWER_FOYER.get(), compoundTag, ctx, readSettings(compoundTag));
+	public LichTowerFoyer(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
+		super(TFStructurePieceTypes.LICH_TOWER_FOYER.get(), compoundTag, ctx, readSettings(compoundTag));
 
-		TowerUtil.addDefaultProcessors(this.placeSettings);
+		LichTowerUtil.addDefaultProcessors(this.placeSettings);
 
 		this.putChest = compoundTag.getBoolean("put_chest");
 		this.chestSide = compoundTag.getBoolean("chest_side");
 	}
 
-	public TowerFoyer(StructureTemplateManager structureManager, BlockPos startPosition, Rotation rotation, boolean putChest, boolean chestSide) {
-		super(TFStructurePieceTypes.TOWER_FOYER.get(), 0, structureManager, TwilightForestMod.prefix("lich_tower/tower_foyer"), makeSettings(rotation), startPosition.below());
+	public LichTowerFoyer(StructureTemplateManager structureManager, BlockPos startPosition, Rotation rotation, boolean putChest, boolean chestSide) {
+		super(TFStructurePieceTypes.LICH_TOWER_FOYER.get(), 0, structureManager, TwilightForestMod.prefix("lich_tower/tower_foyer"), makeSettings(rotation), startPosition.below());
 
-		TowerUtil.addDefaultProcessors(this.placeSettings);
+		LichTowerUtil.addDefaultProcessors(this.placeSettings);
 
 		this.putChest = putChest;
 		this.chestSide = chestSide;
@@ -63,7 +63,7 @@ public final class TowerFoyer extends TwilightJigsawPiece implements PieceBeardi
 
 			if (placeableJunction == null) return;
 
-			StructurePiece towerBase = new CentralTowerBase(this.structureManager, placeableJunction);
+			StructurePiece towerBase = new LichTowerBase(this.structureManager, placeableJunction);
 			pieceAccessor.addPiece(towerBase);
 			towerBase.addChildren(this, pieceAccessor, random);
 		} else if ("twilightforest:shelf".equals(connection.target()) && (jigsawIndex % 4) == random.nextInt(5)) {
@@ -71,7 +71,7 @@ public final class TowerFoyer extends TwilightJigsawPiece implements PieceBeardi
 
 			if (placeableJunction == null) return;
 
-			StructurePiece towerBase = new FoyerDecoration(this.genDepth + 1, this.structureManager, placeableJunction);
+			StructurePiece towerBase = new LichTowerFoyerDecor(this.genDepth + 1, this.structureManager, placeableJunction);
 			pieceAccessor.addPiece(towerBase);
 			towerBase.addChildren(this, pieceAccessor, random);
 		}

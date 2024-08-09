@@ -18,17 +18,17 @@ import twilightforest.util.jigsaw.JigsawRecord;
 import twilightforest.world.components.processors.SoftReplaceProcessor;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
 
-public class TowerBeard extends TwilightJigsawPiece implements PieceBeardifierModifier {
-	public TowerBeard(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
-		super(TFStructurePieceTypes.TOWER_BEARD.get(), compoundTag, ctx, readSettings(compoundTag));
+public class LichTowerWingBeard extends TwilightJigsawPiece implements PieceBeardifierModifier {
+	public LichTowerWingBeard(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
+		super(TFStructurePieceTypes.LICH_WING_BEARD.get(), compoundTag, ctx, readSettings(compoundTag));
 
-		TowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(SoftReplaceProcessor.INSTANCE));
+		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(SoftReplaceProcessor.INSTANCE));
 	}
 
-	public TowerBeard(int genDepth, StructureTemplateManager structureManager, ResourceLocation templateLocation, JigsawPlaceContext jigsawContext) {
-		super(TFStructurePieceTypes.TOWER_BEARD.get(), genDepth, structureManager, templateLocation, jigsawContext);
+	public LichTowerWingBeard(int genDepth, StructureTemplateManager structureManager, ResourceLocation templateLocation, JigsawPlaceContext jigsawContext) {
+		super(TFStructurePieceTypes.LICH_WING_BEARD.get(), genDepth, structureManager, templateLocation, jigsawContext);
 
-		TowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(SoftReplaceProcessor.INSTANCE));
+		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(SoftReplaceProcessor.INSTANCE));
 	}
 
 	@Override

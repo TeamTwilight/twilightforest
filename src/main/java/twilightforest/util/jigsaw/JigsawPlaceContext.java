@@ -9,6 +9,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.JigsawBlock;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
@@ -96,5 +97,9 @@ public record JigsawPlaceContext(BlockPos templatePos, StructurePlaceSettings pl
 		}
 
 		return null;
+	}
+
+	public BoundingBox makeBoundingBox(StructureTemplate template) {
+		return template.getBoundingBox(this.templatePos, this.placementSettings.getRotation(), this.placementSettings.getRotationPivot(), this.placementSettings.getMirror());
 	}
 }

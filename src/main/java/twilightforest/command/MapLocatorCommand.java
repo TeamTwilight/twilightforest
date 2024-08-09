@@ -30,16 +30,18 @@ import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import java.util.Collection;
 import java.util.Collections;
 
+@twilightforest.beans.Component
 public class MapLocatorCommand {
+
 	// [vanillacopy] LocateCommand.java
-	private static final DynamicCommandExceptionType ERROR_STRUCTURE_INVALID = new DynamicCommandExceptionType(
+	private final DynamicCommandExceptionType ERROR_STRUCTURE_INVALID = new DynamicCommandExceptionType(
 		info -> Component.translatableEscape("commands.locate.structure.invalid", info)
 	);
-	private static final DynamicCommandExceptionType ERROR_STRUCTURE_NOT_FOUND = new DynamicCommandExceptionType(
+	private final DynamicCommandExceptionType ERROR_STRUCTURE_NOT_FOUND = new DynamicCommandExceptionType(
 		info -> Component.translatableEscape("commands.locate.structure.not_found", info)
 	);
 
-	public static LiteralArgumentBuilder<CommandSourceStack> register() {
+	public LiteralArgumentBuilder<CommandSourceStack> register() {
 		// TODO A magic map variation might be cool
 		return Commands.literal("map_locator").requires(cs -> cs.hasPermission(2)).then(
 			Commands.argument("structure", ResourceOrTagKeyArgument.resourceOrTagKey(Registries.STRUCTURE)).executes(context -> run(context, Collections.singleton(context.getSource().getPlayerOrException()), false)).then(
@@ -50,7 +52,7 @@ public class MapLocatorCommand {
 		);
 	}
 
-	private static int run(CommandContext<CommandSourceStack> context, Collection<ServerPlayer> players, boolean skipKnownStructures) throws CommandSyntaxException {
+	private int run(CommandContext<CommandSourceStack> context, Collection<ServerPlayer> players, boolean skipKnownStructures) throws CommandSyntaxException {
 		var structure = ResourceOrTagKeyArgument.getResourceOrTagKey(context, "structure", Registries.STRUCTURE, ERROR_STRUCTURE_INVALID);
 		var source = context.getSource();
 

@@ -11,6 +11,10 @@
     {
       "structure": "twilightforest:hollow_tree",
       "weight": 1
+    },
+    {
+      "structure": "twilightforest:swamp_hollow_tree",
+      "weight": 1
     }
   ]
 }

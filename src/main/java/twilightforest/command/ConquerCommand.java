@@ -15,16 +15,18 @@ import twilightforest.world.components.structures.start.TFStructureStart;
 
 import java.util.Optional;
 
+@twilightforest.beans.Component
 public class ConquerCommand {
-	private static final SimpleCommandExceptionType NOT_IN_STRUCTURE = new SimpleCommandExceptionType(Component.translatable("commands.tffeature.structure.required"));
 
-	public static LiteralArgumentBuilder<CommandSourceStack> register() {
+	private final SimpleCommandExceptionType NOT_IN_STRUCTURE = new SimpleCommandExceptionType(Component.translatable("commands.tffeature.structure.required"));
+
+	public LiteralArgumentBuilder<CommandSourceStack> register() {
 		LiteralArgumentBuilder<CommandSourceStack> conquer = Commands.literal("conquer").requires(cs -> cs.hasPermission(2)).executes(ctx -> changeStructureActivity(ctx.getSource(), true));
 		LiteralArgumentBuilder<CommandSourceStack> reactivate = Commands.literal("reactivate").requires(cs -> cs.hasPermission(2)).executes(ctx -> changeStructureActivity(ctx.getSource(), false));
 		return conquer.then(reactivate);
 	}
 
-	private static int changeStructureActivity(CommandSourceStack source, boolean flag) throws CommandSyntaxException {
+	private int changeStructureActivity(CommandSourceStack source, boolean flag) throws CommandSyntaxException {
 		BlockPos pos = BlockPos.containing(source.getPosition());
 		Optional<StructureStart> struct = LandmarkUtil.locateNearestLandmarkStart(source.getLevel(), SectionPos.blockToSectionCoord(pos.getX()), SectionPos.blockToSectionCoord(pos.getZ()));
 

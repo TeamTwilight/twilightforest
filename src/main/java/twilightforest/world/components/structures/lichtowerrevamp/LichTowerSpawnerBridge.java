@@ -29,13 +29,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-public class TowerMobBridge extends TwilightJigsawPiece implements PieceBeardifierModifier {
+public class LichTowerSpawnerBridge extends TwilightJigsawPiece implements PieceBeardifierModifier {
 	private final boolean invertedPalette;
 
-	public TowerMobBridge(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
-		super(TFStructurePieceTypes.MOB_BRIDGE.get(), compoundTag, ctx, readSettings(compoundTag));
+	public LichTowerSpawnerBridge(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
+		super(TFStructurePieceTypes.LICH_SPAWNER_BRIDGE.get(), compoundTag, ctx, readSettings(compoundTag));
 
-		TowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(TowerUtil.CENTRAL_SPAWNERS));
+		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(LichTowerUtil.CENTRAL_SPAWNERS));
 
 		this.invertedPalette = compoundTag.getBoolean("inverted");
 
@@ -59,10 +59,10 @@ public class TowerMobBridge extends TwilightJigsawPiece implements PieceBeardifi
 		}
 	}
 
-	public TowerMobBridge(int genDepth, StructureTemplateManager structureManager, ResourceLocation templateLocation, JigsawPlaceContext jigsawContext, boolean invertedPalette) {
-		super(TFStructurePieceTypes.MOB_BRIDGE.get(), genDepth, structureManager, templateLocation, jigsawContext);
+	public LichTowerSpawnerBridge(int genDepth, StructureTemplateManager structureManager, ResourceLocation templateLocation, JigsawPlaceContext jigsawContext, boolean invertedPalette) {
+		super(TFStructurePieceTypes.LICH_SPAWNER_BRIDGE.get(), genDepth, structureManager, templateLocation, jigsawContext);
 
-		TowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(TowerUtil.CENTRAL_SPAWNERS));
+		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(LichTowerUtil.CENTRAL_SPAWNERS));
 
 		this.invertedPalette = invertedPalette;
 

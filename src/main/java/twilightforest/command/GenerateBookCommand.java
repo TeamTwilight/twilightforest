@@ -17,11 +17,12 @@ import net.neoforged.neoforge.common.util.FakePlayer;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.world.components.structures.util.StructureHints;
 
+@twilightforest.beans.Component
 public class GenerateBookCommand {
 
-	private static final SimpleCommandExceptionType ERROR_NOT_RUN_BY_PLAYER = new SimpleCommandExceptionType(Component.translatable("commands.tffeature.not_player"));
+	private final SimpleCommandExceptionType ERROR_NOT_RUN_BY_PLAYER = new SimpleCommandExceptionType(Component.translatable("commands.tffeature.not_player"));
 
-	public static LiteralArgumentBuilder<CommandSourceStack> register() {
+	public LiteralArgumentBuilder<CommandSourceStack> register() {
 		return Commands.literal("genbook")
 			.executes(context -> generateBook(context.getSource(), null))
 			.requires(cs -> cs.hasPermission(3))
@@ -29,7 +30,7 @@ public class GenerateBookCommand {
 				.executes(context -> generateBook(context.getSource(), ResourceKeyArgument.getStructure(context, "structure"))));
 	}
 
-	private static int generateBook(CommandSourceStack source, @Nullable Holder.Reference<Structure> structureKey) throws CommandSyntaxException {
+	private int generateBook(CommandSourceStack source, @Nullable Holder.Reference<Structure> structureKey) throws CommandSyntaxException {
 		if (!(source.getEntity() instanceof Player player) || player instanceof FakePlayer) throw ERROR_NOT_RUN_BY_PLAYER.create();
 		if (structureKey == null) {
 			for (Structure structure : source.getLevel().registryAccess().registryOrThrow(Registries.STRUCTURE).stream().toList()) {

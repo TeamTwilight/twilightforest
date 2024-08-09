@@ -45,6 +45,8 @@ import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.beans.Autowired;
+import twilightforest.beans.ProcessBeanAnnotationsEvent;
 import twilightforest.beans.TFBeanContext;
 import twilightforest.block.entity.JarBlockEntity;
 import twilightforest.client.TFClientSetup;
@@ -64,7 +66,6 @@ import twilightforest.init.custom.Enforcements;
 import twilightforest.loot.modifiers.GiantToolGroupingModifier;
 import twilightforest.network.*;
 import twilightforest.util.Restriction;
-import twilightforest.util.TFEnumExtensions;
 import twilightforest.util.TFRemapper;
 import twilightforest.util.woods.WoodPalette;
 import twilightforest.world.components.BiomeGrassColors;
@@ -90,17 +91,15 @@ public final class TwilightForestMod {
 
 	public static final Logger LOGGER = LogManager.getLogger(ID);
 
-	/**
-	 * {@link TFEnumExtensions#pinchDamage(int, Class)}
-	 */
-	public static final DamageEffects PINCH = DamageEffects.valueOf("TWILIGHTFOREST_PINCH");
-	//private static final Rarity RARITY = Rarity.valueOf("TWILIGHTFOREST_TWILIGHT"); Crashes if initialized for some reason, idk
-
 	static { // Load as early as possible
 		TFBeanContext.init();
 	}
 
+	@Autowired
+	private TFCommand tfCommand;
+
 	public TwilightForestMod(IEventBus bus, Dist dist) {
+		bus.post(new ProcessBeanAnnotationsEvent(this)); // Enables @Autowired
 		Reflection.initialize(ConfigSetup.class);
 		ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, () -> ConfigurationScreen::new);
 		if (dist.isClient()) {
@@ -439,7 +438,7 @@ public final class TwilightForestMod {
 	}
 
 	public void registerCommands(RegisterCommandsEvent event) {
-		TFCommand.register(event.getDispatcher());
+		tfCommand.register(event.getDispatcher());
 	}
 
 	public static ResourceLocation prefix(String name) {
@@ -458,10 +457,4 @@ public final class TwilightForestMod {
 		return ResourceLocation.fromNamespaceAndPath(ID, ENVIRO_DIR + name);
 	}
 
-	/**
-	 * {@link TFEnumExtensions#twilightRarity(int, Class)}
-	 */
-	public static Rarity getRarity() {
-		return Rarity.valueOf("TWILIGHTFOREST_TWILIGHT");
-	}
 }

@@ -11,9 +11,10 @@ import java.util.Map;
 import java.util.Set;
 
 // TODO: Move to DataMaps if possible to obtain RegistryAccess
-public final class TowerPieces {
+public final class LichTowerPieces {
+	public static final ResourceLocation ENCLOSED_BRIDGE_CENTRAL = TwilightForestMod.prefix("lich_tower/central_bridge");
 	static final ResourceLocation[] CENTER_BRIDGES = new ResourceLocation[] {
-		TwilightForestMod.prefix("lich_tower/central_bridge"),
+		ENCLOSED_BRIDGE_CENTRAL,
 		TwilightForestMod.prefix("lich_tower/central_bridge_open")
 	};
 	public static final ResourceLocation DIRECT_ATTACHMENT = TwilightForestMod.prefix("lich_tower/no_bridge");
@@ -355,7 +356,7 @@ public final class TowerPieces {
 		))
 	);
 
-	private TowerPieces() {
+	private LichTowerPieces() {
 		throw new IllegalStateException("How did we get here?");
 	}
 }

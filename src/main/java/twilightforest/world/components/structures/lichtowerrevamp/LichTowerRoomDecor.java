@@ -25,29 +25,29 @@ import twilightforest.util.jigsaw.JigsawRecord;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
 import twilightforest.world.components.structures.TwilightTemplateStructurePiece;
 
-public class TowerWingDecorPiece extends TwilightJigsawPiece implements PieceBeardifierModifier {
+public class LichTowerRoomDecor extends TwilightJigsawPiece implements PieceBeardifierModifier {
 	private final boolean isInCenterTower;
 
-	public TowerWingDecorPiece(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
-		super(TFStructurePieceTypes.TOWER_DECOR.value(), compoundTag, ctx, readSettings(compoundTag));
+	public LichTowerRoomDecor(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
+		super(TFStructurePieceTypes.LICH_TOWER_DECOR.value(), compoundTag, ctx, readSettings(compoundTag));
 
-		TowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(TowerUtil.ROOM_SPAWNERS));
+		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(LichTowerUtil.ROOM_SPAWNERS));
 		this.isInCenterTower = compoundTag.getBoolean("is_in_central");
 	}
 
-	public TowerWingDecorPiece(int genDepth, StructureTemplateManager structureManager, ResourceLocation templateLocation, JigsawPlaceContext jigsawContext, boolean isInCenterTower) {
-		super(TFStructurePieceTypes.TOWER_DECOR.value(), genDepth, structureManager, templateLocation, jigsawContext);
+	public LichTowerRoomDecor(int genDepth, StructureTemplateManager structureManager, ResourceLocation templateLocation, JigsawPlaceContext jigsawContext, boolean isInCenterTower) {
+		super(TFStructurePieceTypes.LICH_TOWER_DECOR.value(), genDepth, structureManager, templateLocation, jigsawContext);
 
-		TowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(TowerUtil.ROOM_SPAWNERS));
+		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(LichTowerUtil.ROOM_SPAWNERS));
 		this.isInCenterTower = isInCenterTower;
 	}
 
 	public static void addDecor(TwilightTemplateStructurePiece parent, StructurePieceAccessor pieceAccessor, RandomSource random, JigsawRecord connection, int newDepth, StructureTemplateManager structureManager, boolean isInCenterTower) {
-		ResourceLocation decorId = TowerUtil.rollRandomDecor(random, false);
+		ResourceLocation decorId = LichTowerUtil.rollRandomDecor(random, false);
 		JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(parent.templatePosition(), connection.pos(), connection.orientation(), structureManager, decorId, "twilightforest:lich_tower/decor", random);
 
 		if (placeableJunction != null) {
-			StructurePiece decor = new TowerWingDecorPiece(newDepth, structureManager, decorId, placeableJunction, isInCenterTower);
+			StructurePiece decor = new LichTowerRoomDecor(newDepth, structureManager, decorId, placeableJunction, isInCenterTower);
 			pieceAccessor.addPiece(decor);
 			decor.addChildren(parent, pieceAccessor, random);
 		}

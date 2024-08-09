@@ -111,6 +111,7 @@ public final class TFBeanContext {
 
 			Objects.requireNonNull(modContainer.getEventBus()).addListener(FMLCommonSetupEvent.class, event -> injectRegistries(modContainer, scanData, annotationDataPostProcessors));
 			Objects.requireNonNull(modContainer.getEventBus()).addListener(EventPriority.HIGHEST, GatherDataEvent.class, event -> injectRegistries(modContainer, scanData, annotationDataPostProcessors));
+			Objects.requireNonNull(modContainer.getEventBus()).addListener(ProcessBeanAnnotationsEvent.class, event -> handleProcessBeanAnnotationsEvent(event, modContainer, scanData, annotationDataPostProcessors));
 			if (forceInjectRegistries)
 				injectRegistries(modContainer, scanData, annotationDataPostProcessors);
 
@@ -132,15 +133,31 @@ public final class TFBeanContext {
 			try {
 				Object o = holder.value();
 				if (classOrSuperHasAnnotation(o.getClass(), Configurable.class)) {
-					for (AnnotationDataPostProcessor annotationDataPostProcessor : annotationDataPostProcessors) {
-						annotationDataPostProcessor.process(TFBeanContextInternalInjector.SINGLETON, modContainer, scanData, o, curInj);
-					}
+					runAnnotationDataPostProcessors(o, modContainer, scanData, annotationDataPostProcessors, curInj);
 				}
 			} catch (Throwable e) {
 				throwInjectionFailedException(curInj, e);
 			}
 		});
 		logger.debug("Finished processing registry objects in {} ms", System.currentTimeMillis() - ms);
+	}
+
+	private void handleProcessBeanAnnotationsEvent(ProcessBeanAnnotationsEvent event, ModContainer modContainer, ModFileScanData scanData, List<AnnotationDataPostProcessor> annotationDataPostProcessors) {
+		final long ms = System.currentTimeMillis();
+		logger.debug("Processing {}", event.getObjectToProcess());
+		AtomicReference<Object> curInj = new AtomicReference<>();
+		try {
+			runAnnotationDataPostProcessors(event.getObjectToProcess(), modContainer, scanData, annotationDataPostProcessors, curInj);
+		} catch (Throwable e) {
+			throwInjectionFailedException(curInj, e);
+		}
+		logger.debug("Finished processing {} in {} ms", event.getObjectToProcess(), System.currentTimeMillis() - ms);
+	}
+
+	private void runAnnotationDataPostProcessors(Object o, ModContainer modContainer, ModFileScanData scanData, List<AnnotationDataPostProcessor> annotationDataPostProcessors, AtomicReference<Object> curInj) throws Throwable {
+		for (AnnotationDataPostProcessor annotationDataPostProcessor : annotationDataPostProcessors) {
+			annotationDataPostProcessor.process(TFBeanContextInternalInjector.SINGLETON, modContainer, scanData, o, curInj);
+		}
 	}
 
 	private boolean classOrSuperHasAnnotation(Class<?> c, Class<? extends Annotation> a) {

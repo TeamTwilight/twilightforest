@@ -1,4 +1,4 @@
-package twilightforest.util;
+package twilightforest;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Style;
@@ -8,7 +8,6 @@ import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSpecialEffects;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
 import twilightforest.client.renderer.tileentity.JarRenderer;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
@@ -20,10 +19,13 @@ import java.util.function.UnaryOperator;
 
 @SuppressWarnings("unused") // Referenced by enumextender.json
 public class TFEnumExtensions {
+
 	/**
-	 * {@link twilightforest.TwilightForestMod#PINCH}
+	 * {@link net.minecraft.world.damagesource.DamageEffects}<p/>
+	 *
+	 * {@link twilightforest.enums.extensions.TFDamageEffectsEnumExtension#PINCH}
 	 */
-	public static Object pinchDamage(int idx, Class<?> type) {
+	public static Object DamageEffects_PINCH(int idx, Class<?> type) {
 		return type.cast(switch (idx) {
 			case 0 -> prefix("pinch");
 			case 1 -> TFSounds.PINCH_BEETLE_ATTACK;
@@ -32,9 +34,11 @@ public class TFEnumExtensions {
 	}
 
 	/**
-	 * {@link TwilightForestMod#getRarity()}
+	 * {@link net.minecraft.world.item.Rarity}<p/>
+	 *
+	 * {@link twilightforest.enums.extensions.TFRarityEnumExtension#TWILIGHT}
 	 */
-	public static Object twilightRarity(int idx, Class<?> type) {
+	public static Object Rarity_TWILIGHT(int idx, Class<?> type) {
 		return type.cast(switch (idx) {
 			case 0 -> -1;
 			case 1 -> prefix("twilight");

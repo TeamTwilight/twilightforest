@@ -31,17 +31,17 @@ import twilightforest.world.components.structures.TwilightJigsawPiece;
 
 import java.util.Optional;
 
-public class TowerGallery extends TwilightJigsawPiece implements PieceBeardifierModifier {
-	public TowerGallery(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
-		super(TFStructurePieceTypes.TOWER_GALLERY.value(), compoundTag, ctx, readSettings(compoundTag));
+public class LichTowerMagicGallery extends TwilightJigsawPiece implements PieceBeardifierModifier {
+	public LichTowerMagicGallery(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
+		super(TFStructurePieceTypes.LICH_MAGIC_GALLERY.value(), compoundTag, ctx, readSettings(compoundTag));
 
-		TowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(TowerUtil.ROOM_SPAWNERS));
+		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(LichTowerUtil.ROOM_SPAWNERS));
 	}
 
-	public TowerGallery(int genDepth, StructureTemplateManager structureManager, ResourceLocation templateLocation, JigsawPlaceContext jigsawContext) {
-		super(TFStructurePieceTypes.TOWER_GALLERY.value(), genDepth, structureManager, templateLocation, jigsawContext);
+	public LichTowerMagicGallery(int genDepth, StructureTemplateManager structureManager, ResourceLocation templateLocation, JigsawPlaceContext jigsawContext) {
+		super(TFStructurePieceTypes.LICH_MAGIC_GALLERY.value(), genDepth, structureManager, templateLocation, jigsawContext);
 
-		TowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(TowerUtil.ROOM_SPAWNERS));
+		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(LichTowerUtil.ROOM_SPAWNERS));
 	}
 
 	@Override
@@ -62,9 +62,9 @@ public class TowerGallery extends TwilightJigsawPiece implements PieceBeardifier
 	@Override
 	protected void processJigsaw(StructurePiece parent, StructurePieceAccessor pieceAccessor, RandomSource random, JigsawRecord connection, int jigsawIndex) {
 		if ("twilightforest:lich_tower/roof".equals(connection.target())) {
-			ResourceLocation fallbackRoof = TowerUtil.rollGalleryRoof(random, this.boundingBox);
-			FrontAndTop orientationToMatch = TowerRoom.getVerticalOrientation(connection, Direction.UP, this);
-			TowerRoom.tryRoof(pieceAccessor, random, connection, fallbackRoof, orientationToMatch, true, this, this.genDepth + 1, this.structureManager);
+			ResourceLocation fallbackRoof = LichTowerUtil.rollGalleryRoof(random, this.boundingBox);
+			FrontAndTop orientationToMatch = LichTowerWingRoom.getVerticalOrientation(connection, Direction.UP, this);
+			LichTowerWingRoom.tryRoof(pieceAccessor, random, connection, fallbackRoof, orientationToMatch, true, this, this.genDepth + 1, this.structureManager);
 		}
 	}
 
@@ -106,7 +106,7 @@ public class TowerGallery extends TwilightJigsawPiece implements PieceBeardifier
 	public static void tryPlaceGallery(RandomSource random, StructurePieceAccessor pieceAccessor, @Nullable ResourceLocation roomId, JigsawRecord connection, TwilightJigsawPiece parent, int newDepth, StructureTemplateManager structureManager, String jigsawLabel) {
 		JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(parent.templatePosition(), connection.pos(), connection.orientation(), structureManager, roomId, jigsawLabel, random);
 		if (placeableJunction != null) {
-			StructurePiece room = new TowerGallery(newDepth, structureManager, roomId, placeableJunction);
+			StructurePiece room = new LichTowerMagicGallery(newDepth, structureManager, roomId, placeableJunction);
 			pieceAccessor.addPiece(room);
 			room.addChildren(parent, pieceAccessor, random);
 		}

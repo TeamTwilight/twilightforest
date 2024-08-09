@@ -27,7 +27,7 @@ import net.neoforged.neoforge.client.model.data.ModelData;
 import twilightforest.block.entity.JarBlockEntity;
 import twilightforest.block.entity.MasonJarBlockEntity;
 import twilightforest.init.TFBlocks;
-import twilightforest.util.TFEnumExtensions;
+import twilightforest.TFEnumExtensions;
 
 import java.util.HashMap;
 import java.util.Map;
