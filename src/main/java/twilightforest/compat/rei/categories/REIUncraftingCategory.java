@@ -87,7 +87,7 @@ public class REIUncraftingCategory implements DisplayCategory<REIUncraftingDispl
 			widgets.add(Widgets.createSlot(new Point(bounds.getX() + x * 18 + 63, bounds.getY() + y * 18 + 1)).markOutput().disableBackground().entries(EntryIngredients.ofIngredient(outputs.get(j - k)))); //Set input as output and place in the grid
 		}
 
-		widgets.add(Widgets.createSlot(new Point(bounds.getX() + 5, bounds.getY() + 19)).markInput().disableBackground().entries(display.getInputEntries().get(0)));//Set the outputs as inputs and draw the item you're uncrafting in the right spot as well
+		widgets.add(Widgets.createSlot(new Point(bounds.getX() + 5, bounds.getY() + 19)).markInput().disableBackground().entries(display.getInputEntries().getFirst()));//Set the outputs as inputs and draw the item you're uncrafting in the right spot as well
 		return widgets;
 	}
 }

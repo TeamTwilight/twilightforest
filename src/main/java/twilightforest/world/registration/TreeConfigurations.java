@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.BlobFoliagePlacer;
+import net.minecraft.world.level.levelgen.feature.foliageplacers.BushFoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FancyFoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.MegaPineFoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
@@ -204,6 +205,16 @@ public class TreeConfigurations {
 			new CocoaDecorator(0.7F),
 			TrunkVineDecorator.INSTANCE,
 			new LeaveVineDecorator(0.25F)))
+		.ignoreVines()
+		.build();
+
+	//[VanillaCopy] of JUNGLE_BUSH
+	public static final TreeConfiguration OAK_BUSH = new TreeConfiguration.TreeConfigurationBuilder(
+		BlockStateProvider.simple(Blocks.OAK_LOG),
+		new StraightTrunkPlacer(1, 0, 0),
+		BlockStateProvider.simple(Blocks.OAK_LEAVES),
+		new BushFoliagePlacer(ConstantInt.of(2), ConstantInt.of(1), 2),
+		new TwoLayersFeatureSize(0, 0, 0))
 		.ignoreVines()
 		.build();
 

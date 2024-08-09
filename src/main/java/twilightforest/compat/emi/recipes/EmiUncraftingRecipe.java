@@ -34,7 +34,7 @@ public class EmiUncraftingRecipe<T extends CraftingRecipe> extends TFEmiRecipe<T
 	@Override
 	protected void addInputs(List<EmiIngredient> inputs) {
 		if (this.getRecipe().value() instanceof UncraftingRecipe uncraftingRecipe) {
-			inputs.add(EmiIngredient.of(uncraftingRecipe.input(), uncraftingRecipe.count()));//If the recipe is an uncrafting recipe, we need to get the ingredient instead of an itemStack
+			inputs.add(EmiIngredient.of(uncraftingRecipe.getInput(), uncraftingRecipe.getCount()));//If the recipe is an uncrafting recipe, we need to get the ingredient instead of an itemStack
 		} else {
 			inputs.add(EmiStack.of(this.getRecipe().value().getResultItem(Minecraft.getInstance().level.registryAccess())));//Set the outputs as inputs and draw the item you're uncrafting in the right spot as well
 		}
@@ -77,10 +77,10 @@ public class EmiUncraftingRecipe<T extends CraftingRecipe> extends TFEmiRecipe<T
 		}
 
 		if (this.getRecipe().value() instanceof UncraftingRecipe uncraftingRecipe) {
-			ItemStack[] stacks = uncraftingRecipe.input().getItems();
+			ItemStack[] stacks = uncraftingRecipe.getInput().getItems();
 			ItemStack[] stackedStacks = new ItemStack[stacks.length];
-			for (int i = 0; i < stacks.length; i++) stackedStacks[i] = new ItemStack(stacks[0].getItem(), uncraftingRecipe.count());
-			widgets.addSlot(new ListEmiIngredient(Stream.of(stackedStacks).map(EmiStack::of).toList(), uncraftingRecipe.count()), 5, 19);//If the recipe is an uncrafting recipe, we need to get the ingredient instead of an itemStack
+			for (int i = 0; i < stacks.length; i++) stackedStacks[i] = new ItemStack(stacks[0].getItem(), uncraftingRecipe.getCount());
+			widgets.addSlot(new ListEmiIngredient(Stream.of(stackedStacks).map(EmiStack::of).toList(), uncraftingRecipe.getCount()), 5, 19);//If the recipe is an uncrafting recipe, we need to get the ingredient instead of an itemStack
 		} else {
 			widgets.addSlot(EmiStack.of(this.getRecipe().value().getResultItem(Minecraft.getInstance().level.registryAccess())), 5, 14).large(true).recipeContext(this); //Set the outputs as inputs and draw the item you're uncrafting in the right spot as well
 		}

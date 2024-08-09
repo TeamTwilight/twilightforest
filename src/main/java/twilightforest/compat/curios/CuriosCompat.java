@@ -2,6 +2,7 @@ package twilightforest.compat.curios;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.FastColor;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -92,8 +93,8 @@ public class CuriosCompat {
 
 	public static void registerCurioRenderers(FMLClientSetupEvent event) {
 		event.enqueueWork(() -> {
-			CuriosRendererRegistry.register(TFItems.CHARM_OF_LIFE_1.get(), () -> new CharmOfLifeNecklaceRenderer(new float[]{1.0F, 0.5F, 0.5F}));
-			CuriosRendererRegistry.register(TFItems.CHARM_OF_LIFE_2.get(), () -> new CharmOfLifeNecklaceRenderer(new float[]{1.0F, 0.9F, 0.0F}));
+			CuriosRendererRegistry.register(TFItems.CHARM_OF_LIFE_1.get(), () -> new CharmOfLifeNecklaceRenderer(FastColor.ARGB32.colorFromFloat(1.0F, 1.0F, 0.5F, 0.5F)));
+			CuriosRendererRegistry.register(TFItems.CHARM_OF_LIFE_2.get(), () -> new CharmOfLifeNecklaceRenderer(FastColor.ARGB32.colorFromFloat(1.0F, 1.0F, 0.9F, 0.0F)));
 			CuriosRendererRegistry.register(TFItems.CHARM_OF_KEEPING_1.get(), CharmOfKeepingRenderer::new);
 			CuriosRendererRegistry.register(TFItems.CHARM_OF_KEEPING_2.get(), CharmOfKeepingRenderer::new);
 			CuriosRendererRegistry.register(TFItems.CHARM_OF_KEEPING_3.get(), CharmOfKeepingRenderer::new);

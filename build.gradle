@@ -178,6 +178,16 @@ configurations.testImplementation {
 
 test {
 	useJUnitPlatform()
+	testLogging {
+		events "failed"
+
+		showExceptions true
+		exceptionFormat "full"
+		showCauses true
+		showStackTraces true
+
+		showStandardStreams = false
+	}
 }
 
 jar {

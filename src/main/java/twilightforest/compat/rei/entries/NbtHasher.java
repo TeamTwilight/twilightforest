@@ -7,8 +7,8 @@ import me.shedaniel.rei.api.common.entry.comparison.EntryComparator;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.*;
 
 public class NbtHasher implements EntryComparator<Tag> {
@@ -35,7 +35,7 @@ public class NbtHasher implements EntryComparator<Tag> {
 		return hashTag(value);
 	}
 
-	private int hashTag(Tag tag) {
+	private int hashTag(@Nullable Tag tag) {
 		if (tag == null) return 0;
 		if (tag instanceof ListTag list) return hashListTag(list);
 		if (tag instanceof CompoundTag compound) return hashCompoundTag(compound);

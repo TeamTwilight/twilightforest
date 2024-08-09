@@ -9,14 +9,13 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.SpawnEggItem;
-import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.compat.RecipeViewerConstants;
 import twilightforest.compat.rei.TFREIClientPlugin;
 import twilightforest.compat.rei.categories.REITransformationPowderCategory;
-import twilightforest.util.EntityRenderingUtil;
+import twilightforest.util.entities.EntityRenderingUtil;
 
 import java.util.ArrayList;
 import java.util.List;

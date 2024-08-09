@@ -45,7 +45,7 @@ import twilightforest.init.TFItems;
 import twilightforest.init.TFRecipes;
 import twilightforest.item.recipe.NoTemplateSmithingRecipe;
 import twilightforest.item.recipe.UncraftingRecipe;
-import twilightforest.util.EntityRenderingUtil;
+import twilightforest.util.entities.EntityRenderingUtil;
 
 import java.util.*;
 import java.util.stream.Stream;

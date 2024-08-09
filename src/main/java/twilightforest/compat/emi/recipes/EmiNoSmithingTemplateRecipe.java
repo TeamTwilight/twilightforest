@@ -13,6 +13,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.SmithingRecipe;
+import net.minecraft.world.item.crafting.SmithingRecipeInput;
 
 import java.util.Random;
 
@@ -43,7 +44,7 @@ public class EmiNoSmithingTemplateRecipe extends EmiSmithingRecipe {
 	private EmiStack getStack(Random r, int i) {
 		EmiStack input = this.input.getEmiStacks().get(r.nextInt(this.input.getEmiStacks().size()));
 		EmiStack addition = this.addition.getEmiStacks().get(r.nextInt(this.addition.getEmiStacks().size()));
-		Container inv = new SimpleContainer(ItemStack.EMPTY, input.getItemStack(), addition.getItemStack(), ItemStack.EMPTY);
+		SmithingRecipeInput inv = new SmithingRecipeInput(ItemStack.EMPTY, input.getItemStack(), addition.getItemStack());
 		Minecraft client = Minecraft.getInstance();
 		return new EmiStack[]{input, addition, EmiStack.of(this.recipe.assemble(inv, client.level.registryAccess()))}[i];
 	}

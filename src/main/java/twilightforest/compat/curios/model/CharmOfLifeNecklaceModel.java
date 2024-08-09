@@ -37,10 +37,10 @@ public class CharmOfLifeNecklaceModel extends HumanoidModel<LivingEntity> {
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack stack, VertexConsumer consumer, int light, int overlay, float red, float green, float blue, float alpha) {
+	public void renderToBuffer(PoseStack stack, VertexConsumer consumer, int light, int overlay, int color) {
 		stack.pushPose();
 		stack.scale(0.55F, 0.55F, 0.55F);
-		this.body.render(stack, consumer, light, overlay, red, green, blue, alpha);
+		this.body.render(stack, consumer, light, overlay, color);
 		stack.popPose();
 	}
 }
