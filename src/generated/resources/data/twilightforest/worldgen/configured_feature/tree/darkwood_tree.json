@@ -78,7 +78,7 @@
         "random_add_length": 2.0,
         "spacing_yaw": 0.23
       },
-      "branch_start_offset_down": 3,
+      "branch_start_offset_down": 6,
       "height_rand_a": 1,
       "height_rand_b": 1,
       "perpendicular_branches": false

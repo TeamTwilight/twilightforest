@@ -51,6 +51,7 @@ public class MoonwormQueenCategory implements IRecipeCategory<MoonwormQueenRepai
 		return this.icon;
 	}
 
+	@SuppressWarnings("removal") //liar
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, MoonwormQueenRepairRecipe recipe, IFocusGroup focuses) {
 		builder.addSlot(RecipeIngredientRole.INPUT, 1, 1).addItemStack(RecipeViewerConstants.DAMAGED_MOONWORM_QUEEN);
@@ -64,6 +65,6 @@ public class MoonwormQueenCategory implements IRecipeCategory<MoonwormQueenRepai
 		builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 19, 37).addItemStack(ItemStack.EMPTY);
 		builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 37, 37).addItemStack(ItemStack.EMPTY);
 
-		builder.addSlot(RecipeIngredientRole.OUTPUT, 95, 19).addItemStacks(RecipeViewerConstants.MOONWORM_QUEEN_LIST).addTooltipCallback((recipeSlotView, tooltip) -> tooltip.add(RecipeViewerConstants.MOONWORM_QUEEN_TOOLTIP));
+		builder.addSlot(RecipeIngredientRole.OUTPUT, 95, 19).addItemStacks(RecipeViewerConstants.MOONWORM_QUEEN_LIST).addTooltipCallback((view, tooltip) -> tooltip.add(RecipeViewerConstants.MOONWORM_QUEEN_TOOLTIP));
 	}
 }

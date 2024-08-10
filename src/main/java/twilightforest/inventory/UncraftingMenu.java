@@ -270,7 +270,7 @@ public class UncraftingMenu extends RecipeBookMenu<RecipeInput, Recipe<RecipeInp
 		TFItemStackUtils.clearInfoTag(stack, TAG_MARKER);
 	}
 
-	private static boolean isIngredientProblematic(ItemStack ingredient) {
+	public static boolean isIngredientProblematic(ItemStack ingredient) {
 		return (!ingredient.isEmpty() && ingredient.getItem().hasCraftingRemainingItem(ingredient)) || ingredient.is(Items.BARRIER);
 	}
 
@@ -507,14 +507,14 @@ public class UncraftingMenu extends RecipeBookMenu<RecipeInput, Recipe<RecipeInp
 	/**
 	 * Should the specified item count for taking damage?
 	 */
-	private static boolean isDamageableComponent(ItemStack stack) {
+	public static boolean isDamageableComponent(ItemStack stack) {
 		return !stack.isEmpty() && !stack.is(ItemTagGenerator.UNCRAFTING_IGNORES_COST);
 	}
 
 	/**
 	 * Count how many items in an inventory can take damage
 	 */
-	private static int countDamageableParts(Container matrix) {
+	public static int countDamageableParts(Container matrix) {
 		int count = matrix.getContainerSize();
 		for (int i = 0; i < matrix.getContainerSize(); i++) {
 

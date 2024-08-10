@@ -3,17 +3,10 @@ package twilightforest.compat.rei.displays;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.display.basic.BasicDisplay;
 import me.shedaniel.rei.api.common.entry.EntryIngredient;
-import me.shedaniel.rei.api.common.entry.EntryStack;
-import me.shedaniel.rei.api.common.util.EntryStacks;
-import me.shedaniel.rei.plugin.common.displays.DefaultCompostingDisplay;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.crafting.RecipeHolder;
-import twilightforest.compat.rei.TFREIClientPlugin;
 import twilightforest.compat.rei.categories.REICrumbleHornCategory;
 
 import java.util.List;
-import java.util.Optional;
 
 public class REICrumbleHornDisplay extends BasicDisplay {
 

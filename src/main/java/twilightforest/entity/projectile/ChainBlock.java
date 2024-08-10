@@ -28,19 +28,18 @@ import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
 import net.neoforged.neoforge.entity.PartEntity;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.init.TFDamageTypes;
-import twilightforest.init.TFItems;
-import twilightforest.init.TFSounds;
+import twilightforest.init.*;
 
 public class ChainBlock extends ThrowableProjectile implements IEntityWithComplexSpawn {
 
-	private static final int MAX_SMASH = 12;
+	private static final int MAX_STUCK_TICKS = 100;
 	private static final int MAX_CHAIN = 16;
 
 	private static final EntityDataAccessor<Boolean> HAND = SynchedEntityData.defineId(ChainBlock.class, EntityDataSerializers.BOOLEAN);
 	private static final EntityDataAccessor<Boolean> IS_FOIL = SynchedEntityData.defineId(ChainBlock.class, EntityDataSerializers.BOOLEAN);
 	private boolean isReturning = false;
 	private boolean hitEntity = false;
+	private int stuckTime;
 	@Nullable
 	private ItemStack stack;
 	private double velX;
@@ -221,6 +220,20 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 			if (this.getOwner() == null) {
 				this.discard();
 			} else {
+				if (!this.isReturning) {
+					if (this.xOld != this.getX() || this.zOld != this.getZ()) {
+						double d0 = Math.abs(this.getX() - this.xOld);
+						double d1 = Math.abs(this.getZ() - this.zOld);
+						if (d0 < 0.003F && d1 < 0.003F) {
+							this.stuckTime++;
+						}
+					}
+
+					if (this.stuckTime >= MAX_STUCK_TICKS) {
+						this.isReturning = true;
+					}
+				}
+
 				double distToPlayer = this.distanceTo(this.getOwner());
 				// return if far enough away
 				if (!this.isReturning && distToPlayer > MAX_CHAIN) {
@@ -230,6 +243,9 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 				if (this.isReturning) {
 					// despawn if close enough
 					if (distToPlayer < 2F) {
+						if (this.stack != null && this.getOwner() instanceof LivingEntity living && living.getData(TFDataAttachments.SMASH_BLOCKS).getBlocksSmashed() > 0) {
+							this.stack.hurtAndBreak(Math.min(living.getData(TFDataAttachments.SMASH_BLOCKS).getBlocksSmashed(), 3), living, LivingEntity.getSlotForHand(this.getHand()));
+						}
 						this.discard();
 					}
 

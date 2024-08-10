@@ -106,7 +106,12 @@ public class TFTeleporter {
 
 			// replace with our own placement logic
 			BlockPos[] portalBorder = getBoundaryPositions(destDim, blockpos).toArray(new BlockPos[0]);
-			BlockPos borderPos = portalBorder[0/*random.nextInt(portalBorder.length)*/];
+			BlockPos borderPos;
+			if (portalBorder.length > 0) {
+				borderPos = portalBorder[destDim.getRandom().nextInt(portalBorder.length)];
+			} else {
+				borderPos = blockpos;
+			}
 
 			double portalX = borderPos.getX() + 0.5;
 			double portalY = borderPos.getY() + 1.0;
@@ -197,10 +202,13 @@ public class TFTeleporter {
 			BlockPos offset = pos.relative(facing);
 			if (!checked.add(offset))
 				continue;
-			if (isPortalAt(world, offset)) {
+			BlockState checkState = world.getBlockState(offset);
+			if (isPortal(checkState)) {
 				checkAdjacent(world, offset, checked, result);
 			} else {
-				result.add(offset);
+				if (Block.isFaceFull(checkState.getCollisionShape(world, offset), Direction.UP) && world.getBlockState(offset.above()).getCollisionShape(world, offset.above()).isEmpty()) {
+					result.add(offset);
+				}
 			}
 		}
 	}
@@ -596,7 +604,7 @@ public class TFTeleporter {
 	}
 
 	protected static DimensionTransition makePortalInfo(ServerLevel level, Entity entity, Vec3 pos) {
-		return new DimensionTransition(level, pos, Vec3.ZERO, entity.getXRot(), entity.getYRot(), DimensionTransition.PLACE_PORTAL_TICKET);
+		return new DimensionTransition(level, pos, Vec3.ZERO, entity.getYRot(), entity.getXRot(), DimensionTransition.PLACE_PORTAL_TICKET);
 	}
 
 	static class PortalPosition {

@@ -1,5 +1,6 @@
 package twilightforest.compat.jei.renderers;
 
+import mezz.jei.api.gui.builder.ITooltipBuilder;
 import mezz.jei.api.ingredients.IIngredientRenderer;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
@@ -35,8 +36,14 @@ public class EntityRenderer implements IIngredientRenderer<FakeEntityType> {
 		}
 	}
 
+	@SuppressWarnings("removal") //we are absolutely forced to use this
 	@Override
 	public List<Component> getTooltip(FakeEntityType type, TooltipFlag flag) {
-		return EntityRenderingUtil.getMobTooltip(type.type());
+		return List.of();
+	}
+
+	@Override
+	public void getTooltip(ITooltipBuilder tooltip, FakeEntityType type, TooltipFlag flag) {
+		tooltip.addAll(EntityRenderingUtil.getMobTooltip(type.type()));
 	}
 }

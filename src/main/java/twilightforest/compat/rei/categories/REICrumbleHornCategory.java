@@ -78,7 +78,7 @@ public class REICrumbleHornCategory implements DisplayCategory<REICrumbleHornDis
 		widgets.add(Widgets.createSlot(offsetPoint(bounds, 19, 19))
 			.markInput()
 			.disableBackground()
-			.entries(display.getInputEntries().get(0))
+			.entries(display.getInputEntries().getFirst())
 		);
 
 		//output
@@ -86,14 +86,14 @@ public class REICrumbleHornCategory implements DisplayCategory<REICrumbleHornDis
 			widgets.add(Widgets.createSlot(offsetPoint(bounds, 81, 19))
 				.markOutput()
 				.disableBackground()
-				.entries(display.getOutputEntries().get(0))
+				.entries(display.getOutputEntries().getFirst())
 			);
 		} else {
 			widgets.add(Widgets.createSlot(new Rectangle(offsetPoint(bounds, 75, 12), new Dimension(32, 32)))
 				.markOutput()
 				.disableHighlight()
 				.disableBackground()
-				.entries(display.getOutputEntries().get(0))
+				.entries(display.getOutputEntries().getFirst())
 			);
 		}
 

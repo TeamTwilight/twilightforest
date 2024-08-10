@@ -1,7 +1,5 @@
 package twilightforest.compat.emi;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import dev.emi.emi.api.widget.Bounds;
 import dev.emi.emi.api.widget.Widget;
 import net.minecraft.ChatFormatting;
@@ -13,9 +11,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
-import org.joml.Matrix4fStack;
 import twilightforest.TwilightForestMod;
-import twilightforest.util.EntityRenderingUtil;
+import twilightforest.util.entities.EntityRenderingUtil;
 
 import java.util.ArrayList;
 import java.util.List;

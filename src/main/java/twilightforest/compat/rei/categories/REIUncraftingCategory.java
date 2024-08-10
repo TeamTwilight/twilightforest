@@ -10,6 +10,7 @@ import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
 import me.shedaniel.rei.api.common.util.EntryStacks;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.CraftingRecipe;
@@ -21,6 +22,7 @@ import twilightforest.compat.rei.TFREIServerPlugin;
 import twilightforest.compat.rei.displays.REIUncraftingDisplay;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.TFBlocks;
+import twilightforest.item.recipe.UncraftingRecipe;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -87,7 +89,14 @@ public class REIUncraftingCategory implements DisplayCategory<REIUncraftingDispl
 			widgets.add(Widgets.createSlot(new Point(bounds.getX() + x * 18 + 63, bounds.getY() + y * 18 + 1)).markOutput().disableBackground().entries(EntryIngredients.ofIngredient(outputs.get(j - k)))); //Set input as output and place in the grid
 		}
 
-		widgets.add(Widgets.createSlot(new Point(bounds.getX() + 5, bounds.getY() + 19)).markInput().disableBackground().entries(display.getInputEntries().get(0)));//Set the outputs as inputs and draw the item you're uncrafting in the right spot as well
+		widgets.add(Widgets.createSlot(new Point(bounds.getX() + 5, bounds.getY() + 19)).markInput().disableBackground().entries(display.getInputEntries().getFirst()));//Set the outputs as inputs and draw the item you're uncrafting in the right spot as well
+
+		int cost = display.getRecipe() instanceof UncraftingRecipe ur ? ur.getCost() : RecipeViewerConstants.getRecipeCost(display.getOutputEntries().stream().map(entryStacks -> entryStacks.getFirst().cheatsAs().getValue()).toList());
+		if (cost > 0) {
+			String costStr = cost + "";
+			widgets.add(Widgets.createLabel(new Point(bounds.getX() + 45 - Minecraft.getInstance().font.width(costStr), bounds.getY() + 22), Component.literal(costStr)).color(RecipeViewerConstants.getXPColor(cost)));
+		}
+
 		return widgets;
 	}
 }

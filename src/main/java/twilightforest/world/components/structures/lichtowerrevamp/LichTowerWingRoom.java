@@ -337,9 +337,32 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 		return this.ladderIndex >= 0;
 	}
 
+	private static final int ROPE_SUBSTRING_START = "rope".length();
 	@Override
 	protected void handleDataMarker(String label, BlockPos pos, WorldGenLevel level, RandomSource random, BoundingBox chunkBounds, ChunkGenerator chunkGen) {
-		String[] directionSplit = label.split("@");
+		String[] modifiedLabel = label.split(">");
+
+		String variety = modifiedLabel.length == 2 ? modifiedLabel[1] : label;
+		if (modifiedLabel.length == 2 && modifiedLabel[0].startsWith("rope")) {
+			String[] ropeChance = modifiedLabel[0].substring(ROPE_SUBSTRING_START).split("%");
+
+			if (ropeChance.length == 0 || (ropeChance.length == 2 && StringUtils.isNumeric(ropeChance[0]) && random.nextFloat() > Integer.parseInt(ropeChance[0]) * 0.01f))
+				return;
+
+			String ropeParams = ropeChance[ropeChance.length - 1];
+
+			int ropeLength = this.parseRange(ropeParams, random, 1, 2);
+
+			if (ropeLength > 0) {
+				for (BlockPos hangSupportAt : BlockPos.betweenClosed(pos, pos.below(ropeLength - 1))) {
+					level.setBlock(hangSupportAt, TFBlocks.ROPE.value().defaultBlockState(), 2);
+				}
+
+				pos = pos.below(ropeLength);
+			}
+		}
+
+		String[] directionSplit = variety.split("@");
 
 		if (directionSplit.length == 0) return;
 
@@ -575,6 +598,11 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 	}
 
 	private int getCandleRanged(String amountLabel, RandomSource random) {
+		return this.parseRange(amountLabel, random, 1, 3);
+	}
+
+	@SuppressWarnings("SameParameterValue")
+	private int parseRange(String amountLabel, RandomSource random, int defaultMin, int defaultMax) {
 		String[] amountParams = amountLabel.split("-");
 
 		if (amountParams.length == 1 && StringUtils.isNumeric(amountParams[0])) {
@@ -583,7 +611,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 			return random.nextIntBetweenInclusive(Integer.parseInt(amountParams[0]), Integer.parseInt(amountParams[1]));
 		}
 
-		return random.nextIntBetweenInclusive(1, 3);
+		return random.nextIntBetweenInclusive(defaultMin, defaultMax);
 	}
 
 	private int getHeadRotation(String amountLabel, RandomSource random) {

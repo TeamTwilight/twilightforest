@@ -1,7 +1,5 @@
 package twilightforest.compat.rei.entries;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.entry.renderer.EntryRenderer;
 import me.shedaniel.rei.api.client.gui.widgets.Tooltip;
@@ -30,7 +28,7 @@ import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
-import twilightforest.util.EntityRenderingUtil;
+import twilightforest.util.entities.EntityRenderingUtil;
 
 import java.util.ArrayList;
 import java.util.List;

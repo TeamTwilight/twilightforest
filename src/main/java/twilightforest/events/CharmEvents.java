@@ -31,6 +31,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.KeepsakeCasketBlock;
 import twilightforest.block.entity.KeepsakeCasketBlockEntity;
+import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.config.TFConfig;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.enums.BlockLoggingEnum;
@@ -309,9 +310,9 @@ public class CharmEvents {
 	}
 
 	private static boolean hasCharmCurio(Item item, Player player) {
-//		if (ModList.get().isLoaded("curios")) {
-//			return CuriosCompat.findAndConsumeCurio(item, player);
-//		}
+		if (ModList.get().isLoaded("curios")) {
+			return CuriosCompat.findAndConsumeCurio(item, player);
+		}
 
 		return false;
 	}

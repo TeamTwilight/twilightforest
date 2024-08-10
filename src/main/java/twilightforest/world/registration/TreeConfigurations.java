@@ -12,6 +12,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.BlobFoliagePlacer;
+import net.minecraft.world.level.levelgen.feature.foliageplacers.BushFoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FancyFoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.MegaPineFoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
@@ -151,7 +152,7 @@ public class TreeConfigurations {
 
 	public static final TreeConfiguration DARKWOOD_TREE = new TreeConfiguration.TreeConfigurationBuilder(
 		BlockStateProvider.simple(TFBlocks.DARK_LOG.get()),
-		new BranchingTrunkPlacer(9, 1, 1, 3, new BranchesConfig(BlockStateProvider.simple(TFBlocks.DARK_WOOD.get()), 4, 0, 8, 2, 0.23, 0.23), false),
+		new BranchingTrunkPlacer(9, 1, 1, 6, new BranchesConfig(BlockStateProvider.simple(TFBlocks.DARK_WOOD.get()), 4, 0, 8, 2, 0.23, 0.23), false),
 		BlockStateProvider.simple(TFBlocks.HARDENED_DARK_LEAVES.get()),
 		new LeafSpheroidFoliagePlacer(4.5f, 2.25f, ConstantInt.of(0), 1, 0, 0.45f, (int) (LEAF_SHAG_FACTOR * 1.5f)),
 		new TwoLayersFeatureSize(4, 1, 1)
@@ -162,7 +163,7 @@ public class TreeConfigurations {
 
 	public static final TreeConfiguration HOMEGROWN_DARKWOOD_TREE = new TreeConfiguration.TreeConfigurationBuilder(
 		BlockStateProvider.simple(TFBlocks.DARK_LOG.get()),
-		new BranchingTrunkPlacer(9, 1, 1, 3, new BranchesConfig(BlockStateProvider.simple(TFBlocks.DARK_WOOD.get()), 4, 0, 8, 2, 0.23, 0.23), false),
+		new BranchingTrunkPlacer(9, 1, 1, 6, new BranchesConfig(BlockStateProvider.simple(TFBlocks.DARK_WOOD.get()), 4, 0, 8, 2, 0.23, 0.23), false),
 		BlockStateProvider.simple(TFBlocks.DARK_LEAVES.get()),
 		new LeafSpheroidFoliagePlacer(4.5f, 2.25f, ConstantInt.of(0), 1, 0, 0.45f, (int) (LEAF_SHAG_FACTOR * 1.5f)),
 		new TwoLayersFeatureSize(4, 1, 1)
@@ -173,7 +174,7 @@ public class TreeConfigurations {
 
 	public static final TreeConfiguration DARKWOOD_LANTERN_TREE = new TreeConfiguration.TreeConfigurationBuilder(
 		BlockStateProvider.simple(TFBlocks.DARK_LOG.get()),
-		new BranchingTrunkPlacer(9, 1, 1, 3, new BranchesConfig(BlockStateProvider.simple(TFBlocks.DARK_WOOD.get()), 4, 0, 8, 2, 0.23, 0.23), false),
+		new BranchingTrunkPlacer(9, 1, 1, 6, new BranchesConfig(BlockStateProvider.simple(TFBlocks.DARK_WOOD.get()), 4, 0, 8, 2, 0.23, 0.23), false),
 		BlockStateProvider.simple(TFBlocks.DARK_LEAVES.get()),
 		new LeafSpheroidFoliagePlacer(4.5f, 2.25f, ConstantInt.of(0), 1, 0, 0.45f, (int) (LEAF_SHAG_FACTOR * 1.5f)),
 		new TwoLayersFeatureSize(4, 1, 1)
@@ -204,6 +205,16 @@ public class TreeConfigurations {
 			new CocoaDecorator(0.7F),
 			TrunkVineDecorator.INSTANCE,
 			new LeaveVineDecorator(0.25F)))
+		.ignoreVines()
+		.build();
+
+	//[VanillaCopy] of JUNGLE_BUSH
+	public static final TreeConfiguration OAK_BUSH = new TreeConfiguration.TreeConfigurationBuilder(
+		BlockStateProvider.simple(Blocks.OAK_LOG),
+		new StraightTrunkPlacer(1, 0, 0),
+		BlockStateProvider.simple(Blocks.OAK_LEAVES),
+		new BushFoliagePlacer(ConstantInt.of(2), ConstantInt.of(1), 2),
+		new TwoLayersFeatureSize(0, 0, 0))
 		.ignoreVines()
 		.build();
 

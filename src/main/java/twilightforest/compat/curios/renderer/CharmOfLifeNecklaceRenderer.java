@@ -23,12 +23,11 @@ import twilightforest.compat.curios.model.CharmOfLifeNecklaceModel;
 public class CharmOfLifeNecklaceRenderer implements ICurioRenderer {
 
 	private final CharmOfLifeNecklaceModel model;
-	private final float[] necklaceColors;
+	private final int necklaceColor;
 
-	public CharmOfLifeNecklaceRenderer(float[] rgbNecklaceColor) {
+	public CharmOfLifeNecklaceRenderer(int necklaceColor) {
 		this.model = new CharmOfLifeNecklaceModel(Minecraft.getInstance().getEntityModels().bakeLayer(TFModelLayers.CHARM_OF_LIFE));
-		if (rgbNecklaceColor.length != 3) throw new IllegalArgumentException("Charm of Life Curio must define 3 colors");
-		this.necklaceColors = rgbNecklaceColor;
+		this.necklaceColor = necklaceColor;
 	}
 
 	@Override
@@ -47,6 +46,6 @@ public class CharmOfLifeNecklaceRenderer implements ICurioRenderer {
 		this.model.prepareMobModel(slotContext.entity(), limbSwing, limbSwingAmount, partialTicks);
 		ICurioRenderer.followBodyRotations(slotContext.entity(), this.model);
 		VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.entityCutout(TwilightForestMod.getModelTexture("charm_of_life_necklace.png")));
-		this.model.renderToBuffer(stack, vertexConsumer, light, OverlayTexture.NO_OVERLAY, this.necklaceColors[0], this.necklaceColors[1], this.necklaceColors[2], 1.0F);
+		this.model.renderToBuffer(stack, vertexConsumer, light, OverlayTexture.NO_OVERLAY, this.necklaceColor);
 	}
 }
