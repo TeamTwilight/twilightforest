@@ -213,7 +213,7 @@ public class WroughtIronFenceBlock extends Block implements SimpleWaterloggedBlo
 
 	@Override
 
-	public BlockState rotate(BlockState state, LevelAccessor accessor, BlockPos pos, Rotation rotation) {
+	public BlockState rotate(BlockState state, Rotation rotation) {
 		return switch (rotation) {
 			case CLOCKWISE_180 -> state.setValue(NORTH_FENCE, state.getValue(SOUTH_FENCE)).setValue(EAST_FENCE, state.getValue(WEST_FENCE)).setValue(SOUTH_FENCE, state.getValue(NORTH_FENCE)).setValue(WEST_FENCE, state.getValue(WEST_FENCE));
 			case COUNTERCLOCKWISE_90 -> state.setValue(NORTH_FENCE, state.getValue(EAST_FENCE)).setValue(EAST_FENCE, state.getValue(SOUTH_FENCE)).setValue(SOUTH_FENCE, state.getValue(WEST_FENCE)).setValue(WEST_FENCE, state.getValue(NORTH_FENCE));

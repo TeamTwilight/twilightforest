@@ -59,7 +59,7 @@ public class ThornRoseBlock extends BushBlock {
 	}
 
 	@Override
-	public BlockState rotate(BlockState state, LevelAccessor level, BlockPos pos, Rotation rotation) {
+	public BlockState rotate(BlockState state, Rotation rotation) {
 		return state.setValue(DirectionalBlock.FACING, rotation.rotate(state.getValue(DirectionalBlock.FACING)));
 	}
 

@@ -77,7 +77,7 @@ public class SpiralBrickBlock extends Block implements SimpleWaterloggedBlock {
 	}
 
 	@Override
-	public BlockState rotate(BlockState state, LevelAccessor accessor, BlockPos pos, Rotation rot) {
+	public BlockState rotate(BlockState state, Rotation rot) {
 		Direction.Axis axis = state.getValue(AXIS_FACING);
 		if (rot == Rotation.CLOCKWISE_180 || (axis == Direction.Axis.X && rot == Rotation.CLOCKWISE_90) || (axis == Direction.Axis.Z && rot == Rotation.COUNTERCLOCKWISE_90))
 			state = state.setValue(DIAGONAL, Diagonals.mirror(state.getValue(DIAGONAL), Mirror.LEFT_RIGHT));

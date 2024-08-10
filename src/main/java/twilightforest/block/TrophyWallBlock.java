@@ -78,7 +78,7 @@ public class TrophyWallBlock extends AbstractTrophyBlock {
 	}
 
 	@Override
-	public BlockState rotate(BlockState state, LevelAccessor accessor, BlockPos pos, Rotation rot) {
+	public BlockState rotate(BlockState state, Rotation rot) {
 		return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
 	}
 
