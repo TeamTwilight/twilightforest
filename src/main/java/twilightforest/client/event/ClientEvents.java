@@ -40,6 +40,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.api.distmarker.Dist;
+import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.common.NeoForge;
@@ -53,6 +54,7 @@ import twilightforest.client.BugModelAnimationHelper;
 import twilightforest.client.ISTER;
 import twilightforest.client.OptifineWarningScreen;
 import twilightforest.client.TFShaders;
+import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.config.TFConfig;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.entity.boss.bar.ClientTFBossBar;
@@ -304,9 +306,9 @@ public class ClientEvents {
 	}
 
 	private static boolean areCuriosEquipped(LivingEntity entity) {
-//		if (ModList.get().isLoaded("curios")) {
-//			return CuriosCompat.isCurioEquippedAndVisible(entity, stack -> stack.getItem() instanceof TrophyItem) || CuriosCompat.isCurioEquippedAndVisible(entity, stack -> stack.getItem() instanceof SkullCandleItem);
-//		}
+		if (ModList.get().isLoaded("curios")) {
+			return CuriosCompat.isCurioEquippedAndVisible(entity, stack -> stack.getItem() instanceof TrophyItem) || CuriosCompat.isCurioEquippedAndVisible(entity, stack -> stack.getItem() instanceof SkullCandleItem);
+		}
 		return false;
 	}
 
