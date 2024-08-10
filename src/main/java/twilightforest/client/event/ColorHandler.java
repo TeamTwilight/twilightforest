@@ -24,7 +24,7 @@ import twilightforest.util.ColorUtil;
 import twilightforest.util.SimplexNoiseHelper;
 
 public class ColorHandler {
-	public static int WHITE = 0xFFFFFFFF;
+	public static final int WHITE = 0xFFFFFFFF;
 
 	protected static void registerBlockColors(RegisterColorHandlersEvent.Block event) {
 		BlockColors blockColors = event.getBlockColors();

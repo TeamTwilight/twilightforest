@@ -5,8 +5,6 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.biome.BiomeSpecialEffects;
-import org.jetbrains.annotations.Nullable;
-import twilightforest.client.renderer.block.JarRenderer;
 import twilightforest.beans.Autowired;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;

@@ -55,7 +55,6 @@ import twilightforest.client.model.block.leaves.BakedLeavesModel;
 import twilightforest.client.model.block.patch.PatchModelLoader;
 import twilightforest.client.model.entity.*;
 import twilightforest.client.model.item.TrollsteinnModel;
-import twilightforest.client.renderer.block.CursedSpawnerRenderer;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.entity.*;
 import twilightforest.client.renderer.block.*;

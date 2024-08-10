@@ -42,7 +42,7 @@ public class OverlayHandler {
 	private static final ResourceLocation QUESTING_RAM_CHECK_SPRITE = TwilightForestMod.prefix("questing_ram_check");
 	private static final ResourceLocation QUESTING_RAM_X_SPRITE = TwilightForestMod.prefix("questing_ram_x");
 	private static final ResourceLocation FORTIFICATION_SHIELD_SPRITE = TwilightForestMod.prefix("fortification_shield");
-	public static Map<Long, OreMeterInfoCache> ORE_METER_STAT_CACHE = new HashMap<>();
+	public static final Map<Long, OreMeterInfoCache> ORE_METER_STAT_CACHE = new HashMap<>();
 
 	protected static void registerOverlays(RegisterGuiLayersEvent event) {
 		event.registerAbove(VanillaGuiLayers.CROSSHAIR, TwilightForestMod.prefix("quest_ram_indicator"), (graphics, partialTicks) -> {

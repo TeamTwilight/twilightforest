@@ -1,12 +1,9 @@
 package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.data.tags.BlockTagGenerator;
 
 public abstract class TFPlantBlock extends BushBlock {

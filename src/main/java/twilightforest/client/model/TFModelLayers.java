@@ -1,7 +1,6 @@
 package twilightforest.client.model;
 
 import net.minecraft.client.model.geom.ModelLayerLocation;
-import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
 
 public class TFModelLayers {
