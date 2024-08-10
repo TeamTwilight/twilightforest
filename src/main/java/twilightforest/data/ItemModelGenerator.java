@@ -19,6 +19,8 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.renderer.block.JarRenderer;
+import twilightforest.beans.Autowired;
+import twilightforest.enums.extensions.TFItemDisplayContextEnumExtension;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFItems;
@@ -29,6 +31,10 @@ import static twilightforest.TwilightForestMod.prefix;
 
 @SuppressWarnings("SameParameterValue")
 public class ItemModelGenerator extends ItemModelProvider {
+
+	@Autowired
+	private static TFItemDisplayContextEnumExtension itemDisplayContextEnumExtension;
+
 	public ItemModelGenerator(PackOutput output, ExistingFileHelper existingFileHelper) {
 		super(output, TwilightForestMod.ID, existingFileHelper);
 	}
@@ -435,21 +441,21 @@ public class ItemModelGenerator extends ItemModelProvider {
 		withExistingParent(TFItems.LICH_TROPHY.getId().toString(), templateTrophy);
 		withExistingParent(TFItems.MINOSHROOM_TROPHY.getId().toString(), templateTrophy);
 		withExistingParent(TFItems.HYDRA_TROPHY.getId().toString(), templateTrophy).transforms()
-			.transform(JarRenderer.MasonJarRenderer.JARRED).translation(0, 0, 1).rotation(0, 180, 0).end().end();
+			.transform(itemDisplayContextEnumExtension.JARRED).translation(0, 0, 1).rotation(0, 180, 0).end().end();
 		withExistingParent(TFItems.KNIGHT_PHANTOM_TROPHY.getId().toString(), templateTrophy).transforms()
-			.transform(JarRenderer.MasonJarRenderer.JARRED).scale(0.85F).rotation(0, 180, 0).end().end();
+			.transform(itemDisplayContextEnumExtension.JARRED).scale(0.85F).rotation(0, 180, 0).end().end();
 		withExistingParent(TFItems.UR_GHAST_TROPHY.getId().toString(), templateTrophy).transforms()
 			.transform(ItemDisplayContext.HEAD).scale(1.6F).translation(0, 18, 0).rotation(180, 0, 180).end()
 			.transform(ItemDisplayContext.FIXED).translation(0, 14, -2).rotation(0, 180, 0).end()
 			.transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND).scale(0.5F).translation(0, 4, 3.6F).rotation(45, 135, 0).end()
 			.transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND).translation(0, 11, 0).rotation(0, 180, 0).end()
-			.transform(JarRenderer.MasonJarRenderer.JARRED).scale(0.85F).translation(0, 14, 0).rotation(0, 180, 0).end().end();
+			.transform(itemDisplayContextEnumExtension.JARRED).scale(0.85F).translation(0, 14, 0).rotation(0, 180, 0).end().end();
 		withExistingParent(TFItems.ALPHA_YETI_TROPHY.getId().toString(), templateTrophy).transforms()
 			.transform(ItemDisplayContext.HEAD).scale(1.5F).translation(0, 2, 0).rotation(180, 0, 180).end()
-			.transform(JarRenderer.MasonJarRenderer.JARRED).translation(0, 0, 1).rotation(0, 180, 0).end().end();
+			.transform(itemDisplayContextEnumExtension.JARRED).translation(0, 0, 1).rotation(0, 180, 0).end().end();
 		withExistingParent(TFItems.SNOW_QUEEN_TROPHY.getId().toString(), templateTrophy);
 		withExistingParent(TFItems.QUEST_RAM_TROPHY.getId().toString(), templateTrophy).transforms()
-			.transform(JarRenderer.MasonJarRenderer.JARRED).scale(0.85F).rotation(0, 180, 0).end().end();
+			.transform(itemDisplayContextEnumExtension.JARRED).scale(0.85F).rotation(0, 180, 0).end().end();
 
 		withExistingParent(TFItems.CREEPER_SKULL_CANDLE.getId().toString(), prefix("item/template_skull_candle"));
 		withExistingParent(TFItems.PIGLIN_SKULL_CANDLE.getId().toString(), prefix("item/template_skull_candle"));

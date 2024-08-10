@@ -24,7 +24,7 @@
       "constructor": "(Ljava/lang/String;Lnet/minecraft/world/level/biome/BiomeSpecialEffects$GrassColorModifier$ColorModifier;)V",
       "parameters": {
         "class": "twilightforest/TFEnumExtensions",
-        "method": "enchantedForestBiomeGrassColor"
+        "method": "GrassColorModifier_ENCHANTED_FOREST"
       }
     },
     {
@@ -33,7 +33,7 @@
       "constructor": "(Ljava/lang/String;Lnet/minecraft/world/level/biome/BiomeSpecialEffects$GrassColorModifier$ColorModifier;)V",
       "parameters": {
         "class": "twilightforest/TFEnumExtensions",
-        "method": "swampBiomeGrassColor"
+        "method": "GrassColorModifier_SWAMP"
       }
     },
     {
@@ -42,7 +42,7 @@
       "constructor": "(Ljava/lang/String;Lnet/minecraft/world/level/biome/BiomeSpecialEffects$GrassColorModifier$ColorModifier;)V",
       "parameters": {
         "class": "twilightforest/TFEnumExtensions",
-        "method": "darkForestBiomeGrassColor"
+        "method": "GrassColorModifier_DARK_FOREST"
       }
     },
     {
@@ -51,7 +51,7 @@
       "constructor": "(Ljava/lang/String;Lnet/minecraft/world/level/biome/BiomeSpecialEffects$GrassColorModifier$ColorModifier;)V",
       "parameters": {
         "class": "twilightforest/TFEnumExtensions",
-        "method": "darkForestCenterBiomeGrassColor"
+        "method": "GrassColorModifier_DARK_FOREST_CENTER"
       }
     },
     {
@@ -60,7 +60,7 @@
       "constructor": "(Ljava/lang/String;Lnet/minecraft/world/level/biome/BiomeSpecialEffects$GrassColorModifier$ColorModifier;)V",
       "parameters": {
         "class": "twilightforest/TFEnumExtensions",
-        "method": "spookyBiomeGrassColor"
+        "method": "GrassColorModifier_SPOOKY_FOREST"
       }
     },
     {
@@ -69,7 +69,7 @@
       "constructor": "(ILjava/lang/String;Ljava/lang/String;)V",
       "parameters": {
         "class": "twilightforest/TFEnumExtensions",
-        "method": "jarred"
+        "method": "ItemDisplayContext_JARRED"
       }
     },
     {

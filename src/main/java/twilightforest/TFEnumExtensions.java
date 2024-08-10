@@ -4,21 +4,23 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Style;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.GrassColor;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSpecialEffects;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.client.renderer.block.JarRenderer;
+import twilightforest.beans.Autowired;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFSounds;
-import twilightforest.world.components.BiomeGrassColors;
+import twilightforest.world.components.BiomeColorAlgorithms;
 
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
 @SuppressWarnings("unused") // Referenced by enumextender.json
 public class TFEnumExtensions {
+
+	@Autowired
+	private static BiomeColorAlgorithms biomeColorAlgorithms;
 
 	/**
 	 * {@link net.minecraft.world.damagesource.DamageEffects}<p/>
@@ -48,75 +50,76 @@ public class TFEnumExtensions {
 	}
 
 	/**
-	 * {@link BiomeGrassColors#ENCHANTED_FOREST}
+	 * {@link net.minecraft.world.level.biome.BiomeSpecialEffects.GrassColorModifier}<p/>
+	 *
+	 * {@link twilightforest.enums.extensions.TFGrassColorModifierEnumExtension#ENCHANTED_FOREST}
 	 */
-	public static Object enchantedForestBiomeGrassColor(int idx, Class<?> type) {
+	public static Object GrassColorModifier_ENCHANTED_FOREST(int idx, Class<?> type) {
 		return type.cast(switch (idx) {
 			case 0 -> prefix("enchanted_forest");
-			case 1 -> (BiomeSpecialEffects.GrassColorModifier.ColorModifier) (x, z, color) -> {
-				return (color & 0xFFFF00) + BiomeGrassColors.getEnchantedColor((int) x, (int) z); //TODO
-			};
+			case 1 -> (BiomeSpecialEffects.GrassColorModifier.ColorModifier) (x, z, color) -> biomeColorAlgorithms.enchanted(color, (int) x, (int) z);
 			default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
 		});
 	}
 
 	/**
-	 * {@link BiomeGrassColors#SWAMP}
+	 * {@link net.minecraft.world.level.biome.BiomeSpecialEffects.GrassColorModifier}<p/>
+	 *
+	 * {@link twilightforest.enums.extensions.TFGrassColorModifierEnumExtension#SWAMP}
 	 */
-	// FIXME Flat color, resolve
-	public static Object swampBiomeGrassColor(int idx, Class<?> type) {
+	public static Object GrassColorModifier_SWAMP(int idx, Class<?> type) {
 		return type.cast(switch (idx) {
 			case 0 -> prefix("swamp");
-			case 1 -> (BiomeSpecialEffects.GrassColorModifier.ColorModifier) (x, z, color) -> ((GrassColor.get(0.8F, 0.9F) & 0xFEFEFE) + 0x4E0E4E) / 2;
+			case 1 -> (BiomeSpecialEffects.GrassColorModifier.ColorModifier) (x, z, color) -> biomeColorAlgorithms.swamp(BiomeColorAlgorithms.Type.Grass);
 			default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
 		});
 	}
 
 	/**
-	 * {@link BiomeGrassColors#DARK_FOREST}
+	 * {@link net.minecraft.world.level.biome.BiomeSpecialEffects.GrassColorModifier}<p/>
+	 *
+	 * {@link twilightforest.enums.extensions.TFGrassColorModifierEnumExtension#DARK_FOREST}
 	 */
-	// FIXME Flat color, resolve
-	public static Object darkForestBiomeGrassColor(int idx, Class<?> type) {
+	public static Object GrassColorModifier_DARK_FOREST(int idx, Class<?> type) {
 		return type.cast(switch (idx) {
 			case 0 -> prefix("dark_forest");
-			case 1 -> (BiomeSpecialEffects.GrassColorModifier.ColorModifier) (x, z, color) -> ((GrassColor.get(0.7F, 0.8F) & 0xFEFEFE) + 0x1E0E4E) / 2;
+			case 1 -> (BiomeSpecialEffects.GrassColorModifier.ColorModifier) (x, z, color) -> biomeColorAlgorithms.darkForest(BiomeColorAlgorithms.Type.Grass);
 			default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
 		});
 	}
 
 	/**
-	 * {@link BiomeGrassColors#DARK_FOREST_CENTER}
+	 * {@link net.minecraft.world.level.biome.BiomeSpecialEffects.GrassColorModifier}<p/>
+	 *
+	 * {@link twilightforest.enums.extensions.TFGrassColorModifierEnumExtension#DARK_FOREST_CENTER}
 	 */
-	public static Object darkForestCenterBiomeGrassColor(int idx, Class<?> type) {
+	public static Object GrassColorModifier_DARK_FOREST_CENTER(int idx, Class<?> type) {
 		return type.cast(switch (idx) {
 			case 0 -> prefix("dark_forest_center");
-			case 1 -> (BiomeSpecialEffects.GrassColorModifier.ColorModifier) (x, z, color) -> {
-				double d0 = Biome.TEMPERATURE_NOISE.getValue(x * 0.0225D, z * 0.0225D, false); //TODO: Check
-				return d0 < -0.2D ? 0x667540 : 0x554114;
-			};
+			case 1 -> (BiomeSpecialEffects.GrassColorModifier.ColorModifier) (x, z, color) -> biomeColorAlgorithms.darkForestCenterGrass(x, z);
 			default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
 		});
 	}
 
 	/**
-	 * {@link BiomeGrassColors#SPOOKY_FOREST}
+	 * {@link net.minecraft.world.level.biome.BiomeSpecialEffects.GrassColorModifier}<p/>
+	 *
+	 * {@link twilightforest.enums.extensions.TFGrassColorModifierEnumExtension#SPOOKY_FOREST}
 	 */
-	public static Object spookyBiomeGrassColor(int idx, Class<?> type) {
+	public static Object GrassColorModifier_SPOOKY_FOREST(int idx, Class<?> type) {
 		return type.cast(switch (idx) {
 			case 0 -> prefix("spooky_forest");
-			case 1 -> (BiomeSpecialEffects.GrassColorModifier.ColorModifier) (x, z, color) -> {
-				double noise = (Biome.TEMPERATURE_NOISE.getValue(x * 0.0225D, z * 0.0225D, false) + 1D) / 2D;
-				return BiomeGrassColors.blendColors(0xc43323, 0x5BC423, noise > 0.6D ? noise * 0.1D : noise);
-			};
+			case 1 -> (BiomeSpecialEffects.GrassColorModifier.ColorModifier) (x, z, color) -> biomeColorAlgorithms.spookyGrass(x, z);
 			default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
 		});
 	}
 
 	/**
-	 * {@link JarRenderer.MasonJarRenderer#JARRED}
+	 * {@link net.minecraft.world.item.ItemDisplayContext}<p/>
+	 *
+	 * {@link twilightforest.enums.extensions.TFItemDisplayContextEnumExtension#JARRED}
 	 */
-	@Nullable
-	public static Object jarred(int idx, Class<?> type) {
+	public static Object ItemDisplayContext_JARRED(int idx, Class<?> type) {
 		return type.cast(switch (idx) {
 			case 0 -> -1;
 			case 1 -> prefix("jarred");

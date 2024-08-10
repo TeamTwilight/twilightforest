@@ -29,10 +29,12 @@ import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.item.component.ResolvableProfile;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import twilightforest.TwilightForestMod;
+import twilightforest.beans.Autowired;
 import twilightforest.block.*;
 import twilightforest.block.entity.CandelabraBlockEntity;
 import twilightforest.block.entity.KeepsakeCasketBlockEntity;
@@ -50,6 +52,7 @@ import twilightforest.components.item.JarLid;
 import twilightforest.components.item.SkullCandles;
 import twilightforest.config.TFConfig;
 import twilightforest.enums.BossVariant;
+import twilightforest.enums.extensions.TFItemDisplayContextEnumExtension;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDataComponents;
 import twilightforest.item.KnightmetalShieldItem;
@@ -59,6 +62,10 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 public class ISTER extends BlockEntityWithoutLevelRenderer {
+
+	@Autowired(dist = Dist.CLIENT)
+	private static TFItemDisplayContextEnumExtension itemDisplayContextEnumExtension;
+
 	public static final Supplier<ISTER> INSTANCE = Suppliers.memoize(ISTER::new);
 	public static final IClientItemExtensions CLIENT_ITEM_EXTENSION = Util.make(() -> new IClientItemExtensions() {
 		@Override
@@ -201,7 +208,7 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 						ms.pushPose();
 						ms.translate(0.5D, 0.4375D, 0.5D);
 						ms.scale(0.5F, 0.5F, 0.5F);
-						minecraft.getItemRenderer().render(contents.copyOne(), JarRenderer.MasonJarRenderer.JARRED, false, ms, bufferSource, light, OverlayTexture.NO_OVERLAY, minecraft.getItemRenderer().getModel(contents.copyOne(), null, null, 1));
+						minecraft.getItemRenderer().render(contents.copyOne(), itemDisplayContextEnumExtension.JARRED, false, ms, bufferSource, light, OverlayTexture.NO_OVERLAY, minecraft.getItemRenderer().getModel(contents.copyOne(), null, null, 1));
 						ms.popPose();
 						bufferSource.endBatch();
 					}

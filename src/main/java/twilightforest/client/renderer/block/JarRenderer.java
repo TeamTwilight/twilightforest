@@ -16,25 +16,27 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.entity.DecoratedPotBlockEntity.WobbleStyle;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RotationSegment;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.neoforge.client.RenderTypeHelper;
 import net.neoforged.neoforge.client.model.data.ModelData;
+import net.neoforged.neoforge.common.util.Lazy;
+import twilightforest.beans.Autowired;
 import twilightforest.block.entity.JarBlockEntity;
 import twilightforest.block.entity.MasonJarBlockEntity;
+import twilightforest.enums.extensions.TFItemDisplayContextEnumExtension;
 import twilightforest.init.TFBlocks;
-import twilightforest.TFEnumExtensions;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class JarRenderer<T extends JarBlockEntity> implements BlockEntityRenderer<T> {
 	public static final Map<Item, BakedModel> LIDS = new HashMap<>();
-	public static final Map<Item, ResourceLocation> LOG_LOCATION_MAP = Map.ofEntries(
+	public static final Lazy<Map<Item, ResourceLocation>> LOG_LOCATION_MAP = Lazy.of(() -> Map.ofEntries(
 		Map.entry(TFBlocks.MANGROVE_LOG.asItem(), TFBlocks.MANGROVE_LOG.getId()),
 		Map.entry(TFBlocks.CANOPY_LOG.asItem(), TFBlocks.CANOPY_LOG.getId()),
 		Map.entry(TFBlocks.DARK_LOG.asItem(), TFBlocks.DARK_LOG.getId()),
@@ -71,7 +73,7 @@ public class JarRenderer<T extends JarBlockEntity> implements BlockEntityRendere
 		Map.entry(Items.STRIPPED_SPRUCE_LOG, ResourceLocation.fromNamespaceAndPath("minecraft", "stripped_spruce_log")),
 		Map.entry(Items.STRIPPED_CRIMSON_STEM, ResourceLocation.fromNamespaceAndPath("minecraft", "stripped_crimson_stem")),
 		Map.entry(Items.STRIPPED_WARPED_STEM, ResourceLocation.fromNamespaceAndPath("minecraft", "stripped_warped_stem"))
-	);
+	));
 
 	protected final BlockRenderDispatcher blockRenderer;
 	protected static final float WOBBLE_AMPLITUDE = 0.125F;
@@ -151,10 +153,9 @@ public class JarRenderer<T extends JarBlockEntity> implements BlockEntityRendere
 	}
 
 	public static class MasonJarRenderer extends JarRenderer<MasonJarBlockEntity> {
-		/**
-		 * {@link TFEnumExtensions#jarred(int, Class)}
-		 */
-		public static final ItemDisplayContext JARRED = ItemDisplayContext.valueOf("TWILIGHTFOREST_JARRED");
+
+		@Autowired(dist = Dist.CLIENT)
+		private static TFItemDisplayContextEnumExtension itemDisplayContextEnumExtension;
 
 		protected final ItemRenderer itemRenderer;
 		protected final EntityRenderDispatcher entityRender;
@@ -178,7 +179,7 @@ public class JarRenderer<T extends JarBlockEntity> implements BlockEntityRendere
 				poseStack.mulPose(Axis.YN.rotationDegrees(RotationSegment.convertToDegrees(blockEntity.getItemRotation())));
 
 				poseStack.scale(0.5F, 0.5F, 0.5F);
-				this.itemRenderer.renderStatic(stack, JARRED, packedLight, OverlayTexture.NO_OVERLAY, poseStack, buffer, null, 0);
+				this.itemRenderer.renderStatic(stack, itemDisplayContextEnumExtension.JARRED, packedLight, OverlayTexture.NO_OVERLAY, poseStack, buffer, null, 0);
 
 
 				poseStack.popPose();

@@ -68,7 +68,6 @@ import twilightforest.network.*;
 import twilightforest.util.Restriction;
 import twilightforest.util.TFRemapper;
 import twilightforest.util.woods.WoodPalette;
-import twilightforest.world.components.BiomeGrassColors;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.layer.BiomeDensitySource;
 import twilightforest.world.components.structures.StructureSpeleothemConfig;
@@ -168,8 +167,6 @@ public final class TwilightForestMod {
 
 		if (ModList.get().isLoaded("curios")) loadCuriosCompat(bus);
 		if (ModList.get().isLoaded("cosmeticarmorreworked")) NeoForge.EVENT_BUS.addListener(CosmeticArmorCompat::keepCosmeticArmor);
-
-		BiomeGrassColors.init();
 	}
 
 	private static void loadCuriosCompat(IEventBus bus) {

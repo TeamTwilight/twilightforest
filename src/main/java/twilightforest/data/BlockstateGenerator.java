@@ -328,7 +328,7 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		simpleBlockExisting(TFBlocks.FIREFLY_SPAWNER.get());
 
 		ResourceLocation jarLid = TwilightForestMod.prefix("jar_lid");
-		for (ResourceLocation item : JarRenderer.LOG_LOCATION_MAP.values()) {
+		for (ResourceLocation item : JarRenderer.LOG_LOCATION_MAP.get().values()) {
 			String name = item.getPath() + "_lid";
 			if ((name.equals("mangrove_log_lid") || name.equals("stripped_mangrove_log_lid")) && item.getNamespace().equals("minecraft")) name = "vanilla_" + name;
 			this.models().withExistingParent(name, jarLid)

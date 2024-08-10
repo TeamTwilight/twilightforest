@@ -455,18 +455,18 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 	}
 
 	private void putBrewingStand(BlockPos pos, WorldGenLevel level, RandomSource random) {
-		BlockState brewingStand = Blocks.BREWING_STAND.defaultBlockState();
+		BlockState brewingStandBlock = Blocks.BREWING_STAND.defaultBlockState();
 
 		IntList filledSlots = new IntArrayList();
 		for (int index = 0; index < 3; index++) {
 			if (random.nextInt(3) != 0) {
 				filledSlots.add(index);
-				brewingStand = brewingStand.setValue(BrewingStandBlock.HAS_BOTTLE[index], true);
+				brewingStandBlock = brewingStandBlock.setValue(BrewingStandBlock.HAS_BOTTLE[index], true);
 			}
 		}
 
-		level.setBlock(pos, brewingStand, 2);
-		if (level.getBlockEntity(pos) instanceof BrewingStandBlockEntity brewingStandBlockEntity) {
+		level.setBlock(pos, brewingStandBlock, 2);
+		if (level.getBlockEntity(pos) instanceof BrewingStandBlockEntity brewingStandBE) {
 			for (int index = 0; index < 3; index++) {
 				ItemStack potionStack = new ItemStack(random.nextInt(4) == 0 ? Items.SPLASH_POTION : Items.POTION);
 				potionStack.set(DataComponents.POTION_CONTENTS, new PotionContents(switch (random.nextInt(8)) {
@@ -475,8 +475,10 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 					case 1, 2, 3 -> Potions.HEALING;
 					default -> Potions.WATER;
 				}));
-				brewingStandBlockEntity.setItem(index, potionStack);
+				brewingStandBE.setItem(index, potionStack);
 			}
+			brewingStandBE.setItem(4, new ItemStack(Items.BLAZE_POWDER, random.nextIntBetweenInclusive(1, 5)));
+			brewingStandBE.fuel = random.nextIntBetweenInclusive(10, 20);
 		}
 	}
 
