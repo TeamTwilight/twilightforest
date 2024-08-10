@@ -17,9 +17,8 @@ public class MoonDialItem extends Item {
 
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-		super.appendHoverText(stack, context, tooltip, flag);
 		boolean aprilFools = LocalDate.of(LocalDate.now().getYear(), 4, 1).equals(LocalDate.now());
-		var level = Minecraft.getInstance().level; // FIXME Might need a different way to access the Minecraft level. Hope this method is never called on server
+		var level = context.level();
 		String phaseType = (level != null && level.dimensionType().natural() ? String.valueOf(level.getMoonPhase()) : aprilFools ? "unknown_fools" : "unknown");
 		tooltip.add(Component.translatable("item.twilightforest.moon_dial.phase_" + phaseType).withStyle(ChatFormatting.GRAY));
 	}

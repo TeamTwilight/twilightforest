@@ -154,12 +154,12 @@ dependencies {
 	jarJar implementation(project(":tf-asm"))
 
 	//make sure to only pick one of these when testing (switch others to compileOnly)
-	implementation "mezz.jei:jei-${project.minecraft_version}-neoforge:${project.jei_version}"
+	implementation "mezz.jei:jei-${project.base_minecraft_version}-neoforge:${project.jei_version}"
 	compileOnly "me.shedaniel:RoughlyEnoughItems-neoforge:${project.rei_version}"
-	compileOnly "dev.emi:emi-neoforge:${project.emi_version}+${project.minecraft_version}"
+	compileOnly "dev.emi:emi-neoforge:${project.emi_version}+${project.base_minecraft_version}"
 
 	// theillusivec4
-	implementation "top.theillusivec4.curios:curios-neoforge:${project.curios_version}+${project.minecraft_version}"
+	implementation "top.theillusivec4.curios:curios-neoforge:${project.curios_version}+${project.base_minecraft_version}"
 
 	//curse maven
 	implementation "curse.maven:jade-324717:5529595"

@@ -1,7 +1,6 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "category": "equipment",
-  "ingredients": [
+  "type": "twilightforest:scepter_repair",
+  "repair_ingredients": [
     [
       {
         "type": "neoforge:components",
@@ -32,18 +31,8 @@
       }
     ],
     {
-      "type": "neoforge:components",
-      "components": {
-        "minecraft:damage": 9
-      },
-      "items": "twilightforest:zombie_scepter"
-    },
-    {
       "item": "minecraft:rotten_flesh"
     }
   ],
-  "result": {
-    "count": 1,
-    "id": "twilightforest:zombie_scepter"
-  }
+  "scepter": "twilightforest:zombie_scepter"
 }

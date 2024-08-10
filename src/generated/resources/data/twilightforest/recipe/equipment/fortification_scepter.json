@@ -1,20 +1,9 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "category": "equipment",
-  "ingredients": [
-    {
-      "type": "neoforge:components",
-      "components": {
-        "minecraft:damage": 9
-      },
-      "items": "twilightforest:fortification_scepter"
-    },
+  "type": "twilightforest:scepter_repair",
+  "repair_ingredients": [
     {
       "item": "minecraft:golden_apple"
     }
   ],
-  "result": {
-    "count": 1,
-    "id": "twilightforest:fortification_scepter"
-  }
+  "scepter": "twilightforest:fortification_scepter"
 }

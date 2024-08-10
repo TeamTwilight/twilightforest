@@ -1,20 +1,9 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "category": "equipment",
-  "ingredients": [
-    {
-      "type": "neoforge:components",
-      "components": {
-        "minecraft:damage": 99
-      },
-      "items": "twilightforest:twilight_scepter"
-    },
+  "type": "twilightforest:scepter_repair",
+  "repair_ingredients": [
     {
       "tag": "c:ender_pearls"
     }
   ],
-  "result": {
-    "count": 1,
-    "id": "twilightforest:twilight_scepter"
-  }
+  "scepter": "twilightforest:twilight_scepter"
 }

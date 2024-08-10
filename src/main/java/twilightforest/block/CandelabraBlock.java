@@ -366,6 +366,11 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 	}
 
 	@Override
+	public boolean canConnectRedstone(BlockState state, BlockGetter level, BlockPos pos, @Nullable Direction direction) {
+		return state.getValue(LIGHTING) == Lighting.DIM && state.getValue(ON_WALL) && state.getValue(FACING).getOpposite() == direction;
+	}
+
+	@Override
 	public int getSignal(BlockState state, BlockGetter getter, BlockPos pos, Direction direction) {
 		if (state.getValue(LIGHTING) == Lighting.DIM) {
 			if (state.getValue(ON_WALL)) {
