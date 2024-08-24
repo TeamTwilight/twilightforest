@@ -18,6 +18,8 @@ public class TFRemapper {
 
 		remapEntryFromRegistries("yeti_trophy", "alpha_yeti_trophy", blockReg, itemReg);
 		remapEntryFromRegistries("yeti_wall_trophy", "alpha_yeti_wall_trophy", blockReg, itemReg);
+		remapEntryFromRegistries("quest_ram_trophy", "questing_ram_trophy", blockReg, itemReg);
+		remapEntryFromRegistries("quest_ram_wall_trophy", "questing_ram_wall_trophy", blockReg, itemReg);
 		remapEntryFromRegistries("boss_spawner_naga", "naga_boss_spawner", blockReg, itemReg);
 		remapEntryFromRegistries("boss_spawner_lich", "lich_boss_spawner", blockReg, itemReg);
 		remapEntryFromRegistries("boss_spawner_minoshroom", "minoshroom_boss_spawner", blockReg, itemReg);
@@ -159,6 +161,7 @@ public class TFRemapper {
 		remapEntry(itemReg, "peacock_fan", "peacock_feather_fan");
 		remapEntry(itemReg, "alpha_fur", "alpha_yeti_fur");
 		//remapEntry(itemReg, "questing_ram_banner_pattern", "quest_ram_banner_pattern");
+		remapEntry(itemReg, "quest_ram_banner_pattern", "questing_ram_banner_pattern");
 
 		remapEntry(itemReg, "bunny_spawn_egg", "dwarf_rabbit_spawn_egg");
 		remapEntry(itemReg, "goblin_knight_lower_spawn_egg", "lower_goblin_knight_spawn_egg");
@@ -180,6 +183,7 @@ public class TFRemapper {
 		remapEntry(entityReg, "goblin_knight_upper", "upper_goblin_knight");
 		remapEntry(entityReg, "goblin_knight_lower", "lower_goblin_knight");
 		remapEntry(entityReg, "yeti_alpha", "alpha_yeti");
+		remapEntry(entityReg, "quest_ram", "questing_ram");
 	}
 
 	private static void remapEntry(DeferredRegister<?> registry, String oldId, String newId) {
