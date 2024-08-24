@@ -8,21 +8,21 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import twilightforest.TwilightForestMod;
-import twilightforest.entity.passive.QuestRam;
+import twilightforest.entity.passive.QuestingRam;
 
-public enum TOPQuestRamWoolProvider implements IProbeInfoEntityProvider {
+public enum TOPQuestingRamWoolProvider implements IProbeInfoEntityProvider {
 
 	INSTANCE;
 
 	@Override
 	public String getID() {
-		return TwilightForestMod.prefix("quest_ram_wool").toString();
+		return TwilightForestMod.prefix("questing_ram_wool").toString();
 	}
 
 	@Override
 	public void addProbeEntityInfo(ProbeMode probeMode, IProbeInfo iProbeInfo, Player player, Level level, Entity entity, IProbeHitEntityData iProbeHitEntityData) {
-		if (entity instanceof QuestRam ram) {
-			iProbeInfo.element(new QuestRamWoolElement(ram.getColorFlags()));
+		if (entity instanceof QuestingRam ram) {
+			iProbeInfo.element(new QuestingRamWoolElement(ram.getColorFlags()));
 		}
 	}
 }

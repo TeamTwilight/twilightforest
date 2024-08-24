@@ -8,20 +8,20 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.gameevent.GameEvent;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.entity.passive.QuestRam;
+import twilightforest.entity.passive.QuestingRam;
 
 import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.List;
 
-public class QuestRamEatWoolGoal extends Goal {
-	private final QuestRam ram;
+public class QuestingRamEatWoolGoal extends Goal {
+	private final QuestingRam ram;
 	private final PathNavigation navigation;
 	@Nullable
 	private ItemEntity targetItem = null;
 
 	@SuppressWarnings("this-escape")
-	public QuestRamEatWoolGoal(QuestRam ram) {
+	public QuestingRamEatWoolGoal(QuestingRam ram) {
 		this.ram = ram;
 		this.navigation = ram.getNavigation();
 		this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));

@@ -194,10 +194,10 @@ public class SoundGenerator extends TFSoundProvider {
 		this.generateNewSoundWithSubtitle(TFSounds.PINCH_BEETLE_HURT, "mob/pinch_beetle/hurt", 3, "Pinch Beetle hurts");
 		this.makeStepSound(TFSounds.PINCH_BEETLE_STEP, SoundEvents.SPIDER_STEP);
 
-		this.generateExistingSoundWithSubtitle(TFSounds.QUEST_RAM_AMBIENT, SoundEvents.SHEEP_AMBIENT, "Questing Ram bleats");
-		this.generateExistingSoundWithSubtitle(TFSounds.QUEST_RAM_DEATH, SoundEvents.SHEEP_DEATH, "Questing Ram dies");
-		this.generateExistingSoundWithSubtitle(TFSounds.QUEST_RAM_HURT, SoundEvents.SHEEP_HURT, "Questing Ram hurts");
-		this.makeStepSound(TFSounds.QUEST_RAM_STEP, SoundEvents.SHEEP_STEP);
+		this.generateExistingSoundWithSubtitle(TFSounds.QUESTING_RAM_AMBIENT, SoundEvents.SHEEP_AMBIENT, "Questing Ram bleats");
+		this.generateExistingSoundWithSubtitle(TFSounds.QUESTING_RAM_DEATH, SoundEvents.SHEEP_DEATH, "Questing Ram dies");
+		this.generateExistingSoundWithSubtitle(TFSounds.QUESTING_RAM_HURT, SoundEvents.SHEEP_HURT, "Questing Ram hurts");
+		this.makeStepSound(TFSounds.QUESTING_RAM_STEP, SoundEvents.SHEEP_STEP);
 
 		this.generateNewSoundWithSubtitle(TFSounds.RAVEN_CAW, "mob/raven/caw", 2, "Raven caws");
 		this.generateNewSoundWithSubtitle(TFSounds.RAVEN_SQUAWK, "mob/raven/squawk", 2, "Raven squawks in pain");

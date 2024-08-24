@@ -36,8 +36,8 @@ public class SimpleAdvancementTrigger extends SimpleCriterionTrigger<SimpleAdvan
 			return TFAdvancements.CONSUME_HYDRA_CHOP.get().createCriterion(new TriggerInstance(Optional.empty()));
 		}
 
-		public static Criterion<SimpleAdvancementTrigger.TriggerInstance> completeQuestRam() {
-			return TFAdvancements.QUEST_RAM_COMPLETED.get().createCriterion(new TriggerInstance(Optional.empty()));
+		public static Criterion<SimpleAdvancementTrigger.TriggerInstance> completeQuestingRam() {
+			return TFAdvancements.QUESTING_RAM_COMPLETED.get().createCriterion(new TriggerInstance(Optional.empty()));
 		}
 
 		public static Criterion<SimpleAdvancementTrigger.TriggerInstance> activateGhastTrap() {

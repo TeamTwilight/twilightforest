@@ -61,6 +61,7 @@ import twilightforest.client.renderer.block.*;
 import twilightforest.client.renderer.map.ConqueredMapIconRenderer;
 import twilightforest.client.renderer.map.MagicMapPlayerIconRenderer;
 import twilightforest.components.item.PotionFlaskComponent;
+import twilightforest.entity.passive.QuestingRam;
 import twilightforest.init.*;
 import twilightforest.item.*;
 import twilightforest.util.woods.TFWoodTypes;
@@ -324,7 +325,7 @@ public class RegistrationEvents {
 		event.registerEntityRenderer(TFEntities.SQUIRREL.get(), m -> new TFGenericMobRenderer<>(m, new SquirrelModel(m.bakeLayer(TFModelLayers.SQUIRREL)), 0.3F, "squirrel2.png"));
 		event.registerEntityRenderer(TFEntities.DWARF_RABBIT.get(), m -> new BunnyRenderer(m, new BunnyModel(m.bakeLayer(TFModelLayers.BUNNY)), 0.3F));
 		event.registerEntityRenderer(TFEntities.RAVEN.get(), m -> new BirdRenderer<>(m, new RavenModel(m.bakeLayer(TFModelLayers.RAVEN)), 0.3F, "raven.png"));
-		event.registerEntityRenderer(TFEntities.QUEST_RAM.get(), m -> new QuestRamRenderer<>(m, new QuestRamModel<>(m.bakeLayer(TFModelLayers.QUEST_RAM))));
+		event.registerEntityRenderer(TFEntities.QUESTING_RAM.get(), m -> new QuestingRamRenderer<>(m, new QuestingRamModel<>(m.bakeLayer(TFModelLayers.QUESTING_RAM))));
 		event.registerEntityRenderer(TFEntities.KOBOLD.get(), m -> new TFBipedRenderer<>(m, new KoboldModel(m.bakeLayer(TFModelLayers.KOBOLD)), 0.4F, "kobold.png"));
 		//event.registerEntityRenderer(TFEntities.BOGGARD.get(), m -> new RenderTFBiped<>(m, new BipedModel<>(0), 0.625F, "kobold.png"));
 		event.registerEntityRenderer(TFEntities.MOSQUITO_SWARM.get(), MosquitoSwarmRenderer::new);
@@ -426,7 +427,7 @@ public class RegistrationEvents {
 		event.registerLayerDefinition(TFModelLayers.LICH_TROPHY, LichModel::create);
 		event.registerLayerDefinition(TFModelLayers.MINOSHROOM_TROPHY, MinoshroomModel::checkForPack);
 		event.registerLayerDefinition(TFModelLayers.NAGA_TROPHY, NagaModel::checkForPack);
-		event.registerLayerDefinition(TFModelLayers.QUEST_RAM_TROPHY, QuestRamModel::checkForPackTrophyEdition);
+		event.registerLayerDefinition(TFModelLayers.QUESTING_RAM_TROPHY, QuestingRamModel::checkForPackTrophyEdition);
 		event.registerLayerDefinition(TFModelLayers.SNOW_QUEEN_TROPHY, SnowQueenModel::checkForPack);
 		event.registerLayerDefinition(TFModelLayers.UR_GHAST_TROPHY, UrGhastModel::create);
 
@@ -475,7 +476,7 @@ public class RegistrationEvents {
 		event.registerLayerDefinition(TFModelLayers.PENGUIN, PenguinModel::create);
 		event.registerLayerDefinition(TFModelLayers.PINCH_BEETLE, PinchBeetleModel::checkForPack);
 		event.registerLayerDefinition(TFModelLayers.PROTECTION_BOX, () -> LayerDefinition.create(ProtectionBoxModel.createMesh(), 16, 16));
-		event.registerLayerDefinition(TFModelLayers.QUEST_RAM, QuestRamModel::checkForPack);
+		event.registerLayerDefinition(TFModelLayers.QUESTING_RAM, QuestingRamModel::checkForPack);
 		event.registerLayerDefinition(TFModelLayers.RAVEN, RavenModel::checkForPack);
 		event.registerLayerDefinition(TFModelLayers.REDCAP, RedcapModel::checkForPack);
 		event.registerLayerDefinition(TFModelLayers.REDCAP_ARMOR_INNER, () -> LayerDefinition.create(HumanoidModel.createMesh(new CubeDeformation(0.25F), 0.7F), 64, 32));
@@ -592,7 +593,7 @@ public class RegistrationEvents {
 			TFItems.CICADA_JAR.get(), TFItems.FIREFLY_JAR.get(), TFItems.MASON_JAR.get(), TFItems.KNIGHTMETAL_SHIELD.get(),
 			TFBlocks.TWILIGHT_OAK_CHEST.asItem(), TFBlocks.CANOPY_CHEST.asItem(), TFBlocks.MANGROVE_CHEST.asItem(), TFBlocks.DARK_CHEST.asItem(), TFBlocks.TIME_CHEST.asItem(), TFBlocks.TRANSFORMATION_CHEST.asItem(), TFBlocks.MINING_CHEST.asItem(), TFBlocks.SORTING_CHEST.asItem(),
 			TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST.asItem(), TFBlocks.CANOPY_TRAPPED_CHEST.asItem(), TFBlocks.MANGROVE_TRAPPED_CHEST.asItem(), TFBlocks.DARK_TRAPPED_CHEST.asItem(), TFBlocks.TIME_TRAPPED_CHEST.asItem(), TFBlocks.TRANSFORMATION_TRAPPED_CHEST.asItem(), TFBlocks.MINING_TRAPPED_CHEST.asItem(), TFBlocks.SORTING_TRAPPED_CHEST.asItem(),
-			TFItems.NAGA_TROPHY.get(), TFItems.LICH_TROPHY.get(), TFItems.MINOSHROOM_TROPHY.get(), TFItems.HYDRA_TROPHY.get(), TFItems.KNIGHT_PHANTOM_TROPHY.get(), TFItems.UR_GHAST_TROPHY.get(), TFItems.ALPHA_YETI_TROPHY.get(), TFItems.SNOW_QUEEN_TROPHY.get(), TFItems.QUEST_RAM_TROPHY.get(),
+			TFItems.NAGA_TROPHY.get(), TFItems.LICH_TROPHY.get(), TFItems.MINOSHROOM_TROPHY.get(), TFItems.HYDRA_TROPHY.get(), TFItems.KNIGHT_PHANTOM_TROPHY.get(), TFItems.UR_GHAST_TROPHY.get(), TFItems.ALPHA_YETI_TROPHY.get(), TFItems.SNOW_QUEEN_TROPHY.get(), TFItems.QUESTING_RAM_TROPHY.get(),
 			TFItems.CREEPER_SKULL_CANDLE.get(), TFItems.PIGLIN_SKULL_CANDLE.get(), TFItems.PLAYER_SKULL_CANDLE.get(), TFItems.SKELETON_SKULL_CANDLE.get(), TFItems.WITHER_SKELETON_SKULL_CANDLE.get(), TFItems.ZOMBIE_SKULL_CANDLE.get());
 
 		event.registerItem(ArcticArmorItem.ArmorRender.INSTANCE, TFItems.ARCTIC_HELMET.get(), TFItems.ARCTIC_CHESTPLATE.get(), TFItems.ARCTIC_LEGGINGS.get(), TFItems.ARCTIC_BOOTS.get());

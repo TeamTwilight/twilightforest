@@ -41,7 +41,7 @@ public class TrophyRenderer implements BlockEntityRenderer<TrophyBlockEntity> {
 		trophyList.put(BossVariant.UR_GHAST, new UrGhastModel(set.bakeLayer(TFModelLayers.UR_GHAST_TROPHY)));
 		trophyList.put(BossVariant.ALPHA_YETI, new AlphaYetiModel(set.bakeLayer(TFModelLayers.ALPHA_YETI_TROPHY)));
 		trophyList.put(BossVariant.SNOW_QUEEN, new SnowQueenModel(set.bakeLayer(TFModelLayers.SNOW_QUEEN_TROPHY)));
-		trophyList.put(BossVariant.QUEST_RAM, new QuestRamModel<>(set.bakeLayer(TFModelLayers.QUEST_RAM_TROPHY)));
+		trophyList.put(BossVariant.QUESTING_RAM, new QuestingRamModel<>(set.bakeLayer(TFModelLayers.QUESTING_RAM_TROPHY)));
 		return trophyList.build();
 	}
 

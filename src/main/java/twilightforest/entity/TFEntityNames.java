@@ -15,7 +15,7 @@ public class TFEntityNames {
 	public static final ResourceLocation DWARF_RABBIT = prefix("dwarf_rabbit");
 	public static final ResourceLocation RAVEN = prefix("raven");
 
-	public static final ResourceLocation QUEST_RAM = prefix("quest_ram");
+	public static final ResourceLocation QUESTING_RAM = prefix("questing_ram");
 
 	// Common Enemies
 	public static final ResourceLocation SKELETON_DRUID = prefix("skeleton_druid");

@@ -13,7 +13,7 @@ public class TFAdvancements {
 
 	public static final DeferredHolder<CriterionTrigger<?>, SimpleAdvancementTrigger> MADE_TF_PORTAL = TRIGGERS.register("make_tf_portal", SimpleAdvancementTrigger::new);
 	public static final DeferredHolder<CriterionTrigger<?>, SimpleAdvancementTrigger> CONSUME_HYDRA_CHOP = TRIGGERS.register("consume_hydra_chop_on_low_hunger", SimpleAdvancementTrigger::new);
-	public static final DeferredHolder<CriterionTrigger<?>, SimpleAdvancementTrigger> QUEST_RAM_COMPLETED = TRIGGERS.register("complete_quest_ram", SimpleAdvancementTrigger::new);
+	public static final DeferredHolder<CriterionTrigger<?>, SimpleAdvancementTrigger> QUESTING_RAM_COMPLETED = TRIGGERS.register("complete_questing_ram", SimpleAdvancementTrigger::new);
 	public static final DeferredHolder<CriterionTrigger<?>, SimpleAdvancementTrigger> PLACED_TROPHY_ON_PEDESTAL = TRIGGERS.register("placed_on_trophy_pedestal", SimpleAdvancementTrigger::new);
 	public static final DeferredHolder<CriterionTrigger<?>, SimpleAdvancementTrigger> ACTIVATED_GHAST_TRAP = TRIGGERS.register("activate_ghast_trap", SimpleAdvancementTrigger::new);
 	public static final DeferredHolder<CriterionTrigger<?>, StructureClearedTrigger> STRUCTURE_CLEARED = TRIGGERS.register("structure_cleared", StructureClearedTrigger::new);

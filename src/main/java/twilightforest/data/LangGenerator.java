@@ -99,7 +99,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addAdvancement("hill1", "The Boots Are Mine!", "Defeat a %s in a Small Hollow Hill");
 		this.addAdvancement("hill2", "What Was That Noise?", "Defeat a %s in a Medium Hollow Hill");
 		this.addAdvancement("hill3", "I See Right Through You", "Defeat a %s in a Large Hollow Hill");
-		this.addAdvancement("quest_ram", "Consummate Baaahs", "Give the %s what it is missing");
+		this.addAdvancement("questing_ram", "Consummate Baaahs", "Give the %s what it is missing");
 		this.addAdvancement("magic_map_focus", "With Fire It Writes", "Craft the %s with a %s, %s, and %s");
 		this.addAdvancement("magic_map", "I Can See Forever", "Craft the %s");
 		this.addAdvancement("maze_map", "And Now, to Find the Exit", "Craft the %s after obtaining the focus from the labyrinth");
@@ -430,7 +430,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addBlock(TFBlocks.UR_GHAST_TROPHY, "Ur-Ghast Trophy");
 		this.addBlock(TFBlocks.ALPHA_YETI_TROPHY, "Alpha Yeti Trophy");
 		this.addBlock(TFBlocks.SNOW_QUEEN_TROPHY, "Snow Queen Trophy");
-		this.addBlock(TFBlocks.QUEST_RAM_TROPHY, "Questing Ram Trophy");
+		this.addBlock(TFBlocks.QUESTING_RAM_TROPHY, "Questing Ram Trophy");
 
 		this.addBlock(TFBlocks.NAGA_BOSS_SPAWNER, "Naga Boss Spawner");
 		this.addBlock(TFBlocks.LICH_BOSS_SPAWNER, "Lich Boss Spawner");
@@ -450,7 +450,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addBannerPattern("ur_ghast", "Carminite Border");
 		this.addBannerPattern("alpha_yeti", "Alpha Yeti Face");
 		this.addBannerPattern("snow_queen", "Snowflake");
-		this.addBannerPattern("quest_ram", "Questing Ram Swirls");
+		this.addBannerPattern("questing_ram", "Questing Ram Swirls");
 
 		this.addBlock(TFBlocks.ZOMBIE_SKULL_CANDLE, "Zombie Skull Candle");
 		this.addBlock(TFBlocks.ZOMBIE_WALL_SKULL_CANDLE, "Zombie Wall Skull Candle");
@@ -671,7 +671,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addEntityAndEgg(TFEntities.NAGA, "Naga");
 		this.addEntityAndEgg(TFEntities.PENGUIN, "Penguin");
 		this.addEntityAndEgg(TFEntities.PINCH_BEETLE, "Pinch Beetle");
-		this.addEntityAndEgg(TFEntities.QUEST_RAM, "Questing Ram");
+		this.addEntityAndEgg(TFEntities.QUESTING_RAM, "Questing Ram");
 		this.addEntityAndEgg(TFEntities.RAVEN, "Raven");
 		this.addEntityAndEgg(TFEntities.REDCAP, "Redcap");
 		this.addEntityAndEgg(TFEntities.REDCAP_SAPPER, "Redcap Sapper");
@@ -798,7 +798,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addStat("trophy_pedestals_activated", "Trophy Pedestals Activated");
 		this.addStat("uncrafting_table_interactions", "Interactions with Uncrafting Table");
 
-		this.add("config.jade.plugin_twilightforest.quest_ram_wool", "Questing Ram Wool");
+		this.add("config.jade.plugin_twilightforest.questing_ram_wool", "Questing Ram Wool");
 		this.add("config.jade.plugin_twilightforest.chiseled_bookshelf_spawner", "Chiseled Canopy Bookshelf Spawns");
 
 		this.add("twilightforest.book.author", "a forgotten explorer");
@@ -945,7 +945,7 @@ public class LangGenerator extends TFLangProvider {
 		this.createTip("ore_magnet", "The Ore Magnet can pull ore veins up to the surface.");
 		this.createTip("peacock_feather_fan", "The Peacock Feather Fan can be used to extinguish Candles.");
 		this.createTip("phantom_armor", "Phantom Armor is automatically kept on death.");
-		this.createTip("quest_ram", "The Questing Ram will reward anyone who gives it what it's missing.");
+		this.createTip("questing_ram", "The Questing Ram will reward anyone who gives it what it's missing.");
 		this.createTip("red_thread", "Red Thread can be seen through walls.");
 		this.createTip("redcap", "Redcaps can place and light TNT.");
 		this.createTip("skull_candle", "Candles can be placed on top of mob heads to create a fancy light source.");

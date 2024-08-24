@@ -11,15 +11,15 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
-import twilightforest.client.model.entity.QuestRamModel;
-import twilightforest.entity.passive.QuestRam;
+import twilightforest.client.model.entity.QuestingRamModel;
+import twilightforest.entity.passive.QuestingRam;
 
-public class QuestRamRenderer<T extends QuestRam, M extends QuestRamModel<T>> extends MobRenderer<T, M> {
+public class QuestingRamRenderer<T extends QuestingRam, M extends QuestingRamModel<T>> extends MobRenderer<T, M> {
 
-	public static final ResourceLocation TEXTURE = TwilightForestMod.getModelTexture("questram.png");
-	public static final ResourceLocation LINE_TEXTURE = TwilightForestMod.getModelTexture("questram_lines.png");
+	public static final ResourceLocation TEXTURE = TwilightForestMod.getModelTexture("questingram.png");
+	public static final ResourceLocation LINE_TEXTURE = TwilightForestMod.getModelTexture("questingram_lines.png");
 
-	public QuestRamRenderer(EntityRendererProvider.Context context, M model) {
+	public QuestingRamRenderer(EntityRendererProvider.Context context, M model) {
 		super(context, model, 1.0F);
 		this.addLayer(new GlowingLinesLayer<>(this));
 	}
@@ -29,7 +29,7 @@ public class QuestRamRenderer<T extends QuestRam, M extends QuestRamModel<T>> ex
 		return TEXTURE;
 	}
 
-	public static class GlowingLinesLayer<T extends QuestRam, M extends QuestRamModel<T>> extends RenderLayer<T, M> {
+	public static class GlowingLinesLayer<T extends QuestingRam, M extends QuestingRamModel<T>> extends RenderLayer<T, M> {
 
 		public GlowingLinesLayer(RenderLayerParent<T, M> renderer) {
 			super(renderer);

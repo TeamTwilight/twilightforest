@@ -203,10 +203,10 @@ public final class TFSounds {
 	public static final DeferredHolder<SoundEvent, SoundEvent> PINCH_BEETLE_STEP = createEvent("entity.twilightforest.pinch_beetle.step");
 	public static final DeferredHolder<SoundEvent, SoundEvent> PORTAL_WHOOSH = createEvent("block.twilightforest.portal.whoosh");
 	public static final DeferredHolder<SoundEvent, SoundEvent> POWDER_USE = createEvent("item.twilightforest.transformation_powder.use");
-	public static final DeferredHolder<SoundEvent, SoundEvent> QUEST_RAM_AMBIENT = createEvent("entity.twilightforest.quest_ram.ambient");
-	public static final DeferredHolder<SoundEvent, SoundEvent> QUEST_RAM_DEATH = createEvent("entity.twilightforest.quest_ram.death");
-	public static final DeferredHolder<SoundEvent, SoundEvent> QUEST_RAM_HURT = createEvent("entity.twilightforest.quest_ram.hurt");
-	public static final DeferredHolder<SoundEvent, SoundEvent> QUEST_RAM_STEP = createEvent("entity.twilightforest.quest_ram.step");
+	public static final DeferredHolder<SoundEvent, SoundEvent> QUESTING_RAM_AMBIENT = createEvent("entity.twilightforest.questing_ram.ambient");
+	public static final DeferredHolder<SoundEvent, SoundEvent> QUESTING_RAM_DEATH = createEvent("entity.twilightforest.questing_ram.death");
+	public static final DeferredHolder<SoundEvent, SoundEvent> QUESTING_RAM_HURT = createEvent("entity.twilightforest.questing_ram.hurt");
+	public static final DeferredHolder<SoundEvent, SoundEvent> QUESTING_RAM_STEP = createEvent("entity.twilightforest.questing_ram.step");
 	public static final DeferredHolder<SoundEvent, SoundEvent> RAVEN_CAW = createEvent("entity.twilightforest.raven.caw");
 	public static final DeferredHolder<SoundEvent, SoundEvent> RAVEN_SQUAWK = createEvent("entity.twilightforest.raven.squawk");
 	public static final DeferredHolder<SoundEvent, SoundEvent> REACTOR_AMBIENT = createEvent("block.twilightforest.reactor.ambient");

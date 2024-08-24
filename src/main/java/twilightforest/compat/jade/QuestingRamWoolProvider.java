@@ -12,18 +12,18 @@ import snownee.jade.api.ITooltip;
 import snownee.jade.api.config.IPluginConfig;
 import snownee.jade.api.ui.IElementHelper;
 import twilightforest.TwilightForestMod;
-import twilightforest.entity.passive.QuestRam;
+import twilightforest.entity.passive.QuestingRam;
 import twilightforest.util.ColorUtil;
 
 import java.util.Map;
 
-public enum QuestRamWoolProvider implements IEntityComponentProvider {
+public enum QuestingRamWoolProvider implements IEntityComponentProvider {
 
 	INSTANCE;
 
 	@Override
 	public void appendTooltip(ITooltip tooltip, EntityAccessor entityAccessor, IPluginConfig pluginConfig) {
-		if (entityAccessor.getEntity() instanceof QuestRam ram) {
+		if (entityAccessor.getEntity() instanceof QuestingRam ram) {
 			int getRenderedWools = 0;
 			for (Map.Entry<DyeColor, Block> entry : ColorUtil.WOOL_TO_DYE_IN_RAM_ORDER.entrySet()) {
 				if (!ram.isColorPresent(entry.getKey())) {

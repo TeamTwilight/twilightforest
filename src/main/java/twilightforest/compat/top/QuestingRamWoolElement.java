@@ -16,17 +16,17 @@ import twilightforest.util.ColorUtil;
 
 import java.util.Map;
 
-public class QuestRamWoolElement implements IElement {
+public class QuestingRamWoolElement implements IElement {
 
 	public static ResourceLocation ID = TwilightForestMod.prefix("quest_ram_wool");
 
 	private final int colorData;
 
-	public QuestRamWoolElement(int colorData) {
+	public QuestingRamWoolElement(int colorData) {
 		this.colorData = colorData;
 	}
 
-	public QuestRamWoolElement(FriendlyByteBuf buf) {
+	public QuestingRamWoolElement(FriendlyByteBuf buf) {
 		this.colorData = buf.readInt();
 	}
 
@@ -100,7 +100,7 @@ public class QuestRamWoolElement implements IElement {
 
 		@Override
 		public IElement createElement(RegistryFriendlyByteBuf buf) {
-			return new QuestRamWoolElement(buf);
+			return new QuestingRamWoolElement(buf);
 		}
 
 		@Override

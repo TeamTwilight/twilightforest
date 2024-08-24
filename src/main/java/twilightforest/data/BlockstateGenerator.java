@@ -135,7 +135,7 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		simpleBlock(TFBlocks.SNOW_QUEEN_TROPHY.get(), models().getExistingFile(ResourceLocation.withDefaultNamespace("block/skull")));
 		simpleBlock(TFBlocks.KNIGHT_PHANTOM_TROPHY.get(), models().getExistingFile(ResourceLocation.withDefaultNamespace("block/skull")));
 		simpleBlock(TFBlocks.UR_GHAST_TROPHY.get(), models().getExistingFile(ResourceLocation.withDefaultNamespace("block/skull")));
-		simpleBlock(TFBlocks.QUEST_RAM_TROPHY.get(), models().getExistingFile(ResourceLocation.withDefaultNamespace("block/skull")));
+		simpleBlock(TFBlocks.QUESTING_RAM_TROPHY.get(), models().getExistingFile(ResourceLocation.withDefaultNamespace("block/skull")));
 		simpleBlock(TFBlocks.NAGA_WALL_TROPHY.get(), models().getExistingFile(ResourceLocation.withDefaultNamespace("block/skull")));
 		simpleBlock(TFBlocks.LICH_WALL_TROPHY.get(), models().getExistingFile(ResourceLocation.withDefaultNamespace("block/skull")));
 		simpleBlock(TFBlocks.MINOSHROOM_WALL_TROPHY.get(), models().getExistingFile(ResourceLocation.withDefaultNamespace("block/skull")));
@@ -144,7 +144,7 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		simpleBlock(TFBlocks.SNOW_QUEEN_WALL_TROPHY.get(), models().getExistingFile(ResourceLocation.withDefaultNamespace("block/skull")));
 		simpleBlock(TFBlocks.KNIGHT_PHANTOM_WALL_TROPHY.get(), models().getExistingFile(ResourceLocation.withDefaultNamespace("block/skull")));
 		simpleBlock(TFBlocks.UR_GHAST_WALL_TROPHY.get(), models().getExistingFile(ResourceLocation.withDefaultNamespace("block/skull")));
-		simpleBlock(TFBlocks.QUEST_RAM_WALL_TROPHY.get(), models().getExistingFile(ResourceLocation.withDefaultNamespace("block/skull")));
+		simpleBlock(TFBlocks.QUESTING_RAM_WALL_TROPHY.get(), models().getExistingFile(ResourceLocation.withDefaultNamespace("block/skull")));
 
 		simpleBlock(TFBlocks.ZOMBIE_SKULL_CANDLE.get(), models().getExistingFile(ResourceLocation.withDefaultNamespace("block/skull")));
 		simpleBlock(TFBlocks.ZOMBIE_WALL_SKULL_CANDLE.get(), models().getExistingFile(ResourceLocation.withDefaultNamespace("block/skull")));

@@ -41,7 +41,7 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.EnforcedHomePoint;
-import twilightforest.entity.ai.goal.QuestRamEatWoolGoal;
+import twilightforest.entity.ai.goal.QuestingRamEatWoolGoal;
 import twilightforest.init.TFAdvancements;
 import twilightforest.init.TFSounds;
 import twilightforest.init.TFStructures;
@@ -51,15 +51,15 @@ import twilightforest.util.landmarks.LandmarkUtil;
 
 import java.util.Optional;
 
-public class QuestRam extends Animal implements EnforcedHomePoint {
+public class QuestingRam extends Animal implements EnforcedHomePoint {
 
-	private static final EntityDataAccessor<Integer> DATA_COLOR = SynchedEntityData.defineId(QuestRam.class, EntityDataSerializers.INT);
-	private static final EntityDataAccessor<Boolean> DATA_REWARDED = SynchedEntityData.defineId(QuestRam.class, EntityDataSerializers.BOOLEAN);
-	private static final EntityDataAccessor<Optional<GlobalPos>> HOME_POINT = SynchedEntityData.defineId(QuestRam.class, EntityDataSerializers.OPTIONAL_GLOBAL_POS);
+	private static final EntityDataAccessor<Integer> DATA_COLOR = SynchedEntityData.defineId(QuestingRam.class, EntityDataSerializers.INT);
+	private static final EntityDataAccessor<Boolean> DATA_REWARDED = SynchedEntityData.defineId(QuestingRam.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<Optional<GlobalPos>> HOME_POINT = SynchedEntityData.defineId(QuestingRam.class, EntityDataSerializers.OPTIONAL_GLOBAL_POS);
 
 	private int randomTickDivider;
 
-	public QuestRam(EntityType<? extends QuestRam> type, Level level) {
+	public QuestingRam(EntityType<? extends QuestingRam> type, Level level) {
 		super(type, level);
 		this.randomTickDivider = 0;
 	}
@@ -68,7 +68,7 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 	protected void registerGoals() {
 		this.goalSelector.addGoal(0, new FloatGoal(this));
 		this.goalSelector.addGoal(1, new PanicGoal(this, 1.38F));
-		this.goalSelector.addGoal(2, new QuestRamEatWoolGoal(this));
+		this.goalSelector.addGoal(2, new QuestingRamEatWoolGoal(this));
 		this.goalSelector.addGoal(3, new TemptGoal(this, 1.0F, Ingredient.of(ItemTags.WOOL), false));
 		this.addRestrictionGoals(this, this.goalSelector);
 		this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0F));
@@ -127,7 +127,7 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 		rewards.forEach(stack -> this.spawnAtLocation(stack, 1.0F));
 
 		for (ServerPlayer player : this.level().getEntitiesOfClass(ServerPlayer.class, getBoundingBox().inflate(16.0D, 16.0D, 16.0D))) {
-			TFAdvancements.QUEST_RAM_COMPLETED.get().trigger(player);
+			TFAdvancements.QUESTING_RAM_COMPLETED.get().trigger(player);
 		}
 
 		LandmarkUtil.markStructureConquered(this.level(), this, TFStructures.QUEST_GROVE, true);
@@ -260,22 +260,22 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.QUEST_RAM_AMBIENT.get();
+		return TFSounds.QUESTING_RAM_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.QUEST_RAM_HURT.get();
+		return TFSounds.QUESTING_RAM_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.QUEST_RAM_DEATH.get();
+		return TFSounds.QUESTING_RAM_DEATH.get();
 	}
 
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState state) {
-		this.playSound(TFSounds.QUEST_RAM_STEP.get(), 0.15F, 1.0F);
+		this.playSound(TFSounds.QUESTING_RAM_STEP.get(), 0.15F, 1.0F);
 	}
 
 	@Override

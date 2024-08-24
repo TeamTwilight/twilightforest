@@ -22,7 +22,7 @@ public class TFModelLayers {
 	public static final ModelLayerLocation LICH_TROPHY = register("lich_trophy");
 	public static final ModelLayerLocation MINOSHROOM_TROPHY = register("minoshroom_trophy");
 	public static final ModelLayerLocation NAGA_TROPHY = register("naga_trophy");
-	public static final ModelLayerLocation QUEST_RAM_TROPHY = register("quest_ram_trophy");
+	public static final ModelLayerLocation QUESTING_RAM_TROPHY = register("questing_ram_trophy");
 	public static final ModelLayerLocation SNOW_QUEEN_TROPHY = register("snow_queen_trophy");
 	public static final ModelLayerLocation UR_GHAST_TROPHY = register("ur_ghast_trophy");
 
@@ -68,7 +68,7 @@ public class TFModelLayers {
 	public static final ModelLayerLocation NOOP = register("noop");
 	public static final ModelLayerLocation PENGUIN = register("penguin");
 	public static final ModelLayerLocation PINCH_BEETLE = register("pinch_beetle");
-	public static final ModelLayerLocation QUEST_RAM = register("quest_ram");
+	public static final ModelLayerLocation QUESTING_RAM = register("questing_ram");
 	public static final ModelLayerLocation RAVEN = register("raven");
 	public static final ModelLayerLocation REDCAP = register("redcap");
 	public static final ModelLayerLocation REDCAP_ARMOR_OUTER = register("redcap", "outer");

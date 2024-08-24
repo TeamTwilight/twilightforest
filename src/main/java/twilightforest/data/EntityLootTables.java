@@ -47,7 +47,7 @@ public class EntityLootTables extends EntityLootSubProvider {
 		add(TFEntities.HARBINGER_CUBE.get(), emptyLootTable());
 		add(TFEntities.MOSQUITO_SWARM.get(), emptyLootTable());
 		add(TFEntities.PINCH_BEETLE.get(), emptyLootTable());
-		add(TFEntities.QUEST_RAM.get(), emptyLootTable());
+		add(TFEntities.QUESTING_RAM.get(), emptyLootTable());
 		add(TFEntities.ROVING_CUBE.get(), emptyLootTable());
 		add(TFEntities.SQUIRREL.get(), emptyLootTable());
 		add(TFEntities.DWARF_RABBIT.get(), fromEntityLootTable(EntityType.RABBIT));
@@ -570,7 +570,7 @@ public class EntityLootTables extends EntityLootSubProvider {
 					.setRolls(ConstantValue.exactly(1.0F))
 					.add(LootItem.lootTableItem(TFBlocks.SNOW_QUEEN_TROPHY.get().asItem()))));
 
-		add(TFEntities.QUEST_RAM.get(), TFLootTables.QUESTING_RAM_REWARDS,
+		add(TFEntities.QUESTING_RAM.get(), TFLootTables.QUESTING_RAM_REWARDS,
 			LootTable.lootTable()
 				.withPool(LootPool.lootPool()
 					.setRolls(ConstantValue.exactly(1))
@@ -578,11 +578,11 @@ public class EntityLootTables extends EntityLootSubProvider {
 				.withPool(LootPool.lootPool()
 					.setRolls(ConstantValue.exactly(1))
 					.add(LootItem.lootTableItem(Items.BUNDLE).apply(SetContainerContents.setContents(ContainerComponentManipulators.BUNDLE_CONTENTS)
-						.withEntry(LootItem.lootTableItem(TFBlocks.QUEST_RAM_TROPHY.value()))
+						.withEntry(LootItem.lootTableItem(TFBlocks.QUESTING_RAM_TROPHY.value()))
 						.withEntry(NestedLootTable.lootTableReference(TFLootTables.QUESTING_RAM_REWARD_BLOCKS))
 					))));
 
-		add(TFEntities.QUEST_RAM.get(), TFLootTables.QUESTING_RAM_REWARD_BLOCKS, LootTable.lootTable()
+		add(TFEntities.QUESTING_RAM.get(), TFLootTables.QUESTING_RAM_REWARD_BLOCKS, LootTable.lootTable()
 			.withPool(LootPool.lootPool().add(LootItem.lootTableItem(Blocks.COAL_BLOCK)))
 			.withPool(LootPool.lootPool().add(LootItem.lootTableItem(Blocks.IRON_BLOCK)))
 			.withPool(LootPool.lootPool().add(LootItem.lootTableItem(Blocks.COPPER_BLOCK)))

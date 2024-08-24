@@ -7,8 +7,8 @@ import java.util.function.Function;
 public class TopCompat implements Function<ITheOneProbe, Void> {
 	@Override
 	public Void apply(ITheOneProbe api) {
-		api.registerElementFactory(QuestRamWoolElement.Factory.INSTANCE);
-		api.registerEntityProvider(TOPQuestRamWoolProvider.INSTANCE);
+		api.registerElementFactory(QuestingRamWoolElement.Factory.INSTANCE);
+		api.registerEntityProvider(TOPQuestingRamWoolProvider.INSTANCE);
 		api.registerProvider(ChiseledBookshelfSpawnProvider.INSTANCE);
 		return null;
 	}

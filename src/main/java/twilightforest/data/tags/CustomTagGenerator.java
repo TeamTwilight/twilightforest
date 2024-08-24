@@ -80,7 +80,7 @@ public class CustomTagGenerator {
 		public static final TagKey<BannerPattern> UR_GHAST_BANNER_PATTERN = create("pattern_item/ur_ghast");
 		public static final TagKey<BannerPattern> ALPHA_YETI_BANNER_PATTERN = create("pattern_item/alpha_yeti");
 		public static final TagKey<BannerPattern> SNOW_QUEEN_BANNER_PATTERN = create("pattern_item/snow_queen");
-		public static final TagKey<BannerPattern> QUEST_RAM_BANNER_PATTERN = create("pattern_item/quest_ram");
+		public static final TagKey<BannerPattern> QUESTING_RAM_BANNER_PATTERN = create("pattern_item/questing_ram");
 
 		public BannerPatternTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, @Nullable ExistingFileHelper existingFileHelper) {
 			super(output, Registries.BANNER_PATTERN, provider, TwilightForestMod.ID, existingFileHelper);
@@ -96,7 +96,7 @@ public class CustomTagGenerator {
 			this.tag(UR_GHAST_BANNER_PATTERN).add(TFBannerPatterns.UR_GHAST);
 			this.tag(ALPHA_YETI_BANNER_PATTERN).add(TFBannerPatterns.ALPHA_YETI);
 			this.tag(SNOW_QUEEN_BANNER_PATTERN).add(TFBannerPatterns.SNOW_QUEEN);
-			this.tag(QUEST_RAM_BANNER_PATTERN).add(TFBannerPatterns.QUESTING_RAM);
+			this.tag(QUESTING_RAM_BANNER_PATTERN).add(TFBannerPatterns.QUESTING_RAM);
 		}
 
 		private static TagKey<BannerPattern> create(String name) {

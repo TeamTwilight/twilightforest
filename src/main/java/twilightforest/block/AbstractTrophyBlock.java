@@ -135,8 +135,8 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock implements Equ
 					volume = 0.75F;
 					pitch = 0.75F;
 				}
-				case QUEST_RAM -> {
-					sound = TFSounds.QUEST_RAM_AMBIENT.get();
+				case QUESTING_RAM -> {
+					sound = TFSounds.QUESTING_RAM_AMBIENT.get();
 					pitch = 0.7F;
 				}
 				default -> {
@@ -218,7 +218,7 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock implements Equ
 							0, 0, 0);
 					}
 					break;
-				case QUEST_RAM:
+				case QUESTING_RAM:
 					for (int p = 0; p < 10; p++) {
 						particlePacket.queueParticle(ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, rand.nextFloat(), rand.nextFloat(), rand.nextFloat()), false,
 							(double) pos.getX() + 0.5 + (rand.nextDouble() - 0.5),

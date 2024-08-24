@@ -44,8 +44,8 @@ public class QuestGrove extends TwilightTemplateStructurePiece {
 	protected void handleDataMarker(String name, BlockPos pos, WorldGenLevel levelAccessor, RandomSource random, BoundingBox chunkBounds, ChunkGenerator chunkGen) {
 		if (!chunkBounds.isInside(pos)) return;
 
-		if ("quest_ram".equals(name)) {
-			FeaturePlacers.placeEntity(TFEntities.QUEST_RAM.get(), pos, levelAccessor);
+		if ("questing_ram".equals(name)) {
+			FeaturePlacers.placeEntity(TFEntities.QUESTING_RAM.get(), pos, levelAccessor);
 		} else if ("dispenser".equals(name)) {
 			TFLootTables.generateLootContainer(levelAccessor, pos, Blocks.DROPPER.defaultBlockState().setValue(DispenserBlock.FACING, this.placeSettings.getRotation().rotate(Direction.NORTH)), 16 | 4 | 2, random.nextLong(), TFLootTables.QUEST_GROVE);
 		}

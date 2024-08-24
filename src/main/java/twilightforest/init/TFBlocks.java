@@ -258,7 +258,7 @@ public class TFBlocks {
 	public static final DeferredBlock<TrophyBlock> SNOW_QUEEN_TROPHY = BLOCKS.register("snow_queen_trophy", () -> new TrophyBlock(BossVariant.SNOW_QUEEN, 14, BlockBehaviour.Properties.of().instabreak()));
 	public static final DeferredBlock<TrophyBlock> MINOSHROOM_TROPHY = BLOCKS.register("minoshroom_trophy", () -> new TrophyBlock(BossVariant.MINOSHROOM, 7, BlockBehaviour.Properties.of().instabreak()));
 	public static final DeferredBlock<TrophyBlock> ALPHA_YETI_TROPHY = BLOCKS.register("alpha_yeti_trophy", () -> new TrophyBlock(BossVariant.ALPHA_YETI, 9, BlockBehaviour.Properties.of().instabreak()));
-	public static final DeferredBlock<TrophyBlock> QUEST_RAM_TROPHY = BLOCKS.register("quest_ram_trophy", () -> new TrophyBlock(BossVariant.QUEST_RAM, 1, BlockBehaviour.Properties.of().instabreak()));
+	public static final DeferredBlock<TrophyBlock> QUESTING_RAM_TROPHY = BLOCKS.register("questing_ram_trophy", () -> new TrophyBlock(BossVariant.QUESTING_RAM, 1, BlockBehaviour.Properties.of().instabreak()));
 	public static final DeferredBlock<TrophyWallBlock> NAGA_WALL_TROPHY = BLOCKS.register("naga_wall_trophy", () -> new TrophyWallBlock(BossVariant.NAGA, BlockBehaviour.Properties.of().instabreak()));
 	public static final DeferredBlock<TrophyWallBlock> LICH_WALL_TROPHY = BLOCKS.register("lich_wall_trophy", () -> new TrophyWallBlock(BossVariant.LICH, BlockBehaviour.Properties.of().instabreak()));
 	public static final DeferredBlock<TrophyWallBlock> HYDRA_WALL_TROPHY = BLOCKS.register("hydra_wall_trophy", () -> new TrophyWallBlock(BossVariant.HYDRA, BlockBehaviour.Properties.of().instabreak()));
@@ -267,7 +267,7 @@ public class TFBlocks {
 	public static final DeferredBlock<TrophyWallBlock> SNOW_QUEEN_WALL_TROPHY = BLOCKS.register("snow_queen_wall_trophy", () -> new TrophyWallBlock(BossVariant.SNOW_QUEEN, BlockBehaviour.Properties.of().instabreak()));
 	public static final DeferredBlock<TrophyWallBlock> MINOSHROOM_WALL_TROPHY = BLOCKS.register("minoshroom_wall_trophy", () -> new TrophyWallBlock(BossVariant.MINOSHROOM, BlockBehaviour.Properties.of().instabreak()));
 	public static final DeferredBlock<TrophyWallBlock> ALPHA_YETI_WALL_TROPHY = BLOCKS.register("alpha_yeti_wall_trophy", () -> new TrophyWallBlock(BossVariant.ALPHA_YETI, BlockBehaviour.Properties.of().instabreak()));
-	public static final DeferredBlock<TrophyWallBlock> QUEST_RAM_WALL_TROPHY = BLOCKS.register("quest_ram_wall_trophy", () -> new TrophyWallBlock(BossVariant.QUEST_RAM, BlockBehaviour.Properties.of().instabreak()));
+	public static final DeferredBlock<TrophyWallBlock> QUESTING_RAM_WALL_TROPHY = BLOCKS.register("questing_ram_wall_trophy", () -> new TrophyWallBlock(BossVariant.QUESTING_RAM, BlockBehaviour.Properties.of().instabreak()));
 
 	// TODO Enumify all of the dang tree stuff
 

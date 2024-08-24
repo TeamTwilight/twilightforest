@@ -245,8 +245,8 @@ public class BlockLootTables extends BlockLootSubProvider {
 		add(TFBlocks.ALPHA_YETI_WALL_TROPHY.get(), createSingleItemTable(TFBlocks.ALPHA_YETI_TROPHY.get().asItem()));
 		add(TFBlocks.SNOW_QUEEN_TROPHY.get(), createSingleItemTable(TFBlocks.SNOW_QUEEN_TROPHY.get().asItem()));
 		add(TFBlocks.SNOW_QUEEN_WALL_TROPHY.get(), createSingleItemTable(TFBlocks.SNOW_QUEEN_TROPHY.get().asItem()));
-		add(TFBlocks.QUEST_RAM_TROPHY.get(), createSingleItemTable(TFBlocks.QUEST_RAM_TROPHY.get().asItem()));
-		add(TFBlocks.QUEST_RAM_WALL_TROPHY.get(), createSingleItemTable(TFBlocks.QUEST_RAM_TROPHY.get().asItem()));
+		add(TFBlocks.QUESTING_RAM_TROPHY.get(), createSingleItemTable(TFBlocks.QUESTING_RAM_TROPHY.get().asItem()));
+		add(TFBlocks.QUESTING_RAM_WALL_TROPHY.get(), createSingleItemTable(TFBlocks.QUESTING_RAM_TROPHY.get().asItem()));
 
 		add(TFBlocks.ZOMBIE_SKULL_CANDLE.get(), createSingleItemTable(Blocks.ZOMBIE_HEAD));
 		add(TFBlocks.ZOMBIE_WALL_SKULL_CANDLE.get(), createSingleItemTable(Blocks.ZOMBIE_HEAD));

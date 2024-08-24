@@ -64,7 +64,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		bannerPattern(output, "ur_ghast_banner_pattern", TFBlocks.UR_GHAST_TROPHY, TFItems.UR_GHAST_BANNER_PATTERN);
 		bannerPattern(output, "alpha_yeti_banner_pattern", TFBlocks.ALPHA_YETI_TROPHY, TFItems.ALPHA_YETI_BANNER_PATTERN);
 		bannerPattern(output, "snow_queen_banner_pattern", TFBlocks.SNOW_QUEEN_TROPHY, TFItems.SNOW_QUEEN_BANNER_PATTERN);
-		bannerPattern(output, "questing_ram_banner_pattern", TFBlocks.QUEST_RAM_TROPHY, TFItems.QUEST_RAM_BANNER_PATTERN);
+		bannerPattern(output, "questing_ram_banner_pattern", TFBlocks.QUESTING_RAM_TROPHY, TFItems.QUESTING_RAM_BANNER_PATTERN);
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, Blocks.MOSS_BLOCK)
 			.pattern("mmm")

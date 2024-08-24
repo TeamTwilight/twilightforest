@@ -18,12 +18,12 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.item.DyeColor;
 import twilightforest.client.JappaPackReloadListener;
-import twilightforest.client.renderer.entity.QuestRamRenderer;
-import twilightforest.entity.passive.QuestRam;
+import twilightforest.client.renderer.entity.QuestingRamRenderer;
+import twilightforest.entity.passive.QuestingRam;
 
 import java.util.Arrays;
 
-public class QuestRamModel<T extends QuestRam> extends HierarchicalModel<T> implements TrophyBlockModel {
+public class QuestingRamModel<T extends QuestingRam> extends HierarchicalModel<T> implements TrophyBlockModel {
 
 	private final ModelPart root;
 	private final ModelPart head;
@@ -38,7 +38,7 @@ public class QuestRamModel<T extends QuestRam> extends HierarchicalModel<T> impl
 
 	final int[] colorOrder = new int[]{0, 8, 7, 15, 14, 1, 4, 5, 13, 3, 9, 11, 10, 2, 6, 12};
 
-	public QuestRamModel(ModelPart root) {
+	public QuestingRamModel(ModelPart root) {
 		this.root = root;
 		this.head = root.getChild("head");
 		if (root.hasChild("neck")) {
@@ -349,11 +349,11 @@ public class QuestRamModel<T extends QuestRam> extends HierarchicalModel<T> impl
 			stack.translate(0.0F, 0.5F, itemForm ? 0.5F : 0.67F);
 		}
 
-		VertexConsumer consumer = buffer.getBuffer(RenderType.entityCutoutNoCull(QuestRamRenderer.TEXTURE));
+		VertexConsumer consumer = buffer.getBuffer(RenderType.entityCutoutNoCull(QuestingRamRenderer.TEXTURE));
 		this.head.render(stack, consumer, light, overlay, color);
 		stack.pushPose();
 		stack.scale(1.025F, 1.025F, 1.025F);
-		consumer = buffer.getBuffer(RenderType.entityTranslucent(QuestRamRenderer.LINE_TEXTURE));
+		consumer = buffer.getBuffer(RenderType.entityTranslucent(QuestingRamRenderer.LINE_TEXTURE));
 		this.head.render(stack, consumer, 0xF000F0, overlay, color);
 		stack.popPose();
 	}

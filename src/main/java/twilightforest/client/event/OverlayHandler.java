@@ -26,7 +26,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.components.entity.TFPortalAttachment;
 import twilightforest.components.item.OreScannerData;
 import twilightforest.config.TFConfig;
-import twilightforest.entity.passive.QuestRam;
+import twilightforest.entity.passive.QuestingRam;
 import twilightforest.events.HostileMountEvents;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDataAttachments;
@@ -45,7 +45,7 @@ public class OverlayHandler {
 	public static final Map<Long, OreMeterInfoCache> ORE_METER_STAT_CACHE = new HashMap<>();
 
 	protected static void registerOverlays(RegisterGuiLayersEvent event) {
-		event.registerAbove(VanillaGuiLayers.CROSSHAIR, TwilightForestMod.prefix("quest_ram_indicator"), (graphics, partialTicks) -> {
+		event.registerAbove(VanillaGuiLayers.CROSSHAIR, TwilightForestMod.prefix("questing_ram_indicator"), (graphics, partialTicks) -> {
 			Minecraft minecraft = Minecraft.getInstance();
 			LocalPlayer player = minecraft.player;
 			Gui gui = minecraft.gui;
@@ -108,7 +108,7 @@ public class OverlayHandler {
 	}
 
 	private static void renderIndicator(Minecraft minecraft, GuiGraphics graphics, Gui gui, Player player, int screenWidth, int screenHeight) {
-        if (minecraft.options.getCameraType().isFirstPerson() && (minecraft.gameMode.getPlayerMode() != GameType.SPECTATOR || gui.canRenderCrosshairForSpectator(minecraft.hitResult)) && minecraft.crosshairPickEntity instanceof QuestRam ram) {
+        if (minecraft.options.getCameraType().isFirstPerson() && (minecraft.gameMode.getPlayerMode() != GameType.SPECTATOR || gui.canRenderCrosshairForSpectator(minecraft.hitResult)) && minecraft.crosshairPickEntity instanceof QuestingRam ram) {
             ItemStack stack = player.getInventory().getItem(player.getInventory().selected);
             if (!stack.isEmpty() && stack.is(ItemTags.WOOL)) {
 				RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);

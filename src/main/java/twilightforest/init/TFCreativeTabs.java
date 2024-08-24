@@ -280,7 +280,7 @@ public class TFCreativeTabs {
 			output.accept(TFItems.UR_GHAST_TROPHY);
 			output.accept(TFItems.ALPHA_YETI_TROPHY);
 			output.accept(TFItems.SNOW_QUEEN_TROPHY);
-			output.accept(TFItems.QUEST_RAM_TROPHY);
+			output.accept(TFItems.QUESTING_RAM_TROPHY);
 			output.accept(TFBlocks.NAGA_BOSS_SPAWNER);
 			output.accept(TFBlocks.LICH_BOSS_SPAWNER);
 			output.accept(TFBlocks.MINOSHROOM_BOSS_SPAWNER);
@@ -479,7 +479,7 @@ public class TFCreativeTabs {
 			output.accept(TFItems.UR_GHAST_BANNER_PATTERN);
 			output.accept(TFItems.ALPHA_YETI_BANNER_PATTERN);
 			output.accept(TFItems.SNOW_QUEEN_BANNER_PATTERN);
-			output.accept(TFItems.QUEST_RAM_BANNER_PATTERN);
+			output.accept(TFItems.QUESTING_RAM_BANNER_PATTERN);
 			output.accept(TFItems.TWILIGHT_OAK_BOAT);
 			output.accept(TFItems.CANOPY_BOAT);
 			output.accept(TFItems.MANGROVE_BOAT);

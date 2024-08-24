@@ -190,7 +190,7 @@ public class TFItems {
 	public static final DeferredItem<Item> UR_GHAST_TROPHY = ITEMS.register("ur_ghast_trophy", () -> new TrophyItem(TFBlocks.UR_GHAST_TROPHY.get(), TFBlocks.UR_GHAST_WALL_TROPHY.get(), new Item.Properties().rarity(tfRarityEnumExtension.TWILIGHT)));
 	public static final DeferredItem<Item> ALPHA_YETI_TROPHY = ITEMS.register("alpha_yeti_trophy", () -> new TrophyItem(TFBlocks.ALPHA_YETI_TROPHY.get(), TFBlocks.ALPHA_YETI_WALL_TROPHY.get(), new Item.Properties().rarity(tfRarityEnumExtension.TWILIGHT)));
 	public static final DeferredItem<Item> SNOW_QUEEN_TROPHY = ITEMS.register("snow_queen_trophy", () -> new TrophyItem(TFBlocks.SNOW_QUEEN_TROPHY.get(), TFBlocks.SNOW_QUEEN_WALL_TROPHY.get(), new Item.Properties().rarity(tfRarityEnumExtension.TWILIGHT)));
-	public static final DeferredItem<Item> QUEST_RAM_TROPHY = ITEMS.register("quest_ram_trophy", () -> new TrophyItem(TFBlocks.QUEST_RAM_TROPHY.get(), TFBlocks.QUEST_RAM_WALL_TROPHY.get(), new Item.Properties().rarity(tfRarityEnumExtension.TWILIGHT)));
+	public static final DeferredItem<Item> QUESTING_RAM_TROPHY = ITEMS.register("questing_ram_trophy", () -> new TrophyItem(TFBlocks.QUESTING_RAM_TROPHY.get(), TFBlocks.QUESTING_RAM_WALL_TROPHY.get(), new Item.Properties().rarity(tfRarityEnumExtension.TWILIGHT)));
 
 	public static final DeferredItem<HollowLogItem> HOLLOW_TWILIGHT_OAK_LOG = ITEMS.register("hollow_twilight_oak_log", () -> new HollowLogItem(TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_HORIZONTAL, TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_VERTICAL, TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_CLIMBABLE, new Item.Properties()));
 	public static final DeferredItem<HollowLogItem> HOLLOW_CANOPY_LOG = ITEMS.register("hollow_canopy_log", () -> new HollowLogItem(TFBlocks.HOLLOW_CANOPY_LOG_HORIZONTAL, TFBlocks.HOLLOW_CANOPY_LOG_VERTICAL, TFBlocks.HOLLOW_CANOPY_LOG_CLIMBABLE, new Item.Properties()));
@@ -264,6 +264,6 @@ public class TFItems {
 	public static final DeferredItem<Item> UR_GHAST_BANNER_PATTERN = ITEMS.register("ur_ghast_banner_pattern", () -> new BannerPatternItem(CustomTagGenerator.BannerPatternTagGenerator.UR_GHAST_BANNER_PATTERN, new Item.Properties().stacksTo(1).rarity(tfRarityEnumExtension.TWILIGHT)));
 	public static final DeferredItem<Item> ALPHA_YETI_BANNER_PATTERN = ITEMS.register("alpha_yeti_banner_pattern", () -> new BannerPatternItem(CustomTagGenerator.BannerPatternTagGenerator.ALPHA_YETI_BANNER_PATTERN, new Item.Properties().stacksTo(1).rarity(tfRarityEnumExtension.TWILIGHT)));
 	public static final DeferredItem<Item> SNOW_QUEEN_BANNER_PATTERN = ITEMS.register("snow_queen_banner_pattern", () -> new BannerPatternItem(CustomTagGenerator.BannerPatternTagGenerator.SNOW_QUEEN_BANNER_PATTERN, new Item.Properties().stacksTo(1).rarity(tfRarityEnumExtension.TWILIGHT)));
-	public static final DeferredItem<Item> QUEST_RAM_BANNER_PATTERN = ITEMS.register("quest_ram_banner_pattern", () -> new BannerPatternItem(CustomTagGenerator.BannerPatternTagGenerator.QUEST_RAM_BANNER_PATTERN, new Item.Properties().stacksTo(1).rarity(tfRarityEnumExtension.TWILIGHT)));
+	public static final DeferredItem<Item> QUESTING_RAM_BANNER_PATTERN = ITEMS.register("questing_ram_banner_pattern", () -> new BannerPatternItem(CustomTagGenerator.BannerPatternTagGenerator.QUESTING_RAM_BANNER_PATTERN, new Item.Properties().stacksTo(1).rarity(tfRarityEnumExtension.TWILIGHT)));
 
 }

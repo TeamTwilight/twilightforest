@@ -377,7 +377,7 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			.add(TFBlocks.UR_GHAST_TROPHY.get(), TFBlocks.UR_GHAST_WALL_TROPHY.get())
 			.add(TFBlocks.ALPHA_YETI_TROPHY.get(), TFBlocks.ALPHA_YETI_WALL_TROPHY.get())
 			.add(TFBlocks.SNOW_QUEEN_TROPHY.get(), TFBlocks.SNOW_QUEEN_WALL_TROPHY.get())
-			.add(TFBlocks.QUEST_RAM_TROPHY.get(), TFBlocks.QUEST_RAM_WALL_TROPHY.get());
+			.add(TFBlocks.QUESTING_RAM_TROPHY.get(), TFBlocks.QUESTING_RAM_WALL_TROPHY.get());
 
 		this.tag(FIRE_JET_FUEL).add(Blocks.LAVA);
 

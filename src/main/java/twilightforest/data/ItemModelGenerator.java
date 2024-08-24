@@ -454,7 +454,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 			.transform(ItemDisplayContext.HEAD).scale(1.5F).translation(0, 2, 0).rotation(180, 0, 180).end()
 			.transform(itemDisplayContextEnumExtension.JARRED).translation(0, 0, 1).rotation(0, 180, 0).end().end();
 		withExistingParent(TFItems.SNOW_QUEEN_TROPHY.getId().toString(), templateTrophy);
-		withExistingParent(TFItems.QUEST_RAM_TROPHY.getId().toString(), templateTrophy).transforms()
+		withExistingParent(TFItems.QUESTING_RAM_TROPHY.getId().toString(), templateTrophy).transforms()
 			.transform(itemDisplayContextEnumExtension.JARRED).scale(0.85F).rotation(0, 180, 0).end().end();
 
 		withExistingParent(TFItems.CREEPER_SKULL_CANDLE.getId().toString(), prefix("item/template_skull_candle"));
@@ -702,7 +702,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		generated(TFItems.UR_GHAST_BANNER_PATTERN.getId().getPath(), prefix("item/tf_banner_pattern"));
 		generated(TFItems.ALPHA_YETI_BANNER_PATTERN.getId().getPath(), prefix("item/tf_banner_pattern"));
 		generated(TFItems.SNOW_QUEEN_BANNER_PATTERN.getId().getPath(), prefix("item/tf_banner_pattern"));
-		generated(TFItems.QUEST_RAM_BANNER_PATTERN.getId().getPath(), prefix("item/tf_banner_pattern"));
+		generated(TFItems.QUESTING_RAM_BANNER_PATTERN.getId().getPath(), prefix("item/tf_banner_pattern"));
 
 		//these models are used as references in other things, they dont have actual items
 		generated("trophy", prefix("item/trophy"));
