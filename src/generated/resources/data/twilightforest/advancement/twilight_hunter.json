@@ -596,14 +596,14 @@
       },
       "trigger": "minecraft:player_killed_entity"
     },
-    "quest_ram": {
+    "questing_ram": {
       "conditions": {
         "entity": [
           {
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "twilightforest:quest_ram",
+              "type": "twilightforest:questing_ram",
               "location": {
                 "dimension": "twilightforest:twilight_forest"
               }
@@ -982,7 +982,7 @@
       "penguin",
       "pinch_beetle",
       "plateau_boss",
-      "quest_ram",
+      "questing_ram",
       "raven",
       "redcap",
       "redcap_sapper",

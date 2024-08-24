@@ -1751,34 +1751,34 @@
     ],
     "subtitle": "subtitles.block.generic.footsteps"
   },
-  "entity.twilightforest.quest_ram.ambient": {
+  "entity.twilightforest.questing_ram.ambient": {
     "sounds": [
       {
         "type": "event",
         "name": "entity.sheep.ambient"
       }
     ],
-    "subtitle": "subtitles.twilightforest.entity.quest_ram.ambient"
+    "subtitle": "subtitles.twilightforest.entity.questing_ram.ambient"
   },
-  "entity.twilightforest.quest_ram.death": {
+  "entity.twilightforest.questing_ram.death": {
     "sounds": [
       {
         "type": "event",
         "name": "entity.sheep.death"
       }
     ],
-    "subtitle": "subtitles.twilightforest.entity.quest_ram.death"
+    "subtitle": "subtitles.twilightforest.entity.questing_ram.death"
   },
-  "entity.twilightforest.quest_ram.hurt": {
+  "entity.twilightforest.questing_ram.hurt": {
     "sounds": [
       {
         "type": "event",
         "name": "entity.sheep.hurt"
       }
     ],
-    "subtitle": "subtitles.twilightforest.entity.quest_ram.hurt"
+    "subtitle": "subtitles.twilightforest.entity.questing_ram.hurt"
   },
-  "entity.twilightforest.quest_ram.step": {
+  "entity.twilightforest.questing_ram.step": {
     "sounds": [
       {
         "type": "event",

@@ -22,7 +22,7 @@
               "entries": [
                 {
                   "type": "minecraft:item",
-                  "name": "twilightforest:quest_ram_trophy"
+                  "name": "twilightforest:questing_ram_trophy"
                 },
                 {
                   "type": "minecraft:loot_table",

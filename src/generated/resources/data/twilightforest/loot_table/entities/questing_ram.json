@@ -1,0 +1,4 @@
+{
+  "type": "minecraft:entity",
+  "random_sequence": "twilightforest:entities/questing_ram"
+}
