@@ -176,6 +176,12 @@ public class DataMapGenerator extends DataMapProvider {
 		crumble.add(Blocks.OXIDIZED_CUT_COPPER.builtInRegistryHolder(), new CrumbledBlock(Blocks.WEATHERED_CUT_COPPER, 0.2F), false);
 		crumble.add(Blocks.WEATHERED_CUT_COPPER.builtInRegistryHolder(), new CrumbledBlock(Blocks.EXPOSED_CUT_COPPER, 0.2F), false);
 		crumble.add(Blocks.EXPOSED_CUT_COPPER.builtInRegistryHolder(), new CrumbledBlock(Blocks.CUT_COPPER, 0.2F), false);
+		crumble.add(Blocks.OXIDIZED_CUT_COPPER_STAIRS.builtInRegistryHolder(), new CrumbledBlock(Blocks.WEATHERED_CUT_COPPER_STAIRS, 0.2F), false);
+		crumble.add(Blocks.WEATHERED_CUT_COPPER_STAIRS.builtInRegistryHolder(), new CrumbledBlock(Blocks.EXPOSED_CUT_COPPER_STAIRS, 0.2F), false);
+		crumble.add(Blocks.EXPOSED_CUT_COPPER_STAIRS.builtInRegistryHolder(), new CrumbledBlock(Blocks.CUT_COPPER_STAIRS, 0.2F), false);
+		crumble.add(Blocks.OXIDIZED_CUT_COPPER_SLAB.builtInRegistryHolder(), new CrumbledBlock(Blocks.WEATHERED_CUT_COPPER_SLAB, 0.2F), false);
+		crumble.add(Blocks.WEATHERED_CUT_COPPER_SLAB.builtInRegistryHolder(), new CrumbledBlock(Blocks.EXPOSED_CUT_COPPER_SLAB, 0.2F), false);
+		crumble.add(Blocks.EXPOSED_CUT_COPPER_SLAB.builtInRegistryHolder(), new CrumbledBlock(Blocks.CUT_COPPER_SLAB, 0.2F), false);
 		crumble.add(Blocks.OXIDIZED_CHISELED_COPPER.builtInRegistryHolder(), new CrumbledBlock(Blocks.WEATHERED_CHISELED_COPPER, 0.2F), false);
 		crumble.add(Blocks.WEATHERED_CHISELED_COPPER.builtInRegistryHolder(), new CrumbledBlock(Blocks.EXPOSED_CHISELED_COPPER, 0.2F), false);
 		crumble.add(Blocks.EXPOSED_CHISELED_COPPER.builtInRegistryHolder(), new CrumbledBlock(Blocks.CHISELED_COPPER, 0.2F), false);
