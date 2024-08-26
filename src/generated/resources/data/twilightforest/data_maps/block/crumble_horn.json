@@ -48,9 +48,17 @@
       "crumble_chance": 0.2,
       "crumble_to": "minecraft:copper_bulb"
     },
+    "minecraft:exposed_copper_door": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:copper_door"
+    },
     "minecraft:exposed_copper_grate": {
       "crumble_chance": 0.2,
       "crumble_to": "minecraft:copper_grate"
+    },
+    "minecraft:exposed_copper_trapdoor": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:copper_trapdoor"
     },
     "minecraft:exposed_cut_copper": {
       "crumble_chance": 0.2,
@@ -92,9 +100,17 @@
       "crumble_chance": 0.2,
       "crumble_to": "minecraft:weathered_copper_bulb"
     },
+    "minecraft:oxidized_copper_door": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:weathered_copper_door"
+    },
     "minecraft:oxidized_copper_grate": {
       "crumble_chance": 0.2,
       "crumble_to": "minecraft:weathered_copper_grate"
+    },
+    "minecraft:oxidized_copper_trapdoor": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:weathered_copper_trapdoor"
     },
     "minecraft:oxidized_cut_copper": {
       "crumble_chance": 0.2,
@@ -148,9 +164,17 @@
       "crumble_chance": 0.2,
       "crumble_to": "minecraft:exposed_copper_bulb"
     },
+    "minecraft:weathered_copper_door": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:exposed_copper_door"
+    },
     "minecraft:weathered_copper_grate": {
       "crumble_chance": 0.2,
       "crumble_to": "minecraft:exposed_copper_grate"
+    },
+    "minecraft:weathered_copper_trapdoor": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:exposed_copper_trapdoor"
     },
     "minecraft:weathered_cut_copper": {
       "crumble_chance": 0.2,
