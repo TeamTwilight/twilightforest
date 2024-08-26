@@ -64,6 +64,14 @@
       "crumble_chance": 0.2,
       "crumble_to": "minecraft:cut_copper"
     },
+    "minecraft:exposed_cut_copper_slab": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:cut_copper_slab"
+    },
+    "minecraft:exposed_cut_copper_stairs": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:cut_copper_stairs"
+    },
     "minecraft:granite": {
       "crumble_chance": 0.05,
       "crumble_to": "minecraft:air"
@@ -115,6 +123,14 @@
     "minecraft:oxidized_cut_copper": {
       "crumble_chance": 0.2,
       "crumble_to": "minecraft:weathered_cut_copper"
+    },
+    "minecraft:oxidized_cut_copper_slab": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:weathered_cut_copper_slab"
+    },
+    "minecraft:oxidized_cut_copper_stairs": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:weathered_cut_copper_stairs"
     },
     "minecraft:podzol": {
       "crumble_chance": 0.2,
@@ -179,6 +195,14 @@
     "minecraft:weathered_cut_copper": {
       "crumble_chance": 0.2,
       "crumble_to": "minecraft:exposed_cut_copper"
+    },
+    "minecraft:weathered_cut_copper_slab": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:exposed_cut_copper_slab"
+    },
+    "minecraft:weathered_cut_copper_stairs": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:exposed_cut_copper_stairs"
     },
     "twilightforest:castle_brick": {
       "crumble_chance": 0.2,
