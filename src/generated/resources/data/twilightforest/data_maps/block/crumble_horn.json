@@ -36,9 +36,21 @@
       "crumble_chance": 0.05,
       "crumble_to": "minecraft:air"
     },
+    "minecraft:exposed_chiseled_copper": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:chiseled_copper"
+    },
     "minecraft:exposed_copper": {
       "crumble_chance": 0.2,
       "crumble_to": "minecraft:copper_block"
+    },
+    "minecraft:exposed_copper_bulb": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:copper_bulb"
+    },
+    "minecraft:exposed_copper_grate": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:copper_grate"
     },
     "minecraft:exposed_cut_copper": {
       "crumble_chance": 0.2,
@@ -68,9 +80,21 @@
       "crumble_chance": 0.2,
       "crumble_to": "minecraft:cracked_nether_bricks"
     },
+    "minecraft:oxidized_chiseled_copper": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:weathered_chiseled_copper"
+    },
     "minecraft:oxidized_copper": {
       "crumble_chance": 0.2,
       "crumble_to": "minecraft:weathered_copper"
+    },
+    "minecraft:oxidized_copper_bulb": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:weathered_copper_bulb"
+    },
+    "minecraft:oxidized_copper_grate": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:weathered_copper_grate"
     },
     "minecraft:oxidized_cut_copper": {
       "crumble_chance": 0.2,
@@ -112,9 +136,21 @@
       "crumble_chance": 0.2,
       "crumble_to": "minecraft:cracked_stone_bricks"
     },
+    "minecraft:weathered_chiseled_copper": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:exposed_chiseled_copper"
+    },
     "minecraft:weathered_copper": {
       "crumble_chance": 0.2,
       "crumble_to": "minecraft:exposed_copper"
+    },
+    "minecraft:weathered_copper_bulb": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:exposed_copper_bulb"
+    },
+    "minecraft:weathered_copper_grate": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:exposed_copper_grate"
     },
     "minecraft:weathered_cut_copper": {
       "crumble_chance": 0.2,
