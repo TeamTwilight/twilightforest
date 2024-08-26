@@ -185,6 +185,12 @@ public class DataMapGenerator extends DataMapProvider {
 		crumble.add(Blocks.OXIDIZED_COPPER_BULB.builtInRegistryHolder(), new CrumbledBlock(Blocks.WEATHERED_COPPER_BULB, 0.2F), false);
 		crumble.add(Blocks.WEATHERED_COPPER_BULB.builtInRegistryHolder(), new CrumbledBlock(Blocks.EXPOSED_COPPER_BULB, 0.2F), false);
 		crumble.add(Blocks.EXPOSED_COPPER_BULB.builtInRegistryHolder(), new CrumbledBlock(Blocks.COPPER_BULB, 0.2F), false);
+		crumble.add(Blocks.OXIDIZED_COPPER_TRAPDOOR.builtInRegistryHolder(), new CrumbledBlock(Blocks.WEATHERED_COPPER_TRAPDOOR, 0.2F), false);
+		crumble.add(Blocks.WEATHERED_COPPER_TRAPDOOR.builtInRegistryHolder(), new CrumbledBlock(Blocks.EXPOSED_COPPER_TRAPDOOR, 0.2F), false);
+		crumble.add(Blocks.EXPOSED_COPPER_TRAPDOOR.builtInRegistryHolder(), new CrumbledBlock(Blocks.COPPER_TRAPDOOR, 0.2F), false);
+		crumble.add(Blocks.OXIDIZED_COPPER_DOOR.builtInRegistryHolder(), new CrumbledBlock(Blocks.WEATHERED_COPPER_DOOR, 0.2F), false);
+		crumble.add(Blocks.WEATHERED_COPPER_DOOR.builtInRegistryHolder(), new CrumbledBlock(Blocks.EXPOSED_COPPER_DOOR, 0.2F), false);
+		crumble.add(Blocks.EXPOSED_COPPER_DOOR.builtInRegistryHolder(), new CrumbledBlock(Blocks.COPPER_DOOR, 0.2F), false);
 		crumble.add(Blocks.GRAVEL.builtInRegistryHolder(), new CrumbledBlock(Blocks.AIR, 0.05F), false);
 		crumble.add(Blocks.DIRT.builtInRegistryHolder(), new CrumbledBlock(Blocks.AIR, 0.05F), false);
 		crumble.add(Blocks.SAND.builtInRegistryHolder(), new CrumbledBlock(Blocks.AIR, 0.05F), false);
