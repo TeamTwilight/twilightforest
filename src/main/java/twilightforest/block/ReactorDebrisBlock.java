@@ -51,7 +51,7 @@ public class ReactorDebrisBlock extends BaseEntityBlock {
 
 	@Override
 	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-		if (state.getBlock() == this)
+		if (state.is(this))
 			level.destroyBlock(pos, false);
 	}
 

@@ -2,27 +2,18 @@ package twilightforest.client.model.block;
 
 import com.google.common.base.MoreObjects;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.ItemOverrides;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.resources.model.SimpleBakedModel;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.client.RenderTypeGroup;
 import net.neoforged.neoforge.client.model.BakedModelWrapper;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.client.model.data.ModelProperty;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.block.entity.ReactorDebrisBlockEntity;
-import twilightforest.client.renderer.tileentity.ReactorDebrisRenderer;
-
-import java.util.List;
-import java.util.Map;
+import twilightforest.client.renderer.block.ReactorDebrisRenderer;
 
 
 public class ReactorDebrisModel extends BakedModelWrapper<BakedModel> {
