@@ -3,6 +3,7 @@ package twilightforest.world.components.structures.trollcave;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.features.TreeFeatures;
 import net.minecraft.nbt.CompoundTag;
@@ -50,7 +51,8 @@ public class TrollCaveGardenComponent extends TrollCaveMainComponent {
 
 	@Override
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		Predicate<Biome> highlands = biome -> biome == world.registryAccess().registryOrThrow(Registries.BIOME).get(TFBiomes.HIGHLANDS);
+		Registry<Biome> biomeRegistry = world.registryAccess().registryOrThrow(Registries.BIOME);
+		Predicate<Biome> highlands = biome -> biome == biomeRegistry.get(TFBiomes.HIGHLANDS) || biome == biomeRegistry.get(TFBiomes.HIGHLANDS_UNDERGROUND);
 		if (this.isBoundingBoxOutsideBiomes(world, highlands, blockPos)) {
 			return;
 		}
