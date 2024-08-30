@@ -7,6 +7,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFBlocks;
@@ -23,15 +24,14 @@ public class AntibuilderBlockEntity extends BlockEntity {
 	private int tickCount;
 	private boolean slowScan;
 	private int ticksSinceChange;
-
-	private BlockState[] blockData;
+	private BlockState @Nullable[] blockData;
 
 	public AntibuilderBlockEntity(BlockPos pos, BlockState state) {
 		super(TFBlockEntities.ANTIBUILDER.get(), pos, state);
 	}
 
 	public static void tick(Level level, BlockPos pos, BlockState state, AntibuilderBlockEntity te) {
-		if (te.anyPlayerInRange()) {
+		if (te.anyPlayerInRange(level, pos)) {
 			te.tickCount++;
 
 			if (level.isClientSide()) {
@@ -42,20 +42,20 @@ public class AntibuilderBlockEntity extends BlockEntity {
 
 				// occasionally make a little red dust line to outline our radius
 				if (te.rand.nextInt(10) == 0) {
-					te.makeRandomOutline();
-					te.makeRandomOutline();
-					te.makeRandomOutline();
+					te.makeRandomOutline(level, pos);
+					te.makeRandomOutline(level, pos);
+					te.makeRandomOutline(level, pos);
 				}
 			} else {
 
 				// new plan, take a snapshot of the world when we are first activated, and then rapidly revert changes
 				if (te.blockData == null && level.isAreaLoaded(pos, AntibuilderBlockEntity.RADIUS)) {
-					te.captureBlockData();
+					te.captureBlockData(level, pos);
 					te.slowScan = true;
 				}
 
 				if (te.blockData != null && (!te.slowScan || te.tickCount % 20 == 0)) {
-					if (te.scanAndRevertChanges()) {
+					if (te.scanAndRevertChanges(level, pos)) {
 						te.slowScan = false;
 						te.ticksSinceChange = 0;
 					} else {
@@ -78,22 +78,22 @@ public class AntibuilderBlockEntity extends BlockEntity {
 	/**
 	 * Display a random one of the 12 possible outlines
 	 */
-	private void makeRandomOutline() {
-		makeOutline(this.rand.nextInt(12));
+	private void makeRandomOutline(Level level, BlockPos pos) {
+		this.makeOutline(level, pos, this.rand.nextInt(12));
 	}
 
 	/**
 	 * Display a specific outline
 	 */
-	private void makeOutline(int outline) {
+	private void makeOutline(Level level, BlockPos pos, int outline) {
 		// src
-		double sx = this.getBlockPos().getX();
-		double sy = this.getBlockPos().getY();
-		double sz = this.getBlockPos().getZ();
+		double sx = pos.getX();
+		double sy = pos.getY();
+		double sz = pos.getZ();
 		// dest
-		double dx = this.getBlockPos().getX();
-		double dy = this.getBlockPos().getY();
-		double dz = this.getBlockPos().getZ();
+		double dx = pos.getX();
+		double dy = pos.getY();
+		double dz = pos.getZ();
 
 		switch (outline) {
 			case 0, 8 -> {
@@ -162,14 +162,14 @@ public class AntibuilderBlockEntity extends BlockEntity {
 		}
 
 		if (this.rand.nextBoolean()) {
-			this.drawParticleLine(this.getBlockPos().getX() + 0.5, this.getBlockPos().getY() + 0.5, this.getBlockPos().getZ() + 0.5, dx, dy, dz);
+			this.drawParticleLine(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, dx, dy, dz);
 		} else {
-			this.drawParticleLine(sx, sy, sz, this.getBlockPos().getX() + 0.5, this.getBlockPos().getY() + 0.5, this.getBlockPos().getZ() + 0.5);
+			this.drawParticleLine(level, sx, sy, sz, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
 		}
-		this.drawParticleLine(sx, sy, sz, dx, dy, dz);
+		this.drawParticleLine(level, sx, sy, sz, dx, dy, dz);
 	}
 
-	private void drawParticleLine(double srcX, double srcY, double srcZ, double destX, double destY, double destZ) {
+	private void drawParticleLine(Level level, double srcX, double srcY, double srcZ, double destX, double destY, double destZ) {
 		// make particle trail
 		int particles = 16;
 		for (int i = 0; i < particles; i++) {
@@ -178,21 +178,21 @@ public class AntibuilderBlockEntity extends BlockEntity {
 			double tx = srcX + (destX - srcX) * trailFactor + this.rand.nextFloat() * 0.005;
 			double ty = srcY + (destY - srcY) * trailFactor + this.rand.nextFloat() * 0.005;
 			double tz = srcZ + (destZ - srcZ) * trailFactor + this.rand.nextFloat() * 0.005;
-			this.getLevel().addParticle(DustParticleOptions.REDSTONE, tx, ty, tz, 0, 0, 0);
+			level.addParticle(DustParticleOptions.REDSTONE, tx, ty, tz, 0, 0, 0);
 		}
 	}
 
-	private boolean scanAndRevertChanges() {
+	private boolean scanAndRevertChanges(Level level, BlockPos pos) {
 		int index = 0;
 		boolean reverted = false;
 
 		for (int x = -RADIUS; x <= RADIUS; x++) {
 			for (int y = -RADIUS; y <= RADIUS; y++) {
 				for (int z = -RADIUS; z <= RADIUS; z++) {
-					BlockState stateThere = this.getLevel().getBlockState(this.getBlockPos().offset(x, y, z));
+					BlockState stateThere = level.getBlockState(pos.offset(x, y, z));
 
 					if (this.blockData[index].getBlock() != stateThere.getBlock()) {
-						if (revertBlock(this.getBlockPos().offset(x, y, z), stateThere, this.blockData[index])) {
+						if (this.revertBlock(level, pos.offset(x, y, z), stateThere, this.blockData[index])) {
 							reverted = true;
 						} else {
 							this.blockData[index] = stateThere;
@@ -207,11 +207,11 @@ public class AntibuilderBlockEntity extends BlockEntity {
 		return reverted;
 	}
 
-	private boolean revertBlock(BlockPos pos, BlockState stateThere, BlockState replaceWith) {
+	private boolean revertBlock(Level level, BlockPos pos, BlockState stateThere, BlockState replaceWith) {
 		if (stateThere.isAir() && !replaceWith.blocksMotion()) {
 			return false;
 		}
-		if (stateThere.getDestroySpeed(this.getLevel(), pos) < 0 || this.isUnrevertable(stateThere, replaceWith)) {
+		if (stateThere.getDestroySpeed(level, pos) < 0 || this.isUnrevertable(stateThere, replaceWith)) {
 			return false;
 		} else if (this.rand.nextInt(REVERT_CHANCE) == 0) {
 			// don't revert everything instantly
@@ -220,9 +220,9 @@ public class AntibuilderBlockEntity extends BlockEntity {
 			}
 
 			if (stateThere.isAir()) {
-				this.getLevel().levelEvent(2001, pos, Block.getId(replaceWith));
+				level.levelEvent(2001, pos, Block.getId(replaceWith));
 			}
-			Block.updateOrDestroy(stateThere, replaceWith, this.getLevel(), pos, 2);
+			Block.updateOrDestroy(stateThere, replaceWith, level, pos, 2);
 		}
 
 		return true;
@@ -232,7 +232,7 @@ public class AntibuilderBlockEntity extends BlockEntity {
 		return stateThere.is(BlockTagGenerator.ANTIBUILDER_IGNORES) || replaceWith.is(BlockTagGenerator.ANTIBUILDER_IGNORES);
 	}
 
-	private void captureBlockData() {
+	private void captureBlockData(Level level, BlockPos pos) {
 		this.blockData = new BlockState[DIAMETER * DIAMETER * DIAMETER];
 
 		int index = 0;
@@ -240,14 +240,14 @@ public class AntibuilderBlockEntity extends BlockEntity {
 		for (int x = -RADIUS; x <= RADIUS; x++) {
 			for (int y = -RADIUS; y <= RADIUS; y++) {
 				for (int z = -RADIUS; z <= RADIUS; z++) {
-					this.blockData[index] = this.getLevel().getBlockState(this.getBlockPos().offset(x, y, z));
+					this.blockData[index] = level.getBlockState(pos.offset(x, y, z));
 					index++;
 				}
 			}
 		}
 	}
 
-	private boolean anyPlayerInRange() {
-		return this.getLevel().hasNearbyAlivePlayer(this.getBlockPos().getX() + 0.5D, this.getBlockPos().getY() + 0.5D, this.getBlockPos().getZ() + 0.5D, AntibuilderBlockEntity.PLAYER_RANGE);
+	private boolean anyPlayerInRange(Level level, BlockPos pos) {
+		return level.hasNearbyAlivePlayer(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, AntibuilderBlockEntity.PLAYER_RANGE);
 	}
 }

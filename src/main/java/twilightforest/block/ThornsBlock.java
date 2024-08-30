@@ -42,7 +42,6 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 
 	private static final float THORN_DAMAGE = 4.0F;
 
-	@SuppressWarnings("this-escape")
 	public ThornsBlock(Properties properties) {
 		super(properties, 10);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(WATERLOGGED, false).setValue(AXIS, Direction.Axis.Y)
@@ -60,7 +59,6 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
 	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 		VoxelShape shape = BASE_SHAPE;
 
@@ -75,12 +73,11 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 	}
 
 	@Override
-	public @Nullable PathType getBlockPathType(BlockState state, BlockGetter getter, BlockPos pos, @Nullable Mob entity) {
+	public PathType getBlockPathType(BlockState state, BlockGetter getter, BlockPos pos, @Nullable Mob entity) {
 		return PathType.DAMAGE_OTHER;
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
 		entity.hurt(TFDamageTypes.getDamageSource(level, TFDamageTypes.THORNS), THORN_DAMAGE);
 	}
@@ -151,7 +148,6 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
 	public FluidState getFluidState(BlockState state) {
 		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
 	}
@@ -181,7 +177,6 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		super.createBlockStateDefinition(builder);
-		builder.add(WATERLOGGED);
+		super.createBlockStateDefinition(builder.add(WATERLOGGED));
 	}
 }

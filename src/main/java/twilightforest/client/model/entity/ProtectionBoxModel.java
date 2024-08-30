@@ -9,10 +9,12 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.ProtectionBox;
 
 public class ProtectionBoxModel<T extends ProtectionBox> extends ListModel<T> {
 
+	@Nullable
 	private T entity;
 
 	public ModelPart box;
@@ -25,15 +27,15 @@ public class ProtectionBoxModel<T extends ProtectionBox> extends ListModel<T> {
 	}
 
 	public static MeshDefinition createMesh() {
-		MeshDefinition mesh = new MeshDefinition();
-		PartDefinition definition = mesh.getRoot();
+		MeshDefinition meshdefinition = new MeshDefinition();
+		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		definition.addOrReplaceChild("box", CubeListBuilder.create()
+		partdefinition.addOrReplaceChild("box", CubeListBuilder.create()
 				.texOffs(0, 0)
 				.addBox(0.0F, 0.0F, 0.0F, 16.0F, 16.0F, 16.0F),
 			PartPose.ZERO);
 
-		return mesh;
+		return meshdefinition;
 	}
 
 	@Override
@@ -42,40 +44,36 @@ public class ProtectionBoxModel<T extends ProtectionBox> extends ListModel<T> {
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, int color) {
-		ProtectionBox boxEntity = entity;
+	public void renderToBuffer(PoseStack stack, VertexConsumer consumer, int light, int overlay, int color) {
+		if (this.entity != null) {
+			int pixelsX = this.entity.sizeX * 16 + 2;
+			int pixelsY = this.entity.sizeY * 16 + 2;
+			int pixelsZ = this.entity.sizeZ * 16 + 2;
 
-		int pixelsX = boxEntity.sizeX * 16 + 2;
-		int pixelsY = boxEntity.sizeY * 16 + 2;
-		int pixelsZ = boxEntity.sizeZ * 16 + 2;
-
-		if (pixelsX != this.lastPixelsX || pixelsY != this.lastPixelsY || pixelsZ != this.lastPixelsZ) {
-			resizeBoxElement(pixelsX, pixelsY, pixelsZ);
+			if (pixelsX != this.lastPixelsX || pixelsY != this.lastPixelsY || pixelsZ != this.lastPixelsZ) {
+				this.resizeBoxElement(pixelsX, pixelsY, pixelsZ);
+			}
 		}
 
-		super.renderToBuffer(stack, builder, light, overlay, color);
+		super.renderToBuffer(stack, consumer, light, overlay, color);
+		this.entity = null;
 	}
 
 	@Override
-	public void setupAnim(T entity, float v, float v1, float v2, float v3, float v4) {
-
-	}
-
-	@Override
-	public void prepareMobModel(T entity, float limbSwing, float limbSwingAmount, float partialTicks) {
+	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.entity = entity;
 	}
 
 	private void resizeBoxElement(int pixelsX, int pixelsY, int pixelsZ) {
 
-		MeshDefinition mesh = createMesh();
-		PartDefinition definition = mesh.getRoot();
+		MeshDefinition meshdefinition = createMesh();
+		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		definition.addOrReplaceChild("box", CubeListBuilder.create()
+		partdefinition.addOrReplaceChild("box", CubeListBuilder.create()
 				.texOffs(0, 0)
 				.addBox(-1.0F, -1.0F, -1.0F, pixelsX, pixelsY, pixelsZ),
 			PartPose.ZERO);
-		box = definition.getChild("box").bake(16, 16);
+		this.box = partdefinition.getChild("box").bake(16, 16);
 
 		this.lastPixelsX = pixelsX;
 		this.lastPixelsY = pixelsY;

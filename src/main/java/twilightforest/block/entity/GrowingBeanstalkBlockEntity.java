@@ -39,7 +39,7 @@ public class GrowingBeanstalkBlockEntity extends BlockEntity {
 			//initialize shit. We can't do this in the ctor because there is no level yet
 			te.nextLeafY = pos.getY() + 10 + level.getRandom().nextInt(10);
 			te.yOffset = level.getRandom().nextInt(100);
-			te.cScale = level.getRandom().nextFloat() * 0.25F + 0.125F; // spiral tightness scaling  //make this number negative to reverse the spiral
+			te.cScale = level.getRandom().nextFloat() * 0.25F + 0.125F; // spiral tightness scaling, make this number negative to reverse the spiral
 			te.rScale = level.getRandom().nextFloat() * 0.25F + 0.125F; // radius change scaling
 			te.maxY = Math.max(pos.getY() + 100, 175);
 		}
@@ -135,34 +135,34 @@ public class GrowingBeanstalkBlockEntity extends BlockEntity {
 		}
 	}
 
-	private void placeLeaves(Level world, BlockPos pos) {
+	private void placeLeaves(Level level, BlockPos pos) {
 		// stalk at center
-		world.setBlockAndUpdate(pos, TFBlocks.HUGE_STALK.get().defaultBlockState());
+		level.setBlockAndUpdate(pos, TFBlocks.HUGE_STALK.get().defaultBlockState());
 
 		// small squares
 		for (int dx = -1; dx <= 1; dx++) {
 			for (int dz = -1; dz <= 1; dz++) {
 				int distance = Math.abs(dx) + Math.abs(dz) + 1;
-				this.tryToPlaceLeaves(world, pos.offset(dx, -1, dz), distance);
-				this.tryToPlaceLeaves(world, pos.offset(dx, 1, dz), distance);
+				this.tryToPlaceLeaves(level, pos.offset(dx, -1, dz), distance);
+				this.tryToPlaceLeaves(level, pos.offset(dx, 1, dz), distance);
 			}
 		}
 		// larger square
 		for (int dx = -2; dx <= 2; dx++) {
 			for (int dz = -2; dz <= 2; dz++) {
 				if (!((dx == 2 || dx == -2) && (dz == 2 || dz == -2))) {
-					this.tryToPlaceLeaves(world, pos.offset(dx, 0, dz), Math.max(Math.abs(dx) + Math.abs(dz), 1));
+					this.tryToPlaceLeaves(level, pos.offset(dx, 0, dz), Math.max(Math.abs(dx) + Math.abs(dz), 1));
 				}
 			}
 		}
 	}
 
 	/**
-	 * Place the stalk block only if the destination is clear.  Return false if a layer is blocked by 15 or more blocks.
+	 * Place the stalk block only if the destination is clear. Return false if a layer is blocked by 15 or more blocks.
 	 */
 	private boolean tryToPlaceStalk(Level level, BlockPos pos, boolean checkBlocked) {
 		BlockState state = level.getBlockState(pos);
-		if (state.isAir() || (state.canBeReplaced() && !state.is(TFBlocks.BEANSTALK_GROWER)) || (state.isAir() || state.is(BlockTags.LEAVES)) || state.getBlock().equals(TFBlocks.FLUFFY_CLOUD)) {
+		if (state.isAir() || (state.canBeReplaced() && !state.is(TFBlocks.BEANSTALK_GROWER)) || (state.isAir() || state.is(BlockTags.LEAVES)) || state.is(TFBlocks.FLUFFY_CLOUD)) {
 			level.setBlockAndUpdate(pos, TFBlocks.HUGE_STALK.get().defaultBlockState());
 			if (pos.getY() > 150) {
 				for (int i = 0; i < 7; i++) {
@@ -180,10 +180,10 @@ public class GrowingBeanstalkBlockEntity extends BlockEntity {
 		}
 	}
 
-	private void tryToPlaceLeaves(Level world, BlockPos pos, int distance) {
-		BlockState state = world.getBlockState(pos);
+	private void tryToPlaceLeaves(Level level, BlockPos pos, int distance) {
+		BlockState state = level.getBlockState(pos);
 		if (state.isAir() || state.is(BlockTags.LEAVES)) {
-			world.setBlock(pos, TFBlocks.BEANSTALK_LEAVES.get().defaultBlockState().setValue(LeavesBlock.DISTANCE, distance), 2);
+			level.setBlock(pos, TFBlocks.BEANSTALK_LEAVES.get().defaultBlockState().setValue(LeavesBlock.DISTANCE, distance), 2);
 		}
 	}
 

@@ -17,7 +17,7 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.block.entity.spawner.CursedSpawnerEntity;
+import twilightforest.block.entity.spawner.CursedSpawnerBlockEntity;
 import twilightforest.init.TFBlockEntities;
 
 import java.util.List;
@@ -35,24 +35,23 @@ public class CursedSpawnerBlock extends BaseEntityBlock {
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	protected RenderShape getRenderShape(BlockState state) {
 		return RenderShape.MODEL;
 	}
 
-	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new CursedSpawnerEntity(pos, state);
+		return new CursedSpawnerBlockEntity(pos, state);
 	}
 
-	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-		return createTickerHelper(blockEntityType, TFBlockEntities.CURSED_SPAWNER.value(), level.isClientSide ? CursedSpawnerEntity::clientTick : CursedSpawnerEntity::serverTick);
+		return createTickerHelper(blockEntityType, TFBlockEntities.CURSED_SPAWNER.value(), level.isClientSide ? CursedSpawnerBlockEntity::clientTick : CursedSpawnerBlockEntity::serverTick);
 	}
 
 	@Override
-	public int getExpDrop(BlockState state, LevelAccessor level, BlockPos pos, BlockEntity blockEntity, Entity breaker, ItemStack tool) {
+	public int getExpDrop(BlockState state, LevelAccessor level, BlockPos pos, @Nullable BlockEntity blockEntity, @Nullable Entity breaker, ItemStack tool) {
 		return 15 + level.getRandom().nextInt(15) + level.getRandom().nextInt(15);
 	}
 

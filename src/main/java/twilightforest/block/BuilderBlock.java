@@ -17,7 +17,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.CarminiteBuilderBlockEntity;
 import twilightforest.enums.TowerDeviceVariant;
 import twilightforest.init.TFBlockEntities;
@@ -28,13 +27,25 @@ import java.util.Objects;
 
 public class BuilderBlock extends BaseEntityBlock {
 
-	public static final MapCodec<BuilderBlock> CODEC = simpleCodec(BuilderBlock::new);
 	public static final EnumProperty<TowerDeviceVariant> STATE = EnumProperty.create("state", TowerDeviceVariant.class);
+	public static final MapCodec<BuilderBlock> CODEC = simpleCodec(BuilderBlock::new);
 
-	@SuppressWarnings("this-escape")
 	public BuilderBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(STATE, TowerDeviceVariant.BUILDER_INACTIVE));
+	}
+
+	/**
+	 * If the targeted block is a vanishing block, activate it
+	 */
+	public static void activateBuiltBlocks(Level level, BlockPos pos) {
+		BlockState state = level.getBlockState(pos);
+
+		if (state.getBlock() == TFBlocks.BUILT_BLOCK.get() && !state.getValue(TranslucentBuiltBlock.ACTIVE)) {
+			level.setBlockAndUpdate(pos, state.setValue(TranslucentBuiltBlock.ACTIVE, true));
+			level.playSound(null, pos, TFSounds.BUILDER_REPLACE.get(), SoundSource.BLOCKS, 0.3F, 0.6F);
+			level.scheduleTick(pos, state.getBlock(), 10);
+		}
 	}
 
 	@Override
@@ -43,18 +54,17 @@ public class BuilderBlock extends BaseEntityBlock {
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public RenderShape getRenderShape(BlockState state) {
 		return RenderShape.MODEL;
 	}
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		super.createBlockStateDefinition(builder);
 		builder.add(STATE);
 	}
 
 	@Override
-	@Deprecated
 	public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
 		if (!level.isClientSide() && state.getValue(STATE) == TowerDeviceVariant.BUILDER_INACTIVE && level.hasNeighborSignal(pos)) {
 			level.setBlockAndUpdate(pos, state.setValue(STATE, TowerDeviceVariant.BUILDER_ACTIVE));
@@ -63,7 +73,6 @@ public class BuilderBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	@Deprecated
 	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
 		if (level.isClientSide()) {
 			return;
@@ -136,35 +145,20 @@ public class BuilderBlock extends BaseEntityBlock {
 		for (Direction direction : Direction.values()) {
 			BlockPos blockpos = pos.relative(direction);
 			if (!level.getBlockState(blockpos).isSolidRender(level, blockpos)) {
-				Direction.Axis direction$axis = direction.getAxis();
-				double d1 = direction$axis == Direction.Axis.X ? 0.5 + 0.5625 * (double) direction.getStepX() : (double) random.nextFloat();
-				double d2 = direction$axis == Direction.Axis.Y ? 0.5 + 0.5625 * (double) direction.getStepY() : (double) random.nextFloat();
-				double d3 = direction$axis == Direction.Axis.Z ? 0.5 + 0.5625 * (double) direction.getStepZ() : (double) random.nextFloat();
+				Direction.Axis axis = direction.getAxis();
+				double d1 = axis == Direction.Axis.X ? 0.5 + 0.5625 * (double) direction.getStepX() : (double) random.nextFloat();
+				double d2 = axis == Direction.Axis.Y ? 0.5 + 0.5625 * (double) direction.getStepY() : (double) random.nextFloat();
+				double d3 = axis == Direction.Axis.Z ? 0.5 + 0.5625 * (double) direction.getStepZ() : (double) random.nextFloat();
 				level.addParticle(DustParticleOptions.REDSTONE, (double) pos.getX() + d1, (double) pos.getY() + d2, (double) pos.getZ() + d3, 0.0, 0.0, 0.0);
 			}
 		}
 	}
 
-	/**
-	 * If the targeted block is a vanishing block, activate it
-	 */
-	public static void activateBuiltBlocks(Level level, BlockPos pos) {
-		BlockState state = level.getBlockState(pos);
-
-		if (state.getBlock() == TFBlocks.BUILT_BLOCK.get() && !state.getValue(TranslucentBuiltBlock.ACTIVE)) {
-			level.setBlockAndUpdate(pos, state.setValue(TranslucentBuiltBlock.ACTIVE, true));
-			level.playSound(null, pos, TFSounds.BUILDER_REPLACE.get(), SoundSource.BLOCKS, 0.3F, 0.6F);
-			level.scheduleTick(pos, state.getBlock(), 10);
-		}
-	}
-
-	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new CarminiteBuilderBlockEntity(pos, state);
 	}
 
-	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
 		return state.getValue(STATE) == TowerDeviceVariant.BUILDER_ACTIVE ? createTickerHelper(type, TFBlockEntities.TOWER_BUILDER.get(), CarminiteBuilderBlockEntity::tick) : null;

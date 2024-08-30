@@ -32,14 +32,14 @@ public class IceCrystalModel extends HierarchicalModel<IceCrystal> {
 	}
 
 	public static LayerDefinition create() {
-		MeshDefinition mesh = new MeshDefinition();
-		PartDefinition definition = mesh.getRoot();
+		MeshDefinition meshdefinition = new MeshDefinition();
+		PartDefinition partdefinition = meshdefinition.getRoot();
 
 		for (int i = 0; i < 16; i++) {
 
 			int spikeLength = i % 2 == 0 ? 6 : 8;
 
-			var spike = definition.addOrReplaceChild("spike_" + i, CubeListBuilder.create()
+			var spike = partdefinition.addOrReplaceChild("spike_" + i, CubeListBuilder.create()
 					.texOffs(0, 16)
 					.addBox(-1.0F, -1.0F, -1.0F, 2.0F, spikeLength, 2.0F),
 				PartPose.ZERO);
@@ -47,10 +47,10 @@ public class IceCrystalModel extends HierarchicalModel<IceCrystal> {
 			spike.addOrReplaceChild("cube_" + i, CubeListBuilder.create()
 					.texOffs(8, 16)
 					.addBox(-1.5F, -1.5F, -1.5F, 3.0F, 3.0F, 3.0F),
-				PartPose.offsetAndRotation(0.0F, spikeLength, 0.0F, 0.0F, 0.0F, (Mth.PI / 4F)));
+				PartPose.offsetAndRotation(0.0F, spikeLength, 0.0F, 0.0F, 0.0F, (Mth.PI / 4.0F)));
 		}
 
-		return LayerDefinition.create(mesh, 32, 32);
+		return LayerDefinition.create(meshdefinition, 32, 32);
 	}
 
 	@Override
@@ -60,30 +60,30 @@ public class IceCrystalModel extends HierarchicalModel<IceCrystal> {
 
 	@Override
 	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, int color) {
-		for (ModelPart spike : spikes) {
+		for (ModelPart spike : this.spikes) {
 			spike.render(stack, builder, light, overlay, FastColor.ARGB32.color((int) (FastColor.ARGB32.alpha(color) * (alive ? 0.6F : 1.0F)), FastColor.ARGB32.red(color), FastColor.ARGB32.green(color), FastColor.ARGB32.blue(color)));
 		}
 	}
 
 	@Override
-	public void setupAnim(IceCrystal entity, float v, float v1, float v2, float v3, float v4) {
+	public void setupAnim(IceCrystal entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 	}
 
 	@Override
 	public void prepareMobModel(IceCrystal entity, float limbSwing, float limbSwingAmount, float partialTicks) {
 		this.alive = entity.isAlive();
-		for (int i = 0; i < spikes.length; i++) {
+		for (int i = 0; i < this.spikes.length; i++) {
 			// rotate the spikes
 			this.spikes[i].xRot = Mth.sin((entity.tickCount + partialTicks) / 5.0F) / 4.0F;
 			this.spikes[i].yRot = (entity.tickCount + partialTicks) / 5.0F;
 			this.spikes[i].zRot = Mth.cos((entity.tickCount + partialTicks) / 5.0F) / 4.0F;
 
-			this.spikes[i].xRot += i * (Mth.PI / 8F);
+			this.spikes[i].xRot += i * (Mth.PI / 8.0F);
 
 			if (i % 4 == 0) {
-				this.spikes[i].yRot += 1;
+				this.spikes[i].yRot += 1.0F;
 			} else if (i % 4 == 2) {
-				this.spikes[i].yRot -= 1;
+				this.spikes[i].yRot -= 1.0F;
 			}
 		}
 	}

@@ -16,12 +16,12 @@ import twilightforest.entity.projectile.CubeOfAnnihilation;
 
 public class CubeOfAnnihilationRenderer extends EntityRenderer<CubeOfAnnihilation> {
 
-	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("cubeofannihilation.png");
+	private static final ResourceLocation TEXTURE = TwilightForestMod.getModelTexture("cubeofannihilation.png");
 	private final Model model;
 
-	public CubeOfAnnihilationRenderer(EntityRendererProvider.Context manager) {
-		super(manager);
-		model = new CubeOfAnnihilationModel(manager.bakeLayer(TFModelLayers.CUBE_OF_ANNIHILATION));
+	public CubeOfAnnihilationRenderer(EntityRendererProvider.Context context) {
+		super(context);
+		this.model = new CubeOfAnnihilationModel(context.bakeLayer(TFModelLayers.CUBE_OF_ANNIHILATION));
 	}
 
 	@Override
@@ -31,15 +31,15 @@ public class CubeOfAnnihilationRenderer extends EntityRenderer<CubeOfAnnihilatio
 		stack.pushPose();
 
 		stack.scale(-1.0F, -1.0F, 1.0F);
-		stack.mulPose(Axis.YP.rotationDegrees(Mth.wrapDegrees((entity.tickCount + partialTicks) * 11F)));
-		stack.translate(0F, -0.5F, 0F);
-		model.renderToBuffer(stack, buffer.getBuffer(model.renderType(textureLoc)), light, OverlayTexture.NO_OVERLAY);
+		stack.mulPose(Axis.YP.rotationDegrees(Mth.wrapDegrees((entity.tickCount + partialTicks) * 11.0F)));
+		stack.translate(0.0F, -0.5F, 0.0F);
+		this.model.renderToBuffer(stack, buffer.getBuffer(this.model.renderType(TEXTURE)), light, OverlayTexture.NO_OVERLAY);
 
 		stack.popPose();
 	}
 
 	@Override
 	public ResourceLocation getTextureLocation(CubeOfAnnihilation entity) {
-		return textureLoc;
+		return TEXTURE;
 	}
 }

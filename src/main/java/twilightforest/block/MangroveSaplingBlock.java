@@ -20,33 +20,17 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import org.jetbrains.annotations.Nullable;
 
 public class MangroveSaplingBlock extends SaplingBlock implements SimpleWaterloggedBlock {
 
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-	@SuppressWarnings("this-escape")
 	public MangroveSaplingBlock(TreeGrower tree, BlockBehaviour.Properties properties) {
 		super(tree, properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(WATERLOGGED, false));
 	}
 
-	@Override
-	@Deprecated
-	public FluidState getFluidState(BlockState state) {
-		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
-	}
-
-	@Override
-	@Deprecated
-	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand) {
-		if (!isInWater(state, level, pos)) {
-			level.setBlock(pos, this.defaultBlockState().setValue(WATERLOGGED, false), 2);
-		}
-	}
-
-	//VanillaCopy of AbstractCoralPlantBlock.isInWater
+	//[VanillaCopy] of AbstractCoralPlantBlock.isInWater
 	protected static boolean isInWater(BlockState state, BlockGetter getter, BlockPos pos) {
 		if (state.getValue(WATERLOGGED)) {
 			return true;
@@ -62,19 +46,30 @@ public class MangroveSaplingBlock extends SaplingBlock implements SimpleWaterlog
 	}
 
 	@Override
-	@Nullable
+	public FluidState getFluidState(BlockState state) {
+		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+	}
+
+	@Override
+	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand) {
+		if (!isInWater(state, level, pos)) {
+			level.setBlock(pos, this.defaultBlockState().setValue(WATERLOGGED, false), 2);
+		}
+	}
+
+	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
 		return this.defaultBlockState().setValue(WATERLOGGED, fluidstate.is(FluidTags.WATER) && fluidstate.getAmount() == 8);
 	}
 
 	@Override
-	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor accessor, BlockPos currentPos, BlockPos facingPos) {
-		if (stateIn.getValue(WATERLOGGED)) {
+	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor accessor, BlockPos currentPos, BlockPos facingPos) {
+		if (state.getValue(WATERLOGGED)) {
 			accessor.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(accessor));
 		}
 
-		return facing == Direction.DOWN && !this.canSurvive(stateIn, accessor, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(stateIn, facing, facingState, accessor, currentPos, facingPos);
+		return facing == Direction.DOWN && !this.canSurvive(state, accessor, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, facing, facingState, accessor, currentPos, facingPos);
 	}
 
 	@Override

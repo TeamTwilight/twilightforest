@@ -244,6 +244,11 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 	}
 
 	@Override
+	protected AABB makeBoundingBox() {
+		return super.makeBoundingBox();
+	}
+
+	@Override
 	protected boolean canRide(Entity entityIn) {
 		return false;
 	}

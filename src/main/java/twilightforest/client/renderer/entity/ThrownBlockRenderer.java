@@ -24,8 +24,8 @@ import twilightforest.entity.projectile.ThrownBlock;
  */
 public class ThrownBlockRenderer extends EntityRenderer<ThrownBlock> {
 
-	public ThrownBlockRenderer(EntityRendererProvider.Context manager) {
-		super(manager);
+	public ThrownBlockRenderer(EntityRendererProvider.Context context) {
+		super(context);
 		this.shadowRadius = 0.5F;
 	}
 

@@ -1,10 +1,13 @@
 package twilightforest.beans;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.neoforgespi.language.ModFileScanData;
 import org.apache.logging.log4j.LogManager;
@@ -18,6 +21,7 @@ import java.lang.annotation.ElementType;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 public final class TFBeanContext {
 
@@ -109,9 +113,17 @@ public final class TFBeanContext {
 
 			currentInjection.set(null);
 
-			Objects.requireNonNull(modContainer.getEventBus()).addListener(FMLCommonSetupEvent.class, event -> injectRegistries(modContainer, scanData, annotationDataPostProcessors));
-			Objects.requireNonNull(modContainer.getEventBus()).addListener(EventPriority.HIGHEST, GatherDataEvent.class, event -> injectRegistries(modContainer, scanData, annotationDataPostProcessors));
+			// @Mod
 			Objects.requireNonNull(modContainer.getEventBus()).addListener(ProcessBeanAnnotationsEvent.class, event -> handleProcessBeanAnnotationsEvent(event, modContainer, scanData, annotationDataPostProcessors));
+			// Registries
+			Objects.requireNonNull(modContainer.getEventBus()).addListener(FMLCommonSetupEvent.class, event -> injectRegistries(modContainer, scanData, annotationDataPostProcessors));
+			// Registries (Data Gen)
+			Objects.requireNonNull(modContainer.getEventBus()).addListener(EventPriority.HIGHEST, GatherDataEvent.class, event -> injectRegistries(modContainer, scanData, annotationDataPostProcessors));
+			// Renderers (Entity, BlockEntity)
+			Objects.requireNonNull(modContainer.getEventBus()).addListener(EventPriority.LOWEST, RegisterClientReloadListenersEvent.class,
+				event -> event.registerReloadListener((ResourceManagerReloadListener) manager -> injectRenderers(modContainer, scanData, annotationDataPostProcessors))
+			);
+
 			if (forceInjectRegistries)
 				injectRegistries(modContainer, scanData, annotationDataPostProcessors);
 
@@ -123,6 +135,24 @@ public final class TFBeanContext {
 
 	private void throwInjectionFailedException(AtomicReference<Object> o, Throwable e) {
 		throw new RuntimeException("Bean injection failed." + (o.get() == null ? "" : (" At: " + o)), e);
+	}
+
+	private void runAnnotationDataPostProcessors(Object o, ModContainer modContainer, ModFileScanData scanData, List<AnnotationDataPostProcessor> annotationDataPostProcessors, AtomicReference<Object> curInj) throws Throwable {
+		for (AnnotationDataPostProcessor annotationDataPostProcessor : annotationDataPostProcessors) {
+			annotationDataPostProcessor.process(TFBeanContextInternalInjector.SINGLETON, modContainer, scanData, o, curInj);
+		}
+	}
+
+	private void handleProcessBeanAnnotationsEvent(ProcessBeanAnnotationsEvent event, ModContainer modContainer, ModFileScanData scanData, List<AnnotationDataPostProcessor> annotationDataPostProcessors) {
+		final long ms = System.currentTimeMillis();
+		logger.debug("Processing {}", event.getObjectToProcess());
+		AtomicReference<Object> curInj = new AtomicReference<>();
+		try {
+			runAnnotationDataPostProcessors(event.getObjectToProcess(), modContainer, scanData, annotationDataPostProcessors, curInj);
+		} catch (Throwable e) {
+			throwInjectionFailedException(curInj, e);
+		}
+		logger.debug("Finished processing {} in {} ms", event.getObjectToProcess(), System.currentTimeMillis() - ms);
 	}
 
 	private void injectRegistries(ModContainer modContainer, ModFileScanData scanData, List<AnnotationDataPostProcessor> annotationDataPostProcessors) {
@@ -142,22 +172,23 @@ public final class TFBeanContext {
 		logger.debug("Finished processing registry objects in {} ms", System.currentTimeMillis() - ms);
 	}
 
-	private void handleProcessBeanAnnotationsEvent(ProcessBeanAnnotationsEvent event, ModContainer modContainer, ModFileScanData scanData, List<AnnotationDataPostProcessor> annotationDataPostProcessors) {
+	private void injectRenderers(ModContainer modContainer, ModFileScanData scanData, List<AnnotationDataPostProcessor> annotationDataPostProcessors) {
 		final long ms = System.currentTimeMillis();
-		logger.debug("Processing {}", event.getObjectToProcess());
+		logger.debug("Processing renderer objects");
 		AtomicReference<Object> curInj = new AtomicReference<>();
-		try {
-			runAnnotationDataPostProcessors(event.getObjectToProcess(), modContainer, scanData, annotationDataPostProcessors, curInj);
-		} catch (Throwable e) {
-			throwInjectionFailedException(curInj, e);
-		}
-		logger.debug("Finished processing {} in {} ms", event.getObjectToProcess(), System.currentTimeMillis() - ms);
-	}
-
-	private void runAnnotationDataPostProcessors(Object o, ModContainer modContainer, ModFileScanData scanData, List<AnnotationDataPostProcessor> annotationDataPostProcessors, AtomicReference<Object> curInj) throws Throwable {
-		for (AnnotationDataPostProcessor annotationDataPostProcessor : annotationDataPostProcessors) {
-			annotationDataPostProcessor.process(TFBeanContextInternalInjector.SINGLETON, modContainer, scanData, o, curInj);
-		}
+		Stream.concat(
+			Minecraft.getInstance().getEntityRenderDispatcher().renderers.values().stream(),
+			Minecraft.getInstance().getBlockEntityRenderDispatcher().renderers.values().stream()
+		).forEach(renderer -> {
+			try {
+				if (classOrSuperHasAnnotation(renderer.getClass(), Configurable.class)) {
+					runAnnotationDataPostProcessors(renderer, modContainer, scanData, annotationDataPostProcessors, curInj);
+				}
+			} catch (Throwable e) {
+				throwInjectionFailedException(curInj, e);
+			}
+		});
+		logger.debug("Finished processing renderer objects in {} ms", System.currentTimeMillis() - ms);
 	}
 
 	private boolean classOrSuperHasAnnotation(Class<?> c, Class<? extends Annotation> a) {

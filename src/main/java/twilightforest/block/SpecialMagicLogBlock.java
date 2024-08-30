@@ -21,7 +21,6 @@ public abstract class SpecialMagicLogBlock extends RotatedPillarBlock {
 
 	public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
-	@SuppressWarnings("this-escape")
 	protected SpecialMagicLogBlock(BlockBehaviour.Properties properties) {
 		super(properties.strength(2.0F).sound(SoundType.WOOD).lightLevel((state) -> state.getValue(ACTIVE) ? 15 : 0));
 
@@ -30,8 +29,7 @@ public abstract class SpecialMagicLogBlock extends RotatedPillarBlock {
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		super.createBlockStateDefinition(builder);
-		builder.add(ACTIVE);
+		super.createBlockStateDefinition(builder.add(ACTIVE));
 	}
 
 	//No longer an override, but keep here for sanity
@@ -40,13 +38,11 @@ public abstract class SpecialMagicLogBlock extends RotatedPillarBlock {
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
 	public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
 		level.scheduleTick(pos, this, this.tickRate());
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
 	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand) {
 		if (!state.getValue(ACTIVE) || !this.doesCoreFunction()) return;
 
@@ -59,7 +55,7 @@ public abstract class SpecialMagicLogBlock extends RotatedPillarBlock {
 	@Override
 	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult result) {
 		if (!this.doesCoreFunction()) {
-			state.setValue(ACTIVE, false);
+			level.setBlockAndUpdate(pos, state.setValue(ACTIVE, false));
 			player.displayClientMessage(Component.translatable("misc.twilightforest.core_disabled", this.getName()).withStyle(ChatFormatting.RED), true);
 			return InteractionResult.SUCCESS;
 		}

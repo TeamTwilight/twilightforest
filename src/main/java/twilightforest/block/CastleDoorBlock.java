@@ -30,15 +30,19 @@ public class CastleDoorBlock extends Block {
 
 	private static final VoxelShape REAPPEARING_BB = Shapes.create(new AABB(0.375F, 0.375F, 0.375F, 0.625F, 0.625F, 0.625F));
 
-	@SuppressWarnings("this-escape")
 	public CastleDoorBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(ACTIVE, false).setValue(VANISHED, false));
 	}
 
+	private static boolean isBlockLocked(Level level, BlockPos pos) {
+		// check if we are in a structure, and if that structure says that we are locked
+		// TODO is this method even needed any more? Might be needed in the future when the structure comes with internal gating progression - don't delete this method quite yet
+		return false;
+	}
+
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		super.createBlockStateDefinition(builder);
 		builder.add(ACTIVE, VANISHED);
 	}
 
@@ -93,12 +97,6 @@ public class CastleDoorBlock extends Block {
 		level.scheduleTick(pos, originState.getBlock(), 2 + level.getRandom().nextInt(5));
 	}
 
-	private static boolean isBlockLocked(Level level, BlockPos pos) {
-		// check if we are in a structure, and if that structure says that we are locked
-		// TODO is this method even needed any more? Might be needed in the future when the structure comes with internal gating progression - don't delete this method quite yet
-		return false;
-	}
-
 	@Override
 	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 		if (state.getValue(VANISHED)) {
@@ -107,7 +105,7 @@ public class CastleDoorBlock extends Block {
 			} else {
 				this.changeToActiveBlock(level, pos, state);
 			}
-			playReappearSound(level, pos);
+			this.playReappearSound(level, pos);
 		} else {
 			if (state.getValue(ACTIVE)) {
 				level.setBlockAndUpdate(pos, state.setValue(VANISHED, true).setValue(ACTIVE, false));

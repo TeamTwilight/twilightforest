@@ -14,9 +14,8 @@ import twilightforest.entity.boss.KnightPhantom;
 
 public class KnightPhantomRenderer extends HumanoidMobRenderer<KnightPhantom, KnightPhantomModel> {
 
-	private static final ResourceLocation PHANTOM_TEXTURE = TwilightForestMod.getModelTexture("phantomskeleton.png");
+	public static final ResourceLocation TEXTURE = TwilightForestMod.getModelTexture("phantomskeleton.png");
 
-	@SuppressWarnings("this-escape")
 	public KnightPhantomRenderer(EntityRendererProvider.Context context, KnightPhantomModel model, float shadowSize) {
 		super(context, model, shadowSize);
 		this.addLayer(new ItemInHandLayer<>(this, context.getItemInHandRenderer()));
@@ -24,18 +23,18 @@ public class KnightPhantomRenderer extends HumanoidMobRenderer<KnightPhantom, Kn
 	}
 
 	@Override
-	public void render(KnightPhantom phantom, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
-		if (phantom.hasYetToDisappear()) super.render(phantom, entityYaw, partialTicks, poseStack, buffer, packedLight);
+	public void render(KnightPhantom entity, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int packedLight) {
+		if (entity.hasYetToDisappear()) super.render(entity, entityYaw, partialTicks, stack, buffer, packedLight);
 	}
 
 	@Override
-	protected boolean isShaking(KnightPhantom pEntity) {
-		return super.isShaking(pEntity) || pEntity.isDeadOrDying();
+	protected boolean isShaking(KnightPhantom entity) {
+		return super.isShaking(entity) || entity.isDeadOrDying();
 	}
 
 	@Override
 	public ResourceLocation getTextureLocation(KnightPhantom entity) {
-		return PHANTOM_TEXTURE;
+		return TEXTURE;
 	}
 
 	@Override
@@ -45,7 +44,7 @@ public class KnightPhantomRenderer extends HumanoidMobRenderer<KnightPhantom, Kn
 	}
 
 	@Override
-	protected float getFlipDegrees(KnightPhantom phantom) { //Prevent the body from keeling over
-		return phantom.isDeadOrDying() ? 0.0F : super.getFlipDegrees(phantom);
+	protected float getFlipDegrees(KnightPhantom entity) { //Prevent the body from keeling over
+		return entity.isDeadOrDying() ? 0.0F : super.getFlipDegrees(entity);
 	}
 }

@@ -14,33 +14,32 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.QuestRamModel;
 import twilightforest.entity.passive.QuestRam;
 
-public class QuestRamRenderer extends MobRenderer<QuestRam, QuestRamModel> {
+public class QuestRamRenderer<T extends QuestRam, M extends QuestRamModel<T>> extends MobRenderer<T, M> {
 
-	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("questram.png");
-	private static final ResourceLocation textureLocLines = TwilightForestMod.getModelTexture("questram_lines.png");
+	public static final ResourceLocation TEXTURE = TwilightForestMod.getModelTexture("questram.png");
+	public static final ResourceLocation LINE_TEXTURE = TwilightForestMod.getModelTexture("questram_lines.png");
 
-	@SuppressWarnings("this-escape")
-	public QuestRamRenderer(EntityRendererProvider.Context manager, QuestRamModel model) {
-		super(manager, model, 1.0F);
-		addLayer(new LayerGlowingLines(this));
+	public QuestRamRenderer(EntityRendererProvider.Context context, M model) {
+		super(context, model, 1.0F);
+		this.addLayer(new GlowingLinesLayer<>(this));
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(QuestRam entity) {
-		return textureLoc;
+	public ResourceLocation getTextureLocation(T entity) {
+		return TEXTURE;
 	}
 
-	class LayerGlowingLines extends RenderLayer<QuestRam, QuestRamModel> {
+	public static class GlowingLinesLayer<T extends QuestRam, M extends QuestRamModel<T>> extends RenderLayer<T, M> {
 
-		public LayerGlowingLines(RenderLayerParent<QuestRam, QuestRamModel> renderer) {
+		public GlowingLinesLayer(RenderLayerParent<T, M> renderer) {
 			super(renderer);
 		}
 
 		@Override
-		public void render(PoseStack stack, MultiBufferSource buffer, int i, QuestRam entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-			VertexConsumer builder = buffer.getBuffer(RenderType.entityTranslucent(textureLocLines));
-			stack.scale(1.025f, 1.025f, 1.025f);
-			QuestRamRenderer.this.getModel().renderToBuffer(stack, builder, 0xF000F0, OverlayTexture.NO_OVERLAY);
+		public void render(PoseStack stack, MultiBufferSource buffer, int i, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+			VertexConsumer consumer = buffer.getBuffer(RenderType.entityTranslucent(LINE_TEXTURE));
+			stack.scale(1.025F, 1.025F, 1.025F);
+			this.getParentModel().renderToBuffer(stack, consumer, 0xF000F0, OverlayTexture.NO_OVERLAY);
 		}
 	}
 }

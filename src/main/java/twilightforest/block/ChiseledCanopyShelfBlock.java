@@ -12,7 +12,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SpawnEggItem;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ChiseledBookShelfBlock;
@@ -37,7 +36,7 @@ public class ChiseledCanopyShelfBlock extends ChiseledBookShelfBlock {
 
 	public ChiseledCanopyShelfBlock(Properties properties) {
 		super(properties);
-		BlockState blockstate = this.stateDefinition.any().setValue(HorizontalDirectionalBlock.FACING, Direction.NORTH).setValue(SPAWNER, false);
+		BlockState blockstate = this.getStateDefinition().any().setValue(HorizontalDirectionalBlock.FACING, Direction.NORTH).setValue(SPAWNER, false);
 
 		for (BooleanProperty booleanproperty : SLOT_OCCUPIED_PROPERTIES) {
 			blockstate = blockstate.setValue(booleanproperty, false);
@@ -102,25 +101,13 @@ public class ChiseledCanopyShelfBlock extends ChiseledBookShelfBlock {
 		return RenderShape.MODEL;
 	}
 
-	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new ChiseledCanopyShelfBlockEntity(pos, state);
 	}
 
-	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
 		return createTickerHelper(type, TFBlockEntities.CHISELED_CANOPY_BOOKSHELF.get(), ChiseledCanopyShelfBlockEntity::tick);
-	}
-
-	@Override
-	public int getFlammability(BlockState state, BlockGetter getter, BlockPos pos, Direction face) {
-		return 20;
-	}
-
-	@Override
-	public int getFireSpreadSpeed(BlockState state, BlockGetter getter, BlockPos pos, Direction face) {
-		return 30;
 	}
 }

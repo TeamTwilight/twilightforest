@@ -1,7 +1,6 @@
 package twilightforest.client.model;
 
 import net.minecraft.client.model.geom.ModelLayerLocation;
-import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
 
 public class TFModelLayers {
@@ -27,17 +26,10 @@ public class TFModelLayers {
 	public static final ModelLayerLocation SNOW_QUEEN_TROPHY = register("snow_queen_trophy");
 	public static final ModelLayerLocation UR_GHAST_TROPHY = register("ur_ghast_trophy");
 
-	public static final ModelLayerLocation NEW_HYDRA_TROPHY = register("new_hydra_trophy");
-	public static final ModelLayerLocation NEW_MINOSHROOM_TROPHY = register("new_minoshroom_trophy");
-	public static final ModelLayerLocation NEW_QUEST_RAM_TROPHY = register("new_quest_ram_trophy");
-	public static final ModelLayerLocation NEW_SNOW_QUEEN_TROPHY = register("new_snow_queen_trophy");
-	public static final ModelLayerLocation NEW_UR_GHAST_TROPHY = register("new_ur_ghast_trophy");
-
 	public static final ModelLayerLocation ADHERENT = register("adherent");
 	public static final ModelLayerLocation ALPHA_YETI = register("alpha_yeti");
 	public static final ModelLayerLocation ARMORED_GIANT = register("armored_giant");
 	public static final ModelLayerLocation BIGHORN_SHEEP = register("bighorn_sheep");
-	public static final ModelLayerLocation BIGHORN_SHEEP_FUR = register("bighorn_sheep", "fur");
 	public static final ModelLayerLocation BLOCKCHAIN_GOBLIN = register("blockchain_goblin");
 	public static final ModelLayerLocation BOAR = register("boar");
 	public static final ModelLayerLocation BUNNY = register("bunny");
@@ -99,34 +91,6 @@ public class TFModelLayers {
 	public static final ModelLayerLocation WINTER_WOLF = register("winter_wolf");
 	public static final ModelLayerLocation WRAITH = register("wraith");
 	public static final ModelLayerLocation YETI = register("yeti");
-
-	public static final ModelLayerLocation NEW_BIGHORN_SHEEP = register("new_bighorn_sheep");
-	public static final ModelLayerLocation NEW_BLOCKCHAIN_GOBLIN = register("new_blockchain_goblin");
-	public static final ModelLayerLocation NEW_BOAR = register("new_boar");
-	public static final ModelLayerLocation NEW_DEER = register("new_deer");
-	public static final ModelLayerLocation NEW_FIRE_BEETLE = register("new_fire_beetle");
-	public static final ModelLayerLocation NEW_HELMET_CRAB = register("new_helmet_crab");
-	public static final ModelLayerLocation NEW_HYDRA = register("new_hydra");
-	public static final ModelLayerLocation NEW_HYDRA_HEAD = register("new_hydra_head");
-	public static final ModelLayerLocation NEW_HYDRA_NECK = register("new_hydra_neck");
-	public static final ModelLayerLocation NEW_KOBOLD = register("new_kobold");
-	public static final ModelLayerLocation NEW_LOWER_GOBLIN_KNIGHT = register("new_lower_goblin_knight");
-	public static final ModelLayerLocation NEW_MINOSHROOM = register("new_minoshroom");
-	public static final ModelLayerLocation NEW_MINOTAUR = register("new_minotaur");
-	public static final ModelLayerLocation NEW_NAGA = register("new_naga");
-	public static final ModelLayerLocation NEW_NAGA_BODY = register("new_naga_body");
-	public static final ModelLayerLocation NEW_PINCH_BEETLE = register("new_pinch_beetle");
-	public static final ModelLayerLocation NEW_QUEST_RAM = register("new_quest_ram");
-	public static final ModelLayerLocation NEW_RAVEN = register("new_raven");
-	public static final ModelLayerLocation NEW_REDCAP = register("new_redcap");
-	public static final ModelLayerLocation NEW_SLIME_BEETLE = register("new_slime_beetle");
-	public static final ModelLayerLocation NEW_SLIME_BEETLE_TAIL = register("new_slime_beetle", "tail");
-	public static final ModelLayerLocation NEW_SNOW_QUEEN = register("new_snow_queen");
-	public static final ModelLayerLocation NEW_SQUIRREL = register("new_squirrel");
-	public static final ModelLayerLocation NEW_TINY_BIRD = register("new_tiny_bird");
-	public static final ModelLayerLocation NEW_TROLL = register("new_troll");
-	public static final ModelLayerLocation NEW_UPPER_GOBLIN_KNIGHT = register("new_upper_goblin_knight");
-	public static final ModelLayerLocation NEW_UR_GHAST = register("new_ur_ghast");
 
 	public static final ModelLayerLocation CHAIN_BLOCK = register("chain_block");
 	public static final ModelLayerLocation CUBE_OF_ANNIHILATION = register("cube_of_annihilation");

@@ -25,7 +25,6 @@ public class HugeLilyPadBlock extends WaterlilyBlock {
 
 	private boolean isSelfDestructing = false;
 
-	@SuppressWarnings("this-escape")
 	public HugeLilyPadBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH).setValue(PIECE, HugeLilypadPiece.NW));
@@ -33,7 +32,7 @@ public class HugeLilyPadBlock extends WaterlilyBlock {
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		super.createBlockStateDefinition(builder.add(FACING, PIECE));
+		builder.add(FACING, PIECE);
 	}
 
 	@Override

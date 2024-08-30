@@ -8,7 +8,6 @@ import net.minecraft.world.level.block.MultifaceBlock;
 import net.minecraft.world.level.block.MultifaceSpreader;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.RedThreadBlockEntity;
 import twilightforest.init.TFBlocks;
 
@@ -35,7 +34,6 @@ public class RedThreadBlock extends MultifaceBlock implements EntityBlock {
 		return new MultifaceSpreader(this);
 	}
 
-	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new RedThreadBlockEntity(pos, state);

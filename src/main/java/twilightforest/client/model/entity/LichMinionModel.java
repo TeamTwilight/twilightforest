@@ -23,7 +23,7 @@ public class LichMinionModel extends ZombieModel<LichMinion> {
 
 	@Override
 	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, int color) {
-		if (hasStrength) {
+		if (this.hasStrength) {
 			super.renderToBuffer(stack, builder, light, overlay, FastColor.ARGB32.color(FastColor.ARGB32.alpha(color), (int) (FastColor.ARGB32.red(color) * 0.25F), FastColor.ARGB32.green(color), (int) (FastColor.ARGB32.blue(color) * 0.25F)));
 		} else {
 			super.renderToBuffer(stack, builder, light, overlay, FastColor.ARGB32.color(FastColor.ARGB32.alpha(color), (int) (FastColor.ARGB32.red(color) * 0.5F), FastColor.ARGB32.green(color), (int) (FastColor.ARGB32.blue(color) * 0.5F)));

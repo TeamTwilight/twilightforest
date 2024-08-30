@@ -17,73 +17,122 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
+import twilightforest.client.JappaPackReloadListener;
 import twilightforest.entity.passive.TinyBird;
 
 public class TinyBirdModel extends AgeableListModel<TinyBird> {
-	//fields
-	final ModelPart head;
-	final ModelPart body;
-	final ModelPart rightarm;
-	final ModelPart leftarm;
-	final ModelPart rightleg;
-	final ModelPart leftleg;
-	final ModelPart tail;
+
+	private final ModelPart head;
+	private final ModelPart body;
+	private final ModelPart rightFoot;
+	private final ModelPart leftFoot;
+	private final ModelPart rightWing;
+	private final ModelPart leftWing;
 
 	public TinyBirdModel(ModelPart root) {
 		this.head = root.getChild("head");
 		this.body = root.getChild("body");
-		this.rightarm = root.getChild("right_arm");
-		this.leftarm = root.getChild("left_arm");
-		this.rightleg = root.getChild("right_leg");
-		this.leftleg = root.getChild("left_leg");
-		this.tail = root.getChild("tail");
+		this.rightFoot = root.getChild("right_foot");
+		this.leftFoot = root.getChild("left_foot");
+		this.rightWing = body.getChild("right_wing");
+		this.leftWing = body.getChild("left_wing");
 	}
 
-	public static LayerDefinition create() {
-		MeshDefinition mesh = new MeshDefinition();
-		PartDefinition definition = mesh.getRoot();
+	public static LayerDefinition checkForPack() {
+		return JappaPackReloadListener.INSTANCE.isJappaPackLoaded() ? createJappaModel() : create();
+	}
 
-		var head = definition.addOrReplaceChild("head", CubeListBuilder.create()
+	private static LayerDefinition create() {
+		MeshDefinition meshdefinition = new MeshDefinition();
+		PartDefinition partdefinition = meshdefinition.getRoot();
+
+		var head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
 				.texOffs(0, 0)
-				.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3),
-			PartPose.offset(0F, 20.5F, -0.5F));
+				.addBox(-1.5F, -1.5F, -1.5F, 3.0F, 3.0F, 3.0F),
+			PartPose.offset(0.0F, 20.5F, -0.5F));
 
 		head.addOrReplaceChild("beak", CubeListBuilder.create()
 				.texOffs(12, 0)
-				.addBox(-0.5F, -0.5F, -0.5F, 1, 1, 1),
-			PartPose.offset(0F, 0.5F, -2F));
+				.addBox(-0.5F, -0.5F, -0.5F, 1.0F, 1.0F, 1.0F),
+			PartPose.offset(0.0F, 0.5F, -2.0F));
 
-		definition.addOrReplaceChild("body", CubeListBuilder.create()
+		var body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create()
 				.texOffs(0, 6)
-				.addBox(-1.5F, 0F, -1F, 3, 3, 3),
-			PartPose.offset(0F, 20F, 0F));
+				.addBox(-1.5F, 0.0F, -1.0F, 3.0F, 3.0F, 3.0F),
+			PartPose.offset(0.0F, 20.0F, 0.0F));
 
-		definition.addOrReplaceChild("right_arm", CubeListBuilder.create()
+		body.addOrReplaceChild("right_wing", CubeListBuilder.create()
 				.texOffs(12, 2)
-				.addBox(-1F, 0F, -1.5F, 1, 2, 3),
-			PartPose.offset(-1.5F, 20.5F, 1F));
+				.addBox(-1.0F, 0.0F, -1.5F, 1.0F, 2.0F, 3.0F),
+			PartPose.offset(-1.5F, 0.5F, 1.0F));
 
-		definition.addOrReplaceChild("left_arm", CubeListBuilder.create().mirror()
+		body.addOrReplaceChild("left_wing", CubeListBuilder.create().mirror()
 				.texOffs(12, 2)
-				.addBox(0F, 0F, -1.5F, 1, 2, 3),
-			PartPose.offset(1.5F, 20.5F, 1F));
+				.addBox(0.0F, 0F, -1.5F, 1.0F, 2.0F, 3.0F),
+			PartPose.offset(1.5F, 0.5F, 1.0F));
 
-		definition.addOrReplaceChild("right_leg", CubeListBuilder.create()
+		partdefinition.addOrReplaceChild("right_foot", CubeListBuilder.create()
 				.texOffs(0, 12)
-				.addBox(0F, 0F, 0F, 1, 1, 1),
-			PartPose.offset(-1.5F, 23F, 0F));
+				.addBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F),
+			PartPose.offset(-1.5F, 23.0F, 0.0F));
 
-		definition.addOrReplaceChild("left_leg", CubeListBuilder.create().mirror()
+		partdefinition.addOrReplaceChild("left_foot", CubeListBuilder.create().mirror()
 				.texOffs(0, 12)
-				.addBox(0F, 0F, 0F, 1, 1, 1),
-			PartPose.offset(0F, 23F, 0F));
+				.addBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F),
+			PartPose.offset(0.0F, 23.0F, 0.0F));
 
-		definition.addOrReplaceChild("tail", CubeListBuilder.create()
+		body.addOrReplaceChild("tail", CubeListBuilder.create()
 				.texOffs(0, 14)
-				.addBox(-1.5F, -0.5F, 0F, 3, 1, 2),
-			PartPose.offset(0F, 22F, 2F));
+				.addBox(-1.5F, -0.5F, 0.0F, 3.0F, 1.0F, 2.0F),
+			PartPose.offset(0.0F, 2.0F, 2.0F));
 
-		return LayerDefinition.create(mesh, 32, 32);
+		return LayerDefinition.create(meshdefinition, 32, 32);
+	}
+
+	private static LayerDefinition createJappaModel() {
+		MeshDefinition meshdefinition = new MeshDefinition();
+		PartDefinition partdefinition = meshdefinition.getRoot();
+
+		partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
+				.texOffs(0, 0)
+				.addBox(-1.5F, -2.0F, -2.0F, 3.0F, 3.0F, 3.0F)
+				.texOffs(9, 0)
+				.addBox(-0.5F, 0.0F, -3.0F, 1.0F, 1.0F, 1.0F)
+				.texOffs(0, 6)
+				.addBox(-1.5F, -5.0F, 1.0F, 3.0F, 3.0F, 0.0F),
+			PartPose.offset(0.0F, 21.0F, 0.0F));
+
+		var body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create()
+				.texOffs(12, 0)
+				.addBox(-1.5F, 0.0F, 0.0F, 3.0F, 3.0F, 3.0F),
+			PartPose.offset(0.0F, 20.0F, 0.0F));
+
+		partdefinition.addOrReplaceChild("right_foot", CubeListBuilder.create()
+				.texOffs(0, 9)
+				.addBox(-0.5F, 0.0F, -1.0F, 1.0F, 1.0F, 1.0F),
+			PartPose.offset(-1.0F, 23.0F, 2.0F));
+
+		partdefinition.addOrReplaceChild("left_foot", CubeListBuilder.create()
+				.texOffs(0, 11)
+				.addBox(-0.5F, 0.0F, -1.0F, 1.0F, 1.0F, 1.0F),
+			PartPose.offset(1.0F, 23.0F, 2.0F));
+
+		body.addOrReplaceChild("right_wing", CubeListBuilder.create()
+				.texOffs(24, 0)
+				.addBox(-0.5F, 0.0F, -1.0F, 1.0F, 2.0F, 3.0F),
+			PartPose.offset(-2.0F, 0.0F, 1.0F));
+
+		body.addOrReplaceChild("left_wing", CubeListBuilder.create()
+				.texOffs(24, 5)
+				.addBox(-0.5F, 0.0F, -1.0F, 1.0F, 2.0F, 3.0F),
+			PartPose.offset(2.0F, 0.0F, 1.0F));
+
+		body.addOrReplaceChild("tail", CubeListBuilder.create()
+				.texOffs(1, 6)
+				.addBox(-2.5F, 0.0F, 0.0F, 5.0F, 0.0F, 5.0F),
+			PartPose.offsetAndRotation(0.0F, 1.0F, 3.0F, 0.4363323129985824F, 0.0F, 0.0F));
+
+		return LayerDefinition.create(meshdefinition, 32, 32);
 	}
 
 	@Override
@@ -93,15 +142,7 @@ public class TinyBirdModel extends AgeableListModel<TinyBird> {
 
 	@Override
 	protected Iterable<ModelPart> bodyParts() {
-		return ImmutableList.of(
-			head,
-			body,
-			rightleg,
-			leftleg,
-			rightarm,
-			leftarm,
-			tail
-		);
+		return ImmutableList.of(this.head, this.body, this.rightFoot, this.leftFoot);
 	}
 
 	@Override
@@ -109,12 +150,12 @@ public class TinyBirdModel extends AgeableListModel<TinyBird> {
 		if (young) {
 			float f = 2.0F;
 			stack.pushPose();
-			stack.translate(0.0F, 5F, 0.75F);
+			stack.translate(0.0F, 5.0F, 0.75F);
 			this.headParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, color));
 			stack.popPose();
 			stack.pushPose();
 			stack.scale(1.0F / f, 1.0F / f, 1.0F / f);
-			stack.translate(0.0F, 24F, 0.0F);
+			stack.translate(0.0F, 24.0F, 0.0F);
 			this.bodyParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, color));
 			stack.popPose();
 		} else {
@@ -123,26 +164,23 @@ public class TinyBirdModel extends AgeableListModel<TinyBird> {
 		}
 	}
 
-	/**
-	 * Sets the models various rotation angles.
-	 */
 	@Override
 	public void setupAnim(TinyBird entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		head.xRot = headPitch / (180F / (float) Math.PI);
-		head.yRot = netHeadYaw / (180F / (float) Math.PI);
+		this.head.xRot = headPitch * Mth.DEG_TO_RAD;
+		this.head.yRot = netHeadYaw * Mth.DEG_TO_RAD;
 
-		rightleg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-		leftleg.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
+		this.rightFoot.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+		this.leftFoot.xRot = Mth.cos(limbSwing * 0.6662F + Mth.PI) * 1.4F * limbSwingAmount;
 
-		rightarm.zRot = ageInTicks;
-		leftarm.zRot = -ageInTicks;
+		this.rightWing.zRot = ageInTicks;
+		this.leftWing.zRot = -ageInTicks;
 
 		if (entity.isBirdLanded()) {
-			rightleg.y = 23;
-			leftleg.y = 23;
+			this.rightFoot.y = 23.0F;
+			this.leftFoot.y = 23.0F;
 		} else {
-			rightleg.y = 22.5F;
-			leftleg.y = 22.5F;
+			this.rightFoot.y = 22.5F;
+			this.leftFoot.y = 22.5F;
 		}
 	}
 }

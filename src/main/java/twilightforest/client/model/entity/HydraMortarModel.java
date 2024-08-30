@@ -11,22 +11,22 @@ import twilightforest.entity.boss.HydraMortar;
 
 public class HydraMortarModel extends HierarchicalModel<HydraMortar> {
 
-	public final ModelPart root;
+	private final ModelPart root;
 
 	public HydraMortarModel(ModelPart root) {
 		this.root = root;
 	}
 
 	public static LayerDefinition create() {
-		MeshDefinition mesh = new MeshDefinition();
-		PartDefinition definition = mesh.getRoot();
+		MeshDefinition meshdefinition = new MeshDefinition();
+		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		definition.addOrReplaceChild("mortar", CubeListBuilder.create()
+		partdefinition.addOrReplaceChild("mortar", CubeListBuilder.create()
 				.texOffs(0, 0)
 				.addBox(-4.0F, 0.0F, -4.0F, 8.0F, 8.0F, 8.0F),
 			PartPose.ZERO);
 
-		return LayerDefinition.create(mesh, 32, 32);
+		return LayerDefinition.create(meshdefinition, 32, 32);
 	}
 
 	@Override
@@ -35,6 +35,6 @@ public class HydraMortarModel extends HierarchicalModel<HydraMortar> {
 	}
 
 	@Override
-	public void setupAnim(HydraMortar entity, float v, float v1, float v2, float v3, float v4) {
+	public void setupAnim(HydraMortar entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 	}
 }

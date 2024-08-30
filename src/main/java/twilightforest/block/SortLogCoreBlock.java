@@ -3,7 +3,6 @@ package twilightforest.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
@@ -132,16 +131,12 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 									Vec3 xyz = outputMap.get(outputIItemHandler);
 									Vec3 diff = inputHandlers.getValue().subtract(xyz);
 
-									for (ServerPlayer serverplayer : level.players()) { // This is just particle math, we send a particle packet to every player in range
-										if (serverplayer.distanceToSqr(xyz) < 4096.0D) {
-											ParticlePacket particlePacket = new ParticlePacket();
-											double x = diff.x - 0.25D + rand.nextDouble() * 0.5D;
-											double y = diff.y - 1.75D + rand.nextDouble() * 0.5D;
-											double z = diff.z - 0.25D + rand.nextDouble() * 0.5D;
-											particlePacket.queueParticle(TFParticleType.SORTING_PARTICLE.get(), false, xyz, new Vec3(x, y, z).scale(1D / diff.length()));
-											PacketDistributor.sendToPlayer(serverplayer, particlePacket);
-										}
-									}
+									ParticlePacket particlePacket = new ParticlePacket();
+									double x = diff.x - 0.25D + rand.nextDouble() * 0.5D;
+									double y = diff.y - 1.75D + rand.nextDouble() * 0.5D;
+									double z = diff.z - 0.25D + rand.nextDouble() * 0.5D;
+									particlePacket.queueParticle(TFParticleType.SORTING_PARTICLE.get(), false, xyz, new Vec3(x, y, z).scale(1D / diff.length()));
+									PacketDistributor.sendToPlayersNear(level, null, xyz.x(), xyz.y(), xyz.z(), 64.0D, particlePacket);
 									break;
 								}
 							}

@@ -15,6 +15,7 @@ import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.TFDataMaps;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFRecipes;
+import twilightforest.inventory.UncraftingMenu;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,6 +90,24 @@ public class RecipeViewerConstants {
 			}
 		}
 		return info;
+	}
+
+	public static int getRecipeCost(List<ItemStack> inputs) {
+		int cost = 0;
+		for (ItemStack stack : inputs) {
+			if (UncraftingMenu.isDamageableComponent(stack) && !UncraftingMenu.isIngredientProblematic(stack) && !UncraftingMenu.isMarked(stack)) {
+				cost++;
+			}
+		}
+		return cost;
+	}
+
+	public static int getXPColor(int cost) {
+		if (Minecraft.getInstance().player.experienceLevel < cost && !Minecraft.getInstance().player.getAbilities().instabuild) {
+			return 0xA00000;
+		} else {
+			return 0x80FF20;
+		}
 	}
 
 	public record TransformationPowderInfo(EntityType<?> input, EntityType<?> output, boolean reversible) {

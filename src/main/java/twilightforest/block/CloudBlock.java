@@ -32,13 +32,36 @@ public class CloudBlock extends Block {
 		this.precipitation = precipitation;
 	}
 
+	public static boolean shouldSnow(LevelReader level, BlockPos pos) {
+		if (pos.getY() >= level.getMinBuildHeight() && pos.getY() < level.getMaxBuildHeight() && level.getBrightness(LightLayer.BLOCK, pos) < 10) {
+			BlockState blockstate = level.getBlockState(pos);
+			return (blockstate.isAir() || blockstate.is(Blocks.SNOW)) && Blocks.SNOW.defaultBlockState().canSurvive(level, pos);
+		}
+		return false;
+	}
+
+	public static void addEntityMovementParticles(Level level, BlockPos pos, Entity entity, boolean jumping) {
+		if (level.getRandom().nextBoolean()) return;
+		Vec3 deltaMovement = entity.getDeltaMovement();
+		BlockPos blockpos1 = entity.blockPosition();
+		double jumpMultiplier = jumping ? 2.0D : 1.0D;
+
+		double x = entity.getX() + (level.getRandom().nextDouble() - 0.5D) * (double) entity.dimensions.width() * jumpMultiplier;
+		double y = entity.getY() + 0.1D;
+		double z = entity.getZ() + (level.getRandom().nextDouble() - 0.5D) * (double) entity.dimensions.width() * jumpMultiplier;
+
+		if (blockpos1.getX() != pos.getX()) x = Mth.clamp(x, pos.getX(), (double) pos.getX() + 1.0D);
+		if (blockpos1.getZ() != pos.getZ()) z = Mth.clamp(z, pos.getZ(), (double) pos.getZ() + 1.0D);
+
+		level.addParticle(TFParticleType.CLOUD_PUFF.get(), x, y, z, deltaMovement.x * -0.5D, 0.015D * jumpMultiplier, deltaMovement.z * -0.5D);
+	}
+
 	@Override
 	public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, float fallDistance) {
 		entity.causeFallDamage(fallDistance, 0.1F, level.damageSources().fall());
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
 	public int getLightBlock(BlockState state, BlockGetter level, BlockPos pos) {
 		return 1;
 	}
@@ -71,7 +94,6 @@ public class CloudBlock extends Block {
 	 * Simulate weather the way it's done in the ServerLevel class, but only for the block below our cloud
 	 */
 	@Override
-	@SuppressWarnings("deprecation")
 	public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 		if (!level.isAreaLoaded(pos, 1) || TFConfig.commonCloudBlockPrecipitationDistance == 0) return;
 
@@ -107,14 +129,6 @@ public class CloudBlock extends Block {
 				}
 			}
 		}
-	}
-
-	public static boolean shouldSnow(LevelReader level, BlockPos pos) {
-		if (pos.getY() >= level.getMinBuildHeight() && pos.getY() < level.getMaxBuildHeight() && level.getBrightness(LightLayer.BLOCK, pos) < 10) {
-			BlockState blockstate = level.getBlockState(pos);
-			return (blockstate.isAir() || blockstate.is(Blocks.SNOW)) && Blocks.SNOW.defaultBlockState().canSurvive(level, pos);
-		}
-		return false;
 	}
 
 	@Override
@@ -164,21 +178,5 @@ public class CloudBlock extends Block {
 			addEntityMovementParticles(level, pos, entity, false);
 		}
 		return true;
-	}
-
-	public static void addEntityMovementParticles(Level level, BlockPos pos, Entity entity, boolean jumping) {
-		if (level.getRandom().nextBoolean()) return;
-		Vec3 deltaMovement = entity.getDeltaMovement();
-		BlockPos blockpos1 = entity.blockPosition();
-		double jumpMultiplier = jumping ? 2.0D : 1.0D;
-
-		double x = entity.getX() + (level.getRandom().nextDouble() - 0.5D) * (double) entity.dimensions.width() * jumpMultiplier;
-		double y = entity.getY() + 0.1D;
-		double z = entity.getZ() + (level.getRandom().nextDouble() - 0.5D) * (double) entity.dimensions.width() * jumpMultiplier;
-
-		if (blockpos1.getX() != pos.getX()) x = Mth.clamp(x, pos.getX(), (double) pos.getX() + 1.0D);
-		if (blockpos1.getZ() != pos.getZ()) z = Mth.clamp(z, pos.getZ(), (double) pos.getZ() + 1.0D);
-
-		level.addParticle(TFParticleType.CLOUD_PUFF.get(), x, y, z, deltaMovement.x * -0.5D, 0.015D * jumpMultiplier, deltaMovement.z * -0.5D);
 	}
 }

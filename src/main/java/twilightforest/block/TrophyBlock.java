@@ -7,6 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
@@ -23,19 +24,18 @@ import twilightforest.enums.BossVariant;
 
 public class TrophyBlock extends AbstractTrophyBlock {
 
+	public static final IntegerProperty ROTATION = BlockStateProperties.ROTATION_16;
 	public static final MapCodec<TrophyBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 			BossVariant.CODEC.fieldOf("variant").forGetter(AbstractTrophyBlock::getVariant),
 			Codec.INT.fieldOf("pedestal_comparator_strength").forGetter(AbstractTrophyBlock::getComparatorValue),
 			propertiesCodec())
 		.apply(instance, TrophyBlock::new));
-	public static final IntegerProperty ROTATION = BlockStateProperties.ROTATION_16;
-	protected static final VoxelShape SHAPE = Block.box(4.0D, 0.0D, 4.0D, 12.0D, 8.0D, 12.0D);
 	public static final VoxelShape GHAST_SHAPE = Block.box(4.0D, 8.0D, 4.0D, 12.0D, 16.0D, 12.0D);
+	protected static final VoxelShape SHAPE = Block.box(4.0D, 0.0D, 4.0D, 12.0D, 8.0D, 12.0D);
 	protected static final VoxelShape YETI_X_SHAPE = Block.box(3.25D, 0.0D, 4.5D, 12.75D, 10.0D, 11.5D);
 	protected static final VoxelShape YETI_Z_SHAPE = Block.box(4.5D, 0.0D, 3.25D, 11.5D, 10.0D, 12.75D);
 	protected static final VoxelShape YETI_CORNER_SHAPE = Block.box(4.5D, 0.0D, 4.5D, 11.5D, 10.0D, 11.5D);
 
-	@SuppressWarnings("this-escape")
 	public TrophyBlock(BossVariant variant, int value, BlockBehaviour.Properties properties) {
 		super(variant, value, properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(TrophyBlock.ROTATION, 0));
@@ -76,6 +76,7 @@ public class TrophyBlock extends AbstractTrophyBlock {
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public BlockState mirror(BlockState state, Mirror mirror) {
 		return state.setValue(ROTATION, mirror.mirror(state.getValue(ROTATION), 16));
 	}

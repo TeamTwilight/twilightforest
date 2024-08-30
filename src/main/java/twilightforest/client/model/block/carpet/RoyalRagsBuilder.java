@@ -8,7 +8,7 @@ import twilightforest.TwilightForestMod;
 public class RoyalRagsBuilder<T extends ModelBuilder<T>> extends CustomLoaderBuilder<T> {
 
 	protected RoyalRagsBuilder(T parent, ExistingFileHelper existingFileHelper) {
-		super(TwilightForestMod.prefix("lofty_carpet"), parent, existingFileHelper, false);
+		super(TwilightForestMod.prefix("royal_rags"), parent, existingFileHelper, false);
 	}
 
 	public static <T extends ModelBuilder<T>> RoyalRagsBuilder<T> begin(T parent, ExistingFileHelper helper) {

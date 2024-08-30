@@ -13,7 +13,6 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootTable;
-import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.CicadaBlockEntity;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFSounds;
@@ -32,20 +31,18 @@ public class CicadaBlock extends CritterBlock {
 		return CODEC;
 	}
 
-	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new CicadaBlockEntity(pos, state);
 	}
 
-	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
 		return createTickerHelper(type, TFBlockEntities.CICADA.get(), CicadaBlockEntity::tick);
 	}
 
 	@Override
-	public @Nullable ResourceKey<LootTable> getSquishLootTable() {
+	public ResourceKey<LootTable> getSquishLootTable() {
 		return TFLootTables.CICADA_SQUISH_DROPS;
 	}
 

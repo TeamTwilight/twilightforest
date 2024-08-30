@@ -1,6 +1,8 @@
 package twilightforest.client.model.entity;
 
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.ListModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -8,105 +10,151 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.util.Mth;
+import twilightforest.client.JappaPackReloadListener;
+import twilightforest.client.renderer.entity.HydraRenderer;
 import twilightforest.entity.boss.HydraHead;
 import twilightforest.entity.boss.HydraPart;
 
-public class HydraHeadModel extends ListModel<HydraHead> {
+public class HydraHeadModel<T extends HydraHead> extends ListModel<T> implements TrophyBlockModel {
 
-	final ModelPart head;
-	final ModelPart jaw;
+	private final ModelPart head;
+	private final ModelPart jaw;
 
 	public HydraHeadModel(ModelPart root) {
 		this.head = root.getChild("head");
-		this.jaw = head.getChild("jaw");
+		this.jaw = this.head.getChild("jaw");
 	}
 
-	public static LayerDefinition create() {
-		MeshDefinition mesh = new MeshDefinition();
-		PartDefinition definition = mesh.getRoot();
+	public static LayerDefinition checkForPack() {
+		return JappaPackReloadListener.INSTANCE.isJappaPackLoaded() ? createJappaModel() : create();
+	}
 
-		var head = definition.addOrReplaceChild("head", CubeListBuilder.create()
+	private static LayerDefinition create() {
+		MeshDefinition meshdefinition = new MeshDefinition();
+		PartDefinition partdefinition = meshdefinition.getRoot();
+
+		var head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
 				.texOffs(272, 0)
-				.addBox(-16F, -14F, -32F, 32, 24, 32)
+				.addBox(-16.0F, -14.0F, -16.0F, 32.0F, 24.0F, 32.0F)
 				.texOffs(272, 56)
-				.addBox(-15F, -2F, -56F, 30, 12, 24)
+				.addBox(-15.0F, -2.0F, -40.0F, 30.0F, 12.0F, 24.0F)
 				.texOffs(272, 132)
-				.addBox(-15F, 10F, -20F, 30, 8, 16)
+				.addBox(-15F, 10F, -4F, 30, 8, 16)
 				.texOffs(128, 200)
-				.addBox(-2F, -30F, -12F, 4, 24, 24)
+				.addBox(-2.0F, -30.0F, 4.0F, 4.0F, 24.0F, 24.0F)
 				.texOffs(272, 156)
-				.addBox(-12F, 10, -49F, 2, 5, 2)
+				.addBox(-12.0F, 10.0F, -33.0F, 2.0F, 5.0F, 2.0F)
 				.texOffs(272, 156)
-				.addBox(10F, 10, -49F, 2, 5, 2)
+				.addBox(10.0F, 10.0F, -33.0F, 2.0F, 5.0F, 2.0F)
 				.texOffs(280, 156)
-				.addBox(-8F, 9, -49F, 16, 2, 2)
+				.addBox(-8.0F, 9.0F, -33.0F, 16.0F, 2.0F, 2.0F)
 				.texOffs(280, 160)
-				.addBox(-10F, 9, -45F, 2, 2, 16)
+				.addBox(-10.0F, 9.0F, -29.0F, 2.0F, 2.0F, 16.0F)
 				.texOffs(280, 160)
-				.addBox(8F, 9, -45F, 2, 2, 16),
+				.addBox(8.0F, 9.0F, -29.0F, 2.0F, 2.0F, 16.0F),
 			PartPose.ZERO);
 
 		head.addOrReplaceChild("jaw", CubeListBuilder.create()
 				.texOffs(272, 92)
-				.addBox(-15F, 0F, -32F, 30, 8, 32)
+				.addBox(-15.0F, 0.0F, -16.0F, 30.0F, 8.0F, 32.0F)
 				.texOffs(272, 156)
-				.addBox(-10F, -5, -29F, 2, 5, 2)
+				.addBox(-10.0F, -5.0F, -13.0F, 2.0F, 5.0F, 2.0F)
 				.texOffs(272, 156)
-				.addBox(8F, -5, -29F, 2, 5, 2)
+				.addBox(8.0F, -5.0F, -13.0F, 2.0F, 5.0F, 2.0F)
 				.texOffs(280, 156)
-				.addBox(-8F, -1, -29F, 16, 2, 2)
+				.addBox(-8.0F, -1.0F, -13.0F, 16.0F, 2.0F, 2.0F)
 				.texOffs(280, 160)
-				.addBox(-10F, -1, -25F, 2, 2, 16)
+				.addBox(-10.0F, -1.0F, -9.0F, 2.0F, 2.0F, 16.0F)
 				.texOffs(280, 160)
-				.addBox(8F, -1, -25F, 2, 2, 16),
-			PartPose.offset(0F, 10F, -20F));
+				.addBox(8.0F, -1.0F, -9.0F, 2.0F, 2.0F, 16.0F),
+			PartPose.offset(0.0F, 10.0F, -20.0F));
 
 		head.addOrReplaceChild("frill", CubeListBuilder.create()
 				.texOffs(272, 200)
-				.addBox(-24F, -40.0F, 0F, 48, 48, 4),
-			PartPose.offsetAndRotation(0F, 0F, -14F, -0.5235988F, 0F, 0F));
+				.addBox(-24.0F, -50.0F, 16.0F, 48.0F, 48.0F, 4.0F),
+			PartPose.offsetAndRotation(0.0F, 0.0F, -14.0F, -0.5235988F, 0.0F, 0.0F));
 
-		return LayerDefinition.create(mesh, 512, 256);
+		return LayerDefinition.create(meshdefinition, 512, 256);
+	}
+
+	private static LayerDefinition createJappaModel() {
+		MeshDefinition meshdefinition = new MeshDefinition();
+		PartDefinition partdefinition = meshdefinition.getRoot();
+
+		var head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
+				.texOffs(260, 64)
+				.addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
+				.texOffs(236, 128)
+				.addBox(-16.0F, -2.0F, -40.0F, 32.0F, 10.0F, 24.0F)
+				.texOffs(356, 70)
+				.addBox(-12.0F, 8.0F, -36.0F, 24.0F, 6.0F, 20.0F),
+			PartPose.ZERO);
+
+		head.addOrReplaceChild("jaw", CubeListBuilder.create()
+				.texOffs(240, 162)
+				.addBox(-15.0F, 0.0F, -24.0F, 30.0F, 8.0F, 24.0F),
+			PartPose.offset(0.0F, 10.0F, -14.0F));
+
+		head.addOrReplaceChild("plate", CubeListBuilder.create()
+				.texOffs(388, 0)
+				.addBox(-24.0F, -48.0F, 0.0F, 48.0F, 48.0F, 6.0F)
+				.texOffs(220, 0)
+				.addBox(-4.0F, -32.0F, -8.0F, 8.0F, 32.0F, 8.0F),
+			PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.7853981633974483F, 0.0F, 0.0F));
+
+		return LayerDefinition.create(meshdefinition, 512, 256);
 	}
 
 	@Override
 	public Iterable<ModelPart> parts() {
-		return ImmutableList.of(head);
+		return ImmutableList.of(this.head);
 	}
 
 	@Override
-	public void setupAnim(HydraHead entity, float v, float v1, float v2, float v3, float v4) {
+	public void setupAnim(HydraHead entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+		this.head.z = -16.0F;
 	}
 
 	@Override
-	public void prepareMobModel(HydraHead entity, float limbSwing, float limbSwingAmount, float partialTicks) {
-		head.yRot = getRotationY(entity, partialTicks);
-		head.xRot = getRotationX(entity, partialTicks);
+	public void prepareMobModel(T entity, float limbSwing, float limbSwingAmount, float partialTicks) {
+		this.head.yRot = this.getRotationY(entity, partialTicks);
+		this.head.xRot = this.getRotationX(entity, partialTicks);
 
 		float mouthOpenLast = entity.getMouthOpenLast();
 		float mouthOpenReal = entity.getMouthOpen();
 		float mouthOpen = Mth.lerp(partialTicks, mouthOpenLast, mouthOpenReal);
-		head.xRot -= (float) (mouthOpen * (Math.PI / 12.0));
-		jaw.xRot = (float) (mouthOpen * (Math.PI / 3.0));
-	}
-
-	public void openMouthForTrophy(float mouthOpen) {
-		head.yRot = 0;
-		head.xRot = 0;
-
-		head.xRot -= (float) (mouthOpen * (Math.PI / 12.0));
-		jaw.xRot = (float) (mouthOpen * (Math.PI / 3.0));
+		this.head.xRot -= mouthOpen * (Mth.PI / 12.0F);
+		this.jaw.xRot = mouthOpen * (Mth.PI / 3.0F);
 	}
 
 	public float getRotationY(HydraPart whichHead, float time) {
-		//float yawOffset = hydra.prevRenderYawOffset + (hydra.renderYawOffset - hydra.prevRenderYawOffset) * time;
 		float yaw = whichHead.yRotO + (whichHead.getYRot() - whichHead.yRotO) * time;
 
-		return yaw / 57.29578F;
+		return yaw * Mth.DEG_TO_RAD;
 	}
 
 	public float getRotationX(HydraPart whichHead, float time) {
-		return (whichHead.xRotO + (whichHead.getXRot() - whichHead.xRotO) * time) / 57.29578F;
+		return (whichHead.xRotO + (whichHead.getXRot() - whichHead.xRotO) * time) * Mth.DEG_TO_RAD;
+	}
+
+	@Override
+	public void setupRotationsForTrophy(float x, float y, float z, float mouthAngle) {
+		this.head.yRot = y * Mth.DEG_TO_RAD;
+		this.head.xRot = z * Mth.DEG_TO_RAD;
+
+		this.head.xRot -= mouthAngle * (Mth.PI / 12.0F);
+		this.jaw.xRot = mouthAngle * (Mth.PI / 3.0F);
+	}
+
+	@Override
+	public void renderTrophy(PoseStack stack, MultiBufferSource buffer, int light, int overlay, int color, boolean itemForm) {
+		stack.scale(0.25F, 0.25F, 0.25F);
+		if (itemForm) stack.scale(0.9F, 0.9F, 0.9F);
+		stack.translate(0.0F, -1.0F, itemForm && !JappaPackReloadListener.INSTANCE.isJappaPackLoaded() ? -1.0F : 0.0F);
+		VertexConsumer consumer = buffer.getBuffer(RenderType.entityCutoutNoCull(HydraRenderer.TEXTURE));
+		this.head.render(stack, consumer, light, overlay, color);
 	}
 }

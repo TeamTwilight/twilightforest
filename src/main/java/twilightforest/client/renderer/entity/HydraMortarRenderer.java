@@ -17,22 +17,21 @@ import twilightforest.entity.boss.HydraMortar;
 
 public class HydraMortarRenderer extends EntityRenderer<HydraMortar> {
 
-	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("hydramortar.png");
+	private static final ResourceLocation TEXTURE = TwilightForestMod.getModelTexture("hydramortar.png");
 	private final HydraMortarModel mortarModel;
 
-	public HydraMortarRenderer(EntityRendererProvider.Context manager) {
-		super(manager);
+	public HydraMortarRenderer(EntityRendererProvider.Context context) {
+		super(context);
 		this.shadowRadius = 0.5F;
-		mortarModel = new HydraMortarModel(manager.bakeLayer(TFModelLayers.HYDRA_MORTAR));
+		this.mortarModel = new HydraMortarModel(context.bakeLayer(TFModelLayers.HYDRA_MORTAR));
 	}
 
 	@Override
-	public void render(HydraMortar mortar, float yaw, float partialTicks, PoseStack stack, MultiBufferSource buffers, int light) {
+	public void render(HydraMortar entity, float yaw, float partialTicks, PoseStack stack, MultiBufferSource buffers, int light) {
 		stack.pushPose();
-		float blink;
 		// [VanillaCopy] TNTRenderer
-		if (mortar.fuse - partialTicks + 1.0F < 10.0F) {
-			float f = 1.0F - (mortar.fuse - partialTicks + 1.0F) / 10.0F;
+		if (entity.fuse - partialTicks + 1.0F < 10.0F) {
+			float f = 1.0F - (entity.fuse - partialTicks + 1.0F) / 10.0F;
 			f = Mth.clamp(f, 0.0F, 1.0F);
 			f = f * f;
 			f = f * f;
@@ -40,14 +39,14 @@ public class HydraMortarRenderer extends EntityRenderer<HydraMortar> {
 			stack.scale(f1, f1, f1);
 		}
 
-		float alpha = (1.0F - (mortar.fuse - partialTicks + 1.0F) / 100.0F) * 0.8F;
+		float alpha = (1.0F - (entity.fuse - partialTicks + 1.0F) / 100.0F) * 0.8F;
 
-		VertexConsumer builder = buffers.getBuffer(mortarModel.renderType(textureLoc));
-		mortarModel.renderToBuffer(stack, builder, light, OverlayTexture.NO_OVERLAY, FastColor.ARGB32.colorFromFloat(0.075F, 1.0F, 1.0F, 1.0F));
+		VertexConsumer consumer = buffers.getBuffer(this.mortarModel.renderType(TEXTURE));
+		this.mortarModel.renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY, FastColor.ARGB32.colorFromFloat(0.075F, 1.0F, 1.0F, 1.0F));
 
-		if (mortar.fuse / 5 % 2 == 0) {
-			builder = buffers.getBuffer(RenderType.entityTranslucent(textureLoc));
-			mortarModel.renderToBuffer(stack, builder, light, OverlayTexture.pack(OverlayTexture.u(1), 10), FastColor.ARGB32.colorFromFloat(alpha, 1.0F, 1.0F, 1.0F));
+		if (entity.fuse / 5 % 2 == 0) {
+			consumer = buffers.getBuffer(RenderType.entityTranslucent(TEXTURE));
+			this.mortarModel.renderToBuffer(stack, consumer, light, OverlayTexture.pack(OverlayTexture.u(1.0F), 10), FastColor.ARGB32.colorFromFloat(alpha, 1.0F, 1.0F, 1.0F));
 		}
 
 		stack.popPose();
@@ -55,6 +54,6 @@ public class HydraMortarRenderer extends EntityRenderer<HydraMortar> {
 
 	@Override
 	public ResourceLocation getTextureLocation(HydraMortar entity) {
-		return textureLoc;
+		return TEXTURE;
 	}
 }

@@ -8,12 +8,13 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class RootStrandBlock extends TFPlantBlock {
+public class RootStrandBlock extends TFPlantBlock implements BonemealableBlock {
 
 	public static final MapCodec<RootStrandBlock> CODEC = simpleCodec(RootStrandBlock::new);
 	private static final VoxelShape ROOT_SHAPE = box(2, 0, 2, 14, 16, 14);
@@ -33,7 +34,6 @@ public class RootStrandBlock extends TFPlantBlock {
 	}
 
 	@Override
-	@Deprecated
 	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 		return ROOT_SHAPE;
 	}

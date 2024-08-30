@@ -15,8 +15,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import twilightforest.block.entity.GrowingBeanstalkBlockEntity;
 import twilightforest.init.TFBlockEntities;
 
-import javax.annotation.Nullable;
-
 public class GrowingBeanstalkBlock extends BaseEntityBlock {
 
 	public static final MapCodec<GrowingBeanstalkBlock> CODEC = simpleCodec(GrowingBeanstalkBlock::new);
@@ -46,13 +44,11 @@ public class GrowingBeanstalkBlock extends BaseEntityBlock {
 		return false;
 	}
 
-	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new GrowingBeanstalkBlockEntity(pos, state);
 	}
 
-	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
 		return createTickerHelper(type, TFBlockEntities.BEANSTALK_GROWER.get(), GrowingBeanstalkBlockEntity::tick);

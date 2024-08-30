@@ -31,11 +31,11 @@ import java.util.Map;
 
 public class WallSkullCandleBlock extends AbstractSkullCandleBlock {
 
+	public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 	public static final MapCodec<WallSkullCandleBlock> CODEC = RecordCodecBuilder.mapCodec(
 		instance -> instance.group(SkullBlock.Type.CODEC.fieldOf("kind").forGetter(AbstractSkullCandleBlock::getType), propertiesCodec())
 			.apply(instance, WallSkullCandleBlock::new)
 	);
-	public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 	//im not doing individual boxes for each candle per facing, the boxes get cut off since the heads are halfway up the wall, and that would be 16!! boxes to make. No thanks.
 	private static final Map<Direction, VoxelShape> AABBS = Maps.newEnumMap(ImmutableMap.of(
 		Direction.NORTH, Block.box(4.0D, 4.0D, 8.0D, 12.0D, 12.0D, 16.0D),
@@ -59,7 +59,6 @@ public class WallSkullCandleBlock extends AbstractSkullCandleBlock {
 		return Int2ObjectMaps.unmodifiable(var0);
 	});
 
-	@SuppressWarnings("this-escape")
 	public WallSkullCandleBlock(SkullBlock.Type type, Properties properties) {
 		super(type, properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH));
@@ -117,6 +116,7 @@ public class WallSkullCandleBlock extends AbstractSkullCandleBlock {
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public BlockState mirror(BlockState state, Mirror mirror) {
 		return state.rotate(mirror.getRotation(state.getValue(FACING)));
 	}

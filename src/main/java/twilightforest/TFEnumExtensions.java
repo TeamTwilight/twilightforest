@@ -4,21 +4,24 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Style;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.GrassColor;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSpecialEffects;
-import org.jetbrains.annotations.Nullable;
-import twilightforest.client.renderer.tileentity.JarRenderer;
+import twilightforest.beans.Autowired;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFSounds;
-import twilightforest.world.components.BiomeGrassColors;
+import twilightforest.util.ModidPrefixUtil;
+import twilightforest.world.components.BiomeColorAlgorithms;
 
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
 @SuppressWarnings("unused") // Referenced by enumextender.json
 public class TFEnumExtensions {
+
+	@Autowired
+	private static BiomeColorAlgorithms biomeColorAlgorithms;
+
+	private static final ModidPrefixUtil modidPrefixUtil = new ModidPrefixUtil(); // Enum extensions run before the bean context loads
 
 	/**
 	 * {@link net.minecraft.world.damagesource.DamageEffects}<p/>
@@ -27,7 +30,7 @@ public class TFEnumExtensions {
 	 */
 	public static Object DamageEffects_PINCH(int idx, Class<?> type) {
 		return type.cast(switch (idx) {
-			case 0 -> prefix("pinch");
+			case 0 -> modidPrefixUtil.stringPrefix("pinch");
 			case 1 -> TFSounds.PINCH_BEETLE_ATTACK;
 			default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
 		});
@@ -41,187 +44,233 @@ public class TFEnumExtensions {
 	public static Object Rarity_TWILIGHT(int idx, Class<?> type) {
 		return type.cast(switch (idx) {
 			case 0 -> -1;
-			case 1 -> prefix("twilight");
+			case 1 -> modidPrefixUtil.stringPrefix("twilight");
 			case 2 -> (UnaryOperator<Style>) style -> style.withColor(ChatFormatting.DARK_GREEN);
 			default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
 		});
 	}
 
 	/**
-	 * {@link BiomeGrassColors#ENCHANTED_FOREST}
+	 * {@link net.minecraft.world.level.biome.BiomeSpecialEffects.GrassColorModifier}<p/>
+	 *
+	 * {@link twilightforest.enums.extensions.TFGrassColorModifierEnumExtension#ENCHANTED_FOREST}
 	 */
-	public static Object enchantedForestBiomeGrassColor(int idx, Class<?> type) {
+	public static Object GrassColorModifier_ENCHANTED_FOREST(int idx, Class<?> type) {
 		return type.cast(switch (idx) {
-			case 0 -> prefix("enchanted_forest");
-			case 1 -> (BiomeSpecialEffects.GrassColorModifier.ColorModifier) (x, z, color) -> {
-				return (color & 0xFFFF00) + BiomeGrassColors.getEnchantedColor((int) x, (int) z); //TODO
-			};
+			case 0 -> modidPrefixUtil.stringPrefix("enchanted_forest");
+			case 1 -> (BiomeSpecialEffects.GrassColorModifier.ColorModifier) (x, z, color) -> biomeColorAlgorithms.enchanted(color, (int) x, (int) z);
 			default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
 		});
 	}
 
 	/**
-	 * {@link BiomeGrassColors#SWAMP}
+	 * {@link net.minecraft.world.level.biome.BiomeSpecialEffects.GrassColorModifier}<p/>
+	 *
+	 * {@link twilightforest.enums.extensions.TFGrassColorModifierEnumExtension#SWAMP}
 	 */
-	// FIXME Flat color, resolve
-	public static Object swampBiomeGrassColor(int idx, Class<?> type) {
+	public static Object GrassColorModifier_SWAMP(int idx, Class<?> type) {
 		return type.cast(switch (idx) {
-			case 0 -> prefix("swamp");
-			case 1 -> (BiomeSpecialEffects.GrassColorModifier.ColorModifier) (x, z, color) -> ((GrassColor.get(0.8F, 0.9F) & 0xFEFEFE) + 0x4E0E4E) / 2;
+			case 0 -> modidPrefixUtil.stringPrefix("swamp");
+			case 1 -> (BiomeSpecialEffects.GrassColorModifier.ColorModifier) (x, z, color) -> biomeColorAlgorithms.swamp(BiomeColorAlgorithms.Type.Grass);
 			default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
 		});
 	}
 
 	/**
-	 * {@link BiomeGrassColors#DARK_FOREST}
+	 * {@link net.minecraft.world.level.biome.BiomeSpecialEffects.GrassColorModifier}<p/>
+	 *
+	 * {@link twilightforest.enums.extensions.TFGrassColorModifierEnumExtension#DARK_FOREST}
 	 */
-	// FIXME Flat color, resolve
-	public static Object darkForestBiomeGrassColor(int idx, Class<?> type) {
+	public static Object GrassColorModifier_DARK_FOREST(int idx, Class<?> type) {
 		return type.cast(switch (idx) {
-			case 0 -> prefix("dark_forest");
-			case 1 -> (BiomeSpecialEffects.GrassColorModifier.ColorModifier) (x, z, color) -> ((GrassColor.get(0.7F, 0.8F) & 0xFEFEFE) + 0x1E0E4E) / 2;
+			case 0 -> modidPrefixUtil.stringPrefix("dark_forest");
+			case 1 -> (BiomeSpecialEffects.GrassColorModifier.ColorModifier) (x, z, color) -> biomeColorAlgorithms.darkForest(BiomeColorAlgorithms.Type.Grass);
 			default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
 		});
 	}
 
 	/**
-	 * {@link BiomeGrassColors#DARK_FOREST_CENTER}
+	 * {@link net.minecraft.world.level.biome.BiomeSpecialEffects.GrassColorModifier}<p/>
+	 *
+	 * {@link twilightforest.enums.extensions.TFGrassColorModifierEnumExtension#DARK_FOREST_CENTER}
 	 */
-	public static Object darkForestCenterBiomeGrassColor(int idx, Class<?> type) {
+	public static Object GrassColorModifier_DARK_FOREST_CENTER(int idx, Class<?> type) {
 		return type.cast(switch (idx) {
-			case 0 -> prefix("dark_forest_center");
-			case 1 -> (BiomeSpecialEffects.GrassColorModifier.ColorModifier) (x, z, color) -> {
-				double d0 = Biome.TEMPERATURE_NOISE.getValue(x * 0.0225D, z * 0.0225D, false); //TODO: Check
-				return d0 < -0.2D ? 0x667540 : 0x554114;
-			};
+			case 0 -> modidPrefixUtil.stringPrefix("dark_forest_center");
+			case 1 -> (BiomeSpecialEffects.GrassColorModifier.ColorModifier) (x, z, color) -> biomeColorAlgorithms.darkForestCenterGrass(x, z);
 			default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
 		});
 	}
 
 	/**
-	 * {@link BiomeGrassColors#SPOOKY_FOREST}
+	 * {@link net.minecraft.world.level.biome.BiomeSpecialEffects.GrassColorModifier}<p/>
+	 *
+	 * {@link twilightforest.enums.extensions.TFGrassColorModifierEnumExtension#SPOOKY_FOREST}
 	 */
-	public static Object spookyBiomeGrassColor(int idx, Class<?> type) {
+	public static Object GrassColorModifier_SPOOKY_FOREST(int idx, Class<?> type) {
 		return type.cast(switch (idx) {
-			case 0 -> prefix("spooky_forest");
-			case 1 -> (BiomeSpecialEffects.GrassColorModifier.ColorModifier) (x, z, color) -> {
-				double noise = (Biome.TEMPERATURE_NOISE.getValue(x * 0.0225D, z * 0.0225D, false) + 1D) / 2D;
-				return BiomeGrassColors.blendColors(0xc43323, 0x5BC423, noise > 0.6D ? noise * 0.1D : noise);
-			};
+			case 0 -> modidPrefixUtil.stringPrefix("spooky_forest");
+			case 1 -> (BiomeSpecialEffects.GrassColorModifier.ColorModifier) (x, z, color) -> biomeColorAlgorithms.spookyGrass(x, z);
 			default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
 		});
 	}
 
 	/**
-	 * {@link JarRenderer.MasonJarRenderer#JARRED}
+	 * {@link net.minecraft.world.item.ItemDisplayContext}<p/>
+	 *
+	 * {@link twilightforest.enums.extensions.TFItemDisplayContextEnumExtension#JARRED}
 	 */
-	@Nullable
-	public static Object jarred(int idx, Class<?> type) {
+	public static Object ItemDisplayContext_JARRED(int idx, Class<?> type) {
 		return type.cast(switch (idx) {
 			case 0 -> -1;
-			case 1 -> prefix("jarred");
+			case 1 -> modidPrefixUtil.stringPrefix("jarred");
 			case 2 -> "FIXED";
 			default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
 		});
 	}
 
-	public static Object twilightOakBoat(int idx, Class<?> type) {
-		return switch (idx) {
-			case 0 -> type.cast(TFBlocks.TWILIGHT_OAK_PLANKS);
-			case 1 -> type.cast("twilightforest:twilight_oak");
-			case 2 -> type.cast(TFItems.TWILIGHT_OAK_BOAT);
-			case 3 -> type.cast(TFItems.TWILIGHT_OAK_CHEST_BOAT);
-			case 4 -> type.cast((Supplier<Item>) () -> Items.STICK);
-			case 5 -> false;
+	/**
+	 * {@link net.minecraft.world.entity.vehicle.Boat.Type}<p/>
+	 *
+	 * {@link twilightforest.enums.extensions.TFBoatTypeEnumExtension#TWILIGHT_OAK}
+	 */
+	public static Object Boat$Type_TWILIGHT_OAK(int idx, Class<?> type) {
+		if (idx == 5) // Lazy away around boxing the boolean
+			return false;
+		return type.cast(switch (idx) {
+			case 0 -> TFBlocks.TWILIGHT_OAK_PLANKS;
+			case 1 -> modidPrefixUtil.stringPrefix("twilight_oak");
+			case 2 -> TFItems.TWILIGHT_OAK_BOAT;
+			case 3 -> TFItems.TWILIGHT_OAK_CHEST_BOAT;
+			case 4 -> (Supplier<Item>) () -> Items.STICK;
 			default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
-		};
+		});
 	}
 
-	public static Object canopyBoat(int idx, Class<?> type) {
-		return switch (idx) {
-			case 0 -> type.cast(TFBlocks.CANOPY_PLANKS);
-			case 1 -> type.cast("twilightforest:canopy");
-			case 2 -> type.cast(TFItems.CANOPY_BOAT);
-			case 3 -> type.cast(TFItems.CANOPY_CHEST_BOAT);
-			case 4 -> type.cast((Supplier<Item>) () -> Items.STICK);
-			case 5 -> false;
+	/**
+	 * {@link net.minecraft.world.entity.vehicle.Boat.Type}<p/>
+	 *
+	 * {@link twilightforest.enums.extensions.TFBoatTypeEnumExtension#CANOPY}
+	 */
+	public static Object Boat$Type_CANOPY(int idx, Class<?> type) {
+		if (idx == 5) // Lazy away around boxing the boolean
+			return false;
+		return type.cast(switch (idx) {
+			case 0 -> TFBlocks.CANOPY_PLANKS;
+			case 1 -> modidPrefixUtil.stringPrefix("canopy");
+			case 2 -> TFItems.CANOPY_BOAT;
+			case 3 -> TFItems.CANOPY_CHEST_BOAT;
+			case 4 -> (Supplier<Item>) () -> Items.STICK;
 			default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
-		};
+		});
 	}
 
-	public static Object mangroveBoat(int idx, Class<?> type) {
-		return switch (idx) {
-			case 0 -> type.cast(TFBlocks.MANGROVE_PLANKS);
-			case 1 -> type.cast("twilightforest:mangrove");
-			case 2 -> type.cast(TFItems.MANGROVE_BOAT);
-			case 3 -> type.cast(TFItems.MANGROVE_CHEST_BOAT);
-			case 4 -> type.cast((Supplier<Item>) () -> Items.STICK);
-			case 5 -> false;
+	/**
+	 * {@link net.minecraft.world.entity.vehicle.Boat.Type}<p/>
+	 *
+	 * {@link twilightforest.enums.extensions.TFBoatTypeEnumExtension#MANGROVE}
+	 */
+	public static Object Boat$Type_MANGROVE(int idx, Class<?> type) {
+		if (idx == 5) // Lazy away around boxing the boolean
+			return false;
+		return type.cast(switch (idx) {
+			case 0 -> TFBlocks.MANGROVE_PLANKS;
+			case 1 -> modidPrefixUtil.stringPrefix("mangrove");
+			case 2 -> TFItems.MANGROVE_BOAT;
+			case 3 -> TFItems.MANGROVE_CHEST_BOAT;
+			case 4 -> (Supplier<Item>) () -> Items.STICK;
 			default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
-		};
+		});
 	}
 
-	public static Object darkBoat(int idx, Class<?> type) {
-		return switch (idx) {
-			case 0 -> type.cast(TFBlocks.DARK_PLANKS);
-			case 1 -> type.cast("twilightforest:dark");
-			case 2 -> type.cast(TFItems.DARK_BOAT);
-			case 3 -> type.cast(TFItems.DARK_CHEST_BOAT);
-			case 4 -> type.cast((Supplier<Item>) () -> Items.STICK);
-			case 5 -> false;
+	/**
+	 * {@link net.minecraft.world.entity.vehicle.Boat.Type}<p/>
+	 *
+	 * {@link twilightforest.enums.extensions.TFBoatTypeEnumExtension#DARK}
+	 */
+	public static Object Boat$Type_DARK(int idx, Class<?> type) {
+		if (idx == 5) // Lazy away around boxing the boolean
+			return false;
+		return type.cast(switch (idx) {
+			case 0 -> TFBlocks.DARK_PLANKS;
+			case 1 -> modidPrefixUtil.stringPrefix("dark");
+			case 2 -> TFItems.DARK_BOAT;
+			case 3 -> TFItems.DARK_CHEST_BOAT;
+			case 4 -> (Supplier<Item>) () -> Items.STICK;
 			default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
-		};
+		});
 	}
 
-	public static Object timeBoat(int idx, Class<?> type) {
-		return switch (idx) {
-			case 0 -> type.cast(TFBlocks.TIME_PLANKS);
-			case 1 -> type.cast("twilightforest:time");
-			case 2 -> type.cast(TFItems.TIME_BOAT);
-			case 3 -> type.cast(TFItems.TIME_CHEST_BOAT);
-			case 4 -> type.cast((Supplier<Item>) () -> Items.STICK);
-			case 5 -> false;
+	/**
+	 * {@link net.minecraft.world.entity.vehicle.Boat.Type}<p/>
+	 *
+	 * {@link twilightforest.enums.extensions.TFBoatTypeEnumExtension#TIME}
+	 */
+	public static Object Boat$Type_TIME(int idx, Class<?> type) {
+		if (idx == 5) // Lazy away around boxing the boolean
+			return false;
+		return type.cast(switch (idx) {
+			case 0 -> TFBlocks.TIME_PLANKS;
+			case 1 -> modidPrefixUtil.stringPrefix("time");
+			case 2 -> TFItems.TIME_BOAT;
+			case 3 -> TFItems.TIME_CHEST_BOAT;
+			case 4 -> (Supplier<Item>) () -> Items.STICK;
 			default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
-		};
+		});
 	}
 
-	public static Object transformationBoat(int idx, Class<?> type) {
-		return switch (idx) {
-			case 0 -> type.cast(TFBlocks.TRANSFORMATION_PLANKS);
-			case 1 -> type.cast("twilightforest:transformation");
-			case 2 -> type.cast(TFItems.TRANSFORMATION_BOAT);
-			case 3 -> type.cast(TFItems.TRANSFORMATION_CHEST_BOAT);
-			case 4 -> type.cast((Supplier<Item>) () -> Items.STICK);
-			case 5 -> false;
+	/**
+	 * {@link net.minecraft.world.entity.vehicle.Boat.Type}<p/>
+	 *
+	 * {@link twilightforest.enums.extensions.TFBoatTypeEnumExtension#TRANSFORMATION}
+	 */
+	public static Object Boat$Type_TRANSFORMATION(int idx, Class<?> type) {
+		if (idx == 5) // Lazy away around boxing the boolean
+			return false;
+		return type.cast(switch (idx) {
+			case 0 -> TFBlocks.TRANSFORMATION_PLANKS;
+			case 1 -> modidPrefixUtil.stringPrefix("transformation");
+			case 2 -> TFItems.TRANSFORMATION_BOAT;
+			case 3 -> TFItems.TRANSFORMATION_CHEST_BOAT;
+			case 4 -> (Supplier<Item>) () -> Items.STICK;
 			default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
-		};
+		});
 	}
 
-	public static Object miningBoat(int idx, Class<?> type) {
-		return switch (idx) {
-			case 0 -> type.cast(TFBlocks.MINING_PLANKS);
-			case 1 -> type.cast("twilightforest:mining");
-			case 2 -> type.cast(TFItems.MINING_BOAT);
-			case 3 -> type.cast(TFItems.MINING_CHEST_BOAT);
-			case 4 -> type.cast((Supplier<Item>) () -> Items.STICK);
-			case 5 -> false;
+	/**
+	 * {@link net.minecraft.world.entity.vehicle.Boat.Type}<p/>
+	 *
+	 * {@link twilightforest.enums.extensions.TFBoatTypeEnumExtension#MINING}
+	 */
+	public static Object Boat$Type_MINING(int idx, Class<?> type) {
+		if (idx == 5) // Lazy away around boxing the boolean
+			return false;
+		return type.cast(switch (idx) {
+			case 0 -> TFBlocks.MINING_PLANKS;
+			case 1 -> modidPrefixUtil.stringPrefix("mining");
+			case 2 -> TFItems.MINING_BOAT;
+			case 3 -> TFItems.MINING_CHEST_BOAT;
+			case 4 -> (Supplier<Item>) () -> Items.STICK;
 			default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
-		};
+		});
 	}
 
-	public static Object sortingBoat(int idx, Class<?> type) {
-		return switch (idx) {
-			case 0 -> type.cast(TFBlocks.SORTING_PLANKS);
-			case 1 -> type.cast("twilightforest:sorting");
-			case 2 -> type.cast(TFItems.SORTING_BOAT);
-			case 3 -> type.cast(TFItems.SORTING_CHEST_BOAT);
-			case 4 -> type.cast((Supplier<Item>) () -> Items.STICK);
-			case 5 -> false;
+	/**
+	 * {@link net.minecraft.world.entity.vehicle.Boat.Type}<p/>
+	 *
+	 * {@link twilightforest.enums.extensions.TFBoatTypeEnumExtension#SORTING}
+	 */
+	public static Object Boat$Type_SORTING(int idx, Class<?> type) {
+		if (idx == 5) // Lazy away around boxing the boolean
+			return false;
+		return type.cast(switch (idx) {
+			case 0 -> TFBlocks.SORTING_PLANKS;
+			case 1 -> modidPrefixUtil.stringPrefix("sorting");
+			case 2 -> TFItems.SORTING_BOAT;
+			case 3 -> TFItems.SORTING_CHEST_BOAT;
+			case 4 -> (Supplier<Item>) () -> Items.STICK;
 			default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
-		};
+		});
 	}
 
-	private static String prefix(String id) {
-		return TwilightForestMod.ID + ":" + id;
-	}
 }

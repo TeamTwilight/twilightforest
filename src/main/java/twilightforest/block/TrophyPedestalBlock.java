@@ -23,7 +23,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFAdvancements;
@@ -48,7 +47,6 @@ public class TrophyPedestalBlock extends Block implements SimpleWaterloggedBlock
 
 	private static final VoxelShape FINAL = Shapes.or(BOTTOM, MID, TOP, CORNER1, CORNER2, CORNER3, CORNER4);
 
-	@SuppressWarnings("this-escape")
 	public TrophyPedestalBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(ACTIVE, false).setValue(WATERLOGGED, false));
@@ -59,7 +57,6 @@ public class TrophyPedestalBlock extends Block implements SimpleWaterloggedBlock
 		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
 	}
 
-	@Nullable
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
@@ -78,19 +75,16 @@ public class TrophyPedestalBlock extends Block implements SimpleWaterloggedBlock
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		super.createBlockStateDefinition(builder);
 		builder.add(ACTIVE, WATERLOGGED);
 	}
 
 	@Override
-	@Deprecated
 	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 		return FINAL;
 	}
 
 	@Override
-	@Deprecated
-	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
+	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
 		level.updateNeighbourForOutputSignal(pos, this);
 		if (level.isClientSide() || state.getValue(ACTIVE) || !isTrophyOnTop(level, pos)) return;
 
@@ -152,16 +146,19 @@ public class TrophyPedestalBlock extends Block implements SimpleWaterloggedBlock
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public float getDestroyProgress(BlockState state, Player player, BlockGetter getter, BlockPos pos) {
 		return state.getValue(ACTIVE) ? super.getDestroyProgress(state, player, getter, pos) : -1;
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public boolean hasAnalogOutputSignal(BlockState state) {
 		return true;
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos pos) {
 		Block trophy = level.getBlockState(pos.above()).getBlock();
 		if (trophy instanceof TrophyBlock value) {

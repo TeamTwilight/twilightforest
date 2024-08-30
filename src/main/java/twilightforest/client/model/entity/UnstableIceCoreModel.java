@@ -16,8 +16,8 @@ import twilightforest.entity.monster.BaseIceMob;
 
 public class UnstableIceCoreModel<T extends BaseIceMob> extends HierarchicalModel<T> {
 
-	public final ModelPart[] spikes = new ModelPart[16];
-	public final ModelPart[] cubes = new ModelPart[16];
+	protected final ModelPart[] spikes = new ModelPart[16];
+	protected final ModelPart[] cubes = new ModelPart[16];
 
 	private final ModelPart root;
 	protected boolean alive;
@@ -26,39 +26,39 @@ public class UnstableIceCoreModel<T extends BaseIceMob> extends HierarchicalMode
 		super(RenderType::entityTranslucent);
 		this.root = root;
 
-		for (int i = 0; i < spikes.length; i++) {
+		for (int i = 0; i < this.spikes.length; i++) {
 			this.spikes[i] = root.getChild("spike_" + i);
 		}
 
-		for (int i = 0; i < cubes.length; i++) {
-			this.cubes[i] = spikes[i].getChild("cube_" + i);
+		for (int i = 0; i < this.cubes.length; i++) {
+			this.cubes[i] = this.spikes[i].getChild("cube_" + i);
 		}
 	}
 
 	public static LayerDefinition create() {
-		MeshDefinition mesh = new MeshDefinition();
-		PartDefinition definition = mesh.getRoot();
+		MeshDefinition meshdefinition = new MeshDefinition();
+		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		definition.addOrReplaceChild("head", CubeListBuilder.create()
+		partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
 				.texOffs(0, 0)
 				.addBox(-4.0F, 0.0F, -4.0F, 8.0F, 8.0F, 8.0F),
 			PartPose.ZERO);
 
 		for (int i = 0; i < 16; i++) {
-			int spikeLength = i % 2 == 0 ? 6 : 8;
+			float spikeLength = i % 2 == 0 ? 6.0F : 8.0F;
 
-			var spike = definition.addOrReplaceChild("spike_" + i, CubeListBuilder.create()
+			var spike = partdefinition.addOrReplaceChild("spike_" + i, CubeListBuilder.create()
 					.texOffs(0, 16)
-					.addBox(-1.0F, 4.0F, -1.0F, 2, spikeLength, 2),
+					.addBox(-1.0F, 4.0F, -1.0F, 2.0F, spikeLength, 2.0F),
 				PartPose.offset(0.0F, 4.0F, 0.0F));
 
 			spike.addOrReplaceChild("cube_" + i, CubeListBuilder.create()
 					.texOffs(8, 16)
-					.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3),
+					.addBox(-1.5F, -1.5F, -1.5F, 3.0F, 3.0F, 3.0F),
 				PartPose.offsetAndRotation(0.0F, 8.0F, 0.0F, 0.0F, 0.0F, Mth.PI / 4.0F));
 		}
 
-		return LayerDefinition.create(mesh, 32, 32);
+		return LayerDefinition.create(meshdefinition, 32, 32);
 	}
 
 	@Override
@@ -72,7 +72,7 @@ public class UnstableIceCoreModel<T extends BaseIceMob> extends HierarchicalMode
 	}
 
 	@Override
-	public void setupAnim(T t, float v, float v1, float v2, float v3, float v4) {
+	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 
 	}
 
@@ -86,15 +86,15 @@ public class UnstableIceCoreModel<T extends BaseIceMob> extends HierarchicalMode
 			this.spikes[i].xRot = Mth.sin((entity.tickCount + partialTicks) / 5.0F) / 4.0F;
 			this.spikes[i].zRot = Mth.cos((entity.tickCount + partialTicks) / 5.0F) / 4.0F;
 
-			this.spikes[i].xRot += i * 5;
-			this.spikes[i].yRot += i * 2.5f;
-			this.spikes[i].zRot += i * 3;
+			this.spikes[i].xRot += i * 5.0F;
+			this.spikes[i].yRot += i * 2.5F;
+			this.spikes[i].zRot += i * 3.0F;
 
-			this.spikes[i].x = Mth.cos((entity.tickCount + partialTicks) / i) * 3F;
-			this.spikes[i].y = 5F + Mth.sin((entity.tickCount + partialTicks) / i) * 3F;
-			this.spikes[i].z = Mth.sin((entity.tickCount + partialTicks) / i) * 3F;
+			this.spikes[i].x = Mth.cos((entity.tickCount + partialTicks) / i) * 3.0F;
+			this.spikes[i].y = 5.0F + Mth.sin((entity.tickCount + partialTicks) / i) * 3.0F;
+			this.spikes[i].z = Mth.sin((entity.tickCount + partialTicks) / i) * 3.0F;
 
-			this.cubes[i].y = 10 + Mth.sin((i + entity.tickCount + partialTicks) / i) * 3F;
+			this.cubes[i].y = 10.0F + Mth.sin((i + entity.tickCount + partialTicks) / i) * 3.0F;
 		}
 	}
 }

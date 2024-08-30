@@ -14,6 +14,7 @@ public class AuroraBrickBlock extends Block {
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public float getDestroyProgress(BlockState state, Player player, BlockGetter getter, BlockPos pos) {
 		return PlayerHelper.doesPlayerHaveRequiredAdvancements(player, TwilightForestMod.prefix("progress_glacier")) ? 0.1F : super.getDestroyProgress(state, player, getter, pos);
 	}

@@ -6,14 +6,15 @@ import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.entity.monster.TowerwoodBorer;
 import twilightforest.init.TFEntities;
 
-public class InfestedTowerwoodBlock extends FlammableBlock {
+public class InfestedTowerwoodBlock extends Block {
 
-	public InfestedTowerwoodBlock(int flammability, int spreadSpeed, Properties properties) {
-		super(flammability, spreadSpeed, properties);
+	public InfestedTowerwoodBlock(Properties properties) {
+		super(properties);
 	}
 
 	@Override

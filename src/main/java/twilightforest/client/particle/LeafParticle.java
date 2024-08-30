@@ -1,14 +1,12 @@
 package twilightforest.client.particle;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Quaternionf;
-import org.joml.Vector3f;
 import twilightforest.client.particle.data.LeafParticleData;
 
 public class LeafParticle extends TextureSheetParticle {
@@ -98,7 +96,7 @@ public class LeafParticle extends TextureSheetParticle {
 		@Override
 		public Particle createParticle(LeafParticleData data, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
 			LeafParticle particle = new LeafParticle(level, x, y, z, xSpeed, ySpeed, zSpeed);
-			particle.setColor(data.r / 255.0F, data.g / 255.0F, data.b / 255.0F);
+			particle.setColor(data.r() / 255.0F, data.g() / 255.0F, data.b() / 255.0F);
 			particle.pickSprite(this.sprite);
 			return particle;
 		}

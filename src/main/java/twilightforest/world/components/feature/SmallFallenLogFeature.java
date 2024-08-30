@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.block.HollowLogHorizontal;
+import twilightforest.block.HorizontalHollowLogBlock;
 import twilightforest.enums.HollowLogVariants;
 import twilightforest.init.TFBlocks;
 import twilightforest.util.features.FeatureUtil;
@@ -74,8 +74,8 @@ public class SmallFallenLogFeature extends Feature<HollowLogConfig> {
 		if (goingX) {
 			logState = logState.setValue(RotatedPillarBlock.AXIS, Direction.Axis.X);
 			if (hollowLogState != null) {
-				hollowLogState = hollowLogState.setValue(HollowLogHorizontal.HORIZONTAL_AXIS, Direction.Axis.X)
-					.setValue(HollowLogHorizontal.VARIANT, determineHollowProperties(world, pos, rand));
+				hollowLogState = hollowLogState.setValue(HorizontalHollowLogBlock.HORIZONTAL_AXIS, Direction.Axis.X)
+					.setValue(HorizontalHollowLogBlock.VARIANT, determineHollowProperties(world, pos, rand));
 			}
 			branchState = logState.setValue(RotatedPillarBlock.AXIS, Direction.Axis.Z);
 
@@ -89,8 +89,8 @@ public class SmallFallenLogFeature extends Feature<HollowLogConfig> {
 		} else {
 			logState = logState.setValue(RotatedPillarBlock.AXIS, Direction.Axis.Z);
 			if (hollowLogState != null) {
-				hollowLogState = hollowLogState.setValue(HollowLogHorizontal.HORIZONTAL_AXIS, Direction.Axis.Z)
-					.setValue(HollowLogHorizontal.VARIANT, determineHollowProperties(world, pos, rand));
+				hollowLogState = hollowLogState.setValue(HorizontalHollowLogBlock.HORIZONTAL_AXIS, Direction.Axis.Z)
+					.setValue(HorizontalHollowLogBlock.VARIANT, determineHollowProperties(world, pos, rand));
 			}
 			branchState = logState.setValue(RotatedPillarBlock.AXIS, Direction.Axis.X);
 

@@ -12,7 +12,11 @@ import net.minecraft.util.Mth;
 import twilightforest.entity.projectile.CubeOfAnnihilation;
 
 public class CubeOfAnnihilationModel extends ListModel<CubeOfAnnihilation> {
-	private final ModelPart box, boxX, boxY, boxZ;
+
+	private final ModelPart box;
+	private final ModelPart boxX;
+	private final ModelPart boxY;
+	private final ModelPart boxZ;
 
 	public CubeOfAnnihilationModel(ModelPart root) {
 		this.box = root.getChild("box");
@@ -22,47 +26,42 @@ public class CubeOfAnnihilationModel extends ListModel<CubeOfAnnihilation> {
 	}
 
 	public static LayerDefinition create() {
-		MeshDefinition mesh = new MeshDefinition();
-		PartDefinition definition = mesh.getRoot();
+		MeshDefinition meshdefinition = new MeshDefinition();
+		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		definition.addOrReplaceChild("box", CubeListBuilder.create()
+		partdefinition.addOrReplaceChild("box", CubeListBuilder.create()
 				.texOffs(0, 0)
-				.addBox(-8F, -8F, -8F, 16, 16, 16),
+				.addBox(-8.0F, -8.0F, -8.0F, 16.0F, 16.0F, 16.0F),
 			PartPose.ZERO);
 
-		definition.addOrReplaceChild("box_x", CubeListBuilder.create()
+		partdefinition.addOrReplaceChild("box_x", CubeListBuilder.create()
 				.texOffs(0, 32)
-				.addBox(-8F, -8F, -8F, 16, 16, 16),
+				.addBox(-8.0F, -8.0F, -8.0F, 16.0F, 16.0F, 16.0F),
 			PartPose.ZERO);
 
-		definition.addOrReplaceChild("box_y", CubeListBuilder.create()
+		partdefinition.addOrReplaceChild("box_y", CubeListBuilder.create()
 				.texOffs(0, 32)
-				.addBox(-8F, -8F, -8F, 16, 16, 16),
+				.addBox(-8.0F, -8.0F, -8.0F, 16.0F, 16.0F, 16.0F),
 			PartPose.ZERO);
 
-		definition.addOrReplaceChild("box_z", CubeListBuilder.create()
+		partdefinition.addOrReplaceChild("box_z", CubeListBuilder.create()
 				.texOffs(0, 32)
-				.addBox(-8F, -8F, -8F, 16, 16, 16),
+				.addBox(-8.0F, -8.0F, -8.0F, 16.0F, 16.0F, 16.0F),
 			PartPose.ZERO);
 
 
-		return LayerDefinition.create(mesh, 64, 64);
+		return LayerDefinition.create(meshdefinition, 64, 64);
 	}
 
 	@Override
 	public Iterable<ModelPart> parts() {
-		return ImmutableList.of(
-			this.box,
-			this.boxX,
-			this.boxY,
-			this.boxZ
-		);
+		return ImmutableList.of(this.box, this.boxX, this.boxY, this.boxZ);
 	}
 
 	@Override
 	public void setupAnim(CubeOfAnnihilation entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		this.boxX.xRot = Mth.sin((entity.tickCount + headPitch)) / 5F;
-		this.boxY.yRot = Mth.sin((entity.tickCount + headPitch)) / 5F;
-		this.boxZ.zRot = Mth.sin((entity.tickCount + headPitch)) / 5F;
+		this.boxX.xRot = Mth.sin((entity.tickCount + headPitch)) / 5.0F;
+		this.boxY.yRot = Mth.sin((entity.tickCount + headPitch)) / 5.0F;
+		this.boxZ.zRot = Mth.sin((entity.tickCount + headPitch)) / 5.0F;
 	}
 }

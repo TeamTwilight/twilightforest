@@ -36,7 +36,7 @@ public class HollowLogVerticalTests {
 	private DirectionUtil directionUtil;
 
 	@InjectMocks
-	private HollowLogVertical instance;
+	private VerticalHollowLogBlock instance;
 
 	@BeforeEach
 	public void setup() {
@@ -102,8 +102,8 @@ public class HollowLogVerticalTests {
 		verify(stack, times(1)).is(Blocks.VINE.asItem());
 		ArgumentCaptor<BlockState> climbable = ArgumentCaptor.captor();
 		verify(level, times(1)).setBlock(eq(BlockPos.ZERO), climbable.capture(), eq(3));
-		assertSame(HollowLogVariants.Climbable.VINE, climbable.getValue().getValue(HollowLogClimbable.VARIANT));
-		assertSame(Direction.NORTH, climbable.getValue().getValue(HollowLogClimbable.FACING));
+		assertSame(HollowLogVariants.Climbable.VINE, climbable.getValue().getValue(ClimbableHollowLogBlock.VARIANT));
+		assertSame(Direction.NORTH, climbable.getValue().getValue(ClimbableHollowLogBlock.FACING));
 		verify(level, times(1)).playSound(null, BlockPos.ZERO, SoundEvents.VINE_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
 		verify(stack, times(1)).consume(1, player);
 
@@ -122,7 +122,7 @@ public class HollowLogVerticalTests {
 		when(stack.is(Blocks.VINE.asItem())).thenReturn(false);
 		when(stack.is(Blocks.LADDER.asItem())).thenReturn(true);
 
-		when(state.getValue(HollowLogVertical.WATERLOGGED)).thenReturn(false);
+		when(state.getValue(VerticalHollowLogBlock.WATERLOGGED)).thenReturn(false);
 		when(hitResult.getDirection()).thenReturn(Direction.NORTH);
 		when(player.getDirection()).thenReturn(Direction.NORTH);
 		when(directionUtil.horizontalOrElse(any(Direction.class), any(Direction.class))).thenReturn(Direction.NORTH);
@@ -136,8 +136,8 @@ public class HollowLogVerticalTests {
 		verify(stack, times(1)).is(Blocks.LADDER.asItem());
 		ArgumentCaptor<BlockState> climbable = ArgumentCaptor.captor();
 		verify(level, times(1)).setBlock(eq(BlockPos.ZERO), climbable.capture(), eq(3));
-		assertSame(HollowLogVariants.Climbable.LADDER, climbable.getValue().getValue(HollowLogClimbable.VARIANT));
-		assertSame(Direction.NORTH, climbable.getValue().getValue(HollowLogClimbable.FACING));
+		assertSame(HollowLogVariants.Climbable.LADDER, climbable.getValue().getValue(ClimbableHollowLogBlock.VARIANT));
+		assertSame(Direction.NORTH, climbable.getValue().getValue(ClimbableHollowLogBlock.FACING));
 		verify(level, times(1)).playSound(null, BlockPos.ZERO, SoundEvents.LADDER_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
 		verify(stack, times(1)).consume(1, player);
 	}
@@ -154,7 +154,7 @@ public class HollowLogVerticalTests {
 		when(stack.is(Blocks.VINE.asItem())).thenReturn(false);
 		when(stack.is(Blocks.LADDER.asItem())).thenReturn(true);
 
-		when(state.getValue(HollowLogVertical.WATERLOGGED)).thenReturn(true);
+		when(state.getValue(VerticalHollowLogBlock.WATERLOGGED)).thenReturn(true);
 		when(hitResult.getDirection()).thenReturn(Direction.NORTH);
 		when(player.getDirection()).thenReturn(Direction.NORTH);
 		when(directionUtil.horizontalOrElse(any(Direction.class), any(Direction.class))).thenReturn(Direction.NORTH);
@@ -168,8 +168,8 @@ public class HollowLogVerticalTests {
 		verify(stack, times(1)).is(Blocks.LADDER.asItem());
 		ArgumentCaptor<BlockState> climbable = ArgumentCaptor.captor();
 		verify(level, times(1)).setBlock(eq(BlockPos.ZERO), climbable.capture(), eq(3));
-		assertSame(HollowLogVariants.Climbable.LADDER_WATERLOGGED, climbable.getValue().getValue(HollowLogClimbable.VARIANT));
-		assertSame(Direction.NORTH, climbable.getValue().getValue(HollowLogClimbable.FACING));
+		assertSame(HollowLogVariants.Climbable.LADDER_WATERLOGGED, climbable.getValue().getValue(ClimbableHollowLogBlock.VARIANT));
+		assertSame(Direction.NORTH, climbable.getValue().getValue(ClimbableHollowLogBlock.FACING));
 		verify(level, times(1)).playSound(null, BlockPos.ZERO, SoundEvents.LADDER_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
 		verify(stack, times(1)).consume(1, player);
 	}

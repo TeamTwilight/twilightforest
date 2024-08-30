@@ -156,4 +156,15 @@ public record ColorUtil(Function<DyeColor, Block> function) {
 	static <K, V> Map.Entry<K, V> entryOf(K key, V value) {
 		return new AbstractMap.SimpleImmutableEntry<>(key, value);
 	}
+
+	public static int blendColors(int a, int b, double ratio) {
+		int mask1 = 0x00FF00FF;
+		int mask2 = 0xFF00FF00;
+
+		int f2 = (int) (256 * ratio);
+		int f1 = 256 - f2;
+
+		return (((((a & mask1) * f1) + ((b & mask1) * f2)) >> 8) & mask1)
+			| (((((a & mask2) * f1) + ((b & mask2) * f2)) >> 8) & mask2);
+	}
 }

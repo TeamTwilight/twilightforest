@@ -16,33 +16,33 @@ import twilightforest.entity.projectile.MoonwormShot;
 
 public class MoonwormShotRenderer extends EntityRenderer<MoonwormShot> {
 
-	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("moonworm.png");
+	private static final ResourceLocation TEXTURE = TwilightForestMod.getModelTexture("moonworm.png");
 	private final MoonwormModel wormModel;
 
-	public MoonwormShotRenderer(EntityRendererProvider.Context manager) {
-		super(manager);
+	public MoonwormShotRenderer(EntityRendererProvider.Context context) {
+		super(context);
 		this.shadowRadius = 0.25F;
 
-		this.wormModel = new MoonwormModel(manager.bakeLayer(TFModelLayers.MOONWORM));
+		this.wormModel = new MoonwormModel(context.bakeLayer(TFModelLayers.MOONWORM));
 	}
 
 	@Override
 	public void render(MoonwormShot entity, float yaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light) {
 		stack.pushPose();
-		stack.translate(0.0, 0.5, 0.0);
-		stack.scale(-1f, -1f, -1f);
+		stack.translate(0.0F, 0.5F, 0.0F);
+		stack.scale(-1.0F, -1.0F, -1.0F);
 
 		stack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTicks, entity.yRotO, entity.getYRot()) - 180.0F));
 		stack.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTicks, entity.xRotO, entity.getXRot())));
 
-		VertexConsumer builder = buffer.getBuffer(this.wormModel.renderType(textureLoc));
-		this.wormModel.renderToBuffer(stack, builder, light, OverlayTexture.NO_OVERLAY);
+		VertexConsumer consumer = buffer.getBuffer(this.wormModel.renderType(TEXTURE));
+		this.wormModel.renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY);
 
 		stack.popPose();
 	}
 
 	@Override
 	public ResourceLocation getTextureLocation(MoonwormShot entity) {
-		return textureLoc;
+		return TEXTURE;
 	}
 }

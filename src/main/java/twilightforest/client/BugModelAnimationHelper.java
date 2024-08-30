@@ -18,7 +18,7 @@ public class BugModelAnimationHelper {
 	private static boolean glowing;
 	private static int glowDelay;
 
-	static void animate() {
+	public static void animate() {
 		tickYaw();
 		tickGlow();
 		tickRotation();

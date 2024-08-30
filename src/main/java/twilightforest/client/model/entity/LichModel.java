@@ -7,14 +7,17 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
+import twilightforest.client.renderer.entity.LichRenderer;
 import twilightforest.entity.boss.Lich;
 
 import java.util.Arrays;
 
-public class LichModel extends HumanoidModel<Lich> {
+public class LichModel extends HumanoidModel<Lich> implements TrophyBlockModel {
 
 	private boolean shadowClone;
 	private final ModelPart collar;
@@ -27,53 +30,54 @@ public class LichModel extends HumanoidModel<Lich> {
 	}
 
 	public static LayerDefinition create() {
-		MeshDefinition mesh = HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F);
-		PartDefinition definition = mesh.getRoot();
+		MeshDefinition meshdefinition = HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F);
+		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		definition.addOrReplaceChild("hat", CubeListBuilder.create()
+		partdefinition.addOrReplaceChild("hat", CubeListBuilder.create()
 				.texOffs(32, 0)
 				.addBox(-4.0F, -12.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.5F)),
 			PartPose.ZERO);
 
-		definition.addOrReplaceChild("collar", CubeListBuilder.create()
+		partdefinition.addOrReplaceChild("collar", CubeListBuilder.create()
 				.texOffs(32, 16)
 				.addBox(-6.0F, -2.0F, -4.0F, 12.0F, 12.0F, 1.0F, new CubeDeformation(-0.1F)),
-			PartPose.offsetAndRotation(0.0F, -3.0F, -1.0F, 2.164208F, 0F, 0F));
+			PartPose.offsetAndRotation(0.0F, -3.0F, -1.0F, 2.164208F, 0.0F, 0.0F));
 
-		definition.addOrReplaceChild("cloak", CubeListBuilder.create()
+		partdefinition.addOrReplaceChild("cloak", CubeListBuilder.create()
 				.texOffs(0, 44)
 				.addBox(-6.0F, 2.0F, 0.0F, 12.0F, 19.0F, 1.0F),
 			PartPose.offset(0.0F, -4.0F, 2.5F));
 
-		definition.addOrReplaceChild("body", CubeListBuilder.create()
+		partdefinition.addOrReplaceChild("body", CubeListBuilder.create()
 				.texOffs(8, 16)
 				.addBox(-4.0F, 0.0F, -2.0F, 8.0F, 24.0F, 4.0F),
 			PartPose.offset(0.0F, -4.0F, 0.0F));
 
-		definition.addOrReplaceChild("right_arm", CubeListBuilder.create()
+		partdefinition.addOrReplaceChild("right_arm", CubeListBuilder.create()
 				.texOffs(0, 16)
 				.addBox(-1.0F, -2.0F, -1.0F, 2.0F, 12.0F, 2.0F),
 			PartPose.offset(-5.0F, -2.0F, 0.0F));
 
-		definition.addOrReplaceChild("left_arm", CubeListBuilder.create().mirror()
+		partdefinition.addOrReplaceChild("left_arm", CubeListBuilder.create().mirror()
 				.texOffs(0, 16)
 				.addBox(-1.0F, -2.0F, -1.0F, 2.0F, 12.0F, 2.0F),
 			PartPose.offset(5.0F, 2.0F, 0.0F));
 
-		definition.addOrReplaceChild("right_leg", CubeListBuilder.create()
+		partdefinition.addOrReplaceChild("right_leg", CubeListBuilder.create()
 				.texOffs(0, 16)
 				.addBox(-1.0F, 0.0F, -1.0F, 2.0F, 12.0F, 2.0F),
 			PartPose.offset(-2.0F, 12.0F, 0.0F));
 
-		definition.addOrReplaceChild("left_leg", CubeListBuilder.create().mirror()
+		partdefinition.addOrReplaceChild("left_leg", CubeListBuilder.create().mirror()
 				.texOffs(0, 16)
 				.addBox(-1.0F, 0.0F, -1.0F, 2.0F, 12.0F, 2.0F),
 			PartPose.offset(2.0F, 12.0F, 0.0F));
 
-		return LayerDefinition.create(mesh, 64, 64);
+		return LayerDefinition.create(meshdefinition, 64, 64);
 	}
 
 	@Override
+
 	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, int color) {
 		if (!this.shadowClone) {
 			super.renderToBuffer(stack, builder, light, overlay, color);
@@ -87,7 +91,7 @@ public class LichModel extends HumanoidModel<Lich> {
 		if (this.shadowClone) {
 			return super.bodyParts();
 		} else {
-			return Iterables.concat(Arrays.asList(cloak, collar), super.bodyParts());
+			return Iterables.concat(Arrays.asList(this.cloak, this.collar), super.bodyParts());
 		}
 	}
 
@@ -96,8 +100,8 @@ public class LichModel extends HumanoidModel<Lich> {
 		this.shadowClone = entity.isShadowClone();
 		super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 
-		float ogSin = Mth.sin(this.attackTime * 3.141593F);
-		float otherSin = Mth.sin((1.0F - (1.0F - this.attackTime) * (1.0F - this.attackTime)) * 3.141593F);
+		float ogSin = Mth.sin(this.attackTime * Mth.PI);
+		float otherSin = Mth.sin((1.0F - (1.0F - this.attackTime) * (1.0F - this.attackTime)) * Mth.PI);
 		if (entity.tickCount > 0 && !entity.isDeadOrDying()) {
 			this.leftArm.zRot = 0.5F;
 			this.leftArm.yRot = 0.1F - ogSin * 0.6F;
@@ -113,7 +117,7 @@ public class LichModel extends HumanoidModel<Lich> {
 		if (!entity.getMainHandItem().isEmpty()) {
 			this.rightArm.zRot = 0.0F;
 			this.rightArm.yRot = -(0.1F - ogSin * 0.6F);
-			this.rightArm.xRot = -1.570796F;
+			this.rightArm.xRot = -Mth.HALF_PI;
 			this.rightArm.xRot -= ogSin * 1.2F - otherSin * 0.4F;
 			this.rightArm.zRot += Mth.cos(ageInTicks * 0.26F) * 0.15F + 0.05F;
 			this.rightArm.xRot += Mth.sin(ageInTicks * 0.167F) * 0.15F;
@@ -140,5 +144,20 @@ public class LichModel extends HumanoidModel<Lich> {
 		modelpart.x += f;
 		modelpart.translateAndRotate(stack);
 		modelpart.x -= f;
+	}
+
+	@Override
+	public void setupRotationsForTrophy(float x, float y, float z, float mouthAngle) {
+		this.head.yRot = y * Mth.DEG_TO_RAD;
+		this.head.xRot = z * Mth.DEG_TO_RAD;
+		this.hat.yRot = this.head.yRot;
+		this.hat.xRot = this.head.xRot;
+	}
+
+	@Override
+	public void renderTrophy(PoseStack stack, MultiBufferSource buffer, int light, int overlay, int color, boolean itemForm) {
+		VertexConsumer consumer = buffer.getBuffer(RenderType.entityCutoutNoCull(LichRenderer.TEXTURE));
+		this.head.render(stack, consumer, light, overlay, color);
+		this.hat.render(stack, consumer, light, overlay, color);
 	}
 }

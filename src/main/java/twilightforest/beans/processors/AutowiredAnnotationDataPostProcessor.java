@@ -12,6 +12,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Stream;
 
 @BeanProcessor
 public class AutowiredAnnotationDataPostProcessor implements AnnotationDataPostProcessor {
@@ -60,9 +61,18 @@ public class AutowiredAnnotationDataPostProcessor implements AnnotationDataPostP
 
 	@Override
 	public void process(TFBeanContext.TFBeanContextInternalInjector context, ModContainer modContainer, ModFileScanData scanData, AtomicReference<Object> currentInjectionTarget) throws Throwable {
+		List<String> ignoredClasses = Stream.concat(
+			DistAnnotationRetriever.retrieve(scanData, Configurable.class, ElementType.TYPE),
+			Stream.concat(
+				DistAnnotationRetriever.retrieve(scanData, Component.class, ElementType.TYPE),
+				DistAnnotationRetriever.retrieve(scanData, Mod.class, ElementType.TYPE)
+			)
+		).map(d -> d.clazz().getClassName()).toList();
 		for (Iterator<ModFileScanData.AnnotationData> it = DistAnnotationRetriever.retrieve(scanData, Autowired.class, ElementType.FIELD).iterator(); it.hasNext(); ) {
 			ModFileScanData.AnnotationData data = it.next();
 			currentInjectionTarget.set(data.clazz());
+			if (ignoredClasses.contains(data.clazz().getClassName()))
+				continue;
 			Class<?> type = Class.forName(data.clazz().getClassName());
 			if (type.isAnnotationPresent(Configurable.class) || type.isAnnotationPresent(Component.class) || type.isAnnotationPresent(Mod.class))
 				continue;

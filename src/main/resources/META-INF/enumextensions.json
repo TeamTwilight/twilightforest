@@ -24,7 +24,7 @@
       "constructor": "(Ljava/lang/String;Lnet/minecraft/world/level/biome/BiomeSpecialEffects$GrassColorModifier$ColorModifier;)V",
       "parameters": {
         "class": "twilightforest/TFEnumExtensions",
-        "method": "enchantedForestBiomeGrassColor"
+        "method": "GrassColorModifier_ENCHANTED_FOREST"
       }
     },
     {
@@ -33,7 +33,7 @@
       "constructor": "(Ljava/lang/String;Lnet/minecraft/world/level/biome/BiomeSpecialEffects$GrassColorModifier$ColorModifier;)V",
       "parameters": {
         "class": "twilightforest/TFEnumExtensions",
-        "method": "swampBiomeGrassColor"
+        "method": "GrassColorModifier_SWAMP"
       }
     },
     {
@@ -42,7 +42,7 @@
       "constructor": "(Ljava/lang/String;Lnet/minecraft/world/level/biome/BiomeSpecialEffects$GrassColorModifier$ColorModifier;)V",
       "parameters": {
         "class": "twilightforest/TFEnumExtensions",
-        "method": "darkForestBiomeGrassColor"
+        "method": "GrassColorModifier_DARK_FOREST"
       }
     },
     {
@@ -51,7 +51,7 @@
       "constructor": "(Ljava/lang/String;Lnet/minecraft/world/level/biome/BiomeSpecialEffects$GrassColorModifier$ColorModifier;)V",
       "parameters": {
         "class": "twilightforest/TFEnumExtensions",
-        "method": "darkForestCenterBiomeGrassColor"
+        "method": "GrassColorModifier_DARK_FOREST_CENTER"
       }
     },
     {
@@ -60,7 +60,7 @@
       "constructor": "(Ljava/lang/String;Lnet/minecraft/world/level/biome/BiomeSpecialEffects$GrassColorModifier$ColorModifier;)V",
       "parameters": {
         "class": "twilightforest/TFEnumExtensions",
-        "method": "spookyBiomeGrassColor"
+        "method": "GrassColorModifier_SPOOKY_FOREST"
       }
     },
     {
@@ -69,7 +69,7 @@
       "constructor": "(ILjava/lang/String;Ljava/lang/String;)V",
       "parameters": {
         "class": "twilightforest/TFEnumExtensions",
-        "method": "jarred"
+        "method": "ItemDisplayContext_JARRED"
       }
     },
     {
@@ -78,7 +78,7 @@
       "constructor": "(Ljava/util/function/Supplier;Ljava/lang/String;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Z)V",
       "parameters": {
         "class": "twilightforest/TFEnumExtensions",
-        "method": "twilightOakBoat"
+        "method": "Boat$Type_TWILIGHT_OAK"
       }
     },
     {
@@ -87,7 +87,7 @@
       "constructor": "(Ljava/util/function/Supplier;Ljava/lang/String;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Z)V",
       "parameters": {
         "class": "twilightforest/TFEnumExtensions",
-        "method": "canopyBoat"
+        "method": "Boat$Type_CANOPY"
       }
     },
     {
@@ -96,7 +96,7 @@
       "constructor": "(Ljava/util/function/Supplier;Ljava/lang/String;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Z)V",
       "parameters": {
         "class": "twilightforest/TFEnumExtensions",
-        "method": "mangroveBoat"
+        "method": "Boat$Type_MANGROVE"
       }
     },
     {
@@ -105,7 +105,7 @@
       "constructor": "(Ljava/util/function/Supplier;Ljava/lang/String;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Z)V",
       "parameters": {
         "class": "twilightforest/TFEnumExtensions",
-        "method": "darkBoat"
+        "method": "Boat$Type_DARK"
       }
     },
     {
@@ -114,7 +114,7 @@
       "constructor": "(Ljava/util/function/Supplier;Ljava/lang/String;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Z)V",
       "parameters": {
         "class": "twilightforest/TFEnumExtensions",
-        "method": "timeBoat"
+        "method": "Boat$Type_TIME"
       }
     },
     {
@@ -123,7 +123,7 @@
       "constructor": "(Ljava/util/function/Supplier;Ljava/lang/String;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Z)V",
       "parameters": {
         "class": "twilightforest/TFEnumExtensions",
-        "method": "transformationBoat"
+        "method": "Boat$Type_TRANSFORMATION"
       }
     },
     {
@@ -132,7 +132,7 @@
       "constructor": "(Ljava/util/function/Supplier;Ljava/lang/String;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Z)V",
       "parameters": {
         "class": "twilightforest/TFEnumExtensions",
-        "method": "miningBoat"
+        "method": "Boat$Type_MINING"
       }
     },
     {
@@ -141,7 +141,7 @@
       "constructor": "(Ljava/util/function/Supplier;Ljava/lang/String;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Z)V",
       "parameters": {
         "class": "twilightforest/TFEnumExtensions",
-        "method": "sortingBoat"
+        "method": "Boat$Type_SORTING"
       }
     }
   ]

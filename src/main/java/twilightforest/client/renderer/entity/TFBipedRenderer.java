@@ -10,26 +10,25 @@ import twilightforest.TwilightForestMod;
 
 public class TFBipedRenderer<T extends Mob, M extends HumanoidModel<T>> extends HumanoidMobRenderer<T, M> {
 
-	private final ResourceLocation textureLoc;
+	private final ResourceLocation texture;
 
-	public TFBipedRenderer(EntityRendererProvider.Context manager, M modelBiped, float shadowSize, String textureName) {
-		super(manager, modelBiped, shadowSize);
+	public TFBipedRenderer(EntityRendererProvider.Context context, M model, float shadowSize, String textureName) {
+		super(context, model, shadowSize);
 
 		if (textureName.startsWith("textures")) {
-			textureLoc = ResourceLocation.withDefaultNamespace(textureName);
+			this.texture = ResourceLocation.withDefaultNamespace(textureName);
 		} else {
-			textureLoc = TwilightForestMod.getModelTexture(textureName);
+			this.texture = TwilightForestMod.getModelTexture(textureName);
 		}
 	}
 
-	@SuppressWarnings("this-escape")
-	public TFBipedRenderer(EntityRendererProvider.Context context, M modelBiped, M armorModel1, M armorModel2, float shadowSize, String textureName) {
-		this(context, modelBiped, shadowSize, textureName);
-		this.addLayer(new HumanoidArmorLayer<>(this, armorModel1, armorModel2, context.getModelManager()));
+	public TFBipedRenderer(EntityRendererProvider.Context context, M model, M innerArmor, M outerArmor, float shadowSize, String textureName) {
+		this(context, model, shadowSize, textureName);
+		this.addLayer(new HumanoidArmorLayer<>(this, innerArmor, outerArmor, context.getModelManager()));
 	}
 
 	@Override
 	public ResourceLocation getTextureLocation(T entity) {
-		return textureLoc;
+		return this.texture;
 	}
 }

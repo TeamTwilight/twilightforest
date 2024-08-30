@@ -17,7 +17,6 @@ import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.TFPart;
 
-@SuppressWarnings("unused")
 public abstract class TFPartRenderer<T extends TFPart<?>, M extends ListModel<T>> extends EntityRenderer<T> {
 
 	protected final M model;
@@ -35,7 +34,7 @@ public abstract class TFPartRenderer<T extends TFPart<?>, M extends ListModel<T>
 		float xRot = Mth.lerp(partialTicks, entity.xRotO, entity.getXRot());
 
 		float ageInTicks = this.getBob(entity, partialTicks);
-		this.setupRotations(entity, stack, ageInTicks, yRot, partialTicks);
+		this.setupRotations(entity, stack, partialTicks);
 		stack.scale(-1.0F, -1.0F, 1.0F);
 		stack.translate(0.0D, -1.501F, 0.0D);
 
@@ -47,7 +46,7 @@ public abstract class TFPartRenderer<T extends TFPart<?>, M extends ListModel<T>
 		RenderType rendertype = this.getRenderType(entity, visible, ghostly, glowing);
 		if (rendertype != null) {
 			VertexConsumer consumer = buffer.getBuffer(rendertype);
-			int overlay = this.getOverlayCoords(entity, this.getWhiteOverlayProgress(entity, partialTicks));
+			int overlay = this.getOverlayCoords(entity, OverlayTexture.NO_WHITE_U);
 			this.model.renderToBuffer(stack, consumer, light, overlay, ghostly ? 654311423 : -1);
 		}
 
@@ -55,14 +54,10 @@ public abstract class TFPartRenderer<T extends TFPart<?>, M extends ListModel<T>
 		super.render(entity, entityYaw, partialTicks, stack, buffer, light);
 	}
 
-	protected float getWhiteOverlayProgress(T entity, float partialTicks) {
-		return 0.0F;
-	}
-
-	public int getOverlayCoords(T entity, float uIn) {
+	public int getOverlayCoords(T entity, float u) {
 		if (entity.getParent() instanceof LivingEntity living)
-			return OverlayTexture.pack(OverlayTexture.u(uIn), OverlayTexture.v(living.hurtTime > 0 || living.deathTime > 0 || entity.hurtTime > 0 || entity.deathTime > 0));
-		return OverlayTexture.pack(OverlayTexture.u(uIn), OverlayTexture.v(entity.hurtTime > 0 || entity.deathTime > 0));
+			return OverlayTexture.pack(OverlayTexture.u(u), OverlayTexture.v(living.hurtTime > 0 || living.deathTime > 0 || entity.hurtTime > 0 || entity.deathTime > 0));
+		return OverlayTexture.pack(OverlayTexture.u(u), OverlayTexture.v(entity.hurtTime > 0 || entity.deathTime > 0));
 	}
 
 	@Nullable
@@ -81,7 +76,7 @@ public abstract class TFPartRenderer<T extends TFPart<?>, M extends ListModel<T>
 		return (float) entity.tickCount + partialTicks;
 	}
 
-	protected void setupRotations(T entity, PoseStack stack, float ageInTicks, float rotationYaw, float partialTicks) {
+	protected void setupRotations(T entity, PoseStack stack, float partialTicks) {
 		if (entity.deathTime > 0) {
 			float f = ((float) entity.deathTime + partialTicks - 1.0F) / 20.0F * 1.6F;
 			f = Mth.sqrt(f);

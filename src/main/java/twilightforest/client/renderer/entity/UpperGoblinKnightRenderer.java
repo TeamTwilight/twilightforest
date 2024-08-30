@@ -2,49 +2,49 @@ package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import twilightforest.client.model.entity.UpperGoblinKnightModel;
 import twilightforest.entity.monster.UpperGoblinKnight;
 
-public class UpperGoblinKnightRenderer extends TFBipedRenderer<UpperGoblinKnight, UpperGoblinKnightModel> {
-	public UpperGoblinKnightRenderer(EntityRendererProvider.Context manager, UpperGoblinKnightModel model, float shadowSize) {
-		super(manager, model, shadowSize, "doublegoblin.png");
+public class UpperGoblinKnightRenderer<T extends UpperGoblinKnight, M extends HumanoidModel<T>> extends TFBipedRenderer<T, M> {
+	public UpperGoblinKnightRenderer(EntityRendererProvider.Context context, M model, float shadowSize) {
+		super(context, model, shadowSize, "doublegoblin.png");
 	}
 
 	@Override
-	protected void setupRotations(UpperGoblinKnight upperKnight, PoseStack stack, float ageInTicks, float rotationYaw, float partialTicks, float scale) {
-		super.setupRotations(upperKnight, stack, ageInTicks, rotationYaw, partialTicks, scale);
+	protected void setupRotations(T entity, PoseStack stack, float ageInTicks, float rotationYaw, float partialTicks, float scale) {
+		super.setupRotations(entity, stack, ageInTicks, rotationYaw, partialTicks, scale);
 
-		if (upperKnight.heavySpearTimer > 0) {
-			stack.mulPose(Axis.XP.rotationDegrees(getPitchForAttack((60 - upperKnight.heavySpearTimer) + partialTicks)));
+		if (entity.heavySpearTimer > 0) {
+			stack.mulPose(Axis.XP.rotationDegrees(this.getPitchForAttack((60.0F - entity.heavySpearTimer) + partialTicks)));
 		}
 	}
 
 	/**
-	 * Figure out what pitch the goblin should be at depending on where it's at on the the timer
+	 * Figure out what pitch the goblin should be at depending on where it's at on the timer
 	 */
 	private float getPitchForAttack(float attackTime) {
-		if (attackTime <= 10) {
+		if (attackTime <= 10.0F) {
 			// rock back
 			return attackTime * 3.0F;
 		}
-		if (attackTime > 10 && attackTime <= 30) {
+		if (attackTime > 10.0F && attackTime <= 30.0F) {
 			// hang back
-			return 30F;
+			return 30.0F;
 		}
-		if (attackTime > 30 && attackTime <= 33) {
+		if (attackTime > 30.0F && attackTime <= 33.0F) {
 			// slam forward
-			return (attackTime - 30) * -25F + 30F;
+			return (attackTime - 30.0F) * -25.0F + 30.0F;
 		}
-		if (attackTime > 33 && attackTime <= 50) {
+		if (attackTime > 33.0F && attackTime <= 50.0F) {
 			// stay forward
-			return -45F;
+			return -45.0F;
 		}
-		if (attackTime > 50 && attackTime <= 60) {
+		if (attackTime > 50.0F && attackTime <= 60.0F) {
 			// back to normal
-			return (10 - (attackTime - 50)) * -4.5F;
+			return (10.0F - (attackTime - 50.0F)) * -4.5F;
 		}
 
-		return 0;
+		return 0.0F;
 	}
 }

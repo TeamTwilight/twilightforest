@@ -8,12 +8,12 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ShearsItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.common.ItemAbilities;
 
 import java.util.List;
 
@@ -25,9 +25,10 @@ public class ArcticFurBlock extends Block {
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public float getDestroyProgress(BlockState state, Player player, BlockGetter getter, BlockPos pos) {
-		// ItemShears#getDestroySpeed is really dumb and doesn't check IShearable so we have to do it this way to try to match the wool break speed with shears
-		return player.getMainHandItem().getItem() instanceof ShearsItem ? 0.2F : super.getDestroyProgress(state, player, getter, pos);
+		//Shears dont allow extra additions to their override speed (what a dumb system) so this will do
+		return player.getMainHandItem().canPerformAction(ItemAbilities.SHEARS_DIG) ? 0.2F : super.getDestroyProgress(state, player, getter, pos);
 	}
 
 	@Override

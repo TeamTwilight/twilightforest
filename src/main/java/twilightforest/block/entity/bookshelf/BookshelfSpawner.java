@@ -35,15 +35,6 @@ import java.util.List;
 import java.util.Optional;
 
 public abstract class BookshelfSpawner implements IOwnedSpawner {
-	private int spawnDelay = 20;
-	private SimpleWeightedRandomList<SpawnData> spawnPotentials = SimpleWeightedRandomList.empty();
-	@Nullable
-	private SpawnData nextSpawnData;
-	private int minSpawnDelay = 200;
-	private int maxSpawnDelay = 400;
-	public int maxNearbyEntities = 4;
-	private int requiredPlayerRange = 8;
-	public int spawnRange = 4;
 	public static final List<Pair<Integer, BooleanProperty>> SLOT_PROPERTIES_AND_INDEXES = List.of(
 		Pair.of(0, BlockStateProperties.CHISELED_BOOKSHELF_SLOT_0_OCCUPIED),
 		Pair.of(1, BlockStateProperties.CHISELED_BOOKSHELF_SLOT_1_OCCUPIED),
@@ -51,6 +42,15 @@ public abstract class BookshelfSpawner implements IOwnedSpawner {
 		Pair.of(3, BlockStateProperties.CHISELED_BOOKSHELF_SLOT_3_OCCUPIED),
 		Pair.of(4, BlockStateProperties.CHISELED_BOOKSHELF_SLOT_4_OCCUPIED),
 		Pair.of(5, BlockStateProperties.CHISELED_BOOKSHELF_SLOT_5_OCCUPIED));
+	public int maxNearbyEntities = 4;
+	public int spawnRange = 4;
+	private int spawnDelay = 20;
+	private SimpleWeightedRandomList<SpawnData> spawnPotentials = SimpleWeightedRandomList.empty();
+	@Nullable
+	private SpawnData nextSpawnData;
+	private int minSpawnDelay = 200;
+	private int maxSpawnDelay = 400;
+	private int requiredPlayerRange = 8;
 
 	public void setEntityId(EntityType<?> type, @Nullable Level level, RandomSource random, BlockPos pos) {
 		this.getOrCreateNextSpawnData(level, random, pos)

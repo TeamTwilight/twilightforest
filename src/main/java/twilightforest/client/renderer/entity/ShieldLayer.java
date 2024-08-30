@@ -30,6 +30,13 @@ public class ShieldLayer<T extends LivingEntity, M extends EntityModel<T>> exten
 		super(renderer);
 	}
 
+	@Override
+	public void render(PoseStack stack, MultiBufferSource buffer, int light, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+		if (this.getShieldCount(entity) > 0) {
+			this.renderShields(stack, buffer, entity, partialTicks);
+		}
+	}
+
 	private int getShieldCount(T entity) {
 		return entity instanceof Lich lich
 			? lich.getShieldStrength()
@@ -48,13 +55,13 @@ public class ShieldLayer<T extends LivingEntity, M extends EntityModel<T>> exten
 
 			// perform the rotations, accounting for the fact that baked models are corner-based
 			// Z gets extra 180 degrees to flip visual upside-down, since scaling y by -1 will cause back-faces to render instead
-			stack.mulPose(Axis.ZP.rotationDegrees(180 + rotateAngleZ * (180F / (float) Math.PI)));
-			stack.mulPose(Axis.YP.rotationDegrees(rotateAngleY * (180F / (float) Math.PI) + (c * (360F / count))));
-			stack.mulPose(Axis.XP.rotationDegrees(rotateAngleX * (180F / (float) Math.PI)));
-			stack.translate(-0.5, -0.65, -0.5);
+			stack.mulPose(Axis.ZP.rotationDegrees(180.0F + rotateAngleZ * (180.0F / Mth.PI)));
+			stack.mulPose(Axis.YP.rotationDegrees(rotateAngleY * (180.0F / Mth.PI) + (c * (360.0F / count))));
+			stack.mulPose(Axis.XP.rotationDegrees(rotateAngleX * (180.0F / Mth.PI)));
+			stack.translate(-0.5F, -0.65F, -0.5F);
 
 			// push the shields outwards from the center of rotation
-			stack.translate(0F, 0F, -0.7F);
+			stack.translate(0.0F, 0.0F, -0.7F);
 
 			BakedModel model = Minecraft.getInstance().getModelManager().getModel(LOC);
 			for (Direction dir : DIRS) {
@@ -69,13 +76,6 @@ public class ShieldLayer<T extends LivingEntity, M extends EntityModel<T>> exten
 			}
 
 			stack.popPose();
-		}
-	}
-
-	@Override
-	public void render(PoseStack stack, MultiBufferSource buffer, int light, T living, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-		if (getShieldCount(living) > 0) {
-			renderShields(stack, buffer, living, partialTicks);
 		}
 	}
 }

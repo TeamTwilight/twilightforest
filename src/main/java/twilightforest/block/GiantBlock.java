@@ -17,7 +17,13 @@ public class GiantBlock extends Block {
 		super(properties);
 	}
 
-	@Nullable
+	public static Iterable<BlockPos> getVolume(BlockPos pos) {
+		return BlockPos.betweenClosed(
+			pos.getX() & ~0b11, pos.getY() & ~0b11, pos.getZ() & ~0b11,
+			pos.getX() | 0b11, pos.getY() | 0b11, pos.getZ() | 0b11
+		);
+	}
+
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		for (BlockPos dPos : getVolume(context.getClickedPos())) {
@@ -25,20 +31,19 @@ public class GiantBlock extends Block {
 				return null;
 			}
 		}
-		return defaultBlockState();
+		return super.getStateForPlacement(context);
 	}
 
 	@Override
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
 		if (!level.isClientSide()) {
 			for (BlockPos dPos : getVolume(pos)) {
-				level.setBlockAndUpdate(dPos, defaultBlockState());
+				level.setBlockAndUpdate(dPos, this.defaultBlockState());
 			}
 		}
 	}
 
 	@Override
-	@Deprecated
 	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
 		super.onRemove(state, level, pos, newState, isMoving);
 		if (!this.isSelfDestructing && !isVolumeFilled(level, pos)) {
@@ -66,12 +71,5 @@ public class GiantBlock extends Block {
 			}
 		}
 		return true;
-	}
-
-	public static Iterable<BlockPos> getVolume(BlockPos pos) {
-		return BlockPos.betweenClosed(
-			pos.getX() & ~0b11, pos.getY() & ~0b11, pos.getZ() & ~0b11,
-			pos.getX() | 0b11, pos.getY() | 0b11, pos.getZ() | 0b11
-		);
 	}
 }

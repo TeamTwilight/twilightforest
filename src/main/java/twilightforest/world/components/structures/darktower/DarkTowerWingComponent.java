@@ -110,7 +110,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 					makeTowerBalcony(list, rand, this.getGenDepth(), dest[0], dest[1], dest[2], direction);
 				}
 			}
-		} else if (rand.nextInt(4) == 0) {
+		} else if (rand.nextInt(4) == 0 && !(this instanceof DarkTowerEntranceComponent)) {
 			// occasional balcony on small towers too
 			Rotation direction = RotationUtil.ROTATIONS[rand.nextInt(4)];
 			int[] dest = getValidOpening(rand, direction);

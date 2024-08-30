@@ -18,38 +18,19 @@ import twilightforest.init.TFSounds;
 
 public class CarminiteBuilderBlockEntity extends BlockEntity {
 	private static final int RANGE = 16;
-
+	private final BlockState blockBuiltState = TFBlocks.BUILT_BLOCK.get().defaultBlockState().setValue(TranslucentBuiltBlock.ACTIVE, false);
+	public boolean makingBlocks = false;
 	private int ticksRunning = 0;
 	private int blockedCounter = 0;
 	private int ticksStopped = 0;
-
-	public boolean makingBlocks = false;
-
 	private int blocksMade = 0;
-
+	@Nullable
 	private BlockPos lastBlockCoords;
-
+	@Nullable
 	private Player trackedPlayer;
-
-	private final BlockState blockBuiltState = TFBlocks.BUILT_BLOCK.get().defaultBlockState().setValue(TranslucentBuiltBlock.ACTIVE, false);
 
 	public CarminiteBuilderBlockEntity(BlockPos pos, BlockState state) {
 		super(TFBlockEntities.TOWER_BUILDER.get(), pos, state);
-	}
-
-	/**
-	 * Start building stuffs
-	 */
-	public void startBuilding() {
-		this.makingBlocks = true;
-		resetStats();
-	}
-
-	public void resetStats() {
-		this.blocksMade = 0;
-		this.lastBlockCoords = getBlockPos();
-		this.ticksStopped = 0;
-		this.blockedCounter = 0;
 	}
 
 	public static void tick(Level level, BlockPos pos, BlockState state, CarminiteBuilderBlockEntity te) {
@@ -99,6 +80,21 @@ public class CarminiteBuilderBlockEntity extends BlockEntity {
 		}
 	}
 
+	/**
+	 * Start building stuffs
+	 */
+	public void startBuilding() {
+		this.makingBlocks = true;
+		resetStats();
+	}
+
+	public void resetStats() {
+		this.blocksMade = 0;
+		this.lastBlockCoords = getBlockPos();
+		this.ticksStopped = 0;
+		this.blockedCounter = 0;
+	}
+
 	@Nullable
 	private Direction findNextFacing() {
 		if (this.trackedPlayer != null) {
@@ -118,7 +114,7 @@ public class CarminiteBuilderBlockEntity extends BlockEntity {
 	}
 
 	/**
-	 * Who is the closest player?  Used to find which player we should track when building
+	 * Who is the closest player? Used to find which player we should track when building
 	 */
 	@Nullable
 	private Player findClosestValidPlayer() {

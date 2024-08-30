@@ -6,9 +6,6 @@
 
 package twilightforest.client.model.entity;
 
-import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.QuadrupedModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -17,80 +14,52 @@ import net.minecraft.util.Mth;
 import twilightforest.entity.passive.DwarfRabbit;
 
 public class BunnyModel extends QuadrupedModel<DwarfRabbit> {
+
 	public BunnyModel(ModelPart root) {
-		super(root, false, 4.0F, 4.0F, 2.0F, 2.0F, 24);
+		super(root, true, 4.0F, 4.0F, 2.0F, 2.0F, 24);
 	}
 
 	public static LayerDefinition create() {
-		MeshDefinition mesh = QuadrupedModel.createBodyMesh(1, CubeDeformation.NONE);
-		PartDefinition definition = mesh.getRoot();
+		MeshDefinition meshdefinition = QuadrupedModel.createBodyMesh(1, CubeDeformation.NONE);
+		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		definition.addOrReplaceChild("body", CubeListBuilder.create()
+		partdefinition.addOrReplaceChild("body", CubeListBuilder.create()
 				.texOffs(0, 8)
-				.addBox(-2F, -1F, -2F, 4, 3, 5)
+				.addBox(-2.0F, -1.0F, -2.0F, 4.0F, 3.0F, 5.0F)
 				.texOffs(0, 18) // Tail
-				.addBox(-1F, -2F, 3F, 2, 2, 2)
-				.mirror(),
-			PartPose.offset(0F, 21F, 0F));
+				.addBox(-1.0F, -2.0F, 3.0F, 2.0F, 2.0F, 2.0F),
+			PartPose.offset(0.0F, 21.0F, 0.0F));
 
-		definition.addOrReplaceChild("left_hind_leg", CubeListBuilder.create()
+		partdefinition.addOrReplaceChild("left_hind_leg", CubeListBuilder.create()
 				.texOffs(0, 16)
-				.addBox(0F, 0F, 0F, 1, 1, 1)
-				.mirror(),
-			PartPose.offset(-2F, 23F, 2F));
+				.addBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F),
+			PartPose.offset(-2.0F, 23.0F, 2.0F));
 
-		definition.addOrReplaceChild("right_hind_leg", CubeListBuilder.create()
+		partdefinition.addOrReplaceChild("right_hind_leg", CubeListBuilder.create()
 				.texOffs(0, 16)
-				.addBox(0F, 0F, 0F, 1, 1, 1)
-				.mirror(),
-			PartPose.offset(1F, 23F, 2F));
+				.addBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F),
+			PartPose.offset(1.0F, 23.0F, 2.0F));
 
-		definition.addOrReplaceChild("left_front_leg", CubeListBuilder.create()
+		partdefinition.addOrReplaceChild("left_front_leg", CubeListBuilder.create()
 				.texOffs(0, 16)
-				.addBox(0F, 0F, 0F, 1, 1, 1)
-				.mirror(),
-			PartPose.offset(-2F, 23F, -2F));
+				.addBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F),
+			PartPose.offset(-2.0F, 23.0F, -2.0F));
 
-		definition.addOrReplaceChild("right_front_leg", CubeListBuilder.create()
+		partdefinition.addOrReplaceChild("right_front_leg", CubeListBuilder.create()
 				.texOffs(0, 16)
-				.addBox(0F, 0F, 0F, 1, 1, 1)
-				.mirror(),
-			PartPose.offset(1F, 23F, -2F));
+				.addBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F),
+			PartPose.offset(1.0F, 23.0F, -2.0F));
 
-		definition.addOrReplaceChild("head", CubeListBuilder.create()
+		partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
 				.texOffs(0, 0)
-				.addBox(-2F, -4F, -3F, 4, 4, 4, new CubeDeformation(0.1F))
+				.addBox(-2.0F, -4.0F, -3.0F, 4.0F, 4.0F, 4.0F, new CubeDeformation(0.1F))
 				.texOffs(16, 0)
-				.addBox(-2.5F, -8F, -0.5F, 2, 4, 1)
+				.addBox(-2.5F, -8.0F, -0.5F, 2.0F, 4.0F, 1.0F)
 				.texOffs(16, 0)
-				.addBox(0.5F, -8F, -0.5F, 2, 4, 1)
-				.mirror(),
-			PartPose.offset(0F, 22F, -1F));
+				.addBox(0.5F, -8.0F, -0.5F, 2.0F, 4.0F, 1.0F),
+			PartPose.offset(0.0F, 22.0F, -1.0F));
 
-		return LayerDefinition.create(mesh, 32, 32);
-	}
-
-
-	@Override
-	public void renderToBuffer(PoseStack ms, VertexConsumer buffer, int light, int overlay, int color) {
-		if (this.young) {
-			ms.pushPose();
-			ms.scale(0.85F, 0.85F, 0.85F);
-			ms.translate(0.0F, 0.25F, 0.0F);
-			ImmutableList.of(this.head).forEach((p_103597_) -> {
-				p_103597_.render(ms, buffer, light, overlay);
-			});
-			ms.popPose();
-			ms.pushPose();
-			ms.scale(0.8F, 0.8F, 0.8F);
-			ms.translate(0.0F, 0.37F, 0.0F);
-			ImmutableList.of(this.body, this.leftFrontLeg, this.rightFrontLeg, this.leftHindLeg, this.rightHindLeg).forEach((p_103587_) -> {
-				p_103587_.render(ms, buffer, light, overlay);
-			});
-			ms.popPose();
-		} else {
-			super.renderToBuffer(ms, buffer, light, overlay, color);
-		}
+		return LayerDefinition.create(meshdefinition, 32, 32);
 	}
 
 	@Override

@@ -11,134 +11,265 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.CubeListBuilder;
-import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.item.DyeColor;
+import twilightforest.client.JappaPackReloadListener;
+import twilightforest.client.renderer.entity.QuestRamRenderer;
 import twilightforest.entity.passive.QuestRam;
 
 import java.util.Arrays;
 
-public class QuestRamModel extends HierarchicalModel<QuestRam> {
-	//root
-	public final ModelPart root;
-	//fields
-	final ModelPart rearbody;
-	public final ModelPart leg1;
-	public final ModelPart haunch1;
-	public final ModelPart leg2;
-	public final ModelPart haunch2;
-	public final ModelPart leg3;
-	public final ModelPart haunch3;
-	public final ModelPart leg4;
-	public final ModelPart haunch4;
-	public final ModelPart neck;
-	public final ModelPart head;
-	public final ModelPart[] segments = new ModelPart[16];
+public class QuestRamModel<T extends QuestRam> extends HierarchicalModel<T> implements TrophyBlockModel {
+
+	private final ModelPart root;
+	private final ModelPart head;
+	private ModelPart neck;
+	private ModelPart frontTorso;
+	private ModelPart backTorso;
+	private ModelPart leftFrontLeg;
+	private ModelPart rightFrontLeg;
+	private ModelPart leftBackLeg;
+	private ModelPart rightBackLeg;
+	private final ModelPart[] segments = new ModelPart[16];
 
 	final int[] colorOrder = new int[]{0, 8, 7, 15, 14, 1, 4, 5, 13, 3, 9, 11, 10, 2, 6, 12};
 
 	public QuestRamModel(ModelPart root) {
 		this.root = root;
-
 		this.head = root.getChild("head");
-		this.neck = root.getChild("neck");
-		this.rearbody = root.getChild("rear_body");
-		this.haunch1 = root.getChild("right_front_haunch");
-		this.leg1 = root.getChild("right_front_leg");
-		this.haunch2 = root.getChild("left_front_haunch");
-		this.leg2 = root.getChild("left_front_leg");
-		this.haunch3 = root.getChild("right_back_haunch");
-		this.leg3 = root.getChild("right_back_leg");
-		this.haunch4 = root.getChild("left_back_haunch");
-		this.leg4 = root.getChild("left_back_leg");
-		Arrays.setAll(this.segments, (num) -> root.getChild(getSegmentName(num)));
-		for (int i = 0; i < 16; i++) {
-			segments[i].visible = false;
+		if (root.hasChild("neck")) {
+			this.neck = root.getChild("neck");
+			this.frontTorso = root.getChild("front_torso");
+			this.backTorso = root.getChild("back_torso");
+			this.leftFrontLeg = root.getChild("left_front_leg");
+			this.rightFrontLeg = root.getChild("right_front_leg");
+			this.leftBackLeg = root.getChild("left_back_leg");
+			this.rightBackLeg = root.getChild("right_back_leg");
+			Arrays.setAll(this.segments, (num) -> root.getChild(getSegmentName(num)));
+			for (int i = 0; i < 16; i++) {
+				this.segments[i].visible = false;
+			}
 		}
 	}
 
-	public static LayerDefinition create() {
-		MeshDefinition mesh = new MeshDefinition();
-		PartDefinition base = mesh.getRoot();
+	public static LayerDefinition checkForPack() {
+		return JappaPackReloadListener.INSTANCE.isJappaPackLoaded() ? createJappaModel() : create();
+	}
 
-		PartDefinition headpart = base.addOrReplaceChild("head", CubeListBuilder.create()
-				.texOffs(0, 70).addBox(-6F, -4.5F, -15F, 12, 9, 15)
-				.texOffs(0, 94).addBox(5F, -9F, -7F, 4, 4, 6)
-				.texOffs(20, 96).addBox(7F, -8F, -2F, 3, 4, 4)
-				.texOffs(34, 95).addBox(8F, -6F, 0F, 3, 6, 3)
-				.texOffs(46, 98).addBox(9.5F, -2F, -2F, 3, 3, 3)
-				.texOffs(58, 95).addBox(11F, 0F, -7F, 3, 3, 6)
-				.texOffs(76, 95).addBox(12F, -4F, -9F, 3, 6, 3)
-				.texOffs(88, 97).addBox(13F, -6F, -7F, 3, 3, 4)
-				.texOffs(0, 94).addBox(-9F, -9F, -7F, 4, 4, 6)
-				.texOffs(20, 96).addBox(-10F, -8F, -2F, 3, 4, 4)
-				.texOffs(34, 95).addBox(-11F, -6F, 0F, 3, 6, 3)
-				.texOffs(46, 98).addBox(-12.5F, -2F, -2F, 3, 3, 3)
-				.texOffs(58, 95).addBox(-14F, 0F, -7F, 3, 3, 6)
-				.texOffs(76, 95).addBox(-15F, -4F, -9F, 3, 6, 3)
-				.texOffs(88, 97).addBox(-16F, -6F, -7F, 3, 3, 4),
-			PartPose.offset(0F, -13F, -5F));
-		headpart.addOrReplaceChild("nose", CubeListBuilder.create()
+	public static LayerDefinition checkForPackTrophyEdition() {
+		return JappaPackReloadListener.INSTANCE.isJappaPackLoaded() ? createJappaTrophy() : create();
+	}
+
+	private static LayerDefinition create() {
+		MeshDefinition meshdefinition = new MeshDefinition();
+		PartDefinition partdefinition = meshdefinition.getRoot();
+
+		PartDefinition head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create().texOffs(0, 70).addBox(-6.0F, -5.0F, -11.0F, 12.0F, 9.0F, 15.0F), PartPose.offset(0.0F, -12.0F, -11.0F));
+
+		head.addOrReplaceChild("sloped_head", CubeListBuilder.create()
 				.texOffs(54, 73)
-				.addBox(-5.5F, -5F, -13F, 11, 9, 12),
-			PartPose.offsetAndRotation(0F, -7F, -1F, 0.5235988F, 0F, 0F));
-		base.addOrReplaceChild("neck", CubeListBuilder.create()
-				.texOffs(66, 37)
-				.addBox(-5.5F, -8F, -8F, 11, 14, 12),
-			PartPose.offsetAndRotation(0F, -8F, -7F, 0.2617994F, 0F, 0F));
-		base.addOrReplaceChild("front_body", CubeListBuilder.create()
-				.texOffs(0, 0)
-				.addBox(-9F, -7.5F, -15F, 18, 15, 15),
-			PartPose.offset(0F, -1F, 2F));
-		base.addOrReplaceChild("rear_body", CubeListBuilder.create()
-				.texOffs(0, 30)
-				.addBox(-9F, -7.5F, 0F, 18, 15, 15),
-			PartPose.offset(0F, -1F, 4F));
-		base.addOrReplaceChild("right_front_haunch", CubeListBuilder.create()
-				.texOffs(90, 0)
-				.addBox(-3.5F, 0F, -6F, 7, 10, 10),
-			PartPose.offset(-6F, 2F, 13F));
-		base.addOrReplaceChild("right_front_leg", CubeListBuilder.create()
-				.texOffs(66, 0)
-				.addBox(-3F, 10F, -3F, 6, 12, 6),
-			PartPose.offset(-6F, 2F, 13F));
-		base.addOrReplaceChild("left_front_haunch", CubeListBuilder.create()
-				.texOffs(90, 0)
-				.addBox(-3.5F, 0F, -6F, 7, 10, 10),
-			PartPose.offset(6F, 2F, 13F));
-		base.addOrReplaceChild("left_front_leg", CubeListBuilder.create()
-				.texOffs(66, 0)
-				.addBox(-3F, 10F, -3F, 6, 12, 6),
-			PartPose.offset(6F, 2F, 13F));
-		base.addOrReplaceChild("right_back_haunch", CubeListBuilder.create()
-				.texOffs(90, 20)
-				.addBox(-3.5F, 0F, -4F, 7, 10, 7),
-			PartPose.offset(-6F, 1F, -8F));
-		base.addOrReplaceChild("right_back_leg", CubeListBuilder.create()
-				.texOffs(66, 18)
-				.addBox(-3F, 10F, -3F, 6, 13, 6),
-			PartPose.offset(-6F, 1F, -8F));
-		base.addOrReplaceChild("left_back_haunch", CubeListBuilder.create()
-				.texOffs(90, 20)
-				.addBox(-3.5F, 0F, -4F, 7, 10, 7),
-			PartPose.offset(6F, 1F, -8F));
-		base.addOrReplaceChild("left_back_leg", CubeListBuilder.create()
-				.texOffs(66, 18)
-				.addBox(-3F, 10F, -3F, 6, 13, 6),
-			PartPose.offset(6F, 1F, -8F));
+				.addBox(-10.0F, -8.5F, -0.5F, 11.0F, 9.0F, 12.0F),
+			PartPose.offsetAndRotation(4.5F, 2.0F, -6.0F, 0.5236F, 0.0F, 0.0F));
 
-		CubeListBuilder bodycube = CubeListBuilder.create()
+		head.addOrReplaceChild("left_horn", CubeListBuilder.create()
+				.texOffs(0, 94)
+				.addBox(5.0F, -45.0F, -14.0F, 4.0F, 4.0F, 6.0F)
+				.texOffs(20, 96)
+				.addBox(8.0F, -44.0F, -9.0F, 3.0F, 4.0F, 4.0F)
+				.texOffs(34, 95)
+				.addBox(9.0F, -42.0F, -7.0F, 3.0F, 6.0F, 3.0F)
+				.texOffs(46, 98)
+				.addBox(10.5F, -38.0F, -9.0F, 3.0F, 3.0F, 3.0F)
+				.texOffs(58, 95)
+				.addBox(12.0F, -36.0F, -14.0F, 3.0F, 3.0F, 6.0F)
+				.texOffs(76, 95)
+				.addBox(13.0F, -40.0F, -16.0F, 3.0F, 6.0F, 3.0F)
+				.texOffs(88, 97)
+				.addBox(14.0F, -42.0F, -14.0F, 3.0F, 3.0F, 4.0F),
+			PartPose.offset(0.0F, 36.0F, 11.0F));
+
+		head.addOrReplaceChild("right_horn", CubeListBuilder.create().mirror()
+				.texOffs(0, 94)
+				.addBox(-9.0F, -45.0F, -14.0F, 4.0F, 4.0F, 6.0F)
+				.texOffs(20, 96)
+				.addBox(-11.0F, -44.0F, -9.0F, 3.0F, 4.0F, 4.0F)
+				.texOffs(34, 95)
+				.addBox(-12.0F, -42.0F, -7.0F, 3.0F, 6.0F, 3.0F)
+				.texOffs(46, 98)
+				.addBox(-13.5F, -38.0F, -9.0F, 3.0F, 3.0F, 3.0F)
+				.texOffs(58, 95)
+				.addBox(-15.0F, -36.0F, -14.0F, 3.0F, 3.0F, 6.0F)
+				.texOffs(76, 95)
+				.addBox(-16.0F, -40.0F, -16.0F, 3.0F, 6.0F, 3.0F)
+				.texOffs(88, 97)
+				.addBox(-17.0F, -42.0F, -14.0F, 3.0F, 3.0F, 4.0F),
+			PartPose.offset(0.0F, 36.0F, 11.0F));
+
+		PartDefinition neck = partdefinition.addOrReplaceChild("neck", CubeListBuilder.create(),
+			PartPose.offset(0.0F, -8.0F, -11.0F));
+
+		neck.addOrReplaceChild("neck_r1", CubeListBuilder.create()
+				.texOffs(66, 37)
+				.addBox(-9.5F, -14.0F, -1.0F, 11.0F, 14.0F, 12.0F, new CubeDeformation(-0.001F)),
+			PartPose.offsetAndRotation(4.0F, 8.0F, -3.0F, 0.2618F, 0.0F, 0.0F));
+
+		partdefinition.addOrReplaceChild("front_torso", CubeListBuilder.create()
+				.texOffs(0, 0)
+				.addBox(-9.0F, -32.0F, -15.0F, 18.0F, 15.0F, 15.0F),
+			PartPose.offset(0.0F, 24.0F, 0.0F));
+
+		partdefinition.addOrReplaceChild("back_torso", CubeListBuilder.create()
+				.texOffs(0, 30)
+				.addBox(-9.0F, -32.0F, 0.0F, 18.0F, 15.0F, 15.0F),
+			PartPose.offset(0.0F, 24.0F, 0.0F));
+
+		partdefinition.addOrReplaceChild("left_front_leg", CubeListBuilder.create()
+				.texOffs(90, 20)
+				.addBox(-3.5F, -5.5F, -3.5F, 7.0F, 10.0F, 7.0F)
+				.texOffs(66, 18)
+				.addBox(-3.0F, 4.0F, -3.0F, 6.0F, 13.0F, 6.0F),
+			PartPose.offset(6.0F, 7.0F, -10.5F));
+
+		partdefinition.addOrReplaceChild("right_front_leg", CubeListBuilder.create().mirror()
+				.texOffs(90, 20)
+				.addBox(-3.5F, -5.5F, -3.5F, 7.0F, 10.0F, 7.0F)
+				.texOffs(66, 18)
+				.addBox(-3.0F, 4.0F, -3.0F, 6.0F, 13.0F, 6.0F),
+			PartPose.offset(-6.0F, 7.0F, -10.5F));
+
+		partdefinition.addOrReplaceChild("left_back_leg", CubeListBuilder.create()
+				.texOffs(90, 0)
+				.addBox(-3.5F, -4.5F, -6.0F, 7.0F, 10.0F, 10.0F)
+				.texOffs(66, 0)
+				.addBox(-3.0F, 5.0F, -3.0F, 6.0F, 12.0F, 6.0F),
+			PartPose.offset(6.0F, 7.0F, 9.0F));
+
+		partdefinition.addOrReplaceChild("right_back_leg", CubeListBuilder.create().mirror()
+				.texOffs(90, 0)
+				.addBox(-3.5F, -4.5F, -6.0F, 7.0F, 10.0F, 10.0F)
+				.texOffs(66, 0)
+				.addBox(-3.0F, 5.0F, -3.0F, 6.0F, 12.0F, 6.0F),
+			PartPose.offset(-6.0F, 7.0F, 9.0F));
+
+		CubeListBuilder wool = CubeListBuilder.create()
 			.texOffs(0, 104)
-			.addBox(-9F, -7.5F, 0F, 18, 15, 2);
+			.addBox(-9F, -7.5F, 0.0F, 18.0F, 15.0F, 2.0F);
+
 		for (int i = 0; i < 16; i++) {
-			base.addOrReplaceChild(getSegmentName(i), bodycube, PartPose.offset(0F, -1F, 2F));
+			partdefinition.addOrReplaceChild(getSegmentName(i), wool, PartPose.offset(0.0F, -0.5F, 0.0F));
 		}
 
-		return LayerDefinition.create(mesh, 128, 128);
+		return LayerDefinition.create(meshdefinition, 128, 128);
+	}
+
+	private static LayerDefinition createJappaModel() {
+		MeshDefinition meshdefinition = new MeshDefinition();
+		PartDefinition partdefinition = meshdefinition.getRoot();
+
+		//these ARE actually the horns, theyre just called the head so its rendered properly as a trophy
+		var horns = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
+				.texOffs(64, 0)
+				.addBox(-9.0F, -11.0F, -1.0F, 4.0F, 10.0F, 10.0F)
+				.texOffs(48, 0)
+				.addBox(-13.0F, -11.0F, 5.0F, 4.0F, 4.0F, 4.0F)
+				.texOffs(92, 0)
+				.addBox(5.0F, -11.0F, -1.0F, 4.0F, 10.0F, 10.0F)
+				.texOffs(110, 0)
+				.addBox(9.0F, -11.0F, 5.0F, 4.0F, 4.0F, 4.0F),
+			PartPose.offset(0.0F, -10.0F, -8.0F));
+
+		horns.addOrReplaceChild("real_head", CubeListBuilder.create()
+				.texOffs(74, 70)
+				.addBox(-6.0F, -2.0F, -13.0F, 12.0F, 8.0F, 15.0F)
+				.texOffs(42, 71)
+				.addBox(-6.0F, -5.0F, -9.0F, 12.0F, 3.0F, 11.0F),
+			PartPose.offsetAndRotation(0.0F, -4.0F, 3.0F, 0.4363323129985824F, 0.0F, 0.0F));
+
+		partdefinition.addOrReplaceChild("body", CubeListBuilder.create(), PartPose.ZERO);
+
+		partdefinition.addOrReplaceChild("front_torso", CubeListBuilder.create()
+				.texOffs(0, 0)
+				.addBox(-8.0F, -7.0F, -6.0F, 16.0F, 14.0F, 16.0F),
+			PartPose.offset(0.0F, 0.0F, 0.0F));
+
+		partdefinition.addOrReplaceChild("neck", CubeListBuilder.create()
+				.texOffs(84, 93)
+				.addBox(-5.0F, -11.0F, -2.0F, 10.0F, 12.0F, 12.0F),
+			PartPose.offsetAndRotation(0.0F, 2.0F, -3.0F, 0.6108652381980153F, 0.0F, 0.0F));
+
+		partdefinition.addOrReplaceChild("back_torso", CubeListBuilder.create()
+				.texOffs(0, 30)
+				.addBox(-8.0F, -7.0F, 8.0F, 16.0F, 14.0F, 16.0F),
+			PartPose.offset(0.0F, 0.0F, 6.0F));
+
+		partdefinition.addOrReplaceChild("right_front_leg", CubeListBuilder.create()
+				.texOffs(0, 60)
+				.addBox(-3.0F, 2.0F, -3.0F, 6.0F, 16.0F, 6.0F)
+				.texOffs(54, 20)
+				.addBox(-4.0F, -4.0F, -5.0F, 8.0F, 10.0F, 10.0F),
+			PartPose.offset(-5.0F, 6.0F, 0.0F));
+
+		partdefinition.addOrReplaceChild("left_front_leg", CubeListBuilder.create()
+				.texOffs(24, 60)
+				.addBox(-3.0F, 2.0F, -3.0F, 6.0F, 16.0F, 6.0F)
+				.texOffs(90, 20)
+				.addBox(-4.0F, -4.0F, -5.0F, 8.0F, 10.0F, 10.0F),
+			PartPose.offset(5.0F, 6.0F, 0.0F));
+
+		partdefinition.addOrReplaceChild("right_back_leg", CubeListBuilder.create()
+				.texOffs(0, 82)
+				.addBox(7.0F, 2.0F, -5.0F, 6.0F, 16.0F, 6.0F)
+				.texOffs(54, 50)
+				.addBox(6.0F, -4.0F, -7.0F, 8.0F, 10.0F, 10.0F),
+			PartPose.offset(-16.0F, 6.0F, 0.0F));
+
+		partdefinition.addOrReplaceChild("left_back_leg", CubeListBuilder.create()
+				.texOffs(24, 82)
+				.addBox(-13.0F, 2.0F, -5.0F, 6.0F, 16.0F, 6.0F)
+				.texOffs(90, 50)
+				.addBox(-14.0F, -4.0F, -7.0F, 8.0F, 10.0F, 10.0F),
+			PartPose.offset(16.0F, 6.0F, 0.0F));
+
+		for (int i = 0; i < 16; i++) {
+			partdefinition.addOrReplaceChild("segment" + i, CubeListBuilder.create()
+					.texOffs(0, 112)
+					.addBox(-8.0F, -7.0F, 8.0F, 16.0F, 14.0F, 2.0F),
+				PartPose.offset(0.0F, 0.0F, 10.0F));
+		}
+
+		return LayerDefinition.create(meshdefinition, 128, 128);
+	}
+
+	//the rotation of the original head prevents me from making a proper trophy so it needs its own model
+	private static LayerDefinition createJappaTrophy() {
+		MeshDefinition meshdefinition = new MeshDefinition();
+		PartDefinition partdefinition = meshdefinition.getRoot();
+
+		var head = partdefinition.addOrReplaceChild("head",
+			CubeListBuilder.create()
+				.texOffs(74, 70)
+				.addBox(-6.0F, -4.0F, -10.0F, 12.0F, 8.0F, 15.0F)
+				.texOffs(42, 71)
+				.addBox(-6.0F, -7.0F, -6.0F, 12.0F, 3.0F, 11.0F),
+			PartPose.offset(0.0F, -4.0F, 0.0F));
+
+		head.addOrReplaceChild("horns",
+			CubeListBuilder.create()
+				.texOffs(64, 0)
+				.addBox(-9.0F, -6.0F, -1.0F, 4.0F, 10.0F, 10.0F)
+				.texOffs(48, 0)
+				.addBox(-13.0F, -6.0F, 5.0F, 4.0F, 4.0F, 4.0F)
+				.texOffs(92, 0)
+				.addBox(5.0F, -6.0F, -1.0F, 4.0F, 10.0F, 10.0F)
+				.texOffs(110, 0)
+				.addBox(9.0F, -6.0F, 5.0F, 4.0F, 4.0F, 4.0F),
+			PartPose.offsetAndRotation(0.0F, -4.0F, 0.0F, -0.4363323129985824F, 0.0F, 0.0F));
+
+		return LayerDefinition.create(meshdefinition, 128, 128);
 	}
 
 	private static String getSegmentName(int num) {
@@ -161,45 +292,69 @@ public class QuestRamModel extends HierarchicalModel<QuestRam> {
 	}
 
 	@Override
-	public void setupAnim(QuestRam entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		this.head.xRot = headPitch / (180F / (float) Math.PI);
-		this.head.yRot = netHeadYaw / (180F / (float) Math.PI);
+	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+		this.head.xRot = headPitch * Mth.DEG_TO_RAD;
+		this.head.yRot = netHeadYaw * Mth.DEG_TO_RAD;
 
-		this.neck.yRot = this.head.yRot;
+		if (!JappaPackReloadListener.INSTANCE.isJappaPackLoaded()) {
+			this.neck.yRot = this.head.yRot;
+		}
 
-		this.leg1.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount * 0.5F;
-		this.leg2.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount * 0.5F;
-		this.leg3.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount * 0.5F;
-		this.leg4.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount * 0.5F;
-		this.haunch1.xRot = this.leg1.xRot;
-		this.haunch2.xRot = this.leg2.xRot;
-		this.haunch3.xRot = this.leg3.xRot;
-		this.haunch4.xRot = this.leg4.xRot;
+		this.leftFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount * 0.5F;
+		this.rightFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F + Mth.PI) * 1.4F * limbSwingAmount * 0.5F;
+		this.leftBackLeg.xRot = Mth.cos(limbSwing * 0.6662F + Mth.PI) * 1.4F * limbSwingAmount * 0.5F;
+		this.rightBackLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount * 0.5F;
 	}
 
 	@Override
-	public void prepareMobModel(QuestRam entity, float limbSwing, float limbSwingAmount, float partialTicks) {
+	public void prepareMobModel(T entity, float limbSwing, float limbSwingAmount, float partialTicks) {
 
 		// how many colors should we display?
 		int count = entity.countColorsSet();
+		boolean jappa = JappaPackReloadListener.INSTANCE.isJappaPackLoaded();
 
-		this.rearbody.z = 2 + 2 * count;
-		this.leg1.z = 11 + 2 * count;
-		this.leg2.z = 11 + 2 * count;
-		this.haunch1.z = 11 + 2 * count;
-		this.haunch2.z = 11 + 2 * count;
+		this.head.z = -count - (jappa ? 20 : 11);
+		this.neck.z = -count - (jappa ? 17 : 11);
+		this.frontTorso.z = -count - (jappa ? 12 : 0);
+		this.backTorso.z = count - (jappa ? 10 : 0);
+		this.leftBackLeg.z = 9 + count;
+		this.rightBackLeg.z = 9 + count;
+		this.leftFrontLeg.z = -11 - count;
+		this.rightFrontLeg.z = -11 - count;
 
 		// set up the colors displayed in color order
-		int segmentOffset = 2;
-		for (int color : colorOrder) {
+		int segmentOffset = 0;
+		for (int color : this.colorOrder) {
 			if (entity.isColorPresent(DyeColor.byId(color))) {
-				segments[color].visible = true;
-				segments[color].z = segmentOffset;
+				this.segments[color].visible = true;
+				this.segments[color].z = segmentOffset - count - (jappa ? 10 : 0);
 
 				segmentOffset += 2;
 			} else {
-				segments[color].visible = false;
+				this.segments[color].visible = false;
 			}
 		}
+	}
+
+	@Override
+	public void setupRotationsForTrophy(float x, float y, float z, float mouthAngle) {
+		this.head.yRot = y * Mth.DEG_TO_RAD;
+		this.head.xRot = z * Mth.DEG_TO_RAD;
+	}
+
+	@Override
+	public void renderTrophy(PoseStack stack, MultiBufferSource buffer, int light, int overlay, int color, boolean itemForm) {
+		stack.scale(0.67F, 0.67F, 0.67F);
+		if (!JappaPackReloadListener.INSTANCE.isJappaPackLoaded()) {
+			stack.translate(0.0F, 0.5F, itemForm ? 0.5F : 0.67F);
+		}
+
+		VertexConsumer consumer = buffer.getBuffer(RenderType.entityCutoutNoCull(QuestRamRenderer.TEXTURE));
+		this.head.render(stack, consumer, light, overlay, color);
+		stack.pushPose();
+		stack.scale(1.025F, 1.025F, 1.025F);
+		consumer = buffer.getBuffer(RenderType.entityTranslucent(QuestRamRenderer.LINE_TEXTURE));
+		this.head.render(stack, consumer, 0xF000F0, overlay, color);
+		stack.popPose();
 	}
 }

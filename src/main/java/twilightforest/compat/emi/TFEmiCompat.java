@@ -22,6 +22,7 @@ import twilightforest.compat.emi.recipes.*;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
 import twilightforest.item.recipe.NoTemplateSmithingRecipe;
+import twilightforest.item.recipe.ScepterRepairRecipe;
 
 import java.util.List;
 import java.util.Objects;
@@ -43,6 +44,7 @@ public class TFEmiCompat implements EmiPlugin {
 		stack.contains(EmiStack.of(TFItems.LAMP_OF_CINDERS)) || stack.contains(EmiStack.of(TFItems.GLASS_SWORD)) || stack.contains(EmiStack.of(TFItems.MAZEBREAKER_PICKAXE));
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public void register(EmiRegistry registry) {
 		registry.addCategory(UNCRAFTING);
 		registry.addCategory(CRUMBLE_HORN);
@@ -73,6 +75,10 @@ public class TFEmiCompat implements EmiPlugin {
 		for (RecipeHolder<SmithingRecipe> holder : manager.getAllRecipesFor(RecipeType.SMITHING).stream().filter(holder -> holder.value() instanceof NoTemplateSmithingRecipe).toList()) {
 			NoTemplateSmithingRecipe recipe = (NoTemplateSmithingRecipe) holder.value();
 			registry.addRecipe(new EmiNoSmithingTemplateRecipe(EmiIngredient.of(recipe.getBase()), EmiIngredient.of(recipe.getAddition()), EmiStack.of(recipe.getResultItem(Minecraft.getInstance().level.registryAccess())), recipe));
+		}
+
+		for (RecipeHolder<ScepterRepairRecipe> holder : manager.getAllRecipesFor(RecipeType.CRAFTING).stream().filter(holder -> holder.value() instanceof ScepterRepairRecipe).map(RecipeHolder.class::cast).toList()) {
+			registry.addRecipe(new EmiScepterRepairRecipe(holder.value().getIngredients().stream().map(EmiIngredient::of).toList(), EmiStack.of(holder.value().getScepter()), holder.id()));
 		}
 
 		//remove other recipes as they arent actually possible recipes to use

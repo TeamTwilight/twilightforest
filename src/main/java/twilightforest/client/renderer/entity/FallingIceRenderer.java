@@ -19,8 +19,8 @@ import net.neoforged.neoforge.client.model.data.ModelData;
 import twilightforest.entity.projectile.FallingIce;
 
 public class FallingIceRenderer extends EntityRenderer<FallingIce> {
-	public FallingIceRenderer(EntityRendererProvider.Context renderManagerIn) {
-		super(renderManagerIn);
+	public FallingIceRenderer(EntityRendererProvider.Context context) {
+		super(context);
 		this.shadowRadius = 0.5F;
 	}
 

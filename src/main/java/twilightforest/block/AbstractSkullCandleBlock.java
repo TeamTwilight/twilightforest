@@ -74,7 +74,6 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 		};
 	}
 
-	@Nullable
 	@Override
 	public BlockState getToolModifiedState(BlockState state, UseOnContext context, ItemAbility itemAbility, boolean simulate) {
 		if (ItemAbilities.FIRESTARTER_LIGHT == itemAbility) {
@@ -85,7 +84,6 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 		return super.getToolModifiedState(state, context, itemAbility, simulate);
 	}
 
-	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new SkullCandleBlockEntity(pos, state, 0);
@@ -277,10 +275,9 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		builder.add(LIGHTING).add(CANDLES);
+		builder.add(LIGHTING, CANDLES);
 	}
 
-	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
 		return createTickerHelper(type, TFBlockEntities.SKULL_CANDLE.get(), SkullCandleBlockEntity::tick);

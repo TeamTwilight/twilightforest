@@ -54,22 +54,19 @@ public class TrollRootBlock extends Block {
 	}
 
 	@Override
-	@Deprecated
 	public boolean canSurvive(BlockState state, LevelReader reader, BlockPos pos) {
 		return canPlaceRootBelow(reader, pos.above());
 	}
 
 	@Override
-	@Deprecated
 	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 		return AABB;
 	}
 
 	@Override
-	@Deprecated
 	public BlockState updateShape(BlockState state, Direction dirToNeighbor, BlockState neighborState, LevelAccessor accessor, BlockPos pos, BlockPos neighborPos) {
 		if (dirToNeighbor == Direction.UP) {
-			return canSurvive(state, accessor, pos) ? state : Blocks.AIR.defaultBlockState();
+			return this.canSurvive(state, accessor, pos) ? state : Blocks.AIR.defaultBlockState();
 		}
 		return state;
 	}

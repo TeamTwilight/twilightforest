@@ -648,7 +648,7 @@ public class HydraHeadContainer {
 
 		dx = this.hydra.getX() + vector.x();
 		dy = this.hydra.getY() + vector.y() + 3;
-		dz = this.hydra.getZ() + vector.z();
+		dz = this.hydra.getZ() + vector.z() + 1;
 
 		this.headEntity.setPos(dx, dy, dz);
 		this.headEntity.setMouthOpen(getCurrentMouthOpen());

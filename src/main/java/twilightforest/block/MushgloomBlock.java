@@ -25,7 +25,6 @@ public class MushgloomBlock extends MushroomBlock {
 	}
 
 	@Override
-	@Deprecated
 	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 		return MUSHGLOOM_SHAPE;
 	}
@@ -34,5 +33,4 @@ public class MushgloomBlock extends MushroomBlock {
 	public boolean isValidBonemealTarget(LevelReader getter, BlockPos pos, BlockState state) {
 		return false;
 	}
-
 }

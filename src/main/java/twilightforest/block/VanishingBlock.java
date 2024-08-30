@@ -44,15 +44,41 @@ public class VanishingBlock extends Block {
 	public static final BooleanProperty VANISHED = BooleanProperty.create("vanished");
 	private static final VoxelShape VANISHED_SHAPE = box(6, 6, 6, 10, 10, 10);
 
-	@SuppressWarnings("this-escape")
 	public VanishingBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(ACTIVE, false));
 	}
 
+	private static boolean areBlocksLocked(BlockGetter getter, BlockPos start) {
+		int limit = 512;
+		Deque<BlockPos> queue = new ArrayDeque<>();
+		Set<BlockPos> checked = new HashSet<>();
+		queue.offer(start);
+
+		for (int iter = 0; !queue.isEmpty() && iter < limit; iter++) {
+			BlockPos cur = queue.pop();
+			BlockState state = getter.getBlockState(cur);
+			if (state.getBlock() == TFBlocks.LOCKED_VANISHING_BLOCK.get() && state.getValue(LockedVanishingBlock.LOCKED)) {
+				return true;
+			}
+
+			checked.add(cur);
+
+			if (state.getBlock() instanceof VanishingBlock) {
+				for (Direction facing : Direction.values()) {
+					BlockPos neighbor = cur.relative(facing);
+					if (!checked.contains(neighbor)) {
+						queue.offer(neighbor);
+					}
+				}
+			}
+		}
+
+		return false;
+	}
+
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		super.createBlockStateDefinition(builder);
 		builder.add(ACTIVE);
 	}
 
@@ -94,37 +120,8 @@ public class VanishingBlock extends Block {
 		return !state.getValue(ACTIVE) ? !areBlocksLocked(getter, pos) : super.canEntityDestroy(state, getter, pos, entity);
 	}
 
-	private static boolean areBlocksLocked(BlockGetter getter, BlockPos start) {
-		int limit = 512;
-		Deque<BlockPos> queue = new ArrayDeque<>();
-		Set<BlockPos> checked = new HashSet<>();
-		queue.offer(start);
-
-		for (int iter = 0; !queue.isEmpty() && iter < limit; iter++) {
-			BlockPos cur = queue.pop();
-			BlockState state = getter.getBlockState(cur);
-			if (state.getBlock() == TFBlocks.LOCKED_VANISHING_BLOCK.get() && state.getValue(LockedVanishingBlock.LOCKED)) {
-				return true;
-			}
-
-			checked.add(cur);
-
-			if (state.getBlock() instanceof VanishingBlock) {
-				for (Direction facing : Direction.values()) {
-					BlockPos neighbor = cur.relative(facing);
-					if (!checked.contains(neighbor)) {
-						queue.offer(neighbor);
-					}
-				}
-			}
-		}
-
-		return false;
-	}
-
 	@Override
-	@Deprecated
-	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
+	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
 		if (level.isClientSide()) {
 			return;
 		}
@@ -135,13 +132,12 @@ public class VanishingBlock extends Block {
 	}
 
 	@Override
-	@Deprecated
 	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 		if (level.isClientSide()) {
 			return;
 		}
 
-		if (isVanished(state)) {
+		if (this.isVanished(state)) {
 			if (state.getValue(ACTIVE)) {
 				level.setBlockAndUpdate(pos, state.setValue(VANISHED, false).setValue(ACTIVE, false));
 			} else {
@@ -174,17 +170,17 @@ public class VanishingBlock extends Block {
 		}
 	}
 
-	// [VanillaCopy] BlockRedstoneOre.spawnParticles. Unchanged.
+	// [VanillaCopy] RedstoneOreBlock.spawnParticles. Unchanged.
 	public void sparkle(Level level, BlockPos pos) {
 		RandomSource random = level.getRandom();
 
 		for (Direction direction : Direction.values()) {
 			BlockPos blockpos = pos.relative(direction);
 			if (!level.getBlockState(blockpos).isSolidRender(level, blockpos)) {
-				Direction.Axis direction$axis = direction.getAxis();
-				double d1 = direction$axis == Direction.Axis.X ? 0.5 + 0.5625 * (double) direction.getStepX() : (double) random.nextFloat();
-				double d2 = direction$axis == Direction.Axis.Y ? 0.5 + 0.5625 * (double) direction.getStepY() : (double) random.nextFloat();
-				double d3 = direction$axis == Direction.Axis.Z ? 0.5 + 0.5625 * (double) direction.getStepZ() : (double) random.nextFloat();
+				Direction.Axis axis = direction.getAxis();
+				double d1 = axis == Direction.Axis.X ? 0.5 + 0.5625 * (double) direction.getStepX() : (double) random.nextFloat();
+				double d2 = axis == Direction.Axis.Y ? 0.5 + 0.5625 * (double) direction.getStepY() : (double) random.nextFloat();
+				double d3 = axis == Direction.Axis.Z ? 0.5 + 0.5625 * (double) direction.getStepZ() : (double) random.nextFloat();
 				level.addParticle(DustParticleOptions.REDSTONE, (double) pos.getX() + d1, (double) pos.getY() + d2, (double) pos.getZ() + d3, 0.0, 0.0, 0.0);
 			}
 		}

@@ -10,14 +10,16 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 
 public class RedThreadModel extends Model {
-	public final ModelPart center;
-	public final ModelPart up;
-	public final ModelPart down;
-	public final ModelPart left;
-	public final ModelPart right;
+
+	private final ModelPart center;
+	private final ModelPart up;
+	private final ModelPart down;
+	private final ModelPart left;
+	private final ModelPart right;
 
 	public RedThreadModel(ModelPart root) {
 		super(RenderType::entityCutoutNoCull);
@@ -31,28 +33,28 @@ public class RedThreadModel extends Model {
 	public static LayerDefinition create() {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
-		partdefinition.addOrReplaceChild("center",
-			CubeListBuilder.create()
+
+		partdefinition.addOrReplaceChild("center", CubeListBuilder.create()
 				.texOffs(0, 0)
 				.addBox(-1.0F, 0.2F, -1.0F, 2.0F, 0.0F, 2.0F),
 			PartPose.ZERO);
-		partdefinition.addOrReplaceChild("up",
-			CubeListBuilder.create()
+
+		partdefinition.addOrReplaceChild("up", CubeListBuilder.create()
 				.texOffs(0, 2)
 				.addBox(-1.0F, 0.2F, -8.0F, 2.0F, 0.0F, 7.0F),
 			PartPose.ZERO);
-		partdefinition.addOrReplaceChild("down",
-			CubeListBuilder.create()
+
+		partdefinition.addOrReplaceChild("down", CubeListBuilder.create()
 				.texOffs(4, 2)
 				.addBox(-1.0F, 0.2F, 1.0F, 2.0F, 0.0F, 7.0F),
 			PartPose.ZERO);
-		partdefinition.addOrReplaceChild("left",
-			CubeListBuilder.create()
+
+		partdefinition.addOrReplaceChild("left", CubeListBuilder.create()
 				.texOffs(0, 10)
 				.addBox(-8.0F, 0.2F, -1.0F, 7.0F, 0.0F, 2.0F),
 			PartPose.ZERO);
-		partdefinition.addOrReplaceChild("right",
-			CubeListBuilder.create()
+
+		partdefinition.addOrReplaceChild("right", CubeListBuilder.create()
 				.texOffs(0, 14)
 				.addBox(1.0F, 0.2F, -1.0F, 7.0F, 0.0F, 2.0F),
 			PartPose.ZERO);
@@ -67,6 +69,10 @@ public class RedThreadModel extends Model {
 		this.down.render(stack, consumer, light, overlay, color);
 		this.left.render(stack, consumer, light, overlay, color);
 		this.right.render(stack, consumer, light, overlay, color);
+	}
+
+	public void renderCenterPiece(PoseStack stack, VertexConsumer consumer, int light) {
+		this.center.render(stack, consumer, light, OverlayTexture.NO_OVERLAY);
 	}
 
 	/**

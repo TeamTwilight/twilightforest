@@ -6,114 +6,159 @@
 
 package twilightforest.client.model.entity;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
 import net.minecraft.client.model.QuadrupedModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
+import twilightforest.client.JappaPackReloadListener;
 import twilightforest.entity.passive.Squirrel;
 
 public class SquirrelModel extends QuadrupedModel<Squirrel> {
-	//fields
-	final ModelPart tail;
-	final ModelPart fluff1;
-	final ModelPart fluff2;
-	final ModelPart fluff3;
+
+	private final ModelPart tail;
+	private final ModelPart tailPart1;
+	private final ModelPart tailPart2;
 
 	public SquirrelModel(ModelPart root) {
 		super(root, false, 4.0F, 4.0F, 2.0F, 2.0F, 24);
-		this.tail = root.getChild("tail");
-		this.fluff1 = tail.getChild("fluff_1");
-		this.fluff2 = fluff1.getChild("fluff_2");
-		this.fluff3 = fluff2.getChild("fluff_3");
+		this.tail = this.body.getChild("tail");
+		this.tailPart1 = this.tail.getChild("tail_1");
+		this.tailPart2 = this.tailPart1.getChild("tail_2");
 	}
 
-	public static LayerDefinition create() {
-		MeshDefinition mesh = QuadrupedModel.createBodyMesh(0, CubeDeformation.NONE);
-		PartDefinition definition = mesh.getRoot();
+	public static LayerDefinition checkForPack() {
+		return JappaPackReloadListener.INSTANCE.isJappaPackLoaded() ? createJappaModel() : create();
+	}
 
-		definition.addOrReplaceChild("head", CubeListBuilder.create()
+	private static LayerDefinition create() {
+		MeshDefinition meshdefinition = QuadrupedModel.createBodyMesh(0, CubeDeformation.NONE);
+		PartDefinition partdefinition = meshdefinition.getRoot();
+
+		partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
 				.texOffs(0, 0)
-				.addBox(-2F, -5F, -3F, 4, 4, 4)
+				.addBox(-2.0F, -5.0F, -3.0F, 4.0F, 4.0F, 4.0F)
 				.texOffs(16, 0)
-				.addBox(-2F, -6F, -0.5F, 1, 1, 1)
+				.addBox(-2.0F, -6.0F, -0.5F, 1.0F, 1.0F, 1.0F)
 				.texOffs(16, 0)
-				.addBox(1F, -6F, -0.5F, 1, 1, 1),
-			PartPose.offset(0F, 22F, -2F));
+				.addBox(1.0F, -6.0F, -0.5F, 1.0F, 1.0F, 1.0F),
+			PartPose.offset(0.0F, 22.0F, -2.0F));
 
-		var body = definition.addOrReplaceChild("body", CubeListBuilder.create().mirror()
+		var body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create().mirror()
 				.texOffs(0, 8)
-				.addBox(-2F, -1F, -2F, 4, 3, 5),
-			PartPose.offset(0F, 21F, 0F));
+				.addBox(-2.0F, -1.0F, -2.0F, 4.0F, 3.0F, 5.0F),
+			PartPose.offset(0.0F, 21.0F, 0.0F));
 
-		definition.addOrReplaceChild("right_hind_leg", CubeListBuilder.create().mirror()
+		partdefinition.addOrReplaceChild("right_hind_leg", CubeListBuilder.create().mirror()
 				.texOffs(0, 16)
-				.addBox(0F, 0F, 0F, 1, 1, 1),
-			PartPose.offset(-2F, 23F, 2F));
+				.addBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F),
+			PartPose.offset(-2.0F, 23.0F, 2.0F));
 
-		definition.addOrReplaceChild("left_hind_leg", CubeListBuilder.create().mirror()
+		partdefinition.addOrReplaceChild("left_hind_leg", CubeListBuilder.create().mirror()
 				.texOffs(0, 16)
-				.addBox(0F, 0F, 0F, 1, 1, 1),
-			PartPose.offset(1F, 23F, 2F));
+				.addBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F),
+			PartPose.offset(1.0F, 23.0F, 2.0F));
 
-		definition.addOrReplaceChild("right_front_leg", CubeListBuilder.create()
+		partdefinition.addOrReplaceChild("right_front_leg", CubeListBuilder.create()
 				.texOffs(0, 16)
-				.addBox(0F, 0F, 0F, 1, 1, 1),
-			PartPose.offset(-2F, 23F, -2F));
+				.addBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F),
+			PartPose.offset(-2.0F, 23.0F, -2.0F));
 
-		definition.addOrReplaceChild("left_front_leg", CubeListBuilder.create()
+		partdefinition.addOrReplaceChild("left_front_leg", CubeListBuilder.create()
 				.texOffs(0, 16)
-				.addBox(0F, 0F, 0F, 1, 1, 1),
-			PartPose.offset(1F, 23F, -2F));
+				.addBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F),
+			PartPose.offset(1.0F, 23.0F, -2.0F));
 
-		var tail = definition.addOrReplaceChild("tail", CubeListBuilder.create()
+		var tail = body.addOrReplaceChild("tail", CubeListBuilder.create()
 				.texOffs(0, 18)
-				.addBox(-0.5F, -1.5F, 0.5F, 1, 1, 1),
-			PartPose.offset(0F, 21F, 2F));
-
-		var fluff1 = tail.addOrReplaceChild("fluff_1", CubeListBuilder.create()
+				.addBox(-0.5F, -1.5F, 0.5F, 1.0F, 1.0F, 1.0F)
 				.texOffs(0, 20)
-				.addBox(-1.5F, -4F, 1F, 3, 3, 3),
-			PartPose.ZERO);
+				.addBox(-1.5F, -4.0F, 1.0F, 3.0F, 3.0F, 3.0F),
+			PartPose.offset(0.0F, 0.0F, 2.0F));
 
-		var fluff2 = fluff1.addOrReplaceChild("fluff_2", CubeListBuilder.create()
+		var tail1 = tail.addOrReplaceChild("tail_1", CubeListBuilder.create()
 				.texOffs(0, 20)
-				.addBox(0F, -3F, -1.5F, 3, 3, 3),
-			PartPose.offset(-1.5F, -4F, 2.5F));
+				.addBox(0.0F, -3.0F, -1.5F, 3.0F, 3.0F, 3.0F),
+			PartPose.offset(-1.5F, -4.0F, 2.5F));
 
-		fluff2.addOrReplaceChild("fluff_3", CubeListBuilder.create()
+		tail1.addOrReplaceChild("tail_2", CubeListBuilder.create()
 				.texOffs(0, 26)
-				.addBox(1.5F, -3F, -1.5F, 3, 3, 3),
-			PartPose.offset(-1.5F, -3F, 0F));
+				.addBox(1.5F, -3.0F, -1.5F, 3.0F, 3.0F, 3.0F),
+			PartPose.offset(-1.5F, -3.0F, 0.0F));
 
-		return LayerDefinition.create(mesh, 32, 32);
+		return LayerDefinition.create(meshdefinition, 32, 32);
 	}
 
-	@Override
-	protected Iterable<ModelPart> bodyParts() {
-		return Iterables.concat(super.bodyParts(), ImmutableList.of(tail));
+	private static LayerDefinition createJappaModel() {
+		MeshDefinition meshdefinition = QuadrupedModel.createBodyMesh(1, CubeDeformation.NONE);
+		PartDefinition partdefinition = meshdefinition.getRoot();
+
+		partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
+				.texOffs(0, 0)
+				.addBox(-2.0F, -2.0F, -3.0F, 4.0F, 4.0F, 4.0F)
+				.addBox(-2.0F, -3.0F, -1.0F, 1.0F, 1.0F, 1.0F)
+				.texOffs(0, 2)
+				.addBox(1.0F, -3.0F, -1.0F, 1.0F, 1.0F, 1.0F),
+			PartPose.offset(0.0F, 20.0F, -3.0F));
+
+		var body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create()
+				.texOffs(0, 8)
+				.addBox(-2.0F, -3.0F, -3.0F, 4.0F, 3.0F, 5.0F),
+			PartPose.offset(0.0F, 23.0F, 0.0F));
+
+		partdefinition.addOrReplaceChild("right_front_leg", CubeListBuilder.create()
+				.texOffs(0, 16)
+				.addBox(-0.5F, 0.0F, -0.5F, 1.0F, 1.0F, 1.0F),
+			PartPose.offset(-1.5F, 23.0F, -2.5F));
+
+		partdefinition.addOrReplaceChild("left_front_leg", CubeListBuilder.create()
+				.texOffs(4, 16)
+				.addBox(-0.5F, 0.0F, -0.5F, 1.0F, 1.0F, 1.0F),
+			PartPose.offset(1.5F, 23.0F, -2.5F));
+
+		partdefinition.addOrReplaceChild("right_hind_leg", CubeListBuilder.create()
+				.texOffs(0, 18)
+				.addBox(-0.5F, 0.0F, -0.5F, 1.0F, 1.0F, 1.0F),
+			PartPose.offset(-1.5F, 23.0F, 1.5F));
+
+		partdefinition.addOrReplaceChild("left_hind_leg", CubeListBuilder.create()
+				.texOffs(4, 18)
+				.addBox(-0.5F, 0.0F, -0.5F, 1.0F, 1.0F, 1.0F),
+			PartPose.offset(1.5F, 23.0F, 1.5F));
+
+		var tail = body.addOrReplaceChild("tail", CubeListBuilder.create()
+				.texOffs(18, 0)
+				.addBox(-1.5F, 0.0F, -1.5F, 3.0F, 4.0F, 3.0F),
+			PartPose.offset(0.0F, -3.0F, 2.0F));
+
+		var tail1 = tail.addOrReplaceChild("tail_1", CubeListBuilder.create()
+				.texOffs(13, 11)
+				.addBox(-1.5F, -1.0F, 0.0F, 3.0F, 3.0F, 5.0F),
+			PartPose.offset(0.0F, 4.0F, 0.5F));
+
+		tail1.addOrReplaceChild("tail_2", CubeListBuilder.create(), PartPose.ZERO);
+
+		return LayerDefinition.create(meshdefinition, 32, 32);
 	}
 
 	@Override
 	public void setupAnim(Squirrel entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		this.head.xRot = headPitch / (180F / (float) Math.PI);
-		this.head.yRot = netHeadYaw / (180F / (float) Math.PI);
+		this.head.xRot = headPitch * Mth.DEG_TO_RAD;
+		this.head.yRot = netHeadYaw * Mth.DEG_TO_RAD;
 		this.rightHindLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-		this.leftHindLeg.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
-		this.rightFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
+		this.leftHindLeg.xRot = Mth.cos(limbSwing * 0.6662F + Mth.PI) * 1.4F * limbSwingAmount;
+		this.rightFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F + Mth.PI) * 1.4F * limbSwingAmount;
 		this.leftFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
 
 		if (limbSwingAmount > 0.2) {
 			float wiggle = Math.min(limbSwingAmount, 0.6F);
-			this.tail.xRot = (Mth.cos(ageInTicks * 0.6662F) - (float) Math.PI / 3) * wiggle;
-			this.fluff2.xRot = Mth.cos(ageInTicks * 0.7774F) * 1.2F * wiggle;
-			this.fluff3.xRot = Mth.cos(ageInTicks * 0.8886F + (float) Math.PI / 2) * 1.4F * wiggle;
+			this.tail.xRot = (JappaPackReloadListener.INSTANCE.isJappaPackLoaded() ? 2.5F : 0.2F) + (Mth.cos(ageInTicks * 0.6662F) - Mth.PI / 3.0F) * wiggle;
+			this.tailPart1.xRot = Mth.cos(ageInTicks * 0.7774F) * 1.2F * wiggle;
+			this.tailPart2.xRot = Mth.cos(ageInTicks * 0.8886F + Mth.PI / 2.0F) * 1.4F * wiggle;
 		} else {
-			this.tail.xRot = 0.2F + Mth.cos(ageInTicks * 0.3335F) * 0.15F;
-			this.fluff2.xRot = 0.1F + Mth.cos(ageInTicks * 0.4445F) * 0.20F;
-			this.fluff3.xRot = 0.1F + Mth.cos(ageInTicks * 0.5555F) * 0.25F;
+			this.tail.xRot = (JappaPackReloadListener.INSTANCE.isJappaPackLoaded() ? 2.5F : 0.2F) + Mth.cos(ageInTicks * 0.3335F) * 0.15F;
+			this.tailPart1.xRot = 0.1F + Mth.cos(ageInTicks * 0.4445F) * 0.20F;
+			this.tailPart2.xRot = 0.1F + Mth.cos(ageInTicks * 0.5555F) * 0.25F;
 		}
 	}
 }

@@ -3,15 +3,15 @@ package twilightforest.client.model.entity;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.model.AgeableListModel;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.CubeListBuilder;
-import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import twilightforest.entity.monster.HostileWolf;
 
+import java.util.function.Function;
+
 public class HostileWolfModel<T extends HostileWolf> extends AgeableListModel<T> {
+
 	private final ModelPart head;
 	private final ModelPart body;
 	private final ModelPart rightHindLeg;
@@ -21,15 +21,20 @@ public class HostileWolfModel<T extends HostileWolf> extends AgeableListModel<T>
 	private final ModelPart tail;
 	private final ModelPart upperBody;
 
-	public HostileWolfModel(ModelPart p_171087_) {
-		this.head = p_171087_.getChild("head");
-		this.body = p_171087_.getChild("body");
-		this.upperBody = p_171087_.getChild("upper_body");
-		this.rightHindLeg = p_171087_.getChild("right_hind_leg");
-		this.leftHindLeg = p_171087_.getChild("left_hind_leg");
-		this.rightFrontLeg = p_171087_.getChild("right_front_leg");
-		this.leftFrontLeg = p_171087_.getChild("left_front_leg");
-		this.tail = p_171087_.getChild("tail");
+	public HostileWolfModel(ModelPart root) {
+		this(RenderType::entityCutoutNoCull, root);
+	}
+
+	public HostileWolfModel(Function<ResourceLocation, RenderType> type, ModelPart root) {
+		super(type, false, 5.0F, 2.0F, 2.0F, 2.0F, 24.0F);
+		this.head = root.getChild("head");
+		this.body = root.getChild("body");
+		this.upperBody = root.getChild("upper_body");
+		this.rightHindLeg = root.getChild("right_hind_leg");
+		this.leftHindLeg = root.getChild("left_hind_leg");
+		this.rightFrontLeg = root.getChild("right_front_leg");
+		this.leftFrontLeg = root.getChild("left_front_leg");
+		this.tail = root.getChild("tail");
 	}
 
 	@Override
@@ -51,7 +56,7 @@ public class HostileWolfModel<T extends HostileWolf> extends AgeableListModel<T>
 		}
 
 		this.body.setPos(0.0F, 14.0F, 2.0F);
-		this.body.xRot = ((float) Math.PI / 2F);
+		this.body.xRot = Mth.HALF_PI;
 		this.upperBody.setPos(-1.0F, 14.0F, -3.0F);
 		this.upperBody.xRot = this.body.xRot;
 		this.tail.setPos(-1.0F, 12.0F, 8.0F);
@@ -60,15 +65,15 @@ public class HostileWolfModel<T extends HostileWolf> extends AgeableListModel<T>
 		this.rightFrontLeg.setPos(-2.5F, 16.0F, -4.0F);
 		this.leftFrontLeg.setPos(0.5F, 16.0F, -4.0F);
 		this.rightHindLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-		this.leftHindLeg.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
-		this.rightFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
+		this.leftHindLeg.xRot = Mth.cos(limbSwing * 0.6662F + Mth.PI) * 1.4F * limbSwingAmount;
+		this.rightFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F + Mth.PI) * 1.4F * limbSwingAmount;
 		this.leftFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
 	}
 
 	@Override
 	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		this.head.xRot = headPitch * ((float) Math.PI / 180F);
-		this.head.yRot = netHeadYaw * ((float) Math.PI / 180F);
+		this.head.xRot = headPitch * Mth.DEG_TO_RAD;
+		this.head.yRot = netHeadYaw * Mth.DEG_TO_RAD;
 		this.tail.xRot = ageInTicks;
 	}
 }

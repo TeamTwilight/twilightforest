@@ -17,7 +17,6 @@ public class WispyCloudBlock extends CloudBlock {
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
 	public VoxelShape getCollisionShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
 		return SHAPE;
 	}
@@ -28,7 +27,6 @@ public class WispyCloudBlock extends CloudBlock {
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
 	public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
 		return adjacentBlockState.is(this) || super.skipRendering(state, adjacentBlockState, side);
 	}

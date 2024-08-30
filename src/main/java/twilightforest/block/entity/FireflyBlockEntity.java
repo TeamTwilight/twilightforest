@@ -10,14 +10,13 @@ import twilightforest.init.TFParticleType;
 
 public class FireflyBlockEntity extends BlockEntity {
 
-	private int yawDelay;
+	public final float randRot = RandomSource.create().nextInt(4) * 90.0F;
 	public int currentYaw;
-	private int desiredYaw;
-
 	public float glowIntensity;
+	private int yawDelay;
+	private int desiredYaw;
 	private boolean glowing;
 	private int glowDelay;
-	public final float randRot = RandomSource.create().nextInt(4) * 90.0F;
 
 	public FireflyBlockEntity(BlockPos pos, BlockState state) {
 		super(TFBlockEntities.FIREFLY.get(), pos, state);
@@ -71,14 +70,14 @@ public class FireflyBlockEntity extends BlockEntity {
 	}
 
 	private boolean anyPlayerInRange() {
-		return this.getLevel().getNearestPlayer(this.getBlockPos().getX() + 0.5D, this.getBlockPos().getY() + 0.5D, this.getBlockPos().getZ() + 0.5D, 16D, false) != null;
+		return this.getLevel().hasNearbyAlivePlayer(this.getBlockPos().getX() + 0.5D, this.getBlockPos().getY() + 0.5D, this.getBlockPos().getZ() + 0.5D, 16D);
 	}
 
 	private void spawnParticles() {
 		double rx = this.getBlockPos().getX() + this.getLevel().getRandom().nextFloat();
 		double ry = this.getBlockPos().getY() + this.getLevel().getRandom().nextFloat();
 		double rz = this.getBlockPos().getZ() + this.getLevel().getRandom().nextFloat();
-//    	ModLoader.getMinecraftInstance().effectRenderer.addEffect(fireflyfx);
+		// ModLoader.getMinecraftInstance().effectRenderer.addEffect(fireflyfx);
 		// ^ keeping here only for pure lolz
 		this.getLevel().addParticle(TFParticleType.FIREFLY.get(), rx, ry, rz, 0, 0, 0);
 	}

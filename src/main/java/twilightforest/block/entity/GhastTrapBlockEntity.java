@@ -24,12 +24,19 @@ import java.util.List;
 
 public class GhastTrapBlockEntity extends BlockEntity {
 
-	private int counter = 0;
 	private final List<CarminiteGhastling> dyingGhasts = new ArrayList<>();
 	private final RandomSource rand = RandomSource.create();
+	private int counter = 0;
 
 	public GhastTrapBlockEntity(BlockPos pos, BlockState state) {
 		super(TFBlockEntities.GHAST_TRAP.get(), pos, state);
+	}
+
+	public static void tick(Level level, BlockPos pos, BlockState state, GhastTrapBlockEntity te) {
+		if (!level.isDebug()) {
+			if (state.getValue(GhastTrapBlock.ACTIVE)) te.tickActive(level, pos, state, te);
+			else te.tickInactive(level, pos, state, te);
+		}
 	}
 
 	private void tickInactive(Level level, BlockPos pos, BlockState state, GhastTrapBlockEntity te) {
@@ -84,13 +91,6 @@ public class GhastTrapBlockEntity extends BlockEntity {
 
 	public boolean isCharged() {
 		return this.dyingGhasts.size() >= 3;
-	}
-
-	public static void tick(Level level, BlockPos pos, BlockState state, GhastTrapBlockEntity te) {
-		if (!level.isDebug()) {
-			if (state.getValue(GhastTrapBlock.ACTIVE)) te.tickActive(level, pos, state, te);
-			else te.tickInactive(level, pos, state, te);
-		}
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package twilightforest.compat.jei.renderers;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import mezz.jei.api.gui.builder.ITooltipBuilder;
 import mezz.jei.api.ingredients.IIngredientRenderer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -57,15 +58,17 @@ public class FakeItemEntityRenderer implements IIngredientRenderer<FakeItemEntit
 		}
 	}
 
+	@SuppressWarnings("removal") //we are absolutely forced to use this
 	@Override
 	public List<Component> getTooltip(FakeItemEntity item, TooltipFlag flag) {
-		List<Component> tooltip = new ArrayList<>();
+		return List.of();
+	}
+
+	@Override
+	public void getTooltip(ITooltipBuilder tooltip, FakeItemEntity item, TooltipFlag flag) {
 		tooltip.add(item.stack().getItem().getDescription());
 		if (flag.isAdvanced()) {
 			tooltip.add(Component.literal(Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(item.stack().getItem())).toString()).withStyle(ChatFormatting.DARK_GRAY));
 		}
-		return tooltip;
 	}
-
-
 }

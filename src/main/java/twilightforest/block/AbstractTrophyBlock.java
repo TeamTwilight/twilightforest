@@ -25,7 +25,6 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.network.PacketDistributor;
-import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.TrophyBlockEntity;
 import twilightforest.enums.BossVariant;
 import twilightforest.init.TFBlockEntities;
@@ -37,11 +36,10 @@ import twilightforest.network.ParticlePacket;
 //[VanillaCopy] of AbstractSkullBlock except uses Variants instead of ISkullType and adds Sounds when clicked or powered
 public abstract class AbstractTrophyBlock extends BaseEntityBlock implements Equipable {
 
+	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 	private final BossVariant variant;
 	private final int comparatorValue;
-	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
-	@SuppressWarnings("this-escape")
 	protected AbstractTrophyBlock(BossVariant variant, int value, BlockBehaviour.Properties builder) {
 		super(builder);
 		this.variant = variant;
@@ -67,19 +65,17 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock implements Equ
 	}
 
 	@Override
-	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player playerIn, BlockHitResult hit) {
+	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
 		this.playSound(level, pos);
 		this.createParticle(level, pos);
 		return InteractionResult.sidedSuccess(level.isClientSide());
 	}
 
-	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new TrophyBlockEntity(pos, state);
 	}
 
-	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
 		return createTickerHelper(type, TFBlockEntities.TROPHY.get(), TrophyBlockEntity::tick);
@@ -99,9 +95,9 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock implements Equ
 		builder.add(POWERED);
 	}
 
-	public void playSound(Level world, BlockPos pos) {
-		BlockEntity te = world.getBlockEntity(pos);
-		if (!world.isClientSide() && te instanceof TrophyBlockEntity) {
+	public void playSound(Level level, BlockPos pos) {
+		BlockEntity te = level.getBlockEntity(pos);
+		if (!level.isClientSide() && te instanceof TrophyBlockEntity) {
 			SoundEvent sound = null;
 			float volume = 1.0F;
 			float pitch = 0.9F;
@@ -135,7 +131,7 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock implements Equ
 					pitch = 0.7F;
 				}
 				case ALPHA_YETI -> {
-					sound = world.getRandom().nextInt(50) == 0 ? TFSounds.ALPHA_YETI_ROAR.get() : TFSounds.ALPHA_YETI_GROWL.get();
+					sound = level.getRandom().nextInt(50) == 0 ? TFSounds.ALPHA_YETI_ROAR.get() : TFSounds.ALPHA_YETI_GROWL.get();
 					volume = 0.75F;
 					pitch = 0.75F;
 				}
@@ -147,7 +143,7 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock implements Equ
 				}
 			}
 			if (sound != null) {
-				world.playSound(null, pos, sound, SoundSource.BLOCKS, volume, world.getRandom().nextFloat() * 0.1F + pitch);
+				level.playSound(null, pos, sound, SoundSource.BLOCKS, volume, level.getRandom().nextFloat() * 0.1F + pitch);
 			}
 		}
 	}

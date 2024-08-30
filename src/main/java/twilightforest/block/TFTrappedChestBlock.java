@@ -16,7 +16,7 @@ import twilightforest.init.TFBlockEntities;
 
 public class TFTrappedChestBlock extends ChestBlock {
 	public TFTrappedChestBlock(Properties properties) {
-		super(properties, TFBlockEntities.TF_TRAPPED_CHEST::value);
+		super(properties, TFBlockEntities.TF_TRAPPED_CHEST::get);
 	}
 
 	@Override
@@ -30,16 +30,19 @@ public class TFTrappedChestBlock extends ChestBlock {
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public boolean isSignalSource(BlockState state) {
 		return true;
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public int getSignal(BlockState state, BlockGetter getter, BlockPos pos, Direction direction) {
 		return Mth.clamp(ChestBlockEntity.getOpenCount(getter, pos), 0, 15);
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public int getDirectSignal(BlockState state, BlockGetter getter, BlockPos pos, Direction direction) {
 		return direction == Direction.UP ? state.getSignal(getter, pos, direction) : 0;
 	}

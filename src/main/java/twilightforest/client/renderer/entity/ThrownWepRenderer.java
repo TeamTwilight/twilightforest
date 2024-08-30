@@ -15,15 +15,15 @@ import twilightforest.entity.projectile.ThrownWep;
 
 public class ThrownWepRenderer extends EntityRenderer<ThrownWep> {
 
-	public ThrownWepRenderer(EntityRendererProvider.Context manager) {
-		super(manager);
+	public ThrownWepRenderer(EntityRendererProvider.Context context) {
+		super(context);
 	}
 
 	@Override
 	public void render(ThrownWep entity, float yaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light) {
 		stack.pushPose();
 
-		float spin = (entity.tickCount + partialTicks) * 10F;
+		float spin = (entity.tickCount + partialTicks) * 10.0F;
 
 		// size up
 		stack.scale(1.25F, 1.25F, 1.25F);
@@ -33,24 +33,24 @@ public class ThrownWepRenderer extends EntityRenderer<ThrownWep> {
 		stack.popPose();
 	}
 
-	private void renderDroppedItem(PoseStack matrix, MultiBufferSource buffer, int light, ItemStack stack, float rotation, float spin) {
-		matrix.pushPose();
+	private void renderDroppedItem(PoseStack stack, MultiBufferSource buffer, int light, ItemStack item, float rotation, float spin) {
+		stack.pushPose();
 
 		float f9 = 0.5F;
 		float f10 = 0.25F;
 
-		matrix.mulPose(Axis.YP.rotationDegrees(rotation + 90));
-		matrix.mulPose(Axis.ZP.rotationDegrees(spin));
+		stack.mulPose(Axis.YP.rotationDegrees(rotation + 90.0F));
+		stack.mulPose(Axis.ZP.rotationDegrees(spin));
 
 		float f12 = 0.0625F;
 		float f11 = 0.021875F;
 
-		matrix.translate(-f9, -f10, -(f12 + f11));
-		matrix.translate(0f, 0f, f12 + f11);
+		stack.translate(-f9, -f10, -(f12 + f11));
+		stack.translate(0.0F, 0.0F, f12 + f11);
 
-		Minecraft.getInstance().getItemRenderer().renderStatic(stack, ItemDisplayContext.GROUND, light, OverlayTexture.NO_OVERLAY, matrix, buffer, null, 0);
+		Minecraft.getInstance().getItemRenderer().renderStatic(item, ItemDisplayContext.GROUND, light, OverlayTexture.NO_OVERLAY, stack, buffer, null, 0);
 
-		matrix.popPose();
+		stack.popPose();
 	}
 
 	@Override

@@ -10,7 +10,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
  */
 public class ReappearingBlock extends VanishingBlock {
 
-	@SuppressWarnings("this-escape")
 	public ReappearingBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(ACTIVE, false).setValue(VANISHED, false));
@@ -18,7 +17,6 @@ public class ReappearingBlock extends VanishingBlock {
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		super.createBlockStateDefinition(builder);
-		builder.add(VANISHED);
+		super.createBlockStateDefinition(builder.add(VANISHED));
 	}
 }

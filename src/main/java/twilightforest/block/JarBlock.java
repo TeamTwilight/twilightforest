@@ -35,12 +35,12 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.JarBlockEntity;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFSounds;
 
 import java.util.List;
+import java.util.function.BooleanSupplier;
 
 public class JarBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
 	public static final MapCodec<JarBlock> CODEC = simpleCodec(JarBlock::new);
@@ -49,7 +49,6 @@ public class JarBlock extends BaseEntityBlock implements SimpleWaterloggedBlock 
 	private static final VoxelShape AABB = Shapes.or(JAR, LID);
 	private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-	@SuppressWarnings("this-escape")
 	public JarBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(WATERLOGGED, false));
@@ -61,7 +60,6 @@ public class JarBlock extends BaseEntityBlock implements SimpleWaterloggedBlock 
 	}
 
 	@Override
-	@Deprecated
 	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 		return AABB;
 	}
@@ -109,7 +107,6 @@ public class JarBlock extends BaseEntityBlock implements SimpleWaterloggedBlock 
 		return super.getDrops(state, params);
 	}
 
-	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new JarBlockEntity(pos, state);
@@ -117,27 +114,24 @@ public class JarBlock extends BaseEntityBlock implements SimpleWaterloggedBlock 
 
 	@Override
 	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-		if (level.getBlockEntity(pos) instanceof JarBlockEntity jarBlockEntity && hitResult.getLocation().y >= pos.getY() + (14.0D / 16.0D) && JarBlockEntity.REGISTERED_LOG_LIDS.contains(stack.getItem())) {
+		if (level.getBlockEntity(pos) instanceof JarBlockEntity jarBlockEntity && hitResult.getLocation().y >= pos.getY() + (14.0D / 16.0D)) {
 			Item lid = stack.getItem();
-			if (lid != jarBlockEntity.lid) {
+			if (lid != jarBlockEntity.lid && JarBlockEntity.REGISTERED_LOG_LIDS.get(lid) instanceof BooleanSupplier check && check.getAsBoolean())  {
 				jarBlockEntity.lid = lid;
 				if (level instanceof ServerLevel serverLevel) {
 					serverLevel.playSound(null, pos, TFSounds.JAR_LID_SWAP.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
 					jarBlockEntity.wobble(DecoratedPotBlockEntity.WobbleStyle.POSITIVE);
 					jarBlockEntity.setChanged();
 				}
-            } else {
-				level.playSound(null, pos, TFSounds.JAR_WIGGLE.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
-				jarBlockEntity.wobble(DecoratedPotBlockEntity.WobbleStyle.NEGATIVE);
-            }
-            return ItemInteractionResult.SUCCESS;
-        }
+				return ItemInteractionResult.SUCCESS;
+			}
+		}
 		return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 	}
 
 	@Override
 	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
-		if (level.getBlockEntity(pos) instanceof JarBlockEntity blockEntity) {
+		if (level.getBlockEntity(pos) instanceof JarBlockEntity blockEntity && player.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && player.getItemInHand(InteractionHand.OFF_HAND).isEmpty()) {
 			if (level instanceof ServerLevel serverLevel) {
 				serverLevel.playSound(null, pos, TFSounds.JAR_WIGGLE.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
 				blockEntity.wobble(DecoratedPotBlockEntity.WobbleStyle.NEGATIVE);

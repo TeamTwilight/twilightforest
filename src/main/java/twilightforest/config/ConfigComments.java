@@ -81,7 +81,7 @@ public final class ConfigComments {
 	public static final String TIME_CORE = """
 					Defines the radius at which the Timewood Core works. Can be a number anywhere between 1 and 128.
 					Set to 0 to prevent the Timewood Core from functioning.""";
-	public static final String TRANFORMATION_CORE = """
+	public static final String TRANSFORMATION_CORE = """
 					Defines the radius at which the Transformation Core works. Can be a number anywhere between 1 and 128.
 					Set to 0 to prevent the Transformation Core from functioning.""";
 	public static final String MINING_CORE = """

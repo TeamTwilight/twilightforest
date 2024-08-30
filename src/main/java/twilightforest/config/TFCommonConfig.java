@@ -176,7 +176,7 @@ public class TFCommonConfig {
 			MAGIC_TREES.transformationRange = builder
 				.worldRestart()
 				.translation(TFConfig.CONFIG_ID + "transformation_range")
-				.comment(ConfigComments.TRANFORMATION_CORE)
+				.comment(ConfigComments.TRANSFORMATION_CORE)
 				.defineInRange("transformationCoreRange", 16, 0, 128);
 
 			MAGIC_TREES.miningRange = builder

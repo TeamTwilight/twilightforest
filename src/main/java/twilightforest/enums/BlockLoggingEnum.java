@@ -1,6 +1,7 @@
 package twilightforest.enums;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -19,6 +20,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Optional;
 
 public enum BlockLoggingEnum implements StringRepresentable {
 	AIR(Blocks.AIR, Fluids.EMPTY),
@@ -97,6 +99,16 @@ public enum BlockLoggingEnum implements StringRepresentable {
 				return true;
 			}
 			return false;
+		}
+
+		@Override
+		default Optional<SoundEvent> getPickupSound() {
+			return Optional.empty();
+		}
+
+		@Override
+		default Optional<SoundEvent> getPickupSound(BlockState state) {
+			return state.getValue(MULTILOGGED).fluid.getPickupSound();
 		}
 	}
 

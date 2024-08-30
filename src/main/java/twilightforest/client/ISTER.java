@@ -29,26 +29,30 @@ import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.item.component.ResolvableProfile;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import twilightforest.TwilightForestMod;
+import twilightforest.beans.Autowired;
 import twilightforest.block.*;
 import twilightforest.block.entity.CandelabraBlockEntity;
 import twilightforest.block.entity.KeepsakeCasketBlockEntity;
 import twilightforest.block.entity.TFChestBlockEntity;
 import twilightforest.block.entity.TFTrappedChestBlockEntity;
+import twilightforest.client.event.ClientEvents;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.KnightmetalShieldModel;
-import twilightforest.client.model.tileentity.GenericTrophyModel;
-import twilightforest.client.renderer.tileentity.JarRenderer;
-import twilightforest.client.renderer.tileentity.SkullCandleTileEntityRenderer;
-import twilightforest.client.renderer.tileentity.TrophyTileEntityRenderer;
+import twilightforest.client.model.entity.TrophyBlockModel;
+import twilightforest.client.renderer.block.JarRenderer;
+import twilightforest.client.renderer.block.SkullCandleRenderer;
+import twilightforest.client.renderer.block.TrophyRenderer;
 import twilightforest.components.item.CandelabraData;
 import twilightforest.components.item.JarLid;
 import twilightforest.components.item.SkullCandles;
 import twilightforest.config.TFConfig;
 import twilightforest.enums.BossVariant;
+import twilightforest.enums.extensions.TFItemDisplayContextEnumExtension;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDataComponents;
 import twilightforest.item.KnightmetalShieldItem;
@@ -58,6 +62,10 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 public class ISTER extends BlockEntityWithoutLevelRenderer {
+
+	@Autowired(dist = Dist.CLIENT)
+	private static TFItemDisplayContextEnumExtension itemDisplayContextEnumExtension;
+
 	public static final Supplier<ISTER> INSTANCE = Suppliers.memoize(ISTER::new);
 	public static final IClientItemExtensions CLIENT_ITEM_EXTENSION = Util.make(() -> new IClientItemExtensions() {
 		@Override
@@ -87,7 +95,7 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 		makeTrappedInstance(map, TFBlocks.SORTING_TRAPPED_CHEST);
 	});
 	private KnightmetalShieldModel shield = new KnightmetalShieldModel(Minecraft.getInstance().getEntityModels().bakeLayer(TFModelLayers.KNIGHTMETAL_SHIELD));
-	private Map<BossVariant, GenericTrophyModel> trophies = TrophyTileEntityRenderer.createTrophyRenderers(Minecraft.getInstance().getEntityModels());
+	private Map<BossVariant, TrophyBlockModel> trophies = TrophyRenderer.createTrophyRenderers(Minecraft.getInstance().getEntityModels());
 	private Map<SkullBlock.Type, SkullModelBase> skulls = SkullBlockRenderer.createSkullRenderers(Minecraft.getInstance().getEntityModels());
 	private final CandelabraBlockEntity candelabra = new CandelabraBlockEntity(BlockPos.ZERO, TFBlocks.CANDELABRA.get().defaultBlockState());
 
@@ -99,7 +107,7 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 	@Override
 	public void onResourceManagerReload(ResourceManager manager) {
 		this.shield = new KnightmetalShieldModel(Minecraft.getInstance().getEntityModels().bakeLayer(TFModelLayers.KNIGHTMETAL_SHIELD));
-		this.trophies = TrophyTileEntityRenderer.createTrophyRenderers(Minecraft.getInstance().getEntityModels());
+		this.trophies = TrophyRenderer.createTrophyRenderers(Minecraft.getInstance().getEntityModels());
 		this.skulls = SkullBlockRenderer.createSkullRenderers(Minecraft.getInstance().getEntityModels());
 
 		TwilightForestMod.LOGGER.debug("Reloaded ISTER!");
@@ -113,7 +121,7 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 			Minecraft minecraft = Minecraft.getInstance();
 			if (block instanceof AbstractTrophyBlock trophyBlock) {
 				BossVariant variant = trophyBlock.getVariant();
-				GenericTrophyModel trophy = this.trophies.get(variant);
+				TrophyBlockModel trophy = this.trophies.get(variant);
 
 				if (camera == ItemDisplayContext.GUI) {
 					ModelResourceLocation back = ModelResourceLocation.standalone(TwilightForestMod.prefix("item/" + ((AbstractTrophyBlock) block).getVariant().getTrophyType().getModelName()));
@@ -124,25 +132,23 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 					ms.pushPose();
 					Lighting.setupForFlatItems();
 					ms.translate(0.5F, 0.5F, -1.5F);
-					minecraft.getItemRenderer().render(TrophyTileEntityRenderer.stack, ItemDisplayContext.GUI, false, ms, bufferSource, 15728880, OverlayTexture.NO_OVERLAY, modelBack.applyTransform(camera, ms, false));
+					minecraft.getItemRenderer().render(TrophyRenderer.stack, ItemDisplayContext.GUI, false, ms, bufferSource, 15728880, OverlayTexture.NO_OVERLAY, modelBack.applyTransform(camera, ms, false));
 					ms.popPose();
 					bufferSource.endBatch();
 					Lighting.setupFor3DItems();
 
 					ms.pushPose();
 					ms.translate(0.5F, 0.5F, 0.5F);
-					if (trophyBlock.getVariant() == BossVariant.HYDRA || trophyBlock.getVariant() == BossVariant.QUEST_RAM)
-						ms.scale(0.9F, 0.9F, 0.9F);
 					ms.mulPose(Axis.XP.rotationDegrees(30));
-					ms.mulPose(Axis.YN.rotationDegrees(TFConfig.rotateTrophyHeadsGui && !minecraft.isPaused() ? TFClientEvents.rotationTicker : -45));
+					ms.mulPose(Axis.YN.rotationDegrees(TFConfig.rotateTrophyHeadsGui && !minecraft.isPaused() ? ClientEvents.time % 360 : -45));
 					ms.translate(-0.5F, -0.5F, -0.5F);
 					ms.translate(0.0F, 0.25F, 0.0F);
 					if (trophyBlock.getVariant() == BossVariant.UR_GHAST) ms.translate(0.0F, 0.5F, 0.0F);
 					if (trophyBlock.getVariant() == BossVariant.ALPHA_YETI) ms.translate(0.0F, -0.15F, 0.0F);
-					TrophyTileEntityRenderer.render(null, 180.0F, trophy, variant, !minecraft.isPaused() ? TFClientEvents.time + minecraft.getTimer().getRealtimeDeltaTicks() : 0, ms, buffers, light, camera);
+					TrophyRenderer.render(null, 180.0F, trophy, variant, !minecraft.isPaused() ? ClientEvents.time + minecraft.getTimer().getRealtimeDeltaTicks() : 0, ms, buffers, light, camera);
 					ms.popPose();
 				} else {
-					TrophyTileEntityRenderer.render(null, 180.0F, trophy, variant, !minecraft.isPaused() ? TFClientEvents.time + minecraft.getTimer().getRealtimeDeltaTicks() : 0, ms, buffers, light, camera);
+					TrophyRenderer.render(null, 180.0F, trophy, variant, !minecraft.isPaused() ? ClientEvents.time + minecraft.getTimer().getRealtimeDeltaTicks() : 0, ms, buffers, light, camera);
 				}
 
 			} else if (block instanceof KeepsakeCasketBlock) {
@@ -163,8 +169,8 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 
 				SkullBlock.Type type = candleBlock.getType();
 				SkullModelBase base = this.skulls.get(type);
-				RenderType renderType = SkullCandleTileEntityRenderer.getRenderType(type, profile);
-				SkullCandleTileEntityRenderer.renderSkull(null, 180.0F, 0.0F, ms, buffers, light, base, renderType);
+				RenderType renderType = SkullCandleRenderer.getRenderType(type, profile);
+				SkullCandleRenderer.renderSkull(null, 180.0F, 0.0F, ms, buffers, light, base, renderType);
 
 				//we put the candle
 				ms.translate(0.0F, 0.5F, 0.0F);
@@ -202,7 +208,7 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 						ms.pushPose();
 						ms.translate(0.5D, 0.4375D, 0.5D);
 						ms.scale(0.5F, 0.5F, 0.5F);
-						minecraft.getItemRenderer().render(contents.copyOne(), JarRenderer.MasonJarRenderer.JARRED, false, ms, bufferSource, light, OverlayTexture.NO_OVERLAY, minecraft.getItemRenderer().getModel(contents.copyOne(), null, null, 1));
+						minecraft.getItemRenderer().render(contents.copyOne(), itemDisplayContextEnumExtension.JARRED, false, ms, bufferSource, light, OverlayTexture.NO_OVERLAY, minecraft.getItemRenderer().getModel(contents.copyOne(), null, null, 1));
 						ms.popPose();
 						bufferSource.endBatch();
 					}

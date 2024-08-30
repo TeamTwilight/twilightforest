@@ -24,16 +24,14 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class RopeBlock extends Block implements SimpleWaterloggedBlock {
-	private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	public static final BooleanProperty X = BooleanProperty.create("x");
 	public static final BooleanProperty Y = BooleanProperty.create("y");
 	public static final BooleanProperty Z = BooleanProperty.create("z");
-
 	protected static final VoxelShape X_SHAPE = Block.box(0.0, 6.5, 6.5, 16.0, 9.5, 9.5);
 	protected static final VoxelShape Y_SHAPE = Block.box(6.5, 0.0, 6.5, 9.5, 16.0, 9.5);
 	protected static final VoxelShape Z_SHAPE = Block.box(6.5, 6.5, 0.0, 9.5, 9.5, 16.0);
+	private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-	@SuppressWarnings("this-escape")
 	public RopeBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any()
@@ -43,18 +41,31 @@ public class RopeBlock extends Block implements SimpleWaterloggedBlock {
 			.setValue(Z, false));
 	}
 
+	public static boolean canConnectTo(BlockState state, Direction dir, LevelReader level, BlockPos pos) {
+		if (dir == Direction.DOWN) return false;
+		return state.getBlock() instanceof LeavesBlock || (state.getBlock() instanceof RopeBlock && hasAxis(state, dir.getAxis())) || state.isFaceSturdy(level, pos, dir.getOpposite(), SupportType.CENTER);
+	}
+
+	public static boolean hasAxis(BlockState state, Direction.Axis axis) {
+		return switch (axis) {
+			case X -> state.getValue(X);
+			case Y -> state.getValue(Y);
+			case Z -> state.getValue(Z);
+		};
+	}
+
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		builder.add(WATERLOGGED, Y, X, Z);
 	}
 
 	@Override
-	public boolean propagatesSkylightDown(BlockState p_261479_, BlockGetter p_261942_, BlockPos p_261844_) {
+	public boolean propagatesSkylightDown(BlockState state, BlockGetter getter, BlockPos pos) {
 		return true;
 	}
 
 	@Override
-	protected boolean isPathfindable(BlockState state, PathComputationType computationType) {
+	protected boolean isPathfindable(BlockState state, PathComputationType type) {
 		return false;
 	}
 
@@ -159,11 +170,6 @@ public class RopeBlock extends Block implements SimpleWaterloggedBlock {
 		return false;
 	}
 
-	public static boolean canConnectTo(BlockState state, Direction dir, LevelReader level, BlockPos pos) {
-		if (dir == Direction.DOWN) return false;
-		return state.getBlock() instanceof LeavesBlock || (state.getBlock() instanceof RopeBlock && hasAxis(state, dir.getAxis())) || state.isFaceSturdy(level, pos, dir.getOpposite(), SupportType.CENTER);
-	}
-
 	protected boolean checkConnection(LevelReader level, BlockPos pos, Direction dir) {
 		BlockPos.MutableBlockPos mutable = pos.mutable();
 		while (true) {
@@ -171,14 +177,6 @@ public class RopeBlock extends Block implements SimpleWaterloggedBlock {
 			mutable.move(dir);
 			if (!canConnectTo(level.getBlockState(mutable), dir, level, mutable)) return false;
 		}
-	}
-
-	public static boolean hasAxis(BlockState state, Direction.Axis axis) {
-		return switch (axis) {
-			case X -> state.getValue(X);
-			case Y -> state.getValue(Y);
-			case Z -> state.getValue(Z);
-		};
 	}
 
 	@Override

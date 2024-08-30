@@ -58,86 +58,16 @@ import java.util.*;
 public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockContainer, Portal {
 
 	public static final BooleanProperty DISALLOW_RETURN = BooleanProperty.create("is_one_way");
-
+	public static final Component PORTAL_UNWORTHY = Component.translatable("misc.twilightforest.portal_unworthy");
 	private static final VoxelShape AABB = Shapes.create(new AABB(0.0F, 0.0F, 0.0F, 1.0F, 0.8125F, 1.0F));
+	private static final int MIN_PORTAL_SIZE = 4;
+	private static final HashSet<ServerPlayer> playersNotified = new HashSet<>();
 	@Nullable
 	private static ResourceKey<Level> cachedOriginDimension;
 
-	public static final Component PORTAL_UNWORTHY = Component.translatable("misc.twilightforest.portal_unworthy");
-	private static final int MIN_PORTAL_SIZE = 4;
-	private static final HashSet<ServerPlayer> playersNotified = new HashSet<>();
-
-	@SuppressWarnings("this-escape")
 	public TFPortalBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(DISALLOW_RETURN, false));
-	}
-
-	@Override
-	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		super.createBlockStateDefinition(builder);
-		builder.add(DISALLOW_RETURN);
-	}
-
-	@Override
-	@Deprecated
-	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
-		return AABB;
-	}
-
-	@Override
-	@Deprecated
-	public VoxelShape getCollisionShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
-		return state.getValue(DISALLOW_RETURN) ? AABB : Shapes.empty();
-	}
-
-	@Override
-	public FluidState getFluidState(BlockState state) {
-		// The portal itself is kind of technically water, and this checks the checkbox in Sugar Cane logic to not destroy itself when portal is made.
-		return Fluids.WATER.getFlowing(1, false); // 1 is minimum value. Minecraft wiki at time of this writing has the values backwards.
-	}
-
-	public boolean tryToCreatePortal(Level level, BlockPos pos, ItemEntity catalyst, @Nullable Player player) {
-
-		BlockState state = level.getBlockState(pos);
-
-		if (this.canFormPortal(state) && level.getBlockState(pos.below()).isFaceSturdy(level, pos, Direction.UP)) {
-			Map<BlockPos, Boolean> blocksChecked = new HashMap<>();
-			blocksChecked.put(pos, true);
-
-			MutableInt size = new MutableInt(0);
-
-			if (recursivelyValidatePortal(level, pos, blocksChecked, size, state) && size.intValue() >= MIN_PORTAL_SIZE) {
-
-				if (!TFConfig.checkPortalPlacement) {
-					boolean checkProgression = LandmarkUtil.isProgressionEnforced(catalyst.level());
-					if (!TFTeleporter.isSafeAround(level, pos, catalyst, checkProgression)) {
-						// TODO: "failure" effect - particles?
-						if (player != null) {
-							player.displayClientMessage(Component.translatable("misc.twilightforest.portal_unsafe"), true);
-						}
-						return false;
-					}
-				}
-
-				catalyst.getItem().shrink(1);
-				causeLightning(level, pos, TFConfig.destructivePortalLightning);
-
-				for (Map.Entry<BlockPos, Boolean> checkedPos : blocksChecked.entrySet()) {
-					if (checkedPos.getValue()) {
-						level.setBlock(checkedPos.getKey(), TFBlocks.TWILIGHT_PORTAL.get().defaultBlockState(), 2);
-					}
-				}
-
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	public boolean canFormPortal(BlockState state) {
-		return state.is(BlockTagGenerator.PORTAL_POOL) || state.getBlock() == this && state.getValue(DISALLOW_RETURN);
 	}
 
 	private static void causeLightning(Level level, BlockPos pos, boolean destructive) {
@@ -193,8 +123,79 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 		return state.is(BlockTagGenerator.PORTAL_EDGE);
 	}
 
+	public static boolean isPlayerNotifiedOfRequirement(ServerPlayer player) {
+		return playersNotified.contains(player);
+	}
+
+	public static void playerNotifiedOfRequirement(ServerPlayer player) {
+		playersNotified.add(player);
+	}
+
 	@Override
-	@Deprecated
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+		builder.add(DISALLOW_RETURN);
+	}
+
+	@Override
+	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
+		return AABB;
+	}
+
+	@Override
+	public VoxelShape getCollisionShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
+		return state.getValue(DISALLOW_RETURN) ? AABB : Shapes.empty();
+	}
+
+	@Override
+	public FluidState getFluidState(BlockState state) {
+		// The portal itself is kind of technically water, and this checks the checkbox in Sugar Cane logic to not destroy itself when portal is made.
+		return Fluids.WATER.getFlowing(1, false); // 1 is minimum value. Minecraft wiki at time of this writing has the values backwards.
+	}
+
+	public boolean tryToCreatePortal(Level level, BlockPos pos, ItemEntity catalyst, @Nullable Player player) {
+
+		BlockState state = level.getBlockState(pos);
+
+		if (this.canFormPortal(state) && level.getBlockState(pos.below()).isFaceSturdy(level, pos, Direction.UP)) {
+			Map<BlockPos, Boolean> blocksChecked = new HashMap<>();
+			blocksChecked.put(pos, true);
+
+			MutableInt size = new MutableInt(0);
+
+			if (recursivelyValidatePortal(level, pos, blocksChecked, size, state) && size.intValue() >= MIN_PORTAL_SIZE) {
+
+				if (!TFConfig.checkPortalPlacement) {
+					boolean checkProgression = LandmarkUtil.isProgressionEnforced(catalyst.level());
+					if (!TFTeleporter.isSafeAround(level, pos, catalyst, checkProgression)) {
+						// TODO: "failure" effect - particles?
+						if (player != null) {
+							player.displayClientMessage(Component.translatable("misc.twilightforest.portal_unsafe"), true);
+						}
+						return false;
+					}
+				}
+
+				catalyst.getItem().shrink(1);
+				causeLightning(level, pos, TFConfig.destructivePortalLightning);
+
+				for (Map.Entry<BlockPos, Boolean> checkedPos : blocksChecked.entrySet()) {
+					if (checkedPos.getValue()) {
+						level.setBlock(checkedPos.getKey(), TFBlocks.TWILIGHT_PORTAL.get().defaultBlockState(), 2);
+					}
+				}
+
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public boolean canFormPortal(BlockState state) {
+		return state.is(BlockTagGenerator.PORTAL_POOL) || state.getBlock() == this && state.getValue(DISALLOW_RETURN);
+	}
+
+	@Override
 	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
 		boolean good = level.getBlockState(pos.below()).isFaceSturdy(level, pos, Direction.UP);
 
@@ -237,14 +238,6 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 			}
 		}
 		entity.getData(TFDataAttachments.TF_PORTAL_COOLDOWN).setInPortal(true);
-	}
-
-	public static boolean isPlayerNotifiedOfRequirement(ServerPlayer player) {
-		return playersNotified.contains(player);
-	}
-
-	public static void playerNotifiedOfRequirement(ServerPlayer player) {
-		playersNotified.add(player);
 	}
 
 	// Full [VanillaCopy] of NetherPortalBlock.animateTick

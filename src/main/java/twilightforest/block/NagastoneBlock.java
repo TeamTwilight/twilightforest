@@ -15,7 +15,6 @@ public class NagastoneBlock extends Block {
 
 	public static final EnumProperty<NagastoneVariant> VARIANT = EnumProperty.create("variant", NagastoneVariant.class);
 
-	@SuppressWarnings("this-escape")
 	public NagastoneBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(VARIANT, NagastoneVariant.SOLID));
@@ -66,7 +65,6 @@ public class NagastoneBlock extends Block {
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		super.createBlockStateDefinition(builder);
 		builder.add(VARIANT);
 	}
 }

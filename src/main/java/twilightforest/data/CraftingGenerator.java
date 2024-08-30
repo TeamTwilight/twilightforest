@@ -19,6 +19,7 @@ import net.neoforged.neoforge.common.crafting.CompoundIngredient;
 import net.neoforged.neoforge.common.crafting.DataComponentIngredient;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.custom.NoSmithingTemplateRecipeBuilder;
+import twilightforest.data.custom.ScepterRecipeBuilder;
 import twilightforest.data.custom.UncraftingGenerator;
 import twilightforest.data.helpers.CraftingDataHelper;
 import twilightforest.data.tags.ItemTagGenerator;
@@ -569,33 +570,25 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.unlockedBy("has_ring", has(TFItems.KNIGHTMETAL_RING.get()))
 			.save(output, locEquip(TFItems.KNIGHTMETAL_SHIELD.getId().getPath()));
 
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, TFItems.LIFEDRAIN_SCEPTER.get())
-			.requires(DataComponentIngredient.of(false, DataComponents.DAMAGE, 99, TFItems.LIFEDRAIN_SCEPTER))
-			.requires(Ingredient.of(Items.FERMENTED_SPIDER_EYE))
-			.unlockedBy("has_item", has(TFItems.LIFEDRAIN_SCEPTER.get()))
+		ScepterRecipeBuilder.repairFor(TFItems.LIFEDRAIN_SCEPTER.get())
+			.addRepairIngredient(Items.FERMENTED_SPIDER_EYE)
 			.save(output, locEquip(TFItems.LIFEDRAIN_SCEPTER.getId().getPath()));
 
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, TFItems.FORTIFICATION_SCEPTER.get())
-			.requires(DataComponentIngredient.of(false, DataComponents.DAMAGE, 9, TFItems.FORTIFICATION_SCEPTER))
-			.requires(Ingredient.of(Items.GOLDEN_APPLE))
-			.unlockedBy("has_item", has(TFItems.FORTIFICATION_SCEPTER.get()))
+		ScepterRecipeBuilder.repairFor(TFItems.FORTIFICATION_SCEPTER.get())
+			.addRepairIngredient(Ingredient.of(Items.GOLDEN_APPLE))
 			.save(output, locEquip(TFItems.FORTIFICATION_SCEPTER.getId().getPath()));
 
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, TFItems.TWILIGHT_SCEPTER.get())
-			.requires(DataComponentIngredient.of(false, DataComponents.DAMAGE, 99, TFItems.TWILIGHT_SCEPTER))
-			.requires(Tags.Items.ENDER_PEARLS)
-			.unlockedBy("has_item", has(TFItems.TWILIGHT_SCEPTER.get()))
+		ScepterRecipeBuilder.repairFor(TFItems.TWILIGHT_SCEPTER.get())
+			.addRepairIngredient(Tags.Items.ENDER_PEARLS)
 			.save(output, locEquip(TFItems.TWILIGHT_SCEPTER.getId().getPath()));
 
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, TFItems.ZOMBIE_SCEPTER.get())
-			.requires(CompoundIngredient.of(
+		ScepterRecipeBuilder.repairFor(TFItems.ZOMBIE_SCEPTER.get())
+			.addRepairIngredient(CompoundIngredient.of(
 				DataComponentIngredient.of(false, DataComponents.POTION_CONTENTS, new PotionContents(Potions.STRENGTH), Items.POTION),
 				DataComponentIngredient.of(false, DataComponents.POTION_CONTENTS, new PotionContents(Potions.LONG_STRENGTH), Items.POTION),
 				DataComponentIngredient.of(false, DataComponents.POTION_CONTENTS, new PotionContents(Potions.STRONG_STRENGTH), Items.POTION)
 			))
-			.requires(DataComponentIngredient.of(false, DataComponents.DAMAGE, 9, TFItems.ZOMBIE_SCEPTER))
-			.requires(Ingredient.of(Items.ROTTEN_FLESH))
-			.unlockedBy("has_item", has(TFItems.ZOMBIE_SCEPTER.get()))
+			.addRepairIngredient(Items.ROTTEN_FLESH)
 			.save(output, locEquip(TFItems.ZOMBIE_SCEPTER.getId().getPath()));
 	}
 
@@ -911,24 +904,24 @@ public class CraftingGenerator extends CraftingDataHelper {
 	}
 
 	private <T extends AbstractCookingRecipe> void cookingRecipes(RecipeOutput output, String processName, RecipeSerializer<T> process, AbstractCookingRecipe.Factory<T> factory, int smeltingTime) {
-		SimpleCookingRecipeBuilder.generic(Ingredient.of(TFItems.RAW_MEEF.get()), RecipeCategory.FOOD, TFItems.COOKED_MEEF.get(), 0.3f, smeltingTime, process, factory).unlockedBy("has_food", has(TFItems.RAW_MEEF.get())).save(output, TwilightForestMod.prefix("food/" + processName + "_meef").toString());
-		SimpleCookingRecipeBuilder.generic(Ingredient.of(TFItems.RAW_VENISON.get()), RecipeCategory.FOOD, TFItems.COOKED_VENISON.get(), 0.3f, smeltingTime, process, factory).unlockedBy("has_food", has(TFItems.RAW_VENISON.get())).save(output, TwilightForestMod.prefix("food/" + processName + "_venison").toString());
+		SimpleCookingRecipeBuilder.generic(Ingredient.of(TFItems.RAW_MEEF.get()), RecipeCategory.FOOD, TFItems.COOKED_MEEF.get(), 0.35F, smeltingTime, process, factory).unlockedBy("has_food", has(TFItems.RAW_MEEF.get())).save(output, TwilightForestMod.prefix("food/" + processName + "_meef").toString());
+		SimpleCookingRecipeBuilder.generic(Ingredient.of(TFItems.RAW_VENISON.get()), RecipeCategory.FOOD, TFItems.COOKED_VENISON.get(), 0.35F, smeltingTime, process, factory).unlockedBy("has_food", has(TFItems.RAW_VENISON.get())).save(output, TwilightForestMod.prefix("food/" + processName + "_venison").toString());
 	}
 
 	private <T extends AbstractCookingRecipe> void ingotRecipes(RecipeOutput output, String processName, RecipeSerializer<T> process, AbstractCookingRecipe.Factory<T> factory, int smeltingTime) {
-		SimpleCookingRecipeBuilder.generic(Ingredient.of(TFItems.ARMOR_SHARD_CLUSTER.get()), RecipeCategory.MISC, TFItems.KNIGHTMETAL_INGOT.get(), 1.0f, smeltingTime, process, factory).unlockedBy("has_item", has(TFItems.ARMOR_SHARD_CLUSTER.get())).group("knightmetal_ingot").save(output, TwilightForestMod.prefix("material/" + processName + "_knightmetal_ingot").toString());
-		SimpleCookingRecipeBuilder.generic(Ingredient.of(TFItems.RAW_IRONWOOD.get()), RecipeCategory.MISC, TFItems.IRONWOOD_INGOT.get(), 1.0f, smeltingTime, process, factory).unlockedBy("has_item", has(TFItems.RAW_IRONWOOD.get())).group("ironwood_ingot").save(output, TwilightForestMod.prefix("material/" + processName + "_ironwood_ingot").toString());
+		SimpleCookingRecipeBuilder.generic(Ingredient.of(TFItems.ARMOR_SHARD_CLUSTER.get()), RecipeCategory.MISC, TFItems.KNIGHTMETAL_INGOT.get(), 1.0F, smeltingTime, process, factory).unlockedBy("has_item", has(TFItems.ARMOR_SHARD_CLUSTER.get())).group("knightmetal_ingot").save(output, TwilightForestMod.prefix("material/" + processName + "_knightmetal_ingot").toString());
+		SimpleCookingRecipeBuilder.generic(Ingredient.of(TFItems.RAW_IRONWOOD.get()), RecipeCategory.MISC, TFItems.IRONWOOD_INGOT.get(), 1.0F, smeltingTime, process, factory).unlockedBy("has_item", has(TFItems.RAW_IRONWOOD.get())).group("ironwood_ingot").save(output, TwilightForestMod.prefix("material/" + processName + "_ironwood_ingot").toString());
 	}
 
 	private void crackedWoodRecipes(RecipeOutput output) {
-		SimpleCookingRecipeBuilder.smoking(Ingredient.of(TFBlocks.TOWERWOOD.get()), RecipeCategory.BUILDING_BLOCKS, TFBlocks.CRACKED_TOWERWOOD.get(), 0.3f, 100).unlockedBy("has_item", has(TFBlocks.TOWERWOOD.get())).save(output, TwilightForestMod.prefix("wood/" + "smoked" + "_cracked_towerwood").toString());
+		SimpleCookingRecipeBuilder.smoking(Ingredient.of(TFBlocks.TOWERWOOD.get()), RecipeCategory.BUILDING_BLOCKS, TFBlocks.CRACKED_TOWERWOOD.get(), 0.1F, 100).unlockedBy("has_item", has(TFBlocks.TOWERWOOD.get())).save(output, TwilightForestMod.prefix("wood/" + "smoked" + "_cracked_towerwood").toString());
 	}
 
 	private void crackedStoneRecipes(RecipeOutput output) {
-		SimpleCookingRecipeBuilder.smelting(Ingredient.of(TFBlocks.NAGASTONE_PILLAR.get()), RecipeCategory.BUILDING_BLOCKS, TFBlocks.CRACKED_NAGASTONE_PILLAR.get(), 0.3f, 200).unlockedBy("has_item", has(TFBlocks.NAGASTONE_PILLAR.get())).save(output, TwilightForestMod.prefix("nagastone/" + "smelted" + "_cracked_nagastone_pillar").toString());
-		SimpleCookingRecipeBuilder.smelting(Ingredient.of(TFBlocks.ETCHED_NAGASTONE.get()), RecipeCategory.BUILDING_BLOCKS, TFBlocks.CRACKED_ETCHED_NAGASTONE.get(), 0.3f, 200).unlockedBy("has_item", has(TFBlocks.ETCHED_NAGASTONE.get())).save(output, TwilightForestMod.prefix("nagastone/" + "smelted" + "_cracked_etched_nagastone").toString());
-		SimpleCookingRecipeBuilder.smelting(Ingredient.of(TFBlocks.MAZESTONE_BRICK.get()), RecipeCategory.BUILDING_BLOCKS, TFBlocks.CRACKED_MAZESTONE.get(), 0.3f, 200).unlockedBy("has_item", has(TFBlocks.MAZESTONE_BRICK.get())).save(output, TwilightForestMod.prefix("maze_stone/" + "smelted" + "_maze_stone_cracked").toString());
-		SimpleCookingRecipeBuilder.smelting(Ingredient.of(TFBlocks.CASTLE_BRICK.get()), RecipeCategory.BUILDING_BLOCKS, TFBlocks.CRACKED_CASTLE_BRICK.get(), 0.3f, 200).unlockedBy("has_item", has(TFBlocks.CASTLE_BRICK.get())).save(output, TwilightForestMod.prefix("castleblock/" + "smelted" + "_cracked_castle_brick").toString());
-		SimpleCookingRecipeBuilder.smelting(Ingredient.of(TFBlocks.UNDERBRICK.get()), RecipeCategory.BUILDING_BLOCKS, TFBlocks.CRACKED_UNDERBRICK.get(), 0.3f, 200).unlockedBy("has_item", has(TFBlocks.UNDERBRICK.get())).save(output, TwilightForestMod.prefix("smelted" + "_cracked_underbrick").toString());
+		SimpleCookingRecipeBuilder.smelting(Ingredient.of(TFBlocks.NAGASTONE_PILLAR.get()), RecipeCategory.BUILDING_BLOCKS, TFBlocks.CRACKED_NAGASTONE_PILLAR.get(), 0.1F, 200).unlockedBy("has_item", has(TFBlocks.NAGASTONE_PILLAR.get())).save(output, TwilightForestMod.prefix("nagastone/" + "smelted" + "_cracked_nagastone_pillar").toString());
+		SimpleCookingRecipeBuilder.smelting(Ingredient.of(TFBlocks.ETCHED_NAGASTONE.get()), RecipeCategory.BUILDING_BLOCKS, TFBlocks.CRACKED_ETCHED_NAGASTONE.get(), 0.1F, 200).unlockedBy("has_item", has(TFBlocks.ETCHED_NAGASTONE.get())).save(output, TwilightForestMod.prefix("nagastone/" + "smelted" + "_cracked_etched_nagastone").toString());
+		SimpleCookingRecipeBuilder.smelting(Ingredient.of(TFBlocks.MAZESTONE_BRICK.get()), RecipeCategory.BUILDING_BLOCKS, TFBlocks.CRACKED_MAZESTONE.get(), 0.1F, 200).unlockedBy("has_item", has(TFBlocks.MAZESTONE_BRICK.get())).save(output, TwilightForestMod.prefix("maze_stone/" + "smelted" + "_maze_stone_cracked").toString());
+		SimpleCookingRecipeBuilder.smelting(Ingredient.of(TFBlocks.CASTLE_BRICK.get()), RecipeCategory.BUILDING_BLOCKS, TFBlocks.CRACKED_CASTLE_BRICK.get(), 0.1F, 200).unlockedBy("has_item", has(TFBlocks.CASTLE_BRICK.get())).save(output, TwilightForestMod.prefix("castleblock/" + "smelted" + "_cracked_castle_brick").toString());
+		SimpleCookingRecipeBuilder.smelting(Ingredient.of(TFBlocks.UNDERBRICK.get()), RecipeCategory.BUILDING_BLOCKS, TFBlocks.CRACKED_UNDERBRICK.get(), 0.1F, 200).unlockedBy("has_item", has(TFBlocks.UNDERBRICK.get())).save(output, TwilightForestMod.prefix("smelted" + "_cracked_underbrick").toString());
 	}
 }

@@ -6,30 +6,26 @@ import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceProvider;
-import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.client.event.RegisterShadersEvent;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 
 import java.io.IOException;
-import java.util.function.Consumer;
 
 public class TFShaders {
 
 	public static ShaderInstance RED_THREAD;
 	public static PositionAwareShaderInstance AURORA;
 
-	public static void init(IEventBus bus) {
-		bus.addListener((Consumer<RegisterShadersEvent>) event -> {
-			try {
-				event.registerShader(new ShaderInstance(event.getResourceProvider(), TwilightForestMod.prefix("red_thread/red_thread"), DefaultVertexFormat.BLOCK),
-					shader -> RED_THREAD = shader);
-				event.registerShader(new PositionAwareShaderInstance(event.getResourceProvider(), TwilightForestMod.prefix("aurora/aurora"), DefaultVertexFormat.POSITION_COLOR),
-					shader -> AURORA = (PositionAwareShaderInstance) shader);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		});
+	public static void registerShaders(RegisterShadersEvent event) {
+		try {
+			event.registerShader(new ShaderInstance(event.getResourceProvider(), TwilightForestMod.prefix("red_thread/red_thread"), DefaultVertexFormat.BLOCK),
+				shader -> RED_THREAD = shader);
+			event.registerShader(new PositionAwareShaderInstance(event.getResourceProvider(), TwilightForestMod.prefix("aurora/aurora"), DefaultVertexFormat.POSITION_COLOR),
+				shader -> AURORA = (PositionAwareShaderInstance) shader);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static class BindableShaderInstance extends ShaderInstance {
@@ -86,7 +82,6 @@ public class TFShaders {
 		@Nullable
 		public final Uniform POSITION;
 
-		@SuppressWarnings("this-escape")
 		public PositionAwareShaderInstance(ResourceProvider p_173336_, ResourceLocation shaderLocation, VertexFormat p_173338_) throws IOException {
 			super(p_173336_, shaderLocation, p_173338_);
 			SEED = getUniform("SeedContext");

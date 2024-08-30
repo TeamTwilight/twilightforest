@@ -8,8 +8,8 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 public class DefaultArrowRenderer<T extends AbstractArrow> extends ArrowRenderer<T> {
 	public static final ResourceLocation RES_ARROW = ResourceLocation.withDefaultNamespace("textures/entity/projectiles/arrow.png");
 
-	public DefaultArrowRenderer(EntityRendererProvider.Context manager) {
-		super(manager);
+	public DefaultArrowRenderer(EntityRendererProvider.Context context) {
+		super(context);
 	}
 
 	@Override

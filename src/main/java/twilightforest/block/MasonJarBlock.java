@@ -9,7 +9,6 @@ import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -27,7 +26,6 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.common.world.AuxiliaryLightManager;
-import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.MasonJarBlockEntity;
 import twilightforest.init.TFSounds;
 
@@ -36,7 +34,6 @@ import java.util.List;
 public class MasonJarBlock extends JarBlock implements SimpleWaterloggedBlock {
 	public static final MapCodec<MasonJarBlock> CODEC = simpleCodec(MasonJarBlock::new);
 
-	@SuppressWarnings("this-escape")
 	public MasonJarBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 	}
@@ -46,7 +43,6 @@ public class MasonJarBlock extends JarBlock implements SimpleWaterloggedBlock {
 		return CODEC;
 	}
 
-	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new MasonJarBlockEntity(pos, state);
@@ -81,7 +77,7 @@ public class MasonJarBlock extends JarBlock implements SimpleWaterloggedBlock {
 						ItemStack inserted = stack.copy();
 						ItemStack returned = handler.insertItem(0, stack, false);
 
-						player.setItemInHand(hand, returned);
+						if (!player.isCreative()) player.setItemInHand(hand, returned);
 						float pitch = (float) (inserted.getCount() - returned.getCount()) / (float) inserted.getMaxStackSize();
 						serverLevel.playSound(null, pos, TFSounds.JAR_INSERT.get(), SoundSource.BLOCKS, 1.0F, 0.7F + 0.5F * pitch); // FIXME
 
@@ -97,14 +93,6 @@ public class MasonJarBlock extends JarBlock implements SimpleWaterloggedBlock {
 			}
 		}
 		return ItemInteractionResult.SUCCESS;
-	}
-
-	@Override
-	public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity living, ItemStack stack) {
-		if (living != null && level.getBlockEntity(pos) instanceof MasonJarBlockEntity masonJarBlock) {
-			//masonJarBlock.setItemRotation(RotationSegment.convertToSegment(living.getYRot() + 180.0F));
-		}
-		super.setPlacedBy(level, pos, state, living, stack);
 	}
 
 	@Override

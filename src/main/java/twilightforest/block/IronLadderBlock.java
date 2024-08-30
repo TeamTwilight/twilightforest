@@ -13,7 +13,6 @@ public class IronLadderBlock extends LadderBlock {
 	public static final BooleanProperty LEFT = BooleanProperty.create("left");
 	public static final BooleanProperty RIGHT = BooleanProperty.create("right");
 
-	@SuppressWarnings("this-escape")
 	public IronLadderBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(LEFT, false).setValue(RIGHT, false));
@@ -21,15 +20,14 @@ public class IronLadderBlock extends LadderBlock {
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		super.createBlockStateDefinition(builder);
-		builder.add(LEFT, RIGHT);
+		super.createBlockStateDefinition(builder.add(LEFT, RIGHT));
 	}
 
 	@Override
 	public BlockState updateShape(BlockState state, Direction direction, BlockState facingState, LevelAccessor accessor, BlockPos currentPos, BlockPos facingPos) {
 		Direction facing = state.getValue(LadderBlock.FACING);
 		BlockState superUpdated = super.updateShape(state, direction, facingState, accessor, currentPos, facingPos);
-		if (superUpdated.getBlock() != this) {
+		if (!superUpdated.is(this)) {
 			return superUpdated;
 		}
 

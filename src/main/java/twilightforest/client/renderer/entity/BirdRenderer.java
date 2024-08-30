@@ -10,25 +10,22 @@ import twilightforest.entity.passive.Bird;
 
 public class BirdRenderer<T extends Bird, M extends EntityModel<T>> extends MobRenderer<T, M> {
 
-	private final ResourceLocation textureLoc;
+	private final ResourceLocation texture;
 
-	public BirdRenderer(EntityRendererProvider.Context manager, M model, float shadowSize, String textureName) {
-		super(manager, model, shadowSize);
-		textureLoc = TwilightForestMod.getModelTexture(textureName);
+	public BirdRenderer(EntityRendererProvider.Context context, M model, float shadowSize, String textureName) {
+		super(context, model, shadowSize);
+		this.texture = TwilightForestMod.getModelTexture(textureName);
 	}
 
-	/**
-	 * Defines what float the third param in setRotationAngles of ModelBase is
-	 */
 	@Override
-	protected float getBob(T living, float time) {
-		float var3 = living.lastFlapLength + (living.flapLength - living.lastFlapLength) * time;
-		float var4 = living.lastFlapIntensity + (living.flapIntensity - living.lastFlapIntensity) * time;
-		return (Mth.sin(var3) + 1.0F) * var4;
+	protected float getBob(T entity, float partialTicks) {
+		float flapLength = entity.lastFlapLength + (entity.flapLength - entity.lastFlapLength) * partialTicks;
+		float flapIntensity = entity.lastFlapIntensity + (entity.flapIntensity - entity.lastFlapIntensity) * partialTicks;
+		return (Mth.sin(flapLength) + 1.0F) * flapIntensity;
 	}
 
 	@Override
 	public ResourceLocation getTextureLocation(T entity) {
-		return textureLoc;
+		return this.texture;
 	}
 }
