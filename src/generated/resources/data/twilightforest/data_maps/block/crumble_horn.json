@@ -36,13 +36,41 @@
       "crumble_chance": 0.05,
       "crumble_to": "minecraft:air"
     },
+    "minecraft:exposed_chiseled_copper": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:chiseled_copper"
+    },
     "minecraft:exposed_copper": {
       "crumble_chance": 0.2,
       "crumble_to": "minecraft:copper_block"
     },
+    "minecraft:exposed_copper_bulb": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:copper_bulb"
+    },
+    "minecraft:exposed_copper_door": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:copper_door"
+    },
+    "minecraft:exposed_copper_grate": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:copper_grate"
+    },
+    "minecraft:exposed_copper_trapdoor": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:copper_trapdoor"
+    },
     "minecraft:exposed_cut_copper": {
       "crumble_chance": 0.2,
       "crumble_to": "minecraft:cut_copper"
+    },
+    "minecraft:exposed_cut_copper_slab": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:cut_copper_slab"
+    },
+    "minecraft:exposed_cut_copper_stairs": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:cut_copper_stairs"
     },
     "minecraft:granite": {
       "crumble_chance": 0.05,
@@ -68,13 +96,41 @@
       "crumble_chance": 0.2,
       "crumble_to": "minecraft:cracked_nether_bricks"
     },
+    "minecraft:oxidized_chiseled_copper": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:weathered_chiseled_copper"
+    },
     "minecraft:oxidized_copper": {
       "crumble_chance": 0.2,
       "crumble_to": "minecraft:weathered_copper"
     },
+    "minecraft:oxidized_copper_bulb": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:weathered_copper_bulb"
+    },
+    "minecraft:oxidized_copper_door": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:weathered_copper_door"
+    },
+    "minecraft:oxidized_copper_grate": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:weathered_copper_grate"
+    },
+    "minecraft:oxidized_copper_trapdoor": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:weathered_copper_trapdoor"
+    },
     "minecraft:oxidized_cut_copper": {
       "crumble_chance": 0.2,
       "crumble_to": "minecraft:weathered_cut_copper"
+    },
+    "minecraft:oxidized_cut_copper_slab": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:weathered_cut_copper_slab"
+    },
+    "minecraft:oxidized_cut_copper_stairs": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:weathered_cut_copper_stairs"
     },
     "minecraft:podzol": {
       "crumble_chance": 0.2,
@@ -112,13 +168,41 @@
       "crumble_chance": 0.2,
       "crumble_to": "minecraft:cracked_stone_bricks"
     },
+    "minecraft:weathered_chiseled_copper": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:exposed_chiseled_copper"
+    },
     "minecraft:weathered_copper": {
       "crumble_chance": 0.2,
       "crumble_to": "minecraft:exposed_copper"
     },
+    "minecraft:weathered_copper_bulb": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:exposed_copper_bulb"
+    },
+    "minecraft:weathered_copper_door": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:exposed_copper_door"
+    },
+    "minecraft:weathered_copper_grate": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:exposed_copper_grate"
+    },
+    "minecraft:weathered_copper_trapdoor": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:exposed_copper_trapdoor"
+    },
     "minecraft:weathered_cut_copper": {
       "crumble_chance": 0.2,
       "crumble_to": "minecraft:exposed_cut_copper"
+    },
+    "minecraft:weathered_cut_copper_slab": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:exposed_cut_copper_slab"
+    },
+    "minecraft:weathered_cut_copper_stairs": {
+      "crumble_chance": 0.2,
+      "crumble_to": "minecraft:exposed_cut_copper_stairs"
     },
     "twilightforest:castle_brick": {
       "crumble_chance": 0.2,

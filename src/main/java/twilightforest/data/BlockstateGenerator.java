@@ -333,7 +333,7 @@ public class BlockstateGenerator extends BlockModelBuilders {
 			ResourceLocation item = lid.resourceLocation();
 			String name = item.getPath();
 			if (lid.lid() == Items.PUMPKIN) {
-				this.models().withExistingParent(name, jarLid)
+				this.models().withExistingParent("block/lid/" + name, jarLid)
 					.texture("1", "minecraft:block/pumpkin_top")
 					.texture("2", "minecraft:block/pumpkin_side");
 				continue;
@@ -1223,7 +1223,6 @@ public class BlockstateGenerator extends BlockModelBuilders {
 			.with(CarminiteReactorBlock.ACTIVE, false).setModels(new ConfiguredModel(reactor));
 		getVariantBuilder(TFBlocks.CARMINITE_REACTOR.get()).partialState()
 			.with(CarminiteReactorBlock.ACTIVE, true).setModels(new ConfiguredModel(reactorActive));
-		simpleBlock(TFBlocks.REACTOR_DEBRIS.get(), models().cubeAll(TFBlocks.REACTOR_DEBRIS.getId().getPath(), ResourceLocation.withDefaultNamespace("block/destroy_stage_9")).renderType(CUTOUT));
 	}
 
 	private ModelFile pedestalModel(String name, String north, String south, String west, String east, boolean active) {
