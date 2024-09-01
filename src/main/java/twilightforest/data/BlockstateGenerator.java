@@ -333,7 +333,7 @@ public class BlockstateGenerator extends BlockModelBuilders {
 			ResourceLocation item = lid.resourceLocation();
 			String name = item.getPath();
 			if (lid.lid() == Items.PUMPKIN) {
-				this.models().withExistingParent(name, jarLid)
+				this.models().withExistingParent("block/lid/" + name, jarLid)
 					.texture("1", "minecraft:block/pumpkin_top")
 					.texture("2", "minecraft:block/pumpkin_side");
 				continue;
