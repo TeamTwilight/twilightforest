@@ -17,6 +17,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.ItemDisplayContext;
 import twilightforest.client.JappaPackReloadListener;
 import twilightforest.client.renderer.entity.QuestRamRenderer;
 import twilightforest.entity.passive.QuestRam;
@@ -343,10 +344,10 @@ public class QuestRamModel<T extends QuestRam> extends HierarchicalModel<T> impl
 	}
 
 	@Override
-	public void renderTrophy(PoseStack stack, MultiBufferSource buffer, int light, int overlay, int color, boolean itemForm) {
+	public void renderTrophy(PoseStack stack, MultiBufferSource buffer, int light, int overlay, int color, ItemDisplayContext context) {
 		stack.scale(0.67F, 0.67F, 0.67F);
 		if (!JappaPackReloadListener.INSTANCE.isJappaPackLoaded()) {
-			stack.translate(0.0F, 0.5F, itemForm ? 0.5F : 0.67F);
+			stack.translate(0.0F, 0.5F, context != ItemDisplayContext.NONE ? 0.5F : 0.67F);
 		}
 
 		VertexConsumer consumer = buffer.getBuffer(RenderType.entityCutoutNoCull(QuestRamRenderer.TEXTURE));

@@ -28,6 +28,6 @@ public class CourtyardTerraceStatue extends TwilightTemplateStructurePiece {
 
 	@Override
 	public void postProcess(WorldGenLevel level, StructureManager structureFeatureManager, ChunkGenerator chunkGenerator, RandomSource random, BoundingBox boundingBox, ChunkPos chunkPos, BlockPos pos) {
-		this.placePieceAdjusted(level, structureFeatureManager, chunkGenerator, random, boundingBox, chunkPos, pos, -3);
+		this.placePieceAdjusted(level, chunkGenerator, random, boundingBox, pos, -3);
 	}
 }

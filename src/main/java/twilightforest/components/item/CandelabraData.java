@@ -1,33 +1,62 @@
 package twilightforest.components.item;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import twilightforest.block.AbstractSkullCandleBlock;
-import twilightforest.block.entity.CandelabraBlockEntity;
 
-public record CandelabraData(int one, int two, int three) {
-	public static final Codec<CandelabraData> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-		Codec.INT.fieldOf("one").forGetter(CandelabraData::one),
-		Codec.INT.fieldOf("two").forGetter(CandelabraData::two),
-		Codec.INT.fieldOf("three").forGetter(CandelabraData::three)
-	).apply(inst, CandelabraData::new));
+import javax.annotation.Nullable;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
 
-	public static final CandelabraData DEFAULT = new CandelabraData(17, 17, 17);
+public record CandelabraData(Optional<Block> one, Optional<Block> two, Optional<Block> three) {
+	public static final CandelabraData EMPTY = new CandelabraData(Optional.empty(), Optional.empty(), Optional.empty());
+	public static final Codec<CandelabraData> CODEC = BuiltInRegistries.BLOCK
+		.byNameCodec()
+		.sizeLimitedListOf(3)
+		.xmap(CandelabraData::new, CandelabraData::ordered);
+	public static final StreamCodec<RegistryFriendlyByteBuf, CandelabraData> STREAM_CODEC = ByteBufCodecs.registry(Registries.BLOCK)
+		.apply(ByteBufCodecs.list(4))
+		.map(CandelabraData::new, CandelabraData::ordered);
 
-	public static CandelabraData dataFromBE(CandelabraBlockEntity be) {
-		return new CandelabraData(blockToNumber(be, 0), blockToNumber(be, 1), blockToNumber(be, 2));
+	public CandelabraData(List<Block> blocks) {
+		this(getItem(blocks, 0), getItem(blocks, 1), getItem(blocks, 2));
 	}
 
-	public static int blockToNumber(CandelabraBlockEntity be, int slot) {
-		Block candle = be.getCandle(slot);
-		return candle == Blocks.AIR ? 17 : AbstractSkullCandleBlock.candleToCandleColor(candle.asItem()).ordinal();
+	public CandelabraData(Block one, Block two, Block three) {
+		this(List.of(one, two, three));
 	}
 
-	public static void setCandlesOf(CandelabraBlockEntity be, CandelabraData data) {
-		be.getCandles()[0] = data.one == 17 ? Blocks.AIR : AbstractSkullCandleBlock.candleColorToCandle(AbstractSkullCandleBlock.CandleColors.colorFromInt(data.one));
-		be.getCandles()[1] = data.two == 17 ? Blocks.AIR : AbstractSkullCandleBlock.candleColorToCandle(AbstractSkullCandleBlock.CandleColors.colorFromInt(data.two));
-		be.getCandles()[2] = data.three == 17 ? Blocks.AIR : AbstractSkullCandleBlock.candleColorToCandle(AbstractSkullCandleBlock.CandleColors.colorFromInt(data.three));
+	public static Optional<Block> getItem(List<Block> candles, int index) {
+		if (index >= candles.size()) {
+			return Optional.empty();
+		} else {
+			Block candle = candles.get(index);
+			return candle == Blocks.AIR ? Optional.empty() : Optional.of(candle);
+		}
+	}
+
+	public CompoundTag save(CompoundTag tag) {
+		if (!this.equals(EMPTY)) {
+			tag.put("Candles", CODEC.encodeStart(NbtOps.INSTANCE, this).getOrThrow());
+		}
+		return tag;
+	}
+
+	public List<Block> ordered() {
+		return Stream.of(this.one, this.three, this.three).map(block -> block.orElse(Blocks.AIR)).toList();
+	}
+
+	public static CandelabraData load(@Nullable CompoundTag tag) {
+		return tag != null && tag.contains("Candles") ? CODEC.parse(NbtOps.INSTANCE, tag.get("Candles")).result().orElse(EMPTY) : EMPTY;
 	}
 }

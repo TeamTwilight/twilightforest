@@ -11,6 +11,7 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.ItemDisplayContext;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.renderer.entity.UrGhastRenderer;
 import twilightforest.entity.boss.UrGhast;
@@ -124,8 +125,8 @@ public class UrGhastModel extends TFGhastModel<UrGhast> implements TrophyBlockMo
 	}
 
 	@Override
-	public void renderTrophy(PoseStack stack, MultiBufferSource buffer, int light, int overlay, int color, boolean itemForm) {
-		if (!itemForm) {
+	public void renderTrophy(PoseStack stack, MultiBufferSource buffer, int light, int overlay, int color, ItemDisplayContext context) {
+		if (context == ItemDisplayContext.NONE) {
 			stack.translate(0.0F, -1.0F, 0.0F);
 		}
 		stack.scale(0.5F, 0.5F, 0.5F);

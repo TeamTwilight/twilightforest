@@ -228,8 +228,7 @@ public class CarminiteReactorBlockEntity extends BlockEntity {
 		BlockState stateThere = this.getLevel().getBlockState(pos);
 
 		// don't destroy unbreakable stuff
-		if (stateThere.getBlock() != Blocks.AIR &&
-			!(stateThere.is(BlockTagGenerator.CARMINITE_REACTOR_IMMUNE) ||
+		if (!(stateThere.is(BlockTagGenerator.CARMINITE_REACTOR_IMMUNE) ||
 				(stateThere.getDestroySpeed(this.getLevel(), pos) == -1))) {
 			this.getLevel().setBlock(pos, state, 2);
 		}

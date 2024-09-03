@@ -2,6 +2,8 @@ package twilightforest.block.entity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -9,65 +11,69 @@ import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.PotDecorations;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
 import twilightforest.block.CandelabraBlock;
 import twilightforest.block.LightableBlock;
+import twilightforest.components.item.CandelabraData;
 import twilightforest.init.TFBlockEntities;
+import twilightforest.init.TFDataComponents;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class CandelabraBlockEntity extends BlockEntity {
 
-	private final Block[] candles = {Blocks.AIR, Blocks.AIR, Blocks.AIR};
+	private CandelabraData data;
 
 	public CandelabraBlockEntity(BlockPos pos, BlockState state) {
 		super(TFBlockEntities.CANDELABRA.get(), pos, state);
+		this.data = CandelabraData.EMPTY;
 	}
 
-	public Block[] getCandles() {
-		return this.candles;
+	public CandelabraData getCandles() {
+		return this.data;
+	}
+
+	public void setData(CandelabraData data) {
+		this.data = data;
 	}
 
 	public Block removeCandle(int index) {
-		Block block = this.candles[index];
+		Block block = CandelabraData.getItem(this.data.ordered(), index).orElse(Blocks.AIR);
 		this.setCandle(index, Blocks.AIR);
 		return block;
 	}
 
 	public void setCandle(int index, Block block) {
-		this.candles[index] = block;
+		List<Block> list = this.data.ordered();
+		list.set(index, block);
+		this.data = new CandelabraData(list);
 		this.updateState(index);
 		this.setChanged();
 		this.getLevel().sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
 	}
 
 	public Block getCandle(int index) {
-		return this.candles[index];
+		return CandelabraData.getItem(this.data.ordered(), index).orElse(Blocks.AIR);
 	}
 
 	@Override
 	public void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
 		super.saveAdditional(tag, provider);
-		ListTag list = new ListTag();
-		Arrays.stream(this.candles).toList().forEach(block -> list.add(StringTag.valueOf(BuiltInRegistries.BLOCK.getKey(block).toString())));
-		tag.put("Candles", list);
+		this.data.save(tag);
 	}
 
 	@Override
 	protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
 		super.loadAdditional(tag, provider);
-		if (tag.contains("Candles", Tag.TAG_LIST)) {
-			ListTag list = tag.getList("Candles", Tag.TAG_STRING);
-			for (int i = 0; i < list.size(); i++) {
-				String name = list.getString(i);
-				this.candles[i] = BuiltInRegistries.BLOCK.get(ResourceLocation.tryParse(name));
-			}
-		}
+		this.data = CandelabraData.load(tag);
 	}
 
 	private void updateState(int index) {
@@ -90,10 +96,26 @@ public class CandelabraBlockEntity extends BlockEntity {
 	}
 
 	@Override
+	protected void collectImplicitComponents(DataComponentMap.Builder components) {
+		super.collectImplicitComponents(components);
+		components.set(TFDataComponents.CANDELABRA_DATA, this.data);
+	}
+
+	@Override
+	protected void applyImplicitComponents(BlockEntity.DataComponentInput componentInput) {
+		super.applyImplicitComponents(componentInput);
+		this.data = componentInput.getOrDefault(TFDataComponents.CANDELABRA_DATA, CandelabraData.EMPTY);
+	}
+
+	@Override
+	public void removeComponentsFromTag(CompoundTag tag) {
+		super.removeComponentsFromTag(tag);
+		tag.remove("Candles");
+	}
+
+	@Override
 	public CompoundTag getUpdateTag(HolderLookup.Provider provider) {
-		CompoundTag tag = new CompoundTag();
-		this.saveAdditional(tag, provider);
-		return tag;
+		return this.saveCustomOnly(provider);
 	}
 
 	@Override

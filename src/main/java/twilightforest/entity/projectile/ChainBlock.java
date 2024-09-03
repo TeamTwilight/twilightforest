@@ -1,6 +1,7 @@
 package twilightforest.entity.projectile;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -28,6 +29,7 @@ import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
 import net.neoforged.neoforge.entity.PartEntity;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.*;
 
 public class ChainBlock extends ThrowableProjectile implements IEntityWithComplexSpawn {
@@ -135,6 +137,11 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 		if (this.level() instanceof ServerLevel level && this.stack != null) {
 			BlockState state = level.getBlockState(pos);
 			if (!state.isAir()) {
+				boolean restrictedPlaceMode = this.getOwner() instanceof ServerPlayer player && player.gameMode.getGameModeForPlayer().isBlockPlacingRestricted();
+				if (!canBreakBlockAt(level, pos, state, this.stack, restrictedPlaceMode) || this.getData(TFDataAttachments.SMASH_BLOCKS).getBlocksSmashed() >= 12) {
+					this.bounce(result.getDirection());
+				}
+
 				Vec3 vec3 = result.getBlockPos().clampLocationWithin(result.getLocation().add(-0.5D, 0D, 0D));
 				EnchantmentHelper.onHitBlock(
 					level,
@@ -146,69 +153,61 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 					level.getBlockState(result.getBlockPos()),
 					item -> this.kill()
 				);
-
-				boolean restrictedPlaceMode = this.getOwner() instanceof ServerPlayer player && player.gameMode.getGameModeForPlayer().isBlockPlacingRestricted();
-				if (!canBreakBlockAt(level, pos, state, this.stack, restrictedPlaceMode)) {
-					if (!this.isReturning && !this.hitEntity) {
-						this.playSound(TFSounds.BLOCK_AND_CHAIN_COLLIDE.get(), 0.125F, this.random.nextFloat());
-						this.gameEvent(GameEvent.HIT_GROUND);
-					}
-
-					this.isReturning = true;
-
-					// riccochet
-					double bounce = 0.6;
-					this.velX *= bounce;
-					this.velY *= bounce;
-					this.velZ *= bounce;
-
-
-					switch (result.getDirection()) {
-						case DOWN:
-							if (this.velY > 0) {
-								this.velY *= -bounce;
-							}
-							break;
-						case UP:
-							if (this.velY < 0) {
-								this.velY *= -bounce;
-							}
-							break;
-						case NORTH:
-							if (this.velZ > 0) {
-								this.velZ *= -bounce;
-							}
-							break;
-						case SOUTH:
-							if (this.velZ < 0) {
-								this.velZ *= -bounce;
-							}
-							break;
-						case WEST:
-							if (this.velX > 0) {
-								this.velX *= -bounce;
-							}
-							break;
-						case EAST:
-							if (this.velX < 0) {
-								this.velX *= -bounce;
-							}
-							break;
-					}
-				}
 			}
 		}
 	}
 
-	public void retractBlock() {
+	public void bounce(Direction direction) {
+		if (!this.isReturning && !this.hitEntity) {
+			this.playSound(TFSounds.BLOCK_AND_CHAIN_COLLIDE.get(), 0.125F, this.random.nextFloat());
+			this.gameEvent(GameEvent.HIT_GROUND);
+		}
+
 		this.isReturning = true;
-		if (this.tickCount < 60) {
-			this.tickCount += 60;
+
+		// riccochet
+		double bounce = 0.6;
+		this.velX *= bounce;
+		this.velY *= bounce;
+		this.velZ *= bounce;
+
+
+		switch (direction) {
+			case DOWN:
+				if (this.velY > 0) {
+					this.velY *= -bounce;
+				}
+				break;
+			case UP:
+				if (this.velY < 0) {
+					this.velY *= -bounce;
+				}
+				break;
+			case NORTH:
+				if (this.velZ > 0) {
+					this.velZ *= -bounce;
+				}
+				break;
+			case SOUTH:
+				if (this.velZ < 0) {
+					this.velZ *= -bounce;
+				}
+				break;
+			case WEST:
+				if (this.velX > 0) {
+					this.velX *= -bounce;
+				}
+				break;
+			case EAST:
+				if (this.velX < 0) {
+					this.velX *= -bounce;
+				}
+				break;
 		}
 	}
 
 	public static boolean canBreakBlockAt(Level level, BlockPos pos, BlockState state, ItemStack stack, boolean restrictedPlaceMode) {
-		return level.getWorldBorder().isWithinBounds(pos) && stack.isCorrectToolForDrops(state)
+		return level.getWorldBorder().isWithinBounds(pos) && stack.isCorrectToolForDrops(state) && !state.is(BlockTagGenerator.BLOCK_AND_CHAIN_NEVER_BREAKS)
 			&& (!restrictedPlaceMode || stack.canBreakBlockInAdventureMode(new BlockInWorld(level, pos, false)));
 	}
 

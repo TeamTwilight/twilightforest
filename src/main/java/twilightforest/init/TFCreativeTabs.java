@@ -289,10 +289,6 @@ public class TFCreativeTabs {
 			output.accept(TFBlocks.UR_GHAST_BOSS_SPAWNER);
 			output.accept(TFBlocks.ALPHA_YETI_BOSS_SPAWNER);
 			output.accept(TFBlocks.SNOW_QUEEN_BOSS_SPAWNER);
-			output.accept(TFBlocks.FINAL_BOSS_BOSS_SPAWNER);
-			output.accept(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE);
-			output.accept(TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE);
-			output.accept(TFBlocks.LICH_TOWER_MINIATURE_STRUCTURE);
 			output.accept(TFBlocks.ETCHED_NAGASTONE);
 			output.accept(TFBlocks.CRACKED_ETCHED_NAGASTONE);
 			output.accept(TFBlocks.MOSSY_ETCHED_NAGASTONE);
@@ -311,19 +307,6 @@ public class TFCreativeTabs {
 			output.accept(TFBlocks.BOLD_STONE_PILLAR);
 			output.accept(TFBlocks.TWISTED_STONE);
 			output.accept(TFBlocks.TWISTED_STONE_PILLAR);
-			output.accept(TFBlocks.CANDELABRA);
-			output.accept(TFBlocks.WROUGHT_IRON_FENCE);
-			output.accept(TFBlocks.TERRORCOTTA_ARCS);
-			output.accept(TFBlocks.TERRORCOTTA_CURVES);
-			output.accept(TFBlocks.TERRORCOTTA_LINES);
-			makeSkullCandle(output, TFItems.ZOMBIE_SKULL_CANDLE);
-			makeSkullCandle(output, TFItems.SKELETON_SKULL_CANDLE);
-			makeSkullCandle(output, TFItems.WITHER_SKELETON_SKULL_CANDLE);
-			makeSkullCandle(output, TFItems.CREEPER_SKULL_CANDLE);
-			makeSkullCandle(output, TFItems.PLAYER_SKULL_CANDLE);
-			makeSkullCandle(output, TFItems.PIGLIN_SKULL_CANDLE);
-			output.accept(TFBlocks.CHISELED_CANOPY_BOOKSHELF);
-			output.accept(TFBlocks.KEEPSAKE_CASKET);
 			output.accept(TFBlocks.SMOKER);
 			output.accept(TFBlocks.FIRE_JET);
 			output.accept(TFBlocks.MAZESTONE);
@@ -357,7 +340,6 @@ public class TFCreativeTabs {
 			output.accept(TFBlocks.AURORA_BLOCK);
 			output.accept(TFBlocks.AURORA_PILLAR);
 			output.accept(TFBlocks.AURORA_SLAB);
-			output.accept(TFBlocks.AURORALIZED_GLASS);
 			output.accept(TFBlocks.TROLLSTEINN);
 			output.accept(TFBlocks.HUGE_MUSHGLOOM);
 			output.accept(TFBlocks.HUGE_MUSHGLOOM_STEM);
@@ -401,16 +383,9 @@ public class TFCreativeTabs {
 			output.accept(TFBlocks.GREEN_FORCE_FIELD);
 			output.accept(TFBlocks.BLUE_FORCE_FIELD);
 			output.accept(TFBlocks.VIOLET_FORCE_FIELD);
-			output.accept(TFBlocks.CINDER_FURNACE);
-			output.accept(TFBlocks.CINDER_LOG);
-			output.accept(TFBlocks.CINDER_WOOD);
-			output.accept(TFBlocks.SLIDER);
 			output.accept(TFBlocks.UNCRAFTING_TABLE);
 			output.accept(TFBlocks.IRON_LADDER);
 			output.accept(TFBlocks.ROPE);
-			output.accept(TFBlocks.ROYAL_RAGS);
-
-			output.accept(TFBlocks.CURSED_SPAWNER);
 		}).build());
 
 	public static final DeferredHolder<CreativeModeTab, CreativeModeTab> ITEMS = TABS.register("items", () -> CreativeModeTab.builder()
@@ -457,11 +432,7 @@ public class TFCreativeTabs {
 			output.accept(TFItems.BORER_ESSENCE);
 			output.accept(TFItems.CARMINITE);
 			output.accept(TFItems.TOWER_KEY);
-			output.accept(TFItems.BRITTLE_FLASK);
-			output.accept(TFItems.GREATER_FLASK);
 			output.accept(TFItems.MAGIC_BEANS);
-			output.accept(TFItems.CUBE_TALISMAN);
-			if (parameters.hasPermissions()) parameters.holders().lookup(TFRegistries.Keys.MAGIC_PAINTINGS).ifPresent((lookup) -> createPaintings(output, lookup));
 			output.accept(TFItems.MUSIC_DISC_THREAD);
 			output.accept(TFItems.MUSIC_DISC_FINDINGS);
 			output.accept(TFItems.MUSIC_DISC_RADIANCE);
@@ -575,7 +546,6 @@ public class TFCreativeTabs {
 			output.accept(TFItems.CRUMBLE_HORN);
 			output.accept(TFItems.PEACOCK_FEATHER_FAN);
 			output.accept(TFItems.MOONWORM_QUEEN);
-			output.accept(TFItems.CUBE_OF_ANNIHILATION);
 		}).build());
 
 

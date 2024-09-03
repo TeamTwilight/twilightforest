@@ -41,12 +41,7 @@ public class CrumbleHornItem extends Item {
 	@Override
 	public void onUseTick(Level level, LivingEntity living, ItemStack stack, int count) {
 		if (count > 10 && count % 5 == 0 && level instanceof ServerLevel serverLevel) {
-			int crumbled = this.doCrumble(serverLevel, living);
-
-			if (crumbled > 0) {
-				stack.hurtAndBreak(crumbled, living, LivingEntity.getSlotForHand(living.getUsedItemHand()));
-			}
-
+			this.doCrumble(serverLevel, living, stack);
 			serverLevel.playSound(null, living.getX(), living.getY(), living.getZ(), TFSounds.QUEST_RAM_AMBIENT.get(), living.getSoundSource(), 1.0F, 0.8F);
 		}
 	}
@@ -71,8 +66,7 @@ public class CrumbleHornItem extends Item {
 		return slotChanged || newStack.getItem() != oldStack.getItem();
 	}
 
-	private int doCrumble(ServerLevel serverLevel, LivingEntity living) {
-
+	private void doCrumble(ServerLevel serverLevel, LivingEntity living, ItemStack stack) {
 		final double range = 3.0D;
 		final double radius = 2.0D;
 
@@ -82,20 +76,19 @@ public class CrumbleHornItem extends Item {
 
 		AABB crumbleBox = new AABB(destVec.x() - radius, destVec.y() - radius, destVec.z() - radius, destVec.x() + radius, destVec.y() + radius, destVec.z() + radius);
 
-		return this.crumbleBlocksInAABB(serverLevel, living, crumbleBox);
+		this.crumbleBlocksInAABB(serverLevel, living, crumbleBox, stack);
 	}
 
-	private int crumbleBlocksInAABB(ServerLevel serverLevel, LivingEntity living, AABB box) {
-		int crumbled = 0;
+	private void crumbleBlocksInAABB(ServerLevel serverLevel, LivingEntity living, AABB box, ItemStack stack) {
 		for (BlockPos pos : WorldUtil.getAllInBB(box)) {
 			if (this.crumbleBlock(serverLevel, living, pos)) {
-				crumbled++;
 				if (living instanceof ServerPlayer player) {
 					player.awardStat(TFStats.BLOCKS_CRUMBLED.get());
 				}
+				stack.hurtAndBreak(1, living, LivingEntity.getSlotForHand(living.getUsedItemHand()));
+				if (stack.getDamageValue() >= stack.getMaxDamage()) break;
 			}
 		}
-		return crumbled;
 	}
 
 	private boolean crumbleBlock(ServerLevel serverLevel, LivingEntity living, BlockPos pos) {

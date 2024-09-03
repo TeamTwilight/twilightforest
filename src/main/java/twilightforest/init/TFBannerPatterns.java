@@ -31,6 +31,6 @@ public class TFBannerPatterns {
 		context.register(UR_GHAST, new BannerPattern(TwilightForestMod.prefix("ur_ghast"), "block.minecraft.banner.twilightforest.ur_ghast"));
 		context.register(ALPHA_YETI, new BannerPattern(TwilightForestMod.prefix("alpha_yeti"), "block.minecraft.banner.twilightforest.alpha_yeti"));
 		context.register(SNOW_QUEEN, new BannerPattern(TwilightForestMod.prefix("snow_queen"), "block.minecraft.banner.twilightforest.snow_queen"));
-		context.register(QUESTING_RAM, new BannerPattern(TwilightForestMod.prefix("questing_ram"), "block.minecraft.banner.twilightforest.questing_ram"));
+		context.register(QUESTING_RAM, new BannerPattern(TwilightForestMod.prefix("quest_ram"), "block.minecraft.banner.twilightforest.quest_ram"));
 	}
 }

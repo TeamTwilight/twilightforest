@@ -29,7 +29,7 @@ public class CapabilityEvents {
 
 	@SubscribeEvent
 	public static void updateShields(EntityTickEvent.Post event) {
-		if (event.getEntity() instanceof LivingEntity living && living.hasData(TFDataAttachments.FORTIFICATION_SHIELDS)) {
+		if (event.getEntity() instanceof LivingEntity living && !living.level().isClientSide() && living.hasData(TFDataAttachments.FORTIFICATION_SHIELDS)) {
 			event.getEntity().getData(TFDataAttachments.FORTIFICATION_SHIELDS).tick(living);
 		}
 	}

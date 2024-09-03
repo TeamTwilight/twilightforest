@@ -30,6 +30,7 @@ import twilightforest.entity.projectile.MoonwormShot;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
+import twilightforest.util.TFItemStackUtils;
 
 import javax.annotation.Nonnull;
 import java.util.Objects;
@@ -55,7 +56,7 @@ public class MoonwormQueenItem extends Item {
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
-		if (stack.getDamageValue() + 1 >= this.getMaxDamage(stack)) {
+		if (stack.getDamageValue() == this.getMaxDamage(stack)) {
 			return InteractionResultHolder.fail(stack);
 		} else {
 			player.startUsingItem(hand);
@@ -103,7 +104,7 @@ public class MoonwormQueenItem extends Item {
 		if (!level.isClientSide() && useTime > FIRING_TIME && (stack.getDamageValue() + 1) < stack.getMaxDamage()) {
 
 			if (level.addFreshEntity(new MoonwormShot(TFEntities.MOONWORM_SHOT.get(), level, living))) {
-				if (living instanceof Player player && !player.getAbilities().instabuild) stack.hurtAndBreak(2, (ServerLevel) level, player, item -> {});
+				if (living instanceof Player player && !player.getAbilities().instabuild) TFItemStackUtils.hurtButDontBreak(stack, 2, (ServerLevel) level, player);
 
 				level.playSound(null, living.getX(), living.getY(), living.getZ(), TFSounds.MOONWORM_SQUISH.get(), living instanceof Player ? SoundSource.PLAYERS : SoundSource.NEUTRAL, 1.0F, 1.0F);
 			}
@@ -138,24 +139,24 @@ public class MoonwormQueenItem extends Item {
 					return InteractionResult.FAIL;
 				} else {
 					BlockPos blockpos = blockitemusecontext.getClickedPos();
-					Level world = blockitemusecontext.getLevel();
+					Level level = blockitemusecontext.getLevel();
 					Player playerentity = blockitemusecontext.getPlayer();
 					ItemStack itemstack = blockitemusecontext.getItemInHand();
-					BlockState blockstate1 = world.getBlockState(blockpos);
+					BlockState blockstate1 = level.getBlockState(blockpos);
 					Block block = blockstate1.getBlock();
 					if (block == blockstate.getBlock()) {
-						blockstate1 = this.updateBlockStateFromTag(blockpos, world, itemstack, blockstate1);
-						this.onBlockPlaced(blockpos, world, playerentity, itemstack);
-						block.setPlacedBy(world, blockpos, blockstate1, playerentity, itemstack);
+						blockstate1 = this.updateBlockStateFromTag(blockpos, level, itemstack, blockstate1);
+						this.onBlockPlaced(blockpos, level, playerentity, itemstack);
+						block.setPlacedBy(level, blockpos, blockstate1, playerentity, itemstack);
 						if (playerentity instanceof ServerPlayer) {
 							CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayer) playerentity, blockpos, itemstack);
 						}
 					}
 
-					SoundType soundtype = blockstate1.getSoundType(world, blockpos, context.getPlayer());
-					world.playSound(playerentity, blockpos, this.getPlaceSound(blockstate1, world, blockpos, Objects.requireNonNull(context.getPlayer())), SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
-					if (playerentity == null || !playerentity.getAbilities().instabuild) {
-						itemstack.hurtAndBreak(1, (ServerLevel) world, playerentity, item -> {});
+					SoundType soundtype = blockstate1.getSoundType(level, blockpos, context.getPlayer());
+					level.playSound(playerentity, blockpos, this.getPlaceSound(blockstate1, level, blockpos, Objects.requireNonNull(context.getPlayer())), SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
+					if (level instanceof ServerLevel server && !playerentity.getAbilities().instabuild) {
+						TFItemStackUtils.hurtButDontBreak(itemstack, 1, server, playerentity);
 					}
 
 					return InteractionResult.SUCCESS;

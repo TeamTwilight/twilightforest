@@ -23,7 +23,7 @@ public class CandelabraRenderer<T extends CandelabraBlockEntity> implements Bloc
 		BlockState state = entity.getBlockState();
 		Direction direction = state.getValue(CandelabraBlock.FACING);
 
-		for (int i = 0; i < entity.getCandles().length; i++) {
+		for (int i = 0; i < entity.getCandles().ordered().size(); i++) {
 			stack.pushPose();
 			float offset = (0.315F - 0.315F * i);
 			if (state.getValue(CandelabraBlock.ON_WALL)) {

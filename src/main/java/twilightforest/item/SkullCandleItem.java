@@ -5,21 +5,24 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Equipable;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.component.ResolvableProfile;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.SkullBlockEntity;
-import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import org.apache.commons.lang3.text.WordUtils;
 import twilightforest.block.AbstractSkullCandleBlock;
-import twilightforest.client.ISTER;
 
 import java.util.List;
-import java.util.function.Consumer;
 
-public class SkullCandleItem extends StandingAndWallBlockItem {
+public class SkullCandleItem extends StandingAndWallBlockItem implements Equipable {
 
 	public SkullCandleItem(AbstractSkullCandleBlock floor, AbstractSkullCandleBlock wall, Properties properties) {
 		super(floor, wall, properties, Direction.DOWN);
@@ -44,11 +47,21 @@ public class SkullCandleItem extends StandingAndWallBlockItem {
 	}
 
 	@Override
-	public Component getName(ItemStack pStack) {
-		ResolvableProfile resolvableprofile = pStack.get(DataComponents.PROFILE);
+	public EquipmentSlot getEquipmentSlot() {
+		return EquipmentSlot.HEAD;
+	}
+
+	@Override
+	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+		return this.swapWithEquipmentSlot(this, level, player, hand);
+	}
+
+	@Override
+	public Component getName(ItemStack stack) {
+		ResolvableProfile resolvableprofile = stack.get(DataComponents.PROFILE);
 		return resolvableprofile != null && resolvableprofile.name().isPresent()
 			? Component.translatable(this.getDescriptionId() + ".named", resolvableprofile.name().get())
-			: super.getName(pStack);
+			: super.getName(stack);
 	}
 
 	@Override

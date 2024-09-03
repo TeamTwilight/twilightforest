@@ -1,4 +1,4 @@
-// 1.21.1	2024-08-11T11:15:17.211508343	Twilight Forest Item Tags
+// 1.21.1	2024-09-01T15:13:50.504973	Twilight Forest Item Tags
 3c5895c72cfffe09615ec2b28267a726fcbf52e8 data/alexscaves/tags/item/ferns.json
 4c5df8d60b8f068b482a22fd807ddea22e1bfe00 data/alexscaves/tags/item/ferromagnetic_items.json
 42afac82c004061587d5b1ae20c2e66c0d399c8c data/alexscaves/tags/item/raw_meats.json
@@ -86,7 +86,7 @@ f0813a14ba178a941ba37c4059a25e6b19f77091 data/minecraft/tags/item/wooden_buttons
 e4144fc27ee121d3f7d17a5fdff02e93e1d7f7d8 data/minecraft/tags/item/wooden_slabs.json
 f3de4b0d6d2929c8fab124e75ff6269ca7642aa7 data/minecraft/tags/item/wooden_stairs.json
 8522d5d06fec7c30601264eb04aebaa58886a948 data/minecraft/tags/item/wooden_trapdoors.json
-da18183378ce02b94193b95eb3da20c71fd6d086 data/randomium/tags/item/blacklist.json
+80d39c2bda904c02ce91f31f02cd1079c0c1d4ee data/randomium/tags/item/blacklist.json
 b365ad6615ef9b05f43067637b8c869c06150e9e data/twilightforest/tags/item/arctic_fur.json
 af8520c845f14fb320bcefd284018a5ad57a7528 data/twilightforest/tags/item/banisters.json
 03701e27c1ba9819ac4dc5865a2bd2ab3be6a7be data/twilightforest/tags/item/banned_uncraftables.json
@@ -103,7 +103,6 @@ a0f401c3c8c79c599a3c1ad8d6b92d06e9f38bb0 data/twilightforest/tags/item/kept_on_d
 33bdeefc5a85e9afb7b260809bec0d2a615d1f0f data/twilightforest/tags/item/logs.json
 089e4347e6320066de4cd4d08b3e04a9442f4090 data/twilightforest/tags/item/mangrove_logs.json
 9a0837862b33f048722739e6314f5c471d56b2d6 data/twilightforest/tags/item/mining_logs.json
-c3536130fb19436382b0b9d1dc92c8fcb0e9aebe data/twilightforest/tags/item/nyi.json
 46917e7306850aedf22c53f9664894363b91fed9 data/twilightforest/tags/item/penguin_tempt_items.json
 d7160b3ddc802c57f798147148a479d2477adf34 data/twilightforest/tags/item/portal/activator.json
 788e6e34a201c014ae3783bc128afbd75443273b data/twilightforest/tags/item/raven_tempt_items.json
@@ -121,4 +120,4 @@ aa9ca0bf521d8c6b198f2c25e4d5528917308d9f data/twilightforest/tags/item/timewood_
 548dfc9d7e2225c6f7d761216b3fafc120978f73 data/twilightforest/tags/item/transwood_logs.json
 d94381f990d5908c2d71247b1b14946ef4a4ef3d data/twilightforest/tags/item/twilight_oak_logs.json
 f98e3791b370872501ab48edb20af5fe8f410ac0 data/twilightforest/tags/item/uncrafting_ignores_cost.json
-94591fd5c4e49bb8e71e3a9ae2532d95e6612849 data/twilightforest/tags/item/wip.json
+80ba8c6d5845f660645888e6183f5359fe1eb387 data/twilightforest/tags/item/wip.json

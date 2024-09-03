@@ -144,7 +144,6 @@ public class LangGenerator extends TFLangProvider {
 		this.addMessage("core_disabled", "%s is disabled via config");
 		this.addMessage("firefly_spawner_radius", "Firefly Particle Radius: %s Blocks");
 		this.addMessage("magic_map_fail", "The Magic faltered. Perhaps it doesn't work here?");
-		this.addMessage("nyi", "This feature has effects that are not yet implemented.");
 		this.addMessage("ore_meter_separator", "-");
 		this.addMessage("ore_meter_ratio", "(%s%%)");
 		this.addMessage("ore_meter_header_block", "Block");
@@ -160,8 +159,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addMessage("pedestal_ineligible", "You are unworthy.");
 		this.addMessage("portal_unsafe", "It doesn't seem safe here...");
 		this.addMessage("portal_unworthy", "The Portal pool is unresponsive. Perhaps something was neglected?");
-		this.addMessage("wip0", "This feature is a work in progress and may have bugs or unintended effects that may damage your world.");
-		this.addMessage("wip1", "Use with caution.");
+		this.addMessage("wip", "This feature is a work in progress and may have bugs or unintended effects that may damage your world");
 
 		this.addBlock(TFBlocks.MASON_JAR, "Mason Jar");
 		this.addBlock(TFBlocks.CICADA, "Cicada");
@@ -597,6 +595,8 @@ public class LangGenerator extends TFLangProvider {
 		this.addItem(TFItems.EMPERORS_CLOTH, "Emperor's Cloth");
 		this.add("item.twilightforest.emperors_cloth.desc", "Shrouded");
 		this.addItem(TFItems.FOUR_LEAF_CLOVER, "Four-Leaf Clover");
+		this.addItem(TFItems.CROWN_SPLINTER, "Crown Splinter");
+		this.addItem(TFItems.MYSTIC_CROWN, "Mystic Crown");
 		this.addItem(TFItems.ORE_MAGNET, "Ore Magnet");
 		this.addItem(TFItems.CRUMBLE_HORN, "Crumble Horn");
 		this.addItem(TFItems.MOONWORM_QUEEN, "Moonworm Queen");
@@ -999,7 +999,6 @@ public class LangGenerator extends TFLangProvider {
 		this.translateTag(ItemTagGenerator.TWILIGHT_LOGS, "Twilight Forest Logs");
 		this.translateTag(ItemTagGenerator.MANGROVE_LOGS, "Mangrove Logs");
 		this.translateTag(ItemTagGenerator.MINING_LOGS, "Miningwood Logs");
-		this.translateTag(ItemTagGenerator.NYI, "Not Yet Implemented Items");
 		this.translateTag(ItemTagGenerator.PORTAL_ACTIVATOR, "Twilight Forest Portal Activators");
 		this.translateTag(ItemTagGenerator.REPAIRS_FIERY_TOOLS, "Repairs Fiery Tools");
 		this.translateTag(ItemTagGenerator.REPAIRS_GIANT_TOOLS, "Repairs Giant Tools");

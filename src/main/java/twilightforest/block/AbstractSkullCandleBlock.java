@@ -13,11 +13,9 @@ import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.item.Equipable;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ResolvableProfile;
@@ -50,7 +48,7 @@ import twilightforest.init.TFDataComponents;
 
 import java.util.*;
 
-public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implements LightableBlock, Equipable {
+public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implements LightableBlock {
 	public static final IntegerProperty CANDLES = BlockStateProperties.CANDLES;
 	private final SkullBlock.Type type;
 
@@ -281,11 +279,6 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
 		return createTickerHelper(type, TFBlockEntities.SKULL_CANDLE.get(), SkullCandleBlockEntity::tick);
-	}
-
-	@Override
-	public EquipmentSlot getEquipmentSlot() {
-		return EquipmentSlot.HEAD;
 	}
 
 	public enum CandleColors implements StringRepresentable {

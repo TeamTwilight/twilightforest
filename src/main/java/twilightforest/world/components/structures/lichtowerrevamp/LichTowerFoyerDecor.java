@@ -24,12 +24,15 @@ import twilightforest.block.CandelabraBlock;
 import twilightforest.block.LightableBlock;
 import twilightforest.block.SkullCandleBlock;
 import twilightforest.block.entity.CandelabraBlockEntity;
+import twilightforest.components.item.CandelabraData;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.loot.TFLootTables;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.util.jigsaw.JigsawRecord;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
+
+import java.util.List;
 
 public class LichTowerFoyerDecor extends TwilightJigsawPiece implements PieceBeardifierModifier {
 	public LichTowerFoyerDecor(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
@@ -99,10 +102,7 @@ public class LichTowerFoyerDecor extends TwilightJigsawPiece implements PieceBea
 
 					if (level.getBlockEntity(placePos) instanceof CandelabraBlockEntity candelabraBE) {
 						// Manually set candles instead of calling setCandle() so that method's setBlockState calls won't crash the game
-						Block[] candles = candelabraBE.getCandles();
-						candles[0] = Blocks.CANDLE;
-						candles[1] = Blocks.CANDLE;
-						candles[2] = Blocks.CANDLE;
+						candelabraBE.setData(new CandelabraData(List.of(Blocks.CANDLE, Blocks.CANDLE, Blocks.CANDLE)));
 					}
 				}
 				default -> {

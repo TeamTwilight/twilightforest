@@ -11,6 +11,7 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DispenserBlock;
+import twilightforest.util.TFItemStackUtils;
 
 //[VanillaCopy] of ProjectileDispenseBehavior, but it damages the stack instead of using it up every shot
 public abstract class DamageableStackDispenseBehavior extends DefaultDispenseItemBehavior {
@@ -26,7 +27,7 @@ public abstract class DamageableStackDispenseBehavior extends DefaultDispenseIte
 			Projectile projectileentity = this.getProjectileEntity(level, pos, stack);
 			projectileentity.shoot(direction.getStepX(), (float) direction.getStepY() + 0.1F, direction.getStepZ(), this.getProjectileVelocity(), this.getProjectileInaccuracy());
 			level.addFreshEntity(projectileentity);
-			stack.hurtAndBreak(1, level, null, item -> {});
+			TFItemStackUtils.hurtButDontBreak(stack, 1, level, null);
 			this.fired = true;
 		}
 		return stack;

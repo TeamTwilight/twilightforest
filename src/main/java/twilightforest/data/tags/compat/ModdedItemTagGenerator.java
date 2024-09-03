@@ -96,7 +96,7 @@ public class ModdedItemTagGenerator extends ItemTagsProvider {
 
 		tag(FD_CABBAGE_ROLL_INGREDIENTS).add(TFItems.RAW_VENISON.get(), TFItems.RAW_MEEF.get());
 
-		tag(RANDOMIUM_BLACKLIST).addTag(ItemTagGenerator.NYI).addTag(ItemTagGenerator.WIP).add(TFItems.GLASS_SWORD.get(), //this one is here because the ore can give the unbreakable one
+		tag(RANDOMIUM_BLACKLIST).addTag(ItemTagGenerator.WIP).add(TFItems.GLASS_SWORD.get(), //this one is here because the ore can give the unbreakable one
 			TFBlocks.TIME_LOG_CORE.get().asItem(), TFBlocks.TRANSFORMATION_LOG_CORE.get().asItem(),
 			TFBlocks.MINING_LOG_CORE.get().asItem(), TFBlocks.SORTING_LOG_CORE.get().asItem(),
 			TFBlocks.ANTIBUILDER.get().asItem(), TFBlocks.STRONGHOLD_SHIELD.get().asItem(),

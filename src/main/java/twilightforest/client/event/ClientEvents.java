@@ -68,9 +68,7 @@ import java.util.*;
 
 public class ClientEvents {
 	private static final VoxelShape GIANT_BLOCK = Shapes.box(0.0D, 0.0D, 0.0D, 4.0D, 4.0D, 4.0D);
-	private static final MutableComponent WIP_TEXT_0 = Component.translatable("misc.twilightforest.wip0").setStyle(Style.EMPTY.withColor(ChatFormatting.RED));
-	private static final MutableComponent WIP_TEXT_1 = Component.translatable("misc.twilightforest.wip1").setStyle(Style.EMPTY.withColor(ChatFormatting.RED));
-	private static final MutableComponent NYI_TEXT = Component.translatable("misc.twilightforest.nyi").setStyle(Style.EMPTY.withColor(ChatFormatting.RED));
+	private static final MutableComponent WIP_TEXT = Component.translatable("misc.twilightforest.wip").withStyle(ChatFormatting.RED);
 	private static final MutableComponent EMPERORS_CLOTH_TOOLTIP = Component.translatable("item.twilightforest.emperors_cloth.desc").withStyle(ChatFormatting.GRAY);
 
 	private static boolean firstTitleScreenShown = false;
@@ -104,7 +102,6 @@ public class ClientEvents {
 		NeoForge.EVENT_BUS.addListener(CloudEvents::tickWeatherEffects);
 
 		NeoForge.EVENT_BUS.addListener(FogHandler::renderFog);
-		NeoForge.EVENT_BUS.addListener(FogHandler::setupFogColors);
 		NeoForge.EVENT_BUS.addListener(FogHandler::unloadFog);
 
 		NeoForge.EVENT_BUS.addListener(LockedBiomeToastHandler::tickLockedToastLogic);
@@ -267,13 +264,8 @@ public class ClientEvents {
 			event.getToolTip().add(1, EMPERORS_CLOTH_TOOLTIP);
 		}
 
-		if (!item.is(ItemTagGenerator.WIP) && !item.is(ItemTagGenerator.NYI)) return;
-
 		if (item.is(ItemTagGenerator.WIP)) {
-			event.getToolTip().add(WIP_TEXT_0);
-			event.getToolTip().add(WIP_TEXT_1);
-		} else {
-			event.getToolTip().add(NYI_TEXT);
+			event.getToolTip().add(WIP_TEXT);
 		}
 	}
 

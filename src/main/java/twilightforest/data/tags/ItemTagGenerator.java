@@ -58,7 +58,6 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 	public static final TagKey<Item> PORTAL_ACTIVATOR = create("portal/activator");
 
 	public static final TagKey<Item> WIP = create("wip");
-	public static final TagKey<Item> NYI = create("nyi");
 
 	public static final TagKey<Item> KOBOLD_PACIFICATION_BREADS = create("kobold_pacification_breads");
 	public static final TagKey<Item> BOAR_TEMPT_ITEMS = create("boar_tempt_items");
@@ -199,26 +198,31 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 		);
 
 		this.tag(WIP).add(
-			TFBlocks.KEEPSAKE_CASKET.get().asItem(),
-			TFBlocks.CANDELABRA.get().asItem(),
+			TFBlocks.AURORALIZED_GLASS.asItem(),
+			TFItems.QUEST_RAM_BANNER_PATTERN.get(),
+			TFBlocks.FINAL_BOSS_BOSS_SPAWNER.asItem(),
+			TFItems.CUBE_TALISMAN.get(),
+			TFItems.CUBE_OF_ANNIHILATION.get(),
+			TFBlocks.CINDER_FURNACE.asItem(),
+			TFBlocks.CINDER_LOG.asItem(),
+			TFBlocks.CINDER_WOOD.asItem(),
+			TFBlocks.SLIDER.asItem(),
+			TFBlocks.TERRORCOTTA_ARCS.asItem(),
+			TFBlocks.TERRORCOTTA_CURVES.asItem(),
+			TFBlocks.TERRORCOTTA_LINES.asItem(),
+			TFBlocks.CHISELED_CANOPY_BOOKSHELF.asItem(),
+			TFBlocks.KEEPSAKE_CASKET.asItem(),
+			TFBlocks.CURSED_SPAWNER.asItem(),
+			TFBlocks.ROYAL_RAGS.asItem(),
+			TFBlocks.WROUGHT_IRON_FENCE.asItem(),
+			TFBlocks.CANOPY_WINDOW.asItem(),
+			TFBlocks.CANOPY_WINDOW_PANE.asItem(),
+			TFBlocks.CANDELABRA.asItem(),
+			TFItems.MAGIC_PAINTING.get(),
 			TFItems.BRITTLE_FLASK.get(),
 			TFItems.GREATER_FLASK.get(),
-			TFItems.CUBE_OF_ANNIHILATION.get(),
-			TFBlocks.WROUGHT_IRON_FENCE.get().asItem()
-		);
-
-		this.tag(NYI).add(
-			TFBlocks.CINDER_FURNACE.get().asItem(),
-			TFBlocks.CINDER_LOG.get().asItem(),
-			TFBlocks.CINDER_WOOD.get().asItem(),
-			TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get().asItem(),
-			TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE.get().asItem(),
-			TFBlocks.LICH_TOWER_MINIATURE_STRUCTURE.get().asItem(),
-			TFBlocks.AURORALIZED_GLASS.get().asItem(),
-			TFBlocks.SLIDER.get().asItem(),
-			TFItems.MAGIC_PAINTING.get(),
-			TFItems.QUEST_RAM_BANNER_PATTERN.get(),
-			TFBlocks.FINAL_BOSS_BOSS_SPAWNER.asItem()
+			TFItems.MYSTIC_CROWN.get(),
+			TFItems.CROWN_SPLINTER.get()
 		);
 
 		this.tag(KOBOLD_PACIFICATION_BREADS).add(Items.BREAD);

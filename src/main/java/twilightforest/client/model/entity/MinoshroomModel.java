@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.item.ItemDisplayContext;
 import twilightforest.client.JappaPackReloadListener;
 import twilightforest.client.renderer.entity.MinoshroomRenderer;
 import twilightforest.entity.boss.Minoshroom;
@@ -290,7 +291,7 @@ public class MinoshroomModel<T extends Minoshroom> extends HumanoidModel<T> impl
 	}
 
 	@Override
-	public void renderTrophy(PoseStack stack, MultiBufferSource buffer, int light, int overlay, int color, boolean itemForm) {
+	public void renderTrophy(PoseStack stack, MultiBufferSource buffer, int light, int overlay, int color, ItemDisplayContext context) {
 		if (!JappaPackReloadListener.INSTANCE.isJappaPackLoaded()) {
 			stack.translate(0.0F, 0.375F, 0.56F);
 		} else {

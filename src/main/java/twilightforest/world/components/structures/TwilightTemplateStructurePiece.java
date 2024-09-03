@@ -66,10 +66,11 @@ public abstract class TwilightTemplateStructurePiece extends TemplateStructurePi
 	}
 
 	// This will be required if you want to dig a piece into a noise beard
-	protected void placePieceAdjusted(WorldGenLevel level, StructureManager structureFeatureManager, ChunkGenerator chunkGenerator, RandomSource random, BoundingBox boundingBox, ChunkPos chunkPos, BlockPos pos, int dY) {
+	protected void placePieceAdjusted(WorldGenLevel level, ChunkGenerator chunkGenerator, RandomSource random, BoundingBox boundingBox, BlockPos pos, int dY) {
 		this.templatePosition = this.templatePosition.above(dY);
 
-		super.postProcess(level, structureFeatureManager, chunkGenerator, random, boundingBox, chunkPos, pos.above(dY));
+		// Call this class's overridden method instead of the supermethod to ensure execution of our custom handleDataMarker() method
+		this.customPostProcess(level, chunkGenerator, random, boundingBox, pos.above(dY));
 
 		this.templatePosition = this.originalPlacement;
 		this.boundingBox = BoundingBoxUtils.clone(this.originalBox);
@@ -100,6 +101,10 @@ public abstract class TwilightTemplateStructurePiece extends TemplateStructurePi
 	// VANILLACOPY: Same as the supercall except without the dumb jigsaw code
 	@Override
 	public void postProcess(WorldGenLevel level, StructureManager structureManager, ChunkGenerator chunkGen, RandomSource random, BoundingBox chunkBounds, ChunkPos chunkPos, BlockPos structureBottomCenter) {
+		this.customPostProcess(level, chunkGen, random, chunkBounds, structureBottomCenter);
+	}
+
+	private void customPostProcess(WorldGenLevel level, ChunkGenerator chunkGen, RandomSource random, BoundingBox chunkBounds, BlockPos structureBottomCenter) {
 		this.placeSettings.setBoundingBox(chunkBounds);
 		this.boundingBox = this.template.getBoundingBox(this.placeSettings, this.templatePosition);
 		if (this.template.placeInWorld(level, this.templatePosition, structureBottomCenter, this.placeSettings, random, 2)) {

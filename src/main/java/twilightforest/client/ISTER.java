@@ -43,10 +43,12 @@ import twilightforest.block.entity.TFTrappedChestBlockEntity;
 import twilightforest.client.event.ClientEvents;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.KnightmetalShieldModel;
+import twilightforest.client.model.entity.LichModel;
 import twilightforest.client.model.entity.TrophyBlockModel;
 import twilightforest.client.renderer.block.JarRenderer;
 import twilightforest.client.renderer.block.SkullCandleRenderer;
 import twilightforest.client.renderer.block.TrophyRenderer;
+import twilightforest.client.renderer.entity.LichRenderer;
 import twilightforest.components.item.CandelabraData;
 import twilightforest.components.item.JarLid;
 import twilightforest.components.item.SkullCandles;
@@ -56,6 +58,7 @@ import twilightforest.enums.extensions.TFItemDisplayContextEnumExtension;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDataComponents;
 import twilightforest.item.KnightmetalShieldItem;
+import twilightforest.item.WearableLichCrown;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -114,7 +117,7 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 	}
 
 	@Override
-	public void renderByItem(ItemStack stack, ItemDisplayContext camera, PoseStack ms, MultiBufferSource buffers, int light, int overlay) {
+	public void renderByItem(ItemStack stack, ItemDisplayContext camera, PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
 		Item item = stack.getItem();
 		if (item instanceof BlockItem blockItem) {
 			Block block = blockItem.getBlock();
@@ -129,34 +132,34 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 
 					Lighting.setupForFlatItems();
 					MultiBufferSource.BufferSource bufferSource = minecraft.renderBuffers().bufferSource();
-					ms.pushPose();
+					pose.pushPose();
 					Lighting.setupForFlatItems();
-					ms.translate(0.5F, 0.5F, -1.5F);
-					minecraft.getItemRenderer().render(TrophyRenderer.stack, ItemDisplayContext.GUI, false, ms, bufferSource, 15728880, OverlayTexture.NO_OVERLAY, modelBack.applyTransform(camera, ms, false));
-					ms.popPose();
+					pose.translate(0.5F, 0.5F, -1.5F);
+					minecraft.getItemRenderer().render(TrophyRenderer.stack, ItemDisplayContext.GUI, false, pose, bufferSource, 15728880, OverlayTexture.NO_OVERLAY, modelBack.applyTransform(camera, pose, false));
+					pose.popPose();
 					bufferSource.endBatch();
 					Lighting.setupFor3DItems();
 
-					ms.pushPose();
-					ms.translate(0.5F, 0.5F, 0.5F);
-					ms.mulPose(Axis.XP.rotationDegrees(30));
-					ms.mulPose(Axis.YN.rotationDegrees(TFConfig.rotateTrophyHeadsGui && !minecraft.isPaused() ? ClientEvents.time % 360 : -45));
-					ms.translate(-0.5F, -0.5F, -0.5F);
-					ms.translate(0.0F, 0.25F, 0.0F);
-					if (trophyBlock.getVariant() == BossVariant.UR_GHAST) ms.translate(0.0F, 0.5F, 0.0F);
-					if (trophyBlock.getVariant() == BossVariant.ALPHA_YETI) ms.translate(0.0F, -0.15F, 0.0F);
-					TrophyRenderer.render(null, 180.0F, trophy, variant, !minecraft.isPaused() ? ClientEvents.time + minecraft.getTimer().getRealtimeDeltaTicks() : 0, ms, buffers, light, camera);
-					ms.popPose();
+					pose.pushPose();
+					pose.translate(0.5F, 0.5F, 0.5F);
+					pose.mulPose(Axis.XP.rotationDegrees(30));
+					pose.mulPose(Axis.YN.rotationDegrees(TFConfig.rotateTrophyHeadsGui && !minecraft.isPaused() ? ClientEvents.time % 360 : -45));
+					pose.translate(-0.5F, -0.5F, -0.5F);
+					pose.translate(0.0F, 0.25F, 0.0F);
+					if (trophyBlock.getVariant() == BossVariant.UR_GHAST) pose.translate(0.0F, 0.5F, 0.0F);
+					if (trophyBlock.getVariant() == BossVariant.ALPHA_YETI) pose.translate(0.0F, -0.15F, 0.0F);
+					TrophyRenderer.render(null, 180.0F, trophy, variant, !minecraft.isPaused() ? ClientEvents.time + minecraft.getTimer().getRealtimeDeltaTicks() : 0, pose, buffers, light, camera);
+					pose.popPose();
 				} else {
-					TrophyRenderer.render(null, 180.0F, trophy, variant, !minecraft.isPaused() ? ClientEvents.time + minecraft.getTimer().getRealtimeDeltaTicks() : 0, ms, buffers, light, camera);
+					TrophyRenderer.render(null, 180.0F, trophy, variant, !minecraft.isPaused() ? ClientEvents.time + minecraft.getTimer().getRealtimeDeltaTicks() : 0, pose, buffers, light, camera);
 				}
 
 			} else if (block instanceof KeepsakeCasketBlock) {
-				minecraft.getBlockEntityRenderDispatcher().renderItem(this.casket, ms, buffers, light, overlay);
+				minecraft.getBlockEntityRenderDispatcher().renderItem(this.casket, pose, buffers, light, overlay);
 			} else if (block instanceof TFChestBlock) {
-				minecraft.getBlockEntityRenderDispatcher().renderItem(this.chestEntities.get(block), ms, buffers, light, overlay);
+				minecraft.getBlockEntityRenderDispatcher().renderItem(this.chestEntities.get(block), pose, buffers, light, overlay);
 			} else if (block instanceof TFTrappedChestBlock) {
-				minecraft.getBlockEntityRenderDispatcher().renderItem(this.trappedChestEntities.get(block), ms, buffers, light, overlay);
+				minecraft.getBlockEntityRenderDispatcher().renderItem(this.trappedChestEntities.get(block), pose, buffers, light, overlay);
 			} else if (block instanceof AbstractSkullCandleBlock candleBlock) {
 				ResolvableProfile profile = stack.get(DataComponents.PROFILE);
 
@@ -170,57 +173,69 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 				SkullBlock.Type type = candleBlock.getType();
 				SkullModelBase base = this.skulls.get(type);
 				RenderType renderType = SkullCandleRenderer.getRenderType(type, profile);
-				SkullCandleRenderer.renderSkull(null, 180.0F, 0.0F, ms, buffers, light, base, renderType);
+				SkullCandleRenderer.renderSkull(null, 180.0F, 0.0F, pose, buffers, light, base, renderType);
 
 				//we put the candle
-				ms.translate(0.0F, 0.5F, 0.0F);
+				pose.translate(0.0F, 0.5F, 0.0F);
 
 				SkullCandles skullCandles = stack.getOrDefault(TFDataComponents.SKULL_CANDLES, SkullCandles.DEFAULT);
 
 				minecraft.getBlockRenderer().renderSingleBlock(
 					AbstractSkullCandleBlock.candleColorToCandle(AbstractSkullCandleBlock.CandleColors.colorFromInt(skullCandles.color()))
-						.defaultBlockState().setValue(CandleBlock.CANDLES, skullCandles.count()), ms, buffers, light, overlay, ModelData.EMPTY, RenderType.cutout());
+						.defaultBlockState().setValue(CandleBlock.CANDLES, skullCandles.count()), pose, buffers, light, overlay, ModelData.EMPTY, RenderType.cutout());
 			} else if (block instanceof CandelabraBlock) {
 				//we need to render the candelabra block here since we have to use builtin/entity on the item.
 				//This doesnt allow us to set the item parent to the candelabra block, and without it, only the candles render, if any
-				minecraft.getBlockRenderer().renderSingleBlock(TFBlocks.CANDELABRA.get().defaultBlockState(), ms, buffers, light, overlay);
+				minecraft.getBlockRenderer().renderSingleBlock(TFBlocks.CANDELABRA.get().defaultBlockState(), pose, buffers, light, overlay);
 				CandelabraData candelabraData = stack.get(TFDataComponents.CANDELABRA_DATA);
 				if (candelabraData != null) {
 					CandelabraBlockEntity copy = this.candelabra;
-					CandelabraData.setCandlesOf(copy, candelabraData);
-					minecraft.getBlockEntityRenderDispatcher().renderItem(copy, ms, buffers, light, overlay);
+					copy.setData(candelabraData);
+					minecraft.getBlockEntityRenderDispatcher().renderItem(copy, pose, buffers, light, overlay);
 				}
 			} else if (block instanceof CritterBlock critter) {
 				BlockEntity blockEntity = critter.newBlockEntity(BlockPos.ZERO, block.defaultBlockState());
 				if (blockEntity != null) {
-					minecraft.getBlockEntityRenderDispatcher().getRenderer(blockEntity).render(null, 0, ms, buffers, light, overlay);
+					minecraft.getBlockEntityRenderDispatcher().getRenderer(blockEntity).render(null, 0, pose, buffers, light, overlay);
 				}
 			} else if (block instanceof JarBlock jarBlock) {
-				JarRenderer.renderJarModel(block.defaultBlockState(), minecraft.getBlockRenderer(), ms, buffers, light, overlay);
+				JarRenderer.renderJarModel(block.defaultBlockState(), minecraft.getBlockRenderer(), pose, buffers, light, overlay);
 				JarLid jarLid = stack.getComponents().get(TFDataComponents.JAR_LID.get());
 				Item lid = jarLid == null || !JarRenderer.LIDS.containsKey(jarLid.lid()) ? jarBlock.getDefaultLid() : jarLid.lid();
-				JarRenderer.renderModel(JarRenderer.LIDS.get(lid), block.defaultBlockState(), minecraft.getBlockRenderer(), ms, buffers, light, overlay);
+				JarRenderer.renderModel(JarRenderer.LIDS.get(lid), block.defaultBlockState(), minecraft.getBlockRenderer(), pose, buffers, light, overlay);
 
 				if (jarBlock instanceof MasonJarBlock) {
 					ItemContainerContents contents = stack.getComponents().get(DataComponents.CONTAINER);
 					if (contents != null) {
 						MultiBufferSource.BufferSource bufferSource = minecraft.renderBuffers().bufferSource();
-						ms.pushPose();
-						ms.translate(0.5D, 0.4375D, 0.5D);
-						ms.scale(0.5F, 0.5F, 0.5F);
-						minecraft.getItemRenderer().render(contents.copyOne(), itemDisplayContextEnumExtension.JARRED, false, ms, bufferSource, light, OverlayTexture.NO_OVERLAY, minecraft.getItemRenderer().getModel(contents.copyOne(), null, null, 1));
-						ms.popPose();
+						pose.pushPose();
+						pose.translate(0.5D, 0.4375D, 0.5D);
+						pose.scale(0.5F, 0.5F, 0.5F);
+						minecraft.getItemRenderer().render(contents.copyOne(), itemDisplayContextEnumExtension.JARRED, false, pose, bufferSource, light, OverlayTexture.NO_OVERLAY, minecraft.getItemRenderer().getModel(contents.copyOne(), null, null, 1));
+						pose.popPose();
 						bufferSource.endBatch();
 					}
 				}
 			}
 		} else if (item instanceof KnightmetalShieldItem) {
-			ms.pushPose();
-			ms.scale(1.0F, -1.0F, -1.0F);
+			pose.pushPose();
+			pose.scale(1.0F, -1.0F, -1.0F);
 			Material material = new Material(Sheets.SHIELD_SHEET, TwilightForestMod.prefix("entity/knightmetal_shield"));
 			VertexConsumer vertexconsumer = material.sprite().wrap(ItemRenderer.getFoilBufferDirect(buffers, this.shield.renderType(material.atlasLocation()), true, stack.hasFoil()));
-			this.shield.renderToBuffer(ms, vertexconsumer, light, overlay);
-			ms.popPose();
+			this.shield.renderToBuffer(pose, vertexconsumer, light, overlay);
+			pose.popPose();
+		} else if (item instanceof WearableLichCrown && this.trophies.get(BossVariant.LICH) instanceof LichModel lichModel) {
+			pose.pushPose();
+			pose.scale(1.0F, -1.0F, -1.0F);
+			if (camera == ItemDisplayContext.GUI) {
+				pose.translate(0.5F, -0.1F, 0.0F);
+				pose.mulPose(Axis.XP.rotationDegrees(30));
+				pose.mulPose(Axis.YP.rotationDegrees(45));
+			} else {
+				pose.translate(0.5F, -0.0625, -0.5F);
+			}
+			lichModel.hat.render(pose, buffers.getBuffer(RenderType.entityCutoutNoCull(LichRenderer.TEXTURE)), light, overlay);
+			pose.popPose();
 		}
 	}
 

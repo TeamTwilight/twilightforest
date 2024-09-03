@@ -64,7 +64,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		bannerPattern(output, "ur_ghast_banner_pattern", TFBlocks.UR_GHAST_TROPHY, TFItems.UR_GHAST_BANNER_PATTERN);
 		bannerPattern(output, "alpha_yeti_banner_pattern", TFBlocks.ALPHA_YETI_TROPHY, TFItems.ALPHA_YETI_BANNER_PATTERN);
 		bannerPattern(output, "snow_queen_banner_pattern", TFBlocks.SNOW_QUEEN_TROPHY, TFItems.SNOW_QUEEN_BANNER_PATTERN);
-		bannerPattern(output, "questing_ram_banner_pattern", TFBlocks.QUEST_RAM_TROPHY, TFItems.QUEST_RAM_BANNER_PATTERN);
+//		bannerPattern(output, "questing_ram_banner_pattern", TFBlocks.QUEST_RAM_TROPHY, TFItems.QUEST_RAM_BANNER_PATTERN);
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, Blocks.MOSS_BLOCK)
 			.pattern("mmm")
@@ -117,21 +117,21 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.unlockedBy("has_root_strand", has(TFBlocks.ROOT_STRAND.get()))
 			.save(output);
 
-		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, TFBlocks.CANOPY_WINDOW.value(), 4)
-			.pattern("GPG")
-			.pattern("PPP")
-			.pattern("GPG")
-			.define('G', Ingredient.of(Tags.Items.GLASS_BLOCKS))
-			.define('P', Ingredient.of(TFBlocks.CANOPY_PLANKS.value()))
-			.unlockedBy("has_planks", has(TFBlocks.CANOPY_PLANKS.value()))
-			.save(output);
-
-		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, TFBlocks.CANOPY_WINDOW_PANE.value(), 16)
-			.pattern("GGG")
-			.pattern("GGG")
-			.define('G', Ingredient.of(TFBlocks.CANOPY_WINDOW.value()))
-			.unlockedBy("has_windows", has(TFBlocks.CANOPY_WINDOW.value()))
-			.save(output);
+//		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, TFBlocks.CANOPY_WINDOW.value(), 4)
+//			.pattern("GPG")
+//			.pattern("PPP")
+//			.pattern("GPG")
+//			.define('G', Ingredient.of(Tags.Items.GLASS_BLOCKS))
+//			.define('P', Ingredient.of(TFBlocks.CANOPY_PLANKS.value()))
+//			.unlockedBy("has_planks", has(TFBlocks.CANOPY_PLANKS.value()))
+//			.save(output);
+//
+//		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, TFBlocks.CANOPY_WINDOW_PANE.value(), 16)
+//			.pattern("GGG")
+//			.pattern("GGG")
+//			.define('G', Ingredient.of(TFBlocks.CANOPY_WINDOW.value()))
+//			.unlockedBy("has_windows", has(TFBlocks.CANOPY_WINDOW.value()))
+//			.save(output);
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, TFItems.MASON_JAR.get(), 4)
 			.pattern("GLG")
@@ -204,13 +204,13 @@ public class CraftingGenerator extends CraftingDataHelper {
 		crackedWoodRecipes(output);
 		crackedStoneRecipes(output);
 
-		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, TFBlocks.CHISELED_CANOPY_BOOKSHELF.get())
-			.pattern("---")
-			.pattern("   ")
-			.pattern("---")
-			.define('-', TFBlocks.CANOPY_SLAB.get())
-			.unlockedBy("has_item", has(TFBlocks.CANOPY_SLAB.get()))
-			.save(output);
+//		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, TFBlocks.CHISELED_CANOPY_BOOKSHELF.get())
+//			.pattern("---")
+//			.pattern("   ")
+//			.pattern("---")
+//			.define('-', TFBlocks.CANOPY_SLAB.get())
+//			.unlockedBy("has_item", has(TFBlocks.CANOPY_SLAB.get()))
+//			.save(output);
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, TFBlocks.CANOPY_BOOKSHELF.get())
 			.pattern("---")
@@ -221,13 +221,13 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.unlockedBy("has_item", has(TFBlocks.CANOPY_PLANKS.get()))
 			.save(output);
 
-		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, TFBlocks.CANDELABRA.get())
-			.pattern("III")
-			.pattern(" W ")
-			.define('W', TFBlocks.WROUGHT_IRON_FENCE.get())
-			.define('I', Tags.Items.INGOTS_IRON)
-			.unlockedBy("has_item", has(TFBlocks.WROUGHT_IRON_FENCE.get()))
-			.save(output);
+//		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, TFBlocks.CANDELABRA.get())
+//			.pattern("III")
+//			.pattern(" W ")
+//			.define('W', TFBlocks.WROUGHT_IRON_FENCE.get())
+//			.define('I', Tags.Items.INGOTS_IRON)
+//			.unlockedBy("has_item", has(TFBlocks.WROUGHT_IRON_FENCE.get()))
+//			.save(output);
 
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, TFItems.ARMOR_SHARD_CLUSTER.get())
 			.requires(Ingredient.of(TFItems.ARMOR_SHARD.get()), 9)
@@ -283,6 +283,14 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.define('b', Ingredient.of(Items.POWDER_SNOW_BUCKET))
 			.unlockedBy("has_item", has(TFBlocks.FLUFFY_CLOUD.get()))
 			.save(output, TwilightForestMod.prefix("snowy_cloud"));
+
+//		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, TFItems.LICH_CROWN, 1)
+//			.pattern("ttt")
+//			.pattern("t t")
+//			.pattern("ttt")
+//			.define('t', Ingredient.of(TFItems.CROWN_SPLINTER))
+//			.unlockedBy("has_item", has(TFItems.CROWN_SPLINTER))
+//			.save(output);
 	}
 
 	private void darkTowerRecipes(RecipeOutput output) {

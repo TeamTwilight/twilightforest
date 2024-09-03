@@ -4,9 +4,11 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.PacketDistributor;
+import twilightforest.init.TFItems;
 import twilightforest.init.TFSounds;
 import twilightforest.init.TFStats;
 import twilightforest.network.UpdateShieldPacket;
@@ -21,7 +23,6 @@ public class FortificationShieldAttachment {
 	private int temporaryShields;
 	private int permanentShields;
 	private int timer;
-	private int breakTimer;
 
 	public FortificationShieldAttachment() {
 		this(0, 0);
@@ -34,10 +35,20 @@ public class FortificationShieldAttachment {
 	}
 
 	public void tick(LivingEntity entity) {
-		if (!entity.level().isClientSide() && this.temporaryShieldsLeft() > 0 && this.timer-- <= 0 && this.breakTimer <= 0 && (!(entity instanceof Player player) || !player.getAbilities().invulnerable))
-			this.breakShield(entity, true);
-		if (this.breakTimer > 0)
-			this.breakTimer--;
+		if (this.temporaryShieldsLeft() > 0 && !(entity instanceof Player player && player.getAbilities().invulnerable)) {
+			if (this.timer <= 0) {
+				this.breakShield(entity, true);
+			} else if (this.checkLichCrownBonus(entity)) {
+				// Timer decay skipped after every 2 ticks so that shields last 50% longer with Lich Crown worn
+				this.timer--;
+			}
+		}
+	}
+
+	private boolean checkLichCrownBonus(LivingEntity entity) {
+		//return entity.getItemBySlot(EquipmentSlot.HEAD).is(TFItems.LICH_CROWN) ? (entity.tickCount % 3) != 0 : true;
+		// Simplified but same logic as the line above
+		return !entity.getItemBySlot(EquipmentSlot.HEAD).is(TFItems.MYSTIC_CROWN) || (entity.tickCount % 3) != 0;
 	}
 
 	public int shieldsLeft() {
@@ -53,21 +64,20 @@ public class FortificationShieldAttachment {
 	}
 
 	public void breakShield(LivingEntity entity, boolean expired) {
-		if (this.breakTimer <= 0) {
-			// Temp shields should break first before permanent ones. Reset time each time a temp shield is busted.
-			if (this.temporaryShields > 0) {
-				this.temporaryShields--;
-				this.resetTimer();
-			} else if (this.permanentShields > 0) {
-				this.permanentShields--;
-			}
-
-			if (entity instanceof ServerPlayer player && !expired)
-				player.awardStat(TFStats.TF_SHIELDS_BROKEN.get());
-			this.sendUpdatePacket(entity);
-			entity.level().playSound(null, entity.blockPosition(), expired ? TFSounds.SHIELD_EXPIRE.get() : TFSounds.SHIELD_BREAK.get(), SoundSource.PLAYERS, 1.0F, (entity.getRandom().nextFloat() - entity.getRandom().nextFloat()) * 0.3F + 1.0F);
-			this.breakTimer = 20;
+		// Temp shields should break first before permanent ones. Reset time each time a temp shield is busted.
+		if (this.temporaryShields > 0) {
+			this.temporaryShields--;
+			this.resetTimer();
+		} else if (this.permanentShields > 0) {
+			this.permanentShields--;
 		}
+
+		if (entity instanceof ServerPlayer player && !expired) {
+			player.awardStat(TFStats.TF_SHIELDS_BROKEN.get());
+		}
+
+		this.sendUpdatePacket(entity);
+		entity.level().playSound(null, entity.blockPosition(), expired ? TFSounds.SHIELD_EXPIRE.get() : TFSounds.SHIELD_BREAK.get(), SoundSource.PLAYERS, 1.0F, (entity.getRandom().nextFloat() - entity.getRandom().nextFloat()) * 0.3F + 1.0F);
 	}
 
 	public void setShields(LivingEntity entity, int amount, boolean temp) {
@@ -83,8 +93,10 @@ public class FortificationShieldAttachment {
 
 	public void addShields(LivingEntity entity, int amount, boolean temp) {
 		if (temp) {
-			if (this.temporaryShields <= 0)
+			if (this.temporaryShields <= 0) {
 				this.resetTimer(); // Since we add new shields to the stack instead of setting them, no timer reset is needed, unless they start from 0 shields.
+			}
+
 			this.temporaryShields = Math.max(this.temporaryShields + amount, 0);
 		} else {
 			this.permanentShields = Math.max(this.permanentShields + amount, 0);

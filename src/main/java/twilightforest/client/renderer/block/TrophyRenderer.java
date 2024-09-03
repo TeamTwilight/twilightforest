@@ -68,7 +68,7 @@ public class TrophyRenderer implements BlockEntityRenderer<TrophyBlockEntity> {
 		}
 		stack.scale(-1.0F, -1.0F, 1.0F);
 		model.setupRotationsForTrophy(animationProgress * 4.5F, y, 0.0F, context == ItemDisplayContext.GUI ? 0.35F : direction != null ? 0.5F : 0.0F);
-		model.renderTrophy(stack, buffer, light, OverlayTexture.NO_OVERLAY, -1, context != ItemDisplayContext.NONE);
+		model.renderTrophy(stack, buffer, light, OverlayTexture.NO_OVERLAY, -1, context);
 		stack.popPose();
 	}
 }

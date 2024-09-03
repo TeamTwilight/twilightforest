@@ -1,10 +1,29 @@
 {
   "values": [
+    "twilightforest:auroralized_glass",
+    "twilightforest:quest_ram_banner_pattern",
+    "twilightforest:final_boss_boss_spawner",
+    "twilightforest:cube_talisman",
+    "twilightforest:cube_of_annihilation",
+    "twilightforest:cinder_furnace",
+    "twilightforest:cinder_log",
+    "twilightforest:cinder_wood",
+    "twilightforest:slider",
+    "twilightforest:terrorcotta_arcs",
+    "twilightforest:terrorcotta_curves",
+    "twilightforest:terrorcotta_lines",
+    "twilightforest:chiseled_canopy_bookshelf",
     "twilightforest:keepsake_casket",
+    "twilightforest:cursed_spawner",
+    "twilightforest:royal_rags",
+    "twilightforest:wrought_iron_fence",
+    "twilightforest:canopy_window",
+    "twilightforest:canopy_window_pane",
     "twilightforest:candelabra",
+    "twilightforest:magic_painting",
     "twilightforest:brittle_potion_flask",
     "twilightforest:greater_potion_flask",
-    "twilightforest:cube_of_annihilation",
-    "twilightforest:wrought_iron_fence"
+    "twilightforest:mystic_crown",
+    "twilightforest:crown_splinter"
   ]
 }

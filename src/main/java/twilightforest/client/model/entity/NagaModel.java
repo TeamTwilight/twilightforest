@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.util.Mth;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.ItemDisplayContext;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.client.JappaPackReloadListener;
 import twilightforest.client.renderer.entity.NagaRenderer;
@@ -84,7 +85,7 @@ public class NagaModel<T extends Entity> extends ListModel<T> implements TrophyB
 	}
 
 	@Override
-	public void renderTrophy(PoseStack stack, MultiBufferSource buffer, int light, int overlay, int color, boolean itemForm) {
+	public void renderTrophy(PoseStack stack, MultiBufferSource buffer, int light, int overlay, int color, ItemDisplayContext context) {
 		if (JappaPackReloadListener.INSTANCE.isJappaPackLoaded()) {
 			stack.scale(0.25F, 0.25F, 0.25F);
 			stack.translate(0.0F, -1.5F, 0.0F);

@@ -16,7 +16,6 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.BlockItem;
@@ -52,10 +51,7 @@ import net.neoforged.neoforge.common.ItemAbility;
 import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.CandelabraBlockEntity;
-import twilightforest.components.item.CandelabraData;
-import twilightforest.init.TFDataComponents;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -357,7 +353,7 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 					drops.remove(base.get());
 					drops.add(newStack);
 				} else {
-					Arrays.stream(candelabra.getCandles()).toList().forEach(block -> drops.add(new ItemStack(block)));
+					candelabra.getCandles().ordered().forEach(block -> drops.add(new ItemStack(block)));
 				}
 			}
 		}
@@ -406,10 +402,6 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 	@Override
 	public void onPlace(BlockState state, Level level, BlockPos pos, BlockState newState, boolean moving) {
 		this.updateNeighborsBasedOnRotation(level, pos, state);
-		//send a dummy candle placement when placing a candelabra. This allows the blockstates to update properly
-		if (!state.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof CandelabraBlockEntity candelabra) {
-			candelabra.setCandle(0, candelabra.getCandle(0));
-		}
 		super.onPlace(state, level, pos, newState, moving);
 	}
 
@@ -422,22 +414,12 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 	}
 
 	@Override
-	public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity living, ItemStack stack) {
-		if (level.getBlockEntity(pos) instanceof CandelabraBlockEntity be) {
-			CandelabraData data = stack.getComponents().get(TFDataComponents.CANDELABRA_DATA.get());
-			if (data != null) CandelabraData.setCandlesOf(be, data);
-		}
-	}
-
-	@Override
 	public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
-		ItemStack newStack = new ItemStack(this);
-
-		if (level.getBlockEntity(pos) instanceof CandelabraBlockEntity be) {
-			newStack.set(TFDataComponents.CANDELABRA_DATA, CandelabraData.dataFromBE(be));
+		if (level.getBlockEntity(pos) instanceof CandelabraBlockEntity candelabra) {
+			ItemStack itemstack = new ItemStack(this);
+			itemstack.applyComponents(candelabra.collectComponents());
+			return itemstack;
 		}
-
-		return newStack;
+		return super.getCloneItemStack(state, target, level, pos, player);
 	}
-
 }

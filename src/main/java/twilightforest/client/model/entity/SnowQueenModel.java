@@ -10,6 +10,7 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.ItemDisplayContext;
 import twilightforest.client.JappaPackReloadListener;
 import twilightforest.client.renderer.entity.SnowQueenRenderer;
 import twilightforest.entity.boss.SnowQueen;
@@ -207,7 +208,7 @@ public class SnowQueenModel extends HumanoidModel<SnowQueen> implements TrophyBl
 	}
 
 	@Override
-	public void renderTrophy(PoseStack stack, MultiBufferSource buffer, int light, int overlay, int color, boolean itemForm) {
+	public void renderTrophy(PoseStack stack, MultiBufferSource buffer, int light, int overlay, int color, ItemDisplayContext context) {
 		if (!JappaPackReloadListener.INSTANCE.isJappaPackLoaded()) {
 			stack.translate(0.0F, 0.25F, 0.0F);
 		}

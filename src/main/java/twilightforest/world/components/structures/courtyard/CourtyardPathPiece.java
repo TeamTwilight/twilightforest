@@ -27,6 +27,6 @@ public class CourtyardPathPiece extends TwilightTemplateStructurePiece {
 
 	@Override
 	public void postProcess(WorldGenLevel level, StructureManager structureFeatureManager, ChunkGenerator chunkGenerator, RandomSource random, BoundingBox boundingBox, ChunkPos chunkPos, BlockPos pos) {
-		this.placePieceAdjusted(level, structureFeatureManager, chunkGenerator, random, boundingBox, chunkPos, pos, -1);
+		this.placePieceAdjusted(level, chunkGenerator, random, boundingBox, pos, -1);
 	}
 }

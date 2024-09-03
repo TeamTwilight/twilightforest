@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.ItemDisplayContext;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.renderer.entity.KnightPhantomRenderer;
 import twilightforest.entity.boss.KnightPhantom;
@@ -145,13 +146,34 @@ public class KnightPhantomModel extends HumanoidModel<KnightPhantom> implements 
 	}
 
 	@Override
-	public void renderTrophy(PoseStack stack, MultiBufferSource buffer, int light, int overlay, int color, boolean itemForm) {
-		stack.translate(0.0F, 0.25F, 0.0F);
-		VertexConsumer consumer = buffer.getBuffer(RenderType.entityCutoutNoCull(KnightPhantomRenderer.TEXTURE));
-		this.head.render(stack, consumer, light, overlay, color);
-		stack.scale(1.1F, 1.1F, 1.1F);
-		stack.translate(0.0F, 0.05F, 0.0F);
-		VertexConsumer armorConsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(PHANTOM_ARMOR_TEXTURE));
-		this.helmet.render(stack, armorConsumer, light, OverlayTexture.NO_OVERLAY, FastColor.ARGB32.colorFromFloat(0.0625F, 1.0F, 1.0F, 1.0F));
+	public void renderTrophy(PoseStack stack, MultiBufferSource buffer, int light, int overlay, int color, ItemDisplayContext context) {
+		if (context == ItemDisplayContext.GUI) {
+			stack.pushPose();
+
+			float scale = 16f / 17f; // Helmets are mixelled geometry that is 17 pixels wide when compared to the normal head, scale it down
+			stack.scale(scale, scale, scale);
+			stack.translate(0.0F, -0.065f, 0.0F);
+
+			stack.pushPose();
+			stack.translate(0.0F, 0.3f, 0.0F);
+			VertexConsumer armorConsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(PHANTOM_ARMOR_TEXTURE));
+			this.helmet.render(stack, armorConsumer, light, OverlayTexture.NO_OVERLAY, FastColor.ARGB32.colorFromFloat(0.0625F, 1.0F, 1.0F, 1.0F));
+			stack.popPose();
+
+			stack.scale(1 / 1.1F, 1 / 1.1F, 1 / 1.1F);
+			stack.translate(0.0F, 0.25F, 0.0F);
+			VertexConsumer consumer = buffer.getBuffer(RenderType.entityCutoutNoCull(KnightPhantomRenderer.TEXTURE));
+			this.head.render(stack, consumer, light, overlay, color);
+
+			stack.popPose();
+		} else {
+			stack.translate(0.0F, 0.25F, 0.0F);
+			VertexConsumer consumer = buffer.getBuffer(RenderType.entityCutoutNoCull(KnightPhantomRenderer.TEXTURE));
+			this.head.render(stack, consumer, light, overlay, color);
+			stack.scale(1.1F, 1.1F, 1.1F);
+			stack.translate(0.0F, 0.05F, 0.0F);
+			VertexConsumer armorConsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(PHANTOM_ARMOR_TEXTURE));
+			this.helmet.render(stack, armorConsumer, light, OverlayTexture.NO_OVERLAY, FastColor.ARGB32.colorFromFloat(0.0625F, 1.0F, 1.0F, 1.0F));
+		}
 	}
 }

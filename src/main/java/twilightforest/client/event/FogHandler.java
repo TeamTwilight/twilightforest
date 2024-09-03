@@ -25,32 +25,6 @@ public class FogHandler {
 	private static float TERRAIN_FAR = 0.0F;
 	private static float TERRAIN_NEAR = 0.0F;
 
-	private static final float[] spoopColors = new float[3];
-	private static float spoopColor = 0F;
-
-	protected static void setupFogColors(ViewportEvent.ComputeFogColor event) {
-		boolean flag = isSpooky(Minecraft.getInstance().level, Minecraft.getInstance().player);
-		if (flag || spoopColor > 0F) {
-			final float[] realColors = {event.getRed(), event.getGreen(), event.getBlue()};
-			final float[] lerpColors = {130F / 255F, 115F / 255F, 145F / 255F};
-			for (int i = 0; i < 3; i++) {
-				final float real = realColors[i];
-				final float spoop = lerpColors[i];
-				final boolean inverse = real > spoop;
-				spoopColors[i] = real == spoop ? spoop : Mth.clampedLerp(inverse ? spoop : real, inverse ? real : spoop, spoopColor);
-			}
-			float shift = (float) (0.01F * event.getPartialTick());
-			if (flag)
-				spoopColor += shift;
-			else
-				spoopColor -= shift;
-			spoopColor = Mth.clamp(spoopColor, 0F, 1F);
-			event.setRed(spoopColors[0]);
-			event.setGreen(spoopColors[1]);
-			event.setBlue(spoopColors[2]);
-		}
-	}
-
 	protected static void renderFog(ViewportEvent.RenderFog event) {
 		if (event.getType().equals(FogType.NONE) && Minecraft.getInstance().cameraEntity instanceof LocalPlayer player && player.level() instanceof ClientLevel clientLevel && clientLevel.effects() instanceof TwilightForestRenderInfo) {
 			if (event.getMode().equals(FogRenderer.FogMode.FOG_SKY)) {

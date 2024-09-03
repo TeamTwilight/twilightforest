@@ -13,6 +13,7 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.ItemDisplayContext;
 import twilightforest.client.JappaPackReloadListener;
 import twilightforest.client.renderer.entity.HydraRenderer;
 import twilightforest.entity.boss.HydraHead;
@@ -150,9 +151,15 @@ public class HydraHeadModel<T extends HydraHead> extends ListModel<T> implements
 	}
 
 	@Override
-	public void renderTrophy(PoseStack stack, MultiBufferSource buffer, int light, int overlay, int color, boolean itemForm) {
+	public void renderTrophy(PoseStack stack, MultiBufferSource buffer, int light, int overlay, int color, ItemDisplayContext context) {
+		boolean itemForm = context != ItemDisplayContext.NONE;
 		stack.scale(0.25F, 0.25F, 0.25F);
-		if (itemForm) stack.scale(0.9F, 0.9F, 0.9F);
+		if (itemForm) {
+			stack.scale(0.9F, 0.9F, 0.9F);
+		}
+		if (context == ItemDisplayContext.GUI) {
+			stack.translate(0.0F, 0.0F, 0.75f);
+		}
 		stack.translate(0.0F, -1.0F, itemForm && !JappaPackReloadListener.INSTANCE.isJappaPackLoaded() ? -1.0F : 0.0F);
 		VertexConsumer consumer = buffer.getBuffer(RenderType.entityCutoutNoCull(HydraRenderer.TEXTURE));
 		this.head.render(stack, consumer, light, overlay, color);

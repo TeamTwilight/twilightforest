@@ -9,10 +9,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFSounds;
+import twilightforest.util.TFItemStackUtils;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -35,7 +35,7 @@ public class FortificationWandItem extends Item {
 		if (!level.isClientSide()) {
 			player.getData(TFDataAttachments.FORTIFICATION_SHIELDS).setShields(player, 5, true);
 			if(!player.getAbilities().instabuild) {
-				stack.hurtAndBreak(1, (ServerLevel) level, player, item -> {});
+				TFItemStackUtils.hurtButDontBreak(stack, 1, (ServerLevel) level, player);
 			}
 		}
 		player.playSound(TFSounds.SHIELD_ADD.get(), 1.0F, (player.getRandom().nextFloat() - player.getRandom().nextFloat()) * 0.2F + 1.0F);

@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.item.ItemDisplayContext;
 import twilightforest.client.renderer.entity.LichRenderer;
 import twilightforest.entity.boss.Lich;
 
@@ -155,7 +156,7 @@ public class LichModel extends HumanoidModel<Lich> implements TrophyBlockModel {
 	}
 
 	@Override
-	public void renderTrophy(PoseStack stack, MultiBufferSource buffer, int light, int overlay, int color, boolean itemForm) {
+	public void renderTrophy(PoseStack stack, MultiBufferSource buffer, int light, int overlay, int color, ItemDisplayContext context) {
 		VertexConsumer consumer = buffer.getBuffer(RenderType.entityCutoutNoCull(LichRenderer.TEXTURE));
 		this.head.render(stack, consumer, light, overlay, color);
 		this.hat.render(stack, consumer, light, overlay, color);

@@ -56,7 +56,11 @@ public class TimeTreeFeature extends HollowTreeFeature {
 		buildTinyCrown(world, trunkPlacer, leavesPlacer, random, pos, radius, height, config);
 
 		// add clock block
-		world.setBlock(pos.offset(-1, 2, 0), TFBlocks.TIME_LOG_CORE.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y), 3);
+		BlockPos corePos = pos.offset(-1, 2, 0);
+		if (world.getBlockState(corePos).canBeReplaced()) {
+			world.setBlock(corePos, TFBlocks.TIME_LOG_CORE.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y), 3);
+			world.scheduleTick(corePos, TFBlocks.TIME_LOG_CORE.get(), 20);
+		}
 
 		return true;
 	}

@@ -1,7 +1,6 @@
 {
-  "parent": "minecraft:block/cube_all",
-  "render_type": "minecraft:cutout",
+  "parent": "minecraft:builtin/entity",
   "textures": {
-    "all": "minecraft:block/destroy_stage_9"
+    "particle": "twilightforest:block/blank"
   }
 }

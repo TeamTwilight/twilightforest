@@ -1,23 +1,30 @@
 package twilightforest.util;
 
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.BlockItemStateProperties;
 import net.minecraft.world.item.component.CustomData;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import org.codehaus.plexus.util.StringUtils;
 import twilightforest.block.KeepsakeCasketBlock;
 import twilightforest.events.CharmEvents;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class TFItemStackUtils {
 
@@ -144,5 +151,26 @@ public class TFItemStackUtils {
 		}
 
 		if (!blockedItems.isEmpty()) blockedItems.forEach(inventory::add);
+	}
+
+	public static void hurtButDontBreak(ItemStack stack, int amount, ServerLevel level, @Nullable LivingEntity entity) {
+		if (stack.isDamageableItem()) {
+			amount = stack.getItem().damageItem(stack, amount, entity, item -> {});
+			if (entity == null || !entity.hasInfiniteMaterials()) {
+				if (amount > 0) {
+					amount = EnchantmentHelper.processDurabilityChange(level, stack, amount);
+					if (amount <= 0) {
+						return;
+					}
+				}
+
+				if (entity instanceof ServerPlayer sp && amount != 0) {
+					CriteriaTriggers.ITEM_DURABILITY_CHANGED.trigger(sp, stack, stack.getDamageValue() + amount);
+				}
+
+				int i = stack.getDamageValue() + amount;
+				stack.setDamageValue(i);
+			}
+		}
 	}
 }
