@@ -2,7 +2,7 @@
   "type": "twilightforest:underground_plants",
   "config": {
     "state": {
-      "Name": "minecraft:sponge"
+      "Name": "twilightforest:mushgloom"
     }
   }
 }
