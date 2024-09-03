@@ -62,7 +62,8 @@
       "minecraft:forest_rock",
       "twilightforest:sparse_mushglooms",
       "twilightforest:spruce_fallen_log",
-      "twilightforest:dark_ferns"
+      "twilightforest:dark_ferns",
+      "twilightforest:troll_mushglooms"
     ]
   ],
   "has_precipitation": true,

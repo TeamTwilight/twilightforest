@@ -435,6 +435,7 @@ public abstract class BiomeHelper {
 	public static void addHighlandCaves(BiomeGenerationSettings.Builder biome) {
 		biome.addCarver(GenerationStep.Carving.AIR, TFCaveCarvers.HIGHLANDCAVES_CONFIGURED);
 		biome.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, TFPlacedFeatures.PLACED_TROLL_ROOTS);
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_TROLL_MUSHGLOOMS);
 		addLegacyOres(biome);
 	}
 
