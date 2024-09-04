@@ -58,7 +58,7 @@ public class TrollCaveGardenComponent extends TrollCaveMainComponent {
 		}
 
 		// clear inside
-		hollowCaveMiddle(world, sbb, rand, 0, 0, 0, this.size - 1, this.height - 1, this.size - 1);
+		hollowCaveMiddleIfNeeded(world, sbb, rand, 0, 0, 0, this.size - 1, this.height - 1, this.size - 1);
 		RandomSource decoRNG = RandomSource.create(world.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
 
 		// treasure!
