@@ -37,7 +37,6 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 
 	protected int size;
 	protected int height;
-	protected boolean doneCarving;
 
 	protected final StructureSpeleothemConfig speleothemConfig;
 	protected final Holder.Reference<StructureSpeleothemConfig> speleothemConfigHolder;
@@ -51,7 +50,6 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 
 		this.size = nbt.getInt("size");
 		this.height = nbt.getInt("height");
-		this.doneCarving = nbt.getBoolean("done_carving") || !nbt.contains("done_carving");  // don't modify caves from previous versions
 
 		this.speleothemConfigHolder = StructureSpeleothemConfigs.getConfigHolder(ctx.registryAccess(), nbt.getString("config_id"));
 		this.speleothemConfig = this.speleothemConfigHolder.value();
@@ -64,7 +62,6 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 
 		this.size = 30;
 		this.height = 20;
-		this.doneCarving = false;
 
 		int radius = this.size / 2;
 		this.boundingBox = BoundingBoxUtils.getComponentToAddBoundingBox(x, y, z, -radius, -this.height, -radius, this.size, this.height, this.size, Direction.SOUTH, false);
@@ -78,7 +75,6 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 		super.addAdditionalSaveData(ctx, tagCompound);
 		tagCompound.putInt("size", this.size);
 		tagCompound.putInt("height", this.height);
-		tagCompound.putBoolean("done_carving", this.doneCarving);
 		tagCompound.putString("config_id", this.speleothemConfigHolder.key().location().toString());
 	}
 
@@ -117,7 +113,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 		RandomSource decoRNG = RandomSource.create(world.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
 
 		// clear inside
-		hollowCaveMiddleIfNeeded(world, sbb, rand, 0, 0, 0, this.size - 1, this.height - 1, this.size - 1);
+		hollowCaveMiddle(world, sbb, rand, 0, 0, 0, this.size - 1, this.height - 1, this.size - 1);
 
 		this.placeSpeleothems(world, rand, sbb, decoRNG);
 
@@ -151,13 +147,6 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 		return new BlockPos.MutableBlockPos(rand.nextInt(this.size - 1), rand.nextInt(this.height - 1), rand.nextInt(this.size - 1));
 	}
 
-	protected void hollowCaveMiddleIfNeeded(WorldGenLevel world, BoundingBox boundingBox, RandomSource rand, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
-		if (!doneCarving) {
-			hollowCaveMiddle(world, boundingBox, rand, minX, minY, minZ, maxX, maxY, maxZ);
-			doneCarving = true;
-		}
-	}
-
 	protected void hollowCaveMiddle(WorldGenLevel world, BoundingBox boundingBox, RandomSource rand, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
 		int threshold = this.size / 5;
 
@@ -171,11 +160,10 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 
 					double dist = Math.sqrt(ex * ey * ez);
 
-					// Carve all cave at once to allow generating features in all chunks
 					if (dist > threshold) {
-						this.placeBlock(world, Blocks.AIR.defaultBlockState(), x, y, z, this.boundingBox);
+						this.placeBlock(world, Blocks.AIR.defaultBlockState(), x, y, z, boundingBox);
 					} else if (dist == threshold && rand.nextInt(4) == 0 && this.getBlock(world, x, y, z, boundingBox).is(BlockTags.BASE_STONE_OVERWORLD)) {
-						this.placeBlock(world, TFBlocks.TROLLSTEINN.get().defaultBlockState(), x, y, z, this.boundingBox);
+						this.placeBlock(world, TFBlocks.TROLLSTEINN.get().defaultBlockState(), x, y, z, boundingBox);
 					}
 				}
 			}
