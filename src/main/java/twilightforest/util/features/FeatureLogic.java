@@ -7,6 +7,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.HugeMushroomBlock;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
@@ -132,5 +133,61 @@ public final class FeatureLogic {
 		Util.shuffle(availableForRandom, rand);
 
 		return Util.getRandom(availableForRandom, rand);
+	}
+
+	public static boolean hasHorizontalMushroomProperties(BlockState blockState) {
+		return blockState.hasProperty(HugeMushroomBlock.WEST)
+			&& blockState.hasProperty(HugeMushroomBlock.EAST)
+			&& blockState.hasProperty(HugeMushroomBlock.NORTH)
+			&& blockState.hasProperty(HugeMushroomBlock.SOUTH);
+	}
+
+	public static boolean hasAllMushroomsProperties(BlockState blockState) {
+		return blockState.hasProperty(HugeMushroomBlock.UP) && hasHorizontalMushroomProperties(blockState);  // Down is never used in HugeMushrooms
+	}
+
+	public static boolean isEdge(int x, int edge) {
+		return x == edge || x == -edge;
+	}
+
+	public static boolean isEdge(int x, int z, int edge) {
+		return isEdge(x, edge) != isEdge(z, edge);
+	}
+
+	public static boolean isCorner(int x, int z, int edgeX, int edgeZ) {
+		return isEdge(x, edgeX) && isEdge(z, edgeZ);
+	}
+
+	public static boolean isCornerInSquare(int x, int z, int edge) {
+		return isCorner(x, z, edge, edge);
+	}
+
+	public static BlockState getHorizontalMushroomBlockState(BlockState blockState, int x, int z, int foliageRadius) {
+		if (hasHorizontalMushroomProperties(blockState)) {
+			boolean west = x == -foliageRadius || (isEdge(z, foliageRadius) && x == 1 - foliageRadius);
+			boolean east = x == foliageRadius || (isEdge(z, foliageRadius) && x == foliageRadius - 1);
+			boolean north = z == -foliageRadius || (isEdge(x, foliageRadius) && z == 1 - foliageRadius);
+			boolean south = z == foliageRadius || (isEdge(x, foliageRadius) && z == foliageRadius - 1);
+
+			blockState = blockState
+				.setValue(HugeMushroomBlock.WEST, west)
+				.setValue(HugeMushroomBlock.EAST, east)
+				.setValue(HugeMushroomBlock.NORTH, north)
+				.setValue(HugeMushroomBlock.SOUTH, south);
+		}
+
+		return blockState;
+	}
+
+	public static BlockState getSphericalMushroomBlockState(BlockState blockState, int x, int y, int z, int foliageRadius, int height) {
+		if (hasAllMushroomsProperties(blockState)) {
+			blockState = blockState
+				.setValue(HugeMushroomBlock.UP, y >= height - 1)
+				.setValue(HugeMushroomBlock.WEST, x == -foliageRadius)
+				.setValue(HugeMushroomBlock.EAST, x == foliageRadius)
+				.setValue(HugeMushroomBlock.NORTH, z == -foliageRadius)
+				.setValue(HugeMushroomBlock.SOUTH, z == foliageRadius);
+		}
+		return blockState;
 	}
 }

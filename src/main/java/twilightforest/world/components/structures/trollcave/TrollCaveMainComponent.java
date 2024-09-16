@@ -22,6 +22,7 @@ import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFConfiguredFeatures;
 import twilightforest.init.TFStructurePieceTypes;
@@ -159,6 +160,9 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 					int ez = Math.min(z - minZ, maxZ - z);
 
 					double dist = Math.sqrt(ex * ey * ez);
+
+					if (this.getBlock(world, x, y, z, boundingBox).is(BlockTagGenerator.CANNOT_TROLL_CAVE_HOLLOW))
+						continue;
 
 					if (dist > threshold) {
 						this.placeBlock(world, Blocks.AIR.defaultBlockState(), x, y, z, boundingBox);
