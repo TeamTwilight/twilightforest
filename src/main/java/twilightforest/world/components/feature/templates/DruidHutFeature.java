@@ -32,8 +32,7 @@ public class DruidHutFeature extends TemplateFeature<SwizzleConfig> {
 
 	@Override
 	protected StructureTemplate getTemplate(StructureTemplateManager templateManager, RandomSource random) {
-//		return templateManager.getOrCreate(Util.getRandom(DruidHutFeature.HutType.values(), random).resourceLocation);
-		return templateManager.getOrCreate(DruidHutFeature.HutType.values()[2].resourceLocation);  // [DEBUG]
+		return templateManager.getOrCreate(Util.getRandom(DruidHutFeature.HutType.values(), random).resourceLocation);
 	}
 
 	@Override
