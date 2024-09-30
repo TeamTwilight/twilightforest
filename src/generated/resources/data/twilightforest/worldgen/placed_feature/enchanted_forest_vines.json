@@ -1,5 +1,5 @@
 {
-  "feature": "minecraft:vines",
+  "feature": "twilightforest:enchanted_forest_vines",
   "placement": [
     {
       "type": "minecraft:count",
