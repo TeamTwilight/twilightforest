@@ -6,8 +6,8 @@ import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.data.worldgen.features.VegetationFeatures;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
-import net.minecraft.data.worldgen.placement.VegetationPlacements;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
@@ -71,6 +71,7 @@ public class TFPlacedFeatures {
 	public static final ResourceKey<PlacedFeature> PLACED_DARK_BROWN_MUSHROOMS = registerKey("dark_brown_mushrooms");
 	public static final ResourceKey<PlacedFeature> PLACED_DARK_RED_MUSHROOMS = registerKey("dark_red_mushrooms");
 	public static final ResourceKey<PlacedFeature> PLACED_DARK_DEAD_BUSHES = registerKey("dark_dead_bushes");
+	public static final ResourceKey<PlacedFeature> PLACED_ENCHANTED_FOREST_VINES = registerKey("enchanted_forest_vines");
 
 	//Ores!
 	public static final ResourceKey<PlacedFeature> PLACED_LEGACY_COAL_ORE = registerKey("legacy_coal_ore");
@@ -196,6 +197,8 @@ public class TFPlacedFeatures {
 		context.register(PLACED_DARK_BROWN_MUSHROOMS, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.DARK_BROWN_MUSHROOMS), ImmutableList.<PlacementModifier>builder().add(RarityFilter.onAverageOnceEvery(3), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_WORLD_SURFACE, BiomeFilter.biome()).build()));
 		context.register(PLACED_DARK_RED_MUSHROOMS, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.DARK_RED_MUSHROOMS), ImmutableList.<PlacementModifier>builder().add(RarityFilter.onAverageOnceEvery(3), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_WORLD_SURFACE, BiomeFilter.biome()).build()));
 		context.register(PLACED_DARK_DEAD_BUSHES, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.DARK_DEAD_BUSHES), ImmutableList.<PlacementModifier>builder().add(RarityFilter.onAverageOnceEvery(3), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_WORLD_SURFACE, BiomeFilter.biome()).build()));
+
+		context.register(PLACED_ENCHANTED_FOREST_VINES, new PlacedFeature(features.getOrThrow(VegetationFeatures.VINES), ImmutableList.<PlacementModifier>builder().add(CountPlacement.of(127), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_WORLD_SURFACE, BiomeFilter.biome()).build()));  // [VanillaCopy] use PlacementUtils.HEIGHTMAP_WORLD_SURFACE instead of HeightRangePlacement.uniform(VerticalAnchor.absolute(64), VerticalAnchor.absolute(100))
 
 		context.register(PLACED_LEGACY_COAL_ORE, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.LEGACY_COAL_ORE), ImmutableList.<PlacementModifier>builder().add(HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(127)), InSquarePlacement.spread(), CountPlacement.of(20), BiomeFilter.biome()).build()));
 		context.register(PLACED_LEGACY_IRON_ORE, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.LEGACY_IRON_ORE), ImmutableList.<PlacementModifier>builder().add(HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(63)), InSquarePlacement.spread(), CountPlacement.of(20), BiomeFilter.biome()).build()));
