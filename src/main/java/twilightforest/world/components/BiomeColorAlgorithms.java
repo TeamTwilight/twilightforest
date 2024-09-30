@@ -16,7 +16,7 @@ public class BiomeColorAlgorithms {
 		int cz = 256 * Math.round((z - 8) / 256F) - 8;
 
 		int dist = (int) Mth.sqrt((cx - x) * (cx - x) + (cz - z) * (cz - z));
-		int color = dist * 64;
+		int color = dist * 16;
 		color %= 512;
 
 		if (color > 255) {
