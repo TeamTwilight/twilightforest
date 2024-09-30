@@ -12,6 +12,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import twilightforest.init.TFBlocks;
 
 public class EnchantedForestVinesFeature extends Feature<NoneFeatureConfiguration> {
 	public EnchantedForestVinesFeature(Codec<NoneFeatureConfiguration> codec) {super(codec);}
@@ -28,7 +29,7 @@ public class EnchantedForestVinesFeature extends Feature<NoneFeatureConfiguratio
 		boolean empty = true;
 		for (Direction dir : Direction.values()) {
 			BlockPos relativePos = pos.relative(dir);
-			if (dir != Direction.DOWN && VineBlock.isAcceptableNeighbour(world, relativePos, dir) && !isTree(world.getBlockState(relativePos))) {
+			if (dir != Direction.DOWN && VineBlock.isAcceptableNeighbour(world, relativePos, dir) && !world.getBlockState(relativePos).is(TFBlocks.RAINBOW_OAK_LEAVES.get())) {
 				state = state.setValue(VineBlock.getPropertyForFace(dir), true);
 				if (dir.getAxis() != Direction.Axis.Y) {
 					empty = false;
@@ -39,7 +40,7 @@ public class EnchantedForestVinesFeature extends Feature<NoneFeatureConfiguratio
 			return false;
 
 		world.setBlock(pos, state, Block.UPDATE_CLIENTS);
-		placeVerticalVines(world, pos, state.setValue(VineBlock.getPropertyForFace(Direction.UP), false), 8);
+		placeVerticalVines(world, pos, state.setValue(VineBlock.getPropertyForFace(Direction.UP), false), context.random().nextInt(10));
 		return true;
 	}
 
@@ -51,9 +52,5 @@ public class EnchantedForestVinesFeature extends Feature<NoneFeatureConfiguratio
 
 			world.setBlock(belowPos, blockState, Block.UPDATE_CLIENTS);
 		}
-	}
-
-	private boolean isTree(BlockState state) {
-		return state.is(BlockTags.LEAVES) || state.is(BlockTags.LOGS);
 	}
 }
