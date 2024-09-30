@@ -9,8 +9,16 @@
       "type": "minecraft:in_square"
     },
     {
-      "type": "minecraft:heightmap",
-      "heightmap": "WORLD_SURFACE_WG"
+      "type": "minecraft:height_range",
+      "height": {
+        "type": "minecraft:uniform",
+        "max_inclusive": {
+          "absolute": 10
+        },
+        "min_inclusive": {
+          "absolute": -3
+        }
+      }
     },
     {
       "type": "minecraft:biome"
