@@ -1,4 +1,4 @@
-// 1.21.1	2024-09-30T20:12:24.79421432	Registries
+// 1.21.1	2024-10-04T00:09:01.656884453	Registries
 9089ada9ce06fd30adf8b10e50f02233c7d5a76e data/minecraft/twilight/wood_palettes/acacia.json
 dca1ef01d0df4e956fd414782de57c25dfddd290 data/minecraft/twilight/wood_palettes/birch.json
 01becb45438b7f2bfdc77baba72bc986341510c8 data/minecraft/twilight/wood_palettes/crimson.json
@@ -264,7 +264,7 @@ ed07f065cfb7a5086353305b5c8dc01c4e35e82e data/twilightforest/worldgen/placed_fea
 4c01547375217b1f29972e9f383f39447c23718b data/twilightforest/worldgen/placed_feature/dark_red_mushrooms.json
 53e9eb90d244012f3ccbfba21ee44aa346f2d7a1 data/twilightforest/worldgen/placed_feature/default_fallen_logs.json
 77bc97d3a7c316f9a7cef0fc3c687b0a5cf0e14a data/twilightforest/worldgen/placed_feature/druid_hut.json
-028955ed0ec81556d278280a5b70258008a9332d data/twilightforest/worldgen/placed_feature/enchanted_forest_vines.json
+e5e7edb229f842a89635b58ba6fb3a68ef34c384 data/twilightforest/worldgen/placed_feature/enchanted_forest_vines.json
 0648665b104dc44bac69861cd8d240c941ebc50d data/twilightforest/worldgen/placed_feature/fallen_leaves.json
 575df3da21e8b7a4fdbd4a1bc6f89495f8447a45 data/twilightforest/worldgen/placed_feature/fiddlehead.json
 4450866e7c5041ea9e6fceafb690cb5445f5300b data/twilightforest/worldgen/placed_feature/fire_jet.json
