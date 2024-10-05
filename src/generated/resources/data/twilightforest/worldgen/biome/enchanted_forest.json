@@ -80,12 +80,12 @@
       "twilightforest:hollow_log",
       "twilightforest:tree/selector/enchanted_forest_trees",
       "twilightforest:fiddlehead",
-      "twilightforest:enchanted_forest_vines",
       "twilightforest:tree/selector/canopy_trees",
       "twilightforest:default_fallen_logs"
     ],
     [
-      "minecraft:freeze_top_layer"
+      "minecraft:freeze_top_layer",
+      "twilightforest:enchanted_forest_vines"
     ]
   ],
   "has_precipitation": false,

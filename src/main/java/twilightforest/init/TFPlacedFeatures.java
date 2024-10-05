@@ -57,6 +57,7 @@ public class TFPlacedFeatures {
 	public static final ResourceKey<PlacedFeature> PLACED_WEBS = registerKey("webs");
 	public static final ResourceKey<PlacedFeature> PLACED_WOOD_ROOTS_SPREAD = registerKey("wood_roots");
 	public static final ResourceKey<PlacedFeature> PLACED_SNOW_UNDER_TREES = registerKey("snow_under_trees");
+	public static final ResourceKey<PlacedFeature> PLACED_ENCHANTED_FOREST_VINES = registerKey("enchanted_forest_vines");
 	public static final ResourceKey<PlacedFeature> PLACED_TF_OAK_FALLEN_LOG = registerKey("tf_oak_fallen_log");
 	public static final ResourceKey<PlacedFeature> PLACED_CANOPY_FALLEN_LOG = registerKey("canopy_fallen_log");
 	public static final ResourceKey<PlacedFeature> PLACED_MANGROVE_FALLEN_LOG = registerKey("mangrove_fallen_log");
@@ -71,7 +72,6 @@ public class TFPlacedFeatures {
 	public static final ResourceKey<PlacedFeature> PLACED_DARK_BROWN_MUSHROOMS = registerKey("dark_brown_mushrooms");
 	public static final ResourceKey<PlacedFeature> PLACED_DARK_RED_MUSHROOMS = registerKey("dark_red_mushrooms");
 	public static final ResourceKey<PlacedFeature> PLACED_DARK_DEAD_BUSHES = registerKey("dark_dead_bushes");
-	public static final ResourceKey<PlacedFeature> PLACED_ENCHANTED_FOREST_VINES = registerKey("enchanted_forest_vines");
 
 	//Ores!
 	public static final ResourceKey<PlacedFeature> PLACED_LEGACY_COAL_ORE = registerKey("legacy_coal_ore");
@@ -198,7 +198,7 @@ public class TFPlacedFeatures {
 		context.register(PLACED_DARK_RED_MUSHROOMS, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.DARK_RED_MUSHROOMS), ImmutableList.<PlacementModifier>builder().add(RarityFilter.onAverageOnceEvery(3), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_WORLD_SURFACE, BiomeFilter.biome()).build()));
 		context.register(PLACED_DARK_DEAD_BUSHES, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.DARK_DEAD_BUSHES), ImmutableList.<PlacementModifier>builder().add(RarityFilter.onAverageOnceEvery(3), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_WORLD_SURFACE, BiomeFilter.biome()).build()));
 
-		context.register(PLACED_ENCHANTED_FOREST_VINES, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.ENCHANTED_FOREST_VINES), ImmutableList.<PlacementModifier>builder().add(CountPlacement.of(127), InSquarePlacement.spread(), HeightRangePlacement.uniform(VerticalAnchor.absolute(0), VerticalAnchor.absolute(24)), BiomeFilter.biome()).build()));  // [VanillaCopy] with changes in VerticalAnchors.
+		context.register(PLACED_ENCHANTED_FOREST_VINES, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.ENCHANTED_FOREST_VINES), ImmutableList.<PlacementModifier>builder().add(PlacementUtils.HEIGHTMAP).build()));
 
 		context.register(PLACED_LEGACY_COAL_ORE, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.LEGACY_COAL_ORE), ImmutableList.<PlacementModifier>builder().add(HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(127)), InSquarePlacement.spread(), CountPlacement.of(20), BiomeFilter.biome()).build()));
 		context.register(PLACED_LEGACY_IRON_ORE, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.LEGACY_IRON_ORE), ImmutableList.<PlacementModifier>builder().add(HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(63)), InSquarePlacement.spread(), CountPlacement.of(20), BiomeFilter.biome()).build()));

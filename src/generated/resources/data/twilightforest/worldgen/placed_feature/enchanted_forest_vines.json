@@ -2,26 +2,8 @@
   "feature": "twilightforest:enchanted_forest_vines",
   "placement": [
     {
-      "type": "minecraft:count",
-      "count": 127
-    },
-    {
-      "type": "minecraft:in_square"
-    },
-    {
-      "type": "minecraft:height_range",
-      "height": {
-        "type": "minecraft:uniform",
-        "max_inclusive": {
-          "absolute": 24
-        },
-        "min_inclusive": {
-          "absolute": 0
-        }
-      }
-    },
-    {
-      "type": "minecraft:biome"
+      "type": "minecraft:heightmap",
+      "heightmap": "MOTION_BLOCKING"
     }
   ]
 }
