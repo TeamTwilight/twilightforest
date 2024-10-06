@@ -4,6 +4,7 @@ import com.llamalad7.mixinextras.lib.apache.commons.tuple.Pair;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
@@ -18,7 +19,8 @@ import twilightforest.init.TFBlocks;
 import java.util.*;
 
 public class EnchantedForestVinesFeature extends Feature<NoneFeatureConfiguration> {
-	private static final int rarity = 4;
+	private static final int rarity = 7;
+	private static final int extraRarityOnTrees = 8;
 
 	public EnchantedForestVinesFeature(Codec<NoneFeatureConfiguration> codec) {super(codec);}
 
@@ -74,21 +76,31 @@ public class EnchantedForestVinesFeature extends Feature<NoneFeatureConfiguratio
 
 		BlockState state = Blocks.VINE.defaultBlockState();
 		boolean empty = true;
+		boolean isTree = true;
 
 		for (Direction dir : Direction.values()) {
 			BlockPos relativePos = pos.relative(dir);
 			if (dir != Direction.DOWN && VineBlock.isAcceptableNeighbour(world, relativePos, dir) && !world.getBlockState(relativePos).is(TFBlocks.RAINBOW_OAK_LEAVES.get())) {
+				if (!isTree(world.getBlockState(relativePos)))
+					isTree = false;
+
 				state = state.setValue(VineBlock.getPropertyForFace(dir), true);
-				if (dir.getAxis() != Direction.Axis.Y) {
+				if (dir.getAxis() != Direction.Axis.Y)
 					empty = false;
-				}
 			}
 		}
+		if (isTree && random.nextInt(extraRarityOnTrees) > 0)
+			return;
+
 		if (!empty)
 			setBlock(world, pos, state);
 	}
 
 	private boolean isSuitableBiome(WorldGenLevel world, BlockPos pos) {
 		return Objects.requireNonNull(world.getBiome(pos).getKey()).location().getPath().equals("enchanted_forest");
+	}
+
+	private boolean isTree(BlockState state) {
+		return state.is(BlockTags.LOGS) || state.is(BlockTags.LEAVES);
 	}
 }
