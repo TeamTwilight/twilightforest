@@ -117,6 +117,7 @@ public abstract class BiomeHelper {
 		commonFeatures(biome);
 
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_ENCHANTED_FOREST_TREES);
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_DENSE_CANOPY_TREES);
 
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_FIDDLEHEAD);
 		biome.addFeature(GenerationStep.Decoration.TOP_LAYER_MODIFICATION, TFPlacedFeatures.PLACED_ENCHANTED_FOREST_VINES);
