@@ -6,14 +6,14 @@ import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.biome.Biome;
 import twilightforest.beans.Component;
 import twilightforest.util.ColorUtil;
+import twilightforest.world.components.structures.type.QuestGroveStructure;
 
 @Component
 public class BiomeColorAlgorithms {
 
 	public int enchanted(int originalColor, int x, int z) {  // TODO
-		// center of the biome is at % 256 - 8
-		int cx = 256 * Math.round((x - 8) / 256F) + 8;
-		int cz = 256 * Math.round((z - 8) / 256F) - 8;
+		int cx = QuestGroveStructure.findCenterX(x);
+		int cz = QuestGroveStructure.findCenterZ(z);
 
 		int dist = (int) Mth.sqrt((cx - x) * (cx - x) + (cz - z) * (cz - z));
 		int color = dist * 16;
