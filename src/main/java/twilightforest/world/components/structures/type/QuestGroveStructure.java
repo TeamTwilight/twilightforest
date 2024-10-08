@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 
 public class QuestGroveStructure extends ConquerableStructure {
 	public static final MapCodec<QuestGroveStructure> CODEC = RecordCodecBuilder.mapCodec(instance -> landmarkCodec(instance).apply(instance, QuestGroveStructure::new));
+	public static final int LENGTH = 27;
 
 	public QuestGroveStructure(DecorationConfig decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
 		super(decorationConfig, centerInChunk, structureIcon, structureSettings);
@@ -32,7 +33,7 @@ public class QuestGroveStructure extends ConquerableStructure {
 
 	@Override
 	protected StructurePiece getFirstPiece(GenerationContext context, RandomSource random, ChunkPos chunkPos, int x, int y, int z) {
-		return new QuestGrove(context.structureTemplateManager(), new BlockPos(findCenterX(x) - 13, y + 2, findCenterZ(z) - 13));  // 13 is a (length of grove / 2)
+		return new QuestGrove(context.structureTemplateManager(), new BlockPos(findCenterX(x) - LENGTH / 2, y + 2, findCenterZ(z) - LENGTH / 2));
 	}
 
 	@Override
