@@ -16,6 +16,7 @@ import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.init.TFBlocks;
 import twilightforest.init.TFParticleType;
 import twilightforest.util.BoundingBoxUtils;
 
@@ -178,7 +179,7 @@ public abstract class CursedSpawnerLogic extends BaseSpawner {
 		if (blockBelow.isAir()) {
 			this.checkPos.move(Direction.DOWN);
 		} else {
-			if (blockBelow.isSolid() && random.nextBoolean() && !this.spawnBuffer.contains(this.checkPos) && serverLevel.getBlockState(this.checkPos).isAir()) {
+			if ((blockBelow.isSolid() || blockBelow.is(TFBlocks.ROYAL_RAGS.get())) && random.nextBoolean() && !this.spawnBuffer.contains(this.checkPos) && serverLevel.getBlockState(this.checkPos).isAir()) {
 				// If below is solid, then maybe record this position for being clear to spawn
 				this.spawnBuffer.add(this.checkPos.immutable());
 			}

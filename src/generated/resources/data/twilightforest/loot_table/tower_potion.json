@@ -308,6 +308,11 @@
         },
         {
           "type": "minecraft:item",
+          "name": "twilightforest:crown_splinter",
+          "weight": 75
+        },
+        {
+          "type": "minecraft:item",
           "name": "minecraft:brewing_stand",
           "weight": 25
         },

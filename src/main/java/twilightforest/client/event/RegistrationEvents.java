@@ -61,6 +61,8 @@ import twilightforest.client.particle.*;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.entity.*;
 import twilightforest.client.renderer.block.*;
+import twilightforest.client.renderer.entity.layers.IceLayer;
+import twilightforest.client.renderer.entity.layers.ShieldLayer;
 import twilightforest.client.renderer.map.ConqueredMapIconRenderer;
 import twilightforest.client.renderer.map.MagicMapPlayerIconRenderer;
 import twilightforest.components.item.PotionFlaskComponent;
@@ -322,7 +324,7 @@ public class RegistrationEvents {
 		event.registerEntityRenderer(TFEntities.HOSTILE_WOLF.get(), HostileWolfRenderer::new);
 		event.registerEntityRenderer(TFEntities.WRAITH.get(), m -> new WraithRenderer(m, new WraithModel(m.bakeLayer(TFModelLayers.WRAITH)), 0.5F));
 		event.registerEntityRenderer(TFEntities.HYDRA.get(), m -> new HydraRenderer<>(m, new HydraModel(m.bakeLayer(TFModelLayers.HYDRA)), 4.0F));
-		event.registerEntityRenderer(TFEntities.LICH.get(), m -> new LichRenderer(m, new LichModel(m.bakeLayer(TFModelLayers.LICH)), 0.6F));
+		event.registerEntityRenderer(TFEntities.LICH.get(), m -> new LichRenderer<>(m, new LichModel<>(m.bakeLayer(TFModelLayers.LICH)), 0.6F));
 		event.registerEntityRenderer(TFEntities.PENGUIN.get(), m -> new BirdRenderer<>(m, new PenguinModel(m.bakeLayer(TFModelLayers.PENGUIN)), 0.375F, "penguin.png"));
 		event.registerEntityRenderer(TFEntities.LICH_MINION.get(), m -> new TFBipedRenderer<>(m, new LichMinionModel(m.bakeLayer(TFModelLayers.LICH_MINION)), new LichMinionModel(m.bakeLayer(ModelLayers.ZOMBIE_INNER_ARMOR)), new LichMinionModel(m.bakeLayer(ModelLayers.ZOMBIE_OUTER_ARMOR)), 0.5F, "textures/entity/zombie/zombie.png"));
 		event.registerEntityRenderer(TFEntities.LOYAL_ZOMBIE.get(), m -> new TFBipedRenderer<>(m, new LoyalZombieModel(m.bakeLayer(TFModelLayers.LOYAL_ZOMBIE)), new LoyalZombieModel(m.bakeLayer(ModelLayers.ZOMBIE_INNER_ARMOR)), new LoyalZombieModel(m.bakeLayer(ModelLayers.ZOMBIE_OUTER_ARMOR)), 0.5F, "textures/entity/zombie/zombie.png"));

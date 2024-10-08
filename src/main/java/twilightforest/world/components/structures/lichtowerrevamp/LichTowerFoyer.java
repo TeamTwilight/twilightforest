@@ -40,7 +40,7 @@ public final class LichTowerFoyer extends TwilightJigsawPiece implements PieceBe
 	}
 
 	public LichTowerFoyer(StructureTemplateManager structureManager, BlockPos startPosition, Rotation rotation, boolean putChest, boolean chestSide) {
-		super(TFStructurePieceTypes.LICH_TOWER_FOYER.get(), 0, structureManager, TwilightForestMod.prefix("lich_tower/tower_foyer"), makeSettings(rotation), startPosition.below());
+		super(TFStructurePieceTypes.LICH_TOWER_FOYER.get(), 0, structureManager, TwilightForestMod.prefix("lich_tower/tower_foyer"), makeSettings(rotation), startPosition);
 
 		LichTowerUtil.addDefaultProcessors(this.placeSettings);
 

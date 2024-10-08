@@ -39,9 +39,12 @@
   "advancement.twilightforest.kill_cicada": "Kapat",
   "advancement.twilightforest.kill_cicada.desc": "Bir Ağustos Böceği Öldür",
   "advancement.twilightforest.kill_hydra": "Hidra Katili",
+  "advancement.twilightforest.kill_lich": "Ölülerinizi Ortaya Çıkarın",
   "advancement.twilightforest.magic_map": "Sonsuza Kadar Görebilirim",
+  "advancement.twilightforest.magic_map_focus": "Ateşle Yazar",
   "advancement.twilightforest.naga_armors": "Naga Zırhçısı",
   "advancement.twilightforest.progress_glacier": "Açık Gökyüzü",
+  "advancement.twilightforest.progress_ur_ghast": "Ateşin Gözyaşları",
   "advancement.twilightforest.root": "Alacakaranlık Ormanı",
   "advancement.twilightforest.twilight_hunter": "Ormanın Sessizliği",
   "auroraBiomes.button": "Biyomları Düzenle",
@@ -220,6 +223,8 @@
   "block.twilightforest.aurora_block": "Aurora Bloğu",
   "block.twilightforest.aurora_pillar": "Aurora Sütunu",
   "block.twilightforest.aurora_slab": "Aurora Basamak",
+  "block.twilightforest.birch_banister": "Huş Korkuluğu",
+  "block.twilightforest.blue_force_field": "Mavi Güç Alanı",
   "block.twilightforest.brown_thorns": "Dikenler",
   "item.twilightforest.snow_queen_banner_pattern.desc": "Kar Tanesi"
 }

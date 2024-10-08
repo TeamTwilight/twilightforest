@@ -95,7 +95,7 @@ public final class LichTowerUtil {
 	}
 
 	public static Iterable<ResourceLocation> shuffledBeards(RandomSource randomSource, int size) {
-		return ArrayUtil.safeShuffledCopy(ArrayUtil.orNull(LichTowerPieces.BEARDS, size - 1), randomSource);
+		return ArrayUtil.safeShuffledCopy(ArrayUtil.orNull(LichTowerPieces.WING_BEARDS, size - 1), randomSource);
 	}
 
 	@Nullable

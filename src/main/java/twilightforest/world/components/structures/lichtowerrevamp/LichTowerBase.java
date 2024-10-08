@@ -46,13 +46,26 @@ public final class LichTowerBase extends TwilightJigsawPiece implements PieceBea
 	protected void processJigsaw(StructurePiece parent, StructurePieceAccessor pieceAccessor, RandomSource random, JigsawRecord connection, int jigsawIndex) {
 		switch (connection.target()) {
 			case "twilightforest:lich_tower/tower_below" -> LichTowerSegment.buildTowerBySegments(pieceAccessor, random, connection.pos(), connection.orientation(), this, this.structureManager, random.nextInt(9, 11));
-			case "twilightforest:lich_tower/bridge" -> LichTowerWingBridge.tryRoomAndBridge(this, pieceAccessor, random, connection, this.structureManager, true, 4, true, this.genDepth + 1, false);
+			case "twilightforest:lich_tower/bridge" -> {
+				if (connection.pos().getY() < 6)
+					LichTowerWingBridge.tryRoomAndBridge(this, pieceAccessor, random, connection, this.structureManager, true, 4, true, this.genDepth + 1, false);
+			}
 			case "twilightforest:lich_tower/decor" -> {
 				ResourceLocation decorId = LichTowerUtil.rollRandomDecor(random, true);
 				JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(this.templatePosition(), connection.pos(), connection.orientation(), this.structureManager, decorId, "twilightforest:lich_tower/decor", random);
 
 				if (placeableJunction != null) {
 					StructurePiece decor = new LichTowerRoomDecor(this.genDepth + 1, this.structureManager, decorId, placeableJunction, false);
+					pieceAccessor.addPiece(decor);
+					decor.addChildren(this, pieceAccessor, random);
+				}
+			}
+			case "twilightforest:lich_tower/tower_trim" -> {
+				ResourceLocation decorId = TwilightForestMod.prefix("lich_tower/central_trim");
+				JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(this.templatePosition(), connection.pos(), connection.orientation(), this.structureManager, decorId, "twilightforest:lich_tower/tower_trim", random);
+
+				if (placeableJunction != null) {
+					StructurePiece decor = new LichTowerBaseTrim(this.structureManager, placeableJunction);
 					pieceAccessor.addPiece(decor);
 					decor.addChildren(this, pieceAccessor, random);
 				}

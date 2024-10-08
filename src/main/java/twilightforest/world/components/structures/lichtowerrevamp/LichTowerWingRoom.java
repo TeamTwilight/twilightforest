@@ -337,7 +337,21 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 			}
 		}
 
+		if (this.generateGround) {
+			fillCorner(level, new BlockPos(this.boundingBox.minX(), this.boundingBox.minY(), this.boundingBox.minZ()), chunkBounds);
+			fillCorner(level, new BlockPos(this.boundingBox.maxX(), this.boundingBox.minY(), this.boundingBox.minZ()), chunkBounds);
+			fillCorner(level, new BlockPos(this.boundingBox.maxX(), this.boundingBox.minY(), this.boundingBox.maxZ()), chunkBounds);
+			fillCorner(level, new BlockPos(this.boundingBox.minX(), this.boundingBox.minY(), this.boundingBox.maxZ()), chunkBounds);
+		}
+
 		// if (!FMLLoader.isProduction()) this.setInvisibleTextEntity(level, Mth.lerpInt(0.5f, this.boundingBox.minX(), this.boundingBox.maxX()), this.boundingBox.minY() + 3, Mth.lerpInt(0.5f, this.boundingBox.minZ(), this.boundingBox.maxZ()), chunkBounds, this.templateName, Display.BillboardConstraints.FIXED);
+	}
+
+	private static void fillCorner(WorldGenLevel level, BlockPos pos, BoundingBox chunkBounds) {
+		if (chunkBounds.isInside(pos)) {
+			level.setBlock(pos, Blocks.STONE_BRICKS.defaultBlockState(), 3);
+			level.setBlock(pos.above(), Blocks.STONE_BRICKS.defaultBlockState(), 3);
+		}
 	}
 
 	private void setInvisibleTextEntity(WorldGenLevel world, int x, int y, int z, BoundingBox sbb, String s, Display.BillboardConstraints billboardConstraint) {

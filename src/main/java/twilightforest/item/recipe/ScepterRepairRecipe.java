@@ -13,6 +13,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
+import twilightforest.init.TFItems;
 import twilightforest.init.TFRecipes;
 
 import java.util.List;
@@ -34,16 +35,18 @@ public class ScepterRepairRecipe extends CustomRecipe {
 			return false;
 		}
 		ItemStack scepter = null;
+		boolean hasEssence = false;
 		for (int i = 0; i < input.size(); ++i) {
 			ItemStack stackInQuestion = input.getItem(i);
 			if (!stackInQuestion.isEmpty()) {
 				if (stackInQuestion.is(this.scepter) && stackInQuestion.getDamageValue() >= 0) {
 					scepter = stackInQuestion;
-					break;
+				} else if (stackInQuestion.is(TFItems.EXANIMATE_ESSENCE)) {
+					hasEssence = true;
 				}
 			}
 		}
-		return scepter != null && input.stackedContents().canCraft(this, null);
+		return scepter != null && (hasEssence || input.stackedContents().canCraft(this, null));
 	}
 
 	public Item getScepter() {

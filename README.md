@@ -6,9 +6,9 @@ This is the home of the Twilight Forest mod for Minecraft 1.12 and beyond.
 ## Licensing
 Code unless otherwise stated default to our [LICENSE file here](LICENSE)
 
-Non-Code and [Non-Sound](src/main/resources/assets/twilightforest/sounds) assets [(Located here)](src/main/resources/assets) go by our [ASSET_LICENSE file here](ASSET_LICENSE)
+Non-Code, [Non-Sound](src/main/resources/assets/twilightforest/sounds) and [Non-Structure](src/main/resources/data/twilightforest/structure) assets [(Located here)](src/main/resources/assets) go by our [ASSET_LICENSE file here](ASSET_LICENSE)
 
-Sound based assets [(Located Here)](src/main/resources/assets/twilightforest/sounds) are **All Rights Reserved**
+Sound based assets [(Located Here)](src/main/resources/assets/twilightforest/sounds) and Structure based assets [(Located Here)](src/main/resources/data/twilightforest/structure) are **All Rights Reserved**
 
 ## Downloads
 Releases will be available on [CurseForge](https://minecraft.curseforge.com/projects/the-twilight-forest) when ready.

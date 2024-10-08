@@ -53,7 +53,7 @@ public class DruidHutFeature extends TemplateFeature<SwizzleConfig> {
 			config.buildAddProcessors(placementSettings, random);
 			placementSettings.addProcessor(CobbleVariants.INSTANCE).addProcessor(StoneBricksVariants.INSTANCE);
 
-			template.placeInWorld(world, placementPos, placementPos, placementSettings, random, 20);
+			template.placeInWorld(world, placementPos, placementPos, placementSettings, random, Block.UPDATE_CLIENTS);
 
 			for (StructureTemplate.StructureBlockInfo info : template.filterBlocks(placementPos, placementSettings, Blocks.STRUCTURE_BLOCK))
 				if (info.nbt() != null && StructureMode.valueOf(info.nbt().getString("mode")) == StructureMode.DATA)

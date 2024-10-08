@@ -10,6 +10,9 @@ import twilightforest.world.components.feature.*;
 import twilightforest.world.components.feature.config.*;
 import twilightforest.world.components.feature.templates.*;
 import twilightforest.world.components.feature.trees.*;
+import twilightforest.world.components.feature.trollcave.TrollBigMushgloomFeature;
+import twilightforest.world.components.feature.trollcave.TrollHugeBrownMushroomFeature;
+import twilightforest.world.components.feature.trollcave.TrollHugeRedMushroomFeature;
 
 public class TFFeatures {
 
@@ -41,6 +44,9 @@ public class TFFeatures {
 	public static final DeferredHolder<Feature<?>, Feature<DiskConfiguration>> MYCELIUM_BLOB = FEATURES.register("mycelium_blob", () -> new CheckAbovePatchFeature(DiskConfiguration.CODEC));
 	public static final DeferredHolder<Feature<?>, Feature<BlockStateConfiguration>> UNDERGROUND_PLANTS = FEATURES.register("underground_plants", () -> new UndergroundPlantFeature(BlockStateConfiguration.CODEC));
 	public static final DeferredHolder<Feature<?>, Feature<BlockStateConfiguration>> TROLL_VINES = FEATURES.register("troll_vines", () -> new UndergroundPlantFeature(BlockStateConfiguration.CODEC));
+	public static final DeferredHolder<Feature<?>, Feature<HugeMushroomFeatureConfiguration>> TROLL_BIG_MUSHGLOOM = FEATURES.register("troll_cave_big_mushgloom", () -> new TrollBigMushgloomFeature(HugeMushroomFeatureConfiguration.CODEC));
+	public static final DeferredHolder<Feature<?>, Feature<HugeMushroomFeatureConfiguration>> TROLL_HUGE_RED_MUSHROOM = FEATURES.register("troll_cave_huge_red_mushroom", () -> new TrollHugeRedMushroomFeature(HugeMushroomFeatureConfiguration.CODEC));
+	public static final DeferredHolder<Feature<?>, Feature<HugeMushroomFeatureConfiguration>> TROLL_HUGE_BROWN_MUSHROOM = FEATURES.register("troll_cave_huge_brown_mushroom", () -> new TrollHugeBrownMushroomFeature(HugeMushroomFeatureConfiguration.CODEC));
 	public static final DeferredHolder<Feature<?>, Feature<NoneFeatureConfiguration>> STONE_CIRCLE = FEATURES.register("stone_circle", () -> new StoneCircleFeature(NoneFeatureConfiguration.CODEC));
 	public static final DeferredHolder<Feature<?>, Feature<ThornsConfig>> THORNS = FEATURES.register("thorns", () -> new ThornFeature(ThornsConfig.CODEC));
 	public static final DeferredHolder<Feature<?>, Feature<TFTreeFeatureConfig>> TREE_OF_TIME = FEATURES.register("tree_of_time", () -> new TimeTreeFeature(TFTreeFeatureConfig.codecTFTreeConfig));

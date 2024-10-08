@@ -3,8 +3,8 @@ package twilightforest.world.components.structures.trollcave;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.features.TreeFeatures;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.RandomSource;
@@ -50,7 +50,8 @@ public class TrollCaveGardenComponent extends TrollCaveMainComponent {
 
 	@Override
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		Predicate<Biome> highlands = biome -> biome == world.registryAccess().registryOrThrow(Registries.BIOME).get(TFBiomes.HIGHLANDS);
+		Registry<Biome> biomeRegistry = world.registryAccess().registryOrThrow(Registries.BIOME);
+		Predicate<Biome> highlands = biome -> biome == biomeRegistry.get(TFBiomes.HIGHLANDS) || biome == biomeRegistry.get(TFBiomes.HIGHLANDS_UNDERGROUND);
 		if (this.isBoundingBoxOutsideBiomes(world, highlands, blockPos)) {
 			return;
 		}
@@ -86,14 +87,14 @@ public class TrollCaveGardenComponent extends TrollCaveMainComponent {
 		for (int i = 0; i < 8; i++) {
 			BlockPos.MutableBlockPos dest = getCoordsInCave(decoRNG);
 			setBlockStateRotated(world, Blocks.MYCELIUM.defaultBlockState(), dest.getX(), dest.setY(0).getY(), dest.getZ(), this.rotation, sbb);
-			generate(world, generator, TFConfiguredFeatures.BIG_MUSHGLOOM, decoRNG, dest.getX(), dest.setY(1).getY(), dest.getZ(), sbb);
+			generate(world, generator, TFConfiguredFeatures.TROLL_BIG_MUSHGLOOMS, decoRNG, dest.getX(), dest.setY(1).getY(), dest.getZ(), sbb);
 		}
 
 		// mushrooms!
 		for (int i = 0; i < 16; i++) {
 			BlockPos.MutableBlockPos dest = getCoordsInCave(decoRNG);
 			setBlockStateRotated(world, Blocks.MYCELIUM.defaultBlockState(), dest.getX(), dest.setY(0).getY(), dest.getZ(), this.rotation, sbb);
-			generate(world, generator, rand.nextBoolean() ? TreeFeatures.HUGE_BROWN_MUSHROOM : TreeFeatures.HUGE_RED_MUSHROOM, decoRNG, dest.getX(), dest.setY(1).getY(), dest.getZ(), sbb);
+			generate(world, generator, rand.nextBoolean() ? TFConfiguredFeatures.TROLL_HUGE_BROWN_MUSHROOMS : TFConfiguredFeatures.TROLL_HUGE_RED_MUSHROOMS, decoRNG, dest.getX(), dest.setY(1).getY(), dest.getZ(), sbb);
 		}
 
 		this.placeSpeleothems(world, rand, sbb, decoRNG);

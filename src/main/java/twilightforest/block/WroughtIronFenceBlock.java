@@ -218,7 +218,7 @@ public class WroughtIronFenceBlock extends Block implements SimpleWaterloggedBlo
 	@Override
 	public BlockState rotate(BlockState state, Rotation rotation) {
 		return switch (rotation) {
-			case CLOCKWISE_180 -> state.setValue(NORTH_FENCE, state.getValue(SOUTH_FENCE)).setValue(EAST_FENCE, state.getValue(WEST_FENCE)).setValue(SOUTH_FENCE, state.getValue(NORTH_FENCE)).setValue(WEST_FENCE, state.getValue(WEST_FENCE));
+			case CLOCKWISE_180 -> state.setValue(NORTH_FENCE, state.getValue(SOUTH_FENCE)).setValue(EAST_FENCE, state.getValue(WEST_FENCE)).setValue(SOUTH_FENCE, state.getValue(NORTH_FENCE)).setValue(WEST_FENCE, state.getValue(EAST_FENCE));
 			case COUNTERCLOCKWISE_90 -> state.setValue(NORTH_FENCE, state.getValue(EAST_FENCE)).setValue(EAST_FENCE, state.getValue(SOUTH_FENCE)).setValue(SOUTH_FENCE, state.getValue(WEST_FENCE)).setValue(WEST_FENCE, state.getValue(NORTH_FENCE));
 			case CLOCKWISE_90 -> state.setValue(NORTH_FENCE, state.getValue(WEST_FENCE)).setValue(EAST_FENCE, state.getValue(NORTH_FENCE)).setValue(SOUTH_FENCE, state.getValue(EAST_FENCE)).setValue(WEST_FENCE, state.getValue(SOUTH_FENCE));
 			default -> state;
@@ -230,7 +230,7 @@ public class WroughtIronFenceBlock extends Block implements SimpleWaterloggedBlo
 	public BlockState mirror(BlockState state, Mirror mirror) {
 		return switch (mirror) {
 			case LEFT_RIGHT -> state.setValue(NORTH_FENCE, state.getValue(SOUTH_FENCE)).setValue(SOUTH_FENCE, state.getValue(NORTH_FENCE));
-			case FRONT_BACK -> state.setValue(EAST_FENCE, state.getValue(WEST_FENCE)).setValue(WEST_FENCE, state.getValue(WEST_FENCE));
+			case FRONT_BACK -> state.setValue(EAST_FENCE, state.getValue(WEST_FENCE)).setValue(WEST_FENCE, state.getValue(EAST_FENCE));
 			default -> super.mirror(state, mirror);
 		};
 	}

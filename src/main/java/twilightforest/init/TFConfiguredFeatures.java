@@ -11,12 +11,10 @@ import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.Music;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HugeMushroomBlock;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -24,7 +22,6 @@ import net.minecraft.world.level.levelgen.feature.WeightedPlacedFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.*;
 import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.BlobFoliagePlacer;
-import net.minecraft.world.level.levelgen.feature.foliageplacers.BushFoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.SpruceFoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.stateproviders.*;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlacer;
@@ -85,6 +82,10 @@ public final class TFConfiguredFeatures {
 	public static final ResourceKey<ConfiguredFeature<?, ?>> THORNS = registerKey("thorns");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> TORCH_BERRIES = registerKey("torch_berries");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> TROLL_ROOTS = registerKey("troll_roots");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> TROLL_BIG_MUSHGLOOMS = registerKey("troll_big_mushglooms");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> TROLL_HUGE_RED_MUSHROOMS = registerKey("troll_huge_red_mushrooms");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> TROLL_HUGE_BROWN_MUSHROOMS = registerKey("troll_huge_brown_mushrooms");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> TROLL_MUSHGLOOMS = registerKey("troll_mushglooms");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> VANILLA_ROOTS = registerKey("vanilla_roots");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> WEBS = registerKey("webs");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> WOOD_ROOTS_SPREAD = registerKey("ore/wood_roots_spread");
@@ -124,9 +125,9 @@ public final class TFConfiguredFeatures {
 
 	//troll caves special stuff
 	public static final ResourceKey<ConfiguredFeature<?, ?>> UBEROUS_SOIL_PATCH_BIG = registerKey("uberous_soil_patch_big");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> UBEROUS_SOIL_PATCH_SMALL = registerKey("uberous_soil_patch_small");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> TROLL_CAVE_MYCELIUM = registerKey("troll_cave_mycelium");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> TROLL_CAVE_DIRT = registerKey("troll_cave_dirt");
-	public static final ResourceKey<ConfiguredFeature<?, ?>> UBEROUS_SOIL_PATCH_SMALL = registerKey("uberous_soil_patch_small");
 
 	//Trees!
 	public static final ResourceKey<ConfiguredFeature<?, ?>> TWILIGHT_OAK_TREE = registerKey("tree/twilight_oak_tree");
@@ -261,6 +262,10 @@ public final class TFConfiguredFeatures {
 		context.register(THORNS, new ConfiguredFeature<>(TFFeatures.THORNS.get(), new ThornsConfig(7, 3, 3, 50)));
 		context.register(TORCH_BERRIES, new ConfiguredFeature<>(TFFeatures.UNDERGROUND_PLANTS.get(), new BlockStateConfiguration(TFBlocks.TORCHBERRY_PLANT.get().defaultBlockState().setValue(TorchberryPlantBlock.HAS_BERRIES, true))));
 		context.register(TROLL_ROOTS, new ConfiguredFeature<>(TFFeatures.TROLL_VINES.get(), new BlockStateConfiguration(TFBlocks.TROLLVIDR.get().defaultBlockState())));
+		context.register(TROLL_BIG_MUSHGLOOMS, new ConfiguredFeature<>(TFFeatures.TROLL_BIG_MUSHGLOOM.get(), new HugeMushroomFeatureConfiguration(BlockStateProvider.simple(TFBlocks.HUGE_MUSHGLOOM.get().defaultBlockState().setValue(HugeMushroomBlock.UP, Boolean.TRUE).setValue(HugeMushroomBlock.DOWN, Boolean.FALSE)), BlockStateProvider.simple(TFBlocks.HUGE_MUSHGLOOM_STEM.get().defaultBlockState().setValue(HugeMushroomBlock.UP, Boolean.FALSE).setValue(HugeMushroomBlock.DOWN, Boolean.FALSE)), 1)));
+		context.register(TROLL_HUGE_RED_MUSHROOMS, new ConfiguredFeature<>(TFFeatures.TROLL_HUGE_RED_MUSHROOM.get(), new HugeMushroomFeatureConfiguration(BlockStateProvider.simple(Blocks.RED_MUSHROOM_BLOCK.defaultBlockState().setValue(HugeMushroomBlock.DOWN, Boolean.FALSE)), BlockStateProvider.simple(Blocks.MUSHROOM_STEM.defaultBlockState().setValue(HugeMushroomBlock.UP, Boolean.FALSE).setValue(HugeMushroomBlock.DOWN, Boolean.FALSE)), 2)));
+		context.register(TROLL_HUGE_BROWN_MUSHROOMS, new ConfiguredFeature<>(TFFeatures.TROLL_HUGE_BROWN_MUSHROOM.get(), new HugeMushroomFeatureConfiguration(BlockStateProvider.simple(Blocks.BROWN_MUSHROOM_BLOCK.defaultBlockState().setValue(HugeMushroomBlock.UP, Boolean.TRUE).setValue(HugeMushroomBlock.DOWN, Boolean.FALSE)), BlockStateProvider.simple(Blocks.MUSHROOM_STEM.defaultBlockState().setValue(HugeMushroomBlock.UP, Boolean.FALSE).setValue(HugeMushroomBlock.DOWN, Boolean.FALSE)), 3)));
+		context.register(TROLL_MUSHGLOOMS, new ConfiguredFeature<>(TFFeatures.UNDERGROUND_PLANTS.get(), new BlockStateConfiguration(TFBlocks.MUSHGLOOM.get().defaultBlockState())));
 		context.register(VANILLA_ROOTS, new ConfiguredFeature<>(TFFeatures.UNDERGROUND_PLANTS.get(), new BlockStateConfiguration(Blocks.HANGING_ROOTS.defaultBlockState())));
 		context.register(WEBS, new ConfiguredFeature<>(TFFeatures.WEBS.get(), NoneFeatureConfiguration.NONE));
 		context.register(WOOD_ROOTS_SPREAD, new ConfiguredFeature<>(TFFeatures.WOOD_ROOTS.get(), new RootConfig(TreeDecorators.ROOT_BLEND_PROVIDER, BlockStateProvider.simple(TFBlocks.LIVEROOT_BLOCK.get()))));
@@ -296,9 +301,9 @@ public final class TFConfiguredFeatures {
 		context.register(DARK_DEAD_BUSHES, new ConfiguredFeature<>(TFFeatures.DARK_FOREST_PLACER.get(),  new RandomPatchConfiguration(50, 7, 3, PlacementUtils.filtered(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(Blocks.DEAD_BUSH)), BlockPredicate.allOf(BlockPredicate.replaceable(), BlockPredicate.matchesTag(Direction.DOWN.getNormal(), BlockTags.DIRT))))));
 
 		context.register(UBEROUS_SOIL_PATCH_BIG, new ConfiguredFeature<>(TFFeatures.MYCELIUM_BLOB.get(), new DiskConfiguration(RuleBasedBlockStateProvider.simple(TFBlocks.UBEROUS_SOIL.get()), BlockPredicate.matchesBlocks(Blocks.PODZOL, Blocks.COARSE_DIRT, Blocks.DIRT), UniformInt.of(4, 8), 1)));
+		context.register(UBEROUS_SOIL_PATCH_SMALL, new ConfiguredFeature<>(TFFeatures.MYCELIUM_BLOB.get(), new DiskConfiguration(RuleBasedBlockStateProvider.simple(TFBlocks.UBEROUS_SOIL.get()), BlockPredicate.matchesBlocks(Blocks.PODZOL, Blocks.COARSE_DIRT, Blocks.DIRT), UniformInt.of(2, 3), 0)));
 		context.register(TROLL_CAVE_MYCELIUM, new ConfiguredFeature<>(TFFeatures.MYCELIUM_BLOB.get(), new DiskConfiguration(RuleBasedBlockStateProvider.simple(Blocks.MYCELIUM), BlockPredicate.matchesBlocks(Blocks.STONE, TFBlocks.DEADROCK.get()), UniformInt.of(3, 5), 0)));
 		context.register(TROLL_CAVE_DIRT, new ConfiguredFeature<>(TFFeatures.MYCELIUM_BLOB.get(), new DiskConfiguration(RuleBasedBlockStateProvider.simple(Blocks.DIRT), BlockPredicate.matchesBlocks(Blocks.STONE, TFBlocks.DEADROCK.get()), UniformInt.of(2, 5), 0)));
-		context.register(UBEROUS_SOIL_PATCH_SMALL, new ConfiguredFeature<>(TFFeatures.MYCELIUM_BLOB.get(), new DiskConfiguration(RuleBasedBlockStateProvider.simple(TFBlocks.UBEROUS_SOIL.get()), BlockPredicate.matchesBlocks(Blocks.PODZOL, Blocks.COARSE_DIRT, Blocks.DIRT), UniformInt.of(2, 3), 0)));
 
 		context.register(TWILIGHT_OAK_TREE, new ConfiguredFeature<>(Feature.TREE, TreeConfigurations.TWILIGHT_OAK));
 		context.register(LARGE_TWILIGHT_OAK_TREE, new ConfiguredFeature<>(Feature.TREE, TreeConfigurations.LARGE_TWILIGHT_OAK));

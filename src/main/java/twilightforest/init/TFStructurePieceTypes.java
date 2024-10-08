@@ -88,6 +88,7 @@ public class TFStructurePieceTypes {
 	// Lich Tower
 	public static final DeferredHolder<StructurePieceType, StructurePieceType> LICH_TOWER_FOYER = registerPieceType("TFLT" + "TFoy", LichTowerFoyer::new);
 	public static final DeferredHolder<StructurePieceType, StructurePieceType> LICH_TOWER_BASE = registerPieceType("TFLT" + "CTBase", LichTowerBase::new);
+	public static final DeferredHolder<StructurePieceType, StructurePieceType> LICH_TOWER_BASE_TRIM = registerPieceType("TFLT" + "CTTrim", LichTowerBaseTrim::new);
 	public static final DeferredHolder<StructurePieceType, StructurePieceType> LICH_TOWER_SEGMENT = registerPieceType("TFLT" + "CTSeg", LichTowerSegment::new);
 	public static final DeferredHolder<StructurePieceType, StructurePieceType> LICH_SPAWNER_BRIDGE = registerPieceType("TFLT" + "MobBridge", LichTowerSpawnerBridge::new);
 	public static final DeferredHolder<StructurePieceType, StructurePieceType> LICH_WING_BRIDGE = registerPieceType("TFLT" + "Bridge", LichTowerWingBridge::new);

@@ -1,6 +1,8 @@
 package twilightforest.block.entity.spawner;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
@@ -27,16 +29,24 @@ public class LichSpawnerBlockEntity extends BossSpawnerBlockEntity<Lich> {
 
 	@Override
 	protected boolean spawnMyBoss(ServerLevelAccessor accessor) {
-
 		Lich myCreature = this.makeMyCreature();
 
-		myCreature.moveTo(this.getBlockPos(), accessor.getLevel().random.nextFloat() * 360F, 0.0F);
-		EventHooks.finalizeMobSpawn(myCreature, accessor, accessor.getCurrentDifficultyAt(this.getBlockPos()), MobSpawnType.SPAWNER, null);
+		BlockPos.MutableBlockPos mutableBlockPos = this.getBlockPos().mutable();
+		while (true) {
+			if (accessor.getMinBuildHeight() >= mutableBlockPos.getY()) break;
+			if (accessor.getBlockState(mutableBlockPos.below()).isAir()) {
+				mutableBlockPos.move(Direction.DOWN);
+			} else break;
+		}
+
+		myCreature.moveTo(mutableBlockPos, accessor.getLevel().random.nextFloat() * 360F, 0.0F);
+
+		EventHooks.finalizeMobSpawn(myCreature, accessor, accessor.getCurrentDifficultyAt(mutableBlockPos), MobSpawnType.SPAWNER, null);
 		myCreature.setAttackCooldown(40);
 		myCreature.setExtinguishTimer();
 
 		// set creature's home to this
-		this.initializeCreature(myCreature);
+		myCreature.setRestrictionPoint(GlobalPos.of(myCreature.level().dimension(), mutableBlockPos));
 
 		// spawn it
 		return accessor.addFreshEntity(myCreature);

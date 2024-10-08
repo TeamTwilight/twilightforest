@@ -195,21 +195,24 @@ public final class LichTowerPieces {
 		}
 	};
 
-	static final ResourceLocation[][] BEARDS = new ResourceLocation[][] {
+	static final ResourceLocation[][] WING_BEARDS = new ResourceLocation[][] {
 		new ResourceLocation[] {
-			TwilightForestMod.prefix("lich_tower/5x5/beard_fancy"),
-			TwilightForestMod.prefix("lich_tower/5x5/beard_fangs"),
-			TwilightForestMod.prefix("lich_tower/5x5/beard_plain")
+			TwilightForestMod.prefix("lich_tower/5x5/beard_checkered"),
+			TwilightForestMod.prefix("lich_tower/5x5/beard_chiseled"),
+			TwilightForestMod.prefix("lich_tower/5x5/beard_chunks"),
+			TwilightForestMod.prefix("lich_tower/5x5/beard_staggered")
 		},
 		new ResourceLocation[] {
-			TwilightForestMod.prefix("lich_tower/7x7/beard_fancy"),
-			TwilightForestMod.prefix("lich_tower/7x7/beard_fangs"),
-			TwilightForestMod.prefix("lich_tower/7x7/beard_plain")
+			TwilightForestMod.prefix("lich_tower/7x7/beard_checkered"),
+			TwilightForestMod.prefix("lich_tower/7x7/beard_chiseled"),
+			TwilightForestMod.prefix("lich_tower/7x7/beard_chunks"),
+			TwilightForestMod.prefix("lich_tower/7x7/beard_staggered")
 		},
 		new ResourceLocation[] {
-			TwilightForestMod.prefix("lich_tower/9x9/beard_fancy"),
-			TwilightForestMod.prefix("lich_tower/9x9/beard_fangs"),
-			TwilightForestMod.prefix("lich_tower/9x9/beard_plain")
+			TwilightForestMod.prefix("lich_tower/9x9/beard_checkered"),
+			TwilightForestMod.prefix("lich_tower/9x9/beard_chiseled"),
+			TwilightForestMod.prefix("lich_tower/9x9/beard_chunks"),
+			TwilightForestMod.prefix("lich_tower/9x9/beard_staggered")
 		}
 	};
 

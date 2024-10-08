@@ -9,31 +9,33 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.LichModel;
+import twilightforest.client.renderer.TFRenderTypes;
+import twilightforest.client.renderer.entity.layers.ShieldLayer;
 import twilightforest.entity.boss.Lich;
 
-public class LichRenderer extends HumanoidMobRenderer<Lich, LichModel> {
+public class LichRenderer<T extends Lich, M extends LichModel<T>> extends HumanoidMobRenderer<T, M> {
 
 	public static final ResourceLocation TEXTURE = TwilightForestMod.getModelTexture("twilightlich64.png");
 
-	public LichRenderer(EntityRendererProvider.Context context, LichModel model, float shadowSize) {
+	public LichRenderer(EntityRendererProvider.Context context, M model, float shadowSize) {
 		super(context, model, shadowSize);
 		this.addLayer(new ShieldLayer<>(this));
 	}
 
 	@Nullable
 	@Override
-	protected RenderType getRenderType(Lich entity, boolean bodyVisible, boolean translucent, boolean glowing) {
-		if (entity.isShadowClone()) return RenderType.entityTranslucent(this.getTextureLocation(entity));
+	protected RenderType getRenderType(T entity, boolean bodyVisible, boolean translucent, boolean glowing) {
+		if (entity.isShadowClone()) return TFRenderTypes.SHADOW_CLONE;
 		else return super.getRenderType(entity, bodyVisible, translucent, glowing);
 	}
 
 	@Override
-	protected boolean isShaking(Lich entity) {
+	protected boolean isShaking(T entity) {
 		return super.isShaking(entity) || (entity.isDeadOrDying() && entity.deathTime <= Lich.DEATH_ANIMATION_POINT_A);
 	}
 
 	@Override
-	public void render(Lich entity, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int packedLight) {
+	public void render(T entity, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int packedLight) {
 		if (entity.deathTime > 0) {
 			stack.pushPose();
 			if (entity.deathTime > Lich.DEATH_ANIMATION_POINT_A) {
@@ -48,7 +50,7 @@ public class LichRenderer extends HumanoidMobRenderer<Lich, LichModel> {
 	}
 
 	@Override
-	protected float getFlipDegrees(Lich entity) { //Prevent the body from keeling over
+	protected float getFlipDegrees(T entity) { //Prevent the body from keeling over
 		return entity.isDeadOrDying() ? 0.0F : super.getFlipDegrees(entity);
 	}
 

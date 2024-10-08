@@ -112,32 +112,18 @@ public abstract class CanopyMushroomFeature extends AbstractHugeMushroomFeature 
 		this.makeCap(levelAccessor, random, dest, 1, new BlockPos.MutableBlockPos(), featureConfiguration);//Branches need caps as well, height in this case is set to 1
 	}
 
-	@Override//Pretty much a 1:1 vanilla copy of the big brown mushroom cap code
+	@Override //Pretty much a 1:1 vanilla copy of the big brown mushroom cap code
 	protected void makeCap(LevelAccessor levelAccessor, RandomSource random, BlockPos pos, int height, BlockPos.MutableBlockPos mutableBlockPos, HugeMushroomFeatureConfiguration featureConfiguration) {
-		int i = featureConfiguration.foliageRadius;
+		int foliageRadius = featureConfiguration.foliageRadius;
 
-		for (int x = -i; x <= i; ++x) {
-			for (int z = -i; z <= i; ++z) {
-				boolean xIsMin = x == -i;
-				boolean xIsMax = x == i;
-				boolean zIsMin = z == -i;
-				boolean zIsMax = z == i;
-				boolean xMinMax = xIsMin || xIsMax;
-				boolean zMinMax = zIsMin || zIsMax;
-				if (!xMinMax || !zMinMax) {
+		for (int x = -foliageRadius; x <= foliageRadius; ++x) {
+			for (int z = -foliageRadius; z <= foliageRadius; ++z) {
+				if (!FeatureLogic.isCornerInSquare(x, z, foliageRadius)) {
 					mutableBlockPos.setWithOffset(pos, x, height, z);
 					if (!levelAccessor.getBlockState(mutableBlockPos).isSolidRender(levelAccessor, mutableBlockPos)) {
-						boolean xMinOrZ = xIsMin || zMinMax && x == 1 - i;
-						boolean xMaxOrZ = xIsMax || zMinMax && x == i - 1;
-						boolean zMinOrX = zIsMin || xMinMax && z == 1 - i;
-						boolean zMaxOrX = zIsMax || xMinMax && z == i - 1;
-						BlockState blockstate = featureConfiguration.capProvider.getState(random, pos);
-
-						if (blockstate.hasProperty(HugeMushroomBlock.WEST) && blockstate.hasProperty(HugeMushroomBlock.EAST) && blockstate.hasProperty(HugeMushroomBlock.NORTH) && blockstate.hasProperty(HugeMushroomBlock.SOUTH)) {
-							blockstate = blockstate.setValue(HugeMushroomBlock.WEST, xMinOrZ).setValue(HugeMushroomBlock.EAST, xMaxOrZ).setValue(HugeMushroomBlock.NORTH, zMinOrX).setValue(HugeMushroomBlock.SOUTH, zMaxOrX);
-						}
-
-						this.setBlock(levelAccessor, mutableBlockPos, blockstate);
+						BlockState blockState = featureConfiguration.capProvider.getState(random, pos);
+						blockState = FeatureLogic.getHorizontalMushroomBlockState(blockState, x, z, foliageRadius);
+						this.setBlock(levelAccessor, mutableBlockPos, blockState);
 					}
 				}
 			}

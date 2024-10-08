@@ -32,6 +32,22 @@
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
+                "max": 12.0,
+                "min": 6.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "minecraft:clay_ball",
+          "weight": 75
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
                 "max": 8.0,
                 "min": 3.0
               },
@@ -204,21 +220,6 @@
         },
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 7.0,
-                "min": 3.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "twilightforest:liveroot"
-        },
-        {
-          "type": "minecraft:item",
           "name": "twilightforest:magic_map"
         },
         {
@@ -235,6 +236,36 @@
             }
           ],
           "name": "twilightforest:firefly"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 3.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "twilightforest:exanimate_essence"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 5.0,
+                "min": 3.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "twilightforest:brittle_potion_flask"
         },
         {
           "type": "minecraft:item",
@@ -348,7 +379,28 @@
         },
         {
           "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 5.0,
+                "min": 3.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "twilightforest:liveroot",
+          "weight": 75
+        },
+        {
+          "type": "minecraft:item",
           "name": "minecraft:diamond",
+          "weight": 75
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twilightforest:crown_splinter",
           "weight": 75
         },
         {

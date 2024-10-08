@@ -2,6 +2,7 @@ package twilightforest.world.components.structures;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.QuartPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -527,7 +528,10 @@ public abstract class TFStructureComponentOld extends TFStructureComponent imple
 
         for (int x = minX; x <= maxX; x++) {
 			for (int z = minZ; z <= maxZ; z++) {
-				if (!predicate.test(world.getUncachedNoiseBiome(x, structurePos.getY(), z).value())) return true;
+				if (!predicate.test(world.getUncachedNoiseBiome(  // getUncachedNoiseBiome() requires quart pos instead of blockPos, unlike getBiome()
+					QuartPos.fromBlock(x),
+					QuartPos.fromBlock(structurePos.getY()),
+					QuartPos.fromBlock(z)).value())) return true;
 			}
 		}
 
