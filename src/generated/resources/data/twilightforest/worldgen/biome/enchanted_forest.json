@@ -66,10 +66,9 @@
     [
       "minecraft:patch_tall_grass",
       "minecraft:patch_grass_badlands",
-      "minecraft:patch_grass_savanna",
       "minecraft:patch_sugar_cane",
-      "minecraft:patch_grass_jungle",
-      "minecraft:patch_large_fern",
+      "twilightforest:dense_ferns",
+      "twilightforest:dense_large_ferns",
       "twilightforest:mayapple",
       "twilightforest:flower_placer",
       "twilightforest:grove_ruins",
