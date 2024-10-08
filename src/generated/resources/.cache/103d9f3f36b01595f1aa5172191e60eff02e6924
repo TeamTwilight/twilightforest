@@ -1,4 +1,4 @@
-// 1.21.1	2024-10-08T23:14:20.161560906	Registries
+// 1.21.1	2024-10-08T23:43:42.760223952	Registries
 9089ada9ce06fd30adf8b10e50f02233c7d5a76e data/minecraft/twilight/wood_palettes/acacia.json
 dca1ef01d0df4e956fd414782de57c25dfddd290 data/minecraft/twilight/wood_palettes/birch.json
 01becb45438b7f2bfdc77baba72bc986341510c8 data/minecraft/twilight/wood_palettes/crimson.json
@@ -118,7 +118,7 @@ cd3724ced610878eed7614232aa3df1c1d501f72 data/twilightforest/worldgen/biome/clea
 17c5d64992834cfb5edd94617a56698fbd5328d7 data/twilightforest/worldgen/biome/dark_forest_center.json
 afbd0904fbe5fdf5e5dcf4a6657138a379e2ad76 data/twilightforest/worldgen/biome/dense_forest.json
 6554f2be9d0faeabfa8a652ddb059fc61367f177 data/twilightforest/worldgen/biome/dense_mushroom_forest.json
-455c74918cb6c93ac993806592dee6381a17f0d7 data/twilightforest/worldgen/biome/enchanted_forest.json
+680be135ef02fc3425f3d799278c345799c35110 data/twilightforest/worldgen/biome/enchanted_forest.json
 0f7add8c82f0867894000c6f3a5db4bc48b9027f data/twilightforest/worldgen/biome/final_plateau.json
 16a6c39507c7bfda243d44efebf67c427688aa24 data/twilightforest/worldgen/biome/fire_swamp.json
 73e266bb4fc8eaad4094adc4133efc6bf25f6e58 data/twilightforest/worldgen/biome/firefly_forest.json
