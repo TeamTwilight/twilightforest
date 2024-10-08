@@ -21,7 +21,7 @@
         }
       },
       {
-        "chance": 0.1,
+        "chance": 0.15,
         "feature": {
           "feature": "twilightforest:tree/large_rainbow_oak",
           "placement": []

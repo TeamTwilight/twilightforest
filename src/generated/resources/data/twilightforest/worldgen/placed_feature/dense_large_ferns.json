@@ -2,6 +2,10 @@
   "feature": "twilightforest:dense_large_ferns",
   "placement": [
     {
+      "type": "minecraft:count",
+      "count": 2
+    },
+    {
       "type": "minecraft:in_square"
     },
     {

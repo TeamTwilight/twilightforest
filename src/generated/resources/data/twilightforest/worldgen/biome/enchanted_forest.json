@@ -64,12 +64,10 @@
     ],
     [],
     [
-      "minecraft:patch_tall_grass",
       "minecraft:patch_grass_badlands",
       "minecraft:patch_sugar_cane",
       "twilightforest:dense_ferns",
       "twilightforest:dense_large_ferns",
-      "twilightforest:mayapple",
       "twilightforest:flower_placer",
       "twilightforest:grove_ruins",
       "twilightforest:stone_circle",

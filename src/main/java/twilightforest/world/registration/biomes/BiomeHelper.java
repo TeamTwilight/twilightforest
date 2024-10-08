@@ -110,7 +110,6 @@ public abstract class BiomeHelper {
 	public static BiomeGenerationSettings.Builder enchantedForestGen(HolderGetter<PlacedFeature> featureGetter, HolderGetter<ConfiguredWorldCarver<?>> carverGetter) {
 		BiomeGenerationSettings.Builder biome = new BiomeGenerationSettings.Builder(featureGetter, carverGetter);
 		BiomeDefaultFeatures.addDefaultSoftDisks(biome);
-		BiomeDefaultFeatures.addSavannaGrass(biome);
 		BiomeDefaultFeatures.addDefaultGrass(biome);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, VegetationPlacements.PATCH_SUGAR_CANE);
 		BiomeDefaultFeatures.addSurfaceFreezing(biome);
@@ -121,7 +120,7 @@ public abstract class BiomeHelper {
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_DENSE_FERNS);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_DENSE_LARGE_FERNS);
 
-		addForestVegetation(biome);
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_FLOWER_PLACER);
 		commonFeatures(biome);
 
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_ENCHANTED_FOREST_TREES);
