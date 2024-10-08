@@ -119,6 +119,7 @@ public abstract class BiomeHelper {
 
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_DENSE_FERNS);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_DENSE_LARGE_FERNS);
+//		biome.addFeature(GenerationStep.Decoration.LAKES, TFPlacedFeatures.PLACED_DENSE_LAKE_WATER);  TODO: fix grove placement
 
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_FLOWER_PLACER);
 		commonFeatures(biome);

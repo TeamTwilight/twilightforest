@@ -31,6 +31,7 @@ public class TFPlacedFeatures {
 	public static final ResourceKey<PlacedFeature> PLACED_DRUID_HUT = registerKey("druid_hut");
 	public static final ResourceKey<PlacedFeature> PLACED_DENSE_FERNS = registerKey("dense_ferns");
 	public static final ResourceKey<PlacedFeature> PLACED_DENSE_LARGE_FERNS = registerKey("dense_large_ferns");
+	public static final ResourceKey<PlacedFeature> PLACED_DENSE_LAKE_WATER = registerKey("dense_water_lake");
 	public static final ResourceKey<PlacedFeature> PLACED_GRAVEYARD = registerKey("graveyard");
 	public static final ResourceKey<PlacedFeature> PLACED_BIG_MUSHGLOOM = registerKey("big_mushgloom");
 	public static final ResourceKey<PlacedFeature> PLACED_FALLEN_LEAVES = registerKey("fallen_leaves");
@@ -158,6 +159,7 @@ public class TFPlacedFeatures {
 		context.register(PLACED_DRUID_HUT, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.DRUID_HUT), tfFeatureCheckArea(AvoidLandmarkModifier.checkBoth(), 105).build()));
 		context.register(PLACED_DENSE_FERNS, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.DENSE_FERNS), ImmutableList.<PlacementModifier>builder().add(PlacementUtils.countExtra(3, 0.5F, 1), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_WORLD_SURFACE, BiomeFilter.biome()).build()));
 		context.register(PLACED_DENSE_LARGE_FERNS, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.DENSE_LARGE_FERNS), ImmutableList.<PlacementModifier>builder().add(CountPlacement.of(2), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_WORLD_SURFACE, BiomeFilter.biome()).build()));
+		context.register(PLACED_DENSE_LAKE_WATER, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.LAKE_WATER), tfFeatureCheckArea(AvoidLandmarkModifier.checkBoth(), 3).build()));
 		context.register(PLACED_GRAVEYARD, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.GRAVEYARD), tfFeatureCheckArea(AvoidLandmarkModifier.checkSurface(), 70).build()));
 		context.register(PLACED_BIG_MUSHGLOOM, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.BIG_MUSHGLOOM), tfFeatureCheckArea(AvoidLandmarkModifier.checkSurface(), 1).build()));
 		context.register(PLACED_FALLEN_LEAVES, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.FALLEN_LEAVES), tfFeatureCheckArea(AvoidLandmarkModifier.checkSurface(), 1).build()));
