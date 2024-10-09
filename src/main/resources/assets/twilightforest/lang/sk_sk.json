@@ -1,1 +1,20 @@
-{}
+{
+    "Dimension Settings.button": "Upraviť",
+    "Magic Trees.button": "Upraviť",
+    "Portal Settings.button": "Upraviť",
+    "Shield Parrying.button": "Upraviť",
+    "Uncrafting Table.button": "Upraviť",
+    "advancement.twilightforest.arborist": "Maniacky Dendrolog",
+    "advancement.twilightforest.arborist.desc": "Pripravte si svoje sekery a nožnice. Prehladajte každú skulinku a získajte čokoľvek ide zo stromov! Vyrobte, ulúpte, získajte každý polblok... sadenicu... listy... viac... ešte viac. ÚPLNE VŠETKO!",
+    "advancement.twilightforest.arctic_dyed": "Dostávam sa do módy",
+    "advancement.twilightforest.arctic_dyed.desc": "Nafarbite štyri unikátne diely Arktického brnenia",
+    "advancement.twilightforest.beanstalk": "Janko a fazuľa",
+    "advancement.twilightforest.beanstalk.desc": "Získajte nejaké %s v trollích jaskyniach a použite to na svietiacu pôdu pod mrakmi",
+    "advancement.twilightforest.experiment_115": "Tajomné maso?",
+    "advancement.twilightforest.experiment_115.desc": "Vyzerá to ako koláč...",
+    "advancement.twilightforest.experiment_115_2": "Vytváranie poznámky: Obrovský úspech!",
+    "advancement.twilightforest.experiment_115_2.desc": "Je to tak chutné a vlhké!",
+    "advancement.twilightforest.experiment_115_3": "Jem 115 každý deň, 115 rokov, navždy",
+    "advancement.twilightforest.experiment_115_3.desc": "Jedenie experimentu stopätnásť celý den, navždy, stopätnásť krát experiment stopätnásť, experiment stopätnásť bodka com, vé vé vé bodka experiment stopätnásť bodka com, stopätnásť rokov, každá minúta experiment stopätnásť bodka com, vé vé vé bodka stopätnásť krát experiment stopätnásť bodka com",
+    "advancement.twilightforest.fiery_set": "Galóny krvi a slzy"
+}
