@@ -24,6 +24,10 @@ public class LichModel<T extends Lich> extends HumanoidModel<T> implements Troph
 	private final ModelPart collar;
 	private final ModelPart cloak;
 
+	private final float OG_SIN = Mth.sin(this.attackTime * Mth.PI);
+	private final float ATTACK_DELTA_SQUARED = Mth.square(1.0F - this.attackTime);
+	private final float OTHER_SIN = Mth.sin((1.0F - ATTACK_DELTA_SQUARED) * Mth.PI);
+
 	public LichModel(ModelPart root) {
 		super(root);
 		this.collar = root.getChild("collar");
@@ -78,7 +82,6 @@ public class LichModel<T extends Lich> extends HumanoidModel<T> implements Troph
 	}
 
 	@Override
-
 	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, int color) {
 		if (!this.shadowClone) {
 			super.renderToBuffer(stack, builder, light, overlay, color);
@@ -96,63 +99,91 @@ public class LichModel<T extends Lich> extends HumanoidModel<T> implements Troph
 		}
 	}
 
-	@Override
-	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		this.shadowClone = entity.isShadowClone();
-		super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+	private void initializeArmsAnim() {
+		this.leftArm.xRot = 0.0F;
+		this.leftArm.yRot = 0.0F;
 
-		float ogSin = Mth.sin(this.attackTime * Mth.PI);
-		float otherSin = Mth.sin((1.0F - (1.0F - this.attackTime) * (1.0F - this.attackTime)) * Mth.PI);
-		if (entity.tickCount > 0 && !entity.isDeadOrDying()) {
-			this.leftArm.zRot = 0.5F;
-			this.leftArm.yRot = 0.1F - ogSin * 0.6F;
-			this.leftArm.xRot = -3.141593F;
-			this.leftArm.xRot -= ogSin * 1.2F - otherSin * 0.4F;
-			this.leftArm.zRot -= Mth.cos(ageInTicks * 0.26F) * 0.15F + 0.05F;
-			this.leftArm.xRot -= Mth.sin(ageInTicks * 0.167F) * 0.15F;
-		} else {
-			this.leftArm.xRot = 0.0F;
-			this.leftArm.yRot = 0.0F;
-		}
+		this.rightArm.xRot = 0.0F;
+		this.rightArm.yRot = 0.0F;
+	}
 
-		if (!entity.getMainHandItem().isEmpty()) {
-			this.rightArm.zRot = 0.0F;
-			this.rightArm.yRot = -(0.1F - ogSin * 0.6F);
-			this.rightArm.xRot = -Mth.HALF_PI;
-			this.rightArm.xRot -= ogSin * 1.2F - otherSin * 0.4F;
-			this.rightArm.zRot += Mth.cos(ageInTicks * 0.26F) * 0.15F + 0.05F;
-			this.rightArm.xRot += Mth.sin(ageInTicks * 0.167F) * 0.15F;
-		} else {
-			this.rightArm.xRot = 0.0F;
-			this.rightArm.yRot = 0.0F;
-		}
+	private void setupLeftHandNotDyingAnim(float ageInTicks) {
+		this.leftArm.xRot = -Mth.PI;
+		this.leftArm.xRot -= OG_SIN * 1.2F - OTHER_SIN * 0.4F;
+		this.leftArm.xRot -= Mth.sin(ageInTicks * 0.167F) * 0.15F;
 
-		boolean flag = entity.deathTime > 50;
+		this.leftArm.yRot = 0.1F - OG_SIN * 0.6F;
+
+		this.leftArm.zRot = 0.5F;
+		this.leftArm.zRot -= Mth.cos(ageInTicks * 0.26F) * 0.15F + 0.05F;
+	}
+
+	private void setupMainHandNonEmptyAnim(float ageInTicks) {
+		this.rightArm.xRot = -Mth.HALF_PI;
+		this.rightArm.xRot -= OG_SIN * 1.2F - OTHER_SIN * 0.4F;
+		this.rightArm.xRot += Mth.sin(ageInTicks * 0.167F) * 0.15F;
+
+		this.rightArm.yRot = -(0.1F - OG_SIN * 0.6F);
+
+		this.rightArm.zRot = 0.0F;
+		this.rightArm.zRot += Mth.cos(ageInTicks * 0.26F) * 0.15F + 0.05F;
+	}
+
+	private void setSkipDrawAnim(boolean flag) {
 		this.body.skipDraw = flag;
+
 		this.leftArm.skipDraw = flag;
 		this.rightArm.skipDraw = flag;
+
 		this.leftLeg.skipDraw = flag;
 		this.rightLeg.skipDraw = flag;
+
 		this.cloak.skipDraw = flag;
 		this.collar.skipDraw = flag;
 		this.head.skipDraw = flag;
 	}
 
+	private void setupHandsAnim(T entity, float ageInTicks) {
+		initializeArmsAnim();
+
+		if (entity.tickCount > 0 && !entity.isDeadOrDying()) {
+			setupLeftHandNotDyingAnim(ageInTicks);
+		}
+
+		if (!entity.getMainHandItem().isEmpty()) {
+			setupMainHandNonEmptyAnim(ageInTicks);
+		}
+	}
+
+	@Override
+	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+		this.shadowClone = entity.isShadowClone();
+		super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+
+		setupHandsAnim(entity, ageInTicks);
+
+		setSkipDrawAnim(entity.deathTime > 50);
+	}
+
 	@Override
 	public void translateToHand(HumanoidArm arm, PoseStack stack) {
-		float f = arm == HumanoidArm.RIGHT ? 1.0F : -1.0F;
+		final float offset = (arm == HumanoidArm.RIGHT ? 1.0F : -1.0F);
 		ModelPart modelpart = this.getArm(arm);
-		modelpart.x += f;
+		modelpart.x += offset;
 		modelpart.translateAndRotate(stack);
-		modelpart.x -= f;
+		modelpart.x -= offset;
 	}
 
 	@Override
 	public void setupRotationsForTrophy(float x, float y, float z, float mouthAngle) {
-		this.head.yRot = y * Mth.DEG_TO_RAD;
-		this.head.xRot = z * Mth.DEG_TO_RAD;
-		this.hat.yRot = this.head.yRot;
-		this.hat.xRot = this.head.xRot;
+		final float X_ROTATION_ANGLE = z * Mth.DEG_TO_RAD;
+		final float Y_ROTATION_ANGLE = y * Mth.DEG_TO_RAD;
+
+		this.head.xRot = X_ROTATION_ANGLE;
+		this.head.yRot = Y_ROTATION_ANGLE;
+
+		this.hat.xRot = X_ROTATION_ANGLE;
+		this.hat.yRot = Y_ROTATION_ANGLE;
 	}
 
 	@Override
