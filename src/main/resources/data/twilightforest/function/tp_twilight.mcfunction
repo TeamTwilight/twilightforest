@@ -1,1 +1,1 @@
-execute in twilightforest:twilight_forest run tp @p ~ ~ ~
+execute in twilightforest:twilight_forest run tp @s ~ ~ ~
