@@ -1,1 +1,1 @@
-twilightforest shield @p add 3 false
+twilightforest shield @s add 3 false
