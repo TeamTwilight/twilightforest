@@ -33,7 +33,7 @@ public class QuestGroveStructure extends ConquerableStructure {
 
 	@Override
 	protected StructurePiece getFirstPiece(GenerationContext context, RandomSource random, ChunkPos chunkPos, int x, int y, int z) {
-		return new QuestGrove(context.structureTemplateManager(), new BlockPos(findCenterX(x) - LENGTH / 2, y + 2, findCenterZ(z) - LENGTH / 2));
+		return new QuestGrove(context.structureTemplateManager(), new BlockPos(x - LENGTH / 2 + 1, y + 2, z - LENGTH / 2 + 1)); // + 1 offsets to center the structure
 	}
 
 	@Override
@@ -43,7 +43,7 @@ public class QuestGroveStructure extends ConquerableStructure {
 
 	public static QuestGroveStructure buildStructureConfig(BootstrapContext<Structure> context) {
 		return new QuestGroveStructure(
-			new DecorationConfig(1, false, true, true),
+			new DecorationConfig(2, false, true, true),
 			true, Optional.of(TFMapDecorations.QUEST_GROVE),
 			new StructureSettings(
 				context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_QUEST_GROVE_BIOMES),
@@ -52,14 +52,5 @@ public class QuestGroveStructure extends ConquerableStructure {
 				TerrainAdjustment.BEARD_THIN
 			)
 		);
-	}
-
-	// center of the biome is at % 256 - 8
-	public static int findCenterX(int x) {
-		return 256 * Math.round((x - 8) / 256F) + 8;
-	}
-
-	public static int findCenterZ(int z) {
-		return 256 * Math.round((z - 8) / 256F) - 8;
 	}
 }

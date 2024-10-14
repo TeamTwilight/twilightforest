@@ -1,19 +1,22 @@
 package twilightforest.world.components;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.biome.Biome;
 import twilightforest.beans.Component;
 import twilightforest.util.ColorUtil;
+import twilightforest.util.landmarks.LegacyLandmarkPlacements;
 import twilightforest.world.components.structures.type.QuestGroveStructure;
 
 @Component
 public class BiomeColorAlgorithms {
 
 	public int enchanted(int originalColor, int x, int z) {  // TODO
-		int cx = QuestGroveStructure.findCenterX(x);
-		int cz = QuestGroveStructure.findCenterZ(z);
+		BlockPos center = LegacyLandmarkPlacements.getNearestCenterXZ(x / 16, z / 16);  // Center is quest grove
+		int cx = center.getX();
+		int cz = center.getZ();
 
 		int dist = (int) Mth.sqrt((cx - x) * (cx - x) + (cz - z) * (cz - z));
 		int color = dist * 16;

@@ -33,7 +33,9 @@
   },
   "features": [
     [],
-    [],
+    [
+      "twilightforest:dense_water_lake"
+    ],
     [],
     [],
     [
