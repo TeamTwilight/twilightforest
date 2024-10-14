@@ -1,1 +1,1 @@
-execute in minecraft:overworld run tp @p ~ ~ ~
+execute in minecraft:overworld run tp @s ~ ~ ~
