@@ -852,6 +852,8 @@
   "container.twilightforest.uncrafting_table.cycle_next_uncraft": "Próxima receita de fabricação",
   "container.twilightforest.uncrafting_table.disabled_item": "Desfazer esse item está desativado",
   "container.twilightforest.uncrafting_table.uncrafting_disabled": "Desfabricação está desabilitada via configuração",
+  "death.attack.twilightforest.acid_rain": "%1$s foi dançar na chuva ácida",
+  "death.attack.twilightforest.ant": "%1$s foi esmagado como uma formiga por %2$s",
   "death.attack.twilightforest.axing": "%1$s foi cortado por %2$s",
   "death.attack.twilightforest.axing.item": "%1$s foi cortado por %2$s usando %3$s",
   "death.attack.twilightforest.chillingBreath": "%1$s foi congelado até a morte pela Rainha da Neve",
