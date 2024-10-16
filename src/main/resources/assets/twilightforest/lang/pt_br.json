@@ -1291,6 +1291,8 @@
   "misc.twilightforest.biome_locked_2": "Verifique seus avanços",
   "misc.twilightforest.core_disabled": "%s está desativado via configuração",
   "misc.twilightforest.firefly_spawner_radius": "Raio da Partícula de Vaga-lume: %s Blocos",
+  "misc.twilightforest.magic_map_fail": "A magia falhou. Talvez não funcione aqui?\n\n\n\n\n\n\n",
+  "misc.twilightforest.ore_meter_header_block": "Bloco",
   "museumcurator.metallurgy.twilightforest.ironwood": "Madeira-ferro",
   "stat.twilightforest.e115_slices_eaten": "Fatias de experimento 115 comidas",
   "stat.twilightforest.tf_shields_broken": "Escudos de Fortificação Quebrados",
