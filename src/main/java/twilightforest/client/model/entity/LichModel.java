@@ -18,7 +18,7 @@ import twilightforest.entity.boss.Lich;
 
 import java.util.Arrays;
 
-public class LichModel extends HumanoidModel<Lich> implements TrophyBlockModel {
+public class LichModel<T extends Lich> extends HumanoidModel<T> implements TrophyBlockModel {
 
 	private boolean shadowClone;
 	private final ModelPart collar;
@@ -83,7 +83,7 @@ public class LichModel extends HumanoidModel<Lich> implements TrophyBlockModel {
 		if (!this.shadowClone) {
 			super.renderToBuffer(stack, builder, light, overlay, color);
 		} else {
-			super.renderToBuffer(stack, builder, light, overlay, FastColor.ARGB32.color((int) (FastColor.ARGB32.alpha(color) * 0.75F), (int) (FastColor.ARGB32.red(color) * 0.25F), (int) (FastColor.ARGB32.green(color) * 0.25F), (int) (FastColor.ARGB32.blue(color) * 0.25F)));
+			super.renderToBuffer(stack, builder, light, overlay, FastColor.ARGB32.color((int) (FastColor.ARGB32.alpha(color) * 0.5F), (int) (FastColor.ARGB32.red(color) * 0.333F), (int) (FastColor.ARGB32.green(color) * 0.333F), (int) (FastColor.ARGB32.blue(color) * 0.333F)));
 		}
 	}
 
@@ -97,7 +97,7 @@ public class LichModel extends HumanoidModel<Lich> implements TrophyBlockModel {
 	}
 
 	@Override
-	public void setupAnim(Lich entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.shadowClone = entity.isShadowClone();
 		super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 

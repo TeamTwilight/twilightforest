@@ -4,7 +4,7 @@
   "allow_biome_surface_decorations": false,
   "allow_biome_underground_decorations": true,
   "biomes": "#twilightforest:valid_quest_grove_biomes",
-  "chunk_clearance_radius": 1,
+  "chunk_clearance_radius": 2,
   "spawn_overrides": {
     "ambient": {
       "bounding_box": "full",

@@ -109,7 +109,7 @@ afterEvaluate { // DO NOT ASK... it fixes the runClient and family tasks :harold
 }
 
 jar {
-	exclude 'data/twilightforest/functions/**'
+	exclude 'data/twilightforest/function/**'
 	if (hasProperty("CIRevision"))
 		exclude 'data/twilightforest/structure/lich_tower'
 }

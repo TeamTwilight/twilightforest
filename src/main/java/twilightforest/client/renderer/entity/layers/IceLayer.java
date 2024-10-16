@@ -1,4 +1,4 @@
-package twilightforest.client.renderer.entity;
+package twilightforest.client.renderer.entity.layers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;

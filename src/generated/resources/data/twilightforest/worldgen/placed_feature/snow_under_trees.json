@@ -2,6 +2,10 @@
   "feature": "twilightforest:snow_under_trees",
   "placement": [
     {
+      "type": "minecraft:heightmap",
+      "heightmap": "WORLD_SURFACE_WG"
+    },
+    {
       "type": "minecraft:biome"
     }
   ]

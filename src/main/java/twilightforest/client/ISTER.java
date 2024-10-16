@@ -224,7 +224,7 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 			VertexConsumer vertexconsumer = material.sprite().wrap(ItemRenderer.getFoilBufferDirect(buffers, this.shield.renderType(material.atlasLocation()), true, stack.hasFoil()));
 			this.shield.renderToBuffer(pose, vertexconsumer, light, overlay);
 			pose.popPose();
-		} else if (item instanceof WearableLichCrown && this.trophies.get(BossVariant.LICH) instanceof LichModel lichModel) {
+		} else if (item instanceof WearableLichCrown && this.trophies.get(BossVariant.LICH) instanceof LichModel<?> lichModel) {
 			pose.pushPose();
 			pose.scale(1.0F, -1.0F, -1.0F);
 			if (camera == ItemDisplayContext.GUI) {

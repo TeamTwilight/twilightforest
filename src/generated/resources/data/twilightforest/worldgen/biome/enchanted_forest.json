@@ -33,7 +33,9 @@
   },
   "features": [
     [],
-    [],
+    [
+      "twilightforest:dense_water_lake"
+    ],
     [],
     [],
     [
@@ -64,13 +66,10 @@
     ],
     [],
     [
-      "minecraft:patch_tall_grass",
       "minecraft:patch_grass_badlands",
-      "minecraft:patch_grass_savanna",
       "minecraft:patch_sugar_cane",
-      "minecraft:patch_grass_jungle",
-      "minecraft:patch_large_fern",
-      "twilightforest:mayapple",
+      "twilightforest:dense_ferns",
+      "twilightforest:dense_large_ferns",
       "twilightforest:flower_placer",
       "twilightforest:grove_ruins",
       "twilightforest:stone_circle",
@@ -79,13 +78,14 @@
       "twilightforest:hollow_stump",
       "twilightforest:hollow_log",
       "twilightforest:tree/selector/enchanted_forest_trees",
+      "twilightforest:tree/selector/dense_canopy_trees",
       "twilightforest:fiddlehead",
-      "minecraft:vines",
       "twilightforest:tree/selector/canopy_trees",
       "twilightforest:default_fallen_logs"
     ],
     [
-      "minecraft:freeze_top_layer"
+      "minecraft:freeze_top_layer",
+      "twilightforest:enchanted_forest_vines"
     ]
   ],
   "has_precipitation": false,

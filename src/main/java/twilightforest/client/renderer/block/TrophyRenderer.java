@@ -34,7 +34,7 @@ public class TrophyRenderer implements BlockEntityRenderer<TrophyBlockEntity> {
 	public static Map<BossVariant, TrophyBlockModel> createTrophyRenderers(EntityModelSet set) {
 		ImmutableMap.Builder<BossVariant, TrophyBlockModel> trophyList = ImmutableMap.builder();
 		trophyList.put(BossVariant.NAGA, new NagaModel<>(set.bakeLayer(TFModelLayers.NAGA_TROPHY)));
-		trophyList.put(BossVariant.LICH, new LichModel(set.bakeLayer(TFModelLayers.LICH_TROPHY)));
+		trophyList.put(BossVariant.LICH, new LichModel<>(set.bakeLayer(TFModelLayers.LICH_TROPHY)));
 		trophyList.put(BossVariant.MINOSHROOM, new MinoshroomModel<>(set.bakeLayer(TFModelLayers.MINOSHROOM_TROPHY)));
 		trophyList.put(BossVariant.HYDRA, new HydraHeadModel<>(set.bakeLayer(TFModelLayers.HYDRA_TROPHY)));
 		trophyList.put(BossVariant.KNIGHT_PHANTOM, new KnightPhantomModel(set.bakeLayer(TFModelLayers.KNIGHT_PHANTOM_TROPHY)));

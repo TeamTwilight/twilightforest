@@ -161,6 +161,11 @@ steps:
         [$(DiscordMessage)]
     condition: and(eq(variables.SKIP_BUILD, 'false'), eq(variables['CreateArtifacts'], 'True'))
 
+  - powershell: |
+      Write-Host "##vso[task.setvariable variable=RunMavenPublishTask]True"
+    displayName: Allow Maven Publish tasks
+    condition: and(and(succeeded(), eq(variables['CreateArtifacts'], 'True')), eq(variables.SKIP_BUILD, 'false'))
+
   - task: Gradle@2
     displayName: Publish to Maven
     inputs:
@@ -174,7 +179,7 @@ steps:
       publishJUnitResults: false
       testResultsFiles: '**/TEST-*.xml'
       tasks: 'publish'
-    condition: and(and(succeeded(), eq(variables['CreateArtifacts'], 'True')), eq(variables.SKIP_BUILD, 'false'))
+    condition: and(and(succeeded(), eq(variables['RunMavenPublishTask'], 'True')), eq(variables.SKIP_BUILD, 'false'))
     env:
       ARTIFACTORY_USER: $(Artifactory.User)
       ARTIFACTORY_PASS: $(Artifactory.Password)
@@ -187,7 +192,7 @@ steps:
       messageType: 'embeds'
       embeds: |
         [$(DiscordMessageMavenFailed)]
-    condition: failed()
+    condition: and(and(failed(), eq(variables['RunMavenPublishTask'], 'True')), eq(variables.SKIP_BUILD, 'false'))
 
   - script: |
       # stop the Gradle daemon to ensure no files are left open (impacting the save cache operation later)
