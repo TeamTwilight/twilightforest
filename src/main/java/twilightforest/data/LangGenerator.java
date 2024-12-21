@@ -1089,5 +1089,8 @@ public class LangGenerator extends TFLangProvider {
 		this.add("config.twilightforest.multiplayer_fight_adjuster.more_loot", "More Loot");
 		this.add("config.twilightforest.multiplayer_fight_adjuster.more_health", "More Health");
 		this.add("config.twilightforest.multiplayer_fight_adjuster.more_loot_and_health", "More Loot & Health");
+
+
+		this.add("twilightforest.menu_title.twilight_forest", "Twilight Forest");
 	}
 }

@@ -8,6 +8,7 @@ plugins {
 	// Version List: https://projects.neoforged.net/neoforged/ModDevGradle
 	id 'net.neoforged.moddev' version "${mdg_version}"
 	id "com.dorongold.task-tree" version "4.0.0"
+	id 'io.github.0ffz.github-packages' version '[1,2)'
 }
 
 def secrets = new Properties()
@@ -150,6 +151,7 @@ repositories {
             includeGroup "curse.maven"
         }
     }
+	maven githubPackage.invoke("The-Aether-Team/Cumulus")
 }
 
 dependencies {
@@ -162,6 +164,7 @@ dependencies {
 //	implementation "mezz.jei:jei-${project.base_minecraft_version}-neoforge:${project.jei_version}"
 //	compileOnly "me.shedaniel:RoughlyEnoughItems-neoforge:${project.rei_version}"
 //	compileOnly "dev.emi:emi-neoforge:${project.emi_version}+${project.base_minecraft_version}"
+//	implementation "com.aetherteam.cumulus:cumulus_menus:${project.cumulus_version}"
 
 	// theillusivec4
 //	implementation "top.theillusivec4.curios:curios-neoforge:${project.curios_version}+${project.base_minecraft_version}"
@@ -182,6 +185,8 @@ dependencies {
 	testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter', version: '5.10.3'
 	testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.10.3'
 	testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '5.12.0'
+
+//	implementation fileTree(dir: 'libs', include: '*.jar')
 }
 
 configurations.testImplementation {
