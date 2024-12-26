@@ -64,10 +64,10 @@ public class FinalCastleMuralComponent extends TFStructureComponentOld {
 					// main tree
 					makeVerticalTree(decoRNG, mural, startX, startY + 1, decoRNG.nextInt(height / 6) + height / 6, true);
 
+					this.mural = mural;
+
 					// stripes
 					makeStripes(decoRNG);
-
-					this.mural = mural;
 				}
 			}
 		}
