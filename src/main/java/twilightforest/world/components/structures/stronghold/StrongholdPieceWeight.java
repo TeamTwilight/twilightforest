@@ -5,7 +5,7 @@ import twilightforest.world.components.structures.stronghold.KnightStrongholdCom
 /**
  * Based off StructureStrongholdPieceWeight
  */
-public class StrongholdPieceWeight {
+public class StrongholdPieceWeight implements Cloneable {
 
 	public final Factory<? extends KnightStrongholdComponent> factory;
 	public final int pieceWeight;
@@ -36,4 +36,14 @@ public class StrongholdPieceWeight {
 		return this.instancesLimit == 0 || this.instancesSpawned < this.instancesLimit;
 	}
 
+	@Override
+	public StrongholdPieceWeight clone() {
+		try {
+			StrongholdPieceWeight clone = (StrongholdPieceWeight) super.clone();
+			clone.instancesSpawned = 0;
+			return clone;
+		} catch (CloneNotSupportedException e) {
+			throw new AssertionError();
+		}
+	}
 }
