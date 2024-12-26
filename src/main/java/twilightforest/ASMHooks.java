@@ -26,6 +26,7 @@ import net.minecraft.world.entity.decoration.LeashFenceKnotEntity;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.BiomeResolver;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.LevelChunk;
@@ -51,6 +52,7 @@ import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.custom.ChunkBlanketProcessors;
 import twilightforest.util.WorldUtil;
+import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.structures.CustomDensitySource;
 import twilightforest.world.components.structures.util.CustomStructureData;
 
@@ -164,6 +166,20 @@ public class ASMHooks {
 	 */
 	public static void chunkBlanketing(ChunkAccess chunkAccess, WorldGenRegion worldGenRegion) {
 		ChunkBlanketProcessors.chunkBlanketing(chunkAccess, worldGenRegion);
+	}
+
+	/**
+	 * {@link twilightforest.asm.transformers.chunk.NoiseBasedChunkGeneratorTransformer}
+	 *
+	 * Injection Point:<br/>
+	 * {@link net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator#doCreateBiomes}
+	 */
+	public static BiomeResolver tryRecreateBiomeResolver(BiomeResolver resolver) {
+		if (resolver instanceof TFBiomeProvider tfBiomeProvider) {
+			return tfBiomeProvider.recreate();
+		} else {
+			return resolver;
+		}
 	}
 
 	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

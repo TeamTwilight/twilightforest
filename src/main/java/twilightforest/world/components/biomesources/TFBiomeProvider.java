@@ -52,6 +52,10 @@ public class TFBiomeProvider extends BiomeSource {
 		return this.biomeTerrainDataHolder.value();
 	}
 
+	public TFBiomeProvider recreate() {
+		return new TFBiomeProvider(new Holder.Direct<>(this.biomeTerrainDataHolder.value().recreate()));
+	}
+
 	@Override
 	public void addDebugInfo(List<String> info, BlockPos cameraPos, Climate.Sampler sampler) {
 		super.addDebugInfo(info, cameraPos, sampler);

@@ -9,6 +9,7 @@ import twilightforest.asm.transformers.beardifier.BeardifierComputeTransformer;
 import twilightforest.asm.transformers.beardifier.InitializeCustomBeardifierFieldsDuringCreateNoiseChunkTransformer;
 import twilightforest.asm.transformers.book.ModifyWrittenBookNameTransformer;
 import twilightforest.asm.transformers.chunk.ChunkStatusTaskTransformer;
+import twilightforest.asm.transformers.chunk.NoiseBasedChunkGeneratorTransformer;
 import twilightforest.asm.transformers.cloud.IsRainingAtTransformer;
 import twilightforest.asm.transformers.conquered.StructureStartLoadStaticTransformer;
 import twilightforest.asm.transformers.foliage.FoliageColorResolverTransformer;
@@ -39,6 +40,7 @@ public class TFCoreMod implements ICoreMod {
 
 			// chunk
 			new ChunkStatusTaskTransformer(),
+			new NoiseBasedChunkGeneratorTransformer(),
 
 			// cloud
 			new IsRainingAtTransformer(),
