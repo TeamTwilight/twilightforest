@@ -51,6 +51,10 @@ public class BiomeDensitySource {
 		this.biomeList = list;
 	}
 
+	public BiomeDensitySource recreate() {
+		return new BiomeDensitySource(this.biomeList, this.genBiomeConfig);
+	}
+
 	private Holder<BiomeLayerFactory> getBiomeConfig() {
 		return this.genBiomeConfig;
 	}

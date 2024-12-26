@@ -122,7 +122,7 @@ public class TerrainDensityRouter implements DensityFunction.SimpleFunction {
 	@Override // NoiseChunk is the only class to ever call this, and it's typically a new chunk each time
 	public DensityFunction mapAll(Visitor visitor) {
 		return visitor.apply(new ChunkCachedDensityRouter(
-			this.biomeDensitySourceHolder,
+			new Holder.Direct<>(this.biomeDensitySourceHolder.value().recreate()), // isolate LazyArea cache between chunks
 			visitor.visitNoise(this.noise),
 			this.lowerDensityBound,
 			this.upperDensityBound,
