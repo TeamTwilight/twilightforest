@@ -39,7 +39,7 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 
 		// recreate maze object
 		maze = new TFMaze(getMazeSize(), getMazeSize(), RandomSource.create());
-		setFixedMazeSeed();
+		setFixedMazeSeed(maze);
 
 		// blank out rcoords above 1 so that the room generation works properly
 		//TODO: re-do this. :)
@@ -65,7 +65,7 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 		maze = new TFMaze(getMazeSize(), getMazeSize(), random);
 
 		// set the seed to a fixed value based on this maze's x and z
-		setFixedMazeSeed();
+		setFixedMazeSeed(maze);
 
 		// rooms
 		int nrooms = 7;
@@ -98,7 +98,7 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 		}
 	}
 
-	private void setFixedMazeSeed() {
+	private void setFixedMazeSeed(TFMaze maze) {
 		maze.setSeed(this.boundingBox.minX() * 90342903L + this.boundingBox.minY() * 90342903L ^ this.boundingBox.minZ());
 	}
 
@@ -285,18 +285,21 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 		generateBox(world, sbb, 1, 5, 1, getDiameter() + 1, 5, getDiameter() + 1, TFBlocks.MAZESTONE.get().defaultBlockState(), stone, onlyReplaceCeiling);
 		generateBox(world, sbb, 1, 0, 1, getDiameter() + 1, 0, getDiameter() + 1, TFBlocks.MAZESTONE_MOSAIC.get().defaultBlockState(), stone, false);
 
-		maze.headBlockState = TFBlocks.DECORATIVE_MAZESTONE.get().defaultBlockState();
-		maze.wallBlockState = TFBlocks.MAZESTONE_BRICK.get().defaultBlockState();
-		maze.rootBlockState = TFBlocks.DECORATIVE_MAZESTONE.get().defaultBlockState();
-		maze.pillarBlockState = TFBlocks.CUT_MAZESTONE.get().defaultBlockState();
-		maze.wallBlocks = mazestone.make();
-		maze.torchRarity = 0.05F;
-		maze.tall = 2;
-		maze.head = 1;
-		maze.roots = 1;
-		maze.oddBias = 4;
+		TFMaze maze1 = maze.clone();
+		setFixedMazeSeed(maze1);
 
-		maze.copyToStructure(world, manager, generator, 1, 2, 1, this, sbb);
+		maze1.headBlockState = TFBlocks.DECORATIVE_MAZESTONE.get().defaultBlockState();
+		maze1.wallBlockState = TFBlocks.MAZESTONE_BRICK.get().defaultBlockState();
+		maze1.rootBlockState = TFBlocks.DECORATIVE_MAZESTONE.get().defaultBlockState();
+		maze1.pillarBlockState = TFBlocks.CUT_MAZESTONE.get().defaultBlockState();
+		maze1.wallBlocks = mazestone.make();
+		maze1.torchRarity = 0.05F;
+		maze1.tall = 2;
+		maze1.head = 1;
+		maze1.roots = 1;
+		maze1.oddBias = 4;
+
+		maze1.copyToStructure(world, manager, generator, 1, 2, 1, this, sbb);
 	}
 
 	public int getMazeSize() {

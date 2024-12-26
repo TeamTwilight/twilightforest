@@ -24,7 +24,7 @@ import java.util.stream.IntStream;
  *
  * @author Ben
  */
-public class TFMaze {
+public class TFMaze implements Cloneable {
 
 	public final int width; // cells wide (x)
 	public final int depth; // cells deep (z)
@@ -63,7 +63,7 @@ public class TFMaze {
 	public static final int ROOM = 5;
 	public static final int DOOR = 6;
 
-	public final RandomSource rand;
+	public RandomSource rand;
 
 	public TFMaze(int cellsWidth, int cellsDepth, RandomSource random) {
 		// default values
@@ -575,5 +575,18 @@ public class TFMaze {
 		// the destination has run out of free spaces, let's try this square again, up to 2 more times
 		rbGen(sx, sz);
 		rbGen(sx, sz);
+	}
+
+	@Override
+	public TFMaze clone() {
+		try {
+			TFMaze clone = (TFMaze) super.clone();
+			synchronized (this) {
+				clone.rand = this.rand.fork();
+			}
+			return clone;
+		} catch (CloneNotSupportedException e) {
+			throw new AssertionError();
+		}
 	}
 }

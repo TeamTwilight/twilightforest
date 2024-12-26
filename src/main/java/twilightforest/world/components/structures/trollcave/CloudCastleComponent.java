@@ -22,16 +22,18 @@ import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 
 public class CloudCastleComponent extends TFStructureComponentOld {
 
-	private boolean minerPlaced = false;
-	private boolean warriorPlaced = false;
+	private final AtomicBoolean minerPlaced = new AtomicBoolean(false);
+	private final AtomicBoolean warriorPlaced = new AtomicBoolean(false);
 
 	public CloudCastleComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(TFStructurePieceTypes.TFClCa.get(), nbt);
-		this.minerPlaced = nbt.getBoolean("minerPlaced");
-		this.warriorPlaced = nbt.getBoolean("warriorPlaced");
+		this.minerPlaced.set(nbt.getBoolean("minerPlaced"));
+		this.warriorPlaced.set(nbt.getBoolean("warriorPlaced"));
 	}
 
 	@SuppressWarnings("this-escape")
@@ -50,8 +52,8 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 	@Override
 	protected void addAdditionalSaveData(StructurePieceSerializationContext ctx, CompoundTag tagCompound) {
 		super.addAdditionalSaveData(ctx, tagCompound);
-		tagCompound.putBoolean("minerPlaced", this.minerPlaced);
-		tagCompound.putBoolean("warriorPlaced", this.warriorPlaced);
+		tagCompound.putBoolean("minerPlaced", this.minerPlaced.get());
+		tagCompound.putBoolean("warriorPlaced", this.warriorPlaced.get());
 	}
 
 	@Override
@@ -92,15 +94,13 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 		this.generateAirBox(world, sbb, 8, 4, 12, 12, 11, 15);
 
 		// add giants
-		if (!this.minerPlaced) {
+		if (!this.minerPlaced.get()) {
 			int bx = this.getWorldX(14, 14);
 			int by = this.getWorldY(4);
 			int bz = this.getWorldZ(14, 14);
 			BlockPos pos = new BlockPos(bx, by, bz);
 
-			if (sbb.isInside(pos)) {
-				this.minerPlaced = true;
-
+			if (sbb.isInside(pos) && this.minerPlaced.compareAndSet(false, true)) {
 				GiantMiner miner = TFEntities.GIANT_MINER.get().create(world.getLevel());
 				miner.setPos(bx, by, bz);
 				miner.setPersistenceRequired();
@@ -109,15 +109,13 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 				world.addFreshEntity(miner);
 			}
 		}
-		if (!this.warriorPlaced) {
+		if (!this.warriorPlaced.get()) {
 			int bx = this.getWorldX(17, 17);
 			int by = this.getWorldY(4);
 			int bz = this.getWorldZ(17, 17);
 			BlockPos pos = new BlockPos(bx, by, bz);
 
-			if (sbb.isInside(pos)) {
-				this.warriorPlaced = true;
-
+			if (sbb.isInside(pos) && this.warriorPlaced.compareAndSet(false, true)) {
 				ArmoredGiant warrior = TFEntities.ARMORED_GIANT.get().create(world.getLevel());
 				warrior.setPos(bx, by, bz);
 				warrior.setPersistenceRequired();

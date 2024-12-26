@@ -22,7 +22,7 @@ public class FinalCastleMuralComponent extends TFStructureComponentOld {
 	private int width;
 
 	// we will model the mural in this byte array
-	private byte[][] mural;
+	private volatile byte[][] mural;
 
 	public FinalCastleMuralComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(TFStructurePieceTypes.TFFCMur.get(), nbt);
@@ -33,38 +33,43 @@ public class FinalCastleMuralComponent extends TFStructureComponentOld {
 		super(TFStructurePieceTypes.TFFCMur.get(), i, x, y, z);
 		this.setOrientation(direction);
 		this.boundingBox = TFStructureComponentOld.getComponentToAddBoundingBox2(x, y, z, 0, -height / 2, -width / 2, 1, height - 1, width - 1, direction);
+		this.height = this.boundingBox.getYSpan();
+		this.width = (this.getOrientation() == Direction.SOUTH || this.getOrientation() == Direction.NORTH) ? this.boundingBox.getZSpan() : this.boundingBox.getXSpan();
 	}
 
 	@Override
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		this.height = this.boundingBox.getYSpan();
-		this.width = (this.getOrientation() == Direction.SOUTH || this.getOrientation() == Direction.NORTH) ? this.boundingBox.getZSpan() : this.boundingBox.getXSpan();
-
 		RandomSource decoRNG = RandomSource.create(world.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
 
-		if (mural == null) {
-			// only make it once
-			mural = new byte[width][height];
+		if (this.mural == null) {
+			synchronized (this) {
+				if (this.mural == null) {
+					// only make it once
+					byte[][] mural = new byte[width][height];
 
-			int startX = width / 2 - 1;
-			int startY = 2;
+					int startX = width / 2 - 1;
+					int startY = 2;
 
-			// make mural, fill in dot by start
-			for (int x = -1; x < 2; x++) {
-				for (int y = -1; y < 2; y++) {
-					mural[startX + x][startY + y] = 1;
+					// make mural, fill in dot by start
+					for (int x = -1; x < 2; x++) {
+						for (int y = -1; y < 2; y++) {
+							mural[startX + x][startY + y] = 1;
+						}
+					}
+
+					// side branches
+					makeHorizontalTree(decoRNG, mural, startX + 1, startY, decoRNG.nextInt(width / 6) + width / 6, true);
+					makeHorizontalTree(decoRNG, mural, startX - 1, startY, decoRNG.nextInt(width / 6) + width / 6, false);
+
+					// main tree
+					makeVerticalTree(decoRNG, mural, startX, startY + 1, decoRNG.nextInt(height / 6) + height / 6, true);
+
+					// stripes
+					makeStripes(decoRNG);
+
+					this.mural = mural;
 				}
 			}
-
-			// side branches
-			makeHorizontalTree(decoRNG, mural, startX + 1, startY, decoRNG.nextInt(width / 6) + width / 6, true);
-			makeHorizontalTree(decoRNG, mural, startX - 1, startY, decoRNG.nextInt(width / 6) + width / 6, false);
-
-			// main tree
-			makeVerticalTree(decoRNG, mural, startX, startY + 1, decoRNG.nextInt(height / 6) + height / 6, true);
-
-			// stripes
-			makeStripes(decoRNG);
 		}
 
 		final BlockState castleMagic = TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get().defaultBlockState();
