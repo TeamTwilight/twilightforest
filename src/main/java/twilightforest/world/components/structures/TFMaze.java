@@ -581,9 +581,7 @@ public class TFMaze implements Cloneable {
 	public TFMaze clone() {
 		try {
 			TFMaze clone = (TFMaze) super.clone();
-			synchronized (this) {
-				clone.rand = this.rand.fork();
-			}
+			clone.rand = RandomSource.create();
 			return clone;
 		} catch (CloneNotSupportedException e) {
 			throw new AssertionError();
