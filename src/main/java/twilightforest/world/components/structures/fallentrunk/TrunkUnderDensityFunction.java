@@ -7,6 +7,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.Beardifier;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pools.JigsawJunction;
+import twilightforest.TwilightForestMod;
 import twilightforest.world.components.chunkgenerators.HollowHillFunction;
 
 import java.util.Arrays;
@@ -18,10 +19,10 @@ public class TrunkUnderDensityFunction extends Beardifier {
 	private final RandomSource random;  // used to create dirt mounds
 	private final BoundingBox boundingBox;
 	private final HollowHillFunction[] hollowHillFunctions;
-	private final int moundRadius = 4;
 	protected final BoundingBox moundApex;
+	protected static final int moundRadius = 4;
 
-	public TrunkUnderDensityFunction(ObjectListIterator<Rigid> pieceIterator, boolean isBigTree, int minMounds, int maxMounds) {
+	public TrunkUnderDensityFunction(ObjectListIterator<Rigid> pieceIterator, FallenTrunkPiece piece, boolean isBigTree, int minMounds, int maxMounds) {
 		super(pieceIterator, (ObjectListIterator<JigsawJunction>) ObjectIterators.<JigsawJunction>emptyIterator());
 		this.isBigTree = isBigTree;
 		boundingBox = getFallenTrunkPiece().box();
@@ -35,7 +36,7 @@ public class TrunkUnderDensityFunction extends Beardifier {
 		this.moundApex = BoundingBox.fromCorners(moundApexCorner, moundApexCorner);
 		this.hollowHillFunctions = new HollowHillFunction[random.nextInt(minMounds, maxMounds + 1)];
 		for(int i = 0; i < hollowHillFunctions.length; i++) {
-			hollowHillFunctions[i] = getHollowHillFunction();
+			hollowHillFunctions[i] = getHollowHillFunctionWithoutCoveringHole(piece);
 		}
 	}
 
@@ -73,7 +74,20 @@ public class TrunkUnderDensityFunction extends Beardifier {
 			.max(Comparator.comparing(hollowHillFunction -> hollowHillFunction.compute(context)))
 			.map(hollowHillFunction -> hollowHillFunction.compute(context))
 			.orElse(Double.NEGATIVE_INFINITY);
-//		return getBeardContribution(horizontalDistanceX, verticalDistance, horizontalDistanceZ, verticalDistance) * 2.5;
+	}
+
+	protected HollowHillFunction getHollowHillFunctionWithoutCoveringHole(FallenTrunkPiece piece) {
+		if (isBigTree)
+			return getHollowHillFunction();  // Big trees don't have holes
+
+		HollowHillFunction hollowHillFunction = getHollowHillFunction();
+		for (int tries = 0; tries < 100 && piece.isHoleCoveredByHill(hollowHillFunction); tries++) {
+			hollowHillFunction = getHollowHillFunction();
+		}
+		if (piece.isHoleCoveredByHill(hollowHillFunction))
+			TwilightForestMod.LOGGER.error("Too many tries during generation of mounds in Fallen Trunk! Please contact TF devs with seed and {}", piece.getBoundingBox().getCenter().toString());
+
+		return hollowHillFunction;
 	}
 
 	protected HollowHillFunction getHollowHillFunction() {
@@ -82,9 +96,9 @@ public class TrunkUnderDensityFunction extends Beardifier {
 		BoundingBox absouluteMoundApex = moundApex.moved(boundingBox.minX(), boundingBox.minY(), boundingBox.minZ());
 		int radius = getRadius(boundingBox);
 		return new HollowHillFunction(
-			absouluteMoundApex.getCenter().getX() + (isXOriented ? coordinateOffset : random.nextBoolean() ? radius * 1.5f : 0),
+			absouluteMoundApex.getCenter().getX() + (isXOriented ? coordinateOffset : random.nextBoolean() ? boundingBox.getXSpan() - 1 : 0),
 			absouluteMoundApex.getCenter().getY() + radius / 3f,
-			absouluteMoundApex.getCenter().getZ() + (!isXOriented ? coordinateOffset : random.nextBoolean() ? radius * 1.5f : 0),
+			absouluteMoundApex.getCenter().getZ() + (!isXOriented ? coordinateOffset : random.nextBoolean() ? boundingBox.getZSpan() - 1 : 0),
 			moundRadius, 1);
 	}
 

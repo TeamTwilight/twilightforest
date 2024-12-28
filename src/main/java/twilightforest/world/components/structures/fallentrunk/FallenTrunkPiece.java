@@ -34,6 +34,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.world.components.chunkgenerators.HollowHillFunction;
 import twilightforest.world.components.structures.TerraformingPiece;
 import twilightforest.world.components.structures.type.FallenTrunkStructure;
 
@@ -228,8 +229,11 @@ public class FallenTrunkPiece extends StructurePiece {
 		return radius == 1 ? 2 : this.radius * 2 - 1;
 	}
 
-	private int convertXYtoLength(int x, int y) {
-		int sideLength = getSideLength();
+	protected int convertXYtoLength(int x, int y) {
+		return convertXYtoLength(getSideLength(), x, y);
+	}
+
+	protected int convertXYtoLength(int sideLength, int x, int y) {
 		int length = 0;
 
 		if (x == 0) {
@@ -243,5 +247,49 @@ public class FallenTrunkPiece extends StructurePiece {
 		}
 
 		return length - 1;
+	}
+
+	public int[] convertLengthToXY(int length) {
+		return convertLengthToXY(getSideLength(), length);
+	}
+
+	public int[] convertLengthToXY(int sideLength, int length) {
+		if (length < sideLength) {
+			return new int[] {0, length + 1};  // Left edge
+		} else if (length < 2 * sideLength) {
+			return new int[] {length + 1 - sideLength, sideLength + 1};  // Top edge
+		} else if (length < 3 * sideLength) {
+			return new int[] {sideLength + 1, 3 * sideLength - length};  // Right edge
+		} else {
+			return new int[] {4 * sideLength - (length + 1), 0};  // Bottom edge
+		}
+	}
+
+	public boolean isHoleCoveredByHill(HollowHillFunction hollowHillFunction) {
+		for (int length = 0; length < hole.sizeXY; length++) {
+			for (int z = 0; z < hole.sizeZ; z++) {
+				if (!hole.isInHole(length, z))
+					continue;
+				int[] xy = convertLengthToXY(length);
+				int x = xy[0];
+				int y = xy[1];
+				if (checkForMoundAroundTheBlock(x, y, z, hollowHillFunction))
+					return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean checkForMoundAroundTheBlock(int x, int y, int z, HollowHillFunction hollowHillFunction) {
+		float hillX = x + boundingBox.minX() - hollowHillFunction.centerX();
+		float hillY = y + boundingBox.minY() - hollowHillFunction.bottomY();
+		float hillZ = z + boundingBox.minZ() - hollowHillFunction.centerZ();
+		for (int dx = -1; dx <= 1; dx++) {
+				for (int dz = -1; dz <= 1; dz++) {
+					if (hollowHillFunction.compute(hillX + dx, hillY, hillZ + dz) > 0)
+						return true;
+				}
+			}
+		return false;
 	}
 }

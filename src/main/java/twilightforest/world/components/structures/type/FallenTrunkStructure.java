@@ -88,13 +88,12 @@ public class FallenTrunkStructure extends Structure implements CustomDensitySour
 		int xOff = 0;
 		int yOff = 0;
 		int zOff = 0;
-		int xSize = radius > 1 ? radius * 2 + 1 : 4;
-		int ySize = xSize;
+		int xySize = radius > 1 ? radius * 2 + 1 : 4;
 		int zSize = length - 1;
 
 		BoundingBox boundingBox = BoundingBox.orientBox(x, worldY, z,
 			xOff, yOff, zOff,
-			xSize, ySize, zSize,
+			xySize, xySize, zSize,
 			orientation);
 		long holeSeed = random.nextLong();
 
@@ -126,12 +125,13 @@ public class FallenTrunkStructure extends Structure implements CustomDensitySour
 	public DensityFunction getStructureTerraformer(ChunkPos chunkPosAt, StructureStart structurePieceSource) {
 		FallenTrunkPiece piece = ((FallenTrunkPiece) structurePieceSource.getPieces().getFirst());
 		ObjectList<Beardifier.Rigid> objectlist = ObjectArrayList.of(new Beardifier.Rigid(piece.getBoundingBox(), TerrainAdjustment.NONE, 0));
+		boolean isBigTree = piece.radius == radiuses.get(2);
 		int minMounds = 3;
 		int maxMounds = 5;
 		if (piece.radius == radiuses.get(2)) {
 			minMounds += 5;
 			maxMounds += 5;
 		}
-		return new TrunkUnderDensityFunction(objectlist.iterator(), piece.radius == radiuses.get(2), minMounds, maxMounds);  // big trees are a special case
+		return new TrunkUnderDensityFunction(objectlist.iterator(), piece, isBigTree, minMounds, maxMounds);  // big trees are a special case
 	}
 }
