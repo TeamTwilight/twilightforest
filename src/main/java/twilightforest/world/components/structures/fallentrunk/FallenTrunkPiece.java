@@ -273,7 +273,10 @@ public class FallenTrunkPiece extends StructurePiece {
 				int[] xy = convertLengthToXY(length);
 				int x = xy[0];
 				int y = xy[1];
-				if (checkForMoundAroundTheBlock(getOrientation().getAxis() == Direction.Axis.Z ? x : z, y, getOrientation().getAxis() == Direction.Axis.Z ? z : x, hollowHillFunction))
+
+				int zOffset = ERODED_LENGTH + 1;  // hole coordinates has offset because of eroded ends
+				int worldZ = z + zOffset;
+				if (checkForMoundAroundTheBlock(getOrientation().getAxis() == Direction.Axis.Z ? x : worldZ, y, getOrientation().getAxis() == Direction.Axis.Z ? worldZ : x, hollowHillFunction))
 					return true;
 			}
 		}
