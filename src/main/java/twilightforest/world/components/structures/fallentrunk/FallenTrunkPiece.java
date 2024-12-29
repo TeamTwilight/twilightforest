@@ -275,8 +275,12 @@ public class FallenTrunkPiece extends StructurePiece {
 				int y = xy[1];
 
 				int zOffset = ERODED_LENGTH + 1;  // hole coordinates has offset because of eroded ends
-				int worldZ = z + zOffset;
-				if (checkForMoundAroundTheBlock(getOrientation().getAxis() == Direction.Axis.Z ? x : worldZ, y, getOrientation().getAxis() == Direction.Axis.Z ? worldZ : x, hollowHillFunction))
+				BlockPos worldPos = getWorldPos(x, y, z + zOffset);
+				int worldX = worldPos.getX();
+				int worldY = worldPos.getY();
+				int worldZ = worldPos.getZ();
+
+				if (checkForMoundAroundTheBlock(getOrientation().getAxis() == Direction.Axis.Z ? worldX : worldZ, worldY, getOrientation().getAxis() == Direction.Axis.Z ? worldZ : worldX, hollowHillFunction))
 					return true;
 			}
 		}
@@ -284,9 +288,9 @@ public class FallenTrunkPiece extends StructurePiece {
 	}
 
 	private boolean checkForMoundAroundTheBlock(int x, int y, int z, HollowHillFunction hollowHillFunction) {
-		float hillX = x + boundingBox.minX() - hollowHillFunction.centerX();
-		float hillY = y + boundingBox.minY() - hollowHillFunction.bottomY();
-		float hillZ = z + boundingBox.minZ() - hollowHillFunction.centerZ();
+		float hillX = x - hollowHillFunction.centerX();
+		float hillY = y - hollowHillFunction.bottomY();
+		float hillZ = z - hollowHillFunction.centerZ();
 		for (int dx = -1; dx <= 1; dx++) {
 				for (int dz = -1; dz <= 1; dz++) {
 					if (hollowHillFunction.compute(hillX + dx, hillY, hillZ + dz) > 0)
