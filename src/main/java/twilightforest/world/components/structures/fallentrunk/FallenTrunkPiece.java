@@ -282,7 +282,7 @@ public class FallenTrunkPiece extends StructurePiece {
 				int worldY = worldPos.getY();
 				int worldZ = worldPos.getZ();
 
-				if (checkForMoundAroundTheBlock(getOrientation().getAxis() == Direction.Axis.Z ? worldX : worldZ, worldY, getOrientation().getAxis() == Direction.Axis.Z ? worldZ : worldX, hollowHillFunction))
+				if (checkForMoundAroundTheBlock(worldX, worldY, worldZ, hollowHillFunction))
 					return true;
 			}
 		}
