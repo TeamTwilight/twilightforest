@@ -15,14 +15,16 @@ import java.util.List;
 
 public class ScepterRecipeBuilder {
 	private final Item scepter;
+	private final int durability;
 	private final List<Ingredient> repairItems = new ArrayList<>();
 
-	private ScepterRecipeBuilder(Item scepter) {
+	private ScepterRecipeBuilder(Item scepter, int durability) {
 		this.scepter = scepter;
+		this.durability = durability;
 	}
 
-	public static ScepterRecipeBuilder repairFor(Item scepter) {
-		return new ScepterRecipeBuilder(scepter);
+	public static ScepterRecipeBuilder repairFor(Item scepter, int durability) {
+		return new ScepterRecipeBuilder(scepter, durability);
 	}
 
 	public <T> ScepterRecipeBuilder addRepairIngredient(Ingredient item) {
@@ -46,7 +48,7 @@ public class ScepterRecipeBuilder {
 	}
 
 	public void save(RecipeOutput output, ResourceLocation id) {
-		ScepterRepairRecipe recipe = new ScepterRepairRecipe(this.scepter, this.repairItems, CraftingBookCategory.MISC);
+		ScepterRepairRecipe recipe = new ScepterRepairRecipe(this.scepter, this.repairItems, this.durability, CraftingBookCategory.MISC);
 		output.accept(id, recipe, null);
 	}
 }

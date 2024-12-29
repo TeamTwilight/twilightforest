@@ -48,6 +48,11 @@ public class ArcticArmorItem extends ArmorItem {
 		public static final ArmorRender INSTANCE = new ArmorRender();
 
 		@Override
+		public int getDefaultDyeColor(ItemStack stack) {
+			return DEFAULT_COLOR;
+		}
+
+		@Override
 		public @NotNull HumanoidModel<?> getHumanoidArmorModel(LivingEntity living, ItemStack stack, EquipmentSlot slot, HumanoidModel<?> model) {
 			EntityModelSet models = Minecraft.getInstance().getEntityModels();
 			ModelPart root = models.bakeLayer(slot == EquipmentSlot.LEGS ? TFModelLayers.ARCTIC_ARMOR_INNER : TFModelLayers.ARCTIC_ARMOR_OUTER);

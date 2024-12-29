@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -16,9 +17,11 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
+import twilightforest.block.entity.JarBlockEntity;
+import twilightforest.components.item.JarLid;
 import twilightforest.config.TFConfig;
 import twilightforest.init.TFBlocks;
-import twilightforest.init.TFItems;
+import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFSounds;
 
 public class CicadaJarBlock extends JarBlock {
@@ -28,11 +31,11 @@ public class CicadaJarBlock extends JarBlock {
 
 	@Override
 	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult result) {
-		if (player.isShiftKeyDown()) {
+		if (player.isShiftKeyDown() && level.getBlockEntity(pos) instanceof JarBlockEntity jarBE) {
 			ItemEntity cicada = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(TFBlocks.CICADA));
 			level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
 			cicada.spawnAtLocation(cicada.getItem());
-			cicada.spawnAtLocation(TFItems.MASON_JAR.get());
+			cicada.spawnAtLocation(Util.make(new ItemStack(TFBlocks.MASON_JAR.get()), jar -> jar.set(TFDataComponents.JAR_LID.get(), new JarLid(jarBE.lid))));
 			level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
 			return InteractionResult.sidedSuccess(level.isClientSide());
 		}

@@ -15,6 +15,7 @@ import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import twilightforest.TwilightForestMod;
+import twilightforest.data.custom.QuestGenerator;
 import twilightforest.data.custom.stalactites.StalactiteGenerator;
 import twilightforest.data.tags.*;
 
@@ -69,6 +70,8 @@ public class DataGenerators {
 		//when magic paintings are registered their atlas and lang content is too
 		generator.addProvider(event.includeClient(), new AtlasGenerator(output, lookupProvider, helper));
 		generator.addProvider(event.includeClient(), new LangGenerator(output));
+
+		generator.addProvider(event.includeServer(), new QuestGenerator(output));
 
 		//pack.mcmeta
 		generator.addProvider(true, new PackMetadataGenerator(output).add(PackMetadataSection.TYPE, new PackMetadataSection(

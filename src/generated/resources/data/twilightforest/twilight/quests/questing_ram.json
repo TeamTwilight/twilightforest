@@ -1,0 +1,53 @@
+{
+  "items": {
+    "black": {
+      "item": "minecraft:black_wool"
+    },
+    "blue": {
+      "item": "minecraft:blue_wool"
+    },
+    "brown": {
+      "item": "minecraft:brown_wool"
+    },
+    "cyan": {
+      "item": "minecraft:cyan_wool"
+    },
+    "gray": {
+      "item": "minecraft:gray_wool"
+    },
+    "green": {
+      "item": "minecraft:green_wool"
+    },
+    "light_blue": {
+      "item": "minecraft:light_blue_wool"
+    },
+    "light_gray": {
+      "item": "minecraft:light_gray_wool"
+    },
+    "lime": {
+      "item": "minecraft:lime_wool"
+    },
+    "magenta": {
+      "item": "minecraft:magenta_wool"
+    },
+    "orange": {
+      "item": "minecraft:orange_wool"
+    },
+    "pink": {
+      "item": "minecraft:pink_wool"
+    },
+    "purple": {
+      "item": "minecraft:purple_wool"
+    },
+    "red": {
+      "item": "minecraft:red_wool"
+    },
+    "white": {
+      "item": "minecraft:white_wool"
+    },
+    "yellow": {
+      "item": "minecraft:yellow_wool"
+    }
+  },
+  "reward": "twilightforest:entities/questing_ram_rewards"
+}

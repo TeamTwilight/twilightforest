@@ -23,8 +23,7 @@ public class MagicPaintingTextureManager extends TextureAtlasHolder {
 		return this.getSprite(variant.withPrefix(MAGIC_PAINTING_PATH + "/").withSuffix("/" + layer.path()));
 	}
 
-	public TextureAtlasSprite getBackSprite() {
-		return this.getSprite(BACK_SPRITE_LOCATION);
+	public TextureAtlasSprite getBackSprite(MagicPaintingVariant variant) {
+		return this.getSprite(variant.backTexture());
 	}
-
 }

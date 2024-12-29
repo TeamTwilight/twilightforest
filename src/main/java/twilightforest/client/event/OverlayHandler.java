@@ -108,20 +108,25 @@ public class OverlayHandler {
 	}
 
 	private static void renderIndicator(Minecraft minecraft, GuiGraphics graphics, Gui gui, Player player, int screenWidth, int screenHeight) {
-        if (minecraft.options.getCameraType().isFirstPerson() && (minecraft.gameMode.getPlayerMode() != GameType.SPECTATOR || gui.canRenderCrosshairForSpectator(minecraft.hitResult)) && minecraft.crosshairPickEntity instanceof QuestRam ram) {
-            ItemStack stack = player.getInventory().getItem(player.getInventory().selected);
-            if (!stack.isEmpty() && stack.is(ItemTags.WOOL)) {
-				RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-				int j = ((screenHeight - 1) / 2) - 11;
-				int k = ((screenWidth - 1) / 2) - 3;
-                if (ram.guessColor(stack) != null && !ram.isColorPresent(Objects.requireNonNull(ram.guessColor(stack)))) {
-                    graphics.blitSprite(QUESTING_RAM_X_SPRITE, k, j, 7, 7);
-                } else {
-                    graphics.blitSprite(QUESTING_RAM_CHECK_SPRITE, k, j, 7, 7);
-                }
-				RenderSystem.defaultBlendFunc();
-            }
-        }
+		if (minecraft.options.getCameraType().isFirstPerson() && (minecraft.gameMode.getPlayerMode() != GameType.SPECTATOR || gui.canRenderCrosshairForSpectator(minecraft.hitResult)) && minecraft.crosshairPickEntity instanceof QuestRam ram) {
+			ItemStack stack = player.getInventory().getItem(player.getInventory().selected);
+			if (!stack.isEmpty()) {
+				for (var questEntry : TwilightForestMod.getQuests().getQuestingRam().questItems().entrySet()) {
+					if (questEntry.getValue().test(stack)) {
+						RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+						int j = ((screenHeight - 1) / 2) - 11;
+						int k = ((screenWidth - 1) / 2) - 3;
+						if (!ram.isColorPresent(questEntry.getKey())) {
+							graphics.blitSprite(QUESTING_RAM_X_SPRITE, k, j, 7, 7);
+						} else {
+							graphics.blitSprite(QUESTING_RAM_CHECK_SPRITE, k, j, 7, 7);
+						}
+						RenderSystem.defaultBlendFunc();
+						break;
+					}
+				}
+			}
+		}
 	}
 
 	private static void renderShieldCount(GuiGraphics graphics, Gui gui, int screenWidth, int screenHeight, int shieldCount) {

@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -135,13 +136,15 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 			ItemContainerContents contents = stack.getComponents().get(DataComponents.CONTAINER);
 			if (contents == null || contents.copyOne().isEmpty()) {
 				if (this == TFBlocks.FIREFLY.get()) {
+					ItemStack newStack = Util.make(new ItemStack(TFBlocks.FIREFLY_JAR.get()), jar -> jar.set(TFDataComponents.JAR_LID.get(), stack.get(TFDataComponents.JAR_LID.get())));
 					stack.consume(1, player);
-					player.getInventory().add(new ItemStack(TFBlocks.FIREFLY_JAR.get()));
+					player.getInventory().add(newStack);
 					level.setBlockAndUpdate(pos, state.getValue(WATERLOGGED) ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState());
 					return ItemInteractionResult.sidedSuccess(level.isClientSide());
 				} else if (this == TFBlocks.CICADA.get()) {
+					ItemStack newStack = Util.make(new ItemStack(TFBlocks.CICADA_JAR.get()), jar -> jar.set(TFDataComponents.JAR_LID.get(), stack.get(TFDataComponents.JAR_LID.get())));
 					stack.consume(1, player);
-					player.getInventory().add(new ItemStack(TFBlocks.CICADA_JAR.get()));
+					player.getInventory().add(newStack);
 					if (level.isClientSide())
 						Minecraft.getInstance().getSoundManager().stop(TFSounds.CICADA.get().getLocation(), SoundSource.NEUTRAL);
 					level.setBlockAndUpdate(pos, state.getValue(WATERLOGGED) ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState());

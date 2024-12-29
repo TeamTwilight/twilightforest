@@ -12,16 +12,6 @@ import java.util.OptionalInt;
 @Component
 public class ArmorUtil {
 
-	public OptionalInt getArmorColor(ItemStack stack) {
-		if (stack.isEmpty())
-			return OptionalInt.empty();
-
-		if (stack.getItem() instanceof ArcticArmorItem)
-			return OptionalInt.of(DyedItemColor.getOrDefault(stack, ArcticArmorItem.DEFAULT_COLOR));
-
-		return OptionalInt.empty();
-	}
-
 	public float getShroudedArmorPercentage(LivingEntity entity) {
 		int shroudedArmor = 0;
 		int nonShroudedArmor = 0;

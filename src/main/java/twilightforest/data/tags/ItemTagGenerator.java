@@ -212,6 +212,7 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 			TFBlocks.TERRORCOTTA_CURVES.asItem(),
 			TFBlocks.TERRORCOTTA_LINES.asItem(),
 			TFBlocks.CHISELED_CANOPY_BOOKSHELF.asItem(),
+			TFBlocks.SKULL_CHEST.asItem(),
 			TFBlocks.KEEPSAKE_CASKET.asItem(),
 			TFBlocks.SINISTER_SPAWNER.asItem(),
 			TFBlocks.CORONATION_CARPET.asItem(),
@@ -223,7 +224,10 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 			TFItems.BRITTLE_FLASK.get(),
 			TFItems.GREATER_FLASK.get(),
 			TFItems.MYSTIC_CROWN.get(),
-			TFItems.CROWN_SPLINTER.get()
+			TFItems.CROWN_SPLINTER.get(),
+			TFItems.EXANIMATE_ESSENCE.get(),
+			TFItems.WROUGHT_IRON_BAR.get(),
+			TFBlocks.BRAZIER.asItem()
 		);
 
 		this.tag(KOBOLD_PACIFICATION_BREADS).add(Items.BREAD);

@@ -19,6 +19,7 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import org.codehaus.plexus.util.StringUtils;
 import twilightforest.block.KeepsakeCasketBlock;
 import twilightforest.events.CharmEvents;
+import twilightforest.init.TFDataComponents;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -38,13 +39,15 @@ public class TFItemStackUtils {
 		for (ItemStack stack : stacks) {
 			if (stack.is(item)) {
 				if (saveItemToTag) persistentTag.put(CharmEvents.CONSUMED_CHARM_TAG, stack.save(provider));
-				stack.shrink(1);
 				BlockItemStateProperties blockItemStateProperties = stack.get(DataComponents.BLOCK_STATE);
 				if (blockItemStateProperties != null && blockItemStateProperties.properties().containsKey(KeepsakeCasketBlock.BREAKAGE.getName())) {
 					String propertyValueString = blockItemStateProperties.properties().get(KeepsakeCasketBlock.BREAKAGE.getName());
 
 					persistentTag.putInt(CharmEvents.CASKET_DAMAGE_TAG, StringUtils.isNumeric(propertyValueString) ? Integer.parseInt(propertyValueString) : 0);
+				} else if (stack.has(TFDataComponents.CASKET_DAMAGE)) {
+					persistentTag.putInt(CharmEvents.CASKET_DAMAGE_TAG, stack.getOrDefault(TFDataComponents.CASKET_DAMAGE, 0));
 				}
+				stack.shrink(1);
 				return true;
 			}
 		}

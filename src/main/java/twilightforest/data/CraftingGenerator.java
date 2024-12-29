@@ -579,19 +579,19 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.unlockedBy("has_ring", has(TFItems.KNIGHTMETAL_RING.get()))
 			.save(output, locEquip(TFItems.KNIGHTMETAL_SHIELD.getId().getPath()));
 
-		ScepterRecipeBuilder.repairFor(TFItems.LIFEDRAIN_SCEPTER.get())
+		ScepterRecipeBuilder.repairFor(TFItems.LIFEDRAIN_SCEPTER.get(), 9)
 			.addRepairIngredient(Items.FERMENTED_SPIDER_EYE)
 			.save(output, locEquip(TFItems.LIFEDRAIN_SCEPTER.getId().getPath()));
 
-		ScepterRecipeBuilder.repairFor(TFItems.FORTIFICATION_SCEPTER.get())
+		ScepterRecipeBuilder.repairFor(TFItems.FORTIFICATION_SCEPTER.get(), 9)
 			.addRepairIngredient(Ingredient.of(Items.GOLDEN_APPLE))
 			.save(output, locEquip(TFItems.FORTIFICATION_SCEPTER.getId().getPath()));
 
-		ScepterRecipeBuilder.repairFor(TFItems.TWILIGHT_SCEPTER.get())
+		ScepterRecipeBuilder.repairFor(TFItems.TWILIGHT_SCEPTER.get(), 9)
 			.addRepairIngredient(Tags.Items.ENDER_PEARLS)
 			.save(output, locEquip(TFItems.TWILIGHT_SCEPTER.getId().getPath()));
 
-		ScepterRecipeBuilder.repairFor(TFItems.ZOMBIE_SCEPTER.get())
+		ScepterRecipeBuilder.repairFor(TFItems.ZOMBIE_SCEPTER.get(), 9)
 			.addRepairIngredient(CompoundIngredient.of(
 				DataComponentIngredient.of(false, DataComponents.POTION_CONTENTS, new PotionContents(Potions.STRENGTH), Items.POTION),
 				DataComponentIngredient.of(false, DataComponents.POTION_CONTENTS, new PotionContents(Potions.LONG_STRENGTH), Items.POTION),

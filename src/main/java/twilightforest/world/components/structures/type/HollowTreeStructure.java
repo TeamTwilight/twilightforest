@@ -157,7 +157,7 @@ public class HollowTreeStructure extends Structure implements DecorationClearanc
 			if (posCheck.equals(pos))
 				continue;
 
-			if (!FeatureLogic.worldGenReplaceable(level.getBlockState(posCheck)))
+			if (!FeatureLogic.treesReplaceable(level.getBlockState(posCheck)))
 				return false;
 		}
 

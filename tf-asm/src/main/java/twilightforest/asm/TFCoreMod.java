@@ -2,7 +2,6 @@ package twilightforest.asm;
 
 import cpw.mods.modlauncher.api.ITransformer;
 import net.neoforged.neoforgespi.coremod.ICoreMod;
-import twilightforest.asm.transformers.armor.ArmorColorRenderingTransformer;
 import twilightforest.asm.transformers.armor.ArmorVisibilityRenderingTransformer;
 import twilightforest.asm.transformers.armor.CancelArmorRenderingTransformer;
 import twilightforest.asm.transformers.beardifier.BeardifierClassTransformer;
@@ -27,7 +26,6 @@ public class TFCoreMod implements ICoreMod {
 	public Iterable<? extends ITransformer<?>> getTransformers() {
 		return List.of(
 			// armor
-			new ArmorColorRenderingTransformer(),
 			new ArmorVisibilityRenderingTransformer(),
 			new CancelArmorRenderingTransformer(),
 

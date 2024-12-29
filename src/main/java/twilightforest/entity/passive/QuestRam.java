@@ -12,7 +12,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -26,13 +25,10 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
@@ -40,12 +36,12 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.TwilightForestMod;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.entity.ai.goal.QuestRamEatWoolGoal;
 import twilightforest.init.TFAdvancements;
 import twilightforest.init.TFSounds;
 import twilightforest.init.TFStructures;
-import twilightforest.loot.TFLootTables;
 import twilightforest.network.ParticlePacket;
 import twilightforest.util.landmarks.LandmarkUtil;
 
@@ -69,10 +65,20 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 		this.goalSelector.addGoal(0, new FloatGoal(this));
 		this.goalSelector.addGoal(1, new PanicGoal(this, 1.38F));
 		this.goalSelector.addGoal(2, new QuestRamEatWoolGoal(this));
-		this.goalSelector.addGoal(3, new TemptGoal(this, 1.0F, Ingredient.of(ItemTags.WOOL), false));
+		this.goalSelector.addGoal(3, new TemptGoal(this, 1.0F, this::isItemTempting, false));
 		this.addRestrictionGoals(this, this.goalSelector);
 		this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0F));
 		this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
+	}
+
+	public boolean isItemTempting(ItemStack stack) {
+		for (var questEntry : TwilightForestMod.getQuests().getQuestingRam().questItems().entrySet()) {
+			if (questEntry.getValue().test(stack)) {
+				DyeColor color = questEntry.getKey();
+				return color != null && !this.isColorPresent(color);
+			}
+		}
+		return false;
 	}
 
 	@Override
@@ -123,7 +129,7 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 	private void rewardQuest() {
 		// todo flesh the context out more
 		LootParams ctx = new LootParams.Builder((ServerLevel) this.level()).withParameter(LootContextParams.THIS_ENTITY, this).create(LootContextParamSets.PIGLIN_BARTER);
-		ObjectArrayList<ItemStack> rewards = this.level().getServer().reloadableRegistries().getLootTable(TFLootTables.QUESTING_RAM_REWARDS).getRandomItems(ctx);
+		ObjectArrayList<ItemStack> rewards = this.level().getServer().reloadableRegistries().getLootTable(TwilightForestMod.getQuests().getQuestingRam().lootTable()).getRandomItems(ctx);
 		rewards.forEach(stack -> this.spawnAtLocation(stack, 1.0F));
 
 		for (ServerPlayer player : this.level().getEntitiesOfClass(ServerPlayer.class, getBoundingBox().inflate(16.0D, 16.0D, 16.0D))) {
@@ -152,29 +158,18 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 	}
 
 	public boolean tryAccept(ItemStack stack) {
-		if (stack.is(ItemTags.WOOL)) {
-			DyeColor color = this.guessColor(stack);
-			if (color != null && !this.isColorPresent(color)) {
-				this.setColorPresent(color);
-				this.animateAddColor(color, 50);
-				this.playAmbientSound();
-				return true;
-			}
-		}
-		return false;
-	}
-
-	@Nullable
-	public DyeColor guessColor(ItemStack stack) {
-		if (stack.is(ItemTags.WOOL) && stack.getItem() instanceof BlockItem blockItem) {
-			MapColor color = blockItem.getBlock().defaultMapColor();
-			for (DyeColor dye : DyeColor.values()) {
-				if (color == dye.getMapColor()) {
-					return dye;
+		for (var questEntry : TwilightForestMod.getQuests().getQuestingRam().questItems().entrySet()) {
+			if (questEntry.getValue().test(stack)) {
+				DyeColor color = questEntry.getKey();
+				if (color != null && !this.isColorPresent(color)) {
+					this.setColorPresent(color);
+					this.animateAddColor(color, 50);
+					this.playAmbientSound();
+					return true;
 				}
 			}
 		}
-		return null;
+		return false;
 	}
 
 	@Override

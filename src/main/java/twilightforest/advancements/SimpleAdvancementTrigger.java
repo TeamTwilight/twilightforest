@@ -51,5 +51,9 @@ public class SimpleAdvancementTrigger extends SimpleCriterionTrigger<SimpleAdvan
 		public static Criterion<SimpleAdvancementTrigger.TriggerInstance> activatedPedestal() {
 			return TFAdvancements.PLACED_TROPHY_ON_PEDESTAL.get().createCriterion(new TriggerInstance(Optional.empty()));
 		}
+
+		public static Criterion<SimpleAdvancementTrigger.TriggerInstance> brokenSword() {
+			return TFAdvancements.BROKE_GLASS_SWORD.get().createCriterion(new TriggerInstance(Optional.empty()));
+		}
 	}
 }

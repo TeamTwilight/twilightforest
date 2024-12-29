@@ -1,23 +1,35 @@
 package twilightforest.world.components.structures.lichtowerrevamp;
 
 import com.google.common.collect.Streams;
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.FrontAndTop;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.StructureManager;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.WroughtIronFenceBlock;
+import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
@@ -33,16 +45,35 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 public class LichPerimeterFence extends TwilightJigsawPiece implements PieceBeardifierModifier, SortablePiece, SpawnIndexProvider.Deny {
+	private final @Nullable BlockPos leashPos;
+
 	public LichPerimeterFence(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
 		super(TFStructurePieceTypes.LICH_PERIMETER_FENCE.value(), compoundTag, ctx, readSettings(compoundTag));
 
 		this.placeSettings.addProcessor(MetaBlockProcessor.INSTANCE);
+		this.leashPos = NbtUtils.readBlockPos(compoundTag, "leash_pos").orElse(null);
 	}
 
-	public LichPerimeterFence(StructureTemplateManager structureManager, JigsawPlaceContext jigsawContext, ResourceLocation templateId) {
+	public LichPerimeterFence(StructureTemplateManager structureManager, JigsawPlaceContext jigsawContext, ResourceLocation templateId, RandomSource random) {
 		super(TFStructurePieceTypes.LICH_PERIMETER_FENCE.value(), 0, structureManager, templateId, jigsawContext);
 
 		this.placeSettings.addProcessor(MetaBlockProcessor.INSTANCE);
+
+		List<StructureTemplate.StructureBlockInfo> fenceBlocks = random.nextFloat() > 0.25 ? List.of() : this.template.filterBlocks(BlockPos.ZERO, this.placeSettings, TFBlocks.WROUGHT_IRON_FENCE.value(), true);
+		if (!fenceBlocks.isEmpty()) {
+			fenceBlocks.removeIf(info -> info.state().getValue(WroughtIronFenceBlock.POST) != WroughtIronFenceBlock.PostState.POST);
+			Util.shuffle(fenceBlocks, random);
+		}
+		this.leashPos = fenceBlocks.isEmpty() ? null : this.templatePosition.offset(fenceBlocks.getFirst().pos());
+	}
+
+	@Override
+	protected void addAdditionalSaveData(StructurePieceSerializationContext ctx, CompoundTag structureTag) {
+		super.addAdditionalSaveData(ctx, structureTag);
+
+		if (this.leashPos != null) {
+			structureTag.put("leash_pos", NbtUtils.writeBlockPos(this.leashPos));
+		}
 	}
 
 	@Override
@@ -57,7 +88,7 @@ public class LichPerimeterFence extends TwilightJigsawPiece implements PieceBear
 
 	@Override
 	public int getGroundLevelDelta() {
-		return 1;
+		return 2;
 	}
 
 	public BlockPos bottomCenter() {
@@ -130,7 +161,7 @@ public class LichPerimeterFence extends TwilightJigsawPiece implements PieceBear
 
 		if (placeableJunction == null) return null;
 
-		LichPerimeterFence fenceStarter = new LichPerimeterFence(structureManager, placeableJunction, TwilightForestMod.prefix("lich_tower/outer_fence_7"));
+		LichPerimeterFence fenceStarter = new LichPerimeterFence(structureManager, placeableJunction, TwilightForestMod.prefix("lich_tower/outer_fence_7"), random);
 		structurePiecesBuilder.addPiece(fenceStarter);
 		fenceStarter.addChildren(vestibule, structurePiecesBuilder, random);
 
@@ -145,24 +176,25 @@ public class LichPerimeterFence extends TwilightJigsawPiece implements PieceBear
 		generateSidedPerimeter(frontFence, structureManager, structurePiecesBuilder, random, context, fullFenceId, rightDest, LichPerimeterFence::getRightJunctions, Rotation.COUNTERCLOCKWISE_90);
 	}
 
-	private static void generateSidedPerimeter(LichPerimeterFence frontFence, StructureTemplateManager structureManager, StructurePiecesBuilder structurePiecesBuilder, WorldgenRandom random, Structure.GenerationContext context, ResourceLocation fullFenceId, BoundingBox leftDest, Function<LichPerimeterFence, List<JigsawRecord>> leftJunctionGetter, Rotation rotation) {
-		LichPerimeterFence left = nextFence(frontFence, structureManager, structurePiecesBuilder, random, leftJunctionGetter.apply(frontFence), Rotation.NONE, context, fullFenceId);
-		if (left == null) return;
+	private static void generateSidedPerimeter(LichPerimeterFence frontFence, StructureTemplateManager structureManager, StructurePiecesBuilder structurePiecesBuilder, WorldgenRandom random, Structure.GenerationContext context, ResourceLocation fullFenceId, BoundingBox destination, Function<LichPerimeterFence, List<JigsawRecord>> junctionGetter, Rotation rotation) {
+		LichPerimeterFence fence = nextFence(frontFence, structureManager, structurePiecesBuilder, random, junctionGetter.apply(frontFence), Rotation.NONE, context, fullFenceId, destination);
+		if (fence == null) return;
 
-		left = generateUntilNearDest(structureManager, structurePiecesBuilder, random, context, leftDest, 4, left, rotation, leftJunctionGetter, fullFenceId);
-		List<JigsawRecord> leftJunctions = leftJunctionGetter.apply(left);
-		if (left == null || leftJunctions.isEmpty()) return;
+		fence = generateUntilNearDest(structureManager, structurePiecesBuilder, random, context, destination, 4, fence, rotation, junctionGetter, fullFenceId);
+		List<JigsawRecord> fenceJunctions = junctionGetter.apply(fence);
+		if (fence == null || fenceJunctions.isEmpty()) return;
 
 		// Generate until collision
-		JigsawRecord first = leftJunctions.getFirst();
-		BlockPos fencePostPos = left.templatePosition.offset(first.pos());
+		JigsawRecord first = fenceJunctions.getFirst();
+		BlockPos fencePostPos = fence.templatePosition.offset(first.pos());
 		// Since the fencepost is directly in front of one of the box's faces; this should the same as a regular distance function. If not, then a deeper issue has happened inside generateUntilNearDest()
-		for (int distance = BoundingBoxUtils.greatestAxalDistance(leftDest, fencePostPos); distance > 2;) {
+
+		for (int distance = Math.min(BoundingBoxUtils.greatestAxalDistance(destination, fencePostPos), 32); distance > 2;) {
 			int stepSize = Math.min(distance, 7);
 			distance -= stepSize;
 
-			left = nextFence(left, structureManager, structurePiecesBuilder, random, leftJunctionGetter.apply(left), rotation, context, TwilightForestMod.prefix("lich_tower/outer_fence_" + stepSize));
-			if (left == null) return;
+			fence = nextFence(fence, structureManager, structurePiecesBuilder, random, junctionGetter.apply(fence), rotation, context, TwilightForestMod.prefix("lich_tower/outer_fence_" + stepSize), destination);
+			if (fence == null) return;
 			rotation = Rotation.NONE;
 		}
 	}
@@ -176,7 +208,8 @@ public class LichPerimeterFence extends TwilightJigsawPiece implements PieceBear
 		int counterRotatedPieces = 0;
 		boolean foldNext = false;
 		int foldAt = random.nextInt(turnAtIndex - 1);
-		for (int idx = 0; idx < 16; idx++) {
+		int maximumPosts = 16;
+		for (int idx = 0; idx < maximumPosts; idx++) {
 			boolean makeTurn = idx == turnAtIndex;
 			boolean marchTowardsDest = idx > turnAtIndex;
 
@@ -211,7 +244,7 @@ public class LichPerimeterFence extends TwilightJigsawPiece implements PieceBear
 			if (infoldedPieces > 0) {
 				Rotation nextTurn = foldNext ? turn : Rotation.NONE;
 				foldNext = false;
-				fence = nextFence(fence, structureManager, structurePiecesBuilder, random, junctions, nextTurn, context, templateId);
+				fence = nextFence(fence, structureManager, structurePiecesBuilder, random, junctions, nextTurn, context, templateId, destBox);
 
 				infoldedPieces--;
 				if (infoldedPieces == 0) {
@@ -220,12 +253,12 @@ public class LichPerimeterFence extends TwilightJigsawPiece implements PieceBear
 			} else if (counterRotatedPieces > 0) {
 				Rotation nextTurn = foldNext ? Rotation.CLOCKWISE_180.getRotated(turn) : (makeTurn ? turn : Rotation.NONE);
 				foldNext = false;
-				fence = nextFence(fence, structureManager, structurePiecesBuilder, random, junctions, nextTurn, context, templateId);
+				fence = nextFence(fence, structureManager, structurePiecesBuilder, random, junctions, nextTurn, context, templateId, destBox);
 
 				counterRotatedPieces--;
 			} else {
 				Rotation nextTurn = makeTurn ? turn : Rotation.NONE;
-				fence = nextFence(fence, structureManager, structurePiecesBuilder, random, junctions, nextTurn, context, templateId);
+				fence = nextFence(fence, structureManager, structurePiecesBuilder, random, junctions, nextTurn, context, templateId, destBox);
 			}
 		}
 
@@ -233,22 +266,30 @@ public class LichPerimeterFence extends TwilightJigsawPiece implements PieceBear
 	}
 
 	@Nullable
-	public static LichPerimeterFence nextFence(LichPerimeterFence parentFence, StructureTemplateManager structureManager, StructurePiecesBuilder structurePiecesBuilder, WorldgenRandom random, List<JigsawRecord> junctions, Rotation rotation, Structure.GenerationContext context, ResourceLocation templateId) {
+	public static LichPerimeterFence nextFence(LichPerimeterFence parentFence, StructureTemplateManager structureManager, StructurePiecesBuilder structurePiecesBuilder, WorldgenRandom random, List<JigsawRecord> junctions, Rotation rotation, Structure.GenerationContext context, ResourceLocation templateId, BoundingBox destination) {
 		if (junctions.isEmpty()) return null;
 
 		JigsawRecord junction = junctions.getFirst();
 		FrontAndTop orientation = junction.orientation();
 		FrontAndTop connectOrientation = FrontAndTop.fromFrontAndTop(orientation.front().getOpposite(), rotation.rotate(orientation.top()));
-		BlockPos bottomCenter = parentFence.bottomCenter();
+		BlockPos postPos = parentFence.templatePosition.offset(junction.pos());
 
-		int dY = -1 - parentFence.templatePosition().getY() + context.chunkGenerator().getBaseHeight(bottomCenter.getX(), bottomCenter.getZ(), Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState());
+		int horizontalAxalDistance = BoundingBoxUtils.horizontalManhattanDistance(destination, postPos);
+
+		int dY;
+		if (horizontalAxalDistance <= 20) {
+			// Begin "homing" onto Fence's vertical height if close enough to the trim
+			dY = Mth.clamp(parentFence.templatePosition().getY() - 1, destination.minY() + 2, destination.maxY() - 2) - 1 - parentFence.templatePosition().getY();
+		} else {
+			dY = -1 - parentFence.templatePosition().getY() + context.chunkGenerator().getBaseHeight(postPos.getX(), postPos.getZ(), Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState());
+		}
 		BlockPos parentPos = parentFence.templatePosition().above(Mth.sign(dY) - 1);
 
 		JigsawPlaceContext placeContext = JigsawPlaceContext.pickPlaceableJunction(parentPos, junction.pos(), connectOrientation, structureManager, templateId, junction.target(), random);
 
 		if (placeContext == null) return null;
 
-		LichPerimeterFence nextFence = new LichPerimeterFence(structureManager, placeContext, templateId);
+		LichPerimeterFence nextFence = new LichPerimeterFence(structureManager, placeContext, templateId, random);
 		structurePiecesBuilder.addPiece(nextFence);
 		nextFence.addChildren(parentFence, structurePiecesBuilder, random);
 
@@ -263,5 +304,40 @@ public class LichPerimeterFence extends TwilightJigsawPiece implements PieceBear
 
 	public Stream<BlockPos> fencePostPositions() {
 		return Streams.concat(this.getLeftJunctions().stream(), this.getRightJunctions().stream()).map(r -> this.templatePosition.offset(r.pos()));
+	}
+
+	@Override
+	public void postProcess(WorldGenLevel level, StructureManager structureManager, ChunkGenerator chunkGen, RandomSource random, BoundingBox chunkBounds, ChunkPos chunkPos, BlockPos structureCenterPos) {
+		super.postProcess(level, structureManager, chunkGen, random, chunkBounds, chunkPos, structureCenterPos);
+
+		Direction fenceFacing = this.getSourceJigsaw().orientation().top();
+		if (this.leashPos == null || !chunkBounds.isInside(this.leashPos))
+			return;
+
+		BlockPos zombiePos = this.leashPos.relative(fenceFacing, 1);
+		if (!chunkBounds.isInside(zombiePos))
+			return;
+
+		var knot = createEntityIgnoreException(level, EntityType.LEASH_KNOT);
+		var boundedEntity = createEntityIgnoreException(level, EntityType.ZOMBIE);
+		if (knot == null || boundedEntity == null)
+			return;
+
+		knot.setPos(this.leashPos.getX() + 0.5, this.leashPos.getY(), this.leashPos.getZ() + 0.5);
+		level.addFreshEntity(knot);
+
+		boundedEntity.setPersistenceRequired();
+		boundedEntity.setLeashedTo(knot, false);
+		boundedEntity.setPos(zombiePos.getX() + 0.5, zombiePos.getY() - 1, zombiePos.getZ() + 0.5);
+		level.addFreshEntityWithPassengers(boundedEntity);
+	}
+
+	@Nullable
+	private static <T extends Entity> T createEntityIgnoreException(ServerLevelAccessor level, EntityType<T> type) {
+		try {
+			return type.create(level.getLevel());
+		} catch (Exception exception) {
+			return null;
+		}
 	}
 }

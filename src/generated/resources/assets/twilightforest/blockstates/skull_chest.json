@@ -1,0 +1,22 @@
+{
+  "variants": {
+    "multilogged=air": {
+      "model": "twilightforest:block/skull_chest"
+    },
+    "multilogged=basalt": {
+      "model": "twilightforest:block/casket_basalt"
+    },
+    "multilogged=lava": {
+      "model": "twilightforest:block/skull_chest"
+    },
+    "multilogged=obsidian": {
+      "model": "twilightforest:block/casket_obsidian"
+    },
+    "multilogged=stone": {
+      "model": "twilightforest:block/casket_stone"
+    },
+    "multilogged=water": {
+      "model": "twilightforest:block/skull_chest"
+    }
+  }
+}

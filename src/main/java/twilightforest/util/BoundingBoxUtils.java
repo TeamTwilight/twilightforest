@@ -174,6 +174,12 @@ public class BoundingBoxUtils {
 		return Math.max(Math.max(Math.abs(clamped.getX() - pos.getX()), Math.abs(clamped.getY() - pos.getY())), Math.abs(clamped.getZ() - pos.getZ()));
 	}
 
+	public static int horizontalManhattanDistance(BoundingBox box, BlockPos pos) {
+		int xClamped = Mth.clamp(pos.getX(), box.minX(), box.maxX());
+		int zClamped = Mth.clamp(pos.getZ(), box.minZ(), box.maxZ());
+		return Math.abs(xClamped - pos.getX()) + Math.abs(zClamped - pos.getZ());
+	}
+
 	public static BoundingBox wrappedCoordinates(int padding, BlockPos pos1, BlockPos pos2) {
 		int minX = Math.min(pos1.getX(), pos2.getX()) - padding;
 		int minY = Math.min(pos1.getY(), pos2.getY()) - padding;

@@ -219,21 +219,6 @@
             }
           ],
           "name": "minecraft:potion"
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 3.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "twilightforest:brittle_potion_flask"
         }
       ],
       "rolls": 2.0
@@ -308,6 +293,11 @@
         },
         {
           "type": "minecraft:item",
+          "name": "twilightforest:crown_splinter",
+          "weight": 75
+        },
+        {
+          "type": "minecraft:item",
           "name": "minecraft:brewing_stand",
           "weight": 25
         },
@@ -318,7 +308,28 @@
         }
       ],
       "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 5.0,
+                "min": 3.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "twilightforest:brittle_potion_flask"
+        }
+      ],
+      "rolls": 1.0
     }
   ],
-  "random_sequence": "twilightforest:tower_potion"
+  "random_sequence": "twilightforest:chests/tower_potion"
 }

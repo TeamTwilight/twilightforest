@@ -8,6 +8,7 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
@@ -24,10 +25,15 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import twilightforest.util.ArrayUtil;
 import twilightforest.util.BoundingBoxUtils;
 
+import java.util.Comparator;
+import java.util.List;
+
 public abstract class TwilightTemplateStructurePiece extends TemplateStructurePiece {
 	protected final StructureTemplateManager structureManager;
 	private final BlockPos originalPlacement;
 	private final BoundingBox originalBox;
+
+	protected int placeFlag;
 
 	@SuppressWarnings("this-escape")
 	public TwilightTemplateStructurePiece(StructurePieceType structurePieceType, CompoundTag compoundTag, StructurePieceSerializationContext ctx, StructurePlaceSettings placeSettings) {
@@ -39,6 +45,10 @@ public abstract class TwilightTemplateStructurePiece extends TemplateStructurePi
 
 		this.originalPlacement = this.templatePosition;
 		this.originalBox = BoundingBoxUtils.clone(this.boundingBox);
+
+		// Fixes Ladders
+		this.placeSettings.setKnownShape(true);
+		this.placeFlag = Block.UPDATE_CLIENTS;
 	}
 
 	@SuppressWarnings("this-escape")
@@ -51,6 +61,10 @@ public abstract class TwilightTemplateStructurePiece extends TemplateStructurePi
 
 		this.originalPlacement = this.templatePosition;
 		this.originalBox = BoundingBoxUtils.clone(this.boundingBox);
+
+		// Fixes Ladders
+		this.placeSettings.setKnownShape(true);
+		this.placeFlag = Block.UPDATE_CLIENTS;
 	}
 
 	@Override
@@ -107,7 +121,7 @@ public abstract class TwilightTemplateStructurePiece extends TemplateStructurePi
 	private void customPostProcess(WorldGenLevel level, ChunkGenerator chunkGen, RandomSource random, BoundingBox chunkBounds, BlockPos structureBottomCenter) {
 		this.placeSettings.setBoundingBox(chunkBounds);
 		this.boundingBox = this.template.getBoundingBox(this.placeSettings, this.templatePosition);
-		if (this.template.placeInWorld(level, this.templatePosition, structureBottomCenter, this.placeSettings, random, 2)) {
+		if (this.template.placeInWorld(level, this.templatePosition, structureBottomCenter, this.placeSettings, random, this.placeFlag)) {
 			for (StructureTemplate.StructureBlockInfo structuretemplate$structureblockinfo : this.template
 				.filterBlocks(this.templatePosition, this.placeSettings, Blocks.STRUCTURE_BLOCK)) {
 				if (structuretemplate$structureblockinfo.nbt() != null) {

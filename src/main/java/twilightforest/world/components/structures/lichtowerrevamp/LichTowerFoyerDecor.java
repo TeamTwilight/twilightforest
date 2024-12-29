@@ -85,7 +85,7 @@ public class LichTowerFoyerDecor extends TwilightJigsawPiece implements PieceBea
 					level.setBlock(placePos, chest, Block.UPDATE_ALL);
 
 					if (level.getBlockEntity(placePos) instanceof ChestBlockEntity chestBE) {
-						chestBE.setLootTable(TFLootTables.TOWER_LIBRARY, random.nextLong());
+						chestBE.setLootTable(TFLootTables.TOWER_FOYER, random.nextLong());
 					}
 
 					BlockState chestGap = Blocks.STONE_BRICK_STAIRS.defaultBlockState().setValue(StairBlock.HALF, Half.TOP).rotate(rotation.getRotated(Rotation.CLOCKWISE_180));

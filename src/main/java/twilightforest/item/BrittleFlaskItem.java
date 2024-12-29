@@ -55,11 +55,13 @@ public class BrittleFlaskItem extends Item {
 		PotionFlaskComponent flaskContents = stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY);
 		PotionContents potionContents = other.get(DataComponents.POTION_CONTENTS);
 
-		if (action == ClickAction.SECONDARY && potionContents != null && potionContents != PotionContents.EMPTY) {
-			if ((flaskContents.potion() == PotionContents.EMPTY || flaskContents.potion().equals(potionContents)) && flaskContents.breakage() <= 0 && flaskContents.doses() < DOSES) {
+		if (action == ClickAction.SECONDARY && potionContents != null) {
+			if ((flaskContents.potion().potion().isEmpty() || flaskContents.potion().equals(potionContents)) && flaskContents.doses() < DOSES - flaskContents.breakage()) {
 				if (!player.getAbilities().instabuild) {
 					other.shrink(1);
-					player.getInventory().add(new ItemStack(Items.GLASS_BOTTLE));
+					if (!player.getInventory().add(new ItemStack(Items.GLASS_BOTTLE))) {
+						player.drop(new ItemStack(Items.GLASS_BOTTLE), false);
+					}
 				}
 				stack.update(TFDataComponents.POTION_FLASK_CONTENTS, flaskContents, component -> component.tryAddDose(potionContents));
 				player.playSound(TFSounds.FLASK_FILL.get(), (flaskContents.doses() + 1) * 0.25F, player.level().getRandom().nextFloat() * 0.1F + 0.9F);
@@ -101,9 +103,6 @@ public class BrittleFlaskItem extends Item {
 		if (flaskContents.potion() != PotionContents.EMPTY) {
 			if (entity instanceof Player player) {
 				if (!level.isClientSide()) {
-					if (!player.isCreative() && !player.isSpectator() && player instanceof ServerPlayer serverPlayer) {
-						flaskContents.potion().potion().ifPresent(potion -> player.getData(TFDataAttachments.FLASK_DOSES).trackDrink(potion, serverPlayer));
-					}
 					for (MobEffectInstance mobeffectinstance : flaskContents.potion().getAllEffects()) {
 						if (mobeffectinstance.getEffect().value().isInstantenous()) {
 							mobeffectinstance.getEffect().value().applyInstantenousEffect(player, player, player, mobeffectinstance.getAmplifier(), 1.0D);
@@ -111,13 +110,16 @@ public class BrittleFlaskItem extends Item {
 							player.addEffect(new MobEffectInstance(mobeffectinstance));
 						}
 					}
+					if (!player.isCreative() && !player.isSpectator() && player instanceof ServerPlayer serverPlayer) {
+						flaskContents.potion().potion().ifPresent(potion -> player.getData(TFDataAttachments.FLASK_DOSES).trackDrink(potion, serverPlayer));
+					}
 				}
 				player.awardStat(Stats.ITEM_USED.get(this));
 				if (!player.getAbilities().instabuild) {
 					stack.update(TFDataComponents.POTION_FLASK_CONTENTS, flaskContents, component -> {
 						component = component.removeDose();
 						if (component.breakable() && !player.getAbilities().instabuild) {
-							if (component.doses() <= 0) {
+							if (component.breakage() >= DOSES) {
 								stack.shrink(1);
 								level.playSound(null, player, TFSounds.BRITTLE_FLASK_BREAK.get(), player.getSoundSource(), 1.5F, 0.7F);
 							} else {

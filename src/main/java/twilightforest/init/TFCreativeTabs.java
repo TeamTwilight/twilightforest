@@ -17,6 +17,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ItemLike;
+import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import twilightforest.TFRegistries;
@@ -468,6 +469,11 @@ public class TFCreativeTabs {
 			output.accept(TFItems.MINING_CHEST_BOAT);
 			output.accept(TFItems.SORTING_CHEST_BOAT);
 			createSpawnEggsAlphabetical(output);
+
+			if (!FMLLoader.isProduction()) {
+				output.accept(TFItems.WROUGHT_IRON_BAR);
+				createPaintings(output, parameters.holders().lookupOrThrow(TFRegistries.Keys.MAGIC_PAINTINGS));
+			}
 		}).build());
 
 	public static final DeferredHolder<CreativeModeTab, CreativeModeTab> EQUIPMENT = TABS.register("equipment", () -> CreativeModeTab.builder()
@@ -537,8 +543,11 @@ public class TFCreativeTabs {
 			output.accept(TFItems.LIFEDRAIN_SCEPTER);
 			output.accept(TFItems.ZOMBIE_SCEPTER);
 			output.accept(TFItems.FORTIFICATION_SCEPTER);
-			// output.accept(TFItems.EXANIMATE_ESSENCE); TODO
-			// output.accept(TFItems.WROUGHT_IRON_BAR); TODO
+
+			if (!FMLLoader.isProduction()) {
+				output.accept(TFItems.EXANIMATE_ESSENCE);
+			}
+
 			output.accept(TFItems.LAMP_OF_CINDERS);
 			output.accept(TFItems.EMPERORS_CLOTH);
 			output.accept(TFItems.ORE_MAGNET);

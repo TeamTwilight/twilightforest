@@ -143,10 +143,10 @@ public class HollowTreeTrunk extends HollowTreePiece {
 
 		// roots
 		// 3-5 roots at the bottom
-		this.buildBranchRing(list, rand, index, 3, 2, 6, 0.75D, 3, 5, 3, false);
+		this.buildBranchRing(list, rand, index, 4, 2, 6, 0.75D, 3, 5, 3, false);
 
 		// several more taproots
-		this.buildBranchRing(list, rand, index, 1, 2, 8, 0.9D, 3, 5, 3, false);
+		this.buildBranchRing(list, rand, index, 2, 2, 8, 0.9D, 3, 5, 3, false);
 	}
 
 	/**

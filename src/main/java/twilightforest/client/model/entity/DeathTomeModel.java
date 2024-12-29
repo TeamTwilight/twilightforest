@@ -170,7 +170,7 @@ public class DeathTomeModel extends HierarchicalModel<DeathTome> {
 		this.loosePage3.zRot = Mth.cos((bounce) / 7.0F) / 5.0F;
 
 		// hoveriness
-		this.book.setPos(0, 8 + Mth.sin((bounce) * 0.3F) * 2.0F, 0);
+		this.book.setPos(0, 8 - Mth.sin((bounce) * 0.3F) * 2.0F, 0);
 
 
 		// book openness

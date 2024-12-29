@@ -2,13 +2,7 @@
   "parent": "twilightforest:progress_yeti",
   "criteria": {
     "broken_sword": {
-      "conditions": {
-        "durability": -1,
-        "item": {
-          "items": "twilightforest:glass_sword"
-        }
-      },
-      "trigger": "minecraft:item_durability_changed"
+      "trigger": "twilightforest:broke_glass_sword"
     }
   },
   "display": {

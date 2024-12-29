@@ -1,0 +1,87 @@
+{
+  "parent": "twilightforest:progress_yeti",
+  "criteria": {
+    "boots": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:arctic_boots",
+            "predicates": {
+              "twilightforest:color": {}
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "chestplate": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:arctic_chestplate",
+            "predicates": {
+              "twilightforest:color": {}
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "helmet": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:arctic_helmet",
+            "predicates": {
+              "twilightforest:color": {}
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "leggings": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:arctic_leggings",
+            "predicates": {
+              "twilightforest:color": {}
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.twilightforest.arctic_dyed.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "twilightforest:arctic_chestplate"
+    },
+    "title": {
+      "translate": "advancement.twilightforest.arctic_dyed"
+    }
+  },
+  "requirements": [
+    [
+      "helmet"
+    ],
+    [
+      "chestplate"
+    ],
+    [
+      "leggings"
+    ],
+    [
+      "boots"
+    ]
+  ],
+  "rewards": {
+    "experience": 25
+  },
+  "sends_telemetry_event": true
+}

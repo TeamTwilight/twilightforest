@@ -15,6 +15,8 @@ import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.levelgen.DensityFunction;
+import net.minecraft.world.level.levelgen.DensityFunctions;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
@@ -26,17 +28,21 @@ import twilightforest.init.TFEntities;
 import twilightforest.init.TFMapDecorations;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
+import twilightforest.world.components.chunkgenerators.BoxDensityFunction;
+import twilightforest.world.components.structures.CustomDensitySource;
 import twilightforest.world.components.structures.lichtower.TowerMainComponent;
 import twilightforest.world.components.structures.lichtowerrevamp.LichTowerFoyer;
+import twilightforest.world.components.structures.lichtowerrevamp.LichTowerWingBeard;
 import twilightforest.world.components.structures.lichtowerrevamp.LichYardBox;
 import twilightforest.world.components.structures.util.ControlledSpawningStructure;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class LichTowerStructure extends ControlledSpawningStructure {
+public class LichTowerStructure extends ControlledSpawningStructure implements CustomDensitySource {
 	public static final MapCodec<LichTowerStructure> CODEC = RecordCodecBuilder.mapCodec(instance ->
 		controlledSpawningCodec(instance).apply(instance, LichTowerStructure::new)
 	);
@@ -118,5 +124,18 @@ public class LichTowerStructure extends ControlledSpawningStructure {
 				TerrainAdjustment.BEARD_THIN
 			)
 		);
+	}
+
+	@Override
+	public DensityFunction getStructureTerraformer(ChunkPos chunkPosAt, StructureStart structurePieceSource) {
+		List<BoundingBox> trimBoxes = new ArrayList<>();
+
+		for (var piece : structurePieceSource.getPieces()) {
+			if (piece instanceof LichTowerFoyer || (piece instanceof LichTowerWingBeard beard && beard.isTrim())) {
+				trimBoxes.add(piece.getBoundingBox());
+			}
+		}
+
+		return DensityFunctions.max(BoxDensityFunction.combine(trimBoxes, 1, TerrainAdjustment.BEARD_BOX), DensityFunctions.constant(0));
 	}
 }

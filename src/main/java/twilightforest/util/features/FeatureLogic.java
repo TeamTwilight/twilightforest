@@ -55,8 +55,17 @@ public final class FeatureLogic {
 		}
 	}
 
+	public static boolean isReplaceable(BlockState state, boolean includeFlowers) {
+		return (state.canBeReplaced() || state.is(BlockTagGenerator.WORLDGEN_REPLACEABLES) || (includeFlowers && state.is(BlockTags.FLOWERS)))
+			&& !state.is(BlockTags.FEATURES_CANNOT_REPLACE);
+	}
+
 	public static boolean worldGenReplaceable(BlockState state) {
-		return (state.canBeReplaced() || state.is(BlockTagGenerator.WORLDGEN_REPLACEABLES)) && !state.is(BlockTags.FEATURES_CANNOT_REPLACE);
+		return isReplaceable(state, false);
+	}
+
+	public static boolean treesReplaceable(BlockState state) {
+		return isReplaceable(state, true);
 	}
 
 	/**

@@ -3,6 +3,8 @@ package twilightforest.data;
 import net.minecraft.advancements.*;
 import net.minecraft.advancements.critereon.*;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentPredicate;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -22,6 +24,7 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.common.util.Lazy;
 import twilightforest.TwilightForestMod;
 import twilightforest.advancements.*;
+import twilightforest.advancements.predicate.ItemColorPredicate;
 import twilightforest.beans.Autowired;
 import twilightforest.block.Experiment115Block;
 import twilightforest.components.item.PotionFlaskComponent;
@@ -510,25 +513,24 @@ public class TFAdvancementGenerator implements AdvancementProvider.AdvancementGe
 			.addCriterion("place_complete_e115", ItemUsedOnLocationTrigger.TriggerInstance.itemUsedOnBlock(LocationPredicate.Builder.location().setBlock(BlockPredicate.Builder.block().of(TFBlocks.EXPERIMENT_115.get()).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(Experiment115Block.REGENERATE, true))), ItemPredicate.Builder.item().of(Items.REDSTONE)))
 			.save(consumer, "twilightforest:experiment_115_self_replenishing");
 
-		// FIXME How can we check if arctic armor is dyed from its original color?
-		//Advancement.Builder.advancement().parent(yeti).display(
-		//				TFItems.ARCTIC_CHESTPLATE.get(),
-		//				Component.translatable("advancement.twilightforest.arctic_dyed"),
-		//				Component.translatable("advancement.twilightforest.arctic_dyed.desc"),
-		//				null, AdvancementType.TASK, true, true, false)
-		//		.addCriterion("helmet", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(TFItems.ARCTIC_HELMET.get()).hasNbt(arcticDye(TFItems.ARCTIC_HELMET.get())).build()))
-		//		.addCriterion("chestplate", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(TFItems.ARCTIC_CHESTPLATE.get()).hasNbt(arcticDye(TFItems.ARCTIC_CHESTPLATE.get())).build()))
-		//		.addCriterion("leggings", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(TFItems.ARCTIC_LEGGINGS.get()).hasNbt(arcticDye(TFItems.ARCTIC_LEGGINGS.get())).build()))
-		//		.addCriterion("boots", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(TFItems.ARCTIC_BOOTS.get()).hasNbt(arcticDye(TFItems.ARCTIC_BOOTS.get())).build()))
-		//		.rewards(AdvancementRewards.Builder.experience(25))
-		//		.save(consumer, "twilightforest:arctic_armor_dyed");
+		Advancement.Builder.advancement().parent(yeti).display(
+						TFItems.ARCTIC_CHESTPLATE.get(),
+						Component.translatable("advancement.twilightforest.arctic_dyed"),
+						Component.translatable("advancement.twilightforest.arctic_dyed.desc"),
+						null, AdvancementType.TASK, true, true, false)
+				.addCriterion("helmet", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(TFItems.ARCTIC_HELMET.get()).withSubPredicate(TFItemSubPredicates.COLOR.get(), ItemColorPredicate.anyColor()).build()))
+				.addCriterion("chestplate", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(TFItems.ARCTIC_CHESTPLATE.get()).withSubPredicate(TFItemSubPredicates.COLOR.get(), ItemColorPredicate.anyColor()).build()))
+				.addCriterion("leggings", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(TFItems.ARCTIC_LEGGINGS.get()).withSubPredicate(TFItemSubPredicates.COLOR.get(), ItemColorPredicate.anyColor()).build()))
+				.addCriterion("boots", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(TFItems.ARCTIC_BOOTS.get()).withSubPredicate(TFItemSubPredicates.COLOR.get(), ItemColorPredicate.anyColor()).build()))
+				.rewards(AdvancementRewards.Builder.experience(25))
+				.save(consumer, "twilightforest:arctic_armor_dyed");
 
 		Advancement.Builder.advancement().parent(yeti).display(
 				TFItems.GLASS_SWORD.get(),
 				Component.translatable("advancement.twilightforest.glass_sword"),
 				Component.translatable("advancement.twilightforest.glass_sword.desc"),
 				null, AdvancementType.CHALLENGE, true, true, true)
-			.addCriterion("broken_sword", ItemDurabilityTrigger.TriggerInstance.changedDurability(Optional.of(ItemPredicate.Builder.item().of(TFItems.GLASS_SWORD.get()).build()), MinMaxBounds.Ints.exactly(-1)))
+			.addCriterion("broken_sword", SimpleAdvancementTrigger.TriggerInstance.brokenSword())
 			.rewards(AdvancementRewards.Builder.experience(42))
 			.save(consumer, "twilightforest:break_glass_sword");
 

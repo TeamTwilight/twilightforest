@@ -408,6 +408,7 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			TFBlocks.GREEN_FORCE_FIELD.get(),
 			TFBlocks.BLUE_FORCE_FIELD.get(),
 			TFBlocks.VIOLET_FORCE_FIELD.get(),
+			TFBlocks.SKULL_CHEST.get(),
 			TFBlocks.KEEPSAKE_CASKET.get(),
 			TFBlocks.TROPHY_PEDESTAL.get()
 		).add( // [VanillaCopy] WITHER_IMMUNE - Do NOT include that tag in this tag
@@ -463,6 +464,7 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 
 		// TODO add more grave mods to this list
 		this.tag(PROGRESSION_ALLOW_BREAKING)
+			.add(TFBlocks.SKULL_CHEST.get())
 			.add(TFBlocks.KEEPSAKE_CASKET.get())
 			.addOptional(ResourceLocation.fromNamespaceAndPath("gravestone", "gravestone"));
 
@@ -644,6 +646,7 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			TFBlocks.IRON_LADDER.get(),
 			TFBlocks.TWISTED_STONE.get(),
 			TFBlocks.TWISTED_STONE_PILLAR.get(),
+			TFBlocks.SKULL_CHEST.get(),
 			TFBlocks.KEEPSAKE_CASKET.get(),
 			TFBlocks.BOLD_STONE_PILLAR.get(),
 			TFBlocks.TERRORCOTTA_CURVES.value(),

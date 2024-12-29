@@ -85,6 +85,8 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting> {
 
 			Parallax parallax = layer.parallax();
 
+			boolean localLighting = layer.localLighting();
+
 			int layerWidth = parallax != null ? parallax.width() : width;
 			int layerHeight = parallax != null ? parallax.height() : height;
 
@@ -119,72 +121,93 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting> {
 					float xStart = layerTexture.getU((float) (layerWidthFactor * (double) (widthAsBlock - (k + 1)) + widthOffset));
 					float yEnd = layerTexture.getV((float) (layerHeightFactor * (double) (heightAsBlock - l) + heightOffset));
 					float yStart = layerTexture.getV((float) (layerHeightFactor * (double) (heightAsBlock - (l + 1)) + heightOffset));
-					this.vertex(pose, vertex, xMax, yMin, -z, xStart, yEnd, 0, 0, -1, light, alpha);
-					this.vertex(pose, vertex, xMin, yMin, -z, xEnd, yEnd, 0, 0, -1, light, alpha);
-					this.vertex(pose, vertex, xMin, yMax, -z, xEnd, yStart, 0, 0, -1, light, alpha);
-					this.vertex(pose, vertex, xMax, yMax, -z, xStart, yStart, 0, 0, -1, light, alpha);
+					this.vertex(pose, vertex, xMax, yMin, -z, xStart, yEnd, 0, 0, -1, light, alpha, localLighting);
+					this.vertex(pose, vertex, xMin, yMin, -z, xEnd, yEnd, 0, 0, -1, light, alpha, localLighting);
+					this.vertex(pose, vertex, xMin, yMax, -z, xEnd, yStart, 0, 0, -1, light, alpha, localLighting);
+					this.vertex(pose, vertex, xMax, yMax, -z, xStart, yStart, 0, 0, -1, light, alpha, localLighting);
 				}
 			}
 		}
 
-		TextureAtlasSprite backSprite = MagicPaintingTextureManager.instance.getBackSprite();
-		float u0 = backSprite.getU0();
-		float u1 = backSprite.getU1();
-		float v0 = backSprite.getV0();
-		float v1 = backSprite.getV1();
-		float u01 = backSprite.getU0();
-		float u11 = backSprite.getU1();
-		float v01 = backSprite.getV0();
-		float v = backSprite.getV(0.0625F);
-		float u02 = backSprite.getU0();
-		float u = backSprite.getU(0.0625F);
-		float v02 = backSprite.getV0();
-		float v11 = backSprite.getV1();
+		TextureAtlasSprite backSprite = MagicPaintingTextureManager.instance.getBackSprite(variant);
 
 		for (int w = 0; w < widthAsBlock; ++w) {
+			boolean leftBorder = w == 0;
+			boolean rightBorder = w == widthAsBlock - 1;
+			float wShift = (leftBorder ? (rightBorder ? 3 : 0) : (rightBorder ? 2 : 1)) * 0.25f;
+
+			float u0 = backSprite.getU(wShift);
+			float u1 = backSprite.getU(wShift + 0.25f);
+			float u = Mth.lerp(0.0625F, u0, u1);
+			float uI = Mth.lerp(0.0625F, u1, u0);
+
+			float xMax = x + (float) ((w + 1) * 16);
+			float xMin = x + (float) (w * 16);
+
+			if (direction == Direction.NORTH) posX = Mth.floor(painting.getX() + (double) ((xMax + xMin) / 2.0F / 16.0F));
+			if (direction == Direction.WEST) posZ = Mth.floor(painting.getZ() - (double) ((xMax + xMin) / 2.0F / 16.0F));
+			if (direction == Direction.SOUTH) posX = Mth.floor(painting.getX() - (double) ((xMax + xMin) / 2.0F / 16.0F));
+			if (direction == Direction.EAST) posZ = Mth.floor(painting.getZ() + (double) ((xMax + xMin) / 2.0F / 16.0F));
+
 			for (int h = 0; h < heightAsBlock; ++h) {
-				float xMax = x + (float) ((w + 1) * 16);
-				float xMin = x + (float) (w * 16);
+				boolean bottomBorder = h == 0;
+				boolean topBorder = h == heightAsBlock - 1;
+				float hShift = (bottomBorder ? (topBorder ? 3 : 2) : (topBorder ? 0 : 1)) * 0.25f;
+
+				float v0 = backSprite.getV(hShift);
+				float v1 = backSprite.getV(hShift + 0.25f);
+				float v = Mth.lerp(0.0625F, v0, v1);
+				float vI = Mth.lerp(0.0625F, v1, v0);
+
 				float yMax = y + (float) ((h + 1) * 16);
 				float yMin = y + (float) (h * 16);
 
-				if (direction == Direction.NORTH) posX = Mth.floor(painting.getX() + (double) ((xMax + xMin) / 2.0F / 16.0F));
-				if (direction == Direction.WEST) posZ = Mth.floor(painting.getZ() - (double) ((xMax + xMin) / 2.0F / 16.0F));
-				if (direction == Direction.SOUTH) posX = Mth.floor(painting.getX() - (double) ((xMax + xMin) / 2.0F / 16.0F));
-				if (direction == Direction.EAST) posZ = Mth.floor(painting.getZ() + (double) ((xMax + xMin) / 2.0F / 16.0F));
-
 				int light = LevelRenderer.getLightColor(painting.level(), new BlockPos(posX, Mth.floor(painting.getY() + (double) ((yMax + yMin) / 2.0F / 16.0F)), posZ));
 
-				this.vertex(pose, vertex, xMax, yMax, z, u1, v0, 0, 0, 1, light);
-				this.vertex(pose, vertex, xMin, yMax, z, u0, v0, 0, 0, 1, light);
-				this.vertex(pose, vertex, xMin, yMin, z, u0, v1, 0, 0, 1, light);
-				this.vertex(pose, vertex, xMax, yMin, z, u1, v1, 0, 0, 1, light);
-				this.vertex(pose, vertex, xMax, yMax, -z, u01, v01, 0, 1, 0, light);
-				this.vertex(pose, vertex, xMin, yMax, -z, u11, v01, 0, 1, 0, light);
-				this.vertex(pose, vertex, xMin, yMax, z, u11, v, 0, 1, 0, light);
-				this.vertex(pose, vertex, xMax, yMax, z, u01, v, 0, 1, 0, light);
-				this.vertex(pose, vertex, xMax, yMin, z, u01, v01, 0, -1, 0, light);
-				this.vertex(pose, vertex, xMin, yMin, z, u11, v01, 0, -1, 0, light);
-				this.vertex(pose, vertex, xMin, yMin, -z, u11, v, 0, -1, 0, light);
-				this.vertex(pose, vertex, xMax, yMin, -z, u01, v, 0, -1, 0, light);
-				this.vertex(pose, vertex, xMax, yMax, z, u, v02, -1, 0, 0, light);
-				this.vertex(pose, vertex, xMax, yMin, z, u, v11, -1, 0, 0, light);
-				this.vertex(pose, vertex, xMax, yMin, -z, u02, v11, -1, 0, 0, light);
-				this.vertex(pose, vertex, xMax, yMax, -z, u02, v02, -1, 0, 0, light);
-				this.vertex(pose, vertex, xMin, yMax, -z, u, v02, 1, 0, 0, light);
-				this.vertex(pose, vertex, xMin, yMin, -z, u, v11, 1, 0, 0, light);
-				this.vertex(pose, vertex, xMin, yMin, z, u02, v11, 1, 0, 0, light);
-				this.vertex(pose, vertex, xMin, yMax, z, u02, v02, 1, 0, 0, light);
+				// Back
+				this.vertex(pose, vertex, xMax, yMax, z, u1, v0, 0, 0, 1, light, false);
+				this.vertex(pose, vertex, xMin, yMax, z, u0, v0, 0, 0, 1, light, false);
+				this.vertex(pose, vertex, xMin, yMin, z, u0, v1, 0, 0, 1, light, false);
+				this.vertex(pose, vertex, xMax, yMin, z, u1, v1, 0, 0, 1, light, false);
+
+				// Top
+				this.vertex(pose, vertex, xMax, yMax, -z, u1, v0, 0, 1, 0, light, false);
+				this.vertex(pose, vertex, xMin, yMax, -z, u0, v0, 0, 1, 0, light, false);
+				this.vertex(pose, vertex, xMin, yMax, z, u0, v, 0, 1, 0, light, false);
+				this.vertex(pose, vertex, xMax, yMax, z, u1, v, 0, 1, 0, light, false);
+
+				// Bottom
+				this.vertex(pose, vertex, xMax, yMin, z, u1, vI, 0, -1, 0, light, false);
+				this.vertex(pose, vertex, xMin, yMin, z, u0, vI, 0, -1, 0, light, false);
+				this.vertex(pose, vertex, xMin, yMin, -z, u0, v1, 0, -1, 0, light, false);
+				this.vertex(pose, vertex, xMax, yMin, -z, u1, v1, 0, -1, 0, light, false);
+
+				// Left
+				this.vertex(pose, vertex, xMax, yMax, z, uI, v0, -1, 0, 0, light, false);
+				this.vertex(pose, vertex, xMax, yMin, z, uI, v1, -1, 0, 0, light, false);
+				this.vertex(pose, vertex, xMax, yMin, -z, u1, v1, -1, 0, 0, light, false);
+				this.vertex(pose, vertex, xMax, yMax, -z, u1, v0, -1, 0, 0, light, false);
+
+				// Right
+				this.vertex(pose, vertex, xMin, yMax, -z, u0, v0, 1, 0, 0, light, false);
+				this.vertex(pose, vertex, xMin, yMin, -z, u0, v1, 1, 0, 0, light, false);
+				this.vertex(pose, vertex, xMin, yMin, z, u, v1, 1, 0, 0, light, false);
+				this.vertex(pose, vertex, xMin, yMax, z, u, v0, 1, 0, 0, light, false);
 			}
 		}
 	}
 
-	protected void vertex(PoseStack.Pose pose, VertexConsumer vertex, float x, float y, float z, float u, float v, int normX, int normY, int normZ, int light) {
-		this.vertex(pose, vertex, x, y, z, u, v, normX, normY, normZ, light, 1.0F);
+	protected void vertex(PoseStack.Pose pose, VertexConsumer vertex, float x, float y, float z, float u, float v, int normX, int normY, int normZ, int light, boolean localLighting) {
+		this.vertex(pose, vertex, x, y, z, u, v, normX, normY, normZ, light, 1.0F, localLighting);
 	}
 
-	protected void vertex(PoseStack.Pose pose, VertexConsumer vertex, float x, float y, float z, float u, float v, int normX, int normY, int normZ, int light, float a) {
-		vertex.addVertex(pose, x, y, z).setColor(255, 255, 255, (int) (255.0F * a)).setUv(u, v).setOverlay(OverlayTexture.NO_OVERLAY).setLight(light).setNormal(pose, normX, normY, normZ);
+	protected void vertex(PoseStack.Pose pose, VertexConsumer vertex, float x, float y, float z, float u, float v, int normX, int normY, int normZ, int light, float a, boolean localLighting) {
+		vertex.addVertex(pose, x, y, z).setColor(255, 255, 255, (int) (255.0F * a)).setUv(u, v).setOverlay(OverlayTexture.NO_OVERLAY).setLight(light);
+
+		if (localLighting)
+			vertex.setNormal(normX, normY, normZ);
+		else
+			vertex.setNormal(pose, normX, normY, normZ);
 	}
 
 	protected double getWidthOffset(@Nullable Parallax parallax, MagicPainting painting, double widthDiff, float partialTicks) {

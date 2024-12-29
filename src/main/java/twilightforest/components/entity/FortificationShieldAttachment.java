@@ -82,10 +82,10 @@ public class FortificationShieldAttachment {
 
 	public void setShields(LivingEntity entity, int amount, boolean temp) {
 		if (temp) {
-			this.temporaryShields = Math.max(amount, 0);
+			this.temporaryShields = Math.clamp(amount, 0, 115);
 			this.resetTimer();
 		} else {
-			this.permanentShields = Math.max(amount, 0);
+			this.permanentShields = Math.clamp(amount, 0, 115);
 		}
 
 		this.sendUpdatePacket(entity);
@@ -97,9 +97,9 @@ public class FortificationShieldAttachment {
 				this.resetTimer(); // Since we add new shields to the stack instead of setting them, no timer reset is needed, unless they start from 0 shields.
 			}
 
-			this.temporaryShields = Math.max(this.temporaryShields + amount, 0);
+			this.temporaryShields = Math.clamp(this.temporaryShields + amount, 0, 115);
 		} else {
-			this.permanentShields = Math.max(this.permanentShields + amount, 0);
+			this.permanentShields = Math.clamp(this.permanentShields + amount, 0, 115);
 		}
 
 		sendUpdatePacket(entity);

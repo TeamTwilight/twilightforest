@@ -5,6 +5,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.FrontAndTop;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
@@ -23,6 +25,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilde
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import org.joml.SimplexNoise;
+import twilightforest.beans.Autowired;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
@@ -37,6 +40,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class LichYardBox extends StructurePiece implements PieceBeardifierModifier, SortablePiece, SpawnIndexProvider {
+	@Autowired
+	private static LichTowerUtil lichTowerUtil;
+
 	private final float edgeFeatheringRange;
 	private final Direction.Axis placeGraveAxis;
 	private final boolean doDirtMotley;
@@ -97,8 +103,11 @@ public class LichYardBox extends StructurePiece implements PieceBeardifierModifi
 
 		for (int z = boxIntersection.minZ(); z <= boxIntersection.maxZ(); z++) {
 			for (int x = boxIntersection.minX(); x <= boxIntersection.maxX(); x++) {
-				int y = level.getHeight(Heightmap.Types.WORLD_SURFACE_WG, x, z) - 1;
+				int y = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z) - 1;
 				BlockPos placeAt = new BlockPos(x, y, z);
+
+				if (!level.getBlockState(placeAt).is(BlockTags.DIRT))
+					continue;
 
 				int xBorderDist = Math.min(x - this.boundingBox.minX(), this.boundingBox.maxX() - x);
 				int zBorderDist = Math.min(z - this.boundingBox.minZ(), this.boundingBox.maxZ() - z);
@@ -110,7 +119,7 @@ public class LichYardBox extends StructurePiece implements PieceBeardifierModifi
 				if (featheredNoise < 0) {
 					if (!this.doDirtMotley) {
 						float fenceNoise = SimplexNoise.noise(x * 0.15f, y * 0.15f - 1024f, z * 0.15f) * 0.5f;
-						 if (Math.abs(fenceNoise) > 0.15f) {
+						if (Math.abs(fenceNoise) > 0.15f) {
 							int noiseRounded = Math.round(fenceNoise + 0.5f);
 							if (this.placeGraveAxis == Direction.Axis.Z ? x == this.boundingBox.minX() + noiseRounded || x == this.boundingBox.maxX() - noiseRounded : z == this.boundingBox.minZ() + noiseRounded || z == this.boundingBox.maxZ() - noiseRounded) {
 								BlockPos fenceAt = placeAt.above();
@@ -241,11 +250,12 @@ public class LichYardBox extends StructurePiece implements PieceBeardifierModifi
 			FrontAndTop orientation = FrontAndTop.fromFrontAndTop(side, Direction.UP);
 			int baseY = context.chunkGenerator().getBaseHeight(randomPos.getX(), randomPos.getZ(), Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState());
 
-			JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(randomPos.atY(baseY - 1), BlockPos.ZERO, orientation, context.structureTemplateManager(), LichTowerPieces.YARD_GRAVE, "twilightforest:lich_tower/grave", random);
+			ResourceLocation templateId = lichTowerUtil.rollGrave(random);
+			JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(randomPos.atY(baseY - 1), BlockPos.ZERO, orientation, context.structureTemplateManager(), templateId, "twilightforest:lich_tower/grave", random);
 
 			if (placeableJunction == null) continue;
 
-			LichYardGrave grave = new LichYardGrave(context.structureTemplateManager(), placeableJunction);
+			LichYardGrave grave = new LichYardGrave(context.structureTemplateManager(), placeableJunction, templateId);
 			if (pieces.findCollisionPiece(grave.getBoundingBox()) == null) {
 				pieces.addPiece(grave);
 				grave.addChildren(piece, pieces, random);

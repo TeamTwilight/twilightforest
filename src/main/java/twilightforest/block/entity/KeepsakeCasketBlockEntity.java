@@ -16,6 +16,7 @@ import net.minecraft.world.inventory.ChestMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.LidBlockEntity;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -41,14 +42,22 @@ public class KeepsakeCasketBlockEntity extends RandomizableContainerBlockEntity 
 	protected int numPlayersUsing;
 	private int ticksSinceSync;
 
-	public KeepsakeCasketBlockEntity(BlockPos pos, BlockState state) {
-		super(TFBlockEntities.KEEPSAKE_CASKET.get(), pos, state);
+	public static KeepsakeCasketBlockEntity createSkullChestBE(BlockPos pos, BlockState state) {
+		return new KeepsakeCasketBlockEntity(TFBlockEntities.SKULL_CHEST.get(), pos, state);
+	}
+
+	public static KeepsakeCasketBlockEntity createKeepsakeCasketBE(BlockPos pos, BlockState state) {
+		return new KeepsakeCasketBlockEntity(TFBlockEntities.KEEPSAKE_CASKET.get(), pos, state);
+	}
+
+	private KeepsakeCasketBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+		super(type, pos, state);
 	}
 
 	//[VanillaCopy] of EnderChestBlockEntity, with some small adaptations
 	public static void tick(Level level, BlockPos pos, BlockState state, KeepsakeCasketBlockEntity te) {
 		if (++te.ticksSinceSync % 20 * 4 == 0) {
-			level.blockEvent(pos, TFBlocks.KEEPSAKE_CASKET.get(), 1, te.numPlayersUsing);
+			level.blockEvent(pos, state.getBlock(), 1, te.numPlayersUsing);
 		}
 		te.prevLidAngle = te.lidAngle;
 		if (te.numPlayersUsing > 0 && te.lidAngle == 0.0F) {
@@ -105,7 +114,7 @@ public class KeepsakeCasketBlockEntity extends RandomizableContainerBlockEntity 
 
 	@Override
 	protected Component getDefaultName() {
-		return Component.translatable("block.twilightforest.keepsake_casket");
+		return this.getBlockState().getBlock().getName();
 	}
 
 	@Override
@@ -193,7 +202,7 @@ public class KeepsakeCasketBlockEntity extends RandomizableContainerBlockEntity 
 				this.numPlayersUsing = 0;
 			}
 			++this.numPlayersUsing;
-			this.getLevel().blockEvent(this.getBlockPos(), TFBlocks.KEEPSAKE_CASKET.get(), 1, this.numPlayersUsing);
+			this.getLevel().blockEvent(this.getBlockPos(), this.getBlockState().getBlock(), 1, this.numPlayersUsing);
 		}
 
 	}
@@ -202,9 +211,8 @@ public class KeepsakeCasketBlockEntity extends RandomizableContainerBlockEntity 
 	public void stopOpen(Player player) {
 		if (!player.isSpectator()) {
 			--this.numPlayersUsing;
-			this.getLevel().blockEvent(this.getBlockPos(), TFBlocks.KEEPSAKE_CASKET.get(), 1, this.numPlayersUsing);
+			this.getLevel().blockEvent(this.getBlockPos(), this.getBlockState().getBlock(), 1, this.numPlayersUsing);
 		}
-
 	}
 
 	@Override

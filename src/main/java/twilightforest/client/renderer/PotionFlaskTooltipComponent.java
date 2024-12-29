@@ -58,7 +58,6 @@ public class PotionFlaskTooltipComponent implements ClientTooltipComponent {
 				height += font.split(component, WIDTH).size() * font.lineHeight + 1;
 			}
 
-			if (this.component.breakage() > 0) height += font.lineHeight + 1;
 			return height;
 		}
 		return font.split(EMPTY_DESCRIPTION, WIDTH).size() * font.lineHeight + 1;
@@ -94,9 +93,6 @@ public class PotionFlaskTooltipComponent implements ClientTooltipComponent {
 				}
 				height += font.split(component, WIDTH).size() * font.lineHeight + 1;
 			}
-
-			if (this.component.breakage() > 0)
-				graphics.drawWordWrap(font, Component.translatable("item.twilightforest.flask.no_refill"), x, y + height + 2, WIDTH, 16733525);
 		}
 		this.drawPotionBar(x + this.getContentXOffset(offs), y + this.getDescriptionHeight(font) + 4, font, graphics);
 	}
@@ -107,6 +103,12 @@ public class PotionFlaskTooltipComponent implements ClientTooltipComponent {
 			graphics.drawCenteredString(font, Component.translatable("item.twilightforest.flask.empty"), x + 57, y + 3, 16777215);
 		} else {
 			this.renderPotion(graphics.pose(), x + 1, y + 13, this.component.doses() * segmentSplit - 1, 13, this.component.potion().getColor());
+			if (this.component.breakage() > 0) {
+				int xPos = x + segmentSplit * (3 - this.component.breakage());
+				RenderSystem.enableBlend();
+				graphics.fill(xPos, y, xPos + (segmentSplit * this.component.breakage()), y + 13, 0xAA434343);
+				RenderSystem.disableBlend();
+			}
 			int widthProg = segmentSplit;
 			for (int i = 1; i < this.maxDoses; i++) {
 				graphics.blitSprite(DOSE_SPRITE, x + widthProg, y, 1, 13);

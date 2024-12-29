@@ -29,6 +29,7 @@ import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.AddReloadListenerEvent;
 import net.neoforged.neoforge.event.BlockEntityTypeAddBlocksEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.items.IItemHandler;
@@ -58,6 +59,7 @@ import twilightforest.dispenser.TFDispenserBehaviors;
 import twilightforest.entity.MagicPaintingVariant;
 import twilightforest.entity.passive.DwarfRabbitVariant;
 import twilightforest.entity.passive.TinyBirdVariant;
+import twilightforest.entity.passive.quest.QuestReloadListener;
 import twilightforest.init.*;
 import twilightforest.init.custom.BiomeLayerStack;
 import twilightforest.init.custom.BiomeLayerTypes;
@@ -90,6 +92,9 @@ public final class TwilightForestMod {
 			PacketDistributor.sendToAllPlayers(new EnforceProgressionStatusPacket(enforced.get())))); //sends a packet to every player online when this changes so weather effects update accordingly
 
 	public static final Logger LOGGER = LogManager.getLogger(ID);
+
+	@Nullable
+	private static QuestReloadListener QUEST_INSTANCE;
 
 	static { // Load as early as possible
 		TFBeanContext.init();
@@ -129,6 +134,7 @@ public final class TwilightForestMod {
 		TFRecipes.RECIPE_TYPES.register(bus);
 		TFAdvancements.TRIGGERS.register(bus);
 		TFMobEffects.MOB_EFFECTS.register(bus);
+		TFItemSubPredicates.TYPES.register(bus);
 		Enforcements.ENFORCEMENTS.register(bus);
 		TFCaveCarvers.CARVER_TYPES.register(bus);
 		TFDataComponents.COMPONENTS.register(bus);
@@ -168,6 +174,7 @@ public final class TwilightForestMod {
 		bus.addListener(ConfigSetup::loadConfigs);
 		bus.addListener(ConfigSetup::reloadConfigs);
 		NeoForge.EVENT_BUS.addListener(ConfigSetup::syncUncraftingConfig);
+		NeoForge.EVENT_BUS.addListener(this::reloadQuests);
 
 		if (ModList.get().isLoaded("curios")) loadCuriosCompat(bus);
 		if (ModList.get().isLoaded("cosmeticarmorreworked")) NeoForge.EVENT_BUS.addListener(CosmeticArmorCompat::keepCosmeticArmor);
@@ -289,6 +296,7 @@ public final class TwilightForestMod {
 		registrar.playToClient(TFBossBarPacket.AddTFBossBarPacket.TYPE, TFBossBarPacket.AddTFBossBarPacket.STREAM_CODEC, TFBossBarPacket.AddTFBossBarPacket::handle);
 		registrar.playToClient(TFBossBarPacket.UpdateTFBossBarStylePacket.TYPE, TFBossBarPacket.UpdateTFBossBarStylePacket.STREAM_CODEC, TFBossBarPacket.UpdateTFBossBarStylePacket::handle);
 		registrar.playToClient(SetMasonJarItemPacket.TYPE, SetMasonJarItemPacket.STREAM_CODEC, SetMasonJarItemPacket::handle);
+		registrar.playToClient(SyncQuestsPacket.TYPE, SyncQuestsPacket.STREAM_CODEC, SyncQuestsPacket::handle);
 	}
 
 	public void init(FMLCommonSetupEvent evt) {
@@ -596,4 +604,14 @@ public final class TwilightForestMod {
 		return ResourceLocation.fromNamespaceAndPath(ID, ENVIRO_DIR + name);
 	}
 
+	private void reloadQuests(AddReloadListenerEvent event) {
+		QUEST_INSTANCE = new QuestReloadListener();
+		event.addListener(QUEST_INSTANCE);
+	}
+
+	public static QuestReloadListener getQuests() {
+		if (QUEST_INSTANCE == null)
+			throw new IllegalStateException("Can't retrieve QuestReloadListener until resources have loaded once");
+		return QUEST_INSTANCE;
+	}
 }

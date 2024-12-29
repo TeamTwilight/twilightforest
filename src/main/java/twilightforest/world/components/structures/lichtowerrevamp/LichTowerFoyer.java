@@ -142,6 +142,6 @@ public final class LichTowerFoyer extends TwilightJigsawPiece implements PieceBe
 
 	@Override
 	public int getSpawnIndex() {
-		return LichTowerPieces.INTERIOR_SPAWNS;
+		return LichTowerPieces.EMPTY;
 	}
 }

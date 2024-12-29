@@ -62,8 +62,12 @@ public class TFBlockEntities {
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MoonwormBlockEntity>> MOONWORM = BLOCK_ENTITIES.register("moonworm", () ->
 		BlockEntityType.Builder.of(MoonwormBlockEntity::new, TFBlocks.MOONWORM.get()).build(null));
 
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<KeepsakeCasketBlockEntity>> SKULL_CHEST = BLOCK_ENTITIES.register("skull_chest", () ->
+		BlockEntityType.Builder.of(KeepsakeCasketBlockEntity::createSkullChestBE, TFBlocks.SKULL_CHEST.value()).build(null));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<KeepsakeCasketBlockEntity>> KEEPSAKE_CASKET = BLOCK_ENTITIES.register("keepsake_casket", () ->
-		BlockEntityType.Builder.of(KeepsakeCasketBlockEntity::new, TFBlocks.KEEPSAKE_CASKET.get()).build(null));
+		BlockEntityType.Builder.of(KeepsakeCasketBlockEntity::createKeepsakeCasketBE, TFBlocks.KEEPSAKE_CASKET.get()).build(null));
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BrazierBlockEntity>> BRAZIER = BLOCK_ENTITIES.register("brazier", () ->
+		BlockEntityType.Builder.of(BrazierBlockEntity::new, TFBlocks.BRAZIER.get()).build(null));
 
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TFChestBlockEntity>> TF_CHEST = BLOCK_ENTITIES.register("tf_chest", () ->
 		BlockEntityType.Builder.of(TFChestBlockEntity::new,

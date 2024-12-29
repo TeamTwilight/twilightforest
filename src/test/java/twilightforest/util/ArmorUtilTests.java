@@ -30,27 +30,6 @@ public class ArmorUtilTests {
 	}
 
 	@Test
-	public void getArmorColorEmpty() {
-		OptionalInt result = instance.getArmorColor(ItemStack.EMPTY);
-
-		assertTrue(result.isEmpty());
-	}
-
-	@Test
-	public void getArmorColorArtic() {
-		OptionalInt result = instance.getArmorColor(new ItemStack(TFItems.ARCTIC_BOOTS.asItem()));
-
-		assertFalse(result.isEmpty());
-	}
-
-	@Test
-	public void getArmorColorUnused() {
-		OptionalInt result = instance.getArmorColor(new ItemStack(Items.STICK));
-
-		assertTrue(result.isEmpty());
-	}
-
-	@Test
 	public void getShroudedArmorPercentage() {
 		LivingEntity entity = mock(LivingEntity.class);
 		when(entity.getArmorSlots()).thenReturn(List.of(

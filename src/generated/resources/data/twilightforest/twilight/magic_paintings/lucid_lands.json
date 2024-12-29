@@ -1,12 +1,18 @@
 {
+  "author": {
+    "translate": "magic_painting.twilightforest.lucid_lands.author"
+  },
+  "back_texture": "twilightforest:magic_paintings/back",
   "height": 48,
   "layers": [
     {
       "fullbright": true,
+      "local_lighting": true,
       "path": "background"
     },
     {
       "fullbright": true,
+      "local_lighting": true,
       "parallax": {
         "type": "linear_time",
         "height": 48,
@@ -17,10 +23,12 @@
     },
     {
       "fullbright": true,
+      "local_lighting": true,
       "path": "mookaite_mesa"
     },
     {
       "fullbright": true,
+      "local_lighting": true,
       "parallax": {
         "type": "view_angle",
         "height": 48,
@@ -31,6 +39,7 @@
     },
     {
       "fullbright": true,
+      "local_lighting": true,
       "parallax": {
         "type": "view_angle",
         "height": 48,
@@ -41,6 +50,7 @@
     },
     {
       "fullbright": true,
+      "local_lighting": true,
       "opacity_modifier": {
         "type": "holding_item",
         "invert": false,
@@ -56,6 +66,7 @@
     },
     {
       "fullbright": true,
+      "local_lighting": true,
       "opacity_modifier": {
         "type": "holding_item",
         "invert": false,
@@ -77,6 +88,7 @@
     },
     {
       "fullbright": true,
+      "local_lighting": true,
       "opacity_modifier": {
         "type": "holding_item",
         "invert": false,
@@ -92,6 +104,7 @@
     },
     {
       "fullbright": true,
+      "local_lighting": true,
       "opacity_modifier": {
         "type": "holding_item",
         "invert": false,
@@ -113,6 +126,7 @@
     },
     {
       "fullbright": true,
+      "local_lighting": true,
       "opacity_modifier": {
         "type": "holding_item",
         "invert": false,
@@ -134,6 +148,7 @@
     },
     {
       "fullbright": true,
+      "local_lighting": true,
       "opacity_modifier": {
         "type": "mob_effect_category",
         "effect_category": "HARMFUL",
@@ -146,6 +161,7 @@
     },
     {
       "fullbright": false,
+      "local_lighting": true,
       "opacity_modifier": {
         "type": "mob_effect_category",
         "effect_category": "HARMFUL",
@@ -164,6 +180,7 @@
     },
     {
       "fullbright": false,
+      "local_lighting": true,
       "opacity_modifier": {
         "type": "mob_effect_category",
         "effect_category": "HARMFUL",
@@ -176,6 +193,7 @@
     },
     {
       "fullbright": true,
+      "local_lighting": true,
       "opacity_modifier": {
         "type": "mob_effect_category",
         "effect_category": "HARMFUL",
@@ -188,6 +206,7 @@
     },
     {
       "fullbright": false,
+      "local_lighting": true,
       "opacity_modifier": {
         "type": "mob_effect_category",
         "effect_category": "HARMFUL",
@@ -206,6 +225,7 @@
     },
     {
       "fullbright": false,
+      "local_lighting": true,
       "opacity_modifier": {
         "type": "mob_effect_category",
         "effect_category": "HARMFUL",
@@ -224,6 +244,7 @@
     },
     {
       "fullbright": false,
+      "local_lighting": false,
       "path": "frame"
     }
   ],

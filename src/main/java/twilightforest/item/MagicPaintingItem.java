@@ -73,10 +73,11 @@ public class MagicPaintingItem extends Item {
 		Holder<MagicPaintingVariant> magicPainting = stack.get(TFDataComponents.MAGIC_PAINTING_VARIANT);
 
 		if (magicPainting != null) {
+			MagicPaintingVariant painting = magicPainting.value();
 			ResourceLocation location = magicPainting.unwrapKey().orElse(MagicPaintingVariants.DEFAULT).location();
 			components.add(Component.translatable(location.toLanguageKey("magic_painting", "title")).withStyle(ChatFormatting.YELLOW));
-			components.add(Component.translatable(location.toLanguageKey("magic_painting", "author")).withStyle(ChatFormatting.GRAY));
-			components.add(Component.translatable("painting.dimensions", Mth.positiveCeilDiv(magicPainting.value().width(), 16), Mth.positiveCeilDiv(magicPainting.value().height(), 16)));
+			components.add(Component.empty().withStyle(ChatFormatting.GRAY).append(painting.author()));
+			components.add(Component.translatable("painting.dimensions", Mth.positiveCeilDiv(painting.width(), 16), Mth.positiveCeilDiv(painting.height(), 16)));
 		}
 	}
 }

@@ -19,6 +19,6 @@
   },
   "natural": true,
   "piglin_safe": false,
-  "respawn_anchor_works": true,
+  "respawn_anchor_works": false,
   "ultrawarm": false
 }

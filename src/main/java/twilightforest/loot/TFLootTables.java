@@ -24,6 +24,7 @@ import twilightforest.TwilightForestMod;
 import java.util.Collections;
 import java.util.Set;
 
+//TODO fix other chest loot table directories next breaking version (1.21.4)
 public class TFLootTables {
 	// For easy testing:
 	// /give @p chest{BlockEntityTag:{LootTable:"twilightforest:all_bosses",CustomName:'{"text":"Master Loot Crate"}'}} 1
@@ -32,6 +33,7 @@ public class TFLootTables {
 	public static final int DEFAULT_PLACE_FLAG = Block.UPDATE_CLIENTS;
 
 	// Chest loot
+	public static final ResourceKey<LootTable> SUSPICIOUS_STEW = register("chests/suspicious_stew");
 	public static final ResourceKey<LootTable> SMALL_HOLLOW_HILL = register("hill_1");
 	public static final ResourceKey<LootTable> MEDIUM_HOLLOW_HILL = register("hill_2");
 	public static final ResourceKey<LootTable> LARGE_HOLLOW_HILL = register("hill_3");
@@ -41,14 +43,16 @@ public class TFLootTables {
 	public static final ResourceKey<LootTable> WELL = register("well");
 	public static final ResourceKey<LootTable> LABYRINTH_ROOM = register("labyrinth_room");
 	public static final ResourceKey<LootTable> LABYRINTH_DEAD_END = register("labyrinth_dead_end");
-	public static final ResourceKey<LootTable> TOWER_ROOM = register("tower_room");
-	public static final ResourceKey<LootTable> TOWER_LIBRARY = register("tower_library");
-	public static final ResourceKey<LootTable> TOWER_POTION = register("tower_potion");
-	public static final ResourceKey<LootTable> TOWER_GRAVE = register("tower_grave");
-	public static final ResourceKey<LootTable> TOWER_ENCHANTING = register("tower_enchanting");
-	public static final ResourceKey<LootTable> TOWER_JARS = register("tower_jars");
-	public static final ResourceKey<LootTable> BASEMENT = register("basement");
-	public static final ResourceKey<LootTable> HUT_JUNK = register("hut_junk");
+	public static final ResourceKey<LootTable> TOWER_ROOM = register("chests/tower_room");
+	public static final ResourceKey<LootTable> TOWER_LIBRARY = register("chests/tower_library");
+	public static final ResourceKey<LootTable> TOWER_POTION = register("chests/tower_potion");
+	public static final ResourceKey<LootTable> TOWER_GRAVE = register("chests/tower_grave");
+	public static final ResourceKey<LootTable> TOWER_ENCHANTING = register("chests/tower_enchanting");
+	public static final ResourceKey<LootTable> TOWER_JARS = register("chests/tower_jars");
+	public static final ResourceKey<LootTable> TOWER_FOYER = register("chests/tower_foyer");
+	public static final ResourceKey<LootTable> CASKET_LOOT = register("chests/casket_loot");
+	public static final ResourceKey<LootTable> BASEMENT = register("chests/basement");
+	public static final ResourceKey<LootTable> HUT_JUNK = register("chests/hut_junk");
 	public static final ResourceKey<LootTable> FOUNDATION_BASEMENT = register("foundation_basement");
 	public static final ResourceKey<LootTable> LABYRINTH_VAULT = register("labyrinth_vault");
 	public static final ResourceKey<LootTable> LABYRINTH_VAULT_JACKPOT = register("labyrinth_vault_jackpot");

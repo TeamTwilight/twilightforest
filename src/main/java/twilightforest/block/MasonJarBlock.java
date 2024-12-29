@@ -77,9 +77,9 @@ public class MasonJarBlock extends JarBlock implements SimpleWaterloggedBlock {
 						ItemStack inserted = stack.copy();
 						ItemStack returned = handler.insertItem(0, stack, false);
 
-						if (!player.isCreative()) player.setItemInHand(hand, returned);
+						player.setItemInHand(hand, returned);
 						float pitch = (float) (inserted.getCount() - returned.getCount()) / (float) inserted.getMaxStackSize();
-						serverLevel.playSound(null, pos, TFSounds.JAR_INSERT.get(), SoundSource.BLOCKS, 1.0F, 0.7F + 0.5F * pitch); // FIXME
+						serverLevel.playSound(null, pos, TFSounds.JAR_INSERT.get(), SoundSource.BLOCKS, 1.0F, 0.7F + 0.5F * pitch);
 
 						serverLevel.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
 					} else {

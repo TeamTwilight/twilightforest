@@ -30,7 +30,6 @@ import java.util.List;
 import java.util.function.Predicate;
 
 public abstract class TwilightJigsawPiece extends TwilightTemplateStructurePiece {
-	@Nullable
 	private final JigsawRecord sourceJigsaw;
 	private final List<JigsawRecord> spareJigsaws;
 
@@ -41,27 +40,14 @@ public abstract class TwilightJigsawPiece extends TwilightTemplateStructurePiece
 		this.spareJigsaws = readConnectionsFromNBT(compoundTag);
 	}
 
-	public TwilightJigsawPiece(StructurePieceType type, int genDepth, StructureTemplateManager structureManager, ResourceLocation templateLocation, StructurePlaceSettings placeSettings, BlockPos startPosition) {
-		this(type, genDepth, structureManager, templateLocation, placeSettings, startPosition, null, JigsawRecord.allFromTemplate(structureManager, templateLocation, placeSettings));
-	}
-
 	public TwilightJigsawPiece(StructurePieceType type, int genDepth, StructureTemplateManager structureManager, ResourceLocation templateLocation, JigsawPlaceContext jigsawContext) {
-		this(type, genDepth, structureManager, templateLocation, jigsawContext.placementSettings(), jigsawContext.templatePos(), jigsawContext.seedJigsaw(), jigsawContext.spareJigsaws());
+		super(type, genDepth, structureManager, templateLocation, jigsawContext.placementSettings(), jigsawContext.templatePos());
+
+		this.sourceJigsaw = jigsawContext.seedJigsaw();
+		this.spareJigsaws = Collections.unmodifiableList(jigsawContext.spareJigsaws());
 	}
 
-	private TwilightJigsawPiece(StructurePieceType type, int genDepth, StructureTemplateManager structureManager, ResourceLocation templateLocation, StructurePlaceSettings placeSettings, BlockPos startPosition, @Nullable JigsawRecord sourceJigsaw, List<JigsawRecord> spareJigsaws) {
-		super(type, genDepth, structureManager, templateLocation, placeSettings, startPosition);
-
-		this.sourceJigsaw = sourceJigsaw;
-		this.spareJigsaws = Collections.unmodifiableList(spareJigsaws);
-	}
-
-	@Nullable
 	protected static JigsawRecord readSourceFromNBT(CompoundTag structureTag) {
-		if (!structureTag.contains("source", Tag.TAG_COMPOUND)) {
-			return null;
-		}
-
 		return JigsawRecord.fromTag(structureTag.getCompound("source"));
 	}
 
@@ -83,9 +69,7 @@ public abstract class TwilightJigsawPiece extends TwilightTemplateStructurePiece
 	protected void addAdditionalSaveData(StructurePieceSerializationContext ctx, CompoundTag structureTag) {
 		super.addAdditionalSaveData(ctx, structureTag);
 
-		if (this.sourceJigsaw != null) {
-			structureTag.put("source", this.sourceJigsaw.toTag());
-		}
+		structureTag.put("source", this.sourceJigsaw.toTag());
 
 		ListTag tags = new ListTag();
 
@@ -121,7 +105,6 @@ public abstract class TwilightJigsawPiece extends TwilightTemplateStructurePiece
 		}
 	}
 
-	@Nullable
 	public JigsawRecord getSourceJigsaw() {
 		return this.sourceJigsaw;
 	}
@@ -138,5 +121,13 @@ public abstract class TwilightJigsawPiece extends TwilightTemplateStructurePiece
 				jigsaws.add(record);
 
 		return jigsaws;
+	}
+
+	public int firstMatchIndex(Predicate<JigsawRecord> filter) {
+		for (int i = 0; i < this.spareJigsaws.size(); i++)
+			if (filter.test(this.spareJigsaws.get(i)))
+				return i;
+
+		return -1;
 	}
 }

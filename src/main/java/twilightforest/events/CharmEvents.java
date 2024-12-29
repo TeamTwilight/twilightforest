@@ -17,8 +17,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -192,78 +191,87 @@ public class CharmEvents {
 	private static void keepsakeCasket(Player player) {
 		boolean casketConsumed = TFItemStackUtils.consumeInventoryItem(player, TFBlocks.KEEPSAKE_CASKET.get().asItem(), getPlayerData(player), false);
 
-		if (casketConsumed) {
-			Level level = player.level();
-			BlockPos.MutableBlockPos pos = player.blockPosition().mutable();
+		if (!casketConsumed)
+			return;
 
-			if (pos.getY() < level.dimensionType().minY() + 2) {
-				pos.setY(level.dimensionType().minY() + 2);
-			} else {
-				int logicalHeight = player.level().dimensionType().logicalHeight();
+		Level level = player.level();
+		BlockPos.MutableBlockPos pos = player.blockPosition().mutable();
 
-				if (pos.getY() > logicalHeight) {
-					pos.setY(logicalHeight - 1);
-				}
-			}
+		if (pos.getY() < level.dimensionType().minY() + 2) {
+			pos.setY(level.dimensionType().minY() + 2);
+		} else {
+			int logicalHeight = player.level().dimensionType().logicalHeight();
 
-			pos.move(0, -1, 0);
-
-			do {
-				pos.move(0, 1, 0);
-			} while (!level.getBlockState(pos).canBeReplaced());
-
-			BlockPos immutablePos = pos.immutable();
-			FluidState fluidState = level.getFluidState(immutablePos);
-
-			if (level.setBlockAndUpdate(immutablePos, TFBlocks.KEEPSAKE_CASKET.get().defaultBlockState().setValue(BlockLoggingEnum.MULTILOGGED, BlockLoggingEnum.getFromFluid(fluidState.getType())).setValue(KeepsakeCasketBlock.BREAKAGE, getPlayerData(player).contains(CASKET_DAMAGE_TAG) ? getPlayerData(player).getInt(CASKET_DAMAGE_TAG) : 0).setValue(KeepsakeCasketBlock.FACING, Direction.from2DDataValue(level.getRandom().nextInt(3))))) {
-				BlockEntity te = level.getBlockEntity(immutablePos);
-
-				if (te instanceof KeepsakeCasketBlockEntity casket) {
-					if (TFConfig.casketUUIDLocking) {
-						//make it so only the player who died can open the chest if our config allows us
-						casket.playeruuid = player.getGameProfile().getId();
-					} else {
-						casket.playeruuid = null;
-					}
-
-					casket.playerName = player.getName().getString();
-					//some names are way too long for the casket so we'll cut them down
-					String modifiedName = casket.playerName.substring(0, Math.min(12, player.getName().getString().length()));
-					casket.casketname = modifiedName;
-					casket.name = (Component.literal(modifiedName + "'s " + (level.getRandom().nextInt(1000) == 0 ? "Costco Casket" : casket.getDisplayName().getString())));
-					int damage = level.getBlockState(immutablePos).getValue(KeepsakeCasketBlock.BREAKAGE);
-					if (level.getRandom().nextFloat() <= 1.0F) {
-						if (damage >= 2) {
-							player.getInventory().dropAll();
-							level.setBlockAndUpdate(immutablePos, Blocks.AIR.defaultBlockState());
-							getPlayerData(player).putBoolean(CASKET_BROKEN_TAG, true);
-							TwilightForestMod.LOGGER.debug("{}'s Casket damage value was too high, alerting the player and dropping extra items", player.getName().getString());
-						} else {
-							damage = damage + 1;
-							level.setBlockAndUpdate(immutablePos, TFBlocks.KEEPSAKE_CASKET.get().defaultBlockState().setValue(BlockLoggingEnum.MULTILOGGED, BlockLoggingEnum.getFromFluid(fluidState.getType())).setValue(KeepsakeCasketBlock.BREAKAGE, damage));
-							TwilightForestMod.LOGGER.debug("{}'s Casket was randomly damaged, applying new damage", player.getName().getString());
-						}
-					}
-					int casketCapacity = casket.getContainerSize();
-					List<ItemStack> list = new ArrayList<>(casketCapacity);
-					NonNullList<ItemStack> filler = NonNullList.withSize(4, ItemStack.EMPTY);
-
-					// lets add our inventory exactly how it was on us
-					list.addAll(TFItemStackUtils.sortArmorForCasket(player));
-					player.getInventory().armor.clear();
-					list.addAll(filler);
-					list.addAll(player.getInventory().offhand);
-					player.getInventory().offhand.clear();
-					list.addAll(TFItemStackUtils.sortInvForCasket(player));
-					player.getInventory().items.clear();
-
-					casket.setItems(NonNullList.of(ItemStack.EMPTY, list.toArray(new ItemStack[casketCapacity])));
-					getPlayerData(player).remove(CASKET_DAMAGE_TAG);
-				}
-			} else {
-				TwilightForestMod.LOGGER.error("Could not place Keepsake Casket at " + pos);
+			if (pos.getY() > logicalHeight) {
+				pos.setY(logicalHeight - 1);
 			}
 		}
+
+		pos.move(0, -1, 0);
+
+		do {
+			pos.move(0, 1, 0);
+		} while (!level.getBlockState(pos).canBeReplaced());
+
+		BlockPos immutablePos = pos.immutable();
+		FluidState fluidState = level.getFluidState(immutablePos);
+
+		int damage = getPlayerData(player).contains(CASKET_DAMAGE_TAG) ? getPlayerData(player).getInt(CASKET_DAMAGE_TAG) : 0;
+		BlockState setState = TFBlocks.KEEPSAKE_CASKET.get().defaultBlockState()
+			.setValue(BlockLoggingEnum.MULTILOGGED, BlockLoggingEnum.getFromFluid(fluidState.getType()))
+			.setValue(KeepsakeCasketBlock.BREAKAGE, damage)
+			.setValue(KeepsakeCasketBlock.FACING, Direction.from2DDataValue(level.getRandom().nextInt(3)));
+
+		if (level.getRandom().nextFloat() <= 1.0F) {
+			if (damage >= 2) {
+				setState = TFBlocks.SKULL_CHEST.get().defaultBlockState().setValue(BlockLoggingEnum.MULTILOGGED, BlockLoggingEnum.getFromFluid(fluidState.getType()));
+				getPlayerData(player).putBoolean(CASKET_BROKEN_TAG, true);
+				TwilightForestMod.LOGGER.debug("{}'s Casket damage value was too high, alerting the player and placing Skull Chest instead", player.getName().getString());
+			} else {
+				damage = damage + 1;
+				setState = TFBlocks.KEEPSAKE_CASKET.get().defaultBlockState().setValue(BlockLoggingEnum.MULTILOGGED, BlockLoggingEnum.getFromFluid(fluidState.getType())).setValue(KeepsakeCasketBlock.BREAKAGE, damage);
+				TwilightForestMod.LOGGER.debug("{}'s Casket was randomly damaged, applying new damage", player.getName().getString());
+			}
+		}
+
+		if (!level.setBlockAndUpdate(immutablePos, setState)) {
+			TwilightForestMod.LOGGER.error("Could not place Keepsake Casket at " + pos);
+			return;
+		}
+
+		if (!(level.getBlockEntity(immutablePos) instanceof KeepsakeCasketBlockEntity casket)) {
+			TwilightForestMod.LOGGER.error("Failed to set Keepsake Casket data at " + pos);
+			return;
+		}
+
+		if (TFConfig.casketUUIDLocking) {
+			//make it so only the player who died can open the chest if our config allows us
+			casket.playeruuid = player.getGameProfile().getId();
+		} else {
+			casket.playeruuid = null;
+		}
+
+		casket.playerName = player.getName().getString();
+		//some names are way too long for the casket so we'll cut them down
+		String modifiedName = casket.playerName.substring(0, Math.min(12, player.getName().getString().length()));
+		casket.casketname = modifiedName;
+		casket.name = (Component.literal(modifiedName + "'s " + (level.getRandom().nextInt(1000) == 0 ? "Costco Casket" : casket.getDisplayName().getString())));
+
+		int casketCapacity = casket.getContainerSize();
+		List<ItemStack> list = new ArrayList<>(casketCapacity);
+		NonNullList<ItemStack> filler = NonNullList.withSize(4, ItemStack.EMPTY);
+
+		// lets add our inventory exactly how it was on us
+		list.addAll(TFItemStackUtils.sortArmorForCasket(player));
+		player.getInventory().armor.clear();
+		list.addAll(filler);
+		list.addAll(player.getInventory().offhand);
+		player.getInventory().offhand.clear();
+		list.addAll(TFItemStackUtils.sortInvForCasket(player));
+		player.getInventory().items.clear();
+
+		casket.setItems(NonNullList.of(ItemStack.EMPTY, list.toArray(new ItemStack[casketCapacity])));
+		getPlayerData(player).remove(CASKET_DAMAGE_TAG);
 	}
 
 	/**

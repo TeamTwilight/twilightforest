@@ -1,8 +1,13 @@
 {
+  "author": {
+    "translate": "magic_painting.twilightforest.music_in_the_mire.author"
+  },
+  "back_texture": "twilightforest:magic_paintings/back",
   "height": 48,
   "layers": [
     {
       "fullbright": false,
+      "local_lighting": true,
       "parallax": {
         "type": "view_angle",
         "height": 56,
@@ -13,6 +18,7 @@
     },
     {
       "fullbright": true,
+      "local_lighting": true,
       "parallax": {
         "type": "view_angle",
         "height": 52,
@@ -23,6 +29,7 @@
     },
     {
       "fullbright": false,
+      "local_lighting": true,
       "opacity_modifier": {
         "type": "lightning",
         "invert": false,
@@ -40,6 +47,7 @@
     },
     {
       "fullbright": false,
+      "local_lighting": true,
       "parallax": {
         "type": "view_angle",
         "height": 52,
@@ -50,6 +58,7 @@
     },
     {
       "fullbright": false,
+      "local_lighting": true,
       "opacity_modifier": {
         "type": "lightning",
         "invert": false,
@@ -67,6 +76,7 @@
     },
     {
       "fullbright": false,
+      "local_lighting": true,
       "opacity_modifier": {
         "type": "day_time",
         "from": 22331.0,
@@ -86,6 +96,7 @@
     },
     {
       "fullbright": false,
+      "local_lighting": true,
       "parallax": {
         "type": "view_angle",
         "height": 48,
@@ -96,6 +107,7 @@
     },
     {
       "fullbright": false,
+      "local_lighting": true,
       "opacity_modifier": {
         "type": "lightning",
         "invert": false,
@@ -113,6 +125,7 @@
     },
     {
       "fullbright": false,
+      "local_lighting": true,
       "parallax": {
         "type": "view_angle",
         "height": 48,
@@ -123,6 +136,7 @@
     },
     {
       "fullbright": false,
+      "local_lighting": true,
       "opacity_modifier": {
         "type": "lightning",
         "invert": false,
@@ -140,6 +154,7 @@
     },
     {
       "fullbright": false,
+      "local_lighting": false,
       "path": "bl_frame"
     }
   ],

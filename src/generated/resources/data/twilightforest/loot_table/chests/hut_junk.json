@@ -166,63 +166,8 @@
       "bonus_rolls": 0.0,
       "entries": [
         {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "effects": [
-                {
-                  "type": "minecraft:jump_boost",
-                  "duration": {
-                    "type": "minecraft:uniform",
-                    "max": 10.0,
-                    "min": 7.0
-                  }
-                },
-                {
-                  "type": "minecraft:weakness",
-                  "duration": {
-                    "type": "minecraft:uniform",
-                    "max": 8.0,
-                    "min": 6.0
-                  }
-                },
-                {
-                  "type": "minecraft:blindness",
-                  "duration": {
-                    "type": "minecraft:uniform",
-                    "max": 7.0,
-                    "min": 5.0
-                  }
-                },
-                {
-                  "type": "minecraft:poison",
-                  "duration": {
-                    "type": "minecraft:uniform",
-                    "max": 20.0,
-                    "min": 10.0
-                  }
-                },
-                {
-                  "type": "minecraft:saturation",
-                  "duration": {
-                    "type": "minecraft:uniform",
-                    "max": 10.0,
-                    "min": 7.0
-                  }
-                },
-                {
-                  "type": "minecraft:wither",
-                  "duration": {
-                    "type": "minecraft:uniform",
-                    "max": 10.0,
-                    "min": 6.0
-                  }
-                }
-              ],
-              "function": "minecraft:set_stew_effect"
-            }
-          ],
-          "name": "minecraft:suspicious_stew",
+          "type": "minecraft:loot_table",
+          "value": "twilightforest:chests/suspicious_stew",
           "weight": 8
         },
         {
@@ -273,5 +218,5 @@
       "rolls": 1.0
     }
   ],
-  "random_sequence": "twilightforest:hut_junk"
+  "random_sequence": "twilightforest:chests/hut_junk"
 }

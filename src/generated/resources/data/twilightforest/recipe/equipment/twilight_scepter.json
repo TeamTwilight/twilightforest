@@ -1,5 +1,6 @@
 {
   "type": "twilightforest:scepter_repair",
+  "durability": 9,
   "repair_ingredients": [
     {
       "tag": "c:ender_pearls"

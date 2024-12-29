@@ -199,6 +199,22 @@ test {
 	}
 }
 
+processResources {
+	def mc = minecraft_version
+	def neo = neo_version
+	def ver = project.version
+	filesMatching("META-INF/neoforge.mods.toml") {
+		expand([
+			'file'           : [
+				'jarVersion': ver
+			],
+			'm'      : mc,
+			'l'      : "NeoForge",
+			'v': neo,
+		])
+	}
+}
+
 jar {
 	manifest {
 		archiveClassifier = 'universal'

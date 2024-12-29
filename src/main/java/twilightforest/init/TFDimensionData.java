@@ -43,7 +43,7 @@ public class TFDimensionData {
 			true, //natural
 			1 / 8.0, //coordinate scale
 			true, //bed works
-			true, //respawn anchor works
+			false, //respawn anchor works
 			-32, // Minimum Y Level
 			32 + 256, // Height + Min Y = Max Y
 			32 + 256, // Logical Height
