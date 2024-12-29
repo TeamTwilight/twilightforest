@@ -79,10 +79,7 @@ public class FallenTrunkStructure extends Structure implements CustomDensitySour
 			return Optional.empty();
 		}
 
-
-
 		int radius = Util.getRandom(radiuses, random);
-//		int radius = 4; FIXME: remove debug determined radius
 
 		Direction orientation = Direction.Plane.HORIZONTAL.getRandomDirection(random);
 		int xOff = 0;
@@ -121,6 +118,7 @@ public class FallenTrunkStructure extends Structure implements CustomDensitySour
 			UniformInt.of(17, 24), BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_LOG.get()), TFLootTables.TREE_CACHE, TFEntities.SWARM_SPIDER
 		);
 	}
+
 	@Override
 	public DensityFunction getStructureTerraformer(ChunkPos chunkPosAt, StructureStart structurePieceSource) {
 		FallenTrunkPiece piece = ((FallenTrunkPiece) structurePieceSource.getPieces().getFirst());
