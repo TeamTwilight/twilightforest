@@ -273,7 +273,7 @@ public class FallenTrunkPiece extends StructurePiece {
 				int[] xy = convertLengthToXY(length);
 				int x = xy[0];
 				int y = xy[1];
-				if (checkForMoundAroundTheBlock(x, y, z, hollowHillFunction))
+				if (checkForMoundAroundTheBlock(getOrientation().getAxis() == Direction.Axis.Z ? x : z, y, getOrientation().getAxis() == Direction.Axis.Z ? z : x, hollowHillFunction))
 					return true;
 			}
 		}
