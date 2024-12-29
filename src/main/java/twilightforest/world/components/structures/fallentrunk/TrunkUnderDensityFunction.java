@@ -95,11 +95,15 @@ public class TrunkUnderDensityFunction extends Beardifier {
 		int coordinateOffset = random.nextInt(-length / 4, length / 4);
 		BoundingBox absouluteMoundApex = moundApex.moved(boundingBox.minX(), boundingBox.minY(), boundingBox.minZ());
 		int radius = getRadius(boundingBox);
+		float hollowHillX = absouluteMoundApex.getCenter().getX() + (isXOriented ? coordinateOffset : random.nextBoolean() ? boundingBox.getXSpan() - 1 : 0);
+		float hollowHillY = absouluteMoundApex.getCenter().getY() + radius / 3f + random.nextInt(-1, 3);
+		float hollowHillZ = absouluteMoundApex.getCenter().getZ() + (!isXOriented ? coordinateOffset : random.nextBoolean() ? boundingBox.getZSpan() - 1 : 0);
+		float hollowHillRadius = moundRadius + random.nextInt(0, 3);
 		return new HollowHillFunction(
-			absouluteMoundApex.getCenter().getX() + (isXOriented ? coordinateOffset : random.nextBoolean() ? boundingBox.getXSpan() - 1 : 0),
-			absouluteMoundApex.getCenter().getY() + radius / 3f,
-			absouluteMoundApex.getCenter().getZ() + (!isXOriented ? coordinateOffset : random.nextBoolean() ? boundingBox.getZSpan() - 1 : 0),
-			moundRadius, 1);
+			hollowHillX,
+			hollowHillY,
+			hollowHillZ,
+			hollowHillRadius, 1);
 	}
 
 	protected Beardifier.Rigid getFallenTrunkPiece() {
