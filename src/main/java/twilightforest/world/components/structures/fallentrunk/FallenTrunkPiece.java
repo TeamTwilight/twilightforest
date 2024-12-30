@@ -1,6 +1,5 @@
 package twilightforest.world.components.structures.fallentrunk;
 
-import com.google.common.base.MoreObjects;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -37,6 +36,8 @@ import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.world.components.chunkgenerators.HollowHillFunction;
 import twilightforest.world.components.structures.TerraformingPiece;
 import twilightforest.world.components.structures.type.FallenTrunkStructure;
+
+import java.util.Objects;
 
 public class FallenTrunkPiece extends StructurePiece {
 	public static final BlockStateProvider DEFAULT_LOG = BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_LOG.get());
@@ -224,7 +225,7 @@ public class FallenTrunkPiece extends StructurePiece {
 	@NotNull
 	@Override
 	public Direction getOrientation() {
-		return MoreObjects.firstNonNull(orientation, Direction.NORTH);  // orientation is always not null, just to remove warnings
+		return Objects.requireNonNull(orientation);  // orientation is always not null, just to remove warnings
 	}
 
 	protected int getSideLength() {
