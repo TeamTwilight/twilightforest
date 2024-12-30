@@ -11,7 +11,6 @@ import twilightforest.TwilightForestMod;
 import twilightforest.world.components.chunkgenerators.HollowHillFunction;
 
 import java.util.Arrays;
-import java.util.Comparator;
 
 public class TrunkUnderDensityFunction extends Beardifier {
 	private final boolean isBigTree;
@@ -71,8 +70,8 @@ public class TrunkUnderDensityFunction extends Beardifier {
 		}
 
 		return Arrays.stream(hollowHillFunctions)
-			.max(Comparator.comparing(hollowHillFunction -> hollowHillFunction.compute(context)))
 			.map(hollowHillFunction -> hollowHillFunction.compute(context))
+			.max(Double::compareTo)
 			.orElse(Double.NEGATIVE_INFINITY);
 	}
 
