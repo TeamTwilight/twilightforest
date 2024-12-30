@@ -42,7 +42,6 @@ public class Hole {
 				x2 = x1 + xSize - 1;
 				tries++;
 			}
-			System.out.println(tries);
 
 			if (tries >= maxAttemptAmount)
 				TwilightForestMod.LOGGER.error("Too many tries during generation of the hole in Fallen Trunk! Please report to https://github.com/TeamTwilight/twilightforest/issues the with seed and {}", piece.getBoundingBox().getCenter().toString());
