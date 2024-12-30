@@ -85,7 +85,7 @@ public class TrunkUnderDensityFunction extends Beardifier {
 			hollowHillFunction = getHollowHillFunction();
 		}
 		if (piece.isHoleCoveredByHill(hollowHillFunction))
-			TwilightForestMod.LOGGER.error("Too many tries during generation of mounds in Fallen Trunk! Please contact TF devs with seed and {}", piece.getBoundingBox().getCenter().toString());
+			TwilightForestMod.LOGGER.error("Too many tries during generation of mounds in Fallen Trunk! Please report to https://github.com/TeamTwilight/twilightforest/issues the with seed and {}", piece.getBoundingBox().getCenter().toString());
 
 		return hollowHillFunction;
 	}
