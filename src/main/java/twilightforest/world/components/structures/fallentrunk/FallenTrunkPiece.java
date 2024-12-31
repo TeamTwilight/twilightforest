@@ -197,9 +197,9 @@ public class FallenTrunkPiece extends StructurePiece {
 		Vec3i doubleChestOffset = Util.getRandom(possibleChestsOffsets.stream().toList(), random);
 		BlockPos doubleChestPos = spawnerPos.offset(doubleChestOffset);
 		ChestType chestType = mirror != Mirror.NONE ? ChestType.RIGHT : ChestType.LEFT;
-		BlockState doubleChest0 = Blocks.CHEST.defaultBlockState().setValue(ChestBlock.FACING, orientation.getOpposite()).setValue(ChestBlock.TYPE, chestType);
+		BlockState doubleChest0 = TFBlocks.TWILIGHT_OAK_CHEST.get().defaultBlockState().setValue(ChestBlock.FACING, orientation.getOpposite()).setValue(ChestBlock.TYPE, chestType);
 		BlockPos doubleChestPos0 = getWorldPos(doubleChestPos.getX(), doubleChestPos.getY(), doubleChestPos.getZ());
-		BlockState doubleChest1 = Blocks.CHEST.defaultBlockState().setValue(ChestBlock.FACING, orientation.getOpposite()).setValue(ChestBlock.TYPE, chestType.getOpposite());
+		BlockState doubleChest1 = TFBlocks.TWILIGHT_OAK_CHEST.get().defaultBlockState().setValue(ChestBlock.FACING, orientation.getOpposite()).setValue(ChestBlock.TYPE, chestType.getOpposite());
 		BlockPos doubleChestPos1 = getWorldPos(doubleChestPos.getX(), doubleChestPos.getY(), doubleChestPos.getZ() + 1);
 		RandomSource chest0Random = RandomSource.create(random.nextLong());  // Create new randomSources to avoid the same loot in chests if placed in different chunks
 		RandomSource chest1Random = RandomSource.create(random.nextLong());  // Using "random" for loot in chests makes it worse, because the single chest may not spawn
@@ -218,7 +218,7 @@ public class FallenTrunkPiece extends StructurePiece {
 		Vec3i singleChestOffset = Util.getRandom(possibleChestsOffsets.stream().toList(), random);
 		BlockPos singleChestSpawnerPos = spawnerPos.offset(singleChestOffset);
 
-		BlockState singleChestState = Blocks.CHEST.defaultBlockState().setValue(ChestBlock.FACING, singleChestOffset.getX() < 0 ? orientation : orientation.getOpposite());
+		BlockState singleChestState = TFBlocks.TWILIGHT_OAK_CHEST.get().defaultBlockState().setValue(ChestBlock.FACING, singleChestOffset.getX() < 0 ? orientation : orientation.getOpposite());
 		BlockPos singleChestPos = getWorldPos(singleChestSpawnerPos.getX(), singleChestSpawnerPos.getY(), singleChestSpawnerPos.getZ());
 		RandomSource chestRandom = RandomSource.create(random.nextLong());
 		this.createChest(level, box, chestRandom, singleChestPos, chestLootTable, singleChestState);
