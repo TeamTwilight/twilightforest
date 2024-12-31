@@ -1,8 +1,10 @@
 package twilightforest.world.components.structures.fallentrunk;
 
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
+import net.minecraft.core.Vec3i;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
@@ -37,7 +39,9 @@ import twilightforest.world.components.chunkgenerators.HollowHillFunction;
 import twilightforest.world.components.structures.TerraformingPiece;
 import twilightforest.world.components.structures.type.FallenTrunkStructure;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 public class FallenTrunkPiece extends StructurePiece {
 	public static final BlockStateProvider DEFAULT_LOG = BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_LOG.get());
@@ -181,17 +185,43 @@ public class FallenTrunkPiece extends StructurePiece {
 		Direction orientation = this.getOrientation().getClockWise();
 		if (this.mirror == Mirror.LEFT_RIGHT)
 			orientation = orientation.getOpposite();
-		BlockState singleChestState = Blocks.CHEST.defaultBlockState().setValue(ChestBlock.FACING, orientation);
-		BlockPos singleChestPos = getWorldPos(spawnerPos.getX() - 1, spawnerPos.getY(), spawnerPos.getZ() + 2);
-		this.createChest(level, box, random, singleChestPos, chestLootTable, singleChestState);
 
+
+		Set<Vec3i> possibleChestsOffsets = new HashSet<>();
+		for (int i = 0; i < 6; i++) {
+			possibleChestsOffsets.add(new Vec3i(2, 1, -3 + i));
+		}
+		possibleChestsOffsets.add(new Vec3i(1, 0, -3));
+		possibleChestsOffsets.add(new Vec3i(1, 0, 2));
+
+		Vec3i doubleChestOffset = Util.getRandom(possibleChestsOffsets.stream().toList(), random);
+		BlockPos doubleChestPos = spawnerPos.offset(doubleChestOffset);
 		ChestType chestType = mirror != Mirror.NONE ? ChestType.RIGHT : ChestType.LEFT;
 		BlockState doubleChest0 = Blocks.CHEST.defaultBlockState().setValue(ChestBlock.FACING, orientation.getOpposite()).setValue(ChestBlock.TYPE, chestType);
-		BlockPos doubleChestPos0 = getWorldPos(spawnerPos.getX() + 2, spawnerPos.getY() + 1, spawnerPos.getZ() - 3);
+		BlockPos doubleChestPos0 = getWorldPos(doubleChestPos.getX(), doubleChestPos.getY(), doubleChestPos.getZ());
 		BlockState doubleChest1 = Blocks.CHEST.defaultBlockState().setValue(ChestBlock.FACING, orientation.getOpposite()).setValue(ChestBlock.TYPE, chestType.getOpposite());
-		BlockPos doubleChestPos1 = getWorldPos(spawnerPos.getX() + 2, spawnerPos.getY() + 1, spawnerPos.getZ() - 2);
-		this.createChest(level, box, random, doubleChestPos0, chestLootTable, doubleChest0);
-		this.createChest(level, box, random, doubleChestPos1, chestLootTable, doubleChest1);
+		BlockPos doubleChestPos1 = getWorldPos(doubleChestPos.getX(), doubleChestPos.getY(), doubleChestPos.getZ() + 1);
+		RandomSource chest0Random = RandomSource.create(random.nextLong());  // Create new randomSources to avoid the same loot in chests if placed in different chunks
+		RandomSource chest1Random = RandomSource.create(random.nextLong());  // Using "random" for loot in chests makes it worse, because the single chest may not spawn
+		this.createChest(level, box, chest0Random, doubleChestPos0, chestLootTable, doubleChest0);
+		this.createChest(level, box, chest1Random, doubleChestPos1, chestLootTable, doubleChest1);
+
+		for(Vec3i vec3i : possibleChestsOffsets.stream().toList()) {
+			possibleChestsOffsets.add(vec3i.offset(0, 0, 1));
+		}
+		for(Vec3i vec3i : possibleChestsOffsets.stream().toList()) {
+			possibleChestsOffsets.add(new Vec3i(-vec3i.getX(), vec3i.getY(), vec3i.getZ()));
+		}
+
+		possibleChestsOffsets.remove(doubleChestOffset);
+		possibleChestsOffsets.remove(doubleChestOffset.offset(0, 0, 1));
+		Vec3i singleChestOffset = Util.getRandom(possibleChestsOffsets.stream().toList(), random);
+		BlockPos singleChestSpawnerPos = spawnerPos.offset(singleChestOffset);
+
+		BlockState singleChestState = Blocks.CHEST.defaultBlockState().setValue(ChestBlock.FACING, singleChestOffset.getX() < 0 ? orientation : orientation.getOpposite());
+		BlockPos singleChestPos = getWorldPos(singleChestSpawnerPos.getX(), singleChestSpawnerPos.getY(), singleChestSpawnerPos.getZ());
+		RandomSource chestRandom = RandomSource.create(random.nextLong());
+		this.createChest(level, box, chestRandom, singleChestPos, chestLootTable, singleChestState);
 	}
 
 	private int getDist(int dx, int dy) {
