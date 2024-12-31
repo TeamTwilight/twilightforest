@@ -8,13 +8,11 @@ import it.unimi.dsi.fastutil.objects.ObjectList;
 import net.minecraft.Util;
 import net.minecraft.core.*;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.RegistryFixedCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.util.valueproviders.UniformInt;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.biome.Biome;
@@ -23,7 +21,6 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.storage.loot.LootTable;
 import twilightforest.init.TFBlocks;
-import twilightforest.init.TFEntities;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.loot.TFLootTables;
 import twilightforest.world.components.structures.CustomDensitySource;
@@ -40,22 +37,19 @@ public class FallenTrunkStructure extends Structure implements CustomDensitySour
 		Structure.settingsCodec(instance),
 		IntProvider.codec(16, 32).fieldOf("length").forGetter(s -> s.length),
 		BlockStateProvider.CODEC.fieldOf("log").forGetter(s -> s.log),
-		ResourceKey.codec(Registries.LOOT_TABLE).fieldOf("chest_loot_table").forGetter(s -> s.chestLootTable),
-		RegistryFixedCodec.create(Registries.ENTITY_TYPE).fieldOf("spawner_monster").forGetter(s -> s.spawnerMonster)
+		ResourceKey.codec(Registries.LOOT_TABLE).fieldOf("chest_loot_table").forGetter(s -> s.chestLootTable)
 	).apply(instance, FallenTrunkStructure::new));
 	public static final List<Integer> radiuses = List.of(1, 2, 4);
 
 	private final IntProvider length;
 	private final BlockStateProvider log;
 	private final ResourceKey<LootTable> chestLootTable;
-	private final Holder<EntityType<?>> spawnerMonster;
 
-	protected FallenTrunkStructure(StructureSettings settings, IntProvider length, BlockStateProvider log, ResourceKey<LootTable> chestLootTable, Holder<EntityType<?>> spawnerMonster) {
+	protected FallenTrunkStructure(StructureSettings settings, IntProvider length, BlockStateProvider log, ResourceKey<LootTable> chestLootTable) {
 		super(settings);
 		this.length = length;
 		this.log = log;
 		this.chestLootTable = chestLootTable;
-		this.spawnerMonster = spawnerMonster;
 	}
 
 	@Override
@@ -95,7 +89,7 @@ public class FallenTrunkStructure extends Structure implements CustomDensitySour
 		long holeSeed = random.nextLong();
 
 		return Optional.of(new GenerationStub(new BlockPos(x, worldY, z), structurePiecesBuilder -> {
-			StructurePiece piece = new FallenTrunkPiece(length, radius, log, chestLootTable, spawnerMonster,
+			StructurePiece piece = new FallenTrunkPiece(length, radius, log, chestLootTable,
 				orientation, boundingBox, holeSeed);
 			structurePiecesBuilder.addPiece(piece);
 			piece.addChildren(piece, structurePiecesBuilder, random);
@@ -115,7 +109,7 @@ public class FallenTrunkStructure extends Structure implements CustomDensitySour
 				GenerationStep.Decoration.SURFACE_STRUCTURES,
 				TerrainAdjustment.NONE
 			),
-			UniformInt.of(17, 24), BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_LOG.get()), TFLootTables.FALLEN_TRUNK_LOOT, TFEntities.SWARM_SPIDER
+			UniformInt.of(17, 24), BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_LOG.get()), TFLootTables.FALLEN_TRUNK_LOOT
 		);
 	}
 

@@ -3,9 +3,7 @@ package twilightforest.world.components.structures.fallentrunk;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
 import net.minecraft.core.Vec3i;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
@@ -39,30 +37,29 @@ import twilightforest.world.components.structures.TerraformingPiece;
 import twilightforest.world.components.structures.type.FallenTrunkStructure;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
 public class FallenTrunkPiece extends StructurePiece {
 	public static final BlockStateProvider DEFAULT_LOG = BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_LOG.get());
-	public static final Holder<EntityType<?>> DEFAULT_DUNGEON_MONSTER = TFEntities.SWARM_SPIDER;
 
 	public static final int ERODED_LENGTH = 3;
 	protected static final float MOSS_CHANCE = 0.44F;
+	protected static final List<EntityType<?>> SPAWNER_MONSTERS = List.of(TFEntities.SWARM_SPIDER.get(), TFEntities.HOSTILE_WOLF.get(), EntityType.CAVE_SPIDER);
 	protected final BlockStateProvider log;
 	public final int length;
 	public final int radius;
 	protected final ResourceKey<LootTable> chestLootTable;
-	protected final Holder<EntityType<?>> spawnerMonster;
 	private final long holeSeed;
 	protected final Hole hole;
 
-	public FallenTrunkPiece(int length, int radius, BlockStateProvider log, ResourceKey<LootTable> chestLootTable, Holder<EntityType<?>> spawnerMonster, Direction orientation, BoundingBox boundingBox, long seed) {
+	public FallenTrunkPiece(int length, int radius, BlockStateProvider log, ResourceKey<LootTable> chestLootTable, Direction orientation, BoundingBox boundingBox, long seed) {
 		super(TFStructurePieceTypes.TFFallenTrunk.value(), 0, boundingBox);
 		this.length = length;
 		this.radius = radius;
 		this.log = log;
 		this.chestLootTable = chestLootTable;
-		this.spawnerMonster = spawnerMonster;
 		this.holeSeed = seed;
 		this.hole = new Hole(this, RandomSource.create(holeSeed));
 		setOrientation(orientation);
@@ -76,10 +73,6 @@ public class FallenTrunkPiece extends StructurePiece {
 		RegistryOps<Tag> ops = RegistryOps.create(NbtOps.INSTANCE, context.registryAccess());
 		log = BlockStateProvider.CODEC.parse(ops, tag.getCompound("log")).result().orElse(DEFAULT_LOG);
 		chestLootTable = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.parse(tag.getString("chest_loot_table")));
-		ResourceKey<EntityType<?>> dungeonMonster = ResourceKey.create(Registries.ENTITY_TYPE, ResourceLocation.parse(tag.getString("spawner_monster")));
-		this.spawnerMonster = context.registryAccess().registry(Registries.ENTITY_TYPE)
-			.<Holder<EntityType<?>>>flatMap(reg -> reg.getHolder(dungeonMonster))
-			.orElse(DEFAULT_DUNGEON_MONSTER);
 		this.holeSeed = tag.getInt("hole_seed");
 		this.hole = new Hole(this, RandomSource.create(holeSeed));
 	}
@@ -90,7 +83,6 @@ public class FallenTrunkPiece extends StructurePiece {
 		tag.putInt("radius", this.radius);
 		tag.put("log", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.log).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
 		tag.putString("chest_loot_table", this.chestLootTable.location().toString());
-		tag.putString("spawner_monster", BuiltInRegistries.ENTITY_TYPE.getKey(this.spawnerMonster.value()).toString());
 		tag.putLong("hole_seed", this.holeSeed);
 	}
 
@@ -101,14 +93,15 @@ public class FallenTrunkPiece extends StructurePiece {
 	}
 
 	@Override
-	public void postProcess(@NotNull WorldGenLevel level, @NotNull StructureManager structureManager, @NotNull ChunkGenerator generator, @NotNull RandomSource random,
+	public void postProcess(@NotNull WorldGenLevel level, @NotNull StructureManager structureManager, @NotNull ChunkGenerator generator, @NotNull RandomSource randomSource,
 							@NotNull BoundingBox box, @NotNull ChunkPos chunkPos, @NotNull BlockPos pos) {
+		RandomSource random = RandomSource.create(pos.asLong());
 		if (radius == FallenTrunkStructure.radiuses.get(0))
-			generateSmallFallenTrunk(level, RandomSource.create(pos.asLong()), box, pos, random.nextBoolean());
+			generateSmallFallenTrunk(level, random, box, pos, random.nextBoolean());
 		if (radius == FallenTrunkStructure.radiuses.get(1))
-			generateFallenTrunk(level, RandomSource.create(pos.asLong()), box, pos, random.nextBoolean(), false);
+			generateFallenTrunk(level, random, box, pos, random.nextBoolean(), false);
 		if (radius == FallenTrunkStructure.radiuses.get(2))
-			generateFallenTrunk(level, RandomSource.create(pos.asLong()), box, pos, false, random.nextBoolean());
+			generateFallenTrunk(level, random, box, pos, false, random.nextBoolean());
 	}
 
 	private void generateSmallFallenTrunk(WorldGenLevel level, RandomSource random, BoundingBox box, BlockPos pos, boolean hasHole) {
@@ -178,8 +171,12 @@ public class FallenTrunkPiece extends StructurePiece {
 		BlockPos spawnerPos = new BlockPos(radius, 2, (length - 1) / 2);
 		this.placeBlock(level, Blocks.SPAWNER.defaultBlockState(), spawnerPos.getX(), spawnerPos.getY(), spawnerPos.getZ(), box);
 		BlockPos worldSpawnerPos = getWorldPos(spawnerPos.getX(), spawnerPos.getY(), spawnerPos.getZ());
+
+		// Don't use main random for spawner due to desyncs in random.next() calls between chunks, causing 2 chests or other bugs
+		RandomSource spawnerRandom = RandomSource.create(random.nextLong());
+
 		if (box.isInside(worldSpawnerPos.getX(), worldSpawnerPos.getY(), worldSpawnerPos.getZ()) && level.getBlockEntity(worldSpawnerPos) instanceof SpawnerBlockEntity spawner)
-			spawner.setEntityId(spawnerMonster.value(), random);
+			spawner.setEntityId(Util.getRandom(SPAWNER_MONSTERS, spawnerRandom), spawnerRandom);
 
 		Direction orientation = this.getOrientation().getClockWise();
 		if (this.mirror == Mirror.LEFT_RIGHT)
