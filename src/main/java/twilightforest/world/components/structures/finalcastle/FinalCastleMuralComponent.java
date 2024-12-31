@@ -33,8 +33,6 @@ public class FinalCastleMuralComponent extends TFStructureComponentOld {
 		super(TFStructurePieceTypes.TFFCMur.get(), i, x, y, z);
 		this.setOrientation(direction);
 		this.boundingBox = TFStructureComponentOld.getComponentToAddBoundingBox2(x, y, z, 0, -height / 2, -width / 2, 1, height - 1, width - 1, direction);
-		this.height = this.boundingBox.getYSpan();
-		this.width = (this.getOrientation() == Direction.SOUTH || this.getOrientation() == Direction.NORTH) ? this.boundingBox.getZSpan() : this.boundingBox.getXSpan();
 	}
 
 	@Override
@@ -44,6 +42,9 @@ public class FinalCastleMuralComponent extends TFStructureComponentOld {
 		if (this.mural == null) {
 			synchronized (this) {
 				if (this.mural == null) {
+					this.height = this.boundingBox.getYSpan();
+					this.width = (this.getOrientation() == Direction.SOUTH || this.getOrientation() == Direction.NORTH) ? this.boundingBox.getZSpan() : this.boundingBox.getXSpan();
+
 					// only make it once
 					byte[][] mural = new byte[width][height];
 
