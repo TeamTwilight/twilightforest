@@ -60,6 +60,7 @@ public class TFLootTables {
 	public static final ResourceKey<LootTable> DARKTOWER_KEY = register("darktower_key");
 	public static final ResourceKey<LootTable> DARKTOWER_BOSS = register("darktower_boss");
 	public static final ResourceKey<LootTable> TREE_CACHE = register("tree_cache");
+	public static final ResourceKey<LootTable> FALLEN_TRUNK_LOOT = register("fallen_trunk_loot");
 	public static final ResourceKey<LootTable> STRONGHOLD_CACHE = register("stronghold_cache");
 	public static final ResourceKey<LootTable> STRONGHOLD_ROOM = register("stronghold_room");
 	public static final ResourceKey<LootTable> AURORA_CACHE = register("aurora_cache");

@@ -326,6 +326,39 @@ public record ChestLootTables(HolderLookup.Provider registries) implements LootT
 					.add(LootItem.lootTableItem(TFBlocks.SORTING_SAPLING).setWeight(25))
 					.add(LootItem.lootTableItem(TFItems.MUSIC_DISC_SUPERSTITIOUS).setWeight(25))));
 
+		register.accept(TFLootTables.FALLEN_TRUNK_LOOT,
+			LootTable.lootTable()
+				.withPool(LootPool.lootPool()
+					.setRolls(ConstantValue.exactly(4))
+					.add(NestedLootTable.lootTableReference(TFLootTables.USELESS_LOOT).setWeight(25))
+					//common loot
+					.add(LootItem.lootTableItem(Items.POISONOUS_POTATO).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(75))
+					.add(LootItem.lootTableItem(Items.WHEAT).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 6))).setWeight(75))
+					.add(LootItem.lootTableItem(Items.POTATO).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 6))).setWeight(75))
+					.add(LootItem.lootTableItem(Items.CARROT).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 6))).setWeight(75))
+					.add(LootItem.lootTableItem(Items.MELON_SLICE).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 6))).setWeight(75))
+					.add(LootItem.lootTableItem(Items.MELON_SEEDS).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 5))).setWeight(75))
+					.add(LootItem.lootTableItem(Items.WATER_BUCKET).setWeight(75))
+					.add(LootItem.lootTableItem(Items.MILK_BUCKET).setWeight(75)))
+				.withPool(LootPool.lootPool()
+					.setRolls(ConstantValue.exactly(2))
+					//uncommon loot
+					.add(LootItem.lootTableItem(TFBlocks.TWILIGHT_OAK_SAPLING).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4))))
+					.add(LootItem.lootTableItem(TFBlocks.CANOPY_SAPLING).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4))))
+					.add(LootItem.lootTableItem(TFBlocks.MANGROVE_SAPLING).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4))))
+					.add(LootItem.lootTableItem(TFBlocks.DARKWOOD_SAPLING).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4))))
+					.add(LootItem.lootTableItem(TFBlocks.FIREFLY).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 12)))))
+				.withPool(LootPool.lootPool()
+					.setRolls(ConstantValue.exactly(1))
+					//rare loot
+					.add(LootItem.lootTableItem(Items.PUMPKIN_PIE).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 12))).setWeight(75))
+					.add(LootItem.lootTableItem(Items.APPLE).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 12))).setWeight(75))
+					.add(LootItem.lootTableItem(TFItems.CHARM_OF_KEEPING_1).setWeight(75))
+					.add(LootItem.lootTableItem(TFItems.CHARM_OF_LIFE_1).setWeight(75))
+					//ultrarare loot
+					.add(LootItem.lootTableItem(TFBlocks.HOLLOW_OAK_SAPLING).setWeight(25))
+					.add(LootItem.lootTableItem(TFItems.MUSIC_DISC_SUPERSTITIOUS).setWeight(25))));
+
 		register.accept(TFLootTables.GRAVEYARD,
 			LootTable.lootTable()
 				.withPool(LootPool.lootPool()

@@ -115,7 +115,7 @@ public class FallenTrunkStructure extends Structure implements CustomDensitySour
 				GenerationStep.Decoration.SURFACE_STRUCTURES,
 				TerrainAdjustment.NONE
 			),
-			UniformInt.of(17, 24), BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_LOG.get()), TFLootTables.TREE_CACHE, TFEntities.SWARM_SPIDER
+			UniformInt.of(17, 24), BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_LOG.get()), TFLootTables.FALLEN_TRUNK_LOOT, TFEntities.SWARM_SPIDER
 		);
 	}
 
