@@ -109,7 +109,7 @@ public class FallenTrunkPiece extends StructurePiece {
 		if (radius == FallenTrunkStructure.radiuses.get(1))
 			generateFallenTrunk(level, RandomSource.create(pos.asLong()), box, pos, random.nextBoolean(), false);
 		if (radius == FallenTrunkStructure.radiuses.get(2))
-			generateFallenTrunk(level, RandomSource.create(pos.asLong()), box, pos, false, true);
+			generateFallenTrunk(level, RandomSource.create(pos.asLong()), box, pos, false, random.nextBoolean());
 	}
 
 	private void generateSmallFallenTrunk(WorldGenLevel level, RandomSource random, BoundingBox box, BlockPos pos, boolean hasHole) {
