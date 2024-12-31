@@ -184,14 +184,11 @@ public class FallenTrunkPiece extends StructurePiece {
 
 
 		Set<Vec3i> possibleChestsOffsets = new HashSet<>();
-		for (int i = 0; i < 6; i++) {
+		for (int i = 0; i <= 6; i++) {
 			possibleChestsOffsets.add(new Vec3i(2, 1, -3 + i));
 		}
 		possibleChestsOffsets.add(new Vec3i(1, 0, -3));
 		possibleChestsOffsets.add(new Vec3i(1, 0, 2));
-		for(Vec3i vec3i : possibleChestsOffsets.stream().toList()) {
-			possibleChestsOffsets.add(vec3i.offset(0, 0, 1));
-		}
 		for(Vec3i vec3i : possibleChestsOffsets.stream().toList()) {
 			possibleChestsOffsets.add(new Vec3i(-vec3i.getX(), vec3i.getY(), vec3i.getZ()));
 		}
