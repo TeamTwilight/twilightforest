@@ -22,7 +22,6 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.ChestType;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
@@ -193,19 +192,6 @@ public class FallenTrunkPiece extends StructurePiece {
 		}
 		possibleChestsOffsets.add(new Vec3i(1, 0, -3));
 		possibleChestsOffsets.add(new Vec3i(1, 0, 2));
-
-		Vec3i doubleChestOffset = Util.getRandom(possibleChestsOffsets.stream().toList(), random);
-		BlockPos doubleChestPos = spawnerPos.offset(doubleChestOffset);
-		ChestType chestType = mirror != Mirror.NONE ? ChestType.RIGHT : ChestType.LEFT;
-		BlockState doubleChest0 = TFBlocks.TWILIGHT_OAK_CHEST.get().defaultBlockState().setValue(ChestBlock.FACING, orientation.getOpposite()).setValue(ChestBlock.TYPE, chestType);
-		BlockPos doubleChestPos0 = getWorldPos(doubleChestPos.getX(), doubleChestPos.getY(), doubleChestPos.getZ());
-		BlockState doubleChest1 = TFBlocks.TWILIGHT_OAK_CHEST.get().defaultBlockState().setValue(ChestBlock.FACING, orientation.getOpposite()).setValue(ChestBlock.TYPE, chestType.getOpposite());
-		BlockPos doubleChestPos1 = getWorldPos(doubleChestPos.getX(), doubleChestPos.getY(), doubleChestPos.getZ() + 1);
-		RandomSource chest0Random = RandomSource.create(random.nextLong());  // Create new randomSources to avoid the same loot in chests if placed in different chunks
-		RandomSource chest1Random = RandomSource.create(random.nextLong());  // Using "random" for loot in chests makes it worse, because the single chest may not spawn
-		this.createChest(level, box, chest0Random, doubleChestPos0, chestLootTable, doubleChest0);
-		this.createChest(level, box, chest1Random, doubleChestPos1, chestLootTable, doubleChest1);
-
 		for(Vec3i vec3i : possibleChestsOffsets.stream().toList()) {
 			possibleChestsOffsets.add(vec3i.offset(0, 0, 1));
 		}
@@ -213,15 +199,13 @@ public class FallenTrunkPiece extends StructurePiece {
 			possibleChestsOffsets.add(new Vec3i(-vec3i.getX(), vec3i.getY(), vec3i.getZ()));
 		}
 
-		possibleChestsOffsets.remove(doubleChestOffset);
-		possibleChestsOffsets.remove(doubleChestOffset.offset(0, 0, 1));
-		Vec3i singleChestOffset = Util.getRandom(possibleChestsOffsets.stream().toList(), random);
-		BlockPos singleChestSpawnerPos = spawnerPos.offset(singleChestOffset);
+		Vec3i chestOffset = Util.getRandom(possibleChestsOffsets.stream().toList(), random);
+		BlockPos chestSpawnerPos = spawnerPos.offset(chestOffset);
 
-		BlockState singleChestState = TFBlocks.TWILIGHT_OAK_CHEST.get().defaultBlockState().setValue(ChestBlock.FACING, singleChestOffset.getX() < 0 ? orientation : orientation.getOpposite());
-		BlockPos singleChestPos = getWorldPos(singleChestSpawnerPos.getX(), singleChestSpawnerPos.getY(), singleChestSpawnerPos.getZ());
+		BlockState chestState = TFBlocks.TWILIGHT_OAK_CHEST.get().defaultBlockState().setValue(ChestBlock.FACING, chestOffset.getX() < 0 ? orientation : orientation.getOpposite());
+		BlockPos chestPos = getWorldPos(chestSpawnerPos.getX(), chestSpawnerPos.getY(), chestSpawnerPos.getZ());
 		RandomSource chestRandom = RandomSource.create(random.nextLong());
-		this.createChest(level, box, chestRandom, singleChestPos, chestLootTable, singleChestState);
+		this.createChest(level, box, chestRandom, chestPos, chestLootTable, chestState);
 	}
 
 	private int getDist(int dx, int dy) {
