@@ -50,6 +50,5 @@
       "spawns": []
     }
   },
-  "spawner_monster": "twilightforest:swarm_spider",
   "step": "surface_structures"
 }

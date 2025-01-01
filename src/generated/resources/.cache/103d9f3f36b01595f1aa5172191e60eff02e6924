@@ -1,4 +1,4 @@
-// 1.21.1	2024-12-31T14:04:43.250284307	Registries
+// 1.21.1	2025-01-01T20:03:00.270443	Registries
 9089ada9ce06fd30adf8b10e50f02233c7d5a76e data/minecraft/twilight/wood_palettes/acacia.json
 dca1ef01d0df4e956fd414782de57c25dfddd290 data/minecraft/twilight/wood_palettes/birch.json
 01becb45438b7f2bfdc77baba72bc986341510c8 data/minecraft/twilight/wood_palettes/crimson.json
@@ -358,7 +358,7 @@ cf1c91f89f727cbbb41f58ce9865533b956cfef3 data/twilightforest/worldgen/placed_fea
 acf33832e2093d6dd231b73c085d201755345886 data/twilightforest/worldgen/placed_feature/wood_roots.json
 3ee5b430015b944abb12691e99b35c24cc0b122b data/twilightforest/worldgen/structure/aurora_palace.json
 431bebc61d8813c5654c1f3db84e7cd13273af9e data/twilightforest/worldgen/structure/dark_tower.json
-8a362d4959c2d1a470c677f3e31d59581fac9eb0 data/twilightforest/worldgen/structure/fallen_trunk.json
+aa35ddc2eb6f2e470d743c83a8b882a420291061 data/twilightforest/worldgen/structure/fallen_trunk.json
 d46575dc4f45c10821b533389322fda77b9ca9dc data/twilightforest/worldgen/structure/final_castle.json
 f3dd6746ddee506d0e5ce66db99546a6d2b1bc48 data/twilightforest/worldgen/structure/giant_house.json
 96718e6c4d0937959a03e8c993417389ee21bc0f data/twilightforest/worldgen/structure/hedge_maze.json
