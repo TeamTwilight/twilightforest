@@ -63,10 +63,10 @@ public class TrunkUnderDensityFunction extends Beardifier {
 		double az = Math.abs(y - radius + 1);
 		if (radius == 2D) {  // This case is generated differently
 			if (Math.abs((isXOriented ? z : x) - 1.5) + Math.abs(y - 1.5) <= 2)
-				return -0.4;
+				return 0;
 		} else {
 			if ((int) (Math.max(ax, az) + (Math.min(ax, az) * 0.5)) < radius)
-				return -0.4;
+				return 0;
 		}
 
 		return Arrays.stream(hollowHillFunctions)
