@@ -88,7 +88,7 @@ public class FallenTrunkPiece extends StructurePiece {
 
 	@Override
 	public void addChildren(@NotNull StructurePiece parent, StructurePieceAccessor list, @NotNull RandomSource rand) {
-		StructurePiece terraformingPiece = new TerraformingPiece(TFStructurePieceTypes.TFFallenTrunk.value(), 0, boundingBox.inflatedBy(16));
+		StructurePiece terraformingPiece = new TerraformingPiece(0, boundingBox.inflatedBy(16));
 		list.addPiece(terraformingPiece);
 	}
 

@@ -14,8 +14,8 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import twilightforest.init.TFStructurePieceTypes;
 
 public class TerraformingPiece extends StructurePiece {
-	public TerraformingPiece(StructurePieceType type, int genDepth, BoundingBox boundingBox) {
-		super(type, genDepth, boundingBox);
+	public TerraformingPiece(int genDepth, BoundingBox boundingBox) {
+		super(TFStructurePieceTypes.TFTerraformingPiece.value(), genDepth, boundingBox);
 	}
 
 	public TerraformingPiece(StructurePieceSerializationContext context, CompoundTag compoundTag) {
