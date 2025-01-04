@@ -132,8 +132,8 @@ public class ToolEvents {
 
 	@SubscribeEvent
 	public static void onMobEffectApplicableEvent(MobEffectEvent.Applicable event) {
-		if (event.getEffectInstance() != null && event.getEffectInstance().is(MobEffects.DIG_SLOWDOWN) && event.getEntity().isHolding(TFItems.POCKET_WATCH.get())) {
+		if (event.getApplicationResult() && event.getEffectInstance().is(MobEffects.DIG_SLOWDOWN) && event.getEntity().isHolding(TFItems.POCKET_WATCH.get())) {
 			event.setResult(MobEffectEvent.Applicable.Result.DO_NOT_APPLY);
-		} else event.setResult(MobEffectEvent.Applicable.Result.DEFAULT);
+		}
 	}
 }

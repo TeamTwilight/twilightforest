@@ -11,12 +11,12 @@
     },
     "head": {
       "rotation": [ 180, 0, 180 ],
-      "translation": [ 0, 6, 0 ],
-      "scale":[ 1.6, 1.6, 1.6 ]
+      "translation": [ 0, 8, 0 ],
+      "scale":[ 1.85, 1.85, 1.85 ]
     },
     "fixed": {
       "rotation": [ 0, 180, 0 ],
-      "translation": [ 0, 2, 0],
+      "translation": [ 0, 2, 0 ],
       "scale":[ 1, 1, 1 ]
     },
     "ground": {

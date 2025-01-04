@@ -1,1 +1,2 @@
 src/generated/**/*.json text eol=lf
+src/generated/** linguist-generated

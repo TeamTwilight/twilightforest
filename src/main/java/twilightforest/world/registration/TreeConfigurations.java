@@ -72,7 +72,7 @@ public class TreeConfigurations {
 		BlockStateProvider.simple(TFBlocks.CANOPY_LOG.get()),
 		new BranchingTrunkPlacer(20, 5, 5, 12, new BranchesConfig(BlockStateProvider.simple(TFBlocks.CANOPY_WOOD.get()), 3, 1, 10, 1, 0.3, 0.2), false, true),
 		BlockStateProvider.simple(TFBlocks.CANOPY_LEAVES.get()),
-		new LeafSpheroidFoliagePlacer(4.5f, 1.5f, ConstantInt.of(0), 1, 0, -0.25f, LEAF_SHAG_FACTOR),
+		new LeafSpheroidFoliagePlacer((float) Math.sqrt(Math.pow(4, 2) + Math.pow(1, 2)), 1.5f, ConstantInt.of(0), 0, 0, -0.2f, LEAF_SHAG_FACTOR),
 		new TwoLayersFeatureSize(20, 0, canopyDistancing)
 	)
 		.decorators(ImmutableList.of(TreeDecorators.FIREFLY, TreeDecorators.LIVING_ROOTS))
@@ -83,7 +83,7 @@ public class TreeConfigurations {
 		BlockStateProvider.simple(TFBlocks.CANOPY_LOG.get()),
 		new BranchingTrunkPlacer(20, 5, 5, 12, new BranchesConfig(BlockStateProvider.simple(TFBlocks.CANOPY_WOOD.get()), 3, 1, 10, 1, 0.3, 0.2), false, true),
 		BlockStateProvider.simple(TFBlocks.CANOPY_LEAVES.get()),
-		new LeafSpheroidFoliagePlacer(4.5f, 1.5f, ConstantInt.of(0), 1, 0, -0.25f, LEAF_SHAG_FACTOR),
+		new LeafSpheroidFoliagePlacer((float) Math.sqrt(Math.pow(4, 2) + Math.pow(1, 2)), 1.5f, ConstantInt.of(0), 0, 0, -0.2f, LEAF_SHAG_FACTOR),
 		new TwoLayersFeatureSize(20, 1, canopyDistancing)
 	)
 		.decorators(ImmutableList.of(

@@ -21,6 +21,9 @@ import twilightforest.compat.emi.recipes.*;
 import twilightforest.config.TFConfig;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
+import twilightforest.init.TFRecipes;
+import twilightforest.item.recipe.EmperorsClothRecipe;
+import twilightforest.item.recipe.MoonwormQueenRepairRecipe;
 import twilightforest.item.recipe.NoTemplateSmithingRecipe;
 import twilightforest.item.recipe.ScepterRepairRecipe;
 
@@ -71,8 +74,14 @@ public class TFEmiCompat implements EmiPlugin {
 		for (Pair<Block, Block> info : RecipeViewerConstants.getCrumbleHornRecipes()) {
 			registry.addRecipe(new EmiCrumbleHornRecipe(info.getFirst(), info.getSecond()));
 		}
-		registry.addRecipe(new EmiMoonwormQueenRecipe());
-		registry.addRecipe(new EmiEmperorsClothRecipe());
+
+		if (!manager.getAllRecipesFor(RecipeType.CRAFTING).stream().filter(holder -> holder.value() instanceof MoonwormQueenRepairRecipe).toList().isEmpty()) {
+			registry.addRecipe(new EmiMoonwormQueenRecipe());
+		}
+
+		if (!manager.getAllRecipesFor(RecipeType.CRAFTING).stream().filter(holder -> holder.value() instanceof EmperorsClothRecipe).toList().isEmpty()) {
+			registry.addRecipe(new EmiEmperorsClothRecipe());
+		}
 
 		for (RecipeHolder<SmithingRecipe> holder : manager.getAllRecipesFor(RecipeType.SMITHING).stream().filter(holder -> holder.value() instanceof NoTemplateSmithingRecipe).toList()) {
 			NoTemplateSmithingRecipe recipe = (NoTemplateSmithingRecipe) holder.value();
