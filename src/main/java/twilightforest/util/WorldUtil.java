@@ -75,17 +75,17 @@ public final class WorldUtil {
 		return pos.offset(dx, dy, dz);
 	}
 
-	public static <T> T getRandomElementWithWeights(List<Pair<T, Integer>> list, RandomSource rng) {
-		int totalWeight = list.stream().mapToInt(Pair::getSecond).sum();
-		int randomValue = rng.nextInt(totalWeight);
+	public static <T> T getRandomElementWithWeights(List<Pair<T, Float>> list, RandomSource rng) {
+		float totalWeight = (float) list.stream().mapToDouble(Pair::getSecond).sum();
+		float randomValue = rng.nextFloat() * totalWeight;
 
-		for (Pair<T, Integer> pair : list) {
+		for (Pair<T, Float> pair : list) {
 			randomValue -= pair.getSecond();
 			if (randomValue < 0) {
 				return pair.getFirst();
 			}
 		}
-		return Util.getRandom(list, rng).getFirst(); // This line should never be reached if input list is valid
+		return Util.getRandom(list, rng).getFirst(); // This line should never be reached if the input list is valid
 	}
 
 	public static int getGeneratorSeaLevel(LevelAccessor level) {

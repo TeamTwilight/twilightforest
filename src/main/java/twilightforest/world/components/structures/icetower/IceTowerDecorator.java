@@ -5,6 +5,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import twilightforest.init.TFBlocks;
 import twilightforest.world.components.structures.TFStructureDecorator;
+import twilightforest.world.components.structures.util.SimpleRandomBlockSelectorFactory;
 
 public class IceTowerDecorator extends TFStructureDecorator {
 
@@ -16,7 +17,7 @@ public class IceTowerDecorator extends TFStructureDecorator {
 		this.pillarState = TFBlocks.AURORA_PILLAR.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y);
 		this.platformState = Blocks.BIRCH_SLAB.defaultBlockState();
 		this.floorState = Blocks.BIRCH_PLANKS.defaultBlockState();
-		this.randomBlocks = new IceTowerProcessor();
+		this.randomBlocks = SimpleRandomBlockSelectorFactory.getIceTower();
 	}
 
 }

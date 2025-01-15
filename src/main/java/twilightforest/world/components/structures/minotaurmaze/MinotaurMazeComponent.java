@@ -19,6 +19,7 @@ import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.world.components.structures.TFMaze;
 import twilightforest.world.components.structures.TFStructureComponentOld;
+import twilightforest.world.components.structures.util.SimpleRandomBlockSelectorFactory;
 
 
 public class MinotaurMazeComponent extends TFStructureComponentOld {
@@ -286,7 +287,7 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 		maze.wallBlockState = TFBlocks.MAZESTONE_BRICK.get().defaultBlockState();
 		maze.rootBlockState = TFBlocks.DECORATIVE_MAZESTONE.get().defaultBlockState();
 		maze.pillarBlockState = TFBlocks.CUT_MAZESTONE.get().defaultBlockState();
-		maze.wallBlocks = new MazestoneProcessor();
+		maze.wallBlocks = SimpleRandomBlockSelectorFactory.getMazestone();
 		maze.torchRarity = 0.05F;
 		maze.tall = 2;
 		maze.head = 1;

@@ -3,6 +3,7 @@ package twilightforest.world.components.structures.finalcastle;
 import net.minecraft.world.level.block.Blocks;
 import twilightforest.init.TFBlocks;
 import twilightforest.world.components.structures.TFStructureDecorator;
+import twilightforest.world.components.structures.util.SimpleRandomBlockSelectorFactory;
 
 public class StructureTFDecoratorCastle extends TFStructureDecorator {
 
@@ -13,7 +14,7 @@ public class StructureTFDecoratorCastle extends TFStructureDecorator {
 		this.pillarState = TFBlocks.BOLD_CASTLE_BRICK_PILLAR.get().defaultBlockState();
 		this.fenceState = Blocks.OAK_FENCE.defaultBlockState();
 		this.stairState = Blocks.QUARTZ_STAIRS.defaultBlockState();
-		this.randomBlocks = new CastleBlockProcessor();
+		this.randomBlocks = SimpleRandomBlockSelectorFactory.getCastleBlocks();
 	}
 
 }

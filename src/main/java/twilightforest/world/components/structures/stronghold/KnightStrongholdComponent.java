@@ -18,6 +18,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import twilightforest.world.components.structures.TFStructureComponentOld;
+import twilightforest.world.components.structures.util.SimpleRandomBlockSelectorFactory;
 
 import java.nio.IntBuffer;
 import java.util.ArrayList;
@@ -482,8 +483,15 @@ public abstract class KnightStrongholdComponent extends TFStructureComponentOld 
 					boolean wall = y == sy || y == dy || x == sx || x == dx || z == sz || z == dz;
 					BlockState state = this.getBlock(world, x, y, z, sbb);
 
-					if ((!state.isAir() && (state.is(BlockTags.BASE_STONE_OVERWORLD) || state.is(BlockTags.DIRT)))
-						|| (state.isAir() && rand.nextInt(3) == 0) && this.getBlock(world, x, y - 1, z, sbb).getBlock() == Blocks.STONE_BRICKS) {
+					BlockState stateBelow = this.getBlock(world, x, y - 1, z, sbb).getBlock().defaultBlockState();
+					boolean isKnightStone = SimpleRandomBlockSelectorFactory.getKnightStones().getStates().contains(stateBelow);
+					boolean isStrongholdStone = SimpleRandomBlockSelectorFactory.getStrongholdStones().getStates().contains(stateBelow);
+
+					boolean isValidSurface = !state.isAir() && (state.is(BlockTags.BASE_STONE_OVERWORLD) || state.is(BlockTags.DIRT));
+					boolean isAirWithChance = state.isAir() && rand.nextInt(3) == 0;
+					boolean isStoneBelow = isKnightStone || isStrongholdStone;
+
+					if (isValidSurface || isAirWithChance && isStoneBelow) {
 						if (y == sy || y == dy) {
 							// do stronghold bricks for floor/ceiling
 							StructurePiece.BlockSelector strongBlocks = TFStructureComponentOld.getStrongholdStones();
