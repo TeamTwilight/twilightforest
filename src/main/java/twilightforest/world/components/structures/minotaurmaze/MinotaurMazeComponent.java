@@ -14,16 +14,18 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import twilightforest.beans.Autowired;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.world.components.structures.TFMaze;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.world.components.structures.util.SimpleRandomBlockSelectorFactory;
+import twilightforest.world.components.structures.selectors.MazestoneRandomBlockSelectoryFactory;
 
 
 public class MinotaurMazeComponent extends TFStructureComponentOld {
-
+	@Autowired
+	private static MazestoneRandomBlockSelectoryFactory mazestone;
 	final TFMaze maze;
 	final int[] rcoords;
 	private final int level;
@@ -287,7 +289,7 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 		maze.wallBlockState = TFBlocks.MAZESTONE_BRICK.get().defaultBlockState();
 		maze.rootBlockState = TFBlocks.DECORATIVE_MAZESTONE.get().defaultBlockState();
 		maze.pillarBlockState = TFBlocks.CUT_MAZESTONE.get().defaultBlockState();
-		maze.wallBlocks = SimpleRandomBlockSelectorFactory.getMazestone();
+		maze.wallBlocks = mazestone.make();
 		maze.torchRarity = 0.05F;
 		maze.tall = 2;
 		maze.head = 1;
