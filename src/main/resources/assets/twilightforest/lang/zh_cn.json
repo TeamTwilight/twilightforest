@@ -303,6 +303,7 @@
   "block.twilightforest.carminite_block": "砷铅铁块",
   "block.twilightforest.carminite_builder": "砷铅铁建造器",
   "block.twilightforest.carminite_reactor": "砷铅铁反应堆",
+  "block.twilightforest.casket.damage": "损坏程度：%s",
   "block.twilightforest.casket.locked": "这个匣子只能由%s打开！",
   "block.twilightforest.castle_brick": "城堡砖",
   "block.twilightforest.castle_brick_stairs": "城堡砖楼梯",
