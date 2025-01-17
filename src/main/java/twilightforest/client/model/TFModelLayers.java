@@ -9,6 +9,8 @@ public class TFModelLayers {
 	public static final ModelLayerLocation ARCTIC_ARMOR_OUTER = register("arctic_armor", "outer");
 	public static final ModelLayerLocation FIERY_ARMOR_INNER = register("fiery_armor", "inner");
 	public static final ModelLayerLocation FIERY_ARMOR_OUTER = register("fiery_armor", "outer");
+	public static final ModelLayerLocation TRAVELLER_ARMOR_INNER = register("traveller_armor", "inner");
+	public static final ModelLayerLocation TRAVELLER_ARMOR_OUTER = register("traveller_armor", "outer");
 	public static final ModelLayerLocation KNIGHTMETAL_ARMOR_INNER = register("knightmetal_armor", "inner");
 	public static final ModelLayerLocation KNIGHTMETAL_ARMOR_OUTER = register("knightmetal_armor", "outer");
 	public static final ModelLayerLocation PHANTOM_ARMOR_INNER = register("phantom_armor", "inner");

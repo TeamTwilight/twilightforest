@@ -537,6 +537,10 @@ public class ItemModelGenerator extends ItemModelProvider {
 		singleTexTool(TFItems.STEELEAF_AXE);
 		singleTexTool(TFItems.STEELEAF_SHOVEL);
 		singleTexTool(TFItems.STEELEAF_HOE);
+		trimmedArmor(TFItems.TRAVELLER_HELMET);
+		trimmedArmor(TFItems.TRAVELLER_CHESTPLATE);
+		trimmedArmor(TFItems.TRAVELLER_LEGGINGS);
+		trimmedArmor(TFItems.TRAVELLER_BOOTS);
 		singleTexTool(TFItems.DIAMOND_MINOTAUR_AXE);
 		singleTexTool(TFItems.GOLDEN_MINOTAUR_AXE);
 		singleTexTool(TFItems.MAZEBREAKER_PICKAXE);

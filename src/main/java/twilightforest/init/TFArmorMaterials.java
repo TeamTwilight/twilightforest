@@ -2,10 +2,10 @@ package twilightforest.init;
 
 import net.minecraft.Util;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -41,6 +41,14 @@ public class TFArmorMaterials {
 		map.put(ArmorItem.Type.HELMET, 4);
 		map.put(ArmorItem.Type.BODY, 13);
 	}), 10, SoundEvents.ARMOR_EQUIP_GENERIC, () -> Ingredient.of(TFItems.FIERY_INGOT.get()), List.of(new ArmorMaterial.Layer(TwilightForestMod.prefix("fiery"))), 1.5F, 0.0F));
+
+	public static final DeferredHolder<ArmorMaterial, ArmorMaterial> TRAVELLER = ARMOR_MATERIALS.register("traveller", () -> new ArmorMaterial(Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
+		map.put(ArmorItem.Type.BOOTS, 1);
+		map.put(ArmorItem.Type.LEGGINGS, 4);
+		map.put(ArmorItem.Type.CHESTPLATE, 5);
+		map.put(ArmorItem.Type.HELMET, 2);
+		map.put(ArmorItem.Type.BODY, 4);
+	}), 5, SoundEvents.ARMOR_EQUIP_GENERIC, () -> Ingredient.of(Items.LEATHER), List.of(new ArmorMaterial.Layer(TwilightForestMod.prefix("traveller"))), 0F, 0.0F));
 
 	public static final DeferredHolder<ArmorMaterial, ArmorMaterial> STEELEAF = ARMOR_MATERIALS.register("steeleaf", () -> new ArmorMaterial(Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
 		map.put(ArmorItem.Type.BOOTS, 3);

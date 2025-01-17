@@ -363,7 +363,8 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 			TFItems.ARCTIC_HELMET.get(),
 			TFItems.YETI_HELMET.get(),
 			TFItems.FIERY_HELMET.get(),
-			TFItems.PHANTOM_HELMET.get());
+			TFItems.PHANTOM_HELMET.get(),
+			TFItems.TRAVELLER_HELMET.get());
 
 		this.tag(ItemTags.CHEST_ARMOR).add(
 			TFItems.IRONWOOD_CHESTPLATE.get(),
@@ -373,7 +374,8 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 			TFItems.YETI_CHESTPLATE.get(),
 			TFItems.FIERY_CHESTPLATE.get(),
 			TFItems.PHANTOM_CHESTPLATE.get(),
-			TFItems.NAGA_CHESTPLATE.get());
+			TFItems.NAGA_CHESTPLATE.get(),
+			TFItems.TRAVELLER_CHESTPLATE.get());
 
 		this.tag(ItemTags.LEG_ARMOR).add(
 			TFItems.IRONWOOD_LEGGINGS.get(),
@@ -382,7 +384,8 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 			TFItems.ARCTIC_LEGGINGS.get(),
 			TFItems.YETI_LEGGINGS.get(),
 			TFItems.FIERY_LEGGINGS.get(),
-			TFItems.NAGA_LEGGINGS.get());
+			TFItems.NAGA_LEGGINGS.get(),
+			TFItems.TRAVELLER_LEGGINGS.get());
 
 		this.tag(ItemTags.FOOT_ARMOR).add(
 			TFItems.IRONWOOD_BOOTS.get(),
@@ -390,7 +393,8 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 			TFItems.KNIGHTMETAL_BOOTS.get(),
 			TFItems.ARCTIC_BOOTS.get(),
 			TFItems.YETI_BOOTS.get(),
-			TFItems.FIERY_BOOTS.get());
+			TFItems.FIERY_BOOTS.get(),
+			TFItems.TRAVELLER_BOOTS.get());
 
 		this.tag(ItemTags.DYEABLE).add(TFItems.ARCTIC_HELMET.get(), TFItems.ARCTIC_CHESTPLATE.get(), TFItems.ARCTIC_LEGGINGS.get(), TFItems.ARCTIC_BOOTS.get());
 
