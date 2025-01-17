@@ -21,6 +21,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.common.util.Lazy;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
 import twilightforest.util.ColorUtil;
@@ -35,7 +36,7 @@ public abstract class TFStructureComponent extends StructurePiece implements Spa
 
 	public TFStructureDecorator deco = null;
 	protected int spawnListIndex = 0;
-	private static final Set<Block> BLOCKS_NEEDING_POSTPROCESSING = ImmutableSet.<Block>builder()
+	private static final Lazy<Set<Block>> BLOCKS_NEEDING_POSTPROCESSING = Lazy.of(() -> ImmutableSet.<Block>builder()
 		.add(Blocks.NETHER_BRICK_FENCE)
 		.add(Blocks.TORCH)
 		.add(Blocks.WALL_TORCH)
@@ -72,7 +73,7 @@ public abstract class TFStructureComponent extends StructurePiece implements Spa
 		.add(TFBlocks.BROWN_THORNS.get())
 		.add(TFBlocks.GREEN_THORNS.get())
 		.add(Blocks.GRAVEL)
-		.build();
+		.build());
 
 
 	public TFStructureComponent(StructurePieceType piece, CompoundTag nbt) {
@@ -149,7 +150,7 @@ public abstract class TFStructureComponent extends StructurePiece implements Spa
 				worldIn.scheduleTick(blockpos, fluidstate.getType(), 0);
 			}
 
-			if (BLOCKS_NEEDING_POSTPROCESSING.contains(blockstateIn.getBlock())) {
+			if (BLOCKS_NEEDING_POSTPROCESSING.get().contains(blockstateIn.getBlock())) {
 				worldIn.getChunk(blockpos).markPosForPostprocessing(blockpos);
 			}
 
