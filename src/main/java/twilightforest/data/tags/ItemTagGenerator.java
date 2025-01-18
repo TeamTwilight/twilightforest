@@ -375,7 +375,9 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 			TFItems.FIERY_CHESTPLATE.get(),
 			TFItems.PHANTOM_CHESTPLATE.get(),
 			TFItems.NAGA_CHESTPLATE.get(),
-			TFItems.TRAVELLER_CHESTPLATE.get());
+			TFItems.TRAVELLER_CHESTPLATE_GLOVES.get(),
+			TFItems.TRAVELLER_CHESTPLATE.get(),
+			TFItems.TRAVELLER_GLOVES.get());
 
 		this.tag(ItemTags.LEG_ARMOR).add(
 			TFItems.IRONWOOD_LEGGINGS.get(),
@@ -385,7 +387,7 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 			TFItems.YETI_LEGGINGS.get(),
 			TFItems.FIERY_LEGGINGS.get(),
 			TFItems.NAGA_LEGGINGS.get(),
-			TFItems.TRAVELLER_LEGGINGS.get());
+			TFItems.TRAVELLER_WINGS.get());
 
 		this.tag(ItemTags.FOOT_ARMOR).add(
 			TFItems.IRONWOOD_BOOTS.get(),

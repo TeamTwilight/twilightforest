@@ -429,8 +429,10 @@ public class RegistrationEvents {
 		event.registerLayerDefinition(TFModelLayers.ARCTIC_ARMOR_OUTER, () -> LayerDefinition.create(ArcticArmorModel.addPieces(LayerDefinitions.OUTER_ARMOR_DEFORMATION), 64, 32));
 		event.registerLayerDefinition(TFModelLayers.FIERY_ARMOR_INNER, () -> LayerDefinition.create(FieryArmorModel.createMesh(LayerDefinitions.INNER_ARMOR_DEFORMATION, 0.0F), 64, 32));
 		event.registerLayerDefinition(TFModelLayers.FIERY_ARMOR_OUTER, () -> LayerDefinition.create(FieryArmorModel.createMesh(LayerDefinitions.OUTER_ARMOR_DEFORMATION, 0.0F), 64, 32));
-		event.registerLayerDefinition(TFModelLayers.TRAVELLER_ARMOR_INNER, () -> TravelArmorModel.createLayer(LayerDefinitions.INNER_ARMOR_DEFORMATION));
-		event.registerLayerDefinition(TFModelLayers.TRAVELLER_ARMOR_OUTER, () -> TravelArmorModel.createLayer(LayerDefinitions.OUTER_ARMOR_DEFORMATION));
+		event.registerLayerDefinition(TFModelLayers.TRAVELLER_ARMOR_HELMET_CHEST_GLOVES, () -> LayerDefinition.create(HumanoidModel.createMesh(new CubeDeformation(0.25F), 0.0F), 64, 32));
+		event.registerLayerDefinition(TFModelLayers.TRAVELLER_ARMOR_WINGS, () -> TravellerWingsModel.createLayer(0.25F));
+		event.registerLayerDefinition(TFModelLayers.TRAVELLER_ARMOR_BELT, () -> LayerDefinition.create(HumanoidModel.createMesh(new CubeDeformation(0.4F), 0.0F), 64, 32));
+		event.registerLayerDefinition(TFModelLayers.TRAVELLER_ARMOR_BOOTS, () -> LayerDefinition.create(TravellerBootsModel.addPieces(new CubeDeformation(0.5F)), 64, 32));
 		event.registerLayerDefinition(TFModelLayers.KNIGHTMETAL_ARMOR_INNER, () -> LayerDefinition.create(KnightmetalArmorModel.addPieces(LayerDefinitions.INNER_ARMOR_DEFORMATION), 64, 32));
 		event.registerLayerDefinition(TFModelLayers.KNIGHTMETAL_ARMOR_OUTER, () -> LayerDefinition.create(KnightmetalArmorModel.addPieces(LayerDefinitions.OUTER_ARMOR_DEFORMATION), 64, 32));
 		event.registerLayerDefinition(TFModelLayers.PHANTOM_ARMOR_INNER, () -> LayerDefinition.create(PhantomArmorModel.addPieces(LayerDefinitions.INNER_ARMOR_DEFORMATION), 64, 32));
@@ -642,7 +644,7 @@ public class RegistrationEvents {
 
 		event.registerItem(ArcticArmorItem.ArmorRender.INSTANCE, TFItems.ARCTIC_HELMET.get(), TFItems.ARCTIC_CHESTPLATE.get(), TFItems.ARCTIC_LEGGINGS.get(), TFItems.ARCTIC_BOOTS.get());
 		event.registerItem(FieryArmorItem.ArmorRender.INSTANCE, TFItems.FIERY_HELMET.get(), TFItems.FIERY_CHESTPLATE.get(), TFItems.FIERY_LEGGINGS.get(), TFItems.FIERY_BOOTS.get());
-		event.registerItem(TravellerArmorItem.ArmorRender.INSTANCE, TFItems.TRAVELLER_HELMET.get(), TFItems.TRAVELLER_CHESTPLATE.get(), TFItems.TRAVELLER_LEGGINGS.get(), TFItems.TRAVELLER_BOOTS.get());
+		event.registerItem(TravellerArmorItem.ArmorRender.INSTANCE, TFItems.TRAVELLER_HELMET.get(), TFItems.TRAVELLER_CHESTPLATE_GLOVES.get(), TFItems.TRAVELLER_CHESTPLATE.get(), TFItems.TRAVELLER_GLOVES.get(), TFItems.TRAVELLER_WINGS.get(), TFItems.TRAVELLER_BOOTS.get());
 		event.registerItem(KnightmetalArmorItem.ArmorRender.INSTANCE, TFItems.KNIGHTMETAL_HELMET.get(), TFItems.KNIGHTMETAL_CHESTPLATE.get(), TFItems.KNIGHTMETAL_LEGGINGS.get(), TFItems.KNIGHTMETAL_BOOTS.get());
 		event.registerItem(PhantomArmorItem.ArmorRender.INSTANCE, TFItems.PHANTOM_HELMET.get(), TFItems.PHANTOM_CHESTPLATE.get());
 		event.registerItem(YetiArmorItem.ArmorRender.INSTANCE, TFItems.YETI_HELMET.get(), TFItems.YETI_CHESTPLATE.get(), TFItems.YETI_LEGGINGS.get(), TFItems.YETI_BOOTS.get());
