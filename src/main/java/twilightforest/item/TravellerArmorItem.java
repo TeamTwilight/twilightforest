@@ -45,9 +45,9 @@ public class TravellerArmorItem extends ArmorItem {
 		public @NotNull HumanoidModel<?> getHumanoidArmorModel(LivingEntity living, ItemStack stack, EquipmentSlot slot, HumanoidModel<?> model) {
 			EntityModelSet models = Minecraft.getInstance().getEntityModels();
 			ModelPart root = switch (slot) {
-				case HEAD -> models.bakeLayer(TFModelLayers.TRAVELLER_ARMOR_HELMET_CHEST_GLOVES);
+				case HEAD -> models.bakeLayer(TFModelLayers.TRAVELLER_ARMOR_HELMET);
 				case CHEST -> {
-					ModelPart chestLayer = models.bakeLayer(TFModelLayers.TRAVELLER_ARMOR_HELMET_CHEST_GLOVES);
+					ModelPart chestLayer = models.bakeLayer(TFModelLayers.TRAVELLER_ARMOR_CHEST_GLOVES);
 					chestLayer.getAllParts().forEach(part -> part.skipDraw = true);
 					if (stack.is(TFItems.TRAVELLER_CHESTPLATE) || stack.is(TFItems.TRAVELLER_CHESTPLATE_GLOVES)) {
 						chestLayer.getChild("body").skipDraw = false;
