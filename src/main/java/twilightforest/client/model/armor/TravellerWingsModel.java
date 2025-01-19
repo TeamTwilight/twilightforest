@@ -13,7 +13,7 @@ import twilightforest.init.TFDataAttachments;
 import java.util.Collections;
 
 public class TravellerWingsModel extends HumanoidModel<LivingEntity> {
-	private static final double tau = 4;  // Time (in ticks) in which distance reduces in e times
+	private static final double TAU = 4;  // Time (in ticks) in which distance reduces in e times
 	private static final float ANGLE_10_DEG = Mth.PI / 18;
 	private final ModelPart wingBaseRight;
 	private final ModelPart wingBaseLeft;
@@ -158,7 +158,7 @@ public class TravellerWingsModel extends HumanoidModel<LivingEntity> {
 	}
 
 	private static float interpolateToTarget(double oPos, double targetPos, double dtInTicks) {
-		return (float) (targetPos - (targetPos - oPos) * Math.exp(-dtInTicks / tau));
+		return (float) (targetPos - (targetPos - oPos) * Math.exp(-dtInTicks / TAU));
 	}
 
 	@Override
