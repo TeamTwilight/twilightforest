@@ -11,6 +11,12 @@ import net.minecraft.world.entity.LivingEntity;
 import java.util.Collections;
 
 public class TravellerWingsModel extends HumanoidModel<LivingEntity> {
+	protected static double cumulativePhase = 0;
+	protected static double oldAgeInTicks = 0;
+	private static final double tau = 4;
+	private static float xRotOld = 0;
+	private static float yRotOld = 0;
+	private static float zRotOld = 0;
 	private static final float angle10deg = Mth.PI / 18;
 	private final ModelPart wingBaseRight, wingEdgeRight, wingInsetRight, wingCenterRight, wingFlangeRight, wingAuxRight;
 	private final ModelPart wingBaseLeft, wingEdgeLeft, wingInsetLeft, wingCenterLeft, wingFlangeLeft, wingAuxLeft;
@@ -113,61 +119,59 @@ public class TravellerWingsModel extends HumanoidModel<LivingEntity> {
 		return LayerDefinition.create(mesh, 64, 32);
 	}
 
-	public void setupModelAnimations(LivingEntity entity, float f, float f1, float ageInTicks, float netHeadYaw, float headPitch) {
-		super.setupAnim(entity, f, f1, ageInTicks, netHeadYaw, headPitch);
-		float t = ageInTicks;
+	public void setupModelAnimations(LivingEntity entity, float f, float f1, double ageInTicks, float netHeadYaw, float headPitch) {
+		super.setupAnim(entity, f, f1, (float) ageInTicks, netHeadYaw, headPitch);
+
+		float targetXRot, targetYRot, targetZRot;
 
 		if (this.riding) {
-			float slow = 17f;
-			wingBaseRight.xRot = Mth.sin(t / slow) / 10f + 0.9F;
-			wingBaseRight.yRot = Mth.sin(t / slow) / 5f - 0.7f;
-			wingBaseRight.zRot = Mth.sin(t / slow) / 2.5f - 0.3f;
-
-			wingBaseLeft.xRot = Mth.sin(t / slow) / 10f + 0.9F;
-			wingBaseLeft.yRot = -Mth.sin(t / slow) / 5f + 0.7f;
-			wingBaseLeft.zRot = -Mth.sin(t / slow) / 2.5f + 0.3f;
+			cumulativePhase += (ageInTicks - oldAgeInTicks) / 17f;
+			float t = (float) (cumulativePhase % (2 * Math.PI));
+			targetXRot = Mth.sin(t) / 10f + 0.9F;
+			targetYRot = Mth.sin(t) / 5f - 0.7f;
+			targetZRot = Mth.sin(t) / 2.5f - 0.3f;
 		} else if (entity.isInWater()) {
-			float slow = 17f;
-			wingBaseRight.xRot = Mth.sin(t / slow) / 15f + angle10deg * 3;
-			wingBaseRight.yRot = Mth.sin(t / slow) / 15f - 0.8f;
-			wingBaseRight.zRot = Mth.sin(t / slow) / 15f - 0.8f;
-
-			wingBaseLeft.xRot = Mth.sin(t / slow) / 15f + angle10deg * 3;
-			wingBaseLeft.yRot = -Mth.sin(t / slow) / 15f + 0.8f;
-			wingBaseLeft.zRot = -Mth.sin(t / slow) / 15f + 0.8f;
+			cumulativePhase += (ageInTicks - oldAgeInTicks) / 17f;
+			float t = (float) (cumulativePhase % (2 * Math.PI));
+			targetXRot = Mth.sin(t) / 15f + angle10deg * 3;
+			targetYRot = Mth.sin(t) / 15f - 0.8f;
+			targetZRot = Mth.sin(t) / 15f - 0.8f;
 		} else if (entity.getDeltaMovement().y < 0 && entity.fallDistance > 2.3f) {
-			float slow = 20f;
-			wingBaseRight.xRot = Mth.sin(t / slow) / 15f + 0.7F;
-			wingBaseRight.yRot = Mth.sin(t / slow) / 15f - 0.8f;
-			wingBaseRight.zRot = Mth.sin(t / slow) / 15f - 0.3f;
-
-			wingBaseLeft.xRot = Mth.sin(t / slow) / 15f + 0.7F;
-			wingBaseLeft.yRot = -Mth.sin(t / slow) / 15f + 0.8f;
-			wingBaseLeft.zRot = -Mth.sin(t / slow) / 15f + 0.3f;
+			cumulativePhase += (ageInTicks - oldAgeInTicks) / 20f;
+			float t = (float) (cumulativePhase % (2 * Math.PI));
+			targetXRot = Mth.sin(t) / 15f + 0.7F;
+			targetYRot = Mth.sin(t) / 15f - 0.8f;
+			targetZRot = Mth.sin(t) / 15f - 0.3f;
 		} else if (entity.isSprinting() || this.attackTime > 0) {
-			float slow = 1.73f;
-			wingBaseRight.xRot = Mth.sin(t / slow) / 15f + angle10deg * 3;
-			wingBaseRight.yRot = Mth.sin(t / slow) / 15f - 0.6f;
-			wingBaseRight.zRot = Mth.sin(t / slow) / 15f - 0.3f;
-
-			wingBaseLeft.xRot = Mth.sin(t / slow) / 15f + angle10deg * 3;
-			wingBaseLeft.yRot = -Mth.sin(t / slow) / 15f + 0.6f;
-			wingBaseLeft.zRot = -Mth.sin(t / slow) / 15f + 0.3f;
+			cumulativePhase += (ageInTicks - oldAgeInTicks) / 1.73f;
+			float t = (float) (cumulativePhase % (2 * Math.PI));
+			targetXRot = Mth.sin(t) / 15f + angle10deg * 3;
+			targetYRot = Mth.sin(t) / 15f - 0.6f;
+			targetZRot = Mth.sin(t) / 15f - 0.3f;
 		} else {
-			float slow = (entity.getDeltaMovement().horizontalDistanceSqr() > 0) ? 6f : 17f;
-			wingBaseRight.xRot = Mth.sin(t / slow) / 5f + angle10deg * 3;
-			wingBaseRight.yRot = Mth.sin(t / slow) / 3f - 0.6f;
-			wingBaseRight.zRot = Mth.sin(t / slow) / 1.5f - 0.3f;
-
-			wingBaseLeft.xRot = Mth.sin(t / slow) / 5f + angle10deg * 3;
-			wingBaseLeft.yRot = -Mth.sin(t / slow) / 3f + 0.6f;
-			wingBaseLeft.zRot = -Mth.sin(t / slow) / 1.5f + 0.3f;
+			cumulativePhase += (ageInTicks - oldAgeInTicks) / ((entity.getDeltaMovement().horizontalDistanceSqr() > 0) ? 6f : 17f);
+			float t = (float) (cumulativePhase % (2 * Math.PI));
+			targetXRot = Mth.sin(t) / 5f + angle10deg * 3;
+			targetYRot = Mth.sin(t) / 3f - 0.6f;
+			targetZRot = Mth.sin(t) / 1.5f - 0.3f;
 		}
 
-		if (this.crouching) {
-			wingBaseRight.xRot += 0.4f;
-			wingBaseLeft.xRot += 0.4f;
-		}
+		xRotOld = moveToTarget(xRotOld, targetXRot, ageInTicks - oldAgeInTicks);
+		yRotOld = moveToTarget(yRotOld, targetYRot, ageInTicks - oldAgeInTicks);
+		zRotOld = moveToTarget(zRotOld, targetZRot, ageInTicks - oldAgeInTicks);
+
+		wingBaseRight.xRot = xRotOld;
+		wingBaseRight.yRot = yRotOld;
+		wingBaseRight.zRot = zRotOld;
+
+		wingBaseLeft.xRot = xRotOld;
+		wingBaseLeft.yRot = -yRotOld;
+		wingBaseLeft.zRot = -zRotOld;
+		oldAgeInTicks = ageInTicks;
+	}
+
+	private static float moveToTarget(double oPos, double targetPos, double dt) {
+		return (float) (targetPos - (targetPos - oPos) * Math.exp(-dt / tau));
 	}
 
 	@Override
