@@ -6,8 +6,6 @@ import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.core.Holder;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
@@ -15,26 +13,14 @@ import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.TFArmorModel;
-import twilightforest.client.model.armor.TravellerWingsModel;
+import twilightforest.client.model.armor.TravellerLeggingsModel;
 import twilightforest.init.TFItems;
 
 public class TravellerArmorItem extends ArmorItem {
 	public TravellerArmorItem(Holder<ArmorMaterial> material, Type type, Properties properties) {
 		super(material, type, properties);
-	}
-
-	@Override
-	@Nullable
-	public ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, ArmorMaterial.Layer layer, boolean innerModel) {
-		if (stack.is(TFItems.TRAVELLER_WINGS))
-			return ResourceLocation.fromNamespaceAndPath(TwilightForestMod.ID, "textures/models/armor/traveller_wings.png");
-//		if (stack.is(TFItems.TRAVELLER_WINGS))
-//			return ResourceLocation.fromNamespaceAndPath(TwilightForestMod.ID, "textures/armor/traveller_wings.png");
-		return null;
 	}
 
 
@@ -58,19 +44,31 @@ public class TravellerArmorItem extends ArmorItem {
 					}
 					yield chestLayer;
 				}
-				case LEGS -> models.bakeLayer(TFModelLayers.TRAVELLER_ARMOR_WINGS);
+				case LEGS -> {
+					ModelPart leggingsLayer = models.bakeLayer(TFModelLayers.TRAVELLER_ARMOR_LEGGINGS);
+					leggingsLayer.getAllParts().forEach(part -> part.skipDraw = true);
+					boolean hasPants = stack.is(TFItems.TRAVELLER_LEGGINGS_BELT) || stack.is(TFItems.TRAVELLER_LEGGINGS);
+					boolean hasWings = hasPants && stack.getDisplayName().getString().equalsIgnoreCase("[traveller's wings]");
+					boolean hasBelt = stack.is(TFItems.TRAVELLER_LEGGINGS_BELT) || stack.is(TFItems.TRAVELLER_BELT);
+
+					TravellerLeggingsModel.skipBelt(leggingsLayer, !hasBelt);
+					TravellerLeggingsModel.skipWings(leggingsLayer, !hasWings);
+					TravellerLeggingsModel.skipPants(leggingsLayer, !hasPants || hasWings);
+
+					yield leggingsLayer;
+				}
 				case FEET -> models.bakeLayer(TFModelLayers.TRAVELLER_ARMOR_BOOTS);
 				default -> throw new IllegalArgumentException("Unexpected slot: " + slot + ": " + stack + ". Please report to https://github.com/TeamTwilight/twilightforest/issues");
 			};
 
-			if (stack.is(TFItems.TRAVELLER_WINGS))
-				return new TravellerWingsModel(root);
+			if (slot == EquipmentSlot.LEGS)
+				return new TravellerLeggingsModel(root);
 			return new TFArmorModel(root);
 		}
 
 		@Override
 		public void setupModelAnimations(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, Model model, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch) {
-			if (model instanceof TravellerWingsModel wingsModel)
+			if (model instanceof TravellerLeggingsModel wingsModel)
 				wingsModel.setupModelAnimations(livingEntity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 		}
 	}

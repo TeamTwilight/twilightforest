@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "twilightforest:item/traveller_chest_gloves",
-    "layer1": "minecraft:trims/items/chestplate_trim_diamond"
-  }
-}

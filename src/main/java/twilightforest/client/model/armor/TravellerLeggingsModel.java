@@ -12,98 +12,152 @@ import twilightforest.init.TFDataAttachments;
 
 import java.util.Collections;
 
-public class TravellerWingsModel extends HumanoidModel<LivingEntity> {
+public class TravellerLeggingsModel extends HumanoidModel<LivingEntity> {
 	private static final double TAU = 4;  // Time (in ticks) in which distance reduces in e times
 	private static final float ANGLE_10_DEG = Mth.PI / 18;
 	private final ModelPart wingBaseRight;
 	private final ModelPart wingBaseLeft;
 
-	public TravellerWingsModel(ModelPart root) {
+	public TravellerLeggingsModel(ModelPart root) {
 		super(root);
 		root = root.getChild("body");
-		this.wingBaseRight = root.getChild("wingBaseRight");
-
 		this.wingBaseLeft = root.getChild("wingBaseLeft");
+		this.wingBaseRight = root.getChild("wingBaseRight");
 		body.skipDraw = true;
 	}
 
 	public static LayerDefinition createLayer(float deformation) {
 		MeshDefinition mesh = HumanoidModel.createMesh(new CubeDeformation(deformation), 0);
 		PartDefinition root = mesh.getRoot().getChild("body");
+		createWings(root);
+		createBelt(root, 0.4F);
 
+		return LayerDefinition.create(mesh, 128, 32);
+	}
+
+	protected static void createWings(PartDefinition root) {
 		PartDefinition wbr = root.addOrReplaceChild("wingBaseRight",
 			CubeListBuilder.create()
-				.texOffs(0, 9)
+				.texOffs(64, 9)
 				.addBox(-0.5F, -1F, 0F, 1, 2, 10),
 			PartPose.offsetAndRotation(-1F, 1F, 0F, ANGLE_10_DEG * 3, -ANGLE_10_DEG * 3, 0F));
 
 		wbr.addOrReplaceChild("wingEdgeRight",
 			CubeListBuilder.create()
-				.texOffs(0, 21)
+				.texOffs(64, 21)
 				.addBox(0F, 0F, -2F, 1, 9, 2),
 			PartPose.offsetAndRotation(-0.502F, -1F, 10F, ANGLE_10_DEG * 3, 0F, 0F));
 
 		wbr.addOrReplaceChild("wingInsetRight",
 			CubeListBuilder.create()
-				.texOffs(6, 21)
+				.texOffs(70, 21)
 				.addBox(0F, 0F, -1F, 1, 9, 2),
 			PartPose.offsetAndRotation(-0.504F, 0F, 7.8F, ANGLE_10_DEG * 2, 0F, 0F));
 
 		wbr.addOrReplaceChild("wingCenterRight",
 			CubeListBuilder.create()
-				.texOffs(12, 21)
+				.texOffs(76, 21)
 				.addBox(0F, 0F, -1F, 1, 9, 2),
 			PartPose.offsetAndRotation(-0.506F, 0.3F, 6.3F, ANGLE_10_DEG, 0F, 0F));
 
 		wbr.addOrReplaceChild("wingFlangeRight",
 			CubeListBuilder.create()
-				.texOffs(18, 21)
+				.texOffs(82, 21)
 				.addBox(0F, 0F, -1F, 1, 8, 2),
 			PartPose.offsetAndRotation(-0.508F, 0.3F, 5.1F, 0F, 0F, 0F));
 
 		wbr.addOrReplaceChild("wingAuxRight",
 			CubeListBuilder.create()
-				.texOffs(24, 21)
+				.texOffs(88, 21)
 				.addBox(0F, 0F, -1F, 1, 7, 2),
 			PartPose.offsetAndRotation(-0.51F, 0.1F, 4F, -ANGLE_10_DEG, 0F, 0F));
 
 		PartDefinition wbl = root.addOrReplaceChild("wingBaseLeft",
 			CubeListBuilder.create()
-				.texOffs(42, 9)
+				.texOffs(106, 9)
 				.addBox(-0.5F, -1F, 0F, 1, 2, 10),
 			PartPose.offsetAndRotation(1F, 1F, 0F, ANGLE_10_DEG * 3, ANGLE_10_DEG * 3, 0F));
 
 		wbl.addOrReplaceChild("wingEdgeLeft",
 			CubeListBuilder.create()
-				.texOffs(58, 21)
+				.texOffs(122, 21)
 				.addBox(0F, 0F, -2F, 1, 9, 2),
 			PartPose.offsetAndRotation(-0.502F, -1F, 10F, ANGLE_10_DEG * 3, 0F, 0F));
 
 		wbl.addOrReplaceChild("wingInsetLeft",
 			CubeListBuilder.create()
-				.texOffs(52, 21)
+				.texOffs(116, 21)
 				.addBox(0F, 0F, -1F, 1, 9, 2),
 			PartPose.offsetAndRotation(-0.504F, 0F, 7.8F, ANGLE_10_DEG * 2, 0F, 0F));
 
 		wbl.addOrReplaceChild("wingCenterLeft",
 			CubeListBuilder.create()
-				.texOffs(46, 21)
+				.texOffs(110, 21)
 				.addBox(0F, 0F, -1F, 1, 9, 2),
 			PartPose.offsetAndRotation(-0.506F, 0.3F, 6.3F, ANGLE_10_DEG, 0F, 0F));
 
 		wbl.addOrReplaceChild("wingFlangeLeft",
 			CubeListBuilder.create()
-				.texOffs(40, 21)
+				.texOffs(104, 21)
 				.addBox(0F, 0F, -1F, 1, 8, 2),
 			PartPose.offsetAndRotation(-0.508F, 0.3F, 5.1F, 0F, 0F, 0F));
 
 		wbl.addOrReplaceChild("wingAuxLeft",
 			CubeListBuilder.create()
-				.texOffs(34, 21)
+				.texOffs(98, 21)
 				.addBox(0F, 0F, -1F, 1, 7, 2),
 			PartPose.offsetAndRotation(-0.51F, 0.1F, 4F, -ANGLE_10_DEG, 0F, 0F));
+	}
 
-		return LayerDefinition.create(mesh, 64, 32);
+	protected static void createBelt(PartDefinition root, float deformation) {
+		CubeDeformation cubeDeformation = new CubeDeformation(deformation);
+		root.addOrReplaceChild(
+			"buckle",
+			CubeListBuilder.create()
+				.texOffs(8, 9)
+				.addBox(-2F, -2F, 0F, 4, 4, 1, cubeDeformation),
+			PartPose.offset(0F, 10F, -2.75F)
+		);
+
+		root.addOrReplaceChild(
+			"frontRight",
+			CubeListBuilder.create()
+				.texOffs(0, 9)
+				.addBox(-3F, -1F, 0F, 3, 2, 1,cubeDeformation),
+			PartPose.offset( -1.75F, 10F, -2.5F)
+		);
+
+		root.addOrReplaceChild(
+			"frontLeft",
+			CubeListBuilder.create()
+				.texOffs(18, 9)
+				.addBox(0F, -1F, 0F, 3, 2, 1, cubeDeformation),
+			PartPose.offset(1.75F, 10F, -2.5F)
+		);
+
+		root.addOrReplaceChild(
+			"sideRight",
+			CubeListBuilder.create()
+				.texOffs(0, 3)
+				.addBox(-1F, -1F, 0F, 1, 2, 4, cubeDeformation),
+			PartPose.offset(-3.75F, 10F, -2F)
+		);
+
+		root.addOrReplaceChild(
+			"sideLeft",
+			CubeListBuilder.create()
+				.texOffs(16, 3)
+				.addBox(0F, -1F, 0F, 1, 2, 4, cubeDeformation),
+			PartPose.offset(3.75F, 10F, -2F)
+		);
+
+		root.addOrReplaceChild(
+			"back",
+			CubeListBuilder.create()
+				.texOffs(2, 0)
+				.addBox(-4.5F, -1F, 0F, 9, 2, 1, cubeDeformation),
+			PartPose.offset(0F, 10F, 1.5F)
+		);
 	}
 
 	public void setupModelAnimations(LivingEntity entity, float f, float f1, double ageInTicks, float netHeadYaw, float headPitch) {
@@ -168,6 +222,42 @@ public class TravellerWingsModel extends HumanoidModel<LivingEntity> {
 
 	@Override
 	protected Iterable<ModelPart> bodyParts() {
-		return ImmutableList.of(body);
+		return ImmutableList.of(body, leftLeg, rightLeg);
+	}
+
+	public static void skipWings(ModelPart leggingsLayer, boolean skip) {
+		ModelPart body = leggingsLayer.getChild("body");
+
+		ModelPart wbl = body.getChild("wingBaseLeft");
+		wbl.skipDraw                                  = skip;
+		wbl.getChild("wingEdgeLeft").skipDraw   = skip;
+		wbl.getChild("wingInsetLeft").skipDraw  = skip;
+		wbl.getChild("wingCenterLeft").skipDraw = skip;
+		wbl.getChild("wingFlangeLeft").skipDraw = skip;
+		wbl.getChild("wingAuxLeft").skipDraw    = skip;
+
+		ModelPart wbr = body.getChild("wingBaseRight");
+		wbr.skipDraw                                   = skip;
+		wbr.getChild("wingEdgeRight").skipDraw   = skip;
+		wbr.getChild("wingInsetRight").skipDraw  = skip;
+		wbr.getChild("wingCenterRight").skipDraw = skip;
+		wbr.getChild("wingFlangeRight").skipDraw = skip;
+		wbr.getChild("wingAuxRight").skipDraw    = skip;
+	}
+
+	public static void skipBelt(ModelPart leggingsLayer, boolean skip) {
+		ModelPart body = leggingsLayer.getChild("body");
+
+		body.getChild("buckle").skipDraw      = skip;
+		body.getChild("frontRight").skipDraw  = skip;
+		body.getChild("frontLeft").skipDraw   = skip;
+		body.getChild("sideRight").skipDraw   = skip;
+		body.getChild("sideLeft").skipDraw    = skip;
+		body.getChild("back").skipDraw        = skip;
+	}
+
+	public static void skipPants(ModelPart leggingsLayer, boolean skip) {
+		leggingsLayer.getChild("left_leg").skipDraw      = skip;
+		leggingsLayer.getChild("right_leg").skipDraw     = skip;
 	}
 }

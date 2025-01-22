@@ -520,7 +520,9 @@ public class TFCreativeTabs {
 			output.accept(TFItems.TRAVELLER_CHESTPLATE_GLOVES);
 			output.accept(TFItems.TRAVELLER_CHESTPLATE);
 			output.accept(TFItems.TRAVELLER_GLOVES);
-			output.accept(TFItems.TRAVELLER_WINGS);
+			output.accept(TFItems.TRAVELLER_LEGGINGS_BELT);
+			output.accept(TFItems.TRAVELLER_LEGGINGS);
+			output.accept(TFItems.TRAVELLER_BELT);
 			output.accept(TFItems.TRAVELLER_BOOTS);
 			output.accept(TFItems.GOLDEN_MINOTAUR_AXE);
 			output.accept(TFItems.DIAMOND_MINOTAUR_AXE);

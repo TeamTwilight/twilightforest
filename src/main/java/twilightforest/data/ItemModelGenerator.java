@@ -537,12 +537,14 @@ public class ItemModelGenerator extends ItemModelProvider {
 		singleTexTool(TFItems.STEELEAF_AXE);
 		singleTexTool(TFItems.STEELEAF_SHOVEL);
 		singleTexTool(TFItems.STEELEAF_HOE);
-		trimmedArmor(TFItems.TRAVELLER_HELMET);
-		trimmedArmor(TFItems.TRAVELLER_CHESTPLATE_GLOVES);  // FIXME: replace placeholder
-		trimmedArmor(TFItems.TRAVELLER_CHESTPLATE);
-		trimmedArmor(TFItems.TRAVELLER_GLOVES);
-		trimmedArmor(TFItems.TRAVELLER_WINGS);
-		trimmedArmor(TFItems.TRAVELLER_BOOTS);
+		singleTex(TFItems.TRAVELLER_HELMET);
+		singleTex(TFItems.TRAVELLER_CHESTPLATE_GLOVES);  // FIXME: replace placeholder
+		singleTex(TFItems.TRAVELLER_CHESTPLATE);
+		singleTex(TFItems.TRAVELLER_GLOVES);
+//		singleTex(TFItems.TRAVELLER_LEGGINGS_BELT);
+//		singleTex(TFItems.TRAVELLER_LEGGINGS);
+		singleTex(TFItems.TRAVELLER_BELT);
+		singleTex(TFItems.TRAVELLER_BOOTS);
 		singleTexTool(TFItems.DIAMOND_MINOTAUR_AXE);
 		singleTexTool(TFItems.GOLDEN_MINOTAUR_AXE);
 		singleTexTool(TFItems.MAZEBREAKER_PICKAXE);

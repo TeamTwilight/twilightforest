@@ -387,7 +387,10 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 			TFItems.YETI_LEGGINGS.get(),
 			TFItems.FIERY_LEGGINGS.get(),
 			TFItems.NAGA_LEGGINGS.get(),
-			TFItems.TRAVELLER_WINGS.get());
+			TFItems.TRAVELLER_LEGGINGS_BELT.get(),
+			TFItems.TRAVELLER_LEGGINGS.get(),
+			TFItems.TRAVELLER_BELT.get());
+
 
 		this.tag(ItemTags.FOOT_ARMOR).add(
 			TFItems.IRONWOOD_BOOTS.get(),

@@ -1,4 +1,4 @@
-// 1.21.1	2025-01-18T19:51:44.533451275	Twilight Forest Item Tags
+// 1.21.1	2025-01-22T22:34:46.986129833	Twilight Forest Item Tags
 3c5895c72cfffe09615ec2b28267a726fcbf52e8 data/alexscaves/tags/item/ferns.json
 4c5df8d60b8f068b482a22fd807ddea22e1bfe00 data/alexscaves/tags/item/ferromagnetic_items.json
 42afac82c004061587d5b1ae20c2e66c0d399c8c data/alexscaves/tags/item/raw_meats.json
@@ -64,7 +64,7 @@ e66649b3248e051912913e282cb83d3b5006cde0 data/minecraft/tags/item/freeze_immune_
 8bdf2061eb180898fba4ced3898648a9629303c5 data/minecraft/tags/item/head_armor.json
 b696524eda9e607bebc1b307e19c2b1633b8b0b1 data/minecraft/tags/item/hoes.json
 30b260e82242a2b548549ed7a4f89117c8d2c3c3 data/minecraft/tags/item/leaves.json
-b710c2cc2269b16b2c563c8a230986bfcc2a8365 data/minecraft/tags/item/leg_armor.json
+794d37638c09c53eecebeabd3371527a2a9ab34d data/minecraft/tags/item/leg_armor.json
 19bd74ce640c043c09053d7571fb7a9915d41417 data/minecraft/tags/item/logs.json
 0af80d33dcbb7226a5afcb9d8a4c1a73a2c38c9d data/minecraft/tags/item/logs_that_burn.json
 3d97022fe689918fe10ff909adfe2953d455c6ec data/minecraft/tags/item/meat.json
