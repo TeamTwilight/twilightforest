@@ -1,5 +1,6 @@
 package twilightforest.client.event;
 
+import it.unimi.dsi.fastutil.ints.Int2IntFunction;
 import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.core.BlockPos;
@@ -23,11 +24,9 @@ import twilightforest.item.ArcticArmorItem;
 import twilightforest.util.ColorUtil;
 import twilightforest.util.SimplexNoiseHelper;
 
-import java.util.function.Function;
-
 public class ColorHandler {
-	public static final Function<Integer, Integer> CANOPY_COLORIZER = color -> 0xFF000000 | (((color & 0xFEFEFE) + 0x469A66) / 2);
-	public static final Function<Integer, Integer> MANGROVE_COLORIZER = color -> 0xFF000000 | (((color & 0xFEFEFE) + 0xC0E694) / 2);
+	public static final Int2IntFunction CANOPY_COLORIZER = color -> 0xFF000000 | (((color & 0xFEFEFE) + 0x469A66) / 2);
+	public static final Int2IntFunction MANGROVE_COLORIZER = color -> 0xFF000000 | (((color & 0xFEFEFE) + 0xC0E694) / 2);
 
 	protected static void registerBlockColors(RegisterColorHandlersEvent.Block event) {
 		BlockColors blockColors = event.getBlockColors();
@@ -143,8 +142,8 @@ public class ColorHandler {
 			}
 		}, TFBlocks.TOWERWOOD.get(), TFBlocks.CRACKED_TOWERWOOD.get(), TFBlocks.INFESTED_TOWERWOOD.get(), TFBlocks.MOSSY_TOWERWOOD.get());
 		event.register((state, getter, pos, tintIndex) -> getter != null && pos != null ? BiomeColors.getAverageFoliageColor(getter, pos) : FoliageColor.getDefaultColor(), TFBlocks.TWILIGHT_OAK_LEAVES.get(), TFBlocks.DARK_LEAVES.get(), TFBlocks.HARDENED_DARK_LEAVES.get(), TFBlocks.GIANT_LEAVES.get(), TFBlocks.FALLEN_LEAVES.get());
-		event.register((state, getter, pos, tintIndex) -> getter != null && pos != null ? CANOPY_COLORIZER.apply(BiomeColors.getAverageFoliageColor(getter, pos)) : FoliageColor.getEvergreenColor(), TFBlocks.CANOPY_LEAVES.get());
-		event.register((state, getter, pos, tintIndex) -> getter != null && pos != null ? MANGROVE_COLORIZER.apply(BiomeColors.getAverageFoliageColor(getter, pos)) : FoliageColor.getBirchColor(), TFBlocks.MANGROVE_LEAVES.get());
+		event.register((state, getter, pos, tintIndex) -> getter != null && pos != null ? CANOPY_COLORIZER.applyAsInt(BiomeColors.getAverageFoliageColor(getter, pos)) : FoliageColor.getEvergreenColor(), TFBlocks.CANOPY_LEAVES.get());
+		event.register((state, getter, pos, tintIndex) -> getter != null && pos != null ? MANGROVE_COLORIZER.applyAsInt(BiomeColors.getAverageFoliageColor(getter, pos)) : FoliageColor.getBirchColor(), TFBlocks.MANGROVE_LEAVES.get());
 		event.register((state, getter, pos, tintIndex) -> {
 			if (getter == null || pos == null) {
 				return FoliageColor.getDefaultColor();
