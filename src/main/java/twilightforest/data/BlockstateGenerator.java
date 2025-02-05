@@ -343,6 +343,11 @@ public class BlockstateGenerator extends BlockModelBuilders {
 				.texture("2", item.getNamespace() + ":block/" + item.getPath());
 		}
 
+		registerOreberry(TFBlocks.IRON_OREBERRY.get());
+		registerOreberry(TFBlocks.GOLD_OREBERRY.get());
+		registerOreberry(TFBlocks.COPPER_OREBERRY.get());
+		registerOreberry(TFBlocks.ESSENCE_OREBERRY.get());
+
 		registerPlantBlocks();
 		simpleBlock(TFBlocks.ROOT_BLOCK.get());
 		simpleBlock(TFBlocks.LIVEROOT_BLOCK.get());
@@ -851,10 +856,37 @@ public class BlockstateGenerator extends BlockModelBuilders {
 			.with(FireJetBlock.STATE, FireJetVariant.FLAME).setModels(new ConfiguredModel(encasedJetOn));
 	}
 
+	private void registerOreberry(Block block) {
+		ModelFile smallBush = models().cubeAll(name(block) + "_small", prefix("block/" + name(block)))
+			.element().from(4, 0, 4).to(12, 8, 12)
+			.allFaces((dir, builder) -> builder.texture("#all"))
+			.end().renderType(TRANSLUCENT);
+		ModelFile mediumBush = models().cubeAll(name(block), prefix("block/" + name(block)))
+			.element().from(2, 0, 2).to(14, 12, 14)
+			.allFaces((dir, builder) -> builder.texture("#all"))
+			.end().renderType(TRANSLUCENT);
+		ModelFile largeBush = models().cubeAll(name(block) + "_large", prefix("block/" + name(block)))
+			.element().from(0, 0, 0).to(16, 16, 16)
+			.allFaces((dir, builder) -> builder.texture("#all"))
+			.end().renderType(TRANSLUCENT);
+		ModelFile grownBush = models().cubeAll(name(block) + "_grown", prefix("block/" + name(block) + "_ripe"))
+			.element().from(0, 0, 0).to(16, 16, 16)
+			.allFaces((dir, builder) -> builder.cullface(dir).tintindex(1).texture("#all"))
+			.end().renderType(TRANSLUCENT);
+
+		getVariantBuilder(block).forAllStates(state -> switch (state.getValue(BlockStateProperties.AGE_3)) {
+			case 0 -> new ConfiguredModel[] { new ConfiguredModel(smallBush, 0, 0, false) };
+			case 1 -> new ConfiguredModel[] { new ConfiguredModel(mediumBush, 0, 0, false) };
+			case 2 -> new ConfiguredModel[] { new ConfiguredModel(largeBush, 0, 0, false) };
+			case 3 -> new ConfiguredModel[] { new ConfiguredModel(grownBush, 0, 0, false) };
+			default -> new ConfiguredModel[0];
+		});
+	}
+
 	private void registerPlantBlocks() {
-		simpleBlock(TFBlocks.MOSS_PATCH.get(), new ConfiguredModel(new ModelFile.UncheckedModelFile(TwilightForestMod.prefix("block/moss_patch"))));
+		simpleBlock(TFBlocks.MOSS_PATCH.get(), new ConfiguredModel(new ModelFile.UncheckedModelFile(prefix("block/moss_patch"))));
 		simpleBlockExisting(TFBlocks.MAYAPPLE.get());
-		simpleBlock(TFBlocks.CLOVER_PATCH.get(), new ConfiguredModel(new ModelFile.UncheckedModelFile(TwilightForestMod.prefix("block/clover_patch"))));
+		simpleBlock(TFBlocks.CLOVER_PATCH.get(), new ConfiguredModel(new ModelFile.UncheckedModelFile(prefix("block/clover_patch"))));
 		simpleBlock(TFBlocks.FIDDLEHEAD.get(), models().withExistingParent(TFBlocks.FIDDLEHEAD.getId().getPath(), "block/tinted_cross").renderType(CUTOUT)
 			.texture("cross", blockTexture(TFBlocks.FIDDLEHEAD.get())));
 		simpleBlock(TFBlocks.MUSHGLOOM.get(), this.make2layerCross(TFBlocks.MUSHGLOOM.getId().getPath(), CUTOUT, 10, 6)

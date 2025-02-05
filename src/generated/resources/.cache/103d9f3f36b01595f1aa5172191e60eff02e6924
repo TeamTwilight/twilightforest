@@ -1,4 +1,4 @@
-// 1.21.1	2025-01-04T05:34:02.742512725	Registries
+// 1.21.1	2025-02-05T17:10:49.031743006	Registries
 9089ada9ce06fd30adf8b10e50f02233c7d5a76e data/minecraft/twilight/wood_palettes/acacia.json
 dca1ef01d0df4e956fd414782de57c25dfddd290 data/minecraft/twilight/wood_palettes/birch.json
 01becb45438b7f2bfdc77baba72bc986341510c8 data/minecraft/twilight/wood_palettes/crimson.json
@@ -42,6 +42,7 @@ e9cec134cab4d5efdb77cd6fb54901bd779de94f data/twilightforest/damage_type/lich_bo
 210f397fa8e6be5a972a815eb1c7fbaae8563552 data/twilightforest/damage_type/lifedrain.json
 f7afffd7b495d67a5dcf30f9e908e1345a5491e3 data/twilightforest/damage_type/lost_words.json
 4e3ec48a9241bfa801bdf2d0ff8bbf696cbd680b data/twilightforest/damage_type/moonworm.json
+6b776479a258fcd32277fbeac7f6426829b869a8 data/twilightforest/damage_type/oreberry.json
 b8fb3f55d34a7281ded705a4c2298d0eb5075a45 data/twilightforest/damage_type/reactor.json
 0d7269b6fa31d8a3acdefbc544e985396ee606de data/twilightforest/damage_type/schooled.json
 401dc9d27a3ea6c90b7af264148599ddea0c3603 data/twilightforest/damage_type/scorched.json

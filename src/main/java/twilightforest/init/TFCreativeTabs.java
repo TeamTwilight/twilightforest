@@ -240,6 +240,10 @@ public class TFCreativeTabs {
 			output.accept(TFItems.HOLLOW_CHERRY_LOG);
 			output.accept(TFBlocks.MOSS_PATCH);
 			output.accept(TFBlocks.MAYAPPLE);
+			output.accept(TFBlocks.IRON_OREBERRY);
+			output.accept(TFBlocks.GOLD_OREBERRY);
+			output.accept(TFBlocks.COPPER_OREBERRY);
+			output.accept(TFBlocks.ESSENCE_OREBERRY);
 			output.accept(TFBlocks.CLOVER_PATCH);
 			output.accept(TFBlocks.FIDDLEHEAD);
 			output.accept(TFBlocks.MUSHGLOOM);
@@ -432,6 +436,11 @@ public class TFCreativeTabs {
 			output.accept(TFItems.CHARM_OF_KEEPING_3);
 			output.accept(TFItems.BORER_ESSENCE);
 			output.accept(TFItems.CARMINITE);
+			output.accept(TFItems.IRON_BERRY);
+			output.accept(TFItems.GOLD_BERRY);
+			output.accept(TFItems.COPPER_BERRY);
+			output.accept(TFItems.ESSENCE_BERRY);
+			output.accept(TFItems.COPPER_NUGGET);
 			output.accept(TFItems.TOWER_KEY);
 			output.accept(TFItems.MAGIC_BEANS);
 			output.accept(TFItems.MUSIC_DISC_THREAD);

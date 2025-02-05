@@ -1,4 +1,4 @@
-// 1.21.1	2025-01-22T22:34:46.986129833	Twilight Forest Item Tags
+// 1.21.1	2025-02-05T15:59:04.364499013	Twilight Forest Item Tags
 3c5895c72cfffe09615ec2b28267a726fcbf52e8 data/alexscaves/tags/item/ferns.json
 4c5df8d60b8f068b482a22fd807ddea22e1bfe00 data/alexscaves/tags/item/ferromagnetic_items.json
 42afac82c004061587d5b1ae20c2e66c0d399c8c data/alexscaves/tags/item/raw_meats.json
@@ -19,6 +19,8 @@ bed43612fb08f85dd3dc7dbc5a4a871f7440b9d7 data/c/tags/item/ingots/ironwood.json
 69966a0aa274f8bcccc17ecf8d9a4e446e7897eb data/c/tags/item/ingots/steeleaf.json
 d6057311598b61ea8d097a01a73d1e48e960285c data/c/tags/item/mushrooms.json
 066e2fc42c34ca191dfa9e388b2ff46cbaa16fff data/c/tags/item/music_discs.json
+75175feaa56fc9efd7843260e55c7849efc44e76 data/c/tags/item/nuggets.json
+75175feaa56fc9efd7843260e55c7849efc44e76 data/c/tags/item/nuggets/copper.json
 886e5e1db1abef8583882d996f8600275f839c37 data/c/tags/item/paper.json
 1b1e724c7125d97aba3327a044b945a2e3189e29 data/c/tags/item/raw_materials.json
 2973f905270dbbc53a2d666941d72485a9e85946 data/c/tags/item/raw_materials/ironwood.json

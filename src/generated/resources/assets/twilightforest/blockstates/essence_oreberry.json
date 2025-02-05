@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "age=0": {
+      "model": "twilightforest:block/essence_oreberry_small"
+    },
+    "age=1": {
+      "model": "twilightforest:block/essence_oreberry"
+    },
+    "age=2": {
+      "model": "twilightforest:block/essence_oreberry_large"
+    },
+    "age=3": {
+      "model": "twilightforest:block/essence_oreberry_grown"
+    }
+  }
+}

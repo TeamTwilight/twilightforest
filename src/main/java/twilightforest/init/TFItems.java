@@ -121,6 +121,11 @@ public class TFItems {
 	public static final DeferredItem<Item> CHARM_OF_KEEPING_1 = ITEMS.register("charm_of_keeping_1", () -> new Item(new Item.Properties().rarity(Rarity.UNCOMMON)));
 	public static final DeferredItem<Item> CHARM_OF_KEEPING_2 = ITEMS.register("charm_of_keeping_2", () -> new Item(new Item.Properties().rarity(Rarity.UNCOMMON)));
 	public static final DeferredItem<Item> CHARM_OF_KEEPING_3 = ITEMS.register("charm_of_keeping_3", () -> new Item(new Item.Properties().rarity(Rarity.UNCOMMON)));
+	public static final DeferredItem<Item> IRON_BERRY = ITEMS.register("iron_berry", () -> new Item(new Item.Properties()));
+	public static final DeferredItem<Item> GOLD_BERRY = ITEMS.register("gold_berry", () -> new Item(new Item.Properties()));
+	public static final DeferredItem<Item> COPPER_BERRY = ITEMS.register("copper_berry", () -> new Item(new Item.Properties()));
+	public static final DeferredItem<Item> ESSENCE_BERRY = ITEMS.register("essence_berry", () -> new EssenceBerry(new Item.Properties()));
+	public static final DeferredItem<Item> COPPER_NUGGET = ITEMS.register("copper_nugget", () -> new Item(new Item.Properties()));
 	public static final DeferredItem<Item> TOWER_KEY = ITEMS.register("tower_key", () -> new Item(new Item.Properties().fireResistant().rarity(Rarity.UNCOMMON)));
 	public static final DeferredItem<Item> BORER_ESSENCE = ITEMS.register("borer_essence", () -> new Item(new Item.Properties()));
 	public static final DeferredItem<Item> CARMINITE = ITEMS.register("carminite", () -> new Item(new Item.Properties()));

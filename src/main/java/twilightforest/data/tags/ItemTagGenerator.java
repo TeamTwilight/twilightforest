@@ -44,6 +44,7 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 	public static final TagKey<Item> IRONWOOD_INGOTS = makeCommonTag("ingots/ironwood");
 	public static final TagKey<Item> KNIGHTMETAL_INGOTS = makeCommonTag("ingots/knightmetal");
 	public static final TagKey<Item> STEELEAF_INGOTS = makeCommonTag("ingots/steeleaf");
+	public static final TagKey<Item> COPPER_NUGGETS = makeCommonTag("nuggets/copper");
 
 	public static final TagKey<Item> STORAGE_BLOCKS_ARCTIC_FUR = makeCommonTag("storage_blocks/arctic_fur");
 	public static final TagKey<Item> STORAGE_BLOCKS_CARMINITE = makeCommonTag("storage_blocks/carminite");
@@ -162,6 +163,11 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 		this.tag(Tags.Items.INGOTS)
 			.addTag(IRONWOOD_INGOTS).addTag(FIERY_INGOTS)
 			.addTag(KNIGHTMETAL_INGOTS).addTag(STEELEAF_INGOTS);
+
+		this.tag(Tags.Items.NUGGETS)
+			.add(TFItems.COPPER_NUGGET.asItem());
+		this.tag(COPPER_NUGGETS)
+			.add(TFItems.COPPER_NUGGET.asItem());
 
 		this.tag(RAW_MATERIALS_IRONWOOD).add(TFItems.RAW_IRONWOOD.get());
 		this.tag(RAW_MATERIALS_KNIGHTMETAL).add(TFItems.ARMOR_SHARD_CLUSTER.get());

@@ -201,6 +201,19 @@ public class CraftingGenerator extends CraftingDataHelper {
 		ingotRecipes(output, "smelted", RecipeSerializer.SMELTING_RECIPE, SmeltingRecipe::new, 200);
 		ingotRecipes(output, "blasted", RecipeSerializer.BLASTING_RECIPE, BlastingRecipe::new, 100);
 
+		oreberryRecipes(output, "smelted", RecipeSerializer.SMELTING_RECIPE, SmeltingRecipe::new, 200);
+		oreberryRecipes(output, "blasted", RecipeSerializer.BLASTING_RECIPE, BlastingRecipe::new, 100);
+
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Items.COPPER_INGOT)
+			.requires(Ingredient.of(ItemTagGenerator.COPPER_NUGGETS), 9)
+			.unlockedBy("has_item", has(ItemTagGenerator.COPPER_NUGGETS))
+			.save(output, TwilightForestMod.prefix("copper_nuggets_to_ingot"));
+
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, TFItems.COPPER_NUGGET, 9)
+			.requires(Ingredient.of(Tags.Items.INGOTS_COPPER))
+			.unlockedBy("has_item", has(Tags.Items.INGOTS_COPPER))
+			.save(output, TwilightForestMod.prefix("copper_ingot_to_nuggets"));
+
 		crackedWoodRecipes(output);
 		crackedStoneRecipes(output);
 
@@ -921,6 +934,13 @@ public class CraftingGenerator extends CraftingDataHelper {
 		SimpleCookingRecipeBuilder.generic(Ingredient.of(TFItems.ARMOR_SHARD_CLUSTER.get()), RecipeCategory.MISC, TFItems.KNIGHTMETAL_INGOT.get(), 1.0F, smeltingTime, process, factory).unlockedBy("has_item", has(TFItems.ARMOR_SHARD_CLUSTER.get())).group("knightmetal_ingot").save(output, TwilightForestMod.prefix("material/" + processName + "_knightmetal_ingot").toString());
 		SimpleCookingRecipeBuilder.generic(Ingredient.of(TFItems.RAW_IRONWOOD.get()), RecipeCategory.MISC, TFItems.IRONWOOD_INGOT.get(), 1.0F, smeltingTime, process, factory).unlockedBy("has_item", has(TFItems.RAW_IRONWOOD.get())).group("ironwood_ingot").save(output, TwilightForestMod.prefix("material/" + processName + "_ironwood_ingot").toString());
 	}
+
+	private <T extends AbstractCookingRecipe> void oreberryRecipes(RecipeOutput output, String processName, RecipeSerializer<T> process, AbstractCookingRecipe.Factory<T> factory, int smeltingTime) {
+		SimpleCookingRecipeBuilder.generic(Ingredient.of(TFItems.IRON_BERRY.get()), RecipeCategory.MISC, Items.IRON_NUGGET, 1.0F, smeltingTime, process, factory).unlockedBy("has_item", has(TFItems.IRON_BERRY.get())).group("iron_nugget").save(output, TwilightForestMod.prefix("material/" + processName + "_iron_nugget").toString());
+		SimpleCookingRecipeBuilder.generic(Ingredient.of(TFItems.GOLD_BERRY.get()), RecipeCategory.MISC, Items.GOLD_NUGGET, 1.0F, smeltingTime, process, factory).unlockedBy("has_item", has(TFItems.GOLD_BERRY.get())).group("gold_nugget").save(output, TwilightForestMod.prefix("material/" + processName + "_gold_nugget").toString());
+		SimpleCookingRecipeBuilder.generic(Ingredient.of(TFItems.COPPER_BERRY.get()), RecipeCategory.MISC, TFItems.COPPER_NUGGET, 1.0F, smeltingTime, process, factory).unlockedBy("has_item", has(TFItems.COPPER_BERRY.get())).group("copper_nugget").save(output, TwilightForestMod.prefix("material/" + processName + "_copper_nugget").toString());
+
+ 	}
 
 	private void crackedWoodRecipes(RecipeOutput output) {
 		SimpleCookingRecipeBuilder.smoking(Ingredient.of(TFBlocks.TOWERWOOD.get()), RecipeCategory.BUILDING_BLOCKS, TFBlocks.CRACKED_TOWERWOOD.get(), 0.1F, 100).unlockedBy("has_item", has(TFBlocks.TOWERWOOD.get())).save(output, TwilightForestMod.prefix("wood/" + "smoked" + "_cracked_towerwood").toString());

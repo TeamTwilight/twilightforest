@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 1.0,
+  "group": "gold_nugget",
+  "ingredient": {
+    "item": "twilightforest:gold_berry"
+  },
+  "result": {
+    "count": 1,
+    "id": "minecraft:gold_nugget"
+  }
+}

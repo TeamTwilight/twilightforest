@@ -211,6 +211,10 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlockModel(TFBlocks.CICADA_JAR.get(), prefix("item/mason_jar"));
 		generated(TFBlocks.MOSS_PATCH.getId().getPath(), prefix("block/patch/moss"));
 		generated(TFBlocks.MAYAPPLE.getId().getPath(), prefix("block/mayapple"));
+		toBlock(TFBlocks.IRON_OREBERRY.get());
+		toBlock(TFBlocks.GOLD_OREBERRY.get());
+		toBlock(TFBlocks.COPPER_OREBERRY.get());
+		toBlock(TFBlocks.ESSENCE_OREBERRY.get());
 		generated(TFBlocks.CLOVER_PATCH.getId().getPath(), prefix("block/patch/clover"));
 		generated(TFBlocks.FIDDLEHEAD.getId().getPath(), prefix("block/fiddlehead"));
 		generated(TFBlocks.MUSHGLOOM.getId().getPath(), prefix("block/mushgloom"), prefix("block/mushgloom_head"));
@@ -569,6 +573,11 @@ public class ItemModelGenerator extends ItemModelProvider {
 		singleTex(TFItems.CHARM_OF_KEEPING_3);
 		singleTex(TFItems.CHARM_OF_LIFE_1);
 		singleTex(TFItems.CHARM_OF_LIFE_2);
+		singleTex(TFItems.IRON_BERRY);
+		singleTex(TFItems.GOLD_BERRY);
+		singleTex(TFItems.COPPER_BERRY);
+		singleTex(TFItems.ESSENCE_BERRY);
+		singleTex(TFItems.COPPER_NUGGET);
 		singleTexFullbright(TFItems.TOWER_KEY);
 		generated(TFItems.BORER_ESSENCE.getId().getPath(), prefix("item/" + TFItems.BORER_ESSENCE.getId().getPath()), prefix("item/borer_essence_particles"));
 		buildItem(TFItems.CARMINITE.getId().getPath(), "item/generated", 7, prefix("item/" + TFItems.CARMINITE.getId().getPath()));
