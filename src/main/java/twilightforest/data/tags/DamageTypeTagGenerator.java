@@ -37,7 +37,7 @@ public class DamageTypeTagGenerator extends TagsProvider<DamageType> {
 		this.tag(TFDamageTypes.THROWN_AXE, DamageTypeTags.IS_PROJECTILE, Tags.DamageTypes.IS_PHYSICAL);
 		this.tag(TFDamageTypes.THROWN_PICKAXE, DamageTypeTags.IS_PROJECTILE, Tags.DamageTypes.IS_PHYSICAL);
 		this.tag(TFDamageTypes.THORNS, Tags.DamageTypes.IS_ENVIRONMENT, Tags.DamageTypes.IS_PHYSICAL);
-		this.tag(TFDamageTypes.OREBERRY, Tags.DamageTypes.IS_ENVIRONMENT, Tags.DamageTypes.IS_PHYSICAL);
+		this.tag(TFDamageTypes.OREBERRY, Tags.DamageTypes.IS_ENVIRONMENT, Tags.DamageTypes.IS_PHYSICAL, DamageTypeTags.NO_KNOCKBACK);
 		this.tag(TFDamageTypes.KNIGHTMETAL, Tags.DamageTypes.IS_ENVIRONMENT);
 		this.tag(TFDamageTypes.FIERY, DamageTypeTags.IS_FIRE, Tags.DamageTypes.IS_ENVIRONMENT, Tags.DamageTypes.IS_PHYSICAL);
 		this.tag(TFDamageTypes.FIRE_JET, DamageTypeTags.IS_FIRE, Tags.DamageTypes.IS_ENVIRONMENT, Tags.DamageTypes.IS_PHYSICAL, DamageTypeTags.IGNITES_ARMOR_STANDS);
