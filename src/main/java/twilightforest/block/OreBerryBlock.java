@@ -94,4 +94,9 @@ public class OreBerryBlock extends Block {
 	protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
 		return (!avoidLight || level.getRawBrightness(pos, 0) < 13) && super.canSurvive(state, level, pos);
 	}
+
+	@Override
+	protected boolean isPathfindable(BlockState state, PathComputationType pathComputationType) {
+		return false;
+	}
 }
