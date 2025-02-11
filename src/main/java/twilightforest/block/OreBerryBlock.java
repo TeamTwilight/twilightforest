@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -32,9 +33,10 @@ public class OreBerryBlock extends Block {
 	protected final DeferredItem<Item> harvestItem;
 	public final boolean avoidLight;
 
-	private static final VoxelShape SHAPE_0 = Block.box(4.0, 0.0, 4.0, 12.0, 8.0, 12.0);
-	private static final VoxelShape SHAPE_1 = Block.box(2.0, 0.0, 2.0, 14.0, 12.0, 14.0);
-	private static final VoxelShape SHAPE_2 = Block.box(0.0, 0.0, 0.0, 16.0, 16.0, 16.0);
+	// TODO: Find a better way to damage the player when they touch the bush
+	private static final VoxelShape SHAPE_0 = Block.box(4.0, 0.001, 4.0, 12.0, 8.0, 12.0);
+	private static final VoxelShape SHAPE_1 = Block.box(2.0, 0.001, 2.0, 14.0, 12.0, 14.0);
+	private static final VoxelShape SHAPE_2 = Block.box(0.001, 0.001, 0.001, 15.999, 15.999, 15.999);
 
 	public OreBerryBlock(DeferredItem<Item> harvestItem) {
 		this(harvestItem, true);
