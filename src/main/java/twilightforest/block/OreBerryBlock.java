@@ -23,6 +23,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.util.RandomSource;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
 import net.neoforged.neoforge.registries.DeferredItem;
 import twilightforest.init.TFDamageTypes;
 
@@ -74,7 +75,7 @@ public class OreBerryBlock extends Block {
 		if (state.getValue(AGE) == MAX_AGE) {
 			if (!level.isClientSide) {
 				int count = level.random.nextInt(3) + 1;
-				popResource(level, player.blockPosition(), new ItemStack(harvestItem.get(), count));
+				ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(harvestItem.get(), count));
 				level.setBlock(pos, state.setValue(AGE, MAX_AGE - 1), Block.UPDATE_CLIENTS);
 			}
 			return InteractionResult.sidedSuccess(level.isClientSide);
