@@ -43,7 +43,7 @@ public class TFBlocks {
 	public static final DeferredBlock<Block> IRON_OREBERRY = register("iron_oreberry", () -> new OreBerryBlock(TFItems.IRON_BERRY));
 	public static final DeferredBlock<Block> GOLD_OREBERRY = register("gold_oreberry", () -> new OreBerryBlock(TFItems.GOLD_BERRY));
 	public static final DeferredBlock<Block> COPPER_OREBERRY = register("copper_oreberry", () -> new OreBerryBlock(TFItems.COPPER_BERRY));
-	public static final DeferredBlock<Block> ESSENCE_OREBERRY = register("essence_oreberry", () -> new OreBerryBlock(TFItems.ESSENCE_BERRY, false));
+	public static final DeferredBlock<Block> ESSENCE_OREBERRY = register("essence_oreberry", () -> new OreBerryBlock(TFItems.ESSENCE_BERRY, true));
 	public static final DeferredBlock<Block> CLOVER_PATCH = register("clover_patch", () -> new PatchBlock(BlockBehaviour.Properties.of().ignitedByLava().noCollission().noOcclusion().instabreak().mapColor(MapColor.PLANT).pushReaction(PushReaction.DESTROY).sound(SoundType.GRASS)));
 	public static final DeferredBlock<Block> FIDDLEHEAD = register("fiddlehead", () -> new FiddleheadBlock(BlockBehaviour.Properties.of().ignitedByLava().instabreak().mapColor(MapColor.PLANT).noCollission().noOcclusion().pushReaction(PushReaction.DESTROY).replaceable().sound(SoundType.GRASS)));
 	public static final DeferredBlock<Block> MUSHGLOOM = register("mushgloom", () -> new MushgloomBlock(BlockBehaviour.Properties.of().instabreak().lightLevel((state) -> 3).noCollission().noOcclusion().mapColor(MapColor.PLANT).pushReaction(PushReaction.DESTROY).sound(SoundType.FUNGUS)));
