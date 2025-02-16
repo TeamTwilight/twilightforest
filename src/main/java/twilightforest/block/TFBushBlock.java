@@ -28,7 +28,6 @@ public abstract class TFBushBlock extends Block {
 
 	protected final DeferredItem<Item> harvestItem;
 
-	// TODO: Find a better way to damage the player when they touch the bush
 	private static final VoxelShape SHAPE_0 = Block.box(4.0, 0.001, 4.0, 12.0, 8.0, 12.0);
 	private static final VoxelShape SHAPE_1 = Block.box(2.0, 0.001, 2.0, 14.0, 12.0, 14.0);
 	private static final VoxelShape SHAPE_2 = Block.box(0.001, 0.001, 0.001, 15.999, 15.999, 15.999);
