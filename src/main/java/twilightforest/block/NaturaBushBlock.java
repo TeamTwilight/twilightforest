@@ -25,7 +25,7 @@ public class NaturaBushBlock extends TFBushBlock implements BonemealableBlock {
 		super.grow(state, level, pos, random);
 		int height = (int) IntStream.iterate(1, n -> level.getBlockState(pos.below(n)).getBlock() == this, n -> n + 1).count();
 
-		if (random.nextInt(3) == 0 && canGrowAt(level, pos) && state.getValue(AGE) >= 2 && height < 3)
+		if (random.nextInt(3) == 0 && canGrowAt(level, pos) && state.getValue(AGE) >= 2 && height < 3 && level.getBlockState(pos.above()).isAir())
 			level.setBlock(pos.above(), state.setValue(AGE, 0), Block.UPDATE_CLIENTS);
 	}
 
