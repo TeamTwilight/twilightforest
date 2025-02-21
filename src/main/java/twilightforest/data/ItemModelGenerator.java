@@ -215,6 +215,14 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.GOLD_OREBERRY.get());
 		toBlock(TFBlocks.COPPER_OREBERRY.get());
 		toBlock(TFBlocks.ESSENCE_OREBERRY.get());
+		toBlock(TFBlocks.RASPBERRY_BUSH.get());
+		toBlock(TFBlocks.BLUEBERRY_BUSH.get());
+		toBlock(TFBlocks.BLACKBERRY_BUSH.get());
+		toBlock(TFBlocks.MALOBERRY_BUSH.get());
+		toBlock(TFBlocks.BLIGHTBERRY_BUSH.get());
+		toBlock(TFBlocks.DUSKBERRY_BUSH.get());
+		toBlock(TFBlocks.SKYBERRY_BUSH.get());
+		toBlock(TFBlocks.STINGBERRY_BUSH.get());
 		generated(TFBlocks.CLOVER_PATCH.getId().getPath(), prefix("block/patch/clover"));
 		generated(TFBlocks.FIDDLEHEAD.getId().getPath(), prefix("block/fiddlehead"));
 		generated(TFBlocks.MUSHGLOOM.getId().getPath(), prefix("block/mushgloom"), prefix("block/mushgloom_head"));
@@ -523,11 +531,11 @@ public class ItemModelGenerator extends ItemModelProvider {
 		singleTex(TFItems.BLUEBERRY);
 		singleTex(TFItems.BLACKBERRY);
 		singleTex(TFItems.MALOBERRY);
-		singleTex(TFItems.BERRY_MEDLEY);
 		singleTex(TFItems.BLIGHTBERRY);
 		singleTex(TFItems.DUSKBERRY);
 		singleTex(TFItems.SKYBERRY);
 		singleTex(TFItems.STINGBERRY);
+		singleTex(TFItems.BERRY_MEDLEY);
 		singleTex(TFItems.RAW_VENISON);
 		singleTex(TFItems.COOKED_VENISON);
 		singleTex(TFItems.HYDRA_CHOP);

@@ -34,7 +34,7 @@
       ]
     }
   ],
-  "render_type": "minecraft:translucent",
+  "render_type": "minecraft:cutout",
   "textures": {
     "all": "twilightforest:block/copper_oreberry"
   }

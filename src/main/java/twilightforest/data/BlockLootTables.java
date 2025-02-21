@@ -209,6 +209,14 @@ public class BlockLootTables extends BlockLootSubProvider {
 		dropSelf(TFBlocks.GOLD_OREBERRY.get());
 		dropSelf(TFBlocks.COPPER_OREBERRY.get());
 		dropSelf(TFBlocks.ESSENCE_OREBERRY.get());
+		dropSelf(TFBlocks.RASPBERRY_BUSH.get());
+		dropSelf(TFBlocks.BLUEBERRY_BUSH.get());
+		dropSelf(TFBlocks.BLACKBERRY_BUSH.get());
+		dropSelf(TFBlocks.MALOBERRY_BUSH.get());
+		dropSelf(TFBlocks.BLIGHTBERRY_BUSH.get());
+		dropSelf(TFBlocks.DUSKBERRY_BUSH.get());
+		dropSelf(TFBlocks.SKYBERRY_BUSH.get());
+		dropSelf(TFBlocks.STINGBERRY_BUSH.get());
 		add(TFBlocks.CLOVER_PATCH.get(), createShearsOnlyDrop(TFBlocks.CLOVER_PATCH.get()));
 		add(TFBlocks.FIDDLEHEAD.get(), createShearsOnlyDrop(TFBlocks.FIDDLEHEAD.get()));
 		dropSelf(TFBlocks.MUSHGLOOM.get());

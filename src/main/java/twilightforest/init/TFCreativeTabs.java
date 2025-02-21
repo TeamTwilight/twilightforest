@@ -244,6 +244,14 @@ public class TFCreativeTabs {
 			output.accept(TFBlocks.GOLD_OREBERRY);
 			output.accept(TFBlocks.COPPER_OREBERRY);
 			output.accept(TFBlocks.ESSENCE_OREBERRY);
+			output.accept(TFBlocks.RASPBERRY_BUSH);
+			output.accept(TFBlocks.BLUEBERRY_BUSH);
+			output.accept(TFBlocks.BLACKBERRY_BUSH);
+			output.accept(TFBlocks.MALOBERRY_BUSH);
+			output.accept(TFBlocks.BLIGHTBERRY_BUSH);
+			output.accept(TFBlocks.DUSKBERRY_BUSH);
+			output.accept(TFBlocks.SKYBERRY_BUSH);
+			output.accept(TFBlocks.STINGBERRY_BUSH);
 			output.accept(TFBlocks.CLOVER_PATCH);
 			output.accept(TFBlocks.FIDDLEHEAD);
 			output.accept(TFBlocks.MUSHGLOOM);
@@ -403,11 +411,11 @@ public class TFCreativeTabs {
 			output.accept(TFItems.BLUEBERRY);
 			output.accept(TFItems.BLACKBERRY);
 			output.accept(TFItems.MALOBERRY);
-			output.accept(TFItems.BERRY_MEDLEY);
 			output.accept(TFItems.BLIGHTBERRY);
 			output.accept(TFItems.DUSKBERRY);
 			output.accept(TFItems.SKYBERRY);
 			output.accept(TFItems.STINGBERRY);
+			output.accept(TFItems.BERRY_MEDLEY);
 			output.accept(TFItems.RAVEN_FEATHER);
 			output.accept(TFItems.MAGIC_MAP_FOCUS);
 			output.accept(TFItems.MAZE_MAP_FOCUS);

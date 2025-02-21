@@ -343,10 +343,18 @@ public class BlockstateGenerator extends BlockModelBuilders {
 				.texture("2", item.getNamespace() + ":block/" + item.getPath());
 		}
 
-		registerOreberry(TFBlocks.IRON_OREBERRY.get());
-		registerOreberry(TFBlocks.GOLD_OREBERRY.get());
-		registerOreberry(TFBlocks.COPPER_OREBERRY.get());
-		registerOreberry(TFBlocks.ESSENCE_OREBERRY.get());
+		registerBush(TFBlocks.IRON_OREBERRY.get());
+		registerBush(TFBlocks.GOLD_OREBERRY.get());
+		registerBush(TFBlocks.COPPER_OREBERRY.get());
+		registerBush(TFBlocks.ESSENCE_OREBERRY.get());
+		registerBush(TFBlocks.RASPBERRY_BUSH.get());
+		registerBush(TFBlocks.BLUEBERRY_BUSH.get());
+		registerBush(TFBlocks.BLACKBERRY_BUSH.get());
+		registerBush(TFBlocks.MALOBERRY_BUSH.get());
+		registerBush(TFBlocks.BLIGHTBERRY_BUSH.get());
+		registerBush(TFBlocks.DUSKBERRY_BUSH.get());
+		registerBush(TFBlocks.SKYBERRY_BUSH.get());
+		registerBush(TFBlocks.STINGBERRY_BUSH.get());
 
 		registerPlantBlocks();
 		simpleBlock(TFBlocks.ROOT_BLOCK.get());
@@ -856,23 +864,23 @@ public class BlockstateGenerator extends BlockModelBuilders {
 			.with(FireJetBlock.STATE, FireJetVariant.FLAME).setModels(new ConfiguredModel(encasedJetOn));
 	}
 
-	private void registerOreberry(Block block) {
+	private void registerBush(Block block) {
 		ModelFile smallBush = models().cubeAll(name(block) + "_small", prefix("block/" + name(block)))
 			.element().from(4, 0, 4).to(12, 8, 12)
 			.allFaces((dir, builder) -> builder.texture("#all"))
-			.end().renderType(TRANSLUCENT);
+			.end().renderType(CUTOUT);
 		ModelFile mediumBush = models().cubeAll(name(block), prefix("block/" + name(block)))
 			.element().from(2, 0, 2).to(14, 12, 14)
 			.allFaces((dir, builder) -> builder.texture("#all"))
-			.end().renderType(TRANSLUCENT);
+			.end().renderType(CUTOUT);
 		ModelFile largeBush = models().cubeAll(name(block) + "_large", prefix("block/" + name(block)))
 			.element().from(0, 0, 0).to(16, 16, 16)
 			.allFaces((dir, builder) -> builder.texture("#all"))
-			.end().renderType(TRANSLUCENT);
+			.end().renderType(CUTOUT);
 		ModelFile grownBush = models().cubeAll(name(block) + "_grown", prefix("block/" + name(block) + "_ripe"))
 			.element().from(0, 0, 0).to(16, 16, 16)
 			.allFaces((dir, builder) -> builder.cullface(dir).tintindex(1).texture("#all"))
-			.end().renderType(TRANSLUCENT);
+			.end().renderType(CUTOUT);
 
 		getVariantBuilder(block).forAllStates(state -> switch (state.getValue(BlockStateProperties.AGE_3)) {
 			case 0 -> new ConfiguredModel[] { new ConfiguredModel(smallBush, 0, 0, false) };

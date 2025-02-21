@@ -40,10 +40,6 @@ public class TFBlocks {
 	public static final DeferredBlock<JarBlock> CICADA_JAR =  BLOCKS.register("cicada_jar", () -> new CicadaJarBlock(BlockBehaviour.Properties.of().noOcclusion().noTerrainParticles().randomTicks().sound(TFSoundTypes.JAR).strength(0.3F, 3.0F)));
 	public static final DeferredBlock<Block> MOSS_PATCH = register("moss_patch", () -> new MossPatchBlock(BlockBehaviour.Properties.of().ignitedByLava().instabreak().mapColor(MapColor.PLANT).noCollission().noOcclusion().pushReaction(PushReaction.DESTROY).sound(SoundType.MOSS)));
 	public static final DeferredBlock<Block> MAYAPPLE = register("mayapple", () -> new MayappleBlock(BlockBehaviour.Properties.of().ignitedByLava().instabreak().mapColor(MapColor.PLANT).noCollission().noOcclusion().pushReaction(PushReaction.DESTROY).sound(SoundType.GRASS)));
-	public static final DeferredBlock<Block> IRON_OREBERRY = register("iron_oreberry", () -> new OreBerryBlock(TFItems.IRON_BERRY));
-	public static final DeferredBlock<Block> GOLD_OREBERRY = register("gold_oreberry", () -> new OreBerryBlock(TFItems.GOLD_BERRY));
-	public static final DeferredBlock<Block> COPPER_OREBERRY = register("copper_oreberry", () -> new OreBerryBlock(TFItems.COPPER_BERRY));
-	public static final DeferredBlock<Block> ESSENCE_OREBERRY = register("essence_oreberry", () -> new OreBerryBlock(TFItems.ESSENCE_BERRY, true));
 	public static final DeferredBlock<Block> CLOVER_PATCH = register("clover_patch", () -> new PatchBlock(BlockBehaviour.Properties.of().ignitedByLava().noCollission().noOcclusion().instabreak().mapColor(MapColor.PLANT).pushReaction(PushReaction.DESTROY).sound(SoundType.GRASS)));
 	public static final DeferredBlock<Block> FIDDLEHEAD = register("fiddlehead", () -> new FiddleheadBlock(BlockBehaviour.Properties.of().ignitedByLava().instabreak().mapColor(MapColor.PLANT).noCollission().noOcclusion().pushReaction(PushReaction.DESTROY).replaceable().sound(SoundType.GRASS)));
 	public static final DeferredBlock<Block> MUSHGLOOM = register("mushgloom", () -> new MushgloomBlock(BlockBehaviour.Properties.of().instabreak().lightLevel((state) -> 3).noCollission().noOcclusion().mapColor(MapColor.PLANT).pushReaction(PushReaction.DESTROY).sound(SoundType.FUNGUS)));
@@ -69,6 +65,20 @@ public class TFBlocks {
 	public static final DeferredBlock<IronBarsBlock> CANOPY_WINDOW_PANE = register("canopy_window_pane", () -> new IronBarsBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.HAT).strength(0.3F).sound(SoundType.GLASS).noOcclusion()));
 	public static final DeferredBlock<Block> SINISTER_SPAWNER = register("sinister_spawner", () -> new SinisterSpawnerBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SPAWNER).noLootTable()));
 	public static final DeferredBlock<Block> BRAZIER = register("brazier", () -> new BrazierBlock(BlockBehaviour.Properties.of().sound(SoundType.WOOD).lightLevel(state -> state.getValue(BrazierBlock.HALF) == DoubleBlockHalf.UPPER ? state.getValue(BrazierBlock.LIGHT).getLight() : 0).pushReaction(PushReaction.DESTROY)));
+
+	// bushes
+	public static final DeferredBlock<Block> IRON_OREBERRY = register("iron_oreberry", () -> new OreBerryBlock(TFItems.IRON_BERRY));
+	public static final DeferredBlock<Block> GOLD_OREBERRY = register("gold_oreberry", () -> new OreBerryBlock(TFItems.GOLD_BERRY));
+	public static final DeferredBlock<Block> COPPER_OREBERRY = register("copper_oreberry", () -> new OreBerryBlock(TFItems.COPPER_BERRY));
+	public static final DeferredBlock<Block> ESSENCE_OREBERRY = register("essence_oreberry", () -> new OreBerryBlock(TFItems.ESSENCE_BERRY, true));
+	public static final DeferredBlock<Block> RASPBERRY_BUSH = register("raspberry_bush", () -> new NaturaBushBlock(TFItems.RASPBERRY));
+	public static final DeferredBlock<Block> BLUEBERRY_BUSH = register("blueberry_bush", () -> new NaturaBushBlock(TFItems.BLUEBERRY));
+	public static final DeferredBlock<Block> BLACKBERRY_BUSH = register("blackberry_bush", () -> new NaturaBushBlock(TFItems.BLACKBERRY));
+	public static final DeferredBlock<Block> MALOBERRY_BUSH = register("maloberry_bush", () -> new NaturaBushBlock(TFItems.MALOBERRY));
+	public static final DeferredBlock<Block> BLIGHTBERRY_BUSH = register("blightberry_bush", () -> new NaturaBushBlock(TFItems.BLIGHTBERRY));
+	public static final DeferredBlock<Block> DUSKBERRY_BUSH   = register("duskberry_bush", () -> new NaturaBushBlock(TFItems.DUSKBERRY));
+	public static final DeferredBlock<Block> SKYBERRY_BUSH    = register("skyberry_bush", () -> new NaturaBushBlock(TFItems.SKYBERRY));
+	public static final DeferredBlock<Block> STINGBERRY_BUSH  = register("stingberry_bush", () -> new NaturaBushBlock(TFItems.STINGBERRY));
 
 	//naga courtyard
 	public static final DeferredBlock<Block> NAGASTONE_HEAD = register("nagastone_head", () -> new TFHorizontalBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASEDRUM).mapColor(MapColor.STONE).requiresCorrectToolForDrops().sound(SoundType.STONE).strength(1.5F, 6.0F)));
