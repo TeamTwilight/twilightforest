@@ -21,11 +21,16 @@ public class NaturaBushBlock extends TFBushBlock implements BonemealableBlock {
 	}
 
 	@Override
-	protected void grow(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-		super.grow(state, level, pos, random);
-		int height = (int) IntStream.iterate(1, n -> level.getBlockState(pos.below(n)).getBlock() == this, n -> n + 1).count();
+	public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+		super.randomTick(state, level, pos, random);
 
-		if (random.nextInt(3) == 0 && canGrowAt(level, pos) && state.getValue(AGE) >= 2 && height < 3 && level.getBlockState(pos.above()).isAir())
+		int height = (int) IntStream.iterate(1, n -> level.getBlockState(pos.below(n)).getBlock() == this, n -> n + 1).count();
+		if (random.nextInt(20) == 0 && height < 2)
+			tryGrowUpwards(state, level, pos, random);
+	}
+
+	protected void tryGrowUpwards(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+		if (random.nextInt(3) == 0 && canGrowAt(level, pos) && state.getValue(AGE) >= 2 && level.getBlockState(pos.above()).isAir())
 			level.setBlock(pos.above(), state.setValue(AGE, 0), Block.UPDATE_CLIENTS);
 	}
 
@@ -56,6 +61,9 @@ public class NaturaBushBlock extends TFBushBlock implements BonemealableBlock {
 
 	@Override
 	public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
-		grow(state, level, pos, random);
+		int age = state.getValue(AGE);
+		if (age < MAX_AGE)
+			grow(state, level, pos, random);
+		tryGrowUpwards(state, level, pos, random);
 	}
 }
