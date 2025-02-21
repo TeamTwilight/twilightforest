@@ -462,6 +462,7 @@ public final class TwilightForestMod {
 			fireblock.setFlammable(TFBlocks.SORTING_FENCE.get(), 5, 20);
 			fireblock.setFlammable(TFBlocks.SORTING_GATE.get(), 5, 20);
 
+			// TODO: Add Natura bushes
 			fireblock.setFlammable(TFBlocks.CLOVER_PATCH.get(), 60, 100);
 			fireblock.setFlammable(TFBlocks.FALLEN_LEAVES.get(), 60, 100);
 			fireblock.setFlammable(TFBlocks.FIDDLEHEAD.get(), 60, 100);

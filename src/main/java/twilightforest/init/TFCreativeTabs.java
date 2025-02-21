@@ -399,6 +399,15 @@ public class TFCreativeTabs {
 		.icon(() -> new ItemStack(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE))
 		.displayItems((parameters, output) -> {
 			output.accept(TFItems.TORCHBERRIES);
+			output.accept(TFItems.RASPBERRY);
+			output.accept(TFItems.BLUEBERRY);
+			output.accept(TFItems.BLACKBERRY);
+			output.accept(TFItems.MALOBERRY);
+			output.accept(TFItems.BERRY_MEDLEY);
+			output.accept(TFItems.BLIGHTBERRY);
+			output.accept(TFItems.DUSKBERRY);
+			output.accept(TFItems.SKYBERRY);
+			output.accept(TFItems.STINGBERRY);
 			output.accept(TFItems.RAVEN_FEATHER);
 			output.accept(TFItems.MAGIC_MAP_FOCUS);
 			output.accept(TFItems.MAZE_MAP_FOCUS);

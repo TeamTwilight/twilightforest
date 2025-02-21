@@ -57,8 +57,12 @@ public abstract class TFBushBlock extends Block {
 
 	@Override
 	public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-		if (state.getValue(AGE) < MAX_AGE && random.nextInt(20) == 0 && canGrow(level, pos))
-			level.setBlock(pos, state.setValue(AGE, state.getValue(AGE) + 1), Block.UPDATE_CLIENTS);
+		if (state.getValue(AGE) < MAX_AGE && random.nextInt(20) == 0 && canGrowAt(level, pos))
+			grow(state, level, pos, random);
+	}
+
+	protected void grow(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+		level.setBlock(pos, state.setValue(AGE, state.getValue(AGE) + 1), Block.UPDATE_CLIENTS);
 	}
 
 	@Override
@@ -85,5 +89,5 @@ public abstract class TFBushBlock extends Block {
 	@Override
 	protected abstract boolean canSurvive(BlockState state, LevelReader level, BlockPos pos);
 
-	protected abstract boolean canGrow(ServerLevel level, BlockPos pos);
+	protected abstract boolean canGrowAt(ServerLevel level, BlockPos pos);
 }

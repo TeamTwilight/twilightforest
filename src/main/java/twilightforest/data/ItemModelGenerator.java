@@ -519,6 +519,15 @@ public class ItemModelGenerator extends ItemModelProvider {
 		singleTexTool(TFItems.IRONWOOD_SHOVEL);
 		singleTexTool(TFItems.IRONWOOD_HOE);
 		singleTexFullbright(TFItems.TORCHBERRIES);
+		singleTex(TFItems.RASPBERRY);
+		singleTex(TFItems.BLUEBERRY);
+		singleTex(TFItems.BLACKBERRY);
+		singleTex(TFItems.MALOBERRY);
+		singleTex(TFItems.BERRY_MEDLEY);
+		singleTex(TFItems.BLIGHTBERRY);
+		singleTex(TFItems.DUSKBERRY);
+		singleTex(TFItems.SKYBERRY);
+		singleTex(TFItems.STINGBERRY);
 		singleTex(TFItems.RAW_VENISON);
 		singleTex(TFItems.COOKED_VENISON);
 		singleTex(TFItems.HYDRA_CHOP);

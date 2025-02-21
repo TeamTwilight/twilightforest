@@ -46,7 +46,7 @@ public class OreBerryBlock extends TFBushBlock {
 	}
 
 	@Override
-	protected boolean canGrow(ServerLevel level, BlockPos pos) {
+	protected boolean canGrowAt(ServerLevel level, BlockPos pos) {
 		return surviveInLight || level.getRawBrightness(pos, 0) < 10;
 	}
 
