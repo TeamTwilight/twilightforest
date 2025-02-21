@@ -15,12 +15,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.util.RandomSource;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 import net.neoforged.neoforge.registries.DeferredItem;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class TFBushBlock extends Block {
 	public static final IntegerProperty AGE = BlockStateProperties.AGE_3;
@@ -70,6 +72,12 @@ public abstract class TFBushBlock extends Block {
 			return InteractionResult.sidedSuccess(level.isClientSide);
 		}
 		return InteractionResult.PASS;
+	}
+
+	@Nullable
+	@Override
+	public PushReaction getPistonPushReaction(BlockState state) {
+		return state.getValue(AGE) < 2 ? PushReaction.DESTROY : null;
 	}
 
 	protected abstract int getNumberOfBerries(RandomSource random);
