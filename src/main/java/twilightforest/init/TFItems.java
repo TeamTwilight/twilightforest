@@ -72,15 +72,6 @@ public class TFItems {
 	public static final DeferredItem<Item> IRONWOOD_AXE = ITEMS.register("ironwood_axe", () -> new AxeItem(TFToolMaterials.IRONWOOD, new Item.Properties().attributes(AxeItem.createAttributes(TFToolMaterials.IRONWOOD, 6.0F, -3.1F))));
 	public static final DeferredItem<Item> IRONWOOD_HOE = ITEMS.register("ironwood_hoe", () -> new HoeItem(TFToolMaterials.IRONWOOD, new Item.Properties().attributes(HoeItem.createAttributes(TFToolMaterials.IRONWOOD, -2, -1.0F))));
 	public static final DeferredItem<Item> TORCHBERRIES = ITEMS.register("torchberries", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().alwaysEdible().effect(() -> new MobEffectInstance(MobEffects.GLOWING, 100, 0), 0.75F).build())));
-	public static final DeferredItem<Item> RASPBERRY = ITEMS.register("raspberry", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(1).saturationModifier(0.4f).fast().build())));
-	public static final DeferredItem<Item> BLUEBERRY = ITEMS.register("blueberry", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(1).saturationModifier(0.4f).fast().build())));
-	public static final DeferredItem<Item> BLACKBERRY = ITEMS.register("blackberry", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(1).saturationModifier(0.4f).fast().build())));
-	public static final DeferredItem<Item> MALOBERRY = ITEMS.register("maloberry", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(1).saturationModifier(0.4f).fast().build())));
-	public static final DeferredItem<Item> BLIGHTBERRY = ITEMS.register("blightberry", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(1).saturationModifier(0.4f).fast().effect(() -> new MobEffectInstance(MobEffects.REGENERATION, 160, 0), 1.0F).effect(() -> new MobEffectInstance(MobEffects.POISON, 100, 0), 1.0F).effect(() -> new MobEffectInstance(MobEffects.WITHER, 100, 0), 1.0F).build())));
-	public static final DeferredItem<Item> DUSKBERRY = ITEMS.register("duskberry", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(1).saturationModifier(0.4f).fast().effect(() -> new MobEffectInstance(MobEffects.NIGHT_VISION, 300, 0), 1.0F).effect(() -> new MobEffectInstance(MobEffects.BLINDNESS, 60, 0), 1.0F).build())));
-	public static final DeferredItem<Item> SKYBERRY = ITEMS.register("skyberry", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(1).saturationModifier(0.4f).fast().effect(() -> new MobEffectInstance(MobEffects.JUMP, 160, 0), 1.0F).effect(() -> new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 0), 1.0F).build())));
-	public static final DeferredItem<Item> STINGBERRY = ITEMS.register("stingberry", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(1).saturationModifier(0.4f).fast().effect(() -> new MobEffectInstance(MobEffects.DAMAGE_BOOST, 200, 0), 1.0F).effect(() -> new MobEffectInstance(MobEffects.DIG_SLOWDOWN, 200, 0), 1.0F).build())));
-	public static final DeferredItem<Item> BERRY_MEDLEY = ITEMS.register("berry_medley", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(5).saturationModifier(1.4f).usingConvertsTo(Items.BOWL).build())));
 	public static final DeferredItem<Item> RAW_VENISON = ITEMS.register("raw_venison", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.3F).build())));
 	public static final DeferredItem<Item> COOKED_VENISON = ITEMS.register("cooked_venison", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationModifier(0.8F).build())));
 	public static final DeferredItem<Item> HYDRA_CHOP = ITEMS.register("hydra_chop", () -> new HydraChopItem(new Item.Properties().fireResistant().food(new FoodProperties.Builder().nutrition(18).saturationModifier(2.0F).effect(() -> new MobEffectInstance(MobEffects.REGENERATION, 100, 0), 1.0F).build()).rarity(Rarity.UNCOMMON)));
@@ -296,4 +287,22 @@ public class TFItems {
 	public static final DeferredItem<Item> SNOW_QUEEN_BANNER_PATTERN = ITEMS.register("snow_queen_banner_pattern", () -> new BannerPatternItem(CustomTagGenerator.BannerPatternTagGenerator.SNOW_QUEEN_BANNER_PATTERN, new Item.Properties().stacksTo(1).rarity(tfRarityEnumExtension.TWILIGHT)));
 	public static final DeferredItem<Item> QUEST_RAM_BANNER_PATTERN = ITEMS.register("quest_ram_banner_pattern", () -> new BannerPatternItem(CustomTagGenerator.BannerPatternTagGenerator.QUEST_RAM_BANNER_PATTERN, new Item.Properties().stacksTo(1).rarity(tfRarityEnumExtension.TWILIGHT)));
 
+	public static final DeferredItem<Item> RASPBERRY = ITEMS.register("raspberry", () -> new EdibleBerry());
+	public static final DeferredItem<Item> BLUEBERRY = ITEMS.register("blueberry", () -> new EdibleBerry());
+	public static final DeferredItem<Item> BLACKBERRY = ITEMS.register("blackberry", () -> new EdibleBerry());
+	public static final DeferredItem<Item> MALOBERRY = ITEMS.register("maloberry", () -> new EdibleBerry());
+	public static final DeferredItem<Item> BLIGHTBERRY = ITEMS.register("blightberry", () -> new EdibleBerry(new EdibleBerry.BerryEffect(MobEffects.REGENERATION, 8), new EdibleBerry.BerryEffect(MobEffects.POISON, 5, 0.75F), new EdibleBerry.BerryEffect(MobEffects.WITHER, 5, 0.15F)));
+	public static final DeferredItem<Item> DUSKBERRY = ITEMS.register("duskberry", () -> new EdibleBerry(
+		new EdibleBerry.BerryEffect(MobEffects.NIGHT_VISION, 15),
+		new EdibleBerry.BerryEffect(MobEffects.BLINDNESS, 3, 0.75F)
+	));
+	public static final DeferredItem<Item> SKYBERRY = ITEMS.register("skyberry", () -> new EdibleBerry(
+		new EdibleBerry.BerryEffect(MobEffects.JUMP, 8),
+		new EdibleBerry.BerryEffect(MobEffects.MOVEMENT_SLOWDOWN, 3, 0.75F)
+	));
+	public static final DeferredItem<Item> STINGBERRY = ITEMS.register("stingberry", () -> new EdibleBerry(
+		new EdibleBerry.BerryEffect(MobEffects.DAMAGE_BOOST, 10),
+		new EdibleBerry.BerryEffect(MobEffects.DIG_SLOWDOWN, 10, 0.75F)
+	));
+	public static final DeferredItem<Item> BERRY_MEDLEY = ITEMS.register("berry_medley", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(5).saturationModifier(1.4f).usingConvertsTo(Items.BOWL).build())));
 }
