@@ -2,6 +2,7 @@ package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -29,15 +30,17 @@ public abstract class TFBushBlock extends Block {
 	public static final int MAX_AGE = 3;
 
 	protected final DeferredItem<Item> harvestItem;
+	protected final TagKey<Block> surviveBlockTag;
 
 	private static final VoxelShape SHAPE_0 = Block.box(4.0, 0.001, 4.0, 12.0, 8.0, 12.0);
 	private static final VoxelShape SHAPE_1 = Block.box(2.0, 0.001, 2.0, 14.0, 12.0, 14.0);
 	private static final VoxelShape SHAPE_2 = Block.box(0.001, 0.001, 0.001, 15.999, 15.999, 15.999);
 
-	public TFBushBlock(DeferredItem<Item> harvestItem, BlockBehaviour.Properties properties) {
+	public TFBushBlock(DeferredItem<Item> harvestItem, BlockBehaviour.Properties properties, TagKey<Block> surviveBlockTag) {
 		super(properties.destroyTime(0.3F).randomTicks().dynamicShape().noOcclusion());
 
 		this.harvestItem = harvestItem;
+		this.surviveBlockTag = surviveBlockTag;
 		this.registerDefaultState(this.stateDefinition.any().setValue(AGE, 0));
 	}
 
@@ -57,11 +60,11 @@ public abstract class TFBushBlock extends Block {
 
 	@Override
 	public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-		if (state.getValue(AGE) < MAX_AGE && random.nextInt(20) == 0 && canGrowAt(level, pos))
-			grow(state, level, pos, random);
+		if (state.getValue(AGE) < MAX_AGE && random.nextInt(20) == 0 && canGrowAt(state, level, pos))
+			grow(state, level, pos);
 	}
 
-	protected void grow(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+	private void grow(BlockState state, ServerLevel level, BlockPos pos) {
 		level.setBlock(pos, state.setValue(AGE, state.getValue(AGE) + 1), Block.UPDATE_CLIENTS);
 	}
 
@@ -87,7 +90,13 @@ public abstract class TFBushBlock extends Block {
 	protected abstract int getNumberOfBerries(RandomSource random);
 
 	@Override
-	protected abstract boolean canSurvive(BlockState state, LevelReader level, BlockPos pos);
+	protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+		BlockState blockStateBelow = level.getBlockState(pos.below());
+		boolean isSameMatureBush = blockStateBelow.is(state.getBlock()) && blockStateBelow.getValue(AGE) >= MAX_AGE - 1;
+		return blockStateBelow.is(surviveBlockTag) || isSameMatureBush;
+	}
 
-	protected abstract boolean canGrowAt(ServerLevel level, BlockPos pos);
+	protected boolean canGrowAt(BlockState state, LevelReader level, BlockPos pos) {
+		return canSurvive(state, level, pos);
+	}
 }

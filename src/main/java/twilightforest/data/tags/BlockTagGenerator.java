@@ -65,6 +65,10 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 	public static final TagKey<Block> SUPPORTS_STALAGMITES = create("supports_stalagmites");
 	public static final TagKey<Block> CARVER_REPLACEABLES = create("carver_replaceables");
 	public static final TagKey<Block> PLANTS_HANG_ON = create("plants_hang_on");
+	public static final TagKey<Block> OREBERRY_BUSHES_SURVIVE = create("oreberry_bushes_survive");
+	public static final TagKey<Block> OVERWORLD_NATURA_BUSHES_SURVIVE = create("overworld_natura_bushes_survive");
+	public static final TagKey<Block> NETHER_NATURA_BUSHES_SURVIVE = create("nether_natura_bushes_survive");
+	public static final TagKey<Block> NETHER_NATURA_BUSHES_DIE = create("nether_natura_bushes_die");
 
 	public static final TagKey<Block> ORE_MAGNET_SAFE_REPLACE_BLOCK = create("ore_magnet/ore_safe_replace_block");
 	public static final TagKey<Block> ORE_MAGNET_IGNORE = create("ore_magnet/ignored_ores");
@@ -389,6 +393,18 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 		this.tag(PLANTS_HANG_ON)
 			.addTag(BlockTags.DIRT)
 			.add(Blocks.MOSS_BLOCK, TFBlocks.MANGROVE_ROOT.get(), TFBlocks.ROOT_BLOCK.get(), TFBlocks.LIVEROOT_BLOCK.get());
+
+		this.tag(OREBERRY_BUSHES_SURVIVE)
+			.addTags(BlockTags.BASE_STONE_OVERWORLD);
+
+		this.tag(OVERWORLD_NATURA_BUSHES_SURVIVE)
+			.addTags(BlockTags.DIRT);
+
+		this.tag(NETHER_NATURA_BUSHES_SURVIVE)
+			.add(Blocks.NETHERRACK, Blocks.SOUL_SAND, Blocks.SOUL_SOIL);
+
+		this.tag(NETHER_NATURA_BUSHES_DIE)
+			.addTags(BlockTags.NYLIUM);
 
 		this.tag(COMMON_PROTECTIONS).add( // For any blocks that absolutely should not be meddled with
 			TFBlocks.NAGA_BOSS_SPAWNER.get(),

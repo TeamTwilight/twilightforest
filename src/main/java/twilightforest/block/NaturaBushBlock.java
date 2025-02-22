@@ -2,6 +2,7 @@ package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
@@ -12,12 +13,17 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.registries.DeferredItem;
+import twilightforest.data.tags.BlockTagGenerator;
 
 import java.util.stream.IntStream;
 
 public class NaturaBushBlock extends TFBushBlock implements BonemealableBlock {
+	protected NaturaBushBlock(DeferredItem<Item> harvestItem, TagKey<Block> surviveBlockTag) {
+		super(harvestItem, BlockBehaviour.Properties.of().sound(SoundType.GRASS), surviveBlockTag);
+	}
+
 	public NaturaBushBlock(DeferredItem<Item> harvestItem) {
-		super(harvestItem, BlockBehaviour.Properties.of().sound(SoundType.GRASS));
+		this(harvestItem, BlockTagGenerator.OVERWORLD_NATURA_BUSHES_SURVIVE);
 	}
 
 	@Override
@@ -25,7 +31,7 @@ public class NaturaBushBlock extends TFBushBlock implements BonemealableBlock {
 		super.randomTick(state, level, pos, random);
 
 		int height = (int) IntStream.iterate(1, n -> level.getBlockState(pos.below(n)).getBlock() == this, n -> n + 1).count();
-		if (random.nextInt(20) == 0 && height < 2 && canGrowAt(level, pos))  // bone meal growth doesn't care about canGrowAt
+		if (random.nextInt(20) == 0 && height < 2 && canGrowAt(state, level, pos))  // bone meal growth doesn't care about canGrowAt
 			tryGrowUpwards(state, level, pos, random);
 	}
 
@@ -40,13 +46,8 @@ public class NaturaBushBlock extends TFBushBlock implements BonemealableBlock {
 	}
 
 	@Override
-	protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
-		return true;
-	}
-
-	@Override
-	protected boolean canGrowAt(ServerLevel level, BlockPos pos) {
-		return level.getRawBrightness(pos, 0) >= 8;
+	protected boolean canGrowAt(BlockState state, LevelReader level, BlockPos pos) {
+		return level.getRawBrightness(pos, 0) >= 8 && super.canGrowAt(state, level, pos);
 	}
 
 	@Override
