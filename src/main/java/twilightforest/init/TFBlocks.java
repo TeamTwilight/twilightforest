@@ -76,9 +76,9 @@ public class TFBlocks {
 	public static final DeferredBlock<Block> BLACKBERRY_BUSH = register("blackberry_bush", () -> new NaturaBushBlock(TFItems.BLACKBERRY));
 	public static final DeferredBlock<Block> MALOBERRY_BUSH = register("maloberry_bush", () -> new NaturaBushBlock(TFItems.MALOBERRY));
 	public static final DeferredBlock<Block> BLIGHTBERRY_BUSH = register("blightberry_bush", () -> new NaturaBushBlock(TFItems.BLIGHTBERRY));
-	public static final DeferredBlock<Block> DUSKBERRY_BUSH   = register("duskberry_bush", () -> new NaturaBushBlock(TFItems.DUSKBERRY));
-	public static final DeferredBlock<Block> SKYBERRY_BUSH    = register("skyberry_bush", () -> new NaturaBushBlock(TFItems.SKYBERRY));
-	public static final DeferredBlock<Block> STINGBERRY_BUSH  = register("stingberry_bush", () -> new NaturaBushBlock(TFItems.STINGBERRY));
+	public static final DeferredBlock<Block> DUSKBERRY_BUSH = register("duskberry_bush", () -> new NaturaBushBlock(TFItems.DUSKBERRY));
+	public static final DeferredBlock<Block> SKYBERRY_BUSH = register("skyberry_bush", () -> new NaturaBushBlock(TFItems.SKYBERRY));
+	public static final DeferredBlock<Block> STINGBERRY_BUSH = register("stingberry_bush", () -> new NaturaBushBlock(TFItems.STINGBERRY));
 
 	//naga courtyard
 	public static final DeferredBlock<Block> NAGASTONE_HEAD = register("nagastone_head", () -> new TFHorizontalBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASEDRUM).mapColor(MapColor.STONE).requiresCorrectToolForDrops().sound(SoundType.STONE).strength(1.5F, 6.0F)));
