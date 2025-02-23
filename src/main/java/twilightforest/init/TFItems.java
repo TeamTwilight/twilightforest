@@ -291,7 +291,11 @@ public class TFItems {
 	public static final DeferredItem<Item> BLUEBERRY = ITEMS.register("blueberry", () -> new EdibleBerry());
 	public static final DeferredItem<Item> BLACKBERRY = ITEMS.register("blackberry", () -> new EdibleBerry());
 	public static final DeferredItem<Item> MALOBERRY = ITEMS.register("maloberry", () -> new EdibleBerry());
-	public static final DeferredItem<Item> BLIGHTBERRY = ITEMS.register("blightberry", () -> new EdibleBerry(new EdibleBerry.BerryEffect(MobEffects.REGENERATION, 8), new EdibleBerry.BerryEffect(MobEffects.POISON, 5, 0.75F), new EdibleBerry.BerryEffect(MobEffects.WITHER, 5, 0.15F)));
+	public static final DeferredItem<Item> BLIGHTBERRY = ITEMS.register("blightberry", () -> new EdibleBerry(
+		new EdibleBerry.BerryEffect(MobEffects.REGENERATION, 8),
+		new EdibleBerry.BerryEffect(MobEffects.POISON, 5, 0.75F),
+		new EdibleBerry.BerryEffect(MobEffects.WITHER, 5, 0.15F)
+	));
 	public static final DeferredItem<Item> DUSKBERRY = ITEMS.register("duskberry", () -> new EdibleBerry(
 		new EdibleBerry.BerryEffect(MobEffects.NIGHT_VISION, 15),
 		new EdibleBerry.BerryEffect(MobEffects.BLINDNESS, 3, 0.75F)
