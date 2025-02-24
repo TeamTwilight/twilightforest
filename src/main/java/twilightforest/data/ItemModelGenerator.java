@@ -562,8 +562,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 		singleTex(TFItems.TRAVELLERS_CHESTPLATE_GLOVES);  // FIXME: replace placeholder
 		singleTex(TFItems.TRAVELLERS_CHESTPLATE);
 		singleTex(TFItems.TRAVELLERS_GLOVES);
-//		singleTex(TFItems.TRAVELLERS_LEGGINGS_BELT);
-//		singleTex(TFItems.TRAVELLERS_LEGGINGS);
+		singleTex(TFItems.TRAVELLERS_LEGGINGS_BELT);
+		singleTex(TFItems.TRAVELLERS_LEGGINGS);
 		singleTex(TFItems.TRAVELLERS_BELT);
 		singleTex(TFItems.TRAVELLERS_BOOTS);
 		singleTexTool(TFItems.DIAMOND_MINOTAUR_AXE);

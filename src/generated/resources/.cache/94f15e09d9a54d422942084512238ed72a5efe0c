@@ -1,4 +1,4 @@
-// 1.21.1	2025-02-24T18:37:34.961397136	TwilightForest Item and BlockItem models
+// 1.21.1	2025-02-24T21:24:25.175804371	TwilightForest Item and BlockItem models
 387b18dfa614fda790f7b8e8324e3b139fa177c2 assets/twilightforest/models/item/acacia_banister.json
 0ca7dc7b4daec376dd0f85d57465830781584c7d assets/twilightforest/models/item/alpha_yeti_banner_pattern.json
 061906a0c9a9a334fbb82acb809c3748e2b1f9cb assets/twilightforest/models/item/alpha_yeti_boss_spawner.json
@@ -821,6 +821,8 @@ a4f1e3540423584467acbddf472c199c3d132cff assets/twilightforest/models/item/trave
 ea97550146f6290ccee5a39af2a2b26000999ef2 assets/twilightforest/models/item/travellers_chest_gloves.json
 f60ae0d84245d753df2a6a97409f2c23b821c7dd assets/twilightforest/models/item/travellers_gloves.json
 d118fba404b81ae1194fdaf4f77c2239cc10c65e assets/twilightforest/models/item/travellers_goggles.json
+8a7642401566c2dbd1cd29c5f3047a9f4825eb62 assets/twilightforest/models/item/travellers_leggings.json
+59c60d7d6db29d0093d1040f08ab3f5cbff6fc04 assets/twilightforest/models/item/travellers_leggings_belt.json
 5bc1edf6b84c4ad6ce22df3d063818dc4e15debe assets/twilightforest/models/item/triple_bow.json
 a01e709e7b119f1c1c6c1f19c37a45adce96fe23 assets/twilightforest/models/item/triple_bow_pulling_0.json
 da8ccbaaf7197d8de6f5a670061779d6c9bd69b8 assets/twilightforest/models/item/triple_bow_pulling_1.json
