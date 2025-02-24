@@ -5,22 +5,32 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.core.Holder;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import org.jetbrains.annotations.NotNull;
+import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.TFArmorModel;
 import twilightforest.client.model.armor.TravellersLeggingsModel;
+import twilightforest.init.TFArmorMaterials;
+import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFItems;
 
 public class TravellersArmorItem extends ArmorItem {
-	public TravellersArmorItem(Holder<ArmorMaterial> material, Type type, Properties properties) {
-		super(material, type, properties);
+	public TravellersArmorItem(ArmorItem.Type equipmentType, Properties properties, int durability) {
+		super(TFArmorMaterials.TRAVELLERS, equipmentType, properties.durability(equipmentType.getDurability(durability)));
+	}
+
+	public TravellersArmorItem(ArmorItem.Type equipmentType, Properties properties) {
+		this(equipmentType, properties, 4);
 	}
 
 
@@ -48,7 +58,7 @@ public class TravellersArmorItem extends ArmorItem {
 					ModelPart leggingsLayer = models.bakeLayer(TFModelLayers.TRAVELLERS_ARMOR_LEGGINGS);
 					leggingsLayer.getAllParts().forEach(part -> part.skipDraw = true);
 					boolean hasPants = stack.is(TFItems.TRAVELLERS_LEGGINGS_BELT) || stack.is(TFItems.TRAVELLERS_LEGGINGS);
-					boolean hasWings = hasPants && stack.getDisplayName().getString().equalsIgnoreCase("[traveller's wings]");
+					boolean hasWings = hasPants && stack.getDisplayName().getString().equalsIgnoreCase("[traveller's wings]"); // FIXME: create actual wings item and use AnvilUpdateEvent to get it
 					boolean hasBelt = stack.is(TFItems.TRAVELLERS_LEGGINGS_BELT) || stack.is(TFItems.TRAVELLERS_BELT);
 
 					TravellersLeggingsModel.skipBelt(leggingsLayer, !hasBelt);
@@ -71,5 +81,13 @@ public class TravellersArmorItem extends ArmorItem {
 			if (model instanceof TravellersLeggingsModel wingsModel)
 				wingsModel.setupModelAnimations(livingEntity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 		}
+	}
+
+	public static Properties gogglesProperties(Properties properties) {
+		return properties.component(TFDataComponents.ZOOM_ABILITY_MODIFIER, 0.3F);
+	}
+
+	public static Properties bootsProperties(Properties properties) {
+		return properties.attributes(ItemAttributeModifiers.builder().add(Attributes.STEP_HEIGHT, new AttributeModifier(TwilightForestMod.prefix("travellers_gear.boots_high_step"), 0.5F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.FEET).build());
 	}
 }
