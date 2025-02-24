@@ -878,7 +878,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addTrim("knightmetal", "Knightmetal");
 		this.addTrim("naga_scale", "Naga Scale");
 		this.addTrim("steeleaf", "Steeleaf");
-		this.addTrim("traveller", "Traveller's");
+		this.addTrim("travellers", "Traveller's");
 
 		this.add("museumcurator.animalhusbandry.twilightforest.bugs", "Bugs");
 		this.add("museumcurator.architecture.twilightforest.aurorablocks", "Aurora Blocks");
@@ -1096,5 +1096,9 @@ public class LangGenerator extends TFLangProvider {
 		this.add("config.twilightforest.multiplayer_fight_adjuster.more_loot", "More Loot");
 		this.add("config.twilightforest.multiplayer_fight_adjuster.more_health", "More Health");
 		this.add("config.twilightforest.multiplayer_fight_adjuster.more_loot_and_health", "More Loot & Health");
+
+		this.add(TFKeyBinds.Categories.TRAVELLERS_GEAR, "Twilight Forest — Traveller's Gear");
+
+		this.add(TFKeyBinds.ZOOM_KEY.getName(), "Zoom With Goggles");
 	}
 }

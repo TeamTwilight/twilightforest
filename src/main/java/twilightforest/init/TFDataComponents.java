@@ -45,6 +45,8 @@ public class TFDataComponents {
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> ORE_RANGE = COMPONENTS.register("ore_range", () -> DataComponentType.<Integer>builder().persistent(ExtraCodecs.NON_NEGATIVE_INT.orElse(1)).networkSynchronized(ByteBufCodecs.VAR_INT).cacheEncoding().build());
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Block>> ORE_FILTER = COMPONENTS.register("ore_filter", () -> DataComponentType.<Block>builder().persistent(BuiltInRegistries.BLOCK.byNameCodec().orElse(Blocks.AIR)).networkSynchronized(ByteBufCodecs.registry(Registries.BLOCK)).cacheEncoding().build());
 
+	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Float>> ZOOM_ABILITY_MODIFIER = COMPONENTS.register("zoom_ability_modifier", () -> DataComponentType.<Float>builder().persistent(ExtraCodecs.POSITIVE_FLOAT).networkSynchronized(ByteBufCodecs.FLOAT).cacheEncoding().build());
+
 	private static @NotNull <T> DeferredHolder<DataComponentType<?>, DataComponentType<T>> register(String name, final Codec<T> codec) {
 		return register(name, codec, null);
 	}

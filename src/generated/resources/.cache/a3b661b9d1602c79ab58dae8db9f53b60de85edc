@@ -1,4 +1,4 @@
-// 1.21.1	2025-02-05T15:59:04.364499013	Twilight Forest Item Tags
+// 1.21.1	2025-02-24T18:37:34.968882727	Twilight Forest Item Tags
 3c5895c72cfffe09615ec2b28267a726fcbf52e8 data/alexscaves/tags/item/ferns.json
 4c5df8d60b8f068b482a22fd807ddea22e1bfe00 data/alexscaves/tags/item/ferromagnetic_items.json
 42afac82c004061587d5b1ae20c2e66c0d399c8c data/alexscaves/tags/item/raw_meats.json
@@ -44,7 +44,7 @@ a60dbce39527970b03af723b64656128b26f70e6 data/minecraft/tags/item/axes.json
 6e4052d645637e55eca3bdbaebd8fbaf2a2cfbc4 data/minecraft/tags/item/beacon_payment_items.json
 932bd2980da6d582ac5ba3cb6d86e51597a713b4 data/minecraft/tags/item/boats.json
 e69d5be074938c1ff9a1853ff8da6782500ff92f data/minecraft/tags/item/breaks_decorated_pots.json
-389eb5d97791c5998cac66d75218679e21f9d8c6 data/minecraft/tags/item/chest_armor.json
+4d55e57124ab1f6fc2dc744782845d01459b9a70 data/minecraft/tags/item/chest_armor.json
 dc2f26c3fd06fccd7385a8d16527701a68efb05a data/minecraft/tags/item/chest_boats.json
 387c3d6fc3d958d7d90aea6c542e7a1a46ed16d9 data/minecraft/tags/item/cluster_max_harvestables.json
 c4789374da6dba366c9372741cd1abcd08aa72c0 data/minecraft/tags/item/dyeable.json
@@ -60,13 +60,13 @@ e69d5be074938c1ff9a1853ff8da6782500ff92f data/minecraft/tags/item/enchantable/mi
 e69d5be074938c1ff9a1853ff8da6782500ff92f data/minecraft/tags/item/enchantable/mining_loot.json
 4780af3972429e8a298077e3b92a0d2878026f8b data/minecraft/tags/item/enchantable/vanishing.json
 211134157771c86a72a0c5a1985c2b05da55729b data/minecraft/tags/item/fence_gates.json
-043285dd7d339f08809f69a33b8f458c85c13781 data/minecraft/tags/item/foot_armor.json
+08b587bf617c9246b6f038bcc4885f3d04739e45 data/minecraft/tags/item/foot_armor.json
 e66649b3248e051912913e282cb83d3b5006cde0 data/minecraft/tags/item/freeze_immune_wearables.json
 6fe1e441c4085be357b16f3ef9158eda9139f939 data/minecraft/tags/item/hanging_signs.json
-8bdf2061eb180898fba4ced3898648a9629303c5 data/minecraft/tags/item/head_armor.json
+5aad0a08128e892d493125fbd082a1f1d981b585 data/minecraft/tags/item/head_armor.json
 b696524eda9e607bebc1b307e19c2b1633b8b0b1 data/minecraft/tags/item/hoes.json
 30b260e82242a2b548549ed7a4f89117c8d2c3c3 data/minecraft/tags/item/leaves.json
-794d37638c09c53eecebeabd3371527a2a9ab34d data/minecraft/tags/item/leg_armor.json
+eeef58b5bd3481604cd7abd9458a15685dc239da data/minecraft/tags/item/leg_armor.json
 19bd74ce640c043c09053d7571fb7a9915d41417 data/minecraft/tags/item/logs.json
 0af80d33dcbb7226a5afcb9d8a4c1a73a2c38c9d data/minecraft/tags/item/logs_that_burn.json
 3d97022fe689918fe10ff909adfe2953d455c6ec data/minecraft/tags/item/meat.json

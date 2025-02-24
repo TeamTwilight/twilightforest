@@ -7,18 +7,18 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
-import twilightforest.components.entity.TravellerWingsAnimAttachment;
+import twilightforest.components.entity.TravellersWingsAnimAttachment;
 import twilightforest.init.TFDataAttachments;
 
 import java.util.Collections;
 
-public class TravellerLeggingsModel extends HumanoidModel<LivingEntity> {
+public class TravellersLeggingsModel extends HumanoidModel<LivingEntity> {
 	private static final double TAU = 4;  // Time (in ticks) in which distance reduces in e times
 	private static final float ANGLE_10_DEG = Mth.PI / 18;
 	private final ModelPart wingBaseRight;
 	private final ModelPart wingBaseLeft;
 
-	public TravellerLeggingsModel(ModelPart root) {
+	public TravellersLeggingsModel(ModelPart root) {
 		super(root);
 		root = root.getChild("body");
 		this.wingBaseLeft = root.getChild("wingBaseLeft");
@@ -163,7 +163,7 @@ public class TravellerLeggingsModel extends HumanoidModel<LivingEntity> {
 	public void setupModelAnimations(LivingEntity entity, float f, float f1, double ageInTicks, float netHeadYaw, float headPitch) {
 		super.setupAnim(entity, f, f1, (float) ageInTicks, netHeadYaw, headPitch);
 
-		TravellerWingsAnimAttachment attachment = entity.getData(TFDataAttachments.TRAVELLER_WINGS_ANIM);
+		TravellersWingsAnimAttachment attachment = entity.getData(TFDataAttachments.TRAVELLERS_WINGS_ANIM);
 
 		float targetXRot, targetYRot, targetZRot;
 		double dtInTicks = ageInTicks - attachment.oldAgeInTicks;
@@ -201,7 +201,7 @@ public class TravellerLeggingsModel extends HumanoidModel<LivingEntity> {
 		attachment.zRotOld = wingBaseRight.zRot;
 	}
 
-	private float[] calculateRotations(TravellerWingsAnimAttachment attachment, double dtInTicks, float phaseDivisor, float xOffset, float yOffset, float zOffset, float[] sinDivisors) {
+	private float[] calculateRotations(TravellersWingsAnimAttachment attachment, double dtInTicks, float phaseDivisor, float xOffset, float yOffset, float zOffset, float[] sinDivisors) {
 		attachment.accumulatedPhase += dtInTicks / phaseDivisor;
 		float sinT = (float) Math.sin(attachment.accumulatedPhase);
 		return new float[]{

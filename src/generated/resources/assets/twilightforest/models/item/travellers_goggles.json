@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "twilightforest:item/traveller_gloves"
+    "layer0": "twilightforest:item/travellers_goggles"
   }
 }

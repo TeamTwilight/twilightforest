@@ -4,7 +4,7 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 
-public class TravellerBootsModel {
+public class TravellersBootsModel {
 	public static MeshDefinition addPieces(CubeDeformation deform) {
 		MeshDefinition mesh = HumanoidModel.createMesh(deform, 0);
 		PartDefinition root = mesh.getRoot();

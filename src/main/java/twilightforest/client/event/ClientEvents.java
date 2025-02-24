@@ -59,6 +59,7 @@ import twilightforest.entity.boss.bar.ClientTFBossBar;
 import twilightforest.events.HostileMountEvents;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFDimension;
+import twilightforest.init.TFKeyBinds;
 import twilightforest.item.*;
 import twilightforest.util.HolderMatcher;
 
@@ -99,6 +100,7 @@ public class ClientEvents {
 		NeoForge.EVENT_BUS.addListener(ClientEvents::translateBookAuthor);
 		NeoForge.EVENT_BUS.addListener(ClientEvents::unrenderHeadWithTrophies);
 		NeoForge.EVENT_BUS.addListener(ClientEvents::updateBowFOV);
+		NeoForge.EVENT_BUS.addListener(ClientEvents::updateTravellersZoomFOV);
 
 		NeoForge.EVENT_BUS.addListener(CloudEvents::renderPrecipitation);
 		NeoForge.EVENT_BUS.addListener(CloudEvents::tickWeatherEffects);
@@ -284,6 +286,13 @@ public class ClientEvents {
 				event.setNewFovModifier((float) Mth.lerp(Minecraft.getInstance().options.fovEffectScale().get(), 1.0F, (event.getFovModifier() * (1.0F - f * 0.15F))));
 			}
 		}
+	}
+
+	private static void updateTravellersZoomFOV(ComputeFovModifierEvent event) {
+		Player player = event.getPlayer();
+		Float zoomModifier = player.getInventory().getArmor(EquipmentSlot.HEAD.getIndex()).get(TFDataComponents.ZOOM_ABILITY_MODIFIER);
+		if (TFKeyBinds.ZOOM_KEY.isDown() && !player.isScoping() && zoomModifier != null)
+			event.setNewFovModifier(event.getNewFovModifier() * zoomModifier);
 	}
 
 	private static void unrenderHeadWithTrophies(RenderLivingEvent.Pre<?, ?> event) {
