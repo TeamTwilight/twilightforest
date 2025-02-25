@@ -22,8 +22,12 @@ import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.decoration.LeashFenceKnotEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
@@ -37,10 +41,12 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.pieces.PiecesContainer;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.util.TriState;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import twilightforest.beans.Autowired;
+import twilightforest.init.TFAttributeModifiers;
 import twilightforest.util.ArmorUtil;
 import twilightforest.util.multiparts.MultipartEntityUtil;
 import twilightforest.block.CloudBlock;
@@ -291,6 +297,24 @@ public class ASMHooks {
 	 */
 	public static Entity sendDirtyEntityData(Entity entity) {
 		return multipartEntityUtil.sendDirtyMultipartEntityData(entity);
+	}
+
+	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// player
+	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	/**
+	 * {@link twilightforest.asm.transformers.player.MaybeBackOffFromEdgeTransformer}<p/>
+	 *
+	 * Injection Point:<br/>
+	 * {@link net.minecraft.world.entity.player.Player#maybeBackOffFromEdge(Vec3 vec, MoverType mover)}
+	 */
+	public static float cancelHighStepModifierForStepDownDuringSneaking(Player player, float f) {
+		for (ItemAttributeModifiers.Entry modifier : player.getInventory().getArmor(EquipmentSlot.FEET.getIndex()).getAttributeModifiers().modifiers()) {
+			if (modifier.matches(Attributes.STEP_HEIGHT, TFAttributeModifiers.TRAVELLERS_HIGH_STEP.id()))
+				return (float) (f - modifier.modifier().amount());  // TODO: use multiply modifiers to this one if they are present
+		}
+		return f;
 	}
 
 	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
