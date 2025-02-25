@@ -6,21 +6,36 @@ import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.core.Holder;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.TFArmorModel;
 import twilightforest.client.model.armor.TravellersLeggingsModel;
+import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFItems;
 
 public class TravellersArmorItem extends ArmorItem {
 	public TravellersArmorItem(Holder<ArmorMaterial> material, Type type, Properties properties) {
 		super(material, type, properties);
+	}
+
+	public static void travellersItemTick(PlayerTickEvent.Post event) {
+		if (!(event.getEntity() instanceof ServerPlayer serverPlayer))
+			return;
+
+		ItemStack stack = serverPlayer.getInventory().getArmor(EquipmentSlot.CHEST.getIndex());
+		if (serverPlayer.isCrouching() && Boolean.TRUE.equals(stack.get(TFDataComponents.STEALTH_CROUCHING_ENABLE))) {
+			serverPlayer.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 2, 0, false, false, false));
+		}
 	}
 
 
