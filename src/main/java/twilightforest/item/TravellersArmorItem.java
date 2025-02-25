@@ -32,8 +32,8 @@ public class TravellersArmorItem extends ArmorItem {
 		if (!(event.getEntity() instanceof ServerPlayer serverPlayer))
 			return;
 
-		ItemStack stack = serverPlayer.getInventory().getArmor(EquipmentSlot.CHEST.getIndex());
-		if (serverPlayer.isCrouching() && Boolean.TRUE.equals(stack.get(TFDataComponents.STEALTH_CROUCHING_ENABLE))) {
+		ItemStack chestArmor = serverPlayer.getInventory().getArmor(EquipmentSlot.CHEST.getIndex());
+		if (serverPlayer.isCrouching() && Boolean.TRUE.equals(chestArmor.get(TFDataComponents.STEALTH_CROUCHING_ENABLE))) {
 			serverPlayer.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 2, 0, false, false, false));
 		}
 	}
