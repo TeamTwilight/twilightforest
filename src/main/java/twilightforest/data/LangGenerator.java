@@ -1099,7 +1099,7 @@ public class LangGenerator extends TFLangProvider {
 
 		this.add(TFKeyBinds.Categories.TRAVELLERS_GEAR, "Twilight Forest — Traveller's Gear");
 
+		this.add(TFKeyBinds.RED_THREAD_VISION_KEY.getName(), "Toggle Red Thread Vision With Goggles");
 		this.add(TFKeyBinds.ZOOM_KEY.getName(), "Zoom With Goggles");
-		this.add(TFKeyBinds.RED_THREAD_VISION_KEY.getName(), "Turn On Red Thread Vision");
 	}
 }

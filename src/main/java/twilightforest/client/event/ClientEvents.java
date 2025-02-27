@@ -304,7 +304,11 @@ public class ClientEvents {
 
 		Boolean redThreadVisionEnabled = player.getInventory().getArmor(EquipmentSlot.HEAD.getIndex()).get(TFDataComponents.RED_THREAD_VISION_ENABLE);
 		boolean current = player.getData(TFDataAttachments.TRAVELLERS_GOGGLES_RED_THREAD_VISION);
-		boolean newValue = Boolean.TRUE.equals(redThreadVisionEnabled) && (TFKeyBinds.RED_THREAD_VISION_KEY.consumeClick() != current);
+		boolean isClicked = false;
+		while (TFKeyBinds.RED_THREAD_VISION_KEY.consumeClick()) {
+			isClicked = !isClicked;  // clickCount can be even, so we may not toggle Red Thread Vision
+		}
+		boolean newValue = Boolean.TRUE.equals(redThreadVisionEnabled) && (isClicked != current);
 
 		player.setData(TFDataAttachments.TRAVELLERS_GOGGLES_RED_THREAD_VISION, newValue);
 	}
