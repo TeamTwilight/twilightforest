@@ -5,6 +5,7 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -13,11 +14,11 @@ import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
-import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
@@ -36,13 +37,21 @@ public class TravellersArmorItem extends ArmorItem {
 		this(equipmentType, properties, 4);
 	}
 
-	public static void travellersItemTick(PlayerTickEvent.Post event) {
-		if (!(event.getEntity() instanceof ServerPlayer serverPlayer))
+	public static void travellersItemTick(Player player) {
+		ItemStack chestArmor = player.getInventory().getArmor(EquipmentSlot.CHEST.getIndex());
+		if (!Boolean.TRUE.equals(chestArmor.get(TFDataComponents.STEALTH_CROUCHING_ENABLE)))
 			return;
 
-		ItemStack chestArmor = serverPlayer.getInventory().getArmor(EquipmentSlot.CHEST.getIndex());
-		if (serverPlayer.isCrouching() && Boolean.TRUE.equals(chestArmor.get(TFDataComponents.STEALTH_CROUCHING_ENABLE))) {
-			serverPlayer.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 2, 0, false, false, false));
+		if (player.isCrouching()) {
+			if (player instanceof LocalPlayer)
+				player.setInvisible(true);
+
+			else if (player instanceof ServerPlayer)
+				player.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 2, 0, false, false, false));
+		} else {
+			MobEffectInstance invisibilityEffect = player.getEffect(MobEffects.INVISIBILITY);
+			if (invisibilityEffect != null && invisibilityEffect.getDuration() < 2)
+				player.setInvisible(false);
 		}
 	}
 
@@ -52,8 +61,17 @@ public class TravellersArmorItem extends ArmorItem {
 			.component(TFDataComponents.RED_THREAD_VISION_ENABLE, true);
 	}
 
+	public static Properties chestProperties(Properties properties) {
+		return properties
+			.component(TFDataComponents.TRAVELLERS_HAS_CHESTPLATE, true)
+			.component(TFDataComponents.STEALTH_CROUCHING_ENABLE, true);
+	}
+
 	public static Properties bootsProperties(Properties properties) {
-		return properties.attributes(ItemAttributeModifiers.builder().add(Attributes.STEP_HEIGHT, new AttributeModifier(TwilightForestMod.prefix("travellers_gear.boots_high_step"), 0.5F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.FEET).build());
+		return properties
+			.attributes(ItemAttributeModifiers.builder()
+				.add(Attributes.STEP_HEIGHT, new AttributeModifier(TwilightForestMod.prefix("travellers_gear.boots_high_step"), 0.5F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.FEET)
+				.build());
 	}
 
 	public static final class ArmorRender implements IClientItemExtensions {
@@ -79,13 +97,13 @@ public class TravellersArmorItem extends ArmorItem {
 				case LEGS -> {
 					ModelPart leggingsLayer = models.bakeLayer(TFModelLayers.TRAVELLERS_ARMOR_LEGGINGS);
 					leggingsLayer.getAllParts().forEach(part -> part.skipDraw = true);
-					boolean hasPants = stack.is(TFItems.TRAVELLERS_LEGGINGS_BELT) || stack.is(TFItems.TRAVELLERS_LEGGINGS);
-					boolean hasWings = hasPants && stack.getDisplayName().getString().equalsIgnoreCase("[traveller's wings]"); // FIXME: create actual wings item and use AnvilUpdateEvent to get it
-					boolean hasBelt = stack.is(TFItems.TRAVELLERS_LEGGINGS_BELT) || stack.is(TFItems.TRAVELLERS_BELT);
+					boolean hasPants = Boolean.TRUE.equals(stack.get(TFDataComponents.TRAVELLERS_HAS_PANTS));
+					boolean hasWings = Boolean.TRUE.equals(stack.get(TFDataComponents.TRAVELLERS_HAS_WINGS));
+					boolean hasBelt = Boolean.TRUE.equals(stack.get(TFDataComponents.TRAVELLERS_HAS_BELT));
 
 					TravellersLeggingsModel.skipBelt(leggingsLayer, !hasBelt);
 					TravellersLeggingsModel.skipWings(leggingsLayer, !hasWings);
-					TravellersLeggingsModel.skipPants(leggingsLayer, !hasPants || hasWings);
+					TravellersLeggingsModel.skipPants(leggingsLayer, !hasPants);
 
 					yield leggingsLayer;
 				}

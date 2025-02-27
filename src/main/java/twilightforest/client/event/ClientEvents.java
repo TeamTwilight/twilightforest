@@ -102,6 +102,7 @@ public class ClientEvents {
 		NeoForge.EVENT_BUS.addListener(ClientEvents::unrenderHeadWithTrophies);
 		NeoForge.EVENT_BUS.addListener(ClientEvents::updateBowFOV);
 		NeoForge.EVENT_BUS.addListener(ClientEvents::updateTravellersZoomFOV);
+		NeoForge.EVENT_BUS.addListener(ClientEvents::handleTravellersStealth);
 		NeoForge.EVENT_BUS.addListener(ClientEvents::updateTravellersRedThreadAttachment);
 
 		NeoForge.EVENT_BUS.addListener(CloudEvents::renderPrecipitation);
@@ -295,6 +296,13 @@ public class ClientEvents {
 		Float zoomModifier = player.getInventory().getArmor(EquipmentSlot.HEAD.getIndex()).get(TFDataComponents.ZOOM_ABILITY_MODIFIER);
 		if (TFKeyBinds.ZOOM_KEY.isDown() && !player.isScoping() && zoomModifier != null)
 			event.setNewFovModifier(event.getNewFovModifier() * zoomModifier);
+	}
+
+	private static void handleTravellersStealth(RenderFrameEvent.Pre event) {
+		Player player = Minecraft.getInstance().player;
+		if (player == null) return;
+
+		TravellersArmorItem.travellersItemTick(player);  // Deceive the player that they are in stealth
 	}
 
 	private static void updateTravellersRedThreadAttachment(ClientTickEvent.Post event) {

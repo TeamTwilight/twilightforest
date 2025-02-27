@@ -51,6 +51,8 @@ public class TFTickHandler {
 		if (!(eventPlayer instanceof ServerPlayer player)) return;
 		if (!(player.level() instanceof ServerLevel world)) return;
 
+		TravellersArmorItem.travellersItemTick(event.getEntity());
+
 		// check for portal creation, at least if it's not disabled
 		if (!TFConfig.disablePortalCreation && player.tickCount % (!TFConfig.checkPortalPlacement ? 100 : 20) == 0) {
 			// skip non admin players when the option is on
@@ -73,8 +75,6 @@ public class TFTickHandler {
 				checkForLockedStructuresSendPacket(player, world);
 			}
 		}
-
-		TravellersArmorItem.travellersItemTick(event);
 	}
 
 	private static void sendStructureProtectionPacket(Player player, List<Pair<BoundingBox, Boolean>> sbbData) {
