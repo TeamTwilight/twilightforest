@@ -13,10 +13,12 @@ public abstract class TFKeyBinds {
 	}
 
 	public static final KeyMapping ZOOM_KEY = new KeyMapping(addPrefix("zoom"), InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_Z, Categories.TRAVELLERS_GEAR);
+	public static final KeyMapping RED_THREAD_VISION_KEY = new KeyMapping(addPrefix("red_thread_vision"), InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_H, Categories.TRAVELLERS_GEAR);
 
 	@SubscribeEvent
 	public static void registerKeyBindings(RegisterKeyMappingsEvent event) {
 		event.register(ZOOM_KEY);
+		event.register(RED_THREAD_VISION_KEY);
 	}
 
 	private static String addPrefix(String s) {

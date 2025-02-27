@@ -5,23 +5,26 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.TFArmorModel;
 import twilightforest.client.model.armor.TravellersLeggingsModel;
-import twilightforest.init.TFArmorMaterials;
 import twilightforest.init.TFDataComponents;
+import twilightforest.init.TFArmorMaterials;
 import twilightforest.init.TFItems;
 
 public class TravellersArmorItem extends ArmorItem {
@@ -31,6 +34,16 @@ public class TravellersArmorItem extends ArmorItem {
 
 	public TravellersArmorItem(ArmorItem.Type equipmentType, Properties properties) {
 		this(equipmentType, properties, 4);
+	}
+
+	public static void travellersItemTick(PlayerTickEvent.Post event) {
+		if (!(event.getEntity() instanceof ServerPlayer serverPlayer))
+			return;
+
+		ItemStack chestArmor = serverPlayer.getInventory().getArmor(EquipmentSlot.CHEST.getIndex());
+		if (serverPlayer.isCrouching() && Boolean.TRUE.equals(chestArmor.get(TFDataComponents.STEALTH_CROUCHING_ENABLE))) {
+			serverPlayer.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 2, 0, false, false, false));
+		}
 	}
 
 

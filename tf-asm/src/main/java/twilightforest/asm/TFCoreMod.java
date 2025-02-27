@@ -17,6 +17,7 @@ import twilightforest.asm.transformers.map.ResolveNearestNonRandomSpreadMapStruc
 import twilightforest.asm.transformers.multipart.ResolveEntitiesForRendereringTransformer;
 import twilightforest.asm.transformers.multipart.ResolveEntityRendererTransformer;
 import twilightforest.asm.transformers.multipart.SendDirtytEntityDataTransformer;
+import twilightforest.asm.transformers.player.MaybeBackOffFromEdgeTransformer;
 import twilightforest.asm.transformers.shroom.ModifySoilDecisionForMushroomBlockSurvivabilityTransformer;
 
 import java.util.List;
@@ -28,6 +29,8 @@ public class TFCoreMod implements ICoreMod {
 			// armor
 			new ArmorVisibilityRenderingTransformer(),
 			new CancelArmorRenderingTransformer(),
+
+			new MaybeBackOffFromEdgeTransformer(),
 
 			// beardifier
 			new BeardifierClassTransformer(),

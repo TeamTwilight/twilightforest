@@ -27,6 +27,7 @@ import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.TFAdvancements;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDimension;
+import twilightforest.item.TravellersArmorItem;
 import twilightforest.network.MissingAdvancementToastPacket;
 import twilightforest.network.StructureProtectionPacket;
 import twilightforest.util.Enforcement;
@@ -72,6 +73,8 @@ public class TFTickHandler {
 				checkForLockedStructuresSendPacket(player, world);
 			}
 		}
+
+		TravellersArmorItem.travellersItemTick(event);
 	}
 
 	private static void sendStructureProtectionPacket(Player player, List<Pair<BoundingBox, Boolean>> sbbData) {
