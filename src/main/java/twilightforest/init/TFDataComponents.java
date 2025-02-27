@@ -46,6 +46,7 @@ public class TFDataComponents {
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Block>> ORE_FILTER = COMPONENTS.register("ore_filter", () -> DataComponentType.<Block>builder().persistent(BuiltInRegistries.BLOCK.byNameCodec().orElse(Blocks.AIR)).networkSynchronized(ByteBufCodecs.registry(Registries.BLOCK)).cacheEncoding().build());
 
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Float>> ZOOM_ABILITY_MODIFIER = COMPONENTS.register("zoom_ability_modifier", () -> DataComponentType.<Float>builder().persistent(ExtraCodecs.POSITIVE_FLOAT).networkSynchronized(ByteBufCodecs.FLOAT).cacheEncoding().build());
+	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Boolean>> RED_THREAD_VISION_ENABLE = COMPONENTS.register("red_thread_vision_enable", () -> DataComponentType.<Boolean>builder().persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL).cacheEncoding().build());
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Boolean>> STEALTH_CROUCHING_ENABLE = COMPONENTS.register("stealth_crouching_enable", () -> DataComponentType.<Boolean>builder().persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL).cacheEncoding().build());
 
 	private static @NotNull <T> DeferredHolder<DataComponentType<?>, DataComponentType<T>> register(String name, final Codec<T> codec) {

@@ -57,6 +57,7 @@ import twilightforest.config.TFConfig;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.entity.boss.bar.ClientTFBossBar;
 import twilightforest.events.HostileMountEvents;
+import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFDimension;
 import twilightforest.init.TFKeyBinds;
@@ -101,6 +102,7 @@ public class ClientEvents {
 		NeoForge.EVENT_BUS.addListener(ClientEvents::unrenderHeadWithTrophies);
 		NeoForge.EVENT_BUS.addListener(ClientEvents::updateBowFOV);
 		NeoForge.EVENT_BUS.addListener(ClientEvents::updateTravellersZoomFOV);
+		NeoForge.EVENT_BUS.addListener(ClientEvents::updateTravellersRedThreadAttachment);
 
 		NeoForge.EVENT_BUS.addListener(CloudEvents::renderPrecipitation);
 		NeoForge.EVENT_BUS.addListener(CloudEvents::tickWeatherEffects);
@@ -293,6 +295,18 @@ public class ClientEvents {
 		Float zoomModifier = player.getInventory().getArmor(EquipmentSlot.HEAD.getIndex()).get(TFDataComponents.ZOOM_ABILITY_MODIFIER);
 		if (TFKeyBinds.ZOOM_KEY.isDown() && !player.isScoping() && zoomModifier != null)
 			event.setNewFovModifier(event.getNewFovModifier() * zoomModifier);
+	}
+
+	private static void updateTravellersRedThreadAttachment(ClientTickEvent.Post event) {
+		Player player = Minecraft.getInstance().player;
+		if (player == null)
+			return;
+
+		Boolean redThreadVisionEnabled = player.getInventory().getArmor(EquipmentSlot.HEAD.getIndex()).get(TFDataComponents.RED_THREAD_VISION_ENABLE);
+		boolean current = player.getData(TFDataAttachments.TRAVELLERS_GOGGLES_RED_THREAD_VISION);
+		boolean newValue = Boolean.TRUE.equals(redThreadVisionEnabled) && (TFKeyBinds.RED_THREAD_VISION_KEY.consumeClick() != current);
+
+		player.setData(TFDataAttachments.TRAVELLERS_GOGGLES_RED_THREAD_VISION, newValue);
 	}
 
 	private static void unrenderHeadWithTrophies(RenderLivingEvent.Pre<?, ?> event) {
