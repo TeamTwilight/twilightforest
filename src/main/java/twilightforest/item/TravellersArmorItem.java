@@ -46,6 +46,15 @@ public class TravellersArmorItem extends ArmorItem {
 		}
 	}
 
+	public static Properties gogglesProperties(Properties properties) {
+		return properties
+			.component(TFDataComponents.ZOOM_ABILITY_MODIFIER, 0.3F)
+			.component(TFDataComponents.RED_THREAD_VISION_ENABLE, true);
+	}
+
+	public static Properties bootsProperties(Properties properties) {
+		return properties.attributes(ItemAttributeModifiers.builder().add(Attributes.STEP_HEIGHT, new AttributeModifier(TwilightForestMod.prefix("travellers_gear.boots_high_step"), 0.5F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.FEET).build());
+	}
 
 	public static final class ArmorRender implements IClientItemExtensions {
 		public static final ArmorRender INSTANCE = new ArmorRender();
@@ -94,13 +103,5 @@ public class TravellersArmorItem extends ArmorItem {
 			if (model instanceof TravellersLeggingsModel wingsModel)
 				wingsModel.setupModelAnimations(livingEntity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 		}
-	}
-
-	public static Properties gogglesProperties(Properties properties) {
-		return properties.component(TFDataComponents.ZOOM_ABILITY_MODIFIER, 0.3F);
-	}
-
-	public static Properties bootsProperties(Properties properties) {
-		return properties.attributes(ItemAttributeModifiers.builder().add(Attributes.STEP_HEIGHT, new AttributeModifier(TwilightForestMod.prefix("travellers_gear.boots_high_step"), 0.5F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.FEET).build());
 	}
 }
