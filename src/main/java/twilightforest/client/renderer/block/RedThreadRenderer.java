@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.PipeBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -25,6 +26,7 @@ import twilightforest.client.TFShaders;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.RedThreadModel;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.TFDataAttachments;
 
 public class RedThreadRenderer<T extends RedThreadBlockEntity> implements BlockEntityRenderer<T> {
 	private static final ResourceLocation TEXTURE = TwilightForestMod.getModelTexture("red_thread.png");
@@ -47,7 +49,11 @@ public class RedThreadRenderer<T extends RedThreadBlockEntity> implements BlockE
 	@Override
 	public void render(T entity, float ticks, PoseStack stack, MultiBufferSource buffer, int light, int overlay) {
 		BlockState state = entity.getBlockState();
-		boolean glow = Minecraft.getInstance().player != null && Minecraft.getInstance().player.isHolding(TFBlocks.RED_THREAD.get().asItem());
+		Player player = Minecraft.getInstance().player;
+		if (player == null)
+			return;
+
+		boolean glow = player.isHolding(TFBlocks.RED_THREAD.get().asItem()) || player.getData(TFDataAttachments.TRAVELLERS_GOGGLES_RED_THREAD_VISION);
 
 		for (Direction face : Direction.values()) {
 			if (state.getValue(PipeBlock.PROPERTY_BY_DIRECTION.get(face))) {
