@@ -70,8 +70,7 @@ public class TravellersArmorItem extends ArmorItem {
 	public static Properties pantsProperties(Properties properties) {
 		return properties
 			.component(TFDataComponents.TRAVELLERS_HAS_PANTS, true)
-			.component(TFDataComponents.CONTROLLED_FALLING_TARGET_VELOCITY, 0.2F)
-			.component(TFDataComponents.CONTROLLED_FALLING_TAU, 0.12F);
+			.component(TFDataComponents.CONTROLLED_FALLING_MULTIPLIER, 1 - 1 / 6F);
 	}
 
 	public static Properties bootsProperties(Properties properties) {

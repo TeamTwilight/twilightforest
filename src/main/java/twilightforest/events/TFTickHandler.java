@@ -35,7 +35,6 @@ import twilightforest.item.TravellersArmorItem;
 import twilightforest.network.MissingAdvancementToastPacket;
 import twilightforest.network.StructureProtectionPacket;
 import twilightforest.util.Enforcement;
-import twilightforest.util.TFMathUtil;
 import twilightforest.util.PlayerHelper;
 import twilightforest.util.landmarks.LandmarkUtil;
 import twilightforest.world.components.structures.TFStructureComponent;
@@ -85,14 +84,10 @@ public class TFTickHandler {
 	@SubscribeEvent
 	public static void levelTick(LevelTickEvent.Post event) {
 		Level level = event.getLevel();
-		if (level instanceof ClientLevel clientLevel) {
-			clientLevel.entitiesForRendering().forEach(entity -> TFTickHandler.travellersPantsControlFall(entity, 1 / clientLevel.tickRateManager().tickrate()));
-			System.out.println("Client level");
-		}
-		else if (level instanceof ServerLevel serverLevel) {
-			serverLevel.getEntities().getAll().forEach(entity -> TFTickHandler.travellersPantsControlFall(entity, 1 / serverLevel.tickRateManager().tickrate()));
-			System.out.println("Server level");
-		}
+		if (level instanceof ClientLevel clientLevel)
+			clientLevel.entitiesForRendering().forEach(TFTickHandler::travellersPantsControlFall);
+		else if (level instanceof ServerLevel serverLevel)
+			serverLevel.getEntities().getAll().forEach(TFTickHandler::travellersPantsControlFall);
 	}
 
 	private static void sendStructureProtectionPacket(Player player, List<Pair<BoundingBox, Boolean>> sbbData) {
@@ -182,29 +177,26 @@ public class TFTickHandler {
 		}
 	}
 
-	public static void travellersPantsControlFall(Entity entity, float dt) {  // FIXME: Make it follow Minecraft laws of physics
+	public static void travellersPantsControlFall(Entity entity) {
 		if (!(entity instanceof LivingEntity livingEntity))
 			return;
 
 		ItemStack leggingsStack = livingEntity.getItemBySlot(EquipmentSlot.LEGS);
-		Float targetSpeed = leggingsStack.get(TFDataComponents.CONTROLLED_FALLING_TARGET_VELOCITY);
-		Float TAU = leggingsStack.get(TFDataComponents.CONTROLLED_FALLING_TAU);
+		Float multiplier = leggingsStack.get(TFDataComponents.CONTROLLED_FALLING_MULTIPLIER);
 		Vec3 deltaMovement = livingEntity.getDeltaMovement();
-		if (targetSpeed == null || TAU == null)
+		if (multiplier == null || deltaMovement.y() >= 0)
 			return;
 
-		float targetVelocity = -targetSpeed * (livingEntity.isShiftKeyDown() ? 3 : 1);
+		if (livingEntity.isShiftKeyDown())
+			multiplier = 1 - (1 - multiplier) / 3F;
 
-		if (deltaMovement.y() >= targetVelocity)
-			return;
-
-
+		double newDeltaMovementY = deltaMovement.y() * multiplier;
 		livingEntity.setDeltaMovement(
 			deltaMovement.x(),
-			TFMathUtil.interpolateToTarget(deltaMovement.y(), targetVelocity, dt, TAU),
+			newDeltaMovementY,  // works similar to minecraft air resistance
 			deltaMovement.z()
 		);
 
-		livingEntity.resetFallDistance();
+		livingEntity.fallDistance = (float) (Math.pow(newDeltaMovementY, 2) / 2 / livingEntity.getGravity());  // use mv ^ 2 / 2 / mg = h
 	}
 }
