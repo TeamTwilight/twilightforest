@@ -302,7 +302,7 @@ public class ClientEvents {
 		Player player = Minecraft.getInstance().player;
 		if (player == null) return;
 
-		TravellersArmorItem.travellersItemTick(player);  // Deceive the player that they are in stealth
+		TravellersArmorItem.travellersItemTick(player);  // call it on client to make player invisible instantly
 	}
 
 	private static void updateTravellersRedThreadAttachment(ClientTickEvent.Post event) {

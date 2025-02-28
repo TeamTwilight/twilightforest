@@ -43,15 +43,11 @@ public class TravellersArmorItem extends ArmorItem {
 			return;
 
 		if (player.isCrouching()) {
-			if (player instanceof LocalPlayer)
-				player.setInvisible(true);
+			if (player instanceof LocalPlayer)  // call it on client to make player invisible instantly;
+				player.setInvisible(true);  // when mobEffect elapses on server, it will synchronize invisibility
 
 			else if (player instanceof ServerPlayer)
 				player.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 2, 0, false, false, false));
-		} else {
-			MobEffectInstance invisibilityEffect = player.getEffect(MobEffects.INVISIBILITY);
-			if (invisibilityEffect != null && invisibilityEffect.getDuration() < 2)
-				player.setInvisible(false);
 		}
 	}
 
