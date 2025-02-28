@@ -63,6 +63,13 @@ public class TravellersArmorItem extends ArmorItem {
 			.component(TFDataComponents.STEALTH_CROUCHING_ENABLE, true);
 	}
 
+	public static Properties pantsProperties(Properties properties) {
+		return properties
+			.component(TFDataComponents.TRAVELLERS_HAS_PANTS, true)
+			.component(TFDataComponents.CONTROLLED_FALLING_TARGET_VELOCITY, 0.2F)
+			.component(TFDataComponents.CONTROLLED_FALLING_TAU, 0.12F);
+	}
+
 	public static Properties bootsProperties(Properties properties) {
 		return properties
 			.attributes(ItemAttributeModifiers.builder()

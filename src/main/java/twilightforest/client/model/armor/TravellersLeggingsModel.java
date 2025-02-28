@@ -9,6 +9,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import twilightforest.components.entity.TravellersWingsAnimAttachment;
 import twilightforest.init.TFDataAttachments;
+import twilightforest.util.TFMathUtil;
 
 import java.util.Collections;
 
@@ -186,9 +187,9 @@ public class TravellersLeggingsModel extends HumanoidModel<LivingEntity> {
 		targetYRot = rotations[1];
 		targetZRot = rotations[2];
 
-		wingBaseRight.xRot = interpolateToTarget(attachment.xRotOld, targetXRot, dtInTicks);
-		wingBaseRight.yRot = interpolateToTarget(attachment.yRotOld, targetYRot, dtInTicks);
-		wingBaseRight.zRot = interpolateToTarget(attachment.zRotOld, targetZRot, dtInTicks);
+		wingBaseRight.xRot = (float) TFMathUtil.interpolateToTarget(attachment.xRotOld, targetXRot, dtInTicks, TAU);
+		wingBaseRight.yRot = (float) TFMathUtil.interpolateToTarget(attachment.yRotOld, targetYRot, dtInTicks, TAU);
+		wingBaseRight.zRot = (float) TFMathUtil.interpolateToTarget(attachment.zRotOld, targetZRot, dtInTicks, TAU);
 
 		wingBaseLeft.xRot = wingBaseRight.xRot;
 		wingBaseLeft.yRot = -wingBaseRight.yRot;
@@ -209,10 +210,6 @@ public class TravellersLeggingsModel extends HumanoidModel<LivingEntity> {
 			sinT / sinDivisors[1] + yOffset,
 			sinT / sinDivisors[2] + zOffset
 		};
-	}
-
-	private static float interpolateToTarget(double oPos, double targetPos, double dtInTicks) {
-		return (float) (targetPos - (targetPos - oPos) * Math.exp(-dtInTicks / TAU));
 	}
 
 	@Override

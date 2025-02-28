@@ -3,12 +3,16 @@ package twilightforest.events;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.DisplayInfo;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -16,21 +20,22 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.tick.LevelTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFPortalBlock;
 import twilightforest.config.TFConfig;
 import twilightforest.data.tags.ItemTagGenerator;
-import twilightforest.init.TFAdvancements;
-import twilightforest.init.TFBlocks;
-import twilightforest.init.TFDimension;
+import twilightforest.init.*;
 import twilightforest.item.TravellersArmorItem;
 import twilightforest.network.MissingAdvancementToastPacket;
 import twilightforest.network.StructureProtectionPacket;
 import twilightforest.util.Enforcement;
+import twilightforest.util.TFMathUtil;
 import twilightforest.util.PlayerHelper;
 import twilightforest.util.landmarks.LandmarkUtil;
 import twilightforest.world.components.structures.TFStructureComponent;
@@ -74,6 +79,19 @@ public class TFTickHandler {
 			} else {
 				checkForLockedStructuresSendPacket(player, world);
 			}
+		}
+	}
+
+	@SubscribeEvent
+	public static void levelTick(LevelTickEvent.Post event) {
+		Level level = event.getLevel();
+		if (level instanceof ClientLevel clientLevel) {
+			clientLevel.entitiesForRendering().forEach(entity -> TFTickHandler.travellersPantsControlFall(entity, 1 / clientLevel.tickRateManager().tickrate()));
+			System.out.println("Client level");
+		}
+		else if (level instanceof ServerLevel serverLevel) {
+			serverLevel.getEntities().getAll().forEach(entity -> TFTickHandler.travellersPantsControlFall(entity, 1 / serverLevel.tickRateManager().tickrate()));
+			System.out.println("Server level");
 		}
 	}
 
@@ -164,4 +182,29 @@ public class TFTickHandler {
 		}
 	}
 
+	public static void travellersPantsControlFall(Entity entity, float dt) {  // FIXME: Make it follow Minecraft laws of physics
+		if (!(entity instanceof LivingEntity livingEntity))
+			return;
+
+		ItemStack leggingsStack = livingEntity.getItemBySlot(EquipmentSlot.LEGS);
+		Float targetSpeed = leggingsStack.get(TFDataComponents.CONTROLLED_FALLING_TARGET_VELOCITY);
+		Float TAU = leggingsStack.get(TFDataComponents.CONTROLLED_FALLING_TAU);
+		Vec3 deltaMovement = livingEntity.getDeltaMovement();
+		if (targetSpeed == null || TAU == null)
+			return;
+
+		float targetVelocity = -targetSpeed * (livingEntity.isShiftKeyDown() ? 3 : 1);
+
+		if (deltaMovement.y() >= targetVelocity)
+			return;
+
+
+		livingEntity.setDeltaMovement(
+			deltaMovement.x(),
+			TFMathUtil.interpolateToTarget(deltaMovement.y(), targetVelocity, dt, TAU),
+			deltaMovement.z()
+		);
+
+		livingEntity.resetFallDistance();
+	}
 }
