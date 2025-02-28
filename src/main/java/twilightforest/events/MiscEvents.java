@@ -22,6 +22,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.AnvilUpdateEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
@@ -36,6 +37,7 @@ import twilightforest.entity.passive.TinyBird;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFEntities;
+import twilightforest.init.TFItems;
 import twilightforest.network.CreateMovingCicadaSoundPacket;
 
 @EventBusSubscriber(modid = TwilightForestMod.ID)
@@ -62,6 +64,25 @@ public class MiscEvents {
 				mob.targetSelector.addGoal(7, new NonTameRandomTargetGoal<>((TamableAnimal) mob, Bighorn.class, true, null));
 			}
 		}
+	}
+
+	@SubscribeEvent
+	public static void addAnvilRecipes(AnvilUpdateEvent event) {
+		ItemStack leftItemStack = event.getLeft();
+		ItemStack rightItemStack = event.getRight();
+		String name = event.getName();
+		boolean correctNameForPantsWithBelt = leftItemStack.is(TFItems.TRAVELLERS_LEGGINGS_BELT) && "Traveller's Wings With Belt".equalsIgnoreCase(name);
+		boolean correctNameForPants = leftItemStack.is(TFItems.TRAVELLERS_LEGGINGS) && "Traveller's Wings".equalsIgnoreCase(name);
+		if (!rightItemStack.isEmpty())
+			return;
+
+		if (correctNameForPantsWithBelt)
+			event.setOutput(new ItemStack(TFItems.TRAVELLERS_WINGS_BELT.get()));
+		if (correctNameForPants)
+			event.setOutput(new ItemStack(TFItems.TRAVELLERS_WINGS.get()));
+
+		if (event.getOutput().has(TFDataComponents.TRAVELLERS_HAS_WINGS))
+			event.setCost(15);
 	}
 
 	@SubscribeEvent

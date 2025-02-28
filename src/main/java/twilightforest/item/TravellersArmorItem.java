@@ -26,7 +26,6 @@ import twilightforest.client.model.armor.TFArmorModel;
 import twilightforest.client.model.armor.TravellersLeggingsModel;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFArmorMaterials;
-import twilightforest.init.TFItems;
 
 public class TravellersArmorItem extends ArmorItem {
 	public TravellersArmorItem(ArmorItem.Type equipmentType, Properties properties, int durability) {
@@ -67,10 +66,26 @@ public class TravellersArmorItem extends ArmorItem {
 			.component(TFDataComponents.STEALTH_CROUCHING_ENABLE, true);
 	}
 
+	public static Properties glovesProperties(Properties properties) {
+		return properties
+			.component(TFDataComponents.TRAVELLERS_HAS_GLOVES, true);
+	}
+
+	public static Properties wingsProperties(Properties properties) {
+		return properties
+			.component(TFDataComponents.TRAVELLERS_HAS_WINGS, true);
+	}
+
 	public static Properties pantsProperties(Properties properties) {
 		return properties
 			.component(TFDataComponents.TRAVELLERS_HAS_PANTS, true)
 			.component(TFDataComponents.CONTROLLED_FALLING_MULTIPLIER, 1 - 1 / 6F);
+	}
+
+
+	public static Properties beltProperties(Properties properties) {
+		return properties
+			.component(TFDataComponents.TRAVELLERS_HAS_BELT, true);
 	}
 
 	public static Properties bootsProperties(Properties properties) {
@@ -91,13 +106,12 @@ public class TravellersArmorItem extends ArmorItem {
 				case CHEST -> {
 					ModelPart chestLayer = models.bakeLayer(TFModelLayers.TRAVELLERS_ARMOR_CHEST_GLOVES);
 					chestLayer.getAllParts().forEach(part -> part.skipDraw = true);
-					if (stack.is(TFItems.TRAVELLERS_CHESTPLATE) || stack.is(TFItems.TRAVELLERS_CHESTPLATE_GLOVES)) {
-						chestLayer.getChild("body").skipDraw = false;
-					}
-					if (stack.is(TFItems.TRAVELLERS_GLOVES) || stack.is(TFItems.TRAVELLERS_CHESTPLATE_GLOVES)) {
-						chestLayer.getChild("left_arm").skipDraw = false;
-						chestLayer.getChild("right_arm").skipDraw = false;
-					}
+					boolean hasChestplate = Boolean.TRUE.equals(stack.get(TFDataComponents.TRAVELLERS_HAS_CHESTPLATE));
+					boolean hasGloves = Boolean.TRUE.equals(stack.get(TFDataComponents.TRAVELLERS_HAS_GLOVES));
+					chestLayer.getChild("body").skipDraw = !hasChestplate;
+					chestLayer.getChild("left_arm").skipDraw = !hasGloves;
+					chestLayer.getChild("right_arm").skipDraw = !hasGloves;
+
 					yield chestLayer;
 				}
 				case LEGS -> {

@@ -646,7 +646,7 @@ public class RegistrationEvents {
 
 		event.registerItem(ArcticArmorItem.ArmorRender.INSTANCE, TFItems.ARCTIC_HELMET.get(), TFItems.ARCTIC_CHESTPLATE.get(), TFItems.ARCTIC_LEGGINGS.get(), TFItems.ARCTIC_BOOTS.get());
 		event.registerItem(FieryArmorItem.ArmorRender.INSTANCE, TFItems.FIERY_HELMET.get(), TFItems.FIERY_CHESTPLATE.get(), TFItems.FIERY_LEGGINGS.get(), TFItems.FIERY_BOOTS.get());
-		event.registerItem(TravellersArmorItem.ArmorRender.INSTANCE, TFItems.TRAVELLERS_GOGGLES.get(), TFItems.TRAVELLERS_CHESTPLATE_GLOVES.get(), TFItems.TRAVELLERS_CHESTPLATE.get(), TFItems.TRAVELLERS_GLOVES.get(), TFItems.TRAVELLERS_LEGGINGS_BELT.get(), TFItems.TRAVELLERS_LEGGINGS.get(), TFItems.TRAVELLERS_BELT.get(), TFItems.TRAVELLERS_BOOTS.get());
+		event.registerItem(TravellersArmorItem.ArmorRender.INSTANCE, TFItems.TRAVELLERS_GOGGLES.get(), TFItems.TRAVELLERS_CHESTPLATE_GLOVES.get(), TFItems.TRAVELLERS_CHESTPLATE.get(), TFItems.TRAVELLERS_GLOVES.get(), TFItems.TRAVELLERS_WINGS_BELT.get(), TFItems.TRAVELLERS_WINGS.get(), TFItems.TRAVELLERS_LEGGINGS_BELT.get(), TFItems.TRAVELLERS_LEGGINGS.get(), TFItems.TRAVELLERS_BELT.get(), TFItems.TRAVELLERS_BOOTS.get());
 		event.registerItem(KnightmetalArmorItem.ArmorRender.INSTANCE, TFItems.KNIGHTMETAL_HELMET.get(), TFItems.KNIGHTMETAL_CHESTPLATE.get(), TFItems.KNIGHTMETAL_LEGGINGS.get(), TFItems.KNIGHTMETAL_BOOTS.get());
 		event.registerItem(PhantomArmorItem.ArmorRender.INSTANCE, TFItems.PHANTOM_HELMET.get(), TFItems.PHANTOM_CHESTPLATE.get());
 		event.registerItem(YetiArmorItem.ArmorRender.INSTANCE, TFItems.YETI_HELMET.get(), TFItems.YETI_CHESTPLATE.get(), TFItems.YETI_LEGGINGS.get(), TFItems.YETI_BOOTS.get());

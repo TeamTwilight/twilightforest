@@ -546,6 +546,8 @@ public class TFCreativeTabs {
 			output.accept(TFItems.TRAVELLERS_CHESTPLATE_GLOVES);
 			output.accept(TFItems.TRAVELLERS_CHESTPLATE);
 			output.accept(TFItems.TRAVELLERS_GLOVES);
+			output.accept(TFItems.TRAVELLERS_WINGS_BELT);
+			output.accept(TFItems.TRAVELLERS_WINGS);
 			output.accept(TFItems.TRAVELLERS_LEGGINGS_BELT);
 			output.accept(TFItems.TRAVELLERS_LEGGINGS);
 			output.accept(TFItems.TRAVELLERS_BELT);
