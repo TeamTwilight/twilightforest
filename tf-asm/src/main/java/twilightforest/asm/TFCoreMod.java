@@ -13,6 +13,7 @@ import twilightforest.asm.transformers.cloud.IsRainingAtTransformer;
 import twilightforest.asm.transformers.conquered.StructureStartLoadStaticTransformer;
 import twilightforest.asm.transformers.foliage.FoliageColorResolverTransformer;
 import twilightforest.asm.transformers.lead.LeashFenceKnotSurvivesTransformer;
+import twilightforest.asm.transformers.livingentity.WaterWalkTransformer;
 import twilightforest.asm.transformers.map.ResolveNearestNonRandomSpreadMapStructureTransformer;
 import twilightforest.asm.transformers.multipart.ResolveEntitiesForRendereringTransformer;
 import twilightforest.asm.transformers.multipart.ResolveEntityRendererTransformer;
@@ -29,8 +30,6 @@ public class TFCoreMod implements ICoreMod {
 			// armor
 			new ArmorVisibilityRenderingTransformer(),
 			new CancelArmorRenderingTransformer(),
-
-			new MaybeBackOffFromEdgeTransformer(),
 
 			// beardifier
 			new BeardifierClassTransformer(),
@@ -55,6 +54,9 @@ public class TFCoreMod implements ICoreMod {
 			// lead
 			new LeashFenceKnotSurvivesTransformer(),
 
+			// livingEntity
+			new WaterWalkTransformer(),
+
 			// map
 			new ResolveNearestNonRandomSpreadMapStructureTransformer(),
 
@@ -62,6 +64,9 @@ public class TFCoreMod implements ICoreMod {
 			new ResolveEntitiesForRendereringTransformer(),
 			new ResolveEntityRendererTransformer(),
 			new SendDirtytEntityDataTransformer(),
+
+			// player
+			new MaybeBackOffFromEdgeTransformer(),
 
 			// shroom
 			new ModifySoilDecisionForMushroomBlockSurvivabilityTransformer()
