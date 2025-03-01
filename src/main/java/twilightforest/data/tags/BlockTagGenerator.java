@@ -416,9 +416,8 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			.addTags(BlockTags.DIRT);
 
 		this.tag(NETHER_NATURA_BUSHES_SURVIVE)
-			.add(Blocks.NETHERRACK)
-			.add(Blocks.NETHER_QUARTZ_ORE)
-			.add(Blocks.NETHER_GOLD_ORE)
+			.addTags(Tags.Blocks.NETHERRACKS)
+			.addTags(Tags.Blocks.ORES_IN_GROUND_NETHERRACK)
 			.add(Blocks.SOUL_SAND)
 			.add(Blocks.SOUL_SOIL);
 
