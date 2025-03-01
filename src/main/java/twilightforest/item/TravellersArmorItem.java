@@ -106,7 +106,10 @@ public class TravellersArmorItem extends ArmorItem {
 	public static Properties chestProperties(Properties properties) {
 		return properties
 			.component(TFDataComponents.TRAVELLERS_HAS_CHESTPLATE, true)
-			.component(TFDataComponents.STEALTH_CROUCHING_ENABLE, true);
+			.component(TFDataComponents.STEALTH_CROUCHING_ENABLE, true)
+			.attributes(defaultArmorProperties(Type.CHESTPLATE)
+				.add(Attributes.WATER_MOVEMENT_EFFICIENCY, new AttributeModifier(TwilightForestMod.prefix("travellers_gear.vest_fast_swimming"), 1F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.CHEST)
+				.build());
 	}
 
 	public static Properties glovesProperties(Properties properties) {
