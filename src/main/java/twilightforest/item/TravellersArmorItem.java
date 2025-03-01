@@ -8,6 +8,7 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -133,9 +134,33 @@ public class TravellersArmorItem extends ArmorItem {
 	public static Properties bootsProperties(Properties properties) {
 		return properties
 			.component(TFDataComponents.WATER_WALK_ENABLE, true)
-			.attributes(ItemAttributeModifiers.builder()
+			.attributes(defaultArmorProperties(Type.BOOTS)
 				.add(Attributes.STEP_HEIGHT, new AttributeModifier(TwilightForestMod.prefix("travellers_gear.boots_high_step"), 0.5F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.FEET)
 				.build());
+	}
+
+	// [VanillaCopy] modified ArmorItem constructor to just return default attribute modifiers
+	public static ItemAttributeModifiers.Builder defaultArmorProperties(Type type) {
+		int defense = TFArmorMaterials.TRAVELLERS.value().getDefense(type);
+		float toughness = TFArmorMaterials.TRAVELLERS.value().toughness();
+		ItemAttributeModifiers.Builder defaultArmorModifiers = ItemAttributeModifiers.builder();
+		EquipmentSlotGroup equipmentslotgroup = EquipmentSlotGroup.bySlot(type.getSlot());
+		ResourceLocation resourcelocation = ResourceLocation.withDefaultNamespace("armor." + type.getName());
+		defaultArmorModifiers.add(
+			Attributes.ARMOR, new AttributeModifier(resourcelocation, defense, AttributeModifier.Operation.ADD_VALUE), equipmentslotgroup
+		);
+		defaultArmorModifiers.add(
+			Attributes.ARMOR_TOUGHNESS, new AttributeModifier(resourcelocation, toughness, AttributeModifier.Operation.ADD_VALUE), equipmentslotgroup
+		);
+		float knockbackResistance = TFArmorMaterials.TRAVELLERS.value().knockbackResistance();
+		if (knockbackResistance > 0.0F) {
+			defaultArmorModifiers.add(
+				Attributes.KNOCKBACK_RESISTANCE,
+				new AttributeModifier(resourcelocation, knockbackResistance, AttributeModifier.Operation.ADD_VALUE),
+				equipmentslotgroup
+			);
+		}
+		return defaultArmorModifiers;
 	}
 
 	public static final class ArmorRender implements IClientItemExtensions {
