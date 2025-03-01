@@ -6,6 +6,8 @@ import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -18,22 +20,42 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.TFArmorModel;
 import twilightforest.client.model.armor.TravellersLeggingsModel;
+import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFArmorMaterials;
 
+import javax.annotation.Nullable;
+
 public class TravellersArmorItem extends ArmorItem {
+	public static final double WATER_WALKING_MAX_SUBMERGED_HEIGHT = 0.4;
+	@Nullable
+	private ItemAttributeModifiers attributeModifiers;
 	public TravellersArmorItem(ArmorItem.Type equipmentType, Properties properties, int durability) {
 		super(TFArmorMaterials.TRAVELLERS, equipmentType, properties.durability(equipmentType.getDurability(durability)));
+		attributeModifiers = this.components().get(DataComponents.ATTRIBUTE_MODIFIERS);
+		if (attributeModifiers == null)
+			return;
+
+		for (ItemAttributeModifiers.Entry modifier : this.getDefaultAttributeModifiers().modifiers()) {
+			attributeModifiers = attributeModifiers.withModifierAdded(modifier.attribute(), modifier.modifier(), modifier.slot());
+		}
 	}
 
 	public TravellersArmorItem(ArmorItem.Type equipmentType, Properties properties) {
 		this(equipmentType, properties, 4);
+	}
+
+	@Override
+	public ItemAttributeModifiers getDefaultAttributeModifiers() {
+		return this.attributeModifiers == null ? super.getDefaultAttributeModifiers() : this.attributeModifiers;
 	}
 
 	public static void travellersItemTick(Player player) {
@@ -51,6 +73,26 @@ public class TravellersArmorItem extends ArmorItem {
 			MobEffectInstance invisibilityEffect = player.getEffect(MobEffects.INVISIBILITY);
 			if (invisibilityEffect != null && invisibilityEffect.getDuration() < 2)
 				player.setInvisible(false);
+		}
+	}
+
+
+	public static void waterWalkingSplashEffect(LivingEntity livingEntity) {
+		Long lastTickWaterWalking = livingEntity.getData(TFDataAttachments.LAST_TICK_WATER_WALKING);
+		Level level = livingEntity.level();
+		Vec3 velocity = livingEntity.getDeltaMovement();
+		if (lastTickWaterWalking + 1 != level.getGameTime() || velocity.horizontalDistance() < 0.01)
+			return;
+
+		// modified [VanillaCopy] of Entity.doWaterSplashEffect()
+		for (int particleNumber = 0; particleNumber < 1.0F + livingEntity.dimensions.width(); particleNumber++) {
+			double dx = (level.random.nextDouble() * 2.0 - 1.0) * (double)livingEntity.dimensions.width() / 2D;
+			double dz = (level.random.nextDouble() * 2.0 - 1.0) * (double)livingEntity.dimensions.width() / 2D;
+			level.addParticle(ParticleTypes.SPLASH,
+				livingEntity.getX() + dx,
+				livingEntity.getY() + WATER_WALKING_MAX_SUBMERGED_HEIGHT,
+				livingEntity.getZ() + dz,
+				-velocity.x, 0.5, -velocity.z);
 		}
 	}
 

@@ -22,5 +22,6 @@ public class TFDataAttachments {
 	public static final DeferredHolder<AttachmentType<?>, AttachmentType<TFPortalAttachment>> TF_PORTAL_COOLDOWN = ATTACHMENT_TYPES.register("tf_portal_cooldown", () -> AttachmentType.builder(TFPortalAttachment::new).build());
 	public static final DeferredHolder<AttachmentType<?>, AttachmentType<SmashBlocksEnchantmentAttachment>> SMASH_BLOCKS = ATTACHMENT_TYPES.register("smash_blocks", () -> AttachmentType.builder(() -> new SmashBlocksEnchantmentAttachment()).serialize(SmashBlocksEnchantmentAttachment.CODEC).build());
 	public static final DeferredHolder<AttachmentType<?>, AttachmentType<TravellersWingsAnimAttachment>> TRAVELLERS_WINGS_ANIM = ATTACHMENT_TYPES.register("travellers_wings_anim", () -> AttachmentType.builder(TravellersWingsAnimAttachment::new).build());
-	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Boolean>> TRAVELLERS_GOGGLES_RED_THREAD_VISION = ATTACHMENT_TYPES.register("travellers_goggles_red_thread_vision", () -> AttachmentType.builder(() -> false).serialize(Codec.BOOL).build());
+	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Boolean>> TRAVELLERS_GOGGLES_RED_THREAD_VISION = ATTACHMENT_TYPES.register("travellers_goggles_red_thread_vision", () -> AttachmentType.builder(() -> true).serialize(Codec.BOOL).build());
+	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Long>> LAST_TICK_WATER_WALKING = ATTACHMENT_TYPES.register("last_tick_water_walking", () -> AttachmentType.builder(() -> 0L).serialize(Codec.LONG).build());
 }

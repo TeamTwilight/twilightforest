@@ -50,6 +50,8 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import twilightforest.beans.Autowired;
 import twilightforest.init.TFAttributeModifiers;
+import twilightforest.init.TFDataAttachments;
+import twilightforest.item.TravellersArmorItem;
 import twilightforest.util.ArmorUtil;
 import twilightforest.util.multiparts.MultipartEntityUtil;
 import twilightforest.block.CloudBlock;
@@ -269,7 +271,10 @@ public class ASMHooks {
 		if (waterWalkEnabled == null || !waterWalkEnabled)
 			return null;
 
-		return livingEntity.getFluidTypeHeight(NeoForgeMod.WATER_TYPE.value()) <= 0.4 && !livingEntity.isCrouching();
+		boolean isWaterWalking = livingEntity.getFluidTypeHeight(NeoForgeMod.WATER_TYPE.value()) <= TravellersArmorItem.WATER_WALKING_MAX_SUBMERGED_HEIGHT && !livingEntity.isCrouching();
+		if (isWaterWalking)
+			livingEntity.setData(TFDataAttachments.LAST_TICK_WATER_WALKING, livingEntity.level().getGameTime());
+		return isWaterWalking;
 	}
 
 	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

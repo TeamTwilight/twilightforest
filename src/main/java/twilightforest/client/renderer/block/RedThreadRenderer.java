@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.PipeBlock;
@@ -27,6 +28,7 @@ import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.RedThreadModel;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDataAttachments;
+import twilightforest.init.TFDataComponents;
 
 public class RedThreadRenderer<T extends RedThreadBlockEntity> implements BlockEntityRenderer<T> {
 	private static final ResourceLocation TEXTURE = TwilightForestMod.getModelTexture("red_thread.png");
@@ -53,7 +55,8 @@ public class RedThreadRenderer<T extends RedThreadBlockEntity> implements BlockE
 		if (player == null)
 			return;
 
-		boolean glow = player.isHolding(TFBlocks.RED_THREAD.get().asItem()) || player.getData(TFDataAttachments.TRAVELLERS_GOGGLES_RED_THREAD_VISION);
+		boolean wearsActivatedTravellersGoggles = player.getData(TFDataAttachments.TRAVELLERS_GOGGLES_RED_THREAD_VISION) && Boolean.TRUE.equals(player.getItemBySlot(EquipmentSlot.HEAD).get(TFDataComponents.RED_THREAD_VISION_ENABLE));
+		boolean glow = player.isHolding(TFBlocks.RED_THREAD.get().asItem()) || wearsActivatedTravellersGoggles;
 
 		for (Direction face : Direction.values()) {
 			if (state.getValue(PipeBlock.PROPERTY_BY_DIRECTION.get(face))) {
