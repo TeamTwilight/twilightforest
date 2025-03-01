@@ -395,13 +395,33 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			.add(Blocks.MOSS_BLOCK, TFBlocks.MANGROVE_ROOT.get(), TFBlocks.ROOT_BLOCK.get(), TFBlocks.LIVEROOT_BLOCK.get());
 
 		this.tag(OREBERRY_BUSHES_SURVIVE)
-			.addTags(BlockTags.BASE_STONE_OVERWORLD);
+			.addTags(Tags.Blocks.STONES)
+			.addTags(BlockTags.STONE_BRICKS)
+			.addTags(Tags.Blocks.ORES_IN_GROUND_STONE)
+			.addTags(Tags.Blocks.COBBLESTONES)
+			.addTags(Tags.Blocks.NETHERRACKS)
+			.add(TFBlocks.GIANT_COBBLESTONE.get())
+			.add(Blocks.POLISHED_ANDESITE)
+			.add(Blocks.POLISHED_DIORITE)
+			.add(Blocks.POLISHED_GRANITE)
+			.add(Blocks.SMOOTH_STONE)
+			.add(Blocks.NETHERRACK)
+			.add(Blocks.NETHER_QUARTZ_ORE)
+			.add(Blocks.NETHER_GOLD_ORE)
+			.add(Blocks.INFESTED_CHISELED_STONE_BRICKS)
+			.add(Blocks.INFESTED_CRACKED_STONE_BRICKS)
+			.add(Blocks.INFESTED_MOSSY_STONE_BRICKS)
+			.add(Blocks.INFESTED_STONE_BRICKS);
 
 		this.tag(OVERWORLD_NATURA_BUSHES_SURVIVE)
 			.addTags(BlockTags.DIRT);
 
 		this.tag(NETHER_NATURA_BUSHES_SURVIVE)
-			.add(Blocks.NETHERRACK, Blocks.SOUL_SAND, Blocks.SOUL_SOIL);
+			.add(Blocks.NETHERRACK)
+			.add(Blocks.NETHER_QUARTZ_ORE)
+			.add(Blocks.NETHER_GOLD_ORE)
+			.add(Blocks.SOUL_SAND)
+			.add(Blocks.SOUL_SOIL);
 
 		this.tag(NETHER_NATURA_BUSHES_DIE)
 			.addTags(BlockTags.NYLIUM);

@@ -1,4 +1,4 @@
-// 1.21.1	2025-02-22T23:13:51.35847753	Twilight Forest Block Tags
+// 1.21.1	2025-03-01T01:13:04.78390605	Twilight Forest Block Tags
 9d529390443b5da5d71bd6e867c066632e1340b8 data/alexscaves/tags/block/ferromagnetic_blocks.json
 ddfcbead67bb9487c003af137a276963e5b20022 data/alexscaves/tags/block/gloomoth_light_sources.json
 c365018bd78f1335cd4508b5d74bc4500ae951bd data/alexscaves/tags/block/underzealot_light_sources.json
@@ -110,11 +110,11 @@ dd1f6af3c96cc308a52726613452fddc17b9833c data/twilightforest/tags/block/mazebrea
 984a835f12c583514b244703d6bad1afa79b3402 data/twilightforest/tags/block/mineable_with_block_and_chain.json
 9a0837862b33f048722739e6314f5c471d56b2d6 data/twilightforest/tags/block/mining_logs.json
 545150b1994cb10f5d3f51ae4c8b7666c19ae96a data/twilightforest/tags/block/nether_natura_bushes_die.json
-0a2619ed0a5b62457d1ff5edfa687c7d82818c27 data/twilightforest/tags/block/nether_natura_bushes_survive.json
+3a8562d9d226ddb586ac935946b4d6109ec501d8 data/twilightforest/tags/block/nether_natura_bushes_survive.json
 2e3669ba44aac2e69249800a996f0e1b27c08e54 data/twilightforest/tags/block/ore_magnet/ignored_ores.json
 3b364832bd51eac9a6ed381bfcb51d69a20c47ac data/twilightforest/tags/block/ore_magnet/ore_safe_replace_block.json
 997d71fbd6bbcc5b7e922ff11bba74a028a37077 data/twilightforest/tags/block/ore_meter_targetable.json
-8dd9194492a51b40153c68f2381b0eaa8f09a217 data/twilightforest/tags/block/oreberry_bushes_survive.json
+4d3094db672cf98b8611a27f9083e32e2415412e data/twilightforest/tags/block/oreberry_bushes_survive.json
 69c396cb051bbe9a130e6979b67065e5041b179d data/twilightforest/tags/block/overworld_natura_bushes_survive.json
 0a6d57dbfee5c2462339b802e3d71f90b2dbf41c data/twilightforest/tags/block/penguins_spawnable_on.json
 0ce6b55aef503d7bff8b5dd86b38092ba2b14c46 data/twilightforest/tags/block/plants_hang_on.json

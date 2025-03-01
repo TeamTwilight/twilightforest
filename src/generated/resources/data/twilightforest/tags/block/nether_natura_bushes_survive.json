@@ -1,6 +1,8 @@
 {
   "values": [
     "minecraft:netherrack",
+    "minecraft:nether_quartz_ore",
+    "minecraft:nether_gold_ore",
     "minecraft:soul_sand",
     "minecraft:soul_soil"
   ]
