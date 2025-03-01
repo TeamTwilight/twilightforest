@@ -119,7 +119,8 @@ public class TravellersArmorItem extends ArmorItem {
 
 	public static Properties wingsProperties(Properties properties) {
 		return properties
-			.component(TFDataComponents.TRAVELLERS_HAS_WINGS, true);
+			.component(TFDataComponents.TRAVELLERS_HAS_WINGS, true)
+			.component(TFDataComponents.HIGH_JUMP_AMPLIFIER, 1);
 	}
 
 	public static Properties pantsProperties(Properties properties) {

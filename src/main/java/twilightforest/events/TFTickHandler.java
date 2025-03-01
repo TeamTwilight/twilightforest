@@ -10,6 +10,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -94,6 +96,7 @@ public class TFTickHandler {
 			serverLevel.getEntities().getAll().forEach(entity -> {
 				if (!(entity instanceof LivingEntity livingEntity))
 					return;
+				travellersWingsHighJump(livingEntity);
 				travellersPantsControlFall(livingEntity);
 				TravellersArmorItem.waterWalkingSplashEffect(livingEntity);
 			});
@@ -205,5 +208,12 @@ public class TFTickHandler {
 		);
 
 		livingEntity.fallDistance = (float) (Math.pow(newDeltaMovementY, 2) / 2 / livingEntity.getGravity());  // use mv ^ 2 / 2 / mg = h
+	}
+
+	public static void travellersWingsHighJump(LivingEntity livingEntity) {
+		ItemStack leggingsStack = livingEntity.getItemBySlot(EquipmentSlot.LEGS);
+		Integer amplifier = leggingsStack.get(TFDataComponents.HIGH_JUMP_AMPLIFIER);
+		if (amplifier != null)
+			livingEntity.addEffect(new MobEffectInstance(MobEffects.JUMP, 2, amplifier, false, false, false));
 	}
 }
