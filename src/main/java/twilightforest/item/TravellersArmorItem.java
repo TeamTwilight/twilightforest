@@ -97,6 +97,26 @@ public class TravellersArmorItem extends ArmorItem {
 		}
 	}
 
+	public static void travellersPantsControlFall(LivingEntity livingEntity) {
+		ItemStack leggingsStack = livingEntity.getItemBySlot(EquipmentSlot.LEGS);
+		Float multiplier = leggingsStack.get(TFDataComponents.CONTROLLED_FALLING_MULTIPLIER);
+		Vec3 deltaMovement = livingEntity.getDeltaMovement();
+		if (multiplier == null || deltaMovement.y() >= 0)
+			return;
+
+		if (livingEntity.isShiftKeyDown())
+			multiplier = 1 - (1 - multiplier) / 3F;
+
+		double newDeltaMovementY = deltaMovement.y() * multiplier;
+		livingEntity.setDeltaMovement(
+			deltaMovement.x(),
+			newDeltaMovementY,  // works similar to minecraft air resistance
+			deltaMovement.z()
+		);
+
+		livingEntity.fallDistance = (float) (Math.pow(newDeltaMovementY, 2) / 2 / livingEntity.getGravity());  // use mv ^ 2 / 2 / mg = h
+	}
+
 	public static Properties gogglesProperties(Properties properties) {
 		return properties
 			.component(TFDataComponents.ZOOM_ABILITY_MODIFIER, 0.3F)

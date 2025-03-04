@@ -9,6 +9,7 @@ import net.minecraft.client.gui.components.SplashRenderer;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.RenderType;
@@ -30,6 +31,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.WrittenBookItem;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -43,6 +45,7 @@ import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
+import net.neoforged.neoforge.event.tick.LevelTickEvent;
 import twilightforest.TwilightForestMod;
 import twilightforest.beans.Autowired;
 import twilightforest.block.GiantBlock;
@@ -57,6 +60,7 @@ import twilightforest.config.TFConfig;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.entity.boss.bar.ClientTFBossBar;
 import twilightforest.events.HostileMountEvents;
+import twilightforest.events.TFTickHandler;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFDimension;
@@ -104,6 +108,7 @@ public class ClientEvents {
 		NeoForge.EVENT_BUS.addListener(ClientEvents::updateTravellersZoomFOV);
 		NeoForge.EVENT_BUS.addListener(ClientEvents::handleTravellersStealth);
 		NeoForge.EVENT_BUS.addListener(ClientEvents::updateTravellersRedThreadAttachment);
+		NeoForge.EVENT_BUS.addListener(ClientEvents::travellersArmorEffects);
 
 		NeoForge.EVENT_BUS.addListener(CloudEvents::renderPrecipitation);
 		NeoForge.EVENT_BUS.addListener(CloudEvents::tickWeatherEffects);
@@ -112,6 +117,18 @@ public class ClientEvents {
 		NeoForge.EVENT_BUS.addListener(FogHandler::unloadFog);
 
 		NeoForge.EVENT_BUS.addListener(LockedBiomeToastHandler::tickLockedToastLogic);
+	}
+
+	public static void travellersArmorEffects(LevelTickEvent.Post event) {
+		Level level = event.getLevel();
+		if (level instanceof ClientLevel clientLevel) {
+			clientLevel.entitiesForRendering().forEach(entity -> {
+				if (!(entity instanceof LivingEntity livingEntity))
+					return;
+				TravellersArmorItem.travellersPantsControlFall(livingEntity);
+				TravellersArmorItem.waterWalkingSplashEffect(livingEntity);
+			});
+		}
 	}
 
 	private static void handleGameBootup(ScreenEvent.Init.Post event) {

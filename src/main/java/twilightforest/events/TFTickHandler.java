@@ -3,7 +3,6 @@ package twilightforest.events;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.DisplayInfo;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
@@ -85,19 +84,12 @@ public class TFTickHandler {
 	@SubscribeEvent
 	public static void levelTick(LevelTickEvent.Post event) {
 		Level level = event.getLevel();
-		if (level instanceof ClientLevel clientLevel) {
-			clientLevel.entitiesForRendering().forEach(entity -> {
-				if (!(entity instanceof LivingEntity livingEntity))
-					return;
-				travellersPantsControlFall(livingEntity);
-				TravellersArmorItem.waterWalkingSplashEffect(livingEntity);
-			});
-		} else if (level instanceof ServerLevel serverLevel) {
+		if (level instanceof ServerLevel serverLevel) {
 			serverLevel.getEntities().getAll().forEach(entity -> {
 				if (!(entity instanceof LivingEntity livingEntity))
 					return;
 				travellersWingsHighJump(livingEntity);
-				travellersPantsControlFall(livingEntity);
+				TravellersArmorItem.travellersPantsControlFall(livingEntity);
 				TravellersArmorItem.waterWalkingSplashEffect(livingEntity);
 			});
 		}
@@ -188,26 +180,6 @@ public class TFTickHandler {
 				TFAdvancements.MADE_TF_PORTAL.get().trigger(player);
 
 		}
-	}
-
-	public static void travellersPantsControlFall(LivingEntity livingEntity) {
-		ItemStack leggingsStack = livingEntity.getItemBySlot(EquipmentSlot.LEGS);
-		Float multiplier = leggingsStack.get(TFDataComponents.CONTROLLED_FALLING_MULTIPLIER);
-		Vec3 deltaMovement = livingEntity.getDeltaMovement();
-		if (multiplier == null || deltaMovement.y() >= 0)
-			return;
-
-		if (livingEntity.isShiftKeyDown())
-			multiplier = 1 - (1 - multiplier) / 3F;
-
-		double newDeltaMovementY = deltaMovement.y() * multiplier;
-		livingEntity.setDeltaMovement(
-			deltaMovement.x(),
-			newDeltaMovementY,  // works similar to minecraft air resistance
-			deltaMovement.z()
-		);
-
-		livingEntity.fallDistance = (float) (Math.pow(newDeltaMovementY, 2) / 2 / livingEntity.getGravity());  // use mv ^ 2 / 2 / mg = h
 	}
 
 	public static void travellersWingsHighJump(LivingEntity livingEntity) {
