@@ -11,14 +11,14 @@ import org.objectweb.asm.tree.*;
 import java.util.Set;
 
 /**
- * {@link twilightforest.ASMHooks#WaterWalkEnabled}
+ * {@link twilightforest.ASMHooks#processWaterWalking}
  */
 public class WaterWalkTransformer implements ITransformer<MethodNode> {
 
 	/*
 		 We insert roughly this at the beginning of LivingEntity::canStandOnFluid
 
-		 Boolean tmp = ASMHooks.WaterWalkEnabled(this, fluidState);
+		 Boolean tmp = ASMHooks.processWaterWalking(this, fluidState);
 		 if (tmp != null) {
 			 return tmp.booleanValue();
 		 }
@@ -39,7 +39,7 @@ public class WaterWalkTransformer implements ITransformer<MethodNode> {
 		list.add(new MethodInsnNode(
 			Opcodes.INVOKESTATIC,
 			"twilightforest/ASMHooks",
-			"WaterWalkEnabled",
+			"processWaterWalking",
 			"(Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/level/material/FluidState;)Ljava/lang/Boolean;",
 			false
 		));

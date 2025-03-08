@@ -24,6 +24,7 @@ import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
@@ -32,6 +33,7 @@ import twilightforest.client.model.armor.TravellersLeggingsModel;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFArmorMaterials;
+import twilightforest.network.ParticlePacket;
 
 import javax.annotation.Nullable;
 
@@ -77,24 +79,30 @@ public class TravellersArmorItem extends ArmorItem {
 		}
 	}
 
-
 	public static void waterWalkingSplashEffect(LivingEntity livingEntity) {
 		Long lastTickWaterWalking = livingEntity.getData(TFDataAttachments.LAST_TICK_WATER_WALKING);
 		Level level = livingEntity.level();
-		Vec3 velocity = livingEntity.getDeltaMovement();
-		if (lastTickWaterWalking + 1 != level.getGameTime() || velocity.horizontalDistance() < 0.01)
+		Vec3 livingEntityVelocity = livingEntity.getKnownMovement();
+		if (lastTickWaterWalking + 1 == level.getGameTime() || livingEntityVelocity.horizontalDistance() < 0.01)
 			return;
 
-		// modified [VanillaCopy] of Entity.doWaterSplashEffect()
-		for (int particleNumber = 0; particleNumber < 1.0F + livingEntity.dimensions.width(); particleNumber++) {
+		livingEntity.setData(TFDataAttachments.LAST_TICK_WATER_WALKING, livingEntity.level().getGameTime());
+
+		ParticlePacket particlePacket = new ParticlePacket();  // we have to create it on client because of limitations of java
+		for (int particleNumber = 0; particleNumber < livingEntity.dimensions.width(); particleNumber++) {
 			double dx = (level.random.nextDouble() * 2.0 - 1.0) * (double)livingEntity.dimensions.width() / 2D;
 			double dz = (level.random.nextDouble() * 2.0 - 1.0) * (double)livingEntity.dimensions.width() / 2D;
-			level.addParticle(ParticleTypes.SPLASH,
-				livingEntity.getX() + dx,
-				livingEntity.getY() + WATER_WALKING_MAX_SUBMERGED_HEIGHT,
-				livingEntity.getZ() + dz,
-				-velocity.x, 0.5, -velocity.z);
+			Vec3 particlePos = new Vec3(livingEntity.getX() + dx, livingEntity.getY() + WATER_WALKING_MAX_SUBMERGED_HEIGHT, livingEntity.getZ() + dz);
+			Vec3 particleVelocity = new Vec3(-livingEntityVelocity.x, 0.5, -livingEntityVelocity.z);
+			if (level.isClientSide()) {
+				level.addParticle(ParticleTypes.SPLASH, false, particlePos.x(), particlePos.y(), particlePos.z(), particleVelocity.x(), particleVelocity.y(), particleVelocity.z());
+			} else {
+				particlePacket.queueParticle(ParticleTypes.SPLASH, false, particlePos, particleVelocity);
+			}
 		}
+
+		if (!level.isClientSide())
+			PacketDistributor.sendToPlayersTrackingEntity(livingEntity, particlePacket);
 	}
 
 	public static void travellersPantsControlFall(LivingEntity livingEntity) {

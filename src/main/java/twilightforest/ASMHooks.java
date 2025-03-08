@@ -50,7 +50,6 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import twilightforest.beans.Autowired;
 import twilightforest.init.TFAttributeModifiers;
-import twilightforest.init.TFDataAttachments;
 import twilightforest.item.TravellersArmorItem;
 import twilightforest.util.ArmorUtil;
 import twilightforest.util.multiparts.MultipartEntityUtil;
@@ -263,7 +262,7 @@ public class ASMHooks {
 	 * {@link net.minecraft.world.entity.LivingEntity#canStandOnFluid(FluidState)}
 	 */
 	@Nullable
-	public static Boolean WaterWalkEnabled(LivingEntity livingEntity, FluidState fluidState) {
+	public static Boolean processWaterWalking(LivingEntity livingEntity, FluidState fluidState) {
 		if (!fluidState.is(FluidTags.WATER))
 			return null;
 
@@ -271,9 +270,13 @@ public class ASMHooks {
 		if (waterWalkEnabled == null || !waterWalkEnabled)
 			return null;
 
-		boolean isWaterWalking = livingEntity.getFluidTypeHeight(NeoForgeMod.WATER_TYPE.value()) <= TravellersArmorItem.WATER_WALKING_MAX_SUBMERGED_HEIGHT && !livingEntity.isCrouching();
-		if (isWaterWalking)
-			livingEntity.setData(TFDataAttachments.LAST_TICK_WATER_WALKING, livingEntity.level().getGameTime());
+		double waterHeight = livingEntity.getFluidTypeHeight(NeoForgeMod.WATER_TYPE.value());
+		boolean isWaterWalking = waterHeight > 0 &&
+			waterHeight <= TravellersArmorItem.WATER_WALKING_MAX_SUBMERGED_HEIGHT &&
+			!livingEntity.isCrouching();
+		Level level = livingEntity.level();
+		if (isWaterWalking && level.getGameTime() % 3 == 1)
+			TravellersArmorItem.waterWalkingSplashEffect(livingEntity);
 		return isWaterWalking;
 	}
 

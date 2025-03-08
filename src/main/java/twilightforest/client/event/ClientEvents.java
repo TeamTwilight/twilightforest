@@ -60,7 +60,6 @@ import twilightforest.config.TFConfig;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.entity.boss.bar.ClientTFBossBar;
 import twilightforest.events.HostileMountEvents;
-import twilightforest.events.TFTickHandler;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFDimension;
@@ -126,7 +125,6 @@ public class ClientEvents {
 				if (!(entity instanceof LivingEntity livingEntity))
 					return;
 				TravellersArmorItem.travellersPantsControlFall(livingEntity);
-				TravellersArmorItem.waterWalkingSplashEffect(livingEntity);
 			});
 		}
 	}

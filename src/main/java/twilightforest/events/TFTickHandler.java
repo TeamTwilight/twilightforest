@@ -20,7 +20,6 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
@@ -55,7 +54,7 @@ public class TFTickHandler {
 		if (!(eventPlayer instanceof ServerPlayer player)) return;
 		if (!(player.level() instanceof ServerLevel world)) return;
 
-		TravellersArmorItem.travellersItemTick(event.getEntity());
+		TravellersArmorItem.travellersItemTick(eventPlayer);
 
 		// check for portal creation, at least if it's not disabled
 		if (!TFConfig.disablePortalCreation && player.tickCount % (!TFConfig.checkPortalPlacement ? 100 : 20) == 0) {
@@ -90,7 +89,6 @@ public class TFTickHandler {
 					return;
 				travellersWingsHighJump(livingEntity);
 				TravellersArmorItem.travellersPantsControlFall(livingEntity);
-				TravellersArmorItem.waterWalkingSplashEffect(livingEntity);
 			});
 		}
 	}
