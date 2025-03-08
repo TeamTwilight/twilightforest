@@ -1,0 +1,11 @@
+{
+  "type": "twilightforest:drying",
+  "filter_time": 9600,
+  "input": {
+    "tag": "c:foods/cooked_meat"
+  },
+  "result": {
+    "count": 1,
+    "id": "minecraft:leather"
+  }
+}

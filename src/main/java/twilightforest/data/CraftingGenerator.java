@@ -6,6 +6,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Unit;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -18,6 +19,7 @@ import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.crafting.CompoundIngredient;
 import net.neoforged.neoforge.common.crafting.DataComponentIngredient;
 import twilightforest.TwilightForestMod;
+import twilightforest.data.custom.DryingRecipeBuilder;
 import twilightforest.data.custom.NoSmithingTemplateRecipeBuilder;
 import twilightforest.data.custom.ScepterRecipeBuilder;
 import twilightforest.data.custom.UncraftingGenerator;
@@ -612,6 +614,70 @@ public class CraftingGenerator extends CraftingDataHelper {
 			))
 			.addRepairIngredient(Items.ROTTEN_FLESH)
 			.save(output, locEquip(TFItems.ZOMBIE_SCEPTER.getId().getPath()));
+
+		DryingRecipeBuilder.drying(Ingredient.of(Tags.Items.FOODS_COOKED_MEAT), new ItemStack(Items.LEATHER), 8)
+			.unlockedBy("has_meat", has(Tags.Items.FOODS_COOKED_MEAT))
+			.save(output, TwilightForestMod.prefix("drying/cooked_meat_to_leather"));
+
+		DryingRecipeBuilder.drying(Ingredient.of(ItemTags.SAPLINGS), new ItemStack(Items.DEAD_BUSH), 6)
+			.unlockedBy("has_sapling", has(ItemTags.SAPLINGS))
+			.save(output, TwilightForestMod.prefix("drying/sapling_to_dead_bush"));
+
+		DryingRecipeBuilder.drying(Items.MUD, Items.CLAY, 6)
+			.unlockedBy("has_mud", has(Items.MUD))
+			.save(output, TwilightForestMod.prefix("drying/mud_to_clay"));
+
+		DryingRecipeBuilder.drying(Items.WET_SPONGE, Items.SPONGE, 2)
+			.unlockedBy("has_wet_sponge", has(Items.SPONGE))
+			.save(output, TwilightForestMod.prefix("drying/sponge"));
+
+		DryingRecipeBuilder.drying(Items.ROTTEN_FLESH, TFItems.MONSTER_JERKY)
+			.unlockedBy("has_meat", has(Items.ROTTEN_FLESH))
+			.save(output);
+
+		DryingRecipeBuilder.drying(Items.BEEF, TFItems.BEEF_JERKY)
+			.unlockedBy("has_meat", has(Items.BEEF))
+			.save(output);
+
+		DryingRecipeBuilder.drying(Items.CHICKEN, TFItems.CHICKEN_JERKY)
+			.unlockedBy("has_meat", has(Items.CHICKEN))
+			.save(output);
+
+		DryingRecipeBuilder.drying(Items.PORKCHOP, TFItems.PORK_JERKY)
+			.unlockedBy("has_meat", has(Items.PORKCHOP))
+			.save(output);
+
+		DryingRecipeBuilder.drying(Items.MUTTON, TFItems.MUTTON_JERKY)
+			.unlockedBy("has_meat", has(Items.MUTTON))
+			.save(output);
+
+		DryingRecipeBuilder.drying(Items.RABBIT, TFItems.RABBIT_JERKY)
+			.unlockedBy("has_meat", has(Items.RABBIT))
+			.save(output);
+
+		DryingRecipeBuilder.drying(Items.COD, TFItems.COD_JERKY)
+			.unlockedBy("has_meat", has(Items.COD))
+			.save(output);
+
+		DryingRecipeBuilder.drying(Items.SALMON, TFItems.SALMON_JERKY)
+			.unlockedBy("has_meat", has(Items.SALMON))
+			.save(output);
+
+		DryingRecipeBuilder.drying(Items.TROPICAL_FISH, TFItems.CLOWNFISH_JERKY)
+			.unlockedBy("has_meat", has(Items.TROPICAL_FISH))
+			.save(output);
+
+		DryingRecipeBuilder.drying(Items.PUFFERFISH, TFItems.FUGU_JERKY)
+			.unlockedBy("has_meat", has(Items.PUFFERFISH))
+			.save(output);
+
+		DryingRecipeBuilder.drying(TFItems.RAW_VENISON, TFItems.VENISON_JERKY)
+			.unlockedBy("has_meat", has(TFItems.RAW_VENISON))
+			.save(output);
+
+		DryingRecipeBuilder.drying(TFItems.RAW_MEEF, TFItems.MEEF_JERKY)
+			.unlockedBy("has_meat", has(TFItems.RAW_MEEF))
+			.save(output);
 	}
 
 	private void blockCompressionRecipes(RecipeOutput output) {
@@ -809,6 +875,27 @@ public class CraftingGenerator extends CraftingDataHelper {
 		banisterBlock(output, "vangrove", TFBlocks.VANGROVE_BANISTER, Blocks.MANGROVE_SLAB);
 		banisterBlock(output, "bamboo", TFBlocks.BAMBOO_BANISTER, Blocks.BAMBOO_SLAB);
 		banisterBlock(output, "cherry", TFBlocks.CHERRY_BANISTER, Blocks.CHERRY_SLAB);
+
+		dryingRackBlock(output, "canopy", TFBlocks.CANOPY_DRYING_RACK, TFBlocks.CANOPY_SLAB);
+		dryingRackBlock(output, "dark", TFBlocks.DARK_DRYING_RACK, TFBlocks.DARK_SLAB);
+		dryingRackBlock(output, "mangrove", TFBlocks.MANGROVE_DRYING_RACK, TFBlocks.MANGROVE_SLAB);
+		dryingRackBlock(output, "mining", TFBlocks.MINING_DRYING_RACK, TFBlocks.MINING_SLAB);
+		dryingRackBlock(output, "sorting", TFBlocks.SORTING_DRYING_RACK, TFBlocks.SORTING_SLAB);
+		dryingRackBlock(output, "time", TFBlocks.TIME_DRYING_RACK, TFBlocks.TIME_SLAB);
+		dryingRackBlock(output, "transformation", TFBlocks.TRANSFORMATION_DRYING_RACK, TFBlocks.TRANSFORMATION_SLAB);
+		dryingRackBlock(output, "twilight_oak", TFBlocks.TWILIGHT_OAK_DRYING_RACK, TFBlocks.TWILIGHT_OAK_SLAB);
+
+		dryingRackBlock(output, "oak", TFBlocks.OAK_DRYING_RACK, Blocks.OAK_SLAB);
+		dryingRackBlock(output, "spruce", TFBlocks.SPRUCE_DRYING_RACK, Blocks.SPRUCE_SLAB);
+		dryingRackBlock(output, "birch", TFBlocks.BIRCH_DRYING_RACK, Blocks.BIRCH_SLAB);
+		dryingRackBlock(output, "jungle", TFBlocks.JUNGLE_DRYING_RACK, Blocks.JUNGLE_SLAB);
+		dryingRackBlock(output, "acacia", TFBlocks.ACACIA_DRYING_RACK, Blocks.ACACIA_SLAB);
+		dryingRackBlock(output, "dark_oak", TFBlocks.DARK_OAK_DRYING_RACK, Blocks.DARK_OAK_SLAB);
+		dryingRackBlock(output, "crimson", TFBlocks.CRIMSON_DRYING_RACK, Blocks.CRIMSON_SLAB);
+		dryingRackBlock(output, "warped", TFBlocks.WARPED_DRYING_RACK, Blocks.WARPED_SLAB);
+		dryingRackBlock(output, "vangrove", TFBlocks.VANGROVE_DRYING_RACK, Blocks.MANGROVE_SLAB);
+		dryingRackBlock(output, "bamboo", TFBlocks.BAMBOO_DRYING_RACK, Blocks.BAMBOO_SLAB);
+		dryingRackBlock(output, "cherry", TFBlocks.CHERRY_DRYING_RACK, Blocks.CHERRY_SLAB);
 
 		chestBlock(output, "twilight_oak", TFBlocks.TWILIGHT_OAK_CHEST, TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST, TFBlocks.TWILIGHT_OAK_PLANKS);
 		chestBlock(output, "canopy", TFBlocks.CANOPY_CHEST, TFBlocks.CANOPY_TRAPPED_CHEST, TFBlocks.CANOPY_PLANKS);

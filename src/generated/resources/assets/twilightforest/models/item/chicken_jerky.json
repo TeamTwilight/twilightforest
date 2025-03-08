@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "twilightforest:item/travellers_leggings"
+    "layer0": "twilightforest:item/chicken_jerky"
   }
 }

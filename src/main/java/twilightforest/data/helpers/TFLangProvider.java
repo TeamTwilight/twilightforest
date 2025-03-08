@@ -93,6 +93,8 @@ public abstract class TFLangProvider extends LanguageProvider {
 		this.add("item.twilightforest." + woodPrefix + "_chest_boat", woodName + " Chest Boat");
 		this.add("block.twilightforest." + woodPrefix + "_hanging_sign", woodName + " Hanging Sign");
 		this.add("block.twilightforest." + woodPrefix + "_wall_hanging_sign", woodName + " Wall Hanging Sign");
+		this.add("block.twilightforest." + woodPrefix + "_drying_rack", woodName + " Drying Rack");
+
 	}
 
 	public void addBannerPattern(String patternPrefix, String patternName) {

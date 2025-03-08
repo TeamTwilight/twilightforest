@@ -22,10 +22,7 @@ import twilightforest.config.TFConfig;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFRecipes;
-import twilightforest.item.recipe.EmperorsClothRecipe;
-import twilightforest.item.recipe.MoonwormQueenRepairRecipe;
-import twilightforest.item.recipe.NoTemplateSmithingRecipe;
-import twilightforest.item.recipe.ScepterRepairRecipe;
+import twilightforest.item.recipe.*;
 
 import java.util.List;
 import java.util.Objects;
@@ -37,6 +34,7 @@ public class TFEmiCompat implements EmiPlugin {
 	public static final TFEmiRecipeCategory CRUMBLE_HORN = new TFEmiRecipeCategory("crumble_horn", TFItems.CRUMBLE_HORN);
 	public static final TFEmiRecipeCategory TRANSFORMATION = new TFEmiRecipeCategory("transformation", TFItems.TRANSFORMATION_POWDER);
 	public static final TFEmiRecipeCategory MOONWORM_QUEEN = new TFEmiRecipeCategory("moonworm_queen", TFItems.MOONWORM_QUEEN);
+	public static final TFEmiRecipeCategory DRYING = new TFEmiRecipeCategory("drying", TFBlocks.SORTING_DRYING_RACK);
 
 	private static final Function<List<EmiIngredient>, Boolean> CANT_USE_ENCHANTS = stack ->
 		stack.contains(EmiStack.of(TFItems.MOONWORM_QUEEN)) || stack.contains(EmiStack.of(TFItems.LAMP_OF_CINDERS)) || stack.contains(EmiStack.of(TFItems.ORE_MAGNET)) ||
@@ -53,6 +51,7 @@ public class TFEmiCompat implements EmiPlugin {
 		registry.addCategory(CRUMBLE_HORN);
 		registry.addCategory(TRANSFORMATION);
 		registry.addCategory(MOONWORM_QUEEN);
+		registry.addCategory(DRYING);
 
 		if (!TFConfig.disableEntireTable) {
 			registry.addWorkstation(VanillaEmiRecipeCategories.CRAFTING, EmiStack.of(TFBlocks.UNCRAFTING_TABLE));
@@ -90,6 +89,10 @@ public class TFEmiCompat implements EmiPlugin {
 
 		for (RecipeHolder<ScepterRepairRecipe> holder : manager.getAllRecipesFor(RecipeType.CRAFTING).stream().filter(holder -> holder.value() instanceof ScepterRepairRecipe).map(RecipeHolder.class::cast).toList()) {
 			registry.addRecipe(new EmiScepterRepairRecipe(holder.value().getIngredients().stream().map(EmiIngredient::of).toList(), EmiStack.of(holder.value().getScepter()), holder.id()));
+		}
+
+		for (RecipeHolder<DryingRecipe> holder : manager.getAllRecipesFor(TFRecipes.DRYING_RECIPE.get())) {
+			registry.addRecipe(new EmiDryingRecipe(holder));
 		}
 
 		//remove other recipes as they arent actually possible recipes to use

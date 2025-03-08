@@ -392,6 +392,18 @@ public class LangGenerator extends TFLangProvider {
 		this.addBlock(TFBlocks.BAMBOO_BANISTER, "Bamboo Banister");
 		this.addBlock(TFBlocks.CHERRY_BANISTER, "Cherry Banister");
 
+		this.addBlock(TFBlocks.OAK_DRYING_RACK, "Oak Drying Rack");
+		this.addBlock(TFBlocks.SPRUCE_DRYING_RACK, "Spruce Drying Rack");
+		this.addBlock(TFBlocks.BIRCH_DRYING_RACK, "Birch Drying Rack");
+		this.addBlock(TFBlocks.JUNGLE_DRYING_RACK, "Jungle Drying Rack");
+		this.addBlock(TFBlocks.ACACIA_DRYING_RACK, "Acacia Drying Rack");
+		this.addBlock(TFBlocks.DARK_OAK_DRYING_RACK, "Dark Oak Drying Rack");
+		this.addBlock(TFBlocks.CRIMSON_DRYING_RACK, "Crimson Drying Rack");
+		this.addBlock(TFBlocks.WARPED_DRYING_RACK, "Warped Drying Rack");
+		this.addBlock(TFBlocks.VANGROVE_DRYING_RACK, "Mangrove Drying Rack");
+		this.addBlock(TFBlocks.BAMBOO_DRYING_RACK, "Bamboo Drying Rack");
+		this.addBlock(TFBlocks.CHERRY_DRYING_RACK, "Cherry Drying Rack");
+
 		this.createHollowLogs("oak", "Oak", false);
 		this.createHollowLogs("spruce", "Spruce", false);
 		this.createHollowLogs("birch", "Birch", false);
@@ -625,6 +637,19 @@ public class LangGenerator extends TFLangProvider {
 		this.addItem(TFItems.COOKED_MEEF, "Meef Steak");
 		this.addItem(TFItems.MEEF_STROGANOFF, "Meef Stroganoff");
 		this.addItem(TFItems.HYDRA_CHOP, "Hydra Chop");
+
+		this.addItem(TFItems.MONSTER_JERKY, "Monster Jerky");
+		this.addItem(TFItems.BEEF_JERKY, "Beef Jerky");
+		this.addItem(TFItems.CHICKEN_JERKY, "Chicken Jerky");
+		this.addItem(TFItems.PORK_JERKY, "Pork Jerky");
+		this.addItem(TFItems.MUTTON_JERKY, "Mutton Jerky");
+		this.addItem(TFItems.RABBIT_JERKY, "Rabbit Jerky");
+		this.addItem(TFItems.COD_JERKY, "Cod Jerky");
+		this.addItem(TFItems.SALMON_JERKY, "Salmon Jerky");
+		this.addItem(TFItems.CLOWNFISH_JERKY, "Clownfish Jerky");
+		this.addItem(TFItems.FUGU_JERKY, "Fugu Jerky");
+		this.addItem(TFItems.VENISON_JERKY, "Venison Jerky");
+		this.addItem(TFItems.MEEF_JERKY, "Meef Jerky");
 
 		this.addItem(TFItems.CHARM_OF_LIFE_1, "Charm of Life I");
 		this.addItem(TFItems.CHARM_OF_LIFE_2, "Charm of Life II");
@@ -866,6 +891,9 @@ public class LangGenerator extends TFLangProvider {
 		this.addScreenMessage("progression_end.message", "This is the end of progression for now. The Final Castle that awaits on the plateau is still unfinished and a work in progress. If you would like to keep up with the mod's development you can join our %s.");
 		this.addScreenMessage("progression_end.discord", "Discord Server");
 
+		this.addScreenMessage("drying_jei", "Drying Rack");
+		this.addScreenMessage("drying_minutes", "%s Minutes");
+		this.addScreenMessage("drying_ticks", "%s ticks");
 		this.addScreenMessage("crumble_horn_jei", "Crumble Horn");
 		this.addScreenMessage("transformation_jei", "Transformation Powder");
 		this.addScreenMessage("uncrafting_jei", "Uncrafting");

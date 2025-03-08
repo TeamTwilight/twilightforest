@@ -170,6 +170,7 @@ public final class TwilightForestMod {
 		bus.addListener(this::addBlockEntityTypes);
 		bus.addListener(this::setRegistriesForDatapack);
 		bus.addListener(this::registerGenericItemHandlers);
+		bus.addListener(TFCreativeTabs::addToTabs);
 
 		bus.addListener(ConfigSetup::loadConfigs);
 		bus.addListener(ConfigSetup::reloadConfigs);
