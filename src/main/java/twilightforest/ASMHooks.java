@@ -273,7 +273,7 @@ public class ASMHooks {
 		double waterHeight = livingEntity.getFluidTypeHeight(NeoForgeMod.WATER_TYPE.value());
 		boolean isWaterWalking = waterHeight > 0 &&
 			waterHeight <= TravellersArmorItem.WATER_WALKING_MAX_SUBMERGED_HEIGHT &&
-			!livingEntity.isCrouching();
+			!livingEntity.isShiftKeyDown();
 		Level level = livingEntity.level();
 		if (isWaterWalking && level.getGameTime() % 3 == 1)
 			TravellersArmorItem.waterWalkingSplashEffect(livingEntity);
