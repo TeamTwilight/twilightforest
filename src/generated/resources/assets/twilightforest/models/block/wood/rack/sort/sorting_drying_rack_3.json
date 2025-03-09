@@ -1,0 +1,6 @@
+{
+  "parent": "twilightforest:block/template_drying_rack",
+  "textures": {
+    "texture": "twilightforest:block/wood/planks_sort_3"
+  }
+}

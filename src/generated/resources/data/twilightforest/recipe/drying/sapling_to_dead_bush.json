@@ -1,0 +1,11 @@
+{
+  "type": "twilightforest:drying",
+  "filter_time": 7200,
+  "input": {
+    "tag": "minecraft:saplings"
+  },
+  "result": {
+    "count": 1,
+    "id": "minecraft:dead_bush"
+  }
+}

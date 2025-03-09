@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "drying_rack",
+  "key": {
+    "-": {
+      "item": "twilightforest:twilight_oak_slab"
+    }
+  },
+  "pattern": [
+    "---"
+  ],
+  "result": {
+    "count": 1,
+    "id": "twilightforest:twilight_oak_drying_rack"
+  }
+}

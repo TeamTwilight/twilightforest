@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_meat": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#c:foods/cooked_meat"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "twilightforest:drying/cooked_meat_to_leather"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_meat"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "twilightforest:drying/cooked_meat_to_leather"
+    ]
+  }
+}

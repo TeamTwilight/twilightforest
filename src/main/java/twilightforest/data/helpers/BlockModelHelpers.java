@@ -14,6 +14,7 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BanisterBlock;
+import twilightforest.block.DryingRackBlock;
 
 import java.util.function.Consumer;
 
@@ -66,11 +67,11 @@ public abstract class BlockModelHelpers extends BlockStateProvider {
 		simpleBlock(sapling, models().cross(name(sapling), saplingTex).renderType(CUTOUT));
 	}
 
-	protected void plankBlocks(String variant, Block plank, Block slab, StairBlock stair, Block button, Block fence, Block gate, Block plate, DoorBlock door, TrapDoorBlock trapdoor, BanisterBlock banister) {
-		this.plankBlocks(variant, plank, slab, stair, button, fence, gate, plate, door, trapdoor, false, false, banister);
+	protected void plankBlocks(String variant, Block plank, Block slab, StairBlock stair, Block button, Block fence, Block gate, Block plate, DoorBlock door, TrapDoorBlock trapdoor, BanisterBlock banister, DryingRackBlock rack) {
+		this.plankBlocks(variant, plank, slab, stair, button, fence, gate, plate, door, trapdoor, false, false, banister, rack);
 	}
 
-	protected void plankBlocks(String variant, Block plank, Block slab, StairBlock stair, Block button, Block fence, Block gate, Block plate, DoorBlock door, TrapDoorBlock trapdoor, boolean cutoutDoors, boolean correctDoors, BanisterBlock banister) {
+	protected void plankBlocks(String variant, Block plank, Block slab, StairBlock stair, Block button, Block fence, Block gate, Block plate, DoorBlock door, TrapDoorBlock trapdoor, boolean cutoutDoors, boolean correctDoors, BanisterBlock banister, DryingRackBlock rack) {
 		String plankTexName = "planks_" + variant;
 		String plankDir = "block/wood/planks/" + variant + "/";
 		ResourceLocation tex0 = prefix("block/wood/" + plankTexName + "_0");
@@ -115,6 +116,7 @@ public abstract class BlockModelHelpers extends BlockStateProvider {
 		trapdoorBlockWithRenderType(trapdoor, trapdoorDir + variant, prefix("block/wood/trapdoor/" + variant + "_trapdoor"), true, cutoutDoors ? CUTOUT : SOLID);
 
 		banister(banister, plankTexName, variant);
+		dryingRack(rack, plankTexName, variant);
 	}
 
 	private void correctedDoorBlock(DoorBlock block, String baseName, ResourceLocation bottom, ResourceLocation top, ResourceLocation side, ResourceLocation renderType) {
@@ -388,6 +390,26 @@ public abstract class BlockModelHelpers extends BlockStateProvider {
 		}, BanisterBlock.WATERLOGGED);
 	}
 
+	protected void dryingRack(DryingRackBlock rack, String texName, String woodVariant) {
+		String banisterDir = "block/wood/rack/" + woodVariant + "/";
+
+		ResourceLocation tex0 = prefix("block/wood/" + texName + "_0");
+		ResourceLocation tex1 = prefix("block/wood/" + texName + "_1");
+		ResourceLocation tex2 = prefix("block/wood/" + texName + "_2");
+		ResourceLocation tex3 = prefix("block/wood/" + texName + "_3");
+
+		getVariantBuilder(rack).forAllStatesExcept(state -> {
+			Direction facing = state.getValue(BanisterBlock.FACING);
+			int yRot = (int) facing.toYRot();
+
+			return ConfiguredModel.builder()
+				.weight(10).modelFile(models().withExistingParent(banisterDir + name(rack), TwilightForestMod.prefix("template_drying_rack")).texture("texture", tex0)).rotationY(yRot).nextModel()
+				.weight(10).modelFile(models().withExistingParent(banisterDir + name(rack) + "_1", TwilightForestMod.prefix("template_drying_rack")).texture("texture", tex1)).rotationY(yRot).nextModel()
+				.weight(1).modelFile(models().withExistingParent(banisterDir + name(rack) + "_2", TwilightForestMod.prefix("template_drying_rack")).texture("texture", tex2)).rotationY(yRot).nextModel()
+				.weight(1).modelFile(models().withExistingParent(banisterDir + name(rack) + "_3", TwilightForestMod.prefix("template_drying_rack")).texture("texture", tex3)).rotationY(yRot).build();
+		}, DryingRackBlock.WATERLOGGED);
+	}
+
 	protected void banisterVanilla(BanisterBlock banister, String texName, String woodVariant) {
 		String banisterDir = "block/wood/banister/" + woodVariant + "/";
 		ResourceLocation tex0 = ResourceLocation.withDefaultNamespace("block/" + texName);
@@ -401,6 +423,18 @@ public abstract class BlockModelHelpers extends BlockStateProvider {
 			return ConfiguredModel.builder()
 				.modelFile(models().withExistingParent(banisterDir + name(banister) + "_" + variant, TwilightForestMod.prefix("banister_" + variant)).texture("texture", tex0)).rotationY(yRot).build();
 		}, BanisterBlock.WATERLOGGED);
+	}
+
+	protected void dryingRackVanilla(DryingRackBlock rack, String texName, String woodVariant) {
+		String banisterDir = "block/wood/rack/" + woodVariant + "/";
+		ResourceLocation tex = ResourceLocation.withDefaultNamespace("block/" + texName);
+
+		getVariantBuilder(rack).forAllStatesExcept(state -> {
+			Direction facing = state.getValue(BanisterBlock.FACING);
+			int yRot = (int) facing.toYRot();
+
+			return ConfiguredModel.builder().modelFile(models().withExistingParent(banisterDir + name(rack), TwilightForestMod.prefix("template_drying_rack")).texture("texture", tex)).rotationY(yRot).build();
+		}, DryingRackBlock.WATERLOGGED);
 	}
 
 	protected void bisectedStairsBlock(DeferredHolder<Block, StairBlock> block, ResourceLocation side, ResourceLocation end, ResourceLocation middle) {

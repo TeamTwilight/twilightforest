@@ -311,4 +311,17 @@ public class TFItems {
 		new EdibleBerry.BerryEffect(MobEffects.DIG_SLOWDOWN, 10, 0.75F)
 	));
 	public static final DeferredItem<Item> BERRY_MEDLEY = ITEMS.register("berry_medley", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(5).saturationModifier(1.4f).usingConvertsTo(Items.BOWL).build())));
+
+	public static final DeferredItem<Item> MONSTER_JERKY = ITEMS.register("monster_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationModifier(0.4F).build())));
+	public static final DeferredItem<Item> BEEF_JERKY = ITEMS.register("beef_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationModifier(1.0F).build())));
+	public static final DeferredItem<Item> CHICKEN_JERKY = ITEMS.register("chicken_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(6).saturationModifier(0.8F).build())));
+	public static final DeferredItem<Item> PORK_JERKY = ITEMS.register("pork_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationModifier(1.0F).build())));
+	public static final DeferredItem<Item> MUTTON_JERKY = ITEMS.register("mutton_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(6).saturationModifier(1.0F).build())));
+	public static final DeferredItem<Item> RABBIT_JERKY = ITEMS.register("rabbit_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(5).saturationModifier(0.8F).build())));
+	public static final DeferredItem<Item> COD_JERKY = ITEMS.register("cod_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(5).saturationModifier(0.8F).build())));
+	public static final DeferredItem<Item> SALMON_JERKY = ITEMS.register("salmon_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(6).saturationModifier(1.0F).build())));
+	public static final DeferredItem<Item> CLOWNFISH_JERKY = ITEMS.register("clownfish_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.8F).build())));
+	public static final DeferredItem<Item> FUGU_JERKY = ITEMS.register("fugu_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.8F).build())));
+	public static final DeferredItem<Item> VENISON_JERKY = ITEMS.register("venison_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationModifier(1.0F).build())));
+	public static final DeferredItem<Item> MEEF_JERKY = ITEMS.register("meef_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationModifier(1.0F).build())));
 }

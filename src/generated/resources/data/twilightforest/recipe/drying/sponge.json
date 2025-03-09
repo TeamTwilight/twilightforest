@@ -1,0 +1,11 @@
+{
+  "type": "twilightforest:drying",
+  "filter_time": 2400,
+  "input": {
+    "item": "minecraft:wet_sponge"
+  },
+  "result": {
+    "count": 1,
+    "id": "minecraft:sponge"
+  }
+}

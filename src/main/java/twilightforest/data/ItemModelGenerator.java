@@ -273,6 +273,18 @@ public class ItemModelGenerator extends ItemModelProvider {
 		withExistingParent(TFBlocks.BAMBOO_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "minecraft:block/bamboo_planks");
 		withExistingParent(TFBlocks.CHERRY_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "minecraft:block/cherry_planks");
 
+		woodBlock(TFBlocks.OAK_DRYING_RACK.get(), "rack/oak");
+		woodBlock(TFBlocks.SPRUCE_DRYING_RACK.get(), "rack/spruce");
+		woodBlock(TFBlocks.BIRCH_DRYING_RACK.get(), "rack/birch");
+		woodBlock(TFBlocks.JUNGLE_DRYING_RACK.get(), "rack/jungle");
+		woodBlock(TFBlocks.ACACIA_DRYING_RACK.get(), "rack/acacia");
+		woodBlock(TFBlocks.DARK_OAK_DRYING_RACK.get(), "rack/dark_oak");
+		woodBlock(TFBlocks.CRIMSON_DRYING_RACK.get(), "rack/crimson");
+		woodBlock(TFBlocks.WARPED_DRYING_RACK.get(), "rack/warped");
+		woodBlock(TFBlocks.VANGROVE_DRYING_RACK.get(), "rack/vanilla_mangrove");
+		woodBlock(TFBlocks.BAMBOO_DRYING_RACK.get(), "rack/bamboo");
+		woodBlock(TFBlocks.CHERRY_DRYING_RACK.get(), "rack/cherry");
+
 		toBlock(TFBlocks.TWILIGHT_OAK_LOG.get());
 		toBlock(TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.get());
 		toBlock(TFBlocks.TWILIGHT_OAK_WOOD.get());
@@ -295,6 +307,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		generated(TFBlocks.TWILIGHT_OAK_DOOR.getId().getPath(), prefix("item/" + TFBlocks.TWILIGHT_OAK_DOOR.getId().getPath()));
 		withExistingParent(TFBlocks.TWILIGHT_OAK_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_twilight_oak_0"));
 		withExistingParent(TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_twilight_oak_0"));
+		woodBlock(TFBlocks.TWILIGHT_OAK_DRYING_RACK.get(), "rack/twilight_oak");
 
 		toBlock(TFBlocks.CANOPY_LOG.get());
 		toBlock(TFBlocks.STRIPPED_CANOPY_LOG.get());
@@ -316,6 +329,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		generated(TFBlocks.CANOPY_DOOR.getId().getPath(), prefix("item/" + TFBlocks.CANOPY_DOOR.getId().getPath()));
 		withExistingParent(TFBlocks.CANOPY_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_canopy_0"));
 		withExistingParent(TFBlocks.CANOPY_TRAPPED_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_canopy_0"));
+		woodBlock(TFBlocks.CANOPY_DRYING_RACK.get(), "rack/canopy");
 
 		toBlock(TFBlocks.MANGROVE_LOG.get());
 		toBlock(TFBlocks.STRIPPED_MANGROVE_LOG.get());
@@ -337,6 +351,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		generated(TFBlocks.MANGROVE_DOOR.getId().getPath(), prefix("item/" + TFBlocks.MANGROVE_DOOR.getId().getPath()));
 		withExistingParent(TFBlocks.MANGROVE_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_mangrove_0"));
 		withExistingParent(TFBlocks.MANGROVE_TRAPPED_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_mangrove_0"));
+		woodBlock(TFBlocks.MANGROVE_DRYING_RACK.get(), "rack/mangrove");
 
 		toBlock(TFBlocks.DARK_LOG.get());
 		toBlock(TFBlocks.STRIPPED_DARK_LOG.get());
@@ -359,6 +374,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		generated(TFBlocks.HOLLOW_OAK_SAPLING.getId().getPath(), prefix("block/" + TFBlocks.HOLLOW_OAK_SAPLING.getId().getPath()));
 		withExistingParent(TFBlocks.DARK_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_darkwood_0"));
 		withExistingParent(TFBlocks.DARK_TRAPPED_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_darkwood_0"));
+		woodBlock(TFBlocks.DARK_DRYING_RACK.get(), "rack/darkwood");
 
 		toBlock(TFBlocks.TIME_LOG.get());
 		toBlock(TFBlocks.STRIPPED_TIME_LOG.get());
@@ -381,6 +397,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		generated(TFBlocks.TIME_DOOR.getId().getPath(), prefix("item/" + TFBlocks.TIME_DOOR.getId().getPath()));
 		withExistingParent(TFBlocks.TIME_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_time_0"));
 		withExistingParent(TFBlocks.TIME_TRAPPED_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_time_0"));
+		woodBlock(TFBlocks.TIME_DRYING_RACK.get(), "rack/time");
 
 		toBlock(TFBlocks.TRANSFORMATION_LOG.get());
 		toBlock(TFBlocks.STRIPPED_TRANSFORMATION_LOG.get());
@@ -403,6 +420,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		generated(TFBlocks.TRANSFORMATION_DOOR.getId().getPath(), prefix("item/" + TFBlocks.TRANSFORMATION_DOOR.getId().getPath()));
 		withExistingParent(TFBlocks.TRANSFORMATION_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_trans_0"));
 		withExistingParent(TFBlocks.TRANSFORMATION_TRAPPED_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_trans_0"));
+		woodBlock(TFBlocks.TRANSFORMATION_DRYING_RACK.get(), "rack/trans");
 
 		toBlock(TFBlocks.MINING_LOG.get());
 		toBlock(TFBlocks.STRIPPED_MINING_LOG.get());
@@ -425,6 +443,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		generated(TFBlocks.MINING_DOOR.getId().getPath(), prefix("item/" + TFBlocks.MINING_DOOR.getId().getPath()));
 		withExistingParent(TFBlocks.MINING_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_mine_0"));
 		withExistingParent(TFBlocks.MINING_TRAPPED_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_mine_0"));
+		woodBlock(TFBlocks.MINING_DRYING_RACK.get(), "rack/mine");
 
 		toBlock(TFBlocks.SORTING_LOG.get());
 		toBlock(TFBlocks.STRIPPED_SORTING_LOG.get());
@@ -447,6 +466,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		generated(TFBlocks.SORTING_DOOR.getId().getPath(), prefix("item/" + TFBlocks.SORTING_DOOR.getId().getPath()));
 		withExistingParent(TFBlocks.SORTING_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_sort_0"));
 		withExistingParent(TFBlocks.SORTING_TRAPPED_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_sort_0"));
+		woodBlock(TFBlocks.SORTING_DRYING_RACK.get(), "rack/sort");
 
 		ResourceLocation templateTrophy = prefix("item/template_trophy");
 		withExistingParent(TFItems.NAGA_TROPHY.getId().toString(), templateTrophy);
@@ -536,8 +556,19 @@ public class ItemModelGenerator extends ItemModelProvider {
 		singleTex(TFItems.SKYBERRY);
 		singleTex(TFItems.STINGBERRY);
 		singleTex(TFItems.BERRY_MEDLEY);
+		singleTex(TFItems.MONSTER_JERKY);
+		singleTex(TFItems.BEEF_JERKY);
+		singleTex(TFItems.CHICKEN_JERKY);
+		singleTex(TFItems.PORK_JERKY);
+		singleTex(TFItems.MUTTON_JERKY);
+		singleTex(TFItems.RABBIT_JERKY);
+		singleTex(TFItems.COD_JERKY);
+		singleTex(TFItems.SALMON_JERKY);
+		singleTex(TFItems.CLOWNFISH_JERKY);
+		singleTex(TFItems.FUGU_JERKY);
 		singleTex(TFItems.RAW_VENISON);
 		singleTex(TFItems.COOKED_VENISON);
+		singleTex(TFItems.VENISON_JERKY);
 		singleTex(TFItems.HYDRA_CHOP);
 		singleTex(TFItems.FIERY_BLOOD);
 		singleTex(TFItems.FIERY_TEARS);
@@ -564,8 +595,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 		singleTex(TFItems.TRAVELLERS_GLOVES);
 		singleTex(TFItems.TRAVELLERS_WINGS_BELT);
 		singleTex(TFItems.TRAVELLERS_WINGS);
-		singleTex(TFItems.TRAVELLERS_LEGGINGS_BELT);
-		singleTex(TFItems.TRAVELLERS_LEGGINGS);
+//		singleTex(TFItems.TRAVELLERS_LEGGINGS_BELT);
+//		singleTex(TFItems.TRAVELLERS_LEGGINGS);
 		singleTex(TFItems.TRAVELLERS_BELT);
 		singleTex(TFItems.TRAVELLERS_BOOTS);
 		singleTexTool(TFItems.DIAMOND_MINOTAUR_AXE);
@@ -574,6 +605,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		singleTex(TFItems.TRANSFORMATION_POWDER);
 		singleTex(TFItems.RAW_MEEF);
 		singleTex(TFItems.COOKED_MEEF);
+		singleTex(TFItems.MEEF_JERKY);
 		singleTex(TFItems.MEEF_STROGANOFF);
 		singleTex(TFItems.MAZE_WAFER);
 		singleTex(TFItems.MAGIC_MAP);
