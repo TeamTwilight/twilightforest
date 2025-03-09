@@ -61,7 +61,17 @@ public class TravellersArmorItem extends ArmorItem {
 		return this.attributeModifiers == null ? super.getDefaultAttributeModifiers() : this.attributeModifiers;
 	}
 
-	public static void travellersItemTick(Player player) {
+	public static void travellersItemClientTick(LocalPlayer player) {
+		stealth(player);
+		processDoubleJump(player);
+	}
+
+	public static void travellersItemTick(ServerPlayer player) {
+		stealth(player);
+		processDoubleJump(player);
+	}
+
+	private static void stealth(Player player) {
 		ItemStack chestArmor = player.getInventory().getArmor(EquipmentSlot.CHEST.getIndex());
 		if (!Boolean.TRUE.equals(chestArmor.get(TFDataComponents.STEALTH_CROUCHING_ENABLE)))
 			return;
@@ -77,6 +87,36 @@ public class TravellersArmorItem extends ArmorItem {
 			if (invisibilityEffect != null && invisibilityEffect.getDuration() < 2)
 				player.setInvisible(false);
 		}
+	}
+
+	private static void performDoubleJump(Player player) {
+		Boolean hasDoubleJump = player.getData(TFDataAttachments.HAS_DOUBLE_JUMP);
+		if (Boolean.TRUE.equals(hasDoubleJump) && !player.onGround()) {
+			player.jumpFromGround();
+			player.setData(TFDataAttachments.HAS_DOUBLE_JUMP, false);
+		}
+	}
+
+	private static void processDoubleJump(LocalPlayer player) {
+		Boolean hasDoubleJump = player.getItemBySlot(EquipmentSlot.CHEST).get(TFDataComponents.HAS_DOUBLE_JUMP);
+		if (!Boolean.TRUE.equals(hasDoubleJump) && player.getData(TFDataAttachments.HAS_DOUBLE_JUMP)) {
+			player.setData(TFDataAttachments.HAS_DOUBLE_JUMP, false);
+			return;
+		}
+
+		if (player.onGround())
+			player.setData(TFDataAttachments.HAS_DOUBLE_JUMP, true);
+	}
+
+	private static void processDoubleJump(ServerPlayer player) {
+		Boolean hasDoubleJump = player.getItemBySlot(EquipmentSlot.CHEST).get(TFDataComponents.HAS_DOUBLE_JUMP);
+		if (!Boolean.TRUE.equals(hasDoubleJump) && player.getData(TFDataAttachments.HAS_DOUBLE_JUMP)) {
+			player.setData(TFDataAttachments.HAS_DOUBLE_JUMP, false);
+			return;
+		}
+
+		if (player.onGround())
+			player.setData(TFDataAttachments.HAS_DOUBLE_JUMP, true);
 	}
 
 	public static void waterWalkingSplashEffect(LivingEntity livingEntity) {
