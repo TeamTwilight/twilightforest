@@ -7,7 +7,11 @@ import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.DisconnectionDetails;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.game.ClientboundPlayerPositionPacket;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -34,6 +38,7 @@ import twilightforest.init.TFDataComponents;
 import twilightforest.network.ParticlePacket;
 
 import javax.annotation.Nullable;
+import java.util.Collections;
 import java.util.function.Consumer;
 
 public class TravellersArmorItem extends ArmorItem {
@@ -120,13 +125,25 @@ public class TravellersArmorItem extends ArmorItem {
 		livingEntity.fallDistance = (float) (Math.pow(newDeltaMovementY, 2) / 2 / livingEntity.getGravity());  // use mv ^ 2 / 2 / mg = h
 	}
 
-	public static void performDoubleJump(Player player) {
+	public static boolean performDoubleJump(Player player) {
 		Boolean hasDoubleJump = player.getData(TFDataAttachments.HAS_DOUBLE_JUMP);
 		if (Boolean.TRUE.equals(hasDoubleJump) && !player.onGround()) {
 			player.jumpFromGround();
 			player.fallDistance = 0;
 			player.setData(TFDataAttachments.HAS_DOUBLE_JUMP, false);
+			player.setData(TFDataAttachments.DOUBLE_JUMP_VALIDATOR, 0);
+			return true;
+		} else if (player instanceof ServerPlayer serverPlayer) {
+			TwilightForestMod.LOGGER.warn("{} double jumped when they shouldn't have!", player.getName().getString());
+			int count = serverPlayer.getData(TFDataAttachments.DOUBLE_JUMP_VALIDATOR);
+			if (count >= 5) {
+				serverPlayer.connection.disconnect(new DisconnectionDetails(Component.translatable("multiplayer.disconnect.flying")));
+			}
+			serverPlayer.setData(TFDataAttachments.DOUBLE_JUMP_VALIDATOR, count + 1);
+			serverPlayer.absMoveTo(player.getX(), player.getY(), player.getZ(), player.getYRot(), player.getXRot());
+			serverPlayer.connection.send(new ClientboundPlayerPositionPacket(player.getX(), player.getY(), player.getZ(), player.getYRot(), player.getXRot(), Collections.emptySet(), 0));
 		}
+		return false;
 	}
 
 	public static Properties gogglesProperties(Properties properties) {

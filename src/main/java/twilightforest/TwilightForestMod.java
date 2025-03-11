@@ -283,7 +283,6 @@ public final class TwilightForestMod {
 		registrar.playToClient(MovePlayerPacket.TYPE, MovePlayerPacket.STREAM_CODEC, MovePlayerPacket::handle);
 		registrar.playToClient(ParticlePacket.TYPE, ParticlePacket.STREAM_CODEC, ParticlePacket::handle);
 		registrar.playToServer(PerformDoubleJumpPacket.TYPE, PerformDoubleJumpPacket.STREAM_CODEC, PerformDoubleJumpPacket::handle);
-		registrar.playToServer(UpdateDoubleJumpPacket.TYPE, UpdateDoubleJumpPacket.STREAM_CODEC, UpdateDoubleJumpPacket::handle);
 		registrar.playToClient(SpawnCharmPacket.TYPE, SpawnCharmPacket.STREAM_CODEC, SpawnCharmPacket::handle);
 		registrar.playToClient(SpawnFallenLeafFromPacket.TYPE, SpawnFallenLeafFromPacket.STREAM_CODEC, SpawnFallenLeafFromPacket::handle);
 		registrar.playToClient(StructureProtectionPacket.TYPE, StructureProtectionPacket.STREAM_CODEC, StructureProtectionPacket::handle);

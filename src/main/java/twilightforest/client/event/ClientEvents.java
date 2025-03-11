@@ -67,7 +67,6 @@ import twilightforest.init.TFDimension;
 import twilightforest.init.TFKeyBinds;
 import twilightforest.item.*;
 import twilightforest.network.PerformDoubleJumpPacket;
-import twilightforest.network.UpdateDoubleJumpPacket;
 import twilightforest.util.HolderMatcher;
 
 import java.time.LocalDate;
@@ -136,9 +135,10 @@ public class ClientEvents {
 	public static void playerTravellersArmorEffects(PlayerTickEvent.Pre event) {
 		if (!(event.getEntity() instanceof LocalPlayer localPlayer))
 			return;
-
-		updateDoubleJump(localPlayer);
-		performDoubleJump(localPlayer);
+		if (Minecraft.getInstance().options.keyJump.consumeClick() && !localPlayer.onGround() && Boolean.TRUE.equals(localPlayer.getItemBySlot(EquipmentSlot.LEGS).get(TFDataComponents.HAS_DOUBLE_JUMP))) {
+			if (TravellersArmorItem.performDoubleJump(localPlayer))
+				localPlayer.connection.send(new PerformDoubleJumpPacket());
+		}
 	}
 
 	private static void handleGameBootup(ScreenEvent.Init.Post event) {
@@ -334,27 +334,6 @@ public class ClientEvents {
 
 	private static void handleTravellersInvisibility(Player player) {
 		player.setInvisible(true);
-	}
-
-	private static void performDoubleJump(LocalPlayer localPlayer) {
-		if (Minecraft.getInstance().options.keyJump.consumeClick() && !localPlayer.onGround()) {
- 			TravellersArmorItem.performDoubleJump(localPlayer);
-			localPlayer.connection.send(new PerformDoubleJumpPacket(true));
-		}
-	}
-
-	private static void updateDoubleJump(LocalPlayer localPlayer) {
-		Boolean hasDoubleJump = null;
-		Boolean hasDoubleJumpAbility = localPlayer.getItemBySlot(EquipmentSlot.LEGS).get(TFDataComponents.HAS_DOUBLE_JUMP);
-		if (!Boolean.TRUE.equals(hasDoubleJumpAbility)) {
-			hasDoubleJump = false;
-		} else if (localPlayer.onGround() || localPlayer.mayFly())
-			hasDoubleJump = true;
-
-		if (hasDoubleJump != null && hasDoubleJump != localPlayer.getData(TFDataAttachments.HAS_DOUBLE_JUMP)) {
- 			localPlayer.setData(TFDataAttachments.HAS_DOUBLE_JUMP, hasDoubleJump);
-			localPlayer.connection.send(new UpdateDoubleJumpPacket(hasDoubleJump));
-		}
 	}
 
 	private static void updateTravellersRedThreadAttachment(ClientTickEvent.Post event) {
