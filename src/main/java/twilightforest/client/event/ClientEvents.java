@@ -46,6 +46,7 @@ import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import twilightforest.TwilightForestMod;
 import twilightforest.beans.Autowired;
 import twilightforest.block.GiantBlock;
@@ -65,6 +66,8 @@ import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFDimension;
 import twilightforest.init.TFKeyBinds;
 import twilightforest.item.*;
+import twilightforest.network.PerformDoubleJumpPacket;
+import twilightforest.network.UpdateDoubleJumpPacket;
 import twilightforest.util.HolderMatcher;
 
 import java.time.LocalDate;
@@ -108,6 +111,7 @@ public class ClientEvents {
 		NeoForge.EVENT_BUS.addListener(ClientEvents::handleTravellersStealth);
 		NeoForge.EVENT_BUS.addListener(ClientEvents::updateTravellersRedThreadAttachment);
 		NeoForge.EVENT_BUS.addListener(ClientEvents::travellersArmorEffects);
+		NeoForge.EVENT_BUS.addListener(ClientEvents::playerTravellersArmorEffects);
 
 		NeoForge.EVENT_BUS.addListener(CloudEvents::renderPrecipitation);
 		NeoForge.EVENT_BUS.addListener(CloudEvents::tickWeatherEffects);
@@ -127,6 +131,14 @@ public class ClientEvents {
 				TravellersArmorItem.travellersPantsControlFall(livingEntity);
 			});
 		}
+	}
+
+	public static void playerTravellersArmorEffects(PlayerTickEvent.Pre event) {
+		if (!(event.getEntity() instanceof LocalPlayer localPlayer))
+			return;
+
+		updateDoubleJump(localPlayer);
+		performDoubleJump(localPlayer);
 	}
 
 	private static void handleGameBootup(ScreenEvent.Init.Post event) {
@@ -322,6 +334,27 @@ public class ClientEvents {
 
 	private static void handleTravellersInvisibility(Player player) {
 		player.setInvisible(true);
+	}
+
+	private static void performDoubleJump(LocalPlayer localPlayer) {
+		if (Minecraft.getInstance().options.keyJump.consumeClick() && !localPlayer.onGround()) {
+ 			TravellersArmorItem.performDoubleJump(localPlayer);
+			localPlayer.connection.send(new PerformDoubleJumpPacket(true));
+		}
+	}
+
+	private static void updateDoubleJump(LocalPlayer localPlayer) {
+		Boolean hasDoubleJump = null;
+		Boolean hasDoubleJumpAbility = localPlayer.getItemBySlot(EquipmentSlot.LEGS).get(TFDataComponents.HAS_DOUBLE_JUMP);
+		if (!Boolean.TRUE.equals(hasDoubleJumpAbility)) {
+			hasDoubleJump = false;
+		} else if (localPlayer.onGround() || localPlayer.mayFly())
+			hasDoubleJump = true;
+
+		if (hasDoubleJump != null && hasDoubleJump != localPlayer.getData(TFDataAttachments.HAS_DOUBLE_JUMP)) {
+ 			localPlayer.setData(TFDataAttachments.HAS_DOUBLE_JUMP, hasDoubleJump);
+			localPlayer.connection.send(new UpdateDoubleJumpPacket(hasDoubleJump));
+		}
 	}
 
 	private static void updateTravellersRedThreadAttachment(ClientTickEvent.Post event) {

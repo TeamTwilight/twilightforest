@@ -28,9 +28,9 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.TFArmorModel;
 import twilightforest.client.model.armor.TravellersLeggingsModel;
+import twilightforest.init.TFArmorMaterials;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFDataComponents;
-import twilightforest.init.TFArmorMaterials;
 import twilightforest.network.ParticlePacket;
 
 import javax.annotation.Nullable;
@@ -120,6 +120,15 @@ public class TravellersArmorItem extends ArmorItem {
 		livingEntity.fallDistance = (float) (Math.pow(newDeltaMovementY, 2) / 2 / livingEntity.getGravity());  // use mv ^ 2 / 2 / mg = h
 	}
 
+	public static void performDoubleJump(Player player) {
+		Boolean hasDoubleJump = player.getData(TFDataAttachments.HAS_DOUBLE_JUMP);
+		if (Boolean.TRUE.equals(hasDoubleJump) && !player.onGround()) {
+			player.jumpFromGround();
+			player.fallDistance = 0;
+			player.setData(TFDataAttachments.HAS_DOUBLE_JUMP, false);
+		}
+	}
+
 	public static Properties gogglesProperties(Properties properties) {
 		return properties
 			.component(TFDataComponents.ZOOM_ABILITY_MODIFIER, 0.3F)
@@ -143,7 +152,8 @@ public class TravellersArmorItem extends ArmorItem {
 	public static Properties wingsProperties(Properties properties) {
 		return properties
 			.component(TFDataComponents.TRAVELLERS_HAS_WINGS, true)
-			.component(TFDataComponents.HIGH_JUMP_AMPLIFIER, 1);
+			.component(TFDataComponents.HIGH_JUMP_AMPLIFIER, 1)
+			.component(TFDataComponents.HAS_DOUBLE_JUMP, true);
 	}
 
 	public static Properties pantsProperties(Properties properties) {
