@@ -54,7 +54,7 @@ public class TFTickHandler {
 		if (!(eventPlayer instanceof ServerPlayer player)) return;
 		if (!(player.level() instanceof ServerLevel world)) return;
 
-		TravellersArmorItem.travellersItemTick(eventPlayer);
+		TravellersArmorItem.travellersStealth(eventPlayer, TFTickHandler::handleTravellersInvisibility);
 
 		// check for portal creation, at least if it's not disabled
 		if (!TFConfig.disablePortalCreation && player.tickCount % (!TFConfig.checkPortalPlacement ? 100 : 20) == 0) {
@@ -91,6 +91,10 @@ public class TFTickHandler {
 				TravellersArmorItem.travellersPantsControlFall(livingEntity);
 			});
 		}
+	}
+
+	private static void handleTravellersInvisibility(Player player) {
+		player.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 2, 0, false, false, false));
 	}
 
 	private static void sendStructureProtectionPacket(Player player, List<Pair<BoundingBox, Boolean>> sbbData) {

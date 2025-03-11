@@ -5,11 +5,9 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -36,6 +34,7 @@ import twilightforest.init.TFArmorMaterials;
 import twilightforest.network.ParticlePacket;
 
 import javax.annotation.Nullable;
+import java.util.function.Consumer;
 
 public class TravellersArmorItem extends ArmorItem {
 	public static final double WATER_WALKING_MAX_SUBMERGED_HEIGHT = 0.4;
@@ -61,17 +60,13 @@ public class TravellersArmorItem extends ArmorItem {
 		return this.attributeModifiers == null ? super.getDefaultAttributeModifiers() : this.attributeModifiers;
 	}
 
-	public static void travellersItemTick(Player player) {
+	public static void travellersStealth(Player player, Consumer<Player> invisibilityHandler) {
 		ItemStack chestArmor = player.getInventory().getArmor(EquipmentSlot.CHEST.getIndex());
 		if (!Boolean.TRUE.equals(chestArmor.get(TFDataComponents.STEALTH_CROUCHING_ENABLE)))
 			return;
 
 		if (player.isCrouching()) {
-			if (player instanceof LocalPlayer)
-				player.setInvisible(true);
-
-			else if (player instanceof ServerPlayer)
-				player.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 2, 0, false, false, false));
+			invisibilityHandler.accept(player);
 		} else {
 			MobEffectInstance invisibilityEffect = player.getEffect(MobEffects.INVISIBILITY);
 			if (invisibilityEffect != null && invisibilityEffect.getDuration() < 2)
