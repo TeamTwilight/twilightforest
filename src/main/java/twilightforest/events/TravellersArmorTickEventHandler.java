@@ -23,7 +23,7 @@ public class TravellersArmorTickEventHandler {
 		Boolean hasDoubleJumpAbility = player.getItemBySlot(EquipmentSlot.LEGS).get(TFDataComponents.HAS_DOUBLE_JUMP);
 		if (!Boolean.TRUE.equals(hasDoubleJumpAbility)) {
 			hasDoubleJump = false;
-		} else if (player.onGround() || player.mayFly())
+		} else if (player.onGround())
 			hasDoubleJump = true;
 
 		if (hasDoubleJump != null && hasDoubleJump != player.getData(TFDataAttachments.HAS_DOUBLE_JUMP)) {
