@@ -26,4 +26,5 @@ public class TFDataAttachments {
 	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Long>> LAST_TICK_WATER_WALKING = ATTACHMENT_TYPES.register("last_tick_water_walking", () -> AttachmentType.builder(() -> 0L).serialize(Codec.LONG).build());
 	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Boolean>> HAS_DOUBLE_JUMP = ATTACHMENT_TYPES.register("has_double_jump", () -> AttachmentType.builder(() -> false).serialize(Codec.BOOL).build());
 	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Integer>> DOUBLE_JUMP_VALIDATOR = ATTACHMENT_TYPES.register("double_jump_validator", () -> AttachmentType.builder(() -> 0).serialize(Codec.INT).build());
+	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Integer>> DOUBLE_JUMP_VALIDATOR_LAST_CHECK = ATTACHMENT_TYPES.register("double_jump_validator_last_check", () -> AttachmentType.builder(() -> 0).serialize(Codec.INT).build());
 }

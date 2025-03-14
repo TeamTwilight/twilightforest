@@ -28,6 +28,7 @@ public class TravellersArmorTickEventHandler {
 
 		if (hasDoubleJump != null && hasDoubleJump != player.getData(TFDataAttachments.HAS_DOUBLE_JUMP)) {
 			player.setData(TFDataAttachments.HAS_DOUBLE_JUMP, hasDoubleJump);
+			player.setData(TFDataAttachments.DOUBLE_JUMP_VALIDATOR, 0);
 		}
 	}
 

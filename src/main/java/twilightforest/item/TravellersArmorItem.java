@@ -134,14 +134,23 @@ public class TravellersArmorItem extends ArmorItem {
 			player.setData(TFDataAttachments.DOUBLE_JUMP_VALIDATOR, 0);
 			return true;
 		} else if (player instanceof ServerPlayer serverPlayer) {
-			TwilightForestMod.LOGGER.warn("{} double jumped when they shouldn't have!", player.getName().getString());
 			int count = serverPlayer.getData(TFDataAttachments.DOUBLE_JUMP_VALIDATOR);
+			int lastCheck = serverPlayer.getData(TFDataAttachments.DOUBLE_JUMP_VALIDATOR_LAST_CHECK);
+			int currentTick = serverPlayer.tickCount;
+			int difference = currentTick - lastCheck;
+			TwilightForestMod.LOGGER.debug("{} double jump validation. Count: {}, Last tick: {}, Current tick: {}, Tick difference: {}", player.getName().getString(), count, lastCheck, currentTick, difference);
+			if (difference >= 45)
+				count = -1;
+			serverPlayer.setData(TFDataAttachments.DOUBLE_JUMP_VALIDATOR_LAST_CHECK, currentTick);
 			if (count >= 5) {
 				serverPlayer.connection.disconnect(new DisconnectionDetails(Component.translatable("multiplayer.disconnect.flying")));
 			}
 			serverPlayer.setData(TFDataAttachments.DOUBLE_JUMP_VALIDATOR, count + 1);
-			serverPlayer.absMoveTo(player.getX(), player.getY(), player.getZ(), player.getYRot(), player.getXRot());
-			serverPlayer.connection.send(new ClientboundPlayerPositionPacket(player.getX(), player.getY(), player.getZ(), player.getYRot(), player.getXRot(), Collections.emptySet(), 0));
+			if (count > 1) {
+				TwilightForestMod.LOGGER.warn("{} double jumped when they shouldn't have!", player.getName().getString());
+				serverPlayer.absMoveTo(player.getX(), player.getY(), player.getZ(), player.getYRot(), player.getXRot());
+				serverPlayer.connection.send(new ClientboundPlayerPositionPacket(player.getX(), player.getY(), player.getZ(), player.getYRot(), player.getXRot(), Collections.emptySet(), 0));
+			}
 		}
 		return false;
 	}
