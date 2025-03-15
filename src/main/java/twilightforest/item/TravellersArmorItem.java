@@ -127,7 +127,7 @@ public class TravellersArmorItem extends ArmorItem {
 
 	public static boolean performDoubleJump(Player player) {
 		Boolean hasDoubleJump = player.getData(TFDataAttachments.HAS_DOUBLE_JUMP);
-		if (Boolean.TRUE.equals(hasDoubleJump) && !player.onGround()) {
+		if (Boolean.TRUE.equals(hasDoubleJump) && !player.isFallFlying() && !player.onGround()) {
 			player.jumpFromGround();
 			player.fallDistance = 0;
 			player.setData(TFDataAttachments.HAS_DOUBLE_JUMP, false);
@@ -139,7 +139,7 @@ public class TravellersArmorItem extends ArmorItem {
 			int currentTick = serverPlayer.tickCount;
 			int difference = currentTick - lastCheck;
 			TwilightForestMod.LOGGER.debug("{} double jump validation. Count: {}, Last tick: {}, Current tick: {}, Tick difference: {}", player.getName().getString(), count, lastCheck, currentTick, difference);
-			if (difference >= 45)
+			if (difference >= 45 && !player.isFallFlying())
 				count = -1;
 			serverPlayer.setData(TFDataAttachments.DOUBLE_JUMP_VALIDATOR_LAST_CHECK, currentTick);
 			if (count >= 5) {
