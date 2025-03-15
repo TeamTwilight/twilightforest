@@ -19,6 +19,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileDeflection;
 import net.minecraft.world.item.ItemStack;
@@ -40,11 +41,11 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.damagesource.DamageContainer;
-import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
 import net.neoforged.neoforge.event.entity.living.FinalizeSpawnEvent;
@@ -224,6 +225,28 @@ public class EntityEvents {
 				}
 			}
 		}
+	}
+
+	@SubscribeEvent
+	public static void travellersMagnetismEvent(ProjectileImpactEvent event) {
+		Projectile projectile = event.getProjectile();
+		Entity entity = projectile.getOwner();
+		if (!(entity instanceof LivingEntity livingEntity) || !event.getRayTraceResult().getType().equals(HitResult.Type.BLOCK))
+			return;
+
+		Boolean hasMagnetism = livingEntity.getItemBySlot(EquipmentSlot.CHEST).get(TFDataComponents.ARROW_MAGNETISM);
+		if (!Boolean.TRUE.equals(hasMagnetism) || !(projectile instanceof AbstractArrow arrow))
+			return;
+
+		if (!(livingEntity instanceof Player player)) {
+			projectile.discard();
+			return;
+		}
+		AbstractArrow.Pickup pickup = arrow.pickup;
+		if (!player.hasInfiniteMaterials() && pickup.equals(AbstractArrow.Pickup.ALLOWED))
+			ItemHandlerHelper.giveItemToPlayer(player, arrow.getPickupItemStackOrigin());
+		if (!projectile.level().isClientSide() && pickup.equals(AbstractArrow.Pickup.ALLOWED) || pickup.equals(AbstractArrow.Pickup.CREATIVE_ONLY) && player.isCreative())
+			projectile.discard();
 	}
 
 	/**
