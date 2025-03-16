@@ -231,7 +231,7 @@ public class EntityEvents {
 	public static void travellersMagnetismEvent(ProjectileImpactEvent event) {
 		Projectile projectile = event.getProjectile();
 		Entity entity = projectile.getOwner();
-		if (!(entity instanceof LivingEntity livingEntity) || !event.getRayTraceResult().getType().equals(HitResult.Type.BLOCK))
+		if (!(entity instanceof LivingEntity livingEntity) || !event.getRayTraceResult().getType().equals(HitResult.Type.BLOCK) || projectile.tickCount >= 200)
 			return;
 
 		Boolean hasMagnetism = livingEntity.getItemBySlot(EquipmentSlot.CHEST).get(TFDataComponents.ARROW_MAGNETISM);
