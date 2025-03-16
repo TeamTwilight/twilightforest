@@ -235,7 +235,7 @@ public class EntityEvents {
 			return;
 
 		Boolean hasMagnetism = livingEntity.getItemBySlot(EquipmentSlot.CHEST).get(TFDataComponents.ARROW_MAGNETISM);
-		if (!Boolean.TRUE.equals(hasMagnetism) || !(projectile instanceof AbstractArrow arrow))
+		if (!Boolean.TRUE.equals(hasMagnetism) || !(projectile instanceof AbstractArrow arrow) || projectile.level().isClientSide())
 			return;
 
 		if (!(livingEntity instanceof Player player)) {
@@ -243,9 +243,11 @@ public class EntityEvents {
 			return;
 		}
 		AbstractArrow.Pickup pickup = arrow.pickup;
-		if (!player.hasInfiniteMaterials() && pickup.equals(AbstractArrow.Pickup.ALLOWED))
+		if (!player.hasInfiniteMaterials() && pickup.equals(AbstractArrow.Pickup.ALLOWED)) {
 			ItemHandlerHelper.giveItemToPlayer(player, arrow.getPickupItemStackOrigin());
-		if (!projectile.level().isClientSide() && pickup.equals(AbstractArrow.Pickup.ALLOWED) || pickup.equals(AbstractArrow.Pickup.CREATIVE_ONLY) && player.isCreative())
+			player.getInventory().setChanged();
+		}
+		if (pickup.equals(AbstractArrow.Pickup.ALLOWED) || pickup.equals(AbstractArrow.Pickup.CREATIVE_ONLY) && player.isCreative())
 			projectile.discard();
 	}
 
