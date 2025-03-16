@@ -711,6 +711,7 @@
   "commands.tffeature.usage": "/%s <info | reaktivieren | erobern | zentrum>",
   "config.jade.plugin_twilightforest.chiseled_bookshelf_spawner": "Gearbeitetes Baldachinholz Bücherregal Mob:",
   "config.jade.plugin_twilightforest.quest_ram_wool": "Quest-Widderwolle",
+  "config.twilightforest.max_portal_size": "Maximalgröße des Portals",
   "config.twilightforest.multiplayer_fight_adjuster.more_loot": "Mehr Loot",
   "config.twilightforest.multiplayer_fight_adjuster.more_loot_and_health": "Mehr Loot und Gesundheit",
   "config.twilightforest.multiplayer_fight_adjuster.none": "Keine",
