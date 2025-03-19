@@ -724,7 +724,7 @@
   "config.twilightforest.aurora_biomes.tooltip": "오로라 셰이더 효과가 나타날 생물 군계를 정의합니다. 효과를 비활성화하려면 목록을 비워두세요.",
   "config.twilightforest.boss_drop_chests": "보스 전리품 상자",
   "config.twilightforest.boss_drop_chests.tooltip": "값이 참이라면, 황혼의 숲의 보스는 전리품을 직접 떨어뜨리는 대신 원래 생성된 상자 안에 전리품을 넣습니다.\n팬텀 기사는 드랍 방식이 다르므로 영향을 받지 않습니다.",
-  "config.twilightforest.casket_uuid_locking": "관 UUID 잠금",
+  "config.twilightforest.casket_uuid_locking": "기념품 상자 UUID 잠금",
   "config.twilightforest.casket_uuid_locking.tooltip": "값이 참이라면, 플레이어가 사망할 때 생성된 기념품 상자는 다른 플레이어가 접근할 수 없습니다. 사람들이 다른 사람들의 죽음의 상자에서 가져가는 것을 원하지 않는다면 이것을 사용하세요. 참고: 서버 운영자는 여전히 잠긴 상자를 열 수 있습니다.",
   "config.twilightforest.check_portal_placement": "차원문 배치 확인",
   "config.twilightforest.check_portal_placement.tooltip": "새로운 차원문이 안전을 위해 미리 확인을 받아야 하는지 여부를 결정합니다. 값이 거짓이면 차원은 안전한 대체 목적지로 리디렉션하는 대신 형성에 실패합니다.\n이 기능을 비활성화하면 차원문 구성 확인이 수행되는 속도도 감소합니다.",
