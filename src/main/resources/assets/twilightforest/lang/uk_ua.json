@@ -1,4 +1,9 @@
 {
+  "Dimension Settings.button": "Редагувати",
+  "Magic Trees.button": "Редагувати",
+  "Portal Settings.button": "Редагувати",
+  "Shield Parrying.button": "Редагувати",
+  "Uncrafting Table.button": "Редагувати",
   "advancement.twilightforest.arborist": "Маніакальний дендролог",
   "advancement.twilightforest.arborist.desc": "Приготуйте свої сокири та ножиці. Обшукайте кожен закуток і щілину, заберіть все, що росте на деревах! Створюйте, збирайте, дістаньте кожну плиту... паросток... листя... ще більше... все. ВСЕ ЩО Є!",
   "advancement.twilightforest.arctic_dyed": "Останній писк моди",
@@ -14,6 +19,7 @@
   "advancement.twilightforest.fiery_set": "Потом і кров'ю",
   "advancement.twilightforest.fiery_set.desc": "Володійте вогненним знаряддям або зброєю, маючи принаймні одну частину вогняної броні у своєму інвентарі",
   "advancement.twilightforest.full_mettle_alchemist": "Сталевий алхімік",
+  "advancement.twilightforest.full_mettle_alchemist.desc": "Випийте чотири дози зілля шкоди II менш ніж за 6 секунд і виживіть",
   "advancement.twilightforest.ghast_trap": "Щось дивне в Тауервуді",
   "advancement.twilightforest.ghast_trap.desc": "Вбийте Кармінитового міні-ґаста біля пасики та активуйте ключ Ур-Ґаста прямо з неба!",
   "advancement.twilightforest.giants": "Я на сьомому небі",
