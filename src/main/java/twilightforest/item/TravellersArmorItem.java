@@ -123,6 +123,21 @@ public class TravellersArmorItem extends ArmorItem {
 		livingEntity.fallDistance = (float) (Math.pow(newDeltaMovementY, 2) / 2 / livingEntity.getGravity());  // use mv ^ 2 / 2 / mg = h
 	}
 
+
+	public static void travellersWingsHighJump(LivingEntity livingEntity) {
+		ItemStack leggingsStack = livingEntity.getItemBySlot(EquipmentSlot.LEGS);
+		Integer amplifier = leggingsStack.get(TFDataComponents.HIGH_JUMP_AMPLIFIER);
+		if (amplifier != null)
+			livingEntity.addEffect(new MobEffectInstance(MobEffects.JUMP, 2, amplifier, false, false, false));
+	}
+
+	public static void travellersVestHaste(LivingEntity livingEntity) {
+		ItemStack chestStack = livingEntity.getItemBySlot(EquipmentSlot.CHEST);
+		Integer amplifier = chestStack.get(TFDataComponents.HASTE_AMPLIFIER);
+		if (amplifier != null)
+			livingEntity.addEffect(new MobEffectInstance(MobEffects.DIG_SPEED, 2, amplifier, false, false, false));
+	}
+
 	public static boolean performDoubleJump(Player player) {
 		Boolean hasDoubleJump = player.getData(TFDataAttachments.HAS_DOUBLE_JUMP);
 		if (Boolean.TRUE.equals(hasDoubleJump) && !player.isFallFlying() && !player.onGround()) {
@@ -163,6 +178,7 @@ public class TravellersArmorItem extends ArmorItem {
 		return properties
 			.component(TFDataComponents.TRAVELLERS_HAS_CHESTPLATE, true)
 			.component(TFDataComponents.STEALTH_CROUCHING_ENABLE, true)
+			.component(TFDataComponents.HASTE_AMPLIFIER, 1)
 			.component(TFDataComponents.ARROW_MAGNETISM, true)
 			.attributes(defaultArmorProperties(Type.CHESTPLATE)
 				.add(Attributes.WATER_MOVEMENT_EFFICIENCY, new AttributeModifier(TwilightForestMod.prefix("travellers_gear.vest_fast_swimming"), 1F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.CHEST)

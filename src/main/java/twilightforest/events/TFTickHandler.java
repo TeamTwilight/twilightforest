@@ -11,7 +11,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -87,8 +86,9 @@ public class TFTickHandler {
 			serverLevel.getEntities().getAll().forEach(entity -> {
 				if (!(entity instanceof LivingEntity livingEntity))
 					return;
-				travellersWingsHighJump(livingEntity);
 				TravellersArmorItem.travellersPantsControlFall(livingEntity);
+				TravellersArmorItem.travellersVestHaste(livingEntity);
+				TravellersArmorItem.travellersWingsHighJump(livingEntity);
 			});
 		}
 	}
@@ -182,12 +182,5 @@ public class TFTickHandler {
 				TFAdvancements.MADE_TF_PORTAL.get().trigger(player);
 
 		}
-	}
-
-	public static void travellersWingsHighJump(LivingEntity livingEntity) {
-		ItemStack leggingsStack = livingEntity.getItemBySlot(EquipmentSlot.LEGS);
-		Integer amplifier = leggingsStack.get(TFDataComponents.HIGH_JUMP_AMPLIFIER);
-		if (amplifier != null)
-			livingEntity.addEffect(new MobEffectInstance(MobEffects.JUMP, 2, amplifier, false, false, false));
 	}
 }
