@@ -253,8 +253,4 @@ public class TravellersLeggingsModel extends HumanoidModel<LivingEntity> {
 		body.getChild("back").skipDraw        = skip;
 	}
 
-	public static void skipPants(ModelPart leggingsLayer, boolean skip) {
-		leggingsLayer.getChild("left_leg").skipDraw      = skip;
-		leggingsLayer.getChild("right_leg").skipDraw     = skip;
-	}
 }
