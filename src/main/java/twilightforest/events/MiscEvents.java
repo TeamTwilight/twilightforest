@@ -67,25 +67,6 @@ public class MiscEvents {
 	}
 
 	@SubscribeEvent
-	public static void addAnvilRecipes(AnvilUpdateEvent event) {
-		ItemStack leftItemStack = event.getLeft();
-		ItemStack rightItemStack = event.getRight();
-		String name = event.getName();
-		boolean correctNameForPantsWithBelt = leftItemStack.is(TFItems.TRAVELLERS_LEGGINGS_BELT) && "Traveller's Wings With Belt".equalsIgnoreCase(name);
-		boolean correctNameForPants = leftItemStack.is(TFItems.TRAVELLERS_LEGGINGS) && "Traveller's Wings".equalsIgnoreCase(name);
-		if (!rightItemStack.isEmpty())
-			return;
-
-		if (correctNameForPantsWithBelt)
-			event.setOutput(new ItemStack(TFItems.TRAVELLERS_WINGS_BELT.get()));
-		if (correctNameForPants)
-			event.setOutput(new ItemStack(TFItems.TRAVELLERS_WINGS.get()));
-
-		if (event.getOutput().has(TFDataComponents.TRAVELLERS_HAS_WINGS))
-			event.setCost(15);
-	}
-
-	@SubscribeEvent
 	public static void armorChanged(LivingEquipmentChangeEvent event) {
 		LivingEntity living = event.getEntity();
 

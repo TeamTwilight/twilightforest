@@ -1,9 +1,7 @@
 package twilightforest.item;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.Model;
-import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
@@ -25,13 +23,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.TFArmorModel;
 import twilightforest.client.model.armor.TravellersLeggingsModel;
+import twilightforest.client.renderer.armor.TFArmorRenderer;
 import twilightforest.init.TFArmorMaterials;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFDataComponents;
@@ -180,15 +178,9 @@ public class TravellersArmorItem extends ArmorItem {
 		return properties
 			.component(TFDataComponents.TRAVELLERS_HAS_WINGS, true)
 			.component(TFDataComponents.HIGH_JUMP_AMPLIFIER, 1)
-			.component(TFDataComponents.HAS_DOUBLE_JUMP, true);
-	}
-
-	public static Properties pantsProperties(Properties properties) {
-		return properties
-			.component(TFDataComponents.TRAVELLERS_HAS_PANTS, true)
+			.component(TFDataComponents.HAS_DOUBLE_JUMP, true)
 			.component(TFDataComponents.CONTROLLED_FALLING_MULTIPLIER, 1 - 1 / 6F);
 	}
-
 
 	public static Properties beltProperties(Properties properties) {
 		return properties
@@ -227,16 +219,18 @@ public class TravellersArmorItem extends ArmorItem {
 		return defaultArmorModifiers;
 	}
 
-	public static final class ArmorRender implements IClientItemExtensions {
-		public static final ArmorRender INSTANCE = new ArmorRender();
+	public static final class ArmorRender extends TFArmorRenderer {
+
+		public ArmorRender() {
+			super(TFModelLayers.TRAVELLERS_ARMOR_HELMET, TFModelLayers.TRAVELLERS_ARMOR_CHEST_GLOVES, TFModelLayers.TRAVELLERS_ARMOR_LEGGINGS, TFModelLayers.TRAVELLERS_ARMOR_BOOTS);
+		}
 
 		@Override
 		public @NotNull HumanoidModel<?> getHumanoidArmorModel(LivingEntity living, ItemStack stack, EquipmentSlot slot, HumanoidModel<?> model) {
-			EntityModelSet models = Minecraft.getInstance().getEntityModels();
 			ModelPart root = switch (slot) {
-				case HEAD -> models.bakeLayer(TFModelLayers.TRAVELLERS_ARMOR_HELMET);
+				case HEAD -> this.getModelPart(TFModelLayers.TRAVELLERS_ARMOR_HELMET);
 				case CHEST -> {
-					ModelPart chestLayer = models.bakeLayer(TFModelLayers.TRAVELLERS_ARMOR_CHEST_GLOVES);
+					ModelPart chestLayer = this.getModelPart(TFModelLayers.TRAVELLERS_ARMOR_CHEST_GLOVES);
 					chestLayer.getAllParts().forEach(part -> part.skipDraw = true);
 					boolean hasChestplate = Boolean.TRUE.equals(stack.get(TFDataComponents.TRAVELLERS_HAS_CHESTPLATE));
 					boolean hasGloves = Boolean.TRUE.equals(stack.get(TFDataComponents.TRAVELLERS_HAS_GLOVES));
@@ -247,19 +241,17 @@ public class TravellersArmorItem extends ArmorItem {
 					yield chestLayer;
 				}
 				case LEGS -> {
-					ModelPart leggingsLayer = models.bakeLayer(TFModelLayers.TRAVELLERS_ARMOR_LEGGINGS);
+					ModelPart leggingsLayer = this.getModelPart(TFModelLayers.TRAVELLERS_ARMOR_LEGGINGS);
 					leggingsLayer.getAllParts().forEach(part -> part.skipDraw = true);
-					boolean hasPants = Boolean.TRUE.equals(stack.get(TFDataComponents.TRAVELLERS_HAS_PANTS));
 					boolean hasWings = Boolean.TRUE.equals(stack.get(TFDataComponents.TRAVELLERS_HAS_WINGS));
 					boolean hasBelt = Boolean.TRUE.equals(stack.get(TFDataComponents.TRAVELLERS_HAS_BELT));
 
 					TravellersLeggingsModel.skipBelt(leggingsLayer, !hasBelt);
 					TravellersLeggingsModel.skipWings(leggingsLayer, !hasWings);
-					TravellersLeggingsModel.skipPants(leggingsLayer, !hasPants);
 
 					yield leggingsLayer;
 				}
-				case FEET -> models.bakeLayer(TFModelLayers.TRAVELLERS_ARMOR_BOOTS);
+				case FEET -> this.getModelPart(TFModelLayers.TRAVELLERS_ARMOR_BOOTS);
 				default -> throw new IllegalArgumentException("Unexpected slot: " + slot + ": " + stack + ". Please report to https://github.com/TeamTwilight/twilightforest/issues");
 			};
 

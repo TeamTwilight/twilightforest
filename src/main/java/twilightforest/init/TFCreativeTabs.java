@@ -593,8 +593,6 @@ public class TFCreativeTabs {
 			output.accept(TFItems.TRAVELLERS_GLOVES);
 			output.accept(TFItems.TRAVELLERS_WINGS_BELT);
 			output.accept(TFItems.TRAVELLERS_WINGS);
-			output.accept(TFItems.TRAVELLERS_LEGGINGS_BELT);
-			output.accept(TFItems.TRAVELLERS_LEGGINGS);
 			output.accept(TFItems.TRAVELLERS_BELT);
 			output.accept(TFItems.TRAVELLERS_BOOTS);
 			output.accept(TFItems.EMPERORS_CLOTH);

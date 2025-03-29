@@ -11,7 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.TFArmorModel;
-import twilightforest.client.renderer.TFSimpleArmorRenderer;
+import twilightforest.client.renderer.armor.TFSimpleArmorRenderer;
 import twilightforest.init.TFItems;
 
 import java.util.List;

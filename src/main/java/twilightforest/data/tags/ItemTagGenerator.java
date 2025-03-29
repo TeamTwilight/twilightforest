@@ -382,8 +382,6 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 			TFItems.NAGA_LEGGINGS.get(),
 			TFItems.TRAVELLERS_WINGS_BELT.get(),
 			TFItems.TRAVELLERS_WINGS.get(),
-			TFItems.TRAVELLERS_LEGGINGS_BELT.get(),
-			TFItems.TRAVELLERS_LEGGINGS.get(),
 			TFItems.TRAVELLERS_BELT.get());
 
 

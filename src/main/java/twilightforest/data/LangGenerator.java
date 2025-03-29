@@ -636,8 +636,6 @@ public class LangGenerator extends TFLangProvider {
 		this.addItem(TFItems.TRAVELLERS_BELT, "Traveller's Belt");
 		this.addItem(TFItems.TRAVELLERS_WINGS, "Traveller's Wings");
 		this.addItem(TFItems.TRAVELLERS_WINGS_BELT, "Traveller's Wings & Belt");
-		this.addItem(TFItems.TRAVELLERS_LEGGINGS, "Traveller's Greaves");
-		this.addItem(TFItems.TRAVELLERS_LEGGINGS_BELT, "Traveller's Graves with Belt");
 		this.addItem(TFItems.TRAVELLERS_BOOTS, "Traveller's Boots");
 
 		this.addItem(TFItems.MOON_DIAL, "Moon Dial");

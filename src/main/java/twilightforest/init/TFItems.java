@@ -90,8 +90,6 @@ public class TFItems {
 	public static final DeferredItem<ArmorItem> TRAVELLERS_GLOVES = ITEMS.register("travellers_gloves", () -> new TravellersArmorItem(ArmorItem.Type.CHESTPLATE, TravellersArmorItem.glovesProperties(new Item.Properties())));
 	public static final DeferredItem<ArmorItem> TRAVELLERS_WINGS_BELT = ITEMS.register("travellers_wings_belt", () -> new TravellersArmorItem(ArmorItem.Type.LEGGINGS, TravellersArmorItem.beltProperties(TravellersArmorItem.wingsProperties(new Item.Properties()))));
 	public static final DeferredItem<ArmorItem> TRAVELLERS_WINGS = ITEMS.register("travellers_wings", () -> new TravellersArmorItem(ArmorItem.Type.LEGGINGS, TravellersArmorItem.wingsProperties(new Item.Properties())));
-	public static final DeferredItem<ArmorItem> TRAVELLERS_LEGGINGS_BELT = ITEMS.register("travellers_leggings_belt", () -> new TravellersArmorItem(ArmorItem.Type.LEGGINGS, TravellersArmorItem.beltProperties(TravellersArmorItem.pantsProperties(new Item.Properties()))));
-	public static final DeferredItem<ArmorItem> TRAVELLERS_LEGGINGS = ITEMS.register("travellers_leggings", () -> new TravellersArmorItem(ArmorItem.Type.LEGGINGS, TravellersArmorItem.pantsProperties(new Item.Properties())));
 	public static final DeferredItem<ArmorItem> TRAVELLERS_BELT = ITEMS.register("travellers_belt", () -> new TravellersArmorItem(ArmorItem.Type.LEGGINGS, TravellersArmorItem.beltProperties(new Item.Properties())));
 	public static final DeferredItem<ArmorItem> TRAVELLERS_BOOTS = ITEMS.register("travellers_boots", () -> new TravellersArmorItem(ArmorItem.Type.BOOTS, TravellersArmorItem.bootsProperties(new Item.Properties())));
 	public static final DeferredItem<Item> STEELEAF_INGOT = ITEMS.register("steeleaf_ingot", () -> new Item(new Item.Properties()));

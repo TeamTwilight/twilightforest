@@ -58,7 +58,8 @@ import twilightforest.client.model.entity.*;
 import twilightforest.client.model.item.TrollsteinnModel;
 import twilightforest.client.particle.*;
 import twilightforest.client.renderer.PotionFlaskTooltipComponent;
-import twilightforest.client.renderer.TFSimpleArmorRenderer;
+import twilightforest.client.renderer.armor.TFArmorRenderer;
+import twilightforest.client.renderer.armor.TFSimpleArmorRenderer;
 import twilightforest.client.renderer.entity.RisingZombieRenderer;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.block.*;
@@ -316,7 +317,7 @@ public class RegistrationEvents {
 		MagicPaintingTextureManager.instance = new MagicPaintingTextureManager(Minecraft.getInstance().getTextureManager());
 		event.registerReloadListener(MagicPaintingTextureManager.instance);
 		event.registerReloadListener(TextureGeneratorReloadListener.INSTANCE);
-		event.registerReloadListener(new TFSimpleArmorRenderer.ResourceReloadListener());
+		event.registerReloadListener(new TFArmorRenderer.ResourceReloadListener());
 	}
 
 	private static void registerScreens(RegisterMenuScreensEvent event) {
@@ -661,8 +662,8 @@ public class RegistrationEvents {
 			TFItems.FIERY_CHESTPLATE.get(), TFItems.FIERY_LEGGINGS.get(), TFItems.FIERY_BOOTS.get()
 		);
 		event.registerItem(
-			TravellersArmorItem.ArmorRender.INSTANCE,
-			TFItems.TRAVELLERS_GOGGLES.get(), TFItems.TRAVELLERS_CHESTPLATE_GLOVES.get(), TFItems.TRAVELLERS_CHESTPLATE.get(), TFItems.TRAVELLERS_GLOVES.get(), TFItems.TRAVELLERS_WINGS_BELT.get(), TFItems.TRAVELLERS_WINGS.get(), TFItems.TRAVELLERS_LEGGINGS_BELT.get(), TFItems.TRAVELLERS_LEGGINGS.get(), TFItems.TRAVELLERS_BELT.get(), TFItems.TRAVELLERS_BOOTS.get()
+			new TravellersArmorItem.ArmorRender(),
+			TFItems.TRAVELLERS_GOGGLES.get(), TFItems.TRAVELLERS_CHESTPLATE_GLOVES.get(), TFItems.TRAVELLERS_CHESTPLATE.get(), TFItems.TRAVELLERS_GLOVES.get(), TFItems.TRAVELLERS_WINGS_BELT.get(), TFItems.TRAVELLERS_WINGS.get(), TFItems.TRAVELLERS_BELT.get(), TFItems.TRAVELLERS_BOOTS.get()
 		);
 		event.registerItem(
 			new TFSimpleArmorRenderer(TFArmorModel::new, TFModelLayers.KNIGHTMETAL_ARMOR_INNER, TFModelLayers.KNIGHTMETAL_ARMOR_OUTER),
