@@ -240,6 +240,18 @@ public class EntityEvents {
 		});
 	}
 
+	@SubscribeEvent
+	public static void perfectDodgeEvent(LivingIncomingDamageEvent event) {
+		if (!event.getSource().is(DamageTypeTags.IS_PROJECTILE))
+			return;
+		LivingEntity livingEntity = event.getEntity();
+		ItemStack chest = livingEntity.getItemBySlot(EquipmentSlot.CHEST);
+		Float probability = chest.get(TFDataComponents.PERFECT_DODGE_PROBABILITY);
+		Level level = livingEntity.level();
+		if (probability != null && probability > level.random.nextFloat())
+			event.setCanceled(true);
+	}
+
 	// Parrying
 	@SubscribeEvent
 	public static void onParryProjectile(ProjectileImpactEvent event) {

@@ -180,6 +180,7 @@ public class TravellersArmorItem extends ArmorItem {
 			.component(TFDataComponents.STEALTH_CROUCHING_ENABLE, true)
 			.component(TFDataComponents.HASTE_AMPLIFIER, 1)
 			.component(TFDataComponents.ARROW_MAGNETISM, true)
+			.component(TFDataComponents.PERFECT_DODGE_PROBABILITY, 0.1F)
 			.attributes(defaultArmorProperties(Type.CHESTPLATE)
 				.add(Attributes.WATER_MOVEMENT_EFFICIENCY, new AttributeModifier(TwilightForestMod.prefix("travellers_gear.vest_fast_swimming"), 1F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.CHEST)
 				.build());
