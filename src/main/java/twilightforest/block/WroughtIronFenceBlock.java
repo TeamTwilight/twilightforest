@@ -173,7 +173,7 @@ public class WroughtIronFenceBlock extends Block implements SimpleWaterloggedBlo
 		BlockState above = level.getBlockState(pos.above());
 
 		boolean shouldAnyBePost = shouldAnyBePost(level, pos);
-		if (state.getValue(POST) == PostState.CAPPED && !above.isSolid()) return PostState.CAPPED;
+		if (state.getValue(POST) == PostState.CAPPED && above.canBeReplaced()) return PostState.CAPPED;
 		if (shouldAnyBePost) return PostState.POST;
 		else return shouldBePost(state) ? PostState.POST : PostState.NONE;
 	}

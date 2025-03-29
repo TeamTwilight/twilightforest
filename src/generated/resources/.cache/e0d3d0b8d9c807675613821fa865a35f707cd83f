@@ -1,8 +1,9 @@
-// 1.21.1	2024-08-26T04:01:24.0420812	Data Maps
+// 1.21.1	2024-11-24T22:39:14.0436261	Data Maps
 9d605f77607fab46af7ad213ed8d31788a2321c9 data/neoforge/data_maps/entity_type/parrot_imitations.json
 afd96f81ddd677bc5552b0685df897a93f4d6445 data/neoforge/data_maps/item/compostables.json
 1bda341a4fd3cfbd09ba74b7072ce0931799b473 data/neoforge/data_maps/item/furnace_fuels.json
 8a5b0485a5ac296217fe1f69fc34d7126e5ca4c9 data/twilightforest/data_maps/block/crumble_horn.json
 7250563057afb29996423871be69f9cd4f78b7cc data/twilightforest/data_maps/block/ore_map_color.json
+d099ac5fbfe0eeabbacb4ef8c4d738bd2c795414 data/twilightforest/data_maps/entity_type/ominous_fire.json
 f5a5270de0e2efc94735b1807a6d8ee6e27984cd data/twilightforest/data_maps/entity_type/transformation_powder.json
 1e9abba89255dd095b06fe297a834f1bad141a5b data/twilightforest/data_maps/worldgen/biome/magic_map_color.json

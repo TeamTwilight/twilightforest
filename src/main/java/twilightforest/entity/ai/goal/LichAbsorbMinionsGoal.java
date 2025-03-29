@@ -44,6 +44,7 @@ public class LichAbsorbMinionsGoal extends Goal {
 
 	@Override
 	public void tick() {
+		if (this.lich.getTeleportInvisibility() > 0) return;
 		super.tick();
 		if (this.lich.getScepterTimeLeft() > 0) return;
 
@@ -51,7 +52,7 @@ public class LichAbsorbMinionsGoal extends Goal {
 			.stream().filter(m -> m.master == this.lich).toList();
 
 		if (!minions.isEmpty()) {
-			LichMinion minion = minions.get(0);
+			LichMinion minion = minions.getFirst();
 			minion.discard();
 			//rain particles
 			LifedrainScepterItem.animateTargetShatter((ServerLevel) this.lich.level(), minion);
@@ -64,7 +65,7 @@ public class LichAbsorbMinionsGoal extends Goal {
 			this.lich.playSound(TFSounds.LICH_POP_MOB.get(), 3.0F, 0.4F + this.lich.getRandom().nextFloat() * 0.2F);
 			minion.playSound(TFSounds.LICH_POP_MOB.get(), 3.0F, 0.4F + this.lich.getRandom().nextFloat() * 0.2F);
 			// make trail so it's clear that we did it
-			this.lich.makeMagicTrail(minion.getEyePosition(), this.lich.getEyePosition(), 0.5F, 0.0F, 1.0F);
+			this.lich.makeMagicTrail(minion.getEyePosition(), this.lich.getEyePosition(), 1.0F, 0.5F, 0.5F);
 			//heal some health
 			this.lich.heal(minion.getHealth());
 			this.lich.swing(InteractionHand.MAIN_HAND);

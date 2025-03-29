@@ -1821,8 +1821,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 			}
 		}
 
-		// I guess we didn't get one
-		TwilightForestMod.LOGGER.info("ComponentTFTowerWing#getRandomWallSpot - We didn't find a valid random spot on the wall.");
+		// No suitable placement found inside the sbb, but that's okay because it'll place with a different sbb mask
 		return null;
 	}
 

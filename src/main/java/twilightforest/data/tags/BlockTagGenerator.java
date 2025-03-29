@@ -77,6 +77,7 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 	public static final TagKey<Block> ROOT_ORES = makeCommonTag("ores_in_ground/root");
 
 	public static final TagKey<Block> TIME_CORE_EXCLUDED = create("time_core_excluded");
+	public static final TagKey<Block> MINING_CORE_EXCLUDED = create("mining_tree_excluded");
 	public static final TagKey<Block> ORE_METER_TARGETABLE = create("ore_meter_targetable");
 
 	public static final TagKey<Block> PENGUINS_SPAWNABLE_ON = create("penguins_spawnable_on");
@@ -521,6 +522,7 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 		);
 
 		this.tag(ORE_MAGNET_IGNORE).addTag(BlockTags.COAL_ORES);
+		this.tag(MINING_CORE_EXCLUDED).addTag(BlockTags.COAL_ORES);
 
 		this.tag(ROOT_GROUND).add(TFBlocks.ROOT_BLOCK.get());
 		this.tag(ROOT_ORES).add(TFBlocks.LIVEROOT_BLOCK.get());
@@ -799,6 +801,9 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 
 		this.tag(BlockTags.WOOL_CARPETS)
 			.add(TFBlocks.CORONATION_CARPET.get());
+
+		this.tag(BlockTags.FIRE)
+			.add(TFBlocks.OMINOUS_FIRE.get());
 	}
 
 	public static TagKey<Block> create(String tagName) {

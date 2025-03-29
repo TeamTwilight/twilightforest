@@ -36,8 +36,8 @@ import twilightforest.network.StructureProtectionPacket;
 import twilightforest.util.Enforcement;
 import twilightforest.util.PlayerHelper;
 import twilightforest.util.landmarks.LandmarkUtil;
-import twilightforest.world.components.structures.TFStructureComponent;
 import twilightforest.world.components.structures.util.AdvancementLockedStructure;
+import twilightforest.world.components.structures.util.ProgressionPiece;
 
 import java.util.List;
 import java.util.Objects;
@@ -129,7 +129,7 @@ public class TFTickHandler {
 
 	@SuppressWarnings("deprecation")
 	private static boolean isProtected(StructurePiece piece) {
-		return !(piece instanceof TFStructureComponent tfStructureComponent) || tfStructureComponent.isComponentProtected();
+		return !(piece instanceof ProgressionPiece progressionPiece) || progressionPiece.isComponentProtected();
 	}
 
 	private static void checkForPortalCreation(ServerPlayer player, Level world, float rangeToCheck) {

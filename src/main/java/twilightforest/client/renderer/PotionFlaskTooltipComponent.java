@@ -100,21 +100,22 @@ public class PotionFlaskTooltipComponent implements ClientTooltipComponent {
 	private void drawPotionBar(int x, int y, Font font, GuiGraphics graphics) {
 		int segmentSplit = this.getWidth(font) / this.maxDoses;
 		if (this.component.doses() <= 0) {
-			graphics.drawCenteredString(font, Component.translatable("item.twilightforest.flask.empty"), x + 57, y + 3, 16777215);
-		} else {
-			this.renderPotion(graphics.pose(), x + 1, y + 13, this.component.doses() * segmentSplit - 1, 13, this.component.potion().getColor());
-			if (this.component.breakage() > 0) {
-				int xPos = x + segmentSplit * (3 - this.component.breakage());
-				RenderSystem.enableBlend();
-				graphics.fill(xPos, y, xPos + (segmentSplit * this.component.breakage()), y + 13, 0xAA434343);
-				RenderSystem.disableBlend();
-			}
-			int widthProg = segmentSplit;
-			for (int i = 1; i < this.maxDoses; i++) {
-				graphics.blitSprite(DOSE_SPRITE, x + widthProg, y, 1, 13);
-				widthProg += segmentSplit;
-			}
+			graphics.drawCenteredString(font, Component.translatable("item.twilightforest.flask.empty"), x + (WIDTH / 2) + 1, y + 3, 16777215);
 		}
+
+		this.renderPotion(graphics.pose(), x + 1, y + 13, this.component.doses() * segmentSplit - 1, 13, this.component.potion().getColor());
+		if (this.component.breakage() > 0) {
+			int xPos = x + segmentSplit * (3 - this.component.breakage());
+			RenderSystem.enableBlend();
+			graphics.fill(xPos, y, xPos + (segmentSplit * this.component.breakage()), y + 13, 0xAA434343);
+			RenderSystem.disableBlend();
+		}
+		int widthProg = segmentSplit;
+		for (int i = 1; i < this.maxDoses; i++) {
+			graphics.blitSprite(DOSE_SPRITE, x + widthProg, y, 1, 13);
+			widthProg += segmentSplit;
+		}
+
 		graphics.blitSprite(BORDER_SPRITE, x, y, WIDTH, 13);
 	}
 

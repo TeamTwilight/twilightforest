@@ -33,6 +33,7 @@ public class TFEmiCompat implements EmiPlugin {
 	public static final TFEmiRecipeCategory UNCRAFTING = new TFEmiRecipeCategory("uncrafting", TFBlocks.UNCRAFTING_TABLE);
 	public static final TFEmiRecipeCategory CRUMBLE_HORN = new TFEmiRecipeCategory("crumble_horn", TFItems.CRUMBLE_HORN);
 	public static final TFEmiRecipeCategory TRANSFORMATION = new TFEmiRecipeCategory("transformation", TFItems.TRANSFORMATION_POWDER);
+	public static final TFEmiRecipeCategory EXANIMATE = new TFEmiRecipeCategory("ominous_flame", TFItems.EXANIMATE_ESSENCE);
 	public static final TFEmiRecipeCategory MOONWORM_QUEEN = new TFEmiRecipeCategory("moonworm_queen", TFItems.MOONWORM_QUEEN);
 	public static final TFEmiRecipeCategory DRYING = new TFEmiRecipeCategory("drying", TFBlocks.SORTING_DRYING_RACK);
 
@@ -50,6 +51,7 @@ public class TFEmiCompat implements EmiPlugin {
 		registry.addCategory(UNCRAFTING);
 		registry.addCategory(CRUMBLE_HORN);
 		registry.addCategory(TRANSFORMATION);
+		registry.addCategory(EXANIMATE);
 		registry.addCategory(MOONWORM_QUEEN);
 		registry.addCategory(DRYING);
 
@@ -59,6 +61,7 @@ public class TFEmiCompat implements EmiPlugin {
 		}
 		registry.addWorkstation(CRUMBLE_HORN, EmiStack.of(TFItems.CRUMBLE_HORN));
 		registry.addWorkstation(TRANSFORMATION, EmiStack.of(TFItems.TRANSFORMATION_POWDER));
+		registry.addWorkstation(EXANIMATE, EmiStack.of(TFItems.EXANIMATE_ESSENCE));
 		registry.addWorkstation(MOONWORM_QUEEN, EmiStack.of(TFItems.MOONWORM_QUEEN));
 
 		RecipeManager manager = Objects.requireNonNull(Minecraft.getInstance().level).getRecipeManager();
@@ -68,6 +71,10 @@ public class TFEmiCompat implements EmiPlugin {
 		}
 		for (RecipeViewerConstants.TransformationPowderInfo info : RecipeViewerConstants.getTransformationPowderRecipes()) {
 			registry.addRecipe(new EmiTransformationPowderRecipe(info.input(), info.output(), info.reversible()));
+		}
+
+		for (RecipeViewerConstants.OminousFireInfo info : RecipeViewerConstants.getOminousFireRecipes()) {
+			registry.addRecipe(new EmiOminousFireRecipe(info.input(), info.output()));
 		}
 
 		for (Pair<Block, Block> info : RecipeViewerConstants.getCrumbleHornRecipes()) {
@@ -107,5 +114,7 @@ public class TFEmiCompat implements EmiPlugin {
 			}
 			return false;
 		});
+
+		registry.removeEmiStacks(stack -> TFItems.MAGIC_PAINTING.getId().equals(stack.getId()));
 	}
 }

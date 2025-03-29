@@ -178,10 +178,9 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 					level.getLightEngine().checkBlock(pos);
 					return ItemInteractionResult.sidedSuccess(level.isClientSide());
 				}
-
 			}
 		}
-		return this.lightCandles(state, level, pos, player, hand);
+		return this.tryLightCandles(stack, state, level, pos, player);
 	}
 
 	@Override

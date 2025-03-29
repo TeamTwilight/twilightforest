@@ -458,7 +458,14 @@ public class EntityLootTables extends EntityLootSubProvider {
 				.withPool(LootPool.lootPool()
 					.name("lich_trophy")
 					.setRolls(ConstantValue.exactly(1.0F))
-					.add(LootItem.lootTableItem(TFBlocks.LICH_TROPHY.get().asItem()))));
+					.add(LootItem.lootTableItem(TFBlocks.LICH_TROPHY)))
+				.withPool(LootPool.lootPool()
+					.name("essence")
+					.setRolls(ConstantValue.exactly(1.0F))
+					.add(LootItem.lootTableItem(TFItems.EXANIMATE_ESSENCE)
+						.apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 3.0F)))
+						.apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F)))
+						.apply(MultiplayerBasedAdditionLootFunction.addForAllParticipatingPlayers(UniformGenerator.between(0.0F, 1.0F))))));
 
 		add(TFEntities.MINOSHROOM.get(),
 			LootTable.lootTable()

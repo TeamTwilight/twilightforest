@@ -1,52 +1,34 @@
 package twilightforest.block;
 
 import com.mojang.serialization.MapCodec;
-import it.unimi.dsi.fastutil.floats.Float2FloatFunction;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.component.DataComponentPatch;
-import net.minecraft.core.component.DataComponents;
-import net.minecraft.network.chat.Component;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.*;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.entity.LidBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.Nullable;
-import twilightforest.block.entity.KeepsakeCasketBlockEntity;
+import twilightforest.block.entity.SkullChestBlockEntity;
 import twilightforest.enums.BlockLoggingEnum;
 import twilightforest.init.TFBlockEntities;
-import twilightforest.init.TFDataComponents;
-import twilightforest.init.TFItems;
-import twilightforest.init.TFSounds;
-
-import java.util.List;
 
 public class SkullChestBlock extends BaseEntityBlock implements BlockLoggingEnum.IMultiLoggable {
 
@@ -94,12 +76,12 @@ public class SkullChestBlock extends BaseEntityBlock implements BlockLoggingEnum
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return KeepsakeCasketBlockEntity.createSkullChestBE(pos, state);
+		return new SkullChestBlockEntity(pos, state);
 	}
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFBlockEntities.SKULL_CHEST.get(), KeepsakeCasketBlockEntity::tick);
+		return createTickerHelper(type, TFBlockEntities.SKULL_CHEST.get(), SkullChestBlockEntity::tick);
 	}
 
 	@Override
@@ -141,15 +123,14 @@ public class SkullChestBlock extends BaseEntityBlock implements BlockLoggingEnum
 	public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
 		if (!level.isClientSide() && !player.isCreative() && level.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS)) {
 			BlockEntity tile = level.getBlockEntity(pos);
-			if (tile instanceof KeepsakeCasketBlockEntity casket) {
+			if (tile instanceof SkullChestBlockEntity chest) {
 				ItemStack stack = new ItemStack(this);
-				String nameCheck = Component.literal(casket.playerName + "'s " + casket.getDisplayName()).getString();
 				ItemEntity itementity = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), stack);
-				modifyDrop(state, stack);
-				if (casket.hasCustomName()) {
-					if (nameCheck.equals(casket.getCustomName().getString()))
-						itementity.setCustomName(casket.getDisplayName());
-					else itementity.setCustomName(casket.getCustomName());
+				this.modifyDrop(state, stack);
+				if (chest.hasCustomName()) {
+					if (chest.owner != null)
+						itementity.setCustomName(chest.getDisplayName());
+					else itementity.setCustomName(chest.getCustomName());
 				}
 				if (state.getValue(BlockLoggingEnum.MULTILOGGED).getFluid() == Fluids.EMPTY) {
 					Block block = state.getValue(BlockLoggingEnum.MULTILOGGED).getBlock();
@@ -168,19 +149,6 @@ public class SkullChestBlock extends BaseEntityBlock implements BlockLoggingEnum
 	}
 
 	protected void modifyDrop(BlockState state, ItemStack stack) {
-	}
-
-	@Override
-	public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
-		Component customName = stack.get(DataComponents.CUSTOM_NAME);
-		if (customName == null)
-			customName = stack.get(DataComponents.ITEM_NAME);
-
-		if (customName != null) {
-			if (level.getBlockEntity(pos) instanceof KeepsakeCasketBlockEntity casket) {
-				casket.name = customName;
-			}
-		}
 	}
 
 	@Override

@@ -200,4 +200,8 @@ public class BoundingBoxUtils {
 			case Z -> new BlockPos(center.getX(), center.getY(), Mth.lerpDiscrete(delta, box.minZ(), box.maxZ()));
 		};
 	}
+
+	public static BoundingBox setY(BoundingBox box, int minY, int maxY) {
+		return new BoundingBox(box.minX(), minY, box.minZ(), box.maxX(), maxY, box.maxZ());
+	}
 }

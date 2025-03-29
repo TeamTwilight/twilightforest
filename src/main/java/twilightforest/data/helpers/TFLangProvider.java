@@ -90,7 +90,7 @@ public abstract class TFLangProvider extends LanguageProvider {
 		this.add("block.twilightforest." + woodPrefix + "_chest", woodName + " Chest");
 		this.add("block.twilightforest." + woodPrefix + "_trapped_chest", "Trapped " + woodName + " Chest");
 		this.add("item.twilightforest." + woodPrefix + "_boat", woodName + " Boat");
-		this.add("item.twilightforest." + woodPrefix + "_chest_boat", woodName + " Chest Boat");
+		this.add("item.twilightforest." + woodPrefix + "_chest_boat", woodName + " Boat with Chest");
 		this.add("block.twilightforest." + woodPrefix + "_hanging_sign", woodName + " Hanging Sign");
 		this.add("block.twilightforest." + woodPrefix + "_wall_hanging_sign", woodName + " Wall Hanging Sign");
 		this.add("block.twilightforest." + woodPrefix + "_drying_rack", woodName + " Drying Rack");
@@ -220,8 +220,10 @@ public abstract class TFLangProvider extends LanguageProvider {
 		for (Map.Entry<String, String> entry : TF_TIPS.entrySet()) {
 			JsonObject object = new JsonObject();
 
+			object.addProperty("type", "tipsmod:simple");
+
 			Component tooltipText = Component.translatable(entry.getKey()).withStyle(ChatFormatting.GREEN);
-			object.add("tip", ComponentSerialization.CODEC.encodeStart(JsonOps.INSTANCE, tooltipText).getOrThrow());
+			object.add("text", ComponentSerialization.CODEC.encodeStart(JsonOps.INSTANCE, tooltipText).getOrThrow());
 			futuresBuilder.add(DataProvider.saveStable(cache, GSON.toJsonTree(object), this.output.getOutputFolder().resolve("assets/twilightforest/tips/" + entry.getValue() + ".json")));
 		}
 		return CompletableFuture.allOf(futuresBuilder.build().toArray(CompletableFuture[]::new));

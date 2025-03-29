@@ -446,7 +446,7 @@ public class TFAdvancementGenerator implements AdvancementProvider.AdvancementGe
 			.save(consumer, "twilightforest:lich_scepters");
 
 		Advancement.Builder.advancement().parent(lich).display(
-				flaskWithHarming(),
+				this.flaskWithHarming(),
 				Component.translatable("advancement.twilightforest.full_mettle_alchemist"),
 				Component.translatable("advancement.twilightforest.full_mettle_alchemist.desc"),
 				null, AdvancementType.CHALLENGE, true, true, true)
@@ -552,13 +552,8 @@ public class TFAdvancementGenerator implements AdvancementProvider.AdvancementGe
 	}
 
 	private ItemStack flaskWithHarming() {
-		ItemStack itemstack = new ItemStack(TFItems.GREATER_FLASK.get());
-		itemstack.set(TFDataComponents.POTION_FLASK_CONTENTS, new PotionFlaskComponent(
-			new PotionContents(Potions.STRONG_HARMING.getDelegate()),
-			4,
-			0,
-			false
-		));
+		ItemStack itemstack = new ItemStack(TFItems.BRITTLE_FLASK.get());
+		itemstack.set(TFDataComponents.POTION_FLASK_CONTENTS, new PotionFlaskComponent(new PotionContents(Potions.STRONG_HARMING), 4, 0, false));
 		return itemstack;
 	}
 

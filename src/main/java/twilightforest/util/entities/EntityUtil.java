@@ -5,6 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.TagKey;
@@ -12,15 +13,14 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.decoration.HangingEntity;
 import net.minecraft.world.entity.decoration.Painting;
 import net.minecraft.world.entity.decoration.PaintingVariant;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -37,13 +37,16 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.fml.util.ObfuscationReflectionHelper;
 import net.neoforged.neoforge.event.EventHooks;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.TwilightForestMod;
 import twilightforest.entity.EnforcedHomePoint;
+import twilightforest.init.TFSounds;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.function.DoubleUnaryOperator;
 
 public class EntityUtil {
@@ -134,7 +137,7 @@ public class EntityUtil {
 
 	//copy of Mob.doHurtTarget, allows for using a custom DamageSource instead of the generic Mob Attack one
 	public static boolean properlyApplyCustomDamageSource(Mob entity, Entity victim, DamageSource source, @Nullable SoundEvent flingSound) {
-		float f = (float)entity.getAttributeValue(Attributes.ATTACK_DAMAGE);
+		float f = (float) entity.getAttributeValue(Attributes.ATTACK_DAMAGE);
 		if (entity.level() instanceof ServerLevel serverlevel) {
 			f = EnchantmentHelper.modifyDamage(serverlevel, entity.getWeaponItem(), entity, source, f);
 		}
@@ -161,7 +164,7 @@ public class EntityUtil {
 	}
 
 	protected static float getKnockback(Mob entity, Entity victim, DamageSource source) {
-		float f = (float)entity.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
+		float f = (float) entity.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
 		return entity.level() instanceof ServerLevel serverlevel ? EnchantmentHelper.modifyKnockback(serverlevel, entity.getWeaponItem(), victim, source, f) : f;
 	}
 
@@ -282,5 +285,81 @@ public class EntityUtil {
 		}
 
 		return list;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static boolean convertEntity(LivingEntity oldEntity, EntityType<?> newType) {
+		if (!(oldEntity.level() instanceof ServerLevel level)) return false;
+		var newEntity = newType.create(level);
+		if (newEntity == null) return false;
+		if (!(newEntity instanceof LivingEntity living) || EventHooks.canLivingConvert(oldEntity, (EntityType<? extends LivingEntity>) living.getType(), timer -> {})) {
+			var passengerSave = oldEntity.getPassengers();
+			if (oldEntity instanceof Mob mob && newEntity instanceof Mob newMob) {
+				newEntity = mob.convertTo((EntityType<? extends Mob>) newMob.getType(), true);
+			} else {
+				newEntity.copyPosition(oldEntity);
+
+				if (newEntity instanceof Mob mob) {
+					if (oldEntity instanceof Mob oldMob) {
+						for (EquipmentSlot equipmentslot : EquipmentSlot.values()) {
+							ItemStack itemstack = oldEntity.getItemBySlot(equipmentslot).copyAndClear();
+							if (!itemstack.isEmpty()) {
+								mob.setItemSlot(equipmentslot, itemstack.copyAndClear());
+								mob.setDropChance(equipmentslot, oldMob.getEquipmentDropChance(equipmentslot));
+							}
+						}
+					}
+
+					EventHooks.finalizeMobSpawn(mob, level, level.getCurrentDifficultyAt(oldEntity.blockPosition()), MobSpawnType.CONVERSION, null);
+				}
+
+				oldEntity.level().addFreshEntity(newEntity);
+				oldEntity.discard();
+			}
+			try { // try copying what can be copied
+				UUID uuid = newEntity.getUUID();
+				newEntity.load(oldEntity.saveWithoutId(newEntity.saveWithoutId(new CompoundTag())));
+				newEntity.setUUID(uuid);
+				if (newEntity instanceof LivingEntity living) {
+					living.setHealth(living.getMaxHealth());
+				}
+			} catch (Exception e) {
+				TwilightForestMod.LOGGER.warn("Couldn't transform entity NBT data", e);
+			}
+
+			if (oldEntity instanceof Saddleable saddleable && saddleable.isSaddled() && !(newEntity instanceof Saddleable)) {
+				newEntity.spawnAtLocation(Items.SADDLE);
+			}
+
+			if (newEntity instanceof Mob mob) {
+				mob.spawnAnim();
+				mob.spawnAnim();
+
+				for (EquipmentSlot equipmentslot : EquipmentSlot.values()) {
+					ItemStack itemstack = mob.getItemBySlot(equipmentslot).copyAndClear();
+					mob.spawnAtLocation(itemstack);
+				}
+			}
+
+			if (!passengerSave.isEmpty()) {
+				for (var entity : passengerSave) {
+					entity.startRiding(newEntity, true);
+				}
+			}
+
+			if (newEntity instanceof LivingEntity living) EventHooks.onLivingConvert(oldEntity, living);
+			level.playSound(null, newEntity.blockPosition(), TFSounds.POWDER_USE.get(), newEntity.getSoundSource());
+			return true;
+		}
+		return false;
+	}
+
+	@Nullable
+	public static <T extends Entity> T createEntityIgnoreException(ServerLevelAccessor level, EntityType<T> type) {
+		try {
+			return type.create(level.getLevel());
+		} catch (Exception exception) {
+			return null;
+		}
 	}
 }

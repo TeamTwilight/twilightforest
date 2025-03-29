@@ -10,15 +10,17 @@ import net.minecraft.nbt.NbtUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.util.Unit;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LadderBlock;
 import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
@@ -30,13 +32,16 @@ import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.WroughtIronFenceBlock;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.BoundingBoxUtils;
+import twilightforest.util.entities.EntityUtil;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.util.jigsaw.JigsawRecord;
 import twilightforest.world.components.processors.MetaBlockProcessor;
 import twilightforest.world.components.structures.SpawnIndexProvider;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
+import twilightforest.world.components.structures.UtilityPiece;
 import twilightforest.world.components.structures.util.SortablePiece;
 
 import java.util.List;
@@ -73,6 +78,21 @@ public class LichPerimeterFence extends TwilightJigsawPiece implements PieceBear
 
 		if (this.leashPos != null) {
 			structureTag.put("leash_pos", NbtUtils.writeBlockPos(this.leashPos));
+		}
+	}
+
+	@Override
+	public void addChildren(StructurePiece parent, StructurePieceAccessor pieceAccessor, RandomSource random) {
+		super.addChildren(parent, pieceAccessor, random);
+
+		Direction ladderDirection = this.getSourceJigsaw().orientation().top().getOpposite();
+		BlockPos ladderColumnPos = this.getSourcePosition().relative(ladderDirection, 2).above(2);
+
+		if (this.getSpareJigsaws().size() == 1 && ladderDirection.getAxis() != Direction.Axis.Y) {
+			BoundingBox box = new BoundingBox(ladderColumnPos).inflatedBy(3);
+			UtilityPiece treeClearance = new UtilityPiece(this.genDepth + 1, box, false);
+			pieceAccessor.addPiece(treeClearance);
+			treeClearance.addChildren(this, pieceAccessor, random);
 		}
 	}
 
@@ -155,7 +175,7 @@ public class LichPerimeterFence extends TwilightJigsawPiece implements PieceBear
 	@Nullable
 	public static LichPerimeterFence startPerimeterFence(StructurePiece vestibule, Structure.GenerationContext context, StructurePiecesBuilder structurePiecesBuilder, StructureTemplateManager structureManager, WorldgenRandom random, Direction direction, BlockPos fenceCenter) {
 		FrontAndTop orientation = FrontAndTop.fromFrontAndTop(Direction.UP, direction);
-		int baseY = context.chunkGenerator().getBaseHeight(fenceCenter.getX(), fenceCenter.getZ(), Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState());
+		int baseY = fenceCenter.getY(); // context.chunkGenerator().getBaseHeight(fenceCenter.getX(), fenceCenter.getZ(), Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState());
 
 		JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(fenceCenter.atY(baseY - 2), BlockPos.ZERO, orientation, structureManager, TwilightForestMod.prefix("lich_tower/outer_fence_7"), "twilightforest:lich_tower/fence_source", random);
 
@@ -189,7 +209,7 @@ public class LichPerimeterFence extends TwilightJigsawPiece implements PieceBear
 		BlockPos fencePostPos = fence.templatePosition.offset(first.pos());
 		// Since the fencepost is directly in front of one of the box's faces; this should the same as a regular distance function. If not, then a deeper issue has happened inside generateUntilNearDest()
 
-		for (int distance = Math.min(BoundingBoxUtils.greatestAxalDistance(destination, fencePostPos), 32); distance > 2;) {
+		for (int distance = Math.min(BoundingBoxUtils.greatestAxalDistance(destination, fencePostPos) + 1, 32); distance > 2;) {
 			int stepSize = Math.min(distance, 7);
 			distance -= stepSize;
 
@@ -281,7 +301,7 @@ public class LichPerimeterFence extends TwilightJigsawPiece implements PieceBear
 			// Begin "homing" onto Fence's vertical height if close enough to the trim
 			dY = Mth.clamp(parentFence.templatePosition().getY() - 1, destination.minY() + 2, destination.maxY() - 2) - 1 - parentFence.templatePosition().getY();
 		} else {
-			dY = -1 - parentFence.templatePosition().getY() + context.chunkGenerator().getBaseHeight(postPos.getX(), postPos.getZ(), Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState());
+			dY = 0;
 		}
 		BlockPos parentPos = parentFence.templatePosition().above(Mth.sign(dY) - 1);
 
@@ -310,6 +330,11 @@ public class LichPerimeterFence extends TwilightJigsawPiece implements PieceBear
 	public void postProcess(WorldGenLevel level, StructureManager structureManager, ChunkGenerator chunkGen, RandomSource random, BoundingBox chunkBounds, ChunkPos chunkPos, BlockPos structureCenterPos) {
 		super.postProcess(level, structureManager, chunkGen, random, chunkBounds, chunkPos, structureCenterPos);
 
+		this.generateBoundZombie(level, chunkBounds);
+		this.generateEscapeLadder(level, chunkBounds);
+	}
+
+	private void generateBoundZombie(WorldGenLevel level, BoundingBox chunkBounds) {
 		Direction fenceFacing = this.getSourceJigsaw().orientation().top();
 		if (this.leashPos == null || !chunkBounds.isInside(this.leashPos))
 			return;
@@ -318,26 +343,30 @@ public class LichPerimeterFence extends TwilightJigsawPiece implements PieceBear
 		if (!chunkBounds.isInside(zombiePos))
 			return;
 
-		var knot = createEntityIgnoreException(level, EntityType.LEASH_KNOT);
-		var boundedEntity = createEntityIgnoreException(level, EntityType.ZOMBIE);
+		var knot = EntityUtil.createEntityIgnoreException(level, EntityType.LEASH_KNOT);
+		var boundedEntity = EntityUtil.createEntityIgnoreException(level, EntityType.ZOMBIE);
 		if (knot == null || boundedEntity == null)
 			return;
 
-		knot.setPos(this.leashPos.getX() + 0.5, this.leashPos.getY(), this.leashPos.getZ() + 0.5);
-		level.addFreshEntity(knot);
+		knot.moveTo(this.leashPos.getX() + 0.5, this.leashPos.getY(), this.leashPos.getZ() + 0.5);
 
 		boundedEntity.setPersistenceRequired();
 		boundedEntity.setLeashedTo(knot, false);
-		boundedEntity.setPos(zombiePos.getX() + 0.5, zombiePos.getY() - 1, zombiePos.getZ() + 0.5);
-		level.addFreshEntityWithPassengers(boundedEntity);
+		boundedEntity.moveTo(zombiePos.getX() + 0.5, zombiePos.getY() - 1, zombiePos.getZ() + 0.5);
+		boundedEntity.setData(TFDataAttachments.LEASH_PATHFINDER_OVERRIDE, Unit.INSTANCE);
+		level.addFreshEntity(boundedEntity);
 	}
 
-	@Nullable
-	private static <T extends Entity> T createEntityIgnoreException(ServerLevelAccessor level, EntityType<T> type) {
-		try {
-			return type.create(level.getLevel());
-		} catch (Exception exception) {
-			return null;
+	private void generateEscapeLadder(WorldGenLevel level, BoundingBox chunkBounds) {
+		Direction ladderDirection = this.getSourceJigsaw().orientation().top().getOpposite();
+		BlockPos ladderColumnPos = this.getSourcePosition().relative(ladderDirection);
+
+		if (!chunkBounds.isInside(ladderColumnPos) || this.getSpareJigsaws().size() != 1 || ladderDirection.getAxis() == Direction.Axis.Y)
+			return;
+
+		BlockState ladderState = Blocks.LADDER.defaultBlockState().setValue(LadderBlock.FACING, ladderDirection);
+		for (BlockPos ladderPos : BlockPos.betweenClosed(ladderColumnPos.above(), ladderColumnPos.above(4))) {
+			level.setBlock(ladderPos, ladderState, Block.UPDATE_ALL);
 		}
 	}
 }

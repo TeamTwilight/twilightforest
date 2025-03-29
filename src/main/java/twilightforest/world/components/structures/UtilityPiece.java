@@ -13,16 +13,26 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import twilightforest.init.TFStructurePieceTypes;
 
 public class UtilityPiece extends StructurePiece {
+	public final boolean allowFeatures;
+
 	public UtilityPiece(int genDepth, BoundingBox boundingBox) {
+		this(genDepth, boundingBox, true);
+	}
+
+	public UtilityPiece(int genDepth, BoundingBox boundingBox, boolean allowFeatures) {
 		super(TFStructurePieceTypes.TFUtilityPiece.value(), genDepth, boundingBox);
+		this.allowFeatures = allowFeatures;
 	}
 
 	public UtilityPiece(StructurePieceSerializationContext context, CompoundTag compoundTag) {
 		super(TFStructurePieceTypes.TFUtilityPiece.value(), compoundTag);
+		this.allowFeatures = compoundTag.getBoolean("allow_features");
 	}
 
 	@Override
-	protected void addAdditionalSaveData(StructurePieceSerializationContext context, CompoundTag tag) {}
+	protected void addAdditionalSaveData(StructurePieceSerializationContext context, CompoundTag tag) {
+		tag.putBoolean("allow_features", allowFeatures);
+	}
 
 
 	@Override

@@ -155,9 +155,9 @@ public class OreMagnetItem extends Item {
 					basePos = coord;
 				}
 				// This ordering is so that the base pos is found first before we pull ores - pushing ores away is a baaaaad idea!
-			} else if (foundPos == null && searchState.getBlock() != Blocks.AIR && isOre(searchState.getBlock()) && level.getBlockEntity(coord) == null) {
+			} else if (foundPos == null && searchState.getBlock() != Blocks.AIR && isOre(searchState.getBlock(), sourceIsMineCore) && level.getBlockEntity(coord) == null) {
 				attactedOreBlock = searchState;
-				replacementBlock = ORE_TO_BLOCK_REPLACEMENTS.getOrDefault(attactedOreBlock.getBlock(), Blocks.STONE).defaultBlockState();
+				replacementBlock = (sourceIsMineCore ? TREE_ORE_TO_BLOCK_REPLACEMENTS : MAGNET_ORE_TO_BLOCK_REPLACEMENTS).getOrDefault(attactedOreBlock.getBlock(), Blocks.STONE).defaultBlockState();
 				foundPos = coord;
 			}
 		}
@@ -246,16 +246,18 @@ public class OreMagnetItem extends Item {
 		}
 	}
 
-	private static boolean isOre(Block ore) {
-		return ORE_TO_BLOCK_REPLACEMENTS.containsKey(ore);
+	private static boolean isOre(Block ore, boolean core) {
+		return (core ? TREE_ORE_TO_BLOCK_REPLACEMENTS : MAGNET_ORE_TO_BLOCK_REPLACEMENTS).containsKey(ore);
 	}
 
 	// Switch over to ConcurrentHashMap if we run into any concurrency problems
-	public static final HashMap<Block, Block> ORE_TO_BLOCK_REPLACEMENTS = new HashMap<>();
+	public static final HashMap<Block, Block> MAGNET_ORE_TO_BLOCK_REPLACEMENTS = new HashMap<>();
+	public static final HashMap<Block, Block> TREE_ORE_TO_BLOCK_REPLACEMENTS = new HashMap<>();
 
 	@SubscribeEvent
 	public static void onTagsUpdatedEvent(TagsUpdatedEvent event) {
-		ORE_TO_BLOCK_REPLACEMENTS.clear();
+		MAGNET_ORE_TO_BLOCK_REPLACEMENTS.clear();
+		TREE_ORE_TO_BLOCK_REPLACEMENTS.clear();
 
 		//collect all tags
 		for (TagKey<Block> tag : BuiltInRegistries.BLOCK.getTagNames().filter(location -> location.location().getNamespace().equals("c")).toList()) {
@@ -270,7 +272,10 @@ public class OreMagnetItem extends Item {
 						BuiltInRegistries.BLOCK.getTag(tag).get().forEach(ore -> {
 							//exclude ignored ores
 							if (!ore.value().defaultBlockState().is(BlockTagGenerator.ORE_MAGNET_IGNORE)) {
-								ORE_TO_BLOCK_REPLACEMENTS.put(ore.value(), ground.value());
+								MAGNET_ORE_TO_BLOCK_REPLACEMENTS.put(ore.value(), ground.value());
+							}
+							if (!ore.value().defaultBlockState().is(BlockTagGenerator.MINING_CORE_EXCLUDED)) {
+								TREE_ORE_TO_BLOCK_REPLACEMENTS.put(ore.value(), ground.value());
 							}
 						}));
 				}
@@ -279,8 +284,12 @@ public class OreMagnetItem extends Item {
 
 		//Gonna need to special case this one as it isn't covered by tags.
 		//Ancient debris isn't exactly an ore, so it makes sense that the tag doesn't include it
-		if (!Blocks.ANCIENT_DEBRIS.defaultBlockState().is(BlockTagGenerator.ORE_MAGNET_IGNORE) && !ORE_TO_BLOCK_REPLACEMENTS.containsKey(Blocks.ANCIENT_DEBRIS)) {
-			ORE_TO_BLOCK_REPLACEMENTS.put(Blocks.ANCIENT_DEBRIS, Blocks.NETHERRACK);
+		if (!Blocks.ANCIENT_DEBRIS.defaultBlockState().is(BlockTagGenerator.ORE_MAGNET_IGNORE) && !MAGNET_ORE_TO_BLOCK_REPLACEMENTS.containsKey(Blocks.ANCIENT_DEBRIS)) {
+			MAGNET_ORE_TO_BLOCK_REPLACEMENTS.put(Blocks.ANCIENT_DEBRIS, Blocks.NETHERRACK);
+		}
+
+		if (!Blocks.ANCIENT_DEBRIS.defaultBlockState().is(BlockTagGenerator.MINING_CORE_EXCLUDED) && !TREE_ORE_TO_BLOCK_REPLACEMENTS.containsKey(Blocks.ANCIENT_DEBRIS)) {
+			TREE_ORE_TO_BLOCK_REPLACEMENTS.put(Blocks.ANCIENT_DEBRIS, Blocks.NETHERRACK);
 		}
 	}
 }

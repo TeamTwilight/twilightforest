@@ -25,6 +25,7 @@ import net.neoforged.neoforge.common.util.Lazy;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
 import twilightforest.util.ColorUtil;
+import twilightforest.world.components.structures.util.ProgressionPiece;
 
 import java.util.Set;
 import java.util.function.Consumer;
@@ -32,7 +33,7 @@ import java.util.function.Consumer;
 @Deprecated
 // We keep rehashing Vanillacopies and they'll keep breaking between ports, we should be adding TwilightFeature to the
 //  StructurePiece classes we actually use. This class will take quite a while to dismantle
-public abstract class TFStructureComponent extends StructurePiece implements SpawnIndexProvider {
+public abstract class TFStructureComponent extends StructurePiece implements SpawnIndexProvider, ProgressionPiece {
 
 	public TFStructureDecorator deco = null;
 	protected int spawnListIndex = 0;
@@ -178,13 +179,6 @@ public abstract class TFStructureComponent extends StructurePiece implements Spa
 		tagCompound.putInt("si", this.spawnListIndex);
 		tagCompound.putString("deco", TFStructureDecorator.getDecoString(this.deco));
 		tagCompound.putInt("rot", this.rotation.ordinal());
-	}
-
-	/**
-	 * Does this component fall under block protection when progression is turned on, normally true
-	 */
-	public boolean isComponentProtected() {
-		return true;
 	}
 
 	@Override

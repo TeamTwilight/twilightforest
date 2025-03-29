@@ -486,7 +486,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 		}
 	}
 
-	private void addFloors(WorldGenLevel world, BoundingBox sbb) {
+	protected void addFloors(WorldGenLevel world, BoundingBox sbb) {
 		// only add floors up to highest opening
 		int floors = (this.highestOpening / 8) + 1;
 

@@ -4,20 +4,24 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import it.unimi.dsi.fastutil.longs.LongSet;
 import net.minecraft.core.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.placement.PlacementContext;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 import net.minecraft.world.level.levelgen.structure.Structure;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import twilightforest.init.TFFeatureModifiers;
-import twilightforest.util.landmarks.LandmarkUtil;
-import twilightforest.util.landmarks.LegacyLandmarkPlacements;
+import twilightforest.util.BoundingBoxUtils;
+import twilightforest.world.components.structures.UtilityPiece;
 import twilightforest.world.components.structures.util.DecorationClearance;
 
-import java.util.Optional;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Stream;
 
 public class AvoidLandmarkModifier extends PlacementModifier {
@@ -70,27 +74,83 @@ public class AvoidLandmarkModifier extends PlacementModifier {
 
 	@Override
 	public Stream<BlockPos> getPositions(PlacementContext worldDecoratingHelper, RandomSource random, BlockPos blockPos) {
-		// Feature Center
-		BlockPos.MutableBlockPos featurePos = LegacyLandmarkPlacements.getNearestCenterXZ(blockPos.getX() >> 4, blockPos.getZ() >> 4).mutable();
+		ChunkAccess chunk = worldDecoratingHelper.getLevel().getChunk(blockPos);
+		Set<Map.Entry<Structure, LongSet>> structuresOverlappingChunk = chunk.getAllReferences().entrySet();
 
-		Optional<StructureStart> possibleStructureStart = LandmarkUtil.locateNearestLandmarkStart(worldDecoratingHelper.getLevel(), SectionPos.blockToSectionCoord(featurePos.getX()), SectionPos.blockToSectionCoord(featurePos.getZ()));
-		if (possibleStructureStart.isEmpty() || !(possibleStructureStart.get().getStructure() instanceof DecorationClearance decorationClearance))
-			return Stream.of(blockPos);
+		for (Map.Entry<Structure, LongSet> startsForStructure : structuresOverlappingChunk)
+			if (this.structureTypeBlocksFeaturePlacement(worldDecoratingHelper, blockPos, startsForStructure.getKey(), startsForStructure.getValue()))
+				return Stream.empty();
 
-		for (Holder<Structure> structureHolder : this.structuresAllowed) {
-			if (structureHolder.value() == decorationClearance) {
-				return Stream.of(blockPos);
+		return Stream.of(blockPos);
+	}
+
+	private boolean structureTypeBlocksFeaturePlacement(PlacementContext worldDecoratingHelper, BlockPos blockPos, Structure structure, LongSet coordsForStarts) {
+		if (this.allowedInsideStructure(structure)
+			|| !(structure instanceof DecorationClearance decorationClearance)
+			|| this.clearFromStructureZone(decorationClearance))
+			return false;
+
+		for (long packedChunkCoord : coordsForStarts) {
+			int startChunkX = (int) packedChunkCoord;
+			int startChunkZ = (int) (packedChunkCoord >> 32);
+
+			ChunkAccess startChunk = worldDecoratingHelper.getLevel().getChunk(startChunkX, startChunkZ);
+			//noinspection ConstantValue
+			if (startChunk == null) { // Underlying LevelReader's getChunk() is nullable
+				continue; // FIXME Is the chunk actually never null? Is it possible for the start's chunk to be unloaded? Leave break-point here to find out!
+			}
+
+			StructureStart startForStructure = startChunk.getStartForStructure(structure);
+
+			if (startForStructure == null)
+				continue;
+
+			BlockPos diff = blockPos.subtract(startForStructure.getBoundingBox().getCenter());
+			if (this.placementIsBlocked(blockPos, startForStructure, diff, decorationClearance.chunkClearanceRadius())) {
+				return true;
 			}
 		}
 
-		if ((!this.occupiesSurface || decorationClearance.isSurfaceDecorationsAllowed()) && (!this.occupiesUnderground || decorationClearance.isUndergroundDecoAllowed()) && (!this.occupiesVegetation || decorationClearance.isGrassDecoAllowed()))
-			return Stream.of(blockPos);
+		return false;
+	}
 
-		// Turn Feature Center into Feature Offset
-		featurePos.set(Math.abs(featurePos.getX() - blockPos.getX()), 0, Math.abs(featurePos.getZ() - blockPos.getZ()));
-		float size = decorationClearance.chunkClearanceRadius() * 16f + this.additionalClearance;
+	private boolean allowedInsideStructure(Structure overlappingStructure) {
+		boolean configAllowedOverlap = false;
 
-		return featurePos.getX() < size && featurePos.getZ() < size ? Stream.empty() : Stream.of(blockPos);
+		for (Holder<Structure> allowedStructure : this.structuresAllowed) {
+			if (allowedStructure.isBound() && overlappingStructure.equals(allowedStructure.value())) {
+				configAllowedOverlap = true;
+			}
+		}
+
+		return configAllowedOverlap;
+	}
+
+	private boolean clearFromStructureZone(DecorationClearance decorationClearance) {
+		boolean surfaceClear = !this.occupiesSurface || decorationClearance.isSurfaceDecorationsAllowed();
+		boolean undergroundClear = !this.occupiesUnderground || decorationClearance.isUndergroundDecoAllowed();
+		boolean vegetationClear = !this.occupiesVegetation || decorationClearance.isGrassDecoAllowed();
+
+		return surfaceClear && undergroundClear && vegetationClear;
+	}
+
+	private boolean placementIsBlocked(BlockPos blockPos, StructureStart startForStructure, BlockPos featureDistanceXZ, float chunkClearanceRadius) {
+		if (chunkClearanceRadius <= 0) {
+			for (StructurePiece piece : startForStructure.getPieces()) {
+				if (piece instanceof UtilityPiece utilityPiece && utilityPiece.allowFeatures) {
+					continue;
+				}
+
+				if (BoundingBoxUtils.greatestAxalDistance(piece.getBoundingBox(), blockPos) <= this.additionalClearance) {
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		float size = chunkClearanceRadius * 16f + this.additionalClearance;
+		return Math.abs(featureDistanceXZ.getX()) < size && Math.abs(featureDistanceXZ.getZ()) < size;
 	}
 
 	@Override

@@ -2,6 +2,7 @@ package twilightforest.compat.rei;
 
 import dev.architectury.event.CompoundEventResult;
 import me.shedaniel.math.Rectangle;
+import me.shedaniel.rei.api.client.entry.filtering.FilteringRuleTypeRegistry;
 import me.shedaniel.rei.api.client.entry.renderer.EntryRenderer;
 import me.shedaniel.rei.api.client.entry.renderer.EntryRendererRegistry;
 import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
@@ -27,14 +28,13 @@ import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.compat.rei.categories.*;
+import twilightforest.compat.rei.displays.REIOminousFireDisplay;
+import twilightforest.compat.rei.filter.HideItemFilterType;
 import twilightforest.config.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.UncraftingScreen;
 import twilightforest.compat.RecipeViewerConstants;
-import twilightforest.compat.rei.categories.REICrumbleHornCategory;
-import twilightforest.compat.rei.categories.REIMoonwormQueenCategory;
-import twilightforest.compat.rei.categories.REITransformationPowderCategory;
-import twilightforest.compat.rei.categories.REIUncraftingCategory;
 import twilightforest.compat.rei.displays.REICrumbleHornDisplay;
 import twilightforest.compat.rei.displays.REITransformationPowderDisplay;
 import twilightforest.compat.rei.displays.REIUncraftingDisplay;
@@ -50,11 +50,16 @@ import twilightforest.util.entities.EntityRenderingUtil;
 import java.util.*;
 import java.util.stream.Stream;
 
+@SuppressWarnings("UnstableApiUsage")
 @REIPluginClient
 public class TFREIClientPlugin implements REIClientPlugin {
 
 	public static final EntityEntryDefinition ENTITY_DEFINITION = new EntityEntryDefinition();
 	public Map<EntryStack<Entity>, EntryRenderer<Entity>> RENDER_CACHE = new WeakHashMap<>();
+
+	static {
+		FilteringRuleTypeRegistry.getInstance().register(TwilightForestMod.prefix("filter"), HideItemFilterType.INSTANCE);
+	}
 
 	@Override
 	public void registerCategories(CategoryRegistry registry) {
@@ -64,12 +69,14 @@ public class TFREIClientPlugin implements REIClientPlugin {
 		}
 		registry.addWorkstations(REICrumbleHornCategory.CRUMBLE_HORN, EntryStacks.of(TFItems.CRUMBLE_HORN));
 		registry.addWorkstations(REITransformationPowderCategory.TRANSFORMATION, EntryStacks.of(TFItems.TRANSFORMATION_POWDER));
+		registry.addWorkstations(REIOminousFireCategory.OMINOUS_FIRE, EntryStacks.of(TFItems.EXANIMATE_ESSENCE));
 
 		if (!TFConfig.disableEntireTable) {
 			registry.add(new REIUncraftingCategory());
 		}
 		registry.add(new REICrumbleHornCategory());
 		registry.add(new REITransformationPowderCategory());
+		registry.add(new REIOminousFireCategory());
 		registry.add(new REIMoonwormQueenCategory());
 	}
 
@@ -103,6 +110,7 @@ public class TFREIClientPlugin implements REIClientPlugin {
 		);
 
 		RecipeViewerConstants.getTransformationPowderRecipes().forEach(info -> registry.add(REITransformationPowderDisplay.of(info)));
+		RecipeViewerConstants.getOminousFireRecipes().forEach(info -> registry.add(REIOminousFireDisplay.of(info)));
 
 		registry.add(REIMoonwormQueenCategory.createDisplay());
 		registry.registerRecipeFiller(NoTemplateSmithingRecipe.class, RecipeType.SMITHING, holder -> new DefaultSmithingDisplay(holder.value(), holder.id(), List.of(EntryIngredients.of(ItemStack.EMPTY), EntryIngredients.ofIngredient(holder.value().getBase()), EntryIngredients.ofIngredient(holder.value().getAddition()))));

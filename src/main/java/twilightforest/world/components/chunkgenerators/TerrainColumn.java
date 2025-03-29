@@ -25,20 +25,22 @@ public final class TerrainColumn {
 			RegistryFixedCodec.create(Registries.BIOME).fieldOf("key_biome").forGetter(o -> o.keyBiome),
 			Codecs.doubleTreeCodec(Biome.CODEC).fieldOf("biome_layers").forGetter(o -> o.biomes),
 			DensityFunction.HOLDER_HELPER_CODEC.fieldOf("depth").forGetter(o -> o.noiseDepth),
-			DensityFunction.HOLDER_HELPER_CODEC.fieldOf("scale").forGetter(o -> o.noiseScale)
+			DensityFunction.HOLDER_HELPER_CODEC.fieldOf("scale").forGetter(o -> o.noiseScale),
+			DensityFunction.HOLDER_HELPER_CODEC.fieldOf("weight").forGetter(o -> o.noiseWeight)
 		).apply(instance, TerrainColumn::new));
 	private final ResourceKey<Biome> resourceKey;
 	private final Holder<Biome> keyBiome;
 	private final Double2ObjectSortedMap<Holder<Biome>> biomes;
 
-	private final DensityFunction noiseDepth, noiseScale;
+	private final DensityFunction noiseDepth, noiseScale, noiseWeight;
 
-	public TerrainColumn(Holder<Biome> keyBiome, Double2ObjectSortedMap<Holder<Biome>> biomes, DensityFunction noiseDepth, DensityFunction noiseScale) {
+	public TerrainColumn(Holder<Biome> keyBiome, Double2ObjectSortedMap<Holder<Biome>> biomes, DensityFunction noiseDepth, DensityFunction noiseScale, DensityFunction noiseWeight) {
 		this.keyBiome = keyBiome;
 		this.resourceKey = this.keyBiome.unwrapKey().get();
 		this.biomes = biomes;
 		this.noiseDepth = noiseDepth;
 		this.noiseScale = noiseScale;
+		this.noiseWeight = noiseWeight;
 
 		if (this.biomes instanceof Double2ObjectAVLTreeMap<Holder<Biome>> treeMap)
 			treeMap.defaultReturnValue(this.keyBiome);
@@ -86,6 +88,10 @@ public final class TerrainColumn {
 
 	public double scale(DensityFunction.FunctionContext context) {
 		return this.noiseScale.compute(context);
+	}
+
+	public double weight(DensityFunction.FunctionContext context) {
+		return this.noiseWeight.compute(context);
 	}
 
 	public ResourceKey<Biome> getResourceKey() {

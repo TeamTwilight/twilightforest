@@ -1,34 +1,33 @@
 {
-  "type": "twilightforest:canopy_red_mushroom",
-  "config": {
-    "cap_provider": {
-      "type": "minecraft:simple_state_provider",
-      "state": {
-        "Name": "minecraft:red_mushroom_block",
-        "Properties": {
-          "down": "false",
-          "east": "true",
-          "north": "true",
-          "south": "true",
-          "up": "true",
-          "west": "true"
-        }
-      }
+  "type": "twilightforest:weighted_list",
+  "config": [
+    {
+      "data": {
+        "feature": "twilightforest:mushroom/canopy_red_vanilla_mushroom",
+        "placement": []
+      },
+      "weight": 33
     },
-    "foliage_radius": 3,
-    "stem_provider": {
-      "type": "minecraft:simple_state_provider",
-      "state": {
-        "Name": "minecraft:mushroom_stem",
-        "Properties": {
-          "down": "false",
-          "east": "true",
-          "north": "true",
-          "south": "true",
-          "up": "false",
-          "west": "true"
-        }
-      }
+    {
+      "data": {
+        "feature": "twilightforest:mushroom/canopy_red_smooth_mushroom",
+        "placement": []
+      },
+      "weight": 33
+    },
+    {
+      "data": {
+        "feature": "twilightforest:mushroom/canopy_red_spheroid_mushroom",
+        "placement": []
+      },
+      "weight": 33
+    },
+    {
+      "data": {
+        "feature": "twilightforest:mushroom/canopy_red_flat_mushroom",
+        "placement": []
+      },
+      "weight": 1
     }
-  }
+  ]
 }

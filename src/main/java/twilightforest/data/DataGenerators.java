@@ -16,6 +16,7 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.custom.QuestGenerator;
+import twilightforest.data.custom.StructureTemplateDefinitionGenerator;
 import twilightforest.data.custom.stalactites.StalactiteGenerator;
 import twilightforest.data.tags.*;
 
@@ -65,6 +66,8 @@ public class DataGenerators {
 		generator.addProvider(event.includeServer(), new EntityTagGenerator(output, lookupProvider, helper));
 		generator.addProvider(event.includeServer(), new CraftingGenerator(output, lookupProvider));
 		generator.addProvider(event.includeServer(), new LootModifierGenerator(output, lookupProvider));
+
+		generator.addProvider(event.includeServer(), new StructureTemplateDefinitionGenerator(output, lookupProvider, helper));
 
 		//these have to go last due to magic paintings
 		//when magic paintings are registered their atlas and lang content is too

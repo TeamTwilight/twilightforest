@@ -1,5 +1,6 @@
 package twilightforest.util;
 
+import com.mojang.authlib.GameProfile;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
@@ -60,6 +61,10 @@ public final class Codecs {
 		Codec.INT.fieldOf("id").forGetter(o -> o.id),
 		Codec.INT.fieldOf("color").forGetter(o -> o.col)
 	).apply(instance, MapColor::new)).validate(Codecs::validateMapColor);
+	public static final Codec<GameProfile> SIMPLE_GAME_PROFILE = RecordCodecBuilder.create(instance -> instance.group(
+		UUIDUtil.AUTHLIB_CODEC.fieldOf("id").forGetter(GameProfile::getId),
+		ExtraCodecs.PLAYER_NAME.fieldOf("name").forGetter(GameProfile::getName)
+	).apply(instance, GameProfile::new));
 
 	public static final Codec<Climate.ParameterList<Holder<Biome>>> CLIMATE_SYSTEM = ExtraCodecs.nonEmptyList(RecordCodecBuilder.<Pair<Climate.ParameterPoint, Holder<Biome>>>create((instance) -> instance.group(Climate.ParameterPoint.CODEC.fieldOf("parameters").forGetter(Pair::getFirst), Biome.CODEC.fieldOf("biome").forGetter(Pair::getSecond)).apply(instance, Pair::of)).listOf()).xmap(Climate.ParameterList::new, Climate.ParameterList::values);
 

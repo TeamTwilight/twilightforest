@@ -16,8 +16,13 @@ public class EntityExcludedDamageSource extends DamageSource {
 
 	protected final List<EntityType<?>> entities;
 
-	public EntityExcludedDamageSource(Holder<DamageType> type, @Nullable Entity attacker, @Nullable Entity indirectAttacker, EntityType<?>... entities) {
-		super(type, attacker, indirectAttacker);
+	public EntityExcludedDamageSource(Holder<DamageType> type, @Nullable Entity directEntity, @Nullable Entity causingEntity, EntityType<?>... entities) {
+		super(type, directEntity, causingEntity);
+		this.entities = Arrays.stream(entities).toList();
+	}
+
+	public EntityExcludedDamageSource(Holder<DamageType> type, EntityType<?>... entities) {
+		super(type);
 		this.entities = Arrays.stream(entities).toList();
 	}
 

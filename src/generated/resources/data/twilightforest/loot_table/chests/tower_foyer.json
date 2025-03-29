@@ -18,7 +18,7 @@
             }
           ],
           "name": "minecraft:rotten_flesh",
-          "weight": 4
+          "weight": 6
         },
         {
           "type": "minecraft:item",
@@ -34,7 +34,7 @@
             }
           ],
           "name": "minecraft:bone",
-          "weight": 4
+          "weight": 6
         },
         {
           "type": "minecraft:item",
@@ -50,7 +50,39 @@
             }
           ],
           "name": "minecraft:charcoal",
-          "weight": 4
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 3.0,
+                "min": 2.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "twilightforest:raven_feather",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 3.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "twilightforest:torchberries",
+          "weight": 6
         },
         {
           "type": "minecraft:item",
@@ -66,7 +98,7 @@
             }
           ],
           "name": "minecraft:stick",
-          "weight": 4
+          "weight": 6
         },
         {
           "type": "minecraft:item",
@@ -82,7 +114,7 @@
             }
           ],
           "name": "minecraft:bread",
-          "weight": 2
+          "weight": 3
         },
         {
           "type": "minecraft:item",
@@ -98,16 +130,20 @@
             }
           ],
           "name": "minecraft:potato",
-          "weight": 2
+          "weight": 3
         },
         {
           "type": "minecraft:loot_table",
           "value": "twilightforest:chests/suspicious_stew",
-          "weight": 2
+          "weight": 3
         },
         {
           "type": "minecraft:item",
           "name": "twilightforest:charm_of_keeping_1"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:diamond"
         }
       ],
       "rolls": {

@@ -199,8 +199,8 @@ public class LangGenerator extends TFLangProvider {
 
 		this.addBlock(TFBlocks.SKULL_CHEST, "Skull Chest");
 		this.addBlock(TFBlocks.KEEPSAKE_CASKET, "Keepsake Casket");
-		this.add("block.twilightforest.casket.damage", "Damage: %s");
-		this.add("block.twilightforest.casket.broken", "Your Keepsake Casket was too damaged, it degraded into a Skull Chest while saving your items.");
+		this.add("block.twilightforest.chipped_keepsake_casket", "Chipped Keepsake Casket");
+		this.add("block.twilightforest.damaged_keepsake_casket", "Damaged Keepsake Casket");
 		this.add("block.twilightforest.casket.locked", "This Casket can only be opened by %s!");
 		this.addBlock(TFBlocks.LICH_TOWER_MINIATURE_STRUCTURE, "Miniature Lich Tower");
 
@@ -215,6 +215,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addBlock(TFBlocks.MAZESTONE_MOSAIC, "Mazestone Mosaic");
 		this.addBlock(TFBlocks.MAZESTONE_BORDER, "Mazestone Border");
 		this.addBlock(TFBlocks.RED_THREAD, "Red Thread");
+		this.addBlock(TFBlocks.MAZE_SLIME_BLOCK, "Maze Slime Block");
 
 		this.addBlock(TFBlocks.SMOKER, "Smoker");
 		this.addBlock(TFBlocks.FIRE_JET, "Fire Jet");
@@ -451,7 +452,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addBlock(TFBlocks.MANGROVE_ROOT, "Mangrove Roots");
 
 		this.addBlock(TFBlocks.NAGA_TROPHY, "Naga Trophy");
-		this.addBlock(TFBlocks.LICH_TROPHY, "Lich Trophy");
+		this.addBlock(TFBlocks.LICH_TROPHY, "Twilight Lich Trophy");
 		this.addBlock(TFBlocks.MINOSHROOM_TROPHY, "Minoshroom Trophy");
 		this.addBlock(TFBlocks.HYDRA_TROPHY, "Hydra Trophy");
 		this.addBlock(TFBlocks.KNIGHT_PHANTOM_TROPHY, "Knight Phantom Trophy");
@@ -518,6 +519,24 @@ public class LangGenerator extends TFLangProvider {
 		this.addItem(TFItems.ZOMBIE_SCEPTER, "Zombie Scepter");
 		this.add("item.twilightforest.scepter.desc", "%s charges left");
 		this.addItem(TFItems.EXANIMATE_ESSENCE, "Exanimate Essence");
+		this.addBlock(TFBlocks.OMINOUS_FIRE, "Ominous Fire");
+		this.addBlock(TFBlocks.OMINOUS_CANDLE, "Ominous Candle");
+		this.addBlock(TFBlocks.OMINOUS_WHITE_CANDLE, "Ominous White Candle");
+		this.addBlock(TFBlocks.OMINOUS_ORANGE_CANDLE, "Ominous Orange Candle");
+		this.addBlock(TFBlocks.OMINOUS_MAGENTA_CANDLE, "Ominous Magenta Candle");
+		this.addBlock(TFBlocks.OMINOUS_LIGHT_BLUE_CANDLE, "Ominous Light Blue Candle");
+		this.addBlock(TFBlocks.OMINOUS_YELLOW_CANDLE, "Ominous Yellow Candle");
+		this.addBlock(TFBlocks.OMINOUS_LIME_CANDLE, "Ominous Lime Candle");
+		this.addBlock(TFBlocks.OMINOUS_PINK_CANDLE, "Ominous Pink Candle");
+		this.addBlock(TFBlocks.OMINOUS_GRAY_CANDLE, "Ominous Gray Candle");
+		this.addBlock(TFBlocks.OMINOUS_LIGHT_GRAY_CANDLE, "Ominous Light Gray Candle");
+		this.addBlock(TFBlocks.OMINOUS_CYAN_CANDLE, "Ominous Cyan Candle");
+		this.addBlock(TFBlocks.OMINOUS_PURPLE_CANDLE, "Ominous Purple Candle");
+		this.addBlock(TFBlocks.OMINOUS_BLUE_CANDLE, "Ominous Blue Candle");
+		this.addBlock(TFBlocks.OMINOUS_BROWN_CANDLE, "Ominous Brown Candle");
+		this.addBlock(TFBlocks.OMINOUS_GREEN_CANDLE, "Ominous Green Candle");
+		this.addBlock(TFBlocks.OMINOUS_RED_CANDLE, "Ominous Red Candle");
+		this.addBlock(TFBlocks.OMINOUS_BLACK_CANDLE, "Ominous Black Candle");
 		this.addItem(TFItems.WROUGHT_IRON_BAR, "Wrought Iron Bar");
 		this.addItem(TFItems.BRITTLE_FLASK, "Brittle Potion Flask");
 		this.addItem(TFItems.GREATER_FLASK, "Greater Potion Flask");
@@ -733,7 +752,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addEntityAndEgg(TFEntities.KNIGHT_PHANTOM, "Knight Phantom");
 		this.add("entity.twilightforest.knight_phantom.plural", "Knight Phantoms");
 		this.addEntityAndEgg(TFEntities.KOBOLD, "Kobold");
-		this.addEntityAndEgg(TFEntities.LICH, "Lich");
+		this.addEntityAndEgg(TFEntities.LICH, "Twilight Lich");
 		this.addEntityAndEgg(TFEntities.MAZE_SLIME, "Maze Slime");
 		this.addEntityAndEgg(TFEntities.MINOSHROOM, "Minoshroom");
 		this.addEntityAndEgg(TFEntities.MINOTAUR, "Minotaur");
@@ -827,6 +846,8 @@ public class LangGenerator extends TFLangProvider {
 		this.addDeathMessage("thrownBlock.player", "%1$s was squashed by a thrown block while escaping %2$s");
 		this.addDeathMessage("expired", "%1$s's life expired");
 		this.addDeathMessage("expired.player", "%1$s's life expired");
+		this.addDeathMessage("ominousFire.zombified_player", "%1$s was killed by the zombified remains of %2$s");
+		this.addDeathMessage("ominousFire.zombified_player.self", "%1$s was killed by the zombified remains of themselves");
 
 		this.addDeathMessage("axing", "%1$s was chopped up by %2$s");
 		this.addDeathMessage("axing.item", "%1$s was chopped up by %2$s using %3$s");
@@ -857,6 +878,8 @@ public class LangGenerator extends TFLangProvider {
 		this.addDeathMessage("yeeted.entity", "%1$s was yeeted for the last time by %2$s");
 		this.addDeathMessage("yeeted.item", "%1$s was yeeted for the last time by %2$s while somehow holding %3$s");
 		this.addDeathMessage("acid_rain", "%1$s went dancing in the acid rain");
+		this.addDeathMessage("ominous", "%1$s was subsumed by ominous fire");
+		this.addDeathMessage("failedChallenge", "%1$s failed to show their mettle and drank themselves to death");
 
 		this.addStat("blocks_crumbled", "Blocks Crumbled");
 		this.addStat("bugs_squished", "Bugs Squashed");
@@ -935,6 +958,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addScreenMessage("drying_ticks", "%s ticks");
 		this.addScreenMessage("crumble_horn_jei", "Crumble Horn");
 		this.addScreenMessage("transformation_jei", "Transformation Powder");
+		this.addScreenMessage("ominous_fire_jei", "Ominous Fire");
 		this.addScreenMessage("uncrafting_jei", "Uncrafting");
 		this.addScreenMessage("moonworm_queen_jei", "Moonworm Queen Repairing");
 		this.add("item.twilightforest.moonworm_queen.jei_info_message", "Torchberries restore 64 durability each");

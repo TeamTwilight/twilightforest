@@ -127,4 +127,10 @@ public class CharmEffect extends Entity implements ItemSupplier {
 	protected boolean canRide(Entity entity) {
 		return false;
 	}
+
+	@Override
+	public boolean shouldRenderAtSqrDistance(double distance) {
+		double d0 = 64.0 * getViewScale();
+		return distance < d0 * d0;
+	}
 }

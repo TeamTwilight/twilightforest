@@ -16,7 +16,6 @@ import net.neoforged.neoforge.registries.datamaps.builtin.NeoForgeDataMaps;
 import net.neoforged.neoforge.registries.datamaps.builtin.ParrotImitation;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.*;
-import twilightforest.item.MagicMapItem;
 import twilightforest.util.datamaps.CrumbledBlock;
 import twilightforest.util.datamaps.EntityTransformation;
 import twilightforest.util.datamaps.MagicMapBiomeColor;
@@ -141,6 +140,11 @@ public class DataMapGenerator extends DataMapProvider {
 		this.add2WayTransform(transformation, TFEntities.TOWERWOOD_BORER, EntityType.SILVERFISH);
 		this.add2WayTransform(transformation, TFEntities.MAZE_SLIME, EntityType.SLIME);
 
+        Builder<EntityTransformation, EntityType<?>> zombieBuilder = this.builder(TFDataMaps.OMINOUS_FIRE);
+		this.add1WayTransform(zombieBuilder, EntityType.VILLAGER, EntityType.ZOMBIE_VILLAGER);
+		this.add1WayTransform(zombieBuilder, EntityType.PIGLIN, EntityType.ZOMBIFIED_PIGLIN);
+		this.add1WayTransform(zombieBuilder, EntityType.HORSE, EntityType.ZOMBIE_HORSE);
+
 		var crumble = this.builder(TFDataMaps.CRUMBLE_HORN);
 		crumble.add(Blocks.STONE_BRICKS.builtInRegistryHolder(), new CrumbledBlock(Blocks.CRACKED_STONE_BRICKS, 0.2F), false);
 		crumble.add(Blocks.INFESTED_STONE_BRICKS.builtInRegistryHolder(), new CrumbledBlock(Blocks.INFESTED_CRACKED_STONE_BRICKS, 0.2F), false);
@@ -238,6 +242,10 @@ public class DataMapGenerator extends DataMapProvider {
 		oreMap.add(BlockTags.DIAMOND_ORES, new OreMapOreColor(MapColor.DIAMOND), false);
 		oreMap.add(BlockTags.EMERALD_ORES, new OreMapOreColor(MapColor.EMERALD), false);
 		oreMap.add(Blocks.ANCIENT_DEBRIS.builtInRegistryHolder(), new OreMapOreColor(MapColor.TERRACOTTA_BROWN), false);
+	}
+
+	private void add1WayTransform(DataMapProvider.Builder<EntityTransformation, EntityType<?>> builder, EntityType<?> from, EntityType<?> to) {
+		builder.add(BuiltInRegistries.ENTITY_TYPE.getKey(from), new EntityTransformation(to), false);
 	}
 
 	private void add2WayTransform(DataMapProvider.Builder<EntityTransformation, EntityType<?>> builder, Holder<EntityType<?>> tfMob, EntityType<?> vanillaMob) {

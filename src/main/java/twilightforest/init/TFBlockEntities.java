@@ -62,10 +62,10 @@ public class TFBlockEntities {
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MoonwormBlockEntity>> MOONWORM = BLOCK_ENTITIES.register("moonworm", () ->
 		BlockEntityType.Builder.of(MoonwormBlockEntity::new, TFBlocks.MOONWORM.get()).build(null));
 
-	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<KeepsakeCasketBlockEntity>> SKULL_CHEST = BLOCK_ENTITIES.register("skull_chest", () ->
-		BlockEntityType.Builder.of(KeepsakeCasketBlockEntity::createSkullChestBE, TFBlocks.SKULL_CHEST.value()).build(null));
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SkullChestBlockEntity>> SKULL_CHEST = BLOCK_ENTITIES.register("skull_chest", () ->
+		BlockEntityType.Builder.of(SkullChestBlockEntity::new, TFBlocks.SKULL_CHEST.get()).build(null));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<KeepsakeCasketBlockEntity>> KEEPSAKE_CASKET = BLOCK_ENTITIES.register("keepsake_casket", () ->
-		BlockEntityType.Builder.of(KeepsakeCasketBlockEntity::createKeepsakeCasketBE, TFBlocks.KEEPSAKE_CASKET.get()).build(null));
+		BlockEntityType.Builder.of(KeepsakeCasketBlockEntity::new, TFBlocks.KEEPSAKE_CASKET.get()).build(null));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BrazierBlockEntity>> BRAZIER = BLOCK_ENTITIES.register("brazier", () ->
 		BlockEntityType.Builder.of(BrazierBlockEntity::new, TFBlocks.BRAZIER.get()).build(null));
 
@@ -123,4 +123,22 @@ public class TFBlockEntities {
 			TFBlocks.MANGROVE_DRYING_RACK.get(), TFBlocks.DARK_DRYING_RACK.get(),
 			TFBlocks.TIME_DRYING_RACK.get(), TFBlocks.TRANSFORMATION_DRYING_RACK.get(),
 			TFBlocks.MINING_DRYING_RACK.get(), TFBlocks.SORTING_DRYING_RACK.get()).build(null));
+
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<OminousCandleBlockEntity>> OMINOUS_CANDLE = BLOCK_ENTITIES.register("ominous_candle", () ->
+		BlockEntityType.Builder.of(OminousCandleBlockEntity::new, TFBlocks.OMINOUS_CANDLE.get(), TFBlocks.OMINOUS_WHITE_CANDLE.get(),
+	TFBlocks.OMINOUS_ORANGE_CANDLE.get(),
+	TFBlocks.OMINOUS_MAGENTA_CANDLE.get(),
+	TFBlocks.OMINOUS_LIGHT_BLUE_CANDLE.get(),
+	TFBlocks.OMINOUS_YELLOW_CANDLE.get(),
+	TFBlocks.OMINOUS_LIME_CANDLE.get(),
+	TFBlocks.OMINOUS_PINK_CANDLE.get(),
+	TFBlocks.OMINOUS_GRAY_CANDLE.get(),
+	TFBlocks.OMINOUS_LIGHT_GRAY_CANDLE.get(),
+	TFBlocks.OMINOUS_CYAN_CANDLE.get(),
+	TFBlocks.OMINOUS_PURPLE_CANDLE.get(),
+	TFBlocks.OMINOUS_BLUE_CANDLE.get(),
+	TFBlocks.OMINOUS_BROWN_CANDLE.get(),
+	TFBlocks.OMINOUS_GREEN_CANDLE.get(),
+	TFBlocks.OMINOUS_RED_CANDLE.get(),
+	TFBlocks.OMINOUS_BLACK_CANDLE.get()).build(null));
 }

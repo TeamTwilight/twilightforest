@@ -137,8 +137,8 @@ public class SoundGenerator extends TFSoundProvider {
 		this.generateExistingSoundWithSubtitle(TFSounds.LICH_CLONE_HURT, SoundEvents.FIRE_EXTINGUISH, "Lich clone ignores attack");
 		this.generateExistingSoundWithSubtitle(TFSounds.LICH_DEATH, SoundEvents.BLAZE_DEATH, "Lich dies");
 		this.generateExistingSoundWithSubtitle(TFSounds.LICH_HURT, SoundEvents.BLAZE_HURT, "Lich hurts");
-		this.generateExistingSoundWithSubtitle(TFSounds.LICH_POP_MOB, SoundEvents.CHICKEN_EGG, "Lich absorbs mob");
-		this.generateExistingSoundWithSubtitle(TFSounds.LICH_SHOOT, SoundEvents.GHAST_SHOOT, "Lich shoots");
+		this.generateNewSoundWithSubtitle(TFSounds.LICH_POP_MOB, "random/scepter/drain", 3, "Lich absorbs mob");
+		this.generateNewSoundWithSubtitle(TFSounds.LICH_SHOOT, "random/scepter/twilight_use", 3, "Lich shoots");
 		this.generateExistingSoundWithSubtitle(TFSounds.LICH_TELEPORT, SoundEvents.CHORUS_FRUIT_TELEPORT, "Lich teleports");
 
 		this.generateExistingSoundWithSubtitle(TFSounds.LOYAL_ZOMBIE_AMBIENT, SoundEvents.ZOMBIE_AMBIENT, "Loyal Zombie groans");
@@ -158,7 +158,7 @@ public class SoundGenerator extends TFSoundProvider {
 		this.generateExistingSoundWithSubtitle(TFSounds.MINION_DEATH, SoundEvents.ZOMBIE_DEATH, "Lich Minion dies");
 		this.generateExistingSoundWithSubtitle(TFSounds.MINION_HURT, SoundEvents.ZOMBIE_HURT, "Lich Minion hurts");
 		this.makeStepSound(TFSounds.MINION_STEP, SoundEvents.ZOMBIE_STEP);
-		this.generateExistingSoundWithSubtitle(TFSounds.MINION_SUMMON, SoundEvents.ITEM_PICKUP, "Lich summons new minion");
+		this.generateNewSoundWithSubtitle(TFSounds.MINION_SUMMON, "random/scepter/zombie", 1, "Lich summons new minion");
 
 		this.generateExistingSoundWithSubtitle(TFSounds.MINOSHROOM_AMBIENT, SoundEvents.COW_AMBIENT, "Minoshroom moos");
 		this.generateExistingSoundWithSubtitle(TFSounds.MINOSHROOM_ATTACK, SoundEvents.IRON_GOLEM_ATTACK, "Minoshroom attacks");
@@ -300,6 +300,7 @@ public class SoundGenerator extends TFSoundProvider {
 
 		this.generateNewSoundWithSubtitle(TFSounds.BEANSTALK_GROWTH, "random/beanstalk_grow", 1, "Ground rumbles");
 		this.generateExistingSoundWithSubtitle(TFSounds.BLOCK_ANNIHILATED, SoundEvents.FIRE_EXTINGUISH, "Block dissolves");
+		this.generateExistingSoundWithSubtitle(TFSounds.BOOKSHELF_CONVERTS, SoundEvents.ZOMBIE_VILLAGER_CURE, "Chiseled Bookshelf converts");
 		this.generateExistingSoundWithSubtitle(TFSounds.BOSS_CHEST_APPEAR, SoundEvents.EVOKER_PREPARE_SUMMON, "Boss Chest appears");
 		this.generateExistingSoundWithSubtitle(TFSounds.BUG_SQUISH, SoundEvents.SLIME_SQUISH_SMALL, "Bug gets squished :(");
 		this.generateExistingSoundWithSubtitle(TFSounds.BUILDER_CREATE, SoundEvents.COMPARATOR_CLICK, "Carminite Builder creates block");
@@ -330,6 +331,9 @@ public class SoundGenerator extends TFSoundProvider {
 		this.generateExistingSoundWithSubtitle(TFSounds.REACTOR_AMBIENT, SoundEvents.PORTAL_AMBIENT, "Carminite Reactor whooshes");
 		this.generateExistingSoundWithSubtitle(TFSounds.REAPPEAR_BLOCK, SoundEvents.ITEM_PICKUP, "Reappearing Block reappears");
 		this.generateExistingSoundWithSubtitle(TFSounds.REAPPEAR_POOF, SoundEvents.ITEM_PICKUP, "Reappearing Block disappears");
+		this.generateNewSoundWithSubtitle(TFSounds.SKULL_CHEST_CLOSE, "random/casket/close", 1, "Skull Chest closes");
+		this.generateExistingSoundWithSubtitle(TFSounds.SKULL_CHEST_LOCKED, SoundEvents.CHEST_LOCKED, "Skull Chest clicks");
+		this.generateNewSoundWithSubtitle(TFSounds.SKULL_CHEST_OPEN, "random/casket/open", 1, "Skull Chest opens", 1.0F, 1.25F);
 		this.generateNewSoundWithSubtitle(TFSounds.SLIDER, "random/creakgo2", 1, "Sliding Trap creaks");
 		this.generateExistingSoundWithSubtitle(TFSounds.SMOKER_START, SoundEvents.COMPARATOR_CLICK, "Smoker activates");
 		this.generateExistingSoundWithSubtitle(TFSounds.TIME_CORE, SoundEvents.COMPARATOR_CLICK, "Tree of Time ticks");
@@ -364,6 +368,7 @@ public class SoundGenerator extends TFSoundProvider {
 		this.generateNewSoundWithSubtitle(TFSounds.TWILIGHT_SCEPTER_USE, "random/scepter/twilight_use", 3, "Twilight Scepter throws pearl");
 		this.generateExistingSoundWithSubtitle(TFSounds.WOOD_SHIELD_SHATTERS, SoundEvents.ZOMBIE_BREAK_WOODEN_DOOR, "Wooden Shield shatters");
 		this.generateNewSoundWithSubtitle(TFSounds.ZOMBIE_SCEPTER_USE, "random/scepter/zombie", 1, "Loyal Zombie summoned");
+		this.generateNewSoundWithSubtitle(TFSounds.OMINOUS_FIRE, "random/candelabra/ominous", 1, "Flame Whooshes Ominously");
 
 		this.makeMusicDisc(TFSounds.MUSIC_DISC_RADIANCE, "radiance");
 		this.makeMusicDisc(TFSounds.MUSIC_DISC_STEPS, "steps");

@@ -48,19 +48,21 @@ public class BlockChainRenderer extends EntityRenderer<ChainBlock> {
 
 		Entity owner = entity.getOwner();
 		if (owner != null) {
-			Vec3 xyz = owner.getEyePosition(partialTicks).subtract(entity.getEyePosition(partialTicks));
-			double links = xyz.length();
-			xyz = xyz.normalize();
+			stack.pushPose();
+			stack.translate(0.0D, entity.getBbHeight() * 0.5D, 0.0D);
+			Vec3 xyz = owner.getEyePosition(partialTicks).subtract(entity.getPosition(partialTicks).add(0.0D, owner.getBbHeight() * 0.5D, 0.0D));
+			double linksPerMeter = 1.5F; // Defines how many chain links per meter. 2.0F there will be two per meter, 0.5F will be one per two meters, etc.
+			double links = xyz.length() / linksPerMeter;
+			Vec3 offset = xyz.normalize().scale(-linksPerMeter);
 			int ownerLight = Minecraft.getInstance().getEntityRenderDispatcher().getPackedLightCoords(owner, partialTicks);
 			for (int i = 1; i < links; i++) {
-				renderChain(entity, xyz, links - i, stack, buffer, Math.max(light, ownerLight), this.chainModel);
+				renderChain(entity, xyz.add(offset.scale(links  - i)), stack, buffer, Math.max(light, ownerLight), this.chainModel);
 			}
+			stack.popPose();
 		}
 	}
 
-	public static void renderChain(Entity entity, Vec3 xyz, double scale, PoseStack stack, MultiBufferSource buffer, int light, Model chainModel) {
-		Vec3 pos = xyz.scale(scale);
-
+	public static void renderChain(Entity entity, Vec3 offset, PoseStack stack, MultiBufferSource buffer, int light, Model chainModel) {
 		stack.pushPose();
 		VertexConsumer vertexConsumer;
 		if (entity instanceof ChainBlock block) {
@@ -69,7 +71,7 @@ public class BlockChainRenderer extends EntityRenderer<ChainBlock> {
 			vertexConsumer = buffer.getBuffer(chainModel.renderType(TEXTURE));
 		}
 
-		stack.translate(pos.x(), pos.y(), pos.z());
+		stack.translate(offset.x(), offset.y(), offset.z());
 
 		stack.scale(-1.0F, -1.0F, 1.0F);
 		chainModel.renderToBuffer(stack, vertexConsumer, light, OverlayTexture.NO_OVERLAY);

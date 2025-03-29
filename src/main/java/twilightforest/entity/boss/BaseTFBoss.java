@@ -1,5 +1,6 @@
 package twilightforest.entity.boss;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.core.NonNullList;
@@ -37,6 +38,7 @@ import twilightforest.network.UpdateDeathTimePacket;
 import twilightforest.util.entities.EntityUtil;
 import twilightforest.util.landmarks.LandmarkUtil;
 
+import java.util.Objects;
 import java.util.Optional;
 
 public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, EnforcedHomePoint {
@@ -137,13 +139,18 @@ public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, Enf
 	@Override
 	public void checkDespawn() {
 		if (this.level().getDifficulty() == Difficulty.PEACEFUL) {
-			if (this.shouldCreateSpawner() && this.isRestrictionPointValid(this.level().dimension()) && this.level().isLoaded(this.getRestrictionPoint().pos())) {
-				this.level().setBlockAndUpdate(this.getRestrictionPoint().pos(), this.getBossSpawner().defaultBlockState());
+			if (this.shouldCreateSpawner() && this.isRestrictionPointValid(this.level().dimension()) && this.level().isLoaded(Objects.requireNonNull(this.getRestrictionPoint()).pos())) {
+				this.placeSpawner(this.getRestrictionPoint().pos());
 			}
 			this.discard();
 		} else {
 			super.checkDespawn();
 		}
+	}
+
+	//Separate method, cuz Lich needs it
+	public void placeSpawner(BlockPos pos) {
+		this.level().setBlockAndUpdate(pos, this.getBossSpawner().defaultBlockState());
 	}
 
 	@Override

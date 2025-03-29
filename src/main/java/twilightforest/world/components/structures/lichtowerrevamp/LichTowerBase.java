@@ -68,7 +68,7 @@ public final class LichTowerBase extends TwilightJigsawPiece implements PieceBea
 			case "twilightforest:lich_tower/bridge" -> {
 				ResourceLocation room;
 				if (jigsawIndex == this.casketWingIndex) {
-					room = lichTowerUtil.getKeepsakeCasketRoom();
+					room = lichTowerUtil.getKeepsakeCasketRoom(random);
 				} else {
 					room = null;
 				}

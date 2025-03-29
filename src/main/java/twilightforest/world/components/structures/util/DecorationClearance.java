@@ -30,7 +30,7 @@ public interface DecorationClearance {
 		}
 
 		public static final MapCodec<DecorationConfig> FLAT_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-			Codec.floatRange(1, 8).fieldOf("chunk_clearance_radius").orElse(1f).forGetter(DecorationConfig::chunkClearanceRadius),
+			Codec.floatRange(0, 8).fieldOf("chunk_clearance_radius").orElse(1f).forGetter(DecorationConfig::chunkClearanceRadius),
 			Codec.BOOL.fieldOf("allow_biome_surface_decorations").forGetter(DecorationConfig::surfaceDecorations),
 			Codec.BOOL.fieldOf("allow_biome_underground_decorations").forGetter(DecorationConfig::undergroundDecorations),
 			Codec.BOOL.fieldOf("allow_biome_vegetation").forGetter(DecorationConfig::vegetation),

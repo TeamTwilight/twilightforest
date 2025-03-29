@@ -119,10 +119,10 @@ public interface IBossLootBuffer {
 		table.shuffleAndSplitItems(items, list.size(), randomsource);
 
 		for (ItemStack itemstack : items) {
-            if (!list.isEmpty()) {
+			if (!list.isEmpty()) {
 				this.setItem(list.removeLast(), itemstack.isEmpty() ? ItemStack.EMPTY : itemstack);
-            }
-        }
+			}
+		}
 	}
 
 	default List<Integer> getAvailableSlots(RandomSource random) {

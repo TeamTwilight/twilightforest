@@ -228,7 +228,7 @@ public class HollowTreeStructure extends Structure implements DecorationClearanc
 				GenerationStep.Decoration.SURFACE_STRUCTURES,
 				TerrainAdjustment.NONE
 			),
-			new DecorationClearance.DecorationConfig(2, false, true, true),
+			new DecorationClearance.DecorationConfig(0.5f, false, true, true),
 			HollowTreePiece.DEFAULT_HEIGHT,
 			HollowTreePiece.DEFAULT_RADIUS,
 			HollowTreePiece.DEFAULT_LOG,

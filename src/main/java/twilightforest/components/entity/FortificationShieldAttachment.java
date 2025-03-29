@@ -4,13 +4,18 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.TraceableEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.init.TFItems;
+import twilightforest.init.TFParticleType;
 import twilightforest.init.TFSounds;
 import twilightforest.init.TFStats;
+import twilightforest.network.ParticlePacket;
 import twilightforest.network.UpdateShieldPacket;
 
 public class FortificationShieldAttachment {
@@ -78,6 +83,41 @@ public class FortificationShieldAttachment {
 
 		this.sendUpdatePacket(entity);
 		entity.level().playSound(null, entity.blockPosition(), expired ? TFSounds.SHIELD_EXPIRE.get() : TFSounds.SHIELD_BREAK.get(), SoundSource.PLAYERS, 1.0F, (entity.getRandom().nextFloat() - entity.getRandom().nextFloat()) * 0.3F + 1.0F);
+	}
+
+	public static void addShieldBreakParticles(DamageSource src, LivingEntity entity) {
+		ParticlePacket particlePacket = new ParticlePacket();
+
+		Vec3 pos = src.getSourcePosition();
+		if (src.getDirectEntity() instanceof LivingEntity living) pos = living.getEyePosition(); // If entity is not null, transfer the position to the eye level
+		if (src.getEntity() instanceof TraceableEntity traceable && traceable.getOwner() instanceof LivingEntity living) pos = living.getEyePosition(); // If entity is not null, transfer the position to the eye level
+
+		if (pos != null) {
+			Vec3 lichPos = entity.position().add(0.0D, entity.getBbHeight() * 0.65D, 0.0D);
+			Vec3 offset = pos.subtract(lichPos).multiply(1.0D, 0.0D, 1.0D).normalize();
+			pos = lichPos.add(offset.scale(0.55D));
+
+			double sizeRange = 0.85D; // Change this value to change size of the plane in which the particle may be placed
+
+			for (int j = 0; j < 16; ++j) {
+				double horizontal = entity.getRandom().nextDouble() - 0.5D;
+				double x = sizeRange * offset.z * horizontal;
+				double y = sizeRange * (entity.getRandom().nextDouble() - 0.5D);
+				double z = sizeRange * offset.x * -horizontal;
+				particlePacket.queueParticle(TFParticleType.SHIELD_BREAK.get(), false, pos.x + x, pos.y + y, pos.z + z, x * 0.5D, y * 0.5D, z * 0.5D);
+			}
+		} else {
+			pos = entity.position().add(0.0D, entity.getBbHeight() * 0.65D, 0.0D);
+			for (int j = 0; j < 16; ++j) {
+				double x = (entity.getRandom().nextDouble() - 0.5D);
+				double y = (entity.getRandom().nextDouble() - 0.5D) * 0.25D;
+				double z = (entity.getRandom().nextDouble() - 0.5D);
+				particlePacket.queueParticle(TFParticleType.SHIELD_BREAK.get(), false, pos.x + x, pos.y + y, pos.z + z, x * 0.33D, y * 0.33D, z * 0.33D);
+			}
+		}
+
+		PacketDistributor.sendToPlayersTrackingEntity(entity, particlePacket);
+		if (entity instanceof ServerPlayer player) PacketDistributor.sendToPlayer(player, particlePacket);
 	}
 
 	public void setShields(LivingEntity entity, int amount, boolean temp) {

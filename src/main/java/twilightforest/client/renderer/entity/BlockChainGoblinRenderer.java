@@ -1,7 +1,6 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.Model;
@@ -45,7 +44,6 @@ public class BlockChainGoblinRenderer<T extends BlockChainGoblin, M extends Huma
 		double blockInY = (entity.block.getY() - entity.getY());
 		double blockInZ = (entity.block.getZ() - entity.getZ());
 
-		VertexConsumer consumer = buffer.getBuffer(this.model.renderType(BLOCK_AND_CHAIN_TEXTURE));
 		stack.translate(blockInX, blockInY, blockInZ);
 
 		float pitch = entity.xRotO + (entity.getXRot() - entity.xRotO) * partialTicks;
@@ -54,17 +52,17 @@ public class BlockChainGoblinRenderer<T extends BlockChainGoblin, M extends Huma
 
 		stack.scale(-1.0F, -1.0F, 1.0F);
 
-		this.model.renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY);
+		this.model.renderToBuffer(stack, buffer.getBuffer(this.model.renderType(BLOCK_AND_CHAIN_TEXTURE)), light, OverlayTexture.NO_OVERLAY);
 		stack.popPose();
 
 		if (entity.isAlive()) {
 			stack.pushPose();
 			stack.translate(0.0D, entity.getEyeHeight(), 0.0D);
 			Vec3 xyz = entity.block.getEyePosition(partialTicks).subtract(entity.getEyePosition(partialTicks)).multiply(1.0D, 0.5D, 1.0D);
-			BlockChainRenderer.renderChain(entity.block, xyz, 0.00D, stack, buffer, light, this.chainModel);
-			BlockChainRenderer.renderChain(entity.block, xyz, 0.25D, stack, buffer, light, this.chainModel);
-			BlockChainRenderer.renderChain(entity.block, xyz, 0.50D, stack, buffer, light, this.chainModel);
-			BlockChainRenderer.renderChain(entity.block, xyz, 0.75D, stack, buffer, light, this.chainModel);
+			BlockChainRenderer.renderChain(entity.block, xyz.scale(0.00D), stack, buffer, light, this.chainModel);
+			BlockChainRenderer.renderChain(entity.block, xyz.scale(0.25D), stack, buffer, light, this.chainModel);
+			BlockChainRenderer.renderChain(entity.block, xyz.scale(0.50D), stack, buffer, light, this.chainModel);
+			BlockChainRenderer.renderChain(entity.block, xyz.scale(0.75D), stack, buffer, light, this.chainModel);
 			stack.popPose();
 		}
 	}

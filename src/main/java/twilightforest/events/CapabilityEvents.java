@@ -15,12 +15,13 @@ import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.TwilightForestMod;
-import twilightforest.world.NoReturnTeleporter;
-import twilightforest.world.TFTeleporter;
+import twilightforest.components.entity.FortificationShieldAttachment;
 import twilightforest.config.TFConfig;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFDimension;
 import twilightforest.network.UpdateShieldPacket;
+import twilightforest.world.NoReturnTeleporter;
+import twilightforest.world.TFTeleporter;
 
 @EventBusSubscriber(modid = TwilightForestMod.ID)
 public class CapabilityEvents {
@@ -53,9 +54,13 @@ public class CapabilityEvents {
 		LivingEntity living = event.getEntity();
 		// shields
 		if (!living.level().isClientSide() && !event.getSource().is(DamageTypeTags.BYPASSES_ARMOR)) {
-			var attachment = living.getData(TFDataAttachments.FORTIFICATION_SHIELDS);
+            FortificationShieldAttachment attachment = living.getData(TFDataAttachments.FORTIFICATION_SHIELDS);
 			if (attachment.shieldsLeft() > 0) {
-				attachment.breakShield(living, false);
+				if (living.invulnerableTime <= 0) {
+					attachment.breakShield(living, false);
+					FortificationShieldAttachment.addShieldBreakParticles(event.getSource(), living);
+					living.invulnerableTime = living.invulnerableDuration;
+				}
 				event.setCanceled(true);
 			}
 		}

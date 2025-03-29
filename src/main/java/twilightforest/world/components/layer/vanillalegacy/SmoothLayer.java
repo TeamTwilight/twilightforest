@@ -9,8 +9,8 @@ import net.minecraft.world.level.biome.Biome;
 import twilightforest.init.custom.BiomeLayerStack;
 import twilightforest.init.custom.BiomeLayerTypes;
 import twilightforest.world.components.layer.vanillalegacy.area.LazyArea;
-import twilightforest.world.components.layer.vanillalegacy.context.Context;
 import twilightforest.world.components.layer.vanillalegacy.context.LazyAreaContext;
+import twilightforest.world.components.layer.vanillalegacy.context.RandomContext;
 import twilightforest.world.components.layer.vanillalegacy.traits.CastleTransformer;
 
 import java.util.function.LongFunction;
@@ -19,12 +19,12 @@ public enum SmoothLayer implements CastleTransformer {
 	INSTANCE;
 
 	@Override
-	public ResourceKey<Biome> apply(Context context, ResourceKey<Biome> up, ResourceKey<Biome> right, ResourceKey<Biome> down, ResourceKey<Biome> left, ResourceKey<Biome> center) {
+	public ResourceKey<Biome> apply(RandomContext randomContext, ResourceKey<Biome> up, ResourceKey<Biome> right, ResourceKey<Biome> down, ResourceKey<Biome> left, ResourceKey<Biome> center) {
 		boolean xMatch = right == left;
 		boolean zMatch = up == down;
 		if (xMatch == zMatch) {
 			if (xMatch) {
-				return context.nextRandom(2) == 0 ? left : up;
+				return randomContext.nextRandom(2) == 0 ? left : up;
 			} else {
 				return center;
 			}

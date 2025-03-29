@@ -23,14 +23,16 @@ import twilightforest.world.components.layer.BiomeDensitySource;
 public class TFDensityFunctions {
 	public static final DeferredRegister<MapCodec<? extends DensityFunction>> DENSITY_FUNCTION_TYPES = DeferredRegister.create(Registries.DENSITY_FUNCTION_TYPE, TwilightForestMod.ID);
 
-	public static final DeferredHolder<MapCodec<? extends DensityFunction>, MapCodec<TerrainDensityRouter>> BIOME_DRIVEN = register("biome_driven", TerrainDensityRouter.CODEC);
+	public static final DeferredHolder<MapCodec<? extends DensityFunction>, MapCodec<TerrainDensityRouter>> BIOME_DRIVEN_TERRAIN = register("biome_driven_terrain", TerrainDensityRouter.CODEC);
+	public static final DeferredHolder<MapCodec<? extends DensityFunction>, MapCodec<NoiseDensityRouter>> BIOME_DRIVEN_NOISE = register("biome_driven_noise", NoiseDensityRouter.CODEC);
 	public static final DeferredHolder<MapCodec<? extends DensityFunction>, MapCodec<FocusedDensityFunction>> FOCUSED = register("focused", FocusedDensityFunction.CODEC);
 	public static final DeferredHolder<MapCodec<? extends DensityFunction>, MapCodec<HollowHillFunction>> HOLLOW_HILL = register("hollow_hill", HollowHillFunction.CODEC);
 	public static final DeferredHolder<MapCodec<? extends DensityFunction>, MapCodec<AbsoluteDifferenceFunction.Min>> COORD_MIN = register("coord_min", AbsoluteDifferenceFunction.Min.CODEC);
 	public static final DeferredHolder<MapCodec<? extends DensityFunction>, MapCodec<AbsoluteDifferenceFunction.Max>> COORD_MAX = register("coord_max", AbsoluteDifferenceFunction.Max.CODEC);
 	public static final DeferredHolder<MapCodec<? extends DensityFunction>, MapCodec<SqrtDensityFunction>> SQRT = register("sqrt", SqrtDensityFunction.CODEC);
 
-	public static final ResourceKey<DensityFunction> BIOMES_RAW = ResourceKey.create(Registries.DENSITY_FUNCTION, TwilightForestMod.prefix("raw_biome_terrain"));
+	public static final ResourceKey<DensityFunction> BIOME_TERRAIN_RAW = ResourceKey.create(Registries.DENSITY_FUNCTION, TwilightForestMod.prefix("raw_biome_terrain"));
+	public static final ResourceKey<DensityFunction> BIOME_NOISE_RAW = ResourceKey.create(Registries.DENSITY_FUNCTION, TwilightForestMod.prefix("raw_biome_noise"));
 	public static final ResourceKey<DensityFunction> FORESTED_TERRAIN = ResourceKey.create(Registries.DENSITY_FUNCTION, TwilightForestMod.prefix("forested_terrain"));
 	public static final ResourceKey<DensityFunction> SKYLIGHT_TERRAIN = ResourceKey.create(Registries.DENSITY_FUNCTION, TwilightForestMod.prefix("skylight_terrain"));
 
@@ -39,21 +41,19 @@ public class TFDensityFunctions {
 	}
 
 	public static void bootstrap(BootstrapContext<DensityFunction> context) {
-		DensityFunction referencedBiomeDensity = makeBiomeDensityRaw(context);
+		Holder.Reference<BiomeDensitySource> biomeGrid = context.lookup(TFRegistries.Keys.BIOME_TERRAIN_DATA).getOrThrow(BiomeLayerStack.BIOME_GRID);
+		DensityFunction referencedBiomeDensity = makeBiomeDensityRaw(context, biomeGrid);
 		DensityFunction ambientTerrainNoise = makeAmbientNoise2D(context);
+		DensityFunction referencedNoiseDensity = makeStreamDensityRaw(context, biomeGrid);
 
-		makeForestedTerrain(context, referencedBiomeDensity, ambientTerrainNoise);
+		makeForestedTerrain(context, referencedBiomeDensity, ambientTerrainNoise, referencedNoiseDensity);
 		makeSkylightTerrain(context, referencedBiomeDensity, ambientTerrainNoise);
 	}
 
 	@NotNull
-	private static DensityFunction makeBiomeDensityRaw(BootstrapContext<DensityFunction> context) {
-		Holder.Reference<BiomeDensitySource> biomeGrid = context.lookup(TFRegistries.Keys.BIOME_TERRAIN_DATA).getOrThrow(BiomeLayerStack.BIOME_GRID);
-		Holder.Reference<NormalNoise.NoiseParameters> surfaceParams = context.lookup(Registries.NOISE).getOrThrow(Noises.SURFACE);
-
+	private static DensityFunction makeBiomeDensityRaw(BootstrapContext<DensityFunction> context, Holder.Reference<BiomeDensitySource> biomeGrid) {
 		DensityFunction rawBiomeDensityReferenced = new TerrainDensityRouter(
 			biomeGrid,
-			new DensityFunction.NoiseHolder(surfaceParams),
 			-31,
 			64,
 			1,
@@ -64,7 +64,7 @@ public class TFDensityFunctions {
 		// Debug: For a flat substitute of TerrainDensityRouter
 		//if (false) rawBiomeDensityReferenced = DensityFunctions.yClampedGradient(-31, 32, 2, -2);
 
-		return new DensityFunctions.HolderHolder(context.register(BIOMES_RAW, rawBiomeDensityReferenced));
+		return new DensityFunctions.HolderHolder(context.register(BIOME_TERRAIN_RAW, rawBiomeDensityReferenced));
 	}
 
 	@NotNull
@@ -87,6 +87,21 @@ public class TFDensityFunctions {
 	}
 
 	@NotNull
+	private static DensityFunction makeStreamDensityRaw(BootstrapContext<DensityFunction> context, Holder.Reference<BiomeDensitySource> biomeGrid) {
+		DensityFunction rawStreamDensityReferenced = new NoiseDensityRouter(
+			biomeGrid,
+			-31,
+			64,
+			1
+		);
+
+		// Debug: For a flat substitute of TerrainDensityRouter
+		//if (false) rawStreamDensityReferenced = DensityFunctions.yClampedGradient(-31, 32, 2, -2);
+
+		return new DensityFunctions.HolderHolder(context.register(BIOME_NOISE_RAW, rawStreamDensityReferenced));
+	}
+
+	@NotNull
 	private static DensityFunction mulAddHalf(DensityFunction input) {
 		// mulAddHalf(x) = x * 0.5 + 0.5
 		// Useful for squeezing function range [-1,1] into [0,1]
@@ -99,7 +114,7 @@ public class TFDensityFunctions {
 		);
 	}
 
-	private static void makeForestedTerrain(BootstrapContext<DensityFunction> context, DensityFunction rawBiomeDensity, DensityFunction ambientTerrainNoise) {
+	private static void makeForestedTerrain(BootstrapContext<DensityFunction> context, DensityFunction rawBiomeDensity, DensityFunction ambientTerrainNoise, DensityFunction rawNoiseDensity) {
 		DensityFunction biomedLandscape = DensityFunctions.mul(
 			DensityFunctions.constant(1 / 6f),
 			DensityFunctions.add(
@@ -110,13 +125,18 @@ public class TFDensityFunctions {
 
 		DensityFunction finalDensity = DensityFunctions.add(
 			biomedLandscape,
-			DensityFunctions.interpolated(DensityFunctions.max(
-				DensityFunctions.zero(),
-				ambientTerrainNoise
-			))
+			DensityFunctions.mul(
+				rawNoiseDensity,
+				DensityFunctions.interpolated(
+					DensityFunctions.max(
+						DensityFunctions.zero(),
+						ambientTerrainNoise
+					)
+				)
+			)
 		);
 
-		context.register(FORESTED_TERRAIN, finalDensity.clamp(-0.1, 1));
+		context.register(FORESTED_TERRAIN, finalDensity.clamp(-0.1, 0.5));
 	}
 
 	// Heavy WIP
@@ -149,6 +169,6 @@ public class TFDensityFunctions {
 			biomeDensity
 		);
 
-		context.register(SKYLIGHT_TERRAIN, finalDensity.clamp(-0.1, 1));
+		context.register(SKYLIGHT_TERRAIN, finalDensity.clamp(-0.1, 0.5));
 	}
 }

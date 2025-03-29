@@ -26,8 +26,9 @@ import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.util.jigsaw.JigsawRecord;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
 import twilightforest.world.components.structures.TwilightTemplateStructurePiece;
+import twilightforest.world.components.structures.util.SortablePiece;
 
-public class LichTowerRoomDecor extends TwilightJigsawPiece implements PieceBeardifierModifier {
+public class LichTowerRoomDecor extends TwilightJigsawPiece implements PieceBeardifierModifier, SortablePiece {
 	@Autowired
 	private static LichTowerUtil lichTowerUtil;
 
@@ -94,5 +95,10 @@ public class LichTowerRoomDecor extends TwilightJigsawPiece implements PieceBear
 	@Override
 	public int getGroundLevelDelta() {
 		return 0;
+	}
+
+	@Override
+	public int getSortKey() {
+		return 2; // This piece must generate after LichTowerBase, which has 1
 	}
 }

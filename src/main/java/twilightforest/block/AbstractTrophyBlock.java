@@ -164,7 +164,7 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock implements Equ
 					break;
 				case LICH:
 					for (int a = 0; a < 5; a++) {
-						particlePacket.queueParticle(ParticleTypes.ANGRY_VILLAGER, false,
+						particlePacket.queueParticle(TFParticleType.ANGRY_LICH.get(), false,
 							(double) pos.getX() + rand.nextFloat() * 0.5D * 2.0F + rand.nextGaussian() * 0.02D,
 							(double) pos.getY() + 0.5D + rand.nextFloat() * 0.25 + rand.nextGaussian() * 0.02D,
 							(double) pos.getZ() + rand.nextFloat() * 0.5D * 2.0F + rand.nextGaussian() * 0.02D,
@@ -220,7 +220,7 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock implements Equ
 					break;
 				case QUEST_RAM:
 					for (int p = 0; p < 10; p++) {
-						particlePacket.queueParticle(ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, rand.nextFloat(), rand.nextFloat(), rand.nextFloat()), false,
+						particlePacket.queueParticle(ColorParticleOption.create(TFParticleType.MAGIC_EFFECT.get(), rand.nextFloat(), rand.nextFloat(), rand.nextFloat()), false,
 							(double) pos.getX() + 0.5 + (rand.nextDouble() - 0.5),
 							(double) pos.getY() + (rand.nextDouble() - 0.5),
 							(double) pos.getZ() + 0.5 + (rand.nextDouble() - 0.5),

@@ -144,7 +144,15 @@ public class StonecuttingGenerator {
 		stonecutting(output, Blocks.STONE, TFBlocks.TWISTED_STONE_PILLAR.get());
 		stonecutting(output, Blocks.STONE, TFBlocks.SPIRAL_BRICKS.get());
 		stonecutting(output, TFBlocks.TWISTED_STONE.get(), TFBlocks.TWISTED_STONE_PILLAR.get());
-
+		stonecutting(output, Blocks.STONE, TFBlocks.TERRORCOTTA_ARCS.get());
+		stonecutting(output, Blocks.STONE, TFBlocks.TERRORCOTTA_CURVES.get());
+		stonecutting(output, Blocks.STONE, TFBlocks.TERRORCOTTA_LINES.get());
+		stonecutting(output, TFBlocks.TERRORCOTTA_ARCS.get(), TFBlocks.TERRORCOTTA_CURVES.get());
+		stonecutting(output, TFBlocks.TERRORCOTTA_ARCS.get(), TFBlocks.TERRORCOTTA_LINES.get());
+		stonecutting(output, TFBlocks.TERRORCOTTA_CURVES.get(), TFBlocks.TERRORCOTTA_ARCS.get());
+		stonecutting(output, TFBlocks.TERRORCOTTA_CURVES.get(), TFBlocks.TERRORCOTTA_LINES.get());
+		stonecutting(output, TFBlocks.TERRORCOTTA_LINES.get(), TFBlocks.TERRORCOTTA_ARCS.get());
+		stonecutting(output, TFBlocks.TERRORCOTTA_LINES.get(), TFBlocks.TERRORCOTTA_CURVES.get());
 		stonecutting(output, TFBlocks.UNDERBRICK.get(), TFBlocks.UNDERBRICK_FLOOR.get());
 	}
 

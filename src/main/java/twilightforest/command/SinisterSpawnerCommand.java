@@ -42,7 +42,7 @@ public class SinisterSpawnerCommand {
 		BlockPos pos = BlockPosArgument.getLoadedBlockPos(context, "pos");
 
 		if (context.getSource().getLevel().getBlockEntity(pos) instanceof SinisterSpawnerBlockEntity entity) {
-			if (entity.addParticle(options))
+			if (entity.addParticle(options, true))
 				return 1;
 		}
 
@@ -54,7 +54,7 @@ public class SinisterSpawnerCommand {
 		BlockPos pos = BlockPosArgument.getLoadedBlockPos(context, "pos");
 
 		if (context.getSource().getLevel().getBlockEntity(pos) instanceof SinisterSpawnerBlockEntity entity) {
-			if (entity.removeParticle(options))
+			if (entity.removeParticle(options, true))
 				return 1;
 		}
 

@@ -34,6 +34,7 @@ public abstract class SinisterSpawnerLogic extends BaseSpawner {
 	private @Nullable BlockPos.MutableBlockPos checkPos = null;
 	private final List<BlockPos> spawnBuffer = new ArrayList<>();
 	private int countNextToSpawn = 0;
+	public int entityScanRange = 4;
 
 	private Set<ParticleOptions> particleOptions = new HashSet<>();
 
@@ -49,22 +50,22 @@ public abstract class SinisterSpawnerLogic extends BaseSpawner {
 		}
 	}
 
-	public boolean setParticles(Collection<ParticleOptions> particleOptions) {
+	public boolean setParticles(Collection<ParticleOptions> particleOptions, boolean sendUpdate) {
 		this.particleOptions.clear();
 		boolean changed = this.particleOptions.addAll(particleOptions);
-		if (changed) this.setChanged();
+		if (sendUpdate && changed) this.setChanged();
 		return changed;
 	}
 
-	public boolean addParticle(ParticleOptions particle) {
+	public boolean addParticle(ParticleOptions particle, boolean sendUpdate) {
 		boolean changed = this.particleOptions.add(particle);
-		if (changed) this.setChanged();
+		if (sendUpdate && changed) this.setChanged();
 		return changed;
 	}
 
-	public boolean removeParticle(ParticleOptions particle) {
+	public boolean removeParticle(ParticleOptions particle, boolean sendUpdate) {
 		boolean changed = this.particleOptions.remove(particle);
-		if (changed) this.setChanged();
+		if (sendUpdate && changed) this.setChanged();
 		return changed;
 	}
 
@@ -156,7 +157,7 @@ public abstract class SinisterSpawnerLogic extends BaseSpawner {
 									blockEntityPos.getX() + 1,
 									blockEntityPos.getY() + 1,
 									blockEntityPos.getZ() + 1
-								).inflate(this.spawnRange),
+								).inflate(this.entityScanRange),
 								EntitySelector.NO_SPECTATORS
 							)
 							.size();
@@ -217,7 +218,12 @@ public abstract class SinisterSpawnerLogic extends BaseSpawner {
 
 		if (this.checkPos == null || !BoundingBoxUtils.isPosWithinBox(blockEntityPos, this.checkPos, this.spawnRange)) {
 			// Restart from beginning, under the spawning block
-			this.checkPos = blockEntityPos.mutable().move(Direction.DOWN);
+			BlockPos.MutableBlockPos posBelow = blockEntityPos.mutable().move(Direction.DOWN);
+			if (serverLevel.getBlockState(posBelow).isAir()) {
+				this.checkPos = posBelow;
+			} else {
+				this.checkPos = posBelow.move(Direction.UP, 2);
+			}
 		}
 
 		BlockState blockBelow = serverLevel.getBlockState(this.checkPos.below());
@@ -255,6 +261,11 @@ public abstract class SinisterSpawnerLogic extends BaseSpawner {
 		if (particleOptions.isSuccess()) {
 			this.particleOptions.addAll(particleOptions.getPartialOrThrow());
 		}
+
+		if (tag.contains("EntityScanRange"))
+			this.entityScanRange = tag.getInt("EntityScanRange");
+		else
+			this.entityScanRange = this.spawnRange;
 	}
 
 	@Override
@@ -265,6 +276,8 @@ public abstract class SinisterSpawnerLogic extends BaseSpawner {
 		if (encoded.isSuccess()) {
 			saved.put("ParticleOptions", encoded.getPartialOrThrow());
 		}
+
+		tag.putInt("EntityScanRange", this.entityScanRange);
 
 		return saved;
 	}

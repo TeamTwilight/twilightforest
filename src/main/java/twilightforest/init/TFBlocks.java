@@ -101,7 +101,7 @@ public class TFBlocks {
 	public static final DeferredBlock<RotatedPillarBlock> TWISTED_STONE = register("twisted_stone", () -> new RotatedPillarBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASEDRUM).mapColor(MapColor.STONE).requiresCorrectToolForDrops().sound(SoundType.STONE).strength(1.5F, 6.0F)));
 	public static final DeferredBlock<Block> TWISTED_STONE_PILLAR = register("twisted_stone_pillar", () -> new WallPillarBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASEDRUM).mapColor(MapColor.STONE).noOcclusion().requiresCorrectToolForDrops().sound(SoundType.STONE).strength(1.5F, 6.0F), 12, 16));
 	public static final DeferredBlock<Block> SKULL_CHEST = register("skull_chest", () -> new SkullChestBlock(BlockBehaviour.Properties.of().lightLevel(state -> state.getValue(BlockLoggingEnum.MULTILOGGED) == BlockLoggingEnum.LAVA ? 15 : 0).mapColor(MapColor.COLOR_LIGHT_GRAY).noOcclusion().pushReaction(PushReaction.BLOCK).requiresCorrectToolForDrops().sound(SoundType.NETHERITE_BLOCK).strength(3.0F, 100.0F)));
-	public static final DeferredBlock<Block> KEEPSAKE_CASKET = register("keepsake_casket", () -> new KeepsakeCasketBlock(BlockBehaviour.Properties.of().lightLevel(state -> state.getValue(BlockLoggingEnum.MULTILOGGED) == BlockLoggingEnum.LAVA ? 15 : 0).mapColor(MapColor.COLOR_BLACK).noOcclusion().pushReaction(PushReaction.BLOCK).requiresCorrectToolForDrops().sound(SoundType.NETHERITE_BLOCK).strength(5.0F, 1200.0F)));
+	public static final DeferredBlock<Block> KEEPSAKE_CASKET = BLOCKS.register("keepsake_casket", () -> new KeepsakeCasketBlock(BlockBehaviour.Properties.of().lightLevel(state -> state.getValue(BlockLoggingEnum.MULTILOGGED) == BlockLoggingEnum.LAVA ? 15 : 0).mapColor(MapColor.COLOR_BLACK).noOcclusion().pushReaction(PushReaction.BLOCK).requiresCorrectToolForDrops().sound(SoundType.NETHERITE_BLOCK).strength(5.0F, 1200.0F)));
 	public static final DeferredBlock<RotatedPillarBlock> BOLD_STONE_PILLAR = register("bold_stone_pillar", () -> new RotatedPillarBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASEDRUM).mapColor(MapColor.STONE).requiresCorrectToolForDrops().sound(SoundType.STONE).strength(1.5F, 6.0F)));
 	public static final DeferredBlock<Block> CHISELED_CANOPY_BOOKSHELF = register("chiseled_canopy_bookshelf", () -> new ChiseledCanopyShelfBlock(BlockBehaviour.Properties.of().ignitedByLava().instrument(NoteBlockInstrument.BASS).mapColor(MapColor.COLOR_BROWN).sound(SoundType.CHISELED_BOOKSHELF).strength(2.5F)));
 	public static final DeferredBlock<Block> CANDELABRA = register("candelabra", () -> new CandelabraBlock(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(1.5F)));
@@ -117,11 +117,31 @@ public class TFBlocks {
 	public static final DeferredBlock<AbstractSkullCandleBlock> PLAYER_WALL_SKULL_CANDLE = BLOCKS.register("player_wall_skull_candle", () -> new WallSkullCandleBlock(SkullBlock.Types.PLAYER, BlockBehaviour.Properties.ofFullCopy(Blocks.PLAYER_WALL_HEAD)));
 	public static final DeferredBlock<AbstractSkullCandleBlock> PIGLIN_SKULL_CANDLE = BLOCKS.register("piglin_skull_candle", () -> new SkullCandleBlock(SkullBlock.Types.PIGLIN, BlockBehaviour.Properties.ofFullCopy(Blocks.PIGLIN_HEAD)));
 	public static final DeferredBlock<AbstractSkullCandleBlock> PIGLIN_WALL_SKULL_CANDLE = BLOCKS.register("piglin_wall_skull_candle", () -> new WallSkullCandleBlock(SkullBlock.Types.PIGLIN, BlockBehaviour.Properties.ofFullCopy(Blocks.PIGLIN_WALL_HEAD)));
-	public static final DeferredBlock<WroughtIronFenceBlock> WROUGHT_IRON_FENCE = registerWroughtFence("wrought_iron_fence", () -> new WroughtIronFenceBlock(BlockBehaviour.Properties.of().strength(5.0F, 6.0F).sound(SoundType.METAL).requiresCorrectToolForDrops().noOcclusion()));
+	public static final DeferredBlock<WroughtIronFenceBlock> WROUGHT_IRON_FENCE = registerWroughtFence("wrought_iron_fence", () -> new WroughtIronFenceBlock(BlockBehaviour.Properties.of().strength(8.0F, 20.0F).sound(SoundType.METAL).requiresCorrectToolForDrops().noOcclusion()));
 	public static final DeferredBlock<RotatedPillarBlock> TERRORCOTTA_ARCS = register("terrorcotta_arcs", () -> new RotatedPillarBlock(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(1.5F, 6.0F)));
 	public static final DeferredBlock<GlazedTerracottaBlock> TERRORCOTTA_CURVES = register("terrorcotta_curves", () -> new GlazedTerracottaBlock(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(1.5F, 6.0F)));
 	public static final DeferredBlock<BinaryRotatedBlock> TERRORCOTTA_LINES = register("terrorcotta_lines", () -> new BinaryRotatedBlock(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(1.5F, 6.0F)));
 	public static final DeferredBlock<CarpetBlock> CORONATION_CARPET = register("coronation_carpet", () -> new WoolCarpetBlock(DyeColor.RED, BlockBehaviour.Properties.ofFullCopy(Blocks.RED_CARPET).isValidSpawn(Blocks::always)));
+
+	//ominous
+	public static final DeferredBlock<OminousFireBlock> OMINOUS_FIRE = BLOCKS.register("ominous_fire", () -> new OminousFireBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PURPLE).replaceable().noCollission().instabreak().lightLevel((state) -> 15).sound(SoundType.WOOL).pushReaction(PushReaction.DESTROY)));
+	public static final DeferredBlock<OminousCandleBlock> OMINOUS_CANDLE = ominousCandle("ominous_candle", MapColor.SAND, Blocks.CANDLE);
+	public static final DeferredBlock<OminousCandleBlock> OMINOUS_WHITE_CANDLE = ominousCandle("ominous_white_candle", MapColor.WOOL, Blocks.WHITE_CANDLE);
+	public static final DeferredBlock<OminousCandleBlock> OMINOUS_ORANGE_CANDLE = ominousCandle("ominous_orange_candle", MapColor.COLOR_ORANGE, Blocks.ORANGE_CANDLE);
+	public static final DeferredBlock<OminousCandleBlock> OMINOUS_MAGENTA_CANDLE = ominousCandle("ominous_magenta_candle", MapColor.COLOR_MAGENTA, Blocks.MAGENTA_CANDLE);
+	public static final DeferredBlock<OminousCandleBlock> OMINOUS_LIGHT_BLUE_CANDLE = ominousCandle("ominous_light_blue_candle", MapColor.COLOR_LIGHT_BLUE, Blocks.LIGHT_BLUE_CANDLE);
+	public static final DeferredBlock<OminousCandleBlock> OMINOUS_YELLOW_CANDLE = ominousCandle("ominous_yellow_candle", MapColor.COLOR_YELLOW, Blocks.YELLOW_CANDLE);
+	public static final DeferredBlock<OminousCandleBlock> OMINOUS_LIME_CANDLE = ominousCandle("ominous_lime_candle", MapColor.COLOR_LIGHT_GREEN, Blocks.LIME_CANDLE);
+	public static final DeferredBlock<OminousCandleBlock> OMINOUS_PINK_CANDLE = ominousCandle("ominous_pink_candle", MapColor.COLOR_PINK, Blocks.PINK_CANDLE);
+	public static final DeferredBlock<OminousCandleBlock> OMINOUS_GRAY_CANDLE = ominousCandle("ominous_gray_candle", MapColor.COLOR_GRAY, Blocks.GRAY_CANDLE);
+	public static final DeferredBlock<OminousCandleBlock> OMINOUS_LIGHT_GRAY_CANDLE = ominousCandle("ominous_light_gray_candle", MapColor.COLOR_LIGHT_GRAY, Blocks.LIGHT_GRAY_CANDLE);
+	public static final DeferredBlock<OminousCandleBlock> OMINOUS_CYAN_CANDLE = ominousCandle("ominous_cyan_candle", MapColor.COLOR_CYAN, Blocks.CYAN_CANDLE);
+	public static final DeferredBlock<OminousCandleBlock> OMINOUS_PURPLE_CANDLE = ominousCandle("ominous_purple_candle", MapColor.COLOR_PURPLE, Blocks.PURPLE_CANDLE);
+	public static final DeferredBlock<OminousCandleBlock> OMINOUS_BLUE_CANDLE = ominousCandle("ominous_blue_candle", MapColor.COLOR_BLUE, Blocks.BLUE_CANDLE);
+	public static final DeferredBlock<OminousCandleBlock> OMINOUS_BROWN_CANDLE = ominousCandle("ominous_brown_candle", MapColor.COLOR_BROWN, Blocks.BROWN_CANDLE);
+	public static final DeferredBlock<OminousCandleBlock> OMINOUS_GREEN_CANDLE = ominousCandle("ominous_green_candle", MapColor.COLOR_GREEN, Blocks.GREEN_CANDLE);
+	public static final DeferredBlock<OminousCandleBlock> OMINOUS_RED_CANDLE = ominousCandle("ominous_red_candle", MapColor.COLOR_RED, Blocks.RED_CANDLE);
+	public static final DeferredBlock<OminousCandleBlock> OMINOUS_BLACK_CANDLE = ominousCandle("ominous_black_candle", MapColor.COLOR_BLACK, Blocks.BLACK_CANDLE);
 
 	//labyrinth
 	public static final DeferredBlock<Block> MAZESTONE = register("mazestone", () -> new Block(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASEDRUM).mapColor(MapColor.STONE).requiresCorrectToolForDrops().sound(SoundType.STONE).strength(100.0F, 5.0F)));
@@ -133,6 +153,7 @@ public class TFBlocks {
 	public static final DeferredBlock<Block> MAZESTONE_MOSAIC = register("mazestone_mosaic", () -> new Block(BlockBehaviour.Properties.ofFullCopy(MAZESTONE.get())));
 	public static final DeferredBlock<Block> MAZESTONE_BORDER = register("mazestone_border", () -> new Block(BlockBehaviour.Properties.ofFullCopy(MAZESTONE.get())));
 	public static final DeferredBlock<Block> RED_THREAD = register("red_thread", () -> new RedThreadBlock(BlockBehaviour.Properties.of().instabreak().mapColor(MapColor.FIRE).isValidSpawn(TFBlocks::noSpawning).noCollission().noOcclusion().noTerrainParticles().pushReaction(PushReaction.DESTROY)));
+	public static final DeferredBlock<Block> MAZE_SLIME_BLOCK = register("maze_slime_block", () -> new MazeSlimeBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SLIME_BLOCK).mapColor(MapColor.STONE)));
 
 	//stronghold
 	public static final DeferredBlock<Block> STRONGHOLD_SHIELD = register("stronghold_shield", () -> new StrongholdShieldBlock(BlockBehaviour.Properties.of().noLootTable().mapColor(MapColor.STONE).pushReaction(PushReaction.BLOCK).requiresCorrectToolForDrops().sound(SoundType.METAL).strength(-1.0F, 6000000.0F)));
@@ -655,6 +676,18 @@ public class TFBlocks {
 		DeferredBlock<T> ret = BLOCKS.register(name, block);
 		TFItems.ITEMS.register(name, () -> new WroughtIronFenceItem(ret.get(), new Item.Properties()));
 		return ret;
+	}
+
+	public static DeferredBlock<OminousCandleBlock> ominousCandle(String name, MapColor mapColor, Block candle) {
+		return BLOCKS.register(name, () -> new OminousCandleBlock(candle,
+			BlockBehaviour.Properties.of()
+				.mapColor(mapColor)
+				.noOcclusion()
+				.strength(0.1F)
+				.sound(SoundType.CANDLE)
+				.lightLevel(state -> 2 * state.getValue(OminousCandleBlock.CANDLES))
+				.pushReaction(PushReaction.DESTROY)
+		));
 	}
 
 	private static BlockBehaviour.Properties logProperties(MapColor color) {

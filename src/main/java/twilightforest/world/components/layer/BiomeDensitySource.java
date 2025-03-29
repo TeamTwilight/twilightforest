@@ -69,7 +69,7 @@ public class BiomeDensitySource {
 	}
 
 	public Optional<TerrainColumn> getTerrainColumn(ResourceKey<Biome> biome) {
-		return this.biomeList.values().stream().filter(p -> p.is(biome)).findFirst();
+		return Optional.ofNullable(this.biomeList.get(biome));
 	}
 
 	// Only used for building a cache
@@ -105,9 +105,10 @@ public class BiomeDensitySource {
 	private static final int BLOCK_XYZ_OFFSET = QuartPos.SIZE / 2;
 
 	public DensityData sampleTerrain(int blockX, int blockZ, DensityFunction.FunctionContext context) {
-		double totalScale = 0.0;
 		double totalMappedDepth = 0.0;
 		double totalContribution = 0.0;
+		double totalScale = 0.0;
+		double totalScaleContribution = 0.0;
 
 		int blockXWithOffset = blockX - BLOCK_XYZ_OFFSET;
 		int blockZWithOffset = blockZ - BLOCK_XYZ_OFFSET;
@@ -131,16 +132,19 @@ public class BiomeDensitySource {
 			if (distSq < BLEND_RADIUS * BLEND_RADIUS) {
 				Optional<TerrainColumn> terrainColumn = this.getTerrainColumn(cx + xQuartStart, cz + zQuartStart);
 				if (terrainColumn.isPresent()) {
-					double falloff = BLEND_RADIUS * BLEND_RADIUS;
+					double falloff = BLEND_RADIUS * BLEND_RADIUS * terrainColumn.get().weight(context);
+					double scaleFalloff = BLEND_RADIUS * BLEND_RADIUS * terrainColumn.get().weight(context);
 
 					double neighborDepth = terrainColumn.get().depth(context);
 					double neighborScale = terrainColumn.get().scale(context);
 
 					falloff *= Math.exp((distSq * 2f + neighborDepth) * -0.4f);
-
 					totalMappedDepth += neighborDepth * falloff;
-					totalScale += neighborScale * falloff;
 					totalContribution += falloff;
+
+					scaleFalloff *= Math.exp((distSq * 2f + neighborScale) * -0.4f);
+					totalScale += neighborScale * scaleFalloff;
+					totalScaleContribution += scaleFalloff;
 				}
 			}
 
@@ -151,9 +155,6 @@ public class BiomeDensitySource {
 			if (cx >= xCount) break;
 		}
 
-		double depthNormalized = totalMappedDepth / totalContribution;
-		double scaleNormalized = totalScale / totalContribution;
-
-		return new DensityData(depthNormalized, scaleNormalized);
+		return new DensityData(totalMappedDepth / totalContribution, totalScale / totalScaleContribution);
 	}
 }

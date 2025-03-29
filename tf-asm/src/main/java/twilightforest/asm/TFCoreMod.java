@@ -15,6 +15,7 @@ import twilightforest.asm.transformers.foliage.FoliageColorResolverTransformer;
 import twilightforest.asm.transformers.lead.LeashFenceKnotSurvivesTransformer;
 import twilightforest.asm.transformers.livingentity.WaterWalkTransformer;
 import twilightforest.asm.transformers.map.ResolveNearestNonRandomSpreadMapStructureTransformer;
+import twilightforest.asm.transformers.mob.PathFinderUnrestrainedByLeash;
 import twilightforest.asm.transformers.multipart.ResolveEntitiesForRendereringTransformer;
 import twilightforest.asm.transformers.multipart.ResolveEntityRendererTransformer;
 import twilightforest.asm.transformers.multipart.SendDirtytEntityDataTransformer;
@@ -69,7 +70,10 @@ public class TFCoreMod implements ICoreMod {
 			new MaybeBackOffFromEdgeTransformer(),
 
 			// shroom
-			new ModifySoilDecisionForMushroomBlockSurvivabilityTransformer()
+			new ModifySoilDecisionForMushroomBlockSurvivabilityTransformer(),
+
+			// mob
+			new PathFinderUnrestrainedByLeash()
 		);
 	}
 }

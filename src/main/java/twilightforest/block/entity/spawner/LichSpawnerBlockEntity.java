@@ -39,6 +39,8 @@ public class LichSpawnerBlockEntity extends BossSpawnerBlockEntity<Lich> {
 			} else break;
 		}
 
+		mutableBlockPos.move(Direction.UP);
+
 		myCreature.moveTo(mutableBlockPos, accessor.getLevel().random.nextFloat() * 360F, 0.0F);
 
 		EventHooks.finalizeMobSpawn(myCreature, accessor, accessor.getCurrentDifficultyAt(mutableBlockPos), MobSpawnType.SPAWNER, null);

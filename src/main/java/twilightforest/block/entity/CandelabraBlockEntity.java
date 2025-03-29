@@ -78,7 +78,7 @@ public class CandelabraBlockEntity extends BlockEntity {
 		this.data = CandelabraData.load(tag);
 	}
 
-	private void updateState(int index) {
+	public void updateState(int index) {
 		if (index >= 0 && index < 3) {
 			BlockState blockstate = this.getBlockState();
 

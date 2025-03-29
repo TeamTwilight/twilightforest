@@ -83,24 +83,6 @@ public class SwarmSpider extends Spider {
 		return this.getRandom().nextInt(4) == 0 && super.doHurtTarget(entity);
 	}
 
-	protected boolean spawnAnother(ServerLevel level) {
-		SwarmSpider another = new SwarmSpider(this.getReinforcementType(), level);
-
-		double sx = this.getX() + (this.getRandom().nextBoolean() ? 0.9D : -0.9D);
-		double sy = this.getY();
-		double sz = this.getZ() + (this.getRandom().nextBoolean() ? 0.9D : -0.9D);
-
-		another.moveTo(sx, sy, sz, this.getRandom().nextFloat() * 360.0F, 0.0F);
-		if (!another.checkSpawnRules(level, MobSpawnType.REINFORCEMENT)) {
-			another.discard();
-			return false;
-		}
-		level.addFreshEntity(another);
-		another.spawnAnim();
-
-		return true;
-	}
-
 	public EntityType<? extends SwarmSpider> getReinforcementType() {
 		return TFEntities.SWARM_SPIDER.get();
 	}
@@ -128,20 +110,10 @@ public class SwarmSpider extends Spider {
 
 	@Nullable
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingData) {
-		livingData = super.finalizeSpawn(accessor, difficulty, reason, livingData);
-
-		if (reason != MobSpawnType.CONVERSION && reason != MobSpawnType.REINFORCEMENT) {
-			int more = 1 + this.getRandom().nextInt(2);
-			for (int i = 0; i < more; i++) {
-				// try twice to spawn
-				if (!spawnAnother(accessor.getLevel())) spawnAnother(accessor.getLevel());
-			}
-		}
-
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData data) {
+		data = super.finalizeSpawn(accessor, difficulty, reason, data);
 		this.summonJockey(accessor, difficulty);
-
-		return livingData;
+		return data;
 	}
 
 	public void summonJockey(ServerLevelAccessor accessor, DifficultyInstance difficulty) {

@@ -30,10 +30,12 @@ public class MoonwormQueenRepairRecipe extends CustomRecipe {
 			ItemStack stackInQuestion = input.getItem(i);
 			if (!stackInQuestion.isEmpty()) {
 				if (stackInQuestion.is(TFItems.MOONWORM_QUEEN.get()) && stackInQuestion.isDamaged()) {
+					if (queen != null) return false;
 					queen = stackInQuestion;
-				}
-				if (stackInQuestion.is(TFItems.TORCHBERRIES.get())) {
+				} else if (stackInQuestion.is(TFItems.TORCHBERRIES.get())) {
 					berries.add(stackInQuestion);
+				} else {
+					return false;
 				}
 			}
 		}

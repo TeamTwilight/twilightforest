@@ -18,6 +18,10 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * @param priority Determines order in which pieces are generated, before post-processing (which is block placement)
+ * @param pos Offset from template origin. Not the world position
+ */
 public record JigsawRecord(int priority, FrontAndTop orientation, BlockPos pos, String name, String target) {
 	public static List<JigsawRecord> allFromTemplate(StructureTemplateManager structureManager, ResourceLocation templateLocation, StructurePlaceSettings placeSettings) {
 		// StructureTemplate#filterBlocks() does not support mirroring, force NONE

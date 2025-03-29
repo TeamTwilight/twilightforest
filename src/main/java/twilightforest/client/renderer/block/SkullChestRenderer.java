@@ -3,6 +3,8 @@ package twilightforest.client.renderer.block;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
@@ -36,34 +38,37 @@ public class SkullChestRenderer<T extends BlockEntity & LidBlockEntity> implemen
 	private final ModelPart base;
 	private final ModelPart lid;
 
-	private final BlockState defaultState;
-
 	public SkullChestRenderer(BlockEntityRendererProvider.Context context) {
-		this(context, TFBlocks.SKULL_CHEST.get().defaultBlockState());
+		this(context, TFModelLayers.SKULL_CHEST);
 	}
 
-	public SkullChestRenderer(BlockEntityRendererProvider.Context context, BlockState defaultState) {
-		var root = context.bakeLayer(TFModelLayers.KEEPSAKE_CASKET);
+	public SkullChestRenderer(BlockEntityRendererProvider.Context context, ModelLayerLocation layer) {
+		var root = context.bakeLayer(layer);
 
 		this.base = root.getChild("base");
 		this.lid = root.getChild("lid");
-		this.defaultState = defaultState;
 	}
 
-	public static LayerDefinition create() {
+	public static LayerDefinition create(boolean addSpikes) {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
-		partdefinition.addOrReplaceChild("lid",
+		var lid = partdefinition.addOrReplaceChild("lid",
 			CubeListBuilder.create()
 				.texOffs(0, 0)
-				.addBox(-8.0F, -8.0F, -13.0F, 16.0F, 10.0F, 14.0F)
-				.texOffs(0, 46)
+				.addBox(-8.0F, -8.0F, -13.0F, 16.0F, 10.0F, 14.0F),
+			PartPose.offset(0.0F, -6.0F, 6.0F));
+
+		if (addSpikes) {
+			lid.addOrReplaceChild("spikes",
+				CubeListBuilder.create().texOffs(0, 46)
 				.addBox(-8.0F, -10.0F, -13.0F, 16.0F, 2.0F, 0.0F)
 				.texOffs(2, 34)
 				.addBox(-7.99F, -10.0F, -12.0F, 0.0F, 2.0F, 14.0F)
 				.texOffs(2, 36)
 				.addBox(7.99F, -10.0F, -12.0F, 0.0F, 2.0F, 14.0F),
-			PartPose.offset(0.0F, -6.0F, 6.0F));
+				PartPose.ZERO);
+		}
+
 		partdefinition.addOrReplaceChild("base",
 			CubeListBuilder.create()
 				.texOffs(1, 28)
@@ -78,10 +83,9 @@ public class SkullChestRenderer<T extends BlockEntity & LidBlockEntity> implemen
 		return LayerDefinition.create(meshdefinition, 64, 64);
 	}
 
-
 	@Override
 	public void render(T entity, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light, int overlay) {
-		BlockState blockstate = entity.getLevel() != null ? entity.getBlockState() : this.defaultState;
+		BlockState blockstate = entity.getBlockState();
 
 		ResourceLocation textureLocation = this.getTextureLocation(blockstate);
 		Direction facing = blockstate.getValue(HorizontalDirectionalBlock.FACING);

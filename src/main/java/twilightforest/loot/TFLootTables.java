@@ -46,7 +46,9 @@ public class TFLootTables {
 	public static final ResourceKey<LootTable> TOWER_ROOM = register("chests/tower_room");
 	public static final ResourceKey<LootTable> TOWER_LIBRARY = register("chests/tower_library");
 	public static final ResourceKey<LootTable> TOWER_POTION = register("chests/tower_potion");
-	public static final ResourceKey<LootTable> TOWER_GRAVE = register("chests/tower_grave");
+	public static final ResourceKey<LootTable> JUST_BONES = register("chests/just_bones");
+	public static final ResourceKey<LootTable> TOWER_GRAVE_LOWER = register("chests/tower_grave_lower");
+	public static final ResourceKey<LootTable> TOWER_GRAVE_UPPER = register("chests/tower_grave_upper");
 	public static final ResourceKey<LootTable> TOWER_ENCHANTING = register("chests/tower_enchanting");
 	public static final ResourceKey<LootTable> TOWER_JARS = register("chests/tower_jars");
 	public static final ResourceKey<LootTable> TOWER_FOYER = register("chests/tower_foyer");

@@ -109,7 +109,7 @@ public class LichTowerFoyerDecor extends TwilightJigsawPiece implements PieceBea
 					BlockState decorBlock = switch (random.nextInt(5)) {
 						case 3 -> TFBlocks.SKELETON_SKULL_CANDLE.value().defaultBlockState()
 							.setValue(SkullCandleBlock.LIGHTING, LightableBlock.Lighting.NORMAL)
-							//.setValue(CandleBlock.CANDLES, random.nextIntBetweenInclusive(1, 3)) TODO Move Skull Candles count to BlockState
+							.setValue(SkullCandleBlock.CANDLES, random.nextIntBetweenInclusive(1, 3))
 							.setValue(SkullCandleBlock.ROTATION, random.nextIntBetweenInclusive(7, 9));
 						case 1, 2 -> Blocks.SKELETON_SKULL.defaultBlockState().setValue(SkullBlock.ROTATION, random.nextIntBetweenInclusive(7, 9));
 						default -> Blocks.CANDLE.defaultBlockState().setValue(CandleBlock.CANDLES, random.nextIntBetweenInclusive(1, 3)).setValue(CandleBlock.LIT, true);

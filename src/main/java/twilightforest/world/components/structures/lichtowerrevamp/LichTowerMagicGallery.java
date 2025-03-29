@@ -12,6 +12,7 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
@@ -24,6 +25,7 @@ import org.jetbrains.annotations.Nullable;
 import twilightforest.TFRegistries;
 import twilightforest.beans.Autowired;
 import twilightforest.data.tags.BlockTagGenerator;
+import twilightforest.data.tags.CustomTagGenerator;
 import twilightforest.entity.MagicPainting;
 import twilightforest.entity.MagicPaintingVariant;
 import twilightforest.init.TFEntities;
@@ -70,23 +72,30 @@ public class LichTowerMagicGallery extends TwilightJigsawPiece implements PieceB
 
 	@Override
 	public void postProcess(WorldGenLevel level, StructureManager structureManager, ChunkGenerator chunkGen, RandomSource random, BoundingBox chunkBounds, ChunkPos chunkPos, BlockPos structureCenterPos) {
-		{
-			JigsawRecord sourceJigsaw = this.getSourceJigsaw();
-			BlockPos sourcePos = this.templatePosition.offset(sourceJigsaw.pos());
-			BlockPos leftPos = sourcePos.relative(sourceJigsaw.orientation().front().getClockWise(Direction.Axis.Y));
-
-			Direction counterClockWise = sourceJigsaw.orientation().front().getCounterClockWise(Direction.Axis.Y);
-			// Special shifting for if this gallery has an entrance that is 2 blocks wide
-			int span = BoundingBoxUtils.getSpan(this.boundingBox, counterClockWise.getAxis());
-			BlockPos rightPos = sourcePos.relative(counterClockWise, 1 + ((span + 1) % 2));
-
-			removeIfBanister(level, leftPos, chunkBounds);
-			removeIfBanister(level, leftPos.above(), chunkBounds);
-			removeIfBanister(level, rightPos, chunkBounds);
-			removeIfBanister(level, rightPos.below(), chunkBounds);
-		}
+		this.removeBanisters(level, chunkBounds);
 
 		super.postProcess(level, structureManager, chunkGen, random, chunkBounds, chunkPos, structureCenterPos);
+	}
+
+	private void removeBanisters(WorldGenLevel level, BoundingBox chunkBounds) {
+		JigsawRecord sourceJigsaw = this.getSourceJigsaw();
+		BlockPos sourcePos = this.templatePosition.offset(sourceJigsaw.pos());
+		Direction front = sourceJigsaw.orientation().front();
+
+		BlockPos leftPos = sourcePos.relative(front.getClockWise(Direction.Axis.Y));
+
+		Direction counterClockWise = front.getCounterClockWise(Direction.Axis.Y);
+		// Special shifting for if this gallery has an entrance that is 2 blocks wide
+		int span = BoundingBoxUtils.getSpan(this.boundingBox, counterClockWise.getAxis());
+		int evenShift = (span + 1) % 2;
+		BlockPos rightPos = sourcePos.relative(counterClockWise, 1 + evenShift);
+
+		removeIfBanister(level, leftPos, chunkBounds);
+		removeIfBanister(level, leftPos.above(), chunkBounds);
+		removeIfBanister(level, rightPos, chunkBounds);
+		removeIfBanister(level, rightPos.below(), chunkBounds);
+		if (evenShift == 1) // Got another banister to remove
+			removeIfBanister(level, sourcePos.relative(counterClockWise, 1).below(), chunkBounds);
 	}
 
 	private static void removeIfBanister(WorldGenLevel level, BlockPos pos, BoundingBox chunkBounds) {
@@ -110,19 +119,23 @@ public class LichTowerMagicGallery extends TwilightJigsawPiece implements PieceB
 	protected void handleDataMarker(String label, BlockPos pos, WorldGenLevel level, RandomSource random, BoundingBox chunkBounds, ChunkGenerator chunkGen) {
 		level.removeBlock(pos, false);
 
-		Direction direction = this.placeSettings.getRotation().rotate(Direction.SOUTH);
+		if ("painting".equals(label)) {
+			Direction direction = this.placeSettings.getRotation().rotate(Direction.SOUTH);
 
-		Optional<Holder.Reference<MagicPaintingVariant>> variantHolderOpt = variantForGallery(level, this.templateName);
-		MagicPainting galleryPainting = TFEntities.MAGIC_PAINTING.value().create(level.getLevel());
-		if (variantHolderOpt.isPresent() && galleryPainting != null) {
-			galleryPainting.setDirection(direction);
-			galleryPainting.setVariant(variantHolderOpt.get());
+			Optional<Holder.Reference<MagicPaintingVariant>> variantHolderOpt = variantForGallery(level, this.templateName);
+			MagicPainting galleryPainting = TFEntities.MAGIC_PAINTING.value().create(level.getLevel());
+			if (variantHolderOpt.isPresent() && galleryPainting != null) {
+				galleryPainting.setDirection(direction);
+				galleryPainting.setVariant(variantHolderOpt.get());
 
-			variantHolderOpt.get().value();
-			this.placeSettings.getRotation();
-			galleryPainting.moveTo(pos.getBottomCenter(), 0, 0);
+				variantHolderOpt.get().value();
+				this.placeSettings.getRotation();
+				galleryPainting.moveTo(pos.getBottomCenter(), 0, 0);
 
-			level.addFreshEntityWithPassengers(galleryPainting);
+				level.addFreshEntityWithPassengers(galleryPainting);
+			}
+		} else {
+			LichBossRoom.placePainting(label, pos, level, random, chunkBounds, this.placeSettings.getRotation(), 2, 1, CustomTagGenerator.PaintingVariantTagGenerator.LICH_TOWER_PAINTINGS);
 		}
 	}
 

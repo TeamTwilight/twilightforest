@@ -40,6 +40,7 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 		// recreate maze object
 		maze = new TFMaze(getMazeSize(), getMazeSize(), RandomSource.create());
 		setFixedMazeSeed();
+		configureMaze();
 
 		// blank out rcoords above 1 so that the room generation works properly
 		//TODO: re-do this. :)
@@ -66,6 +67,7 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 
 		// set the seed to a fixed value based on this maze's x and z
 		setFixedMazeSeed();
+		configureMaze();
 
 		// rooms
 		int nrooms = 7;
@@ -285,6 +287,10 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 		generateBox(world, sbb, 1, 5, 1, getDiameter() + 1, 5, getDiameter() + 1, TFBlocks.MAZESTONE.get().defaultBlockState(), stone, onlyReplaceCeiling);
 		generateBox(world, sbb, 1, 0, 1, getDiameter() + 1, 0, getDiameter() + 1, TFBlocks.MAZESTONE_MOSAIC.get().defaultBlockState(), stone, false);
 
+		maze.copyToStructure(world, manager, generator, 1, 2, 1, this, sbb);
+	}
+
+	private void configureMaze() {
 		maze.headBlockState = TFBlocks.DECORATIVE_MAZESTONE.get().defaultBlockState();
 		maze.wallBlockState = TFBlocks.MAZESTONE_BRICK.get().defaultBlockState();
 		maze.rootBlockState = TFBlocks.DECORATIVE_MAZESTONE.get().defaultBlockState();
@@ -295,8 +301,6 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 		maze.head = 1;
 		maze.roots = 1;
 		maze.oddBias = 4;
-
-		maze.copyToStructure(world, manager, generator, 1, 2, 1, this, sbb);
 	}
 
 	public int getMazeSize() {

@@ -39,7 +39,7 @@ public class ShieldLayer<T extends LivingEntity, M extends EntityModel<T>> exten
 
 	private int getShieldCount(T entity) {
 		return entity instanceof Lich lich
-			? lich.getShieldStrength()
+			? (lich.getTeleportInvisibility() > 0 ? 0 : lich.getShieldStrength())
 			: entity.getData(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft();
 	}
 

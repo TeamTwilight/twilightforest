@@ -166,9 +166,15 @@ dependencies {
 	//curse maven
 	implementation "curse.maven:jade-324717:5529595"
 	implementation "curse.maven:cosmetic-armor-reworked-237307:5427303"
-//	implementation "curse.maven:world-edit-225608:5613180"
+	runtimeOnly "curse.maven:worldedit-225608:5830452"
 //	runtimeOnly "curse.maven:jeed-532286:5483315"
 //	runtimeOnly "curse.maven:museum-curator-859070:4629894"
+	if (project.enable_tips_mod == 'true') {
+		runtimeOnly "curse.maven:tips-306549:5844057"
+		runtimeOnly "curse.maven:bookshelf-228525:6098975"
+		runtimeOnly "curse.maven:prickle-1023259:5836410"
+	}
+	runtimeOnly "curse.maven:suggestion-provider-fix-469647:5598604"
 
 	compileOnly "mcjty.theoneprobe:theoneprobe:${project.top_version}"
 
@@ -200,17 +206,12 @@ test {
 }
 
 processResources {
-	def mc = minecraft_version
-	def neo = neo_version
 	def ver = project.version
 	filesMatching("META-INF/neoforge.mods.toml") {
 		expand([
 			'file'           : [
 				'jarVersion': ver
-			],
-			'm'      : mc,
-			'l'      : "NeoForge",
-			'v': neo,
+			]
 		])
 	}
 }
