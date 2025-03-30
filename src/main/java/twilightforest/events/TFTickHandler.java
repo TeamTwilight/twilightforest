@@ -89,6 +89,7 @@ public class TFTickHandler {
 				TravellersArmorItem.travellersPantsControlFall(livingEntity);
 				TravellersArmorItem.travellersVestHaste(livingEntity);
 				TravellersArmorItem.travellersWingsHighJump(livingEntity);
+				TravellersArmorItem.travellersGearRepair(livingEntity);
 			});
 		}
 	}

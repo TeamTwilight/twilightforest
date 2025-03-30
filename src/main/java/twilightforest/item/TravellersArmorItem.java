@@ -41,6 +41,7 @@ import java.util.function.Consumer;
 
 public class TravellersArmorItem extends ArmorItem {
 	public static final double WATER_WALKING_MAX_SUBMERGED_HEIGHT = 0.4;
+	public static final int AUTO_REPAIR_SUNLIGHT_BOOST = 3;
 	@Nullable
 	private ItemAttributeModifiers attributeModifiers;
 	public TravellersArmorItem(ArmorItem.Type equipmentType, Properties properties, int durability) {
@@ -123,6 +124,18 @@ public class TravellersArmorItem extends ArmorItem {
 		livingEntity.fallDistance = (float) (Math.pow(newDeltaMovementY, 2) / 2 / livingEntity.getGravity());  // use mv ^ 2 / 2 / mg = h
 	}
 
+	public static void travellersGearRepair(LivingEntity livingEntity) {
+		livingEntity.getArmorSlots().forEach(slot -> {
+			Float probability = slot.get(TFDataComponents.AUTO_REPAIR_PROBABILITY);
+			if (probability == null)
+				return;
+			Level level = livingEntity.level();
+			if (level.isDay() && level.canSeeSky(livingEntity.getOnPos()))
+					probability = (float) (1 - Math.pow(1 - probability, AUTO_REPAIR_SUNLIGHT_BOOST));  // chance to have at least 1 repair in AUTO_REPAIR_SUNLIGHT_BOOST tries
+			if (probability > level.random.nextFloat())
+				slot.setDamageValue(Math.max(slot.getDamageValue() - 1, 0));
+		});
+	}
 
 	public static void travellersWingsHighJump(LivingEntity livingEntity) {
 		ItemStack leggingsStack = livingEntity.getItemBySlot(EquipmentSlot.LEGS);
@@ -171,7 +184,8 @@ public class TravellersArmorItem extends ArmorItem {
 	public static Properties gogglesProperties(Properties properties) {
 		return properties
 			.component(TFDataComponents.ZOOM_ABILITY_MODIFIER, 0.3F)
-			.component(TFDataComponents.RED_THREAD_VISION_ENABLE, true);
+			.component(TFDataComponents.RED_THREAD_VISION_ENABLE, true)
+			.component(TFDataComponents.AUTO_REPAIR_PROBABILITY, 0.001F);
 	}
 
 	public static Properties chestProperties(Properties properties) {
@@ -181,6 +195,7 @@ public class TravellersArmorItem extends ArmorItem {
 			.component(TFDataComponents.HASTE_AMPLIFIER, 1)
 			.component(TFDataComponents.ARROW_MAGNETISM, true)
 			.component(TFDataComponents.PERFECT_DODGE_PROBABILITY, 0.1F)
+			.component(TFDataComponents.AUTO_REPAIR_PROBABILITY, 0.001F)
 			.attributes(defaultArmorProperties(Type.CHESTPLATE)
 				.add(Attributes.WATER_MOVEMENT_EFFICIENCY, new AttributeModifier(TwilightForestMod.prefix("travellers_gear.vest_fast_swimming"), 1F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.CHEST)
 				.build());
@@ -196,7 +211,8 @@ public class TravellersArmorItem extends ArmorItem {
 			.component(TFDataComponents.TRAVELLERS_HAS_WINGS, true)
 			.component(TFDataComponents.HIGH_JUMP_AMPLIFIER, 1)
 			.component(TFDataComponents.HAS_DOUBLE_JUMP, true)
-			.component(TFDataComponents.CONTROLLED_FALLING_MULTIPLIER, 1 - 1 / 6F);
+			.component(TFDataComponents.CONTROLLED_FALLING_MULTIPLIER, 1 - 1 / 6F)
+			.component(TFDataComponents.AUTO_REPAIR_PROBABILITY, 0.001F);
 	}
 
 	public static Properties beltProperties(Properties properties) {
@@ -208,6 +224,7 @@ public class TravellersArmorItem extends ArmorItem {
 		return properties
 			.component(TFDataComponents.WATER_WALK_ENABLE, true)
 			.component(TFDataComponents.SLIMY_SOLES_COEFFICIENT, 0.5F)
+			.component(TFDataComponents.AUTO_REPAIR_PROBABILITY, 0.001F)
 			.attributes(defaultArmorProperties(Type.BOOTS)
 				.add(Attributes.STEP_HEIGHT, new AttributeModifier(TwilightForestMod.prefix("travellers_gear.boots_high_step"), 0.5F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.FEET)
 				.build());
