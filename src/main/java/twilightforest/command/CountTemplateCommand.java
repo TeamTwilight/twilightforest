@@ -20,7 +20,7 @@ import net.minecraft.world.level.levelgen.structure.*;
 import java.util.Comparator;
 import java.util.List;
 
-@twilightforest.beans.Component
+@tamaized.beanification.Component
 public class CountTemplateCommand {
 	public LiteralArgumentBuilder<CommandSourceStack> register() {
 		return Commands.literal("count_template").requires(cs -> cs.hasPermission(Commands.LEVEL_GAMEMASTERS))

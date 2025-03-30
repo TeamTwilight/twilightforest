@@ -46,9 +46,9 @@ import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.beans.Autowired;
-import twilightforest.beans.ProcessBeanAnnotationsEvent;
-import twilightforest.beans.TFBeanContext;
+import tamaized.beanification.Autowired;
+import tamaized.beanification.BeanContext;
+import tamaized.beanification.Configurable;
 import twilightforest.block.entity.JarBlockEntity;
 import twilightforest.client.event.ClientEvents;
 import twilightforest.client.event.RegistrationEvents;
@@ -81,6 +81,7 @@ import twilightforest.world.components.structures.lichtowerrevamp.StructureTempl
 import java.util.Locale;
 import java.util.function.Supplier;
 
+@Configurable
 @Mod(TwilightForestMod.ID)
 public final class TwilightForestMod {
 
@@ -103,8 +104,8 @@ public final class TwilightForestMod {
 	@Nullable
 	private static QuestReloadListener QUEST_INSTANCE;
 
-	static { // Load as early as possible
-		TFBeanContext.init();
+	static {
+		BeanContext.init();
 	}
 
 	@Autowired
@@ -114,7 +115,6 @@ public final class TwilightForestMod {
 	private HolidayEvent holidayEvent;
 
 	public TwilightForestMod(IEventBus bus, Dist dist) {
-		bus.post(new ProcessBeanAnnotationsEvent(this)); // Enables @Autowired
 		Reflection.initialize(ConfigSetup.class);
 		ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, () -> ConfigurationScreen::new);
 		// Get main thread and use it to register our gamerule early

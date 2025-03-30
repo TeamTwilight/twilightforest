@@ -15,7 +15,7 @@ import twilightforest.world.components.structures.start.TFStructureStart;
 
 import java.util.Optional;
 
-@twilightforest.beans.Component
+@tamaized.beanification.Component
 public class ConquerCommand {
 
 	private final SimpleCommandExceptionType NOT_IN_STRUCTURE = new SimpleCommandExceptionType(Component.translatable("commands.tffeature.structure.required"));

@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.StringJoiner;
 
-@twilightforest.beans.Component
+@tamaized.beanification.Component
 public class InfoCommand {
 
 	public LiteralArgumentBuilder<CommandSourceStack> register() {

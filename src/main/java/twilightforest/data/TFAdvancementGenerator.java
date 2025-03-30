@@ -25,7 +25,7 @@ import net.neoforged.neoforge.common.util.Lazy;
 import twilightforest.TwilightForestMod;
 import twilightforest.advancements.*;
 import twilightforest.advancements.predicate.ItemColorPredicate;
-import twilightforest.beans.Autowired;
+import tamaized.beanification.Autowired;
 import twilightforest.block.Experiment115Block;
 import twilightforest.components.item.PotionFlaskComponent;
 import twilightforest.data.helpers.AdvancementDataMultiRequirements;

@@ -1,7 +1,7 @@
 package twilightforest.util;
 
 import net.minecraft.core.Holder;
-import twilightforest.beans.Component;
+import tamaized.beanification.Component;
 
 @Component
 public class HolderMatcher {

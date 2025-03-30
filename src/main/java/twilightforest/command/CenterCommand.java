@@ -11,7 +11,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import twilightforest.util.landmarks.LegacyLandmarkPlacements;
 
-@twilightforest.beans.Component
+@tamaized.beanification.Component
 public class CenterCommand {
 
 	public LiteralArgumentBuilder<CommandSourceStack> register() {

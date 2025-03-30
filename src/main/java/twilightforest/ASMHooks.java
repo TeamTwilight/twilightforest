@@ -41,7 +41,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.neoforged.neoforge.common.util.TriState;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
-import twilightforest.beans.Autowired;
+import tamaized.beanification.Autowired;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.util.ArmorUtil;
 import twilightforest.util.multiparts.MultipartEntityUtil;
@@ -66,7 +66,7 @@ public class ASMHooks {
 	private static ArmorUtil armorUtil;
 
 	@Autowired
-	private static MultipartEntityUtil multipartEntityUtil;
+	protected static MultipartEntityUtil multipartEntityUtil;
 
 	@Autowired
 	private static FoliageColorHandler foliageColorHandler;

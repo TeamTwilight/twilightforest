@@ -19,7 +19,7 @@ import net.minecraft.server.ReloadableServerRegistries;
 import net.minecraft.world.level.storage.loot.LootTable;
 import twilightforest.block.entity.spawner.SinisterSpawnerBlockEntity;
 
-@twilightforest.beans.Component
+@tamaized.beanification.Component
 public class SinisterSpawnerCommand {
 	// Copied from LootCommand.SUGGEST_LOOT_TABLE
 	public static final SuggestionProvider<CommandSourceStack> SUGGEST_LOOT_TABLE = (context, builder) -> {

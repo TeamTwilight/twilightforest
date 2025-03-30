@@ -1,7 +1,7 @@
 package twilightforest.util;
 
 import net.minecraft.core.Direction;
-import twilightforest.beans.Component;
+import tamaized.beanification.Component;
 
 @Component
 public class DirectionUtil {

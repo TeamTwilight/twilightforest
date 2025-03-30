@@ -11,7 +11,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import org.joml.Matrix4f;
-import twilightforest.beans.Component;
+import tamaized.beanification.Component;
 
 import java.util.Optional;
 
