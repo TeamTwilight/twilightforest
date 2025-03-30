@@ -66,7 +66,7 @@ public class ASMHooks {
 	private static ArmorUtil armorUtil;
 
 	@Autowired
-	protected static MultipartEntityUtil multipartEntityUtil;
+	private static MultipartEntityUtil multipartEntityUtil;
 
 	@Autowired
 	private static FoliageColorHandler foliageColorHandler;
