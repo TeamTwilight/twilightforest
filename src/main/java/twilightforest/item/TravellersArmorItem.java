@@ -207,6 +207,7 @@ public class TravellersArmorItem extends ArmorItem {
 	public static Properties bootsProperties(Properties properties) {
 		return properties
 			.component(TFDataComponents.WATER_WALK_ENABLE, true)
+			.component(TFDataComponents.SLIMY_SOLES_COEFFICIENT, 0.5F)
 			.attributes(defaultArmorProperties(Type.BOOTS)
 				.add(Attributes.STEP_HEIGHT, new AttributeModifier(TwilightForestMod.prefix("travellers_gear.boots_high_step"), 0.5F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.FEET)
 				.build());

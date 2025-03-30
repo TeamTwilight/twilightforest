@@ -53,10 +53,7 @@ import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
 import net.neoforged.neoforge.event.entity.living.*;
-import net.neoforged.neoforge.event.entity.player.AdvancementEvent;
-import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
-import net.neoforged.neoforge.event.entity.player.PlayerEvent;
-import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.event.entity.player.*;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.level.ExplosionEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
@@ -293,6 +290,15 @@ public class EntityEvents {
 		}
 		if (pickup.equals(AbstractArrow.Pickup.ALLOWED) || pickup.equals(AbstractArrow.Pickup.CREATIVE_ONLY) && player.isCreative())
 			projectile.discard();
+	}
+
+	@SubscribeEvent
+	public static void travellersSlimyEvent(LivingFallEvent event) {
+		LivingEntity livingEntity = event.getEntity();
+		ItemStack boots = livingEntity.getItemBySlot(EquipmentSlot.FEET);
+		Float coefficient = boots.get(TFDataComponents.SLIMY_SOLES_COEFFICIENT);
+		if (coefficient != null)
+			event.setDamageMultiplier(coefficient);;
 	}
 
 	/**
