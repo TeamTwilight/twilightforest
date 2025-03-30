@@ -108,7 +108,7 @@ public class TravellersArmorItem extends ArmorItem {
 		ItemStack leggingsStack = livingEntity.getItemBySlot(EquipmentSlot.LEGS);
 		Float multiplier = leggingsStack.get(TFDataComponents.CONTROLLED_FALLING_MULTIPLIER);
 		Vec3 deltaMovement = livingEntity.getDeltaMovement();
-		if (multiplier == null || deltaMovement.y() >= 0)
+		if (multiplier == null || deltaMovement.y() >= 0 || livingEntity.isFallFlying())
 			return;
 
 		if (livingEntity.isShiftKeyDown())
