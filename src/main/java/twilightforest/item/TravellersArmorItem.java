@@ -212,7 +212,8 @@ public class TravellersArmorItem extends ArmorItem {
 			.component(TFDataComponents.HIGH_JUMP_AMPLIFIER, 1)
 			.component(TFDataComponents.HAS_DOUBLE_JUMP, true)
 			.component(TFDataComponents.CONTROLLED_FALLING_MULTIPLIER, 1 - 1 / 6F)
-			.component(TFDataComponents.AUTO_REPAIR_PROBABILITY, 0.001F);
+			.component(TFDataComponents.AUTO_REPAIR_PROBABILITY, 0.001F)
+			.component(TFDataComponents.AGILE_RANGER_MODIFIER, 5F);
 	}
 
 	public static Properties beltProperties(Properties properties) {

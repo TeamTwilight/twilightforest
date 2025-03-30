@@ -10,6 +10,7 @@ import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.RenderType;
@@ -26,10 +27,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.WrittenBookItem;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
@@ -111,6 +109,7 @@ public class ClientEvents {
 		NeoForge.EVENT_BUS.addListener(ClientEvents::updateTravellersRedThreadAttachment);
 		NeoForge.EVENT_BUS.addListener(ClientEvents::travellersArmorEffects);
 		NeoForge.EVENT_BUS.addListener(ClientEvents::playerTravellersArmorEffects);
+		NeoForge.EVENT_BUS.addListener(ClientEvents::travellersAgileRanger);
 
 		NeoForge.EVENT_BUS.addListener(CloudEvents::renderPrecipitation);
 		NeoForge.EVENT_BUS.addListener(CloudEvents::tickWeatherEffects);
@@ -138,6 +137,19 @@ public class ClientEvents {
 		if (Minecraft.getInstance().options.keyJump.consumeClick() && Boolean.TRUE.equals(localPlayer.getItemBySlot(EquipmentSlot.LEGS).get(TFDataComponents.HAS_DOUBLE_JUMP))) {
 			if (TravellersArmorItem.performDoubleJump(localPlayer))
 				localPlayer.connection.send(new PerformDoubleJumpPacket());
+		}
+	}
+
+	public static void travellersAgileRanger(MovementInputUpdateEvent event) {
+		if (!(event.getEntity() instanceof LocalPlayer localPlayer))
+			return;
+		Float agileRangerModifier = localPlayer.getItemBySlot(EquipmentSlot.LEGS).get(TFDataComponents.AGILE_RANGER_MODIFIER);
+		if (agileRangerModifier == null)
+			return;
+		if (localPlayer.isUsingItem() && !localPlayer.isPassenger() && localPlayer.getUseItem().getItem() instanceof ProjectileWeaponItem) {
+			Input input = event.getInput();
+			input.leftImpulse *= agileRangerModifier;
+			input.forwardImpulse *= agileRangerModifier;
 		}
 	}
 
