@@ -238,15 +238,17 @@ public class EntityEvents {
 	}
 
 	@SubscribeEvent
-	public static void perfectDodgeEvent(LivingIncomingDamageEvent event) {
-		if (!event.getSource().is(DamageTypeTags.IS_PROJECTILE))
+	public static void perfectDodgeEvent(ProjectileImpactEvent event) {
+		HitResult rayResult = event.getRayTraceResult();
+		if (!(rayResult instanceof EntityHitResult entityHitResult) || !(entityHitResult.getEntity() instanceof LivingEntity livingEntity))
 			return;
-		LivingEntity livingEntity = event.getEntity();
 		ItemStack chest = livingEntity.getItemBySlot(EquipmentSlot.CHEST);
 		Float probability = chest.get(TFDataComponents.PERFECT_DODGE_PROBABILITY);
 		Level level = livingEntity.level();
-		if (probability != null && probability > level.random.nextFloat())
+		if (probability != null && probability > level.random.nextFloat()) {
+			level.playLocalSound(event.getEntity(), SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 1, 1);  // FIXME: replace placeholder sound event and adjust volume and pitch parameters
 			event.setCanceled(true);
+		}
 	}
 
 	// Parrying
