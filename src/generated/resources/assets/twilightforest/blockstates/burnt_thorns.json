@@ -1,0 +1,275 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "twilightforest:block/burnt_thorns_thorns"
+      },
+      "when": {
+        "axis": "y"
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/burnt_thorns_thorns",
+        "x": 90
+      },
+      "when": {
+        "axis": "z"
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/burnt_thorns_thorns",
+        "x": 90,
+        "y": 90
+      },
+      "when": {
+        "axis": "x"
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/burnt_thorns_top",
+        "x": 90
+      },
+      "when": {
+        "up": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/burnt_thorns_no_section",
+        "x": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "up": "false"
+          },
+          {
+            "axis": "z|y"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/burnt_thorns_no_section",
+        "x": 270,
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "up": "false"
+          },
+          {
+            "axis": "x"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/burnt_thorns_bottom",
+        "x": 90
+      },
+      "when": {
+        "down": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/burnt_thorns_no_section",
+        "x": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "down": "false"
+          },
+          {
+            "axis": "z|y"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/burnt_thorns_no_section",
+        "x": 90,
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "down": "false"
+          },
+          {
+            "axis": "x"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/burnt_thorns_top",
+        "y": 270
+      },
+      "when": {
+        "east": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/burnt_thorns_no_section",
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "east": "false"
+          },
+          {
+            "axis": "y|x"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/burnt_thorns_no_section_alt",
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "east": "false"
+          },
+          {
+            "axis": "z"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/burnt_thorns_bottom",
+        "y": 270
+      },
+      "when": {
+        "west": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/burnt_thorns_no_section",
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "west": "false"
+          },
+          {
+            "axis": "y|x"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/burnt_thorns_no_section_alt",
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "west": "false"
+          },
+          {
+            "axis": "z"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/burnt_thorns_top"
+      },
+      "when": {
+        "south": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/burnt_thorns_no_section",
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "south": "false"
+          },
+          {
+            "axis": "y|z"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/burnt_thorns_no_section_alt",
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "south": "false"
+          },
+          {
+            "axis": "x"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/burnt_thorns_bottom"
+      },
+      "when": {
+        "north": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/burnt_thorns_no_section"
+      },
+      "when": {
+        "AND": [
+          {
+            "north": "false"
+          },
+          {
+            "axis": "y|z"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/burnt_thorns_no_section_alt"
+      },
+      "when": {
+        "AND": [
+          {
+            "north": "false"
+          },
+          {
+            "axis": "x"
+          }
+        ]
+      }
+    }
+  ]
+}

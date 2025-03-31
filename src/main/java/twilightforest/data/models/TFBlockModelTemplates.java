@@ -27,9 +27,10 @@ public class TFBlockModelTemplates extends ModelTemplates {
 	public static final ModelTemplate CTM = create("ctm", TextureSlot.PARTICLE, TFTextureSlot.CTM_BASE, TFTextureSlot.CTM_OVERLAY, TFTextureSlot.CTM_OVERLAY_CONNECTED).extend().parent(ResourceLocation.withDefaultNamespace("block/block")).build();
 
 	public static final ModelTemplate THORNS_MAIN = create("thorns_main", TextureSlot.SIDE, TextureSlot.END).extend().parent(TwilightForestMod.prefix("block/thorns_main")).renderType("cutout").build();
-	public static final ModelTemplate THORNS_TOP = create("thorns_top", TextureSlot.SIDE, TextureSlot.END).extend().parent(TwilightForestMod.prefix("block/thorns_top")).renderType("cutout").build();
-	public static final ModelTemplate THORNS_BOTTOM = create("thorns_bottom", TextureSlot.SIDE, TextureSlot.END).extend().parent(TwilightForestMod.prefix("block/thorns_bottom")).renderType("cutout").build();
-	public static final ModelTemplate THORNS_SIDE = create("thorns_no_section", TextureSlot.SIDE, TextureSlot.END).extend().parent(TwilightForestMod.prefix("block/thorns_no_section")).renderType("cutout").build();
-	public static final ModelTemplate THORNS_SIDE_ALT = create("thorns_no_section_alt", TextureSlot.SIDE, TextureSlot.END).extend().parent(TwilightForestMod.prefix("block/thorns_no_section_alt")).renderType("cutout").build();
+	public static final ModelTemplate THORNS = create("thorns", TextureSlot.SIDE, TextureSlot.END).extend().parent(TwilightForestMod.prefix("block/thorns")).renderType("cutout").build();
+	public static final ModelTemplate THORNS_SECTION_TOP = create("thorns_section_top", TextureSlot.SIDE, TextureSlot.END).extend().parent(TwilightForestMod.prefix("block/thorns_section_top")).renderType("cutout").build();
+	public static final ModelTemplate THORNS_SECTION_BOTTOM = create("thorns_section_bottom", TextureSlot.SIDE, TextureSlot.END).extend().parent(TwilightForestMod.prefix("block/thorns_section_bottom")).renderType("cutout").build();
+	public static final ModelTemplate THORNS_NO_SECTION = create("thorns_no_section", TextureSlot.SIDE, TextureSlot.END).extend().parent(TwilightForestMod.prefix("block/thorns_no_section")).renderType("cutout").build();
+	public static final ModelTemplate THORNS_NO_SECTION_ALT = create("thorns_no_section_alt", TextureSlot.SIDE, TextureSlot.END).extend().parent(TwilightForestMod.prefix("block/thorns_no_section_alt")).renderType("cutout").build();
 
 }

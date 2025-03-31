@@ -9,9 +9,9 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.PipeBlock;
+import net.minecraft.world.level.block.RotatedPillarBlock;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.CastleDoorBlock;
-import twilightforest.block.ThornsBlock;
 import twilightforest.client.model.block.connected.ConnectedTextureBuilder;
 import twilightforest.client.model.block.forcefield.ForceFieldModel;
 import twilightforest.client.model.block.forcefield.ForceFieldModelBuilder;
@@ -86,18 +86,116 @@ public abstract class BlockModelBuilders extends BlockModelGenerators {
 	}
 
 	public void thorns(Block block) {
-		var mapping = TextureMapping.column(block);
-		ResourceLocation main = TFBlockModelTemplates.THORNS_MAIN.createWithSuffix(block, "_inner", mapping, this.modelOutput);
-		ResourceLocation bottom = TFBlockModelTemplates.THORNS_BOTTOM.create(block, mapping, this.modelOutput);
-		ResourceLocation top = TFBlockModelTemplates.THORNS_TOP.createWithSuffix(block, "_outer", mapping, this.modelOutput);
-		ResourceLocation side = TFBlockModelTemplates.THORNS_SIDE.createWithSuffix(block, "_outer", mapping, this.modelOutput);
-		ResourceLocation sideAlt = TFBlockModelTemplates.THORNS_SIDE_ALT.createWithSuffix(block, "_outer", mapping, this.modelOutput);
-		this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block, Variant.variant().with(VariantProperties.MODEL, main))
-			.with(PropertyDispatch.property(ThornsBlock.AXIS)
-				.select(Direction.Axis.X, Variant.variant().with(VariantProperties.MODEL, main).with(VariantProperties.X_ROT, VariantProperties.Rotation.R90).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-				.select(Direction.Axis.Z, Variant.variant().with(VariantProperties.MODEL, main).with(VariantProperties.X_ROT, VariantProperties.Rotation.R90)))
-			.with(PropertyDispatch.properties(PipeBlock.UP, ThornsBlock.AXIS)
-				.generate((up, axis) -> Variant.variant().with(VariantProperties.MODEL, up ? top : sideAlt).with(VariantProperties.X_ROT, up ? VariantProperties.Rotation.R90 : VariantProperties.Rotation.R270))));
+		TextureMapping mapping = TextureMapping.column(block);
+		ResourceLocation main = TFBlockModelTemplates.THORNS_MAIN.createWithSuffix(block, "_main", mapping, this.modelOutput);
+		ResourceLocation thorns = TFBlockModelTemplates.THORNS.createWithSuffix(block, "_thorns", mapping, this.modelOutput);
+		ResourceLocation top = TFBlockModelTemplates.THORNS_SECTION_TOP.createWithSuffix(block, "_top", mapping, this.modelOutput);
+		ResourceLocation bottom = TFBlockModelTemplates.THORNS_SECTION_BOTTOM.createWithSuffix(block, "_bottom", mapping, this.modelOutput);
+		ResourceLocation noSection = TFBlockModelTemplates.THORNS_NO_SECTION.createWithSuffix(block, "_no_section", mapping, this.modelOutput);
+		ResourceLocation noSectionAlt = TFBlockModelTemplates.THORNS_NO_SECTION_ALT.createWithSuffix(block, "_no_section_alt", mapping, this.modelOutput);
+
+		this.itemModelOutput.accept(block.asItem(), ItemModelUtils.plainModel(main));
+
+		this.blockStateOutput.accept(
+			MultiPartGenerator.multiPart(block)
+				// MAIN
+				.with(
+					Condition.condition().term(RotatedPillarBlock.AXIS, Direction.Axis.Y),
+					Variant.variant().with(VariantProperties.MODEL, thorns)
+				)
+				.with(
+					Condition.condition().term(RotatedPillarBlock.AXIS, Direction.Axis.Z),
+					Variant.variant().with(VariantProperties.MODEL, thorns).with(VariantProperties.X_ROT, VariantProperties.Rotation.R90)
+				)
+				.with(
+					Condition.condition().term(RotatedPillarBlock.AXIS, Direction.Axis.X),
+					Variant.variant().with(VariantProperties.MODEL, thorns).with(VariantProperties.X_ROT, VariantProperties.Rotation.R90).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
+				)
+
+				// UP
+				.with(
+					Condition.condition().term(PipeBlock.UP, true),
+					Variant.variant().with(VariantProperties.MODEL, top).with(VariantProperties.X_ROT, VariantProperties.Rotation.R90)
+				)
+				.with(
+					Condition.and(Condition.condition().term(PipeBlock.UP, false), Condition.condition().term(RotatedPillarBlock.AXIS, Direction.Axis.Z, Direction.Axis.Y)),
+					Variant.variant().with(VariantProperties.MODEL, noSection).with(VariantProperties.X_ROT, VariantProperties.Rotation.R270)
+				)
+				.with(
+					Condition.and(Condition.condition().term(PipeBlock.UP, false), Condition.condition().term(RotatedPillarBlock.AXIS, Direction.Axis.X)),
+					Variant.variant().with(VariantProperties.MODEL, noSection).with(VariantProperties.X_ROT, VariantProperties.Rotation.R270).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
+				)
+
+				// DOWN
+				.with(
+					Condition.condition().term(PipeBlock.DOWN, true),
+					Variant.variant().with(VariantProperties.MODEL, bottom).with(VariantProperties.X_ROT, VariantProperties.Rotation.R90)
+				)
+				.with(
+					Condition.and(Condition.condition().term(PipeBlock.DOWN, false), Condition.condition().term(RotatedPillarBlock.AXIS, Direction.Axis.Z, Direction.Axis.Y)),
+					Variant.variant().with(VariantProperties.MODEL, noSection).with(VariantProperties.X_ROT, VariantProperties.Rotation.R90)
+				)
+				.with(
+					Condition.and(Condition.condition().term(PipeBlock.DOWN, false), Condition.condition().term(RotatedPillarBlock.AXIS, Direction.Axis.X)),
+					Variant.variant().with(VariantProperties.MODEL, noSection).with(VariantProperties.X_ROT, VariantProperties.Rotation.R90).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
+				)
+
+				// EAST
+				.with(
+					Condition.condition().term(PipeBlock.EAST, true),
+					Variant.variant().with(VariantProperties.MODEL, top).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
+				)
+				.with(
+					Condition.and(Condition.condition().term(PipeBlock.EAST, false), Condition.condition().term(RotatedPillarBlock.AXIS, Direction.Axis.Y, Direction.Axis.X)),
+					Variant.variant().with(VariantProperties.MODEL, noSection).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
+				)
+				.with(
+					Condition.and(Condition.condition().term(PipeBlock.EAST, false), Condition.condition().term(RotatedPillarBlock.AXIS, Direction.Axis.Z)),
+					Variant.variant().with(VariantProperties.MODEL, noSectionAlt).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
+				)
+
+				// WEST
+				.with(
+					Condition.condition().term(PipeBlock.WEST, true),
+					Variant.variant().with(VariantProperties.MODEL, bottom).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
+				)
+				.with(
+					Condition.and(Condition.condition().term(PipeBlock.WEST, false), Condition.condition().term(RotatedPillarBlock.AXIS, Direction.Axis.Y, Direction.Axis.X)),
+					Variant.variant().with(VariantProperties.MODEL, noSection).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
+				)
+				.with(
+					Condition.and(Condition.condition().term(PipeBlock.WEST, false), Condition.condition().term(RotatedPillarBlock.AXIS, Direction.Axis.Z)),
+					Variant.variant().with(VariantProperties.MODEL, noSectionAlt).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
+				)
+
+				// SOUTH
+				.with(
+					Condition.condition().term(PipeBlock.SOUTH, true),
+					Variant.variant().with(VariantProperties.MODEL, top)
+				)
+				.with(
+					Condition.and(Condition.condition().term(PipeBlock.SOUTH, false), Condition.condition().term(RotatedPillarBlock.AXIS, Direction.Axis.Y, Direction.Axis.Z)),
+					Variant.variant().with(VariantProperties.MODEL, noSection).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180)
+				)
+				.with(
+					Condition.and(Condition.condition().term(PipeBlock.SOUTH, false), Condition.condition().term(RotatedPillarBlock.AXIS, Direction.Axis.X)),
+					Variant.variant().with(VariantProperties.MODEL, noSectionAlt).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180)
+				)
+
+				// NORTH
+				.with(
+					Condition.condition().term(PipeBlock.NORTH, true),
+					Variant.variant().with(VariantProperties.MODEL, bottom)
+				)
+				.with(
+					Condition.and(Condition.condition().term(PipeBlock.NORTH, false), Condition.condition().term(RotatedPillarBlock.AXIS, Direction.Axis.Y, Direction.Axis.Z)),
+					Variant.variant().with(VariantProperties.MODEL, noSection)
+				)
+				.with(
+					Condition.and(Condition.condition().term(PipeBlock.NORTH, false), Condition.condition().term(RotatedPillarBlock.AXIS, Direction.Axis.X)),
+					Variant.variant().with(VariantProperties.MODEL, noSectionAlt)
+				)
+		);
 	}
 
 	public void forcefield(Block block) {

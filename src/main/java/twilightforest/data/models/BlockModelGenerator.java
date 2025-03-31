@@ -35,6 +35,10 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.bossSpawner(TFBlocks.SNOW_QUEEN_BOSS_SPAWNER.get());
 		this.bossSpawner(TFBlocks.FINAL_BOSS_BOSS_SPAWNER.get());
 
+		this.thorns(TFBlocks.BROWN_THORNS.get());
+		this.thorns(TFBlocks.GREEN_THORNS.get());
+		this.thorns(TFBlocks.BURNT_THORNS.get());
+
 		this.wrapBlockItem(TFBlocks.ANTIBUILDER.get(), block -> this.blockWithRenderType(block, "cutout", TFBlockModelTemplates.ANTIBUILDER, TFTextureMapping::threeLayerBlock));
 		this.blockWithRenderType(TFBlocks.ANTIBUILT_BLOCK.get(), "cutout", TFBlockModelTemplates.ANTIBUILT_BLOCK, TFTextureMapping::twoLayerBlock);
 		this.basicCtmBlock(TFBlocks.ARCTIC_FUR_BLOCK.get());
