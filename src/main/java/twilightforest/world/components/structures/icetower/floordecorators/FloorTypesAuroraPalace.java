@@ -25,23 +25,23 @@ public enum FloorTypesAuroraPalace {
 		Map.entry(WRAPAROUND_WALL_STEPS_PILLARS, new FloorWraparoundWallStepsPillars())
 	);
 
-	private static final Map<FloorTypesAuroraPalace, Integer> weights = Map.ofEntries(
-		Map.entry(FAR_WALL_STEPS, 1),
-		Map.entry(PILLAR_PARKOUR, 6),
-		Map.entry(PILLAR_PLATFORMS, 6),
-		Map.entry(PILLAR_PLATFORMS_OUTSIDE, 1),
-		Map.entry(PLATFORM, 1),
-		Map.entry(QUAD_PILLAR_STAIRS, 1),
-		Map.entry(TOP, 0),
-		Map.entry(WRAPAROUND_WALL_STEPS, 1),
-		Map.entry(WRAPAROUND_WALL_STEPS_PILLARS, 1)
+	private static final Map<FloorTypesAuroraPalace, Float> weights = Map.ofEntries(
+		Map.entry(FAR_WALL_STEPS, 1F),
+		Map.entry(PILLAR_PARKOUR, 6F),
+		Map.entry(PILLAR_PLATFORMS, 6F),
+		Map.entry(PILLAR_PLATFORMS_OUTSIDE, 1F),
+		Map.entry(PLATFORM, 1F),
+		Map.entry(QUAD_PILLAR_STAIRS, 1F),
+		Map.entry(TOP, 0F),
+		Map.entry(WRAPAROUND_WALL_STEPS, 1F),
+		Map.entry(WRAPAROUND_WALL_STEPS_PILLARS, 1F)
 	);
 
 	public FloorWith3x3Map getFloorWith3x3Map() {
 		return floors.get(this);
 	}
 
-	public int getWeight() {
+	public float getWeight() {
 		return weights.get(this);
 	}
 }

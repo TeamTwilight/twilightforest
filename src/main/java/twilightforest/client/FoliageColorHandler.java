@@ -4,8 +4,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
-import twilightforest.beans.Autowired;
-import twilightforest.beans.Component;
+import tamaized.beanification.Autowired;
+import tamaized.beanification.Component;
 import twilightforest.init.TFBiomes;
 import twilightforest.world.components.BiomeColorAlgorithms;
 

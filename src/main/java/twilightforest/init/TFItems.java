@@ -14,7 +14,7 @@ import net.minecraft.world.item.equipment.ArmorType;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import twilightforest.TwilightForestMod;
-import twilightforest.beans.Autowired;
+import tamaized.beanification.Autowired;
 import twilightforest.components.item.PotionFlaskComponent;
 import twilightforest.data.tags.CustomTagGenerator;
 import twilightforest.enums.extensions.TFRarityEnumExtension;
@@ -40,7 +40,7 @@ public class TFItems {
 	public static final DeferredItem<Item> LIFEDRAIN_SCEPTER = register("lifedrain_scepter", LifedrainScepterItem::new, () -> new Item.Properties().durability(99).rarity(Rarity.UNCOMMON));
 	public static final DeferredItem<Item> ZOMBIE_SCEPTER = register("zombie_scepter", ZombieWandItem::new, () -> new Item.Properties().durability(9).rarity(Rarity.UNCOMMON));
 	public static final DeferredItem<Item> FORTIFICATION_SCEPTER = register("fortification_scepter", FortificationWandItem::new, () -> new Item.Properties().durability(9).rarity(Rarity.UNCOMMON));
-	public static final DeferredItem<Item> EXANIMATE_ESSENCE = register("exanimate_essence", Item::new, () -> new Item.Properties().rarity(Rarity.UNCOMMON));
+	public static final DeferredItem<Item> EXANIMATE_ESSENCE = register("exanimate_essence", ExanimateEssenceItem::new, () -> new Item.Properties().rarity(Rarity.UNCOMMON).stacksTo(16));
 	public static final DeferredItem<Item> WROUGHT_IRON_BAR =register("wrought_iron_bar", Item::new, Item.Properties::new);
 	//items.register("Wand of Pacification [NYI]", new Item().setIconIndex(6).setTranslationKey("wandPacification").setMaxStackSize(1));
 	public static final DeferredItem<Item> MAGIC_PAINTING = register("magic_painting", MagicPaintingItem::new, Item.Properties::new);
@@ -101,7 +101,7 @@ public class TFItems {
 	public static final DeferredItem<Item> CRUMBLE_HORN = register("crumble_horn", CrumbleHornItem::new, () -> new Item.Properties().durability(1024).rarity(Rarity.RARE));
 	public static final DeferredItem<Item> PEACOCK_FEATHER_FAN = register("peacock_feather_fan", PeacockFanItem::new, () -> new Item.Properties().durability(1024).rarity(Rarity.RARE));
 	public static final DeferredItem<Item> MOONWORM_QUEEN = register("moonworm_queen", MoonwormQueenItem::new, () -> new Item.Properties().durability(256).rarity(Rarity.RARE));
-	public static final DeferredItem<Item> BRITTLE_FLASK = register("brittle_potion_flask", BrittleFlaskItem::new, () -> new Item.Properties().stacksTo(1).component(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY));
+	public static final DeferredItem<Item> BRITTLE_FLASK = register("brittle_potion_flask", BrittleFlaskItem::new, () -> new Item.Properties().component(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY));
 	public static final DeferredItem<Item> GREATER_FLASK = register("greater_potion_flask", GreaterFlaskItem::new, () -> new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON).fireResistant().component(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY_UNBREAKABLE));
 	public static final DeferredItem<Item> CHARM_OF_LIFE_1 = register("charm_of_life_1", Item::new, () -> new Item.Properties().rarity(Rarity.UNCOMMON));
 	public static final DeferredItem<Item> CHARM_OF_LIFE_2 = register("charm_of_life_2", Item::new, () -> new Item.Properties().rarity(Rarity.UNCOMMON));

@@ -11,6 +11,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
@@ -31,12 +32,12 @@ public interface LightableBlock {
 
 	EnumProperty<Lighting> LIGHTING = EnumProperty.create("lighting", Lighting.class);
 
-	default InteractionResult lightCandles(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand) {
-		if (player.getAbilities().mayBuild && player.getItemInHand(hand).isEmpty() && state.getValue(LIGHTING) != Lighting.NONE) {
+	default InteractionResult tryLightCandles(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player) {
+		if (stack.isEmpty() && player.getAbilities().mayBuild && state.getValue(LIGHTING) != Lighting.NONE) {
 			this.extinguish(player, state, level, pos);
 			return InteractionResult.SUCCESS;
 		} else if (this.canBeLit(state)) {
-			if (player.getItemInHand(hand).canPerformAction(ItemAbilities.FIRESTARTER_LIGHT)) {
+			if (stack.canPerformAction(ItemAbilities.FIRESTARTER_LIGHT)) {
 				return InteractionResult.PASS;
 			}
 		}

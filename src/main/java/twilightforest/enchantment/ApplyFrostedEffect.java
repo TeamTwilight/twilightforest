@@ -26,7 +26,7 @@ public record ApplyFrostedEffect(LevelBasedValue duration, LevelBasedValue ampli
 	@Override
 	public void apply(ServerLevel level, int enchantLevel, EnchantedItemInUse item, Entity victim, Vec3 position) {
 		if (victim instanceof LivingEntity entity) {
-			int duration = Math.round(this.duration.calculate(enchantLevel) * 20.0F);
+			int duration = Math.round(this.duration.calculate(enchantLevel));
 			int amplifier = Math.max(0, Math.round(this.amplifier.calculate(enchantLevel)));
 			doChillAuraEffect(entity, duration, amplifier, true);
 		}

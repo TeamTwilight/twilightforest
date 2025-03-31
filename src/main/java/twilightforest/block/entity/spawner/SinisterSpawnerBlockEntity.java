@@ -94,16 +94,16 @@ public class SinisterSpawnerBlockEntity extends BlockEntity implements Spawner {
 		return this.spawner;
 	}
 
-	public boolean setParticles(List<ParticleOptions> particles) {
-		return this.getSpawner().setParticles(particles);
+	public boolean setParticles(List<ParticleOptions> particles, boolean sendUpdate) {
+		return this.getSpawner().setParticles(particles, sendUpdate);
 	}
 
-	public boolean addParticle(ParticleOptions particle) {
-		return this.getSpawner().addParticle(particle);
+	public boolean addParticle(ParticleOptions particle, boolean sendUpdate) {
+		return this.getSpawner().addParticle(particle, sendUpdate);
 	}
 
-	public boolean removeParticle(ParticleOptions particle) {
-		return this.getSpawner().removeParticle(particle);
+	public boolean removeParticle(ParticleOptions particle, boolean sendUpdate) {
+		return this.getSpawner().removeParticle(particle, sendUpdate);
 	}
 
 	public void sendChanges() {

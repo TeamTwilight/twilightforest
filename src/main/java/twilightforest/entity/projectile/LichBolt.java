@@ -9,8 +9,10 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
@@ -89,16 +91,14 @@ public class LichBolt extends TFThrowable {
 	@Override
 	protected void onHitBlock(BlockHitResult result) {
 		super.onHitBlock(result);
-		this.level().broadcastEntityEvent(this, (byte) 3);
+		this.level().broadcastEntityEvent(this, EntityEvent.DEATH);
 		this.discard();
 	}
 
 	@Override
 	protected boolean canHitEntity(Entity target) {
-		if (target instanceof LichBolt || target instanceof LichBomb || (target instanceof Lich lich && lich.isShadowClone())) {
-			return false;
-		}
-		return super.canHitEntity(target);
+		if (target instanceof Lich lich && (lich.getTeleportInvisibility() > 0 || (!(this.getOwner() instanceof Player) && lich.getPhase() == 1))) return false;
+		return !(target instanceof LichBomb) && !(target instanceof LichBolt) && !(target instanceof TwilightWandBolt);
 	}
 
 	@Override
@@ -111,5 +111,10 @@ public class LichBolt extends TFThrowable {
 				this.discard();
 			}
 		}
+	}
+
+	@Override
+	public boolean ignoreExplosion(Explosion explosion) {
+		return true;
 	}
 }

@@ -16,6 +16,7 @@ import twilightforest.init.TFDataMaps;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFRecipes;
 import twilightforest.inventory.UncraftingMenu;
+import twilightforest.util.datamaps.EntityTransformation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,6 +82,29 @@ public class RecipeViewerConstants {
 	}
 
 	//all recipe viewers run this once when initializing recipes
+	@SuppressWarnings("deprecation")
+	public static List<OminousFireInfo> getOminousFireRecipes() {
+		List<EntityType<?>> inputs = new ArrayList<>();
+		List<OminousFireInfo> info = new ArrayList<>();
+		for (EntityType<?> type : BuiltInRegistries.ENTITY_TYPE) {
+			if (type.builtInRegistryHolder().getData(TFDataMaps.OMINOUS_FIRE) != null) {
+				inputs.add(type);
+			}
+		}
+
+		for (EntityType<?> input : new ArrayList<>(inputs)) {
+            EntityTransformation output = input.builtInRegistryHolder().getData(TFDataMaps.OMINOUS_FIRE);
+			if (output != null) {
+				OminousFireInfo dummy = new OminousFireInfo(output.result(), input);
+				if (!info.contains(dummy)) {
+                    info.add(new OminousFireInfo(input, output.result()));
+                }
+			}
+		}
+		return info;
+	}
+
+	//all recipe viewers run this once when initializing recipes
 	public static List<Pair<Block, Block>> getCrumbleHornRecipes() {
 		List<Pair<Block, Block>> info = new ArrayList<>();
 		for (Block input : BuiltInRegistries.BLOCK) {
@@ -111,5 +135,8 @@ public class RecipeViewerConstants {
 	}
 
 	public record TransformationPowderInfo(EntityType<?> input, EntityType<?> output, boolean reversible) {
+	}
+
+	public record OminousFireInfo(EntityType<?> input, EntityType<?> output) {
 	}
 }

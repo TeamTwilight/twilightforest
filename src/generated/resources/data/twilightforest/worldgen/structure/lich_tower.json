@@ -9,7 +9,7 @@
   "allow_biome_vegetation": false,
   "ambient_spawns": [],
   "biomes": "#twilightforest:valid_lich_tower_biomes",
-  "chunk_clearance_radius": 2.5,
+  "chunk_clearance_radius": 0.0,
   "hint_item": {
     "components": {
       "minecraft:written_book_content": {
@@ -42,6 +42,14 @@
   "hint_mob": "twilightforest:kobold",
   "labelled_monster_spawns": {
     "0": [
+      {
+        "type": "twilightforest:rising_zombie",
+        "maxCount": 2,
+        "minCount": 1,
+        "weight": 2
+      }
+    ],
+    "1": [
       {
         "type": "minecraft:zombie",
         "maxCount": 2,

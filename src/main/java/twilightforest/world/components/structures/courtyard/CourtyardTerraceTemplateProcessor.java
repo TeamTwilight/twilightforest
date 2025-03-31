@@ -44,7 +44,7 @@ public final class CourtyardTerraceTemplateProcessor extends StructureProcessor 
 			if (newState == Blocks.SANDSTONE_SLAB.defaultBlockState().setValue(SlabBlock.TYPE, SlabType.DOUBLE)) {
 				if (BLOCKS_REPLACE_TO_SLAB.contains(stateAt))
 					return new StructureTemplate.StructureBlockInfo(newInfo.pos(), Blocks.STONE_BRICK_SLAB.defaultBlockState(), null);
-				else if (stateAt.isAir())
+				else if (stateAt.is(Blocks.AIR)) // Do not skip Cave Air blocks
 					return null;
 				else
 					return new StructureTemplate.StructureBlockInfo(newInfo.pos(), Blocks.STONE_BRICKS.defaultBlockState(), null);

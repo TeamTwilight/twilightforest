@@ -10,10 +10,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.DoorBlock;
-import net.minecraft.world.level.block.PipeBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -31,6 +28,7 @@ import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.common.loot.CanItemPerformAbility;
+import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import twilightforest.block.*;
 import twilightforest.enums.HollowLogVariants;
@@ -38,6 +36,7 @@ import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFItems;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -145,6 +144,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 		dropSelf(TFBlocks.MOSSY_MAZESTONE.get());
 		dropSelf(TFBlocks.MAZESTONE_MOSAIC.get());
 		dropSelf(TFBlocks.MAZESTONE_BORDER.get());
+		dropSelf(TFBlocks.MAZE_SLIME_BLOCK.get());
 		add(TFBlocks.RED_THREAD.get(), redThread());
 		dropWhenSilkTouch(TFBlocks.HEDGE.get());
 		add(TFBlocks.ROOT_BLOCK.get(), createSingleItemTableWithSilkTouch(TFBlocks.ROOT_BLOCK.get(), Items.STICK, UniformGenerator.between(3, 5)));
@@ -568,7 +568,24 @@ public class BlockLootTables extends BlockLootSubProvider {
 		dropSelf(TFBlocks.SORTING_BANISTER.get());
 		dropSelf(TFBlocks.SORTING_CHEST.get());
 		dropSelf(TFBlocks.SORTING_TRAPPED_CHEST.get());
-
+		add(TFBlocks.OMINOUS_FIRE.get(), noDrop());
+		ominousCandle(TFBlocks.OMINOUS_CANDLE);
+		ominousCandle(TFBlocks.OMINOUS_WHITE_CANDLE);
+		ominousCandle(TFBlocks.OMINOUS_ORANGE_CANDLE);
+		ominousCandle(TFBlocks.OMINOUS_MAGENTA_CANDLE);
+		ominousCandle(TFBlocks.OMINOUS_LIGHT_BLUE_CANDLE);
+		ominousCandle(TFBlocks.OMINOUS_YELLOW_CANDLE);
+		ominousCandle(TFBlocks.OMINOUS_LIME_CANDLE);
+		ominousCandle(TFBlocks.OMINOUS_PINK_CANDLE);
+		ominousCandle(TFBlocks.OMINOUS_GRAY_CANDLE);
+		ominousCandle(TFBlocks.OMINOUS_LIGHT_GRAY_CANDLE);
+		ominousCandle(TFBlocks.OMINOUS_CYAN_CANDLE);
+		ominousCandle(TFBlocks.OMINOUS_PURPLE_CANDLE);
+		ominousCandle(TFBlocks.OMINOUS_BLUE_CANDLE);
+		ominousCandle(TFBlocks.OMINOUS_BROWN_CANDLE);
+		ominousCandle(TFBlocks.OMINOUS_GREEN_CANDLE);
+		ominousCandle(TFBlocks.OMINOUS_RED_CANDLE);
+		ominousCandle(TFBlocks.OMINOUS_BLACK_CANDLE);
 	}
 
 	private void registerLeavesNoSapling(Block leaves, HolderLookup.RegistryLookup<Enchantment> registrylookup) {
@@ -693,6 +710,30 @@ public class BlockLootTables extends BlockLootSubProvider {
 					.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.FALLEN_LEAVES.get())
 						.setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(FallenLeavesBlock.LAYERS, layer)))
 					.apply(SetItemCountFunction.setCount(ConstantValue.exactly(layer)))).when(HAS_SHEARS))));
+	}
+
+	protected void ominousCandle(DeferredBlock<OminousCandleBlock> block) {
+		this.add(block.get(), LootTable.lootTable()
+			.withPool(
+				LootPool.lootPool()
+					.setRolls(ConstantValue.exactly(1.0F))
+					.add(
+						this.applyExplosionDecay(
+							block.get(),
+							LootItem.lootTableItem(block.get().candle)
+								.apply(
+									List.of(2, 3, 4),
+									value -> SetItemCountFunction.setCount(ConstantValue.exactly((float) value))
+										.when(
+											LootItemBlockStatePropertyCondition.hasBlockStateProperties(block.get())
+												.setProperties(
+													StatePropertiesPredicate.Builder.properties().hasProperty(OminousCandleBlock.CANDLES, value)
+												)
+										)
+								)
+						)
+					)
+			));
 	}
 
 	//[VanillaCopy] of a few different methods from BlockLoot. These are here just so we can use the modded shears thing

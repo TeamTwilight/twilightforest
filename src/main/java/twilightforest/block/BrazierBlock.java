@@ -40,7 +40,7 @@ import javax.annotation.Nullable;
 public class BrazierBlock extends BaseEntityBlock {
 
 	public static final MapCodec<BrazierBlock> CODEC = simpleCodec(BrazierBlock::new);
-	private static final VoxelShape UPPER_SHAPE = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 14.0D, 14.0D);
+	private static final VoxelShape UPPER_SHAPE = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 12.0D, 14.0D);
 	private static final VoxelShape LOWER_SHAPE = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 16.0D, 14.0D);
 	public static final EnumProperty<BrazierLight> LIGHT = EnumProperty.create("light", BrazierLight.class);
 	public static final EnumProperty<DoubleBlockHalf> HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;

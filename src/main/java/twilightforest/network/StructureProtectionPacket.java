@@ -1,7 +1,7 @@
 package twilightforest.network;
 
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -15,13 +15,19 @@ import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.init.TFDimension;
 import twilightforest.util.Codecs;
 
+import java.util.List;
 import java.util.Optional;
 
-public record StructureProtectionPacket(Optional<BoundingBox> box) implements CustomPacketPayload {
+public record StructureProtectionPacket(Optional<List<Pair<BoundingBox, Boolean>>> boxes) implements CustomPacketPayload {
 
 	public static final Type<StructureProtectionPacket> TYPE = new Type<>(TwilightForestMod.prefix("change_protection_renderer"));
-	public static final StreamCodec<RegistryFriendlyByteBuf, StructureProtectionPacket> STREAM_CODEC = StreamCodec.composite(
-		Codecs.BOX_STREAM_CODEC.apply(ByteBufCodecs::optional), StructureProtectionPacket::box, StructureProtectionPacket::new);
+
+	public static final StreamCodec<RegistryFriendlyByteBuf, StructureProtectionPacket> STREAM_CODEC =
+		StreamCodec.composite(
+			Codecs.listOf(Codecs.BOX_AND_FLAG_STREAM_CODEC).apply(ByteBufCodecs::optional),
+			StructureProtectionPacket::boxes,
+			StructureProtectionPacket::new
+		);
 
 	@Override
 	public Type<? extends CustomPacketPayload> type() {
@@ -32,9 +38,9 @@ public record StructureProtectionPacket(Optional<BoundingBox> box) implements Cu
 		ctx.enqueueWork(() -> {
 			DimensionSpecialEffects info = DimensionSpecialEffectsManager.getForType(TFDimension.DIMENSION_RENDERER);
 
-			// add weather box if needed
+			// Now you have a List<Pair<BoundingBox, Boolean>>
 			if (info instanceof TwilightForestRenderInfo) {
-				TFWeatherRenderer.setProtectedBox(message.box().orElse(null));
+				TFWeatherRenderer.setProtectedBoxes(message.boxes().orElse(null));
 			}
 		});
 	}

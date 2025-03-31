@@ -1,6 +1,7 @@
 package twilightforest.item.recipe;
 
 import net.minecraft.core.HolderLookup;
+import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
@@ -22,32 +23,34 @@ public class MoonwormQueenRepairRecipe extends CustomRecipe {
 
 	@Override
 	public boolean matches(CraftingInput input, Level level) {
-		ItemStack queen = ItemStack.EMPTY;
-		int berries = 0;
+		ItemStack queen = null;
+		List<ItemStack> berries = new ArrayList<>();
 
 		for (int i = 0; i < input.size(); ++i) {
-			ItemStack checkedStack = input.getItem(i);
-			if (!checkedStack.isEmpty()) {
-				if (checkedStack.is(TFItems.MOONWORM_QUEEN.get()) && checkedStack.isDamaged()) {
-					queen = checkedStack;
-				}
-				if (checkedStack.is(TFItems.TORCHBERRIES.get())) {
-					berries++;
+			ItemStack stackInQuestion = input.getItem(i);
+			if (!stackInQuestion.isEmpty()) {
+				if (stackInQuestion.is(TFItems.MOONWORM_QUEEN.get()) && stackInQuestion.isDamaged()) {
+					if (queen != null) return false;
+					queen = stackInQuestion;
+				} else if (stackInQuestion.is(TFItems.TORCHBERRIES.get())) {
+					berries.add(stackInQuestion);
+				} else {
+					return false;
 				}
 			}
 		}
-		return !queen.isEmpty() && berries > 0;
+		return queen != null && !berries.isEmpty();
 	}
 
 	@Override
 	public ItemStack assemble(CraftingInput input, HolderLookup.Provider access) {
-		int berries = 0;
-		ItemStack queen = ItemStack.EMPTY;
+		List<Item> berries = new ArrayList<>();
+		ItemStack queen = null;
 		for (int i = 0; i < input.size(); ++i) {
 			ItemStack itemstack = input.getItem(i);
 			if (!itemstack.isEmpty()) {
 				if (itemstack.is(TFItems.MOONWORM_QUEEN.get())) {
-					if (queen.isEmpty()) {
+					if (queen == null) {
 						queen = itemstack;
 					} else {
 						//Only accept 1 queen
@@ -57,15 +60,15 @@ public class MoonwormQueenRepairRecipe extends CustomRecipe {
 
 				if (itemstack.is(TFItems.TORCHBERRIES.get())) {
 					//add all berries in the grid to a list to determine the amount to repair
-					berries++;
+					berries.add(itemstack.getItem());
 				}
 			}
 		}
 
-		if (berries > 0 && !queen.isEmpty() && queen.isDamaged()) {
-			ItemStack newQueen = TFItems.MOONWORM_QUEEN.toStack();
+		if (!berries.isEmpty() && queen != null && queen.isDamaged()) {
+			ItemStack newQueen = TFItems.MOONWORM_QUEEN.get().getDefaultInstance();
 			//each berry repairs 64 durability
-			newQueen.setDamageValue(queen.getDamageValue() - (berries * 64));
+			newQueen.setDamageValue(queen.getDamageValue() - (berries.size() * 64));
 			return newQueen;
 		}
 
@@ -73,7 +76,12 @@ public class MoonwormQueenRepairRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public RecipeSerializer<? extends CustomRecipe> getSerializer() {
+	public boolean canCraftInDimensions(int width, int height) {
+		return width * height >= 2;
+	}
+
+	@Override
+	public RecipeSerializer<?> getSerializer() {
 		return TFRecipes.MOONWORM_QUEEN_REPAIR_RECIPE.get();
 	}
 }

@@ -70,7 +70,7 @@ public class CarminiteGolemModel extends EntityModel<IronGolemRenderState> {
 				.texOffs(52, 17) // fist
 				.addBox(1.0F, 12.0F, -3.0F, 6.0F, 12.0F, 6.0F)
 				.texOffs(52, 36) // shoulder top
-				.addBox(0.0F, -.03F, -3.5F, 7.0F, 2.0F, 7.0F)
+				.addBox(0.0F, -3.0F, -3.5F, 7.0F, 2.0F, 7.0F)
 				.texOffs(52, 45) // shoulder front
 				.addBox(0.0F, -1.0F, -3.5F, 7.0F, 5.0F, 2.0F)
 				.texOffs(52, 45) // shoulder back

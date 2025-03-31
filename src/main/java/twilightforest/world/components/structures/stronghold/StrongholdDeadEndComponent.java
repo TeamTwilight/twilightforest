@@ -40,7 +40,7 @@ public class StrongholdDeadEndComponent extends KnightStrongholdComponent {
 
 	@Override
 	public BoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
-		return KnightStrongholdComponent.getComponentToAddBoundingBox(x, y, z, -4, -1, 0, 9, 6, 9, facing);
+		return KnightStrongholdComponent.getComponentToAddBoundingBox(x, y, z, -4, -1, 0, 9, 7, 9, facing);
 	}
 
 	@Override

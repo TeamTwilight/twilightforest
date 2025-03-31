@@ -1,5 +1,6 @@
 {
-  "tip": {
+  "type": "tipsmod:simple",
+  "text": {
     "color": "green",
     "translate": "twilightforest.tips.peacock_feather_fan"
   }

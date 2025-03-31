@@ -5,6 +5,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
+import net.minecraft.client.renderer.entity.layers.EyesLayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ARGB;
 import org.jetbrains.annotations.Nullable;
@@ -23,6 +24,19 @@ public class LichRenderer extends HumanoidMobRenderer<Lich, LichRenderState, Lic
 	public LichRenderer(EntityRendererProvider.Context context) {
 		super(context, new LichModel(context.bakeLayer(TFModelLayers.LICH)), 0.6F);
 		this.addLayer(new ShieldLayer<>(this));
+		this.addLayer(new EyesLayer<>(this) {
+			private static final RenderType EYES = RenderType.eyes(TwilightForestMod.getModelTexture("twilightlich64_eyes.png"));
+
+            @Override
+            public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, T t, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+                if (t.isShadowClone() && !t.isInvisible()) super.render(poseStack, buffer, packedLight, t, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
+            }
+
+            @Override
+            public RenderType renderType() {
+                return EYES;
+            }
+        });
 	}
 
 	@Override
@@ -47,8 +61,9 @@ public class LichRenderer extends HumanoidMobRenderer<Lich, LichRenderState, Lic
 
 	@Override
 	public void render(LichRenderState state, PoseStack stack, MultiBufferSource buffer, int packedLight) {
+		stack.pushPose();
+		stack.scale(1.125F, 1.125F, 1.125F);
 		if (state.deathTime > 0) {
-			stack.pushPose();
 			if (state.deathTime > Lich.DEATH_ANIMATION_POINT_A) {
 				stack.translate(0.0D, -1.8D * Math.pow(Math.min(((state.deathTime - Lich.DEATH_ANIMATION_POINT_A) + state.partialTick) * 0.05D, 1.0D), 3.0D), 0.0D);
 			} else {
@@ -56,8 +71,8 @@ public class LichRenderer extends HumanoidMobRenderer<Lich, LichRenderState, Lic
 				stack.translate(Math.sin(time * time) * 0.01D, 0.0D, Math.cos(time * time) * 0.01D);
 			}
 			super.render(state, stack, buffer, packedLight);
-			stack.popPose();
 		} else super.render(state, stack, buffer, packedLight);
+		stack.popPose();
 	}
 
 	@Override
@@ -79,5 +94,10 @@ public class LichRenderer extends HumanoidMobRenderer<Lich, LichRenderState, Lic
 	@Override
 	public ResourceLocation getTextureLocation(LichRenderState state) {
 		return TEXTURE;
+	}
+
+	@Override
+	protected float getShadowRadius(T entity) {
+		return entity.isShadowClone() || entity.deathTime > Lich.DEATH_ANIMATION_POINT_A ? 0.0F : super.getShadowRadius(entity);
 	}
 }

@@ -4,13 +4,13 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
+import net.minecraft.core.SectionPos;
 import net.minecraft.resources.RegistryFileCodec;
 import net.minecraft.util.KeyDispatchDataCodec;
 import net.minecraft.world.level.levelgen.DensityFunction;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TFRegistries;
 import twilightforest.world.components.layer.BiomeDensitySource;
-import twilightforest.world.components.layer.ChunkCachedDensityRouter;
 
 /**
  * A DensityFunction implementation that enables Biomes to influence terrain formulations, if in the noise chunk generator.
@@ -18,7 +18,6 @@ import twilightforest.world.components.layer.ChunkCachedDensityRouter;
 public class TerrainDensityRouter implements DensityFunction.SimpleFunction {
 	public static final MapCodec<TerrainDensityRouter> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
 		RegistryFileCodec.create(TFRegistries.Keys.BIOME_TERRAIN_DATA, BiomeDensitySource.CODEC, false).fieldOf("terrain_source").forGetter(TerrainDensityRouter::biomeDensitySourceHolder),
-		NoiseHolder.CODEC.fieldOf("noise").forGetter(TerrainDensityRouter::noise),
 		Codec.doubleRange(-64, 0).fieldOf("lower_density_bound").forGetter(TerrainDensityRouter::lowerDensityBound),
 		Codec.doubleRange(0, 64).fieldOf("upper_density_bound").forGetter(TerrainDensityRouter::upperDensityBound),
 		Codec.doubleRange(0, 32).orElse(8.0).fieldOf("depth_scalar").forGetter(TerrainDensityRouter::depthScalar),
@@ -28,7 +27,6 @@ public class TerrainDensityRouter implements DensityFunction.SimpleFunction {
 	public static final KeyDispatchDataCodec<TerrainDensityRouter> KEY_CODEC = KeyDispatchDataCodec.of(CODEC);
 
 	private final Holder<BiomeDensitySource> biomeDensitySourceHolder;
-	private final DensityFunction.NoiseHolder noise;
 	private final double lowerDensityBound;
 	private final double upperDensityBound;
 	private final double depthScalar;
@@ -42,9 +40,8 @@ public class TerrainDensityRouter implements DensityFunction.SimpleFunction {
 	 * @param baseFactor         Density function (can be constant) for the height of the vertical y-gradient at a given X-Z position. A biome speeds or slows this vertical rate of change.
 	 * @param baseOffset         Density function (can be constant) for the elevation of the vertical y-gradient at a given X-Z position. A biome moves it up and down.
 	 */
-	public TerrainDensityRouter(Holder<BiomeDensitySource> biomeDensitySource, DensityFunction.NoiseHolder noise, double lowerDensityBound, double upperDensityBound, double depthScalar, DensityFunction baseFactor, DensityFunction baseOffset) {
+	public TerrainDensityRouter(Holder<BiomeDensitySource> biomeDensitySource, double lowerDensityBound, double upperDensityBound, double depthScalar, DensityFunction baseFactor, DensityFunction baseOffset) {
 		this.biomeDensitySourceHolder = biomeDensitySource;
-		this.noise = noise;
 		this.lowerDensityBound = lowerDensityBound;
 		this.upperDensityBound = upperDensityBound;
 		this.depthScalar = depthScalar;
@@ -55,12 +52,8 @@ public class TerrainDensityRouter implements DensityFunction.SimpleFunction {
 	@Override
 	public double compute(FunctionContext context) {
 		BiomeDensitySource.DensityData densityData = this.computeTerrain(context);
-
 		double depth = this.baseOffset.compute(context) + densityData.depth * this.baseFactor.compute(context);
-
-		double noise = this.noise.getValue(context.blockX() * densityData.scale, context.blockY() * densityData.scale, context.blockZ() * densityData.scale) * 0.5 + 0.5;
-
-		return depth + noise + densityData.depth;
+		return depth + densityData.depth;
 	}
 
 	// Our default method for obtaining column samples of the biome source.
@@ -87,10 +80,6 @@ public class TerrainDensityRouter implements DensityFunction.SimpleFunction {
 
 	public Holder<BiomeDensitySource> biomeDensitySourceHolder() {
 		return this.biomeDensitySourceHolder;
-	}
-
-	private NoiseHolder noise() {
-		return this.noise;
 	}
 
 	public double lowerDensityBound() {
@@ -123,12 +112,40 @@ public class TerrainDensityRouter implements DensityFunction.SimpleFunction {
 	public DensityFunction mapAll(Visitor visitor) {
 		return visitor.apply(new ChunkCachedDensityRouter(
 			this.biomeDensitySourceHolder,
-			visitor.visitNoise(this.noise),
 			this.lowerDensityBound,
 			this.upperDensityBound,
 			this.depthScalar,
 			this.baseFactor,
 			this.baseOffset
 		));
+	}
+
+	public static class ChunkCachedDensityRouter extends TerrainDensityRouter {
+		private final BiomeDensitySource biomeDensitySource;
+
+		private final BiomeDensitySource.DensityData[] horizontalCache = new BiomeDensitySource.DensityData[16 * 16];
+
+		public ChunkCachedDensityRouter(Holder<BiomeDensitySource> biomeDensitySource, double lowerDensityBound, double upperDensityBound, double depthScalar, DensityFunction baseFactor, DensityFunction baseOffset) {
+			super(biomeDensitySource, lowerDensityBound, upperDensityBound, depthScalar, baseFactor, baseOffset);
+			this.biomeDensitySource = biomeDensitySource.value();
+		}
+
+		@NotNull
+		@Override
+		public BiomeDensitySource.DensityData computeTerrain(FunctionContext context) {
+			int xInChunk = SectionPos.sectionRelative(context.blockX());
+			int zInChunk = SectionPos.sectionRelative(context.blockZ());
+
+			int arrayCoord = zInChunk + (xInChunk << 4);
+
+			BiomeDensitySource.DensityData dataColumn = this.horizontalCache[arrayCoord];
+
+			if (dataColumn == null) {
+				dataColumn = this.biomeDensitySource.sampleTerrain(context.blockX(), context.blockZ(), context);
+				this.horizontalCache[arrayCoord] = dataColumn;
+			}
+
+			return dataColumn;
+		}
 	}
 }

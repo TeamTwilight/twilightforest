@@ -14,8 +14,8 @@ import twilightforest.util.Codecs;
 import twilightforest.world.components.layer.vanillalegacy.BiomeLayerFactory;
 import twilightforest.world.components.layer.vanillalegacy.BiomeLayerType;
 import twilightforest.world.components.layer.vanillalegacy.area.LazyArea;
-import twilightforest.world.components.layer.vanillalegacy.context.Context;
 import twilightforest.world.components.layer.vanillalegacy.context.LazyAreaContext;
+import twilightforest.world.components.layer.vanillalegacy.context.RandomContext;
 import twilightforest.world.components.layer.vanillalegacy.traits.CastleTransformer;
 
 import java.util.List;
@@ -23,7 +23,7 @@ import java.util.function.LongFunction;
 
 public record SeamLayer(ResourceKey<Biome> partitioningBiome, List<ResourceKey<Biome>> excludedBiomeNeighbors, List<Pair<ResourceKey<Biome>, ResourceKey<Biome>>> excludedBiomeIntersections) implements CastleTransformer {
 	@Override
-	public ResourceKey<Biome> apply(Context context, ResourceKey<Biome> up, ResourceKey<Biome> left, ResourceKey<Biome> down, ResourceKey<Biome> right, ResourceKey<Biome> mid) {
+	public ResourceKey<Biome> apply(RandomContext randomContext, ResourceKey<Biome> up, ResourceKey<Biome> left, ResourceKey<Biome> down, ResourceKey<Biome> right, ResourceKey<Biome> mid) {
 		if (this.shouldPartition(mid, left) || this.shouldPartition(mid, right) || this.shouldPartition(mid, down) || this.shouldPartition(mid, up)) {
 			return this.partitioningBiome;
 		} else {

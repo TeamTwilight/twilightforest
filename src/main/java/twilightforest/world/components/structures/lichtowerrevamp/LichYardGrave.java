@@ -17,13 +17,14 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import net.minecraft.world.level.levelgen.structure.templatesystem.BlockIgnoreProcessor;
+import net.minecraft.world.level.levelgen.structure.templatesystem.JigsawReplacementProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.util.jigsaw.JigsawRecord;
-import twilightforest.world.components.processors.MetaBlockProcessor;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
 
 public class LichYardGrave extends TwilightJigsawPiece implements PieceBeardifierModifier {
@@ -32,7 +33,8 @@ public class LichYardGrave extends TwilightJigsawPiece implements PieceBeardifie
 	public LichYardGrave(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
 		super(TFStructurePieceTypes.LICH_YARD_GRAVE.value(), compoundTag, ctx, readSettings(compoundTag));
 
-		this.placeSettings().addProcessor(MetaBlockProcessor.INSTANCE);
+		this.placeSettings().addProcessor(JigsawReplacementProcessor.INSTANCE);
+		this.placeSettings().addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK);
 
 		this.fillUnder = this.makeFillerBox();
 	}
@@ -40,7 +42,8 @@ public class LichYardGrave extends TwilightJigsawPiece implements PieceBeardifie
 	public LichYardGrave(StructureTemplateManager structureManager, JigsawPlaceContext jigsawContext, ResourceLocation templateId) {
 		super(TFStructurePieceTypes.LICH_YARD_GRAVE.value(), 0, structureManager, templateId, jigsawContext);
 
-		this.placeSettings().addProcessor(MetaBlockProcessor.INSTANCE);
+		this.placeSettings().addProcessor(JigsawReplacementProcessor.INSTANCE);
+		this.placeSettings().addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK);
 
 		this.fillUnder = this.makeFillerBox();
 	}

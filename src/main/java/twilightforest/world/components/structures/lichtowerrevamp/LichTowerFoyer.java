@@ -116,8 +116,7 @@ public final class LichTowerFoyer extends TwilightJigsawPiece implements PieceBe
 				level.setBlock(pos, Blocks.CHEST.defaultBlockState().rotate(stateRotation), Block.UPDATE_CLIENTS);
 
 				if (level.getBlockEntity(pos) instanceof RandomizableContainer lootBlock) {
-					// FIXME Use actual loot table
-					lootBlock.setLootTable(TFLootTables.USELESS_LOOT, random.nextLong());
+					lootBlock.setLootTable(TFLootTables.TOWER_ROOM, random.nextLong());
 				}
 
 				level.setBlock(pos.below(), TFBlocks.CANOPY_PLANKS.value().defaultBlockState(), Block.UPDATE_CLIENTS);

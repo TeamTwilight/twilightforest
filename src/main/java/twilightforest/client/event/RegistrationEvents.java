@@ -7,9 +7,7 @@ import net.minecraft.client.model.geom.LayerDefinitions;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.FlameParticle;
-import net.minecraft.client.particle.Particle;
-import net.minecraft.client.particle.ParticleEngine;
+import net.minecraft.client.particle.*;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
@@ -65,6 +63,9 @@ import twilightforest.client.model.block.patch.PatchModelLoader;
 import twilightforest.client.model.entity.*;
 import twilightforest.client.particle.*;
 import twilightforest.client.renderer.PotionFlaskTooltipComponent;
+import twilightforest.client.renderer.TFSimpleArmorRenderer;
+import twilightforest.client.renderer.entity.RisingZombieRenderer;
+import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.block.*;
 import twilightforest.client.renderer.entity.*;
 import twilightforest.client.renderer.entity.layers.IceLayer;
@@ -315,6 +316,7 @@ public class RegistrationEvents {
 		MagicPaintingTextureManager.instance = new MagicPaintingTextureManager(Minecraft.getInstance().getTextureManager());
 		event.registerReloadListener(MagicPaintingTextureManager.instance);
 		event.registerReloadListener(TextureGeneratorReloadListener.INSTANCE);
+		event.registerReloadListener(new TFSimpleArmorRenderer.ResourceReloadListener());
 	}
 
 	private static void registerScreens(RegisterMenuScreensEvent event) {
@@ -384,19 +386,19 @@ public class RegistrationEvents {
 		event.registerEntityRenderer(TFEntities.HARBINGER_CUBE.get(), HarbingerCubeRenderer::new);
 		event.registerEntityRenderer(TFEntities.ADHERENT.get(), AdherentRenderer::new);
 		event.registerEntityRenderer(TFEntities.ROVING_CUBE.get(), RovingCubeRenderer::new);
-		event.registerEntityRenderer(TFEntities.RISING_ZOMBIE.get(), ZombieRenderer::new);
+		event.registerEntityRenderer(TFEntities.RISING_ZOMBIE.get(), RisingZombieRenderer::new);
 		event.registerEntityRenderer(TFEntities.PLATEAU_BOSS.get(), NoopRenderer::new);
 
 		// projectiles
 		event.registerEntityRenderer(TFEntities.NATURE_BOLT.get(), ThrownItemRenderer::new);
-		event.registerEntityRenderer(TFEntities.LICH_BOLT.get(), c -> new CustomProjectileTextureRenderer(c, TwilightForestMod.prefix("textures/item/twilight_orb.png")));
-		event.registerEntityRenderer(TFEntities.WAND_BOLT.get(), c -> new CustomProjectileTextureRenderer(c, TwilightForestMod.prefix("textures/item/twilight_orb.png")));
+		event.registerEntityRenderer(TFEntities.LICH_BOLT.get(), c -> new CustomProjectileTextureRenderer(c, TwilightForestMod.prefix("textures/particle/twilight_orb.png"), 1.0F, true, false));
+		event.registerEntityRenderer(TFEntities.WAND_BOLT.get(), c -> new CustomProjectileTextureRenderer(c, TwilightForestMod.prefix("textures/particle/twilight_orb.png"), 1.0F, true, false));
+		event.registerEntityRenderer(TFEntities.LICH_BOMB.get(), c -> new CustomProjectileTextureRenderer(c, ResourceLocation.withDefaultNamespace("textures/item/magma_cream.png"), 1.0F, true, true));
 		event.registerEntityRenderer(TFEntities.TOME_BOLT.get(), ThrownItemRenderer::new);
 		event.registerEntityRenderer(TFEntities.HYDRA_MORTAR.get(), HydraMortarRenderer::new);
 		event.registerEntityRenderer(TFEntities.SLIME_BLOB.get(), ThrownItemRenderer::new);
 		event.registerEntityRenderer(TFEntities.MOONWORM_SHOT.get(), MoonwormShotRenderer::new);
 		event.registerEntityRenderer(TFEntities.CHARM_EFFECT.get(), ThrownItemRenderer::new);
-		event.registerEntityRenderer(TFEntities.LICH_BOMB.get(), ThrownItemRenderer::new);
 		event.registerEntityRenderer(TFEntities.THROWN_WEP.get(), ThrownWepRenderer::new);
 		event.registerEntityRenderer(TFEntities.FALLING_ICE.get(), FallingIceRenderer::new);
 		event.registerEntityRenderer(TFEntities.THROWN_ICE.get(), ThrownIceRenderer::new);
@@ -421,6 +423,7 @@ public class RegistrationEvents {
 		event.registerBlockEntityRenderer(TFBlockEntities.CANDELABRA.get(), CandelabraRenderer::new);
 		event.registerBlockEntityRenderer(TFBlockEntities.JAR.get(), JarRenderer::new);
 		event.registerBlockEntityRenderer(TFBlockEntities.MASON_JAR.get(), JarRenderer.MasonJarRenderer::new);
+		event.registerBlockEntityRenderer(TFBlockEntities.OMINOUS_CANDLE.get(), OminousCandleRenderer::new);
 		event.registerBlockEntityRenderer(TFBlockEntities.SINISTER_SPAWNER.get(), SinisterSpawnerRenderer::new);
 		event.registerBlockEntityRenderer(TFBlockEntities.BRAZIER.get(), BrazierRenderer::new);
 	}
@@ -519,7 +522,8 @@ public class RegistrationEvents {
 
 		event.registerLayerDefinition(TFModelLayers.CICADA, CicadaModel::create);
 		event.registerLayerDefinition(TFModelLayers.FIREFLY, FireflyModel::create);
-		event.registerLayerDefinition(TFModelLayers.KEEPSAKE_CASKET, SkullChestRenderer::create);
+		event.registerLayerDefinition(TFModelLayers.KEEPSAKE_CASKET, () -> SkullChestRenderer.create(true));
+		event.registerLayerDefinition(TFModelLayers.SKULL_CHEST, () -> SkullChestRenderer.create(false));
 		event.registerLayerDefinition(TFModelLayers.MOONWORM, MoonwormModel::create);
 		event.registerLayerDefinition(TFModelLayers.BRAZIER, BrazierModel::create);
 
@@ -551,6 +555,10 @@ public class RegistrationEvents {
 		event.registerSpriteSet(TFParticleType.TRANSFORMATION_PARTICLE.get(), TransformationParticle.Factory::new);
 		event.registerSpriteSet(TFParticleType.LOG_CORE_PARTICLE.get(), LogCoreParticle.Factory::new);
 		event.registerSpriteSet(TFParticleType.CLOUD_PUFF.get(), CloudPuffParticle.Factory::new);
+		event.registerSpriteSet(TFParticleType.MAGIC_EFFECT.get(), MagicEffectParticle.Factory::new);
+		event.registerSpriteSet(TFParticleType.ANGRY_LICH.get(), AngryLichParticle.Factory::new);
+		event.registerSpriteSet(TFParticleType.TWILIGHT_ORB.get(), (SpriteSet sprite) -> new CustomTextureParticle.Factory(sprite, true));
+		event.registerSpriteSet(TFParticleType.SHIELD_BREAK.get(), CustomTextureParticle.ShieldBreak::new);
 	}
 
 	private static void registerClientExtensions(RegisterClientExtensionsEvent event) {
@@ -639,11 +647,25 @@ public class RegistrationEvents {
 //			TFItems.CREEPER_SKULL_CANDLE.get(), TFItems.PIGLIN_SKULL_CANDLE.get(), TFItems.PLAYER_SKULL_CANDLE.get(), TFItems.SKELETON_SKULL_CANDLE.get(), TFItems.WITHER_SKELETON_SKULL_CANDLE.get(), TFItems.ZOMBIE_SKULL_CANDLE.get()
 //		);
 
-		event.registerItem(ArcticArmorItem.ArmorRender.INSTANCE, TFItems.ARCTIC_HELMET.get(), TFItems.ARCTIC_CHESTPLATE.get(), TFItems.ARCTIC_LEGGINGS.get(), TFItems.ARCTIC_BOOTS.get());
-		event.registerItem(FieryArmorItem.ArmorRender.INSTANCE, TFItems.FIERY_HELMET.get(), TFItems.FIERY_CHESTPLATE.get(), TFItems.FIERY_LEGGINGS.get(), TFItems.FIERY_BOOTS.get());
-		event.registerItem(KnightmetalArmorItem.ArmorRender.INSTANCE, TFItems.KNIGHTMETAL_HELMET.get(), TFItems.KNIGHTMETAL_CHESTPLATE.get(), TFItems.KNIGHTMETAL_LEGGINGS.get(), TFItems.KNIGHTMETAL_BOOTS.get());
-		event.registerItem(PhantomArmorItem.ArmorRender.INSTANCE, TFItems.PHANTOM_HELMET.get(), TFItems.PHANTOM_CHESTPLATE.get());
-		event.registerItem(YetiArmorItem.ArmorRender.INSTANCE, TFItems.YETI_HELMET.get(), TFItems.YETI_CHESTPLATE.get(), TFItems.YETI_LEGGINGS.get(), TFItems.YETI_BOOTS.get());
+		event.registerItem(
+			new ArcticArmorItem.ArmorRender(),
+			TFItems.ARCTIC_HELMET.get(), TFItems.ARCTIC_CHESTPLATE.get(), TFItems.ARCTIC_LEGGINGS.get(), TFItems.ARCTIC_BOOTS.get());
+		event.registerItem(
+			new TFSimpleArmorRenderer(FieryArmorModel::new, TFModelLayers.FIERY_ARMOR_INNER, TFModelLayers.FIERY_ARMOR_OUTER),
+			TFItems.FIERY_CHESTPLATE.get(), TFItems.FIERY_LEGGINGS.get(), TFItems.FIERY_BOOTS.get()
+		);
+		event.registerItem(
+			new TFSimpleArmorRenderer(TFArmorModel::new, TFModelLayers.KNIGHTMETAL_ARMOR_INNER, TFModelLayers.KNIGHTMETAL_ARMOR_OUTER),
+			TFItems.KNIGHTMETAL_HELMET.get(), TFItems.KNIGHTMETAL_CHESTPLATE.get(), TFItems.KNIGHTMETAL_LEGGINGS.get(), TFItems.KNIGHTMETAL_BOOTS.get()
+		);
+		event.registerItem(
+			new TFSimpleArmorRenderer(TFArmorModel::new, TFModelLayers.PHANTOM_ARMOR_INNER, TFModelLayers.PHANTOM_ARMOR_OUTER),
+			TFItems.PHANTOM_HELMET.get(), TFItems.PHANTOM_CHESTPLATE.get()
+		);
+		event.registerItem(
+			new TFSimpleArmorRenderer(YetiArmorModel::new, TFModelLayers.YETI_ARMOR_INNER, TFModelLayers.YETI_ARMOR_OUTER),
+			TFItems.YETI_HELMET.get(), TFItems.YETI_CHESTPLATE.get(), TFItems.YETI_LEGGINGS.get(), TFItems.YETI_BOOTS.get()
+		);
 	}
 
 	private static void registerMapDecorators(RegisterMapDecorationRenderersEvent event) {

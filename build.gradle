@@ -1,5 +1,17 @@
 import net.neoforged.moddevgradle.internal.RunGameTask
 
+buildscript {
+	repositories {
+		maven {
+			name 'Beanification'
+			url 'https://maven.tamaized.com/releases/'
+		}
+	}
+	dependencies {
+		classpath "tamaized:beanification:${minecraft_version}-${beanification_version}:gradle"
+	}
+}
+
 plugins {
 	id 'java-library'
 	id 'eclipse'
@@ -8,6 +20,19 @@ plugins {
 	// Version List: https://projects.neoforged.net/neoforged/ModDevGradle
 	id 'net.neoforged.moddev' version "${mdg_version}"
 	id "com.dorongold.task-tree" version "4.0.0"
+	id 'com.gradleup.shadow' version '8.3.3'
+}
+
+apply plugin: 'tamaized.beanification'
+
+configurations {
+	shade
+}
+
+shadowJar {
+	archiveClassifier.set('universal')
+	configurations = [project.configurations.shade]
+	relocate 'tamaized.beanification', "${project.mod_id}.beanification"
 }
 
 def secrets = new Properties()
@@ -57,25 +82,29 @@ subprojects {
 }
 
 neoForge {
-	evaluationDependsOnChildren() // we need the subprojects to evaluate first so that the sourceSets are properly constructed
+	// we need the subprojects to evaluate first so that the sourceSets are properly constructed
+	evaluationDependsOnChildren()
 
+	def mod_id = project.mod_id
 	version = project.neo_version
 
 	validateAccessTransformers = true
 
 	mods {
-		twilightforest {
-			sourceSet this.sourceSets.main
+		"${mod_id}" {
+			it.sourceSet this.sourceSets.main
 		}
 
 		'tf-asm' {
-			sourceSet project(":tf-asm").sourceSets.main
+			it.sourceSet project(":tf-asm").sourceSets.main
 		}
 	}
 
+	def mainMod = mods."${project.mod_id}"
+
 	unitTest {
 		enable()
-		testedMod = mods.twilightforest
+		testedMod = mainMod
 	}
 
 	runs {
@@ -113,14 +142,16 @@ afterEvaluate { // DO NOT ASK... it fixes the runClient and family tasks :harold
 
 jar {
 	exclude 'data/twilightforest/function/**'
-	if (hasProperty("CIRevision"))
-		exclude 'data/twilightforest/structure/lich_tower'
 }
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
 	mavenLocal()
+	maven {
+		name 'Tama\'s Maven' // Beanification
+		url 'https://maven.tamaized.com/releases/'
+	}
 	maven {
 		name 'Jared\'s Maven' // JEI
 		url 'https://maven.blamejared.com/'
@@ -153,10 +184,13 @@ repositories {
 }
 
 dependencies {
-	// Purely so we can see MDG sources for debugging purposes
-	compileOnly "net.neoforged.moddev:net.neoforged.moddev.gradle.plugin:${project.mdg_version}"
-
 	jarJar implementation(project(":tf-asm"))
+
+	def beanification = "tamaized:beanification:${project.minecraft_version}-${project.beanification_version}"
+	implementation beanification
+	shade beanification
+	testImplementation "${beanification}:tests"
+	testCompileOnly "${beanification}:test-sources"
 
 	//make sure to only pick one of these when testing (switch others to compileOnly)
 //	implementation "mezz.jei:jei-${project.base_minecraft_version}-neoforge:${project.jei_version}"
@@ -169,8 +203,15 @@ dependencies {
 	//curse maven
 	implementation "curse.maven:jade-324717:6011327"
 	implementation "curse.maven:cosmetic-armor-reworked-237307:5961480"
+	runtimeOnly "curse.maven:worldedit-225608:5830452"
 //	runtimeOnly "curse.maven:jeed-532286:5483315"
 //	runtimeOnly "curse.maven:museum-curator-859070:4629894"
+	if (project.enable_tips_mod == 'true') {
+		runtimeOnly "curse.maven:tips-306549:5844057"
+		runtimeOnly "curse.maven:bookshelf-228525:6098975"
+		runtimeOnly "curse.maven:prickle-1023259:5836410"
+	}
+	runtimeOnly "curse.maven:suggestion-provider-fix-469647:5598604"
 
 //	compileOnly "mcjty.theoneprobe:theoneprobe:${project.top_version}"
 
@@ -203,17 +244,12 @@ test {
 }
 
 processResources {
-	def mc = minecraft_version
-	def neo = neo_version
 	def ver = project.version
 	filesMatching("META-INF/neoforge.mods.toml") {
 		expand([
 			'file'           : [
 				'jarVersion': ver
-			],
-			'm'      : mc,
-			'l'      : "NeoForge",
-			'v': neo,
+			]
 		])
 	}
 }
@@ -233,6 +269,11 @@ jar {
 	}
 }
 
+def mavenUser = hasProperty("ARTIFACTORY_USER") ? ARTIFACTORY_USER : secrets.getProperty("maven_username")
+def mavenToken = hasProperty("ARTIFACTORY_PASS") ? ARTIFACTORY_PASS : secrets.getProperty("maven_password")
+logger.lifecycle(hasProperty("ARTIFACTORY_USER").toString())
+logger.lifecycle(mavenUser)
+
 publishing {
 	publications {
 		create('mavenJava', MavenPublication) {
@@ -240,17 +281,16 @@ publishing {
 				artifact this.project.jar
 				artifact this.project.sourceJar
 			}
-			groupId 'team-twilight'
+			groupId mavenUser
 			artifactId this.project.mod_id
 		}
 	}
 	repositories {
 		maven {
-			//url "file:///${project.projectDir}/mcmodsrepo"
 			url "https://maven.tamaized.com/releases"
 			credentials {
-				username System.getenv('ARTIFACTORY_USER')
-				password System.getenv('ARTIFACTORY_PASS')
+				username mavenUser
+				password mavenToken
 			}
 		}
 	}
@@ -261,3 +301,9 @@ tasks.register('sourceJar', Jar) {
 	from sourceSets.main.allSource
 	archiveClassifier = 'sources'
 }
+
+tasks.withType(JavaCompile).configureEach {
+	options.encoding = 'UTF-8'
+}
+
+build.dependsOn shadowJar

@@ -8,9 +8,13 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BeaconBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BrazierBlock;
 import twilightforest.block.entity.BrazierBlockEntity;
@@ -36,7 +40,7 @@ public class BrazierRenderer implements BlockEntityRenderer<BrazierBlockEntity> 
 		BlockRenderDispatcher dispatch = Minecraft.getInstance().getBlockRenderer();
 		BlockState state = Blocks.FIRE.defaultBlockState();
 		float y = 0.35F * lit.getFireSize();
-		stack.translate(0.26F, 1.7F, 0.5F);
+		stack.translate(0.26F, 1.6F, 0.5F);
 		stack.scale(0.35F, y, 0.35F);
 		stack.mulPose(Axis.YP.rotationDegrees(45.0F));
 		if (lit.isLit() && y > 0.0F) {
@@ -59,5 +63,11 @@ public class BrazierRenderer implements BlockEntityRenderer<BrazierBlockEntity> 
 	@Override
 	public boolean shouldRenderOffScreen(BrazierBlockEntity entity) {
 		return true;
+	}
+
+	@Override
+	public AABB getRenderBoundingBox(BrazierBlockEntity blockEntity) {
+		BlockPos pos = blockEntity.getBlockPos();
+		return new AABB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1.0, pos.getY() + 2.0, pos.getZ() + 1.0);
 	}
 }

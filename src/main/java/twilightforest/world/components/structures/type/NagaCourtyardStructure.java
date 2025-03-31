@@ -9,12 +9,15 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFMapDecorations;
 import twilightforest.init.TFStructureTypes;
+import twilightforest.util.WorldUtil;
+import twilightforest.world.components.structures.CustomDensitySource;
 import twilightforest.world.components.structures.courtyard.CourtyardMain;
 import twilightforest.world.components.structures.util.ConquerableStructure;
 
@@ -22,7 +25,7 @@ import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class NagaCourtyardStructure extends ConquerableStructure {
+public class NagaCourtyardStructure extends ConquerableStructure implements CustomDensitySource {
 	public static final MapCodec<NagaCourtyardStructure> CODEC = RecordCodecBuilder.mapCodec(instance -> landmarkCodec(instance).apply(instance, NagaCourtyardStructure::new));
 
 	public NagaCourtyardStructure(DecorationConfig decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
@@ -50,5 +53,15 @@ public class NagaCourtyardStructure extends ConquerableStructure {
 				TerrainAdjustment.BEARD_THIN
 			)
 		);
+	}
+
+	@Override
+	public DensityFunction getStructureTerraformer(ChunkPos chunkPosAt, StructureStart structurePieceSource) {
+		return CustomDensitySource.getInvertedPyramidTerraformer(structurePieceSource, 3, 4);
+	}
+
+	@Override
+	public int adjustForTerrain(GenerationContext context, int x, int z) {
+		return WorldUtil.adjustForTerrain(context, x, z, 40, 4) + 2;
 	}
 }

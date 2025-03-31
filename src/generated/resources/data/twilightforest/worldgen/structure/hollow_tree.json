@@ -30,7 +30,7 @@
       }
     ]
   },
-  "chunk_clearance_radius": 2.0,
+  "chunk_clearance_radius": 0.5,
   "dungeon_air": {
     "type": "minecraft:simple_state_provider",
     "state": {

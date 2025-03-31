@@ -31,8 +31,10 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
+import tamaized.beanification.Autowired;
 import twilightforest.loot.TFLootTables;
 import twilightforest.util.BoundingBoxUtils;
+import twilightforest.world.components.structures.selectors.StrongholdStonesRandomBlockSelectorFactory;
 
 import java.util.Iterator;
 import java.util.List;
@@ -43,7 +45,8 @@ import java.util.function.Predicate;
 public abstract class TFStructureComponentOld extends TFStructureComponent implements PieceBeardifierModifier {
 
 	protected static final BlockState AIR = Blocks.AIR.defaultBlockState();
-	private static final StrongholdStones strongholdStones = new StrongholdStones();
+	@Autowired
+	private static StrongholdStonesRandomBlockSelectorFactory strongholdStones;
 
 	public TFStructureComponentOld(StructurePieceType piece, CompoundTag nbt) {
 		super(piece, nbt);
@@ -465,7 +468,7 @@ public abstract class TFStructureComponentOld extends TFStructureComponent imple
 	}
 
 	protected static StructurePiece.BlockSelector getStrongholdStones() {
-		return strongholdStones;
+		return strongholdStones.make();
 	}
 
 	protected Direction getStructureRelativeRotation(Rotation rotationsCW) {

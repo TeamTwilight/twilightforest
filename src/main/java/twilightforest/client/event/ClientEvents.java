@@ -51,7 +51,7 @@ import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import twilightforest.TwilightForestMod;
-import twilightforest.beans.Autowired;
+import tamaized.beanification.Autowired;
 import twilightforest.block.GiantBlock;
 import twilightforest.block.MiniatureStructureBlock;
 import twilightforest.block.entity.GrowingBeanstalkBlockEntity;

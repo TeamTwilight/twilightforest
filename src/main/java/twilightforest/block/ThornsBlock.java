@@ -6,6 +6,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.*;
@@ -24,6 +25,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDamageTypes;
 
@@ -79,7 +81,7 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 
 	@Override
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-		if (level instanceof ServerLevel serverLevel) {
+		if (level instanceof ServerLevel serverLevel && !(entity instanceof ItemEntity item) || !item.getItem().is(ItemTagGenerator.IMMUNE_TO_THORNS)) {
 			entity.hurtServer(serverLevel, serverLevel.damageSources().source(TFDamageTypes.THORNS), THORN_DAMAGE);
 		}
 	}

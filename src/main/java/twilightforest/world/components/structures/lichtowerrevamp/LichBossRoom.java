@@ -70,7 +70,7 @@ public final class LichBossRoom extends TwilightJigsawPiece implements PieceBear
 			int y = random.nextInt(3);
 			BlockPos placeAt = center.offset(x, y, z);
 
-			if (chunkBounds.isInside(placeAt) && level.getBlockState(placeAt).isAir()) {
+			if (chunkBounds.isInside(placeAt) && level.getBlockState(placeAt).isAir() && level.getBlockState(placeAt.below()).isAir()) {
 				level.setBlock(placeAt, candle, Block.UPDATE_CLIENTS);
 			}
 		}

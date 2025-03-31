@@ -25,6 +25,7 @@ import twilightforest.loot.TFLootTables;
 import twilightforest.util.RotationUtil;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
+import twilightforest.world.components.structures.UtilityPiece;
 import twilightforest.world.components.structures.icetower.floordecorators.FloorParts;
 import twilightforest.world.components.structures.icetower.floordecorators.FloorTypesAuroraPalace;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
@@ -86,6 +87,13 @@ public class IceTowerWingComponent extends TowerWingComponent {
 		makeARoof(parent, list, rand);
 		if (!this.hasBase) {
 			makeABeard(parent, list, rand);
+		} else if (list instanceof StructurePiecesBuilder structurePiecesBuilder){
+			UtilityPiece utilityPiece = new UtilityPiece(getGenDepth() + 1,
+				new BoundingBox(
+					boundingBox.minX(), structurePiecesBuilder.pieces.stream().mapToInt(piece -> piece.getBoundingBox().minY()).min().getAsInt(), boundingBox.minZ(),
+					boundingBox.maxX(), boundingBox.minY(), boundingBox.maxZ()
+				));
+			list.addPiece(utilityPiece);
 		}
 
 		// limit sprawl to a reasonable amount

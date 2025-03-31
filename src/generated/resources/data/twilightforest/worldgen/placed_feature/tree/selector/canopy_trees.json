@@ -2,6 +2,22 @@
   "feature": "twilightforest:tree/selector/canopy_trees",
   "placement": [
     {
+      "type": "minecraft:count",
+      "count": {
+        "type": "minecraft:weighted_list",
+        "distribution": [
+          {
+            "data": 7,
+            "weight": 9
+          },
+          {
+            "data": 8,
+            "weight": 1
+          }
+        ]
+      }
+    },
+    {
       "type": "minecraft:in_square"
     },
     {

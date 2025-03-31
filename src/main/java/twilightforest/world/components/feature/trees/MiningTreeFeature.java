@@ -3,6 +3,7 @@ package twilightforest.world.components.feature.trees;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.WorldGenLevel;
@@ -53,7 +54,8 @@ public class MiningTreeFeature extends TFTreeFeature<TFTreeFeatureConfig> {
 		putBranchWithLeaves(world, trunkPlacer, leavesPlacer, random, pos.offset(0, 6, -5), false, config);
 
 		// place minewood core
-		if (world.getBlockState(pos.above()).canBeReplaced()) {
+		BlockState stateAtCorePos = world.getBlockState(pos.above());
+		if (stateAtCorePos.is(BlockTags.LOGS) || stateAtCorePos.canBeReplaced()) {
 			world.setBlock(pos.above(), TFBlocks.MINING_LOG_CORE.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y), Block.UPDATE_ALL);
 			world.scheduleTick(pos.above(), TFBlocks.MINING_LOG_CORE.get(), 20);
 		}

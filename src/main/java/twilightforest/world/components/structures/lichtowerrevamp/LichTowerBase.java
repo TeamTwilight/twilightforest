@@ -22,7 +22,7 @@ import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
-import twilightforest.beans.Autowired;
+import tamaized.beanification.Autowired;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
@@ -68,7 +68,7 @@ public final class LichTowerBase extends TwilightJigsawPiece implements PieceBea
 			case "twilightforest:lich_tower/bridge" -> {
 				ResourceLocation room;
 				if (jigsawIndex == this.casketWingIndex) {
-					room = lichTowerUtil.getKeepsakeCasketRoom();
+					room = lichTowerUtil.getKeepsakeCasketRoom(random);
 				} else {
 					room = null;
 				}

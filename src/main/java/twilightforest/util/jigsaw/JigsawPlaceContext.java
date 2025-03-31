@@ -114,4 +114,9 @@ public record JigsawPlaceContext(BlockPos templatePos, StructurePlaceSettings pl
 	public boolean isWithoutCollision(StructureTemplateManager manager, StructurePieceAccessor pieceAccessor) {
 		return this.isWithoutCollision(manager, pieceAccessor, b -> b);
 	}
+
+	// Creates a copy of this, re-using immutable objects while cloning mutable ones, especially StructurePlaceSettings
+	public JigsawPlaceContext copy() {
+		return new JigsawPlaceContext(this.templatePos.immutable(), this.placementSettings.copy(), this.seedJigsaw, List.copyOf(this.spareJigsaws), this.templateLocation);
+	}
 }

@@ -31,20 +31,20 @@ public class BoxDensityFunction implements DensityFunction.SimpleFunction {
 	private final double minValue, maxValue;
 	private final TerrainAdjustment terrainAdjustment;
 
-	public static DensityFunction combine(List<BoundingBox> boxes, int dY, TerrainAdjustment terrainAdjustment) {
+	public static DensityFunction combine(List<BoundingBox> boxes, int dYMin, int dYMax, TerrainAdjustment terrainAdjustment) {
 		if (boxes.isEmpty()) return DensityFunctions.constant(0);
 
-		DensityFunction densityFunction = make(boxes.getFirst(), dY, terrainAdjustment);
+		DensityFunction densityFunction = make(boxes.getFirst(), dYMin, dYMax, terrainAdjustment);
 
 		for (int idx = 1; idx < boxes.size(); idx++) {
-			densityFunction = DensityFunctions.add(make(boxes.get(idx), dY, terrainAdjustment), densityFunction);
+			densityFunction = DensityFunctions.add(make(boxes.get(idx), dYMin, dYMax, terrainAdjustment), densityFunction);
 		}
 
 		return densityFunction;
 	}
 
-	public static BoxDensityFunction make(BoundingBox box, int dY, TerrainAdjustment terrainAdjustment) {
-		return new BoxDensityFunction(box.minX(), box.minY() + dY, box.minZ(), box.maxX(), box.maxY() + dY, box.maxZ(), -4.0, 4.0, terrainAdjustment);
+	public static BoxDensityFunction make(BoundingBox box, int dYMin, int dYMax, TerrainAdjustment terrainAdjustment) {
+		return new BoxDensityFunction(box.minX(), box.minY() + dYMin, box.minZ(), box.maxX(), box.maxY() + dYMax, box.maxZ(), -4.0, 4.0, terrainAdjustment);
 	}
 
 	public BoxDensityFunction(int minX, int minY, int minZ, int maxX, int maxY, int maxZ, double minValue, double maxValue, TerrainAdjustment terrainAdjustment) {

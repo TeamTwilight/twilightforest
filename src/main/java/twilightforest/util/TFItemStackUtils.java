@@ -16,6 +16,7 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.BlockItemStateProperties;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.ItemLike;
 import org.codehaus.plexus.util.StringUtils;
 import twilightforest.block.KeepsakeCasketBlock;
 import twilightforest.events.CharmEvents;
@@ -29,15 +30,15 @@ import java.util.function.Consumer;
 
 public class TFItemStackUtils {
 
-	public static boolean consumeInventoryItem(final Player player, final Item item, CompoundTag persistentTag, boolean saveItemToTag) {
+	public static boolean consumeInventoryItem(final Player player, final ItemLike item, CompoundTag persistentTag, boolean saveItemToTag) {
 		return consumeInventoryItem(player.getInventory().armor, item, persistentTag, saveItemToTag, player.registryAccess())
 			|| consumeInventoryItem(player.getInventory().items, item, persistentTag, saveItemToTag, player.registryAccess())
 			|| consumeInventoryItem(player.getInventory().offhand, item, persistentTag, saveItemToTag, player.registryAccess());
 	}
 
-	public static boolean consumeInventoryItem(final NonNullList<ItemStack> stacks, final Item item, CompoundTag persistentTag, boolean saveItemToTag, HolderLookup.Provider provider) {
+	public static boolean consumeInventoryItem(final NonNullList<ItemStack> stacks, final ItemLike item, CompoundTag persistentTag, boolean saveItemToTag, HolderLookup.Provider provider) {
 		for (ItemStack stack : stacks) {
-			if (stack.is(item)) {
+			if (stack.is(item.asItem())) {
 				if (saveItemToTag) persistentTag.put(CharmEvents.CONSUMED_CHARM_TAG, stack.save(provider));
 				BlockItemStateProperties blockItemStateProperties = stack.get(DataComponents.BLOCK_STATE);
 				if (blockItemStateProperties != null && blockItemStateProperties.properties().containsKey(KeepsakeCasketBlock.BREAKAGE.getName())) {

@@ -21,12 +21,13 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.entity.DecoratedPotBlockEntity.WobbleStyle;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RotationSegment;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.neoforge.client.RenderTypeHelper;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.common.util.Lazy;
 import net.neoforged.neoforge.registries.DeferredBlock;
-import twilightforest.beans.Autowired;
-import twilightforest.beans.Configurable;
+import tamaized.beanification.Autowired;
+import tamaized.beanification.Configurable;
 import twilightforest.block.entity.JarBlockEntity;
 import twilightforest.block.entity.MasonJarBlockEntity;
 import twilightforest.enums.extensions.TFItemDisplayContextEnumExtension;
@@ -177,7 +178,7 @@ public class JarRenderer<T extends JarBlockEntity> implements BlockEntityRendere
 	@Configurable
 	public static class MasonJarRenderer extends JarRenderer<MasonJarBlockEntity> {
 
-		@Autowired
+		@Autowired(dist = Dist.CLIENT)
 		private TFItemDisplayContextEnumExtension itemDisplayContextEnumExtension;
 
 		protected final ItemRenderer itemRenderer;

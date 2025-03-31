@@ -18,6 +18,8 @@ import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileDeflection;
@@ -44,35 +46,41 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.damagesource.DamageContainer;
-import net.neoforged.neoforge.common.util.FakePlayer;
+import net.neoforged.neoforge.event.EventHooks;
 import net.neoforged.neoforge.event.OnDatapackSyncEvent;
+import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
-import net.neoforged.neoforge.event.entity.living.FinalizeSpawnEvent;
-import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
-import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
-import net.neoforged.neoforge.event.entity.living.LivingEvent;
+import net.neoforged.neoforge.event.entity.living.*;
 import net.neoforged.neoforge.event.entity.player.AdvancementEvent;
 import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.neoforge.event.level.ExplosionEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
+import twilightforest.advancements.DrinkFromFlaskTrigger;
+import tamaized.beanification.Autowired;
 import twilightforest.block.*;
-import twilightforest.block.entity.KeepsakeCasketBlockEntity;
+import twilightforest.block.entity.SkullChestBlockEntity;
 import twilightforest.block.entity.SkullCandleBlockEntity;
 import twilightforest.config.TFConfig;
 import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.enchantment.ApplyFrostedEffect;
+import twilightforest.entity.passive.quest.ram.QuestingRamCurrentContext;
 import twilightforest.entity.projectile.ITFProjectile;
+import twilightforest.entity.projectile.LichBomb;
 import twilightforest.init.*;
 import twilightforest.item.FieryArmorItem;
 import twilightforest.item.YetiArmorItem;
 import twilightforest.network.SyncQuestsPacket;
 import twilightforest.network.WipeOreMeterPacket;
+import twilightforest.util.datamaps.EntityTransformation;
+import twilightforest.util.entities.EntityUtil;
+import twilightforest.util.entities.OminousFireDamageSource;
 import twilightforest.world.components.structures.SpawnIndexProvider;
 import twilightforest.world.components.structures.finalcastle.FinalCastleBossGazeboComponent;
 import twilightforest.world.components.structures.start.TFStructureStart;
@@ -86,7 +94,38 @@ import java.util.UUID;
 @EventBusSubscriber(modid = TwilightForestMod.ID)
 public class EntityEvents {
 
+	@Autowired
+	private static QuestingRamCurrentContext questingRamCurrentContext;
+
 	private static final boolean SHIELD_PARRY_MOD_LOADED = ModList.get().isLoaded("parry");
+
+	@SubscribeEvent
+	public static void ominousFireConversion(LivingDeathEvent event) {
+		if (event.getSource().is(TFDamageTypes.OMINOUS_FIRE)) {
+			EntityTransformation dataMap = event.getEntity().getType().builtInRegistryHolder().getData(TFDataMaps.OMINOUS_FIRE);
+
+			if (event.getEntity() instanceof ServerPlayer player) {
+				var zombie = EntityType.ZOMBIE.create(player.level());
+				zombie.setData(TFDataAttachments.ZOMBIFIED_PLAYER, player.getGameProfile());
+				zombie.copyPosition(player);
+				zombie.setCanPickUpLoot(true);
+				zombie.setBaby(false);
+				EventHooks.finalizeMobSpawn(zombie, player.serverLevel(), player.level().getCurrentDifficultyAt(player.blockPosition()), MobSpawnType.CONVERSION, null);
+				player.level().addFreshEntity(zombie);
+			} else if (dataMap != null && event.getEntity().level() instanceof ServerLevel) {
+				EntityUtil.convertEntity(event.getEntity(), dataMap.result());
+			}
+		}
+	}
+
+	@SubscribeEvent
+	public static void zombifiedPlayerAttacks(LivingIncomingDamageEvent event) {
+		if (!(event.getSource() instanceof OminousFireDamageSource) && event.getSource().getEntity() instanceof Zombie zombie && zombie.hasData(TFDataAttachments.ZOMBIFIED_PLAYER)) {
+			float amount = event.getAmount();
+			event.setCanceled(true);
+			event.getEntity().hurt(new OminousFireDamageSource(event.getSource()), amount);
+		}
+	}
 
 	@SubscribeEvent
 	public static void alertPlayerCastleIsWIP(AdvancementEvent.AdvancementEarnEvent event) {
@@ -157,15 +196,12 @@ public class EntityEvents {
 	public static void onCasketBreak(BlockEvent.BreakEvent event) {
 		Block block = event.getState().getBlock();
 		Player player = event.getPlayer();
-		BlockEntity te = event.getLevel().getBlockEntity(event.getPos());
-		UUID checker;
 		if (block == TFBlocks.SKULL_CHEST.get() || block == TFBlocks.KEEPSAKE_CASKET.get()) {
-			if (te instanceof KeepsakeCasketBlockEntity casket) {
-				checker = casket.playeruuid;
-			} else checker = null;
-			if (checker != null) {
-				if (!((KeepsakeCasketBlockEntity) te).isEmpty()) {
-					if (!player.hasPermissions(3) || !player.getGameProfile().getId().equals(checker)) {
+			BlockEntity te = event.getLevel().getBlockEntity(event.getPos());
+			if (te instanceof SkullChestBlockEntity casket) {
+				ResolvableProfile checker = casket.owner;
+				if (checker != null && !casket.isEmpty()) {
+					if (!player.hasPermissions(3) || !player.getGameProfile().equals(checker.gameProfile())) {
 						event.setCanceled(true);
 					}
 				}
@@ -443,11 +479,39 @@ public class EntityEvents {
 	}
 
 	@SubscribeEvent
+	public static void onExplosionDetonationEvent(ExplosionEvent.Detonate event) {
+		if (event.getExplosion().getDirectSourceEntity() instanceof LichBomb) {
+			event.getAffectedEntities().removeIf(entity -> entity instanceof ItemEntity || entity instanceof LichBomb);
+		}
+	}
+
+	@SubscribeEvent
 	public static void handleQuestSyncing(OnDatapackSyncEvent event) {
 		if (event.getPlayer() != null) {
-			PacketDistributor.sendToPlayer(event.getPlayer(), new SyncQuestsPacket(TwilightForestMod.getQuests().getQuestingRam()));
+			PacketDistributor.sendToPlayer(event.getPlayer(), new SyncQuestsPacket(questingRamCurrentContext.getContext()));
 		} else {
-			event.getPlayerList().getPlayers().forEach(player -> PacketDistributor.sendToPlayer(player, new SyncQuestsPacket(TwilightForestMod.getQuests().getQuestingRam())));
+			event.getPlayerList().getPlayers().forEach(player -> PacketDistributor.sendToPlayer(player, new SyncQuestsPacket(questingRamCurrentContext.getContext())));
+		}
+	}
+
+	@SubscribeEvent
+	public static void resetFlaskLogic(AdvancementEvent.AdvancementEarnEvent event) {
+		for (var criteria : event.getAdvancement().value().criteria().entrySet()) {
+			if (criteria.getValue().trigger() instanceof DrinkFromFlaskTrigger) {
+				event.getEntity().getData(TFDataAttachments.FLASK_DOSES).resetDoses();
+				break;
+			}
+		}
+	}
+
+	@SubscribeEvent
+	public static void entityJoinedWorld(EntityJoinLevelEvent event) {
+		if (!(event.getEntity() instanceof PathfinderMob mob && mob.hasData(TFDataAttachments.LEASH_PATHFINDER_OVERRIDE))) {
+			return;
+		}
+
+		if (!mob.mayBeLeashed()) {
+			mob.removeData(TFDataAttachments.LEASH_PATHFINDER_OVERRIDE);
 		}
 	}
 }

@@ -1,21 +1,27 @@
 package twilightforest.client.model.entity;
 
+import com.google.common.collect.Iterables;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemDisplayContext;
 import twilightforest.client.renderer.entity.LichRenderer;
-import twilightforest.client.state.LichRenderState;
+import twilightforest.entity.boss.Lich;
 
-public class LichModel extends HumanoidModel<LichRenderState> implements TrophyBlockModel {
+import java.util.Arrays;
 
+public class LichModel<T extends Lich> extends HumanoidModel<T> implements TrophyBlockModel {
+
+	private boolean shadowClone;
 	private final ModelPart collar;
 	private final ModelPart cloak;
 
@@ -29,7 +35,7 @@ public class LichModel extends HumanoidModel<LichRenderState> implements TrophyB
 		MeshDefinition meshdefinition = HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F);
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		partdefinition.getChild("head").addOrReplaceChild("hat", CubeListBuilder.create()
+		partdefinition.addOrReplaceChild("hat", CubeListBuilder.create()
 				.texOffs(32, 0)
 				.addBox(-4.0F, -12.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.5F)),
 			PartPose.ZERO);
@@ -73,38 +79,78 @@ public class LichModel extends HumanoidModel<LichRenderState> implements TrophyB
 	}
 
 	@Override
-	public void setupAnim(LichRenderState state) {
-		super.setupAnim(state);
-		this.cloak.skipDraw = state.isShadowClone;
-		this.collar.skipDraw = state.isShadowClone;
-
-		float ogSin = Mth.sin(state.attackTime * Mth.PI);
-		float otherSin = Mth.sin((1.0F - (1.0F - state.attackTime) * (1.0F - state.attackTime)) * Mth.PI);
-		if (state.ageInTicks > 0 && state.deathTime <= 0) {
-			this.leftArm.zRot = 0.5F;
-			this.leftArm.yRot = 0.1F - ogSin * 0.6F;
-			this.leftArm.xRot = -3.141593F;
-			this.leftArm.xRot -= ogSin * 1.2F - otherSin * 0.4F;
-			this.leftArm.zRot -= Mth.cos(state.ageInTicks * 0.26F) * 0.15F + 0.05F;
-			this.leftArm.xRot -= Mth.sin(state.ageInTicks * 0.167F) * 0.15F;
+	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, int color) {
+		if (!this.shadowClone) {
+			super.renderToBuffer(stack, builder, light, overlay, color);
 		} else {
-			this.leftArm.xRot = 0.0F;
-			this.leftArm.yRot = 0.0F;
+			super.renderToBuffer(stack, builder, light, overlay, FastColor.ARGB32.color((int) (FastColor.ARGB32.alpha(color) * 0.5F), (int) (FastColor.ARGB32.red(color) * 0.333F), (int) (FastColor.ARGB32.green(color) * 0.333F), (int) (FastColor.ARGB32.blue(color) * 0.333F)));
+		}
+	}
+
+	@Override
+	protected Iterable<ModelPart> bodyParts() {
+		if (this.shadowClone) {
+			return super.bodyParts();
+		} else {
+			return Iterables.concat(Arrays.asList(this.cloak, this.collar), super.bodyParts());
+		}
+	}
+
+	@Override
+	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+		if (entity.isDeadOrDying() && entity.deathTime < Lich.DEATH_ANIMATION_POINT_A) {
+			float partialTicks = Minecraft.getInstance().getTimer().getGameTimeDeltaTicks();
+			limbSwingAmount = entity.walkAnimation.speed(partialTicks);
+			limbSwing = entity.walkAnimation.position(partialTicks);
+			limbSwingAmount *= 1.5F;
+			if (limbSwingAmount > 1.0F) limbSwingAmount = 1.0F;
+		} else limbSwingAmount *= 0.75F;
+		this.shadowClone = entity.isShadowClone();
+		super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+
+		if (entity.getPhase() != 3) {
+			float ogSin = Mth.sin(this.attackTime * Mth.PI);
+			float otherSin = Mth.sin((1.0F - (1.0F - this.attackTime) * (1.0F - this.attackTime)) * Mth.PI);
+			if (entity.tickCount > 0 && !entity.isDeadOrDying()) {
+				this.leftArm.zRot = 0.5F;
+				this.leftArm.yRot = 0.1F - ogSin * 0.6F;
+				this.leftArm.xRot = -3.141593F;
+				this.leftArm.xRot -= ogSin * 1.2F - otherSin * 0.4F;
+				this.leftArm.zRot -= Mth.cos(ageInTicks * 0.26F) * 0.15F + 0.05F;
+				this.leftArm.xRot -= Mth.sin(ageInTicks * 0.167F) * 0.15F;
+			} else {
+				this.leftArm.xRot = 0.0F;
+				this.leftArm.yRot = 0.0F;
+			}
+
+			if (!entity.getMainHandItem().isEmpty()) {
+				this.rightArm.zRot = 0.0F;
+				this.rightArm.yRot = -(0.1F - ogSin * 0.6F);
+				this.rightArm.xRot = -Mth.HALF_PI;
+				this.rightArm.xRot -= ogSin * 1.2F - otherSin * 0.4F;
+				this.rightArm.zRot += Mth.cos(ageInTicks * 0.26F) * 0.15F + 0.05F;
+				this.rightArm.xRot += Mth.sin(ageInTicks * 0.167F) * 0.15F;
+			} else {
+				this.rightArm.xRot = 0.0F;
+				this.rightArm.yRot = 0.0F;
+			}
+		} else {
+			float f = 1.0F;
+			if (entity.getFallFlyingTicks() > 4) {
+				f = (float)entity.getDeltaMovement().lengthSqr();
+				f /= 0.2F;
+				f *= f * f;
+			}
+
+			if (f < 1.0F) f = 1.0F;
+
+			this.leftArm.xRot += -Mth.HALF_PI * 0.25F;
+
+			this.rightArm.xRot -= (Mth.cos(limbSwing * 0.6662F + 3.1415927F) * 2.0F * limbSwingAmount * 0.5F / f) * 0.75F;
+			this.rightArm.xRot += -Mth.HALF_PI * 0.75F;
 		}
 
-		if (!state.getMainHandItem().isEmpty()) {
-			this.rightArm.zRot = 0.0F;
-			this.rightArm.yRot = -(0.1F - ogSin * 0.6F);
-			this.rightArm.xRot = -Mth.HALF_PI;
-			this.rightArm.xRot -= ogSin * 1.2F - otherSin * 0.4F;
-			this.rightArm.zRot += Mth.cos(state.ageInTicks * 0.26F) * 0.15F + 0.05F;
-			this.rightArm.xRot += Mth.sin(state.ageInTicks * 0.167F) * 0.15F;
-		} else {
-			this.rightArm.xRot = 0.0F;
-			this.rightArm.yRot = 0.0F;
-		}
-
-		boolean flag = state.deathTime > 50;
+		boolean flag = entity.deathTime > Lich.DEATH_ANIMATION_POINT_A;
 		this.body.skipDraw = flag;
 		this.leftArm.skipDraw = flag;
 		this.rightArm.skipDraw = flag;

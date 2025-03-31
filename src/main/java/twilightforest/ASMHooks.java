@@ -22,6 +22,7 @@ import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.decoration.LeashFenceKnotEntity;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.*;
@@ -40,7 +41,8 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.neoforged.neoforge.common.util.TriState;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
-import twilightforest.beans.Autowired;
+import tamaized.beanification.Autowired;
+import twilightforest.init.TFDataAttachments;
 import twilightforest.util.ArmorUtil;
 import twilightforest.util.multiparts.MultipartEntityUtil;
 import twilightforest.block.CloudBlock;
@@ -316,5 +318,20 @@ public class ASMHooks {
 			}
 		}
 		return o;
+	}
+
+	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// mob
+	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	/**
+	 * {@link twilightforest.asm.transformers.mob.PathFinderUnrestrainedByLeash}
+	 *
+	 * Injection Point:<br/>
+	 * {@link net.minecraft.world.entity.PathfinderMob#shouldStayCloseToLeashHolder()}<br/>
+	 * Targets: IRETURN
+	 */
+	public static boolean overrideStayCloseToHolder(boolean prior, PathfinderMob mob) {
+		return prior && !mob.hasData(TFDataAttachments.LEASH_PATHFINDER_OVERRIDE);
 	}
 }

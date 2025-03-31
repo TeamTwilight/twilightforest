@@ -22,13 +22,16 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.GameType;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import twilightforest.TwilightForestMod;
+import tamaized.beanification.Autowired;
 import twilightforest.components.entity.TFPortalAttachment;
 import twilightforest.components.item.OreScannerData;
 import twilightforest.config.TFConfig;
 import twilightforest.entity.passive.QuestRam;
+import twilightforest.entity.passive.quest.ram.QuestingRamCurrentContext;
 import twilightforest.events.HostileMountEvents;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDataAttachments;
@@ -45,6 +48,9 @@ public class OverlayHandler {
 	private static final ResourceLocation QUESTING_RAM_X_SPRITE = TwilightForestMod.prefix("questing_ram_x");
 	private static final ResourceLocation FORTIFICATION_SHIELD_SPRITE = TwilightForestMod.prefix("fortification_shield");
 	public static final Map<Long, OreMeterInfoCache> ORE_METER_STAT_CACHE = new HashMap<>();
+
+	@Autowired(dist = Dist.CLIENT)
+	private static QuestingRamCurrentContext questingRamCurrentContext;
 
 	protected static void registerOverlays(RegisterGuiLayersEvent event) {
 		event.registerAbove(VanillaGuiLayers.CROSSHAIR, TwilightForestMod.prefix("quest_ram_indicator"), (graphics, partialTicks) -> {
@@ -111,7 +117,7 @@ public class OverlayHandler {
 		if (minecraft.options.getCameraType().isFirstPerson() && (minecraft.gameMode.getPlayerMode() != GameType.SPECTATOR || gui.canRenderCrosshairForSpectator(minecraft.hitResult)) && minecraft.crosshairPickEntity instanceof QuestRam ram) {
 			ItemStack stack = player.getInventory().getItem(player.getInventory().selected);
 			if (!stack.isEmpty()) {
-				for (var questEntry : TwilightForestMod.getQuests().getQuestingRam().questItems().entrySet()) {
+				for (var questEntry : questingRamCurrentContext.getContext().questItems().entrySet()) {
 					if (questEntry.getValue().test(stack)) {
 						RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 						int j = ((screenHeight - 1) / 2) - 11;

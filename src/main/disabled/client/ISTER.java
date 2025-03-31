@@ -19,6 +19,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.util.Mth;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -35,7 +36,7 @@ import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import twilightforest.TwilightForestMod;
-import twilightforest.beans.Autowired;
+import tamaized.beanification.Autowired;
 import twilightforest.block.*;
 import twilightforest.block.entity.*;
 import twilightforest.client.event.ClientEvents;
@@ -54,6 +55,7 @@ import twilightforest.components.item.SkullCandles;
 import twilightforest.config.TFConfig;
 import twilightforest.enums.BossVariant;
 import twilightforest.enums.extensions.TFItemDisplayContextEnumExtension;
+import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFItems;
@@ -75,8 +77,8 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 			return INSTANCE.get();
 		}
 	});
-	private final KeepsakeCasketBlockEntity skullChest = KeepsakeCasketBlockEntity.createSkullChestBE(BlockPos.ZERO, TFBlocks.SKULL_CHEST.get().defaultBlockState());
-	private final KeepsakeCasketBlockEntity skullCasket = KeepsakeCasketBlockEntity.createKeepsakeCasketBE(BlockPos.ZERO, TFBlocks.KEEPSAKE_CASKET.get().defaultBlockState());
+	private final SkullChestBlockEntity skullChest = new SkullChestBlockEntity(BlockPos.ZERO, TFBlocks.SKULL_CHEST.get().defaultBlockState());
+	private final KeepsakeCasketBlockEntity keepsakeCasket = new KeepsakeCasketBlockEntity(BlockPos.ZERO, TFBlocks.KEEPSAKE_CASKET.get().defaultBlockState());
 	private final Map<Block, TFChestBlockEntity> chestEntities = Util.make(new HashMap<>(), map -> {
 		makeInstance(map, TFBlocks.TWILIGHT_OAK_CHEST);
 		makeInstance(map, TFBlocks.CANOPY_CHEST);
@@ -102,6 +104,7 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 	private Map<SkullBlock.Type, SkullModelBase> skulls = SkullBlockRenderer.createSkullRenderers(Minecraft.getInstance().getEntityModels());
 	private final CandelabraBlockEntity candelabra = new CandelabraBlockEntity(BlockPos.ZERO, TFBlocks.CANDELABRA.get().defaultBlockState());
 	private final BrazierBlockEntity brazier = new BrazierBlockEntity(BlockPos.ZERO, TFBlocks.BRAZIER.get().defaultBlockState());
+	private final Map<CritterBlock, BlockEntity> critters = new HashMap<>();
 
 	// Use the cached INSTANCE.get instead
 	private ISTER() {
@@ -155,12 +158,15 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 					TrophyRenderer.render(null, 180.0F, trophy, variant, !minecraft.isPaused() ? ClientEvents.time + minecraft.getDeltaTracker().getRealtimeDeltaTicks() : 0, pose, buffers, light, camera);
 				}
 
-			} else if (block instanceof SkullChestBlock) {
+			} else if (block instanceof KeepsakeCasketBlock) {
 				int damage = stack.getOrDefault(TFDataComponents.CASKET_DAMAGE, 0);
 
-				BlockEntity chestEntity = block == TFBlocks.KEEPSAKE_CASKET.value() ? this.skullCasket : this.skullChest;
-				if (minecraft.getBlockEntityRenderDispatcher().getRenderer(chestEntity) instanceof SkullChestRenderer<?> renderer) {
+				if (minecraft.getBlockEntityRenderDispatcher().getRenderer(this.keepsakeCasket) instanceof SkullChestRenderer<?> renderer) {
 					renderer.renderCasket(0.0F, pose, buffers, light, overlay, renderer.getTextureLocation(damage), Direction.NORTH);
+				}
+			} else if (block instanceof SkullChestBlock) {
+				if (minecraft.getBlockEntityRenderDispatcher().getRenderer(this.skullChest) instanceof SkullChestRenderer<?> renderer) {
+					renderer.renderCasket(0.0F, pose, buffers, light, overlay, renderer.getTextureLocation(0), Direction.NORTH);
 				}
 			} else if (block instanceof TFChestBlock) {
 				minecraft.getBlockEntityRenderDispatcher().renderItem(this.chestEntities.get(block), pose, buffers, light, overlay);
@@ -200,10 +206,8 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 					minecraft.getBlockEntityRenderDispatcher().renderItem(copy, pose, buffers, light, overlay);
 				}
 			} else if (block instanceof CritterBlock critter) {
-				BlockEntity blockEntity = critter.newBlockEntity(BlockPos.ZERO, block.defaultBlockState());
-				if (blockEntity != null) {
-					minecraft.getBlockEntityRenderDispatcher().getRenderer(blockEntity).render(null, 0, pose, buffers, light, overlay);
-				}
+				var blockEntity = this.critters.computeIfAbsent(critter, critterBlock -> critterBlock.newBlockEntity(BlockPos.ZERO, critterBlock.defaultBlockState()));
+				minecraft.getBlockEntityRenderDispatcher().getRenderer(blockEntity).render(null, 0.0F, pose, buffers, light, overlay);
 			} else if (block instanceof JarBlock jarBlock) {
 				JarRenderer.renderJarModel(block.defaultBlockState(), minecraft.getBlockRenderer(), pose, buffers, light, overlay);
 				JarLid jarLid = stack.getComponents().get(TFDataComponents.JAR_LID.get());
@@ -222,11 +226,8 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 						bufferSource.endBatch();
 					}
 				}
-			} else if (block instanceof BrazierBlock brazierBlock) {
-				BlockEntity blockEntity = brazierBlock.newBlockEntity(BlockPos.ZERO, block.defaultBlockState());
-				if (blockEntity != null) {
-					minecraft.getBlockEntityRenderDispatcher().getRenderer(blockEntity).render(blockEntity, 0, pose, buffers, light, overlay);
-				}
+			} else if (block instanceof BrazierBlock) {
+				minecraft.getBlockEntityRenderDispatcher().renderItem(this.brazier, pose, buffers, light, overlay);
 			}
 		} else if (item instanceof KnightmetalShieldItem) {
 			pose.pushPose();
@@ -240,6 +241,7 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 			pose.scale(1.0F, -1.0F, -1.0F);
 			if (camera == ItemDisplayContext.GUI) {
 				pose.translate(0.5F, -0.1F, 0.0F);
+				pose.last().normal().rotate(Mth.PI * 0.5f, 0, 1, 0);
 				pose.mulPose(Axis.XP.rotationDegrees(30));
 				pose.mulPose(Axis.YP.rotationDegrees(45));
 			} else {

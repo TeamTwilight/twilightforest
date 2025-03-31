@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -521,6 +522,55 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		this.terrorcotta();
 
 		this.simpleBlock(TFBlocks.SINISTER_SPAWNER.value(), this.models().withExistingParent( "sinister_spawner", "block/spawner").texture("all", TwilightForestMod.prefix("block/sinister_spawner")).renderType(CUTOUT));
+
+		builtinEntity(TFBlocks.OMINOUS_CANDLE.get(), "minecraft:block/candle_lit");//FIXME
+		builtinEntity(TFBlocks.OMINOUS_WHITE_CANDLE.get(), "minecraft:block/candle_lit");
+		builtinEntity(TFBlocks.OMINOUS_ORANGE_CANDLE.get(), "minecraft:block/candle_lit");
+		builtinEntity(TFBlocks.OMINOUS_MAGENTA_CANDLE.get(), "minecraft:block/candle_lit");
+		builtinEntity(TFBlocks.OMINOUS_LIGHT_BLUE_CANDLE.get(), "minecraft:block/candle_lit");
+		builtinEntity(TFBlocks.OMINOUS_YELLOW_CANDLE.get(), "minecraft:block/candle_lit");
+		builtinEntity(TFBlocks.OMINOUS_LIME_CANDLE.get(), "minecraft:block/candle_lit");
+		builtinEntity(TFBlocks.OMINOUS_PINK_CANDLE.get(), "minecraft:block/candle_lit");
+		builtinEntity(TFBlocks.OMINOUS_GRAY_CANDLE.get(), "minecraft:block/candle_lit");
+		builtinEntity(TFBlocks.OMINOUS_LIGHT_GRAY_CANDLE.get(), "minecraft:block/candle_lit");
+		builtinEntity(TFBlocks.OMINOUS_CYAN_CANDLE.get(), "minecraft:block/candle_lit");
+		builtinEntity(TFBlocks.OMINOUS_PURPLE_CANDLE.get(), "minecraft:block/candle_lit");
+		builtinEntity(TFBlocks.OMINOUS_BLUE_CANDLE.get(), "minecraft:block/candle_lit");
+		builtinEntity(TFBlocks.OMINOUS_BROWN_CANDLE.get(), "minecraft:block/candle_lit");
+		builtinEntity(TFBlocks.OMINOUS_GREEN_CANDLE.get(), "minecraft:block/candle_lit");
+		builtinEntity(TFBlocks.OMINOUS_RED_CANDLE.get(), "minecraft:block/candle_lit");
+		builtinEntity(TFBlocks.OMINOUS_BLACK_CANDLE.get(), "minecraft:block/candle_lit");
+
+		ModelFile floor0 = this.models().withExistingParent(TFBlocks.OMINOUS_FIRE.getId().getPath() + "_floor0", ResourceLocation.withDefaultNamespace("block/template_fire_floor")).renderType(CUTOUT).texture("fire", blockTexture(TFBlocks.OMINOUS_FIRE.get()) + "_0");
+		ModelFile floor1 = this.models().withExistingParent(TFBlocks.OMINOUS_FIRE.getId().getPath() + "_floor1", ResourceLocation.withDefaultNamespace("block/template_fire_floor")).renderType(CUTOUT).texture("fire", blockTexture(TFBlocks.OMINOUS_FIRE.get()) + "_1");
+		ModelFile side0 = this.models().withExistingParent(TFBlocks.OMINOUS_FIRE.getId().getPath() + "_side0", ResourceLocation.withDefaultNamespace("block/template_fire_side")).renderType(CUTOUT).texture("fire", blockTexture(TFBlocks.OMINOUS_FIRE.get()) + "_0");
+		ModelFile side1 = this.models().withExistingParent(TFBlocks.OMINOUS_FIRE.getId().getPath() + "_side1", ResourceLocation.withDefaultNamespace("block/template_fire_side")).renderType(CUTOUT).texture("fire", blockTexture(TFBlocks.OMINOUS_FIRE.get()) + "_1");
+		ModelFile side_alt0 = this.models().withExistingParent(TFBlocks.OMINOUS_FIRE.getId().getPath() + "_side_alt0", ResourceLocation.withDefaultNamespace("block/template_fire_side_alt")).renderType(CUTOUT).texture("fire", blockTexture(TFBlocks.OMINOUS_FIRE.get()) + "_0");
+		ModelFile side_alt1 = this.models().withExistingParent(TFBlocks.OMINOUS_FIRE.getId().getPath() + "_side_alt1", ResourceLocation.withDefaultNamespace("block/template_fire_side_alt")).renderType(CUTOUT).texture("fire", blockTexture(TFBlocks.OMINOUS_FIRE.get()) + "_1");
+
+		getMultipartBuilder(TFBlocks.OMINOUS_FIRE.get())
+			.part().modelFile(floor0).nextModel()
+			.modelFile(floor1).addModel().end()
+
+			.part().modelFile(side0).nextModel()
+			.modelFile(side1).nextModel()
+			.modelFile(side_alt0).nextModel()
+			.modelFile(side_alt1).addModel().end()
+
+			.part().modelFile(side0).rotationY(90).nextModel()
+			.modelFile(side1).rotationY(90).nextModel()
+			.modelFile(side_alt0).rotationY(90).nextModel()
+			.modelFile(side_alt1).rotationY(90).addModel().end()
+
+			.part().modelFile(side0).rotationY(180).nextModel()
+			.modelFile(side1).rotationY(180).nextModel()
+			.modelFile(side_alt0).rotationY(180).nextModel()
+			.modelFile(side_alt1).rotationY(180).addModel().end()
+
+			.part().modelFile(side0).rotationY(270).nextModel()
+			.modelFile(side1).rotationY(270).nextModel()
+			.modelFile(side_alt0).rotationY(270).nextModel()
+			.modelFile(side_alt1).rotationY(270).addModel().end();
 	}
 
 	private void registerCoronationCarpet() {
@@ -1467,6 +1517,10 @@ public class BlockstateGenerator extends BlockModelBuilders {
 
 		ModelFile border = models().cubeColumn(TFBlocks.MAZESTONE_BORDER.getId().getPath(), brickTex, blockTexture(TFBlocks.MAZESTONE_BORDER.get()));
 		simpleBlock(TFBlocks.MAZESTONE_BORDER.get(), border);
+
+		simpleBlock(TFBlocks.MAZE_SLIME_BLOCK.get(), models().withExistingParent(TFBlocks.MAZE_SLIME_BLOCK.getId().getPath(), ResourceLocation.withDefaultNamespace("block/slime_block")).renderType(TRANSLUCENT)
+			.texture("particle", blockTexture(TFBlocks.MAZE_SLIME_BLOCK.get()))
+			.texture("texture", blockTexture(TFBlocks.MAZE_SLIME_BLOCK.get())));
 	}
 
 	private void lilyPad(Block b) {
@@ -1566,12 +1620,12 @@ public class BlockstateGenerator extends BlockModelBuilders {
 	private static String curvesSuffixForFacing(int blockRotation, Direction blockFace) {
 		int rotationForFace = switch (blockFace) {
 			case UP -> 2 - blockRotation;
-			case DOWN -> 1 + blockRotation;
+			case DOWN -> 3 + blockRotation;
 			case SOUTH -> switch (blockRotation) {
-				case 3 -> 2;
-				case 2 -> 1;
-				case 1 -> 3;
-				default -> 0;
+				case 3 -> 0;
+				case 2 -> 3;
+				case 1 -> 1;
+				default -> 2;
 			};
 			case WEST -> switch (blockRotation) {
 				case 3 -> 1;
@@ -1586,10 +1640,10 @@ public class BlockstateGenerator extends BlockModelBuilders {
 				default -> 1;
 			};
 			case EAST -> switch (blockRotation) {
-				case 3 -> 0;
-				case 2 -> 2;
-				case 1 -> 1;
-				default -> 3;
+				case 3 -> 2;
+				case 2 -> 0;
+				case 1 -> 3;
+				default -> 1;
 			};
 		};
 
@@ -1614,7 +1668,10 @@ public class BlockstateGenerator extends BlockModelBuilders {
 
 	@NotNull
 	private static String linesSuffixForFacing(boolean blockRotation, Direction blockFace) {
-		return (blockFace.getAxis() == Direction.Axis.Z) != blockRotation ? "_a" : "_b";
+		Vec3i normal = blockFace.getNormal();
+		int axisDirection = normal.getX() + normal.getY() + normal.getZ();
+		// Biblically accurate XOR
+		return axisDirection > 0 == ((blockFace.getAxis() == Direction.Axis.Z) != blockRotation) ? "_a" : "_b";
 	}
 
 	private void hollowLogs(Block originalLog, Block strippedLog, DeferredHolder<Block, HorizontalHollowLogBlock> horizontalHollowLog, DeferredHolder<Block, VerticalHollowLogBlock> verticalHollowLog, DeferredHolder<Block, ClimbableHollowLogBlock> climbableHollowLog, ModelFile emptyLog, ModelFile mossLog, ModelFile grassLog, ModelFile snowLog, ModelFile hollowLog, ModelFile vineLog, ModelFile ladderLog) {

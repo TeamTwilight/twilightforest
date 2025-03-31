@@ -18,7 +18,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProc
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import twilightforest.TwilightForestMod;
-import twilightforest.beans.Autowired;
+import tamaized.beanification.Autowired;
 import twilightforest.data.tags.CustomTagGenerator;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
@@ -48,8 +48,8 @@ public final class LichTowerSegment extends TwilightJigsawPiece implements Piece
 		this.putGallery = compoundTag.getBoolean("put_gallery");
 	}
 
-	public LichTowerSegment(StructureTemplateManager structureManager, int genDepth, JigsawPlaceContext jigsawContext, boolean putMobBridge, boolean putWings, boolean putGallery) {
-		super(TFStructurePieceTypes.LICH_TOWER_SEGMENT.get(), genDepth, structureManager, TwilightForestMod.prefix("lich_tower/tower_slice"), jigsawContext);
+	public LichTowerSegment(StructureTemplateManager structureManager, int genDepth, JigsawPlaceContext jigsawContext, boolean putMobBridge, boolean putWings, boolean putGallery, ResourceLocation template) {
+		super(TFStructurePieceTypes.LICH_TOWER_SEGMENT.get(), genDepth, structureManager, template, jigsawContext);
 
 		LichTowerUtil.addDefaultProcessors(this.placeSettings);
 		stairDecay(this.genDepth, this.placeSettings);
@@ -60,7 +60,7 @@ public final class LichTowerSegment extends TwilightJigsawPiece implements Piece
 	}
 
 	private static void stairDecay(int depth, StructurePlaceSettings settings) {
-		int decayLevel = Mth.ceil((depth - 3) * 0.25);
+		int decayLevel = Mth.ceil((depth - 3) * 0.5);
 
 		if (decayLevel >= 0) {
 			StructureProcessor[] stairDecayProcessors = lichTowerUtil.getStairDecayProcessors();
@@ -93,7 +93,7 @@ public final class LichTowerSegment extends TwilightJigsawPiece implements Piece
 
 			boolean putWings = stackIndex > segments >> 1;
 			boolean putGallery = stackIndex == segments - 1;
-			LichTowerSegment towerSegment = new LichTowerSegment(structureManager, priorPiece.getGenDepth() + 1, placeableJunction, mobBridge == 0, putWings, putGallery);
+			LichTowerSegment towerSegment = new LichTowerSegment(structureManager, priorPiece.getGenDepth() + 1, placeableJunction, mobBridge == 0, putWings, putGallery, TwilightForestMod.prefix("lich_tower/tower_slice"));
 
 			pieceAccessor.addPiece(towerSegment);
 			pieces.add(towerSegment); // Add to list for adding children later, must build upwards to the boss room before beginning Sidetowers from the base & upwards too
@@ -114,6 +114,10 @@ public final class LichTowerSegment extends TwilightJigsawPiece implements Piece
 			StructurePiece bossRoom = new LichBossRoom(structureManager, bossRoomJunction);
 			pieceAccessor.addPiece(bossRoom);
 			bossRoom.addChildren(priorPiece, pieceAccessor, random);
+
+			StructurePiece boundary = new LichTowerSegment(structureManager, priorPiece.getGenDepth() + 1, bossRoomJunction.copy(), false, false, false, TwilightForestMod.prefix("lich_tower/tower_boss_boundary"));
+			pieceAccessor.addPiece(boundary);
+			boundary.addChildren(priorPiece, pieceAccessor, random);
 		}
 
 		if (pieces.isEmpty())
@@ -149,8 +153,12 @@ public final class LichTowerSegment extends TwilightJigsawPiece implements Piece
 			}
 			case "twilightforest:mob_bridge" -> {
 				if (this.putMobBridge) {
+					FrontAndTop orientation = connection.orientation();
+					// Either keep match jigsaw rotation or spin it 180. This will "flip" a few bridges
+					FrontAndTop forPlacement = random.nextBoolean() ? orientation : FrontAndTop.fromFrontAndTop(orientation.front(), orientation.top().getOpposite());
+
 					ResourceLocation mobBridgeLocation = lichTowerUtil.rollRandomMobBridge(random);
-					JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(this.templatePosition(), connection.pos(), connection.orientation(), this.structureManager, mobBridgeLocation, "twilightforest:mob_bridge", random);
+					JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(this.templatePosition(), connection.pos(), forPlacement, this.structureManager, mobBridgeLocation, "twilightforest:mob_bridge", random);
 
 					if (placeableJunction != null) {
 						StructurePiece mobBridgePiece = new LichTowerSpawnerBridge(this.genDepth + 1, this.structureManager, mobBridgeLocation, placeableJunction, random.nextBoolean());

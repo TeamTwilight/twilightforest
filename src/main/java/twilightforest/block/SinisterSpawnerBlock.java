@@ -107,7 +107,7 @@ public class SinisterSpawnerBlock extends BaseEntityBlock {
 				List<ParticleOptions> particleOptions = this.particlesFromItem(stack);
 
 				if (!particleOptions.isEmpty()) {
-					logic.setParticles(particleOptions);
+					logic.setParticles(particleOptions, true);
 
 					return InteractionResult.SUCCESS;
 				}

@@ -1,13 +1,13 @@
 package twilightforest.util;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import twilightforest.TwilightForestMod;
-import twilightforest.init.TFBlocks;
-import twilightforest.init.TFEntities;
-import twilightforest.init.TFItems;
+import twilightforest.init.*;
 
 public class TFRemapper {
 
@@ -15,6 +15,7 @@ public class TFRemapper {
 		DeferredRegister<Block> blockReg = TFBlocks.BLOCKS;
 		DeferredRegister<EntityType<?>> entityReg = TFEntities.ENTITY_TYPES;
 		DeferredRegister<Item> itemReg = TFItems.ITEMS;
+		DeferredRegister<StructurePieceType> pieceTypeReg = TFStructurePieceTypes.STRUCTURE_PIECE_TYPES;
 
 		remapEntryFromRegistries("yeti_trophy", "alpha_yeti_trophy", blockReg, itemReg);
 		remapEntryFromRegistries("yeti_wall_trophy", "alpha_yeti_wall_trophy", blockReg, itemReg);
@@ -182,6 +183,12 @@ public class TFRemapper {
 		remapEntry(entityReg, "goblin_knight_upper", "upper_goblin_knight");
 		remapEntry(entityReg, "goblin_knight_lower", "lower_goblin_knight");
 		remapEntry(entityReg, "yeti_alpha", "alpha_yeti");
+
+		remapEntry(pieceTypeReg, "TFNCTr", "TFNCTe"); // Terrace Brazier
+		remapEntry(pieceTypeReg, "TFNCDu", "TFNCTe"); // Terrace Duct
+		remapEntry(pieceTypeReg, "TFNCSt", "TFNCTe"); // Terrace Statue
+
+		TFStructureProcessors.STRUCTURE_PROCESSORS.addAlias(TwilightForestMod.prefix("meta_block_processor"), ResourceLocation.withDefaultNamespace("jigsaw_replacement"));
 	}
 
 	private static void remapEntry(DeferredRegister<?> registry, String oldId, String newId) {

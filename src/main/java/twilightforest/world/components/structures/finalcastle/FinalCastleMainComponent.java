@@ -37,23 +37,10 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 		this.setOrientation(Direction.SOUTH);
 		this.spawnListIndex = 1; // main monsters
 
-		x = ((x + 127) >> 8) << 8;
-		z = ((z + 127) >> 8) << 8;
-
 		this.boundingBox = BoundingBoxUtils.getComponentToAddBoundingBox(x, y, z, -24, 120, -24, 48, 40, 48, Direction.SOUTH, false);
 
-		BlockPos cc = LegacyLandmarkPlacements.getNearestCenterXZ(x >> 4, z >> 4);
-
-		int cx = (x >> 8) << 8;
-		int cz = (z >> 8) << 8;
-
-		//TwilightForestMod.LOGGER.debug("Making castle at {}, {}. center is {}, {}", x, z, cc.getX(), cc.getZ());
-		//TwilightForestMod.LOGGER.debug("Natural center at {}, {}", cx, cz);
-
 		// decorator
-		if (this.deco == null) {
-			this.deco = new StructureTFDecoratorCastle();
-		}
+		this.deco = new StructureTFDecoratorCastle();
 	}
 
 	@Override

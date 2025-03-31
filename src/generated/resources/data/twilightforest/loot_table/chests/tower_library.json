@@ -116,8 +116,8 @@
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 56.0,
-                "min": 24.0
+                "max": 10.0,
+                "min": 5.0
               },
               "function": "minecraft:set_count"
             }
@@ -133,6 +133,22 @@
         {
           "type": "minecraft:empty",
           "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 2.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "twilightforest:brittle_potion_flask",
+          "weight": 2
         },
         {
           "type": "minecraft:item",
@@ -178,6 +194,19 @@
           ],
           "name": "minecraft:book",
           "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "enchantments": {
+                "twilightforest:renewal": 1.0
+              },
+              "function": "minecraft:set_enchantments"
+            }
+          ],
+          "name": "minecraft:book"
         }
       ],
       "rolls": 1.0

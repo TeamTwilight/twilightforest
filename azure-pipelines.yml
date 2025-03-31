@@ -10,6 +10,7 @@ variables:
   artifactName: 'Release'
   GRADLE_USER_HOME: $(Pipeline.Workspace)/.gradle
   SKIP_BUILD: $[contains(variables['Build.SourceBranch'], 'refs/heads/no-build/')]
+  SKIP_DISCORD: 'false'
   ${{ if not(contains(variables['Build.SourceBranch'], 'refs/heads/no-build/')) }}:
     revision: $[counter('release-number', 0)]
 
@@ -159,7 +160,7 @@ steps:
       messageType: 'embeds'
       embeds: |
         [$(DiscordMessage)]
-    condition: and(eq(variables.SKIP_BUILD, 'false'), eq(variables['CreateArtifacts'], 'True'))
+    condition: and(and(eq(variables.SKIP_BUILD, 'false'), eq(variables['CreateArtifacts'], 'True')), eq(variables.SKIP_DISCORD, 'false'))
 
   - powershell: |
       Write-Host "##vso[task.setvariable variable=RunMavenPublishTask]True"

@@ -9,17 +9,13 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.event.EventHooks;
-import twilightforest.TwilightForestMod;
 import twilightforest.init.TFDataMaps;
-import twilightforest.init.TFSounds;
+import twilightforest.util.entities.EntityUtil;
 
 import javax.annotation.Nonnull;
-import java.util.UUID;
 
 public class TransformPowderItem extends Item {
 
@@ -33,7 +29,7 @@ public class TransformPowderItem extends Item {
 			return InteractionResult.PASS;
 		}
 
-		return transformEntityIfPossible(player.level(), target, player.getItemInHand(hand), !player.isCreative()) ? InteractionResult.SUCCESS : InteractionResult.PASS;
+		return transformEntityIfPossible(target, player.getItemInHand(hand), !player.isCreative()) ? InteractionResult.SUCCESS : InteractionResult.PASS;
 	}
 
 	@Nonnull
@@ -55,7 +51,7 @@ public class TransformPowderItem extends Item {
 		return InteractionResult.SUCCESS;
 	}
 
-	public static boolean transformEntityIfPossible(Level level, LivingEntity target, ItemStack powder, boolean shrinkStack) {
+	public static boolean transformEntityIfPossible(LivingEntity target, ItemStack powder, boolean shrinkStack) {
 		//dont transform tamed animals that have owners
 		if (target instanceof OwnableEntity ownable && ownable.getOwner() != null) return false;
 
@@ -93,13 +89,7 @@ public class TransformPowderItem extends Item {
 			if (shrinkStack) {
 				powder.shrink(1);
 			}
-
-			if (target instanceof Mob mob) {
-				mob.spawnAnim();
-				mob.spawnAnim();
-			}
-			target.playSound(TFSounds.POWDER_USE.get(), 1.0F + target.level().getRandom().nextFloat(), target.level().getRandom().nextFloat() * 0.7F + 0.3F);
-			return true;
+			return flag;
 		}
 		return false;
 	}

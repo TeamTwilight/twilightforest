@@ -16,6 +16,7 @@ import net.minecraft.world.level.Level;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFRecipes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ScepterRepairRecipe extends CustomRecipe {
@@ -34,39 +35,47 @@ public class ScepterRepairRecipe extends CustomRecipe {
 	@Override
 	public boolean matches(CraftingInput input, Level level) {
 		ItemStack scepter = null;
-		boolean hasEssence = false;
-		int ingredients = 0;
-		for (int i = 0; i < input.size(); ++i) {
-			ItemStack stackInQuestion = input.getItem(i);
-			if (!stackInQuestion.isEmpty()) {
-				if (stackInQuestion.is(this.scepter) && stackInQuestion.getDamageValue() > 0) {
-					scepter = stackInQuestion;
-				} else if (stackInQuestion.is(TFItems.EXANIMATE_ESSENCE)) {
-					if (hasEssence) return false; //only 1 essence
-					hasEssence = true;
-				} else if (this.repairItems.size() == 1 && this.repairItems.getFirst().test(stackInQuestion)) {
-					ingredients++;
-				} else if (this.repairItems.size() == 1 && !this.repairItems.getFirst().test(stackInQuestion)) {
-					break;
+		if (this.repairItems.size() == 1) {
+			int ingredients = 0;
+			for (int i = 0; i < input.size(); ++i) {
+				ItemStack stackInQuestion = input.getItem(i);
+				if (!stackInQuestion.isEmpty()) {
+					if (stackInQuestion.is(this.scepter) && stackInQuestion.getDamageValue() > 0) {
+						if (scepter != null) return false;
+						scepter = stackInQuestion;
+					} else if (this.repairItems.getFirst().test(stackInQuestion)) {
+						ingredients++;
+					} else {
+						return false;
+					}
 				}
 			}
+			int duraRes = ingredients * this.getRepairDurability();
+			return scepter != null && (ingredients > 0 && (duraRes + (scepter.getMaxDamage() - scepter.getDamageValue())) < scepter.getMaxDamage());
+		} else {
+			for (int i = 0; i < input.size(); ++i) {
+				ItemStack stackInQuestion = input.getItem(i);
+				if (!stackInQuestion.isEmpty()) {
+					if (stackInQuestion.is(this.scepter) && stackInQuestion.getDamageValue() > 0) {
+						if (scepter != null) return false;
+						scepter = stackInQuestion;
+					}
+				}
+			}
+			return scepter != null && this.repairItems.size() == input.ingredientCount() - 1 && input.stackedContents().canCraft(this, null);
 		}
-		int duraRes = ingredients * this.durability;
-		return scepter != null && (hasEssence || (ingredients > 0 && (duraRes + (scepter.getMaxDamage() - scepter.getDamageValue())) < scepter.getMaxDamage()) || input.stackedContents().canCraft(this, null));
+
 	}
 
 	@Override
 	public ItemStack assemble(CraftingInput input, HolderLookup.Provider registries) {
 		ItemStack scepter = null;
-		boolean hasEssence = false;
 		int ingredients = 0;
 		for (int i = 0; i < input.size(); ++i) {
 			ItemStack stackInQuestion = input.getItem(i);
 			if (!stackInQuestion.isEmpty()) {
 				if (stackInQuestion.is(this.scepter) && stackInQuestion.getDamageValue() > 0) {
 					scepter = stackInQuestion;
-				} else if (stackInQuestion.is(TFItems.EXANIMATE_ESSENCE)) {
-					hasEssence = true;
 				} else if (this.repairItems.size() == 1 && this.repairItems.getFirst().test(stackInQuestion)) {
 					ingredients++;
 				}
@@ -74,23 +83,28 @@ public class ScepterRepairRecipe extends CustomRecipe {
 		}
 
 		if (scepter != null) {
-			if (hasEssence) {
-				return new ItemStack(this.scepter);
-			} else if (ingredients > 0) {
-				var copy = new ItemStack(this.scepter);
-				copy.setDamageValue(scepter.getDamageValue() - (this.durability * ingredients));
-				return copy;
+			var copy = new ItemStack(this.scepter);
+			copy.applyComponents(scepter.getComponents());
+			if (ingredients > 0) {
+				copy.setDamageValue(scepter.getDamageValue() - (this.getRepairDurability() * ingredients));
 			} else {
-				var copy = new ItemStack(this.scepter);
 				copy.setDamageValue(scepter.getDamageValue() - this.durability);
-				return copy;
 			}
+			return copy;
 		}
 		return ItemStack.EMPTY;
 	}
 
 	public Item getScepter() {
 		return this.scepter;
+	}
+
+	public List<Ingredient> getRepairItems() {
+		return this.repairItems;
+	}
+
+	public int getRepairDurability() {
+		return this.durability;
 	}
 
 	@Override

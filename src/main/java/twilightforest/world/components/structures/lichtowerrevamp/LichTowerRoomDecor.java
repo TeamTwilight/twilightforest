@@ -19,15 +19,16 @@ import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
-import twilightforest.beans.Autowired;
+import tamaized.beanification.Autowired;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.TFStructureHelper;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.util.jigsaw.JigsawRecord;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
 import twilightforest.world.components.structures.TwilightTemplateStructurePiece;
+import twilightforest.world.components.structures.util.SortablePiece;
 
-public class LichTowerRoomDecor extends TwilightJigsawPiece implements PieceBeardifierModifier {
+public class LichTowerRoomDecor extends TwilightJigsawPiece implements PieceBeardifierModifier, SortablePiece {
 	@Autowired
 	private static LichTowerUtil lichTowerUtil;
 
@@ -94,5 +95,10 @@ public class LichTowerRoomDecor extends TwilightJigsawPiece implements PieceBear
 	@Override
 	public int getGroundLevelDelta() {
 		return 0;
+	}
+
+	@Override
+	public int getSortKey() {
+		return 2; // This piece must generate after LichTowerBase, which has 1
 	}
 }

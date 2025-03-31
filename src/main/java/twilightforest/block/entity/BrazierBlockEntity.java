@@ -10,17 +10,22 @@ import twilightforest.init.TFBlockEntities;
 
 public class BrazierBlockEntity extends BlockEntity {
 
+	private static int tick = 0;
+
 	public BrazierBlockEntity(BlockPos pos, BlockState blockState) {
 		super(TFBlockEntities.BRAZIER.get(), pos, blockState);
 	}
 
 	public static void tick(Level level, BlockPos pos, BlockState state, BrazierBlockEntity entity) {
 		if (level.isClientSide()) {
-			if (state.getValue(BrazierBlock.LIGHT).isLit()) {
-				BlockPos above = pos.above();
-				level.addParticle(ParticleTypes.SMOKE, above.getX() + level.random.nextFloat() * 0.4F + 0.3F, above.getY() + 0.9F, above.getZ() + level.random.nextFloat() * 0.4F + 0.3F,
-					0.0D, 0.05D, 0.0D);
+			if (state.getValue(BrazierBlock.LIGHT).isLit() && state.getValue(BrazierBlock.LIGHT).getSmokeRate() > 0) {
+				if (BrazierBlockEntity.tick % state.getValue(BrazierBlock.LIGHT).getSmokeRate() == 0) {
+					BlockPos above = pos.above();
+					level.addParticle(ParticleTypes.SMOKE, above.getX() + level.random.nextFloat() * 0.4F + 0.3F, above.getY() + 0.9F, above.getZ() + level.random.nextFloat() * 0.4F + 0.3F,
+						0.0D, 0.05D, 0.0D);
+				}
 			}
+			BrazierBlockEntity.tick++;
 		}
 	}
 }

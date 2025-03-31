@@ -9,6 +9,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.KeepsakeCasketBlock;
+import twilightforest.client.model.TFModelLayers;
 import twilightforest.init.TFBlocks;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public class KeepsakeCasketRenderer<T extends BlockEntity & LidBlockEntity> exte
 	);
 
 	public KeepsakeCasketRenderer(BlockEntityRendererProvider.Context context) {
-		super(context, TFBlocks.KEEPSAKE_CASKET.get().defaultBlockState());
+		super(context, TFModelLayers.KEEPSAKE_CASKET);
 	}
 
 	@NotNull

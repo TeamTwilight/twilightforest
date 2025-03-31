@@ -4,6 +4,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.SpawnData;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import snownee.jade.api.BlockAccessor;
 import snownee.jade.api.IBlockComponentProvider;
@@ -26,9 +27,10 @@ public enum ChiseledBookshelfSpawnProvider implements IBlockComponentProvider {
 			if (accessor.getPlayer().isCreative()) {
 				BlockEntity te = accessor.getBlockEntity();
 				if (te instanceof ChiseledCanopyShelfBlockEntity shelf) {
-					BookshelfSpawner logic = shelf.getSpawner();
-					CompoundTag tag = logic.getNextSpawnData().entityToSpawn();
-					EntityType.by(tag).ifPresent(type -> tooltip.replace(ResourceLocation.fromNamespaceAndPath("jade", "object_name"), IThemeHelper.get().title(Component.translatable("jade.spawner", accessor.getBlock().getName().getString(), type.getDescription().getString()))));
+					SpawnData logic = shelf.getSpawner().getNextSpawnData();
+					if (logic != null) {
+						EntityType.by(logic.entityToSpawn()).ifPresent(type -> tooltip.replace(ResourceLocation.fromNamespaceAndPath("jade", "object_name"), IThemeHelper.get().title(Component.translatable("jade.spawner", accessor.getBlock().getName().getString(), type.getDescription().getString()))));
+					}
 				}
 			}
 		}

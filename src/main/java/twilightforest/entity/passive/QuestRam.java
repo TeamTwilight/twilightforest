@@ -36,9 +36,10 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
+import tamaized.beanification.Autowired;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.entity.ai.goal.QuestRamEatWoolGoal;
+import twilightforest.entity.passive.quest.ram.QuestingRamCurrentContext;
 import twilightforest.init.TFAdvancements;
 import twilightforest.init.TFSounds;
 import twilightforest.init.TFStructures;
@@ -48,6 +49,9 @@ import twilightforest.util.landmarks.LandmarkUtil;
 import java.util.Optional;
 
 public class QuestRam extends Animal implements EnforcedHomePoint {
+
+	@Autowired
+	private static QuestingRamCurrentContext questingRamCurrentContext;
 
 	private static final EntityDataAccessor<Integer> DATA_COLOR = SynchedEntityData.defineId(QuestRam.class, EntityDataSerializers.INT);
 	private static final EntityDataAccessor<Boolean> DATA_REWARDED = SynchedEntityData.defineId(QuestRam.class, EntityDataSerializers.BOOLEAN);
@@ -72,7 +76,7 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 	}
 
 	public boolean isItemTempting(ItemStack stack) {
-		for (var questEntry : TwilightForestMod.getQuests().getQuestingRam().questItems().entrySet()) {
+		for (var questEntry : questingRamCurrentContext.getContext().questItems().entrySet()) {
 			if (questEntry.getValue().test(stack)) {
 				DyeColor color = questEntry.getKey();
 				return color != null && !this.isColorPresent(color);
@@ -129,7 +133,7 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 	private void rewardQuest(ServerLevel level) {
 		// todo flesh the context out more
 		LootParams ctx = new LootParams.Builder((ServerLevel) this.level()).withParameter(LootContextParams.THIS_ENTITY, this).create(LootContextParamSets.PIGLIN_BARTER);
-		ObjectArrayList<ItemStack> rewards = this.level().getServer().reloadableRegistries().getLootTable(TwilightForestMod.getQuests().getQuestingRam().lootTable()).getRandomItems(ctx);
+		ObjectArrayList<ItemStack> rewards = this.level().getServer().reloadableRegistries().getLootTable(questingRamCurrentContext.getContext().lootTable()).getRandomItems(ctx);
 		rewards.forEach(stack -> this.spawnAtLocation(level, stack, 1.0F));
 
 		for (ServerPlayer player : this.level().getEntitiesOfClass(ServerPlayer.class, getBoundingBox().inflate(16.0D, 16.0D, 16.0D))) {
@@ -143,7 +147,7 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 	public InteractionResult interactAt(Player player, Vec3 vec, InteractionHand hand) {
 		ItemStack currentItem = player.getItemInHand(hand);
 
-		if (this.tryAccept(currentItem)) {
+		if (!level().isClientSide() && this.tryAccept(currentItem)) {
 			currentItem.consume(1, player);
 
 			return InteractionResult.SUCCESS;
@@ -153,7 +157,7 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 	}
 
 	public boolean tryAccept(ItemStack stack) {
-		for (var questEntry : TwilightForestMod.getQuests().getQuestingRam().questItems().entrySet()) {
+		for (var questEntry : questingRamCurrentContext.getContext().questItems().entrySet()) {
 			if (questEntry.getValue().test(stack)) {
 				DyeColor color = questEntry.getKey();
 				if (color != null && !this.isColorPresent(color)) {

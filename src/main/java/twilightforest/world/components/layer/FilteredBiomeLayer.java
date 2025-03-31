@@ -13,8 +13,8 @@ import twilightforest.world.components.layer.vanillalegacy.Area;
 import twilightforest.world.components.layer.vanillalegacy.BiomeLayerFactory;
 import twilightforest.world.components.layer.vanillalegacy.BiomeLayerType;
 import twilightforest.world.components.layer.vanillalegacy.area.LazyArea;
-import twilightforest.world.components.layer.vanillalegacy.context.Context;
 import twilightforest.world.components.layer.vanillalegacy.context.LazyAreaContext;
+import twilightforest.world.components.layer.vanillalegacy.context.RandomContext;
 import twilightforest.world.components.layer.vanillalegacy.traits.AreaTransformer2;
 import twilightforest.world.components.layer.vanillalegacy.traits.DimensionOffset0Transformer;
 
@@ -22,7 +22,7 @@ import java.util.function.LongFunction;
 
 public record FilteredBiomeLayer(ResourceKey<Biome> biomeFirst) implements AreaTransformer2, DimensionOffset0Transformer {
 	@Override
-	public ResourceKey<Biome> applyPixel(Context context, Area area1, Area area2, int x, int z) {
+	public ResourceKey<Biome> applyPixel(RandomContext randomContext, Area area1, Area area2, int x, int z) {
 		ResourceKey<Biome> riverInputs = area2.getBiome(this.getParentX(x), this.getParentY(z));
 
 		if (riverInputs == this.biomeFirst) {

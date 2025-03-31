@@ -19,7 +19,7 @@ import net.minecraft.server.ReloadableServerRegistries;
 import net.minecraft.world.level.storage.loot.LootTable;
 import twilightforest.block.entity.spawner.SinisterSpawnerBlockEntity;
 
-@twilightforest.beans.Component
+@tamaized.beanification.Component
 public class SinisterSpawnerCommand {
 	// Copied from LootCommand.SUGGEST_LOOT_TABLE
 	public static final SuggestionProvider<CommandSourceStack> SUGGEST_LOOT_TABLE = (context, builder) -> {
@@ -42,7 +42,7 @@ public class SinisterSpawnerCommand {
 		BlockPos pos = BlockPosArgument.getLoadedBlockPos(context, "pos");
 
 		if (context.getSource().getLevel().getBlockEntity(pos) instanceof SinisterSpawnerBlockEntity entity) {
-			if (entity.addParticle(options))
+			if (entity.addParticle(options, true))
 				return 1;
 		}
 
@@ -54,7 +54,7 @@ public class SinisterSpawnerCommand {
 		BlockPos pos = BlockPosArgument.getLoadedBlockPos(context, "pos");
 
 		if (context.getSource().getLevel().getBlockEntity(pos) instanceof SinisterSpawnerBlockEntity entity) {
-			if (entity.removeParticle(options))
+			if (entity.removeParticle(options, true))
 				return 1;
 		}
 

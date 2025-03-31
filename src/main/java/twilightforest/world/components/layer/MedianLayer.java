@@ -12,8 +12,8 @@ import twilightforest.world.components.layer.vanillalegacy.Area;
 import twilightforest.world.components.layer.vanillalegacy.BiomeLayerFactory;
 import twilightforest.world.components.layer.vanillalegacy.BiomeLayerType;
 import twilightforest.world.components.layer.vanillalegacy.area.LazyArea;
-import twilightforest.world.components.layer.vanillalegacy.context.BigContext;
 import twilightforest.world.components.layer.vanillalegacy.context.LazyAreaContext;
+import twilightforest.world.components.layer.vanillalegacy.context.RandomContext;
 import twilightforest.world.components.layer.vanillalegacy.traits.AreaTransformer1;
 
 import java.util.function.LongFunction;
@@ -23,7 +23,7 @@ public enum MedianLayer implements AreaTransformer1 {
 
 	@SuppressWarnings({"rawtypes", "unchecked"})
 	@Override
-	public ResourceKey<Biome> applyPixel(BigContext<?> context, Area layer, int x, int z) {
+	public ResourceKey<Biome> applyPixel(RandomContext randomContext, Area layer, int x, int z) {
 		ResourceKey[] biomes = new ResourceKey[9];
 
 		for (int pos = 0; pos < 9; pos++) {
@@ -48,7 +48,7 @@ public enum MedianLayer implements AreaTransformer1 {
 			}
 
 			// If there are two biomes with same dominating quantity, then randomly pick unless it is the central biome.
-			if (biomeRecordCount == iterationQuantity && (index == 5 || (biomeRecordIndex != 5 && context.nextRandom(2) == 0))) {
+			if (biomeRecordCount == iterationQuantity && (index == 5 || (biomeRecordIndex != 5 && randomContext.nextRandom(2) == 0))) {
 				biomeRecordIndex = index;
 			}
 
