@@ -2,6 +2,6 @@
   "parent": "minecraft:block/cube_all",
   "render_type": "minecraft:cutout_mipped",
   "textures": {
-    "all": "twilightforest:block/beanstalk_leaves"
+    "all": "minecraft:block/azalea_leaves"
   }
 }

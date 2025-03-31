@@ -5,15 +5,19 @@ import net.minecraft.client.data.models.ItemModelOutput;
 import net.minecraft.client.data.models.blockstates.*;
 import net.minecraft.client.data.models.model.*;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.PipeBlock;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.CastleDoorBlock;
+import twilightforest.block.ThornsBlock;
 import twilightforest.client.model.block.connected.ConnectedTextureBuilder;
 import twilightforest.client.model.block.forcefield.ForceFieldModel;
 import twilightforest.client.model.block.forcefield.ForceFieldModelBuilder;
 import twilightforest.data.models.TFBlockModelTemplates;
 import twilightforest.data.models.TFTextureMapping;
+import twilightforest.data.models.TFTextureSlot;
 import twilightforest.init.TFBlocks;
 
 import java.util.function.BiConsumer;
@@ -29,18 +33,30 @@ public abstract class BlockModelBuilders extends BlockModelGenerators {
 	@Override
 	public abstract void run();
 
+	public void wrapBlockItem(Block block, Consumer<Block> blockRegistry) {
+		blockRegistry.accept(block);
+		this.createBlockItem(block);
+	}
+
+	public void createBlockItem(Block block) {
+		this.registerSimpleItemModel(block, BuiltInRegistries.BLOCK.getKey(block).withPrefix("block/"));
+	}
+
 	public void bossSpawner(Block block) {
-		TextureMapping texturemapping = TextureMapping.cube(TwilightForestMod.prefix("boss_spawner"));
-		this.blockStateOutput.accept(createSimpleBlock(block, ModelTemplates.CUBE_ALL_INNER_FACES.create(block, texturemapping, this.modelOutput)));
+		TextureMapping texturemapping = TextureMapping.cube(TwilightForestMod.prefix("block/boss_spawner"));
+		this.blockStateOutput.accept(createSimpleBlock(block, ModelTemplates.CUBE_ALL_INNER_FACES.extend().renderType("cutout").build().create(block, texturemapping, this.modelOutput)));
+		this.createBlockItem(block);
 	}
 
 	public void basicCtmBlock(Block block) {
 		this.blockStateOutput.accept(createSimpleBlock(block, TFBlockModelTemplates.CTM_NO_BASE.extend().customLoader(ConnectedTextureBuilder::new, builder -> builder.connectsTo(block)).build().create(block, TFTextureMapping.ctmBlock(block), this.modelOutput)));
+		this.createBlockItem(block);
 	}
 
 	public void castleDoor(Block block) {
-		Function<Boolean, ResourceLocation> door = bool -> TFBlockModelTemplates.CTM.extend().customLoader(ConnectedTextureBuilder::new, builder -> builder.connectsTo(TFBlocks.BLUE_CASTLE_DOOR.get(), TFBlocks.PINK_CASTLE_DOOR.get(), TFBlocks.VIOLET_CASTLE_DOOR.get(), TFBlocks.YELLOW_CASTLE_DOOR.get()).setOverlayEmissivity(15).setOverlayTintIndex(0)).renderType("cutout").build().createWithSuffix(block, bool ? "_vanished" : "", TFTextureMapping.ctmBlock(TwilightForestMod.prefix("block/castle_door" + (bool ? "_vanished" : "")), TwilightForestMod.prefix("castle_door_runes")), this.modelOutput);
+		Function<Boolean, ResourceLocation> door = bool -> TFBlockModelTemplates.CTM.extend().customLoader(ConnectedTextureBuilder::new, builder -> builder.connectsTo(TFBlocks.BLUE_CASTLE_DOOR.get(), TFBlocks.PINK_CASTLE_DOOR.get(), TFBlocks.VIOLET_CASTLE_DOOR.get(), TFBlocks.YELLOW_CASTLE_DOOR.get()).setOverlayEmissivity(15).setOverlayTintIndex(0)).renderType("cutout").build().createWithSuffix(block, bool ? "_vanished" : "", TFTextureMapping.ctmBlock(TwilightForestMod.prefix("block/castle_door" + (bool ? "_vanished" : "")), TwilightForestMod.prefix("block/castle_door_runes")), this.modelOutput);
 		this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block).with(PropertyDispatch.property(CastleDoorBlock.VANISHED).select(true, Variant.variant().with(VariantProperties.MODEL, door.apply(true))).select(false, Variant.variant().with(VariantProperties.MODEL, door.apply(false)))));
+		this.createBlockItem(block);
 	}
 
 	public void stairsBlock(Block block) {
@@ -52,12 +68,36 @@ public abstract class BlockModelBuilders extends BlockModelGenerators {
 		this.registerSimpleItemModel(block, straight);
 	}
 
+	public void coolerStairsBlock(Block block, ResourceLocation middle) {
+		var mapping = TextureMapping.cube(block).put(TFTextureSlot.MIDDLE, middle);
+		ResourceLocation inner = TFBlockModelTemplates.STAIRS_INNER.createWithSuffix(block, "_inner", mapping, this.modelOutput);
+		ResourceLocation straight = TFBlockModelTemplates.STAIRS_STRAIGHT.create(block, mapping, this.modelOutput);
+		ResourceLocation outer = TFBlockModelTemplates.STAIRS_OUTER.createWithSuffix(block, "_outer", mapping, this.modelOutput);
+		this.blockStateOutput.accept(createStairs(block, inner, straight, outer));
+		this.registerSimpleItemModel(block, straight);
+	}
+
 	public void simpleBlockWithRenderType(Block block, String type) {
 		this.blockWithRenderType(block, type, ModelTemplates.CUBE_ALL, TextureMapping::cube);
 	}
 
 	public void blockWithRenderType(Block block, String type, ModelTemplate template, Function<Block, TextureMapping> mapping) {
 		this.blockStateOutput.accept(createSimpleBlock(block, template.extend().renderType(type).build().create(block, mapping.apply(block), this.modelOutput)));
+	}
+
+	public void thorns(Block block) {
+		var mapping = TextureMapping.column(block);
+		ResourceLocation main = TFBlockModelTemplates.THORNS_MAIN.createWithSuffix(block, "_inner", mapping, this.modelOutput);
+		ResourceLocation bottom = TFBlockModelTemplates.THORNS_BOTTOM.create(block, mapping, this.modelOutput);
+		ResourceLocation top = TFBlockModelTemplates.THORNS_TOP.createWithSuffix(block, "_outer", mapping, this.modelOutput);
+		ResourceLocation side = TFBlockModelTemplates.THORNS_SIDE.createWithSuffix(block, "_outer", mapping, this.modelOutput);
+		ResourceLocation sideAlt = TFBlockModelTemplates.THORNS_SIDE_ALT.createWithSuffix(block, "_outer", mapping, this.modelOutput);
+		this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block, Variant.variant().with(VariantProperties.MODEL, main))
+			.with(PropertyDispatch.property(ThornsBlock.AXIS)
+				.select(Direction.Axis.X, Variant.variant().with(VariantProperties.MODEL, main).with(VariantProperties.X_ROT, VariantProperties.Rotation.R90).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
+				.select(Direction.Axis.Z, Variant.variant().with(VariantProperties.MODEL, main).with(VariantProperties.X_ROT, VariantProperties.Rotation.R90)))
+			.with(PropertyDispatch.properties(PipeBlock.UP, ThornsBlock.AXIS)
+				.generate((up, axis) -> Variant.variant().with(VariantProperties.MODEL, up ? top : sideAlt).with(VariantProperties.X_ROT, up ? VariantProperties.Rotation.R90 : VariantProperties.Rotation.R270))));
 	}
 
 	public void forcefield(Block block) {
@@ -194,5 +234,6 @@ public abstract class BlockModelBuilders extends BlockModelGenerators {
 				.ifElse().from(7, 7, 9).to(9, 9, 16).parents(ForceFieldModel.ExtraDirection.SOUTH).shade(false).face(Direction.EAST).uvs(9, 7, 16, 9).texture("#pane").emissivity(15, 15).end()
 				.ifSame().from(9, 7, 7).to(16, 9, 9).parents(ForceFieldModel.ExtraDirection.EAST).shade(false).face(Direction.SOUTH).uvs(0, 7, 7, 9).texture("#pane").emissivity(15, 15).end().end();
 		}).build().create(block, TFTextureMapping.forcefield(block), this.modelOutput)));
+		this.registerSimpleFlatItemModel(block);
 	}
 }

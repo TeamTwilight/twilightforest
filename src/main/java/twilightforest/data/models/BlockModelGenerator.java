@@ -3,6 +3,8 @@ package twilightforest.data.models;
 import net.minecraft.client.data.models.ItemModelOutput;
 import net.minecraft.client.data.models.blockstates.BlockStateGenerator;
 import net.minecraft.client.data.models.model.ModelInstance;
+import net.minecraft.client.data.models.model.ModelTemplates;
+import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TexturedModel;
 import net.minecraft.data.BlockFamily;
 import net.minecraft.resources.ResourceLocation;
@@ -33,14 +35,15 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.bossSpawner(TFBlocks.SNOW_QUEEN_BOSS_SPAWNER.get());
 		this.bossSpawner(TFBlocks.FINAL_BOSS_BOSS_SPAWNER.get());
 
-		this.blockWithRenderType(TFBlocks.ANTIBUILDER.get(), "cutout", TFBlockModelTemplates.ANTIBUILDER, TFTextureMapping::threeLayerBlock);
+		this.wrapBlockItem(TFBlocks.ANTIBUILDER.get(), block -> this.blockWithRenderType(block, "cutout", TFBlockModelTemplates.ANTIBUILDER, TFTextureMapping::threeLayerBlock));
 		this.blockWithRenderType(TFBlocks.ANTIBUILT_BLOCK.get(), "cutout", TFBlockModelTemplates.ANTIBUILT_BLOCK, TFTextureMapping::twoLayerBlock);
 		this.basicCtmBlock(TFBlocks.ARCTIC_FUR_BLOCK.get());
 		//TODO aurora blocks
-		this.simpleBlockWithRenderType(TFBlocks.BEANSTALK_LEAVES.get(), "cutout_mipped");
+		this.wrapBlockItem(TFBlocks.BEANSTALK_LEAVES.get(), block -> this.blockWithRenderType(block, "cutout_mipped", ModelTemplates.CUBE_ALL, u -> TextureMapping.cube(Blocks.AZALEA_LEAVES)));
 		this.castleDoor(TFBlocks.BLUE_CASTLE_DOOR.get());
 		this.forcefield(TFBlocks.BLUE_FORCE_FIELD.get());
-		this.createRotatedPillarWithHorizontalVariant(TFBlocks.BOLD_CASTLE_BRICK_PILLAR.get(), TexturedModel.COLUMN_ALT, TexturedModel.COLUMN_HORIZONTAL_ALT);
-		this.createTrivialCube(TFBlocks.BOLD_CASTLE_BRICK_TILE.get());
+		this.wrapBlockItem(TFBlocks.BOLD_CASTLE_BRICK_PILLAR.get(), block -> this.createRotatedPillarWithHorizontalVariant(block, TexturedModel.COLUMN_ALT, TexturedModel.COLUMN_HORIZONTAL_ALT));
+		this.stairsBlock(TFBlocks.BOLD_CASTLE_BRICK_STAIRS.get());
+		this.wrapBlockItem(TFBlocks.BOLD_CASTLE_BRICK_TILE.get(), this::createTrivialCube);
 	}
 }

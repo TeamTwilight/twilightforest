@@ -15,8 +15,8 @@
   "render_type": "minecraft:cutout",
   "textures": {
     "base_texture": "twilightforest:block/castle_door",
-    "overlay_connected": "twilightforest:castle_door_runes_ctm",
-    "overlay_texture": "twilightforest:castle_door_runes",
+    "overlay_connected": "twilightforest:block/castle_door_runes_ctm",
+    "overlay_texture": "twilightforest:block/castle_door_runes",
     "particle": "twilightforest:block/castle_door"
   }
 }
