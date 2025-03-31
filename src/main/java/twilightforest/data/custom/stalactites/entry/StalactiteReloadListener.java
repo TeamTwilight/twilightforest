@@ -26,7 +26,7 @@ public class StalactiteReloadListener extends CodecResourceReloadListener<Speleo
 	public static final Map<String, List<Stalactite>> STALAGMITES_PER_HILL = new HashMap<>();
 
 	public StalactiteReloadListener() {
-		super(STALACTITE_DIRECTORY, SpeleothemVarietyConfig.CODEC);
+		super(SpeleothemVarietyConfig.CODEC, STALACTITE_DIRECTORY);
 	}
 
 	@Override

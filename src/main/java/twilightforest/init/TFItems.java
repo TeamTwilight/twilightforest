@@ -119,10 +119,10 @@ public class TFItems {
 	public static final DeferredItem<Item> ARMOR_SHARD = register("armor_shard", Item::new, Item.Properties::new);
 	public static final DeferredItem<Item> ARMOR_SHARD_CLUSTER = register("armor_shard_cluster", Item::new, Item.Properties::new);
 	public static final DeferredItem<Item> KNIGHTMETAL_INGOT = register("knightmetal_ingot", Item::new, Item.Properties::new);
-	public static final DeferredItem<ArmorItem> KNIGHTMETAL_HELMET = register("knightmetal_helmet", properties -> new KnightmetalArmorItem(TFArmorMaterials.KNIGHTMETAL, ArmorType.HELMET, properties), Item.Properties::new);
-	public static final DeferredItem<ArmorItem> KNIGHTMETAL_CHESTPLATE = register("knightmetal_chestplate", properties -> new KnightmetalArmorItem(TFArmorMaterials.KNIGHTMETAL, ArmorType.CHESTPLATE, properties), Item.Properties::new);
-	public static final DeferredItem<ArmorItem> KNIGHTMETAL_LEGGINGS = register("knightmetal_leggings", properties -> new KnightmetalArmorItem(TFArmorMaterials.KNIGHTMETAL, ArmorType.LEGGINGS, properties), Item.Properties::new);
-	public static final DeferredItem<ArmorItem> KNIGHTMETAL_BOOTS = register("knightmetal_boots", properties -> new KnightmetalArmorItem(TFArmorMaterials.KNIGHTMETAL, ArmorType.BOOTS, properties), Item.Properties::new);
+	public static final DeferredItem<ArmorItem> KNIGHTMETAL_HELMET = register("knightmetal_helmet", properties -> new ArmorItem(TFArmorMaterials.KNIGHTMETAL, ArmorType.HELMET, properties), Item.Properties::new);
+	public static final DeferredItem<ArmorItem> KNIGHTMETAL_CHESTPLATE = register("knightmetal_chestplate", properties -> new ArmorItem(TFArmorMaterials.KNIGHTMETAL, ArmorType.CHESTPLATE, properties), Item.Properties::new);
+	public static final DeferredItem<ArmorItem> KNIGHTMETAL_LEGGINGS = register("knightmetal_leggings", properties -> new ArmorItem(TFArmorMaterials.KNIGHTMETAL, ArmorType.LEGGINGS, properties), Item.Properties::new);
+	public static final DeferredItem<ArmorItem> KNIGHTMETAL_BOOTS = register("knightmetal_boots", properties -> new ArmorItem(TFArmorMaterials.KNIGHTMETAL, ArmorType.BOOTS, properties), Item.Properties::new);
 	public static final DeferredItem<Item> KNIGHTMETAL_SWORD = register("knightmetal_sword", properties -> new KnightmetalSwordItem(TFToolMaterials.KNIGHTMETAL, properties), Item.Properties::new);
 	public static final DeferredItem<Item> KNIGHTMETAL_PICKAXE = register("knightmetal_pickaxe", properties -> new KnightmetalPickItem(TFToolMaterials.KNIGHTMETAL, properties), Item.Properties::new);
 	public static final DeferredItem<Item> KNIGHTMETAL_AXE = register("knightmetal_axe", properties -> new KnightmetalAxeItem(TFToolMaterials.KNIGHTMETAL, properties), Item.Properties::new);
@@ -161,6 +161,7 @@ public class TFItems {
 	public static final DeferredItem<Item> CROWN_SPLINTER = register("crown_splinter", Item::new, () -> new Item.Properties().rarity(Rarity.UNCOMMON));
 	public static final DeferredItem<Item> MYSTIC_CROWN = register("mystic_crown", Item::new, () -> new Item.Properties().rarity(Rarity.UNCOMMON).stacksTo(1).attributes(ItemAttributeModifiers.builder().add(Attributes.ARMOR, new AttributeModifier(ResourceLocation.withDefaultNamespace("armor." + EquipmentSlot.HEAD.getName()), 2.0F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.HEAD).build()));
 
+	public static final DeferredItem<Item> KEEPSAKE_CASKET = register("keepsake_casket", KeepsakeCasketItem::new, () -> new Item.Properties().rarity(Rarity.UNCOMMON));
 	public static final DeferredItem<Item> HUGE_LILY_PAD = register("huge_lily_pad", properties -> new HugeLilyPadItem(TFBlocks.HUGE_LILY_PAD.get(), properties), Item.Properties::new);
 	public static final DeferredItem<Item> HUGE_WATER_LILY = register("huge_water_lily", properties -> new PlaceOnWaterBlockItem(TFBlocks.HUGE_WATER_LILY.get(), properties), Item.Properties::new);
 	public static final DeferredItem<Item> FALLEN_LEAVES = register("fallen_leaves", properties -> new FallenLeavesItem(TFBlocks.FALLEN_LEAVES.get(), properties), Item.Properties::new);

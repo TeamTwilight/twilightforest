@@ -66,12 +66,7 @@ public class CasketRepairRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public boolean canCraftInDimensions(int width, int height) {
-		return width * height >= 2;
-	}
-
-	@Override
-	public RecipeSerializer<?> getSerializer() {
+	public RecipeSerializer<CasketRepairRecipe> getSerializer() {
 		return TFRecipes.CASKET_REPAIR_RECIPE.get();
 	}
 }

@@ -6,6 +6,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -14,12 +15,9 @@ import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.event.EventHooks;
 import net.neoforged.neoforge.fluids.FluidType;
 
 public class RisingZombie extends Monster {
@@ -82,20 +80,23 @@ public class RisingZombie extends Monster {
 			}
 		} else if (this.tickCount % 10 == 0) {
 			var player = this.level().getNearestPlayer(this, this.getAttributeValue(Attributes.FOLLOW_RANGE) / 2);
-			if (player != null && this.isLookingInMyDirection(player, 0.5D, false, true, this.getEyeY(), this.getY() + 0.5D * (double)this.getScale(), (this.getEyeY() + this.getY()) / 2.0D)) {
+			if (player != null && this.isLookingAtMe(player, 0.5D, false, true, this.getEyeY(), this.getY() + 0.5D * (double)this.getScale(), (this.getEyeY() + this.getY()) / 2.0D)) {
 				this.getEntityData().set(RISING_TICKS, 1);
 			}
 		}
 
 		if (!this.level().isClientSide() && this.getRisingTicks() >= 130) {
-			var zombie = this.convertTo(EntityType.ZOMBIE, true);
-			zombie.setHealth(this.getHealth());
-			zombie.setYRot(this.yRotO = this.getYRot());
+			this.convertTo(EntityType.ZOMBIE, ConversionParams.single(this, true, true), mob -> {
+				EventHooks.onLivingConvert(this, mob);
+				mob.setHealth(this.getHealth());
+				mob.setYRot(this.yRotO = this.getYRot());
+			});
+
 		}
 	}
 
 	@Override
-	public boolean isInvulnerableTo(DamageSource source) {
+	public boolean isInvulnerableTo(ServerLevel level, DamageSource source) {
 		return source.is(DamageTypes.IN_WALL);
 	}
 
@@ -107,33 +108,6 @@ public class RisingZombie extends Monster {
 	@Override
 	protected SoundEvent getDeathSound() {
 		return SoundEvents.ZOMBIE_DEATH;
-	}
-
-	//TODO replace with LivingEntity.isLookingAtMe in 1.21.4+
-	public boolean isLookingInMyDirection(Player player, double width, boolean useLength, boolean checkAir, double... offsets) {
-		Vec3 vec3 = player.getViewVector(1.0F).normalize();
-
-		for (double yOffs : offsets) {
-			Vec3 vec31 = new Vec3(this.getX() - player.getX(), yOffs - player.getEyeY(), this.getZ() - player.getZ());
-			double d1 = vec31.length();
-			vec31 = vec31.normalize();
-			double d2 = vec3.dot(vec31);
-			if (d2 > 1.0 - width / (useLength ? d1 : 1.0D) && this.hasLineOfSight(player, checkAir ? ClipContext.Block.VISUAL : ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, yOffs)) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	public boolean hasLineOfSight(Player player, ClipContext.Block blockClip, ClipContext.Fluid fluidClip, double yOffs) {
-		if (player.level() != this.level()) {
-			return false;
-		} else {
-			Vec3 vec3 = new Vec3(this.getX(), this.getEyeY(), this.getZ());
-			Vec3 vec31 = new Vec3(player.getX(), yOffs, player.getZ());
-			return !(vec31.distanceTo(vec3) > 128.0) && this.level().clip(new ClipContext(vec3, vec31, blockClip, fluidClip, this)).getType() == HitResult.Type.MISS;
-		}
 	}
 
 	public int getRisingTicks() {

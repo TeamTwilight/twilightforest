@@ -114,11 +114,11 @@ public class PotionFlaskTooltipComponent implements ClientTooltipComponent {
 		}
 		int widthProg = segmentSplit;
 		for (int i = 1; i < this.maxDoses; i++) {
-			graphics.blitSprite(DOSE_SPRITE, x + widthProg, y, 1, 13);
+			graphics.blitSprite(RenderType::guiTextured, DOSE_SPRITE, x + widthProg, y, 1, 13);
 			widthProg += segmentSplit;
 		}
 
-		graphics.blitSprite(BORDER_SPRITE, x, y, WIDTH, 13);
+		graphics.blitSprite(RenderType::guiTextured, BORDER_SPRITE, x, y, WIDTH, 13);
 	}
 
 	private void renderPotion(PoseStack stack, int xPosition, int yPosition, int desiredWidth, int desiredHeight, int color) {

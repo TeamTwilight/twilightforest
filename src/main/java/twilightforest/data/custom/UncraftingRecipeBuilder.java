@@ -91,12 +91,12 @@ public class UncraftingRecipeBuilder implements RecipeBuilder {
 	}
 
 	@Override
-	public RecipeBuilder unlockedBy(String name, Criterion<?> trigger) {
+	public UncraftingRecipeBuilder unlockedBy(String name, Criterion<?> trigger) {
 		return this;
 	}
 
 	@Override
-	public RecipeBuilder group(@Nullable String group) {
+	public UncraftingRecipeBuilder group(@Nullable String group) {
 		return this;
 	}
 

@@ -36,7 +36,7 @@ public class ProtectionBoxRenderer extends EntityRenderer<ProtectionBox, Protect
 		if (state.life < 20) alpha = state.life / 20.0F;
 
 		VertexConsumer vertexconsumer = buffer.getBuffer(TFRenderTypes.PROTECTION_BOX);
-		this.boxModel.setupAnim(entity, 0.0F, 0.0F, 0, 0.0F, 0.0F);
+		this.boxModel.setupAnim(state);
 		this.boxModel.renderToBuffer(stack, vertexconsumer, light, OverlayTexture.NO_OVERLAY, ARGB.colorFromFloat(alpha, 1.0F, 1.0F, 1.0F));
 	}
 

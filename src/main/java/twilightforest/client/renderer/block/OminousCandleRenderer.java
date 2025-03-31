@@ -73,7 +73,7 @@ public class OminousCandleRenderer<T extends OminousCandleBlockEntity> implement
 				this.blockRenderer.getModelRenderer()
 					.renderModel(
 						stack.last(),
-						buffer.getBuffer(RenderTypeHelper.getEntityRenderType(rt, false)),
+						buffer.getBuffer(RenderTypeHelper.getEntityRenderType(rt)),
 						state,
 						bakedModel,
 						r,
@@ -98,6 +98,6 @@ public class OminousCandleRenderer<T extends OminousCandleBlockEntity> implement
 	 * @return A value towards targetValue in respect to decayFactor
 	 */
 	private double exponentialDecay(double prevValue, double targetValue, double decayFactor) {
-		return targetValue + (prevValue - targetValue) * Math.exp(-decayFactor * this.minecraft.getTimer().getGameTimeDeltaTicks());
+		return targetValue + (prevValue - targetValue) * Math.exp(-decayFactor * this.minecraft.getDeltaTracker().getGameTimeDeltaTicks());
 	}
 }

@@ -27,9 +27,9 @@ public class LichRenderer extends HumanoidMobRenderer<Lich, LichRenderState, Lic
 		this.addLayer(new EyesLayer<>(this) {
 			private static final RenderType EYES = RenderType.eyes(TwilightForestMod.getModelTexture("twilightlich64_eyes.png"));
 
-            @Override
-            public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, T t, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-                if (t.isShadowClone() && !t.isInvisible()) super.render(poseStack, buffer, packedLight, t, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
+			@Override
+			public void render(PoseStack stack, MultiBufferSource buffer, int light, LichRenderState state, float netHeadYaw, float headPitch) {
+                if (state.isShadowClone && !state.isInvisible) super.render(stack, buffer, light, state, netHeadYaw, headPitch);
             }
 
             @Override
@@ -97,7 +97,7 @@ public class LichRenderer extends HumanoidMobRenderer<Lich, LichRenderState, Lic
 	}
 
 	@Override
-	protected float getShadowRadius(T entity) {
-		return entity.isShadowClone() || entity.deathTime > Lich.DEATH_ANIMATION_POINT_A ? 0.0F : super.getShadowRadius(entity);
+	protected float getShadowRadius(LichRenderState state) {
+		return state.isShadowClone || state.deathTime > Lich.DEATH_ANIMATION_POINT_A ? 0.0F : super.getShadowRadius(state);
 	}
 }

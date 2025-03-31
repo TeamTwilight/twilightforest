@@ -67,7 +67,7 @@ public class DataGenerators {
 		generator.addProvider(true, new CraftingGeneratorRunner(output, lookupProvider));
 		generator.addProvider(true, new LootModifierGenerator(output, lookupProvider));
 
-		generator.addProvider(event.includeServer(), new StructureTemplateDefinitionGenerator(output, lookupProvider, helper));
+		generator.addProvider(true, new StructureTemplateDefinitionGenerator(output, lookupProvider));
 
 		//these have to go last due to magic paintings
 		//when magic paintings are registered their atlas and lang content is too

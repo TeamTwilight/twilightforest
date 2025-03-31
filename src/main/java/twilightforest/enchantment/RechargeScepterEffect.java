@@ -31,7 +31,7 @@ public record RechargeScepterEffect() implements EnchantmentEntityEffect {
 			List<Integer> slotsToConsume = new ArrayList<>();
 			for (var recipe : recipes) {
 				if (item.is(recipe.getScepter())) {
-					var ingredientCopy = new ArrayList<>(recipe.getIngredients());
+					var ingredientCopy = new ArrayList<>(recipe.placementInfo().ingredients());
 					scepterItemsCheck:
 					for (int i = 0; i < player.getInventory().items.size(); i++) {
 						var stack = player.getInventory().items.get(i);

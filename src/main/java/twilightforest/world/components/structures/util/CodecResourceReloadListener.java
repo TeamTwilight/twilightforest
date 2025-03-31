@@ -5,9 +5,11 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
+import net.minecraft.resources.FileToIdConverter;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.neoforged.neoforge.event.AddReloadListenerEvent;
 import twilightforest.TwilightForestMod;
@@ -17,16 +19,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public abstract class CodecResourceReloadListener<T> extends SimpleJsonResourceReloadListener {
+//TODO this class may be redundant now that SimpleJsonResourceReloadListener uses codecs. Look into it
+@Deprecated
+public abstract class CodecResourceReloadListener<T> extends SimpleJsonResourceReloadListener<JsonElement> {
 	protected final Gson gson;
 	private final Codec<T> codec;
 
-	public CodecResourceReloadListener(String directory, Codec<T> codec) {
-		this(new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create(), directory, codec);
+	public CodecResourceReloadListener(Codec<T> codec, String directory) {
+		this(new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create(), codec, directory);
 	}
 
-	public CodecResourceReloadListener(Gson gson, String directory, Codec<T> codec) {
-		super(gson, directory);
+	public CodecResourceReloadListener(Gson gson, Codec<T> codec, String directory) {
+		super(ExtraCodecs.JSON, FileToIdConverter.json(directory));
 
 		this.gson = gson;
 		this.codec = codec;

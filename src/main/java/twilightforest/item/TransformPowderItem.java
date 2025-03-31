@@ -58,35 +58,8 @@ public class TransformPowderItem extends Item {
 		var datamap = target.getType().builtInRegistryHolder().getData(TFDataMaps.TRANSFORMATION_POWDER);
 
 		if (datamap != null) {
-			Entity newEntity = datamap.result().create(level, EntitySpawnReason.CONVERSION);
-			if (newEntity == null) {
-				return false;
-			}
-
-			newEntity.moveTo(target.getX(), target.getY(), target.getZ(), target.getYRot(), target.getXRot());
-			if (newEntity instanceof Mob mob && target.level() instanceof ServerLevel world) {
-				EventHooks.finalizeMobSpawn(mob, world, target.level().getCurrentDifficultyAt(target.blockPosition()), EntitySpawnReason.CONVERSION, null);
-
-				if (target instanceof Saddleable saddleable && saddleable.isSaddled() && !(newEntity instanceof Saddleable)) {
-					newEntity.spawnAtLocation(world, Items.SADDLE);
-				}
-			}
-
-			try { // try copying what can be copied
-				UUID uuid = newEntity.getUUID();
-				newEntity.load(target.saveWithoutId(newEntity.saveWithoutId(new CompoundTag())));
-				newEntity.setUUID(uuid);
-				if (newEntity instanceof LivingEntity living) {
-					living.setHealth(living.getMaxHealth());
-				}
-			} catch (Exception e) {
-				TwilightForestMod.LOGGER.warn("Couldn't transform entity NBT data", e);
-			}
-
-			target.level().addFreshEntity(newEntity);
-			target.discard();
-
-			if (shrinkStack) {
+			boolean flag = EntityUtil.convertEntity(target, datamap.result());
+			if (flag && shrinkStack) {
 				powder.shrink(1);
 			}
 			return flag;

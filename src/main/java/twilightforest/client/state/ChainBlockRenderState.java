@@ -11,4 +11,5 @@ public class ChainBlockRenderState extends EntityRenderState {
 	@Nullable
 	public Vec3 chainStartPos;
 	public int ownerLight;
+	public float blockHeight;
 }

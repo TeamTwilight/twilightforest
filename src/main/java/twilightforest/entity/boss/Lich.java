@@ -118,8 +118,8 @@ public class Lich extends BaseTFBoss {
 	@Nullable
 	@Override
 	@SuppressWarnings({"deprecation"})
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData) {
-		SpawnGroupData data = super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData);
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, EntitySpawnReason reason, @Nullable SpawnGroupData spawnGroupData) {
+		SpawnGroupData data = super.finalizeSpawn(level, difficulty, reason, spawnGroupData);
 		if (!this.isShadowClone()) {
 			this.setItemInHand(InteractionHand.MAIN_HAND, TFItems.FORTIFICATION_SCEPTER.toStack());
 			this.playSound(TFSounds.SHIELD_ADD.get(), 1.5F, this.getVoicePitch());
@@ -470,7 +470,7 @@ public class Lich extends BaseTFBoss {
 						double x = clone.getX((this.random.nextDouble() * this.random.nextDouble() * (this.random.nextBoolean() ? 1.0D : -1.0D)) * 1.5D);
 						double y = clone.getY(this.random.nextDouble() * this.random.nextDouble() * 1.25D);
 						double z = clone.getZ((this.random.nextDouble() * this.random.nextDouble() * (this.random.nextBoolean() ? 1.0D : -1.0D)) * 1.5D);
-						particlePacket.queueParticle(ParticleTypes.SMOKE, false, x, y, z, 0.0D, 0.0D, 0.0D);
+						particlePacket.queueParticle(ParticleTypes.SMOKE, x, y, z, 0.0D, 0.0D, 0.0D);
 					}
 
 					PacketDistributor.sendToPlayersTrackingEntity(this, particlePacket);
@@ -675,14 +675,14 @@ public class Lich extends BaseTFBoss {
 					double x = this.getX(this.random.nextDouble() * this.random.nextDouble() * (this.random.nextBoolean() ? 1.0D : -1.0D));
 					double y =  this.getY(this.random.nextDouble());
 					double z = this.getZ(this.random.nextDouble() * this.random.nextDouble() * (this.random.nextBoolean() ? 1.0D : -1.0D));
-					particlePacket.queueParticle(options, false, x, y, z, (x - pos.x) * 0.0625D, (y - pos.y) * 0.0625D, (z - pos.z) * 0.0625D);
+					particlePacket.queueParticle(options, x, y, z, (x - pos.x) * 0.0625D, (y - pos.y) * 0.0625D, (z - pos.z) * 0.0625D);
 				}
 			} else {
 				for(int j = 0; j < (!this.isShadowClone() ? 128 : 64); ++j) {
 					double x = this.getX((this.random.nextDouble() * this.random.nextDouble() * (this.random.nextBoolean() ? 1.0D : -1.0D)) * 2.0D);
 					double y =  this.getY(this.random.nextDouble() * 1.125D);
 					double z = this.getZ((this.random.nextDouble() * this.random.nextDouble() * (this.random.nextBoolean() ? 1.0D : -1.0D)) * 2.0D);
-					particlePacket.queueParticle(ParticleTypes.SMOKE, false, x, y, z, 0.0D, 0.0D, 0.0D);
+					particlePacket.queueParticle(ParticleTypes.SMOKE, x, y, z, 0.0D, 0.0D, 0.0D);
 				}
 			}
 
@@ -702,7 +702,7 @@ public class Lich extends BaseTFBoss {
 						double tx = source.x() + (target.x() - source.x()) * trailFactor + this.getRandom().nextGaussian() * 0.005D;
 						double ty = source.y() + 0.2D + (target.y() - source.y()) * trailFactor + this.getRandom().nextGaussian() * 0.005D;
 						double tz = source.z() + (target.z() - source.z()) * trailFactor + this.getRandom().nextGaussian() * 0.005D;
-						packet.queueParticle(ColorParticleOption.create(TFParticleType.MAGIC_EFFECT.get(), red, green, blue), false, tx, ty, tz, 0.0D, 0.0D, 0.0D);
+						packet.queueParticle(ColorParticleOption.create(TFParticleType.MAGIC_EFFECT.get(), red, green, blue), tx, ty, tz, 0.0D, 0.0D, 0.0D);
 					}
 
 					PacketDistributor.sendToPlayersTrackingEntity(this, packet);
@@ -1006,7 +1006,7 @@ public class Lich extends BaseTFBoss {
 			for (double i = 0.0D; i < 1.0D; i += 0.2D) {
 				double x = Math.sin((powFactor + i) * Math.PI * 2.0D) * expandFactor * 1.75D;
 				double z = Math.cos((powFactor + i) * Math.PI * 2.0D) * expandFactor * 1.75D;
-				this.level().addParticle(TFParticleType.OMINOUS_FLAME.get(), false, particlePos.x() + x, particlePos.y() - 0.25D, particlePos.z() + z, 0.0D, 0.0D, 0.0D);
+				this.level().addParticle(TFParticleType.OMINOUS_FLAME.get(), particlePos.x() + x, particlePos.y() - 0.25D, particlePos.z() + z, 0.0D, 0.0D, 0.0D);
 			}
 		}
 
@@ -1015,7 +1015,7 @@ public class Lich extends BaseTFBoss {
 			double x = (this.getRandom().nextDouble() - 0.5D) * 0.25D;
 			double y = this.getRandom().nextDouble() * this.getBbHeight() * 0.1D;
 			double z = (this.getRandom().nextDouble() - 0.5D) * 0.25D;
-			this.level().addParticle(ParticleTypes.SMOKE, false, start.x() + x, start.y() + y, start.z() + z, 0.0D, 0.0D, 0.0D);
+			this.level().addParticle(ParticleTypes.SMOKE, start.x() + x, start.y() + y, start.z() + z, 0.0D, 0.0D, 0.0D);
 		}
 	}
 

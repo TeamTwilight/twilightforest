@@ -252,7 +252,7 @@ public class LichPerimeterFence extends TwilightJigsawPiece implements PieceBear
 
 				BlockPos directionOffset = destPos.subtract(checkPos);
 				// Rotate to test for orthogonality via dot product (to check if dot() == 0)
-				var targetDirecton = turn.rotate(first.orientation().top()).getNormal();
+				var targetDirecton = turn.rotate(first.orientation().top()).getUnitVec3i();
 
 				// 0 from (horizontal) dot product means orthogonal, can approach from a right-angle turn now
 				if (directionOffset.getX() * targetDirecton.getX() + directionOffset.getZ() * targetDirecton.getZ() == 0)

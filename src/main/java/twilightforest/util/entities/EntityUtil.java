@@ -286,12 +286,14 @@ public class EntityUtil {
 	@SuppressWarnings("unchecked")
 	public static boolean convertEntity(LivingEntity oldEntity, EntityType<?> newType) {
 		if (!(oldEntity.level() instanceof ServerLevel level)) return false;
-		var newEntity = newType.create(level);
+		var newEntity = newType.create(level, EntitySpawnReason.CONVERSION);
 		if (newEntity == null) return false;
 		if (!(newEntity instanceof LivingEntity living) || EventHooks.canLivingConvert(oldEntity, (EntityType<? extends LivingEntity>) living.getType(), timer -> {})) {
 			var passengerSave = oldEntity.getPassengers();
 			if (oldEntity instanceof Mob mob && newEntity instanceof Mob newMob) {
-				newEntity = mob.convertTo((EntityType<? extends Mob>) newMob.getType(), true);
+				newEntity = mob.convertTo((EntityType<? extends Mob>) newMob.getType(), ConversionParams.single(mob, true, true), mob1 -> {
+					EventHooks.onLivingConvert(oldEntity, mob1);
+				});
 			} else {
 				newEntity.copyPosition(oldEntity);
 
@@ -306,7 +308,7 @@ public class EntityUtil {
 						}
 					}
 
-					EventHooks.finalizeMobSpawn(mob, level, level.getCurrentDifficultyAt(oldEntity.blockPosition()), MobSpawnType.CONVERSION, null);
+					EventHooks.finalizeMobSpawn(mob, level, level.getCurrentDifficultyAt(oldEntity.blockPosition()), EntitySpawnReason.CONVERSION, null);
 				}
 
 				oldEntity.level().addFreshEntity(newEntity);
@@ -324,7 +326,7 @@ public class EntityUtil {
 			}
 
 			if (oldEntity instanceof Saddleable saddleable && saddleable.isSaddled() && !(newEntity instanceof Saddleable)) {
-				newEntity.spawnAtLocation(Items.SADDLE);
+				newEntity.spawnAtLocation(level, Items.SADDLE);
 			}
 
 			if (newEntity instanceof Mob mob) {
@@ -333,7 +335,7 @@ public class EntityUtil {
 
 				for (EquipmentSlot equipmentslot : EquipmentSlot.values()) {
 					ItemStack itemstack = mob.getItemBySlot(equipmentslot).copyAndClear();
-					mob.spawnAtLocation(itemstack);
+					mob.spawnAtLocation(level, itemstack);
 				}
 			}
 
@@ -353,7 +355,7 @@ public class EntityUtil {
 	@Nullable
 	public static <T extends Entity> T createEntityIgnoreException(ServerLevelAccessor level, EntityType<T> type) {
 		try {
-			return type.create(level.getLevel());
+			return type.create(level.getLevel(), EntitySpawnReason.MOB_SUMMONED);
 		} catch (Exception exception) {
 			return null;
 		}

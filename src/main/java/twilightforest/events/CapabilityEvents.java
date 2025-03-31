@@ -118,7 +118,7 @@ public class CapabilityEvents {
 
 		BlockPos newDefaultSpawn = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, player.blockPosition());
 
-		player.changeDimension(TFConfig.portalForNewPlayerSpawn ?
+		player.teleport(TFConfig.portalForNewPlayerSpawn ?
 			TFTeleporter.createTransition(player, level, newDefaultSpawn, true) :
 			NoReturnTeleporter.createNoPortalTransition(level, player, newDefaultSpawn));
 		player.setRespawnPosition(TFDimension.DIMENSION_KEY, newDefaultSpawn, player.getYRot(), true, false);

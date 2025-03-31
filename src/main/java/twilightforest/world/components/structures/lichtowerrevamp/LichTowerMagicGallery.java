@@ -8,6 +8,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.StructureManager;
@@ -123,7 +124,7 @@ public class LichTowerMagicGallery extends TwilightJigsawPiece implements PieceB
 			Direction direction = this.placeSettings.getRotation().rotate(Direction.SOUTH);
 
 			Optional<Holder.Reference<MagicPaintingVariant>> variantHolderOpt = variantForGallery(level, this.templateName);
-			MagicPainting galleryPainting = TFEntities.MAGIC_PAINTING.value().create(level.getLevel());
+			MagicPainting galleryPainting = TFEntities.MAGIC_PAINTING.value().create(level.getLevel(), EntitySpawnReason.STRUCTURE);
 			if (variantHolderOpt.isPresent() && galleryPainting != null) {
 				galleryPainting.setDirection(direction);
 				galleryPainting.setVariant(variantHolderOpt.get());
@@ -151,7 +152,7 @@ public class LichTowerMagicGallery extends TwilightJigsawPiece implements PieceB
 
 		if (variantId == null) return Optional.empty();
 
-		return level.registryAccess().registryOrThrow(TFRegistries.Keys.MAGIC_PAINTINGS).getHolder(variantId);
+		return level.registryAccess().holder(variantId);
 	}
 
 	public static void tryPlaceGallery(RandomSource random, StructurePieceAccessor pieceAccessor, @Nullable ResourceLocation roomId, JigsawRecord connection, TwilightJigsawPiece parent, int newDepth, StructureTemplateManager structureManager, String jigsawLabel) {

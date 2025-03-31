@@ -76,12 +76,7 @@ public class MoonwormQueenRepairRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public boolean canCraftInDimensions(int width, int height) {
-		return width * height >= 2;
-	}
-
-	@Override
-	public RecipeSerializer<?> getSerializer() {
+	public RecipeSerializer<MoonwormQueenRepairRecipe> getSerializer() {
 		return TFRecipes.MOONWORM_QUEEN_REPAIR_RECIPE.get();
 	}
 }

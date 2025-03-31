@@ -1,10 +1,6 @@
 package twilightforest.entity.passive.quest;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
-import com.mojang.serialization.JsonOps;
+import net.minecraft.resources.FileToIdConverter;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
@@ -16,23 +12,21 @@ import twilightforest.entity.passive.quest.ram.QuestingRamCurrentContext;
 
 import java.util.Map;
 
-public class QuestReloadListener extends SimpleJsonResourceReloadListener {
+public class QuestReloadListener extends SimpleJsonResourceReloadListener<QuestingRamContext> {
 
 	@Autowired
 	private static QuestingRamCurrentContext questingRamCurrentContext;
 
-	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
-
 	public QuestReloadListener() {
-		super(GSON, "twilight/quests");
+		super(QuestingRamContext.CODEC, FileToIdConverter.json("twilight/quests"));
 	}
 
 	@Override
-	protected void apply(Map<ResourceLocation, JsonElement> object, ResourceManager resourceManager, ProfilerFiller profiler) {
+	protected void apply(Map<ResourceLocation, QuestingRamContext> object, ResourceManager resourceManager, ProfilerFiller profiler) {
 		boolean found = false;
 		for (var entry : object.entrySet()) {
 			if (entry.getKey().getPath().equals("questing_ram")) {
-				questingRamCurrentContext.setContext(QuestingRamContext.CODEC.parse(JsonOps.INSTANCE, entry.getValue()).getOrThrow(JsonParseException::new));
+				questingRamCurrentContext.setContext(entry.getValue());
 				TwilightForestMod.LOGGER.debug("Questing Ram quest set by mod {}", entry.getKey().getNamespace());
 				found = true;
 			}

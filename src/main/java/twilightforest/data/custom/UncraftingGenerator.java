@@ -1,7 +1,9 @@
 package twilightforest.data.custom;
 
 import net.minecraft.core.HolderGetter;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeOutput;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -21,8 +23,8 @@ public class UncraftingGenerator {
 			.pattern("B")
 			.define('B', Items.BOOK).save(output);
 
-		UncraftingRecipeBuilder.uncrafting(TFBlocks.KEEPSAKE_CASKET.value()).setCost(0)
+		UncraftingRecipeBuilder.uncrafting(items, TFBlocks.KEEPSAKE_CASKET.get()).setCost(0)
 			.pattern("C")
-			.define('C', TFBlocks.SKULL_CHEST.value()).save(output, TwilightForestMod.prefix("relinquish_keepsakes"));
+			.define('C', TFBlocks.SKULL_CHEST.value()).save(output, ResourceKey.create(Registries.RECIPE, TwilightForestMod.prefix("relinquish_keepsakes")));
 	}
 }

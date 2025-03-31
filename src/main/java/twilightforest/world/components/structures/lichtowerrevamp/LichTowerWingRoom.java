@@ -19,8 +19,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.Unit;
 import net.minecraft.world.RandomizableContainer;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -583,7 +583,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 				};
 				if (!jarEntity.fillFromLootTable(lootTableId, random.nextLong(), level.getLevel())) {
 					ResourceLocation itemId = ResourceLocation.bySeparator(label, '.');
-					jarEntity.getItemHandler().setItem(new ItemStack(level.registryAccess().registry(Registries.ITEM).<Function<ResourceLocation, Item>>map(reg -> reg::get).orElse($ -> Items.AIR).apply(itemId)));
+					jarEntity.getItemHandler().setItem(new ItemStack(level.registryAccess().lookup(Registries.ITEM).<Function<ResourceLocation, Item>>map(reg -> reg::getValue).orElse($ -> Items.AIR).apply(itemId)));
 				}
 				int itemRotation = this.placeSettings.getRotation().ordinal() * 4 + (parameters.length == 3 ? this.getHeadRotation(parameters[2], random) : 0);
 				jarEntity.setItemRotation(Math.floorMod(itemRotation, 16));
@@ -752,9 +752,9 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 
 	private BlockState blockFromLabel(String label) {
 		if (label.contains(".")) {
-			return BuiltInRegistries.BLOCK.get(ResourceLocation.bySeparator(label, '.')).defaultBlockState();
+			return BuiltInRegistries.BLOCK.getValue(ResourceLocation.bySeparator(label, '.')).defaultBlockState();
 		} else {
-			return BuiltInRegistries.BLOCK.get(ResourceLocation.parse(label)).defaultBlockState();
+			return BuiltInRegistries.BLOCK.getValue(ResourceLocation.parse(label)).defaultBlockState();
 		}
 	}
 
@@ -868,12 +868,12 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 		level.setBlock(pos, lectern, Block.UPDATE_CLIENTS);
 
 		if (putMimic) {
-			DeathTome tomeMimic = TFEntities.DEATH_TOME.value().create(level.getLevel());
+			DeathTome tomeMimic = TFEntities.DEATH_TOME.get().create(level.getLevel(), EntitySpawnReason.STRUCTURE);
 			if (tomeMimic != null) {
 				tomeMimic.setPersistenceRequired();
 				tomeMimic.moveTo(pos, lectern.getValue(HorizontalDirectionalBlock.FACING).toYRot(), 0);
 				tomeMimic.setOnLectern(true);
-				tomeMimic.finalizeSpawn(level, level.getCurrentDifficultyAt(tomeMimic.blockPosition()), MobSpawnType.STRUCTURE, null);
+				tomeMimic.finalizeSpawn(level, level.getCurrentDifficultyAt(tomeMimic.blockPosition()), EntitySpawnReason.STRUCTURE, null);
 				level.addFreshEntityWithPassengers(tomeMimic);
 			}
 		} else if (level.getBlockEntity(pos) instanceof LecternBlockEntity lecternBlockEntity) {

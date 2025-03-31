@@ -45,7 +45,7 @@ public class ExanimateEssenceItem extends Item {
 
 		if (flag) {
 			context.getItemInHand().shrink(1);
-			return InteractionResult.sidedSuccess(level.isClientSide());
+			return InteractionResult.SUCCESS;
 		} else {
 			return InteractionResult.FAIL;
 		}

@@ -125,7 +125,7 @@ public final class LandmarkUtil {
 	}
 
 	public static boolean isProgressionEnforced(ServerLevel level) {
-		return level.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE);
+		return level.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE.get());
 	}
 
 	private LandmarkUtil() {

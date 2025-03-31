@@ -22,7 +22,7 @@ public class StructureTemplateDefinitions extends CodecResourceReloadListener<St
 	public static final String DIRECTORY = "twilight/template_definition";
 
 	private StructureTemplateDefinitions() {
-		super(DIRECTORY, StructureTemplateDefinition.CODEC);
+		super(StructureTemplateDefinition.CODEC, DIRECTORY);
 	}
 
 	@Override

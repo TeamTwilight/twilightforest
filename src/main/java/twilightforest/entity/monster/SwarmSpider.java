@@ -9,8 +9,8 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -79,15 +79,11 @@ public class SwarmSpider extends Spider {
 	}
 
 	@Override
-	public boolean doHurtTarget(Entity entity) {
-		return this.getRandom().nextInt(4) == 0 && super.doHurtTarget(entity);
+	public boolean doHurtTarget(ServerLevel level, Entity entity) {
+		return this.getRandom().nextInt(4) == 0 && super.doHurtTarget(level, entity);
 	}
 
-	public EntityType<? extends SwarmSpider> getReinforcementType() {
-		return TFEntities.SWARM_SPIDER.get();
-	}
-
-	public static boolean getCanSpawnHere(EntityType<? extends SwarmSpider> entity, ServerLevelAccessor accessor, MobSpawnType reason, BlockPos pos, RandomSource random) {
+	public static boolean checkSwarmSpawnRules(EntityType<? extends SwarmSpider> entity, ServerLevelAccessor accessor, EntitySpawnReason reason, BlockPos pos, RandomSource random) {
 		return accessor.getDifficulty() != Difficulty.PEACEFUL && isValidLightLevel(accessor, pos, random) && checkMobSpawnRules(entity, accessor, reason, pos, random);
 	}
 
@@ -110,7 +106,7 @@ public class SwarmSpider extends Spider {
 
 	@Nullable
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData data) {
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, EntitySpawnReason reason, @Nullable SpawnGroupData data) {
 		data = super.finalizeSpawn(accessor, difficulty, reason, data);
 		this.summonJockey(accessor, difficulty);
 		return data;
@@ -118,11 +114,11 @@ public class SwarmSpider extends Spider {
 
 	public void summonJockey(ServerLevelAccessor accessor, DifficultyInstance difficulty) {
 		if (this.getFirstPassenger() != null || accessor.getRandom().nextInt(200) == 0) {
-			SkeletonDruid druid = TFEntities.SKELETON_DRUID.get().create(this.level());
+			SkeletonDruid druid = TFEntities.SKELETON_DRUID.get().create(this.level(), EntitySpawnReason.JOCKEY);
 			if (druid != null) {
 				druid.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
 				druid.setBaby(true);
-				EventHooks.finalizeMobSpawn(druid, accessor, difficulty, MobSpawnType.JOCKEY, null);
+				EventHooks.finalizeMobSpawn(druid, accessor, difficulty, EntitySpawnReason.JOCKEY, null);
 
 				if (this.hasPassenger(e -> true)) this.ejectPassengers();
 				druid.startRiding(this);

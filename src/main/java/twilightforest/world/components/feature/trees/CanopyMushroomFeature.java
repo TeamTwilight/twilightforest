@@ -38,7 +38,7 @@ public abstract class CanopyMushroomFeature extends AbstractHugeMushroomFeature 
 
 		for (int i = 0; i < height; ++i) {
 			mutableBlockPos.set(pos).move(Direction.UP, i);
-			if (!levelAccessor.getBlockState(mutableBlockPos).isSolidRender(levelAccessor, mutableBlockPos)) {
+			if (!levelAccessor.getBlockState(mutableBlockPos).isSolidRender()) {
 				this.setBlock(levelAccessor, mutableBlockPos, featureConfiguration.stemProvider.getState(random, pos));
 
 				if (bugsLeft > 0 && i > height / 2 && random.nextInt(10) == 9)
@@ -70,7 +70,7 @@ public abstract class CanopyMushroomFeature extends AbstractHugeMushroomFeature 
 		BlockPos.MutableBlockPos bugPos = new BlockPos.MutableBlockPos();
 		bugPos.set(pos).move(direction);
 
-		if (levelAccessor.getBlockState(bugPos).isSolidRender(levelAccessor, bugPos)) {
+		if (levelAccessor.getBlockState(bugPos).isSolidRender()) {
 			return false;
 		}
 
@@ -133,7 +133,7 @@ public abstract class CanopyMushroomFeature extends AbstractHugeMushroomFeature 
 			for (int z = -foliageRadius; z <= foliageRadius; ++z) {
 				if (!FeatureLogic.isCornerInSquare(x, z, foliageRadius)) {
 					mutableBlockPos.setWithOffset(pos, x, height, z);
-					if (!levelAccessor.getBlockState(mutableBlockPos).isSolidRender(levelAccessor, mutableBlockPos)) {
+					if (!levelAccessor.getBlockState(mutableBlockPos).isSolidRender()) {
 						BlockState blockState = featureConfiguration.capProvider.getState(random, pos);
 						blockState = FeatureLogic.getHorizontalMushroomBlockState(blockState, x, z, foliageRadius);
 						this.setBlock(levelAccessor, mutableBlockPos, blockState);

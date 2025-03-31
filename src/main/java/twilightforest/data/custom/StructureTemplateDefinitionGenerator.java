@@ -2,7 +2,6 @@ package twilightforest.data.custom;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.structures.finalcastle.FinalCastleBellTower21Component;
 import twilightforest.world.components.structures.finalcastle.FinalCastleBossGazeboComponent;
@@ -12,8 +11,8 @@ import twilightforest.world.components.structures.lichtowerrevamp.LichTowerPiece
 import java.util.concurrent.CompletableFuture;
 
 public class StructureTemplateDefinitionGenerator extends StructureTemplateDefinitionProvider {
-	public StructureTemplateDefinitionGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper) {
-		super(output, lookupProvider, TwilightForestMod.ID, existingFileHelper);
+	public StructureTemplateDefinitionGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
+		super(output, lookupProvider, TwilightForestMod.ID);
 	}
 
 	@Override

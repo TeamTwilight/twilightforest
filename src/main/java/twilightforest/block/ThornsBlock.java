@@ -81,7 +81,7 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 
 	@Override
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-		if (level instanceof ServerLevel serverLevel && !(entity instanceof ItemEntity item) || !item.getItem().is(ItemTagGenerator.IMMUNE_TO_THORNS)) {
+		if (level instanceof ServerLevel serverLevel && (!(entity instanceof ItemEntity item) || !item.getItem().is(ItemTagGenerator.IMMUNE_TO_THORNS))) {
 			entity.hurtServer(serverLevel, serverLevel.damageSources().source(TFDamageTypes.THORNS), THORN_DAMAGE);
 		}
 	}

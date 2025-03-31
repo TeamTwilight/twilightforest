@@ -1,16 +1,16 @@
 package twilightforest.item;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.Holder;
+import net.minecraft.client.model.HumanoidArmorModel;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.equipment.ArmorMaterial;
+import net.minecraft.world.item.equipment.ArmorType;
 import twilightforest.client.model.TFModelLayers;
-import twilightforest.client.model.armor.TFArmorModel;
 import twilightforest.client.renderer.TFSimpleArmorRenderer;
 import twilightforest.init.TFItems;
 
@@ -20,8 +20,8 @@ public class ArcticArmorItem extends ArmorItem {
 	private static final MutableComponent TOOLTIP = Component.translatable("item.twilightforest.arctic_armor.desc").withStyle(ChatFormatting.GRAY);
 	public static final int DEFAULT_COLOR = 0xFFBDCFD9;
 
-	public ArcticArmorItem(Holder<ArmorMaterial> armorMaterial, Type type, Properties properties) {
-		super(armorMaterial, type, properties);
+	public ArcticArmorItem(ArmorMaterial material, ArmorType type, Properties properties) {
+		super(material, type, properties);
 	}
 
 	@Override
@@ -37,7 +37,7 @@ public class ArcticArmorItem extends ArmorItem {
 
 	public static final class ArmorRender extends TFSimpleArmorRenderer {
 		public ArmorRender() {
-			super(TFArmorModel::new, TFModelLayers.ARCTIC_ARMOR_INNER, TFModelLayers.ARCTIC_ARMOR_OUTER);
+			super(HumanoidArmorModel::new, TFModelLayers.ARCTIC_ARMOR_INNER, TFModelLayers.ARCTIC_ARMOR_OUTER);
 		}
 
 		@Override

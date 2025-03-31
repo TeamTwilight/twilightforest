@@ -109,17 +109,17 @@ public class TFTickHandler {
 		return !(piece instanceof ProgressionPiece progressionPiece) || progressionPiece.isComponentProtected();
 	}
 
-	private static void checkForPortalCreation(ServerPlayer player, Level world, float rangeToCheck) {
-		if (world.dimension().location().equals(ResourceLocation.parse(TFConfig.originDimension))
-			|| TFDimension.isTwilightPortalDestination(world)
+	private static void checkForPortalCreation(ServerPlayer player, ServerLevel level, float rangeToCheck) {
+		if (level.dimension().location().equals(ResourceLocation.parse(TFConfig.originDimension))
+			|| TFDimension.isTwilightPortalDestination(level)
 			|| TFConfig.allowPortalsInOtherDimensions) {
 
-			List<ItemEntity> itemList = world.getEntitiesOfClass(ItemEntity.class, player.getBoundingBox().inflate(rangeToCheck));
+			List<ItemEntity> itemList = level.getEntitiesOfClass(ItemEntity.class, player.getBoundingBox().inflate(rangeToCheck));
 			ItemEntity qualified = null;
 
 			for (ItemEntity entityItem : itemList) {
 				if (entityItem.getItem().is(ItemTagGenerator.PORTAL_ACTIVATOR) &&
-					TFBlocks.TWILIGHT_PORTAL.get().canFormPortal(world.getBlockState(entityItem.blockPosition())) &&
+					TFBlocks.TWILIGHT_PORTAL.get().canFormPortal(level.getBlockState(entityItem.blockPosition())) &&
 					Objects.equals(entityItem.getOwner(), player)) {
 
 					qualified = entityItem;
@@ -146,16 +146,15 @@ public class TFTickHandler {
 				}
 			}
 
-			Random rand = new Random();
 			for (int i = 0; i < 2; i++) {
-				double vx = rand.nextGaussian() * 0.02D;
-				double vy = rand.nextGaussian() * 0.02D;
-				double vz = rand.nextGaussian() * 0.02D;
+				double vx = level.getRandom().nextGaussian() * 0.02D;
+				double vy = level.getRandom().nextGaussian() * 0.02D;
+				double vz = level.getRandom().nextGaussian() * 0.02D;
 
-				world.addParticle(ParticleTypes.EFFECT, qualified.getX(), qualified.getY() + 0.2, qualified.getZ(), vx, vy, vz);
+				level.addParticle(ParticleTypes.EFFECT, qualified.getX(), qualified.getY() + 0.2, qualified.getZ(), vx, vy, vz);
 			}
 
-			if (TFBlocks.TWILIGHT_PORTAL.get().tryToCreatePortal(world, qualified.blockPosition(), qualified, player))
+			if (TFBlocks.TWILIGHT_PORTAL.get().tryToCreatePortal(level, qualified.blockPosition(), qualified, player))
 				TFAdvancements.MADE_TF_PORTAL.get().trigger(player);
 
 		}

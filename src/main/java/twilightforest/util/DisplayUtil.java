@@ -6,6 +6,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.*;
 import net.minecraft.world.entity.Display;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -43,7 +44,7 @@ public class DisplayUtil {
 
 		entityNBT.putString("id", BuiltInRegistries.ENTITY_TYPE.getKey(EntityType.BLOCK_DISPLAY).toString());
 
-		Optional<Entity> spawned = EntityType.create(entityNBT, level);
+		Optional<Entity> spawned = EntityType.create(entityNBT, level, EntitySpawnReason.MOB_SUMMONED);
 
 		if (spawned.isEmpty()) return false;
 		Entity entity = spawned.get();
@@ -83,7 +84,7 @@ public class DisplayUtil {
 
 		entityNBT.putString("id", BuiltInRegistries.ENTITY_TYPE.getKey(EntityType.TEXT_DISPLAY).toString());
 
-		Optional<Entity> spawned = EntityType.create(entityNBT, level);
+		Optional<Entity> spawned = EntityType.create(entityNBT, level, EntitySpawnReason.MOB_SUMMONED);
 
 		if (spawned.isEmpty()) return;
 		Entity entity = spawned.get();

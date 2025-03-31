@@ -67,12 +67,7 @@ public class EssenceRepairRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public boolean canCraftInDimensions(int width, int height) {
-		return width * height >= 2;
-	}
-
-	@Override
-	public RecipeSerializer<?> getSerializer() {
+	public RecipeSerializer<EssenceRepairRecipe> getSerializer() {
 		return TFRecipes.ESSENCE_REPAIR_RECIPE.get();
 	}
 }

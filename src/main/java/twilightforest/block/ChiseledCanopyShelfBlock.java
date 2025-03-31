@@ -73,12 +73,12 @@ public class ChiseledCanopyShelfBlock extends ChiseledBookShelfBlock {
 		if (level.getBlockEntity(pos) instanceof ChiseledCanopyShelfBlockEntity shelf && stack.getItem() instanceof SpawnEggItem) {
 			//dont swing our hand if the shelf is empty
 			if (shelf.isEmpty()) {
-				return ItemInteractionResult.CONSUME;
+				return InteractionResult.CONSUME;
 			}
 			level.playSound(null, pos, TFSounds.BOOKSHELF_CONVERTS.get(), SoundSource.BLOCKS, 0.35F, 0.6F + level.getRandom().nextFloat() * 0.4F);
-			return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
+			return InteractionResult.SUCCESS;
 		}
-		if (state.getValue(SPAWNER)) return ItemInteractionResult.FAIL;
+		if (state.getValue(SPAWNER)) return InteractionResult.FAIL;
 		return super.useItemOn(stack, state, level, pos, player, hand, result);
 	}
 

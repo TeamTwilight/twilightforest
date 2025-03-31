@@ -1,18 +1,17 @@
 package twilightforest.client.renderer;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.HumanoidArmorModel;
 import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.resources.model.EquipmentClientInfo;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.common.util.Lazy;
-import org.jetbrains.annotations.NotNull;
-import twilightforest.client.model.armor.TFArmorModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +22,7 @@ public class TFSimpleArmorRenderer implements IClientItemExtensions {
 	protected final Lazy<HumanoidModel<?>> INNER_ARMOR_MODEL;
 	protected final Lazy<HumanoidModel<?>> OUTER_ARMOR_MODEL;
 
-	public TFSimpleArmorRenderer(Function<ModelPart, TFArmorModel> createModelInstance, ModelLayerLocation innerLayerLocation, ModelLayerLocation outerLayerLocation) {
+	public TFSimpleArmorRenderer(Function<ModelPart, HumanoidArmorModel<?>> createModelInstance, ModelLayerLocation innerLayerLocation, ModelLayerLocation outerLayerLocation) {
 		INSTANCES.add(this);
 		this.INNER_ARMOR_MODEL = Lazy.of(() -> {
 			ModelPart baked = Minecraft.getInstance().getEntityModels().bakeLayer(innerLayerLocation);
@@ -46,8 +45,8 @@ public class TFSimpleArmorRenderer implements IClientItemExtensions {
 	}
 
 	@Override
-	public @NotNull HumanoidModel<?> getHumanoidArmorModel(LivingEntity living, ItemStack stack, EquipmentSlot slot, HumanoidModel<?> model) {
-		return slot == EquipmentSlot.LEGS ? INNER_ARMOR_MODEL.get() : OUTER_ARMOR_MODEL.get();
+	public Model getHumanoidArmorModel(ItemStack stack, EquipmentClientInfo.LayerType type, Model original) {
+		return type == EquipmentClientInfo.LayerType.HUMANOID_LEGGINGS ? INNER_ARMOR_MODEL.get() : OUTER_ARMOR_MODEL.get();
 	}
 
 	public static final class ResourceReloadListener implements ResourceManagerReloadListener {

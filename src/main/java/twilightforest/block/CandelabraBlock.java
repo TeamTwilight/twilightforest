@@ -186,7 +186,7 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 						return InteractionResult.SUCCESS;
 					}
 				}
-				return ItemInteractionResult.CONSUME;
+				return InteractionResult.CONSUME;
 			}
 		} else if (stack.is(Tags.Items.DUSTS_REDSTONE) && state.getValue(LIGHTING) == Lighting.NORMAL) {
 			level.setBlockAndUpdate(pos, state.setValue(LIGHTING, Lighting.DIM));

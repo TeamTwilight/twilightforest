@@ -17,7 +17,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
@@ -153,13 +153,13 @@ public class OminousCandleBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+	protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
 		if (player.getAbilities().mayBuild) {
 			if (stack.isEmpty()) {
 				BlockState newState = this.candle.defaultBlockState().setValue(CANDLES, state.getValue(CANDLES));
 				level.setBlock(pos, newState, Block.UPDATE_ALL);
 				AbstractCandleBlock.extinguish(player, newState, level, pos);
-				return ItemInteractionResult.sidedSuccess(level.isClientSide);
+				return InteractionResult.SUCCESS;
 			} else if (stack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof CandleBlock candleBlock && state.getValue(CANDLES) < 4 && this.candle == candleBlock) {
 				level.setBlock(pos, state.setValue(CANDLES, state.getValue(CANDLES) + 1), Block.UPDATE_ALL);
 
@@ -181,7 +181,7 @@ public class OminousCandleBlock extends BaseEntityBlock {
 				level.gameEvent(GameEvent.BLOCK_PLACE, pos, GameEvent.Context.of(player, newState));
 				stack.consume(1, player);
 
-				return ItemInteractionResult.SUCCESS;
+				return InteractionResult.SUCCESS;
 			}
 		}
 		return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
@@ -202,7 +202,7 @@ public class OminousCandleBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
+	public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData, Player player) {
 		return new ItemStack(this.candle);
 	}
 
