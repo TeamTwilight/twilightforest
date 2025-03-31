@@ -1,13 +1,9 @@
 {
   "type": "twilightforest:uncrafting",
   "cost": 0,
-  "input": {
-    "item": "twilightforest:keepsake_casket"
-  },
+  "input": "twilightforest:keepsake_casket",
   "key": {
-    "C": {
-      "item": "twilightforest:skull_chest"
-    }
+    "C": "twilightforest:skull_chest"
   },
   "pattern": [
     "C"

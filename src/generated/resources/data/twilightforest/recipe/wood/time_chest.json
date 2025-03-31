@@ -3,16 +3,15 @@
   "category": "misc",
   "group": "chest",
   "key": {
-    "#": "twilightforest:time_planks",
-    "C": "minecraft:chest"
+    "#": "twilightforest:time_planks"
   },
   "pattern": [
     "###",
-    "#C#",
+    "# #",
     "###"
   ],
   "result": {
-    "count": 2,
+    "count": 1,
     "id": "twilightforest:time_chest"
   }
 }

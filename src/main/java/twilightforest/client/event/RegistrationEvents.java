@@ -46,6 +46,7 @@ import net.neoforged.neoforge.client.extensions.common.IClientBlockExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.client.gui.map.RegisterMapDecorationRenderersEvent;
 import net.neoforged.neoforge.client.renderstate.RegisterRenderStateModifiersEvent;
+import net.neoforged.neoforge.client.resources.VanillaClientListeners;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.*;
@@ -311,12 +312,14 @@ public class RegistrationEvents {
 		});
 	}
 
-	private static void registerClientReloadListeners(RegisterClientReloadListenersEvent event) {
-		((ReloadableResourceManager)Minecraft.getInstance().getResourceManager()).listeners.addFirst(JappaPackReloadListener.INSTANCE);
+	private static void registerClientReloadListeners(AddClientReloadListenersEvent event) {
+		event.addListener(TwilightForestMod.prefix("jappa_pack"), JappaPackReloadListener.INSTANCE);
+		event.addDependency(VanillaClientListeners.FIRST, TwilightForestMod.prefix("jappa_pack"));
+
 		MagicPaintingTextureManager.instance = new MagicPaintingTextureManager(Minecraft.getInstance().getTextureManager());
-		event.registerReloadListener(MagicPaintingTextureManager.instance);
-		event.registerReloadListener(TextureGeneratorReloadListener.INSTANCE);
-		event.registerReloadListener(new TFSimpleArmorRenderer.ResourceReloadListener());
+		event.addListener(TwilightForestMod.prefix("magic_paintings"), MagicPaintingTextureManager.instance);
+		event.addListener(TwilightForestMod.prefix("texture_generators"), TextureGeneratorReloadListener.INSTANCE);
+		event.addListener(TwilightForestMod.prefix("armor_models"), new TFSimpleArmorRenderer.ResourceReloadListener());
 	}
 
 	private static void registerScreens(RegisterMenuScreensEvent event) {

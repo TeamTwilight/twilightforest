@@ -3,16 +3,15 @@
   "category": "misc",
   "group": "chest",
   "key": {
-    "#": "twilightforest:transformation_planks",
-    "C": "minecraft:chest"
+    "#": "twilightforest:transformation_planks"
   },
   "pattern": [
     "###",
-    "#C#",
+    "# #",
     "###"
   ],
   "result": {
-    "count": 2,
+    "count": 1,
     "id": "twilightforest:transformation_chest"
   }
 }

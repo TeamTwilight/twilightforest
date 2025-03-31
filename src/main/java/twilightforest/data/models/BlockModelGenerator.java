@@ -3,8 +3,10 @@ package twilightforest.data.models;
 import net.minecraft.client.data.models.ItemModelOutput;
 import net.minecraft.client.data.models.blockstates.BlockStateGenerator;
 import net.minecraft.client.data.models.model.ModelInstance;
+import net.minecraft.client.data.models.model.TexturedModel;
 import net.minecraft.data.BlockFamily;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Blocks;
 import twilightforest.data.TFBlockFamilies;
 import twilightforest.data.helpers.BlockModelBuilders;
 import twilightforest.init.TFBlocks;
@@ -38,7 +40,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.simpleBlockWithRenderType(TFBlocks.BEANSTALK_LEAVES.get(), "cutout_mipped");
 		this.castleDoor(TFBlocks.BLUE_CASTLE_DOOR.get());
 		this.forcefield(TFBlocks.BLUE_FORCE_FIELD.get());
-		this.createRotatableColumn(TFBlocks.BOLD_CASTLE_BRICK_PILLAR.get());
+		this.createRotatedPillarWithHorizontalVariant(TFBlocks.BOLD_CASTLE_BRICK_PILLAR.get(), TexturedModel.COLUMN_ALT, TexturedModel.COLUMN_HORIZONTAL_ALT);
 		this.createTrivialCube(TFBlocks.BOLD_CASTLE_BRICK_TILE.get());
 	}
 }

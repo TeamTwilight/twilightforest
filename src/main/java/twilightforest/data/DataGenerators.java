@@ -20,6 +20,7 @@ import twilightforest.data.custom.stalactites.StalactiteGenerator;
 import twilightforest.data.models.BlockModelGenerator;
 import twilightforest.data.models.ModelGenerator;
 import twilightforest.data.recipes.CraftingGeneratorRunner;
+import twilightforest.data.recipes.RecipePriorityGenerator;
 import twilightforest.data.tags.*;
 
 import java.util.Optional;
@@ -65,6 +66,7 @@ public class DataGenerators {
 		generator.addProvider(true, new ItemTagGenerator(output, lookupProvider, blocktags.contentsGetter()));
 		generator.addProvider(true, new EntityTagGenerator(output, lookupProvider));
 		generator.addProvider(true, new CraftingGeneratorRunner(output, lookupProvider));
+		generator.addProvider(true, new RecipePriorityGenerator(output, lookupProvider));
 		generator.addProvider(true, new LootModifierGenerator(output, lookupProvider));
 
 		generator.addProvider(true, new StructureTemplateDefinitionGenerator(output, lookupProvider));
@@ -75,11 +77,5 @@ public class DataGenerators {
 		generator.addProvider(true, new LangGenerator(output));
 
 		generator.addProvider(true, new QuestGenerator(output));
-
-		//pack.mcmeta
-		generator.addProvider(true, new PackMetadataGenerator(output).add(PackMetadataSection.TYPE, new PackMetadataSection(
-			Component.literal("Resources for Twilight Forest"),
-			DetectedVersion.BUILT_IN.getPackVersion(PackType.SERVER_DATA),
-			Optional.of(new InclusiveRange<>(0, Integer.MAX_VALUE)))));
 	}
 }

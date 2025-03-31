@@ -19,17 +19,17 @@ import java.util.List;
 public class ScepterRecipeBuilder {
 
 	private final HolderGetter<Item> getter;
-	private final Item scepter;
+	private final ItemLike scepter;
 	private final int durability;
 	private final List<Ingredient> repairItems = new ArrayList<>();
 
-	private ScepterRecipeBuilder(HolderGetter<Item> getter, Item scepter, int durability) {
+	private ScepterRecipeBuilder(HolderGetter<Item> getter, ItemLike scepter, int durability) {
 		this.getter = getter;
 		this.scepter = scepter;
 		this.durability = durability;
 	}
 
-	public static ScepterRecipeBuilder repairFor(HolderGetter<Item> getter, Item scepter, int durability) {
+	public static ScepterRecipeBuilder repairFor(HolderGetter<Item> getter, ItemLike scepter, int durability) {
 		return new ScepterRecipeBuilder(getter, scepter, durability);
 	}
 
@@ -49,7 +49,7 @@ public class ScepterRecipeBuilder {
 	}
 
 	public void save(RecipeOutput output, ResourceKey<Recipe<?>> id) {
-		ScepterRepairRecipe recipe = new ScepterRepairRecipe(this.scepter, this.repairItems, this.durability, CraftingBookCategory.MISC);
+		ScepterRepairRecipe recipe = new ScepterRepairRecipe(this.scepter.asItem(), this.repairItems, this.durability, CraftingBookCategory.MISC);
 		output.accept(id, recipe, null);
 	}
 }

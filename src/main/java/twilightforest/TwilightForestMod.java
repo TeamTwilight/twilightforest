@@ -31,7 +31,7 @@ import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.AddReloadListenerEvent;
+import net.neoforged.neoforge.event.AddServerReloadListenersEvent;
 import net.neoforged.neoforge.event.BlockEntityTypeAddBlocksEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.items.IItemHandler;
@@ -99,9 +99,6 @@ public final class TwilightForestMod {
 
 	public static final Logger LOGGER = LogManager.getLogger(ID);
 
-	@Nullable
-	private static QuestReloadListener QUEST_INSTANCE;
-
 	static {
 		BeanContext.init();
 	}
@@ -122,8 +119,8 @@ public final class TwilightForestMod {
 			ClientEvents.initGameEvents();
 		}
 		NeoForge.EVENT_BUS.addListener(this::registerCommands);
-		NeoForge.EVENT_BUS.addListener(StalactiteReloadListener.INSTANCE::registerListener);
-		NeoForge.EVENT_BUS.addListener(StructureTemplateDefinitions.INSTANCE::registerListener);
+		NeoForge.EVENT_BUS.addListener(AddServerReloadListenersEvent.class, event -> StalactiteReloadListener.INSTANCE.registerListener(prefix("stalactites"), event));
+		NeoForge.EVENT_BUS.addListener(AddServerReloadListenersEvent.class, event -> StructureTemplateDefinitions.INSTANCE.registerListener(prefix("structure_templates"), event));
 
 		TFItems.ITEMS.register(bus);
 		TFStats.STATS.register(bus);
@@ -615,14 +612,7 @@ public final class TwilightForestMod {
 		return ResourceLocation.fromNamespaceAndPath(ID, ENVIRO_DIR + name);
 	}
 
-	private void reloadQuests(AddReloadListenerEvent event) {
-		QUEST_INSTANCE = new QuestReloadListener();
-		event.addListener(QUEST_INSTANCE);
-	}
-
-	public static QuestReloadListener getQuests() {
-		if (QUEST_INSTANCE == null)
-			throw new IllegalStateException("Can't retrieve QuestReloadListener until resources have loaded once");
-		return QUEST_INSTANCE;
+	private void reloadQuests(AddServerReloadListenersEvent event) {
+		event.addListener(TwilightForestMod.prefix("quests"), new QuestReloadListener());
 	}
 }

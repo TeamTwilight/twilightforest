@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/slime_block",
-  "render_type": "minecraft:translucent",
-  "textures": {
-    "particle": "twilightforest:block/maze_slime_block",
-    "texture": "twilightforest:block/maze_slime_block"
-  }
-}

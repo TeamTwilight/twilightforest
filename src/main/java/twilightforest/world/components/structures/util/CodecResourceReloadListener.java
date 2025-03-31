@@ -11,7 +11,8 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.profiling.ProfilerFiller;
-import net.neoforged.neoforge.event.AddReloadListenerEvent;
+import net.neoforged.neoforge.client.event.AddClientReloadListenersEvent;
+import net.neoforged.neoforge.event.AddServerReloadListenersEvent;
 import twilightforest.TwilightForestMod;
 
 import java.util.ArrayList;
@@ -79,7 +80,7 @@ public abstract class CodecResourceReloadListener<T> extends SimpleJsonResourceR
 	/**
 	 * Intentionally not subscribed, it is on the subclasses to opt into subscription
 	 */
-	public void registerListener(AddReloadListenerEvent event) {
-		event.addListener(this);
+	public void registerListener(ResourceLocation name, AddServerReloadListenersEvent event) {
+		event.addListener(name, this);
 	}
 }
