@@ -44,6 +44,8 @@ public abstract class CodecResourceReloadListener<T> extends SimpleJsonResourceR
 		for (Map.Entry<ResourceLocation, JsonElement> entry : map.entrySet()) {
 			ResourceLocation location = entry.getKey();
 
+			// FIXME separate Stalactite entry from structure-specific stalactite jsons
+			//  The StalactiteReloadListener requires this. When that is fixed, then this class can be deleted.
 			if (location.getPath().contains("entries"))
 				continue;
 
@@ -76,11 +78,4 @@ public abstract class CodecResourceReloadListener<T> extends SimpleJsonResourceR
 	}
 
 	protected abstract void forLocation(ResourceManager manager, ResourceLocation location, T element);
-
-	/**
-	 * Intentionally not subscribed, it is on the subclasses to opt into subscription
-	 */
-	public void registerListener(ResourceLocation name, AddServerReloadListenersEvent event) {
-		event.addListener(name, this);
-	}
 }
