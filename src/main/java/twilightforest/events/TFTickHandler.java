@@ -11,7 +11,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -21,7 +20,6 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.tick.LevelTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.TwilightForestMod;
@@ -76,21 +74,6 @@ public class TFTickHandler {
 			} else {
 				checkForLockedStructuresSendPacket(player, world);
 			}
-		}
-	}
-
-	@SubscribeEvent
-	public static void levelTick(LevelTickEvent.Post event) {
-		Level level = event.getLevel();
-		if (level instanceof ServerLevel serverLevel) {
-			serverLevel.getEntities().getAll().forEach(entity -> {
-				if (!(entity instanceof LivingEntity livingEntity))
-					return;
-				TravellersArmorItem.travellersPantsControlFall(livingEntity);
-				TravellersArmorItem.travellersVestHaste(livingEntity);
-				TravellersArmorItem.travellersWingsHighJump(livingEntity);
-				TravellersArmorItem.travellersGearRepair(livingEntity);
-			});
 		}
 	}
 

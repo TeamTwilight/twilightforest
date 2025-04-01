@@ -26,6 +26,9 @@ import net.minecraft.sounds.Musics;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.ChunkPos;
@@ -110,6 +113,7 @@ public class ClientEvents {
 		NeoForge.EVENT_BUS.addListener(ClientEvents::travellersArmorEffects);
 		NeoForge.EVENT_BUS.addListener(ClientEvents::playerTravellersArmorEffects);
 		NeoForge.EVENT_BUS.addListener(ClientEvents::travellersAgileRanger);
+		NeoForge.EVENT_BUS.addListener(ClientEvents::travellersForwardBoost);
 
 		NeoForge.EVENT_BUS.addListener(CloudEvents::renderPrecipitation);
 		NeoForge.EVENT_BUS.addListener(CloudEvents::tickWeatherEffects);
@@ -126,7 +130,7 @@ public class ClientEvents {
 			clientLevel.entitiesForRendering().forEach(entity -> {
 				if (!(entity instanceof LivingEntity livingEntity))
 					return;
-				TravellersArmorItem.travellersPantsControlFall(livingEntity);
+				TravellersArmorItem.travellersWingsControlledFall(livingEntity);
 			});
 		}
 	}
@@ -151,6 +155,22 @@ public class ClientEvents {
 			input.leftImpulse *= agileRangerModifier;
 			input.forwardImpulse *= agileRangerModifier;
 		}
+	}
+
+	public static void travellersForwardBoost(MovementInputUpdateEvent event) {
+		if (!(event.getEntity() instanceof LocalPlayer localPlayer))
+			return;
+		ItemStack bootsStack = localPlayer.getItemBySlot(EquipmentSlot.FEET);
+		Double multiplier = bootsStack.get(TFDataComponents.FORWARD_BOOST_MULTIPLIER);
+		AttributeInstance attributeInstance = localPlayer.getAttributes().getInstance(Attributes.MOVEMENT_SPEED);
+		if (attributeInstance == null)
+			return;
+
+		Input input = localPlayer.input;
+		if (multiplier == null || input.forwardImpulse <= 0 || localPlayer.isInLiquid())
+			multiplier = 1D;
+		attributeInstance.addOrUpdateTransientModifier(new AttributeModifier(TravellersArmorItem.FORWARD_BOOTS_ATTRIBUTE_MODIFIER_LOCATION, multiplier - 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+		input.leftImpulse /= multiplier;
 	}
 
 	private static void handleGameBootup(ScreenEvent.Init.Post event) {

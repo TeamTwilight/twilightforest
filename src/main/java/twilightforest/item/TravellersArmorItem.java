@@ -15,6 +15,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -42,6 +43,7 @@ import java.util.function.Consumer;
 public class TravellersArmorItem extends ArmorItem {
 	public static final double WATER_WALKING_MAX_SUBMERGED_HEIGHT = 0.4;
 	public static final int AUTO_REPAIR_SUNLIGHT_BOOST = 3;
+	public static final ResourceLocation FORWARD_BOOTS_ATTRIBUTE_MODIFIER_LOCATION = TwilightForestMod.prefix("travellers_gear.boots_forward_boost");
 	@Nullable
 	private ItemAttributeModifiers attributeModifiers;
 	public TravellersArmorItem(ArmorItem.Type equipmentType, Properties properties, int durability) {
@@ -104,7 +106,20 @@ public class TravellersArmorItem extends ArmorItem {
 			PacketDistributor.sendToPlayersTrackingEntity(livingEntity, particlePacket);
 	}
 
-	public static void travellersPantsControlFall(LivingEntity livingEntity) {
+	public static void travellersBootsForwardBoost(LivingEntity livingEntity) {
+		if (livingEntity instanceof Player)
+			return;
+		ItemStack leggingsStack = livingEntity.getItemBySlot(EquipmentSlot.FEET);
+		Double multiplier = leggingsStack.get(TFDataComponents.FORWARD_BOOST_MULTIPLIER);
+		AttributeInstance attributeInstance = livingEntity.getAttributes().getInstance(Attributes.MOVEMENT_SPEED);
+		if (attributeInstance == null)
+			return;
+		if (multiplier == null)
+			multiplier = 1D;
+		attributeInstance.addOrUpdateTransientModifier(new AttributeModifier(FORWARD_BOOTS_ATTRIBUTE_MODIFIER_LOCATION, multiplier - 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+	}
+
+	public static void travellersWingsControlledFall(LivingEntity livingEntity) {
 		ItemStack leggingsStack = livingEntity.getItemBySlot(EquipmentSlot.LEGS);
 		Float multiplier = leggingsStack.get(TFDataComponents.CONTROLLED_FALLING_MULTIPLIER);
 		Vec3 deltaMovement = livingEntity.getDeltaMovement();
@@ -225,6 +240,7 @@ public class TravellersArmorItem extends ArmorItem {
 		return properties
 			.component(TFDataComponents.WATER_WALK_ENABLE, true)
 			.component(TFDataComponents.SLIMY_SOLES_COEFFICIENT, 0.5F)
+			.component(TFDataComponents.FORWARD_BOOST_MULTIPLIER, 1.4)
 			.component(TFDataComponents.AUTO_REPAIR_PROBABILITY, 0.001F)
 			.attributes(defaultArmorProperties(Type.BOOTS)
 				.add(Attributes.STEP_HEIGHT, new AttributeModifier(TwilightForestMod.prefix("travellers_gear.boots_high_step"), 0.5F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.FEET)
