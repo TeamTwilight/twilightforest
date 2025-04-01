@@ -22,7 +22,7 @@ import net.minecraft.world.phys.*;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
-import twilightforest.data.tags.BlockTagGenerator;
+import twilightforest.tags.TFBlockTags;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFParticleType;
 import twilightforest.init.TFSounds;
@@ -120,7 +120,7 @@ public class CubeOfAnnihilation extends ThrowableProjectile {
 	private boolean canAnnihilate(BlockPos pos, BlockState state, boolean restrictedPlaceMode) {
 		// whitelist many castle blocks
 		Block block = state.getBlock();
-		return (state.is(BlockTagGenerator.ANNIHILATION_INCLUSIONS) || block.getExplosionResistance() < 8F && state.getDestroySpeed(this.level(), pos) >= 0)
+		return (state.is(TFBlockTags.ANNIHILATION_INCLUSIONS) || block.getExplosionResistance() < 8F && state.getDestroySpeed(this.level(), pos) >= 0)
 			&& (!restrictedPlaceMode || this.stack.canBreakBlockInAdventureMode(new BlockInWorld(this.level(), pos, false)));
 	}
 

@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.data.tags.BlockTagGenerator;
+import twilightforest.tags.TFBlockTags;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFBlocks;
 
@@ -230,7 +230,7 @@ public class AntibuilderBlockEntity extends BlockEntity {
 	}
 
 	private boolean isUnrevertable(BlockState stateThere, BlockState replaceWith) {
-		return stateThere.is(BlockTagGenerator.ANTIBUILDER_IGNORES) || replaceWith.is(BlockTagGenerator.ANTIBUILDER_IGNORES);
+		return stateThere.is(TFBlockTags.ANTIBUILDER_IGNORES) || replaceWith.is(TFBlockTags.ANTIBUILDER_IGNORES);
 	}
 
 	private void captureBlockData(Level level, BlockPos pos) {

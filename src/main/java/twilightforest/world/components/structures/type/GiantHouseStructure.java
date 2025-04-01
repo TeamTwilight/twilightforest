@@ -14,9 +14,8 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import twilightforest.TwilightForestMod;
-import twilightforest.data.tags.BiomeTagGenerator;
+import twilightforest.tags.TFBiomeTags;
 import twilightforest.init.TFEntities;
-import twilightforest.init.TFMapDecorations;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.world.components.structures.trollcave.CloudCastleComponent;
 import twilightforest.world.components.structures.util.ConfigurableSpawns;
@@ -65,7 +64,7 @@ public class GiantHouseStructure extends ProgressionStructure implements Configu
 			new DecorationConfig(1, true, true, false),
 			false, Optional.empty(),
 			new StructureSettings(
-				context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_GIANT_HOUSE_BIOMES),
+				context.lookup(Registries.BIOME).getOrThrow(TFBiomeTags.VALID_GIANT_HOUSE_BIOMES),
 				Arrays.stream(MobCategory.values()).collect(Collectors.toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create()))), // Landmarks have Controlled Mob spawning
 				GenerationStep.Decoration.TOP_LAYER_MODIFICATION,
 				TerrainAdjustment.NONE

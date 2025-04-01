@@ -20,8 +20,7 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.pathfinder.PathType;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.FireJetBlockEntity;
-import twilightforest.data.tags.BlockTagGenerator;
-import twilightforest.data.tags.FluidTagGenerator;
+import twilightforest.tags.TFBlockTags;
 import twilightforest.enums.FireJetVariant;
 import twilightforest.init.TFBlockEntities;
 
@@ -61,7 +60,7 @@ public class FireJetBlock extends BaseEntityBlock {
 		if (!level.isClientSide() && state.getValue(STATE) == FireJetVariant.IDLE) {
 			BlockPos lavaPos = findLavaAround(level, pos.below());
 
-			if (this.isLava(level, lavaPos)) {
+			if (this.isFuel(level, lavaPos)) {
 				level.setBlockAndUpdate(lavaPos, Blocks.AIR.defaultBlockState());
 				level.setBlockAndUpdate(pos, state.setValue(STATE, FireJetVariant.POPPING));
 			}
@@ -72,13 +71,13 @@ public class FireJetBlock extends BaseEntityBlock {
 	 * Find a full block of lava near the designated block. This is intentionally not really that reliable.
 	 */
 	private BlockPos findLavaAround(Level level, BlockPos pos) {
-		if (this.isLava(level, pos)) {
+		if (this.isFuel(level, pos)) {
 			return pos;
 		}
 
 		for (int i = 0; i < 3; i++) {
 			BlockPos randPos = pos.offset(level.getRandom().nextInt(3) - 1, 0, level.getRandom().nextInt(3) - 1);
-			if (this.isLava(level, randPos)) {
+			if (this.isFuel(level, randPos)) {
 				return randPos;
 			}
 		}
@@ -86,9 +85,8 @@ public class FireJetBlock extends BaseEntityBlock {
 		return pos;
 	}
 
-	private boolean isLava(Level level, BlockPos pos) {
-		BlockState state = level.getBlockState(pos);
-		return state.is(BlockTagGenerator.FIRE_JET_FUEL) || state.getFluidState().is(FluidTagGenerator.FIRE_JET_FUEL);
+	private boolean isFuel(Level level, BlockPos pos) {
+		return level.getBlockState(pos).is(TFBlockTags.FIRE_JET_FUEL);
 	}
 
 	@Override

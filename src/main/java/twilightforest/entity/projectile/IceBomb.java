@@ -17,7 +17,7 @@ import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
-import twilightforest.data.tags.BlockTagGenerator;
+import twilightforest.tags.TFBlockTags;
 import twilightforest.enchantment.ApplyFrostedEffect;
 import twilightforest.entity.boss.AlphaYeti;
 import twilightforest.entity.monster.Yeti;
@@ -86,7 +86,7 @@ public class IceBomb extends TFThrowable {
 			if (this.level().isEmptyBlock(pos) && Blocks.SNOW.defaultBlockState().canSurvive(this.level(), pos)) {
 				this.level().setBlockAndUpdate(pos, Blocks.SNOW.defaultBlockState());
 			}
-			if (state.is(BlockTagGenerator.ICE_BOMB_REPLACEABLES)) {
+			if (state.is(TFBlockTags.ICE_BOMB_REPLACEABLES)) {
 				this.level().setBlock(pos, Blocks.SNOW.defaultBlockState().canSurvive(this.level(), pos) ? Blocks.SNOW.defaultBlockState() : Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
 			}
 			if (state.is(Blocks.SNOW) && state.getValue(SnowLayerBlock.LAYERS) < 8) {

@@ -54,7 +54,6 @@ import twilightforest.client.event.ClientEvents;
 import twilightforest.client.event.RegistrationEvents;
 import twilightforest.command.TFCommand;
 import twilightforest.config.ConfigSetup;
-import twilightforest.data.custom.stalactites.entry.StalactiteReloadListener;
 import twilightforest.dispenser.TFDispenserBehaviors;
 import twilightforest.entity.MagicPaintingVariant;
 import twilightforest.entity.passive.DwarfRabbitVariant;
@@ -73,7 +72,8 @@ import twilightforest.util.TFRemapper;
 import twilightforest.util.woods.WoodPalette;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.layer.BiomeDensitySource;
-import twilightforest.world.components.structures.StructureSpeleothemConfig;
+import twilightforest.world.components.spelothem.StalactiteReloadListener;
+import twilightforest.world.components.spelothem.StructureSpeleothemConfig;
 import twilightforest.world.components.structures.lichtowerrevamp.StructureTemplateDefinitions;
 
 import java.util.Locale;

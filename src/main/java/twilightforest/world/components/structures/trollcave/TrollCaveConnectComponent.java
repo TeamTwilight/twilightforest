@@ -24,7 +24,7 @@ import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.util.HugeMushroomUtil;
 import twilightforest.util.RotationUtil;
-import twilightforest.world.components.structures.StructureSpeleothemConfig;
+import twilightforest.world.components.spelothem.StructureSpeleothemConfig;
 
 public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 	protected final boolean[] openingTowards = {false, false, true, false};

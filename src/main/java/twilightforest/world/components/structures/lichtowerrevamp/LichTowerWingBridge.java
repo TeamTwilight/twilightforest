@@ -20,7 +20,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import org.jetbrains.annotations.Nullable;
 import tamaized.beanification.Autowired;
-import twilightforest.data.tags.BlockTagGenerator;
+import twilightforest.tags.TFBlockTags;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
@@ -80,7 +80,7 @@ public final class LichTowerWingBridge extends TwilightJigsawPiece implements Pi
 
 	private static void removeIfBanister(WorldGenLevel level, BlockPos pos, BoundingBox chunkBounds) {
 		if (chunkBounds.isInside(pos)) {
-			if (level.getBlockState(pos).is(BlockTagGenerator.BANISTERS)) {
+			if (level.getBlockState(pos).is(TFBlockTags.BANISTERS)) {
 				level.removeBlock(pos, false);
 			}
 		}

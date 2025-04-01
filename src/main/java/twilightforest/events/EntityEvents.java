@@ -68,7 +68,7 @@ import twilightforest.block.*;
 import twilightforest.block.entity.SkullChestBlockEntity;
 import twilightforest.block.entity.SkullCandleBlockEntity;
 import twilightforest.config.TFConfig;
-import twilightforest.data.tags.EntityTagGenerator;
+import twilightforest.tags.TFEntityTypeTags;
 import twilightforest.enchantment.ApplyFrostedEffect;
 import twilightforest.entity.passive.quest.ram.QuestingRamCurrentContext;
 import twilightforest.entity.projectile.ITFProjectile;
@@ -442,7 +442,7 @@ public class EntityEvents {
 
 	@SubscribeEvent
 	public static void adjustEntityHealthInMultiplayerFights(FinalizeSpawnEvent event) {
-		if (event.getEntity().getType().is(EntityTagGenerator.MULTIPLAYER_INCLUSIVE_ENTITIES)) {
+		if (event.getEntity().getType().is(TFEntityTypeTags.MULTIPLAYER_INCLUSIVE_ENTITIES)) {
 			if (TFConfig.multiplayerFightAdjuster.adjustsHealth()) {
 				List<ServerPlayer> nearbyPlayers = event.getLevel().getEntitiesOfClass(ServerPlayer.class, event.getEntity().getBoundingBox().inflate(32, 10, 32), player -> EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(EntitySelector.ENTITY_STILL_ALIVE).test(player));
 				if (nearbyPlayers.size() > 1 && event.getEntity().getAttribute(Attributes.MAX_HEALTH) != null) {
@@ -463,7 +463,7 @@ public class EntityEvents {
 
 	@SubscribeEvent
 	public static void addQualifiedPlayerIfNeeded(LivingDamageEvent.Post event) {
-		if (event.getEntity().getType().is(EntityTagGenerator.MULTIPLAYER_INCLUSIVE_ENTITIES)) {
+		if (event.getEntity().getType().is(TFEntityTypeTags.MULTIPLAYER_INCLUSIVE_ENTITIES)) {
 			var data = event.getEntity().getData(TFDataAttachments.MULTIPLAYER_FIGHT);
 			if (event.getSource().getEntity() != null) {
 				data.maybeAddQualifiedPlayer(event.getSource().getEntity());

@@ -15,7 +15,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -29,7 +28,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
-import twilightforest.data.tags.ItemTagGenerator;
+import twilightforest.tags.TFItemTags;
 import twilightforest.entity.ai.goal.FlockToSameKindGoal;
 import twilightforest.entity.ai.goal.PanicOnFlockDeathGoal;
 import twilightforest.init.TFSounds;
@@ -114,7 +113,7 @@ public class Kobold extends Monster {
 		}
 
 		//bread munching
-		if (!this.level().isClientSide() && this.isAlive() && this.getItemBySlot(EquipmentSlot.MAINHAND).is(ItemTagGenerator.KOBOLD_PACIFICATION_BREADS)) {
+		if (!this.level().isClientSide() && this.isAlive() && this.getItemBySlot(EquipmentSlot.MAINHAND).is(TFItemTags.KOBOLD_PACIFICATION_BREADS)) {
 			++this.lastEatenBreadTicks;
 			if (this.eatingTime > 0) this.eatingTime--;
 			ItemStack itemstack = this.getItemBySlot(EquipmentSlot.MAINHAND);
@@ -195,7 +194,7 @@ public class Kobold extends Monster {
 
 	@Override
 	public boolean canHoldItem(ItemStack stack) {
-		return this.getItemBySlot(EquipmentSlot.MAINHAND).isEmpty() && stack.is(ItemTagGenerator.KOBOLD_PACIFICATION_BREADS) && !this.isPanicked();
+		return this.getItemBySlot(EquipmentSlot.MAINHAND).isEmpty() && stack.is(TFItemTags.KOBOLD_PACIFICATION_BREADS) && !this.isPanicked();
 	}
 
 	@Override
@@ -268,7 +267,7 @@ public class Kobold extends Monster {
 
 		@Override
 		public boolean canUse() {
-			if (this.mob.getItemBySlot(EquipmentSlot.MAINHAND).is(ItemTagGenerator.KOBOLD_PACIFICATION_BREADS)) {
+			if (this.mob.getItemBySlot(EquipmentSlot.MAINHAND).is(TFItemTags.KOBOLD_PACIFICATION_BREADS)) {
 				return false;
 			}
 			return super.canUse();
@@ -280,7 +279,7 @@ public class Kobold extends Monster {
 	private static class SeekBreadGoal extends Goal {
 
 		private static final Predicate<ItemEntity> ALLOWED_ITEMS = (item) ->
-			item.getItem().is(ItemTagGenerator.KOBOLD_PACIFICATION_BREADS);
+			item.getItem().is(TFItemTags.KOBOLD_PACIFICATION_BREADS);
 
 		private final Kobold mob;
 
@@ -333,7 +332,7 @@ public class Kobold extends Monster {
 
 		@Override
 		public boolean canUse() {
-			if (this.mob.getItemBySlot(EquipmentSlot.MAINHAND).is(ItemTagGenerator.KOBOLD_PACIFICATION_BREADS)) {
+			if (this.mob.getItemBySlot(EquipmentSlot.MAINHAND).is(TFItemTags.KOBOLD_PACIFICATION_BREADS)) {
 				return super.canUse();
 			}
 			return false;

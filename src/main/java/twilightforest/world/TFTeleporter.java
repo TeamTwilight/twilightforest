@@ -21,14 +21,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.portal.TeleportTransition;
-import net.minecraft.world.level.portal.TeleportTransition;
 import net.minecraft.world.phys.Vec3;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFPortalBlock;
 import twilightforest.config.TFConfig;
-import twilightforest.data.tags.BlockTagGenerator;
+import twilightforest.tags.TFBlockTags;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDimension;
 import twilightforest.item.MagicMapItem;
@@ -560,7 +559,7 @@ public class TFTeleporter {
 
 	private static BlockState randNatureBlock(RandomSource random) {
 		Optional<Block> optional = BuiltInRegistries.BLOCK
-			.get(BlockTagGenerator.GENERATED_PORTAL_DECO)
+			.get(TFBlockTags.GENERATED_PORTAL_DECO)
 			.flatMap(tag -> tag.getRandomElement(random))
 			.map(Holder::value);
 		return optional.map(Block::defaultBlockState).orElseGet(Blocks.SHORT_GRASS::defaultBlockState);

@@ -8,7 +8,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
-import twilightforest.data.tags.ItemTagGenerator;
+import twilightforest.tags.TFItemTags;
 import twilightforest.init.TFSounds;
 
 public class Raven extends FlyingBird {
@@ -46,6 +46,6 @@ public class Raven extends FlyingBird {
 
 	@Override
 	public TagKey<Item> getTemptItems() {
-		return ItemTagGenerator.RAVEN_TEMPT_ITEMS;
+		return TFItemTags.RAVEN_TEMPT_ITEMS;
 	}
 }

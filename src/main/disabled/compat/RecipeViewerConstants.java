@@ -11,7 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.block.Block;
 import twilightforest.config.TFConfig;
-import twilightforest.data.tags.ItemTagGenerator;
+import twilightforest.tags.TFItemTags;
 import twilightforest.init.TFDataMaps;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFRecipes;
@@ -43,7 +43,7 @@ public class RecipeViewerConstants {
 			List<RecipeHolder<? extends CraftingRecipe>> recipes = new ArrayList<>(manager.getAllRecipesFor(RecipeType.CRAFTING));
 			recipes = recipes.stream().filter(recipe ->
 					!recipe.value().getResultItem(Minecraft.getInstance().level.registryAccess()).isEmpty() && //get rid of empty items
-						!recipe.value().getResultItem(Minecraft.getInstance().level.registryAccess()).is(ItemTagGenerator.BANNED_UNCRAFTABLES) && //Prevents things that are tagged as banned from showing up
+						!recipe.value().getResultItem(Minecraft.getInstance().level.registryAccess()).is(TFItemTags.BANNED_UNCRAFTABLES) && //Prevents things that are tagged as banned from showing up
 						TFConfig.reverseRecipeBlacklist == TFConfig.disableUncraftingRecipes.contains(recipe.id().toString()) && //remove disabled recipes
 						TFConfig.flipUncraftingModIdList == TFConfig.blacklistedUncraftingModIds.contains(recipe.id().getNamespace())) //remove blacklisted mod ids
 				.collect(Collectors.toList());

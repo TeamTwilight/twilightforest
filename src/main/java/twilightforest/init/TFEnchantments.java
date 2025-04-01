@@ -5,28 +5,20 @@ import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.world.damagesource.DamageType;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.JukeboxSong;
 import net.minecraft.world.item.enchantment.*;
 import net.minecraft.world.item.enchantment.effects.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 import net.minecraft.world.level.storage.loot.providers.number.EnchantmentLevelProvider;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
 import twilightforest.TwilightForestMod;
-import twilightforest.data.tags.BlockTagGenerator;
-import twilightforest.data.tags.ItemTagGenerator;
+import twilightforest.tags.TFBlockTags;
+import twilightforest.tags.TFItemTags;
 import twilightforest.enchantment.*;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 
 public class TFEnchantments {
 	public static final ResourceKey<Enchantment> FIRE_REACT = registerKey("fire_react");
@@ -80,7 +72,7 @@ public class TFEnchantments {
 				LootItemRandomChanceCondition.randomChance(EnchantmentLevelProvider.forEnchantmentLevel(LevelBasedValue.perLevel(0.15F)))));
 
 		register(context, DESTRUCTION, new Enchantment.Builder(Enchantment.definition(
-			items.getOrThrow(ItemTagGenerator.BLOCK_AND_CHAIN_ENCHANTABLE),
+			items.getOrThrow(TFItemTags.BLOCK_AND_CHAIN_ENCHANTABLE),
 			1,
 			3,
 			Enchantment.dynamicCost(5, 9),
@@ -91,12 +83,12 @@ public class TFEnchantments {
 			.withEffect(EnchantmentEffectComponents.HIT_BLOCK, new SmashBlocksEffect(
 				LevelBasedValue.constant(12.0F),
 				LevelBasedValue.constant(1.0F),
-				Optional.of(blocks.get(BlockTagGenerator.BLOCK_AND_CHAIN_NEVER_BREAKS).orElseThrow()),
+				Optional.of(blocks.get(TFBlockTags.BLOCK_AND_CHAIN_NEVER_BREAKS).orElseThrow()),
 				Optional.empty(),
 				Optional.empty())));
 
 		register(context, RENEWAL, new Enchantment.Builder(Enchantment.definition(
-			items.getOrThrow(ItemTagGenerator.SCEPTERS),
+			items.getOrThrow(TFItemTags.SCEPTERS),
 			1, 1,
 			Enchantment.dynamicCost(5, 9),
 			Enchantment.dynamicCost(20, 9),

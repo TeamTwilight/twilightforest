@@ -43,7 +43,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.data.tags.EntityTagGenerator;
+import twilightforest.tags.TFEntityTypeTags;
 import twilightforest.init.*;
 
 public abstract class CritterBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
@@ -153,7 +153,7 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 
 	@Override
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-		if ((entity instanceof Projectile && !entity.getType().is(EntityTagGenerator.DONT_KILL_BUGS)) || entity instanceof FallingBlockEntity) {
+		if ((entity instanceof Projectile && !entity.getType().is(TFEntityTypeTags.DONT_KILL_BUGS)) || entity instanceof FallingBlockEntity) {
 			level.setBlockAndUpdate(pos, state.getValue(WATERLOGGED) ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState());
 			if (level.isClientSide())
 				Minecraft.getInstance().getSoundManager().stop(TFSounds.CICADA.get().location(), SoundSource.NEUTRAL);

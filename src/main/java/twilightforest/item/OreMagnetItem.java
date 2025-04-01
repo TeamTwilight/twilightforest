@@ -28,7 +28,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.TagsUpdatedEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.TwilightForestMod;
-import twilightforest.data.tags.BlockTagGenerator;
+import twilightforest.tags.TFBlockTags;
 import twilightforest.init.TFParticleType;
 import twilightforest.init.TFSounds;
 import twilightforest.network.ParticlePacket;
@@ -214,7 +214,7 @@ public class OreMagnetItem extends Item {
 
 	@Deprecated
 	private static boolean isReplaceable(BlockState state) {
-		return state.is(BlockTagGenerator.ORE_MAGNET_SAFE_REPLACE_BLOCK);
+		return state.is(TFBlockTags.ORE_MAGNET_SAFE_REPLACE_BLOCK);
 	}
 
 	private static boolean findVein(Level level, BlockPos here, BlockState oreState, Set<BlockPos> veinBlocks) {
@@ -268,10 +268,10 @@ public class OreMagnetItem extends Item {
 					BuiltInRegistries.BLOCK.get(TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("c", "ore_bearing_ground/" + oreground))).get().forEach(ground ->
 						tag.forEach(ore -> {
 							//exclude ignored ores
-							if (!ore.value().defaultBlockState().is(BlockTagGenerator.ORE_MAGNET_IGNORE)) {
+							if (!ore.value().defaultBlockState().is(TFBlockTags.ORE_MAGNET_IGNORE)) {
 								MAGNET_ORE_TO_BLOCK_REPLACEMENTS.put(ore.value(), ground.value());
 							}
-							if (!ore.value().defaultBlockState().is(BlockTagGenerator.MINING_CORE_EXCLUDED)) {
+							if (!ore.value().defaultBlockState().is(TFBlockTags.MINING_CORE_EXCLUDED)) {
 								TREE_ORE_TO_BLOCK_REPLACEMENTS.put(ore.value(), ground.value());
 							}
 						}));
@@ -281,11 +281,11 @@ public class OreMagnetItem extends Item {
 
 		//Gonna need to special case this one as it isn't covered by tags.
 		//Ancient debris isn't exactly an ore, so it makes sense that the tag doesn't include it
-		if (!Blocks.ANCIENT_DEBRIS.defaultBlockState().is(BlockTagGenerator.ORE_MAGNET_IGNORE) && !MAGNET_ORE_TO_BLOCK_REPLACEMENTS.containsKey(Blocks.ANCIENT_DEBRIS)) {
+		if (!Blocks.ANCIENT_DEBRIS.defaultBlockState().is(TFBlockTags.ORE_MAGNET_IGNORE) && !MAGNET_ORE_TO_BLOCK_REPLACEMENTS.containsKey(Blocks.ANCIENT_DEBRIS)) {
 			MAGNET_ORE_TO_BLOCK_REPLACEMENTS.put(Blocks.ANCIENT_DEBRIS, Blocks.NETHERRACK);
 		}
 
-		if (!Blocks.ANCIENT_DEBRIS.defaultBlockState().is(BlockTagGenerator.MINING_CORE_EXCLUDED) && !TREE_ORE_TO_BLOCK_REPLACEMENTS.containsKey(Blocks.ANCIENT_DEBRIS)) {
+		if (!Blocks.ANCIENT_DEBRIS.defaultBlockState().is(TFBlockTags.MINING_CORE_EXCLUDED) && !TREE_ORE_TO_BLOCK_REPLACEMENTS.containsKey(Blocks.ANCIENT_DEBRIS)) {
 			TREE_ORE_TO_BLOCK_REPLACEMENTS.put(Blocks.ANCIENT_DEBRIS, Blocks.NETHERRACK);
 		}
 	}

@@ -26,7 +26,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
-import twilightforest.data.tags.BlockTagGenerator;
+import twilightforest.tags.TFBlockTags;
 import twilightforest.init.TFAdvancements;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFSounds;
@@ -103,7 +103,7 @@ public class TrophyPedestalBlock extends Block implements SimpleWaterloggedBlock
 	}
 
 	private boolean isTrophyOnTop(Level level, BlockPos pos) {
-		return level.getBlockState(pos.above()).is(BlockTagGenerator.TROPHIES);
+		return level.getBlockState(pos.above()).is(TFBlockTags.TROPHIES);
 	}
 
 	private void warnIneligiblePlayers(Level level, BlockPos pos) {

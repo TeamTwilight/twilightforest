@@ -16,11 +16,11 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import twilightforest.TwilightForestMod;
 import tamaized.beanification.Autowired;
 import twilightforest.components.item.PotionFlaskComponent;
-import twilightforest.data.tags.CustomTagGenerator;
 import twilightforest.enums.extensions.TFRarityEnumExtension;
 import twilightforest.item.*;
 import twilightforest.item.food.TFConsumables;
 import twilightforest.item.food.TFFoods;
+import twilightforest.tags.TFBannerPatternTags;
 import twilightforest.util.TFToolMaterials;
 
 import java.util.function.Function;
@@ -247,15 +247,15 @@ public class TFItems {
 	public static final DeferredItem<Item> MUSIC_DISC_THREAD = register("music_disc_thread", Item::new, () -> new Item.Properties().stacksTo(1).rarity(Rarity.RARE).jukeboxPlayable(TFJukeboxSongs.THREAD));
 	public static final DeferredItem<Item> MUSIC_DISC_MOTION = register("music_disc_motion", Item::new, () -> new Item.Properties().stacksTo(1).rarity(Rarity.RARE).jukeboxPlayable(TFJukeboxSongs.MOTION));
 
-	public static final DeferredItem<Item> NAGA_BANNER_PATTERN = register("naga_banner_pattern", properties -> new BannerPatternItem(CustomTagGenerator.BannerPatternTagGenerator.NAGA_BANNER_PATTERN, properties), () -> new Item.Properties().stacksTo(1).rarity(tfRarityEnumExtension.TWILIGHT));
-	public static final DeferredItem<Item> LICH_BANNER_PATTERN = register("lich_banner_pattern", properties -> new BannerPatternItem(CustomTagGenerator.BannerPatternTagGenerator.LICH_BANNER_PATTERN, properties), () -> new Item.Properties().stacksTo(1).rarity(tfRarityEnumExtension.TWILIGHT));
-	public static final DeferredItem<Item> MINOSHROOM_BANNER_PATTERN = register("minoshroom_banner_pattern", properties -> new BannerPatternItem(CustomTagGenerator.BannerPatternTagGenerator.MINOSHROOM_BANNER_PATTERN, properties), () -> new Item.Properties().stacksTo(1).rarity(tfRarityEnumExtension.TWILIGHT));
-	public static final DeferredItem<Item> HYDRA_BANNER_PATTERN = register("hydra_banner_pattern", properties -> new BannerPatternItem(CustomTagGenerator.BannerPatternTagGenerator.HYDRA_BANNER_PATTERN, properties), () -> new Item.Properties().stacksTo(1).rarity(tfRarityEnumExtension.TWILIGHT));
-	public static final DeferredItem<Item> KNIGHT_PHANTOM_BANNER_PATTERN = register("knight_phantom_banner_pattern", properties -> new BannerPatternItem(CustomTagGenerator.BannerPatternTagGenerator.KNIGHT_PHANTOM_BANNER_PATTERN, properties), () -> new Item.Properties().stacksTo(1).rarity(tfRarityEnumExtension.TWILIGHT));
-	public static final DeferredItem<Item> UR_GHAST_BANNER_PATTERN = register("ur_ghast_banner_pattern", properties -> new BannerPatternItem(CustomTagGenerator.BannerPatternTagGenerator.UR_GHAST_BANNER_PATTERN, properties), () -> new Item.Properties().stacksTo(1).rarity(tfRarityEnumExtension.TWILIGHT));
-	public static final DeferredItem<Item> ALPHA_YETI_BANNER_PATTERN = register("alpha_yeti_banner_pattern", properties -> new BannerPatternItem(CustomTagGenerator.BannerPatternTagGenerator.ALPHA_YETI_BANNER_PATTERN, properties), () -> new Item.Properties().stacksTo(1).rarity(tfRarityEnumExtension.TWILIGHT));
-	public static final DeferredItem<Item> SNOW_QUEEN_BANNER_PATTERN = register("snow_queen_banner_pattern", properties -> new BannerPatternItem(CustomTagGenerator.BannerPatternTagGenerator.SNOW_QUEEN_BANNER_PATTERN, properties), () -> new Item.Properties().stacksTo(1).rarity(tfRarityEnumExtension.TWILIGHT));
-	public static final DeferredItem<Item> QUEST_RAM_BANNER_PATTERN = register("quest_ram_banner_pattern", properties -> new BannerPatternItem(CustomTagGenerator.BannerPatternTagGenerator.QUEST_RAM_BANNER_PATTERN, properties), () -> new Item.Properties().stacksTo(1).rarity(tfRarityEnumExtension.TWILIGHT));
+	public static final DeferredItem<Item> NAGA_BANNER_PATTERN = register("naga_banner_pattern", properties -> new BannerPatternItem(TFBannerPatternTags.NAGA_BANNER_PATTERN, properties), () -> new Item.Properties().stacksTo(1).rarity(tfRarityEnumExtension.TWILIGHT));
+	public static final DeferredItem<Item> LICH_BANNER_PATTERN = register("lich_banner_pattern", properties -> new BannerPatternItem(TFBannerPatternTags.LICH_BANNER_PATTERN, properties), () -> new Item.Properties().stacksTo(1).rarity(tfRarityEnumExtension.TWILIGHT));
+	public static final DeferredItem<Item> MINOSHROOM_BANNER_PATTERN = register("minoshroom_banner_pattern", properties -> new BannerPatternItem(TFBannerPatternTags.MINOSHROOM_BANNER_PATTERN, properties), () -> new Item.Properties().stacksTo(1).rarity(tfRarityEnumExtension.TWILIGHT));
+	public static final DeferredItem<Item> HYDRA_BANNER_PATTERN = register("hydra_banner_pattern", properties -> new BannerPatternItem(TFBannerPatternTags.HYDRA_BANNER_PATTERN, properties), () -> new Item.Properties().stacksTo(1).rarity(tfRarityEnumExtension.TWILIGHT));
+	public static final DeferredItem<Item> KNIGHT_PHANTOM_BANNER_PATTERN = register("knight_phantom_banner_pattern", properties -> new BannerPatternItem(TFBannerPatternTags.KNIGHT_PHANTOM_BANNER_PATTERN, properties), () -> new Item.Properties().stacksTo(1).rarity(tfRarityEnumExtension.TWILIGHT));
+	public static final DeferredItem<Item> UR_GHAST_BANNER_PATTERN = register("ur_ghast_banner_pattern", properties -> new BannerPatternItem(TFBannerPatternTags.UR_GHAST_BANNER_PATTERN, properties), () -> new Item.Properties().stacksTo(1).rarity(tfRarityEnumExtension.TWILIGHT));
+	public static final DeferredItem<Item> ALPHA_YETI_BANNER_PATTERN = register("alpha_yeti_banner_pattern", properties -> new BannerPatternItem(TFBannerPatternTags.ALPHA_YETI_BANNER_PATTERN, properties), () -> new Item.Properties().stacksTo(1).rarity(tfRarityEnumExtension.TWILIGHT));
+	public static final DeferredItem<Item> SNOW_QUEEN_BANNER_PATTERN = register("snow_queen_banner_pattern", properties -> new BannerPatternItem(TFBannerPatternTags.SNOW_QUEEN_BANNER_PATTERN, properties), () -> new Item.Properties().stacksTo(1).rarity(tfRarityEnumExtension.TWILIGHT));
+	public static final DeferredItem<Item> QUEST_RAM_BANNER_PATTERN = register("quest_ram_banner_pattern", properties -> new BannerPatternItem(TFBannerPatternTags.QUESTING_RAM_BANNER_PATTERN, properties), () -> new Item.Properties().stacksTo(1).rarity(tfRarityEnumExtension.TWILIGHT));
 
 	public static <T extends Item> DeferredItem<T> register(String name, Function<Item.Properties, T> item, Supplier<Item.Properties> properties) {
 		return ITEMS.register(name, () -> item.apply(properties.get().setId(ResourceKey.create(Registries.ITEM, TwilightForestMod.prefix(name)))));

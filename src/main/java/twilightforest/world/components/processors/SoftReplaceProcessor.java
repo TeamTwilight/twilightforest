@@ -10,7 +10,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProc
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.data.tags.BlockTagGenerator;
+import twilightforest.tags.TFBlockTags;
 import twilightforest.init.TFStructureProcessors;
 
 public final class SoftReplaceProcessor extends StructureProcessor {
@@ -25,7 +25,7 @@ public final class SoftReplaceProcessor extends StructureProcessor {
 	public StructureTemplate.StructureBlockInfo process(LevelReader level, BlockPos offset, BlockPos piecePos, StructureTemplate.StructureBlockInfo originalInfo, StructureTemplate.StructureBlockInfo modifiedInfo, StructurePlaceSettings placeSettings, @Nullable StructureTemplate template) {
 		BlockState blockAt = level.getBlockState(modifiedInfo.pos());
 
-		boolean isReplaceableAt = blockAt.canBeReplaced() || blockAt.is(BlockTagGenerator.WORLDGEN_REPLACEABLES);
+		boolean isReplaceableAt = blockAt.canBeReplaced() || blockAt.is(TFBlockTags.WORLDGEN_REPLACEABLES);
 
 		if (isReplaceableAt) {
 			return modifiedInfo;

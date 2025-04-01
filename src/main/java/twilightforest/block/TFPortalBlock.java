@@ -43,7 +43,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.config.TFConfig;
-import twilightforest.data.tags.BlockTagGenerator;
+import twilightforest.tags.TFBlockTags;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFDimension;
@@ -117,11 +117,11 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 	}
 
 	private static boolean isNatureBlock(BlockState state) {
-		return state.is(BlockTagGenerator.PORTAL_DECO);
+		return state.is(TFBlockTags.PORTAL_DECO);
 	}
 
 	private static boolean isGrassOrDirt(BlockState state) {
-		return state.is(BlockTagGenerator.PORTAL_EDGE);
+		return state.is(TFBlockTags.PORTAL_EDGE);
 	}
 
 	public static boolean isPlayerNotifiedOfRequirement(ServerPlayer player) {
@@ -193,7 +193,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 	}
 
 	public boolean canFormPortal(BlockState state) {
-		return state.is(BlockTagGenerator.PORTAL_POOL) || state.getBlock() == this && state.getValue(DISALLOW_RETURN);
+		return state.is(TFBlockTags.PORTAL_POOL) || state.getBlock() == this && state.getValue(DISALLOW_RETURN);
 	}
 
 	@Override

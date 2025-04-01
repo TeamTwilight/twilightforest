@@ -19,14 +19,13 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.animal.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.util.Lazy;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFRegistries;
-import twilightforest.data.tags.ItemTagGenerator;
+import twilightforest.tags.TFItemTags;
 import twilightforest.init.TFDataSerializers;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
@@ -47,7 +46,7 @@ public class DwarfRabbit extends Animal implements VariantHolder<Holder<DwarfRab
 		this.goalSelector.addGoal(0, new FloatGoal(this));
 		this.goalSelector.addGoal(1, new PanicGoal(this, 2.0F));
 		this.goalSelector.addGoal(2, new BreedGoal(this, 0.8D));
-		this.goalSelector.addGoal(2, new TemptGoal(this, 1.0F, stack -> stack.is(ItemTagGenerator.DWARF_RABBIT_TEMPT_ITEMS), false));
+		this.goalSelector.addGoal(2, new TemptGoal(this, 1.0F, stack -> stack.is(TFItemTags.DWARF_RABBIT_TEMPT_ITEMS), false));
 		this.goalSelector.addGoal(3, new AvoidEntityGoal<>(this, Player.class, 2.0F, 0.8F, 1.33F));
 		this.goalSelector.addGoal(4, new AvoidEntityGoal<>(this, Ocelot.class, 8.0F, 0.8F, 1.1F));
 		this.goalSelector.addGoal(4, new AvoidEntityGoal<>(this, Cat.class, 8.0F, 0.8F, 1.1F));
@@ -144,7 +143,7 @@ public class DwarfRabbit extends Animal implements VariantHolder<Holder<DwarfRab
 
 	@Override
 	public boolean isFood(ItemStack stack) {
-		return stack.is(ItemTagGenerator.DWARF_RABBIT_TEMPT_ITEMS);
+		return stack.is(TFItemTags.DWARF_RABBIT_TEMPT_ITEMS);
 	}
 
 	@Nullable

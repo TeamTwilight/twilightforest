@@ -40,7 +40,6 @@ import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -51,7 +50,7 @@ import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.CandelabraBlockEntity;
 import twilightforest.components.item.CandelabraData;
-import twilightforest.data.tags.ItemTagGenerator;
+import twilightforest.tags.TFItemTags;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFParticleType;
 import twilightforest.init.TFSounds;
@@ -196,7 +195,7 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 				this.eruptFlameParticles(TFParticleType.DIM_FLAME.get(), level, pos, state);
 			}
 			return InteractionResult.SUCCESS;
-		} else if ((stack.is(ItemTagGenerator.SCEPTERS) || stack.is(TFItems.EXANIMATE_ESSENCE)) && state.getValue(LIGHTING) == Lighting.NORMAL) {
+		} else if ((stack.is(TFItemTags.SCEPTERS) || stack.is(TFItems.EXANIMATE_ESSENCE)) && state.getValue(LIGHTING) == Lighting.NORMAL) {
 			level.setBlockAndUpdate(pos, state.setValue(LIGHTING, Lighting.OMINOUS));
 			level.playSound(null, pos, TFSounds.CANDELABRA_OMINOUS.get(), SoundSource.BLOCKS, 1.0F, level.getRandom().nextFloat() * 0.1F + 0.9F);
 			if (level.isClientSide()) {

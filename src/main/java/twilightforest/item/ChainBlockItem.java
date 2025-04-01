@@ -12,7 +12,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.data.tags.BlockTagGenerator;
+import twilightforest.tags.TFBlockTags;
 import twilightforest.entity.projectile.ChainBlock;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFEnchantments;
@@ -81,7 +81,7 @@ public class ChainBlockItem extends Item {
 	@Override
 	public boolean isCorrectToolForDrops(ItemStack stack, BlockState state) {
 		//dont try to check harvest level if we arent thrown
-		if (stack.get(TFDataComponents.THROWN_PROJECTILE) == null || !state.is(BlockTagGenerator.MINEABLE_WITH_BLOCK_AND_CHAIN)) return false;
+		if (stack.get(TFDataComponents.THROWN_PROJECTILE) == null || !state.is(TFBlockTags.MINEABLE_WITH_BLOCK_AND_CHAIN)) return false;
 		MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
 		if (server != null) {
 			int destruction = stack.getEnchantmentLevel(server.registryAccess().holderOrThrow(TFEnchantments.DESTRUCTION));

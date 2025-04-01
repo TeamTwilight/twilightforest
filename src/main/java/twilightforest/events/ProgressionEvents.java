@@ -2,7 +2,6 @@ package twilightforest.events;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -11,7 +10,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -23,14 +21,10 @@ import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.TwilightForestMod;
-import twilightforest.data.tags.BlockTagGenerator;
-import twilightforest.entity.boss.Hydra;
+import twilightforest.tags.TFBlockTags;
 import twilightforest.entity.monster.Kobold;
-import twilightforest.init.TFStructures;
 import twilightforest.network.AreaProtectionPacket;
 import twilightforest.util.landmarks.LandmarkUtil;
-import twilightforest.util.landmarks.LegacyLandmarkPlacements;
-import twilightforest.util.WorldUtil;
 import twilightforest.world.components.structures.TFStructureComponent;
 import twilightforest.world.components.structures.util.ProgressionStructure;
 
@@ -112,11 +106,11 @@ public class ProgressionEvents {
 	}
 
 	private static boolean isBlockProtectedFromInteraction(BlockGetter level, BlockPos pos) {
-		return level.getBlockState(pos).is(BlockTagGenerator.STRUCTURE_BANNED_INTERACTIONS);
+		return level.getBlockState(pos).is(TFBlockTags.STRUCTURE_BANNED_INTERACTIONS);
 	}
 
 	private static boolean isBlockProtectedFromBreaking(BlockGetter level, BlockPos pos) {
-		return !level.getBlockState(pos).is(BlockTagGenerator.PROGRESSION_ALLOW_BREAKING);
+		return !level.getBlockState(pos).is(TFBlockTags.PROGRESSION_ALLOW_BREAKING);
 	}
 
 	/**

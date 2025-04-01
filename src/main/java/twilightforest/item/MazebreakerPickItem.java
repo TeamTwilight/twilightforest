@@ -4,7 +4,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.data.tags.BlockTagGenerator;
+import twilightforest.tags.TFBlockTags;
 
 import javax.annotation.Nonnull;
 
@@ -16,6 +16,6 @@ public class MazebreakerPickItem extends PickaxeItem {
 	@Override
 	public float getDestroySpeed(@Nonnull ItemStack stack, BlockState state) {
 		float destroySpeed = super.getDestroySpeed(stack, state);
-		return state.is(BlockTagGenerator.MAZEBREAKER_ACCELERATED) ? destroySpeed * 16.0F : destroySpeed;
+		return state.is(TFBlockTags.MAZEBREAKER_ACCELERATED) ? destroySpeed * 16.0F : destroySpeed;
 	}
 }

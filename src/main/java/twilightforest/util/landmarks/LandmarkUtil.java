@@ -17,7 +17,7 @@ import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
-import twilightforest.data.tags.StructureTagGenerator;
+import twilightforest.tags.TFStructureTags;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.init.TFAdvancements;
 import twilightforest.world.components.structures.start.TFStructureStart;
@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 @SuppressWarnings("OptionalIsPresent")
 public final class LandmarkUtil {
 	public static Optional<StructureStart> locateNearestLandmarkStart(LevelAccessor level, int chunkX, int chunkZ) {
-		return locateNearestMatchingLandmark(level, StructureTagGenerator.LANDMARK, chunkX, chunkZ);
+		return locateNearestMatchingLandmark(level, TFStructureTags.LANDMARK, chunkX, chunkZ);
 	}
 
 	public static Optional<StructureStart> locateNearestMatchingLandmark(LevelAccessor level, TagKey<Structure> matching, int chunkX, int chunkZ) {

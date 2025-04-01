@@ -22,7 +22,7 @@ import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.data.tags.BlockTagGenerator;
+import twilightforest.tags.TFBlockTags;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFConfiguredFeatures;
 import twilightforest.init.TFStructurePieceTypes;
@@ -31,7 +31,7 @@ import twilightforest.loot.TFLootTables;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.feature.BlockSpikeFeature;
-import twilightforest.world.components.structures.StructureSpeleothemConfig;
+import twilightforest.world.components.spelothem.StructureSpeleothemConfig;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 
 public class TrollCaveMainComponent extends TFStructureComponentOld {
@@ -160,7 +160,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 
 					double dist = Math.sqrt(ex * ey * ez);
 
-					if (this.getBlock(world, x, y, z, boundingBox).is(BlockTagGenerator.CANNOT_TROLL_CAVE_HOLLOW))
+					if (this.getBlock(world, x, y, z, boundingBox).is(TFBlockTags.CANNOT_TROLL_CAVE_HOLLOW))
 						continue;
 
 					if (dist > threshold) {

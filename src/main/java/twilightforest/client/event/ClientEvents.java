@@ -13,11 +13,7 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.CompiledShaderProgram;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.client.renderer.entity.state.PlayerRenderState;
-import net.minecraft.client.renderer.LevelRenderer;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.client.sounds.MusicInfo;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -25,7 +21,6 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraft.sounds.Music;
 import net.minecraft.sounds.Musics;
 import net.minecraft.util.Mth;
@@ -59,7 +54,7 @@ import twilightforest.client.BugModelAnimationHelper;
 import twilightforest.client.OptifineWarningScreen;
 import twilightforest.client.TFShaders;
 import twilightforest.config.TFConfig;
-import twilightforest.data.tags.ItemTagGenerator;
+import twilightforest.tags.TFItemTags;
 import twilightforest.entity.boss.bar.ClientTFBossBar;
 import twilightforest.events.HostileMountEvents;
 import twilightforest.init.TFDataComponents;
@@ -301,7 +296,7 @@ public class ClientEvents {
 			event.getToolTip().add(1, EMPERORS_CLOTH_TOOLTIP);
 		}
 
-		if (item.is(ItemTagGenerator.WIP)) {
+		if (item.is(TFItemTags.WIP)) {
 			event.getToolTip().add(WIP_TEXT);
 		}
 	}

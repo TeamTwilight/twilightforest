@@ -22,7 +22,7 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.saveddata.maps.*;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.data.tags.StructureTagGenerator;
+import twilightforest.tags.TFStructureTags;
 import twilightforest.init.TFBiomes;
 import twilightforest.init.TFDataMaps;
 import twilightforest.init.TFItems;
@@ -161,7 +161,7 @@ public class MagicMapItem extends MapItem {
 							if (LegacyLandmarkPlacements.blockIsInLandmarkCenter(worldX, worldZ)) {
 								ResourceKey<Structure> structureKey = LegacyLandmarkPlacements.pickLandmarkAtBlock(worldX, worldZ, level);
 								// Filters by structures we want to give icons for
-								if (structureRegistry.get(structureKey).map(structureRef -> structureRef.is(StructureTagGenerator.LANDMARK)).orElse(false)) {
+								if (structureRegistry.get(structureKey).map(structureRef -> structureRef.is(TFStructureTags.LANDMARK)).orElse(false)) {
 									TFMagicMapData tfData = (TFMagicMapData) data;
 									if (structureRegistry.getValueOrThrow(structureKey) instanceof LandmarkStructure landmark) {
 										landmark.getMapIcon().ifPresent(icon -> tfData.addTFDecoration(icon, level, makeName(icon, worldX, worldZ), worldX, worldZ, 180.0F, LandmarkUtil.isConquered(level, worldX, worldZ)));

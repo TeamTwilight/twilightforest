@@ -19,14 +19,14 @@ import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
-import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFMapDecorations;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.init.custom.StructureSpeleothemConfigs;
+import twilightforest.tags.TFBiomeTags;
 import twilightforest.world.components.chunkgenerators.AbsoluteDifferenceFunction;
 import twilightforest.world.components.structures.CustomDensitySource;
-import twilightforest.world.components.structures.StructureSpeleothemConfig;
+import twilightforest.world.components.spelothem.StructureSpeleothemConfig;
 import twilightforest.world.components.structures.YetiCaveComponent;
 import twilightforest.world.components.structures.util.ControlledSpawningStructure;
 
@@ -68,7 +68,7 @@ public class YetiCaveStructure extends ControlledSpawningStructure implements Cu
 			new DecorationConfig(2, true, false, false),
 			false, Optional.of(TFMapDecorations.YETI_LAIR),
 			new StructureSettings(
-				context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_YETI_CAVE_BIOMES),
+				context.lookup(Registries.BIOME).getOrThrow(TFBiomeTags.VALID_YETI_CAVE_BIOMES),
 				Arrays.stream(MobCategory.values()).collect(Collectors.toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create()))), // Landmarks have Controlled Mob spawning
 				GenerationStep.Decoration.SURFACE_STRUCTURES,
 				TerrainAdjustment.NONE

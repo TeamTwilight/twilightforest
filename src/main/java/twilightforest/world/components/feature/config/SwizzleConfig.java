@@ -15,7 +15,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.ProcessorRule
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TFRegistries;
-import twilightforest.data.tags.CustomTagGenerator;
+import twilightforest.tags.TFWoodPaletteTags;
 import twilightforest.util.woods.WoodPalette;
 import twilightforest.world.components.processors.StateTransfiguringProcessor;
 import twilightforest.world.components.processors.WoodPaletteSwizzle;
@@ -42,13 +42,13 @@ public record SwizzleConfig(HolderSet<WoodPalette> targets, WeightedRandomList<W
 		//  }
 
 		WeightedEntry.Wrapper<HolderSet<WoodPalette>> common = // 50% chance
-			WeightedEntry.wrap(paletteHolders.get(CustomTagGenerator.WoodPaletteTagGenerator.COMMON_PALETTES).get(), 8);
+			WeightedEntry.wrap(paletteHolders.get(TFWoodPaletteTags.COMMON_PALETTES).get(), 8);
 		WeightedEntry.Wrapper<HolderSet<WoodPalette>> uncommon = // 25% chance
-			WeightedEntry.wrap(paletteHolders.get(CustomTagGenerator.WoodPaletteTagGenerator.UNCOMMON_PALETTES).get(), 4);
+			WeightedEntry.wrap(paletteHolders.get(TFWoodPaletteTags.UNCOMMON_PALETTES).get(), 4);
 		WeightedEntry.Wrapper<HolderSet<WoodPalette>> rare = // 18.75% chance
-			WeightedEntry.wrap(paletteHolders.get(CustomTagGenerator.WoodPaletteTagGenerator.RARE_PALETTES).get(), 3);
+			WeightedEntry.wrap(paletteHolders.get(TFWoodPaletteTags.RARE_PALETTES).get(), 3);
 		WeightedEntry.Wrapper<HolderSet<WoodPalette>> treasure = // 6.25% chance
-			WeightedEntry.wrap(paletteHolders.get(CustomTagGenerator.WoodPaletteTagGenerator.TREASURE_PALETTES).get(), 1);
+			WeightedEntry.wrap(paletteHolders.get(TFWoodPaletteTags.TREASURE_PALETTES).get(), 1);
 
 		return WeightedRandomList.create(common, uncommon, rare, treasure);
 	}

@@ -22,7 +22,7 @@ import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
-import twilightforest.data.tags.BlockTagGenerator;
+import twilightforest.tags.TFBlockTags;
 import twilightforest.init.TFItems;
 import twilightforest.item.EnderBowItem;
 import twilightforest.item.MazebreakerPickItem;
@@ -123,7 +123,7 @@ public class ToolEvents {
 	@SubscribeEvent
 	public static void damageToolsExtra(BlockEvent.BreakEvent event) {
 		ItemStack stack = event.getPlayer().getMainHandItem();
-		if (event.getState().is(BlockTagGenerator.MAZESTONE) || event.getState().is(BlockTagGenerator.CASTLE_BLOCKS)) {
+		if (event.getState().is(TFBlockTags.MAZESTONE) || event.getState().is(TFBlockTags.CASTLE_BLOCKS)) {
 			if (stack.isDamageableItem() && !(stack.getItem() instanceof MazebreakerPickItem)) {
 				stack.hurtAndBreak(16, event.getPlayer(), EquipmentSlot.MAINHAND);
 			}

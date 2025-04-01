@@ -15,7 +15,7 @@ import twilightforest.world.components.chunkblanketing.ChunkBlanketType;
 import twilightforest.world.components.layer.vanillalegacy.BiomeLayerFactory;
 import twilightforest.world.components.layer.vanillalegacy.BiomeLayerType;
 import twilightforest.world.components.layer.BiomeDensitySource;
-import twilightforest.world.components.structures.StructureSpeleothemConfig;
+import twilightforest.world.components.spelothem.StructureSpeleothemConfig;
 
 import java.util.Locale;
 

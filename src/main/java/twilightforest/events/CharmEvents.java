@@ -1,9 +1,7 @@
 package twilightforest.events;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -24,7 +22,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
@@ -33,10 +30,9 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.registries.DeferredItem;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.KeepsakeCasketBlock;
-import twilightforest.block.entity.KeepsakeCasketBlockEntity;
 import twilightforest.block.entity.SkullChestBlockEntity;
 import twilightforest.config.TFConfig;
-import twilightforest.data.tags.ItemTagGenerator;
+import twilightforest.tags.TFItemTags;
 import twilightforest.enums.BlockLoggingEnum;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
@@ -46,7 +42,6 @@ import twilightforest.network.SpawnCharmPacket;
 import twilightforest.util.TFItemStackUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @EventBusSubscriber(modid = TwilightForestMod.ID)
@@ -140,7 +135,7 @@ public class CharmEvents {
 		//keep all items in the kept_on_death tag. This allows modpacks to support other items to keep on death
 		for (int i = 0; i < player.getInventory().items.size(); i++) {
 			ItemStack stack = player.getInventory().items.get(i);
-			if (stack.is(ItemTagGenerator.KEPT_ON_DEATH)) {
+			if (stack.is(TFItemTags.KEPT_ON_DEATH)) {
 				keepInventory.items.set(i, stack.copy());
 				player.getInventory().items.set(i, ItemStack.EMPTY);
 			}
@@ -148,13 +143,13 @@ public class CharmEvents {
 
 		for (int i = 0; i < player.getInventory().armor.size(); i++) {
 			ItemStack armor = player.getInventory().armor.get(i);
-			if (armor.is(ItemTagGenerator.KEPT_ON_DEATH)) {
+			if (armor.is(TFItemTags.KEPT_ON_DEATH)) {
 				keepInventory.armor.set(i, armor.copy());
 				player.getInventory().armor.set(i, ItemStack.EMPTY);
 			}
 		}
 
-		if (player.getInventory().offhand.getFirst().is(ItemTagGenerator.KEPT_ON_DEATH)) {
+		if (player.getInventory().offhand.getFirst().is(TFItemTags.KEPT_ON_DEATH)) {
 			keepInventory.offhand.set(0, player.getInventory().offhand.getFirst().copy());
 			player.getInventory().offhand.set(0, ItemStack.EMPTY);
 		}

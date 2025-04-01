@@ -18,6 +18,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.features.FeaturePlacers;
+import twilightforest.world.components.spelothem.StructureSpeleothemConfig;
 
 
 public class HydraLairComponent extends HollowHillComponent {

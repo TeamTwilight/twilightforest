@@ -20,6 +20,7 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.world.components.spelothem.StructureSpeleothemConfig;
 
 // FIXME Get rid of the HollowHillComponent inheritance
 public class YetiCaveComponent extends HollowHillComponent {

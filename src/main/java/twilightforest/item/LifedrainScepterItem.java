@@ -30,7 +30,7 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.data.tags.EntityTagGenerator;
+import twilightforest.tags.TFEntityTypeTags;
 import twilightforest.enchantment.RechargeScepterEffect;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEnchantments;
@@ -162,7 +162,7 @@ public class LifedrainScepterItem extends Item {
 				if (level instanceof ServerLevel serverLevel && target.hurtServer(serverLevel, damageSource, 1)) {
 					// make it explode
 					if (target.getHealth() <= 1 && !target.getType().is(Tags.EntityTypes.BOSSES)) {
-						if (!target.getType().is(EntityTagGenerator.LIFEDRAIN_DROPS_NO_FLESH) && living instanceof Player player) {
+						if (!target.getType().is(TFEntityTypeTags.LIFEDRAIN_DROPS_NO_FLESH) && living instanceof Player player) {
 							LootParams ctx = new LootParams.Builder(serverLevel)
 								.withParameter(LootContextParams.THIS_ENTITY, target)
 								.withParameter(LootContextParams.ORIGIN, target.getEyePosition())

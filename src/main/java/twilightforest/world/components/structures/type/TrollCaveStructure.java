@@ -17,13 +17,13 @@ import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
-import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFMapDecorations;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.init.custom.StructureSpeleothemConfigs;
-import twilightforest.world.components.structures.StructureSpeleothemConfig;
+import twilightforest.tags.TFBiomeTags;
+import twilightforest.world.components.spelothem.StructureSpeleothemConfig;
 import twilightforest.world.components.structures.trollcave.TrollCaveMainComponent;
 import twilightforest.world.components.structures.util.ConfigurableSpawns;
 import twilightforest.world.components.structures.util.ControlledSpawns;
@@ -87,7 +87,7 @@ public class TrollCaveStructure extends ProgressionStructure implements Configur
 			new DecorationConfig(4, true, true, false),
 			false, Optional.of(TFMapDecorations.TROLL_CAVES),
 			new StructureSettings(
-				context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_TROLL_CAVE_BIOMES),
+				context.lookup(Registries.BIOME).getOrThrow(TFBiomeTags.VALID_TROLL_CAVE_BIOMES),
 				Arrays.stream(MobCategory.values()).collect(Collectors.toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create()))), // Landmarks have Controlled Mob spawning
 				GenerationStep.Decoration.UNDERGROUND_STRUCTURES,
 				TerrainAdjustment.BURY

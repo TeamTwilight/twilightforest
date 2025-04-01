@@ -26,7 +26,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.neoforged.neoforge.common.util.Lazy;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFRegistries;
-import twilightforest.data.tags.ItemTagGenerator;
+import twilightforest.tags.TFItemTags;
 import twilightforest.init.TFDataSerializers;
 import twilightforest.init.TFSounds;
 import twilightforest.init.custom.TinyBirdVariants;
@@ -117,6 +117,6 @@ public class TinyBird extends FlyingBird implements VariantHolder<Holder<TinyBir
 
 	@Override
 	public TagKey<Item> getTemptItems() {
-		return ItemTagGenerator.TINY_BIRD_TEMPT_ITEMS;
+		return TFItemTags.TINY_BIRD_TEMPT_ITEMS;
 	}
 }

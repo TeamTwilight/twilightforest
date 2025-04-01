@@ -10,7 +10,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import twilightforest.data.tags.CustomTagGenerator;
+import twilightforest.tags.TFDimensionTypeTags;
 
 public class EmptyMagicMapItem extends Item {
 	public EmptyMagicMapItem(Properties properties) {
@@ -25,7 +25,7 @@ public class EmptyMagicMapItem extends Item {
 			return InteractionResult.SUCCESS;
 
 		//TF - only allow magic maps to be created in allowed dimensions (controlled via tag)
-		if (!level.dimensionTypeRegistration().is(CustomTagGenerator.DimensionTypeTagGenerator.ALLOWS_MAGIC_MAP_CHARTING)) {
+		if (!level.dimensionTypeRegistration().is(TFDimensionTypeTags.ALLOWS_MAGIC_MAP_CHARTING)) {
 			player.displayClientMessage(Component.translatable("misc.twilightforest.magic_map_fail"), true);
 			return InteractionResult.FAIL;
 		}

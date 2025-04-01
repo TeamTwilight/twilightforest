@@ -14,13 +14,11 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.Boat;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.data.tags.EntityTagGenerator;
+import twilightforest.tags.TFEntityTypeTags;
 import twilightforest.entity.IHostileMount;
 import twilightforest.entity.ai.goal.ChargeAttackGoal;
 import twilightforest.init.TFDamageTypes;
@@ -122,7 +120,7 @@ public class PinchBeetle extends Monster implements IHostileMount {
 		if (this.getPassengers().isEmpty()) {
 			var v = entity.getVehicle();
 
-			if (v == null || !v.getType().is(EntityTagGenerator.RIDES_OBSTRUCT_SNATCHING)) {
+			if (v == null || !v.getType().is(TFEntityTypeTags.RIDES_OBSTRUCT_SNATCHING)) {
 				// Pluck them from the boat, minecart, donkey, or whatever
 				entity.stopRiding();
 

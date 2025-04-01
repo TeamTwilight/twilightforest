@@ -13,7 +13,6 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -23,7 +22,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFPortalBlock;
 import twilightforest.config.TFConfig;
-import twilightforest.data.tags.ItemTagGenerator;
+import twilightforest.tags.TFItemTags;
 import twilightforest.init.TFAdvancements;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDimension;
@@ -38,7 +37,6 @@ import twilightforest.world.components.structures.util.ProgressionPiece;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Random;
 
 @EventBusSubscriber(modid = TwilightForestMod.ID)
 public class TFTickHandler {
@@ -118,7 +116,7 @@ public class TFTickHandler {
 			ItemEntity qualified = null;
 
 			for (ItemEntity entityItem : itemList) {
-				if (entityItem.getItem().is(ItemTagGenerator.PORTAL_ACTIVATOR) &&
+				if (entityItem.getItem().is(TFItemTags.PORTAL_ACTIVATOR) &&
 					TFBlocks.TWILIGHT_PORTAL.get().canFormPortal(level.getBlockState(entityItem.blockPosition())) &&
 					Objects.equals(entityItem.getOwner(), player)) {
 

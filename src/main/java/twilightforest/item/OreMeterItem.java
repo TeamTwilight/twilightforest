@@ -22,7 +22,7 @@ import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.components.item.OreScannerComponent;
 import twilightforest.components.item.OreScannerData;
-import twilightforest.data.tags.BlockTagGenerator;
+import twilightforest.tags.TFBlockTags;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFSounds;
 
@@ -124,7 +124,7 @@ public class OreMeterItem extends Item {
 		//if we're crouching and targeting a block, attempt to save the block as the focused block
 		if (context.isSecondaryUseActive()) {
 			BlockState state = context.getLevel().getBlockState(context.getClickedPos());
-			if (state.is(BlockTagGenerator.ORE_METER_TARGETABLE)) {
+			if (state.is(TFBlockTags.ORE_METER_TARGETABLE)) {
 				stack.set(TFDataComponents.ORE_FILTER, state.getBlock());
 				context.getPlayer().displayClientMessage(Component.translatable("misc.twilightforest.ore_meter_set_block", Component.translatable(state.getBlock().getDescriptionId())), true);
 				context.getLevel().playSound(context.getPlayer(), context.getPlayer().blockPosition(), TFSounds.ORE_METER_TARGET_BLOCK.get(), SoundSource.PLAYERS, 0.5F, context.getLevel().getRandom().nextFloat() * 0.1F + 0.9F);

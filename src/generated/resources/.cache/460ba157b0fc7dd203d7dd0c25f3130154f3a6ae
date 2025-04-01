@@ -1,4 +1,4 @@
-// 1.21.4	2025-04-01T00:42:17.1952715	Model Definitions - twilightforest
+// 1.21.4	2025-04-01T09:28:00.8709692	Model Definitions - twilightforest
 2ba5945264a026fc35aa113643919b494cf4406d assets/twilightforest/blockstates/alpha_yeti_boss_spawner.json
 796cb2fedc6bde053e988892110dbd38578f4424 assets/twilightforest/blockstates/antibuilder.json
 a753d663958c27ad77bd65d8d9ee637ae7cd5a9d assets/twilightforest/blockstates/antibuilt_block.json
@@ -10,6 +10,7 @@ bd0c8ddce5de1aac44bae03f99cd4eb2409eeddf assets/twilightforest/blockstates/blue_
 d72b1cd661284766ffd3bbb58e0103fcd661ec85 assets/twilightforest/blockstates/bold_castle_brick_stairs.json
 837b9e4864b610470f48d1f10a153b9534255d5c assets/twilightforest/blockstates/bold_castle_brick_tile.json
 54ebb2eea4482a5907fa266195c19b2d7cc9cd4f assets/twilightforest/blockstates/brown_thorns.json
+d81e7dded354de592cc34fae65a72b922f5bc2c4 assets/twilightforest/blockstates/built_block.json
 8387cc5d3da350857978959aa07b6e30528e4c25 assets/twilightforest/blockstates/burnt_thorns.json
 00ec1f804d0935e5f475c9cc8b08b865f2c394f1 assets/twilightforest/blockstates/canopy_button.json
 6fbd38b17d1378e76ae0f9f4be6e86c9c564689c assets/twilightforest/blockstates/canopy_door.json
@@ -204,6 +205,8 @@ a462fd6b50a881c3a5ffea67b665576117232d7e assets/twilightforest/models/block/bold
 8e52a7f96e67b981796584af76ebd22ab2a28e92 assets/twilightforest/models/block/brown_thorns_no_section_alt.json
 52b0fb15b80228b9297770997df8724f771133b1 assets/twilightforest/models/block/brown_thorns_thorns.json
 5a8afd3fdb70f78be26ee033766a3a2ac643f027 assets/twilightforest/models/block/brown_thorns_top.json
+ead02af15ec17ebfc803345f6844dc29b418b20a assets/twilightforest/models/block/built_block.json
+ead02af15ec17ebfc803345f6844dc29b418b20a assets/twilightforest/models/block/built_block_active.json
 1b533d9d66efaa6f21b7f84bfa6c742b15f6a09d assets/twilightforest/models/block/burnt_thorns_bottom.json
 935643a433f3ad29eefb164a8d03fd67f7a823b8 assets/twilightforest/models/block/burnt_thorns_main.json
 2ce68a0b10b6070ed346988f3a4b443b1893b1f2 assets/twilightforest/models/block/burnt_thorns_no_section.json

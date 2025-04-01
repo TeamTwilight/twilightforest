@@ -26,7 +26,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.config.TFConfig;
-import twilightforest.data.tags.ItemTagGenerator;
+import twilightforest.tags.TFItemTags;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFMenuTypes;
 import twilightforest.inventory.slot.AssemblySlot;
@@ -135,7 +135,7 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 
 			int size = recipes.length;
 
-			if (size > 0 && !inputStack.is(ItemTagGenerator.BANNED_UNCRAFTABLES)) {
+			if (size > 0 && !inputStack.is(TFItemTags.BANNED_UNCRAFTABLES)) {
 
 				CraftingRecipe recipe = recipes[Math.floorMod(this.unrecipeInCycle, size)];
 				this.storedGhostRecipe = recipe;
@@ -516,7 +516,7 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 	 * Should the specified item count for taking damage?
 	 */
 	public static boolean isDamageableComponent(ItemStack stack) {
-		return !stack.isEmpty() && !stack.is(ItemTagGenerator.UNCRAFTING_IGNORES_COST);
+		return !stack.isEmpty() && !stack.is(TFItemTags.UNCRAFTING_IGNORES_COST);
 	}
 
 	/**
@@ -608,7 +608,7 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 		ItemStack[] stacks = new ItemStack[recipe.display().size()];
 
 		for (int i = 0; i < recipe.display().size(); i++) {
-			ItemStack[] matchingStacks = recipe.placementInfo().ingredients().get(i).getValues().stream().filter(s -> !s.is(ItemTagGenerator.BANNED_UNCRAFTING_INGREDIENTS)).map(p -> new ItemStack(p.value())).toArray(ItemStack[]::new);
+			ItemStack[] matchingStacks = recipe.placementInfo().ingredients().get(i).getValues().stream().filter(s -> !s.is(TFItemTags.BANNED_UNCRAFTING_INGREDIENTS)).map(p -> new ItemStack(p.value())).toArray(ItemStack[]::new);
 			stacks[i] = matchingStacks.length > 0 ? matchingStacks[Math.floorMod(this.ingredientsInCycle, matchingStacks.length)] : ItemStack.EMPTY;
 		}
 

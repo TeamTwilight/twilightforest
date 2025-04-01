@@ -39,7 +39,7 @@ import twilightforest.compat.rei.displays.REICrumbleHornDisplay;
 import twilightforest.compat.rei.displays.REITransformationPowderDisplay;
 import twilightforest.compat.rei.displays.REIUncraftingDisplay;
 import twilightforest.compat.rei.entries.EntityEntryDefinition;
-import twilightforest.data.tags.ItemTagGenerator;
+import twilightforest.tags.TFItemTags;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFRecipes;
@@ -89,7 +89,7 @@ public class TFREIClientPlugin implements REIClientPlugin {
 			if (!TFConfig.disableUncraftingOnly) {
 				registry.registerRecipeFiller(CraftingRecipe.class, RecipeType.CRAFTING, recipe -> {
 					if (recipe.value().getResultItem(registryAccess).isEmpty() ||
-						recipe.value().getResultItem(registryAccess).is(ItemTagGenerator.BANNED_UNCRAFTABLES) ||
+						recipe.value().getResultItem(registryAccess).is(TFItemTags.BANNED_UNCRAFTABLES) ||
 						TFConfig.disableUncraftingRecipes.contains(recipe.id().toString()) ||
 						TFConfig.flipUncraftingModIdList != TFConfig.blacklistedUncraftingModIds.contains(recipe.id().getNamespace())) {
 						return null;

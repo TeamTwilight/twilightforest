@@ -18,8 +18,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.data.tags.BlockTagGenerator;
-import twilightforest.data.tags.ItemTagGenerator;
+import twilightforest.tags.TFBlockTags;
+import twilightforest.tags.TFItemTags;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
 
@@ -33,7 +33,7 @@ public class Penguin extends Bird {
 		this.goalSelector.addGoal(0, new FloatGoal(this));
 		this.goalSelector.addGoal(1, new PanicGoal(this, 1.75F));
 		this.goalSelector.addGoal(2, new BreedGoal(this, 1.0F));
-		this.goalSelector.addGoal(3, new TemptGoal(this, 0.75F, stack -> stack.is(ItemTagGenerator.PENGUIN_TEMPT_ITEMS), false));
+		this.goalSelector.addGoal(3, new TemptGoal(this, 0.75F, stack -> stack.is(TFItemTags.PENGUIN_TEMPT_ITEMS), false));
 		this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.15F));
 		this.goalSelector.addGoal(5, new RandomStrollGoal(this, 1.0F));
 		this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6F));
@@ -48,7 +48,7 @@ public class Penguin extends Bird {
 
 	@Override
 	public boolean isFood(ItemStack stack) {
-		return stack.is(ItemTagGenerator.PENGUIN_TEMPT_ITEMS);
+		return stack.is(TFItemTags.PENGUIN_TEMPT_ITEMS);
 	}
 
 	@Nullable
@@ -79,6 +79,6 @@ public class Penguin extends Bird {
 	}
 
 	public static boolean checkPenguinSpawnRules(EntityType<? extends Penguin> type, LevelAccessor accessor, EntitySpawnReason reason, BlockPos pos, RandomSource rand) {
-		return accessor.getBlockState(pos.below()).is(BlockTagGenerator.PENGUINS_SPAWNABLE_ON);
+		return accessor.getBlockState(pos.below()).is(TFBlockTags.PENGUINS_SPAWNABLE_ON);
 	}
 }

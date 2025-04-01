@@ -23,7 +23,7 @@ import twilightforest.init.TFBiomes;
 import twilightforest.init.TFConfiguredFeatures;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.BoundingBoxUtils;
-import twilightforest.world.components.structures.StructureSpeleothemConfig;
+import twilightforest.world.components.spelothem.StructureSpeleothemConfig;
 
 import java.util.function.Predicate;
 

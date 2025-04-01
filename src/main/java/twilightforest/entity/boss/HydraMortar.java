@@ -19,7 +19,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.event.EventHooks;
-import twilightforest.data.tags.BlockTagGenerator;
+import twilightforest.tags.TFBlockTags;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
 
@@ -122,7 +122,7 @@ public class HydraMortar extends ThrowableProjectile {
 	public float getBlockExplosionResistance(Explosion explosion, BlockGetter getter, BlockPos pos, BlockState state, FluidState fluid, float idk) {
 		float resistance = super.getBlockExplosionResistance(explosion, getter, pos, state, fluid, idk);
 
-		if (this.megaBlast && !state.is(BlockTagGenerator.COMMON_PROTECTIONS)) {
+		if (this.megaBlast && !state.is(TFBlockTags.COMMON_PROTECTIONS)) {
 			resistance = Math.min(0.8F, resistance);
 		}
 

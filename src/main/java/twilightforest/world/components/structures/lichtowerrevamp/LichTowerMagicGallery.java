@@ -13,7 +13,6 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
@@ -23,15 +22,14 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TFRegistries;
 import tamaized.beanification.Autowired;
-import twilightforest.data.tags.BlockTagGenerator;
-import twilightforest.data.tags.CustomTagGenerator;
+import twilightforest.tags.TFBlockTags;
 import twilightforest.entity.MagicPainting;
 import twilightforest.entity.MagicPaintingVariant;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.init.custom.MagicPaintingVariants;
+import twilightforest.tags.TFPaintingVariantTags;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.util.jigsaw.JigsawRecord;
@@ -101,7 +99,7 @@ public class LichTowerMagicGallery extends TwilightJigsawPiece implements PieceB
 
 	private static void removeIfBanister(WorldGenLevel level, BlockPos pos, BoundingBox chunkBounds) {
 		if (chunkBounds.isInside(pos)) {
-			if (level.getBlockState(pos).is(BlockTagGenerator.BANISTERS)) {
+			if (level.getBlockState(pos).is(TFBlockTags.BANISTERS)) {
 				level.removeBlock(pos, false);
 			}
 		}
@@ -136,7 +134,7 @@ public class LichTowerMagicGallery extends TwilightJigsawPiece implements PieceB
 				level.addFreshEntityWithPassengers(galleryPainting);
 			}
 		} else {
-			LichBossRoom.placePainting(label, pos, level, random, chunkBounds, this.placeSettings.getRotation(), 2, 1, CustomTagGenerator.PaintingVariantTagGenerator.LICH_TOWER_PAINTINGS);
+			LichBossRoom.placePainting(label, pos, level, random, chunkBounds, this.placeSettings.getRotation(), 2, 1, TFPaintingVariantTags.LICH_TOWER_PAINTINGS);
 		}
 	}
 

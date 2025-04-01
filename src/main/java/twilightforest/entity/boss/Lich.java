@@ -49,7 +49,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.structure.Structure;
-import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -57,8 +56,8 @@ import org.jetbrains.annotations.Nullable;
 import twilightforest.block.LightableBlock;
 import twilightforest.block.OminousCandleBlock;
 import twilightforest.components.entity.FortificationShieldAttachment;
-import twilightforest.data.tags.DamageTypeTagGenerator;
-import twilightforest.data.tags.EntityTagGenerator;
+import twilightforest.tags.TFDamageTypeTags;
+import twilightforest.tags.TFEntityTypeTags;
 import twilightforest.entity.ai.goal.*;
 import twilightforest.entity.monster.LichMinion;
 import twilightforest.entity.projectile.LichBomb;
@@ -369,7 +368,7 @@ public class Lich extends BaseTFBoss {
 
 		// if our shield is up, ignore any damage that can be blocked.
 		if (!src.is(DamageTypeTags.BYPASSES_INVULNERABILITY) && this.getShieldStrength() > 0) {
-			if (src.is(DamageTypeTagGenerator.BREAKS_LICH_SHIELDS) && damage > 2) {
+			if (src.is(TFDamageTypeTags.BREAKS_LICH_SHIELDS) && damage > 2) {
 				// reduce shield for magic damage greater than 1 heart
 				if (this.getShieldStrength() > 0) {
 					int newShieldStrength = this.getShieldStrength() - 1;
@@ -1071,7 +1070,7 @@ public class Lich extends BaseTFBoss {
 
 	@Override
 	public ProjectileDeflection deflection(Projectile projectile) {
-		if (projectile.getType().is(EntityTagGenerator.LICH_DEFLECTS_PHASE_2) && (projectile.getOwner() instanceof Player || projectile.getOwner() instanceof Lich || projectile.getOwner() == null) && this.getPhase() > 1) {
+		if (projectile.getType().is(TFEntityTypeTags.LICH_DEFLECTS_PHASE_2) && (projectile.getOwner() instanceof Player || projectile.getOwner() instanceof Lich || projectile.getOwner() == null) && this.getPhase() > 1) {
 			return (proj, entity, random) -> {
 				proj.setDeltaMovement(this.getDeltaMovement().add(0.5D - this.getRandom().nextDouble(), 0.75D, 0.5D - this.getRandom().nextDouble()).multiply(0.75D, 1.5D, 0.75D));
 				proj.setOwner(this);
