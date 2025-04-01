@@ -20,7 +20,7 @@ public class StructureTemplateDefinitions extends SimpleJsonResourceReloadListen
 
 	public static final String DIRECTORY = "twilight/template_definition";
 
-	private StructureTemplateDefinitions() {
+	StructureTemplateDefinitions() {
 		super(StructureTemplateDefinition.CODEC, FileToIdConverter.json(DIRECTORY));
 	}
 
