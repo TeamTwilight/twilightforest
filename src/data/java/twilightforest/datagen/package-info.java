@@ -1,6 +1,6 @@
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-package twilightforest;
+package twilightforest.datagen;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 

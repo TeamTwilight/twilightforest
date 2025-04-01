@@ -1,4 +1,4 @@
-package twilightforest.bootstrap;
+package twilightforest.datagen.bootstrap;
 
 import net.minecraft.core.RegistrySetBuilder;
 

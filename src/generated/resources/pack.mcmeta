@@ -1,0 +1,10 @@
+{
+  "pack": {
+    "description": "Resources for Twilight Forest",
+    "pack_format": 61,
+    "supported_formats": [
+      0,
+      2147483647
+    ]
+  }
+}

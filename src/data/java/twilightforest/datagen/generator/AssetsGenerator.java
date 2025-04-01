@@ -1,4 +1,4 @@
-package twilightforest.generator;
+package twilightforest.datagen.generator;
 
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import tamaized.beanification.Component;

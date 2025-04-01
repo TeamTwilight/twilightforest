@@ -1,4 +1,4 @@
-package twilightforest;
+package twilightforest.datagen;
 
 import net.minecraft.DetectedVersion;
 import net.minecraft.data.metadata.PackMetadataGenerator;
@@ -10,8 +10,8 @@ import net.neoforged.neoforge.data.event.GatherDataEvent;
 import tamaized.beanification.Autowired;
 import tamaized.beanification.Component;
 import tamaized.beanification.PostConstruct;
-import twilightforest.generator.AssetsGenerator;
-import twilightforest.generator.DataGenerator;
+import twilightforest.datagen.generator.AssetsGenerator;
+import twilightforest.datagen.generator.DataGenerator;
 
 import java.util.Optional;
 
@@ -26,7 +26,7 @@ public class DataGenerators {
 
 	@PostConstruct
 	private void register(IEventBus bus) {
-		bus.addListener(GatherDataEvent.class, event -> {
+		bus.addListener(GatherDataEvent.Client.class, event -> {
 			assetsGenerator.generate(event);
 			dataGenerator.generate(event);
 

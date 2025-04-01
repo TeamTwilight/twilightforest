@@ -1,4 +1,4 @@
-package twilightforest;
+package twilightforest.datagen;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
@@ -10,7 +10,8 @@ import org.jetbrains.annotations.Nullable;
 import tamaized.beanification.Component;
 import tamaized.beanification.Directory;
 import tamaized.beanification.PostConstruct;
-import twilightforest.bootstrap.IBootstrap;
+import twilightforest.TwilightForestMod;
+import twilightforest.datagen.bootstrap.IBootstrap;
 
 import java.util.List;
 import java.util.Objects;

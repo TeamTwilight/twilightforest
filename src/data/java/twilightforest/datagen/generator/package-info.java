@@ -1,5 +1,5 @@
 @MethodsReturnNonnullByDefault @ParametersAreNonnullByDefault
-package twilightforest.generator;
+package twilightforest.datagen.generator;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 
