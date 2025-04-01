@@ -24,6 +24,7 @@ import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.common.util.Lazy;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TFRegistries;
 import twilightforest.init.TFDataComponents;
@@ -38,7 +39,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class MagicPainting extends HangingEntity {
-	private static final EntityDataAccessor<Holder<MagicPaintingVariant>> MAGIC_PAINTING_VARIANT = SynchedEntityData.defineId(MagicPainting.class, TFDataSerializers.MAGIC_PAINTING_VARIANT.value());
+	private static final Lazy<EntityDataAccessor<Holder<MagicPaintingVariant>>> MAGIC_PAINTING_VARIANT = Lazy.of(() -> SynchedEntityData.defineId(MagicPainting.class, TFDataSerializers.MAGIC_PAINTING_VARIANT.value()));
 
 	public MagicPainting(EntityType<? extends MagicPainting> entityType, Level level) {
 		super(entityType, level);
@@ -50,22 +51,22 @@ public class MagicPainting extends HangingEntity {
 
 	@Override
 	protected void defineSynchedData(SynchedEntityData.Builder builder) {
-		builder.define(MAGIC_PAINTING_VARIANT, this.getReg().getOrThrow(MagicPaintingVariants.DEFAULT));
+		builder.define(MAGIC_PAINTING_VARIANT.get(), this.getReg().getOrThrow(MagicPaintingVariants.DEFAULT));
 	}
 
 	@Override
 	public void onSyncedDataUpdated(EntityDataAccessor<?> pKey) {
-		if (MAGIC_PAINTING_VARIANT.equals(pKey)) {
+		if (MAGIC_PAINTING_VARIANT.get().equals(pKey)) {
 			this.recalculateBoundingBox();
 		}
 	}
 
 	public void setVariant(Holder<MagicPaintingVariant> variant) {
-		this.getEntityData().set(MAGIC_PAINTING_VARIANT, variant);
+		this.getEntityData().set(MAGIC_PAINTING_VARIANT.get(), variant);
 	}
 
 	public Holder<MagicPaintingVariant> getVariant() {
-		return this.getEntityData().get(MAGIC_PAINTING_VARIANT);
+		return this.getEntityData().get(MAGIC_PAINTING_VARIANT.get());
 	}
 
 	public static Optional<MagicPainting> create(Level level, BlockPos pos, Direction direction) {

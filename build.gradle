@@ -5,6 +5,9 @@ buildscript {
 		maven {
 			name 'Beanification'
 			url 'https://maven.tamaized.com/releases/'
+			content {
+				includeGroup("tamaized")
+			}
 		}
 	}
 	dependencies {
@@ -81,6 +84,30 @@ subprojects {
 	version = project(":").version
 }
 
+sourceSets {
+	data {
+		compileClasspath += main.compileClasspath + main.output
+
+		java {
+			srcDirs = ['src/main/java', 'src/data/java']
+		}
+		resources {
+			srcDirs = ['src/main/resources']
+		}
+	}
+	dataForPublishing {
+		compileClasspath += data.compileClasspath
+
+		java {
+			srcDirs = ['src/data/java']
+		}
+	}
+}
+
+configurations {
+	dataImplementation.extendsFrom implementation
+}
+
 neoForge {
 	// we need the subprojects to evaluate first so that the sourceSets are properly constructed
 	evaluationDependsOnChildren()
@@ -90,6 +117,8 @@ neoForge {
 
 	validateAccessTransformers = true
 
+	addModdingDependenciesTo sourceSets.data
+
 	mods {
 		"${mod_id}" {
 			it.sourceSet this.sourceSets.main
@@ -98,9 +127,16 @@ neoForge {
 		'tf-asm' {
 			it.sourceSet project(":tf-asm").sourceSets.main
 		}
+
+		"${mod_id}-data" {
+			it.sourceSet this.sourceSets.main
+			it.sourceSet this.sourceSets.data
+		}
 	}
 
 	def mainMod = mods."${project.mod_id}"
+	def asmMod = mods."tf-asm"
+	def dataMod = mods."${project.mod_id}-data"
 
 	unitTest {
 		enable()
@@ -112,6 +148,7 @@ neoForge {
 			gameDirectory = project.file('run')
 			systemProperty 'forge.logging.console.level', 'debug'
 			logLevel = org.slf4j.event.Level.DEBUG
+			loadedMods = [mainMod, asmMod]
 		}
 
 		client {
@@ -130,6 +167,8 @@ neoForge {
 			clientData()
 			gameDirectory = project.file('run-data')
 			programArguments.addAll '--mod', mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+			sourceSet = this.sourceSets.data
+			loadedMods = [dataMod, asmMod]
 		}
 	}
 }
@@ -151,6 +190,9 @@ repositories {
 	maven {
 		name 'Tama\'s Maven' // Beanification
 		url 'https://maven.tamaized.com/releases/'
+		content {
+			includeGroup("tamaized")
+		}
 	}
 	maven {
 		name 'Jared\'s Maven' // JEI
@@ -268,10 +310,8 @@ jar {
 	}
 }
 
-def mavenUser = hasProperty("ARTIFACTORY_USER") ? ARTIFACTORY_USER : secrets.getProperty("maven_username")
-def mavenToken = hasProperty("ARTIFACTORY_PASS") ? ARTIFACTORY_PASS : secrets.getProperty("maven_password")
-logger.lifecycle(hasProperty("ARTIFACTORY_USER").toString())
-logger.lifecycle(mavenUser)
+def mavenUser = System.getenv("MAVEN_USER")?: secrets.getProperty("maven_username")
+def mavenToken = System.getenv("MAVEN_PASS")?: secrets.getProperty("maven_password")
 
 publishing {
 	publications {
@@ -279,8 +319,10 @@ publishing {
 			afterEvaluate {
 				artifact this.project.jar
 				artifact this.project.sourceJar
+				artifact this.project.dataJar
+				artifact this.project.dataSourceJar
 			}
-			groupId mavenUser
+			groupId 'team-twilight'
 			artifactId this.project.mod_id
 		}
 	}
@@ -299,6 +341,18 @@ tasks.register('sourceJar', Jar) {
 	dependsOn 'classes'
 	from sourceSets.main.allSource
 	archiveClassifier = 'sources'
+}
+
+tasks.register('dataJar', Jar) {
+	dependsOn 'classes'
+	from sourceSets.dataForPublishing.output
+	archiveClassifier = 'data'
+}
+
+tasks.register('dataSourceJar', Jar) {
+	dependsOn 'classes'
+	from sourceSets.dataForPublishing.allSource
+	archiveClassifier = 'data-sources'
 }
 
 tasks.withType(JavaCompile).configureEach {

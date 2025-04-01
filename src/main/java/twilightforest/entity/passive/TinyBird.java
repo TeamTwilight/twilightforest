@@ -23,6 +23,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.neoforged.neoforge.common.util.Lazy;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFRegistries;
 import twilightforest.data.tags.ItemTagGenerator;
@@ -34,7 +35,7 @@ import java.util.Optional;
 
 public class TinyBird extends FlyingBird implements VariantHolder<Holder<TinyBirdVariant>> {
 
-	private static final EntityDataAccessor<Holder<TinyBirdVariant>> VARIANT = SynchedEntityData.defineId(TinyBird.class, TFDataSerializers.TINY_BIRD_VARIANT.get());
+	private static final Lazy<EntityDataAccessor<Holder<TinyBirdVariant>>> VARIANT = Lazy.of(() -> SynchedEntityData.defineId(TinyBird.class, TFDataSerializers.TINY_BIRD_VARIANT.get()));
 
 	public TinyBird(EntityType<? extends TinyBird> type, Level level) {
 		super(type, level);
@@ -50,7 +51,7 @@ public class TinyBird extends FlyingBird implements VariantHolder<Holder<TinyBir
 	@Override
 	protected void defineSynchedData(SynchedEntityData.Builder builder) {
 		super.defineSynchedData(builder);
-		builder.define(VARIANT, this.registryAccess().lookupOrThrow(TFRegistries.Keys.TINY_BIRD_VARIANT).getOrThrow(TinyBirdVariants.RED));
+		builder.define(VARIANT.get(), this.registryAccess().lookupOrThrow(TFRegistries.Keys.TINY_BIRD_VARIANT).getOrThrow(TinyBirdVariants.RED));
 	}
 
 	public static AttributeSupplier.Builder registerAttributes() {
@@ -84,12 +85,12 @@ public class TinyBird extends FlyingBird implements VariantHolder<Holder<TinyBir
 
 	@Override
 	public Holder<TinyBirdVariant> getVariant() {
-		return this.getEntityData().get(VARIANT);
+		return this.getEntityData().get(VARIANT.get());
 	}
 
 	@Override
 	public void setVariant(Holder<TinyBirdVariant> variant) {
-		this.getEntityData().set(VARIANT, variant);
+		this.getEntityData().set(VARIANT.get(), variant);
 	}
 
 	@Override

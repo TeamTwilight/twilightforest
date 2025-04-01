@@ -23,6 +23,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.common.util.Lazy;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFRegistries;
 import twilightforest.data.tags.ItemTagGenerator;
@@ -35,7 +36,7 @@ import java.util.Optional;
 
 public class DwarfRabbit extends Animal implements VariantHolder<Holder<DwarfRabbitVariant>> {
 
-	private static final EntityDataAccessor<Holder<DwarfRabbitVariant>> VARIANT = SynchedEntityData.defineId(DwarfRabbit.class, TFDataSerializers.DWARF_RABBIT_VARIANT.get());
+	private static final Lazy<EntityDataAccessor<Holder<DwarfRabbitVariant>>> VARIANT = Lazy.of(() -> SynchedEntityData.defineId(DwarfRabbit.class, TFDataSerializers.DWARF_RABBIT_VARIANT.get()));
 
 	public DwarfRabbit(EntityType<? extends DwarfRabbit> type, Level world) {
 		super(type, world);
@@ -87,7 +88,7 @@ public class DwarfRabbit extends Animal implements VariantHolder<Holder<DwarfRab
 	@Override
 	protected void defineSynchedData(SynchedEntityData.Builder builder) {
 		super.defineSynchedData(builder);
-		builder.define(VARIANT, this.registryAccess().lookupOrThrow(TFRegistries.Keys.DWARF_RABBIT_VARIANT).getOrThrow(DwarfRabbitVariants.BROWN));
+		builder.define(VARIANT.get(), this.registryAccess().lookupOrThrow(TFRegistries.Keys.DWARF_RABBIT_VARIANT).getOrThrow(DwarfRabbitVariants.BROWN));
 	}
 
 	@Override
@@ -114,12 +115,12 @@ public class DwarfRabbit extends Animal implements VariantHolder<Holder<DwarfRab
 
 	@Override
 	public Holder<DwarfRabbitVariant> getVariant() {
-		return this.getEntityData().get(VARIANT);
+		return this.getEntityData().get(VARIANT.get());
 	}
 
 	@Override
 	public void setVariant(Holder<DwarfRabbitVariant> variant) {
-		this.getEntityData().set(VARIANT, variant);
+		this.getEntityData().set(VARIANT.get(), variant);
 	}
 
 	@Override
