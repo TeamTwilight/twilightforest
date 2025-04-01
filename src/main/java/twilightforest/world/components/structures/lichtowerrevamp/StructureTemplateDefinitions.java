@@ -53,13 +53,13 @@ public class StructureTemplateDefinitions extends SimpleJsonResourceReloadListen
 	}
 
 	@Nullable
-	private ResourceLocation rollTemplatePool(RandomSource random, ResourceLocation templatePoolId) {
+	public ResourceLocation rollTemplatePool(RandomSource random, ResourceLocation templatePoolId) {
 		SimpleWeightedRandomList<ResourceLocation> templatePool = this.templatePools.get(templatePoolId);
 		return templatePool == null ? null : templatePool.getRandomValue(random).orElse(null);
 	}
 
 	// https://en.wikipedia.org/wiki/Reservoir_sampling
-	private Iterable<ResourceLocation> shuffledTemplatePool(RandomSource random, ResourceLocation templatePoolId) {
+	public Iterable<ResourceLocation> shuffledTemplatePool(RandomSource random, ResourceLocation templatePoolId) {
 		SimpleWeightedRandomList<ResourceLocation> templatePool = this.templatePools.get(templatePoolId);
 
 		if (templatePool == null)
@@ -72,15 +72,5 @@ public class StructureTemplateDefinitions extends SimpleJsonResourceReloadListen
 		}
 
 		return reservoirSampled.entrySet().stream().sorted(Map.Entry.comparingByValue()).map(Map.Entry::getKey).collect(Collectors.toList());
-	}
-
-	@Nullable // TODO Autowired
-	public static ResourceLocation getRandomTemplate(RandomSource random, ResourceLocation poolId) {
-		return INSTANCE.rollTemplatePool(random, poolId);
-	}
-
-	// TODO Autowired
-	public static Iterable<ResourceLocation> getShuffledSequence(RandomSource random, ResourceLocation poolId) {
-		return INSTANCE.shuffledTemplatePool(random, poolId);
 	}
 }

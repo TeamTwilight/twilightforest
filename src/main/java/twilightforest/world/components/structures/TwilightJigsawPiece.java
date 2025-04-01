@@ -47,7 +47,7 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 
 	@Nullable
 	public static TwilightJigsawPiece initializeTemplateFromPool(ResourceLocation templatePool, BlockPos.MutableBlockPos parentJunctionPos, FrontAndTop parentOrientation, String selectName, RandomSource rand, int genDepth, StructureTemplateManager structureManager) {
-		ResourceLocation templateId = StructureTemplateDefinitions.getRandomTemplate(rand, templatePool);
+		ResourceLocation templateId = StructureTemplateDefinitions.INSTANCE.rollTemplatePool(rand, templatePool);
 		JigsawPlaceContext placeContext = JigsawPlaceContext.pickPlaceableJunction(parentJunctionPos, BlockPos.ZERO, parentOrientation, structureManager, templateId, selectName, rand);
 
 		if (templateId == null || placeContext == null)
