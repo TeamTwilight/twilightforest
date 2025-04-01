@@ -98,7 +98,7 @@ public class HollowLogVerticalTests {
 
 		InteractionResult result = instance.useItemOn(stack, state, level, BlockPos.ZERO, player, InteractionHand.MAIN_HAND, hitResult);
 
-		assertSame(InteractionResult.CONSUME, result);
+		assertSame(InteractionResult.SUCCESS, result);
 
 		verify(stack, times(1)).is(Blocks.VINE.asItem());
 		ArgumentCaptor<BlockState> climbable = ArgumentCaptor.captor();
@@ -131,7 +131,7 @@ public class HollowLogVerticalTests {
 
 		InteractionResult result = instance.useItemOn(stack, state, level, BlockPos.ZERO, player, InteractionHand.MAIN_HAND, hitResult);
 
-		assertSame(InteractionResult.CONSUME, result);
+		assertSame(InteractionResult.SUCCESS, result);
 
 		verify(stack, times(1)).is(Blocks.VINE.asItem());
 		verify(stack, times(1)).is(Blocks.LADDER.asItem());
@@ -163,7 +163,7 @@ public class HollowLogVerticalTests {
 
 		InteractionResult result = instance.useItemOn(stack, state, level, BlockPos.ZERO, player, InteractionHand.MAIN_HAND, hitResult);
 
-		assertSame(InteractionResult.CONSUME, result);
+		assertSame(InteractionResult.SUCCESS, result);
 
 		verify(stack, times(1)).is(Blocks.VINE.asItem());
 		verify(stack, times(1)).is(Blocks.LADDER.asItem());
