@@ -140,7 +140,8 @@ neoForge {
 
 	unitTest {
 		enable()
-		testedMod = mainMod
+		// For whatever reason, tests break if we dont combine all source sets, which the data source set does
+		testedMod = dataMod
 	}
 
 	runs {
