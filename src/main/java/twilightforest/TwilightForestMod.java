@@ -119,8 +119,10 @@ public final class TwilightForestMod {
 			ClientEvents.initGameEvents();
 		}
 		NeoForge.EVENT_BUS.addListener(this::registerCommands);
-		NeoForge.EVENT_BUS.addListener(AddServerReloadListenersEvent.class, event -> StalactiteReloadListener.INSTANCE.registerListener(prefix("stalactites"), event));
-		NeoForge.EVENT_BUS.addListener(AddServerReloadListenersEvent.class, event -> StructureTemplateDefinitions.INSTANCE.registerListener(prefix("structure_templates"), event));
+		NeoForge.EVENT_BUS.addListener(AddServerReloadListenersEvent.class, event -> {
+			event.addListener(prefix("stalactites"), StalactiteReloadListener.INSTANCE);
+			event.addListener(prefix("structure_templates"), StructureTemplateDefinitions.INSTANCE);
+		});
 
 		TFItems.ITEMS.register(bus);
 		TFStats.STATS.register(bus);

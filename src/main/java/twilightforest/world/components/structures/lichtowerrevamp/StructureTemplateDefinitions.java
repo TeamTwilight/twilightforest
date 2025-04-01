@@ -1,63 +1,55 @@
 package twilightforest.world.components.structures.lichtowerrevamp;
 
-import com.google.gson.JsonElement;
+import net.minecraft.resources.FileToIdConverter;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.util.random.WeightedEntry;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.world.components.structures.util.CodecResourceReloadListener;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class StructureTemplateDefinitions extends CodecResourceReloadListener<StructureTemplateDefinition> {
+public class StructureTemplateDefinitions extends SimpleJsonResourceReloadListener<StructureTemplateDefinition> {
 	public static final StructureTemplateDefinitions INSTANCE = new StructureTemplateDefinitions(); // TODO Autowired
 
-	private final Map<ResourceLocation, Map<ResourceLocation, Integer>> rawTemplatePools = new HashMap<>();
 	private final Map<ResourceLocation, SimpleWeightedRandomList<ResourceLocation>> templatePools = new HashMap<>();
 
 	public static final String DIRECTORY = "twilight/template_definition";
 
 	private StructureTemplateDefinitions() {
-		super(StructureTemplateDefinition.CODEC, DIRECTORY);
+		super(StructureTemplateDefinition.CODEC, FileToIdConverter.json(DIRECTORY));
 	}
 
 	@Override
-	protected void forLocation(ResourceManager manager, ResourceLocation templateName, StructureTemplateDefinition templateDefinition) {
-		for(Map.Entry<ResourceLocation, Integer> poolToRegisterWeight : templateDefinition.poolWeights().entrySet()) {
-			ResourceLocation templatePoolId = poolToRegisterWeight.getKey();
-			Integer templateWeight = poolToRegisterWeight.getValue();
-
-			Map<ResourceLocation, Integer> pool = this.rawTemplatePools.computeIfAbsent(templatePoolId, k -> new HashMap<>());
-
-			pool.put(templateName, templateWeight);
-		}
-	}
-
-	@Override
-	protected void apply(Map<ResourceLocation, JsonElement> map, ResourceManager manager, ProfilerFiller profiler) {
-		this.rawTemplatePools.clear();
+	protected void apply(Map<ResourceLocation, StructureTemplateDefinition> map, ResourceManager manager, ProfilerFiller profiler) {
 		this.templatePools.clear();
 
-		super.apply(map, manager, profiler);
+		final Map<ResourceLocation, SimpleWeightedRandomList.Builder<ResourceLocation>> rawTemplatePools = new HashMap<>();
 
-		for(Map.Entry<ResourceLocation, Map<ResourceLocation, Integer>> rawTemplatePool : this.rawTemplatePools.entrySet()) {
-			SimpleWeightedRandomList.Builder<ResourceLocation> poolBuilder = SimpleWeightedRandomList.builder();
+		for(Map.Entry<ResourceLocation, StructureTemplateDefinition> mapEntry : map.entrySet()) {
 
-			// Ensures that the order of elements stays deterministic between sessions, as Sets are not implicitly ordered
-			List<Map.Entry<ResourceLocation, Integer>> sortedTemplateWeights = rawTemplatePool.getValue().entrySet().stream().sorted(Map.Entry.comparingByKey()).toList();
-			for (Map.Entry<ResourceLocation, Integer> templateIdWeight : sortedTemplateWeights) {
-				poolBuilder.add(templateIdWeight.getKey(), templateIdWeight.getValue());
+			// Ensures that the order of elements stays deterministic between sessions, as Map/Set sorting are undefined behavior
+			List<Map.Entry<ResourceLocation, Integer>> sorted = mapEntry.getValue().poolWeights().entrySet().stream().sorted(Map.Entry.comparingByKey()).toList();
+
+			for(Map.Entry<ResourceLocation, Integer> poolToRegisterWeight : sorted) {
+				ResourceLocation templatePoolId = poolToRegisterWeight.getKey();
+				Integer templateWeight = poolToRegisterWeight.getValue();
+
+				SimpleWeightedRandomList.Builder<ResourceLocation> pool = rawTemplatePools.computeIfAbsent(templatePoolId, k -> SimpleWeightedRandomList.builder());
+
+				pool.add(mapEntry.getKey(), templateWeight);
 			}
-
-			ResourceLocation templatePoolId = rawTemplatePool.getKey();
-			this.templatePools.put(templatePoolId, poolBuilder.build());
 		}
 
-		this.rawTemplatePools.clear();
+		for(Map.Entry<ResourceLocation, SimpleWeightedRandomList.Builder<ResourceLocation>> rawTemplatePool : rawTemplatePools.entrySet()) {
+			this.templatePools.put(rawTemplatePool.getKey(), rawTemplatePool.getValue().build());
+		}
+
+		rawTemplatePools.clear();
 	}
 
 	@Nullable
