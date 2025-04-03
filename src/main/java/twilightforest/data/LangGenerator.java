@@ -1190,5 +1190,6 @@ public class LangGenerator extends TFLangProvider {
 
 		this.add(TFKeyBinds.RED_THREAD_VISION_KEY.getName(), "See Red Thread with Goggles");
 		this.add(TFKeyBinds.ZOOM_KEY.getName(), "Zoom With Goggles");
+		this.addAttribute(TFAttributes.TRAVEL_FOOD_EFFICIENCY, "Travel Food Efficiency");
 	}
 }

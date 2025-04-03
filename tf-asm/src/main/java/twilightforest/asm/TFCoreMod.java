@@ -20,6 +20,7 @@ import twilightforest.asm.transformers.multipart.ResolveEntitiesForRendereringTr
 import twilightforest.asm.transformers.multipart.ResolveEntityRendererTransformer;
 import twilightforest.asm.transformers.multipart.SendDirtytEntityDataTransformer;
 import twilightforest.asm.transformers.player.MaybeBackOffFromEdgeTransformer;
+import twilightforest.asm.transformers.player_and_serverplayer.ReduceMovementFoodExhaustionTransformer;
 import twilightforest.asm.transformers.shroom.ModifySoilDecisionForMushroomBlockSurvivabilityTransformer;
 
 import java.util.List;
@@ -68,6 +69,9 @@ public class TFCoreMod implements ICoreMod {
 
 			// player
 			new MaybeBackOffFromEdgeTransformer(),
+
+			// player and serverPlayer
+			new ReduceMovementFoodExhaustionTransformer(),
 
 			// shroom
 			new ModifySoilDecisionForMushroomBlockSurvivabilityTransformer(),

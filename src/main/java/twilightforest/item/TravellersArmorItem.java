@@ -32,6 +32,7 @@ import twilightforest.client.model.armor.TFArmorModel;
 import twilightforest.client.model.armor.TravellersLeggingsModel;
 import twilightforest.client.renderer.armor.TFArmorRenderer;
 import twilightforest.init.TFArmorMaterials;
+import twilightforest.init.TFAttributes;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFDataComponents;
 import twilightforest.network.ParticlePacket;
@@ -213,6 +214,7 @@ public class TravellersArmorItem extends ArmorItem {
 			.component(TFDataComponents.AUTO_REPAIR_PROBABILITY, 0.001F)
 			.attributes(defaultArmorProperties(Type.CHESTPLATE)
 				.add(Attributes.WATER_MOVEMENT_EFFICIENCY, new AttributeModifier(TwilightForestMod.prefix("travellers_gear.vest_fast_swimming"), 1F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.CHEST)
+				.add(TFAttributes.TRAVEL_FOOD_EFFICIENCY, new AttributeModifier(TwilightForestMod.prefix("travellers_gear.vest_efficient_eater"), 1F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.CHEST)
 				.build());
 	}
 

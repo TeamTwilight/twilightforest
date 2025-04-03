@@ -16,6 +16,7 @@ import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
@@ -49,6 +50,10 @@ public abstract class TFLangProvider extends LanguageProvider {
 		super.add(key, value);
 		List<LangFormatSplitter.Component> splitEnglish = LangFormatSplitter.split(value);
 		this.upsideDownEntries.put(key, LangConversionHelper.convertComponents(splitEnglish));
+	}
+
+	public void addAttribute(DeferredHolder<Attribute, Attribute> attribute, String name) {
+		this.add(attribute.get().getDescriptionId(), name);
 	}
 
 	public void addBiome(ResourceKey<Biome> biome, String name) {

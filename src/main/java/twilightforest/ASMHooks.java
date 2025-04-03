@@ -24,6 +24,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.decoration.LeashFenceKnotEntity;
@@ -50,8 +51,7 @@ import net.neoforged.neoforge.common.util.TriState;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import twilightforest.beans.Autowired;
-import twilightforest.init.TFDataAttachments;
-import twilightforest.init.TFAttributeModifiers;
+import twilightforest.init.*;
 import twilightforest.item.TravellersArmorItem;
 import twilightforest.util.ArmorUtil;
 import twilightforest.util.multiparts.MultipartEntityUtil;
@@ -59,8 +59,6 @@ import twilightforest.block.CloudBlock;
 import twilightforest.block.WroughtIronFenceBlock;
 import twilightforest.client.FoliageColorHandler;
 import twilightforest.config.TFConfig;
-import twilightforest.init.TFBlocks;
-import twilightforest.init.TFDataComponents;
 import twilightforest.init.custom.ChunkBlanketProcessors;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.structures.CustomDensitySource;
@@ -350,6 +348,25 @@ public class ASMHooks {
 				return (float) (f - modifier.modifier().amount());  // TODO: use multiply modifiers to this one if they are present
 		}
 		return f;
+	}
+
+	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// player and serverPlayer
+	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	/**
+	 * {@link twilightforest.asm.transformers.player_and_serverplayer.ReduceMovementFoodExhaustionTransformer()}<p/>
+	 *
+	 * Injection Points:<br/>
+	 * {@link net.minecraft.server.level.ServerPlayer#checkMovementStatistics(double dx, double dy, double dz)}
+	 * {@link net.minecraft.world.entity.player.Player#jumpFromGround()}
+	 */
+
+	public static float getFoodExhaustionMultiplier(float f, Player player) {
+		AttributeInstance attributeInstance = player.getAttributes().getInstance(TFAttributes.TRAVEL_FOOD_EFFICIENCY);
+		if (attributeInstance == null)
+			return 1;
+		return (float) (f * (1 / attributeInstance.getValue()));
 	}
 
 	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
