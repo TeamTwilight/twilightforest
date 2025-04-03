@@ -34,10 +34,7 @@ import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.TFArmorModel;
 import twilightforest.client.model.armor.TravellersLeggingsModel;
 import twilightforest.client.renderer.armor.TFArmorRenderer;
-import twilightforest.init.TFArmorMaterials;
-import twilightforest.init.TFAttributes;
-import twilightforest.init.TFDataAttachments;
-import twilightforest.init.TFDataComponents;
+import twilightforest.init.*;
 import twilightforest.network.ParticlePacket;
 
 import javax.annotation.Nullable;
@@ -277,8 +274,8 @@ public class TravellersArmorItem extends ArmorItem {
 			.component(TFDataComponents.PERFECT_DODGE_PROBABILITY, 0.1F)
 			.component(TFDataComponents.AUTO_REPAIR_PROBABILITY, 0.001F)
 			.attributes(defaultArmorProperties(Type.CHESTPLATE)
-				.add(Attributes.WATER_MOVEMENT_EFFICIENCY, new AttributeModifier(TwilightForestMod.prefix("travellers_gear.vest_fast_swimming"), 1F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.CHEST)
-				.add(TFAttributes.TRAVEL_FOOD_EFFICIENCY, new AttributeModifier(TwilightForestMod.prefix("travellers_gear.vest_efficient_eater"), 1F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.CHEST)
+				.add(Attributes.WATER_MOVEMENT_EFFICIENCY, TFAttributeModifiers.TRAVELLERS_SWIFT_SWIM, EquipmentSlotGroup.CHEST)
+				.add(TFAttributes.TRAVEL_FOOD_EFFICIENCY, TFAttributeModifiers.EFFICIENT_EATER, EquipmentSlotGroup.CHEST)
 				.build());
 	}
 
@@ -310,7 +307,7 @@ public class TravellersArmorItem extends ArmorItem {
 			.component(TFDataComponents.FORWARD_BOOST_MULTIPLIER, 1.4)
 			.component(TFDataComponents.AUTO_REPAIR_PROBABILITY, 0.001F)
 			.attributes(defaultArmorProperties(Type.BOOTS)
-				.add(Attributes.STEP_HEIGHT, new AttributeModifier(TwilightForestMod.prefix("travellers_gear.boots_high_step"), 0.5F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.FEET)
+				.add(Attributes.STEP_HEIGHT, TFAttributeModifiers.TRAVELLERS_HIGH_STEP,  EquipmentSlotGroup.FEET)
 				.build());
 	}
 
