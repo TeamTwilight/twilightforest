@@ -36,6 +36,8 @@ public class TravellersArmorTickEventHandler {
 			player.setData(TFDataAttachments.HAS_DOUBLE_JUMP, hasDoubleJump);
 			player.setData(TFDataAttachments.DOUBLE_JUMP_VALIDATOR, 0);
 		}
+
+		TravellersArmorItem.travellersWingsSidestepCooldownSound(player);
 	}
 
 	public void levelTickPost(LevelTickEvent.Post event) {

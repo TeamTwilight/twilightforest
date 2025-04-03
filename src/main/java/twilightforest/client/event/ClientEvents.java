@@ -68,6 +68,7 @@ import twilightforest.init.TFDimension;
 import twilightforest.init.TFKeyBinds;
 import twilightforest.item.*;
 import twilightforest.network.PerformDoubleJumpPacket;
+import twilightforest.network.PerformSidestepPacket;
 import twilightforest.util.HolderMatcher;
 
 import java.time.LocalDate;
@@ -114,6 +115,7 @@ public class ClientEvents {
 		NeoForge.EVENT_BUS.addListener(ClientEvents::playerTravellersArmorEffects);
 		NeoForge.EVENT_BUS.addListener(ClientEvents::travellersAgileRanger);
 		NeoForge.EVENT_BUS.addListener(ClientEvents::travellersForwardBoost);
+		NeoForge.EVENT_BUS.addListener(ClientEvents::travellersSidestep);
 
 		NeoForge.EVENT_BUS.addListener(CloudEvents::renderPrecipitation);
 		NeoForge.EVENT_BUS.addListener(CloudEvents::tickWeatherEffects);
@@ -171,6 +173,31 @@ public class ClientEvents {
 			multiplier = 1D;
 		attributeInstance.addOrUpdateTransientModifier(new AttributeModifier(TravellersArmorItem.FORWARD_BOOTS_ATTRIBUTE_MODIFIER_LOCATION, multiplier - 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
 		input.leftImpulse /= multiplier;
+	}
+
+	public static void travellersSidestep(MovementInputUpdateEvent event) {
+		if (!(event.getEntity() instanceof LocalPlayer localPlayer) || !localPlayer.onGround())
+			return;
+
+		Input input = localPlayer.input;
+		boolean lastImpulseZero = localPlayer.getData(TFDataAttachments.LAST_HORIZONTAL_IMPULSE) == 0;
+		boolean sameImpulseDirection = Math.signum(localPlayer.getData(TFDataAttachments.LAST_NON_ZERO_HORIZONTAL_IMPULSE)) == Math.signum(input.leftImpulse);
+		long currentTime = localPlayer.level().getGameTime();
+		long lastWalkingTime = localPlayer.getData(TFDataAttachments.LAST_HORIZONTAL_WALKING_TIME);
+		boolean hasDoubleTapped = currentTime - lastWalkingTime < 4;
+
+		if (lastImpulseZero && sameImpulseDirection && hasDoubleTapped) {
+			boolean isLeftSidestep = input.leftImpulse > 0;
+			if (TravellersArmorItem.tryPerformSidestep(localPlayer, isLeftSidestep)) {
+				localPlayer.connection.send(new PerformSidestepPacket(isLeftSidestep));
+			}
+		}
+
+		localPlayer.setData(TFDataAttachments.LAST_HORIZONTAL_IMPULSE, input.leftImpulse);
+		if (input.leftImpulse != 0) {
+			localPlayer.setData(TFDataAttachments.LAST_HORIZONTAL_WALKING_TIME, currentTime);
+			localPlayer.setData(TFDataAttachments.LAST_NON_ZERO_HORIZONTAL_IMPULSE, input.leftImpulse);
+		}
 	}
 
 	private static void handleGameBootup(ScreenEvent.Init.Post event) {

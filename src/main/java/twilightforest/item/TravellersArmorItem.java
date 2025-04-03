@@ -10,6 +10,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundPlayerPositionPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -24,7 +25,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
@@ -120,6 +123,13 @@ public class TravellersArmorItem extends ArmorItem {
 		attributeInstance.addOrUpdateTransientModifier(new AttributeModifier(FORWARD_BOOTS_ATTRIBUTE_MODIFIER_LOCATION, multiplier - 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
 	}
 
+	public static void travellersWingsSidestepCooldownSound(Player player) {
+		Long cooldown = player.getItemBySlot(EquipmentSlot.LEGS).get(TFDataComponents.SIDESTEP_COOLDOWN);
+		Long dt = player.level().getGameTime() - player.getData(TFDataAttachments.LAST_SIDESTEP_TIME);
+		if (dt.equals(cooldown))
+			player.playSound(SoundEvents.EXPERIENCE_ORB_PICKUP, 1F, 1F);
+	}
+
 	public static void travellersWingsControlledFall(LivingEntity livingEntity) {
 		ItemStack leggingsStack = livingEntity.getItemBySlot(EquipmentSlot.LEGS);
 		Float multiplier = leggingsStack.get(TFDataComponents.CONTROLLED_FALLING_MULTIPLIER);
@@ -167,6 +177,25 @@ public class TravellersArmorItem extends ArmorItem {
 			livingEntity.addEffect(new MobEffectInstance(MobEffects.DIG_SPEED, 2, amplifier, false, false, false));
 	}
 
+	public static boolean tryPerformSidestep(Player player, boolean isLeftSidestep) {
+		long lastSidestepTime = player.getData(TFDataAttachments.LAST_SIDESTEP_TIME);
+		Long cooldown = player.getItemBySlot(EquipmentSlot.LEGS).get(TFDataComponents.SIDESTEP_COOLDOWN);
+		long currentTime = player.level().getGameTime();
+		if (cooldown != null && currentTime - lastSidestepTime > cooldown && !player.isFallFlying() && player.onGround() && !player.isCrouching()) {
+			TravellersArmorItem.performSidestep(player, isLeftSidestep);
+			player.setData(TFDataAttachments.LAST_SIDESTEP_TIME, currentTime);
+			return true;
+		}
+		return false;
+	}
+
+	public static void performSidestep(Player player, boolean isLeftSidestep) {
+		float angle = player.getYRot();
+		double rot = isLeftSidestep ? -Math.PI / 2 : Math.PI / 2;
+		Vec3 dashDirection =new Vec3(-Math.sin(Math.toRadians(angle) + rot), 0, Math.cos(Math.toRadians(angle) + rot));
+		player.push(dashDirection.scale(1.3));
+	}
+
 	public static boolean performDoubleJump(Player player) {
 		Boolean hasDoubleJump = player.getData(TFDataAttachments.HAS_DOUBLE_JUMP);
 		if (Boolean.TRUE.equals(hasDoubleJump) && !player.isFallFlying() && !player.onGround()) {
@@ -175,26 +204,61 @@ public class TravellersArmorItem extends ArmorItem {
 			player.setData(TFDataAttachments.HAS_DOUBLE_JUMP, false);
 			player.setData(TFDataAttachments.DOUBLE_JUMP_VALIDATOR, 0);
 			return true;
-		} else if (player instanceof ServerPlayer serverPlayer) {
-			int count = serverPlayer.getData(TFDataAttachments.DOUBLE_JUMP_VALIDATOR);
-			int lastCheck = serverPlayer.getData(TFDataAttachments.DOUBLE_JUMP_VALIDATOR_LAST_CHECK);
-			int currentTick = serverPlayer.tickCount;
-			int difference = currentTick - lastCheck;
-			TwilightForestMod.LOGGER.debug("{} double jump validation. Count: {}, Last tick: {}, Current tick: {}, Tick difference: {}", player.getName().getString(), count, lastCheck, currentTick, difference);
-			if (difference >= 45 && !player.isFallFlying())
-				count = -1;
-			serverPlayer.setData(TFDataAttachments.DOUBLE_JUMP_VALIDATOR_LAST_CHECK, currentTick);
-			if (count >= 5) {
-				serverPlayer.connection.disconnect(new DisconnectionDetails(Component.translatable("multiplayer.disconnect.flying")));
-			}
-			serverPlayer.setData(TFDataAttachments.DOUBLE_JUMP_VALIDATOR, count + 1);
-			if (count > 1) {
-				TwilightForestMod.LOGGER.warn("{} double jumped when they shouldn't have!", player.getName().getString());
-				serverPlayer.absMoveTo(player.getX(), player.getY(), player.getZ(), player.getYRot(), player.getXRot());
-				serverPlayer.connection.send(new ClientboundPlayerPositionPacket(player.getX(), player.getY(), player.getZ(), player.getYRot(), player.getXRot(), Collections.emptySet(), 0));
-			}
 		}
 		return false;
+	}
+
+	private static void validateMovement(ServerPlayer serverPlayer,
+										 DeferredHolder<AttachmentType<?>, AttachmentType<Integer>> validator,
+										 DeferredHolder<AttachmentType<?>, AttachmentType<Integer>> lastCheck,
+										 String movementType) {
+		int count = serverPlayer.getData(validator);
+		int lastTick = serverPlayer.getData(lastCheck);
+		int currentTick = serverPlayer.tickCount;
+		int diff = currentTick - lastTick;
+		TwilightForestMod.LOGGER.debug("{} {} check: count={}, lastTick={}, currentTick={}, diff={}",
+			serverPlayer.getName().getString(), movementType, count, lastTick, currentTick, diff);
+
+		if (diff >= 45 && !serverPlayer.isFallFlying()) {
+			count = -1;
+		}
+
+		serverPlayer.setData(lastCheck, currentTick);
+
+		if (count >= 5) {
+			serverPlayer.connection.disconnect(new DisconnectionDetails(Component.translatable("multiplayer.disconnect.flying")));
+			return;
+		}
+
+		serverPlayer.setData(validator, count + 1);
+
+		if (count > 1) {
+			TwilightForestMod.LOGGER.warn("{} illegal {}", serverPlayer.getName().getString(), movementType);
+			serverPlayer.absMoveTo(serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(),
+				serverPlayer.getYRot(), serverPlayer.getXRot());
+			serverPlayer.connection.send(new ClientboundPlayerPositionPacket(
+				serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(),
+				serverPlayer.getYRot(), serverPlayer.getXRot(), Collections.emptySet(), 0));
+		}
+	}
+
+
+	public static void handleSidestepAbuse(Player player) {
+		if (player instanceof ServerPlayer serverPlayer) {
+			validateMovement(serverPlayer,
+				TFDataAttachments.SIDESTEP_VALIDATOR,
+				TFDataAttachments.SIDESTEP_VALIDATOR_LAST_CHECK,
+				"sidestep");
+		}
+	}
+
+	public static void handleDoubleJumpAbuse(Player player) {
+		if (player instanceof ServerPlayer serverPlayer) {
+			validateMovement(serverPlayer,
+				TFDataAttachments.DOUBLE_JUMP_VALIDATOR,
+				TFDataAttachments.DOUBLE_JUMP_VALIDATOR_LAST_CHECK,
+				"double jump");
+		}
 	}
 
 	public static Properties gogglesProperties(Properties properties) {
@@ -230,7 +294,8 @@ public class TravellersArmorItem extends ArmorItem {
 			.component(TFDataComponents.HAS_DOUBLE_JUMP, true)
 			.component(TFDataComponents.CONTROLLED_FALLING_MULTIPLIER, 1 - 1 / 6F)
 			.component(TFDataComponents.AUTO_REPAIR_PROBABILITY, 0.001F)
-			.component(TFDataComponents.AGILE_RANGER_MODIFIER, 5F);
+			.component(TFDataComponents.AGILE_RANGER_MODIFIER, 5F)
+			.component(TFDataComponents.SIDESTEP_COOLDOWN, 3 * 20L);
 	}
 
 	public static Properties beltProperties(Properties properties) {

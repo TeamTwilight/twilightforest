@@ -26,7 +26,8 @@ public record PerformDoubleJumpPacket() implements CustomPacketPayload {
 
 	public static void handle(PerformDoubleJumpPacket message, IPayloadContext ctx) {
 		ctx.enqueueWork(() -> {
-			TravellersArmorItem.performDoubleJump(ctx.player());
+			if (!TravellersArmorItem.performDoubleJump(ctx.player()))
+				TravellersArmorItem.handleDoubleJumpAbuse(ctx.player());
 		});
 	}
 }
