@@ -34,8 +34,16 @@ configurations {
 
 shadowJar {
 	archiveClassifier.set('universal')
+	dependsOn(tasks.named("jar"))
+	afterEvaluate {
+		from({ tasks.named("jar").get().outputs })
+	}
 	configurations = [project.configurations.shade]
 	relocate 'tamaized.beanification', "${project.mod_id}.beanification"
+}
+
+jar {
+	archiveClassifier = "slim"
 }
 
 def secrets = new Properties()
@@ -298,7 +306,6 @@ processResources {
 
 jar {
 	manifest {
-		archiveClassifier = 'universal'
 		attributes([
 			'Specification-Title'     : mod_id,
 			'Specification-Vendor'    : "TeamTwilight",
@@ -318,7 +325,7 @@ publishing {
 	publications {
 		create('mavenJava', MavenPublication) {
 			afterEvaluate {
-				artifact this.project.jar
+				artifact this.project.shadowJar
 				artifact this.project.sourceJar
 				artifact this.project.dataJar
 				artifact this.project.dataSourceJar

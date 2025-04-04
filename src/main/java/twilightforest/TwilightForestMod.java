@@ -100,7 +100,7 @@ public final class TwilightForestMod {
 	public static final Logger LOGGER = LogManager.getLogger(ID);
 
 	static {
-		BeanContext.init();
+		BeanContext.init(ID);
 	}
 
 	@Autowired
