@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/bow",
+  "textures": {
+    "layer0": "twilightforest:item/ender_bow_pulling_2"
+  }
+}

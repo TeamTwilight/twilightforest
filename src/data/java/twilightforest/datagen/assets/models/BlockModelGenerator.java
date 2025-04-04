@@ -14,7 +14,6 @@ import net.minecraft.world.level.block.Blocks;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
 import twilightforest.client.renderer.special.*;
-import twilightforest.enums.BossVariant;
 import twilightforest.util.TFBlockFamilies;
 import twilightforest.datagen.helpers.BlockModelBuilders;
 import twilightforest.init.TFBlocks;
@@ -46,8 +45,8 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.thorns(TFBlocks.GREEN_THORNS.get());
 		this.thorns(TFBlocks.BURNT_THORNS.get());
 
-		this.wrapBlockItem(TFBlocks.ANTIBUILDER.get(), block -> this.blockWithRenderType(block, "cutout", TFBlockModelTemplates.ANTIBUILDER, TFTextureMapping::threeLayerBlock));
-		this.blockWithRenderType(TFBlocks.ANTIBUILT_BLOCK.get(), "cutout", TFBlockModelTemplates.ANTIBUILT_BLOCK, TFTextureMapping::twoLayerBlock);
+		this.wrapBlockItem(TFBlocks.ANTIBUILDER.get(), block -> this.blockWithRenderType(block, "cutout", TFModelTemplates.ANTIBUILDER, TFTextureMapping::threeLayerBlock));
+		this.blockWithRenderType(TFBlocks.ANTIBUILT_BLOCK.get(), "cutout", TFModelTemplates.ANTIBUILT_BLOCK, TFTextureMapping::twoLayerBlock);
 		this.basicCtmBlock(TFBlocks.ARCTIC_FUR_BLOCK.get());
 		//TODO aurora blocks
 		this.wrapBlockItem(TFBlocks.BEANSTALK_LEAVES.get(), block -> this.blockWithRenderType(block, "cutout_mipped", ModelTemplates.CUBE_ALL, u -> TextureMapping.cube(Blocks.AZALEA_LEAVES)));
@@ -58,8 +57,8 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.wrapBlockItem(TFBlocks.BOLD_CASTLE_BRICK_TILE.get(), this::createTrivialCube);
 
 		var builtMapping = TextureMapping.cube(TFBlocks.BUILT_BLOCK.get());
-		ResourceLocation builtOff = TFBlockModelTemplates.FULLBRIGHT_BLOCK.create(TFBlocks.BUILT_BLOCK.get(), builtMapping, this.modelOutput);
-		ResourceLocation builtOn = TFBlockModelTemplates.FULLBRIGHT_BLOCK.createWithSuffix(TFBlocks.BUILT_BLOCK.get(), "_active", builtMapping, this.modelOutput);
+		ResourceLocation builtOff = TFModelTemplates.FULLBRIGHT_BLOCK.create(TFBlocks.BUILT_BLOCK.get(), builtMapping, this.modelOutput);
+		ResourceLocation builtOn = TFModelTemplates.FULLBRIGHT_BLOCK.createWithSuffix(TFBlocks.BUILT_BLOCK.get(), "_active", builtMapping, this.modelOutput);
 		this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(TFBlocks.BUILT_BLOCK.get())
 			.with(PropertyDispatch.property(TranslucentBuiltBlock.ACTIVE).generate(active -> Variant.variant().with(VariantProperties.MODEL, active ? builtOn : builtOff))));
 

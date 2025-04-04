@@ -6,26 +6,21 @@ import net.minecraft.client.model.*;
 import net.minecraft.client.model.geom.LayerDefinitions;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
-import net.minecraft.client.renderer.entity.ZombieRenderer;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.client.renderer.entity.state.PlayerRenderState;
 import net.minecraft.client.renderer.special.ChestSpecialRenderer;
-import net.minecraft.client.renderer.special.SpecialModelRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -33,7 +28,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.SkullBlock;
@@ -50,7 +44,6 @@ import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsE
 import net.neoforged.neoforge.client.gui.map.RegisterMapDecorationRenderersEvent;
 import net.neoforged.neoforge.client.renderstate.RegisterRenderStateModifiersEvent;
 import net.neoforged.neoforge.client.resources.VanillaClientListeners;
-import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.*;
 import twilightforest.client.model.TFModelLayers;
@@ -66,10 +59,12 @@ import twilightforest.client.model.block.leaves.BakedLeavesModel;
 import twilightforest.client.model.block.patch.PatchModelLoader;
 import twilightforest.client.model.entity.*;
 import twilightforest.client.particle.*;
+import twilightforest.client.properties.MoonwormQueenPulse;
+import twilightforest.client.properties.NaturalDimension;
+import twilightforest.client.properties.OreMeterFlash;
 import twilightforest.client.renderer.PotionFlaskTooltipComponent;
 import twilightforest.client.renderer.TFSimpleArmorRenderer;
 import twilightforest.client.renderer.entity.RisingZombieRenderer;
-import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.block.*;
 import twilightforest.client.renderer.entity.*;
 import twilightforest.client.renderer.entity.layers.IceLayer;
@@ -87,7 +82,6 @@ import twilightforest.util.woods.TFWoodTypes;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Function;
 
 public class RegistrationEvents {
 
@@ -111,6 +105,7 @@ public class RegistrationEvents {
 		bus.addListener(RegistrationEvents::registerCustomRenderData);
 		bus.addListener(RegistrationEvents::registerSpecialModelTypes);
 		bus.addListener(RegistrationEvents::registerSpecialModels);
+		bus.addListener(RegistrationEvents::registerConditionalProperties);
 
 		bus.addListener(ColorHandler::registerBlockColors);
 
@@ -183,43 +178,6 @@ public class RegistrationEvents {
 //			}
 //			return 0;
 //		});
-//
-//		ItemProperties.register(TFItems.ENDER_BOW.get(), ResourceLocation.parse("pull"), (stack, level, entity, idk) -> {
-//			if (entity == null) return 0.0F;
-//			else
-//				return entity.getUseItem() != stack ? 0.0F : (stack.getUseDuration(entity) - entity.getUseItemRemainingTicks()) / 20.0F;
-//		});
-//
-//		ItemProperties.register(TFItems.ENDER_BOW.get(), ResourceLocation.parse("pulling"), (stack, level, entity, idk) ->
-//			entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
-//
-//		ItemProperties.register(TFItems.ICE_BOW.get(), ResourceLocation.parse("pull"), (stack, level, entity, idk) -> {
-//			if (entity == null) return 0.0F;
-//			else
-//				return entity.getUseItem() != stack ? 0.0F : (stack.getUseDuration(entity) - entity.getUseItemRemainingTicks()) / 20.0F;
-//		});
-//
-//		ItemProperties.register(TFItems.ICE_BOW.get(), ResourceLocation.parse("pulling"), (stack, level, entity, idk) ->
-//			entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
-//
-//		ItemProperties.register(TFItems.SEEKER_BOW.get(), ResourceLocation.parse("pull"), (stack, level, entity, idk) -> {
-//			if (entity == null) return 0.0F;
-//			else
-//				return entity.getUseItem() != stack ? 0.0F : (stack.getUseDuration(entity) - entity.getUseItemRemainingTicks()) / 20.0F;
-//		});
-//
-//		ItemProperties.register(TFItems.SEEKER_BOW.get(), ResourceLocation.parse("pulling"), (stack, level, entity, idk) ->
-//			entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
-//
-//		ItemProperties.register(TFItems.TRIPLE_BOW.get(), ResourceLocation.parse("pull"), (stack, level, entity, idk) -> {
-//			if (entity == null) return 0.0F;
-//			else
-//				return entity.getUseItem() != stack ? 0.0F : (stack.getUseDuration(entity) - entity.getUseItemRemainingTicks()) / 20.0F;
-//		});
-//
-//		ItemProperties.register(TFItems.TRIPLE_BOW.get(), ResourceLocation.parse("pulling"), (stack, level, entity, idk) ->
-//			entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
-//
 //		ItemProperties.register(TFItems.ORE_MAGNET.get(), ResourceLocation.parse("pull"), (stack, level, entity, idk) -> {
 //			if (entity == null) return 0.0F;
 //			else {
@@ -434,6 +392,12 @@ public class RegistrationEvents {
 		event.registerBlockEntityRenderer(TFBlockEntities.OMINOUS_CANDLE.get(), OminousCandleRenderer::new);
 		event.registerBlockEntityRenderer(TFBlockEntities.SINISTER_SPAWNER.get(), SinisterSpawnerRenderer::new);
 		event.registerBlockEntityRenderer(TFBlockEntities.BRAZIER.get(), BrazierRenderer::new);
+	}
+
+	private static void registerConditionalProperties(RegisterConditionalItemModelPropertyEvent event) {
+		event.register(TwilightForestMod.prefix("natural_dimension"), NaturalDimension.TYPE);
+		event.register(TwilightForestMod.prefix("moonworm_queen_pulse"), MoonwormQueenPulse.TYPE);
+		event.register(TwilightForestMod.prefix("ore_meter_flash"), OreMeterFlash.TYPE);
 	}
 
 	private static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {

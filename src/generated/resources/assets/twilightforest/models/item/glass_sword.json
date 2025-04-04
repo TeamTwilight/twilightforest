@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "twilightforest:item/glass_sword_solid",
+    "layer1": "twilightforest:item/glass_sword_clear"
+  }
+}

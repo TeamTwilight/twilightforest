@@ -15,7 +15,7 @@ import twilightforest.block.CastleDoorBlock;
 import twilightforest.client.model.block.connected.ConnectedTextureBuilder;
 import twilightforest.client.model.block.forcefield.ForceFieldModel;
 import twilightforest.client.model.block.forcefield.ForceFieldModelBuilder;
-import twilightforest.datagen.assets.models.TFBlockModelTemplates;
+import twilightforest.datagen.assets.models.TFModelTemplates;
 import twilightforest.datagen.assets.models.TFTextureMapping;
 import twilightforest.datagen.assets.models.TFTextureSlot;
 import twilightforest.init.TFBlocks;
@@ -49,12 +49,12 @@ public abstract class BlockModelBuilders extends BlockModelGenerators {
 	}
 
 	public void basicCtmBlock(Block block) {
-		this.blockStateOutput.accept(createSimpleBlock(block, TFBlockModelTemplates.CTM_NO_BASE.extend().customLoader(ConnectedTextureBuilder::new, builder -> builder.connectsTo(block)).build().create(block, TFTextureMapping.ctmBlock(block), this.modelOutput)));
+		this.blockStateOutput.accept(createSimpleBlock(block, TFModelTemplates.CTM_NO_BASE.extend().customLoader(ConnectedTextureBuilder::new, builder -> builder.connectsTo(block)).build().create(block, TFTextureMapping.ctmBlock(block), this.modelOutput)));
 		this.createBlockItem(block);
 	}
 
 	public void castleDoor(Block block) {
-		Function<Boolean, ResourceLocation> door = bool -> TFBlockModelTemplates.CTM.extend().customLoader(ConnectedTextureBuilder::new, builder -> builder.connectsTo(TFBlocks.BLUE_CASTLE_DOOR.get(), TFBlocks.PINK_CASTLE_DOOR.get(), TFBlocks.VIOLET_CASTLE_DOOR.get(), TFBlocks.YELLOW_CASTLE_DOOR.get()).setOverlayEmissivity(15).setOverlayTintIndex(0)).renderType("cutout").build().createWithSuffix(block, bool ? "_vanished" : "", TFTextureMapping.ctmBlock(TwilightForestMod.prefix("block/castle_door" + (bool ? "_vanished" : "")), TwilightForestMod.prefix("block/castle_door_runes")), this.modelOutput);
+		Function<Boolean, ResourceLocation> door = bool -> TFModelTemplates.CTM.extend().customLoader(ConnectedTextureBuilder::new, builder -> builder.connectsTo(TFBlocks.BLUE_CASTLE_DOOR.get(), TFBlocks.PINK_CASTLE_DOOR.get(), TFBlocks.VIOLET_CASTLE_DOOR.get(), TFBlocks.YELLOW_CASTLE_DOOR.get()).setOverlayEmissivity(15).setOverlayTintIndex(0)).renderType("cutout").build().createWithSuffix(block, bool ? "_vanished" : "", TFTextureMapping.ctmBlock(TwilightForestMod.prefix("block/castle_door" + (bool ? "_vanished" : "")), TwilightForestMod.prefix("block/castle_door_runes")), this.modelOutput);
 		this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block).with(PropertyDispatch.property(CastleDoorBlock.VANISHED).select(true, Variant.variant().with(VariantProperties.MODEL, door.apply(true))).select(false, Variant.variant().with(VariantProperties.MODEL, door.apply(false)))));
 		this.createBlockItem(block);
 	}
@@ -70,9 +70,9 @@ public abstract class BlockModelBuilders extends BlockModelGenerators {
 
 	public void coolerStairsBlock(Block block, ResourceLocation middle) {
 		var mapping = TextureMapping.cube(block).put(TFTextureSlot.MIDDLE, middle);
-		ResourceLocation inner = TFBlockModelTemplates.STAIRS_INNER.createWithSuffix(block, "_inner", mapping, this.modelOutput);
-		ResourceLocation straight = TFBlockModelTemplates.STAIRS_STRAIGHT.create(block, mapping, this.modelOutput);
-		ResourceLocation outer = TFBlockModelTemplates.STAIRS_OUTER.createWithSuffix(block, "_outer", mapping, this.modelOutput);
+		ResourceLocation inner = TFModelTemplates.STAIRS_INNER.createWithSuffix(block, "_inner", mapping, this.modelOutput);
+		ResourceLocation straight = TFModelTemplates.STAIRS_STRAIGHT.create(block, mapping, this.modelOutput);
+		ResourceLocation outer = TFModelTemplates.STAIRS_OUTER.createWithSuffix(block, "_outer", mapping, this.modelOutput);
 		this.blockStateOutput.accept(createStairs(block, inner, straight, outer));
 		this.registerSimpleItemModel(block, straight);
 	}
@@ -87,12 +87,12 @@ public abstract class BlockModelBuilders extends BlockModelGenerators {
 
 	public void thorns(Block block) {
 		TextureMapping mapping = TextureMapping.column(block);
-		ResourceLocation main = TFBlockModelTemplates.THORNS_MAIN.createWithSuffix(block, "_main", mapping, this.modelOutput);
-		ResourceLocation thorns = TFBlockModelTemplates.THORNS.createWithSuffix(block, "_thorns", mapping, this.modelOutput);
-		ResourceLocation top = TFBlockModelTemplates.THORNS_SECTION_TOP.createWithSuffix(block, "_top", mapping, this.modelOutput);
-		ResourceLocation bottom = TFBlockModelTemplates.THORNS_SECTION_BOTTOM.createWithSuffix(block, "_bottom", mapping, this.modelOutput);
-		ResourceLocation noSection = TFBlockModelTemplates.THORNS_NO_SECTION.createWithSuffix(block, "_no_section", mapping, this.modelOutput);
-		ResourceLocation noSectionAlt = TFBlockModelTemplates.THORNS_NO_SECTION_ALT.createWithSuffix(block, "_no_section_alt", mapping, this.modelOutput);
+		ResourceLocation main = TFModelTemplates.THORNS_MAIN.createWithSuffix(block, "_main", mapping, this.modelOutput);
+		ResourceLocation thorns = TFModelTemplates.THORNS.createWithSuffix(block, "_thorns", mapping, this.modelOutput);
+		ResourceLocation top = TFModelTemplates.THORNS_SECTION_TOP.createWithSuffix(block, "_top", mapping, this.modelOutput);
+		ResourceLocation bottom = TFModelTemplates.THORNS_SECTION_BOTTOM.createWithSuffix(block, "_bottom", mapping, this.modelOutput);
+		ResourceLocation noSection = TFModelTemplates.THORNS_NO_SECTION.createWithSuffix(block, "_no_section", mapping, this.modelOutput);
+		ResourceLocation noSectionAlt = TFModelTemplates.THORNS_NO_SECTION_ALT.createWithSuffix(block, "_no_section_alt", mapping, this.modelOutput);
 
 		this.itemModelOutput.accept(block.asItem(), ItemModelUtils.plainModel(main));
 
@@ -199,7 +199,7 @@ public abstract class BlockModelBuilders extends BlockModelGenerators {
 	}
 
 	public void forcefield(Block block) {
-		this.blockStateOutput.accept(createSimpleBlock(block, TFBlockModelTemplates.FORCEFIELD.extend().customLoader(ForceFieldModelBuilder::new, builder -> {
+		this.blockStateOutput.accept(createSimpleBlock(block, TFModelTemplates.FORCEFIELD.extend().customLoader(ForceFieldModelBuilder::new, builder -> {
 			//WEST
 			builder.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.WEST, true).from(0, 7, 7).to(7, 9, 9).shade(false).face(Direction.WEST).cullface(Direction.WEST).uvs(7, 7, 9, 9).texture("#pane").emissivity(15, 15).end()
 				.ifElse().from(7, 7, 7).to(9, 9, 9).shade(false).face(Direction.WEST).uvs(7, 7, 9, 9).texture("#pane").emissivity(15, 15).end().end()

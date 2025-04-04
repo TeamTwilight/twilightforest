@@ -1,40 +1,153 @@
 package twilightforest.datagen.assets.models;
 
+import net.minecraft.client.color.item.Dye;
+import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ItemModelOutput;
 import net.minecraft.client.data.models.model.*;
 import net.minecraft.client.renderer.item.ItemModel;
+import net.minecraft.client.renderer.item.RangeSelectItemModel;
+import net.minecraft.client.renderer.item.SelectItemModel;
+import net.minecraft.client.renderer.item.properties.numeric.Time;
+import net.minecraft.client.renderer.item.properties.numeric.UseDuration;
 import net.minecraft.client.renderer.item.properties.select.DisplayContext;
-import net.minecraft.client.renderer.special.ChestSpecialRenderer;
-import net.minecraft.client.renderer.special.ShieldSpecialRenderer;
-import net.minecraft.client.renderer.special.SpecialModelRenderer;
+import net.minecraft.client.renderer.item.properties.select.TrimMaterialProperty;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
-import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.SkullBlock;
-import net.neoforged.neoforge.capabilities.IBlockCapabilityProvider;
-import org.w3c.dom.Text;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.equipment.EquipmentAsset;
+import net.minecraft.world.item.equipment.EquipmentAssets;
+import net.minecraft.world.item.equipment.trim.TrimMaterial;
+import net.minecraft.world.item.equipment.trim.TrimMaterials;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.properties.MoonwormQueenPulse;
+import twilightforest.client.properties.NaturalDimension;
 import twilightforest.client.renderer.special.*;
 import twilightforest.datagen.helpers.ItemModelBuilders;
-import twilightforest.enums.BossVariant;
-import twilightforest.init.TFBlocks;
+import twilightforest.init.TFEquipmentModels;
 import twilightforest.init.TFItems;
+import twilightforest.init.TFTrimMaterials;
+import twilightforest.item.ArcticArmorItem;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiConsumer;
-import java.util.function.Function;
 
 public class ItemModelGenerator extends ItemModelBuilders {
+
+	private static final List<ItemModelGenerators.TrimMaterialData> EX_TRIM_MATERIAL_MODELS = List.of(
+		new ItemModelGenerators.TrimMaterialData("quartz", TrimMaterials.QUARTZ, Map.of()),
+		new ItemModelGenerators.TrimMaterialData("iron", TrimMaterials.IRON, Map.of(EquipmentAssets.IRON, "iron_darker")),
+		new ItemModelGenerators.TrimMaterialData("netherite", TrimMaterials.NETHERITE, Map.of(EquipmentAssets.NETHERITE, "netherite_darker")),
+		new ItemModelGenerators.TrimMaterialData("redstone", TrimMaterials.REDSTONE, Map.of()),
+		new ItemModelGenerators.TrimMaterialData("copper", TrimMaterials.COPPER, Map.of()),
+		new ItemModelGenerators.TrimMaterialData("gold", TrimMaterials.GOLD, Map.of(EquipmentAssets.GOLD, "gold_darker")),
+		new ItemModelGenerators.TrimMaterialData("emerald", TrimMaterials.EMERALD, Map.of()),
+		new ItemModelGenerators.TrimMaterialData("diamond", TrimMaterials.DIAMOND, Map.of(EquipmentAssets.DIAMOND, "diamond_darker")),
+		new ItemModelGenerators.TrimMaterialData("lapis", TrimMaterials.LAPIS, Map.of()),
+		new ItemModelGenerators.TrimMaterialData("amethyst", TrimMaterials.AMETHYST, Map.of()),
+		new ItemModelGenerators.TrimMaterialData("resin", TrimMaterials.RESIN, Map.of()),
+		new ItemModelGenerators.TrimMaterialData("ironwood", TFTrimMaterials.IRONWOOD, Map.of()),
+		new ItemModelGenerators.TrimMaterialData("steeleaf", TFTrimMaterials.STEELEAF, Map.of()),
+		new ItemModelGenerators.TrimMaterialData("fiery", TFTrimMaterials.FIERY, Map.of()),
+		new ItemModelGenerators.TrimMaterialData("knightmetal", TFTrimMaterials.KNIGHTMETAL, Map.of()),
+		new ItemModelGenerators.TrimMaterialData("carminite", TFTrimMaterials.CARMINITE, Map.of()),
+		new ItemModelGenerators.TrimMaterialData("naga_scale", TFTrimMaterials.NAGA_SCALE, Map.of()));
+
 	public ItemModelGenerator(ItemModelOutput output, BiConsumer<ResourceLocation, ModelInstance> modelOutput) {
 		super(output, modelOutput);
 	}
 
 	@Override
 	public void run() {
+		this.generateExpandedTrimmableItem(TFItems.IRONWOOD_HELMET.get(), TFEquipmentModels.IRONWOOD, "helmet");
+		this.generateExpandedTrimmableItem(TFItems.IRONWOOD_CHESTPLATE.get(), TFEquipmentModels.IRONWOOD, "chestplate");
+		this.generateExpandedTrimmableItem(TFItems.IRONWOOD_LEGGINGS.get(), TFEquipmentModels.IRONWOOD, "leggings");
+		this.generateExpandedTrimmableItem(TFItems.IRONWOOD_BOOTS.get(), TFEquipmentModels.IRONWOOD, "boots");
+		this.generateFlatItem(TFItems.IRONWOOD_SWORD.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+		this.generateFlatItem(TFItems.IRONWOOD_PICKAXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+		this.generateFlatItem(TFItems.IRONWOOD_AXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+		this.generateFlatItem(TFItems.IRONWOOD_SHOVEL.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+		this.generateFlatItem(TFItems.IRONWOOD_HOE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+
+		this.generateExpandedTrimmableItem(TFItems.STEELEAF_HELMET.get(), TFEquipmentModels.STEELEAF, "helmet");
+		this.generateExpandedTrimmableItem(TFItems.STEELEAF_CHESTPLATE.get(), TFEquipmentModels.STEELEAF, "chestplate");
+		this.generateExpandedTrimmableItem(TFItems.STEELEAF_LEGGINGS.get(), TFEquipmentModels.STEELEAF, "leggings");
+		this.generateExpandedTrimmableItem(TFItems.STEELEAF_BOOTS.get(), TFEquipmentModels.STEELEAF, "boots");
+		this.generateFlatItem(TFItems.STEELEAF_SWORD.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+		this.generateFlatItem(TFItems.STEELEAF_PICKAXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+		this.generateFlatItem(TFItems.STEELEAF_AXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+		this.generateFlatItem(TFItems.STEELEAF_SHOVEL.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+		this.generateFlatItem(TFItems.STEELEAF_HOE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+
+		this.generateExpandedTrimmableItem(TFItems.KNIGHTMETAL_HELMET.get(), TFEquipmentModels.KNIGHTMETAL, "helmet");
+		this.generateExpandedTrimmableItem(TFItems.KNIGHTMETAL_CHESTPLATE.get(), TFEquipmentModels.KNIGHTMETAL, "chestplate");
+		this.generateExpandedTrimmableItem(TFItems.KNIGHTMETAL_LEGGINGS.get(), TFEquipmentModels.KNIGHTMETAL, "leggings");
+		this.generateExpandedTrimmableItem(TFItems.KNIGHTMETAL_BOOTS.get(), TFEquipmentModels.KNIGHTMETAL, "boots");
+		this.generateFlatItem(TFItems.KNIGHTMETAL_SWORD.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+		this.generateFlatItem(TFItems.KNIGHTMETAL_PICKAXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+		this.generateFlatItem(TFItems.KNIGHTMETAL_AXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+		this.generateFlatItem(TFItems.BLOCK_AND_CHAIN.get(), ModelTemplates.FLAT_ITEM);
 		this.generateKnightmetalShield(TFItems.KNIGHTMETAL_SHIELD.get());
+
+		this.generateExpandedTrimmableItem(TFItems.FIERY_HELMET.get(), TFEquipmentModels.FIERY, "helmet");
+		this.generateExpandedTrimmableItem(TFItems.FIERY_CHESTPLATE.get(), TFEquipmentModels.FIERY, "chestplate");
+		this.generateExpandedTrimmableItem(TFItems.FIERY_LEGGINGS.get(), TFEquipmentModels.FIERY, "leggings");
+		this.generateExpandedTrimmableItem(TFItems.FIERY_BOOTS.get(), TFEquipmentModels.FIERY, "boots");
+		this.generateFlatItem(TFItems.FIERY_SWORD.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+		this.generateFlatItem(TFItems.FIERY_PICKAXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+
+		this.generateExpandedTrimmableItem(TFItems.ARCTIC_HELMET.get(), TFEquipmentModels.ARCTIC, "helmet", ArcticArmorItem.DEFAULT_COLOR);
+		this.generateExpandedTrimmableItem(TFItems.ARCTIC_CHESTPLATE.get(), TFEquipmentModels.ARCTIC, "chestplate", ArcticArmorItem.DEFAULT_COLOR);
+		this.generateExpandedTrimmableItem(TFItems.ARCTIC_LEGGINGS.get(), TFEquipmentModels.ARCTIC, "leggings", ArcticArmorItem.DEFAULT_COLOR);
+		this.generateExpandedTrimmableItem(TFItems.ARCTIC_BOOTS.get(), TFEquipmentModels.ARCTIC, "boots", ArcticArmorItem.DEFAULT_COLOR);
+
+		this.generateExpandedTrimmableItem(TFItems.YETI_HELMET.get(), TFEquipmentModels.YETI, "helmet");
+		this.generateExpandedTrimmableItem(TFItems.YETI_CHESTPLATE.get(), TFEquipmentModels.YETI, "chestplate");
+		this.generateExpandedTrimmableItem(TFItems.YETI_LEGGINGS.get(), TFEquipmentModels.YETI, "leggings");
+		this.generateExpandedTrimmableItem(TFItems.YETI_BOOTS.get(), TFEquipmentModels.YETI, "boots");
+
+		this.generateExpandedTrimmableItem(TFItems.PHANTOM_HELMET.get(), TFEquipmentModels.PHANTOM, "helmet");
+		this.generateExpandedTrimmableItem(TFItems.PHANTOM_CHESTPLATE.get(), TFEquipmentModels.PHANTOM, "chestplate");
+
+		this.generateExpandedTrimmableItem(TFItems.NAGA_CHESTPLATE.get(), TFEquipmentModels.NAGA, "chestplate");
+		this.generateExpandedTrimmableItem(TFItems.NAGA_LEGGINGS.get(), TFEquipmentModels.NAGA, "leggings");
+
+		//TODO mystic crown
+
+		this.generateFlatItem(TFItems.MAZEBREAKER_PICKAXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+		this.generateFlatItem(TFItems.DIAMOND_MINOTAUR_AXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+		this.generateFlatItem(TFItems.GOLDEN_MINOTAUR_AXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+		this.generateTwoLayerItem(TFItems.ICE_SWORD.get(), TFModelTemplates.TWO_LAYERED_HANDHELD);
+		this.generateTwoLayerItem(TFItems.GLASS_SWORD.get(), TFModelTemplates.TWO_LAYERED_HANDHELD);
+
+		this.generateBow(TFItems.TRIPLE_BOW.get(), false);
+		this.generateBow(TFItems.SEEKER_BOW.get(), false);
+		this.generateBow(TFItems.ICE_BOW.get(), true);
+		this.generateBow(TFItems.ENDER_BOW.get(), false);
+
+		this.generateGiantTool(TFItems.GIANT_SWORD.get(), Items.STONE_SWORD);
+		this.generateGiantTool(TFItems.GIANT_PICKAXE.get(), Items.STONE_PICKAXE);
+
+		this.generateFlatItem(TFItems.ICE_BOMB.get(), ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.TWILIGHT_SCEPTER.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+		this.generateFlatItem(TFItems.LIFEDRAIN_SCEPTER.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+		this.generateFlatItem(TFItems.ZOMBIE_SCEPTER.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+		this.generateFlatItem(TFItems.FORTIFICATION_SCEPTER.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+		//TODO lamp
+		this.generateFlatItem(TFItems.EMPERORS_CLOTH.get(), ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.ORE_MAGNET.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+		this.generateFlatItem(TFItems.ORE_METER.get(), ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.POCKET_WATCH.get(), ModelTemplates.FLAT_ITEM);
+		this.generateMoonDial(TFItems.MOON_DIAL.get());
+		this.generateFlatItem(TFItems.CRUMBLE_HORN.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+		this.generateFlatItem(TFItems.PEACOCK_FEATHER_FAN.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+		this.itemModelOutput.accept(TFItems.MOONWORM_QUEEN.get(), ItemModelUtils.conditional(new MoonwormQueenPulse(),
+			ItemModelUtils.plainModel(this.createFlatItemModel(TFItems.MOONWORM_QUEEN.get(), "_alt", ModelTemplates.FLAT_HANDHELD_ITEM)),
+			ItemModelUtils.plainModel(this.createFlatItemModel(TFItems.MOONWORM_QUEEN.get(), ModelTemplates.FLAT_HANDHELD_ITEM))));
 
 		this.generateSpawnEgg("alpha_yeti", 0xCDCDCD, 0x29486E);
 		this.generateSpawnEgg("armored_giant", 0x239391, 0x9A9A9A);
@@ -93,9 +206,95 @@ public class ItemModelGenerator extends ItemModelBuilders {
 		this.generateSpawnEgg(BuiltInRegistries.ITEM.getValue(TwilightForestMod.prefix(entityName + "_spawn_egg")), primary, secondary);
 	}
 
+	public void generateGiantTool(Item tool, Item baseTool) {
+		ItemModel.Unbaked base = ItemModelUtils.plainModel(TFModelTemplates.GIANT_TOOL.create(tool, TextureMapping.layer0(baseTool), this.modelOutput));
+		ItemModel.Unbaked gui = ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(tool).withSuffix("_gui"));
+		this.itemModelOutput.accept(tool, ItemModelUtils.select(new DisplayContext(), base, ItemModelUtils.when(ItemDisplayContext.GUI, gui)));
+	}
+
 	public void generateKnightmetalShield(Item shieldItem) {
 		var normal = ItemModelUtils.specialModel(ModelLocationUtils.getModelLocation(shieldItem), new KnightmetalShieldSpecialRenderer.Unbaked());
 		var blocking = ItemModelUtils.specialModel(ModelLocationUtils.getModelLocation(shieldItem, "_blocking"), new KnightmetalShieldSpecialRenderer.Unbaked());
 		this.generateBooleanDispatch(shieldItem, ItemModelUtils.isUsingItem(), blocking, normal);
+	}
+
+	public void generateExpandedTrimmableItem(Item item, ResourceKey<EquipmentAsset> key, String name) {
+		this.generateExpandedTrimmableItem(item, key, name, -1);
+	}
+
+	public void generateExpandedTrimmableItem(Item item, ResourceKey<EquipmentAsset> key, String name, int dyeColor) {
+		ResourceLocation model = ModelLocationUtils.getModelLocation(item);
+		ResourceLocation texture = TextureMapping.getItemTexture(item);
+		ResourceLocation overlayTexture = TextureMapping.getItemTexture(item, "_overlay");
+		List<SelectItemModel.SwitchCase<ResourceKey<TrimMaterial>>> trims = new ArrayList<>(TRIM_MATERIAL_MODELS.size());
+
+		for (ItemModelGenerators.TrimMaterialData data : EX_TRIM_MATERIAL_MODELS) {
+			ResourceLocation trimModel = model.withSuffix("_" + data.name() + "_trim");
+			ResourceLocation trimTexture = ResourceLocation.withDefaultNamespace(
+				"trims/items/" + name + "_trim_" + data.textureName(key)
+			);
+			ItemModel.Unbaked trimMaterialModel;
+			if (dyeColor != -1) {
+				this.generateLayeredItem(trimModel, texture, overlayTexture, trimTexture);
+				trimMaterialModel = ItemModelUtils.tintedModel(trimModel, new Dye(dyeColor));
+			} else {
+				trimMaterialModel = ItemModelUtils.plainModel(this.generateLayeredItem(trimModel, texture, trimTexture));
+			}
+
+			trims.add(ItemModelUtils.when(data.materialKey(), trimMaterialModel));
+		}
+
+		ItemModel.Unbaked armorModel;
+		if (dyeColor != -1) {
+			armorModel = ItemModelUtils.tintedModel(ModelTemplates.TWO_LAYERED_ITEM.create(model, TextureMapping.layered(texture, overlayTexture), this.modelOutput), new Dye(dyeColor));
+		} else {
+			armorModel = ItemModelUtils.plainModel(ModelTemplates.FLAT_ITEM.create(model, TextureMapping.layer0(texture), this.modelOutput));
+		}
+
+		this.itemModelOutput.accept(item, ItemModelUtils.select(new TrimMaterialProperty(), armorModel, trims));
+	}
+
+	public void generateBow(Item bowItem, boolean twoLayered) {
+		ItemModel.Unbaked base = ItemModelUtils.plainModel(twoLayered ? this.twoLayerItem(bowItem, TFModelTemplates.TWO_LAYERED_BOW) : this.createFlatItemModel(bowItem, ModelTemplates.BOW));
+		ItemModel.Unbaked pull0 = ItemModelUtils.plainModel(twoLayered ? this.twoLayerItem(bowItem, "_pulling_0", TFModelTemplates.TWO_LAYERED_BOW) : this.createFlatItemModel(bowItem, "_pulling_0", ModelTemplates.BOW));
+		ItemModel.Unbaked pull1 = ItemModelUtils.plainModel(twoLayered ? this.twoLayerItem(bowItem, "_pulling_1", TFModelTemplates.TWO_LAYERED_BOW) : this.createFlatItemModel(bowItem, "_pulling_1", ModelTemplates.BOW));
+		ItemModel.Unbaked pull2 = ItemModelUtils.plainModel(twoLayered ? this.twoLayerItem(bowItem, "_pulling_2", TFModelTemplates.TWO_LAYERED_BOW) : this.createFlatItemModel(bowItem, "_pulling_2", ModelTemplates.BOW));
+		this.itemModelOutput.accept(bowItem, ItemModelUtils.conditional(ItemModelUtils.isUsingItem(),
+			ItemModelUtils.rangeSelect(
+				new UseDuration(false),
+				0.05F,
+				pull0,
+				ItemModelUtils.override(pull1, 0.65F),
+				ItemModelUtils.override(pull2, 0.9F)
+			), base));
+	}
+
+	public void generateMoonDial(Item dial) {
+		List<RangeSelectItemModel.Entry> list = new ArrayList<>();
+		ItemModel.Unbaked itemmodel$unbaked = ItemModelUtils.plainModel(this.createFlatItemModel(dial, TFModelTemplates.MOON_DIAL));
+		list.add(ItemModelUtils.override(itemmodel$unbaked, 0.0F));
+
+		for (int i = 1; i < 8; i++) {
+			ItemModel.Unbaked phase = ItemModelUtils.plainModel(this.createFlatItemModel(dial, "_" + i, TFModelTemplates.MOON_DIAL));
+			list.add(ItemModelUtils.override(phase, (float) i - 0.5F));
+		}
+
+		list.add(ItemModelUtils.override(itemmodel$unbaked, 7.5F));
+		this.itemModelOutput.accept(dial, ItemModelUtils.conditional(new NaturalDimension(),
+			ItemModelUtils.rangeSelect(new Time(true, Time.TimeSource.MOON_PHASE), 8.0F, list),
+			ItemModelUtils.rangeSelect(new Time(true, Time.TimeSource.RANDOM), 8.0F, list)));
+	}
+
+	public void generateTwoLayerItem(Item item, ModelTemplate template) {
+		this.itemModelOutput.accept(item, ItemModelUtils.plainModel(this.twoLayerItem(item, template)));
+	}
+
+	public ResourceLocation twoLayerItem(Item item, ModelTemplate template) {
+		return this.twoLayerItem(item, "", template);
+	}
+
+	public ResourceLocation twoLayerItem(Item item, String suffix, ModelTemplate template) {
+		ResourceLocation baseTex = TextureMapping.getItemTexture(item);
+		return template.create(ModelLocationUtils.getModelLocation(item, suffix), TextureMapping.layered(baseTex.withSuffix("_solid"), baseTex.withSuffix("_clear")), this.modelOutput);
 	}
 }

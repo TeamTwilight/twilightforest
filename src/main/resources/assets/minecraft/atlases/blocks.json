@@ -1,0 +1,22 @@
+{
+  "sources": [
+    {
+      "type": "paletted_permutations",
+      "textures": [
+        "trims/items/leggings_trim",
+        "trims/items/chestplate_trim",
+        "trims/items/helmet_trim",
+        "trims/items/boots_trim"
+      ],
+      "palette_key": "trims/color_palettes/trim_palette",
+      "permutations": {
+        "ironwood": "twilightforest:trims/color_palettes/ironwood",
+        "steeleaf": "twilightforest:trims/color_palettes/steeleaf",
+        "fiery": "twilightforest:trims/color_palettes/fiery",
+        "knightmetal": "twilightforest:trims/color_palettes/knightmetal",
+        "naga_scale": "twilightforest:trims/color_palettes/naga_scale",
+        "carminite": "twilightforest:trims/color_palettes/carminite"
+      }
+    }
+  ]
+}

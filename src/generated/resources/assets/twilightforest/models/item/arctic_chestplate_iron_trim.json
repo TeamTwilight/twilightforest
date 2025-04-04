@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "twilightforest:item/arctic_chestplate",
+    "layer1": "twilightforest:item/arctic_chestplate_overlay",
+    "layer2": "minecraft:trims/items/chestplate_trim_iron"
+  }
+}

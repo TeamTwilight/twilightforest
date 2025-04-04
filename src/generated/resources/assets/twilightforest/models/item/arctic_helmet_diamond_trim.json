@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "twilightforest:item/arctic_helmet",
+    "layer1": "twilightforest:item/arctic_helmet_overlay",
+    "layer2": "minecraft:trims/items/helmet_trim_diamond"
+  }
+}

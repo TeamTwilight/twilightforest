@@ -1,5 +1,5 @@
 {
-  "parent": "twilightforest:template_trophy",
+  "parent": "twilightforest:item/template_trophy",
   "textures": {
     "particle": "block/soul_sand"
   },

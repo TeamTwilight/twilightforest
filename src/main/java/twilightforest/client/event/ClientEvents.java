@@ -317,12 +317,12 @@ public class ClientEvents {
 	}
 
 	private static void unrenderHeadWithTrophies(RenderLivingEvent.Pre<?, ?, ?> event) {
-		boolean visible = event.getRenderState().getRenderDataOrDefault(HEAD_KEY, false);
+		boolean visible = !event.getRenderState().getRenderDataOrDefault(HEAD_KEY, false);
 		boolean isPlayer = event.getRenderState() instanceof PlayerRenderState;
 		if (event.getRenderer().getModel() instanceof HeadedModel headedModel) {
-			headedModel.getHead().visible = visible && (!isPlayer || headedModel.getHead().visible);  // some mods like Better Combat can move player's head and hide it in the first person view
+			headedModel.getHead().visible = visible && (isPlayer || headedModel.getHead().visible);  // some mods like Better Combat can move player's head and hide it in the first person view
 			if (event.getRenderer().getModel() instanceof HumanoidModel<?> humanoidModel) {
-				humanoidModel.hat.visible = visible && (!isPlayer || humanoidModel.hat.visible);
+				humanoidModel.hat.visible = visible && (isPlayer || humanoidModel.hat.visible);
 			}
 		}
 	}
