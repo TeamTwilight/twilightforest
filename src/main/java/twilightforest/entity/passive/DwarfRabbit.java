@@ -35,7 +35,7 @@ import java.util.Optional;
 
 public class DwarfRabbit extends Animal implements VariantHolder<Holder<DwarfRabbitVariant>> {
 
-	private static final Lazy<EntityDataAccessor<Holder<DwarfRabbitVariant>>> VARIANT = Lazy.of(() -> SynchedEntityData.defineId(DwarfRabbit.class, TFDataSerializers.DWARF_RABBIT_VARIANT.get()));
+	private static final EntityDataAccessor<Holder<DwarfRabbitVariant>> VARIANT = SynchedEntityData.defineId(DwarfRabbit.class, TFDataSerializers.DWARF_RABBIT_VARIANT.get());
 
 	public DwarfRabbit(EntityType<? extends DwarfRabbit> type, Level world) {
 		super(type, world);
@@ -59,7 +59,7 @@ public class DwarfRabbit extends Animal implements VariantHolder<Holder<DwarfRab
 	}
 
 	public static AttributeSupplier.Builder registerAttributes() {
-		return Mob.createMobAttributes()
+		return Animal.createAnimalAttributes()
 			.add(Attributes.MAX_HEALTH, 3.0D)
 			.add(Attributes.MOVEMENT_SPEED, 0.3D)
 			.add(Attributes.STEP_HEIGHT, 1.0D);
@@ -87,7 +87,7 @@ public class DwarfRabbit extends Animal implements VariantHolder<Holder<DwarfRab
 	@Override
 	protected void defineSynchedData(SynchedEntityData.Builder builder) {
 		super.defineSynchedData(builder);
-		builder.define(VARIANT.get(), this.registryAccess().lookupOrThrow(TFRegistries.Keys.DWARF_RABBIT_VARIANT).getOrThrow(DwarfRabbitVariants.BROWN));
+		builder.define(VARIANT, this.registryAccess().lookupOrThrow(TFRegistries.Keys.DWARF_RABBIT_VARIANT).getOrThrow(DwarfRabbitVariants.BROWN));
 	}
 
 	@Override
@@ -114,12 +114,12 @@ public class DwarfRabbit extends Animal implements VariantHolder<Holder<DwarfRab
 
 	@Override
 	public Holder<DwarfRabbitVariant> getVariant() {
-		return this.getEntityData().get(VARIANT.get());
+		return this.getEntityData().get(VARIANT);
 	}
 
 	@Override
 	public void setVariant(Holder<DwarfRabbitVariant> variant) {
-		this.getEntityData().set(VARIANT.get(), variant);
+		this.getEntityData().set(VARIANT, variant);
 	}
 
 	@Override

@@ -17,6 +17,7 @@ import net.minecraft.world.entity.VariantHolder;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Cat;
 import net.minecraft.world.entity.animal.Ocelot;
 import net.minecraft.world.entity.player.Player;
@@ -35,7 +36,7 @@ import java.util.Optional;
 
 public class TinyBird extends FlyingBird implements VariantHolder<Holder<TinyBirdVariant>> {
 
-	private static final Lazy<EntityDataAccessor<Holder<TinyBirdVariant>>> VARIANT = Lazy.of(() -> SynchedEntityData.defineId(TinyBird.class, TFDataSerializers.TINY_BIRD_VARIANT.get()));
+	private static final EntityDataAccessor<Holder<TinyBirdVariant>> VARIANT = SynchedEntityData.defineId(TinyBird.class, TFDataSerializers.TINY_BIRD_VARIANT.get());
 
 	public TinyBird(EntityType<? extends TinyBird> type, Level level) {
 		super(type, level);
@@ -51,11 +52,11 @@ public class TinyBird extends FlyingBird implements VariantHolder<Holder<TinyBir
 	@Override
 	protected void defineSynchedData(SynchedEntityData.Builder builder) {
 		super.defineSynchedData(builder);
-		builder.define(VARIANT.get(), this.registryAccess().lookupOrThrow(TFRegistries.Keys.TINY_BIRD_VARIANT).getOrThrow(TinyBirdVariants.RED));
+		builder.define(VARIANT, this.registryAccess().lookupOrThrow(TFRegistries.Keys.TINY_BIRD_VARIANT).getOrThrow(TinyBirdVariants.RED));
 	}
 
 	public static AttributeSupplier.Builder registerAttributes() {
-		return FlyingBird.createMobAttributes()
+		return Animal.createAnimalAttributes()
 			.add(Attributes.MAX_HEALTH, 4.0D)
 			.add(Attributes.MOVEMENT_SPEED, 0.2D)
 			.add(Attributes.STEP_HEIGHT, 1.0D);
@@ -85,12 +86,12 @@ public class TinyBird extends FlyingBird implements VariantHolder<Holder<TinyBir
 
 	@Override
 	public Holder<TinyBirdVariant> getVariant() {
-		return this.getEntityData().get(VARIANT.get());
+		return this.getEntityData().get(VARIANT);
 	}
 
 	@Override
 	public void setVariant(Holder<TinyBirdVariant> variant) {
-		this.getEntityData().set(VARIANT.get(), variant);
+		this.getEntityData().set(VARIANT, variant);
 	}
 
 	@Override
