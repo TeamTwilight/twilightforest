@@ -190,7 +190,7 @@ public class TravellersArmorItem extends ArmorItem {
 		float angle = player.getYRot();
 		double rot = isLeftSidestep ? -Math.PI / 2 : Math.PI / 2;
 		Vec3 dashDirection =new Vec3(-Math.sin(Math.toRadians(angle) + rot), 0, Math.cos(Math.toRadians(angle) + rot));
-		player.push(dashDirection.scale(1.3));
+		player.push(dashDirection.scale(1.6));  // 5 blocks
 	}
 
 	public static boolean performDoubleJump(Player player) {
