@@ -1,0 +1,9 @@
+{
+  "model": {
+    "type": "minecraft:special",
+    "base": "twilightforest:item/moonworm",
+    "model": {
+      "type": "twilightforest:moonworm"
+    }
+  }
+}

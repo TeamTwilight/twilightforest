@@ -211,7 +211,6 @@ public class SnowQueenModel extends HumanoidModel<SnowQueenRenderState> implemen
 		}
 		VertexConsumer consumer = buffer.getBuffer(RenderType.entityCutoutNoCull(SnowQueenRenderer.TEXTURE));
 		this.head.render(stack, consumer, light, overlay, color);
-		this.hat.render(stack, consumer, light, overlay, color);
 	}
 
 	@Override

@@ -7,6 +7,7 @@ public class TFTextureSlot {
 	public static final TextureSlot ALL_2 = TextureSlot.create("all_2");
 	public static final TextureSlot ALL_3 = TextureSlot.create("all_3");
 
+	public static final TextureSlot CANDELABRA = TextureSlot.create("candelabra");
 	public static final TextureSlot MIDDLE = TextureSlot.create("middle");
 
 

@@ -15,7 +15,7 @@ import twilightforest.init.TFBlocks;
 import java.util.List;
 
 public class KeepsakeCasketRenderer<T extends BlockEntity & LidBlockEntity> extends SkullChestRenderer<T> {
-	private static final List<ResourceLocation> CASKET_TEXTURES = List.of(
+	public static final List<ResourceLocation> CASKET_TEXTURES = List.of(
 		TwilightForestMod.getModelTexture("casket/keepsake_casket_0.png"),
 		TwilightForestMod.getModelTexture("casket/keepsake_casket_1.png"),
 		TwilightForestMod.getModelTexture("casket/keepsake_casket_2.png")
@@ -25,15 +25,12 @@ public class KeepsakeCasketRenderer<T extends BlockEntity & LidBlockEntity> exte
 		super(context, TFModelLayers.KEEPSAKE_CASKET);
 	}
 
-	@NotNull
 	@Override
-	protected ResourceLocation getTextureLocation(BlockState blockstate) {
-		return this.getTextureLocation(blockstate.getValue(KeepsakeCasketBlock.BREAKAGE));
+	protected ResourceLocation getTextureLocation(BlockState state) {
+		return getTextureLocation(state.getValue(KeepsakeCasketBlock.BREAKAGE));
 	}
 
-	@NotNull
-	@Override
-	public ResourceLocation getTextureLocation(int damage) {
+	public static ResourceLocation getTextureLocation(int damage) {
 		return CASKET_TEXTURES.get(Mth.clamp(damage, 0, CASKET_TEXTURES.size() - 1));
 	}
 }

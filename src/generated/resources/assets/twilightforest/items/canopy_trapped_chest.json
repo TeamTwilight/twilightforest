@@ -1,0 +1,10 @@
+{
+  "model": {
+    "type": "minecraft:special",
+    "base": "twilightforest:item/canopy_trapped_chest",
+    "model": {
+      "type": "minecraft:chest",
+      "texture": "twilightforest:canopy/trapped"
+    }
+  }
+}

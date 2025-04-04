@@ -1,0 +1,36 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "cases": [
+      {
+        "model": {
+          "type": "minecraft:composite",
+          "models": [
+            {
+              "type": "minecraft:model",
+              "model": "twilightforest:item/major_boss_trophy"
+            },
+            {
+              "type": "minecraft:special",
+              "base": "twilightforest:item/ur_ghast_trophy",
+              "model": {
+                "type": "twilightforest:boss_trophy",
+                "kind": "ur_ghast"
+              }
+            }
+          ]
+        },
+        "when": "gui"
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:special",
+      "base": "twilightforest:item/ur_ghast_trophy",
+      "model": {
+        "type": "twilightforest:boss_trophy",
+        "kind": "ur_ghast"
+      }
+    },
+    "property": "minecraft:display_context"
+  }
+}

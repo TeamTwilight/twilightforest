@@ -30,7 +30,7 @@ public class LichModel extends HumanoidModel<LichRenderState> implements TrophyB
 		MeshDefinition meshdefinition = HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F);
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		partdefinition.addOrReplaceChild("hat", CubeListBuilder.create()
+		partdefinition.getChild("head").addOrReplaceChild("hat", CubeListBuilder.create()
 				.texOffs(32, 0)
 				.addBox(-4.0F, -12.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.5F)),
 			PartPose.ZERO);
@@ -136,14 +136,11 @@ public class LichModel extends HumanoidModel<LichRenderState> implements TrophyB
 	public void setupRotationsForTrophy(float x, float y, float z, float mouthAngle) {
 		this.head.yRot = y * Mth.DEG_TO_RAD;
 		this.head.xRot = z * Mth.DEG_TO_RAD;
-		this.hat.yRot = this.head.yRot;
-		this.hat.xRot = this.head.xRot;
 	}
 
 	@Override
 	public void renderTrophy(PoseStack stack, MultiBufferSource buffer, int light, int overlay, int color, ItemDisplayContext context) {
 		VertexConsumer consumer = buffer.getBuffer(RenderType.entityCutoutNoCull(LichRenderer.TEXTURE));
 		this.head.render(stack, consumer, light, overlay, color);
-		this.hat.render(stack, consumer, light, overlay, color);
 	}
 }

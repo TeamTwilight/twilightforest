@@ -49,7 +49,12 @@ public class FireflyModel extends Model {
 		return LayerDefinition.create(meshdefinition, 64, 32);
 	}
 
-	public void renderGlow(PoseStack stack, VertexConsumer consumer, float alpha) {
-		this.glow.render(stack, consumer, 0xF000F0, OverlayTexture.NO_OVERLAY, ARGB.colorFromFloat(alpha, 1.0F, 1.0F, 1.0F));
+	public void setupGlow() {
+		this.glow.skipDraw = true;
+	}
+
+	public void renderGlow(PoseStack stack, VertexConsumer consumer, int overlay, float alpha) {
+		this.glow.skipDraw = false;
+		this.glow.render(stack, consumer, 0xF000F0, overlay, ARGB.colorFromFloat(alpha, 1.0F, 1.0F, 1.0F));
 	}
 }

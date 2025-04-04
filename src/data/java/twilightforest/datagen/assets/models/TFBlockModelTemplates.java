@@ -3,7 +3,9 @@ package twilightforest.datagen.assets.models;
 import net.minecraft.client.data.models.model.ModelTemplate;
 import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureSlot;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import org.w3c.dom.Text;
 import twilightforest.TwilightForestMod;
 
 public class TFBlockModelTemplates extends ModelTemplates {
@@ -20,6 +22,9 @@ public class TFBlockModelTemplates extends ModelTemplates {
 	public static final ModelTemplate BISECTED_STAIRS_STRAIGHT = create("bisected_stairs", TextureSlot.BOTTOM, TextureSlot.TOP, TextureSlot.SIDE, TFTextureSlot.MIDDLE);
 	public static final ModelTemplate BISECTED_STAIRS_INNER = create("bisected_inner_stairs", "_inner", TextureSlot.BOTTOM, TextureSlot.TOP, TextureSlot.SIDE, TFTextureSlot.MIDDLE);
 	public static final ModelTemplate BISECTED_STAIRS_OUTER = create("bisected_outer_stairs", "_outer", TextureSlot.BOTTOM, TextureSlot.TOP, TextureSlot.SIDE, TFTextureSlot.MIDDLE);
+
+	public static final ModelTemplate CANDELABRA = create("candelabra");
+	public static final ModelTemplate WALL_CANDELABRA = create("wall_candelabra");
 
 	public static final ModelTemplate FORCEFIELD = create("forcefield", TextureSlot.PANE, TextureSlot.PARTICLE).extend().parent(ResourceLocation.withDefaultNamespace("block/cube_all")).ambientOcclusion(false).renderType("translucent").build();
 	public static final ModelTemplate FULLBRIGHT_BLOCK = create("fullbright_block", TextureSlot.ALL).extend()

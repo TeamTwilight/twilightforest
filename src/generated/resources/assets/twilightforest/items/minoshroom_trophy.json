@@ -1,0 +1,36 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "cases": [
+      {
+        "model": {
+          "type": "minecraft:composite",
+          "models": [
+            {
+              "type": "minecraft:model",
+              "model": "twilightforest:item/minor_boss_trophy"
+            },
+            {
+              "type": "minecraft:special",
+              "base": "twilightforest:item/smaller_gui_trophy",
+              "model": {
+                "type": "twilightforest:boss_trophy",
+                "kind": "minoshroom"
+              }
+            }
+          ]
+        },
+        "when": "gui"
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:special",
+      "base": "twilightforest:item/smaller_gui_trophy",
+      "model": {
+        "type": "twilightforest:boss_trophy",
+        "kind": "minoshroom"
+      }
+    },
+    "property": "minecraft:display_context"
+  }
+}

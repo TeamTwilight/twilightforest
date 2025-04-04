@@ -1,5 +1,4 @@
 {
-  "parent": "builtin/entity",
   "textures": {
     "particle": "minecraft:block/slime_block"
   },

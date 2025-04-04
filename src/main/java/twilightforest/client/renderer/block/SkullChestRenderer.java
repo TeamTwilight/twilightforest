@@ -3,6 +3,7 @@ package twilightforest.client.renderer.block;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.geom.ModelPart;
@@ -25,62 +26,20 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
+import twilightforest.client.model.entity.KeepsakeCasketModel;
 import twilightforest.init.TFBlocks;
 
-/**
- * Keepsake Casket Model - MCVinnyq
- * Created using Tabula 8.0.0
- */
-//Most of the other stuff is derived from ChestRenderer
 public class SkullChestRenderer<T extends BlockEntity & LidBlockEntity> implements BlockEntityRenderer<T> {
-	private static final ResourceLocation SKULL_CHEST_TEXTURE = TwilightForestMod.getModelTexture("casket/skull_chest.png");
+	public static final ResourceLocation SKULL_CHEST_TEXTURE = TwilightForestMod.getModelTexture("casket/skull_chest.png");
 
-	private final ModelPart base;
-	private final ModelPart lid;
+	private final KeepsakeCasketModel model;
 
 	public SkullChestRenderer(BlockEntityRendererProvider.Context context) {
 		this(context, TFModelLayers.SKULL_CHEST);
 	}
 
 	public SkullChestRenderer(BlockEntityRendererProvider.Context context, ModelLayerLocation layer) {
-		var root = context.bakeLayer(layer);
-
-		this.base = root.getChild("base");
-		this.lid = root.getChild("lid");
-	}
-
-	public static LayerDefinition create(boolean addSpikes) {
-		MeshDefinition meshdefinition = new MeshDefinition();
-		PartDefinition partdefinition = meshdefinition.getRoot();
-		var lid = partdefinition.addOrReplaceChild("lid",
-			CubeListBuilder.create()
-				.texOffs(0, 0)
-				.addBox(-8.0F, -8.0F, -13.0F, 16.0F, 10.0F, 14.0F),
-			PartPose.offset(0.0F, -6.0F, 6.0F));
-
-		if (addSpikes) {
-			lid.addOrReplaceChild("spikes",
-				CubeListBuilder.create().texOffs(0, 46)
-				.addBox(-8.0F, -10.0F, -13.0F, 16.0F, 2.0F, 0.0F)
-				.texOffs(2, 34)
-				.addBox(-7.99F, -10.0F, -12.0F, 0.0F, 2.0F, 14.0F)
-				.texOffs(2, 36)
-				.addBox(7.99F, -10.0F, -12.0F, 0.0F, 2.0F, 14.0F),
-				PartPose.ZERO);
-		}
-
-		partdefinition.addOrReplaceChild("base",
-			CubeListBuilder.create()
-				.texOffs(1, 28)
-				.addBox(-7.0F, -10.0F, -2.0F, 14.0F, 10.0F, 8.0F)
-				.texOffs(0, 26)
-				.addBox(-7.0F, -10.0F, -6.0F, 1.0F, 6.0F, 4.0F)
-				.texOffs(40, 26)
-				.addBox(6.0F, -10.0F, -6.0F, 1.0F, 6.0F, 4.0F)
-				.texOffs(0, 56)
-				.addBox(-7.0F, -4.0F, -6.0F, 14.0F, 4.0F, 4.0F),
-			PartPose.offset(0.0F, -0.01F, 0.0F));
-		return LayerDefinition.create(meshdefinition, 64, 64);
+		this.model = new KeepsakeCasketModel(context.bakeLayer(layer));
 	}
 
 	@Override
@@ -90,35 +49,24 @@ public class SkullChestRenderer<T extends BlockEntity & LidBlockEntity> implemen
 		ResourceLocation textureLocation = this.getTextureLocation(blockstate);
 		Direction facing = blockstate.getValue(HorizontalDirectionalBlock.FACING);
 
-		this.renderCasket(entity.getOpenNess(partialTicks), stack, buffer, light, overlay, textureLocation, facing);
+		renderCasket(entity.getOpenNess(partialTicks), stack, buffer, light, overlay, textureLocation, facing, this.model);
 	}
 
-	public void renderCasket(float lidRotation, PoseStack stack, MultiBufferSource buffer, int light, int overlay, ResourceLocation texture, Direction facing) {
+	public static void renderCasket(float lidRotation, PoseStack stack, MultiBufferSource buffer, int light, int overlay, ResourceLocation texture, Direction facing, KeepsakeCasketModel model) {
 		stack.pushPose();
 		stack.translate(0.5F, 0.0F, 0.5F);
-		stack.mulPose(facing.getRotation());
-		stack.mulPose(Axis.XP.rotationDegrees(90.0F));
+		stack.mulPose(Axis.YP.rotationDegrees(-facing.toYRot()));
+		stack.scale(1.0F, -1.0F, -1.0F);
 
 		lidRotation = 1.0F - lidRotation;
 		lidRotation = 1.0F - lidRotation * lidRotation * lidRotation;
 
-		this.renderModels(stack, buffer.getBuffer(RenderType.entityCutoutNoCull(texture)), this.lid, this.base, lidRotation, light, overlay);
+		model.setupAnim(lidRotation);
+		model.renderToBuffer(stack, buffer.getBuffer(model.renderType(texture)), light, overlay);
 		stack.popPose();
 	}
 
-	private void renderModels(PoseStack stack, VertexConsumer buffer, ModelPart lid, ModelPart base, float lidAngle, int light, int overlay) {
-		lid.xRot = lidAngle * -Mth.HALF_PI;
-		lid.render(stack, buffer, light, overlay);
-		base.render(stack, buffer, light, overlay);
-	}
-
-	@NotNull
-	protected ResourceLocation getTextureLocation(BlockState blockstate) {
-		return SKULL_CHEST_TEXTURE;
-	}
-
-	@NotNull
-	public ResourceLocation getTextureLocation(int damage) {
+	protected ResourceLocation getTextureLocation(BlockState state) {
 		return SKULL_CHEST_TEXTURE;
 	}
 }

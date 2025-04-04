@@ -16,6 +16,8 @@ import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.entity.ZombieRenderer;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.client.renderer.entity.state.PlayerRenderState;
+import net.minecraft.client.renderer.special.ChestSpecialRenderer;
+import net.minecraft.client.renderer.special.SpecialModelRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
@@ -34,6 +36,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.SkullBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.saveddata.maps.MapDecorationTypes;
 import net.minecraft.world.phys.AABB;
@@ -73,6 +76,8 @@ import twilightforest.client.renderer.entity.layers.IceLayer;
 import twilightforest.client.renderer.entity.layers.ShieldLayer;
 import twilightforest.client.renderer.map.ConqueredMapIconRenderer;
 import twilightforest.client.renderer.map.MagicMapPlayerIconRenderer;
+import twilightforest.client.renderer.special.*;
+import twilightforest.enums.BossVariant;
 import twilightforest.init.*;
 import twilightforest.item.*;
 import twilightforest.item.mapdata.TFMagicMapData;
@@ -82,6 +87,7 @@ import twilightforest.util.woods.TFWoodTypes;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 
 public class RegistrationEvents {
 
@@ -103,6 +109,8 @@ public class RegistrationEvents {
 		bus.addListener(RegistrationEvents::registerMapDecorators);
 		bus.addListener(RegistrationEvents::registerParticleFactories);
 		bus.addListener(RegistrationEvents::registerCustomRenderData);
+		bus.addListener(RegistrationEvents::registerSpecialModelTypes);
+		bus.addListener(RegistrationEvents::registerSpecialModels);
 
 		bus.addListener(ColorHandler::registerBlockColors);
 
@@ -268,9 +276,6 @@ public class RegistrationEvents {
 
 	private static void registerAdditionalModels(ModelEvent.RegisterAdditional event) {
 		event.register(ShieldLayer.LOC);
-		event.register(TwilightForestMod.prefix("item/trophy"));
-		event.register(TwilightForestMod.prefix("item/trophy_minor"));
-		event.register(TwilightForestMod.prefix("item/trophy_quest"));
 
 		for (JarRenderer.LidResource lid : JarRenderer.LID_LOCATION_LIST.get()) {
 			ResourceLocation location = lid.resourceLocation();
@@ -525,14 +530,84 @@ public class RegistrationEvents {
 
 		event.registerLayerDefinition(TFModelLayers.CICADA, CicadaModel::create);
 		event.registerLayerDefinition(TFModelLayers.FIREFLY, FireflyModel::create);
-		event.registerLayerDefinition(TFModelLayers.KEEPSAKE_CASKET, () -> SkullChestRenderer.create(true));
-		event.registerLayerDefinition(TFModelLayers.SKULL_CHEST, () -> SkullChestRenderer.create(false));
+		event.registerLayerDefinition(TFModelLayers.KEEPSAKE_CASKET, () -> KeepsakeCasketModel.create(true));
+		event.registerLayerDefinition(TFModelLayers.SKULL_CHEST, () -> KeepsakeCasketModel.create(false));
 		event.registerLayerDefinition(TFModelLayers.MOONWORM, MoonwormModel::create);
 		event.registerLayerDefinition(TFModelLayers.BRAZIER, BrazierModel::create);
 
 		event.registerLayerDefinition(TFModelLayers.RED_THREAD, RedThreadModel::create);
 
 		event.registerLayerDefinition(TFModelLayers.KNIGHTMETAL_SHIELD, KnightmetalShieldModel::create);
+	}
+
+	private static void registerSpecialModelTypes(RegisterSpecialModelRendererEvent event) {
+		event.register(TwilightForestMod.prefix("skull_candle"), SkullCandleSpecialRenderer.Unbaked.MAP_CODEC);
+		event.register(TwilightForestMod.prefix("keepsake_casket"), KeepsakeCasketSpecialRenderer.Unbaked.MAP_CODEC);
+		event.register(TwilightForestMod.prefix("skull_chest"), SkullChestSpecialRenderer.Unbaked.MAP_CODEC);
+		event.register(TwilightForestMod.prefix("candelabra"), CandelabraSpecialRenderer.Unbaked.MAP_CODEC);
+		event.register(TwilightForestMod.prefix("boss_trophy"), TrophySpecialRenderer.Unbaked.MAP_CODEC);
+		event.register(TwilightForestMod.prefix("cicada"), CicadaSpecialRenderer.Unbaked.MAP_CODEC);
+		event.register(TwilightForestMod.prefix("firefly"), FireflySpecialRenderer.Unbaked.MAP_CODEC);
+		event.register(TwilightForestMod.prefix("moonworm"), MoonwormSpecialRenderer.Unbaked.MAP_CODEC);
+		event.register(TwilightForestMod.prefix("knightmetal_shield"), KnightmetalShieldSpecialRenderer.Unbaked.MAP_CODEC);
+	}
+
+	private static void registerSpecialModels(RegisterSpecialBlockModelRendererEvent event) {
+		event.register(TFBlocks.TWILIGHT_OAK_CHEST.get(), new ChestSpecialRenderer.Unbaked(TwilightForestMod.prefix("twilight_oak/normal")));
+		event.register(TFBlocks.CANOPY_CHEST.get(), new ChestSpecialRenderer.Unbaked(TwilightForestMod.prefix("canopy/normal")));
+		event.register(TFBlocks.MANGROVE_CHEST.get(), new ChestSpecialRenderer.Unbaked(TwilightForestMod.prefix("mangrove/normal")));
+		event.register(TFBlocks.DARK_CHEST.get(), new ChestSpecialRenderer.Unbaked(TwilightForestMod.prefix("darkwood/normal")));
+		event.register(TFBlocks.TIME_CHEST.get(), new ChestSpecialRenderer.Unbaked(TwilightForestMod.prefix("time/normal")));
+		event.register(TFBlocks.TRANSFORMATION_CHEST.get(), new ChestSpecialRenderer.Unbaked(TwilightForestMod.prefix("tranformation/normal")));
+		event.register(TFBlocks.MINING_CHEST.get(), new ChestSpecialRenderer.Unbaked(TwilightForestMod.prefix("mining/normal")));
+		event.register(TFBlocks.SORTING_CHEST.get(), new ChestSpecialRenderer.Unbaked(TwilightForestMod.prefix("sorting/normal")));
+		event.register(TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST.get(), new ChestSpecialRenderer.Unbaked(TwilightForestMod.prefix("twilight_oak/trapped")));
+		event.register(TFBlocks.CANOPY_TRAPPED_CHEST.get(), new ChestSpecialRenderer.Unbaked(TwilightForestMod.prefix("canopy/trapped")));
+		event.register(TFBlocks.MANGROVE_TRAPPED_CHEST.get(), new ChestSpecialRenderer.Unbaked(TwilightForestMod.prefix("mangrove/trapped")));
+		event.register(TFBlocks.DARK_TRAPPED_CHEST.get(), new ChestSpecialRenderer.Unbaked(TwilightForestMod.prefix("darkwood/trapped")));
+		event.register(TFBlocks.TIME_TRAPPED_CHEST.get(), new ChestSpecialRenderer.Unbaked(TwilightForestMod.prefix("time/trapped")));
+		event.register(TFBlocks.TRANSFORMATION_TRAPPED_CHEST.get(), new ChestSpecialRenderer.Unbaked(TwilightForestMod.prefix("tranformation/trapped")));
+		event.register(TFBlocks.MINING_TRAPPED_CHEST.get(), new ChestSpecialRenderer.Unbaked(TwilightForestMod.prefix("mining/trapped")));
+		event.register(TFBlocks.SORTING_TRAPPED_CHEST.get(), new ChestSpecialRenderer.Unbaked(TwilightForestMod.prefix("sorting/trapped")));
+
+		event.register(TFBlocks.SKULL_CHEST.get(), new SkullChestSpecialRenderer.Unbaked());
+		event.register(TFBlocks.KEEPSAKE_CASKET.get(), new KeepsakeCasketSpecialRenderer.Unbaked());
+		event.register(TFBlocks.CANDELABRA.get(), new CandelabraSpecialRenderer.Unbaked());
+		event.register(TFBlocks.CICADA.get(), new CicadaSpecialRenderer.Unbaked());
+		event.register(TFBlocks.FIREFLY.get(), new FireflySpecialRenderer.Unbaked());
+		event.register(TFBlocks.MOONWORM.get(), new MoonwormSpecialRenderer.Unbaked());
+
+		event.register(TFBlocks.ZOMBIE_SKULL_CANDLE.get(), new SkullCandleSpecialRenderer.Unbaked(SkullBlock.Types.ZOMBIE));
+		event.register(TFBlocks.ZOMBIE_WALL_SKULL_CANDLE.get(), new SkullCandleSpecialRenderer.Unbaked(SkullBlock.Types.ZOMBIE));
+		event.register(TFBlocks.SKELETON_SKULL_CANDLE.get(), new SkullCandleSpecialRenderer.Unbaked(SkullBlock.Types.SKELETON));
+		event.register(TFBlocks.SKELETON_WALL_SKULL_CANDLE.get(), new SkullCandleSpecialRenderer.Unbaked(SkullBlock.Types.SKELETON));
+		event.register(TFBlocks.CREEPER_SKULL_CANDLE.get(), new SkullCandleSpecialRenderer.Unbaked(SkullBlock.Types.CREEPER));
+		event.register(TFBlocks.CREEPER_WALL_SKULL_CANDLE.get(), new SkullCandleSpecialRenderer.Unbaked(SkullBlock.Types.CREEPER));
+		event.register(TFBlocks.WITHER_SKELE_SKULL_CANDLE.get(), new SkullCandleSpecialRenderer.Unbaked(SkullBlock.Types.WITHER_SKELETON));
+		event.register(TFBlocks.WITHER_SKELE_WALL_SKULL_CANDLE.get(), new SkullCandleSpecialRenderer.Unbaked(SkullBlock.Types.WITHER_SKELETON));
+		event.register(TFBlocks.PLAYER_SKULL_CANDLE.get(), new SkullCandleSpecialRenderer.Unbaked(SkullBlock.Types.PLAYER));
+		event.register(TFBlocks.PLAYER_WALL_SKULL_CANDLE.get(), new SkullCandleSpecialRenderer.Unbaked(SkullBlock.Types.PLAYER));
+		event.register(TFBlocks.PIGLIN_SKULL_CANDLE.get(), new SkullCandleSpecialRenderer.Unbaked(SkullBlock.Types.PIGLIN));
+		event.register(TFBlocks.PIGLIN_WALL_SKULL_CANDLE.get(), new SkullCandleSpecialRenderer.Unbaked(SkullBlock.Types.PIGLIN));
+
+		event.register(TFBlocks.NAGA_TROPHY.get(), new TrophySpecialRenderer.Unbaked(BossVariant.NAGA));
+		event.register(TFBlocks.NAGA_WALL_TROPHY.get(), new TrophySpecialRenderer.Unbaked(BossVariant.NAGA));
+		event.register(TFBlocks.LICH_TROPHY.get(), new TrophySpecialRenderer.Unbaked(BossVariant.LICH));
+		event.register(TFBlocks.LICH_WALL_TROPHY.get(), new TrophySpecialRenderer.Unbaked(BossVariant.LICH));
+		event.register(TFBlocks.MINOSHROOM_TROPHY.get(), new TrophySpecialRenderer.Unbaked(BossVariant.MINOSHROOM));
+		event.register(TFBlocks.MINOSHROOM_WALL_TROPHY.get(), new TrophySpecialRenderer.Unbaked(BossVariant.MINOSHROOM));
+		event.register(TFBlocks.HYDRA_TROPHY.get(), new TrophySpecialRenderer.Unbaked(BossVariant.HYDRA));
+		event.register(TFBlocks.HYDRA_WALL_TROPHY.get(), new TrophySpecialRenderer.Unbaked(BossVariant.HYDRA));
+		event.register(TFBlocks.KNIGHT_PHANTOM_TROPHY.get(), new TrophySpecialRenderer.Unbaked(BossVariant.KNIGHT_PHANTOM));
+		event.register(TFBlocks.KNIGHT_PHANTOM_WALL_TROPHY.get(), new TrophySpecialRenderer.Unbaked(BossVariant.KNIGHT_PHANTOM));
+		event.register(TFBlocks.UR_GHAST_TROPHY.get(), new TrophySpecialRenderer.Unbaked(BossVariant.UR_GHAST));
+		event.register(TFBlocks.UR_GHAST_WALL_TROPHY.get(), new TrophySpecialRenderer.Unbaked(BossVariant.UR_GHAST));
+		event.register(TFBlocks.ALPHA_YETI_TROPHY.get(), new TrophySpecialRenderer.Unbaked(BossVariant.ALPHA_YETI));
+		event.register(TFBlocks.ALPHA_YETI_WALL_TROPHY.get(), new TrophySpecialRenderer.Unbaked(BossVariant.ALPHA_YETI));
+		event.register(TFBlocks.SNOW_QUEEN_TROPHY.get(), new TrophySpecialRenderer.Unbaked(BossVariant.SNOW_QUEEN));
+		event.register(TFBlocks.SNOW_QUEEN_WALL_TROPHY.get(), new TrophySpecialRenderer.Unbaked(BossVariant.SNOW_QUEEN));
+		event.register(TFBlocks.QUEST_RAM_TROPHY.get(), new TrophySpecialRenderer.Unbaked(BossVariant.QUEST_RAM));
+		event.register(TFBlocks.QUEST_RAM_WALL_TROPHY.get(), new TrophySpecialRenderer.Unbaked(BossVariant.QUEST_RAM));
 	}
 
 	private static void registerParticleFactories(RegisterParticleProvidersEvent event) {
