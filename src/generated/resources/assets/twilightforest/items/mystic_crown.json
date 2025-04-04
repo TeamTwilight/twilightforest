@@ -1,0 +1,9 @@
+{
+  "model": {
+    "type": "minecraft:special",
+    "base": "twilightforest:item/mystic_crown",
+    "model": {
+      "type": "twilightforest:mystic_crown"
+    }
+  }
+}

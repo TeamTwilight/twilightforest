@@ -141,7 +141,8 @@
       ],
       "property": "minecraft:time",
       "scale": 8.0,
-      "source": "moon_phase"
+      "source": "moon_phase",
+      "wobble": false
     },
     "property": "twilightforest:natural_dimension"
   }
