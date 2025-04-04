@@ -514,6 +514,7 @@ public class RegistrationEvents {
 		event.register(TwilightForestMod.prefix("firefly"), FireflySpecialRenderer.Unbaked.MAP_CODEC);
 		event.register(TwilightForestMod.prefix("moonworm"), MoonwormSpecialRenderer.Unbaked.MAP_CODEC);
 		event.register(TwilightForestMod.prefix("knightmetal_shield"), KnightmetalShieldSpecialRenderer.Unbaked.MAP_CODEC);
+		event.register(TwilightForestMod.prefix("mystic_crown"), MysticCrownSpecialRenderer.Unbaked.MAP_CODEC);
 	}
 
 	private static void registerSpecialModels(RegisterSpecialBlockModelRendererEvent event) {

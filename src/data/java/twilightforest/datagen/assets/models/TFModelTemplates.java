@@ -41,6 +41,7 @@ public class TFModelTemplates extends ModelTemplates {
 
 	public static final ModelTemplate GIANT_TOOL = createItem("twilightforest:giant_tool_base", TextureSlot.LAYER0);
 	public static final ModelTemplate MOON_DIAL = createItem("twilightforest:moon_dial_template", TextureSlot.LAYER0);
+	public static final ModelTemplate SPECIAL_HANDHELD = createItem("twilightforest:special_handheld", TextureSlot.LAYER0);
 	public static final ModelTemplate TWO_LAYERED_HANDHELD = createItem("handheld", TextureSlot.LAYER0, TextureSlot.LAYER1);
 	public static final ModelTemplate TWO_LAYERED_BOW = createItem("bow", TextureSlot.LAYER0, TextureSlot.LAYER1);
 

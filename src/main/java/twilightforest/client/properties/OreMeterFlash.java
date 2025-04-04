@@ -7,6 +7,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.init.TFDataComponents;
 import twilightforest.item.OreMeterItem;
 
 public record OreMeterFlash() implements ConditionalItemModelProperty {
@@ -20,7 +21,7 @@ public record OreMeterFlash() implements ConditionalItemModelProperty {
 			int progress = OreMeterItem.getLoadProgress(stack);
 			return progress % 5 >= 2 + (int) (Math.random() * 2) && progress <= totalLoadTime - 15;
 		}
-		return false;
+		return stack.has(TFDataComponents.ORE_DATA);
 	}
 
 	@Override

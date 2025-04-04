@@ -1,0 +1,14 @@
+{
+  "parent": "twilightforest:item/template_trophy",
+  "display": {
+    "gui": {
+      "rotation": [ 30, 45, 0 ],
+      "translation": [ 0, 0, 0 ]
+    },
+    "head": {
+      "rotation": [ 180, 0, 180 ],
+      "translation": [ 0, 7, 0 ],
+      "scale": [ 1.7, 1.7, 1.7 ]
+    }
+  }
+}

@@ -7,6 +7,7 @@ import net.minecraft.client.data.models.model.*;
 import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.client.renderer.item.RangeSelectItemModel;
 import net.minecraft.client.renderer.item.SelectItemModel;
+import net.minecraft.client.renderer.item.properties.conditional.HasComponent;
 import net.minecraft.client.renderer.item.properties.numeric.Time;
 import net.minecraft.client.renderer.item.properties.numeric.UseDuration;
 import net.minecraft.client.renderer.item.properties.select.DisplayContext;
@@ -24,8 +25,10 @@ import net.minecraft.world.item.equipment.trim.TrimMaterials;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.properties.MoonwormQueenPulse;
 import twilightforest.client.properties.NaturalDimension;
+import twilightforest.client.properties.OreMeterFlash;
 import twilightforest.client.renderer.special.*;
 import twilightforest.datagen.helpers.ItemModelBuilders;
+import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFEquipmentModels;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFTrimMaterials;
@@ -90,7 +93,9 @@ public class ItemModelGenerator extends ItemModelBuilders {
 		this.generateFlatItem(TFItems.KNIGHTMETAL_SWORD.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 		this.generateFlatItem(TFItems.KNIGHTMETAL_PICKAXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 		this.generateFlatItem(TFItems.KNIGHTMETAL_AXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
-		this.generateFlatItem(TFItems.BLOCK_AND_CHAIN.get(), ModelTemplates.FLAT_ITEM);
+		this.itemModelOutput.accept(TFItems.BLOCK_AND_CHAIN.get(), ItemModelUtils.conditional(new HasComponent(TFDataComponents.THROWN_PROJECTILE.get(), false),
+			ItemModelUtils.plainModel(this.createFlatItemModel(TFItems.BLOCK_AND_CHAIN.get(), "_thrown", ModelTemplates.FLAT_HANDHELD_ITEM)),
+			ItemModelUtils.plainModel(this.createFlatItemModel(TFItems.BLOCK_AND_CHAIN.get(), ModelTemplates.FLAT_HANDHELD_ITEM))));
 		this.generateKnightmetalShield(TFItems.KNIGHTMETAL_SHIELD.get());
 
 		this.generateExpandedTrimmableItem(TFItems.FIERY_HELMET.get(), TFEquipmentModels.FIERY, "helmet");
@@ -116,7 +121,7 @@ public class ItemModelGenerator extends ItemModelBuilders {
 		this.generateExpandedTrimmableItem(TFItems.NAGA_CHESTPLATE.get(), TFEquipmentModels.NAGA, "chestplate");
 		this.generateExpandedTrimmableItem(TFItems.NAGA_LEGGINGS.get(), TFEquipmentModels.NAGA, "leggings");
 
-		//TODO mystic crown
+		this.itemModelOutput.accept(TFItems.MYSTIC_CROWN.get(), ItemModelUtils.specialModel(ModelLocationUtils.getModelLocation(TFItems.MYSTIC_CROWN.get()), new MysticCrownSpecialRenderer.Unbaked()));
 
 		this.generateFlatItem(TFItems.MAZEBREAKER_PICKAXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 		this.generateFlatItem(TFItems.DIAMOND_MINOTAUR_AXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
@@ -137,10 +142,12 @@ public class ItemModelGenerator extends ItemModelBuilders {
 		this.generateFlatItem(TFItems.LIFEDRAIN_SCEPTER.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 		this.generateFlatItem(TFItems.ZOMBIE_SCEPTER.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 		this.generateFlatItem(TFItems.FORTIFICATION_SCEPTER.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
-		//TODO lamp
+		this.itemModelOutput.accept(TFItems.LAMP_OF_CINDERS.get(), ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(TFItems.LAMP_OF_CINDERS.get())));
 		this.generateFlatItem(TFItems.EMPERORS_CLOTH.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.ORE_MAGNET.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
-		this.generateFlatItem(TFItems.ORE_METER.get(), ModelTemplates.FLAT_ITEM);
+		this.generateOreMagnet(TFItems.ORE_MAGNET.get());
+		this.itemModelOutput.accept(TFItems.ORE_METER.get(), ItemModelUtils.conditional(new OreMeterFlash(),
+			ItemModelUtils.plainModel(this.createFlatItemModel(TFItems.ORE_METER.get(), "_active", ModelTemplates.FLAT_ITEM)),
+			ItemModelUtils.plainModel(this.createFlatItemModel(TFItems.ORE_METER.get(), ModelTemplates.FLAT_ITEM))));
 		this.generateFlatItem(TFItems.POCKET_WATCH.get(), ModelTemplates.FLAT_ITEM);
 		this.generateMoonDial(TFItems.MOON_DIAL.get());
 		this.generateFlatItem(TFItems.CRUMBLE_HORN.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
@@ -269,6 +276,17 @@ public class ItemModelGenerator extends ItemModelBuilders {
 			), base));
 	}
 
+	public void generateOreMagnet(Item magnetItem) {
+		ItemModel.Unbaked base = ItemModelUtils.plainModel(this.createFlatItemModel(magnetItem, TFModelTemplates.SPECIAL_HANDHELD));
+		ItemModel.Unbaked pulling1 = ItemModelUtils.plainModel(this.createFlatItemModel(magnetItem, "_pulling_1", TFModelTemplates.SPECIAL_HANDHELD));
+		ItemModel.Unbaked pulling2 = ItemModelUtils.plainModel(this.createFlatItemModel(magnetItem, "_pulling_2", TFModelTemplates.SPECIAL_HANDHELD));
+		this.itemModelOutput.accept(magnetItem, ItemModelUtils.conditional(ItemModelUtils.isUsingItem(),
+			ItemModelUtils.rangeSelect(new UseDuration(false), 0.05F, base,
+				ItemModelUtils.override(pulling1, 0.5F),
+				ItemModelUtils.override(pulling2, 1.0F)),
+			base));
+	}
+
 	public void generateMoonDial(Item dial) {
 		List<RangeSelectItemModel.Entry> list = new ArrayList<>();
 		ItemModel.Unbaked itemmodel$unbaked = ItemModelUtils.plainModel(this.createFlatItemModel(dial, TFModelTemplates.MOON_DIAL));
@@ -281,7 +299,7 @@ public class ItemModelGenerator extends ItemModelBuilders {
 
 		list.add(ItemModelUtils.override(itemmodel$unbaked, 7.5F));
 		this.itemModelOutput.accept(dial, ItemModelUtils.conditional(new NaturalDimension(),
-			ItemModelUtils.rangeSelect(new Time(true, Time.TimeSource.MOON_PHASE), 8.0F, list),
+			ItemModelUtils.rangeSelect(new Time(false, Time.TimeSource.MOON_PHASE), 8.0F, list),
 			ItemModelUtils.rangeSelect(new Time(true, Time.TimeSource.RANDOM), 8.0F, list)));
 	}
 
