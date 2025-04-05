@@ -7,12 +7,16 @@ import net.minecraft.client.data.models.model.*;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.DirectionalBlock;
+import net.minecraft.world.level.block.PipeBlock;
+import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.CastleDoorBlock;
 import twilightforest.block.DirectionalRotatedPillarBlock;
 import twilightforest.block.NagastoneBlock;
+import twilightforest.block.WallPillarBlock;
 import twilightforest.client.model.block.connected.ConnectedTextureBuilder;
 import twilightforest.client.model.block.forcefield.ForceFieldModel;
 import twilightforest.client.model.block.forcefield.ForceFieldModelBuilder;
@@ -214,6 +218,85 @@ public abstract class BlockModelBuilders extends BlockModelGenerators {
 		ResourceLocation straight = TFModelTemplates.BISECTED_STAIRS_STRAIGHT.create(block, mapping, this.modelOutput);
 		ResourceLocation outer = TFModelTemplates.BISECTED_STAIRS_OUTER.createWithSuffix(block, "_outer", mapping, this.modelOutput);
 		this.stairsBlock(block, straight, inner, outer);
+	}
+
+	public void stonePillar() {
+		ResourceLocation base = TwilightForestMod.prefix("block/pillar/pillar_base");
+		ResourceLocation up = TwilightForestMod.prefix("block/pillar/pillar_up");
+		ResourceLocation down = TwilightForestMod.prefix("block/pillar/pillar_down");
+		ResourceLocation top = TwilightForestMod.prefix("block/pillar/pillar_top");
+		ResourceLocation bottom = TwilightForestMod.prefix("block/pillar/pillar_bottom");
+
+		this.itemModelOutput.accept(TFBlocks.TWISTED_STONE_PILLAR.asItem(), ItemModelUtils.plainModel(TwilightForestMod.prefix("block/pillar/pillar_inventory")));
+
+		this.blockStateOutput.accept(
+			MultiPartGenerator.multiPart(TFBlocks.TWISTED_STONE_PILLAR.get())
+				// X
+				.with(
+					Condition.condition().term(WallPillarBlock.AXIS, Direction.Axis.X),
+					Variant.variant().with(VariantProperties.MODEL, base).with(VariantProperties.X_ROT, VariantProperties.Rotation.R90).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
+				)
+				.with(
+					Condition.and(Condition.condition().term(WallPillarBlock.AXIS, Direction.Axis.X), Condition.condition().term(PipeBlock.EAST, false)),
+					Variant.variant().with(VariantProperties.MODEL, top).with(VariantProperties.X_ROT, VariantProperties.Rotation.R90).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
+				)
+				.with(
+					Condition.and(Condition.condition().term(WallPillarBlock.AXIS, Direction.Axis.X), Condition.condition().term(PipeBlock.WEST, false)),
+					Variant.variant().with(VariantProperties.MODEL, bottom).with(VariantProperties.X_ROT, VariantProperties.Rotation.R90).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
+				)
+				.with(
+					Condition.and(Condition.condition().term(WallPillarBlock.AXIS, Direction.Axis.Y, Direction.Axis.Z), Condition.condition().term(PipeBlock.EAST, true)),
+					Variant.variant().with(VariantProperties.MODEL, up).with(VariantProperties.X_ROT, VariantProperties.Rotation.R90).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
+				)
+				.with(
+					Condition.and(Condition.condition().term(WallPillarBlock.AXIS, Direction.Axis.Y, Direction.Axis.Z), Condition.condition().term(PipeBlock.WEST, true)),
+					Variant.variant().with(VariantProperties.MODEL, down).with(VariantProperties.X_ROT, VariantProperties.Rotation.R90).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
+				)
+
+				// Y
+				.with(
+					Condition.condition().term(WallPillarBlock.AXIS, Direction.Axis.Y),
+					Variant.variant().with(VariantProperties.MODEL, base)
+				)
+				.with(
+					Condition.and(Condition.condition().term(WallPillarBlock.AXIS, Direction.Axis.Y), Condition.condition().term(PipeBlock.UP, false)),
+					Variant.variant().with(VariantProperties.MODEL, top)
+				)
+				.with(
+					Condition.and(Condition.condition().term(WallPillarBlock.AXIS, Direction.Axis.Y), Condition.condition().term(PipeBlock.DOWN, false)),
+					Variant.variant().with(VariantProperties.MODEL, bottom)
+				)
+				.with(
+					Condition.and(Condition.condition().term(WallPillarBlock.AXIS, Direction.Axis.X, Direction.Axis.Z), Condition.condition().term(PipeBlock.UP, true)),
+					Variant.variant().with(VariantProperties.MODEL, up)
+				)
+				.with(
+					Condition.and(Condition.condition().term(WallPillarBlock.AXIS, Direction.Axis.X, Direction.Axis.Z), Condition.condition().term(PipeBlock.DOWN, true)),
+					Variant.variant().with(VariantProperties.MODEL, down)
+				)
+
+				// Z
+				.with(
+					Condition.condition().term(WallPillarBlock.AXIS, Direction.Axis.Z),
+					Variant.variant().with(VariantProperties.MODEL, base).with(VariantProperties.X_ROT, VariantProperties.Rotation.R90)
+				)
+				.with(
+					Condition.and(Condition.condition().term(WallPillarBlock.AXIS, Direction.Axis.Z), Condition.condition().term(PipeBlock.NORTH, false)),
+					Variant.variant().with(VariantProperties.MODEL, top).with(VariantProperties.X_ROT, VariantProperties.Rotation.R90)
+				)
+				.with(
+					Condition.and(Condition.condition().term(WallPillarBlock.AXIS, Direction.Axis.Z), Condition.condition().term(PipeBlock.SOUTH, false)),
+					Variant.variant().with(VariantProperties.MODEL, bottom).with(VariantProperties.X_ROT, VariantProperties.Rotation.R90)
+				)
+				.with(
+					Condition.and(Condition.condition().term(WallPillarBlock.AXIS, Direction.Axis.X, Direction.Axis.Y), Condition.condition().term(PipeBlock.NORTH, true)),
+					Variant.variant().with(VariantProperties.MODEL, up).with(VariantProperties.X_ROT, VariantProperties.Rotation.R90)
+				)
+				.with(
+					Condition.and(Condition.condition().term(WallPillarBlock.AXIS, Direction.Axis.X, Direction.Axis.Y), Condition.condition().term(PipeBlock.SOUTH, true)),
+					Variant.variant().with(VariantProperties.MODEL, down).with(VariantProperties.X_ROT, VariantProperties.Rotation.R90)
+				)
+		);
 	}
 
 	public void thorns(Block block) {

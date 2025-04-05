@@ -1,0 +1,40 @@
+{
+  "variants": {
+    "axis=x,diagonal=bottom_left": {
+      "model": "twilightforest:block/spiral_bricks/x_spiral_bottom_left"
+    },
+    "axis=x,diagonal=bottom_right": {
+      "model": "twilightforest:block/spiral_bricks/x_spiral_bottom_right"
+    },
+    "axis=x,diagonal=top_left": {
+      "model": "twilightforest:block/spiral_bricks/x_spiral_top_left"
+    },
+    "axis=x,diagonal=top_right": {
+      "model": "twilightforest:block/spiral_bricks/x_spiral_top_right"
+    },
+    "axis=y,diagonal=bottom_left": {
+      "model": "twilightforest:block/spiral_bricks/y_spiral_bottom_left"
+    },
+    "axis=y,diagonal=bottom_right": {
+      "model": "twilightforest:block/spiral_bricks/y_spiral_bottom_right"
+    },
+    "axis=y,diagonal=top_left": {
+      "model": "twilightforest:block/spiral_bricks/y_spiral_top_left"
+    },
+    "axis=y,diagonal=top_right": {
+      "model": "twilightforest:block/spiral_bricks/y_spiral_top_right"
+    },
+    "axis=z,diagonal=bottom_left": {
+      "model": "twilightforest:block/spiral_bricks/z_spiral_bottom_left"
+    },
+    "axis=z,diagonal=bottom_right": {
+      "model": "twilightforest:block/spiral_bricks/z_spiral_bottom_right"
+    },
+    "axis=z,diagonal=top_left": {
+      "model": "twilightforest:block/spiral_bricks/z_spiral_top_left"
+    },
+    "axis=z,diagonal=top_right": {
+      "model": "twilightforest:block/spiral_bricks/z_spiral_top_right"
+    }
+  }
+}
