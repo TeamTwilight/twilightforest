@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "twilightforest:block/nagastone_pillar_end_weathered",
+    "side": "twilightforest:block/nagastone_pillar_side_weathered_alt"
+  }
+}
