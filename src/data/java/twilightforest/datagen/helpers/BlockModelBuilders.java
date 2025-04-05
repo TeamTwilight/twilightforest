@@ -7,10 +7,8 @@ import net.minecraft.client.data.models.model.*;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.DirectionalBlock;
-import net.minecraft.world.level.block.PipeBlock;
-import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.CastleDoorBlock;
 import twilightforest.block.DirectionalRotatedPillarBlock;
@@ -68,6 +66,10 @@ public abstract class BlockModelBuilders extends BlockModelGenerators {
 		ResourceLocation inner = ModelTemplates.STAIRS_INNER.createWithSuffix(block, "_inner", mapping, this.modelOutput);
 		ResourceLocation straight = ModelTemplates.STAIRS_STRAIGHT.create(block, mapping, this.modelOutput);
 		ResourceLocation outer = ModelTemplates.STAIRS_OUTER.createWithSuffix(block, "_outer", mapping, this.modelOutput);
+		this.stairsBlock(block, straight, inner, outer);
+	}
+
+	public void stairsBlock(Block block, ResourceLocation straight, ResourceLocation inner, ResourceLocation outer) {
 		this.blockStateOutput.accept(createStairs(block, inner, straight, outer));
 		this.registerSimpleItemModel(block, straight);
 	}
@@ -98,7 +100,7 @@ public abstract class BlockModelBuilders extends BlockModelGenerators {
 			.put(TextureSlot.TOP, TwilightForestMod.prefix("block/nagastone_turn_top"));
 
 		ResourceLocation solid = TFModelTemplates.CUBE_BOTTOM_TOP.createWithSuffix(TFBlocks.NAGASTONE.get(), "_solid", solidMapping, this.modelOutput);
-		// todo 1.21.x cleanup: generate these models as well instead of ModelTemplates.create-ing them
+		// todo 1.21.x cleanup: generate these models as well instead of ModelTemplates.create().extend().parent-ing them
 		ResourceLocation down = ModelTemplates.create("twilightforest:naga_segment_down").extend().parent(TwilightForestMod.prefix("block/naga_segment/down")).build().createWithSuffix(TFBlocks.NAGASTONE.get(), "_down", mapping, this.modelOutput);
 		ResourceLocation up = ModelTemplates.create("twilightforest:naga_segment_up").extend().parent(TwilightForestMod.prefix("block/naga_segment/up")).build().createWithSuffix(TFBlocks.NAGASTONE.get(), "_up", mapping, this.modelOutput);
 		ResourceLocation horizontal = ModelTemplates.create("twilightforest:naga_segment_horizontal").extend().parent(TwilightForestMod.prefix("block/naga_segment/horizontal")).build().createWithSuffix(TFBlocks.NAGASTONE.get(), "_horizontal", mapping, this.modelOutput);
@@ -123,12 +125,38 @@ public abstract class BlockModelBuilders extends BlockModelGenerators {
 				.select(NagastoneVariant.SOLID, Variant.variant().with(VariantProperties.MODEL, solid))
 		));
 
+		TextureMapping faceMapping = TextureMapping.cube(TFBlocks.NAGASTONE_HEAD.get())
+			.put(TextureSlot.UP, TwilightForestMod.prefix("block/nagastone_top_tip"))
+			.put(TextureSlot.DOWN, TwilightForestMod.prefix("block/nagastone_bottom_tip"))
+			.put(TextureSlot.SOUTH, TwilightForestMod.prefix("block/nagastone_face_left"))
+			.put(TextureSlot.NORTH, TwilightForestMod.prefix("block/nagastone_face_right"))
+			.put(TextureSlot.WEST, TwilightForestMod.prefix("block/nagastone_face_front"))
+			.put(TextureSlot.EAST, TwilightForestMod.prefix("block/nagastone_cross_section"))
+			.put(TextureSlot.PARTICLE, TwilightForestMod.prefix("block/nagastone_face_front"));
+		ResourceLocation model = TFModelTemplates.CUBE.create(TFBlocks.NAGASTONE_HEAD.get(), faceMapping, this.modelOutput);
+
+		this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(TFBlocks.NAGASTONE_HEAD.get()).with(
+			PropertyDispatch.property(BlockStateProperties.HORIZONTAL_FACING)
+				.select(Direction.SOUTH, Variant.variant().with(VariantProperties.MODEL, model).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
+				.select(Direction.NORTH, Variant.variant().with(VariantProperties.MODEL, model).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
+				.select(Direction.WEST, Variant.variant().with(VariantProperties.MODEL, model).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R0))
+				.select(Direction.EAST, Variant.variant().with(VariantProperties.MODEL, model).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
+		));
+		this.itemModelOutput.accept(TFBlocks.NAGASTONE_HEAD.asItem(), ItemModelUtils.plainModel(model));
+
 		nagastonePillar(TFBlocks.NAGASTONE_PILLAR.get(), "");
 		nagastonePillar(TFBlocks.MOSSY_NAGASTONE_PILLAR.get(), "_mossy");
 		nagastonePillar(TFBlocks.CRACKED_NAGASTONE_PILLAR.get(), "_weathered");
 		etchedNagastone(TFBlocks.ETCHED_NAGASTONE.get(), "");
 		etchedNagastone(TFBlocks.MOSSY_ETCHED_NAGASTONE.get(), "_mossy");
 		etchedNagastone(TFBlocks.CRACKED_ETCHED_NAGASTONE.get(), "_weathered");
+
+		bisectedStairsBlock(TFBlocks.NAGASTONE_STAIRS_LEFT.get(), TwilightForestMod.prefix("block/etched_nagastone_left"), TwilightForestMod.prefix("block/stone_tiles"), TwilightForestMod.prefix("block/nagastone_bare"));
+		bisectedStairsBlock(TFBlocks.NAGASTONE_STAIRS_RIGHT.get(), TwilightForestMod.prefix("block/etched_nagastone_right"), TwilightForestMod.prefix("block/stone_tiles"), TwilightForestMod.prefix("block/nagastone_bare"));
+		bisectedStairsBlock(TFBlocks.MOSSY_NAGASTONE_STAIRS_LEFT.get(), TwilightForestMod.prefix("block/etched_nagastone_left_mossy"), TwilightForestMod.prefix("block/stone_tiles_mossy"), TwilightForestMod.prefix("block/nagastone_bare_mossy"));
+		bisectedStairsBlock(TFBlocks.MOSSY_NAGASTONE_STAIRS_RIGHT.get(), TwilightForestMod.prefix("block/etched_nagastone_right_mossy"), TwilightForestMod.prefix("block/stone_tiles_mossy"), TwilightForestMod.prefix("block/nagastone_bare_mossy"));
+		bisectedStairsBlock(TFBlocks.CRACKED_NAGASTONE_STAIRS_LEFT.get(), TwilightForestMod.prefix("block/etched_nagastone_left_weathered"), TwilightForestMod.prefix("block/stone_tiles_weathered"), TwilightForestMod.prefix("block/nagastone_bare_weathered"));
+		bisectedStairsBlock(TFBlocks.CRACKED_NAGASTONE_STAIRS_RIGHT.get(), TwilightForestMod.prefix("block/etched_nagastone_right_weathered"), TwilightForestMod.prefix("block/stone_tiles_weathered"), TwilightForestMod.prefix("block/nagastone_bare_weathered"));
 	}
 
 	private void nagastonePillar(Block block, String suffix) {
@@ -172,6 +200,20 @@ public abstract class BlockModelBuilders extends BlockModelGenerators {
 				.select(Direction.EAST, Variant.variant().with(VariantProperties.MODEL, model).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90).with(VariantProperties.X_ROT, VariantProperties.Rotation.R90))
 		));
 		this.itemModelOutput.accept(block.asItem(), ItemModelUtils.plainModel(model));
+	}
+
+	protected void bisectedStairsBlock(Block block, ResourceLocation side, ResourceLocation end, ResourceLocation middle) {
+		TextureMapping mapping = TextureMapping.cube(block)
+			.put(TextureSlot.BOTTOM, end)
+			.put(TextureSlot.TOP, end)
+			.put(TextureSlot.SIDE, side)
+			.put(TFTextureSlot.MIDDLE, middle)
+			.put(TextureSlot.PARTICLE, middle);
+
+		ResourceLocation inner = TFModelTemplates.BISECTED_STAIRS_INNER.createWithSuffix(block, "_inner", mapping, this.modelOutput);
+		ResourceLocation straight = TFModelTemplates.BISECTED_STAIRS_STRAIGHT.create(block, mapping, this.modelOutput);
+		ResourceLocation outer = TFModelTemplates.BISECTED_STAIRS_OUTER.createWithSuffix(block, "_outer", mapping, this.modelOutput);
+		this.stairsBlock(block, straight, inner, outer);
 	}
 
 	public void thorns(Block block) {
