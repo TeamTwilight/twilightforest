@@ -1,0 +1,29 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "twilightforest:block/thorn_rose",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "twilightforest:block/thorn_rose",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north": {
+      "model": "twilightforest:block/thorn_rose",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "twilightforest:block/thorn_rose",
+      "x": 270
+    },
+    "facing=up": {
+      "model": "twilightforest:block/thorn_rose"
+    },
+    "facing=west": {
+      "model": "twilightforest:block/thorn_rose",
+      "x": 270,
+      "y": 90
+    }
+  }
+}
