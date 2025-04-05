@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.PipeBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.CastleDoorBlock;
+import twilightforest.block.DirectionalRotatedPillarBlock;
 import twilightforest.block.NagastoneBlock;
 import twilightforest.client.model.block.connected.ConnectedTextureBuilder;
 import twilightforest.client.model.block.forcefield.ForceFieldModel;
@@ -121,6 +122,56 @@ public abstract class BlockModelBuilders extends BlockModelGenerators {
 				.select(NagastoneVariant.AXIS_Z, Variant.variant().with(VariantProperties.MODEL, horizontal).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
 				.select(NagastoneVariant.SOLID, Variant.variant().with(VariantProperties.MODEL, solid))
 		));
+
+		nagastonePillar(TFBlocks.NAGASTONE_PILLAR.get(), "");
+		nagastonePillar(TFBlocks.MOSSY_NAGASTONE_PILLAR.get(), "_mossy");
+		nagastonePillar(TFBlocks.CRACKED_NAGASTONE_PILLAR.get(), "_weathered");
+		etchedNagastone(TFBlocks.ETCHED_NAGASTONE.get(), "");
+		etchedNagastone(TFBlocks.MOSSY_ETCHED_NAGASTONE.get(), "_mossy");
+		etchedNagastone(TFBlocks.CRACKED_ETCHED_NAGASTONE.get(), "_weathered");
+	}
+
+	private void nagastonePillar(Block block, String suffix) {
+		TextureMapping mapping = TextureMapping.cube(TFBlocks.NAGASTONE.get())
+			.put(TextureSlot.END, TwilightForestMod.prefix("block/nagastone_pillar_end" + suffix))
+			.put(TextureSlot.SIDE, TwilightForestMod.prefix("block/nagastone_pillar_side" + suffix));
+		ResourceLocation model = TFModelTemplates.CUBE_COLUMN.create(block, mapping, this.modelOutput);
+
+		TextureMapping altMapping = TextureMapping.cube(TFBlocks.NAGASTONE.get())
+			.put(TextureSlot.END, TwilightForestMod.prefix("block/nagastone_pillar_end" + suffix))
+			.put(TextureSlot.SIDE, TwilightForestMod.prefix("block/nagastone_pillar_side" + suffix + "_alt"));
+		ResourceLocation reversed = TFModelTemplates.CUBE_COLUMN.createWithSuffix(block, "_alt", altMapping, this.modelOutput);
+
+		this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block).with(
+			PropertyDispatch.properties(RotatedPillarBlock.AXIS, DirectionalRotatedPillarBlock.REVERSED)
+				.select(Direction.Axis.X, true, Variant.variant().with(VariantProperties.MODEL, reversed).with(VariantProperties.X_ROT, VariantProperties.Rotation.R270).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
+				.select(Direction.Axis.Y, true, Variant.variant().with(VariantProperties.MODEL, reversed))
+				.select(Direction.Axis.Z, true, Variant.variant().with(VariantProperties.MODEL, reversed).with(VariantProperties.X_ROT, VariantProperties.Rotation.R270))
+
+				.select(Direction.Axis.X, false, Variant.variant().with(VariantProperties.MODEL, model).with(VariantProperties.X_ROT, VariantProperties.Rotation.R270).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
+				.select(Direction.Axis.Y, false, Variant.variant().with(VariantProperties.MODEL, model))
+				.select(Direction.Axis.Z, false, Variant.variant().with(VariantProperties.MODEL, model).with(VariantProperties.X_ROT, VariantProperties.Rotation.R270))
+		));
+		this.itemModelOutput.accept(block.asItem(), ItemModelUtils.plainModel(model));
+	}
+
+	private void etchedNagastone(Block block, String suffix) {
+		TextureMapping mapping = TextureMapping.cube(TFBlocks.NAGASTONE.get())
+			.put(TextureSlot.END, TwilightForestMod.prefix("block/stone_tiles" + suffix))
+			.put(TextureSlot.SIDE, TwilightForestMod.prefix("block/etched_nagastone_up" + suffix))
+			.put(TextureSlot.PARTICLE, TwilightForestMod.prefix("block/stone_tiles" + suffix));
+		ResourceLocation model = ModelTemplates.CUBE_COLUMN.create(block, mapping, this.modelOutput);
+
+		this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block).with(
+			PropertyDispatch.property(DirectionalBlock.FACING)
+				.select(Direction.UP, Variant.variant().with(VariantProperties.MODEL, model))
+				.select(Direction.DOWN, Variant.variant().with(VariantProperties.MODEL, model).with(VariantProperties.X_ROT, VariantProperties.Rotation.R180))
+				.select(Direction.SOUTH, Variant.variant().with(VariantProperties.MODEL, model).with(VariantProperties.X_ROT, VariantProperties.Rotation.R270))
+				.select(Direction.NORTH, Variant.variant().with(VariantProperties.MODEL, model).with(VariantProperties.X_ROT, VariantProperties.Rotation.R90))
+				.select(Direction.WEST, Variant.variant().with(VariantProperties.MODEL, model).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90).with(VariantProperties.X_ROT, VariantProperties.Rotation.R270))
+				.select(Direction.EAST, Variant.variant().with(VariantProperties.MODEL, model).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90).with(VariantProperties.X_ROT, VariantProperties.Rotation.R90))
+		));
+		this.itemModelOutput.accept(block.asItem(), ItemModelUtils.plainModel(model));
 	}
 
 	public void thorns(Block block) {
