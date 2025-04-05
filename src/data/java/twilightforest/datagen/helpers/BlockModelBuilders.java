@@ -8,6 +8,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.PipeBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import twilightforest.TwilightForestMod;
@@ -196,6 +197,21 @@ public abstract class BlockModelBuilders extends BlockModelGenerators {
 					Variant.variant().with(VariantProperties.MODEL, noSectionAlt)
 				)
 		);
+	}
+
+	public void directionalCrossModel(Block block, PlantType type) {
+		ResourceLocation resourcelocation = type.getCross().extend().renderType("cutout").build().create(block, TextureMapping.cross(block), this.modelOutput);
+
+		this.itemModelOutput.accept(block.asItem(), ItemModelUtils.plainModel(this.createFlatItemModelWithBlockTexture(block.asItem(), block)));
+		this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block).with(
+			PropertyDispatch.property(DirectionalBlock.FACING)
+				.select(Direction.UP, Variant.variant().with(VariantProperties.MODEL, resourcelocation))
+				.select(Direction.DOWN, Variant.variant().with(VariantProperties.MODEL, resourcelocation).with(VariantProperties.X_ROT, VariantProperties.Rotation.R180))
+				.select(Direction.SOUTH, Variant.variant().with(VariantProperties.MODEL, resourcelocation).with(VariantProperties.X_ROT, VariantProperties.Rotation.R270))
+				.select(Direction.NORTH, Variant.variant().with(VariantProperties.MODEL, resourcelocation).with(VariantProperties.X_ROT, VariantProperties.Rotation.R90))
+				.select(Direction.WEST, Variant.variant().with(VariantProperties.MODEL, resourcelocation).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90).with(VariantProperties.X_ROT, VariantProperties.Rotation.R270))
+				.select(Direction.EAST, Variant.variant().with(VariantProperties.MODEL, resourcelocation).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90).with(VariantProperties.X_ROT, VariantProperties.Rotation.R90))
+		));
 	}
 
 	public void forcefield(Block block) {

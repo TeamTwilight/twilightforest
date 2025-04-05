@@ -44,6 +44,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.thorns(TFBlocks.BROWN_THORNS.get());
 		this.thorns(TFBlocks.GREEN_THORNS.get());
 		this.thorns(TFBlocks.BURNT_THORNS.get());
+		this.directionalCrossModel(TFBlocks.THORN_ROSE.get(), PlantType.NOT_TINTED);
 
 		this.wrapBlockItem(TFBlocks.ANTIBUILDER.get(), block -> this.blockWithRenderType(block, "cutout", TFModelTemplates.ANTIBUILDER, TFTextureMapping::threeLayerBlock));
 		this.blockWithRenderType(TFBlocks.ANTIBUILT_BLOCK.get(), "cutout", TFModelTemplates.ANTIBUILT_BLOCK, TFTextureMapping::twoLayerBlock);
