@@ -31,20 +31,26 @@ public class BlockModelGenerator extends BlockModelBuilders {
 	public void run() {
 		TFBlockFamilies.getAllFamilies().filter(BlockFamily::shouldGenerateModel).forEach((family) -> this.family(family.getBaseBlock()).generateFor(family));
 
-		this.bossSpawner(TFBlocks.NAGA_BOSS_SPAWNER.get());
-		this.bossSpawner(TFBlocks.LICH_BOSS_SPAWNER.get());
-		this.bossSpawner(TFBlocks.MINOSHROOM_BOSS_SPAWNER.get());
-		this.bossSpawner(TFBlocks.HYDRA_BOSS_SPAWNER.get());
-		this.bossSpawner(TFBlocks.KNIGHT_PHANTOM_BOSS_SPAWNER.get());
-		this.bossSpawner(TFBlocks.UR_GHAST_BOSS_SPAWNER.get());
-		this.bossSpawner(TFBlocks.ALPHA_YETI_BOSS_SPAWNER.get());
-		this.bossSpawner(TFBlocks.SNOW_QUEEN_BOSS_SPAWNER.get());
-		this.bossSpawner(TFBlocks.FINAL_BOSS_BOSS_SPAWNER.get());
+		this.spawner(TFBlocks.NAGA_BOSS_SPAWNER.get(), "block/boss_spawner");
+		this.spawner(TFBlocks.LICH_BOSS_SPAWNER.get(), "block/boss_spawner");
+		this.spawner(TFBlocks.MINOSHROOM_BOSS_SPAWNER.get(), "block/boss_spawner");
+		this.spawner(TFBlocks.HYDRA_BOSS_SPAWNER.get(), "block/boss_spawner");
+		this.spawner(TFBlocks.KNIGHT_PHANTOM_BOSS_SPAWNER.get(), "block/boss_spawner");
+		this.spawner(TFBlocks.UR_GHAST_BOSS_SPAWNER.get(), "block/boss_spawner");
+		this.spawner(TFBlocks.ALPHA_YETI_BOSS_SPAWNER.get(), "block/boss_spawner");
+		this.spawner(TFBlocks.SNOW_QUEEN_BOSS_SPAWNER.get(), "block/boss_spawner");
+		this.spawner(TFBlocks.FINAL_BOSS_BOSS_SPAWNER.get(), "block/boss_spawner");
+		this.spawner(TFBlocks.SINISTER_SPAWNER.get(), "block/sinister_spawner");
 
 		this.thorns(TFBlocks.BROWN_THORNS.get());
 		this.thorns(TFBlocks.GREEN_THORNS.get());
 		this.thorns(TFBlocks.BURNT_THORNS.get());
 		this.directionalCrossModel(TFBlocks.THORN_ROSE.get(), PlantType.NOT_TINTED);
+		this.wrapBlockItem(TFBlocks.DEADROCK.get(), this::createTrivialCube);
+		this.wrapBlockItem(TFBlocks.CRACKED_DEADROCK.get(), this::createTrivialCube);
+		this.wrapBlockItem(TFBlocks.WEATHERED_DEADROCK.get(), this::createTrivialCube);
+
+		this.nagaStone();
 
 		this.wrapBlockItem(TFBlocks.ANTIBUILDER.get(), block -> this.blockWithRenderType(block, "cutout", TFModelTemplates.ANTIBUILDER, TFTextureMapping::threeLayerBlock));
 		this.blockWithRenderType(TFBlocks.ANTIBUILT_BLOCK.get(), "cutout", TFModelTemplates.ANTIBUILT_BLOCK, TFTextureMapping::twoLayerBlock);
