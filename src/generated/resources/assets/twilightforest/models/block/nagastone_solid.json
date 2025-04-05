@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "twilightforest:block/nagastone_bottom_long",
+    "side": "twilightforest:block/nagastone_long_side",
+    "top": "twilightforest:block/nagastone_turn_top"
+  }
+}
