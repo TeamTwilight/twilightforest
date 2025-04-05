@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 import com.mojang.serialization.JsonOps;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
@@ -27,6 +28,7 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import org.apache.commons.lang3.text.WordUtils;
 import twilightforest.TwilightForestMod;
 import twilightforest.config.TFConfig;
+import twilightforest.init.TFKeyBindsCategories;
 
 import java.util.HashMap;
 import java.util.List;
@@ -99,7 +101,6 @@ public abstract class TFLangProvider extends LanguageProvider {
 		this.add("block.twilightforest." + woodPrefix + "_hanging_sign", woodName + " Hanging Sign");
 		this.add("block.twilightforest." + woodPrefix + "_wall_hanging_sign", woodName + " Wall Hanging Sign");
 		this.add("block.twilightforest." + woodPrefix + "_drying_rack", woodName + " Drying Rack");
-
 	}
 
 	public void addBannerPattern(String patternPrefix, String patternName) {
@@ -186,6 +187,14 @@ public abstract class TFLangProvider extends LanguageProvider {
 
 	public void addScreenMessage(String key, String name) {
 		this.add("gui.twilightforest." + key, name);
+	}
+
+	public void addKeyBindCategory(TFKeyBindsCategories.Category category, String name) {
+		this.add(category.internalName(), name);
+	}
+
+	public void addKeyMapping(KeyMapping keyMapping, String name) {
+		this.add(keyMapping.getName(), name);
 	}
 
 	public void createTip(String key, String translation) {

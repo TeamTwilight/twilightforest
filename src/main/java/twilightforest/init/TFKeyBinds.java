@@ -7,25 +7,29 @@ import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import org.lwjgl.glfw.GLFW;
 import twilightforest.TwilightForestMod;
 
-public abstract class TFKeyBinds {
-	public static class Categories {
-		public static final String TRAVELLERS_GEAR = addCategoryPrefix("travellers_gear");
-	}
+import java.util.HashSet;
+import java.util.Set;
 
-	public static final KeyMapping RED_THREAD_VISION_KEY = new KeyMapping(addPrefix("red_thread_vision"), InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, Categories.TRAVELLERS_GEAR);
-	public static final KeyMapping ZOOM_KEY = new KeyMapping(addPrefix("zoom"), InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_Z, Categories.TRAVELLERS_GEAR);
+public abstract class TFKeyBinds {
+	private static final Set<KeyMapping> KEY_MAPPINGS = new HashSet<>();
+
+	public static final KeyMapping RED_THREAD_VISION_KEY = register("red_thread_vision", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, TFKeyBindsCategories.TRAVELLERS_GEAR);
+	public static final KeyMapping ZOOM_KEY = register("zoom", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_Z, TFKeyBindsCategories.TRAVELLERS_GEAR);
+	public static final KeyMapping SWAP_HOTBAR_KEY = register("swap_hotbar", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_X, TFKeyBindsCategories.TRAVELLERS_GEAR);
 
 	@SubscribeEvent
 	public static void registerKeyBindings(RegisterKeyMappingsEvent event) {
-		event.register(RED_THREAD_VISION_KEY);
-		event.register(ZOOM_KEY);
+		KEY_MAPPINGS.forEach(event::register);
+	}
+
+	@SuppressWarnings("SameParameterValue")
+	private static KeyMapping register(String name, InputConstants.Type type, int key, TFKeyBindsCategories.Category category) {
+		KeyMapping keyMapping = new KeyMapping(addPrefix(name), type, key, category.internalName());
+		KEY_MAPPINGS.add(keyMapping);
+		return keyMapping;
 	}
 
 	private static String addPrefix(String s) {
 		return "key." + TwilightForestMod.ID + "." + s;
-	}
-
-	private static String addCategoryPrefix(String s) {
-		return addPrefix("categories." + s);
 	}
 }

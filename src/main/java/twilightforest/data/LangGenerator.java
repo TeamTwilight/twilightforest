@@ -1186,10 +1186,11 @@ public class LangGenerator extends TFLangProvider {
 		this.add("config.twilightforest.multiplayer_fight_adjuster.more_health", "More Health");
 		this.add("config.twilightforest.multiplayer_fight_adjuster.more_loot_and_health", "More Loot & Health");
 
-		this.add(TFKeyBinds.Categories.TRAVELLERS_GEAR, "Twilight Forest — Traveller's Gear");
+		this.addKeyBindCategory(TFKeyBindsCategories.TRAVELLERS_GEAR, "Twilight Forest — Traveller's Gear");
 
-		this.add(TFKeyBinds.RED_THREAD_VISION_KEY.getName(), "See Red Thread with Goggles");
-		this.add(TFKeyBinds.ZOOM_KEY.getName(), "Zoom With Goggles");
+		this.addKeyMapping(TFKeyBinds.RED_THREAD_VISION_KEY, "See Red Thread with Goggles");
+		this.addKeyMapping(TFKeyBinds.ZOOM_KEY, "Zoom With Goggles");
+		this.addKeyMapping(TFKeyBinds.SWAP_HOTBAR_KEY, "Swap Hotbar");
 		this.addAttribute(TFAttributes.TRAVEL_FOOD_EFFICIENCY, "Travel Food Efficiency");
 	}
 }
