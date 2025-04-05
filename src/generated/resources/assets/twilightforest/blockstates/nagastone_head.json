@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "twilightforest:block/nagastone_head",
+      "y": 180
+    },
+    "facing=north": {
+      "model": "twilightforest:block/nagastone_head",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "twilightforest:block/nagastone_head",
+      "y": 270
+    },
+    "facing=west": {
+      "model": "twilightforest:block/nagastone_head",
+      "y": 0
+    }
+  }
+}
