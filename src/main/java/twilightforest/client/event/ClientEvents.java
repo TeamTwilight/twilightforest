@@ -31,6 +31,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
@@ -399,6 +400,12 @@ public class ClientEvents {
 
 	private static void updateTravellersSwapHotbar(InputEvent.Key event) {
 		Player player = Minecraft.getInstance().player;
+		if (!(player instanceof LocalPlayer localPlayer)) return;
+		ItemStack legArmor = localPlayer.getItemBySlot(EquipmentSlot.LEGS);
+		ItemContainerContents containerContents = legArmor.get(DataComponents.CONTAINER);
+		if (!legArmor.has(TFDataComponents.TRAVELLERS_HAS_BELT) || containerContents == null)
+			return;
+
 		boolean isClicked = false;
 		boolean changed = false;
 		while (TFKeyBinds.SWAP_HOTBAR_KEY.consumeClick()) {
@@ -407,7 +414,7 @@ public class ClientEvents {
 		}
 		// make it work in inventory menu
 		boolean hasClicked = isClicked || !changed && event.getKey() == TFKeyBinds.SWAP_HOTBAR_KEY.getKey().getValue() && event.getAction() == 1;
-		if (!(player instanceof LocalPlayer localPlayer) || !hasClicked)
+		if (!hasClicked)
 			return;
 		localPlayer.connection.send(new SwapHotbarPacket());
 	}
