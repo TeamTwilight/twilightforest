@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "rotated=false": {
+      "model": "twilightforest:block/terrorcotta_lines_0"
+    },
+    "rotated=true": {
+      "model": "twilightforest:block/terrorcotta_lines_90"
+    }
+  }
+}
