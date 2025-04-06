@@ -20,6 +20,8 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.protocol.game.ServerboundContainerClickPacket;
+import net.minecraft.network.protocol.game.ServerboundContainerSlotStateChangedPacket;
 import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraft.sounds.Music;
 import net.minecraft.sounds.Musics;
@@ -31,6 +33,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
@@ -69,6 +72,7 @@ import twilightforest.init.TFKeyBinds;
 import twilightforest.item.*;
 import twilightforest.network.PerformDoubleJumpPacket;
 import twilightforest.network.PerformSidestepPacket;
+import twilightforest.network.SwapHotbarPacket;
 import twilightforest.util.HolderMatcher;
 
 import java.time.LocalDate;
@@ -110,6 +114,7 @@ public class ClientEvents {
 		NeoForge.EVENT_BUS.addListener(ClientEvents::updateBowFOV);
 		NeoForge.EVENT_BUS.addListener(ClientEvents::updateTravellersZoomFOV);
 		NeoForge.EVENT_BUS.addListener(ClientEvents::handleTravellersStealth);
+		NeoForge.EVENT_BUS.addListener(ClientEvents::updateTravellersSwapHotbar);
 		NeoForge.EVENT_BUS.addListener(ClientEvents::updateTravellersRedThreadAttachment);
 		NeoForge.EVENT_BUS.addListener(ClientEvents::travellersArmorEffects);
 		NeoForge.EVENT_BUS.addListener(ClientEvents::playerTravellersArmorEffects);
@@ -395,7 +400,23 @@ public class ClientEvents {
 		player.setInvisible(true);
 	}
 
-	private static void updateTravellersRedThreadAttachment(ClientTickEvent.Post event) {
+	private static void updateTravellersSwapHotbar(InputEvent.Key event) {
+		Player player = Minecraft.getInstance().player;
+		boolean isClicked = false;
+		boolean changed = false;
+		while (TFKeyBinds.SWAP_HOTBAR_KEY.consumeClick()) {
+			isClicked = !isClicked;  // clickCount can be even, so we may not swap hotbar
+			changed = true;
+		}
+		// make it work in inventory
+		boolean hasClicked = isClicked || !changed && event.getKey() == TFKeyBinds.SWAP_HOTBAR_KEY.getKey().getValue() && event.getAction() == 1;
+		if (!(player instanceof LocalPlayer localPlayer) || !hasClicked)
+			return;
+		TravellersArmorBeltItem.travellersTrySwapHotbar(player);
+		localPlayer.connection.send(new SwapHotbarPacket());
+	}
+
+	private static void updateTravellersRedThreadAttachment(InputEvent.Key event) {
 		Player player = Minecraft.getInstance().player;
 		if (player == null)
 			return;
