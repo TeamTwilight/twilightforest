@@ -1,3 +1,5 @@
+import groovy.json.JsonOutput
+import groovy.json.JsonSlurper
 import net.neoforged.moddevgradle.internal.RunGameTask
 
 buildscript {
@@ -297,10 +299,16 @@ processResources {
 	def ver = project.version
 	filesMatching("META-INF/neoforge.mods.toml") {
 		expand([
-			'file'           : [
+			'file': [
 				'jarVersion': ver
 			]
 		])
+	}
+	exclude ".cache"
+	doLast {
+		fileTree(dir: getOutputs().getFiles().getAsPath(), includes: ["**/*.json", "**/*.mcmeta"]).each {
+			File file -> file.setText(JsonOutput.toJson(new JsonSlurper().parse(file)))
+		}
 	}
 }
 
