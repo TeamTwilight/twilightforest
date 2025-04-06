@@ -305,8 +305,11 @@ processResources {
 		])
 	}
 	exclude ".cache"
+	def lazyTree = providers.provider {
+		fileTree(dir: getOutputs().getFiles().getAsPath(), includes: ["**/*.json", "**/*.mcmeta"])
+	}
 	doLast {
-		fileTree(dir: getOutputs().getFiles().getAsPath(), includes: ["**/*.json", "**/*.mcmeta"]).each {
+		lazyTree.get().each {
 			File file -> file.setText(JsonOutput.toJson(new JsonSlurper().parse(file)))
 		}
 	}
