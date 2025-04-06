@@ -30,8 +30,8 @@ public class TravellersBeltTooltipComponent implements ClientTooltipComponent {
 		guiGraphics.blitSprite(BACKGROUND_SPRITE, x, y, this.backgroundWidth(), this.backgroundHeight());
 		int k = 0;
 
-		for (int gridY = 0; gridY < gridSizeX(); gridY++) {
-			for (int gridX = 0; gridX < gridSizeY(); gridX++) {
+		for (int gridX = 0; gridX < gridSizeX(); gridX++) {
+			for (int gridY = 0; gridY < gridSizeY(); gridY++) {
 				int renderX = x + gridX * 18 + 1;
 				int renderY = y + gridY * 20 + 1;
 				this.renderSlot(renderX, renderY, k++, guiGraphics, font);
