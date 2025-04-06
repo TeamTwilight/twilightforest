@@ -72,6 +72,8 @@ import twilightforest.client.renderer.tooltip.TravellersBeltTooltipComponent;
 import twilightforest.components.item.PotionFlaskComponent;
 import twilightforest.init.*;
 import twilightforest.item.*;
+import twilightforest.item.travellers_gear.TravellersArmorBeltItem;
+import twilightforest.item.travellers_gear.TravellersArmorItem;
 import twilightforest.util.woods.TFWoodTypes;
 
 import java.util.List;

@@ -68,6 +68,7 @@ import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFDimension;
 import twilightforest.init.TFKeyBinds;
 import twilightforest.item.*;
+import twilightforest.item.travellers_gear.TravellersArmorItem;
 import twilightforest.network.PerformDoubleJumpPacket;
 import twilightforest.network.PerformSidestepPacket;
 import twilightforest.network.SwapHotbarPacket;

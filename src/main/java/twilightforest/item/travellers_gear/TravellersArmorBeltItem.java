@@ -1,4 +1,4 @@
-package twilightforest.item;
+package twilightforest.item.travellers_gear;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;

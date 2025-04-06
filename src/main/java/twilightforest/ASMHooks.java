@@ -55,7 +55,7 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import twilightforest.beans.Autowired;
 import twilightforest.init.*;
-import twilightforest.item.TravellersArmorItem;
+import twilightforest.item.travellers_gear.TravellersArmorItem;
 import twilightforest.util.ArmorUtil;
 import twilightforest.util.multiparts.MultipartEntityUtil;
 import twilightforest.block.CloudBlock;
@@ -401,11 +401,11 @@ public class ASMHooks {
 	 * {@link net.minecraft.world.entity.player.Player#jumpFromGround()}
 	 */
 
-	public static float getFoodExhaustionMultiplier(float f, Player player) {
-		AttributeInstance attributeInstance = player.getAttributes().getInstance(TFAttributes.TRAVEL_FOOD_EFFICIENCY);
-		if (attributeInstance == null)
+	public static float getFoodExhaustion(float f, Player player) {
+		Float divisor = player.getItemBySlot(EquipmentSlot.CHEST).get(TFDataComponents.EFFICIENT_EATER);
+		if (divisor == null)
 			return 1;
-		return (float) (f * (1 / attributeInstance.getValue()));
+		return f * (1 / divisor);
 	}
 
 	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

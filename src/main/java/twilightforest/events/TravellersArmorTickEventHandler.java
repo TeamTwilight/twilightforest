@@ -12,7 +12,7 @@ import twilightforest.beans.Component;
 import twilightforest.beans.PostConstruct;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFDataComponents;
-import twilightforest.item.TravellersArmorItem;
+import twilightforest.item.travellers_gear.TravellersArmorItem;
 
 @Component
 public class TravellersArmorTickEventHandler {

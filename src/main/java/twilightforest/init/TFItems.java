@@ -26,6 +26,8 @@ import twilightforest.data.tags.CustomTagGenerator;
 import twilightforest.enums.extensions.TFBoatTypeEnumExtension;
 import twilightforest.enums.extensions.TFRarityEnumExtension;
 import twilightforest.item.*;
+import twilightforest.item.travellers_gear.TravellersArmorBeltItem;
+import twilightforest.item.travellers_gear.TravellersArmorItem;
 import twilightforest.util.TFToolMaterials;
 
 public class TFItems {

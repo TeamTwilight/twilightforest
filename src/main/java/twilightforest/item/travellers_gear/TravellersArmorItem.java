@@ -1,9 +1,8 @@
-package twilightforest.item;
+package twilightforest.item.travellers_gear;
 
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.DisconnectionDetails;
@@ -20,12 +19,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
-import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.attachment.AttachmentType;
@@ -37,7 +34,6 @@ import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.TFArmorModel;
 import twilightforest.client.model.armor.TravellersLeggingsModel;
 import twilightforest.client.renderer.armor.TFArmorRenderer;
-import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.*;
 import twilightforest.network.ParticlePacket;
 
@@ -264,22 +260,14 @@ public class TravellersArmorItem extends ArmorItem {
 
 	public static Properties gogglesProperties(Properties properties) {
 		return properties
-			.component(TFDataComponents.ZOOM_ABILITY_MODIFIER, 0.3F)
-			.component(TFDataComponents.RED_THREAD_VISION_ENABLE, true)
-			.component(TFDataComponents.AUTO_REPAIR_PROBABILITY, 0.001F);
+			.component(TFDataComponents.ZOOM_ABILITY_MODIFIER, 0.3F);
 	}
 
 	public static Properties chestProperties(Properties properties) {
 		return properties
 			.component(TFDataComponents.TRAVELLERS_HAS_CHESTPLATE, true)
-			.component(TFDataComponents.STEALTH_CROUCHING_ENABLE, true)
-			.component(TFDataComponents.HASTE_AMPLIFIER, 1)
-			.component(TFDataComponents.ARROW_MAGNETISM, true)
-			.component(TFDataComponents.PERFECT_DODGE_PROBABILITY, 0.1F)
-			.component(TFDataComponents.AUTO_REPAIR_PROBABILITY, 0.001F)
 			.attributes(defaultArmorProperties(Type.CHESTPLATE)
 				.add(Attributes.WATER_MOVEMENT_EFFICIENCY, TFAttributeModifiers.TRAVELLERS_SWIFT_SWIM, EquipmentSlotGroup.CHEST)
-				.add(TFAttributes.TRAVEL_FOOD_EFFICIENCY, TFAttributeModifiers.EFFICIENT_EATER, EquipmentSlotGroup.CHEST)
 				.build());
 	}
 
@@ -291,19 +279,11 @@ public class TravellersArmorItem extends ArmorItem {
 	public static Properties wingsProperties(Properties properties) {
 		return properties
 			.component(TFDataComponents.TRAVELLERS_HAS_WINGS, true)
-			.component(TFDataComponents.HIGH_JUMP_AMPLIFIER, 1)
-			.component(TFDataComponents.HAS_DOUBLE_JUMP, true)
-			.component(TFDataComponents.CONTROLLED_FALLING_MULTIPLIER, 1 - 1 / 6F)
-			.component(TFDataComponents.AUTO_REPAIR_PROBABILITY, 0.001F)
-			.component(TFDataComponents.AGILE_RANGER_MODIFIER, 5F)
-			.component(TFDataComponents.SIDESTEP_COOLDOWN, 3 * 20L);
+			.component(TFDataComponents.HIGH_JUMP_AMPLIFIER, 1);
 	}
 
 	public static Properties bootsProperties(Properties properties) {
 		return properties
-			.component(TFDataComponents.WATER_WALK_ENABLE, true)
-			.component(TFDataComponents.SLIMY_SOLES_COEFFICIENT, 0.5F)
-			.component(TFDataComponents.FORWARD_BOOST_MULTIPLIER, 1.4)
 			.component(TFDataComponents.AUTO_REPAIR_PROBABILITY, 0.001F)
 			.attributes(defaultArmorProperties(Type.BOOTS)
 				.add(Attributes.STEP_HEIGHT, TFAttributeModifiers.TRAVELLERS_HIGH_STEP,  EquipmentSlotGroup.FEET)

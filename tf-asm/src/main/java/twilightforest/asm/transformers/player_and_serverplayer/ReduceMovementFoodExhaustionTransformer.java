@@ -4,6 +4,7 @@ import cpw.mods.modlauncher.api.ITransformer;
 import cpw.mods.modlauncher.api.ITransformerVotingContext;
 import cpw.mods.modlauncher.api.TargetType;
 import cpw.mods.modlauncher.api.TransformerVoteResult;
+import net.minecraft.world.entity.player.Player;
 import net.neoforged.coremod.api.ASMAPI;
 import org.jetbrains.annotations.NotNull;
 import org.objectweb.asm.Opcodes;
@@ -14,7 +15,7 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 /**
- * {@link twilightforest.ASMHooks#getFoodExhaustionMultiplier}
+ * {@link twilightforest.ASMHooks#getFoodExhaustion}
  */
 public class ReduceMovementFoodExhaustionTransformer implements ITransformer<MethodNode> {
 	@Override
@@ -42,7 +43,7 @@ public class ReduceMovementFoodExhaustionTransformer implements ITransformer<Met
 				new MethodInsnNode(
 					Opcodes.INVOKESTATIC,
 					"twilightforest/ASMHooks",
-					"getFoodExhaustionMultiplier",
+					"getFoodExhaustion",
 					"(FLnet/minecraft/world/entity/player/Player;)F"
 				)
 			)

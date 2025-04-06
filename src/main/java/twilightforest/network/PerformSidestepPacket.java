@@ -5,7 +5,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import twilightforest.TwilightForestMod;
-import twilightforest.item.TravellersArmorItem;
+import twilightforest.item.travellers_gear.TravellersArmorItem;
 
 public record PerformSidestepPacket(boolean isLeftStepSide) implements CustomPacketPayload {
 	public static final Type<twilightforest.network.PerformSidestepPacket> TYPE = new Type<>(TwilightForestMod.prefix("perform_sidestep_packet"));
