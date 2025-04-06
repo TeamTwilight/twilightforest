@@ -5,18 +5,14 @@ import net.minecraft.client.data.models.ItemModelOutput;
 import net.minecraft.client.data.models.blockstates.*;
 import net.minecraft.client.data.models.model.*;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.DirectionalBlock;
-import net.minecraft.world.level.block.PipeBlock;
-import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.CastleDoorBlock;
-import twilightforest.block.DirectionalRotatedPillarBlock;
-import twilightforest.block.NagastoneBlock;
-import twilightforest.block.WallPillarBlock;
+import twilightforest.block.*;
 import twilightforest.client.model.block.connected.ConnectedTextureBuilder;
 import twilightforest.client.model.block.forcefield.ForceFieldModel;
 import twilightforest.client.model.block.forcefield.ForceFieldModelBuilder;
@@ -297,6 +293,124 @@ public abstract class BlockModelBuilders extends BlockModelGenerators {
 					Variant.variant().with(VariantProperties.MODEL, down).with(VariantProperties.X_ROT, VariantProperties.Rotation.R90)
 				)
 		);
+	}
+
+	public void terrorcotta() {
+		this.rotationallySpecialColumn(TFBlocks.TERRORCOTTA_ARCS.get());
+
+		PropertyDispatch.C1<Direction> directionDispach = PropertyDispatch.property(GlazedTerracottaBlock.FACING);
+		boolean firstCurve = true;
+		for (Direction direction : new Direction[] { Direction.SOUTH, Direction.NORTH, Direction.WEST, Direction.EAST }) {
+			ResourceLocation location = this.makeTerrorcottaCurvesModel("terrorcotta_curves", direction.get2DDataValue());
+			directionDispach = directionDispach.select(direction, Variant.variant().with(VariantProperties.MODEL, location));
+			if (firstCurve) {
+				this.itemModelOutput.accept(TFBlocks.TERRORCOTTA_CURVES.asItem(), ItemModelUtils.plainModel(location));
+				firstCurve = false;
+			}
+		}
+		this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(TFBlocks.TERRORCOTTA_CURVES.get()).with(directionDispach));
+
+		ResourceLocation rotated = this.makeTerrorcottaLinesModel("terrorcotta_lines", true);
+		ResourceLocation unRotated = this.makeTerrorcottaLinesModel("terrorcotta_lines", false);
+
+		this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(TFBlocks.TERRORCOTTA_LINES.get()).with(
+			PropertyDispatch.property(BinaryRotatedBlock.ROTATED)
+				.select(true,  Variant.variant().with(VariantProperties.MODEL, rotated))
+				.select(false,  Variant.variant().with(VariantProperties.MODEL, unRotated))
+		));
+
+		this.itemModelOutput.accept(TFBlocks.TERRORCOTTA_LINES.asItem(), ItemModelUtils.plainModel(rotated));
+	}
+
+	private ResourceLocation makeTerrorcottaCurvesModel(String type, int rotation) {
+		TextureMapping mapping = TextureMapping.cube(TFBlocks.TERRORCOTTA_CURVES.get())
+			.put(TextureSlot.UP, TwilightForestMod.prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.UP)))
+			.put(TextureSlot.DOWN, TwilightForestMod.prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.DOWN)))
+			.put(TextureSlot.SOUTH, TwilightForestMod.prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.SOUTH)))
+			.put(TextureSlot.NORTH, TwilightForestMod.prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.NORTH)))
+			.put(TextureSlot.WEST, TwilightForestMod.prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.WEST)))
+			.put(TextureSlot.EAST, TwilightForestMod.prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.EAST)))
+			.put(TextureSlot.PARTICLE, TwilightForestMod.prefix("block/" + type + "_a"));
+
+		return TFModelTemplates.CUBE.create(TwilightForestMod.prefix("block/" + type + "_" + (rotation * 90)), mapping, this.modelOutput);
+	}
+
+	@NotNull
+	private static String curvesSuffixForFacing(int blockRotation, Direction blockFace) {
+		int rotationForFace = switch (blockFace) {
+			case UP -> 2 - blockRotation;
+			case DOWN -> 3 + blockRotation;
+			case SOUTH -> switch (blockRotation) {
+				case 3 -> 0;
+				case 2 -> 3;
+				case 1 -> 1;
+				default -> 2;
+			};
+			case WEST -> switch (blockRotation) {
+				case 3 -> 1;
+				case 2 -> 3;
+				case 1 -> 0;
+				default -> 2;
+			};
+			case NORTH -> switch (blockRotation) {
+				case 3 -> 3;
+				case 2 -> 0;
+				case 1 -> 2;
+				default -> 1;
+			};
+			case EAST -> switch (blockRotation) {
+				case 3 -> 2;
+				case 2 -> 0;
+				case 1 -> 3;
+				default -> 1;
+			};
+		};
+
+		return switch (Math.floorMod(rotationForFace, 4)) {
+			case 3 -> "_d";
+			case 2 -> "_c";
+			case 1 -> "_b";
+			default -> "_a";
+		};
+	}
+
+	private ResourceLocation makeTerrorcottaLinesModel(String type, boolean rotated) {
+		TextureMapping mapping = TextureMapping.cube(TFBlocks.TERRORCOTTA_CURVES.get())
+			.put(TextureSlot.UP, TwilightForestMod.prefix("block/" + type + linesSuffixForFacing(rotated, Direction.UP)))
+			.put(TextureSlot.DOWN, TwilightForestMod.prefix("block/" + type + linesSuffixForFacing(rotated, Direction.DOWN)))
+			.put(TextureSlot.SOUTH, TwilightForestMod.prefix("block/" + type + linesSuffixForFacing(rotated, Direction.SOUTH)))
+			.put(TextureSlot.NORTH, TwilightForestMod.prefix("block/" + type + linesSuffixForFacing(rotated, Direction.NORTH)))
+			.put(TextureSlot.WEST, TwilightForestMod.prefix("block/" + type + linesSuffixForFacing(rotated, Direction.WEST)))
+			.put(TextureSlot.EAST, TwilightForestMod.prefix("block/" + type + linesSuffixForFacing(rotated, Direction.EAST)))
+			.put(TextureSlot.PARTICLE, TwilightForestMod.prefix("block/" + type + "_a"));
+
+		return TFModelTemplates.CUBE.create(TwilightForestMod.prefix("block/" + type + "_" + (rotated ? 90 : 0)), mapping, this.modelOutput);
+	}
+
+	@NotNull
+	private static String linesSuffixForFacing(boolean blockRotation, Direction blockFace) {
+		Vec3i normal = blockFace.getUnitVec3i();
+		int axisDirection = normal.getX() + normal.getY() + normal.getZ();
+		// Biblically accurate XOR
+		return axisDirection > 0 == ((blockFace.getAxis() == Direction.Axis.Z) != blockRotation) ? "_a" : "_b";
+	}
+
+	public void rotationallySpecialColumn(Block block) {
+		ResourceLocation sideA = TextureMapping.getBlockTexture(block, "_side_a");
+		ResourceLocation sideB = TextureMapping.getBlockTexture(block, "_side_b");
+		ResourceLocation end = TextureMapping.getBlockTexture(block, "_end");
+
+		ResourceLocation xModel = TFModelTemplates.CUBE_COLUMN_ROTATIONALLY_SPECIAL_X.create(block, TextureMapping.cube(block).put(TextureSlot.END, end).put(TFTextureSlot.SIDE_A, sideA).put(TFTextureSlot.SIDE_B, sideB), this.modelOutput);
+		ResourceLocation yModel = TFModelTemplates.CUBE_COLUMN.create(block, TextureMapping.cube(block).put(TextureSlot.END, end).put(TextureSlot.SIDE, sideA), this.modelOutput);
+		ResourceLocation zModel = TFModelTemplates.CUBE_COLUMN_ROTATIONALLY_SPECIAL_Z.create(block, TextureMapping.cube(block).put(TextureSlot.END, end).put(TFTextureSlot.SIDE_A, sideA).put(TFTextureSlot.SIDE_B, sideB), this.modelOutput);
+
+		this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block).with(
+			PropertyDispatch.property(RotatedPillarBlock.AXIS)
+				.select(Direction.Axis.X, Variant.variant().with(VariantProperties.MODEL, xModel))
+				.select(Direction.Axis.Y, Variant.variant().with(VariantProperties.MODEL, yModel))
+				.select(Direction.Axis.Z, Variant.variant().with(VariantProperties.MODEL, zModel))
+		));
+		this.itemModelOutput.accept(block.asItem(), ItemModelUtils.plainModel(yModel));
 	}
 
 	public void thorns(Block block) {

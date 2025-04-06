@@ -10,6 +10,9 @@ public class TFTextureSlot {
 	public static final TextureSlot CANDELABRA = TextureSlot.create("candelabra");
 	public static final TextureSlot MIDDLE = TextureSlot.create("middle");
 
+	public static final TextureSlot SIDE_A = TextureSlot.create("side_a");
+	public static final TextureSlot SIDE_B = TextureSlot.create("side_b");
+
 
 	public static final TextureSlot CTM_BASE = TextureSlot.create("base_texture");
 	public static final TextureSlot CTM_OVERLAY = TextureSlot.create("overlay_texture");
