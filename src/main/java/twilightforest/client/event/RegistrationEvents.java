@@ -57,7 +57,7 @@ import twilightforest.client.model.block.patch.PatchModelLoader;
 import twilightforest.client.model.entity.*;
 import twilightforest.client.model.item.TrollsteinnModel;
 import twilightforest.client.particle.*;
-import twilightforest.client.renderer.PotionFlaskTooltipComponent;
+import twilightforest.client.renderer.tooltip.PotionFlaskTooltipComponent;
 import twilightforest.client.renderer.armor.TFArmorRenderer;
 import twilightforest.client.renderer.armor.TFSimpleArmorRenderer;
 import twilightforest.client.renderer.entity.RisingZombieRenderer;
@@ -68,6 +68,7 @@ import twilightforest.client.renderer.entity.layers.IceLayer;
 import twilightforest.client.renderer.entity.layers.ShieldLayer;
 import twilightforest.client.renderer.map.ConqueredMapIconRenderer;
 import twilightforest.client.renderer.map.MagicMapPlayerIconRenderer;
+import twilightforest.client.renderer.tooltip.TravellersBeltTooltipComponent;
 import twilightforest.components.item.PotionFlaskComponent;
 import twilightforest.init.*;
 import twilightforest.item.*;
@@ -107,6 +108,7 @@ public class RegistrationEvents {
 		bus.addListener(TFShaders::registerShaders);
 
 		bus.addListener(RegisterClientTooltipComponentFactoriesEvent.class, event -> event.register(BrittleFlaskItem.Tooltip.class, PotionFlaskTooltipComponent::new));
+		bus.addListener(RegisterClientTooltipComponentFactoriesEvent.class, event -> event.register(TravellersArmorBeltItem.Tooltip.class, TravellersBeltTooltipComponent::new));
 	}
 
 	private static void registerModelLoaders(ModelEvent.RegisterGeometryLoaders event) {
