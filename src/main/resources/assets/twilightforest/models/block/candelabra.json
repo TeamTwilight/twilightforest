@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:block/block",
+  "parent": "block/block",
   "render_type": "minecraft:cutout",
   "textures": {
     "candelabra": "twilightforest:block/candelabra",

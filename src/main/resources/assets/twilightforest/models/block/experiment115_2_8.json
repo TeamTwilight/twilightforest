@@ -1,32 +1,33 @@
 {
-    "parent": "block/block",
-    "render_type": "minecraft:cutout",
-    "textures": {
-        "particle": "#bottom",
-        "bottom": "twilightforest:block/experiment115/experiment115_bottom",
-        "inside": "twilightforest:block/experiment115/experiment115_inner",
-        "top": "twilightforest:block/experiment115/experiment115_top",
-        "top_2": "twilightforest:block/blank",
-        "side": "twilightforest:block/experiment115/experiment115_side"
+  "parent": "block/block",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "bottom": "twilightforest:block/experiment115_bottom",
+    "inside": "twilightforest:block/experiment115_inner",
+    "top": "twilightforest:block/experiment115_top",
+    "top_2": "twilightforest:block/blank",
+    "side": "twilightforest:block/experiment115_side",
+    "particle": "#bottom"
+  },
+  "elements": [
+    {
+      "from": [1, 0, 1],
+      "to": [8, 8, 8],
+      "faces": {
+        "north": {"uv": [8, 8, 15, 16], "texture": "#side"},
+        "east": {"uv": [8, 8, 15, 16], "texture": "#inside"},
+        "south": {"uv": [1, 8, 8, 16], "texture": "#inside"},
+        "west": {"uv": [1, 8, 8, 16], "texture": "#side"},
+        "up": {"uv": [1, 1, 8, 8], "texture": "#top"},
+        "down": {"uv": [1, 8, 8, 15], "texture": "#bottom", "cullface": "down"}
+      }
     },
-    "elements": [
-        {
-            "from": [ 1, 0, 1 ],
-            "to": [ 8, 8, 8 ],
-            "faces": {
-                "down":  { "texture": "#bottom", "cullface": "down" },
-                "up":    { "texture": "#top" },
-                "north": { "texture": "#side" },
-                "south": { "texture": "#inside" },
-                "west":  { "texture": "#side" },
-                "east": { "texture": "#inside" }
-            }
-        }, {
-            "from": [ 1, 8, 1 ],
-            "to": [ 8, 8, 8 ],
-            "faces": {
-                "up":    { "texture": "#top_2", "neoforge_data": { "block_light": 15, "sky_light": 15 } }
-            }
-        }
-    ]
+    {
+      "from": [1, 8, 1],
+      "to": [8, 8, 8],
+      "faces": {
+        "up": {"uv": [1, 1, 8, 8], "texture": "#top_2"}
+      }
+    }
+  ]
 }
