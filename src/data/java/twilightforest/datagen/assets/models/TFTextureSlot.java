@@ -17,6 +17,8 @@ public class TFTextureSlot {
 	public static final TextureSlot OVERHANG = TextureSlot.create("overhang");
 	public static final TextureSlot CLIMBABLE = TextureSlot.create("climbable");
 
+	public static final TextureSlot RUNE = TextureSlot.create("rune");
+
 	public static final TextureSlot CTM_BASE = TextureSlot.create("base_texture");
 	public static final TextureSlot CTM_OVERLAY = TextureSlot.create("overlay_texture");
 	public static final TextureSlot CTM_OVERLAY_CONNECTED = TextureSlot.create("overlay_connected");

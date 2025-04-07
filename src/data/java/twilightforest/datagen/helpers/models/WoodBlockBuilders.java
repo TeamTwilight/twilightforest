@@ -230,7 +230,7 @@ public abstract class WoodBlockBuilders extends BlockModelGenerators {
 		this.generateBlockItem(core);
 	}
 
-	public void createChiseledBookshelf(Block shelf) {
+	public void generateChiseledBookshelf(Block shelf) {
 		ResourceLocation resourcelocation = ModelLocationUtils.getModelLocation(shelf);
 		MultiPartGenerator multipartgenerator = MultiPartGenerator.multiPart(shelf);
 		List.of(

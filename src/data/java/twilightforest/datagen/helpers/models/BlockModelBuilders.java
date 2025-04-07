@@ -1,5 +1,6 @@
 package twilightforest.datagen.helpers.models;
 
+import com.google.errorprone.annotations.Var;
 import net.minecraft.client.data.models.ItemModelOutput;
 import net.minecraft.client.data.models.blockstates.*;
 import net.minecraft.client.data.models.model.*;
@@ -21,6 +22,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
+import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.block.connected.ConnectedTextureBuilder;
 import twilightforest.client.model.block.forcefield.ForceFieldModel;
 import twilightforest.client.model.block.forcefield.ForceFieldModelBuilder;
@@ -675,7 +677,7 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 		this.registerSimpleFlatItemModel(block);
 	}
 
-	public void createPaneBlock(Block glassBlock, Block paneBlock) {
+	public void generatePaneBlock(Block glassBlock, Block paneBlock) {
 		TextureMapping mapping = new TextureMapping().put(TextureSlot.PANE, TextureMapping.getBlockTexture(glassBlock)).put(TextureSlot.EDGE, TextureMapping.getBlockTexture(glassBlock));
 		ResourceLocation post = ModelTemplates.STAINED_GLASS_PANE_POST.extend().renderType("translucent").build().create(paneBlock, mapping, this.modelOutput);
 		ResourceLocation side = ModelTemplates.STAINED_GLASS_PANE_SIDE.extend().renderType("translucent").build().create(paneBlock, mapping, this.modelOutput);
@@ -709,5 +711,14 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 						Variant.variant().with(VariantProperties.MODEL, noSide).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
 					)
 			);
+	}
+
+	public void generateRuneBlock(Block runeBlock, int tint) {
+		Variant[] variants = new Variant[8];
+		for (int i = 0; i < 8; i++) {
+			variants[i] = Variant.variant().with(VariantProperties.MODEL, TFModelTemplates.CASTLE_RUNE_TEMPLATE.createWithSuffix(runeBlock, "_" + i, TextureMapping.cube(TFBlocks.CASTLE_BRICK.get()).put(TFTextureSlot.RUNE, TwilightForestMod.prefix("block/castleblock_magic_" + i)), this.modelOutput));
+		}
+		this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(runeBlock, variants));
+		this.itemModelOutput.accept(runeBlock.asItem(), ItemModelUtils.tintedModel(ModelLocationUtils.getModelLocation(runeBlock).withSuffix("_0"), ItemModelUtils.constantTint(tint)));
 	}
 }

@@ -87,11 +87,37 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.basicCtmBlock(TFBlocks.ARCTIC_FUR_BLOCK.get());
 		//TODO aurora blocks
 		this.wrapBlockItem(TFBlocks.BEANSTALK_LEAVES.get(), block -> this.blockWithRenderType(block, "cutout_mipped", ModelTemplates.CUBE_ALL, u -> TextureMapping.cube(Blocks.AZALEA_LEAVES)));
-		this.castleDoor(TFBlocks.BLUE_CASTLE_DOOR.get());
-		this.forcefield(TFBlocks.BLUE_FORCE_FIELD.get());
+
+		this.wrapBlockItem(TFBlocks.CASTLE_BRICK.get(), this::createTrivialCube);
+		this.wrapBlockItem(TFBlocks.WORN_CASTLE_BRICK.get(), this::createTrivialCube);
+		this.wrapBlockItem(TFBlocks.CRACKED_CASTLE_BRICK.get(), this::createTrivialCube);
+		this.wrapBlockItem(TFBlocks.MOSSY_CASTLE_BRICK.get(), this::createTrivialCube);
+		this.wrapBlockItem(TFBlocks.THICK_CASTLE_BRICK.get(), this::createTrivialCube);
+		this.wrapBlockItem(TFBlocks.CASTLE_ROOF_TILE.get(), this::createTrivialCube);
+		this.wrapBlockItem(TFBlocks.ENCASED_CASTLE_BRICK_PILLAR.get(), block -> this.createRotatedPillarWithHorizontalVariant(block, TexturedModel.COLUMN_ALT, TexturedModel.COLUMN_HORIZONTAL_ALT));
+		this.wrapBlockItem(TFBlocks.ENCASED_CASTLE_BRICK_TILE.get(), block -> this.blockStateOutput.accept(createSimpleBlock(block, ModelTemplates.CUBE_ALL.create(block, TextureMapping.cube(TextureMapping.getBlockTexture(TFBlocks.ENCASED_CASTLE_BRICK_PILLAR.get(), "_top")), this.modelOutput))));
 		this.wrapBlockItem(TFBlocks.BOLD_CASTLE_BRICK_PILLAR.get(), block -> this.createRotatedPillarWithHorizontalVariant(block, TexturedModel.COLUMN_ALT, TexturedModel.COLUMN_HORIZONTAL_ALT));
-		this.generateStairs(TFBlocks.BOLD_CASTLE_BRICK_STAIRS.get(), TextureMapping.cube(TFBlocks.BOLD_CASTLE_BRICK_TILE.get()));
 		this.wrapBlockItem(TFBlocks.BOLD_CASTLE_BRICK_TILE.get(), this::createTrivialCube);
+		this.generateStairs(TFBlocks.CASTLE_BRICK_STAIRS.get(), TextureMapping.cube(TFBlocks.BOLD_CASTLE_BRICK_TILE.get()));
+		this.generateStairs(TFBlocks.WORN_CASTLE_BRICK_STAIRS.get(), TextureMapping.cube(TFBlocks.BOLD_CASTLE_BRICK_TILE.get()));
+		this.generateStairs(TFBlocks.CRACKED_CASTLE_BRICK_STAIRS.get(), TextureMapping.cube(TFBlocks.BOLD_CASTLE_BRICK_TILE.get()));
+		this.generateStairs(TFBlocks.MOSSY_CASTLE_BRICK_STAIRS.get(), TextureMapping.cube(TFBlocks.BOLD_CASTLE_BRICK_TILE.get()));
+		this.bisectedStairsBlock(TFBlocks.ENCASED_CASTLE_BRICK_STAIRS.get(), TextureMapping.getBlockTexture(TFBlocks.ENCASED_CASTLE_BRICK_PILLAR.get(), "_h"), TextureMapping.getBlockTexture(TFBlocks.CASTLE_BRICK.get()), TextureMapping.getBlockTexture(TFBlocks.CASTLE_ROOF_TILE.get()));
+		this.generateStairs(TFBlocks.BOLD_CASTLE_BRICK_STAIRS.get(), TextureMapping.cube(TFBlocks.BOLD_CASTLE_BRICK_TILE.get()));
+		this.generateRuneBlock(TFBlocks.PINK_CASTLE_RUNE_BRICK.get(), 16711935);
+		this.generateRuneBlock(TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get(), 16776960);
+		this.generateRuneBlock(TFBlocks.BLUE_CASTLE_RUNE_BRICK.get(), 65535);
+		this.generateRuneBlock(TFBlocks.VIOLET_CASTLE_RUNE_BRICK.get(), 4915330);
+
+		this.castleDoor(TFBlocks.PINK_CASTLE_DOOR.get());
+		this.castleDoor(TFBlocks.YELLOW_CASTLE_DOOR.get());
+		this.castleDoor(TFBlocks.BLUE_CASTLE_DOOR.get());
+		this.castleDoor(TFBlocks.VIOLET_CASTLE_DOOR.get());
+		this.forcefield(TFBlocks.PINK_FORCE_FIELD.get());
+		this.forcefield(TFBlocks.ORANGE_FORCE_FIELD.get());
+		this.forcefield(TFBlocks.GREEN_FORCE_FIELD.get());
+		this.forcefield(TFBlocks.BLUE_FORCE_FIELD.get());
+		this.forcefield(TFBlocks.VIOLET_FORCE_FIELD.get());
 
 		var builtMapping = TextureMapping.cube(TFBlocks.BUILT_BLOCK.get());
 		ResourceLocation builtOff = TFModelTemplates.FULLBRIGHT_BLOCK.create(TFBlocks.BUILT_BLOCK.get(), builtMapping, this.modelOutput);
@@ -184,9 +210,9 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.generateHangingSign(TFBlocks.CANOPY_HANGING_SIGN.get(), TFBlocks.CANOPY_WALL_HANGING_SIGN.get(), TFBlocks.STRIPPED_CANOPY_LOG.get());
 		this.generateBanister(TFBlocks.CANOPY_BANISTER.get(), canopy);
 		this.wrapBlockItem(TFBlocks.CANOPY_BOOKSHELF.get(), block -> this.blockStateOutput.accept(createSimpleBlock(block, ModelTemplates.CUBE_COLUMN.create(block, TextureMapping.column(TextureMapping.getBlockTexture(block), TextureMapping.getBlockTexture(TFBlocks.CANOPY_PLANKS.get())), this.modelOutput))));
-		this.createChiseledBookshelf(TFBlocks.CHISELED_CANOPY_BOOKSHELF.get());
+		this.generateChiseledBookshelf(TFBlocks.CHISELED_CANOPY_BOOKSHELF.get());
 		this.wrapBlockItem(TFBlocks.CANOPY_WINDOW.get(), block -> this.simpleBlockWithRenderType(block, "translucent"));
-		this.createPaneBlock(TFBlocks.CANOPY_WINDOW.get(), TFBlocks.CANOPY_WINDOW_PANE.get());
+		this.generatePaneBlock(TFBlocks.CANOPY_WINDOW.get(), TFBlocks.CANOPY_WINDOW_PANE.get());
 
 		this.wrapBlockItem(TFBlocks.MANGROVE_LOG.get(), block -> this.generateLog(block, TextureMapping.logColumn(TFBlocks.MANGROVE_LOG.get())));
 		this.wrapBlockItem(TFBlocks.MANGROVE_WOOD.get(), block -> this.generateWood(block, TextureMapping.logColumn(TFBlocks.MANGROVE_LOG.get())));
