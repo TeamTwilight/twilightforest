@@ -1,7 +1,9 @@
 package twilightforest.data;
 
+import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
@@ -29,6 +31,7 @@ import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFItems;
 import twilightforest.item.recipe.*;
+import twilightforest.item.travellers_gear.modifiers.TravellersModifiers;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -595,6 +598,8 @@ public class CraftingGenerator extends CraftingDataHelper {
 			))
 			.addRepairIngredient(Items.ROTTEN_FLESH)
 			.save(output, locEquip(TFItems.ZOMBIE_SCEPTER.getId().getPath()));
+		Either<ShapedRecipePattern, NonNullList<Ingredient>> pattern = Either.right(NonNullList.of(Ingredient.of(ItemStack.EMPTY), Ingredient.of(TFItems.TRAVELLERS_WINGS), Ingredient.of(Items.DIAMOND), Ingredient.of(Items.DIAMOND)));
+		output.accept(locEquip(TFItems.TRAVELLERS_WINGS.getId().getPath()), new TravellersGearModifierRecipe(pattern, TravellersModifiers.CONTROLLED_FALL_MODIFIER), null);
 
 		DryingRecipeBuilder.drying(Ingredient.of(Tags.Items.FOODS_COOKED_MEAT), new ItemStack(Items.LEATHER), 8)
 			.unlockedBy("has_meat", has(Tags.Items.FOODS_COOKED_MEAT))

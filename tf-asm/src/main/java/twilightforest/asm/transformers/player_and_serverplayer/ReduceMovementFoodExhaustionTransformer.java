@@ -4,7 +4,6 @@ import cpw.mods.modlauncher.api.ITransformer;
 import cpw.mods.modlauncher.api.ITransformerVotingContext;
 import cpw.mods.modlauncher.api.TargetType;
 import cpw.mods.modlauncher.api.TransformerVoteResult;
-import net.minecraft.world.entity.player.Player;
 import net.neoforged.coremod.api.ASMAPI;
 import org.jetbrains.annotations.NotNull;
 import org.objectweb.asm.Opcodes;

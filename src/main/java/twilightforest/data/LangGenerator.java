@@ -1191,6 +1191,6 @@ public class LangGenerator extends TFLangProvider {
 		this.addKeyMapping(TFKeyBinds.RED_THREAD_VISION_KEY, "See Red Thread with Goggles");
 		this.addKeyMapping(TFKeyBinds.ZOOM_KEY, "Zoom With Goggles");
 		this.addKeyMapping(TFKeyBinds.SWAP_HOTBAR_KEY, "Swap Hotbar");
-		this.addAttribute(TFAttributes.TRAVEL_FOOD_EFFICIENCY, "Travel Food Efficiency");
+//		this.addAttribute(TFAttributes.TRAVEL_FOOD_EFFICIENCY, "Travel Food Efficiency");
 	}
 }
