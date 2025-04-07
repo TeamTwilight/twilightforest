@@ -38,4 +38,11 @@ public class TFTextureMapping {
 		}
 		return mapping.put(TFTextureSlot.CTM_OVERLAY, overlay).put(TFTextureSlot.CTM_OVERLAY_CONNECTED, overlay.withSuffix("_ctm"));
 	}
+
+	public static TextureMapping sideDoor(Block block) {
+		return new TextureMapping()
+			.put(TextureSlot.TOP, TextureMapping.getBlockTexture(block, "_top"))
+			.put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(block, "_bottom"))
+			.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_side"));
+	}
 }

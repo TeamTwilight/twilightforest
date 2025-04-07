@@ -1,5 +1,6 @@
 package twilightforest.datagen.assets.models;
 
+import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelOutput;
 import net.minecraft.client.data.models.blockstates.*;
 import net.minecraft.client.data.models.model.*;
@@ -15,7 +16,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
 import twilightforest.client.renderer.special.*;
 import twilightforest.util.TFBlockFamilies;
-import twilightforest.datagen.helpers.BlockModelBuilders;
+import twilightforest.datagen.helpers.models.BlockModelBuilders;
 import twilightforest.init.TFBlocks;
 
 import java.util.function.BiConsumer;
@@ -29,7 +30,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 
 	@Override
 	public void run() {
-		TFBlockFamilies.getAllFamilies().filter(BlockFamily::shouldGenerateModel).forEach((family) -> this.family(family.getBaseBlock()).generateFor(family));
+		this.generateWoodBlocks();
 
 		this.spawner(TFBlocks.NAGA_BOSS_SPAWNER.get(), "block/boss_spawner");
 		this.spawner(TFBlocks.LICH_BOSS_SPAWNER.get(), "block/boss_spawner");
@@ -70,7 +71,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.castleDoor(TFBlocks.BLUE_CASTLE_DOOR.get());
 		this.forcefield(TFBlocks.BLUE_FORCE_FIELD.get());
 		this.wrapBlockItem(TFBlocks.BOLD_CASTLE_BRICK_PILLAR.get(), block -> this.createRotatedPillarWithHorizontalVariant(block, TexturedModel.COLUMN_ALT, TexturedModel.COLUMN_HORIZONTAL_ALT));
-		this.stairsBlock(TFBlocks.BOLD_CASTLE_BRICK_STAIRS.get());
+		this.generateStairs(TFBlocks.BOLD_CASTLE_BRICK_STAIRS.get(), TextureMapping.cube(TFBlocks.BOLD_CASTLE_BRICK_TILE.get()));
 		this.wrapBlockItem(TFBlocks.BOLD_CASTLE_BRICK_TILE.get(), this::createTrivialCube);
 
 		var builtMapping = TextureMapping.cube(TFBlocks.BUILT_BLOCK.get());
@@ -136,28 +137,173 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.createChest(TFBlocks.SORTING_TRAPPED_CHEST.get(), TFBlocks.SORTING_PLANKS.get(), TwilightForestMod.prefix("sorting/trapped"), false);
 	}
 
-	public <B extends Block> void generateSpecialModel(B block, Block particleBlock, Function<B, ItemModel.Unbaked> itemModel) {
-		this.createParticleOnlyBlock(block, particleBlock);
-		this.itemModelOutput.accept(block.asItem(), itemModel.apply(block));
-	}
+	private void generateWoodBlocks() {
+		this.wrapBlockItem(TFBlocks.TWILIGHT_OAK_LOG.get(), block -> this.generateLog(block, TextureMapping.column(TFBlocks.TWILIGHT_OAK_LOG.get())));
+		this.wrapBlockItem(TFBlocks.TWILIGHT_OAK_WOOD.get(), block -> this.generateWood(block, TextureMapping.column(TFBlocks.TWILIGHT_OAK_LOG.get())));
+		this.wrapBlockItem(TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.get(), block -> this.generateLog(block, TextureMapping.column(TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.get())));
+		this.wrapBlockItem(TFBlocks.STRIPPED_TWILIGHT_OAK_WOOD.get(), block -> this.generateLog(block, TextureMapping.column(TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.get())));
+		this.generateHollowLog(TFBlocks.TWILIGHT_OAK_LOG.get(), TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.get(), TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_VERTICAL.get(), TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_CLIMBABLE.get());
+		this.generateSapling(TFBlocks.TWILIGHT_OAK_SAPLING.get(), TFBlocks.POTTED_TWILIGHT_OAK_SAPLING.get(), BlockModelGenerators.PlantType.NOT_TINTED);
+		this.generateLeaves(TFBlocks.TWILIGHT_OAK_LEAVES.get(), TextureMapping.cube(Blocks.OAK_LEAVES), -12012264);
+		this.wrapBlockItem(TFBlocks.TWILIGHT_OAK_PLANKS.get(), this::createTrivialCube);
+		TextureMapping twilightOak = TextureMapping.cube(TFBlocks.TWILIGHT_OAK_PLANKS.get());
+		this.generateStairs(TFBlocks.TWILIGHT_OAK_STAIRS.get(), twilightOak);
+		this.generateSlab(TFBlocks.TWILIGHT_OAK_SLAB.get(), TFBlocks.TWILIGHT_OAK_PLANKS.get(), twilightOak);
+		this.generateButton(TFBlocks.TWILIGHT_OAK_BUTTON.get(), twilightOak);
+		this.generateFence(TFBlocks.TWILIGHT_OAK_FENCE.get(), twilightOak);
+		this.generateFenceGate(TFBlocks.TWILIGHT_OAK_GATE.get(), twilightOak);
+		this.generatePressurePlate(TFBlocks.TWILIGHT_OAK_PLATE.get(), twilightOak);
+		this.generateTrapdoor(TFBlocks.TWILIGHT_OAK_TRAPDOOR.get(), true, "solid");
+		this.generateDoor(TFBlocks.TWILIGHT_OAK_DOOR.get(), false, "solid");
+		this.generateSign(TFBlocks.TWILIGHT_OAK_SIGN.get(), TFBlocks.TWILIGHT_WALL_SIGN.get(), twilightOak);
+		this.generateHangingSign(TFBlocks.TWILIGHT_OAK_HANGING_SIGN.get(), TFBlocks.TWILIGHT_OAK_WALL_HANGING_SIGN.get(), TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.get());
+		this.generateBanister(TFBlocks.TWILIGHT_OAK_BANISTER.get(), twilightOak);
 
-	public void generateTrophy(TrophyBlock floor, TrophyWallBlock wall, ItemModel.Unbaked backplate) {
-		this.generateTrophy(floor, wall, backplate, "template_trophy");
-	}
+		this.wrapBlockItem(TFBlocks.CANOPY_LOG.get(), block -> this.generateLog(block, TextureMapping.column(TFBlocks.CANOPY_LOG.get())));
+		this.wrapBlockItem(TFBlocks.CANOPY_WOOD.get(), block -> this.generateWood(block, TextureMapping.column(TFBlocks.CANOPY_LOG.get())));
+		this.wrapBlockItem(TFBlocks.STRIPPED_CANOPY_LOG.get(), block -> this.generateLog(block, TextureMapping.column(TFBlocks.STRIPPED_CANOPY_LOG.get())));
+		this.wrapBlockItem(TFBlocks.STRIPPED_CANOPY_WOOD.get(), block -> this.generateLog(block, TextureMapping.column(TFBlocks.STRIPPED_CANOPY_LOG.get())));
+		this.generateHollowLog(TFBlocks.CANOPY_LOG.get(), TFBlocks.STRIPPED_CANOPY_LOG.get(), TFBlocks.HOLLOW_CANOPY_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_CANOPY_LOG_VERTICAL.get(), TFBlocks.HOLLOW_CANOPY_LOG_CLIMBABLE.get());
+		this.generateSapling(TFBlocks.CANOPY_SAPLING.get(), TFBlocks.POTTED_CANOPY_SAPLING.get(), BlockModelGenerators.PlantType.NOT_TINTED);
+		this.generateLeaves(TFBlocks.CANOPY_LEAVES.get(), TextureMapping.cube(Blocks.OAK_LEAVES), -12012264);
+		this.wrapBlockItem(TFBlocks.CANOPY_PLANKS.get(), this::createTrivialCube);
+		TextureMapping canopy = TextureMapping.cube(TFBlocks.CANOPY_PLANKS.get());
+		this.generateStairs(TFBlocks.CANOPY_STAIRS.get(), canopy);
+		this.generateSlab(TFBlocks.CANOPY_SLAB.get(), TFBlocks.CANOPY_PLANKS.get(), canopy);
+		this.generateButton(TFBlocks.CANOPY_BUTTON.get(), canopy);
+		this.generateFence(TFBlocks.CANOPY_FENCE.get(), canopy);
+		this.generateFenceGate(TFBlocks.CANOPY_GATE.get(), canopy);
+		this.generatePressurePlate(TFBlocks.CANOPY_PLATE.get(), canopy);
+		this.generateTrapdoor(TFBlocks.CANOPY_TRAPDOOR.get(), true, "solid");
+		this.generateDoor(TFBlocks.CANOPY_DOOR.get(), false, "solid");
+		this.generateSign(TFBlocks.CANOPY_SIGN.get(), TFBlocks.CANOPY_WALL_SIGN.get(), canopy);
+		this.generateHangingSign(TFBlocks.CANOPY_HANGING_SIGN.get(), TFBlocks.CANOPY_WALL_HANGING_SIGN.get(), TFBlocks.STRIPPED_CANOPY_LOG.get());
+		this.generateBanister(TFBlocks.CANOPY_BANISTER.get(), canopy);
 
-	public void generateTrophy(TrophyBlock floor, TrophyWallBlock wall, ItemModel.Unbaked backplate, String existingTrophy) {
-		ResourceLocation template = ModelLocationUtils.decorateBlockModelLocation("skull");
-		this.blockStateOutput.accept(createSimpleBlock(floor, template));
-		this.blockStateOutput.accept(createSimpleBlock(wall, template));
-		var itemTrophy = ItemModelUtils.specialModel(ModelLocationUtils.decorateItemModelLocation("twilightforest:" + existingTrophy), new TrophySpecialRenderer.Unbaked(floor.getVariant()));
-		this.itemModelOutput.accept(floor.asItem(), ItemModelUtils.select(new DisplayContext(), itemTrophy,
-			ItemModelUtils.when(ItemDisplayContext.GUI, ItemModelUtils.composite(backplate, itemTrophy))));
-	}
+		this.wrapBlockItem(TFBlocks.MANGROVE_LOG.get(), block -> this.generateLog(block, TextureMapping.column(TFBlocks.MANGROVE_LOG.get())));
+		this.wrapBlockItem(TFBlocks.MANGROVE_WOOD.get(), block -> this.generateWood(block, TextureMapping.column(TFBlocks.MANGROVE_LOG.get())));
+		this.wrapBlockItem(TFBlocks.STRIPPED_MANGROVE_LOG.get(), block -> this.generateLog(block, TextureMapping.column(TFBlocks.STRIPPED_MANGROVE_LOG.get())));
+		this.wrapBlockItem(TFBlocks.STRIPPED_MANGROVE_WOOD.get(), block -> this.generateLog(block, TextureMapping.column(TFBlocks.STRIPPED_MANGROVE_LOG.get())));
+		this.generateHollowLog(TFBlocks.MANGROVE_LOG.get(), TFBlocks.STRIPPED_MANGROVE_LOG.get(), TFBlocks.HOLLOW_MANGROVE_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_MANGROVE_LOG_VERTICAL.get(), TFBlocks.HOLLOW_MANGROVE_LOG_CLIMBABLE.get());
+		this.generateSapling(TFBlocks.MANGROVE_SAPLING.get(), TFBlocks.POTTED_MANGROVE_SAPLING.get(), BlockModelGenerators.PlantType.NOT_TINTED);
+		this.generateLeaves(TFBlocks.MANGROVE_LEAVES.get(), TextureMapping.cube(Blocks.OAK_LEAVES), -12012264);
+		this.wrapBlockItem(TFBlocks.MANGROVE_PLANKS.get(), this::createTrivialCube);
+		TextureMapping mangrove = TextureMapping.cube(TFBlocks.MANGROVE_PLANKS.get());
+		this.generateStairs(TFBlocks.MANGROVE_STAIRS.get(), mangrove);
+		this.generateSlab(TFBlocks.MANGROVE_SLAB.get(), TFBlocks.MANGROVE_PLANKS.get(), mangrove);
+		this.generateButton(TFBlocks.MANGROVE_BUTTON.get(), mangrove);
+		this.generateFence(TFBlocks.MANGROVE_FENCE.get(), mangrove);
+		this.generateFenceGate(TFBlocks.MANGROVE_GATE.get(), mangrove);
+		this.generatePressurePlate(TFBlocks.MANGROVE_PLATE.get(), mangrove);
+		this.generateTrapdoor(TFBlocks.MANGROVE_TRAPDOOR.get(), true, "solid");
+		this.generateDoor(TFBlocks.MANGROVE_DOOR.get(), false, "solid");
+		this.generateSign(TFBlocks.MANGROVE_SIGN.get(), TFBlocks.MANGROVE_WALL_SIGN.get(), mangrove);
+		this.generateHangingSign(TFBlocks.MANGROVE_HANGING_SIGN.get(), TFBlocks.MANGROVE_WALL_HANGING_SIGN.get(), TFBlocks.STRIPPED_MANGROVE_LOG.get());
+		this.generateBanister(TFBlocks.MANGROVE_BANISTER.get(), mangrove);
 
-	public void generateSkullCandle(AbstractSkullCandleBlock floor, AbstractSkullCandleBlock wall) {
-		ResourceLocation template = ModelLocationUtils.decorateBlockModelLocation("skull");
-		this.blockStateOutput.accept(createSimpleBlock(floor, template));
-		this.blockStateOutput.accept(createSimpleBlock(wall, template));
-		this.itemModelOutput.accept(floor.asItem(), ItemModelUtils.specialModel(TwilightForestMod.prefix("item/template_skull_candle"), new SkullCandleSpecialRenderer.Unbaked(floor.getType())));
+		this.wrapBlockItem(TFBlocks.DARK_LOG.get(), block -> this.generateLog(block, TextureMapping.column(TFBlocks.DARK_LOG.get())));
+		this.wrapBlockItem(TFBlocks.DARK_WOOD.get(), block -> this.generateWood(block, TextureMapping.column(TFBlocks.DARK_LOG.get())));
+		this.wrapBlockItem(TFBlocks.STRIPPED_DARK_LOG.get(), block -> this.generateLog(block, TextureMapping.column(TFBlocks.STRIPPED_DARK_LOG.get())));
+		this.wrapBlockItem(TFBlocks.STRIPPED_DARK_WOOD.get(), block -> this.generateLog(block, TextureMapping.column(TFBlocks.STRIPPED_DARK_LOG.get())));
+		this.generateHollowLog(TFBlocks.DARK_LOG.get(), TFBlocks.STRIPPED_DARK_LOG.get(), TFBlocks.HOLLOW_DARK_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_DARK_LOG_VERTICAL.get(), TFBlocks.HOLLOW_DARK_LOG_CLIMBABLE.get());
+		this.generateSapling(TFBlocks.DARKWOOD_SAPLING.get(), TFBlocks.POTTED_DARKWOOD_SAPLING.get(), BlockModelGenerators.PlantType.NOT_TINTED);
+		this.generateLeaves(TFBlocks.DARK_LEAVES.get(), TextureMapping.cube(Blocks.OAK_LEAVES), -12012264);
+		this.wrapBlockItem(TFBlocks.DARK_PLANKS.get(), this::createTrivialCube);
+		TextureMapping dark = TextureMapping.cube(TFBlocks.DARK_PLANKS.get());
+		this.generateStairs(TFBlocks.DARK_STAIRS.get(), dark);
+		this.generateSlab(TFBlocks.DARK_SLAB.get(), TFBlocks.DARK_PLANKS.get(), dark);
+		this.generateButton(TFBlocks.DARK_BUTTON.get(), dark);
+		this.generateFence(TFBlocks.DARK_FENCE.get(), dark);
+		this.generateFenceGate(TFBlocks.DARK_GATE.get(), dark);
+		this.generatePressurePlate(TFBlocks.DARK_PLATE.get(), dark);
+		this.generateTrapdoor(TFBlocks.DARK_TRAPDOOR.get(), true, "solid");
+		this.generateDoor(TFBlocks.DARK_DOOR.get(), false, "solid");
+		this.generateSign(TFBlocks.DARK_SIGN.get(), TFBlocks.DARK_WALL_SIGN.get(), dark);
+		this.generateHangingSign(TFBlocks.DARK_HANGING_SIGN.get(), TFBlocks.DARK_WALL_HANGING_SIGN.get(), TFBlocks.STRIPPED_DARK_LOG.get());
+		this.generateBanister(TFBlocks.DARK_BANISTER.get(), dark);
+
+		this.wrapBlockItem(TFBlocks.TIME_LOG.get(), block -> this.generateLog(block, TextureMapping.column(TFBlocks.TIME_LOG.get())));
+		this.wrapBlockItem(TFBlocks.TIME_WOOD.get(), block -> this.generateWood(block, TextureMapping.column(TFBlocks.TIME_LOG.get())));
+		this.wrapBlockItem(TFBlocks.STRIPPED_TIME_LOG.get(), block -> this.generateLog(block, TextureMapping.column(TFBlocks.STRIPPED_TIME_LOG.get())));
+		this.wrapBlockItem(TFBlocks.STRIPPED_TIME_WOOD.get(), block -> this.generateLog(block, TextureMapping.column(TFBlocks.STRIPPED_TIME_LOG.get())));
+		this.generateHollowLog(TFBlocks.TIME_LOG.get(), TFBlocks.STRIPPED_TIME_LOG.get(), TFBlocks.HOLLOW_TIME_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_TIME_LOG_VERTICAL.get(), TFBlocks.HOLLOW_TIME_LOG_CLIMBABLE.get());
+		this.generateSapling(TFBlocks.TIME_SAPLING.get(), TFBlocks.POTTED_TIME_SAPLING.get(), BlockModelGenerators.PlantType.NOT_TINTED);
+		this.generateLeaves(TFBlocks.TIME_LEAVES.get(), TextureMapping.cube(Blocks.OAK_LEAVES), -12012264);
+		this.wrapBlockItem(TFBlocks.TIME_PLANKS.get(), this::createTrivialCube);
+		TextureMapping time = TextureMapping.cube(TFBlocks.TIME_PLANKS.get());
+		this.generateStairs(TFBlocks.TIME_STAIRS.get(), time);
+		this.generateSlab(TFBlocks.TIME_SLAB.get(), TFBlocks.TIME_PLANKS.get(), time);
+		this.generateButton(TFBlocks.TIME_BUTTON.get(), time);
+		this.generateFence(TFBlocks.TIME_FENCE.get(), time);
+		this.generateFenceGate(TFBlocks.TIME_GATE.get(), time);
+		this.generatePressurePlate(TFBlocks.TIME_PLATE.get(), time);
+		this.generateTrapdoor(TFBlocks.TIME_TRAPDOOR.get(), true, "solid");
+		this.generateDoor(TFBlocks.TIME_DOOR.get(), false, "solid");
+		this.generateSign(TFBlocks.TIME_SIGN.get(), TFBlocks.TIME_WALL_SIGN.get(), time);
+		this.generateHangingSign(TFBlocks.TIME_HANGING_SIGN.get(), TFBlocks.TIME_WALL_HANGING_SIGN.get(), TFBlocks.STRIPPED_TIME_LOG.get());
+		this.generateBanister(TFBlocks.TIME_BANISTER.get(), time);
+
+		this.wrapBlockItem(TFBlocks.TRANSFORMATION_LOG.get(), block -> this.generateLog(block, TextureMapping.column(TFBlocks.TRANSFORMATION_LOG.get())));
+		this.wrapBlockItem(TFBlocks.TRANSFORMATION_WOOD.get(), block -> this.generateWood(block, TextureMapping.column(TFBlocks.TRANSFORMATION_LOG.get())));
+		this.wrapBlockItem(TFBlocks.STRIPPED_TRANSFORMATION_LOG.get(), block -> this.generateLog(block, TextureMapping.column(TFBlocks.STRIPPED_TRANSFORMATION_LOG.get())));
+		this.wrapBlockItem(TFBlocks.STRIPPED_TRANSFORMATION_WOOD.get(), block -> this.generateLog(block, TextureMapping.column(TFBlocks.STRIPPED_TRANSFORMATION_LOG.get())));
+		this.generateHollowLog(TFBlocks.TRANSFORMATION_LOG.get(), TFBlocks.STRIPPED_TRANSFORMATION_LOG.get(), TFBlocks.HOLLOW_TRANSFORMATION_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_TRANSFORMATION_LOG_VERTICAL.get(), TFBlocks.HOLLOW_TRANSFORMATION_LOG_CLIMBABLE.get());
+		this.generateSapling(TFBlocks.TRANSFORMATION_SAPLING.get(), TFBlocks.POTTED_TRANSFORMATION_SAPLING.get(), BlockModelGenerators.PlantType.NOT_TINTED);
+		this.generateLeaves(TFBlocks.TRANSFORMATION_LEAVES.get(), TextureMapping.cube(Blocks.OAK_LEAVES), -12012264);
+		this.wrapBlockItem(TFBlocks.TRANSFORMATION_PLANKS.get(), this::createTrivialCube);
+		TextureMapping transformation = TextureMapping.cube(TFBlocks.TRANSFORMATION_PLANKS.get());
+		this.generateStairs(TFBlocks.TRANSFORMATION_STAIRS.get(), transformation);
+		this.generateSlab(TFBlocks.TRANSFORMATION_SLAB.get(), TFBlocks.TRANSFORMATION_PLANKS.get(), transformation);
+		this.generateButton(TFBlocks.TRANSFORMATION_BUTTON.get(), transformation);
+		this.generateFence(TFBlocks.TRANSFORMATION_FENCE.get(), transformation);
+		this.generateFenceGate(TFBlocks.TRANSFORMATION_GATE.get(), transformation);
+		this.generatePressurePlate(TFBlocks.TRANSFORMATION_PLATE.get(), transformation);
+		this.generateTrapdoor(TFBlocks.TRANSFORMATION_TRAPDOOR.get(), true, "solid");
+		this.generateDoor(TFBlocks.TRANSFORMATION_DOOR.get(), false, "solid");
+		this.generateSign(TFBlocks.TRANSFORMATION_SIGN.get(), TFBlocks.TRANSFORMATION_WALL_SIGN.get(), transformation);
+		this.generateHangingSign(TFBlocks.TRANSFORMATION_HANGING_SIGN.get(), TFBlocks.TRANSFORMATION_WALL_HANGING_SIGN.get(), TFBlocks.STRIPPED_TRANSFORMATION_LOG.get());
+		this.generateBanister(TFBlocks.TRANSFORMATION_BANISTER.get(), transformation);
+
+		this.wrapBlockItem(TFBlocks.MINING_LOG.get(), block -> this.generateLog(block, TextureMapping.column(TFBlocks.MINING_LOG.get())));
+		this.wrapBlockItem(TFBlocks.MINING_WOOD.get(), block -> this.generateWood(block, TextureMapping.column(TFBlocks.MINING_LOG.get())));
+		this.wrapBlockItem(TFBlocks.STRIPPED_MINING_LOG.get(), block -> this.generateLog(block, TextureMapping.column(TFBlocks.STRIPPED_MINING_LOG.get())));
+		this.wrapBlockItem(TFBlocks.STRIPPED_MINING_WOOD.get(), block -> this.generateLog(block, TextureMapping.column(TFBlocks.STRIPPED_MINING_LOG.get())));
+		this.generateHollowLog(TFBlocks.MINING_LOG.get(), TFBlocks.STRIPPED_MINING_LOG.get(), TFBlocks.HOLLOW_MINING_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_MINING_LOG_VERTICAL.get(), TFBlocks.HOLLOW_MINING_LOG_CLIMBABLE.get());
+		this.generateSapling(TFBlocks.MINING_SAPLING.get(), TFBlocks.POTTED_MINING_SAPLING.get(), BlockModelGenerators.PlantType.NOT_TINTED);
+		this.generateLeaves(TFBlocks.MINING_LEAVES.get(), TextureMapping.cube(Blocks.OAK_LEAVES), -12012264);
+		this.wrapBlockItem(TFBlocks.MINING_PLANKS.get(), this::createTrivialCube);
+		TextureMapping mining = TextureMapping.cube(TFBlocks.MINING_PLANKS.get());
+		this.generateStairs(TFBlocks.MINING_STAIRS.get(), mining);
+		this.generateSlab(TFBlocks.MINING_SLAB.get(), TFBlocks.MINING_PLANKS.get(), mining);
+		this.generateButton(TFBlocks.MINING_BUTTON.get(), mining);
+		this.generateFence(TFBlocks.MINING_FENCE.get(), mining);
+		this.generateFenceGate(TFBlocks.MINING_GATE.get(), mining);
+		this.generatePressurePlate(TFBlocks.MINING_PLATE.get(), mining);
+		this.generateTrapdoor(TFBlocks.MINING_TRAPDOOR.get(), true, "solid");
+		this.generateDoor(TFBlocks.MINING_DOOR.get(), false, "solid");
+		this.generateSign(TFBlocks.MINING_SIGN.get(), TFBlocks.MINING_WALL_SIGN.get(), mining);
+		this.generateHangingSign(TFBlocks.MINING_HANGING_SIGN.get(), TFBlocks.MINING_WALL_HANGING_SIGN.get(), TFBlocks.STRIPPED_MINING_LOG.get());
+		this.generateBanister(TFBlocks.MINING_BANISTER.get(), mining);
+
+		this.wrapBlockItem(TFBlocks.SORTING_LOG.get(), block -> this.generateLog(block, TextureMapping.column(TFBlocks.SORTING_LOG.get())));
+		this.wrapBlockItem(TFBlocks.SORTING_WOOD.get(), block -> this.generateWood(block, TextureMapping.column(TFBlocks.SORTING_LOG.get())));
+		this.wrapBlockItem(TFBlocks.STRIPPED_SORTING_LOG.get(), block -> this.generateLog(block, TextureMapping.column(TFBlocks.STRIPPED_SORTING_LOG.get())));
+		this.wrapBlockItem(TFBlocks.STRIPPED_SORTING_WOOD.get(), block -> this.generateLog(block, TextureMapping.column(TFBlocks.STRIPPED_SORTING_LOG.get())));
+		this.generateHollowLog(TFBlocks.SORTING_LOG.get(), TFBlocks.STRIPPED_SORTING_LOG.get(), TFBlocks.HOLLOW_SORTING_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_SORTING_LOG_VERTICAL.get(), TFBlocks.HOLLOW_SORTING_LOG_CLIMBABLE.get());
+		this.generateSapling(TFBlocks.SORTING_SAPLING.get(), TFBlocks.POTTED_SORTING_SAPLING.get(), BlockModelGenerators.PlantType.NOT_TINTED);
+		this.generateLeaves(TFBlocks.SORTING_LEAVES.get(), TextureMapping.cube(Blocks.OAK_LEAVES), -12012264);
+		this.wrapBlockItem(TFBlocks.SORTING_PLANKS.get(), this::createTrivialCube);
+		TextureMapping sorting = TextureMapping.cube(TFBlocks.SORTING_PLANKS.get());
+		this.generateStairs(TFBlocks.SORTING_STAIRS.get(), sorting);
+		this.generateSlab(TFBlocks.SORTING_SLAB.get(), TFBlocks.SORTING_PLANKS.get(), sorting);
+		this.generateButton(TFBlocks.SORTING_BUTTON.get(), sorting);
+		this.generateFence(TFBlocks.SORTING_FENCE.get(), sorting);
+		this.generateFenceGate(TFBlocks.SORTING_GATE.get(), sorting);
+		this.generatePressurePlate(TFBlocks.SORTING_PLATE.get(), sorting);
+		this.generateTrapdoor(TFBlocks.SORTING_TRAPDOOR.get(), true, "solid");
+		this.generateDoor(TFBlocks.SORTING_DOOR.get(), false, "solid");
+		this.generateSign(TFBlocks.SORTING_SIGN.get(), TFBlocks.SORTING_WALL_SIGN.get(), sorting);
+		this.generateHangingSign(TFBlocks.SORTING_HANGING_SIGN.get(), TFBlocks.SORTING_WALL_HANGING_SIGN.get(), TFBlocks.STRIPPED_SORTING_LOG.get());
+		this.generateBanister(TFBlocks.SORTING_BANISTER.get(), sorting);
 	}
 }

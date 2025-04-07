@@ -1,14 +1,21 @@
-package twilightforest.datagen.helpers;
+package twilightforest.datagen.helpers.models;
 
-import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelOutput;
 import net.minecraft.client.data.models.blockstates.*;
 import net.minecraft.client.data.models.model.*;
+import net.minecraft.client.renderer.item.ItemModel;
+import net.minecraft.client.renderer.item.properties.select.DisplayContext;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.*;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.DirectionalBlock;
+import net.minecraft.world.level.block.PipeBlock;
+import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
@@ -16,6 +23,8 @@ import twilightforest.block.*;
 import twilightforest.client.model.block.connected.ConnectedTextureBuilder;
 import twilightforest.client.model.block.forcefield.ForceFieldModel;
 import twilightforest.client.model.block.forcefield.ForceFieldModelBuilder;
+import twilightforest.client.renderer.special.SkullCandleSpecialRenderer;
+import twilightforest.client.renderer.special.TrophySpecialRenderer;
 import twilightforest.datagen.assets.models.TFModelTemplates;
 import twilightforest.datagen.assets.models.TFTextureMapping;
 import twilightforest.datagen.assets.models.TFTextureSlot;
@@ -26,61 +35,47 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public abstract class BlockModelBuilders extends BlockModelGenerators {
+public abstract class BlockModelBuilders extends WoodBlockBuilders {
 
 	public BlockModelBuilders(Consumer<BlockStateGenerator> stateOutput, ItemModelOutput itemOutput, BiConsumer<ResourceLocation, ModelInstance> modelOutput) {
 		super(stateOutput, itemOutput, modelOutput);
 	}
 
-	@Override
-	public abstract void run();
-
-	public void wrapBlockItem(Block block, Consumer<Block> blockRegistry) {
-		blockRegistry.accept(block);
-		this.createBlockItem(block);
+	public void generateTrophy(TrophyBlock floor, TrophyWallBlock wall, ItemModel.Unbaked backplate) {
+		this.generateTrophy(floor, wall, backplate, "template_trophy");
 	}
 
-	public void createBlockItem(Block block) {
-		this.registerSimpleItemModel(block, BuiltInRegistries.BLOCK.getKey(block).withPrefix("block/"));
+	public void generateTrophy(TrophyBlock floor, TrophyWallBlock wall, ItemModel.Unbaked backplate, String existingTrophy) {
+		ResourceLocation template = ModelLocationUtils.decorateBlockModelLocation("skull");
+		this.blockStateOutput.accept(createSimpleBlock(floor, template));
+		this.blockStateOutput.accept(createSimpleBlock(wall, template));
+		var itemTrophy = ItemModelUtils.specialModel(ModelLocationUtils.decorateItemModelLocation("twilightforest:" + existingTrophy), new TrophySpecialRenderer.Unbaked(floor.getVariant()));
+		this.itemModelOutput.accept(floor.asItem(), ItemModelUtils.select(new DisplayContext(), itemTrophy,
+			ItemModelUtils.when(ItemDisplayContext.GUI, ItemModelUtils.composite(backplate, itemTrophy))));
+	}
+
+	public void generateSkullCandle(AbstractSkullCandleBlock floor, AbstractSkullCandleBlock wall) {
+		ResourceLocation template = ModelLocationUtils.decorateBlockModelLocation("skull");
+		this.blockStateOutput.accept(createSimpleBlock(floor, template));
+		this.blockStateOutput.accept(createSimpleBlock(wall, template));
+		this.itemModelOutput.accept(floor.asItem(), ItemModelUtils.specialModel(TwilightForestMod.prefix("item/template_skull_candle"), new SkullCandleSpecialRenderer.Unbaked(floor.getType())));
 	}
 
 	public void spawner(Block block, String texture) {
 		TextureMapping texturemapping = TextureMapping.cube(TwilightForestMod.prefix(texture));
 		this.blockStateOutput.accept(createSimpleBlock(block, ModelTemplates.CUBE_ALL_INNER_FACES.extend().renderType("cutout").build().create(block, texturemapping, this.modelOutput)));
-		this.createBlockItem(block);
+		this.generateBlockItem(block);
 	}
 
 	public void basicCtmBlock(Block block) {
 		this.blockStateOutput.accept(createSimpleBlock(block, TFModelTemplates.CTM_NO_BASE.extend().customLoader(ConnectedTextureBuilder::new, builder -> builder.connectsTo(block)).build().create(block, TFTextureMapping.ctmBlock(block), this.modelOutput)));
-		this.createBlockItem(block);
+		this.generateBlockItem(block);
 	}
 
 	public void castleDoor(Block block) {
 		Function<Boolean, ResourceLocation> door = bool -> TFModelTemplates.CTM.extend().customLoader(ConnectedTextureBuilder::new, builder -> builder.connectsTo(TFBlocks.BLUE_CASTLE_DOOR.get(), TFBlocks.PINK_CASTLE_DOOR.get(), TFBlocks.VIOLET_CASTLE_DOOR.get(), TFBlocks.YELLOW_CASTLE_DOOR.get()).setOverlayEmissivity(15).setOverlayTintIndex(0)).renderType("cutout").build().createWithSuffix(block, bool ? "_vanished" : "", TFTextureMapping.ctmBlock(TwilightForestMod.prefix("block/castle_door" + (bool ? "_vanished" : "")), TwilightForestMod.prefix("block/castle_door_runes")), this.modelOutput);
 		this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block).with(PropertyDispatch.property(CastleDoorBlock.VANISHED).select(true, Variant.variant().with(VariantProperties.MODEL, door.apply(true))).select(false, Variant.variant().with(VariantProperties.MODEL, door.apply(false)))));
-		this.createBlockItem(block);
-	}
-
-	public void stairsBlock(Block block) {
-		TextureMapping mapping = TextureMapping.cube(block);
-		ResourceLocation inner = ModelTemplates.STAIRS_INNER.createWithSuffix(block, "_inner", mapping, this.modelOutput);
-		ResourceLocation straight = ModelTemplates.STAIRS_STRAIGHT.create(block, mapping, this.modelOutput);
-		ResourceLocation outer = ModelTemplates.STAIRS_OUTER.createWithSuffix(block, "_outer", mapping, this.modelOutput);
-		this.stairsBlock(block, straight, inner, outer);
-	}
-
-	public void stairsBlock(Block block, ResourceLocation straight, ResourceLocation inner, ResourceLocation outer) {
-		this.blockStateOutput.accept(createStairs(block, inner, straight, outer));
-		this.registerSimpleItemModel(block, straight);
-	}
-
-	public void coolerStairsBlock(Block block, ResourceLocation middle) {
-		TextureMapping mapping = TextureMapping.cube(block).put(TFTextureSlot.MIDDLE, middle);
-		ResourceLocation inner = TFModelTemplates.STAIRS_INNER.createWithSuffix(block, "_inner", mapping, this.modelOutput);
-		ResourceLocation straight = TFModelTemplates.STAIRS_STRAIGHT.create(block, mapping, this.modelOutput);
-		ResourceLocation outer = TFModelTemplates.STAIRS_OUTER.createWithSuffix(block, "_outer", mapping, this.modelOutput);
-		this.blockStateOutput.accept(createStairs(block, inner, straight, outer));
-		this.registerSimpleItemModel(block, straight);
+		this.generateBlockItem(block);
 	}
 
 	public void simpleBlockWithRenderType(Block block, String type) {
@@ -213,7 +208,8 @@ public abstract class BlockModelBuilders extends BlockModelGenerators {
 		ResourceLocation inner = TFModelTemplates.BISECTED_STAIRS_INNER.createWithSuffix(block, "_inner", mapping, this.modelOutput);
 		ResourceLocation straight = TFModelTemplates.BISECTED_STAIRS_STRAIGHT.create(block, mapping, this.modelOutput);
 		ResourceLocation outer = TFModelTemplates.BISECTED_STAIRS_OUTER.createWithSuffix(block, "_outer", mapping, this.modelOutput);
-		this.stairsBlock(block, straight, inner, outer);
+		this.blockStateOutput.accept(createStairs(block, inner, straight, outer));
+		this.itemModelOutput.accept(block.asItem(), ItemModelUtils.plainModel(straight));
 	}
 
 	public void stonePillar() {
