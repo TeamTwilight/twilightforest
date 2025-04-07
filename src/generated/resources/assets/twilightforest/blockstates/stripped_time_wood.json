@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "twilightforest:block/stripped_time_wood_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "twilightforest:block/stripped_time_wood"
+    },
+    "axis=z": {
+      "model": "twilightforest:block/stripped_time_wood_horizontal",
+      "x": 90
+    }
+  }
+}

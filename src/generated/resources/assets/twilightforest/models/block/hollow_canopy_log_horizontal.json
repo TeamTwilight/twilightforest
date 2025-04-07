@@ -1,0 +1,8 @@
+{
+  "parent": "twilightforest:block/horizontal_hollow_log",
+  "textures": {
+    "end": "twilightforest:block/canopy_log_top",
+    "inside": "twilightforest:block/stripped_canopy_log_side",
+    "side": "twilightforest:block/canopy_log_side"
+  }
+}

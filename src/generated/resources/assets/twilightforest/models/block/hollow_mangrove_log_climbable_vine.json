@@ -1,0 +1,9 @@
+{
+  "parent": "twilightforest:block/climbable_hollow_log",
+  "textures": {
+    "climbable": "minecraft:block/vine",
+    "end": "twilightforest:block/mangrove_log_top",
+    "inside": "twilightforest:block/stripped_mangrove_log_side",
+    "side": "twilightforest:block/mangrove_log_side"
+  }
+}
