@@ -1,6 +1,7 @@
 package twilightforest.datagen.helpers.models;
 
 import com.mojang.datafixers.util.Pair;
+import net.minecraft.client.color.item.ItemTintSource;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelOutput;
 import net.minecraft.client.data.models.blockstates.*;
@@ -292,8 +293,17 @@ public abstract class WoodBlockBuilders extends BlockModelGenerators {
 		this.generateBlockItem(block);
 	}
 
+	public void wrapTintedBlockItem(Block block, ItemTintSource tint, Consumer<Block> blockRegistry) {
+		blockRegistry.accept(block);
+		this.generateTintedBlockItem(block, tint);
+	}
+
 	public void generateBlockItem(Block block) {
 		this.registerSimpleItemModel(block, BuiltInRegistries.BLOCK.getKey(block).withPrefix("block/"));
+	}
+
+	public void generateTintedBlockItem(Block block, ItemTintSource tint) {
+		this.registerSimpleTintedItemModel(block, BuiltInRegistries.BLOCK.getKey(block).withPrefix("block/"), tint);
 	}
 
 	public <B extends Block> void generateSpecialModel(B block, Block particleBlock, Function<B, ItemModel.Unbaked> itemModel) {

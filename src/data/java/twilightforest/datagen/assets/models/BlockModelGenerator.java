@@ -1,5 +1,6 @@
 package twilightforest.datagen.assets.models;
 
+import net.minecraft.client.color.item.GrassColorSource;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelOutput;
 import net.minecraft.client.data.models.blockstates.*;
@@ -10,8 +11,10 @@ import net.minecraft.core.Direction;
 import net.minecraft.data.BlockFamily;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import org.w3c.dom.Text;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
 import twilightforest.client.renderer.special.*;
@@ -63,6 +66,21 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.stonePillar();
 
 		this.terrorcotta();
+
+		this.wrapBlockItem(TFBlocks.MAZESTONE.get(), this::createTrivialCube);
+		this.wrapBlockItem(TFBlocks.MAZESTONE_BRICK.get(), this::createTrivialCube);
+		this.wrapBlockItem(TFBlocks.CRACKED_MAZESTONE.get(), this::createTrivialCube);
+		this.wrapBlockItem(TFBlocks.MOSSY_MAZESTONE.get(), this::createTrivialCube);
+		this.wrapBlockItem(TFBlocks.DECORATIVE_MAZESTONE.get(), block -> this.blockStateOutput.accept(createSimpleBlock(block, ModelTemplates.CUBE_COLUMN.create(block, TextureMapping.column(TextureMapping.getBlockTexture(block), TextureMapping.getBlockTexture(TFBlocks.MAZESTONE.get())), this.modelOutput))));
+		this.wrapBlockItem(TFBlocks.CUT_MAZESTONE.get(), block -> this.blockStateOutput.accept(createSimpleBlock(block, ModelTemplates.CUBE_COLUMN.create(block, TextureMapping.column(TextureMapping.getBlockTexture(block), TextureMapping.getBlockTexture(TFBlocks.MAZESTONE.get())), this.modelOutput))));
+		this.wrapBlockItem(TFBlocks.MAZESTONE_MOSAIC.get(), block -> this.blockStateOutput.accept(createSimpleBlock(block, ModelTemplates.CUBE_COLUMN.create(block, TextureMapping.column(TextureMapping.getBlockTexture(TFBlocks.MAZESTONE_BRICK.get()), TextureMapping.getBlockTexture(block)), this.modelOutput))));
+		this.wrapBlockItem(TFBlocks.MAZESTONE_BORDER.get(), block -> this.blockStateOutput.accept(createSimpleBlock(block, ModelTemplates.CUBE_COLUMN.create(block, TextureMapping.column(TextureMapping.getBlockTexture(TFBlocks.MAZESTONE_BRICK.get()), TextureMapping.getBlockTexture(block)), this.modelOutput))));
+		this.wrapTintedBlockItem(TFBlocks.SMOKER.get(), new GrassColorSource(), block -> this.blockStateOutput.accept(createSimpleBlock(block, TFModelTemplates.TINTED_CUBE_BOTTOM_TOP.create(block, TextureMapping.cubeTop(block).put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(Blocks.BLACK_CONCRETE_POWDER)), this.modelOutput))));
+		this.wrapTintedBlockItem(TFBlocks.FIRE_JET.get(), new GrassColorSource(), block -> this.blockStateOutput.accept(createSimpleBlock(block, TFModelTemplates.TINTED_CUBE_BOTTOM_TOP.create(block, TextureMapping.cubeTop(block).put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(Blocks.BLACK_CONCRETE_POWDER)), this.modelOutput))));
+		this.wrapBlockItem(TFBlocks.UNDERBRICK.get(), this::createTrivialCube);
+		this.wrapBlockItem(TFBlocks.CRACKED_UNDERBRICK.get(), this::createTrivialCube);
+		this.wrapBlockItem(TFBlocks.MOSSY_UNDERBRICK.get(), this::createTrivialCube);
+		this.wrapBlockItem(TFBlocks.UNDERBRICK_FLOOR.get(), this::createTrivialCube);
 
 		this.wrapBlockItem(TFBlocks.ANTIBUILDER.get(), block -> this.blockWithRenderType(block, "cutout", TFModelTemplates.ANTIBUILDER, TFTextureMapping::threeLayerBlock));
 		this.blockWithRenderType(TFBlocks.ANTIBUILT_BLOCK.get(), "cutout", TFModelTemplates.ANTIBUILT_BLOCK, TFTextureMapping::twoLayerBlock);
@@ -296,7 +314,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.generateFenceGate(TFBlocks.SORTING_GATE.get(), sorting);
 		this.generatePressurePlate(TFBlocks.SORTING_PLATE.get(), sorting);
 		this.generateTrapdoor(TFBlocks.SORTING_TRAPDOOR.get(), true, "cutout");
-		this.generateDoor(TFBlocks.SORTING_DOOR.get(), false, "cutout");
+		this.generateDoor(TFBlocks.SORTING_DOOR.get(), true, "cutout");
 		this.generateSign(TFBlocks.SORTING_SIGN.get(), TFBlocks.SORTING_WALL_SIGN.get(), sorting);
 		this.generateHangingSign(TFBlocks.SORTING_HANGING_SIGN.get(), TFBlocks.SORTING_WALL_HANGING_SIGN.get(), TFBlocks.STRIPPED_SORTING_LOG.get());
 		this.generateBanister(TFBlocks.SORTING_BANISTER.get(), sorting);

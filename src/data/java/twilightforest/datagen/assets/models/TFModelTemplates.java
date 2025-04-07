@@ -44,14 +44,14 @@ public class TFModelTemplates extends ModelTemplates {
 	public static final ModelTemplate BANISTER_TALL_EXTENDED = create("twilightforest:banister_tall_extended", "_tall_extended", TextureSlot.TEXTURE);
 	public static final ModelTemplate BANISTER_INVENTORY = createItem("twilightforest:banister_inventory", "_inventory", TextureSlot.TEXTURE);
 
-	public static final ModelTemplate CORRECTED_DOOR_BOTTOM_LEFT = create("twilightforest:corrected_door_bottom_left", "_bottom_left", TextureSlot.TOP, TextureSlot.BOTTOM, TextureSlot.SIDE);
-	public static final ModelTemplate CORRECTED_DOOR_BOTTOM_LEFT_OPEN = create("twilightforest:corrected_door_bottom_left_open", "_bottom_left_open", TextureSlot.TOP, TextureSlot.BOTTOM, TextureSlot.SIDE);
-	public static final ModelTemplate CORRECTED_DOOR_BOTTOM_RIGHT = create("twilightforest:corrected_door_bottom_right", "_bottom_right", TextureSlot.TOP, TextureSlot.BOTTOM, TextureSlot.SIDE);
-	public static final ModelTemplate CORRECTED_DOOR_BOTTOM_RIGHT_OPEN = create("twilightforest:corrected_door_bottom_right_open", "_bottom_right_open", TextureSlot.TOP, TextureSlot.BOTTOM, TextureSlot.SIDE);
-	public static final ModelTemplate CORRECTED_DOOR_TOP_LEFT = create("twilightforest:corrected_door_top_left", "_top_left", TextureSlot.TOP, TextureSlot.BOTTOM, TextureSlot.SIDE);
-	public static final ModelTemplate CORRECTED_DOOR_TOP_LEFT_OPEN = create("twilightforest:corrected_door_top_left_open", "_top_left_open", TextureSlot.TOP, TextureSlot.BOTTOM, TextureSlot.SIDE);
-	public static final ModelTemplate CORRECTED_DOOR_TOP_RIGHT = create("twilightforest:corrected_door_top_right", "_top_right", TextureSlot.TOP, TextureSlot.BOTTOM, TextureSlot.SIDE);
-	public static final ModelTemplate CORRECTED_DOOR_TOP_RIGHT_OPEN = create("twilightforest:corrected_door_top_right_open", "_top_right_open", TextureSlot.TOP, TextureSlot.BOTTOM, TextureSlot.SIDE);
+	public static final ModelTemplate CORRECTED_DOOR_BOTTOM_LEFT = create("twilightforest:util/corrected_door_bottom_left", "_bottom_left", TextureSlot.TOP, TextureSlot.BOTTOM, TextureSlot.SIDE);
+	public static final ModelTemplate CORRECTED_DOOR_BOTTOM_LEFT_OPEN = create("twilightforest:util/corrected_door_bottom_left_open", "_bottom_left_open", TextureSlot.TOP, TextureSlot.BOTTOM, TextureSlot.SIDE);
+	public static final ModelTemplate CORRECTED_DOOR_BOTTOM_RIGHT = create("twilightforest:util/corrected_door_bottom_right", "_bottom_right", TextureSlot.TOP, TextureSlot.BOTTOM, TextureSlot.SIDE);
+	public static final ModelTemplate CORRECTED_DOOR_BOTTOM_RIGHT_OPEN = create("twilightforest:util/corrected_door_bottom_right_open", "_bottom_right_open", TextureSlot.TOP, TextureSlot.BOTTOM, TextureSlot.SIDE);
+	public static final ModelTemplate CORRECTED_DOOR_TOP_LEFT = create("twilightforest:util/corrected_door_top_left", "_top_left", TextureSlot.TOP, TextureSlot.BOTTOM, TextureSlot.SIDE);
+	public static final ModelTemplate CORRECTED_DOOR_TOP_LEFT_OPEN = create("twilightforest:util/corrected_door_top_left_open", "_top_left_open", TextureSlot.TOP, TextureSlot.BOTTOM, TextureSlot.SIDE);
+	public static final ModelTemplate CORRECTED_DOOR_TOP_RIGHT = create("twilightforest:util/corrected_door_top_right", "_top_right", TextureSlot.TOP, TextureSlot.BOTTOM, TextureSlot.SIDE);
+	public static final ModelTemplate CORRECTED_DOOR_TOP_RIGHT_OPEN = create("twilightforest:util/corrected_door_top_right_open", "_top_right_open", TextureSlot.TOP, TextureSlot.BOTTOM, TextureSlot.SIDE);
 
 	public static final ModelTemplate HORIZONTAL_HOLLOW_LOG = create("twilightforest:horizontal_hollow_log", TextureSlot.SIDE, TextureSlot.END, TextureSlot.INSIDE);
 	public static final ModelTemplate HORIZONTAL_HOLLOW_LOG_CARPET = create("twilightforest:horizontal_hollow_log_carpet", TextureSlot.SIDE, TextureSlot.END, TextureSlot.INSIDE, TFTextureSlot.CARPET, TFTextureSlot.OVERHANG);
@@ -65,6 +65,8 @@ public class TFModelTemplates extends ModelTemplates {
 	public static final ModelTemplate THORNS_SECTION_BOTTOM = create("twilightforest:thorns_section_bottom", TextureSlot.SIDE, TextureSlot.END).extend().parent(TwilightForestMod.prefix("block/thorns_section_bottom")).renderType("cutout").build();
 	public static final ModelTemplate THORNS_NO_SECTION = create("twilightforest:thorns_no_section", TextureSlot.SIDE, TextureSlot.END).extend().parent(TwilightForestMod.prefix("block/thorns_no_section")).renderType("cutout").build();
 	public static final ModelTemplate THORNS_NO_SECTION_ALT = create("twilightforest:thorns_no_section_alt", TextureSlot.SIDE, TextureSlot.END).extend().parent(TwilightForestMod.prefix("block/thorns_no_section_alt")).renderType("cutout").build();
+
+	public static final ModelTemplate TINTED_CUBE_BOTTOM_TOP = create("twilightforest:tinted_cube_bottom_top", TextureSlot.TOP, TextureSlot.SIDE, TextureSlot.BOTTOM);
 
 	public static final ModelTemplate GIANT_TOOL = createItem("twilightforest:giant_tool_base", TextureSlot.LAYER0);
 	public static final ModelTemplate MOON_DIAL = createItem("twilightforest:moon_dial_template", TextureSlot.LAYER0);
