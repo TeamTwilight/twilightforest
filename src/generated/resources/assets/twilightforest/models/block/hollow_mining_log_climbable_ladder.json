@@ -3,7 +3,7 @@
   "textures": {
     "climbable": "minecraft:block/ladder",
     "end": "twilightforest:block/mining_log_top",
-    "inside": "twilightforest:block/stripped_mining_log_side",
-    "side": "twilightforest:block/mining_log_side"
+    "inside": "twilightforest:block/stripped_mining_log",
+    "side": "twilightforest:block/mining_log"
   }
 }

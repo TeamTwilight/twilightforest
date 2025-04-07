@@ -1,0 +1,8 @@
+{
+  "parent": "twilightforest:block/vertical_hollow_log",
+  "textures": {
+    "end": "minecraft:block/cherry_log_top",
+    "inside": "minecraft:block/stripped_cherry_log",
+    "side": "minecraft:block/cherry_log"
+  }
+}

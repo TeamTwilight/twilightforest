@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/door_bottom_left_open",
-  "render_type": "minecraft:solid",
+  "render_type": "minecraft:cutout",
   "textures": {
     "bottom": "twilightforest:block/sorting_door_bottom",
     "top": "twilightforest:block/sorting_door_top"

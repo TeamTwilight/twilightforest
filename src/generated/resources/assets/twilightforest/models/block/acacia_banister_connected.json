@@ -1,0 +1,6 @@
+{
+  "parent": "twilightforest:block/banister_connected",
+  "textures": {
+    "texture": "minecraft:block/acacia_planks"
+  }
+}

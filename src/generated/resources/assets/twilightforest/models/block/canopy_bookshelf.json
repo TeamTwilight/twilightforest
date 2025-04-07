@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "twilightforest:block/canopy_planks",
+    "side": "twilightforest:block/canopy_bookshelf"
+  }
+}

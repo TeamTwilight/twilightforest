@@ -1,0 +1,6 @@
+{
+  "parent": "twilightforest:item/banister_inventory",
+  "textures": {
+    "texture": "minecraft:block/crimson_planks"
+  }
+}

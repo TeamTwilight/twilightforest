@@ -1,0 +1,9 @@
+{
+  "parent": "twilightforest:block/climbable_hollow_log",
+  "textures": {
+    "climbable": "minecraft:block/ladder",
+    "end": "minecraft:block/warped_stem_top",
+    "inside": "minecraft:block/stripped_warped_stem",
+    "side": "minecraft:block/warped_stem"
+  }
+}

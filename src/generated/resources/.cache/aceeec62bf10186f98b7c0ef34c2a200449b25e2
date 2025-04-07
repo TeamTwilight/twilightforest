@@ -1,4 +1,4 @@
-// 1.21.4	2025-01-18T14:13:37.950048	Twilight Forest Block Tags
+// 1.21.4	2025-04-07T10:37:41.7767317	Twilight Forest Block Tags
 9d529390443b5da5d71bd6e867c066632e1340b8 data/alexscaves/tags/block/ferromagnetic_blocks.json
 ddfcbead67bb9487c003af137a276963e5b20022 data/alexscaves/tags/block/gloomoth_light_sources.json
 c365018bd78f1335cd4508b5d74bc4500ae951bd data/alexscaves/tags/block/underzealot_light_sources.json
@@ -75,7 +75,7 @@ f3de4b0d6d2929c8fab124e75ff6269ca7642aa7 data/minecraft/tags/block/wooden_stairs
 bf268104ef37c6ae11779d7ebac410abe4e9e399 data/neoforge/tags/block/needs_wood_tool.json
 da8d3633fcaeec13b64c7691a56ece30484ae0cd data/twilightforest/tags/block/annihilation_inclusions.json
 894771e557845fa22ca82b71283c23be8ab1847a data/twilightforest/tags/block/antibuilder_ignores.json
-af8520c845f14fb320bcefd284018a5ad57a7528 data/twilightforest/tags/block/banisters.json
+39103fb12e59c923d656b47c4e8460d351754505 data/twilightforest/tags/block/banisters.json
 6500e46db807b8cb8b3729393ae550ed1e46900a data/twilightforest/tags/block/block_and_chain_never_breaks.json
 2b503fff2f0de363a3e4903edb60eab934c7ebd2 data/twilightforest/tags/block/cannot_troll_cave_hollow.json
 84101198c6b6d645c6e155abb5349d33e7279300 data/twilightforest/tags/block/canopy_logs.json
@@ -93,9 +93,9 @@ ecd0a9f97ab5b54a7c21ed4f6af6896d564ea5f0 data/twilightforest/tags/block/castle_b
 db6195d77bd598771b111d12750ba39f41fe35c7 data/twilightforest/tags/block/fire_jet_fuel.json
 25aee6721c6ac17e92f2a9f5d0733f89a0a0489b data/twilightforest/tags/block/giants_spawnable_on.json
 e222b54e9f838dbf2e905bf0b137ed8b0c60b328 data/twilightforest/tags/block/hollow_logs.json
-e76ac35d93be5d3604434978c6f388542c03f06a data/twilightforest/tags/block/hollow_logs_climbable.json
-bb8b9b62d506ca43da000c49146b02a02db94cba data/twilightforest/tags/block/hollow_logs_horizontal.json
-0c4ebe5892c15ecdc495af7c56d4ed1e0f61e511 data/twilightforest/tags/block/hollow_logs_vertical.json
+cdc6b7c87012ec91b9e54d304fe9a6f52c99f504 data/twilightforest/tags/block/hollow_logs_climbable.json
+a09e807a55eb5523998665258e423397c8241f80 data/twilightforest/tags/block/hollow_logs_horizontal.json
+8914fc4c7ff4d4b8a77b44e4f715913f8477b363 data/twilightforest/tags/block/hollow_logs_vertical.json
 f1c96c713b5d5a966247c1b17cb52da4c125d4a9 data/twilightforest/tags/block/ice_bomb_replaceables.json
 edb717ba8ce70db0f1c3d09fbaab29aed6d4e5ff data/twilightforest/tags/block/incorrect_for_fiery_tool.json
 b239e7b03736ed687b12fa515c9a1139f07cc1a8 data/twilightforest/tags/block/incorrect_for_giant_tool.json

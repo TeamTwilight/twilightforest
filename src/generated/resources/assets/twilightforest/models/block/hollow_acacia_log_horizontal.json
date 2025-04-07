@@ -1,0 +1,8 @@
+{
+  "parent": "twilightforest:block/horizontal_hollow_log",
+  "textures": {
+    "end": "minecraft:block/acacia_log_top",
+    "inside": "minecraft:block/stripped_acacia_log",
+    "side": "minecraft:block/acacia_log"
+  }
+}

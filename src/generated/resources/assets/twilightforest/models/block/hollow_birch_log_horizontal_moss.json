@@ -1,0 +1,10 @@
+{
+  "parent": "twilightforest:block/horizontal_hollow_log_carpet",
+  "textures": {
+    "carpet": "twilightforest:block/mosspatch",
+    "end": "minecraft:block/birch_log_top",
+    "inside": "minecraft:block/stripped_birch_log",
+    "overhang": "twilightforest:block/moss_overhang",
+    "side": "minecraft:block/birch_log"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "twilightforest:block/sorting_log_top",
+    "side": "twilightforest:block/sorting_log_core_on"
+  }
+}

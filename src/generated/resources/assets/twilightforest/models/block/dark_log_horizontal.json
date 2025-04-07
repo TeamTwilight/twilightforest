@@ -2,6 +2,6 @@
   "parent": "minecraft:block/cube_column_horizontal",
   "textures": {
     "end": "twilightforest:block/dark_log_top",
-    "side": "twilightforest:block/dark_log_side"
+    "side": "twilightforest:block/dark_log"
   }
 }

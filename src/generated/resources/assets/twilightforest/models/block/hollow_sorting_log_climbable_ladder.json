@@ -3,7 +3,7 @@
   "textures": {
     "climbable": "minecraft:block/ladder",
     "end": "twilightforest:block/sorting_log_top",
-    "inside": "twilightforest:block/stripped_sorting_log_side",
-    "side": "twilightforest:block/sorting_log_side"
+    "inside": "twilightforest:block/stripped_sorting_log",
+    "side": "twilightforest:block/sorting_log"
   }
 }

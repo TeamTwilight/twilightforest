@@ -3,8 +3,8 @@
   "textures": {
     "carpet": "twilightforest:block/mosspatch",
     "end": "twilightforest:block/transformation_log_top",
-    "inside": "twilightforest:block/stripped_transformation_log_side",
+    "inside": "twilightforest:block/stripped_transformation_log",
     "overhang": "twilightforest:block/moss_overhang",
-    "side": "twilightforest:block/transformation_log_side"
+    "side": "twilightforest:block/transformation_log"
   }
 }

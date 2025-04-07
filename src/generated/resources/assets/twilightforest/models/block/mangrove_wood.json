@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:block/cube_column",
   "textures": {
-    "end": "twilightforest:block/mangrove_log_side",
-    "side": "twilightforest:block/mangrove_log_side"
+    "end": "twilightforest:block/mangrove_log",
+    "side": "twilightforest:block/mangrove_log"
   }
 }

@@ -3,7 +3,7 @@
   "textures": {
     "climbable": "minecraft:block/vine",
     "end": "twilightforest:block/canopy_log_top",
-    "inside": "twilightforest:block/stripped_canopy_log_side",
-    "side": "twilightforest:block/canopy_log_side"
+    "inside": "twilightforest:block/stripped_canopy_log",
+    "side": "twilightforest:block/canopy_log"
   }
 }

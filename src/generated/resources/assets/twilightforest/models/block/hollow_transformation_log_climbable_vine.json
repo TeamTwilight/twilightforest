@@ -3,7 +3,7 @@
   "textures": {
     "climbable": "minecraft:block/vine",
     "end": "twilightforest:block/transformation_log_top",
-    "inside": "twilightforest:block/stripped_transformation_log_side",
-    "side": "twilightforest:block/transformation_log_side"
+    "inside": "twilightforest:block/stripped_transformation_log",
+    "side": "twilightforest:block/transformation_log"
   }
 }

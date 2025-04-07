@@ -2,6 +2,6 @@
   "parent": "minecraft:block/cube_column",
   "textures": {
     "end": "twilightforest:block/stripped_sorting_log_top",
-    "side": "twilightforest:block/stripped_sorting_log_side"
+    "side": "twilightforest:block/stripped_sorting_log"
   }
 }

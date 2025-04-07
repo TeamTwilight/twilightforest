@@ -3,9 +3,9 @@
   "textures": {
     "carpet": "twilightforest:block/mosspatch",
     "end": "twilightforest:block/mining_log_top",
-    "inside": "twilightforest:block/stripped_mining_log_side",
+    "inside": "twilightforest:block/stripped_mining_log",
     "overhang": "twilightforest:block/moss_overhang",
     "plant": "minecraft:block/short_grass",
-    "side": "twilightforest:block/mining_log_side"
+    "side": "twilightforest:block/mining_log"
   }
 }

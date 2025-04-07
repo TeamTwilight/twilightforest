@@ -3,8 +3,8 @@
   "textures": {
     "carpet": "minecraft:block/snow",
     "end": "twilightforest:block/mangrove_log_top",
-    "inside": "twilightforest:block/stripped_mangrove_log_side",
+    "inside": "twilightforest:block/stripped_mangrove_log",
     "overhang": "twilightforest:block/snow_overhang",
-    "side": "twilightforest:block/mangrove_log_side"
+    "side": "twilightforest:block/mangrove_log"
   }
 }

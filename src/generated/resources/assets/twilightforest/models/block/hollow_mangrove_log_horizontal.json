@@ -2,7 +2,7 @@
   "parent": "twilightforest:block/horizontal_hollow_log",
   "textures": {
     "end": "twilightforest:block/mangrove_log_top",
-    "inside": "twilightforest:block/stripped_mangrove_log_side",
-    "side": "twilightforest:block/mangrove_log_side"
+    "inside": "twilightforest:block/stripped_mangrove_log",
+    "side": "twilightforest:block/mangrove_log"
   }
 }

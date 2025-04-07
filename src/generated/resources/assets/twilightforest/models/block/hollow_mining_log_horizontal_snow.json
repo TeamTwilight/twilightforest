@@ -3,8 +3,8 @@
   "textures": {
     "carpet": "minecraft:block/snow",
     "end": "twilightforest:block/mining_log_top",
-    "inside": "twilightforest:block/stripped_mining_log_side",
+    "inside": "twilightforest:block/stripped_mining_log",
     "overhang": "twilightforest:block/snow_overhang",
-    "side": "twilightforest:block/mining_log_side"
+    "side": "twilightforest:block/mining_log"
   }
 }
