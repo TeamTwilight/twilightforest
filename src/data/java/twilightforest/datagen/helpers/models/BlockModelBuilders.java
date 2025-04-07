@@ -9,6 +9,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -672,5 +673,41 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 				.ifSame().from(9, 7, 7).to(16, 9, 9).parents(ForceFieldModel.ExtraDirection.EAST).shade(false).face(Direction.SOUTH).uvs(0, 7, 7, 9).texture("#pane").emissivity(15, 15).end().end();
 		}).build().create(block, TFTextureMapping.forcefield(block), this.modelOutput)));
 		this.registerSimpleFlatItemModel(block);
+	}
+
+	public void createPaneBlock(Block glassBlock, Block paneBlock) {
+		TextureMapping mapping = new TextureMapping().put(TextureSlot.PANE, TextureMapping.getBlockTexture(glassBlock)).put(TextureSlot.EDGE, TextureMapping.getBlockTexture(glassBlock));
+		ResourceLocation post = ModelTemplates.STAINED_GLASS_PANE_POST.extend().renderType("translucent").build().create(paneBlock, mapping, this.modelOutput);
+		ResourceLocation side = ModelTemplates.STAINED_GLASS_PANE_SIDE.extend().renderType("translucent").build().create(paneBlock, mapping, this.modelOutput);
+		ResourceLocation sideAlt = ModelTemplates.STAINED_GLASS_PANE_SIDE_ALT.extend().renderType("translucent").build().create(paneBlock, mapping, this.modelOutput);
+		ResourceLocation noSide = ModelTemplates.STAINED_GLASS_PANE_NOSIDE.extend().renderType("translucent").build().create(paneBlock, mapping, this.modelOutput);
+		ResourceLocation noSideAlt = ModelTemplates.STAINED_GLASS_PANE_NOSIDE_ALT.extend().renderType("translucent").build().create(paneBlock, mapping, this.modelOutput);
+		Item item = paneBlock.asItem();
+		this.registerSimpleItemModel(item, this.createFlatItemModelWithBlockTexture(item, glassBlock));
+		this.blockStateOutput
+			.accept(
+				MultiPartGenerator.multiPart(paneBlock)
+					.with(Variant.variant().with(VariantProperties.MODEL, post))
+					.with(Condition.condition().term(BlockStateProperties.NORTH, true), Variant.variant().with(VariantProperties.MODEL, side))
+					.with(
+						Condition.condition().term(BlockStateProperties.EAST, true),
+						Variant.variant().with(VariantProperties.MODEL, side).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
+					)
+					.with(Condition.condition().term(BlockStateProperties.SOUTH, true), Variant.variant().with(VariantProperties.MODEL, sideAlt))
+					.with(
+						Condition.condition().term(BlockStateProperties.WEST, true),
+						Variant.variant().with(VariantProperties.MODEL, sideAlt).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
+					)
+					.with(Condition.condition().term(BlockStateProperties.NORTH, false), Variant.variant().with(VariantProperties.MODEL, noSide))
+					.with(Condition.condition().term(BlockStateProperties.EAST, false), Variant.variant().with(VariantProperties.MODEL, noSideAlt))
+					.with(
+						Condition.condition().term(BlockStateProperties.SOUTH, false),
+						Variant.variant().with(VariantProperties.MODEL, noSideAlt).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
+					)
+					.with(
+						Condition.condition().term(BlockStateProperties.WEST, false),
+						Variant.variant().with(VariantProperties.MODEL, noSide).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
+					)
+			);
 	}
 }

@@ -780,6 +780,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		banisterBlock(getter, "vangrove", TFBlocks.VANGROVE_BANISTER, Blocks.MANGROVE_SLAB);
 		banisterBlock(getter, "bamboo", TFBlocks.BAMBOO_BANISTER, Blocks.BAMBOO_SLAB);
 		banisterBlock(getter, "cherry", TFBlocks.CHERRY_BANISTER, Blocks.CHERRY_SLAB);
+		banisterBlock(getter, "pale_oak", TFBlocks.PALE_OAK_BANISTER, Blocks.PALE_OAK_SLAB);
 
 		chestBlock(getter, "twilight_oak", TFBlocks.TWILIGHT_OAK_CHEST, TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST, TFBlocks.TWILIGHT_OAK_PLANKS);
 		chestBlock(getter, "canopy", TFBlocks.CANOPY_CHEST, TFBlocks.CANOPY_TRAPPED_CHEST, TFBlocks.CANOPY_PLANKS);

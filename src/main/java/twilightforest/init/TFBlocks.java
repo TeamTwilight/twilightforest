@@ -311,6 +311,7 @@ public class TFBlocks {
 	public static final DeferredBlock<BanisterBlock> VANGROVE_BANISTER = registerWithItem("vangrove_banister", BanisterBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.MANGROVE_PLANKS));
 	public static final DeferredBlock<BanisterBlock> BAMBOO_BANISTER = registerWithItem("bamboo_banister", BanisterBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.BAMBOO_PLANKS));
 	public static final DeferredBlock<BanisterBlock> CHERRY_BANISTER = registerWithItem("cherry_banister", BanisterBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.CHERRY_PLANKS));
+	public static final DeferredBlock<BanisterBlock> PALE_OAK_BANISTER = registerWithItem("pale_oak_banister", BanisterBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.PALE_OAK_PLANKS));
 
 	public static final BlockBehaviour.Properties TWILIGHT_OAK_LOG_PROPS = logProperties(MapColor.WOOD, MapColor.PODZOL).strength(2.0F).sound(SoundType.WOOD);
 	public static final BlockBehaviour.Properties CANOPY_LOG_PROPS = logProperties(MapColor.PODZOL, MapColor.COLOR_BROWN).strength(2.0F).sound(SoundType.WOOD);
@@ -385,6 +386,7 @@ public class TFBlocks {
 	public static final DeferredBlock<HorizontalHollowLogBlock> HOLLOW_WARPED_STEM_HORIZONTAL = register("hollow_warped_stem_horizontal", HorizontalHollowLogBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.WARPED_HYPHAE));
 	public static final DeferredBlock<HorizontalHollowLogBlock> HOLLOW_VANGROVE_LOG_HORIZONTAL = register("hollow_vangrove_log_horizontal", HorizontalHollowLogBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.MANGROVE_WOOD));
 	public static final DeferredBlock<HorizontalHollowLogBlock> HOLLOW_CHERRY_LOG_HORIZONTAL = register("hollow_cherry_log_horizontal", HorizontalHollowLogBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.CHERRY_WOOD));
+	public static final DeferredBlock<HorizontalHollowLogBlock> HOLLOW_PALE_OAK_LOG_HORIZONTAL = register("hollow_pale_oak_log_horizontal", HorizontalHollowLogBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.PALE_OAK_WOOD));
 
 	public static final DeferredBlock<VerticalHollowLogBlock> HOLLOW_OAK_LOG_VERTICAL = register("hollow_oak_log_vertical", properties -> new VerticalHollowLogBlock(TFBlocks.HOLLOW_OAK_LOG_CLIMBABLE, properties), () -> BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_OAK_WOOD));
 	public static final DeferredBlock<VerticalHollowLogBlock> HOLLOW_SPRUCE_LOG_VERTICAL = register("hollow_spruce_log_vertical", properties -> new VerticalHollowLogBlock(TFBlocks.HOLLOW_SPRUCE_LOG_CLIMBABLE, properties), () -> BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_SPRUCE_WOOD));
@@ -398,6 +400,7 @@ public class TFBlocks {
 	// I still legit have no idea why it happens but it does
 	public static final DeferredBlock<VerticalHollowLogBlock> HOLLOW_VANGROVE_LOG_VERTICAL = register("hollow_vangrove_log_vertical", properties -> new VerticalHollowLogBlock(TFBlocks.HOLLOW_VANGROVE_LOG_CLIMBABLE, properties), () -> BlockBehaviour.Properties.of().ignitedByLava().mapColor(MapColor.COLOR_RED).strength(2.0F).sound(SoundType.WOOD));
 	public static final DeferredBlock<VerticalHollowLogBlock> HOLLOW_CHERRY_LOG_VERTICAL = register("hollow_cherry_log_vertical", properties -> new VerticalHollowLogBlock(TFBlocks.HOLLOW_CHERRY_LOG_CLIMBABLE, properties), () -> BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_CHERRY_WOOD));
+	public static final DeferredBlock<VerticalHollowLogBlock> HOLLOW_PALE_OAK_LOG_VERTICAL = register("hollow_pale_oak_log_vertical", properties -> new VerticalHollowLogBlock(TFBlocks.HOLLOW_PALE_OAK_LOG_CLIMBABLE, properties), () -> BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_PALE_OAK_WOOD));
 
 	public static final DeferredBlock<ClimbableHollowLogBlock> HOLLOW_OAK_LOG_CLIMBABLE = register("hollow_oak_log_climbable", properties -> new ClimbableHollowLogBlock(TFBlocks.HOLLOW_OAK_LOG_VERTICAL, properties), () -> BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_OAK_WOOD));
 	public static final DeferredBlock<ClimbableHollowLogBlock> HOLLOW_SPRUCE_LOG_CLIMBABLE = register("hollow_spruce_log_climbable", properties -> new ClimbableHollowLogBlock(TFBlocks.HOLLOW_SPRUCE_LOG_VERTICAL, properties), () -> BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_SPRUCE_WOOD));
@@ -409,6 +412,7 @@ public class TFBlocks {
 	public static final DeferredBlock<ClimbableHollowLogBlock> HOLLOW_WARPED_STEM_CLIMBABLE = register("hollow_warped_stem_climbable", properties -> new ClimbableHollowLogBlock(TFBlocks.HOLLOW_WARPED_STEM_VERTICAL, properties), () -> BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_WARPED_HYPHAE));
 	public static final DeferredBlock<ClimbableHollowLogBlock> HOLLOW_VANGROVE_LOG_CLIMBABLE = register("hollow_vangrove_log_climbable", properties -> new ClimbableHollowLogBlock(TFBlocks.HOLLOW_VANGROVE_LOG_VERTICAL, properties), () -> BlockBehaviour.Properties.of().ignitedByLava().mapColor(MapColor.COLOR_RED).strength(2.0F).sound(SoundType.WOOD));
 	public static final DeferredBlock<ClimbableHollowLogBlock> HOLLOW_CHERRY_LOG_CLIMBABLE = register("hollow_cherry_log_climbable", properties -> new ClimbableHollowLogBlock(TFBlocks.HOLLOW_CHERRY_LOG_VERTICAL, properties), () -> BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_CHERRY_WOOD));
+	public static final DeferredBlock<ClimbableHollowLogBlock> HOLLOW_PALE_OAK_LOG_CLIMBABLE = register("hollow_pale_oak_log_climbable", properties -> new ClimbableHollowLogBlock(TFBlocks.HOLLOW_PALE_OAK_LOG_VERTICAL, properties), () -> BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_PALE_OAK_WOOD));
 
 	public static final DeferredBlock<RotatedPillarBlock> STRIPPED_TWILIGHT_OAK_LOG = registerWithItem("stripped_twilight_oak_log", RotatedPillarBlock::new, () -> TWILIGHT_OAK_STRIPPED_PROPS);
 	public static final DeferredBlock<RotatedPillarBlock> STRIPPED_CANOPY_LOG = registerWithItem("stripped_canopy_log", RotatedPillarBlock::new, () -> CANOPY_STRIPPED_PROPS);

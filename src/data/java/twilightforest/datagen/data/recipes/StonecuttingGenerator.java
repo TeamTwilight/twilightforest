@@ -143,6 +143,7 @@ public class StonecuttingGenerator {
 		stonecutting(getter, output, Blocks.WARPED_STEM, TFItems.HOLLOW_WARPED_STEM);
 		stonecutting(getter, output, Blocks.MANGROVE_LOG, TFItems.HOLLOW_VANGROVE_LOG);
 		stonecutting(getter, output, Blocks.CHERRY_LOG, TFItems.HOLLOW_CHERRY_LOG);
+		stonecutting(getter, output, Blocks.PALE_OAK_LOG, TFItems.HOLLOW_PALE_OAK_LOG);
 		stonecutting(getter, output, Blocks.STONE, TFBlocks.TWISTED_STONE);
 		stonecutting(getter, output, Blocks.STONE, TFBlocks.BOLD_STONE_PILLAR);
 		stonecutting(getter, output, Blocks.STONE, TFBlocks.TWISTED_STONE_PILLAR);

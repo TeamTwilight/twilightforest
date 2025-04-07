@@ -389,6 +389,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addBlock(TFBlocks.VANGROVE_BANISTER, "Mangrove Banister");
 		this.addBlock(TFBlocks.BAMBOO_BANISTER, "Bamboo Banister");
 		this.addBlock(TFBlocks.CHERRY_BANISTER, "Cherry Banister");
+		this.addBlock(TFBlocks.PALE_OAK_BANISTER, "Pale Oak Banister");
 
 		this.createHollowLogs("oak", "Oak", false);
 		this.createHollowLogs("spruce", "Spruce", false);
@@ -400,6 +401,7 @@ public class LangGenerator extends TFLangProvider {
 		this.createHollowLogs("warped", "Warped", true);
 		this.createHollowLogs("vangrove", "Mangrove", false);
 		this.createHollowLogs("cherry", "Cherry", false);
+		this.createHollowLogs("pale_oak", "Pale Oak", false);
 		this.add("block.twilightforest.banister.cycle", "Right-click with axe to cycle");
 
 		this.addBlock(TFBlocks.MOSS_PATCH, "Moss Patch");
