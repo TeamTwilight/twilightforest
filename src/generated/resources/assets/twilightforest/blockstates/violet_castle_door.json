@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "vanish=false": {
+      "model": "twilightforest:block/violet_castle_door"
+    },
+    "vanish=true": {
+      "model": "twilightforest:block/violet_castle_door_vanished"
+    }
+  }
+}
