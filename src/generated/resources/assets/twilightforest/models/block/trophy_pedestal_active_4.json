@@ -1,0 +1,17 @@
+{
+  "parent": "twilightforest:block/template_trophy_pedestal_active",
+  "textures": {
+    "east": "twilightforest:block/trophy_pedestal_snow_queen_latent",
+    "east2": "twilightforest:block/trophy_pedestal_snow_queen_glow",
+    "east3": "twilightforest:block/trophy_pedestal_snow_queen",
+    "north": "twilightforest:block/trophy_pedestal_lich_latent",
+    "north2": "twilightforest:block/trophy_pedestal_lich_glow",
+    "north3": "twilightforest:block/trophy_pedestal_lich",
+    "south": "twilightforest:block/trophy_pedestal_hydra_latent",
+    "south2": "twilightforest:block/trophy_pedestal_hydra_glow",
+    "south3": "twilightforest:block/trophy_pedestal_hydra",
+    "west": "twilightforest:block/trophy_pedestal_ur_ghast_latent",
+    "west2": "twilightforest:block/trophy_pedestal_ur_ghast_glow",
+    "west3": "twilightforest:block/trophy_pedestal_ur_ghast"
+  }
+}
