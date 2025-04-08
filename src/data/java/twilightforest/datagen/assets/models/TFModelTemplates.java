@@ -68,6 +68,11 @@ public class TFModelTemplates extends ModelTemplates {
 
 	public static final ModelTemplate CASTLE_RUNE_TEMPLATE = create("twilightforest:castle_rune_template", TextureSlot.ALL, TFTextureSlot.RUNE);
 	public static final ModelTemplate TINTED_CUBE_BOTTOM_TOP = create("twilightforest:tinted_cube_bottom_top", TextureSlot.TOP, TextureSlot.SIDE, TextureSlot.BOTTOM);
+	public static final ModelTemplate TROPHY_PEDESTAL = create("twilightforest:template_trophy_pedestal", TextureSlot.NORTH, TextureSlot.SOUTH, TextureSlot.EAST, TextureSlot.WEST);
+	public static final ModelTemplate TROPHY_PEDESTAL_ACTIVE = create("twilightforest:template_trophy_pedestal_active",
+		TextureSlot.NORTH, TextureSlot.SOUTH, TextureSlot.EAST, TextureSlot.WEST, //base
+		TFTextureSlot.NORTH2, TFTextureSlot.SOUTH2, TFTextureSlot.EAST2, TFTextureSlot.WEST2, //glow
+		TFTextureSlot.NORTH3, TFTextureSlot.SOUTH3, TFTextureSlot.EAST3, TFTextureSlot.WEST3); //boss face
 
 	public static final ModelTemplate GIANT_TOOL = createItem("twilightforest:giant_tool_base", TextureSlot.LAYER0);
 	public static final ModelTemplate MOON_DIAL = createItem("twilightforest:moon_dial_template", TextureSlot.LAYER0);

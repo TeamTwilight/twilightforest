@@ -81,6 +81,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.wrapBlockItem(TFBlocks.CRACKED_UNDERBRICK.get(), this::createTrivialCube);
 		this.wrapBlockItem(TFBlocks.MOSSY_UNDERBRICK.get(), this::createTrivialCube);
 		this.wrapBlockItem(TFBlocks.UNDERBRICK_FLOOR.get(), this::createTrivialCube);
+		this.trophyPedestal();
 
 		this.wrapBlockItem(TFBlocks.ANTIBUILDER.get(), block -> this.blockWithRenderType(block, "cutout", TFModelTemplates.ANTIBUILDER, TFTextureMapping::threeLayerBlock));
 		this.blockWithRenderType(TFBlocks.ANTIBUILT_BLOCK.get(), "cutout", TFModelTemplates.ANTIBUILT_BLOCK, TFTextureMapping::twoLayerBlock);

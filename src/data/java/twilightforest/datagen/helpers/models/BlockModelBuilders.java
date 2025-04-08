@@ -1,6 +1,5 @@
 package twilightforest.datagen.helpers.models;
 
-import com.google.errorprone.annotations.Var;
 import net.minecraft.client.data.models.ItemModelOutput;
 import net.minecraft.client.data.models.blockstates.*;
 import net.minecraft.client.data.models.model.*;
@@ -8,11 +7,9 @@ import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.client.renderer.item.properties.select.DisplayContext;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.*;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DirectionalBlock;
@@ -22,7 +19,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
-import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.block.connected.ConnectedTextureBuilder;
 import twilightforest.client.model.block.forcefield.ForceFieldModel;
 import twilightforest.client.model.block.forcefield.ForceFieldModelBuilder;
@@ -31,9 +27,12 @@ import twilightforest.client.renderer.special.TrophySpecialRenderer;
 import twilightforest.datagen.assets.models.TFModelTemplates;
 import twilightforest.datagen.assets.models.TFTextureMapping;
 import twilightforest.datagen.assets.models.TFTextureSlot;
+import twilightforest.enums.BossVariant;
 import twilightforest.enums.NagastoneVariant;
 import twilightforest.init.TFBlocks;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -720,5 +719,29 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 		}
 		this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(runeBlock, variants));
 		this.itemModelOutput.accept(runeBlock.asItem(), ItemModelUtils.tintedModel(ModelLocationUtils.getModelLocation(runeBlock).withSuffix("_0"), ItemModelUtils.constantTint(tint)));
+	}
+
+	public void trophyPedestal() {
+		BossVariant[][] variantList = new BossVariant[][] { //face order: north, south, east, west
+				new BossVariant[]{BossVariant.NAGA, BossVariant.LICH, BossVariant.UR_GHAST, BossVariant.HYDRA},
+				new BossVariant[]{BossVariant.SNOW_QUEEN, BossVariant.NAGA, BossVariant.HYDRA, BossVariant.LICH},
+				new BossVariant[]{BossVariant.UR_GHAST, BossVariant.SNOW_QUEEN, BossVariant.LICH, BossVariant.NAGA},
+				new BossVariant[]{BossVariant.HYDRA, BossVariant.UR_GHAST, BossVariant.NAGA, BossVariant.SNOW_QUEEN},
+				new BossVariant[]{BossVariant.LICH, BossVariant.HYDRA, BossVariant.SNOW_QUEEN, BossVariant.UR_GHAST}
+		};
+		Block pedestal = TFBlocks.TROPHY_PEDESTAL.get();
+		List<Variant> variants = new ArrayList<>();
+		List<Variant> activeVariants = new ArrayList<>();
+		for (int i = 0; i < variantList.length; i++) {
+			ResourceLocation model = TFModelTemplates.TROPHY_PEDESTAL.createWithSuffix(pedestal, i == 0 ? "" : ("_" + i), TFTextureMapping.trophyPedestal(pedestal, false, variantList[i][0], variantList[i][1], variantList[i][2], variantList[i][3]), this.modelOutput);
+			ResourceLocation activeModel = TFModelTemplates.TROPHY_PEDESTAL_ACTIVE.createWithSuffix(pedestal, i == 0 ? "_active" : ("_active_" + i), TFTextureMapping.trophyPedestal(pedestal, true, variantList[i][0], variantList[i][1], variantList[i][2], variantList[i][3]), this.modelOutput);
+
+			for (VariantProperties.Rotation rot : VariantProperties.Rotation.values()) {
+				variants.add(Variant.variant().with(VariantProperties.MODEL, model).with(VariantProperties.Y_ROT, rot));
+				activeVariants.add(Variant.variant().with(VariantProperties.MODEL, activeModel).with(VariantProperties.Y_ROT, rot));
+			}
+		}
+		this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(pedestal).with(PropertyDispatch.property(TrophyPedestalBlock.ACTIVE).select(true, activeVariants).select(false, variants)));
+		this.generateBlockItem(pedestal);
 	}
 }

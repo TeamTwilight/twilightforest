@@ -1,0 +1,88 @@
+{
+  "parent": "minecraft:block/block",
+  "render_type": "minecraft:translucent",
+  "textures": {
+    "top": "twilightforest:block/trophy_pedestal_top",
+    "particle": "#top"
+  },
+  "elements": [
+    {
+      "from": [2, 3, 2],
+      "to": [14, 13, 14],
+      "faces": {
+        "east": {"texture": "#east"},
+        "north": {"texture": "#north"},
+        "south": {"texture": "#south"},
+        "west": {"texture": "#west"}
+      }
+    },
+    {
+      "from": [1, 0, 1],
+      "to": [15, 3, 15],
+      "faces": {
+        "down": {"cullface": "down", "texture": "#top"},
+        "east": {"texture": "#east"},
+        "north": {"texture": "#north"},
+        "south": {"texture": "#south"},
+        "up": {"texture": "#top"},
+        "west": {"texture": "#west"}
+      }
+    },
+    {
+      "from": [1, 13, 1],
+      "to": [15, 16, 15],
+      "faces": {
+        "down": {"texture": "#top"},
+        "east": {"texture": "#east"},
+        "north": {"texture": "#north"},
+        "south": {"texture": "#south"},
+        "up": {"cullface": "up", "texture": "#top"},
+        "west": {"texture": "#west"}
+      }
+    },
+    {
+      "from": [1, 12, 1],
+      "to": [4, 13, 4],
+      "faces": {
+        "down": {"texture": "#top"},
+        "east": {"texture": "#east"},
+        "north": {"texture": "#north"},
+        "south": {"texture": "#south"},
+        "west": {"texture": "#west"}
+      }
+    },
+    {
+      "from": [12, 12, 1],
+      "to": [15, 13, 4],
+      "faces": {
+        "down": {"texture": "#top"},
+        "east": {"texture": "#east"},
+        "north": {"texture": "#north"},
+        "south": {"texture": "#south"},
+        "west": {"texture": "#west"}
+      }
+    },
+    {
+      "from": [1, 12, 12],
+      "to": [4, 13, 15],
+      "faces": {
+        "down": {"texture": "#top"},
+        "east": {"texture": "#east"},
+        "north": {"texture": "#north"},
+        "south": {"texture": "#south"},
+        "west": {"texture": "#west"}
+      }
+    },
+    {
+      "from": [12, 12, 12],
+      "to": [15, 13, 15],
+      "faces": {
+        "down": {"texture": "#top"},
+        "east": {"texture": "#east"},
+        "north": {"texture": "#north"},
+        "south": {"texture": "#south"},
+        "west": {"texture": "#west"}
+      }
+    }
+  ]
+}
