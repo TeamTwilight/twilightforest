@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "twilightforest:block/stronghold_shield",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "twilightforest:block/stronghold_shield",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north": {
+      "model": "twilightforest:block/stronghold_shield",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "twilightforest:block/stronghold_shield",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up": {
+      "model": "twilightforest:block/stronghold_shield"
+    },
+    "facing=west": {
+      "model": "twilightforest:block/stronghold_shield",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

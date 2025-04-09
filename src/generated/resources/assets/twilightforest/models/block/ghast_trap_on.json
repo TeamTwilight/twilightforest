@@ -1,0 +1,12 @@
+{
+  "parent": "twilightforest:block/util/three_layer_device_active",
+  "textures": {
+    "bottom": "twilightforest:block/encased_towerwood",
+    "side": "twilightforest:block/ghast_trap_on",
+    "side2": "twilightforest:block/ghast_trap_layer_1",
+    "side3": "twilightforest:block/ghast_trap_on_layer_2",
+    "top": "twilightforest:block/ghast_trap_on_top",
+    "top2": "twilightforest:block/ghast_trap_on_top_layer_1",
+    "top3": "twilightforest:block/ghast_trap_on_top_layer_2"
+  }
+}

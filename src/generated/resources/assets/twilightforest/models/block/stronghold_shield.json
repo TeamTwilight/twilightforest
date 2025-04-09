@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_top",
+  "textures": {
+    "side": "twilightforest:block/stronghold_shield",
+    "top": "twilightforest:block/stronghold_shield_inside"
+  }
+}
