@@ -1,0 +1,160 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "twilightforest:block/wrought_iron_fence_post"
+      },
+      "when": {
+        "post": "post"
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/wrought_iron_fence_post_capped"
+      },
+      "when": {
+        "post": "capped"
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/wrought_iron_fence_full"
+      },
+      "when": {
+        "north_fence": "full"
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/wrought_iron_fence_top"
+      },
+      "when": {
+        "north_fence": "top"
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/wrought_iron_fence_middle"
+      },
+      "when": {
+        "north_fence": "middle"
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/wrought_iron_fence_bottom"
+      },
+      "when": {
+        "north_fence": "bottom"
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/wrought_iron_fence_full",
+        "y": 90
+      },
+      "when": {
+        "east_fence": "full"
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/wrought_iron_fence_top",
+        "y": 90
+      },
+      "when": {
+        "east_fence": "top"
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/wrought_iron_fence_middle",
+        "y": 90
+      },
+      "when": {
+        "east_fence": "middle"
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/wrought_iron_fence_bottom",
+        "y": 90
+      },
+      "when": {
+        "east_fence": "bottom"
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/wrought_iron_fence_full",
+        "y": 180
+      },
+      "when": {
+        "south_fence": "full"
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/wrought_iron_fence_top",
+        "y": 180
+      },
+      "when": {
+        "south_fence": "top"
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/wrought_iron_fence_middle",
+        "y": 180
+      },
+      "when": {
+        "south_fence": "middle"
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/wrought_iron_fence_bottom",
+        "y": 180
+      },
+      "when": {
+        "south_fence": "bottom"
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/wrought_iron_fence_full",
+        "y": 270
+      },
+      "when": {
+        "west_fence": "full"
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/wrought_iron_fence_top",
+        "y": 270
+      },
+      "when": {
+        "west_fence": "top"
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/wrought_iron_fence_middle",
+        "y": 270
+      },
+      "when": {
+        "west_fence": "middle"
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/wrought_iron_fence_bottom",
+        "y": 270
+      },
+      "when": {
+        "west_fence": "bottom"
+      }
+    }
+  ]
+}
