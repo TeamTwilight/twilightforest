@@ -1,12 +1,6 @@
 {
-  "type": "twilightforest:travellers_gear_modifier",
-  "modifier": {
-    "data_component_map": {
-      "twilightforest:controlled_falling_multiplier": 0.8333333
-    },
-    "tooltip": "controlled_fall"
-  },
-  "pattern": [
+  "type": "twilightforest:travellers_gear_modifier_shapeless_recipe",
+  "ingredients": [
     {
       "item": "twilightforest:travellers_wings"
     },
@@ -16,5 +10,11 @@
     {
       "item": "minecraft:diamond"
     }
-  ]
+  ],
+  "modifier": {
+    "data_component_map": {
+      "twilightforest:controlled_falling_multiplier": 0.8333333
+    },
+    "tooltip": "controlled_fall"
+  }
 }

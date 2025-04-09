@@ -1,9 +1,7 @@
 package twilightforest.data;
 
-import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
@@ -599,6 +597,15 @@ public class CraftingGenerator extends CraftingDataHelper {
 //		output.accept(locEquip(TFItems.TRAVELLERS_WINGS.getId().getPath()), , null);
 		TravellersGearComponentModifierBuilder.build(List.of(Ingredient.of(TFItems.TRAVELLERS_WINGS), Ingredient.of(Items.DIAMOND), Ingredient.of(Items.DIAMOND)),
 			TravellersModifiers.CONTROLLED_FALL_MODIFIER).save(output);
+
+		TravellersGearComponentModifierBuilder.build(PatternBuilder.create()
+				.pattern("SBS")
+				.pattern("L L")
+				.define('B', Ingredient.of(TFItems.TRAVELLERS_BOOTS))
+				.define('S', Ingredient.of(Tags.Items.SLIME_BALLS))
+				.define('L', Ingredient.of(Items.LILY_PAD))
+				.build(),
+			TravellersModifiers.WATER_WALK_MODIFIER).save(output);
 
 		DryingRecipeBuilder.drying(Ingredient.of(Tags.Items.FOODS_COOKED_MEAT), new ItemStack(Items.LEATHER), 8)
 			.unlockedBy("has_meat", has(Tags.Items.FOODS_COOKED_MEAT))

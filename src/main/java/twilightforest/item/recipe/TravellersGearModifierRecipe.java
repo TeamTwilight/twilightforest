@@ -1,11 +1,7 @@
 package twilightforest.item.recipe;
 
-import com.mojang.datafixers.util.Either;
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
@@ -13,7 +9,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import twilightforest.TwilightForestMod;
-import twilightforest.init.TFRecipes;
 import twilightforest.item.travellers_gear.TravellersArmorItem;
 import twilightforest.item.travellers_gear.modifiers.TravellersGearComponentModifier;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifiers;
@@ -21,12 +16,10 @@ import twilightforest.item.travellers_gear.modifiers.TravellersModifiers;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-public class TravellersGearModifierRecipe extends CustomRecipe {
-	protected final Either<ShapedRecipePattern, NonNullList<Ingredient>> pattern;
+public abstract class TravellersGearModifierRecipe extends CustomRecipe {
 	protected final TravellersGearComponentModifier travellersModifier;
-	public TravellersGearModifierRecipe(Either<ShapedRecipePattern, NonNullList<Ingredient>> pattern, TravellersGearComponentModifier travellersModifier) {
+	public TravellersGearModifierRecipe(TravellersGearComponentModifier travellersModifier) {
 		super(CraftingBookCategory.EQUIPMENT);
-		this.pattern = pattern;
 		this.travellersModifier = travellersModifier;
 	}
 
@@ -51,19 +44,6 @@ public class TravellersGearModifierRecipe extends CustomRecipe {
 		return stack;
 	}
 
-	@Override
-	public boolean canCraftInDimensions(int width, int height) {
-		return pattern.map(
-			shapedRecipePattern -> width >= shapedRecipePattern.width() && height >= shapedRecipePattern.height(),
-			ingredients -> ingredients.size() <= width * height
-		);
-	}
-
-	@Override
-	public RecipeSerializer<?> getSerializer() {
-		return TFRecipes.MODIFIER_SERIALIZER.get();
-	}
-
 	protected static Stream<ItemStack> getTravellersArmor(CraftingInput input) {
 		return input.items().stream().filter(stack -> stack.getItem() instanceof TravellersArmorItem);
 	}
@@ -72,33 +52,29 @@ public class TravellersGearModifierRecipe extends CustomRecipe {
 		return travellersModifier.getComponentId().withPrefix("add_modifier_to_travellers_gear/").withSuffix("_modifier");
 	}
 
-	public static class Serializer implements RecipeSerializer<TravellersGearModifierRecipe> {
-		private static final Codec<ShapedRecipePattern> SHAPED_RECIPE_PATTERN_CODEC = ShapedRecipePattern.MAP_CODEC.codec();
-		private static final Codec<NonNullList<Ingredient>> NON_NULL_LIST_INGREDIENT_CODEC = NonNullList.codecOf(Ingredient.CODEC);
+	public static class AbstractModifierRecipeSerializer<T extends TravellersGearModifierRecipe> implements RecipeSerializer<T> {
+		protected final MapCodec<T> codec;
 
-		public static final MapCodec<TravellersGearModifierRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-				Codec.either(SHAPED_RECIPE_PATTERN_CODEC, NON_NULL_LIST_INGREDIENT_CODEC).fieldOf("pattern").forGetter(recipe -> recipe.pattern),
-				TravellersGearComponentModifier.MAP_CODEC.fieldOf("modifier").forGetter(recipe -> recipe.travellersModifier)
-			).apply(instance, TravellersGearModifierRecipe::new));
-
-		public static final StreamCodec<RegistryFriendlyByteBuf, TravellersGearModifierRecipe> STREAM_CODEC = StreamCodec.of(Serializer::toNetwork, Serializer::fromNetwork);
-
-		@Override
-		public MapCodec<TravellersGearModifierRecipe> codec() {
-			return CODEC;
+		protected AbstractModifierRecipeSerializer(MapCodec<T> codec) {
+			this.codec = codec;
 		}
 
 		@Override
-		public StreamCodec<RegistryFriendlyByteBuf, TravellersGearModifierRecipe> streamCodec() {
-			return STREAM_CODEC;
+		public MapCodec<T> codec() {
+			return codec;
 		}
 
-		public static TravellersGearModifierRecipe fromNetwork(RegistryFriendlyByteBuf friendlyByteBuf) {
-			return friendlyByteBuf.readJsonWithCodec(CODEC.codec());
+		@Override
+		public StreamCodec<RegistryFriendlyByteBuf, T> streamCodec() {
+			return StreamCodec.of(this::toNetwork, this::fromNetwork);
 		}
 
-		public static void toNetwork(RegistryFriendlyByteBuf friendlyByteBuf, TravellersGearModifierRecipe recipe) {
-			friendlyByteBuf.writeJsonWithCodec(CODEC.codec(), recipe);
+		public T fromNetwork(RegistryFriendlyByteBuf buf) {
+			return buf.readJsonWithCodec(codec.codec());
+		}
+
+		public void toNetwork(RegistryFriendlyByteBuf buf, T recipe) {
+			buf.writeJsonWithCodec(codec.codec(), recipe);
 		}
 	}
 }
