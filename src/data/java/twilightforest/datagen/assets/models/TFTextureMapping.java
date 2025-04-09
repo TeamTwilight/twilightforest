@@ -4,7 +4,9 @@ import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.Nullable;
+import org.w3c.dom.Text;
 import twilightforest.enums.BossVariant;
 import twilightforest.init.TFBlocks;
 
@@ -35,6 +37,18 @@ public class TFTextureMapping {
 			.put(TFTextureSlot.TOP_3, TextureMapping.getBlockTexture(topBlock, "_on_top_layer_2"));
 	}
 
+	public static TextureMapping uncraftingTable(Block block) {
+		return new TextureMapping()
+			.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block))
+			.put(TextureSlot.TOP, TextureMapping.getBlockTexture(block, "_top"))
+			.put(TFTextureSlot.TOP_2, TextureMapping.getBlockTexture(block, "_top_glow"))
+			.put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(Blocks.JUNGLE_PLANKS));
+	}
+
+	public static TextureMapping uncraftingTableOn(Block block) {
+		return uncraftingTable(block).put(TFTextureSlot.SIDE_2, TextureMapping.getBlockTexture(block, "_glow"));
+	}
+
 	public static TextureMapping ctmBlock(Block block) {
 		var overlay = TextureMapping.getBlockTexture(block);
 		return ctmBlock(null, overlay);
@@ -43,6 +57,22 @@ public class TFTextureMapping {
 	public static TextureMapping forcefield(Block block) {
 		var tex = TextureMapping.getBlockTexture(block);
 		return new TextureMapping().put(TextureSlot.PANE, tex).put(TextureSlot.PARTICLE, tex);
+	}
+
+	public static TextureMapping giantBlock(Block block) {
+		var tex = TextureMapping.getBlockTexture(block);
+		return giantBlock(tex, tex);
+	}
+
+	public static TextureMapping giantBlock(ResourceLocation side, ResourceLocation end) {
+		return new TextureMapping()
+			.put(TextureSlot.PARTICLE, side)
+			.put(TextureSlot.NORTH, side)
+			.put(TextureSlot.SOUTH, side)
+			.put(TextureSlot.EAST, side)
+			.put(TextureSlot.WEST, side)
+			.put(TextureSlot.UP, end)
+			.put(TextureSlot.DOWN, end);
 	}
 
 	public static TextureMapping ctmBlock(@Nullable ResourceLocation base, ResourceLocation overlay) {

@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.client.renderer.item.properties.select.DisplayContext;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.*;
@@ -74,10 +75,32 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 		this.generateBlockItem(block);
 	}
 
-	public void castleDoor(Block block) {
+	public void castleDoor(Block block, int tint) {
 		Function<Boolean, ResourceLocation> door = bool -> TFModelTemplates.CTM.extend().customLoader(ConnectedTextureBuilder::new, builder -> builder.connectsTo(TFBlocks.BLUE_CASTLE_DOOR.get(), TFBlocks.PINK_CASTLE_DOOR.get(), TFBlocks.VIOLET_CASTLE_DOOR.get(), TFBlocks.YELLOW_CASTLE_DOOR.get()).setOverlayEmissivity(15).setOverlayTintIndex(0)).renderType("cutout").build().createWithSuffix(block, bool ? "_vanished" : "", TFTextureMapping.ctmBlock(TwilightForestMod.prefix("block/castle_door" + (bool ? "_vanished" : "")), TwilightForestMod.prefix("block/castle_door_runes")), this.modelOutput);
 		this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block).with(PropertyDispatch.property(CastleDoorBlock.VANISHED).select(true, Variant.variant().with(VariantProperties.MODEL, door.apply(true))).select(false, Variant.variant().with(VariantProperties.MODEL, door.apply(false)))));
-		this.generateBlockItem(block);
+		this.registerSimpleTintedItemModel(block, BuiltInRegistries.BLOCK.getKey(block).withPrefix("block/"), ItemModelUtils.constantTint(tint));
+	}
+
+	public void giantBlock(Block block, TextureMapping mapping) {
+		this.blockStateOutput.accept(createSimpleBlock(block, TFModelTemplates.GIANT_BLOCK.create(block, mapping, this.modelOutput)));
+		this.generateGiantBlockItem(block, mapping);
+	}
+
+	public void generateGiantBlockItem(Block giantBlock, TextureMapping mapping) {
+		ItemModel.Unbaked base = ItemModelUtils.plainModel(TFModelTemplates.GIANT_BLOCK_BASE.createWithSuffix(giantBlock, "_item", mapping, this.modelOutput));
+		ItemModel.Unbaked gui = ItemModelUtils.plainModel(TFModelTemplates.GIANT_BLOCK_GUI.createWithSuffix(giantBlock, "_gui", mapping, this.modelOutput));
+		this.itemModelOutput.accept(giantBlock.asItem(), ItemModelUtils.select(new DisplayContext(), base, ItemModelUtils.when(ItemDisplayContext.GUI, gui)));
+	}
+
+	public void giantBlock(Block block, String renderType, TextureMapping mapping, int tint) {
+		this.blockStateOutput.accept(createSimpleBlock(block, TFModelTemplates.GIANT_BLOCK.extend().renderType(renderType).build().create(block, mapping, this.modelOutput)));
+		this.generateGiantBlockItem(block, mapping, tint);
+	}
+
+	public void generateGiantBlockItem(Block giantBlock, TextureMapping mapping, int tint) {
+		ItemModel.Unbaked base = ItemModelUtils.tintedModel(TFModelTemplates.GIANT_BLOCK_BASE.createWithSuffix(giantBlock, "_item", mapping, this.modelOutput), ItemModelUtils.constantTint(tint));
+		ItemModel.Unbaked gui = ItemModelUtils.tintedModel(TFModelTemplates.GIANT_BLOCK_GUI.createWithSuffix(giantBlock, "_gui", mapping, this.modelOutput), ItemModelUtils.constantTint(tint));
+		this.itemModelOutput.accept(giantBlock.asItem(), ItemModelUtils.select(new DisplayContext(), base, ItemModelUtils.when(ItemDisplayContext.GUI, gui)));
 	}
 
 	public void simpleBlockWithRenderType(Block block, String type) {

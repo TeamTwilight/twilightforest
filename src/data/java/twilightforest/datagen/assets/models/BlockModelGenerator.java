@@ -98,8 +98,6 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.wrapBlockItem(TFBlocks.INFESTED_TOWERWOOD.get(), this::createTrivialCube);
 		this.wrapBlockItem(TFBlocks.ENCASED_TOWERWOOD.get(), this::createTrivialCube);
 
-		//reappearing - 0, 15, 10
-
 		this.wrapBlockItem(TFBlocks.ENCASED_SMOKER.get(), block -> this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block).with(
 			createBooleanModelDispatch(EncasedSmokerBlock.ACTIVE,
 				TFModelTemplates.THREE_LAYER_DEVICE_ACTIVE.createWithSuffix(block, "_on", TFTextureMapping.threeLayerDeviceOn(block, TFBlocks.GHAST_TRAP.get()), this.modelOutput),
@@ -141,9 +139,13 @@ public class BlockModelGenerator extends BlockModelBuilders {
 					TFModelTemplates.THREE_LAYER_BLOCK.createWithSuffix(block, variant, TFTextureMapping.threeLayerBlock(block, variant), this.modelOutput));
 			}))));
 
-		this.basicCtmBlock(TFBlocks.ARCTIC_FUR_BLOCK.get());
 		//TODO aurora blocks
 		this.wrapBlockItem(TFBlocks.BEANSTALK_LEAVES.get(), block -> this.blockWithRenderType(block, "cutout_mipped", ModelTemplates.CUBE_ALL, u -> TextureMapping.cube(Blocks.AZALEA_LEAVES)));
+
+		this.giantBlock(TFBlocks.GIANT_COBBLESTONE.get(), TFTextureMapping.giantBlock(Blocks.COBBLESTONE));
+		this.giantBlock(TFBlocks.GIANT_LOG.get(), TFTextureMapping.giantBlock(TextureMapping.getBlockTexture(Blocks.OAK_LOG), TextureMapping.getBlockTexture(Blocks.OAK_LOG, "_top")));
+		this.giantBlock(TFBlocks.GIANT_LEAVES.get(), "cutout_mipped", TFTextureMapping.giantBlock(Blocks.OAK_LEAVES), -12012264);
+		this.giantBlock(TFBlocks.GIANT_OBSIDIAN.get(), TFTextureMapping.giantBlock(Blocks.OBSIDIAN));
 
 		this.wrapBlockItem(TFBlocks.CASTLE_BRICK.get(), this::createTrivialCube);
 		this.wrapBlockItem(TFBlocks.WORN_CASTLE_BRICK.get(), this::createTrivialCube);
@@ -166,10 +168,10 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.generateRuneBlock(TFBlocks.BLUE_CASTLE_RUNE_BRICK.get(), 65535);
 		this.generateRuneBlock(TFBlocks.VIOLET_CASTLE_RUNE_BRICK.get(), 4915330);
 
-		this.castleDoor(TFBlocks.PINK_CASTLE_DOOR.get());
-		this.castleDoor(TFBlocks.YELLOW_CASTLE_DOOR.get());
-		this.castleDoor(TFBlocks.BLUE_CASTLE_DOOR.get());
-		this.castleDoor(TFBlocks.VIOLET_CASTLE_DOOR.get());
+		this.castleDoor(TFBlocks.PINK_CASTLE_DOOR.get(), 16711935);
+		this.castleDoor(TFBlocks.YELLOW_CASTLE_DOOR.get(), 16776960);
+		this.castleDoor(TFBlocks.BLUE_CASTLE_DOOR.get(), 65535);
+		this.castleDoor(TFBlocks.VIOLET_CASTLE_DOOR.get(), 4915330);
 		this.forcefield(TFBlocks.PINK_FORCE_FIELD.get());
 		this.forcefield(TFBlocks.ORANGE_FORCE_FIELD.get());
 		this.forcefield(TFBlocks.GREEN_FORCE_FIELD.get());
@@ -213,6 +215,13 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.generateTrophy(TFBlocks.ALPHA_YETI_TROPHY.get(), TFBlocks.ALPHA_YETI_WALL_TROPHY.get(), minor, "alpha_yeti_trophy");
 		this.generateTrophy(TFBlocks.SNOW_QUEEN_TROPHY.get(), TFBlocks.SNOW_QUEEN_WALL_TROPHY.get(), major);
 		this.generateTrophy(TFBlocks.QUEST_RAM_TROPHY.get(), TFBlocks.QUEST_RAM_WALL_TROPHY.get(), quest, "smaller_gui_trophy");
+
+		this.wrapBlockItem(TFBlocks.UNCRAFTING_TABLE.get(), block -> this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block).with(createBooleanModelDispatch(UncraftingTableBlock.POWERED, TFModelTemplates.TWO_LAYER_COLUMN_NO_BOTTOM.createWithSuffix(block, "_activated", TFTextureMapping.uncraftingTableOn(block), this.modelOutput), TFModelTemplates.CUBE_BOTTOM_2_LAYER_TOP.create(block, TFTextureMapping.uncraftingTable(block), this.modelOutput)))));
+		this.basicCtmBlock(TFBlocks.ARCTIC_FUR_BLOCK.get());
+		this.wrapBlockItem(TFBlocks.STEELEAF_BLOCK.get(), this::createTrivialCube);
+		this.wrapBlockItem(TFBlocks.IRONWOOD_BLOCK.get(), this::createTrivialCube);
+		this.wrapBlockItem(TFBlocks.KNIGHTMETAL_BLOCK.get(), block -> this.blockStateOutput.accept(createSimpleBlock(block, ModelLocationUtils.getModelLocation(block))));
+		this.wrapBlockItem(TFBlocks.FIERY_BLOCK.get(), block -> this.blockStateOutput.accept(createSimpleBlock(block, ModelLocationUtils.getModelLocation(block))));
 	}
 
 	private void generateWoodBlocks() {
