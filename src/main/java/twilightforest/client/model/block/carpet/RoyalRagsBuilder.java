@@ -5,7 +5,7 @@ import twilightforest.TwilightForestMod;
 
 public class RoyalRagsBuilder extends CustomLoaderBuilder {
 
-	protected RoyalRagsBuilder() {
+	public RoyalRagsBuilder() {
 		super(TwilightForestMod.prefix("royal_rags"), false);
 	}
 

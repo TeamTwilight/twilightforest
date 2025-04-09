@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
-@SuppressWarnings("deprecation")
 public class ConnectedTextureModel implements IDynamicBakedModel {
 
 	private final EnumSet<Direction> enabledFaces;
@@ -64,7 +63,7 @@ public class ConnectedTextureModel implements IDynamicBakedModel {
 
 			if (this.enabledFaces.contains(side) || this.renderOnDisabledFaces) {
 				for (int quad = 0; quad < 4; ++quad) {
-					//if our model data is null (I really hope it isn't) we can skip connected textures since we dont have the info we need
+					//if our model data is null (happens for items) we can skip connected textures since we dont have the info we need
 					//i'd rather do this than crash the game or skip rendering the block entirely
 					ConnectionLogic connectionType = data != null && this.enabledFaces.contains(side) ? data.logic[faceIndex][quad] : ConnectionLogic.NONE;
 					quads.add(this.quads[faceIndex][quad][connectionType.ordinal()]);

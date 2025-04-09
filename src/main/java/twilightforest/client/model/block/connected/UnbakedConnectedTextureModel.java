@@ -23,12 +23,12 @@ import java.util.Map;
 
 public class UnbakedConnectedTextureModel extends AbstractUnbakedModel {
 
-	private final boolean renderOnDisabledFaces;
-	private final EnumSet<Direction> enabledFaces;
-	private final List<Block> connectableBlocks;
-	private final BlockElement[][] baseElements;
-	private final BlockElement[][][] faceElements;
-	private final RenderTypeGroup group;
+	protected final boolean renderOnDisabledFaces;
+	protected final EnumSet<Direction> enabledFaces;
+	protected final List<Block> connectableBlocks;
+	protected BlockElement[][] baseElements;
+	protected BlockElement[][][] faceElements;
+	protected final RenderTypeGroup group;
 
 	public UnbakedConnectedTextureModel(EnumSet<Direction> enabledFaces, boolean renderOnDisabledFaces, List<Block> connectableBlocks, int baseTintIndex, int baseEmissivity, int tintIndex, int emissivity, StandardModelParameters parameters, RenderTypeGroup group) {
 		super(parameters);

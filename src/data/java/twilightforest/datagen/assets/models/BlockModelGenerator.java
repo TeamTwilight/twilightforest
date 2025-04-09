@@ -19,6 +19,8 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.w3c.dom.Text;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
+import twilightforest.client.model.block.carpet.RoyalRagsBuilder;
+import twilightforest.client.model.block.carpet.RoyalRagsModelLoader;
 import twilightforest.client.renderer.special.*;
 import twilightforest.enums.TowerDeviceVariant;
 import twilightforest.util.TFBlockFamilies;
@@ -66,6 +68,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 
 		this.wrapBlockItem(TFBlocks.TWISTED_STONE.get(), block -> this.createRotatedPillarWithHorizontalVariant(block, TexturedModel.COLUMN_ALT, TexturedModel.COLUMN_HORIZONTAL_ALT));
 		this.wrapBlockItem(TFBlocks.BOLD_STONE_PILLAR.get(), block -> this.createRotatedPillarWithHorizontalVariant(block, TexturedModel.COLUMN_ALT, TexturedModel.COLUMN_HORIZONTAL_ALT));
+		this.wrapBlockItem(TFBlocks.CORONATION_CARPET.get(), block -> this.blockStateOutput.accept(createSimpleBlock(block, TFModelTemplates.CTM.extend().customLoader(RoyalRagsBuilder::new, builder -> {}).build().create(block, TFTextureMapping.ctmBlock(ModelLocationUtils.getModelLocation(block), ModelLocationUtils.getModelLocation(block)), this.modelOutput))));
 		this.stonePillar();
 		this.wroughtIronFence();
 		this.terrorcotta();
