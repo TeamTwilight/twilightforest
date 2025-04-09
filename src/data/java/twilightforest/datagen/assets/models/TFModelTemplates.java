@@ -1,25 +1,20 @@
 package twilightforest.datagen.assets.models;
 
-import net.minecraft.client.data.models.model.ModelLocationUtils;
 import net.minecraft.client.data.models.model.ModelTemplate;
 import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
 
-import java.util.Optional;
-
 public class TFModelTemplates extends ModelTemplates {
 
-	public static final ModelTemplate ANTIBUILDER = create("twilightforest:antibuilder", TextureSlot.ALL, TFTextureSlot.ALL_2, TFTextureSlot.ALL_3).extend()
-		.parent(ResourceLocation.withDefaultNamespace("block/cube_all"))
-		.element(builder -> builder.allFaces((direction, faceBuilder) -> faceBuilder.texture(TextureSlot.ALL).cullface(direction)))
-		.element(builder -> builder.allFaces((direction, faceBuilder) -> faceBuilder.emissivity(15, 15).texture(TFTextureSlot.ALL_2).cullface(direction)))
-		.element(builder -> builder.allFaces((direction, faceBuilder) -> faceBuilder.emissivity(10, 10).texture(TFTextureSlot.ALL_3).cullface(direction))).build();
-	public static final ModelTemplate ANTIBUILT_BLOCK = create("twilightforest:antibuilt_block", TextureSlot.ALL, TFTextureSlot.ALL_2).extend()
-		.parent(ResourceLocation.withDefaultNamespace("block/cube_all"))
-		.element(builder -> builder.allFaces((direction, faceBuilder) -> faceBuilder.texture(TextureSlot.ALL).cullface(direction)))
-		.element(builder -> builder.allFaces((direction, faceBuilder) -> faceBuilder.emissivity(10, 10).texture(TFTextureSlot.ALL_2).cullface(direction))).build();
+	public static final ModelTemplate TWO_LAYER_BLOCK = create("twilightforest:util/two_layer_block_15", TextureSlot.ALL, TFTextureSlot.ALL_2);
+	public static final ModelTemplate TWO_LAYER_BLOCK_DARKER = create("twilightforest:util/two_layer_block_10", TextureSlot.ALL, TFTextureSlot.ALL_2);
+	public static final ModelTemplate THREE_LAYER_BLOCK = create("twilightforest:util/three_layer_block", TextureSlot.ALL, TFTextureSlot.ALL_2, TFTextureSlot.ALL_3);
+	public static final ModelTemplate SMALL_CUBE = create("twilightforest:util/small_cube", TextureSlot.ALL);
+
+	public static final ModelTemplate THREE_LAYER_DEVICE = create("twilightforest:util/three_layer_device", TextureSlot.BOTTOM, TextureSlot.TOP, TFTextureSlot.TOP_2, TextureSlot.SIDE, TFTextureSlot.SIDE_2, TFTextureSlot.SIDE_3);
+	public static final ModelTemplate THREE_LAYER_DEVICE_ACTIVE = create("twilightforest:util/three_layer_device_active", TextureSlot.BOTTOM, TextureSlot.TOP, TFTextureSlot.TOP_2, TFTextureSlot.TOP_3, TextureSlot.SIDE, TFTextureSlot.SIDE_2, TFTextureSlot.SIDE_3);
 
 	public static final ModelTemplate BISECTED_STAIRS_STRAIGHT = create("twilightforest:util/bisected_stairs", TextureSlot.BOTTOM, TextureSlot.TOP, TextureSlot.SIDE, TFTextureSlot.MIDDLE);
 	public static final ModelTemplate BISECTED_STAIRS_INNER = create("twilightforest:util/bisected_inner_stairs", "_inner", TextureSlot.BOTTOM, TextureSlot.TOP, TextureSlot.SIDE, TFTextureSlot.MIDDLE);
@@ -29,9 +24,7 @@ public class TFModelTemplates extends ModelTemplates {
 	public static final ModelTemplate CUBE_COLUMN_ROTATIONALLY_SPECIAL_Z = create("twilightforest:util/cube_column_rotationally_special_z", "_special_z", TextureSlot.END, TFTextureSlot.SIDE_A, TFTextureSlot.SIDE_B);
 
 	public static final ModelTemplate FORCEFIELD = create("twilightforest:forcefield", TextureSlot.PANE, TextureSlot.PARTICLE).extend().parent(ResourceLocation.withDefaultNamespace("block/cube_all")).ambientOcclusion(false).renderType("translucent").build();
-	public static final ModelTemplate FULLBRIGHT_BLOCK = create("twilightforest:fullbright_block", TextureSlot.ALL).extend()
-		.parent(ResourceLocation.withDefaultNamespace("block/cube"))
-		.element(builder -> builder.allFaces((direction, faceBuilder) -> faceBuilder.texture(TextureSlot.ALL).emissivity(15, 15).cullface(direction))).build();
+	public static final ModelTemplate FULLBRIGHT_BLOCK = create("twilightforest:util/fullbright_cube", TextureSlot.ALL);
 
 	public static final ModelTemplate CTM_NO_BASE = create("twilightforest:ctm_no_base", TextureSlot.PARTICLE, TFTextureSlot.CTM_OVERLAY, TFTextureSlot.CTM_OVERLAY_CONNECTED).extend().parent(ResourceLocation.withDefaultNamespace("block/block")).build();
 	public static final ModelTemplate CTM = create("twilightforest:ctm", TextureSlot.PARTICLE, TFTextureSlot.CTM_BASE, TFTextureSlot.CTM_OVERLAY, TFTextureSlot.CTM_OVERLAY_CONNECTED).extend().parent(ResourceLocation.withDefaultNamespace("block/block")).build();

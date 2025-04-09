@@ -14,10 +14,12 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.w3c.dom.Text;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
 import twilightforest.client.renderer.special.*;
+import twilightforest.enums.TowerDeviceVariant;
 import twilightforest.util.TFBlockFamilies;
 import twilightforest.datagen.helpers.models.BlockModelBuilders;
 import twilightforest.init.TFBlocks;
@@ -82,9 +84,63 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.wrapBlockItem(TFBlocks.MOSSY_UNDERBRICK.get(), this::createTrivialCube);
 		this.wrapBlockItem(TFBlocks.UNDERBRICK_FLOOR.get(), this::createTrivialCube);
 		this.trophyPedestal();
+		this.wrapBlockItem(TFBlocks.STRONGHOLD_SHIELD.get(), block -> this.blockStateOutput.accept(createSimpleBlock(block, ModelTemplates.CUBE_TOP.create(block, new TextureMapping().put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block)).put(TextureSlot.TOP, TextureMapping.getBlockTexture(block, "_inside")), this.modelOutput)).with(PropertyDispatch.property(BlockStateProperties.FACING)
+			.select(Direction.UP, Variant.variant())
+			.select(Direction.DOWN, Variant.variant().with(VariantProperties.X_ROT, VariantProperties.Rotation.R180))
+			.select(Direction.NORTH, Variant.variant().with(VariantProperties.X_ROT, VariantProperties.Rotation.R90))
+			.select(Direction.SOUTH, Variant.variant().with(VariantProperties.X_ROT, VariantProperties.Rotation.R90).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
+			.select(Direction.WEST, Variant.variant().with(VariantProperties.X_ROT, VariantProperties.Rotation.R90).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
+			.select(Direction.EAST, Variant.variant().with(VariantProperties.X_ROT, VariantProperties.Rotation.R90).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)))));
 
-		this.wrapBlockItem(TFBlocks.ANTIBUILDER.get(), block -> this.blockWithRenderType(block, "cutout", TFModelTemplates.ANTIBUILDER, TFTextureMapping::threeLayerBlock));
-		this.blockWithRenderType(TFBlocks.ANTIBUILT_BLOCK.get(), "cutout", TFModelTemplates.ANTIBUILT_BLOCK, TFTextureMapping::twoLayerBlock);
+		this.wrapBlockItem(TFBlocks.TOWERWOOD.get(), this::createTrivialCube);
+		this.wrapBlockItem(TFBlocks.CRACKED_TOWERWOOD.get(), this::createTrivialCube);
+		this.wrapBlockItem(TFBlocks.MOSSY_TOWERWOOD.get(), this::createTrivialCube);
+		this.wrapBlockItem(TFBlocks.INFESTED_TOWERWOOD.get(), this::createTrivialCube);
+		this.wrapBlockItem(TFBlocks.ENCASED_TOWERWOOD.get(), this::createTrivialCube);
+
+		//reappearing - 0, 15, 10
+
+		this.wrapBlockItem(TFBlocks.ENCASED_SMOKER.get(), block -> this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block).with(
+			createBooleanModelDispatch(EncasedSmokerBlock.ACTIVE,
+				TFModelTemplates.THREE_LAYER_DEVICE_ACTIVE.createWithSuffix(block, "_on", TFTextureMapping.threeLayerDeviceOn(block, TFBlocks.GHAST_TRAP.get()), this.modelOutput),
+			TFModelTemplates.THREE_LAYER_DEVICE.create(block, TFTextureMapping.threeLayerDevice(block, TFBlocks.GHAST_TRAP.get(), ""), this.modelOutput)))));
+		ResourceLocation jetOn = TFModelTemplates.THREE_LAYER_DEVICE_ACTIVE.createWithSuffix(TFBlocks.ENCASED_FIRE_JET.get(), "_on", TFTextureMapping.threeLayerDeviceOn(TFBlocks.ENCASED_FIRE_JET.get(), TFBlocks.GHAST_TRAP.get()), this.modelOutput);
+		ResourceLocation jetOff = TFModelTemplates.THREE_LAYER_DEVICE.create(TFBlocks.ENCASED_FIRE_JET.get(), TFTextureMapping.threeLayerDevice(TFBlocks.ENCASED_FIRE_JET.get(), TFBlocks.GHAST_TRAP.get(), ""), this.modelOutput);
+		this.wrapBlockItem(TFBlocks.ENCASED_FIRE_JET.get(), block -> this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block).with(PropertyDispatch.property(EncasedFireJetBlock.STATE).generate(variant -> Variant.variant().with(VariantProperties.MODEL, variant.isVariantOn() ? jetOn : jetOff)))));
+		this.wrapBlockItem(TFBlocks.GHAST_TRAP.get(), block -> this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block).with(createBooleanModelDispatch(GhastTrapBlock.ACTIVE,
+			TFModelTemplates.THREE_LAYER_DEVICE_ACTIVE.createWithSuffix(block, "_on", TFTextureMapping.threeLayerDeviceOn(block, block), this.modelOutput),
+			TFModelTemplates.THREE_LAYER_DEVICE.create(block, TFTextureMapping.threeLayerDevice(block, block, ""), this.modelOutput)))));
+		this.wrapBlockItem(TFBlocks.ANTIBUILDER.get(), block -> this.blockStateOutput.accept(createSimpleBlock(block, TFModelTemplates.THREE_LAYER_BLOCK.create(block, TFTextureMapping.threeLayerBlock(block, ""), this.modelOutput))));
+		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.ANTIBUILT_BLOCK.get(), TFModelTemplates.TWO_LAYER_BLOCK_DARKER.create(TFBlocks.ANTIBUILT_BLOCK.get(), TFTextureMapping.twoLayerBlock(TFBlocks.ANTIBUILT_BLOCK.get(), ""), this.modelOutput)));
+		this.wrapBlockItem(TFBlocks.CARMINITE_BUILDER.get(), block -> this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block).with(PropertyDispatch.property(BuilderBlock.STATE).generate(state -> {
+			ResourceLocation model = switch (state) {
+				case BUILDER_INACTIVE -> TFModelTemplates.THREE_LAYER_BLOCK.createWithSuffix(block, "", TFTextureMapping.threeLayerBlock(block, ""), this.modelOutput);
+				case BUILDER_ACTIVE -> TFModelTemplates.THREE_LAYER_BLOCK.createWithSuffix(block, "_on", TFTextureMapping.threeLayerBlock(block, "_on"), this.modelOutput);
+				case BUILDER_TIMEOUT -> TFModelTemplates.THREE_LAYER_BLOCK.createWithSuffix(block, "_timeout", TFTextureMapping.threeLayerBlock(block, "_timeout"), this.modelOutput);
+			};
+			return Variant.variant().with(VariantProperties.MODEL, model);
+		}))));
+		this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(TFBlocks.BUILT_BLOCK.get())
+			.with(PropertyDispatch.property(TranslucentBuiltBlock.ACTIVE).generate(active -> Variant.variant().with(VariantProperties.MODEL, active ?
+				TFModelTemplates.FULLBRIGHT_BLOCK.createWithSuffix(TFBlocks.BUILT_BLOCK.get(), "_on", TextureMapping.cube(TextureMapping.getBlockTexture(TFBlocks.BUILT_BLOCK.get(), "_on")), this.modelOutput) :
+				TFModelTemplates.FULLBRIGHT_BLOCK.create(TFBlocks.BUILT_BLOCK.get(), TextureMapping.cube(TFBlocks.BUILT_BLOCK.get()), this.modelOutput)))));
+		this.wrapBlockItem(TFBlocks.CARMINITE_REACTOR.get(), block -> this.createTrivialBlock(block, TexturedModel.createDefault(block1 -> TFTextureMapping.threeLayerBlock(block, ""), TFModelTemplates.THREE_LAYER_BLOCK)));
+		this.wrapBlockItem(TFBlocks.LOCKED_VANISHING_BLOCK.get(), block -> this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block)
+			.with(PropertyDispatch.property(VanishingBlock.ACTIVE).generate(active -> Variant.variant().with(VariantProperties.MODEL, active ?
+				TFModelTemplates.THREE_LAYER_BLOCK.createWithSuffix(block, "_on", TFTextureMapping.threeLayerBlock(block, "_on"), this.modelOutput) :
+				TFModelTemplates.THREE_LAYER_BLOCK.create(block, TFTextureMapping.threeLayerBlock(block, ""), this.modelOutput))))));
+		this.wrapBlockItem(TFBlocks.VANISHING_BLOCK.get(), block -> this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block)
+			.with(PropertyDispatch.property(VanishingBlock.ACTIVE).generate(active -> Variant.variant().with(VariantProperties.MODEL, active ?
+				TFModelTemplates.THREE_LAYER_BLOCK.createWithSuffix(block, "_on", TFTextureMapping.threeLayerBlock(block, "_on"), this.modelOutput) :
+				TFModelTemplates.THREE_LAYER_BLOCK.create(block, TFTextureMapping.threeLayerBlock(block, ""), this.modelOutput))))));
+		this.wrapBlockItem(TFBlocks.REAPPEARING_BLOCK.get(), block -> this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block)
+			.with(PropertyDispatch.properties(ReappearingBlock.ACTIVE, ReappearingBlock.VANISHED).generate((active, vanished) -> {
+				String variant = (vanished ? "_invis" : "") + (active ? "_on" : "");
+				return Variant.variant().with(VariantProperties.MODEL, vanished ?
+					TFModelTemplates.SMALL_CUBE.createWithSuffix(block, variant, TextureMapping.cube(TextureMapping.getBlockTexture(block, variant)), this.modelOutput) :
+					TFModelTemplates.THREE_LAYER_BLOCK.createWithSuffix(block, variant, TFTextureMapping.threeLayerBlock(block, variant), this.modelOutput));
+			}))));
+
 		this.basicCtmBlock(TFBlocks.ARCTIC_FUR_BLOCK.get());
 		//TODO aurora blocks
 		this.wrapBlockItem(TFBlocks.BEANSTALK_LEAVES.get(), block -> this.blockWithRenderType(block, "cutout_mipped", ModelTemplates.CUBE_ALL, u -> TextureMapping.cube(Blocks.AZALEA_LEAVES)));
@@ -119,12 +175,6 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.forcefield(TFBlocks.GREEN_FORCE_FIELD.get());
 		this.forcefield(TFBlocks.BLUE_FORCE_FIELD.get());
 		this.forcefield(TFBlocks.VIOLET_FORCE_FIELD.get());
-
-		var builtMapping = TextureMapping.cube(TFBlocks.BUILT_BLOCK.get());
-		ResourceLocation builtOff = TFModelTemplates.FULLBRIGHT_BLOCK.create(TFBlocks.BUILT_BLOCK.get(), builtMapping, this.modelOutput);
-		ResourceLocation builtOn = TFModelTemplates.FULLBRIGHT_BLOCK.createWithSuffix(TFBlocks.BUILT_BLOCK.get(), "_active", builtMapping, this.modelOutput);
-		this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(TFBlocks.BUILT_BLOCK.get())
-			.with(PropertyDispatch.property(TranslucentBuiltBlock.ACTIVE).generate(active -> Variant.variant().with(VariantProperties.MODEL, active ? builtOn : builtOff))));
 
 		this.generateSpecialModel(TFBlocks.KEEPSAKE_CASKET.get(), Blocks.NETHERITE_BLOCK, block -> ItemModelUtils.specialModel(TwilightForestMod.prefix("item/keepsake_casket"), new KeepsakeCasketSpecialRenderer.Unbaked()));
 		this.generateSpecialModel(TFBlocks.SKULL_CHEST.get(), Blocks.BONE_BLOCK, block -> ItemModelUtils.specialModel(TwilightForestMod.prefix("item/skull_chest"), new SkullChestSpecialRenderer.Unbaked()));
@@ -174,7 +224,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.wrapBlockItem(TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.get(), block -> this.generateLog(block, TextureMapping.logColumn(TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.get())));
 		this.wrapBlockItem(TFBlocks.STRIPPED_TWILIGHT_OAK_WOOD.get(), block -> this.generateLog(block, TextureMapping.logColumn(TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.get())));
 		this.generateHollowLog(TFBlocks.TWILIGHT_OAK_LOG.get(), TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.get(), TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_VERTICAL.get(), TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_CLIMBABLE.get());
-		this.generateSapling(TFBlocks.TWILIGHT_OAK_SAPLING.get(), TFBlocks.POTTED_TWILIGHT_OAK_SAPLING.get(), BlockModelGenerators.PlantType.NOT_TINTED);
+		this.generateSapling(TFBlocks.TWILIGHT_OAK_SAPLING.get(), TFBlocks.POTTED_TWILIGHT_OAK_SAPLING.get(), PlantType.NOT_TINTED);
 		this.generateLeaves(TFBlocks.TWILIGHT_OAK_LEAVES.get(), TextureMapping.cube(Blocks.OAK_LEAVES), -12012264);
 		this.wrapBlockItem(TFBlocks.TWILIGHT_OAK_PLANKS.get(), this::createTrivialCube);
 		TextureMapping twilightOak = TextureMapping.cube(TFBlocks.TWILIGHT_OAK_PLANKS.get());
@@ -195,7 +245,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.wrapBlockItem(TFBlocks.STRIPPED_CANOPY_LOG.get(), block -> this.generateLog(block, TextureMapping.logColumn(TFBlocks.STRIPPED_CANOPY_LOG.get())));
 		this.wrapBlockItem(TFBlocks.STRIPPED_CANOPY_WOOD.get(), block -> this.generateLog(block, TextureMapping.logColumn(TFBlocks.STRIPPED_CANOPY_LOG.get())));
 		this.generateHollowLog(TFBlocks.CANOPY_LOG.get(), TFBlocks.STRIPPED_CANOPY_LOG.get(), TFBlocks.HOLLOW_CANOPY_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_CANOPY_LOG_VERTICAL.get(), TFBlocks.HOLLOW_CANOPY_LOG_CLIMBABLE.get());
-		this.generateSapling(TFBlocks.CANOPY_SAPLING.get(), TFBlocks.POTTED_CANOPY_SAPLING.get(), BlockModelGenerators.PlantType.NOT_TINTED);
+		this.generateSapling(TFBlocks.CANOPY_SAPLING.get(), TFBlocks.POTTED_CANOPY_SAPLING.get(), PlantType.NOT_TINTED);
 		this.generateLeaves(TFBlocks.CANOPY_LEAVES.get(), TextureMapping.cube(Blocks.SPRUCE_LEAVES), -10380959);
 		this.wrapBlockItem(TFBlocks.CANOPY_PLANKS.get(), this::createTrivialCube);
 		TextureMapping canopy = TextureMapping.cube(TFBlocks.CANOPY_PLANKS.get());
@@ -220,7 +270,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.wrapBlockItem(TFBlocks.STRIPPED_MANGROVE_LOG.get(), block -> this.generateLog(block, TextureMapping.logColumn(TFBlocks.STRIPPED_MANGROVE_LOG.get())));
 		this.wrapBlockItem(TFBlocks.STRIPPED_MANGROVE_WOOD.get(), block -> this.generateLog(block, TextureMapping.logColumn(TFBlocks.STRIPPED_MANGROVE_LOG.get())));
 		this.generateHollowLog(TFBlocks.MANGROVE_LOG.get(), TFBlocks.STRIPPED_MANGROVE_LOG.get(), TFBlocks.HOLLOW_MANGROVE_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_MANGROVE_LOG_VERTICAL.get(), TFBlocks.HOLLOW_MANGROVE_LOG_CLIMBABLE.get());
-		this.generateSapling(TFBlocks.MANGROVE_SAPLING.get(), TFBlocks.POTTED_MANGROVE_SAPLING.get(), BlockModelGenerators.PlantType.NOT_TINTED);
+		this.generateSapling(TFBlocks.MANGROVE_SAPLING.get(), TFBlocks.POTTED_MANGROVE_SAPLING.get(), PlantType.NOT_TINTED);
 		this.generateLeaves(TFBlocks.MANGROVE_LEAVES.get(), TextureMapping.cube(Blocks.BIRCH_LEAVES), -8345771);
 		this.wrapBlockItem(TFBlocks.MANGROVE_ROOT.get(), this::createTrivialCube);
 		this.wrapBlockItem(TFBlocks.MANGROVE_PLANKS.get(), this::createTrivialCube);
@@ -242,7 +292,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.wrapBlockItem(TFBlocks.STRIPPED_DARK_LOG.get(), block -> this.generateLog(block, TextureMapping.logColumn(TFBlocks.STRIPPED_DARK_LOG.get())));
 		this.wrapBlockItem(TFBlocks.STRIPPED_DARK_WOOD.get(), block -> this.generateLog(block, TextureMapping.logColumn(TFBlocks.STRIPPED_DARK_LOG.get())));
 		this.generateHollowLog(TFBlocks.DARK_LOG.get(), TFBlocks.STRIPPED_DARK_LOG.get(), TFBlocks.HOLLOW_DARK_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_DARK_LOG_VERTICAL.get(), TFBlocks.HOLLOW_DARK_LOG_CLIMBABLE.get());
-		this.generateSapling(TFBlocks.DARKWOOD_SAPLING.get(), TFBlocks.POTTED_DARKWOOD_SAPLING.get(), BlockModelGenerators.PlantType.NOT_TINTED);
+		this.generateSapling(TFBlocks.DARKWOOD_SAPLING.get(), TFBlocks.POTTED_DARKWOOD_SAPLING.get(), PlantType.NOT_TINTED);
 		this.generateLeaves(TFBlocks.DARK_LEAVES.get(), -12012264);
 		this.wrapBlockItem(TFBlocks.DARK_PLANKS.get(), this::createTrivialCube);
 		TextureMapping dark = TextureMapping.cube(TFBlocks.DARK_PLANKS.get());
@@ -264,7 +314,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.wrapBlockItem(TFBlocks.STRIPPED_TIME_WOOD.get(), block -> this.generateLog(block, TextureMapping.logColumn(TFBlocks.STRIPPED_TIME_LOG.get())));
 		this.generateTreeCore(TFBlocks.TIME_LOG.get(), TFBlocks.TIME_LOG_CORE.get());
 		this.generateHollowLog(TFBlocks.TIME_LOG.get(), TFBlocks.STRIPPED_TIME_LOG.get(), TFBlocks.HOLLOW_TIME_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_TIME_LOG_VERTICAL.get(), TFBlocks.HOLLOW_TIME_LOG_CLIMBABLE.get());
-		this.generateSapling(TFBlocks.TIME_SAPLING.get(), TFBlocks.POTTED_TIME_SAPLING.get(), BlockModelGenerators.PlantType.NOT_TINTED);
+		this.generateSapling(TFBlocks.TIME_SAPLING.get(), TFBlocks.POTTED_TIME_SAPLING.get(), PlantType.NOT_TINTED);
 		this.generateLeaves(TFBlocks.TIME_LEAVES.get(), 6986775);
 		this.wrapBlockItem(TFBlocks.TIME_PLANKS.get(), this::createTrivialCube);
 		TextureMapping time = TextureMapping.cube(TFBlocks.TIME_PLANKS.get());
@@ -286,7 +336,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.wrapBlockItem(TFBlocks.STRIPPED_TRANSFORMATION_WOOD.get(), block -> this.generateLog(block, TextureMapping.logColumn(TFBlocks.STRIPPED_TRANSFORMATION_LOG.get())));
 		this.generateTreeCore(TFBlocks.TRANSFORMATION_LOG.get(), TFBlocks.TRANSFORMATION_LOG_CORE.get());
 		this.generateHollowLog(TFBlocks.TRANSFORMATION_LOG.get(), TFBlocks.STRIPPED_TRANSFORMATION_LOG.get(), TFBlocks.HOLLOW_TRANSFORMATION_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_TRANSFORMATION_LOG_VERTICAL.get(), TFBlocks.HOLLOW_TRANSFORMATION_LOG_CLIMBABLE.get());
-		this.generateSapling(TFBlocks.TRANSFORMATION_SAPLING.get(), TFBlocks.POTTED_TRANSFORMATION_SAPLING.get(), BlockModelGenerators.PlantType.NOT_TINTED);
+		this.generateSapling(TFBlocks.TRANSFORMATION_SAPLING.get(), TFBlocks.POTTED_TRANSFORMATION_SAPLING.get(), PlantType.NOT_TINTED);
 		this.generateLeaves(TFBlocks.TRANSFORMATION_LEAVES.get(), 7130346);
 		this.wrapBlockItem(TFBlocks.TRANSFORMATION_PLANKS.get(), this::createTrivialCube);
 		TextureMapping transformation = TextureMapping.cube(TFBlocks.TRANSFORMATION_PLANKS.get());
@@ -308,7 +358,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.wrapBlockItem(TFBlocks.STRIPPED_MINING_WOOD.get(), block -> this.generateLog(block, TextureMapping.logColumn(TFBlocks.STRIPPED_MINING_LOG.get())));
 		this.generateTreeCore(TFBlocks.MINING_LOG.get(), TFBlocks.MINING_LOG_CORE.get());
 		this.generateHollowLog(TFBlocks.MINING_LOG.get(), TFBlocks.STRIPPED_MINING_LOG.get(), TFBlocks.HOLLOW_MINING_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_MINING_LOG_VERTICAL.get(), TFBlocks.HOLLOW_MINING_LOG_CLIMBABLE.get());
-		this.generateSapling(TFBlocks.MINING_SAPLING.get(), TFBlocks.POTTED_MINING_SAPLING.get(), BlockModelGenerators.PlantType.NOT_TINTED);
+		this.generateSapling(TFBlocks.MINING_SAPLING.get(), TFBlocks.POTTED_MINING_SAPLING.get(), PlantType.NOT_TINTED);
 		this.generateLeaves(TFBlocks.MINING_LEAVES.get(), 16576836);
 		this.wrapBlockItem(TFBlocks.MINING_PLANKS.get(), this::createTrivialCube);
 		TextureMapping mining = TextureMapping.cube(TFBlocks.MINING_PLANKS.get());
@@ -330,7 +380,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.wrapBlockItem(TFBlocks.STRIPPED_SORTING_WOOD.get(), block -> this.generateLog(block, TextureMapping.logColumn(TFBlocks.STRIPPED_SORTING_LOG.get())));
 		this.generateTreeCore(TFBlocks.SORTING_LOG.get(), TFBlocks.SORTING_LOG_CORE.get());
 		this.generateHollowLog(TFBlocks.SORTING_LOG.get(), TFBlocks.STRIPPED_SORTING_LOG.get(), TFBlocks.HOLLOW_SORTING_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_SORTING_LOG_VERTICAL.get(), TFBlocks.HOLLOW_SORTING_LOG_CLIMBABLE.get());
-		this.generateSapling(TFBlocks.SORTING_SAPLING.get(), TFBlocks.POTTED_SORTING_SAPLING.get(), BlockModelGenerators.PlantType.NOT_TINTED);
+		this.generateSapling(TFBlocks.SORTING_SAPLING.get(), TFBlocks.POTTED_SORTING_SAPLING.get(), PlantType.NOT_TINTED);
 		this.generateLeaves(TFBlocks.SORTING_LEAVES.get(), 3558403);
 		this.wrapBlockItem(TFBlocks.SORTING_PLANKS.get(), this::createTrivialCube);
 		TextureMapping sorting = TextureMapping.cube(TFBlocks.SORTING_PLANKS.get());
@@ -346,9 +396,9 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.generateHangingSign(TFBlocks.SORTING_HANGING_SIGN.get(), TFBlocks.SORTING_WALL_HANGING_SIGN.get(), TFBlocks.STRIPPED_SORTING_LOG.get());
 		this.generateBanister(TFBlocks.SORTING_BANISTER.get(), sorting);
 
-		this.generateSapling(TFBlocks.HOLLOW_OAK_SAPLING.get(), TFBlocks.POTTED_HOLLOW_OAK_SAPLING.get(), BlockModelGenerators.PlantType.NOT_TINTED);
+		this.generateSapling(TFBlocks.HOLLOW_OAK_SAPLING.get(), TFBlocks.POTTED_HOLLOW_OAK_SAPLING.get(), PlantType.NOT_TINTED);
 		this.generateLeaves(TFBlocks.RAINBOW_OAK_LEAVES.get(), TextureMapping.cube(Blocks.OAK_LEAVES), -12012264);
-		this.generateSapling(TFBlocks.RAINBOW_OAK_SAPLING.get(), TFBlocks.POTTED_RAINBOW_OAK_SAPLING.get(), BlockModelGenerators.PlantType.NOT_TINTED);
+		this.generateSapling(TFBlocks.RAINBOW_OAK_SAPLING.get(), TFBlocks.POTTED_RAINBOW_OAK_SAPLING.get(), PlantType.NOT_TINTED);
 
 		this.createChest(TFBlocks.TWILIGHT_OAK_CHEST.get(), TFBlocks.TWILIGHT_OAK_PLANKS.get(), TwilightForestMod.prefix("twilight_oak/normal"), false);
 		this.createChest(TFBlocks.CANOPY_CHEST.get(), TFBlocks.CANOPY_PLANKS.get(), TwilightForestMod.prefix("canopy/normal"), false);

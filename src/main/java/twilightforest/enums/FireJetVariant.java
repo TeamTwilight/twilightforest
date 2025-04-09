@@ -19,4 +19,8 @@ public enum FireJetVariant implements StringRepresentable {
 	public String getSerializedName() {
 		return name().toLowerCase(Locale.ROOT);
 	}
+
+	public boolean isVariantOn() {
+		return this == POPPING || this == FLAME;
+	}
 }

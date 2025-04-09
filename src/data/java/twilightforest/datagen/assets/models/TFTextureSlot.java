@@ -4,8 +4,12 @@ import net.minecraft.client.data.models.model.TextureSlot;
 
 public class TFTextureSlot {
 
-	public static final TextureSlot ALL_2 = TextureSlot.create("all_2");
-	public static final TextureSlot ALL_3 = TextureSlot.create("all_3");
+	public static final TextureSlot ALL_2 = TextureSlot.create("all2");
+	public static final TextureSlot ALL_3 = TextureSlot.create("all3");
+	public static final TextureSlot TOP_2 = TextureSlot.create("top2");
+	public static final TextureSlot TOP_3 = TextureSlot.create("top3");
+	public static final TextureSlot SIDE_2 = TextureSlot.create("side2");
+	public static final TextureSlot SIDE_3 = TextureSlot.create("side3");
 
 	public static final TextureSlot MIDDLE = TextureSlot.create("middle");
 

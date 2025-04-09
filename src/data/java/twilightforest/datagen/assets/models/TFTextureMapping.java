@@ -6,18 +6,33 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.enums.BossVariant;
+import twilightforest.init.TFBlocks;
 
 public class TFTextureMapping {
 
-	public static TextureMapping twoLayerBlock(Block block) {
-		return TextureMapping.cube(block)
-			.put(TFTextureSlot.ALL_2, TextureMapping.getBlockTexture(block, "_layer_1"));
+	public static TextureMapping twoLayerBlock(Block block, String suffix) {
+		return TextureMapping.cube(TextureMapping.getBlockTexture(block, suffix))
+			.put(TFTextureSlot.ALL_2, TextureMapping.getBlockTexture(block, suffix + "_layer_1"));
 	}
 
-	public static TextureMapping threeLayerBlock(Block block) {
-		return TextureMapping.cube(block)
-			.put(TFTextureSlot.ALL_2, TextureMapping.getBlockTexture(block, "_layer_1"))
-			.put(TFTextureSlot.ALL_3, TextureMapping.getBlockTexture(block, "_layer_2"));
+	public static TextureMapping threeLayerBlock(Block block, String suffix) {
+		return twoLayerBlock(block, suffix)
+			.put(TFTextureSlot.ALL_3, TextureMapping.getBlockTexture(block, suffix + "_layer_2"));
+	}
+
+	public static TextureMapping threeLayerDevice(Block block, Block topBlock, String suffix) {
+		return new TextureMapping()
+			.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, suffix))
+			.put(TextureSlot.TOP, TextureMapping.getBlockTexture(topBlock, suffix + "_top"))
+			.put(TFTextureSlot.TOP_2, TextureMapping.getBlockTexture(topBlock, suffix + "_top_layer_1"))
+			.put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(TFBlocks.ENCASED_TOWERWOOD.get()))
+			.put(TFTextureSlot.SIDE_2, TextureMapping.getBlockTexture(block, "_layer_1"))
+			.put(TFTextureSlot.SIDE_3, TextureMapping.getBlockTexture(block, suffix + "_layer_2"));
+	}
+
+	public static TextureMapping threeLayerDeviceOn(Block block, Block topBlock) {
+		return threeLayerDevice(block, topBlock, "_on")
+			.put(TFTextureSlot.TOP_3, TextureMapping.getBlockTexture(topBlock, "_on_top_layer_2"));
 	}
 
 	public static TextureMapping ctmBlock(Block block) {
