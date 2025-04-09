@@ -5,19 +5,26 @@ import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.block.model.TextureSlots;
 import net.minecraft.client.resources.model.*;
 import net.minecraft.util.context.ContextMap;
+import net.neoforged.neoforge.client.RenderTypeGroup;
+import net.neoforged.neoforge.client.model.AbstractUnbakedModel;
 import net.neoforged.neoforge.client.model.ExtendedUnbakedModel;
+import net.neoforged.neoforge.client.model.StandardModelParameters;
 
 import java.util.Map;
 
-public record UnbakedForceFieldModel(Map<BlockElement, ForceFieldModelLoader.Condition> elementsAndConditions) implements ExtendedUnbakedModel {
+public class UnbakedForceFieldModel extends AbstractUnbakedModel {
 
-	@Override
-	public BakedModel bake(TextureSlots textures, ModelBaker baker, ModelState modelState, boolean useAmbientOcclusion, boolean usesBlockLight, ItemTransforms itemTransforms, ContextMap additionalProperties) {
-		return new ForceFieldModel(this.elementsAndConditions, s -> baker.findSprite(textures, s), useAmbientOcclusion, usesBlockLight, itemTransforms);
+	private final Map<BlockElement, ForceFieldModelLoader.Condition> elementsAndConditions;
+	private final RenderTypeGroup group;
+
+	public UnbakedForceFieldModel(Map<BlockElement, ForceFieldModelLoader.Condition> elementsAndConditions, StandardModelParameters parameters, RenderTypeGroup group) {
+		super(parameters);
+		this.elementsAndConditions = elementsAndConditions;
+		this.group = group;
 	}
 
 	@Override
-	public void resolveDependencies(Resolver resolver) {
-
+	public BakedModel bake(TextureSlots textures, ModelBaker baker, ModelState modelState, boolean useAmbientOcclusion, boolean usesBlockLight, ItemTransforms itemTransforms, ContextMap additionalProperties) {
+		return new ForceFieldModel(this.elementsAndConditions, s -> baker.findSprite(textures, s), useAmbientOcclusion, usesBlockLight, itemTransforms, this.group);
 	}
 }

@@ -1,11 +1,18 @@
 package twilightforest.client.model.block.connected;
 
+import com.mojang.math.Transformation;
 import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.*;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
+import net.minecraft.util.context.ContextMap;
 import net.minecraft.world.level.block.Block;
+import net.neoforged.neoforge.client.RenderTypeGroup;
+import net.neoforged.neoforge.client.model.AbstractUnbakedModel;
+import net.neoforged.neoforge.client.model.NeoForgeModelProperties;
+import net.neoforged.neoforge.client.model.StandardModelParameters;
+import net.neoforged.neoforge.client.model.UnbakedElementsHelper;
 import org.joml.Vector3f;
 
 import java.lang.reflect.Array;
@@ -14,15 +21,17 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 
-public class UnbakedConnectedTextureModel implements UnbakedModel {
+public class UnbakedConnectedTextureModel extends AbstractUnbakedModel {
 
 	private final boolean renderOnDisabledFaces;
 	private final EnumSet<Direction> enabledFaces;
 	private final List<Block> connectableBlocks;
 	private final BlockElement[][] baseElements;
 	private final BlockElement[][][] faceElements;
+	private final RenderTypeGroup group;
 
-	public UnbakedConnectedTextureModel(EnumSet<Direction> enabledFaces, boolean renderOnDisabledFaces, List<Block> connectableBlocks, int baseTintIndex, int baseEmissivity, int tintIndex, int emissivity) {
+	public UnbakedConnectedTextureModel(EnumSet<Direction> enabledFaces, boolean renderOnDisabledFaces, List<Block> connectableBlocks, int baseTintIndex, int baseEmissivity, int tintIndex, int emissivity, StandardModelParameters parameters, RenderTypeGroup group) {
+		super(parameters);
 		//a list of block faces that should have connected textures.
 		this.enabledFaces = enabledFaces;
 		//whether or not the overlay texture should render on disabled faces or not. Defaults to true
@@ -51,14 +60,14 @@ public class UnbakedConnectedTextureModel implements UnbakedModel {
 				}
 			}
 		}
+		this.group = group;
 	}
 
 	@Override
-	public BakedModel bake(TextureSlots textureSlots, ModelBaker baker, ModelState modelState, boolean hasAmbientOcclusion, boolean useBlockLight, ItemTransforms transforms) {
-//		Transformation transformation = context.getRootTransform();
-//		if (!transformation.isIdentity()) {
-//			modelState = new SimpleModelState(modelState.getRotation().compose(transformation), modelState.isUvLocked());
-//		}
+	public BakedModel bake(TextureSlots textureSlots, ModelBaker baker, ModelState state, boolean useAmbientOcclusion, boolean usesBlockLight, ItemTransforms itemTransforms, ContextMap additionalProperties) {
+		Transformation rootTransform = additionalProperties.getOrDefault(NeoForgeModelProperties.TRANSFORM, Transformation.identity());
+		if (!rootTransform.isIdentity())
+			state = UnbakedElementsHelper.composeRootTransformIntoModelState(state, rootTransform);
 
 		@SuppressWarnings("unchecked") //this is fine, I hope
 		List<BakedQuad>[] baseQuads = (List<BakedQuad>[]) Array.newInstance(List.class, 6);
@@ -70,7 +79,7 @@ public class UnbakedConnectedTextureModel implements UnbakedModel {
 				baseQuads[dir] = new ArrayList<>();
 
 				for (BlockElement element : this.baseElements[dir]) {
-					baseQuads[dir].add(FaceBakery.bakeQuad(element.from, element.to, element.faces.values().iterator().next(), baseTexture, Direction.values()[dir], modelState, element.rotation, element.shade, element.lightEmission));
+					baseQuads[dir].add(FaceBakery.bakeQuad(element.from, element.to, element.faces.values().iterator().next(), baseTexture, Direction.values()[dir], state, element.rotation, element.shade, element.lightEmission));
 				}
 			}
 		} else {
@@ -90,16 +99,11 @@ public class UnbakedConnectedTextureModel implements UnbakedModel {
 			for (int quad = 0; quad < 4; quad++) {
 				for (int type = 0; type < 5; type++) {
 					BlockElement element = this.faceElements[dir][quad][type];
-					quads[dir][quad][type] = FaceBakery.bakeQuad(element.from, element.to, element.faces.values().iterator().next(), ConnectionLogic.values()[type].chooseTexture(sprites), Direction.values()[dir], modelState, element.rotation, element.shade, element.lightEmission);
+					quads[dir][quad][type] = FaceBakery.bakeQuad(element.from, element.to, element.faces.values().iterator().next(), ConnectionLogic.values()[type].chooseTexture(sprites), Direction.values()[dir], state, element.rotation, element.shade, element.lightEmission);
 				}
 			}
 		}
 
-		return new ConnectedTextureModel(this.enabledFaces, this.renderOnDisabledFaces, this.connectableBlocks, baseQuads, quads, sprites[2], transforms);
-	}
-
-	@Override
-	public void resolveDependencies(Resolver resolver) {
-
+		return new ConnectedTextureModel(this.enabledFaces, this.renderOnDisabledFaces, this.connectableBlocks, baseQuads, quads, sprites[2], itemTransforms, this.group);
 	}
 }

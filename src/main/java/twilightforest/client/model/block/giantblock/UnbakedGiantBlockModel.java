@@ -5,15 +5,25 @@ import net.minecraft.client.renderer.block.model.TextureSlots;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.*;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.context.ContextMap;
+import net.neoforged.neoforge.client.RenderTypeGroup;
+import net.neoforged.neoforge.client.model.AbstractUnbakedModel;
+import net.neoforged.neoforge.client.model.StandardModelParameters;
 
 import java.util.ArrayList;
 import java.util.Locale;
 
-public record UnbakedGiantBlockModel(ResourceLocation parent) implements UnbakedModel {
+public class UnbakedGiantBlockModel extends AbstractUnbakedModel {
+
+	private final RenderTypeGroup group;
+
+	public UnbakedGiantBlockModel(StandardModelParameters parameters, RenderTypeGroup group) {
+		super(parameters);
+		this.group = group;
+	}
 
 	@Override
-	public BakedModel bake(TextureSlots textureSlots, ModelBaker baker, ModelState modelState, boolean hasAmbientOcclusion, boolean useBlockLight, ItemTransforms transforms) {
+	public BakedModel bake(TextureSlots textureSlots, ModelBaker baker, ModelState modelState, boolean hasAmbientOcclusion, boolean useBlockLight, ItemTransforms transforms, ContextMap additionalProperties) {
 		TextureAtlasSprite[] sprites;
 		if (textureSlots.getMaterial("all") != null) {
 			sprites = new TextureAtlasSprite[]{baker.findSprite(textureSlots, "all")};
@@ -25,11 +35,6 @@ public record UnbakedGiantBlockModel(ResourceLocation parent) implements Unbaked
 			sprites = materials.toArray(new TextureAtlasSprite[]{});
 		}
 
-		return new GiantBlockModel(sprites, baker.findSprite(textureSlots, "particle"), transforms);
-	}
-
-	@Override
-	public void resolveDependencies(Resolver resolver) {
-
+		return new GiantBlockModel(sprites, baker.findSprite(textureSlots, "particle"), transforms, this.group);
 	}
 }

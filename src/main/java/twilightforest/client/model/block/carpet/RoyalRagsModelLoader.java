@@ -3,6 +3,8 @@ package twilightforest.client.model.block.carpet;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import net.neoforged.neoforge.client.model.NeoForgeModelProperties;
+import net.neoforged.neoforge.client.model.StandardModelParameters;
 import net.neoforged.neoforge.client.model.UnbakedModelLoader;
 
 public class RoyalRagsModelLoader implements UnbakedModelLoader<UnbakedRoyalRagsModel> {
@@ -13,6 +15,6 @@ public class RoyalRagsModelLoader implements UnbakedModelLoader<UnbakedRoyalRags
 	}
 
 	public UnbakedRoyalRagsModel read(JsonObject jsonObject, JsonDeserializationContext deserializationContext) throws JsonParseException {
-		return new UnbakedRoyalRagsModel();
+		return new UnbakedRoyalRagsModel(StandardModelParameters.parse(jsonObject, deserializationContext), NeoForgeModelProperties.deserializeRenderType(jsonObject));
 	}
 }

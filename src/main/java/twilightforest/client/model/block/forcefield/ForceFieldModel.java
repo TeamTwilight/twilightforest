@@ -8,9 +8,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.client.ChunkRenderTypeSet;
+import net.neoforged.neoforge.client.RenderTypeGroup;
 import net.neoforged.neoforge.client.model.IDynamicBakedModel;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.client.model.data.ModelProperty;
@@ -30,14 +33,20 @@ public class ForceFieldModel implements IDynamicBakedModel {
 	private final boolean usesAO;
 	private final boolean usesBlockLight;
 	private final ItemTransforms transforms;
+	@Nullable
+	private final ChunkRenderTypeSet blockRenderTypes;
+	@Nullable
+	private final RenderType itemRenderType;
 
-	public ForceFieldModel(Map<BlockElement, ForceFieldModelLoader.Condition> parts, Function<String, TextureAtlasSprite> spriteFunction, boolean useAmbientOcclusion, boolean usesBlockLight, ItemTransforms itemTransforms) {
+	public ForceFieldModel(Map<BlockElement, ForceFieldModelLoader.Condition> parts, Function<String, TextureAtlasSprite> spriteFunction, boolean useAmbientOcclusion, boolean usesBlockLight, ItemTransforms itemTransforms, RenderTypeGroup group) {
 		this.parts = parts;
 		this.spriteFunction = spriteFunction;
 		this.particle = spriteFunction.apply("particle");
 		this.usesAO = useAmbientOcclusion;
 		this.usesBlockLight = usesBlockLight;
 		this.transforms = itemTransforms;
+		this.blockRenderTypes = !group.isEmpty() ? ChunkRenderTypeSet.of(group.block()) : null;
+		this.itemRenderType = !group.isEmpty() ? group.entity() : null;
 	}
 
 	@Override
@@ -175,6 +184,17 @@ public class ForceFieldModel implements IDynamicBakedModel {
 	@Override
 	public ItemTransforms getTransforms() {
 		return this.transforms;
+	}
+
+	@NotNull
+	@Override
+	public ChunkRenderTypeSet getRenderTypes(@NotNull BlockState state, @NotNull RandomSource rand, @NotNull ModelData data) {
+		return this.blockRenderTypes != null ? this.blockRenderTypes : IDynamicBakedModel.super.getRenderTypes(state, rand, data);
+	}
+
+	@Override
+	public RenderType getRenderType(ItemStack stack) {
+		return this.itemRenderType != null ? this.itemRenderType : IDynamicBakedModel.super.getRenderType(stack);
 	}
 
 	public enum ExtraDirection implements StringRepresentable {

@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.mojang.realmsclient.util.JsonUtils;
 import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.client.model.StandardModelParameters;
 import net.neoforged.neoforge.client.model.UnbakedModelLoader;
 
 public final class PatchModelLoader implements UnbakedModelLoader<UnbakedPatchModel> {
@@ -18,6 +19,6 @@ public final class PatchModelLoader implements UnbakedModelLoader<UnbakedPatchMo
 		if (!object.has("texture"))
 			throw new JsonParseException("Patch model missing value for 'texture'.");
 
-		return new UnbakedPatchModel(JsonUtils.getBooleanOr("shaggify", object, false));
+		return new UnbakedPatchModel(JsonUtils.getBooleanOr("shaggify", object, false), StandardModelParameters.parse(object, deserializationContext));
 	}
 }

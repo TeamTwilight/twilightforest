@@ -1,6 +1,7 @@
 package twilightforest.client.model.block.giantblock;
 
 import com.google.common.collect.Iterables;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -32,11 +33,17 @@ public class GiantBlockModel implements IDynamicBakedModel {
 	private final TextureAtlasSprite[] textures;
 	private final TextureAtlasSprite particle;
 	private final ItemTransforms transforms;
+	@Nullable
+	private final ChunkRenderTypeSet blockRenderTypes;
+	@Nullable
+	private final RenderType itemRenderType;
 
-	public GiantBlockModel(TextureAtlasSprite[] texture, TextureAtlasSprite particle, ItemTransforms transforms) {
+	public GiantBlockModel(TextureAtlasSprite[] texture, TextureAtlasSprite particle, ItemTransforms transforms, RenderTypeGroup group) {
 		this.textures = texture;
 		this.particle = particle;
 		this.transforms = transforms;
+		this.blockRenderTypes = !group.isEmpty() ? ChunkRenderTypeSet.of(group.block()) : null;
+		this.itemRenderType = !group.isEmpty() ? group.entity() : null;
 	}
 
 	@Override
@@ -60,10 +67,10 @@ public class GiantBlockModel implements IDynamicBakedModel {
 	//based on the offsets written in the original giant block json
 	private BlockPos magicOffsetFromDir(Direction side) {
 		return switch (side) {
-			default -> new BlockPos(0, 0, -1);
 			case DOWN -> new BlockPos(0, 0, 2);
 			case NORTH, SOUTH -> new BlockPos(0, 1, 0);
 			case WEST, EAST -> new BlockPos(0, 1, -1);
+			default -> new BlockPos(0, 0, -1);
 		};
 	}
 
@@ -133,6 +140,23 @@ public class GiantBlockModel implements IDynamicBakedModel {
 	@Override
 	public ItemTransforms getTransforms() {
 		return this.transforms;
+	}
+
+	@NotNull
+	@Override
+	public ChunkRenderTypeSet getRenderTypes(@NotNull BlockState state, @NotNull RandomSource rand, @NotNull ModelData data) {
+		if (this.blockRenderTypes != null) {
+			if (this.blockRenderTypes.contains(RenderType.cutoutMipped()) && !Minecraft.useFancyGraphics()) {
+				return ChunkRenderTypeSet.of(RenderType.solid());
+			}
+			return this.blockRenderTypes;
+		}
+		return IDynamicBakedModel.super.getRenderTypes(state, rand, data);
+	}
+
+	@Override
+	public RenderType getRenderType(ItemStack stack) {
+		return this.itemRenderType != null ? this.itemRenderType : IDynamicBakedModel.super.getRenderType(stack);
 	}
 
 	//modeldata holder

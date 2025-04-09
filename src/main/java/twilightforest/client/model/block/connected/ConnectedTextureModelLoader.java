@@ -12,6 +12,8 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.neoforged.neoforge.client.model.NeoForgeModelProperties;
+import net.neoforged.neoforge.client.model.StandardModelParameters;
 import net.neoforged.neoforge.client.model.UnbakedModelLoader;
 
 import java.util.ArrayList;
@@ -37,7 +39,7 @@ public class ConnectedTextureModelLoader implements UnbakedModelLoader<UnbakedCo
 		EnumSet<Direction> faces = this.parseEnabledFaces(overlayInfo);
 
 		List<Block> connectables = this.parseConnnectableBlocks(jsonObject);
-		return new UnbakedConnectedTextureModel(faces, renderDisabled, connectables, baseTintIndex, baseEmissivity, tintIndex, emissivity);
+		return new UnbakedConnectedTextureModel(faces, renderDisabled, connectables, baseTintIndex, baseEmissivity, tintIndex, emissivity, StandardModelParameters.parse(jsonObject, deserializationContext), NeoForgeModelProperties.deserializeRenderType(jsonObject));
 	}
 
 	private EnumSet<Direction> parseEnabledFaces(JsonObject object) {

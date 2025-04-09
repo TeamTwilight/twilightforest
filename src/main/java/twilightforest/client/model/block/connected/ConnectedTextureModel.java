@@ -32,10 +32,14 @@ public class ConnectedTextureModel implements IDynamicBakedModel {
 	private final BakedQuad[][][] quads;
 	private final TextureAtlasSprite particle;
 	private final ItemTransforms transforms;
+	@Nullable
+	private final ChunkRenderTypeSet blockRenderTypes;
+	@Nullable
+	private final RenderType itemRenderType;
 	private final List<Block> validConnectors;
 	private static final ModelProperty<ConnectedTextureData> DATA = new ModelProperty<>();
 
-	public ConnectedTextureModel(EnumSet<Direction> enabledFaces, boolean renderOnDisabledFaces, List<Block> connectableBlocks, List<BakedQuad>@Nullable[] baseQuads, BakedQuad[][][] quads, TextureAtlasSprite particle, ItemTransforms transforms) {
+	public ConnectedTextureModel(EnumSet<Direction> enabledFaces, boolean renderOnDisabledFaces, List<Block> connectableBlocks, List<BakedQuad>@Nullable[] baseQuads, BakedQuad[][][] quads, TextureAtlasSprite particle, ItemTransforms transforms, RenderTypeGroup group) {
 		this.enabledFaces = enabledFaces;
 		this.renderOnDisabledFaces = renderOnDisabledFaces;
 		this.validConnectors = connectableBlocks;
@@ -43,6 +47,8 @@ public class ConnectedTextureModel implements IDynamicBakedModel {
 		this.quads = quads;
 		this.particle = particle;
 		this.transforms = transforms;
+		this.blockRenderTypes = !group.isEmpty() ? ChunkRenderTypeSet.of(group.block()) : null;
+		this.itemRenderType = !group.isEmpty() ? group.entity() : null;
 	}
 
 	@NotNull
@@ -134,6 +140,17 @@ public class ConnectedTextureModel implements IDynamicBakedModel {
 	@Override
 	public ItemTransforms getTransforms() {
 		return this.transforms;
+	}
+
+	@NotNull
+	@Override
+	public ChunkRenderTypeSet getRenderTypes(@NotNull BlockState state, @NotNull RandomSource rand, @NotNull ModelData data) {
+		return this.blockRenderTypes != null ? this.blockRenderTypes : IDynamicBakedModel.super.getRenderTypes(state, rand, data);
+	}
+
+	@Override
+	public RenderType getRenderType(ItemStack stack) {
+		return this.itemRenderType != null ? this.itemRenderType : IDynamicBakedModel.super.getRenderType(stack);
 	}
 
 	private static final class ConnectedTextureData {

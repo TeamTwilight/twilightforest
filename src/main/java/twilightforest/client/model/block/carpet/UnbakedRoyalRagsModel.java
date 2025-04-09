@@ -1,10 +1,17 @@
 package twilightforest.client.model.block.carpet;
 
+import com.mojang.math.Transformation;
 import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.*;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
+import net.minecraft.util.context.ContextMap;
+import net.neoforged.neoforge.client.RenderTypeGroup;
+import net.neoforged.neoforge.client.model.AbstractUnbakedModel;
+import net.neoforged.neoforge.client.model.NeoForgeModelProperties;
+import net.neoforged.neoforge.client.model.StandardModelParameters;
+import net.neoforged.neoforge.client.model.UnbakedElementsHelper;
 import org.apache.commons.lang3.mutable.MutableObject;
 import org.joml.Vector3f;
 import twilightforest.client.model.block.connected.ConnectedTextureModel;
@@ -18,12 +25,14 @@ import java.util.List;
 import java.util.Map;
 
 //FIXME remove this once the connected texture loader supports custom geometry
-public class UnbakedRoyalRagsModel implements UnbakedModel {
+public class UnbakedRoyalRagsModel extends AbstractUnbakedModel {
 
 	private final BlockElement[][] baseElements;
 	private final BlockElement[][][] faceElements;
+	private final RenderTypeGroup group;
 
-	public UnbakedRoyalRagsModel() {
+	public UnbakedRoyalRagsModel(StandardModelParameters parameters, RenderTypeGroup group) {
+		super(parameters);
 		//base elements - the side faces without ctm. No Connected Textures on this bit.
 		//the array is made of horizontal directions (Direction.get2DDataValue) and quads
 		this.baseElements = new BlockElement[4][4];
@@ -50,14 +59,14 @@ public class UnbakedRoyalRagsModel implements UnbakedModel {
 				}
 			}
 		}
+		this.group = group;
 	}
 
 	@Override
-	public BakedModel bake(TextureSlots textureSlots, ModelBaker baker, ModelState modelState, boolean hasAmbientOcclusion, boolean useBlockLight, ItemTransforms transforms) {
-//		Transformation transformation = context.getRootTransform();
-//		if (!transformation.isIdentity()) {
-//			modelState = new SimpleModelState(modelState.getRotation().compose(transformation), modelState.isUvLocked());
-//		}
+	public BakedModel bake(TextureSlots textureSlots, ModelBaker baker, ModelState modelState, boolean hasAmbientOcclusion, boolean useBlockLight, ItemTransforms transforms, ContextMap additionalProperties) {
+		Transformation rootTransform = additionalProperties.getOrDefault(NeoForgeModelProperties.TRANSFORM, Transformation.identity());
+		if (!rootTransform.isIdentity())
+			modelState = UnbakedElementsHelper.composeRootTransformIntoModelState(modelState, rootTransform);
 
 		@SuppressWarnings("unchecked") //this is fine, I hope
 		List<BakedQuad>[] baseQuads = (List<BakedQuad>[]) Array.newInstance(List.class, 4);
@@ -86,11 +95,6 @@ public class UnbakedRoyalRagsModel implements UnbakedModel {
 			}
 		}
 
-		return new ConnectedTextureModel(EnumSet.of(Direction.UP), false, List.of(TFBlocks.CORONATION_CARPET.get()), baseQuads, quads, baker.findSprite(textureSlots, "wool"), transforms);
-	}
-
-	@Override
-	public void resolveDependencies(Resolver resolver) {
-
+		return new ConnectedTextureModel(EnumSet.of(Direction.UP), false, List.of(TFBlocks.CORONATION_CARPET.get()), baseQuads, quads, baker.findSprite(textureSlots, "wool"), transforms, this.group);
 	}
 }

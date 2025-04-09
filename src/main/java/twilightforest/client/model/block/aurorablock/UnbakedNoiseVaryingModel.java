@@ -5,16 +5,20 @@ import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.block.model.TextureSlots;
 import net.minecraft.client.resources.model.*;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.context.ContextMap;
+import net.neoforged.neoforge.client.model.AbstractUnbakedModel;
+import net.neoforged.neoforge.client.model.StandardModelParameters;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class UnbakedNoiseVaryingModel implements UnbakedModel {
+public class UnbakedNoiseVaryingModel extends AbstractUnbakedModel {
 	private final String[] importVariants;
 	private final List<BlockModel> variants;
 
-	public UnbakedNoiseVaryingModel(String[] variants) {
+	public UnbakedNoiseVaryingModel(String[] variants, StandardModelParameters parameters) {
+		super(parameters);
 		this.importVariants = variants;
 		this.variants = new ArrayList<>(this.importVariants.length);
 	}
@@ -26,6 +30,7 @@ public class UnbakedNoiseVaryingModel implements UnbakedModel {
 
 			this.variants.add(checkedParent);
 		}
+		super.resolveDependencies(modelGetter);
 	}
 
 	@NotNull
@@ -39,12 +44,12 @@ public class UnbakedNoiseVaryingModel implements UnbakedModel {
 	}
 
 	@Override
-	public BakedModel bake(TextureSlots textureSlots, ModelBaker baker, ModelState modelState, boolean hasAmbientOcclusion, boolean useBlockLight, ItemTransforms transforms) {
+	public BakedModel bake(TextureSlots textureSlots, ModelBaker baker, ModelState modelState, boolean hasAmbientOcclusion, boolean useBlockLight, ItemTransforms transforms, ContextMap additionalProperties) {
 		BakedModel[] bakedVariants = new BakedModel[this.importVariants.length];
 
 		for (int i = 0; i < bakedVariants.length; i++) {
 			BlockModel variant = this.variants.get(i);
-			bakedVariants[i] = variant.bake(textureSlots, baker, modelState, hasAmbientOcclusion, useBlockLight, transforms);
+			bakedVariants[i] = variant.bake(textureSlots, baker, modelState, hasAmbientOcclusion, useBlockLight, transforms, additionalProperties);
 		}
 
 		return new NoiseVaryingModel(bakedVariants);

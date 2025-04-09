@@ -3,16 +3,21 @@ package twilightforest.client.model.block.patch;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.block.model.TextureSlots;
 import net.minecraft.client.resources.model.*;
+import net.minecraft.util.context.ContextMap;
+import net.neoforged.neoforge.client.model.AbstractUnbakedModel;
+import net.neoforged.neoforge.client.model.StandardModelParameters;
 
-public record UnbakedPatchModel(boolean shaggify) implements UnbakedModel {
+public class UnbakedPatchModel extends AbstractUnbakedModel {
 
-	@Override
-	public BakedModel bake(TextureSlots textureSlots, ModelBaker baker, ModelState modelState, boolean hasAmbientOcclusion, boolean useBlockLight, ItemTransforms transforms) {
-		return new PatchModel(baker.findSprite(textureSlots, "texture"), this.shaggify());
+	private final boolean shaggify;
+
+	public UnbakedPatchModel(boolean shaggify, StandardModelParameters parameters) {
+		super(parameters);
+		this.shaggify = shaggify;
 	}
 
 	@Override
-	public void resolveDependencies(Resolver resolver) {
-
+	public BakedModel bake(TextureSlots textureSlots, ModelBaker baker, ModelState modelState, boolean hasAmbientOcclusion, boolean useBlockLight, ItemTransforms transforms, ContextMap additionalProperties) {
+		return new PatchModel(baker.findSprite(textureSlots, "texture"), this.shaggify);
 	}
 }
