@@ -1,0 +1,10 @@
+{
+  "parent": "minecraft:block/block",
+  "loader": "twilightforest:royal_rags",
+  "textures": {
+    "base_texture": "twilightforest:block/coronation_carpet",
+    "overlay_connected": "twilightforest:block/coronation_carpet_ctm",
+    "overlay_texture": "twilightforest:block/coronation_carpet",
+    "particle": "twilightforest:block/coronation_carpet"
+  }
+}
