@@ -22,10 +22,12 @@ import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.config.TFConfig;
+import twilightforest.network.UpdateUncraftingCostPacket;
 import twilightforest.tags.TFItemTags;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFMenuTypes;
@@ -124,7 +126,7 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 	@Override
 	public void slotsChanged(Container inventory) {
 		// we need to see what inventory is calling this, and update appropriately
-		if (inventory == this.tinkerInput) {
+		if (this.level instanceof ServerLevel && inventory == this.tinkerInput) {
 
 			// empty whole grid to start with
 			this.uncraftingMatrix.clearContent();
@@ -136,7 +138,6 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 			int size = recipes.length;
 
 			if (size > 0 && !inputStack.is(TFItemTags.BANNED_UNCRAFTABLES)) {
-
 				CraftingRecipe recipe = recipes[Math.floorMod(this.unrecipeInCycle, size)];
 				this.storedGhostRecipe = recipe;
 				ItemStack[] recipeItems = this.getIngredients(recipe);
@@ -190,13 +191,11 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 
 				// store number of items this recipe produces (and thus how many input items are required for uncrafting)
 				this.uncraftingMatrix.numberOfInputItems = recipe instanceof UncraftingRecipe uncraftingRecipe ? uncraftingRecipe.getCount() : recipe.assemble(this.craftSlots.asCraftInput(), this.level.registryAccess()).getCount(); //Uncrafting recipes need this method call
-				this.uncraftingMatrix.uncraftingCost = this.calculateUncraftingCost();
-				this.uncraftingMatrix.recraftingCost = 0;
-
+				this.updateCosts(this.calculateUncraftingCost(), 0);
 			} else {
 				this.storedGhostRecipe = null;
 				this.uncraftingMatrix.numberOfInputItems = 0;
-				this.uncraftingMatrix.uncraftingCost = 0;
+				this.updateCosts(0, this.getRecraftingCost());
 			}
 		}
 		// Now we've got the uncrafting logic set in, currently we don't modify the uncraftingMatrix. That's fine.
@@ -207,9 +206,9 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 			} else {
 				// we placed an item in the assembly matrix, the next step will re-initialize these with correct values
 				this.tinkerResult.setItem(0, ItemStack.EMPTY);
-				this.uncraftingMatrix.uncraftingCost = this.calculateUncraftingCost();
+				this.updateCosts(this.calculateUncraftingCost(), this.getRecraftingCost());
 			}
-			this.uncraftingMatrix.recraftingCost = 0;
+			this.updateCosts(this.getUncraftingCost(), 0);
 		}
 
 		// repairing / recrafting: if there is an input item, and items in both grids, can we combine them to produce an output item that is the same type as the input item?
@@ -249,8 +248,7 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 				EnchantmentHelper.setEnchantments(result, enchants.toImmutable());
 
 				this.tinkerResult.setItem(0, result);
-				this.uncraftingMatrix.uncraftingCost = 0;
-				this.uncraftingMatrix.recraftingCost = this.calculateRecraftingCost();
+				this.updateCosts(0, this.calculateRecraftingCost());
 			}
 		}
 	}
@@ -388,6 +386,14 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 
 	public int getRecraftingCost() {
 		return this.uncraftingMatrix.recraftingCost;
+	}
+
+	public void updateCosts(int uncraftingCost, int recraftingCost) {
+		this.uncraftingMatrix.uncraftingCost = uncraftingCost;
+		this.uncraftingMatrix.recraftingCost = recraftingCost;
+		if (this.level instanceof ServerLevel) {
+			PacketDistributor.sendToPlayer((ServerPlayer) this.player, new UpdateUncraftingCostPacket(uncraftingCost, recraftingCost));
+		}
 	}
 
 	/**
@@ -605,10 +611,11 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 	}
 
 	private ItemStack[] getIngredients(CraftingRecipe recipe) {
-		ItemStack[] stacks = new ItemStack[recipe.display().size()];
+		List<Ingredient> ingredients = recipe.placementInfo().ingredients();
+		ItemStack[] stacks = new ItemStack[ingredients.size()];
 
-		for (int i = 0; i < recipe.display().size(); i++) {
-			ItemStack[] matchingStacks = recipe.placementInfo().ingredients().get(i).getValues().stream().filter(s -> !s.is(TFItemTags.BANNED_UNCRAFTING_INGREDIENTS)).map(p -> new ItemStack(p.value())).toArray(ItemStack[]::new);
+		for (int i = 0; i < ingredients.size(); i++) {
+			ItemStack[] matchingStacks = ingredients.get(i).getValues().stream().filter(s -> !s.is(TFItemTags.BANNED_UNCRAFTING_INGREDIENTS)).map(p -> new ItemStack(p.value())).toArray(ItemStack[]::new);
 			stacks[i] = matchingStacks.length > 0 ? matchingStacks[Math.floorMod(this.ingredientsInCycle, matchingStacks.length)] : ItemStack.EMPTY;
 		}
 
