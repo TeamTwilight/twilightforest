@@ -1,0 +1,11 @@
+{
+  "parent": "twilightforest:item/giant_block_gui",
+  "textures": {
+    "down": "minecraft:block/oak_leaves",
+    "east": "minecraft:block/oak_leaves",
+    "north": "minecraft:block/oak_leaves",
+    "south": "minecraft:block/oak_leaves",
+    "up": "minecraft:block/oak_leaves",
+    "west": "minecraft:block/oak_leaves"
+  }
+}
