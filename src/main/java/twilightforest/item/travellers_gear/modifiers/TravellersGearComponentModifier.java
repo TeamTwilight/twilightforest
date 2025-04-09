@@ -7,12 +7,14 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.TypedDataComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class TravellersGearComponentModifier implements TravellersModifier {
 	protected final TypedDataComponent<?> typedDataComponent;
 	protected final String tooltip;
+	protected ResourceLocation componentId;
 
 	private TravellersGearComponentModifier(TypedDataComponent<?> typedDataComponent, String tooltip) {
 		this.typedDataComponent = typedDataComponent;
@@ -21,6 +23,7 @@ public class TravellersGearComponentModifier implements TravellersModifier {
 
 	public <T> TravellersGearComponentModifier(DeferredHolder<DataComponentType<?>, DataComponentType<T>> dataComponent, T value, String tooltip) {
 		this(new TypedDataComponent<>(dataComponent.get(), value), tooltip);
+		componentId = dataComponent.getId();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -42,6 +45,10 @@ public class TravellersGearComponentModifier implements TravellersModifier {
 	@Override
 	public String getTooltipString() {
 		return tooltip;
+	}
+
+	public ResourceLocation getComponentId() {
+		return componentId;
 	}
 
 	@SuppressWarnings("unchecked")

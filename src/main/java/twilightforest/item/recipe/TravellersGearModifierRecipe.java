@@ -8,6 +8,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
@@ -65,6 +66,10 @@ public class TravellersGearModifierRecipe extends CustomRecipe {
 
 	protected static Stream<ItemStack> getTravellersArmor(CraftingInput input) {
 		return input.items().stream().filter(stack -> stack.getItem() instanceof TravellersArmorItem);
+	}
+
+	public ResourceLocation getId() {
+		return travellersModifier.getComponentId().withPrefix("add_modifier_to_travellers_gear/").withSuffix("_modifier");
 	}
 
 	public static class Serializer implements RecipeSerializer<TravellersGearModifierRecipe> {
