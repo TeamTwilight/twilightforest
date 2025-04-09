@@ -14,6 +14,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LadderBlock;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.w3c.dom.Text;
 import twilightforest.TwilightForestMod;
@@ -66,7 +67,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.wrapBlockItem(TFBlocks.TWISTED_STONE.get(), block -> this.createRotatedPillarWithHorizontalVariant(block, TexturedModel.COLUMN_ALT, TexturedModel.COLUMN_HORIZONTAL_ALT));
 		this.wrapBlockItem(TFBlocks.BOLD_STONE_PILLAR.get(), block -> this.createRotatedPillarWithHorizontalVariant(block, TexturedModel.COLUMN_ALT, TexturedModel.COLUMN_HORIZONTAL_ALT));
 		this.stonePillar();
-
+		this.wroughtIronFence();
 		this.terrorcotta();
 
 		this.wrapBlockItem(TFBlocks.MAZESTONE.get(), this::createTrivialCube);
@@ -101,7 +102,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.wrapBlockItem(TFBlocks.ENCASED_SMOKER.get(), block -> this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block).with(
 			createBooleanModelDispatch(EncasedSmokerBlock.ACTIVE,
 				TFModelTemplates.THREE_LAYER_DEVICE_ACTIVE.createWithSuffix(block, "_on", TFTextureMapping.threeLayerDeviceOn(block, TFBlocks.GHAST_TRAP.get()), this.modelOutput),
-			TFModelTemplates.THREE_LAYER_DEVICE.create(block, TFTextureMapping.threeLayerDevice(block, TFBlocks.GHAST_TRAP.get(), ""), this.modelOutput)))));
+				TFModelTemplates.THREE_LAYER_DEVICE.create(block, TFTextureMapping.threeLayerDevice(block, TFBlocks.GHAST_TRAP.get(), ""), this.modelOutput)))));
 		ResourceLocation jetOn = TFModelTemplates.THREE_LAYER_DEVICE_ACTIVE.createWithSuffix(TFBlocks.ENCASED_FIRE_JET.get(), "_on", TFTextureMapping.threeLayerDeviceOn(TFBlocks.ENCASED_FIRE_JET.get(), TFBlocks.GHAST_TRAP.get()), this.modelOutput);
 		ResourceLocation jetOff = TFModelTemplates.THREE_LAYER_DEVICE.create(TFBlocks.ENCASED_FIRE_JET.get(), TFTextureMapping.threeLayerDevice(TFBlocks.ENCASED_FIRE_JET.get(), TFBlocks.GHAST_TRAP.get(), ""), this.modelOutput);
 		this.wrapBlockItem(TFBlocks.ENCASED_FIRE_JET.get(), block -> this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block).with(PropertyDispatch.property(EncasedFireJetBlock.STATE).generate(variant -> Variant.variant().with(VariantProperties.MODEL, variant.isVariantOn() ? jetOn : jetOff)))));
@@ -138,6 +139,17 @@ public class BlockModelGenerator extends BlockModelBuilders {
 					TFModelTemplates.SMALL_CUBE.createWithSuffix(block, variant, TextureMapping.cube(TextureMapping.getBlockTexture(block, variant)), this.modelOutput) :
 					TFModelTemplates.THREE_LAYER_BLOCK.createWithSuffix(block, variant, TFTextureMapping.threeLayerBlock(block, variant), this.modelOutput));
 			}))));
+		this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(TFBlocks.EXPERIMENT_115.get()).with(PropertyDispatch.properties(Experiment115Block.BITES_TAKEN, Experiment115Block.REGENERATE).generate((bites, regen) -> {
+			String suffix = String.format("_%d_8", 8 - bites);
+			ResourceLocation model;
+			if (regen) {
+				model = TFModelTemplates.create("twilightforest:experiment_115" + suffix, suffix + "_regenerating", TFTextureSlot.TOP_2).create(TFBlocks.EXPERIMENT_115.get(), new TextureMapping().put(TFTextureSlot.TOP_2, TwilightForestMod.prefix("block/experiment115_sprinkle")), this.modelOutput);
+			} else {
+				model = ModelLocationUtils.getModelLocation(TFBlocks.EXPERIMENT_115.get(), suffix);
+			}
+			return Variant.variant().with(VariantProperties.MODEL, model);
+		})));
+		this.itemModelOutput.accept(TFBlocks.EXPERIMENT_115.asItem(), ItemModelUtils.plainModel(this.createFlatItemModel(TFBlocks.EXPERIMENT_115.asItem())));
 
 		//TODO aurora blocks
 		this.wrapBlockItem(TFBlocks.BEANSTALK_LEAVES.get(), block -> this.blockWithRenderType(block, "cutout_mipped", ModelTemplates.CUBE_ALL, u -> TextureMapping.cube(Blocks.AZALEA_LEAVES)));
@@ -216,12 +228,26 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.generateTrophy(TFBlocks.SNOW_QUEEN_TROPHY.get(), TFBlocks.SNOW_QUEEN_WALL_TROPHY.get(), major);
 		this.generateTrophy(TFBlocks.QUEST_RAM_TROPHY.get(), TFBlocks.QUEST_RAM_WALL_TROPHY.get(), quest, "smaller_gui_trophy");
 
+		this.ironLadder();
+
+		this.blockStateOutput.accept(MultiPartGenerator.multiPart(TFBlocks.ROPE.get())
+			.with(Condition.condition().term(RopeBlock.X, true), Variant.variant().with(VariantProperties.MODEL, ModelLocationUtils.getModelLocation(TFBlocks.ROPE.get(), "_x")))
+			.with(Condition.condition().term(RopeBlock.Y, true), Variant.variant().with(VariantProperties.MODEL, ModelLocationUtils.getModelLocation(TFBlocks.ROPE.get(), "_y")))
+			.with(Condition.condition().term(RopeBlock.Z, true), Variant.variant().with(VariantProperties.MODEL, ModelLocationUtils.getModelLocation(TFBlocks.ROPE.get(), "_z")))
+			.with(Condition.or(
+					Condition.and(Condition.condition().term(RopeBlock.X, true), Condition.condition().term(RopeBlock.Y, true)),
+					Condition.and(Condition.condition().term(RopeBlock.Y, true), Condition.condition().term(RopeBlock.Z, true)),
+					Condition.and(Condition.condition().term(RopeBlock.Z, true), Condition.condition().term(RopeBlock.X, true))),
+				Variant.variant().with(VariantProperties.MODEL, ModelLocationUtils.getModelLocation(TFBlocks.ROPE.get(), "_knot"))));
+		this.itemModelOutput.accept(TFBlocks.ROPE.asItem(), ItemModelUtils.plainModel(this.createFlatItemModelWithBlockTexture(TFBlocks.ROPE.asItem(), TFBlocks.ROPE.get())));
+
 		this.wrapBlockItem(TFBlocks.UNCRAFTING_TABLE.get(), block -> this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block).with(createBooleanModelDispatch(UncraftingTableBlock.POWERED, TFModelTemplates.TWO_LAYER_COLUMN_NO_BOTTOM.createWithSuffix(block, "_activated", TFTextureMapping.uncraftingTableOn(block), this.modelOutput), TFModelTemplates.CUBE_BOTTOM_2_LAYER_TOP.create(block, TFTextureMapping.uncraftingTable(block), this.modelOutput)))));
 		this.basicCtmBlock(TFBlocks.ARCTIC_FUR_BLOCK.get());
 		this.wrapBlockItem(TFBlocks.STEELEAF_BLOCK.get(), this::createTrivialCube);
 		this.wrapBlockItem(TFBlocks.IRONWOOD_BLOCK.get(), this::createTrivialCube);
 		this.wrapBlockItem(TFBlocks.KNIGHTMETAL_BLOCK.get(), block -> this.blockStateOutput.accept(createSimpleBlock(block, ModelLocationUtils.getModelLocation(block))));
 		this.wrapBlockItem(TFBlocks.FIERY_BLOCK.get(), block -> this.blockStateOutput.accept(createSimpleBlock(block, ModelLocationUtils.getModelLocation(block))));
+		this.wrapBlockItem(TFBlocks.CARMINITE_BLOCK.get(), block -> this.blockStateOutput.accept(createSimpleBlock(block, ModelLocationUtils.getModelLocation(block))));
 	}
 
 	private void generateWoodBlocks() {

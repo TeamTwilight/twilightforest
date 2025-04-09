@@ -5,7 +5,7 @@
     "bottom": "twilightforest:block/experiment115_bottom",
     "inside": "twilightforest:block/experiment115_inner",
     "top": "twilightforest:block/experiment115_top",
-    "top_2": "twilightforest:block/blank",
+    "top2": "twilightforest:block/blank",
     "side": "twilightforest:block/experiment115_side",
     "particle": "#bottom"
   },
@@ -99,56 +99,56 @@
       "from": [1, 8, 1],
       "to": [8, 8, 15],
       "faces": {
-        "up": {"uv": [1, 1, 8, 15], "texture": "#top_2"}
+        "up": {"uv": [1, 1, 8, 15], "texture": "#top2"}
       }
     },
     {
       "from": [8, 8, 11],
       "to": [12, 8, 15],
       "faces": {
-        "up": {"uv": [8, 11, 12, 15], "texture": "#top_2"}
+        "up": {"uv": [8, 11, 12, 15], "texture": "#top2"}
       }
     },
     {
       "from": [12, 8, 13],
       "to": [14, 8, 15],
       "faces": {
-        "up": {"uv": [12, 13, 14, 15], "texture": "#top_2"}
+        "up": {"uv": [12, 13, 14, 15], "texture": "#top2"}
       }
     },
     {
       "from": [8, 8, 9],
       "to": [10, 8, 11],
       "faces": {
-        "up": {"uv": [8, 9, 10, 11], "texture": "#top_2"}
+        "up": {"uv": [8, 9, 10, 11], "texture": "#top2"}
       }
     },
     {
       "from": [8, 8, 8],
       "to": [9, 8, 9],
       "faces": {
-        "up": {"uv": [8, 8, 9, 9], "texture": "#top_2"}
+        "up": {"uv": [8, 8, 9, 9], "texture": "#top2"}
       }
     },
     {
       "from": [10, 8, 10],
       "to": [11, 8, 11],
       "faces": {
-        "up": {"uv": [10, 10, 11, 11], "texture": "#top_2"}
+        "up": {"uv": [10, 10, 11, 11], "texture": "#top2"}
       }
     },
     {
       "from": [12, 8, 12],
       "to": [13, 8, 13],
       "faces": {
-        "up": {"uv": [12, 12, 13, 13], "texture": "#top_2"}
+        "up": {"uv": [12, 12, 13, 13], "texture": "#top2"}
       }
     },
     {
       "from": [14, 8, 14],
       "to": [15, 8, 15],
       "faces": {
-        "up": {"uv": [14, 14, 15, 15], "texture": "#top_2"}
+        "up": {"uv": [14, 14, 15, 15], "texture": "#top2"}
       }
     }
   ]

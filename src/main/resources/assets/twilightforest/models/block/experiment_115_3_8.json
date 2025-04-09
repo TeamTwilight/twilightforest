@@ -5,7 +5,7 @@
     "bottom": "twilightforest:block/experiment115_bottom",
     "inside": "twilightforest:block/experiment115_inner",
     "top": "twilightforest:block/experiment115_top",
-    "top_2": "twilightforest:block/blank",
+    "top2": "twilightforest:block/blank",
     "side": "twilightforest:block/experiment115_side",
     "particle": "#bottom"
   },
@@ -89,49 +89,49 @@
       "from": [1, 8, 1],
       "to": [8, 8, 9],
       "faces": {
-        "up": {"uv": [1, 1, 8, 9], "texture": "#top_2"}
+        "up": {"uv": [1, 1, 8, 9], "texture": "#top2"}
       }
     },
     {
       "from": [1, 8, 9],
       "to": [5, 8, 12],
       "faces": {
-        "up": {"uv": [1, 9, 5, 12], "texture": "#top_2"}
+        "up": {"uv": [1, 9, 5, 12], "texture": "#top2"}
       }
     },
     {
       "from": [1, 0, 12],
       "to": [3, 8, 14],
       "faces": {
-        "up": {"uv": [1, 12, 3, 14], "texture": "#top_2"}
+        "up": {"uv": [1, 12, 3, 14], "texture": "#top2"}
       }
     },
     {
       "from": [5, 8, 9],
       "to": [7, 8, 10],
       "faces": {
-        "up": {"uv": [5, 9, 7, 10], "texture": "#top_2"}
+        "up": {"uv": [5, 9, 7, 10], "texture": "#top2"}
       }
     },
     {
       "from": [1, 8, 14],
       "to": [2, 8, 15],
       "faces": {
-        "up": {"uv": [1, 14, 2, 15], "texture": "#top_2"}
+        "up": {"uv": [1, 14, 2, 15], "texture": "#top2"}
       }
     },
     {
       "from": [3, 8, 12],
       "to": [4, 8, 13],
       "faces": {
-        "up": {"uv": [3, 12, 4, 13], "texture": "#top_2"}
+        "up": {"uv": [3, 12, 4, 13], "texture": "#top2"}
       }
     },
     {
       "from": [5, 8, 10],
       "to": [6, 8, 11],
       "faces": {
-        "up": {"uv": [5, 10, 6, 11], "texture": "#top_2"}
+        "up": {"uv": [5, 10, 6, 11], "texture": "#top2"}
       }
     }
   ]

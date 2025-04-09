@@ -4,7 +4,7 @@
   "textures": {
     "bottom": "twilightforest:block/experiment115_bottom",
     "top": "twilightforest:block/experiment115_top",
-    "top_2": "twilightforest:block/blank",
+    "top2": "twilightforest:block/blank",
     "side": "twilightforest:block/experiment115_side",
     "particle": "#bottom"
   },
@@ -25,14 +25,14 @@
       "from": [1, 8, 1],
       "to": [15, 8, 15],
       "faces": {
-        "up": {"uv": [1, 1, 15, 15], "texture": "#top_2"}
+        "up": {"uv": [1, 1, 15, 15], "texture": "#top2"}
       }
     },
     {
       "from": [1, 8, 1],
       "to": [15, 8.02, 15],
       "faces": {
-        "up": {"uv": [1, 1, 15, 15], "texture": "#top_2"}
+        "up": {"uv": [1, 1, 15, 15], "texture": "#top2"}
       }
     }
   ]

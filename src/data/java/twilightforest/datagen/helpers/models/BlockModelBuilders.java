@@ -316,6 +316,43 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 		);
 	}
 
+	public void wroughtIronFence() {
+		Block block = TFBlocks.WROUGHT_IRON_FENCE.get();
+		ResourceLocation post = ModelLocationUtils.getModelLocation(block, "_post");
+		ResourceLocation capped = ModelLocationUtils.getModelLocation(block, "_post_capped");
+		ResourceLocation full = ModelLocationUtils.getModelLocation(block, "_full");
+		ResourceLocation top = ModelLocationUtils.getModelLocation(block, "_top");
+		ResourceLocation middle = ModelLocationUtils.getModelLocation(block, "_middle");
+		ResourceLocation bottom = ModelLocationUtils.getModelLocation(block, "_bottom");
+
+		this.blockStateOutput.accept(MultiPartGenerator.multiPart(block)
+			.with(Condition.condition().term(WroughtIronFenceBlock.POST, WroughtIronFenceBlock.PostState.POST), Variant.variant().with(VariantProperties.MODEL, post))
+			.with(Condition.condition().term(WroughtIronFenceBlock.POST, WroughtIronFenceBlock.PostState.CAPPED), Variant.variant().with(VariantProperties.MODEL, capped))
+
+			.with(Condition.condition().term(WroughtIronFenceBlock.NORTH_FENCE, WroughtIronFenceBlock.FenceSide.FULL), Variant.variant().with(VariantProperties.MODEL, full))
+			.with(Condition.condition().term(WroughtIronFenceBlock.NORTH_FENCE, WroughtIronFenceBlock.FenceSide.TOP), Variant.variant().with(VariantProperties.MODEL, top))
+			.with(Condition.condition().term(WroughtIronFenceBlock.NORTH_FENCE, WroughtIronFenceBlock.FenceSide.MIDDLE), Variant.variant().with(VariantProperties.MODEL, middle))
+			.with(Condition.condition().term(WroughtIronFenceBlock.NORTH_FENCE, WroughtIronFenceBlock.FenceSide.BOTTOM), Variant.variant().with(VariantProperties.MODEL, bottom))
+
+			.with(Condition.condition().term(WroughtIronFenceBlock.EAST_FENCE, WroughtIronFenceBlock.FenceSide.FULL), Variant.variant().with(VariantProperties.MODEL, full).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
+			.with(Condition.condition().term(WroughtIronFenceBlock.EAST_FENCE, WroughtIronFenceBlock.FenceSide.TOP), Variant.variant().with(VariantProperties.MODEL, top).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
+			.with(Condition.condition().term(WroughtIronFenceBlock.EAST_FENCE, WroughtIronFenceBlock.FenceSide.MIDDLE), Variant.variant().with(VariantProperties.MODEL, middle).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
+			.with(Condition.condition().term(WroughtIronFenceBlock.EAST_FENCE, WroughtIronFenceBlock.FenceSide.BOTTOM), Variant.variant().with(VariantProperties.MODEL, bottom).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
+
+			.with(Condition.condition().term(WroughtIronFenceBlock.SOUTH_FENCE, WroughtIronFenceBlock.FenceSide.FULL), Variant.variant().with(VariantProperties.MODEL, full).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
+			.with(Condition.condition().term(WroughtIronFenceBlock.SOUTH_FENCE, WroughtIronFenceBlock.FenceSide.TOP), Variant.variant().with(VariantProperties.MODEL, top).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
+			.with(Condition.condition().term(WroughtIronFenceBlock.SOUTH_FENCE, WroughtIronFenceBlock.FenceSide.MIDDLE), Variant.variant().with(VariantProperties.MODEL, middle).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
+			.with(Condition.condition().term(WroughtIronFenceBlock.SOUTH_FENCE, WroughtIronFenceBlock.FenceSide.BOTTOM), Variant.variant().with(VariantProperties.MODEL, bottom).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
+
+			.with(Condition.condition().term(WroughtIronFenceBlock.WEST_FENCE, WroughtIronFenceBlock.FenceSide.FULL), Variant.variant().with(VariantProperties.MODEL, full).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
+			.with(Condition.condition().term(WroughtIronFenceBlock.WEST_FENCE, WroughtIronFenceBlock.FenceSide.TOP), Variant.variant().with(VariantProperties.MODEL, top).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
+			.with(Condition.condition().term(WroughtIronFenceBlock.WEST_FENCE, WroughtIronFenceBlock.FenceSide.MIDDLE), Variant.variant().with(VariantProperties.MODEL, middle).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
+			.with(Condition.condition().term(WroughtIronFenceBlock.WEST_FENCE, WroughtIronFenceBlock.FenceSide.BOTTOM), Variant.variant().with(VariantProperties.MODEL, bottom).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
+		);
+
+		this.itemModelOutput.accept(block.asItem(), ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(block.asItem())));
+	}
+
 	public void terrorcotta() {
 		this.rotationallySpecialColumn(TFBlocks.TERRORCOTTA_ARCS.get());
 
@@ -766,5 +803,38 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 		}
 		this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(pedestal).with(PropertyDispatch.property(TrophyPedestalBlock.ACTIVE).select(true, activeVariants).select(false, variants)));
 		this.generateBlockItem(pedestal);
+	}
+
+	public void ironLadder() {
+		MultiPartGenerator model = MultiPartGenerator.multiPart(TFBlocks.IRON_LADDER.get());
+		ResourceLocation left = ModelLocationUtils.getModelLocation(TFBlocks.IRON_LADDER.get(), "_left");
+		ResourceLocation leftConnect = ModelLocationUtils.getModelLocation(TFBlocks.IRON_LADDER.get(), "_left_connection");
+		ResourceLocation right = ModelLocationUtils.getModelLocation(TFBlocks.IRON_LADDER.get(), "_right");
+		ResourceLocation rightConnect = ModelLocationUtils.getModelLocation(TFBlocks.IRON_LADDER.get(), "_right_connection");
+		for (Direction d : Direction.Plane.HORIZONTAL) {
+			model.with(Condition.and(
+				Condition.condition().term(IronLadderBlock.LEFT, false),
+				Condition.condition().term(LadderBlock.FACING, d)), Variant.variant().with(VariantProperties.MODEL, left).with(VariantProperties.Y_ROT, getYRotationFromDirection(d)));
+			model.with(Condition.and(
+				Condition.condition().term(IronLadderBlock.LEFT, true),
+				Condition.condition().term(LadderBlock.FACING, d)), Variant.variant().with(VariantProperties.MODEL, leftConnect).with(VariantProperties.Y_ROT, getYRotationFromDirection(d)));
+			model.with(Condition.and(
+				Condition.condition().term(IronLadderBlock.RIGHT, false),
+				Condition.condition().term(LadderBlock.FACING, d)), Variant.variant().with(VariantProperties.MODEL, right).with(VariantProperties.Y_ROT, getYRotationFromDirection(d)));
+			model.with(Condition.and(
+				Condition.condition().term(IronLadderBlock.RIGHT, true),
+				Condition.condition().term(LadderBlock.FACING, d)), Variant.variant().with(VariantProperties.MODEL, rightConnect).with(VariantProperties.Y_ROT, getYRotationFromDirection(d)));
+		}
+		this.blockStateOutput.accept(model);
+		this.itemModelOutput.accept(TFBlocks.IRON_LADDER.asItem(), ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(TFBlocks.IRON_LADDER.asItem())));
+	}
+
+	public static VariantProperties.Rotation getYRotationFromDirection(Direction direction) {
+		return switch (direction) {
+			case EAST -> VariantProperties.Rotation.R90;
+			case SOUTH -> VariantProperties.Rotation.R180;
+			case WEST -> VariantProperties.Rotation.R270;
+			default -> VariantProperties.Rotation.R0;
+		};
 	}
 }

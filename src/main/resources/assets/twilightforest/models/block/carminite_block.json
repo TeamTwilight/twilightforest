@@ -1,0 +1,35 @@
+{
+  "parent": "block/block",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "all": "twilightforest:block/carminite_block",
+    "all2": "twilightforest:block/carminite_block_overlay",
+    "particle": "#all"
+  },
+  "elements": [
+    {
+      "from": [ 0, 0, 0 ],
+      "to": [ 16, 16, 16 ],
+      "faces": {
+        "down": {"texture": "#all", "neoforge_data": {"block_light": 4, "sky_light": 4}, "cullface": "down"},
+        "up": {"texture": "#all", "neoforge_data": {"block_light": 4, "sky_light": 4}, "cullface": "up"},
+        "north": {"texture": "#all", "neoforge_data": {"block_light": 4, "sky_light": 4}, "cullface": "north"},
+        "south": {"texture": "#all", "neoforge_data": {"block_light": 4, "sky_light": 4}, "cullface": "south"},
+        "west": {"texture": "#all", "neoforge_data": {"block_light": 4, "sky_light": 4}, "cullface": "west"},
+        "east": {"texture": "#all", "neoforge_data": {"block_light": 4, "sky_light": 4}, "cullface": "east"}
+      }
+    },
+    {
+      "from": [ 0, 0, 0 ],
+      "to": [ 16, 16, 16 ],
+      "faces": {
+        "up": {"texture": "#all2", "neoforge_data": {"block_light": 7, "sky_light": 7}, "cullface": "up"},
+        "down": {"texture": "#all2", "neoforge_data": {"block_light": 7, "sky_light": 7}, "cullface": "down"},
+        "north": {"texture": "#all2", "neoforge_data": {"block_light": 7, "sky_light": 7}, "cullface": "north"},
+        "south": {"texture": "#all2", "neoforge_data": {"block_light": 7, "sky_light": 7}, "cullface": "south"},
+        "west": {"texture": "#all2", "neoforge_data": {"block_light": 7, "sky_light": 7}, "cullface": "west"},
+        "east": {"texture": "#all2", "neoforge_data": {"block_light": 7, "sky_light": 7}, "cullface": "east"}
+      }
+    }
+  ]
+}
