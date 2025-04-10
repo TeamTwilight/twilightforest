@@ -1,9 +1,7 @@
 package twilightforest.client.model.block.connected;
 
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
+import com.google.gson.*;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -15,6 +13,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.client.model.NeoForgeModelProperties;
 import net.neoforged.neoforge.client.model.StandardModelParameters;
 import net.neoforged.neoforge.client.model.UnbakedModelLoader;
+import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -32,6 +31,14 @@ public class ConnectedTextureModelLoader implements UnbakedModelLoader<UnbakedCo
 		int baseTintIndex = GsonHelper.getAsInt(baseTextureInfo, "tint_index", -1);
 		int baseEmissivity = GsonHelper.getAsInt(baseTextureInfo, "emissivity", 0);
 
+		Pair<Vector3f, Vector3f> element;
+		if (jsonObject.has("element")) {
+			JsonObject obj = jsonObject.getAsJsonObject("element");
+			element = Pair.of(this.deserializeVec(obj, "from"), this.deserializeVec(obj, "to"));
+		} else {
+			element = Pair.of(new Vector3f(0, 0, 0), new Vector3f(16, 16, 16));
+		}
+
 		JsonObject overlayInfo = GsonHelper.getAsJsonObject(jsonObject, "connected_texture", new JsonObject());
 		int tintIndex = GsonHelper.getAsInt(overlayInfo, "tint_index", -1);
 		int emissivity = GsonHelper.getAsInt(overlayInfo, "emissivity", 0);
@@ -39,7 +46,7 @@ public class ConnectedTextureModelLoader implements UnbakedModelLoader<UnbakedCo
 		EnumSet<Direction> faces = this.parseEnabledFaces(overlayInfo);
 
 		List<Block> connectables = this.parseConnnectableBlocks(jsonObject);
-		return new UnbakedConnectedTextureModel(faces, renderDisabled, connectables, baseTintIndex, baseEmissivity, tintIndex, emissivity, StandardModelParameters.parse(jsonObject, deserializationContext), NeoForgeModelProperties.deserializeRenderType(jsonObject));
+		return new UnbakedConnectedTextureModel(element, faces, renderDisabled, connectables, baseTintIndex, baseEmissivity, tintIndex, emissivity, StandardModelParameters.parse(jsonObject, deserializationContext), NeoForgeModelProperties.deserializeRenderType(jsonObject));
 	}
 
 	private EnumSet<Direction> parseEnabledFaces(JsonObject object) {
@@ -86,5 +93,13 @@ public class ConnectedTextureModelLoader implements UnbakedModelLoader<UnbakedCo
 
 			return blocks;
 		}
+	}
+
+	private Vector3f deserializeVec(JsonObject object, String name) {
+		JsonArray from = object.getAsJsonArray(name);
+		if (from.asList().size() == 3) {
+			return new Vector3f(from.get(0).getAsFloat(), from.get(1).getAsFloat(), from.get(2).getAsFloat());
+		}
+		return new Vector3f(0, 0, 0);
 	}
 }

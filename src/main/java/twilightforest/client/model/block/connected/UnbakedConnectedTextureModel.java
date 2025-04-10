@@ -1,5 +1,6 @@
 package twilightforest.client.model.block.connected;
 
+import com.mojang.datafixers.util.Pair;
 import com.mojang.math.Transformation;
 import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -30,7 +31,7 @@ public class UnbakedConnectedTextureModel extends AbstractUnbakedModel {
 	protected BlockElement[][][] faceElements;
 	protected final RenderTypeGroup group;
 
-	public UnbakedConnectedTextureModel(EnumSet<Direction> enabledFaces, boolean renderOnDisabledFaces, List<Block> connectableBlocks, int baseTintIndex, int baseEmissivity, int tintIndex, int emissivity, StandardModelParameters parameters, RenderTypeGroup group) {
+	public UnbakedConnectedTextureModel(Pair<Vector3f, Vector3f> element, EnumSet<Direction> enabledFaces, boolean renderOnDisabledFaces, List<Block> connectableBlocks, int baseTintIndex, int baseEmissivity, int tintIndex, int emissivity, StandardModelParameters parameters, RenderTypeGroup group) {
 		super(parameters);
 		//a list of block faces that should have connected textures.
 		this.enabledFaces = enabledFaces;
@@ -39,28 +40,45 @@ public class UnbakedConnectedTextureModel extends AbstractUnbakedModel {
 		//a list of blocks this block can connect its texture to
 		this.connectableBlocks = connectableBlocks;
 		//base elements - the base block. No Connected Textures on this bit.
-		//the array is made of the directions and quads
+		//the array is made of the directions and "sections". Each section is a corner quadrant of the block
 		this.baseElements = new BlockElement[6][4];
 
 		//face elements - the connected bit of the model.
-		//the array is made of the directions, quads, and each logic value in the ConnectionLogic class
+		//the array is made of the directions, "sections", and each logic value in the ConnectionLogic class
 		this.faceElements = new BlockElement[6][4][5];
-		Vec3i center = new Vec3i(8, 8, 8);
+		int center = 8;
 
 		for (Direction face : Direction.values()) {
 			Direction[] planeDirections = ConnectionLogic.AXIS_PLANE_DIRECTIONS[face.getAxis().ordinal()];
 
-			for(int i = 0; i < 4; ++i) {
+			for (int i = 0; i < 4; ++i) {
 				Vec3i corner = face.getUnitVec3i().offset(planeDirections[i].getUnitVec3i()).offset(planeDirections[(i + 1) % 4].getUnitVec3i()).offset(1, 1, 1).multiply(8);
-				BlockElement element = new BlockElement(new Vector3f((float)Math.min(center.getX(), corner.getX()), (float)Math.min(center.getY(), corner.getY()), (float)Math.min(center.getZ(), corner.getZ())), new Vector3f((float)Math.max(center.getX(), corner.getX()), (float)Math.max(center.getY(), corner.getY()), (float)Math.max(center.getZ(), corner.getZ())), Map.of(), null, true, 0);
-				this.baseElements[face.get3DDataValue()][i] = new BlockElement(element.from, element.to, Map.of(face, new BlockElementFace(face, baseTintIndex, "", new BlockFaceUV(ConnectionLogic.NONE.remapUVs(element.uvsByFace(face)), 0))), null, true, baseEmissivity);
+				BlockElement modifiedElement = new BlockElement(
+					new Vector3f(
+						Math.clamp(Math.min(center - (16 - element.getSecond().x()), corner.getX() + element.getFirst().x()), 0, 16),
+						Math.clamp(Math.min(center - (16 - element.getSecond().y()), corner.getY() + element.getFirst().y()), 0, 16),
+						Math.clamp(Math.min(center - (16 - element.getSecond().z()), corner.getZ() + element.getFirst().z()), 0, 16)),
+					new Vector3f(
+						element.getSecond().x() < center ? element.getSecond().x() : Math.max(center, corner.getX() - (16 - element.getSecond().x())),
+						element.getSecond().y() < center ? element.getSecond().y() : Math.max(center, corner.getY() - (16 - element.getSecond().y())),
+						element.getSecond().z() < center ? element.getSecond().z() : Math.max(center, corner.getZ() - (16 - element.getSecond().z()))),
+					Map.of(), null, true, 0);
+				this.baseElements[face.get3DDataValue()][i] = new BlockElement(modifiedElement.from, modifiedElement.to, Map.of(face, new BlockElementFace(face, baseTintIndex, "", new BlockFaceUV(ConnectionLogic.NONE.remapUVs(modifiedElement.uvsByFace(face)), 0))), null, true, baseEmissivity);
 
 				for (ConnectionLogic logic : ConnectionLogic.values()) {
-					this.faceElements[face.get3DDataValue()][i][logic.ordinal()] = new BlockElement(element.from, element.to, Map.of(face, new BlockElementFace(face, tintIndex, "", new BlockFaceUV(logic.remapUVs(element.uvsByFace(face)), 0))), null, true, emissivity);
+					this.faceElements[face.get3DDataValue()][i][logic.ordinal()] = new BlockElement(modifiedElement.from, modifiedElement.to, Map.of(face, new BlockElementFace(face, tintIndex, "", new BlockFaceUV(logic.remapUVs(modifiedElement.uvsByFace(face)), 0))), null, true, emissivity);
 				}
 			}
 		}
 		this.group = group;
+	}
+
+	private float getElementScalar(Vector3f corner, Direction direction) {
+		return switch (direction.getAxis()) {
+			case X -> corner.x();
+			case Y -> corner.y();
+			case Z -> corner.z();
+		};
 	}
 
 	@Override

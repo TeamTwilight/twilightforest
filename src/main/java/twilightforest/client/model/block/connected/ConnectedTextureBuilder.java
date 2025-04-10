@@ -2,11 +2,14 @@ package twilightforest.client.model.block.connected;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.client.model.generators.template.CustomLoaderBuilder;
+import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 import twilightforest.TwilightForestMod;
 
 import java.util.ArrayList;
@@ -18,6 +21,8 @@ public class ConnectedTextureBuilder extends CustomLoaderBuilder {
 	private List<Direction> enabledFaces = new ArrayList<>();
 	private List<Block> connectableBlocks = new ArrayList<>();
 	private List<TagKey<Block>> connectableTags = new ArrayList<>();
+	@Nullable
+	private Pair<Vector3f, Vector3f> element;
 	private boolean renderOnDisabledFaces = true;
 
 	private int baseTintIndex = -1;
@@ -35,6 +40,11 @@ public class ConnectedTextureBuilder extends CustomLoaderBuilder {
 
 	public ConnectedTextureBuilder addConnectionFaces(Direction... faces) {
 		this.enabledFaces.addAll(List.of(faces));
+		return this;
+	}
+
+	public ConnectedTextureBuilder createElement(Vector3f from, Vector3f to) {
+		this.element = Pair.of(from, to);
 		return this;
 	}
 
@@ -81,6 +91,7 @@ public class ConnectedTextureBuilder extends CustomLoaderBuilder {
 		builder.enabledFaces = List.copyOf(this.enabledFaces);
 		builder.connectableBlocks = List.copyOf(this.connectableBlocks);
 		builder.connectableTags = List.copyOf(this.connectableTags);
+		builder.element = this.element;
 		builder.renderOnDisabledFaces = this.renderOnDisabledFaces;
 		builder.baseTintIndex = this.baseTintIndex;
 		builder.baseEmissivity = this.baseEmissivity;
@@ -132,6 +143,28 @@ public class ConnectedTextureBuilder extends CustomLoaderBuilder {
 			json.add("connectable_blocks", connectables);
 		}
 
+		if (this.element != null) {
+			JsonObject serializedElement = new JsonObject();
+			serializedElement.add("from", serializeVector3f(this.element.getFirst()));
+			serializedElement.add("to", serializeVector3f(this.element.getSecond()));
+			json.add("element", serializedElement);
+		}
+
 		return json;
+	}
+
+	private static JsonArray serializeVector3f(Vector3f vec) {
+		JsonArray ret = new JsonArray();
+		ret.add(serializeFloat(vec.x()));
+		ret.add(serializeFloat(vec.y()));
+		ret.add(serializeFloat(vec.z()));
+		return ret;
+	}
+
+	private static Number serializeFloat(float f) {
+		if ((int) f == f) {
+			return (int) f;
+		}
+		return f;
 	}
 }

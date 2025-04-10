@@ -51,7 +51,6 @@ import twilightforest.client.model.armor.*;
 import twilightforest.client.model.block.BrazierModel;
 import twilightforest.client.model.block.ReactorDebrisModel;
 import twilightforest.client.model.block.aurorablock.NoiseVaryingModelLoader;
-import twilightforest.client.model.block.carpet.RoyalRagsModelLoader;
 import twilightforest.client.model.block.connected.ConnectedTextureModelLoader;
 import twilightforest.client.model.block.forcefield.ForceFieldModelLoader;
 import twilightforest.client.model.block.giantblock.GiantBlockModelLoader;
@@ -122,69 +121,11 @@ public class RegistrationEvents {
 		event.register(TwilightForestMod.prefix("force_field"), ForceFieldModelLoader.INSTANCE);
 		event.register(TwilightForestMod.prefix("connected_texture_block"), ConnectedTextureModelLoader.INSTANCE);
 		event.register(TwilightForestMod.prefix("noise_varying"), NoiseVaryingModelLoader.INSTANCE);
-		event.register(TwilightForestMod.prefix("royal_rags"), RoyalRagsModelLoader.INSTANCE);
 	}
 
 	private static void bakeCustomModels(ModelEvent.ModifyBakingResult event) {
 //		ItemProperties.register(TFItems.CUBE_OF_ANNIHILATION.get(), TwilightForestMod.prefix("thrown"), (stack, level, entity, idk) ->
 //			stack.get(TFDataComponents.THROWN_PROJECTILE) != null ? 1 : 0);
-//
-//		ItemProperties.register(TFItems.KNIGHTMETAL_SHIELD.get(), ResourceLocation.parse("blocking"), (stack, level, entity, idk) ->
-//			entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
-//
-//		ItemProperties.register(TFItems.MOON_DIAL.get(), ResourceLocation.parse("phase"), new ClampedItemPropertyFunction() {
-//			@Override
-//			public float unclampedCall(ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entityBase, int idk) {
-//				boolean flag = entityBase != null;
-//				Entity entity = flag ? entityBase : stack.getFrame();
-//
-//				if (level == null && entity != null) level = (ClientLevel) entity.level();
-//
-//				return level == null ? 0.0F : (float) (level.dimensionType().natural() ? Mth.frac(level.getMoonPhase() / 8.0f) : this.wobble(level, Math.random()));
-//			}
-//
-//			double rotation;
-//			double rota;
-//			long lastUpdateTick;
-//
-//			private double wobble(Level level, double rotation) {
-//				if (level.getGameTime() != this.lastUpdateTick) {
-//					this.lastUpdateTick = level.getGameTime();
-//					double delta = rotation - this.rotation;
-//					delta = Mth.positiveModulo(delta + 0.5D, 1.0D) - 0.5D;
-//					this.rota += delta * 0.1D;
-//					this.rota *= 0.9D;
-//					this.rotation = Mth.positiveModulo(this.rotation + this.rota, 1.0D);
-//				}
-//				return this.rotation;
-//			}
-//		});
-//
-//		ItemProperties.register(TFItems.ORE_METER.get(), TwilightForestMod.prefix("active"), (stack, level, entity, idk) -> {
-//			if (OreMeterItem.isLoading(stack)) {
-//				int totalLoadTime = OreMeterItem.LOAD_TIME + OreMeterItem.getRange(stack) * 25;
-//				int progress = OreMeterItem.getLoadProgress(stack);
-//				return progress % 5 >= 2 + (int) (Math.random() * 2) && progress <= totalLoadTime - 15 ? 1 : 0;
-//			}
-//			return stack.has(TFDataComponents.ORE_DATA) ? 1 : 0;
-//		});
-//
-//		ItemProperties.register(TFItems.MOONWORM_QUEEN.get(), TwilightForestMod.prefix("alt"), (stack, level, entity, idk) -> {
-//			if (entity != null && entity.getUseItem() == stack) {
-//				int useTime = stack.getUseDuration(entity) - entity.getUseItemRemainingTicks();
-//				if (useTime >= MoonwormQueenItem.FIRING_TIME && (useTime >>> 1) % 2 == 0) {
-//					return 1;
-//				}
-//			}
-//			return 0;
-//		});
-//		ItemProperties.register(TFItems.ORE_MAGNET.get(), ResourceLocation.parse("pull"), (stack, level, entity, idk) -> {
-//			if (entity == null) return 0.0F;
-//			else {
-//				ItemStack itemstack = entity.getUseItem();
-//				return !itemstack.isEmpty() ? (stack.getUseDuration(entity) - entity.getUseItemRemainingTicks()) / 20.0F : 0.0F;
-//			}
-//		});
 //
 //		ItemProperties.register(TFBlocks.RED_THREAD.get().asItem(), TwilightForestMod.prefix("size"), (stack, level, entity, idk) -> {
 //			if (stack.getCount() >= 32) {
@@ -196,12 +137,6 @@ public class RegistrationEvents {
 //			}
 //			return 0.0F;
 //		});
-//
-//		ItemProperties.register(TFItems.ORE_MAGNET.get(), ResourceLocation.parse("pulling"), (stack, level, entity, idk) ->
-//			entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
-//
-//		ItemProperties.register(TFItems.BLOCK_AND_CHAIN.get(), TwilightForestMod.prefix("thrown"), (stack, level, entity, idk) ->
-//			stack.get(TFDataComponents.THROWN_PROJECTILE) != null ? 1 : 0);
 //
 //		ItemProperties.register(TFItems.EXPERIMENT_115.get(), Experiment115Item.THINK, (stack, level, entity, idk) ->
 //			stack.get(TFDataComponents.EXPERIMENT_115_VARIANTS) != null && stack.get(TFDataComponents.EXPERIMENT_115_VARIANTS).equals("think") ? 1 : 0);

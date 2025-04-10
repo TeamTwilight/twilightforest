@@ -87,7 +87,7 @@ public class ConnectedTextureModel implements IDynamicBakedModel {
 
 			int faceIndex;
 			for (faceIndex = 0; faceIndex < directions.length; faceIndex++) {
-				sideStates[faceIndex] = this.shouldConnectSide(getter, pos, state, face, directions[faceIndex]);
+				sideStates[faceIndex] = this.shouldConnectSide(getter, pos, face, directions[faceIndex]);
 			}
 
 			faceIndex = face.get3DDataValue();
@@ -96,7 +96,7 @@ public class ConnectedTextureModel implements IDynamicBakedModel {
 				int cornerOffset = (dir + 1) % directions.length;
 				boolean side1 = sideStates[dir];
 				boolean side2 = sideStates[cornerOffset];
-				boolean corner = side1 && side2 && this.isCornerBlockPresent(getter, pos, state, face, directions[dir], directions[cornerOffset]);
+				boolean corner = side1 && side2 && this.isCornerBlockPresent(getter, pos, face, directions[dir], directions[cornerOffset]);
 				data.logic[faceIndex][dir] = dir % 2 == 0 ? ConnectionLogic.of(side1, side2, corner) : ConnectionLogic.of(side2, side1, corner);
 			}
 		}
@@ -104,14 +104,14 @@ public class ConnectedTextureModel implements IDynamicBakedModel {
 		return modelData.derive().with(DATA, data).build();
 	}
 
-	private boolean shouldConnectSide(BlockAndTintGetter getter, BlockPos pos, BlockState state, Direction face, Direction side) {
+	private boolean shouldConnectSide(BlockAndTintGetter getter, BlockPos pos, Direction face, Direction side) {
 		BlockState neighborState = getter.getBlockState(pos.relative(side));
-		return this.validConnectors.stream().anyMatch(neighborState::is) && Block.shouldRenderFace(getter, pos, state, neighborState, face);
+		return this.validConnectors.stream().anyMatch(neighborState::is) && Block.shouldRenderFace(getter, pos.relative(face), neighborState, getter.getBlockState(pos.relative(face)), face);
 	}
 
-	private boolean isCornerBlockPresent(BlockAndTintGetter getter, BlockPos pos, BlockState state, Direction face, Direction side1, Direction side2) {
+	private boolean isCornerBlockPresent(BlockAndTintGetter getter, BlockPos pos, Direction face, Direction side1, Direction side2) {
 		BlockState neighborState = getter.getBlockState(pos.relative(side1).relative(side2));
-		return this.validConnectors.stream().anyMatch(neighborState::is) && Block.shouldRenderFace(getter, pos, state, neighborState, face);
+		return this.validConnectors.stream().anyMatch(neighborState::is) && Block.shouldRenderFace(getter, pos.relative(face), neighborState, getter.getBlockState(pos.relative(face)), face);
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-// 1.21.4	2025-04-09T11:00:04.4212003	Model Definitions - twilightforest
+// 1.21.4	2025-04-10T11:21:07.0076306	Model Definitions - twilightforest
 bfc4b40d2c8daf9144a74758b5060ff35a20c7b8 assets/twilightforest/blockstates/acacia_banister.json
 2ba5945264a026fc35aa113643919b494cf4406d assets/twilightforest/blockstates/alpha_yeti_boss_spawner.json
 94ee00eebd82061338b6db439a84b3fdf98f3942 assets/twilightforest/blockstates/alpha_yeti_trophy.json
@@ -1098,7 +1098,7 @@ acb126a76db8e72dc7a8a873edfd302210ef357e assets/twilightforest/models/block/chis
 29e160336d210f8c080119513073bfe7ce926d77 assets/twilightforest/models/block/chiseled_canopy_bookshelf_occupied_slot_top_mid.json
 12b26d9a5bfd4a59a913e5358dfbdf27d30c6610 assets/twilightforest/models/block/chiseled_canopy_bookshelf_occupied_slot_top_right.json
 85943df6ad1f7ace7273f71e14f5bcf7b3dbd4d0 assets/twilightforest/models/block/cicada.json
-c2a2901059f31fe9a99663aa4f241ae79406a635 assets/twilightforest/models/block/coronation_carpet.json
+771c5abff1cdc13f88168a1df7d31a732e42b088 assets/twilightforest/models/block/coronation_carpet.json
 5b6b856b1e975cdc65d1f9e03f83bb313b36b74c assets/twilightforest/models/block/cracked_castle_brick.json
 6a9fff69573a1e88c6d946f99c518a7ed5ee57ce assets/twilightforest/models/block/cracked_castle_brick_stairs.json
 f9231681aa47fdc0ab680e11caab75c72b7191fb assets/twilightforest/models/block/cracked_castle_brick_stairs_inner_inner.json

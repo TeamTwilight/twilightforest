@@ -1,35 +1,23 @@
 package twilightforest.datagen.assets.models;
 
 import net.minecraft.client.color.item.GrassColorSource;
-import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelOutput;
 import net.minecraft.client.data.models.blockstates.*;
 import net.minecraft.client.data.models.model.*;
-import net.minecraft.client.renderer.item.ItemModel;
-import net.minecraft.client.renderer.item.properties.select.DisplayContext;
 import net.minecraft.core.Direction;
-import net.minecraft.data.BlockFamily;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemDisplayContext;
-import net.minecraft.world.level.GrassColor;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.LadderBlock;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import org.w3c.dom.Text;
+import org.joml.Vector3f;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
-import twilightforest.client.model.block.carpet.RoyalRagsBuilder;
-import twilightforest.client.model.block.carpet.RoyalRagsModelLoader;
+import twilightforest.client.model.block.connected.ConnectedTextureBuilder;
 import twilightforest.client.renderer.special.*;
-import twilightforest.enums.TowerDeviceVariant;
-import twilightforest.util.TFBlockFamilies;
 import twilightforest.datagen.helpers.models.BlockModelBuilders;
 import twilightforest.init.TFBlocks;
 
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 public class BlockModelGenerator extends BlockModelBuilders {
 	public BlockModelGenerator(Consumer<BlockStateGenerator> stateOutput, ItemModelOutput itemOutput, BiConsumer<ResourceLocation, ModelInstance> modelOutput) {
@@ -68,7 +56,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 
 		this.wrapBlockItem(TFBlocks.TWISTED_STONE.get(), block -> this.createRotatedPillarWithHorizontalVariant(block, TexturedModel.COLUMN_ALT, TexturedModel.COLUMN_HORIZONTAL_ALT));
 		this.wrapBlockItem(TFBlocks.BOLD_STONE_PILLAR.get(), block -> this.createRotatedPillarWithHorizontalVariant(block, TexturedModel.COLUMN_ALT, TexturedModel.COLUMN_HORIZONTAL_ALT));
-		this.wrapBlockItem(TFBlocks.CORONATION_CARPET.get(), block -> this.blockStateOutput.accept(createSimpleBlock(block, TFModelTemplates.CTM.extend().customLoader(RoyalRagsBuilder::new, builder -> {}).build().create(block, TFTextureMapping.ctmBlock(ModelLocationUtils.getModelLocation(block), ModelLocationUtils.getModelLocation(block)), this.modelOutput))));
+		this.wrapBlockItem(TFBlocks.CORONATION_CARPET.get(), block -> this.blockStateOutput.accept(createSimpleBlock(block, TFModelTemplates.CTM_NO_BASE.extend().customLoader(ConnectedTextureBuilder::new, builder -> builder.connectsTo(block).addConnectionFaces(Direction.UP, Direction.DOWN).createElement(new Vector3f(0, 0, 0), new Vector3f(16, 1, 16))).build().create(block, TFTextureMapping.ctmBlock(block), this.modelOutput))));
 		this.stonePillar();
 		this.wroughtIronFence();
 		this.terrorcotta();
