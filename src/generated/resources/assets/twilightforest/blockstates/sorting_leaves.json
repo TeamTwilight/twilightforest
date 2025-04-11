@@ -1,7 +1,18 @@
 {
   "variants": {
-    "": {
-      "model": "twilightforest:block/sorting_leaves"
-    }
+    "": [
+      {
+        "model": "twilightforest:block/sorting_leaves"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves_1"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves_2"
+      },
+      {
+        "model": "twilightforest:block/sorting_leaves_3"
+      }
+    ]
   }
 }

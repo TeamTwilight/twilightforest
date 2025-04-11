@@ -1,6 +1,54 @@
 {
-  "parent": "minecraft:block/leaves",
-  "render_type": "minecraft:cutout_mipped",
+  "parent": "minecraft:block/cube_all",
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "cullface": "down",
+          "texture": "#all",
+          "tintindex": 0
+        },
+        "east": {
+          "cullface": "east",
+          "texture": "#all",
+          "tintindex": 0
+        },
+        "north": {
+          "cullface": "north",
+          "rotation": 180,
+          "texture": "#all",
+          "tintindex": 0
+        },
+        "south": {
+          "cullface": "south",
+          "rotation": 270,
+          "texture": "#all",
+          "tintindex": 0
+        },
+        "up": {
+          "cullface": "up",
+          "rotation": 180,
+          "texture": "#all",
+          "tintindex": 0
+        },
+        "west": {
+          "cullface": "west",
+          "texture": "#all",
+          "tintindex": 0
+        }
+      },
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ]
+    }
+  ],
   "textures": {
     "all": "twilightforest:block/sorting_leaves"
   }

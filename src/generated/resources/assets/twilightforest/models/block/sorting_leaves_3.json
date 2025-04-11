@@ -11,13 +11,12 @@
         },
         "east": {
           "cullface": "east",
-          "rotation": 90,
+          "rotation": 270,
           "texture": "#all",
           "tintindex": 0
         },
         "north": {
           "cullface": "north",
-          "rotation": 90,
           "texture": "#all",
           "tintindex": 0
         },
@@ -53,6 +52,6 @@
     }
   ],
   "textures": {
-    "all": "twilightforest:block/mining_leaves"
+    "all": "twilightforest:block/sorting_leaves"
   }
 }
