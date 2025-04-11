@@ -284,7 +284,6 @@ public class TravellersArmorItem extends ArmorItem {
 
 	public static Properties bootsProperties(Properties properties) {
 		return properties
-			.component(TFDataComponents.AUTO_REPAIR_PROBABILITY, 0.001F)
 			.attributes(defaultArmorProperties(Type.BOOTS)
 				.add(Attributes.STEP_HEIGHT, TFAttributeModifiers.TRAVELLERS_HIGH_STEP,  EquipmentSlotGroup.FEET)
 				.build());

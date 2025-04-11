@@ -1,6 +1,7 @@
 package twilightforest.data;
 
 import com.mojang.datafixers.util.Pair;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -10,6 +11,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Unit;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.*;
@@ -18,6 +20,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.crafting.CompoundIngredient;
 import net.neoforged.neoforge.common.crafting.DataComponentIngredient;
+import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.custom.*;
 import twilightforest.data.helpers.CraftingDataHelper;
@@ -28,7 +31,6 @@ import twilightforest.init.TFItems;
 import twilightforest.item.recipe.*;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifiers;
 
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class CraftingGenerator extends CraftingDataHelper {
@@ -587,16 +589,68 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.save(output, locEquip(TFItems.TWILIGHT_SCEPTER.getId().getPath()));
 
 		ScepterRecipeBuilder.repairFor(TFItems.ZOMBIE_SCEPTER.get(), 9)
-			.addRepairIngredient(CompoundIngredient.of(
-				DataComponentIngredient.of(false, DataComponents.POTION_CONTENTS, new PotionContents(Potions.STRENGTH), Items.POTION),
-				DataComponentIngredient.of(false, DataComponents.POTION_CONTENTS, new PotionContents(Potions.LONG_STRENGTH), Items.POTION),
-				DataComponentIngredient.of(false, DataComponents.POTION_CONTENTS, new PotionContents(Potions.STRONG_STRENGTH), Items.POTION)
+			.addRepairIngredient(potionsIngredient(
+				Potions.STRENGTH,
+				Potions.LONG_STRENGTH,
+				Potions.STRONG_STRENGTH
 			))
 			.addRepairIngredient(Items.ROTTEN_FLESH)
 			.save(output, locEquip(TFItems.ZOMBIE_SCEPTER.getId().getPath()));
-//		output.accept(locEquip(TFItems.TRAVELLERS_WINGS.getId().getPath()), , null);
-		TravellersGearComponentModifierBuilder.build(List.of(Ingredient.of(TFItems.TRAVELLERS_WINGS), Ingredient.of(Items.DIAMOND), Ingredient.of(Items.DIAMOND)),
+
+		TravellersGearComponentModifierBuilder.build(PatternBuilder.create()
+				.pattern(" E ")
+				.pattern("PVP")
+				.pattern(" S ")
+				.define('E', Ingredient.of(Items.ENDER_EYE))
+				.define('P', Ingredient.of(Items.ENDER_PEARL))
+				.define('V', Ingredient.of(TFItems.TRAVELLERS_CHESTPLATE, TFItems.TRAVELLERS_CHESTPLATE_GLOVES))
+				.define('S', Ingredient.of(Items.SUGAR))
+				.build(),
+			TravellersModifiers.PERFECT_DODGE_MODIFIER).save(output);
+
+		TravellersGearComponentModifierBuilder.build(PatternBuilder.create()
+				.pattern("FCF")
+				.pattern("FWF")
+				.pattern("FEF")
+				.define('F', Ingredient.of(Items.FEATHER))
+				.define('C', Ingredient.of(Items.COBWEB))
+				.define('W', Ingredient.of(TFItems.TRAVELLERS_WINGS, TFItems.TRAVELLERS_WINGS_BELT))
+				.define('E', Ingredient.of(TFItems.BORER_ESSENCE))
+				.build(),
 			TravellersModifiers.CONTROLLED_FALL_MODIFIER).save(output);
+
+		TravellersGearComponentModifierBuilder.build(PatternBuilder.create()
+				.pattern(" L ")
+				.pattern("SWS")
+				.pattern("P P")
+				.define('L', potionsIngredient(Potions.LEAPING, Potions.LONG_LEAPING, Potions.STRONG_LEAPING))
+				.define('S', Ingredient.of(Tags.Items.STRINGS))
+				.define('W', Ingredient.of(TFItems.TRAVELLERS_WINGS, TFItems.TRAVELLERS_WINGS_BELT))
+				.define('P', Ingredient.of(Items.PISTON))
+				.build(),
+			TravellersModifiers.DOUBLE_JUMP_MODIFIER).save(output);
+
+		TravellersGearComponentModifierBuilder.build(PatternBuilder.create()
+				.pattern(" P ")
+				.pattern("HWH")
+				.pattern("F F")
+				.define('P', potionsIngredient(Potions.SWIFTNESS, Potions.LONG_SWIFTNESS, Potions.STRONG_SWIFTNESS))
+				.define('H', Ingredient.of(Items.RABBIT_HIDE))
+				.define('W', Ingredient.of(TFItems.TRAVELLERS_WINGS, TFItems.TRAVELLERS_WINGS_BELT))
+				.define('F', Ingredient.of(TFItems.RAVEN_FEATHER))
+				.build(),
+			TravellersModifiers.AGILE_RANGER_MODIFIER).save(output);
+
+		TravellersGearComponentModifierBuilder.build(PatternBuilder.create()
+				.pattern("SBS")
+				.pattern("PWP")
+				.pattern("SBS")
+				.define('S', Ingredient.of(Tags.Items.STRINGS))
+				.define('B', Ingredient.of(Tags.Items.BONES))
+				.define('P', Ingredient.of(Items.PISTON))
+				.define('W', Ingredient.of(TFItems.TRAVELLERS_WINGS_BELT, TFItems.TRAVELLERS_WINGS_BELT))
+				.build(),
+			TravellersModifiers.SIDESTEP_MODIFIER).save(output);
 
 		TravellersGearComponentModifierBuilder.build(PatternBuilder.create()
 				.pattern("SBS")
@@ -606,6 +660,35 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.define('L', Ingredient.of(Items.LILY_PAD))
 				.build(),
 			TravellersModifiers.WATER_WALK_MODIFIER).save(output);
+
+		TravellersGearComponentModifierBuilder.build(PatternBuilder.create()
+				.pattern("WBW")
+				.pattern("S S")
+				.define('W', Ingredient.of(Tags.Items.STRINGS))
+				.define('B', Ingredient.of(TFItems.TRAVELLERS_BOOTS))
+				.define('S', Ingredient.of(Items.SLIME_BLOCK))
+				.build(),
+			TravellersModifiers.SLIMY_SOLES_MODIFIER).save(output);
+
+		TravellersGearComponentModifierBuilder.build(PatternBuilder.create()
+				.pattern("MPM")
+				.pattern("HBH")
+				.define('M', Ingredient.of(TFItems.RAW_MEEF))
+				.define('P', potionsIngredient(Potions.SWIFTNESS, Potions.LONG_SWIFTNESS, Potions.STRONG_SWIFTNESS))
+				.define('B', Ingredient.of(TFItems.TRAVELLERS_BOOTS))
+				.define('H', Ingredient.of(Items.RABBIT_HIDE))
+				.build(),
+			TravellersModifiers.FORWARD_BOOST_MODIFIER).save(output);
+
+		TravellersGearComponentModifierBuilder.build(PatternBuilder.create()
+				.pattern(" E ")
+				.pattern("MTM")
+				.pattern(" E ")
+				.define('E', Ingredient.of(Items.EXPERIENCE_BOTTLE))
+				.define('M', Ingredient.of(TFBlocks.MOSS_PATCH))
+				.define('T', Ingredient.of(TFItems.TRAVELLERS_GOGGLES, TFItems.TRAVELLERS_CHESTPLATE, TFItems.TRAVELLERS_CHESTPLATE_GLOVES, TFItems.TRAVELLERS_WINGS, TFItems.TRAVELLERS_WINGS_BELT, TFItems.TRAVELLERS_BOOTS))
+				.build(),
+			TravellersModifiers.AUTO_REPAIR_MODIFIER).save(output);
 
 		DryingRecipeBuilder.drying(Ingredient.of(Tags.Items.FOODS_COOKED_MEAT), new ItemStack(Items.LEATHER), 8)
 			.unlockedBy("has_meat", has(Tags.Items.FOODS_COOKED_MEAT))
@@ -1031,5 +1114,18 @@ public class CraftingGenerator extends CraftingDataHelper {
 		SimpleCookingRecipeBuilder.smelting(Ingredient.of(TFBlocks.MAZESTONE_BRICK.get()), RecipeCategory.BUILDING_BLOCKS, TFBlocks.CRACKED_MAZESTONE.get(), 0.1F, 200).unlockedBy("has_item", has(TFBlocks.MAZESTONE_BRICK.get())).save(output, TwilightForestMod.prefix("maze_stone/" + "smelted" + "_maze_stone_cracked").toString());
 		SimpleCookingRecipeBuilder.smelting(Ingredient.of(TFBlocks.CASTLE_BRICK.get()), RecipeCategory.BUILDING_BLOCKS, TFBlocks.CRACKED_CASTLE_BRICK.get(), 0.1F, 200).unlockedBy("has_item", has(TFBlocks.CASTLE_BRICK.get())).save(output, TwilightForestMod.prefix("castleblock/" + "smelted" + "_cracked_castle_brick").toString());
 		SimpleCookingRecipeBuilder.smelting(Ingredient.of(TFBlocks.UNDERBRICK.get()), RecipeCategory.BUILDING_BLOCKS, TFBlocks.CRACKED_UNDERBRICK.get(), 0.1F, 200).unlockedBy("has_item", has(TFBlocks.UNDERBRICK.get())).save(output, TwilightForestMod.prefix("smelted" + "_cracked_underbrick").toString());
+	}
+
+	@SafeVarargs
+	private static @NotNull Ingredient potionsIngredient(Holder<Potion> @NotNull ... potions) {
+		Ingredient[] ingredients = new Ingredient[potions.length];
+		for (int i = 0; i < potions.length; i++) {
+			ingredients[i] = potionIngredient(potions[i]);
+		}
+		return CompoundIngredient.of(ingredients);
+	}
+
+	private static @NotNull Ingredient potionIngredient(@NotNull Holder<Potion> potion) {
+		return DataComponentIngredient.of(false, DataComponents.POTION_CONTENTS, new PotionContents(potion), Items.POTION);
 	}
 }

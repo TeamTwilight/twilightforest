@@ -33,8 +33,6 @@ public class TravellersGearModifierShapedRecipe extends TravellersGearModifierRe
 	}
 
 	public static class Serializer extends AbstractModifierRecipeSerializer<TravellersGearModifierShapedRecipe> {
-		public static final Serializer INSTANCE = new Serializer();
-
 		public Serializer() {
 			super(RecordCodecBuilder.mapCodec(instance -> instance.group(
 				ShapedRecipePattern.MAP_CODEC

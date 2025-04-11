@@ -1,20 +1,35 @@
 {
-  "type": "twilightforest:travellers_gear_modifier_shapeless_recipe",
-  "ingredients": [
-    {
-      "item": "twilightforest:travellers_wings"
-    },
-    {
-      "item": "minecraft:diamond"
-    },
-    {
-      "item": "minecraft:diamond"
-    }
-  ],
+  "type": "twilightforest:travellers_gear_modifier_shaped_recipe",
   "modifier": {
     "data_component_map": {
       "twilightforest:controlled_falling_multiplier": 0.8333333
     },
     "tooltip": "controlled_fall"
+  },
+  "pattern": {
+    "key": {
+      "C": {
+        "item": "minecraft:cobweb"
+      },
+      "E": {
+        "item": "twilightforest:borer_essence"
+      },
+      "F": {
+        "item": "minecraft:feather"
+      },
+      "W": [
+        {
+          "item": "twilightforest:travellers_wings"
+        },
+        {
+          "item": "twilightforest:travellers_wings_belt"
+        }
+      ]
+    },
+    "pattern": [
+      "FCF",
+      "FWF",
+      "FEF"
+    ]
   }
 }

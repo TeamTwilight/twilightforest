@@ -1,13 +1,18 @@
 package twilightforest.item.recipe;
 
+import com.google.gson.JsonElement;
+import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
+import snownee.jade.util.JsonConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.item.travellers_gear.TravellersArmorItem;
 import twilightforest.item.travellers_gear.modifiers.TravellersGearComponentModifier;
@@ -25,8 +30,8 @@ public abstract class TravellersGearModifierRecipe extends CustomRecipe {
 
 	@Override
 	public boolean matches(CraftingInput input, Level level) {
-		for (ItemStack stack : input.items()) {
-			if (TravellersModifiers.countModifiers(stack) >= 3)
+		for (ItemStack stack : getTravellersArmor(input).toList()) {
+			if (TravellersModifiers.countModifiers(stack) >= 3 || TravellersModifiers.findAllModifiers(stack).toList().contains(travellersModifier))
 				return false;
 		}
 		return true;
@@ -49,7 +54,7 @@ public abstract class TravellersGearModifierRecipe extends CustomRecipe {
 	}
 
 	public ResourceLocation getId() {
-		return travellersModifier.getComponentId().withPrefix("add_modifier_to_travellers_gear/").withSuffix("_modifier");
+		return travellersModifier.getDatagenOnlyComponentId().withPrefix("add_modifier_to_travellers_gear/").withSuffix("_modifier");
 	}
 
 	public static class AbstractModifierRecipeSerializer<T extends TravellersGearModifierRecipe> implements RecipeSerializer<T> {
@@ -70,11 +75,15 @@ public abstract class TravellersGearModifierRecipe extends CustomRecipe {
 		}
 
 		public T fromNetwork(RegistryFriendlyByteBuf buf) {
-			return buf.readJsonWithCodec(codec.codec());
+			RegistryOps<JsonElement> registryops = buf.registryAccess().createSerializationContext(JsonOps.INSTANCE);
+			JsonElement jsonelementDeserialized = GsonHelper.fromJson(JsonConfig.GSON, buf.readUtf(), JsonElement.class);
+			return codec.codec().decode(registryops, jsonelementDeserialized).getOrThrow().getFirst();
 		}
 
 		public void toNetwork(RegistryFriendlyByteBuf buf, T recipe) {
-			buf.writeJsonWithCodec(codec.codec(), recipe);
+			RegistryOps<JsonElement> registryops = buf.registryAccess().createSerializationContext(JsonOps.INSTANCE);
+			JsonElement jsonelement = codec.codec().encodeStart(registryops, recipe).getOrThrow();
+			buf.writeUtf(jsonelement.toString());
 		}
 	}
 }

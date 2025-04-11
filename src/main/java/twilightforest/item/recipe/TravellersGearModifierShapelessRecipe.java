@@ -46,11 +46,9 @@ public class TravellersGearModifierShapelessRecipe extends TravellersGearModifie
 	}
 
 	public static class Serializer extends AbstractModifierRecipeSerializer<TravellersGearModifierShapelessRecipe> {
-		public static final Serializer INSTANCE = new Serializer();
-
 		public Serializer() {
 			super(RecordCodecBuilder.mapCodec(instance -> instance.group(
-				NonNullList.codecOf(Ingredient.CODEC)
+				NonNullList.codecOf(Ingredient.CODEC_NONEMPTY)
 					.fieldOf("ingredients")
 					.forGetter(recipe -> recipe.ingredients),
 				TravellersGearComponentModifier.MAP_CODEC

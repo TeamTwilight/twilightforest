@@ -1,0 +1,35 @@
+{
+  "type": "twilightforest:travellers_gear_modifier_shaped_recipe",
+  "modifier": {
+    "data_component_map": {
+      "twilightforest:sidestep_coolddown": 60
+    },
+    "tooltip": "sidestep_cooldown"
+  },
+  "pattern": {
+    "key": {
+      "B": {
+        "tag": "c:bones"
+      },
+      "P": {
+        "item": "minecraft:piston"
+      },
+      "S": {
+        "tag": "c:strings"
+      },
+      "W": [
+        {
+          "item": "twilightforest:travellers_wings_belt"
+        },
+        {
+          "item": "twilightforest:travellers_wings_belt"
+        }
+      ]
+    },
+    "pattern": [
+      "SBS",
+      "PWP",
+      "SBS"
+    ]
+  }
+}
