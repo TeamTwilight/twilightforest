@@ -88,69 +88,76 @@
     {
       "from": [2, 3, 2],
       "to": [14, 13, 14],
+      "light_emission": 15,
       "faces": {
-        "east": {"neoforge_data": {"block_light": 15, "sky_light": 15}, "texture": "#east2"},
-        "north": {"neoforge_data": {"block_light": 15, "sky_light": 15}, "texture": "#north2"},
-        "south": {"neoforge_data": {"block_light": 15, "sky_light": 15}, "texture": "#south2"},
-        "west": {"neoforge_data": {"block_light": 15, "sky_light": 15}, "texture": "#west2"}
+        "east": {"texture": "#east2"},
+        "north": {"texture": "#north2"},
+        "south": {"texture": "#south2"},
+        "west": {"texture": "#west2"}
       }
     },
     {
       "from": [1, 0, 1],
       "to": [15, 16, 15],
+      "light_emission": 12,
       "faces": {
-        "down": {"cullface": "down", "neoforge_data": {"block_light": 12, "sky_light": 12}, "texture": "#top2"},
-        "up": {"cullface": "up", "neoforge_data": {"block_light": 12, "sky_light": 12}, "texture": "#top2"}
+        "down": {"cullface": "down", "texture": "#top2"},
+        "up": {"cullface": "up", "texture": "#top2"}
       }
     },
     {
       "from": [1, 12, 1],
       "to": [4, 13, 4],
+      "light_emission": 15,
       "faces": {
-        "east": {"neoforge_data": {"block_light": 15, "sky_light": 15}, "texture": "#east2"},
-        "north": {"neoforge_data": {"block_light": 15, "sky_light": 15}, "texture": "#north2"},
-        "south": {"neoforge_data": {"block_light": 15, "sky_light": 15}, "texture": "#south2"},
-        "west": {"neoforge_data": {"block_light": 15, "sky_light": 15}, "texture": "#west2"}
+        "east": {"texture": "#east2"},
+        "north": {"texture": "#north2"},
+        "south": {"texture": "#south2"},
+        "west": {"texture": "#west2"}
       }
     },
     {
       "from": [12, 12, 1],
       "to": [15, 13, 4],
+      "light_emission": 15,
       "faces": {
-        "east": {"neoforge_data": {"block_light": 15, "sky_light": 15}, "texture": "#east2"},
-        "north": {"neoforge_data": {"block_light": 15, "sky_light": 15}, "texture": "#north2"},
-        "south": {"neoforge_data": {"block_light": 15, "sky_light": 15}, "texture": "#south2"},
-        "west": {"neoforge_data": {"block_light": 15, "sky_light": 15}, "texture": "#west2"}
+        "east": {"texture": "#east2"},
+        "north": {"texture": "#north2"},
+        "south": {"texture": "#south2"},
+        "west": {"texture": "#west2"}
       }
     },
     {
       "from": [1, 12, 12],
       "to": [4, 13, 15],
+      "light_emission": 15,
       "faces": {
-        "east": {"neoforge_data": {"block_light": 15, "sky_light": 15}, "texture": "#east2"},
-        "north": {"neoforge_data": {"block_light": 15, "sky_light": 15}, "texture": "#north2"},
-        "south": {"neoforge_data": {"block_light": 15, "sky_light": 15}, "texture": "#south2"},
-        "west": {"neoforge_data": {"block_light": 15, "sky_light": 15}, "texture": "#west2"}
+        "east": {"texture": "#east2"},
+        "north": {"texture": "#north2"},
+        "south": {"texture": "#south2"},
+        "west": {"texture": "#west2"}
       }
     },
     {
       "from": [12, 12, 12],
       "to": [15, 13, 15],
+      "light_emission": 15,
       "faces": {
-        "east": {"neoforge_data": {"block_light": 15, "sky_light": 15}, "texture": "#east2"},
-        "north": {"neoforge_data": {"block_light": 15, "sky_light": 15}, "texture": "#north2"},
-        "south": {"neoforge_data": {"block_light": 15, "sky_light": 15}, "texture": "#south2"},
-        "west": {"neoforge_data": {"block_light": 15, "sky_light": 15}, "texture": "#west2"}
+        "east": {"texture": "#east2"},
+        "north": {"texture": "#north2"},
+        "south": {"texture": "#south2"},
+        "west": {"texture": "#west2"}
       }
     },
     {
       "from": [2, 3, 2],
       "to": [14, 13, 14],
+      "light_emission": 10,
       "faces": {
-        "east": {"neoforge_data": {"block_light": 10, "sky_light": 10}, "texture": "#east3"},
-        "north": {"neoforge_data": {"block_light": 10, "sky_light": 10}, "texture": "#north3"},
-        "south": {"neoforge_data": {"block_light": 10, "sky_light": 10}, "texture": "#south3"},
-        "west": {"neoforge_data": {"block_light": 10, "sky_light": 10}, "texture": "#west3"}
+        "east": {"texture": "#east3"},
+        "north": {"texture": "#north3"},
+        "south": {"texture": "#south3"},
+        "west": {"texture": "#west3"}
       }
     }
   ]

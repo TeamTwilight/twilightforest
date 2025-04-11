@@ -20,13 +20,14 @@
     {
       "from": [0, 0, 0],
       "to": [16, 16, 16],
+      "light_emission": 15,
       "faces": {
-        "down": {"cullface": "down", "neoforge_data": {"block_light": 15, "sky_light": 15}, "texture": "#rune", "tintindex": 0},
-        "east": {"cullface": "east", "neoforge_data": {"block_light": 15, "sky_light": 15}, "texture": "#rune", "tintindex": 0},
-        "north": {"cullface": "north", "neoforge_data": {"block_light": 15, "sky_light": 15}, "texture": "#rune", "tintindex": 0},
-        "south": {"cullface": "south", "neoforge_data": {"block_light": 15, "sky_light": 15}, "texture": "#rune", "tintindex": 0},
-        "up": {"cullface": "up", "neoforge_data": {"block_light": 15, "sky_light": 15}, "texture": "#rune", "tintindex": 0},
-        "west": {"cullface": "west", "neoforge_data": {"block_light": 15, "sky_light": 15}, "texture": "#rune", "tintindex": 0}
+        "down": {"cullface": "down", "texture": "#rune", "tintindex": 0},
+        "east": {"cullface": "east", "texture": "#rune", "tintindex": 0},
+        "north": {"cullface": "north", "texture": "#rune", "tintindex": 0},
+        "south": {"cullface": "south", "texture": "#rune", "tintindex": 0},
+        "up": {"cullface": "up", "texture": "#rune", "tintindex": 0},
+        "west": {"cullface": "west", "texture": "#rune", "tintindex": 0}
       }
     }
   ]
