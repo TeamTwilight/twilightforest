@@ -1,5 +1,5 @@
 {
-  "parent": "twilightforest:block/moss_patch",
+  "parent": "minecraft:block/block",
   "loader": "twilightforest:patch",
   "shaggify": true,
   "textures": {

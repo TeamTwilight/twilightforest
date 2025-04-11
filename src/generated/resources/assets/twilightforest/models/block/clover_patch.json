@@ -1,5 +1,5 @@
 {
-  "parent": "twilightforest:block/clover_patch",
+  "parent": "minecraft:block/block",
   "loader": "twilightforest:patch",
   "render_type": "minecraft:cutout",
   "shaggify": false,

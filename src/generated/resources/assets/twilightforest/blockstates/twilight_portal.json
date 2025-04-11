@@ -1,0 +1,17 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "twilightforest:block/twilight_portal"
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/twilight_portal_barrier"
+      },
+      "when": {
+        "is_one_way": "true"
+      }
+    }
+  ]
+}
