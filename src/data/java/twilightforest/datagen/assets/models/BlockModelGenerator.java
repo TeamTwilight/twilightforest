@@ -2,11 +2,9 @@ package twilightforest.datagen.assets.models;
 
 import net.minecraft.client.color.item.GrassColorSource;
 import net.minecraft.client.data.models.ItemModelOutput;
-import net.minecraft.client.data.models.ModelProvider;
 import net.minecraft.client.data.models.blockstates.*;
 import net.minecraft.client.data.models.model.*;
 import net.minecraft.core.Direction;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -46,7 +44,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.thorns(TFBlocks.GREEN_THORNS.get());
 		this.thorns(TFBlocks.BURNT_THORNS.get());
 		this.directionalCrossModel(TFBlocks.THORN_ROSE.get(), PlantType.NOT_TINTED);
-		this.generateLeaves(TFBlocks.THORN_LEAVES.get(), TextureMapping.cube(Blocks.SPRUCE_LEAVES), -10380959);
+		this.createTintedLeaves(TFBlocks.THORN_LEAVES.get(), TexturedModel.createDefault(block -> TextureMapping.cube(Blocks.SPRUCE_LEAVES), ModelTemplates.LEAVES), -10380959);
 		this.wrapBlockItem(TFBlocks.DEADROCK.get(), this::createTrivialCube);
 		this.wrapBlockItem(TFBlocks.CRACKED_DEADROCK.get(), this::createTrivialCube);
 		this.wrapBlockItem(TFBlocks.WEATHERED_DEADROCK.get(), this::createTrivialCube);
@@ -65,6 +63,9 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.registerSimpleFlatItemModel(TFBlocks.TORCHBERRY_PLANT.get());
 		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.MUSHGLOOM.get(), ModelLocationUtils.getModelLocation(TFBlocks.MUSHGLOOM.get())));
 		this.registerTwoLayerFlatItemModel(TFBlocks.MUSHGLOOM.get(), "_head");
+		this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(TFBlocks.HEDGE.get(),
+			Variant.variant().with(VariantProperties.MODEL, ModelTemplates.CUBE_ALL.create(TFBlocks.HEDGE.get(), TextureMapping.cube(TFBlocks.HEDGE.get()), this.modelOutput)).with(VariantProperties.WEIGHT, 10),
+			Variant.variant().with(VariantProperties.MODEL, ModelTemplates.CUBE_ALL.createWithSuffix(TFBlocks.HEDGE.get(), "_rose", TextureMapping.cube(TextureMapping.getBlockTexture(TFBlocks.HEDGE.get(), "_rose")), this.modelOutput))));
 
 		this.nagaStone();
 
@@ -79,6 +80,8 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.wroughtIronFence();
 		this.terrorcotta();
 
+		this.generateHugeLilyPad();
+		this.createCrossBlockWithDefaultItem(TFBlocks.HUGE_WATER_LILY.get(), PlantType.NOT_TINTED);
 		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.RED_THREAD.get(), ModelTemplates.PARTICLE_ONLY.create(TFBlocks.RED_THREAD.get(), TextureMapping.particle(TwilightForestMod.prefix("block/blank")), this.modelOutput)));
 		this.wrapBlockItem(TFBlocks.MAZESTONE.get(), this::createTrivialCube);
 		this.wrapBlockItem(TFBlocks.MAZESTONE_BRICK.get(), this::createTrivialCube);
@@ -293,7 +296,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.wrapBlockItem(TFBlocks.STRIPPED_TWILIGHT_OAK_WOOD.get(), block -> this.generateLog(block, TextureMapping.logColumn(TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.get())));
 		this.generateHollowLog(TFBlocks.TWILIGHT_OAK_LOG.get(), TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.get(), TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_VERTICAL.get(), TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_CLIMBABLE.get());
 		this.generateSapling(TFBlocks.TWILIGHT_OAK_SAPLING.get(), TFBlocks.POTTED_TWILIGHT_OAK_SAPLING.get(), PlantType.NOT_TINTED);
-		this.generateLeaves(TFBlocks.TWILIGHT_OAK_LEAVES.get(), TextureMapping.cube(Blocks.OAK_LEAVES), -12012264);
+		this.createTintedLeaves(TFBlocks.TWILIGHT_OAK_LEAVES.get(), TexturedModel.createDefault(block -> TextureMapping.cube(Blocks.OAK_LEAVES), ModelTemplates.LEAVES), -12012264);
 		this.wrapBlockItem(TFBlocks.TWILIGHT_OAK_PLANKS.get(), this::createTrivialCube);
 		TextureMapping twilightOak = TextureMapping.cube(TFBlocks.TWILIGHT_OAK_PLANKS.get());
 		this.generateStairs(TFBlocks.TWILIGHT_OAK_STAIRS.get(), twilightOak);
@@ -314,7 +317,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.wrapBlockItem(TFBlocks.STRIPPED_CANOPY_WOOD.get(), block -> this.generateLog(block, TextureMapping.logColumn(TFBlocks.STRIPPED_CANOPY_LOG.get())));
 		this.generateHollowLog(TFBlocks.CANOPY_LOG.get(), TFBlocks.STRIPPED_CANOPY_LOG.get(), TFBlocks.HOLLOW_CANOPY_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_CANOPY_LOG_VERTICAL.get(), TFBlocks.HOLLOW_CANOPY_LOG_CLIMBABLE.get());
 		this.generateSapling(TFBlocks.CANOPY_SAPLING.get(), TFBlocks.POTTED_CANOPY_SAPLING.get(), PlantType.NOT_TINTED);
-		this.generateLeaves(TFBlocks.CANOPY_LEAVES.get(), TextureMapping.cube(Blocks.SPRUCE_LEAVES), -10380959);
+		this.createTintedLeaves(TFBlocks.CANOPY_LEAVES.get(), TexturedModel.createDefault(block -> TextureMapping.cube(Blocks.SPRUCE_LEAVES), ModelTemplates.LEAVES), -10380959);
 		this.wrapBlockItem(TFBlocks.CANOPY_PLANKS.get(), this::createTrivialCube);
 		TextureMapping canopy = TextureMapping.cube(TFBlocks.CANOPY_PLANKS.get());
 		this.generateStairs(TFBlocks.CANOPY_STAIRS.get(), canopy);
@@ -339,7 +342,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.wrapBlockItem(TFBlocks.STRIPPED_MANGROVE_WOOD.get(), block -> this.generateLog(block, TextureMapping.logColumn(TFBlocks.STRIPPED_MANGROVE_LOG.get())));
 		this.generateHollowLog(TFBlocks.MANGROVE_LOG.get(), TFBlocks.STRIPPED_MANGROVE_LOG.get(), TFBlocks.HOLLOW_MANGROVE_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_MANGROVE_LOG_VERTICAL.get(), TFBlocks.HOLLOW_MANGROVE_LOG_CLIMBABLE.get());
 		this.generateSapling(TFBlocks.MANGROVE_SAPLING.get(), TFBlocks.POTTED_MANGROVE_SAPLING.get(), PlantType.NOT_TINTED);
-		this.generateLeaves(TFBlocks.MANGROVE_LEAVES.get(), TextureMapping.cube(Blocks.BIRCH_LEAVES), -8345771);
+		this.createTintedLeaves(TFBlocks.MANGROVE_LEAVES.get(), TexturedModel.createDefault(block -> TextureMapping.cube(Blocks.BIRCH_LEAVES), ModelTemplates.LEAVES), -8345771);
 		this.wrapBlockItem(TFBlocks.MANGROVE_ROOT.get(), this::createTrivialCube);
 		this.wrapBlockItem(TFBlocks.MANGROVE_PLANKS.get(), this::createTrivialCube);
 		TextureMapping mangrove = TextureMapping.cube(TFBlocks.MANGROVE_PLANKS.get());
@@ -361,7 +364,8 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.wrapBlockItem(TFBlocks.STRIPPED_DARK_WOOD.get(), block -> this.generateLog(block, TextureMapping.logColumn(TFBlocks.STRIPPED_DARK_LOG.get())));
 		this.generateHollowLog(TFBlocks.DARK_LOG.get(), TFBlocks.STRIPPED_DARK_LOG.get(), TFBlocks.HOLLOW_DARK_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_DARK_LOG_VERTICAL.get(), TFBlocks.HOLLOW_DARK_LOG_CLIMBABLE.get());
 		this.generateSapling(TFBlocks.DARKWOOD_SAPLING.get(), TFBlocks.POTTED_DARKWOOD_SAPLING.get(), PlantType.NOT_TINTED);
-		this.generateLeaves(TFBlocks.DARK_LEAVES.get(), -12012264);
+		this.createTintedLeaves(TFBlocks.DARK_LEAVES.get(), TexturedModel.LEAVES, -12012264);
+		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.HARDENED_DARK_LEAVES.get(), TexturedModel.LEAVES.create(TFBlocks.HARDENED_DARK_LEAVES.get(), this.modelOutput)));
 		this.wrapBlockItem(TFBlocks.DARK_PLANKS.get(), this::createTrivialCube);
 		TextureMapping dark = TextureMapping.cube(TFBlocks.DARK_PLANKS.get());
 		this.generateStairs(TFBlocks.DARK_STAIRS.get(), dark);
@@ -383,7 +387,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.generateTreeCore(TFBlocks.TIME_LOG.get(), TFBlocks.TIME_LOG_CORE.get());
 		this.generateHollowLog(TFBlocks.TIME_LOG.get(), TFBlocks.STRIPPED_TIME_LOG.get(), TFBlocks.HOLLOW_TIME_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_TIME_LOG_VERTICAL.get(), TFBlocks.HOLLOW_TIME_LOG_CLIMBABLE.get());
 		this.generateSapling(TFBlocks.TIME_SAPLING.get(), TFBlocks.POTTED_TIME_SAPLING.get(), PlantType.NOT_TINTED);
-		this.generateLeaves(TFBlocks.TIME_LEAVES.get(), 6986775);
+		this.generateMagicLeaves(TFBlocks.TIME_LEAVES.get(), 180, 6986775);
 		this.wrapBlockItem(TFBlocks.TIME_PLANKS.get(), this::createTrivialCube);
 		TextureMapping time = TextureMapping.cube(TFBlocks.TIME_PLANKS.get());
 		this.generateStairs(TFBlocks.TIME_STAIRS.get(), time);
@@ -405,7 +409,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.generateTreeCore(TFBlocks.TRANSFORMATION_LOG.get(), TFBlocks.TRANSFORMATION_LOG_CORE.get());
 		this.generateHollowLog(TFBlocks.TRANSFORMATION_LOG.get(), TFBlocks.STRIPPED_TRANSFORMATION_LOG.get(), TFBlocks.HOLLOW_TRANSFORMATION_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_TRANSFORMATION_LOG_VERTICAL.get(), TFBlocks.HOLLOW_TRANSFORMATION_LOG_CLIMBABLE.get());
 		this.generateSapling(TFBlocks.TRANSFORMATION_SAPLING.get(), TFBlocks.POTTED_TRANSFORMATION_SAPLING.get(), PlantType.NOT_TINTED);
-		this.generateLeaves(TFBlocks.TRANSFORMATION_LEAVES.get(), 7130346);
+		this.generateMagicLeaves(TFBlocks.TRANSFORMATION_LEAVES.get(), 270, 7130346);
 		this.wrapBlockItem(TFBlocks.TRANSFORMATION_PLANKS.get(), this::createTrivialCube);
 		TextureMapping transformation = TextureMapping.cube(TFBlocks.TRANSFORMATION_PLANKS.get());
 		this.generateStairs(TFBlocks.TRANSFORMATION_STAIRS.get(), transformation);
@@ -427,7 +431,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.generateTreeCore(TFBlocks.MINING_LOG.get(), TFBlocks.MINING_LOG_CORE.get());
 		this.generateHollowLog(TFBlocks.MINING_LOG.get(), TFBlocks.STRIPPED_MINING_LOG.get(), TFBlocks.HOLLOW_MINING_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_MINING_LOG_VERTICAL.get(), TFBlocks.HOLLOW_MINING_LOG_CLIMBABLE.get());
 		this.generateSapling(TFBlocks.MINING_SAPLING.get(), TFBlocks.POTTED_MINING_SAPLING.get(), PlantType.NOT_TINTED);
-		this.generateLeaves(TFBlocks.MINING_LEAVES.get(), 16576836);
+		this.generateMagicLeaves(TFBlocks.MINING_LEAVES.get(), 90, 16576836);
 		this.wrapBlockItem(TFBlocks.MINING_PLANKS.get(), this::createTrivialCube);
 		TextureMapping mining = TextureMapping.cube(TFBlocks.MINING_PLANKS.get());
 		this.generateStairs(TFBlocks.MINING_STAIRS.get(), mining);
@@ -449,7 +453,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.generateTreeCore(TFBlocks.SORTING_LOG.get(), TFBlocks.SORTING_LOG_CORE.get());
 		this.generateHollowLog(TFBlocks.SORTING_LOG.get(), TFBlocks.STRIPPED_SORTING_LOG.get(), TFBlocks.HOLLOW_SORTING_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_SORTING_LOG_VERTICAL.get(), TFBlocks.HOLLOW_SORTING_LOG_CLIMBABLE.get());
 		this.generateSapling(TFBlocks.SORTING_SAPLING.get(), TFBlocks.POTTED_SORTING_SAPLING.get(), PlantType.NOT_TINTED);
-		this.generateLeaves(TFBlocks.SORTING_LEAVES.get(), 3558403);
+		this.wrapTintedBlockItem(TFBlocks.SORTING_LEAVES.get(), ItemModelUtils.constantTint(3558403), block -> this.generateSortingLeaves());
 		this.wrapBlockItem(TFBlocks.SORTING_PLANKS.get(), this::createTrivialCube);
 		TextureMapping sorting = TextureMapping.cube(TFBlocks.SORTING_PLANKS.get());
 		this.generateStairs(TFBlocks.SORTING_STAIRS.get(), sorting);
@@ -465,7 +469,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.generateBanister(TFBlocks.SORTING_BANISTER.get(), sorting);
 
 		this.generateSapling(TFBlocks.HOLLOW_OAK_SAPLING.get(), TFBlocks.POTTED_HOLLOW_OAK_SAPLING.get(), PlantType.NOT_TINTED);
-		this.generateLeaves(TFBlocks.RAINBOW_OAK_LEAVES.get(), TextureMapping.cube(Blocks.OAK_LEAVES), -12012264);
+		this.createTintedLeaves(TFBlocks.RAINBOW_OAK_LEAVES.get(), TexturedModel.createDefault(block -> TextureMapping.cube(Blocks.OAK_LEAVES), ModelTemplates.LEAVES), -12012264);
 		this.generateSapling(TFBlocks.RAINBOW_OAK_SAPLING.get(), TFBlocks.POTTED_RAINBOW_OAK_SAPLING.get(), PlantType.NOT_TINTED);
 
 		this.createChest(TFBlocks.TWILIGHT_OAK_CHEST.get(), TFBlocks.TWILIGHT_OAK_PLANKS.get(), TwilightForestMod.prefix("twilight_oak/normal"), false);

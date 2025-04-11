@@ -14,8 +14,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
-import org.w3c.dom.Text;
+import net.neoforged.neoforge.client.model.generators.template.FaceRotation;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BanisterBlock;
 import twilightforest.block.ClimbableHollowLogBlock;
@@ -24,7 +23,6 @@ import twilightforest.block.SpecialMagicLogBlock;
 import twilightforest.datagen.assets.models.TFModelTemplates;
 import twilightforest.datagen.assets.models.TFTextureMapping;
 import twilightforest.datagen.assets.models.TFTextureSlot;
-import twilightforest.enums.HollowLogVariants;
 import twilightforest.init.TFBlocks;
 
 import java.util.List;
@@ -41,14 +39,36 @@ public abstract class WoodBlockBuilders extends BlockModelGenerators {
 	@Override
 	public abstract void run();
 
-	public void generateLeaves(Block block, int tint) {
-		this.generateLeaves(block, TextureMapping.cube(block), tint);
+	public void generateSortingLeaves() {
+		Block block = TFBlocks.SORTING_LEAVES.get();
+
+		// we create 4 variants of leaves and choose 1 of 4 flowing direction for each face of each variant
+		int[][] CHOSEN_VARIANTS = {{0, 2, 2, 3, 0, 0}, {2, 0, 3, 0, 2, 1}, {3, 3, 1, 2, 3, 2}, {1, 1, 0, 1, 1, 3}};
+		Variant[] modelFiles = new Variant[CHOSEN_VARIANTS.length];
+		for(int i = 0; i < CHOSEN_VARIANTS.length; i++) {
+			int finalI = i;
+			ResourceLocation model = TFModelTemplates.CUBE_ALL.extend().element(builder -> builder.from(0, 0, 0).to(16, 16, 16).allFaces((direction, faceBuilder) -> {
+				FaceRotation rotation = FaceRotation.values()[CHOSEN_VARIANTS[finalI][direction.ordinal()]];
+				faceBuilder.cullface(direction).texture(TextureSlot.ALL).rotation(rotation).tintindex(0);
+			})).build().createWithSuffix(block, (i > 0 ? "_" + i : ""), TextureMapping.cube(block), this.modelOutput);
+
+			modelFiles[i] = Variant.variant().with(VariantProperties.MODEL, model);
+		}
+
+		this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block, modelFiles));
+
 	}
 
-	public void generateLeaves(Block block, TextureMapping mapping, int tint) {
-		ResourceLocation resourcelocation = ModelTemplates.LEAVES.extend().renderType("cutout_mipped").build().create(block, mapping, this.modelOutput);
-		this.blockStateOutput.accept(createSimpleBlock(block, resourcelocation));
-		this.registerSimpleTintedItemModel(block, resourcelocation, ItemModelUtils.constantTint(tint));
+	public void generateMagicLeaves(Block leaves, int rotation, int tint) {
+		FaceRotation faceRotation = rotation % 180 == 0 ? FaceRotation.ZERO : FaceRotation.values()[rotation / 90];
+		boolean isRotation180 = rotation == 180;
+		float u1 = isRotation180 ? 16 : 0;
+		float v1 = isRotation180 ? 16 : 0;
+		float u2 = isRotation180 ? 0 : 16;
+		float v2 = isRotation180 ? 0 : 16;
+
+		ResourceLocation model = ModelTemplates.CUBE_ALL.extend().element(builder -> builder.from(0, 0, 0).to(16, 16, 16).allFaces(((dir, faceBuilder) -> faceBuilder.cullface(dir).uvs(u1, v1, u2, v2).tintindex(0).rotation(faceRotation).texture(TextureSlot.ALL)))).build().create(leaves, TextureMapping.cube(leaves), this.modelOutput);
+		this.wrapTintedBlockItem(leaves, ItemModelUtils.constantTint(tint), block -> this.blockStateOutput.accept(createSimpleBlock(block, model)));
 	}
 
 	public void generateSapling(Block block, Block pottedBlock, BlockModelGenerators.PlantType type) {

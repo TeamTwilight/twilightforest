@@ -126,31 +126,13 @@ public class RegistrationEvents {
 	}
 
 	private static void bakeCustomModels(ModelEvent.ModifyBakingResult event) {
-//		ItemProperties.register(TFItems.CUBE_OF_ANNIHILATION.get(), TwilightForestMod.prefix("thrown"), (stack, level, entity, idk) ->
-//			stack.get(TFDataComponents.THROWN_PROJECTILE) != null ? 1 : 0);
-//
-//		ItemProperties.register(TFItems.EXPERIMENT_115.get(), Experiment115Item.THINK, (stack, level, entity, idk) ->
-//			stack.get(TFDataComponents.EXPERIMENT_115_VARIANTS) != null && stack.get(TFDataComponents.EXPERIMENT_115_VARIANTS).equals("think") ? 1 : 0);
-//
-//		ItemProperties.register(TFItems.EXPERIMENT_115.get(), Experiment115Item.FULL, (stack, level, entity, idk) ->
-//			stack.get(TFDataComponents.EXPERIMENT_115_VARIANTS) != null && stack.get(TFDataComponents.EXPERIMENT_115_VARIANTS).equals("full") ? 1 : 0);
-//
-//		ItemProperties.register(TFItems.BRITTLE_FLASK.get(), TwilightForestMod.prefix("breakage"), (stack, level, entity, i) ->
-//			stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY).breakage());
-//
-//		ItemProperties.register(TFItems.BRITTLE_FLASK.get(), TwilightForestMod.prefix("potion_level"), (stack, level, entity, i) ->
-//			stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY).doses());
-//
-//		ItemProperties.register(TFItems.GREATER_FLASK.get(), TwilightForestMod.prefix("potion_level"), (stack, level, entity, i) ->
-//			stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY).doses());
-//
 //		ItemProperties.register(TFItems.CRUMBLE_HORN.get(), TwilightForestMod.prefix("tooting"), (stack, world, entity, i) ->
 //			entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F
 //		);
 
 		Map<ModelResourceLocation, BakedModel> models = event.getBakingResult().blockStateModels();
 		List<Map.Entry<ModelResourceLocation, BakedModel>> leavesModels = models.entrySet().stream()
-			.filter(entry -> entry.getKey().id().getNamespace().equals(TwilightForestMod.ID) && entry.getKey().id().getPath().contains("leaves") && !entry.getKey().id().getPath().contains("dark")).toList();
+			.filter(entry -> entry.getKey().id().equals(TwilightForestMod.prefix("fallen_leaves"))).toList();
 
 		leavesModels.forEach(entry -> models.put(entry.getKey(), new BakedLeavesModel(entry.getValue())));
 

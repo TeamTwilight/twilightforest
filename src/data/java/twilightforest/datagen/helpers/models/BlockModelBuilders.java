@@ -1,5 +1,6 @@
 package twilightforest.datagen.helpers.models;
 
+import com.google.common.collect.ImmutableMap;
 import net.minecraft.client.data.models.ItemModelOutput;
 import net.minecraft.client.data.models.blockstates.*;
 import net.minecraft.client.data.models.model.*;
@@ -18,7 +19,6 @@ import net.minecraft.world.level.block.PipeBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.NotNull;
-import org.w3c.dom.Text;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
 import twilightforest.client.model.block.connected.ConnectedTextureBuilder;
@@ -30,11 +30,13 @@ import twilightforest.datagen.assets.models.TFModelTemplates;
 import twilightforest.datagen.assets.models.TFTextureMapping;
 import twilightforest.datagen.assets.models.TFTextureSlot;
 import twilightforest.enums.BossVariant;
+import twilightforest.enums.HugeLilypadPiece;
 import twilightforest.enums.NagastoneVariant;
 import twilightforest.init.TFBlocks;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -888,6 +890,25 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 			)
 		);
 		this.registerSimpleItemModel(mushroomBlock, TexturedModel.CUBE.createWithSuffix(mushroomBlock, "_inventory", this.modelOutput));
+	}
+
+	public void generateHugeLilyPad() {
+		Block block = TFBlocks.HUGE_LILY_PAD.get();
+		ResourceLocation[] models = new ResourceLocation[4];
+		for (int i = 0; i < models.length; i++) {
+			ResourceLocation texture = ModelLocationUtils.getModelLocation(block, "_" + i);
+			models[i] = TFModelTemplates.create(texture.toString(), TextureSlot.TEXTURE).extend().renderType("cutout").parent(ModelLocationUtils.getModelLocation(Blocks.LILY_PAD)).build().create(texture, TextureMapping.defaultTexture(texture), this.modelOutput);
+		}
+
+		Map<Direction, Map<HugeLilypadPiece, ResourceLocation>> stateMap = ImmutableMap.of(
+			Direction.NORTH, ImmutableMap.of(HugeLilypadPiece.NW, models[0], HugeLilypadPiece.NE, models[1], HugeLilypadPiece.SE, models[2], HugeLilypadPiece.SW, models[3]),
+			Direction.WEST, ImmutableMap.of(HugeLilypadPiece.NW, models[1], HugeLilypadPiece.NE, models[2], HugeLilypadPiece.SE, models[3], HugeLilypadPiece.SW, models[0]),
+			Direction.SOUTH, ImmutableMap.of(HugeLilypadPiece.NW, models[2], HugeLilypadPiece.NE, models[3], HugeLilypadPiece.SE, models[0], HugeLilypadPiece.SW, models[1]),
+			Direction.EAST, ImmutableMap.of(HugeLilypadPiece.NW, models[3], HugeLilypadPiece.NE, models[0], HugeLilypadPiece.SE, models[1], HugeLilypadPiece.SW, models[2])
+		);
+
+		this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block).with(PropertyDispatch.properties(HugeLilyPadBlock.PIECE, HugeLilyPadBlock.FACING).generate((piece, facing) -> Variant.variant().with(VariantProperties.MODEL, stateMap.get(facing).get(piece)).with(VariantProperties.Y_ROT, getYRotationFromDirection(facing)))));
+		this.itemModelOutput.accept(block.asItem(), ItemModelUtils.tintedModel(ModelTemplates.FLAT_ITEM.create(ModelLocationUtils.getModelLocation(block.asItem()), TextureMapping.layer0(block), this.modelOutput), ItemModelUtils.constantTint(-9321636)));
 	}
 
 	@Override
