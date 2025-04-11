@@ -79,6 +79,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.wroughtIronFence();
 		this.terrorcotta();
 
+		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.RED_THREAD.get(), ModelTemplates.PARTICLE_ONLY.create(TFBlocks.RED_THREAD.get(), TextureMapping.particle(TwilightForestMod.prefix("block/blank")), this.modelOutput)));
 		this.wrapBlockItem(TFBlocks.MAZESTONE.get(), this::createTrivialCube);
 		this.wrapBlockItem(TFBlocks.MAZESTONE_BRICK.get(), this::createTrivialCube);
 		this.wrapBlockItem(TFBlocks.CRACKED_MAZESTONE.get(), this::createTrivialCube);
@@ -158,7 +159,6 @@ public class BlockModelGenerator extends BlockModelBuilders {
 			}
 			return Variant.variant().with(VariantProperties.MODEL, model);
 		})));
-		this.itemModelOutput.accept(TFBlocks.EXPERIMENT_115.asItem(), ItemModelUtils.plainModel(this.createFlatItemModel(TFBlocks.EXPERIMENT_115.asItem())));
 
 		//TODO aurora blocks
 		this.wrapBlockItem(TFBlocks.HUGE_STALK.get(), block -> this.createRotatedPillarWithHorizontalVariant(block, TexturedModel.COLUMN_ALT, TexturedModel.COLUMN_HORIZONTAL_ALT));

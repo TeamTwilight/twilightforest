@@ -1,6 +1,7 @@
 package twilightforest.datagen.assets.models;
 
 import net.minecraft.client.color.item.Dye;
+import net.minecraft.client.color.item.Potion;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ItemModelOutput;
 import net.minecraft.client.data.models.model.*;
@@ -8,8 +9,10 @@ import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.client.renderer.item.RangeSelectItemModel;
 import net.minecraft.client.renderer.item.SelectItemModel;
 import net.minecraft.client.renderer.item.properties.conditional.HasComponent;
+import net.minecraft.client.renderer.item.properties.numeric.Count;
 import net.minecraft.client.renderer.item.properties.numeric.Time;
 import net.minecraft.client.renderer.item.properties.numeric.UseDuration;
+import net.minecraft.client.renderer.item.properties.select.CustomModelDataProperty;
 import net.minecraft.client.renderer.item.properties.select.DisplayContext;
 import net.minecraft.client.renderer.item.properties.select.TrimMaterialProperty;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -22,16 +25,12 @@ import net.minecraft.world.item.equipment.EquipmentAsset;
 import net.minecraft.world.item.equipment.EquipmentAssets;
 import net.minecraft.world.item.equipment.trim.TrimMaterial;
 import net.minecraft.world.item.equipment.trim.TrimMaterials;
+import org.w3c.dom.Text;
 import twilightforest.TwilightForestMod;
-import twilightforest.client.properties.MoonwormQueenPulse;
-import twilightforest.client.properties.NaturalDimension;
-import twilightforest.client.properties.OreMeterFlash;
+import twilightforest.client.properties.*;
 import twilightforest.client.renderer.special.*;
 import twilightforest.datagen.helpers.ItemModelBuilders;
-import twilightforest.init.TFDataComponents;
-import twilightforest.init.TFEquipmentModels;
-import twilightforest.init.TFItems;
-import twilightforest.init.TFTrimMaterials;
+import twilightforest.init.*;
 import twilightforest.item.ArcticArmorItem;
 
 import java.util.ArrayList;
@@ -69,6 +68,9 @@ public class ItemModelGenerator extends ItemModelBuilders {
 		this.generateFlatItem(TFItems.MAGIC_MAP.get(), ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.MAZE_MAP.get(), ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.ORE_MAP.get(), ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.FILLED_MAGIC_MAP.get(), ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.FILLED_MAZE_MAP.get(), ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.FILLED_ORE_MAP.get(), ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.TORCHBERRIES.get(), ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.RAVEN_FEATHER.get(), ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.MAGIC_MAP_FOCUS.get(), ModelTemplates.FLAT_ITEM);
@@ -86,6 +88,9 @@ public class ItemModelGenerator extends ItemModelBuilders {
 		this.generateFlatItem(TFItems.MAZE_WAFER.get(), ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.MEEF_STROGANOFF.get(), ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.HYDRA_CHOP.get(), ModelTemplates.FLAT_ITEM);
+		this.itemModelOutput.accept(TFBlocks.EXPERIMENT_115.asItem(), ItemModelUtils.select(new Experiment115Type(), ItemModelUtils.plainModel(this.createFlatItemModel(TFBlocks.EXPERIMENT_115.asItem(), ModelTemplates.FLAT_ITEM)),
+			ItemModelUtils.when("think", ItemModelUtils.plainModel(ModelTemplates.FLAT_ITEM.create(ModelLocationUtils.getModelLocation(TFBlocks.EXPERIMENT_115.asItem(), "_think"), TextureMapping.layer0(TwilightForestMod.prefix("item/think115")), this.modelOutput))),
+			ItemModelUtils.when("full", ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(TFBlocks.EXPERIMENT_115.get(), "_8_8_regenerating")))));
 		this.generateFlatItem(TFItems.LIVEROOT.get(), ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.RAW_IRONWOOD.get(), ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.IRONWOOD_INGOT.get(), ModelTemplates.FLAT_ITEM);
@@ -101,11 +106,16 @@ public class ItemModelGenerator extends ItemModelBuilders {
 		this.generateFlatItem(TFItems.FIERY_INGOT.get(), ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.ARCTIC_FUR.get(), ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.ALPHA_YETI_FUR.get(), ModelTemplates.FLAT_ITEM);
-		//TODO flasks
-		//TODO essence
+		ResourceLocation empty = ModelTemplates.FLAT_ITEM.create(TwilightForestMod.prefix("item/potion_flask_empty"), TextureMapping.layer0(TwilightForestMod.prefix("block/blank")), this.modelOutput);
+		this.generatePotionFlask(TFItems.BRITTLE_FLASK.get(), true, empty);
+		this.generatePotionFlask(TFItems.GREATER_FLASK.get(), false, empty);
+		this.generateTwoLayerItem(TFItems.EXANIMATE_ESSENCE.get(), "_flames", ModelTemplates.TWO_LAYERED_ITEM);
 		this.generateFlatItem(TFItems.CROWN_SPLINTER.get(), ModelTemplates.FLAT_ITEM);
-		//TODO red thread
-		//TODO borer essence
+		this.itemModelOutput.accept(TFBlocks.RED_THREAD.asItem(), ItemModelUtils.rangeSelect(new Count(true), ItemModelUtils.plainModel(this.createFlatItemModel(TFBlocks.RED_THREAD.asItem(), ModelTemplates.FLAT_ITEM)), List.of(
+			ItemModelUtils.override(ItemModelUtils.plainModel(this.createFlatItemModel(TFBlocks.RED_THREAD.asItem(), "_bundle_0", ModelTemplates.FLAT_ITEM)), 4.0F / 64.0F),
+			ItemModelUtils.override(ItemModelUtils.plainModel(this.createFlatItemModel(TFBlocks.RED_THREAD.asItem(), "_bundle_1", ModelTemplates.FLAT_ITEM)), 16.0F / 64.0F),
+			ItemModelUtils.override(ItemModelUtils.plainModel(this.createFlatItemModel(TFBlocks.RED_THREAD.asItem(), "_bundle_2", ModelTemplates.FLAT_ITEM)), 32.0F / 64.0F))));
+		this.generateTwoLayerItem(TFItems.BORER_ESSENCE.get(), "_particles", ModelTemplates.TWO_LAYERED_ITEM);
 		this.generateFlatItem(TFItems.CARMINITE.get(), ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.TOWER_KEY.get(), ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.MAGIC_BEANS.get(), ModelTemplates.FLAT_ITEM);
@@ -207,8 +217,8 @@ public class ItemModelGenerator extends ItemModelBuilders {
 		this.generateFlatItem(TFItems.MAZEBREAKER_PICKAXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 		this.generateFlatItem(TFItems.DIAMOND_MINOTAUR_AXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 		this.generateFlatItem(TFItems.GOLDEN_MINOTAUR_AXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
-		this.generateTwoLayerItem(TFItems.ICE_SWORD.get(), TFModelTemplates.TWO_LAYERED_HANDHELD);
-		this.generateTwoLayerItem(TFItems.GLASS_SWORD.get(), TFModelTemplates.TWO_LAYERED_HANDHELD);
+		this.generateTwoLayerItem(TFItems.ICE_SWORD.get(), "", "_solid", "_clear", TFModelTemplates.TWO_LAYERED_HANDHELD);
+		this.generateTwoLayerItem(TFItems.GLASS_SWORD.get(), "", "_solid", "_clear", TFModelTemplates.TWO_LAYERED_HANDHELD);
 
 		this.generateBow(TFItems.TRIPLE_BOW.get(), false);
 		this.generateBow(TFItems.SEEKER_BOW.get(), false);
@@ -236,6 +246,13 @@ public class ItemModelGenerator extends ItemModelBuilders {
 		this.itemModelOutput.accept(TFItems.MOONWORM_QUEEN.get(), ItemModelUtils.conditional(new MoonwormQueenPulse(),
 			ItemModelUtils.plainModel(this.createFlatItemModel(TFItems.MOONWORM_QUEEN.get(), "_alt", ModelTemplates.FLAT_HANDHELD_ITEM)),
 			ItemModelUtils.plainModel(this.createFlatItemModel(TFItems.MOONWORM_QUEEN.get(), ModelTemplates.FLAT_HANDHELD_ITEM))));
+		this.generateFlatItem(TFItems.MAGIC_PAINTING.get(), ModelTemplates.FLAT_ITEM);
+
+		this.generateFlatItem(TFItems.CUBE_TALISMAN.get(), ModelTemplates.FLAT_ITEM);
+		this.itemModelOutput.accept(TFItems.CUBE_OF_ANNIHILATION.get(), ItemModelUtils.conditional(new HasComponent(TFDataComponents.THROWN_PROJECTILE.get(), false),
+			ItemModelUtils.plainModel(this.createFlatItemModel(TFItems.CUBE_OF_ANNIHILATION.get(), "_thrown", ModelTemplates.FLAT_HANDHELD_ITEM)),
+			ItemModelUtils.plainModel(this.createFlatItemModel(TFItems.CUBE_OF_ANNIHILATION.get(), ModelTemplates.FLAT_HANDHELD_ITEM))));
+		this.generateFlatItem(TFItems.FOUR_LEAF_CLOVER.get(), ModelTemplates.FLAT_ITEM);
 
 		this.generateSpawnEgg("alpha_yeti", 0xCDCDCD, 0x29486E);
 		this.generateSpawnEgg("armored_giant", 0x239391, 0x9A9A9A);
@@ -351,10 +368,10 @@ public class ItemModelGenerator extends ItemModelBuilders {
 	}
 
 	public void generateBow(Item bowItem, boolean twoLayered) {
-		ItemModel.Unbaked base = ItemModelUtils.plainModel(twoLayered ? this.twoLayerItem(bowItem, TFModelTemplates.TWO_LAYERED_BOW) : this.createFlatItemModel(bowItem, ModelTemplates.BOW));
-		ItemModel.Unbaked pull0 = ItemModelUtils.plainModel(twoLayered ? this.twoLayerItem(bowItem, "_pulling_0", TFModelTemplates.TWO_LAYERED_BOW) : this.createFlatItemModel(bowItem, "_pulling_0", ModelTemplates.BOW));
-		ItemModel.Unbaked pull1 = ItemModelUtils.plainModel(twoLayered ? this.twoLayerItem(bowItem, "_pulling_1", TFModelTemplates.TWO_LAYERED_BOW) : this.createFlatItemModel(bowItem, "_pulling_1", ModelTemplates.BOW));
-		ItemModel.Unbaked pull2 = ItemModelUtils.plainModel(twoLayered ? this.twoLayerItem(bowItem, "_pulling_2", TFModelTemplates.TWO_LAYERED_BOW) : this.createFlatItemModel(bowItem, "_pulling_2", ModelTemplates.BOW));
+		ItemModel.Unbaked base = ItemModelUtils.plainModel(twoLayered ? this.twoLayerItem(bowItem, "", "_solid", "_clear", TFModelTemplates.TWO_LAYERED_BOW) : this.createFlatItemModel(bowItem, ModelTemplates.BOW));
+		ItemModel.Unbaked pull0 = ItemModelUtils.plainModel(twoLayered ? this.twoLayerItem(bowItem, "_pulling_0", "_solid", "_clear", TFModelTemplates.TWO_LAYERED_BOW) : this.createFlatItemModel(bowItem, "_pulling_0", ModelTemplates.BOW));
+		ItemModel.Unbaked pull1 = ItemModelUtils.plainModel(twoLayered ? this.twoLayerItem(bowItem, "_pulling_1", "_solid", "_clear", TFModelTemplates.TWO_LAYERED_BOW) : this.createFlatItemModel(bowItem, "_pulling_1", ModelTemplates.BOW));
+		ItemModel.Unbaked pull2 = ItemModelUtils.plainModel(twoLayered ? this.twoLayerItem(bowItem, "_pulling_2", "_solid", "_clear", TFModelTemplates.TWO_LAYERED_BOW) : this.createFlatItemModel(bowItem, "_pulling_2", ModelTemplates.BOW));
 		this.itemModelOutput.accept(bowItem, ItemModelUtils.conditional(ItemModelUtils.isUsingItem(),
 			ItemModelUtils.rangeSelect(
 				new UseDuration(false),
@@ -392,16 +409,44 @@ public class ItemModelGenerator extends ItemModelBuilders {
 			ItemModelUtils.rangeSelect(new Time(true, Time.TimeSource.RANDOM), 8.0F, list)));
 	}
 
-	public void generateTwoLayerItem(Item item, ModelTemplate template) {
-		this.itemModelOutput.accept(item, ItemModelUtils.plainModel(this.twoLayerItem(item, template)));
+	public void generatePotionFlask(Item flask, boolean crackable, ResourceLocation empty) {
+		List<RangeSelectItemModel.Entry> potionEntries = new ArrayList<>();
+		List<RangeSelectItemModel.Entry> flaskEntries = new ArrayList<>();
+		String[] suffixes = {"_labelled", "_splintered", "_damaged"};
+
+
+		for (int i = 0; i < 3; i++) {
+			potionEntries.add(ItemModelUtils.override(ItemModelUtils.tintedModel(this.createFlatItemModel(flask, "_" + (i + 1), ModelTemplates.FLAT_ITEM), new PotionFlaskTintSource()), i + 1));
+			if (i == 0) {
+				var base = ItemModelUtils.plainModel(this.createFlatItemModel(flask, ModelTemplates.FLAT_ITEM));
+				flaskEntries.add(ItemModelUtils.override(crackable ?
+					ItemModelUtils.conditional(new HasComponent(TFDataComponents.POTION_FLASK_CONTENTS.get(), true),
+						ItemModelUtils.plainModel(this.createFlatItemModel(flask, suffixes[i], ModelTemplates.FLAT_ITEM)), base) : base, 0));
+			} else if (crackable) {
+				flaskEntries.add(ItemModelUtils.override(ItemModelUtils.plainModel(this.createFlatItemModel(flask, suffixes[i], ModelTemplates.FLAT_ITEM)), i));
+			}
+		}
+
+		ItemModel.Unbaked flaskModel = crackable ? ItemModelUtils.rangeSelect(new PotionFlaskDamage(false), flaskEntries) : flaskEntries.getFirst().model();
+		ItemModel.Unbaked potionModel = ItemModelUtils.rangeSelect(new PotionFlaskDosage(false), ItemModelUtils.plainModel(empty), potionEntries);
+
+		this.itemModelOutput.accept(flask, ItemModelUtils.composite(potionModel, flaskModel));
 	}
 
-	public ResourceLocation twoLayerItem(Item item, ModelTemplate template) {
-		return this.twoLayerItem(item, "", template);
+	public void generateTwoLayerItem(Item item, String modelSuffix, String suffix1, String suffix2, ModelTemplate template) {
+		this.itemModelOutput.accept(item, ItemModelUtils.plainModel(this.twoLayerItem(item, modelSuffix, suffix1, suffix2, template)));
+	}
+
+	public void generateTwoLayerItem(Item item, String suffix, ModelTemplate template) {
+		this.itemModelOutput.accept(item, ItemModelUtils.plainModel(this.twoLayerItem(item, "", "", suffix, template)));
 	}
 
 	public ResourceLocation twoLayerItem(Item item, String suffix, ModelTemplate template) {
+		return this.twoLayerItem(item, "", "", suffix, template);
+	}
+
+	public ResourceLocation twoLayerItem(Item item, String modelSuffix, String suffix1, String suffix2, ModelTemplate template) {
 		ResourceLocation baseTex = TextureMapping.getItemTexture(item);
-		return template.create(ModelLocationUtils.getModelLocation(item, suffix), TextureMapping.layered(baseTex.withSuffix("_solid"), baseTex.withSuffix("_clear")), this.modelOutput);
+		return template.create(ModelLocationUtils.getModelLocation(item, modelSuffix), TextureMapping.layered(baseTex.withSuffix(suffix1 + modelSuffix), baseTex.withSuffix(suffix2 + modelSuffix)), this.modelOutput);
 	}
 }

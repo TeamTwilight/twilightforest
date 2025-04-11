@@ -58,9 +58,7 @@ import twilightforest.client.model.block.leaves.BakedLeavesModel;
 import twilightforest.client.model.block.patch.PatchModelLoader;
 import twilightforest.client.model.entity.*;
 import twilightforest.client.particle.*;
-import twilightforest.client.properties.MoonwormQueenPulse;
-import twilightforest.client.properties.NaturalDimension;
-import twilightforest.client.properties.OreMeterFlash;
+import twilightforest.client.properties.*;
 import twilightforest.client.renderer.PotionFlaskTooltipComponent;
 import twilightforest.client.renderer.TFSimpleArmorRenderer;
 import twilightforest.client.renderer.entity.RisingZombieRenderer;
@@ -104,9 +102,13 @@ public class RegistrationEvents {
 		bus.addListener(RegistrationEvents::registerCustomRenderData);
 		bus.addListener(RegistrationEvents::registerSpecialModelTypes);
 		bus.addListener(RegistrationEvents::registerSpecialModels);
+
 		bus.addListener(RegistrationEvents::registerConditionalProperties);
+		bus.addListener(RegistrationEvents::registerRangeProperties);
+		bus.addListener(RegistrationEvents::registerSelectProperties);
 
 		bus.addListener(ColorHandler::registerBlockColors);
+		bus.addListener(ColorHandler::registerTintSources);
 
 		bus.addListener(OverlayHandler::registerOverlays);
 
@@ -126,17 +128,6 @@ public class RegistrationEvents {
 	private static void bakeCustomModels(ModelEvent.ModifyBakingResult event) {
 //		ItemProperties.register(TFItems.CUBE_OF_ANNIHILATION.get(), TwilightForestMod.prefix("thrown"), (stack, level, entity, idk) ->
 //			stack.get(TFDataComponents.THROWN_PROJECTILE) != null ? 1 : 0);
-//
-//		ItemProperties.register(TFBlocks.RED_THREAD.get().asItem(), TwilightForestMod.prefix("size"), (stack, level, entity, idk) -> {
-//			if (stack.getCount() >= 32) {
-//				return 1.0F;
-//			} else if (stack.getCount() >= 16) {
-//				return 0.5F;
-//			} else if (stack.getCount() >= 4) {
-//				return 0.25F;
-//			}
-//			return 0.0F;
-//		});
 //
 //		ItemProperties.register(TFItems.EXPERIMENT_115.get(), Experiment115Item.THINK, (stack, level, entity, idk) ->
 //			stack.get(TFDataComponents.EXPERIMENT_115_VARIANTS) != null && stack.get(TFDataComponents.EXPERIMENT_115_VARIANTS).equals("think") ? 1 : 0);
@@ -333,6 +324,15 @@ public class RegistrationEvents {
 		event.register(TwilightForestMod.prefix("natural_dimension"), NaturalDimension.TYPE);
 		event.register(TwilightForestMod.prefix("moonworm_queen_pulse"), MoonwormQueenPulse.TYPE);
 		event.register(TwilightForestMod.prefix("ore_meter_flash"), OreMeterFlash.TYPE);
+	}
+
+	private static void registerRangeProperties(RegisterRangeSelectItemModelPropertyEvent event) {
+		event.register(TwilightForestMod.prefix("potion_flask_dosage"), PotionFlaskDosage.TYPE);
+		event.register(TwilightForestMod.prefix("potion_flask_damage"), PotionFlaskDamage.TYPE);
+	}
+
+	private static void registerSelectProperties(RegisterSelectItemModelPropertyEvent event) {
+		event.register(TwilightForestMod.prefix("experiment_115_variant"), Experiment115Type.TYPE);
 	}
 
 	private static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {

@@ -58,12 +58,12 @@ public class PotionFlaskTooltipComponent implements ClientTooltipComponent {
 				if (component.getString().isEmpty()) {
 					height += font.lineHeight;
 				}
-				height += font.split(component, WIDTH).size() * font.lineHeight + 1;
+				height += font.split(component, this.getWidth(font)).size() * font.lineHeight + 1;
 			}
 
 			return height;
 		}
-		return font.split(EMPTY_DESCRIPTION, WIDTH).size() * font.lineHeight + 1;
+		return font.split(EMPTY_DESCRIPTION, this.getWidth(font)).size() * font.lineHeight + 1;
 	}
 
 	private List<Component> getPotionTooltips() {
@@ -96,7 +96,7 @@ public class PotionFlaskTooltipComponent implements ClientTooltipComponent {
 				height += font.split(component, WIDTH).size() * font.lineHeight + 1;
 			}
 		}
-		this.drawPotionBar(x + this.getContentXOffset(xOffs), y + this.getDescriptionHeight(font) + 4, font, graphics);
+		this.drawPotionBar(x, y + this.getDescriptionHeight(font) + 4, font, graphics);
 	}
 
 	private void drawPotionBar(int x, int y, Font font, GuiGraphics graphics) {
