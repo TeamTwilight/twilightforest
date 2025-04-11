@@ -276,9 +276,9 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.wrapBlockItem(TFBlocks.CINDER_LOG.get(), block -> this.generateLog(block, TextureMapping.logColumn(block)));
 		this.wrapBlockItem(TFBlocks.CINDER_WOOD.get(), block -> this.generateLog(block, TextureMapping.logColumn(TFBlocks.CINDER_LOG.get())));
 		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get(), TwilightForestMod.prefix("block/miniature/portal")));
-		this.registerSimpleItemModel(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get(), TwilightForestMod.prefix("block/miniature/portal"));
+		this.registerSimpleTintedItemModel(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get(), TwilightForestMod.prefix("block/miniature/portal"), new GrassColorSource());
 		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE.get(), TwilightForestMod.prefix("block/miniature/naga_courtyard")));
-		this.registerSimpleItemModel(TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE.get(), TwilightForestMod.prefix("block/miniature/naga_courtyard"));
+		this.registerSimpleTintedItemModel(TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE.get(), TwilightForestMod.prefix("block/miniature/naga_courtyard"), new GrassColorSource());
 		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.LICH_TOWER_MINIATURE_STRUCTURE.get(), TwilightForestMod.prefix("block/miniature/lich_tower")));
 		this.registerSimpleItemModel(TFBlocks.LICH_TOWER_MINIATURE_STRUCTURE.get(), TwilightForestMod.prefix("block/miniature/lich_tower"));
 	}
