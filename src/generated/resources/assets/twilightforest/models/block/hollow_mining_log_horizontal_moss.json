@@ -1,7 +1,7 @@
 {
   "parent": "twilightforest:block/horizontal_hollow_log_carpet",
   "textures": {
-    "carpet": "twilightforest:block/mosspatch",
+    "carpet": "twilightforest:block/moss_patch",
     "end": "twilightforest:block/mining_log_top",
     "inside": "twilightforest:block/stripped_mining_log",
     "overhang": "twilightforest:block/moss_overhang",

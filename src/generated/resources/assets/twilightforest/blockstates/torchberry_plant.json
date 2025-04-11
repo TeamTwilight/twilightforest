@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "has_torchberries=false": {
+      "model": "twilightforest:block/torchberry_plant"
+    },
+    "has_torchberries=true": {
+      "model": "twilightforest:block/torchberry_plant_berries"
+    }
+  }
+}

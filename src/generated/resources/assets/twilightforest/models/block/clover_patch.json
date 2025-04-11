@@ -1,0 +1,10 @@
+{
+  "parent": "twilightforest:block/clover_patch",
+  "loader": "twilightforest:patch",
+  "render_type": "minecraft:cutout",
+  "shaggify": false,
+  "textures": {
+    "particle": "twilightforest:block/clover_patch",
+    "texture": "twilightforest:block/clover_patch"
+  }
+}

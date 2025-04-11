@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column_horizontal",
+  "textures": {
+    "end": "twilightforest:block/cinder_log_top",
+    "side": "twilightforest:block/cinder_log"
+  }
+}

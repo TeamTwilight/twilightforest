@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "twilightforest:block/huge_stalk_top",
+    "side": "twilightforest:block/huge_stalk"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cross_emissive",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "cross": "twilightforest:block/trollber",
+    "cross_emissive": "twilightforest:block/trollber_emissive"
+  }
+}
