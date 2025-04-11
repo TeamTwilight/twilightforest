@@ -13,6 +13,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import org.joml.Vector3f;
 
@@ -20,12 +21,12 @@ import java.util.Map;
 
 public class TrollsteinnBlock extends Block {
 	public static final int LIGHT_THRESHOLD = 7;
-	private static final BooleanProperty DOWN_LIT = BooleanProperty.create("down");
-	private static final BooleanProperty UP_LIT = BooleanProperty.create("up");
-	private static final BooleanProperty NORTH_LIT = BooleanProperty.create("north");
-	private static final BooleanProperty SOUTH_LIT = BooleanProperty.create("south");
-	private static final BooleanProperty WEST_LIT = BooleanProperty.create("west");
-	private static final BooleanProperty EAST_LIT = BooleanProperty.create("east");
+	private static final BooleanProperty DOWN_LIT = BlockStateProperties.DOWN;
+	private static final BooleanProperty UP_LIT = BlockStateProperties.UP;
+	private static final BooleanProperty NORTH_LIT = BlockStateProperties.NORTH;
+	private static final BooleanProperty SOUTH_LIT = BlockStateProperties.SOUTH;
+	private static final BooleanProperty WEST_LIT = BlockStateProperties.WEST;
+	private static final BooleanProperty EAST_LIT = BlockStateProperties.EAST;
 	private static final Map<Direction, BooleanProperty> PROPERTY_MAP = ImmutableMap.<Direction, BooleanProperty>builder()
 		.put(Direction.DOWN, DOWN_LIT)
 		.put(Direction.UP, UP_LIT)

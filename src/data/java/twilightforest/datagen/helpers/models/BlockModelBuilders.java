@@ -829,6 +829,71 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 		this.itemModelOutput.accept(TFBlocks.IRON_LADDER.asItem(), ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(TFBlocks.IRON_LADDER.asItem())));
 	}
 
+	public void createMultifaceBlock(Block mushroomBlock, ResourceLocation inside, boolean invertConditions) {
+		ResourceLocation outside = ModelTemplates.SINGLE_FACE.create(mushroomBlock, TextureMapping.defaultTexture(mushroomBlock), this.modelOutput);
+		this.blockStateOutput.accept(MultiPartGenerator.multiPart(mushroomBlock)
+			.with(Condition.condition().term(BlockStateProperties.NORTH, !invertConditions), Variant.variant().with(VariantProperties.MODEL, outside))
+			.with(Condition.condition().term(BlockStateProperties.EAST, !invertConditions), Variant.variant()
+				.with(VariantProperties.MODEL, outside)
+				.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
+				.with(VariantProperties.UV_LOCK, true)
+			)
+			.with(Condition.condition().term(BlockStateProperties.SOUTH, !invertConditions), Variant.variant()
+				.with(VariantProperties.MODEL, outside)
+				.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180)
+				.with(VariantProperties.UV_LOCK, true)
+			)
+			.with(Condition.condition().term(BlockStateProperties.WEST, !invertConditions), Variant.variant()
+				.with(VariantProperties.MODEL, outside)
+				.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
+				.with(VariantProperties.UV_LOCK, true)
+			)
+			.with(Condition.condition().term(BlockStateProperties.UP, !invertConditions), Variant.variant()
+				.with(VariantProperties.MODEL, outside)
+				.with(VariantProperties.X_ROT, VariantProperties.Rotation.R270)
+				.with(VariantProperties.UV_LOCK, true)
+			)
+			.with(Condition.condition().term(BlockStateProperties.DOWN, !invertConditions), Variant.variant()
+				.with(VariantProperties.MODEL, outside)
+				.with(VariantProperties.X_ROT, VariantProperties.Rotation.R90)
+				.with(VariantProperties.UV_LOCK, true)
+			)
+			.with(Condition.condition().term(BlockStateProperties.NORTH, invertConditions), Variant.variant().with(VariantProperties.MODEL, inside))
+			.with(Condition.condition().term(BlockStateProperties.EAST, invertConditions), Variant.variant()
+				.with(VariantProperties.MODEL, inside)
+				.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
+				.with(VariantProperties.UV_LOCK, false)
+			)
+			.with(Condition.condition().term(BlockStateProperties.SOUTH, invertConditions), Variant.variant()
+				.with(VariantProperties.MODEL, inside)
+				.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180)
+				.with(VariantProperties.UV_LOCK, false)
+			)
+			.with(Condition.condition().term(BlockStateProperties.WEST, invertConditions), Variant.variant()
+				.with(VariantProperties.MODEL, inside)
+				.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
+				.with(VariantProperties.UV_LOCK, false)
+			)
+			.with(Condition.condition().term(BlockStateProperties.UP, invertConditions), Variant.variant()
+				.with(VariantProperties.MODEL, inside)
+				.with(VariantProperties.X_ROT, VariantProperties.Rotation.R270)
+				.with(VariantProperties.UV_LOCK, false)
+			)
+			.with(Condition.condition().term(BlockStateProperties.DOWN, invertConditions), Variant.variant()
+				.with(VariantProperties.MODEL, inside)
+				.with(VariantProperties.X_ROT, VariantProperties.Rotation.R90)
+				.with(VariantProperties.UV_LOCK, false)
+			)
+		);
+		this.registerSimpleItemModel(mushroomBlock, TexturedModel.CUBE.createWithSuffix(mushroomBlock, "_inventory", this.modelOutput));
+	}
+
+	@Override
+	public void createCrossBlock(Block block, PlantType plantType, TextureMapping textureMapping) {
+		ResourceLocation resourcelocation = plantType.getCross().extend().renderType("cutout").build().create(block, textureMapping, this.modelOutput);
+		this.blockStateOutput.accept(createSimpleBlock(block, resourcelocation));
+	}
+
 	public static VariantProperties.Rotation getYRotationFromDirection(Direction direction) {
 		return switch (direction) {
 			case EAST -> VariantProperties.Rotation.R90;
