@@ -46,7 +46,7 @@ public class ConnectedTextureModelLoader implements UnbakedModelLoader<UnbakedCo
 		EnumSet<Direction> faces = this.parseEnabledFaces(overlayInfo);
 
 		List<Block> connectables = this.parseConnnectableBlocks(jsonObject);
-		return new UnbakedConnectedTextureModel(element, faces, renderDisabled, connectables, baseTintIndex, baseEmissivity, tintIndex, emissivity, StandardModelParameters.parse(jsonObject, deserializationContext), NeoForgeModelProperties.deserializeRenderType(jsonObject));
+		return new UnbakedConnectedTextureModel(element, faces, renderDisabled, connectables, baseTintIndex, baseEmissivity, tintIndex, emissivity, StandardModelParameters.parse(jsonObject, deserializationContext));
 	}
 
 	private EnumSet<Direction> parseEnabledFaces(JsonObject object) {

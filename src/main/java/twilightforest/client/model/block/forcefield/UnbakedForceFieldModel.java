@@ -15,16 +15,14 @@ import java.util.Map;
 public class UnbakedForceFieldModel extends AbstractUnbakedModel {
 
 	private final Map<BlockElement, ForceFieldModelLoader.Condition> elementsAndConditions;
-	private final RenderTypeGroup group;
 
-	public UnbakedForceFieldModel(Map<BlockElement, ForceFieldModelLoader.Condition> elementsAndConditions, StandardModelParameters parameters, RenderTypeGroup group) {
+	public UnbakedForceFieldModel(Map<BlockElement, ForceFieldModelLoader.Condition> elementsAndConditions, StandardModelParameters parameters) {
 		super(parameters);
 		this.elementsAndConditions = elementsAndConditions;
-		this.group = group;
 	}
 
 	@Override
 	public BakedModel bake(TextureSlots textures, ModelBaker baker, ModelState modelState, boolean useAmbientOcclusion, boolean usesBlockLight, ItemTransforms itemTransforms, ContextMap additionalProperties) {
-		return new ForceFieldModel(this.elementsAndConditions, s -> baker.findSprite(textures, s), useAmbientOcclusion, usesBlockLight, itemTransforms, this.group);
+		return new ForceFieldModel(this.elementsAndConditions, s -> baker.findSprite(textures, s), useAmbientOcclusion, usesBlockLight, itemTransforms, this.parameters.renderTypeGroup());
 	}
 }

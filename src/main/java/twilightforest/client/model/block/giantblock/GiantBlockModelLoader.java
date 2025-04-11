@@ -14,6 +14,6 @@ public class GiantBlockModelLoader implements UnbakedModelLoader<UnbakedGiantBlo
 
 	@Override
 	public UnbakedGiantBlockModel read(JsonObject object, JsonDeserializationContext deserializationContext) throws JsonParseException {
-		return new UnbakedGiantBlockModel(StandardModelParameters.parse(object, deserializationContext), NeoForgeModelProperties.deserializeRenderType(object));
+		return new UnbakedGiantBlockModel(StandardModelParameters.parse(object, deserializationContext));
 	}
 }

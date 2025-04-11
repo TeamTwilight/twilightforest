@@ -45,7 +45,7 @@ public class ForceFieldModelLoader implements UnbakedModelLoader<UnbakedForceFie
 			}
 		}
 
-		return new UnbakedForceFieldModel(elementsAndConditions, StandardModelParameters.parse(json, context), NeoForgeModelProperties.deserializeRenderType(json));
+		return new UnbakedForceFieldModel(elementsAndConditions, StandardModelParameters.parse(json, context));
 	}
 
 	public record Condition(@Nullable ExtraDirection direction, boolean b, List<ExtraDirection> parents) {

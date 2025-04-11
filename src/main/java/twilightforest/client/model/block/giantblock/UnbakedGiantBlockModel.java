@@ -15,11 +15,8 @@ import java.util.Locale;
 
 public class UnbakedGiantBlockModel extends AbstractUnbakedModel {
 
-	private final RenderTypeGroup group;
-
-	public UnbakedGiantBlockModel(StandardModelParameters parameters, RenderTypeGroup group) {
+	public UnbakedGiantBlockModel(StandardModelParameters parameters) {
 		super(parameters);
-		this.group = group;
 	}
 
 	@Override
@@ -35,6 +32,6 @@ public class UnbakedGiantBlockModel extends AbstractUnbakedModel {
 			sprites = materials.toArray(new TextureAtlasSprite[]{});
 		}
 
-		return new GiantBlockModel(sprites, baker.findSprite(textureSlots, "particle"), transforms, this.group);
+		return new GiantBlockModel(sprites, baker.findSprite(textureSlots, "particle"), hasAmbientOcclusion, useBlockLight, transforms, this.parameters.renderTypeGroup());
 	}
 }

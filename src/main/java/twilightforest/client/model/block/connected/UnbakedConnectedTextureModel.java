@@ -29,9 +29,8 @@ public class UnbakedConnectedTextureModel extends AbstractUnbakedModel {
 	protected final List<Block> connectableBlocks;
 	protected BlockElement[][] baseElements;
 	protected BlockElement[][][] faceElements;
-	protected final RenderTypeGroup group;
 
-	public UnbakedConnectedTextureModel(Pair<Vector3f, Vector3f> element, EnumSet<Direction> enabledFaces, boolean renderOnDisabledFaces, List<Block> connectableBlocks, int baseTintIndex, int baseEmissivity, int tintIndex, int emissivity, StandardModelParameters parameters, RenderTypeGroup group) {
+	public UnbakedConnectedTextureModel(Pair<Vector3f, Vector3f> element, EnumSet<Direction> enabledFaces, boolean renderOnDisabledFaces, List<Block> connectableBlocks, int baseTintIndex, int baseEmissivity, int tintIndex, int emissivity, StandardModelParameters parameters) {
 		super(parameters);
 		//a list of block faces that should have connected textures.
 		this.enabledFaces = enabledFaces;
@@ -70,7 +69,6 @@ public class UnbakedConnectedTextureModel extends AbstractUnbakedModel {
 				}
 			}
 		}
-		this.group = group;
 	}
 
 	private float getElementScalar(Vector3f corner, Direction direction) {
@@ -122,6 +120,6 @@ public class UnbakedConnectedTextureModel extends AbstractUnbakedModel {
 			}
 		}
 
-		return new ConnectedTextureModel(this.enabledFaces, this.renderOnDisabledFaces, this.connectableBlocks, baseQuads, quads, sprites[2], itemTransforms, this.group);
+		return new ConnectedTextureModel(this.enabledFaces, this.renderOnDisabledFaces, this.connectableBlocks, baseQuads, quads, sprites[2], useAmbientOcclusion, usesBlockLight, itemTransforms, this.parameters.renderTypeGroup());
 	}
 }

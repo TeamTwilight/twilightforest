@@ -32,15 +32,19 @@ public class GiantBlockModel implements IDynamicBakedModel {
 
 	private final TextureAtlasSprite[] textures;
 	private final TextureAtlasSprite particle;
+	private final boolean usesAO;
+	private final boolean usesBlockLight;
 	private final ItemTransforms transforms;
 	@Nullable
 	private final ChunkRenderTypeSet blockRenderTypes;
 	@Nullable
 	private final RenderType itemRenderType;
 
-	public GiantBlockModel(TextureAtlasSprite[] texture, TextureAtlasSprite particle, ItemTransforms transforms, RenderTypeGroup group) {
+	public GiantBlockModel(TextureAtlasSprite[] texture, TextureAtlasSprite particle, boolean usesAO, boolean usesBlockLight, ItemTransforms transforms, RenderTypeGroup group) {
 		this.textures = texture;
 		this.particle = particle;
+		this.usesAO = usesAO;
+		this.usesBlockLight = usesBlockLight;
 		this.transforms = transforms;
 		this.blockRenderTypes = !group.isEmpty() ? ChunkRenderTypeSet.of(group.block()) : null;
 		this.itemRenderType = !group.isEmpty() ? group.entity() : null;
@@ -118,7 +122,7 @@ public class GiantBlockModel implements IDynamicBakedModel {
 
 	@Override
 	public boolean useAmbientOcclusion() {
-		return true;
+		return this.usesAO;
 	}
 
 	@Override
@@ -128,7 +132,7 @@ public class GiantBlockModel implements IDynamicBakedModel {
 
 	@Override
 	public boolean usesBlockLight() {
-		return true;
+		return this.usesBlockLight;
 	}
 
 	@Override

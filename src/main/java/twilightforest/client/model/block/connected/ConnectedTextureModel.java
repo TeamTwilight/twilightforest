@@ -30,6 +30,8 @@ public class ConnectedTextureModel implements IDynamicBakedModel {
 	private final List<BakedQuad>@Nullable[] baseQuads;
 	private final BakedQuad[][][] quads;
 	private final TextureAtlasSprite particle;
+	private final boolean usesAO;
+	private final boolean usesBlockLight;
 	private final ItemTransforms transforms;
 	@Nullable
 	private final ChunkRenderTypeSet blockRenderTypes;
@@ -38,13 +40,15 @@ public class ConnectedTextureModel implements IDynamicBakedModel {
 	private final List<Block> validConnectors;
 	private static final ModelProperty<ConnectedTextureData> DATA = new ModelProperty<>();
 
-	public ConnectedTextureModel(EnumSet<Direction> enabledFaces, boolean renderOnDisabledFaces, List<Block> connectableBlocks, List<BakedQuad>@Nullable[] baseQuads, BakedQuad[][][] quads, TextureAtlasSprite particle, ItemTransforms transforms, RenderTypeGroup group) {
+	public ConnectedTextureModel(EnumSet<Direction> enabledFaces, boolean renderOnDisabledFaces, List<Block> connectableBlocks, List<BakedQuad>@Nullable[] baseQuads, BakedQuad[][][] quads, TextureAtlasSprite particle, boolean usesAO, boolean usesBlockLight, ItemTransforms transforms, RenderTypeGroup group) {
 		this.enabledFaces = enabledFaces;
 		this.renderOnDisabledFaces = renderOnDisabledFaces;
 		this.validConnectors = connectableBlocks;
 		this.baseQuads = baseQuads;
 		this.quads = quads;
 		this.particle = particle;
+		this.usesAO = usesAO;
+		this.usesBlockLight = usesBlockLight;
 		this.transforms = transforms;
 		this.blockRenderTypes = !group.isEmpty() ? ChunkRenderTypeSet.of(group.block()) : null;
 		this.itemRenderType = !group.isEmpty() ? group.entity() : null;
@@ -116,7 +120,7 @@ public class ConnectedTextureModel implements IDynamicBakedModel {
 
 	@Override
 	public boolean useAmbientOcclusion() {
-		return true;
+		return this.usesAO;
 	}
 
 	@Override
@@ -126,7 +130,7 @@ public class ConnectedTextureModel implements IDynamicBakedModel {
 
 	@Override
 	public boolean usesBlockLight() {
-		return true;
+		return this.usesBlockLight;
 	}
 
 	@NotNull
