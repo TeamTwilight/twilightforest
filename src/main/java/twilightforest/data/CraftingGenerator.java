@@ -648,7 +648,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.define('S', Ingredient.of(Tags.Items.STRINGS))
 				.define('B', Ingredient.of(Tags.Items.BONES))
 				.define('P', Ingredient.of(Items.PISTON))
-				.define('W', Ingredient.of(TFItems.TRAVELLERS_WINGS_BELT, TFItems.TRAVELLERS_WINGS_BELT))
+				.define('W', Ingredient.of(TFItems.TRAVELLERS_WINGS, TFItems.TRAVELLERS_WINGS_BELT))
 				.build(),
 			TravellersModifiers.SIDESTEP_MODIFIER).save(output);
 
