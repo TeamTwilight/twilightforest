@@ -1,0 +1,33 @@
+{
+  "model": {
+    "type": "minecraft:range_dispatch",
+    "entries": [
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "twilightforest:item/red_thread_bundle_0"
+        },
+        "threshold": 0.0625
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "twilightforest:item/red_thread_bundle_1"
+        },
+        "threshold": 0.25
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "twilightforest:item/red_thread_bundle_2"
+        },
+        "threshold": 0.5
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "twilightforest:item/red_thread"
+    },
+    "property": "minecraft:count"
+  }
+}
