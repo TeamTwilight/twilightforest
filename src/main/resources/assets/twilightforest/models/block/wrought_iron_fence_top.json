@@ -2,7 +2,8 @@
 	"ambientocclusion": false,
 	"render_type": "minecraft:cutout",
 	"textures": {
-		"all": "twilightforest:block/wrought_iron"
+		"all": "twilightforest:block/wrought_iron",
+    "particle": "#all"
 	},
 	"elements": [
 		{

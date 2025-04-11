@@ -305,6 +305,8 @@ public class ItemModelGenerator extends ItemModelBuilders {
 		this.generateSpawnEgg("winter_wolf", 0xDFE3E5, 0xB2BCCA);
 		this.generateSpawnEgg("wraith", 0x505050, 0x838383);
 		this.generateSpawnEgg("yeti", 0xDEDEDE, 0x4675BB);
+
+		this.generateLayeredItem(TwilightForestMod.prefix("item/shield"), TwilightForestMod.prefix("item/lich_shield_frame"), TwilightForestMod.prefix("item/lich_shield_fill"));
 	}
 
 	private void generateSpawnEgg(String entityName, int primary, int secondary) {

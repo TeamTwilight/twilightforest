@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "particle": "minecraft:block/stone_block"
+    "particle": "minecraft:block/stone"
   },
   "display": {
     "firstperson_lefthand": {
