@@ -12,8 +12,8 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
-import snownee.jade.util.JsonConfig;
 import twilightforest.TwilightForestMod;
+import twilightforest.data.helpers.TFLangProvider;
 import twilightforest.item.travellers_gear.TravellersArmorItem;
 import twilightforest.item.travellers_gear.modifiers.TravellersGearComponentModifier;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifiers;
@@ -76,7 +76,7 @@ public abstract class TravellersGearModifierRecipe extends CustomRecipe {
 
 		public T fromNetwork(RegistryFriendlyByteBuf buf) {
 			RegistryOps<JsonElement> registryops = buf.registryAccess().createSerializationContext(JsonOps.INSTANCE);
-			JsonElement jsonelementDeserialized = GsonHelper.fromJson(JsonConfig.GSON, buf.readUtf(), JsonElement.class);
+			JsonElement jsonelementDeserialized = GsonHelper.fromJson(TFLangProvider.GSON, buf.readUtf(), JsonElement.class);
 			return codec.codec().decode(registryops, jsonelementDeserialized).getOrThrow().getFirst();
 		}
 
