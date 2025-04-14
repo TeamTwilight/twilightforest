@@ -952,7 +952,11 @@ public class LangGenerator extends TFLangProvider {
 		this.addScreenMessage("progression_end.discord", "Discord Server");
 
 		this.addScreenMessage("drying_jei", "Drying Rack");
+		this.addScreenMessage("drying_time", "%sm %ss");
 		this.addScreenMessage("drying_minutes", "%s Minutes");
+		this.addScreenMessage("drying_minute", "%s Minute");
+		this.addScreenMessage("drying_seconds", "%s Seconds");
+		this.addScreenMessage("drying_second", "%s Second");
 		this.addScreenMessage("drying_ticks", "%s ticks");
 		this.addScreenMessage("crumble_horn_jei", "Crumble Horn");
 		this.addScreenMessage("transformation_jei", "Transformation Powder");

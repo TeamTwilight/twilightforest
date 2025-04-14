@@ -39,7 +39,7 @@ public class DryingRecipeBuilder implements RecipeBuilder {
 		return drying(Ingredient.of(input), new ItemStack(result));
 	}
 
-	public static DryingRecipeBuilder drying(ItemLike input, ItemLike result, int dryingMinutes) {
+	public static DryingRecipeBuilder drying(ItemLike input, ItemLike result, float dryingMinutes) {
 		return drying(Ingredient.of(input), new ItemStack(result), dryingMinutes);
 	}
 
@@ -47,8 +47,8 @@ public class DryingRecipeBuilder implements RecipeBuilder {
 		return drying(input, result, 5);
 	}
 
-	public static DryingRecipeBuilder drying(Ingredient input, ItemStack result, int dryingMinutes) {
-		return new DryingRecipeBuilder(input, result, 20 * 60 * dryingMinutes);
+	public static DryingRecipeBuilder drying(Ingredient input, ItemStack result, float dryingMinutes) {
+		return new DryingRecipeBuilder(input, result, (int) (20 * 60 * dryingMinutes));
 	}
 
 	public DryingRecipeBuilder unlockedBy(String key, Criterion<?> criterion) {

@@ -596,7 +596,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.addRepairIngredient(Items.ROTTEN_FLESH)
 			.save(output, locEquip(TFItems.ZOMBIE_SCEPTER.getId().getPath()));
 
-		DryingRecipeBuilder.drying(Ingredient.of(Tags.Items.FOODS_COOKED_MEAT), new ItemStack(Items.LEATHER), 8)
+		DryingRecipeBuilder.drying(Ingredient.of(Tags.Items.FOODS_COOKED_MEAT), new ItemStack(Items.LEATHER), 8.5F)
 			.unlockedBy("has_meat", has(Tags.Items.FOODS_COOKED_MEAT))
 			.save(output, TwilightForestMod.prefix("drying/cooked_meat_to_leather"));
 
@@ -609,8 +609,12 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.save(output, TwilightForestMod.prefix("drying/mud_to_clay"));
 
 		DryingRecipeBuilder.drying(Items.WET_SPONGE, Items.SPONGE, 2)
-			.unlockedBy("has_wet_sponge", has(Items.SPONGE))
+			.unlockedBy("has_wet_sponge", has(Items.WET_SPONGE))
 			.save(output, TwilightForestMod.prefix("drying/sponge"));
+
+		DryingRecipeBuilder.drying(Items.KELP, Items.DRIED_KELP, 1)
+			.unlockedBy("has_kelp", has(Items.KELP))
+			.save(output, TwilightForestMod.prefix("drying/kelp"));
 
 		DryingRecipeBuilder.drying(Items.ROTTEN_FLESH, TFItems.MONSTER_JERKY)
 			.unlockedBy("has_meat", has(Items.ROTTEN_FLESH))

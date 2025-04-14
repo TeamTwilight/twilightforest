@@ -1,11 +1,11 @@
 {
   "type": "twilightforest:drying",
-  "filter_time": 10200,
+  "filter_time": 1200,
   "input": {
-    "tag": "c:foods/cooked_meat"
+    "item": "minecraft:kelp"
   },
   "result": {
     "count": 1,
-    "id": "minecraft:leather"
+    "id": "minecraft:dried_kelp"
   }
 }
