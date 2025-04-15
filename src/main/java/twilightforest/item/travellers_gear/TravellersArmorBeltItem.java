@@ -2,6 +2,8 @@ package twilightforest.item.travellers_gear;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -51,17 +53,22 @@ public class TravellersArmorBeltItem extends TravellersArmorItem {
 
 		NonNullList<ItemStack> hotbarStacks = NonNullList.withSize(9, ItemStack.EMPTY);
 		Inventory inventory = player.getInventory();
+		boolean hasChanged = false;
 		for (int slotIndex = 0; slotIndex < 9; slotIndex++) {
 			ItemStack inventoryStack = inventory.getItem(slotIndex);
 			ItemStack beltStack = containerContents.getSlots() <= slotIndex ? ItemStack.EMPTY : containerContents.getStackInSlot(slotIndex);
 			if (inventoryStack.getItem().canFitInsideContainerItems() && !inventoryStack.is(ItemTagGenerator.TRAVELLERS_BELT_BLACKLISTED)) {
 				hotbarStacks.set(slotIndex, inventoryStack);
 				inventory.setItem(slotIndex, beltStack);
+				if (!beltStack.equals(inventoryStack))
+					hasChanged = true;
 			} else {
 				hotbarStacks.set(slotIndex, beltStack);
 			}
 		}
 		legArmor.set(DataComponents.CONTAINER, ItemContainerContents.fromItems(hotbarStacks));
+		if (hasChanged)
+			player.level().playSound(null, player, SoundEvents.ARMOR_EQUIP_LEATHER.value(), SoundSource.PLAYERS, 1F, 1F);
 	}
 
 	public record Tooltip(ItemContainerContents contents) implements TooltipComponent {}
