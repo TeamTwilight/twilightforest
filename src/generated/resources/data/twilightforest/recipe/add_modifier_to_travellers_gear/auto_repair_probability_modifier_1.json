@@ -1,0 +1,44 @@
+{
+  "type": "twilightforest:travellers_gear_modifier_shaped_recipe",
+  "modifier": {
+    "data_component_map": {
+      "twilightforest:auto_repair_probability": 0.001
+    },
+    "tooltip": "auto_repair"
+  },
+  "pattern": {
+    "key": {
+      "E": {
+        "item": "minecraft:experience_bottle"
+      },
+      "M": {
+        "item": "twilightforest:moss_patch"
+      },
+      "T": [
+        {
+          "item": "twilightforest:travellers_goggles"
+        },
+        {
+          "item": "twilightforest:travellers_chest"
+        },
+        {
+          "item": "twilightforest:travellers_chest_gloves"
+        },
+        {
+          "item": "twilightforest:travellers_wings"
+        },
+        {
+          "item": "twilightforest:travellers_wings_belt"
+        },
+        {
+          "item": "twilightforest:travellers_boots"
+        }
+      ]
+    },
+    "pattern": [
+      " M ",
+      "ETE",
+      " M "
+    ]
+  }
+}
