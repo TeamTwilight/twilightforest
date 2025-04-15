@@ -404,7 +404,7 @@ public class ASMHooks {
 	public static float getFoodExhaustion(float f, Player player) {
 		Float divisor = player.getItemBySlot(EquipmentSlot.CHEST).get(TFDataComponents.EFFICIENT_EATER);
 		if (divisor == null)
-			return 1;
+			return f;
 		return f * (1 / divisor);
 	}
 
