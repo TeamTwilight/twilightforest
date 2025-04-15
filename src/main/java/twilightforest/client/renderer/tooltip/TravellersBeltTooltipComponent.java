@@ -63,11 +63,11 @@ public class TravellersBeltTooltipComponent implements ClientTooltipComponent {
 	}
 
 	private int gridSizeX() {
-		return 3;
+		return 9;
 	}
 
 	private int gridSizeY() {
-		return 3;
+		return 1;
 	}
 
 	@Override

@@ -9,6 +9,7 @@ import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemContainerContents;
+import org.jetbrains.annotations.NotNull;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.TFDataComponents;
 
@@ -31,7 +32,7 @@ public class TravellersArmorBeltItem extends TravellersArmorItem {
 	}
 
 	@Override
-	public Optional<TooltipComponent> getTooltipImage(ItemStack stack) {
+	public @NotNull Optional<TooltipComponent> getTooltipImage(ItemStack stack) {
 		return !stack.has(DataComponents.HIDE_TOOLTIP) && !stack.has(DataComponents.HIDE_ADDITIONAL_TOOLTIP)
 			? Optional.ofNullable(stack.get(DataComponents.CONTAINER)).map(Tooltip::new)
 			: Optional.empty();
