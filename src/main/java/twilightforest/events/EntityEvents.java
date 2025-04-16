@@ -19,6 +19,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
@@ -300,7 +301,8 @@ public class EntityEvents {
 		ItemStack boots = livingEntity.getItemBySlot(EquipmentSlot.FEET);
 		Float coefficient = boots.get(TFDataComponents.SLIMY_SOLES_COEFFICIENT);
 		if (coefficient != null)
-			event.setDamageMultiplier(coefficient);;
+			event.setDamageMultiplier(coefficient);
+		;
 	}
 
 	/**
@@ -558,6 +560,41 @@ public class EntityEvents {
 
 		if (!mob.mayBeLeashed()) {
 			mob.removeData(TFDataAttachments.LEASH_PATHFINDER_OVERRIDE);
+		}
+	}
+
+	@SubscribeEvent
+	public static void stopPickingUpOurFuckingDirt(EntityJoinLevelEvent event) {
+		if (event.getEntity() instanceof EnderMan enderMan) {
+			enderMan.goalSelector.getAvailableGoals().stream()
+				.filter(g -> g.getGoal() instanceof EnderMan.EndermanTakeBlockGoal)
+				.findAny()
+				.ifPresent(g -> {
+					enderMan.goalSelector.removeGoal(g.getGoal());
+					enderMan.goalSelector.addGoal(g.getPriority(), new ExtendedEndermanTakeBlockGoal((EnderMan.EndermanTakeBlockGoal) g.getGoal(), enderMan));
+				});
+		}
+	}
+
+	static class ExtendedEndermanTakeBlockGoal extends EnderMan.EndermanTakeBlockGoal {
+
+		private final EnderMan.EndermanTakeBlockGoal delegate;
+		private final EnderMan enderman;
+
+		public ExtendedEndermanTakeBlockGoal(EnderMan.EndermanTakeBlockGoal delegate, EnderMan enderman) {
+			super(enderman);
+			this.delegate = delegate;
+			this.enderman = enderman;
+		}
+
+		@Override
+		public boolean canUse() {
+			return this.delegate.canUse() && !this.enderman.level().dimensionTypeRegistration().is(TFDimensionData.TWILIGHT_DIM_TYPE);
+		}
+
+		@Override
+		public void tick() {
+			this.delegate.tick();
 		}
 	}
 }
