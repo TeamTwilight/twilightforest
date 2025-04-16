@@ -1,6 +1,7 @@
 package twilightforest.client.event;
 
 import com.ibm.icu.text.RuleBasedNumberFormat;
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.ChatFormatting;
@@ -117,6 +118,7 @@ public class ClientEvents {
 		NeoForge.EVENT_BUS.addListener(ClientEvents::travellersAgileRanger);
 		NeoForge.EVENT_BUS.addListener(ClientEvents::travellersForwardBoost);
 		NeoForge.EVENT_BUS.addListener(ClientEvents::travellersSidestep);
+		NeoForge.EVENT_BUS.addListener(ClientEvents::playZoomSounds);
 
 		NeoForge.EVENT_BUS.addListener(CloudEvents::renderPrecipitation);
 		NeoForge.EVENT_BUS.addListener(CloudEvents::tickWeatherEffects);
@@ -449,6 +451,21 @@ public class ClientEvents {
 		}
 
 		player.setData(TFDataAttachments.TRAVELLERS_GOGGLES_RED_THREAD_VISION, isClicked != current);
+	}
+
+	private static void playZoomSounds(InputEvent.Key event) {
+		Player player = Minecraft.getInstance().player;
+		if (player == null)
+			return;
+
+		Float zoomModifier = player.getInventory().getArmor(EquipmentSlot.HEAD.getIndex()).get(TFDataComponents.ZOOM_ABILITY_MODIFIER);
+		if (zoomModifier != null && event.getKey() == TFKeyBinds.ZOOM_KEY.getKey().getValue()) {
+			if (event.getAction() == InputConstants.PRESS) {
+				player.playSound(TFSounds.GOGGLES_ZOOM_IN.get());
+			} else if (event.getAction() == InputConstants.RELEASE) {
+				player.playSound(TFSounds.GOGGLES_ZOOM_OUT.get());
+			}
+		}
 	}
 
 	private static void unrenderHeadWithTrophies(RenderLivingEvent.Pre<?, ?> event) {

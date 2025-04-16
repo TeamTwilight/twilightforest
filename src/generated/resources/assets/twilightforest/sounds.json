@@ -2543,6 +2543,24 @@
     ],
     "subtitle": "subtitles.twilightforest.item.transformation_powder.use"
   },
+  "item.twilightforest.travellers_goggles.zoom_in": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "item.spyglass.use"
+      }
+    ],
+    "subtitle": "subtitles.twilightforest.item.travellers_goggles.zoom_in"
+  },
+  "item.twilightforest.travellers_goggles.zoom_out": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "item.spyglass.stop_using"
+      }
+    ],
+    "subtitle": "subtitles.twilightforest.item.travellers_goggles.zoom_out"
+  },
   "item.twilightforest.twilight_scepter.pearl_hit": {
     "sounds": [
       "twilightforest:random/scepter/twilight_hit1",

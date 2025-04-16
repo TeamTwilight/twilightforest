@@ -103,6 +103,8 @@ public final class TFSounds {
 	public static final DeferredHolder<SoundEvent, SoundEvent> GOBLIN_KNIGHT_MUFFLED_AMBIENT = createEvent("entity.twilightforest.goblin_knight.muffled.ambient");
 	public static final DeferredHolder<SoundEvent, SoundEvent> GOBLIN_KNIGHT_MUFFLED_DEATH = createEvent("entity.twilightforest.goblin_knight.muffled.death");
 	public static final DeferredHolder<SoundEvent, SoundEvent> GOBLIN_KNIGHT_MUFFLED_HURT = createEvent("entity.twilightforest.goblin_knight.muffled.hurt");
+	public static final DeferredHolder<SoundEvent, SoundEvent> GOGGLES_ZOOM_IN = createEvent("item.twilightforest.travellers_goggles.zoom_in");
+	public static final DeferredHolder<SoundEvent, SoundEvent> GOGGLES_ZOOM_OUT = createEvent("item.twilightforest.travellers_goggles.zoom_out");
 	public static final DeferredHolder<SoundEvent, SoundEvent> HEDGE_SPIDER_AMBIENT = createEvent("entity.twilightforest.hedge_spider.ambient");
 	public static final DeferredHolder<SoundEvent, SoundEvent> HEDGE_SPIDER_DEATH = createEvent("entity.twilightforest.hedge_spider.death");
 	public static final DeferredHolder<SoundEvent, SoundEvent> HEDGE_SPIDER_HURT = createEvent("entity.twilightforest.hedge_spider.hurt");

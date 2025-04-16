@@ -353,6 +353,8 @@ public class SoundGenerator extends TFSoundProvider {
 		this.generateNewSoundMC(TFSounds.FAN_WHOOSH, "random/breath", 1, "Peacock Feather Fan blows");
 		this.generateExistingSoundWithSubtitle(TFSounds.FLASK_FILL, SoundEvents.BREWING_STAND_BREW, "Potion Flask fills");
 		this.generateExistingSoundWithSubtitle(TFSounds.GLASS_SWORD_BREAK, SoundEvents.GLASS_BREAK, "Glass Sword shatters");
+		this.generateExistingSoundWithSubtitle(TFSounds.GOGGLES_ZOOM_IN, SoundEvents.SPYGLASS_USE, "Traveller's Goggles zoom in");
+		this.generateExistingSoundWithSubtitle(TFSounds.GOGGLES_ZOOM_OUT, SoundEvents.SPYGLASS_STOP_USING, "Traveller's Goggles zoom out");
 		this.generateExistingSoundWithSubtitle(TFSounds.ICE_BOMB_FIRED, SoundEvents.ARROW_SHOOT, "Ice Bomb thrown");
 		this.generateExistingSoundWithSubtitle(TFSounds.KNIGHTMETAL_EQUIP, SoundEvents.ARMOR_EQUIP_NETHERITE.value(), "Knightmetal Armor clanks");
 		this.generateExistingSoundWithSubtitle(TFSounds.LAMP_BURN, SoundEvents.GHAST_SHOOT, "Lamp of Cinders ignites area");
