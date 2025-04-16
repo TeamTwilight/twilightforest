@@ -302,7 +302,6 @@ public class EntityEvents {
 		Float coefficient = boots.get(TFDataComponents.SLIMY_SOLES_COEFFICIENT);
 		if (coefficient != null)
 			event.setDamageMultiplier(coefficient);
-		;
 	}
 
 	/**
