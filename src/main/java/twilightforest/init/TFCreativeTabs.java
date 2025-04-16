@@ -415,26 +415,6 @@ public class TFCreativeTabs {
 			output.accept(TFItems.MAGIC_MAP);
 			output.accept(TFItems.MAZE_MAP);
 			output.accept(TFItems.ORE_MAP);
-			output.accept(TFItems.TORCHBERRIES);
-			output.accept(TFItems.RASPBERRY);
-			output.accept(TFItems.BLUEBERRY);
-			output.accept(TFItems.BLACKBERRY);
-			output.accept(TFItems.MALOBERRY);
-			output.accept(TFItems.BLIGHTBERRY);
-			output.accept(TFItems.DUSKBERRY);
-			output.accept(TFItems.SKYBERRY);
-			output.accept(TFItems.STINGBERRY);
-			output.accept(TFItems.BERRY_MEDLEY);
-			output.accept(TFItems.MONSTER_JERKY);
-			output.accept(TFItems.BEEF_JERKY);
-			output.accept(TFItems.CHICKEN_JERKY);
-			output.accept(TFItems.PORK_JERKY);
-			output.accept(TFItems.MUTTON_JERKY);
-			output.accept(TFItems.RABBIT_JERKY);
-			output.accept(TFItems.COD_JERKY);
-			output.accept(TFItems.SALMON_JERKY);
-			output.accept(TFItems.CLOWNFISH_JERKY);
-			output.accept(TFItems.FUGU_JERKY);
 			output.accept(TFItems.RAVEN_FEATHER);
 			output.accept(TFItems.MAGIC_MAP_FOCUS);
 			output.accept(TFItems.MAZE_MAP_FOCUS);
@@ -444,14 +424,6 @@ public class TFCreativeTabs {
 			output.accept(TFItems.CHARM_OF_KEEPING_2);
 			output.accept(TFItems.CHARM_OF_KEEPING_3);
 			output.accept(TFItems.TRANSFORMATION_POWDER);
-			output.accept(TFItems.RAW_VENISON);
-			output.accept(TFItems.COOKED_VENISON);
-			output.accept(TFItems.RAW_MEEF);
-			output.accept(TFItems.COOKED_MEEF);
-			output.accept(TFItems.MAZE_WAFER);
-			output.accept(TFItems.MEEF_STROGANOFF);
-			output.accept(TFItems.HYDRA_CHOP);
-			output.accept(TFItems.EXPERIMENT_115);
 			output.accept(TFItems.LIVEROOT);
 			output.accept(TFItems.RAW_IRONWOOD);
 			output.accept(TFItems.IRONWOOD_INGOT);
@@ -474,13 +446,12 @@ public class TFCreativeTabs {
 			output.accept(TFBlocks.RED_THREAD);
 			output.accept(TFItems.BORER_ESSENCE);
 			output.accept(TFItems.CARMINITE);
+			output.accept(TFItems.TOWER_KEY);
+			output.accept(TFItems.MAGIC_BEANS);
 			output.accept(TFItems.IRON_BERRY);
 			output.accept(TFItems.GOLD_BERRY);
 			output.accept(TFItems.COPPER_BERRY);
 			output.accept(TFItems.ESSENCE_BERRY);
-			output.accept(TFItems.COPPER_NUGGET);
-			output.accept(TFItems.TOWER_KEY);
-			output.accept(TFItems.MAGIC_BEANS);
 			output.accept(TFItems.MUSIC_DISC_THREAD);
 			output.accept(TFItems.MUSIC_DISC_FINDINGS);
 			output.accept(TFItems.MUSIC_DISC_RADIANCE);
@@ -605,7 +576,42 @@ public class TFCreativeTabs {
 			output.accept(TFItems.MOONWORM_QUEEN);
 		}).build());
 
-
+	public static final DeferredHolder<CreativeModeTab, CreativeModeTab> FOOD = TABS.register("food", () -> CreativeModeTab.builder()
+		.withTabsBefore(EQUIPMENT.getKey())
+		.title(Component.translatable("itemGroup.twilightforest.food"))
+		.icon(() -> new ItemStack(TFItems.COOKED_MEEF.get()))
+		.displayItems((parameters, output) -> {
+			output.accept(TFItems.TORCHBERRIES);
+			output.accept(TFItems.RASPBERRY);
+			output.accept(TFItems.BLUEBERRY);
+			output.accept(TFItems.BLACKBERRY);
+			output.accept(TFItems.MALOBERRY);
+			output.accept(TFItems.BLIGHTBERRY);
+			output.accept(TFItems.DUSKBERRY);
+			output.accept(TFItems.SKYBERRY);
+			output.accept(TFItems.STINGBERRY);
+			output.accept(TFItems.BERRY_MEDLEY);
+			output.accept(TFItems.RAW_VENISON);
+			output.accept(TFItems.COOKED_VENISON);
+			output.accept(TFItems.VENISON_JERKY);
+			output.accept(TFItems.RAW_MEEF);
+			output.accept(TFItems.COOKED_MEEF);
+			output.accept(TFItems.MEEF_JERKY);
+			output.accept(TFItems.MONSTER_JERKY);
+			output.accept(TFItems.BEEF_JERKY);
+			output.accept(TFItems.CHICKEN_JERKY);
+			output.accept(TFItems.PORK_JERKY);
+			output.accept(TFItems.MUTTON_JERKY);
+			output.accept(TFItems.RABBIT_JERKY);
+			output.accept(TFItems.COD_JERKY);
+			output.accept(TFItems.SALMON_JERKY);
+			output.accept(TFItems.CLOWNFISH_JERKY);
+			output.accept(TFItems.FUGU_JERKY);
+			output.accept(TFItems.MAZE_WAFER);
+			output.accept(TFItems.MEEF_STROGANOFF);
+			output.accept(TFItems.HYDRA_CHOP);
+			output.accept(TFItems.EXPERIMENT_115);
+		}).build());
 
 	private static void generateGearWithEnchants(CreativeModeTab.Output output, ItemLike item, EnchantmentInstance... instances) {
 		ItemStack stack = new ItemStack(item);
@@ -659,18 +665,6 @@ public class TFCreativeTabs {
 			event.insertAfter(new ItemStack(Items.MANGROVE_WOOD), TFItems.HOLLOW_VANGROVE_LOG.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
 			event.insertAfter(new ItemStack(Items.CHERRY_WOOD), TFItems.HOLLOW_CHERRY_LOG.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
 
-			event.insertAfter(new ItemStack(Items.OAK_FENCE_GATE), TFBlocks.OAK_BANISTER.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-			event.insertAfter(new ItemStack(Items.SPRUCE_FENCE_GATE), TFBlocks.SPRUCE_BANISTER.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-			event.insertAfter(new ItemStack(Items.BIRCH_FENCE_GATE), TFBlocks.BIRCH_BANISTER.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-			event.insertAfter(new ItemStack(Items.JUNGLE_FENCE_GATE), TFBlocks.JUNGLE_BANISTER.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-			event.insertAfter(new ItemStack(Items.ACACIA_FENCE_GATE), TFBlocks.ACACIA_BANISTER.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-			event.insertAfter(new ItemStack(Items.DARK_OAK_FENCE_GATE), TFBlocks.DARK_OAK_BANISTER.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-			event.insertAfter(new ItemStack(Items.CRIMSON_FENCE_GATE), TFBlocks.CRIMSON_BANISTER.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-			event.insertAfter(new ItemStack(Items.WARPED_FENCE_GATE), TFBlocks.WARPED_BANISTER.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-			event.insertAfter(new ItemStack(Items.MANGROVE_FENCE_GATE), TFBlocks.VANGROVE_BANISTER.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-			event.insertAfter(new ItemStack(Items.BAMBOO_FENCE_GATE), TFBlocks.BAMBOO_BANISTER.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-			event.insertAfter(new ItemStack(Items.CHERRY_FENCE_GATE), TFBlocks.CHERRY_BANISTER.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-
 			event.insertAfter(new ItemStack(Items.OAK_FENCE_GATE), TFBlocks.OAK_DRYING_RACK.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
 			event.insertAfter(new ItemStack(Items.SPRUCE_FENCE_GATE), TFBlocks.SPRUCE_DRYING_RACK.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
 			event.insertAfter(new ItemStack(Items.BIRCH_FENCE_GATE), TFBlocks.BIRCH_DRYING_RACK.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
@@ -682,6 +676,20 @@ public class TFCreativeTabs {
 			event.insertAfter(new ItemStack(Items.MANGROVE_FENCE_GATE), TFBlocks.VANGROVE_DRYING_RACK.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
 			event.insertAfter(new ItemStack(Items.BAMBOO_FENCE_GATE), TFBlocks.BAMBOO_DRYING_RACK.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
 			event.insertAfter(new ItemStack(Items.CHERRY_FENCE_GATE), TFBlocks.CHERRY_DRYING_RACK.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+
+			event.insertAfter(new ItemStack(Items.OAK_FENCE_GATE), TFBlocks.OAK_BANISTER.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+			event.insertAfter(new ItemStack(Items.SPRUCE_FENCE_GATE), TFBlocks.SPRUCE_BANISTER.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+			event.insertAfter(new ItemStack(Items.BIRCH_FENCE_GATE), TFBlocks.BIRCH_BANISTER.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+			event.insertAfter(new ItemStack(Items.JUNGLE_FENCE_GATE), TFBlocks.JUNGLE_BANISTER.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+			event.insertAfter(new ItemStack(Items.ACACIA_FENCE_GATE), TFBlocks.ACACIA_BANISTER.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+			event.insertAfter(new ItemStack(Items.DARK_OAK_FENCE_GATE), TFBlocks.DARK_OAK_BANISTER.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+			event.insertAfter(new ItemStack(Items.CRIMSON_FENCE_GATE), TFBlocks.CRIMSON_BANISTER.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+			event.insertAfter(new ItemStack(Items.WARPED_FENCE_GATE), TFBlocks.WARPED_BANISTER.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+			event.insertAfter(new ItemStack(Items.MANGROVE_FENCE_GATE), TFBlocks.VANGROVE_BANISTER.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+			event.insertAfter(new ItemStack(Items.BAMBOO_FENCE_GATE), TFBlocks.BAMBOO_BANISTER.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+			event.insertAfter(new ItemStack(Items.CHERRY_FENCE_GATE), TFBlocks.CHERRY_BANISTER.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+		} else if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
+			event.insertAfter(new ItemStack(Items.IRON_NUGGET), TFItems.COPPER_NUGGET.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
 		} else if (event.getTabKey() == CreativeModeTabs.OP_BLOCKS && event.hasPermissions()) {
 			event.getParameters().holders().lookupOrThrow(TFRegistries.Keys.MAGIC_PAINTINGS)
 				.listElements().sorted(MAGIC_COMPARATOR)

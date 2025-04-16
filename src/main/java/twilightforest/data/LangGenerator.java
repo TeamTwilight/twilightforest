@@ -26,6 +26,7 @@ public class LangGenerator extends TFLangProvider {
 		this.add("itemGroup.twilightforest.blocks", "Twilight Forest: Blocks");
 		this.add("itemGroup.twilightforest.items", "Twilight Forest: Items");
 		this.add("itemGroup.twilightforest.equipment", "Twilight Forest: Equipment");
+		this.add("itemGroup.twilightforest.food", "Twilight Forest: Food");
 
 		this.addBiome(TFBiomes.FOREST, "Twilight Forest");
 		this.addBiome(TFBiomes.DENSE_FOREST, "Dense Forest");
