@@ -63,10 +63,7 @@ import twilightforest.config.TFConfig;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.entity.boss.bar.ClientTFBossBar;
 import twilightforest.events.HostileMountEvents;
-import twilightforest.init.TFDataAttachments;
-import twilightforest.init.TFDataComponents;
-import twilightforest.init.TFDimension;
-import twilightforest.init.TFKeyBinds;
+import twilightforest.init.*;
 import twilightforest.item.*;
 import twilightforest.network.PerformDoubleJumpPacket;
 import twilightforest.network.PerformSidestepPacket;
@@ -111,6 +108,7 @@ public class ClientEvents {
 		NeoForge.EVENT_BUS.addListener(ClientEvents::unrenderHeadWithTrophies);
 		NeoForge.EVENT_BUS.addListener(ClientEvents::updateBowFOV);
 		NeoForge.EVENT_BUS.addListener(ClientEvents::updateTravellersZoomFOV);
+		NeoForge.EVENT_BUS.addListener(ClientEvents::slowZoomSensitivity);
 		NeoForge.EVENT_BUS.addListener(ClientEvents::handleTravellersStealth);
 		NeoForge.EVENT_BUS.addListener(ClientEvents::updateTravellersSwapHotbar);
 		NeoForge.EVENT_BUS.addListener(ClientEvents::updateTravellersRedThreadAttachment);
@@ -385,6 +383,26 @@ public class ClientEvents {
 		Float zoomModifier = player.getInventory().getArmor(EquipmentSlot.HEAD.getIndex()).get(TFDataComponents.ZOOM_ABILITY_MODIFIER);
 		if (TFKeyBinds.ZOOM_KEY.isDown() && !player.isScoping() && zoomModifier != null)
 			event.setNewFovModifier(event.getNewFovModifier() * zoomModifier);
+	}
+
+	private static void slowZoomSensitivity(CalculatePlayerTurnEvent event) {
+		if (event.getCinematicCameraEnabled())
+			return;
+
+		Player player = Minecraft.getInstance().player;
+		if (player != null) { //won't ever be null by the time this event fires but this is just to make intellij happy
+			Float zoomModifier = player.getInventory().getArmor(EquipmentSlot.HEAD.getIndex()).get(TFDataComponents.ZOOM_ABILITY_MODIFIER);
+			if (TFKeyBinds.ZOOM_KEY.isDown() && !player.isScoping() && zoomModifier != null) {
+				double mouseSensitivity = event.getMouseSensitivity();
+				//vanilla math for turning is (m * 0.6 + 0.2)³ * 8; where m is the mouse sensitivity
+				//vanilla spyglasses avoid using the "* 8" part, so we probably want to as well
+				//the mod value to reverse that was borrowed from IE since they also have zoom functionality
+				//we can then divide by our zoom modifier (and add 0.05 to slow it down slightly) to set the sensitivity to a reasonable value when zooming
+				double mod = 0.5D - 1 / (6 * mouseSensitivity);
+				double fovMod = zoomModifier + 0.05F;
+				event.setMouseSensitivity(mod * mouseSensitivity / fovMod);
+			}
+		}
 	}
 
 	private static void handleTravellersStealth(RenderFrameEvent.Pre event) {
