@@ -87,6 +87,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.stonePillar();
 		this.wroughtIronFence();
 		this.terrorcotta();
+		this.makeJars();
 		List<ResourceLocation> floorOminous = this.createFloorFireModels(TFBlocks.OMINOUS_FIRE.get());
 		List<ResourceLocation> sideOminous = this.createSideFireModels(TFBlocks.OMINOUS_FIRE.get());
 		this.blockStateOutput.accept(MultiPartGenerator.multiPart(TFBlocks.OMINOUS_FIRE.get())

@@ -1,0 +1,7 @@
+{
+  "parent": "twilightforest:block/jar_lid",
+  "textures": {
+    "end": "twilightforest:block/transformation_log_top",
+    "side": "twilightforest:block/transformation_log"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "twilightforest:block/jar_lid",
+  "textures": {
+    "end": "twilightforest:block/stripped_mining_log_top",
+    "side": "twilightforest:block/stripped_mining_log"
+  }
+}

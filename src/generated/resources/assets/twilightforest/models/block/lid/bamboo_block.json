@@ -1,0 +1,7 @@
+{
+  "parent": "twilightforest:block/jar_lid",
+  "textures": {
+    "end": "minecraft:block/bamboo_block_top",
+    "side": "minecraft:block/bamboo_block"
+  }
+}

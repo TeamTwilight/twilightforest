@@ -11,12 +11,9 @@ import net.minecraft.core.Vec3i;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.*;
 import net.minecraft.world.item.ItemDisplayContext;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.DirectionalBlock;
-import net.minecraft.world.level.block.PipeBlock;
-import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
@@ -24,6 +21,7 @@ import twilightforest.block.*;
 import twilightforest.client.model.block.connected.ConnectedTextureBuilder;
 import twilightforest.client.model.block.forcefield.ForceFieldModel;
 import twilightforest.client.model.block.forcefield.ForceFieldModelBuilder;
+import twilightforest.client.renderer.block.JarRenderer;
 import twilightforest.client.renderer.special.SkullCandleSpecialRenderer;
 import twilightforest.client.renderer.special.TrophySpecialRenderer;
 import twilightforest.datagen.assets.models.TFModelTemplates;
@@ -446,6 +444,39 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 			.put(TextureSlot.PARTICLE, TwilightForestMod.prefix("block/" + type + "_a"));
 
 		return TFModelTemplates.CUBE.create(TwilightForestMod.prefix("block/" + type + "_" + (rotated ? 90 : 0)), mapping, this.modelOutput);
+	}
+
+	public void makeJars() {
+		TextureMapping mapping = TextureMapping.cube(TFBlocks.MASON_JAR.get())
+			.put(TextureSlot.TOP, TwilightForestMod.prefix("block/jar_top"))
+			.put(TextureSlot.BOTTOM, TwilightForestMod.prefix("block/jar_bottom"))
+			.put(TextureSlot.SIDE, TwilightForestMod.prefix("block/jar_side"))
+			.put(TextureSlot.PARTICLE, TwilightForestMod.prefix("block/jar_side"));
+
+		ResourceLocation location = TFModelTemplates.MASON_JAR.create(TwilightForestMod.prefix("block/" + TFBlocks.MASON_JAR.getId().getPath()), mapping, this.modelOutput);
+		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.MASON_JAR.get(), location));
+		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.CICADA_JAR.get(), location));
+		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.FIREFLY_JAR.get(), location));
+
+		for (JarRenderer.LidResource lid : JarRenderer.LID_LOCATION_LIST.get()) {
+			ResourceLocation item = lid.resourceLocation();
+			String name = item.getPath();
+
+			if (lid.lid() == Items.PUMPKIN) {
+				TextureMapping lidMapping = TextureMapping.cube(TFBlocks.MASON_JAR.get())
+					.put(TextureSlot.SIDE, ResourceLocation.withDefaultNamespace("block/pumpkin_side"))
+					.put(TextureSlot.END, ResourceLocation.withDefaultNamespace("block/pumpkin_top"));
+
+				TFModelTemplates.JAR_LID.create(TwilightForestMod.prefix("block/lid/" + name), lidMapping, this.modelOutput);
+				continue;
+			}
+			if (lid.customPath() != null) name = lid.customPath();
+			TextureMapping lidMapping = TextureMapping.cube(TFBlocks.MASON_JAR.get())
+				.put(TextureSlot.SIDE, ResourceLocation.fromNamespaceAndPath(item.getNamespace(), "block/" + item.getPath()))
+				.put(TextureSlot.END, ResourceLocation.fromNamespaceAndPath(item.getNamespace(), "block/" + item.getPath() + "_top"));
+
+			TFModelTemplates.JAR_LID.create(TwilightForestMod.prefix("block/lid/" + name), lidMapping, this.modelOutput);
+		}
 	}
 
 	@NotNull
