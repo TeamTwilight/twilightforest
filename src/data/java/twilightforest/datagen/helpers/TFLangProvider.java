@@ -69,9 +69,7 @@ public abstract class TFLangProvider extends LanguageProvider {
 	}
 
 	public void createHollowLogs(String woodPrefix, String woodName, boolean stem) {
-		this.add("block.twilightforest.hollow_" + woodPrefix + (stem ? "_stem" : "_log") + "_horizontal", "Hollow " + woodName + (stem ? " Stem" : " Log"));
-		this.add("block.twilightforest.hollow_" + woodPrefix + (stem ? "_stem" : "_log") + "_vertical", "Hollow " + woodName + (stem ? " Stem" : " Log"));
-		this.add("block.twilightforest.hollow_" + woodPrefix + (stem ? "_stem" : "_log") + "_climbable", "Hollow " + woodName + (stem ? " Stem" : " Log"));
+		this.add("block.twilightforest.hollow_" + woodPrefix + (stem ? "_stem" : "_log"), "Hollow " + woodName + (stem ? " Stem" : " Log"));
 	}
 
 	public void createWoodSet(String woodPrefix, String woodName) {
