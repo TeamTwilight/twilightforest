@@ -7,17 +7,21 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.*;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemUseAnimation;
+import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.tags.TFBlockTags;
 import twilightforest.entity.projectile.ChainBlock;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFEnchantments;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
+import twilightforest.tags.TFBlockTags;
 
 import java.util.UUID;
 
@@ -43,10 +47,12 @@ public class ChainBlockItem extends Item {
 
 		player.playSound(TFSounds.BLOCK_AND_CHAIN_FIRED.get(), 0.5F, 1.0F / (level.getRandom().nextFloat() * 0.4F + 1.2F));
 
-		if (!level.isClientSide()) {
-			ChainBlock launchedBlock = new ChainBlock(TFEntities.CHAIN_BLOCK.get(), level, player, hand, stack);
-			level.addFreshEntity(launchedBlock);
-			stack.set(TFDataComponents.THROWN_PROJECTILE, launchedBlock.getUUID());
+		if (level instanceof ServerLevel serverLevel) {
+			Projectile.spawnProjectileFromRotation((lev, entity, stacc) -> {
+				ChainBlock launchedBlock = new ChainBlock(TFEntities.CHAIN_BLOCK.get(), lev, entity, hand, stacc);
+				stack.set(TFDataComponents.THROWN_PROJECTILE, launchedBlock.getUUID());
+				return launchedBlock;
+			}, serverLevel, stack, player, 0.0F, 1.5F, 1.0F);
 		}
 
 		player.startUsingItem(hand);

@@ -61,19 +61,9 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 		this.setOwner(thrower);
 		this.stack = stack;
 		this.setHand(hand);
-		this.shootFromRotation(thrower, thrower.getXRot(), thrower.getYRot(), 0.0F, 1.5F, 1.0F);
+		this.setPos(thrower.getEyePosition());
 		this.getEntityData().set(IS_FOIL, stack.hasFoil());
 	}
-
-//	@Override
-//	public AABB getBoundingBoxForCulling() {
-//		if (this.getOwner() != null) {
-//			AABB dis = super.getBoundingBoxForCulling();
-//			AABB owner = this.getOwner().getBoundingBoxForCulling();
-//			return dis.minmax(owner);
-//		}
-//		return super.getBoundingBoxForCulling();
-//	}
 
 	private void setHand(InteractionHand hand) {
 		this.getEntityData().set(HAND, hand == InteractionHand.MAIN_HAND);

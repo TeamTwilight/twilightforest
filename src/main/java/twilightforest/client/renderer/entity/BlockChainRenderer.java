@@ -11,8 +11,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
@@ -60,6 +59,16 @@ public class BlockChainRenderer extends EntityRenderer<ChainBlock, ChainBlockRen
 		}
 	}
 
+	@Override
+	protected AABB getBoundingBoxForCulling(ChainBlock chainBlock) {
+		if (chainBlock.getOwner() != null) {
+			AABB dis = super.getBoundingBoxForCulling(chainBlock);
+			AABB owner = chainBlock.getOwner().getBoundingBox();
+			return dis.minmax(owner);
+		}
+		return super.getBoundingBoxForCulling(chainBlock);
+	}
+
 	public static void renderChain(boolean renderFoil, Vec3 offset, PoseStack stack, MultiBufferSource buffer, int light, Model chainModel) {
 		stack.pushPose();
 		VertexConsumer vertexConsumer = ItemRenderer.getFoilBuffer(buffer, chainModel.renderType(TEXTURE), false, renderFoil);
@@ -82,7 +91,7 @@ public class BlockChainRenderer extends EntityRenderer<ChainBlock, ChainBlockRen
 		state.yRot = entity.getYRot(partialTick);
 		state.xRot = entity.getXRot(partialTick);
 		state.isFoil = entity.isFoil();
-		state.chainStartPos = entity.getOwner() != null ? entity.getOwner().getEyePosition(partialTick).subtract(entity.getEyePosition(partialTick)).add(0.0D, entity.getOwner().getBbHeight() * 0.5D, 0.0D) : null;
+		state.chainStartPos = entity.getOwner() != null ? entity.getOwner().getEyePosition(partialTick).subtract(entity.getEyePosition(partialTick)).add(0.0D, entity.getBbHeight() * -0.5D, 0.0D) : null;
 		state.ownerLight = entity.getOwner() != null ? Minecraft.getInstance().getEntityRenderDispatcher().getPackedLightCoords(entity.getOwner(), partialTick) : 0;
 		state.blockHeight = entity.getBbHeight();
 	}
