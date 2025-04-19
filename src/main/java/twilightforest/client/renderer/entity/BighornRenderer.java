@@ -1,23 +1,38 @@
 package twilightforest.client.renderer.entity;
 
+import net.minecraft.client.model.SheepModel;
+import net.minecraft.client.renderer.entity.AgeableMobRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.SheepRenderer;
 import net.minecraft.client.renderer.entity.layers.SheepWoolLayer;
 import net.minecraft.client.renderer.entity.state.SheepRenderState;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.BighornModel;
+import twilightforest.entity.passive.Bighorn;
 
-public class BighornRenderer extends SheepRenderer {
-
+@SuppressWarnings("deprecation")
+public class BighornRenderer extends AgeableMobRenderer<Bighorn, SheepRenderState, SheepModel> {
 	public static final ResourceLocation TEXTURE = TwilightForestMod.getModelTexture("bighorn.png");
 
 	public BighornRenderer(EntityRendererProvider.Context context) {
-		super(context);
-		this.shadowRadius = 0.7F;
-		this.model = new BighornModel(context.bakeLayer(TFModelLayers.BIGHORN_SHEEP));
+		super(context, new BighornModel(context.bakeLayer(TFModelLayers.BIGHORN_SHEEP)), new BighornModel(context.bakeLayer(TFModelLayers.BIGHORN_SHEEP_BABY)), 0.7F);
 		this.addLayer(new SheepWoolLayer(this, context.getModelSet()));
+	}
+
+	@Override
+	public SheepRenderState createRenderState() {
+		return new SheepRenderState();
+	}
+
+	@Override
+	public void extractRenderState(Bighorn sheep, SheepRenderState renderState, float partialTick) {
+		super.extractRenderState(sheep, renderState, partialTick);
+		renderState.headEatAngleScale = sheep.getHeadEatAngleScale(partialTick);
+		renderState.headEatPositionScale = sheep.getHeadEatPositionScale(partialTick);
+		renderState.isSheared = sheep.isSheared();
+		renderState.woolColor = sheep.getColor();
+		renderState.id = sheep.getId();
 	}
 
 	@Override

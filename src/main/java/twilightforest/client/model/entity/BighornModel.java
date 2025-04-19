@@ -1,5 +1,6 @@
 package twilightforest.client.model.entity;
 
+import net.minecraft.client.model.BabyModelTransform;
 import net.minecraft.client.model.SheepModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -7,7 +8,10 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.entity.state.SheepRenderState;
 import twilightforest.client.JappaPackReloadListener;
 
+import java.util.Set;
+
 public class BighornModel extends SheepModel {
+	public static final MeshTransformer BABY_TRANSFORMER = new BabyModelTransform(false, 8.0F, 4.0F, 2.0F, 2.0F, 24.0F, Set.of("head"));
 
 	public BighornModel(ModelPart root) {
 		super(root);
@@ -21,7 +25,7 @@ public class BighornModel extends SheepModel {
 		MeshDefinition meshdefinition = SheepModel.createBodyMesh(0, CubeDeformation.NONE);
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		var head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
+		PartDefinition head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
 				.texOffs(0, 0)
 				.addBox(-3.0F, -4.0F, -6.0F, 6.0F, 6.0F, 7.0F),
 			PartPose.offset(0.0F, 6.0F, -8.0F));
@@ -84,7 +88,7 @@ public class BighornModel extends SheepModel {
 		MeshDefinition meshdefinition = SheepModel.createBodyMesh(0, CubeDeformation.NONE);
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		var head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
+		PartDefinition head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
 				.texOffs(38, 0)
 				.addBox(-3.0F, -4.0F, -6.0F, 6.0F, 6.0F, 7.0F),
 			PartPose.offset(0.0F, 5.0F, -8.0F));

@@ -42,6 +42,7 @@ public class Bighorn extends Sheep {
 		return livingdata;
 	}
 
+	@Nullable
 	@Override
 	public Sheep getBreedOffspring(ServerLevel level, AgeableMob ageable) {
 		if (!(ageable instanceof Bighorn otherParent)) {
@@ -50,9 +51,7 @@ public class Bighorn extends Sheep {
 		}
 
 		Bighorn babySheep = TFEntities.BIGHORN_SHEEP.get().create(level, EntitySpawnReason.BREEDING);
-		if (babySheep != null) {
-			babySheep.setColor(DyeColor.getMixedColor(level, this.getColor(), otherParent.getColor()));
-		}
+		if (babySheep != null) babySheep.setColor(DyeColor.getMixedColor(level, this.getColor(), otherParent.getColor()));
 		return babySheep;
 	}
 

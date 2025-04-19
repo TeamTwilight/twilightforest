@@ -343,6 +343,7 @@ public class RegistrationEvents {
 		event.registerLayerDefinition(TFModelLayers.ALPHA_YETI, AlphaYetiModel::create);
 		event.registerLayerDefinition(TFModelLayers.ARMORED_GIANT, () -> LayerDefinition.create(HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F), 64, 32));
 		event.registerLayerDefinition(TFModelLayers.BIGHORN_SHEEP, BighornModel::checkForPack);
+		event.registerLayerDefinition(TFModelLayers.BIGHORN_SHEEP_BABY, () -> BighornModel.checkForPack().apply(BighornModel.BABY_TRANSFORMER));
 		event.registerLayerDefinition(TFModelLayers.BLOCKCHAIN_GOBLIN, BlockChainGoblinModel::checkForPack);
 		event.registerLayerDefinition(TFModelLayers.BOAR, BoarModel::checkForPack);
 		event.registerLayerDefinition(TFModelLayers.BUNNY, BunnyModel::create);
