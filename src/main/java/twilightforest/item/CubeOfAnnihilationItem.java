@@ -6,6 +6,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUseAnimation;
@@ -37,10 +38,9 @@ public class CubeOfAnnihilationItem extends Item {
 		if (stack.get(TFDataComponents.THROWN_PROJECTILE) != null)
 			return InteractionResult.PASS;
 
-		if (!level.isClientSide()) {
-			CubeOfAnnihilation launchedCube = new CubeOfAnnihilation(TFEntities.CUBE_OF_ANNIHILATION.get(), level, player, stack);
-			level.addFreshEntity(launchedCube);
-			stack.set(TFDataComponents.THROWN_PROJECTILE, launchedCube.getUUID());
+		if (level instanceof ServerLevel serverLevel) {
+			Projectile.spawnProjectile(new CubeOfAnnihilation(TFEntities.CUBE_OF_ANNIHILATION.get(), serverLevel, player, stack), serverLevel, stack, cube ->
+				stack.set(TFDataComponents.THROWN_PROJECTILE, cube.getUUID()));
 		}
 
 		player.startUsingItem(hand);

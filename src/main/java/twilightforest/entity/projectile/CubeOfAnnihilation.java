@@ -22,6 +22,7 @@ import net.minecraft.world.phys.*;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.tags.TFBlockTags;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFParticleType;
@@ -32,6 +33,7 @@ import twilightforest.util.WorldUtil;
 public class CubeOfAnnihilation extends ThrowableProjectile {
 
 	private boolean hasHitObstacle = false;
+	@Nullable
 	private ItemStack stack;
 
 	public CubeOfAnnihilation(EntityType<? extends CubeOfAnnihilation> type, Level level) {
@@ -42,6 +44,7 @@ public class CubeOfAnnihilation extends ThrowableProjectile {
 		super(type, level);
 		this.setOwner(thrower);
 		this.shootFromRotation(thrower, thrower.getXRot(), thrower.getYRot(), 0.0F, 1.5F, 1.0F);
+		this.setPos(thrower.getEyePosition());
 		this.stack = stack;
 	}
 

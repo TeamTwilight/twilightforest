@@ -259,7 +259,7 @@ public class AlphaYeti extends BaseTFBoss implements RangedAttackMob, IHostileMo
 	@Override
 	public void performRangedAttack(LivingEntity target, float distanceFactor) {
 		if (!this.canRampage()) {
-			IceBomb ice = new IceBomb(TFEntities.THROWN_ICE.get(), this.level(), this);
+			IceBomb ice = new IceBomb(this.level(), this);
 
 			// [VanillaCopy] Part of Skeleton.performRangedAttack
 			double d0 = target.getX() - this.getX();
@@ -297,17 +297,17 @@ public class AlphaYeti extends BaseTFBoss implements RangedAttackMob, IHostileMo
 
 	@Override
 	public boolean causeFallDamage(float distance, float multiplier, DamageSource source) {
-		if (!this.level().isClientSide() && this.isRampaging()) {
+		if (this.level() instanceof ServerLevel level && this.isRampaging()) {
 			this.playSound(TFSounds.ALPHA_YETI_ICE.get(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
-			this.hitNearbyEntities();
+			this.hitNearbyEntities(level);
 		}
 
 		return super.causeFallDamage(distance, multiplier, source);
 	}
 
-	private void hitNearbyEntities() {
-		for (LivingEntity entity : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(5.0D, 0.0D, 5.0D))) {
-			if (entity != this && entity.hurtOrSimulate(this.damageSources().mobAttack(this), 5.0F)) {
+	private void hitNearbyEntities(ServerLevel level) {
+		for (LivingEntity entity : level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(5.0D, 0.0D, 5.0D))) {
+			if (entity != this && entity.hurtServer(level, this.damageSources().mobAttack(this), 5.0F)) {
 				entity.push(0.0D, 0.4D, 0.0D);
 			}
 		}

@@ -18,7 +18,6 @@ import twilightforest.init.TFEnchantments;
 import twilightforest.init.TFSounds;
 import twilightforest.util.TFItemStackUtils;
 
-import javax.annotation.Nonnull;
 import java.util.List;
 
 public class FortificationWandItem extends Item {
@@ -27,24 +26,23 @@ public class FortificationWandItem extends Item {
 		super(properties);
 	}
 
-	@Nonnull
 	@Override
-	public InteractionResult use(Level level, Player player, @Nonnull InteractionHand hand) {
+	public InteractionResult use(Level level, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 
-		if (stack.getDamageValue() == stack.getMaxDamage() && !player.getAbilities().instabuild) {
+		if (TFItemStackUtils.isAtZeroDurability(stack) && !player.hasInfiniteMaterials()) {
 			return InteractionResult.FAIL;
 		}
 
 		if (!level.isClientSide()) {
 			player.getData(TFDataAttachments.FORTIFICATION_SHIELDS).setShields(player, 5, true);
-			if(!player.getAbilities().instabuild) {
-				TFItemStackUtils.hurtButDontBreak(stack, 1, (ServerLevel) level, player);
+			if (!player.hasInfiniteMaterials()) {
+				TFItemStackUtils.hurtWithoutBreaking(stack, 1, player);
 			}
 		}
 		player.playSound(TFSounds.SHIELD_ADD.get(), 1.0F, (player.getRandom().nextFloat() - player.getRandom().nextFloat()) * 0.2F + 1.0F);
 
-		if (!player.isCreative())
+		if (!player.hasInfiniteMaterials())
 			player.getCooldowns().addCooldown(stack, 1200);
 		return InteractionResult.SUCCESS;
 	}

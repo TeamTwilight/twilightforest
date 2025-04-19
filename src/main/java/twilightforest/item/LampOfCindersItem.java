@@ -18,8 +18,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFSounds;
-
-import javax.annotation.Nonnull;
+import twilightforest.util.TFItemStackUtils;
 
 public class LampOfCindersItem extends Item {
 
@@ -34,19 +33,24 @@ public class LampOfCindersItem extends Item {
 		return false;
 	}
 
-	@Nonnull
 	@Override
-	public InteractionResult use(Level level, Player player, @Nonnull InteractionHand hand) {
+	public InteractionResult use(Level level, Player player, InteractionHand hand) {
+		if (TFItemStackUtils.isAtZeroDurability(player.getItemInHand(hand))) {
+			return InteractionResult.FAIL;
+		}
 		player.startUsingItem(hand);
 		return InteractionResult.SUCCESS;
 	}
 
-	@Nonnull
 	@Override
 	public InteractionResult useOn(UseOnContext context) {
 		Level world = context.getLevel();
 		BlockPos pos = context.getClickedPos();
 		Player player = context.getPlayer();
+
+		if (TFItemStackUtils.isAtZeroDurability(context.getItemInHand())) {
+			return InteractionResult.FAIL;
+		}
 
 		if (this.burnBlock(world, pos)) {
 			if (player instanceof ServerPlayer serverPlayer) CriteriaTriggers.PLACED_BLOCK.trigger(serverPlayer, pos, player.getItemInHand(context.getHand()));
@@ -78,7 +82,7 @@ public class LampOfCindersItem extends Item {
 	public boolean releaseUsing(ItemStack stack, Level level, LivingEntity living, int useRemaining) {
 		int useTime = this.getUseDuration(stack, living) - useRemaining;
 
-		if (useTime > FIRING_TIME && (stack.getDamageValue() + 1) < this.getMaxDamage(stack)) {
+		if (useTime > FIRING_TIME && !TFItemStackUtils.isAtZeroDurability(stack)) {
 			this.doBurnEffect(level, living);
 			return true;
 		}

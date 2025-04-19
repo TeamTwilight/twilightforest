@@ -142,18 +142,22 @@ public class TFItemStackUtils {
 		if (!blockedItems.isEmpty()) blockedItems.forEach(inventory::add);
 	}
 
-	public static void hurtButDontBreak(ItemStack stack, int amount, ServerLevel level, @Nullable LivingEntity entity) {
+	public static boolean isAtZeroDurability(ItemStack stack) {
+		return stack.isDamageableItem() && stack.getDamageValue() >= stack.getMaxDamage();
+	}
+
+	public static void hurtWithoutBreaking(ItemStack stack, int amount, Player player) {
 		if (stack.isDamageableItem()) {
-			amount = stack.getItem().damageItem(stack, amount, entity, item -> {});
-			if (entity == null || !entity.hasInfiniteMaterials()) {
+			amount = stack.getItem().damageItem(stack, amount, player, item -> {});
+			if (player instanceof ServerPlayer sp && !player.hasInfiniteMaterials()) {
 				if (amount > 0) {
-					amount = EnchantmentHelper.processDurabilityChange(level, stack, amount);
+					amount = EnchantmentHelper.processDurabilityChange(sp.serverLevel(), stack, amount);
 					if (amount <= 0) {
 						return;
 					}
 				}
 
-				if (entity instanceof ServerPlayer sp && amount != 0) {
+				if (amount != 0) {
 					CriteriaTriggers.ITEM_DURABILITY_CHANGED.trigger(sp, stack, stack.getDamageValue() + amount);
 				}
 

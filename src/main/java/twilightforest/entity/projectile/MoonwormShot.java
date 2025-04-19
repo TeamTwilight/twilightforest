@@ -39,9 +39,9 @@ public class MoonwormShot extends TFThrowable {
 		super(type, level);
 	}
 
-	public MoonwormShot(EntityType<? extends MoonwormShot> type, Level level, LivingEntity thrower) {
-		super(type, level, thrower);
-		this.shootFromRotation(thrower, thrower.getXRot(), thrower.getYRot(), 0F, 1.5F, 1.0F);
+	public MoonwormShot(Level level, LivingEntity thrower) {
+		super(TFEntities.MOONWORM_SHOT.get(), level, thrower);
+		this.setPos(thrower.getEyePosition());
 	}
 
 	public MoonwormShot(Level level, double x, double y, double z) {

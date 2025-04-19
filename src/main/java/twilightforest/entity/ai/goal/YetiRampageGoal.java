@@ -90,7 +90,7 @@ public class YetiRampageGoal extends Goal {
 		}
 
 		if (this.currentDuration % 20 == 0) {
-			IceBomb ice = new IceBomb(TFEntities.THROWN_ICE.get(), this.yeti.level(), this.yeti);
+			IceBomb ice = new IceBomb(this.yeti.level(), this.yeti);
 			Vec3 vec = new Vec3(0.5F + this.yeti.getRandom().nextFloat() * 0.5F, 0.5F + this.yeti.getRandom().nextFloat() * 0.3F, 0).yRot(this.yeti.getRandom().nextFloat() * 360F);
 			ice.shoot(vec.x(), vec.y(), vec.z(), 0.4F + yeti.getRandom().nextFloat() * 0.3F, 0);
 			this.yeti.playSound(TFSounds.ALPHA_YETI_ICE.get(), 1.0F, 1.0F / (this.yeti.getRandom().nextFloat() * 0.4F + 0.8F));

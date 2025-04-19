@@ -9,6 +9,7 @@ import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -35,8 +36,9 @@ public class IceBomb extends TFThrowable {
 		super(type, level);
 	}
 
-	public IceBomb(EntityType<? extends IceBomb> type, Level level, LivingEntity thrower) {
-		super(type, level, thrower);
+	public IceBomb(Level level, LivingEntity thrower) {
+		super(TFEntities.THROWN_ICE.get(), level, thrower);
+		this.setPos(thrower.getEyePosition());
 	}
 
 	public IceBomb(Level level, Position pos) {

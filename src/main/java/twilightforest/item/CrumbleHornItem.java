@@ -24,6 +24,7 @@ import net.neoforged.neoforge.event.level.BlockEvent;
 import twilightforest.init.TFDataMaps;
 import twilightforest.init.TFSounds;
 import twilightforest.init.TFStats;
+import twilightforest.util.TFItemStackUtils;
 import twilightforest.util.WorldUtil;
 
 public class CrumbleHornItem extends Item {
@@ -85,9 +86,9 @@ public class CrumbleHornItem extends Item {
 			if (this.crumbleBlock(serverLevel, living, pos)) {
 				if (living instanceof ServerPlayer player) {
 					player.awardStat(TFStats.BLOCKS_CRUMBLED.get());
+					TFItemStackUtils.hurtWithoutBreaking(stack, 1, player);
 				}
-				stack.hurtAndBreak(1, living, LivingEntity.getSlotForHand(living.getUsedItemHand()));
-				if (stack.getDamageValue() >= stack.getMaxDamage()) break;
+				if (TFItemStackUtils.isAtZeroDurability(stack)) break;
 			}
 		}
 	}

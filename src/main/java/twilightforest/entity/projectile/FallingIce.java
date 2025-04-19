@@ -27,10 +27,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.DirectionalPlaceContext;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.ConcretePowderBlock;
-import net.minecraft.world.level.block.FallingBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -214,7 +211,7 @@ public class FallingIce extends Entity {
 			this.level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, this.blockState), dx, dy, dz, 0, 0, 0);
 		}
 
-		this.playSound(Blocks.PACKED_ICE.defaultBlockState().getSoundType().getBreakSound(), 3.0F, 0.5F);
+		this.playSound(SoundType.GLASS.getBreakSound(), 3.0F, 0.5F);
 		return false;
 	}
 

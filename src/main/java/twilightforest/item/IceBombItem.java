@@ -13,7 +13,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ProjectileItem;
 import net.minecraft.world.level.Level;
 import twilightforest.entity.projectile.IceBomb;
-import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
 
 public class IceBombItem extends Item implements ProjectileItem {
@@ -28,7 +27,7 @@ public class IceBombItem extends Item implements ProjectileItem {
 		player.playSound(TFSounds.ICE_BOMB_FIRED.get(), 0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
 
 		if (level instanceof ServerLevel serverlevel) {
-			Projectile.spawnProjectileFromRotation((lev, entity, stacc) -> new IceBomb(TFEntities.THROWN_ICE.get(), level, player), serverlevel, stack, player, 0.0F, 1.5F, 1.0F);
+			Projectile.spawnProjectileFromRotation((lev, owner, stacc) -> new IceBomb(lev, owner), serverlevel, stack, player, -5.0F, 1.25F, 1.0F);
 		}
 
 		player.awardStat(Stats.ITEM_USED.get(this));

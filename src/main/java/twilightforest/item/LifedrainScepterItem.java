@@ -56,7 +56,7 @@ public class LifedrainScepterItem extends Item {
 	public InteractionResult use(Level level, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 
-		if (stack.getDamageValue() == stack.getMaxDamage() && !player.getAbilities().instabuild) {
+		if (TFItemStackUtils.isAtZeroDurability(stack) && !player.hasInfiniteMaterials()) {
 			return InteractionResult.FAIL;
 		} else {
 			player.startUsingItem(hand);
@@ -142,7 +142,7 @@ public class LifedrainScepterItem extends Item {
 
 	@Override
 	public void onUseTick(Level level, LivingEntity living, ItemStack stack, int count) {
-		if (stack.getDamageValue() == this.getMaxDamage(stack)) {
+		if (TFItemStackUtils.isAtZeroDurability(stack)) {
 			// do not use
 			living.stopUsingItem();
 			return;
@@ -201,7 +201,7 @@ public class LifedrainScepterItem extends Item {
 					}
 
 					if (living instanceof Player player && !player.getAbilities().instabuild && (!player.getItemBySlot(EquipmentSlot.HEAD).is(TFItems.MYSTIC_CROWN) || level.getRandom().nextFloat() > 0.05f)) {
-						TFItemStackUtils.hurtButDontBreak(stack, 1, (ServerLevel) level, player);
+						TFItemStackUtils.hurtWithoutBreaking(stack, 1, player);
 					}
 				}
 

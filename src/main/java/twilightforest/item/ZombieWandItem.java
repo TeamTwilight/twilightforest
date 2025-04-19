@@ -41,7 +41,7 @@ public class ZombieWandItem extends Item {
 
 		ItemStack stack = player.getItemInHand(hand);
 
-		if (stack.getDamageValue() == stack.getMaxDamage() && !player.getAbilities().instabuild) {
+		if (TFItemStackUtils.isAtZeroDurability(stack) && !player.hasInfiniteMaterials()) {
 			return InteractionResult.FAIL;
 		}
 
@@ -59,14 +59,14 @@ public class ZombieWandItem extends Item {
 				zombie.setTame(true, false);
 				zombie.setOwnerUUID(player.getUUID());
 				zombie.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 1200, 1));
-				if (player.getItemBySlot(EquipmentSlot.HEAD).is(TFItems.MYSTIC_CROWN) && level.getRandom().nextFloat() <= 0.1f) {
+				if (player.getItemBySlot(EquipmentSlot.HEAD).is(TFItems.MYSTIC_CROWN) && level.getRandom().nextFloat() <= 0.1F) {
 					zombie.setBaby(true);
 				}
 				level.addFreshEntity(zombie);
 				level.gameEvent(player, GameEvent.ENTITY_PLACE, result.getBlockPos());
 
-				if (!player.getAbilities().instabuild) {
-					TFItemStackUtils.hurtButDontBreak(stack, 1, (ServerLevel) level, player);
+				if (!player.hasInfiniteMaterials()) {
+					TFItemStackUtils.hurtWithoutBreaking(stack, 1, player);
 				}
 				zombie.playSound(TFSounds.ZOMBIE_SCEPTER_USE.get(), 1.0F, 1.0F);
 			}
