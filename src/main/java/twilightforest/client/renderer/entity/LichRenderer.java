@@ -41,9 +41,7 @@ public class LichRenderer extends HumanoidMobRenderer<Lich, LichRenderState, Lic
 
 	@Override
 	protected int getModelTint(LichRenderState state) {
-		if (state.isShadowClone) {
-			return ARGB.colorFromFloat(0.5F, 0.333F, 0.333F, 0.333F);
-		}
+		if (state.isShadowClone) return ARGB.colorFromFloat(0.5F, 0.333F, 0.333F, 0.333F);
 		return super.getModelTint(state);
 	}
 
@@ -56,13 +54,11 @@ public class LichRenderer extends HumanoidMobRenderer<Lich, LichRenderState, Lic
 
 	@Override
 	protected boolean isShaking(LichRenderState state) {
-		return super.isShaking(state) || (state.deathTime <= Lich.DEATH_ANIMATION_POINT_A);
+		return super.isShaking(state) || (state.deathTime > 0 && state.deathTime <= Lich.DEATH_ANIMATION_POINT_A);
 	}
 
 	@Override
 	public void render(LichRenderState state, PoseStack stack, MultiBufferSource buffer, int packedLight) {
-		stack.pushPose();
-		stack.scale(1.125F, 1.125F, 1.125F);
 		if (state.deathTime > 0) {
 			if (state.deathTime > Lich.DEATH_ANIMATION_POINT_A) {
 				stack.translate(0.0D, -1.8D * Math.pow(Math.min(((state.deathTime - Lich.DEATH_ANIMATION_POINT_A) + state.partialTick) * 0.05D, 1.0D), 3.0D), 0.0D);
@@ -72,7 +68,6 @@ public class LichRenderer extends HumanoidMobRenderer<Lich, LichRenderState, Lic
 			}
 			super.render(state, stack, buffer, packedLight);
 		} else super.render(state, stack, buffer, packedLight);
-		stack.popPose();
 	}
 
 	@Override
