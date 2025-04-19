@@ -34,4 +34,7 @@ public class TFTextureSlot {
 	public static final TextureSlot CTM_BASE = TextureSlot.create("base_texture");
 	public static final TextureSlot CTM_OVERLAY = TextureSlot.create("overlay_texture");
 	public static final TextureSlot CTM_OVERLAY_CONNECTED = TextureSlot.create("overlay_connected");
+
+	public static final TextureSlot SOIL = TextureSlot.create("soil");
+	public static final TextureSlot PLANT = TextureSlot.create("plant");
 }

@@ -3,12 +3,13 @@ package twilightforest.datagen.assets.models;
 import net.minecraft.client.data.models.model.ModelTemplate;
 import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureSlot;
-import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.neoforge.client.model.generators.template.ExtendedModelTemplateBuilder;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.block.giantblock.GiantBlockBuilder;
 
+/**
+ * Class for using ModelTemplates to reference existing block models.
+ */
 public class TFModelTemplates extends ModelTemplates {
 
 	public static final ModelTemplate TWO_LAYER_BLOCK = create("twilightforest:util/two_layer_block_15", TextureSlot.ALL, TFTextureSlot.ALL_2);
@@ -84,23 +85,6 @@ public class TFModelTemplates extends ModelTemplates {
 	public static final ModelTemplate SPECIAL_HANDHELD = createItem("twilightforest:special_handheld", TextureSlot.LAYER0);
 	public static final ModelTemplate TWO_LAYERED_HANDHELD = createItem("handheld", TextureSlot.LAYER0, TextureSlot.LAYER1);
 	public static final ModelTemplate TWO_LAYERED_BOW = createItem("bow", TextureSlot.LAYER0, TextureSlot.LAYER1);
-
-	public static final ModelTemplate MASON_JAR = ExtendedModelTemplateBuilder.builder()
-		.parent(ResourceLocation.withDefaultNamespace("block/block"))
-		.renderType(ResourceLocation.withDefaultNamespace("cutout"))
-		.requiredTextureSlot(TextureSlot.PARTICLE)
-		.requiredTextureSlot(TextureSlot.SIDE)
-		.requiredTextureSlot(TextureSlot.BOTTOM)
-		.requiredTextureSlot(TextureSlot.TOP)
-		.element(elementBuilder ->
-			elementBuilder.from(3.0F, 0.0F, 3.0F).to(13.0F, 14.0F, 13.0F)
-				.face(Direction.UP, faceBuilder -> faceBuilder.texture(TextureSlot.TOP))
-				.face(Direction.DOWN, faceBuilder -> faceBuilder.texture(TextureSlot.BOTTOM).cullface(Direction.DOWN))
-				.face(Direction.NORTH, faceBuilder -> faceBuilder.texture(TextureSlot.SIDE))
-				.face(Direction.SOUTH, faceBuilder -> faceBuilder.texture(TextureSlot.SIDE))
-				.face(Direction.WEST, faceBuilder -> faceBuilder.texture(TextureSlot.SIDE))
-				.face(Direction.EAST, faceBuilder -> faceBuilder.texture(TextureSlot.SIDE))
-		).build();
 
 	public static final ModelTemplate JAR_LID = create("twilightforest:jar_lid", TextureSlot.SIDE, TextureSlot.END).extend().parent(TwilightForestMod.prefix("block/jar_lid")).build();
 }

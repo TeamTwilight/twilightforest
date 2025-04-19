@@ -26,6 +26,7 @@ import twilightforest.client.renderer.block.JarRenderer;
 import twilightforest.client.renderer.special.MasonJarSpecialRenderer;
 import twilightforest.client.renderer.special.SkullCandleSpecialRenderer;
 import twilightforest.client.renderer.special.TrophySpecialRenderer;
+import twilightforest.datagen.assets.models.TFExtendedModelTemplates;
 import twilightforest.datagen.assets.models.TFModelTemplates;
 import twilightforest.datagen.assets.models.TFTextureMapping;
 import twilightforest.datagen.assets.models.TFTextureSlot;
@@ -450,13 +451,25 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 	}
 
 	public void makeJars() {
+		TextureMapping spawnerMapping = TextureMapping.cube(TFBlocks.MASON_JAR.get())
+			.put(TextureSlot.TOP, TwilightForestMod.prefix("block/jar_top"))
+			.put(TextureSlot.BOTTOM, TwilightForestMod.prefix("block/jar_bottom"))
+			.put(TextureSlot.SIDE, TwilightForestMod.prefix("block/jar_side"))
+			.put(TextureSlot.PARTICLE, TwilightForestMod.prefix("block/jar_side"))
+			.put(TFTextureSlot.SOIL, ResourceLocation.withDefaultNamespace("block/composter_compost"))
+			.put(TFTextureSlot.PLANT, ResourceLocation.withDefaultNamespace("block/poppy"));
+
+		ResourceLocation spawnerLocation = TFExtendedModelTemplates.FIREFLY_PARTICLE_SPAWNER.create(TwilightForestMod.prefix("block/" + TFBlocks.FIREFLY_SPAWNER.getId().getPath()), spawnerMapping, this.modelOutput);
+		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.FIREFLY_SPAWNER.get(), spawnerLocation));
+		this.itemModelOutput.accept(TFBlocks.FIREFLY_SPAWNER.get().asItem(), ItemModelUtils.plainModel(spawnerLocation));
+
 		TextureMapping mapping = TextureMapping.cube(TFBlocks.MASON_JAR.get())
 			.put(TextureSlot.TOP, TwilightForestMod.prefix("block/jar_top"))
 			.put(TextureSlot.BOTTOM, TwilightForestMod.prefix("block/jar_bottom"))
 			.put(TextureSlot.SIDE, TwilightForestMod.prefix("block/jar_side"))
 			.put(TextureSlot.PARTICLE, TwilightForestMod.prefix("block/jar_side"));
 
-		ResourceLocation location = TFModelTemplates.MASON_JAR.create(TwilightForestMod.prefix("block/" + TFBlocks.MASON_JAR.getId().getPath()), mapping, this.modelOutput);
+		ResourceLocation location = TFExtendedModelTemplates.MASON_JAR.create(TwilightForestMod.prefix("block/" + TFBlocks.MASON_JAR.getId().getPath()), mapping, this.modelOutput);
 		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.MASON_JAR.get(), location));
 		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.CICADA_JAR.get(), location));
 		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.FIREFLY_JAR.get(), location));
