@@ -1,0 +1,7 @@
+{
+  "parent": "twilightforest:block/potted_thorn_template",
+  "textures": {
+    "end": "twilightforest:block/brown_thorns_top",
+    "side": "twilightforest:block/brown_thorns_side"
+  }
+}
