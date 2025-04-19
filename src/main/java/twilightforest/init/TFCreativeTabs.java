@@ -15,15 +15,15 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ItemLike;
-import net.neoforged.fml.loading.FMLLoader;
+import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
-import twilightforest.components.item.SkullCandles;
 import twilightforest.config.TFConfig;
 import twilightforest.entity.MagicPaintingVariant;
+import twilightforest.tags.TFItemTags;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -629,6 +629,13 @@ public class TFCreativeTabs {
 
 				event.accept(itemstack);
 			});
+
+			if (!FMLEnvironment.production) {
+				TFItems.ITEMS.getEntries().forEach(itemDeferredHolder -> {
+					ItemStack wipStack = itemDeferredHolder.get().getDefaultInstance();
+					if (wipStack.is(TFItemTags.WIP)) event.accept(wipStack);
+				});
+			}
 		}
 	}
 }
