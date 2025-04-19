@@ -10,27 +10,23 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.entity.*;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
+import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
-import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.client.resources.PlayerSkin;
-import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.PlayerModelPart;
-import net.minecraft.world.item.ItemDisplayContext;
-import net.minecraft.world.item.ItemStack;
 import twilightforest.client.model.entity.GiantModel;
 import twilightforest.client.state.GiantRenderState;
 import twilightforest.config.TFConfig;
 import twilightforest.entity.monster.GiantMiner;
-
-import javax.annotation.Nullable;
 
 public class TFGiantRenderer<T extends GiantMiner> extends HumanoidMobRenderer<T, GiantRenderState, GiantModel> {
 	private final GiantModel normalModel;
@@ -41,6 +37,7 @@ public class TFGiantRenderer<T extends GiantMiner> extends HumanoidMobRenderer<T
 		this.normalModel = this.getModel();
 		this.slimModel = new GiantModel(context.bakeLayer(ModelLayers.PLAYER_SLIM), true);
 
+		this.layers.removeIf(layer -> layer instanceof ItemInHandLayer<GiantRenderState, GiantModel>);
 		this.addLayer(new GiantItemInHandLayer<>(this));
 		this.addLayer(new HumanoidArmorLayer<>(this, new HumanoidModel<>(context.bakeLayer(ModelLayers.PLAYER_INNER_ARMOR)), new HumanoidModel<>(context.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR)), context.getEquipmentRenderer()));
 	}
@@ -61,6 +58,8 @@ public class TFGiantRenderer<T extends GiantMiner> extends HumanoidMobRenderer<T
 			texture = client.getSkin().texture();
 			if (client.getSkin().model().id().equals("slim")) this.model = this.slimModel;
 		}
+
+		if (this.model == this.slimModel) this.slimModel.setupAnim(state);
 
 		return texture;
 	}

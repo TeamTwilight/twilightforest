@@ -56,6 +56,7 @@ public class GiantMiner extends Monster {
 
 	@Nullable
 	@Override
+	@SuppressWarnings("deprecation")
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, EntitySpawnReason reason, @Nullable SpawnGroupData spawnDataIn) {
 		SpawnGroupData data = super.finalizeSpawn(accessor, difficulty, reason, spawnDataIn);
 		populateDefaultEquipmentSlots(accessor.getRandom(), difficulty);
