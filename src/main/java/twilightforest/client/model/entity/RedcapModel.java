@@ -21,7 +21,7 @@ public class RedcapModel extends FixedHumanoidModel<HumanoidRenderState> {
 		MeshDefinition meshdefinition = HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F);
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		var head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
+		PartDefinition head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
 				.texOffs(0, 0)
 				.addBox(-3.5F, -8.0F, -3.5F, 7.0F, 7.0F, 7.0F)
 				.texOffs(0, 0)
@@ -37,7 +37,7 @@ public class RedcapModel extends FixedHumanoidModel<HumanoidRenderState> {
 		head.addOrReplaceChild("hat", CubeListBuilder.create()
 				.texOffs(32, 0)
 				.addBox(-2.0F, -8.5F, -3.0F, 4.0F, 5.0F, 7.0F),
-			PartPose.offset(0.0F, 6.0F, 0.0F));
+			PartPose.offset(0.0F, -0.0F, 0.0F));
 
 		partdefinition.addOrReplaceChild("body", CubeListBuilder.create()
 				.texOffs(12, 19)
@@ -71,7 +71,7 @@ public class RedcapModel extends FixedHumanoidModel<HumanoidRenderState> {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		var head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
+		PartDefinition head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
 				.texOffs(0, 1)
 				.addBox(-5.5F, -6.0F, -0.5F, 2.0F, 3.0F, 0.0F)
 				.texOffs(0, 1).mirror()
