@@ -40,7 +40,7 @@ public class UnbakedNoiseVaryingModel extends AbstractUnbakedModel {
 			return blockModel;
 		}
 
-		return (BlockModel) modelGetter.resolve(ResourceLocation.withDefaultNamespace("builtin/missing"));
+		return (BlockModel) modelGetter.resolve(MissingBlockModel.LOCATION);
 	}
 
 	@Override
@@ -49,9 +49,20 @@ public class UnbakedNoiseVaryingModel extends AbstractUnbakedModel {
 
 		for (int i = 0; i < bakedVariants.length; i++) {
 			BlockModel variant = this.variants.get(i);
-			bakedVariants[i] = variant.bake(textureSlots, baker, modelState, hasAmbientOcclusion, useBlockLight, transforms, additionalProperties);
+			bakedVariants[i] = variant.bake(getTopTextureSlots(variant, baker.rootName()), baker, modelState, hasAmbientOcclusion, useBlockLight, transforms, additionalProperties);
 		}
 
 		return new NoiseVaryingModel(bakedVariants);
+	}
+
+	static TextureSlots getTopTextureSlots(UnbakedModel model, ModelDebugName name) {
+		TextureSlots.Resolver textureslots$resolver = new TextureSlots.Resolver();
+
+		while (model != null) {
+			textureslots$resolver.addLast(model.getTextureSlots());
+			model = model.getParent();
+		}
+
+		return textureslots$resolver.resolve(name);
 	}
 }

@@ -1,0 +1,6 @@
+{
+  "parent": "twilightforest:block/tinted_block",
+  "textures": {
+    "all": "twilightforest:block/aurora_block_3"
+  }
+}

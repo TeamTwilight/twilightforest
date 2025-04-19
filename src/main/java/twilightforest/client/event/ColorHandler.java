@@ -31,7 +31,7 @@ public class ColorHandler {
 	protected static void registerBlockColors(RegisterColorHandlersEvent.Block event) {
 		BlockColors blockColors = event.getBlockColors();
 
-		event.register((state, getter, pos, tintIndex) -> 0xFF000000 | ColorUtil.hsvToRGB(getter == null ? 0.45F : SimplexNoiseHelper.rippleFractalNoise(2, 128.0f, pos != null ? pos.above(128) : new BlockPos(0, 0, 0), 0.37f, 0.67f, 1.5f), 1.0f, 1.0f), TFBlocks.AURORA_BLOCK.get());
+		event.register((state, getter, pos, tintIndex) -> 0xFF000000 | ColorUtil.hsvToRGB(getter == null ? 0.45F : SimplexNoiseHelper.rippleFractalNoise(2, 128.0F, pos != null ? pos.above(128) : BlockPos.ZERO, 0.37F, 0.67F, 1.5F), 1.0F, 1.0F), TFBlocks.AURORA_BLOCK.get());
 		event.register((state, getter, pos, tintIndex) -> {
 			int normalColor = blockColors.getColor(TFBlocks.AURORA_BLOCK.get().defaultBlockState(), getter, pos, tintIndex);
 

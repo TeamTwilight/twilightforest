@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "twilightforest:block/aurora_pillar",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "twilightforest:block/aurora_pillar"
+    },
+    "axis=z": {
+      "model": "twilightforest:block/aurora_pillar",
+      "x": 90
+    }
+  }
+}

@@ -68,6 +68,9 @@ public class TFModelTemplates extends ModelTemplates {
 
 	public static final ModelTemplate CASTLE_RUNE_TEMPLATE = create("twilightforest:castle_rune_template", TextureSlot.ALL, TFTextureSlot.RUNE);
 	public static final ModelTemplate TINTED_CUBE_BOTTOM_TOP = create("twilightforest:tinted_cube_bottom_top", TextureSlot.TOP, TextureSlot.SIDE, TextureSlot.BOTTOM);
+	public static final ModelTemplate TINTED_BLOCK = create("twilightforest:tinted_block", TextureSlot.ALL);
+	public static final ModelTemplate TINTED_SLAB_BOTTOM = create("twilightforest:tinted_slab_bottom", TextureSlot.TOP, TextureSlot.SIDE, TextureSlot.BOTTOM);
+	public static final ModelTemplate TINTED_SLAB_TOP = create("twilightforest:tinted_slab_top", "_top", TextureSlot.TOP, TextureSlot.SIDE, TextureSlot.BOTTOM);
 	public static final ModelTemplate TROPHY_PEDESTAL = create("twilightforest:template_trophy_pedestal", TextureSlot.NORTH, TextureSlot.SOUTH, TextureSlot.EAST, TextureSlot.WEST);
 	public static final ModelTemplate TROPHY_PEDESTAL_ACTIVE = create("twilightforest:template_trophy_pedestal_active",
 		TextureSlot.NORTH, TextureSlot.SOUTH, TextureSlot.EAST, TextureSlot.WEST, //base
