@@ -1,11 +1,13 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.SlimeModel;
+import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.client.renderer.entity.layers.SlimeOuterLayer;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.*;
+import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.state.SlimeRenderState;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -19,7 +21,7 @@ public class MazeSlimeRenderer extends MobRenderer<MazeSlime, SlimeRenderState, 
 
 	public MazeSlimeRenderer(EntityRendererProvider.Context context) {
 		super(context, new SlimeModel(context.bakeLayer(TFModelLayers.MAZE_SLIME)), 0.625F);
-		this.addLayer(new SlimeOuterLayer(this, context.getModelSet()));
+		this.addLayer(new MazeSlimeOuterLayer(this, context.getModelSet()));
 	}
 
 	@Override
@@ -53,5 +55,27 @@ public class MazeSlimeRenderer extends MobRenderer<MazeSlime, SlimeRenderState, 
 	@Override
 	public ResourceLocation getTextureLocation(SlimeRenderState state) {
 		return TEXTURE;
+	}
+
+	public static class MazeSlimeOuterLayer extends RenderLayer<SlimeRenderState, SlimeModel> {
+		private final SlimeModel model;
+
+		public MazeSlimeOuterLayer(RenderLayerParent<SlimeRenderState, SlimeModel> renderer, EntityModelSet modelSet) {
+			super(renderer);
+			this.model = new SlimeModel(modelSet.bakeLayer(TFModelLayers.MAZE_SLIME_OUTER));
+		}
+
+		@Override
+		public void render(PoseStack stack, MultiBufferSource source, int light, SlimeRenderState renderState, float yRot, float xRot) {
+			boolean flag = renderState.appearsGlowing && renderState.isInvisible;
+			if (!renderState.isInvisible || flag) {
+				VertexConsumer vertexconsumer;
+				if (flag) vertexconsumer = source.getBuffer(RenderType.outline(TEXTURE));
+				else vertexconsumer = source.getBuffer(RenderType.entityTranslucent(TEXTURE));
+
+				this.model.setupAnim(renderState);
+				this.model.renderToBuffer(stack, vertexconsumer, light, LivingEntityRenderer.getOverlayCoords(renderState, 0.0F));
+			}
+		}
 	}
 }
