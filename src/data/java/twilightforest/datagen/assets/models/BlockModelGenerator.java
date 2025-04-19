@@ -5,6 +5,7 @@ import net.minecraft.client.data.models.ItemModelOutput;
 import net.minecraft.client.data.models.blockstates.*;
 import net.minecraft.client.data.models.model.*;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -46,9 +47,9 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.spawner(TFBlocks.FINAL_BOSS_BOSS_SPAWNER.get(), "block/boss_spawner");
 		this.spawner(TFBlocks.SINISTER_SPAWNER.get(), "block/sinister_spawner");
 
-		this.thorns(TFBlocks.BROWN_THORNS.get());
-		this.thorns(TFBlocks.GREEN_THORNS.get());
-		this.thorns(TFBlocks.BURNT_THORNS.get());
+		this.thorns(TFBlocks.BROWN_THORNS.get(), TFBlocks.POTTED_THORN.get());
+		this.thorns(TFBlocks.GREEN_THORNS.get(), TFBlocks.POTTED_GREEN_THORN.get());
+		this.thorns(TFBlocks.BURNT_THORNS.get(), TFBlocks.POTTED_DEAD_THORN.get());
 		this.directionalCrossModel(TFBlocks.THORN_ROSE.get(), PlantType.NOT_TINTED);
 		this.createTintedLeaves(TFBlocks.THORN_LEAVES.get(), TexturedModel.createDefault(block -> TextureMapping.cube(Blocks.SPRUCE_LEAVES), ModelTemplates.LEAVES), -10380959);
 		this.wrapBlockItem(TFBlocks.DEADROCK.get(), this::createTrivialCube);
@@ -56,8 +57,10 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.wrapBlockItem(TFBlocks.WEATHERED_DEADROCK.get(), this::createTrivialCube);
 
 		this.createCrossBlock(TFBlocks.FIDDLEHEAD.get(), PlantType.TINTED);
+		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.POTTED_FIDDLEHEAD.get(), ModelTemplates.TINTED_FLOWER_POT_CROSS.extend().renderType("cutout").build().create(TFBlocks.POTTED_FIDDLEHEAD.get(), TextureMapping.singleSlot(TextureSlot.PLANT, TwilightForestMod.prefix("block/potted_fiddlehead")), this.modelOutput)));
 		this.createItemWithGrassTint(TFBlocks.FIDDLEHEAD.get());
 		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.MAYAPPLE.get(), ModelLocationUtils.getModelLocation(TFBlocks.MAYAPPLE.get())));
+		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.POTTED_MAYAPPLE.get(), ModelLocationUtils.getModelLocation(TFBlocks.POTTED_MAYAPPLE.get())));
 		this.registerSimpleFlatItemModel(TFBlocks.MAYAPPLE.get());
 		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.CLOVER_PATCH.get(), TFModelTemplates.create("block", TextureSlot.TEXTURE, TextureSlot.PARTICLE).extend().customLoader(PatchBuilder::new, builder -> {
 		}).renderType("cutout").build().create(TFBlocks.CLOVER_PATCH.get(), TextureMapping.defaultTexture(TFBlocks.CLOVER_PATCH.get()), this.modelOutput)));
@@ -70,6 +73,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.registerSimpleFlatItemModel(TFBlocks.TORCHBERRY_PLANT.get());
 		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.MUSHGLOOM.get(), ModelLocationUtils.getModelLocation(TFBlocks.MUSHGLOOM.get())));
 		this.registerTwoLayerFlatItemModel(TFBlocks.MUSHGLOOM.get(), "_head");
+		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.POTTED_MUSHGLOOM.get(), ModelTemplates.FLOWER_POT_CROSS.extend().renderType("cutout").build().create(TFBlocks.POTTED_MUSHGLOOM.get(), TextureMapping.singleSlot(TextureSlot.PLANT, TwilightForestMod.prefix("block/potted_mushgloom")), this.modelOutput)));
 		this.wrapBlockItem(TFBlocks.HEDGE.get(), block -> this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block,
 			Variant.variant().with(VariantProperties.MODEL, ModelTemplates.CUBE_ALL.create(block, TextureMapping.cube(block), this.modelOutput)).with(VariantProperties.WEIGHT, 10),
 			Variant.variant().with(VariantProperties.MODEL, ModelTemplates.CUBE_ALL.createWithSuffix(block, "_rose", TextureMapping.cube(TextureMapping.getBlockTexture(block, "_rose")), this.modelOutput)))));
@@ -326,7 +330,9 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.wrapBlockItem(TFBlocks.CARMINITE_BLOCK.get(), block -> this.blockStateOutput.accept(createSimpleBlock(block, ModelLocationUtils.getModelLocation(block))));
 
 		this.createParticleOnlyBlock(TFBlocks.BRAZIER.get(), TFBlocks.CANOPY_PLANKS.get());
-		this.wrapBlockItem(TFBlocks.CINDER_FURNACE.get(), block -> this.blockStateOutput.accept(createSimpleBlock(block, ModelLocationUtils.getModelLocation(Blocks.FURNACE))));
+		this.wrapBlockItem(TFBlocks.SLIDER.get(), block -> this.blockStateOutput.accept(createRotatedPillarWithHorizontalVariant(block, ModelLocationUtils.getModelLocation(block), ModelLocationUtils.getModelLocation(block, "_horiz"))));
+		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.CINDER_FURNACE.get(), ModelLocationUtils.getModelLocation(Blocks.FURNACE)));
+		this.registerSimpleItemModel(TFBlocks.CINDER_FURNACE.get(), ResourceLocation.withDefaultNamespace("block/furnace"));
 		this.wrapBlockItem(TFBlocks.CINDER_LOG.get(), block -> this.generateLog(block, TextureMapping.logColumn(block)));
 		this.wrapBlockItem(TFBlocks.CINDER_WOOD.get(), block -> this.generateLog(block, TextureMapping.logColumn(TFBlocks.CINDER_LOG.get())));
 		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get(), TwilightForestMod.prefix("block/miniature/portal")));

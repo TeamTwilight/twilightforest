@@ -525,8 +525,10 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 		this.itemModelOutput.accept(block.asItem(), ItemModelUtils.plainModel(yModel));
 	}
 
-	public void thorns(Block block) {
+	public void thorns(Block block, Block potted) {
 		TextureMapping mapping = TextureMapping.column(block);
+		this.blockStateOutput.accept(createSimpleBlock(potted, TFModelTemplates.POTTED_THORN.create(potted, mapping, this.modelOutput)));
+
 		ResourceLocation main = TFModelTemplates.THORNS_MAIN.createWithSuffix(block, "_main", mapping, this.modelOutput);
 		ResourceLocation thorns = TFModelTemplates.THORNS.createWithSuffix(block, "_thorns", mapping, this.modelOutput);
 		ResourceLocation top = TFModelTemplates.THORNS_SECTION_TOP.createWithSuffix(block, "_top", mapping, this.modelOutput);

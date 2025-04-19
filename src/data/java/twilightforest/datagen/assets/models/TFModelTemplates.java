@@ -66,6 +66,7 @@ public class TFModelTemplates extends ModelTemplates {
 	public static final ModelTemplate THORNS_SECTION_BOTTOM = create("twilightforest:thorns_section_bottom", TextureSlot.SIDE, TextureSlot.END).extend().parent(TwilightForestMod.prefix("block/thorns_section_bottom")).renderType("cutout").build();
 	public static final ModelTemplate THORNS_NO_SECTION = create("twilightforest:thorns_no_section", TextureSlot.SIDE, TextureSlot.END).extend().parent(TwilightForestMod.prefix("block/thorns_no_section")).renderType("cutout").build();
 	public static final ModelTemplate THORNS_NO_SECTION_ALT = create("twilightforest:thorns_no_section_alt", TextureSlot.SIDE, TextureSlot.END).extend().parent(TwilightForestMod.prefix("block/thorns_no_section_alt")).renderType("cutout").build();
+	public static final ModelTemplate POTTED_THORN = create("twilightforest:potted_thorn_template", TextureSlot.SIDE, TextureSlot.END);
 
 	public static final ModelTemplate CASTLE_RUNE_TEMPLATE = create("twilightforest:castle_rune_template", TextureSlot.ALL, TFTextureSlot.RUNE);
 	public static final ModelTemplate TINTED_CUBE_BOTTOM_TOP = create("twilightforest:tinted_cube_bottom_top", TextureSlot.TOP, TextureSlot.SIDE, TextureSlot.BOTTOM);
