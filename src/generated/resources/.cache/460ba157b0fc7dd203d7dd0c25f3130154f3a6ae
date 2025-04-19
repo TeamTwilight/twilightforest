@@ -1,4 +1,4 @@
-// 1.21.4	2025-04-18T23:54:41.8198164	Model Definitions - twilightforest
+// 1.21.4	2025-04-19T00:41:15.7716621	Model Definitions - twilightforest
 bfc4b40d2c8daf9144a74758b5060ff35a20c7b8 assets/twilightforest/blockstates/acacia_banister.json
 2ba5945264a026fc35aa113643919b494cf4406d assets/twilightforest/blockstates/alpha_yeti_boss_spawner.json
 94ee00eebd82061338b6db439a84b3fdf98f3942 assets/twilightforest/blockstates/alpha_yeti_trophy.json
@@ -564,6 +564,7 @@ b5a72c8b30f43cd98085254b5131737890a44760 assets/twilightforest/items/charm_of_li
 e58d6a1275db10a970b1cae244727654c8f6866a assets/twilightforest/items/cherry_banister.json
 811a790d6d001885bb20f7bfa128c65fc925b401 assets/twilightforest/items/chiseled_canopy_bookshelf.json
 6bc2e4abafa165cedfa50db190d63d776a45318c assets/twilightforest/items/cicada.json
+3031b70aef996de06574258c98175852ec2170db assets/twilightforest/items/cicada_jar.json
 3b19e64ca96c86e1f735545c273a97c8e944f4fb assets/twilightforest/items/cinder_furnace.json
 baba64132f0f5ae339c0b3107e4d8a22fca3e19b assets/twilightforest/items/cinder_log.json
 b32eeb67d17c7ff44326bb95eb8de98f1a1eee28 assets/twilightforest/items/cinder_wood.json
@@ -642,6 +643,7 @@ ce813db4941103ac8042e077dfefeca18f5ce65d assets/twilightforest/items/filled_maze
 a075e6d51bb6968460215b867a86a16bb5537c6d assets/twilightforest/items/filled_ore_map.json
 8f7d3874c091f2c0dd37afe2fc371b97235002ac assets/twilightforest/items/final_boss_boss_spawner.json
 78509625324ffc2bde1fef0603469b80a75f6719 assets/twilightforest/items/firefly.json
+a75942f78ba7b879eb09c3e209dbbc7a1e2c4555 assets/twilightforest/items/firefly_jar.json
 3b83cb6b70b60830de98575ffd28fde31808aa2e assets/twilightforest/items/fire_beetle_spawn_egg.json
 7a978965e0b28898e3db6e935938688371a8448f assets/twilightforest/items/fire_jet.json
 ddfbfe59023d896fd7293408debcff571da0e75b assets/twilightforest/items/fluffy_cloud.json
@@ -766,6 +768,7 @@ c192583209d88243de973af6f3c15ac18c196cdb assets/twilightforest/items/mangrove_pl
 a6afb5bf93467c4a88cf5e794c9fa45850d58f20 assets/twilightforest/items/mangrove_trapdoor.json
 c066524152659a2fb8a7db8cd209d94dcf15f7f2 assets/twilightforest/items/mangrove_trapped_chest.json
 5181f75f10260ebf5007d576ad97b0889ac543f4 assets/twilightforest/items/mangrove_wood.json
+a75942f78ba7b879eb09c3e209dbbc7a1e2c4555 assets/twilightforest/items/mason_jar.json
 9bf06f4b6a46682a4523cbd79fbed9f299999abe assets/twilightforest/items/mayapple.json
 63b129eb1e24f404ec777dab6e6acc38f4cf1f27 assets/twilightforest/items/mazebreaker_pickaxe.json
 f46bd2155b870e02a91ac25057cf841595d5e1a8 assets/twilightforest/items/mazestone.json
@@ -1533,6 +1536,7 @@ db6a9d6d158eb3a5a1a16b28d4489f3f480265b5 assets/twilightforest/models/block/lid/
 19842890142c3bb31401ac9da58087be97a76295 assets/twilightforest/models/block/lid/mangrove_log.json
 647c8d268e4884bae99a5adad83b55729420f558 assets/twilightforest/models/block/lid/mining_log.json
 6d4cf4d4748111a48745b1216ee0cf90df30c06c assets/twilightforest/models/block/lid/oak_log.json
+fa9b1f04c8da3dc414c4b0babb89783488699e02 assets/twilightforest/models/block/lid/pale_oak_log.json
 452d508621d48693bb31b93afb52d4155144efdd assets/twilightforest/models/block/lid/pumpkin.json
 70e3a5111dc6b8526ad109dced7e46f378677b46 assets/twilightforest/models/block/lid/sorting_log.json
 6000c4fffd48f4a6cc1b09d7403863051974e1ef assets/twilightforest/models/block/lid/spruce_log.json
@@ -1548,6 +1552,7 @@ ed61da99c2d720bcc4accc4041eb4af3ff37b01b assets/twilightforest/models/block/lid/
 18de1925a507b375246dc7d4ee16328355bf2eb5 assets/twilightforest/models/block/lid/stripped_mangrove_log.json
 63b1f5ac883e4b08627d9e5e97595fe87cdfc673 assets/twilightforest/models/block/lid/stripped_mining_log.json
 a2fbab2a89e8996c546ca79e99f79e92961ad456 assets/twilightforest/models/block/lid/stripped_oak_log.json
+659c6b354b7ecf79232a316efc50cf62a24c8de1 assets/twilightforest/models/block/lid/stripped_pale_oak_log.json
 0312afc5eace15f88c8b3cbc4f378dc2573b2188 assets/twilightforest/models/block/lid/stripped_sorting_log.json
 1b13a84d58337e1bb7b0212c229ec077d779e3e8 assets/twilightforest/models/block/lid/stripped_spruce_log.json
 145c186d3d81026460a889f8090b0f209d145f4b assets/twilightforest/models/block/lid/stripped_time_log.json

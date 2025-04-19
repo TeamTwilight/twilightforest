@@ -23,6 +23,7 @@ import twilightforest.client.model.block.connected.ConnectedTextureBuilder;
 import twilightforest.client.model.block.forcefield.ForceFieldModel;
 import twilightforest.client.model.block.forcefield.ForceFieldModelBuilder;
 import twilightforest.client.renderer.block.JarRenderer;
+import twilightforest.client.renderer.special.MasonJarSpecialRenderer;
 import twilightforest.client.renderer.special.SkullCandleSpecialRenderer;
 import twilightforest.client.renderer.special.TrophySpecialRenderer;
 import twilightforest.datagen.assets.models.TFModelTemplates;
@@ -32,6 +33,7 @@ import twilightforest.enums.BossVariant;
 import twilightforest.enums.HugeLilypadPiece;
 import twilightforest.enums.NagastoneVariant;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.TFItems;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -458,6 +460,10 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.MASON_JAR.get(), location));
 		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.CICADA_JAR.get(), location));
 		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.FIREFLY_JAR.get(), location));
+
+		this.itemModelOutput.accept(TFItems.MASON_JAR.get(), ItemModelUtils.composite(ItemModelUtils.plainModel(location), ItemModelUtils.specialModel(location, new MasonJarSpecialRenderer.Unbaked(TFBlocks.TWILIGHT_OAK_LOG.asItem()))));
+		this.itemModelOutput.accept(TFItems.FIREFLY_JAR.get(), ItemModelUtils.composite(ItemModelUtils.plainModel(location), ItemModelUtils.specialModel(location, new MasonJarSpecialRenderer.Unbaked(TFBlocks.TWILIGHT_OAK_LOG.asItem()))));
+		this.itemModelOutput.accept(TFItems.CICADA_JAR.get(), ItemModelUtils.composite(ItemModelUtils.plainModel(location), ItemModelUtils.specialModel(location, new MasonJarSpecialRenderer.Unbaked(TFBlocks.CANOPY_LOG.asItem()))));
 
 		for (JarRenderer.LidResource lid : JarRenderer.LID_LOCATION_LIST.get()) {
 			ResourceLocation item = lid.resourceLocation();

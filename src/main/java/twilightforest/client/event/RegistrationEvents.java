@@ -432,6 +432,7 @@ public class RegistrationEvents {
 		event.register(TwilightForestMod.prefix("moonworm"), MoonwormSpecialRenderer.Unbaked.MAP_CODEC);
 		event.register(TwilightForestMod.prefix("knightmetal_shield"), KnightmetalShieldSpecialRenderer.Unbaked.MAP_CODEC);
 		event.register(TwilightForestMod.prefix("mystic_crown"), MysticCrownSpecialRenderer.Unbaked.MAP_CODEC);
+		event.register(TwilightForestMod.prefix("mason_jar"), MasonJarSpecialRenderer.Unbaked.MAP_CODEC);
 	}
 
 	private static void registerSpecialModels(RegisterSpecialBlockModelRendererEvent event) {
@@ -458,6 +459,10 @@ public class RegistrationEvents {
 		event.register(TFBlocks.CICADA.get(), new CicadaSpecialRenderer.Unbaked());
 		event.register(TFBlocks.FIREFLY.get(), new FireflySpecialRenderer.Unbaked());
 		event.register(TFBlocks.MOONWORM.get(), new MoonwormSpecialRenderer.Unbaked());
+
+		event.register(TFBlocks.FIREFLY_JAR.get(), new MasonJarSpecialRenderer.Unbaked(TFBlocks.TWILIGHT_OAK_LOG.asItem()));
+		event.register(TFBlocks.CICADA_JAR.get(), new MasonJarSpecialRenderer.Unbaked(TFBlocks.CANOPY_LOG.asItem()));
+		event.register(TFBlocks.MASON_JAR.get(), new MasonJarSpecialRenderer.Unbaked(TFBlocks.TWILIGHT_OAK_LOG.asItem()));
 
 		event.register(TFBlocks.ZOMBIE_SKULL_CANDLE.get(), new SkullCandleSpecialRenderer.Unbaked(SkullBlock.Types.ZOMBIE));
 		event.register(TFBlocks.ZOMBIE_WALL_SKULL_CANDLE.get(), new SkullCandleSpecialRenderer.Unbaked(SkullBlock.Types.ZOMBIE));

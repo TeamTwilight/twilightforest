@@ -567,6 +567,7 @@ public final class TwilightForestMod {
 			JarBlockEntity.addLid(Items.JUNGLE_LOG);
 			JarBlockEntity.addLid(Items.MANGROVE_LOG);
 			JarBlockEntity.addLid(Items.OAK_LOG);
+			JarBlockEntity.addLid(Items.PALE_OAK_LOG);
 			JarBlockEntity.addLid(Items.SPRUCE_LOG);
 			JarBlockEntity.addLid(Items.CRIMSON_STEM);
 			JarBlockEntity.addLid(Items.WARPED_STEM);
@@ -585,6 +586,7 @@ public final class TwilightForestMod {
 			JarBlockEntity.addLid(Items.STRIPPED_JUNGLE_LOG);
 			JarBlockEntity.addLid(Items.STRIPPED_MANGROVE_LOG);
 			JarBlockEntity.addLid(Items.STRIPPED_OAK_LOG);
+			JarBlockEntity.addLid(Items.STRIPPED_PALE_OAK_LOG);
 			JarBlockEntity.addLid(Items.STRIPPED_SPRUCE_LOG);
 			JarBlockEntity.addLid(Items.STRIPPED_CRIMSON_STEM);
 			JarBlockEntity.addLid(Items.STRIPPED_WARPED_STEM);
