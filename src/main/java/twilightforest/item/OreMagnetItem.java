@@ -53,7 +53,7 @@ public class OreMagnetItem extends Item {
 	@Override
 	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
 		AtomicBoolean badEnchant = new AtomicBoolean();
-		book.getEnchantments().entrySet().forEach(enchantment -> {
+		book.getTagEnchantments().entrySet().forEach(enchantment -> {
 			if (!Objects.equals(Enchantments.UNBREAKING, enchantment)) {
 				badEnchant.set(true);
 			}

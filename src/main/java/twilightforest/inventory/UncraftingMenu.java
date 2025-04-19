@@ -241,7 +241,7 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 					result.get(DataComponents.ENCHANTMENTS).entrySet().forEach(enchantment -> enchants.set(enchantment.getKey(), enchantment.getIntValue()));
 				}
 				//remove any incompatible enchants
-				enchants.removeIf(holder -> !holder.value().canEnchant(result));
+				enchants.removeIf(holder -> !result.supportsEnchantment(holder));
 
 				//remove enchantments and replace with filtered list
 				result.remove(DataComponents.ENCHANTMENTS);
@@ -313,7 +313,7 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 	}
 
 	protected static boolean isComplete(List<Ingredient> list) { //TODO: check if properly ported
-		return !list.isEmpty() && list.stream().noneMatch((ingredient) -> ingredient.isEmpty());
+		return !list.isEmpty() && list.stream().noneMatch(Ingredient::isEmpty);
 	}
 
 	private static boolean matches(ItemStack input, ItemStack output) {
@@ -432,7 +432,7 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 		cost += enchantCost;
 
 		// broken pieces cost
-		int damagedCost = (1 + this.countDamagedParts(input)) * output.getEnchantments().size();
+		int damagedCost = (1 + this.countDamagedParts(input)) * output.getTagEnchantments().size();
 		cost += damagedCost;
 
 		// minimum cost of 1 if we're even calling this part
@@ -444,7 +444,7 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 	private static int countTotalEnchantmentCost(ItemStack stack) {
 		int count = 0;
 
-		for (Object2IntMap.Entry<Holder<Enchantment>> entry : stack.getEnchantments().entrySet()) {
+		for (Object2IntMap.Entry<Holder<Enchantment>> entry : stack.getTagEnchantments().entrySet()) {
 			Enchantment ench = entry.getKey().value();
 			int level = entry.getIntValue();
 
