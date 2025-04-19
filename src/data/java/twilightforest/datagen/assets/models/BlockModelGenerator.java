@@ -18,6 +18,7 @@ import twilightforest.datagen.helpers.models.BlockModelBuilders;
 import twilightforest.init.TFBlocks;
 
 import java.util.List;
+import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -74,6 +75,12 @@ public class BlockModelGenerator extends BlockModelBuilders {
 			Variant.variant().with(VariantProperties.MODEL, ModelTemplates.CUBE_ALL.createWithSuffix(block, "_rose", TextureMapping.cube(TextureMapping.getBlockTexture(block, "_rose")), this.modelOutput)))));
 		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.ROOT_STRAND.get(), ModelLocationUtils.getModelLocation(TFBlocks.ROOT_STRAND.get())));
 		this.registerSimpleFlatItemModel(TFBlocks.ROOT_STRAND.get());
+		this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(TFBlocks.FALLEN_LEAVES.get()).with(
+			PropertyDispatch.property(BlockStateProperties.LAYERS).generate(layer -> Variant.variant().with(VariantProperties.MODEL, ModelTemplates.create("block", String.valueOf(layer), TextureSlot.TEXTURE, TextureSlot.PARTICLE)
+					.extend().element(builder -> builder.from(0.0F, 0.0F, 0.0F).to(16.0F, layer == 1 ? 0.2F : (layer - 1) * 2, 16.0F)
+						.allFacesExcept((direction, face) -> face.tintindex(0).texture(TextureSlot.TEXTURE), Set.of(Direction.DOWN))
+						.face(Direction.DOWN, face -> face.cullface(Direction.DOWN).texture(TextureSlot.TEXTURE).tintindex(0))).build().create(TFBlocks.FALLEN_LEAVES.get(), TextureMapping.cube(Blocks.OAK_LEAVES), this.modelOutput)))));
+		this.registerSimpleTintedItemModel(TFBlocks.FALLEN_LEAVES.get(), this.createFlatItemModelWithBlockTexture(TFBlocks.FALLEN_LEAVES.asItem(), Blocks.OAK_LEAVES), ItemModelUtils.constantTint(-12012264));
 
 		this.nagaStone();
 
