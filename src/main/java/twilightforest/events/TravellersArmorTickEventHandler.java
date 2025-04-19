@@ -49,7 +49,7 @@ public class TravellersArmorTickEventHandler {
 				TravellersArmorItem.travellersWingsControlledFall(livingEntity);
 				TravellersArmorItem.travellersVestHaste(livingEntity);
 				TravellersArmorItem.travellersWingsHighJump(livingEntity);
-				TravellersArmorItem.travellersGearRepair(livingEntity);
+				TravellersArmorItem.travellersGearAutoRepair(livingEntity);
 				TravellersArmorItem.travellersBootsForwardBoost(livingEntity);
 			});
 		}

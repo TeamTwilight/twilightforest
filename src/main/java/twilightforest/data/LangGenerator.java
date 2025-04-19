@@ -8,6 +8,7 @@ import twilightforest.data.helpers.TFLangProvider;
 import twilightforest.data.tags.FluidTagGenerator;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.*;
+import twilightforest.item.travellers_gear.modifiers.TravellersModifiers;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -1191,6 +1192,32 @@ public class LangGenerator extends TFLangProvider {
 		this.addKeyMapping(TFKeyBinds.RED_THREAD_VISION_KEY, "See Red Thread with Goggles");
 		this.addKeyMapping(TFKeyBinds.ZOOM_KEY, "Zoom With Goggles");
 		this.addKeyMapping(TFKeyBinds.SWAP_HOTBAR_KEY, "Swap Hotbar");
-//		this.addAttribute(TFAttributes.TRAVEL_FOOD_EFFICIENCY, "Travel Food Efficiency");
+
+		// built-in modifiers
+		this.addTravellersModifier(TravellersModifiers.ZOOM_MODIFIER, "Zoom (keybind ${tfkeybinds/"+ TFKeyBinds.ZOOM_KEY.getName() + "})");
+		this.addTravellersModifier(TravellersModifiers.SWIFT_SWIM_MODIFIER, "Swift Swim");
+		this.addTravellersModifier(TravellersModifiers.SWAP_HOTBAR_MODIFIER, "Swap Hotbar (keybind ${tfkeybinds/"+ TFKeyBinds.SWAP_HOTBAR_KEY.getName() + "})");
+		this.addTravellersModifier(TravellersModifiers.HIGH_JUMP_MODIFIER, "High Jump");
+		this.addTravellersModifier(TravellersModifiers.HIGH_STEP_MODIFIER, "High Step");
+
+		// built-in modifiers
+		this.addTravellersModifier(TravellersModifiers.RED_THREAD_VISION_MODIFIER, "— Red Thread Vision (keybind ${tfkeybinds/"+ TFKeyBinds.RED_THREAD_VISION_KEY.getName() + "})");
+		this.addTravellersModifier(TravellersModifiers.PERFECT_DODGE_MODIFIER, "— Perfect Dodge");
+		this.addTravellersModifier(TravellersModifiers.STEALTH_MODIFIER, "— Stealth (sneak to activate)");
+		this.addTravellersModifier(TravellersModifiers.HASTE_MODIFIER, "— Haste");
+		this.addTravellersModifier(TravellersModifiers.ARROW_MAGNETISM_MODIFIER, "— Arrow Magnetism");
+		this.addTravellersModifier(TravellersModifiers.FOOD_EFFICIENCY_MODIFIER, "— Efficient Eater");
+		this.addTravellersModifier(TravellersModifiers.CONTROLLED_FALL_MODIFIER, "— Controlled Fall");
+		this.addTravellersModifier(TravellersModifiers.DOUBLE_JUMP_MODIFIER, "— Double Jump");
+		this.addTravellersModifier(TravellersModifiers.AGILE_RANGER_MODIFIER, "— Agile Ranger");
+		this.addTravellersModifier(TravellersModifiers.SIDESTEP_MODIFIER, "— Sidestep");
+		this.addTravellersModifier(TravellersModifiers.WATER_WALK_MODIFIER, "— Water Walk");
+		this.addTravellersModifier(TravellersModifiers.SLIMY_SOLES_MODIFIER, "— Slimy Soles");
+		this.addTravellersModifier(TravellersModifiers.STRAIGHT_AHEAD_MODIFIER, "— Straight Ahead");
+		this.addTravellersModifier(TravellersModifiers.AUTO_REPAIR_MODIFIER, "— Auto Repair");
+
+		// Other Traveller's gear components
+		this.add("travellers_gear.ability", "Ability: ");
+		this.add("travellers_gear.modifier.empty", "— Empty");
 	}
 }

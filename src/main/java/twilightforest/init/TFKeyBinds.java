@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public abstract class TFKeyBinds {
-	private static final Set<KeyMapping> KEY_MAPPINGS = new HashSet<>();
+	public static final Set<KeyMapping> KEY_MAPPINGS = new HashSet<>();
 
 	public static final KeyMapping RED_THREAD_VISION_KEY = register("red_thread_vision", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, TFKeyBindsCategories.TRAVELLERS_GEAR);
 	public static final KeyMapping ZOOM_KEY = register("zoom", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_Z, TFKeyBindsCategories.TRAVELLERS_GEAR);

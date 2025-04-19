@@ -3,8 +3,7 @@
   "modifier": {
     "data_component_map": {
       "twilightforest:perfect_dodge_probability": 0.1
-    },
-    "tooltip": "dodge"
+    }
   },
   "pattern": {
     "key": {

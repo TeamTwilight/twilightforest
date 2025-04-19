@@ -678,7 +678,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.define('B', Ingredient.of(TFItems.TRAVELLERS_BOOTS))
 				.define('H', Ingredient.of(Items.RABBIT_HIDE))
 				.build(),
-			TravellersModifiers.FORWARD_BOOST_MODIFIER).save(output);
+			TravellersModifiers.STRAIGHT_AHEAD_MODIFIER).save(output);
 
 		TravellersGearComponentModifierBuilder.build(PatternBuilder.create()
 				.pattern(" E ")

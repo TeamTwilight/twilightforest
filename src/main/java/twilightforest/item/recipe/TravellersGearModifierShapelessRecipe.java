@@ -8,7 +8,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 import twilightforest.init.TFRecipes;
-import twilightforest.item.travellers_gear.modifiers.TravellersGearComponentModifier;
+import twilightforest.item.travellers_gear.modifiers.TravellersComponentModifier;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.List;
 public class TravellersGearModifierShapelessRecipe extends TravellersGearModifierRecipe {
 	protected final NonNullList<Ingredient> ingredients;
 
-	public TravellersGearModifierShapelessRecipe(NonNullList<Ingredient> ingredients, TravellersGearComponentModifier travellersModifier) {
+	public TravellersGearModifierShapelessRecipe(NonNullList<Ingredient> ingredients, TravellersComponentModifier travellersModifier) {
 		super(travellersModifier);
 		this.ingredients = ingredients;
 	}
@@ -51,7 +51,7 @@ public class TravellersGearModifierShapelessRecipe extends TravellersGearModifie
 				NonNullList.codecOf(Ingredient.CODEC_NONEMPTY)
 					.fieldOf("ingredients")
 					.forGetter(recipe -> recipe.ingredients),
-				TravellersGearComponentModifier.MAP_CODEC
+				TravellersComponentModifier.MAP_CODEC
 					.fieldOf("modifier")
 					.forGetter(recipe -> recipe.travellersModifier)
 			).apply(instance, TravellersGearModifierShapelessRecipe::new)));

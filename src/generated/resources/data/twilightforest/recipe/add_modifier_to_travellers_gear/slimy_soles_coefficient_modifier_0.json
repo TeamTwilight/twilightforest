@@ -3,8 +3,7 @@
   "modifier": {
     "data_component_map": {
       "twilightforest:slimy_soles_coefficient": 0.5
-    },
-    "tooltip": "slimy_soles"
+    }
   },
   "pattern": {
     "key": {

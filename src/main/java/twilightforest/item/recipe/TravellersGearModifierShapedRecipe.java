@@ -6,11 +6,11 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import net.minecraft.world.level.Level;
 import twilightforest.init.TFRecipes;
-import twilightforest.item.travellers_gear.modifiers.TravellersGearComponentModifier;
+import twilightforest.item.travellers_gear.modifiers.TravellersComponentModifier;
 
 public class TravellersGearModifierShapedRecipe extends TravellersGearModifierRecipe {
 	protected final ShapedRecipePattern pattern;
-	public TravellersGearModifierShapedRecipe(ShapedRecipePattern pattern, TravellersGearComponentModifier travellersModifier) {
+	public TravellersGearModifierShapedRecipe(ShapedRecipePattern pattern, TravellersComponentModifier travellersModifier) {
 		super(travellersModifier);
 		this.pattern = pattern;
 	}
@@ -38,7 +38,7 @@ public class TravellersGearModifierShapedRecipe extends TravellersGearModifierRe
 				ShapedRecipePattern.MAP_CODEC
 					.fieldOf("pattern")
 					.forGetter(recipe -> recipe.pattern),
-				TravellersGearComponentModifier.MAP_CODEC
+				TravellersComponentModifier.MAP_CODEC
 					.fieldOf("modifier")
 					.forGetter(recipe -> recipe.travellersModifier)
 			).apply(instance, TravellersGearModifierShapedRecipe::new)));

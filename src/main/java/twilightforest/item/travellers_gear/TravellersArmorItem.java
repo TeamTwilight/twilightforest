@@ -1,8 +1,10 @@
 package twilightforest.item.travellers_gear;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.DisconnectionDetails;
@@ -22,6 +24,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -35,20 +38,25 @@ import twilightforest.client.model.armor.TFArmorModel;
 import twilightforest.client.model.armor.TravellersLeggingsModel;
 import twilightforest.client.renderer.armor.TFArmorRenderer;
 import twilightforest.init.*;
+import twilightforest.item.travellers_gear.modifiers.*;
 import twilightforest.network.ParticlePacket;
+import twilightforest.util.TFMathUtil;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
+import java.util.List;
 import java.util.function.Consumer;
 
 public class TravellersArmorItem extends ArmorItem {
 	public static final double WATER_WALKING_MAX_SUBMERGED_HEIGHT = 0.4;
-	public static final int AUTO_REPAIR_SUNLIGHT_BOOST = 3;
-	public static final ResourceLocation FORWARD_BOOTS_ATTRIBUTE_MODIFIER_LOCATION = TwilightForestMod.prefix("travellers_gear.boots_forward_boost");
+	private static final double AUTO_REPAIR_SUNLIGHT_BOOST = 3;
+	private static final double AUTO_REPAIR_TWILIGHT_BOOST = AUTO_REPAIR_SUNLIGHT_BOOST / 2;
+	protected int insertableModifierSlots;
 	@Nullable
 	private ItemAttributeModifiers attributeModifiers;
-	public TravellersArmorItem(ArmorItem.Type equipmentType, Properties properties, int durability) {
+	public TravellersArmorItem(ArmorItem.Type equipmentType, Properties properties, int insertableModifierSlots, int durability) {
 		super(TFArmorMaterials.TRAVELLERS, equipmentType, properties.durability(equipmentType.getDurability(durability)));
+		this.insertableModifierSlots = insertableModifierSlots;
 		attributeModifiers = this.components().get(DataComponents.ATTRIBUTE_MODIFIERS);
 		if (attributeModifiers == null)
 			return;
@@ -58,12 +66,12 @@ public class TravellersArmorItem extends ArmorItem {
 		}
 	}
 
-	public TravellersArmorItem(ArmorItem.Type equipmentType, Properties properties) {
-		this(equipmentType, properties, 4);
+	public TravellersArmorItem(ArmorItem.Type equipmentType, Properties properties, int insertableModifierSlots) {
+		this(equipmentType, properties, insertableModifierSlots, 4);
 	}
 
 	@Override
-	public ItemAttributeModifiers getDefaultAttributeModifiers() {
+	public @NotNull ItemAttributeModifiers getDefaultAttributeModifiers() {
 		return this.attributeModifiers == null ? super.getDefaultAttributeModifiers() : this.attributeModifiers;
 	}
 
@@ -117,7 +125,7 @@ public class TravellersArmorItem extends ArmorItem {
 			return;
 		if (multiplier == null)
 			multiplier = 1D;
-		attributeInstance.addOrUpdateTransientModifier(new AttributeModifier(FORWARD_BOOTS_ATTRIBUTE_MODIFIER_LOCATION, multiplier - 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+		attributeInstance.addOrUpdateTransientModifier(new AttributeModifier(TFAttributeModifiers.FORWARD_BOOTS_ATTRIBUTE_MODIFIER_LOCATION, multiplier - 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
 	}
 
 	public static void travellersWingsSidestepCooldownSound(Player player) {
@@ -147,17 +155,31 @@ public class TravellersArmorItem extends ArmorItem {
 		livingEntity.fallDistance = (float) (Math.pow(newDeltaMovementY, 2) / 2 / livingEntity.getGravity());  // use mv ^ 2 / 2 / mg = h
 	}
 
-	public static void travellersGearRepair(LivingEntity livingEntity) {
+	public static void travellersGearAutoRepair(LivingEntity livingEntity) {
 		livingEntity.getArmorSlots().forEach(slot -> {
 			Float probability = slot.get(TFDataComponents.AUTO_REPAIR_PROBABILITY);
 			if (probability == null)
 				return;
 			Level level = livingEntity.level();
-			if (level.isDay() && level.canSeeSky(livingEntity.getOnPos()))
-					probability = (float) (1 - Math.pow(1 - probability, AUTO_REPAIR_SUNLIGHT_BOOST));  // chance to have at least 1 repair in AUTO_REPAIR_SUNLIGHT_BOOST tries
-			if (probability > level.random.nextFloat())
+			double boostedProbability = getAutoRepairChance(probability, level, livingEntity.blockPosition());
+
+			if (boostedProbability > level.random.nextFloat())
 				slot.setDamageValue(Math.max(slot.getDamageValue() - 1, 0));
 		});
+	}
+
+	private static double getAutoRepairChance(double baseProb, Level level, BlockPos pos) {
+		if (!level.canSeeSky(pos))
+			return baseProb;
+
+		double boostFactor;  // 1 tick in boost ≈ boostFactor ticks without boost
+		if (level.dimensionTypeRegistration().is(TFDimensionData.TWILIGHT_DIM_TYPE))
+			boostFactor = AUTO_REPAIR_TWILIGHT_BOOST;
+		else if (level.isDay())
+			boostFactor = AUTO_REPAIR_SUNLIGHT_BOOST;
+		else
+			return baseProb;
+		return TFMathUtil.probabilityOfAtLeastOneSuccess(baseProb, boostFactor);
 	}
 
 	public static void travellersWingsHighJump(LivingEntity livingEntity) {
@@ -194,8 +216,8 @@ public class TravellersArmorItem extends ArmorItem {
 	}
 
 	public static boolean performDoubleJump(Player player) {
-		Boolean hasDoubleJump = player.getData(TFDataAttachments.HAS_DOUBLE_JUMP);
-		if (Boolean.TRUE.equals(hasDoubleJump) && !player.isFallFlying() && !player.onGround()) {
+		boolean hasDoubleJump = player.getData(TFDataAttachments.HAS_DOUBLE_JUMP);
+		if (hasDoubleJump && !player.isFallFlying() && !player.onGround()) {
 			player.jumpFromGround();
 			player.fallDistance = 0;
 			player.setData(TFDataAttachments.HAS_DOUBLE_JUMP, false);
@@ -284,9 +306,26 @@ public class TravellersArmorItem extends ArmorItem {
 
 	public static Properties bootsProperties(Properties properties) {
 		return properties
+			.component(TFDataComponents.TRAVELLERS_HAS_BOOTS, true)
 			.attributes(defaultArmorProperties(Type.BOOTS)
 				.add(Attributes.STEP_HEIGHT, TFAttributeModifiers.TRAVELLERS_HIGH_STEP,  EquipmentSlotGroup.FEET)
 				.build());
+	}
+
+	@Override
+	public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context, @NotNull List<Component> tooltip, @NotNull TooltipFlag flags) {
+		super.appendHoverText(stack, context, tooltip, flags);
+		List<BuiltinTravellersComponentModifier> builtinModifiers = TravellersModifiers.findAllBuiltinModifiers(stack);
+		builtinModifiers.forEach(modifier -> tooltip.add(Component.translatable("travellers_gear.ability").withStyle(ChatFormatting.GOLD).append(getModifierTooltipComponent(modifier))));
+		List<InsertableTravellersModifier> insertableModifiers = TravellersModifiers.findAllInsertableModifiers(stack);
+		insertableModifiers.forEach(modifier -> tooltip.add(getModifierTooltipComponent(modifier)));
+		for (int i = insertableModifiers.size(); i < insertableModifierSlots; i++) {
+			tooltip.add(Component.translatable("travellers_gear.modifier.empty").withStyle(ChatFormatting.DARK_GRAY));
+		}
+	}
+
+	private Component getModifierTooltipComponent(TravellersModifier modifier) {
+		return TooltipStringInterpolator.render(modifier.getTooltipTranslationKey()).withStyle(ChatFormatting.GRAY);
 	}
 
 	// [VanillaCopy] modified ArmorItem constructor to just return default attribute modifiers
@@ -320,7 +359,7 @@ public class TravellersArmorItem extends ArmorItem {
 		}
 
 		@Override
-		public @NotNull HumanoidModel<?> getHumanoidArmorModel(LivingEntity living, ItemStack stack, EquipmentSlot slot, HumanoidModel<?> model) {
+		public @NotNull HumanoidModel<?> getHumanoidArmorModel(@NotNull LivingEntity living, @NotNull ItemStack stack, EquipmentSlot slot, @NotNull HumanoidModel<?> model) {
 			ModelPart root = switch (slot) {
 				case HEAD -> this.getModelPart(TFModelLayers.TRAVELLERS_ARMOR_HELMET);
 				case CHEST -> {
@@ -355,7 +394,7 @@ public class TravellersArmorItem extends ArmorItem {
 		}
 
 		@Override
-		public void setupModelAnimations(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, Model model, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch) {
+		public void setupModelAnimations(@NotNull LivingEntity livingEntity, @NotNull ItemStack itemStack, @NotNull EquipmentSlot equipmentSlot, @NotNull Model model, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch) {
 			if (model instanceof TravellersLeggingsModel wingsModel)
 				wingsModel.setupModelAnimations(livingEntity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 		}

@@ -5,51 +5,70 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import twilightforest.init.TFDataComponents;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Stream;
+import java.util.*;
 
 public abstract class TravellersModifiers {
-	public static final  Set<TravellersModifier> MODIFIERS = new HashSet<>();
+	public static final List<InsertableTravellersModifier> INSERTABLE_MODIFIERS = new ArrayList<>();
+	public static final List<BuiltinTravellersComponentModifier> BUILTIN_MODIFIERS = new ArrayList<>();
 
 	// goggles
-	public static final TravellersGearComponentModifier RED_THREAD_VISION_MODIFIER = registerComponentModifier(TFDataComponents.RED_THREAD_VISION_ENABLE, true, "red_thread_vision");
+	public static final BuiltinTravellersComponentModifier ZOOM_MODIFIER = registerBuiltinComponentModifier(TFDataComponents.ZOOM_ABILITY_MODIFIER);
+	public static final TravellersComponentModifier RED_THREAD_VISION_MODIFIER = registerComponentModifier(TFDataComponents.RED_THREAD_VISION_ENABLE, true);
 
 	// vest
-	public static final TravellersGearComponentModifier PERFECT_DODGE_MODIFIER = registerComponentModifier(TFDataComponents.PERFECT_DODGE_PROBABILITY, 0.1F, "dodge");
-	public static final TravellersGearComponentModifier STEALTH_MODIFIER = registerComponentModifier(TFDataComponents.STEALTH_CROUCHING_ENABLE, true, "stealth");
-	public static final TravellersGearComponentModifier HASTE_MODIFIER = registerComponentModifier(TFDataComponents.HASTE_AMPLIFIER, 1, "haste");
-	public static final TravellersGearComponentModifier ARROW_MAGNETISM_MODIFIER = registerComponentModifier(TFDataComponents.ARROW_MAGNETISM, true, "arrow_magnetism");
-	public static final TravellersGearComponentModifier FOOD_EFFICIENCY_MODIFIER = registerComponentModifier(TFDataComponents.EFFICIENT_EATER, 1F, "food_efficiency");
+	public static final BuiltinTravellersComponentModifier SWIFT_SWIM_MODIFIER = registerBuiltinComponentModifier(TFDataComponents.TRAVELLERS_HAS_CHESTPLATE);
+	public static final TravellersComponentModifier PERFECT_DODGE_MODIFIER = registerComponentModifier(TFDataComponents.PERFECT_DODGE_PROBABILITY, 0.1F);
+	public static final TravellersComponentModifier STEALTH_MODIFIER = registerComponentModifier(TFDataComponents.STEALTH_CROUCHING_ENABLE, true);
+	public static final TravellersComponentModifier HASTE_MODIFIER = registerComponentModifier(TFDataComponents.HASTE_AMPLIFIER, 1);
+	public static final TravellersComponentModifier ARROW_MAGNETISM_MODIFIER = registerComponentModifier(TFDataComponents.ARROW_MAGNETISM, true);
+	public static final TravellersComponentModifier FOOD_EFFICIENCY_MODIFIER = registerComponentModifier(TFDataComponents.EFFICIENT_EATER, 1F);
+
+	// belt
+	public static final BuiltinTravellersComponentModifier SWAP_HOTBAR_MODIFIER = registerBuiltinComponentModifier(TFDataComponents.TRAVELLERS_HAS_BELT);
 
 	// wings
-	public static final TravellersGearComponentModifier CONTROLLED_FALL_MODIFIER = registerComponentModifier(TFDataComponents.CONTROLLED_FALLING_MULTIPLIER, 1 - 1 / 6F, "controlled_fall");
-	public static final TravellersGearComponentModifier DOUBLE_JUMP_MODIFIER = registerComponentModifier(TFDataComponents.HAS_DOUBLE_JUMP, true, "double_jump");
-	public static final TravellersGearComponentModifier AGILE_RANGER_MODIFIER = registerComponentModifier(TFDataComponents.AGILE_RANGER_MODIFIER, 5F, "agile_ranger");
-	public static final TravellersGearComponentModifier SIDESTEP_MODIFIER = registerComponentModifier(TFDataComponents.SIDESTEP_COOLDOWN, 3 * 20L, "sidestep_cooldown");
+	public static final BuiltinTravellersComponentModifier HIGH_JUMP_MODIFIER = registerBuiltinComponentModifier(TFDataComponents.HIGH_JUMP_AMPLIFIER);
+	public static final TravellersComponentModifier CONTROLLED_FALL_MODIFIER = registerComponentModifier(TFDataComponents.CONTROLLED_FALLING_MULTIPLIER, 1 - 1 / 6F);
+	public static final TravellersComponentModifier DOUBLE_JUMP_MODIFIER = registerComponentModifier(TFDataComponents.HAS_DOUBLE_JUMP, true);
+	public static final TravellersComponentModifier AGILE_RANGER_MODIFIER = registerComponentModifier(TFDataComponents.AGILE_RANGER_MODIFIER, 5F);
+	public static final TravellersComponentModifier SIDESTEP_MODIFIER = registerComponentModifier(TFDataComponents.SIDESTEP_COOLDOWN, 3 * 20L);
 
 	// boots
-	public static final TravellersGearComponentModifier WATER_WALK_MODIFIER = registerComponentModifier(TFDataComponents.WATER_WALK_ENABLE, true, "water_walk");
-	public static final TravellersGearComponentModifier SLIMY_SOLES_MODIFIER = registerComponentModifier(TFDataComponents.SLIMY_SOLES_COEFFICIENT, 0.5F, "slimy_soles");
-	public static final TravellersGearComponentModifier FORWARD_BOOST_MODIFIER = registerComponentModifier(TFDataComponents.FORWARD_BOOST_MULTIPLIER, 1.4, "forward_boost");
+	public static final BuiltinTravellersComponentModifier HIGH_STEP_MODIFIER = registerBuiltinComponentModifier(TFDataComponents.TRAVELLERS_HAS_BOOTS);
+	public static final TravellersComponentModifier WATER_WALK_MODIFIER = registerComponentModifier(TFDataComponents.WATER_WALK_ENABLE, true);
+	public static final TravellersComponentModifier SLIMY_SOLES_MODIFIER = registerComponentModifier(TFDataComponents.SLIMY_SOLES_COEFFICIENT, 0.5F);
+	public static final TravellersComponentModifier STRAIGHT_AHEAD_MODIFIER = registerComponentModifier(TFDataComponents.FORWARD_BOOST_MULTIPLIER, 1.4);
 
 	// all
-	public static final TravellersGearComponentModifier AUTO_REPAIR_MODIFIER = registerComponentModifier(TFDataComponents.AUTO_REPAIR_PROBABILITY, 0.001F, "auto_repair");
+	public static final TravellersComponentModifier AUTO_REPAIR_MODIFIER = registerComponentModifier(TFDataComponents.AUTO_REPAIR_PROBABILITY, 0.001F);
 
-	public static <T> TravellersGearComponentModifier registerComponentModifier(DeferredHolder<DataComponentType<?>, DataComponentType<T>> dataComponent, T value, String tooltip) {
-		return register(new TravellersGearComponentModifier(dataComponent, value, tooltip));
+	public static <T> TravellersComponentModifier registerComponentModifier(DeferredHolder<DataComponentType<?>, DataComponentType<T>> dataComponent, T value) {
+		return register(new TravellersComponentModifier(dataComponent, value));
 	}
 
-	public static <T extends TravellersModifier> T register(T travellersModifier) {
-		MODIFIERS.add(travellersModifier);
-		return travellersModifier;
+	public static <T> BuiltinTravellersComponentModifier registerBuiltinComponentModifier(DeferredHolder<DataComponentType<?>, DataComponentType<T>> dataComponent) {
+		return register(new BuiltinTravellersComponentModifier(dataComponent));
 	}
 
-	public static Stream<TravellersModifier> findAllModifiers(ItemStack stack) {
-		return MODIFIERS.stream().filter(travellersModifier -> travellersModifier.hasModifier(stack));
+	public static <T extends InsertableTravellersModifier> T register(T modifier) {
+		INSERTABLE_MODIFIERS.add(modifier);
+		return modifier;
 	}
 
-	public static long countModifiers(ItemStack stack) {
-		return findAllModifiers(stack).count();
+	public static <T extends BuiltinTravellersComponentModifier> T register(T modifier) {
+		BUILTIN_MODIFIERS.add(modifier);
+		return modifier;
+	}
+
+	public static List<InsertableTravellersModifier> findAllInsertableModifiers(ItemStack stack) {
+		return INSERTABLE_MODIFIERS.stream().filter(travellersModifier -> travellersModifier.hasModifier(stack)).toList();
+	}
+
+	public static List<BuiltinTravellersComponentModifier> findAllBuiltinModifiers(ItemStack stack) {
+		return BUILTIN_MODIFIERS.stream().filter(travellersModifier -> travellersModifier.hasModifier(stack)).toList();
+	}
+
+	public static long countInsertableModifiers(ItemStack stack) {
+		return findAllInsertableModifiers(stack).size();
 	}
 }

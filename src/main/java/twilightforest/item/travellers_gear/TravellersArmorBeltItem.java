@@ -19,12 +19,12 @@ import java.util.Optional;
 
 public class TravellersArmorBeltItem extends TravellersArmorItem {
 	@SuppressWarnings("unused")
-	public TravellersArmorBeltItem(ArmorItem.Type equipmentType, Properties properties, int durability) {
-		super(equipmentType, beltProperties(properties), durability);
+	public TravellersArmorBeltItem(ArmorItem.Type equipmentType, Properties properties, int insertableModifierSlots, int durability) {
+		super(equipmentType, beltProperties(properties), insertableModifierSlots, durability);
 	}
 
-	public TravellersArmorBeltItem(ArmorItem.Type equipmentType, Properties properties) {
-		super(equipmentType, beltProperties(properties), 4);
+	public TravellersArmorBeltItem(ArmorItem.Type equipmentType, Properties properties, int insertableModifierSlots) {
+		super(equipmentType, beltProperties(properties), insertableModifierSlots, 4);
 	}
 
 	public static Properties beltProperties(Properties properties) {

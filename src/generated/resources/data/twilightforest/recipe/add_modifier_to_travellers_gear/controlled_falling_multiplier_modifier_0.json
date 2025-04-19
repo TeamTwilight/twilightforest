@@ -3,8 +3,7 @@
   "modifier": {
     "data_component_map": {
       "twilightforest:controlled_falling_multiplier": 0.8333333
-    },
-    "tooltip": "controlled_fall"
+    }
   },
   "pattern": {
     "key": {

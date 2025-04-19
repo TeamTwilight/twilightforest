@@ -96,10 +96,10 @@ public class ASMHooks {
 		AttributeInstance attributeInstance = player.getAttributes().getInstance(Attributes.MOVEMENT_SPEED);
 		if (attributeInstance == null)
 			return;
-		AttributeModifier modifier = attributeInstance.getModifier(TravellersArmorItem.FORWARD_BOOTS_ATTRIBUTE_MODIFIER_LOCATION);
+		AttributeModifier modifier = attributeInstance.getModifier(TFAttributeModifiers.FORWARD_BOOTS_ATTRIBUTE_MODIFIER_LOCATION);
 		double multiplier = modifier == null ? 1 : modifier.amount() + 1;
 		player.setData(TFDataAttachments.TEMPORARY_SAVED_FORWARD_BOOST, multiplier);
-		attributeInstance.removeModifier(TravellersArmorItem.FORWARD_BOOTS_ATTRIBUTE_MODIFIER_LOCATION);
+		attributeInstance.removeModifier(TFAttributeModifiers.FORWARD_BOOTS_ATTRIBUTE_MODIFIER_LOCATION);
 	}
 
 	/**
@@ -115,7 +115,7 @@ public class ASMHooks {
 		if (attributeInstance == null)
 			return;
 		double multiplier = player.getData(TFDataAttachments.TEMPORARY_SAVED_FORWARD_BOOST);
-		attributeInstance.addTransientModifier(new AttributeModifier(TravellersArmorItem.FORWARD_BOOTS_ATTRIBUTE_MODIFIER_LOCATION, multiplier - 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+		attributeInstance.addTransientModifier(new AttributeModifier(TFAttributeModifiers.FORWARD_BOOTS_ATTRIBUTE_MODIFIER_LOCATION, multiplier - 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
 	}
 
 	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

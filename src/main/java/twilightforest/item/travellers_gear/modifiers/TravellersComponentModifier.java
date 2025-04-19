@@ -2,7 +2,6 @@ package twilightforest.item.travellers_gear.modifiers;
 
 
 import com.google.common.base.Objects;
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.component.DataComponentMap;
@@ -11,19 +10,20 @@ import net.minecraft.core.component.TypedDataComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.registries.DeferredHolder;
+import org.apache.commons.lang3.StringUtils;
 
-public class TravellersGearComponentModifier implements TravellersModifier {
+public class TravellersComponentModifier implements InsertableTravellersModifier {
 	protected final TypedDataComponent<?> typedDataComponent;
-	protected final String tooltip;
+	protected final String tooltipTranslationKey;
 	protected ResourceLocation datagenOnlyComponentId;
 
-	private TravellersGearComponentModifier(TypedDataComponent<?> typedDataComponent, String tooltip) {
+	private TravellersComponentModifier(TypedDataComponent<?> typedDataComponent) {
 		this.typedDataComponent = typedDataComponent;
-		this.tooltip = tooltip;
+		this.tooltipTranslationKey = "travellers_gear.modifier." + StringUtils.substringAfterLast(typedDataComponent.type().toString(), ':');
 	}
 
-	public <T> TravellersGearComponentModifier(DeferredHolder<DataComponentType<?>, DataComponentType<T>> dataComponent, T value, String tooltip) {
-		this(new TypedDataComponent<>(dataComponent.get(), value), tooltip);
+	public <T> TravellersComponentModifier(DeferredHolder<DataComponentType<?>, DataComponentType<T>> dataComponent, T value) {
+		this(new TypedDataComponent<>(dataComponent.get(), value));
 		datagenOnlyComponentId = dataComponent.getId();
 	}
 
@@ -44,8 +44,8 @@ public class TravellersGearComponentModifier implements TravellersModifier {
 	}
 
 	@Override
-	public String getTooltipString() {
-		return tooltip;
+	public String getTooltipTranslationKey() {
+		return tooltipTranslationKey;
 	}
 
 	public ResourceLocation getDatagenOnlyComponentId() {
@@ -54,25 +54,24 @@ public class TravellersGearComponentModifier implements TravellersModifier {
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(typedDataComponent, tooltip);
+		return Objects.hashCode(typedDataComponent);
 	}
 
 	@Override
 	public boolean equals(Object o) {
-		if (o instanceof TravellersGearComponentModifier travellersGearComponentModifier)
-			return travellersGearComponentModifier.typedDataComponent.equals(typedDataComponent) &&
-				travellersGearComponentModifier.tooltip.equals(tooltip);
+		if (o instanceof TravellersComponentModifier travellersGearComponentModifier)
+			return travellersGearComponentModifier.typedDataComponent.equals(typedDataComponent);
 		return false;
 	}
 
 	@SuppressWarnings("unchecked")
-	public static final MapCodec<TravellersGearComponentModifier> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-		DataComponentMap.CODEC.fieldOf("data_component_map").forGetter(o -> DataComponentMap.builder().set((DataComponentType<Object>) o.typedDataComponent.type(), o.typedDataComponent.value()).build()),
-		Codec.STRING.fieldOf("tooltip").forGetter(o -> o.tooltip)
-	).apply(instance, (map, tooltip) -> {
+	public static final MapCodec<TravellersComponentModifier> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+		DataComponentMap.CODEC
+			.fieldOf("data_component_map").forGetter(o -> DataComponentMap.builder().set((DataComponentType<Object>) o.typedDataComponent.type(), o.typedDataComponent.value()).build())
+	).apply(instance, (map) -> {
 		if (map.size() != 1)
 			throw new IllegalArgumentException("Expected exactly one entry in this data component map");
 		TypedDataComponent<?> dataComponent = map.stream().findFirst().orElseThrow();
-		return new TravellersGearComponentModifier(dataComponent, tooltip);
+		return new TravellersComponentModifier(dataComponent);
 	}));
 }

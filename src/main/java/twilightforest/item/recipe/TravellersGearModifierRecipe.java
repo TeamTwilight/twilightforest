@@ -15,15 +15,15 @@ import net.minecraft.world.level.Level;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.helpers.TFLangProvider;
 import twilightforest.item.travellers_gear.TravellersArmorItem;
-import twilightforest.item.travellers_gear.modifiers.TravellersGearComponentModifier;
+import twilightforest.item.travellers_gear.modifiers.TravellersComponentModifier;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifiers;
 
 import java.util.Optional;
 import java.util.stream.Stream;
 
 public abstract class TravellersGearModifierRecipe extends CustomRecipe {
-	protected final TravellersGearComponentModifier travellersModifier;
-	public TravellersGearModifierRecipe(TravellersGearComponentModifier travellersModifier) {
+	protected final TravellersComponentModifier travellersModifier;
+	public TravellersGearModifierRecipe(TravellersComponentModifier travellersModifier) {
 		super(CraftingBookCategory.EQUIPMENT);
 		this.travellersModifier = travellersModifier;
 	}
@@ -31,7 +31,7 @@ public abstract class TravellersGearModifierRecipe extends CustomRecipe {
 	@Override
 	public boolean matches(CraftingInput input, Level level) {
 		for (ItemStack stack : getTravellersArmor(input).toList()) {
-			if (TravellersModifiers.countModifiers(stack) >= 3 || TravellersModifiers.findAllModifiers(stack).toList().contains(travellersModifier))
+			if (TravellersModifiers.countInsertableModifiers(stack) >= 3 || travellersModifier.hasModifier(stack))
 				return false;
 		}
 		return true;

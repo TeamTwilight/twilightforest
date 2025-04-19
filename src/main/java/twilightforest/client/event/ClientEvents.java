@@ -63,10 +63,7 @@ import twilightforest.config.TFConfig;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.entity.boss.bar.ClientTFBossBar;
 import twilightforest.events.HostileMountEvents;
-import twilightforest.init.TFDataAttachments;
-import twilightforest.init.TFDataComponents;
-import twilightforest.init.TFDimension;
-import twilightforest.init.TFKeyBinds;
+import twilightforest.init.*;
 import twilightforest.item.*;
 import twilightforest.item.travellers_gear.TravellersArmorItem;
 import twilightforest.network.PerformDoubleJumpPacket;
@@ -175,7 +172,7 @@ public class ClientEvents {
 		Input input = localPlayer.input;
 		if (multiplier == null || input.forwardImpulse <= 0 || localPlayer.isInLiquid())
 			multiplier = 1D;
-		attributeInstance.addOrUpdateTransientModifier(new AttributeModifier(TravellersArmorItem.FORWARD_BOOTS_ATTRIBUTE_MODIFIER_LOCATION, multiplier - 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+		attributeInstance.addOrUpdateTransientModifier(new AttributeModifier(TFAttributeModifiers.FORWARD_BOOTS_ATTRIBUTE_MODIFIER_LOCATION, multiplier - 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
 		input.leftImpulse /= multiplier;
 	}
 
