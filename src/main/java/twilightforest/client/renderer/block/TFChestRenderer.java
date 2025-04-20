@@ -56,12 +56,13 @@ public class TFChestRenderer<T extends ChestBlockEntity> extends ChestRenderer<T
 		return material != null ? material : super.getMaterial(entity, chestType);
 	}
 
-	private static EnumMap<ChestType, Material> chestMaterial(String type, boolean trapped) {
+	private static EnumMap<ChestType, Material> chestMaterial(String wood, boolean trapped) {
 		EnumMap<ChestType, Material> map = new EnumMap<>(ChestType.class);
+		String type = (trapped ? "trapped" : "normal");
 
-		map.put(ChestType.SINGLE, new Material(Sheets.CHEST_SHEET, TwilightForestMod.prefix("entity/chest/" + type + "/" + (trapped ? "trapped" : "single"))));
-		map.put(ChestType.LEFT, new Material(Sheets.CHEST_SHEET, TwilightForestMod.prefix("entity/chest/" + type + "/" + (trapped ? "trapped_left" : "left"))));
-		map.put(ChestType.RIGHT, new Material(Sheets.CHEST_SHEET, TwilightForestMod.prefix("entity/chest/" + type + "/" + (trapped ? "trapped_right" : "right"))));
+		map.put(ChestType.SINGLE, new Material(Sheets.CHEST_SHEET, TwilightForestMod.prefix("entity/chest/" + wood + "/" + type)));
+		map.put(ChestType.LEFT, new Material(Sheets.CHEST_SHEET, TwilightForestMod.prefix("entity/chest/" + wood + "/" + type + "_left")));
+		map.put(ChestType.RIGHT, new Material(Sheets.CHEST_SHEET, TwilightForestMod.prefix("entity/chest/" + wood + "/" + type + "_right")));
 
 		return map;
 	}
