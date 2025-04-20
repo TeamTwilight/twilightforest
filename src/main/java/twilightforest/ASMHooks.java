@@ -217,9 +217,8 @@ public class ASMHooks {
 	 * Injection Point:<br/>
 	 * {@link net.minecraft.world.entity.decoration.LeashFenceKnotEntity#survives()}
 	 */
-	public static boolean leashFenceKnotSurvives(boolean o, LeashFenceKnotEntity entity) {
-		if (o)
-			return true; // Short-circuit to avoid an unnecessary #getBlockState call
+	public static boolean leashFenceKnotSurvives(boolean vanillaCheckWasTrue, LeashFenceKnotEntity entity) {
+		if (vanillaCheckWasTrue) return true; // Short-circuit to avoid an unnecessary #getBlockState call
 		BlockState fenceState = entity.level().getBlockState(entity.getPos());
 		return fenceState.is(TFBlocks.WROUGHT_IRON_FENCE) && fenceState.getValue(WroughtIronFenceBlock.POST) != WroughtIronFenceBlock.PostState.NONE;
 	}
