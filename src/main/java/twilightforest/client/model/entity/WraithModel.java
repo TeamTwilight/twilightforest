@@ -34,6 +34,9 @@ public class WraithModel extends HumanoidModel<HumanoidRenderState> {
 				.addBox(-4.0F, 12.0F, -2.0F, 8.0F, 12.0F, 4.0F),
 			PartPose.ZERO);
 
+		partdefinition.addOrReplaceChild("right_leg", CubeListBuilder.create(), PartPose.ZERO);
+		partdefinition.addOrReplaceChild("left_leg", CubeListBuilder.create(), PartPose.ZERO);
+
 		return LayerDefinition.create(meshdefinition, 64, 32);
 	}
 

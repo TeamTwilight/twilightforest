@@ -3,7 +3,9 @@ package twilightforest.client.renderer.entity;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
+import net.minecraft.client.renderer.entity.state.ZombieRenderState;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.ARGB;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.WraithModel;
@@ -15,6 +17,11 @@ public class WraithRenderer extends HumanoidMobRenderer<Wraith, HumanoidRenderSt
 
 	public WraithRenderer(EntityRendererProvider.Context context) {
 		super(context, new WraithModel(context.bakeLayer(TFModelLayers.WRAITH)), 0.5F);
+	}
+
+	@Override
+	protected int getModelTint(HumanoidRenderState state) {
+		return ARGB.colorFromFloat(0.6F, 1.0F, 1.0F, 1.0F);
 	}
 
 	@Override
