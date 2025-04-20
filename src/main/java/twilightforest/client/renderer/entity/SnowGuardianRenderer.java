@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.resources.ResourceLocation;
@@ -13,7 +13,7 @@ import net.minecraft.util.Mth;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.entity.monster.SnowGuardian;
 
-public class SnowGuardianRenderer extends MobRenderer<SnowGuardian, HumanoidRenderState, HumanoidModel<HumanoidRenderState>> {
+public class SnowGuardianRenderer extends HumanoidMobRenderer<SnowGuardian, HumanoidRenderState, HumanoidModel<HumanoidRenderState>> {
 
 	private static final ResourceLocation TEXTURE = ResourceLocation.withDefaultNamespace("textures/entity/zombie/zombie.png");
 
