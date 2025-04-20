@@ -15,11 +15,11 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.renderer.entity.KnightPhantomRenderer;
-import twilightforest.client.state.KnightPhatomRenderState;
+import twilightforest.client.state.KnightPhantomRenderState;
 
-public class KnightPhantomModel extends HumanoidModel<KnightPhatomRenderState> implements TrophyBlockModel {
+public class KnightPhantomModel extends HumanoidModel<KnightPhantomRenderState> implements TrophyBlockModel {
 
-	private static final ResourceLocation PHANTOM_ARMOR_TEXTURE = TwilightForestMod.prefix("textures/models/armor/phantom_layer_1.png");
+	private static final ResourceLocation PHANTOM_ARMOR_TEXTURE = TwilightForestMod.prefix("textures/entity/equipment/humanoid/phantom.png");
 
 	private ModelPart helmet;
 
@@ -110,7 +110,7 @@ public class KnightPhantomModel extends HumanoidModel<KnightPhatomRenderState> i
 	}
 
 	@Override
-	public void setupAnim(KnightPhatomRenderState state) {
+	public void setupAnim(KnightPhantomRenderState state) {
 		this.root.visible = state.isCharging;
 
 		super.setupAnim(state);

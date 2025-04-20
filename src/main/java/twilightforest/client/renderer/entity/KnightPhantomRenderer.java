@@ -11,10 +11,10 @@ import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.KnightPhantomModel;
-import twilightforest.client.state.KnightPhatomRenderState;
+import twilightforest.client.state.KnightPhantomRenderState;
 import twilightforest.entity.boss.KnightPhantom;
 
-public class KnightPhantomRenderer extends HumanoidMobRenderer<KnightPhantom, KnightPhatomRenderState, KnightPhantomModel> {
+public class KnightPhantomRenderer extends HumanoidMobRenderer<KnightPhantom, KnightPhantomRenderState, KnightPhantomModel> {
 
 	public static final ResourceLocation TEXTURE = TwilightForestMod.getModelTexture("phantomskeleton.png");
 
@@ -25,34 +25,34 @@ public class KnightPhantomRenderer extends HumanoidMobRenderer<KnightPhantom, Kn
 	}
 
 	@Override
-	public void render(KnightPhatomRenderState state, PoseStack stack, MultiBufferSource buffer, int packedLight) {
+	public void render(KnightPhantomRenderState state, PoseStack stack, MultiBufferSource buffer, int packedLight) {
 		if (!state.isDying) super.render(state, stack, buffer, packedLight);
 	}
 
 	@Override
-	protected boolean isShaking(KnightPhatomRenderState state) {
+	protected boolean isShaking(KnightPhantomRenderState state) {
 		return super.isShaking(state) || state.deathTime > 0;
 	}
 
 	@Override
-	public KnightPhatomRenderState createRenderState() {
-		return new KnightPhatomRenderState();
+	public KnightPhantomRenderState createRenderState() {
+		return new KnightPhantomRenderState();
 	}
 
 	@Override
-	public void extractRenderState(KnightPhantom entity, KnightPhatomRenderState state, float partialTick) {
+	public void extractRenderState(KnightPhantom entity, KnightPhantomRenderState state, float partialTick) {
 		super.extractRenderState(entity, state, partialTick);
 		state.isDying = !entity.hasYetToDisappear();
 		state.isCharging = entity.isChargingAtPlayer();
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(KnightPhatomRenderState state) {
+	public ResourceLocation getTextureLocation(KnightPhantomRenderState state) {
 		return TEXTURE;
 	}
 
 	@Override
-	protected void scale(KnightPhatomRenderState state, PoseStack stack) {
+	protected void scale(KnightPhantomRenderState state, PoseStack stack) {
 		float scale = state.isCharging ? 1.8F : 1.2F;
 		stack.scale(scale, scale, scale);
 	}
