@@ -1,4 +1,4 @@
-// 1.21.4	2025-04-19T08:48:40.744376	Model Definitions - twilightforest
+// 1.21.4	2025-04-20T12:22:37.861692	Model Definitions - twilightforest
 bfc4b40d2c8daf9144a74758b5060ff35a20c7b8 assets/twilightforest/blockstates/acacia_banister.json
 2ba5945264a026fc35aa113643919b494cf4406d assets/twilightforest/blockstates/alpha_yeti_boss_spawner.json
 94ee00eebd82061338b6db439a84b3fdf98f3942 assets/twilightforest/blockstates/alpha_yeti_trophy.json
@@ -25,7 +25,7 @@ f1b7f5e3dd11d78ee1eb1013758d06875611656c assets/twilightforest/blockstates/brazi
 54ebb2eea4482a5907fa266195c19b2d7cc9cd4f assets/twilightforest/blockstates/brown_thorns.json
 787d527dc15da8db4f3f87740e9e4439f0d5772e assets/twilightforest/blockstates/built_block.json
 8387cc5d3da350857978959aa07b6e30528e4c25 assets/twilightforest/blockstates/burnt_thorns.json
-97606ce1e236f6a9fa8a4fe1cc6ebf8a86943766 assets/twilightforest/blockstates/candelabra.json
+114b6dbbb960305c9e6b83cb2359a7fc5fc4a631 assets/twilightforest/blockstates/candelabra.json
 4cf9e1114c26460ef7b405d4da5e9c3bbc712dd0 assets/twilightforest/blockstates/canopy_banister.json
 11253eeffd002ce835efe93d3dbfa9b8dbc347c8 assets/twilightforest/blockstates/canopy_bookshelf.json
 00ec1f804d0935e5f475c9cc8b08b865f2c394f1 assets/twilightforest/blockstates/canopy_button.json
