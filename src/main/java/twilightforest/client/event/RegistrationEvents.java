@@ -614,7 +614,7 @@ public class RegistrationEvents {
 //		);
 
 		event.registerItem(
-			new ArcticArmorItem.ArmorRender(),
+			new TFSimpleArmorRenderer(HumanoidArmorModel::new, TFModelLayers.ARCTIC_ARMOR_INNER, TFModelLayers.ARCTIC_ARMOR_OUTER),
 			TFItems.ARCTIC_HELMET.get(), TFItems.ARCTIC_CHESTPLATE.get(), TFItems.ARCTIC_LEGGINGS.get(), TFItems.ARCTIC_BOOTS.get());
 		event.registerItem(
 			new TFSimpleArmorRenderer(FieryArmorModel::new, TFModelLayers.FIERY_ARMOR_INNER, TFModelLayers.FIERY_ARMOR_OUTER),

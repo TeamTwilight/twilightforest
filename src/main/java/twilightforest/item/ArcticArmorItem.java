@@ -1,7 +1,6 @@
 package twilightforest.item;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.model.HumanoidArmorModel;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.LivingEntity;
@@ -10,8 +9,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.equipment.ArmorMaterial;
 import net.minecraft.world.item.equipment.ArmorType;
-import twilightforest.client.model.TFModelLayers;
-import twilightforest.client.renderer.TFSimpleArmorRenderer;
 import twilightforest.init.TFItems;
 
 import java.util.List;
@@ -33,16 +30,5 @@ public class ArcticArmorItem extends ArmorItem {
 	@Override
 	public boolean canWalkOnPowderedSnow(ItemStack stack, LivingEntity wearer) {
 		return stack.is(TFItems.ARCTIC_BOOTS.get());
-	}
-
-	public static final class ArmorRender extends TFSimpleArmorRenderer {
-		public ArmorRender() {
-			super(HumanoidArmorModel::new, TFModelLayers.ARCTIC_ARMOR_INNER, TFModelLayers.ARCTIC_ARMOR_OUTER);
-		}
-
-		@Override
-		public int getDefaultDyeColor(ItemStack stack) {
-			return DEFAULT_COLOR;
-		}
 	}
 }

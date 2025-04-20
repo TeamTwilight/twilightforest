@@ -1,7 +1,6 @@
 package twilightforest.datagen.assets.models;
 
 import net.minecraft.client.color.item.Dye;
-import net.minecraft.client.color.item.Potion;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ItemModelOutput;
 import net.minecraft.client.data.models.model.*;
@@ -12,7 +11,6 @@ import net.minecraft.client.renderer.item.properties.conditional.HasComponent;
 import net.minecraft.client.renderer.item.properties.numeric.Count;
 import net.minecraft.client.renderer.item.properties.numeric.Time;
 import net.minecraft.client.renderer.item.properties.numeric.UseDuration;
-import net.minecraft.client.renderer.item.properties.select.CustomModelDataProperty;
 import net.minecraft.client.renderer.item.properties.select.DisplayContext;
 import net.minecraft.client.renderer.item.properties.select.TrimMaterialProperty;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -25,7 +23,6 @@ import net.minecraft.world.item.equipment.EquipmentAsset;
 import net.minecraft.world.item.equipment.EquipmentAssets;
 import net.minecraft.world.item.equipment.trim.TrimMaterial;
 import net.minecraft.world.item.equipment.trim.TrimMaterials;
-import org.w3c.dom.Text;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.properties.*;
 import twilightforest.client.renderer.special.*;
@@ -157,30 +154,30 @@ public class ItemModelGenerator extends ItemModelBuilders {
 		this.generateChestBoat(TFItems.MINING_CHEST_BOAT.get());
 		this.generateChestBoat(TFItems.SORTING_CHEST_BOAT.get());
 
-		this.generateExpandedTrimmableItem(TFItems.IRONWOOD_HELMET.get(), TFEquipmentModels.IRONWOOD, "helmet");
-		this.generateExpandedTrimmableItem(TFItems.IRONWOOD_CHESTPLATE.get(), TFEquipmentModels.IRONWOOD, "chestplate");
-		this.generateExpandedTrimmableItem(TFItems.IRONWOOD_LEGGINGS.get(), TFEquipmentModels.IRONWOOD, "leggings");
-		this.generateExpandedTrimmableItem(TFItems.IRONWOOD_BOOTS.get(), TFEquipmentModels.IRONWOOD, "boots");
+		this.generateExpandedTrimmableItem(TFItems.IRONWOOD_HELMET.get(), TFEquipmentAssets.IRONWOOD, "helmet");
+		this.generateExpandedTrimmableItem(TFItems.IRONWOOD_CHESTPLATE.get(), TFEquipmentAssets.IRONWOOD, "chestplate");
+		this.generateExpandedTrimmableItem(TFItems.IRONWOOD_LEGGINGS.get(), TFEquipmentAssets.IRONWOOD, "leggings");
+		this.generateExpandedTrimmableItem(TFItems.IRONWOOD_BOOTS.get(), TFEquipmentAssets.IRONWOOD, "boots");
 		this.generateFlatItem(TFItems.IRONWOOD_SWORD.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 		this.generateFlatItem(TFItems.IRONWOOD_PICKAXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 		this.generateFlatItem(TFItems.IRONWOOD_AXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 		this.generateFlatItem(TFItems.IRONWOOD_SHOVEL.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 		this.generateFlatItem(TFItems.IRONWOOD_HOE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 
-		this.generateExpandedTrimmableItem(TFItems.STEELEAF_HELMET.get(), TFEquipmentModels.STEELEAF, "helmet");
-		this.generateExpandedTrimmableItem(TFItems.STEELEAF_CHESTPLATE.get(), TFEquipmentModels.STEELEAF, "chestplate");
-		this.generateExpandedTrimmableItem(TFItems.STEELEAF_LEGGINGS.get(), TFEquipmentModels.STEELEAF, "leggings");
-		this.generateExpandedTrimmableItem(TFItems.STEELEAF_BOOTS.get(), TFEquipmentModels.STEELEAF, "boots");
+		this.generateExpandedTrimmableItem(TFItems.STEELEAF_HELMET.get(), TFEquipmentAssets.STEELEAF, "helmet");
+		this.generateExpandedTrimmableItem(TFItems.STEELEAF_CHESTPLATE.get(), TFEquipmentAssets.STEELEAF, "chestplate");
+		this.generateExpandedTrimmableItem(TFItems.STEELEAF_LEGGINGS.get(), TFEquipmentAssets.STEELEAF, "leggings");
+		this.generateExpandedTrimmableItem(TFItems.STEELEAF_BOOTS.get(), TFEquipmentAssets.STEELEAF, "boots");
 		this.generateFlatItem(TFItems.STEELEAF_SWORD.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 		this.generateFlatItem(TFItems.STEELEAF_PICKAXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 		this.generateFlatItem(TFItems.STEELEAF_AXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 		this.generateFlatItem(TFItems.STEELEAF_SHOVEL.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 		this.generateFlatItem(TFItems.STEELEAF_HOE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 
-		this.generateExpandedTrimmableItem(TFItems.KNIGHTMETAL_HELMET.get(), TFEquipmentModels.KNIGHTMETAL, "helmet");
-		this.generateExpandedTrimmableItem(TFItems.KNIGHTMETAL_CHESTPLATE.get(), TFEquipmentModels.KNIGHTMETAL, "chestplate");
-		this.generateExpandedTrimmableItem(TFItems.KNIGHTMETAL_LEGGINGS.get(), TFEquipmentModels.KNIGHTMETAL, "leggings");
-		this.generateExpandedTrimmableItem(TFItems.KNIGHTMETAL_BOOTS.get(), TFEquipmentModels.KNIGHTMETAL, "boots");
+		this.generateExpandedTrimmableItem(TFItems.KNIGHTMETAL_HELMET.get(), TFEquipmentAssets.KNIGHTMETAL, "helmet");
+		this.generateExpandedTrimmableItem(TFItems.KNIGHTMETAL_CHESTPLATE.get(), TFEquipmentAssets.KNIGHTMETAL, "chestplate");
+		this.generateExpandedTrimmableItem(TFItems.KNIGHTMETAL_LEGGINGS.get(), TFEquipmentAssets.KNIGHTMETAL, "leggings");
+		this.generateExpandedTrimmableItem(TFItems.KNIGHTMETAL_BOOTS.get(), TFEquipmentAssets.KNIGHTMETAL, "boots");
 		this.generateFlatItem(TFItems.KNIGHTMETAL_SWORD.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 		this.generateFlatItem(TFItems.KNIGHTMETAL_PICKAXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 		this.generateFlatItem(TFItems.KNIGHTMETAL_AXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
@@ -189,28 +186,28 @@ public class ItemModelGenerator extends ItemModelBuilders {
 			ItemModelUtils.plainModel(this.createFlatItemModel(TFItems.BLOCK_AND_CHAIN.get(), ModelTemplates.FLAT_HANDHELD_ITEM))));
 		this.generateKnightmetalShield(TFItems.KNIGHTMETAL_SHIELD.get());
 
-		this.generateExpandedTrimmableItem(TFItems.FIERY_HELMET.get(), TFEquipmentModels.FIERY, "helmet");
-		this.generateExpandedTrimmableItem(TFItems.FIERY_CHESTPLATE.get(), TFEquipmentModels.FIERY, "chestplate");
-		this.generateExpandedTrimmableItem(TFItems.FIERY_LEGGINGS.get(), TFEquipmentModels.FIERY, "leggings");
-		this.generateExpandedTrimmableItem(TFItems.FIERY_BOOTS.get(), TFEquipmentModels.FIERY, "boots");
+		this.generateExpandedTrimmableItem(TFItems.FIERY_HELMET.get(), TFEquipmentAssets.FIERY, "helmet");
+		this.generateExpandedTrimmableItem(TFItems.FIERY_CHESTPLATE.get(), TFEquipmentAssets.FIERY, "chestplate");
+		this.generateExpandedTrimmableItem(TFItems.FIERY_LEGGINGS.get(), TFEquipmentAssets.FIERY, "leggings");
+		this.generateExpandedTrimmableItem(TFItems.FIERY_BOOTS.get(), TFEquipmentAssets.FIERY, "boots");
 		this.generateFlatItem(TFItems.FIERY_SWORD.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 		this.generateFlatItem(TFItems.FIERY_PICKAXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 
-		this.generateExpandedTrimmableItem(TFItems.ARCTIC_HELMET.get(), TFEquipmentModels.ARCTIC, "helmet", ArcticArmorItem.DEFAULT_COLOR);
-		this.generateExpandedTrimmableItem(TFItems.ARCTIC_CHESTPLATE.get(), TFEquipmentModels.ARCTIC, "chestplate", ArcticArmorItem.DEFAULT_COLOR);
-		this.generateExpandedTrimmableItem(TFItems.ARCTIC_LEGGINGS.get(), TFEquipmentModels.ARCTIC, "leggings", ArcticArmorItem.DEFAULT_COLOR);
-		this.generateExpandedTrimmableItem(TFItems.ARCTIC_BOOTS.get(), TFEquipmentModels.ARCTIC, "boots", ArcticArmorItem.DEFAULT_COLOR);
+		this.generateExpandedTrimmableItem(TFItems.ARCTIC_HELMET.get(), TFEquipmentAssets.ARCTIC, "helmet", ArcticArmorItem.DEFAULT_COLOR);
+		this.generateExpandedTrimmableItem(TFItems.ARCTIC_CHESTPLATE.get(), TFEquipmentAssets.ARCTIC, "chestplate", ArcticArmorItem.DEFAULT_COLOR);
+		this.generateExpandedTrimmableItem(TFItems.ARCTIC_LEGGINGS.get(), TFEquipmentAssets.ARCTIC, "leggings", ArcticArmorItem.DEFAULT_COLOR);
+		this.generateExpandedTrimmableItem(TFItems.ARCTIC_BOOTS.get(), TFEquipmentAssets.ARCTIC, "boots", ArcticArmorItem.DEFAULT_COLOR);
 
-		this.generateExpandedTrimmableItem(TFItems.YETI_HELMET.get(), TFEquipmentModels.YETI, "helmet");
-		this.generateExpandedTrimmableItem(TFItems.YETI_CHESTPLATE.get(), TFEquipmentModels.YETI, "chestplate");
-		this.generateExpandedTrimmableItem(TFItems.YETI_LEGGINGS.get(), TFEquipmentModels.YETI, "leggings");
-		this.generateExpandedTrimmableItem(TFItems.YETI_BOOTS.get(), TFEquipmentModels.YETI, "boots");
+		this.generateExpandedTrimmableItem(TFItems.YETI_HELMET.get(), TFEquipmentAssets.YETI, "helmet");
+		this.generateExpandedTrimmableItem(TFItems.YETI_CHESTPLATE.get(), TFEquipmentAssets.YETI, "chestplate");
+		this.generateExpandedTrimmableItem(TFItems.YETI_LEGGINGS.get(), TFEquipmentAssets.YETI, "leggings");
+		this.generateExpandedTrimmableItem(TFItems.YETI_BOOTS.get(), TFEquipmentAssets.YETI, "boots");
 
-		this.generateExpandedTrimmableItem(TFItems.PHANTOM_HELMET.get(), TFEquipmentModels.PHANTOM, "helmet");
-		this.generateExpandedTrimmableItem(TFItems.PHANTOM_CHESTPLATE.get(), TFEquipmentModels.PHANTOM, "chestplate");
+		this.generateExpandedTrimmableItem(TFItems.PHANTOM_HELMET.get(), TFEquipmentAssets.PHANTOM, "helmet");
+		this.generateExpandedTrimmableItem(TFItems.PHANTOM_CHESTPLATE.get(), TFEquipmentAssets.PHANTOM, "chestplate");
 
-		this.generateExpandedTrimmableItem(TFItems.NAGA_CHESTPLATE.get(), TFEquipmentModels.NAGA, "chestplate");
-		this.generateExpandedTrimmableItem(TFItems.NAGA_LEGGINGS.get(), TFEquipmentModels.NAGA, "leggings");
+		this.generateExpandedTrimmableItem(TFItems.NAGA_CHESTPLATE.get(), TFEquipmentAssets.NAGA, "chestplate");
+		this.generateExpandedTrimmableItem(TFItems.NAGA_LEGGINGS.get(), TFEquipmentAssets.NAGA, "leggings");
 
 		this.itemModelOutput.accept(TFItems.MYSTIC_CROWN.get(), ItemModelUtils.specialModel(ModelLocationUtils.getModelLocation(TFItems.MYSTIC_CROWN.get()), new MysticCrownSpecialRenderer.Unbaked()));
 
