@@ -30,12 +30,7 @@ public class SnowQueenModel extends HumanoidModel<SnowQueenRenderState> implemen
 		MeshDefinition meshdefinition = HumanoidModel.createMesh(CubeDeformation.NONE, 0);
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		var head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
-				.texOffs(0, 0)
-				.addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F),
-			PartPose.offset(0.0F, -4.0F, 0.0F));
-
-		var crown = head.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
+		var crown = partdefinition.getChild("head").addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
 
 		makeFrontCrown(crown, -1.0F, -4.0F, 10.0F, 0);
 		makeFrontCrown(crown, 0.0F, 4.0F, -10.0F, 1);
