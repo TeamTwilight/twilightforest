@@ -60,14 +60,15 @@ public interface StructureHints {
 			.toList();
 
 		book.set(DataComponents.WRITTEN_BOOK_CONTENT, new WrittenBookContent(
-			Filterable.passThrough(TwilightForestMod.ID + ".book." + key),
+			Filterable.passThrough(""),
 			BOOK_AUTHOR,
 			3,
 			list,
 			true
 		));
 
-		book.set(TFDataComponents.TRANSLATABLE_BOOK, Unit.INSTANCE);
+		book.set(TFDataComponents.TRANSLATABLE_BOOK, Unit.INSTANCE); //for the author
+		book.set(DataComponents.ITEM_NAME, Component.translatable(TwilightForestMod.ID + ".book." + key));
 	}
 
 	/**

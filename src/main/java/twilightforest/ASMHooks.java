@@ -6,16 +6,14 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectListIterator;
 import net.minecraft.client.Camera;
 import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.world.entity.Entity;
@@ -24,7 +22,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.decoration.LeashFenceKnotEntity;
 import net.minecraft.world.item.*;
-import net.minecraft.world.item.equipment.Equippable;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
@@ -40,7 +37,6 @@ import net.minecraft.world.level.levelgen.structure.pieces.PiecesContainer;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.neoforged.neoforge.common.util.TriState;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Matrix4f;
 import tamaized.beanification.Autowired;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.util.ArmorUtil;
@@ -57,6 +53,7 @@ import twilightforest.world.components.structures.CustomDensitySource;
 import twilightforest.world.components.structures.util.CustomStructureData;
 
 import java.util.Iterator;
+import java.util.List;
 
 // TODO: Think about reorganizing each group into their own class or subclass of ASMHooks
 @SuppressWarnings({"JavadocReference", "unused", "RedundantSuppression", "deprecation"})
@@ -136,22 +133,6 @@ public class ASMHooks {
 		customDensities.back(Integer.MAX_VALUE);
 
 		return o + newDensity;
-	}
-
-	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// book
-	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	/**
-	 * {@link twilightforest.asm.transformers.book.ModifyWrittenBookNameTransformer}<p/>
-	 *
-	 * Injection Point:<br/>
-	 * {@link net.minecraft.world.item.WrittenBookItem#getName(net.minecraft.world.item.ItemStack)}
-	 */
-	public static Component modifyWrittenBookName(Component component, ItemStack stack) {
-		if (stack.has(TFDataComponents.TRANSLATABLE_BOOK)) {
-			return Component.translatable(component.getString());
-		} else return component;
 	}
 
 	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -266,7 +247,7 @@ public class ASMHooks {
 	 * {@link twilightforest.asm.transformers.multipart.ResolveEntitiesForRendereringTransformer}<p/>
 	 *
 	 * Injection Point:<br/>
-	 * {@link net.minecraft.client.renderer.LevelRenderer#renderLevel(DeltaTracker, boolean, Camera, GameRenderer, LightTexture, Matrix4f, Matrix4f)}<br/>
+	 * {@link net.minecraft.client.renderer.LevelRenderer#collectVisibleEntities(Camera, Frustum, List)}<br/>
 	 * [Targets: {@link net.minecraft.client.multiplayer.ClientLevel#entitiesForRendering}]
 	 */
 	public static Iterator<Entity> resolveEntitiesForRendering(Iterator<Entity> iter) {

@@ -7,7 +7,6 @@ import twilightforest.asm.transformers.armor.CancelArmorRenderingTransformer;
 import twilightforest.asm.transformers.beardifier.BeardifierClassTransformer;
 import twilightforest.asm.transformers.beardifier.BeardifierComputeTransformer;
 import twilightforest.asm.transformers.beardifier.InitializeCustomBeardifierFieldsDuringCreateNoiseChunkTransformer;
-import twilightforest.asm.transformers.book.ModifyWrittenBookNameTransformer;
 import twilightforest.asm.transformers.chunk.ChunkStatusTaskTransformer;
 import twilightforest.asm.transformers.cloud.IsRainingAtTransformer;
 import twilightforest.asm.transformers.conquered.StructureStartLoadStaticTransformer;
@@ -34,9 +33,6 @@ public class TFCoreMod implements ICoreMod {
 			new BeardifierClassTransformer(),
 			new BeardifierComputeTransformer(),
 			new InitializeCustomBeardifierFieldsDuringCreateNoiseChunkTransformer(),
-
-			// book
-			new ModifyWrittenBookNameTransformer(),
 
 			// chunk
 			new ChunkStatusTaskTransformer(),
