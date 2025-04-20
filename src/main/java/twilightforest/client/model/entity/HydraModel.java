@@ -386,13 +386,11 @@ public class HydraModel extends EntityModel<HydraRenderState> {
 
 	@Override
 	public void setupAnim(HydraRenderState state) {
-		if (!state.renderFakeHeads) {
-			this.root().getAllParts().forEach(modelPart -> modelPart.visible = false);
-			this.body.visible = true;
-			this.tail.visible = true;
-			this.rightLeg.visible = true;
-			this.leftLeg.visible = true;
-		}
+		this.root().getAllParts().forEach(modelPart -> modelPart.skipDraw = !state.renderFakeHeads);
+		this.body.skipDraw = false;
+		this.tail.skipDraw = false;
+		this.rightLeg.skipDraw = false;
+		this.leftLeg.skipDraw = false;
 		this.rightLeg.xRot = Mth.cos(state.walkAnimationPos * 0.6662F) * 1.4F * state.walkAnimationSpeed;
 		this.leftLeg.xRot = Mth.cos(state.walkAnimationPos * 0.6662F + Mth.PI) * 1.4F * state.walkAnimationSpeed;
 	}
