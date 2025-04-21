@@ -33,7 +33,7 @@ public class HydraNeckModel extends EntityModel<HydraNeckRenderState> {
 				.addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
 				.texOffs(128, 200)
 				.addBox(-2.0F, -23.0F, 0.0F, 4.0F, 24.0F, 24.0F),
-			PartPose.ZERO);
+			PartPose.offset(0.0F, 8.0F, 0.0F));
 
 		return LayerDefinition.create(meshdefinition, 512, 256);
 	}
@@ -50,11 +50,5 @@ public class HydraNeckModel extends EntityModel<HydraNeckRenderState> {
 			PartPose.ZERO);
 
 		return LayerDefinition.create(meshdefinition, 512, 256);
-	}
-
-	@Override
-	public void setupAnim(HydraNeckRenderState state) {
-		this.neck.yRot = state.yRot * Mth.DEG_TO_RAD;
-		this.neck.xRot = state.xRot * Mth.DEG_TO_RAD;
 	}
 }
