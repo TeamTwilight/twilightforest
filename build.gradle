@@ -105,13 +105,6 @@ sourceSets {
 			srcDirs = ['src/main/resources']
 		}
 	}
-	dataForPublishing {
-		compileClasspath += data.compileClasspath
-
-		java {
-			srcDirs = ['src/data/java']
-		}
-	}
 }
 
 configurations {
@@ -362,15 +355,21 @@ tasks.register('sourceJar', Jar) {
 	archiveClassifier = 'sources'
 }
 
+tasks.register('dataClassesForPublishing', JavaCompile) {
+	dependsOn "dataClasses"
+	source = fileTree('src/data/java')
+	classpath = sourceSets.named('data').get().compileClasspath
+	destinationDirectory = layout.buildDirectory.dir("classes/java/dataForPublishing")
+}
+
 tasks.register('dataJar', Jar) {
-	dependsOn 'classes'
-	from sourceSets.dataForPublishing.output
+	dependsOn 'dataClassesForPublishing'
+	from layout.buildDirectory.dir("classes/java/dataForPublishing")
 	archiveClassifier = 'data'
 }
 
 tasks.register('dataSourceJar', Jar) {
-	dependsOn 'classes'
-	from sourceSets.dataForPublishing.allSource
+	from sourceSets.data.allSource
 	archiveClassifier = 'data-sources'
 }
 
