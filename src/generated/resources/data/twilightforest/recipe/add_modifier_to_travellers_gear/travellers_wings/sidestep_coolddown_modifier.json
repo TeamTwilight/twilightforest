@@ -1,5 +1,6 @@
 {
   "type": "twilightforest:travellers_gear_modifier_shaped_recipe",
+  "is_rotated": false,
   "modifier": {
     "data_component_map": {
       "twilightforest:sidestep_coolddown": 60
@@ -17,7 +18,7 @@
         "tag": "c:strings"
       },
       "W": {
-        "item": "twilightforest:travellers_wings_belt"
+        "item": "twilightforest:travellers_wings"
       }
     },
     "pattern": [

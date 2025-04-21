@@ -711,7 +711,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.define('E', Ingredient.of(Items.EXPERIENCE_BOTTLE))
 				.define('T', Ingredient.of(TFItems.TRAVELLERS_GOGGLES, TFItems.TRAVELLERS_CHESTPLATE, TFItems.TRAVELLERS_CHESTPLATE_GLOVES, TFItems.TRAVELLERS_WINGS, TFItems.TRAVELLERS_WINGS_BELT, TFItems.TRAVELLERS_BOOTS))
 				.build(),
-			TravellersModifiers.AUTO_REPAIR_MODIFIER).save(output);
+			TravellersModifiers.AUTO_REPAIR_MODIFIER, true).save(output);
 
 		DryingRecipeBuilder.drying(Ingredient.of(Tags.Items.FOODS_COOKED_MEAT), new ItemStack(Items.LEATHER), 8)
 			.unlockedBy("has_meat", has(Tags.Items.FOODS_COOKED_MEAT))

@@ -1,5 +1,6 @@
 {
   "type": "twilightforest:travellers_gear_modifier_shaped_recipe",
+  "is_rotated": false,
   "modifier": {
     "data_component_map": {
       "twilightforest:controlled_falling_multiplier": 0.8333333
@@ -17,7 +18,7 @@
         "item": "minecraft:feather"
       },
       "W": {
-        "item": "twilightforest:travellers_wings"
+        "item": "twilightforest:travellers_wings_belt"
       }
     },
     "pattern": [

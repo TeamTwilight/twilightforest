@@ -1,5 +1,6 @@
 {
   "type": "twilightforest:travellers_gear_modifier_shaped_recipe",
+  "is_rotated": false,
   "modifier": {
     "data_component_map": {
       "twilightforest:auto_repair_probability": 0.001
@@ -14,13 +15,13 @@
         "item": "twilightforest:moss_patch"
       },
       "T": {
-        "item": "twilightforest:travellers_chest"
+        "item": "twilightforest:travellers_goggles"
       }
     },
     "pattern": [
-      " M ",
-      "ETE",
-      " M "
+      " E ",
+      "MTM",
+      " E "
     ]
   }
 }

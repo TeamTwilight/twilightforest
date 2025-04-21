@@ -1,29 +1,27 @@
 {
   "type": "twilightforest:travellers_gear_modifier_shaped_recipe",
+  "is_rotated": false,
   "modifier": {
     "data_component_map": {
-      "twilightforest:controlled_falling_multiplier": 0.8333333
+      "twilightforest:auto_repair_probability": 0.001
     }
   },
   "pattern": {
     "key": {
-      "C": {
-        "item": "minecraft:cobweb"
-      },
       "E": {
-        "item": "twilightforest:borer_essence"
+        "item": "minecraft:experience_bottle"
       },
-      "F": {
-        "item": "minecraft:feather"
+      "M": {
+        "item": "twilightforest:moss_patch"
       },
-      "W": {
+      "T": {
         "item": "twilightforest:travellers_wings_belt"
       }
     },
     "pattern": [
-      "FCF",
-      "FWF",
-      "FEF"
+      " E ",
+      "MTM",
+      " E "
     ]
   }
 }

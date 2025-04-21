@@ -1,26 +1,30 @@
 {
   "type": "twilightforest:travellers_gear_modifier_shaped_recipe",
+  "is_rotated": false,
   "modifier": {
     "data_component_map": {
-      "twilightforest:auto_repair_probability": 0.001
+      "twilightforest:perfect_dodge_probability": 0.1
     }
   },
   "pattern": {
     "key": {
       "E": {
-        "item": "minecraft:experience_bottle"
+        "item": "minecraft:ender_eye"
       },
-      "M": {
-        "item": "twilightforest:moss_patch"
+      "P": {
+        "item": "minecraft:ender_pearl"
       },
-      "T": {
+      "S": {
+        "item": "minecraft:sugar"
+      },
+      "V": {
         "item": "twilightforest:travellers_chest_gloves"
       }
     },
     "pattern": [
-      " M ",
-      "ETE",
-      " M "
+      " E ",
+      "PVP",
+      " S "
     ]
   }
 }

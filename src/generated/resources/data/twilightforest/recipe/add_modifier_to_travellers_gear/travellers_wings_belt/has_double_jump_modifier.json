@@ -1,24 +1,19 @@
 {
   "type": "twilightforest:travellers_gear_modifier_shaped_recipe",
+  "is_rotated": false,
   "modifier": {
     "data_component_map": {
-      "twilightforest:agile_ranger_modifier": 5.0
+      "twilightforest:has_double_jump": true
     }
   },
   "pattern": {
     "key": {
-      "F": {
-        "item": "twilightforest:raven_feather"
-      },
-      "H": {
-        "item": "minecraft:rabbit_hide"
-      },
-      "P": [
+      "L": [
         {
           "type": "neoforge:components",
           "components": {
             "minecraft:potion_contents": {
-              "potion": "minecraft:swiftness"
+              "potion": "minecraft:leaping"
             }
           },
           "items": "minecraft:potion"
@@ -27,7 +22,7 @@
           "type": "neoforge:components",
           "components": {
             "minecraft:potion_contents": {
-              "potion": "minecraft:long_swiftness"
+              "potion": "minecraft:long_leaping"
             }
           },
           "items": "minecraft:potion"
@@ -36,20 +31,26 @@
           "type": "neoforge:components",
           "components": {
             "minecraft:potion_contents": {
-              "potion": "minecraft:strong_swiftness"
+              "potion": "minecraft:strong_leaping"
             }
           },
           "items": "minecraft:potion"
         }
       ],
+      "P": {
+        "item": "minecraft:piston"
+      },
+      "S": {
+        "tag": "c:strings"
+      },
       "W": {
         "item": "twilightforest:travellers_wings_belt"
       }
     },
     "pattern": [
-      " P ",
-      "HWH",
-      "F F"
+      " L ",
+      "SWS",
+      "P P"
     ]
   }
 }

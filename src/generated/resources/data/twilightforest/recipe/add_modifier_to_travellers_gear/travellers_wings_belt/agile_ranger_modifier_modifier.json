@@ -1,5 +1,6 @@
 {
   "type": "twilightforest:travellers_gear_modifier_shaped_recipe",
+  "is_rotated": false,
   "modifier": {
     "data_component_map": {
       "twilightforest:agile_ranger_modifier": 5.0
@@ -43,7 +44,7 @@
         }
       ],
       "W": {
-        "item": "twilightforest:travellers_wings"
+        "item": "twilightforest:travellers_wings_belt"
       }
     },
     "pattern": [
