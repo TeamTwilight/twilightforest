@@ -101,13 +101,16 @@ public class ReactorDebrisBlockEntity extends BlockEntity {
 	@Override
 	protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
 		super.loadAdditional(tag, registries);
-		CompoundTag textures = tag.getCompound("textures");
-		this.textures[0] = nonEmptyNotNull(textures.getString("west"));
-		this.textures[1] = nonEmptyNotNull(textures.getString("east"));
-		this.textures[2] = nonEmptyNotNull(textures.getString("bottom"));
-		this.textures[3] = nonEmptyNotNull(textures.getString("top"));
-		this.textures[4] = nonEmptyNotNull(textures.getString("north"));
-		this.textures[5] = nonEmptyNotNull(textures.getString("south"));
+
+		if (tag.contains("textures")) {
+			CompoundTag textures = tag.getCompound("textures");
+			this.textures[0] = nonEmptyNotNull(textures.getString("west"));
+			this.textures[1] = nonEmptyNotNull(textures.getString("east"));
+			this.textures[2] = nonEmptyNotNull(textures.getString("bottom"));
+			this.textures[3] = nonEmptyNotNull(textures.getString("top"));
+			this.textures[4] = nonEmptyNotNull(textures.getString("north"));
+			this.textures[5] = nonEmptyNotNull(textures.getString("south"));
+		}
 
 		ListTag posTag = tag.getList("pos", Tag.TAG_FLOAT);
 		if (posTag.size() == 3) {
@@ -128,25 +131,27 @@ public class ReactorDebrisBlockEntity extends BlockEntity {
 		this.shape = Shapes.box(this.minPos.x, this.minPos.y, this.minPos.z, this.maxPos.x, this.maxPos.y, this.maxPos.z);
 		this.rerolls = tag.getBoolean("rerolls");
 		this.willDisappear = tag.getBoolean("will_disappear");
-		this.timeAlive = tag.getByte("timeAlive");
+		this.timeAlive = tag.getByte("time_alive");
 	}
 
 	@Override
 	protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
 		super.saveAdditional(tag, registries);
-		CompoundTag textures = new CompoundTag();
-		textures.putString("west", this.textures[0].toString());
-		textures.putString("east", this.textures[1].toString());
-		textures.putString("bottom", this.textures[2].toString());
-		textures.putString("top", this.textures[3].toString());
-		textures.putString("north", this.textures[4].toString());
-		textures.putString("south", this.textures[5].toString());
-		tag.put("textures", textures);
+		if (this.textures[0] != null) {
+			CompoundTag textures = new CompoundTag();
+			textures.putString("west", this.textures[0].toString());
+			textures.putString("east", this.textures[1].toString());
+			textures.putString("bottom", this.textures[2].toString());
+			textures.putString("top", this.textures[3].toString());
+			textures.putString("north", this.textures[4].toString());
+			textures.putString("south", this.textures[5].toString());
+			tag.put("textures", textures);
+		}
 		tag.put("pos", this.newFloatList(this.minPos.x, this.minPos.y, this.minPos.z));
 		tag.put("sizes", this.newFloatList(this.maxPos.x - this.minPos.x, this.maxPos.y - this.minPos.y, this.maxPos.z - this.minPos.z));
 		tag.putBoolean("rerolls", this.rerolls);
 		tag.putBoolean("will_disappear", this.willDisappear);
-		tag.putByte("timeAlive", this.timeAlive);
+		tag.putByte("time_alive", this.timeAlive);
 	}
 
 	protected ListTag newFloatList(float... values) {

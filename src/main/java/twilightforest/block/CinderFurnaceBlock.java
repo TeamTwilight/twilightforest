@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
@@ -24,7 +25,7 @@ import twilightforest.block.entity.CinderFurnaceBlockEntity;
 
 public class CinderFurnaceBlock extends BaseEntityBlock {
 
-	public static final BooleanProperty LIT = BooleanProperty.create("lit");
+	public static final BooleanProperty LIT = BlockStateProperties.LIT;
 	private static final EnumProperty<Direction> FACING = TFHorizontalBlock.FACING;
 	public static final MapCodec<CinderFurnaceBlock> CODEC = simpleCodec(CinderFurnaceBlock::new);
 
@@ -70,7 +71,7 @@ public class CinderFurnaceBlock extends BaseEntityBlock {
 	@Override
 	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
 		if (!level.isClientSide() && level.getBlockEntity(pos) instanceof CinderFurnaceBlockEntity cinder) {
-			player.openMenu(cinder);
+			//player.openMenu(cinder);
 		}
 
 		return InteractionResult.PASS;
