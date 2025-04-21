@@ -178,7 +178,7 @@ public class TFTeleporter {
 	}
 
 	private static int getScanHeight(ServerLevel world, int x, int z) {
-		int worldHeight = world.getMinY() - 1;
+		int worldHeight = world.getMaxY() - 1;
 		//FIXME find an alternative to getHighestSectionPosition, its marked for removal
 		@SuppressWarnings("removal")
 		int chunkHeight = world.getChunk(x >> 4, z >> 4).getHighestSectionPosition() + 15;
