@@ -29,7 +29,7 @@ public class TFDataAttachments {
 	public static final DeferredHolder<AttachmentType<?>, AttachmentType<SmashBlocksEnchantmentAttachment>> SMASH_BLOCKS = ATTACHMENT_TYPES.register("smash_blocks", () -> AttachmentType.builder(() -> new SmashBlocksEnchantmentAttachment()).serialize(SmashBlocksEnchantmentAttachment.CODEC).build());
 	public static final DeferredHolder<AttachmentType<?>, AttachmentType<GameProfile>> ZOMBIFIED_PLAYER = ATTACHMENT_TYPES.register("zombified_player", () -> AttachmentType.builder(() -> UUIDUtil.createOfflineProfile("GizmoTheMoonPig")).serialize(Codecs.SIMPLE_GAME_PROFILE).build());
 	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Unit>> LEASH_PATHFINDER_OVERRIDE = ATTACHMENT_TYPES.register("leashed_pathfinder_override", () -> AttachmentType.builder(() -> Unit.INSTANCE).serialize(Codec.unit(Unit.INSTANCE)).build());
-	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Unit>> BANISHED_TO_TWILIGHT_FOREST = ATTACHMENT_TYPES.register("twilightforest_banished", () -> AttachmentType.builder(() -> Unit.INSTANCE).serialize(Codec.unit(Unit.INSTANCE)).copyHandler(TFDataAttachments::directCopy).build());
+	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Unit>> BANISHED_TO_TWILIGHT_FOREST = ATTACHMENT_TYPES.register("twilightforest_banished", () -> AttachmentType.builder(() -> Unit.INSTANCE).serialize(Codec.unit(Unit.INSTANCE)).copyOnDeath().build());
 
 	private static <T> T directCopy(T attachment, IAttachmentHolder holder, HolderLookup.Provider provider) {
 		return attachment;

@@ -81,12 +81,12 @@ public class CapabilityEvents {
 	 */
 	@SubscribeEvent
 	public static void playerLogsIn(PlayerEvent.PlayerLoggedInEvent event) {
-		if (!event.getEntity().level().isClientSide() && event.getEntity() instanceof ServerPlayer player) {
-			updateCapabilities(player, event.getEntity());
-			dataFixLegacyBanish(player);
-			if (!player.hasData(TFDataAttachments.BANISHED_TO_TWILIGHT_FOREST))
-				newSpawnInTwilightForest(player);
-		}
+		if (event.getEntity().level().isClientSide() || !(event.getEntity() instanceof ServerPlayer player))
+			return;
+		updateCapabilities(player, event.getEntity());
+		dataFixLegacyBanish(player);
+		if (!player.hasData(TFDataAttachments.BANISHED_TO_TWILIGHT_FOREST))
+			newSpawnInTwilightForest(player);
 	}
 
 	@SubscribeEvent
@@ -136,6 +136,9 @@ public class CapabilityEvents {
 
 		playerData.remove("twilightforest_banished");
 		tagCompound.put(Player.PERSISTED_NBT_TAG, playerData);
+
+		if (player.hasData(TFDataAttachments.BANISHED_TO_TWILIGHT_FOREST))
+			return;
 
 		player.setData(TFDataAttachments.BANISHED_TO_TWILIGHT_FOREST, Unit.INSTANCE);
 	}

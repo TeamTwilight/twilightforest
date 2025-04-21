@@ -41,7 +41,7 @@ public enum BlockLoggingEnum implements StringRepresentable {
 		this.fluid = fluid;
 		this.name = name().toLowerCase(Locale.ROOT);
 
-		if (fluid != Fluids.EMPTY && block == Blocks.AIR) {
+		if (fluid != Fluids.EMPTY && block.defaultBlockState().liquid()) {
 			Ref.FLUIDS.put(fluid, this);
 		}
 		if (fluid == Fluids.EMPTY && block != Blocks.AIR) {
