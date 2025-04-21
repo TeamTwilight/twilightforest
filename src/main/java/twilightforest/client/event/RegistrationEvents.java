@@ -9,6 +9,7 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.particle.*;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.entity.BoatRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
@@ -79,6 +80,7 @@ import twilightforest.util.woods.TFWoodTypes;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Supplier;
 
 public class RegistrationEvents {
 
@@ -282,6 +284,25 @@ public class RegistrationEvents {
 		event.registerEntityRenderer(TFEntities.SEEKER_ARROW.get(), DefaultArrowRenderer::new);
 		event.registerEntityRenderer(TFEntities.ICE_ARROW.get(), DefaultArrowRenderer::new);
 
+		//boats
+		event.registerEntityRenderer(TFEntities.TWILIGHT_OAK_BOAT.get(), context -> new BoatRenderer(context, TFModelLayers.TWILIGHT_OAK_BOAT));
+		event.registerEntityRenderer(TFEntities.CANOPY_BOAT.get(), context -> new BoatRenderer(context, TFModelLayers.CANOPY_BOAT));
+		event.registerEntityRenderer(TFEntities.MANGROVE_BOAT.get(), context -> new BoatRenderer(context, TFModelLayers.MANGROVE_BOAT));
+		event.registerEntityRenderer(TFEntities.DARK_BOAT.get(), context -> new BoatRenderer(context, TFModelLayers.DARK_BOAT));
+		event.registerEntityRenderer(TFEntities.TIME_BOAT.get(), context -> new BoatRenderer(context, TFModelLayers.TIME_BOAT));
+		event.registerEntityRenderer(TFEntities.TRANSFORMATION_BOAT.get(), context -> new BoatRenderer(context, TFModelLayers.TRANSFORMATION_BOAT));
+		event.registerEntityRenderer(TFEntities.MINING_BOAT.get(), context -> new BoatRenderer(context, TFModelLayers.MINING_BOAT));
+		event.registerEntityRenderer(TFEntities.SORTING_BOAT.get(), context -> new BoatRenderer(context, TFModelLayers.SORTING_BOAT));
+		event.registerEntityRenderer(TFEntities.TWILIGHT_OAK_CHEST_BOAT.get(), context -> new BoatRenderer(context, TFModelLayers.TWILIGHT_OAK_CHEST_BOAT));
+		event.registerEntityRenderer(TFEntities.CANOPY_CHEST_BOAT.get(), context -> new BoatRenderer(context, TFModelLayers.CANOPY_CHEST_BOAT));
+		event.registerEntityRenderer(TFEntities.MANGROVE_CHEST_BOAT.get(), context -> new BoatRenderer(context, TFModelLayers.MANGROVE_CHEST_BOAT));
+		event.registerEntityRenderer(TFEntities.DARK_CHEST_BOAT.get(), context -> new BoatRenderer(context, TFModelLayers.DARK_CHEST_BOAT));
+		event.registerEntityRenderer(TFEntities.TIME_CHEST_BOAT.get(), context -> new BoatRenderer(context, TFModelLayers.TIME_CHEST_BOAT));
+		event.registerEntityRenderer(TFEntities.TRANSFORMATION_CHEST_BOAT.get(), context -> new BoatRenderer(context, TFModelLayers.TRANSFORMATION_CHEST_BOAT));
+		event.registerEntityRenderer(TFEntities.MINING_CHEST_BOAT.get(), context -> new BoatRenderer(context, TFModelLayers.MINING_CHEST_BOAT));
+		event.registerEntityRenderer(TFEntities.SORTING_CHEST_BOAT.get(), context -> new BoatRenderer(context, TFModelLayers.SORTING_CHEST_BOAT));
+
+
 		// Block Entities
 		event.registerBlockEntityRenderer(TFBlockEntities.FIREFLY.get(), FireflyRenderer::new);
 		event.registerBlockEntityRenderer(TFBlockEntities.CICADA.get(), CicadaRenderer::new);
@@ -420,6 +441,27 @@ public class RegistrationEvents {
 		event.registerLayerDefinition(TFModelLayers.RED_THREAD, RedThreadModel::create);
 
 		event.registerLayerDefinition(TFModelLayers.KNIGHTMETAL_SHIELD, KnightmetalShieldModel::create);
+
+		Supplier<LayerDefinition> boatModel = BoatModel::createBoatModel;
+		Supplier<LayerDefinition> chestBoatModel = BoatModel::createChestBoatModel;
+
+		event.registerLayerDefinition(TFModelLayers.TWILIGHT_OAK_BOAT, boatModel);
+		event.registerLayerDefinition(TFModelLayers.CANOPY_BOAT, boatModel);
+		event.registerLayerDefinition(TFModelLayers.MANGROVE_BOAT, boatModel);
+		event.registerLayerDefinition(TFModelLayers.DARK_BOAT, boatModel);
+		event.registerLayerDefinition(TFModelLayers.TIME_BOAT, boatModel);
+		event.registerLayerDefinition(TFModelLayers.TRANSFORMATION_BOAT, boatModel);
+		event.registerLayerDefinition(TFModelLayers.MINING_BOAT, boatModel);
+		event.registerLayerDefinition(TFModelLayers.SORTING_BOAT, boatModel);
+
+		event.registerLayerDefinition(TFModelLayers.TWILIGHT_OAK_CHEST_BOAT, chestBoatModel);
+		event.registerLayerDefinition(TFModelLayers.CANOPY_CHEST_BOAT, chestBoatModel);
+		event.registerLayerDefinition(TFModelLayers.MANGROVE_CHEST_BOAT, chestBoatModel);
+		event.registerLayerDefinition(TFModelLayers.DARK_CHEST_BOAT, chestBoatModel);
+		event.registerLayerDefinition(TFModelLayers.TIME_CHEST_BOAT, chestBoatModel);
+		event.registerLayerDefinition(TFModelLayers.TRANSFORMATION_CHEST_BOAT, chestBoatModel);
+		event.registerLayerDefinition(TFModelLayers.MINING_CHEST_BOAT, chestBoatModel);
+		event.registerLayerDefinition(TFModelLayers.SORTING_CHEST_BOAT, chestBoatModel);
 	}
 
 	private static void registerSpecialModelTypes(RegisterSpecialModelRendererEvent event) {
