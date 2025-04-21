@@ -1,4 +1,4 @@
-// 1.21.4	2025-04-20T23:10:02.7908596	Model Definitions - twilightforest
+// 1.21.4	2025-04-21T09:20:28.3857473	Model Definitions - twilightforest
 bfc4b40d2c8daf9144a74758b5060ff35a20c7b8 assets/twilightforest/blockstates/acacia_banister.json
 2ba5945264a026fc35aa113643919b494cf4406d assets/twilightforest/blockstates/alpha_yeti_boss_spawner.json
 94ee00eebd82061338b6db439a84b3fdf98f3942 assets/twilightforest/blockstates/alpha_yeti_trophy.json
@@ -61,7 +61,7 @@ b0c8361f2a70856b75d1f38680c73284229445f6 assets/twilightforest/blockstates/cherr
 e4e8e60dad9f38bdc38962828c0380ec75dbed79 assets/twilightforest/blockstates/cicada_jar.json
 506127577d22bb13c94efaa56e758eaac74c6717 assets/twilightforest/blockstates/cinder_furnace.json
 b53fdca651c846d8d8f51d96c1a6bc3e4584fc10 assets/twilightforest/blockstates/cinder_log.json
-794beaa5f826d16ec9edb4209dd4cf9ee6ebeb6f assets/twilightforest/blockstates/cinder_wood.json
+ad27382e53d8bee929e5f329ca6894dd2b35c408 assets/twilightforest/blockstates/cinder_wood.json
 4c8950c67ab660a2167f204644fdfe06cd13a60f assets/twilightforest/blockstates/clover_patch.json
 20d24deb34e2acd2a43e5abebed11b20e0bafd70 assets/twilightforest/blockstates/coronation_carpet.json
 1261f404df8aec15a7b62454520e8ea2d4dbc5a4 assets/twilightforest/blockstates/cracked_castle_brick.json
@@ -1245,8 +1245,7 @@ acb126a76db8e72dc7a8a873edfd302210ef357e assets/twilightforest/models/block/chis
 85943df6ad1f7ace7273f71e14f5bcf7b3dbd4d0 assets/twilightforest/models/block/cicada.json
 4cca9f71464dc67993e49ed3e5d298b3ab6def70 assets/twilightforest/models/block/cinder_log.json
 84ebc3ecc8e9c6631fdd763658078acdec41b247 assets/twilightforest/models/block/cinder_log_horizontal.json
-4cca9f71464dc67993e49ed3e5d298b3ab6def70 assets/twilightforest/models/block/cinder_wood.json
-84ebc3ecc8e9c6631fdd763658078acdec41b247 assets/twilightforest/models/block/cinder_wood_horizontal.json
+9f51bf0f611143e552b26bdd9e89435b03437159 assets/twilightforest/models/block/cinder_wood.json
 cf325abb60b30b02e30a9a775ff09406f629d13d assets/twilightforest/models/block/clover_patch.json
 771c5abff1cdc13f88168a1df7d31a732e42b088 assets/twilightforest/models/block/coronation_carpet.json
 5b6b856b1e975cdc65d1f9e03f83bb313b36b74c assets/twilightforest/models/block/cracked_castle_brick.json

@@ -333,7 +333,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.CINDER_FURNACE.get(), ModelLocationUtils.getModelLocation(Blocks.FURNACE)));
 		this.registerSimpleItemModel(TFBlocks.CINDER_FURNACE.get(), ResourceLocation.withDefaultNamespace("block/furnace"));
 		this.wrapBlockItem(TFBlocks.CINDER_LOG.get(), block -> this.generateLog(block, TextureMapping.logColumn(block)));
-		this.wrapBlockItem(TFBlocks.CINDER_WOOD.get(), block -> this.generateLog(block, TextureMapping.logColumn(TFBlocks.CINDER_LOG.get())));
+		this.wrapBlockItem(TFBlocks.CINDER_WOOD.get(), block -> this.generateWood(block, TextureMapping.logColumn(TFBlocks.CINDER_LOG.get())));
 		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get(), TwilightForestMod.prefix("block/miniature/portal")));
 		this.registerSimpleTintedItemModel(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get(), TwilightForestMod.prefix("block/miniature/portal"), new GrassColorSource());
 		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE.get(), TwilightForestMod.prefix("block/miniature/naga_courtyard")));
