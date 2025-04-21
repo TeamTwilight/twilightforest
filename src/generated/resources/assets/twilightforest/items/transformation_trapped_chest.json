@@ -3,7 +3,7 @@
     "type": "minecraft:special",
     "base": "twilightforest:item/transformation_trapped_chest",
     "model": {
-      "type": "minecraft:chest",
+      "type": "twilightforest:tf_chest",
       "texture": "twilightforest:transformation/trapped"
     }
   }

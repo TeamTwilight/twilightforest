@@ -25,6 +25,7 @@ import twilightforest.client.model.block.forcefield.ForceFieldModelBuilder;
 import twilightforest.client.renderer.block.JarRenderer;
 import twilightforest.client.renderer.special.MasonJarSpecialRenderer;
 import twilightforest.client.renderer.special.SkullCandleSpecialRenderer;
+import twilightforest.client.renderer.special.TFChestSpecialRenderer;
 import twilightforest.client.renderer.special.TrophySpecialRenderer;
 import twilightforest.datagen.assets.models.TFExtendedModelTemplates;
 import twilightforest.datagen.assets.models.TFModelTemplates;
@@ -990,6 +991,12 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 		this.wrapTintedBlockItem(slab, ItemModelUtils.constantTint(-9181501), block -> this.blockStateOutput.accept(createSlab(block, bottom, top, ModelLocationUtils.getModelLocation(pillar))));
 
 		this.wrapTintedBlockItem(TFBlocks.AURORALIZED_GLASS.get(), ItemModelUtils.constantTint(-9181501), block -> this.blockStateOutput.accept(createSimpleBlock(block, TFModelTemplates.CTM_NO_BASE.extend().renderType("translucent").customLoader(ConnectedTextureBuilder::new, builder -> builder.setOverlayTintIndex(0).connectsTo(block)).build().create(block, TFTextureMapping.ctmBlock(block), this.modelOutput))));
+	}
+
+	public void createTFChest(Block chestBlock, Block particleBlock, ResourceLocation texture) {
+		this.createParticleOnlyBlock(chestBlock, particleBlock);
+		Item item = chestBlock.asItem();
+		this.itemModelOutput.accept(item, ItemModelUtils.specialModel(ModelTemplates.CHEST_INVENTORY.create(item, TextureMapping.particle(particleBlock), this.modelOutput), new TFChestSpecialRenderer.Unbaked(texture)));
 	}
 
 	@Override
