@@ -4,9 +4,11 @@ package twilightforest.item.travellers_gear.modifiers;
 import com.google.common.base.Objects;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.Util;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.TypedDataComponent;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -15,7 +17,6 @@ import org.apache.commons.lang3.StringUtils;
 public class TravellersComponentModifier implements InsertableTravellersModifier {
 	protected final TypedDataComponent<?> typedDataComponent;
 	protected final String tooltipTranslationKey;
-	protected ResourceLocation datagenOnlyComponentId;
 
 	private TravellersComponentModifier(TypedDataComponent<?> typedDataComponent) {
 		this.typedDataComponent = typedDataComponent;
@@ -24,7 +25,6 @@ public class TravellersComponentModifier implements InsertableTravellersModifier
 
 	public <T> TravellersComponentModifier(DeferredHolder<DataComponentType<?>, DataComponentType<T>> dataComponent, T value) {
 		this(new TypedDataComponent<>(dataComponent.get(), value));
-		datagenOnlyComponentId = dataComponent.getId();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -48,8 +48,8 @@ public class TravellersComponentModifier implements InsertableTravellersModifier
 		return tooltipTranslationKey;
 	}
 
-	public ResourceLocation getDatagenOnlyComponentId() {
-		return datagenOnlyComponentId;
+	public ResourceLocation getDataComponentTypeId() {
+		return ResourceLocation.parse(Util.getRegisteredName(BuiltInRegistries.DATA_COMPONENT_TYPE, this.typedDataComponent.type()));
 	}
 
 	@Override

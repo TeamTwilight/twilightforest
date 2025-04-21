@@ -601,6 +601,15 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.save(output, locEquip(TFItems.ZOMBIE_SCEPTER.getId().getPath()));
 
 		Predicate<Ingredient> splitTravellersModifiersRecipes = ingredient -> Arrays.stream(ingredient.getItems()).allMatch(stack -> stack.getItem() instanceof TravellersArmorItem);
+
+		TravellersGearComponentModifierBuilder.buildShaped(PatternsBuilder.create(splitTravellersModifiersRecipes)
+				.pattern(" R ")
+				.pattern("RGR")
+				.define('R', Ingredient.of(TFBlocks.RED_THREAD))
+				.define('G', Ingredient.of(TFItems.TRAVELLERS_GOGGLES))
+				.build(),
+			TravellersModifiers.RED_THREAD_VISION_MODIFIER).save(output);
+
 		TravellersGearComponentModifierBuilder.buildShaped(PatternsBuilder.create(splitTravellersModifiersRecipes)
 				.pattern(" E ")
 				.pattern("PVP")

@@ -5,6 +5,7 @@ import dev.emi.emi.api.EmiEntrypoint;
 import dev.emi.emi.api.EmiPlugin;
 import dev.emi.emi.api.EmiRegistry;
 import dev.emi.emi.api.recipe.EmiPatternCraftingRecipe;
+import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.VanillaEmiRecipeCategories;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
@@ -46,7 +47,6 @@ public class TFEmiCompat implements EmiPlugin {
 		stack.contains(EmiStack.of(TFItems.LAMP_OF_CINDERS)) || stack.contains(EmiStack.of(TFItems.GLASS_SWORD)) || stack.contains(EmiStack.of(TFItems.MAZEBREAKER_PICKAXE));
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public void register(EmiRegistry registry) {
 		registry.addCategory(UNCRAFTING);
 		registry.addCategory(CRUMBLE_HORN);
@@ -81,28 +81,45 @@ public class TFEmiCompat implements EmiPlugin {
 			registry.addRecipe(new EmiCrumbleHornRecipe(info.getFirst(), info.getSecond()));
 		}
 
-		if (!manager.getAllRecipesFor(RecipeType.CRAFTING).stream().filter(holder -> holder.value() instanceof MoonwormQueenRepairRecipe).toList().isEmpty()) {
-			registry.addRecipe(new EmiMoonwormQueenRecipe());
-		}
-
-		if (!manager.getAllRecipesFor(RecipeType.CRAFTING).stream().filter(holder -> holder.value() instanceof EmperorsClothRecipe).toList().isEmpty()) {
-			registry.addRecipe(new EmiEmperorsClothRecipe());
-		}
-
 		for (RecipeHolder<SmithingRecipe> holder : manager.getAllRecipesFor(RecipeType.SMITHING).stream().filter(holder -> holder.value() instanceof NoTemplateSmithingRecipe).toList()) {
 			NoTemplateSmithingRecipe recipe = (NoTemplateSmithingRecipe) holder.value();
 			registry.addRecipe(new EmiNoSmithingTemplateRecipe(EmiIngredient.of(recipe.getBase()), EmiIngredient.of(recipe.getAddition()), EmiStack.of(recipe.getResultItem(Minecraft.getInstance().level.registryAccess())), recipe));
 		}
 
-		for (RecipeHolder<ScepterRepairRecipe> holder : manager.getAllRecipesFor(RecipeType.CRAFTING).stream().filter(holder -> holder.value() instanceof ScepterRepairRecipe).map(RecipeHolder.class::cast).toList()) {
-			registry.addRecipe(new EmiScepterRepairRecipe(holder.value().getIngredients().stream().map(EmiIngredient::of).toList(), EmiStack.of(holder.value().getScepter()), holder.id()));
-		}
 
 		for (RecipeHolder<DryingRecipe> holder : manager.getAllRecipesFor(TFRecipes.DRYING_RECIPE.get())) {
 			registry.addRecipe(new EmiDryingRecipe(holder));
 		}
 
-		//remove other recipes as they arent actually possible recipes to use
+		for (RecipeHolder<?> holder : manager.getAllRecipesFor(RecipeType.CRAFTING)) {
+			EmiRecipe emiRecipe = switch (holder.value()) {
+				case MoonwormQueenRepairRecipe moonwormQueenRepairRecipe ->
+					new EmiMoonwormQueenRecipe();
+
+				case EmperorsClothRecipe emperorsClothRecipe ->
+					new EmiEmperorsClothRecipe();
+
+				case ScepterRepairRecipe scepterRepairRecipe ->
+					new EmiScepterRepairRecipe(
+						scepterRepairRecipe.getIngredients().stream()
+							.map(EmiIngredient::of)
+							.toList(),
+						EmiStack.of(scepterRepairRecipe.getScepter()),
+						holder.id()
+					);
+
+				case TravellersGearModifierShapedRecipe travellersGearModifierShapedRecipe ->
+					new EmiTravellersGearModifierShapedRecipe(travellersGearModifierShapedRecipe);
+
+				default -> null;
+			};
+
+			if (emiRecipe != null) {
+				registry.addRecipe(emiRecipe);
+			}
+		}
+
+		//remove other recipes as they aren't actually possible recipes to use
 		//emi makes a few assumptions about damageable items that it honestly shouldnt
 		registry.removeRecipes(recipe -> {
 			if (recipe instanceof EmiPatternCraftingRecipe || recipe instanceof EmiGrindstoneRecipe) {

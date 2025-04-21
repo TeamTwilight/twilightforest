@@ -65,14 +65,14 @@ public abstract class TravellersGearModifierRecipe extends CustomRecipe {
 			.filter(stack -> stack.getItem() instanceof TravellersArmorItem).findFirst().orElse(null);
 	}
 
-	protected static ItemStack getTravellersArmorFromIngredients(Iterable<Ingredient> ingredients) {
+	public static ItemStack getTravellersArmorFromIngredients(Iterable<Ingredient> ingredients) {
 		return StreamSupport.stream(ingredients.spliterator(), false)
 			.flatMap(ingredient -> Arrays.stream(ingredient.getItems()))
 			.filter(stack -> stack.getItem() instanceof TravellersArmorItem).findFirst().orElseThrow();
 	}
 
 	public ResourceLocation getId() {
-		return travellersModifier.getDatagenOnlyComponentId()
+		return travellersModifier.getDataComponentTypeId()
 			.withPrefix(StringUtils.substringAfterLast(getTravellersArmorFromIngredients(getIngredients()).getDescriptionId(), '.') + "/")
 			.withPrefix("add_modifier_to_travellers_gear/")
 			.withSuffix("_modifier");
