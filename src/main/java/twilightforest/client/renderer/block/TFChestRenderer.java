@@ -20,7 +20,7 @@ public class TFChestRenderer<T extends ChestBlockEntity> extends ChestRenderer<T
 	static {
 		ImmutableMap.Builder<Block, EnumMap<ChestType, Material>> builder = ImmutableMap.builder();
 
-		builder.put(TFBlocks.TWILIGHT_OAK_CHEST.get(), chestMaterial("twilight", false));
+		builder.put(TFBlocks.TWILIGHT_OAK_CHEST.get(), chestMaterial("twilight_oak", false));
 		builder.put(TFBlocks.CANOPY_CHEST.get(), chestMaterial("canopy", false));
 		builder.put(TFBlocks.MANGROVE_CHEST.get(), chestMaterial("mangrove", false));
 		builder.put(TFBlocks.DARK_CHEST.get(), chestMaterial("darkwood", false));
@@ -29,7 +29,7 @@ public class TFChestRenderer<T extends ChestBlockEntity> extends ChestRenderer<T
 		builder.put(TFBlocks.MINING_CHEST.get(), chestMaterial("mining", false));
 		builder.put(TFBlocks.SORTING_CHEST.get(), chestMaterial("sorting", false));
 
-		builder.put(TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST.get(), chestMaterial("twilight", true));
+		builder.put(TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST.get(), chestMaterial("twilight_oak", true));
 		builder.put(TFBlocks.CANOPY_TRAPPED_CHEST.get(), chestMaterial("canopy", true));
 		builder.put(TFBlocks.MANGROVE_TRAPPED_CHEST.get(), chestMaterial("mangrove", true));
 		builder.put(TFBlocks.DARK_TRAPPED_CHEST.get(), chestMaterial("darkwood", true));
