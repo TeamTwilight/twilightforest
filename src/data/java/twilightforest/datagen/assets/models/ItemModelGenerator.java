@@ -238,7 +238,9 @@ public class ItemModelGenerator extends ItemModelBuilders {
 			ItemModelUtils.plainModel(this.createFlatItemModel(TFItems.ORE_METER.get(), ModelTemplates.FLAT_ITEM))));
 		this.generateFlatItem(TFItems.POCKET_WATCH.get(), ModelTemplates.FLAT_ITEM);
 		this.generateMoonDial(TFItems.MOON_DIAL.get());
-		this.generateFlatItem(TFItems.CRUMBLE_HORN.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+		this.generateBooleanDispatch(TFItems.CRUMBLE_HORN.get(), ItemModelUtils.isUsingItem(),
+			ItemModelUtils.plainModel(ModelTemplates.createItem(ResourceLocation.withDefaultNamespace("tooting_goat_horn").toString(), TextureSlot.LAYER0).create(TwilightForestMod.prefix("tooting_crumble_horn"), TextureMapping.layer0(TFItems.CRUMBLE_HORN.get()), this.modelOutput)),
+			ItemModelUtils.plainModel(ModelTemplates.createItem(ResourceLocation.withDefaultNamespace("goat_horn").toString(), TextureSlot.LAYER0).create(TFItems.CRUMBLE_HORN.get(), TextureMapping.layer0(TFItems.CRUMBLE_HORN.get()), this.modelOutput)));
 		this.generateFlatItem(TFItems.PEACOCK_FEATHER_FAN.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 		this.itemModelOutput.accept(TFItems.MOONWORM_QUEEN.get(), ItemModelUtils.conditional(new MoonwormQueenPulse(),
 			ItemModelUtils.plainModel(this.createFlatItemModel(TFItems.MOONWORM_QUEEN.get(), "_alt", ModelTemplates.FLAT_HANDHELD_ITEM)),

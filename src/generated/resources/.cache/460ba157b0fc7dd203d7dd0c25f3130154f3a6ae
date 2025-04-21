@@ -1,4 +1,4 @@
-// 1.21.4	2025-04-20T12:22:37.861692	Model Definitions - twilightforest
+// 1.21.4	2025-04-20T23:10:02.7908596	Model Definitions - twilightforest
 bfc4b40d2c8daf9144a74758b5060ff35a20c7b8 assets/twilightforest/blockstates/acacia_banister.json
 2ba5945264a026fc35aa113643919b494cf4406d assets/twilightforest/blockstates/alpha_yeti_boss_spawner.json
 94ee00eebd82061338b6db439a84b3fdf98f3942 assets/twilightforest/blockstates/alpha_yeti_trophy.json
@@ -594,7 +594,7 @@ a177726172be22ebef89f85f0144d4759aec51d2 assets/twilightforest/items/cracked_tow
 1110e102232076e16590624c876a32e7c82c5bcb assets/twilightforest/items/creeper_skull_candle.json
 cfa0126523c18d2b7e2d7ed8405e0136056d71e9 assets/twilightforest/items/crimson_banister.json
 751b99856cf5079c29c59b006ab72934812bf497 assets/twilightforest/items/crown_splinter.json
-075d53461c759967993ed4ec657ef13d4423fa1f assets/twilightforest/items/crumble_horn.json
+7f421d7e9b5ebbefcef9c64bb99fbfd4c33bcf30 assets/twilightforest/items/crumble_horn.json
 279612534d6c58ef81464793ddca1ab7f80bc792 assets/twilightforest/items/cube_of_annihilation.json
 13c2cf5d8cc0c5e055ef61d34074a39d854af444 assets/twilightforest/items/cube_talisman.json
 39b440e56ef50da3547af86fb7697bb9f994b2b0 assets/twilightforest/items/cut_mazestone.json
@@ -2219,7 +2219,7 @@ db0b4a62901bb0e4ba7098fcf4ce6d75e906c2e9 assets/twilightforest/models/item/clove
 672edc91d696882be7a512bd4b0016095d10bd5b assets/twilightforest/models/item/cooked_meef.json
 55102a381f3b4f01bc9e6a243790d044a95cd5c8 assets/twilightforest/models/item/cooked_venison.json
 26b4954dcdc98cb4a179d670509b880dffe0dd5f assets/twilightforest/models/item/crown_splinter.json
-f49a7461b6de4822b4190d497c6db54a7c5d8721 assets/twilightforest/models/item/crumble_horn.json
+e5b15cca7a6c5959119545b6633b08b806effd7f assets/twilightforest/models/item/crumble_horn.json
 d36c63d26640d408e6da58c5cf6759bd6d1f8ae2 assets/twilightforest/models/item/cube_of_annihilation.json
 1ce5d3fe1b3c3104bee4bab8dd23df16c5393881 assets/twilightforest/models/item/cube_of_annihilation_thrown.json
 a7c7d75939e66246dbb6064fad965191f4da748e assets/twilightforest/models/item/cube_talisman.json
@@ -2856,4 +2856,5 @@ f11a88461d365ac273c876c6fe6f25087590af6f assets/twilightforest/models/item/yeti_
 710794ab9a702d0dbdca73586197b3bd868aa7c0 assets/twilightforest/models/item/yeti_leggings_resin_trim.json
 f005b6b9553e9dfd7772f3132e262647c5ddd648 assets/twilightforest/models/item/yeti_leggings_steeleaf_trim.json
 5c5358f8dadee7998b214b7105b8927dd6d6fcd3 assets/twilightforest/models/item/zombie_scepter.json
+84b6e8abf533a1367db9f8aefcbdcc30c3b90496 assets/twilightforest/models/tooting_crumble_horn.json
 4ae965c1ff8d93ea34612519560e7657812d00da assets/twilightforest/models/trollsteinn_inside.json
