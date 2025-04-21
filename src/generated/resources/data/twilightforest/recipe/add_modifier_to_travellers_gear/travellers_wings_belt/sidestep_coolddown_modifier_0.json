@@ -16,14 +16,9 @@
       "S": {
         "tag": "c:strings"
       },
-      "W": [
-        {
-          "item": "twilightforest:travellers_wings"
-        },
-        {
-          "item": "twilightforest:travellers_wings_belt"
-        }
-      ]
+      "W": {
+        "item": "twilightforest:travellers_wings_belt"
+      }
     },
     "pattern": [
       "SBS",

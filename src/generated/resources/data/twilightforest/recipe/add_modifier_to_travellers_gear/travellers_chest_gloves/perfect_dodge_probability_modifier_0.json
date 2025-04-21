@@ -16,14 +16,9 @@
       "S": {
         "item": "minecraft:sugar"
       },
-      "V": [
-        {
-          "item": "twilightforest:travellers_chest"
-        },
-        {
-          "item": "twilightforest:travellers_chest_gloves"
-        }
-      ]
+      "V": {
+        "item": "twilightforest:travellers_chest_gloves"
+      }
     },
     "pattern": [
       " E ",

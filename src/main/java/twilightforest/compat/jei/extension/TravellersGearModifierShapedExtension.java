@@ -1,0 +1,39 @@
+package twilightforest.compat.jei.extension;
+
+import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.ingredient.ICraftingGridHelper;
+import mezz.jei.api.recipe.IFocusGroup;
+import mezz.jei.api.recipe.RecipeIngredientRole;
+import mezz.jei.api.recipe.category.extensions.vanilla.crafting.ICraftingCategoryExtension;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import org.jetbrains.annotations.NotNull;
+import twilightforest.item.recipe.TravellersGearModifierShapedRecipe;
+import twilightforest.item.travellers_gear.TravellersArmorItem;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class TravellersGearModifierShapedExtension implements ICraftingCategoryExtension<TravellersGearModifierShapedRecipe> {
+
+	@Override
+	public void setRecipe(RecipeHolder<TravellersGearModifierShapedRecipe> recipeHolder, @NotNull IRecipeLayoutBuilder builder, ICraftingGridHelper craftingGridHelper, @NotNull IFocusGroup focuses) {
+		TravellersGearModifierShapedRecipe recipe = recipeHolder.value();
+		List<List<ItemStack>> inputs = new ArrayList<>(recipe.getIngredients().stream().map(ingredient -> Arrays.stream(ingredient.getItems()).toList()).toList());
+		craftingGridHelper.createAndSetInputs(builder, inputs, recipe.getWidth(),  recipe.getHeight());
+
+		List<ItemStack> outputs = new ArrayList<>();
+		for (Ingredient ingredient : recipe.getIngredients()) {
+			for (ItemStack stack : ingredient.getItems()) {
+				if (stack.getItem() instanceof TravellersArmorItem) {
+					outputs.add(recipe.applyModifier(stack.copy()));
+				}
+			}
+		}
+
+		// output slot; use RENDER_ONLY to prevent displaying modifier recipes when using the "Show Recipe" key
+		builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 95, 19).addItemStacks(outputs);
+	}
+}

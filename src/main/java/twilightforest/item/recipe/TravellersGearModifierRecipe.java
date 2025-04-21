@@ -12,14 +12,15 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
-import twilightforest.TwilightForestMod;
+import org.apache.commons.lang3.StringUtils;
 import twilightforest.data.helpers.TFLangProvider;
 import twilightforest.item.travellers_gear.TravellersArmorItem;
 import twilightforest.item.travellers_gear.modifiers.TravellersComponentModifier;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifiers;
 
-import java.util.Optional;
-import java.util.stream.Stream;
+import javax.annotation.Nullable;
+import java.util.Arrays;
+import java.util.stream.StreamSupport;
 
 public abstract class TravellersGearModifierRecipe extends CustomRecipe {
 	protected final TravellersComponentModifier travellersModifier;
@@ -30,31 +31,51 @@ public abstract class TravellersGearModifierRecipe extends CustomRecipe {
 
 	@Override
 	public boolean matches(CraftingInput input, Level level) {
-		for (ItemStack stack : getTravellersArmor(input).toList()) {
-			if (TravellersModifiers.countInsertableModifiers(stack) >= 3 || travellersModifier.hasModifier(stack))
-				return false;
-		}
-		return true;
+		ItemStack stack = getTravellersArmor(input);
+		if (stack == null)
+			return false;
+		int slots = 0;
+		if (stack.getItem() instanceof TravellersArmorItem travellersArmorItem)
+			slots = travellersArmorItem.insertableModifierSlots;
+		return TravellersModifiers.countInsertableModifiers(stack) < slots && !travellersModifier.hasModifier(stack);
 	}
 
 	@Override
 	public ItemStack assemble(CraftingInput input, HolderLookup.Provider registries) {
-		Optional<ItemStack> travellerArmorStack = getTravellersArmor(input).findFirst();
-		if (travellerArmorStack.isEmpty()) {
-			TwilightForestMod.LOGGER.error("No traveller's gear item found for {}. Please report this to https://github.com/TeamTwilight/twilightforest/issues", input);
-			return ItemStack.EMPTY;
-		}
-		ItemStack stack = travellerArmorStack.get().copy();
+		ItemStack travellerArmorStack = getTravellersArmor(input);
+		if (travellerArmorStack == null)
+			return ItemStack.EMPTY;  // Should never happen
+
+		ItemStack stack = travellerArmorStack.copy();
+		applyModifier(stack);
+		return stack;
+	}
+
+	public ItemStack applyModifier(ItemStack stack) {
 		travellersModifier.addModifier(stack);
 		return stack;
 	}
 
-	protected static Stream<ItemStack> getTravellersArmor(CraftingInput input) {
-		return input.items().stream().filter(stack -> stack.getItem() instanceof TravellersArmorItem);
+	protected static @Nullable ItemStack getTravellersArmor(CraftingInput input) {
+		return getTravellersArmor(input.items());
+	}
+
+	protected static @Nullable ItemStack getTravellersArmor(Iterable<ItemStack> items) {
+		return StreamSupport.stream(items.spliterator(), false)
+			.filter(stack -> stack.getItem() instanceof TravellersArmorItem).findFirst().orElse(null);
+	}
+
+	protected static ItemStack getTravellersArmorFromIngredients(Iterable<Ingredient> ingredients) {
+		return StreamSupport.stream(ingredients.spliterator(), false)
+			.flatMap(ingredient -> Arrays.stream(ingredient.getItems()))
+			.filter(stack -> stack.getItem() instanceof TravellersArmorItem).findFirst().orElseThrow();
 	}
 
 	public ResourceLocation getId() {
-		return travellersModifier.getDatagenOnlyComponentId().withPrefix("add_modifier_to_travellers_gear/").withSuffix("_modifier");
+		return travellersModifier.getDatagenOnlyComponentId()
+			.withPrefix(StringUtils.substringAfterLast(getTravellersArmorFromIngredients(getIngredients()).getDescriptionId(), '.') + "/")
+			.withPrefix("add_modifier_to_travellers_gear/")
+			.withSuffix("_modifier");
 	}
 
 	public static class AbstractModifierRecipeSerializer<T extends TravellersGearModifierRecipe> implements RecipeSerializer<T> {

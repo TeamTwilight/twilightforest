@@ -10,34 +10,35 @@ import twilightforest.item.recipe.TravellersGearModifierShapedRecipe;
 import twilightforest.item.recipe.TravellersGearModifierShapelessRecipe;
 import twilightforest.item.travellers_gear.modifiers.TravellersComponentModifier;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class TravellersGearComponentModifierBuilder {
 	public static final Map<ResourceLocation, Integer> SAVE_COUNTERS = new HashMap<>();
 
-	TravellersGearModifierRecipe recipe;
+	List<TravellersGearModifierRecipe> recipes = new ArrayList<>();
 
-	private TravellersGearComponentModifierBuilder(ShapedRecipePattern pattern, TravellersComponentModifier travellersModifier) {
-		recipe = new TravellersGearModifierShapedRecipe(pattern, travellersModifier);
+	private TravellersGearComponentModifierBuilder(Iterable<ShapedRecipePattern> pattern, TravellersComponentModifier travellersModifier) {
+		pattern.forEach(shapedRecipePattern -> recipes.add(new TravellersGearModifierShapedRecipe(shapedRecipePattern, travellersModifier)));
 	}
 
 	private TravellersGearComponentModifierBuilder(NonNullList<Ingredient> ingredients, TravellersComponentModifier travellersModifier) {
-		recipe = new TravellersGearModifierShapelessRecipe(ingredients, travellersModifier);
+		recipes.add(new TravellersGearModifierShapelessRecipe(ingredients, travellersModifier));
 	}
 
-	public static TravellersGearComponentModifierBuilder build(ShapedRecipePattern pattern, TravellersComponentModifier travellersModifier) {
+	public static TravellersGearComponentModifierBuilder buildShaped(Iterable<ShapedRecipePattern> pattern, TravellersComponentModifier travellersModifier) {
 		return new TravellersGearComponentModifierBuilder(pattern, travellersModifier);
 	}
 
-	public static TravellersGearComponentModifierBuilder build(List<Ingredient> ingredients, TravellersComponentModifier travellersModifier) {
+	// TODO: add shapeless recipes
+	public static TravellersGearComponentModifierBuilder buildShapeless(List<Ingredient> ingredients, TravellersComponentModifier travellersModifier) {
 		return new TravellersGearComponentModifierBuilder(NonNullList.copyOf(ingredients), travellersModifier);
 	}
 
 	public void save(RecipeOutput output) {
-		int count = SAVE_COUNTERS.getOrDefault(recipe.getId(), 0);
-		output.accept(recipe.getId().withSuffix("_" + count), recipe, null);
-		SAVE_COUNTERS.put(recipe.getId(), count + 1);
+		for (TravellersGearModifierRecipe recipe : recipes) {
+			int count = SAVE_COUNTERS.getOrDefault(recipe.getId(), 0);
+			output.accept(recipe.getId().withSuffix("_" + count), recipe, null);
+			SAVE_COUNTERS.put(recipe.getId(), count + 1);
+		}
 	}
 }

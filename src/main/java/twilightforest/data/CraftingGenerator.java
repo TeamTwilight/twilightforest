@@ -29,9 +29,12 @@ import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFItems;
 import twilightforest.item.recipe.*;
+import twilightforest.item.travellers_gear.TravellersArmorItem;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifiers;
 
+import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Predicate;
 
 public class CraftingGenerator extends CraftingDataHelper {
 
@@ -597,7 +600,8 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.addRepairIngredient(Items.ROTTEN_FLESH)
 			.save(output, locEquip(TFItems.ZOMBIE_SCEPTER.getId().getPath()));
 
-		TravellersGearComponentModifierBuilder.build(PatternBuilder.create()
+		Predicate<Ingredient> splitTravellersModifiersRecipes = ingredient -> Arrays.stream(ingredient.getItems()).allMatch(stack -> stack.getItem() instanceof TravellersArmorItem);
+		TravellersGearComponentModifierBuilder.buildShaped(PatternsBuilder.create(splitTravellersModifiersRecipes)
 				.pattern(" E ")
 				.pattern("PVP")
 				.pattern(" S ")
@@ -608,7 +612,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.build(),
 			TravellersModifiers.PERFECT_DODGE_MODIFIER).save(output);
 
-		TravellersGearComponentModifierBuilder.build(PatternBuilder.create()
+		TravellersGearComponentModifierBuilder.buildShaped(PatternsBuilder.create(splitTravellersModifiersRecipes)
 				.pattern("FCF")
 				.pattern("FWF")
 				.pattern("FEF")
@@ -619,7 +623,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.build(),
 			TravellersModifiers.CONTROLLED_FALL_MODIFIER).save(output);
 
-		TravellersGearComponentModifierBuilder.build(PatternBuilder.create()
+		TravellersGearComponentModifierBuilder.buildShaped(PatternsBuilder.create(splitTravellersModifiersRecipes)
 				.pattern(" L ")
 				.pattern("SWS")
 				.pattern("P P")
@@ -630,7 +634,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.build(),
 			TravellersModifiers.DOUBLE_JUMP_MODIFIER).save(output);
 
-		TravellersGearComponentModifierBuilder.build(PatternBuilder.create()
+		TravellersGearComponentModifierBuilder.buildShaped(PatternsBuilder.create(splitTravellersModifiersRecipes)
 				.pattern(" P ")
 				.pattern("HWH")
 				.pattern("F F")
@@ -641,7 +645,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.build(),
 			TravellersModifiers.AGILE_RANGER_MODIFIER).save(output);
 
-		TravellersGearComponentModifierBuilder.build(PatternBuilder.create()
+		TravellersGearComponentModifierBuilder.buildShaped(PatternsBuilder.create(splitTravellersModifiersRecipes)
 				.pattern("SBS")
 				.pattern("PWP")
 				.pattern("SBS")
@@ -652,7 +656,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.build(),
 			TravellersModifiers.SIDESTEP_MODIFIER).save(output);
 
-		TravellersGearComponentModifierBuilder.build(PatternBuilder.create()
+		TravellersGearComponentModifierBuilder.buildShaped(PatternsBuilder.create(splitTravellersModifiersRecipes)
 				.pattern("SBS")
 				.pattern("L L")
 				.define('B', Ingredient.of(TFItems.TRAVELLERS_BOOTS))
@@ -661,7 +665,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.build(),
 			TravellersModifiers.WATER_WALK_MODIFIER).save(output);
 
-		TravellersGearComponentModifierBuilder.build(PatternBuilder.create()
+		TravellersGearComponentModifierBuilder.buildShaped(PatternsBuilder.create(splitTravellersModifiersRecipes)
 				.pattern("WBW")
 				.pattern("S S")
 				.define('W', Ingredient.of(Tags.Items.STRINGS))
@@ -670,7 +674,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.build(),
 			TravellersModifiers.SLIMY_SOLES_MODIFIER).save(output);
 
-		TravellersGearComponentModifierBuilder.build(PatternBuilder.create()
+		TravellersGearComponentModifierBuilder.buildShaped(PatternsBuilder.create(splitTravellersModifiersRecipes)
 				.pattern("MPM")
 				.pattern("HBH")
 				.define('M', Ingredient.of(TFItems.RAW_MEEF))
@@ -680,7 +684,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.build(),
 			TravellersModifiers.STRAIGHT_AHEAD_MODIFIER).save(output);
 
-		TravellersGearComponentModifierBuilder.build(PatternBuilder.create()
+		TravellersGearComponentModifierBuilder.buildShaped(PatternsBuilder.create(splitTravellersModifiersRecipes)
 				.pattern(" E ")
 				.pattern("MTM")
 				.pattern(" E ")
@@ -690,7 +694,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.build(),
 			TravellersModifiers.AUTO_REPAIR_MODIFIER).save(output);
 
-		TravellersGearComponentModifierBuilder.build(PatternBuilder.create()
+		TravellersGearComponentModifierBuilder.buildShaped(PatternsBuilder.create(splitTravellersModifiersRecipes)
 				.pattern(" M ")
 				.pattern("ETE")
 				.pattern(" M ")

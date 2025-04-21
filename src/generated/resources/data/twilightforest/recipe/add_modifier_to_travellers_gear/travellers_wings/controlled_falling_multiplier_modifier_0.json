@@ -16,14 +16,9 @@
       "F": {
         "item": "minecraft:feather"
       },
-      "W": [
-        {
-          "item": "twilightforest:travellers_wings"
-        },
-        {
-          "item": "twilightforest:travellers_wings_belt"
-        }
-      ]
+      "W": {
+        "item": "twilightforest:travellers_wings"
+      }
     },
     "pattern": [
       "FCF",

@@ -14,6 +14,7 @@ import net.minecraft.world.item.crafting.*;
 import twilightforest.compat.jei.categories.*;
 import twilightforest.compat.jei.extension.NoTemplateSmithingExtension;
 import twilightforest.compat.jei.extension.ScepterRepairExtension;
+import twilightforest.compat.jei.extension.TravellersGearModifierShapedExtension;
 import twilightforest.compat.jei.subtype.CasketSubtypeInterpreter;
 import twilightforest.compat.jei.util.OminousFireRecipe;
 import twilightforest.config.TFConfig;
@@ -34,6 +35,7 @@ import twilightforest.inventory.UncraftingMenu;
 import twilightforest.item.recipe.MoonwormQueenRepairRecipe;
 import twilightforest.item.recipe.NoTemplateSmithingRecipe;
 import twilightforest.item.recipe.ScepterRepairRecipe;
+import twilightforest.item.recipe.TravellersGearModifierShapedRecipe;
 
 import java.util.Collections;
 import java.util.List;
@@ -96,6 +98,7 @@ public class JEICompat implements IModPlugin {
 	public void registerVanillaCategoryExtensions(IVanillaCategoryExtensionRegistration registration) {
 		registration.getSmithingCategory().addExtension(NoTemplateSmithingRecipe.class, new NoTemplateSmithingExtension());
 		registration.getCraftingCategory().addExtension(ScepterRepairRecipe.class, new ScepterRepairExtension());
+		registration.getCraftingCategory().addExtension(TravellersGearModifierShapedRecipe.class, new TravellersGearModifierShapedExtension());
 	}
 
 	@Override
