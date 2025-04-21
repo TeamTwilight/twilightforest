@@ -758,6 +758,6 @@ public class Hydra extends BaseTFBoss {
 
 	@Override
 	public int getBossBarColor() {
-		return 0x05EBB9;
+		return 0xFF05EBB9;
 	}
 }
