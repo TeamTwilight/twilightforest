@@ -615,7 +615,7 @@ public class HydraHeadContainer {
 		}
 
 		vector = vector.yRot((-(this.hydra.yBodyRot + neckRotation) * Mth.PI) / 180.0F);
-		this.setNeckPosition(this.hydra.getX() + vector.x(), this.hydra.getY() + vector.y(), this.hydra.getZ() + vector.z(), this.hydra.yBodyRot);
+		this.setNeckPosition(this.hydra.getX() + vector.x(), this.hydra.getY() + vector.y() + 0.5D, this.hydra.getZ() + vector.z(), this.hydra.yBodyRot);
 	}
 
 	protected void setHeadPosition() {
