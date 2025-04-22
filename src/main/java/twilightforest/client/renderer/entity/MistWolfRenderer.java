@@ -1,5 +1,6 @@
 package twilightforest.client.renderer.entity;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
@@ -19,9 +20,15 @@ public class MistWolfRenderer extends MobRenderer<MistWolf, MistWolfRenderState,
 	}
 
 	@Override
+	protected void scale(MistWolfRenderState state, PoseStack stack) {
+		float wolfScale = 1.9F;
+		stack.scale(wolfScale, wolfScale, wolfScale);
+	}
+
+	@Override
 	protected int getModelTint(MistWolfRenderState state) {
 		float misty = Math.min(1.0F, state.brightness * 3.0F + 0.25F);
-		float smoky = state.brightness * 2.0F + 0.6F;
+		float smoky = Math.min(1.0F, state.brightness * 2.0F + 0.6F);
 		return ARGB.colorFromFloat(smoky, misty, misty, misty);
 	}
 
