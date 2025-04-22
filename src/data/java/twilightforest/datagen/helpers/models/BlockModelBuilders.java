@@ -1,5 +1,6 @@
 package twilightforest.datagen.helpers.models;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.client.data.models.ItemModelOutput;
 import net.minecraft.client.data.models.blockstates.*;
@@ -1003,6 +1004,28 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 	public void createCrossBlock(Block block, PlantType plantType, TextureMapping textureMapping) {
 		ResourceLocation resourcelocation = plantType.getCross().extend().renderType("cutout").build().create(block, textureMapping, this.modelOutput);
 		this.blockStateOutput.accept(createSimpleBlock(block, resourcelocation));
+	}
+
+	@Override
+	public List<ResourceLocation> createFloorFireModels(Block fireBlock) {
+		ResourceLocation resourcelocation = ModelTemplates.FIRE_FLOOR.extend().renderType("cutout").build()
+			.create(ModelLocationUtils.getModelLocation(fireBlock, "_floor0"), TextureMapping.fire0(fireBlock), this.modelOutput);
+		ResourceLocation resourcelocation1 = ModelTemplates.FIRE_FLOOR.extend().renderType("cutout").build()
+			.create(ModelLocationUtils.getModelLocation(fireBlock, "_floor1"), TextureMapping.fire1(fireBlock), this.modelOutput);
+		return ImmutableList.of(resourcelocation, resourcelocation1);
+	}
+
+	@Override
+	public List<ResourceLocation> createSideFireModels(Block fireBlock) {
+		ResourceLocation resourcelocation = ModelTemplates.FIRE_SIDE.extend().renderType("cutout").build()
+			.create(ModelLocationUtils.getModelLocation(fireBlock, "_side0"), TextureMapping.fire0(fireBlock), this.modelOutput);
+		ResourceLocation resourcelocation1 = ModelTemplates.FIRE_SIDE.extend().renderType("cutout").build()
+			.create(ModelLocationUtils.getModelLocation(fireBlock, "_side1"), TextureMapping.fire1(fireBlock), this.modelOutput);
+		ResourceLocation resourcelocation2 = ModelTemplates.FIRE_SIDE_ALT.extend().renderType("cutout").build()
+			.create(ModelLocationUtils.getModelLocation(fireBlock, "_side_alt0"), TextureMapping.fire0(fireBlock), this.modelOutput);
+		ResourceLocation resourcelocation3 = ModelTemplates.FIRE_SIDE_ALT.extend().renderType("cutout").build()
+			.create(ModelLocationUtils.getModelLocation(fireBlock, "_side_alt1"), TextureMapping.fire1(fireBlock), this.modelOutput);
+		return ImmutableList.of(resourcelocation, resourcelocation1, resourcelocation2, resourcelocation3);
 	}
 
 	public static VariantProperties.Rotation getYRotationFromDirection(Direction direction) {
