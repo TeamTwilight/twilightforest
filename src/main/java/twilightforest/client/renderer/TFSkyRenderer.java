@@ -2,6 +2,7 @@ package twilightforest.client.renderer;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
+import com.mojang.math.Axis;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -41,7 +42,11 @@ public class TFSkyRenderer implements AutoCloseable {
 //		}
 
 		//TF: replace sun, moon, and star rendering method with our own star renderer
+		//rotation is from SkyRenderer.renderSunMoonAndStars
+		posestack.pushPose();
+		posestack.mulPose(Axis.YP.rotationDegrees(-90.0F));
 		renderStars(setupFog, posestack);
+		posestack.popPose();
 		//TF: use custom height checks for the void sky as vanilla hardcodes to 63
 		if (shouldDarkenSky(level, camera, partialTicks)) {
 			levelRenderer.skyRenderer.renderDarkDisc(posestack);
@@ -59,7 +64,6 @@ public class TFSkyRenderer implements AutoCloseable {
 		Matrix4fStack matrix = RenderSystem.getModelViewStack();
 		matrix.pushMatrix();
 		matrix.mul(stack.last().pose());
-		RenderSystem.depthMask(false);
 		RenderSystem.setShaderFog(FogParameters.NO_FOG);
 		starBuffer.drawWithRenderType(RenderType.stars());
 		setupFog.run();

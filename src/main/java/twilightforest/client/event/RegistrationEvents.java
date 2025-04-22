@@ -164,7 +164,7 @@ public class RegistrationEvents {
 	}
 
 	private static void registerDimEffects(RegisterDimensionSpecialEffectsEvent event) {
-		event.register(TFDimension.DIMENSION_RENDERER, new TwilightForestRenderInfo(128.0F, false, DimensionSpecialEffects.SkyType.NONE, false, false));
+		event.register(TFDimension.DIMENSION_RENDERER, new TwilightForestRenderInfo(128.0F, false, DimensionSpecialEffects.SkyType.OVERWORLD, false, false));
 	}
 
 	private static void clientSetup(FMLClientSetupEvent evt) {
