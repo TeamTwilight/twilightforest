@@ -37,7 +37,7 @@ public class EmiTravellersGearModifierShapedRecipe extends EmiPatternCraftingRec
 	public SlotWidget getOutputWidget(int x, int y) {
 		return new GeneratedSlotWidget(
 			rand -> EmiStack.of(recipe.applyModifier(TravellersGearModifierRecipe.getTravellersArmorFromIngredients(recipe.getIngredients()))),
-			uniqueSeed, // ensures the same sequence across frames
+			uniqueSeed,
 			x, y
 		);
 	}
