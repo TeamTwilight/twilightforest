@@ -1,6 +1,7 @@
 package twilightforest.item;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.LivingEntity;
@@ -23,8 +24,9 @@ public class ArcticArmorItem extends ArmorItem {
 
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-		super.appendHoverText(stack, context, tooltip, flag);
-		tooltip.add(TOOLTIP);
+		if (!stack.has(DataComponents.DYED_COLOR)) {
+			tooltip.add(TOOLTIP);
+		}
 	}
 
 	@Override
