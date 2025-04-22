@@ -145,6 +145,7 @@ public class LichModel extends HumanoidModel<LichRenderState> implements TrophyB
 
 	@Override
 	public void renderTrophy(PoseStack stack, MultiBufferSource buffer, int light, int overlay, int color, ItemDisplayContext context) {
+		stack.translate(0.0F, 0.25F, 0.0F);
 		VertexConsumer consumer = buffer.getBuffer(RenderType.entityCutoutNoCull(LichRenderer.TEXTURE));
 		this.head.render(stack, consumer, light, overlay, color);
 	}

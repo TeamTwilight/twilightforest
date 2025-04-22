@@ -201,9 +201,6 @@ public class SnowQueenModel extends HumanoidModel<SnowQueenRenderState> implemen
 
 	@Override
 	public void renderTrophy(PoseStack stack, MultiBufferSource buffer, int light, int overlay, int color, ItemDisplayContext context) {
-		if (!JappaPackReloadListener.INSTANCE.isJappaPackLoaded()) {
-			stack.translate(0.0F, 0.25F, 0.0F);
-		}
 		VertexConsumer consumer = buffer.getBuffer(RenderType.entityCutoutNoCull(SnowQueenRenderer.TEXTURE));
 		this.head.render(stack, consumer, light, overlay, color);
 	}
