@@ -34,10 +34,12 @@ public class TravellersGearModifierShapedRecipe extends TravellersGearModifierRe
 		return getHeight() <= height && getWidth() <= width;
 	}
 
+	@Override
 	public int getWidth() {
 		return pattern.width();
 	}
 
+	@Override
 	public int getHeight() {
 		return pattern.height();
 	}

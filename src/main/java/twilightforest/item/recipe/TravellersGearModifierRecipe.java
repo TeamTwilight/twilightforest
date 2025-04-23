@@ -56,6 +56,10 @@ public abstract class TravellersGearModifierRecipe extends CustomRecipe {
 		return stack;
 	}
 
+	public abstract int getWidth();
+
+	public abstract int getHeight();
+
 	protected static @Nullable ItemStack getTravellersArmor(CraftingInput input) {
 		return getTravellersArmor(input.items());
 	}

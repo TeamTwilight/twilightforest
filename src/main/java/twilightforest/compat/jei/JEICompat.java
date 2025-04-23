@@ -11,10 +11,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
+import net.neoforged.fml.ModList;
 import twilightforest.compat.jei.categories.*;
 import twilightforest.compat.jei.extension.NoTemplateSmithingExtension;
 import twilightforest.compat.jei.extension.ScepterRepairExtension;
-import twilightforest.compat.jei.extension.TravellersGearModifierShapedExtension;
+import twilightforest.compat.jei.extension.TravellersGearModifierExtension;
 import twilightforest.compat.jei.subtype.CasketSubtypeInterpreter;
 import twilightforest.compat.jei.util.OminousFireRecipe;
 import twilightforest.config.TFConfig;
@@ -32,10 +33,7 @@ import twilightforest.init.TFItems;
 import twilightforest.init.TFMenuTypes;
 import twilightforest.init.TFRecipes;
 import twilightforest.inventory.UncraftingMenu;
-import twilightforest.item.recipe.MoonwormQueenRepairRecipe;
-import twilightforest.item.recipe.NoTemplateSmithingRecipe;
-import twilightforest.item.recipe.ScepterRepairRecipe;
-import twilightforest.item.recipe.TravellersGearModifierShapedRecipe;
+import twilightforest.item.recipe.*;
 
 import java.util.Collections;
 import java.util.List;
@@ -47,6 +45,11 @@ public class JEICompat implements IModPlugin {
 
 	public static final IIngredientType<FakeEntityType> ENTITY_TYPE = () -> FakeEntityType.class;
 	public static final IIngredientType<FakeItemEntity> FAKE_ITEM_ENTITY = () -> FakeItemEntity.class;
+
+	public JEICompat() throws ReflectiveOperationException {
+		if (ModList.get().isLoaded("emi"))
+			throw new ReflectiveOperationException();
+	}
 
 	@Override
 	public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
@@ -98,7 +101,7 @@ public class JEICompat implements IModPlugin {
 	public void registerVanillaCategoryExtensions(IVanillaCategoryExtensionRegistration registration) {
 		registration.getSmithingCategory().addExtension(NoTemplateSmithingRecipe.class, new NoTemplateSmithingExtension());
 		registration.getCraftingCategory().addExtension(ScepterRepairRecipe.class, new ScepterRepairExtension());
-		registration.getCraftingCategory().addExtension(TravellersGearModifierShapedRecipe.class, new TravellersGearModifierShapedExtension());
+		registration.getCraftingCategory().addExtension(TravellersGearModifierRecipe.class, new TravellersGearModifierExtension());
 	}
 
 	@Override

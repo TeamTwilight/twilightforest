@@ -7,13 +7,12 @@ import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.GeneratedSlotWidget;
 import dev.emi.emi.api.widget.SlotWidget;
 import twilightforest.item.recipe.TravellersGearModifierRecipe;
-import twilightforest.item.recipe.TravellersGearModifierShapedRecipe;
 
-public class EmiTravellersGearModifierShapedRecipe extends EmiPatternCraftingRecipe {
-	private final TravellersGearModifierShapedRecipe recipe;
+public class EmiTravellersGearModifierRecipe extends EmiPatternCraftingRecipe {
+	private final TravellersGearModifierRecipe recipe;
 	private final int uniqueSeed = EmiUtil.RANDOM.nextInt();
 
-	public EmiTravellersGearModifierShapedRecipe(TravellersGearModifierShapedRecipe recipe) {
+	public EmiTravellersGearModifierRecipe(TravellersGearModifierRecipe recipe) {
 		super(
 			recipe.getIngredients().stream()
 				.map(EmiIngredient::of)

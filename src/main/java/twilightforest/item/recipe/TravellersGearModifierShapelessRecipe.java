@@ -41,6 +41,21 @@ public class TravellersGearModifierShapelessRecipe extends TravellersGearModifie
 	}
 
 	@Override
+	public NonNullList<Ingredient> getIngredients() {
+		return ingredients;
+	}
+
+	@Override
+	public int getWidth() {
+		return ingredients.size() > 4 ? 3 : 2;
+	}
+
+	@Override
+	public int getHeight() {
+		return ingredients.size() > 4 ? 3 : 2;
+	}
+
+	@Override
 	public RecipeSerializer<?> getSerializer() {
 		return TFRecipes.MODIFIER_SHAPELESS_RECIPE_SERIALIZER.get();
 	}

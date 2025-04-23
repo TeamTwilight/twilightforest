@@ -13,15 +13,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import twilightforest.item.recipe.TravellersGearModifierRecipe;
-import twilightforest.item.recipe.TravellersGearModifierShapedRecipe;
 
 import java.util.Collection;
 import java.util.List;
 
-public class REITravellersGearModifierShapedRecipeFiller implements CraftingRecipeFiller<TravellersGearModifierShapedRecipe> {
+public class REITravellersGearModifierRecipeFiller implements CraftingRecipeFiller<TravellersGearModifierRecipe> {
 	@Override
-	public Collection<Display> apply(RecipeHolder<TravellersGearModifierShapedRecipe> recipeHolder) {
-		TravellersGearModifierShapedRecipe recipe = recipeHolder.value();
+	public Collection<Display> apply(RecipeHolder<TravellersGearModifierRecipe> recipeHolder) {
+		TravellersGearModifierRecipe recipe = recipeHolder.value();
 		List<Ingredient> ingredients = recipe.getIngredients();
 		ItemStack output = TravellersGearModifierRecipe.getTravellersArmorFromIngredients(ingredients).copy();
 		recipe.applyModifier(output);
@@ -38,7 +37,7 @@ public class REITravellersGearModifierShapedRecipeFiller implements CraftingReci
 	}
 
 	@Override
-	public Class<TravellersGearModifierShapedRecipe> getRecipeClass() {
-		return TravellersGearModifierShapedRecipe.class;
+	public Class<TravellersGearModifierRecipe> getRecipeClass() {
+		return TravellersGearModifierRecipe.class;
 	}
 }

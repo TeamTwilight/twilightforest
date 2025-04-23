@@ -9,20 +9,20 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import org.jetbrains.annotations.NotNull;
-import twilightforest.item.recipe.TravellersGearModifierShapedRecipe;
+import twilightforest.item.recipe.TravellersGearModifierRecipe;
 import twilightforest.item.travellers_gear.TravellersArmorItem;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class TravellersGearModifierShapedExtension implements ICraftingCategoryExtension<TravellersGearModifierShapedRecipe> {
+public class TravellersGearModifierExtension implements ICraftingCategoryExtension<TravellersGearModifierRecipe> {
 
 	@Override
-	public void setRecipe(RecipeHolder<TravellersGearModifierShapedRecipe> recipeHolder, @NotNull IRecipeLayoutBuilder builder, ICraftingGridHelper craftingGridHelper, @NotNull IFocusGroup focuses) {
-		TravellersGearModifierShapedRecipe recipe = recipeHolder.value();
+	public void setRecipe(RecipeHolder<TravellersGearModifierRecipe> recipeHolder, @NotNull IRecipeLayoutBuilder builder, ICraftingGridHelper craftingGridHelper, @NotNull IFocusGroup focuses) {
+		TravellersGearModifierRecipe recipe = recipeHolder.value();
 		List<List<ItemStack>> inputs = new ArrayList<>(recipe.getIngredients().stream().map(ingredient -> Arrays.stream(ingredient.getItems()).toList()).toList());
-		craftingGridHelper.createAndSetInputs(builder, inputs, recipe.getWidth(),  recipe.getHeight());
+		craftingGridHelper.createAndSetInputs(builder, inputs, recipe.getWidth(), recipe.getHeight());
 
 		List<ItemStack> outputs = new ArrayList<>();
 		for (Ingredient ingredient : recipe.getIngredients()) {

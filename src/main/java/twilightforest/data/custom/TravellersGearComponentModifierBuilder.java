@@ -17,8 +17,8 @@ public class TravellersGearComponentModifierBuilder {
 		pattern.forEach(shapedRecipePattern -> recipes.add(new TravellersGearModifierShapedRecipe(shapedRecipePattern, travellersModifier, isRotated)));
 	}
 
-	private TravellersGearComponentModifierBuilder(NonNullList<Ingredient> ingredients, TravellersComponentModifier travellersModifier) {
-		recipes.add(new TravellersGearModifierShapelessRecipe(ingredients, travellersModifier));
+	private TravellersGearComponentModifierBuilder(Iterable<NonNullList<Ingredient>> ingredients, TravellersComponentModifier travellersModifier) {
+		ingredients.forEach(recipeIngredients -> recipes.add(new TravellersGearModifierShapelessRecipe(recipeIngredients, travellersModifier)));
 	}
 
 	public static TravellersGearComponentModifierBuilder buildShaped(Iterable<ShapedRecipePattern> pattern, TravellersComponentModifier travellersModifier) {
@@ -29,9 +29,8 @@ public class TravellersGearComponentModifierBuilder {
 		return new TravellersGearComponentModifierBuilder(pattern, travellersModifier, isRotated);
 	}
 
-	// TODO: add shapeless recipes
-	public static TravellersGearComponentModifierBuilder buildShapeless(List<Ingredient> ingredients, TravellersComponentModifier travellersModifier) {
-		return new TravellersGearComponentModifierBuilder(NonNullList.copyOf(ingredients), travellersModifier);
+	public static TravellersGearComponentModifierBuilder buildShapeless(Iterable<NonNullList<Ingredient>> ingredients, TravellersComponentModifier travellersModifier) {
+		return new TravellersGearComponentModifierBuilder(ingredients, travellersModifier);
 	}
 
 	public void save(RecipeOutput output) {

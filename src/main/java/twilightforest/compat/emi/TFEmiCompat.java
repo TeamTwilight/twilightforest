@@ -108,8 +108,8 @@ public class TFEmiCompat implements EmiPlugin {
 						holder.id()
 					);
 
-				case TravellersGearModifierShapedRecipe travellersGearModifierShapedRecipe ->
-					new EmiTravellersGearModifierShapedRecipe(travellersGearModifierShapedRecipe);
+				case TravellersGearModifierRecipe travellersGearModifierRecipe ->
+					new EmiTravellersGearModifierRecipe(travellersGearModifierRecipe);
 
 				default -> null;
 			};
