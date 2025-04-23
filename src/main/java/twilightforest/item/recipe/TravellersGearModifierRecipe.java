@@ -56,6 +56,8 @@ public abstract class TravellersGearModifierRecipe extends CustomRecipe {
 		return stack;
 	}
 
+	public abstract boolean isShapeless();
+
 	public abstract int getWidth();
 
 	public abstract int getHeight();

@@ -56,6 +56,11 @@ public class TravellersGearModifierShapelessRecipe extends TravellersGearModifie
 	}
 
 	@Override
+	public boolean isShapeless() {
+		return true;
+	}
+
+	@Override
 	public RecipeSerializer<?> getSerializer() {
 		return TFRecipes.MODIFIER_SHAPELESS_RECIPE_SERIALIZER.get();
 	}

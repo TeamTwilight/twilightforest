@@ -7,6 +7,7 @@ import dev.emi.emi.api.stack.ListEmiIngredient;
 import dev.emi.emi.api.widget.WidgetHolder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -14,6 +15,7 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.compat.RecipeViewerConstants;
+import twilightforest.compat.emi.TFEmiCategories;
 import twilightforest.compat.emi.TFEmiCompat;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.item.recipe.UncraftingRecipe;
@@ -29,7 +31,7 @@ public class EmiUncraftingRecipe<T extends CraftingRecipe> extends TFEmiRecipe<T
 	private List<EmiIngredient> displayedOutputs;
 
 	public EmiUncraftingRecipe(RecipeHolder<T> recipe) {
-		super(TFEmiCompat.UNCRAFTING, recipe, RecipeViewerConstants.GENERIC_RECIPE_WIDTH + 2, RecipeViewerConstants.GENERIC_RECIPE_HEIGHT);
+		super(TFEmiCategories.UNCRAFTING, recipe, RecipeViewerConstants.GENERIC_RECIPE_WIDTH + 2, RecipeViewerConstants.GENERIC_RECIPE_HEIGHT);
 	}
 
 	@Override

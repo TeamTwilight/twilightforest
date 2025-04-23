@@ -51,17 +51,13 @@ public class TransformationPowderCategory implements IRecipeCategory<Transformat
 	}
 
 	@Override
-	public IDrawable getBackground() {
-		return this.background;
-	}
-
-	@Override
 	public IDrawable getIcon() {
 		return this.icon;
 	}
 
 	@Override
 	public void draw(TransformationRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics graphics, double mouseX, double mouseY) {
+		this.background.draw(graphics);
 		if (recipe.isReversible()) {
 			this.doubleArrow.draw(graphics, 46, 19);
 		} else {

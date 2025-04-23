@@ -13,6 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.compat.emi.TFEmiCategories;
 import twilightforest.compat.emi.TFEmiCompat;
 import twilightforest.item.recipe.DryingRecipe;
 
@@ -34,7 +35,7 @@ public class EmiDryingRecipe implements EmiRecipe {
 
 	@Override
 	public EmiRecipeCategory getCategory() {
-		return TFEmiCompat.DRYING;
+		return TFEmiCategories.DRYING;
 	}
 
 	@Override

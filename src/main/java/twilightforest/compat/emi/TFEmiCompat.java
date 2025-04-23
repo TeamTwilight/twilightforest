@@ -31,12 +31,6 @@ import java.util.function.Function;
 
 @EmiEntrypoint
 public class TFEmiCompat implements EmiPlugin {
-	public static final TFEmiRecipeCategory UNCRAFTING = new TFEmiRecipeCategory("uncrafting", TFBlocks.UNCRAFTING_TABLE);
-	public static final TFEmiRecipeCategory CRUMBLE_HORN = new TFEmiRecipeCategory("crumble_horn", TFItems.CRUMBLE_HORN);
-	public static final TFEmiRecipeCategory TRANSFORMATION = new TFEmiRecipeCategory("transformation", TFItems.TRANSFORMATION_POWDER);
-	public static final TFEmiRecipeCategory EXANIMATE = new TFEmiRecipeCategory("ominous_flame", TFItems.EXANIMATE_ESSENCE);
-	public static final TFEmiRecipeCategory MOONWORM_QUEEN = new TFEmiRecipeCategory("moonworm_queen", TFItems.MOONWORM_QUEEN);
-	public static final TFEmiRecipeCategory DRYING = new TFEmiRecipeCategory("drying", TFBlocks.SORTING_DRYING_RACK);
 
 	private static final Function<List<EmiIngredient>, Boolean> CANT_USE_ENCHANTS = stack ->
 		stack.contains(EmiStack.of(TFItems.MOONWORM_QUEEN)) || stack.contains(EmiStack.of(TFItems.LAMP_OF_CINDERS)) || stack.contains(EmiStack.of(TFItems.ORE_MAGNET)) ||
@@ -48,21 +42,21 @@ public class TFEmiCompat implements EmiPlugin {
 
 	@Override
 	public void register(EmiRegistry registry) {
-		registry.addCategory(UNCRAFTING);
-		registry.addCategory(CRUMBLE_HORN);
-		registry.addCategory(TRANSFORMATION);
-		registry.addCategory(EXANIMATE);
-		registry.addCategory(MOONWORM_QUEEN);
-		registry.addCategory(DRYING);
+		registry.addCategory(TFEmiCategories.UNCRAFTING);
+		registry.addCategory(TFEmiCategories.CRUMBLE_HORN);
+		registry.addCategory(TFEmiCategories.TRANSFORMATION);
+		registry.addCategory(TFEmiCategories.EXANIMATE);
+		registry.addCategory(TFEmiCategories.MOONWORM_QUEEN);
+		registry.addCategory(TFEmiCategories.DRYING);
 
 		if (!TFConfig.disableEntireTable) {
 			registry.addWorkstation(VanillaEmiRecipeCategories.CRAFTING, EmiStack.of(TFBlocks.UNCRAFTING_TABLE));
-			registry.addWorkstation(UNCRAFTING, EmiStack.of(TFBlocks.UNCRAFTING_TABLE));
+			registry.addWorkstation(TFEmiCategories.UNCRAFTING, EmiStack.of(TFBlocks.UNCRAFTING_TABLE));
 		}
-		registry.addWorkstation(CRUMBLE_HORN, EmiStack.of(TFItems.CRUMBLE_HORN));
-		registry.addWorkstation(TRANSFORMATION, EmiStack.of(TFItems.TRANSFORMATION_POWDER));
-		registry.addWorkstation(EXANIMATE, EmiStack.of(TFItems.EXANIMATE_ESSENCE));
-		registry.addWorkstation(MOONWORM_QUEEN, EmiStack.of(TFItems.MOONWORM_QUEEN));
+		registry.addWorkstation(TFEmiCategories.CRUMBLE_HORN, EmiStack.of(TFItems.CRUMBLE_HORN));
+		registry.addWorkstation(TFEmiCategories.TRANSFORMATION, EmiStack.of(TFItems.TRANSFORMATION_POWDER));
+		registry.addWorkstation(TFEmiCategories.EXANIMATE, EmiStack.of(TFItems.EXANIMATE_ESSENCE));
+		registry.addWorkstation(TFEmiCategories.MOONWORM_QUEEN, EmiStack.of(TFItems.MOONWORM_QUEEN));
 
 		RecipeManager manager = Objects.requireNonNull(Minecraft.getInstance().level).getRecipeManager();
 		if (!TFConfig.disableEntireTable) {

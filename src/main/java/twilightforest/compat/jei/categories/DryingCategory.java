@@ -46,7 +46,7 @@ public class DryingCategory implements IRecipeCategory<DryingRecipe> {
 	public DryingCategory(IGuiHelper helper) {
 		this.background = helper.createBlankDrawable(70, 30);
 		this.slot = helper.getSlotDrawable();
-		this.arrow = helper.drawableBuilder(Constants.RECIPE_GUI_VANILLA, 82, 128, 24, 17).buildAnimated(20 * 60, IDrawableAnimated.StartDirection.LEFT, false);
+		this.arrow = helper.createAnimatedRecipeArrow(20 * 60);
 		this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, TFBlocks.SORTING_DRYING_RACK.get().asItem().getDefaultInstance());
 		this.localizedName = Component.translatable("gui.twilightforest.drying_jei");
 	}
@@ -62,17 +62,13 @@ public class DryingCategory implements IRecipeCategory<DryingRecipe> {
 	}
 
 	@Override
-	public IDrawable getBackground() {
-		return this.background;
-	}
-
-	@Override
 	public IDrawable getIcon() {
 		return this.icon;
 	}
 
 	@Override
 	public void draw(DryingRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics graphics, double mouseX, double mouseY) {
+		this.background.draw(graphics);
 		this.slot.draw(graphics);
 		this.slot.draw(graphics, 52, 0);
 		this.arrow.draw(graphics, 23, 1);

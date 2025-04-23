@@ -4,11 +4,13 @@ import mezz.jei.api.constants.ModIds;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
+import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -42,16 +44,15 @@ public class MoonwormQueenCategory implements IRecipeCategory<MoonwormQueenRepai
 	}
 
 	@Override
-	public IDrawable getBackground() {
-		return this.background;
-	}
-
-	@Override
 	public IDrawable getIcon() {
 		return this.icon;
 	}
 
-	@SuppressWarnings("removal") //liar
+	@Override
+	public void draw(MoonwormQueenRepairRecipe recipe, IRecipeSlotsView view, GuiGraphics graphics, double mouseX, double mouseY) {
+		this.background.draw(graphics);
+	}
+
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, MoonwormQueenRepairRecipe recipe, IFocusGroup focuses) {
 		builder.addSlot(RecipeIngredientRole.INPUT, 1, 1).addItemStack(RecipeViewerConstants.DAMAGED_MOONWORM_QUEEN);
@@ -65,6 +66,6 @@ public class MoonwormQueenCategory implements IRecipeCategory<MoonwormQueenRepai
 		builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 19, 37).addItemStack(ItemStack.EMPTY);
 		builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 37, 37).addItemStack(ItemStack.EMPTY);
 
-		builder.addSlot(RecipeIngredientRole.OUTPUT, 95, 19).addItemStacks(RecipeViewerConstants.MOONWORM_QUEEN_LIST).addTooltipCallback((view, tooltip) -> tooltip.add(RecipeViewerConstants.MOONWORM_QUEEN_TOOLTIP));
+		builder.addSlot(RecipeIngredientRole.OUTPUT, 95, 19).addItemStacks(RecipeViewerConstants.MOONWORM_QUEEN_LIST).addRichTooltipCallback((view, tooltip) -> tooltip.add(RecipeViewerConstants.MOONWORM_QUEEN_TOOLTIP));
 	}
 }

@@ -45,6 +45,11 @@ public class TravellersGearModifierShapedRecipe extends TravellersGearModifierRe
 	}
 
 	@Override
+	public boolean isShapeless() {
+		return false;
+	}
+
+	@Override
 	public NonNullList<Ingredient> getIngredients() {
 		return pattern.ingredients();
 	}

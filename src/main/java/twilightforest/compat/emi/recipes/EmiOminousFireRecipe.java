@@ -14,6 +14,7 @@ import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.compat.RecipeViewerConstants;
 import twilightforest.compat.emi.EmiEntityWidget;
+import twilightforest.compat.emi.TFEmiCategories;
 import twilightforest.compat.emi.TFEmiCompat;
 
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ public class EmiOminousFireRecipe implements EmiRecipe {
 
 	@Override
 	public EmiRecipeCategory getCategory() {
-		return TFEmiCompat.EXANIMATE;
+		return TFEmiCategories.EXANIMATE;
 	}
 
 	@Override

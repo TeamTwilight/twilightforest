@@ -31,7 +31,7 @@ public abstract class TFEmiRecipe<T extends Recipe<?>> implements EmiRecipe {
 		this.height = height;
 
 		ResourceLocation recipeId = recipe.id();
-		String path = String.format("emi/%s/%s/%s", category.name, recipeId.getNamespace(), recipeId.getPath());
+		String path = String.format("/emi/%s/%s/%s", category.name, recipeId.getNamespace(), recipeId.getPath());
 		this.id = TwilightForestMod.prefix(path);
 
 		this.inputs = new ArrayList<>();

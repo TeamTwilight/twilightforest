@@ -6,6 +6,7 @@ import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.GeneratedSlotWidget;
 import dev.emi.emi.api.widget.SlotWidget;
+import net.minecraft.resources.ResourceLocation;
 import twilightforest.item.recipe.TravellersGearModifierRecipe;
 
 public class EmiTravellersGearModifierRecipe extends EmiPatternCraftingRecipe {
@@ -19,9 +20,13 @@ public class EmiTravellersGearModifierRecipe extends EmiPatternCraftingRecipe {
 				.toList(),
 			// dummy output; actual result is generated dynamically
 			EmiStack.EMPTY,
-			recipe.getId()
-		);
+			recipe.getId(), recipe.isShapeless());
 		this.recipe = recipe;
+	}
+
+	@Override
+	public ResourceLocation getId() {
+		return super.getId().withPrefix("/");
 	}
 
 	@Override

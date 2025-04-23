@@ -14,6 +14,7 @@ import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.compat.RecipeViewerConstants;
+import twilightforest.compat.emi.TFEmiCategories;
 import twilightforest.compat.emi.TFEmiCompat;
 import twilightforest.compat.emi.EmiEntityWidget;
 
@@ -44,7 +45,7 @@ public class EmiTransformationPowderRecipe implements EmiRecipe {
 
 	@Override
 	public EmiRecipeCategory getCategory() {
-		return TFEmiCompat.TRANSFORMATION;
+		return TFEmiCategories.TRANSFORMATION;
 	}
 
 	@Override

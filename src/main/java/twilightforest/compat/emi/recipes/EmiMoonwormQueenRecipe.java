@@ -8,6 +8,7 @@ import net.minecraft.Util;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import twilightforest.compat.RecipeViewerConstants;
+import twilightforest.compat.emi.TFEmiCategories;
 import twilightforest.compat.emi.TFEmiCompat;
 import twilightforest.compat.emi.OrderedSlotWidget;
 import twilightforest.init.TFItems;
@@ -19,7 +20,7 @@ import java.util.List;
 public class EmiMoonwormQueenRecipe extends TFEmiRecipe<MoonwormQueenRepairRecipe> {
 
 	public EmiMoonwormQueenRecipe() {
-		super(TFEmiCompat.MOONWORM_QUEEN, new RecipeHolder<>(TFRecipes.MOONWORM_QUEEN_REPAIR_RECIPE.getId(), new MoonwormQueenRepairRecipe(CraftingBookCategory.MISC)), RecipeViewerConstants.GENERIC_RECIPE_WIDTH + 2, RecipeViewerConstants.GENERIC_RECIPE_HEIGHT);
+		super(TFEmiCategories.MOONWORM_QUEEN, new RecipeHolder<>(TFRecipes.MOONWORM_QUEEN_REPAIR_RECIPE.getId(), new MoonwormQueenRepairRecipe(CraftingBookCategory.MISC)), RecipeViewerConstants.GENERIC_RECIPE_WIDTH + 2, RecipeViewerConstants.GENERIC_RECIPE_HEIGHT);
 	}
 
 	@Override
