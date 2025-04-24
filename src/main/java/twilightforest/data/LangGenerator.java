@@ -1200,21 +1200,25 @@ public class LangGenerator extends TFLangProvider {
 		this.addTravellersModifier(TravellersModifiers.HIGH_JUMP_MODIFIER, "High Jump");
 		this.addTravellersModifier(TravellersModifiers.HIGH_STEP_MODIFIER, "High Step");
 
-		// built-in modifiers
-		this.addTravellersModifier(TravellersModifiers.RED_THREAD_VISION_MODIFIER, "— Red Thread Vision (keybind ${tfkeybinds/"+ TFKeyBinds.RED_THREAD_VISION_KEY.getName() + "})");
-		this.addTravellersModifier(TravellersModifiers.PERFECT_DODGE_MODIFIER, "— Perfect Dodge");
-		this.addTravellersModifier(TravellersModifiers.STEALTH_MODIFIER, "— Stealth (sneak to activate)");
-		this.addTravellersModifier(TravellersModifiers.HASTE_MODIFIER, "— Haste");
-		this.addTravellersModifier(TravellersModifiers.ARROW_MAGNETISM_MODIFIER, "— Arrow Magnetism");
-		this.addTravellersModifier(TravellersModifiers.FOOD_EFFICIENCY_MODIFIER, "— Efficient Eater");
-		this.addTravellersModifier(TravellersModifiers.CONTROLLED_FALL_MODIFIER, "— Controlled Fall");
-		this.addTravellersModifier(TravellersModifiers.DOUBLE_JUMP_MODIFIER, "— Double Jump");
-		this.addTravellersModifier(TravellersModifiers.AGILE_RANGER_MODIFIER, "— Agile Ranger");
-		this.addTravellersModifier(TravellersModifiers.SIDESTEP_MODIFIER, "— Sidestep");
-		this.addTravellersModifier(TravellersModifiers.WATER_WALK_MODIFIER, "— Water Walk");
-		this.addTravellersModifier(TravellersModifiers.SLIMY_SOLES_MODIFIER, "— Slimy Soles");
-		this.addTravellersModifier(TravellersModifiers.STRAIGHT_AHEAD_MODIFIER, "— Straight Ahead");
+		// insertable modifiers
 		this.addTravellersModifier(TravellersModifiers.AUTO_REPAIR_MODIFIER, "— Auto Repair");
+
+		this.addTravellersModifier(TravellersModifiers.RED_THREAD_VISION_MODIFIER, "— Red Thread Vision (keybind ${tfkeybinds/"+ TFKeyBinds.RED_THREAD_VISION_KEY.getName() + "})");
+
+		this.addTravellersModifier(TravellersModifiers.STEALTH_MODIFIER,          "— Stealth (sneak to activate)");
+		this.addTravellersModifier(TravellersModifiers.ARROW_MAGNETISM_MODIFIER,  "— Arrow Magnetism");
+		this.addTravellersModifier(TravellersModifiers.FOOD_EFFICIENCY_MODIFIER,  "— Efficient Eater");
+		this.addTravellersModifier(TravellersModifiers.PERFECT_DODGE_MODIFIER,    "— Perfect Dodge");
+		this.addTravellersModifier(TravellersModifiers.HASTE_MODIFIER,            "— Haste");
+
+		this.addTravellersModifier(TravellersModifiers.CONTROLLED_FALL_MODIFIER,  "— Controlled Fall");
+		this.addTravellersModifier(TravellersModifiers.AGILE_RANGER_MODIFIER,     "— Agile Ranger");
+		this.addTravellersModifier(TravellersModifiers.DOUBLE_JUMP_MODIFIER,      "— Double Jump");
+		this.addTravellersModifier(TravellersModifiers.SIDESTEP_MODIFIER,         "— Sidestep");
+
+		this.addTravellersModifier(TravellersModifiers.STRAIGHT_AHEAD_MODIFIER,   "— Straight Ahead");
+		this.addTravellersModifier(TravellersModifiers.SLIMY_SOLES_MODIFIER,      "— Slimy Soles");
+		this.addTravellersModifier(TravellersModifiers.WATER_WALK_MODIFIER,       "— Water Walk");
 
 		// Other Traveller's gear components
 		this.add("travellers_gear.ability", "Ability: ");
