@@ -15,7 +15,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.TwilightForestMod;
-import twilightforest.client.JappaPackReloadListener;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.MinoshroomModel;
 import twilightforest.client.state.MinoshroomRenderState;
@@ -63,8 +62,8 @@ public class MinoshroomRenderer extends HumanoidMobRenderer<Minoshroom, Minoshro
 					BlockRenderDispatcher blockrendererdispatcher = Minecraft.getInstance().getBlockRenderer();
 					BlockState blockstate = Blocks.RED_MUSHROOM.defaultBlockState(); // TF: hardcode mushroom state
 					int i = LivingEntityRenderer.getOverlayCoords(state, 0.0F);
-					float yOffs = JappaPackReloadListener.INSTANCE.isJappaPackLoaded() ? -0.95F : -0.65F;
-					float zOffs = JappaPackReloadListener.INSTANCE.isJappaPackLoaded() ? 0.0F : 0.25F;
+					float yOffs = -0.65F;
+					float zOffs = 0.25F;
 					stack.pushPose();
 					this.getParentModel().cowTorso.translateAndRotate(stack);
 					stack.mulPose(Axis.XP.rotationDegrees(-90.0F));
@@ -88,11 +87,7 @@ public class MinoshroomRenderer extends HumanoidMobRenderer<Minoshroom, Minoshro
 					stack.pushPose();
 					this.getParentModel().head.translateAndRotate(stack);
 					// TF - adjust head shroom
-					if (!JappaPackReloadListener.INSTANCE.isJappaPackLoaded()) {
-						stack.translate(0.0D, -0.9D, 0.05D);
-					} else {
-						stack.translate(0.0D, -1.1D, 0.0D);
-					}
+					stack.translate(0.0D, -0.9D, 0.05D);
 					stack.mulPose(Axis.YP.rotationDegrees(-78.0F));
 					stack.scale(-1.0F, -1.0F, 1.0F);
 					stack.translate(-0.5D, -0.5D, -0.5D);

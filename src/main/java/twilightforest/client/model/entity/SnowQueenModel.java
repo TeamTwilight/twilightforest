@@ -11,7 +11,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
-import twilightforest.client.JappaPackReloadListener;
 import twilightforest.client.renderer.entity.SnowQueenRenderer;
 import twilightforest.client.state.SnowQueenRenderState;
 import twilightforest.entity.boss.SnowQueen.Phase;
@@ -22,11 +21,7 @@ public class SnowQueenModel extends HumanoidModel<SnowQueenRenderState> implemen
 		super(root);
 	}
 
-	public static LayerDefinition checkForPack() {
-		return JappaPackReloadListener.INSTANCE.isJappaPackLoaded() ? createJappaModel() : create();
-	}
-
-	private static LayerDefinition create() {
+	public static LayerDefinition create() {
 		MeshDefinition meshdefinition = HumanoidModel.createMesh(CubeDeformation.NONE, 0);
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
@@ -111,67 +106,6 @@ public class SnowQueenModel extends HumanoidModel<SnowQueenRenderState> implemen
 				.addBox(-0.5F, -2.5F, spikeDepth, 1.0F, 3.0F, 1.0F),
 			PartPose.offsetAndRotation(2.5F, 0.0F, 0.0F, angle * Mth.DEG_TO_RAD, 0.0F, 10.0F * Mth.DEG_TO_RAD));
 
-	}
-
-	private static LayerDefinition createJappaModel() {
-		MeshDefinition meshdefinition = new MeshDefinition();
-		PartDefinition partdefinition = meshdefinition.getRoot();
-
-		partdefinition.addOrReplaceChild("body", CubeListBuilder.create()
-				.texOffs(0, 16)
-				.addBox(-4.0F, 0.0F, -2.0F, 8.0F, 12.0F, 4.0F)
-				.texOffs(32, 45)
-				.addBox(-4.5F, 10.0F, -2.5F, 9.0F, 14.0F, 5.0F),
-			PartPose.ZERO);
-
-		var head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
-				.texOffs(0, 0)
-				.addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F),
-			PartPose.ZERO);
-
-		partdefinition.addOrReplaceChild("left_arm", CubeListBuilder.create()
-				.texOffs(14, 32)
-				.addBox(-1.0F, -2.0F, -2.0F, 3.0F, 12.0F, 4.0F),
-			PartPose.offset(5.0F, 2.0F, 0.0F));
-
-		partdefinition.addOrReplaceChild("left_leg", CubeListBuilder.create()
-				.texOffs(16, 48)
-				.addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F),
-			PartPose.offset(1.9F, 12.0F, 0.0F));
-
-		partdefinition.addOrReplaceChild("right_leg", CubeListBuilder.create()
-				.texOffs(0, 48)
-				.addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F),
-			PartPose.offset(-1.9F, 12.0F, 0.0F));
-
-		partdefinition.addOrReplaceChild("right_arm", CubeListBuilder.create()
-				.texOffs(0, 32)
-				.addBox(-2.0F, -2.0F, -2.0F, 3.0F, 12.0F, 4.0F),
-			PartPose.offset(-5.0F, 2.0F, 0.0F));
-
-		var hat = head.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
-
-		hat.addOrReplaceChild("crown_front", CubeListBuilder.create()
-				.texOffs(24, 0)
-				.addBox(-5.0F, -4.0F, 0.0F, 10.0F, 4.0F, 0.0F),
-			PartPose.offsetAndRotation(0.0F, -6.0F, -4.0F, 0.39269908169872414F, 0.0F, 0.0F));
-
-		hat.addOrReplaceChild("crown_right", CubeListBuilder.create()
-				.texOffs(24, 4)
-				.addBox(-5.0F, -4.0F, 0.0F, 10.0F, 4.0F, 0.0F),
-			PartPose.offsetAndRotation(-4.0F, -6.0F, 0.0F, 0.39269908169872414F, 1.5707963267948966F, 0.0F));
-
-		hat.addOrReplaceChild("crown_left", CubeListBuilder.create()
-				.texOffs(44, 4)
-				.addBox(-5.0F, -4.0F, 0.0F, 10.0F, 4.0F, 0.0F),
-			PartPose.offsetAndRotation(4.0F, -6.0F, 0.0F, -0.39269908169872414F, 1.5707963267948966F, 0.0F));
-
-		hat.addOrReplaceChild("crown_back", CubeListBuilder.create()
-				.texOffs(44, 0)
-				.addBox(-5.0F, -4.0F, 0.0F, 10.0F, 4.0F, 0.0F),
-			PartPose.offsetAndRotation(0.0F, -6.0F, 4.0F, -0.39269908169872414F, 0.0F, 0.0F));
-
-		return LayerDefinition.create(meshdefinition, 64, 64);
 	}
 
 	@Override

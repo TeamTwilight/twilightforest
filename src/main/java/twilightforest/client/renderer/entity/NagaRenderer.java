@@ -6,7 +6,6 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ARGB;
 import twilightforest.TwilightForestMod;
-import twilightforest.client.JappaPackReloadListener;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.NagaModel;
 import twilightforest.client.state.NagaRenderState;
@@ -26,9 +25,7 @@ public class NagaRenderer extends MobRenderer<Naga, NagaRenderState, NagaModel<N
 	protected void scale(NagaRenderState state, PoseStack stack) {
 		super.scale(state, stack);
 		//make size adjustment
-		if (!JappaPackReloadListener.INSTANCE.isJappaPackLoaded()) {
-			stack.scale(2.01F, 2.01F, 2.01F);
-		}
+		stack.scale(2.01F, 2.01F, 2.01F);
 		stack.translate(0.0F, state.isDazed ? 1.075F : 0.75F, state.isDazed ? 0.175F : 0.0F);
 	}
 

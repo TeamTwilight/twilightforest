@@ -14,7 +14,6 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
-import twilightforest.client.JappaPackReloadListener;
 import twilightforest.client.renderer.entity.NagaRenderer;
 
 public class NagaModel<T extends EntityRenderState> extends EntityModel<T> implements TrophyBlockModel {
@@ -26,11 +25,7 @@ public class NagaModel<T extends EntityRenderState> extends EntityModel<T> imple
 		this.head = root.getChild("head");
 	}
 
-	public static LayerDefinition checkForPack() {
-		return JappaPackReloadListener.INSTANCE.isJappaPackLoaded() ? createJappaModel() : create();
-	}
-
-	private static LayerDefinition create() {
+	public static LayerDefinition create() {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
@@ -42,32 +37,11 @@ public class NagaModel<T extends EntityRenderState> extends EntityModel<T> imple
 		return LayerDefinition.create(meshdefinition, 64, 32);
 	}
 
-	private static LayerDefinition createJappaModel() {
-		MeshDefinition meshdefinition = new MeshDefinition();
-		PartDefinition partdefinition = meshdefinition.getRoot();
-
-		var head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
-				.texOffs(0, 0)
-				.addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F),
-			PartPose.offset(0.0F, 8.0F, 0.0F));
-
-		head.addOrReplaceChild("tongue", CubeListBuilder.create()
-				.texOffs(84, 0)
-				.addBox(-6.0F, 0.0F, -12.0F, 12.0F, 0.0F, 12.0F),
-			PartPose.offsetAndRotation(0.0F, 10.0F, -16.0F, 0.4363323129985824F, 0.0F, 0.0F));
-
-		return LayerDefinition.create(meshdefinition, 128, 64);
-	}
-
 	@Override
 	public void renderTrophy(PoseStack stack, MultiBufferSource buffer, int light, int overlay, int color, ItemDisplayContext context) {
-		if (JappaPackReloadListener.INSTANCE.isJappaPackLoaded()) {
-			stack.scale(0.25F, 0.25F, 0.25F);
-			stack.translate(0.0F, -1.5F, 0.0F);
-		} else {
-			stack.scale(0.5F, 0.5F, 0.5F);
-			stack.translate(0.0F, -0.25F, 0.0F);
-		}
+		stack.scale(0.5F, 0.5F, 0.5F);
+		stack.translate(0.0F, -0.25F, 0.0F);
+
 		VertexConsumer consumer = buffer.getBuffer(RenderType.entityCutoutNoCull(NagaRenderer.TEXTURE));
 		this.head.render(stack, consumer, light, overlay, color);
 	}

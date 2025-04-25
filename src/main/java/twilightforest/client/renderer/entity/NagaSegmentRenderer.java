@@ -6,7 +6,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
-import twilightforest.client.JappaPackReloadListener;
 import twilightforest.client.model.entity.NagaModel;
 import twilightforest.client.state.NagaSegmentRenderState;
 import twilightforest.entity.boss.NagaSegment;
@@ -34,9 +33,7 @@ public class NagaSegmentRenderer extends TFPartRenderer<NagaSegment, NagaSegment
 			stack.mulPose(Axis.YP.rotationDegrees(yaw2));
 			stack.mulPose(Axis.XP.rotationDegrees(state.xRot));
 
-			if (!JappaPackReloadListener.INSTANCE.isJappaPackLoaded()) {
-				stack.scale(2.0F, 2.0F, 2.0F);
-			}
+			stack.scale(2.0F, 2.0F, 2.0F);
 			stack.translate(0.0D, -1.25F, 0.0D);
 
 			super.render(state, stack, buffer, state.parentLight);

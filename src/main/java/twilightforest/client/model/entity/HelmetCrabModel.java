@@ -12,7 +12,6 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.util.Mth;
-import twilightforest.client.JappaPackReloadListener;
 
 public class HelmetCrabModel extends EntityModel<LivingEntityRenderState> {
 
@@ -37,11 +36,7 @@ public class HelmetCrabModel extends EntityModel<LivingEntityRenderState> {
 		this.leftLeg2 = root.getChild("left_leg_2");
 	}
 
-	public static LayerDefinition checkForPack() {
-		return JappaPackReloadListener.INSTANCE.isJappaPackLoaded() ? createJappaModel() : create();
-	}
-
-	private static LayerDefinition create() {
+	public static LayerDefinition create() {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
@@ -136,65 +131,6 @@ public class HelmetCrabModel extends EntityModel<LivingEntityRenderState> {
 		return LayerDefinition.create(meshdefinition, 64, 32);
 	}
 
-	private static LayerDefinition createJappaModel() {
-		MeshDefinition meshdefinition = new MeshDefinition();
-		PartDefinition partdefinition = meshdefinition.getRoot();
-
-		var body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create()
-				.texOffs(0, 9)
-				.addBox(-2.5F, -4.0F, -2.5F, 5.0F, 4.0F, 5.0F)
-				.texOffs(58, 0)
-				.addBox(-1.5F, -5.0F, -3.5F, 1.0F, 2.0F, 1.0F)
-				.texOffs(58, 3)
-				.addBox(0.5F, -5.0F, -3.5F, 1.0F, 2.0F, 1.0F),
-			PartPose.offset(0.0F, 21.0F, 0.0F));
-
-		var helmet = body.addOrReplaceChild("helmet", CubeListBuilder.create()
-				.texOffs(40, 0)
-				.addBox(-4.0F, -8.0F, -4.0F, 6.0F, 8.0F, 6.0F)
-				.texOffs(16, 0)
-				.addBox(-4.0F, -8.0F, -4.0F, 6.0F, 8.0F, 6.0F, new CubeDeformation(-0.25F)),
-			PartPose.offsetAndRotation(0.0F, -1.0F, 0.5F, -1.3089969389957472F, -0.2617993877991494F, 0.7463027588580033F));
-
-		helmet.addOrReplaceChild("horns", CubeListBuilder.create()
-				.texOffs(18, 23)
-				.addBox(-11.5F, -12.0F, -0.67F, 23.0F, 9.0F, 0.0F),
-			PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 0.7853981633974483F, 0.0F));
-
-		partdefinition.addOrReplaceChild("right_claw", CubeListBuilder.create()
-				.texOffs(0, 0)
-				.addBox(-1.0F, -3.0F, -5.0F, 2.0F, 4.0F, 5.0F),
-			PartPose.offsetAndRotation(-2.0F, 21.0F, -2.0F, 0.0F, 0.39269908169872414F, 0.0F));
-
-		partdefinition.addOrReplaceChild("left_claw", CubeListBuilder.create()
-				.texOffs(0, 23)
-				.addBox(-1.0F, -3.0F, -5.0F, 2.0F, 4.0F, 5.0F),
-			PartPose.offsetAndRotation(2.0F, 21.0F, -2.0F, 0.0F, -0.39269908169872414F, 0.0F));
-
-		partdefinition.addOrReplaceChild("right_leg_1", CubeListBuilder.create()
-				.texOffs(32, 15)
-				.addBox(-6.0F, -1.0F, -1.0F, 6.0F, 2.0F, 2.0F),
-			PartPose.offsetAndRotation(-2.0F, 21.0F, 0.0F, 0.2181661564992912F, 0.4363323129985824F, -0.4363323129985824F));
-
-		partdefinition.addOrReplaceChild("left_leg_1", CubeListBuilder.create()
-				.texOffs(48, 19)
-				.addBox(0.0F, -1.0F, -1.0F, 6.0F, 2.0F, 2.0F),
-			PartPose.offsetAndRotation(2.0F, 21.0F, 0.0F, 0.2181661564992912F, -0.4363323129985824F, 0.4363323129985824F));
-
-		partdefinition.addOrReplaceChild("right_leg_2", CubeListBuilder.create()
-				.texOffs(32, 19)
-				.addBox(-6.0F, -1.0F, -1.0F, 6.0F, 2.0F, 2.0F),
-			PartPose.offsetAndRotation(-2.0F, 21.0F, -1.5F, 0.2181661564992912F, 0.0F, -0.4363323129985824F));
-
-		partdefinition.addOrReplaceChild("left_leg_2", CubeListBuilder.create()
-				.texOffs(48, 15)
-				.addBox(0.0F, -1.0F, -1.0F, 6.0F, 2.0F, 2.0F),
-			PartPose.offsetAndRotation(2.0F, 21.0F, -1.5F, 0.2181661564992912F, 0.0F, 0.4363323129985824F));
-
-
-		return LayerDefinition.create(meshdefinition, 64, 32);
-	}
-
 	@Override
 	public void setupAnim(LivingEntityRenderState state) {
 		this.body.yRot = state.yRot * Mth.DEG_TO_RAD;
@@ -226,19 +162,11 @@ public class HelmetCrabModel extends EntityModel<LivingEntityRenderState> {
 		this.rightLeg2.zRot += f15;
 		this.leftLeg2.zRot -= f15;
 
-		// swing right arm as if it were an arm, not a leg
-		if (JappaPackReloadListener.INSTANCE.isJappaPackLoaded()) {
-			this.rightClaw.yRot = 0.319531F;
-			this.rightClaw.yRot += (Mth.cos(state.walkAnimationPos * 0.6662F + Mth.PI) * 2.0F * state.walkAnimationSpeed * 0.5F) / 2;
-			this.leftClaw.yRot = -0.319531F;
-			this.leftClaw.yRot += -(Mth.cos(state.walkAnimationPos * 0.6662F + Mth.PI) * 2.0F * state.walkAnimationSpeed * 0.5F) / 2;
-		} else {
-			this.rightClaw.yRot = -1.319531F;
-			this.rightClaw.yRot += Mth.cos(state.walkAnimationPos * 0.6662F + Mth.PI) * 2.0F * state.walkAnimationSpeed * 0.5F;
-			this.leftClaw.zRot = f6;
-			this.leftClaw.yRot = f8 * 2.0F - f7;
-			this.leftClaw.yRot -= f12;
-			this.leftClaw.zRot -= f16;
-		}
+		this.rightClaw.yRot = -1.319531F;
+		this.rightClaw.yRot += Mth.cos(state.walkAnimationPos * 0.6662F + Mth.PI) * 2.0F * state.walkAnimationSpeed * 0.5F;
+		this.leftClaw.zRot = f6;
+		this.leftClaw.yRot = f8 * 2.0F - f7;
+		this.leftClaw.yRot -= f12;
+		this.leftClaw.zRot -= f16;
 	}
 }

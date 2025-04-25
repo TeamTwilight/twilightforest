@@ -9,7 +9,6 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import twilightforest.client.JappaPackReloadListener;
 import twilightforest.client.state.UpperGoblinKnightRenderState;
 
 public class UpperGoblinKnightModel extends HumanoidModel<UpperGoblinKnightRenderState> {
@@ -23,11 +22,7 @@ public class UpperGoblinKnightModel extends HumanoidModel<UpperGoblinKnightRende
 		this.shield = this.leftArm.getChild("shield");
 	}
 
-	public static LayerDefinition checkForPack() {
-		return JappaPackReloadListener.INSTANCE.isJappaPackLoaded() ? createJappaModel() : create();
-	}
-
-	private static LayerDefinition create() {
+	public static LayerDefinition create() {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
@@ -105,71 +100,6 @@ public class UpperGoblinKnightModel extends HumanoidModel<UpperGoblinKnightRende
 				.texOffs(30, 16)
 				.addBox(-1.5F, 0.0F, -2.0F, 3.0F, 4.0F, 4.0F),
 			PartPose.offset(4.0F, 20.0F, 0.0F));
-
-		return LayerDefinition.create(meshdefinition, 128, 64);
-	}
-
-	private static LayerDefinition createJappaModel() {
-		MeshDefinition meshdefinition = new MeshDefinition();
-		PartDefinition partdefinition = meshdefinition.getRoot();
-
-		var head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
-				.texOffs(28, 0)
-				.addBox(-8.0F, -14.0F, -1.9F, 16.0F, 14.0F, 2.0F)
-				.texOffs(116, 0)
-				.addBox(-6.0F, -12.0F, -0.9F, 4.0F, 2.0F, 2.0F)
-				.texOffs(116, 4)
-				.addBox(2.0F, -12.0F, -1.0F, 4.0F, 2.0F, 2.0F),
-			PartPose.offsetAndRotation(0.0F, 12.0F, 0.0F, 0.0F, -0.7853981633974483F, 0.0F));
-
-		partdefinition.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
-
-		//turns out, putting this as the hat doesnt allow us to rotate it at a 45 degree angle, so we have to make it its own piece
-		head.addOrReplaceChild("helm", CubeListBuilder.create()
-				.texOffs(0, 0)
-				.addBox(-3.5F, 0.0F, -3.5F, 7.0F, 11.0F, 7.0F),
-			PartPose.offsetAndRotation(0.0F, -11.0F, 0.0F, 0.0F, 0.7853981633974483F, 0.0F));
-
-		var body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create()
-				.texOffs(0, 18)
-				.addBox(-5.5F, 0.0F, -2.0F, 11.0F, 8.0F, 4.0F),
-			PartPose.offset(0.0F, 12.0F, 0.0F));
-
-		body.addOrReplaceChild("breastplate", CubeListBuilder.create()
-				.texOffs(64, 0)
-				.addBox(-6.5F, 0.0F, -3.0F, 13.0F, 12.0F, 6.0F),
-			PartPose.offset(0.0F, -0.5F, 0.0F));
-
-		var rightArm = partdefinition.addOrReplaceChild("right_arm", CubeListBuilder.create()
-				.texOffs(44, 16)
-				.addBox(-4.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F),
-			PartPose.offsetAndRotation(-5.5F, 14.0F, 0.0F, -2.3876104699914644F, 0.0F, 0.10000736647217022F));
-
-		var leftArm = partdefinition.addOrReplaceChild("left_arm", CubeListBuilder.create()
-				.texOffs(44, 32)
-				.addBox(0.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F),
-			PartPose.offsetAndRotation(5.5F, 14.0F, 0.0F, 0.20001473294434044F, 0.0F, 0.10000736647217022F));
-
-		rightArm.addOrReplaceChild("spear", CubeListBuilder.create()
-				.texOffs(108, 0)
-				.addBox(-1.0F, -19.0F, -1.0F, 2.0F, 40.0F, 2.0F),
-			PartPose.offsetAndRotation(-2.0F, 8.5F, 0.0F, 1.5707963267948966F, 0.0F, 0.0F));
-
-		leftArm.addOrReplaceChild("shield", CubeListBuilder.create()
-				.texOffs(63, 36)
-				.addBox(-6.0F, -6.0F, -2.0F, 12.0F, 20.0F, 2.0F),
-			PartPose.offsetAndRotation(0.0F, 12.0F, 0.0F, 6.083185105107944F, 0.0F, 0.0F));
-
-		partdefinition.addOrReplaceChild("right_leg", CubeListBuilder.create()
-				.texOffs(30, 24)
-				.addBox(-1.5F, 0.0F, -2.0F, 3.0F, 4.0F, 4.0F),
-			PartPose.offset(-4.0F, 20.0F, 0.0F));
-
-		partdefinition.addOrReplaceChild("left_leg", CubeListBuilder.create()
-				.texOffs(30, 16)
-				.addBox(-1.5F, 0.0F, -2.0F, 3.0F, 4.0F, 4.0F),
-			PartPose.offset(4.0F, 20.0F, 0.0F));
-
 
 		return LayerDefinition.create(meshdefinition, 128, 64);
 	}
