@@ -19,10 +19,10 @@ import twilightforest.client.state.MinoshroomRenderState;
 public class MinoshroomModel extends HumanoidModel<MinoshroomRenderState> implements TrophyBlockModel {
 
 	public final ModelPart cowTorso;
-	private final ModelPart rightFrontLeg;
-	private final ModelPart leftFrontLeg;
-	private final ModelPart rightBackLeg;
-	private final ModelPart leftBackLeg;
+	protected final ModelPart rightFrontLeg;
+	protected final ModelPart leftFrontLeg;
+	protected final ModelPart rightBackLeg;
+	protected final ModelPart leftBackLeg;
 
 	public MinoshroomModel(ModelPart root) {
 		super(root);
@@ -83,6 +83,9 @@ public class MinoshroomModel extends HumanoidModel<MinoshroomRenderState> implem
 				.texOffs(90, 0)
 				.addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F),
 			PartPose.offset(5.0F, -4.0F, -9.0F));
+		
+		partdefinition.addOrReplaceChild("left_leg", CubeListBuilder.create(), PartPose.ZERO);
+		partdefinition.addOrReplaceChild("right_leg", CubeListBuilder.create(), PartPose.ZERO);
 
 		var body = partdefinition.addOrReplaceChild("cow_torso", CubeListBuilder.create()
 				.texOffs(18, 4)
@@ -119,6 +122,7 @@ public class MinoshroomModel extends HumanoidModel<MinoshroomRenderState> implem
 
 	@Override
 	public void setupAnim(MinoshroomRenderState state) {
+		this.resetPose();
 		// copied from HumanoidModel
 		HumanoidModel.ArmPose leftPose = state.leftArmPose;
 		HumanoidModel.ArmPose rightPose = state.rightArmPose;
@@ -177,18 +181,18 @@ public class MinoshroomModel extends HumanoidModel<MinoshroomRenderState> implem
 		float f1 = state.chargeAnim;
 		f1 = f1 * f1;
 
-		this.leftFrontLeg.y = 12.0F + -5.0F * f1;
-		this.leftFrontLeg.z = -4.0F + f1;
+		this.leftFrontLeg.y += -5.0F * f1;
+		this.leftFrontLeg.z += f1;
 		this.rightFrontLeg.y = this.leftFrontLeg.y;
 		this.rightFrontLeg.z = this.leftFrontLeg.z;
-		this.head.y = -6.0F + -3.0F * f1;
-		this.head.z = -9.0F + 6.0F * f1;
-		this.body.y = -6.0F + -3.0F * f1;
-		this.body.z = -9.0F + 6.0F * f1;
-		this.cowTorso.y = 5.0F + f1;
-		this.cowTorso.z = 2.0F + 4.0F * f1;
-		this.rightArm.y = -4.0F - 3.0F * f1;
-		this.rightArm.z = -9.0F + (6.0F * f1);
+		this.head.y += -3.0F * f1;
+		this.head.z += 6.0F * f1;
+		this.body.y += -3.0F * f1;
+		this.body.z += 6.0F * f1;
+		this.cowTorso.y += f1;
+		this.cowTorso.z += 4.0F * f1;
+		this.rightArm.y -= 3.0F * f1;
+		this.rightArm.z += (6.0F * f1);
 		this.leftArm.y = this.rightArm.y;
 		this.leftArm.z = this.rightArm.z;
 
