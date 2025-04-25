@@ -25,7 +25,7 @@ import java.util.Arrays;
 
 public class QuestRamModel extends EntityModel<QuestingRamRenderState> implements TrophyBlockModel {
 
-	private final ModelPart head;
+	protected final ModelPart head;
 	private ModelPart neck;
 	private ModelPart frontTorso;
 	private ModelPart backTorso;
@@ -173,6 +173,7 @@ public class QuestRamModel extends EntityModel<QuestingRamRenderState> implement
 
 	@Override
 	public void setupAnim(QuestingRamRenderState state) {
+		this.resetPose();
 		super.setupAnim(state);
 		this.head.xRot = state.xRot * Mth.DEG_TO_RAD;
 		this.head.yRot = state.yRot * Mth.DEG_TO_RAD;
@@ -187,21 +188,21 @@ public class QuestRamModel extends EntityModel<QuestingRamRenderState> implement
 		// how many colors should we display?
 		int count = state.countColorsSet();
 
-		this.head.z = -count - 11;
-		this.neck.z = -count - 11;
-		this.frontTorso.z = -count;
-		this.backTorso.z = count;
-		this.leftBackLeg.z = 9 + count;
-		this.rightBackLeg.z = 9 + count;
-		this.leftFrontLeg.z = -11 - count;
-		this.rightFrontLeg.z = -11 - count;
+		this.head.z -= count;
+		this.neck.z -= count;
+		this.frontTorso.z -= count;
+		this.backTorso.z += count;
+		this.leftBackLeg.z += count;
+		this.rightBackLeg.z += count;
+		this.leftFrontLeg.z -= count;
+		this.rightFrontLeg.z -= count;
 
 		// set up the colors displayed in color order
-		int segmentOffset = 0;
+		float segmentOffset = this.segments[0].z;
 		for (int color : this.colorOrder) {
 			if (state.isColorPresent(DyeColor.byId(color))) {
 				this.segments[color].visible = true;
-				this.segments[color].z = segmentOffset - count;
+				this.segments[color].z += segmentOffset - count;
 
 				segmentOffset += 2;
 			} else {
