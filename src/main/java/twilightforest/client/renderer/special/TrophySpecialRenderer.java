@@ -19,22 +19,26 @@ import twilightforest.enums.BossVariant;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
+import java.util.function.Function;
 
-public record TrophySpecialRenderer(TrophyBlockModel trophy, Optional<Integer> fixedRotation) implements NoDataSpecialModelRenderer {
+public record TrophySpecialRenderer(Function<BossVariant, TrophyBlockModel> trophy, BossVariant variant, Optional<Integer> fixedRotation) implements NoDataSpecialModelRenderer {
 
 	@Override
 	public void render(ItemDisplayContext context, PoseStack stack, MultiBufferSource source, int light, int overlay, boolean foil) {
+		TrophyBlockModel model = this.trophy().apply(this.variant());
 		float rotation = this.fixedRotation.orElse(TFConfig.rotateTrophyHeadsGui && !Minecraft.getInstance().isPaused() ? (int) (Util.getMillis() / 35) : 0);
 		float animation = !Minecraft.getInstance().isPaused() ? (int) (Util.getMillis() / 30) + Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaTicks() : 0;
-		if (context == ItemDisplayContext.GUI) {
-			stack.pushPose();
-			stack.translate(0.5F, 0.5F, 0.5F);
-			stack.mulPose(Axis.YN.rotationDegrees(rotation));
-			stack.translate(-0.5F, -0.5F, -0.5F);
-			TrophyRenderer.render(null, 180.0F, this.trophy, false, animation, stack, source, light, overlay, context);
-			stack.popPose();
-		} else {
-			TrophyRenderer.render(null, 180.0F, this.trophy, false, animation, stack, source, light, overlay, context);
+		if (model != null) {
+			if (context == ItemDisplayContext.GUI) {
+				stack.pushPose();
+				stack.translate(0.5F, 0.5F, 0.5F);
+				stack.mulPose(Axis.YN.rotationDegrees(rotation));
+				stack.translate(-0.5F, -0.5F, -0.5F);
+				TrophyRenderer.render(null, 180.0F, model, false, animation, stack, source, light, overlay, context);
+				stack.popPose();
+			} else {
+				TrophyRenderer.render(null, 180.0F, model, false, animation, stack, source, light, overlay, context);
+			}
 		}
 	}
 
@@ -53,11 +57,10 @@ public record TrophySpecialRenderer(TrophyBlockModel trophy, Optional<Integer> f
 			return MAP_CODEC;
 		}
 
-		@Nullable
 		@Override
 		public SpecialModelRenderer<?> bake(EntityModelSet set) {
-			TrophyBlockModel model = TrophyRenderer.createTrophyModel(set, this.variant());
-			return model != null ? new TrophySpecialRenderer(model, this.fixedRotation()) : null;
+			Function<BossVariant, TrophyBlockModel> model = Util.memoize(variant -> TrophyRenderer.createTrophyModel(set, variant));
+			return new TrophySpecialRenderer(model, variant, this.fixedRotation());
 		}
 	}
 }

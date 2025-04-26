@@ -2,15 +2,20 @@ package twilightforest.client.renderer.block;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.Util;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
+import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.core.Direction;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemDisplayContext;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.TwilightForestMod;
 import twilightforest.block.AbstractTrophyBlock;
 import twilightforest.block.TrophyBlock;
 import twilightforest.block.TrophyWallBlock;
@@ -18,13 +23,14 @@ import twilightforest.block.entity.TrophyBlockEntity;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.*;
 import twilightforest.enums.BossVariant;
-import twilightforest.init.TFBlocks;
+import twilightforest.init.TFEntities;
 
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public class TrophyRenderer implements BlockEntityRenderer<TrophyBlockEntity> {
 
-	private final Function<BossVariant, TrophyBlockModel> modelByType;
+	protected final Function<BossVariant, TrophyBlockModel> modelByType;
 
 	public TrophyRenderer(BlockEntityRendererProvider.Context context) {
 		this.modelByType = Util.memoize(variant -> createTrophyModel(context.getModelSet(), variant));
@@ -32,6 +38,36 @@ public class TrophyRenderer implements BlockEntityRenderer<TrophyBlockEntity> {
 
 	@Nullable
 	public static TrophyBlockModel createTrophyModel(EntityModelSet set, BossVariant variant) {
+		return createTrophyModel((type, layer) -> {
+			//holy fucking shit what
+			try {
+				return (TrophyBlockModel) ((LivingEntityRenderer<?, ?, ?>)
+					Minecraft.getInstance().getEntityRenderDispatcher().renderers.get(type)).getModel().getClass().getDeclaredConstructor(ModelPart.class).newInstance(set.bakeLayer(layer));
+			} catch (Exception e) {
+				TwilightForestMod.LOGGER.warn("Failed to create trophy renderer for entity {}, using fallback", type.getDescription().getString());
+				return createFallback(set, variant);
+			}
+		}, variant);
+	}
+
+	@Nullable
+	public static TrophyBlockModel createTrophyModel(BiFunction<EntityType<?>, ModelLayerLocation, TrophyBlockModel> modelFunction, BossVariant variant) {
+		return switch (variant) {
+			case NAGA -> modelFunction.apply(TFEntities.NAGA.get(), TFModelLayers.NAGA_TROPHY);
+			case LICH -> modelFunction.apply(TFEntities.LICH.get(), TFModelLayers.LICH_TROPHY);
+			case MINOSHROOM -> modelFunction.apply(TFEntities.MINOSHROOM.get(), TFModelLayers.MINOSHROOM_TROPHY);
+			case HYDRA -> new HydraHeadModel(Minecraft.getInstance().getEntityModels().bakeLayer(TFModelLayers.HYDRA_TROPHY)); //special case: doesn't use the base entity model
+			case KNIGHT_PHANTOM -> modelFunction.apply(TFEntities.KNIGHT_PHANTOM.get(),TFModelLayers.KNIGHT_PHANTOM_TROPHY);
+			case UR_GHAST -> modelFunction.apply(TFEntities.UR_GHAST.get(), TFModelLayers.UR_GHAST_TROPHY);
+			case ALPHA_YETI -> modelFunction.apply(TFEntities.ALPHA_YETI.get(), TFModelLayers.ALPHA_YETI_TROPHY);
+			case SNOW_QUEEN -> modelFunction.apply(TFEntities.SNOW_QUEEN.get(), TFModelLayers.SNOW_QUEEN_TROPHY);
+			case QUEST_RAM -> modelFunction.apply(TFEntities.QUEST_RAM.get(), TFModelLayers.QUEST_RAM_TROPHY);
+			case FINAL_BOSS -> null; //lol
+		};
+	}
+
+	@Nullable
+	public static TrophyBlockModel createFallback(EntityModelSet set, BossVariant variant) {
 		return switch (variant) {
 			case NAGA -> new NagaModel<>(set.bakeLayer(TFModelLayers.NAGA_TROPHY));
 			case LICH -> new LichModel(set.bakeLayer(TFModelLayers.LICH_TROPHY));
@@ -45,8 +81,6 @@ public class TrophyRenderer implements BlockEntityRenderer<TrophyBlockEntity> {
 			case FINAL_BOSS -> null; //lol
 		};
 	}
-
-	public static final ItemStack stack = new ItemStack(TFBlocks.NAGA_TROPHY.get());
 
 	@Override
 	public void render(TrophyBlockEntity entity, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light, int overlay) {
