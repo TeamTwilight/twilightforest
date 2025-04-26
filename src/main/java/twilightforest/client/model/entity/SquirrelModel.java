@@ -86,6 +86,7 @@ public class SquirrelModel extends QuadrupedModel<LivingEntityRenderState> {
 
 	@Override
 	public void setupAnim(LivingEntityRenderState state) {
+		this.resetPose();
 		super.setupAnim(state);
 		this.head.xRot = state.xRot * Mth.DEG_TO_RAD;
 		this.head.yRot = state.yRot * Mth.DEG_TO_RAD;
@@ -96,11 +97,11 @@ public class SquirrelModel extends QuadrupedModel<LivingEntityRenderState> {
 
 		if (state.walkAnimationSpeed > 0.2) {
 			float wiggle = Math.min(state.walkAnimationSpeed, 0.6F);
-			this.tail.xRot = 0.2F + (Mth.cos(state.ageInTicks * 0.6662F) - Mth.PI / 3.0F) * wiggle;
+			this.tail.xRot += 0.2F + (Mth.cos(state.ageInTicks * 0.6662F) - Mth.PI / 3.0F) * wiggle;
 			this.tailPart1.xRot = Mth.cos(state.ageInTicks * 0.7774F) * 1.2F * wiggle;
 			this.tailPart2.xRot = Mth.cos(state.ageInTicks * 0.8886F + Mth.PI / 2.0F) * 1.4F * wiggle;
 		} else {
-			this.tail.xRot = 0.2F + Mth.cos(state.ageInTicks * 0.3335F) * 0.15F;
+			this.tail.xRot += 0.2F + Mth.cos(state.ageInTicks * 0.3335F) * 0.15F;
 			this.tailPart1.xRot = 0.1F + Mth.cos(state.ageInTicks * 0.4445F) * 0.20F;
 			this.tailPart2.xRot = 0.1F + Mth.cos(state.ageInTicks * 0.5555F) * 0.25F;
 		}

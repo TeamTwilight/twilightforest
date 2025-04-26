@@ -178,6 +178,7 @@ public class PinchBeetleModel extends EntityModel<PinchBeetleRenderState> {
 
 	@Override
 	public void setupAnim(PinchBeetleRenderState state) {
+		this.resetPose();
 		super.setupAnim(state);
 		this.head.yRot = state.yRot * Mth.DEG_TO_RAD;
 		this.head.xRot = state.xRot * Mth.DEG_TO_RAD;
@@ -225,12 +226,8 @@ public class PinchBeetleModel extends EntityModel<PinchBeetleRenderState> {
 
 		if (state.isHoldingVictim) {
 			// open jaws
-			this.rightPincer.yRot = -170.0F * Mth.DEG_TO_RAD;
-			this.leftPincer.yRot = 20.0F * Mth.DEG_TO_RAD;
-		} else {
-			// close jaws
-			this.rightPincer.yRot = 135.0F * Mth.DEG_TO_RAD;
-			this.leftPincer.yRot = 45.0F * Mth.DEG_TO_RAD;
+			this.rightPincer.yRot += 25.0F * Mth.DEG_TO_RAD;
+			this.leftPincer.yRot -= 25.0F * Mth.DEG_TO_RAD;
 		}
 	}
 }

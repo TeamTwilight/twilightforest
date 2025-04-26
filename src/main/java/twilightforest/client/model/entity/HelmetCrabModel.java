@@ -16,8 +16,8 @@ import net.minecraft.util.Mth;
 public class HelmetCrabModel extends EntityModel<LivingEntityRenderState> {
 
 	private final ModelPart body;
-	private final ModelPart leftClaw;
-	private final ModelPart rightClaw;
+	protected final ModelPart leftClaw;
+	protected final ModelPart rightClaw;
 	private final ModelPart rightLeg1;
 	private final ModelPart rightLeg2;
 	private final ModelPart leftLeg1;
