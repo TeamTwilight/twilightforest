@@ -1,6 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "twilightforest:item/blue_force_field"
+    "model": "twilightforest:item/blue_force_field",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -15868161
+      }
+    ]
   }
 }
