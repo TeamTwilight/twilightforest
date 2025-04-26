@@ -18,13 +18,16 @@ import twilightforest.client.state.TFGhastRenderState;
 
 public class UrGhastModel extends TFGhastModel implements TrophyBlockModel {
 
-	private final ModelPart[][] tentacles = new ModelPart[9][4];
-	private final ModelPart body;
+	protected final ModelPart[][] tentacles = new ModelPart[9][4];
+	protected final ModelPart body;
 
 	public UrGhastModel(ModelPart root) {
 		super(root);
 		this.body = root.getChild("body");
+		this.setupTentacles();
+	}
 
+	protected void setupTentacles() {
 		for (int i = 0; i < this.tentacles.length; i++) {
 			this.tentacles[i][0] = this.body.getChild("tentacle_" + i);
 			this.tentacles[i][1] = this.tentacles[i][0].getChild("tentacle_" + i + "_extension");
@@ -96,7 +99,7 @@ public class UrGhastModel extends TFGhastModel implements TrophyBlockModel {
 		this.waveTentacles(state.walkAnimationSpeed, state.ageInTicks);
 	}
 
-	private void waveTentacles(float limbSwingAmount, float ageInTicks) {
+	protected void waveTentacles(float limbSwingAmount, float ageInTicks) {
 		for (int i = 0; i < this.tentacles.length; ++i) {
 
 			float wiggle = Math.min(limbSwingAmount, 0.6F);
