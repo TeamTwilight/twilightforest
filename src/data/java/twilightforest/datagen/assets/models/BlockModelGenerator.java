@@ -263,11 +263,11 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.castleDoor(TFBlocks.YELLOW_CASTLE_DOOR.get(), 16776960);
 		this.castleDoor(TFBlocks.BLUE_CASTLE_DOOR.get(), 65535);
 		this.castleDoor(TFBlocks.VIOLET_CASTLE_DOOR.get(), 4915330);
-		this.forcefield(TFBlocks.PINK_FORCE_FIELD.get());
-		this.forcefield(TFBlocks.ORANGE_FORCE_FIELD.get());
-		this.forcefield(TFBlocks.GREEN_FORCE_FIELD.get());
-		this.forcefield(TFBlocks.BLUE_FORCE_FIELD.get());
-		this.forcefield(TFBlocks.VIOLET_FORCE_FIELD.get());
+		this.forcefield(TFBlocks.PINK_FORCE_FIELD.get(), 0xFFFA057E);
+		this.forcefield(TFBlocks.ORANGE_FORCE_FIELD.get(), 0xFFFF5B02);
+		this.forcefield(TFBlocks.GREEN_FORCE_FIELD.get(), 0xFF89E701);
+		this.forcefield(TFBlocks.BLUE_FORCE_FIELD.get(), 0xFF0DDEFF);
+		this.forcefield(TFBlocks.VIOLET_FORCE_FIELD.get(), 0xFF5C1074);
 
 		this.generateSpecialModel(TFBlocks.KEEPSAKE_CASKET.get(), Blocks.NETHERITE_BLOCK, block -> ItemModelUtils.specialModel(TwilightForestMod.prefix("item/keepsake_casket"), new KeepsakeCasketSpecialRenderer.Unbaked()));
 		this.generateSpecialModel(TFBlocks.SKULL_CHEST.get(), Blocks.LIGHT_GRAY_CONCRETE_POWDER, block -> ItemModelUtils.specialModel(TwilightForestMod.prefix("item/skull_chest"), new SkullChestSpecialRenderer.Unbaked()));

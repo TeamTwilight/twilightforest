@@ -29,6 +29,7 @@ public class ForceFieldModelBuilder extends CustomLoaderBuilder {
 
 	private boolean defaultShade = true;
 	private int brightnessOverride = 0;
+	private int tint = -1;
 	protected List<ForceFieldElementBuilder> elements = new ArrayList<>();
 
 	public static ForceFieldModelBuilder begin() {
@@ -44,7 +45,7 @@ public class ForceFieldModelBuilder extends CustomLoaderBuilder {
 	}
 
 	public ForceFieldElementBuilder forceFieldElement() {
-		ForceFieldElementBuilder ret = new ForceFieldElementBuilder(this.defaultShade, this.brightnessOverride);
+		ForceFieldElementBuilder ret = new ForceFieldElementBuilder(this.defaultShade, this.brightnessOverride, this.tint);
 		this.elements.add(ret);
 		return ret;
 	}
@@ -59,12 +60,18 @@ public class ForceFieldModelBuilder extends CustomLoaderBuilder {
 		return this;
 	}
 
+	public ForceFieldModelBuilder tintAll(int index) {
+		this.tint = index;
+		return this;
+	}
+
 	@Override
 	protected CustomLoaderBuilder copyInternal() {
 		ForceFieldModelBuilder builder = new ForceFieldModelBuilder();
 		builder.elements = this.elements;
 		builder.defaultShade = this.defaultShade;
 		builder.brightnessOverride = this.brightnessOverride;
+		builder.tint = this.tint;
 		return builder;
 	}
 
@@ -176,13 +183,15 @@ public class ForceFieldModelBuilder extends CustomLoaderBuilder {
 		private ForceFieldElementBuilder.RotationBuilder rotation;
 		private boolean shade;
 		private int light;
+		private int tint;
 		@Nullable
 		private Pair<ExtraDirection, Boolean> condition = null;
 		private final List<ExtraDirection> parents = new ArrayList<>();
 
-		private ForceFieldElementBuilder(boolean defaultShade, int brightnessOverride) {
+		private ForceFieldElementBuilder(boolean defaultShade, int brightnessOverride, int tint) {
 			this.shade = defaultShade;
 			this.light = brightnessOverride;
+			this.tint = tint;
 		}
 
 		private static void validateCoordinate(float coord, char name) {
@@ -209,7 +218,7 @@ public class ForceFieldModelBuilder extends CustomLoaderBuilder {
 
 		public ForceFieldElementBuilder.FaceBuilder face(Direction dir) {
 			Preconditions.checkNotNull(dir, "Direction must not be null");
-			return this.faces.computeIfAbsent(dir, ForceFieldElementBuilder.FaceBuilder::new);
+			return this.faces.computeIfAbsent(dir, direction -> new FaceBuilder(this.tint));
 		}
 
 		public ForceFieldElementBuilder.RotationBuilder rotation() {
@@ -294,14 +303,14 @@ public class ForceFieldModelBuilder extends CustomLoaderBuilder {
 		public class FaceBuilder {
 			@Nullable
 			private Direction cullface;
-			private int tintindex = -1;
+			private int tintindex;
 			@Nullable
 			private String texture = MissingTextureAtlasSprite.getLocation().toString();
 			private float@Nullable[] uvs;
 			private FaceRotation rotation = FaceRotation.ZERO;
 
-			FaceBuilder(Direction dir) {
-				// param unused for functional match
+			FaceBuilder(int tint) {
+				this.tintindex = tint;
 			}
 
 			public ForceFieldElementBuilder.FaceBuilder cullface(@Nullable Direction dir) {
