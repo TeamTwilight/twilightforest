@@ -51,7 +51,7 @@ public class UrGhastModel extends TFGhastModel implements TrophyBlockModel {
 
 	protected static void makeTentacle(PartDefinition parent, String name, int iteration) {
 
-		var tentacleBase = parent.addOrReplaceChild(name, CubeListBuilder.create()
+		var tentacleBase = parent.addOrReplaceChild(name, CubeListBuilder.create().texOffs(iteration % 3, 0)
 				.addBox(-1.5F, 0.0F, -1.5F, 3.0F, 5.0F, 3.0F),
 			switch (iteration) {
 				case 0 -> PartPose.offset(4.5F, 7.0F, 4.5F);
@@ -69,18 +69,20 @@ public class UrGhastModel extends TFGhastModel implements TrophyBlockModel {
 				}
 			});
 
+
+
 		var tentacleExtension = tentacleBase.addOrReplaceChild(name + "_extension", CubeListBuilder.create()
-				.texOffs(0, 3)
+				.texOffs(iteration % 4, 0)
 				.addBox(-1.5F, 1.0F, -1.5F, 3.0F, 4.0F, 3.0F),
 			PartPose.offset(0.0F, 4.0F, 0.0F));
 
 		var tentacleExtension2 = tentacleExtension.addOrReplaceChild(name + "_extension_2", CubeListBuilder.create()
-				.texOffs(0, 9)
+				.texOffs(iteration % 4, 4)
 				.addBox(-1.5F, 1.0F, -1.5F, 3.0F, 4.0F, 3.0F),
 			PartPose.offset(0.0F, 4.0F, 0.0F));
 
 		tentacleExtension2.addOrReplaceChild(name + "_tip", CubeListBuilder.create()
-				.texOffs(0, 9)
+				.texOffs(iteration % 4, 9)
 				.addBox(-1.5F, 1.0F, -1.5F, 3.0F, 4.0F, 3.0F),
 			PartPose.offset(0.0F, 4.0F, 0.0F));
 
