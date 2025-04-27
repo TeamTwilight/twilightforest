@@ -525,6 +525,11 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.unlockedBy("has_item", has(TFBlocks.GIANT_LOG))
 			.save(this.output, this.createKey(TFBlocks.GIANT_LOG.getId().getPath() + "_to_" + BuiltInRegistries.ITEM.getKey(Items.OAK_PLANKS).getPath()));
 
+		ShapelessRecipeBuilder.shapeless(getter, RecipeCategory.BUILDING_BLOCKS, Blocks.OAK_PLANKS, 64)
+			.requires(TFBlocks.GIANT_WOOD)
+			.unlockedBy("has_item", has(TFBlocks.GIANT_WOOD))
+			.save(this.output, this.createKey(TFBlocks.GIANT_WOOD.getId().getPath() + "_to_" + BuiltInRegistries.ITEM.getKey(Items.OAK_PLANKS).getPath()));
+
 		ShapelessRecipeBuilder.shapeless(getter, RecipeCategory.BUILDING_BLOCKS, Blocks.OAK_LEAVES, 64)
 			.requires(TFBlocks.GIANT_LEAVES)
 			.unlockedBy("has_item", has(TFBlocks.GIANT_LEAVES))
@@ -696,6 +701,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		woodBlock(getter, "time", TFBlocks.TIME_WOOD, TFBlocks.TIME_LOG);
 		woodBlock(getter, "transformation", TFBlocks.TRANSFORMATION_WOOD, TFBlocks.TRANSFORMATION_LOG);
 		woodBlock(getter, "twilight_oak", TFBlocks.TWILIGHT_OAK_WOOD, TFBlocks.TWILIGHT_OAK_LOG);
+		woodBlock(getter, "giant", TFBlocks.GIANT_WOOD, TFBlocks.GIANT_LOG);
 
 		strippedWoodBlock(getter, "canopy", TFBlocks.STRIPPED_CANOPY_WOOD, TFBlocks.STRIPPED_CANOPY_LOG);
 		strippedWoodBlock(getter, "dark", TFBlocks.STRIPPED_DARK_WOOD, TFBlocks.STRIPPED_DARK_LOG);

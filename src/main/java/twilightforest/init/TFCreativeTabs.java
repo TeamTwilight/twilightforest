@@ -339,6 +339,7 @@ public class TFCreativeTabs {
 			output.accept(TFBlocks.SNOWY_CLOUD);
 			output.accept(TFBlocks.GIANT_COBBLESTONE);
 			output.accept(TFBlocks.GIANT_LOG);
+			output.accept(TFBlocks.GIANT_WOOD);
 			output.accept(TFBlocks.GIANT_LEAVES);
 			output.accept(TFBlocks.GIANT_OBSIDIAN);
 			output.accept(TFBlocks.BROWN_THORNS);

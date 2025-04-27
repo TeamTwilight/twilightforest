@@ -530,6 +530,7 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			TFBlocks.GIANT_OBSIDIAN.get(),
 			TFBlocks.GIANT_COBBLESTONE.get(),
 			TFBlocks.GIANT_LOG.get(),
+			TFBlocks.GIANT_WOOD.get(),
 			TFBlocks.CINDER_FURNACE.get(),
 			TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get(),
 			//TFBlocks.HEDGE_MAZE_MINIATURE_STRUCTURE.get(),
@@ -637,16 +638,17 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			TFBlocks.REACTOR_DEBRIS.get(), TFBlocks.LOCKED_VANISHING_BLOCK.get(), TFBlocks.VANISHING_BLOCK.get(),
 			TFBlocks.UNBREAKABLE_VANISHING_BLOCK.get(), TFBlocks.REAPPEARING_BLOCK.get(),
 			TFBlocks.BEANSTALK_GROWER.get(), TFBlocks.GIANT_COBBLESTONE.get(),
-			TFBlocks.GIANT_LOG.get(), TFBlocks.GIANT_LEAVES.get(),
-			TFBlocks.GIANT_OBSIDIAN.get(), TFBlocks.BROWN_THORNS.get(),
-			TFBlocks.GREEN_THORNS.get(), TFBlocks.BURNT_THORNS.get(),
-			TFBlocks.PINK_FORCE_FIELD.get(), TFBlocks.ORANGE_FORCE_FIELD.get(),
-			TFBlocks.GREEN_FORCE_FIELD.get(), TFBlocks.BLUE_FORCE_FIELD.get(),
-			TFBlocks.VIOLET_FORCE_FIELD.get(), TFBlocks.FINAL_BOSS_BOSS_SPAWNER.get(),
-			TFBlocks.NAGA_BOSS_SPAWNER.get(), TFBlocks.LICH_BOSS_SPAWNER.get(),
-			TFBlocks.MINOSHROOM_BOSS_SPAWNER.get(), TFBlocks.HYDRA_BOSS_SPAWNER.get(),
-			TFBlocks.KNIGHT_PHANTOM_BOSS_SPAWNER.get(), TFBlocks.UR_GHAST_BOSS_SPAWNER.get(),
-			TFBlocks.ALPHA_YETI_BOSS_SPAWNER.get(), TFBlocks.SNOW_QUEEN_BOSS_SPAWNER.get());
+			TFBlocks.GIANT_LOG.get(), TFBlocks.GIANT_WOOD.get(),
+			TFBlocks.GIANT_LEAVES.get(), TFBlocks.GIANT_OBSIDIAN.get(),
+			TFBlocks.BROWN_THORNS.get(), TFBlocks.GREEN_THORNS.get(),
+			TFBlocks.BURNT_THORNS.get(), TFBlocks.PINK_FORCE_FIELD.get(),
+			TFBlocks.ORANGE_FORCE_FIELD.get(), TFBlocks.GREEN_FORCE_FIELD.get(),
+			TFBlocks.BLUE_FORCE_FIELD.get(), TFBlocks.VIOLET_FORCE_FIELD.get(),
+			TFBlocks.FINAL_BOSS_BOSS_SPAWNER.get(), TFBlocks.NAGA_BOSS_SPAWNER.get(),
+			TFBlocks.LICH_BOSS_SPAWNER.get(), TFBlocks.MINOSHROOM_BOSS_SPAWNER.get(),
+			TFBlocks.HYDRA_BOSS_SPAWNER.get(), TFBlocks.KNIGHT_PHANTOM_BOSS_SPAWNER.get(),
+			TFBlocks.UR_GHAST_BOSS_SPAWNER.get(), TFBlocks.ALPHA_YETI_BOSS_SPAWNER.get(),
+			TFBlocks.SNOW_QUEEN_BOSS_SPAWNER.get());
 
 		this.tag(TFBlockTags.SUPPORTS_STALAGMITES).addTag(TFBlockTags.DEADROCK).add(Blocks.PACKED_ICE);
 

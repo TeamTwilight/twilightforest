@@ -235,6 +235,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 
 		this.giantBlock(TFBlocks.GIANT_COBBLESTONE.get(), TFTextureMapping.giantBlock(Blocks.COBBLESTONE));
 		this.giantBlock(TFBlocks.GIANT_LOG.get(), TFTextureMapping.giantBlock(TextureMapping.getBlockTexture(Blocks.OAK_LOG), TextureMapping.getBlockTexture(Blocks.OAK_LOG, "_top")));
+		this.giantBlock(TFBlocks.GIANT_WOOD.get(), TFTextureMapping.giantBlock(Blocks.OAK_LOG));
 		this.giantBlock(TFBlocks.GIANT_LEAVES.get(), "cutout_mipped", TFTextureMapping.giantBlock(Blocks.OAK_LEAVES), -12012264);
 		this.giantBlock(TFBlocks.GIANT_OBSIDIAN.get(), TFTextureMapping.giantBlock(Blocks.OBSIDIAN));
 

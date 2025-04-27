@@ -89,6 +89,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 		dropSelf(TFBlocks.SNOWY_CLOUD.get());
 		dropSelf(TFBlocks.GIANT_COBBLESTONE.get());
 		dropSelf(TFBlocks.GIANT_LOG.get());
+		dropSelf(TFBlocks.GIANT_WOOD.get());
 		dropSelf(TFBlocks.GIANT_LEAVES.get());
 		dropSelf(TFBlocks.GIANT_OBSIDIAN.get());
 		add(TFBlocks.UBEROUS_SOIL.get(), createSingleItemTable(Blocks.DIRT));

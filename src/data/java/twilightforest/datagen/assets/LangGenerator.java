@@ -266,6 +266,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addBlock(TFBlocks.WISPY_CLOUD, "Wispy Cloud");
 		this.addBlock(TFBlocks.GIANT_LEAVES, "Giant Leaves");
 		this.addBlock(TFBlocks.GIANT_LOG, "Giant Log");
+		this.addBlock(TFBlocks.GIANT_WOOD, "Giant Wood");
 		this.addBlock(TFBlocks.GIANT_COBBLESTONE, "Giant Cobblestone");
 		this.addBlock(TFBlocks.GIANT_OBSIDIAN, "Giant Obsidian");
 
