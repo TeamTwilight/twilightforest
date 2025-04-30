@@ -328,6 +328,10 @@ public class TravellersArmorItem extends ArmorItem {
 		return TooltipStringInterpolator.render(modifier.getTooltipTranslationKey()).withStyle(ChatFormatting.GRAY);
 	}
 
+	public static boolean isTravellersArmorAndBroken(ItemStack stack) {
+		return stack.getItem() instanceof TravellersArmorItem && stack.getMaxDamage() - 1 <= stack.getDamageValue();
+	}
+
 	// [VanillaCopy] modified ArmorItem constructor to just return default attribute modifiers
 	public static ItemAttributeModifiers.Builder defaultArmorProperties(Type type) {
 		int defense = TFArmorMaterials.TRAVELLERS.value().getDefense(type);
