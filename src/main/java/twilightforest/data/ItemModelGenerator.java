@@ -571,6 +571,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		singleTex(TFItems.COOKED_VENISON);
 		singleTex(TFItems.VENISON_JERKY);
 		singleTex(TFItems.HYDRA_CHOP);
+		singleTex(TFItems.TANNIN);
 		singleTex(TFItems.FIERY_BLOOD);
 		singleTex(TFItems.FIERY_TEARS);
 		singleTexFullbright(TFItems.FIERY_INGOT);

@@ -588,6 +588,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addItem(TFItems.PHANTOM_CHESTPLATE, "Phantom Chestplate");
 		this.add("item.twilightforest.phantom_armor.desc", "Is never lost on death");
 
+		this.addItem(TFItems.TANNIN, "Tannin");
 		this.addItem(TFItems.FIERY_BLOOD, "Fiery Blood");
 		this.addItem(TFItems.FIERY_TEARS, "Fiery Tears");
 		this.addItem(TFItems.FIERY_INGOT, "Fiery Ingot");

@@ -136,36 +136,36 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.unlockedBy("has_tf_oak", has(TFBlocks.TWILIGHT_OAK_LOG.value()))
 			.save(output);
 
-		net.minecraft.data.recipes.ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, TFBlocks.FIREFLY_JAR.get())
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, TFBlocks.FIREFLY_JAR.get())
 			.requires(Ingredient.of(TFBlocks.FIREFLY.get()))
 			.requires(Ingredient.of(TFItems.MASON_JAR.get()))
 			.unlockedBy("has_item", has(TFBlocks.FIREFLY.get()))
 			.save(output);
 
-		net.minecraft.data.recipes.ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, TFBlocks.FIREFLY_SPAWNER.get())
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, TFBlocks.FIREFLY_SPAWNER.get())
 			.requires(Ingredient.of(TFBlocks.FIREFLY_JAR.get()))
 			.requires(Ingredient.of(TFBlocks.FIREFLY.get()))
 			.requires(Ingredient.of(Blocks.POPPY))
 			.unlockedBy("has_jar", has(TFBlocks.FIREFLY_JAR.get()))
 			.save(output);
 
-		net.minecraft.data.recipes.ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, TFBlocks.CICADA_JAR.get())
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, TFBlocks.CICADA_JAR.get())
 			.requires(Ingredient.of(TFBlocks.CICADA.get()))
 			.requires(Ingredient.of(TFItems.MASON_JAR.get()))
 			.unlockedBy("has_item", has(TFBlocks.CICADA.get()))
 			.save(output);
 
-		net.minecraft.data.recipes.ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Items.MAGENTA_DYE)
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Items.MAGENTA_DYE)
 			.requires(Ingredient.of(TFBlocks.HUGE_WATER_LILY.get()))
 			.unlockedBy("has_item", has(TFBlocks.HUGE_WATER_LILY.get()))
 			.save(output, TwilightForestMod.prefix("waterlily_to_magenta"));
 
-		net.minecraft.data.recipes.ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Items.RED_DYE)
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Items.RED_DYE)
 			.requires(Ingredient.of(TFBlocks.THORN_ROSE.get()))
 			.unlockedBy("has_item", has(TFBlocks.THORN_ROSE.get()))
 			.save(output, TwilightForestMod.prefix("thorn_rose_to_red"));
 
-		net.minecraft.data.recipes.ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Items.STICK)
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Items.STICK)
 			.requires(Ingredient.of(TFBlocks.ROOT_STRAND.get()))
 			.unlockedBy("has_item", has(TFBlocks.ROOT_STRAND.get()))
 			.group("sticks")
@@ -198,12 +198,12 @@ public class CraftingGenerator extends CraftingDataHelper {
 		oreberryRecipes(output, "smelted", RecipeSerializer.SMELTING_RECIPE, SmeltingRecipe::new, 200);
 		oreberryRecipes(output, "blasted", RecipeSerializer.BLASTING_RECIPE, BlastingRecipe::new, 100);
 
-		net.minecraft.data.recipes.ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Items.COPPER_INGOT)
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Items.COPPER_INGOT)
 			.requires(Ingredient.of(ItemTagGenerator.COPPER_NUGGETS), 9)
 			.unlockedBy("has_item", has(ItemTagGenerator.COPPER_NUGGETS))
 			.save(output, TwilightForestMod.prefix("copper_nuggets_to_ingot"));
 
-		net.minecraft.data.recipes.ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, TFItems.COPPER_NUGGET, 9)
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, TFItems.COPPER_NUGGET, 9)
 			.requires(Ingredient.of(Tags.Items.INGOTS_COPPER))
 			.unlockedBy("has_item", has(Tags.Items.INGOTS_COPPER))
 			.save(output, TwilightForestMod.prefix("copper_ingot_to_nuggets"));
@@ -229,24 +229,24 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.unlockedBy("has_item", has(TFBlocks.CANOPY_PLANKS.get()))
 			.save(output);
 
-		net.minecraft.data.recipes.ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, TFItems.ARMOR_SHARD_CLUSTER.get())
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, TFItems.ARMOR_SHARD_CLUSTER.get())
 			.requires(Ingredient.of(TFItems.ARMOR_SHARD.get()), 9)
 			.unlockedBy("has_item", has(TFItems.ARMOR_SHARD.get()))
 			.save(output, TwilightForestMod.prefix("material/" + TFItems.ARMOR_SHARD_CLUSTER.getId().getPath()));
 
-		net.minecraft.data.recipes.ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, TFBlocks.MOSSY_UNDERBRICK.get(), 1)
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, TFBlocks.MOSSY_UNDERBRICK.get(), 1)
 			.requires(Ingredient.of(Blocks.VINE, Blocks.MOSS_BLOCK))
 			.requires(Ingredient.of(TFBlocks.UNDERBRICK.get()))
 			.unlockedBy("has_item", has(TFBlocks.UNDERBRICK.get()))
 			.save(output);
 
-		net.minecraft.data.recipes.ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, TFBlocks.MOSSY_MAZESTONE.get(), 1)
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, TFBlocks.MOSSY_MAZESTONE.get(), 1)
 			.requires(Ingredient.of(Blocks.VINE, Blocks.MOSS_BLOCK))
 			.requires(Ingredient.of(TFBlocks.MAZESTONE_BRICK.get()))
 			.unlockedBy("has_item", has(TFBlocks.MAZESTONE_BRICK.get()))
 			.save(output, TwilightForestMod.prefix("maze_stone/mossy_mazestone"));
 
-		net.minecraft.data.recipes.ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, TFItems.CARMINITE.get())
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, TFItems.CARMINITE.get())
 			.requires(Ingredient.of(TFItems.BORER_ESSENCE.get()))
 			.requires(Tags.Items.DUSTS_REDSTONE)
 			.requires(Ingredient.of(TFItems.BORER_ESSENCE.get()))
@@ -259,7 +259,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.unlockedBy("has_item", has(TFItems.BORER_ESSENCE.get()))
 			.save(output, TwilightForestMod.prefix("material/" + TFItems.CARMINITE.getId().getPath()));
 
-		net.minecraft.data.recipes.ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, TFItems.RAW_IRONWOOD.get(), 2)
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, TFItems.RAW_IRONWOOD.get(), 2)
 			.requires(Ingredient.of(TFItems.LIVEROOT.get()))
 			.requires(Ingredient.of(Items.RAW_IRON))
 			.requires(Tags.Items.NUGGETS_GOLD)
@@ -355,7 +355,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.unlockedBy("has_item", has(TFBlocks.REAPPEARING_BLOCK.get()))
 			.save(output);
 
-		net.minecraft.data.recipes.ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, TFBlocks.MOSSY_TOWERWOOD.get())
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, TFBlocks.MOSSY_TOWERWOOD.get())
 			.requires(Ingredient.of(TFBlocks.TOWERWOOD.get()))
 			.requires(Ingredient.of(Blocks.VINE, Blocks.MOSS_BLOCK))
 			.unlockedBy("has_item", has(TFBlocks.TOWERWOOD.get()))
@@ -532,27 +532,27 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.unlocks("has_cloth", has(TFItems.EMPERORS_CLOTH))
 			.save(output, TwilightForestMod.prefix("emperors_cloth_smithing"));
 
-		net.minecraft.data.recipes.ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, Blocks.COBBLESTONE, 64)
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, Blocks.COBBLESTONE, 64)
 			.requires(TFBlocks.GIANT_COBBLESTONE.get())
 			.unlockedBy("has_item", has(TFBlocks.GIANT_COBBLESTONE.get()))
 			.save(output, TwilightForestMod.prefix(TFBlocks.GIANT_COBBLESTONE.getId().getPath() + "_to_" + BuiltInRegistries.ITEM.getKey(Items.COBBLESTONE).getPath()));
 
-		net.minecraft.data.recipes.ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, Blocks.OAK_PLANKS, 64)
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, Blocks.OAK_PLANKS, 64)
 			.requires(TFBlocks.GIANT_LOG.get())
 			.unlockedBy("has_item", has(TFBlocks.GIANT_LOG.get()))
 			.save(output, TwilightForestMod.prefix(TFBlocks.GIANT_LOG.getId().getPath() + "_to_" + BuiltInRegistries.ITEM.getKey(Items.OAK_PLANKS).getPath()));
 
-		net.minecraft.data.recipes.ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, Blocks.OAK_LEAVES, 64)
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, Blocks.OAK_LEAVES, 64)
 			.requires(TFBlocks.GIANT_LEAVES.get())
 			.unlockedBy("has_item", has(TFBlocks.GIANT_LEAVES.get()))
 			.save(output, TwilightForestMod.prefix(TFBlocks.GIANT_LEAVES.getId().getPath() + "_to_" + BuiltInRegistries.ITEM.getKey(Items.OAK_LEAVES).getPath()));
 
-		net.minecraft.data.recipes.ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, Blocks.OBSIDIAN, 64)
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, Blocks.OBSIDIAN, 64)
 			.requires(TFBlocks.GIANT_OBSIDIAN.get())
 			.unlockedBy("has_item", has(TFBlocks.GIANT_OBSIDIAN.get()))
 			.save(output, TwilightForestMod.prefix(TFBlocks.GIANT_OBSIDIAN.getId().getPath() + "_to_" + BuiltInRegistries.ITEM.getKey(Items.OBSIDIAN).getPath()));
 
-		net.minecraft.data.recipes.ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, TFItems.BLOCK_AND_CHAIN.get())
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, TFItems.BLOCK_AND_CHAIN.get())
 			.requires(Ingredient.of(ItemTagGenerator.STORAGE_BLOCKS_KNIGHTMETAL))
 			.requires(Ingredient.of(ItemTagGenerator.KNIGHTMETAL_INGOTS), 3)
 			.requires(Ingredient.of(TFItems.KNIGHTMETAL_RING.get()))
@@ -560,6 +560,16 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.unlockedBy("has_ingot", has(ItemTagGenerator.KNIGHTMETAL_INGOTS))
 			.unlockedBy("has_ring", has(TFItems.KNIGHTMETAL_RING.get()))
 			.save(output, locEquip(TFItems.BLOCK_AND_CHAIN.getId().getPath()));
+
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, TFItems.TANNIN)
+			.requires(potionIngredient(Potions.WATER))
+			.requires(TFBlocks.TWILIGHT_OAK_SAPLING)
+			.requires(TFBlocks.ROOT_STRAND)
+			.requires(TFBlocks.TWILIGHT_OAK_LEAVES)
+			.unlockedBy("has_block", has(TFBlocks.TWILIGHT_OAK_SAPLING))
+			.unlockedBy("has_block", has(TFBlocks.ROOT_STRAND))
+			.unlockedBy("has_block", has(TFBlocks.TWILIGHT_OAK_LEAVES))
+			.save(output, TwilightForestMod.prefix(TFItems.TANNIN.getId().getPath()));
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, TFItems.KNIGHTMETAL_RING.get())
 			.pattern(" - ")
@@ -823,7 +833,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		reverseCompressBlock(output, "knightmetal_block_ingot", TFItems.KNIGHTMETAL_INGOT, ItemTagGenerator.STORAGE_BLOCKS_KNIGHTMETAL);
 		reverseCompressBlock(output, "steeleaf_block_ingot", TFItems.STEELEAF_INGOT, ItemTagGenerator.STORAGE_BLOCKS_STEELEAF);
 
-		net.minecraft.data.recipes.ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, TFItems.FIERY_INGOT, 9)
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, TFItems.FIERY_INGOT, 9)
 			.requires(ItemTagGenerator.STORAGE_BLOCKS_FIERY)
 			.unlockedBy("has_item", has(ItemTagGenerator.STORAGE_BLOCKS_FIERY))
 			.group("fiery_ingot")
@@ -838,7 +848,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 	}
 
 	private void emptyMapRecipes(RecipeOutput output) {
-		net.minecraft.data.recipes.ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, TFItems.MAGIC_MAP_FOCUS.get())
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, TFItems.MAGIC_MAP_FOCUS.get())
 			.requires(TFItems.RAVEN_FEATHER.get())
 			.requires(TFItems.TORCHBERRIES.get())
 			.requires(Tags.Items.DUSTS_GLOWSTONE)
@@ -864,7 +874,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.unlockedBy("has_item", has(TFItems.MAZE_MAP_FOCUS.get()))
 			.save(output);
 
-		net.minecraft.data.recipes.ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, TFItems.ORE_MAP.get())
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, TFItems.ORE_MAP.get())
 			.requires(TFItems.MAZE_MAP.get())
 			.requires(Tags.Items.STORAGE_BLOCKS_DIAMOND)
 			.requires(Tags.Items.STORAGE_BLOCKS_GOLD)
@@ -1068,13 +1078,13 @@ public class CraftingGenerator extends CraftingDataHelper {
 		stairsBlock(output, locNaga("mossy_nagastone_stairs_left"), TFBlocks.MOSSY_NAGASTONE_STAIRS_LEFT, TFBlocks.MOSSY_ETCHED_NAGASTONE, TFBlocks.MOSSY_ETCHED_NAGASTONE.get());
 		stairsRightBlock(output, locNaga("mossy_nagastone_stairs_right"), TFBlocks.MOSSY_NAGASTONE_STAIRS_RIGHT, TFBlocks.MOSSY_ETCHED_NAGASTONE, TFBlocks.MOSSY_ETCHED_NAGASTONE.get());
 
-		net.minecraft.data.recipes.ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, TFBlocks.MOSSY_ETCHED_NAGASTONE.get(), 1)
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, TFBlocks.MOSSY_ETCHED_NAGASTONE.get(), 1)
 			.requires(Ingredient.of(Blocks.VINE, Blocks.MOSS_BLOCK))
 			.requires(Ingredient.of(TFBlocks.ETCHED_NAGASTONE.get()))
 			.unlockedBy("has_item", has(TFBlocks.ETCHED_NAGASTONE.get()))
 			.save(output, locNaga("mossy_etched_nagastone"));
 
-		net.minecraft.data.recipes.ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, TFBlocks.MOSSY_NAGASTONE_PILLAR.get(), 1)
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, TFBlocks.MOSSY_NAGASTONE_PILLAR.get(), 1)
 			.requires(Ingredient.of(Blocks.VINE, Blocks.MOSS_BLOCK))
 			.requires(Ingredient.of(TFBlocks.NAGASTONE_PILLAR.get()))
 			.unlockedBy("has_item", has(TFBlocks.NAGASTONE_PILLAR.get()))
@@ -1085,7 +1095,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 	}
 
 	private void castleRecipes(RecipeOutput output) {
-		net.minecraft.data.recipes.ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, TFBlocks.MOSSY_CASTLE_BRICK.get(), 1)
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, TFBlocks.MOSSY_CASTLE_BRICK.get(), 1)
 			.requires(Ingredient.of(Blocks.VINE, Blocks.MOSS_BLOCK))
 			.requires(Ingredient.of(TFBlocks.CASTLE_BRICK.get()))
 			.unlockedBy("has_item", has(TFBlocks.CASTLE_BRICK.get()))
@@ -1119,7 +1129,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 	}
 
 	private void fieryConversions(RecipeOutput output) {
-		net.minecraft.data.recipes.ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, TFItems.FIERY_INGOT.get())
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, TFItems.FIERY_INGOT.get())
 			.requires(Ingredient.of(ItemTagGenerator.FIERY_VIAL))
 			.requires(Ingredient.of(Tags.Items.INGOTS_IRON))
 			.unlockedBy("has_item", has(ItemTagGenerator.FIERY_VIAL))
@@ -1131,7 +1141,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		fieryConversion(output, TFItems.FIERY_LEGGINGS, Items.IRON_LEGGINGS, 7);
 		fieryConversion(output, TFItems.FIERY_BOOTS, Items.IRON_BOOTS, 4);
 
-		net.minecraft.data.recipes.ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, TFItems.FIERY_SWORD.get())
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, TFItems.FIERY_SWORD.get())
 			.requires(Items.IRON_SWORD)
 			.requires(Ingredient.of(ItemTagGenerator.FIERY_VIAL), 2)
 			.requires(Ingredient.of(Tags.Items.RODS_BLAZE))
@@ -1139,7 +1149,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.group("fiery_sword")
 			.save(output, locEquip("fiery_" + BuiltInRegistries.ITEM.getKey(Items.IRON_SWORD).getPath()));
 
-		net.minecraft.data.recipes.ShapelessRecipeBuilder.shapeless(RecipeCategory.TOOLS, TFItems.FIERY_PICKAXE.get())
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.TOOLS, TFItems.FIERY_PICKAXE.get())
 			.requires(Items.IRON_PICKAXE)
 			.requires(Ingredient.of(ItemTagGenerator.FIERY_VIAL), 3)
 			.requires(Ingredient.of(Tags.Items.RODS_BLAZE), 2)
