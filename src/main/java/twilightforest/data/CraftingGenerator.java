@@ -777,6 +777,10 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.unlockedBy("has_wet_sponge", has(Items.SPONGE))
 			.save(output, TwilightForestMod.prefix("drying/sponge"));
 
+		DryingRecipeBuilder.drying(Items.KELP, Items.DRIED_KELP, 4)
+			.unlockedBy("has_kelp", has(Items.KELP))
+			.save(output, TwilightForestMod.prefix("drying/kelp"));
+
 		DryingRecipeBuilder.drying(Items.ROTTEN_FLESH, TFItems.MONSTER_JERKY)
 			.unlockedBy("has_meat", has(Items.ROTTEN_FLESH))
 			.save(output);

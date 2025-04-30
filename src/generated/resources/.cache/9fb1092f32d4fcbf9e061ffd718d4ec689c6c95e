@@ -1,4 +1,4 @@
-// 1.21.1	2025-04-30T10:20:10.724254	Recipes
+// 1.21.1	2025-04-30T10:31:30.577046	Recipes
 c2df534e70a4871d9e50ee3a1c6242e5e0fe6eaa data/twilightforest/advancement/recipes/building_blocks/aurora_pillar.json
 07904494c5d60d52e5f79f8f6487d08016013692 data/twilightforest/advancement/recipes/building_blocks/canopy_bookshelf.json
 195eaa6599cda74857d6163a2d207b797e492275 data/twilightforest/advancement/recipes/building_blocks/castleblock/bold_castle_brick_pillar.json
@@ -322,6 +322,7 @@ d76b356e210d78ad2712ec0bbcf39341990d0bbf data/twilightforest/advancement/recipes
 5530806e997a6c0340606fba502caac52fb8e5d7 data/twilightforest/advancement/recipes/drying/clownfish_jerky.json
 5b266a2ca78341060fabf9c3d81dd4c386434d7a data/twilightforest/advancement/recipes/drying/cod_jerky.json
 a7a72f14093a8bdf3dfa4cbf5c5e4698fe19796e data/twilightforest/advancement/recipes/drying/drying/cooked_meat_to_leather.json
+175ad4734e3d93de21905741b2b6fa47b8dfcdb0 data/twilightforest/advancement/recipes/drying/drying/kelp.json
 3f54dfbdc22d254016a3fbbdb05b31fc2f007406 data/twilightforest/advancement/recipes/drying/drying/mud_to_clay.json
 5e56328a61f42c22ec6339e67454a8a1df2b1b91 data/twilightforest/advancement/recipes/drying/drying/sapling_to_dead_bush.json
 09d66c58d8259f5da4f96f277a86fdc5a25ac19c data/twilightforest/advancement/recipes/drying/drying/sponge.json
@@ -550,6 +551,7 @@ c60787f60623236d5ca5a113c5184c600a47b90d data/twilightforest/recipe/compressed_b
 4ecdf3c1a4ea8b8220c2835785dc11591983b2e7 data/twilightforest/recipe/dark_boat.json
 d0356ed3835229e4f93efe17819879fd539e4bed data/twilightforest/recipe/dark_chest_boat.json
 bf72ffee5cfacff4f8a6506df7b01364307d3201 data/twilightforest/recipe/drying/cooked_meat_to_leather.json
+1c53e09a5bacb47f4deb10c854061e3656325092 data/twilightforest/recipe/drying/kelp.json
 58ec80aeb070194bf4b0eb05777bd72c9669fc24 data/twilightforest/recipe/drying/mud_to_clay.json
 e1de9ac29d22c20c2793afdb5eea9cd377213731 data/twilightforest/recipe/drying/sapling_to_dead_bush.json
 bc585b7593cce8b07be8ec966883673ca25234f1 data/twilightforest/recipe/drying/sponge.json
