@@ -164,7 +164,7 @@ public class TFWeatherRenderer {
 									float countFactor = ((float) (ticks & 511) + partialTicks) / 512.0F;
 									float uFactor = random.nextFloat() + combinedTicks * 0.05F * (float) random.nextGaussian();
 									float vFactor = random.nextFloat() + combinedTicks * 0.0025F * (float) random.nextGaussian();
-									renderEffect(Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(RenderType.weather(nextType.getTextureLocation(), Minecraft.useShaderTransparency())), rainX, rainZ, minY, maxY, camera, dx, dz, countFactor, uFactor, vFactor, new float[]{1.0F, 1.0F, 1.0F, alpha}, fullbright);
+									renderEffect(currentType, rainX, rainZ, minY, maxY, camera, dx, dz, countFactor, uFactor, vFactor, new float[]{1.0F, 1.0F, 1.0F, alpha}, fullbright);
 								}
 								case MOSQUITO -> {
 									float countFactor = 0;
@@ -173,26 +173,26 @@ public class TFWeatherRenderer {
 									float red = random.nextFloat() * 0.3F;
 									float green = random.nextFloat() * 0.3F;
 									float blue = random.nextFloat() * 0.3F;
-									renderEffect(Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(RenderType.weather(nextType.getTextureLocation(), Minecraft.useShaderTransparency())), rainX, rainZ, minY, maxY, camera, dx, dz, countFactor, uFactor, vFactor, new float[]{red, green, blue, 1.0F}, fullbright);
+									renderEffect(currentType, rainX, rainZ, minY, maxY, camera, dx, dz, countFactor, uFactor, vFactor, new float[]{red, green, blue, 1.0F}, fullbright);
 								}
 								case ASHES -> {
 									float countFactor = -((float) (ticks & 1023) + partialTicks) / 1024.0F;
 									float uFactor = random.nextFloat() + combinedTicks * 0.0025F * (float) random.nextGaussian();
 									float vFactor = random.nextFloat() + combinedTicks * 0.005F * (float) random.nextGaussian();
 									float color = random.nextFloat() * 0.2F + 0.8F;
-									renderEffect(Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(RenderType.weather(nextType.getTextureLocation(), Minecraft.useShaderTransparency())), rainX, rainZ, minY, maxY, camera, dx, dz, countFactor, uFactor, vFactor, new float[]{color, color, color, alpha}, fullbright);
+									renderEffect(currentType, rainX, rainZ, minY, maxY, camera, dx, dz, countFactor, uFactor, vFactor, new float[]{color, color, color, alpha}, fullbright);
 								}
 								case DARK_STREAM -> {
 									float countFactor = -((ticks & 511) + partialTicks) / 512.0F;
 									float uFactor = 0; //no moving horizontally
 									float vFactor = random.nextFloat() + combinedTicks * 0.005F * (float) random.nextGaussian();
-									renderEffect(Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(RenderType.weather(nextType.getTextureLocation(), Minecraft.useShaderTransparency())), rainX, rainZ, minY, maxY, camera, dx, dz, countFactor, uFactor, vFactor, new float[]{1.0F, 1.0F, 1.0F, alpha}, fullbright);
+									renderEffect(currentType, rainX, rainZ, minY, maxY, camera, dx, dz, countFactor, uFactor, vFactor, new float[]{1.0F, 1.0F, 1.0F, alpha}, fullbright);
 								}
 								case BIG_RAIN -> {
 									float countFactor = ((float) (ticks + dx * dx * 3121 + dx * 45238971 + dz * dz * 418711 + dz * 13761 & 31) + partialTicks) / 32.0F * (3.0F + random.nextFloat());
 									float uFactor = random.nextFloat();
 									float vFactor = random.nextFloat();
-									renderEffect(Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(RenderType.weather(nextType.getTextureLocation(), Minecraft.useShaderTransparency())), rainX, rainZ, minY, maxY, camera, dx, dz, countFactor, uFactor, vFactor, new float[]{1.0F, 1.0F, 1.0F, alpha}, worldBrightness);
+									renderEffect(currentType, rainX, rainZ, minY, maxY, camera, dx, dz, countFactor, uFactor, vFactor, new float[]{1.0F, 1.0F, 1.0F, alpha}, worldBrightness);
 								}
 							}
 						}
@@ -326,7 +326,8 @@ public class TFWeatherRenderer {
 		return intervals;
 	}
 
-	private static void renderEffect(VertexConsumer consumer, double rainX, double rainZ, int minY, int maxY, Vec3 camera, int dx, int dz, float countFactor, float uFactor, float vFactor, float[] color, int light) {
+	private static void renderEffect(WeatherRenderType type, double rainX, double rainZ, int minY, int maxY, Vec3 camera, int dx, int dz, float countFactor, float uFactor, float vFactor, float[] color, int light) {
+		VertexConsumer consumer = Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(RenderType.weather(type.getTextureLocation(), Minecraft.useShaderTransparency()));
 		consumer
 			.addVertex((float) (dx - camera.x() - rainX + 0.5F), (float) (minY - camera.y()), (float) (dz - camera.z() - rainZ + 0.5F))
 			.setUv(0.0F + uFactor, minY * 0.25F + countFactor + vFactor)
