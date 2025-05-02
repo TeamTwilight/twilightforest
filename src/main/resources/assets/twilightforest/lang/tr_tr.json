@@ -225,8 +225,11 @@
   "block.twilightforest.aurora_pillar": "Aurora Sütunu",
   "block.twilightforest.aurora_slab": "Aurora Basamak",
   "block.twilightforest.birch_banister": "Huş Korkuluğu",
+  "block.twilightforest.blue_castle_door": "Mavi Kale Kapısı",
   "block.twilightforest.blue_force_field": "Mavi Güç Alanı",
   "block.twilightforest.brown_thorns": "Dikenler",
+  "block.twilightforest.castle_brick": "Kale Tuğlası",
+  "block.twilightforest.castle_brick_stairs": "Kale Tuğlası Merdiven",
   "block.twilightforest.iron_ladder": "Demir Merdiven",
   "block.twilightforest.mangrove_button": "Mangrov Düğme",
   "block.twilightforest.mangrove_chest": "Mangrov Sandık",
@@ -244,9 +247,14 @@
   "block.twilightforest.mangrove_trapdoor": "Mangrov Tuzak Kapısı",
   "block.twilightforest.mangrove_trapped_chest": "Tuzaklı Mangrov Sandığı",
   "block.twilightforest.mangrove_wood": "Mangrov Odunu",
+  "block.twilightforest.mossy_castle_brick": "Yosunlu Kale Tuğlası",
+  "block.twilightforest.mossy_castle_brick_stairs": "Yosunlu Kale Tuğlası Merdiven",
+  "block.twilightforest.pink_castle_door": "Eflatun Kale Kapısı",
   "block.twilightforest.potted_mangrove_sapling": "Mangrov Fidan Saksısı",
   "block.twilightforest.stripped_mangrove_log": "Soyulmuş Mangrov Kütüğü",
   "block.twilightforest.stripped_mangrove_wood": "Soyulmuş Mangrov Odunu",
+  "block.twilightforest.yellow_castle_door": "Sarı Kale Kapısı",
   "item.twilightforest.mangrove_boat": "Mangrov Tekne",
-  "item.twilightforest.snow_queen_banner_pattern.desc": "Kar Tanesi"
+  "item.twilightforest.snow_queen_banner_pattern.desc": "Kar Tanesi",
+  "structure.twilightforest.mushroom_tower": "Mantar Kale"
 }
