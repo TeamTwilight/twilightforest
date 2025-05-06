@@ -5,6 +5,7 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.DisconnectionDetails;
@@ -26,6 +27,7 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.attachment.AttachmentType;
@@ -322,6 +324,36 @@ public class TravellersArmorItem extends ArmorItem {
 		for (int i = insertableModifiers.size(); i < insertableModifierSlots; i++) {
 			tooltip.add(Component.translatable("travellers_gear.modifier.empty").withStyle(ChatFormatting.DARK_GRAY));
 		}
+	}
+
+	@Override
+	public boolean isEnchantable(@NotNull ItemStack stack) {
+		return false;
+	}
+
+	@Override
+	public boolean isBookEnchantable(@NotNull ItemStack stack, @NotNull ItemStack book) {
+		return true;
+	}
+
+	@Override
+	public boolean isPrimaryItemFor(@NotNull ItemStack stack, @NotNull Holder<Enchantment> enchantment) {
+		return false;
+	}
+
+	@Override
+	public boolean supportsEnchantment(@NotNull ItemStack stack, @NotNull Holder<Enchantment> enchantment) {
+		return false;
+	}
+
+	@Override
+	public boolean isRepairable(@NotNull ItemStack stack) {
+		return false;
+	}
+
+	@Override
+	public boolean isValidRepairItem(@NotNull ItemStack toRepair, @NotNull ItemStack repair) {
+		return this.material.value().repairIngredient().get().test(repair);
 	}
 
 	private Component getModifierTooltipComponent(TravellersModifier modifier) {
