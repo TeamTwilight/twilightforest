@@ -349,7 +349,16 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 		this.tag(ItemTags.MEAT).add(TFItems.RAW_VENISON.get(), TFItems.COOKED_VENISON.get(), TFItems.RAW_MEEF.get(), TFItems.COOKED_MEEF.get(), TFItems.MEEF_STROGANOFF.get(), TFItems.EXPERIMENT_115.get(), TFItems.HYDRA_CHOP.get());
 		this.tag(ItemTags.BEACON_PAYMENT_ITEMS).addTags(IRONWOOD_INGOTS, STEELEAF_INGOTS, KNIGHTMETAL_INGOTS, FIERY_INGOTS);
 
-		this.tag(ItemTags.TRIMMABLE_ARMOR).remove(TFItems.YETI_HELMET.get());
+		this.tag(ItemTags.TRIMMABLE_ARMOR)
+			.remove(TFItems.YETI_HELMET.get())
+			.remove(TFItems.TRAVELLERS_GOGGLES.get())
+			.remove(TFItems.TRAVELLERS_CHESTPLATE_GLOVES.get())
+			.remove(TFItems.TRAVELLERS_CHESTPLATE.get())
+			.remove(TFItems.TRAVELLERS_GLOVES.get())
+			.remove(TFItems.TRAVELLERS_WINGS_BELT.get())
+			.remove(TFItems.TRAVELLERS_BELT.get())
+			.remove(TFItems.TRAVELLERS_WINGS.get())
+			.remove(TFItems.TRAVELLERS_BOOTS.get());
 
 		this.tag(ItemTags.HEAD_ARMOR).add(
 			TFItems.IRONWOOD_HELMET.get(),

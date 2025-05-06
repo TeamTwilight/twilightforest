@@ -969,7 +969,6 @@ public class LangGenerator extends TFLangProvider {
 		this.addTrim("knightmetal", "Knightmetal");
 		this.addTrim("naga_scale", "Naga Scale");
 		this.addTrim("steeleaf", "Steeleaf");
-		this.addTrim("travellers", "Traveller's");
 
 		this.add("museumcurator.animalhusbandry.twilightforest.bugs", "Bugs");
 		this.add("museumcurator.architecture.twilightforest.aurorablocks", "Aurora Blocks");

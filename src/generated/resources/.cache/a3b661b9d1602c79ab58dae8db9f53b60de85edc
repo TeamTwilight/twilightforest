@@ -1,4 +1,4 @@
-// 1.21.1	2025-03-29T22:58:59.69091631	Twilight Forest Item Tags
+// 1.21.1	2025-05-06T14:30:52.176479	Twilight Forest Item Tags
 3c5895c72cfffe09615ec2b28267a726fcbf52e8 data/alexscaves/tags/item/ferns.json
 4c5df8d60b8f068b482a22fd807ddea22e1bfe00 data/alexscaves/tags/item/ferromagnetic_items.json
 42afac82c004061587d5b1ae20c2e66c0d399c8c data/alexscaves/tags/item/raw_meats.json
@@ -84,7 +84,7 @@ bb39f860aaf80d261eee2fc6cf18ee75a411d1c1 data/minecraft/tags/item/slabs.json
 60d2c0021214d67e32e5edc0ee008326caa52bf7 data/minecraft/tags/item/stairs.json
 931bc115353e6c267d36d480a5891285fde13487 data/minecraft/tags/item/swords.json
 33e52f2e89c4cebba996ae0eae4b4974291b9d81 data/minecraft/tags/item/trim_materials.json
-8c1ea92416b4f7fc8d8f95638d2939ad2165356c data/minecraft/tags/item/trimmable_armor.json
+d88ef445d63688618995d76a05da2b3b212ff682 data/minecraft/tags/item/trimmable_armor.json
 f0813a14ba178a941ba37c4059a25e6b19f77091 data/minecraft/tags/item/wooden_buttons.json
 3ff910b3376b5166da794689b1bf7569ad0b2e87 data/minecraft/tags/item/wooden_doors.json
 879fc86d9d7face7697fbbb62565885740fc7f41 data/minecraft/tags/item/wooden_fences.json
