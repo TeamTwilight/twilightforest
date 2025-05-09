@@ -10,7 +10,6 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.neoforged.neoforge.client.model.NeoForgeModelProperties;
 import net.neoforged.neoforge.client.model.StandardModelParameters;
 import net.neoforged.neoforge.client.model.UnbakedModelLoader;
 import org.joml.Vector3f;
@@ -43,19 +42,21 @@ public class ConnectedTextureModelLoader implements UnbakedModelLoader<UnbakedCo
 		int tintIndex = GsonHelper.getAsInt(overlayInfo, "tint_index", -1);
 		int emissivity = GsonHelper.getAsInt(overlayInfo, "emissivity", 0);
 		boolean renderDisabled = GsonHelper.getAsBoolean(overlayInfo, "render_disabled_faces", true);
-		EnumSet<Direction> faces = this.parseEnabledFaces(overlayInfo);
+		EnumSet<Direction> faces = this.parseEnabledFaces(overlayInfo, "faces");
+
+		EnumSet<Direction> unCulledFaces = this.parseEnabledFaces(jsonObject, "unculled_faces");
 
 		List<Block> connectables = this.parseConnnectableBlocks(jsonObject);
-		return new UnbakedConnectedTextureModel(element, faces, renderDisabled, connectables, baseTintIndex, baseEmissivity, tintIndex, emissivity, StandardModelParameters.parse(jsonObject, deserializationContext));
+		return new UnbakedConnectedTextureModel(element, faces, unCulledFaces, renderDisabled, connectables, baseTintIndex, baseEmissivity, tintIndex, emissivity, StandardModelParameters.parse(jsonObject, deserializationContext));
 	}
 
-	private EnumSet<Direction> parseEnabledFaces(JsonObject object) {
-		if (!object.has("faces")) {
+	private EnumSet<Direction> parseEnabledFaces(JsonObject object, String key) {
+		if (!object.has(key)) {
 			return EnumSet.allOf(Direction.class);
 		} else {
 			EnumSet<Direction> faces = EnumSet.noneOf(Direction.class);
 
-			for (JsonElement element : object.getAsJsonArray("faces")) {
+			for (JsonElement element : object.getAsJsonArray(key)) {
 				Direction face = Direction.byName(element.getAsString());
 				if (face == null) {
 					throw new JsonParseException("Invalid face: " + element.getAsString());

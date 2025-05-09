@@ -80,9 +80,9 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.registerSimpleFlatItemModel(TFBlocks.ROOT_STRAND.get());
 		this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(TFBlocks.FALLEN_LEAVES.get()).with(
 			PropertyDispatch.property(BlockStateProperties.LAYERS).generate(layer -> Variant.variant().with(VariantProperties.MODEL, ModelTemplates.create("block", String.valueOf(layer), TextureSlot.TEXTURE, TextureSlot.PARTICLE)
-					.extend().element(builder -> builder.from(0.0F, 0.0F, 0.0F).to(16.0F, layer == 1 ? 0.2F : (layer - 1) * 2, 16.0F)
-						.allFacesExcept((direction, face) -> face.tintindex(0).texture(TextureSlot.TEXTURE), Set.of(Direction.DOWN))
-						.face(Direction.DOWN, face -> face.cullface(Direction.DOWN).texture(TextureSlot.TEXTURE).tintindex(0))).build().create(TFBlocks.FALLEN_LEAVES.get(), TextureMapping.cube(Blocks.OAK_LEAVES), this.modelOutput)))));
+				.extend().element(builder -> builder.from(0.0F, 0.0F, 0.0F).to(16.0F, layer == 1 ? 0.2F : (layer - 1) * 2, 16.0F)
+					.allFacesExcept((direction, face) -> face.tintindex(0).texture(TextureSlot.TEXTURE), Set.of(Direction.DOWN))
+					.face(Direction.DOWN, face -> face.cullface(Direction.DOWN).texture(TextureSlot.TEXTURE).tintindex(0))).build().create(TFBlocks.FALLEN_LEAVES.get(), TextureMapping.cube(Blocks.OAK_LEAVES), this.modelOutput)))));
 		this.registerSimpleTintedItemModel(TFBlocks.FALLEN_LEAVES.get(), this.createFlatItemModelWithBlockTexture(TFBlocks.FALLEN_LEAVES.asItem(), Blocks.OAK_LEAVES), ItemModelUtils.constantTint(-12012264));
 
 		this.nagaStone();
@@ -93,7 +93,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 
 		this.wrapBlockItem(TFBlocks.TWISTED_STONE.get(), block -> this.createRotatedPillarWithHorizontalVariant(block, TexturedModel.COLUMN_ALT, TexturedModel.COLUMN_HORIZONTAL_ALT));
 		this.wrapBlockItem(TFBlocks.BOLD_STONE_PILLAR.get(), block -> this.createRotatedPillarWithHorizontalVariant(block, TexturedModel.COLUMN_ALT, TexturedModel.COLUMN_HORIZONTAL_ALT));
-		this.wrapBlockItem(TFBlocks.CORONATION_CARPET.get(), block -> this.blockStateOutput.accept(createSimpleBlock(block, TFModelTemplates.CTM_NO_BASE.extend().customLoader(ConnectedTextureBuilder::new, builder -> builder.connectsTo(block).addConnectionFaces(Direction.UP, Direction.DOWN).createElement(new Vector3f(0, 0, 0), new Vector3f(16, 1, 16))).build().create(block, TFTextureMapping.ctmBlock(block), this.modelOutput))));
+		this.wrapBlockItem(TFBlocks.CORONATION_CARPET.get(), block -> this.blockStateOutput.accept(createSimpleBlock(block, TFModelTemplates.CTM_NO_BASE.extend().customLoader(ConnectedTextureBuilder::new, builder -> builder.connectsTo(block).addConnectionFaces(Direction.UP, Direction.DOWN).addUnculledFaces(Direction.UP).createElement(new Vector3f(0, 0, 0), new Vector3f(16, 1, 16))).build().create(block, TFTextureMapping.ctmBlock(block), this.modelOutput))));
 		this.stonePillar();
 		this.wroughtIronFence();
 		this.terrorcotta();

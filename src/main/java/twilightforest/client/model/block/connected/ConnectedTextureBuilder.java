@@ -24,6 +24,7 @@ public class ConnectedTextureBuilder extends CustomLoaderBuilder {
 	@Nullable
 	private Pair<Vector3f, Vector3f> element;
 	private boolean renderOnDisabledFaces = true;
+	private List<Direction> unculledFaces = new ArrayList<>();
 
 	private int baseTintIndex = -1;
 	private int baseEmissivity = 0;
@@ -50,6 +51,11 @@ public class ConnectedTextureBuilder extends CustomLoaderBuilder {
 
 	public ConnectedTextureBuilder disableRenderingOnDisabledFaces() {
 		this.renderOnDisabledFaces = false;
+		return this;
+	}
+
+	public ConnectedTextureBuilder addUnculledFaces(Direction... faces) {
+		this.unculledFaces.addAll(List.of(faces));
 		return this;
 	}
 
@@ -93,6 +99,7 @@ public class ConnectedTextureBuilder extends CustomLoaderBuilder {
 		builder.connectableTags = List.copyOf(this.connectableTags);
 		builder.element = this.element;
 		builder.renderOnDisabledFaces = this.renderOnDisabledFaces;
+		builder.unculledFaces = List.copyOf(this.unculledFaces);
 		builder.baseTintIndex = this.baseTintIndex;
 		builder.baseEmissivity = this.baseEmissivity;
 		builder.tintIndex = this.tintIndex;
@@ -128,6 +135,12 @@ public class ConnectedTextureBuilder extends CustomLoaderBuilder {
 			}
 			overlayInfo.addProperty("render_disabled_faces", this.renderOnDisabledFaces);
 			json.add("connected_texture", overlayInfo);
+		}
+
+		if (!this.unculledFaces.isEmpty()) {
+			JsonArray array = new JsonArray();
+			this.unculledFaces.forEach(face -> array.add(face.getName()));
+			json.add("unculled_faces", array);
 		}
 
 		if (!this.connectableTags.isEmpty() || !this.connectableBlocks.isEmpty()) {

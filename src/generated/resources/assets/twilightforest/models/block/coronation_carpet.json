@@ -27,5 +27,8 @@
     "overlay_connected": "twilightforest:block/coronation_carpet_ctm",
     "overlay_texture": "twilightforest:block/coronation_carpet",
     "particle": "twilightforest:block/coronation_carpet"
-  }
+  },
+  "unculled_faces": [
+    "up"
+  ]
 }

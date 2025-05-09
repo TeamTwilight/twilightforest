@@ -4,12 +4,13 @@ import com.mojang.datafixers.util.Pair;
 import com.mojang.math.Transformation;
 import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.model.*;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelBaker;
+import net.minecraft.client.resources.model.ModelState;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.util.context.ContextMap;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.client.RenderTypeGroup;
 import net.neoforged.neoforge.client.model.AbstractUnbakedModel;
 import net.neoforged.neoforge.client.model.NeoForgeModelProperties;
 import net.neoforged.neoforge.client.model.StandardModelParameters;
@@ -29,11 +30,14 @@ public class UnbakedConnectedTextureModel extends AbstractUnbakedModel {
 	protected final List<Block> connectableBlocks;
 	protected BlockElement[][] baseElements;
 	protected BlockElement[][][] faceElements;
+	protected final EnumSet<Direction> unculledFaces;
 
-	public UnbakedConnectedTextureModel(Pair<Vector3f, Vector3f> element, EnumSet<Direction> enabledFaces, boolean renderOnDisabledFaces, List<Block> connectableBlocks, int baseTintIndex, int baseEmissivity, int tintIndex, int emissivity, StandardModelParameters parameters) {
+	public UnbakedConnectedTextureModel(Pair<Vector3f, Vector3f> element, EnumSet<Direction> enabledFaces, EnumSet<Direction> unculledFaces, boolean renderOnDisabledFaces, List<Block> connectableBlocks, int baseTintIndex, int baseEmissivity, int tintIndex, int emissivity, StandardModelParameters parameters) {
 		super(parameters);
 		//a list of block faces that should have connected textures.
 		this.enabledFaces = enabledFaces;
+		//a list of block faces that should not be culled. Probably cuz they don't extend to the edge of the block.
+		this.unculledFaces = unculledFaces;
 		//whether or not the overlay texture should render on disabled faces or not. Defaults to true
 		this.renderOnDisabledFaces = renderOnDisabledFaces;
 		//a list of blocks this block can connect its texture to
@@ -62,10 +66,10 @@ public class UnbakedConnectedTextureModel extends AbstractUnbakedModel {
 						element.getSecond().y() < center ? element.getSecond().y() : Math.max(center, corner.getY() - (16 - element.getSecond().y())),
 						element.getSecond().z() < center ? element.getSecond().z() : Math.max(center, corner.getZ() - (16 - element.getSecond().z()))),
 					Map.of(), null, true, 0);
-				this.baseElements[face.get3DDataValue()][i] = new BlockElement(modifiedElement.from, modifiedElement.to, Map.of(face, new BlockElementFace(face, baseTintIndex, "", new BlockFaceUV(ConnectionLogic.NONE.remapUVs(modifiedElement.uvsByFace(face)), 0))), null, true, baseEmissivity);
+				this.baseElements[face.get3DDataValue()][i] = new BlockElement(modifiedElement.from, modifiedElement.to, Map.of(face, new BlockElementFace(null, baseTintIndex, "", new BlockFaceUV(ConnectionLogic.NONE.remapUVs(modifiedElement.uvsByFace(face)), 0))), null, true, baseEmissivity);
 
 				for (ConnectionLogic logic : ConnectionLogic.values()) {
-					this.faceElements[face.get3DDataValue()][i][logic.ordinal()] = new BlockElement(modifiedElement.from, modifiedElement.to, Map.of(face, new BlockElementFace(face, tintIndex, "", new BlockFaceUV(logic.remapUVs(modifiedElement.uvsByFace(face)), 0))), null, true, emissivity);
+					this.faceElements[face.get3DDataValue()][i][logic.ordinal()] = new BlockElement(modifiedElement.from, modifiedElement.to, Map.of(face, new BlockElementFace(null, tintIndex, "", new BlockFaceUV(logic.remapUVs(modifiedElement.uvsByFace(face)), 0))), null, true, emissivity);
 				}
 			}
 		}
@@ -120,6 +124,6 @@ public class UnbakedConnectedTextureModel extends AbstractUnbakedModel {
 			}
 		}
 
-		return new ConnectedTextureModel(this.enabledFaces, this.renderOnDisabledFaces, this.connectableBlocks, baseQuads, quads, sprites[2], useAmbientOcclusion, usesBlockLight, itemTransforms, this.parameters.renderTypeGroup());
+		return new ConnectedTextureModel(this.enabledFaces, this.unculledFaces, this.renderOnDisabledFaces, this.connectableBlocks, baseQuads, quads, sprites[2], useAmbientOcclusion, usesBlockLight, itemTransforms, this.parameters.renderTypeGroup());
 	}
 }

@@ -26,6 +26,7 @@ import java.util.List;
 public class ConnectedTextureModel implements IDynamicBakedModel {
 
 	private final EnumSet<Direction> enabledFaces;
+	private final EnumSet<Direction> unculledFaces;
 	private final boolean renderOnDisabledFaces;
 	private final List<BakedQuad>@Nullable[] baseQuads;
 	private final BakedQuad[][][] quads;
@@ -40,8 +41,9 @@ public class ConnectedTextureModel implements IDynamicBakedModel {
 	private final List<Block> validConnectors;
 	private static final ModelProperty<ConnectedTextureData> DATA = new ModelProperty<>();
 
-	public ConnectedTextureModel(EnumSet<Direction> enabledFaces, boolean renderOnDisabledFaces, List<Block> connectableBlocks, List<BakedQuad>@Nullable[] baseQuads, BakedQuad[][][] quads, TextureAtlasSprite particle, boolean usesAO, boolean usesBlockLight, ItemTransforms transforms, RenderTypeGroup group) {
+	public ConnectedTextureModel(EnumSet<Direction> enabledFaces, EnumSet<Direction> unculledFaces, boolean renderOnDisabledFaces, List<Block> connectableBlocks, List<BakedQuad>@Nullable[] baseQuads, BakedQuad[][][] quads, TextureAtlasSprite particle, boolean usesAO, boolean usesBlockLight, ItemTransforms transforms, RenderTypeGroup group) {
 		this.enabledFaces = enabledFaces;
+		this.unculledFaces = unculledFaces;
 		this.renderOnDisabledFaces = renderOnDisabledFaces;
 		this.validConnectors = connectableBlocks;
 		this.baseQuads = baseQuads;
@@ -57,27 +59,29 @@ public class ConnectedTextureModel implements IDynamicBakedModel {
 	@NotNull
 	@Override
 	public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @NotNull RandomSource random, @NotNull ModelData extraData, @Nullable RenderType type) {
-		if (side != null) {
-			int faceIndex = side.get3DDataValue();
-			ConnectedTextureData data = extraData.get(DATA);
-			ArrayList<BakedQuad> quads = new ArrayList<>(4 + (this.baseQuads != null ? 4 : 0));
-			if (this.baseQuads != null) {
-				quads.addAll(this.baseQuads[faceIndex]);
-			}
+		if (side == null) {
+			List<BakedQuad> quadList = new ArrayList<>();
+			for (Direction direction : this.unculledFaces) quadList.addAll(this.getQuadsForFace(direction, extraData));
+			return quadList;
+		} else return this.getQuadsForFace(side, extraData);
+	}
 
-			if (this.enabledFaces.contains(side) || this.renderOnDisabledFaces) {
-				for (int quad = 0; quad < 4; ++quad) {
-					//if our model data is null (happens for items) we can skip connected textures since we dont have the info we need
-					//i'd rather do this than crash the game or skip rendering the block entirely
-					ConnectionLogic connectionType = data != null && this.enabledFaces.contains(side) ? data.logic[faceIndex][quad] : ConnectionLogic.NONE;
-					quads.add(this.quads[faceIndex][quad][connectionType.ordinal()]);
-				}
-			}
+	public List<BakedQuad> getQuadsForFace(Direction side, @NotNull ModelData extraData) {
+		int faceIndex = side.get3DDataValue();
+		ConnectedTextureData data = extraData.get(DATA);
+		ArrayList<BakedQuad> quads = new ArrayList<>(4 + (this.baseQuads != null ? 4 : 0));
+		if (this.baseQuads != null) quads.addAll(this.baseQuads[faceIndex]);
 
-			return quads;
-		} else {
-			return List.of();
+		if (this.enabledFaces.contains(side) || this.renderOnDisabledFaces) {
+			for (int quad = 0; quad < 4; ++quad) {
+				//if our model data is null (happens for items) we can skip connected textures since we dont have the info we need
+				//i'd rather do this than crash the game or skip rendering the block entirely
+				ConnectionLogic connectionType = data != null && this.enabledFaces.contains(side) ? data.logic[faceIndex][quad] : ConnectionLogic.NONE;
+				quads.add(this.quads[faceIndex][quad][connectionType.ordinal()]);
+			}
 		}
+
+		return quads;
 	}
 
 	@NotNull
@@ -110,11 +114,13 @@ public class ConnectedTextureModel implements IDynamicBakedModel {
 
 	private boolean shouldConnectSide(BlockAndTintGetter getter, BlockPos pos, Direction face, Direction side) {
 		BlockState neighborState = getter.getBlockState(pos.relative(side));
+		if (this.unculledFaces.contains(face)) return this.validConnectors.stream().anyMatch(neighborState::is);
 		return this.validConnectors.stream().anyMatch(neighborState::is) && Block.shouldRenderFace(getter, pos.relative(face), neighborState, getter.getBlockState(pos.relative(face)), face);
 	}
 
 	private boolean isCornerBlockPresent(BlockAndTintGetter getter, BlockPos pos, Direction face, Direction side1, Direction side2) {
 		BlockState neighborState = getter.getBlockState(pos.relative(side1).relative(side2));
+		if (this.unculledFaces.contains(face)) return this.validConnectors.stream().anyMatch(neighborState::is);
 		return this.validConnectors.stream().anyMatch(neighborState::is) && Block.shouldRenderFace(getter, pos.relative(face), neighborState, getter.getBlockState(pos.relative(face)), face);
 	}
 
