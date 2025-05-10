@@ -41,13 +41,11 @@ public class ConnectedTextureModelLoader implements UnbakedModelLoader<UnbakedCo
 		JsonObject overlayInfo = GsonHelper.getAsJsonObject(jsonObject, "connected_texture", new JsonObject());
 		int tintIndex = GsonHelper.getAsInt(overlayInfo, "tint_index", -1);
 		int emissivity = GsonHelper.getAsInt(overlayInfo, "emissivity", 0);
-		boolean renderDisabled = GsonHelper.getAsBoolean(overlayInfo, "render_disabled_faces", true);
+		boolean renderDisabled = GsonHelper.getAsBoolean(overlayInfo, "always_render_overlay", true);
 		EnumSet<Direction> faces = this.parseEnabledFaces(overlayInfo, "faces");
 
-		EnumSet<Direction> unCulledFaces = this.parseEnabledFaces(jsonObject, "unculled_faces");
-
 		List<Block> connectables = this.parseConnnectableBlocks(jsonObject);
-		return new UnbakedConnectedTextureModel(element, faces, unCulledFaces, renderDisabled, connectables, baseTintIndex, baseEmissivity, tintIndex, emissivity, StandardModelParameters.parse(jsonObject, deserializationContext));
+		return new UnbakedConnectedTextureModel(element, faces, renderDisabled, connectables, baseTintIndex, baseEmissivity, tintIndex, emissivity, StandardModelParameters.parse(jsonObject, deserializationContext));
 	}
 
 	private EnumSet<Direction> parseEnabledFaces(JsonObject object, String key) {

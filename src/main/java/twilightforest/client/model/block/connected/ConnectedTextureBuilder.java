@@ -18,13 +18,12 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class ConnectedTextureBuilder extends CustomLoaderBuilder {
 
-	private List<Direction> enabledFaces = new ArrayList<>();
+	private List<Direction> connectedFaces = new ArrayList<>();
 	private List<Block> connectableBlocks = new ArrayList<>();
 	private List<TagKey<Block>> connectableTags = new ArrayList<>();
 	@Nullable
 	private Pair<Vector3f, Vector3f> element;
-	private boolean renderOnDisabledFaces = true;
-	private List<Direction> unculledFaces = new ArrayList<>();
+	private boolean renderOverlayOnAllFaces = true;
 
 	private int baseTintIndex = -1;
 	private int baseEmissivity = 0;
@@ -40,7 +39,7 @@ public class ConnectedTextureBuilder extends CustomLoaderBuilder {
 	}
 
 	public ConnectedTextureBuilder addConnectionFaces(Direction... faces) {
-		this.enabledFaces.addAll(List.of(faces));
+		this.connectedFaces.addAll(List.of(faces));
 		return this;
 	}
 
@@ -49,13 +48,8 @@ public class ConnectedTextureBuilder extends CustomLoaderBuilder {
 		return this;
 	}
 
-	public ConnectedTextureBuilder disableRenderingOnDisabledFaces() {
-		this.renderOnDisabledFaces = false;
-		return this;
-	}
-
-	public ConnectedTextureBuilder addUnculledFaces(Direction... faces) {
-		this.unculledFaces.addAll(List.of(faces));
+	public ConnectedTextureBuilder disableOverlayRenderingOnAllFaces() {
+		this.renderOverlayOnAllFaces = false;
 		return this;
 	}
 
@@ -94,12 +88,11 @@ public class ConnectedTextureBuilder extends CustomLoaderBuilder {
 	@Override
 	protected ConnectedTextureBuilder copyInternal() {
 		ConnectedTextureBuilder builder = new ConnectedTextureBuilder();
-		builder.enabledFaces = List.copyOf(this.enabledFaces);
+		builder.connectedFaces = List.copyOf(this.connectedFaces);
 		builder.connectableBlocks = List.copyOf(this.connectableBlocks);
 		builder.connectableTags = List.copyOf(this.connectableTags);
 		builder.element = this.element;
-		builder.renderOnDisabledFaces = this.renderOnDisabledFaces;
-		builder.unculledFaces = List.copyOf(this.unculledFaces);
+		builder.renderOverlayOnAllFaces = this.renderOverlayOnAllFaces;
 		builder.baseTintIndex = this.baseTintIndex;
 		builder.baseEmissivity = this.baseEmissivity;
 		builder.tintIndex = this.tintIndex;
@@ -120,11 +113,11 @@ public class ConnectedTextureBuilder extends CustomLoaderBuilder {
 			}
 			json.add("base", baseInfo);
 		}
-		if (!this.enabledFaces.isEmpty() || this.tintIndex > -1 || this.emissivity != 0) {
+		if (!this.connectedFaces.isEmpty() || this.tintIndex > -1 || this.emissivity != 0) {
 			JsonObject overlayInfo = new JsonObject();
-			if (!this.enabledFaces.isEmpty()) {
+			if (!this.connectedFaces.isEmpty()) {
 				JsonArray array = new JsonArray();
-				this.enabledFaces.forEach(face -> array.add(face.getName()));
+				this.connectedFaces.forEach(face -> array.add(face.getName()));
 				overlayInfo.add("faces", array);
 			}
 			if (this.tintIndex > -1) {
@@ -133,14 +126,10 @@ public class ConnectedTextureBuilder extends CustomLoaderBuilder {
 			if (this.emissivity != 0) {
 				overlayInfo.addProperty("emissivity", this.emissivity);
 			}
-			overlayInfo.addProperty("render_disabled_faces", this.renderOnDisabledFaces);
+			if (!this.renderOverlayOnAllFaces) {
+				overlayInfo.addProperty("always_render_overlay", false);
+			}
 			json.add("connected_texture", overlayInfo);
-		}
-
-		if (!this.unculledFaces.isEmpty()) {
-			JsonArray array = new JsonArray();
-			this.unculledFaces.forEach(face -> array.add(face.getName()));
-			json.add("unculled_faces", array);
 		}
 
 		if (!this.connectableTags.isEmpty() || !this.connectableBlocks.isEmpty()) {
