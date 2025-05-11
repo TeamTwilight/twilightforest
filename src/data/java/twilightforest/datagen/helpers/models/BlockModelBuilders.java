@@ -792,7 +792,7 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 				.ifElse().from(7, 7, 9).to(9, 9, 16).parents(ForceFieldModel.ExtraDirection.SOUTH).face(Direction.EAST).uvs(9, 7, 16, 9).texture("#pane").end()
 				.ifSame().from(9, 7, 7).to(16, 9, 9).parents(ForceFieldModel.ExtraDirection.EAST).face(Direction.SOUTH).uvs(0, 7, 7, 9).texture("#pane").end().end();
 		}).build().create(block, TFTextureMapping.forcefield(), this.modelOutput)));
-		this.itemModelOutput.accept(block.asItem(), ItemModelUtils.tintedModel(ModelTemplates.FLAT_ITEM.create(ModelLocationUtils.getModelLocation(block.asItem()), TextureMapping.layer0(TwilightForestMod.prefix("block/forcefield")), this.modelOutput), ItemModelUtils.constantTint(tint)));
+		this.itemModelOutput.accept(block.asItem(), ItemModelUtils.tintedModel(ModelTemplates.FLAT_ITEM.extend().renderType("translucent").build().create(ModelLocationUtils.getModelLocation(block.asItem()), TextureMapping.layer0(TwilightForestMod.prefix("block/forcefield")), this.modelOutput), ItemModelUtils.constantTint(tint)));
 	}
 
 	public void generatePaneBlock(Block glassBlock, Block paneBlock) {
