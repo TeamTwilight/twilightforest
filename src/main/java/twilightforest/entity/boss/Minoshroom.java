@@ -203,6 +203,6 @@ public class Minoshroom extends BaseTFBoss implements ITFCharger {
 
 	@Override
 	public int getBossBarColor() {
-		return 0xFFFF0000;
+		return 0xFF0000;
 	}
 }

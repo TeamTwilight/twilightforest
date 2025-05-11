@@ -1064,8 +1064,8 @@ public class Lich extends BaseTFBoss {
 
 	@Override
 	public int getBossBarColor() {
-		if (this.getShieldStrength() > 0) return 0xFFFFD800;
-		return this.getPhase() == 2 ? 0xFFBE23FF : 0xFFFF0000;
+		if (this.getShieldStrength() > 0) return 0xFFD800;
+		return this.getPhase() == 2 ? 0xBE23FF : 0xFF0000;
 	}
 
 	@Override

@@ -440,6 +440,6 @@ public class SnowQueen extends BaseTFBoss implements IBreathAttacker {
 
 	@Override
 	public int getBossBarColor() {
-		return 0xFF8CF0F0;
+		return 0x8CF0F0;
 	}
 }

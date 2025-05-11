@@ -573,6 +573,6 @@ public class UrGhast extends BaseTFBoss {
 
 	@Override
 	public int getBossBarColor() {
-		return 0xFFFF0000;
+		return 0xFF0000;
 	}
 }

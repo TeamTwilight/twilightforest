@@ -667,7 +667,7 @@ public class KnightPhantom extends BaseTFBoss {
 
 	@Override
 	public int getBossBarColor() {
-		return 0xFF86BF37;
+		return 0x86BF37;
 	}
 
 	public enum Formation {
