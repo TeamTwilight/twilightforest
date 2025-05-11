@@ -48,7 +48,7 @@ public class LichRenderer extends HumanoidMobRenderer<Lich, LichRenderState, Lic
 	@Nullable
 	@Override
 	protected RenderType getRenderType(LichRenderState state, boolean bodyVisible, boolean translucent, boolean glowing) {
-		if (state.isShadowClone) return TFRenderTypes.SHADOW_CLONE;
+		if (state.isShadowClone && !state.isInvisible) return TFRenderTypes.SHADOW_CLONE;
 		else return super.getRenderType(state, bodyVisible, translucent, glowing);
 	}
 
