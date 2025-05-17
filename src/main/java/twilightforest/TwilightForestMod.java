@@ -598,7 +598,7 @@ public final class TwilightForestMod {
 	}
 
 	public void registerCommands(RegisterCommandsEvent event) {
-		tfCommand.register(event.getDispatcher(), event.getBuildContext());
+		tfCommand.register(event.getDispatcher(), event.getBuildContext(), event.getCommandSelection());
 	}
 
 	public static ResourceLocation prefix(String name) {
