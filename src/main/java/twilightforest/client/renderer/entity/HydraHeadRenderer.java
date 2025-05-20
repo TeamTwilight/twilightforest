@@ -6,6 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -30,11 +31,15 @@ public class HydraHeadRenderer extends TFPartRenderer<HydraHead, HydraHeadRender
 
 	@Override
 	public void render(HydraHeadRenderState state, PoseStack stack, MultiBufferSource buffer, int light) {
+		stack.mulPose(Axis.YP.rotationDegrees(-180));
+		super.render(state, stack, buffer, light);
+	}
+
+	@Override
+	protected @Nullable RenderType getRenderType(HydraHeadRenderState state, boolean visible, boolean ghostly, boolean glowing) {
 		// see whether we want to render these
-		if (state.active) {
-			stack.mulPose(Axis.YP.rotationDegrees(-180));
-			super.render(state, stack, buffer, light);
-		}
+		if (!state.active) return null;
+		return super.getRenderType(state, visible, ghostly, glowing);
 	}
 
 	@Override

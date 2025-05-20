@@ -14,6 +14,7 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFPart;
 
 public abstract class HydraPart extends TFPart<Hydra> {
@@ -65,11 +66,8 @@ public abstract class HydraPart extends TFPart<Hydra> {
 		this.clearFire();
 		super.tick();
 
-		if (this.hurtTime > 0)
-			this.hurtTime--;
-
-		if (this.markedDead)
-			this.deathTime++;
+		if (this.hurtTime > 0) this.hurtTime--;
+		if (this.markedDead) this.deathTime++;
 
 		if (this.markedDead && this.isActive() && this.level().isClientSide()) {
 			float width = this.getBbWidth();
@@ -83,9 +81,7 @@ public abstract class HydraPart extends TFPart<Hydra> {
 			}
 		}
 
-		if (this.deathTime == 20) {
-			this.deactivate();
-		}
+		if (this.deathTime >= 20) this.deactivate();
 	}
 
 	@Override
