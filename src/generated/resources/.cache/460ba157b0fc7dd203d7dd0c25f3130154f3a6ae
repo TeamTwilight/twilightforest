@@ -1,4 +1,4 @@
-// 1.21.4	2025-05-11T08:56:35.8189193	Model Definitions - twilightforest
+// 1.21.4	2025-05-23T19:12:55.9869619	Model Definitions - twilightforest
 bfc4b40d2c8daf9144a74758b5060ff35a20c7b8 assets/twilightforest/blockstates/acacia_banister.json
 2ba5945264a026fc35aa113643919b494cf4406d assets/twilightforest/blockstates/alpha_yeti_boss_spawner.json
 94ee00eebd82061338b6db439a84b3fdf98f3942 assets/twilightforest/blockstates/alpha_yeti_trophy.json
@@ -275,7 +275,7 @@ fe5bd00d8150e9d086a951a8a4df9557e2510394 assets/twilightforest/blockstates/mossy
 740668d5508541d13a02505eee1bbc6af177f583 assets/twilightforest/blockstates/moss_patch.json
 f06dac21e55066a5a2da510d51d778ef1be85f67 assets/twilightforest/blockstates/mushgloom.json
 cb500dbdfb2dc2cd5e1eef62e987dda58a69cd10 assets/twilightforest/blockstates/nagastone.json
-7d84f2b8f8ce462a4cdd4a0a690b4b59ba235ca0 assets/twilightforest/blockstates/nagastone_head.json
+b609ca5161aa6cba127356dd7e6cf739b5ba90cc assets/twilightforest/blockstates/nagastone_head.json
 8fce57e49c9944451fdd609f7dc195805495f436 assets/twilightforest/blockstates/nagastone_pillar.json
 beadc2350f7b8c58833c309391f895251da7e5c9 assets/twilightforest/blockstates/nagastone_stairs_left.json
 344bc801ddf20afa798499ec3c80d49ba89be47c assets/twilightforest/blockstates/nagastone_stairs_right.json
