@@ -123,7 +123,10 @@
       }
     ],
     "fallback": {
-      "type": "minecraft:model",
+      "type": "twilightforest:fullbright_model",
+      "fullbright_faces": [
+        0
+      ],
       "model": "twilightforest:item/fiery_helmet"
     },
     "property": "minecraft:trim_material"

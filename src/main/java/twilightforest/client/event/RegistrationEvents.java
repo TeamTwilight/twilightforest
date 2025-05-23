@@ -59,6 +59,7 @@ import twilightforest.client.model.block.giantblock.GiantBlockModelLoader;
 import twilightforest.client.model.block.leaves.BakedLeavesModel;
 import twilightforest.client.model.block.patch.PatchModelLoader;
 import twilightforest.client.model.entity.*;
+import twilightforest.client.model.item.FullbrightItemModel;
 import twilightforest.client.particle.*;
 import twilightforest.client.properties.*;
 import twilightforest.client.renderer.PotionFlaskTooltipComponent;
@@ -93,6 +94,7 @@ public class RegistrationEvents {
 		bus.addListener(RegistrationEvents::cacheJarLids);
 		bus.addListener(RegistrationEvents::clientSetup);
 		bus.addListener(RegistrationEvents::registerAdditionalModels);
+		bus.addListener(RegistrationEvents::registerItemModels);
 		bus.addListener(RegistrationEvents::registerClientReloadListeners);
 		bus.addListener(RegistrationEvents::registerDimEffects);
 		bus.addListener(RegistrationEvents::registerEntityRenderers);
@@ -152,6 +154,11 @@ public class RegistrationEvents {
 			if (lid.customPath() != null) name = lid.customPath();
 			event.register(TwilightForestMod.prefix("block/lid/" + name));
 		}
+	}
+
+	static void registerItemModels(RegisterItemModelsEvent event) {
+		event.register(TwilightForestMod.prefix("fullbright_model"), FullbrightItemModel.Unbaked.MAP_CODEC);
+		event.register(TwilightForestMod.prefix("fullbright_select_model"), BABA.Unbaked.MAP_CODEC);
 	}
 
 	private static void cacheJarLids(ModelEvent.BakingCompleted event) {

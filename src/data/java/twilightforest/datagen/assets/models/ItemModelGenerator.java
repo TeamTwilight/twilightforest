@@ -1,6 +1,7 @@
 package twilightforest.datagen.assets.models;
 
 import net.minecraft.client.color.item.Dye;
+import net.minecraft.client.color.item.ItemTintSource;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ItemModelOutput;
 import net.minecraft.client.data.models.model.*;
@@ -24,8 +25,10 @@ import net.minecraft.world.item.equipment.EquipmentAssets;
 import net.minecraft.world.item.equipment.trim.TrimMaterial;
 import net.minecraft.world.item.equipment.trim.TrimMaterials;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.model.item.FullbrightItemModel;
 import twilightforest.client.properties.*;
-import twilightforest.client.renderer.special.*;
+import twilightforest.client.renderer.special.KnightmetalShieldSpecialRenderer;
+import twilightforest.client.renderer.special.MysticCrownSpecialRenderer;
 import twilightforest.datagen.helpers.ItemModelBuilders;
 import twilightforest.init.*;
 import twilightforest.item.ArcticArmorItem;
@@ -33,6 +36,7 @@ import twilightforest.item.ArcticArmorItem;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.BiConsumer;
 
 public class ItemModelGenerator extends ItemModelBuilders {
@@ -68,7 +72,7 @@ public class ItemModelGenerator extends ItemModelBuilders {
 		this.generateFlatItem(TFItems.FILLED_MAGIC_MAP.get(), ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.FILLED_MAZE_MAP.get(), ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.FILLED_ORE_MAP.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.TORCHBERRIES.get(), ModelTemplates.FLAT_ITEM);
+		this.generateFullbrightItem(TFItems.TORCHBERRIES.get(), this.createFlatItemModel(TFItems.TORCHBERRIES.get(), ModelTemplates.FLAT_ITEM), 0);
 		this.generateFlatItem(TFItems.RAVEN_FEATHER.get(), ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.MAGIC_MAP_FOCUS.get(), ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.MAZE_MAP_FOCUS.get(), ModelTemplates.FLAT_ITEM);
@@ -100,13 +104,13 @@ public class ItemModelGenerator extends ItemModelBuilders {
 		this.generateFlatItem(TFItems.KNIGHTMETAL_RING.get(), ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.FIERY_BLOOD.get(), ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.FIERY_TEARS.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.FIERY_INGOT.get(), ModelTemplates.FLAT_ITEM);
+		this.generateFullbrightItem(TFItems.FIERY_INGOT.get(), this.createFlatItemModel(TFItems.FIERY_INGOT.get(), ModelTemplates.FLAT_ITEM), 0);
 		this.generateFlatItem(TFItems.ARCTIC_FUR.get(), ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.ALPHA_YETI_FUR.get(), ModelTemplates.FLAT_ITEM);
 		ResourceLocation empty = ModelTemplates.FLAT_ITEM.create(TwilightForestMod.prefix("item/potion_flask_empty"), TextureMapping.layer0(TwilightForestMod.prefix("block/blank")), this.modelOutput);
 		this.generatePotionFlask(TFItems.BRITTLE_FLASK.get(), true, empty);
 		this.generatePotionFlask(TFItems.GREATER_FLASK.get(), false, empty);
-		this.generateTwoLayerItem(TFItems.EXANIMATE_ESSENCE.get(), "_flames", ModelTemplates.TWO_LAYERED_ITEM);
+		this.generateFullbrightItem(TFItems.EXANIMATE_ESSENCE.get(), this.twoLayerItem(TFItems.EXANIMATE_ESSENCE.get(), "", "", "_flames", ModelTemplates.TWO_LAYERED_ITEM), 1);
 		this.generateFlatItem(TFItems.CROWN_SPLINTER.get(), ModelTemplates.FLAT_ITEM);
 		this.itemModelOutput.accept(TFBlocks.RED_THREAD.asItem(), ItemModelUtils.rangeSelect(new Count(true), ItemModelUtils.plainModel(this.createFlatItemModel(TFBlocks.RED_THREAD.asItem(), ModelTemplates.FLAT_ITEM)), List.of(
 			ItemModelUtils.override(ItemModelUtils.plainModel(this.createFlatItemModel(TFBlocks.RED_THREAD.asItem(), "_bundle_0", ModelTemplates.FLAT_ITEM)), 4.0F / 64.0F),
@@ -114,7 +118,7 @@ public class ItemModelGenerator extends ItemModelBuilders {
 			ItemModelUtils.override(ItemModelUtils.plainModel(this.createFlatItemModel(TFBlocks.RED_THREAD.asItem(), "_bundle_2", ModelTemplates.FLAT_ITEM)), 32.0F / 64.0F))));
 		this.generateTwoLayerItem(TFItems.BORER_ESSENCE.get(), "_particles", ModelTemplates.TWO_LAYERED_ITEM);
 		this.generateFlatItem(TFItems.CARMINITE.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.TOWER_KEY.get(), ModelTemplates.FLAT_ITEM);
+		this.generateFullbrightItem(TFItems.TOWER_KEY.get(), this.createFlatItemModel(TFItems.TOWER_KEY.get(), ModelTemplates.FLAT_ITEM), 0);
 		this.generateFlatItem(TFItems.MAGIC_BEANS.get(), ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.MUSIC_DISC_THREAD.get(), ModelTemplates.MUSIC_DISC);
 		this.generateFlatItem(TFItems.MUSIC_DISC_FINDINGS.get(), ModelTemplates.MUSIC_DISC);
@@ -186,12 +190,12 @@ public class ItemModelGenerator extends ItemModelBuilders {
 			ItemModelUtils.plainModel(this.createFlatItemModel(TFItems.BLOCK_AND_CHAIN.get(), ModelTemplates.FLAT_HANDHELD_ITEM))));
 		this.generateKnightmetalShield(TFItems.KNIGHTMETAL_SHIELD.get());
 
-		this.generateExpandedTrimmableItem(TFItems.FIERY_HELMET.get(), TFEquipmentAssets.FIERY, "helmet");
-		this.generateExpandedTrimmableItem(TFItems.FIERY_CHESTPLATE.get(), TFEquipmentAssets.FIERY, "chestplate");
-		this.generateExpandedTrimmableItem(TFItems.FIERY_LEGGINGS.get(), TFEquipmentAssets.FIERY, "leggings");
-		this.generateExpandedTrimmableItem(TFItems.FIERY_BOOTS.get(), TFEquipmentAssets.FIERY, "boots");
-		this.generateFlatItem(TFItems.FIERY_SWORD.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
-		this.generateFlatItem(TFItems.FIERY_PICKAXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+		this.generateExpandedTrimmableFullbrightItem(TFItems.FIERY_HELMET.get(), TFEquipmentAssets.FIERY, "helmet", 0);
+		this.generateExpandedTrimmableFullbrightItem(TFItems.FIERY_CHESTPLATE.get(), TFEquipmentAssets.FIERY, "chestplate", 0);
+		this.generateExpandedTrimmableFullbrightItem(TFItems.FIERY_LEGGINGS.get(), TFEquipmentAssets.FIERY, "leggings", 0);
+		this.generateExpandedTrimmableFullbrightItem(TFItems.FIERY_BOOTS.get(), TFEquipmentAssets.FIERY, "boots", 0);
+		this.generateFullbrightItem(TFItems.FIERY_SWORD.get(), this.createFlatItemModel(TFItems.FIERY_SWORD.get(), ModelTemplates.FLAT_HANDHELD_ITEM), 0);
+		this.generateFullbrightItem(TFItems.FIERY_PICKAXE.get(), this.createFlatItemModel(TFItems.FIERY_PICKAXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM), 0);
 
 		this.generateExpandedTrimmableItem(TFItems.ARCTIC_HELMET.get(), TFEquipmentAssets.ARCTIC, "helmet", ArcticArmorItem.DEFAULT_COLOR);
 		this.generateExpandedTrimmableItem(TFItems.ARCTIC_CHESTPLATE.get(), TFEquipmentAssets.ARCTIC, "chestplate", ArcticArmorItem.DEFAULT_COLOR);
@@ -449,5 +453,50 @@ public class ItemModelGenerator extends ItemModelBuilders {
 	public ResourceLocation twoLayerItem(Item item, String modelSuffix, String suffix1, String suffix2, ModelTemplate template) {
 		ResourceLocation baseTex = TextureMapping.getItemTexture(item);
 		return template.create(ModelLocationUtils.getModelLocation(item, modelSuffix), TextureMapping.layered(baseTex.withSuffix(suffix1 + modelSuffix), baseTex.withSuffix(suffix2 + modelSuffix)), this.modelOutput);
+	}
+
+	public void generateFullbrightItem(Item item, ResourceLocation model, Integer... fullbrightLayers) {
+		this.itemModelOutput.accept(item, new FullbrightItemModel.Unbaked(model, List.of(), List.of(fullbrightLayers)));
+	}
+
+	public void generateFullbrightItem(Item item, ResourceLocation model, List<ItemTintSource> tints, Integer... fullbrightLayers) {
+		this.itemModelOutput.accept(item, new FullbrightItemModel.Unbaked(model, tints, List.of(fullbrightLayers)));
+	}
+
+	public void generateExpandedTrimmableFullbrightItem(Item item, ResourceKey<EquipmentAsset> key, String name, Integer... fullbrightLayers) {
+		this.generateExpandedTrimmableFullbrightItem(item, key, name, Optional.empty(), fullbrightLayers);
+	}
+
+	@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
+	public void generateExpandedTrimmableFullbrightItem(Item item, ResourceKey<EquipmentAsset> key, String name, Optional<Integer> dyeColor, Integer... fullbrightLayers) {
+		ResourceLocation model = ModelLocationUtils.getModelLocation(item);
+		ResourceLocation texture = TextureMapping.getItemTexture(item);
+		ResourceLocation overlayTexture = TextureMapping.getItemTexture(item, "_overlay");
+		List<SelectItemModel.SwitchCase<ResourceKey<TrimMaterial>>> trims = new ArrayList<>(TRIM_MATERIAL_MODELS.size());
+
+		for (ItemModelGenerators.TrimMaterialData data : EX_TRIM_MATERIAL_MODELS) {
+			ResourceLocation trimModel = model.withSuffix("_" + data.name() + "_trim");
+			ResourceLocation trimTexture = ResourceLocation.withDefaultNamespace(
+				"trims/items/" + name + "_trim_" + data.textureName(key)
+			);
+			ItemModel.Unbaked trimMaterialModel;
+			if (dyeColor.isPresent()) {
+				this.generateLayeredItem(trimModel, texture, overlayTexture, trimTexture);
+				trimMaterialModel = ItemModelUtils.tintedModel(trimModel, new Dye(dyeColor.get()));
+			} else {
+				trimMaterialModel = ItemModelUtils.plainModel(this.generateLayeredItem(trimModel, texture, trimTexture));
+			}
+
+			trims.add(ItemModelUtils.when(data.materialKey(), trimMaterialModel));
+		}
+
+		ItemModel.Unbaked armorModel;
+		if (dyeColor.isPresent()) {
+			armorModel = new FullbrightItemModel.Unbaked(ModelTemplates.TWO_LAYERED_ITEM.create(model, TextureMapping.layered(texture, overlayTexture), this.modelOutput), List.of(new Dye(dyeColor.get())), List.of(fullbrightLayers));
+		} else {
+			armorModel = new FullbrightItemModel.Unbaked(ModelTemplates.FLAT_ITEM.create(model, TextureMapping.layer0(texture), this.modelOutput), List.of(), List.of(fullbrightLayers));
+		}
+
+		this.itemModelOutput.accept(item, ItemModelUtils.select(new TrimMaterialProperty(), armorModel, trims));
 	}
 }

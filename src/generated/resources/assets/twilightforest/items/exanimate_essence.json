@@ -1,6 +1,9 @@
 {
   "model": {
-    "type": "minecraft:model",
+    "type": "twilightforest:fullbright_model",
+    "fullbright_faces": [
+      1
+    ],
     "model": "twilightforest:item/exanimate_essence"
   }
 }
