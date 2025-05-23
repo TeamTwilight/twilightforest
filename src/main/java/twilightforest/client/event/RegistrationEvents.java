@@ -477,6 +477,7 @@ public class RegistrationEvents {
 		event.register(TwilightForestMod.prefix("cicada"), CicadaSpecialRenderer.Unbaked.MAP_CODEC);
 		event.register(TwilightForestMod.prefix("firefly"), FireflySpecialRenderer.Unbaked.MAP_CODEC);
 		event.register(TwilightForestMod.prefix("moonworm"), MoonwormSpecialRenderer.Unbaked.MAP_CODEC);
+		event.register(TwilightForestMod.prefix("webworm"), WebwormSpecialRenderer.Unbaked.MAP_CODEC);
 		event.register(TwilightForestMod.prefix("knightmetal_shield"), KnightmetalShieldSpecialRenderer.Unbaked.MAP_CODEC);
 		event.register(TwilightForestMod.prefix("mystic_crown"), MysticCrownSpecialRenderer.Unbaked.MAP_CODEC);
 		event.register(TwilightForestMod.prefix("mason_jar"), MasonJarSpecialRenderer.Unbaked.MAP_CODEC);
@@ -507,6 +508,7 @@ public class RegistrationEvents {
 		event.register(TFBlocks.CICADA.get(), new CicadaSpecialRenderer.Unbaked());
 		event.register(TFBlocks.FIREFLY.get(), new FireflySpecialRenderer.Unbaked());
 		event.register(TFBlocks.MOONWORM.get(), new MoonwormSpecialRenderer.Unbaked());
+		event.register(TFBlocks.WEBWORM.get(), new WebwormSpecialRenderer.Unbaked());
 
 		event.register(TFBlocks.FIREFLY_JAR.get(), new MasonJarSpecialRenderer.Unbaked(TFBlocks.TWILIGHT_OAK_LOG.asItem()));
 		event.register(TFBlocks.CICADA_JAR.get(), new MasonJarSpecialRenderer.Unbaked(TFBlocks.CANOPY_LOG.asItem()));

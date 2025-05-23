@@ -41,7 +41,7 @@ public class TFBlockEntities {
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<GrowingBeanstalkBlockEntity>> BEANSTALK_GROWER = BLOCK_ENTITIES.register("beanstalk_grower", () -> new BlockEntityType<>(GrowingBeanstalkBlockEntity::new, TFBlocks.BEANSTALK_GROWER.get()));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RedThreadBlockEntity>> RED_THREAD = BLOCK_ENTITIES.register("red_thread", () -> new BlockEntityType<>(RedThreadBlockEntity::new, TFBlocks.RED_THREAD.get()));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CandelabraBlockEntity>> CANDELABRA = BLOCK_ENTITIES.register("candelabra", () -> new BlockEntityType<>(CandelabraBlockEntity::new, TFBlocks.CANDELABRA.get()));
-	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<JarBlockEntity>> JAR = BLOCK_ENTITIES.register("jar", () -> new BlockEntityType<>(JarBlockEntity::new, TFBlocks.FIREFLY_JAR.get(), TFBlocks.CICADA_JAR.get()));
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<JarBlockEntity>> JAR = BLOCK_ENTITIES.register("jar", () -> new BlockEntityType<>(JarBlockEntity::new, TFBlocks.FIREFLY_JAR.get(), TFBlocks.CICADA_JAR.get(), TFBlocks.WEBWORM_JAR.get()));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MasonJarBlockEntity>> MASON_JAR = BLOCK_ENTITIES.register("mason_jar", () -> new BlockEntityType<>(MasonJarBlockEntity::new, TFBlocks.MASON_JAR.get()));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SinisterSpawnerBlockEntity>> SINISTER_SPAWNER = BLOCK_ENTITIES.register("sinister_spawner", () -> new BlockEntityType<>(SinisterSpawnerBlockEntity::new, TFBlocks.SINISTER_SPAWNER.get()));
 

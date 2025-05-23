@@ -24,7 +24,7 @@ public class WoodPaletteTagGenerator extends TagsProvider<WoodPalette> {
 
 		tag(TFWoodPaletteTags.COMMON_PALETTES).add(WoodPalettes.SPRUCE, WoodPalettes.CANOPY);
 		tag(TFWoodPaletteTags.UNCOMMON_PALETTES).add(WoodPalettes.OAK, WoodPalettes.DARKWOOD, WoodPalettes.TWILIGHT_OAK);
-		tag(TFWoodPaletteTags.RARE_PALETTES).add(WoodPalettes.BIRCH, WoodPalettes.JUNGLE, WoodPalettes.MANGROVE);
+		tag(TFWoodPaletteTags.RARE_PALETTES).add(WoodPalettes.BIRCH, WoodPalettes.JUNGLE, WoodPalettes.MANGROVE, WoodPalettes.VEILWOOD);
 		tag(TFWoodPaletteTags.TREASURE_PALETTES).add(WoodPalettes.TIMEWOOD, WoodPalettes.TRANSWOOD, WoodPalettes.MINEWOOD, WoodPalettes.SORTWOOD);
 	}
 

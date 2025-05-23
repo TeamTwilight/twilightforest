@@ -274,6 +274,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.generateSpecialModel(TFBlocks.CICADA.get(), Blocks.SLIME_BLOCK, block -> ItemModelUtils.specialModel(TwilightForestMod.prefix("item/cicada"), new CicadaSpecialRenderer.Unbaked()));
 		this.generateSpecialModel(TFBlocks.FIREFLY.get(), Blocks.SLIME_BLOCK, block -> ItemModelUtils.specialModel(TwilightForestMod.prefix("item/firefly"), new FireflySpecialRenderer.Unbaked()));
 		this.generateSpecialModel(TFBlocks.MOONWORM.get(), Blocks.SLIME_BLOCK, block -> ItemModelUtils.specialModel(TwilightForestMod.prefix("item/moonworm"), new MoonwormSpecialRenderer.Unbaked()));
+		this.generateSpecialModel(TFBlocks.WEBWORM.get(), Blocks.SLIME_BLOCK, block -> ItemModelUtils.specialModel(TwilightForestMod.prefix("item/webworm"), new WebwormSpecialRenderer.Unbaked()));
 
 		this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(TFBlocks.CANDELABRA.get())
 			.with(PropertyDispatch.property(CandelabraBlock.ON_WALL)
@@ -539,7 +540,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.generateFenceGate(TFBlocks.VEILWOOD_GATE.get(), veilwood);
 		this.generatePressurePlate(TFBlocks.VEILWOOD_PLATE.get(), veilwood);
 		this.generateTrapdoor(TFBlocks.VEILWOOD_TRAPDOOR.get(), true, "cutout");
-		this.generateDoor(TFBlocks.VEILWOOD_DOOR.get(), true, "cutout");
+		this.generateDoor(TFBlocks.VEILWOOD_DOOR.get(), false, "cutout");
 		this.generateSign(TFBlocks.VEILWOOD_SIGN.get(), TFBlocks.VEILWOOD_WALL_SIGN.get(), veilwood);
 		this.generateHangingSign(TFBlocks.VEILWOOD_HANGING_SIGN.get(), TFBlocks.VEILWOOD_WALL_HANGING_SIGN.get(), TFBlocks.STRIPPED_VEILWOOD_LOG.get());
 		this.generateBanister(TFBlocks.VEILWOOD_BANISTER.get(), veilwood);
