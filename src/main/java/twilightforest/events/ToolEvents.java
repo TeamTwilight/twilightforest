@@ -36,7 +36,6 @@ import net.neoforged.neoforge.event.level.BlockEvent;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.tags.TFBlockTags;
-import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFBiomes;
 import twilightforest.init.TFItems;
 import twilightforest.item.EnderBowItem;

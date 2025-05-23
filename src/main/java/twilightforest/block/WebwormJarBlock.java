@@ -1,6 +1,7 @@
 package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -25,10 +26,12 @@ public class WebwormJarBlock extends JarBlock {
 		if (player.isShiftKeyDown()) {
 			ItemEntity webworm = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(TFBlocks.WEBWORM));
 			level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
-			webworm.spawnAtLocation(webworm.getItem());
-			webworm.spawnAtLocation(TFItems.MASON_JAR.get());
+			if (level instanceof ServerLevel serverLevel) {
+				webworm.spawnAtLocation(serverLevel, webworm.getItem());
+				webworm.spawnAtLocation(serverLevel, TFItems.MASON_JAR.get());
+			}
 			level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
-			return InteractionResult.sidedSuccess(level.isClientSide());
+			return InteractionResult.SUCCESS;
 		}
 		return super.useWithoutItem(state, level, pos, player, result);
 	}

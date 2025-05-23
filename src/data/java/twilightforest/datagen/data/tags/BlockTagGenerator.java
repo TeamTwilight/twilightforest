@@ -690,12 +690,11 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 		this.tag(BlockTags.SWORD_EFFICIENT)
 			.add(TFBlocks.HUGE_LILY_PAD.get());
 
-		this.tag(WEBS_GENERATE_HANGING_FROM)
+		this.tag(TFBlockTags.WEBS_GENERATE_HANGING_FROM)
 			.addTags(BlockTags.LOGS, BlockTags.LEAVES);
 
-		this.tag(WEBS_GENERATE_ON_TOP_OF)
+		this.tag(TFBlockTags.WEBS_GENERATE_ON_TOP_OF)
 			.add(TFBlocks.HEDGE.get());
-	}
 
 		this.tag(Tags.Blocks.BOOKSHELVES)
 			.add(TFBlocks.CANOPY_BOOKSHELF.get());

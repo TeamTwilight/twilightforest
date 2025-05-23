@@ -30,7 +30,7 @@ public class WebwormModel extends Model {
 	private final ModelPart shape4;
 
 	public WebwormModel(ModelPart root) {
-		super(RenderType::entityTranslucent);
+		super(root, RenderType::entityTranslucent);
 
 		this.head = root.getChild("head");
 		this.shape1 = root.getChild("shape1");

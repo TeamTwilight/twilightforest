@@ -5,6 +5,8 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -18,22 +20,6 @@ import twilightforest.tags.TFItemTags;
 import java.util.concurrent.CompletableFuture;
 
 public class ItemTagGenerator extends ModdedItemTagGenerator {
-	public static final TagKey<Item> TWILIGHT_OAK_LOGS = create("twilight_oak_logs");
-	public static final TagKey<Item> CANOPY_LOGS = create("canopy_logs");
-	public static final TagKey<Item> MANGROVE_LOGS = create("mangrove_logs");
-	public static final TagKey<Item> DARKWOOD_LOGS = create("darkwood_logs");
-	public static final TagKey<Item> TIME_LOGS = create("timewood_logs");
-	public static final TagKey<Item> TRANSFORMATION_LOGS = create("transwood_logs");
-	public static final TagKey<Item> MINING_LOGS = create("mining_logs");
-	public static final TagKey<Item> SORTING_LOGS = create("sortwood_logs");
-	public static final TagKey<Item> VEILWOOD_LOGS = create("veilwood_logs");
-	public static final TagKey<Item> TWILIGHT_LOGS = create("logs");
-
-	public static final TagKey<Item> BANISTERS = create("banisters");
-
-	public static final TagKey<Item> PAPER = makeCommonTag("paper");
-
-	public static final TagKey<Item> TOWERWOOD = create("towerwood");
 
 	public ItemTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> future, CompletableFuture<TagsProvider.TagLookup<Block>> provider) {
 		super(output, future, provider);
@@ -51,14 +37,14 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 		this.copy(TFBlockTags.TRANSFORMATION_LOGS, TFItemTags.TRANSFORMATION_LOGS);
 		this.copy(TFBlockTags.MINING_LOGS, TFItemTags.MINING_LOGS);
 		this.copy(TFBlockTags.SORTING_LOGS, TFItemTags.SORTING_LOGS);
-		this.copy(BlockTagGenerator.VEILWOOD_LOGS, VEILWOOD_LOGS);
+		this.copy(TFBlockTags.VEILWOOD_LOGS, TFItemTags.VEILWOOD_LOGS);
 
 		this.copy(TFBlockTags.TF_LOGS, TFItemTags.TWILIGHT_LOGS);
 		this.tag(ItemTags.LOGS).addTag(TFItemTags.TWILIGHT_LOGS);
 		this.tag(ItemTags.LOGS_THAT_BURN)
 			.addTag(TFItemTags.TWILIGHT_OAK_LOGS).addTag(TFItemTags.CANOPY_LOGS).addTag(TFItemTags.MANGROVE_LOGS)
 			.addTag(TFItemTags.TIME_LOGS).addTag(TFItemTags.TRANSFORMATION_LOGS).addTag(TFItemTags.MINING_LOGS)
-			.addTag(TFItemTags.SORTING_LOGS).addTag(VEILWOOD_LOGS);
+			.addTag(TFItemTags.SORTING_LOGS).addTag(TFItemTags.VEILWOOD_LOGS);
 
 		this.copy(BlockTags.SAPLINGS, ItemTags.SAPLINGS);
 		this.copy(BlockTags.LEAVES, ItemTags.LEAVES);

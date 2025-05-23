@@ -13,9 +13,9 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import twilightforest.block.HangingWebBlock;
 import twilightforest.block.WebwormBlock;
-import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.enums.WebShape;
 import twilightforest.init.TFBlocks;
+import twilightforest.tags.TFBlockTags;
 
 public class WebFeature extends Feature<NoneFeatureConfiguration> {
 
@@ -25,8 +25,8 @@ public class WebFeature extends Feature<NoneFeatureConfiguration> {
 
 	private static boolean isValid(WorldGenLevel level, BlockPos pos, RandomSource random) {
 		BlockState state = level.getBlockState(pos);
-		if (state.is(BlockTagGenerator.WEBS_GENERATE_ON_TOP_OF)) return true;
-		return state.is(BlockTagGenerator.WEBS_GENERATE_HANGING_FROM) && (level.isEmptyBlock(pos.below()) || (level.isEmptyBlock(pos.below(2)) && random.nextFloat() <= 0.25F));
+		if (state.is(TFBlockTags.WEBS_GENERATE_ON_TOP_OF)) return true;
+		return state.is(TFBlockTags.WEBS_GENERATE_HANGING_FROM) && (level.isEmptyBlock(pos.below()) || (level.isEmptyBlock(pos.below(2)) && random.nextFloat() <= 0.25F));
 	}
 
 	private static boolean placeAndUpdate(WorldGenLevel level, BlockPos pos, Direction direction, RandomSource random, boolean canBeWorm) {

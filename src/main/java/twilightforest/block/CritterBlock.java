@@ -50,12 +50,12 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 
 	public static final EnumProperty<Direction> FACING = DirectionalBlock.FACING;
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-	private final VoxelShape DOWN_BB = Shapes.create(new AABB(0.2F, 0.85F, 0.2F, 0.8F, 1.0F, 0.8F));
-	private final VoxelShape UP_BB = Shapes.create(new AABB(0.2F, 0.0F, 0.2F, 0.8F, 0.15F, 0.8F));
-	private final VoxelShape NORTH_BB = Shapes.create(new AABB(0.2F, 0.2F, 0.85F, 0.8F, 0.8F, 1.0F));
-	private final VoxelShape SOUTH_BB = Shapes.create(new AABB(0.2F, 0.2F, 0.0F, 0.8F, 0.8F, 0.15F));
-	private final VoxelShape WEST_BB = Shapes.create(new AABB(0.85F, 0.2F, 0.2F, 1.0F, 0.8F, 0.8F));
-	private final VoxelShape EAST_BB = Shapes.create(new AABB(0.0F, 0.2F, 0.2F, 0.15F, 0.8F, 0.8F));
+	protected final VoxelShape DOWN_BB = Shapes.create(new AABB(0.2F, 0.85F, 0.2F, 0.8F, 1.0F, 0.8F));
+	protected final VoxelShape UP_BB = Shapes.create(new AABB(0.2F, 0.0F, 0.2F, 0.8F, 0.15F, 0.8F));
+	protected final VoxelShape NORTH_BB = Shapes.create(new AABB(0.2F, 0.2F, 0.85F, 0.8F, 0.8F, 1.0F));
+	protected final VoxelShape SOUTH_BB = Shapes.create(new AABB(0.2F, 0.2F, 0.0F, 0.8F, 0.8F, 0.15F));
+	protected final VoxelShape WEST_BB = Shapes.create(new AABB(0.85F, 0.2F, 0.2F, 1.0F, 0.8F, 0.8F));
+	protected final VoxelShape EAST_BB = Shapes.create(new AABB(0.0F, 0.2F, 0.2F, 0.15F, 0.8F, 0.8F));
 
 	protected CritterBlock(Properties properties) {
 		super(properties);
@@ -75,11 +75,11 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 		return switch (state.getValue(FACING)) {
 			case DOWN -> DOWN_BB;
-			default -> UP_BB;
 			case NORTH -> NORTH_BB;
 			case SOUTH -> SOUTH_BB;
 			case WEST -> WEST_BB;
 			case EAST -> EAST_BB;
+			default -> UP_BB;
 		};
 	}
 
@@ -102,11 +102,11 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 	}
 
 	@Override
-	public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor accessor, BlockPos pos, BlockPos neighborPos) {
-		if (state.getValue(FACING).getOpposite() == direction && !state.canSurvive(accessor, pos)) {
+	protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess scheduledTickAccess, BlockPos pos, Direction direction, BlockPos neighborPos, BlockState neighborState, RandomSource random) {
+		if (state.getValue(FACING).getOpposite() == direction && !state.canSurvive(level, pos)) {
 			return Blocks.AIR.defaultBlockState();
 		} else {
-			return super.updateShape(state, reader, access, pos, direction, facingPos, facingState, random);
+			return super.updateShape(state, level, scheduledTickAccess, pos, direction, neighborPos, neighborState, random);
 		}
 	}
 
@@ -130,11 +130,11 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 				return this.onJarAttempt(stack, state, level, pos, player, hand, result);
 			}
 		}
-		return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+		return InteractionResult.PASS;
 	}
 
-	protected ItemInteractionResult onJarAttempt(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
-		return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+	protected InteractionResult onJarAttempt(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
+		return InteractionResult.PASS;
 	}
 
 	@Override
@@ -206,11 +206,11 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 		}
 
 		@Override
-		public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor accessor, BlockPos pos, BlockPos neighborPos) {
+		protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess scheduledTickAccess, BlockPos pos, Direction direction, BlockPos neighborPos, BlockState neighborState, RandomSource random) {
 			if (state.getValue(WATERLOGGED)) {
-				accessor.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(accessor));
+				scheduledTickAccess.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
 			}
-			return super.updateShape(state, direction, neighborState, accessor, pos, neighborPos);
+			return super.updateShape(state, level, scheduledTickAccess, pos, direction, neighborPos, neighborState, random);
 		}
 
 		@Override

@@ -17,6 +17,7 @@ public class TFItemTags {
 	public static final TagKey<Item> MINING_LOGS = create("mining_logs");
 	public static final TagKey<Item> SORTING_LOGS = create("sortwood_logs");
 	public static final TagKey<Item> TWILIGHT_LOGS = create("logs");
+	public static final TagKey<Item> VEILWOOD_LOGS = create("veilwood_logs");
 
 	public static final TagKey<Item> BANISTERS = create("banisters");
 

@@ -6,7 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -52,12 +52,12 @@ public class CicadaBlock extends CritterBlock.WaterLoggable {
 	}
 
 	@Override
-	protected ItemInteractionResult onJarAttempt(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
+	protected InteractionResult onJarAttempt(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
 		stack.consume(1, player);
 		player.getInventory().add(new ItemStack(TFBlocks.CICADA_JAR.get()));
-		if (level.isClientSide()) Minecraft.getInstance().getSoundManager().stop(TFSounds.CICADA.get().getLocation(), SoundSource.NEUTRAL);
+		if (level.isClientSide()) Minecraft.getInstance().getSoundManager().stop(TFSounds.CICADA.get().location(), SoundSource.NEUTRAL);
 		level.setBlockAndUpdate(pos, state.getFluidState().createLegacyBlock());
-		return ItemInteractionResult.sidedSuccess(level.isClientSide());
+		return InteractionResult.SUCCESS;
 	}
 
 	@Override

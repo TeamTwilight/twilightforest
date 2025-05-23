@@ -33,6 +33,7 @@ public class TFBlockEntities {
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CicadaBlockEntity>> CICADA = BLOCK_ENTITIES.register("cicada", () -> new BlockEntityType<>(CicadaBlockEntity::new, TFBlocks.CICADA.get()));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FireflyBlockEntity>> FIREFLY = BLOCK_ENTITIES.register("firefly", () -> new BlockEntityType<>(FireflyBlockEntity::new, TFBlocks.FIREFLY.get()));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MoonwormBlockEntity>> MOONWORM = BLOCK_ENTITIES.register("moonworm", () -> new BlockEntityType<>(MoonwormBlockEntity::new, TFBlocks.MOONWORM.get()));
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<WebwormBlockEntity>> WEBWORM = BLOCK_ENTITIES.register("webworm", () -> new BlockEntityType<>(WebwormBlockEntity::new, TFBlocks.WEBWORM.get()));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SkullChestBlockEntity>> SKULL_CHEST = BLOCK_ENTITIES.register("skull_chest", () -> new BlockEntityType<>(SkullChestBlockEntity::new, TFBlocks.SKULL_CHEST.get()));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<KeepsakeCasketBlockEntity>> KEEPSAKE_CASKET = BLOCK_ENTITIES.register("keepsake_casket", () -> new BlockEntityType<>(KeepsakeCasketBlockEntity::new, TFBlocks.KEEPSAKE_CASKET.get()));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BrazierBlockEntity>> BRAZIER = BLOCK_ENTITIES.register("brazier", () -> new BlockEntityType<>(BrazierBlockEntity::new, TFBlocks.BRAZIER.get()));
@@ -50,8 +51,6 @@ public class TFBlockEntities {
 		TFBlocks.SNOW_QUEEN_TROPHY.get(), TFBlocks.QUEST_RAM_TROPHY.get(), TFBlocks.NAGA_WALL_TROPHY.get(), TFBlocks.LICH_WALL_TROPHY.get(),
 		TFBlocks.MINOSHROOM_WALL_TROPHY.get(), TFBlocks.HYDRA_WALL_TROPHY.get(), TFBlocks.KNIGHT_PHANTOM_WALL_TROPHY.get(), TFBlocks.UR_GHAST_WALL_TROPHY.get(),
 		TFBlocks.ALPHA_YETI_WALL_TROPHY.get(), TFBlocks.SNOW_QUEEN_WALL_TROPHY.get(), TFBlocks.QUEST_RAM_WALL_TROPHY.get()));
-	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<WebwormBlockEntity>> WEBWORM = BLOCK_ENTITIES.register("webworm", () ->
-		BlockEntityType.Builder.of(WebwormBlockEntity::new, TFBlocks.WEBWORM.get()).build(null));
 
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TFChestBlockEntity>> TF_CHEST = BLOCK_ENTITIES.register("tf_chest", () -> new BlockEntityType<>(TFChestBlockEntity::new,
 		TFBlocks.TWILIGHT_OAK_CHEST.get(), TFBlocks.CANOPY_CHEST.get(), TFBlocks.MANGROVE_CHEST.get(),

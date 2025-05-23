@@ -23,6 +23,7 @@ public class TFBlockTags {
 	public static final TagKey<Block> TRANSFORMATION_LOGS = create("transwood_logs");
 	public static final TagKey<Block> MINING_LOGS = create("mining_logs");
 	public static final TagKey<Block> SORTING_LOGS = create("sortwood_logs");
+	public static final TagKey<Block> VEILWOOD_LOGS = create("veilwood_logs");
 
 	public static final TagKey<Block> HOLLOW_LOGS = create("hollow_logs");
 	public static final TagKey<Block> HOLLOW_LOGS_HORIZONTAL = create("hollow_logs_horizontal");
@@ -91,6 +92,8 @@ public class TFBlockTags {
 	public static final TagKey<Block> BLOCK_AND_CHAIN_NEVER_BREAKS = create("block_and_chain_never_breaks");
 
 	public static final TagKey<Block> SMALL_LAKES_DONT_REPLACE = create("small_lakes_dont_replace");
+	public static final TagKey<Block> WEBS_GENERATE_HANGING_FROM = create("webs_generate_hanging_from");
+	public static final TagKey<Block> WEBS_GENERATE_ON_TOP_OF = create("webs_generate_on_top_of");
 
 	public static final TagKey<Block> AC_FERROMAGNETIC_BLOCKS = create("alexscaves", "ferromagnetic_blocks");
 	public static final TagKey<Block> AC_GLOOMOTH_LIGHT_SOURCES = create("alexscaves", "gloomoth_light_sources");

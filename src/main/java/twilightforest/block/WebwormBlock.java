@@ -13,7 +13,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -43,9 +43,9 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import twilightforest.block.entity.WebwormBlockEntity;
-import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.init.*;
 import twilightforest.loot.TFLootTables;
+import twilightforest.tags.TFEntityTypeTags;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,10 +65,10 @@ public class WebwormBlock extends CritterBlock {
 
 	public WebwormBlock(Properties properties) {
 		super(properties);
-		this.shapesCache = ImmutableMap.copyOf(this.stateDefinition.getPossibleStates().stream().collect(Collectors.toMap(Function.identity(), WebwormBlock::calculateShape)));
+		this.shapesCache = ImmutableMap.copyOf(this.stateDefinition.getPossibleStates().stream().collect(Collectors.toMap(Function.identity(), this::calculateShape)));
 	}
 
-	private static VoxelShape calculateShape(BlockState state) {
+	private VoxelShape calculateShape(BlockState state) {
 		VoxelShape voxelshape = Shapes.empty();
 		if (state.getValue(UP)) {
 			voxelshape = HangingWebBlock.UP_AABB;
@@ -91,12 +91,12 @@ public class WebwormBlock extends CritterBlock {
 		}
 
 		switch (state.getValue(FACING)) {
-			case DOWN -> voxelshape = Shapes.or(voxelshape, CritterBlock.DOWN_BB);
-			default -> voxelshape = Shapes.or(voxelshape, CritterBlock.UP_BB);
-			case NORTH -> voxelshape = Shapes.or(voxelshape, CritterBlock.NORTH_BB);
-			case SOUTH -> voxelshape = Shapes.or(voxelshape, CritterBlock.SOUTH_BB);
-			case WEST -> voxelshape = Shapes.or(voxelshape, CritterBlock.WEST_BB);
-			case EAST -> voxelshape = Shapes.or(voxelshape, CritterBlock.EAST_BB);
+			case DOWN -> voxelshape = Shapes.or(voxelshape, this.DOWN_BB);
+			case NORTH -> voxelshape = Shapes.or(voxelshape, this.NORTH_BB);
+			case SOUTH -> voxelshape = Shapes.or(voxelshape, this.SOUTH_BB);
+			case WEST -> voxelshape = Shapes.or(voxelshape, this.WEST_BB);
+			case EAST -> voxelshape = Shapes.or(voxelshape, this.EAST_BB);
+			default -> voxelshape = Shapes.or(voxelshape, this.UP_BB);
 		};
 
 		return voxelshape.isEmpty() ? Shapes.block() : voxelshape;
@@ -179,7 +179,7 @@ public class WebwormBlock extends CritterBlock {
 
 	@Override
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-		if ((entity instanceof Projectile && !entity.getType().is(EntityTagGenerator.DONT_KILL_BUGS)) || entity instanceof FallingBlockEntity) {
+		if ((entity instanceof Projectile && !entity.getType().is(TFEntityTypeTags.DONT_KILL_BUGS)) || entity instanceof FallingBlockEntity) {
 			BlockState web = TFBlocks.HANGING_WEB.get().defaultBlockState();
 			boolean any = false;
 			for (Direction direction : Direction.values()) {
@@ -203,7 +203,7 @@ public class WebwormBlock extends CritterBlock {
 
 			for (int i = 0; i < 50; i++) {
 				boolean wallBug = state.getValue(FACING).getAxis() != Direction.Axis.Y;
-				level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.SLIME_BLOCK.defaultBlockState()), true,
+				level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.SLIME_BLOCK.defaultBlockState()),
 					pos.getX() + Mth.nextFloat(level.getRandom(), 0.25F, 0.75F),
 					pos.getY() + (wallBug ? 0.5F : 0.0F),
 					pos.getZ() + Mth.nextFloat(level.getRandom(), 0.25F, 0.75F),
@@ -279,11 +279,11 @@ public class WebwormBlock extends CritterBlock {
 	}
 
 	@Override
-	protected ItemInteractionResult onJarAttempt(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
+	protected InteractionResult onJarAttempt(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
 		stack.consume(1, player);
 		player.getInventory().add(new ItemStack(TFBlocks.WEBWORM_JAR.get()));
 		level.setBlockAndUpdate(pos, state.getFluidState().createLegacyBlock());
-		return ItemInteractionResult.sidedSuccess(level.isClientSide());
+		return InteractionResult.SUCCESS;
 	}
 
 	@Override

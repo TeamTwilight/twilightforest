@@ -222,8 +222,8 @@ public class TFItems {
 	public static final DeferredItem<Item> MINING_HANGING_SIGN = register("mining_hanging_sign", properties -> new HangingSignItem(TFBlocks.MINING_HANGING_SIGN.get(), TFBlocks.MINING_WALL_HANGING_SIGN.get(), properties), () -> new Item.Properties().useBlockDescriptionPrefix().stacksTo(16));
 	public static final DeferredItem<Item> SORTING_SIGN = register("sorting_sign", properties -> new SignItem(TFBlocks.SORTING_SIGN.get(), TFBlocks.SORTING_WALL_SIGN.get(), properties), () -> new Item.Properties().useBlockDescriptionPrefix().stacksTo(16));
 	public static final DeferredItem<Item> SORTING_HANGING_SIGN = register("sorting_hanging_sign", properties -> new HangingSignItem(TFBlocks.SORTING_HANGING_SIGN.get(), TFBlocks.SORTING_WALL_HANGING_SIGN.get(), properties), () -> new Item.Properties().useBlockDescriptionPrefix().stacksTo(16));
-	public static final DeferredItem<Item> VEILWOOD_SIGN = ITEMS.register("veilwood_sign", () -> new SignItem(new Item.Properties().stacksTo(16), TFBlocks.VEILWOOD_SIGN.get(), TFBlocks.VEILWOOD_WALL_SIGN.get()));
-	public static final DeferredItem<Item> VEILWOOD_HANGING_SIGN = ITEMS.register("veilwood_hanging_sign", () -> new HangingSignItem(TFBlocks.VEILWOOD_HANGING_SIGN.get(), TFBlocks.VEILWOOD_WALL_HANGING_SIGN.get(), new Item.Properties().stacksTo(16)));
+	public static final DeferredItem<Item> VEILWOOD_SIGN = register("veilwood_sign", properties -> new SignItem(TFBlocks.VEILWOOD_SIGN.get(), TFBlocks.VEILWOOD_WALL_SIGN.get(), properties), () -> new Item.Properties().useBlockDescriptionPrefix().stacksTo(16));
+	public static final DeferredItem<Item> VEILWOOD_HANGING_SIGN = register("veilwood_hanging_sign", properties -> new HangingSignItem(TFBlocks.VEILWOOD_HANGING_SIGN.get(), TFBlocks.VEILWOOD_WALL_HANGING_SIGN.get(), properties), () -> new Item.Properties().useBlockDescriptionPrefix().stacksTo(16));
 
 	public static final DeferredItem<Item> TWILIGHT_OAK_BOAT = register("twilight_oak_boat", properties -> new BoatItem(TFEntities.TWILIGHT_OAK_BOAT.get(), properties), () -> new Item.Properties().stacksTo(1));
 	public static final DeferredItem<Item> TWILIGHT_OAK_CHEST_BOAT = register("twilight_oak_chest_boat", properties -> new BoatItem(TFEntities.TWILIGHT_OAK_CHEST_BOAT.get(), properties), () -> new Item.Properties().stacksTo(1));
@@ -241,8 +241,8 @@ public class TFItems {
 	public static final DeferredItem<Item> MINING_CHEST_BOAT = register("mining_chest_boat", properties -> new BoatItem(TFEntities.MINING_CHEST_BOAT.get(), properties), () -> new Item.Properties().stacksTo(1));
 	public static final DeferredItem<Item> SORTING_BOAT = register("sorting_boat", properties -> new BoatItem(TFEntities.SORTING_BOAT.get(), properties), () -> new Item.Properties().stacksTo(1));
 	public static final DeferredItem<Item> SORTING_CHEST_BOAT = register("sorting_chest_boat", properties -> new BoatItem(TFEntities.SORTING_CHEST_BOAT.get(), properties), () -> new Item.Properties().stacksTo(1));
-	public static final DeferredItem<Item> VEILWOOD_BOAT = ITEMS.register("veilwood_boat", () -> new BoatItem(false, boatTypeEnumExtension.VEILWOOD.get(), new Item.Properties().stacksTo(1)));
-	public static final DeferredItem<Item> VEILWOOD_CHEST_BOAT = ITEMS.register("veilwood_chest_boat", () -> new BoatItem(true, boatTypeEnumExtension.VEILWOOD.get(), new Item.Properties().stacksTo(1)));
+	public static final DeferredItem<Item> VEILWOOD_BOAT = register("veilwood_boat", properties -> new BoatItem(TFEntities.VEILWOOD_BOAT.get(), properties), () -> new Item.Properties().stacksTo(1));
+	public static final DeferredItem<Item> VEILWOOD_CHEST_BOAT = register("veilwood_chest_boat", properties -> new BoatItem(TFEntities.VEILWOOD_CHEST_BOAT.get(), properties), () -> new Item.Properties().stacksTo(1));
 
 	public static final DeferredItem<Item> MUSIC_DISC_RADIANCE = register("music_disc_radiance", Item::new, () -> new Item.Properties().stacksTo(1).rarity(Rarity.RARE).jukeboxPlayable(TFJukeboxSongs.RADIANCE));
 	public static final DeferredItem<Item> MUSIC_DISC_STEPS = register("music_disc_steps", Item::new, () -> new Item.Properties().stacksTo(1).rarity(Rarity.RARE).jukeboxPlayable(TFJukeboxSongs.STEPS));

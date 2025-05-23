@@ -1041,7 +1041,7 @@ public class LangGenerator extends TFLangProvider {
 		this.translateTag(TFItemTags.REPAIRS_KNIGHTMETAL_TOOLS, "Repairs Knightmetal Tools");
 		this.translateTag(TFItemTags.REPAIRS_STEELEAF_TOOLS, "Repairs Steeleaf Tools");
 		this.translateTag(TFItemTags.SORTING_LOGS, "Sortingwood Logs");
-		this.translateTag(ItemTagGenerator.VEILWOOD_LOGS, "Dead Logs");
+		this.translateTag(TFItemTags.VEILWOOD_LOGS, "Veilwood Logs");
 		this.translateTag(TFItemTags.TIME_LOGS, "Timewood Logs");
 		this.translateTag(TFItemTags.TOWERWOOD, "Towerwood Blocks");
 		this.translateTag(TFItemTags.TRANSFORMATION_LOGS, "Transformation Logs");

@@ -4,15 +4,13 @@ import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Spider;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -118,7 +116,7 @@ public class HangingWebBlock extends Block implements IShearable {
 	}
 
 	@Override
-	protected boolean propagatesSkylightDown(BlockState state, BlockGetter level, BlockPos pos) {
+	protected boolean propagatesSkylightDown(BlockState state) {
 		return true;
 	}
 
@@ -207,8 +205,8 @@ public class HangingWebBlock extends Block implements IShearable {
 	}
 
 	@Override
-	protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
-		BlockState blockstate = this.getUpdatedState(state, level, currentPos);
+	protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess scheduledTickAccess, BlockPos pos, Direction direction, BlockPos neighborPos, BlockState neighborState, RandomSource random) {
+		BlockState blockstate = this.getUpdatedState(state, level, pos);
 		return !this.hasFaces(blockstate) ? Blocks.AIR.defaultBlockState() : blockstate;
 	}
 
@@ -260,7 +258,6 @@ public class HangingWebBlock extends Block implements IShearable {
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
 	protected BlockState rotate(BlockState state, Rotation rotate) {
 		return switch (rotate) {
 			case CLOCKWISE_180 ->
@@ -274,7 +271,6 @@ public class HangingWebBlock extends Block implements IShearable {
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
 	protected BlockState mirror(BlockState state, Mirror mirror) {
 		return switch (mirror) {
 			case LEFT_RIGHT -> state.setValue(NORTH, state.getValue(SOUTH)).setValue(SOUTH, state.getValue(NORTH));
