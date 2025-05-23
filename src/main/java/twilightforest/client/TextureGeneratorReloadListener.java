@@ -25,7 +25,7 @@ public class TextureGeneratorReloadListener implements ResourceManagerReloadList
 	public static final TextureGeneratorReloadListener INSTANCE = new TextureGeneratorReloadListener();
 	private static final Map<String, ReloadableTexture> BOAT_CACHE = new HashMap<>();
 	private static final AtomicReference<NativeImage> ref = new AtomicReference<>();
-	private static final List<String> TF_BOATS = List.of("twilight_oak", "canopy", "mangrove", "dark", "time", "transformation", "mining", "sorting");
+	private static final List<String> TF_BOATS = List.of("twilight_oak", "canopy", "mangrove", "dark", "time", "transformation", "mining", "sorting", "veilwood");
 
 	@Override
 	public void onResourceManagerReload(ResourceManager manager) {

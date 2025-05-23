@@ -291,6 +291,7 @@ public class RegistrationEvents {
 		event.registerEntityRenderer(TFEntities.TRANSFORMATION_BOAT.get(), context -> new BoatRenderer(context, TFModelLayers.TRANSFORMATION_BOAT));
 		event.registerEntityRenderer(TFEntities.MINING_BOAT.get(), context -> new BoatRenderer(context, TFModelLayers.MINING_BOAT));
 		event.registerEntityRenderer(TFEntities.SORTING_BOAT.get(), context -> new BoatRenderer(context, TFModelLayers.SORTING_BOAT));
+		event.registerEntityRenderer(TFEntities.VEILWOOD_BOAT.get(), context -> new BoatRenderer(context, TFModelLayers.VEILWOOD_BOAT));
 		event.registerEntityRenderer(TFEntities.TWILIGHT_OAK_CHEST_BOAT.get(), context -> new BoatRenderer(context, TFModelLayers.TWILIGHT_OAK_CHEST_BOAT));
 		event.registerEntityRenderer(TFEntities.CANOPY_CHEST_BOAT.get(), context -> new BoatRenderer(context, TFModelLayers.CANOPY_CHEST_BOAT));
 		event.registerEntityRenderer(TFEntities.MANGROVE_CHEST_BOAT.get(), context -> new BoatRenderer(context, TFModelLayers.MANGROVE_CHEST_BOAT));
@@ -299,6 +300,7 @@ public class RegistrationEvents {
 		event.registerEntityRenderer(TFEntities.TRANSFORMATION_CHEST_BOAT.get(), context -> new BoatRenderer(context, TFModelLayers.TRANSFORMATION_CHEST_BOAT));
 		event.registerEntityRenderer(TFEntities.MINING_CHEST_BOAT.get(), context -> new BoatRenderer(context, TFModelLayers.MINING_CHEST_BOAT));
 		event.registerEntityRenderer(TFEntities.SORTING_CHEST_BOAT.get(), context -> new BoatRenderer(context, TFModelLayers.SORTING_CHEST_BOAT));
+		event.registerEntityRenderer(TFEntities.VEILWOOD_CHEST_BOAT.get(), context -> new BoatRenderer(context, TFModelLayers.VEILWOOD_CHEST_BOAT));
 
 
 		// Block Entities
@@ -453,6 +455,7 @@ public class RegistrationEvents {
 		event.registerLayerDefinition(TFModelLayers.TRANSFORMATION_BOAT, boatModel);
 		event.registerLayerDefinition(TFModelLayers.MINING_BOAT, boatModel);
 		event.registerLayerDefinition(TFModelLayers.SORTING_BOAT, boatModel);
+		event.registerLayerDefinition(TFModelLayers.VEILWOOD_BOAT, boatModel);
 
 		event.registerLayerDefinition(TFModelLayers.TWILIGHT_OAK_CHEST_BOAT, chestBoatModel);
 		event.registerLayerDefinition(TFModelLayers.CANOPY_CHEST_BOAT, chestBoatModel);
@@ -462,6 +465,7 @@ public class RegistrationEvents {
 		event.registerLayerDefinition(TFModelLayers.TRANSFORMATION_CHEST_BOAT, chestBoatModel);
 		event.registerLayerDefinition(TFModelLayers.MINING_CHEST_BOAT, chestBoatModel);
 		event.registerLayerDefinition(TFModelLayers.SORTING_CHEST_BOAT, chestBoatModel);
+		event.registerLayerDefinition(TFModelLayers.VEILWOOD_CHEST_BOAT, chestBoatModel);
 	}
 
 	private static void registerSpecialModelTypes(RegisterSpecialModelRendererEvent event) {

@@ -144,6 +144,7 @@ public class ItemModelGenerator extends ItemModelBuilders {
 		this.generateFlatItem(TFItems.TRANSFORMATION_BOAT.get(), ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.MINING_BOAT.get(), ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.SORTING_BOAT.get(), ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.VEILWOOD_BOAT.get(), ModelTemplates.FLAT_ITEM);
 
 		this.generateChestBoat(TFItems.TWILIGHT_OAK_CHEST_BOAT.get());
 		this.generateChestBoat(TFItems.CANOPY_CHEST_BOAT.get());
@@ -153,6 +154,7 @@ public class ItemModelGenerator extends ItemModelBuilders {
 		this.generateChestBoat(TFItems.TRANSFORMATION_CHEST_BOAT.get());
 		this.generateChestBoat(TFItems.MINING_CHEST_BOAT.get());
 		this.generateChestBoat(TFItems.SORTING_CHEST_BOAT.get());
+		this.generateChestBoat(TFItems.VEILWOOD_CHEST_BOAT.get());
 
 		this.generateExpandedTrimmableItem(TFItems.IRONWOOD_HELMET.get(), TFEquipmentAssets.IRONWOOD, "helmet");
 		this.generateExpandedTrimmableItem(TFItems.IRONWOOD_CHESTPLATE.get(), TFEquipmentAssets.IRONWOOD, "chestplate");

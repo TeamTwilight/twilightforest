@@ -121,6 +121,7 @@ public class TFModelLayers {
 	public static final ModelLayerLocation TRANSFORMATION_BOAT = register("boat/transformation");
 	public static final ModelLayerLocation MINING_BOAT = register("boat/mining");
 	public static final ModelLayerLocation SORTING_BOAT = register("boat/sorting");
+	public static final ModelLayerLocation VEILWOOD_BOAT = register("boat/veilwood");
 
 	public static final ModelLayerLocation TWILIGHT_OAK_CHEST_BOAT = register("chest_boat/twilight_oak");
 	public static final ModelLayerLocation CANOPY_CHEST_BOAT = register("chest_boat/canopy");
@@ -130,6 +131,7 @@ public class TFModelLayers {
 	public static final ModelLayerLocation TRANSFORMATION_CHEST_BOAT = register("chest_boat/transformation");
 	public static final ModelLayerLocation MINING_CHEST_BOAT = register("chest_boat/mining");
 	public static final ModelLayerLocation SORTING_CHEST_BOAT = register("chest_boat/sorting");
+	public static final ModelLayerLocation VEILWOOD_CHEST_BOAT = register("chest_boat/veilwood");
 
 	private static ModelLayerLocation register(String name) {
 		return register(name, "main");
