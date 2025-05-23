@@ -132,6 +132,7 @@ public class StonecuttingGenerator {
 		stonecutting(getter, output, TFBlocks.TRANSFORMATION_LOG, TFItems.HOLLOW_TRANSFORMATION_LOG);
 		stonecutting(getter, output, TFBlocks.MINING_LOG, TFItems.HOLLOW_MINING_LOG);
 		stonecutting(getter, output, TFBlocks.SORTING_LOG, TFItems.HOLLOW_SORTING_LOG);
+		stonecutting(getter, output, TFBlocks.VEILWOOD_LOG, TFItems.HOLLOW_VEILWOOD_LOG);
 
 		stonecutting(getter, output, Blocks.OAK_LOG, TFItems.HOLLOW_OAK_LOG);
 		stonecutting(getter, output, Blocks.SPRUCE_LOG, TFItems.HOLLOW_SPRUCE_LOG);

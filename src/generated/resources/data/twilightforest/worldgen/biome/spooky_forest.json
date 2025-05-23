@@ -1,5 +1,6 @@
 {
   "carvers": "twilightforest:tf_caves",
+  "creature_spawn_probability": 0.15,
   "downfall": 1.0,
   "effects": {
     "fog_color": 8549265,
@@ -67,7 +68,10 @@
       "twilightforest:mayapple",
       "twilightforest:tree/twilight_oak_tree",
       "twilightforest:tree/large_twilight_oak_tree",
-      "twilightforest:tree/dead_canopy_tree",
+      "twilightforest:tree/veilwood_tree",
+      "twilightforest:tree/big_veilwood_tree",
+      "minecraft:brown_mushroom_swamp",
+      "minecraft:red_mushroom_swamp",
       "twilightforest:pumpkin_lamppost",
       "twilightforest:tf_oak_fallen_log",
       "twilightforest:canopy_fallen_log",
@@ -105,7 +109,26 @@
       }
     ],
     "axolotls": [],
-    "creature": [],
+    "creature": [
+      {
+        "type": "twilightforest:deer",
+        "maxCount": 3,
+        "minCount": 2,
+        "weight": 15
+      },
+      {
+        "type": "twilightforest:squirrel",
+        "maxCount": 4,
+        "minCount": 2,
+        "weight": 10
+      },
+      {
+        "type": "twilightforest:raven",
+        "maxCount": 2,
+        "minCount": 1,
+        "weight": 5
+      }
+    ],
     "misc": [],
     "monster": [
       {

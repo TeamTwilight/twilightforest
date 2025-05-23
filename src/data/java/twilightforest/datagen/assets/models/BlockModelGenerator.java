@@ -524,6 +524,26 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.generateHangingSign(TFBlocks.SORTING_HANGING_SIGN.get(), TFBlocks.SORTING_WALL_HANGING_SIGN.get(), TFBlocks.STRIPPED_SORTING_LOG.get());
 		this.generateBanister(TFBlocks.SORTING_BANISTER.get(), sorting);
 
+		this.wrapBlockItem(TFBlocks.VEILWOOD_LOG.get(), block -> this.generateLog(block, TextureMapping.logColumn(TFBlocks.VEILWOOD_LOG.get())));
+		this.wrapBlockItem(TFBlocks.VEILWOOD_WOOD.get(), block -> this.generateWood(block, TextureMapping.logColumn(TFBlocks.VEILWOOD_LOG.get())));
+		this.wrapBlockItem(TFBlocks.STRIPPED_VEILWOOD_LOG.get(), block -> this.generateLog(block, TextureMapping.logColumn(TFBlocks.STRIPPED_VEILWOOD_LOG.get())));
+		this.wrapBlockItem(TFBlocks.STRIPPED_VEILWOOD_WOOD.get(), block -> this.generateLog(block, TextureMapping.logColumn(TFBlocks.STRIPPED_VEILWOOD_LOG.get())));
+		this.generateHollowLog(TFBlocks.VEILWOOD_LOG.get(), TFBlocks.STRIPPED_VEILWOOD_LOG.get(), TFBlocks.HOLLOW_VEILWOOD_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_VEILWOOD_LOG_VERTICAL.get(), TFBlocks.HOLLOW_VEILWOOD_LOG_CLIMBABLE.get());
+		this.generateSapling(TFBlocks.VEILWOOD_SAPLING.get(), TFBlocks.POTTED_VEILWOOD_SAPLING.get(), PlantType.NOT_TINTED);
+		this.wrapBlockItem(TFBlocks.VEILWOOD_PLANKS.get(), this::createTrivialCube);
+		TextureMapping veilwood = TextureMapping.cube(TFBlocks.VEILWOOD_PLANKS.get());
+		this.generateStairs(TFBlocks.VEILWOOD_STAIRS.get(), veilwood);
+		this.generateSlab(TFBlocks.VEILWOOD_SLAB.get(), TFBlocks.VEILWOOD_PLANKS.get(), veilwood);
+		this.generateButton(TFBlocks.VEILWOOD_BUTTON.get(), veilwood);
+		this.generateFence(TFBlocks.VEILWOOD_FENCE.get(), veilwood);
+		this.generateFenceGate(TFBlocks.VEILWOOD_GATE.get(), veilwood);
+		this.generatePressurePlate(TFBlocks.VEILWOOD_PLATE.get(), veilwood);
+		this.generateTrapdoor(TFBlocks.VEILWOOD_TRAPDOOR.get(), true, "cutout");
+		this.generateDoor(TFBlocks.VEILWOOD_DOOR.get(), true, "cutout");
+		this.generateSign(TFBlocks.VEILWOOD_SIGN.get(), TFBlocks.VEILWOOD_WALL_SIGN.get(), veilwood);
+		this.generateHangingSign(TFBlocks.VEILWOOD_HANGING_SIGN.get(), TFBlocks.VEILWOOD_WALL_HANGING_SIGN.get(), TFBlocks.STRIPPED_VEILWOOD_LOG.get());
+		this.generateBanister(TFBlocks.VEILWOOD_BANISTER.get(), veilwood);
+
 		this.generateSapling(TFBlocks.HOLLOW_OAK_SAPLING.get(), TFBlocks.POTTED_HOLLOW_OAK_SAPLING.get(), PlantType.NOT_TINTED);
 		this.createTintedLeaves(TFBlocks.RAINBOW_OAK_LEAVES.get(), TexturedModel.createDefault(block -> TextureMapping.cube(Blocks.OAK_LEAVES), ModelTemplates.LEAVES), -12012264);
 		this.generateSapling(TFBlocks.RAINBOW_OAK_SAPLING.get(), TFBlocks.POTTED_RAINBOW_OAK_SAPLING.get(), PlantType.NOT_TINTED);
@@ -536,6 +556,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.createTFChest(TFBlocks.TRANSFORMATION_CHEST.get(), TFBlocks.TRANSFORMATION_PLANKS.get(), TwilightForestMod.prefix("transformation/normal"));
 		this.createTFChest(TFBlocks.MINING_CHEST.get(), TFBlocks.MINING_PLANKS.get(), TwilightForestMod.prefix("mining/normal"));
 		this.createTFChest(TFBlocks.SORTING_CHEST.get(), TFBlocks.SORTING_PLANKS.get(), TwilightForestMod.prefix("sorting/normal"));
+		this.createTFChest(TFBlocks.VEILWOOD_CHEST.get(), TFBlocks.VEILWOOD_PLANKS.get(), TwilightForestMod.prefix("veilwood/normal"));
 
 		this.createTFChest(TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST.get(), TFBlocks.TWILIGHT_OAK_PLANKS.get(), TwilightForestMod.prefix("twilight_oak/trapped"));
 		this.createTFChest(TFBlocks.CANOPY_TRAPPED_CHEST.get(), TFBlocks.CANOPY_PLANKS.get(), TwilightForestMod.prefix("canopy/trapped"));
@@ -545,6 +566,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.createTFChest(TFBlocks.TRANSFORMATION_TRAPPED_CHEST.get(), TFBlocks.TRANSFORMATION_PLANKS.get(), TwilightForestMod.prefix("transformation/trapped"));
 		this.createTFChest(TFBlocks.MINING_TRAPPED_CHEST.get(), TFBlocks.MINING_PLANKS.get(), TwilightForestMod.prefix("mining/trapped"));
 		this.createTFChest(TFBlocks.SORTING_TRAPPED_CHEST.get(), TFBlocks.SORTING_PLANKS.get(), TwilightForestMod.prefix("sorting/trapped"));
+		this.createTFChest(TFBlocks.VEILWOOD_TRAPPED_CHEST.get(), TFBlocks.VEILWOOD_PLANKS.get(), TwilightForestMod.prefix("veilwood/trapped"));
 
 		this.generateHollowLog(Blocks.OAK_LOG, Blocks.STRIPPED_OAK_LOG, TFBlocks.HOLLOW_OAK_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_OAK_LOG_VERTICAL.get(), TFBlocks.HOLLOW_OAK_LOG_CLIMBABLE.get());
 		this.generateBanister(TFBlocks.OAK_BANISTER.get(), TextureMapping.cube(Blocks.OAK_PLANKS));

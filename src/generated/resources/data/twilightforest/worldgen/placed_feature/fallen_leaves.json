@@ -2,15 +2,12 @@
   "feature": "twilightforest:fallen_leaves",
   "placement": [
     {
-      "type": "minecraft:rarity_filter",
-      "chance": 1
-    },
-    {
-      "type": "minecraft:in_square"
-    },
-    {
       "type": "minecraft:heightmap",
       "heightmap": "OCEAN_FLOOR"
+    },
+    {
+      "type": "minecraft:count",
+      "count": 6
     },
     {
       "type": "twilightforest:no_structure",
@@ -19,6 +16,17 @@
       "occupies_underground": false,
       "occupies_vegetation": false,
       "structures_allowed": []
+    },
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 1
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:heightmap",
+      "heightmap": "MOTION_BLOCKING"
     },
     {
       "type": "minecraft:biome"

@@ -203,6 +203,7 @@ public class TFCreativeTabs {
 			output.accept(TFBlocks.SORTING_WOOD);
 			output.accept(TFBlocks.SORTING_LOG_CORE);
 			output.accept(TFItems.HOLLOW_SORTING_LOG);
+			output.accept(TFItems.HOLLOW_VEILWOOD_LOG);
 			output.accept(TFBlocks.STRIPPED_SORTING_LOG);
 			output.accept(TFBlocks.STRIPPED_SORTING_WOOD);
 			output.accept(TFBlocks.SORTING_PLANKS);
@@ -240,6 +241,7 @@ public class TFCreativeTabs {
 			output.accept(TFItems.MASON_JAR.get().getDefaultInstance());
 			output.accept(TFItems.FIREFLY_JAR.get().getDefaultInstance());
 			output.accept(TFItems.CICADA_JAR.get().getDefaultInstance());
+			output.accept(TFItems.WEBWORM_JAR.get().getDefaultInstance());
 			output.accept(TFBlocks.FIREFLY_SPAWNER);
 			output.accept(TFBlocks.FIREFLY);
 			output.accept(TFBlocks.CICADA);

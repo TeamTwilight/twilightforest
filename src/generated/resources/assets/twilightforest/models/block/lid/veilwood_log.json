@@ -1,7 +1,7 @@
 {
   "parent": "twilightforest:block/jar_lid",
   "textures": {
-    "1": "twilightforest:block/veilwood_log_top",
-    "2": "twilightforest:block/veilwood_log"
+    "end": "twilightforest:block/veilwood_log_top",
+    "side": "twilightforest:block/veilwood_log"
   }
 }

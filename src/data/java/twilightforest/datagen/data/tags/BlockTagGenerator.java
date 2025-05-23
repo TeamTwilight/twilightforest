@@ -30,7 +30,8 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 		this.tag(TFBlockTags.TRANSFORMATION_LOGS).add(TFBlocks.TRANSFORMATION_LOG.get(), TFBlocks.STRIPPED_TRANSFORMATION_LOG.get(), TFBlocks.TRANSFORMATION_WOOD.get(), TFBlocks.STRIPPED_TRANSFORMATION_WOOD.get());
 		this.tag(TFBlockTags.MINING_LOGS).add(TFBlocks.MINING_LOG.get(), TFBlocks.STRIPPED_MINING_LOG.get(), TFBlocks.MINING_WOOD.get(), TFBlocks.STRIPPED_MINING_WOOD.get());
 		this.tag(TFBlockTags.SORTING_LOGS).add(TFBlocks.SORTING_LOG.get(), TFBlocks.STRIPPED_SORTING_LOG.get(), TFBlocks.SORTING_WOOD.get(), TFBlocks.STRIPPED_SORTING_WOOD.get());
-		this.tag(TFBlockTags.TF_LOGS).addTags(TFBlockTags.TWILIGHT_OAK_LOGS, TFBlockTags.CANOPY_LOGS, TFBlockTags.MANGROVE_LOGS, TFBlockTags.DARKWOOD_LOGS, TFBlockTags.TIME_LOGS, TFBlockTags.TRANSFORMATION_LOGS, TFBlockTags.MINING_LOGS, TFBlockTags.SORTING_LOGS);
+		this.tag(TFBlockTags.VEILWOOD_LOGS).add(TFBlocks.VEILWOOD_LOG.get(), TFBlocks.STRIPPED_VEILWOOD_LOG.get(), TFBlocks.VEILWOOD_WOOD.get(), TFBlocks.STRIPPED_VEILWOOD_WOOD.get());
+		this.tag(TFBlockTags.TF_LOGS).addTags(TFBlockTags.TWILIGHT_OAK_LOGS, TFBlockTags.CANOPY_LOGS, TFBlockTags.MANGROVE_LOGS, TFBlockTags.DARKWOOD_LOGS, TFBlockTags.TIME_LOGS, TFBlockTags.TRANSFORMATION_LOGS, TFBlockTags.MINING_LOGS, TFBlockTags.SORTING_LOGS, TFBlockTags.VEILWOOD_LOGS);
 		this.tag(BlockTags.LOGS).addTag(TFBlockTags.TF_LOGS);
 		this.tag(BlockTags.LOGS_THAT_BURN).addTag(TFBlockTags.TF_LOGS);
 

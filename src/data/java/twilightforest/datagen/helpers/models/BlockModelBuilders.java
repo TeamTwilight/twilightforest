@@ -475,10 +475,12 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.MASON_JAR.get(), location));
 		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.CICADA_JAR.get(), location));
 		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.FIREFLY_JAR.get(), location));
+		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.WEBWORM_JAR.get(), location));
 
 		this.itemModelOutput.accept(TFItems.MASON_JAR.get(), ItemModelUtils.composite(ItemModelUtils.plainModel(location), ItemModelUtils.specialModel(location, new MasonJarSpecialRenderer.Unbaked(TFBlocks.TWILIGHT_OAK_LOG.asItem()))));
 		this.itemModelOutput.accept(TFItems.FIREFLY_JAR.get(), ItemModelUtils.composite(ItemModelUtils.plainModel(location), ItemModelUtils.specialModel(location, new MasonJarSpecialRenderer.Unbaked(TFBlocks.TWILIGHT_OAK_LOG.asItem()))));
 		this.itemModelOutput.accept(TFItems.CICADA_JAR.get(), ItemModelUtils.composite(ItemModelUtils.plainModel(location), ItemModelUtils.specialModel(location, new MasonJarSpecialRenderer.Unbaked(TFBlocks.CANOPY_LOG.asItem()))));
+		this.itemModelOutput.accept(TFItems.WEBWORM_JAR.get(), ItemModelUtils.composite(ItemModelUtils.plainModel(location), ItemModelUtils.specialModel(location, new MasonJarSpecialRenderer.Unbaked(TFBlocks.VEILWOOD_LOG.asItem()))));
 
 		for (JarRenderer.LidResource lid : JarRenderer.LID_LOCATION_LIST.get()) {
 			ResourceLocation item = lid.resourceLocation();
