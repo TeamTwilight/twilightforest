@@ -9,6 +9,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -29,8 +30,11 @@ import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
 import net.neoforged.neoforge.entity.PartEntity;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.data.tags.BlockTagGenerator;
-import twilightforest.init.*;
+import twilightforest.tags.TFBlockTags;
+import twilightforest.init.TFDamageTypes;
+import twilightforest.init.TFDataAttachments;
+import twilightforest.init.TFItems;
+import twilightforest.init.TFSounds;
 
 public class ChainBlock extends ThrowableProjectile implements IEntityWithComplexSpawn {
 
@@ -39,7 +43,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 
 	private static final EntityDataAccessor<Boolean> HAND = SynchedEntityData.defineId(ChainBlock.class, EntityDataSerializers.BOOLEAN);
 	private static final EntityDataAccessor<Boolean> IS_FOIL = SynchedEntityData.defineId(ChainBlock.class, EntityDataSerializers.BOOLEAN);
-	private boolean isReturning = false;
+	private static final EntityDataAccessor<Boolean> IS_RETURNING = SynchedEntityData.defineId(ChainBlock.class, EntityDataSerializers.BOOLEAN);
 	private boolean hitEntity = false;
 	private int stuckTime;
 	@Nullable
@@ -53,11 +57,11 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 	}
 
 	public ChainBlock(EntityType<? extends ChainBlock> type, Level level, LivingEntity thrower, InteractionHand hand, ItemStack stack) {
-		super(type, thrower, level);
-		this.isReturning = false;
+		super(type, level);
+		this.setOwner(thrower);
 		this.stack = stack;
 		this.setHand(hand);
-		this.shootFromRotation(thrower, thrower.getXRot(), thrower.getYRot(), 0.0F, 1.5F, 1.0F);
+		this.setPos(thrower.getEyePosition());
 		this.getEntityData().set(IS_FOIL, stack.hasFoil());
 	}
 
@@ -71,6 +75,14 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 
 	public boolean isFoil() {
 		return this.getEntityData().get(IS_FOIL);
+	}
+
+	public void setIsReturning(boolean returning) {
+		this.getEntityData().set(IS_RETURNING, returning);
+	}
+
+	public boolean isReturning() {
+		return this.getEntityData().get(IS_RETURNING);
 	}
 
 	@Override
@@ -89,6 +101,19 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 	}
 
 	@Override
+	@SuppressWarnings("SuspiciousNameCombination")
+	protected void updateRotation() {
+		Vec3 vec3 = this.getDeltaMovement();
+		if (this.isReturning() && this.getOwner() instanceof LivingEntity living) {
+			// Use this vec3 when returning. It's supposed to be pulled, so turning to face you doesn't make sense
+			vec3 = vec3.normalize().scale(-1.0D).lerp(this.getEyePosition().subtract(living.getEyePosition()).normalize(), 0.5);
+		}
+		double d0 = vec3.horizontalDistance();
+		this.setXRot(lerpRotation(this.xRotO, (float)(Mth.atan2(vec3.y, d0) * 180.0F / (float)Math.PI)));
+		this.setYRot(lerpRotation(this.yRotO, (float)(Mth.atan2(vec3.x, vec3.z) * 180.0F / (float)Math.PI)));
+	}
+
+	@Override
 	protected double getDefaultGravity() {
 		return 0.05F;
 	}
@@ -97,30 +122,29 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 	protected void onHitEntity(EntityHitResult result) {
 		super.onHitEntity(result);
 		// only hit living things & inside the world border
-		Level level = this.level();
-		if (!level.isClientSide() && result.getEntity() != this.getOwner() && level.getWorldBorder().isWithinBounds(result.getEntity().blockPosition())) {
+		if (this.level() instanceof ServerLevel level && result.getEntity() != this.getOwner() && level.getWorldBorder().isWithinBounds(result.getEntity().blockPosition())) {
 			float damage = 10.0F;
 			DamageSource source = TFDamageTypes.getIndirectEntityDamageSource(level, TFDamageTypes.SPIKED, this, this.getOwner());
 			if (stack != null) {
 				if (result.getEntity() instanceof LivingEntity living) {
-					damage = EnchantmentHelper.modifyDamage((ServerLevel) level, this.stack, living, source, damage);
+					damage = EnchantmentHelper.modifyDamage(level, this.stack, living, source, damage);
 				} else if (result.getEntity() instanceof PartEntity<?> part && part.getParent() instanceof LivingEntity living) {
-					damage = EnchantmentHelper.modifyDamage((ServerLevel) level, this.stack, living, source, damage);
+					damage = EnchantmentHelper.modifyDamage(level, this.stack, living, source, damage);
 				}
 			}
 
 			//properly disable shields
 			if (result.getEntity() instanceof Player player && player.isUsingItem() && player.getUseItem().canPerformAction(ItemAbilities.SHIELD_BLOCK)) {
 				player.getUseItem().hurtAndBreak(5, player, LivingEntity.getSlotForHand(player.getUsedItemHand()));
-				player.disableShield();
+				player.disableShield(player.getUseItem());
 			}
 
 			if (damage > 0.0F) {
-				if (result.getEntity().hurt(source, damage)) {
+				if (result.getEntity().hurtServer(level, source, damage)) {
 					this.playSound(TFSounds.BLOCK_AND_CHAIN_HIT.get(), 1.0f, this.random.nextFloat());
 					// age when we hit a monster so that we go back to the player faster
 					this.hitEntity = true;
-					this.isReturning = true;
+					this.setIsReturning(true);
 					this.tickCount += 60;
 					if (this.getOwner() instanceof LivingEntity living) {
 						this.stack.hurtAndBreak(1, living, LivingEntity.getSlotForHand(this.getHand()));
@@ -151,19 +175,19 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 					null,
 					vec3,
 					level.getBlockState(result.getBlockPos()),
-					item -> this.kill()
+					item -> this.kill(level)
 				);
 			}
 		}
 	}
 
 	public void bounce(Direction direction) {
-		if (!this.isReturning && !this.hitEntity) {
+		if (!this.isReturning() && !this.hitEntity) {
 			this.playSound(TFSounds.BLOCK_AND_CHAIN_COLLIDE.get(), 0.125F, this.random.nextFloat());
 			this.gameEvent(GameEvent.HIT_GROUND);
 		}
 
-		this.isReturning = true;
+		this.setIsReturning(true);
 
 		// riccochet
 		double bounce = 0.6;
@@ -207,7 +231,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 	}
 
 	public static boolean canBreakBlockAt(Level level, BlockPos pos, BlockState state, ItemStack stack, boolean restrictedPlaceMode) {
-		return level.getWorldBorder().isWithinBounds(pos) && stack.isCorrectToolForDrops(state) && !state.is(BlockTagGenerator.BLOCK_AND_CHAIN_NEVER_BREAKS)
+		return level.getWorldBorder().isWithinBounds(pos) && stack.isCorrectToolForDrops(state) && !state.is(TFBlockTags.BLOCK_AND_CHAIN_NEVER_BREAKS)
 			&& (!restrictedPlaceMode || stack.canBreakBlockInAdventureMode(new BlockInWorld(level, pos, false)));
 	}
 
@@ -219,7 +243,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 			if (this.getOwner() == null) {
 				this.discard();
 			} else {
-				if (!this.isReturning) {
+				if (!this.isReturning()) {
 					if (this.xOld != this.getX() || this.zOld != this.getZ()) {
 						double d0 = Math.abs(this.getX() - this.xOld);
 						double d1 = Math.abs(this.getZ() - this.zOld);
@@ -229,17 +253,17 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 					}
 
 					if (this.stuckTime >= MAX_STUCK_TICKS) {
-						this.isReturning = true;
+						this.setIsReturning(true);
 					}
 				}
 
 				double distToPlayer = this.distanceTo(this.getOwner());
 				// return if far enough away
-				if (!this.isReturning && distToPlayer > MAX_CHAIN) {
-					this.isReturning = true;
+				if (!this.isReturning() && distToPlayer > MAX_CHAIN) {
+					this.setIsReturning(true);
 				}
 
-				if (this.isReturning) {
+				if (this.isReturning()) {
 					// despawn if close enough
 					if (distToPlayer < 2F) {
 						if (this.stack != null && this.getOwner() instanceof LivingEntity living && living.getData(TFDataAttachments.SMASH_BLOCKS).getBlocksSmashed() > 0) {
@@ -268,6 +292,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 	protected void defineSynchedData(SynchedEntityData.Builder builder) {
 		builder.define(HAND, true);
 		builder.define(IS_FOIL, false);
+		builder.define(IS_RETURNING, false);
 	}
 
 	@Override
@@ -285,12 +310,14 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 		if (pCompound.contains("BlockAndChainStack", 10)) {
 			this.stack = ItemStack.parseOptional(this.registryAccess(), pCompound.getCompound("BlockAndChainStack"));
 		}
+		this.setIsReturning(pCompound.getBoolean("IsReturning"));
 	}
 
 	@Override
 	protected void addAdditionalSaveData(CompoundTag pCompound) {
 		super.addAdditionalSaveData(pCompound);
 		pCompound.put("BlockAndChainStack", this.stack.save(this.registryAccess()));
+		pCompound.putBoolean("IsReturning", this.isReturning());
 	}
 
 	@Override

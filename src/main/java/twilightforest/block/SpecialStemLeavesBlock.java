@@ -14,7 +14,7 @@ import java.util.function.Predicate;
 public class SpecialStemLeavesBlock extends LeavesBlock {
 	protected final Predicate<BlockState> stemPredicate;
 
-	public SpecialStemLeavesBlock(Properties properties, Predicate<BlockState> stemPredicate) {
+	public SpecialStemLeavesBlock(Predicate<BlockState> stemPredicate, Properties properties) {
 		super(properties);
 		this.stemPredicate = stemPredicate;
 	}

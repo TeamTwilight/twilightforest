@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_all_inner_faces",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "all": "twilightforest:block/boss_spawner"
+  }
+}

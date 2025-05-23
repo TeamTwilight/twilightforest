@@ -1,7 +1,7 @@
 {
   "parent": "twilightforest:block/jar_lid",
   "textures": {
-    "1": "minecraft:block/pumpkin_top",
-    "2": "minecraft:block/pumpkin_side"
+    "end": "minecraft:block/pumpkin_top",
+    "side": "minecraft:block/pumpkin_side"
   }
 }

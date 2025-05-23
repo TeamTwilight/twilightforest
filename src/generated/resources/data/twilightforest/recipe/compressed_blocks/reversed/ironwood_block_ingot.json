@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "tag": "c:storage_blocks/ironwood"
-    }
+    "#c:storage_blocks/ironwood"
   ],
   "result": {
     "count": 9,

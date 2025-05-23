@@ -12,8 +12,8 @@ import twilightforest.world.components.layer.vanillalegacy.Area;
 import twilightforest.world.components.layer.vanillalegacy.BiomeLayerFactory;
 import twilightforest.world.components.layer.vanillalegacy.BiomeLayerType;
 import twilightforest.world.components.layer.vanillalegacy.area.LazyArea;
-import twilightforest.world.components.layer.vanillalegacy.context.BigContext;
 import twilightforest.world.components.layer.vanillalegacy.context.LazyAreaContext;
+import twilightforest.world.components.layer.vanillalegacy.context.RandomContext;
 import twilightforest.world.components.layer.vanillalegacy.traits.AreaTransformer1;
 
 import java.util.function.LongFunction;
@@ -70,7 +70,7 @@ public enum StabilizeLayer implements AreaTransformer1 {
 //		return output;
 //	}
 	@Override
-	public ResourceKey<Biome> applyPixel(BigContext<?> context, Area layer, int x, int z) {
+	public ResourceKey<Biome> applyPixel(RandomContext randomContext, Area layer, int x, int z) {
 		int offX = getParentX(x << 4);
 		int offZ = getParentY(z << 4);
 		int centerX = ((x + offX + 1) & -4) - offX;

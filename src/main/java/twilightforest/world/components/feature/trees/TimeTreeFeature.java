@@ -10,10 +10,10 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import twilightforest.init.TFBlocks;
-import twilightforest.util.features.FeatureUtil;
 import twilightforest.util.RootPlacer;
+import twilightforest.util.features.FeaturePlacers;
+import twilightforest.util.features.FeatureUtil;
 import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
 
 import java.util.function.BiConsumer;
@@ -32,7 +32,7 @@ public class TimeTreeFeature extends HollowTreeFeature {
 		if (world.isOutsideBuildHeight(pos.getY() + 1)
 			|| world.isOutsideBuildHeight(pos.getY() + height + radius)
 			|| FeatureUtil.isAnyMatchInArea(pos.subtract(new Vec3i(1, 4, 1)), 3, 4, 3, blockPos -> world.getBlockState(blockPos).is(BlockTags.FEATURES_CANNOT_REPLACE))
-			|| FeatureUtil.isAnyMatchInArea(pos.subtract(new Vec3i(1, 0, 1)), 3, 16, 3, blockPos -> !TreeFeature.validTreePos(world, blockPos) || blockPos == pos)) {
+			|| FeatureUtil.isAnyMatchInArea(pos.subtract(new Vec3i(1, 0, 1)), 3, 16, 3, blockPos -> !FeaturePlacers.validTreePos(world, blockPos) || blockPos == pos)) {
 				return false;
  		}
 
@@ -58,7 +58,8 @@ public class TimeTreeFeature extends HollowTreeFeature {
 
 		// add clock block
 		BlockPos corePos = pos.offset(-1, 2, 0);
-		if (world.getBlockState(corePos).canBeReplaced()) {
+		BlockState stateAtCorePos = world.getBlockState(pos.above());
+		if (stateAtCorePos.is(BlockTags.LOGS) || stateAtCorePos.canBeReplaced()) {
 			world.setBlock(corePos, TFBlocks.TIME_LOG_CORE.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y), Block.UPDATE_ALL);
 			world.scheduleTick(corePos, TFBlocks.TIME_LOG_CORE.get(), 20);
 		}

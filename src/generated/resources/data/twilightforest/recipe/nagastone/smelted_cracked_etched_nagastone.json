@@ -3,9 +3,7 @@
   "category": "blocks",
   "cookingtime": 200,
   "experience": 0.1,
-  "ingredient": {
-    "item": "twilightforest:etched_nagastone"
-  },
+  "ingredient": "twilightforest:etched_nagastone",
   "result": {
     "count": 1,
     "id": "twilightforest:cracked_etched_nagastone"

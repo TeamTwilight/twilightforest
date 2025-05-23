@@ -53,7 +53,6 @@ public class Troll extends Monster implements RangedAttackMob {
 	@Nullable
 	private BlockState rock;
 
-	@SuppressWarnings("this-escape")
 	public Troll(EntityType<? extends Troll> type, Level level) {
 		super(type, level);
 		this.rockCooldown = 300 + this.getRandom().nextInt(100);
@@ -159,11 +158,6 @@ public class Troll extends Monster implements RangedAttackMob {
 			}
 			this.setCombatTask();
 		}
-	}
-
-	@Override
-	public boolean doHurtTarget(Entity entity) {
-		return super.doHurtTarget(entity);
 	}
 
 	@Override

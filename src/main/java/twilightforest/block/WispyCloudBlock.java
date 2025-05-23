@@ -12,8 +12,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 public class WispyCloudBlock extends CloudBlock {
 	protected static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 14.0D, 16.0D);
 
-	public WispyCloudBlock(Properties properties, Biome.Precipitation precipitation) {
-		super(properties, precipitation);
+	public WispyCloudBlock(Biome.Precipitation precipitation, Properties properties) {
+		super(precipitation, properties);
 	}
 
 	@Override
@@ -22,7 +22,7 @@ public class WispyCloudBlock extends CloudBlock {
 	}
 
 	@Override
-	public int getLightBlock(BlockState state, BlockGetter level, BlockPos pos) {
+	public int getLightBlock(BlockState state) {
 		return 0;
 	}
 

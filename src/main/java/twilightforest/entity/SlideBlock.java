@@ -8,6 +8,8 @@ import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -33,13 +35,12 @@ public class SlideBlock extends Entity {
 	private BlockState myState;
 	private int slideTime;
 
-	public SlideBlock(EntityType<? extends SlideBlock> type, Level world) {
-		super(type, world);
+	public SlideBlock(EntityType<? extends SlideBlock> type, Level level) {
+		super(type, level);
 		this.blocksBuilding = true;
 		this.myState = TFBlocks.SLIDER.get().defaultBlockState();
 	}
 
-	@SuppressWarnings("this-escape")
 	public SlideBlock(EntityType<? extends SlideBlock> type, Level world, double x, double y, double z, BlockState state) {
 		super(type, world);
 
@@ -93,6 +94,11 @@ public class SlideBlock extends Entity {
 	}
 
 	@Override
+	public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
+		return false;
+	}
+
+	@Override
 	public boolean isPickable() {
 		return this.isAlive();
 	}
@@ -115,7 +121,7 @@ public class SlideBlock extends Entity {
 			}
 			this.getDeltaMovement().multiply(0.98, 0.98, 0.98);
 
-			if (!this.level().isClientSide()) {
+			if (this.level() instanceof ServerLevel level) {
 				if (this.slideTime % 5 == 0) {
 					this.playSound(TFSounds.SLIDER.get(), 1.0F, 0.9F + (this.random.nextFloat() * 0.4F));
 				}
@@ -145,10 +151,10 @@ public class SlideBlock extends Entity {
 					if (this.level().isUnobstructed(this.myState, pos, CollisionContext.empty())) {
 						this.level().setBlockAndUpdate(pos, this.myState);
 					} else {
-						this.spawnAtLocation(new ItemStack(this.myState.getBlock()), 0.0F);
+						this.spawnAtLocation(level, new ItemStack(this.myState.getBlock()), 0.0F);
 					}
-				} else if (this.slideTime > 100 && (pos.getY() < this.level().getMinBuildHeight() + 1 || pos.getY() > this.level().getMaxBuildHeight()) || this.slideTime > 600) {
-					this.spawnAtLocation(new ItemStack(this.myState.getBlock()), 0.0F);
+				} else if (this.slideTime > 100 && (pos.getY() < this.level().getMinY() + 1 || pos.getY() > this.level().getMaxY()) || this.slideTime > 600) {
+					this.spawnAtLocation(level, new ItemStack(this.myState.getBlock()), 0.0F);
 					this.discard();
 				}
 
@@ -160,12 +166,9 @@ public class SlideBlock extends Entity {
 
 	private void damageKnockbackEntities(List<Entity> entities) {
 		for (Entity entity : entities) {
-			if (entity instanceof LivingEntity living) {
-				living.hurt(TFDamageTypes.getDamageSource(this.level(), TFDamageTypes.SLIDER), 5.0F);
-
+			if (this.level() instanceof ServerLevel level && entity instanceof LivingEntity living && living.hurtServer(level, level.damageSources().source(TFDamageTypes.SLIDER), 5.0F)) {
 				double kx = (this.getX() - entity.getX()) * 2.0D;
 				double kz = (this.getZ() - entity.getZ()) * 2.0D;
-
 				living.knockback(2.0F, kx, kz);
 			}
 		}
@@ -191,17 +194,7 @@ public class SlideBlock extends Entity {
 	}
 
 	@Override
-	public boolean isPushable() {
-		return false;
-	}
-
-	@Override
-	public boolean isPushedByFluid() {
-		return false;
-	}
-
-	@Override
-	protected boolean canRide(Entity entityIn) {
+	protected boolean canRide(Entity entity) {
 		return false;
 	}
 

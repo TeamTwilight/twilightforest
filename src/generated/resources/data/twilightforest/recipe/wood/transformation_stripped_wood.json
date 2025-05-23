@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "item": "twilightforest:stripped_transformation_log"
-    }
+    "#": "twilightforest:stripped_transformation_log"
   },
   "pattern": [
     "##",

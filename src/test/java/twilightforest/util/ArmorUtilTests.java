@@ -8,12 +8,11 @@ import net.minecraft.world.item.Items;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import tamaized.beanification.junit.MockitoFixer;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFItems;
-import twilightforest.junit.MockitoFixer;
 
 import java.util.List;
-import java.util.OptionalInt;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
@@ -27,27 +26,6 @@ public class ArmorUtilTests {
 	@BeforeEach
 	public void setup() {
 		instance = new ArmorUtil();
-	}
-
-	@Test
-	public void getArmorColorEmpty() {
-		OptionalInt result = instance.getArmorColor(ItemStack.EMPTY);
-
-		assertTrue(result.isEmpty());
-	}
-
-	@Test
-	public void getArmorColorArtic() {
-		OptionalInt result = instance.getArmorColor(new ItemStack(TFItems.ARCTIC_BOOTS.asItem()));
-
-		assertFalse(result.isEmpty());
-	}
-
-	@Test
-	public void getArmorColorUnused() {
-		OptionalInt result = instance.getArmorColor(new ItemStack(Items.STICK));
-
-		assertTrue(result.isEmpty());
 	}
 
 	@Test

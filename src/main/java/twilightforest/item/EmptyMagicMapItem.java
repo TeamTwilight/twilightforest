@@ -5,29 +5,29 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ComplexItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import twilightforest.data.tags.CustomTagGenerator;
+import twilightforest.tags.TFDimensionTypeTags;
 
-public class EmptyMagicMapItem extends ComplexItem {
+public class EmptyMagicMapItem extends Item {
 	public EmptyMagicMapItem(Properties properties) {
 		super(properties);
 	}
 
-	// [VanillaCopy] ItemEmptyMap.onItemRightClick, edits noted
+	// [VanillaCopy] EmptyMapItem.use, edits noted
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+	public InteractionResult use(Level level, Player player, InteractionHand hand) {
 		ItemStack emptyMapStack = player.getItemInHand(hand);
 		if (level.isClientSide())
-			return InteractionResultHolder.pass(emptyMapStack);
+			return InteractionResult.SUCCESS;
 
 		//TF - only allow magic maps to be created in allowed dimensions (controlled via tag)
-		if (!level.dimensionTypeRegistration().is(CustomTagGenerator.DimensionTypeTagGenerator.ALLOWS_MAGIC_MAP_CHARTING)) {
+		if (!level.dimensionTypeRegistration().is(TFDimensionTypeTags.ALLOWS_MAGIC_MAP_CHARTING)) {
 			player.displayClientMessage(Component.translatable("misc.twilightforest.magic_map_fail"), true);
-			return InteractionResultHolder.fail(emptyMapStack);
+			return InteractionResult.FAIL;
 		}
 
 		emptyMapStack.consume(1, player);
@@ -38,12 +38,12 @@ public class EmptyMagicMapItem extends ComplexItem {
 		ItemStack newMapStack = MagicMapItem.setupNewMap(level, Mth.floor(player.getX()), Mth.floor(player.getZ()), (byte) 4, true, false);
 
 		if (emptyMapStack.isEmpty()) {
-			return InteractionResultHolder.success(newMapStack);
+			return InteractionResult.SUCCESS.heldItemTransformedTo(newMapStack);
 		} else {
 			if (!player.getInventory().add(newMapStack.copy())) {
 				player.drop(newMapStack, false);
 			}
-			return InteractionResultHolder.success(emptyMapStack);
+			return InteractionResult.SUCCESS;
 		}
 	}
 }

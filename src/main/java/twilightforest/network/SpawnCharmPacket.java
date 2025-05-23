@@ -57,7 +57,7 @@ public record SpawnCharmPacket(ItemStack charm, ResourceKey<SoundEvent> event) i
 						effect.offset = (float) Math.PI;
 						level.addEntity(effect);
 					}
-					SoundEvent event = BuiltInRegistries.SOUND_EVENT.get(packet.event());
+					SoundEvent event = BuiltInRegistries.SOUND_EVENT.getValue(packet.event());
 					if (camera != null && event != null) {
 						level.playLocalSound(camera.getX(), camera.getY(), camera.getZ(), event, player.getSoundSource(), 1.5F, 1.0F, false);
 					}

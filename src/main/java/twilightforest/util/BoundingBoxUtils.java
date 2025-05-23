@@ -159,4 +159,49 @@ public class BoundingBoxUtils {
 			box.minX() + (box.maxX() - box.minX() + 1) / 2, box.minY(), box.minZ() + (box.maxZ() - box.minZ() + 1) / 2
 		);
 	}
+
+	public static BlockPos clampedInside(BoundingBox box, BlockPos toClamp) {
+		return new BlockPos(Mth.clamp(toClamp.getX(), box.minX(), box.maxX()), Mth.clamp(toClamp.getY(), box.minY(), box.maxY()), Mth.clamp(toClamp.getZ(), box.minZ(), box.maxZ()));
+	}
+
+	public static int manhattanDistance(BoundingBox box, BlockPos pos) {
+		BlockPos clamped = clampedInside(box, pos);
+		return Math.abs(clamped.getX() - pos.getX()) + Math.abs(clamped.getY() - pos.getY()) + Math.abs(clamped.getZ() - pos.getZ());
+	}
+
+	public static int greatestAxalDistance(BoundingBox box, BlockPos pos) {
+		BlockPos clamped = clampedInside(box, pos);
+		return Math.max(Math.max(Math.abs(clamped.getX() - pos.getX()), Math.abs(clamped.getY() - pos.getY())), Math.abs(clamped.getZ() - pos.getZ()));
+	}
+
+	public static int horizontalManhattanDistance(BoundingBox box, BlockPos pos) {
+		int xClamped = Mth.clamp(pos.getX(), box.minX(), box.maxX());
+		int zClamped = Mth.clamp(pos.getZ(), box.minZ(), box.maxZ());
+		return Math.abs(xClamped - pos.getX()) + Math.abs(zClamped - pos.getZ());
+	}
+
+	public static BoundingBox wrappedCoordinates(int padding, BlockPos pos1, BlockPos pos2) {
+		int minX = Math.min(pos1.getX(), pos2.getX()) - padding;
+		int minY = Math.min(pos1.getY(), pos2.getY()) - padding;
+		int minZ = Math.min(pos1.getZ(), pos2.getZ()) - padding;
+		int maxX = Math.max(pos1.getX(), pos2.getX()) + padding;
+		int maxY = Math.max(pos1.getY(), pos2.getY()) + padding;
+		int maxZ = Math.max(pos1.getZ(), pos2.getZ()) + padding;
+
+		return new BoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
+	}
+
+	public static BlockPos lerpPosInside(BoundingBox box, Direction.Axis axis, float delta) {
+		BlockPos center = box.getCenter();
+
+		return switch (axis) {
+			case X -> new BlockPos(Mth.lerpDiscrete(delta, box.minX(), box.maxX()), center.getY(), center.getZ());
+			case Y -> new BlockPos(center.getX(), Mth.lerpDiscrete(delta, box.minY(), box.maxY()), center.getZ());
+			case Z -> new BlockPos(center.getX(), center.getY(), Mth.lerpDiscrete(delta, box.minZ(), box.maxZ()));
+		};
+	}
+
+	public static BoundingBox setY(BoundingBox box, int minY, int maxY) {
+		return new BoundingBox(box.minX(), minY, box.minZ(), box.maxX(), maxY, box.maxZ());
+	}
 }

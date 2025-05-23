@@ -18,12 +18,12 @@ public class CancelArmorRenderingTransformer implements ITransformer<MethodNode>
 
 	@Override
 	public @NotNull MethodNode transform(MethodNode node, ITransformerVotingContext context) {
-		ASMUtil.findInstructions(node, Opcodes.INSTANCEOF)
+		ASMUtil.findInstructions(node, Opcodes.INVOKESTATIC)
 			.findFirst()
 			.ifPresent(target -> node.instructions.insert(
 				target,
 				ASMAPI.listOf(
-					new VarInsnNode(Opcodes.ALOAD, 7),
+					new VarInsnNode(Opcodes.ALOAD, 3),
 					new MethodInsnNode(
 						Opcodes.INVOKESTATIC,
 						"twilightforest/ASMHooks",
@@ -45,7 +45,7 @@ public class CancelArmorRenderingTransformer implements ITransformer<MethodNode>
 		return Set.of(Target.targetMethod(
 			"net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer",
 			"renderArmorPiece",
-			"(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/entity/EquipmentSlot;ILnet/minecraft/client/model/HumanoidModel;)V"
+			"(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/entity/EquipmentSlot;ILnet/minecraft/client/model/HumanoidModel;)V"
 		));
 	}
 

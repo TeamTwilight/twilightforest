@@ -1,21 +1,14 @@
 package twilightforest.client.model.entity;
 
-import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.model.ListModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import org.jetbrains.annotations.Nullable;
-import twilightforest.entity.ProtectionBox;
+import twilightforest.client.state.ProtectionBoxRenderState;
 
-public class ProtectionBoxModel<T extends ProtectionBox> extends ListModel<T> {
-
-	@Nullable
-	private T entity;
+public class ProtectionBoxModel extends EntityModel<ProtectionBoxRenderState> {
 
 	public ModelPart box;
 	private int lastPixelsX;
@@ -23,6 +16,7 @@ public class ProtectionBoxModel<T extends ProtectionBox> extends ListModel<T> {
 	private int lastPixelsZ;
 
 	public ProtectionBoxModel(ModelPart root) {
+		super(root);
 		this.box = root.getChild("box");
 	}
 
@@ -39,29 +33,15 @@ public class ProtectionBoxModel<T extends ProtectionBox> extends ListModel<T> {
 	}
 
 	@Override
-	public Iterable<ModelPart> parts() {
-		return ImmutableList.of(this.box);
-	}
+	public void setupAnim(ProtectionBoxRenderState state) {
+		super.setupAnim(state);
+		int pixelsX = state.sizeX * 16 + 2;
+		int pixelsY = state.sizeY * 16 + 2;
+		int pixelsZ = state.sizeZ * 16 + 2;
 
-	@Override
-	public void renderToBuffer(PoseStack stack, VertexConsumer consumer, int light, int overlay, int color) {
-		if (this.entity != null) {
-			int pixelsX = this.entity.sizeX * 16 + 2;
-			int pixelsY = this.entity.sizeY * 16 + 2;
-			int pixelsZ = this.entity.sizeZ * 16 + 2;
-
-			if (pixelsX != this.lastPixelsX || pixelsY != this.lastPixelsY || pixelsZ != this.lastPixelsZ) {
-				this.resizeBoxElement(pixelsX, pixelsY, pixelsZ);
-			}
+		if (pixelsX != this.lastPixelsX || pixelsY != this.lastPixelsY || pixelsZ != this.lastPixelsZ) {
+			this.resizeBoxElement(pixelsX, pixelsY, pixelsZ);
 		}
-
-		super.renderToBuffer(stack, consumer, light, overlay, color);
-		this.entity = null;
-	}
-
-	@Override
-	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		this.entity = entity;
 	}
 
 	private void resizeBoxElement(int pixelsX, int pixelsY, int pixelsZ) {

@@ -1,6 +1,7 @@
 package twilightforest.world.components.structures.icetower;
 
 import com.mojang.datafixers.util.Pair;
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -24,6 +25,7 @@ import twilightforest.loot.TFLootTables;
 import twilightforest.util.RotationUtil;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
+import twilightforest.world.components.structures.UtilityPiece;
 import twilightforest.world.components.structures.icetower.floordecorators.FloorParts;
 import twilightforest.world.components.structures.icetower.floordecorators.FloorTypesAuroraPalace;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
@@ -85,6 +87,13 @@ public class IceTowerWingComponent extends TowerWingComponent {
 		makeARoof(parent, list, rand);
 		if (!this.hasBase) {
 			makeABeard(parent, list, rand);
+		} else if (list instanceof StructurePiecesBuilder structurePiecesBuilder){
+			UtilityPiece utilityPiece = new UtilityPiece(getGenDepth() + 1,
+				new BoundingBox(
+					boundingBox.minX(), structurePiecesBuilder.pieces.stream().mapToInt(piece -> piece.getBoundingBox().minY()).min().getAsInt(), boundingBox.minZ(),
+					boundingBox.maxX(), boundingBox.minY(), boundingBox.maxZ()
+				));
+			list.addPiece(utilityPiece);
 		}
 
 		// limit sprawl to a reasonable amount
@@ -326,7 +335,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 					.map(floorType -> new Pair<>(floorType, floorType.getWeight()))
 					.collect(Collectors.toList()),
 				decoRNG);
-			int chosenRotation = WorldUtil.getRandomElement(possibleFloors.get(chosenType), decoRNG);
+			int chosenRotation = Util.getRandom(possibleFloors.get(chosenType), decoRNG);
 			plan.add(new Pair<>(chosenType, chosenRotation));
 
 			topBlockedParts = chosenType.getFloorWith3x3Map().getBlockedFloorParts()

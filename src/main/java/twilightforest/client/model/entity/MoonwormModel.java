@@ -6,8 +6,6 @@
 
 package twilightforest.client.model.entity;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -29,7 +27,7 @@ public class MoonwormModel extends Model {
 	private final ModelPart head;
 
 	public MoonwormModel(ModelPart root) {
-		super(RenderType::entityCutoutNoCull);
+		super(root, RenderType::entityCutoutNoCull);
 
 		this.head = root.getChild("head");
 		this.shape1 = root.getChild("shape1");
@@ -64,36 +62,18 @@ public class MoonwormModel extends Model {
 		return LayerDefinition.create(meshdefinition, 32, 32);
 	}
 
-	public void setRotationAngles(@Nullable MoonwormBlockEntity moonworm, float partialTime) {
+	public void setupAnim(float rotation, int delay) {
 		this.head.y = 7.0F;
 		this.shape1.y = 7.0F;
 		this.shape2.y = 7.0F;
 		this.shape3.y = 7.0F;
 
-		if (moonworm != null && moonworm.yawDelay == 0) {
-			float time = (moonworm.desiredYaw - moonworm.currentYaw) - partialTime;
-
+		if (delay == 0) {
 			// moving
-			this.head.y += Math.min(0.0F, Mth.sin(time / 2.0F));
-			this.shape1.y += Math.min(0.0F, Mth.sin(time / 2.0F + 1.0F));
-			this.shape2.y += Math.min(0.0F, Mth.sin(time / 2.0F + 2.0F));
-			this.shape3.y += Math.min(0.0F, Mth.sin(time / 2.0F + 3.0F));
-		} else if (moonworm == null && BugModelAnimationHelper.yawWriggleDelay == 0) {
-			float time = (BugModelAnimationHelper.desiredRotation - BugModelAnimationHelper.currentRotation) - partialTime;
-
-			// moving
-			this.head.y += Math.min(0.0F, Mth.sin(time / 2.0F));
-			this.shape1.y += Math.min(0.0F, Mth.sin(time / 2.0F + 1.0F));
-			this.shape2.y += Math.min(0.0F, Mth.sin(time / 2.0F + 2.0F));
-			this.shape3.y += Math.min(0.0F, Mth.sin(time / 2.0F + 3.0F));
+			this.head.y += Math.min(0.0F, Mth.sin(rotation / 2.0F));
+			this.shape1.y += Math.min(0.0F, Mth.sin(rotation / 2.0F + 1.0F));
+			this.shape2.y += Math.min(0.0F, Mth.sin(rotation / 2.0F + 2.0F));
+			this.shape3.y += Math.min(0.0F, Mth.sin(rotation / 2.0F + 3.0F));
 		}
-	}
-
-	@Override
-	public void renderToBuffer(PoseStack ms, VertexConsumer buffer, int light, int overlay, int color) {
-		this.shape1.render(ms, buffer, light, overlay, color);
-		this.shape2.render(ms, buffer, light, overlay, color);
-		this.shape3.render(ms, buffer, light, overlay, color);
-		this.head.render(ms, buffer, light, overlay, color);
 	}
 }

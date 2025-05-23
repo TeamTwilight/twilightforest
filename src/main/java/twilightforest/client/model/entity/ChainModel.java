@@ -1,21 +1,18 @@
 package twilightforest.client.model.entity;
 
-import com.google.common.collect.ImmutableList;
-import net.minecraft.client.model.ListModel;
+import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.client.renderer.RenderType;
 
-public class ChainModel extends ListModel<Entity> {
-
-	private final ModelPart chain;
+public class ChainModel extends Model {
 
 	public ChainModel(ModelPart root) {
-		this.chain = root.getChild("chain");
+		super(root, RenderType::entityCutoutNoCull);
 	}
 
 	public static LayerDefinition create() {
@@ -28,15 +25,5 @@ public class ChainModel extends ListModel<Entity> {
 			PartPose.ZERO);
 
 		return LayerDefinition.create(meshdefinition, 32, 16);
-	}
-
-	@Override
-	public Iterable<ModelPart> parts() {
-		return ImmutableList.of(this.chain);
-	}
-
-	@Override
-	public void setupAnim(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-
 	}
 }

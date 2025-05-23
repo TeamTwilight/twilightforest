@@ -1,0 +1,239 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "cases": [
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "twilightforest:item/arctic_helmet_quartz_trim",
+          "tints": [
+            {
+              "type": "minecraft:dye",
+              "default": -4337703
+            }
+          ]
+        },
+        "when": "minecraft:quartz"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "twilightforest:item/arctic_helmet_iron_trim",
+          "tints": [
+            {
+              "type": "minecraft:dye",
+              "default": -4337703
+            }
+          ]
+        },
+        "when": "minecraft:iron"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "twilightforest:item/arctic_helmet_netherite_trim",
+          "tints": [
+            {
+              "type": "minecraft:dye",
+              "default": -4337703
+            }
+          ]
+        },
+        "when": "minecraft:netherite"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "twilightforest:item/arctic_helmet_redstone_trim",
+          "tints": [
+            {
+              "type": "minecraft:dye",
+              "default": -4337703
+            }
+          ]
+        },
+        "when": "minecraft:redstone"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "twilightforest:item/arctic_helmet_copper_trim",
+          "tints": [
+            {
+              "type": "minecraft:dye",
+              "default": -4337703
+            }
+          ]
+        },
+        "when": "minecraft:copper"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "twilightforest:item/arctic_helmet_gold_trim",
+          "tints": [
+            {
+              "type": "minecraft:dye",
+              "default": -4337703
+            }
+          ]
+        },
+        "when": "minecraft:gold"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "twilightforest:item/arctic_helmet_emerald_trim",
+          "tints": [
+            {
+              "type": "minecraft:dye",
+              "default": -4337703
+            }
+          ]
+        },
+        "when": "minecraft:emerald"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "twilightforest:item/arctic_helmet_diamond_trim",
+          "tints": [
+            {
+              "type": "minecraft:dye",
+              "default": -4337703
+            }
+          ]
+        },
+        "when": "minecraft:diamond"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "twilightforest:item/arctic_helmet_lapis_trim",
+          "tints": [
+            {
+              "type": "minecraft:dye",
+              "default": -4337703
+            }
+          ]
+        },
+        "when": "minecraft:lapis"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "twilightforest:item/arctic_helmet_amethyst_trim",
+          "tints": [
+            {
+              "type": "minecraft:dye",
+              "default": -4337703
+            }
+          ]
+        },
+        "when": "minecraft:amethyst"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "twilightforest:item/arctic_helmet_resin_trim",
+          "tints": [
+            {
+              "type": "minecraft:dye",
+              "default": -4337703
+            }
+          ]
+        },
+        "when": "minecraft:resin"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "twilightforest:item/arctic_helmet_ironwood_trim",
+          "tints": [
+            {
+              "type": "minecraft:dye",
+              "default": -4337703
+            }
+          ]
+        },
+        "when": "twilightforest:ironwood"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "twilightforest:item/arctic_helmet_steeleaf_trim",
+          "tints": [
+            {
+              "type": "minecraft:dye",
+              "default": -4337703
+            }
+          ]
+        },
+        "when": "twilightforest:steeleaf"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "twilightforest:item/arctic_helmet_fiery_trim",
+          "tints": [
+            {
+              "type": "minecraft:dye",
+              "default": -4337703
+            }
+          ]
+        },
+        "when": "twilightforest:fiery"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "twilightforest:item/arctic_helmet_knightmetal_trim",
+          "tints": [
+            {
+              "type": "minecraft:dye",
+              "default": -4337703
+            }
+          ]
+        },
+        "when": "twilightforest:knightmetal"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "twilightforest:item/arctic_helmet_carminite_trim",
+          "tints": [
+            {
+              "type": "minecraft:dye",
+              "default": -4337703
+            }
+          ]
+        },
+        "when": "twilightforest:carminite"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "twilightforest:item/arctic_helmet_naga_scale_trim",
+          "tints": [
+            {
+              "type": "minecraft:dye",
+              "default": -4337703
+            }
+          ]
+        },
+        "when": "twilightforest:naga_scale"
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "twilightforest:item/arctic_helmet",
+      "tints": [
+        {
+          "type": "minecraft:dye",
+          "default": -4337703
+        }
+      ]
+    },
+    "property": "minecraft:trim_material"
+  }
+}

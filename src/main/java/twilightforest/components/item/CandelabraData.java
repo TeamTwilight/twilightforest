@@ -25,7 +25,7 @@ public record CandelabraData(Optional<Block> one, Optional<Block> two, Optional<
 		.sizeLimitedListOf(3)
 		.xmap(CandelabraData::new, CandelabraData::ordered);
 	public static final StreamCodec<RegistryFriendlyByteBuf, CandelabraData> STREAM_CODEC = ByteBufCodecs.registry(Registries.BLOCK)
-		.apply(ByteBufCodecs.list(4))
+		.apply(ByteBufCodecs.list(3))
 		.map(CandelabraData::new, CandelabraData::ordered);
 
 	public CandelabraData(List<Block> blocks) {
@@ -53,7 +53,7 @@ public record CandelabraData(Optional<Block> one, Optional<Block> two, Optional<
 	}
 
 	public List<Block> ordered() {
-		return Stream.of(this.one, this.three, this.three).map(block -> block.orElse(Blocks.AIR)).toList();
+		return Stream.of(this.one, this.two, this.three).map(block -> block.orElse(Blocks.AIR)).toList();
 	}
 
 	public static CandelabraData load(@Nullable CompoundTag tag) {

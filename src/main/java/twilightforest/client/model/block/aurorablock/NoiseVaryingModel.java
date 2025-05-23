@@ -3,12 +3,12 @@ package twilightforest.client.model.block.aurorablock;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.DelegateBakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.client.model.BakedModelWrapper;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.client.model.data.ModelProperty;
 import org.jetbrains.annotations.Nullable;
@@ -16,7 +16,7 @@ import twilightforest.util.SimplexNoiseHelper;
 
 import java.util.List;
 
-public class NoiseVaryingModel extends BakedModelWrapper<BakedModel> {
+public class NoiseVaryingModel extends DelegateBakedModel {
 	private static final ModelProperty<Integer> VARIANT = new ModelProperty<>();
 	private final BakedModel[] variants;
 

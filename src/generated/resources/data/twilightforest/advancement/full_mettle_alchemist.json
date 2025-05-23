@@ -3,10 +3,10 @@
   "criteria": {
     "drink_4_harming": {
       "conditions": {
-        "doses": 4,
+        "doses": 3,
         "potion": "minecraft:strong_harming",
         "seconds": {
-          "max": 7
+          "max": 6
         }
       },
       "trigger": "twilightforest:drink_from_flask"
@@ -29,7 +29,7 @@
         }
       },
       "count": 1,
-      "id": "twilightforest:greater_potion_flask"
+      "id": "twilightforest:brittle_potion_flask"
     },
     "title": {
       "translate": "advancement.twilightforest.full_mettle_alchemist"

@@ -17,7 +17,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfigur
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
 import net.minecraft.world.level.storage.loot.LootTable;
-import twilightforest.data.TFBlockFamilies;
+import twilightforest.util.TFBlockFamilies;
 import twilightforest.loot.TFLootTables;
 
 @SuppressWarnings("ConstantValue")

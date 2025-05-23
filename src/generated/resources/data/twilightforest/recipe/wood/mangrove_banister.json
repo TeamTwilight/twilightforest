@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "wooden_banister",
   "key": {
-    "-": {
-      "item": "twilightforest:mangrove_slab"
-    },
-    "|": {
-      "tag": "c:rods/wooden"
-    }
+    "-": "twilightforest:mangrove_slab",
+    "|": "#c:rods/wooden"
   },
   "pattern": [
     "---",

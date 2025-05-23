@@ -1,6 +1,7 @@
 package twilightforest.client.event;
 
 import com.ibm.icu.text.RuleBasedNumberFormat;
+import com.mojang.blaze3d.shaders.Uniform;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.ChatFormatting;
@@ -10,19 +11,21 @@ import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.client.renderer.CompiledShaderProgram;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.state.PlayerRenderState;
+import net.minecraft.client.sounds.MusicInfo;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraft.sounds.Music;
 import net.minecraft.sounds.Musics;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.util.context.ContextKey;
+import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
@@ -38,23 +41,20 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.api.distmarker.Dist;
-import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import twilightforest.TwilightForestMod;
-import twilightforest.beans.Autowired;
+import tamaized.beanification.Autowired;
 import twilightforest.block.GiantBlock;
 import twilightforest.block.MiniatureStructureBlock;
 import twilightforest.block.entity.GrowingBeanstalkBlockEntity;
 import twilightforest.client.BugModelAnimationHelper;
-import twilightforest.client.ISTER;
 import twilightforest.client.OptifineWarningScreen;
 import twilightforest.client.TFShaders;
-import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.config.TFConfig;
-import twilightforest.data.tags.ItemTagGenerator;
+import twilightforest.tags.TFItemTags;
 import twilightforest.entity.boss.bar.ClientTFBossBar;
 import twilightforest.events.HostileMountEvents;
 import twilightforest.init.TFDataComponents;
@@ -67,11 +67,13 @@ import java.time.Month;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 public class ClientEvents {
 	private static final VoxelShape GIANT_BLOCK = Shapes.box(0.0D, 0.0D, 0.0D, 4.0D, 4.0D, 4.0D);
 	private static final MutableComponent WIP_TEXT = Component.translatable("misc.twilightforest.wip").withStyle(ChatFormatting.RED);
 	private static final MutableComponent EMPERORS_CLOTH_TOOLTIP = Component.translatable("item.twilightforest.emperors_cloth.desc").withStyle(ChatFormatting.GRAY);
+	public static ContextKey<Boolean> HEAD_KEY = new ContextKey<>(TwilightForestMod.prefix("wearing_trophy"));
 
 	private static boolean firstTitleScreenShown = false;
 
@@ -112,13 +114,6 @@ public class ClientEvents {
 	private static void handleGameBootup(ScreenEvent.Init.Post event) {
 		if (firstTitleScreenShown || !(event.getScreen() instanceof TitleScreen)) return;
 
-		// Registering this resource listener earlier than the main screen will cause a crash
-		// Yes, crashing happens if registered to RegisterClientReloadListenersEvent
-		if (Minecraft.getInstance().getResourceManager() instanceof ReloadableResourceManager resourceManager) {
-			resourceManager.registerReloadListener(ISTER.INSTANCE.get());
-			TwilightForestMod.LOGGER.debug("Registered ISTER listener");
-		}
-
 		if (RegistrationEvents.isOptifinePresent() && !TFConfig.disableOptifineNagScreen) {
 			Minecraft.getInstance().setScreen(new OptifineWarningScreen(event.getScreen()));
 		}
@@ -140,9 +135,16 @@ public class ClientEvents {
 	}
 
 	private static void setMusicInDimension(SelectMusicEvent event) {
-		Music music = event.getOriginalMusic();
-		if (Minecraft.getInstance().level != null && Minecraft.getInstance().player != null && (music == Musics.CREATIVE || music == Musics.UNDER_WATER) && TFDimension.isTwilightWorldOnClient(Minecraft.getInstance().level)) {
-			event.setMusic(Minecraft.getInstance().level.getBiomeManager().getNoiseBiomeAtPosition(Minecraft.getInstance().player.blockPosition()).value().getBackgroundMusic().orElse(Musics.GAME));
+		MusicInfo music = event.getOriginalMusic();
+		if (Minecraft.getInstance().level != null && Minecraft.getInstance().player != null && (music.music() == Musics.CREATIVE || music.music() == Musics.UNDER_WATER) && TFDimension.isTwilightWorldOnClient(Minecraft.getInstance().level)) {
+			Optional<SimpleWeightedRandomList<Music>> optional = Minecraft.getInstance().level.getBiomeManager().getNoiseBiomeAtPosition(Minecraft.getInstance().player.blockPosition()).value().getBackgroundMusic();
+
+			if (optional.isPresent()) {
+				Optional<Music> optional1 = optional.get().getRandomValue(Minecraft.getInstance().level.getRandom());
+				event.setMusic(new MusicInfo(optional1.orElse(null), music.volume()));
+			} else {
+				event.setMusic(new MusicInfo(Musics.GAME));
+			}
 		}
 	}
 
@@ -163,7 +165,15 @@ public class ClientEvents {
 	private static void renderAurora(RenderLevelStageEvent event) {
 		if (Minecraft.getInstance().level == null) return;
 
-		if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_WEATHER && (aurora > 0 || lastAurora > 0) && TFShaders.AURORA != null) {
+		if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_WEATHER && (aurora > 0 || lastAurora > 0)) {
+			CompiledShaderProgram auroraShader = Minecraft.getInstance().getShaderManager().getProgram(TFShaders.AURORA);
+			if (auroraShader == null)
+				return;
+			Uniform seedUniform = auroraShader.getUniform("SeedContext");
+			Uniform positionUniform = auroraShader.getUniform("PositionContext");
+			if (seedUniform == null || positionUniform == null)
+				return;
+
 			Tesselator tesselator = Tesselator.getInstance();
 			BufferBuilder buffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 
@@ -178,13 +188,33 @@ public class ClientEvents {
 			RenderSystem.enableBlend();
 			RenderSystem.enableDepthTest();
 			RenderSystem.setShaderColor(1F, 1F, 1F, (Mth.lerp(event.getPartialTick().getGameTimeDeltaTicks(), lastAurora, aurora)) / 60F * 0.5F);
-			TFShaders.AURORA.invokeThenEndTesselator(
-				Minecraft.getInstance().level == null ? 0 : Mth.abs((int) Minecraft.getInstance().level.getBiomeManager().biomeZoomSeed),
-				(float) pos.x(), (float) pos.y(), (float) pos.z(), buffer);
+			int seed = Minecraft.getInstance().level == null ? 0 : Mth.abs((int) Minecraft.getInstance().level.getBiomeManager().biomeZoomSeed);
+			bindShaderDraw(auroraShader, seed, pos, buffer, seedUniform, positionUniform);
 			RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
 			RenderSystem.disableDepthTest();
 			RenderSystem.disableBlend();
 		}
+	}
+
+	private static void bindShaderDraw(CompiledShaderProgram auroraShader, int seed, Vec3 pos, BufferBuilder buffer, Uniform seedUniform, Uniform positionUniform) {
+		var last = RenderSystem.getShader();
+		RenderSystem.setShader(auroraShader);
+
+		// Set Uniforms
+		seedUniform.set(seed);
+		positionUniform.set((float) pos.x(), (float) pos.y(), (float) pos.z());
+
+		// Actually bind shader
+		auroraShader.apply();
+		BufferUploader.drawWithShader(buffer.buildOrThrow());
+
+		// Reset Uniforms
+		seedUniform.set(0);
+		positionUniform.set(0f, 0f, 0f);
+
+		// Unbind shader
+		auroraShader.clear();
+		RenderSystem.setShader(last);
 	}
 
 	private static void killVignette(RenderFrameEvent.Pre event) {
@@ -266,7 +296,7 @@ public class ClientEvents {
 			event.getToolTip().add(1, EMPERORS_CLOTH_TOOLTIP);
 		}
 
-		if (item.is(ItemTagGenerator.WIP)) {
+		if (item.is(TFItemTags.WIP)) {
 			event.getToolTip().add(WIP_TEXT);
 		}
 	}
@@ -286,22 +316,21 @@ public class ClientEvents {
 		}
 	}
 
-	private static void unrenderHeadWithTrophies(RenderLivingEvent.Pre<?, ?> event) {
-		ItemStack stack = event.getEntity().getItemBySlot(EquipmentSlot.HEAD);
-		boolean visible = !(stack.getItem() instanceof TrophyItem) && !(stack.getItem() instanceof SkullCandleItem) && !areCuriosEquipped(event.getEntity());
-		boolean isPlayer = event.getEntity() instanceof Player;
+	private static void unrenderHeadWithTrophies(RenderLivingEvent.Pre<?, ?, ?> event) {
+		boolean visible = !event.getRenderState().getRenderDataOrDefault(HEAD_KEY, false);
+		boolean isPlayer = event.getRenderState() instanceof PlayerRenderState;
 		if (event.getRenderer().getModel() instanceof HeadedModel headedModel) {
-			headedModel.getHead().visible = visible && (!isPlayer || headedModel.getHead().visible);  // some mods like Better Combat can move player's head and hide it in the first person view
+			headedModel.getHead().visible = visible && (isPlayer || headedModel.getHead().visible);  // some mods like Better Combat can move player's head and hide it in the first person view
 			if (event.getRenderer().getModel() instanceof HumanoidModel<?> humanoidModel) {
-				humanoidModel.hat.visible = visible && (!isPlayer || humanoidModel.hat.visible);
+				humanoidModel.hat.visible = visible && (isPlayer || humanoidModel.hat.visible);
 			}
 		}
 	}
 
-	private static boolean areCuriosEquipped(LivingEntity entity) {
-		if (ModList.get().isLoaded("curios")) {
-			return CuriosCompat.isCurioEquippedAndVisible(entity, stack -> stack.getItem() instanceof TrophyItem) || CuriosCompat.isCurioEquippedAndVisible(entity, stack -> stack.getItem() instanceof SkullCandleItem);
-		}
+	public static boolean areCuriosEquipped(LivingEntity entity) {
+//		if (ModList.get().isLoaded("curios")) {
+//			return CuriosCompat.isCurioEquippedAndVisible(entity, stack -> stack.getItem() instanceof TrophyItem);
+//		}
 		return false;
 	}
 
@@ -336,7 +365,19 @@ public class ClientEvents {
 				BlockPos offsetPos = new BlockPos(pos.getX() & ~0b11, pos.getY() & ~0b11, pos.getZ() & ~0b11);
 				VertexConsumer consumer = event.getMultiBufferSource().getBuffer(RenderType.lines());
 				Vec3 xyz = Vec3.atLowerCornerOf(offsetPos).subtract(event.getCamera().getPosition());
-				LevelRenderer.renderShape(event.getPoseStack(), consumer, GIANT_BLOCK, xyz.x(), xyz.y(), xyz.z(), 0.0F, 0.0F, 0.0F, 0.45F);
+				PoseStack.Pose pose = event.getPoseStack().last();
+				GIANT_BLOCK.forAllEdges((x1, y1, z1, x2, y2, z2) -> {
+						float f = (float)(x2 - x1);
+						float f1 = (float)(y2 - y1);
+						float f2 = (float)(z2 - z1);
+						float f3 = Mth.sqrt(f * f + f1 * f1 + f2 * f2);
+						f /= f3;
+						f1 /= f3;
+						f2 /= f3;
+						consumer.addVertex(pose, (float)(x1 + xyz.x()), (float)(y1 + xyz.y()), (float)(z1 + xyz.z())).setColor(0.0F, 0.0F, 0.0F, 0.45F).setNormal(pose, f, f1, f2);
+						consumer.addVertex(pose, (float)(x2 + xyz.x()), (float)(y2 + xyz.y()), (float)(z2 + xyz.z())).setColor(0.0F, 0.0F, 0.0F, 0.45F).setNormal(pose, f, f1, f2);
+					}
+				);
 			}
 		}
 	}

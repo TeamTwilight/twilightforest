@@ -1,7 +1,6 @@
 package twilightforest.network;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.MapRenderer;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -38,8 +37,7 @@ public record MazeMapPacket(ClientboundMapItemDataPacket inner, boolean ore, int
 				@Override
 				public void run() {
 					Level level = ctx.player().level();
-					// [VanillaCopy] ClientPlayNetHandler#handleMaps with our own mapdatas
-					MapRenderer mapitemrenderer = Minecraft.getInstance().gameRenderer.getMapRenderer();
+					// [VanillaCopy] ClientPacketListener#handleMapItemData with our own mapdatas
 					String s = MazeMapItem.getMapName(message.inner().mapId().id());
 					TFMazeMapData mapdata = TFMazeMapData.getMazeMapData(level, s);
 					if (mapdata == null) {
@@ -50,7 +48,7 @@ public record MazeMapPacket(ClientboundMapItemDataPacket inner, boolean ore, int
 					mapdata.ore = message.ore();
 					mapdata.yCenter = message.yCenter();
 					message.inner().applyToMap(mapdata);
-					mapitemrenderer.update(message.inner().mapId(), mapdata);
+					Minecraft.getInstance().getMapTextureManager().update(message.inner().mapId(), mapdata);
 				}
 			});
 		}

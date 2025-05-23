@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "tag": "c:paper"
-    },
-    {
-      "item": "twilightforest:knight_phantom_trophy"
-    }
+    "#c:paper",
+    "twilightforest:knight_phantom_trophy"
   ],
   "result": {
     "count": 1,

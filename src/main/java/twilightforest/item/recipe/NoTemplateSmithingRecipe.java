@@ -10,26 +10,28 @@ import net.minecraft.core.component.TypedDataComponent;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.SmithingRecipe;
-import net.minecraft.world.item.crafting.SmithingRecipeInput;
+import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.crafting.display.RecipeDisplay;
+import net.minecraft.world.item.crafting.display.SlotDisplay;
+import net.minecraft.world.item.crafting.display.SmithingRecipeDisplay;
 import net.minecraft.world.level.Level;
 import twilightforest.init.TFRecipes;
 
+import javax.annotation.Nullable;
 import java.util.List;
-import java.util.stream.Stream;
+import java.util.Optional;
 
 public class NoTemplateSmithingRecipe implements SmithingRecipe {
 
-	private final Ingredient base;
-	private final Ingredient addition;
+	private final Optional<Ingredient> base;
+	private final Optional<Ingredient> addition;
 	private final List<TypedDataComponent<?>> additionalData;
+	@Nullable
+	private PlacementInfo placementInfo;
 
-	public NoTemplateSmithingRecipe(Ingredient base, Ingredient addition, List<TypedDataComponent<?>> additionalData) {
+	public NoTemplateSmithingRecipe(Optional<Ingredient> base, Optional<Ingredient> addition, List<TypedDataComponent<?>> additionalData) {
 		this.base = base;
 		this.addition = addition;
 		this.additionalData = additionalData;
@@ -40,47 +42,33 @@ public class NoTemplateSmithingRecipe implements SmithingRecipe {
 	 */
 	@Override
 	public boolean matches(SmithingRecipeInput input, Level level) {
-		if (!input.getItem(0).isEmpty() || !this.base.test(input.getItem(1)) || !this.addition.test(input.getItem(2))) return false;
 		ItemStack armor = input.getItem(1);
 
 		for (TypedDataComponent<?> data : this.additionalData)
 			if (armor.has(data.type()))
 				return false;
 
-		return true;
+		return SmithingRecipe.super.matches(input, level);
+	}
+
+	@Override
+	public Optional<Ingredient> templateIngredient() {
+		return Optional.empty();
+	}
+
+	@Override
+	public Optional<Ingredient> baseIngredient() {
+		return this.base;
+	}
+
+	@Override
+	public Optional<Ingredient> additionIngredient() {
+		return this.addition;
 	}
 
 	@Override
 	public ItemStack assemble(SmithingRecipeInput input, HolderLookup.Provider access) {
 		return Util.make(input.getItem(1).copy(), this::setComponents);
-	}
-
-	@Override
-	public ItemStack getResultItem(HolderLookup.Provider access) {
-		return Util.make(new ItemStack(Items.IRON_CHESTPLATE), this::setComponents);
-	}
-
-	@Override
-	public boolean isTemplateIngredient(ItemStack stack) {
-		return stack.isEmpty();
-	}
-
-	@Override
-	public boolean isBaseIngredient(ItemStack stack) {
-		return this.base.test(stack);
-	}
-
-	@Override
-	public boolean isAdditionIngredient(ItemStack stack) {
-		return this.addition.test(stack);
-	}
-
-	public Ingredient getBase() {
-		return this.base;
-	}
-
-	public Ingredient getAddition() {
-		return this.addition;
 	}
 
 	private List<TypedDataComponent<?>> additionalData() {
@@ -101,13 +89,32 @@ public class NoTemplateSmithingRecipe implements SmithingRecipe {
 	}
 
 	@Override
-	public RecipeSerializer<?> getSerializer() {
+	public RecipeSerializer<? extends SmithingRecipe> getSerializer() {
 		return TFRecipes.NO_TEMPLATE_SMITHING_SERIALIZER.get();
 	}
 
 	@Override
-	public boolean isIncomplete() {
-		return Stream.of(this.base, this.addition).anyMatch(Ingredient::hasNoItems);
+	public PlacementInfo placementInfo() {
+		if (this.placementInfo == null) {
+			this.placementInfo = PlacementInfo.createFromOptionals(List.of(this.base, this.addition));
+		}
+
+		return this.placementInfo;
+	}
+
+	@Override
+	public List<RecipeDisplay> display() {
+		SlotDisplay slotdisplay = Ingredient.optionalIngredientToDisplay(this.base);
+		SlotDisplay slotdisplay1 = Ingredient.optionalIngredientToDisplay(this.addition);
+		return List.of(
+			new SmithingRecipeDisplay(
+				SlotDisplay.Empty.INSTANCE,
+				slotdisplay,
+				slotdisplay1,
+				new SlotDisplay.SmithingTrimDemoSlotDisplay(slotdisplay, slotdisplay1, SlotDisplay.Empty.INSTANCE),
+				new SlotDisplay.ItemSlotDisplay(Items.SMITHING_TABLE)
+			)
+		);
 	}
 
 	private static final Codec<List<TypedDataComponent<?>>> DATA_COMPONENT_CODEC = DataComponentMap.CODEC.xmap(typedDataComponents -> typedDataComponents.stream().toList(), typedDataComponents -> {
@@ -121,14 +128,14 @@ public class NoTemplateSmithingRecipe implements SmithingRecipe {
 
 	public static class Serializer implements RecipeSerializer<NoTemplateSmithingRecipe> {
 		private static final MapCodec<NoTemplateSmithingRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-			Ingredient.CODEC.fieldOf("base").forGetter(NoTemplateSmithingRecipe::getBase),
-			Ingredient.CODEC.fieldOf("addition").forGetter(NoTemplateSmithingRecipe::getAddition),
+			Ingredient.CODEC.optionalFieldOf("base").forGetter(NoTemplateSmithingRecipe::baseIngredient),
+			Ingredient.CODEC.optionalFieldOf("addition").forGetter(NoTemplateSmithingRecipe::additionIngredient),
 			DATA_COMPONENT_CODEC.optionalFieldOf("additional_data", List.of()).forGetter(NoTemplateSmithingRecipe::additionalData)
 		).apply(instance, NoTemplateSmithingRecipe::new));
 
 		private static final StreamCodec<RegistryFriendlyByteBuf, NoTemplateSmithingRecipe> STREAM_CODEC = StreamCodec.composite(
-			Ingredient.CONTENTS_STREAM_CODEC, NoTemplateSmithingRecipe::getBase,
-			Ingredient.CONTENTS_STREAM_CODEC, NoTemplateSmithingRecipe::getAddition,
+			Ingredient.OPTIONAL_CONTENTS_STREAM_CODEC, NoTemplateSmithingRecipe::baseIngredient,
+			Ingredient.OPTIONAL_CONTENTS_STREAM_CODEC, NoTemplateSmithingRecipe::additionIngredient,
 			TypedDataComponent.STREAM_CODEC.apply(ByteBufCodecs.list()), NoTemplateSmithingRecipe::additionalData,
 			NoTemplateSmithingRecipe::new
 		);

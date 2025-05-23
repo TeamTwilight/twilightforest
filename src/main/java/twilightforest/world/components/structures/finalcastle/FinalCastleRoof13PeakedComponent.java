@@ -23,7 +23,6 @@ public class FinalCastleRoof13PeakedComponent extends TFStructureComponentOld {
 		super(TFStructurePieceTypes.TFFCRo13Pk.get(), nbt);
 	}
 
-	@SuppressWarnings("this-escape")
 	public FinalCastleRoof13PeakedComponent(int i, TFStructureComponentOld sideTower, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFFCRo13Pk.get(), i, x, y, z);
 

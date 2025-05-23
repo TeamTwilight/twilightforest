@@ -7,6 +7,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,8 +37,14 @@ public interface ControlledSpawns {
 
 		public static final ControlledSpawningConfig EMPTY = create(Map.of(), List.of(), List.of());
 
+		@SuppressWarnings("unchecked")
 		public static ControlledSpawningConfig firstIndexMonsters(MobSpawnSettings.SpawnerData... spawnableMonsterList) {
-			return create(List.of(List.of(spawnableMonsterList)), List.of(), List.of());
+			return justMonsters(Arrays.asList(spawnableMonsterList));
+		}
+
+		@SuppressWarnings("unchecked")
+		public static ControlledSpawningConfig justMonsters(List<MobSpawnSettings.SpawnerData>... spawnableMonsterLists) {
+			return create(convertMonsterList(Arrays.asList(spawnableMonsterLists)), List.of(), List.of());
 		}
 
 		public static ControlledSpawningConfig create(List<List<MobSpawnSettings.SpawnerData>> spawnableMonsterLists, List<MobSpawnSettings.SpawnerData> ambientCreatureList, List<MobSpawnSettings.SpawnerData> waterCreatureList) {

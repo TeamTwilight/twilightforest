@@ -5,6 +5,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -28,8 +29,6 @@ import twilightforest.TwilightForestMod;
 import twilightforest.entity.projectile.NatureBolt;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
-
-import java.util.UUID;
 
 public class SkeletonDruid extends AbstractSkeleton {
 	private RangedAttackGoal rangedAttackGoal;
@@ -115,7 +114,7 @@ public class SkeletonDruid extends AbstractSkeleton {
 		}
 	}
 
-	public static boolean checkDruidSpawnRules(EntityType<? extends SkeletonDruid> entity, LevelAccessor world, MobSpawnType reason, BlockPos pos, RandomSource random) {
+	public static boolean checkDruidSpawnRules(EntityType<? extends SkeletonDruid> entity, LevelAccessor world, EntitySpawnReason reason, BlockPos pos, RandomSource random) {
 		return world.getDifficulty() != Difficulty.PEACEFUL && isValidLightLevel(world, pos, random) && checkMobSpawnRules(entity, world, reason, pos, random);
 	}
 
@@ -152,12 +151,12 @@ public class SkeletonDruid extends AbstractSkeleton {
 	}
 
 	@Override
-	public int getBaseExperienceReward() {
+	public int getBaseExperienceReward(ServerLevel level) {
 		if (this.isBaby()) {
 			this.xpReward = (int) (this.xpReward * 2.5F);
 		}
 
-		return super.getBaseExperienceReward();
+		return super.getBaseExperienceReward(level);
 	}
 
 	@Override

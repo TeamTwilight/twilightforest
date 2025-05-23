@@ -25,7 +25,6 @@ public class TowerRoofPointyComponent extends TowerRoofComponent {
 		super(piece, nbt);
 	}
 
-	@SuppressWarnings("this-escape")
 	public TowerRoofPointyComponent(StructurePieceType piece, int i, TowerWingComponent wing, int x, int y, int z) {
 		super(piece, i, x, y, z);
 

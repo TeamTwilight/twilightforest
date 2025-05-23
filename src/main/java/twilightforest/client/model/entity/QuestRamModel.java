@@ -8,7 +8,7 @@ package twilightforest.client.model.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
@@ -18,16 +18,14 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemDisplayContext;
-import twilightforest.client.JappaPackReloadListener;
 import twilightforest.client.renderer.entity.QuestRamRenderer;
-import twilightforest.entity.passive.QuestRam;
+import twilightforest.client.state.QuestingRamRenderState;
 
 import java.util.Arrays;
 
-public class QuestRamModel<T extends QuestRam> extends HierarchicalModel<T> implements TrophyBlockModel {
+public class QuestRamModel extends EntityModel<QuestingRamRenderState> implements TrophyBlockModel {
 
-	private final ModelPart root;
-	private final ModelPart head;
+	protected final ModelPart head;
 	private ModelPart neck;
 	private ModelPart frontTorso;
 	private ModelPart backTorso;
@@ -40,7 +38,7 @@ public class QuestRamModel<T extends QuestRam> extends HierarchicalModel<T> impl
 	final int[] colorOrder = new int[]{0, 8, 7, 15, 14, 1, 4, 5, 13, 3, 9, 11, 10, 2, 6, 12};
 
 	public QuestRamModel(ModelPart root) {
-		this.root = root;
+		super(root);
 		this.head = root.getChild("head");
 		if (root.hasChild("neck")) {
 			this.neck = root.getChild("neck");
@@ -57,15 +55,7 @@ public class QuestRamModel<T extends QuestRam> extends HierarchicalModel<T> impl
 		}
 	}
 
-	public static LayerDefinition checkForPack() {
-		return JappaPackReloadListener.INSTANCE.isJappaPackLoaded() ? createJappaModel() : create();
-	}
-
-	public static LayerDefinition checkForPackTrophyEdition() {
-		return JappaPackReloadListener.INSTANCE.isJappaPackLoaded() ? createJappaTrophy() : create();
-	}
-
-	private static LayerDefinition create() {
+	public static LayerDefinition create() {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
@@ -167,119 +157,8 @@ public class QuestRamModel<T extends QuestRam> extends HierarchicalModel<T> impl
 		return LayerDefinition.create(meshdefinition, 128, 128);
 	}
 
-	private static LayerDefinition createJappaModel() {
-		MeshDefinition meshdefinition = new MeshDefinition();
-		PartDefinition partdefinition = meshdefinition.getRoot();
-
-		//these ARE actually the horns, theyre just called the head so its rendered properly as a trophy
-		var horns = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
-				.texOffs(64, 0)
-				.addBox(-9.0F, -11.0F, -1.0F, 4.0F, 10.0F, 10.0F)
-				.texOffs(48, 0)
-				.addBox(-13.0F, -11.0F, 5.0F, 4.0F, 4.0F, 4.0F)
-				.texOffs(92, 0)
-				.addBox(5.0F, -11.0F, -1.0F, 4.0F, 10.0F, 10.0F)
-				.texOffs(110, 0)
-				.addBox(9.0F, -11.0F, 5.0F, 4.0F, 4.0F, 4.0F),
-			PartPose.offset(0.0F, -10.0F, -8.0F));
-
-		horns.addOrReplaceChild("real_head", CubeListBuilder.create()
-				.texOffs(74, 70)
-				.addBox(-6.0F, -2.0F, -13.0F, 12.0F, 8.0F, 15.0F)
-				.texOffs(42, 71)
-				.addBox(-6.0F, -5.0F, -9.0F, 12.0F, 3.0F, 11.0F),
-			PartPose.offsetAndRotation(0.0F, -4.0F, 3.0F, 0.4363323129985824F, 0.0F, 0.0F));
-
-		partdefinition.addOrReplaceChild("body", CubeListBuilder.create(), PartPose.ZERO);
-
-		partdefinition.addOrReplaceChild("front_torso", CubeListBuilder.create()
-				.texOffs(0, 0)
-				.addBox(-8.0F, -7.0F, -6.0F, 16.0F, 14.0F, 16.0F),
-			PartPose.offset(0.0F, 0.0F, 0.0F));
-
-		partdefinition.addOrReplaceChild("neck", CubeListBuilder.create()
-				.texOffs(84, 93)
-				.addBox(-5.0F, -11.0F, -2.0F, 10.0F, 12.0F, 12.0F),
-			PartPose.offsetAndRotation(0.0F, 2.0F, -3.0F, 0.6108652381980153F, 0.0F, 0.0F));
-
-		partdefinition.addOrReplaceChild("back_torso", CubeListBuilder.create()
-				.texOffs(0, 30)
-				.addBox(-8.0F, -7.0F, 8.0F, 16.0F, 14.0F, 16.0F),
-			PartPose.offset(0.0F, 0.0F, 6.0F));
-
-		partdefinition.addOrReplaceChild("right_front_leg", CubeListBuilder.create()
-				.texOffs(0, 60)
-				.addBox(-3.0F, 2.0F, -3.0F, 6.0F, 16.0F, 6.0F)
-				.texOffs(54, 20)
-				.addBox(-4.0F, -4.0F, -5.0F, 8.0F, 10.0F, 10.0F),
-			PartPose.offset(-5.0F, 6.0F, 0.0F));
-
-		partdefinition.addOrReplaceChild("left_front_leg", CubeListBuilder.create()
-				.texOffs(24, 60)
-				.addBox(-3.0F, 2.0F, -3.0F, 6.0F, 16.0F, 6.0F)
-				.texOffs(90, 20)
-				.addBox(-4.0F, -4.0F, -5.0F, 8.0F, 10.0F, 10.0F),
-			PartPose.offset(5.0F, 6.0F, 0.0F));
-
-		partdefinition.addOrReplaceChild("right_back_leg", CubeListBuilder.create()
-				.texOffs(0, 82)
-				.addBox(7.0F, 2.0F, -5.0F, 6.0F, 16.0F, 6.0F)
-				.texOffs(54, 50)
-				.addBox(6.0F, -4.0F, -7.0F, 8.0F, 10.0F, 10.0F),
-			PartPose.offset(-16.0F, 6.0F, 0.0F));
-
-		partdefinition.addOrReplaceChild("left_back_leg", CubeListBuilder.create()
-				.texOffs(24, 82)
-				.addBox(-13.0F, 2.0F, -5.0F, 6.0F, 16.0F, 6.0F)
-				.texOffs(90, 50)
-				.addBox(-14.0F, -4.0F, -7.0F, 8.0F, 10.0F, 10.0F),
-			PartPose.offset(16.0F, 6.0F, 0.0F));
-
-		for (int i = 0; i < 16; i++) {
-			partdefinition.addOrReplaceChild("segment" + i, CubeListBuilder.create()
-					.texOffs(0, 112)
-					.addBox(-8.0F, -7.0F, 8.0F, 16.0F, 14.0F, 2.0F),
-				PartPose.offset(0.0F, 0.0F, 10.0F));
-		}
-
-		return LayerDefinition.create(meshdefinition, 128, 128);
-	}
-
-	//the rotation of the original head prevents me from making a proper trophy so it needs its own model
-	private static LayerDefinition createJappaTrophy() {
-		MeshDefinition meshdefinition = new MeshDefinition();
-		PartDefinition partdefinition = meshdefinition.getRoot();
-
-		var head = partdefinition.addOrReplaceChild("head",
-			CubeListBuilder.create()
-				.texOffs(74, 70)
-				.addBox(-6.0F, -4.0F, -10.0F, 12.0F, 8.0F, 15.0F)
-				.texOffs(42, 71)
-				.addBox(-6.0F, -7.0F, -6.0F, 12.0F, 3.0F, 11.0F),
-			PartPose.offset(0.0F, -4.0F, 0.0F));
-
-		head.addOrReplaceChild("horns",
-			CubeListBuilder.create()
-				.texOffs(64, 0)
-				.addBox(-9.0F, -6.0F, -1.0F, 4.0F, 10.0F, 10.0F)
-				.texOffs(48, 0)
-				.addBox(-13.0F, -6.0F, 5.0F, 4.0F, 4.0F, 4.0F)
-				.texOffs(92, 0)
-				.addBox(5.0F, -6.0F, -1.0F, 4.0F, 10.0F, 10.0F)
-				.texOffs(110, 0)
-				.addBox(9.0F, -6.0F, 5.0F, 4.0F, 4.0F, 4.0F),
-			PartPose.offsetAndRotation(0.0F, -4.0F, 0.0F, -0.4363323129985824F, 0.0F, 0.0F));
-
-		return LayerDefinition.create(meshdefinition, 128, 128);
-	}
-
 	private static String getSegmentName(int num) {
 		return "segment" + num;
-	}
-
-	@Override
-	public ModelPart root() {
-		return this.root;
 	}
 
 	@Override
@@ -288,47 +167,42 @@ public class QuestRamModel<T extends QuestRam> extends HierarchicalModel<T> impl
 
 		for (int i = 0; i < 16; i++) {
 			final int dyeRgb = Sheep.getColor(DyeColor.byId(i));
-			segments[i].render(stack, builder, light, overlay, dyeRgb);
+			this.segments[i].render(stack, builder, light, overlay, dyeRgb);
 		}
 	}
 
 	@Override
-	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		this.head.xRot = headPitch * Mth.DEG_TO_RAD;
-		this.head.yRot = netHeadYaw * Mth.DEG_TO_RAD;
+	public void setupAnim(QuestingRamRenderState state) {
+		this.resetPose();
+		super.setupAnim(state);
+		this.head.xRot = state.xRot * Mth.DEG_TO_RAD;
+		this.head.yRot = state.yRot * Mth.DEG_TO_RAD;
 
-		if (!JappaPackReloadListener.INSTANCE.isJappaPackLoaded()) {
-			this.neck.yRot = this.head.yRot;
-		}
+		this.neck.yRot = this.head.yRot;
 
-		this.leftFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount * 0.5F;
-		this.rightFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F + Mth.PI) * 1.4F * limbSwingAmount * 0.5F;
-		this.leftBackLeg.xRot = Mth.cos(limbSwing * 0.6662F + Mth.PI) * 1.4F * limbSwingAmount * 0.5F;
-		this.rightBackLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount * 0.5F;
-	}
-
-	@Override
-	public void prepareMobModel(T entity, float limbSwing, float limbSwingAmount, float partialTicks) {
+		this.leftFrontLeg.xRot = Mth.cos(state.walkAnimationPos * 0.6662F) * 1.4F * state.walkAnimationSpeed * 0.5F;
+		this.rightFrontLeg.xRot = Mth.cos(state.walkAnimationPos * 0.6662F + Mth.PI) * 1.4F * state.walkAnimationSpeed * 0.5F;
+		this.leftBackLeg.xRot = Mth.cos(state.walkAnimationPos * 0.6662F + Mth.PI) * 1.4F * state.walkAnimationSpeed * 0.5F;
+		this.rightBackLeg.xRot = Mth.cos(state.walkAnimationPos * 0.6662F) * 1.4F * state.walkAnimationSpeed * 0.5F;
 
 		// how many colors should we display?
-		int count = entity.countColorsSet();
-		boolean jappa = JappaPackReloadListener.INSTANCE.isJappaPackLoaded();
+		int count = state.countColorsSet();
 
-		this.head.z = -count - (jappa ? 20 : 11);
-		this.neck.z = -count - (jappa ? 17 : 11);
-		this.frontTorso.z = -count - (jappa ? 12 : 0);
-		this.backTorso.z = count - (jappa ? 10 : 0);
-		this.leftBackLeg.z = 9 + count;
-		this.rightBackLeg.z = 9 + count;
-		this.leftFrontLeg.z = -11 - count;
-		this.rightFrontLeg.z = -11 - count;
+		this.head.z -= count;
+		this.neck.z -= count;
+		this.frontTorso.z -= count;
+		this.backTorso.z += count;
+		this.leftBackLeg.z += count;
+		this.rightBackLeg.z += count;
+		this.leftFrontLeg.z -= count;
+		this.rightFrontLeg.z -= count;
 
 		// set up the colors displayed in color order
-		int segmentOffset = 0;
+		float segmentOffset = this.segments[0].z;
 		for (int color : this.colorOrder) {
-			if (entity.isColorPresent(DyeColor.byId(color))) {
+			if (state.isColorPresent(DyeColor.byId(color))) {
 				this.segments[color].visible = true;
-				this.segments[color].z = segmentOffset - count - (jappa ? 10 : 0);
+				this.segments[color].z += segmentOffset - count;
 
 				segmentOffset += 2;
 			} else {
@@ -346,9 +220,7 @@ public class QuestRamModel<T extends QuestRam> extends HierarchicalModel<T> impl
 	@Override
 	public void renderTrophy(PoseStack stack, MultiBufferSource buffer, int light, int overlay, int color, ItemDisplayContext context) {
 		stack.scale(0.67F, 0.67F, 0.67F);
-		if (!JappaPackReloadListener.INSTANCE.isJappaPackLoaded()) {
-			stack.translate(0.0F, 0.5F, context != ItemDisplayContext.NONE ? 0.5F : 0.67F);
-		}
+		stack.translate(0.0F, 0.5F, context != ItemDisplayContext.NONE ? 0.5F : 0.67F);
 
 		VertexConsumer consumer = buffer.getBuffer(RenderType.entityCutoutNoCull(QuestRamRenderer.TEXTURE));
 		this.head.render(stack, consumer, light, overlay, color);

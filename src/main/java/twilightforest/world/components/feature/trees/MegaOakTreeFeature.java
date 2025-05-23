@@ -100,7 +100,7 @@ public class MegaOakTreeFeature extends CanopyTreeFeature {
 					BlockPos.MutableBlockPos bugPos = new BlockPos.MutableBlockPos();
 					bugPos.set(pos.offset(direction == Direction.EAST ? 1 : 0, rand.nextInt(treeHeight), direction == Direction.SOUTH ? 1 : 0));
 					bugPos.move(direction).move(axis == Direction.Axis.Z ? rand.nextInt(2) : 0, 0, axis == Direction.Axis.X ? rand.nextInt(2) : 0);
-					if (!world.getBlockState(bugPos).isSolidRender(world, bugPos)) {
+					if (!world.getBlockState(bugPos).isSolidRender()) {
 						BlockState bugState = TFBlocks.FIREFLY.get().defaultBlockState().setValue(DirectionalBlock.FACING, direction);
 						this.setBlock(world, bugPos, bugState);
 					}

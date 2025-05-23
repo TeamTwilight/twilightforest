@@ -10,7 +10,7 @@ public record Enforcement(TriConsumer<Player, ServerLevel, Restriction> consumer
 
 	public static void enforceBiomeProgression(Player player, ServerLevel level) {
 		Restriction.getRestrictionForBiome(level.getBiome(player.blockPosition()).value(), player).ifPresent(restriction -> {
-			Enforcement enforcement = TFRegistries.ENFORCEMENT.get(restriction.enforcement().location());
+			Enforcement enforcement = TFRegistries.ENFORCEMENT.getValue(restriction.enforcement().location());
 			if (enforcement != null) {
 				enforcement.consumer().accept(player, level, restriction);
 				if (restriction.hintStructureKey() != null) {

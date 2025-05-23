@@ -2,18 +2,10 @@
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
   "key": {
-    "#": {
-      "item": "twilightforest:encased_towerwood"
-    },
-    "^": {
-      "item": "twilightforest:fire_jet"
-    },
-    "u": {
-      "item": "minecraft:lava_bucket"
-    },
-    "∴": {
-      "tag": "c:dusts/redstone"
-    }
+    "#": "twilightforest:encased_towerwood",
+    "^": "twilightforest:fire_jet",
+    "u": "minecraft:lava_bucket",
+    "∴": "#c:dusts/redstone"
   },
   "pattern": [
     "#∴#",

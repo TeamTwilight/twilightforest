@@ -21,17 +21,17 @@ import java.util.Map;
 
 @SuppressWarnings("deprecation")
 public class BakedMultiPartRenderers {
-	private static final Map<ResourceLocation, LazyLoadedValue<EntityRenderer<?>>> renderers = new HashMap<>();
+	private static final Map<ResourceLocation, LazyLoadedValue<EntityRenderer<?, ?>>> renderers = new HashMap<>();
 
 	public static void bakeMultiPartRenderers(EntityRendererProvider.Context context) {
 		renderers.put(TFPart.RENDERER, new LazyLoadedValue<>(() -> new NoopRenderer<>(context)));
-		renderers.put(HydraHead.RENDERER, new LazyLoadedValue<>(() -> new HydraHeadRenderer<>(context, new HydraHeadModel<>(context.bakeLayer(TFModelLayers.HYDRA_HEAD)))));
-		renderers.put(HydraNeck.RENDERER, new LazyLoadedValue<>(() -> new HydraNeckRenderer<>(context, new HydraNeckModel(context.bakeLayer(TFModelLayers.HYDRA_NECK)))));
-		renderers.put(SnowQueenIceShield.RENDERER, new LazyLoadedValue<>(() -> new SnowQueenIceShieldRenderer<>(context)));
-		renderers.put(NagaSegment.RENDERER, new LazyLoadedValue<>(() -> new NagaSegmentRenderer<>(context, new NagaModel<>(context.bakeLayer(TFModelLayers.NAGA_BODY)))));
+		renderers.put(HydraHead.RENDERER, new LazyLoadedValue<>(() -> new HydraHeadRenderer(context, new HydraHeadModel(context.bakeLayer(TFModelLayers.HYDRA_HEAD)))));
+		renderers.put(HydraNeck.RENDERER, new LazyLoadedValue<>(() -> new HydraNeckRenderer(context, new HydraNeckModel(context.bakeLayer(TFModelLayers.HYDRA_NECK)))));
+		renderers.put(SnowQueenIceShield.RENDERER, new LazyLoadedValue<>(() -> new SnowQueenIceShieldRenderer(context)));
+		renderers.put(NagaSegment.RENDERER, new LazyLoadedValue<>(() -> new NagaSegmentRenderer(context, new NagaModel<>(context.bakeLayer(TFModelLayers.NAGA_BODY)))));
 	}
 
-	public static EntityRenderer<?> lookup(ResourceLocation location) {
+	public static EntityRenderer<?, ?> lookup(ResourceLocation location) {
 		return renderers.get(location).get();
 	}
 }

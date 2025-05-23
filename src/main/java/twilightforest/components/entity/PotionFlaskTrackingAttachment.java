@@ -49,4 +49,9 @@ public class PotionFlaskTrackingAttachment {
 			TFAdvancements.DRINK_FROM_FLASK.get().trigger(player, this.dosesDrank, Mth.floor((float) (player.level().getGameTime() - this.lastTimeStarted) / 20L), this.lastUsedPotion);
 		}
 	}
+
+	public void resetDoses() {
+		this.dosesDrank = 0;
+		this.lastUsedPotion = null;
+	}
 }

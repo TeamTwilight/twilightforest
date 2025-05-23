@@ -1,5 +1,4 @@
 {
-  "parent": "builtin/entity",
   "gui_light": "front",
   "textures": {
     "particle": "twilightforest:block/towerwood"

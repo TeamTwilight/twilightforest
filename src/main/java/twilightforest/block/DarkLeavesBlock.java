@@ -19,7 +19,7 @@ public class DarkLeavesBlock extends LeavesBlock {
 	}
 
 	@Override
-	public int getLightBlock(BlockState state, BlockGetter getter, BlockPos pos) {
+	public int getLightBlock(BlockState state) {
 		return 15;
 	}
 }

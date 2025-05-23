@@ -4,6 +4,8 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -67,14 +69,19 @@ public class ThrownWep extends TFThrowable {
 	}
 
 	@Override
+	protected boolean canHitEntity(Entity target) {
+		if (target instanceof KnightPhantom || target == this.getOwner()) {
+			return false;
+		}
+		return super.canHitEntity(target);
+	}
+
+	@Override
 	protected void onHitEntity(EntityHitResult result) {
 		super.onHitEntity(result);
-		if (result.getEntity() instanceof KnightPhantom || result.getEntity() == this.getOwner()) {
-			return;
-		}
 
-		if (!this.level().isClientSide()) {
-			result.getEntity().hurt(TFDamageTypes.getDamageSource(this.level(), this.getItem().getItem() == TFItems.KNIGHTMETAL_PICKAXE.get() ? TFDamageTypes.THROWN_PICKAXE : TFDamageTypes.THROWN_AXE), this.projectileDamage);
+		if (this.level() instanceof ServerLevel level) {
+			result.getEntity().hurtServer(level, level.damageSources().source(this.getItem().getItem() == TFItems.KNIGHTMETAL_PICKAXE.get() ? TFDamageTypes.THROWN_PICKAXE : TFDamageTypes.THROWN_AXE), this.projectileDamage);
 		}
 	}
 

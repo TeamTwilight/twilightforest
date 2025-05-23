@@ -2,7 +2,10 @@ package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LadderBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -24,15 +27,15 @@ public class IronLadderBlock extends LadderBlock {
 	}
 
 	@Override
-	public BlockState updateShape(BlockState state, Direction direction, BlockState facingState, LevelAccessor accessor, BlockPos currentPos, BlockPos facingPos) {
+	protected BlockState updateShape(BlockState state, LevelReader reader, ScheduledTickAccess access, BlockPos pos, Direction direction, BlockPos facingPos, BlockState facingState, RandomSource random) {
 		Direction facing = state.getValue(LadderBlock.FACING);
-		BlockState superUpdated = super.updateShape(state, direction, facingState, accessor, currentPos, facingPos);
+		BlockState superUpdated = super.updateShape(state, reader, access, pos, direction, facingPos, facingState, random);
 		if (!superUpdated.is(this)) {
 			return superUpdated;
 		}
 
-		BlockState leftState = accessor.getBlockState(currentPos.relative(facing.getCounterClockWise()));
-		BlockState rightState = accessor.getBlockState(currentPos.relative(facing.getClockWise()));
+		BlockState leftState = reader.getBlockState(pos.relative(facing.getCounterClockWise()));
+		BlockState rightState = reader.getBlockState(pos.relative(facing.getClockWise()));
 
 		return superUpdated.setValue(LEFT, leftState.getBlock() instanceof IronLadderBlock && leftState.getValue(LadderBlock.FACING) == facing)
 			.setValue(RIGHT, rightState.getBlock() instanceof IronLadderBlock && rightState.getValue(LadderBlock.FACING) == facing);

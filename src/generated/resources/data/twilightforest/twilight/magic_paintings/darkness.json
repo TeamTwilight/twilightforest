@@ -1,12 +1,18 @@
 {
+  "author": {
+    "translate": "magic_painting.twilightforest.darkness.author"
+  },
+  "back_texture": "twilightforest:magic_paintings/back",
   "height": 32,
   "layers": [
     {
       "fullbright": true,
+      "local_lighting": true,
       "path": "background"
     },
     {
       "fullbright": true,
+      "local_lighting": true,
       "opacity_modifier": {
         "type": "sine_time",
         "invert": false,
@@ -24,14 +30,17 @@
     },
     {
       "fullbright": false,
+      "local_lighting": true,
       "path": "terrain"
     },
     {
       "fullbright": true,
+      "local_lighting": true,
       "path": "gems"
     },
     {
       "fullbright": true,
+      "local_lighting": true,
       "opacity_modifier": {
         "type": "day_time",
         "from": 1.0,
@@ -45,6 +54,7 @@
     },
     {
       "fullbright": true,
+      "local_lighting": true,
       "opacity_modifier": {
         "type": "lightning",
         "invert": false,
@@ -56,6 +66,7 @@
     },
     {
       "fullbright": false,
+      "local_lighting": false,
       "path": "frame"
     }
   ],

@@ -1,6 +1,7 @@
 {
 	"ambientocclusion": false,
-	"textures": {
+  "parent": "block/block",
+  "textures": {
 		"all": "twilightforest:block/fiery_block_inner",
 		"over": "twilightforest:block/fiery_pattern",
 		"particle": "twilightforest:block/fiery_block"
@@ -10,53 +11,29 @@
 			"from": [1, 1, 1],
 			"to": [15, 15, 15],
 			"shade": false,
-			"faces": {
-				"north": {"uv": [1, 1, 15, 15], "neoforge_data": { "block_light": 15, "sky_light": 15 }, "texture": "#all", "tintindex": 0},
-				"east": {"uv": [1, 1, 15, 15], "neoforge_data": { "block_light": 15, "sky_light": 15 }, "texture": "#all", "tintindex": 0},
-				"south": {"uv": [1, 1, 15, 15], "neoforge_data": { "block_light": 15, "sky_light": 15 }, "texture": "#all", "tintindex": 0},
-				"west": {"uv": [1, 1, 15, 15], "neoforge_data": { "block_light": 15, "sky_light": 15 }, "texture": "#all", "tintindex": 0},
-				"up": {"uv": [1, 1, 15, 15], "neoforge_data": { "block_light": 15, "sky_light": 15 }, "texture": "#all", "tintindex": 0},
-				"down": {"uv": [1, 1, 15, 15], "neoforge_data": { "block_light": 15, "sky_light": 15 }, "texture": "#all", "tintindex": 0}
+      "light_emission": 15,
+      "faces": {
+				"north": {"uv": [1, 1, 15, 15], "texture": "#all", "tintindex": 0},
+				"east": {"uv": [1, 1, 15, 15], "texture": "#all", "tintindex": 0},
+				"south": {"uv": [1, 1, 15, 15], "texture": "#all", "tintindex": 0},
+				"west": {"uv": [1, 1, 15, 15], "texture": "#all", "tintindex": 0},
+				"up": {"uv": [1, 1, 15, 15], "texture": "#all", "tintindex": 0},
+				"down": {"uv": [1, 1, 15, 15], "texture": "#all", "tintindex": 0}
 			}
 		},
 		{
 			"from": [15.99, 15.99, 15.99],
 			"to": [0.01, 0.01, 0.01],
 			"shade": false,
-			"faces": {
-				"north": {"uv": [15.99, 15.99, 0.01, 0.01], "neoforge_data": { "block_light": 15, "sky_light": 15 }, "texture": "#over", "cullface": "south", "tintindex": 1},
-				"east": {"uv": [15.99, 15.99, 0.01, 0.01], "neoforge_data": { "block_light": 15, "sky_light": 15 }, "texture": "#over", "cullface": "west", "tintindex": 1},
-				"south": {"uv": [15.99, 15.99, 0.01, 0.01], "neoforge_data": { "block_light": 15, "sky_light": 15 }, "texture": "#over", "cullface": "north", "tintindex": 1},
-				"west": {"uv": [15.99, 15.99, 0.01, 0.01], "neoforge_data": { "block_light": 15, "sky_light": 15 }, "texture": "#over", "cullface": "east", "tintindex": 1},
-				"up": {"uv": [15.99, 15.99, 0.01, 0.01], "neoforge_data": { "block_light": 15, "sky_light": 15 }, "texture": "#over", "cullface": "down", "tintindex": 1},
-				"down": {"uv": [15.99, 15.99, 0.01, 0.01], "neoforge_data": { "block_light": 15, "sky_light": 15 }, "texture": "#over", "cullface": "up", "tintindex": 1}
+      "light_emission": 15,
+      "faces": {
+				"north": {"uv": [15.99, 15.99, 0.01, 0.01], "texture": "#over", "cullface": "south", "tintindex": 1},
+				"east": {"uv": [15.99, 15.99, 0.01, 0.01], "texture": "#over", "cullface": "west", "tintindex": 1},
+				"south": {"uv": [15.99, 15.99, 0.01, 0.01], "texture": "#over", "cullface": "north", "tintindex": 1},
+				"west": {"uv": [15.99, 15.99, 0.01, 0.01], "texture": "#over", "cullface": "east", "tintindex": 1},
+				"up": {"uv": [15.99, 15.99, 0.01, 0.01], "texture": "#over", "cullface": "down", "tintindex": 1},
+				"down": {"uv": [15.99, 15.99, 0.01, 0.01], "texture": "#over", "cullface": "up", "tintindex": 1}
 			}
 		}
-	],
-	"display": {
-		"thirdperson_righthand": {
-			"rotation": [75, 45, 0],
-			"translation": [0, 2.5, 0],
-			"scale": [0.375, 0.375, 0.375]
-		},
-		"firstperson_righthand": {
-			"rotation": [0, 45, 0],
-			"scale": [0.4, 0.4, 0.4]
-		},
-		"firstperson_lefthand": {
-			"rotation": [0, 225, 0],
-			"scale": [0.4, 0.4, 0.4]
-		},
-		"ground": {
-			"translation": [0, 3, 0],
-			"scale": [0.25, 0.25, 0.25]
-		},
-		"gui": {
-			"rotation": [30, 225, 0],
-			"scale": [0.625, 0.625, 0.625]
-		},
-		"fixed": {
-			"scale": [0.5, 0.5, 0.5]
-		}
-	}
+	]
 }

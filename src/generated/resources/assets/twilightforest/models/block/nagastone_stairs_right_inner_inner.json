@@ -1,0 +1,9 @@
+{
+  "parent": "twilightforest:block/util/bisected_inner_stairs",
+  "textures": {
+    "bottom": "twilightforest:block/stone_tiles",
+    "middle": "twilightforest:block/nagastone_bare",
+    "side": "twilightforest:block/etched_nagastone_right",
+    "top": "twilightforest:block/stone_tiles"
+  }
+}

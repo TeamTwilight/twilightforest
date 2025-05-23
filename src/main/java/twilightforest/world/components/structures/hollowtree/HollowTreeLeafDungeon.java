@@ -45,7 +45,6 @@ public class HollowTreeLeafDungeon extends HollowTreePiece {
 	/**
 	 * Make a blob of leaves
 	 */
-	@SuppressWarnings("this-escape")
 	protected HollowTreeLeafDungeon(int index, int x, int y, int z, int radius, BlockStateProvider wood, BlockStateProvider leaves, BlockStateProvider inside, BlockStateProvider lootContainer, ResourceKey<LootTable> lootTable, Holder<EntityType<?>> monster, RandomSource random) {
 		super(TFStructurePieceTypes.TFHTLD.value(), index, new BoundingBox(x - radius, y - radius, z - radius, x + radius, y + radius, z + radius));
 
@@ -79,8 +78,8 @@ public class HollowTreeLeafDungeon extends HollowTreePiece {
 		this.lootTable = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.parse(tag.getString("loot_table")));
 
 		ResourceKey<EntityType<?>> dungeonMonster = ResourceKey.create(Registries.ENTITY_TYPE, ResourceLocation.parse(tag.getString("monster")));
-		this.monster = context.registryAccess().registry(Registries.ENTITY_TYPE)
-			.<Holder<EntityType<?>>>flatMap(reg -> reg.getHolder(dungeonMonster))
+		this.monster = context.registryAccess().lookup(Registries.ENTITY_TYPE)
+			.<Holder<EntityType<?>>>flatMap(reg -> reg.get(dungeonMonster))
 			.orElse(HollowTreePiece.DEFAULT_DUNGEON_MONSTER);
 	}
 

@@ -1,21 +1,21 @@
 package twilightforest.entity.projectile;
 
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.ItemSupplier;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
 import twilightforest.entity.boss.Lich;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
 
-public class LichBomb extends TFThrowable implements ItemSupplier {
+public class LichBomb extends TFThrowable {
 
 	public LichBomb(EntityType<? extends LichBomb> type, Level world) {
 		super(type, world);
@@ -37,9 +37,9 @@ public class LichBomb extends TFThrowable implements ItemSupplier {
 			double sy = 0.5 * (this.random.nextDouble() - this.random.nextDouble()) + this.getDeltaMovement().y();
 			double sz = 0.5 * (this.random.nextDouble() - this.random.nextDouble()) + this.getDeltaMovement().z();
 
-			double dx = this.getX() + sx;
-			double dy = this.getY() + sy;
-			double dz = this.getZ() + sz;
+			double dx = this.getX() - sx;
+			double dy = this.getY() - sy;
+			double dz = this.getZ() - sz;
 
 			this.level().addParticle(ParticleTypes.FLAME, dx, dy, dz, sx * -0.25, sy * -0.25, sz * -0.25);
 		}
@@ -61,9 +61,7 @@ public class LichBomb extends TFThrowable implements ItemSupplier {
 	}
 
 	@Override
-	public boolean hurt(DamageSource source, float amount) {
-		super.hurt(source, amount);
-
+	public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
 		if (source.getDirectEntity() != null) {
 			if (!source.is(DamageTypeTags.IS_EXPLOSION))
 				this.explode();
@@ -75,7 +73,7 @@ public class LichBomb extends TFThrowable implements ItemSupplier {
 
 	private void explode() {
 		if (!this.level().isClientSide()) {
-			this.level().explode(this, TFDamageTypes.getDamageSource(this.level(), TFDamageTypes.LICH_BOMB, TFEntities.LICH.get()), null, this.getX(), this.getY(), this.getZ(), 2.0F, false, Level.ExplosionInteraction.NONE);
+			this.level().explode(this, TFDamageTypes.getIndirectEntityDamageSource(this.level(), TFDamageTypes.LICH_BOMB, this, this.getOwner(), TFEntities.LICH.get()), null, this.getX(), this.getY(), this.getZ(), 2.0F, false, Level.ExplosionInteraction.NONE);
 			this.discard();
 		}
 	}
@@ -86,22 +84,19 @@ public class LichBomb extends TFThrowable implements ItemSupplier {
 	}
 
 	@Override
-	protected void onHitBlock(BlockHitResult result) {
-		super.onHitBlock(result);
+	protected void onHit(HitResult result) {
+		super.onHit(result);
 		this.explode();
 	}
 
 	@Override
-	protected void onHitEntity(EntityHitResult result) {
-		super.onHitEntity(result);
-		if (result.getEntity() instanceof LichBolt || result.getEntity() instanceof LichBomb || result.getEntity() instanceof Lich) {
-			return;
-		}
-		this.explode();
+	protected boolean canHitEntity(Entity target) {
+		if (target instanceof Lich lich && (lich.getTeleportInvisibility() > 0 || !(this.getOwner() instanceof Player))) return false;
+		return !(target instanceof LichBomb) && !(target instanceof Lich) && !(target instanceof LichBolt) && !(target instanceof TwilightWandBolt);
 	}
 
 	@Override
-	public ItemStack getItem() {
-		return new ItemStack(Items.MAGMA_CREAM);
+	public boolean ignoreExplosion(Explosion explosion) {
+		return true;
 	}
 }

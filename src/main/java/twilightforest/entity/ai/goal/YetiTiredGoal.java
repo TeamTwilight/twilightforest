@@ -12,7 +12,6 @@ public class YetiTiredGoal extends Goal {
 	private final int tiredDuration;
 	private int tiredTimer;
 
-	@SuppressWarnings("this-escape")
 	public YetiTiredGoal(AlphaYeti alpha, int i) {
 		this.yeti = alpha;
 		this.tiredDuration = i;

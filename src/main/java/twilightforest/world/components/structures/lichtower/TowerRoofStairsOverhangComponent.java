@@ -22,7 +22,6 @@ public class TowerRoofStairsOverhangComponent extends TowerRoofComponent {
 		super(TFStructurePieceTypes.TFLTRStO.get(), nbt);
 	}
 
-	@SuppressWarnings("this-escape")
 	public TowerRoofStairsOverhangComponent(int i, TowerWingComponent wing, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFLTRStO.get(), i, x, y, z);
 

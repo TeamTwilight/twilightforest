@@ -22,7 +22,7 @@ public class RedThreadModel extends Model {
 	private final ModelPart right;
 
 	public RedThreadModel(ModelPart root) {
-		super(RenderType::entityCutoutNoCull);
+		super(root, RenderType::entityCutoutNoCull);
 		this.center = root.getChild("center");
 		this.up = root.getChild("up");
 		this.down = root.getChild("down");
@@ -60,15 +60,6 @@ public class RedThreadModel extends Model {
 			PartPose.ZERO);
 
 		return LayerDefinition.create(meshdefinition, 16, 16);
-	}
-
-	@Override
-	public void renderToBuffer(PoseStack stack, VertexConsumer consumer, int light, int overlay, int color) {
-		this.center.render(stack, consumer, light, overlay, color);
-		this.up.render(stack, consumer, light, overlay, color);
-		this.down.render(stack, consumer, light, overlay, color);
-		this.left.render(stack, consumer, light, overlay, color);
-		this.right.render(stack, consumer, light, overlay, color);
 	}
 
 	public void renderCenterPiece(PoseStack stack, VertexConsumer consumer, int light) {

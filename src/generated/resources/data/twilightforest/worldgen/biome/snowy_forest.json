@@ -1,7 +1,5 @@
 {
-  "carvers": {
-    "air": "twilightforest:tf_caves"
-  },
+  "carvers": "twilightforest:tf_caves",
   "creature_spawn_probability": 0.05,
   "downfall": 0.9,
   "effects": {
@@ -14,12 +12,18 @@
       "sound": "minecraft:ambient.cave",
       "tick_delay": 6000
     },
-    "music": {
-      "max_delay": 12000,
-      "min_delay": 1200,
-      "replace_current_music": true,
-      "sound": "twilightforest:music.twilightforest.twilight_forest"
-    },
+    "music": [
+      {
+        "data": {
+          "max_delay": 12000,
+          "min_delay": 1200,
+          "replace_current_music": true,
+          "sound": "twilightforest:music.twilightforest.twilight_forest"
+        },
+        "weight": 1
+      }
+    ],
+    "music_volume": 1.0,
     "sky_color": 8421504,
     "water_color": 4159204,
     "water_fog_color": 329011

@@ -1,4 +1,4 @@
-// 1.21.1	2024-11-17T11:00:18.1567621	Twilight Forest Biome Tags
+// 1.21.4	2025-01-18T14:13:37.9265722	Twilight Forest Biome Tags
 de7eae9ce12a34bc9ba7e9b0a080f206b7bf5ab8 data/minecraft/tags/worldgen/biome/has_closer_water_fog.json
 6fcfc9f11967d4486971cf630ce3613738d77290 data/minecraft/tags/worldgen/biome/snow_golem_melts.json
 d465db5120f478c5dbf3e4038d755aaec6ea9eed data/minecraft/tags/worldgen/biome/spawns_cold_variant_frogs.json
@@ -19,9 +19,9 @@ ffed46f1c73aadb1dec87c223b4930163ccd7036 data/twilightforest/tags/worldgen/biome
 5fd1719d0b22f0d7e010f4116f4eb77dee86b226 data/twilightforest/tags/worldgen/biome/valid_hydra_lair_biomes.json
 2a382bb5f70078ea9ba821ce46214def4f712510 data/twilightforest/tags/worldgen/biome/valid_knight_stronghold_biomes.json
 a14f9ef2cc3bd86f97831c44eea5ff0b28102c38 data/twilightforest/tags/worldgen/biome/valid_labyrinth_biomes.json
-1797b950aee9bbbb9744e513efad7c8410e65cbc data/twilightforest/tags/worldgen/biome/valid_lich_tower_biomes.json
+5dbc0593cfefd9710d1e409268dc18f9778ebaf9 data/twilightforest/tags/worldgen/biome/valid_lich_tower_biomes.json
 92b48a1581c1464ce588c770723ace329715d86f data/twilightforest/tags/worldgen/biome/valid_mushroom_tower_biomes.json
-1797b950aee9bbbb9744e513efad7c8410e65cbc data/twilightforest/tags/worldgen/biome/valid_naga_courtyard_biomes.json
+5dbc0593cfefd9710d1e409268dc18f9778ebaf9 data/twilightforest/tags/worldgen/biome/valid_naga_courtyard_biomes.json
 af6fcb99600af8de2062598323e5c7c815ed6946 data/twilightforest/tags/worldgen/biome/valid_quest_grove_biomes.json
 314565d6885146dded331c51c43558f6992cd4f2 data/twilightforest/tags/worldgen/biome/valid_troll_cave_biomes.json
 42495f5d6b52b76067a886c454c134b6e2c18caa data/twilightforest/tags/worldgen/biome/valid_yeti_cave_biomes.json

@@ -42,8 +42,8 @@ public class GiantToolGroupingModifier extends LootModifier {
 
 	@Override
 	protected @NotNull ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
-		if (context.getParam(LootContextParams.THIS_ENTITY) instanceof Player player) {
-			BlockState state = context.getParam(LootContextParams.BLOCK_STATE);
+		if (context.getOptionalParameter(LootContextParams.THIS_ENTITY) instanceof Player player) {
+			BlockState state = context.getParameter(LootContextParams.BLOCK_STATE);
 			if (CONVERSIONS.containsKey(state.getBlock())) { // Should be true but let's double-check
 				var attachment = player.getData(TFDataAttachments.GIANT_PICKAXE_MINING);
 				int blockConversion = attachment.getGiantBlockConversion(); // Get how many conversions are left

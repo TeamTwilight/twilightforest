@@ -4,19 +4,20 @@ import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
+import twilightforest.init.TFParticleType;
 import twilightforest.init.TFSounds;
 
 public class TwilightWandBolt extends TFThrowable {
@@ -25,10 +26,9 @@ public class TwilightWandBolt extends TFThrowable {
 		super(type, world);
 	}
 
-	@SuppressWarnings("this-escape")
 	public TwilightWandBolt(Level world, LivingEntity thrower) {
 		super(TFEntities.WAND_BOLT.get(), world, thrower);
-		this.shootFromRotation(thrower, thrower.getXRot(), thrower.getYRot(), 0, 1.5F, 1.0F);
+		this.setPos(thrower.getEyePosition());
 	}
 
 	public TwilightWandBolt(Level worldIn, double x, double y, double z) {
@@ -43,15 +43,15 @@ public class TwilightWandBolt extends TFThrowable {
 
 	private void makeTrail() {
 		for (int i = 0; i < 5; i++) {
-			double dx = this.getX() + 0.5D * (this.random.nextDouble() - this.random.nextDouble());
-			double dy = this.getY() + 0.5D * (this.random.nextDouble() - this.random.nextDouble());
-			double dz = this.getZ() + 0.5D * (this.random.nextDouble() - this.random.nextDouble());
+			double dx = this.getX() + 0.25D * (this.random.nextDouble() - this.random.nextDouble());
+			double dy = this.getY() + 0.25D * (this.random.nextDouble() - this.random.nextDouble());
+			double dz = this.getZ() + 0.25D * (this.random.nextDouble() - this.random.nextDouble());
 
 			float s1 = ((this.random.nextFloat() * 0.5F) + 0.5F) * 0.17F;  // color
 			float s2 = ((this.random.nextFloat() * 0.5F) + 0.5F) * 0.80F;  // color
 			float s3 = ((this.random.nextFloat() * 0.5F) + 0.5F) * 0.69F;  // color
 
-			this.level().addParticle(ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, s1, s2, s3), dx, dy, dz, 0.0D, 0.0D, 0.0D);
+			this.level().addParticle(ColorParticleOption.create(TFParticleType.MAGIC_EFFECT.get(), s1, s2, s3), dx, dy, dz, 0.0D, 0.0D, 0.0D);
 		}
 	}
 
@@ -61,11 +61,15 @@ public class TwilightWandBolt extends TFThrowable {
 	}
 
 	@Override
+	protected boolean canHitEntity(Entity target) {
+		return super.canHitEntity(target) && !(target instanceof LichBolt) && !(target instanceof LichBomb);
+	}
+
+	@Override
 	public void handleEntityEvent(byte id) {
 		if (id == EntityEvent.DEATH) {
-			ParticleOptions particle = new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(Items.ENDER_PEARL));
 			for (int i = 0; i < 8; i++) {
-				this.level().addParticle(particle, false, this.getX(), this.getY(), this.getZ(), this.random.nextGaussian() * 0.05D, random.nextDouble() * 0.2D, random.nextGaussian() * 0.05D);
+				this.level().addParticle(TFParticleType.TWILIGHT_ORB.get(), this.getX(), this.getY(), this.getZ(), this.random.nextGaussian() * 0.05D, random.nextDouble() * 0.2D, random.nextGaussian() * 0.05D);
 			}
 		} else {
 			super.handleEntityEvent(id);
@@ -75,8 +79,7 @@ public class TwilightWandBolt extends TFThrowable {
 	@Override
 	protected void onHitEntity(EntityHitResult result) {
 		super.onHitEntity(result);
-		if (!this.level().isClientSide()) {
-			result.getEntity().hurt(TFDamageTypes.getIndirectEntityDamageSource(this.level(), TFDamageTypes.TWILIGHT_SCEPTER, this, this.getOwner()), 6);
+		if (this.level() instanceof ServerLevel level && result.getEntity().hurtServer(level, level.damageSources().source(TFDamageTypes.TWILIGHT_SCEPTER, this, this.getOwner()), 6)) {
 			this.level().playSound(null, result.getEntity().blockPosition(), TFSounds.TWILIGHT_SCEPTER_HIT.get(), this.getOwner() != null ? this.getOwner().getSoundSource() : SoundSource.PLAYERS);
 			this.level().broadcastEntityEvent(this, (byte) 3);
 			this.discard();
@@ -94,9 +97,7 @@ public class TwilightWandBolt extends TFThrowable {
 	}
 
 	@Override
-	public boolean hurt(DamageSource source, float amount) {
-		super.hurt(source, amount);
-
+	public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
 		if (!this.level().isClientSide() && source.getEntity() != null) {
 			Vec3 vec3d = source.getEntity().getLookAngle();
 			// reflect faster and more accurately
@@ -108,6 +109,6 @@ public class TwilightWandBolt extends TFThrowable {
 			return true;
 		}
 
-		return false;
+		return super.hurtServer(level, source, amount);
 	}
 }

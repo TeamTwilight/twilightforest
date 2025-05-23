@@ -75,7 +75,7 @@ public class WebFeature extends Feature<NoneFeatureConfiguration> {
 	public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> config) {
 		WorldGenLevel level = config.level();
 		RandomSource random = config.random();
-		BlockPos pos = config.origin().above(random.nextInt(level.getMaxBuildHeight() - config.origin().getY()));
+		BlockPos pos = config.origin().above(random.nextInt(level.getMaxY() - config.origin().getY()));
 		while (pos.getY() > config.origin().getY()) {
 			pos = pos.below();
 			if (isValid(level, pos, random)) {

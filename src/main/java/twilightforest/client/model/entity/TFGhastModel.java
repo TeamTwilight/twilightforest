@@ -1,6 +1,6 @@
 package twilightforest.client.model.entity;
 
-import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
@@ -9,18 +9,17 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.Mob;
+import twilightforest.client.state.TFGhastRenderState;
 
-public class TFGhastModel<T extends Mob> extends HierarchicalModel<T> {
+public class TFGhastModel extends EntityModel<TFGhastRenderState> {
 
 	protected final static int tentacleCount = 9;
-	private final ModelPart root;
 	private final ModelPart body;
 	private final ModelPart[] tentacles = new ModelPart[tentacleCount];
 
 	public TFGhastModel(ModelPart root) {
-		this.root = root;
-		this.body = this.root.getChild("body");
+		super(root);
+		this.body = root.getChild("body");
 
 		for (int i = 0; i < this.tentacles.length; i++) {
 			this.tentacles[i] = this.body.getChild("tentacle_" + i);
@@ -45,11 +44,6 @@ public class TFGhastModel<T extends Mob> extends HierarchicalModel<T> {
 		return LayerDefinition.create(meshdefinition, 64, 32);
 	}
 
-	@Override
-	public ModelPart root() {
-		return this.root;
-	}
-
 	private static void makeTentacle(PartDefinition parent, String name, RandomSource random, int i) {
 		final float length = random.nextInt(7) + 8.0F;
 
@@ -63,14 +57,15 @@ public class TFGhastModel<T extends Mob> extends HierarchicalModel<T> {
 	}
 
 	@Override
-	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(TFGhastRenderState state) {
+		super.setupAnim(state);
 		// wave tentacles
 		for (int i = 0; i < this.tentacles.length; ++i) {
-			this.tentacles[i].xRot = 0.2F * Mth.sin(ageInTicks * 0.3F + i) + 0.4F;
+			this.tentacles[i].xRot = 0.2F * Mth.sin(state.ageInTicks * 0.3F + i) + 0.4F;
 		}
 
 		// make body face what we're looking at
-		this.body.xRot = headPitch * Mth.DEG_TO_RAD;
-		this.body.yRot = netHeadYaw * Mth.DEG_TO_RAD;
+		this.body.xRot = state.xRot * Mth.DEG_TO_RAD;
+		this.body.yRot = state.yRot * Mth.DEG_TO_RAD;
 	}
 }

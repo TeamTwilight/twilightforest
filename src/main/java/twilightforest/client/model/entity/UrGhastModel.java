@@ -14,17 +14,20 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.renderer.entity.UrGhastRenderer;
-import twilightforest.entity.boss.UrGhast;
+import twilightforest.client.state.TFGhastRenderState;
 
-public class UrGhastModel extends TFGhastModel<UrGhast> implements TrophyBlockModel {
+public class UrGhastModel extends TFGhastModel implements TrophyBlockModel {
 
-	private final ModelPart[][] tentacles = new ModelPart[9][4];
-	private final ModelPart body;
+	protected final ModelPart[][] tentacles = new ModelPart[9][4];
+	protected final ModelPart body;
 
 	public UrGhastModel(ModelPart root) {
 		super(root);
 		this.body = root.getChild("body");
+		this.setupTentacles();
+	}
 
+	protected void setupTentacles() {
 		for (int i = 0; i < this.tentacles.length; i++) {
 			this.tentacles[i][0] = this.body.getChild("tentacle_" + i);
 			this.tentacles[i][1] = this.tentacles[i][0].getChild("tentacle_" + i + "_extension");
@@ -51,7 +54,7 @@ public class UrGhastModel extends TFGhastModel<UrGhast> implements TrophyBlockMo
 
 	protected static void makeTentacle(PartDefinition parent, String name, int iteration) {
 
-		var tentacleBase = parent.addOrReplaceChild(name, CubeListBuilder.create()
+		var tentacleBase = parent.addOrReplaceChild(name, CubeListBuilder.create().texOffs(iteration % 3, 0)
 				.addBox(-1.5F, 0.0F, -1.5F, 3.0F, 5.0F, 3.0F),
 			switch (iteration) {
 				case 0 -> PartPose.offset(4.5F, 7.0F, 4.5F);
@@ -69,32 +72,34 @@ public class UrGhastModel extends TFGhastModel<UrGhast> implements TrophyBlockMo
 				}
 			});
 
+
+
 		var tentacleExtension = tentacleBase.addOrReplaceChild(name + "_extension", CubeListBuilder.create()
-				.texOffs(0, 3)
+				.texOffs(iteration % 4, 0)
 				.addBox(-1.5F, 1.0F, -1.5F, 3.0F, 4.0F, 3.0F),
 			PartPose.offset(0.0F, 4.0F, 0.0F));
 
 		var tentacleExtension2 = tentacleExtension.addOrReplaceChild(name + "_extension_2", CubeListBuilder.create()
-				.texOffs(0, 9)
+				.texOffs(iteration % 4, 4)
 				.addBox(-1.5F, 1.0F, -1.5F, 3.0F, 4.0F, 3.0F),
 			PartPose.offset(0.0F, 4.0F, 0.0F));
 
 		tentacleExtension2.addOrReplaceChild(name + "_tip", CubeListBuilder.create()
-				.texOffs(0, 9)
+				.texOffs(iteration % 4, 9)
 				.addBox(-1.5F, 1.0F, -1.5F, 3.0F, 4.0F, 3.0F),
 			PartPose.offset(0.0F, 4.0F, 0.0F));
 
 	}
 
 	@Override
-	public void setupAnim(UrGhast entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+	public void setupAnim(TFGhastRenderState state) {
+		super.setupAnim(state);
 
 		// wave tentacles
-		this.waveTentacles(limbSwingAmount, ageInTicks);
+		this.waveTentacles(state.walkAnimationSpeed, state.ageInTicks);
 	}
 
-	private void waveTentacles(float limbSwingAmount, float ageInTicks) {
+	protected void waveTentacles(float limbSwingAmount, float ageInTicks) {
 		for (int i = 0; i < this.tentacles.length; ++i) {
 
 			float wiggle = Math.min(limbSwingAmount, 0.6F);

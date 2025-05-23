@@ -23,7 +23,7 @@ import twilightforest.init.TFBiomes;
 import twilightforest.init.TFConfiguredFeatures;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.BoundingBoxUtils;
-import twilightforest.world.components.structures.StructureSpeleothemConfig;
+import twilightforest.world.components.spelothem.StructureSpeleothemConfig;
 
 import java.util.function.Predicate;
 
@@ -34,7 +34,6 @@ public class TrollCaveGardenComponent extends TrollCaveMainComponent {
 		super(TFStructurePieceTypes.TFTCGard.get(), ctx, nbt);
 	}
 
-	@SuppressWarnings("this-escape")
 	public TrollCaveGardenComponent(int index, int x, int y, int z, int caveSize, int caveHeight, Direction direction, Holder.Reference<StructureSpeleothemConfig> speleothemConfig) {
 		super(TFStructurePieceTypes.TFTCGard.get(), index, x, y, z, speleothemConfig);
 		this.size = caveSize;
@@ -50,8 +49,8 @@ public class TrollCaveGardenComponent extends TrollCaveMainComponent {
 
 	@Override
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		Registry<Biome> biomeRegistry = world.registryAccess().registryOrThrow(Registries.BIOME);
-		Predicate<Biome> highlands = biome -> biome == biomeRegistry.get(TFBiomes.HIGHLANDS) || biome == biomeRegistry.get(TFBiomes.HIGHLANDS_UNDERGROUND);
+		Registry<Biome> biomeRegistry = world.registryAccess().lookupOrThrow(Registries.BIOME);
+		Predicate<Biome> highlands = biome -> biome == biomeRegistry.getValue(TFBiomes.HIGHLANDS) || biome == biomeRegistry.getValue(TFBiomes.HIGHLANDS_UNDERGROUND);
 		if (this.isBoundingBoxOutsideBiomes(world, highlands, blockPos)) {
 			return;
 		}
@@ -108,7 +107,7 @@ public class TrollCaveGardenComponent extends TrollCaveMainComponent {
 
 		BlockPos pos = new BlockPos(dx, dy, dz);
 		if (sbb.isInside(pos)) {
-			world.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE).get(feature).place(world, generator, rand, pos);
+			world.registryAccess().lookupOrThrow(Registries.CONFIGURED_FEATURE).getValueOrThrow(feature).place(world, generator, rand, pos);
 		}
 	}
 }

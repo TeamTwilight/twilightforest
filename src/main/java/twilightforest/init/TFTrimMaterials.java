@@ -7,9 +7,8 @@ import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.armortrim.TrimMaterial;
+import net.minecraft.world.item.equipment.trim.TrimMaterial;
 import twilightforest.TwilightForestMod;
 
 import java.util.Map;
@@ -28,16 +27,16 @@ public class TFTrimMaterials {
 	}
 
 	public static void bootstrap(BootstrapContext<TrimMaterial> context) {
-		register(context, IRONWOOD, TFItems.IRONWOOD_INGOT, Style.EMPTY.withColor(7037281), 0.2F);
-		register(context, STEELEAF, TFItems.STEELEAF_INGOT, Style.EMPTY.withColor(4814643), 0.7F);
-		register(context, KNIGHTMETAL, TFItems.KNIGHTMETAL_INGOT, Style.EMPTY.withColor(8424562), 0.1F);
-		register(context, FIERY, TFItems.FIERY_INGOT, Style.EMPTY.withColor(16758076), 0.3F);
-		register(context, NAGA_SCALE, TFItems.NAGA_SCALE, Style.EMPTY.withColor(2381586), 0.7F);
-		register(context, CARMINITE, TFItems.CARMINITE, Style.EMPTY.withColor(10092544), 0.4F);
+		register(context, IRONWOOD, TFItems.IRONWOOD_INGOT, Style.EMPTY.withColor(7037281));
+		register(context, STEELEAF, TFItems.STEELEAF_INGOT, Style.EMPTY.withColor(4814643));
+		register(context, KNIGHTMETAL, TFItems.KNIGHTMETAL_INGOT, Style.EMPTY.withColor(8424562));
+		register(context, FIERY, TFItems.FIERY_INGOT, Style.EMPTY.withColor(16758076));
+		register(context, NAGA_SCALE, TFItems.NAGA_SCALE, Style.EMPTY.withColor(2381586));
+		register(context, CARMINITE, TFItems.CARMINITE, Style.EMPTY.withColor(10092544));
 	}
 
-	private static void register(BootstrapContext<TrimMaterial> context, ResourceKey<TrimMaterial> trimKey, Holder<Item> trimItem, Style color, float itemModelIndex) {
-		TrimMaterial material = new TrimMaterial(trimKey.location().getPath(), trimItem, itemModelIndex, Map.of(), Component.translatable(Util.makeDescriptionId("trim_material", trimKey.location())).withStyle(color));
+	private static void register(BootstrapContext<TrimMaterial> context, ResourceKey<TrimMaterial> trimKey, Holder<Item> trimItem, Style color) {
+		TrimMaterial material = new TrimMaterial(trimKey.location().getPath(), trimItem, Map.of(), Component.translatable(Util.makeDescriptionId("trim_material", trimKey.location())).withStyle(color));
 		context.register(trimKey, material);
 	}
 }

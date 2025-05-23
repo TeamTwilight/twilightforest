@@ -1,8 +1,6 @@
 {
   "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "twilightforest:nagastone_stairs_right"
-  },
+  "ingredient": "twilightforest:nagastone_stairs_right",
   "result": {
     "count": 1,
     "id": "twilightforest:nagastone_stairs_left"

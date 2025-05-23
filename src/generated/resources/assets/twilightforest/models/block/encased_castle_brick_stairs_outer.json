@@ -1,8 +1,0 @@
-{
-  "parent": "twilightforest:block/util/bisected_outer_stairs",
-  "textures": {
-    "end": "twilightforest:block/castleblock_tile",
-    "middle": "twilightforest:block/castle_roof_tile",
-    "side": "twilightforest:block/encased_castle_brick_pillar_h"
-  }
-}

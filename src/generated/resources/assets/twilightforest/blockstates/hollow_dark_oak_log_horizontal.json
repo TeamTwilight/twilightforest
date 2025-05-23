@@ -9,7 +9,7 @@
       "y": 90
     },
     "axis=x,variant=moss_and_grass": {
-      "model": "twilightforest:block/hollow_dark_oak_log_horizontal_moss_grass",
+      "model": "twilightforest:block/hollow_dark_oak_log_horizontal_grass_inventory",
       "y": 90
     },
     "axis=x,variant=snow": {
@@ -27,7 +27,7 @@
       "model": "twilightforest:block/hollow_dark_oak_log_horizontal_moss"
     },
     "axis=z,variant=moss_and_grass": {
-      "model": "twilightforest:block/hollow_dark_oak_log_horizontal_moss_grass"
+      "model": "twilightforest:block/hollow_dark_oak_log_horizontal_grass_inventory"
     },
     "axis=z,variant=snow": {
       "model": "twilightforest:block/hollow_dark_oak_log_horizontal_snow"

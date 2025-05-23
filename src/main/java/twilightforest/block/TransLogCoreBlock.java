@@ -42,7 +42,7 @@ public class TransLogCoreBlock extends SpecialMagicLogBlock {
 	@Override
 	void performTreeEffect(ServerLevel level, BlockPos pos, RandomSource rand) {
 		ResourceKey<Biome> target = TFBiomes.ENCHANTED_FOREST;
-		Holder<Biome> biome = level.registryAccess().registryOrThrow(Registries.BIOME).getHolderOrThrow(target);
+		Holder<Biome> biome = level.registryAccess().holderOrThrow(target);
 		int range = TFConfig.transformationCoreRange;
 		for (int i = 0; i < 16; i++) {
 			BlockPos dPos = WorldUtil.randomOffset(rand, pos, range, 0, range);
@@ -52,7 +52,7 @@ public class TransLogCoreBlock extends SpecialMagicLogBlock {
 			if (level.getBiome(dPos).is(target))
 				continue;
 
-			int minY = QuartPos.fromBlock(level.getMinBuildHeight());
+			int minY = QuartPos.fromBlock(level.getMinY());
 			int maxY = minY + QuartPos.fromBlock(level.getHeight()) - 1;
 
 			int x = QuartPos.fromBlock(dPos.getX());
@@ -61,7 +61,7 @@ public class TransLogCoreBlock extends SpecialMagicLogBlock {
 			LevelChunk chunkAt = level.getChunk(dPos.getX() >> 4, dPos.getZ() >> 4);
 			for (LevelChunkSection section : chunkAt.getSections()) {
 				for (int sy = 0; sy < 16; sy += 4) {
-					int y = Mth.clamp(QuartPos.fromBlock(chunkAt.getMinSection() + sy), minY, maxY);
+					int y = Mth.clamp(QuartPos.fromBlock(chunkAt.getMinY() + sy), minY, maxY);
 					if (section.getBiomes().get(x & 3, y & 3, z & 3).is(target))
 						continue;
 					if (section.getBiomes() instanceof PalettedContainer<Holder<Biome>> container)
@@ -69,7 +69,7 @@ public class TransLogCoreBlock extends SpecialMagicLogBlock {
 				}
 			}
 
-			if (!chunkAt.isUnsaved()) chunkAt.setUnsaved(true);
+			chunkAt.markUnsaved();
 			level.getChunkSource().chunkMap.resendBiomesForChunks(List.of(chunkAt));
 
 			Vec3 xyz = Vec3.atCenterOf(dPos);
@@ -78,7 +78,7 @@ public class TransLogCoreBlock extends SpecialMagicLogBlock {
 			for (int j = 0; j < 9; j++) {
 				float angle = rand.nextFloat() * 360.0F;
 				Vec3 offset = new Vec3(Math.cos(angle), 0.0D, Math.sin(angle)).scale(2.0D);
-				particlePacket.queueParticle(TFParticleType.TRANSFORMATION_PARTICLE.get(), false, xyz.add(offset), Vec3.ZERO.subtract(offset));
+				particlePacket.queueParticle(TFParticleType.TRANSFORMATION_PARTICLE.get(), xyz.add(offset), Vec3.ZERO.subtract(offset));
 			}
 			PacketDistributor.sendToPlayersNear(level, null, xyz.x(), xyz.y(), xyz.z(), 64.0D, particlePacket);
 			break;

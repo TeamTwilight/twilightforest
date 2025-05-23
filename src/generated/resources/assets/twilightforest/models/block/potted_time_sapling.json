@@ -1,5 +1,5 @@
 {
-  "parent": "twilightforest:block/potted_larger_sapling",
+  "parent": "minecraft:block/flower_pot_cross",
   "render_type": "minecraft:cutout",
   "textures": {
     "plant": "twilightforest:block/time_sapling"

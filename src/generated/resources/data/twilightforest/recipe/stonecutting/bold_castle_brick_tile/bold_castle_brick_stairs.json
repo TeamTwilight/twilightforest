@@ -1,8 +1,6 @@
 {
   "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "twilightforest:bold_castle_brick_tile"
-  },
+  "ingredient": "twilightforest:bold_castle_brick_tile",
   "result": {
     "count": 1,
     "id": "twilightforest:bold_castle_brick_stairs"

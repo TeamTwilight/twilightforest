@@ -2,6 +2,7 @@ package twilightforest.entity.ai.goal;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -21,7 +22,6 @@ public class NagaMovementPattern extends Goal {
 	private boolean clockwise;
 	private boolean stunCalculated;
 
-	@SuppressWarnings("this-escape")
 	public NagaMovementPattern(Naga naga) {
 		this.naga = naga;
 		this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
@@ -176,7 +176,7 @@ public class NagaMovementPattern extends Goal {
 	}
 
 	private void crumbleBelowTarget(int range) {
-		if (!EventHooks.canEntityGrief(this.naga.level(), this.naga) || naga.getTarget() == null) return;
+		if (!EventHooks.canEntityGrief((ServerLevel) this.naga.level(), this.naga) || this.naga.getTarget() == null) return;
 
 		int floor = (int) this.naga.getBoundingBox().minY;
 		int targetY = (int) this.naga.getTarget().getBoundingBox().minY;

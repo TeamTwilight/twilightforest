@@ -12,7 +12,6 @@ import java.util.EnumSet;
 public class UrGhastLookGoal extends Goal {
 	private final UrGhast ghast;
 
-	@SuppressWarnings("this-escape")
 	public UrGhastLookGoal(UrGhast pGhast) {
 		this.ghast = pGhast;
 		this.setFlags(EnumSet.of(Goal.Flag.LOOK));

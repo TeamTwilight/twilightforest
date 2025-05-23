@@ -3,24 +3,12 @@
   "category": "equipment",
   "group": "fiery_pickaxe",
   "ingredients": [
-    {
-      "item": "minecraft:iron_pickaxe"
-    },
-    {
-      "tag": "twilightforest:fiery_vial"
-    },
-    {
-      "tag": "twilightforest:fiery_vial"
-    },
-    {
-      "tag": "twilightforest:fiery_vial"
-    },
-    {
-      "tag": "c:rods/blaze"
-    },
-    {
-      "tag": "c:rods/blaze"
-    }
+    "minecraft:iron_pickaxe",
+    "#twilightforest:fiery_vial",
+    "#twilightforest:fiery_vial",
+    "#twilightforest:fiery_vial",
+    "#c:rods/blaze",
+    "#c:rods/blaze"
   ],
   "result": {
     "count": 1,

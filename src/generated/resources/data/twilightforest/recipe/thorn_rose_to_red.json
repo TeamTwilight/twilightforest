@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "twilightforest:thorn_rose"
-    }
+    "twilightforest:thorn_rose"
   ],
   "result": {
     "count": 1,

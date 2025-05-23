@@ -10,23 +10,28 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.util.ARGB;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.GameType;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import twilightforest.TwilightForestMod;
+import tamaized.beanification.Autowired;
 import twilightforest.components.entity.TFPortalAttachment;
 import twilightforest.components.item.OreScannerData;
 import twilightforest.config.TFConfig;
 import twilightforest.entity.passive.QuestRam;
+import twilightforest.entity.passive.quest.ram.QuestingRamCurrentContext;
 import twilightforest.events.HostileMountEvents;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDataAttachments;
@@ -43,6 +48,9 @@ public class OverlayHandler {
 	private static final ResourceLocation QUESTING_RAM_X_SPRITE = TwilightForestMod.prefix("questing_ram_x");
 	private static final ResourceLocation FORTIFICATION_SHIELD_SPRITE = TwilightForestMod.prefix("fortification_shield");
 	public static final Map<Long, OreMeterInfoCache> ORE_METER_STAT_CACHE = new HashMap<>();
+
+	@Autowired(dist = Dist.CLIENT)
+	private static QuestingRamCurrentContext questingRamCurrentContext;
 
 	protected static void registerOverlays(RegisterGuiLayersEvent event) {
 		event.registerAbove(VanillaGuiLayers.CROSSHAIR, TwilightForestMod.prefix("quest_ram_indicator"), (graphics, partialTicks) -> {
@@ -95,38 +103,41 @@ public class OverlayHandler {
 					RenderSystem.disableDepthTest();
 					RenderSystem.depthMask(false);
 					RenderSystem.enableBlend();
-					graphics.setColor(1.0F, 1.0F, 1.0F, (float) portal.getPortalTimer() / (float) TFPortalAttachment.MAX_TICKS);
 					TextureAtlasSprite textureatlassprite = minecraft.getBlockRenderer().getBlockModelShaper().getParticleIcon(TFBlocks.TWILIGHT_PORTAL.get().defaultBlockState());
-					graphics.blit(0, 0, -90, window.getGuiScaledWidth(), window.getGuiScaledHeight(), textureatlassprite);
+					graphics.blitSprite(RenderType::guiTexturedOverlay, textureatlassprite, 0, 0, window.getGuiScaledWidth(), window.getGuiScaledHeight(), ARGB.white((float) portal.getPortalTimer() / (float) TFPortalAttachment.MAX_TICKS));
 					RenderSystem.disableBlend();
 					RenderSystem.depthMask(true);
 					RenderSystem.enableDepthTest();
-					graphics.setColor(1.0F, 1.0F, 1.0F, 1.0F);
 				}
 			}
 		});
 	}
 
 	private static void renderIndicator(Minecraft minecraft, GuiGraphics graphics, Gui gui, Player player, int screenWidth, int screenHeight) {
-        if (minecraft.options.getCameraType().isFirstPerson() && (minecraft.gameMode.getPlayerMode() != GameType.SPECTATOR || gui.canRenderCrosshairForSpectator(minecraft.hitResult)) && minecraft.crosshairPickEntity instanceof QuestRam ram) {
-            ItemStack stack = player.getInventory().getItem(player.getInventory().selected);
-            if (!stack.isEmpty() && stack.is(ItemTags.WOOL)) {
-				RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-				int j = ((screenHeight - 1) / 2) - 11;
-				int k = ((screenWidth - 1) / 2) - 3;
-                if (ram.guessColor(stack) != null && !ram.isColorPresent(Objects.requireNonNull(ram.guessColor(stack)))) {
-                    graphics.blitSprite(QUESTING_RAM_X_SPRITE, k, j, 7, 7);
-                } else {
-                    graphics.blitSprite(QUESTING_RAM_CHECK_SPRITE, k, j, 7, 7);
-                }
-				RenderSystem.defaultBlendFunc();
-            }
-        }
+		if (minecraft.options.getCameraType().isFirstPerson() && (minecraft.gameMode.getPlayerMode() != GameType.SPECTATOR || gui.canRenderCrosshairForSpectator(minecraft.hitResult)) && minecraft.crosshairPickEntity instanceof QuestRam ram) {
+			ItemStack stack = player.getInventory().getItem(player.getInventory().selected);
+			if (!stack.isEmpty()) {
+				for (var questEntry : questingRamCurrentContext.getContext().questItems().entrySet()) {
+					if (questEntry.getValue().test(stack)) {
+						RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+						int j = ((screenHeight - 1) / 2) - 11;
+						int k = ((screenWidth - 1) / 2) - 3;
+						if (!ram.isColorPresent(questEntry.getKey())) {
+							graphics.blitSprite(RenderType::crosshair, QUESTING_RAM_X_SPRITE, k, j, 7, 7);
+						} else {
+							graphics.blitSprite(RenderType::crosshair, QUESTING_RAM_CHECK_SPRITE, k, j, 7, 7);
+						}
+						RenderSystem.defaultBlendFunc();
+						break;
+					}
+				}
+			}
+		}
 	}
 
 	private static void renderShieldCount(GuiGraphics graphics, Gui gui, int screenWidth, int screenHeight, int shieldCount) {
 		for (int i = 0; i < Math.min(shieldCount, 10); i++) {
-			graphics.blitSprite(FORTIFICATION_SHIELD_SPRITE, screenWidth / 2 - 91 + (i * 8), screenHeight - gui.leftHeight, 9, 9);
+			graphics.blitSprite(RenderType::guiTextured, FORTIFICATION_SHIELD_SPRITE, screenWidth / 2 - 91 + (i * 8), screenHeight - gui.leftHeight, 9, 9);
 		}
 		gui.leftHeight += 10;
 	}

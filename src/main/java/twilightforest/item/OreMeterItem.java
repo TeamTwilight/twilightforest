@@ -8,7 +8,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -23,7 +22,7 @@ import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.components.item.OreScannerComponent;
 import twilightforest.components.item.OreScannerData;
-import twilightforest.data.tags.BlockTagGenerator;
+import twilightforest.tags.TFBlockTags;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFSounds;
 
@@ -63,14 +62,14 @@ public class OreMeterItem extends Item {
 	}
 
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+	public InteractionResult use(Level level, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 
 		// FakePlayers should never be allowed to use the Ore Meter
-		if (player.getClass() != ServerPlayer.class) return InteractionResultHolder.fail(stack);
+		if (player.getClass() != ServerPlayer.class) return InteractionResult.FAIL;
 
 		//if we're in the "loading" state don't try to run any logic
-		if (isLoading(stack)) return InteractionResultHolder.pass(stack);
+		if (isLoading(stack)) return InteractionResult.PASS;
 
 		//if we're not crouching, put the ore meter into its "loading" state
 		if (!player.isSecondaryUseActive()) {
@@ -81,8 +80,8 @@ public class OreMeterItem extends Item {
 	}
 
 	@NotNull
-	private static InteractionResultHolder<ItemStack> beginScanning(Level level, Player player, ItemStack stack) {
-		if (!level.isClientSide) {
+	private static InteractionResult beginScanning(Level level, Player player, ItemStack stack) {
+		if (!level.isClientSide()) {
 			int range = getRange(stack);
 
 			// 50 base ticks plus 25 additional ticks for each range increment
@@ -98,11 +97,11 @@ public class OreMeterItem extends Item {
 
 		level.playSound(player, player.blockPosition(), TFSounds.ORE_METER_CRACKLE.get(), SoundSource.PLAYERS, 0.5F, level.getRandom().nextFloat() * 0.1F + 0.9F);
 
-		return InteractionResultHolder.pass(stack);
+		return InteractionResult.PASS;
 	}
 
 	@NotNull
-	private static InteractionResultHolder<ItemStack> toggleRange(Level level, Player player, ItemStack stack) {
+	private static InteractionResult toggleRange(Level level, Player player, ItemStack stack) {
 		//if we're crouching and not targeting a block, change the ore meter range instead
 		HitResult result = getPlayerPOVHitResult(level, player, ClipContext.Fluid.ANY);
 		if (result.getType() == HitResult.Type.MISS) {
@@ -113,10 +112,10 @@ public class OreMeterItem extends Item {
 				player.displayClientMessage(Component.translatable("misc.twilightforest.ore_meter_new_range", newRange), true);
 				level.playSound(null, player.blockPosition(), SoundEvents.UI_BUTTON_CLICK.value(), SoundSource.PLAYERS, 0.25F, 0.75F + (newRange * 0.1F));
 			}
-			return InteractionResultHolder.success(stack);
+			return InteractionResult.SUCCESS;
 		}
 
-		return InteractionResultHolder.pass(stack);
+		return InteractionResult.PASS;
 	}
 
 	@Override
@@ -125,7 +124,7 @@ public class OreMeterItem extends Item {
 		//if we're crouching and targeting a block, attempt to save the block as the focused block
 		if (context.isSecondaryUseActive()) {
 			BlockState state = context.getLevel().getBlockState(context.getClickedPos());
-			if (state.is(BlockTagGenerator.ORE_METER_TARGETABLE)) {
+			if (state.is(TFBlockTags.ORE_METER_TARGETABLE)) {
 				stack.set(TFDataComponents.ORE_FILTER, state.getBlock());
 				context.getPlayer().displayClientMessage(Component.translatable("misc.twilightforest.ore_meter_set_block", Component.translatable(state.getBlock().getDescriptionId())), true);
 				context.getLevel().playSound(context.getPlayer(), context.getPlayer().blockPosition(), TFSounds.ORE_METER_TARGET_BLOCK.get(), SoundSource.PLAYERS, 0.5F, context.getLevel().getRandom().nextFloat() * 0.1F + 0.9F);

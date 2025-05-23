@@ -1,8 +1,6 @@
 {
   "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "minecraft:spruce_log"
-  },
+  "ingredient": "minecraft:spruce_log",
   "result": {
     "count": 1,
     "id": "twilightforest:hollow_spruce_log"

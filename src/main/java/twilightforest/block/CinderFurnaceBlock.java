@@ -14,21 +14,19 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import twilightforest.block.entity.CinderFurnaceBlockEntity;
-import twilightforest.init.TFBlockEntities;
 
 public class CinderFurnaceBlock extends BaseEntityBlock {
 
-	public static final BooleanProperty LIT = BooleanProperty.create("lit");
-	private static final DirectionProperty FACING = TFHorizontalBlock.FACING;
+	public static final BooleanProperty LIT = BlockStateProperties.LIT;
+	private static final EnumProperty<Direction> FACING = TFHorizontalBlock.FACING;
 	public static final MapCodec<CinderFurnaceBlock> CODEC = simpleCodec(CinderFurnaceBlock::new);
 
 	public CinderFurnaceBlock(BlockBehaviour.Properties properties) {
@@ -63,11 +61,6 @@ public class CinderFurnaceBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFBlockEntities.CINDER_FURNACE.get(), CinderFurnaceBlockEntity::tick);
-	}
-
-	@Override
 	@SuppressWarnings("deprecation")
 	public boolean triggerEvent(BlockState state, Level level, BlockPos pos, int id, int param) {
 		super.triggerEvent(state, level, pos, id, param);
@@ -78,7 +71,7 @@ public class CinderFurnaceBlock extends BaseEntityBlock {
 	@Override
 	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
 		if (!level.isClientSide() && level.getBlockEntity(pos) instanceof CinderFurnaceBlockEntity cinder) {
-			player.openMenu(cinder);
+			//player.openMenu(cinder);
 		}
 
 		return InteractionResult.PASS;

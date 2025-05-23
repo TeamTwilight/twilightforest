@@ -51,7 +51,6 @@ public class UpperGoblinKnight extends Monster {
 	private int shieldDisabledTicks;
 	public int heavySpearTimer;
 
-	@SuppressWarnings("this-escape")
 	public UpperGoblinKnight(EntityType<? extends UpperGoblinKnight> type, Level level) {
 		super(type, level);
 
@@ -167,8 +166,8 @@ public class UpperGoblinKnight extends Monster {
 	}
 
 	@Override
-	public void customServerAiStep() {
-		super.customServerAiStep();
+	public void customServerAiStep(ServerLevel level) {
+		super.customServerAiStep(level);
 
 		if (this.isShieldDisabled() && this.shieldDisabledTicks++ >= 100) {
 			this.shieldDisabledTicks = 0;
@@ -195,7 +194,7 @@ public class UpperGoblinKnight extends Monster {
 		}
 	}
 
-	public void landHeavySpearAttack() {
+	public void landHeavySpearAttack(ServerLevel level) {
 		// find vector in front of us
 		Vec3 vector = this.getLookAngle();
 
@@ -207,7 +206,7 @@ public class UpperGoblinKnight extends Monster {
 		if (this.level() instanceof ServerLevel) {
 			ParticlePacket particlePacket = new ParticlePacket();
 			for (int i = 0; i < 50; i++) {
-				particlePacket.queueParticle(ParticleTypes.LARGE_SMOKE, false,
+				particlePacket.queueParticle(ParticleTypes.LARGE_SMOKE,
 					px + (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.25F * this.getRandom().nextGaussian(),
 					py,
 					pz + (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.25F * this.getRandom().nextGaussian(),
@@ -224,7 +223,7 @@ public class UpperGoblinKnight extends Monster {
 		List<Entity> inBox = this.level().getEntities(this, spearBB, e -> e != this.getVehicle());
 
 		for (Entity entity : inBox) {
-			super.doHurtTarget(entity);
+			super.doHurtTarget(level, entity);
 		}
 
 		if (!inBox.isEmpty()) {
@@ -249,7 +248,7 @@ public class UpperGoblinKnight extends Monster {
 	}
 
 	@Override
-	public boolean doHurtTarget(Entity entity) {
+	public boolean doHurtTarget(ServerLevel level, Entity entity) {
 
 		if (this.heavySpearTimer > 0) {
 			return false;
@@ -262,17 +261,17 @@ public class UpperGoblinKnight extends Monster {
 		}
 
 		this.swing(InteractionHand.MAIN_HAND);
-		return super.doHurtTarget(entity);
+		return super.doHurtTarget(level, entity);
 	}
 
 	@Override
-	public boolean hurt(DamageSource damageSource, float amount) {
+	public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
 		// don't take suffocation damage while riding
-		if (damageSource.is(DamageTypes.IN_WALL) && this.getVehicle() != null) {
+		if (source.is(DamageTypes.IN_WALL) && this.getVehicle() != null) {
 			return false;
 		}
 
-		Entity attacker = damageSource.getEntity();
+		Entity attacker = source.getEntity();
 
 		if (attacker != null) {
 			double dx = this.getX() - attacker.getX();
@@ -282,7 +281,7 @@ public class UpperGoblinKnight extends Monster {
 			float difference = Mth.abs((this.yBodyRot - angle) % 360);
 
 			if (this.hasShield() && difference > 150 && difference < 230) {
-				if (this.takeHitOnShield(damageSource, amount)) {
+				if (this.takeHitOnShield(source, amount)) {
 					return false;
 				}
 			} else {
@@ -296,7 +295,7 @@ public class UpperGoblinKnight extends Monster {
 			}
 		}
 
-		return super.hurt(damageSource, amount);
+		return super.hurtServer(level, source, amount);
 	}
 
 	private void breakArmor() {

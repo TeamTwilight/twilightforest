@@ -2,6 +2,7 @@ package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -32,16 +33,16 @@ public class FieryBlock extends Block {
 	}
 
 	@Override
-	public VoxelShape getOcclusionShape(BlockState state, BlockGetter getter, BlockPos pos) {
+	public VoxelShape getOcclusionShape(BlockState state) {
 		return Shapes.empty();
 	}
 
 	@Override
 	public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
-		if ((!entity.fireImmune())
+		if (level instanceof ServerLevel serverLevel && !entity.fireImmune()
 			&& entity instanceof LivingEntity living
 			&& !living.getItemBySlot(EquipmentSlot.FEET).is(TFItems.FIERY_BOOTS.get())) {
-			entity.hurt(TFDamageTypes.getDamageSource(level, TFDamageTypes.FIERY), 1.0F);
+			living.hurtServer(serverLevel, serverLevel.damageSources().source(TFDamageTypes.FIERY), 1.0F);
 		}
 
 		super.stepOn(level, pos, state, entity);

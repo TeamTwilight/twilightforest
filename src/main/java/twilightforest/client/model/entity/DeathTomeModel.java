@@ -1,6 +1,6 @@
 package twilightforest.client.model.entity;
 
-import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
@@ -8,11 +8,10 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import twilightforest.entity.monster.DeathTome;
+import twilightforest.client.state.DeathTomeRenderState;
 
-public class DeathTomeModel extends HierarchicalModel<DeathTome> {
+public class DeathTomeModel extends EntityModel<DeathTomeRenderState> {
 
-	private final ModelPart root;
 	private final ModelPart book;
 	private final ModelPart pagesRight;
 	private final ModelPart pagesLeft;
@@ -28,7 +27,7 @@ public class DeathTomeModel extends HierarchicalModel<DeathTome> {
 	private final ModelPart loosePage3;
 
 	public DeathTomeModel(ModelPart root) {
-		this.root = root;
+		super(root);
 
 		this.book = root.getChild("book");
 
@@ -41,7 +40,7 @@ public class DeathTomeModel extends HierarchicalModel<DeathTome> {
 		this.coverRight = this.book.getChild("cover_right");
 		this.coverLeft = this.book.getChild("cover_left");
 
-		this.paperStorm = this.root.getChild("paper_storm");
+		this.paperStorm = root.getChild("paper_storm");
 
 		this.loosePage0 = this.paperStorm.getChild("loose_page_0");
 		this.loosePage1 = this.paperStorm.getChild("loose_page_1");
@@ -115,15 +114,12 @@ public class DeathTomeModel extends HierarchicalModel<DeathTome> {
 	}
 
 	@Override
-	public ModelPart root() {
-		return this.root;
-	}
-
-	@Override
-	public void setupAnim(DeathTome entity, float limbAngle, float limbDistance, float ageInTicks, float headYaw, float headPitch) {
+	public void setupAnim(DeathTomeRenderState state) {
+		super.setupAnim(state);
 		this.root.yRot = Mth.HALF_PI;
+		boolean onLectern = state.onLectern;
 
-		if (entity.isOnLectern()) {
+		if (onLectern) {
 			this.book.zRot = -0.8726646259971647F * 1.35F;
 			this.book.x = 1.75F;
 		} else {
@@ -131,18 +127,13 @@ public class DeathTomeModel extends HierarchicalModel<DeathTome> {
 			this.book.x = 0.0F;
 		}
 
-		this.paperStorm.yRot = ageInTicks * Mth.DEG_TO_RAD + Mth.HALF_PI;
+		this.paperStorm.yRot = state.ageInTicks * Mth.DEG_TO_RAD + Mth.HALF_PI;
 		this.paperStorm.zRot = 0.8726646259971647F;
-	}
 
-	@Override
-	public void prepareMobModel(DeathTome entity, float limbSwing, float limbSwingAmount, float partialTicks) {
-		boolean onLectern = entity.isOnLectern();
-
-		float bounce = onLectern ? 0.0F : entity.tickCount + partialTicks;
+		float bounce = onLectern ? 0.0F : state.ageInTicks;
 		float open = onLectern ? 1.2F : 0.9f;
 
-		float flip = Mth.lerp(partialTicks, entity.oFlip, entity.flip);
+		float flip = state.flip;
 		float flipRight = Mth.clamp(Mth.frac(flip + 0.25F) * 1.6F - 0.3F, 0.0F, 1.0F);
 		float flipLeft = Mth.clamp(Mth.frac(flip + 0.75F) * 1.6F - 0.3F, 0.0F, 1.0F);
 
@@ -170,7 +161,7 @@ public class DeathTomeModel extends HierarchicalModel<DeathTome> {
 		this.loosePage3.zRot = Mth.cos((bounce) / 7.0F) / 5.0F;
 
 		// hoveriness
-		this.book.setPos(0, 8 + Mth.sin((bounce) * 0.3F) * 2.0F, 0);
+		this.book.setPos(0, 8 - Mth.sin((bounce) * 0.3F) * 2.0F, 0);
 
 
 		// book openness

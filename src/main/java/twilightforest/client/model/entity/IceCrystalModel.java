@@ -1,8 +1,6 @@
 package twilightforest.client.model.entity;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
@@ -10,25 +8,19 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.util.FastColor;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.util.Mth;
-import twilightforest.entity.monster.IceCrystal;
 
-public class IceCrystalModel extends HierarchicalModel<IceCrystal> {
+public class IceCrystalModel extends EntityModel<LivingEntityRenderState> {
 
-	private final ModelPart root;
 	private final ModelPart[] spikes = new ModelPart[16];
 
-	private boolean alive;
-
 	public IceCrystalModel(ModelPart root) {
-		super(RenderType::entityTranslucent);
-		this.root = root;
+		super(root, RenderType::entityTranslucent);
 
 		for (int i = 0; i < spikes.length; i++) {
 			this.spikes[i] = root.getChild("spike_" + i);
 		}
-
 	}
 
 	public static LayerDefinition create() {
@@ -54,29 +46,12 @@ public class IceCrystalModel extends HierarchicalModel<IceCrystal> {
 	}
 
 	@Override
-	public ModelPart root() {
-		return this.root;
-	}
-
-	@Override
-	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, int color) {
-		for (ModelPart spike : this.spikes) {
-			spike.render(stack, builder, light, overlay, FastColor.ARGB32.color((int) (FastColor.ARGB32.alpha(color) * (alive ? 0.6F : 1.0F)), FastColor.ARGB32.red(color), FastColor.ARGB32.green(color), FastColor.ARGB32.blue(color)));
-		}
-	}
-
-	@Override
-	public void setupAnim(IceCrystal entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-	}
-
-	@Override
-	public void prepareMobModel(IceCrystal entity, float limbSwing, float limbSwingAmount, float partialTicks) {
-		this.alive = entity.isAlive();
+	public void setupAnim(LivingEntityRenderState state) {
 		for (int i = 0; i < this.spikes.length; i++) {
 			// rotate the spikes
-			this.spikes[i].xRot = Mth.sin((entity.tickCount + partialTicks) / 5.0F) / 4.0F;
-			this.spikes[i].yRot = (entity.tickCount + partialTicks) / 5.0F;
-			this.spikes[i].zRot = Mth.cos((entity.tickCount + partialTicks) / 5.0F) / 4.0F;
+			this.spikes[i].xRot = Mth.sin((state.ageInTicks) / 5.0F) / 4.0F;
+			this.spikes[i].yRot = (state.ageInTicks) / 5.0F;
+			this.spikes[i].zRot = Mth.cos((state.ageInTicks) / 5.0F) / 4.0F;
 
 			this.spikes[i].xRot += i * (Mth.PI / 8.0F);
 

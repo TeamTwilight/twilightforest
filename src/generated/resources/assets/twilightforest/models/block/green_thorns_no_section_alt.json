@@ -2,6 +2,7 @@
   "parent": "twilightforest:block/thorns_no_section_alt",
   "render_type": "minecraft:cutout",
   "textures": {
+    "end": "twilightforest:block/green_thorns_top",
     "side": "twilightforest:block/green_thorns_side"
   }
 }

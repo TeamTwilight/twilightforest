@@ -1,15 +1,9 @@
 {
   "variants": {
-    "active=false,vanish=false": {
+    "vanish=false": {
       "model": "twilightforest:block/yellow_castle_door"
     },
-    "active=false,vanish=true": {
-      "model": "twilightforest:block/yellow_castle_door_vanished"
-    },
-    "active=true,vanish=false": {
-      "model": "twilightforest:block/yellow_castle_door"
-    },
-    "active=true,vanish=true": {
+    "vanish=true": {
       "model": "twilightforest:block/yellow_castle_door_vanished"
     }
   }

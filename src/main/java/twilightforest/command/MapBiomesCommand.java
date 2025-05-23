@@ -32,7 +32,7 @@ import java.util.Map;
 /**
  * Thank you @SuperCoder79 (from Twitter) for sharing the original code! Code sourced from a LGPL project
  */
-@twilightforest.beans.Component
+@tamaized.beanification.Component
 public class MapBiomesCommand {
 
 	private final DecimalFormat numberFormat = new DecimalFormat("#.00");
@@ -95,7 +95,7 @@ public class MapBiomesCommand {
 			for (int z = 0; z < img.getWidth(); z++) {
 				ServerLevel level = source.getLevel();
 				Holder<Biome> b = level.getNoiseBiome(x - (img.getWidth() / 2), 0, z - (img.getHeight() / 2));
-				ResourceLocation key = level.registryAccess().registryOrThrow(Registries.BIOME).getKey(b.value());
+				ResourceLocation key = level.registryAccess().lookupOrThrow(Registries.BIOME).getKey(b.value());
 				BiomeMapColor color = BIOME2COLOR.get(key);
 
 				if (color == null) {
@@ -114,7 +114,7 @@ public class MapBiomesCommand {
 				}
 
 				//set the color
-				img.setPixelRGBA(x, z, ColorUtil.argbToABGR(color.getARGB()));
+				img.setPixel(x, z, color.getARGB());
 			}
 
 			//send a progress update to let people know the server isn't dying
@@ -128,7 +128,7 @@ public class MapBiomesCommand {
 			source.sendSuccess(() -> Component.literal("Approximate biome-block counts within a " + (width + "x" + height) + " region"), false);
 			int totalCount = biomeCount.values().stream().mapToInt(i -> i).sum();
 			biomeCount.forEach((biome, integer) -> source.sendSuccess(() -> Component.literal(
-					source.getLevel().registryAccess().registryOrThrow(Registries.BIOME).getKey(biome.value()).toString())
+					source.getLevel().registryAccess().lookupOrThrow(Registries.BIOME).getKey(biome.value()).toString())
 				.append(": " + (integer) + ChatFormatting.GRAY + " (" + numberFormat.format(((double) integer / totalCount) * 100) + "%)"), false));
 		}
 
@@ -140,7 +140,7 @@ public class MapBiomesCommand {
 		try {
 			if (!Files.exists(path)) {
 				Files.createDirectories(path.getParent());
-				Files.write(path, img.asByteArray());
+				img.writeToFile(path);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

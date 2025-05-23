@@ -5,9 +5,7 @@
 // - ZeuX
 package twilightforest.client.model.entity;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
@@ -15,34 +13,24 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import org.jetbrains.annotations.Nullable;
-import twilightforest.client.JappaPackReloadListener;
-import twilightforest.entity.boss.Hydra;
+import twilightforest.client.state.HydraRenderState;
 
-public class HydraModel extends HierarchicalModel<Hydra> {
+public class HydraModel extends EntityModel<HydraRenderState> {
 
-	private final ModelPart root;
 	private final ModelPart body;
 	private final ModelPart tail;
 	private final ModelPart rightLeg;
 	private final ModelPart leftLeg;
 
-	@Nullable
-	private Hydra hydra;
-
 	public HydraModel(ModelPart root) {
-		this.root = root;
+		super(root);
 		this.body = root.getChild("body");
 		this.tail = root.getChild("tail_1");
 		this.rightLeg = root.getChild("right_leg");
 		this.leftLeg = root.getChild("left_leg");
 	}
 
-	public static LayerDefinition checkForPack() {
-		return JappaPackReloadListener.INSTANCE.isJappaPackLoaded() ? createJappaModel() : create();
-	}
-
-	private static LayerDefinition create() {
+	public static LayerDefinition create() {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
@@ -224,194 +212,14 @@ public class HydraModel extends HierarchicalModel<Hydra> {
 		return LayerDefinition.create(meshdefinition, 512, 256);
 	}
 
-	private static LayerDefinition createJappaModel() {
-		MeshDefinition meshdefinition = new MeshDefinition();
-		PartDefinition partdefinition = meshdefinition.getRoot();
-
-		var head1 = partdefinition.addOrReplaceChild("head_1", CubeListBuilder.create()
-				.texOffs(260, 64)
-				.addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
-				.texOffs(236, 128)
-				.addBox(-16.0F, -2.0F, -40.0F, 32.0F, 10.0F, 24.0F)
-				.texOffs(356, 70)
-				.addBox(-12.0F, 8.0F, -36.0F, 24.0F, 6.0F, 20.0F),
-			PartPose.offset(-74.0F, -100.0F, -56.0F));
-
-		var head2 = partdefinition.addOrReplaceChild("head_2", CubeListBuilder.create()
-				.texOffs(260, 64)
-				.addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
-				.texOffs(236, 128)
-				.addBox(-16.0F, -2.0F, -40.0F, 32.0F, 10.0F, 24.0F)
-				.texOffs(356, 70)
-				.addBox(-12.0F, 8.0F, -36.0F, 24.0F, 6.0F, 20.0F),
-			PartPose.offset(0.0F, -116.0F, -56.0F));
-
-		var head3 = partdefinition.addOrReplaceChild("head_3", CubeListBuilder.create()
-				.texOffs(260, 64)
-				.addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
-				.texOffs(236, 128)
-				.addBox(-16.0F, -2.0F, -40.0F, 32.0F, 10.0F, 24.0F)
-				.texOffs(356, 70)
-				.addBox(-12.0F, 8.0F, -36.0F, 24.0F, 6.0F, 20.0F),
-			PartPose.offset(74.0F, -100.0F, -56.0F));
-
-		head1.addOrReplaceChild("mouth_1", CubeListBuilder.create()
-				.texOffs(240, 162)
-				.addBox(-15.0F, 0.0F, -24.0F, 30.0F, 8.0F, 24.0F),
-			PartPose.offset(0.0F, 8.0F, -16.0F));
-
-		head2.addOrReplaceChild("mouth_2", CubeListBuilder.create()
-				.texOffs(240, 162)
-				.addBox(-15.0F, 0.0F, -24.0F, 30.0F, 8.0F, 24.0F),
-			PartPose.offset(0.0F, 8.0F, -16.0F));
-
-		head3.addOrReplaceChild("mouth_3", CubeListBuilder.create()
-				.texOffs(240, 162)
-				.addBox(-15.0F, 0.0F, -24.0F, 30.0F, 8.0F, 24.0F),
-			PartPose.offset(0.0F, 8.0F, -16.0F));
-
-		head1.addOrReplaceChild("plate_1", CubeListBuilder.create()
-				.texOffs(388, 0)
-				.addBox(-24.0F, -48.0F, 0.0F, 48.0F, 48.0F, 6.0F)
-				.texOffs(220, 0)
-				.addBox(-4.0F, -32.0F, -8.0F, 8.0F, 32.0F, 8.0F),
-			PartPose.offsetAndRotation(0.0F, 0.0F, -1.0F, -0.7853981633974483F, 0.0F, 0.0F));
-
-		head2.addOrReplaceChild("plate_2", CubeListBuilder.create()
-				.texOffs(388, 0)
-				.addBox(-24.0F, -48.0F, 0.0F, 48.0F, 48.0F, 6.0F)
-				.texOffs(220, 0)
-				.addBox(-4.0F, -32.0F, -8.0F, 8.0F, 32.0F, 8.0F),
-			PartPose.offsetAndRotation(0.0F, 0.0F, -1.0F, -0.7853981633974483F, 0.0F, 0.0F));
-
-		head3.addOrReplaceChild("plate_3", CubeListBuilder.create()
-				.texOffs(388, 0)
-				.addBox(-24.0F, -48.0F, 0.0F, 48.0F, 48.0F, 6.0F)
-				.texOffs(220, 0)
-				.addBox(-4.0F, -32.0F, -8.0F, 8.0F, 32.0F, 8.0F),
-			PartPose.offsetAndRotation(0.0F, 0.0F, -1.0F, -0.7853981633974483F, 0.0F, 0.0F));
-
-		var neck1 = partdefinition.addOrReplaceChild("neck_1", CubeListBuilder.create()
-				.texOffs(260, 0).addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
-				.texOffs(0, 0).addBox(-2.0F, -24.0F, 0.0F, 4.0F, 8.0F, 16.0F),
-			PartPose.offset(-42.0F, -48.0F, 0.0F));
-
-		var neck2 = partdefinition.addOrReplaceChild("neck_2", CubeListBuilder.create()
-				.texOffs(260, 0).addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
-				.texOffs(0, 0).addBox(-2.0F, -24.0F, 0.0F, 4.0F, 8.0F, 16.0F),
-			PartPose.offset(0.0F, -48.0F, 0.0F));
-
-		var neck3 = partdefinition.addOrReplaceChild("neck_3", CubeListBuilder.create()
-				.texOffs(260, 0).addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
-				.texOffs(0, 0).addBox(-2.0F, -24.0F, 0.0F, 4.0F, 8.0F, 16.0F),
-			PartPose.offset(42.0F, -48.0F, 0.0F));
-
-		var neck4 = neck1.addOrReplaceChild("neck_4", CubeListBuilder.create()
-				.texOffs(260, 0).addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
-				.texOffs(0, 0).addBox(-2.0F, -24.0F, 0.0F, 4.0F, 8.0F, 16.0F),
-			PartPose.offset(-16.0F, -16.0F, -16.0F));
-
-		var neck5 = neck2.addOrReplaceChild("neck_5", CubeListBuilder.create()
-				.texOffs(260, 0).addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
-				.texOffs(0, 0).addBox(-2.0F, -24.0F, 0.0F, 4.0F, 8.0F, 16.0F),
-			PartPose.offset(0.0F, -24.0F, -16.0F));
-
-		var neck6 = neck3.addOrReplaceChild("neck_6", CubeListBuilder.create()
-				.texOffs(260, 0).addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
-				.texOffs(0, 0).addBox(-2.0F, -24.0F, 0.0F, 4.0F, 8.0F, 16.0F),
-			PartPose.offset(16.0F, -16.0F, -16.0F));
-
-		neck4.addOrReplaceChild("neck_7", CubeListBuilder.create()
-				.texOffs(260, 0).addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
-				.texOffs(0, 0).addBox(-2.0F, -24.0F, 0.0F, 4.0F, 8.0F, 16.0F),
-			PartPose.offset(-16.0F, -16.0F, -16.0F));
-
-		neck5.addOrReplaceChild("neck_8", CubeListBuilder.create()
-				.texOffs(260, 0).addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
-				.texOffs(0, 0).addBox(-2.0F, -24.0F, 0.0F, 4.0F, 8.0F, 16.0F),
-			PartPose.offset(0.0F, -24.0F, -16.0F));
-
-		neck6.addOrReplaceChild("neck_9", CubeListBuilder.create()
-				.texOffs(260, 0).addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
-				.texOffs(0, 0).addBox(-2.0F, -24.0F, 0.0F, 4.0F, 8.0F, 16.0F),
-			PartPose.offset(16.0F, -16.0F, -16.0F));
-
-		partdefinition.addOrReplaceChild("body", CubeListBuilder.create()
-				.texOffs(0, 0)
-				.addBox(-45.0F, -12.0F, -20.0F, 90.0F, 96.0F, 40.0F)
-				.texOffs(88, 136)
-				.addBox(-2.0F, 20.0F, 20.0F, 4.0F, 16.0F, 12.0F)
-				.texOffs(120, 136)
-				.addBox(-2.0F, 48.0F, 20.0F, 4.0F, 16.0F, 12.0F),
-			PartPose.offsetAndRotation(0.0F, -32.0F, 0.0F, 1.117010721276371F, 0.0F, 0.0F));
-
-		partdefinition.addOrReplaceChild("right_leg", CubeListBuilder.create()
-				.texOffs(0, 136)
-				.addBox(-14.0F, -8.0F, -16.0F, 28.0F, 52.0F, 32.0F)
-				.texOffs(0, 220)
-				.addBox(-14.0F, 36.0F, -22.0F, 28.0F, 8.0F, 6.0F),
-			PartPose.offset(-40.0F, -20.0F, -12.0F));
-
-		partdefinition.addOrReplaceChild("left_leg", CubeListBuilder.create()
-				.texOffs(120, 136)
-				.addBox(-14.0F, -8.0F, -16.0F, 28.0F, 52.0F, 32.0F)
-				.texOffs(68, 220)
-				.addBox(-14.0F, 36.0F, -22.0F, 28.0F, 8.0F, 6.0F),
-			PartPose.offset(40.0F, -20.0F, -12.0F));
-
-		var tail1 = partdefinition.addOrReplaceChild("tail_1", CubeListBuilder.create()
-				.texOffs(260, 0)
-				.addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
-				.texOffs(0, 0)
-				.addBox(-2.0F, -24.0F, 0.0F, 4.0F, 8.0F, 16.0F),
-			PartPose.offset(0.0F, 8.0F, 80.0F));
-
-		var tail2 = tail1.addOrReplaceChild("tail_2", CubeListBuilder.create()
-				.texOffs(260, 0)
-				.addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
-				.texOffs(0, 0)
-				.addBox(-2.0F, -24.0F, 0.0F, 4.0F, 8.0F, 16.0F),
-			PartPose.offset(0.0F, 0.0F, 32.0F));
-
-		var tail3 = tail2.addOrReplaceChild("tail_3", CubeListBuilder.create()
-				.texOffs(260, 0)
-				.addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
-				.texOffs(0, 0)
-				.addBox(-2.0F, -24.0F, 0.0F, 4.0F, 8.0F, 16.0F),
-			PartPose.offset(0.0F, 0.0F, 32.0F));
-
-		tail3.addOrReplaceChild("tail_4", CubeListBuilder.create()
-				.texOffs(260, 0)
-				.addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
-				.texOffs(0, 0)
-				.addBox(-2.0F, -24.0F, 0.0F, 4.0F, 8.0F, 16.0F),
-			PartPose.offset(0.0F, 0.0F, 32.0F));
-
-		return LayerDefinition.create(meshdefinition, 512, 256);
-	}
-
 	@Override
-	public ModelPart root() {
-		return this.root;
-	}
-
-	@Override
-	public void renderToBuffer(PoseStack stack, VertexConsumer consumer, int light, int overlay, int color) {
-		if (this.hydra != null && this.hydra.renderFakeHeads) {
-			super.renderToBuffer(stack, consumer, light, overlay, color);
-		} else {
-			this.rightLeg.render(stack, consumer, light, overlay, color);
-			this.leftLeg.render(stack, consumer, light, overlay, color);
-			this.body.render(stack, consumer, light, overlay, color);
-			this.tail.render(stack, consumer, light, overlay, color);
-		}
-		this.hydra = null;
-	}
-
-	@Override
-	public void setupAnim(Hydra entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		this.hydra = entity;
-		this.rightLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-		this.leftLeg.xRot = Mth.cos(limbSwing * 0.6662F + Mth.PI) * 1.4F * limbSwingAmount;
+	public void setupAnim(HydraRenderState state) {
+		this.root().getAllParts().forEach(modelPart -> modelPart.skipDraw = !state.renderFakeHeads);
+		this.body.skipDraw = false;
+		this.tail.getAllParts().forEach(modelPart -> modelPart.skipDraw = false);
+		this.rightLeg.skipDraw = false;
+		this.leftLeg.skipDraw = false;
+		this.rightLeg.xRot = Mth.cos(state.walkAnimationPos * 0.6662F) * 1.4F * state.walkAnimationSpeed;
+		this.leftLeg.xRot = Mth.cos(state.walkAnimationPos * 0.6662F + Mth.PI) * 1.4F * state.walkAnimationSpeed;
 	}
 }

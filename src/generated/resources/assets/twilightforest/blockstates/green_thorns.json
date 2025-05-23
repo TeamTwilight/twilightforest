@@ -42,8 +42,14 @@
         "x": 270
       },
       "when": {
-        "axis": "z|y",
-        "up": "false"
+        "AND": [
+          {
+            "up": "false"
+          },
+          {
+            "axis": "z|y"
+          }
+        ]
       }
     },
     {
@@ -53,8 +59,14 @@
         "y": 90
       },
       "when": {
-        "axis": "x",
-        "up": "false"
+        "AND": [
+          {
+            "up": "false"
+          },
+          {
+            "axis": "x"
+          }
+        ]
       }
     },
     {
@@ -72,8 +84,14 @@
         "x": 90
       },
       "when": {
-        "axis": "z|y",
-        "down": "false"
+        "AND": [
+          {
+            "down": "false"
+          },
+          {
+            "axis": "z|y"
+          }
+        ]
       }
     },
     {
@@ -83,8 +101,14 @@
         "y": 90
       },
       "when": {
-        "axis": "x",
-        "down": "false"
+        "AND": [
+          {
+            "down": "false"
+          },
+          {
+            "axis": "x"
+          }
+        ]
       }
     },
     {
@@ -102,8 +126,14 @@
         "y": 90
       },
       "when": {
-        "axis": "y|x",
-        "east": "false"
+        "AND": [
+          {
+            "east": "false"
+          },
+          {
+            "axis": "y|x"
+          }
+        ]
       }
     },
     {
@@ -112,8 +142,14 @@
         "y": 90
       },
       "when": {
-        "axis": "z",
-        "east": "false"
+        "AND": [
+          {
+            "east": "false"
+          },
+          {
+            "axis": "z"
+          }
+        ]
       }
     },
     {
@@ -131,8 +167,14 @@
         "y": 270
       },
       "when": {
-        "axis": "y|x",
-        "west": "false"
+        "AND": [
+          {
+            "west": "false"
+          },
+          {
+            "axis": "y|x"
+          }
+        ]
       }
     },
     {
@@ -141,8 +183,14 @@
         "y": 270
       },
       "when": {
-        "axis": "z",
-        "west": "false"
+        "AND": [
+          {
+            "west": "false"
+          },
+          {
+            "axis": "z"
+          }
+        ]
       }
     },
     {
@@ -159,8 +207,14 @@
         "y": 180
       },
       "when": {
-        "axis": "y|z",
-        "south": "false"
+        "AND": [
+          {
+            "south": "false"
+          },
+          {
+            "axis": "y|z"
+          }
+        ]
       }
     },
     {
@@ -169,8 +223,14 @@
         "y": 180
       },
       "when": {
-        "axis": "x",
-        "south": "false"
+        "AND": [
+          {
+            "south": "false"
+          },
+          {
+            "axis": "x"
+          }
+        ]
       }
     },
     {
@@ -186,8 +246,14 @@
         "model": "twilightforest:block/green_thorns_no_section"
       },
       "when": {
-        "axis": "y|z",
-        "north": "false"
+        "AND": [
+          {
+            "north": "false"
+          },
+          {
+            "axis": "y|z"
+          }
+        ]
       }
     },
     {
@@ -195,8 +261,14 @@
         "model": "twilightforest:block/green_thorns_no_section_alt"
       },
       "when": {
-        "axis": "x",
-        "north": "false"
+        "AND": [
+          {
+            "north": "false"
+          },
+          {
+            "axis": "x"
+          }
+        ]
       }
     }
   ]

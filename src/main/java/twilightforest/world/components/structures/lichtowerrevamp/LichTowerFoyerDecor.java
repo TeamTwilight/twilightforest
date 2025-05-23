@@ -85,7 +85,7 @@ public class LichTowerFoyerDecor extends TwilightJigsawPiece implements PieceBea
 					level.setBlock(placePos, chest, Block.UPDATE_ALL);
 
 					if (level.getBlockEntity(placePos) instanceof ChestBlockEntity chestBE) {
-						chestBE.setLootTable(TFLootTables.TOWER_LIBRARY, random.nextLong());
+						chestBE.setLootTable(TFLootTables.TOWER_FOYER, random.nextLong());
 					}
 
 					BlockState chestGap = Blocks.STONE_BRICK_STAIRS.defaultBlockState().setValue(StairBlock.HALF, Half.TOP).rotate(rotation.getRotated(Rotation.CLOCKWISE_180));
@@ -109,7 +109,7 @@ public class LichTowerFoyerDecor extends TwilightJigsawPiece implements PieceBea
 					BlockState decorBlock = switch (random.nextInt(5)) {
 						case 3 -> TFBlocks.SKELETON_SKULL_CANDLE.value().defaultBlockState()
 							.setValue(SkullCandleBlock.LIGHTING, LightableBlock.Lighting.NORMAL)
-							//.setValue(CandleBlock.CANDLES, random.nextIntBetweenInclusive(1, 3)) TODO Move Skull Candles count to BlockState
+							.setValue(SkullCandleBlock.CANDLES, random.nextIntBetweenInclusive(1, 3))
 							.setValue(SkullCandleBlock.ROTATION, random.nextIntBetweenInclusive(7, 9));
 						case 1, 2 -> Blocks.SKELETON_SKULL.defaultBlockState().setValue(SkullBlock.ROTATION, random.nextIntBetweenInclusive(7, 9));
 						default -> Blocks.CANDLE.defaultBlockState().setValue(CandleBlock.CANDLES, random.nextIntBetweenInclusive(1, 3)).setValue(CandleBlock.LIT, true);

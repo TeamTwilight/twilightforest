@@ -3,9 +3,7 @@
   "category": "redstone",
   "group": "wooden_button",
   "ingredients": [
-    {
-      "item": "twilightforest:sorting_planks"
-    }
+    "twilightforest:sorting_planks"
   ],
   "result": {
     "count": 1,

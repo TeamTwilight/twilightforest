@@ -18,6 +18,8 @@ import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileDeflection;
@@ -44,33 +46,42 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.damagesource.DamageContainer;
+import net.neoforged.neoforge.event.EventHooks;
+import net.neoforged.neoforge.event.OnDatapackSyncEvent;
+import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
-import net.neoforged.neoforge.event.entity.living.FinalizeSpawnEvent;
-import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
-import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
-import net.neoforged.neoforge.event.entity.living.LivingEvent;
+import net.neoforged.neoforge.event.entity.living.*;
 import net.neoforged.neoforge.event.entity.player.AdvancementEvent;
 import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.neoforge.event.level.ExplosionEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
+import twilightforest.advancements.DrinkFromFlaskTrigger;
+import tamaized.beanification.Autowired;
 import twilightforest.block.*;
-import twilightforest.block.entity.KeepsakeCasketBlockEntity;
+import twilightforest.block.entity.SkullChestBlockEntity;
 import twilightforest.block.entity.SkullCandleBlockEntity;
 import twilightforest.config.TFConfig;
-import twilightforest.data.tags.EntityTagGenerator;
+import twilightforest.tags.TFEntityTypeTags;
 import twilightforest.enchantment.ApplyFrostedEffect;
+import twilightforest.entity.passive.quest.ram.QuestingRamCurrentContext;
 import twilightforest.entity.projectile.ITFProjectile;
+import twilightforest.entity.projectile.LichBomb;
 import twilightforest.init.*;
 import twilightforest.item.FieryArmorItem;
 import twilightforest.item.YetiArmorItem;
+import twilightforest.network.SyncQuestsPacket;
 import twilightforest.network.WipeOreMeterPacket;
-import twilightforest.world.components.structures.TFStructureComponent;
+import twilightforest.util.datamaps.EntityTransformation;
+import twilightforest.util.entities.EntityUtil;
+import twilightforest.util.entities.OminousFireDamageSource;
+import twilightforest.world.components.structures.SpawnIndexProvider;
 import twilightforest.world.components.structures.finalcastle.FinalCastleBossGazeboComponent;
 import twilightforest.world.components.structures.start.TFStructureStart;
 import twilightforest.world.components.structures.type.HollowHillStructure;
@@ -83,12 +94,43 @@ import java.util.UUID;
 @EventBusSubscriber(modid = TwilightForestMod.ID)
 public class EntityEvents {
 
+	@Autowired
+	private static QuestingRamCurrentContext questingRamCurrentContext;
+
 	private static final boolean SHIELD_PARRY_MOD_LOADED = ModList.get().isLoaded("parry");
+
+	@SubscribeEvent
+	public static void ominousFireConversion(LivingDeathEvent event) {
+		if (event.getSource().is(TFDamageTypes.OMINOUS_FIRE)) {
+			EntityTransformation dataMap = event.getEntity().getType().builtInRegistryHolder().getData(TFDataMaps.OMINOUS_FIRE);
+
+			if (event.getEntity() instanceof ServerPlayer player) {
+				var zombie = EntityType.ZOMBIE.create(player.level(), EntitySpawnReason.CONVERSION);
+				zombie.setData(TFDataAttachments.ZOMBIFIED_PLAYER, player.getGameProfile());
+				zombie.copyPosition(player);
+				zombie.setCanPickUpLoot(true);
+				zombie.setBaby(false);
+				EventHooks.finalizeMobSpawn(zombie, player.serverLevel(), player.level().getCurrentDifficultyAt(player.blockPosition()), EntitySpawnReason.CONVERSION, null);
+				player.level().addFreshEntity(zombie);
+			} else if (dataMap != null && event.getEntity().level() instanceof ServerLevel) {
+				EntityUtil.convertEntity(event.getEntity(), dataMap.result());
+			}
+		}
+	}
+
+	@SubscribeEvent
+	public static void zombifiedPlayerAttacks(LivingIncomingDamageEvent event) {
+		if (!(event.getSource() instanceof OminousFireDamageSource) && event.getSource().getEntity() instanceof Zombie zombie && zombie.hasData(TFDataAttachments.ZOMBIFIED_PLAYER) && event.getEntity().level() instanceof ServerLevel level) {
+			float amount = event.getAmount();
+			event.setCanceled(true);
+			event.getEntity().hurtServer(level, new OminousFireDamageSource(event.getSource()), amount);
+		}
+	}
 
 	@SubscribeEvent
 	public static void alertPlayerCastleIsWIP(AdvancementEvent.AdvancementEarnEvent event) {
 		if (event.getAdvancement().id().equals(TwilightForestMod.prefix("progression_end"))) {
-			event.getEntity().sendSystemMessage(Component.translatable("gui.twilightforest.progression_end.message", Component.translatable("gui.twilightforest.progression_end.discord").withStyle(style -> style.withColor(ChatFormatting.BLUE).applyFormat(ChatFormatting.UNDERLINE).withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://discord.experiment115.com/")))));
+			event.getEntity().displayClientMessage(Component.translatable("gui.twilightforest.progression_end.message", Component.translatable("gui.twilightforest.progression_end.discord").withStyle(style -> style.withColor(ChatFormatting.BLUE).applyFormat(ChatFormatting.UNDERLINE).withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://discord.experiment115.com/")))), false);
 		}
 	}
 
@@ -154,15 +196,12 @@ public class EntityEvents {
 	public static void onCasketBreak(BlockEvent.BreakEvent event) {
 		Block block = event.getState().getBlock();
 		Player player = event.getPlayer();
-		BlockEntity te = event.getLevel().getBlockEntity(event.getPos());
-		UUID checker;
-		if (block == TFBlocks.KEEPSAKE_CASKET.get()) {
-			if (te instanceof KeepsakeCasketBlockEntity casket) {
-				checker = casket.playeruuid;
-			} else checker = null;
-			if (checker != null) {
-				if (!((KeepsakeCasketBlockEntity) te).isEmpty()) {
-					if (!player.hasPermissions(3) || !player.getGameProfile().getId().equals(checker)) {
+		if (block == TFBlocks.SKULL_CHEST.get() || block == TFBlocks.KEEPSAKE_CASKET.get()) {
+			BlockEntity te = event.getLevel().getBlockEntity(event.getPos());
+			if (te instanceof SkullChestBlockEntity casket) {
+				ResolvableProfile checker = casket.owner;
+				if (checker != null && !casket.isEmpty()) {
+					if (!player.hasPermissions(3) || !player.getGameProfile().equals(checker.gameProfile())) {
 						event.setCanceled(true);
 					}
 				}
@@ -337,12 +376,8 @@ public class EntityEvents {
 	private static int getSpawnListIndexAt(StructureStart start, BlockPos pos) {
 		int highestFoundIndex = -1;
 		for (StructurePiece component : start.getPieces()) {
-			if (component.getBoundingBox().isInside(pos)) {
-				if (component instanceof TFStructureComponent tfComponent) {
-					if (tfComponent.spawnListIndex > highestFoundIndex)
-						highestFoundIndex = tfComponent.spawnListIndex;
-				} else
-					return 0;
+			if (component.getBoundingBox().isInside(pos) && component instanceof SpawnIndexProvider indexProvider && indexProvider.getSpawnIndex() > highestFoundIndex) {
+				highestFoundIndex = indexProvider.getSpawnIndex();
 			}
 		}
 		return highestFoundIndex;
@@ -407,7 +442,7 @@ public class EntityEvents {
 
 	@SubscribeEvent
 	public static void adjustEntityHealthInMultiplayerFights(FinalizeSpawnEvent event) {
-		if (event.getEntity().getType().is(EntityTagGenerator.MULTIPLAYER_INCLUSIVE_ENTITIES)) {
+		if (event.getEntity().getType().is(TFEntityTypeTags.MULTIPLAYER_INCLUSIVE_ENTITIES)) {
 			if (TFConfig.multiplayerFightAdjuster.adjustsHealth()) {
 				List<ServerPlayer> nearbyPlayers = event.getLevel().getEntitiesOfClass(ServerPlayer.class, event.getEntity().getBoundingBox().inflate(32, 10, 32), player -> EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(EntitySelector.ENTITY_STILL_ALIVE).test(player));
 				if (nearbyPlayers.size() > 1 && event.getEntity().getAttribute(Attributes.MAX_HEALTH) != null) {
@@ -428,7 +463,7 @@ public class EntityEvents {
 
 	@SubscribeEvent
 	public static void addQualifiedPlayerIfNeeded(LivingDamageEvent.Post event) {
-		if (event.getEntity().getType().is(EntityTagGenerator.MULTIPLAYER_INCLUSIVE_ENTITIES)) {
+		if (event.getEntity().getType().is(TFEntityTypeTags.MULTIPLAYER_INCLUSIVE_ENTITIES)) {
 			var data = event.getEntity().getData(TFDataAttachments.MULTIPLAYER_FIGHT);
 			if (event.getSource().getEntity() != null) {
 				data.maybeAddQualifiedPlayer(event.getSource().getEntity());
@@ -440,6 +475,43 @@ public class EntityEvents {
 	public static void grantAdvancementIfNeeded(LivingDeathEvent event) {
 		if (!event.isCanceled() && event.getEntity().hasData(TFDataAttachments.MULTIPLAYER_FIGHT)) {
 			event.getEntity().getData(TFDataAttachments.MULTIPLAYER_FIGHT).grantGroupAdvancement(event.getEntity());
+		}
+	}
+
+	@SubscribeEvent
+	public static void onExplosionDetonationEvent(ExplosionEvent.Detonate event) {
+		if (event.getExplosion().getDirectSourceEntity() instanceof LichBomb) {
+			event.getAffectedEntities().removeIf(entity -> entity instanceof ItemEntity || entity instanceof LichBomb);
+		}
+	}
+
+	@SubscribeEvent
+	public static void handleQuestSyncing(OnDatapackSyncEvent event) {
+		if (event.getPlayer() != null) {
+			PacketDistributor.sendToPlayer(event.getPlayer(), new SyncQuestsPacket(questingRamCurrentContext.getContext()));
+		} else {
+			event.getPlayerList().getPlayers().forEach(player -> PacketDistributor.sendToPlayer(player, new SyncQuestsPacket(questingRamCurrentContext.getContext())));
+		}
+	}
+
+	@SubscribeEvent
+	public static void resetFlaskLogic(AdvancementEvent.AdvancementEarnEvent event) {
+		for (var criteria : event.getAdvancement().value().criteria().entrySet()) {
+			if (criteria.getValue().trigger() instanceof DrinkFromFlaskTrigger) {
+				event.getEntity().getData(TFDataAttachments.FLASK_DOSES).resetDoses();
+				break;
+			}
+		}
+	}
+
+	@SubscribeEvent
+	public static void entityJoinedWorld(EntityJoinLevelEvent event) {
+		if (!(event.getEntity() instanceof PathfinderMob mob && mob.hasData(TFDataAttachments.LEASH_PATHFINDER_OVERRIDE))) {
+			return;
+		}
+
+		if (!mob.mayBeLeashed()) {
+			mob.removeData(TFDataAttachments.LEASH_PATHFINDER_OVERRIDE);
 		}
 	}
 }

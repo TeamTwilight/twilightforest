@@ -14,9 +14,9 @@ import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -148,8 +148,8 @@ public class UrGhast extends BaseTFBoss {
 	}
 
 	@Override
-	public boolean isInvulnerableTo(DamageSource source) {
-		return !this.isReflectedFireball(source) && (source.is(DamageTypes.IN_WALL) || source.is(DamageTypeTags.IS_FIRE) || super.isInvulnerableTo(source));
+	public boolean isInvulnerableTo(ServerLevel level, DamageSource source) {
+		return !this.isReflectedFireball(source) && (source.is(DamageTypes.IN_WALL) || source.is(DamageTypeTags.IS_FIRE) || super.isInvulnerableTo(level, source));
 	}
 
 	@Override
@@ -158,14 +158,14 @@ public class UrGhast extends BaseTFBoss {
 	}
 
 	@Override
-	public boolean hurt(DamageSource source, float damage) {
+	public boolean hurtServer(ServerLevel level, DamageSource source, float damage) {
 		// in tantrum mode take only 1/10 damage
 		if (this.isInTantrum()) {
 			damage /= 10;
 		}
 
 		float oldHealth = this.getHealth();
-		boolean hurt = super.hurt(source, damage);
+		boolean hurt = super.hurtServer(level, source, damage);
 		float lastDamage = oldHealth - this.getHealth();
 
 		if (!this.level().isClientSide()) {
@@ -198,7 +198,7 @@ public class UrGhast extends BaseTFBoss {
 	private void startTantrum() {
 		this.setInTantrum(true);
 		if (this.level() instanceof ServerLevel serverLevel) {
-			LightningBolt lightningbolt = EntityType.LIGHTNING_BOLT.create(serverLevel);
+			LightningBolt lightningbolt = EntityType.LIGHTNING_BOLT.create(serverLevel, EntitySpawnReason.EVENT);
 			if (lightningbolt != null) {
 				BlockPos blockpos = serverLevel.findLightningTargetAround(BlockPos.containing(this.position().add(new Vec3(18.0D, 0.0D, 0.0D).yRot((float) Math.toRadians(this.getRandom().nextInt(360))))));
 				lightningbolt.moveTo(Vec3.atBottomCenterOf(blockpos));
@@ -249,7 +249,7 @@ public class UrGhast extends BaseTFBoss {
 		level.addFreshEntity(bolt);
 
 		for (int i = 0; i < tries; i++) {
-			CarminiteGhastling minion = TFEntities.CARMINITE_GHASTLING.get().create(level);
+			CarminiteGhastling minion = TFEntities.CARMINITE_GHASTLING.get().create(level, EntitySpawnReason.MOB_SUMMONED);
 
 			double sx = x + ((this.getRandom().nextDouble() - this.getRandom().nextDouble()) * rangeXZ);
 			double sy = y + (this.getRandom().nextDouble() * rangeY);
@@ -257,8 +257,8 @@ public class UrGhast extends BaseTFBoss {
 
 			minion.moveTo(sx, sy, sz, level.getRandom().nextFloat() * 360.0F, 0.0F);
 			minion.makeBossMinion();
-			EventHooks.finalizeMobSpawn(minion, level, level.getCurrentDifficultyAt(minion.blockPosition()), MobSpawnType.MOB_SUMMONED, null);
-			if (minion.checkSpawnRules(level, MobSpawnType.MOB_SUMMONED)) {
+			EventHooks.finalizeMobSpawn(minion, level, level.getCurrentDifficultyAt(minion.blockPosition()), EntitySpawnReason.MOB_SUMMONED, null);
+			if (minion.checkSpawnRules(level, EntitySpawnReason.MOB_SUMMONED)) {
 				level.addFreshEntity(minion);
 				minion.spawnAnim();
 			}
@@ -270,8 +270,8 @@ public class UrGhast extends BaseTFBoss {
 	}
 
 	@Override
-	protected void customServerAiStep() {
-		super.customServerAiStep();
+	protected void customServerAiStep(ServerLevel level) {
+		super.customServerAiStep(level);
 
 		if (this.inTrapCounter > 0) {
 			this.inTrapCounter--;
@@ -315,7 +315,7 @@ public class UrGhast extends BaseTFBoss {
 			}
 
 			if (this.tickCount % 10 == 0) {
-				this.doTantrumDamageEffects();
+				this.doTantrumDamageEffects(level);
 			}
 		}
 	}
@@ -358,13 +358,13 @@ public class UrGhast extends BaseTFBoss {
 			.collect(Collectors.toList());
 	}
 
-	private void doTantrumDamageEffects() {
+	private void doTantrumDamageEffects(ServerLevel level) {
 		// harm player below
 		AABB below = this.getBoundingBox().move(0.0D, -16.0D, 0.0D).inflate(0.0D, 16.0D, 0.0D);
 
 		for (Player player : this.level().getEntitiesOfClass(Player.class, below)) {
 			if (this.level().canSeeSkyFromBelowWater(player.blockPosition())) {
-				player.hurt(TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.GHAST_TEAR, this, TFEntities.UR_GHAST.get()), 3);
+				player.hurtServer(level, TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.GHAST_TEAR, this, TFEntities.UR_GHAST.get()), 3);
 			}
 		}
 
@@ -439,7 +439,7 @@ public class UrGhast extends BaseTFBoss {
 		super.die(cause);
 		// mark the tower as defeated
 		if (this.level() instanceof ServerLevel serverLevel) {
-			LightningBolt lightningbolt = EntityType.LIGHTNING_BOLT.create(serverLevel);
+			LightningBolt lightningbolt = EntityType.LIGHTNING_BOLT.create(serverLevel, EntitySpawnReason.EVENT);
 			if (lightningbolt != null) {
 				lightningbolt.moveTo(this.position().add(0.0D, this.getBbHeight() * 0.5F, 0.0D));
 				lightningbolt.setVisualOnly(true);
@@ -561,7 +561,7 @@ public class UrGhast extends BaseTFBoss {
 				double x = (this.random.nextDouble() - 0.5D) * 0.05D * i;
 				double y = (this.random.nextDouble() - 0.5D) * 0.05D * i;
 				double z = (this.random.nextDouble() - 0.5D) * 0.05D * i;
-				this.level().addParticle(DustParticleOptions.REDSTONE, false, particlePos.x() + x, particlePos.y() + y, particlePos.z() + z, 0.0D, 0.0D, 0.0D);
+				this.level().addParticle(DustParticleOptions.REDSTONE, particlePos.x() + x, particlePos.y() + y, particlePos.z() + z, 0.0D, 0.0D, 0.0D);
 			}
 		}
 	}

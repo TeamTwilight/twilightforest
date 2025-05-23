@@ -59,6 +59,18 @@
     ],
     "subtitle": "subtitles.twilightforest.block.builder.replace"
   },
+  "block.twilightforest.candelabra.light": {
+    "sounds": [
+      "twilightforest:random/candelabra/light"
+    ],
+    "subtitle": "subtitles.twilightforest.block.candelabra.light"
+  },
+  "block.twilightforest.candelabra.ominous": {
+    "sounds": [
+      "twilightforest:random/candelabra/ominous"
+    ],
+    "subtitle": "subtitles.twilightforest.block.candelabra.ominous"
+  },
   "block.twilightforest.casket.close": {
     "sounds": [
       "twilightforest:random/casket/close"
@@ -85,6 +97,15 @@
       "twilightforest:random/casket/repair"
     ],
     "subtitle": "subtitles.twilightforest.block.casket.repair"
+  },
+  "block.twilightforest.chiseled_bookshelf.convert": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.zombie_villager.cure"
+      }
+    ],
+    "subtitle": "subtitles.twilightforest.block.chiseled_bookshelf.convert"
   },
   "block.twilightforest.cicada": {
     "sounds": [
@@ -268,6 +289,12 @@
     ],
     "subtitle": "subtitles.twilightforest.block.jet.start"
   },
+  "block.twilightforest.ominous_fire.light": {
+    "sounds": [
+      "twilightforest:random/candelabra/ominous"
+    ],
+    "subtitle": "subtitles.twilightforest.block.ominous_fire.light"
+  },
   "block.twilightforest.portal.whoosh": {
     "sounds": [
       {
@@ -303,6 +330,30 @@
       }
     ],
     "subtitle": "subtitles.twilightforest.block.reappearing_block.vanish"
+  },
+  "block.twilightforest.skull_chest.close": {
+    "sounds": [
+      "twilightforest:random/casket/close"
+    ],
+    "subtitle": "subtitles.twilightforest.block.skull_chest.close"
+  },
+  "block.twilightforest.skull_chest.locked": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "block.chest.locked"
+      }
+    ],
+    "subtitle": "subtitles.twilightforest.block.skull_chest.locked"
+  },
+  "block.twilightforest.skull_chest.open": {
+    "sounds": [
+      {
+        "name": "twilightforest:random/casket/open",
+        "pitch": 1.25
+      }
+    ],
+    "subtitle": "subtitles.twilightforest.block.skull_chest.open"
   },
   "block.twilightforest.slider.move": {
     "sounds": [
@@ -1228,19 +1279,17 @@
   },
   "entity.twilightforest.lich.pop_mob": {
     "sounds": [
-      {
-        "type": "event",
-        "name": "entity.chicken.egg"
-      }
+      "twilightforest:random/scepter/drain1",
+      "twilightforest:random/scepter/drain2",
+      "twilightforest:random/scepter/drain3"
     ],
     "subtitle": "subtitles.twilightforest.entity.lich.pop_mob"
   },
   "entity.twilightforest.lich.shoot": {
     "sounds": [
-      {
-        "type": "event",
-        "name": "entity.ghast.shoot"
-      }
+      "twilightforest:random/scepter/twilight_use1",
+      "twilightforest:random/scepter/twilight_use2",
+      "twilightforest:random/scepter/twilight_use3"
     ],
     "subtitle": "subtitles.twilightforest.entity.lich.shoot"
   },
@@ -1390,10 +1439,7 @@
   },
   "entity.twilightforest.minion.summon": {
     "sounds": [
-      {
-        "type": "event",
-        "name": "entity.item.pickup"
-      }
+      "twilightforest:random/scepter/zombie"
     ],
     "subtitle": "subtitles.twilightforest.entity.minion.summon"
   },

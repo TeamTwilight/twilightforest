@@ -65,7 +65,7 @@ public final class ChunkBlanketProcessors {
 		}
 
 		Iterator<ChunkBlanketProcessor> modifierIterator = worldGenRegion.registryAccess()
-			.registry(TFRegistries.Keys.CHUNK_BLANKET_PROCESSORS)
+			.lookup(TFRegistries.Keys.CHUNK_BLANKET_PROCESSORS)
 			.map(Registry::stream)
 			.orElseGet(Stream::empty)
 			.filter(modifier -> modifier.biomesForApplication().stream().anyMatch(biomesInChunk::contains))

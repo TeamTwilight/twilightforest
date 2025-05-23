@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.StringJoiner;
 
-@twilightforest.beans.Component
+@tamaized.beanification.Component
 public class InfoCommand {
 
 	public LiteralArgumentBuilder<CommandSourceStack> register() {
@@ -41,7 +41,7 @@ public class InfoCommand {
 
 		BlockPos pos = BlockPos.containing(source.getPosition());
 
-		Optional<Registry<Structure>> possibleStructureRegistry = level.registryAccess().registry(Registries.STRUCTURE);
+		Optional<Registry<Structure>> possibleStructureRegistry = level.registryAccess().lookup(Registries.STRUCTURE);
 		Optional<StructureStart> possibleNearLandmark = LandmarkUtil.locateNearestLandmarkStart(level, SectionPos.blockToSectionCoord(pos.getX()), SectionPos.blockToSectionCoord(pos.getZ()));
 
 		if (possibleStructureRegistry.isEmpty() || possibleNearLandmark.isEmpty() || !(possibleNearLandmark.get().getStructure() instanceof LandmarkStructure landmarkStructure)) return 0;

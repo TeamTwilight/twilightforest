@@ -1,10 +1,9 @@
 package twilightforest.client.event;
 
-
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.ParticleStatus;
+import net.minecraft.client.renderer.CoreShaders;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.LightTexture;
@@ -12,6 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ParticleStatus;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.FluidTags;
@@ -115,8 +115,8 @@ public class CloudEvents {
 									if (!Heightmap.Types.MOTION_BLOCKING.isOpaque().test(mc.level.getBlockState(highestRainyPos.below())))
 										continue;
 
-									if (yetToMakeASound && particlePos != null && randomsource.nextInt(3) < mc.levelRenderer.rainSoundTime++) {
-										mc.levelRenderer.rainSoundTime = 0;
+									if (yetToMakeASound && particlePos != null && randomsource.nextInt(3) < mc.levelRenderer.weatherEffectRenderer.rainSoundTime++) {
+										mc.levelRenderer.weatherEffectRenderer.rainSoundTime = 0;
 										if (particlePos.getY() > camPos.getY() + 1 && mc.level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, camPos).getY() > Mth.floor((float) camPos.getY())) {
 											mc.level.playLocalSound(particlePos, SoundEvents.WEATHER_RAIN_ABOVE, SoundSource.WEATHER, 0.1F, 0.5F, false);
 										} else {
@@ -125,7 +125,7 @@ public class CloudEvents {
 										yetToMakeASound = false;
 									}
 
-									if (highestRainyPos.getY() > mc.level.getMinBuildHeight() && highestRainyPos.getY() <= camPos.getY() + 10 && highestRainyPos.getY() >= camPos.getY() - 10) {
+									if (highestRainyPos.getY() > mc.level.getMinY() && highestRainyPos.getY() <= camPos.getY() + 10 && highestRainyPos.getY() >= camPos.getY() - 10) {
 										particlePos = highestRainyPos.below();
 										if (mc.options.particles().get() == ParticleStatus.MINIMAL) break;
 
@@ -153,7 +153,7 @@ public class CloudEvents {
 		if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_WEATHER && TFConfig.getClientCloudBlockPrecipitationDistance() > 0 && !RENDER_HELPER.isEmpty()) {
 			Minecraft minecraft = Minecraft.getInstance();
 			if (minecraft.level == null) return;
-			float partialTick = minecraft.getTimer().getGameTimeDeltaPartialTick(false);
+			float partialTick = minecraft.getDeltaTracker().getGameTimeDeltaPartialTick(false);
 			LightTexture lightTexture = minecraft.gameRenderer.lightTexture();
 			int ticks = minecraft.levelRenderer.getTicks();
 			lightTexture.turnOnLightLayer();
@@ -178,7 +178,7 @@ public class CloudEvents {
 
 			int tesselatorCheck = -1;
 			float fullTick = (float) ticks + partialTick;
-			RenderSystem.setShader(GameRenderer::getParticleShader);
+			RenderSystem.setShader(CoreShaders.PARTICLE);
 			BlockPos.MutableBlockPos mutableBlockPos = new BlockPos.MutableBlockPos();
 
 			for (PrecipitationRenderHelper helper : RENDER_HELPER) {

@@ -35,6 +35,7 @@ import net.neoforged.neoforge.event.entity.player.ItemFishedEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
+import twilightforest.tags.TFBlockTags;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFBiomes;
 import twilightforest.init.TFItems;
@@ -140,7 +141,7 @@ public class ToolEvents {
 	@SubscribeEvent
 	public static void damageToolsExtra(BlockEvent.BreakEvent event) {
 		ItemStack stack = event.getPlayer().getMainHandItem();
-		if (event.getState().is(BlockTagGenerator.MAZESTONE) || event.getState().is(BlockTagGenerator.CASTLE_BLOCKS)) {
+		if (event.getState().is(TFBlockTags.MAZESTONE) || event.getState().is(TFBlockTags.CASTLE_BLOCKS)) {
 			if (stack.isDamageableItem() && !(stack.getItem() instanceof MazebreakerPickItem)) {
 				stack.hurtAndBreak(16, event.getPlayer(), EquipmentSlot.MAINHAND);
 			}
@@ -149,9 +150,9 @@ public class ToolEvents {
 
 	@SubscribeEvent
 	public static void onMobEffectApplicableEvent(MobEffectEvent.Applicable event) {
-		if (event.getEffectInstance() != null && event.getEffectInstance().is(MobEffects.DIG_SLOWDOWN) && event.getEntity().isHolding(TFItems.POCKET_WATCH.get())) {
+		if (event.getApplicationResult() && event.getEffectInstance().is(MobEffects.DIG_SLOWDOWN) && event.getEntity().isHolding(TFItems.POCKET_WATCH.get())) {
 			event.setResult(MobEffectEvent.Applicable.Result.DO_NOT_APPLY);
-		} else event.setResult(MobEffectEvent.Applicable.Result.DEFAULT);
+		}
 	}
 
 	@SubscribeEvent

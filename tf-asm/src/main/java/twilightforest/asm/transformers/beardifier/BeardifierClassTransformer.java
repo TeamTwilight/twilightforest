@@ -20,7 +20,7 @@ public class BeardifierClassTransformer implements ITransformer<ClassNode> {
 	@Override
 	public @NotNull ClassNode transform(ClassNode node, ITransformerVotingContext context) {
 		node.fields.add(new FieldNode(
-			Opcodes.ACC_PRIVATE,
+			Opcodes.ACC_PUBLIC,
 			"twilightforest_customStructureDensities",
 			"Lit/unimi/dsi/fastutil/objects/ObjectListIterator;",
 			"Lit/unimi/dsi/fastutil/objects/ObjectListIterator<net.minecraft.world.level.levelgen.DensityFunction>;",

@@ -37,7 +37,7 @@ public class BigMushgloomFeature extends AbstractHugeMushroomFeature {
 			for (int x = -foliageRadius; x <= foliageRadius; ++x) {
 				for (int z = -foliageRadius; z <= foliageRadius; ++z) {
 					mutableBlockPos.setWithOffset(pos, x, height + y, z);
-					if (!levelAccessor.getBlockState(mutableBlockPos).isSolidRender(levelAccessor, mutableBlockPos)) {
+					if (!levelAccessor.getBlockState(mutableBlockPos).isSolidRender()) {
 						BlockState blockstate = featureConfiguration.capProvider.getState(random, pos);
 						blockstate = FeatureLogic.getSphericalMushroomBlockState(blockstate, x, y, z, foliageRadius, capHeight);
 						this.setBlock(levelAccessor, mutableBlockPos, blockstate);

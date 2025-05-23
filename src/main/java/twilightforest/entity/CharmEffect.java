@@ -4,7 +4,9 @@ import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -36,7 +38,6 @@ public class CharmEffect extends Entity implements ItemSupplier {
 		super(type, level);
 	}
 
-	@SuppressWarnings("this-escape")
 	public CharmEffect(EntityType<? extends CharmEffect> type, Level level, LivingEntity owner, ItemStack item) {
 		this(type, level);
 		this.orbiter = owner;
@@ -90,6 +91,11 @@ public class CharmEffect extends Entity implements ItemSupplier {
 	}
 
 	@Override
+	public final boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
+		return false;
+	}
+
+	@Override
 	public void lerpTo(double x, double y, double z, float yaw, float pitch, int posRotationIncrements) {
 		this.interpTargetX = x;
 		this.interpTargetY = y;
@@ -126,5 +132,11 @@ public class CharmEffect extends Entity implements ItemSupplier {
 	@Override
 	protected boolean canRide(Entity entity) {
 		return false;
+	}
+
+	@Override
+	public boolean shouldRenderAtSqrDistance(double distance) {
+		double d0 = 64.0 * getViewScale();
+		return distance < d0 * d0;
 	}
 }

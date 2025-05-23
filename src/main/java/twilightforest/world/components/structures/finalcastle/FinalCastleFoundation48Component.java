@@ -23,7 +23,6 @@ public class FinalCastleFoundation48Component extends TFStructureComponentOld {
 		super(TFStructurePieceTypes.TFFCToF48.get(), nbt);
 	}
 
-	@SuppressWarnings("this-escape")
 	public FinalCastleFoundation48Component(int i, TFStructureComponentOld sideTower, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFFCToF48.get(), i, x, y, z);
 

@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/carpet",
-  "loader": "twilightforest:royal_rags",
-  "textures": {
-    "wool": "twilightforest:block/royal_rags",
-    "wool_ctm": "twilightforest:block/royal_rags_ctm"
-  }
-}

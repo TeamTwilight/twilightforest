@@ -16,9 +16,11 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.BlockItemStateProperties;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.ItemLike;
 import org.codehaus.plexus.util.StringUtils;
 import twilightforest.block.KeepsakeCasketBlock;
 import twilightforest.events.CharmEvents;
+import twilightforest.init.TFDataComponents;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -28,23 +30,25 @@ import java.util.function.Consumer;
 
 public class TFItemStackUtils {
 
-	public static boolean consumeInventoryItem(final Player player, final Item item, CompoundTag persistentTag, boolean saveItemToTag) {
+	public static boolean consumeInventoryItem(final Player player, final ItemLike item, CompoundTag persistentTag, boolean saveItemToTag) {
 		return consumeInventoryItem(player.getInventory().armor, item, persistentTag, saveItemToTag, player.registryAccess())
 			|| consumeInventoryItem(player.getInventory().items, item, persistentTag, saveItemToTag, player.registryAccess())
 			|| consumeInventoryItem(player.getInventory().offhand, item, persistentTag, saveItemToTag, player.registryAccess());
 	}
 
-	public static boolean consumeInventoryItem(final NonNullList<ItemStack> stacks, final Item item, CompoundTag persistentTag, boolean saveItemToTag, HolderLookup.Provider provider) {
+	public static boolean consumeInventoryItem(final NonNullList<ItemStack> stacks, final ItemLike item, CompoundTag persistentTag, boolean saveItemToTag, HolderLookup.Provider provider) {
 		for (ItemStack stack : stacks) {
-			if (stack.is(item)) {
+			if (stack.is(item.asItem())) {
 				if (saveItemToTag) persistentTag.put(CharmEvents.CONSUMED_CHARM_TAG, stack.save(provider));
-				stack.shrink(1);
 				BlockItemStateProperties blockItemStateProperties = stack.get(DataComponents.BLOCK_STATE);
 				if (blockItemStateProperties != null && blockItemStateProperties.properties().containsKey(KeepsakeCasketBlock.BREAKAGE.getName())) {
 					String propertyValueString = blockItemStateProperties.properties().get(KeepsakeCasketBlock.BREAKAGE.getName());
 
 					persistentTag.putInt(CharmEvents.CASKET_DAMAGE_TAG, StringUtils.isNumeric(propertyValueString) ? Integer.parseInt(propertyValueString) : 0);
+				} else if (stack.has(TFDataComponents.CASKET_DAMAGE)) {
+					persistentTag.putInt(CharmEvents.CASKET_DAMAGE_TAG, stack.getOrDefault(TFDataComponents.CASKET_DAMAGE, 0));
 				}
+				stack.shrink(1);
 				return true;
 			}
 		}
@@ -80,21 +84,6 @@ public class TFItemStackUtils {
 
 		return result;
 	}
-
-	public static boolean hasToolMaterial(ItemStack stack, Tier tier) {
-
-		Item item = stack.getItem();
-
-		// see TileEntityFurnace.getItemBurnTime
-		if (item instanceof TieredItem tieredItem && tier.equals(tieredItem.getTier())) {
-			return true;
-		}
-		if (item instanceof SwordItem sword && tier.equals(sword.getTier())) {
-			return true;
-		}
-		return item instanceof HoeItem hoe && tier.equals(hoe.getTier());
-	}
-
 
 	public static boolean hasInfoTag(ItemStack stack, String key) {
 		CustomData customData = stack.get(DataComponents.CUSTOM_DATA);
@@ -153,18 +142,22 @@ public class TFItemStackUtils {
 		if (!blockedItems.isEmpty()) blockedItems.forEach(inventory::add);
 	}
 
-	public static void hurtButDontBreak(ItemStack stack, int amount, ServerLevel level, @Nullable LivingEntity entity) {
+	public static boolean isAtZeroDurability(ItemStack stack) {
+		return stack.isDamageableItem() && stack.getDamageValue() >= stack.getMaxDamage();
+	}
+
+	public static void hurtWithoutBreaking(ItemStack stack, int amount, Player player) {
 		if (stack.isDamageableItem()) {
-			amount = stack.getItem().damageItem(stack, amount, entity, item -> {});
-			if (entity == null || !entity.hasInfiniteMaterials()) {
+			amount = stack.getItem().damageItem(stack, amount, player, item -> {});
+			if (player instanceof ServerPlayer sp && !player.hasInfiniteMaterials()) {
 				if (amount > 0) {
-					amount = EnchantmentHelper.processDurabilityChange(level, stack, amount);
+					amount = EnchantmentHelper.processDurabilityChange(sp.serverLevel(), stack, amount);
 					if (amount <= 0) {
 						return;
 					}
 				}
 
-				if (entity instanceof ServerPlayer sp && amount != 0) {
+				if (amount != 0) {
 					CriteriaTriggers.ITEM_DURABILITY_CHANGED.trigger(sp, stack, stack.getDamageValue() + amount);
 				}
 

@@ -29,17 +29,18 @@ import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
-import twilightforest.data.tags.CustomTagGenerator;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.tags.TFPaintingVariantTags;
 import twilightforest.util.DirectionUtil;
 import twilightforest.util.entities.EntityUtil;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.util.jigsaw.JigsawRecord;
+import twilightforest.world.components.structures.SpawnIndexProvider;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
 
 import java.util.List;
 
-public final class LichBossRoom extends TwilightJigsawPiece implements PieceBeardifierModifier {
+public final class LichBossRoom extends TwilightJigsawPiece implements PieceBeardifierModifier, SpawnIndexProvider.Deny {
 	public LichBossRoom(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
 		super(TFStructurePieceTypes.LICH_BOSS_ROOM.get(), compoundTag, ctx, readSettings(compoundTag));
 
@@ -69,7 +70,7 @@ public final class LichBossRoom extends TwilightJigsawPiece implements PieceBear
 			int y = random.nextInt(3);
 			BlockPos placeAt = center.offset(x, y, z);
 
-			if (chunkBounds.isInside(placeAt) && level.getBlockState(placeAt).isAir()) {
+			if (chunkBounds.isInside(placeAt) && level.getBlockState(placeAt).isAir() && level.getBlockState(placeAt.below()).isAir()) {
 				level.setBlock(placeAt, candle, Block.UPDATE_CLIENTS);
 			}
 		}
@@ -77,7 +78,7 @@ public final class LichBossRoom extends TwilightJigsawPiece implements PieceBear
 
 	@Override
 	protected void handleDataMarker(String label, BlockPos pos, WorldGenLevel level, RandomSource random, BoundingBox chunkBounds, ChunkGenerator chunkGen) {
-		placePainting(label, pos, level, random, chunkBounds, this.placeSettings.getRotation(), 3, 3, CustomTagGenerator.PaintingVariantTagGenerator.LICH_BOSS_PAINTINGS);
+		placePainting(label, pos, level, random, chunkBounds, this.placeSettings.getRotation(), 3, 3, TFPaintingVariantTags.LICH_BOSS_PAINTINGS);
 	}
 
 	public static void placePainting(String label, BlockPos pos, ServerLevelAccessor level, RandomSource random, BoundingBox chunkBounds, Rotation rotation, int limitTries, int rarityFactor, TagKey<PaintingVariant> lichTowerPaintings) {

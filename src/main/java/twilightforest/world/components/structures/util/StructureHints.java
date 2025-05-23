@@ -60,14 +60,15 @@ public interface StructureHints {
 			.toList();
 
 		book.set(DataComponents.WRITTEN_BOOK_CONTENT, new WrittenBookContent(
-			Filterable.passThrough(TwilightForestMod.ID + ".book." + key),
+			Filterable.passThrough(""),
 			BOOK_AUTHOR,
 			3,
 			list,
 			true
 		));
 
-		book.set(TFDataComponents.TRANSLATABLE_BOOK, Unit.INSTANCE);
+		book.set(TFDataComponents.TRANSLATABLE_BOOK, Unit.INSTANCE); //for the author
+		book.set(DataComponents.ITEM_NAME, Component.translatable(TwilightForestMod.ID + ".book." + key));
 	}
 
 	/**
@@ -83,9 +84,9 @@ public interface StructureHints {
 	void trySpawnHintMonster(Level world, Player player, BlockPos pos);
 
 	static void tryHintForStructure(Player player, ServerLevel level, ResourceKey<Structure> forStructure) {
-		Optional<Registry<Structure>> optStructureReg = level.registryAccess().registry(Registries.STRUCTURE);
+		Optional<Registry<Structure>> optStructureReg = level.registryAccess().lookup(Registries.STRUCTURE);
 
-		if (optStructureReg.isEmpty() || !(optStructureReg.get().get(forStructure) instanceof StructureHints structureHints))
+		if (optStructureReg.isEmpty() || !(optStructureReg.get().getValue(forStructure) instanceof StructureHints structureHints))
 			return;
 
 		structureHints.trySpawnHintMonster(level, player);

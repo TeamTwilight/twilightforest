@@ -25,7 +25,6 @@ public class SeekerArrow extends TFArrow {
 	private static final double seekAngle = Math.PI / 6.0;
 	private static final double seekThreshold = 0.5;
 
-	@SuppressWarnings("this-escape")
 	public SeekerArrow(EntityType<? extends SeekerArrow> type, Level world) {
 		super(type, world);
 		this.setBaseDamage(1.0D);
@@ -49,7 +48,7 @@ public class SeekerArrow extends TFArrow {
 				this.updateTarget();
 			}
 
-			if (this.level().isClientSide() && !this.inGround) {
+			if (this.level().isClientSide() && !this.isInGround()) {
 				for (int i = 0; i < 4; ++i) {
 					this.level().addParticle(ParticleTypes.WITCH, this.getX() + this.getDeltaMovement().x() * i / 4.0D, this.getY() + this.getDeltaMovement().y() * i / 4.0D, this.getZ() + this.getDeltaMovement().z() * i / 4.0D, -this.getDeltaMovement().x(), -this.getDeltaMovement().y() + 0.2D, -this.getDeltaMovement().z());
 				}
@@ -174,7 +173,7 @@ public class SeekerArrow extends TFArrow {
 	}
 
 	private boolean isThisArrowFlying() {
-		return !this.inGround && getDeltaMovement().lengthSqr() > 1.0;
+		return !this.isInGround() && getDeltaMovement().lengthSqr() > 1.0;
 	}
 
 	@Override

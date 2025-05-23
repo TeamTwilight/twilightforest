@@ -79,7 +79,7 @@ public class HydraHead extends HydraPart {
 				}
 			}
 
-			return InteractionResult.sidedSuccess(this.level().isClientSide());
+			return InteractionResult.SUCCESS;
 		}
 		return super.interact(player, hand);
 	}

@@ -2,7 +2,8 @@
   "variants": {
     "active=false": [
       {
-        "model": "twilightforest:block/trophy_pedestal"
+        "model": "twilightforest:block/trophy_pedestal",
+        "y": 0
       },
       {
         "model": "twilightforest:block/trophy_pedestal",
@@ -17,7 +18,8 @@
         "y": 270
       },
       {
-        "model": "twilightforest:block/trophy_pedestal_1"
+        "model": "twilightforest:block/trophy_pedestal_1",
+        "y": 0
       },
       {
         "model": "twilightforest:block/trophy_pedestal_1",
@@ -32,7 +34,8 @@
         "y": 270
       },
       {
-        "model": "twilightforest:block/trophy_pedestal_2"
+        "model": "twilightforest:block/trophy_pedestal_2",
+        "y": 0
       },
       {
         "model": "twilightforest:block/trophy_pedestal_2",
@@ -47,7 +50,8 @@
         "y": 270
       },
       {
-        "model": "twilightforest:block/trophy_pedestal_3"
+        "model": "twilightforest:block/trophy_pedestal_3",
+        "y": 0
       },
       {
         "model": "twilightforest:block/trophy_pedestal_3",
@@ -62,7 +66,8 @@
         "y": 270
       },
       {
-        "model": "twilightforest:block/trophy_pedestal_4"
+        "model": "twilightforest:block/trophy_pedestal_4",
+        "y": 0
       },
       {
         "model": "twilightforest:block/trophy_pedestal_4",
@@ -79,7 +84,8 @@
     ],
     "active=true": [
       {
-        "model": "twilightforest:block/trophy_pedestal_active"
+        "model": "twilightforest:block/trophy_pedestal_active",
+        "y": 0
       },
       {
         "model": "twilightforest:block/trophy_pedestal_active",
@@ -94,7 +100,8 @@
         "y": 270
       },
       {
-        "model": "twilightforest:block/trophy_pedestal_active_1"
+        "model": "twilightforest:block/trophy_pedestal_active_1",
+        "y": 0
       },
       {
         "model": "twilightforest:block/trophy_pedestal_active_1",
@@ -109,7 +116,8 @@
         "y": 270
       },
       {
-        "model": "twilightforest:block/trophy_pedestal_active_2"
+        "model": "twilightforest:block/trophy_pedestal_active_2",
+        "y": 0
       },
       {
         "model": "twilightforest:block/trophy_pedestal_active_2",
@@ -124,7 +132,8 @@
         "y": 270
       },
       {
-        "model": "twilightforest:block/trophy_pedestal_active_3"
+        "model": "twilightforest:block/trophy_pedestal_active_3",
+        "y": 0
       },
       {
         "model": "twilightforest:block/trophy_pedestal_active_3",
@@ -139,7 +148,8 @@
         "y": 270
       },
       {
-        "model": "twilightforest:block/trophy_pedestal_active_4"
+        "model": "twilightforest:block/trophy_pedestal_active_4",
+        "y": 0
       },
       {
         "model": "twilightforest:block/trophy_pedestal_active_4",

@@ -5,6 +5,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -135,17 +136,17 @@ public class FireBeetle extends Monster implements IBreathAttacker {
 	}
 
 	@Override
-	public void doBreathAttack(Entity target) {
-		if (!target.fireImmune() && target.hurt(TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.SCORCHED, this), BREATH_DAMAGE)) {
+	public void doBreathAttack(ServerLevel level, Entity target) {
+		if (!target.fireImmune() && target.hurtServer(level, TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.SCORCHED, this), BREATH_DAMAGE)) {
 			target.igniteForSeconds(BREATH_DURATION);
 		}
 	}
 
 	@Override
-	public boolean doHurtTarget(Entity entity) {
+	public boolean doHurtTarget(ServerLevel level, Entity entity) {
 		if (this.isBreathing()) {
-			return entity.hurt(TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.SCORCHED, this), BREATH_DAMAGE);
+			return entity.hurtServer(level, TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.SCORCHED, this), BREATH_DAMAGE);
 		}
-		return super.doHurtTarget(entity);
+		return super.doHurtTarget(level, entity);
 	}
 }

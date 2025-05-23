@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "twilightforest:naga"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "twilightforest:naga"
+      }
+    ]
+  }
+}

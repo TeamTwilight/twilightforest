@@ -27,10 +27,7 @@ public record PotionFlaskComponent(PotionContents potion, int doses, int breakag
 		PotionFlaskComponent::new);
 
 	public PotionFlaskComponent tryAddDose(PotionContents potion) {
-		if (this.breakage() <= 0) {
-			return new PotionFlaskComponent(potion, this.doses() + 1, this.breakage(), this.breakable());
-		}
-		return this;
+		return new PotionFlaskComponent(potion, this.doses() + 1, this.breakage(), this.breakable());
 	}
 
 	public PotionFlaskComponent removeDose() {

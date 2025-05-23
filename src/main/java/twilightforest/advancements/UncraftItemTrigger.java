@@ -7,7 +7,9 @@ import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import twilightforest.init.TFAdvancements;
@@ -36,8 +38,8 @@ public class UncraftItemTrigger extends SimpleCriterionTrigger<UncraftItemTrigge
 			return TFAdvancements.UNCRAFT_ITEM.get().createCriterion(new UncraftItemTrigger.TriggerInstance(Optional.empty(), Optional.of(predicate)));
 		}
 
-		public static Criterion<UncraftItemTrigger.TriggerInstance> uncraftedItem(ItemLike item) {
-			return uncraftedItem(ItemPredicate.Builder.item().of(item).build());
+		public static Criterion<UncraftItemTrigger.TriggerInstance> uncraftedItem(HolderGetter<Item> getter, ItemLike item) {
+			return uncraftedItem(ItemPredicate.Builder.item().of(getter, item).build());
 		}
 
 		public boolean matches(ItemStack item) {

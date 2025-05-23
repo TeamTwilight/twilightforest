@@ -1,9 +1,8 @@
 {
   "parent": "twilightforest:block/horizontal_hollow_log",
-  "render_type": "minecraft:cutout",
   "textures": {
-    "inner": "twilightforest:block/stripped_transformation_log",
-    "side": "twilightforest:block/transformation_log",
-    "top": "twilightforest:block/transformation_log_top"
+    "end": "twilightforest:block/transformation_log_top",
+    "inside": "twilightforest:block/stripped_transformation_log",
+    "side": "twilightforest:block/transformation_log"
   }
 }

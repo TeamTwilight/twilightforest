@@ -18,11 +18,14 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.redstone.ExperimentalRedstoneUtils;
+import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.common.util.FakePlayerFactory;
 import net.neoforged.neoforge.common.util.TriState;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
 
@@ -59,14 +62,14 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 
 	@Override
 	public void onPlace(BlockState state, Level level, BlockPos pos, BlockState newState, boolean moving) {
-		if (!newState.is(state.getBlock()) && !level.getBlockState(pos.above()).isAir()) this.neighborChanged(state, level, pos, this, pos.above(), moving);
+		if (!newState.is(state.getBlock()) && !level.getBlockState(pos.above()).isAir()) this.neighborChanged(state, level, pos, this, Orientation.of(Direction.UP, Direction.UP, Orientation.SideBias.LEFT), moving);
 	}
 
 	@Override
 	@SuppressWarnings("deprecation")
-	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
-		if (fromPos.getY() == pos.getY() + 1) {
-			BlockState above = level.getBlockState(fromPos);
+	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, @Nullable Orientation orientation, boolean isMoving) {
+		if (orientation != null && orientation.getSide() == Direction.UP) {
+			BlockState above = level.getBlockState(pos.above());
 			if (!(above.getBlock() instanceof BonemealableBlock bonemealableBlock && !above.is(this))) {
 				if (above.isSolid()) FarmBlock.turnToDirt(null, state, level, pos);
 				return;
@@ -80,19 +83,17 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 				newState = Blocks.MYCELIUM.defaultBlockState();
 			else if (bonemealableBlock instanceof BushBlock)
 				newState = Blocks.GRASS_BLOCK.defaultBlockState();
-			else if (bonemealableBlock instanceof MossBlock mossBlock)
-				newState = mossBlock.defaultBlockState();
 
 			if (level instanceof ServerLevel serverLevel) {
 				if (bonemealableBlock instanceof MushgloomBlock mushgloomBlock) {
 					//This seems a bit hacky, but it's the easiest way of letting the mushgloom only be grown by uberous soil
 					//If we make it growable by bonemeal as well, just delete this if statement and update the appropriate method inside the mushgloom class
 					level.setBlockAndUpdate(pos, pushEntitiesUp(state, newState, level, pos));
-					mushgloomBlock.growMushroom(serverLevel, fromPos, above, serverLevel.random);
-					level.levelEvent(2005, fromPos, 0); // FIXME Nothing happens, used to call BoneMealItem.addGrowthParticles on client
+					mushgloomBlock.growMushroom(serverLevel, pos.above(), above, serverLevel.random);
+					level.levelEvent(2005, pos.above(), 0); // FIXME Nothing happens, used to call BoneMealItem.addGrowthParticles on client
 					return;
 				}
-				level.levelEvent(LevelEvent.PARTICLES_AND_SOUND_PLANT_GROWTH, fromPos, 15); // Bonemeal particles
+				level.levelEvent(LevelEvent.PARTICLES_AND_SOUND_PLANT_GROWTH, pos.above(), 15); // Bonemeal particles
 			}
 
 
@@ -103,16 +104,16 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 			if (level instanceof ServerLevel serverLevel) {
 				MinecraftServer server = serverLevel.getServer();
 				FakePlayer fakePlayer = FakePlayerFactory.getMinecraft(serverLevel);
-				server.tell(new TickTask(server.getTickCount(), () -> {
+				server.schedule(new TickTask(server.getTickCount(), () -> {
 					//We need to use a tick task so that plants that grow into tall variants don't just break upon growth
 					for (int i = 0; i < 15; i++)
-						BoneMealItem.applyBonemeal(new ItemStack(Items.BONE_MEAL), serverLevel, fromPos, fakePlayer);
+						BoneMealItem.applyBonemeal(new ItemStack(Items.BONE_MEAL), serverLevel, pos.above(), fakePlayer);
 				}));
 			}
 
-			level.levelEvent(2005, fromPos, 0); // FIXME Nothing happens, used to call BoneMealItem.addGrowthParticles on client
-		} else if (fromPos.getY() + 1 == pos.getY()) {
-			BlockState below = level.getBlockState(fromPos);
+			level.levelEvent(2005, pos.above(), 0); // FIXME Nothing happens, used to call BoneMealItem.addGrowthParticles on client
+		} else if (orientation != null && orientation.getSide() == Direction.DOWN) {
+			BlockState below = level.getBlockState(pos.below());
 			if (!(below.getBlock() instanceof BonemealableBlock)) return;
 
 			level.setBlockAndUpdate(pos, pushEntitiesUp(state, Blocks.DIRT.defaultBlockState(), level, pos));
@@ -120,14 +121,14 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 			if (level instanceof ServerLevel serverLevel) {
 				MinecraftServer server = serverLevel.getServer();
 				FakePlayer fakePlayer = FakePlayerFactory.getMinecraft(serverLevel);
-				server.tell(new TickTask(server.getTickCount(), () -> {
-					for (int i = 0; i < 15; i++) BoneMealItem.applyBonemeal(new ItemStack(Items.BONE_MEAL), serverLevel, fromPos, fakePlayer);
+				server.schedule(new TickTask(server.getTickCount(), () -> {
+					for (int i = 0; i < 15; i++) BoneMealItem.applyBonemeal(new ItemStack(Items.BONE_MEAL), serverLevel, pos.below(), fakePlayer);
 				}));
 
-				level.levelEvent(LevelEvent.PARTICLES_AND_SOUND_PLANT_GROWTH, fromPos, 15); // Bonemeal particles
+				level.levelEvent(LevelEvent.PARTICLES_AND_SOUND_PLANT_GROWTH, pos.below(), 15); // Bonemeal particles
 			}
 
-			level.levelEvent(2005, fromPos, 0); // FIXME Nothing happens, used to call BoneMealItem.addGrowthParticles on client
+			level.levelEvent(2005, pos.below(), 0); // FIXME Nothing happens, used to call BoneMealItem.addGrowthParticles on client
 		}
 	}
 
@@ -220,6 +221,6 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 
 	public void spreadTo(ServerLevel level, BlockPos pos) {
 		level.setBlockAndUpdate(pos, this.defaultBlockState());
-		if (!level.getBlockState(pos.above()).isAir()) this.neighborChanged(this.defaultBlockState(), level, pos, this, pos.above(), false);
+		if (!level.getBlockState(pos.above()).isAir()) this.neighborChanged(this.defaultBlockState(), level, pos, this, Orientation.of(Direction.UP, Direction.UP, Orientation.SideBias.LEFT), false); //TODO how tf do orientations work????
 	}
 }

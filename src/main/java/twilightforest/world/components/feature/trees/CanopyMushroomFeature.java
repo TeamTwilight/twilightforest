@@ -19,7 +19,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
 public abstract class CanopyMushroomFeature extends AbstractHugeMushroomFeature {
-	private int bugsLeft;
 
 	public CanopyMushroomFeature(Codec<HugeMushroomFeatureConfiguration> featureConfigurationCodec) {
 		super(featureConfigurationCodec);
@@ -35,12 +34,16 @@ public abstract class CanopyMushroomFeature extends AbstractHugeMushroomFeature 
 
 	@Override
 	protected void placeTrunk(LevelAccessor levelAccessor, RandomSource random, BlockPos pos, HugeMushroomFeatureConfiguration featureConfiguration, int height, BlockPos.MutableBlockPos mutableBlockPos) {
+		int bugsLeft = Math.max(0, random.nextInt(10) - 4) / 2; //Weird math, I know, but I like the odds (and weird math, sue me)
+
 		for (int i = 0; i < height; ++i) {
 			mutableBlockPos.set(pos).move(Direction.UP, i);
-			if (!levelAccessor.getBlockState(mutableBlockPos).isSolidRender(levelAccessor, mutableBlockPos)) {
+			if (!levelAccessor.getBlockState(mutableBlockPos).isSolidRender()) {
 				this.setBlock(levelAccessor, mutableBlockPos, featureConfiguration.stemProvider.getState(random, pos));
 
-				if (this.bugsLeft > 0 && i > height / 2 && random.nextInt(10) == 9) addFirefly(levelAccessor, mutableBlockPos, random);
+				if (bugsLeft > 0 && i > height / 2 && random.nextInt(10) == 9)
+					if (this.addFirefly(levelAccessor, mutableBlockPos, random))
+						bugsLeft--;
 			} else {
 				height = i;
 				break;
@@ -50,24 +53,30 @@ public abstract class CanopyMushroomFeature extends AbstractHugeMushroomFeature 
 		int numBranches = this.getBranches(random);
 		float offset = random.nextFloat();
 		for (int b = 0; b < numBranches; b++) {
-			buildABranch(levelAccessor, pos, height - 6 + b, this.getLength(random), 0.3 * b + offset, random, new HugeMushroomFeatureConfiguration(featureConfiguration.capProvider, featureConfiguration.stemProvider, featureConfiguration.foliageRadius - 1));
+			bugsLeft = this.buildABranch(levelAccessor, pos, height - 6 + b, this.getLength(random), 0.3 * b + offset, random, new HugeMushroomFeatureConfiguration(featureConfiguration.capProvider, featureConfiguration.stemProvider, featureConfiguration.foliageRadius - 1), bugsLeft);
 		}
 	}
 
 	/**
 	 * Add a firefly on a RandomSource face of a block
 	 */
-	protected void addFirefly(LevelAccessor levelAccessor, BlockPos pos, RandomSource random) {
+	protected boolean addFirefly(LevelAccessor levelAccessor, BlockPos pos, RandomSource random) {
 		Direction direction = Direction.getRandom(random);
-		if (direction.getAxis() != Direction.Axis.Y) {
-			BlockPos.MutableBlockPos bugPos = new BlockPos.MutableBlockPos();
-			bugPos.set(pos).move(direction);
-			if (!levelAccessor.getBlockState(bugPos).isSolidRender(levelAccessor, bugPos)) {
-				BlockState bugState = TFBlocks.FIREFLY.get().defaultBlockState().setValue(DirectionalBlock.FACING, direction);
-				this.setBlock(levelAccessor, bugPos, bugState);
-				this.bugsLeft--;
-			}
+
+		if (direction.getAxis() == Direction.Axis.Y) {
+			return false;
 		}
+
+		BlockPos.MutableBlockPos bugPos = new BlockPos.MutableBlockPos();
+		bugPos.set(pos).move(direction);
+
+		if (levelAccessor.getBlockState(bugPos).isSolidRender()) {
+			return false;
+		}
+
+		BlockState bugState = TFBlocks.FIREFLY.get().defaultBlockState().setValue(DirectionalBlock.FACING, direction);
+		this.setBlock(levelAccessor, bugPos, bugState);
+		return true;
 	}
 
 	@Override
@@ -79,7 +88,7 @@ public abstract class CanopyMushroomFeature extends AbstractHugeMushroomFeature 
 
 	protected abstract double getLength(RandomSource random);
 
-	private void buildABranch(LevelAccessor levelAccessor, BlockPos pos, int height, double length, double angle, RandomSource random, HugeMushroomFeatureConfiguration featureConfiguration) {
+	private int buildABranch(LevelAccessor levelAccessor, BlockPos pos, int height, double length, double angle, RandomSource random, HugeMushroomFeatureConfiguration featureConfiguration, int bugsLeft) {
 		BlockPos src = pos.above(height);
 		BlockPos dest = FeatureLogic.translate(src, length, angle, 0.2);
 
@@ -106,10 +115,14 @@ public abstract class CanopyMushroomFeature extends AbstractHugeMushroomFeature 
 
 			this.setBlock(levelAccessor, blockPos, blockstate);
 
-			if (this.bugsLeft > 0 && i > Math.min(src.getY(), dest.getY()) / 2 && random.nextInt(20) == 0) addFirefly(levelAccessor, blockPos, random);
+			if (bugsLeft > 0 && i > Math.min(src.getY(), dest.getY()) / 2 && random.nextInt(20) == 0)
+				if (this.addFirefly(levelAccessor, blockPos, random))
+					bugsLeft--;
 		}
 
-		this.makeCap(levelAccessor, random, dest, 1, new BlockPos.MutableBlockPos(), featureConfiguration);//Branches need caps as well, height in this case is set to 1
+		this.makeCap(levelAccessor, random, dest, 1, new BlockPos.MutableBlockPos(), featureConfiguration); //Branches need caps as well, height in this case is set to 1
+
+		return bugsLeft;
 	}
 
 	@Override //Pretty much a 1:1 vanilla copy of the big brown mushroom cap code
@@ -120,7 +133,7 @@ public abstract class CanopyMushroomFeature extends AbstractHugeMushroomFeature 
 			for (int z = -foliageRadius; z <= foliageRadius; ++z) {
 				if (!FeatureLogic.isCornerInSquare(x, z, foliageRadius)) {
 					mutableBlockPos.setWithOffset(pos, x, height, z);
-					if (!levelAccessor.getBlockState(mutableBlockPos).isSolidRender(levelAccessor, mutableBlockPos)) {
+					if (!levelAccessor.getBlockState(mutableBlockPos).isSolidRender()) {
 						BlockState blockState = featureConfiguration.capProvider.getState(random, pos);
 						blockState = FeatureLogic.getHorizontalMushroomBlockState(blockState, x, z, foliageRadius);
 						this.setBlock(levelAccessor, mutableBlockPos, blockState);
@@ -128,11 +141,5 @@ public abstract class CanopyMushroomFeature extends AbstractHugeMushroomFeature 
 				}
 			}
 		}
-	}
-
-	@Override
-	public boolean place(FeaturePlaceContext<HugeMushroomFeatureConfiguration> context) {
-		this.bugsLeft = Math.max(0, context.random().nextInt(10) - 4) / 2; //Weird math, I know, but I like the odds (and weird math, sue me)
-		return super.place(context);
 	}
 }

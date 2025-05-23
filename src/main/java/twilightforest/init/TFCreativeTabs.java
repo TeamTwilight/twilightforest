@@ -8,21 +8,22 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.util.Unit;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.ItemLore;
 import net.minecraft.world.item.component.Unbreakable;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ItemLike;
+import net.neoforged.fml.loading.FMLEnvironment;
+import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
-import twilightforest.components.item.SkullCandles;
 import twilightforest.config.TFConfig;
 import twilightforest.entity.MagicPaintingVariant;
+import twilightforest.tags.TFItemTags;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -53,25 +54,25 @@ public class TFCreativeTabs {
 			output.accept(TFBlocks.TWILIGHT_OAK_TRAPDOOR);
 			output.accept(TFBlocks.TWILIGHT_OAK_PLATE);
 			output.accept(TFBlocks.TWILIGHT_OAK_BUTTON);
-			output.accept(TFItems.TWILIGHT_OAK_SIGN);
-			output.accept(TFItems.TWILIGHT_OAK_HANGING_SIGN);
+			output.accept(TFBlocks.TWILIGHT_OAK_SIGN);
+			output.accept(TFBlocks.TWILIGHT_OAK_HANGING_SIGN);
 			output.accept(TFBlocks.TWILIGHT_OAK_LEAVES);
 			output.accept(TFBlocks.TWILIGHT_OAK_SAPLING);
-			output.accept(TFBlocks.RAINBOW_OAK_LEAVES);
-			output.accept(TFBlocks.RAINBOW_OAK_SAPLING);
-			output.accept(TFBlocks.HOLLOW_OAK_SAPLING);
 
 			output.accept(TFBlocks.CANOPY_LOG);
 			output.accept(TFBlocks.CANOPY_WOOD);
 			output.accept(TFItems.HOLLOW_CANOPY_LOG);
 			output.accept(TFBlocks.STRIPPED_CANOPY_LOG);
 			output.accept(TFBlocks.STRIPPED_CANOPY_WOOD);
-			output.accept(TFBlocks.CANOPY_BOOKSHELF);
 			output.accept(TFBlocks.CANOPY_PLANKS);
 			output.accept(TFBlocks.CANOPY_STAIRS);
 			output.accept(TFBlocks.CANOPY_SLAB);
 			output.accept(TFBlocks.CANOPY_CHEST);
 			output.accept(TFBlocks.CANOPY_TRAPPED_CHEST);
+			output.accept(TFBlocks.CANOPY_BOOKSHELF);
+			output.accept(TFBlocks.CHISELED_CANOPY_BOOKSHELF);
+			output.accept(TFBlocks.CANOPY_WINDOW);
+			output.accept(TFBlocks.CANOPY_WINDOW_PANE);
 			output.accept(TFBlocks.CANOPY_FENCE);
 			output.accept(TFBlocks.CANOPY_GATE);
 			output.accept(TFBlocks.CANOPY_BANISTER);
@@ -79,17 +80,17 @@ public class TFCreativeTabs {
 			output.accept(TFBlocks.CANOPY_TRAPDOOR);
 			output.accept(TFBlocks.CANOPY_PLATE);
 			output.accept(TFBlocks.CANOPY_BUTTON);
-			output.accept(TFItems.CANOPY_SIGN);
-			output.accept(TFItems.CANOPY_HANGING_SIGN);
+			output.accept(TFBlocks.CANOPY_SIGN);
+			output.accept(TFBlocks.CANOPY_HANGING_SIGN);
 			output.accept(TFBlocks.CANOPY_LEAVES);
 			output.accept(TFBlocks.CANOPY_SAPLING);
 
 			output.accept(TFBlocks.MANGROVE_LOG);
 			output.accept(TFBlocks.MANGROVE_WOOD);
-			output.accept(TFBlocks.MANGROVE_ROOT);
 			output.accept(TFItems.HOLLOW_MANGROVE_LOG);
 			output.accept(TFBlocks.STRIPPED_MANGROVE_LOG);
 			output.accept(TFBlocks.STRIPPED_MANGROVE_WOOD);
+			output.accept(TFBlocks.MANGROVE_ROOT);
 			output.accept(TFBlocks.MANGROVE_PLANKS);
 			output.accept(TFBlocks.MANGROVE_STAIRS);
 			output.accept(TFBlocks.MANGROVE_SLAB);
@@ -102,8 +103,8 @@ public class TFCreativeTabs {
 			output.accept(TFBlocks.MANGROVE_TRAPDOOR);
 			output.accept(TFBlocks.MANGROVE_PLATE);
 			output.accept(TFBlocks.MANGROVE_BUTTON);
-			output.accept(TFItems.MANGROVE_SIGN);
-			output.accept(TFItems.MANGROVE_HANGING_SIGN);
+			output.accept(TFBlocks.MANGROVE_SIGN);
+			output.accept(TFBlocks.MANGROVE_HANGING_SIGN);
 			output.accept(TFBlocks.MANGROVE_LEAVES);
 			output.accept(TFBlocks.MANGROVE_SAPLING);
 
@@ -124,31 +125,10 @@ public class TFCreativeTabs {
 			output.accept(TFBlocks.DARK_TRAPDOOR);
 			output.accept(TFBlocks.DARK_PLATE);
 			output.accept(TFBlocks.DARK_BUTTON);
-			output.accept(TFItems.DARK_SIGN);
-			output.accept(TFItems.DARK_HANGING_SIGN);
+			output.accept(TFBlocks.DARK_SIGN);
+			output.accept(TFBlocks.DARK_HANGING_SIGN);
 			output.accept(TFBlocks.DARK_LEAVES);
 			output.accept(TFBlocks.DARKWOOD_SAPLING);
-
-			output.accept(TFBlocks.VEILWOOD_LOG);
-			output.accept(TFBlocks.VEILWOOD_WOOD);
-			output.accept(TFItems.HOLLOW_VEILWOOD_LOG);
-			output.accept(TFBlocks.STRIPPED_VEILWOOD_LOG);
-			output.accept(TFBlocks.STRIPPED_VEILWOOD_WOOD);
-			output.accept(TFBlocks.VEILWOOD_PLANKS);
-			output.accept(TFBlocks.VEILWOOD_STAIRS);
-			output.accept(TFBlocks.VEILWOOD_SLAB);
-			output.accept(TFBlocks.VEILWOOD_CHEST);
-			output.accept(TFBlocks.VEILWOOD_TRAPPED_CHEST);
-			output.accept(TFBlocks.VEILWOOD_FENCE);
-			output.accept(TFBlocks.VEILWOOD_GATE);
-			output.accept(TFBlocks.VEILWOOD_BANISTER);
-			output.accept(TFBlocks.VEILWOOD_DOOR);
-			output.accept(TFBlocks.VEILWOOD_TRAPDOOR);
-			output.accept(TFBlocks.VEILWOOD_PLATE);
-			output.accept(TFBlocks.VEILWOOD_BUTTON);
-			output.accept(TFItems.VEILWOOD_SIGN);
-			output.accept(TFItems.VEILWOOD_HANGING_SIGN);
-			output.accept(TFBlocks.VEILWOOD_SAPLING);
 
 			output.accept(TFBlocks.TIME_LOG);
 			output.accept(TFBlocks.TIME_WOOD);
@@ -168,8 +148,8 @@ public class TFCreativeTabs {
 			output.accept(TFBlocks.TIME_TRAPDOOR);
 			output.accept(TFBlocks.TIME_PLATE);
 			output.accept(TFBlocks.TIME_BUTTON);
-			output.accept(TFItems.TIME_SIGN);
-			output.accept(TFItems.TIME_HANGING_SIGN);
+			output.accept(TFBlocks.TIME_SIGN);
+			output.accept(TFBlocks.TIME_HANGING_SIGN);
 			output.accept(TFBlocks.TIME_LEAVES);
 			output.accept(TFBlocks.TIME_SAPLING);
 
@@ -191,8 +171,8 @@ public class TFCreativeTabs {
 			output.accept(TFBlocks.TRANSFORMATION_TRAPDOOR);
 			output.accept(TFBlocks.TRANSFORMATION_PLATE);
 			output.accept(TFBlocks.TRANSFORMATION_BUTTON);
-			output.accept(TFItems.TRANSFORMATION_SIGN);
-			output.accept(TFItems.TRANSFORMATION_HANGING_SIGN);
+			output.accept(TFBlocks.TRANSFORMATION_SIGN);
+			output.accept(TFBlocks.TRANSFORMATION_HANGING_SIGN);
 			output.accept(TFBlocks.TRANSFORMATION_LEAVES);
 			output.accept(TFBlocks.TRANSFORMATION_SAPLING);
 
@@ -214,8 +194,8 @@ public class TFCreativeTabs {
 			output.accept(TFBlocks.MINING_TRAPDOOR);
 			output.accept(TFBlocks.MINING_PLATE);
 			output.accept(TFBlocks.MINING_BUTTON);
-			output.accept(TFItems.MINING_SIGN);
-			output.accept(TFItems.MINING_HANGING_SIGN);
+			output.accept(TFBlocks.MINING_SIGN);
+			output.accept(TFBlocks.MINING_HANGING_SIGN);
 			output.accept(TFBlocks.MINING_LEAVES);
 			output.accept(TFBlocks.MINING_SAPLING);
 
@@ -237,34 +217,17 @@ public class TFCreativeTabs {
 			output.accept(TFBlocks.SORTING_TRAPDOOR);
 			output.accept(TFBlocks.SORTING_PLATE);
 			output.accept(TFBlocks.SORTING_BUTTON);
-			output.accept(TFItems.SORTING_SIGN);
-			output.accept(TFItems.SORTING_HANGING_SIGN);
+			output.accept(TFBlocks.SORTING_SIGN);
+			output.accept(TFBlocks.SORTING_HANGING_SIGN);
 			output.accept(TFBlocks.SORTING_LEAVES);
 			output.accept(TFBlocks.SORTING_SAPLING);
 
 			output.accept(TFBlocks.ROOT_BLOCK);
 			output.accept(TFBlocks.LIVEROOT_BLOCK);
-			output.accept(TFBlocks.OAK_BANISTER);
-			output.accept(TFBlocks.SPRUCE_BANISTER);
-			output.accept(TFBlocks.BIRCH_BANISTER);
-			output.accept(TFBlocks.JUNGLE_BANISTER);
-			output.accept(TFBlocks.ACACIA_BANISTER);
-			output.accept(TFBlocks.DARK_OAK_BANISTER);
-			output.accept(TFBlocks.CRIMSON_BANISTER);
-			output.accept(TFBlocks.WARPED_BANISTER);
-			output.accept(TFBlocks.VANGROVE_BANISTER);
-			output.accept(TFBlocks.BAMBOO_BANISTER);
-			output.accept(TFBlocks.CHERRY_BANISTER);
-			output.accept(TFItems.HOLLOW_OAK_LOG);
-			output.accept(TFItems.HOLLOW_SPRUCE_LOG);
-			output.accept(TFItems.HOLLOW_BIRCH_LOG);
-			output.accept(TFItems.HOLLOW_JUNGLE_LOG);
-			output.accept(TFItems.HOLLOW_ACACIA_LOG);
-			output.accept(TFItems.HOLLOW_DARK_OAK_LOG);
-			output.accept(TFItems.HOLLOW_CRIMSON_STEM);
-			output.accept(TFItems.HOLLOW_WARPED_STEM);
-			output.accept(TFItems.HOLLOW_VANGROVE_LOG);
-			output.accept(TFItems.HOLLOW_CHERRY_LOG);
+			output.accept(TFBlocks.HOLLOW_OAK_SAPLING);
+			output.accept(TFBlocks.RAINBOW_OAK_LEAVES);
+			output.accept(TFBlocks.RAINBOW_OAK_SAPLING);
+
 			output.accept(TFBlocks.MOSS_PATCH);
 			output.accept(TFBlocks.MAYAPPLE);
 			output.accept(TFBlocks.CLOVER_PATCH);
@@ -273,35 +236,15 @@ public class TFCreativeTabs {
 			output.accept(TFBlocks.TORCHBERRY_PLANT);
 			output.accept(TFItems.FALLEN_LEAVES);
 			output.accept(TFBlocks.ROOT_STRAND);
-			output.accept(TFBlocks.TROLLVIDR);
-			output.accept(TFBlocks.UNRIPE_TROLLBER);
-			output.accept(TFBlocks.TROLLBER);
-			output.accept(TFBlocks.UBEROUS_SOIL);
-			output.accept(TFBlocks.HUGE_STALK);
-			output.accept(TFBlocks.BEANSTALK_LEAVES);
-			output.accept(TFItems.HUGE_WATER_LILY);
-			output.accept(TFItems.HUGE_LILY_PAD);
-			output.accept(TFBlocks.BROWN_THORNS);
-			output.accept(TFBlocks.GREEN_THORNS);
-			output.accept(TFBlocks.BURNT_THORNS);
-			output.accept(TFBlocks.THORN_ROSE);
-			output.accept(TFBlocks.THORN_LEAVES);
 			output.accept(TFBlocks.HEDGE);
 			output.accept(TFItems.MASON_JAR.get().getDefaultInstance());
 			output.accept(TFItems.FIREFLY_JAR.get().getDefaultInstance());
 			output.accept(TFItems.CICADA_JAR.get().getDefaultInstance());
-			output.accept(TFItems.WEBWORM_JAR.get().getDefaultInstance());
 			output.accept(TFBlocks.FIREFLY_SPAWNER);
 			output.accept(TFBlocks.FIREFLY);
 			output.accept(TFBlocks.CICADA);
 			output.accept(TFBlocks.MOONWORM);
-			output.accept(TFBlocks.WEBWORM);
-			output.accept(TFBlocks.IRONWOOD_BLOCK);
-			output.accept(TFBlocks.STEELEAF_BLOCK);
-			output.accept(TFBlocks.FIERY_BLOCK);
-			output.accept(TFBlocks.KNIGHTMETAL_BLOCK);
-			output.accept(TFBlocks.CARMINITE_BLOCK);
-			output.accept(TFBlocks.ARCTIC_FUR_BLOCK);
+
 			output.accept(TFItems.NAGA_TROPHY);
 			output.accept(TFItems.LICH_TROPHY);
 			output.accept(TFItems.MINOSHROOM_TROPHY);
@@ -319,6 +262,7 @@ public class TFCreativeTabs {
 			output.accept(TFBlocks.UR_GHAST_BOSS_SPAWNER);
 			output.accept(TFBlocks.ALPHA_YETI_BOSS_SPAWNER);
 			output.accept(TFBlocks.SNOW_QUEEN_BOSS_SPAWNER);
+			output.accept(TFBlocks.SINISTER_SPAWNER);
 			output.accept(TFBlocks.ETCHED_NAGASTONE);
 			output.accept(TFBlocks.CRACKED_ETCHED_NAGASTONE);
 			output.accept(TFBlocks.MOSSY_ETCHED_NAGASTONE);
@@ -337,8 +281,16 @@ public class TFCreativeTabs {
 			output.accept(TFBlocks.BOLD_STONE_PILLAR);
 			output.accept(TFBlocks.TWISTED_STONE);
 			output.accept(TFBlocks.TWISTED_STONE_PILLAR);
-			output.accept(TFBlocks.SMOKER);
-			output.accept(TFBlocks.FIRE_JET);
+			output.accept(TFBlocks.TERRORCOTTA_LINES);
+			output.accept(TFBlocks.TERRORCOTTA_CURVES);
+			output.accept(TFBlocks.TERRORCOTTA_ARCS);
+			createCaskets(output);
+			output.accept(TFBlocks.SKULL_CHEST);
+			output.accept(TFBlocks.WROUGHT_IRON_FENCE);
+			output.accept(TFBlocks.CANDELABRA);
+			output.accept(TFBlocks.CORONATION_CARPET);
+			output.accept(TFItems.HUGE_WATER_LILY);
+			output.accept(TFItems.HUGE_LILY_PAD);
 			output.accept(TFBlocks.MAZESTONE);
 			output.accept(TFBlocks.MAZESTONE_BRICK);
 			output.accept(TFBlocks.CRACKED_MAZESTONE);
@@ -347,6 +299,8 @@ public class TFCreativeTabs {
 			output.accept(TFBlocks.CUT_MAZESTONE);
 			output.accept(TFBlocks.MAZESTONE_MOSAIC);
 			output.accept(TFBlocks.MAZESTONE_BORDER);
+			output.accept(TFBlocks.SMOKER);
+			output.accept(TFBlocks.FIRE_JET);
 			output.accept(TFBlocks.UNDERBRICK);
 			output.accept(TFBlocks.CRACKED_UNDERBRICK);
 			output.accept(TFBlocks.MOSSY_UNDERBRICK);
@@ -370,7 +324,13 @@ public class TFCreativeTabs {
 			output.accept(TFBlocks.AURORA_BLOCK);
 			output.accept(TFBlocks.AURORA_PILLAR);
 			output.accept(TFBlocks.AURORA_SLAB);
+			output.accept(TFBlocks.UBEROUS_SOIL);
+			output.accept(TFBlocks.HUGE_STALK);
+			output.accept(TFBlocks.BEANSTALK_LEAVES);
 			output.accept(TFBlocks.TROLLSTEINN);
+			output.accept(TFBlocks.TROLLVIDR);
+			output.accept(TFBlocks.UNRIPE_TROLLBER);
+			output.accept(TFBlocks.TROLLBER);
 			output.accept(TFBlocks.HUGE_MUSHGLOOM);
 			output.accept(TFBlocks.HUGE_MUSHGLOOM_STEM);
 			output.accept(TFBlocks.WISPY_CLOUD);
@@ -381,6 +341,11 @@ public class TFCreativeTabs {
 			output.accept(TFBlocks.GIANT_LOG);
 			output.accept(TFBlocks.GIANT_LEAVES);
 			output.accept(TFBlocks.GIANT_OBSIDIAN);
+			output.accept(TFBlocks.BROWN_THORNS);
+			output.accept(TFBlocks.GREEN_THORNS);
+			output.accept(TFBlocks.BURNT_THORNS);
+			output.accept(TFBlocks.THORN_ROSE);
+			output.accept(TFBlocks.THORN_LEAVES);
 			output.accept(TFBlocks.DEADROCK);
 			output.accept(TFBlocks.CRACKED_DEADROCK);
 			output.accept(TFBlocks.WEATHERED_DEADROCK);
@@ -416,7 +381,12 @@ public class TFCreativeTabs {
 			output.accept(TFBlocks.UNCRAFTING_TABLE);
 			output.accept(TFBlocks.IRON_LADDER);
 			output.accept(TFBlocks.ROPE);
-			output.accept(TFBlocks.HANGING_WEB);
+			output.accept(TFBlocks.IRONWOOD_BLOCK);
+			output.accept(TFBlocks.STEELEAF_BLOCK);
+			output.accept(TFBlocks.FIERY_BLOCK);
+			output.accept(TFBlocks.KNIGHTMETAL_BLOCK);
+			output.accept(TFBlocks.CARMINITE_BLOCK);
+			output.accept(TFBlocks.ARCTIC_FUR_BLOCK);
 		}).build());
 
 	public static final DeferredHolder<CreativeModeTab, CreativeModeTab> ITEMS = TABS.register("items", () -> CreativeModeTab.builder()
@@ -424,20 +394,33 @@ public class TFCreativeTabs {
 		.title(Component.translatable("itemGroup.twilightforest.items"))
 		.icon(() -> new ItemStack(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE))
 		.displayItems((parameters, output) -> {
+			output.accept(TFItems.MAGIC_MAP);
+			output.accept(TFItems.MAZE_MAP);
+			output.accept(TFItems.ORE_MAP);
 			output.accept(TFItems.TORCHBERRIES);
 			output.accept(TFItems.RAVEN_FEATHER);
 			output.accept(TFItems.MAGIC_MAP_FOCUS);
 			output.accept(TFItems.MAZE_MAP_FOCUS);
-			output.accept(TFItems.MAGIC_MAP);
-			output.accept(TFItems.MAZE_MAP);
-			output.accept(TFItems.ORE_MAP);
+			output.accept(TFItems.CHARM_OF_LIFE_1);
+			output.accept(TFItems.CHARM_OF_LIFE_2);
+			output.accept(TFItems.CHARM_OF_KEEPING_1);
+			output.accept(TFItems.CHARM_OF_KEEPING_2);
+			output.accept(TFItems.CHARM_OF_KEEPING_3);
 			output.accept(TFItems.TRANSFORMATION_POWDER);
-			output.accept(TFBlocks.RED_THREAD);
+			output.accept(TFItems.RAW_VENISON);
+			output.accept(TFItems.COOKED_VENISON);
+			output.accept(TFItems.RAW_MEEF);
+			output.accept(TFItems.COOKED_MEEF);
+			output.accept(TFItems.MAZE_WAFER);
+			output.accept(TFItems.MEEF_STROGANOFF);
+			output.accept(TFItems.HYDRA_CHOP);
+			output.accept(TFItems.EXPERIMENT_115);
 			output.accept(TFItems.LIVEROOT);
 			output.accept(TFItems.RAW_IRONWOOD);
 			output.accept(TFItems.IRONWOOD_INGOT);
 			output.accept(TFItems.STEELEAF_INGOT);
 			output.accept(TFItems.NAGA_SCALE);
+			output.accept(TFItems.WROUGHT_IRON_BAR);
 			output.accept(TFItems.ARMOR_SHARD);
 			output.accept(TFItems.ARMOR_SHARD_CLUSTER);
 			output.accept(TFItems.KNIGHTMETAL_INGOT);
@@ -447,19 +430,11 @@ public class TFCreativeTabs {
 			output.accept(TFItems.FIERY_INGOT);
 			output.accept(TFItems.ARCTIC_FUR);
 			output.accept(TFItems.ALPHA_YETI_FUR);
-			output.accept(TFItems.RAW_VENISON);
-			output.accept(TFItems.COOKED_VENISON);
-			output.accept(TFItems.RAW_MEEF);
-			output.accept(TFItems.COOKED_MEEF);
-			output.accept(TFItems.MAZE_WAFER);
-			output.accept(TFItems.MEEF_STROGANOFF);
-			output.accept(TFItems.HYDRA_CHOP);
-			output.accept(TFItems.EXPERIMENT_115);
-			output.accept(TFItems.CHARM_OF_LIFE_1);
-			output.accept(TFItems.CHARM_OF_LIFE_2);
-			output.accept(TFItems.CHARM_OF_KEEPING_1);
-			output.accept(TFItems.CHARM_OF_KEEPING_2);
-			output.accept(TFItems.CHARM_OF_KEEPING_3);
+			output.accept(TFItems.BRITTLE_FLASK);
+			output.accept(TFItems.GREATER_FLASK);
+			output.accept(TFItems.EXANIMATE_ESSENCE);
+			output.accept(TFItems.CROWN_SPLINTER);
+			output.accept(TFBlocks.RED_THREAD);
 			output.accept(TFItems.BORER_ESSENCE);
 			output.accept(TFItems.CARMINITE);
 			output.accept(TFItems.TOWER_KEY);
@@ -490,7 +465,6 @@ public class TFCreativeTabs {
 			output.accept(TFItems.TRANSFORMATION_BOAT);
 			output.accept(TFItems.MINING_BOAT);
 			output.accept(TFItems.SORTING_BOAT);
-			output.accept(TFItems.VEILWOOD_BOAT);
 			output.accept(TFItems.TWILIGHT_OAK_CHEST_BOAT);
 			output.accept(TFItems.CANOPY_CHEST_BOAT);
 			output.accept(TFItems.MANGROVE_CHEST_BOAT);
@@ -499,7 +473,6 @@ public class TFCreativeTabs {
 			output.accept(TFItems.TRANSFORMATION_CHEST_BOAT);
 			output.accept(TFItems.MINING_CHEST_BOAT);
 			output.accept(TFItems.SORTING_CHEST_BOAT);
-			output.accept(TFItems.VEILWOOD_CHEST_BOAT);
 			createSpawnEggsAlphabetical(output);
 		}).build());
 
@@ -566,6 +539,7 @@ public class TFCreativeTabs {
 			output.accept(TFItems.PHANTOM_CHESTPLATE);
 			generateGearWithEnchants(output, TFItems.NAGA_CHESTPLATE, new EnchantmentInstance(lookup.getOrThrow(Enchantments.FIRE_PROTECTION), 3));
 			generateGearWithEnchants(output, TFItems.NAGA_LEGGINGS, new EnchantmentInstance(lookup.getOrThrow(Enchantments.PROTECTION), 3));
+			output.accept(TFItems.MYSTIC_CROWN);
 			output.accept(TFItems.TWILIGHT_SCEPTER);
 			output.accept(TFItems.LIFEDRAIN_SCEPTER);
 			output.accept(TFItems.ZOMBIE_SCEPTER);
@@ -598,10 +572,12 @@ public class TFCreativeTabs {
 		eggs.forEach(output::accept);
 	}
 
-	private static void makeSkullCandle(CreativeModeTab.Output output, ItemLike item) {
-		ItemStack stack = new ItemStack(item);
-		stack.set(TFDataComponents.SKULL_CANDLES, new SkullCandles(0, 1));
-		output.accept(stack);
+	private static void createCaskets(CreativeModeTab.Output output) {
+		for (int i = 0; i< 3; i++) {
+			ItemStack stack = new ItemStack(TFItems.KEEPSAKE_CASKET.get());
+			stack.set(TFDataComponents.CASKET_DAMAGE, i);
+			output.accept(stack);
+		}
 	}
 
 	private static void createGlassSwordAndLoreVer(CreativeModeTab.Output output) {
@@ -620,13 +596,46 @@ public class TFCreativeTabs {
 	private static final Comparator<Holder<MagicPaintingVariant>> MAGIC_COMPARATOR = Comparator.comparing(Holder::value, Comparator.<MagicPaintingVariant>comparingInt((variant) ->
 		variant.height() * variant.width()).thenComparing(MagicPaintingVariant::width));
 
-	private static void createPaintings(CreativeModeTab.Output output, HolderLookup.RegistryLookup<MagicPaintingVariant> lookup) {
-		lookup.listElements().sorted(MAGIC_COMPARATOR).forEach(holder -> {
-			ItemStack itemstack = new ItemStack(TFItems.MAGIC_PAINTING.get());
+	public static void addToTabs(BuildCreativeModeTabContentsEvent event) {
+		if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
+			event.insertAfter(new ItemStack(Items.OAK_WOOD), TFItems.HOLLOW_OAK_LOG.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+			event.insertAfter(new ItemStack(Items.SPRUCE_WOOD), TFItems.HOLLOW_SPRUCE_LOG.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+			event.insertAfter(new ItemStack(Items.BIRCH_WOOD), TFItems.HOLLOW_BIRCH_LOG.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+			event.insertAfter(new ItemStack(Items.JUNGLE_WOOD), TFItems.HOLLOW_JUNGLE_LOG.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+			event.insertAfter(new ItemStack(Items.ACACIA_WOOD), TFItems.HOLLOW_ACACIA_LOG.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+			event.insertAfter(new ItemStack(Items.DARK_OAK_WOOD), TFItems.HOLLOW_DARK_OAK_LOG.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+			event.insertAfter(new ItemStack(Items.CRIMSON_HYPHAE), TFItems.HOLLOW_CRIMSON_STEM.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+			event.insertAfter(new ItemStack(Items.WARPED_HYPHAE), TFItems.HOLLOW_WARPED_STEM.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+			event.insertAfter(new ItemStack(Items.MANGROVE_WOOD), TFItems.HOLLOW_VANGROVE_LOG.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+			event.insertAfter(new ItemStack(Items.CHERRY_WOOD), TFItems.HOLLOW_CHERRY_LOG.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+			event.insertAfter(new ItemStack(Items.PALE_OAK_WOOD), TFItems.HOLLOW_PALE_OAK_LOG.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
 
-			itemstack.set(TFDataComponents.MAGIC_PAINTING_VARIANT, holder);
+			event.insertAfter(new ItemStack(Items.OAK_FENCE_GATE), TFBlocks.OAK_BANISTER.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+			event.insertAfter(new ItemStack(Items.SPRUCE_FENCE_GATE), TFBlocks.SPRUCE_BANISTER.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+			event.insertAfter(new ItemStack(Items.BIRCH_FENCE_GATE), TFBlocks.BIRCH_BANISTER.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+			event.insertAfter(new ItemStack(Items.JUNGLE_FENCE_GATE), TFBlocks.JUNGLE_BANISTER.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+			event.insertAfter(new ItemStack(Items.ACACIA_FENCE_GATE), TFBlocks.ACACIA_BANISTER.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+			event.insertAfter(new ItemStack(Items.DARK_OAK_FENCE_GATE), TFBlocks.DARK_OAK_BANISTER.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+			event.insertAfter(new ItemStack(Items.CRIMSON_FENCE_GATE), TFBlocks.CRIMSON_BANISTER.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+			event.insertAfter(new ItemStack(Items.WARPED_FENCE_GATE), TFBlocks.WARPED_BANISTER.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+			event.insertAfter(new ItemStack(Items.MANGROVE_FENCE_GATE), TFBlocks.VANGROVE_BANISTER.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+			event.insertAfter(new ItemStack(Items.CHERRY_FENCE_GATE), TFBlocks.CHERRY_BANISTER.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+			event.insertAfter(new ItemStack(Items.PALE_OAK_FENCE_GATE), TFBlocks.PALE_OAK_BANISTER.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+		} else if (event.getTabKey() == CreativeModeTabs.OP_BLOCKS && event.hasPermissions()) {
+			event.getParameters().holders().lookupOrThrow(TFRegistries.Keys.MAGIC_PAINTINGS).listElements().sorted(MAGIC_COMPARATOR).forEach(holder -> {
+				ItemStack itemstack = new ItemStack(TFItems.MAGIC_PAINTING.get());
 
-			output.accept(itemstack);
-		});
+				itemstack.set(TFDataComponents.MAGIC_PAINTING_VARIANT, holder);
+
+				event.accept(itemstack);
+			});
+
+			if (!FMLEnvironment.production) {
+				TFItems.ITEMS.getEntries().forEach(itemDeferredHolder -> {
+					ItemStack wipStack = itemDeferredHolder.get().getDefaultInstance();
+					if (wipStack.is(TFItemTags.WIP)) event.accept(wipStack);
+				});
+			}
+		}
 	}
 }

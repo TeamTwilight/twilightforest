@@ -1,0 +1,29 @@
+{
+  "anvil_cost": 8,
+  "description": {
+    "translate": "enchantment.twilightforest.renewal"
+  },
+  "effects": {
+    "minecraft:tick": [
+      {
+        "effect": {
+          "type": "twilightforest:recharge_scepter"
+        }
+      }
+    ]
+  },
+  "max_cost": {
+    "base": 20,
+    "per_level_above_first": 9
+  },
+  "max_level": 1,
+  "min_cost": {
+    "base": 5,
+    "per_level_above_first": 9
+  },
+  "slots": [
+    "hand"
+  ],
+  "supported_items": "#twilightforest:scepters",
+  "weight": 1
+}

@@ -1,0 +1,149 @@
+{
+  "model": {
+    "type": "minecraft:condition",
+    "on_false": {
+      "type": "minecraft:range_dispatch",
+      "entries": [
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "twilightforest:item/moon_dial"
+          },
+          "threshold": 0.0
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "twilightforest:item/moon_dial_1"
+          },
+          "threshold": 0.5
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "twilightforest:item/moon_dial_2"
+          },
+          "threshold": 1.5
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "twilightforest:item/moon_dial_3"
+          },
+          "threshold": 2.5
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "twilightforest:item/moon_dial_4"
+          },
+          "threshold": 3.5
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "twilightforest:item/moon_dial_5"
+          },
+          "threshold": 4.5
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "twilightforest:item/moon_dial_6"
+          },
+          "threshold": 5.5
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "twilightforest:item/moon_dial_7"
+          },
+          "threshold": 6.5
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "twilightforest:item/moon_dial"
+          },
+          "threshold": 7.5
+        }
+      ],
+      "property": "minecraft:time",
+      "scale": 8.0,
+      "source": "random"
+    },
+    "on_true": {
+      "type": "minecraft:range_dispatch",
+      "entries": [
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "twilightforest:item/moon_dial"
+          },
+          "threshold": 0.0
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "twilightforest:item/moon_dial_1"
+          },
+          "threshold": 0.5
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "twilightforest:item/moon_dial_2"
+          },
+          "threshold": 1.5
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "twilightforest:item/moon_dial_3"
+          },
+          "threshold": 2.5
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "twilightforest:item/moon_dial_4"
+          },
+          "threshold": 3.5
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "twilightforest:item/moon_dial_5"
+          },
+          "threshold": 4.5
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "twilightforest:item/moon_dial_6"
+          },
+          "threshold": 5.5
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "twilightforest:item/moon_dial_7"
+          },
+          "threshold": 6.5
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "twilightforest:item/moon_dial"
+          },
+          "threshold": 7.5
+        }
+      ],
+      "property": "minecraft:time",
+      "scale": 8.0,
+      "source": "moon_phase",
+      "wobble": false
+    },
+    "property": "twilightforest:natural_dimension"
+  }
+}

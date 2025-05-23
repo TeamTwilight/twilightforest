@@ -3,9 +3,7 @@
   "category": "food",
   "cookingtime": 600,
   "experience": 0.35,
-  "ingredient": {
-    "item": "twilightforest:raw_venison"
-  },
+  "ingredient": "twilightforest:raw_venison",
   "result": {
     "count": 1,
     "id": "twilightforest:cooked_venison"

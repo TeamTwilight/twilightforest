@@ -57,7 +57,7 @@ public class LichTowerWingBeard extends TwilightJigsawPiece implements PieceBear
 
 	@Override
 	public int getGroundLevelDelta() {
-		return 5;
+		return 4;
 	}
 
 	@Override
@@ -75,5 +75,10 @@ public class LichTowerWingBeard extends TwilightJigsawPiece implements PieceBear
 	@Override
 	public int getSortKey() {
 		return -1;
+	}
+
+	// Is this beard a trim piece, on the ground? Used for generating fence
+	public boolean isTrim() {
+		return this.generateGround;
 	}
 }

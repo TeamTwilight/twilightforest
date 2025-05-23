@@ -83,7 +83,6 @@ public class KnightPhantom extends BaseTFBoss {
 	private final EntityDimensions invisibleSize = EntityDimensions.fixed(1.25F, 2.5F);
 	private final EntityDimensions visibleSize = EntityDimensions.fixed(1.75F, 4.0F);
 
-	@SuppressWarnings("this-escape")
 	public KnightPhantom(EntityType<? extends KnightPhantom> type, Level level) {
 		super(type, level);
 		this.noPhysics = true;
@@ -129,8 +128,8 @@ public class KnightPhantom extends BaseTFBoss {
 
 	@Nullable
 	@Override
-	@SuppressWarnings({"deprecation", "OverrideOnly"})
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData data) {
+	@SuppressWarnings("deprecation")
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, EntitySpawnReason reason, @Nullable SpawnGroupData data) {
 		data = super.finalizeSpawn(accessor, difficulty, reason, data);
 		this.populateDefaultEquipmentSlots(accessor.getRandom(), difficulty);
 		this.populateDefaultEquipmentEnchantments(accessor, accessor.getRandom(), difficulty);
@@ -158,8 +157,8 @@ public class KnightPhantom extends BaseTFBoss {
 	}
 
 	@Override
-	public boolean isInvulnerableTo(DamageSource source) {
-		return source.is(DamageTypes.IN_WALL) || super.isInvulnerableTo(source);
+	public boolean isInvulnerableTo(ServerLevel level, DamageSource source) {
+		return source.is(DamageTypes.IN_WALL) || super.isInvulnerableTo(level, source);
 	}
 
 	@Override
@@ -177,8 +176,8 @@ public class KnightPhantom extends BaseTFBoss {
 	}
 
 	@Override
-	protected void customServerAiStep() {
-		super.customServerAiStep();
+	protected void customServerAiStep(ServerLevel level) {
+		super.customServerAiStep(level);
 		if (this.totalKnownKnights == Integer.MIN_VALUE) this.updateMyNumber();
 		float health = 0F;
 		float maxHealth = 0F;
@@ -197,50 +196,56 @@ public class KnightPhantom extends BaseTFBoss {
 
 	@Override
 	protected void postmortem(ServerLevel serverLevel, DamageSource cause) {
+		var loot = this.getLootTable();
+
 		List<KnightPhantom> knights = this.getNearbyKnights();
 
 		LootParams params = TFLootTables.createLootParams(this, true, cause).create(LootContextParamSets.ENTITY);
-		LootTable table = serverLevel.getServer().reloadableRegistries().getLootTable(this.getLootTable());
 
 		if (!knights.isEmpty()) {
 			knights.forEach(KnightPhantom::updateMyNumber);
 
-			ObjectArrayList<ItemStack> items = table.getRandomItems(params);
-			if (!this.getItemStacks().isEmpty()) items.addAll(this.getItemStacks());
-			List<Integer> list = this.getAvailableSlots(this.random);
-			table.shuffleAndSplitItems(items, list.size(), this.random);
+			if (loot.isPresent()) {
+				LootTable table = serverLevel.getServer().reloadableRegistries().getLootTable(loot.get());
+				ObjectArrayList<ItemStack> items = table.getRandomItems(params);
+				if (!this.getItemStacks().isEmpty()) items.addAll(this.getItemStacks());
+				List<Integer> list = this.getAvailableSlots(this.random);
+				table.shuffleAndSplitItems(items, list.size(), this.random);
 
-			giveKnightLoot(knights.getFirst(), items, serverLevel, list, this.position());
+				giveKnightLoot(knights.getFirst(), items, serverLevel, list, this.position());
+			}
 		} else {
 			this.getBossBar().setProgress(0.0F);
 			BlockPos treasurePos = this.getRestrictionPoint() != null ? serverLevel.getBlockState(this.getRestrictionPoint().pos().below()).canBeReplaced() ? this.getRestrictionPoint().pos().below() : this.getRestrictionPoint().pos() : this.blockPosition();
 
-			ObjectArrayList<ItemStack> items = table.getRandomItems(params);
+			if (loot.isPresent()) {
+				LootTable table = serverLevel.getServer().reloadableRegistries().getLootTable(loot.get());
+				ObjectArrayList<ItemStack> items = table.getRandomItems(params);
 
-			LootParams.Builder builder = new LootParams.Builder(serverLevel)
-				.withParameter(LootContextParams.THIS_ENTITY, this)
-				.withParameter(LootContextParams.ORIGIN, this.getEyePosition())
-				.withParameter(LootContextParams.DAMAGE_SOURCE, cause);
+				LootParams.Builder builder = new LootParams.Builder(serverLevel)
+					.withParameter(LootContextParams.THIS_ENTITY, this)
+					.withParameter(LootContextParams.ORIGIN, this.getEyePosition())
+					.withParameter(LootContextParams.DAMAGE_SOURCE, cause);
 
-			if (this.lastHurtByPlayer != null) {
-				builder = builder.withParameter(LootContextParams.LAST_DAMAGE_PLAYER, this.lastHurtByPlayer)
-					.withLuck(this.lastHurtByPlayer.getLuck());
+				if (this.lastHurtByPlayer != null) {
+					builder = builder.withParameter(LootContextParams.LAST_DAMAGE_PLAYER, this.lastHurtByPlayer)
+						.withLuck(this.lastHurtByPlayer.getLuck());
+				}
+
+				if (cause.getEntity() != null) {
+					builder = builder.withParameter(LootContextParams.ATTACKING_ENTITY, cause.getEntity());
+				}
+
+				if (cause.getDirectEntity() != null) {
+					builder = builder.withParameter(LootContextParams.DIRECT_ATTACKING_ENTITY, cause.getDirectEntity());
+				}
+
+				items.addAll(serverLevel.getServer().reloadableRegistries().getLootTable(TFLootTables.KNIGHT_PHANTOM_DEFEATED).getRandomItems(builder.create(LootContextParamSets.ENTITY)));
+				List<Integer> list = this.getAvailableSlots(this.random);
+				table.shuffleAndSplitItems(items, list.size(), this.random);
+
+				giveKnightLoot(this, items, serverLevel, list, this.position());
 			}
-
-			if (cause.getEntity() != null) {
-				builder = builder.withParameter(LootContextParams.ATTACKING_ENTITY, cause.getEntity());
-			}
-
-			if (cause.getDirectEntity() != null) {
-				builder = builder.withParameter(LootContextParams.DIRECT_ATTACKING_ENTITY, cause.getDirectEntity());
-			}
-
-			items.addAll(serverLevel.getServer().reloadableRegistries().getLootTable(TFLootTables.KNIGHT_PHANTOM_DEFEATED).getRandomItems(builder.create(LootContextParamSets.ENTITY)));
-			List<Integer> list = this.getAvailableSlots(this.random);
-			table.shuffleAndSplitItems(items, list.size(), this.random);
-
-			giveKnightLoot(this, items, serverLevel, list, this.position());
-
 			//trigger criteria for killing every phantom in a group
 			if (cause.getEntity() instanceof ServerPlayer player) {
 				TFAdvancements.KILL_ALL_PHANTOMS.get().trigger(player);
@@ -286,24 +291,24 @@ public class KnightPhantom extends BaseTFBoss {
 
 	@Override
 	protected void postRemoval(ServerLevel serverLevel, RemovalReason reason) {
-		if (reason.equals(RemovalReason.KILLED) && this.shouldSpawnLoot() && this.entityData.get(IT_IS_OVER)) {
+		if (reason.equals(RemovalReason.KILLED) && this.shouldSpawnLoot(serverLevel) && this.getEntityData().get(IT_IS_OVER)) {
 			IBossLootBuffer.depositDropsIntoChest(this, this.getDeathContainer(this.getRandom()).defaultBlockState().setValue(ChestBlock.FACING, Direction.Plane.HORIZONTAL.getRandomDirection(this.level().getRandom())), EntityUtil.bossChestLocation(this), serverLevel);
 		}
 	}
 
 	@Override
-	public boolean hurt(DamageSource source, float amount) {
+	public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
 		if (this.isDamageSourceBlocked(source)) {
 			this.playSound(SoundEvents.SHIELD_BLOCK, 1.0F, 0.8F + this.level().getRandom().nextFloat() * 0.4F);
 			return false;
 		}
 
-		return super.hurt(source, amount);
+		return super.hurtServer(level, source, amount);
 	}
 
 	@Override
-	public boolean doHurtTarget(Entity entity) {
-		return EntityUtil.properlyApplyCustomDamageSource(this, entity, TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.HAUNT, this), null);
+	public boolean doHurtTarget(ServerLevel level, Entity entity) {
+		return EntityUtil.properlyApplyCustomDamageSource(level, this, entity, TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.HAUNT, this), null);
 	}
 
 	@Override
@@ -612,7 +617,7 @@ public class KnightPhantom extends BaseTFBoss {
 				double x = (this.random.nextDouble() - 0.5D) * 0.15D * i;
 				double y = (this.random.nextDouble() - 0.5D) * 0.15D * i;
 				double z = (this.random.nextDouble() - 0.5D) * 0.15D * i;
-				this.level().addParticle(ParticleTypes.SMOKE, false, particlePos.x() + x, particlePos.y() + y, particlePos.z() + z, 0.0D, 0.0D, 0.0D);
+				this.level().addParticle(ParticleTypes.SMOKE, particlePos.x() + x, particlePos.y() + y, particlePos.z() + z, 0.0D, 0.0D, 0.0D);
 			}
 		} else if (!this.getNearbyKnights().isEmpty() || this.getEntityData().get(IT_IS_OVER)) {
 			if (this.deathTime == DYING_TICKS) { // Poof when going invisible
@@ -644,7 +649,7 @@ public class KnightPhantom extends BaseTFBoss {
 					double x = (this.random.nextDouble() - 0.5D) * 0.15D * i;
 					double y = (this.random.nextDouble() - 0.5D) * 0.15D * i;
 					double z = (this.random.nextDouble() - 0.5D) * 0.15D * i;
-					this.level().addParticle(ParticleTypes.SMOKE, false, particlePos.x() + x, particlePos.y() + y, particlePos.z() + z, 0.0D, 0.0D, 0.0D);
+					this.level().addParticle(ParticleTypes.SMOKE, particlePos.x() + x, particlePos.y() + y, particlePos.z() + z, 0.0D, 0.0D, 0.0D);
 				}
 			}
 		}

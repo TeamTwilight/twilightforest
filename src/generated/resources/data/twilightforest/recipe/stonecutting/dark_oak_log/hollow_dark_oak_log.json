@@ -1,8 +1,6 @@
 {
   "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "minecraft:dark_oak_log"
-  },
+  "ingredient": "minecraft:dark_oak_log",
   "result": {
     "count": 1,
     "id": "twilightforest:hollow_dark_oak_log"

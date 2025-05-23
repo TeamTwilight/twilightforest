@@ -46,7 +46,6 @@ public class HollowTreeMedBranch extends HollowTreePiece {
 		this(TFStructurePieceTypes.TFHTMB.value(), i, src, dest, boundingBox, length, angle, tilt, leafy, wood, leaves);
 	}
 
-	@SuppressWarnings("this-escape")
 	protected HollowTreeMedBranch(StructurePieceType type, int i, BlockPos src, BlockPos dest, BoundingBox boundingBox, double length, double angle, double tilt, boolean leafy, BlockStateProvider wood, BlockStateProvider leaves) {
 		super(type, i, boundingBox);
 

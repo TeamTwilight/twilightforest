@@ -4,6 +4,5 @@
     "color": "#9A0000",
     "translate": "trim_material.twilightforest.carminite"
   },
-  "ingredient": "twilightforest:carminite",
-  "item_model_index": 0.4
+  "ingredient": "twilightforest:carminite"
 }

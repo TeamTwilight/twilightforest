@@ -26,7 +26,6 @@ public class IceTowerBeardComponent extends TFStructureComponentOld {
 		this.height = nbt.getInt("beardHeight");
 	}
 
-	@SuppressWarnings("this-escape")
 	public IceTowerBeardComponent(int i, TowerWingComponent wing, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFITBea.get(), i, x, y, z);
 

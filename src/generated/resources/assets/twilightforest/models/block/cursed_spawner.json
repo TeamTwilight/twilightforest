@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/spawner",
-  "render_type": "minecraft:cutout",
-  "textures": {
-    "all": "twilightforest:block/cursed_spawner"
-  }
-}

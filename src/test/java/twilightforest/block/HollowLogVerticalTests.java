@@ -5,7 +5,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -22,9 +22,9 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import tamaized.beanification.junit.MockitoFixer;
 import twilightforest.enums.HollowLogVariants;
 import twilightforest.init.TFBlocks;
-import twilightforest.junit.MockitoFixer;
 import twilightforest.util.DirectionUtil;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -55,9 +55,9 @@ public class HollowLogVerticalTests {
 
 		when(hitResult.getLocation()).thenReturn(Vec3.ZERO);
 
-		ItemInteractionResult result = instance.useItemOn(stack, state, level, BlockPos.ZERO, player, InteractionHand.MAIN_HAND, hitResult);
+		InteractionResult result = instance.useItemOn(stack, state, level, BlockPos.ZERO, player, InteractionHand.MAIN_HAND, hitResult);
 
-		assertSame(ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION, result);
+		assertSame(InteractionResult.TRY_WITH_EMPTY_HAND, result);
 		verify(stack, never()).is(any(Item.class));
 	}
 
@@ -72,9 +72,9 @@ public class HollowLogVerticalTests {
 		when(hitResult.getLocation()).thenReturn(new Vec3(0.5, 0.5, 0.5));
 		when(stack.is(any(Item.class))).thenReturn(false);
 
-		ItemInteractionResult result = instance.useItemOn(stack, state, level, BlockPos.ZERO, player, InteractionHand.MAIN_HAND, hitResult);
+		InteractionResult result = instance.useItemOn(stack, state, level, BlockPos.ZERO, player, InteractionHand.MAIN_HAND, hitResult);
 
-		assertSame(ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION, result);
+		assertSame(InteractionResult.TRY_WITH_EMPTY_HAND, result);
 		verify(stack, times(1)).is(Blocks.VINE.asItem());
 		verify(stack, times(1)).is(Blocks.LADDER.asItem());
 	}
@@ -96,9 +96,9 @@ public class HollowLogVerticalTests {
 		when(directionUtil.horizontalOrElse(any(Direction.class), any(Direction.class))).thenReturn(Direction.NORTH);
 		when(level.isClientSide()).thenReturn(false);
 
-		ItemInteractionResult result = instance.useItemOn(stack, state, level, BlockPos.ZERO, player, InteractionHand.MAIN_HAND, hitResult);
+		InteractionResult result = instance.useItemOn(stack, state, level, BlockPos.ZERO, player, InteractionHand.MAIN_HAND, hitResult);
 
-		assertSame(ItemInteractionResult.CONSUME, result);
+		assertSame(InteractionResult.SUCCESS, result);
 
 		verify(stack, times(1)).is(Blocks.VINE.asItem());
 		ArgumentCaptor<BlockState> climbable = ArgumentCaptor.captor();
@@ -129,9 +129,9 @@ public class HollowLogVerticalTests {
 		when(directionUtil.horizontalOrElse(any(Direction.class), any(Direction.class))).thenReturn(Direction.NORTH);
 		when(level.isClientSide()).thenReturn(false);
 
-		ItemInteractionResult result = instance.useItemOn(stack, state, level, BlockPos.ZERO, player, InteractionHand.MAIN_HAND, hitResult);
+		InteractionResult result = instance.useItemOn(stack, state, level, BlockPos.ZERO, player, InteractionHand.MAIN_HAND, hitResult);
 
-		assertSame(ItemInteractionResult.CONSUME, result);
+		assertSame(InteractionResult.SUCCESS, result);
 
 		verify(stack, times(1)).is(Blocks.VINE.asItem());
 		verify(stack, times(1)).is(Blocks.LADDER.asItem());
@@ -161,9 +161,9 @@ public class HollowLogVerticalTests {
 		when(directionUtil.horizontalOrElse(any(Direction.class), any(Direction.class))).thenReturn(Direction.NORTH);
 		when(level.isClientSide()).thenReturn(false);
 
-		ItemInteractionResult result = instance.useItemOn(stack, state, level, BlockPos.ZERO, player, InteractionHand.MAIN_HAND, hitResult);
+		InteractionResult result = instance.useItemOn(stack, state, level, BlockPos.ZERO, player, InteractionHand.MAIN_HAND, hitResult);
 
-		assertSame(ItemInteractionResult.CONSUME, result);
+		assertSame(InteractionResult.SUCCESS, result);
 
 		verify(stack, times(1)).is(Blocks.VINE.asItem());
 		verify(stack, times(1)).is(Blocks.LADDER.asItem());

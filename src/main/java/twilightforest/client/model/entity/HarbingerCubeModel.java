@@ -4,12 +4,12 @@ import net.minecraft.client.model.QuadrupedModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import twilightforest.entity.monster.HarbingerCube;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 
-public class HarbingerCubeModel<T extends HarbingerCube> extends QuadrupedModel<T> {
+public class HarbingerCubeModel extends QuadrupedModel<LivingEntityRenderState> {
 
 	public HarbingerCubeModel(ModelPart part) {
-		super(part, false, 0.0F, 0.0F, 0.0F, 0.0F, 4); //All this is from AgeableModel. Do we scale?
+		super(part);
 	}
 
 	public static LayerDefinition create() {

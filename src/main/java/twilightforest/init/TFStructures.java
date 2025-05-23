@@ -6,7 +6,7 @@ import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import twilightforest.TwilightForestMod;
-import twilightforest.data.tags.BiomeTagGenerator;
+import twilightforest.tags.TFBiomeTags;
 import twilightforest.world.components.structures.type.*;
 
 public class TFStructures {
@@ -28,6 +28,7 @@ public class TFStructures {
 	public static final ResourceKey<Structure> GIANT_HOUSE = registerKey("giant_house");
 	public static final ResourceKey<Structure> FINAL_CASTLE = registerKey("final_castle");
 
+	public static final ResourceKey<Structure> FALLEN_TRUNK = registerKey("fallen_trunk");
 	public static final ResourceKey<Structure> HOLLOW_TREE = registerKey("hollow_tree");
 	public static final ResourceKey<Structure> SWAMP_HOLLOW_TREE = registerKey("swamp_hollow_tree");
 	public static final ResourceKey<Structure> MUSHROOM_TOWER = registerKey("mushroom_tower");
@@ -41,7 +42,8 @@ public class TFStructures {
 	}
 
 	public static void bootstrap(BootstrapContext<Structure> context) {
-		context.register(HOLLOW_TREE, HollowTreeStructure.buildStructureConfig(false, context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_HOLLOW_TREE_BIOMES)));
+		context.register(FALLEN_TRUNK, FallenTrunkStructure.buildStructureConfig(context.lookup(Registries.BIOME).getOrThrow(TFBiomeTags.VALID_HOLLOW_TREE_BIOMES)));
+		context.register(HOLLOW_TREE, HollowTreeStructure.buildStructureConfig(false, context.lookup(Registries.BIOME).getOrThrow(TFBiomeTags.VALID_HOLLOW_TREE_BIOMES)));
 		context.register(SWAMP_HOLLOW_TREE, HollowTreeStructure.buildStructureConfig(true, HolderSet.direct(context.lookup(Registries.BIOME).getOrThrow(TFBiomes.SWAMP))));
 		context.register(HEDGE_MAZE, HedgeMazeStructure.buildStructureConfig(context));
 		context.register(QUEST_GROVE, QuestGroveStructure.buildStructureConfig(context));

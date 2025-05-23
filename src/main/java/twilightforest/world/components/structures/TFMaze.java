@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFConfiguredFeatures;
@@ -38,6 +39,7 @@ public class TFMaze {
 
 	public int type; // 1-3 = various sizes hollow hills
 
+	@Nullable
 	public StructurePiece.BlockSelector wallBlocks;
 
 	public BlockState wallBlockState;
@@ -75,7 +77,9 @@ public class TFMaze {
 		wallBlockState = TFBlocks.CUT_MAZESTONE.get().defaultBlockState();
 		rootBlockState = TFBlocks.MAZESTONE.get().defaultBlockState();
 		torchBlockState = Blocks.TORCH.defaultBlockState();
-		pillarBlockState = null;
+		pillarBlockState = Blocks.AIR.defaultBlockState();
+		headBlockState = Blocks.AIR.defaultBlockState();
+		doorBlockState = Blocks.AIR.defaultBlockState();
 
 		torchRarity = 0.75F;
 		doorRarity = 0F;
@@ -379,7 +383,7 @@ public class TFMaze {
 
 		// only place it if we're actually generating the chunk the tree is in (or at least the middle of the tree)
 		if (sbb.isInside(pos)) {
-			if (!world.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE).get(TFConfiguredFeatures.CANOPY_TREE).place(world, generator, world.getRandom(), pos)) {
+			if (!world.registryAccess().lookupOrThrow(Registries.CONFIGURED_FEATURE).getValueOrThrow(TFConfiguredFeatures.CANOPY_TREE).place(world, generator, world.getRandom(), pos)) {
 				makeWallThing(world, y, component, sbb, x, z, 0, 0);
 			}
 		}
@@ -414,7 +418,7 @@ public class TFMaze {
 	 */
 	public boolean shouldPillar(int rx, int rz) {
 		// if the pillar block is not defined, no
-		if (pillarBlockState == null) {
+		if (pillarBlockState.isAir()) {
 			return false;
 		}
 

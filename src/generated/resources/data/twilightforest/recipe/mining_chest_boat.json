@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "chest_boat",
   "ingredients": [
-    {
-      "item": "twilightforest:mining_boat"
-    },
-    {
-      "tag": "c:chests/wooden"
-    }
+    "twilightforest:mining_boat",
+    "#c:chests/wooden"
   ],
   "result": {
     "count": 1,

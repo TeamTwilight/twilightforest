@@ -2,6 +2,7 @@ package twilightforest.block.entity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
@@ -89,7 +90,7 @@ public class FireJetBlockEntity extends BlockEntity {
 		}
 
 		// actual fire effects
-		if (!level.isClientSide()) {
+		if (level instanceof ServerLevel serverLevel) {
 			if (te.counter % 5 == 0) {
 				// find entities in the area of effect
 				List<Entity> entitiesInRange = level.getEntitiesOfClass(Entity.class,
@@ -97,8 +98,8 @@ public class FireJetBlockEntity extends BlockEntity {
 				// fire!
 				for (Entity entity : entitiesInRange) {
 					if (!entity.fireImmune()) {
-						entity.hurt(TFDamageTypes.getDamageSource(level, TFDamageTypes.FIRE_JET), 2);
-						entity.setRemainingFireTicks(300);
+						entity.hurtServer(serverLevel, serverLevel.damageSources().source(TFDamageTypes.FIRE_JET), 2);
+						entity.igniteForSeconds(15);
 					}
 				}
 			}

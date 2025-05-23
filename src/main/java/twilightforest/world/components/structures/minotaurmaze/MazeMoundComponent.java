@@ -26,7 +26,6 @@ public class MazeMoundComponent extends TFStructureComponentOld {
 
 	private MazeUpperEntranceComponent mazeAbove;
 
-	@SuppressWarnings("this-escape")
 	public MazeMoundComponent(int i, RandomSource rand, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFMMMound.get(), i, new BoundingBox(x, y, z, x + DIAMETER, y + 12, z + DIAMETER));
 		this.setOrientation(Direction.Plane.HORIZONTAL.getRandomDirection(rand));

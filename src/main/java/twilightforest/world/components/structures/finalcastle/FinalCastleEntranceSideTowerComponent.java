@@ -18,7 +18,6 @@ public class FinalCastleEntranceSideTowerComponent extends FinalCastleMazeTower1
 		super(TFStructurePieceTypes.TFFCEnSiTo.get(), nbt);
 	}
 
-	@SuppressWarnings("this-escape")
 	public FinalCastleEntranceSideTowerComponent(int i, int x, int y, int z, int floors, int entranceFloor, Direction direction) {
 		super(TFStructurePieceTypes.TFFCEnSiTo.get(), i, x, y, z, floors, entranceFloor, TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get().defaultBlockState(), direction);
 

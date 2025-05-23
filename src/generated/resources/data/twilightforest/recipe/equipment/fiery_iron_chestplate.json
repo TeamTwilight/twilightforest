@@ -3,33 +3,15 @@
   "category": "equipment",
   "group": "fiery_chestplate",
   "ingredients": [
-    {
-      "item": "minecraft:iron_chestplate"
-    },
-    {
-      "tag": "twilightforest:fiery_vial"
-    },
-    {
-      "tag": "twilightforest:fiery_vial"
-    },
-    {
-      "tag": "twilightforest:fiery_vial"
-    },
-    {
-      "tag": "twilightforest:fiery_vial"
-    },
-    {
-      "tag": "twilightforest:fiery_vial"
-    },
-    {
-      "tag": "twilightforest:fiery_vial"
-    },
-    {
-      "tag": "twilightforest:fiery_vial"
-    },
-    {
-      "tag": "twilightforest:fiery_vial"
-    }
+    "minecraft:iron_chestplate",
+    "#twilightforest:fiery_vial",
+    "#twilightforest:fiery_vial",
+    "#twilightforest:fiery_vial",
+    "#twilightforest:fiery_vial",
+    "#twilightforest:fiery_vial",
+    "#twilightforest:fiery_vial",
+    "#twilightforest:fiery_vial",
+    "#twilightforest:fiery_vial"
   ],
   "result": {
     "count": 1,

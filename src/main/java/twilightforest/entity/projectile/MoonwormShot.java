@@ -39,10 +39,9 @@ public class MoonwormShot extends TFThrowable {
 		super(type, level);
 	}
 
-	@SuppressWarnings("this-escape")
-	public MoonwormShot(EntityType<? extends MoonwormShot> type, Level level, LivingEntity thrower) {
-		super(type, level, thrower);
-		this.shootFromRotation(thrower, thrower.getXRot(), thrower.getYRot(), 0F, 1.5F, 1.0F);
+	public MoonwormShot(Level level, LivingEntity thrower) {
+		super(TFEntities.MOONWORM_SHOT.get(), level, thrower);
+		this.setPos(thrower.getEyePosition());
 	}
 
 	public MoonwormShot(Level level, double x, double y, double z) {
@@ -68,7 +67,7 @@ public class MoonwormShot extends TFThrowable {
 	public void handleEntityEvent(byte id) {
 		if (id == EntityEvent.DEATH) {
 			for (int i = 0; i < 8; ++i) {
-				this.level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.SLIME_BLOCK.defaultBlockState()), true, this.getX(), this.getY() + 0.1D, this.getZ(), 0.0D, 0.0D, 0.0D);
+				this.level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.SLIME_BLOCK.defaultBlockState()), this.getX(), this.getY() + 0.1D, this.getZ(), 0.0D, 0.0D, 0.0D);
 			}
 		} else {
 			super.handleEntityEvent(id);
@@ -92,7 +91,7 @@ public class MoonwormShot extends TFThrowable {
 				LootParams ctx = new LootParams.Builder(serverLevel).withParameter(LootContextParams.THIS_ENTITY, this).withParameter(LootContextParams.ORIGIN, this.position()).withParameter(LootContextParams.DAMAGE_SOURCE, this.damageSources().fall()).create(LootContextParamSets.ENTITY);
 				serverLevel.getServer().reloadableRegistries().getLootTable(TFLootTables.MOONWORM_SQUISH_DROPS).getRandomItems(ctx).forEach((stack) -> {
 					ItemEntity squish = new ItemEntity(this.level(), this.getX(), this.getY(), this.getZ(), stack);
-					squish.spawnAtLocation(squish.getItem());
+					squish.spawnAtLocation(serverLevel, squish.getItem());
 				});
 			}
 			this.level().playSound(null, pos, TFSounds.BUG_SQUISH.get(), SoundSource.NEUTRAL, 1.0F, 1.0F);
@@ -106,12 +105,12 @@ public class MoonwormShot extends TFThrowable {
 		if (result.getEntity() instanceof Player player && !player.hasItemInSlot(EquipmentSlot.HEAD)) {
 			player.setItemSlot(EquipmentSlot.HEAD, new ItemStack(TFBlocks.MOONWORM.get()));
 		} else {
-			result.getEntity().hurt(TFDamageTypes.getIndirectEntityDamageSource(this.level(), TFDamageTypes.MOONWORM, this, this.getOwner()), this.random.nextInt(3) == 0 ? 1 : 0);
 			if (this.level() instanceof ServerLevel serverLevel) {
+				result.getEntity().hurtServer(serverLevel, TFDamageTypes.getIndirectEntityDamageSource(this.level(), TFDamageTypes.MOONWORM, this, this.getOwner()), this.random.nextInt(3) == 0 ? 1 : 0);
 				LootParams ctx = new LootParams.Builder(serverLevel).withParameter(LootContextParams.THIS_ENTITY, this).withParameter(LootContextParams.ORIGIN, this.position()).withParameter(LootContextParams.DAMAGE_SOURCE, this.damageSources().fall()).create(LootContextParamSets.ENTITY);
 				serverLevel.getServer().reloadableRegistries().getLootTable(TFLootTables.MOONWORM_SQUISH_DROPS).getRandomItems(ctx).forEach((stack) -> {
 					ItemEntity squish = new ItemEntity(this.level(), this.getX(), this.getY(), this.getZ(), stack);
-					squish.spawnAtLocation(squish.getItem());
+					squish.spawnAtLocation(serverLevel, squish.getItem());
 				});
 			}
 			this.level().playSound(null, this.blockPosition(), TFSounds.BUG_SQUISH.get(), SoundSource.NEUTRAL, 1.0F, 1.0F);

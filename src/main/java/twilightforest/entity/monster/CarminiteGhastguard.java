@@ -7,14 +7,15 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
@@ -123,7 +124,7 @@ public class CarminiteGhastguard extends Ghast implements EnforcedHomePoint {
 	}
 
 	@Override
-	protected void customServerAiStep() {
+	protected void customServerAiStep(ServerLevel level) {
 		int status = this.getTarget() != null && this.shouldAttack(this.getTarget()) ? 1 : 0;
 
 		this.getEntityData().set(ATTACK_STATUS, (byte) status);
@@ -160,7 +161,7 @@ public class CarminiteGhastguard extends Ghast implements EnforcedHomePoint {
 		return false;
 	}
 
-	public static boolean ghastSpawnHandler(EntityType<? extends CarminiteGhastguard> entityType, LevelAccessor accessor, MobSpawnType type, BlockPos pos, RandomSource random) {
+	public static boolean checkGhastguardSpawnRules(EntityType<? extends CarminiteGhastguard> entityType, LevelAccessor accessor, EntitySpawnReason type, BlockPos pos, RandomSource random) {
 		return accessor.getDifficulty() != Difficulty.PEACEFUL && checkMobSpawnRules(entityType, accessor, type, pos, random);
 	}
 
@@ -174,8 +175,8 @@ public class CarminiteGhastguard extends Ghast implements EnforcedHomePoint {
 		if (!this.isRestrictionPointValid(entity.level().dimension())) return true;
 		// TF - restrict valid y levels
 		// Towers are so large, a simple radius doesn't really work, so we make it more of a cylinder
-		return entity.blockPosition().getY() > this.level().getMinBuildHeight() + 64 &&
-			entity.blockPosition().getY() < this.level().getMaxBuildHeight() - 64 &&
+		return entity.blockPosition().getY() > this.level().getMinY() + 64 &&
+			entity.blockPosition().getY() < this.level().getMaxY() - 64 &&
 			this.getRestrictionPoint().pos().distSqr(entity.blockPosition()) < (double) (this.getHomeRadius() * this.getHomeRadius());
 
 	}

@@ -2,6 +2,7 @@ package twilightforest.item;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
@@ -12,7 +13,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -29,9 +30,12 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.data.tags.EntityTagGenerator;
+import twilightforest.tags.TFEntityTypeTags;
+import twilightforest.enchantment.RechargeScepterEffect;
 import twilightforest.init.TFDamageTypes;
+import twilightforest.init.TFEnchantments;
 import twilightforest.init.TFItems;
+import twilightforest.init.TFParticleType;
 import twilightforest.init.TFSounds;
 import twilightforest.loot.TFLootTables;
 import twilightforest.network.LifedrainParticlePacket;
@@ -49,25 +53,25 @@ public class LifedrainScepterItem extends Item {
 	}
 
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+	public InteractionResult use(Level level, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 
-		if (stack.getDamageValue() == stack.getMaxDamage() && !player.getAbilities().instabuild) {
-			return InteractionResultHolder.fail(player.getItemInHand(hand));
+		if (TFItemStackUtils.isAtZeroDurability(stack) && !player.hasInfiniteMaterials()) {
+			return InteractionResult.FAIL;
 		} else {
 			player.startUsingItem(hand);
-			return InteractionResultHolder.success(player.getItemInHand(hand));
+			return InteractionResult.SUCCESS;
 		}
 	}
 
 	@Override
-	public boolean isEnchantable(ItemStack stack) {
-		return false;
-	}
-
-	@Override
-	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-		return false;
+	public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
+		if (entity.tickCount % 20 == 0 && level instanceof ServerLevel serverLevel && stack.has(DataComponents.ENCHANTMENTS) && !isSelected) {
+			int renewal = stack.get(DataComponents.ENCHANTMENTS).getLevel(level.holderOrThrow(TFEnchantments.RENEWAL));
+			if (renewal > 0) {
+				RechargeScepterEffect.applyRecharge(serverLevel, stack, entity);
+			}
+		}
 	}
 
 	/**
@@ -91,7 +95,7 @@ public class LifedrainScepterItem extends Item {
 			double y = level.getRandom().nextFloat() * target.getBbHeight() - gaussY * gaussFactor + (level.random.nextGaussian() * gaussY);
 			double z = level.getRandom().nextFloat() * target.getBbWidth() * 1.5F - target.getBbWidth() - gaussZ * gaussFactor + (level.random.nextGaussian() * gaussZ);
 
-			particlePacket.queueParticle(options, false, target.getX() + x, target.getY() + y, target.getZ() + z, x * speed, y * speed, z * speed);
+			particlePacket.queueParticle(options, target.getX() + x, target.getY() + y, target.getZ() + z, x * speed, y * speed, z * speed);
 		}
 
 		PacketDistributor.sendToPlayersTrackingEntity(target, particlePacket);
@@ -138,7 +142,7 @@ public class LifedrainScepterItem extends Item {
 
 	@Override
 	public void onUseTick(Level level, LivingEntity living, ItemStack stack, int count) {
-		if (stack.getDamageValue() == this.getMaxDamage(stack)) {
+		if (TFItemStackUtils.isAtZeroDurability(stack)) {
 			// do not use
 			living.stopUsingItem();
 			return;
@@ -149,61 +153,59 @@ public class LifedrainScepterItem extends Item {
 			Entity pointedEntity = getPlayerLookTarget(level, living);
 
 			if (pointedEntity instanceof LivingEntity target && !(target instanceof ArmorStand)) {
-                if (!level.isClientSide() && !target.isDeadOrDying()) {
+				if (!level.isClientSide() && !target.isDeadOrDying()) {
 					PacketDistributor.sendToPlayersTrackingEntityAndSelf(living, new LifedrainParticlePacket(living.getId(), target.getEyePosition()));
 					level.playSound(null, living.blockPosition(), TFSounds.LIFE_SCEPTER_DRAIN.get(), SoundSource.PLAYERS);
 				}
 
 				DamageSource damageSource = TFDamageTypes.getEntityDamageSource(level, TFDamageTypes.LIFEDRAIN, living);
-                if (target.hurt(damageSource, 1)) {
+				if (level instanceof ServerLevel serverLevel && target.hurtServer(serverLevel, damageSource, 1)) {
 					// make it explode
-					if (!level.isClientSide()) {
-						if (target.getHealth() <= 1 && !target.getType().is(Tags.EntityTypes.BOSSES)) {
-							if (!target.getType().is(EntityTagGenerator.LIFEDRAIN_DROPS_NO_FLESH) && level instanceof ServerLevel serverLevel && living instanceof Player player) {
-								LootParams ctx = new LootParams.Builder(serverLevel)
-									.withParameter(LootContextParams.THIS_ENTITY, target)
-									.withParameter(LootContextParams.ORIGIN, target.getEyePosition())
-									.withParameter(LootContextParams.DAMAGE_SOURCE, damageSource)
-									.withParameter(LootContextParams.LAST_DAMAGE_PLAYER, player)
-									.withParameter(LootContextParams.ATTACKING_ENTITY, player)
-									.withParameter(LootContextParams.DIRECT_ATTACKING_ENTITY, player).create(LootContextParamSets.ENTITY);
-								serverLevel.getServer().reloadableRegistries().getLootTable(TFLootTables.LIFEDRAIN_SCEPTER_KILL_BONUS).getRandomItems(ctx).forEach(target::spawnAtLocation);
-								animateTargetShatter(serverLevel, target);
-							}
-
-							if (target instanceof Mob mob) {
-								mob.spawnAnim();
-							}
-							SoundEvent deathSound = EntityUtil.getDeathSound(target);
-							if (deathSound != null) {
-								level.playSound(null, target.blockPosition(), deathSound, SoundSource.HOSTILE, 1.0F, target.getVoicePitch());
-							}
-							if (!target.isDeadOrDying()) {
-								if (target instanceof Player) {
-									target.hurt(TFDamageTypes.getEntityDamageSource(level, TFDamageTypes.LIFEDRAIN, living), Float.MAX_VALUE);
-								} else {
-									target.die(TFDamageTypes.getEntityDamageSource(level, TFDamageTypes.LIFEDRAIN, living));
-									target.discard();
-								}
-							}
-						} else {
-							target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20, 2));
-							if (count % 10 == 0) {
-								// heal the player
-								living.heal(1.0F);
-								// and give foods
-								if (living instanceof Player player)
-									player.getFoodData().eat(1, 0.1F);
-							}
+					if (target.getHealth() <= 1 && !target.getType().is(Tags.EntityTypes.BOSSES)) {
+						if (!target.getType().is(TFEntityTypeTags.LIFEDRAIN_DROPS_NO_FLESH) && living instanceof Player player) {
+							LootParams ctx = new LootParams.Builder(serverLevel)
+								.withParameter(LootContextParams.THIS_ENTITY, target)
+								.withParameter(LootContextParams.ORIGIN, target.getEyePosition())
+								.withParameter(LootContextParams.DAMAGE_SOURCE, damageSource)
+								.withParameter(LootContextParams.LAST_DAMAGE_PLAYER, player)
+								.withParameter(LootContextParams.ATTACKING_ENTITY, player)
+								.withParameter(LootContextParams.DIRECT_ATTACKING_ENTITY, player).create(LootContextParamSets.ENTITY);
+							serverLevel.getServer().reloadableRegistries().getLootTable(TFLootTables.LIFEDRAIN_SCEPTER_KILL_BONUS).getRandomItems(ctx).forEach(dropped -> target.spawnAtLocation(serverLevel, dropped));
+							animateTargetShatter(serverLevel, target);
 						}
 
-						if (living instanceof Player player && !player.getAbilities().instabuild && (!player.getItemBySlot(EquipmentSlot.HEAD).is(TFItems.MYSTIC_CROWN) || level.getRandom().nextFloat() > 0.05f)) {
-							TFItemStackUtils.hurtButDontBreak(stack, 1, (ServerLevel) level, player);
+						if (target instanceof Mob mob) {
+							mob.spawnAnim();
 						}
+						SoundEvent deathSound = EntityUtil.getDeathSound(target);
+						if (deathSound != null) {
+							level.playSound(null, target.blockPosition(), deathSound, SoundSource.HOSTILE, 1.0F, target.getVoicePitch());
+						}
+						if (!target.isDeadOrDying()) {
+							if (target instanceof Player) {
+								target.hurtServer(serverLevel, TFDamageTypes.getEntityDamageSource(level, TFDamageTypes.LIFEDRAIN, living), Float.MAX_VALUE);
+							} else {
+								target.die(TFDamageTypes.getEntityDamageSource(level, TFDamageTypes.LIFEDRAIN, living));
+								target.discard();
+							}
+						}
+					} else {
+						target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20, 2));
+						if (count % 10 == 0) {
+							// heal the player
+							living.heal(1.0F);
+							// and give foods
+							if (living instanceof Player player)
+								player.getFoodData().eat(1, 0.1F);
+						}
+					}
+
+					if (living instanceof Player player && !player.getAbilities().instabuild && (!player.getItemBySlot(EquipmentSlot.HEAD).is(TFItems.MYSTIC_CROWN) || level.getRandom().nextFloat() > 0.05f)) {
+						TFItemStackUtils.hurtWithoutBreaking(stack, 1, player);
 					}
 				}
 
-				if (!level.isClientSide() && target.getHealth() <= living.getHealth()) {
+				if (target.getHealth() <= living.getHealth()) {
 					// only do lifting effect on creatures weaker than the player
 					target.setDeltaMovement(0, 0.15D, 0);
 				}
@@ -213,7 +215,7 @@ public class LifedrainScepterItem extends Item {
 
 	public static void makeRedMagicTrail(Level level, LivingEntity source, Vec3 target) {
 		// make particle trail
-		Vec3 handPos = getPlayerHandPos(source, Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false));
+		Vec3 handPos = getPlayerHandPos(source, Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(false));
 		double distance = handPos.distanceTo(target);
 
 		for (double i = 0; i <= distance * 3; i++) {
@@ -222,7 +224,7 @@ public class LifedrainScepterItem extends Item {
 			float r = 1.0F;
 			float g = 0.5F;
 			float b = 0.5F;
-			level.addParticle(ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, r, g, b), particlePos.x(), particlePos.y(), particlePos.z(), 0.0D, 0.0D, 0.0D);
+			level.addParticle(ColorParticleOption.create(TFParticleType.MAGIC_EFFECT.get(), r, g, b), particlePos.x(), particlePos.y(), particlePos.z(), 0.0D, 0.0D, 0.0D);
 		}
 	}
 
@@ -241,7 +243,7 @@ public class LifedrainScepterItem extends Item {
 			Vec3 vec3 = minecraft.getEntityRenderDispatcher()
 				.camera
 				.getNearPlane()
-				.getPointOnPlane((float)hand * 0.525F, -0.1F)
+				.getPointOnPlane((float) hand * 0.525F, -0.1F)
 				.scale(960.0D / (double) minecraft.options.fov().get())
 				.yRot(armSwing * 0.5F)
 				.xRot(-armSwing * 0.7F);
@@ -251,10 +253,10 @@ public class LifedrainScepterItem extends Item {
 			double sin = Mth.sin(yRot);
 			double cos = Mth.cos(yRot);
 			float scale = living.getScale();
-			double offset = (double)hand * 0.35 * (double)scale;
-			double factor = 0.8 * (double)scale;
+			double offset = (double) hand * 0.35 * (double) scale;
+			double factor = 0.8 * (double) scale;
 			float crouch = living.isCrouching() ? -0.1875F : 0.0F;
-			return living.getEyePosition(partialTicks).add(-cos * offset - sin * factor, (double)crouch - 0.45 * (double)scale, -sin * offset + cos * factor);
+			return living.getEyePosition(partialTicks).add(-cos * offset - sin * factor, (double) crouch - 0.45 * (double) scale, -sin * offset + cos * factor);
 		}
 	}
 
@@ -264,8 +266,8 @@ public class LifedrainScepterItem extends Item {
 	}
 
 	@Override
-	public UseAnim getUseAnimation(ItemStack stack) {
-		return UseAnim.BOW;
+	public ItemUseAnimation getUseAnimation(ItemStack stack) {
+		return ItemUseAnimation.BOW;
 	}
 
 	@Override

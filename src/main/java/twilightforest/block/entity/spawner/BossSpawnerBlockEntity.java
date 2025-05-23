@@ -5,9 +5,9 @@ import net.minecraft.core.GlobalPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -60,7 +60,7 @@ public abstract class BossSpawnerBlockEntity<T extends Mob & EnforcedHomePoint> 
 
 		BlockPos spawnPos = accessor.getBlockState(this.getBlockPos().below()).getCollisionShape(accessor, this.getBlockPos().below()).isEmpty() ? this.getBlockPos().below() : this.getBlockPos();
 		myCreature.moveTo(spawnPos, accessor.getLevel().getRandom().nextFloat() * 360F, 0.0F);
-		EventHooks.finalizeMobSpawn(myCreature, accessor, accessor.getCurrentDifficultyAt(spawnPos), MobSpawnType.SPAWNER, null);
+		EventHooks.finalizeMobSpawn(myCreature, accessor, accessor.getCurrentDifficultyAt(spawnPos), EntitySpawnReason.SPAWNER, null);
 
 		// set creature's home to this
 		this.initializeCreature(myCreature);
@@ -80,6 +80,6 @@ public abstract class BossSpawnerBlockEntity<T extends Mob & EnforcedHomePoint> 
 	}
 
 	protected T makeMyCreature() {
-		return Objects.requireNonNull(this.entityType.create(Objects.requireNonNull(this.getLevel())));
+		return Objects.requireNonNull(this.entityType.create(this.getLevel(), EntitySpawnReason.SPAWNER));
 	}
 }

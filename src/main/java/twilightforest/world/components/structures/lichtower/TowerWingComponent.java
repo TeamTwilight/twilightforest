@@ -19,8 +19,7 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
-import twilightforest.data.tags.BlockTagGenerator;
+import twilightforest.tags.TFBlockTags;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.loot.TFLootTables;
@@ -70,7 +69,6 @@ public class TowerWingComponent extends TFStructureComponentOld {
 		this.highestOpening = 0;
 	}
 
-	@SuppressWarnings("this-escape")
 	protected TowerWingComponent(StructurePieceType type, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
 		super(type, i, x, y, z);
 
@@ -1252,7 +1250,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 
 		final BlockPos pos = getBlockPosWithOffset(cx, 2, cx);
 
-		if (i > 4 && !world.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE).get(TFStructureHelper.randomTree(rand.nextInt(4))).place(world, generator, world.getRandom(), pos)) {
+		if (i > 4 && !world.registryAccess().lookupOrThrow(Registries.CONFIGURED_FEATURE).getValue(TFStructureHelper.randomTree(rand.nextInt(4))).place(world, generator, world.getRandom(), pos)) {
 			//if tree placement fails, place the potted sapling
 			this.placeBlock(world, plant, cx, 2, cx, sbb);
 		} else {
@@ -1821,8 +1819,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 			}
 		}
 
-		// I guess we didn't get one
-		TwilightForestMod.LOGGER.info("ComponentTFTowerWing#getRandomWallSpot - We didn't find a valid random spot on the wall.");
+		// No suitable placement found inside the sbb, but that's okay because it'll place with a different sbb mask
 		return null;
 	}
 
@@ -1846,7 +1843,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 		if (sbb.isInside(new BlockPos(dx, this.boundingBox.minY() + 1, dz))) {
 			for (int dy = this.getWorldY(startHeight); dy > 0; dy--) {
 				final BlockPos pos = new BlockPos(dx, dy, dz);
-				if (world.getBlockState(pos).is(BlockTagGenerator.CASTLE_BLOCKS) && world.getBlockState(pos).isRedstoneConductor(world, pos)) {
+				if (world.getBlockState(pos).is(TFBlockTags.CASTLE_BLOCKS) && world.getBlockState(pos).isRedstoneConductor(world, pos)) {
 					world.setBlock(pos, colour, Block.UPDATE_CLIENTS);
 				} else {
 					break;

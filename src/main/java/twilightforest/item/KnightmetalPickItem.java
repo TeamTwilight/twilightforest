@@ -4,15 +4,15 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PickaxeItem;
-import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.item.TooltipFlag;
 
 import java.util.List;
 
 public class KnightmetalPickItem extends PickaxeItem {
 
-	public KnightmetalPickItem(Tier material, Properties properties) {
-		super(material, properties);
+	public KnightmetalPickItem(ToolMaterial material, Properties properties) {
+		super(material, 1.0F, -2.8F, properties);
 	}
 
 	@Override

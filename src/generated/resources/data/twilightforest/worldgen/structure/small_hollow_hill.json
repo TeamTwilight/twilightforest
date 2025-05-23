@@ -3,9 +3,10 @@
   "adjust_structure_elevation": false,
   "allow_biome_surface_decorations": true,
   "allow_biome_underground_decorations": false,
+  "allow_biome_vegetation": true,
   "ambient_spawns": [],
   "biomes": "#twilightforest:valid_hollow_hill_biomes",
-  "chunk_clearance_radius": 1,
+  "chunk_clearance_radius": 1.0,
   "hill_size": 1,
   "labelled_monster_spawns": {
     "0": [

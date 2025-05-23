@@ -5,6 +5,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
@@ -31,7 +32,6 @@ public abstract class FlyingBird extends Bird {
 	private BlockPos targetPosition;
 	private int currentFlightTime;
 
-	@SuppressWarnings("this-escape")
 	public FlyingBird(EntityType<? extends Bird> entity, Level world) {
 		super(entity, world);
 		this.setIsBirdLanded(true);
@@ -49,7 +49,7 @@ public abstract class FlyingBird extends Bird {
 		super.registerGoals();
 		this.goalSelector.addGoal(0, new FloatGoal(this));
 		this.goalSelector.addGoal(0, new PanicGoal(this, 1.5F));
-		this.goalSelector.addGoal(3, new TemptGoal(this, 1.0F, Ingredient.of(this.getTemptItems()), true));
+		this.goalSelector.addGoal(3, new TemptGoal(this, 1.0F, stack -> stack.is(this.getTemptItems()), true));
 		this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
 		this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6F));
 		this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
@@ -82,8 +82,8 @@ public abstract class FlyingBird extends Bird {
 	}
 
 	@Override
-	protected void customServerAiStep() {
-		super.customServerAiStep();
+	protected void customServerAiStep(ServerLevel level) {
+		super.customServerAiStep(level);
 
 		if (this.isBirdLanded()) {
 			this.currentFlightTime = 0;
@@ -99,7 +99,7 @@ public abstract class FlyingBird extends Bird {
 			this.currentFlightTime++;
 
 			// [VanillaCopy] Modified version of last half of Bat.customServerAiStep(). Edits noted
-			if (this.targetPosition != null && (!this.level().isEmptyBlock(this.targetPosition) || this.targetPosition.getY() <= this.level().getMinBuildHeight())) {
+			if (this.targetPosition != null && (!this.level().isEmptyBlock(this.targetPosition) || this.targetPosition.getY() <= this.level().getMinY())) {
 				this.targetPosition = null;
 			}
 

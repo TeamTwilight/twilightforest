@@ -1,12 +1,8 @@
 {
   "type": "twilightforest:no_template_smithing",
-  "addition": {
-    "item": "twilightforest:emperors_cloth"
-  },
+  "addition": "twilightforest:emperors_cloth",
   "additional_data": {
     "twilightforest:emperors_cloth": {}
   },
-  "base": {
-    "tag": "c:armors"
-  }
+  "base": "#c:armors"
 }

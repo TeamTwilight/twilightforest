@@ -15,7 +15,6 @@ public class CubeMoveToRedstoneSymbolsGoal extends Goal {
 	private final double speed;
 	private BlockPos targetPos;
 
-	@SuppressWarnings("this-escape")
 	public CubeMoveToRedstoneSymbolsGoal(RovingCube cube, double speed) {
 		this.myCube = cube;
 		this.speed = speed;

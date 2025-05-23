@@ -1,25 +1,23 @@
 package twilightforest.client.model.entity;
 
-import com.google.common.collect.ImmutableList;
-import net.minecraft.client.model.ListModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.util.Mth;
-import twilightforest.entity.projectile.CubeOfAnnihilation;
 
-public class CubeOfAnnihilationModel extends ListModel<CubeOfAnnihilation> {
+public class CubeOfAnnihilationModel extends EntityModel<EntityRenderState> {
 
-	private final ModelPart box;
 	private final ModelPart boxX;
 	private final ModelPart boxY;
 	private final ModelPart boxZ;
 
 	public CubeOfAnnihilationModel(ModelPart root) {
-		this.box = root.getChild("box");
+		super(root);
 		this.boxX = root.getChild("box_x");
 		this.boxY = root.getChild("box_y");
 		this.boxZ = root.getChild("box_z");
@@ -54,14 +52,9 @@ public class CubeOfAnnihilationModel extends ListModel<CubeOfAnnihilation> {
 	}
 
 	@Override
-	public Iterable<ModelPart> parts() {
-		return ImmutableList.of(this.box, this.boxX, this.boxY, this.boxZ);
-	}
-
-	@Override
-	public void setupAnim(CubeOfAnnihilation entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		this.boxX.xRot = Mth.sin((entity.tickCount + headPitch)) / 5.0F;
-		this.boxY.yRot = Mth.sin((entity.tickCount + headPitch)) / 5.0F;
-		this.boxZ.zRot = Mth.sin((entity.tickCount + headPitch)) / 5.0F;
+	public void setupAnim(EntityRenderState state) {
+		this.boxX.xRot = Mth.sin((state.ageInTicks)) / 5.0F;
+		this.boxY.yRot = Mth.sin((state.ageInTicks)) / 5.0F;
+		this.boxZ.zRot = Mth.sin((state.ageInTicks)) / 5.0F;
 	}
 }

@@ -3,14 +3,11 @@ package twilightforest.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.PipeBlock;
-import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.*;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -60,8 +57,8 @@ public class ForceFieldBlock extends Block implements SimpleWaterloggedBlock {
 	}
 
 	public static boolean cornerConnects(BlockGetter getter, BlockPos pos, Direction dir1, Direction dir2) {
-		Vec3i vec31 = dir1.getNormal();
-		Vec3i vec32 = dir2.getNormal();
+		Vec3i vec31 = dir1.getUnitVec3i();
+		Vec3i vec32 = dir2.getUnitVec3i();
 
 		return fullFaceOrSimilarForceField(getter, pos.offset(vec31), dir1, dir2) ||
 			fullFaceOrSimilarForceField(getter, pos.offset(vec32), dir2, dir1);
@@ -125,7 +122,7 @@ public class ForceFieldBlock extends Block implements SimpleWaterloggedBlock {
 	}
 
 	@Override
-	public boolean propagatesSkylightDown(BlockState state, BlockGetter getter, BlockPos pos) {
+	public boolean propagatesSkylightDown(BlockState state) {
 		return true;
 	}
 
@@ -170,9 +167,9 @@ public class ForceFieldBlock extends Block implements SimpleWaterloggedBlock {
 	}
 
 	@Override
-	public BlockState updateShape(BlockState state, Direction direction, BlockState facingState, LevelAccessor accessor, BlockPos pos, BlockPos facingPos) {
-		if (state.getValue(WATERLOGGED)) accessor.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(accessor));
-		return this.canConnectTo(state, accessor, pos, direction) ? state.setValue(PipeBlock.PROPERTY_BY_DIRECTION.get(direction), true) : state;
+	protected BlockState updateShape(BlockState state, LevelReader reader, ScheduledTickAccess access, BlockPos pos, Direction direction, BlockPos neighborPos, BlockState neighborState, RandomSource random) {
+		if (state.getValue(WATERLOGGED)) access.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(reader));
+		return this.canConnectTo(state, reader, pos, direction) ? state.setValue(PipeBlock.PROPERTY_BY_DIRECTION.get(direction), true) : state;
 	}
 
 	@Override
@@ -180,4 +177,31 @@ public class ForceFieldBlock extends Block implements SimpleWaterloggedBlock {
 		builder.add(WATERLOGGED, NORTH, EAST, SOUTH, WEST, UP, DOWN);
 	}
 
+	@Override
+	protected BlockState rotate(BlockState state, Rotation rotation) {
+		return switch (rotation) {
+			case CLOCKWISE_180 -> state.setValue(NORTH, state.getValue(SOUTH))
+				.setValue(EAST, state.getValue(WEST))
+				.setValue(SOUTH, state.getValue(NORTH))
+				.setValue(WEST, state.getValue(EAST));
+			case COUNTERCLOCKWISE_90 -> state.setValue(NORTH, state.getValue(EAST))
+				.setValue(EAST, state.getValue(SOUTH))
+				.setValue(SOUTH, state.getValue(WEST))
+				.setValue(WEST, state.getValue(NORTH));
+			case CLOCKWISE_90 -> state.setValue(NORTH, state.getValue(WEST))
+				.setValue(EAST, state.getValue(NORTH))
+				.setValue(SOUTH, state.getValue(EAST))
+				.setValue(WEST, state.getValue(SOUTH));
+			default -> state;
+		};
+	}
+
+	@Override
+	protected BlockState mirror(BlockState state, Mirror mirror) {
+		return switch (mirror) {
+			case LEFT_RIGHT -> state.setValue(NORTH, state.getValue(SOUTH)).setValue(SOUTH, state.getValue(NORTH));
+			case FRONT_BACK -> state.setValue(EAST, state.getValue(WEST)).setValue(WEST, state.getValue(EAST));
+			default -> state;
+		};
+	}
 }

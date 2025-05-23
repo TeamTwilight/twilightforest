@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": {
-      "tag": "twilightforest:arctic_fur"
-    }
+    "#": "#twilightforest:arctic_fur"
   },
   "pattern": [
     "# #",

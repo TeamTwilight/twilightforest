@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "fiery_ingot",
   "ingredients": [
-    {
-      "tag": "twilightforest:fiery_vial"
-    },
-    {
-      "tag": "c:ingots/iron"
-    }
+    "#twilightforest:fiery_vial",
+    "#c:ingots/iron"
   ],
   "result": {
     "count": 1,

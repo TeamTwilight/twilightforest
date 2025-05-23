@@ -51,8 +51,9 @@ public interface IBossLootBuffer {
 	}
 
 	static <T extends LivingEntity & IBossLootBuffer> void saveDropsIntoBoss(T boss, LootParams params, ServerLevel serverLevel) {
-		if (TFConfig.bossDropChests) {
-			LootTable table = serverLevel.getServer().reloadableRegistries().getLootTable(boss.getLootTable());
+		var loot = boss.getLootTable();
+		if (TFConfig.bossDropChests && loot.isPresent()) {
+			LootTable table = serverLevel.getServer().reloadableRegistries().getLootTable(loot.get());
 			ObjectArrayList<ItemStack> stacks = table.getRandomItems(params);
 			boss.fill(boss, params, table);
 
@@ -72,7 +73,7 @@ public interface IBossLootBuffer {
 		if (TFConfig.bossDropChests && !boss.getItemStacks().isEmpty()) {
 			if (!tryDeposit(boss, chest, pos, serverLevel)) {
 				BlockPos.MutableBlockPos chestPos = pos.mutable();
-				for (int y = pos.getY(); y < serverLevel.getMaxBuildHeight(); y++) {
+				for (int y = pos.getY(); y < serverLevel.getMaxY(); y++) {
 					chestPos.setY(y);
 					if (tryDeposit(boss, chest, chestPos, serverLevel)) return;
 				}
@@ -107,7 +108,7 @@ public interface IBossLootBuffer {
 			double x = (boss.getRandom().nextDouble() - 0.5D) * 0.075D * i;
 			double y = (boss.getRandom().nextDouble() - 0.5D) * 0.075D * i;
 			double z = (boss.getRandom().nextDouble() - 0.5D) * 0.075D * i;
-			particlePacket.queueParticle(ParticleTypes.POOF, false, vec3.add(x, y, z), Vec3.ZERO);
+			particlePacket.queueParticle(ParticleTypes.POOF, vec3.add(x, y, z), Vec3.ZERO);
 		}
 		PacketDistributor.sendToPlayersTrackingEntity(boss, particlePacket);
 	}
@@ -119,10 +120,10 @@ public interface IBossLootBuffer {
 		table.shuffleAndSplitItems(items, list.size(), randomsource);
 
 		for (ItemStack itemstack : items) {
-            if (!list.isEmpty()) {
+			if (!list.isEmpty()) {
 				this.setItem(list.removeLast(), itemstack.isEmpty() ? ItemStack.EMPTY : itemstack);
-            }
-        }
+			}
+		}
 	}
 
 	default List<Integer> getAvailableSlots(RandomSource random) {

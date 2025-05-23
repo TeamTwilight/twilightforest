@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.inventory.InventoryMenu;
 import org.joml.Matrix4f;
 import twilightforest.block.entity.ReactorDebrisBlockEntity;
 
@@ -43,7 +44,7 @@ public class ReactorDebrisRenderer implements BlockEntityRenderer<ReactorDebrisB
 		if (entity.getLevel() == null) return;
 
 		poseStack.pushPose();
-		VertexConsumer builder = buffer.getBuffer(RenderType.entityTranslucentCull(TextureAtlas.LOCATION_BLOCKS));
+		VertexConsumer builder = buffer.getBuffer(RenderType.itemEntityTranslucentCull(TextureAtlas.LOCATION_BLOCKS));
 		Matrix4f matrix = poseStack.last().pose();
 		QuadRenderInfo info = new QuadRenderInfo(builder, matrix, light, overlay);
 

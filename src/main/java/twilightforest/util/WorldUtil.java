@@ -1,14 +1,18 @@
 package twilightforest.util;
 
 import com.mojang.datafixers.util.Pair;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import it.unimi.dsi.fastutil.objects.ObjectArraySet;
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.level.ChunkPos;
@@ -16,6 +20,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.ChunkGeneratorStructureState;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureCheckResult;
 import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement;
@@ -74,21 +79,17 @@ public final class WorldUtil {
 		return pos.offset(dx, dy, dz);
 	}
 
-	public static <T> T getRandomElement(List<T> list, RandomSource rng) {
-		return list.get(rng.nextInt(list.size()));
-	}
+	public static <T> T getRandomElementWithWeights(List<Pair<T, Float>> list, RandomSource rng) {
+		float totalWeight = (float) list.stream().mapToDouble(Pair::getSecond).sum();
+		float randomValue = rng.nextFloat() * totalWeight;
 
-	public static <T> T getRandomElementWithWeights(List<Pair<T, Integer>> list, RandomSource rng) {
-		int totalWeight = list.stream().mapToInt(Pair::getSecond).sum();
-		int randomValue = rng.nextInt(totalWeight);
-
-		for (Pair<T, Integer> pair : list) {
+		for (Pair<T, Float> pair : list) {
 			randomValue -= pair.getSecond();
 			if (randomValue < 0) {
 				return pair.getFirst();
 			}
 		}
-		return getRandomElement(list, rng).getFirst(); // This line should never be reached if input list is valid
+		return Util.getRandom(list, rng).getFirst(); // This line should never be reached if the input list is valid
 	}
 
 	public static int getGeneratorSeaLevel(LevelAccessor level) {
@@ -143,5 +144,37 @@ public final class WorldUtil {
 		}
 
 		return Optional.ofNullable(nearest);
+	}
+
+	public static int adjustForTerrain(Structure.GenerationContext context, int xMin, int zMin, int xMax, int zMax, int gridLength) {
+		int subDivisions = gridLength - 1;
+		IntList heights = new IntArrayList(gridLength * gridLength);
+
+		for (int zStep = 0; zStep <= subDivisions; zStep++) {
+			int zPos = Mth.lerpDiscrete((float) zStep / subDivisions, zMin, zMax);
+			for (int xStep = 0; xStep <= subDivisions; xStep++) {
+				int xPos = Mth.lerpDiscrete((float) xStep / subDivisions, xMin, xMax);
+
+				heights.add(context.chunkGenerator().getFirstOccupiedHeight(xPos, zPos, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState()));
+			}
+		}
+
+		heights.sort((a, b) -> Integer.compare(b, a));  // sort from highest to lowest
+
+		double weightedSum = 0;
+		double totalWeight = 0;
+		for (int i = 0; i < heights.size(); i++) {
+			double weight = i + 1;
+			weightedSum += weight * heights.getInt(i);
+			totalWeight += weight;
+		}
+		return (int) Math.round(weightedSum / totalWeight);
+	}
+
+	public static int adjustForTerrain(Structure.GenerationContext context, int xInCenterChunk, int zInCenterChunk, int radiusFromCenterChunk, int gridLength) {
+		int chunkOriginX = xInCenterChunk & ~0b1111;
+		int chunkOriginZ = zInCenterChunk & ~0b1111;
+
+		return WorldUtil.adjustForTerrain(context, chunkOriginX - radiusFromCenterChunk, chunkOriginZ - radiusFromCenterChunk, chunkOriginX + 15 + radiusFromCenterChunk, chunkOriginZ + 15 + radiusFromCenterChunk, gridLength);
 	}
 }

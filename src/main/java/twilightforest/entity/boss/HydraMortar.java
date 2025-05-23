@@ -3,6 +3,7 @@ package twilightforest.entity.boss;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -18,9 +19,11 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.event.EventHooks;
-import twilightforest.data.tags.BlockTagGenerator;
+import twilightforest.tags.TFBlockTags;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
+
+import java.util.Objects;
 
 public class HydraMortar extends ThrowableProjectile {
 
@@ -30,13 +33,13 @@ public class HydraMortar extends ThrowableProjectile {
 	public int fuse = 80;
 	private boolean megaBlast = false;
 
-	public HydraMortar(EntityType<? extends HydraMortar> type, Level world) {
-		super(type, world);
+	public HydraMortar(EntityType<? extends HydraMortar> type, Level level) {
+		super(type, level);
 	}
 
-	@SuppressWarnings("this-escape")
-	public HydraMortar(EntityType<? extends HydraMortar> type, Level world, HydraHead head) {
-		super(type, head.getParent(), world);
+	public HydraMortar(EntityType<? extends HydraMortar> type, Level level, HydraHead head) {
+		super(type, level);
+		this.setOwner(head.getParent());
 
 		Vec3 vector = head.getLookAngle();
 
@@ -65,8 +68,8 @@ public class HydraMortar extends ThrowableProjectile {
 		if (this.onGround()) {
 			this.getDeltaMovement().multiply(0.9D, 0.9D, 0.9D);
 
-			if (!this.level().isClientSide() && this.fuse-- <= 0) {
-				this.detonate();
+			if (this.level() instanceof ServerLevel level && this.fuse-- <= 0) {
+				this.detonate(level);
 			}
 		}
 	}
@@ -78,14 +81,16 @@ public class HydraMortar extends ThrowableProjectile {
 	@Override
 	protected void onHitBlock(BlockHitResult result) {
 		super.onHitBlock(result);
-		if (!this.megaBlast) {
-			//if we hit a wall, explode
-			if (result.getDirection() != Direction.UP) this.detonate();
-			// we hit the ground
-			this.setDeltaMovement(this.getDeltaMovement().x(), 0.0D, this.getDeltaMovement().z());
-			this.setOnGround(true);
-		} else {
-			this.detonate();
+		if (this.level() instanceof ServerLevel level) {
+			if (!this.megaBlast) {
+				//if we hit a wall, explode
+				if (result.getDirection() != Direction.UP) this.detonate(level);
+				// we hit the ground
+				this.setDeltaMovement(this.getDeltaMovement().x(), 0.0D, this.getDeltaMovement().z());
+				this.setOnGround(true);
+			} else {
+				this.detonate(level);
+			}
 		}
 	}
 
@@ -102,9 +107,9 @@ public class HydraMortar extends ThrowableProjectile {
 	@Override
 	protected void onHitEntity(EntityHitResult result) {
 		Entity entity = result.getEntity();
-		if (!this.level().isClientSide() && this.getOwner() != null) {
-			if ((!(entity instanceof HydraMortar mortar) || mortar.getOwner().is(this.getOwner())) && !entity.is(this.getOwner()) && !this.isPartOfHydra(entity)) {
-				this.detonate();
+		if (this.level() instanceof ServerLevel level && this.getOwner() != null) {
+			if ((!(entity instanceof HydraMortar mortar) || Objects.equals(mortar.getOwner(), this.getOwner())) && !entity.is(this.getOwner()) && !this.isPartOfHydra(entity)) {
+				this.detonate(level);
 			}
 		}
 	}
@@ -117,20 +122,20 @@ public class HydraMortar extends ThrowableProjectile {
 	public float getBlockExplosionResistance(Explosion explosion, BlockGetter getter, BlockPos pos, BlockState state, FluidState fluid, float idk) {
 		float resistance = super.getBlockExplosionResistance(explosion, getter, pos, state, fluid, idk);
 
-		if (this.megaBlast && !state.is(BlockTagGenerator.COMMON_PROTECTIONS)) {
+		if (this.megaBlast && !state.is(TFBlockTags.COMMON_PROTECTIONS)) {
 			resistance = Math.min(0.8F, resistance);
 		}
 
 		return resistance;
 	}
 
-	private void detonate() {
-		float explosionPower = megaBlast ? 4.0F : 0.1F;
-		boolean flag = EventHooks.canEntityGrief(this.level(), this);
+	private void detonate(ServerLevel level) {
+		float explosionPower = this.megaBlast ? 4.0F : 0.1F;
+		boolean flag = EventHooks.canEntityGrief(level, this);
 		this.level().explode(this, this.getX(), this.getY(), this.getZ(), explosionPower, flag, Level.ExplosionInteraction.MOB);
 
 		for (Entity nearby : this.level().getEntities(this, this.getBoundingBox().inflate(1.0D, 1.0D, 1.0D))) {
-			if ((!nearby.fireImmune() || nearby instanceof Hydra || nearby instanceof HydraPart) && nearby.hurt(TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.HYDRA_MORTAR, this.getOwner(), TFEntities.HYDRA.get()), DIRECT_DAMAGE)) {
+			if ((!nearby.fireImmune() || nearby instanceof Hydra || nearby instanceof HydraPart) && nearby.hurtServer(level, TFDamageTypes.getIndirectEntityDamageSource(this.level(), TFDamageTypes.HYDRA_MORTAR, this, this.getOwner(), TFEntities.HYDRA.get()), DIRECT_DAMAGE)) {
 				nearby.igniteForSeconds(BURN_FACTOR);
 			}
 		}
@@ -139,9 +144,7 @@ public class HydraMortar extends ThrowableProjectile {
 	}
 
 	@Override
-	public boolean hurt(DamageSource source, float amount) {
-		super.hurt(source, amount);
-
+	public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
 		if (source.getEntity() != null && !this.level().isClientSide()) {
 			Vec3 vec3d = source.getEntity().getLookAngle();
 			if (vec3d != null) {

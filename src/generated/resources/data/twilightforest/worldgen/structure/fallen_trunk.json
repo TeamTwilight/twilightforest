@@ -1,0 +1,59 @@
+{
+  "type": "twilightforest:fallen_trunk",
+  "big_trunk_length": {
+    "type": "minecraft:uniform",
+    "max_inclusive": 28,
+    "min_inclusive": 22
+  },
+  "biomes": "#twilightforest:valid_hollow_tree_biomes",
+  "chest_loot_table": "twilightforest:fallen_trunk_loot",
+  "length": {
+    "type": "minecraft:uniform",
+    "max_inclusive": 24,
+    "min_inclusive": 17
+  },
+  "log": {
+    "type": "minecraft:simple_state_provider",
+    "state": {
+      "Name": "twilightforest:twilight_oak_log",
+      "Properties": {
+        "axis": "y"
+      }
+    }
+  },
+  "spawn_overrides": {
+    "ambient": {
+      "bounding_box": "full",
+      "spawns": []
+    },
+    "axolotls": {
+      "bounding_box": "full",
+      "spawns": []
+    },
+    "creature": {
+      "bounding_box": "full",
+      "spawns": []
+    },
+    "misc": {
+      "bounding_box": "full",
+      "spawns": []
+    },
+    "monster": {
+      "bounding_box": "full",
+      "spawns": []
+    },
+    "underground_water_creature": {
+      "bounding_box": "full",
+      "spawns": []
+    },
+    "water_ambient": {
+      "bounding_box": "full",
+      "spawns": []
+    },
+    "water_creature": {
+      "bounding_box": "full",
+      "spawns": []
+    }
+  },
+  "step": "surface_structures"
+}

@@ -5,6 +5,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -13,10 +14,9 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.data.tags.ItemTagGenerator;
+import twilightforest.tags.TFItemTags;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
 
@@ -31,7 +31,7 @@ public class Deer extends Animal {
 		goalSelector.addGoal(0, new FloatGoal(this));
 		goalSelector.addGoal(1, new PanicGoal(this, 2.0D));
 		goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
-		goalSelector.addGoal(3, new TemptGoal(this, 1.25D, Ingredient.of(ItemTagGenerator.DEER_TEMPT_ITEMS), false));
+		goalSelector.addGoal(3, new TemptGoal(this, 1.25D, stack -> stack.is(TFItemTags.DEER_TEMPT_ITEMS), false));
 		goalSelector.addGoal(4, new FollowParentGoal(this, 1.25D));
 		goalSelector.addGoal(4, new AvoidEntityGoal<>(this, Player.class, 16.0F, 1.5D, 1.8D));
 		goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
@@ -40,7 +40,7 @@ public class Deer extends Animal {
 	}
 
 	public static AttributeSupplier.Builder registerAttributes() {
-		return Mob.createMobAttributes()
+		return Animal.createAnimalAttributes()
 			.add(Attributes.MAX_HEALTH, 10.0)
 			.add(Attributes.MOVEMENT_SPEED, 0.2);
 	}
@@ -66,11 +66,11 @@ public class Deer extends Animal {
 
 	@Override
 	public Deer getBreedOffspring(ServerLevel level, AgeableMob mate) {
-		return TFEntities.DEER.get().create(level);
+		return TFEntities.DEER.get().create(level, EntitySpawnReason.BREEDING);
 	}
 
 	@Override
 	public boolean isFood(ItemStack stack) {
-		return stack.is(ItemTagGenerator.DEER_TEMPT_ITEMS);
+		return stack.is(TFItemTags.DEER_TEMPT_ITEMS);
 	}
 }

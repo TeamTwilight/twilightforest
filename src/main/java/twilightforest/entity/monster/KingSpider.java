@@ -57,17 +57,17 @@ public class KingSpider extends Spider {
 
 	@Nullable
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData data) {
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, EntitySpawnReason reason, @Nullable SpawnGroupData data) {
 		data = super.finalizeSpawn(accessor, difficulty, reason, data);
 
 		// will always have a druid riding the spider or whatever is riding the spider
-		SkeletonDruid druid = TFEntities.SKELETON_DRUID.get().create(this.level());
+		SkeletonDruid druid = TFEntities.SKELETON_DRUID.get().create(this.level(), EntitySpawnReason.JOCKEY);
 		if (druid != null) {
 			druid.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
-			druid.finalizeSpawn(accessor, difficulty, MobSpawnType.JOCKEY, null);
+			druid.finalizeSpawn(accessor, difficulty, EntitySpawnReason.JOCKEY, null);
 			Entity lastRider = this;
 			while (!lastRider.getPassengers().isEmpty())
-				lastRider = lastRider.getPassengers().get(0);
+				lastRider = lastRider.getPassengers().getFirst();
 			druid.startRiding(lastRider);
 		}
 		return data;

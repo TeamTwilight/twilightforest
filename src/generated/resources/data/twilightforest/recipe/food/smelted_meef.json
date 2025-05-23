@@ -3,9 +3,7 @@
   "category": "food",
   "cookingtime": 200,
   "experience": 0.35,
-  "ingredient": {
-    "item": "twilightforest:raw_meef"
-  },
+  "ingredient": "twilightforest:raw_meef",
   "result": {
     "count": 1,
     "id": "twilightforest:cooked_meef"

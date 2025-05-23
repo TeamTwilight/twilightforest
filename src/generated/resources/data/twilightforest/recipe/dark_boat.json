@@ -3,9 +3,7 @@
   "category": "misc",
   "group": "boat",
   "key": {
-    "P": {
-      "item": "twilightforest:dark_planks"
-    }
+    "P": "twilightforest:dark_planks"
   },
   "pattern": [
     "P P",

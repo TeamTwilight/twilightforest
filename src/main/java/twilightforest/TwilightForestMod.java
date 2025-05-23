@@ -1,7 +1,9 @@
 package twilightforest;
 
+import com.google.common.base.Suppliers;
 import com.google.common.collect.Maps;
 import com.google.common.reflect.Reflection;
+import net.minecraft.Util;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.core.cauldron.CauldronInteraction;
@@ -29,6 +31,7 @@ import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.AddServerReloadListenersEvent;
 import net.neoforged.neoforge.event.BlockEntityTypeAddBlocksEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.items.IItemHandler;
@@ -43,21 +46,19 @@ import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.beans.Autowired;
-import twilightforest.beans.ProcessBeanAnnotationsEvent;
-import twilightforest.beans.TFBeanContext;
+import tamaized.beanification.Autowired;
+import tamaized.beanification.BeanContext;
+import tamaized.beanification.Configurable;
 import twilightforest.block.entity.JarBlockEntity;
 import twilightforest.client.event.ClientEvents;
 import twilightforest.client.event.RegistrationEvents;
 import twilightforest.command.TFCommand;
-import twilightforest.compat.CosmeticArmorCompat;
-import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.config.ConfigSetup;
-import twilightforest.data.custom.stalactites.entry.Stalactite;
 import twilightforest.dispenser.TFDispenserBehaviors;
 import twilightforest.entity.MagicPaintingVariant;
 import twilightforest.entity.passive.DwarfRabbitVariant;
 import twilightforest.entity.passive.TinyBirdVariant;
+import twilightforest.entity.passive.quest.QuestReloadListener;
 import twilightforest.init.*;
 import twilightforest.init.custom.BiomeLayerStack;
 import twilightforest.init.custom.BiomeLayerTypes;
@@ -71,10 +72,14 @@ import twilightforest.util.TFRemapper;
 import twilightforest.util.woods.WoodPalette;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.layer.BiomeDensitySource;
-import twilightforest.world.components.structures.StructureSpeleothemConfig;
+import twilightforest.world.components.spelothem.StalactiteReloadListener;
+import twilightforest.world.components.spelothem.StructureSpeleothemConfig;
+import twilightforest.world.components.structures.lichtowerrevamp.StructureTemplateDefinitions;
 
 import java.util.Locale;
+import java.util.function.Supplier;
 
+@Configurable
 @Mod(TwilightForestMod.ID)
 public final class TwilightForestMod {
 
@@ -84,15 +89,18 @@ public final class TwilightForestMod {
 	private static final String GUI_DIR = "textures/gui/";
 	private static final String ENVIRO_DIR = "textures/environment/";
 
-	public static final GameRules.Key<GameRules.BooleanValue> ENFORCED_PROGRESSION_RULE = GameRules.register("tfEnforcedProgression",
+	public static final Supplier<GameRules.Key<GameRules.BooleanValue>> ENFORCED_PROGRESSION_RULE = Suppliers.memoize(() -> GameRules.register("tfEnforcedProgression",
 		GameRules.Category.UPDATES,  //Putting it in UPDATES since other world stuff is here
 		GameRules.BooleanValue.create(true, (server, enforced) ->
-			PacketDistributor.sendToAllPlayers(new EnforceProgressionStatusPacket(enforced.get())))); //sends a packet to every player online when this changes so weather effects update accordingly
+			//sends a packet to every player online when this changes so weather effects update accordingly
+			PacketDistributor.sendToAllPlayers(new EnforceProgressionStatusPacket(enforced.get()))
+		)
+	));
 
 	public static final Logger LOGGER = LogManager.getLogger(ID);
 
-	static { // Load as early as possible
-		TFBeanContext.init();
+	static {
+		BeanContext.init(ID);
 	}
 
 	@Autowired
@@ -102,15 +110,19 @@ public final class TwilightForestMod {
 	private HolidayEvent holidayEvent;
 
 	public TwilightForestMod(IEventBus bus, Dist dist) {
-		bus.post(new ProcessBeanAnnotationsEvent(this)); // Enables @Autowired
 		Reflection.initialize(ConfigSetup.class);
 		ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, () -> ConfigurationScreen::new);
+		// Get main thread and use it to register our gamerule early
+		Util.backgroundExecutor().execute(ENFORCED_PROGRESSION_RULE::get);
 		if (dist.isClient()) {
 			RegistrationEvents.initModBusEvents(bus);
 			ClientEvents.initGameEvents();
 		}
 		NeoForge.EVENT_BUS.addListener(this::registerCommands);
-		NeoForge.EVENT_BUS.addListener(Stalactite::reloadStalactites);
+		NeoForge.EVENT_BUS.addListener(AddServerReloadListenersEvent.class, event -> {
+			event.addListener(prefix("stalactites"), StalactiteReloadListener.INSTANCE);
+			event.addListener(prefix("structure_templates"), StructureTemplateDefinitions.INSTANCE);
+		});
 
 		TFItems.ITEMS.register(bus);
 		TFStats.STATS.register(bus);
@@ -120,15 +132,17 @@ public final class TwilightForestMod {
 		TFSounds.SOUNDS.register(bus);
 		TFLoot.FUNCTIONS.register(bus);
 		TFLoot.CONDITIONS.register(bus);
-		TFEntities.ENTITIES.register(bus);
+		TFEntities.ENTITY_TYPES.register(bus);
 		TFFeatures.FEATURES.register(bus);
 		TFCreativeTabs.TABS.register(bus);
 		TFLoot.CONDITIONALS.register(bus);
 		TFEntities.SPAWN_EGGS.register(bus);
 		TFMenuTypes.CONTAINERS.register(bus);
 		TFRecipes.RECIPE_TYPES.register(bus);
+		TFAttributes.ATTRIBUTES.register(bus);
 		TFAdvancements.TRIGGERS.register(bus);
 		TFMobEffects.MOB_EFFECTS.register(bus);
+		TFItemSubPredicates.TYPES.register(bus);
 		Enforcements.ENFORCEMENTS.register(bus);
 		TFCaveCarvers.CARVER_TYPES.register(bus);
 		TFDataComponents.COMPONENTS.register(bus);
@@ -137,7 +151,6 @@ public final class TwilightForestMod {
 		TFParticleType.PARTICLE_TYPES.register(bus);
 		TFBlockEntities.BLOCK_ENTITIES.register(bus);
 		TFLootModifiers.LOOT_MODIFIERS.register(bus);
-		TFArmorMaterials.ARMOR_MATERIALS.register(bus);
 		TFStructureTypes.STRUCTURE_TYPES.register(bus);
 		TFFeatureModifiers.TRUNK_PLACERS.register(bus);
 		BiomeLayerTypes.BIOME_LAYER_TYPES.register(bus);
@@ -164,20 +177,22 @@ public final class TwilightForestMod {
 		bus.addListener(this::addBlockEntityTypes);
 		bus.addListener(this::setRegistriesForDatapack);
 		bus.addListener(this::registerGenericItemHandlers);
+		bus.addListener(TFCreativeTabs::addToTabs);
 
 		bus.addListener(ConfigSetup::loadConfigs);
 		bus.addListener(ConfigSetup::reloadConfigs);
 		NeoForge.EVENT_BUS.addListener(ConfigSetup::syncUncraftingConfig);
+		NeoForge.EVENT_BUS.addListener(this::reloadQuests);
 
 		if (ModList.get().isLoaded("curios")) loadCuriosCompat(bus);
-		if (ModList.get().isLoaded("cosmeticarmorreworked")) NeoForge.EVENT_BUS.addListener(CosmeticArmorCompat::keepCosmeticArmor);
+		//if (ModList.get().isLoaded("cosmeticarmorreworked")) NeoForge.EVENT_BUS.addListener(CosmeticArmorCompat::keepCosmeticArmor);
 	}
 
 	private static void loadCuriosCompat(IEventBus bus) {
-		NeoForge.EVENT_BUS.addListener(CuriosCompat::keepCurios);
-		bus.addListener(CuriosCompat::registerCuriosCapabilities);
-		bus.addListener(CuriosCompat::registerCurioRenderers);
-		bus.addListener(CuriosCompat::registerCurioLayers);
+//		NeoForge.EVENT_BUS.addListener(CuriosCompat::keepCurios);
+//		bus.addListener(CuriosCompat::registerCuriosCapabilities);
+//		bus.addListener(CuriosCompat::registerCurioRenderers);
+//		bus.addListener(CuriosCompat::registerCurioLayers);
 	}
 
 	private void registerGenericItemHandlers(RegisterCapabilitiesEvent event) {
@@ -260,6 +275,7 @@ public final class TwilightForestMod {
 	public void createDataMaps(RegisterDataMapTypesEvent event) {
 		event.register(TFDataMaps.CRUMBLE_HORN);
 		event.register(TFDataMaps.TRANSFORMATION_POWDER);
+		event.register(TFDataMaps.OMINOUS_FIRE);
 		event.register(TFDataMaps.MAGIC_MAP_BIOME_COLOR);
 		event.register(TFDataMaps.ORE_MAP_ORE_COLOR);
 	}
@@ -293,6 +309,8 @@ public final class TwilightForestMod {
 		registrar.playToClient(TFBossBarPacket.AddTFBossBarPacket.TYPE, TFBossBarPacket.AddTFBossBarPacket.STREAM_CODEC, TFBossBarPacket.AddTFBossBarPacket::handle);
 		registrar.playToClient(TFBossBarPacket.UpdateTFBossBarStylePacket.TYPE, TFBossBarPacket.UpdateTFBossBarStylePacket.STREAM_CODEC, TFBossBarPacket.UpdateTFBossBarStylePacket::handle);
 		registrar.playToClient(SetMasonJarItemPacket.TYPE, SetMasonJarItemPacket.STREAM_CODEC, SetMasonJarItemPacket::handle);
+		registrar.playToClient(SyncQuestsPacket.TYPE, SyncQuestsPacket.STREAM_CODEC, SyncQuestsPacket::handle);
+		registrar.playToClient(UpdateUncraftingCostPacket.TYPE, UpdateUncraftingCostPacket.STREAM_CODEC, UpdateUncraftingCostPacket::handle);
 	}
 
 	public void init(FMLCommonSetupEvent evt) {
@@ -300,10 +318,10 @@ public final class TwilightForestMod {
 			TFDispenserBehaviors.init();
 			TFStats.init();
 
-			CauldronInteraction.WATER.map().put(TFItems.ARCTIC_HELMET.get(), CauldronInteraction.DYED_ITEM);
-			CauldronInteraction.WATER.map().put(TFItems.ARCTIC_CHESTPLATE.get(), CauldronInteraction.DYED_ITEM);
-			CauldronInteraction.WATER.map().put(TFItems.ARCTIC_LEGGINGS.get(), CauldronInteraction.DYED_ITEM);
-			CauldronInteraction.WATER.map().put(TFItems.ARCTIC_BOOTS.get(), CauldronInteraction.DYED_ITEM);
+			CauldronInteraction.WATER.map().put(TFItems.ARCTIC_HELMET.get(), CauldronInteraction::dyedItemIteration);
+			CauldronInteraction.WATER.map().put(TFItems.ARCTIC_CHESTPLATE.get(), CauldronInteraction::dyedItemIteration);
+			CauldronInteraction.WATER.map().put(TFItems.ARCTIC_LEGGINGS.get(), CauldronInteraction::dyedItemIteration);
+			CauldronInteraction.WATER.map().put(TFItems.ARCTIC_BOOTS.get(), CauldronInteraction::dyedItemIteration);
 
 			AxeItem.STRIPPABLES = Maps.newHashMap(AxeItem.STRIPPABLES);
 			AxeItem.STRIPPABLES.put(TFBlocks.TWILIGHT_OAK_LOG.get(), TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.get());
@@ -486,6 +504,7 @@ public final class TwilightForestMod {
 			fireblock.setFlammable(TFBlocks.ARCTIC_FUR_BLOCK.get(), 20, 20);
 			fireblock.setFlammable(TFBlocks.LIVEROOT_BLOCK.get(), 5, 20);
 			fireblock.setFlammable(TFBlocks.CHISELED_CANOPY_BOOKSHELF.get(), 30, 20);
+			fireblock.setFlammable(TFBlocks.HUGE_STALK.get(), 5, 5);
 
 			fireblock.setFlammable(TFBlocks.TOWERWOOD.get(), 0, 1);
 			fireblock.setFlammable(TFBlocks.CRACKED_TOWERWOOD.get(), 0, 1);
@@ -570,6 +589,7 @@ public final class TwilightForestMod {
 			JarBlockEntity.addLid(Items.JUNGLE_LOG);
 			JarBlockEntity.addLid(Items.MANGROVE_LOG);
 			JarBlockEntity.addLid(Items.OAK_LOG);
+			JarBlockEntity.addLid(Items.PALE_OAK_LOG);
 			JarBlockEntity.addLid(Items.SPRUCE_LOG);
 			JarBlockEntity.addLid(Items.CRIMSON_STEM);
 			JarBlockEntity.addLid(Items.WARPED_STEM);
@@ -589,6 +609,7 @@ public final class TwilightForestMod {
 			JarBlockEntity.addLid(Items.STRIPPED_JUNGLE_LOG);
 			JarBlockEntity.addLid(Items.STRIPPED_MANGROVE_LOG);
 			JarBlockEntity.addLid(Items.STRIPPED_OAK_LOG);
+			JarBlockEntity.addLid(Items.STRIPPED_PALE_OAK_LOG);
 			JarBlockEntity.addLid(Items.STRIPPED_SPRUCE_LOG);
 			JarBlockEntity.addLid(Items.STRIPPED_CRIMSON_STEM);
 			JarBlockEntity.addLid(Items.STRIPPED_WARPED_STEM);
@@ -600,7 +621,7 @@ public final class TwilightForestMod {
 	}
 
 	public void registerCommands(RegisterCommandsEvent event) {
-		tfCommand.register(event.getDispatcher());
+		tfCommand.register(event.getDispatcher(), event.getBuildContext(), event.getCommandSelection());
 	}
 
 	public static ResourceLocation prefix(String name) {
@@ -619,4 +640,7 @@ public final class TwilightForestMod {
 		return ResourceLocation.fromNamespaceAndPath(ID, ENVIRO_DIR + name);
 	}
 
+	private void reloadQuests(AddServerReloadListenersEvent event) {
+		event.addListener(TwilightForestMod.prefix("quests"), new QuestReloadListener());
+	}
 }

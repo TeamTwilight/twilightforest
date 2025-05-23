@@ -16,7 +16,7 @@ public class MossPatchBlock extends PatchBlock {
 
 	@Override
 	protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos) {
-		return level.getBlockState(pos.below()).isFaceSturdy(level, pos, Direction.UP);
+		return level.getBlockState(pos).isFaceSturdy(level, pos, Direction.UP);
 	}
 
 	@Override

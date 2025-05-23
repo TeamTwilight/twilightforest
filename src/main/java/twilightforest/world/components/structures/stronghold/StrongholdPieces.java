@@ -38,8 +38,7 @@ public class StrongholdPieces {
 		pieceList = new ArrayList<>();
 
 		for (StrongholdPieceWeight piece : pieceWeightArray) {
-			piece.instancesSpawned = 0;
-			pieceList.add(piece);
+			pieceList.add(piece.recount());
 		}
 	}
 

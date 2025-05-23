@@ -3,9 +3,7 @@
   "category": "misc",
   "group": "fiery_ingot",
   "ingredients": [
-    {
-      "tag": "c:storage_blocks/fiery"
-    }
+    "#c:storage_blocks/fiery"
   ],
   "result": {
     "count": 9,

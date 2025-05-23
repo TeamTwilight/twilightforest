@@ -1,63 +1,67 @@
 {
   "variants": {
     "facing=east,piece=ne": {
-      "model": "twilightforest:block/huge_lily_pad_1",
+      "model": "twilightforest:block/huge_lily_pad_0",
       "y": 90
     },
     "facing=east,piece=nw": {
-      "model": "twilightforest:block/huge_lily_pad_2",
+      "model": "twilightforest:block/huge_lily_pad_3",
       "y": 90
     },
     "facing=east,piece=se": {
-      "model": "twilightforest:block/huge_lily_pad_0",
+      "model": "twilightforest:block/huge_lily_pad_1",
       "y": 90
     },
     "facing=east,piece=sw": {
-      "model": "twilightforest:block/huge_lily_pad_3",
+      "model": "twilightforest:block/huge_lily_pad_2",
       "y": 90
     },
     "facing=north,piece=ne": {
-      "model": "twilightforest:block/huge_lily_pad_0"
+      "model": "twilightforest:block/huge_lily_pad_1",
+      "y": 0
     },
     "facing=north,piece=nw": {
-      "model": "twilightforest:block/huge_lily_pad_1"
+      "model": "twilightforest:block/huge_lily_pad_0",
+      "y": 0
     },
     "facing=north,piece=se": {
-      "model": "twilightforest:block/huge_lily_pad_3"
+      "model": "twilightforest:block/huge_lily_pad_2",
+      "y": 0
     },
     "facing=north,piece=sw": {
-      "model": "twilightforest:block/huge_lily_pad_2"
+      "model": "twilightforest:block/huge_lily_pad_3",
+      "y": 0
     },
     "facing=south,piece=ne": {
-      "model": "twilightforest:block/huge_lily_pad_2",
+      "model": "twilightforest:block/huge_lily_pad_3",
       "y": 180
     },
     "facing=south,piece=nw": {
-      "model": "twilightforest:block/huge_lily_pad_3",
+      "model": "twilightforest:block/huge_lily_pad_2",
       "y": 180
     },
     "facing=south,piece=se": {
-      "model": "twilightforest:block/huge_lily_pad_1",
+      "model": "twilightforest:block/huge_lily_pad_0",
       "y": 180
     },
     "facing=south,piece=sw": {
-      "model": "twilightforest:block/huge_lily_pad_0",
+      "model": "twilightforest:block/huge_lily_pad_1",
       "y": 180
     },
     "facing=west,piece=ne": {
-      "model": "twilightforest:block/huge_lily_pad_3",
-      "y": 270
-    },
-    "facing=west,piece=nw": {
-      "model": "twilightforest:block/huge_lily_pad_0",
-      "y": 270
-    },
-    "facing=west,piece=se": {
       "model": "twilightforest:block/huge_lily_pad_2",
       "y": 270
     },
-    "facing=west,piece=sw": {
+    "facing=west,piece=nw": {
       "model": "twilightforest:block/huge_lily_pad_1",
+      "y": 270
+    },
+    "facing=west,piece=se": {
+      "model": "twilightforest:block/huge_lily_pad_3",
+      "y": 270
+    },
+    "facing=west,piece=sw": {
+      "model": "twilightforest:block/huge_lily_pad_0",
       "y": 270
     }
   }

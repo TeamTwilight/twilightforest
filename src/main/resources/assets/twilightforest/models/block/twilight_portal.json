@@ -1,6 +1,18 @@
 {
-    "parent": "block/block",
-    "render_type": "minecraft:translucent",
-    "textures": { "all": "block/nether_portal", "particle": "block/nether_portal" },
-    "elements": [{ "from": [ 0, 13, 0 ], "to": [ 16, 13, 16 ], "faces": {"up": {"texture": "#all" }}}]
+  "parent": "block/block",
+  "render_type": "minecraft:translucent",
+  "textures": {
+    "texture": "block/nether_portal",
+    "particle": "#texture"
+  },
+  "elements": [
+    {
+      "from": [0, 13, 0],
+      "to": [16, 13, 16],
+      "faces": {
+        "up": {"uv": [0, 0, 16, 16], "texture": "#texture"},
+        "down": {"uv": [16, 0, 0, 16], "rotation": 180, "texture": "#texture"}
+      }
+    }
+  ]
 }

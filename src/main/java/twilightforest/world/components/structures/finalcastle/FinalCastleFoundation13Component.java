@@ -33,7 +33,6 @@ public class FinalCastleFoundation13Component extends TFStructureComponentOld {
 		super(piece, nbt);
 	}
 
-	@SuppressWarnings("this-escape")
 	public FinalCastleFoundation13Component(StructurePieceType type, int i, TFStructureComponentOld sideTower, int x, int y, int z) {
 		super(type, i, x, y, z);
 

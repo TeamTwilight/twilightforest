@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:item/generated",
+  "parent": "minecraft:item/template_music_disc",
   "textures": {
     "layer0": "twilightforest:item/music_disc_steps"
   }

@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.TriState;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.PipeBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -36,8 +37,8 @@ public class RedThreadRenderer<T extends RedThreadBlockEntity> implements BlockE
 			.setLightmapState(new RenderStateShard.LightmapStateShard(true))
 			.setCullState(new RenderStateShard.CullStateShard(true))
 			.setDepthTestState(new RenderStateShard.DepthTestStateShard("always", 519))
-			.setShaderState(new RenderStateShard.ShaderStateShard(() -> TFShaders.RED_THREAD))
-			.setTextureState(new RenderStateShard.TextureStateShard(TEXTURE, false, true))
+			.setShaderState(new RenderStateShard.ShaderStateShard(TFShaders.RED_THREAD))
+			.setTextureState(new RenderStateShard.TextureStateShard(TEXTURE, TriState.FALSE, true))
 			.createCompositeState(true));
 
 	public RedThreadRenderer(BlockEntityRendererProvider.Context context) {

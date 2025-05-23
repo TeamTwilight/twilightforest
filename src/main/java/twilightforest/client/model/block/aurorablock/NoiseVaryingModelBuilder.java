@@ -1,45 +1,38 @@
 package twilightforest.client.model.block.aurorablock;
 
-import com.google.common.base.Preconditions;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.neoforge.client.model.generators.CustomLoaderBuilder;
-import net.neoforged.neoforge.client.model.generators.ModelBuilder;
-import net.neoforged.neoforge.client.model.generators.ModelFile;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.client.model.generators.template.CustomLoaderBuilder;
 import twilightforest.TwilightForestMod;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class NoiseVaryingModelBuilder<T extends ModelBuilder<T>> extends CustomLoaderBuilder<T> {
-	private final List<T> variants = new ArrayList<>();
+public class NoiseVaryingModelBuilder extends CustomLoaderBuilder {
+	private final List<ResourceLocation> variants = new ArrayList<>();
 
-	public NoiseVaryingModelBuilder(T parent, ExistingFileHelper existingFileHelper) {
-		super(TwilightForestMod.prefix("noise_varying"), parent, existingFileHelper, false);
+	public NoiseVaryingModelBuilder() {
+		super(TwilightForestMod.prefix("noise_varying"), false);
 	}
 
-	public NoiseVaryingModelBuilder<T> add(T builder) {
-		builder.assertExistence();
-
+	public NoiseVaryingModelBuilder add(ResourceLocation builder) {
 		this.variants.add(builder);
-
 		return this;
 	}
 
-	public NoiseVaryingModelBuilder<T> addAll(T[] builders) {
+	public NoiseVaryingModelBuilder addAll(ResourceLocation[] builders) {
 		Arrays.stream(builders).forEach(this::add);
 
 		return this;
 	}
 
 	@Override
-	public T end() {
-		Preconditions.checkArgument(!this.variants.isEmpty(), "Noise Varying builder cannot have zero variants.");
-
-		return super.end();
+	protected NoiseVaryingModelBuilder copyInternal() {
+		NoiseVaryingModelBuilder builder = new NoiseVaryingModelBuilder();
+		builder.variants.addAll(this.variants);
+		return builder;
 	}
 
 	@Override
@@ -47,7 +40,7 @@ public class NoiseVaryingModelBuilder<T extends ModelBuilder<T>> extends CustomL
 		JsonObject mainJson = super.toJson(json);
 
 		JsonArray variants = new JsonArray();
-		this.variants.stream().map(ModelFile::getLocation).map(ResourceLocation::toString).forEach(variants::add);
+		this.variants.forEach(resourceLocation -> variants.add(resourceLocation.toString()));
 		mainJson.add("variants", variants);
 
 		return mainJson;

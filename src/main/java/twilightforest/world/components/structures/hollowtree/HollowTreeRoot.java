@@ -1,6 +1,7 @@
 package twilightforest.world.components.structures.hollowtree;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
@@ -52,14 +53,23 @@ public class HollowTreeRoot extends HollowTreeMedBranch {
 			BlockState block = world.getBlockState(worldPos);
 
 			// three choices here
-			if (block.canBeReplaced() || !block.isCollisionShapeFullBlock(world, worldPos)) {
-				// air, other non-solid, or grass, make wood block
-				this.placeProvidedBlock(world, wood, random, coords.getX(), coords.getY(), coords.getZ(), sbb, BlockPos.ZERO, false, false);
-			} else if (block.is(BlockTags.LOGS)) {
+			if (block.is(BlockTags.LOGS)) {
 				// wood, do nothing
 			} else {
-				// solid, make root block
-				this.placeProvidedBlock(world, root, random, coords.getX(), coords.getY(), coords.getZ(), sbb, BlockPos.ZERO, false, false);
+				boolean flag = false;
+				for (Direction direction : Direction.values()) {
+					if (world.getBlockState(worldPos.relative(direction)).canBeReplaced()) {
+						flag = true;
+						break;
+					}
+				}
+				if (flag) {
+					// block is exposed, make it into wood
+					this.placeProvidedBlock(world, wood, random, coords.getX(), coords.getY(), coords.getZ(), sbb, BlockPos.ZERO, false, false);
+				} else {
+					// block is covered up, make it into root
+					this.placeProvidedBlock(world, root, random, coords.getX(), coords.getY(), coords.getZ(), sbb, BlockPos.ZERO, false, false);
+				}
 			}
 		}
 	}

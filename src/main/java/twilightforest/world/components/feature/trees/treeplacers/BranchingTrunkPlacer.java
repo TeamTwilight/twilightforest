@@ -5,8 +5,10 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelSimulatedReader;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
@@ -24,18 +26,21 @@ public class BranchingTrunkPlacer extends TrunkPlacer {
 	public static final MapCodec<BranchingTrunkPlacer> CODEC = RecordCodecBuilder.mapCodec(instance -> trunkPlacerParts(instance).and(instance.group(
 		Codec.intRange(0, 24).fieldOf("branch_start_offset_down").forGetter(o -> o.branchDownwardOffset),
 		BranchesConfig.CODEC.fieldOf("branch_config").forGetter(o -> o.branchesConfig),
-		Codec.BOOL.fieldOf("perpendicular_branches").forGetter(o -> o.perpendicularBranches)
+		Codec.BOOL.fieldOf("perpendicular_branches").forGetter(o -> o.perpendicularBranches),
+		Codec.BOOL.fieldOf("prevent_exposed_root").forGetter(o -> o.preventExposedRoot)
 	)).apply(instance, BranchingTrunkPlacer::new));
 
 	private final int branchDownwardOffset;
 	private final BranchesConfig branchesConfig;
 	private final boolean perpendicularBranches;
+	private final boolean preventExposedRoot;
 
-	public BranchingTrunkPlacer(int baseHeight, int randomHeightA, int randomHeightB, int branchDownwardOffset, BranchesConfig branchesConfig, boolean perpendicularBranches) {
+	public BranchingTrunkPlacer(int baseHeight, int randomHeightA, int randomHeightB, int branchDownwardOffset, BranchesConfig branchesConfig, boolean perpendicularBranches, boolean preventExposedRoot) {
 		super(baseHeight, randomHeightA, randomHeightB);
 		this.branchDownwardOffset = branchDownwardOffset;
 		this.branchesConfig = branchesConfig;
 		this.perpendicularBranches = perpendicularBranches;
+		this.preventExposedRoot = preventExposedRoot;
 	}
 
 	@Override
@@ -46,6 +51,15 @@ public class BranchingTrunkPlacer extends TrunkPlacer {
 	@Override
 	public List<FoliagePlacer.FoliageAttachment> placeTrunk(LevelSimulatedReader worldReader, BiConsumer<BlockPos, BlockState> worldPlacer, RandomSource random, int height, BlockPos startPos, TreeConfiguration treeConfig) {
 		List<FoliagePlacer.FoliageAttachment> leafAttachments = Lists.newArrayList();
+
+		if (this.preventExposedRoot) {
+			for (Direction direction : Direction.Plane.HORIZONTAL) {
+				if (worldReader.isStateAtPosition(startPos.below().relative(direction), BlockBehaviour.BlockStateBase::canBeReplaced)) {
+					worldPlacer.accept(startPos.below(), (BlockState)Function.identity().apply(treeConfig.trunkProvider.getState(random, startPos.below())));
+					break;
+				}
+			}
+		}
 
 		for (int y = 0; y <= height; y++) { // Keep building upwards until we cannot, and then adjust height if we run into something
 			if (!placeLog(worldReader, worldPlacer, random, startPos.above(y), treeConfig)) {

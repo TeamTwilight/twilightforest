@@ -13,7 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.block.GiantBlock;
-import twilightforest.data.tags.BlockTagGenerator;
+import twilightforest.tags.TFBlockTags;
 import twilightforest.init.TFBlocks;
 
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ import java.util.function.Predicate;
  */
 public final class FeatureLogic {
 	public static final Predicate<BlockState> IS_REPLACEABLE_AIR = state -> state.canBeReplaced() || state.isAir();
-	public static final Predicate<BlockState> ROOT_SHOULD_SKIP = state -> state.is(BlockTagGenerator.ROOT_TRACE_SKIP);
+	public static final Predicate<BlockState> ROOT_SHOULD_SKIP = state -> state.is(TFBlockTags.ROOT_TRACE_SKIP);
 
 	public static boolean hasEmptyNeighborExceptBelow(LevelSimulatedReader worldReader, BlockPos pos) {
 		return worldReader.isStateAtPosition(pos.above(), IS_REPLACEABLE_AIR)
@@ -55,8 +55,17 @@ public final class FeatureLogic {
 		}
 	}
 
+	public static boolean isReplaceable(BlockState state, boolean includeFlowers) {
+		return (state.canBeReplaced() || state.is(TFBlockTags.WORLDGEN_REPLACEABLES) || (includeFlowers && state.is(BlockTags.FLOWERS)))
+			&& !state.is(BlockTags.FEATURES_CANNOT_REPLACE);
+	}
+
 	public static boolean worldGenReplaceable(BlockState state) {
-		return (state.canBeReplaced() || state.is(BlockTagGenerator.WORLDGEN_REPLACEABLES)) && !state.is(BlockTags.FEATURES_CANNOT_REPLACE);
+		return isReplaceable(state, false);
+	}
+
+	public static boolean treesReplaceable(BlockState state) {
+		return isReplaceable(state, true);
 	}
 
 	/**
@@ -95,7 +104,7 @@ public final class FeatureLogic {
 	}
 
 	public static boolean isBlockNotOk(BlockState state) {
-		return state.liquid() || state.is(Blocks.BEDROCK) || state.getBlock() instanceof GiantBlock || state.is(BlockTagGenerator.CLOUDS) || state.is(TFBlocks.HARDENED_DARK_LEAVES);
+		return state.liquid() || state.is(Blocks.BEDROCK) || state.getBlock() instanceof GiantBlock || state.is(TFBlockTags.CLOUDS) || state.is(TFBlocks.HARDENED_DARK_LEAVES);
 	}
 
 	// North is treated for default rotation and null means you're not on the wall

@@ -48,7 +48,7 @@ public abstract class TemplateFeature<T extends FeatureConfiguration> extends Fe
 		Mirror mirror = Util.getRandom(Mirror.values(), random);
 
 		ChunkPos chunkpos = new ChunkPos(pos);
-		BoundingBox structureMask = new BoundingBox(chunkpos.getMinBlockX(), world.getMinBuildHeight(), chunkpos.getMinBlockZ(), chunkpos.getMaxBlockX(), world.getMaxBuildHeight(), chunkpos.getMaxBlockZ());
+		BoundingBox structureMask = new BoundingBox(chunkpos.getMinBlockX(), world.getMinY(), chunkpos.getMinBlockZ(), chunkpos.getMaxBlockX(), world.getMaxY(), chunkpos.getMaxBlockZ());
 
 		BlockPos posSnap = chunkpos.getWorldPosition().offset(0, pos.getY(), 0);
 

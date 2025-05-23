@@ -17,10 +17,12 @@
       "y": 180
     },
     "facing=south,on_wall=false": {
-      "model": "twilightforest:block/candelabra"
+      "model": "twilightforest:block/candelabra",
+      "y": 0
     },
     "facing=south,on_wall=true": {
-      "model": "twilightforest:block/wall_candelabra"
+      "model": "twilightforest:block/wall_candelabra",
+      "y": 0
     },
     "facing=west,on_wall=false": {
       "model": "twilightforest:block/candelabra",

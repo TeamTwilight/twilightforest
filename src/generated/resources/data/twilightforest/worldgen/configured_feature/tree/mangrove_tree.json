@@ -114,7 +114,8 @@
         "branch_start_offset_down": 6,
         "height_rand_a": 4,
         "height_rand_b": 0,
-        "perpendicular_branches": false
+        "perpendicular_branches": false,
+        "prevent_exposed_root": false
       }
     },
     "trunk_provider": {

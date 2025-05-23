@@ -1,12 +1,18 @@
 {
+  "author": {
+    "translate": "magic_painting.twilightforest.the_hostile_paradise.author"
+  },
+  "back_texture": "twilightforest:magic_paintings/back",
   "height": 32,
   "layers": [
     {
       "fullbright": true,
+      "local_lighting": true,
       "path": "1_background"
     },
     {
       "fullbright": true,
+      "local_lighting": true,
       "parallax": {
         "type": "view_angle",
         "height": 38,
@@ -17,6 +23,7 @@
     },
     {
       "fullbright": true,
+      "local_lighting": true,
       "parallax": {
         "type": "view_angle",
         "height": 36,
@@ -27,6 +34,7 @@
     },
     {
       "fullbright": true,
+      "local_lighting": true,
       "opacity_modifier": {
         "type": "distance",
         "from": 4.0,
@@ -40,6 +48,7 @@
     },
     {
       "fullbright": true,
+      "local_lighting": true,
       "parallax": {
         "type": "view_angle",
         "height": 36,
@@ -50,6 +59,7 @@
     },
     {
       "fullbright": true,
+      "local_lighting": true,
       "opacity_modifier": {
         "type": "distance",
         "from": 5.0,
@@ -63,6 +73,7 @@
     },
     {
       "fullbright": true,
+      "local_lighting": true,
       "parallax": {
         "type": "view_angle",
         "height": 34,
@@ -73,6 +84,7 @@
     },
     {
       "fullbright": true,
+      "local_lighting": true,
       "opacity_modifier": {
         "type": "distance",
         "from": 6.0,
@@ -86,6 +98,7 @@
     },
     {
       "fullbright": true,
+      "local_lighting": true,
       "parallax": {
         "type": "view_angle",
         "height": 34,
@@ -96,10 +109,12 @@
     },
     {
       "fullbright": true,
+      "local_lighting": true,
       "path": "10_flowers_par"
     },
     {
       "fullbright": true,
+      "local_lighting": true,
       "opacity_modifier": {
         "type": "distance",
         "from": 12.0,
@@ -113,6 +128,7 @@
     },
     {
       "fullbright": true,
+      "local_lighting": true,
       "opacity_modifier": {
         "type": "distance",
         "from": 12.0,
@@ -132,6 +148,7 @@
     },
     {
       "fullbright": false,
+      "local_lighting": false,
       "path": "13_frame"
     }
   ],

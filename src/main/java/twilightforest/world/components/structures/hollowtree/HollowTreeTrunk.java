@@ -47,7 +47,6 @@ public class HollowTreeTrunk extends HollowTreePiece {
 	private final ResourceKey<LootTable> dungeonLootTable;
 	private final Holder<EntityType<?>> dungeonMonster;
 
-	@SuppressWarnings("this-escape")
 	public HollowTreeTrunk(int height, int radius, BoundingBox pBoundingBox, BlockStateProvider log1, BlockStateProvider wood, BlockStateProvider root, BlockStateProvider leaves, BlockStateProvider vine, BlockStateProvider bug, BlockStateProvider dungeonWood, BlockStateProvider dungeonAir, BlockStateProvider dungeonLootBlock, ResourceKey<LootTable> dungeonLootTable, Holder<EntityType<?>> dungeonMonster) {
 		super(TFStructurePieceTypes.TFHTTr.value(), 0, pBoundingBox);
 
@@ -94,8 +93,8 @@ public class HollowTreeTrunk extends HollowTreePiece {
 		this.dungeonLootTable = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.parse(tag.getString("dungeon_loot_table")));
 
 		ResourceKey<EntityType<?>> dungeonMonster = ResourceKey.create(Registries.ENTITY_TYPE, ResourceLocation.parse(tag.getString("dungeon_monster")));
-		this.dungeonMonster = context.registryAccess().registry(Registries.ENTITY_TYPE)
-			.<Holder<EntityType<?>>>flatMap(reg -> reg.getHolder(dungeonMonster))
+		this.dungeonMonster = context.registryAccess().lookup(Registries.ENTITY_TYPE)
+			.<Holder<EntityType<?>>>flatMap(reg -> reg.get(dungeonMonster))
 			.orElse(HollowTreePiece.DEFAULT_DUNGEON_MONSTER);
 	}
 
@@ -143,10 +142,10 @@ public class HollowTreeTrunk extends HollowTreePiece {
 
 		// roots
 		// 3-5 roots at the bottom
-		this.buildBranchRing(list, rand, index, 3, 2, 6, 0.75D, 3, 5, 3, false);
+		this.buildBranchRing(list, rand, index, 4, 2, 6, 0.75D, 3, 5, 3, false);
 
 		// several more taproots
-		this.buildBranchRing(list, rand, index, 1, 2, 8, 0.9D, 3, 5, 3, false);
+		this.buildBranchRing(list, rand, index, 2, 2, 8, 0.9D, 3, 5, 3, false);
 	}
 
 	/**

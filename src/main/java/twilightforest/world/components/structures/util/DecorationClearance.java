@@ -8,11 +8,13 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.Structure;
 
 public interface DecorationClearance {
-	int chunkClearanceRadius();
+	float chunkClearanceRadius();
 
 	boolean isSurfaceDecorationsAllowed();
 
 	boolean isUndergroundDecoAllowed();
+
+	boolean isGrassDecoAllowed();
 
 	boolean shouldAdjustToTerrain();
 
@@ -22,11 +24,16 @@ public interface DecorationClearance {
 			: context.chunkGenerator().getSeaLevel();
 	}
 
-	record DecorationConfig(int chunkClearanceRadius, boolean surfaceDecorations, boolean undergroundDecorations, @Deprecated boolean adjustElevation) {
+	record DecorationConfig(float chunkClearanceRadius, boolean surfaceDecorations, boolean undergroundDecorations, boolean vegetation, @Deprecated boolean adjustElevation) {
+		public DecorationConfig(float chunkClearanceRadius, boolean surfaceDecorations, boolean undergroundDecorations, @Deprecated boolean adjustElevation) {
+			this(chunkClearanceRadius, surfaceDecorations, undergroundDecorations, true, adjustElevation);
+		}
+
 		public static final MapCodec<DecorationConfig> FLAT_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-			Codec.intRange(1, 8).fieldOf("chunk_clearance_radius").orElse(1).forGetter(DecorationConfig::chunkClearanceRadius),
+			Codec.floatRange(0, 8).fieldOf("chunk_clearance_radius").orElse(1f).forGetter(DecorationConfig::chunkClearanceRadius),
 			Codec.BOOL.fieldOf("allow_biome_surface_decorations").forGetter(DecorationConfig::surfaceDecorations),
 			Codec.BOOL.fieldOf("allow_biome_underground_decorations").forGetter(DecorationConfig::undergroundDecorations),
+			Codec.BOOL.fieldOf("allow_biome_vegetation").forGetter(DecorationConfig::vegetation),
 			Codec.BOOL.fieldOf("adjust_structure_elevation").forGetter(DecorationConfig::adjustElevation)
 		).apply(instance, DecorationConfig::new));
 

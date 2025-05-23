@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "twilightforest:block/mining_leaves",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -200380
+      }
+    ]
+  }
+}

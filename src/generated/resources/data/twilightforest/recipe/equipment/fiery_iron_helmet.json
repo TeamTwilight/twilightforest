@@ -3,24 +3,12 @@
   "category": "equipment",
   "group": "fiery_helmet",
   "ingredients": [
-    {
-      "item": "minecraft:iron_helmet"
-    },
-    {
-      "tag": "twilightforest:fiery_vial"
-    },
-    {
-      "tag": "twilightforest:fiery_vial"
-    },
-    {
-      "tag": "twilightforest:fiery_vial"
-    },
-    {
-      "tag": "twilightforest:fiery_vial"
-    },
-    {
-      "tag": "twilightforest:fiery_vial"
-    }
+    "minecraft:iron_helmet",
+    "#twilightforest:fiery_vial",
+    "#twilightforest:fiery_vial",
+    "#twilightforest:fiery_vial",
+    "#twilightforest:fiery_vial",
+    "#twilightforest:fiery_vial"
   ],
   "result": {
     "count": 1,

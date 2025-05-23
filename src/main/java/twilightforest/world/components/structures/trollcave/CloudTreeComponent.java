@@ -22,7 +22,6 @@ public class CloudTreeComponent extends TFStructureComponentOld {
 		super(TFStructurePieceTypes.TFClTr.get(), nbt);
 	}
 
-	@SuppressWarnings("this-escape")
 	public CloudTreeComponent(int index, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFClTr.get(), index, x, y, z);
 

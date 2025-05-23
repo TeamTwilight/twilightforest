@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "tag": "c:paper"
-    },
-    "•": {
-      "item": "twilightforest:maze_map_focus"
-    }
+    "#": "#c:paper",
+    "•": "twilightforest:maze_map_focus"
   },
   "pattern": [
     "###",

@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "twilightforest:firefly_jar"
-    },
-    {
-      "item": "twilightforest:firefly"
-    },
-    {
-      "item": "minecraft:poppy"
-    }
+    "twilightforest:firefly_jar",
+    "twilightforest:firefly",
+    "minecraft:poppy"
   ],
   "result": {
     "count": 1,

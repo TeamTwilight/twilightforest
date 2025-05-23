@@ -3,20 +3,15 @@
   "category": "misc",
   "group": "chest",
   "key": {
-    "#": {
-      "item": "twilightforest:twilight_oak_planks"
-    },
-    "C": {
-      "item": "minecraft:chest"
-    }
+    "#": "twilightforest:twilight_oak_planks"
   },
   "pattern": [
     "###",
-    "#C#",
+    "# #",
     "###"
   ],
   "result": {
-    "count": 2,
+    "count": 1,
     "id": "twilightforest:twilight_oak_chest"
   }
 }

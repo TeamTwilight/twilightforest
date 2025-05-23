@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/door_bottom_left_open",
+  "render_type": "minecraft:solid",
+  "textures": {
+    "bottom": "twilightforest:block/mining_door_bottom",
+    "top": "twilightforest:block/mining_door_top"
+  }
+}

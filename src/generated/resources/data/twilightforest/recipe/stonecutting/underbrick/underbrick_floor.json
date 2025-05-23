@@ -1,8 +1,6 @@
 {
   "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "twilightforest:underbrick"
-  },
+  "ingredient": "twilightforest:underbrick",
   "result": {
     "count": 1,
     "id": "twilightforest:underbrick_floor"

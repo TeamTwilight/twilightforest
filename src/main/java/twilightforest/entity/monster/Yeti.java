@@ -6,6 +6,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
@@ -96,13 +97,13 @@ public class Yeti extends Monster implements IHostileMount {
 	}
 
 	@Override
-	public boolean hurt(DamageSource source, float amount) {
+	public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
 		if (source.getEntity() != null && !source.isCreativePlayer()) {
 			// become angry
 			this.setAngry(true);
 		}
 
-		return super.hurt(source, amount);
+		return super.hurtServer(level, source, amount);
 	}
 
 	public boolean isAngry() {
@@ -145,20 +146,16 @@ public class Yeti extends Monster implements IHostileMount {
 		return true;
 	}
 
-	public static boolean yetiSnowyForestSpawnHandler(EntityType<? extends Yeti> entityType, ServerLevelAccessor accessor, MobSpawnType reason, BlockPos pos, RandomSource random) {
+	public static boolean checkYetiSpawnRules(EntityType<? extends Yeti> entityType, ServerLevelAccessor accessor, EntitySpawnReason reason, BlockPos pos, RandomSource random) {
 		if (accessor.getDifficulty() != Difficulty.PEACEFUL) {
 			if (accessor.getBiome(pos).is(TFBiomes.SNOWY_FOREST)) {
 				return checkMobSpawnRules(entityType, accessor, reason, pos, random);
 			} else {
 				// normal Mob spawn check, checks light level
-				return normalYetiSpawnHandler(entityType, accessor, reason, pos, random);
+				return checkMonsterSpawnRules(entityType, accessor, reason, pos, random);
 			}
 		}
 		return false;
-	}
-
-	public static boolean normalYetiSpawnHandler(EntityType<? extends Monster> entity, ServerLevelAccessor accessor, MobSpawnType reason, BlockPos pos, RandomSource random) {
-		return isValidLightLevel(accessor, pos, random) && checkMobSpawnRules(entity, accessor, reason, pos, random);
 	}
 
 	public static boolean isValidLightLevel(ServerLevelAccessor accessor, BlockPos blockPos, RandomSource random) {

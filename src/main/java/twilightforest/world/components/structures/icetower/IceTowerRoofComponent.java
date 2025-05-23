@@ -14,14 +14,12 @@ import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.world.components.structures.lichtower.TowerRoofComponent;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
 
-
 public class IceTowerRoofComponent extends TowerRoofComponent {
 
 	public IceTowerRoofComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(TFStructurePieceTypes.TFITRoof.get(), nbt);
 	}
 
-	@SuppressWarnings("this-escape")
 	public IceTowerRoofComponent(int i, TowerWingComponent wing, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFITRoof.get(), i, x, y, z);
 

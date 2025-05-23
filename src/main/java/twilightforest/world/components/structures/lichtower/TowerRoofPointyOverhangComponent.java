@@ -10,7 +10,6 @@ public class TowerRoofPointyOverhangComponent extends TowerRoofPointyComponent {
 		super(TFStructurePieceTypes.TFLTRPO.get(), nbt);
 	}
 
-	@SuppressWarnings("this-escape")
 	public TowerRoofPointyOverhangComponent(int i, TowerWingComponent wing, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFLTRPO.get(), i, wing, x, y, z);
 

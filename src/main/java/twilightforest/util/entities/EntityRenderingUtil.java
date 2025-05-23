@@ -7,17 +7,19 @@ import com.mojang.math.Axis;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.ItemEntityRenderer;
+import net.minecraft.client.renderer.entity.state.ItemClusterRenderState;
+import net.minecraft.client.renderer.entity.state.ItemEntityRenderState;
+import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
@@ -45,7 +47,7 @@ public class EntityRenderingUtil {
 				entity = Minecraft.getInstance().player;
 			} else {
 				entity = ENTITY_MAP.computeIfAbsent(type, t -> {
-					Entity created = t.create(level);
+					Entity created = t.create(level, EntitySpawnReason.LOAD);
 					if (created != null) {
 						created.setYRot(0.0F);
 						created.setYHeadRot(0.0F);
@@ -114,7 +116,7 @@ public class EntityRenderingUtil {
 		boolean hitboxes = dispatcher.shouldRenderHitBoxes();
 		dispatcher.setRenderShadow(false);
 		dispatcher.setRenderHitBoxes(false);
-		RenderSystem.runAsFancy(() -> dispatcher.render(entity, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F, posestack, graphics.bufferSource(), 15728880));
+		graphics.drawSpecial(source -> dispatcher.render(entity, 0.0D, 0.0D, 0.0D, 1.0F, graphics.pose(), source, 15728880));
 		graphics.flush();
 		dispatcher.setRenderShadow(true);
 		dispatcher.setRenderHitBoxes(hitboxes);
@@ -139,7 +141,7 @@ public class EntityRenderingUtil {
 		if (entity == EntityType.ELDER_GUARDIAN) stack.scale(0.6F, 0.6F, 0.6F);
 	}
 
-	public static void renderItemEntity(GuiGraphics graphics, ItemStack stack, @Nullable Level level, float bobOffset) {
+	public static void renderItemEntity(GuiGraphics graphics, ItemStack stack, float bobOffset) {
 		PoseStack posestack = graphics.pose();
 		posestack.pushPose();
 		posestack.translate(16.0D, 32.0D, 50.0D);
@@ -152,36 +154,28 @@ public class EntityRenderingUtil {
 		posestack.mulPose(Axis.YN.rotationDegrees(145.0F));
 		Lighting.setupForEntityInInventory();
 		quaternion1.conjugate();
-		ItemEntity item = (ItemEntity) fetchEntity(EntityType.ITEM, level);
-		Objects.requireNonNull(item).setItem(stack);
-		RenderSystem.runAsFancy(() -> render(item, Minecraft.getInstance().getTimer().getGameTimeDeltaTicks(), posestack, graphics.bufferSource(), bobOffset));
+		graphics.drawSpecial(source -> render(stack, Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaTicks(), posestack, source, bobOffset));
 		graphics.flush();
 		posestack.popPose();
 		Lighting.setupFor3DItems();
 	}
 
 	//[VanillaCopy] of ItemEntityRenderer.render. I have to add my own bob offset and ticker since using the vanilla method has issues
-	private static void render(ItemEntity entity, float partialTicks, PoseStack stack, MultiBufferSource buffer, float bobOffset) {
-		stack.pushPose();
-		ItemStack itemstack = entity.getItem();
-		BakedModel bakedmodel = Minecraft.getInstance().getItemRenderer().getModel(itemstack, entity.level(), null, entity.getId());
-		float f1 = Mth.sin((Objects.requireNonNull(Minecraft.getInstance().level).getGameTime() + partialTicks) / 10.0F + bobOffset) * 0.1F + 0.1F;
-		float f2 = bakedmodel.getTransforms().getTransform(ItemDisplayContext.GROUND).scale.y();
-		stack.translate(0.0D, f1 + 0.25F * f2, 0.0D);
-		float f3 = getSpin(partialTicks, bobOffset);
-		stack.mulPose(Axis.YP.rotation(f3));
-
-		stack.pushPose();
-
-		Minecraft.getInstance().getItemRenderer().render(itemstack, ItemDisplayContext.GROUND, false, stack, buffer, 15728880, OverlayTexture.NO_OVERLAY, bakedmodel);
-		stack.popPose();
-
-
-		stack.popPose();
-	}
-
-	private static float getSpin(float partialTicks, float bobOffset) {
-		return (Objects.requireNonNull(Minecraft.getInstance().level).getGameTime() + partialTicks) / 20.0F + bobOffset;
+	private static void render(ItemStack item, float partialTicks, PoseStack stack, MultiBufferSource buffer, float bobOffset) {
+		if (!item.isEmpty() && Minecraft.getInstance().level != null) {
+			ItemClusterRenderState state = new ItemClusterRenderState();
+			Minecraft.getInstance().getItemModelResolver().updateForTopItem(state.item, item, ItemDisplayContext.GROUND, false, Minecraft.getInstance().level, null, 0);
+			stack.pushPose();
+			float bob = Mth.sin((Minecraft.getInstance().level.getGameTime() + partialTicks) / 10.0F + bobOffset) * 0.1F + 0.1F;
+			float offset = state.item.transform().scale.y();
+			stack.translate(0.0D, bob + 0.25F * offset, 0.0D);
+			float f3 = ItemEntity.getSpin(partialTicks, bobOffset);
+			stack.mulPose(Axis.YP.rotation(f3));
+			state.count = ItemClusterRenderState.getRenderedAmount(item.getCount());
+			state.seed = ItemClusterRenderState.getSeedForItemStack(item);
+			ItemEntityRenderer.renderMultipleFromCount(stack, buffer, LightTexture.FULL_BRIGHT, state, Minecraft.getInstance().level.getRandom());
+			stack.popPose();
+		}
 	}
 
 	public static List<Component> getMobTooltip(EntityType<?> type) {

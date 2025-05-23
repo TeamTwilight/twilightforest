@@ -1,0 +1,30 @@
+{
+  "parent": "minecraft:block/block",
+  "connectable_blocks": [
+    "twilightforest:coronation_carpet"
+  ],
+  "connected_texture": {
+    "faces": [
+      "up",
+      "down"
+    ]
+  },
+  "element": {
+    "from": [
+      0,
+      0,
+      0
+    ],
+    "to": [
+      16,
+      1,
+      16
+    ]
+  },
+  "loader": "twilightforest:connected_texture_block",
+  "textures": {
+    "overlay_connected": "twilightforest:block/coronation_carpet_ctm",
+    "overlay_texture": "twilightforest:block/coronation_carpet",
+    "particle": "twilightforest:block/coronation_carpet"
+  }
+}

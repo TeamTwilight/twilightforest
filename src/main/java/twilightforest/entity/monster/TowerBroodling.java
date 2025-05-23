@@ -46,11 +46,6 @@ public class TowerBroodling extends SwarmSpider {
 		this.playSound(TFSounds.CARMINITE_BROODLING_STEP.get(), 0.15F, 1.0F);
 	}
 
-	@Override
-	public EntityType<? extends SwarmSpider> getReinforcementType() {
-		return TFEntities.CARMINITE_BROODLING.get();
-	}
-
 	//no skeleton druid jockeys for us
 	@Override
 	public void summonJockey(ServerLevelAccessor accessor, DifficultyInstance difficulty) {

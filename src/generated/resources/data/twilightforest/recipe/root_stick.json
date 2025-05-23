@@ -3,9 +3,7 @@
   "category": "misc",
   "group": "sticks",
   "ingredients": [
-    {
-      "item": "twilightforest:root_strand"
-    }
+    "twilightforest:root_strand"
   ],
   "result": {
     "count": 1,

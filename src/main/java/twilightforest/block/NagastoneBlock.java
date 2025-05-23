@@ -2,8 +2,11 @@ package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -21,8 +24,8 @@ public class NagastoneBlock extends Block {
 	}
 
 	@Override
-	public BlockState updateShape(BlockState state, Direction directionToNeighbor, BlockState neighborState, LevelAccessor accessor, BlockPos pos, BlockPos neighborPos) {
-		return this.getVariant(accessor, pos);
+	protected BlockState updateShape(BlockState state, LevelReader reader, ScheduledTickAccess access, BlockPos pos, Direction direction, BlockPos facingPos, BlockState facingState, RandomSource random) {
+		return this.getVariant(reader, pos);
 	}
 
 	@Override
@@ -31,7 +34,7 @@ public class NagastoneBlock extends Block {
 	}
 
 	@SuppressWarnings("fallthrough")
-	private BlockState getVariant(LevelAccessor accessor, BlockPos pos) {
+	private BlockState getVariant(LevelReader accessor, BlockPos pos) {
 		int connectionCount = 0;
 		BlockState stateOut;
 		Direction[] facings = new Direction[2];

@@ -4,6 +4,8 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -35,5 +37,23 @@ public class BinaryRotatedBlock extends Block {
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		return this.defaultBlockState().setValue(ROTATED, context.getHorizontalDirection().getAxis() == Direction.Axis.Z);
+	}
+
+	@Override
+	protected BlockState rotate(BlockState state, Rotation rotation) {
+		if (rotation == Rotation.NONE || rotation == Rotation.CLOCKWISE_180)
+			return state;
+
+		boolean rotated = state.getValue(ROTATED);
+		return state.setValue(ROTATED, !rotated);
+	}
+
+	@Override
+	protected BlockState mirror(BlockState state, Mirror mirror) {
+		if (mirror == Mirror.NONE)
+			return state;
+
+		boolean rotated = state.getValue(ROTATED);
+		return state.setValue(ROTATED, !rotated);
 	}
 }

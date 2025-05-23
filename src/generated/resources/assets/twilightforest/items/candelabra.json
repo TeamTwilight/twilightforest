@@ -1,0 +1,18 @@
+{
+  "model": {
+    "type": "minecraft:composite",
+    "models": [
+      {
+        "type": "minecraft:model",
+        "model": "twilightforest:block/candelabra"
+      },
+      {
+        "type": "minecraft:special",
+        "base": "twilightforest:block/candelabra",
+        "model": {
+          "type": "twilightforest:candelabra"
+        }
+      }
+    ]
+  }
+}

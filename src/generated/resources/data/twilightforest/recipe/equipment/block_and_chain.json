@@ -2,21 +2,11 @@
   "type": "minecraft:crafting_shapeless",
   "category": "equipment",
   "ingredients": [
-    {
-      "tag": "c:storage_blocks/knightmetal"
-    },
-    {
-      "tag": "c:ingots/knightmetal"
-    },
-    {
-      "tag": "c:ingots/knightmetal"
-    },
-    {
-      "tag": "c:ingots/knightmetal"
-    },
-    {
-      "item": "twilightforest:knightmetal_ring"
-    }
+    "#c:storage_blocks/knightmetal",
+    "#c:ingots/knightmetal",
+    "#c:ingots/knightmetal",
+    "#c:ingots/knightmetal",
+    "twilightforest:knightmetal_ring"
   ],
   "result": {
     "count": 1,

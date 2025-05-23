@@ -1,13 +1,16 @@
 package twilightforest.block;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -65,10 +68,17 @@ public class ChiseledCanopyShelfBlock extends ChiseledBookShelfBlock {
 	}
 
 	@Override
-	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
+	protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
 		//always allow spawn eggs to be clicked so spawns can be set
-		if (stack.getItem() instanceof SpawnEggItem) return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
-		if (state.getValue(SPAWNER)) return ItemInteractionResult.FAIL;
+		if (level.getBlockEntity(pos) instanceof ChiseledCanopyShelfBlockEntity shelf && stack.getItem() instanceof SpawnEggItem) {
+			//dont swing our hand if the shelf is empty
+			if (shelf.isEmpty()) {
+				return InteractionResult.CONSUME;
+			}
+			level.playSound(null, pos, TFSounds.BOOKSHELF_CONVERTS.get(), SoundSource.BLOCKS, 0.35F, 0.6F + level.getRandom().nextFloat() * 0.4F);
+			return InteractionResult.SUCCESS;
+		}
+		if (state.getValue(SPAWNER)) return InteractionResult.FAIL;
 		return super.useItemOn(stack, state, level, pos, player, hand, result);
 	}
 
@@ -84,7 +94,7 @@ public class ChiseledCanopyShelfBlock extends ChiseledBookShelfBlock {
 			level.playSound(null, pos, TFSounds.DEATH_TOME_DEATH.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
 			ParticlePacket particlePacket = new ParticlePacket();
 			for (int i = 0; i < 20; ++i) {
-				particlePacket.queueParticle(ParticleTypes.POOF, false,
+				particlePacket.queueParticle(ParticleTypes.POOF,
 					(double) pos.getX() + 0.5D + level.getRandom().nextGaussian() * 0.02D * level.getRandom().nextGaussian(),
 					(double) pos.getY() + level.getRandom().nextGaussian() * 0.02D * level.getRandom().nextGaussian(),
 					(double) pos.getZ() + 0.5D + level.getRandom().nextGaussian() * 0.02D * level.getRandom().nextGaussian(),

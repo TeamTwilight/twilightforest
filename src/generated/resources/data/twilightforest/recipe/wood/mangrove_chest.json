@@ -3,20 +3,15 @@
   "category": "misc",
   "group": "chest",
   "key": {
-    "#": {
-      "item": "twilightforest:mangrove_planks"
-    },
-    "C": {
-      "item": "minecraft:chest"
-    }
+    "#": "twilightforest:mangrove_planks"
   },
   "pattern": [
     "###",
-    "#C#",
+    "# #",
     "###"
   ],
   "result": {
-    "count": 2,
+    "count": 1,
     "id": "twilightforest:mangrove_chest"
   }
 }

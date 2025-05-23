@@ -15,7 +15,6 @@ public class HoverSummonGoal extends HoverBaseGoal<SnowQueen> {
 
 	private final int maxSeekTime;
 
-	@SuppressWarnings("this-escape")
 	public HoverSummonGoal(SnowQueen snowQueen) {
 		super(snowQueen, 6F, 6F);
 

@@ -54,15 +54,15 @@ public class HedgeBlock extends Block {
 
 	@Override
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-		if (this.shouldDamage(entity)) {
-			entity.hurt(level.damageSources().cactus(), DAMAGE);
+		if (this.shouldDamage(entity) && level instanceof ServerLevel serverLevel) {
+			entity.hurtServer(serverLevel, serverLevel.damageSources().cactus(), DAMAGE);
 		}
 	}
 
 	@Override
 	public void attack(BlockState state, Level level, BlockPos pos, Player player) {
-		if (!level.isClientSide()) {
-			player.hurt(level.damageSources().cactus(), DAMAGE);
+		if (level instanceof ServerLevel serverLevel) {
+			player.hurtServer(serverLevel, level.damageSources().cactus(), DAMAGE);
 			level.scheduleTick(pos, this, 10);
 		}
 	}
@@ -70,7 +70,9 @@ public class HedgeBlock extends Block {
 	@Override
 	public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity te, ItemStack stack) {
 		super.playerDestroy(level, player, pos, state, te, stack);
-		player.hurt(level.damageSources().cactus(), DAMAGE);
+		if (level instanceof ServerLevel serverLevel) {
+			player.hurtServer(serverLevel, serverLevel.damageSources().cactus(), DAMAGE);
+		}
 	}
 
 	@Override
@@ -85,7 +87,7 @@ public class HedgeBlock extends Block {
 				// are they pointing at this block?
 				if (ray.getType() == HitResult.Type.BLOCK && pos.equals(ray.getBlockPos())) {
 					// prick them! prick them hard!
-					player.hurt(level.damageSources().cactus(), DAMAGE);
+					player.hurtServer(level, level.damageSources().cactus(), DAMAGE);
 
 					// trigger this again!
 					level.scheduleTick(pos, this, 10);

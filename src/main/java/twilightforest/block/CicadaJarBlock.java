@@ -1,8 +1,10 @@
 package twilightforest.block;
 
+import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
@@ -16,9 +18,11 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
+import twilightforest.block.entity.JarBlockEntity;
+import twilightforest.components.item.JarLid;
 import twilightforest.config.TFConfig;
 import twilightforest.init.TFBlocks;
-import twilightforest.init.TFItems;
+import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFSounds;
 
 public class CicadaJarBlock extends JarBlock {
@@ -28,13 +32,16 @@ public class CicadaJarBlock extends JarBlock {
 
 	@Override
 	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult result) {
-		if (player.isShiftKeyDown()) {
-			ItemEntity cicada = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(TFBlocks.CICADA));
-			level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
-			cicada.spawnAtLocation(cicada.getItem());
-			cicada.spawnAtLocation(TFItems.MASON_JAR.get());
+		if (player.isShiftKeyDown() && level.getBlockEntity(pos) instanceof JarBlockEntity jarBE) {
+			if (level instanceof ServerLevel sl) {
+				ItemEntity cicada = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(TFBlocks.CICADA));
+				level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+				cicada.spawnAtLocation(sl, cicada.getItem());
+				cicada.spawnAtLocation(sl, Util.make(new ItemStack(TFBlocks.MASON_JAR.get()), jar -> jar.set(TFDataComponents.JAR_LID.get(), new JarLid(jarBE.lid))));
+			}
+
 			level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
-			return InteractionResult.sidedSuccess(level.isClientSide());
+			return InteractionResult.SUCCESS;
 		}
 		return super.useWithoutItem(state, level, pos, player, result);
 	}
@@ -48,7 +55,7 @@ public class CicadaJarBlock extends JarBlock {
 	public void destroy(LevelAccessor accessor, BlockPos pos, BlockState state) {
 		super.destroy(accessor, pos, state);
 		if (accessor.isClientSide())
-			Minecraft.getInstance().getSoundManager().stop(TFSounds.CICADA.get().getLocation(), SoundSource.BLOCKS);
+			Minecraft.getInstance().getSoundManager().stop(TFSounds.CICADA.get().location(), SoundSource.BLOCKS);
 	}
 
 	@Override

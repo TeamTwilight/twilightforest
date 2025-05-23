@@ -6,17 +6,15 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
-import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.Enchantments;
 
 import java.util.List;
 
 public class FierySwordItem extends SwordItem {
 
-	public FierySwordItem(Tier toolMaterial, Properties properties) {
-		super(toolMaterial, properties);
+	public FierySwordItem(ToolMaterial material, Properties properties) {
+		super(material, 3.0F, -2.4F, properties);
 	}
 
 	@Override

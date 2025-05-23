@@ -1,5 +1,6 @@
 package twilightforest.entity.ai.goal;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -34,7 +35,7 @@ public class PhantomWatchAndAttackGoal extends Goal {
 				if (this.boss.getSensing().hasLineOfSight(target)) {
 					if (attackTime-- <= 0 && f1 < 2.0F && target.getBoundingBox().maxY > this.boss.getBoundingBox().minY && this.boss.getTarget().getBoundingBox().minY < this.boss.getBoundingBox().maxY) {
 						attackTime = 20;
-						this.boss.doHurtTarget(target);
+						this.boss.doHurtTarget(getServerLevel(this.boss), target);
 					}
 				}
 

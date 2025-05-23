@@ -30,6 +30,7 @@ public class TFModelLayers {
 	public static final ModelLayerLocation ALPHA_YETI = register("alpha_yeti");
 	public static final ModelLayerLocation ARMORED_GIANT = register("armored_giant");
 	public static final ModelLayerLocation BIGHORN_SHEEP = register("bighorn_sheep");
+	public static final ModelLayerLocation BIGHORN_SHEEP_BABY = register("bighorn_sheep_baby");
 	public static final ModelLayerLocation BLOCKCHAIN_GOBLIN = register("blockchain_goblin");
 	public static final ModelLayerLocation BOAR = register("boar");
 	public static final ModelLayerLocation BUNNY = register("bunny");
@@ -101,7 +102,9 @@ public class TFModelLayers {
 	public static final ModelLayerLocation CICADA = register("cicada");
 	public static final ModelLayerLocation FIREFLY = register("firefly");
 	public static final ModelLayerLocation KEEPSAKE_CASKET = register("keepsake_casket");
+	public static final ModelLayerLocation SKULL_CHEST = register("skull_chest");
 	public static final ModelLayerLocation MOONWORM = register("moonworm");
+	public static final ModelLayerLocation BRAZIER = register("brazier");
 	public static final ModelLayerLocation WEBWORM = register("webworm");
 
 	public static final ModelLayerLocation RED_THREAD = register("red_thread");
@@ -110,11 +113,29 @@ public class TFModelLayers {
 
 	public static final ModelLayerLocation CHARM_OF_LIFE = register("charm_of_life");
 
-	private static ModelLayerLocation register(String p_171294_) {
-		return register(p_171294_, "main");
+	public static final ModelLayerLocation TWILIGHT_OAK_BOAT = register("boat/twilight_oak");
+	public static final ModelLayerLocation CANOPY_BOAT = register("boat/canopy");
+	public static final ModelLayerLocation MANGROVE_BOAT = register("boat/mangrove");
+	public static final ModelLayerLocation DARK_BOAT = register("boat/dark");
+	public static final ModelLayerLocation TIME_BOAT = register("boat/time");
+	public static final ModelLayerLocation TRANSFORMATION_BOAT = register("boat/transformation");
+	public static final ModelLayerLocation MINING_BOAT = register("boat/mining");
+	public static final ModelLayerLocation SORTING_BOAT = register("boat/sorting");
+
+	public static final ModelLayerLocation TWILIGHT_OAK_CHEST_BOAT = register("chest_boat/twilight_oak");
+	public static final ModelLayerLocation CANOPY_CHEST_BOAT = register("chest_boat/canopy");
+	public static final ModelLayerLocation MANGROVE_CHEST_BOAT = register("chest_boat/mangrove");
+	public static final ModelLayerLocation DARK_CHEST_BOAT = register("chest_boat/dark");
+	public static final ModelLayerLocation TIME_CHEST_BOAT = register("chest_boat/time");
+	public static final ModelLayerLocation TRANSFORMATION_CHEST_BOAT = register("chest_boat/transformation");
+	public static final ModelLayerLocation MINING_CHEST_BOAT = register("chest_boat/mining");
+	public static final ModelLayerLocation SORTING_CHEST_BOAT = register("chest_boat/sorting");
+
+	private static ModelLayerLocation register(String name) {
+		return register(name, "main");
 	}
 
-	private static ModelLayerLocation register(String p_171301_, String p_171302_) {
-		return new ModelLayerLocation(TwilightForestMod.prefix(p_171301_), p_171302_);
+	private static ModelLayerLocation register(String name, String layer) {
+		return new ModelLayerLocation(TwilightForestMod.prefix(name), layer);
 	}
 }

@@ -41,7 +41,6 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 		super(piece, nbt);
 	}
 
-	@SuppressWarnings("this-escape")
 	public FinalCastleDungeonRoom31Component(StructurePieceType piece, int i, int x, int y, int z, Direction direction, int level) {
 		super(piece, i, x, y, z);
 		this.setOrientation(direction);
@@ -151,8 +150,8 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 	@Override
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		Predicate<Biome> plateauBiomes = biome ->
-			biome == world.registryAccess().registryOrThrow(Registries.BIOME).get(TFBiomes.THORNLANDS) ||
-				biome == world.registryAccess().registryOrThrow(Registries.BIOME).get(TFBiomes.FINAL_PLATEAU);
+			biome == world.registryAccess().lookupOrThrow(Registries.BIOME).getValue(TFBiomes.THORNLANDS) ||
+				biome == world.registryAccess().lookupOrThrow(Registries.BIOME).getValue(TFBiomes.FINAL_PLATEAU);
 
 		if (this.isBoundingBoxOutsideBiomes(world, plateauBiomes, blockPos)) {
 			return;

@@ -1,6 +1,5 @@
 {
-  "parent": "minecraft:builtin/entity",
   "textures": {
-    "particle": "twilightforest:block/wood/planks_twilight_oak_0"
+    "particle": "twilightforest:block/twilight_oak_planks"
   }
 }

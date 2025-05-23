@@ -8,13 +8,8 @@ import java.util.List;
 
 public class MinotaurAxeItem extends AxeItem {
 
-	public MinotaurAxeItem(Tier material, Properties properties) {
-		super(material, properties);
-	}
-
-	@Override
-	public int getEnchantmentValue() {
-		return Tiers.GOLD.getEnchantmentValue();
+	public MinotaurAxeItem(ToolMaterial material, Properties properties) {
+		super(material, 6.0F, -3.2F, properties);
 	}
 
 	@Override

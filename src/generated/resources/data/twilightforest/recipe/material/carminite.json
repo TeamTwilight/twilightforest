@@ -2,33 +2,15 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "twilightforest:borer_essence"
-    },
-    {
-      "tag": "c:dusts/redstone"
-    },
-    {
-      "item": "twilightforest:borer_essence"
-    },
-    {
-      "tag": "c:dusts/redstone"
-    },
-    {
-      "item": "minecraft:ghast_tear"
-    },
-    {
-      "tag": "c:dusts/redstone"
-    },
-    {
-      "item": "twilightforest:borer_essence"
-    },
-    {
-      "tag": "c:dusts/redstone"
-    },
-    {
-      "item": "twilightforest:borer_essence"
-    }
+    "twilightforest:borer_essence",
+    "#c:dusts/redstone",
+    "twilightforest:borer_essence",
+    "#c:dusts/redstone",
+    "minecraft:ghast_tear",
+    "#c:dusts/redstone",
+    "twilightforest:borer_essence",
+    "#c:dusts/redstone",
+    "twilightforest:borer_essence"
   ],
   "result": {
     "count": 1,

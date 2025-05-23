@@ -30,14 +30,14 @@ public record DwarfRabbitVariant(ResourceLocation texture, Optional<HolderSet<Bi
 	}
 
 	public static Holder<DwarfRabbitVariant> getVariant(RegistryAccess access, Holder<Biome> currentBiome, RandomSource random) {
-		Registry<DwarfRabbitVariant> registry = access.registryOrThrow(TFRegistries.Keys.DWARF_RABBIT_VARIANT);
-		List<Holder.Reference<DwarfRabbitVariant>> validBunnies = registry.holders().filter(variant -> variant.value().spawnBiomes().isEmpty() || variant.value().spawnBiomes().get().contains(currentBiome)).toList();
-		return validBunnies.isEmpty() ? registry.getHolderOrThrow(DwarfRabbitVariants.BROWN) : validBunnies.get(random.nextInt(validBunnies.size()));
+		Registry<DwarfRabbitVariant> registry = access.lookupOrThrow(TFRegistries.Keys.DWARF_RABBIT_VARIANT);
+		List<Holder.Reference<DwarfRabbitVariant>> validBunnies = registry.listElements().filter(variant -> variant.value().spawnBiomes().isEmpty() || variant.value().spawnBiomes().get().contains(currentBiome)).toList();
+		return validBunnies.isEmpty() ? registry.getOrThrow(DwarfRabbitVariants.BROWN) : validBunnies.get(random.nextInt(validBunnies.size()));
 	}
 
 	public static Holder<DwarfRabbitVariant> getRandomCommonVariant(RegistryAccess access, RandomSource random) {
-		Registry<DwarfRabbitVariant> registry = access.registryOrThrow(TFRegistries.Keys.DWARF_RABBIT_VARIANT);
-		List<Holder.Reference<DwarfRabbitVariant>> validBunnies = registry.holders().filter(variant -> variant.value().spawnBiomes().isEmpty()).toList();
-		return validBunnies.isEmpty() ? registry.getHolderOrThrow(DwarfRabbitVariants.BROWN) : validBunnies.get(random.nextInt(validBunnies.size()));
+		Registry<DwarfRabbitVariant> registry = access.lookupOrThrow(TFRegistries.Keys.DWARF_RABBIT_VARIANT);
+		List<Holder.Reference<DwarfRabbitVariant>> validBunnies = registry.listElements().filter(variant -> variant.value().spawnBiomes().isEmpty()).toList();
+		return validBunnies.isEmpty() ? registry.getOrThrow(DwarfRabbitVariants.BROWN) : validBunnies.get(random.nextInt(validBunnies.size()));
 	}
 }

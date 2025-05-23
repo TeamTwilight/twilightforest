@@ -13,7 +13,7 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.config.TFConfig;
-import twilightforest.data.tags.EntityTagGenerator;
+import twilightforest.tags.TFEntityTypeTags;
 import twilightforest.init.TFParticleType;
 import twilightforest.network.ParticlePacket;
 import twilightforest.util.BlockCapabilityDirectionalCache;
@@ -65,7 +65,7 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 
 		List<Entity> alreadyUsedForInput = new ArrayList<>(); // Keep track of entities we already have for inputs, so we can skip over them when looking for outputs
 
-		level.getEntities((Entity) null, new AABB(pos).inflate(2), entity -> entity.isAlive() && entity.getType().is(EntityTagGenerator.SORTABLE_ENTITIES)).forEach(entity -> {
+		level.getEntities((Entity) null, new AABB(pos).inflate(2), entity -> entity.isAlive() && entity.getType().is(TFEntityTypeTags.SORTABLE_ENTITIES)).forEach(entity -> {
 			List<IItemHandler> handlers = new ArrayList<>();
 			for (Direction side : Direction.values()) {
 				IItemHandler handler = entity.getCapability(Capabilities.ItemHandler.ENTITY_AUTOMATION, side);
@@ -79,7 +79,7 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 
 		if (inputMap.isEmpty()) return; // No input
 
-		level.getEntities((Entity) null, new AABB(pos).inflate(16), entity -> entity.isAlive() && !alreadyUsedForInput.contains(entity) && entity.getType().is(EntityTagGenerator.SORTABLE_ENTITIES)).forEach(entity -> {
+		level.getEntities((Entity) null, new AABB(pos).inflate(16), entity -> entity.isAlive() && !alreadyUsedForInput.contains(entity) && entity.getType().is(TFEntityTypeTags.SORTABLE_ENTITIES)).forEach(entity -> {
 			for (Direction side : Direction.values()) {
 				IItemHandler handler = entity.getCapability(Capabilities.ItemHandler.ENTITY_AUTOMATION, side);
 				if (handler != null) outputMap.put(handler, entity.position().add(0D, entity.getBbHeight() + 0.9D, 0D));
@@ -135,7 +135,7 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 									double x = diff.x - 0.25D + rand.nextDouble() * 0.5D;
 									double y = diff.y - 1.75D + rand.nextDouble() * 0.5D;
 									double z = diff.z - 0.25D + rand.nextDouble() * 0.5D;
-									particlePacket.queueParticle(TFParticleType.SORTING_PARTICLE.get(), false, xyz, new Vec3(x, y, z).scale(1D / diff.length()));
+									particlePacket.queueParticle(TFParticleType.SORTING_PARTICLE.get(), xyz, new Vec3(x, y, z).scale(1D / diff.length()));
 									PacketDistributor.sendToPlayersNear(level, null, xyz.x(), xyz.y(), xyz.z(), 64.0D, particlePacket);
 									break;
 								}

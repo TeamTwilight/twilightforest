@@ -65,7 +65,7 @@ public class HostileWolf extends Monster implements VariantHolder<Holder<WolfVar
 	@Override
 	protected void defineSynchedData(SynchedEntityData.Builder builder) {
 		super.defineSynchedData(builder);
-		builder.define(VARIANT, this.registryAccess().registryOrThrow(Registries.WOLF_VARIANT).getHolderOrThrow(WolfVariants.PALE));
+		builder.define(VARIANT, this.registryAccess().lookupOrThrow(Registries.WOLF_VARIANT).getOrThrow(WolfVariants.PALE));
 	}
 
 	public ResourceLocation getTexture() {
@@ -94,7 +94,7 @@ public class HostileWolf extends Monster implements VariantHolder<Holder<WolfVar
 		super.readAdditionalSaveData(tag);
 		Optional.ofNullable(ResourceLocation.tryParse(tag.getString("variant")))
 			.map(location -> ResourceKey.create(Registries.WOLF_VARIANT, location))
-			.flatMap(key -> this.registryAccess().registryOrThrow(Registries.WOLF_VARIANT).getHolder(key))
+			.flatMap(key -> this.registryAccess().lookupOrThrow(Registries.WOLF_VARIANT).get(key))
 			.ifPresent(this::setVariant);
 	}
 
@@ -105,7 +105,7 @@ public class HostileWolf extends Monster implements VariantHolder<Holder<WolfVar
 		super.setTarget(entity);
 	}
 
-	public static boolean checkWolfSpawnRules(EntityType<? extends HostileWolf> entity, ServerLevelAccessor accessor, MobSpawnType reason, BlockPos pos, RandomSource random) {
+	public static boolean checkWolfSpawnRules(EntityType<? extends HostileWolf> entity, ServerLevelAccessor accessor, EntitySpawnReason reason, BlockPos pos, RandomSource random) {
 		return accessor.getDifficulty() != Difficulty.PEACEFUL && isValidLightLevel(accessor, pos, random) && checkMobSpawnRules(entity, accessor, reason, pos, random);
 	}
 

@@ -26,7 +26,6 @@ public class DarkTowerBeardComponent extends TFStructureComponentOld {
 		this.height = nbt.getInt("beardHeight");
 	}
 
-	@SuppressWarnings("this-escape")
 	public DarkTowerBeardComponent(int i, TowerWingComponent wing, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFDTBea.get(), i, x, y, z);
 

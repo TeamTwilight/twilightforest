@@ -2,79 +2,102 @@ package twilightforest.client.model.block.connected;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.client.model.generators.CustomLoaderBuilder;
-import net.neoforged.neoforge.client.model.generators.ModelBuilder;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.client.model.generators.template.CustomLoaderBuilder;
+import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 import twilightforest.TwilightForestMod;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("unused")
-public class ConnectedTextureBuilder<T extends ModelBuilder<T>> extends CustomLoaderBuilder<T> {
+public class ConnectedTextureBuilder extends CustomLoaderBuilder {
 
-	private final List<Direction> enabledFaces = new ArrayList<>();
-	private final List<Block> connectableBlocks = new ArrayList<>();
-	private final List<TagKey<Block>> connectableTags = new ArrayList<>();
-	private boolean renderOnDisabledFaces = true;
+	private List<Direction> connectedFaces = new ArrayList<>();
+	private List<Block> connectableBlocks = new ArrayList<>();
+	private List<TagKey<Block>> connectableTags = new ArrayList<>();
+	@Nullable
+	private Pair<Vector3f, Vector3f> element;
+	private boolean renderOverlayOnAllFaces = true;
 
 	private int baseTintIndex = -1;
 	private int baseEmissivity = 0;
 	private int tintIndex = -1;
 	private int emissivity = 0;
 
-	protected ConnectedTextureBuilder(T parent, ExistingFileHelper existingFileHelper) {
-		super(TwilightForestMod.prefix("connected_texture_block"), parent, existingFileHelper, false);
+	public ConnectedTextureBuilder() {
+		super(TwilightForestMod.prefix("connected_texture_block"), false);
 	}
 
-	public static <T extends ModelBuilder<T>> ConnectedTextureBuilder<T> begin(T parent, ExistingFileHelper helper) {
-		return new ConnectedTextureBuilder<>(parent, helper);
+	public static ConnectedTextureBuilder begin() {
+		return new ConnectedTextureBuilder();
 	}
 
-	public ConnectedTextureBuilder<T> addConnectionFaces(Direction... faces) {
-		this.enabledFaces.addAll(List.of(faces));
+	public ConnectedTextureBuilder addConnectionFaces(Direction... faces) {
+		this.connectedFaces.addAll(List.of(faces));
 		return this;
 	}
 
-	public ConnectedTextureBuilder<T> disableRenderingOnDisabledFaces() {
-		this.renderOnDisabledFaces = false;
+	public ConnectedTextureBuilder createElement(Vector3f from, Vector3f to) {
+		this.element = Pair.of(from, to);
 		return this;
 	}
 
-	public ConnectedTextureBuilder<T> setBaseTintIndex(int index) {
+	public ConnectedTextureBuilder disableOverlayRenderingOnAllFaces() {
+		this.renderOverlayOnAllFaces = false;
+		return this;
+	}
+
+	public ConnectedTextureBuilder setBaseTintIndex(int index) {
 		this.baseTintIndex = index;
 		return this;
 	}
 
-	public ConnectedTextureBuilder<T> setOverlayTintIndex(int index) {
+	public ConnectedTextureBuilder setOverlayTintIndex(int index) {
 		this.tintIndex = index;
 		return this;
 	}
 
-	public ConnectedTextureBuilder<T> setBaseEmissivity(int value) {
+	public ConnectedTextureBuilder setBaseEmissivity(int value) {
 		this.baseEmissivity = value;
 		return this;
 	}
 
-	public ConnectedTextureBuilder<T> setOverlayEmissivity(int value) {
+	public ConnectedTextureBuilder setOverlayEmissivity(int value) {
 		this.emissivity = value;
 		return this;
 	}
 
-	public final ConnectedTextureBuilder<T> connectsTo(Block... blocks) {
+	public final ConnectedTextureBuilder connectsTo(Block... blocks) {
 		this.connectableBlocks.addAll(List.of(blocks));
 		return this;
 	}
 
 	@SuppressWarnings("varargs")
 	@SafeVarargs
-	public final ConnectedTextureBuilder<T> connectsTo(TagKey<Block>... blocks) {
+	public final ConnectedTextureBuilder connectsTo(TagKey<Block>... blocks) {
 		this.connectableTags.addAll(List.of(blocks));
 		return this;
+	}
+
+	@Override
+	protected ConnectedTextureBuilder copyInternal() {
+		ConnectedTextureBuilder builder = new ConnectedTextureBuilder();
+		builder.connectedFaces = List.copyOf(this.connectedFaces);
+		builder.connectableBlocks = List.copyOf(this.connectableBlocks);
+		builder.connectableTags = List.copyOf(this.connectableTags);
+		builder.element = this.element;
+		builder.renderOverlayOnAllFaces = this.renderOverlayOnAllFaces;
+		builder.baseTintIndex = this.baseTintIndex;
+		builder.baseEmissivity = this.baseEmissivity;
+		builder.tintIndex = this.tintIndex;
+		builder.emissivity = this.emissivity;
+		return builder;
 	}
 
 	@Override
@@ -90,11 +113,11 @@ public class ConnectedTextureBuilder<T extends ModelBuilder<T>> extends CustomLo
 			}
 			json.add("base", baseInfo);
 		}
-		if (!this.enabledFaces.isEmpty() || this.tintIndex > -1 || this.emissivity != 0) {
+		if (!this.connectedFaces.isEmpty() || this.tintIndex > -1 || this.emissivity != 0) {
 			JsonObject overlayInfo = new JsonObject();
-			if (!this.enabledFaces.isEmpty()) {
+			if (!this.connectedFaces.isEmpty()) {
 				JsonArray array = new JsonArray();
-				this.enabledFaces.forEach(face -> array.add(face.getName()));
+				this.connectedFaces.forEach(face -> array.add(face.getName()));
 				overlayInfo.add("faces", array);
 			}
 			if (this.tintIndex > -1) {
@@ -103,7 +126,9 @@ public class ConnectedTextureBuilder<T extends ModelBuilder<T>> extends CustomLo
 			if (this.emissivity != 0) {
 				overlayInfo.addProperty("emissivity", this.emissivity);
 			}
-			overlayInfo.addProperty("render_disabled_faces", this.renderOnDisabledFaces);
+			if (!this.renderOverlayOnAllFaces) {
+				overlayInfo.addProperty("always_render_overlay", false);
+			}
 			json.add("connected_texture", overlayInfo);
 		}
 
@@ -120,6 +145,28 @@ public class ConnectedTextureBuilder<T extends ModelBuilder<T>> extends CustomLo
 			json.add("connectable_blocks", connectables);
 		}
 
+		if (this.element != null) {
+			JsonObject serializedElement = new JsonObject();
+			serializedElement.add("from", serializeVector3f(this.element.getFirst()));
+			serializedElement.add("to", serializeVector3f(this.element.getSecond()));
+			json.add("element", serializedElement);
+		}
+
 		return json;
+	}
+
+	private static JsonArray serializeVector3f(Vector3f vec) {
+		JsonArray ret = new JsonArray();
+		ret.add(serializeFloat(vec.x()));
+		ret.add(serializeFloat(vec.y()));
+		ret.add(serializeFloat(vec.z()));
+		return ret;
+	}
+
+	private static Number serializeFloat(float f) {
+		if ((int) f == f) {
+			return (int) f;
+		}
+		return f;
 	}
 }

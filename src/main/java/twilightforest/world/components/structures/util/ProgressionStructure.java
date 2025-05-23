@@ -6,6 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -74,6 +75,6 @@ public abstract class ProgressionStructure extends ConquerableStructure implemen
 	@Override
 	@Nullable
 	public Mob createHintMonster(Level world) {
-		return this.hintConfig.hintMob().create(world);
+		return this.hintConfig.hintMob().create(world, EntitySpawnReason.STRUCTURE);
 	}
 }

@@ -24,7 +24,6 @@ public class MazeUpperEntranceComponent extends TFStructureComponentOld {
 		super(TFStructurePieceTypes.TFMMUE.get(), nbt);
 	}
 
-	@SuppressWarnings("this-escape")
 	public MazeUpperEntranceComponent(int i, RandomSource rand, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFMMUE.get(), i, x, y, z);
 		this.setOrientation(Direction.Plane.HORIZONTAL.getRandomDirection(rand));

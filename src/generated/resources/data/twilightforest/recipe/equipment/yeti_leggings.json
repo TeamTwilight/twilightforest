@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": {
-      "item": "twilightforest:alpha_yeti_fur"
-    }
+    "#": "twilightforest:alpha_yeti_fur"
   },
   "pattern": [
     "###",

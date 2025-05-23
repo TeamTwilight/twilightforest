@@ -11,78 +11,90 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.TwilightForestMod;
-import twilightforest.client.JappaPackReloadListener;
+import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.MinoshroomModel;
+import twilightforest.client.state.MinoshroomRenderState;
 import twilightforest.entity.boss.Minoshroom;
 
-public class MinoshroomRenderer<T extends Minoshroom, M extends MinoshroomModel<T>> extends HumanoidMobRenderer<T, M> {
+public class MinoshroomRenderer extends HumanoidMobRenderer<Minoshroom, MinoshroomRenderState, MinoshroomModel> {
 
 	public static final ResourceLocation TEXTURE = TwilightForestMod.getModelTexture("minoshroomtaur.png");
 
-	public MinoshroomRenderer(EntityRendererProvider.Context context, M model, float shadowSize) {
-		super(context, model, shadowSize);
-		this.addLayer(new MinoshroomMushroomLayer<>(this));
+	public MinoshroomRenderer(EntityRendererProvider.Context context) {
+		super(context, new MinoshroomModel(context.bakeLayer(TFModelLayers.MINOSHROOM)), 0.625F);
+		this.addLayer(new MinoshroomMushroomLayer(this));
+	}
+
+	@Override
+	public MinoshroomRenderState createRenderState() {
+		return new MinoshroomRenderState();
+	}
+
+	@Override
+	public void extractRenderState(Minoshroom entity, MinoshroomRenderState state, float partialTick) {
+		super.extractRenderState(entity, state, partialTick);
+		state.chargeAnim = Mth.lerp(state.partialTick, entity.prevClientSideChargeAnimation, entity.clientSideChargeAnimation) / 6.0F;
+	}
+
+	@Override
+	public ResourceLocation getTextureLocation(MinoshroomRenderState state) {
+		return TEXTURE;
 	}
 
 	/**
 	 * [VanillaCopy] {@link net.minecraft.client.renderer.entity.layers.MushroomCowMushroomLayer}
 	 */
-	static class MinoshroomMushroomLayer<T extends Minoshroom, M extends MinoshroomModel<T>> extends RenderLayer<T, M> {
+	static class MinoshroomMushroomLayer extends RenderLayer<MinoshroomRenderState, MinoshroomModel> {
 
-		public MinoshroomMushroomLayer(RenderLayerParent<T, M> renderer) {
+		public MinoshroomMushroomLayer(RenderLayerParent<MinoshroomRenderState, MinoshroomModel> renderer) {
 			super(renderer);
 		}
 
 		@Override
-		public void render(PoseStack ms, MultiBufferSource buffers, int light, Minoshroom entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-			if (!entity.isBaby() && !entity.isInvisible()) {
-				BlockRenderDispatcher blockrendererdispatcher = Minecraft.getInstance().getBlockRenderer();
-				BlockState blockstate = Blocks.RED_MUSHROOM.defaultBlockState(); // TF: hardcode mushroom state
-				int i = LivingEntityRenderer.getOverlayCoords(entity, 0.0F);
-				float yOffs = JappaPackReloadListener.INSTANCE.isJappaPackLoaded() ? -0.95F : -0.65F;
-				float zOffs = JappaPackReloadListener.INSTANCE.isJappaPackLoaded() ? 0.0F : 0.25F;
-				ms.pushPose();
-				this.getParentModel().cowTorso.translateAndRotate(ms);
-				ms.mulPose(Axis.XP.rotationDegrees(-90.0F));
-				ms.translate(0.2F, yOffs, zOffs);
-				ms.mulPose(Axis.YP.rotationDegrees(-48.0F));
-				ms.scale(-1.0F, -1.0F, 1.0F);
-				ms.translate(-0.5D, -0.5D, -0.5D);
-				blockrendererdispatcher.renderSingleBlock(blockstate, ms, buffers, light, i);
-				ms.popPose();
-				ms.pushPose();
-				this.getParentModel().cowTorso.translateAndRotate(ms);
-				ms.mulPose(Axis.XP.rotationDegrees(-90.0F));
-				ms.translate(0.2F, yOffs, zOffs + 0.5D);
-				ms.mulPose(Axis.YP.rotationDegrees(42.0F));
-				ms.translate(0.35F, 0.0D, -0.9F);
-				ms.mulPose(Axis.YP.rotationDegrees(-48.0F));
-				ms.scale(-1.0F, -1.0F, 1.0F);
-				ms.translate(-0.5D, -0.5D, -0.5D);
-				blockrendererdispatcher.renderSingleBlock(blockstate, ms, buffers, light, i);
-				ms.popPose();
-				ms.pushPose();
-				this.getParentModel().head.translateAndRotate(ms);
-				// TF - adjust head shroom
-				if (!JappaPackReloadListener.INSTANCE.isJappaPackLoaded()) {
-					ms.translate(0.0D, -0.9D, 0.05D);
-				} else {
-					ms.translate(0.0D, -1.1D, 0.0D);
+		public void render(PoseStack stack, MultiBufferSource source, int light, MinoshroomRenderState state, float netHeadYaw, float headPitch) {
+			if (!state.isBaby) {
+				boolean flag = state.appearsGlowing && state.isInvisible;
+				if (!state.isInvisible || flag) {
+					BlockRenderDispatcher blockrendererdispatcher = Minecraft.getInstance().getBlockRenderer();
+					BlockState blockstate = Blocks.RED_MUSHROOM.defaultBlockState(); // TF: hardcode mushroom state
+					int i = LivingEntityRenderer.getOverlayCoords(state, 0.0F);
+					float yOffs = -0.65F;
+					float zOffs = 0.25F;
+					stack.pushPose();
+					this.getParentModel().cowTorso.translateAndRotate(stack);
+					stack.mulPose(Axis.XP.rotationDegrees(-90.0F));
+					stack.translate(0.2F, yOffs, zOffs);
+					stack.mulPose(Axis.YP.rotationDegrees(-48.0F));
+					stack.scale(-1.0F, -1.0F, 1.0F);
+					stack.translate(-0.5D, -0.5D, -0.5D);
+					blockrendererdispatcher.renderSingleBlock(blockstate, stack, source, light, i);
+					stack.popPose();
+					stack.pushPose();
+					this.getParentModel().cowTorso.translateAndRotate(stack);
+					stack.mulPose(Axis.XP.rotationDegrees(-90.0F));
+					stack.translate(0.2F, yOffs, zOffs + 0.5D);
+					stack.mulPose(Axis.YP.rotationDegrees(42.0F));
+					stack.translate(0.35F, 0.0D, -0.9F);
+					stack.mulPose(Axis.YP.rotationDegrees(-48.0F));
+					stack.scale(-1.0F, -1.0F, 1.0F);
+					stack.translate(-0.5D, -0.5D, -0.5D);
+					blockrendererdispatcher.renderSingleBlock(blockstate, stack, source, light, i);
+					stack.popPose();
+					stack.pushPose();
+					this.getParentModel().head.translateAndRotate(stack);
+					// TF - adjust head shroom
+					stack.translate(0.0D, -0.9D, 0.05D);
+					stack.mulPose(Axis.YP.rotationDegrees(-78.0F));
+					stack.scale(-1.0F, -1.0F, 1.0F);
+					stack.translate(-0.5D, -0.5D, -0.5D);
+					blockrendererdispatcher.renderSingleBlock(blockstate, stack, source, light, i);
+					stack.popPose();
 				}
-				ms.mulPose(Axis.YP.rotationDegrees(-78.0F));
-				ms.scale(-1.0F, -1.0F, 1.0F);
-				ms.translate(-0.5D, -0.5D, -0.5D);
-				blockrendererdispatcher.renderSingleBlock(blockstate, ms, buffers, light, i);
-				ms.popPose();
 			}
 		}
-	}
-
-	@Override
-	public ResourceLocation getTextureLocation(Minoshroom entity) {
-		return TEXTURE;
 	}
 }

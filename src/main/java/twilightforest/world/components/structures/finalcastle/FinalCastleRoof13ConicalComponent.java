@@ -29,7 +29,6 @@ public class FinalCastleRoof13ConicalComponent extends TFStructureComponentOld {
 		this.slope = nbt.getInt("slope");
 	}
 
-	@SuppressWarnings("this-escape")
 	public FinalCastleRoof13ConicalComponent(RandomSource rand, int i, TFStructureComponentOld sideTower, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFFCRo13Con.get(), i, x, y, z);
 

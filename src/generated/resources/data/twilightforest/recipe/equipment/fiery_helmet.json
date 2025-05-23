@@ -3,9 +3,7 @@
   "category": "equipment",
   "group": "fiery_helmet",
   "key": {
-    "#": {
-      "tag": "c:ingots/fiery"
-    }
+    "#": "#c:ingots/fiery"
   },
   "pattern": [
     "###",

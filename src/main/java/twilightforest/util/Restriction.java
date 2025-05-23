@@ -45,9 +45,9 @@ public record Restriction(@Nullable ResourceKey<Structure> hintStructureKey, Res
 	public static Optional<Restriction> getRestrictionForBiome(Biome biome, Entity entity) {
 		if (entity instanceof Player player) {
 			RegistryAccess access = entity.level().registryAccess();
-			ResourceLocation biomeLocation = access.registryOrThrow(Registries.BIOME).getKey(biome);
+			ResourceLocation biomeLocation = access.lookupOrThrow(Registries.BIOME).getKey(biome);
 			if (biomeLocation != null) {
-				Restriction restrictions = access.registryOrThrow(TFRegistries.Keys.RESTRICTIONS).get(biomeLocation);
+				Restriction restrictions = access.lookupOrThrow(TFRegistries.Keys.RESTRICTIONS).getValue(biomeLocation);
 				if (restrictions != null && !PlayerHelper.doesPlayerHaveRequiredAdvancements(player, restrictions.advancements())) {
 					return Optional.of(restrictions);
 				}

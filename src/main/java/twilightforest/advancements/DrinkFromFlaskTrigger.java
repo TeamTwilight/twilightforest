@@ -11,9 +11,9 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.alchemy.Potion;
-import twilightforest.beans.Autowired;
-import twilightforest.beans.Component;
-import twilightforest.beans.Configurable;
+import tamaized.beanification.Autowired;
+import tamaized.beanification.Component;
+import tamaized.beanification.Configurable;
 import twilightforest.init.TFAdvancements;
 import twilightforest.util.HolderMatcher;
 

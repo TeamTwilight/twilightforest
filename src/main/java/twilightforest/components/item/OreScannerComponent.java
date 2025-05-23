@@ -8,8 +8,6 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMaps;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
-import net.minecraft.core.component.DataComponentHolder;
-import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.BlockGetter;
@@ -76,8 +74,8 @@ public class OreScannerComponent {
 	}
 
 	public OreScannerComponent tickScan(BlockGetter reader) {
-		BlockPos originPos = this.origin.atY(reader.getMinBuildHeight());
-		int volume = this.area * reader.getMaxBuildHeight();
+		BlockPos originPos = this.origin.atY(reader.getMinY());
+		int volume = this.area * reader.getMaxY();
 		int march = Mth.ceil((float) volume / Mth.abs(this.scanDurationTicks));
 		int totalProgress = this.ticksProgressed * march;
 		Object2IntMap<Block> nextCounter = new Object2IntArrayMap<>(this.blockCounter);
@@ -114,7 +112,7 @@ public class OreScannerComponent {
 	}
 
 	public int getVolume(BlockGetter reader) {
-		return this.area * reader.getMaxBuildHeight();
+		return this.area * reader.getMaxY();
 	}
 
 	public int getTickProgress() {

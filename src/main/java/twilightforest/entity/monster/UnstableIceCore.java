@@ -1,9 +1,10 @@
 package twilightforest.entity.monster;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.FastColor;
+import net.minecraft.util.ARGB;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -68,8 +69,8 @@ public class UnstableIceCore extends BaseIceMob {
 		++this.deathTime;
 
 		if (this.deathTime == 60) { // delay until 3 seconds
-			if (!this.level().isClientSide()) {
-				boolean mobGriefing = EventHooks.canEntityGrief(this.level(), this);
+			if (this.level() instanceof ServerLevel level) {
+				boolean mobGriefing = EventHooks.canEntityGrief(level, this);
 				this.level().explode(this, this.getX(), this.getY(), this.getZ(), UnstableIceCore.EXPLOSION_RADIUS, Level.ExplosionInteraction.MOB);
 
 				if (mobGriefing) {
@@ -141,9 +142,9 @@ public class UnstableIceCore extends BaseIceMob {
 		for (DyeColor color : DyeColor.values()) {
 			int iColor = color.getTextureDiffuseColor();
 
-			int iRed = FastColor.ARGB32.red(iColor);
-			int iGreen = FastColor.ARGB32.green(iColor);
-			int iBlue = FastColor.ARGB32.blue(iColor);
+			int iRed = ARGB.red(iColor);
+			int iGreen = ARGB.green(iColor);
+			int iBlue = ARGB.blue(iColor);
 
 			int difference = Math.abs(red - iRed) + Math.abs(green - iGreen) + Math.abs(blue - iBlue);
 

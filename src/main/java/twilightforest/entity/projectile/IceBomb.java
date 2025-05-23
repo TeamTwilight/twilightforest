@@ -4,10 +4,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Position;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -16,7 +18,7 @@ import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
-import twilightforest.data.tags.BlockTagGenerator;
+import twilightforest.tags.TFBlockTags;
 import twilightforest.enchantment.ApplyFrostedEffect;
 import twilightforest.entity.boss.AlphaYeti;
 import twilightforest.entity.monster.Yeti;
@@ -34,8 +36,9 @@ public class IceBomb extends TFThrowable {
 		super(type, level);
 	}
 
-	public IceBomb(EntityType<? extends IceBomb> type, Level level, LivingEntity thrower) {
-		super(type, level, thrower);
+	public IceBomb(Level level, LivingEntity thrower) {
+		super(TFEntities.THROWN_ICE.get(), level, thrower);
+		this.setPos(thrower.getEyePosition());
 	}
 
 	public IceBomb(Level level, Position pos) {
@@ -85,7 +88,7 @@ public class IceBomb extends TFThrowable {
 			if (this.level().isEmptyBlock(pos) && Blocks.SNOW.defaultBlockState().canSurvive(this.level(), pos)) {
 				this.level().setBlockAndUpdate(pos, Blocks.SNOW.defaultBlockState());
 			}
-			if (state.is(BlockTagGenerator.ICE_BOMB_REPLACEABLES)) {
+			if (state.is(TFBlockTags.ICE_BOMB_REPLACEABLES)) {
 				this.level().setBlock(pos, Blocks.SNOW.defaultBlockState().canSurvive(this.level(), pos) ? Blocks.SNOW.defaultBlockState() : Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
 			}
 			if (state.is(Blocks.SNOW) && state.getValue(SnowLayerBlock.LAYERS) < 8) {
@@ -156,9 +159,9 @@ public class IceBomb extends TFThrowable {
 	}
 
 	private void inflictDamage(LivingEntity entity, int dmgMultiplier) {
-		if (!entity.getType().is(EntityTypeTags.FREEZE_IMMUNE_ENTITY_TYPES)) {
-			entity.hurt(TFDamageTypes.getIndirectEntityDamageSource(this.level(), TFDamageTypes.FROZEN, this, this.getOwner()),
-				(entity.getType().is(EntityTypeTags.FREEZE_HURTS_EXTRA_TYPES) ? 5.0F : 1.0F) * dmgMultiplier);
+		if (!entity.getType().is(EntityTypeTags.FREEZE_IMMUNE_ENTITY_TYPES) && this.level() instanceof ServerLevel level &&
+			entity.hurtServer(level, this.damageSources().source(TFDamageTypes.FROZEN, this, this.getOwner()),
+				(entity.getType().is(EntityTypeTags.FREEZE_HURTS_EXTRA_TYPES) ? 5.0F : 1.0F) * dmgMultiplier)) {
 			ApplyFrostedEffect.doChillAuraEffect(entity, 100 * dmgMultiplier, 0, true);
 		}
 	}

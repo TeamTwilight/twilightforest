@@ -36,6 +36,7 @@ public final class TFSounds {
 	public static final DeferredHolder<SoundEvent, SoundEvent> BOAR_DEATH = createEvent("entity.twilightforest.boar.death");
 	public static final DeferredHolder<SoundEvent, SoundEvent> BOAR_HURT = createEvent("entity.twilightforest.boar.hurt");
 	public static final DeferredHolder<SoundEvent, SoundEvent> BOAR_STEP = createEvent("entity.twilightforest.boar.step");
+	public static final DeferredHolder<SoundEvent, SoundEvent> BOOKSHELF_CONVERTS = createEvent("block.twilightforest.chiseled_bookshelf.convert");
 	public static final DeferredHolder<SoundEvent, SoundEvent> BOSS_CHEST_APPEAR = createEvent("block.twilightforest.boss_chest.appear");
 	public static final DeferredHolder<SoundEvent, SoundEvent> BRITTLE_FLASK_BREAK = createEvent("item.twilightforest.flask.break");
 	public static final DeferredHolder<SoundEvent, SoundEvent> BRITTLE_FLASK_CRACK = createEvent("item.twilightforest.flask.crack");
@@ -44,6 +45,8 @@ public final class TFSounds {
 	public static final DeferredHolder<SoundEvent, SoundEvent> BUILDER_OFF = createEvent("block.twilightforest.builder.off");
 	public static final DeferredHolder<SoundEvent, SoundEvent> BUILDER_ON = createEvent("block.twilightforest.builder.on");
 	public static final DeferredHolder<SoundEvent, SoundEvent> BUILDER_REPLACE = createEvent("block.twilightforest.builder.replace");
+	public static final DeferredHolder<SoundEvent, SoundEvent> CANDELABRA_LIGHT = createEvent("block.twilightforest.candelabra.light");
+	public static final DeferredHolder<SoundEvent, SoundEvent> CANDELABRA_OMINOUS = createEvent("block.twilightforest.candelabra.ominous");
 	public static final DeferredHolder<SoundEvent, SoundEvent> CARMINITE_BROODLING_AMBIENT = createEvent("entity.twilightforest.carminite_broodling.ambient");
 	public static final DeferredHolder<SoundEvent, SoundEvent> CARMINITE_BROODLING_DEATH = createEvent("entity.twilightforest.carminite_broodling.death");
 	public static final DeferredHolder<SoundEvent, SoundEvent> CARMINITE_BROODLING_HURT = createEvent("entity.twilightforest.carminite_broodling.hurt");
@@ -224,6 +227,9 @@ public final class TFSounds {
 	public static final DeferredHolder<SoundEvent, SoundEvent> SKELETON_DRUID_HURT = createEvent("entity.twilightforest.skeleton_druid.hurt");
 	public static final DeferredHolder<SoundEvent, SoundEvent> SKELETON_DRUID_SHOOT = createEvent("entity.twilightforest.skeleton_druid.shoot");
 	public static final DeferredHolder<SoundEvent, SoundEvent> SKELETON_DRUID_STEP = createEvent("entity.twilightforest.skeleton_druid.step");
+	public static final DeferredHolder<SoundEvent, SoundEvent> SKULL_CHEST_CLOSE = createEvent("block.twilightforest.skull_chest.close");
+	public static final DeferredHolder<SoundEvent, SoundEvent> SKULL_CHEST_LOCKED = createEvent("block.twilightforest.skull_chest.locked");
+	public static final DeferredHolder<SoundEvent, SoundEvent> SKULL_CHEST_OPEN = createEvent("block.twilightforest.skull_chest.open");
 	public static final DeferredHolder<SoundEvent, SoundEvent> SLIDER = createEvent("block.twilightforest.slider.move");
 	public static final DeferredHolder<SoundEvent, SoundEvent> SLIME_BEETLE_AMBIENT = createEvent("entity.twilightforest.slime_beetle.ambient");
 	public static final DeferredHolder<SoundEvent, SoundEvent> SLIME_BEETLE_DEATH = createEvent("entity.twilightforest.slime_beetle.death");
@@ -289,6 +295,7 @@ public final class TFSounds {
 	public static final DeferredHolder<SoundEvent, SoundEvent> YETI_HURT = createEvent("entity.twilightforest.yeti.hurt");
 	public static final DeferredHolder<SoundEvent, SoundEvent> YETI_THROW = createEvent("entity.twilightforest.yeti.throw");
 	public static final DeferredHolder<SoundEvent, SoundEvent> ZOMBIE_SCEPTER_USE = createEvent("item.twilightforest.zombie_scepter.use");
+	public static final DeferredHolder<SoundEvent, SoundEvent> OMINOUS_FIRE = createEvent("block.twilightforest.ominous_fire.light");
 
 	//Parrot sounds
 	public static final DeferredHolder<SoundEvent, SoundEvent> ALPHA_YETI_PARROT = createEvent("entity.twilightforest.parrot.imitate.alpha_yeti");

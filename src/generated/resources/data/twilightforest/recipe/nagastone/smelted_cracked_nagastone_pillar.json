@@ -3,9 +3,7 @@
   "category": "blocks",
   "cookingtime": 200,
   "experience": 0.1,
-  "ingredient": {
-    "item": "twilightforest:nagastone_pillar"
-  },
+  "ingredient": "twilightforest:nagastone_pillar",
   "result": {
     "count": 1,
     "id": "twilightforest:cracked_nagastone_pillar"

@@ -5,6 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.TagKey;
@@ -12,15 +13,14 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.decoration.HangingEntity;
 import net.minecraft.world.entity.decoration.Painting;
 import net.minecraft.world.entity.decoration.PaintingVariant;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -37,13 +37,16 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.fml.util.ObfuscationReflectionHelper;
 import net.neoforged.neoforge.event.EventHooks;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.TwilightForestMod;
 import twilightforest.entity.EnforcedHomePoint;
+import twilightforest.init.TFSounds;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.function.DoubleUnaryOperator;
 
 public class EntityUtil {
@@ -133,13 +136,13 @@ public class EntityUtil {
 	}
 
 	//copy of Mob.doHurtTarget, allows for using a custom DamageSource instead of the generic Mob Attack one
-	public static boolean properlyApplyCustomDamageSource(Mob entity, Entity victim, DamageSource source, @Nullable SoundEvent flingSound) {
-		float f = (float)entity.getAttributeValue(Attributes.ATTACK_DAMAGE);
+	public static boolean properlyApplyCustomDamageSource(ServerLevel level, Mob entity, Entity victim, DamageSource source, @Nullable SoundEvent flingSound) {
+		float f = (float) entity.getAttributeValue(Attributes.ATTACK_DAMAGE);
 		if (entity.level() instanceof ServerLevel serverlevel) {
 			f = EnchantmentHelper.modifyDamage(serverlevel, entity.getWeaponItem(), entity, source, f);
 		}
 
-		boolean flag = victim.hurt(source, f);
+		boolean flag = victim.hurtServer(level, source, f);
 		if (flag) {
 			float f1 = getKnockback(entity, victim, source);
 			if (f1 > 0.0F && victim instanceof LivingEntity livingentity) {
@@ -149,11 +152,7 @@ public class EntityUtil {
 				livingentity.knockback(f1 * 0.5F, Mth.sin(entity.getYRot() * Mth.DEG_TO_RAD), -Mth.cos(entity.getYRot() * Mth.DEG_TO_RAD));
 				entity.setDeltaMovement(entity.getDeltaMovement().multiply(0.6D, 1.0D, 0.6D));
 			}
-
-			if (entity.level() instanceof ServerLevel level) {
-				EnchantmentHelper.doPostAttackEffects(level, victim, source);
-			}
-
+			EnchantmentHelper.doPostAttackEffects(level, victim, source);
 			entity.setLastHurtMob(entity);
 		}
 
@@ -161,15 +160,15 @@ public class EntityUtil {
 	}
 
 	protected static float getKnockback(Mob entity, Entity victim, DamageSource source) {
-		float f = (float)entity.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
+		float f = (float) entity.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
 		return entity.level() instanceof ServerLevel serverlevel ? EnchantmentHelper.modifyKnockback(serverlevel, entity.getWeaponItem(), victim, source, f) : f;
 	}
 
 	// [VanillaCopy] with modifications: StructureTemplate.createEntityIgnoreException
 	@Nullable
-	private static <T extends Entity> T createEntityIgnoreException(EntityType<T> type, ServerLevelAccessor levelAccessor) {
+	private static <T extends Entity> T createEntityIgnoreException(EntityType<T> type, ServerLevelAccessor levelAccessor, EntitySpawnReason reason) {
 		try {
-			return type.create(levelAccessor.getLevel());
+			return type.create(levelAccessor.getLevel(), reason);
 		} catch (Exception exception) {
 			return null;
 		}
@@ -178,7 +177,7 @@ public class EntityUtil {
 	public static boolean tryHangPainting(WorldGenLevel world, BlockPos pos, Direction direction, @Nullable Holder<PaintingVariant> chosenPainting) {
 		if (chosenPainting == null) return false;
 
-		Painting painting = createEntityIgnoreException(EntityType.PAINTING, world);
+		Painting painting = createEntityIgnoreException(EntityType.PAINTING, world, EntitySpawnReason.STRUCTURE);
 
 		painting.setPos(pos.getX(), pos.getY(), pos.getZ());
 		try {
@@ -207,14 +206,14 @@ public class EntityUtil {
 	public static Holder<PaintingVariant> getPaintingOfSize(WorldGenLevel level, RandomSource rand, int width, int height, boolean exactMeasurements) {
 		List<Holder<PaintingVariant>> valid = new ArrayList<>();
 
-		for (Holder<PaintingVariant> art : level.registryAccess().registryOrThrow(Registries.PAINTING_VARIANT).holders().toList()) {
+		for (PaintingVariant art : level.registryAccess().lookupOrThrow(Registries.PAINTING_VARIANT)) {
 			if (exactMeasurements) {
-				if (art.value().width() == width && art.value().height() == height) {
-					valid.add(art);
+				if (art.width() == width && art.height() == height) {
+					valid.add(level.registryAccess().lookupOrThrow(Registries.PAINTING_VARIANT).wrapAsHolder(art));
 				}
 			} else {
-				if (art.value().width() >= width || art.value().height() >= height) {
-					valid.add(art);
+				if (art.width() >= width || art.height() >= height) {
+					valid.add(level.registryAccess().lookupOrThrow(Registries.PAINTING_VARIANT).wrapAsHolder(art));
 				}
 			}
 		}
@@ -229,7 +228,7 @@ public class EntityUtil {
 	public static List<Holder<PaintingVariant>> getPaintingsOfSizeOrSmaller(WorldGenLevel level, TagKey<PaintingVariant> lichTowerPaintings, int width, int height) {
 		List<Holder<PaintingVariant>> valid = new ArrayList<>();
 
-		for (Holder<PaintingVariant> art : level.registryAccess().registryOrThrow(Registries.PAINTING_VARIANT).getTagOrEmpty(lichTowerPaintings)) {
+		for (Holder<PaintingVariant> art : level.registryAccess().lookupOrThrow(Registries.PAINTING_VARIANT).getTagOrEmpty(lichTowerPaintings)) {
 			if (art.value().width() <= width && art.value().height() <= height) {
 				valid.add(art);
 			}
@@ -272,7 +271,7 @@ public class EntityUtil {
 				ChunkAccess chunk = world.getChunk(i1, j1, ChunkStatus.STRUCTURE_STARTS);
 				if (chunk instanceof ProtoChunk proto) {
 					proto.getEntities().forEach(nbt -> {
-						Entity entity = EntityType.loadEntityRecursive(nbt, world.getLevel(), e -> e);
+						Entity entity = EntityType.loadEntityRecursive(nbt, world.getLevel(), EntitySpawnReason.STRUCTURE, e -> e);
 						if (entity != null && boundingBox.intersects(entity.getBoundingBox())) {
 							list.add(entity);
 						}
@@ -282,5 +281,83 @@ public class EntityUtil {
 		}
 
 		return list;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static boolean convertEntity(LivingEntity oldEntity, EntityType<?> newType) {
+		if (!(oldEntity.level() instanceof ServerLevel level)) return false;
+		var newEntity = newType.create(level, EntitySpawnReason.CONVERSION);
+		if (newEntity == null) return false;
+		if (!(newEntity instanceof LivingEntity living) || EventHooks.canLivingConvert(oldEntity, (EntityType<? extends LivingEntity>) living.getType(), timer -> {})) {
+			var passengerSave = oldEntity.getPassengers();
+			if (oldEntity instanceof Mob mob && newEntity instanceof Mob newMob) {
+				newEntity = mob.convertTo((EntityType<? extends Mob>) newMob.getType(), ConversionParams.single(mob, true, true), mob1 -> {
+					EventHooks.onLivingConvert(oldEntity, mob1);
+				});
+			} else {
+				newEntity.copyPosition(oldEntity);
+
+				if (newEntity instanceof Mob mob) {
+					if (oldEntity instanceof Mob oldMob) {
+						for (EquipmentSlot equipmentslot : EquipmentSlot.values()) {
+							ItemStack itemstack = oldEntity.getItemBySlot(equipmentslot).copyAndClear();
+							if (!itemstack.isEmpty()) {
+								mob.setItemSlot(equipmentslot, itemstack.copyAndClear());
+								mob.setDropChance(equipmentslot, oldMob.getEquipmentDropChance(equipmentslot));
+							}
+						}
+					}
+
+					EventHooks.finalizeMobSpawn(mob, level, level.getCurrentDifficultyAt(oldEntity.blockPosition()), EntitySpawnReason.CONVERSION, null);
+				}
+
+				oldEntity.level().addFreshEntity(newEntity);
+				oldEntity.discard();
+			}
+			try { // try copying what can be copied
+				UUID uuid = newEntity.getUUID();
+				newEntity.load(oldEntity.saveWithoutId(newEntity.saveWithoutId(new CompoundTag())));
+				newEntity.setUUID(uuid);
+				if (newEntity instanceof LivingEntity living) {
+					living.setHealth(living.getMaxHealth());
+				}
+			} catch (Exception e) {
+				TwilightForestMod.LOGGER.warn("Couldn't transform entity NBT data", e);
+			}
+
+			if (oldEntity instanceof Saddleable saddleable && saddleable.isSaddled() && !(newEntity instanceof Saddleable)) {
+				newEntity.spawnAtLocation(level, Items.SADDLE);
+			}
+
+			if (newEntity instanceof Mob mob) {
+				mob.spawnAnim();
+				mob.spawnAnim();
+
+				for (EquipmentSlot equipmentslot : EquipmentSlot.values()) {
+					ItemStack itemstack = mob.getItemBySlot(equipmentslot).copyAndClear();
+					mob.spawnAtLocation(level, itemstack);
+				}
+			}
+
+			if (!passengerSave.isEmpty()) {
+				for (var entity : passengerSave) {
+					entity.startRiding(newEntity, true);
+				}
+			}
+
+			if (newEntity instanceof LivingEntity living) EventHooks.onLivingConvert(oldEntity, living);
+			level.playSound(null, newEntity.blockPosition(), TFSounds.POWDER_USE.get(), newEntity.getSoundSource());
+			return true;
+		}
+		return false;
+	}
+
+	@Nullable
+	public static <T extends Entity> T createEntityIgnoreException(ServerLevelAccessor level, EntityType<T> type) {
+		try {
+			return type.create(level.getLevel(), EntitySpawnReason.MOB_SUMMONED);
+		} catch (Exception exception) {
+			return null;
+		}
 	}
 }

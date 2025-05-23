@@ -28,7 +28,6 @@ public class MazeRoomComponent extends TFStructureComponentOld {
 		super(piece, nbt);
 	}
 
-	@SuppressWarnings("this-escape")
 	public MazeRoomComponent(StructurePieceType type, int i, RandomSource rand, int x, int y, int z) {
 		super(type, i, x, y, z);
 		this.setOrientation(Direction.Plane.HORIZONTAL.getRandomDirection(rand));

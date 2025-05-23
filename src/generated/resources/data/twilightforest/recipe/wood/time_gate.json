@@ -3,12 +3,8 @@
   "category": "redstone",
   "group": "wooden_fence_gate",
   "key": {
-    "#": {
-      "item": "twilightforest:time_planks"
-    },
-    "S": {
-      "tag": "c:rods/wooden"
-    }
+    "#": "twilightforest:time_planks",
+    "S": "#c:rods/wooden"
   },
   "pattern": [
     "S#S",

@@ -25,7 +25,7 @@ public class UndergroundPlantFeature extends Feature<BlockStateConfiguration> {
 		int copyX = pos.getX();
 		int copyZ = pos.getZ();
 
-		for (; pos.getY() > world.getMinBuildHeight(); pos = pos.below()) {
+		for (; pos.getY() > world.getMinY(); pos = pos.below()) {
 			if (world.isEmptyBlock(pos) && random.nextInt(6) > 0) {
 				if (ctx.config().state.canSurvive(ctx.level(), pos)) {
 					if (ctx.config().state.is(TFBlocks.TROLLVIDR) && random.nextInt(10) == 0) {

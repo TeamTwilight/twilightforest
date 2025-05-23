@@ -1,5 +1,6 @@
 package twilightforest.entity;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 
 public interface IBreathAttacker {
@@ -13,5 +14,5 @@ public interface IBreathAttacker {
 	 *
 	 * @param target
 	 */
-	void doBreathAttack(Entity target);
+	void doBreathAttack(ServerLevel level, Entity target);
 }

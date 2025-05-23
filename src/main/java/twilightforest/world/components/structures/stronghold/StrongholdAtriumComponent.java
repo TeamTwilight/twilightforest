@@ -150,7 +150,7 @@ public class StrongholdAtriumComponent extends KnightStrongholdComponent {
 			// grow a tree
 
 			for (int i = 0; i < 100; i++) {
-				if (world.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE).get(treeGen).place(world, generator, world.getRandom(), pos)) {
+				if (world.registryAccess().lookupOrThrow(Registries.CONFIGURED_FEATURE).getValueOrThrow(treeGen).place(world, generator, world.getRandom(), pos)) {
 					break;
 				}
 			}

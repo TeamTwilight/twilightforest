@@ -3,9 +3,7 @@
   "category": "building",
   "group": "wooden_slab",
   "key": {
-    "#": {
-      "item": "twilightforest:mangrove_planks"
-    }
+    "#": "twilightforest:mangrove_planks"
   },
   "pattern": [
     "###"

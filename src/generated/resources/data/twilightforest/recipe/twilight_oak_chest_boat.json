@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "chest_boat",
   "ingredients": [
-    {
-      "item": "twilightforest:twilight_oak_boat"
-    },
-    {
-      "tag": "c:chests/wooden"
-    }
+    "twilightforest:twilight_oak_boat",
+    "#c:chests/wooden"
   ],
   "result": {
     "count": 1,

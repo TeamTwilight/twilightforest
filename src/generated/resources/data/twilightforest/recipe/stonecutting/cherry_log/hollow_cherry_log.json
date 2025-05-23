@@ -1,8 +1,6 @@
 {
   "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "minecraft:cherry_log"
-  },
+  "ingredient": "minecraft:cherry_log",
   "result": {
     "count": 1,
     "id": "twilightforest:hollow_cherry_log"

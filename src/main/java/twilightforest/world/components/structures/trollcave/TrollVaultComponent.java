@@ -24,7 +24,6 @@ public class TrollVaultComponent extends TFStructureComponentOld {
 		super(TFStructurePieceTypes.TFTCVa.get(), nbt);
 	}
 
-	@SuppressWarnings("this-escape")
 	public TrollVaultComponent(int index, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFTCVa.get(), index, x, y, z);
 		this.setOrientation(Direction.SOUTH);

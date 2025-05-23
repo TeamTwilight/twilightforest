@@ -14,7 +14,6 @@ public class ThrowSpikeBlockGoal extends Goal {
 	protected final SpikeBlock spikeBlock;
 	private int cooldown;
 
-	@SuppressWarnings("this-escape")
 	public ThrowSpikeBlockGoal(BlockChainGoblin goblin, SpikeBlock block) {
 		this.attacker = goblin;
 		this.spikeBlock = block;

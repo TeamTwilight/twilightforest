@@ -17,9 +17,9 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
-import twilightforest.data.custom.stalactites.entry.Stalactite;
-import twilightforest.data.tags.BlockTagGenerator;
+import twilightforest.tags.TFBlockTags;
 import twilightforest.util.features.FeatureLogic;
+import twilightforest.world.components.spelothem.Stalactite;
 
 import java.util.List;
 
@@ -96,7 +96,7 @@ public class BlockSpikeFeature extends Feature<NoneFeatureConfiguration> {
 		if (!hang) {
 			BlockPos below = startPos.below(2);
 			BlockState belowState = level.getBlockState(below);
-			if (!belowState.is(BlockTagGenerator.SUPPORTS_STALAGMITES) &&
+			if (!belowState.is(TFBlockTags.SUPPORTS_STALAGMITES) &&
 				(!FeatureLogic.worldGenReplaceable(belowState) || !belowState.isFaceSturdy(level, below, Direction.UP) || FeatureLogic.isBlockNotOk(belowState))) return false;
 		}
 

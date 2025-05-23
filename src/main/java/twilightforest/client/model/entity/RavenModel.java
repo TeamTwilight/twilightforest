@@ -6,7 +6,7 @@
 
 package twilightforest.client.model.entity;
 
-import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
@@ -14,11 +14,10 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import twilightforest.client.JappaPackReloadListener;
-import twilightforest.entity.passive.Raven;
+import twilightforest.client.state.BirdRenderState;
 
-public class RavenModel extends HierarchicalModel<Raven> {
-	private final ModelPart root;
+public class RavenModel extends EntityModel<BirdRenderState> {
+
 	private final ModelPart head;
 	private final ModelPart rightWing;
 	private final ModelPart leftWing;
@@ -26,7 +25,7 @@ public class RavenModel extends HierarchicalModel<Raven> {
 	private final ModelPart leftLeg;
 
 	public RavenModel(ModelPart root) {
-		this.root = root;
+		super(root);
 
 		this.head = root.getChild("head");
 		var body = root.getChild("body");
@@ -36,11 +35,7 @@ public class RavenModel extends HierarchicalModel<Raven> {
 		this.leftLeg = root.getChild("left_leg");
 	}
 
-	public static LayerDefinition checkForPack() {
-		return JappaPackReloadListener.INSTANCE.isJappaPackLoaded() ? createJappaModel() : create();
-	}
-
-	private static LayerDefinition create() {
+	public static LayerDefinition create() {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition base = meshdefinition.getRoot();
 
@@ -102,68 +97,21 @@ public class RavenModel extends HierarchicalModel<Raven> {
 		return LayerDefinition.create(meshdefinition, 32, 32);
 	}
 
-	private static LayerDefinition createJappaModel() {
-		MeshDefinition meshdefinition = new MeshDefinition();
-		PartDefinition partdefinition = meshdefinition.getRoot();
-
-		partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
-				.texOffs(0, 0)
-				.addBox(-1.5F, -1.0F, -2.0F, 3.0F, 3.0F, 3.0F)
-				.texOffs(9, 0)
-				.addBox(-0.5F, 0.0F, -3.0F, 1.0F, 2.0F, 1.0F),
-			PartPose.offset(0.0F, 18.5F, -2.0F));
-
-		var body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create()
-				.texOffs(0, 6)
-				.addBox(-2.0F, -1.5F, 0.0F, 4.0F, 3.0F, 6.0F),
-			PartPose.offsetAndRotation(0.0F, 18.5F, -2.0F, -0.4363323129985824F, 0.0F, 0.0F));
-
-		body.addOrReplaceChild("right_wing", CubeListBuilder.create()
-				.texOffs(0, 15)
-				.addBox(-1.0F, 0.0F, -1.0F, 1.0F, 3.0F, 6.0F),
-			PartPose.offsetAndRotation(-2.0F, -1.0F, 2.0F, 0.2617993877991494F, 0.0F, 0.0F));
-
-		body.addOrReplaceChild("left_wing", CubeListBuilder.create()
-				.texOffs(14, 15)
-				.addBox(0.0F, 0.0F, -1.0F, 1.0F, 3.0F, 6.0F),
-			PartPose.offsetAndRotation(2.0F, -1.0F, 2.0F, 0.2617993877991494F, 0.0F, 0.0F));
-
-		partdefinition.addOrReplaceChild("right_leg", CubeListBuilder.create()
-				.texOffs(8, 15)
-				.addBox(0.0F, 0.0F, -1.0F, 1.0F, 2.0F, 2.0F),
-			PartPose.offsetAndRotation(-1.0F, 0.0F, 0.0F, 0.7853981633974483F, 0.0F, 0.0F));
-
-		partdefinition.addOrReplaceChild("left_leg", CubeListBuilder.create()
-				.texOffs(14, 15)
-				.addBox(0.0F, 0.0F, -1.0F, 1.0F, 2.0F, 2.0F),
-			PartPose.offsetAndRotation(1.0F, 0.0F, 0.0F, 0.7853981633974483F, 0.0F, 0.0F));
-
-		body.addOrReplaceChild("tail", CubeListBuilder.create()
-				.texOffs(8, 0)
-				.addBox(-2.5F, 0.0F, 0.0F, 5.0F, 0.0F, 5.0F),
-			PartPose.offsetAndRotation(0.0F, -1.5F, 6.0F, -0.4363323129985824F, 0.0F, 0.0F));
-
-		return LayerDefinition.create(meshdefinition, 32, 32);
-	}
-
 	@Override
-	public ModelPart root() {
-		return this.root;
-	}
+	public void setupAnim(BirdRenderState state) {
+		super.setupAnim(state);
+		float f = (Mth.sin(state.flap) + 1.0F) * state.flapSpeed;
+		this.head.xRot = state.xRot * Mth.DEG_TO_RAD;
+		this.head.yRot = state.yRot * Mth.DEG_TO_RAD;
+		this.head.zRot = state.yRot > 5.0F ? -0.2617994F : 0.0F;
 
-	@Override
-	public void setupAnim(Raven entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		this.head.xRot = headPitch * Mth.DEG_TO_RAD;
-		this.head.yRot = netHeadYaw * Mth.DEG_TO_RAD;
-		this.head.zRot = netHeadYaw > 5.0F ? -0.2617994F : 0.0F;
+		this.rightLeg.xRot = Mth.cos(state.walkAnimationPos * 0.6662F) * 1.4F * state.walkAnimationSpeed;
+		this.leftLeg.xRot = Mth.cos(state.walkAnimationPos * 0.6662F + Mth.PI) * 1.4F * state.walkAnimationSpeed;
 
-		this.rightLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-		this.leftLeg.xRot = Mth.cos(limbSwing * 0.6662F + Mth.PI) * 1.4F * limbSwingAmount;
+		this.rightWing.zRot = f;
+		this.leftWing.zRot = -f;
 
-		this.rightWing.zRot = ageInTicks;
-		this.leftWing.zRot = -ageInTicks;
-
-		if (entity.isBirdLanded()) {
+		if (state.landed) {
 			this.rightLeg.y = 21.0F;
 			this.leftLeg.y = 21.0F;
 		} else {

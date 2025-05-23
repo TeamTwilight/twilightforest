@@ -1,6 +1,7 @@
 package twilightforest.world.components.structures;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.FrontAndTop;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -15,53 +16,70 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
+import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
+import net.minecraft.world.level.levelgen.structure.templatesystem.*;
+import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.util.jigsaw.JigsawRecord;
+import twilightforest.world.components.structures.lichtowerrevamp.StructureTemplateDefinitions;
+import twilightforest.world.components.structures.util.ProgressionPiece;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 
-public abstract class TwilightJigsawPiece extends TwilightTemplateStructurePiece {
-	@Nullable
+public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implements ProgressionPiece, PieceBeardifierModifier {
 	private final JigsawRecord sourceJigsaw;
 	private final List<JigsawRecord> spareJigsaws;
+	private TerrainAdjustment terrainAdjustment;
+
+	public static TwilightJigsawPiece defaultDeserialize(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
+		TwilightJigsawPiece twilightJigsawPiece = new TwilightJigsawPiece(TFStructurePieceTypes.TFJigsawTemplate.value(), compoundTag, ctx, readSettings(compoundTag));
+		twilightJigsawPiece.placeSettings().addProcessor(JigsawReplacementProcessor.INSTANCE);
+		twilightJigsawPiece.placeSettings().addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK);
+		return twilightJigsawPiece;
+	}
+
+	@Nullable
+	public static TwilightJigsawPiece initializeTemplateFromPool(ResourceLocation templatePool, BlockPos.MutableBlockPos parentJunctionPos, FrontAndTop parentOrientation, String selectName, RandomSource rand, int genDepth, StructureTemplateManager structureManager) {
+		ResourceLocation templateId = StructureTemplateDefinitions.INSTANCE.rollTemplatePool(rand, templatePool);
+		JigsawPlaceContext placeContext = JigsawPlaceContext.pickPlaceableJunction(parentJunctionPos, BlockPos.ZERO, parentOrientation, structureManager, templateId, selectName, rand);
+
+		if (templateId == null || placeContext == null)
+			return null;
+
+		return TwilightJigsawPiece.defaultForTemplate(genDepth, structureManager, templateId, placeContext);
+	}
+
+	public static TwilightJigsawPiece defaultForTemplate(int genDepth, StructureTemplateManager structureManager, ResourceLocation templateLocation, JigsawPlaceContext jigsawContext) {
+		TwilightJigsawPiece twilightJigsawPiece = new TwilightJigsawPiece(TFStructurePieceTypes.TFJigsawTemplate.value(), genDepth, structureManager, templateLocation, jigsawContext);
+		twilightJigsawPiece.placeSettings().addProcessor(JigsawReplacementProcessor.INSTANCE);
+		twilightJigsawPiece.placeSettings().addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK);
+		return twilightJigsawPiece;
+	}
 
 	public TwilightJigsawPiece(StructurePieceType structurePieceType, CompoundTag compoundTag, StructurePieceSerializationContext ctx, StructurePlaceSettings placeSettings) {
 		super(structurePieceType, compoundTag, ctx, placeSettings);
 
 		this.sourceJigsaw = readSourceFromNBT(compoundTag);
 		this.spareJigsaws = readConnectionsFromNBT(compoundTag);
-	}
-
-	public TwilightJigsawPiece(StructurePieceType type, int genDepth, StructureTemplateManager structureManager, ResourceLocation templateLocation, StructurePlaceSettings placeSettings, BlockPos startPosition) {
-		this(type, genDepth, structureManager, templateLocation, placeSettings, startPosition, null, JigsawRecord.allFromTemplate(structureManager, templateLocation, placeSettings));
+		this.terrainAdjustment = TerrainAdjustment.NONE;
 	}
 
 	public TwilightJigsawPiece(StructurePieceType type, int genDepth, StructureTemplateManager structureManager, ResourceLocation templateLocation, JigsawPlaceContext jigsawContext) {
-		this(type, genDepth, structureManager, templateLocation, jigsawContext.placementSettings(), jigsawContext.templatePos(), jigsawContext.seedJigsaw(), jigsawContext.spareJigsaws());
+		super(type, genDepth, structureManager, templateLocation, jigsawContext.placementSettings(), jigsawContext.templatePos());
+
+		this.sourceJigsaw = jigsawContext.seedJigsaw();
+		this.spareJigsaws = Collections.unmodifiableList(jigsawContext.spareJigsaws());
+		this.terrainAdjustment = TerrainAdjustment.NONE;
 	}
 
-	private TwilightJigsawPiece(StructurePieceType type, int genDepth, StructureTemplateManager structureManager, ResourceLocation templateLocation, StructurePlaceSettings placeSettings, BlockPos startPosition, @Nullable JigsawRecord sourceJigsaw, List<JigsawRecord> spareJigsaws) {
-		super(type, genDepth, structureManager, templateLocation, placeSettings, startPosition);
-
-		this.sourceJigsaw = sourceJigsaw;
-		this.spareJigsaws = Collections.unmodifiableList(spareJigsaws);
-	}
-
-	@Nullable
 	protected static JigsawRecord readSourceFromNBT(CompoundTag structureTag) {
-		if (!structureTag.contains("source", Tag.TAG_COMPOUND)) {
-			return null;
-		}
-
 		return JigsawRecord.fromTag(structureTag.getCompound("source"));
 	}
 
@@ -83,9 +101,7 @@ public abstract class TwilightJigsawPiece extends TwilightTemplateStructurePiece
 	protected void addAdditionalSaveData(StructurePieceSerializationContext ctx, CompoundTag structureTag) {
 		super.addAdditionalSaveData(ctx, structureTag);
 
-		if (this.sourceJigsaw != null) {
-			structureTag.put("source", this.sourceJigsaw.toTag());
-		}
+		structureTag.put("source", this.sourceJigsaw.toTag());
 
 		ListTag tags = new ListTag();
 
@@ -106,7 +122,8 @@ public abstract class TwilightJigsawPiece extends TwilightTemplateStructurePiece
 		}
 	}
 
-	protected abstract void processJigsaw(StructurePiece parent, StructurePieceAccessor pieceAccessor, RandomSource random, JigsawRecord connection, int jigsawIndex);
+	protected void processJigsaw(StructurePiece parent, StructurePieceAccessor pieceAccessor, RandomSource random, JigsawRecord connection, int jigsawIndex) {
+	}
 
 	@Override
 	public void postProcess(WorldGenLevel level, StructureManager structureManager, ChunkGenerator chunkGen, RandomSource random, BoundingBox chunkBounds, ChunkPos chunkPos, BlockPos structureCenterPos) {
@@ -121,9 +138,12 @@ public abstract class TwilightJigsawPiece extends TwilightTemplateStructurePiece
 		}
 	}
 
-	@Nullable
 	public JigsawRecord getSourceJigsaw() {
 		return this.sourceJigsaw;
+	}
+
+	public BlockPos getSourcePosition() {
+		return this.templatePosition.offset(this.sourceJigsaw.pos());
 	}
 
 	public List<JigsawRecord> getSpareJigsaws() {
@@ -138,5 +158,28 @@ public abstract class TwilightJigsawPiece extends TwilightTemplateStructurePiece
 				jigsaws.add(record);
 
 		return jigsaws;
+	}
+
+	public int firstMatchIndex(Predicate<JigsawRecord> filter) {
+		for (int i = 0; i < this.spareJigsaws.size(); i++)
+			if (filter.test(this.spareJigsaws.get(i)))
+				return i;
+
+		return -1;
+	}
+
+	@Override
+	public BoundingBox getBeardifierBox() {
+		return this.boundingBox;
+	}
+
+	@Override
+	public TerrainAdjustment getTerrainAdjustment() {
+		return this.terrainAdjustment;
+	}
+
+	@Override
+	public int getGroundLevelDelta() {
+		return 0;
 	}
 }

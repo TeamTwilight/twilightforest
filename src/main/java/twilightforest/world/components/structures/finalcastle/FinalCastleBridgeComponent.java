@@ -26,7 +26,6 @@ public class FinalCastleBridgeComponent extends TFStructureComponentOld {
 		super(TFStructurePieceTypes.TFFCBri.get(), nbt);
 	}
 
-	@SuppressWarnings("this-escape")
 	public FinalCastleBridgeComponent(int i, int x, int y, int z, int length, Direction direction) {
 		super(TFStructurePieceTypes.TFFCBri.get(), i, x, y, z);
 		this.setOrientation(direction);

@@ -1,6 +1,7 @@
 package twilightforest.entity.ai.goal;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -20,14 +21,12 @@ public class NagaSmashGoal extends Goal {
 
 	@Override
 	public boolean canUse() {
-		return this.naga.horizontalCollision && EventHooks.canEntityGrief(this.naga.level(), this.naga);
+		return this.naga.horizontalCollision && EventHooks.canEntityGrief(getServerLevel(this.naga), this.naga);
 	}
 
 	@Override
 	public void start() {
 		// NAGA SMASH!
-		if (this.naga.level().isClientSide()) return;
-
 		AABB bb = this.naga.getBoundingBox();
 
 		int minx = Mth.floor(bb.minX - 0.75D);

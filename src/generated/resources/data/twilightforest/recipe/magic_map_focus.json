@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "twilightforest:raven_feather"
-    },
-    {
-      "item": "twilightforest:torchberries"
-    },
-    {
-      "tag": "c:dusts/glowstone"
-    }
+    "twilightforest:raven_feather",
+    "twilightforest:torchberries",
+    "#c:dusts/glowstone"
   ],
   "result": {
     "count": 1,

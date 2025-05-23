@@ -1,5 +1,5 @@
-// 1.21.1	2024-08-11T11:15:17.181360744	Twilight Forest Entity Tags
-00b66b9a62a509d2c0bcfad259ff965c818a8f12 data/aether/tags/entity_type/deflectable_projectiles.json
+// 1.21.4	2025-03-31T09:20:45.7979585	Twilight Forest Entity Tags
+d208fff881b5ab7116f15e79ec1b5954653479cd data/aether/tags/entity_type/deflectable_projectiles.json
 9e5f68b2faa6d767538d0f4264a7145d32a2bdda data/aether/tags/entity_type/fire_mob.json
 3ddb086fa7ad80a4f7018142796566c22407e7e4 data/aether/tags/entity_type/pigs.json
 986ee69ca972520c9ae4cf136e28d84e98d0f256 data/alexscaves/tags/entity_type/resists_acid.json
@@ -17,7 +17,7 @@ f0201eef926830e5f1c0aaaf18c674c503d22c0b data/minecraft/tags/entity_type/freeze_
 4cc81785a3c2c7f11c11bac6cf2ad3c0d89c9ad5 data/minecraft/tags/entity_type/frog_food.json
 6184dccab39df4437d8d887c05024f60bd5e788d data/minecraft/tags/entity_type/immune_to_infested.json
 4cc81785a3c2c7f11c11bac6cf2ad3c0d89c9ad5 data/minecraft/tags/entity_type/immune_to_oozing.json
-7e37d5f14228bd5903b7d4c85c407f06d291ad53 data/minecraft/tags/entity_type/impact_projectiles.json
+dcf1397e690453cbfefff253d9ae85d6eaeb4b03 data/minecraft/tags/entity_type/impact_projectiles.json
 e1ec2146a12c67e6333cd9738c81291aded74036 data/minecraft/tags/entity_type/powder_snow_walkable_mobs.json
 016d3165a6f228f7416cec2923bf9b8bed8979fa data/minecraft/tags/entity_type/redirectable_projectile.json
 05818cb02398f00d3d7129f8fa26858a295e069f data/minecraft/tags/entity_type/skeletons.json
@@ -25,6 +25,7 @@ d0db54edeabbabca99c42c3c4953efe760b18c03 data/minecraft/tags/entity_type/undead.
 4c421f0abf08155c163118250eff7f5a24617998 data/minecraft/tags/entity_type/zombies.json
 38bf80bb5d608168d87dbbc33e3314fd1d0135d9 data/twilightforest/tags/entity_type/bosses.json
 bfe454dfc8b286c9a748229c8338e4e382fb5348 data/twilightforest/tags/entity_type/dont_kill_bugs.json
+783d0f4b0afa2163ebc4d44da8d1d56939023582 data/twilightforest/tags/entity_type/lich_deflects_phase_2.json
 6787368a63a113d6f8b2e25cd08d952fd7467436 data/twilightforest/tags/entity_type/lich_poppables.json
 20a1f4f56dc7667b8bc729dfd372c2e9f5d7ad1e data/twilightforest/tags/entity_type/lifedrain_drops_no_flesh.json
 c5eb251bcb3f4e958ddcb4f254b0d3563e7d28e7 data/twilightforest/tags/entity_type/multiplayer_inclusive_entities.json

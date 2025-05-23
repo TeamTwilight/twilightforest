@@ -47,7 +47,7 @@ public class RopeItem extends BlockItem {
 			while (i < EXTEND_RANGE) {
 				if (!level.isClientSide && !level.isInWorldBounds(mutableBlockPos)) {
 					Player player = context.getPlayer();
-					int j = level.getMaxBuildHeight();
+					int j = level.getMaxY();
 					if (player instanceof ServerPlayer serverPlayer && mutableBlockPos.getY() >= j) {
 						serverPlayer.sendSystemMessage(Component.translatable("build.tooHigh", j - 1).withStyle(ChatFormatting.RED), true);
 					}

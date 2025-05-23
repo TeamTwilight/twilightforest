@@ -2,11 +2,14 @@ package twilightforest.entity;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFEntities;
 
 public class ProtectionBox extends Entity {
@@ -17,6 +20,7 @@ public class ProtectionBox extends Entity {
 	public final int sizeY;
 	public final int sizeZ;
 
+	@Nullable
 	private final BoundingBox sbb;
 
 	public ProtectionBox(EntityType<?> type, Level world) {
@@ -25,7 +29,6 @@ public class ProtectionBox extends Entity {
 		this.sbb = null;
 	}
 
-	@SuppressWarnings("this-escape")
 	public ProtectionBox(Level world, BoundingBox sbb) {
 		super(TFEntities.PROTECTION_BOX.get(), world);
 
@@ -51,6 +54,11 @@ public class ProtectionBox extends Entity {
 		} else {
 			this.lifeTime--;
 		}
+	}
+
+	@Override
+	public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
+		return false;
 	}
 
 	public boolean matches(BoundingBox sbb) {

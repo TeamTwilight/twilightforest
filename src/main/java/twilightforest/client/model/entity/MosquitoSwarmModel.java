@@ -1,20 +1,20 @@
 package twilightforest.client.model.entity;
 
-import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import org.joml.Vector3f;
-import twilightforest.entity.monster.MosquitoSwarm;
 
-public class MosquitoSwarmModel extends HierarchicalModel<MosquitoSwarm> {
-	private final ModelPart root;
+public class MosquitoSwarmModel extends EntityModel<LivingEntityRenderState> {
+
 	private final ModelPart core;
 	private final ModelPart group1;
 	private final ModelPart group2;
@@ -26,7 +26,7 @@ public class MosquitoSwarmModel extends HierarchicalModel<MosquitoSwarm> {
 	private static final RandomSource rand = RandomSource.create();
 
 	public MosquitoSwarmModel(ModelPart root) {
-		this.root = root;
+		super(root);
 
 		this.core = this.root.getChild("core");
 
@@ -82,43 +82,34 @@ public class MosquitoSwarmModel extends HierarchicalModel<MosquitoSwarm> {
 	}
 
 	@Override
-	public ModelPart root() {
-		return this.root;
-	}
+	public void setupAnim(LivingEntityRenderState state) {
+		super.setupAnim(state);
+		this.core.yRot = (state.ageInTicks) / 5.0F;
+		this.core.xRot = Mth.sin((state.ageInTicks) / 5.0F) / 4.0F;
+		this.core.zRot = Mth.cos((state.ageInTicks) / 5.0F) / 4.0F;
 
-	@Override
-	public void setupAnim(MosquitoSwarm entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+		this.group1.yRot = (state.ageInTicks) / 2.0F;
+		this.group1.xRot = Mth.sin((state.ageInTicks) / 6.0F) / 2.0F;
+		this.group1.zRot = Mth.cos((state.ageInTicks) / 5.0F) / 4.0F;
 
-	}
+		this.group2.yRot = Mth.sin((state.ageInTicks) / 2.0F) / 3.0F;
+		this.group2.xRot = (state.ageInTicks) / 5.0F;
+		this.group2.zRot = Mth.cos((state.ageInTicks) / 5.0F) / 4.0F;
 
-	@Override
-	public void prepareMobModel(MosquitoSwarm entity, float limbSwing, float limbSwingAmount, float partialTicks) {
-		this.core.yRot = (entity.tickCount + partialTicks) / 5.0F;
-		this.core.xRot = Mth.sin((entity.tickCount + partialTicks) / 5.0F) / 4.0F;
-		this.core.zRot = Mth.cos((entity.tickCount + partialTicks) / 5.0F) / 4.0F;
+		this.group3.yRot = Mth.sin((state.ageInTicks) / 7.0F) / 3.0F;
+		this.group3.xRot = Mth.cos((state.ageInTicks) / 4.0F) / 2.0F;
+		this.group3.zRot = (state.ageInTicks) / 5.0F;
 
-		this.group1.yRot = (entity.tickCount + partialTicks) / 2.0F;
-		this.group1.xRot = Mth.sin((entity.tickCount + partialTicks) / 6.0F) / 2.0F;
-		this.group1.zRot = Mth.cos((entity.tickCount + partialTicks) / 5.0F) / 4.0F;
+		this.group4.xRot = (state.ageInTicks) / 2.0F;
+		this.group4.zRot = Mth.sin((state.ageInTicks) / 6.0F) / 2.0F;
+		this.group4.yRot = Mth.sin((state.ageInTicks) / 5.0F) / 4.0F;
 
-		this.group2.yRot = Mth.sin((entity.tickCount + partialTicks) / 2.0F) / 3.0F;
-		this.group2.xRot = (entity.tickCount + partialTicks) / 5.0F;
-		this.group2.zRot = Mth.cos((entity.tickCount + partialTicks) / 5.0F) / 4.0F;
+		this.group5.zRot = (state.ageInTicks) / 2.0F;
+		this.group5.yRot = Mth.cos((state.ageInTicks) / 5.0F) / 4.0F;
+		this.group5.xRot = Mth.cos((state.ageInTicks) / 5.0F) / 4.0F;
 
-		this.group3.yRot = Mth.sin((entity.tickCount + partialTicks) / 7.0F) / 3.0F;
-		this.group3.xRot = Mth.cos((entity.tickCount + partialTicks) / 4.0F) / 2.0F;
-		this.group3.zRot = (entity.tickCount + partialTicks) / 5.0F;
-
-		this.group4.xRot = (entity.tickCount + partialTicks) / 2.0F;
-		this.group4.zRot = Mth.sin((entity.tickCount + partialTicks) / 6.0F) / 2.0F;
-		this.group4.yRot = Mth.sin((entity.tickCount + partialTicks) / 5.0F) / 4.0F;
-
-		this.group5.zRot = (entity.tickCount + partialTicks) / 2.0F;
-		this.group5.yRot = Mth.cos((entity.tickCount + partialTicks) / 5.0F) / 4.0F;
-		this.group5.xRot = Mth.cos((entity.tickCount + partialTicks) / 5.0F) / 4.0F;
-
-		this.group6.zRot = Mth.cos((entity.tickCount + partialTicks) / 7.0F) / 3.0F;
-		this.group6.xRot = Mth.cos((entity.tickCount + partialTicks) / 4.0F) / 2.0F;
-		this.group6.yRot = (entity.tickCount + partialTicks) / 5.0F;
+		this.group6.zRot = Mth.cos((state.ageInTicks) / 7.0F) / 3.0F;
+		this.group6.xRot = Mth.cos((state.ageInTicks) / 4.0F) / 2.0F;
+		this.group6.yRot = (state.ageInTicks) / 5.0F;
 	}
 }

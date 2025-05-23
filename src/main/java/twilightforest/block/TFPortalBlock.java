@@ -32,7 +32,8 @@ import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.portal.DimensionTransition;
+import net.minecraft.world.level.portal.TeleportTransition;
+import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -42,7 +43,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.config.TFConfig;
-import twilightforest.data.tags.BlockTagGenerator;
+import twilightforest.tags.TFBlockTags;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFDimension;
@@ -116,11 +117,11 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 	}
 
 	private static boolean isNatureBlock(BlockState state) {
-		return state.is(BlockTagGenerator.PORTAL_DECO);
+		return state.is(TFBlockTags.PORTAL_DECO);
 	}
 
 	private static boolean isGrassOrDirt(BlockState state) {
-		return state.is(BlockTagGenerator.PORTAL_EDGE);
+		return state.is(TFBlockTags.PORTAL_EDGE);
 	}
 
 	public static boolean isPlayerNotifiedOfRequirement(ServerPlayer player) {
@@ -152,7 +153,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 		return Fluids.WATER.getFlowing(1, false); // 1 is minimum value. Minecraft wiki at time of this writing has the values backwards.
 	}
 
-	public boolean tryToCreatePortal(Level level, BlockPos pos, ItemEntity catalyst, @Nullable Player player) {
+	public boolean tryToCreatePortal(ServerLevel level, BlockPos pos, ItemEntity catalyst, @Nullable Player player) {
 
 		BlockState state = level.getBlockState(pos);
 
@@ -165,7 +166,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 			if (recursivelyValidatePortal(level, pos, blocksChecked, size, state) && size.intValue() >= MIN_PORTAL_SIZE) {
 
 				if (!TFConfig.checkPortalPlacement) {
-					boolean checkProgression = LandmarkUtil.isProgressionEnforced(catalyst.level());
+					boolean checkProgression = LandmarkUtil.isProgressionEnforced(level);
 					if (!TFTeleporter.isSafeAround(level, pos, catalyst, checkProgression)) {
 						// TODO: "failure" effect - particles?
 						if (player != null) {
@@ -192,11 +193,11 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 	}
 
 	public boolean canFormPortal(BlockState state) {
-		return state.is(BlockTagGenerator.PORTAL_POOL) || state.getBlock() == this && state.getValue(DISALLOW_RETURN);
+		return state.is(TFBlockTags.PORTAL_POOL) || state.getBlock() == this && state.getValue(DISALLOW_RETURN);
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
+	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, @Nullable Orientation orientation, boolean isMoving) {
 		boolean good = level.getBlockState(pos.below()).isFaceSturdy(level, pos, Direction.UP);
 
 		for (Direction facing : Direction.Plane.HORIZONTAL) {
@@ -235,9 +236,9 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 
 			if (entity.canUsePortal(false)) {
 				entity.setAsInsidePortal(this, entity.blockPosition());
+				entity.getData(TFDataAttachments.TF_PORTAL_COOLDOWN).setInPortal(true);
 			}
 		}
-		entity.getData(TFDataAttachments.TF_PORTAL_COOLDOWN).setInPortal(true);
 	}
 
 	// Full [VanillaCopy] of NetherPortalBlock.animateTick
@@ -277,9 +278,8 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 		return 60;
 	}
 
-	@Nullable
 	@Override
-	public DimensionTransition getPortalDestination(ServerLevel level, Entity entity, BlockPos pos) {
+	public TeleportTransition getPortalDestination(ServerLevel level, Entity entity, BlockPos pos) {
 		if (cachedOriginDimension == null) cachedOriginDimension = ResourceKey.create(Registries.DIMENSION, ResourceLocation.parse(TFConfig.originDimension));
 		ResourceKey<Level> newDimension = !level.dimension().location().equals(TFDimension.DIMENSION) ? TFDimension.DIMENSION_KEY : cachedOriginDimension;
 		ServerLevel serverlevel = level.getServer().getLevel(newDimension);

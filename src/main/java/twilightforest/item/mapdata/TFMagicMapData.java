@@ -9,6 +9,7 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.context.ContextKey;
 import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -24,6 +25,10 @@ import twilightforest.util.Codecs;
 import java.util.*;
 
 public class TFMagicMapData extends MapItemSavedData {
+
+	public static ContextKey<Boolean> MAGIC_MAP_KEY = new ContextKey<>(TwilightForestMod.prefix("is_magic_map"));
+	public static ContextKey<List<String>> CONQUERED_STRUCTURES_KEY = new ContextKey<>(TwilightForestMod.prefix("conquered_structures"));
+
 	private static final Map<String, TFMagicMapData> CLIENT_DATA = new HashMap<>();
 	public final List<String> conqueredStructures = new ArrayList<>();
 

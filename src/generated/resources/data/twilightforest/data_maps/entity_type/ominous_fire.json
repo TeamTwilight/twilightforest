@@ -1,0 +1,13 @@
+{
+  "values": {
+    "minecraft:horse": {
+      "transform_to": "minecraft:zombie_horse"
+    },
+    "minecraft:piglin": {
+      "transform_to": "minecraft:zombified_piglin"
+    },
+    "minecraft:villager": {
+      "transform_to": "minecraft:zombie_villager"
+    }
+  }
+}

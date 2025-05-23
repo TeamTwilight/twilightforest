@@ -45,7 +45,6 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 		this(TFStructurePieceTypes.TFFCSiTo.get(), nbt);
 	}
 
-	@SuppressWarnings("this-escape")
 	public FinalCastleMazeTower13Component(StructurePieceType piece, RandomSource rand, int i, int x, int y, int z, BlockState color, Direction direction) {
 		super(piece, i, x, y, z);
 		this.setOrientation(direction);
@@ -76,7 +75,6 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 		addOpening(0, entranceFloor * 8 + 1, size / 2, Rotation.CLOCKWISE_180);
 	}
 
-	@SuppressWarnings("this-escape")
 	public FinalCastleMazeTower13Component(StructurePieceType piece, int i, int x, int y, int z, int floors, int entranceFloor, BlockState color, Direction direction) {
 		super(piece, i, x, y, z);
 		this.setOrientation(direction);
@@ -486,7 +484,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 		}
 	}
 
-	private void addFloors(WorldGenLevel world, BoundingBox sbb) {
+	protected void addFloors(WorldGenLevel world, BoundingBox sbb) {
 		// only add floors up to highest opening
 		int floors = (this.highestOpening / 8) + 1;
 

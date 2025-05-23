@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "twilightforest:canopy_window_pane"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_windows": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:canopy_window"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_windows"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "twilightforest:canopy_window_pane"
+    ]
+  }
+}

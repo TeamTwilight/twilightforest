@@ -3,8 +3,9 @@
   "adjust_structure_elevation": true,
   "allow_biome_surface_decorations": false,
   "allow_biome_underground_decorations": true,
+  "allow_biome_vegetation": true,
   "biomes": "#twilightforest:valid_hedge_maze_biomes",
-  "chunk_clearance_radius": 2,
+  "chunk_clearance_radius": 2.0,
   "spawn_overrides": {
     "ambient": {
       "bounding_box": "full",

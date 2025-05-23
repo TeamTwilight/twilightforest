@@ -1,0 +1,26 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "dyeable": {
+          "color_when_undyed": -4337703
+        },
+        "texture": "twilightforest:arctic"
+      },
+      {
+        "texture": "twilightforest:arctic_overlay"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "dyeable": {
+          "color_when_undyed": -4337703
+        },
+        "texture": "twilightforest:arctic"
+      },
+      {
+        "texture": "twilightforest:arctic_overlay"
+      }
+    ]
+  }
+}

@@ -3,18 +3,10 @@
   "category": "equipment",
   "group": "fiery_sword",
   "ingredients": [
-    {
-      "item": "minecraft:iron_sword"
-    },
-    {
-      "tag": "twilightforest:fiery_vial"
-    },
-    {
-      "tag": "twilightforest:fiery_vial"
-    },
-    {
-      "tag": "c:rods/blaze"
-    }
+    "minecraft:iron_sword",
+    "#twilightforest:fiery_vial",
+    "#twilightforest:fiery_vial",
+    "#c:rods/blaze"
   ],
   "result": {
     "count": 1,

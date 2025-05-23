@@ -44,7 +44,7 @@ public class MiniatureStructureBlock extends HorizontalDirectionalBlock {
 
 
 	@Override
-	public boolean propagatesSkylightDown(BlockState state, BlockGetter getter, BlockPos pos) {
+	public boolean propagatesSkylightDown(BlockState state) {
 		return true;
 	}
 

@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -47,7 +48,7 @@ public class HydraHeadContainer {
 	@Nullable
 	private static final State NEXT_AUTOMATIC = null;
 
-	enum State {
+	public enum State {
 		IDLE(10),
 
 		BITE_BEGINNING(40),
@@ -147,7 +148,7 @@ public class HydraHeadContainer {
 	private final Map<State, Float>[] stateYRotations;
 	private final Map<State, Float>[] stateMouthOpen;
 
-	@SuppressWarnings({"this-escape", "unchecked"})
+	@SuppressWarnings("unchecked")
 	public HydraHeadContainer(Hydra hydra, int number, boolean startActive) {
 		this.headNum = number;
 		this.hydra = hydra;
@@ -348,7 +349,7 @@ public class HydraHeadContainer {
 		this.setDifficultyVariables();
 
 		// only actually do these things on the server
-		if (!this.hydra.level().isClientSide()) {
+		if (this.hydra.level() instanceof ServerLevel level) {
 			// make sure this is set up
 			if (!this.isDead() && this.headEntity.dimensions.width() == 0) {
 				this.headEntity.activate();
@@ -361,7 +362,7 @@ public class HydraHeadContainer {
 			this.advanceHeadState();
 			this.setHeadPosition();
 			this.setHeadFacing();
-			this.executeAttacks();
+			this.executeAttacks(level);
 			this.playSounds();
 		} else {
 			this.addMouthParticles();
@@ -614,7 +615,7 @@ public class HydraHeadContainer {
 		}
 
 		vector = vector.yRot((-(this.hydra.yBodyRot + neckRotation) * Mth.PI) / 180.0F);
-		this.setNeckPosition(this.hydra.getX() + vector.x(), this.hydra.getY() + vector.y(), this.hydra.getZ() + vector.z(), this.hydra.yBodyRot);
+		this.setNeckPosition(this.hydra.getX() + vector.x(), this.hydra.getY() + vector.y() + 0.5D, this.hydra.getZ() + vector.z(), this.hydra.yBodyRot);
 	}
 
 	protected void setHeadPosition() {
@@ -654,7 +655,7 @@ public class HydraHeadContainer {
 		this.headEntity.setMouthOpen(getCurrentMouthOpen());
 	}
 
-	private void executeAttacks() {
+	private void executeAttacks(ServerLevel level) {
 		if (this.currentState == State.MORTAR_SHOOTING && this.ticksProgress % 10 == 0) {
 			HydraMortar mortar = new HydraMortar(TFEntities.HYDRA_MORTAR.get(), this.headEntity.level(), this.headEntity);
 
@@ -675,19 +676,19 @@ public class HydraHeadContainer {
 				if (nearby instanceof LivingEntity living && nearby != this.hydra) {
 					//is a player holding a shield? Let's do some extra stuff!
 					if (nearby instanceof Player player && player.isBlocking()) {
-						if (!player.getCooldowns().isOnCooldown(player.getUseItem().getItem())) {
+						if (!player.getCooldowns().isOnCooldown(player.getUseItem())) {
 							//cause severe damage and play a shatter sound
 							this.headEntity.level().playSound(null, player.blockPosition(), player.getUseItem().is(Items.SHIELD) ? TFSounds.WOOD_SHIELD_SHATTERS.get() : TFSounds.METAL_SHIELD_SHATTERS.get(), SoundSource.PLAYERS, 1.0F, player.getVoicePitch());
 							player.getUseItem().hurtAndBreak(112, player, LivingEntity.getSlotForHand(player.getUsedItemHand()));
 						}
 						//add cooldown and knockback
-						player.getCooldowns().addCooldown(player.getUseItem().getItem(), 200);
+						player.getCooldowns().addCooldown(player.getUseItem(), 200);
 						player.stopUsingItem();
 						PacketDistributor.sendToPlayer((ServerPlayer) player, new MovePlayerPacket(-this.headEntity.getDirection().getStepX() * 0.5F, 0.15F, -this.headEntity.getDirection().getStepZ() * 0.5F));
 					}
 
 					// bite it!
-					nearby.hurt(TFDamageTypes.getEntityDamageSource(living.level(), TFDamageTypes.HYDRA_BITE, this.hydra, TFEntities.HYDRA.get()), BITE_DAMAGE);
+					nearby.hurtServer(level, TFDamageTypes.getEntityDamageSource(living.level(), TFDamageTypes.HYDRA_BITE, this.hydra, TFEntities.HYDRA.get()), BITE_DAMAGE);
 
 					//knockback!
 					if (living instanceof Player player) {
@@ -703,7 +704,7 @@ public class HydraHeadContainer {
 			Entity target = getHeadLookTarget();
 
 			if (target != null && target != this.headEntity.getParent() && (!(target instanceof HydraPart) || ((HydraPart) target).getParent() != this.headEntity.getParent())) {
-				if (!target.fireImmune() && target.hurt(TFDamageTypes.getEntityDamageSource(target.level(), TFDamageTypes.HYDRA_FIRE, this.hydra, TFEntities.HYDRA.get()), FLAME_DAMAGE)) {
+				if (!target.fireImmune() && target.hurtServer(level, TFDamageTypes.getEntityDamageSource(target.level(), TFDamageTypes.HYDRA_FIRE, this.hydra, TFEntities.HYDRA.get()), FLAME_DAMAGE)) {
 					target.igniteForSeconds(FLAME_BURN_FACTOR);
 				}
 			}

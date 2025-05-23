@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "tag": "c:paper"
-    },
-    {
-      "item": "twilightforest:naga_trophy"
-    }
+    "#c:paper",
+    "twilightforest:naga_trophy"
   ],
   "result": {
     "count": 1,

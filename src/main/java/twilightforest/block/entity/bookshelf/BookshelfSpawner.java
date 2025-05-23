@@ -17,6 +17,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.SpawnData;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.entity.trialspawner.PlayerDetector;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -44,6 +45,7 @@ public abstract class BookshelfSpawner implements IOwnedSpawner {
 		Pair.of(5, BlockStateProperties.CHISELED_BOOKSHELF_SLOT_5_OCCUPIED));
 	public int maxNearbyEntities = 4;
 	public int spawnRange = 4;
+	public int spawnCheckRange = 12;
 	private int spawnDelay = 20;
 	private SimpleWeightedRandomList<SpawnData> spawnPotentials = SimpleWeightedRandomList.empty();
 	@Nullable
@@ -51,6 +53,7 @@ public abstract class BookshelfSpawner implements IOwnedSpawner {
 	private int minSpawnDelay = 200;
 	private int maxSpawnDelay = 400;
 	private int requiredPlayerRange = 8;
+	private final PlayerDetector detector = PlayerDetector.INCLUDING_CREATIVE_PLAYERS;
 
 	public void setEntityId(EntityType<?> type, @Nullable Level level, RandomSource random, BlockPos pos) {
 		this.getOrCreateNextSpawnData(level, random, pos)
@@ -58,8 +61,8 @@ public abstract class BookshelfSpawner implements IOwnedSpawner {
 			.putString("id", BuiltInRegistries.ENTITY_TYPE.getKey(type).toString());
 	}
 
-	private boolean isNearPlayer(Level level, BlockPos pos) {
-		return level.hasNearbyAlivePlayer(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, this.requiredPlayerRange);
+	private boolean isNearPlayer(ServerLevel level, BlockPos pos) {
+		return !this.detector.detect(level, PlayerDetector.EntitySelector.SELECT_FROM_LEVEL, pos, this.requiredPlayerRange, true).isEmpty();
 	}
 
 	public void serverTick(ServerLevel level, BlockPos pos, BlockState state) {
@@ -146,6 +149,10 @@ public abstract class BookshelfSpawner implements IOwnedSpawner {
 		if (tag.contains("SpawnRange", 99)) {
 			this.spawnRange = tag.getShort("SpawnRange");
 		}
+
+		if (tag.contains("SpawnCheckRange", 99)) {
+			this.spawnCheckRange = tag.getShort("SpawnCheckRange");
+		}
 	}
 
 	public CompoundTag save(CompoundTag tag) {
@@ -155,6 +162,7 @@ public abstract class BookshelfSpawner implements IOwnedSpawner {
 		tag.putShort("MaxNearbyEntities", (short) this.maxNearbyEntities);
 		tag.putShort("RequiredPlayerRange", (short) this.requiredPlayerRange);
 		tag.putShort("SpawnRange", (short) this.spawnRange);
+		tag.putShort("SpawnCheckRange", (short) this.spawnCheckRange);
 		if (this.nextSpawnData != null) {
 			tag.put(
 				"SpawnData",
@@ -218,9 +226,11 @@ public abstract class BookshelfSpawner implements IOwnedSpawner {
 
 		//apply spawning logic like vanilla spawners do
 		if (level.noCollision(optional.get().getSpawnAABB(x, y, z))) {
+			boolean difficultyPreventsSpawn = !optional.get().getCategory().isFriendly() && level.getDifficulty() == Difficulty.PEACEFUL;
+
 			BlockPos blockpos = BlockPos.containing(x, y, z);
 			if (data.getCustomSpawnRules().isPresent()) {
-				if (!optional.get().getCategory().isFriendly() && level.getDifficulty() == Difficulty.PEACEFUL) {
+				if (difficultyPreventsSpawn) {
 					return false;
 				}
 
@@ -228,9 +238,12 @@ public abstract class BookshelfSpawner implements IOwnedSpawner {
 				if (!rules.isValidPosition(blockpos, level) && !fire) {
 					return false;
 				}
+			} else if (difficultyPreventsSpawn) {
+				this.delay(level, pos);
+				return false;
 			}
 
-			Entity entity = EntityType.loadEntityRecursive(tag, level, processed -> {
+			Entity entity = EntityType.loadEntityRecursive(tag, level, EntitySpawnReason.SPAWNER, processed -> {
 				processed.moveTo(x, y, z, processed.getYRot(), processed.getXRot());
 				//set entity on fire if told to do so
 				if (fire) {
@@ -249,7 +262,7 @@ public abstract class BookshelfSpawner implements IOwnedSpawner {
 				return false;
 			}
 
-			int k = level.getEntities(EntityTypeTest.forExactClass(entity.getClass()), new AABB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).inflate(this.spawnRange), EntitySelector.NO_SPECTATORS).size();
+			int k = level.getEntities(EntityTypeTest.forExactClass(entity.getClass()), new AABB(pos).inflate(this.spawnCheckRange), EntitySelector.NO_SPECTATORS).size();
 			if (k >= this.maxNearbyEntities && !fire) {
 				this.delay(level, pos);
 				return false;
@@ -258,7 +271,7 @@ public abstract class BookshelfSpawner implements IOwnedSpawner {
 			entity.moveTo(entity.getX(), entity.getY(), entity.getZ(), random.nextFloat() * 360.0F, 0.0F);
 			if (entity instanceof Mob mob) {
 				boolean flag1 = data.getEntityToSpawn().size() == 1 && data.getEntityToSpawn().contains("id", 8);
-				EventHooks.finalizeMobSpawnSpawner(mob, level, level.getCurrentDifficultyAt(entity.blockPosition()), MobSpawnType.SPAWNER, null, this, flag1);
+				EventHooks.finalizeMobSpawnSpawner(mob, level, level.getCurrentDifficultyAt(entity.blockPosition()), EntitySpawnReason.SPAWNER, null, this, flag1);
 
 				data.getEquipment().ifPresent(mob::equip);
 			}

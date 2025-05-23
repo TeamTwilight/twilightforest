@@ -1,5 +1,6 @@
 package twilightforest.util;
 
+import com.mojang.authlib.GameProfile;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
@@ -22,8 +23,8 @@ import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.saveddata.maps.MapDecoration;
-import twilightforest.world.components.structures.placements.AvoidLandmarkGridPlacement;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
@@ -60,6 +61,10 @@ public final class Codecs {
 		Codec.INT.fieldOf("id").forGetter(o -> o.id),
 		Codec.INT.fieldOf("color").forGetter(o -> o.col)
 	).apply(instance, MapColor::new)).validate(Codecs::validateMapColor);
+	public static final Codec<GameProfile> SIMPLE_GAME_PROFILE = RecordCodecBuilder.create(instance -> instance.group(
+		UUIDUtil.AUTHLIB_CODEC.fieldOf("id").forGetter(GameProfile::getId),
+		ExtraCodecs.PLAYER_NAME.fieldOf("name").forGetter(GameProfile::getName)
+	).apply(instance, GameProfile::new));
 
 	public static final Codec<Climate.ParameterList<Holder<Biome>>> CLIMATE_SYSTEM = ExtraCodecs.nonEmptyList(RecordCodecBuilder.<Pair<Climate.ParameterPoint, Holder<Biome>>>create((instance) -> instance.group(Climate.ParameterPoint.CODEC.fieldOf("parameters").forGetter(Pair::getFirst), Biome.CODEC.fieldOf("biome").forGetter(Pair::getSecond)).apply(instance, Pair::of)).listOf()).xmap(Climate.ParameterList::new, Climate.ParameterList::values);
 
@@ -74,6 +79,43 @@ public final class Codecs {
 			.compoundList(Codecs.DOUBLE_STRING, elementCodec)
 			.xmap(floatEList -> floatEList.stream().collect(Double2ObjectAVLTreeMap::new, (map, pair) -> map.put(pair.getFirst(), pair.getSecond()), Double2ObjectAVLTreeMap::putAll), map -> map.entrySet().stream().map(entry -> new Pair<>(entry.getKey(), entry.getValue())).toList());
 	}
+
+	public static <T> StreamCodec<ByteBuf, List<T>> listOf(StreamCodec<ByteBuf, T> elementCodec) {
+		return new StreamCodec<>() {
+			@Override
+			public List<T> decode(ByteBuf buf) {
+				int size = buf.readInt();
+				List<T> list = new ArrayList<>(size);
+				for (int i = 0; i < size; i++) {
+					list.add(elementCodec.decode(buf));
+				}
+				return list;
+			}
+
+			@Override
+			public void encode(ByteBuf buf, List<T> list) {
+				buf.writeInt(list.size());
+				for (T t : list) {
+					elementCodec.encode(buf, t);
+				}
+			}
+		};
+	}
+
+	public static final StreamCodec<ByteBuf, Pair<BoundingBox, Boolean>> BOX_AND_FLAG_STREAM_CODEC = new StreamCodec<>() {
+		@Override
+		public Pair<BoundingBox, Boolean> decode(ByteBuf buf) {
+			BoundingBox box = BOX_STREAM_CODEC.decode(buf);
+			boolean flag = buf.readBoolean();
+			return Pair.of(box, flag);
+		}
+
+		@Override
+		public void encode(ByteBuf buf, Pair<BoundingBox, Boolean> boxAndFlag) {
+			BOX_STREAM_CODEC.encode(buf, boxAndFlag.getFirst());
+			buf.writeBoolean(boxAndFlag.getSecond());
+		}
+	};
 
 	private static DataResult<BlockPos> parseString2BlockPos(String string) {
 		try {
@@ -100,11 +142,11 @@ public final class Codecs {
 	}
 
 	public static <T> Codec<T> fromRegistry(Registry<T> registry) {
-		return ResourceLocation.CODEC.xmap(registry::get, registry::getKey);
+		return ResourceLocation.CODEC.xmap(registry::getValue, registry::getKey);
 	}
 
 	public static <E> DataResult<Pair<E, E>> arrayToPair(List<E> list) {
-		return Util.fixedSize(list, 2).map(l -> Pair.of(l.get(0), l.get(1)));
+		return Util.fixedSize(list, 2).map(l -> Pair.of(l.getFirst(), l.get(1)));
 	}
 
 	private static DataResult<MapColor> validateMapColor(MapColor color) {

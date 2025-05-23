@@ -3,19 +3,19 @@ package twilightforest.world;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.portal.DimensionTransition;
+import net.minecraft.world.level.portal.TeleportTransition;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.TwilightForestMod;
 
 public class NoReturnTeleporter extends TFTeleporter {
 
-	public static DimensionTransition createNoPortalTransition(ServerLevel dest, Entity entity, BlockPos destPos) {
-		DimensionTransition info = moveToSafeCoords(dest, entity, destPos);
-		info = placePosition(entity, dest, info.pos());
+	public static TeleportTransition createNoPortalTransition(ServerLevel dest, Entity entity, BlockPos destPos) {
+		TeleportTransition info = moveToSafeCoords(dest, entity, destPos);
+		info = placePosition(entity, dest, info.position());
 		return info;
 	}
 
-	private static DimensionTransition placePosition(Entity entity, ServerLevel level, Vec3 pos) {
+	private static TeleportTransition placePosition(Entity entity, ServerLevel level, Vec3 pos) {
 		// ensure area is populated first
 		loadSurroundingArea(level, pos);
 

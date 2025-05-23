@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "twilightforest:block/canopy_wall_sign"
+      "model": "twilightforest:block/canopy_sign"
     }
   }
 }

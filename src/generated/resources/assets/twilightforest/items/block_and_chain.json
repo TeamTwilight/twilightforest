@@ -1,0 +1,15 @@
+{
+  "model": {
+    "type": "minecraft:condition",
+    "component": "twilightforest:thrown_projectile",
+    "on_false": {
+      "type": "minecraft:model",
+      "model": "twilightforest:item/block_and_chain"
+    },
+    "on_true": {
+      "type": "minecraft:model",
+      "model": "twilightforest:item/block_and_chain_thrown"
+    },
+    "property": "minecraft:has_component"
+  }
+}

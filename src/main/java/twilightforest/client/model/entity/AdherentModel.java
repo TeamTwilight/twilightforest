@@ -4,10 +4,10 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.util.Mth;
-import twilightforest.entity.monster.Adherent;
 
-public class AdherentModel extends HumanoidModel<Adherent> {
+public class AdherentModel extends HumanoidModel<HumanoidRenderState> {
 
 	public AdherentModel(ModelPart root) {
 		super(root);
@@ -17,12 +17,12 @@ public class AdherentModel extends HumanoidModel<Adherent> {
 		MeshDefinition meshdefinition = HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F);
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
+		var head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
 				.texOffs(0, 0)
 				.addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F),
 			PartPose.ZERO);
 
-		partdefinition.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
+		head.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
 
 		partdefinition.addOrReplaceChild("body", CubeListBuilder.create()
 				.texOffs(32, 0)
@@ -64,19 +64,19 @@ public class AdherentModel extends HumanoidModel<Adherent> {
 	}
 
 	@Override
-	public void setupAnim(Adherent entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(HumanoidRenderState state) {
 		// rotate head normally
-		this.head.yRot = netHeadYaw * Mth.DEG_TO_RAD;
-		this.head.xRot = headPitch * Mth.DEG_TO_RAD;
+		this.head.yRot = state.yRot * Mth.DEG_TO_RAD;
+		this.head.xRot = state.xRot * Mth.DEG_TO_RAD;
 
 		this.rightArm.xRot = 0.0F;
 		this.leftArm.xRot = 0.0F;
 		this.rightArm.zRot = 0.0F;
 		this.leftArm.zRot = 0.0F;
 
-		this.rightArm.zRot += Mth.cos((ageInTicks + 10.0F) * 0.133F) * 0.3F + 0.3F;
-		this.leftArm.zRot -= Mth.cos((ageInTicks + 10.0F) * 0.133F) * 0.3F + 0.3F;
-		this.rightArm.xRot += Mth.sin(ageInTicks * 0.067F) * 0.05F;
-		this.leftArm.xRot -= Mth.sin(ageInTicks * 0.067F) * 0.05F;
+		this.rightArm.zRot += Mth.cos((state.ageInTicks + 10.0F) * 0.133F) * 0.3F + 0.3F;
+		this.leftArm.zRot -= Mth.cos((state.ageInTicks + 10.0F) * 0.133F) * 0.3F + 0.3F;
+		this.rightArm.xRot += Mth.sin(state.ageInTicks * 0.067F) * 0.05F;
+		this.leftArm.xRot -= Mth.sin(state.ageInTicks * 0.067F) * 0.05F;
 	}
 }

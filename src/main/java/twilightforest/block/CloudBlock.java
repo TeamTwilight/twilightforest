@@ -27,13 +27,13 @@ public class CloudBlock extends Block {
 	@Nullable
 	protected final Biome.Precipitation precipitation;
 
-	public CloudBlock(Properties properties, @Nullable Biome.Precipitation precipitation) {
+	public CloudBlock(@Nullable Biome.Precipitation precipitation, Properties properties) {
 		super(properties);
 		this.precipitation = precipitation;
 	}
 
 	public static boolean shouldSnow(LevelReader level, BlockPos pos) {
-		if (pos.getY() >= level.getMinBuildHeight() && pos.getY() < level.getMaxBuildHeight() && level.getBrightness(LightLayer.BLOCK, pos) < 10) {
+		if (!level.isOutsideBuildHeight(pos) && level.getBrightness(LightLayer.BLOCK, pos) < 10) {
 			BlockState blockstate = level.getBlockState(pos);
 			return (blockstate.isAir() || blockstate.is(Blocks.SNOW)) && Blocks.SNOW.defaultBlockState().canSurvive(level, pos);
 		}
@@ -62,7 +62,7 @@ public class CloudBlock extends Block {
 	}
 
 	@Override
-	public int getLightBlock(BlockState state, BlockGetter level, BlockPos pos) {
+	public int getLightBlock(BlockState state) {
 		return 1;
 	}
 
@@ -85,7 +85,7 @@ public class CloudBlock extends Block {
 	 */
 	public Pair<Biome.Precipitation, Float> getCurrentPrecipitation(BlockPos pos, Level level, float rainLevel) {
 		if (this.getPrecipitation() == null) {
-			if (rainLevel > 0.0F) return Pair.of(level.getBiome(pos).value().getPrecipitationAt(pos), rainLevel);
+			if (rainLevel > 0.0F) return Pair.of(level.getBiome(pos).value().getPrecipitationAt(pos, level.getSeaLevel()), rainLevel);
 			else return Pair.of(Biome.Precipitation.NONE, 0.0F);
 		} else return Pair.of(this.getPrecipitation(), 1.0F);
 	}
@@ -106,7 +106,7 @@ public class CloudBlock extends Block {
 					if (!Heightmap.Types.MOTION_BLOCKING.isOpaque().test(level.getBlockState(pos.atY(y)))) highestRainyBlock = y - 1;
 					else break;
 				}
-				if (highestRainyBlock > level.getMinBuildHeight()) {
+				if (highestRainyBlock > level.getMinY()) {
 					if (precipitation == Biome.Precipitation.SNOW) {
 						int snowHeight = level.getGameRules().getInt(GameRules.RULE_SNOW_ACCUMULATION_HEIGHT);
 						BlockPos snowOnPos = pos.atY(highestRainyBlock + 1); // We check the position above our last block
@@ -151,7 +151,7 @@ public class CloudBlock extends Block {
 			double xSpeed = xSpd * 0.0035D * maxI;
 			double zSpeed = zSpd * 0.0035D * maxI;
 
-			particlePacket.queueParticle(TFParticleType.CLOUD_PUFF.get(), false, x, y, z, xSpeed, ySpeed, zSpeed);
+			particlePacket.queueParticle(TFParticleType.CLOUD_PUFF.get(), x, y, z, xSpeed, ySpeed, zSpeed);
 		}
 
 		PacketDistributor.sendToPlayersTrackingChunk(level, new ChunkPos(pos), particlePacket);

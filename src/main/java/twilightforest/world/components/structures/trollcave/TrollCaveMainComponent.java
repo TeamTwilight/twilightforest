@@ -22,7 +22,7 @@ import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.data.tags.BlockTagGenerator;
+import twilightforest.tags.TFBlockTags;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFConfiguredFeatures;
 import twilightforest.init.TFStructurePieceTypes;
@@ -31,7 +31,7 @@ import twilightforest.loot.TFLootTables;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.feature.BlockSpikeFeature;
-import twilightforest.world.components.structures.StructureSpeleothemConfig;
+import twilightforest.world.components.spelothem.StructureSpeleothemConfig;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 
 public class TrollCaveMainComponent extends TFStructureComponentOld {
@@ -56,7 +56,6 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 		this.speleothemConfig = this.speleothemConfigHolder.value();
 	}
 
-	@SuppressWarnings("this-escape")
 	public TrollCaveMainComponent(StructurePieceType type, int i, int x, int y, int z, Holder.Reference<StructureSpeleothemConfig> speleothemConfig) {
 		super(type, i, x, y, z);
 		this.setOrientation(Direction.SOUTH); // DEPTH_AVERAGE
@@ -161,7 +160,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 
 					double dist = Math.sqrt(ex * ey * ez);
 
-					if (this.getBlock(world, x, y, z, boundingBox).is(BlockTagGenerator.CANNOT_TROLL_CAVE_HOLLOW))
+					if (this.getBlock(world, x, y, z, boundingBox).is(TFBlockTags.CANNOT_TROLL_CAVE_HOLLOW))
 						continue;
 
 					if (dist > threshold) {
@@ -241,7 +240,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 		for (int i = 0; i < 15; i++) {
 			pos.move(0, 1, 0);
 			if (sbb.isInside(pos) && world.getBlockState(pos.above()).isAir()) {
-				world.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE).get(feature).place(world, generator, rand, pos);
+				world.registryAccess().lookupOrThrow(Registries.CONFIGURED_FEATURE).getValueOrThrow(feature).place(world, generator, rand, pos);
 				break;
 			}
 		}

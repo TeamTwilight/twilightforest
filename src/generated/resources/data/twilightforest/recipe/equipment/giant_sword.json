@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": {
-      "item": "twilightforest:giant_cobblestone"
-    },
-    "X": {
-      "item": "twilightforest:giant_log"
-    }
+    "#": "twilightforest:giant_cobblestone",
+    "X": "twilightforest:giant_log"
   },
   "pattern": [
     "#",

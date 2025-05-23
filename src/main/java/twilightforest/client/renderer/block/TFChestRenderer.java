@@ -20,7 +20,7 @@ public class TFChestRenderer<T extends ChestBlockEntity> extends ChestRenderer<T
 	static {
 		ImmutableMap.Builder<Block, EnumMap<ChestType, Material>> builder = ImmutableMap.builder();
 
-		builder.put(TFBlocks.TWILIGHT_OAK_CHEST.get(), chestMaterial("twilight", false));
+		builder.put(TFBlocks.TWILIGHT_OAK_CHEST.get(), chestMaterial("twilight_oak", false));
 		builder.put(TFBlocks.CANOPY_CHEST.get(), chestMaterial("canopy", false));
 		builder.put(TFBlocks.MANGROVE_CHEST.get(), chestMaterial("mangrove", false));
 		builder.put(TFBlocks.DARK_CHEST.get(), chestMaterial("darkwood", false));
@@ -30,7 +30,7 @@ public class TFChestRenderer<T extends ChestBlockEntity> extends ChestRenderer<T
 		builder.put(TFBlocks.SORTING_CHEST.get(), chestMaterial("sorting", false));
 		builder.put(TFBlocks.VEILWOOD_CHEST.get(), chestMaterial("veilwood", false));
 
-		builder.put(TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST.get(), chestMaterial("twilight", true));
+		builder.put(TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST.get(), chestMaterial("twilight_oak", true));
 		builder.put(TFBlocks.CANOPY_TRAPPED_CHEST.get(), chestMaterial("canopy", true));
 		builder.put(TFBlocks.MANGROVE_TRAPPED_CHEST.get(), chestMaterial("mangrove", true));
 		builder.put(TFBlocks.DARK_TRAPPED_CHEST.get(), chestMaterial("darkwood", true));
@@ -58,12 +58,13 @@ public class TFChestRenderer<T extends ChestBlockEntity> extends ChestRenderer<T
 		return material != null ? material : super.getMaterial(entity, chestType);
 	}
 
-	private static EnumMap<ChestType, Material> chestMaterial(String type, boolean trapped) {
+	private static EnumMap<ChestType, Material> chestMaterial(String wood, boolean trapped) {
 		EnumMap<ChestType, Material> map = new EnumMap<>(ChestType.class);
+		String type = (trapped ? "trapped" : "normal");
 
-		map.put(ChestType.SINGLE, new Material(Sheets.CHEST_SHEET, TwilightForestMod.prefix("entity/chest/" + type + "/" + (trapped ? "trapped" : "single"))));
-		map.put(ChestType.LEFT, new Material(Sheets.CHEST_SHEET, TwilightForestMod.prefix("entity/chest/" + type + "/" + (trapped ? "trapped_left" : "left"))));
-		map.put(ChestType.RIGHT, new Material(Sheets.CHEST_SHEET, TwilightForestMod.prefix("entity/chest/" + type + "/" + (trapped ? "trapped_right" : "right"))));
+		map.put(ChestType.SINGLE, new Material(Sheets.CHEST_SHEET, TwilightForestMod.prefix("entity/chest/" + wood + "/" + type)));
+		map.put(ChestType.LEFT, new Material(Sheets.CHEST_SHEET, TwilightForestMod.prefix("entity/chest/" + wood + "/" + type + "_left")));
+		map.put(ChestType.RIGHT, new Material(Sheets.CHEST_SHEET, TwilightForestMod.prefix("entity/chest/" + wood + "/" + type + "_right")));
 
 		return map;
 	}

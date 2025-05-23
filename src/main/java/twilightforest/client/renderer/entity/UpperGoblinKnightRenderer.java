@@ -2,49 +2,48 @@ package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
+import net.minecraft.resources.ResourceLocation;
+import twilightforest.TwilightForestMod;
+import twilightforest.client.model.TFModelLayers;
+import twilightforest.client.model.entity.UpperGoblinKnightModel;
+import twilightforest.client.state.UpperGoblinKnightRenderState;
 import twilightforest.entity.monster.UpperGoblinKnight;
 
-public class UpperGoblinKnightRenderer<T extends UpperGoblinKnight, M extends HumanoidModel<T>> extends TFBipedRenderer<T, M> {
-	public UpperGoblinKnightRenderer(EntityRendererProvider.Context context, M model, float shadowSize) {
-		super(context, model, shadowSize, "doublegoblin.png");
+public class UpperGoblinKnightRenderer extends HumanoidMobRenderer<UpperGoblinKnight, UpperGoblinKnightRenderState, UpperGoblinKnightModel> {
+
+	public static final ResourceLocation TEXTURE = TwilightForestMod.getModelTexture("doublegoblin.png");
+
+	public UpperGoblinKnightRenderer(EntityRendererProvider.Context context) {
+		super(context, new UpperGoblinKnightModel(context.bakeLayer(TFModelLayers.UPPER_GOBLIN_KNIGHT)), 0.625F);
 	}
 
 	@Override
-	protected void setupRotations(T entity, PoseStack stack, float ageInTicks, float rotationYaw, float partialTicks, float scale) {
-		super.setupRotations(entity, stack, ageInTicks, rotationYaw, partialTicks, scale);
+	protected void setupRotations(UpperGoblinKnightRenderState state, PoseStack stack, float rotationYaw, float scale) {
+		super.setupRotations(state, stack, rotationYaw, scale);
 
-		if (entity.heavySpearTimer > 0) {
-			stack.mulPose(Axis.XP.rotationDegrees(this.getPitchForAttack((60.0F - entity.heavySpearTimer) + partialTicks)));
+		if (state.spearTimer > 0) {
+			stack.mulPose(Axis.XP.rotationDegrees(state.getPitchForAttack()));
 		}
 	}
 
-	/**
-	 * Figure out what pitch the goblin should be at depending on where it's at on the timer
-	 */
-	private float getPitchForAttack(float attackTime) {
-		if (attackTime <= 10.0F) {
-			// rock back
-			return attackTime * 3.0F;
-		}
-		if (attackTime > 10.0F && attackTime <= 30.0F) {
-			// hang back
-			return 30.0F;
-		}
-		if (attackTime > 30.0F && attackTime <= 33.0F) {
-			// slam forward
-			return (attackTime - 30.0F) * -25.0F + 30.0F;
-		}
-		if (attackTime > 33.0F && attackTime <= 50.0F) {
-			// stay forward
-			return -45.0F;
-		}
-		if (attackTime > 50.0F && attackTime <= 60.0F) {
-			// back to normal
-			return (10.0F - (attackTime - 50.0F)) * -4.5F;
-		}
+	@Override
+	public UpperGoblinKnightRenderState createRenderState() {
+		return new UpperGoblinKnightRenderState();
+	}
 
-		return 0.0F;
+	@Override
+	public void extractRenderState(UpperGoblinKnight entity, UpperGoblinKnightRenderState state, float partialTick) {
+		super.extractRenderState(entity, state, partialTick);
+		state.spearTimer = entity.heavySpearTimer;
+		state.hasArmor = entity.hasArmor();
+		state.hasShield = entity.hasShield();
+		state.isShieldDisabled = entity.isShieldDisabled();
+	}
+
+	@Override
+	public ResourceLocation getTextureLocation(UpperGoblinKnightRenderState state) {
+		return TEXTURE;
 	}
 }

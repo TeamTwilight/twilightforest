@@ -10,13 +10,12 @@ import net.minecraft.client.model.QuadrupedModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.util.Mth;
-import twilightforest.entity.passive.DwarfRabbit;
+import twilightforest.client.state.DwarfRabbitRenderState;
 
-public class BunnyModel extends QuadrupedModel<DwarfRabbit> {
+public class BunnyModel extends QuadrupedModel<DwarfRabbitRenderState> {
 
 	public BunnyModel(ModelPart root) {
-		super(root, true, 4.0F, 4.0F, 2.0F, 2.0F, 24);
+		super(root);
 	}
 
 	public static LayerDefinition create() {
@@ -60,15 +59,5 @@ public class BunnyModel extends QuadrupedModel<DwarfRabbit> {
 			PartPose.offset(0.0F, 22.0F, -1.0F));
 
 		return LayerDefinition.create(meshdefinition, 32, 32);
-	}
-
-	@Override
-	public void setupAnim(DwarfRabbit entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		this.head.xRot = headPitch * Mth.DEG_TO_RAD;
-		this.head.yRot = netHeadYaw * Mth.DEG_TO_RAD;
-		this.leftHindLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-		this.rightHindLeg.xRot = Mth.cos(limbSwing * 0.6662F + Mth.PI) * 1.4F * limbSwingAmount;
-		this.leftFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F + Mth.PI) * 1.4F * limbSwingAmount;
-		this.rightFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
 	}
 }

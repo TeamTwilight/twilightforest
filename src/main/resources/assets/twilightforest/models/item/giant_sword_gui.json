@@ -1,0 +1,16 @@
+{
+  "gui_light": "front",
+  "textures": {
+    "all": "minecraft:item/stone_sword",
+    "particle": "#all"
+  },
+  "elements": [
+    {
+      "from": [0, 0, 0],
+      "to": [16, 16, 0],
+      "faces": {
+        "south": {"texture": "#all", "tintindex": 0, "uv": [3.0, 5.0, 11.0, 13.0]}
+      }
+    }
+  ]
+}

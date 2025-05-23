@@ -30,6 +30,7 @@ import twilightforest.init.custom.StructureSpeleothemConfigs;
 import twilightforest.loot.TFLootTables;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.world.components.feature.BlockSpikeFeature;
+import twilightforest.world.components.spelothem.StructureSpeleothemConfig;
 
 public class HollowHillComponent extends TFStructureComponentOld {
 	private static final float CHEST_SPAWN_CHANCE = 0.025f;
@@ -61,7 +62,6 @@ public class HollowHillComponent extends TFStructureComponentOld {
 		this.speleothemConfigId = configHolder.key().location();
 	}
 
-	@SuppressWarnings("this-escape")
 	public HollowHillComponent(StructurePieceType piece, int i, int size, int x, int y, int z, Holder.Reference<StructureSpeleothemConfig> speleothemConfig) {
 		super(piece, i, x, y, z);
 

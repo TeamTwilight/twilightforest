@@ -1,0 +1,95 @@
+{
+  "model": {
+    "type": "minecraft:composite",
+    "models": [
+      {
+        "type": "minecraft:range_dispatch",
+        "entries": [
+          {
+            "model": {
+              "type": "minecraft:model",
+              "model": "twilightforest:item/brittle_potion_flask_1",
+              "tints": [
+                {
+                  "type": "twilightforest:potion_flask",
+                  "default": -13083194
+                }
+              ]
+            },
+            "threshold": 1.0
+          },
+          {
+            "model": {
+              "type": "minecraft:model",
+              "model": "twilightforest:item/brittle_potion_flask_2",
+              "tints": [
+                {
+                  "type": "twilightforest:potion_flask",
+                  "default": -13083194
+                }
+              ]
+            },
+            "threshold": 2.0
+          },
+          {
+            "model": {
+              "type": "minecraft:model",
+              "model": "twilightforest:item/brittle_potion_flask_3",
+              "tints": [
+                {
+                  "type": "twilightforest:potion_flask",
+                  "default": -13083194
+                }
+              ]
+            },
+            "threshold": 3.0
+          }
+        ],
+        "fallback": {
+          "type": "minecraft:model",
+          "model": "twilightforest:item/potion_flask_empty"
+        },
+        "normalize": false,
+        "property": "twilightforest:potion_flask_dosage"
+      },
+      {
+        "type": "minecraft:range_dispatch",
+        "entries": [
+          {
+            "model": {
+              "type": "minecraft:condition",
+              "component": "twilightforest:flask_contents",
+              "ignore_default": true,
+              "on_false": {
+                "type": "minecraft:model",
+                "model": "twilightforest:item/brittle_potion_flask"
+              },
+              "on_true": {
+                "type": "minecraft:model",
+                "model": "twilightforest:item/brittle_potion_flask_labelled"
+              },
+              "property": "minecraft:has_component"
+            },
+            "threshold": 0.0
+          },
+          {
+            "model": {
+              "type": "minecraft:model",
+              "model": "twilightforest:item/brittle_potion_flask_splintered"
+            },
+            "threshold": 1.0
+          },
+          {
+            "model": {
+              "type": "minecraft:model",
+              "model": "twilightforest:item/brittle_potion_flask_damaged"
+            },
+            "threshold": 2.0
+          }
+        ],
+        "normalize": false,
+        "property": "twilightforest:potion_flask_damage"
+      }
+    ]
+  }
+}

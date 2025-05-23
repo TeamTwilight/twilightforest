@@ -43,7 +43,7 @@ public class FireflyParticle extends TextureSheetParticle {
 
 	@Override
 	public void tick() {
-		if (this.checkSkylight && this.level.getBrightness(LightLayer.SKY, BlockPos.containing(this.x, this.y, this.z)) < 1) {
+		if (this.checkSkylight && this.level.getBrightness(LightLayer.SKY, BlockPos.containing(this.x, this.y, this.z)) <= 12) {
 			this.remove();
 		}
 		super.tick();

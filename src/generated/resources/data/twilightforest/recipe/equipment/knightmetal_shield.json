@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": {
-      "tag": "twilightforest:towerwood"
-    },
-    "-": {
-      "tag": "c:ingots/knightmetal"
-    },
-    "o": {
-      "item": "twilightforest:knightmetal_ring"
-    }
+    "#": "#twilightforest:towerwood",
+    "-": "#c:ingots/knightmetal",
+    "o": "twilightforest:knightmetal_ring"
   },
   "pattern": [
     "-#",

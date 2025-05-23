@@ -3,9 +3,9 @@ package twilightforest.loot.conditions;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.util.context.ContextKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.storage.loot.LootContext;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParam;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 import twilightforest.init.TFDataAttachments;
@@ -23,13 +23,13 @@ public record GiantPickUsedCondition(LootContext.EntityTarget target) implements
 	}
 
 	@Override
-	public Set<LootContextParam<?>> getReferencedContextParams() {
+	public Set<ContextKey<?>> getReferencedContextParams() {
 		return ImmutableSet.of(this.target.getParam());
 	}
 
 	@Override
 	public boolean test(LootContext context) {
-		if (context.getParamOrNull(this.target.getParam()) instanceof Player player) {
+		if (context.getOptionalParameter(this.target.getParam()) instanceof Player player) {
 			var attachment = player.getData(TFDataAttachments.GIANT_PICKAXE_MINING);
 			return player.level().getGameTime() == attachment.getMining() && attachment.canMakeGiantBlock();
 		}

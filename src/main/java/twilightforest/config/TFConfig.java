@@ -121,7 +121,7 @@ public class TFConfig {
 	public static List<Holder<Biome>> getValidAuroraBiomes(RegistryAccess access) {
 		if (VALID_AURORA_BIOMES.isEmpty() && !ConfigSetup.CLIENT_CONFIG.auroraBiomes.get().isEmpty()) {
 			ConfigSetup.CLIENT_CONFIG.auroraBiomes.get().forEach(s -> {
-				Optional<Holder<Biome>> holder = Optional.ofNullable(ResourceLocation.tryParse(s)).flatMap(key -> access.registryOrThrow(Registries.BIOME).getHolder(key));
+				Optional<Holder<Biome>> holder = Optional.ofNullable(ResourceLocation.tryParse(s)).flatMap(key -> access.lookupOrThrow(Registries.BIOME).get(key));
 				if (holder.isEmpty()) {
 					TwilightForestMod.LOGGER.warn("Biome {} in Twilight Forest's validAuroraBiomes config option is not a valid biome. Skipping!", s);
 				} else {

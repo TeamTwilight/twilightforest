@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/template_glass_pane_post",
-  "render_type": "minecraft:cutout",
+  "render_type": "minecraft:translucent",
   "textures": {
     "edge": "twilightforest:block/canopy_window",
     "pane": "twilightforest:block/canopy_window"

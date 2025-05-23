@@ -4,7 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -33,15 +33,17 @@ public class LichSpawnerBlockEntity extends BossSpawnerBlockEntity<Lich> {
 
 		BlockPos.MutableBlockPos mutableBlockPos = this.getBlockPos().mutable();
 		while (true) {
-			if (accessor.getMinBuildHeight() >= mutableBlockPos.getY()) break;
+			if (accessor.getMinY() >= mutableBlockPos.getY()) break;
 			if (accessor.getBlockState(mutableBlockPos.below()).isAir()) {
 				mutableBlockPos.move(Direction.DOWN);
 			} else break;
 		}
 
+		mutableBlockPos.move(Direction.UP);
+
 		myCreature.moveTo(mutableBlockPos, accessor.getLevel().random.nextFloat() * 360F, 0.0F);
 
-		EventHooks.finalizeMobSpawn(myCreature, accessor, accessor.getCurrentDifficultyAt(mutableBlockPos), MobSpawnType.SPAWNER, null);
+		EventHooks.finalizeMobSpawn(myCreature, accessor, accessor.getCurrentDifficultyAt(mutableBlockPos), EntitySpawnReason.SPAWNER, null);
 		myCreature.setAttackCooldown(40);
 		myCreature.setExtinguishTimer();
 

@@ -2,18 +2,10 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "twilightforest:maze_map"
-    },
-    {
-      "tag": "c:storage_blocks/diamond"
-    },
-    {
-      "tag": "c:storage_blocks/gold"
-    },
-    {
-      "tag": "c:storage_blocks/iron"
-    }
+    "twilightforest:maze_map",
+    "#c:storage_blocks/diamond",
+    "#c:storage_blocks/gold",
+    "#c:storage_blocks/iron"
   ],
   "result": {
     "count": 1,

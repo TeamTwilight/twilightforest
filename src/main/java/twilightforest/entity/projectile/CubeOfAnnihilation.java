@@ -22,7 +22,8 @@ import net.minecraft.world.phys.*;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
-import twilightforest.data.tags.BlockTagGenerator;
+import org.jetbrains.annotations.Nullable;
+import twilightforest.tags.TFBlockTags;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFParticleType;
 import twilightforest.init.TFSounds;
@@ -32,16 +33,18 @@ import twilightforest.util.WorldUtil;
 public class CubeOfAnnihilation extends ThrowableProjectile {
 
 	private boolean hasHitObstacle = false;
+	@Nullable
 	private ItemStack stack;
 
-	public CubeOfAnnihilation(EntityType<? extends CubeOfAnnihilation> type, Level world) {
-		super(type, world);
+	public CubeOfAnnihilation(EntityType<? extends CubeOfAnnihilation> type, Level level) {
+		super(type, level);
 	}
 
-	@SuppressWarnings("this-escape")
-	public CubeOfAnnihilation(EntityType<? extends CubeOfAnnihilation> type, Level world, LivingEntity thrower, ItemStack stack) {
-		super(type, thrower, world);
+	public CubeOfAnnihilation(EntityType<? extends CubeOfAnnihilation> type, Level level, LivingEntity thrower, ItemStack stack) {
+		super(type, level);
+		this.setOwner(thrower);
 		this.shootFromRotation(thrower, thrower.getXRot(), thrower.getYRot(), 0.0F, 1.5F, 1.0F);
+		this.setPos(thrower.getEyePosition());
 		this.stack = stack;
 	}
 
@@ -62,7 +65,7 @@ public class CubeOfAnnihilation extends ThrowableProjectile {
 	@Override
 	protected void onHitEntity(EntityHitResult result) {
 		super.onHitEntity(result);
-		if (result.getEntity() instanceof LivingEntity && result.getEntity().hurt(this.getDamageSource(), 10)) {
+		if (this.level() instanceof ServerLevel level && result.getEntity() instanceof LivingEntity && result.getEntity().hurtServer(level, this.getDamageSource(), 10)) {
 			this.tickCount += 60;
 		}
 	}
@@ -86,8 +89,8 @@ public class CubeOfAnnihilation extends ThrowableProjectile {
 
 	private DamageSource getDamageSource() {
 		LivingEntity thrower = (LivingEntity) this.getOwner();
-		if (thrower instanceof Player) {
-			return this.damageSources().playerAttack((Player) thrower);
+		if (thrower instanceof Player player) {
+			return this.damageSources().playerAttack(player);
 		} else if (thrower != null) {
 			return this.damageSources().mobAttack(thrower);
 		} else {
@@ -120,7 +123,7 @@ public class CubeOfAnnihilation extends ThrowableProjectile {
 	private boolean canAnnihilate(BlockPos pos, BlockState state, boolean restrictedPlaceMode) {
 		// whitelist many castle blocks
 		Block block = state.getBlock();
-		return (state.is(BlockTagGenerator.ANNIHILATION_INCLUSIONS) || block.getExplosionResistance() < 8F && state.getDestroySpeed(this.level(), pos) >= 0)
+		return (state.is(TFBlockTags.ANNIHILATION_INCLUSIONS) || block.getExplosionResistance() < 8F && state.getDestroySpeed(this.level(), pos) >= 0)
 			&& (!restrictedPlaceMode || this.stack.canBreakBlockInAdventureMode(new BlockInWorld(this.level(), pos, false)));
 	}
 
@@ -131,7 +134,7 @@ public class CubeOfAnnihilation extends ThrowableProjectile {
 			for (int dx = 0; dx < 3; dx++) {
 				for (int dy = 0; dy < 3; dy++) {
 					for (int dz = 0; dz < 3; dz++) {
-						particlePacket.queueParticle(TFParticleType.ANNIHILATE.get(), false,
+						particlePacket.queueParticle(TFParticleType.ANNIHILATE.get(),
 							pos.getX() + (dx + 0.5D) / 4,
 							pos.getY() + (dy + 0.5D) / 4,
 							pos.getZ() + (dz + 0.5D) / 4,

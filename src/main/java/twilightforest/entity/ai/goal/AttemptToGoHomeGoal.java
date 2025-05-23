@@ -15,7 +15,6 @@ public class AttemptToGoHomeGoal<T extends PathfinderMob & EnforcedHomePoint> ex
 	private double wantedZ;
 	private final double speedModifier;
 
-	@SuppressWarnings("this-escape")
 	public AttemptToGoHomeGoal(T mob, double speedModifier) {
 		this.mob = mob;
 		this.speedModifier = speedModifier;

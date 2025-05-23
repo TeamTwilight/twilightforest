@@ -24,7 +24,7 @@ import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.util.HugeMushroomUtil;
 import twilightforest.util.RotationUtil;
-import twilightforest.world.components.structures.StructureSpeleothemConfig;
+import twilightforest.world.components.spelothem.StructureSpeleothemConfig;
 
 public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 	protected final boolean[] openingTowards = {false, false, true, false};
@@ -37,7 +37,6 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 		this.openingTowards[3] = nbt.getBoolean("openingTowards3");
 	}
 
-	@SuppressWarnings("this-escape")
 	public TrollCaveConnectComponent(int index, int x, int y, int z, int caveSize, int caveHeight, Direction direction, Holder.Reference<StructureSpeleothemConfig> speleothemConfig) {
 		super(TFStructurePieceTypes.TFTCCon.get(), index, x, y, z, speleothemConfig);
 		this.size = caveSize;

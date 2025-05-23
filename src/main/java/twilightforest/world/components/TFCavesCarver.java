@@ -102,7 +102,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 		}
 
 		//We dont want caves to go so far down you can see bedrock, so lets stop them right before
-		if (pos.getY() < access.getMinBuildHeight() + 6) return false;
+		if (pos.getY() < access.getMinY() + 6) return false;
 
 		if (!this.canReplaceBlock(config, stateBeforeReplacement) && !isDebugEnabled(config)) {
 			return false;
@@ -226,7 +226,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 
 			float yShift = Mth.sin(pitch);
 			// If posY nears bedrock, "slow" its descent if marching downwards
-			posY += yShift > 0 || posY + yShift > access.getMinBuildHeight() + 10 ? yShift : yShift * 0.25f;
+			posY += yShift > 0 || posY + yShift > access.getMinY() + 10 ? yShift : yShift * 0.25f;
 
 			posZ += Mth.sin(yaw) * f2;
 			pitch = pitch * (flag ? 0.92F : 0.7F);
@@ -248,7 +248,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 				}
 
 				// Additional size-boosting to make wider & taller spherical rooms
-				boolean shouldEnlargeSphere = posY > access.getMinBuildHeight() + 12 && random.nextInt(48) == 0;
+				boolean shouldEnlargeSphere = posY > access.getMinY() + 12 && random.nextInt(48) == 0;
 				float sizeMultiplier = shouldEnlargeSphere
 					? random.nextFloat() * random.nextFloat() * 2f + 1
 					: 1;

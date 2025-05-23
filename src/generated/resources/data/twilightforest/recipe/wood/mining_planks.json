@@ -3,9 +3,7 @@
   "category": "building",
   "group": "planks",
   "ingredients": [
-    {
-      "tag": "twilightforest:mining_logs"
-    }
+    "#twilightforest:mining_logs"
   ],
   "result": {
     "count": 4,

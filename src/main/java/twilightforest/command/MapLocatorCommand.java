@@ -30,7 +30,7 @@ import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import java.util.Collection;
 import java.util.Collections;
 
-@twilightforest.beans.Component
+@tamaized.beanification.Component
 public class MapLocatorCommand {
 
 	// [vanillacopy] LocateCommand.java
@@ -56,7 +56,7 @@ public class MapLocatorCommand {
 		var structure = ResourceOrTagKeyArgument.getResourceOrTagKey(context, "structure", Registries.STRUCTURE, ERROR_STRUCTURE_INVALID);
 		var source = context.getSource();
 
-		Registry<Structure> registry = source.getLevel().registryAccess().registryOrThrow(Registries.STRUCTURE);
+		Registry<Structure> registry = source.getLevel().registryAccess().lookupOrThrow(Registries.STRUCTURE);
 		HolderSet<Structure> holderset = LocateCommand.getHolders(structure, registry).orElseThrow(() -> ERROR_STRUCTURE_INVALID.create(structure.asPrintable()));
 		BlockPos blockpos = BlockPos.containing(source.getPosition());
 		ServerLevel serverlevel = source.getLevel();

@@ -28,7 +28,7 @@ public abstract class DamageableStackDispenseBehavior extends DefaultDispenseIte
 			Projectile projectileentity = this.getProjectileEntity(level, pos, stack);
 			projectileentity.shoot(direction.getStepX(), (float) direction.getStepY() + 0.1F, direction.getStepZ(), this.getProjectileVelocity(), this.getProjectileInaccuracy());
 			level.addFreshEntity(projectileentity);
-			TFItemStackUtils.hurtButDontBreak(stack, 1, level, null);
+			TFItemStackUtils.hurtWithoutBreaking(stack, 1, null);
 			this.fired = true;
 		}
 		return stack;

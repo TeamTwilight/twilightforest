@@ -13,7 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.config.TFConfig;
-import twilightforest.data.tags.BlockTagGenerator;
+import twilightforest.tags.TFBlockTags;
 import twilightforest.init.TFParticleType;
 import twilightforest.init.TFSounds;
 import twilightforest.network.ParticlePacket;
@@ -45,7 +45,7 @@ public class TimeLogCoreBlock extends SpecialMagicLogBlock {
 
 			BlockState state = level.getBlockState(dPos);
 
-			if (!state.is(BlockTagGenerator.TIME_CORE_EXCLUDED)) {
+			if (!state.is(TFBlockTags.TIME_CORE_EXCLUDED)) {
 				boolean worked = false;
 
 				if (state.isRandomlyTicking()) {
@@ -65,8 +65,8 @@ public class TimeLogCoreBlock extends SpecialMagicLogBlock {
 				if (worked) {
 					Vec3 xyz = Vec3.atCenterOf(dPos);
 					ParticlePacket particlePacket = new ParticlePacket();
-					double yOffset = state.getOcclusionShape(level, dPos).max(Direction.Axis.Y);
-					particlePacket.queueParticle(TFParticleType.LOG_CORE_PARTICLE.get(), false, xyz.add(0.0, yOffset - 0.5, 0.0), new Vec3(0.953, 0.698, 0.0));
+					double yOffset = state.getOcclusionShape().max(Direction.Axis.Y);
+					particlePacket.queueParticle(TFParticleType.LOG_CORE_PARTICLE.get(), xyz.add(0.0, yOffset - 0.5, 0.0), new Vec3(0.953, 0.698, 0.0));
 					PacketDistributor.sendToPlayersNear(level, null, xyz.x(), xyz.y(), xyz.z(), 64.0D, particlePacket);
 				}
 			}

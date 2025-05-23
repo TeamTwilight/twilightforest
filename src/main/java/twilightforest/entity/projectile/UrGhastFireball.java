@@ -49,10 +49,10 @@ public class UrGhastFireball extends LargeFireball implements ITFProjectile {
 			Entity owner = this.getOwner();
 			DamageSource source = this.damageSources().fireball(this, owner);
 			// TF - up damage by 10
-			entity1.hurt(source, 16.0F);
+			entity1.hurtServer(serverlevel, source, 16.0F);
 			EnchantmentHelper.doPostAttackEffects(serverlevel, entity1, source);
 
-			boolean flag = EventHooks.canEntityGrief(this.level(), this.getOwner());
+			boolean flag = EventHooks.canEntityGrief(serverlevel, this.getOwner());
 			this.level().explode(null, this.getX(), this.getY(), this.getZ(), this.power, flag, Level.ExplosionInteraction.NONE);
 			this.discard();
 		}
@@ -61,18 +61,17 @@ public class UrGhastFireball extends LargeFireball implements ITFProjectile {
 	@Override
 	protected void onHitBlock(BlockHitResult result) {
 		super.onHitBlock(result);
-		//explode and leave fire when hitting a block, but dont destroy them
-		boolean flag = EventHooks.canEntityGrief(this.level(), this.getOwner());
-		this.level().explode(null, this.getX(), this.getY(), this.getZ(), (float) this.power, flag, Level.ExplosionInteraction.NONE);
-		this.discard();
+		if (this.level() instanceof ServerLevel level) {
+			//explode and leave fire when hitting a block, but dont destroy them
+			boolean flag = EventHooks.canEntityGrief(level, this.getOwner());
+			this.level().explode(null, this.getX(), this.getY(), this.getZ(), (float) this.power, flag, Level.ExplosionInteraction.NONE);
+			this.discard();
+		}
 	}
 
 	@Override
 	public void shoot(double x, double y, double z, float scale, float dist) {
-		Vec3 vec3d = (new Vec3(x, y, z))
-			.normalize()
-			.add(this.random.nextGaussian() * 0.0075F * dist, this.random.nextGaussian() * 0.0075F * dist, this.random.nextGaussian() * 0.0075F * dist)
-			.scale(scale);
+		Vec3 vec3d = new Vec3(x, y, z).normalize().add(this.random.nextGaussian() * 0.0075F * dist, this.random.nextGaussian() * 0.0075F * dist, this.random.nextGaussian() * 0.0075F * dist).scale(scale);
 		this.setDeltaMovement(vec3d);
 		float f = Mth.sqrt((float) distanceToSqr(vec3d));
 		this.setYRot((float) (Mth.atan2(vec3d.x(), z) * (180F / Mth.PI)));

@@ -1,5 +1,5 @@
 {
-  "ambient_light": 0.0,
+  "ambient_light": 0.01,
   "bed_works": true,
   "coordinate_scale": 0.125,
   "effects": "twilightforest:renderer",
@@ -19,6 +19,6 @@
   },
   "natural": true,
   "piglin_safe": false,
-  "respawn_anchor_works": true,
+  "respawn_anchor_works": false,
   "ultrawarm": false
 }

@@ -14,7 +14,7 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.data.tags.BlockTagGenerator;
+import twilightforest.tags.TFBlockTags;
 
 import java.util.Optional;
 
@@ -33,7 +33,7 @@ public class TFSmallLakeFeature extends Feature<TFSmallLakeFeature.Configuration
 		RandomSource randomsource = context.random();
 		TFSmallLakeFeature.Configuration config = context.config();
 
-		if (blockpos.getY() <= worldgenlevel.getMinBuildHeight() + 4) {
+		if (blockpos.getY() <= worldgenlevel.getMinY() + 4) {
 			return false;
 		} else {
 			blockpos = blockpos.below(4);
@@ -98,8 +98,8 @@ public class TFSmallLakeFeature extends Feature<TFSmallLakeFeature.Configuration
 					for (int y = 0; y < 8; y++) {
 						if (booleans[(x * 16 + z) * 8 + y]) {
 							BlockPos offset = blockpos.offset(x, y, z);
-							if (!(worldgenlevel.getBlockState(offset).is(BlockTagGenerator.SMALL_LAKES_DONT_REPLACE) ||
-								worldgenlevel.getBlockState(offset.above()).is(BlockTagGenerator.SMALL_LAKES_DONT_REPLACE))) {
+							if (!(worldgenlevel.getBlockState(offset).is(TFBlockTags.SMALL_LAKES_DONT_REPLACE) ||
+								worldgenlevel.getBlockState(offset.above()).is(TFBlockTags.SMALL_LAKES_DONT_REPLACE))) {
 								if (y >= 4) {
 									worldgenlevel.setBlock(offset, AIR, Block.UPDATE_CLIENTS);
                                     worldgenlevel.scheduleTick(offset, AIR.getBlock(), 0);

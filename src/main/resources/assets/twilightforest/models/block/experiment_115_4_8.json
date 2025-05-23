@@ -1,0 +1,33 @@
+{
+  "parent": "block/block",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "bottom": "twilightforest:block/experiment115_bottom",
+    "inside": "twilightforest:block/experiment115_inner",
+    "top": "twilightforest:block/experiment115_top",
+    "top2": "twilightforest:block/blank",
+    "side": "twilightforest:block/experiment115_side",
+    "particle": "#bottom"
+  },
+  "elements": [
+    {
+      "from": [1, 0, 1],
+      "to": [8, 8, 15],
+      "faces": {
+        "north": {"uv": [8, 8, 15, 16], "texture": "#side"},
+        "east": {"uv": [1, 8, 15, 16], "texture": "#inside"},
+        "south": {"uv": [1, 8, 8, 16], "texture": "#side"},
+        "west": {"uv": [1, 8, 15, 16], "texture": "#side"},
+        "up": {"uv": [1, 1, 8, 15], "texture": "#top"},
+        "down": {"uv": [1, 1, 8, 15], "texture": "#bottom", "cullface": "down"}
+      }
+    },
+    {
+      "from": [1, 8, 1],
+      "to": [8, 8, 15],
+      "faces": {
+        "up": {"uv": [1, 1, 8, 15], "texture": "#top2"}
+      }
+    }
+  ]
+}

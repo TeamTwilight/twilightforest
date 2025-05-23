@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "hanging_sign",
   "key": {
-    "#": {
-      "item": "twilightforest:stripped_canopy_log"
-    },
-    "|": {
-      "item": "minecraft:chain"
-    }
+    "#": "twilightforest:stripped_canopy_log",
+    "|": "minecraft:chain"
   },
   "pattern": [
     "| |",

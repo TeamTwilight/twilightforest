@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "tag": "c:paper"
-    },
-    {
-      "item": "twilightforest:alpha_yeti_trophy"
-    }
+    "#c:paper",
+    "twilightforest:alpha_yeti_trophy"
   ],
   "result": {
     "count": 1,

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/template_orientable_trapdoor_bottom",
+  "render_type": "minecraft:solid",
+  "textures": {
+    "texture": "twilightforest:block/dark_trapdoor"
+  }
+}

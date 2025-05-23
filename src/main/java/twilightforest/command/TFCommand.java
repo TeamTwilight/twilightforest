@@ -6,12 +6,13 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.brigadier.tree.LiteralCommandNode;
+import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
-import twilightforest.beans.Autowired;
+import tamaized.beanification.Autowired;
 
-@twilightforest.beans.Component
+@tamaized.beanification.Component
 public class TFCommand {
 
 	@Autowired
@@ -35,7 +36,35 @@ public class TFCommand {
 	@Autowired
 	private ShieldCommand shieldCommand;
 
-	public void register(CommandDispatcher<CommandSourceStack> dispatcher) {
+	@Autowired
+	private SinisterSpawnerCommand spawnerCommand;
+
+	@Autowired
+	private DisplayPiecesCommand displayPiecesCommand;
+
+	@Autowired
+	private CountLootCommand countLootCommand;
+
+	@Autowired
+	private CountTemplateCommand countTemplateCommand;
+
+	@Autowired
+	private StructureDistanceCommand structureDistanceCommand;
+
+	@Autowired
+	private ClearDisplayCommand clearDisplayCommand;
+
+	@Autowired
+	private GetSeedAndTeleportCommand getSeedAndTeleportCommand;
+
+	public void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext buildContext, Commands.CommandSelection selection) {
+		LiteralArgumentBuilder<CommandSourceStack> structureBranch = Commands.literal("structure_util")
+			.then(displayPiecesCommand.register())
+			.then(clearDisplayCommand.register())
+			.then(countLootCommand.register())
+			.then(countTemplateCommand.register())
+			.then(structureDistanceCommand.register());
+
 		LiteralArgumentBuilder<CommandSourceStack> builder = Commands.literal("twilightforest")
 			.executes(this::run)
 			.then(centerCommand.register())
@@ -44,7 +73,10 @@ public class TFCommand {
 			.then(generateBookCommand.register())
 			.then(infoCommand.register())
 			.then(mapBiomesCommand.register())
-			.then(shieldCommand.register());
+			.then(shieldCommand.register())
+			.then(spawnerCommand.register(buildContext))
+			.then(getSeedAndTeleportCommand.register(selection != Commands.CommandSelection.INTEGRATED))
+			.then(structureBranch);
 		LiteralCommandNode<CommandSourceStack> node = dispatcher.register(builder);
 		dispatcher.register(Commands.literal("tf").executes(this::run).redirect(node));
 		dispatcher.register(Commands.literal("tffeature").executes(this::run).redirect(node));

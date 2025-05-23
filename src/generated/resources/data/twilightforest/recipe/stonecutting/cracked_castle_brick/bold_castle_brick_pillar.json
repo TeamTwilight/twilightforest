@@ -1,8 +1,6 @@
 {
   "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "twilightforest:cracked_castle_brick"
-  },
+  "ingredient": "twilightforest:cracked_castle_brick",
   "result": {
     "count": 1,
     "id": "twilightforest:bold_castle_brick_pillar"

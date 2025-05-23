@@ -1,5 +1,6 @@
 package twilightforest.events;
 
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.commands.Commands;
@@ -12,8 +13,8 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
@@ -21,21 +22,21 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFPortalBlock;
 import twilightforest.config.TFConfig;
-import twilightforest.data.tags.ItemTagGenerator;
+import twilightforest.tags.TFItemTags;
 import twilightforest.init.TFAdvancements;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDimension;
 import twilightforest.network.MissingAdvancementToastPacket;
 import twilightforest.network.StructureProtectionPacket;
 import twilightforest.util.Enforcement;
-import twilightforest.util.landmarks.LandmarkUtil;
 import twilightforest.util.PlayerHelper;
+import twilightforest.util.landmarks.LandmarkUtil;
 import twilightforest.world.components.structures.util.AdvancementLockedStructure;
+import twilightforest.world.components.structures.util.ProgressionPiece;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Random;
 
 @EventBusSubscriber(modid = TwilightForestMod.ID)
 public class TFTickHandler {
@@ -71,9 +72,9 @@ public class TFTickHandler {
 		}
 	}
 
-	private static void sendStructureProtectionPacket(Player player, BoundingBox sbb) {
+	private static void sendStructureProtectionPacket(Player player, List<Pair<BoundingBox, Boolean>> sbbData) {
 		if (player instanceof ServerPlayer sp) {
-			PacketDistributor.sendToPlayer(sp, new StructureProtectionPacket(Optional.of(sbb)));
+			PacketDistributor.sendToPlayer(sp, new StructureProtectionPacket(Optional.of(sbbData)));
 		}
 	}
 
@@ -88,7 +89,11 @@ public class TFTickHandler {
 		ChunkPos chunkPlayer = player.chunkPosition();
 		return LandmarkUtil.locateNearestLandmarkStart(world, chunkPlayer.x, chunkPlayer.z).map(structureStart -> {
 			if (structureStart.getStructure() instanceof AdvancementLockedStructure advancementLockedStructure && !advancementLockedStructure.doesPlayerHaveRequiredAdvancements(player)) {
-				sendStructureProtectionPacket(player, structureStart.getBoundingBox());
+				List<Pair<BoundingBox, Boolean>> boundingBoxesData = structureStart.getPieces().stream()
+					.map(piece -> Pair.of(isProtected(piece) ? piece.getBoundingBox().inflatedBy(4) : piece.getBoundingBox(), isProtected(piece)))
+					.toList();
+
+				sendStructureProtectionPacket(player, boundingBoxesData);
 				return true;
 			}
 
@@ -97,17 +102,22 @@ public class TFTickHandler {
 		}).orElse(false);
 	}
 
-	private static void checkForPortalCreation(ServerPlayer player, Level world, float rangeToCheck) {
-		if (world.dimension().location().equals(ResourceLocation.parse(TFConfig.originDimension))
-			|| TFDimension.isTwilightPortalDestination(world)
+	@SuppressWarnings("deprecation")
+	private static boolean isProtected(StructurePiece piece) {
+		return !(piece instanceof ProgressionPiece progressionPiece) || progressionPiece.isComponentProtected();
+	}
+
+	private static void checkForPortalCreation(ServerPlayer player, ServerLevel level, float rangeToCheck) {
+		if (level.dimension().location().equals(ResourceLocation.parse(TFConfig.originDimension))
+			|| TFDimension.isTwilightPortalDestination(level)
 			|| TFConfig.allowPortalsInOtherDimensions) {
 
-			List<ItemEntity> itemList = world.getEntitiesOfClass(ItemEntity.class, player.getBoundingBox().inflate(rangeToCheck));
+			List<ItemEntity> itemList = level.getEntitiesOfClass(ItemEntity.class, player.getBoundingBox().inflate(rangeToCheck));
 			ItemEntity qualified = null;
 
 			for (ItemEntity entityItem : itemList) {
-				if (entityItem.getItem().is(ItemTagGenerator.PORTAL_ACTIVATOR) &&
-					TFBlocks.TWILIGHT_PORTAL.get().canFormPortal(world.getBlockState(entityItem.blockPosition())) &&
+				if (entityItem.getItem().is(TFItemTags.PORTAL_ACTIVATOR) &&
+					TFBlocks.TWILIGHT_PORTAL.get().canFormPortal(level.getBlockState(entityItem.blockPosition())) &&
 					Objects.equals(entityItem.getOwner(), player)) {
 
 					qualified = entityItem;
@@ -134,16 +144,15 @@ public class TFTickHandler {
 				}
 			}
 
-			Random rand = new Random();
 			for (int i = 0; i < 2; i++) {
-				double vx = rand.nextGaussian() * 0.02D;
-				double vy = rand.nextGaussian() * 0.02D;
-				double vz = rand.nextGaussian() * 0.02D;
+				double vx = level.getRandom().nextGaussian() * 0.02D;
+				double vy = level.getRandom().nextGaussian() * 0.02D;
+				double vz = level.getRandom().nextGaussian() * 0.02D;
 
-				world.addParticle(ParticleTypes.EFFECT, qualified.getX(), qualified.getY() + 0.2, qualified.getZ(), vx, vy, vz);
+				level.addParticle(ParticleTypes.EFFECT, qualified.getX(), qualified.getY() + 0.2, qualified.getZ(), vx, vy, vz);
 			}
 
-			if (TFBlocks.TWILIGHT_PORTAL.get().tryToCreatePortal(world, qualified.blockPosition(), qualified, player))
+			if (TFBlocks.TWILIGHT_PORTAL.get().tryToCreatePortal(level, qualified.blockPosition(), qualified, player))
 				TFAdvancements.MADE_TF_PORTAL.get().trigger(player);
 
 		}

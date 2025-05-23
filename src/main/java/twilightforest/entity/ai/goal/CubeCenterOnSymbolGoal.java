@@ -20,7 +20,6 @@ public class CubeCenterOnSymbolGoal extends Goal {
 	private double yPosition;
 	private double zPosition;
 
-	@SuppressWarnings("this-escape")
 	public CubeCenterOnSymbolGoal(RovingCube cube, double d) {
 		this.myCube = cube;
 		this.xPosition = this.myCube.symbolX;

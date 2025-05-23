@@ -3,8 +3,9 @@
   "adjust_structure_elevation": true,
   "allow_biome_surface_decorations": false,
   "allow_biome_underground_decorations": true,
+  "allow_biome_vegetation": true,
   "biomes": "#twilightforest:valid_naga_courtyard_biomes",
-  "chunk_clearance_radius": 3,
+  "chunk_clearance_radius": 3.0,
   "spawn_overrides": {
     "ambient": {
       "bounding_box": "full",

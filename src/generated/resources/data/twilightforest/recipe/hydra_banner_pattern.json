@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "tag": "c:paper"
-    },
-    {
-      "item": "twilightforest:hydra_trophy"
-    }
+    "#c:paper",
+    "twilightforest:hydra_trophy"
   ],
   "result": {
     "count": 1,

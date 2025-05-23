@@ -3,9 +3,7 @@
   "category": "redstone",
   "group": "wooden_pressure_plate",
   "key": {
-    "#": {
-      "item": "twilightforest:mangrove_planks"
-    }
+    "#": "twilightforest:mangrove_planks"
   },
   "pattern": [
     "##"

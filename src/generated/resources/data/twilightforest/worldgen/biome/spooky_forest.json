@@ -1,8 +1,5 @@
 {
-  "carvers": {
-    "air": "twilightforest:tf_caves"
-  },
-  "creature_spawn_probability": 0.15,
+  "carvers": "twilightforest:tf_caves",
   "downfall": 1.0,
   "effects": {
     "fog_color": 8549265,
@@ -15,12 +12,18 @@
       "sound": "minecraft:ambient.cave",
       "tick_delay": 6000
     },
-    "music": {
-      "max_delay": 12000,
-      "min_delay": 1200,
-      "replace_current_music": true,
-      "sound": "twilightforest:music.twilightforest.twilight_forest"
-    },
+    "music": [
+      {
+        "data": {
+          "max_delay": 12000,
+          "min_delay": 1200,
+          "replace_current_music": true,
+          "sound": "twilightforest:music.twilightforest.twilight_forest"
+        },
+        "weight": 1
+      }
+    ],
+    "music_volume": 1.0,
     "sky_color": 2105930,
     "water_color": 12355671,
     "water_fog_color": 329011
@@ -57,17 +60,14 @@
     [],
     [
       "minecraft:patch_tall_grass",
-      "minecraft:patch_grass_badlands",
-      "minecraft:patch_grass_savanna",
+      "twilightforest:patch_grass_badlands",
+      "twilightforest:patch_grass_savanna",
       "minecraft:patch_sugar_cane",
-      "minecraft:patch_grass_jungle",
+      "twilightforest:patch_grass_jungle",
       "twilightforest:mayapple",
       "twilightforest:tree/twilight_oak_tree",
       "twilightforest:tree/large_twilight_oak_tree",
-      "twilightforest:tree/veilwood_tree",
-      "twilightforest:tree/big_veilwood_tree",
-      "minecraft:brown_mushroom_swamp",
-      "minecraft:red_mushroom_swamp",
+      "twilightforest:tree/dead_canopy_tree",
       "twilightforest:pumpkin_lamppost",
       "twilightforest:tf_oak_fallen_log",
       "twilightforest:canopy_fallen_log",
@@ -105,26 +105,7 @@
       }
     ],
     "axolotls": [],
-    "creature": [
-      {
-        "type": "twilightforest:deer",
-        "maxCount": 3,
-        "minCount": 2,
-        "weight": 15
-      },
-      {
-        "type": "twilightforest:squirrel",
-        "maxCount": 4,
-        "minCount": 2,
-        "weight": 10
-      },
-      {
-        "type": "twilightforest:raven",
-        "maxCount": 2,
-        "minCount": 1,
-        "weight": 5
-      }
-    ],
+    "creature": [],
     "misc": [],
     "monster": [
       {

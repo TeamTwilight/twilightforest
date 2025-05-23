@@ -29,7 +29,6 @@ public class IceTowerBridgeComponent extends TFStructureComponentOld {
 		this.extraZlength = nbt.getInt("extraZlength");
 	}
 
-	@SuppressWarnings("this-escape")
 	public IceTowerBridgeComponent(int index, int x, int y, int z, int length, int zLength, Direction direction) {
 		super(TFStructurePieceTypes.TFITBri.get(), index, x, y, z);
 		this.length = length;

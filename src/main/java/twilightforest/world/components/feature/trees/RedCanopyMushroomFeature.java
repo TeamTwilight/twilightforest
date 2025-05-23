@@ -13,15 +13,22 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
 public class RedCanopyMushroomFeature extends CanopyMushroomFeature {
-	private int altHeads = 0;
+	/**
+	 * Weights should produce the following distribution:
+	 * 0: Vanilla, 33% Chance, styled big red mushroom cap,
+	 * 1: Smooth, 33% Chance, kinda like the ones on a mushroom castle,
+	 * 2: Spheroid, 33% Chance, same style of cap as you'd find in TF version 1.17, for example
+	 * 3: Flat, 1% chance, same as the brown mushroom one, these used to be in older versions of TF
+	 */
+	private final int enumHead;
 
-	public RedCanopyMushroomFeature(Codec<HugeMushroomFeatureConfiguration> featureConfigurationCodec) {
+	public RedCanopyMushroomFeature(Codec<HugeMushroomFeatureConfiguration> featureConfigurationCodec, int enumHead) {
 		super(featureConfigurationCodec);
+		this.enumHead = enumHead;
 	}
 
 	@Override
 	public boolean place(FeaturePlaceContext<HugeMushroomFeatureConfiguration> context) {
-		this.altHeads = context.random().nextInt(100) + 1; //Roll the dice on the style of cap
 		return super.place(context);
 	}
 
@@ -40,19 +47,13 @@ public class RedCanopyMushroomFeature extends CanopyMushroomFeature {
 		return 10 + random.nextInt(2);
 	}
 
-	/**
-	 * 33% Chance to get a vanilla - styled big red mushroom cap,
-	 * 33% chance for it to be a "smooth" cap, kinda like the ones on a mushroom castle,
-	 * 33% chance it's the same style of cap as you'd find in TF version 1.17, for example
-	 * 1% chance for it to be a flat cap, same as the brown mushroom one, these used to be in older versions of TF
-	 */
 	@Override
 	protected void makeCap(LevelAccessor levelAccessor, RandomSource random, BlockPos pos, int height, BlockPos.MutableBlockPos mutableBlockPos, HugeMushroomFeatureConfiguration featureConfiguration) {
-		if (this.altHeads <= 33) {
+		if (this.enumHead == 0) {
 			this.makeVanillaCap(levelAccessor, random, pos, height, mutableBlockPos, featureConfiguration);
-		} else if (this.altHeads <= 66) {
+		} else if (this.enumHead == 1) {
 			this.makeSmoothCap(levelAccessor, random, pos, height, mutableBlockPos, featureConfiguration);
-		} else if (this.altHeads <= 99) {
+		} else if (this.enumHead == 2) {
 			this.makeSpheroidCap(levelAccessor, random, pos, height, mutableBlockPos, featureConfiguration);
 		} else super.makeCap(levelAccessor, random, pos, height, mutableBlockPos, featureConfiguration);
 	}
@@ -73,7 +74,7 @@ public class RedCanopyMushroomFeature extends CanopyMushroomFeature {
 					boolean zMinMax = zIsMin || zIsMax;
 					if (y >= height || xMinMax != zMinMax) {
 						mutableBlockPos.setWithOffset(pos, x, y, z);
-						if (!levelAccessor.getBlockState(mutableBlockPos).isSolidRender(levelAccessor, mutableBlockPos)) {
+						if (!levelAccessor.getBlockState(mutableBlockPos).isSolidRender()) {
 							BlockState blockstate = featureConfiguration.capProvider.getState(random, pos);
 
 							if (blockstate.hasProperty(HugeMushroomBlock.WEST) && blockstate.hasProperty(HugeMushroomBlock.EAST) && blockstate.hasProperty(HugeMushroomBlock.NORTH) && blockstate.hasProperty(HugeMushroomBlock.SOUTH) && blockstate.hasProperty(HugeMushroomBlock.UP)) {
@@ -101,7 +102,7 @@ public class RedCanopyMushroomFeature extends CanopyMushroomFeature {
 				for (int z = -j; z <= j; ++z) {
 					if (isInsideSmoothShape(height, j, x, y, z)) {
 						mutableBlockPos.setWithOffset(pos, x, y, z);
-						if (!levelAccessor.getBlockState(mutableBlockPos).isSolidRender(levelAccessor, mutableBlockPos)) {
+						if (!levelAccessor.getBlockState(mutableBlockPos).isSolidRender()) {
 							BlockState blockstate = featureConfiguration.capProvider.getState(random, pos);
 
 							if (blockstate.hasProperty(HugeMushroomBlock.WEST) && blockstate.hasProperty(HugeMushroomBlock.EAST) && blockstate.hasProperty(HugeMushroomBlock.NORTH) && blockstate.hasProperty(HugeMushroomBlock.SOUTH) && blockstate.hasProperty(HugeMushroomBlock.UP)) {
@@ -152,7 +153,7 @@ public class RedCanopyMushroomFeature extends CanopyMushroomFeature {
 					double maxDistance = (double) j + 0.1D;
 					if (distance <= maxDistance) {
 						mutableBlockPos.setWithOffset(pos, x, y, z);
-						if (!levelAccessor.getBlockState(mutableBlockPos).isSolidRender(levelAccessor, mutableBlockPos)) {
+						if (!levelAccessor.getBlockState(mutableBlockPos).isSolidRender()) {
 							BlockState blockstate = featureConfiguration.capProvider.getState(random, pos);
 
 							if (blockstate.hasProperty(HugeMushroomBlock.WEST) && blockstate.hasProperty(HugeMushroomBlock.EAST) && blockstate.hasProperty(HugeMushroomBlock.NORTH) && blockstate.hasProperty(HugeMushroomBlock.SOUTH) && blockstate.hasProperty(HugeMushroomBlock.UP)) {

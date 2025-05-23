@@ -6,11 +6,13 @@
   ],
   "allow_biome_surface_decorations": false,
   "allow_biome_underground_decorations": true,
+  "allow_biome_vegetation": true,
   "ambient_spawns": [],
   "biomes": "#twilightforest:valid_dark_tower_biomes",
-  "chunk_clearance_radius": 1,
+  "chunk_clearance_radius": 1.0,
   "hint_item": {
     "components": {
+      "minecraft:item_name": "{\"translate\":\"twilightforest.book.darktower\"}",
       "minecraft:written_book_content": {
         "author": "twilightforest.book.author",
         "generation": 3,
@@ -27,7 +29,7 @@
         ],
         "resolved": true,
         "title": {
-          "raw": "twilightforest.book.darktower"
+          "raw": ""
         }
       },
       "twilightforest:translatable_book": {}

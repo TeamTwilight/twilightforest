@@ -2,9 +2,12 @@ package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -35,7 +38,7 @@ public class WallPillarBlock extends ConnectableRotatedPillarBlock implements Si
 	private static final VoxelShape NORTH_FLAT = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 3.0D);
 	private static final VoxelShape SOUTH_FLAT = Block.box(0.0D, 0.0D, 13.0D, 16.0D, 16.0D, 16.0D);
 
-	public WallPillarBlock(BlockBehaviour.Properties properties, double width, double height) {
+	public WallPillarBlock(double width, double height, BlockBehaviour.Properties properties) {
 		super(properties, width);
 		this.registerDefaultState(this.defaultBlockState().setValue(WATERLOGGED, false));
 	}
@@ -84,12 +87,12 @@ public class WallPillarBlock extends ConnectableRotatedPillarBlock implements Si
 	}
 
 	@Override
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor accessor, BlockPos currentPos, BlockPos facingPos) {
+	protected BlockState updateShape(BlockState state, LevelReader reader, ScheduledTickAccess access, BlockPos pos, Direction direction, BlockPos facingPos, BlockState facingState, RandomSource random) {
 		if (state.getValue(WATERLOGGED)) {
-			accessor.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(accessor));
+			access.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(reader));
 		}
 
-		return super.updateShape(state, facing, facingState, accessor, currentPos, facingPos);
+		return super.updateShape(state, reader, access, pos, direction, facingPos, facingState, random);
 	}
 
 	@Override

@@ -4,11 +4,11 @@ import com.google.common.base.MoreObjects;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.DelegateBakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.client.model.BakedModelWrapper;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.client.model.data.ModelProperty;
 import org.jetbrains.annotations.NotNull;
@@ -16,7 +16,7 @@ import twilightforest.block.entity.ReactorDebrisBlockEntity;
 import twilightforest.client.renderer.block.ReactorDebrisRenderer;
 
 
-public class ReactorDebrisModel extends BakedModelWrapper<BakedModel> {
+public class ReactorDebrisModel extends DelegateBakedModel {
 	public static final ModelProperty<ResourceLocation> TEXTURE_FOR_PARTICLE = new ModelProperty<>();
 	public ReactorDebrisModel(BakedModel defaultModel) {
 		super(defaultModel);

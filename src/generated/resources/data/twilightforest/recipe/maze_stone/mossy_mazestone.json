@@ -3,16 +3,10 @@
   "category": "building",
   "ingredients": [
     [
-      {
-        "item": "minecraft:vine"
-      },
-      {
-        "item": "minecraft:moss_block"
-      }
+      "minecraft:vine",
+      "minecraft:moss_block"
     ],
-    {
-      "item": "twilightforest:mazestone_brick"
-    }
+    "twilightforest:mazestone_brick"
   ],
   "result": {
     "count": 1,

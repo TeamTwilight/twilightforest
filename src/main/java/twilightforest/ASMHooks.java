@@ -5,23 +5,21 @@ import com.mojang.datafixers.util.Pair;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectListIterator;
 import net.minecraft.client.Camera;
-import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.decoration.LeashFenceKnotEntity;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.*;
@@ -31,14 +29,16 @@ import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.RandomState;
+import net.minecraft.world.level.levelgen.blending.Blender;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.pieces.PiecesContainer;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.neoforged.neoforge.common.util.TriState;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Matrix4f;
-import twilightforest.beans.Autowired;
+import tamaized.beanification.Autowired;
+import twilightforest.init.TFDataAttachments;
 import twilightforest.util.ArmorUtil;
 import twilightforest.util.multiparts.MultipartEntityUtil;
 import twilightforest.block.CloudBlock;
@@ -53,6 +53,7 @@ import twilightforest.world.components.structures.CustomDensitySource;
 import twilightforest.world.components.structures.util.CustomStructureData;
 
 import java.util.Iterator;
+import java.util.List;
 
 // TODO: Think about reorganizing each group into their own class or subclass of ASMHooks
 @SuppressWarnings({"JavadocReference", "unused", "RedundantSuppression", "deprecation"})
@@ -72,17 +73,6 @@ public class ASMHooks {
 	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/**
-	 * {@link twilightforest.asm.transformers.armor.ArmorColorRenderingTransformer}<p/>
-	 *
-	 * Injection Point:<br/>
-	 * {@link net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer#renderArmorPiece(PoseStack, MultiBufferSource, LivingEntity, EquipmentSlot, int, HumanoidModel)} <br/>
-	 * Targets: {@link net.minecraft.world.item.component.DyedItemColor#getOrDefault(net.minecraft.world.item.ItemStack, int)}
-	 */
-	public static int armorColorRendering(int color, ItemStack armorStack) {
-		return armorUtil.getArmorColor(armorStack).orElse(color);
-	}
-
-	/**
 	 * {@link twilightforest.asm.transformers.armor.ArmorVisibilityRenderingTransformer}<p/>
 	 *
 	 * Injection Point:<br/>
@@ -96,7 +86,7 @@ public class ASMHooks {
 	 * {@link twilightforest.asm.transformers.armor.CancelArmorRenderingTransformer}<p/>
 	 *
 	 * Injection Point:<br/>
-	 * {@link net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer#renderArmorPiece(PoseStack, MultiBufferSource, LivingEntity, EquipmentSlot, int, HumanoidModel)}
+	 * {@link net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer#renderArmorPiece(PoseStack, MultiBufferSource, ItemStack, EquipmentSlot, int, HumanoidModel)}
 	 */
 	public static boolean cancelArmorRendering(boolean o, ItemStack stack) {
 		if (o && stack.get(TFDataComponents.EMPERORS_CLOTH) != null) {
@@ -113,7 +103,7 @@ public class ASMHooks {
 	 * {@link twilightforest.asm.transformers.beardifier.InitializeCustomBeardifierFieldsDuringForStructuresInChunkTransformer}<p/>
 	 *
 	 * Injection point:<br/>
-	 * {@link net.minecraft.world.level.levelgen.Beardifier#forStructuresInChunk(StructureManager, ChunkPos)}
+	 * {@link net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator#createNoiseChunk(ChunkAccess, StructureManager, Blender, RandomState)}
 	 */
 	public static ObjectListIterator<DensityFunction> gatherCustomTerrain(StructureManager structureManager, ChunkPos chunkPos) {
 		ObjectArrayList<DensityFunction> customStructureTerraforms = new ObjectArrayList<>(10);
@@ -143,22 +133,6 @@ public class ASMHooks {
 		customDensities.back(Integer.MAX_VALUE);
 
 		return o + newDensity;
-	}
-
-	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// book
-	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	/**
-	 * {@link twilightforest.asm.transformers.book.ModifyWrittenBookNameTransformer}<p/>
-	 *
-	 * Injection Point:<br/>
-	 * {@link net.minecraft.world.item.WrittenBookItem#getName(net.minecraft.world.item.ItemStack)}
-	 */
-	public static Component modifyWrittenBookName(Component component, ItemStack stack) {
-		if (stack.has(TFDataComponents.TRANSLATABLE_BOOK)) {
-			return Component.translatable(component.getString());
-		} else return component;
 	}
 
 	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -244,8 +218,7 @@ public class ASMHooks {
 	 * {@link net.minecraft.world.entity.decoration.LeashFenceKnotEntity#survives()}
 	 */
 	public static boolean leashFenceKnotSurvives(boolean o, LeashFenceKnotEntity entity) {
-		if (o)
-			return true; // Short-circuit to avoid an unnecessary #getBlockState call
+		if (o) return true; // Short-circuit to avoid an unnecessary #getBlockState call
 		BlockState fenceState = entity.level().getBlockState(entity.getPos());
 		return fenceState.is(TFBlocks.WROUGHT_IRON_FENCE) && fenceState.getValue(WroughtIronFenceBlock.POST) != WroughtIronFenceBlock.PostState.NONE;
 	}
@@ -273,7 +246,7 @@ public class ASMHooks {
 	 * {@link twilightforest.asm.transformers.multipart.ResolveEntitiesForRendereringTransformer}<p/>
 	 *
 	 * Injection Point:<br/>
-	 * {@link net.minecraft.client.renderer.LevelRenderer#renderLevel(DeltaTracker, boolean, Camera, GameRenderer, LightTexture, Matrix4f, Matrix4f)}<br/>
+	 * {@link net.minecraft.client.renderer.LevelRenderer#collectVisibleEntities(Camera, Frustum, List)}<br/>
 	 * [Targets: {@link net.minecraft.client.multiplayer.ClientLevel#entitiesForRendering}]
 	 */
 	public static Iterator<Entity> resolveEntitiesForRendering(Iterator<Entity> iter) {
@@ -288,7 +261,7 @@ public class ASMHooks {
 	 * Targets: {@link net.minecraft.client.renderer.entity.EntityRenderDispatcher#renderers}
 	 */
 	@Nullable
-	public static EntityRenderer<?> resolveEntityRenderer(@Nullable EntityRenderer<?> renderer, Entity entity) {
+	public static EntityRenderer<?, ?> resolveEntityRenderer(@Nullable EntityRenderer<?, ?> renderer, Entity entity) {
 		return multipartEntityUtil.tryLookupTFPartRenderer(renderer, entity);
 	}
 
@@ -325,5 +298,20 @@ public class ASMHooks {
 			}
 		}
 		return o;
+	}
+
+	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// mob
+	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	/**
+	 * {@link twilightforest.asm.transformers.mob.PathFinderUnrestrainedByLeash}
+	 *
+	 * Injection Point:<br/>
+	 * {@link net.minecraft.world.entity.PathfinderMob#shouldStayCloseToLeashHolder()}<br/>
+	 * Targets: IRETURN
+	 */
+	public static boolean overrideStayCloseToHolder(boolean prior, PathfinderMob mob) {
+		return prior && !mob.hasData(TFDataAttachments.LEASH_PATHFINDER_OVERRIDE);
 	}
 }

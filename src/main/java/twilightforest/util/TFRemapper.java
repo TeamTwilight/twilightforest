@@ -1,20 +1,21 @@
 package twilightforest.util;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import twilightforest.TwilightForestMod;
-import twilightforest.init.TFBlocks;
-import twilightforest.init.TFEntities;
-import twilightforest.init.TFItems;
+import twilightforest.init.*;
 
 public class TFRemapper {
 
 	public static void addRegistryAliases() {
 		DeferredRegister<Block> blockReg = TFBlocks.BLOCKS;
-		DeferredRegister<EntityType<?>> entityReg = TFEntities.ENTITIES;
+		DeferredRegister<EntityType<?>> entityReg = TFEntities.ENTITY_TYPES;
 		DeferredRegister<Item> itemReg = TFItems.ITEMS;
+		DeferredRegister<StructurePieceType> pieceTypeReg = TFStructurePieceTypes.STRUCTURE_PIECE_TYPES;
 
 		remapEntryFromRegistries("yeti_trophy", "alpha_yeti_trophy", blockReg, itemReg);
 		remapEntryFromRegistries("yeti_wall_trophy", "alpha_yeti_wall_trophy", blockReg, itemReg);
@@ -43,6 +44,8 @@ public class TFRemapper {
 		remapEntryFromRegistries("stone_twist_thin", "twisted_stone_pillar", blockReg, itemReg);
 		remapEntryFromRegistries("stone_pillar_bold", "bold_stone_pillar", blockReg, itemReg);
 		remapEntryFromRegistries("empty_bookshelf", "empty_canopy_bookshelf", blockReg, itemReg);
+		remapEntryFromRegistries("royal_rags", "coronation_carpet", blockReg, itemReg);
+		remapEntryFromRegistries("cursed_spawner", "sinister_spawner", blockReg, itemReg);
 
 		remapEntryFromRegistries("huge_lilypad", "huge_lily_pad", blockReg, itemReg);
 		remapEntryFromRegistries("huge_waterlily", "huge_water_lily", blockReg, itemReg);
@@ -180,6 +183,12 @@ public class TFRemapper {
 		remapEntry(entityReg, "goblin_knight_upper", "upper_goblin_knight");
 		remapEntry(entityReg, "goblin_knight_lower", "lower_goblin_knight");
 		remapEntry(entityReg, "yeti_alpha", "alpha_yeti");
+
+		remapEntry(pieceTypeReg, "TFNCTr", "TFNCTe"); // Terrace Brazier
+		remapEntry(pieceTypeReg, "TFNCDu", "TFNCTe"); // Terrace Duct
+		remapEntry(pieceTypeReg, "TFNCSt", "TFNCTe"); // Terrace Statue
+
+		TFStructureProcessors.STRUCTURE_PROCESSORS.addAlias(TwilightForestMod.prefix("meta_block_processor"), ResourceLocation.withDefaultNamespace("jigsaw_replacement"));
 	}
 
 	private static void remapEntry(DeferredRegister<?> registry, String oldId, String newId) {

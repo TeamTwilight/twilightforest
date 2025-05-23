@@ -1,0 +1,10 @@
+{
+  "model": {
+    "type": "minecraft:special",
+    "base": "twilightforest:item/twilight_oak_trapped_chest",
+    "model": {
+      "type": "twilightforest:tf_chest",
+      "texture": "twilightforest:twilight_oak/trapped"
+    }
+  }
+}

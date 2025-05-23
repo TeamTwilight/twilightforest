@@ -5,6 +5,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
@@ -13,6 +14,7 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFPart;
 
 public abstract class HydraPart extends TFPart<Hydra> {
@@ -22,7 +24,6 @@ public abstract class HydraPart extends TFPart<Hydra> {
 	boolean markedDead;
 	private EntityDimensions cacheSize;
 
-	@SuppressWarnings("this-escape")
 	public HydraPart(Hydra parent, float width, float height) {
 		super(parent);
 		this.setSize(EntityDimensions.scalable(width, height));
@@ -65,11 +66,8 @@ public abstract class HydraPart extends TFPart<Hydra> {
 		this.clearFire();
 		super.tick();
 
-		if (this.hurtTime > 0)
-			this.hurtTime--;
-
-		if (this.markedDead)
-			this.deathTime++;
+		if (this.hurtTime > 0) this.hurtTime--;
+		if (this.markedDead) this.deathTime++;
 
 		if (this.markedDead && this.isActive() && this.level().isClientSide()) {
 			float width = this.getBbWidth();
@@ -83,14 +81,12 @@ public abstract class HydraPart extends TFPart<Hydra> {
 			}
 		}
 
-		if (this.deathTime == 20) {
-			this.deactivate();
-		}
+		if (this.deathTime >= 20) this.deactivate();
 	}
 
 	@Override
-	public boolean hurt(DamageSource source, float amount) {
-		boolean flag = this.getParent() != null && this.getParent().attackEntityFromPart(this, source, amount);
+	public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
+		boolean flag = this.getParent() != null && this.getParent().attackEntityFromPart(level, this, source, amount);
 		if (flag) {
 			this.gameEvent(GameEvent.ENTITY_DAMAGE);
 		}

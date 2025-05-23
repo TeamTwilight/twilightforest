@@ -25,7 +25,6 @@ public class TowerRoofMushroomComponent extends TowerRoofComponent {
 		super(TFStructurePieceTypes.TFMTRoofMush.get(), nbt);
 	}
 
-	@SuppressWarnings("this-escape")
 	public TowerRoofMushroomComponent(int i, TowerWingComponent wing, float pHang, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFMTRoofMush.get(), i, x, y, z);
 		this.height = wing.size;

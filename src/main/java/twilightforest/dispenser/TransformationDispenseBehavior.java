@@ -21,7 +21,7 @@ public class TransformationDispenseBehavior extends DefaultDispenseItemBehavior 
 		BlockPos blockpos = source.pos().relative(source.state().getValue(DispenserBlock.FACING));
 		if (!level.isClientSide()) {
 			for (LivingEntity livingentity : level.getEntitiesOfClass(LivingEntity.class, new AABB(blockpos), EntitySelector.NO_SPECTATORS)) {
-				if (TransformPowderItem.transformEntityIfPossible(level, livingentity, stack, true)) {
+				if (TransformPowderItem.transformEntityIfPossible(livingentity, stack, true)) {
 					this.fired = true;
 				}
 			}

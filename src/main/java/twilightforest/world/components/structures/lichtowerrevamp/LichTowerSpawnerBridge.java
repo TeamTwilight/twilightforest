@@ -17,6 +17,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import twilightforest.TFRegistries;
+import tamaized.beanification.Autowired;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.init.custom.WoodPalettes;
 import twilightforest.util.woods.WoodPalette;
@@ -30,12 +31,15 @@ import java.util.Objects;
 import java.util.Optional;
 
 public class LichTowerSpawnerBridge extends TwilightJigsawPiece implements PieceBeardifierModifier {
+	@Autowired
+	private static LichTowerUtil lichTowerUtil;
+
 	private final boolean invertedPalette;
 
 	public LichTowerSpawnerBridge(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
 		super(TFStructurePieceTypes.LICH_SPAWNER_BRIDGE.get(), compoundTag, ctx, readSettings(compoundTag));
 
-		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(LichTowerUtil.CENTRAL_SPAWNERS));
+		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(lichTowerUtil.getCentralBridgeSpawnerProcessor()));
 
 		this.invertedPalette = compoundTag.getBoolean("inverted");
 
@@ -46,12 +50,12 @@ public class LichTowerSpawnerBridge extends TwilightJigsawPiece implements Piece
 	}
 
 	private static void addInvertedWoodProcessors(RegistryAccess registryAccess, StructurePlaceSettings placeSettings) {
-		Optional<Registry<WoodPalette>> woodPalettes = registryAccess.registry(TFRegistries.Keys.WOOD_PALETTES);
+		Optional<Registry<WoodPalette>> woodPalettes = registryAccess.lookup(TFRegistries.Keys.WOOD_PALETTES);
 
 		if (woodPalettes.isPresent()) {
 			Registry<WoodPalette> woodPaletteRegistry = woodPalettes.get();
-			Holder<WoodPalette> twiOak = woodPaletteRegistry.getHolderOrThrow(WoodPalettes.TWILIGHT_OAK);
-			Holder<WoodPalette> canopy = woodPaletteRegistry.getHolderOrThrow(WoodPalettes.CANOPY);
+			Holder<WoodPalette> twiOak = woodPaletteRegistry.getOrThrow(WoodPalettes.TWILIGHT_OAK);
+			Holder<WoodPalette> canopy = woodPaletteRegistry.getOrThrow(WoodPalettes.CANOPY);
 			placeSettings.addProcessor(new WoodMultiPaletteSwizzle(List.of(
 				Pair.of(twiOak, canopy),
 				Pair.of(canopy, twiOak)
@@ -62,7 +66,7 @@ public class LichTowerSpawnerBridge extends TwilightJigsawPiece implements Piece
 	public LichTowerSpawnerBridge(int genDepth, StructureTemplateManager structureManager, ResourceLocation templateLocation, JigsawPlaceContext jigsawContext, boolean invertedPalette) {
 		super(TFStructurePieceTypes.LICH_SPAWNER_BRIDGE.get(), genDepth, structureManager, templateLocation, jigsawContext);
 
-		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(LichTowerUtil.CENTRAL_SPAWNERS));
+		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(lichTowerUtil.getCentralBridgeSpawnerProcessor()));
 
 		this.invertedPalette = invertedPalette;
 

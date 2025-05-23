@@ -23,7 +23,6 @@ public class MazeDeadEndTrappedChestComponent extends MazeDeadEndComponent {
 		super(TFStructurePieceTypes.TFMMDETrC.get(), nbt);
 	}
 
-	@SuppressWarnings("this-escape")
 	public MazeDeadEndTrappedChestComponent(int i, int x, int y, int z, Direction rotation) {
 		super(TFStructurePieceTypes.TFMMDETrC.get(), i, x, y, z, rotation);
 		this.setOrientation(rotation);

@@ -7,6 +7,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -30,6 +31,7 @@ import twilightforest.entity.ai.control.NoClipMoveControl;
 import twilightforest.entity.ai.goal.SimplifiedAttackGoal;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFSounds;
+import twilightforest.util.entities.EntityUtil;
 
 import java.util.EnumSet;
 import java.util.Optional;
@@ -38,7 +40,6 @@ public class Wraith extends FlyingMob implements Enemy, EnforcedHomePoint {
 
 	private static final EntityDataAccessor<Optional<GlobalPos>> HOME_POINT = SynchedEntityData.defineId(Wraith.class, EntityDataSerializers.OPTIONAL_GLOBAL_POS);
 
-	@SuppressWarnings("this-escape")
 	public Wraith(EntityType<? extends Wraith> type, Level level) {
 		super(type, level);
 		this.moveControl = new NoClipMoveControl(this);
@@ -79,8 +80,8 @@ public class Wraith extends FlyingMob implements Enemy, EnforcedHomePoint {
 	}
 
 	@Override
-	public boolean hurt(DamageSource source, float amount) {
-		if (super.hurt(source, amount)) {
+	public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
+		if (super.hurtServer(level, source, amount)) {
 			Entity entity = source.getEntity();
 			if (this.getVehicle() == entity || this.getPassengers().contains(entity)) {
 				return true;
@@ -95,9 +96,8 @@ public class Wraith extends FlyingMob implements Enemy, EnforcedHomePoint {
 	}
 
 	@Override
-	public boolean doHurtTarget(Entity entity) {
-		entity.hurt(TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.HAUNT, this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
-		return super.doHurtTarget(entity);
+	public boolean doHurtTarget(ServerLevel level, Entity entity) {
+		return EntityUtil.properlyApplyCustomDamageSource(level, this, entity, TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.HAUNT, this), null);
 	}
 
 	@Override
@@ -120,13 +120,13 @@ public class Wraith extends FlyingMob implements Enemy, EnforcedHomePoint {
 		return TFSounds.WRAITH_DEATH.get();
 	}
 
-	public static boolean checkMonsterSpawnRules(EntityType<? extends Wraith> entity, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, RandomSource random) {
+	public static boolean checkMonsterSpawnRules(EntityType<? extends Wraith> entity, ServerLevelAccessor world, EntitySpawnReason reason, BlockPos pos, RandomSource random) {
 		return world.getDifficulty() != Difficulty.PEACEFUL && Monster.isDarkEnoughToSpawn(world, pos, random) && checkMobSpawnRules(entity, world, reason, pos, random);
 	}
 
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data) {
-		if (type == MobSpawnType.STRUCTURE || type == MobSpawnType.SPAWNER) this.setRestrictionPoint(GlobalPos.of(accessor.getLevel().dimension(), this.blockPosition()));
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, EntitySpawnReason type, @Nullable SpawnGroupData data) {
+		if (type == EntitySpawnReason.STRUCTURE || type == EntitySpawnReason.SPAWNER) this.setRestrictionPoint(GlobalPos.of(accessor.getLevel().dimension(), this.blockPosition()));
 		return super.finalizeSpawn(accessor, difficulty, type, data);
 	}
 
@@ -223,7 +223,6 @@ public class Wraith extends FlyingMob implements Enemy, EnforcedHomePoint {
 	public static class LookAroundGoal extends Goal {
 		private final Wraith wraith;
 
-		@SuppressWarnings("this-escape")
 		public LookAroundGoal(Wraith wraith) {
 			this.wraith = wraith;
 			this.setFlags(EnumSet.of(Flag.LOOK));
@@ -260,7 +259,6 @@ public class Wraith extends FlyingMob implements Enemy, EnforcedHomePoint {
 		private double wantedZ;
 		private final double speedModifier;
 
-		@SuppressWarnings("this-escape")
 		public MoveTowardsHomeGoal(Wraith mob, double speedModifier) {
 			this.mob = mob;
 			this.speedModifier = speedModifier;

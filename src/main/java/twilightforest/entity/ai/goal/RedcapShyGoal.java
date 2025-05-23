@@ -20,7 +20,6 @@ public class RedcapShyGoal extends RedcapBaseGoal {
 	private static final double minDistance = 3.0;
 	private static final double maxDistance = 6.0;
 
-	@SuppressWarnings("this-escape")
 	public RedcapShyGoal(Redcap entityTFRedcap, float moveSpeed) {
 		super(entityTFRedcap);
 		this.speed = moveSpeed;

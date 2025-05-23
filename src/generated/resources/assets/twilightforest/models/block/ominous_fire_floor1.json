@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/template_fire_floor",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "fire": "twilightforest:block/ominous_fire_1"
+  }
+}

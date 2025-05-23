@@ -11,7 +11,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
-import twilightforest.beans.Autowired;
+import tamaized.beanification.Autowired;
 import twilightforest.enums.extensions.TFDamageEffectsEnumExtension;
 import twilightforest.util.entities.EntityExcludedDamageSource;
 
@@ -57,13 +57,11 @@ public class TFDamageTypes {
 	public static final ResourceKey<DamageType> FALLING_ICE = create("falling_ice");
 	public static final ResourceKey<DamageType> MOONWORM = create("moonworm"); //Moonworm
 	public static final ResourceKey<DamageType> ACID_RAIN = create("acid_rain"); //Acid rain Enforcement
+	public static final ResourceKey<DamageType> OMINOUS_FIRE = create("ominous_fire"); //Standing in cursed fire
+	public static final ResourceKey<DamageType> FAILED_CHALLENGE = create("failed_challenge"); //Being an absolute loser
 
 	public static ResourceKey<DamageType> create(String name) {
 		return ResourceKey.create(Registries.DAMAGE_TYPE, TwilightForestMod.prefix(name));
-	}
-
-	public static DamageSource getDamageSource(Level level, ResourceKey<DamageType> type, EntityType<?>... toIgnore) {
-		return getEntityDamageSource(level, type, null, toIgnore);
 	}
 
 	public static DamageSource getEntityDamageSource(Level level, ResourceKey<DamageType> type, @Nullable Entity attacker, EntityType<?>... toIgnore) {
@@ -71,7 +69,7 @@ public class TFDamageTypes {
 	}
 
 	public static DamageSource getIndirectEntityDamageSource(Level level, ResourceKey<DamageType> type, @Nullable Entity attacker, @Nullable Entity indirectAttacker, EntityType<?>... toIgnore) {
-		return toIgnore.length > 0 ? new EntityExcludedDamageSource(level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(type), toIgnore) : new DamageSource(level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(type), attacker, indirectAttacker);
+		return toIgnore.length > 0 ? new EntityExcludedDamageSource(level.registryAccess().holderOrThrow(type), attacker, indirectAttacker, toIgnore) : new DamageSource(level.registryAccess().holderOrThrow(type), attacker, indirectAttacker);
 	}
 
 	public static void bootstrap(BootstrapContext<DamageType> context) {
@@ -111,5 +109,7 @@ public class TFDamageTypes {
 		context.register(FALLING_ICE, new DamageType("fallingBlock", 0.1F));
 		context.register(MOONWORM, new DamageType("twilightforest.moonworm", 0.0F));
 		context.register(ACID_RAIN, new DamageType("twilightforest.acid_rain", 0.0F));
+		context.register(OMINOUS_FIRE, new DamageType("twilightforest.ominous", 0.1F, DamageEffects.BURNING));
+		context.register(FAILED_CHALLENGE, new DamageType("twilightforest.failedChallenge", 0.0F));
 	}
 }

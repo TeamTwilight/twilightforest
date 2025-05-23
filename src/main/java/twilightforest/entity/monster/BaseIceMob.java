@@ -1,6 +1,7 @@
 package twilightforest.entity.monster;
 
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -35,9 +36,14 @@ public abstract class BaseIceMob extends Monster {
 				}
 			}
 		}
-		if (this.level().getBiome(this.blockPosition()).is(BiomeTags.SNOW_GOLEM_MELTS) && this.tickCount % 20 == 0) {
+	}
+
+	@Override
+	protected void customServerAiStep(ServerLevel level) {
+		super.customServerAiStep(level);
+		if (this.tickCount % 20 == 0 && level.getBiome(this.blockPosition()).is(BiomeTags.SNOW_GOLEM_MELTS)) {
 			//BURN!!!
-			this.hurt(this.damageSources().onFire(), 1.0F);
+			this.hurtServer(level, this.damageSources().onFire(), 1.0F);
 		}
 	}
 

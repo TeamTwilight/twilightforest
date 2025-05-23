@@ -1,8 +1,6 @@
 {
   "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "minecraft:crimson_stem"
-  },
+  "ingredient": "minecraft:crimson_stem",
   "result": {
     "count": 1,
     "id": "twilightforest:hollow_crimson_stem"

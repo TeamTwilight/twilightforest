@@ -1,8 +1,6 @@
 {
   "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "twilightforest:dark_wood"
-  },
+  "ingredient": "twilightforest:dark_wood",
   "result": {
     "count": 1,
     "id": "twilightforest:towerwood"

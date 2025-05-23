@@ -1,5 +1,6 @@
 package twilightforest.entity.boss;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.core.NonNullList;
@@ -37,6 +38,7 @@ import twilightforest.network.UpdateDeathTimePacket;
 import twilightforest.util.entities.EntityUtil;
 import twilightforest.util.landmarks.LandmarkUtil;
 
+import java.util.Objects;
 import java.util.Optional;
 
 public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, EnforcedHomePoint {
@@ -56,8 +58,8 @@ public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, Enf
 
 	public abstract Block getBossSpawner();
 
-	protected boolean shouldSpawnLoot() {
-		return this.level().getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT);
+	protected boolean shouldSpawnLoot(ServerLevel level) {
+		return level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT);
 	}
 
 	protected boolean shouldCreateSpawner() {
@@ -101,8 +103,10 @@ public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, Enf
 	public void lavaHurt() {
 		if (!this.fireImmune()) {
 			this.igniteForSeconds(5);
-			if (this.hurt(this.damageSources().lava(), 4.0F)) {
-				this.playSound(SoundEvents.GENERIC_BURN, 0.4F, 2.0F + this.getRandom().nextFloat() * 0.4F);
+			if (this.level() instanceof ServerLevel serverlevel && this.hurtServer(serverlevel, this.damageSources().lava(), 4.0F)) {
+				if (this.shouldPlayLavaHurtSound() && !this.isSilent()) {
+					this.playSound(SoundEvents.GENERIC_BURN, 0.4F, 2.0F + this.getRandom().nextFloat() * 0.4F);
+				}
 				EntityUtil.killLavaAround(this);
 			}
 		}
@@ -111,7 +115,7 @@ public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, Enf
 	@Override
 	public void die(DamageSource cause) {
 		super.die(cause);
-		if (this.shouldSpawnLoot() && this.level() instanceof ServerLevel server) this.postmortem(server, cause);
+		if (this.level() instanceof ServerLevel server && this.shouldSpawnLoot(server)) this.postmortem(server, cause);
 	}
 
 	// mark the boss structure as conquered, separate method, so it can be overridden
@@ -129,7 +133,7 @@ public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, Enf
 
 	// drop loot into a chest after removal, separate method, so it can be overridden
 	protected void postRemoval(ServerLevel serverLevel, RemovalReason reason) {
-		if (reason.equals(RemovalReason.KILLED) && this.shouldSpawnLoot()) {
+		if (reason.equals(RemovalReason.KILLED) && this.shouldSpawnLoot(serverLevel)) {
 			IBossLootBuffer.depositDropsIntoChest(this, this.getDeathContainer(this.getRandom()).defaultBlockState().setValue(ChestBlock.FACING, Direction.Plane.HORIZONTAL.getRandomDirection(this.level().getRandom())), EntityUtil.bossChestLocation(this), serverLevel);
 		}
 	}
@@ -137,13 +141,18 @@ public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, Enf
 	@Override
 	public void checkDespawn() {
 		if (this.level().getDifficulty() == Difficulty.PEACEFUL) {
-			if (this.shouldCreateSpawner() && this.isRestrictionPointValid(this.level().dimension()) && this.level().isLoaded(this.getRestrictionPoint().pos())) {
-				this.level().setBlockAndUpdate(this.getRestrictionPoint().pos(), this.getBossSpawner().defaultBlockState());
+			if (this.shouldCreateSpawner() && this.isRestrictionPointValid(this.level().dimension()) && this.level().isLoaded(Objects.requireNonNull(this.getRestrictionPoint()).pos())) {
+				this.placeSpawner(this.getRestrictionPoint().pos());
 			}
 			this.discard();
 		} else {
 			super.checkDespawn();
 		}
+	}
+
+	//Separate method, cuz Lich needs it
+	public void placeSpawner(BlockPos pos) {
+		this.level().setBlockAndUpdate(pos, this.getBossSpawner().defaultBlockState());
 	}
 
 	@Override
@@ -222,9 +231,9 @@ public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, Enf
 	}
 
 	@Override
-	protected void customServerAiStep() {
-		super.customServerAiStep();
-		if (!this.level().isClientSide()) this.tickBossBar();
+	protected void customServerAiStep(ServerLevel level) {
+		super.customServerAiStep(level);
+		this.tickBossBar();
 	}
 
 	protected void tickBossBar() {

@@ -24,7 +24,6 @@ public class MazeEntranceShaftComponent extends TFStructureComponentOld {
 		super(TFStructurePieceTypes.TFMMES.get(), nbt);
 	}
 
-	@SuppressWarnings("this-escape")
 	public MazeEntranceShaftComponent(int i, RandomSource rand, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFMMES.get(), i, new BoundingBox(x, y, z, x + 6 - 1, y, z + 6 - 1).encapsulate(new BlockPos(x, TFDimensionData.SEALEVEL, z)));
 		this.setOrientation(Direction.Plane.HORIZONTAL.getRandomDirection(rand));

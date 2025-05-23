@@ -13,6 +13,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerEntity;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -49,7 +50,7 @@ public class MagicPainting extends HangingEntity {
 
 	@Override
 	protected void defineSynchedData(SynchedEntityData.Builder builder) {
-		builder.define(MAGIC_PAINTING_VARIANT, this.getReg().getHolderOrThrow(MagicPaintingVariants.DEFAULT));
+		builder.define(MAGIC_PAINTING_VARIANT, this.getReg().getOrThrow(MagicPaintingVariants.DEFAULT));
 	}
 
 	@Override
@@ -70,7 +71,7 @@ public class MagicPainting extends HangingEntity {
 	public static Optional<MagicPainting> create(Level level, BlockPos pos, Direction direction) {
 		MagicPainting magicPainting = new MagicPainting(level, pos);
 		List<Holder<MagicPaintingVariant>> list = new ArrayList<>();
-		level.registryAccess().registryOrThrow(TFRegistries.Keys.MAGIC_PAINTINGS).holders().forEach(list::add);
+		level.registryAccess().lookupOrThrow(TFRegistries.Keys.MAGIC_PAINTINGS).listElements().forEach(list::add);
 		if (list.isEmpty()) {
 			return Optional.empty();
 		} else {
@@ -117,7 +118,7 @@ public class MagicPainting extends HangingEntity {
 		if (tag.contains("variant")) {
 			ResourceLocation location = ResourceLocation.tryParse(tag.getString("variant"));
 			if (location != null) {
-				this.setVariant(this.getReg().getHolder(location).orElse(this.getReg().getHolderOrThrow(MagicPaintingVariants.DEFAULT)));
+				this.setVariant(this.getReg().get(location).orElse(this.getReg().getOrThrow(MagicPaintingVariants.DEFAULT)));
 			}
 		}
 
@@ -127,7 +128,7 @@ public class MagicPainting extends HangingEntity {
 	}
 
 	protected Registry<MagicPaintingVariant> getReg() {
-		return this.registryAccess().registryOrThrow(TFRegistries.Keys.MAGIC_PAINTINGS);
+		return this.registryAccess().lookupOrThrow(TFRegistries.Keys.MAGIC_PAINTINGS);
 	}
 
 	@Override
@@ -150,8 +151,8 @@ public class MagicPainting extends HangingEntity {
 	}
 
 	@Override
-	public void dropItem(@Nullable Entity entity) {
-		if (this.level().getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
+	public void dropItem(ServerLevel level, @Nullable Entity entity) {
+		if (level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
 			this.playSound(SoundEvents.PAINTING_BREAK, 1.0F, 1.0F);
 			if (entity instanceof Player player) {
 				if (player.getAbilities().instabuild) {
@@ -159,7 +160,7 @@ public class MagicPainting extends HangingEntity {
 				}
 			}
 
-			this.spawnAtLocation(this.getPickResult());
+			this.spawnAtLocation(level, this.getPickResult());
 		}
 	}
 

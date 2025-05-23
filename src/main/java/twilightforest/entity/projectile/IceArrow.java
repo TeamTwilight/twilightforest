@@ -27,7 +27,7 @@ public class IceArrow extends TFArrow {
 	@Override
 	public void tick() {
 		super.tick();
-		if (this.level().isClientSide() && !this.inGround) {
+		if (this.level().isClientSide() && !this.isInGround()) {
 			BlockState stateId = Blocks.SNOW.defaultBlockState();
 			for (int i = 0; i < 4; ++i) {
 				this.level().addParticle(new BlockParticleOption(ParticleTypes.FALLING_DUST, stateId), this.getX() + this.getDeltaMovement().x() * i / 4.0D, this.getY() + this.getDeltaMovement().y() * i / 4.0D, this.getZ() + this.getDeltaMovement().z() * i / 4.0D, -this.getDeltaMovement().x(), -this.getDeltaMovement().y() + 0.2D, -this.getDeltaMovement().z());

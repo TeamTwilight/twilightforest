@@ -16,7 +16,9 @@
       "type": "twilightforest:no_structure",
       "additional_clearance": 0,
       "occupies_surface": true,
-      "occupies_underground": false
+      "occupies_underground": false,
+      "occupies_vegetation": false,
+      "structures_allowed": []
     },
     {
       "type": "minecraft:block_predicate_filter",

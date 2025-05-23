@@ -27,10 +27,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.DirectionalPlaceContext;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.ConcretePowderBlock;
-import net.minecraft.world.level.block.FallingBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -62,7 +59,6 @@ public class FallingIce extends Entity {
 		super(type, level);
 	}
 
-	@SuppressWarnings("this-escape")
 	public FallingIce(Level level, double x, double y, double z, BlockState state, int hangTime) {
 		this(TFEntities.FALLING_ICE.get(), level);
 		this.hangTime = hangTime;
@@ -130,7 +126,7 @@ public class FallingIce extends Entity {
 				}
 
 				if (!this.onGround() && !flag1) {
-					if (!this.level().isClientSide() && (this.time > 100 && (blockpos.getY() <= this.level().getMinBuildHeight() || blockpos.getY() > this.level().getMaxBuildHeight()) || this.time > 1000)) {
+					if (!this.level().isClientSide() && (this.time > 100 && (blockpos.getY() <= this.level().getMinY() || blockpos.getY() > this.level().getMaxY()) || this.time > 1000)) {
 						this.discard();
 					}
 				} else {
@@ -200,8 +196,8 @@ public class FallingIce extends Entity {
 		if (realDist >= 0) {
 			float dmg = (float) Math.min(Mth.floor((float) realDist * this.damagePerDifficulty[this.level().getDifficulty().getId()]), this.fallDamageMax);
 			this.level().getEntities(this, this.getBoundingBox().inflate(1.0F, 0.0F, 1.0F), EntitySelector.NO_SPECTATORS).forEach((entity) -> {
-				if (!(entity instanceof AlphaYeti)) {
-					entity.hurt(TFDamageTypes.getDamageSource(this.level(), TFDamageTypes.FALLING_ICE), dmg);
+				if (!(entity instanceof AlphaYeti) && this.level() instanceof ServerLevel level) {
+					entity.hurtServer(level, this.damageSources().source(TFDamageTypes.FALLING_ICE), dmg);
 				}
 			});
 		}
@@ -215,7 +211,16 @@ public class FallingIce extends Entity {
 			this.level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, this.blockState), dx, dy, dz, 0, 0, 0);
 		}
 
-		this.playSound(Blocks.PACKED_ICE.defaultBlockState().getSoundType().getBreakSound(), 3.0F, 0.5F);
+		this.playSound(SoundType.GLASS.getBreakSound(), 3.0F, 0.5F);
+		return false;
+	}
+
+	@Override
+	public final boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
+		if (!this.isInvulnerableToBase(source)) {
+			this.markHurt();
+		}
+
 		return false;
 	}
 
@@ -256,11 +261,6 @@ public class FallingIce extends Entity {
 
 	public BlockState getBlockState() {
 		return this.blockState;
-	}
-
-	@Override
-	public boolean onlyOpCanSetNbt() {
-		return true;
 	}
 
 	@Override

@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "tag": "c:paper"
-    },
-    {
-      "item": "twilightforest:minoshroom_trophy"
-    }
+    "#c:paper",
+    "twilightforest:minoshroom_trophy"
   ],
   "result": {
     "count": 1,

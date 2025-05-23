@@ -1,5 +1,6 @@
 package twilightforest.entity.ai.goal;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -53,7 +54,7 @@ public class SimplifiedAttackGoal extends Goal {
 		if (this.attackTick <= 0 && this.mob.isWithinMeleeAttackRange(entity) && this.mob.hasLineOfSight(entity)) {
 			this.attackTick = this.adjustedTickDelay(20);
 			this.mob.swing(InteractionHand.MAIN_HAND);
-			this.mob.doHurtTarget(entity);
+			this.mob.doHurtTarget(getServerLevel(this.mob), entity);
 		}
 	}
 }

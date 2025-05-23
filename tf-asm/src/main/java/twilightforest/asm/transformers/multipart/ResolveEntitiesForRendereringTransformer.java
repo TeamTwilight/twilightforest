@@ -57,8 +57,8 @@ public class ResolveEntitiesForRendereringTransformer implements ITransformer<Me
 	public @NotNull Set<Target<MethodNode>> targets() {
 		return Set.of(Target.targetMethod(
 			"net.minecraft.client.renderer.LevelRenderer",
-			"renderLevel",
-			"(Lnet/minecraft/client/DeltaTracker;ZLnet/minecraft/client/Camera;Lnet/minecraft/client/renderer/GameRenderer;Lnet/minecraft/client/renderer/LightTexture;Lorg/joml/Matrix4f;Lorg/joml/Matrix4f;)V"
+			"collectVisibleEntities",
+			"(Lnet/minecraft/client/Camera;Lnet/minecraft/client/renderer/culling/Frustum;Ljava/util/List;)Z"
 		));
 	}
 

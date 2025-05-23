@@ -73,10 +73,10 @@ public class SkullCandleBlock extends AbstractSkullCandleBlock {
 	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext ctx) {
 		boolean piglin = this.getType() == SkullBlock.Types.PIGLIN;
 		return switch (state.getValue(CANDLES)) {
-			default -> piglin ? PIGLIN_SKULL_WITH_ONE : SKULL_WITH_ONE;
 			case 2 -> piglin ? PIGLIN_SKULL_WITH_TWO : SKULL_WITH_TWO;
 			case 3 -> piglin ? PIGLIN_SKULL_WITH_THREE : SKULL_WITH_THREE;
 			case 4 -> piglin ? PIGLIN_SKULL_WITH_FOUR : SKULL_WITH_FOUR;
+			default -> piglin ? PIGLIN_SKULL_WITH_ONE : SKULL_WITH_ONE;
 		};
 	}
 

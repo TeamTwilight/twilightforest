@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/door_bottom_left",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "bottom": "twilightforest:block/transformation_door_bottom",
+    "top": "twilightforest:block/transformation_door_top"
+  }
+}

@@ -22,6 +22,7 @@ public class TFStructureProcessors {
 	public static final DeferredHolder<StructureProcessorType<?>, StructureProcessorType<CobbleVariants>> COBBLE_VARIANTS = registerProcessor("cobble_variants", () -> () -> CobbleVariants.CODEC);
 	public static final DeferredHolder<StructureProcessorType<?>, StructureProcessorType<SmoothStoneVariants>> SMOOTH_STONE_VARIANTS = registerProcessor("smooth_stone_variants", () -> () -> SmoothStoneVariants.CODEC);
 	public static final DeferredHolder<StructureProcessorType<?>, StructureProcessorType<StoneBricksVariants>> STONE_BRICK_VARIANTS = registerProcessor("stone_brick_variants", () -> () -> StoneBricksVariants.CODEC);
+	public static final DeferredHolder<StructureProcessorType<?>, StructureProcessorType<InfestBlocksProcessor>> INFEST_BLOCKS = registerProcessor("infest_blocks", () -> () -> InfestBlocksProcessor.CODEC);
 	public static final DeferredHolder<StructureProcessorType<?>, StructureProcessorType<NagastoneVariants>> NAGASTONE_VARIANTS = registerProcessor("nagastone_variants", () -> () -> NagastoneVariants.CODEC);
 
 	public static final DeferredHolder<StructureProcessorType<?>, StructureProcessorType<StateTransfiguringProcessor>> STATE_TRANSFIGURING = registerProcessor("state_transfiguring", () -> () -> StateTransfiguringProcessor.CODEC);
@@ -36,7 +37,6 @@ public class TFStructureProcessors {
 
 	public static final DeferredHolder<StructureProcessorType<?>, StructureProcessorType<SoftReplaceProcessor>> SOFT_REPLACE = registerProcessor("soft_replace", () -> () -> SoftReplaceProcessor.CODEC);
 
-	public static final DeferredHolder<StructureProcessorType<?>, StructureProcessorType<MetaBlockProcessor>> META_BLOCK_PROCESSOR = registerProcessor("meta_block_processor", () -> () -> MetaBlockProcessor.CODEC);
 	public static final DeferredHolder<StructureProcessorType<?>, StructureProcessorType<SpawnerProcessor>> SPAWNER_PROCESSOR = registerProcessor("spawner_processor", () -> () -> SpawnerProcessor.CODEC);
 	public static final DeferredHolder<StructureProcessorType<?>, StructureProcessorType<UpdateMarkingProcessor>> UPDATE_MARKING_PROCESSOR = registerProcessor("update_marking", () -> () -> UpdateMarkingProcessor.CODEC);
 

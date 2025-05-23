@@ -2,28 +2,56 @@ package twilightforest.client.model.block.patch;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.math.Transformation;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.neoforged.neoforge.client.ChunkRenderTypeSet;
+import net.neoforged.neoforge.client.RenderTypeGroup;
+import net.neoforged.neoforge.client.model.IDynamicBakedModel;
 import net.neoforged.neoforge.client.model.SimpleModelState;
+import net.neoforged.neoforge.client.model.StandardModelParameters;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import twilightforest.block.PatchBlock;
+import twilightforest.client.model.block.connected.UnbakedConnectedTextureModel;
 import twilightforest.init.TFBlocks;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public record PatchModel(TextureAtlasSprite texture, boolean shaggify) implements BakedModel {
-	private static final FaceBakery BAKERY = new FaceBakery();
+public class PatchModel implements BakedModel {
+
+	private final TextureAtlasSprite texture;
+	private final boolean shaggify;
+	private final TextureAtlasSprite particle;
+	private final boolean usesAO;
+	private final boolean usesBlockLight;
+	private final ItemTransforms transforms;
+	@Nullable
+	private final ChunkRenderTypeSet blockRenderTypes;
+	@Nullable
+	private final RenderType itemRenderType;
+
+	public PatchModel(TextureAtlasSprite texture, boolean shaggify, TextureAtlasSprite particle, boolean usesAO, boolean usesBlockLight, ItemTransforms transforms, RenderTypeGroup group) {
+		this.texture = texture;
+		this.shaggify = shaggify;
+		this.particle = particle;
+		this.usesAO = usesAO;
+		this.usesBlockLight = usesBlockLight;
+		this.transforms = transforms;
+		this.blockRenderTypes = !group.isEmpty() ? ChunkRenderTypeSet.of(group.block()) : null;
+		this.itemRenderType = !group.isEmpty() ? group.entity() : null;
+	}
 
 	@Override
 	public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, RandomSource random) {
@@ -141,6 +169,7 @@ public record PatchModel(TextureAtlasSprite texture, boolean shaggify) implement
 		quads.add(this.quadFromVectors(Direction.EAST, minX, minY, minZ, maxX, maxY, maxZ));
 		quads.add(this.quadFromVectors(Direction.SOUTH, minX, minY, minZ, maxX, maxY, maxZ));
 		quads.add(this.quadFromVectors(Direction.WEST, minX, minY, minZ, maxX, maxY, maxZ));
+		quads.add(this.quadFromVectors(Direction.DOWN, minX, minY, minZ, maxX, maxY, maxZ));
 	}
 
 	private BakedQuad quadFromVectors(Direction direction, float minX, float minY, float minZ, float maxX, float maxY, float maxZ) {
@@ -152,14 +181,12 @@ public record PatchModel(TextureAtlasSprite texture, boolean shaggify) implement
 			default -> new BlockFaceUV(new float[]{minX, minZ, maxX, maxZ}, 0);
 		});
 
-		return BAKERY.bakeQuad(new Vector3f(minX, minY, minZ), new Vector3f(maxX, maxY, maxZ), face, this.texture, direction, new SimpleModelState(Transformation.identity()), null, true);
+		return FaceBakery.bakeQuad(new Vector3f(minX, minY, minZ), new Vector3f(maxX, maxY, maxZ), face, this.texture, direction, new SimpleModelState(Transformation.identity()), null, true, 0);
 	}
-
-	// --- Boilerplating ---------------------------------------------------
 
 	@Override
 	public boolean useAmbientOcclusion() {
-		return false;
+		return this.usesAO;
 	}
 
 	@Override
@@ -169,29 +196,27 @@ public record PatchModel(TextureAtlasSprite texture, boolean shaggify) implement
 
 	@Override
 	public boolean usesBlockLight() {
-		return false;
+		return this.usesBlockLight;
 	}
 
 	@Override
-	public boolean isCustomRenderer() {
-		return false;
+	public ItemTransforms getTransforms() {
+		return this.transforms;
 	}
 
 	@Override
 	public TextureAtlasSprite getParticleIcon() {
-		return this.texture;
+		return this.particle;
 	}
 
-	@Override
-	public ItemOverrides getOverrides() {
-		return ItemOverrides.EMPTY; //I doubt we need to do anything here
-	}
-
+	@NotNull
 	@Override
 	public ChunkRenderTypeSet getRenderTypes(@NotNull BlockState state, @NotNull RandomSource rand, @NotNull ModelData data) {
-		if (state.is(TFBlocks.CLOVER_PATCH)) {
-			return ChunkRenderTypeSet.of(RenderType.cutout());
-		}
-		return BakedModel.super.getRenderTypes(state, rand, data);
+		return this.blockRenderTypes != null ? this.blockRenderTypes : BakedModel.super.getRenderTypes(state, rand, data);
+	}
+
+	@Override
+	public RenderType getRenderType(ItemStack stack) {
+		return this.itemRenderType != null ? this.itemRenderType : BakedModel.super.getRenderType(stack);
 	}
 }

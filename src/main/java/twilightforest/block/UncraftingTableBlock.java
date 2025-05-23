@@ -20,7 +20,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.BlockHitResult;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.config.TFConfig;
 import twilightforest.init.TFSounds;
 import twilightforest.init.TFStats;
@@ -53,7 +55,7 @@ public class UncraftingTableBlock extends Block {
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
+	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, @Nullable Orientation orientation, boolean isMoving) {
 		if (!level.isClientSide()) {
 			boolean flag = level.hasNeighborSignal(pos);
 			if (flag != state.getValue(POWERED)) {
@@ -68,7 +70,7 @@ public class UncraftingTableBlock extends Block {
 	@Override
 	public void onPlace(BlockState state, Level level, BlockPos pos, BlockState newState, boolean moving) {
 		if (!newState.is(state.getBlock())) {
-			this.neighborChanged(state, level, pos, this, pos, moving);
+			this.neighborChanged(state, level, pos, this, null, moving);
 		}
 	}
 

@@ -29,7 +29,6 @@ public class TowerBeardComponent extends TFStructureComponentOld {
 		this.height = nbt.getInt("beardHeight");
 	}
 
-	@SuppressWarnings("this-escape")
 	public TowerBeardComponent(StructurePieceType piece, int i, TowerWingComponent wing, int x, int y, int z) {
 		super(piece, i, x, y, z);
 

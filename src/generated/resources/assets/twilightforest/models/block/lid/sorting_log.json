@@ -1,7 +1,7 @@
 {
   "parent": "twilightforest:block/jar_lid",
   "textures": {
-    "1": "twilightforest:block/sorting_log_top",
-    "2": "twilightforest:block/sorting_log"
+    "end": "twilightforest:block/sorting_log_top",
+    "side": "twilightforest:block/sorting_log"
   }
 }

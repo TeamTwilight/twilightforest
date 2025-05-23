@@ -268,11 +268,6 @@
           "type": "minecraft:item",
           "name": "twilightforest:sorting_sapling",
           "weight": 25
-        },
-        {
-          "type": "minecraft:item",
-          "name": "twilightforest:music_disc_superstitious",
-          "weight": 25
         }
       ],
       "rolls": 1.0

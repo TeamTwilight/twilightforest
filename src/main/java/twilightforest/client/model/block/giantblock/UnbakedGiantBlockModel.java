@@ -1,38 +1,37 @@
 package twilightforest.client.model.block.giantblock;
 
-import net.minecraft.client.renderer.block.model.ItemOverrides;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.client.renderer.block.model.TextureSlots;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.resources.model.Material;
-import net.minecraft.client.resources.model.ModelBaker;
-import net.minecraft.client.resources.model.ModelState;
+import net.minecraft.client.resources.model.*;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.context.ContextMap;
 import net.neoforged.neoforge.client.RenderTypeGroup;
-import net.neoforged.neoforge.client.model.geometry.IGeometryBakingContext;
-import net.neoforged.neoforge.client.model.geometry.IUnbakedGeometry;
+import net.neoforged.neoforge.client.model.AbstractUnbakedModel;
+import net.neoforged.neoforge.client.model.StandardModelParameters;
 
 import java.util.ArrayList;
 import java.util.Locale;
-import java.util.function.Function;
 
-public record UnbakedGiantBlockModel(ResourceLocation parent) implements IUnbakedGeometry<UnbakedGiantBlockModel> {
+public class UnbakedGiantBlockModel extends AbstractUnbakedModel {
+
+	public UnbakedGiantBlockModel(StandardModelParameters parameters) {
+		super(parameters);
+	}
 
 	@Override
-	public BakedModel bake(IGeometryBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides) {
+	public BakedModel bake(TextureSlots textureSlots, ModelBaker baker, ModelState modelState, boolean hasAmbientOcclusion, boolean useBlockLight, ItemTransforms transforms, ContextMap additionalProperties) {
 		TextureAtlasSprite[] sprites;
-		if (context.hasMaterial("all")) {
-			sprites = new TextureAtlasSprite[]{spriteGetter.apply(context.getMaterial("all"))};
+		if (textureSlots.getMaterial("all") != null) {
+			sprites = new TextureAtlasSprite[]{baker.findSprite(textureSlots, "all")};
 		} else {
 			ArrayList<TextureAtlasSprite> materials = new ArrayList<>();
 			for (Direction dir : Direction.values()) {
-				materials.add(spriteGetter.apply(context.getMaterial(dir.getName().toLowerCase(Locale.ROOT))));
+				materials.add(baker.findSprite(textureSlots, dir.getName().toLowerCase(Locale.ROOT)));
 			}
 			sprites = materials.toArray(new TextureAtlasSprite[]{});
 		}
 
-		ResourceLocation renderTypeHint = context.getRenderTypeHint();
-		RenderTypeGroup renderTypes = renderTypeHint != null ? context.getRenderType(renderTypeHint) : RenderTypeGroup.EMPTY;
-		return new GiantBlockModel(sprites, spriteGetter.apply(context.getMaterial("particle")), overrides, context.getTransforms(), renderTypes);
+		return new GiantBlockModel(sprites, baker.findSprite(textureSlots, "particle"), hasAmbientOcclusion, useBlockLight, transforms, this.parameters.renderTypeGroup());
 	}
 }

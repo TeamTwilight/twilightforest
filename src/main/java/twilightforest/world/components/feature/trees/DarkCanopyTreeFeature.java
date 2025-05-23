@@ -17,7 +17,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
@@ -25,6 +24,7 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.phys.shapes.BitSetDiscreteVoxelShape;
 import net.minecraft.world.phys.shapes.DiscreteVoxelShape;
+import twilightforest.util.features.FeaturePlacers;
 
 import java.util.List;
 import java.util.OptionalInt;
@@ -52,7 +52,7 @@ public class DarkCanopyTreeFeature extends Feature<TreeConfiguration> {
 
 		// if we are given leaves as a starting position, seek dirt or grass underneath
 		boolean foundDirt = false;
-		for (int dy = pos.getY(); dy >= reader.getMinBuildHeight(); dy--) {
+		for (int dy = pos.getY(); dy >= reader.getMinY(); dy--) {
 			BlockState state = reader.getBlockState(new BlockPos(pos.getX(), dy - 1, pos.getZ()));
 			if (state.is(BlockTags.DIRT)) {
 				// yes!
@@ -72,7 +72,7 @@ public class DarkCanopyTreeFeature extends Feature<TreeConfiguration> {
 		for (int i = 0; i < 4; i++) {
 			//We check against the TreeFeature's validTreePos method, to see if the tree can grow here, cuz the trunk placer uses this as well
 			//If we don't, some trees end up growing only one or two blocks tall
-			if (!TreeFeature.validTreePos(reader, pos.relative(Direction.UP, i))) return false;
+			if (!FeaturePlacers.validTreePos(reader, pos.relative(Direction.UP, i))) return false;
 		}
 
 		// do not grow next to another tree
@@ -139,7 +139,7 @@ public class DarkCanopyTreeFeature extends Feature<TreeConfiguration> {
 		BlockPos blockpos = config.rootPlacer.map((placer) -> placer.getTrunkOrigin(pos, random)).orElse(pos);
 		int i1 = Math.min(pos.getY(), blockpos.getY());
 		int j1 = Math.max(pos.getY(), blockpos.getY()) + i + 1;
-		if (i1 >= level.getMinBuildHeight() + 1 && j1 <= level.getMaxBuildHeight()) {
+		if (i1 >= level.getMinY() + 1 && j1 <= level.getMaxY()) {
 			OptionalInt optionalint = config.minimumSize.minClippedHeight();
 			int k1 = this.getMaxFreeTreeHeight(level, i, blockpos, config);
 			if (k1 >= i || optionalint.isPresent() && k1 >= optionalint.getAsInt()) {

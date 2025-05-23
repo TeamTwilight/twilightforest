@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "twilightforest:block/time_wall_sign"
+      "model": "twilightforest:block/time_sign"
     }
   }
 }

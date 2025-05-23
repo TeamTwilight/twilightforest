@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "twilightforest:huge_water_lily"
-    }
+    "twilightforest:huge_water_lily"
   ],
   "result": {
     "count": 1,

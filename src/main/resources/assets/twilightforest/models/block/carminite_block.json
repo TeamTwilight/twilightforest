@@ -1,0 +1,37 @@
+{
+  "parent": "block/block",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "all": "twilightforest:block/carminite_block",
+    "all2": "twilightforest:block/carminite_block_overlay",
+    "particle": "#all"
+  },
+  "elements": [
+    {
+      "from": [ 0, 0, 0 ],
+      "to": [ 16, 16, 16 ],
+      "light_emission": 4,
+      "faces": {
+        "down": {"texture": "#all", "cullface": "down"},
+        "up": {"texture": "#all", "cullface": "up"},
+        "north": {"texture": "#all", "cullface": "north"},
+        "south": {"texture": "#all", "cullface": "south"},
+        "west": {"texture": "#all", "cullface": "west"},
+        "east": {"texture": "#all", "cullface": "east"}
+      }
+    },
+    {
+      "from": [ 0, 0, 0 ],
+      "to": [ 16, 16, 16 ],
+      "light_emission": 7,
+      "faces": {
+        "up": {"texture": "#all2", "cullface": "up"},
+        "down": {"texture": "#all2", "cullface": "down"},
+        "north": {"texture": "#all2", "cullface": "north"},
+        "south": {"texture": "#all2", "cullface": "south"},
+        "west": {"texture": "#all2", "cullface": "west"},
+        "east": {"texture": "#all2", "cullface": "east"}
+      }
+    }
+  ]
+}

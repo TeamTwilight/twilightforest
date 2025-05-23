@@ -1,9 +1,12 @@
 {
-  "parent": "builtin/entity",
   "textures": {
     "particle": "block/soul_sand"
   },
   "display": {
+    "gui": {
+      "rotation": [ 30, 45, 0 ],
+      "translation": [ 0, 3, 12 ]
+    },
     "head": {
       "rotation": [ 180, 0, 180 ],
       "translation": [ 0, 6, 0 ],
@@ -30,11 +33,6 @@
       "scale": [ 1, 1, 1 ]
     },
     "twilightforest:jarred": {
-      "rotation": [ 0, 180, 0 ],
-      "translation": [ 0, 0, 0 ],
-      "scale": [ 1, 1, 1 ]
-    },
-    "whatever:whatever": {
       "rotation": [ 0, 180, 0 ],
       "translation": [ 0, 0, 0 ],
       "scale": [ 1, 1, 1 ]

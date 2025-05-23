@@ -23,7 +23,6 @@ public class FinalCastleRoof13CrenellatedComponent extends TFStructureComponentO
 		super(TFStructurePieceTypes.TFFCRo13Cr.get(), nbt);
 	}
 
-	@SuppressWarnings("this-escape")
 	public FinalCastleRoof13CrenellatedComponent(int i, TFStructureComponentOld sideTower, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFFCRo13Cr.get(), i, x, y, z);
 

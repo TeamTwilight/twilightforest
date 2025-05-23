@@ -7,9 +7,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Equipable;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -23,8 +21,10 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.TrophyBlockEntity;
 import twilightforest.enums.BossVariant;
 import twilightforest.init.TFBlockEntities;
@@ -34,7 +34,7 @@ import twilightforest.init.TFSounds;
 import twilightforest.network.ParticlePacket;
 
 //[VanillaCopy] of AbstractSkullBlock except uses Variants instead of ISkullType and adds Sounds when clicked or powered
-public abstract class AbstractTrophyBlock extends BaseEntityBlock implements Equipable {
+public abstract class AbstractTrophyBlock extends BaseEntityBlock {
 
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 	private final BossVariant variant;
@@ -52,7 +52,7 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock implements Equ
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
+	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, @Nullable Orientation orientation, boolean isMoving) {
 		if (!level.isClientSide()) {
 			boolean flag = level.hasNeighborSignal(pos);
 			if (flag != state.getValue(POWERED)) {
@@ -68,7 +68,7 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock implements Equ
 	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
 		this.playSound(level, pos);
 		this.createParticle(level, pos);
-		return InteractionResult.sidedSuccess(level.isClientSide());
+		return InteractionResult.SUCCESS;
 	}
 
 	@Override
@@ -155,7 +155,7 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock implements Equ
 			switch (this.variant) {
 				case NAGA:
 					for (int daze = 0; daze < 10; daze++) {
-						particlePacket.queueParticle(ParticleTypes.CRIT, false,
+						particlePacket.queueParticle(ParticleTypes.CRIT,
 							((double) pos.getX() + rand.nextFloat() * 0.5D * 2.0D),
 							(double) pos.getY() + 0.25D,
 							((double) pos.getZ() + rand.nextFloat() * 0.5D * 2.0D),
@@ -164,7 +164,7 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock implements Equ
 					break;
 				case LICH:
 					for (int a = 0; a < 5; a++) {
-						particlePacket.queueParticle(ParticleTypes.ANGRY_VILLAGER, false,
+						particlePacket.queueParticle(TFParticleType.ANGRY_LICH.get(),
 							(double) pos.getX() + rand.nextFloat() * 0.5D * 2.0F + rand.nextGaussian() * 0.02D,
 							(double) pos.getY() + 0.5D + rand.nextFloat() * 0.25 + rand.nextGaussian() * 0.02D,
 							(double) pos.getZ() + rand.nextFloat() * 0.5D * 2.0F + rand.nextGaussian() * 0.02D,
@@ -174,7 +174,7 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock implements Equ
 				case MINOSHROOM:
 					ParticleOptions minoshroomParticle = new BlockParticleOption(ParticleTypes.BLOCK, level.getBlockState(pos.below()));
 					for (int g = 0; g < 10; g++) {
-						particlePacket.queueParticle(minoshroomParticle, false,
+						particlePacket.queueParticle(minoshroomParticle,
 							(double) pos.getX() + rand.nextFloat() * 10F - 5F,
 							(double) pos.getY() + 0.1F + rand.nextFloat() * 0.3F,
 							(double) pos.getZ() + rand.nextFloat() * 10F - 5F,
@@ -184,7 +184,7 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock implements Equ
 				case KNIGHT_PHANTOM:
 					ParticleOptions knightPhantomParticle = new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(TFItems.KNIGHTMETAL_SWORD.get()));
 					for (int brek = 0; brek < 10; brek++) {
-						particlePacket.queueParticle(knightPhantomParticle, false,
+						particlePacket.queueParticle(knightPhantomParticle,
 							pos.getX() + 0.5D + (rand.nextFloat() - 0.5D),
 							pos.getY() + rand.nextFloat() + 0.5D + 0.25D * rand.nextGaussian(),
 							pos.getZ() + 0.5D + (rand.nextFloat() - 0.5D),
@@ -193,7 +193,7 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock implements Equ
 					break;
 				case UR_GHAST:
 					for (int red = 0; red < 10; red++) {
-						particlePacket.queueParticle(DustParticleOptions.REDSTONE, false,
+						particlePacket.queueParticle(DustParticleOptions.REDSTONE,
 							(double) pos.getX() + (rand.nextDouble() * 1),
 							(double) pos.getY() + rand.nextDouble() * 0.5 + 0.5,
 							(double) pos.getZ() + (rand.nextDouble() * 1),
@@ -202,7 +202,7 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock implements Equ
 					break;
 				case ALPHA_YETI:
 					for (int sweat = 0; sweat < 10; sweat++) {
-						particlePacket.queueParticle(ParticleTypes.SPLASH, false,
+						particlePacket.queueParticle(ParticleTypes.SPLASH,
 							(double) pos.getX() + (rand.nextDouble() * 1),
 							(double) pos.getY() + rand.nextDouble() * 0.5 + 0.5,
 							(double) pos.getZ() + (rand.nextDouble() * 1),
@@ -211,7 +211,7 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock implements Equ
 					break;
 				case SNOW_QUEEN:
 					for (int b = 0; b < 20; b++) {
-						particlePacket.queueParticle(TFParticleType.SNOW_WARNING.get(), false,
+						particlePacket.queueParticle(TFParticleType.SNOW_WARNING.get(),
 							(double) pos.getX() - 1 + (rand.nextDouble() * 3.25D),
 							(double) pos.getY() + 5 + rand.nextGaussian(),
 							(double) pos.getZ() - 1 + (rand.nextDouble() * 3.25D),
@@ -220,7 +220,7 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock implements Equ
 					break;
 				case QUEST_RAM:
 					for (int p = 0; p < 10; p++) {
-						particlePacket.queueParticle(ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, rand.nextFloat(), rand.nextFloat(), rand.nextFloat()), false,
+						particlePacket.queueParticle(ColorParticleOption.create(TFParticleType.MAGIC_EFFECT.get(), rand.nextFloat(), rand.nextFloat(), rand.nextFloat()),
 							(double) pos.getX() + 0.5 + (rand.nextDouble() - 0.5),
 							(double) pos.getY() + (rand.nextDouble() - 0.5),
 							(double) pos.getZ() + 0.5 + (rand.nextDouble() - 0.5),
@@ -233,10 +233,5 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock implements Equ
 
 			PacketDistributor.sendToPlayersNear(server, null, pos.getX(), pos.getY(), pos.getZ(), 32.0F, particlePacket);
 		}
-	}
-
-	@Override
-	public EquipmentSlot getEquipmentSlot() {
-		return EquipmentSlot.HEAD;
 	}
 }

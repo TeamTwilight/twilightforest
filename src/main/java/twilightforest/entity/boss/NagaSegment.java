@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
@@ -22,7 +23,6 @@ public class NagaSegment extends TFPart<Naga> {
 
 	private int deathCounter;
 
-	@SuppressWarnings("this-escape")
 	public NagaSegment(Naga naga) {
 		super(naga);
 		this.setPos(naga.getX(), naga.getY(), naga.getZ());
@@ -40,8 +40,8 @@ public class NagaSegment extends TFPart<Naga> {
 	}
 
 	@Override
-	public boolean hurt(DamageSource src, float damage) {
-		return !this.isInvisible() && this.getParent().hurt(src, damage * 2.0F / 3.0F);
+	public boolean hurtServer(ServerLevel level, DamageSource src, float damage) {
+		return !this.isInvisible() && this.getParent().hurtServer(level, src, damage * 2.0F / 3.0F);
 	}
 
 	@Override
@@ -102,7 +102,9 @@ public class NagaSegment extends TFPart<Naga> {
 				attackStrength *= 3;
 			}
 
-			entity.hurt(entity.level().damageSources().mobAttack(this.getParent()), attackStrength);
+			if (this.level() instanceof ServerLevel level) {
+				entity.hurtServer(level, level.damageSources().mobAttack(this.getParent()), attackStrength);
+			}
 		}
 	}
 

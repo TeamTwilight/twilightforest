@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "hanging_sign",
   "key": {
-    "#": {
-      "item": "twilightforest:stripped_mining_log"
-    },
-    "|": {
-      "item": "minecraft:chain"
-    }
+    "#": "twilightforest:stripped_mining_log",
+    "|": "minecraft:chain"
   },
   "pattern": [
     "| |",

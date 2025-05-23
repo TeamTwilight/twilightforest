@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "chest_boat",
   "ingredients": [
-    {
-      "item": "twilightforest:dark_boat"
-    },
-    {
-      "tag": "c:chests/wooden"
-    }
+    "twilightforest:dark_boat",
+    "#c:chests/wooden"
   ],
   "result": {
     "count": 1,

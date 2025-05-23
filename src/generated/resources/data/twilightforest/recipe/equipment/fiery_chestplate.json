@@ -3,9 +3,7 @@
   "category": "equipment",
   "group": "fiery_chestplate",
   "key": {
-    "#": {
-      "tag": "c:ingots/fiery"
-    }
+    "#": "#c:ingots/fiery"
   },
   "pattern": [
     "# #",

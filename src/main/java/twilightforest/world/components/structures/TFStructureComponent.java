@@ -21,9 +21,11 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.common.util.Lazy;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
 import twilightforest.util.ColorUtil;
+import twilightforest.world.components.structures.util.ProgressionPiece;
 
 import java.util.Set;
 import java.util.function.Consumer;
@@ -31,11 +33,11 @@ import java.util.function.Consumer;
 @Deprecated
 // We keep rehashing Vanillacopies and they'll keep breaking between ports, we should be adding TwilightFeature to the
 //  StructurePiece classes we actually use. This class will take quite a while to dismantle
-public abstract class TFStructureComponent extends StructurePiece {
+public abstract class TFStructureComponent extends StructurePiece implements SpawnIndexProvider, ProgressionPiece {
 
 	public TFStructureDecorator deco = null;
-	public int spawnListIndex = 0;
-	private static final Set<Block> BLOCKS_NEEDING_POSTPROCESSING = ImmutableSet.<Block>builder()
+	protected int spawnListIndex = 0;
+	private static final Lazy<Set<Block>> BLOCKS_NEEDING_POSTPROCESSING = Lazy.of(() -> ImmutableSet.<Block>builder()
 		.add(Blocks.NETHER_BRICK_FENCE)
 		.add(Blocks.TORCH)
 		.add(Blocks.WALL_TORCH)
@@ -72,7 +74,7 @@ public abstract class TFStructureComponent extends StructurePiece {
 		.add(TFBlocks.BROWN_THORNS.get())
 		.add(TFBlocks.GREEN_THORNS.get())
 		.add(Blocks.GRAVEL)
-		.build();
+		.build());
 
 
 	public TFStructureComponent(StructurePieceType piece, CompoundTag nbt) {
@@ -149,7 +151,7 @@ public abstract class TFStructureComponent extends StructurePiece {
 				worldIn.scheduleTick(blockpos, fluidstate.getType(), 0);
 			}
 
-			if (BLOCKS_NEEDING_POSTPROCESSING.contains(blockstateIn.getBlock())) {
+			if (BLOCKS_NEEDING_POSTPROCESSING.get().contains(blockstateIn.getBlock())) {
 				worldIn.getChunk(blockpos).markPosForPostprocessing(blockpos);
 			}
 
@@ -179,10 +181,8 @@ public abstract class TFStructureComponent extends StructurePiece {
 		tagCompound.putInt("rot", this.rotation.ordinal());
 	}
 
-	/**
-	 * Does this component fall under block protection when progression is turned on, normally true
-	 */
-	public boolean isComponentProtected() {
-		return true;
+	@Override
+	public int getSpawnIndex() {
+		return this.spawnListIndex;
 	}
 }

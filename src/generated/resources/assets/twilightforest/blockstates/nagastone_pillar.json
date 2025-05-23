@@ -6,7 +6,7 @@
       "y": 270
     },
     "axis=x,reversed=true": {
-      "model": "twilightforest:block/nagastone_pillar_reversed",
+      "model": "twilightforest:block/nagastone_pillar_alt",
       "x": 270,
       "y": 270
     },
@@ -14,14 +14,14 @@
       "model": "twilightforest:block/nagastone_pillar"
     },
     "axis=y,reversed=true": {
-      "model": "twilightforest:block/nagastone_pillar_reversed"
+      "model": "twilightforest:block/nagastone_pillar_alt"
     },
     "axis=z,reversed=false": {
       "model": "twilightforest:block/nagastone_pillar",
       "x": 270
     },
     "axis=z,reversed=true": {
-      "model": "twilightforest:block/nagastone_pillar_reversed",
+      "model": "twilightforest:block/nagastone_pillar_alt",
       "x": 270
     }
   }

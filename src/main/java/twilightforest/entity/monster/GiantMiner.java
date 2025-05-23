@@ -1,6 +1,7 @@
 package twilightforest.entity.monster;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.*;
@@ -16,7 +17,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.data.tags.BlockTagGenerator;
+import twilightforest.tags.TFBlockTags;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFItems;
 import twilightforest.util.entities.EntityUtil;
@@ -25,7 +26,6 @@ import java.util.List;
 
 public class GiantMiner extends Monster {
 
-	@SuppressWarnings("this-escape")
 	public GiantMiner(EntityType<? extends GiantMiner> type, Level world) {
 		super(type, world);
 
@@ -56,7 +56,8 @@ public class GiantMiner extends Monster {
 
 	@Nullable
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn) {
+	@SuppressWarnings("deprecation")
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, EntitySpawnReason reason, @Nullable SpawnGroupData spawnDataIn) {
 		SpawnGroupData data = super.finalizeSpawn(accessor, difficulty, reason, spawnDataIn);
 		populateDefaultEquipmentSlots(accessor.getRandom(), difficulty);
 		populateDefaultEquipmentEnchantments(accessor, accessor.getRandom(), difficulty);
@@ -79,8 +80,8 @@ public class GiantMiner extends Monster {
 	}
 
 	@Override
-	public boolean doHurtTarget(Entity entity) {
-		return EntityUtil.properlyApplyCustomDamageSource(this, entity, TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.ANT, this), null);
+	public boolean doHurtTarget(ServerLevel level, Entity entity) {
+		return EntityUtil.properlyApplyCustomDamageSource(level, this, entity, TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.ANT, this), null);
 	}
 
 	@Override
@@ -89,13 +90,13 @@ public class GiantMiner extends Monster {
 	}
 
 	@Override
-	public boolean checkSpawnRules(LevelAccessor accessor, MobSpawnType reason) {
+	public boolean checkSpawnRules(LevelAccessor accessor, EntitySpawnReason reason) {
 		List<GiantMiner> giantsNearby = accessor.getEntitiesOfClass(GiantMiner.class, this.getBoundingBox().inflate(100, 10, 100));
 		return giantsNearby.size() < 5;
 	}
 
-	public static boolean canSpawn(EntityType<? extends GiantMiner> type, ServerLevelAccessor accessor, MobSpawnType reason, BlockPos pos, RandomSource rand) {
-		return accessor.getBlockState(pos.below()).is(BlockTagGenerator.GIANTS_SPAWNABLE_ON);
+	public static boolean checkGiantSpawnRules(EntityType<? extends GiantMiner> type, ServerLevelAccessor accessor, EntitySpawnReason reason, BlockPos pos, RandomSource rand) {
+		return accessor.getBlockState(pos.below()).is(TFBlockTags.GIANTS_SPAWNABLE_ON);
 	}
 
 	@Override

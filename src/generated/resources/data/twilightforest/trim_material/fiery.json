@@ -4,6 +4,5 @@
     "color": "#FFB53C",
     "translate": "trim_material.twilightforest.fiery"
   },
-  "ingredient": "twilightforest:fiery_ingot",
-  "item_model_index": 0.3
+  "ingredient": "twilightforest:fiery_ingot"
 }

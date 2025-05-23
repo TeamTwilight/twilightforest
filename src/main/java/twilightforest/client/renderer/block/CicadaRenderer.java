@@ -19,28 +19,27 @@ import twilightforest.client.model.entity.CicadaModel;
 public class CicadaRenderer implements BlockEntityRenderer<CicadaBlockEntity> {
 
 	private final CicadaModel cicadaModel;
-	private static final ResourceLocation TEXTURE = TwilightForestMod.getModelTexture("cicada-model.png");
+	public static final ResourceLocation TEXTURE = TwilightForestMod.getModelTexture("cicada-model.png");
 
 	public CicadaRenderer(BlockEntityRendererProvider.Context context) {
 		this.cicadaModel = new CicadaModel(context.bakeLayer(TFModelLayers.CICADA));
 	}
 
 	@Override
-	public void render(@Nullable CicadaBlockEntity entity, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light, int overlay) {
-		int yaw = entity != null ? entity.currentYaw : BugModelAnimationHelper.currentYaw;
+	public void render(CicadaBlockEntity entity, float partialTick, PoseStack stack, MultiBufferSource source, int light, int overlay) {
+		renderCicada(this.cicadaModel, entity.currentYaw, entity.randRot, entity.getBlockState().getValue(DirectionalBlock.FACING), stack, source, light, overlay);
+	}
 
+	public static void renderCicada(CicadaModel model, float yaw, float rotation, Direction facing, PoseStack stack, MultiBufferSource buffer, int light, int overlay) {
 		stack.pushPose();
-		Direction facing = entity != null ? entity.getBlockState().getValue(DirectionalBlock.FACING) : Direction.NORTH;
-		float randRot = entity != null ? entity.randRot : 0.0F;
-
 		stack.translate(0.5F, 0.5F, 0.5F);
 		stack.mulPose(facing.getRotation());
 		stack.mulPose(Axis.ZP.rotationDegrees(180.0F));
-		stack.mulPose(Axis.YP.rotationDegrees(180.0F + randRot));
+		stack.mulPose(Axis.YP.rotationDegrees(180.0F + rotation));
 		stack.mulPose(Axis.YN.rotationDegrees(yaw));
 
-		VertexConsumer consumer = buffer.getBuffer(this.cicadaModel.renderType(TEXTURE));
-		this.cicadaModel.renderToBuffer(stack, consumer, light, overlay);
+		VertexConsumer consumer = buffer.getBuffer(model.renderType(TEXTURE));
+		model.renderToBuffer(stack, consumer, light, overlay);
 		stack.popPose();
 	}
 }

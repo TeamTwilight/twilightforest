@@ -4,7 +4,7 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.world.entity.Entity;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.beans.Component;
+import tamaized.beanification.Component;
 import twilightforest.client.BakedMultiPartRenderers;
 import twilightforest.entity.TFPart;
 import twilightforest.network.UpdateTFMultipartPacket;
@@ -19,7 +19,7 @@ public class MultipartEntityUtil {
 	}
 
 	@Nullable
-	public EntityRenderer<?> tryLookupTFPartRenderer(@Nullable EntityRenderer<?> renderer, Entity entity) {
+	public EntityRenderer<?, ?> tryLookupTFPartRenderer(@Nullable EntityRenderer<?, ?> renderer, Entity entity) {
 		if (entity instanceof TFPart<?> part)
 			return BakedMultiPartRenderers.lookup(part.renderer());
 		return renderer;

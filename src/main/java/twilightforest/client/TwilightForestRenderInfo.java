@@ -23,12 +23,6 @@ public class TwilightForestRenderInfo extends DimensionSpecialEffects {
 		super(cloudHeight, placebo, fogType, brightenLightMap, entityLightingBottomsLit);
 	}
 
-	@Nullable
-	@Override
-	public float[] getSunriseColor(float daycycle, float partialTicks) { // Fog color
-		return null;
-	}
-
 	@Override
 	public Vec3 getBrightnessDependentFogColor(Vec3 biomeFogColor, float daylight) { // For modifying biome fog color with daycycle
 		return biomeFogColor.multiply(daylight * 0.94F + 0.06F, (daylight * 0.94F + 0.06F), (daylight * 0.91F + 0.09F));
@@ -57,13 +51,13 @@ public class TwilightForestRenderInfo extends DimensionSpecialEffects {
 	}
 
 	@Override
-	public boolean renderSky(ClientLevel level, int ticks, float partialTick, Matrix4f modelViewMatrix, Camera camera, Matrix4f projectionMatrix, boolean isFoggy, Runnable setupFog) {
-		return TFSkyRenderer.renderSky(level, partialTick, modelViewMatrix, camera, projectionMatrix, setupFog);
+	public boolean renderSky(ClientLevel level, int ticks, float partialTick, Matrix4f modelViewMatrix, Camera camera, Matrix4f projectionMatrix, Runnable setupFog) {
+		return TFSkyRenderer.renderSky(level, partialTick, camera, setupFog);
 	}
 
 	@Override
-	public boolean renderSnowAndRain(ClientLevel level, int ticks, float partialTick, LightTexture lightTexture, double camX, double camY, double camZ) {
-		return TFWeatherRenderer.renderSnowAndRain(level, ticks, partialTick, lightTexture, new Vec3(camX, camY, camZ));
+	public boolean renderSnowAndRain(ClientLevel level, int ticks, float partialTick, double camX, double camY, double camZ) {
+		return TFWeatherRenderer.renderSnowAndRain(level, ticks, partialTick, new Vec3(camX, camY, camZ));
 	}
 
 	@Override

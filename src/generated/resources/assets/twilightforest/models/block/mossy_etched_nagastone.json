@@ -2,6 +2,6 @@
   "parent": "minecraft:block/cube_column",
   "textures": {
     "end": "twilightforest:block/stone_tiles_mossy",
-    "side": "twilightforest:block/etched_nagastone_down_mossy"
+    "side": "twilightforest:block/etched_nagastone_up_mossy"
   }
 }

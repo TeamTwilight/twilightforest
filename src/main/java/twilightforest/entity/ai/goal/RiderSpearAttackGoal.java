@@ -11,7 +11,6 @@ public class RiderSpearAttackGoal extends Goal {
 
 	private final LowerGoblinKnight entity;
 
-	@SuppressWarnings("this-escape")
 	public RiderSpearAttackGoal(LowerGoblinKnight lowerKnight) {
 		this.entity = lowerKnight;
 		this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK)); // Prevent moving

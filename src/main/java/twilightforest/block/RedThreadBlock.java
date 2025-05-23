@@ -30,11 +30,6 @@ public class RedThreadBlock extends MultifaceBlock implements EntityBlock {
 	}
 
 	@Override
-	public MultifaceSpreader getSpreader() {
-		return new MultifaceSpreader(this);
-	}
-
-	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new RedThreadBlockEntity(pos, state);
 	}

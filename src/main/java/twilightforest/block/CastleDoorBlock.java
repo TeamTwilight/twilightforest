@@ -13,12 +13,14 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFParticleType;
 import twilightforest.init.TFSounds;
 import twilightforest.network.ParticlePacket;
@@ -52,8 +54,8 @@ public class CastleDoorBlock extends Block {
 	}
 
 	@Override
-	public VoxelShape getOcclusionShape(BlockState state, BlockGetter getter, BlockPos pos) {
-		return state.getValue(VANISHED) || !state.getValue(ACTIVE) ? Shapes.empty() : super.getOcclusionShape(state, getter, pos);
+	public VoxelShape getOcclusionShape(BlockState state) {
+		return state.getValue(VANISHED) || !state.getValue(ACTIVE) ? Shapes.empty() : super.getOcclusionShape(state);
 	}
 
 	@Override
@@ -72,7 +74,7 @@ public class CastleDoorBlock extends Block {
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
+	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, @Nullable Orientation orientation, boolean isMoving) {
 		if (!(block instanceof CastleDoorBlock) && level.hasNeighborSignal(pos)) {
 			this.onActivation(level, pos, state);
 		}
@@ -149,7 +151,7 @@ public class CastleDoorBlock extends Block {
 			for (int dx = 0; dx < 4; ++dx) {
 				for (int dy = 0; dy < 4; ++dy) {
 					for (int dz = 0; dz < 4; ++dz) {
-						particlePacket.queueParticle(TFParticleType.ANNIHILATE.get(), false,
+						particlePacket.queueParticle(TFParticleType.ANNIHILATE.get(),
 							pos.getX() + (dx + 0.5D) / 4,
 							pos.getY() + (dy + 0.5D) / 4,
 							pos.getZ() + (dz + 0.5D) / 4,

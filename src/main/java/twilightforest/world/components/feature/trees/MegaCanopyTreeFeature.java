@@ -95,7 +95,12 @@ public class MegaCanopyTreeFeature extends CanopyTreeFeature {
 			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, rand, leafPos.relative(direction, 3).relative(direction.getClockWise(), 2), config.branchProvider);
 			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, rand, leafPos.relative(direction, 4).relative(direction.getClockWise(), 3), config.branchProvider);
 		}
-		FeaturePlacers.placeSpheroid(world, leafPlacer, FeaturePlacers.VALID_TREE_POS, rand, leafPos, 8.5F, 2.5F, config.leavesProvider);
+		// Use circles with legacy distance instead of a spheroid to match the 1.4.7 version as much as possible
+		FeaturePlacers.placeCircleOdd(world, leafPlacer, FeaturePlacers.VALID_TREE_POS, rand, leafPos.above(2), 3, config.leavesProvider, true);
+		FeaturePlacers.placeCircleOdd(world, leafPlacer, FeaturePlacers.VALID_TREE_POS, rand, leafPos.above(), 6, config.leavesProvider, true);
+		FeaturePlacers.placeCircleOdd(world, leafPlacer, FeaturePlacers.VALID_TREE_POS, rand, leafPos, 8, config.leavesProvider, true);
+		FeaturePlacers.placeCircleOdd(world, leafPlacer, FeaturePlacers.VALID_TREE_POS, rand, leafPos.below(), 7, config.leavesProvider, true);
+		FeaturePlacers.placeCircleOdd(world, leafPlacer, FeaturePlacers.VALID_TREE_POS, rand, leafPos.below(2), 4.5f, config.leavesProvider, true);
 	}
 
 	private void buildTrunk(LevelAccessor world, List<BlockPos> leaves, BiConsumer<BlockPos, BlockState> trunkPlacer, RandomSource rand, BlockPos pos, int treeHeight, TFTreeFeatureConfig config) {
@@ -114,7 +119,7 @@ public class MegaCanopyTreeFeature extends CanopyTreeFeature {
 					BlockPos.MutableBlockPos bugPos = new BlockPos.MutableBlockPos();
 					bugPos.set(pos.offset(direction == Direction.EAST ? 1 : 0, rand.nextInt(treeHeight), direction == Direction.SOUTH ? 1 : 0));
 					bugPos.move(direction).move(axis == Direction.Axis.Z ? rand.nextInt(2) : 0, 0, axis == Direction.Axis.X ? rand.nextInt(2) : 0);
-					if (!world.getBlockState(bugPos).isSolidRender(world, bugPos)) {
+					if (!world.getBlockState(bugPos).isSolidRender()) {
 						BlockState bugState = TFBlocks.FIREFLY.get().defaultBlockState().setValue(DirectionalBlock.FACING, direction);
 						this.setBlock(world, bugPos, bugState);
 					}

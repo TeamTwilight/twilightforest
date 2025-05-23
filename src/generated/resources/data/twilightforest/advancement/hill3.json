@@ -1,7 +1,7 @@
 {
   "parent": "twilightforest:hill2",
   "criteria": {
-    "redcap": {
+    "wraith": {
       "conditions": {
         "entity": [
           {
@@ -38,7 +38,7 @@
   },
   "requirements": [
     [
-      "redcap"
+      "wraith"
     ]
   ],
   "sends_telemetry_event": true

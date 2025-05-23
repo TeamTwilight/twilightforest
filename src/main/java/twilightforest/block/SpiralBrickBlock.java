@@ -2,9 +2,12 @@ package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
@@ -33,10 +36,10 @@ public class SpiralBrickBlock extends Block implements SimpleWaterloggedBlock {
 
 	private static Diagonals convertVerticalDirectionToDiagonal(Direction facing) {
 		return switch (facing) {
-			default -> Diagonals.TOP_RIGHT;
 			case SOUTH -> Diagonals.BOTTOM_LEFT;
 			case EAST -> Diagonals.TOP_LEFT;
 			case WEST -> Diagonals.BOTTOM_RIGHT;
+			default -> Diagonals.TOP_RIGHT;
 		};
 	}
 
@@ -71,9 +74,9 @@ public class SpiralBrickBlock extends Block implements SimpleWaterloggedBlock {
 	}
 
 	@Override
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor accessor, BlockPos currentPos, BlockPos facingPos) {
-		if (state.getValue(WATERLOGGED)) accessor.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(accessor));
-		return super.updateShape(state, facing, facingState, accessor, currentPos, facingPos);
+	protected BlockState updateShape(BlockState state, LevelReader reader, ScheduledTickAccess access, BlockPos pos, Direction direction, BlockPos facingPos, BlockState facingState, RandomSource random) {
+		if (state.getValue(WATERLOGGED)) access.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(reader));
+		return super.updateShape(state, reader, access, pos, direction, facingPos, facingState, random);
 	}
 
 	@Override

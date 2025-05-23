@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "tag": "c:storage_blocks/carminite"
-    }
+    "#c:storage_blocks/carminite"
   ],
   "result": {
     "count": 9,

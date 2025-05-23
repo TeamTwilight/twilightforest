@@ -2,6 +2,7 @@ package twilightforest.block.entity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Mob;
@@ -110,7 +111,7 @@ public class GhastTrapBlockEntity extends BlockEntity {
 	private void tickActive(Level level, BlockPos pos, BlockState state, GhastTrapBlockEntity te) {
 		++te.counter;
 
-		if (level.isClientSide()) {
+		if (!(level instanceof ServerLevel serverLevel)) {
 			// smoke when done
 			if (te.counter > 100 && te.counter % 4 == 0) {
 				level.addParticle(TFParticleType.HUGE_SMOKE.get(), pos.getX() + 0.5, pos.getY() + 0.95, pos.getZ() + 0.5, Math.cos(te.counter / 10.0) * 0.05, 0.25D, Math.sin(te.counter / 10.0) * 0.05);
@@ -158,7 +159,7 @@ public class GhastTrapBlockEntity extends BlockEntity {
 					ghast.setDeltaMovement(mx, my, mz);
 
 					if (te.rand.nextInt(10) == 0) {
-						ghast.hurt(level.damageSources().generic(), 7);
+						ghast.hurtServer(serverLevel, serverLevel.damageSources().generic(), 7);
 						urghast.resetDamageUntilNextPhase();
 					}
 
@@ -170,7 +171,7 @@ public class GhastTrapBlockEntity extends BlockEntity {
 					ghast.setDeltaMovement(mx, my, mz);
 
 					if (te.rand.nextInt(10) == 0) {
-						ghast.hurt(level.damageSources().generic(), 10);
+						ghast.hurtServer(serverLevel, serverLevel.damageSources().generic(), 10);
 					}
 				}
 

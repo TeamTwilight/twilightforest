@@ -37,7 +37,6 @@ public class HedgeMazeComponent extends TFStructureComponentOld {
 		this.boundingBox = BoundingBoxUtils.NBTToBoundingBox(nbt);
 	}
 
-	@SuppressWarnings("this-escape")
 	public HedgeMazeComponent(int i, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFHedge.get(), i, x, y, z);
 

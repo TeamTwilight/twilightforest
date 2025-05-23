@@ -84,11 +84,9 @@ public class Naga extends BaseTFBoss {
 	private static final EntityDataAccessor<Boolean> DATA_CHARGE = SynchedEntityData.defineId(Naga.class, EntityDataSerializers.BOOLEAN);
 	private static final EntityDataAccessor<Boolean> DATA_STUNLESS = SynchedEntityData.defineId(Naga.class, EntityDataSerializers.BOOLEAN);
 
-	@SuppressWarnings("this-escape")
 	public Naga(EntityType<? extends Naga> type, Level level) {
 		super(type, level);
 		this.xpReward = 217;
-		this.noCulling = true;
 
 		for (int i = 0; i < this.bodySegments.length; i++) {
 			this.bodySegments[i] = new NagaSegment(this);
@@ -207,7 +205,7 @@ public class Naga extends BaseTFBoss {
 	@Nullable
 	@Override
 	@SuppressWarnings("deprecation")
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data) {
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, EntitySpawnReason type, @Nullable SpawnGroupData data) {
 		if (this.level().getDifficulty() != Difficulty.EASY && this.getAttribute(Attributes.MAX_HEALTH) != null) {
 			boolean hard = this.level().getDifficulty() == Difficulty.HARD;
 			AttributeModifier modifier = new AttributeModifier(TwilightForestMod.prefix("difficulty_health_boost"), hard ? 130 : 80, AttributeModifier.Operation.ADD_VALUE);
@@ -256,14 +254,14 @@ public class Naga extends BaseTFBoss {
 	}
 
 	@Override
-	protected void customServerAiStep() {
-		super.customServerAiStep();
+	protected void customServerAiStep(ServerLevel level) {
+		super.customServerAiStep(level);
 
 		if (this.getTarget() != null && (this.distanceToSqr(this.getTarget()) > 80 * 80 || !this.areSelfAndTargetInHome(this.getTarget()))) {
 			this.setTarget(null);
 		}
 
-		if (EventHooks.canEntityGrief(this.level(), this)) {
+		if (EventHooks.canEntityGrief(level, this)) {
 			AABB bb = this.getBoundingBox();
 
 			int minx = Mth.floor(bb.minX - 0.75D);
@@ -344,15 +342,15 @@ public class Naga extends BaseTFBoss {
 	}
 
 	@Override
-	public boolean isInvulnerableTo(DamageSource src) {
+	public boolean isInvulnerableTo(ServerLevel level, DamageSource src) {
 		return src.getEntity() != null && !this.isOtherEntityWithinHomeArea(src.getEntity()) // reject damage from outside of our home radius
 			|| src.getDirectEntity() != null && !this.isOtherEntityWithinHomeArea(src.getDirectEntity())
-			|| src.is(DamageTypeTags.IS_EXPLOSION) || super.isInvulnerableTo(src);
+			|| src.is(DamageTypeTags.IS_EXPLOSION) || super.isInvulnerableTo(level, src);
 	}
 
 	@Override
-	public boolean hurt(DamageSource source, float amount) {
-		if (super.hurt(source, amount)) {
+	public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
+		if (super.hurtServer(level, source, amount)) {
 			this.ticksSinceDamaged = 0;
 			if (this.isDazed()) {
 				this.damageDuringCurrentStun += (int) amount;
@@ -364,7 +362,7 @@ public class Naga extends BaseTFBoss {
 	}
 
 	@Override
-	public boolean doHurtTarget(Entity toAttack) {
+	public boolean doHurtTarget(ServerLevel level, Entity toAttack) {
 		if (toAttack instanceof LivingEntity living && living.isBlocking()) {
 			if (this.getMovementPattern().getState() == NagaMovementPattern.MovementState.CHARGE) {
 				Vec3 motion = this.getDeltaMovement();
@@ -374,25 +372,25 @@ public class Naga extends BaseTFBoss {
 					player.getUseItem().hurtAndBreak(5, player, LivingEntity.getSlotForHand(player.getUsedItemHand()));
 					PacketDistributor.sendToPlayer(player, new MovePlayerPacket(motion.x() * 3.0D, motion.y() + 0.75D, motion.z() * 3.0D));
 				}
-				this.hurt(this.damageSources().generic(), 2.0F);
+				this.hurtServer(level, this.damageSources().generic(), 2.0F);
 				this.level().playSound(null, toAttack.blockPosition(), SoundEvents.SHIELD_BLOCK, SoundSource.PLAYERS, 1.0F, 0.8F + this.level().getRandom().nextFloat() * 0.4F);
 				this.getMovementPattern().doDaze();
 				return false;
 			} else if (this.getMovementPattern().getState() == NagaMovementPattern.MovementState.STUNLESS_CHARGE) {
 				if (toAttack instanceof ServerPlayer player) {
 					player.getUseItem().hurtAndBreak(10, player, LivingEntity.getSlotForHand(player.getUsedItemHand()));
-					player.getCooldowns().addCooldown(player.getUseItem().getItem(), 200);
+					player.getCooldowns().addCooldown(player.getUseItem(), 200);
 					player.stopUsingItem();
 					this.level().broadcastEntityEvent(player, (byte) 30);
 				}
-				living.hurt(this.damageSources().mobAttack(this), 4.0F);
+				living.hurtServer(level, this.damageSources().mobAttack(this), 4.0F);
 				this.playSound(SoundEvents.FOX_BITE, 2.0F, 0.5F);
 				this.getMovementPattern().doCircle();
 				return false;
 			}
 		}
 		if (!this.isDazed()) {
-			boolean result = super.doHurtTarget(toAttack);
+			boolean result = super.doHurtTarget(level, toAttack);
 
 			if (result) {
 				// charging, apply extra pushback
@@ -416,11 +414,11 @@ public class Naga extends BaseTFBoss {
 	@Override
 	public void remove(RemovalReason reason) {
 		super.remove(reason);
-		if (this.level() instanceof ServerLevel) {
+		if (this.level() instanceof ServerLevel level) {
 			for (NagaSegment seg : this.bodySegments) {
 				// must use this instead of setDead
 				// since multiparts are not added to the world tick list which is what checks isDead
-				seg.kill();
+				seg.kill(level);
 			}
 		}
 	}
@@ -576,7 +574,7 @@ public class Naga extends BaseTFBoss {
                     Vec3 particlePos = start.add(diff.scale(factor)).add(Math.sin(preciseTime * Math.PI * 0.075D) * xMul, Math.sin(preciseTime * Math.PI * 0.025D) * 0.1D, Math.cos(preciseTime * Math.PI * 0.0625D) * zMul);//Some sine waves to make it slither-y;
                     BlockHitResult blockhitresult = this.level().clip(new ClipContext(particlePos.add(0.0D, 2.0D, 0.0D), particlePos.subtract(0.0D, 3.0D, 0.0D), ClipContext.Block.COLLIDER, ClipContext.Fluid.WATER, CollisionContext.empty()));
                     particlePos = blockhitresult.getLocation().add(0.0D, 0.15D, 0.0D);
-					this.level().addParticle(ParticleTypes.COMPOSTER, false, particlePos.x(), particlePos.y(), particlePos.z(), 0.0D, 0.0D, 0.0D);
+					this.level().addParticle(ParticleTypes.COMPOSTER, particlePos.x(), particlePos.y(), particlePos.z(), 0.0D, 0.0D, 0.0D);
                 }
             }
         }

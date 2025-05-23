@@ -7,7 +7,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -15,7 +14,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.ItemUseAnimation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AbstractCandleBlock;
 import net.minecraft.world.level.block.FlowerBlock;
@@ -43,7 +42,7 @@ public class PeacockFanItem extends Item {
 
 	@Nonnull
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level level, Player player, @Nonnull InteractionHand hand) {
+	public InteractionResult use(Level level, Player player, @Nonnull InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 
 		boolean flag = !player.onGround() && !player.isSwimming() && !player.getData(TFDataAttachments.FEATHER_FAN);
@@ -63,7 +62,7 @@ public class PeacockFanItem extends Item {
 						ParticlePacket packet = new ParticlePacket();
 
 						for (int i = 0; i < 30; i++) {
-							packet.queueParticle(ParticleTypes.CLOUD, true, fanBox.minX + level.getRandom().nextFloat() * (fanBox.maxX - fanBox.minX),
+							packet.queueParticle(ParticleTypes.CLOUD, fanBox.minX + level.getRandom().nextFloat() * (fanBox.maxX - fanBox.minX),
 								fanBox.minY + level.getRandom().nextFloat() * (fanBox.maxY - fanBox.minY),
 								fanBox.minZ + level.getRandom().nextFloat() * (fanBox.maxZ - fanBox.minZ),
 								lookVec.x(), lookVec.y(), lookVec.z());
@@ -91,18 +90,18 @@ public class PeacockFanItem extends Item {
 					player.getDeltaMovement().z() * 1.05F
 				));
 			}
-			return new InteractionResultHolder<>(InteractionResult.SUCCESS, stack);
+			return InteractionResult.SUCCESS;
 		}
 
 		player.startUsingItem(hand);
 
-		return new InteractionResultHolder<>(InteractionResult.PASS, stack);
+		return InteractionResult.PASS;
 	}
 
 	@Nonnull
 	@Override
-	public UseAnim getUseAnimation(ItemStack stack) {
-		return UseAnim.BLOCK;
+	public ItemUseAnimation getUseAnimation(ItemStack stack) {
+		return ItemUseAnimation.BLOCK;
 	}
 
 	@Override
@@ -117,7 +116,7 @@ public class PeacockFanItem extends Item {
 
 	private int fanEntitiesInAABB(Level level, Player player, AABB fanBox) {
 		Vec3 moveVec = player.getLookAngle().scale(2);
-		Item fan = player.getUseItem().getItem();
+		ItemStack fan = player.getUseItem();
 		int fannedEntities = 0;
 
 		for (Entity entity : level.getEntitiesOfClass(Entity.class, fanBox)) {

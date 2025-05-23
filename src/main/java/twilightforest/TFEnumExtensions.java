@@ -2,17 +2,14 @@ package twilightforest;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Style;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.biome.BiomeSpecialEffects;
-import twilightforest.beans.Autowired;
+import tamaized.beanification.Autowired;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFSounds;
 import twilightforest.util.ModidPrefixUtil;
 import twilightforest.world.components.BiomeColorAlgorithms;
 
-import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
 @SuppressWarnings("unused") // Referenced by enumextender.json
@@ -128,167 +125,4 @@ public class TFEnumExtensions {
 			default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
 		});
 	}
-
-	/**
-	 * {@link net.minecraft.world.entity.vehicle.Boat.Type}<p/>
-	 *
-	 * {@link twilightforest.enums.extensions.TFBoatTypeEnumExtension#TWILIGHT_OAK}
-	 */
-	public static Object Boat$Type_TWILIGHT_OAK(int idx, Class<?> type) {
-		if (idx == 5) // Lazy away around boxing the boolean
-			return false;
-		return type.cast(switch (idx) {
-			case 0 -> TFBlocks.TWILIGHT_OAK_PLANKS;
-			case 1 -> modidPrefixUtil.stringPrefix("twilight_oak");
-			case 2 -> TFItems.TWILIGHT_OAK_BOAT;
-			case 3 -> TFItems.TWILIGHT_OAK_CHEST_BOAT;
-			case 4 -> (Supplier<Item>) () -> Items.STICK;
-			default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
-		});
-	}
-
-	/**
-	 * {@link net.minecraft.world.entity.vehicle.Boat.Type}<p/>
-	 *
-	 * {@link twilightforest.enums.extensions.TFBoatTypeEnumExtension#CANOPY}
-	 */
-	public static Object Boat$Type_CANOPY(int idx, Class<?> type) {
-		if (idx == 5) // Lazy away around boxing the boolean
-			return false;
-		return type.cast(switch (idx) {
-			case 0 -> TFBlocks.CANOPY_PLANKS;
-			case 1 -> modidPrefixUtil.stringPrefix("canopy");
-			case 2 -> TFItems.CANOPY_BOAT;
-			case 3 -> TFItems.CANOPY_CHEST_BOAT;
-			case 4 -> (Supplier<Item>) () -> Items.STICK;
-			default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
-		});
-	}
-
-	/**
-	 * {@link net.minecraft.world.entity.vehicle.Boat.Type}<p/>
-	 *
-	 * {@link twilightforest.enums.extensions.TFBoatTypeEnumExtension#MANGROVE}
-	 */
-	public static Object Boat$Type_MANGROVE(int idx, Class<?> type) {
-		if (idx == 5) // Lazy away around boxing the boolean
-			return false;
-		return type.cast(switch (idx) {
-			case 0 -> TFBlocks.MANGROVE_PLANKS;
-			case 1 -> modidPrefixUtil.stringPrefix("mangrove");
-			case 2 -> TFItems.MANGROVE_BOAT;
-			case 3 -> TFItems.MANGROVE_CHEST_BOAT;
-			case 4 -> (Supplier<Item>) () -> Items.STICK;
-			default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
-		});
-	}
-
-	/**
-	 * {@link net.minecraft.world.entity.vehicle.Boat.Type}<p/>
-	 *
-	 * {@link twilightforest.enums.extensions.TFBoatTypeEnumExtension#DARK}
-	 */
-	public static Object Boat$Type_DARK(int idx, Class<?> type) {
-		if (idx == 5) // Lazy away around boxing the boolean
-			return false;
-		return type.cast(switch (idx) {
-			case 0 -> TFBlocks.DARK_PLANKS;
-			case 1 -> modidPrefixUtil.stringPrefix("dark");
-			case 2 -> TFItems.DARK_BOAT;
-			case 3 -> TFItems.DARK_CHEST_BOAT;
-			case 4 -> (Supplier<Item>) () -> Items.STICK;
-			default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
-		});
-	}
-
-	/**
-	 * {@link net.minecraft.world.entity.vehicle.Boat.Type}<p/>
-	 *
-	 * {@link twilightforest.enums.extensions.TFBoatTypeEnumExtension#TIME}
-	 */
-	public static Object Boat$Type_TIME(int idx, Class<?> type) {
-		if (idx == 5) // Lazy away around boxing the boolean
-			return false;
-		return type.cast(switch (idx) {
-			case 0 -> TFBlocks.TIME_PLANKS;
-			case 1 -> modidPrefixUtil.stringPrefix("time");
-			case 2 -> TFItems.TIME_BOAT;
-			case 3 -> TFItems.TIME_CHEST_BOAT;
-			case 4 -> (Supplier<Item>) () -> Items.STICK;
-			default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
-		});
-	}
-
-	/**
-	 * {@link net.minecraft.world.entity.vehicle.Boat.Type}<p/>
-	 *
-	 * {@link twilightforest.enums.extensions.TFBoatTypeEnumExtension#TRANSFORMATION}
-	 */
-	public static Object Boat$Type_TRANSFORMATION(int idx, Class<?> type) {
-		if (idx == 5) // Lazy away around boxing the boolean
-			return false;
-		return type.cast(switch (idx) {
-			case 0 -> TFBlocks.TRANSFORMATION_PLANKS;
-			case 1 -> modidPrefixUtil.stringPrefix("transformation");
-			case 2 -> TFItems.TRANSFORMATION_BOAT;
-			case 3 -> TFItems.TRANSFORMATION_CHEST_BOAT;
-			case 4 -> (Supplier<Item>) () -> Items.STICK;
-			default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
-		});
-	}
-
-	/**
-	 * {@link net.minecraft.world.entity.vehicle.Boat.Type}<p/>
-	 *
-	 * {@link twilightforest.enums.extensions.TFBoatTypeEnumExtension#MINING}
-	 */
-	public static Object Boat$Type_MINING(int idx, Class<?> type) {
-		if (idx == 5) // Lazy away around boxing the boolean
-			return false;
-		return type.cast(switch (idx) {
-			case 0 -> TFBlocks.MINING_PLANKS;
-			case 1 -> modidPrefixUtil.stringPrefix("mining");
-			case 2 -> TFItems.MINING_BOAT;
-			case 3 -> TFItems.MINING_CHEST_BOAT;
-			case 4 -> (Supplier<Item>) () -> Items.STICK;
-			default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
-		});
-	}
-
-	/**
-	 * {@link net.minecraft.world.entity.vehicle.Boat.Type}<p/>
-	 *
-	 * {@link twilightforest.enums.extensions.TFBoatTypeEnumExtension#SORTING}
-	 */
-	public static Object Boat$Type_SORTING(int idx, Class<?> type) {
-		if (idx == 5) // Lazy away around boxing the boolean
-			return false;
-		return type.cast(switch (idx) {
-			case 0 -> TFBlocks.SORTING_PLANKS;
-			case 1 -> modidPrefixUtil.stringPrefix("sorting");
-			case 2 -> TFItems.SORTING_BOAT;
-			case 3 -> TFItems.SORTING_CHEST_BOAT;
-			case 4 -> (Supplier<Item>) () -> Items.STICK;
-			default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
-		});
-	}
-
-	/**
-	 * {@link net.minecraft.world.entity.vehicle.Boat.Type}<p/>
-	 *
-	 * {@link twilightforest.enums.extensions.TFBoatTypeEnumExtension#VEILWOOD}
-	 */
-	public static Object Boat$Type_VEILWOOD(int idx, Class<?> type) {
-		if (idx == 5) // Lazy away around boxing the boolean
-			return false;
-		return type.cast(switch (idx) {
-			case 0 -> TFBlocks.VEILWOOD_PLANKS;
-			case 1 -> modidPrefixUtil.stringPrefix("veilwood");
-			case 2 -> TFItems.VEILWOOD_BOAT;
-			case 3 -> TFItems.VEILWOOD_CHEST_BOAT;
-			case 4 -> (Supplier<Item>) () -> Items.STICK;
-			default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
-		});
-	}
-
 }

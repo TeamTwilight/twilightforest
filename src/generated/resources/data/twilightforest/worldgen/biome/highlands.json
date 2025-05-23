@@ -1,7 +1,5 @@
 {
-  "carvers": {
-    "air": "twilightforest:highland_caves"
-  },
+  "carvers": "twilightforest:highland_caves",
   "creature_spawn_probability": 0.15,
   "downfall": 0.7,
   "effects": {
@@ -12,12 +10,18 @@
       "sound": "minecraft:ambient.cave",
       "tick_delay": 6000
     },
-    "music": {
-      "max_delay": 12000,
-      "min_delay": 1200,
-      "replace_current_music": true,
-      "sound": "twilightforest:music.twilightforest.twilight_forest"
-    },
+    "music": [
+      {
+        "data": {
+          "max_delay": 12000,
+          "min_delay": 1200,
+          "replace_current_music": true,
+          "sound": "twilightforest:music.twilightforest.twilight_forest"
+        },
+        "weight": 1
+      }
+    ],
+    "music_volume": 1.0,
     "sky_color": 2105930,
     "water_color": 4159204,
     "water_fog_color": 329011

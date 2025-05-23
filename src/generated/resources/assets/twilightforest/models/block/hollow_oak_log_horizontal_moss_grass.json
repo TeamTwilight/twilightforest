@@ -1,9 +1,0 @@
-{
-  "parent": "twilightforest:block/hollow_log_moss_grass",
-  "render_type": "minecraft:cutout",
-  "textures": {
-    "inner": "minecraft:block/stripped_oak_log",
-    "side": "minecraft:block/oak_log",
-    "top": "minecraft:block/oak_log_top"
-  }
-}

@@ -21,12 +21,13 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.entity.DecoratedPotBlockEntity.WobbleStyle;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RotationSegment;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.neoforge.client.RenderTypeHelper;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.common.util.Lazy;
 import net.neoforged.neoforge.registries.DeferredBlock;
-import twilightforest.beans.Autowired;
-import twilightforest.beans.Configurable;
+import tamaized.beanification.Autowired;
+import tamaized.beanification.Configurable;
 import twilightforest.block.entity.JarBlockEntity;
 import twilightforest.block.entity.MasonJarBlockEntity;
 import twilightforest.enums.extensions.TFItemDisplayContextEnumExtension;
@@ -71,6 +72,7 @@ public class JarRenderer<T extends JarBlockEntity> implements BlockEntityRendere
 		new LidResource(Items.JUNGLE_LOG, "jungle_log"),
 		new LidResource(Items.MANGROVE_LOG, "mangrove_log", "vanilla_mangrove_log"),
 		new LidResource(Items.OAK_LOG, "oak_log"),
+		new LidResource(Items.PALE_OAK_LOG, "pale_oak_log"),
 		new LidResource(Items.SPRUCE_LOG, "spruce_log"),
 		new LidResource(Items.CRIMSON_STEM, "crimson_stem"),
 		new LidResource(Items.WARPED_STEM, "warped_stem"),
@@ -90,6 +92,7 @@ public class JarRenderer<T extends JarBlockEntity> implements BlockEntityRendere
 		new LidResource(Items.STRIPPED_JUNGLE_LOG, "stripped_jungle_log"),
 		new LidResource(Items.STRIPPED_MANGROVE_LOG, "stripped_mangrove_log", "vanilla_stripped_mangrove_log"),
 		new LidResource(Items.STRIPPED_OAK_LOG, "stripped_oak_log"),
+		new LidResource(Items.STRIPPED_PALE_OAK_LOG, "stripped_pale_oak_log"),
 		new LidResource(Items.STRIPPED_SPRUCE_LOG, "stripped_spruce_log"),
 		new LidResource(Items.STRIPPED_CRIMSON_STEM, "stripped_crimson_stem"),
 		new LidResource(Items.STRIPPED_WARPED_STEM, "stripped_warped_stem"),
@@ -159,7 +162,7 @@ public class JarRenderer<T extends JarBlockEntity> implements BlockEntityRendere
 			blockRenderer.getModelRenderer()
 				.renderModel(
 					stack.last(),
-					buffer.getBuffer(RenderTypeHelper.getEntityRenderType(rt, false)),
+					buffer.getBuffer(RenderTypeHelper.getEntityRenderType(rt)),
 					blockState,
 					bakedModel,
 					r,
@@ -179,7 +182,7 @@ public class JarRenderer<T extends JarBlockEntity> implements BlockEntityRendere
 	@Configurable
 	public static class MasonJarRenderer extends JarRenderer<MasonJarBlockEntity> {
 
-		@Autowired
+		@Autowired(dist = Dist.CLIENT)
 		private TFItemDisplayContextEnumExtension itemDisplayContextEnumExtension;
 
 		protected final ItemRenderer itemRenderer;

@@ -23,7 +23,6 @@ public class MazeMushRoomComponent extends MazeRoomComponent {
 		super(TFStructurePieceTypes.TFMMMR.get(), nbt);
 	}
 
-	@SuppressWarnings("this-escape")
 	public MazeMushRoomComponent(int i, RandomSource rand, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFMMMR.get(), i, rand, x, y, z);
 

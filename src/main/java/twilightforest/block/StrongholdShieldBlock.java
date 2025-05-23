@@ -37,11 +37,7 @@ public class StrongholdShieldBlock extends DirectionalBlock {
 
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
-		Direction facing = context.getNearestLookingDirection();
-		if (facing.getAxis().equals(Direction.Axis.Y)) {
-			facing = facing.getOpposite();
-		}
-		return defaultBlockState().setValue(FACING, facing);
+		return defaultBlockState().setValue(FACING, context.getNearestLookingDirection().getOpposite());
 	}
 
 	@Override
@@ -50,12 +46,10 @@ public class StrongholdShieldBlock extends DirectionalBlock {
 		BlockHitResult ray = EntityUtil.rayTrace(player, range -> range + 1.0);
 
 		Direction hitFace = ray.getDirection();
-		boolean upOrDown = state.getValue(DirectionalBlock.FACING) == Direction.UP || state.getValue(DirectionalBlock.FACING) == Direction.DOWN;
-		Direction sideFace = state.getValue(DirectionalBlock.FACING).getOpposite();
-		Direction upFace = state.getValue(DirectionalBlock.FACING);
+		Direction sideFace = state.getValue(DirectionalBlock.FACING);
 
-		if (hitFace == (upOrDown ? upFace : sideFace)) {
-			return player.getDigSpeed(Blocks.STONE.defaultBlockState(), pos) / 1.5F / 100F;
+		if (hitFace == sideFace) {
+			return player.getDestroySpeed(Blocks.STONE.defaultBlockState(), pos) / 1.5F / 100F;
 		} else {
 			return super.getDestroyProgress(state, player, getter, pos);
 		}

@@ -2,19 +2,18 @@ package twilightforest.asm;
 
 import cpw.mods.modlauncher.api.ITransformer;
 import net.neoforged.neoforgespi.coremod.ICoreMod;
-import twilightforest.asm.transformers.armor.ArmorColorRenderingTransformer;
 import twilightforest.asm.transformers.armor.ArmorVisibilityRenderingTransformer;
 import twilightforest.asm.transformers.armor.CancelArmorRenderingTransformer;
 import twilightforest.asm.transformers.beardifier.BeardifierClassTransformer;
 import twilightforest.asm.transformers.beardifier.BeardifierComputeTransformer;
-import twilightforest.asm.transformers.beardifier.InitializeCustomBeardifierFieldsDuringForStructuresInChunkTransformer;
-import twilightforest.asm.transformers.book.ModifyWrittenBookNameTransformer;
+import twilightforest.asm.transformers.beardifier.InitializeCustomBeardifierFieldsDuringCreateNoiseChunkTransformer;
 import twilightforest.asm.transformers.chunk.ChunkStatusTaskTransformer;
 import twilightforest.asm.transformers.cloud.IsRainingAtTransformer;
 import twilightforest.asm.transformers.conquered.StructureStartLoadStaticTransformer;
 import twilightforest.asm.transformers.foliage.FoliageColorResolverTransformer;
 import twilightforest.asm.transformers.lead.LeashFenceKnotSurvivesTransformer;
 import twilightforest.asm.transformers.map.ResolveNearestNonRandomSpreadMapStructureTransformer;
+import twilightforest.asm.transformers.mob.PathFinderUnrestrainedByLeash;
 import twilightforest.asm.transformers.multipart.ResolveEntitiesForRendereringTransformer;
 import twilightforest.asm.transformers.multipart.ResolveEntityRendererTransformer;
 import twilightforest.asm.transformers.multipart.SendDirtytEntityDataTransformer;
@@ -27,17 +26,13 @@ public class TFCoreMod implements ICoreMod {
 	public Iterable<? extends ITransformer<?>> getTransformers() {
 		return List.of(
 			// armor
-			new ArmorColorRenderingTransformer(),
 			new ArmorVisibilityRenderingTransformer(),
 			new CancelArmorRenderingTransformer(),
 
 			// beardifier
 			new BeardifierClassTransformer(),
 			new BeardifierComputeTransformer(),
-			new InitializeCustomBeardifierFieldsDuringForStructuresInChunkTransformer(),
-
-			// book
-			new ModifyWrittenBookNameTransformer(),
+			new InitializeCustomBeardifierFieldsDuringCreateNoiseChunkTransformer(),
 
 			// chunk
 			new ChunkStatusTaskTransformer(),
@@ -63,7 +58,10 @@ public class TFCoreMod implements ICoreMod {
 			new SendDirtytEntityDataTransformer(),
 
 			// shroom
-			new ModifySoilDecisionForMushroomBlockSurvivabilityTransformer()
+			new ModifySoilDecisionForMushroomBlockSurvivabilityTransformer(),
+
+			// mob
+			new PathFinderUnrestrainedByLeash()
 		);
 	}
 }

@@ -4,8 +4,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
-import twilightforest.beans.Autowired;
-import twilightforest.beans.Component;
+import tamaized.beanification.Autowired;
+import tamaized.beanification.Component;
 import twilightforest.init.TFBiomes;
 import twilightforest.world.components.BiomeColorAlgorithms;
 
@@ -34,7 +34,7 @@ public final class FoliageColorHandler {
 		if (handler == null) {
 			handler = REGISTRY.getOrDefault(
 				Minecraft.getInstance().level == null ? null :
-					Minecraft.getInstance().level.registryAccess().registryOrThrow(Registries.BIOME).getResourceKey(biome).orElse(null),
+					Minecraft.getInstance().level.registryAccess().lookupOrThrow(Registries.BIOME).getResourceKey(biome).orElse(null),
 				Handler.DEFAULT);
 			HANDLES.put(biome, handler);
 		}

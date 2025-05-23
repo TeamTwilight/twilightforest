@@ -9,21 +9,7 @@
     "twilightforest:cinder_log",
     "twilightforest:cinder_wood",
     "twilightforest:slider",
-    "twilightforest:terrorcotta_arcs",
-    "twilightforest:terrorcotta_curves",
-    "twilightforest:terrorcotta_lines",
-    "twilightforest:chiseled_canopy_bookshelf",
-    "twilightforest:keepsake_casket",
-    "twilightforest:cursed_spawner",
-    "twilightforest:royal_rags",
-    "twilightforest:wrought_iron_fence",
-    "twilightforest:canopy_window",
-    "twilightforest:canopy_window_pane",
-    "twilightforest:candelabra",
-    "twilightforest:magic_painting",
-    "twilightforest:brittle_potion_flask",
-    "twilightforest:greater_potion_flask",
-    "twilightforest:mystic_crown",
-    "twilightforest:crown_splinter"
+    "twilightforest:brazier",
+    "twilightforest:maze_slime_block"
   ]
 }

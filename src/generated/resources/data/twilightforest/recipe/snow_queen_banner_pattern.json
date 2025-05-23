@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "tag": "c:paper"
-    },
-    {
-      "item": "twilightforest:snow_queen_trophy"
-    }
+    "#c:paper",
+    "twilightforest:snow_queen_trophy"
   ],
   "result": {
     "count": 1,

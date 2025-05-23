@@ -1,6 +1,7 @@
 package twilightforest.entity.projectile;
 
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -34,10 +35,9 @@ public class SlimeProjectile extends TFThrowable implements ItemSupplier {
 	}
 
 	@Override
-	public boolean hurt(DamageSource source, float amount) {
-		super.hurt(source, amount);
+	public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
 		this.die();
-		return true;
+		return super.hurtServer(level, source, amount);
 	}
 
 	@Override
@@ -55,8 +55,8 @@ public class SlimeProjectile extends TFThrowable implements ItemSupplier {
 	protected void onHitEntity(EntityHitResult result) {
 		super.onHitEntity(result);
 		Entity target = result.getEntity();
-		if (!this.level().isClientSide() && target instanceof LivingEntity)
-			target.hurt(this.damageSources().thrown(this, this.getOwner()), 4);
+		if (this.level() instanceof ServerLevel level && target instanceof LivingEntity)
+			target.hurtServer(level, this.damageSources().thrown(this, this.getOwner()), 4);
 	}
 
 	@Override

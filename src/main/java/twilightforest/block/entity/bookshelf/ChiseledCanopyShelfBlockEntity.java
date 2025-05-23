@@ -94,11 +94,6 @@ public class ChiseledCanopyShelfBlockEntity extends ChiseledBookShelfBlockEntity
 	}
 
 	@Override
-	public boolean onlyOpCanSetNbt() {
-		return true;
-	}
-
-	@Override
 	public void setEntityId(EntityType<?> type, RandomSource random) {
 		this.spawner.setEntityId(type, this.level, random, this.worldPosition);
 		if (this.level != null) {

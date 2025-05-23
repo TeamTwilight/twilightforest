@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "tag": "c:storage_blocks/knightmetal"
-    }
+    "#c:storage_blocks/knightmetal"
   ],
   "result": {
     "count": 9,
