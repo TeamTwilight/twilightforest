@@ -158,7 +158,6 @@ public class RegistrationEvents {
 
 	static void registerItemModels(RegisterItemModelsEvent event) {
 		event.register(TwilightForestMod.prefix("fullbright_model"), FullbrightItemModel.Unbaked.MAP_CODEC);
-		event.register(TwilightForestMod.prefix("fullbright_select_model"), BABA.Unbaked.MAP_CODEC);
 	}
 
 	private static void cacheJarLids(ModelEvent.BakingCompleted event) {
