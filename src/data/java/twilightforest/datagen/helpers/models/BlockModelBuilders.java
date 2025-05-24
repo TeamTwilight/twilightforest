@@ -24,10 +24,7 @@ import twilightforest.client.model.block.connected.ConnectedTextureBuilder;
 import twilightforest.client.model.block.forcefield.ForceFieldModel;
 import twilightforest.client.model.block.forcefield.ForceFieldModelBuilder;
 import twilightforest.client.renderer.block.JarRenderer;
-import twilightforest.client.renderer.special.MasonJarSpecialRenderer;
-import twilightforest.client.renderer.special.SkullCandleSpecialRenderer;
-import twilightforest.client.renderer.special.TFChestSpecialRenderer;
-import twilightforest.client.renderer.special.TrophySpecialRenderer;
+import twilightforest.client.renderer.special.*;
 import twilightforest.datagen.assets.models.TFExtendedModelTemplates;
 import twilightforest.datagen.assets.models.TFModelTemplates;
 import twilightforest.datagen.assets.models.TFTextureMapping;
@@ -35,6 +32,7 @@ import twilightforest.datagen.assets.models.TFTextureSlot;
 import twilightforest.enums.BossVariant;
 import twilightforest.enums.HugeLilypadPiece;
 import twilightforest.enums.NagastoneVariant;
+import twilightforest.enums.WebShape;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
 
@@ -527,6 +525,174 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 				.select(Direction.Axis.Z, Variant.variant().with(VariantProperties.MODEL, zModel))
 		));
 		this.itemModelOutput.accept(block.asItem(), ItemModelUtils.plainModel(yModel));
+	}
+
+	protected void web() {
+		TextureMapping flat = TFExtendedModelTemplates.allAndParticle(TwilightForestMod.prefix("block/hanging_web_flat"));
+		ResourceLocation flatWeb = TFExtendedModelTemplates.WEB_FLAT.createWithSuffix(TFBlocks.HANGING_WEB.get(), "_flat", flat, this.modelOutput);
+
+		TextureMapping hanging = TFExtendedModelTemplates.allAndParticle(TwilightForestMod.prefix("block/hanging_web"));
+		ResourceLocation hangingWeb = TFExtendedModelTemplates.HANGING_WEB.createWithSuffix(TFBlocks.HANGING_WEB.get(), "_hanging", hanging, this.modelOutput);
+
+		TextureMapping altHanging = TFExtendedModelTemplates.allAndParticle(TwilightForestMod.prefix("block/hanging_web_2"));
+		ResourceLocation altHangingWeb = TFExtendedModelTemplates.HANGING_WEB.createWithSuffix(TFBlocks.HANGING_WEB.get(), "_hanging_alt", altHanging, this.modelOutput);
+
+		TextureMapping shortHanging = TFExtendedModelTemplates.allAndParticle(TwilightForestMod.prefix("block/hanging_web_short"));
+		ResourceLocation shortHangingWeb = TFExtendedModelTemplates.HANGING_WEB.createWithSuffix(TFBlocks.HANGING_WEB.get(), "_short", shortHanging, this.modelOutput);
+
+		TextureMapping altShortHanging = TFExtendedModelTemplates.allAndParticle(TwilightForestMod.prefix("block/hanging_web_short_2"));
+		ResourceLocation altShortHangingWeb = TFExtendedModelTemplates.HANGING_WEB.createWithSuffix(TFBlocks.HANGING_WEB.get(), "_short_alt", altShortHanging, this.modelOutput);
+
+		this.blockStateOutput.accept(
+			MultiPartGenerator.multiPart(TFBlocks.HANGING_WEB.get())
+				// UP
+				.with(
+					Condition.condition().term(HangingWebBlock.UP, true),
+					Variant.variant().with(VariantProperties.MODEL, flatWeb)
+						.with(VariantProperties.WEIGHT, 1).with(VariantProperties.X_ROT, VariantProperties.Rotation.R180),
+					Variant.variant().with(VariantProperties.MODEL, flatWeb)
+						.with(VariantProperties.WEIGHT, 1).with(VariantProperties.X_ROT, VariantProperties.Rotation.R180).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90),
+					Variant.variant().with(VariantProperties.MODEL, flatWeb)
+						.with(VariantProperties.WEIGHT, 1).with(VariantProperties.X_ROT, VariantProperties.Rotation.R180).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180),
+					Variant.variant().with(VariantProperties.MODEL, flatWeb)
+						.with(VariantProperties.WEIGHT, 1).with(VariantProperties.X_ROT, VariantProperties.Rotation.R180).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
+				)
+
+				// DOWN
+				.with(
+					Condition.condition().term(HangingWebBlock.DOWN, true),
+					Variant.variant().with(VariantProperties.MODEL, flatWeb)
+						.with(VariantProperties.WEIGHT, 1),
+					Variant.variant().with(VariantProperties.MODEL, flatWeb)
+						.with(VariantProperties.WEIGHT, 1).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90),
+					Variant.variant().with(VariantProperties.MODEL, flatWeb)
+						.with(VariantProperties.WEIGHT, 1).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180),
+					Variant.variant().with(VariantProperties.MODEL, flatWeb)
+						.with(VariantProperties.WEIGHT, 1).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
+				)
+
+				// SOUTH
+				.with(
+					Condition.condition().term(HangingWebBlock.SOUTH, WebShape.SHORT),
+					Variant.variant().with(VariantProperties.MODEL, shortHangingWeb)
+						.with(VariantProperties.WEIGHT, 2).with(VariantProperties.X_ROT, VariantProperties.Rotation.R270).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180),
+					Variant.variant().with(VariantProperties.MODEL, altShortHangingWeb)
+						.with(VariantProperties.WEIGHT, 2).with(VariantProperties.X_ROT, VariantProperties.Rotation.R270).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180)
+				)
+				.with(
+					Condition.condition().term(HangingWebBlock.SOUTH, WebShape.TALL),
+					Variant.variant().with(VariantProperties.MODEL, hangingWeb)
+						.with(VariantProperties.WEIGHT, 2).with(VariantProperties.X_ROT, VariantProperties.Rotation.R270).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180),
+					Variant.variant().with(VariantProperties.MODEL, altHangingWeb)
+						.with(VariantProperties.WEIGHT, 2).with(VariantProperties.X_ROT, VariantProperties.Rotation.R270).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180)
+				)
+
+				// NORTH
+				.with(
+					Condition.condition().term(HangingWebBlock.NORTH, WebShape.SHORT),
+					Variant.variant().with(VariantProperties.MODEL, shortHangingWeb)
+						.with(VariantProperties.WEIGHT, 2).with(VariantProperties.X_ROT, VariantProperties.Rotation.R270),
+					Variant.variant().with(VariantProperties.MODEL, altShortHangingWeb)
+						.with(VariantProperties.WEIGHT, 2).with(VariantProperties.X_ROT, VariantProperties.Rotation.R270)
+				)
+				.with(
+					Condition.condition().term(HangingWebBlock.NORTH, WebShape.TALL),
+					Variant.variant().with(VariantProperties.MODEL, hangingWeb)
+						.with(VariantProperties.WEIGHT, 2).with(VariantProperties.X_ROT, VariantProperties.Rotation.R270),
+					Variant.variant().with(VariantProperties.MODEL, altHangingWeb)
+						.with(VariantProperties.WEIGHT, 2).with(VariantProperties.X_ROT, VariantProperties.Rotation.R270)
+				)
+
+				// WEST
+				.with(
+					Condition.condition().term(HangingWebBlock.WEST, WebShape.SHORT),
+					Variant.variant().with(VariantProperties.MODEL, shortHangingWeb)
+						.with(VariantProperties.WEIGHT, 2).with(VariantProperties.X_ROT, VariantProperties.Rotation.R270).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270),
+					Variant.variant().with(VariantProperties.MODEL, altShortHangingWeb)
+						.with(VariantProperties.WEIGHT, 2).with(VariantProperties.X_ROT, VariantProperties.Rotation.R270).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
+				)
+				.with(
+					Condition.condition().term(HangingWebBlock.WEST, WebShape.TALL),
+					Variant.variant().with(VariantProperties.MODEL, hangingWeb)
+						.with(VariantProperties.WEIGHT, 2).with(VariantProperties.X_ROT, VariantProperties.Rotation.R270).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270),
+					Variant.variant().with(VariantProperties.MODEL, altHangingWeb)
+						.with(VariantProperties.WEIGHT, 2).with(VariantProperties.X_ROT, VariantProperties.Rotation.R270).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
+				)
+
+				// EAST
+				.with(
+					Condition.condition().term(HangingWebBlock.EAST, WebShape.SHORT),
+					Variant.variant().with(VariantProperties.MODEL, shortHangingWeb)
+						.with(VariantProperties.WEIGHT, 2).with(VariantProperties.X_ROT, VariantProperties.Rotation.R270).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90),
+					Variant.variant().with(VariantProperties.MODEL, altShortHangingWeb)
+						.with(VariantProperties.WEIGHT, 2).with(VariantProperties.X_ROT, VariantProperties.Rotation.R270).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
+				)
+				.with(
+					Condition.condition().term(HangingWebBlock.EAST, WebShape.TALL),
+					Variant.variant().with(VariantProperties.MODEL, hangingWeb)
+						.with(VariantProperties.WEIGHT, 2).with(VariantProperties.X_ROT, VariantProperties.Rotation.R270).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90),
+					Variant.variant().with(VariantProperties.MODEL, altHangingWeb)
+						.with(VariantProperties.WEIGHT, 2).with(VariantProperties.X_ROT, VariantProperties.Rotation.R270).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
+				)
+		);
+		this.registerSimpleItemModel(TFBlocks.HANGING_WEB.asItem(), this.createFlatItemModelWithBlockTexture(TFBlocks.HANGING_WEB.asItem(), TFBlocks.HANGING_WEB.get(), "_flat"));
+
+		TextureMapping worm = TextureMapping.cube(TwilightForestMod.prefix("block/hanging_web_flat")).put(TextureSlot.PARTICLE, TextureMapping.getBlockTexture(Blocks.SLIME_BLOCK));
+		ResourceLocation wormWeb = TFExtendedModelTemplates.WEB_FLAT.createWithSuffix(TFBlocks.HANGING_WEB.get(), "_worm", worm, this.modelOutput);
+
+		this.blockStateOutput.accept(
+			MultiPartGenerator.multiPart(TFBlocks.WEBWORM.get())
+				// UP
+				.with(
+					Condition.condition().term(HangingWebBlock.UP, true),
+					Variant.variant().with(VariantProperties.MODEL, wormWeb)
+						.with(VariantProperties.WEIGHT, 1).with(VariantProperties.X_ROT, VariantProperties.Rotation.R180),
+					Variant.variant().with(VariantProperties.MODEL, wormWeb)
+						.with(VariantProperties.WEIGHT, 1).with(VariantProperties.X_ROT, VariantProperties.Rotation.R180).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90),
+					Variant.variant().with(VariantProperties.MODEL, wormWeb)
+						.with(VariantProperties.WEIGHT, 1).with(VariantProperties.X_ROT, VariantProperties.Rotation.R180).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180),
+					Variant.variant().with(VariantProperties.MODEL, wormWeb)
+						.with(VariantProperties.WEIGHT, 1).with(VariantProperties.X_ROT, VariantProperties.Rotation.R180).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
+				)
+
+				// DOWN
+				.with(
+					Condition.condition().term(HangingWebBlock.DOWN, true),
+					Variant.variant().with(VariantProperties.MODEL, wormWeb)
+						.with(VariantProperties.WEIGHT, 1),
+					Variant.variant().with(VariantProperties.MODEL, wormWeb)
+						.with(VariantProperties.WEIGHT, 1).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90),
+					Variant.variant().with(VariantProperties.MODEL, wormWeb)
+						.with(VariantProperties.WEIGHT, 1).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180),
+					Variant.variant().with(VariantProperties.MODEL, wormWeb)
+						.with(VariantProperties.WEIGHT, 1).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
+				)
+
+				// SOUTH
+				.with(
+					Condition.condition().term(WebwormBlock.SOUTH, true),
+					Variant.variant().with(VariantProperties.MODEL, wormWeb).with(VariantProperties.X_ROT, VariantProperties.Rotation.R270).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180)
+				)
+
+				// NORTH
+				.with(
+					Condition.condition().term(WebwormBlock.NORTH, true),
+					Variant.variant().with(VariantProperties.MODEL, wormWeb).with(VariantProperties.X_ROT, VariantProperties.Rotation.R270)
+				)
+
+				// WEST
+				.with(
+					Condition.condition().term(WebwormBlock.WEST, true),
+					Variant.variant().with(VariantProperties.MODEL, wormWeb).with(VariantProperties.X_ROT, VariantProperties.Rotation.R270).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
+				)
+
+				// EAST
+				.with(
+					Condition.condition().term(WebwormBlock.EAST, true),
+					Variant.variant().with(VariantProperties.MODEL, wormWeb).with(VariantProperties.X_ROT, VariantProperties.Rotation.R270).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
+				)
+		);
+		this.itemModelOutput.accept(TFBlocks.WEBWORM.asItem(), ItemModelUtils.specialModel(TwilightForestMod.prefix("item/webworm"), new WebwormSpecialRenderer.Unbaked()));
 	}
 
 	public void thorns(Block block, Block potted) {

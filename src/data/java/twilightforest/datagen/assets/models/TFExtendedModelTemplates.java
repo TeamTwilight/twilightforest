@@ -1,5 +1,6 @@
 package twilightforest.datagen.assets.models;
 
+import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -83,4 +84,30 @@ public class TFExtendedModelTemplates extends TFModelTemplates {
 			elementBuilder.from(3.0F, 13.0F, 4.0F).to(4.0F, 14.0F, 12.0F)
 				.face(Direction.EAST, faceBuilder -> faceBuilder.texture(TextureSlot.TOP).uvs(3, 4, 4, 12).rotation(FaceRotation.CLOCKWISE_90))
 		).build();
+
+	public static final ExtendedModelTemplate WEB_FLAT = ExtendedModelTemplateBuilder.builder()
+		.parent(ResourceLocation.withDefaultNamespace("block/block"))
+		.renderType(ResourceLocation.withDefaultNamespace("translucent"))
+		.requiredTextureSlot(TextureSlot.ALL)
+		.requiredTextureSlot(TextureSlot.PARTICLE)
+		.element(elementBuilder ->
+			elementBuilder.from(0.0F, 0.2F, 0.0F).to(16.0F, 0.2F, 16.0F)
+				.face(Direction.UP, faceBuilder -> faceBuilder.texture(TextureSlot.ALL))
+				.face(Direction.DOWN, faceBuilder -> faceBuilder.texture(TextureSlot.ALL))
+		).build();
+
+	public static final ExtendedModelTemplate HANGING_WEB = ExtendedModelTemplateBuilder.builder()
+		.parent(ResourceLocation.withDefaultNamespace("block/block"))
+		.renderType(ResourceLocation.withDefaultNamespace("translucent"))
+		.requiredTextureSlot(TextureSlot.ALL)
+		.requiredTextureSlot(TextureSlot.PARTICLE)
+		.element(elementBuilder ->
+			elementBuilder.from(0.0F, 0.2F, 0.0F).to(16.0F, 0.2F, 16.0F)
+				.face(Direction.UP, faceBuilder -> faceBuilder.texture(TextureSlot.ALL))
+				.face(Direction.DOWN, faceBuilder -> faceBuilder.texture(TextureSlot.ALL).rotation(FaceRotation.UPSIDE_DOWN))
+		).build();
+
+	public static TextureMapping allAndParticle(ResourceLocation texture) {
+		return new TextureMapping().put(TextureSlot.ALL, texture).put(TextureSlot.PARTICLE, texture);
+	}
 }

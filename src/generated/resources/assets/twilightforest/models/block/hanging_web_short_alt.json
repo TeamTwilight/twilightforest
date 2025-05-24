@@ -1,0 +1,31 @@
+{
+  "parent": "minecraft:block/block",
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "rotation": 180,
+          "texture": "#all"
+        },
+        "up": {
+          "texture": "#all"
+        }
+      },
+      "from": [
+        0,
+        0.2,
+        0
+      ],
+      "to": [
+        16,
+        0.2,
+        16
+      ]
+    }
+  ],
+  "render_type": "minecraft:translucent",
+  "textures": {
+    "all": "twilightforest:block/hanging_web_short_2",
+    "particle": "twilightforest:block/hanging_web_short_2"
+  }
+}

@@ -1,7 +1,99 @@
 {
-  "variants": {
-    "": {
-      "model": "twilightforest:block/webworm"
+  "multipart": [
+    {
+      "apply": [
+        {
+          "model": "twilightforest:block/hanging_web_worm",
+          "weight": 1,
+          "x": 180
+        },
+        {
+          "model": "twilightforest:block/hanging_web_worm",
+          "weight": 1,
+          "x": 180,
+          "y": 90
+        },
+        {
+          "model": "twilightforest:block/hanging_web_worm",
+          "weight": 1,
+          "x": 180,
+          "y": 180
+        },
+        {
+          "model": "twilightforest:block/hanging_web_worm",
+          "weight": 1,
+          "x": 180,
+          "y": 270
+        }
+      ],
+      "when": {
+        "up": "true"
+      }
+    },
+    {
+      "apply": [
+        {
+          "model": "twilightforest:block/hanging_web_worm",
+          "weight": 1
+        },
+        {
+          "model": "twilightforest:block/hanging_web_worm",
+          "weight": 1,
+          "y": 90
+        },
+        {
+          "model": "twilightforest:block/hanging_web_worm",
+          "weight": 1,
+          "y": 180
+        },
+        {
+          "model": "twilightforest:block/hanging_web_worm",
+          "weight": 1,
+          "y": 270
+        }
+      ],
+      "when": {
+        "down": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/hanging_web_worm",
+        "x": 270,
+        "y": 180
+      },
+      "when": {
+        "south": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/hanging_web_worm",
+        "x": 270
+      },
+      "when": {
+        "north": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/hanging_web_worm",
+        "x": 270,
+        "y": 270
+      },
+      "when": {
+        "west": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/hanging_web_worm",
+        "x": 270,
+        "y": 90
+      },
+      "when": {
+        "east": "true"
+      }
     }
-  }
+  ]
 }

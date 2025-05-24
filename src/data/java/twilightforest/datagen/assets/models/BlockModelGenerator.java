@@ -46,6 +46,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.spawner(TFBlocks.FINAL_BOSS_BOSS_SPAWNER.get(), "block/boss_spawner");
 		this.spawner(TFBlocks.SINISTER_SPAWNER.get(), "block/sinister_spawner");
 
+		this.web();
 		this.thorns(TFBlocks.BROWN_THORNS.get(), TFBlocks.POTTED_THORN.get());
 		this.thorns(TFBlocks.GREEN_THORNS.get(), TFBlocks.POTTED_GREEN_THORN.get());
 		this.thorns(TFBlocks.BURNT_THORNS.get(), TFBlocks.POTTED_DEAD_THORN.get());
@@ -274,7 +275,6 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.generateSpecialModel(TFBlocks.CICADA.get(), Blocks.SLIME_BLOCK, block -> ItemModelUtils.specialModel(TwilightForestMod.prefix("item/cicada"), new CicadaSpecialRenderer.Unbaked()));
 		this.generateSpecialModel(TFBlocks.FIREFLY.get(), Blocks.SLIME_BLOCK, block -> ItemModelUtils.specialModel(TwilightForestMod.prefix("item/firefly"), new FireflySpecialRenderer.Unbaked()));
 		this.generateSpecialModel(TFBlocks.MOONWORM.get(), Blocks.SLIME_BLOCK, block -> ItemModelUtils.specialModel(TwilightForestMod.prefix("item/moonworm"), new MoonwormSpecialRenderer.Unbaked()));
-		this.generateSpecialModel(TFBlocks.WEBWORM.get(), Blocks.SLIME_BLOCK, block -> ItemModelUtils.specialModel(TwilightForestMod.prefix("item/webworm"), new WebwormSpecialRenderer.Unbaked()));
 
 		this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(TFBlocks.CANDELABRA.get())
 			.with(PropertyDispatch.property(CandelabraBlock.ON_WALL)
