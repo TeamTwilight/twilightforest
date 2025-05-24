@@ -651,6 +651,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		buttonBlock(getter, "time", TFBlocks.TIME_BUTTON, TFBlocks.TIME_PLANKS);
 		buttonBlock(getter, "transformation", TFBlocks.TRANSFORMATION_BUTTON, TFBlocks.TRANSFORMATION_PLANKS);
 		buttonBlock(getter, "twilight_oak", TFBlocks.TWILIGHT_OAK_BUTTON, TFBlocks.TWILIGHT_OAK_PLANKS);
+		buttonBlock(getter, "veilwood", TFBlocks.VEILWOOD_BUTTON, TFBlocks.VEILWOOD_PLANKS);
 
 		doorBlock(getter, "canopy", TFBlocks.CANOPY_DOOR, TFBlocks.CANOPY_PLANKS);
 		doorBlock(getter, "dark", TFBlocks.DARK_DOOR, TFBlocks.DARK_PLANKS);
@@ -660,6 +661,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		doorBlock(getter, "time", TFBlocks.TIME_DOOR, TFBlocks.TIME_PLANKS);
 		doorBlock(getter, "transformation", TFBlocks.TRANSFORMATION_DOOR, TFBlocks.TRANSFORMATION_PLANKS);
 		doorBlock(getter, "twilight_oak", TFBlocks.TWILIGHT_OAK_DOOR, TFBlocks.TWILIGHT_OAK_PLANKS);
+		doorBlock(getter, "veilwood", TFBlocks.VEILWOOD_DOOR, TFBlocks.VEILWOOD_PLANKS);
 
 		fenceBlock(getter, "canopy", TFBlocks.CANOPY_FENCE, TFBlocks.CANOPY_PLANKS);
 		fenceBlock(getter, "dark", TFBlocks.DARK_FENCE, TFBlocks.DARK_PLANKS);
@@ -669,6 +671,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		fenceBlock(getter, "time", TFBlocks.TIME_FENCE, TFBlocks.TIME_PLANKS);
 		fenceBlock(getter, "transformation", TFBlocks.TRANSFORMATION_FENCE, TFBlocks.TRANSFORMATION_PLANKS);
 		fenceBlock(getter, "twilight_oak", TFBlocks.TWILIGHT_OAK_FENCE, TFBlocks.TWILIGHT_OAK_PLANKS);
+		fenceBlock(getter, "veilwood", TFBlocks.VEILWOOD_FENCE, TFBlocks.VEILWOOD_PLANKS);
 
 		gateBlock(getter, "canopy", TFBlocks.CANOPY_GATE, TFBlocks.CANOPY_PLANKS);
 		gateBlock(getter, "dark", TFBlocks.DARK_GATE, TFBlocks.DARK_PLANKS);
@@ -678,6 +681,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		gateBlock(getter, "time", TFBlocks.TIME_GATE, TFBlocks.TIME_PLANKS);
 		gateBlock(getter, "transformation", TFBlocks.TRANSFORMATION_GATE, TFBlocks.TRANSFORMATION_PLANKS);
 		gateBlock(getter, "twilight_oak", TFBlocks.TWILIGHT_OAK_GATE, TFBlocks.TWILIGHT_OAK_PLANKS);
+		gateBlock(getter, "veilwood", TFBlocks.VEILWOOD_GATE, TFBlocks.VEILWOOD_PLANKS);
 
 		planksBlock(getter, "canopy", TFBlocks.CANOPY_PLANKS, TFItemTags.CANOPY_LOGS);
 		planksBlock(getter, "dark", TFBlocks.DARK_PLANKS, TFItemTags.DARKWOOD_LOGS);
@@ -687,6 +691,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		planksBlock(getter, "time", TFBlocks.TIME_PLANKS, TFItemTags.TIME_LOGS);
 		planksBlock(getter, "transformation", TFBlocks.TRANSFORMATION_PLANKS, TFItemTags.TRANSFORMATION_LOGS);
 		planksBlock(getter, "twilight_oak", TFBlocks.TWILIGHT_OAK_PLANKS, TFItemTags.TWILIGHT_OAK_LOGS);
+		planksBlock(getter, "veilwood", TFBlocks.VEILWOOD_PLANKS, TFItemTags.VEILWOOD_LOGS);
 
 		woodBlock(getter, "canopy", TFBlocks.CANOPY_WOOD, TFBlocks.CANOPY_LOG);
 		woodBlock(getter, "dark", TFBlocks.DARK_WOOD, TFBlocks.DARK_LOG);
@@ -696,6 +701,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		woodBlock(getter, "time", TFBlocks.TIME_WOOD, TFBlocks.TIME_LOG);
 		woodBlock(getter, "transformation", TFBlocks.TRANSFORMATION_WOOD, TFBlocks.TRANSFORMATION_LOG);
 		woodBlock(getter, "twilight_oak", TFBlocks.TWILIGHT_OAK_WOOD, TFBlocks.TWILIGHT_OAK_LOG);
+		woodBlock(getter, "veilwood", TFBlocks.VEILWOOD_WOOD, TFBlocks.VEILWOOD_LOG);
 
 		strippedWoodBlock(getter, "canopy", TFBlocks.STRIPPED_CANOPY_WOOD, TFBlocks.STRIPPED_CANOPY_LOG);
 		strippedWoodBlock(getter, "dark", TFBlocks.STRIPPED_DARK_WOOD, TFBlocks.STRIPPED_DARK_LOG);
@@ -705,6 +711,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		strippedWoodBlock(getter, "time", TFBlocks.STRIPPED_TIME_WOOD, TFBlocks.STRIPPED_TIME_LOG);
 		strippedWoodBlock(getter, "transformation", TFBlocks.STRIPPED_TRANSFORMATION_WOOD, TFBlocks.STRIPPED_TRANSFORMATION_LOG);
 		strippedWoodBlock(getter, "twilight_oak", TFBlocks.STRIPPED_TWILIGHT_OAK_WOOD, TFBlocks.STRIPPED_TWILIGHT_OAK_LOG);
+		strippedWoodBlock(getter, "veilwood", TFBlocks.STRIPPED_VEILWOOD_WOOD, TFBlocks.STRIPPED_VEILWOOD_LOG);
 
 		plateBlock(getter, "canopy", TFBlocks.CANOPY_PLATE, TFBlocks.CANOPY_PLANKS);
 		plateBlock(getter, "dark", TFBlocks.DARK_PLATE, TFBlocks.DARK_PLANKS);
@@ -714,6 +721,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		plateBlock(getter, "time", TFBlocks.TIME_PLATE, TFBlocks.TIME_PLANKS);
 		plateBlock(getter, "transformation", TFBlocks.TRANSFORMATION_PLATE, TFBlocks.TRANSFORMATION_PLANKS);
 		plateBlock(getter, "twilight_oak", TFBlocks.TWILIGHT_OAK_PLATE, TFBlocks.TWILIGHT_OAK_PLANKS);
+		plateBlock(getter, "veilwood", TFBlocks.VEILWOOD_PLATE, TFBlocks.VEILWOOD_PLANKS);
 
 		woodenSlabBlock(getter, "canopy", TFBlocks.CANOPY_SLAB, TFBlocks.CANOPY_PLANKS);
 		woodenSlabBlock(getter, "dark", TFBlocks.DARK_SLAB, TFBlocks.DARK_PLANKS);
@@ -723,6 +731,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		woodenSlabBlock(getter, "time", TFBlocks.TIME_SLAB, TFBlocks.TIME_PLANKS);
 		woodenSlabBlock(getter, "transformation", TFBlocks.TRANSFORMATION_SLAB, TFBlocks.TRANSFORMATION_PLANKS);
 		woodenSlabBlock(getter, "twilight_oak", TFBlocks.TWILIGHT_OAK_SLAB, TFBlocks.TWILIGHT_OAK_PLANKS);
+		woodenSlabBlock(getter, "veilwood", TFBlocks.VEILWOOD_SLAB, TFBlocks.VEILWOOD_PLANKS);
 
 		woodenStairsBlock(getter, locWood("canopy_stairs"), TFBlocks.CANOPY_STAIRS, TFBlocks.CANOPY_PLANKS, TFBlocks.CANOPY_PLANKS);
 		woodenStairsBlock(getter, locWood("dark_stairs"), TFBlocks.DARK_STAIRS, TFBlocks.DARK_PLANKS, TFBlocks.DARK_PLANKS);
@@ -732,6 +741,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		woodenStairsBlock(getter, locWood("time_stairs"), TFBlocks.TIME_STAIRS, TFBlocks.TIME_PLANKS, TFBlocks.TIME_PLANKS);
 		woodenStairsBlock(getter, locWood("transformation_stairs"), TFBlocks.TRANSFORMATION_STAIRS, TFBlocks.TRANSFORMATION_PLANKS, TFBlocks.TRANSFORMATION_PLANKS);
 		woodenStairsBlock(getter, locWood("twilight_oak_stairs"), TFBlocks.TWILIGHT_OAK_STAIRS, TFBlocks.TWILIGHT_OAK_PLANKS, TFBlocks.TWILIGHT_OAK_PLANKS);
+		woodenStairsBlock(getter, locWood("veilwood_stairs"), TFBlocks.VEILWOOD_STAIRS, TFBlocks.VEILWOOD_PLANKS, TFBlocks.VEILWOOD_PLANKS);
 
 		trapdoorBlock(getter, "canopy", TFBlocks.CANOPY_TRAPDOOR, TFBlocks.CANOPY_PLANKS);
 		trapdoorBlock(getter, "dark", TFBlocks.DARK_TRAPDOOR, TFBlocks.DARK_PLANKS);
@@ -741,6 +751,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		trapdoorBlock(getter, "time", TFBlocks.TIME_TRAPDOOR, TFBlocks.TIME_PLANKS);
 		trapdoorBlock(getter, "transformation", TFBlocks.TRANSFORMATION_TRAPDOOR, TFBlocks.TRANSFORMATION_PLANKS);
 		trapdoorBlock(getter, "twilight_oak", TFBlocks.TWILIGHT_OAK_TRAPDOOR, TFBlocks.TWILIGHT_OAK_PLANKS);
+		trapdoorBlock(getter, "veilwood", TFBlocks.VEILWOOD_TRAPDOOR, TFBlocks.VEILWOOD_PLANKS);
 
 		signBlock(getter, "canopy", TFItems.CANOPY_SIGN, TFBlocks.CANOPY_PLANKS);
 		signBlock(getter, "dark", TFItems.DARK_SIGN, TFBlocks.DARK_PLANKS);
@@ -750,6 +761,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		signBlock(getter, "time", TFItems.TIME_SIGN, TFBlocks.TIME_PLANKS);
 		signBlock(getter, "transformation", TFItems.TRANSFORMATION_SIGN, TFBlocks.TRANSFORMATION_PLANKS);
 		signBlock(getter, "twilight_oak", TFItems.TWILIGHT_OAK_SIGN, TFBlocks.TWILIGHT_OAK_PLANKS);
+		signBlock(getter, "veilwood", TFItems.VEILWOOD_SIGN, TFBlocks.VEILWOOD_PLANKS);
 
 		hangingSignBlock(getter, "canopy", TFItems.CANOPY_HANGING_SIGN, TFBlocks.STRIPPED_CANOPY_LOG);
 		hangingSignBlock(getter, "dark", TFItems.DARK_HANGING_SIGN, TFBlocks.STRIPPED_DARK_LOG);
@@ -759,6 +771,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		hangingSignBlock(getter, "time", TFItems.TIME_HANGING_SIGN, TFBlocks.STRIPPED_TIME_LOG);
 		hangingSignBlock(getter, "transformation", TFItems.TRANSFORMATION_HANGING_SIGN, TFBlocks.STRIPPED_TRANSFORMATION_LOG);
 		hangingSignBlock(getter, "twilight_oak", TFItems.TWILIGHT_OAK_HANGING_SIGN, TFBlocks.STRIPPED_TWILIGHT_OAK_LOG);
+		hangingSignBlock(getter, "veilwood", TFItems.VEILWOOD_HANGING_SIGN, TFBlocks.STRIPPED_VEILWOOD_LOG);
 
 		banisterBlock(getter, "canopy", TFBlocks.CANOPY_BANISTER, TFBlocks.CANOPY_SLAB);
 		banisterBlock(getter, "dark", TFBlocks.DARK_BANISTER, TFBlocks.DARK_SLAB);
@@ -768,6 +781,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		banisterBlock(getter, "time", TFBlocks.TIME_BANISTER, TFBlocks.TIME_SLAB);
 		banisterBlock(getter, "transformation", TFBlocks.TRANSFORMATION_BANISTER, TFBlocks.TRANSFORMATION_SLAB);
 		banisterBlock(getter, "twilight_oak", TFBlocks.TWILIGHT_OAK_BANISTER, TFBlocks.TWILIGHT_OAK_SLAB);
+		banisterBlock(getter, "veilwood", TFBlocks.VEILWOOD_BANISTER, TFBlocks.VEILWOOD_SLAB);
 
 		banisterBlock(getter, "oak", TFBlocks.OAK_BANISTER, Blocks.OAK_SLAB);
 		banisterBlock(getter, "spruce", TFBlocks.SPRUCE_BANISTER, Blocks.SPRUCE_SLAB);
@@ -790,6 +804,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		chestBlock(getter, "transformation", TFBlocks.TRANSFORMATION_CHEST, TFBlocks.TRANSFORMATION_TRAPPED_CHEST, TFBlocks.TRANSFORMATION_PLANKS);
 		chestBlock(getter, "mining", TFBlocks.MINING_CHEST, TFBlocks.MINING_TRAPPED_CHEST, TFBlocks.MINING_PLANKS);
 		chestBlock(getter, "sorting", TFBlocks.SORTING_CHEST, TFBlocks.SORTING_TRAPPED_CHEST, TFBlocks.SORTING_PLANKS);
+		chestBlock(getter, "veilwood", TFBlocks.VEILWOOD_CHEST, TFBlocks.VEILWOOD_TRAPPED_CHEST, TFBlocks.VEILWOOD_PLANKS);
 
 		buildBoats(getter, TFItems.TWILIGHT_OAK_BOAT, TFItems.TWILIGHT_OAK_CHEST_BOAT, TFBlocks.TWILIGHT_OAK_PLANKS);
 		buildBoats(getter, TFItems.CANOPY_BOAT, TFItems.CANOPY_CHEST_BOAT, TFBlocks.CANOPY_PLANKS);
@@ -799,6 +814,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		buildBoats(getter, TFItems.TRANSFORMATION_BOAT, TFItems.TRANSFORMATION_CHEST_BOAT, TFBlocks.TRANSFORMATION_PLANKS);
 		buildBoats(getter, TFItems.MINING_BOAT, TFItems.MINING_CHEST_BOAT, TFBlocks.MINING_PLANKS);
 		buildBoats(getter, TFItems.SORTING_BOAT, TFItems.SORTING_CHEST_BOAT, TFBlocks.SORTING_PLANKS);
+		buildBoats(getter, TFItems.VEILWOOD_BOAT, TFItems.VEILWOOD_CHEST_BOAT, TFBlocks.VEILWOOD_PLANKS);
 	}
 
 	private void nagastoneRecipes(HolderGetter<Item> getter) {
