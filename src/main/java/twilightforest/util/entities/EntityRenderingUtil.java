@@ -1,7 +1,6 @@
 package twilightforest.util.entities;
 
 import com.mojang.blaze3d.platform.Lighting;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.ChatFormatting;
@@ -12,12 +11,9 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.ItemEntityRenderer;
 import net.minecraft.client.renderer.entity.state.ItemClusterRenderState;
-import net.minecraft.client.renderer.entity.state.ItemEntityRenderState;
-import net.minecraft.client.renderer.item.ItemStackRenderState;
-import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -178,11 +174,11 @@ public class EntityRenderingUtil {
 		}
 	}
 
-	public static List<Component> getMobTooltip(EntityType<?> type) {
+	public static List<Component> getMobTooltip(EntityType<?> type, ResourceKey<EntityType<?>> key) {
 		List<Component> components = new ArrayList<>();
 		components.add(type.getDescription());
 		if (Minecraft.getInstance().options.advancedItemTooltips) {
-			components.add(Component.literal(BuiltInRegistries.ENTITY_TYPE.getKey(type).toString()).withStyle(ChatFormatting.DARK_GRAY));
+			components.add(Component.literal(key.location().toString()).withStyle(ChatFormatting.DARK_GRAY));
 		}
 		return components;
 	}

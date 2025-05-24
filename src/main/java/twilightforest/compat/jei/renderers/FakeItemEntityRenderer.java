@@ -17,7 +17,6 @@ import twilightforest.TwilightForestMod;
 import twilightforest.compat.jei.FakeItemEntity;
 import twilightforest.util.entities.EntityRenderingUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -49,9 +48,9 @@ public class FakeItemEntityRenderer implements IIngredientRenderer<FakeItemEntit
 				Matrix4fStack modelView = RenderSystem.getModelViewStack();
 				modelView.pushMatrix();
 				modelView.mul(graphics.pose().last().pose());
-				EntityRenderingUtil.renderItemEntity(graphics, item.stack(), level, this.bobOffs);
+				EntityRenderingUtil.renderItemEntity(graphics, item.stack(), this.bobOffs);
 				modelView.popMatrix();
-				RenderSystem.applyModelViewMatrix();
+				//RenderSystem.applyModelViewMatrix(); FIXME no worky :(
 			} catch (Exception e) {
 				TwilightForestMod.LOGGER.error("Error drawing item in JEI!", e);
 			}
@@ -66,7 +65,7 @@ public class FakeItemEntityRenderer implements IIngredientRenderer<FakeItemEntit
 
 	@Override
 	public void getTooltip(ITooltipBuilder tooltip, FakeItemEntity item, TooltipFlag flag) {
-		tooltip.add(item.stack().getItem().getDescription());
+		tooltip.add(item.stack().getItem().getName());
 		if (flag.isAdvanced()) {
 			tooltip.add(Component.literal(Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(item.stack().getItem())).toString()).withStyle(ChatFormatting.DARK_GRAY));
 		}
