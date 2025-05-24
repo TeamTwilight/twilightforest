@@ -3,19 +3,15 @@ package twilightforest.client;
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.platform.TextureUtil;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.renderer.texture.ReloadableTexture;
 import net.minecraft.client.renderer.texture.TextureContents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
-import net.minecraft.world.entity.vehicle.Boat;
-import org.w3c.dom.Text;
 import twilightforest.TwilightForestMod;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,24 +56,7 @@ public class TextureGeneratorReloadListener implements ResourceManagerReloadList
 												}
 											}
 
-											ref.set(newImage);
-
-											if (BOAT_CACHE.containsKey(type)) {
-												BOAT_CACHE.get(type).loadContents(manager);
-											} else {
-												ReloadableTexture texture = new ReloadableTexture(location) {
-													@Override
-													public TextureContents loadContents(ResourceManager resourceManager) {
-														if (ref.get() == null)
-															return TextureContents.createMissing();
-														TextureUtil.prepareImage(this.getId(), 0, ref.get().getWidth(), ref.get().getHeight());
-														ref.get().upload(0, 0, 0, 0, 0, ref.get().getWidth(), ref.get().getHeight(), true);
-														return new TextureContents(ref.get(), null);
-													}
-												};
-												Minecraft.getInstance().getTextureManager().register(location, texture);
-												BOAT_CACHE.put(type, texture);
-											}
+											registerAndLoad(manager, type, location, newImage);
 										}
 									} else {
 										for (int x = 0; x < 48 * tfScale; x++) {
@@ -86,24 +65,7 @@ public class TextureGeneratorReloadListener implements ResourceManagerReloadList
 											}
 										}
 
-										ref.set(tfImage);
-
-										if (BOAT_CACHE.containsKey(type)) {
-											BOAT_CACHE.get(type).loadContents(manager);
-										} else {
-											ReloadableTexture texture = new ReloadableTexture(location) {
-												@Override
-												public TextureContents loadContents(ResourceManager resourceManager) {
-													if (ref.get() == null)
-														return TextureContents.createMissing();
-													TextureUtil.prepareImage(this.getId(), 0, ref.get().getWidth(), ref.get().getHeight());
-													ref.get().upload(0, 0, 0, 0, 0, ref.get().getWidth(), ref.get().getHeight(), true);
-													return new TextureContents(ref.get(), null);
-												}
-											};
-											Minecraft.getInstance().getTextureManager().register(location, texture);
-											BOAT_CACHE.put(type, texture);
-										}
+										registerAndLoad(manager, type, location, tfImage);
 									}
 								}
 							} catch (IOException e) {
@@ -117,6 +79,25 @@ public class TextureGeneratorReloadListener implements ResourceManagerReloadList
 			}
 		});
 		ref.set(null);
+	}
+
+	private static void registerAndLoad(ResourceManager manager, String type, ResourceLocation location, NativeImage image) throws IOException {
+		ref.set(image);
+
+		if (BOAT_CACHE.containsKey(type)) {
+			BOAT_CACHE.get(type).apply(BOAT_CACHE.get(type).loadContents(manager));
+		} else {
+			ReloadableTexture texture = new ReloadableTexture(location) {
+				@Override
+				public TextureContents loadContents(ResourceManager resourceManager) {
+					if (ref.get() == null) return TextureContents.createMissing();
+					TextureUtil.prepareImage(this.getId(), 0, ref.get().getWidth(), ref.get().getHeight());
+					return new TextureContents(ref.get(), null);
+				}
+			};
+			Minecraft.getInstance().getTextureManager().registerAndLoad(location, texture);
+			BOAT_CACHE.put(type, texture);
+		}
 	}
 
 	private static ResourceLocation getTextureLocation(ResourceLocation type) {
