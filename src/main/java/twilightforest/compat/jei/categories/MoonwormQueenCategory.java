@@ -7,8 +7,8 @@ import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
-import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+import mezz.jei.api.recipe.types.IRecipeType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -19,7 +19,7 @@ import twilightforest.item.recipe.MoonwormQueenRepairRecipe;
 
 public class MoonwormQueenCategory implements IRecipeCategory<MoonwormQueenRepairRecipe> {
 
-	public static final RecipeType<MoonwormQueenRepairRecipe> MOONWORM_QUEEN = RecipeType.create(TwilightForestMod.ID, "moonworm_queen_repair", MoonwormQueenRepairRecipe.class);
+	public static final IRecipeType<MoonwormQueenRepairRecipe> MOONWORM_QUEEN = IRecipeType.create(TwilightForestMod.prefix("moonworm_queen_repair"), MoonwormQueenRepairRecipe.class);
 	private final IDrawable background;
 	private final IDrawable icon;
 	private final Component localizedName;
@@ -32,7 +32,7 @@ public class MoonwormQueenCategory implements IRecipeCategory<MoonwormQueenRepai
 	}
 
 	@Override
-	public RecipeType<MoonwormQueenRepairRecipe> getRecipeType() {
+	public IRecipeType<MoonwormQueenRepairRecipe> getRecipeType() {
 		return MOONWORM_QUEEN;
 	}
 
@@ -42,6 +42,7 @@ public class MoonwormQueenCategory implements IRecipeCategory<MoonwormQueenRepai
 	}
 
 	@Override
+	@SuppressWarnings("removal")
 	public IDrawable getBackground() {
 		return this.background;
 	}

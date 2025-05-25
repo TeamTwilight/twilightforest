@@ -606,6 +606,6 @@ public class Naga extends BaseTFBoss {
 
 	@Override
 	public int getBossBarColor() {
-		return 0xFF5E9916;
+		return 0x5E9916;
 	}
 }

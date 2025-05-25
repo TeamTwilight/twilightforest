@@ -4,50 +4,49 @@ import com.mojang.datafixers.util.Pair;
 import com.mojang.math.Transformation;
 import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.model.*;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelBaker;
+import net.minecraft.client.resources.model.ModelState;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.util.context.ContextMap;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.client.RenderTypeGroup;
 import net.neoforged.neoforge.client.model.AbstractUnbakedModel;
 import net.neoforged.neoforge.client.model.NeoForgeModelProperties;
 import net.neoforged.neoforge.client.model.StandardModelParameters;
 import net.neoforged.neoforge.client.model.UnbakedElementsHelper;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class UnbakedConnectedTextureModel extends AbstractUnbakedModel {
 
-	protected final boolean renderOnDisabledFaces;
-	protected final EnumSet<Direction> enabledFaces;
+	protected final boolean renderOverlayOnAllFaces;
+	protected final Set<Direction> connectedFaces;
 	protected final List<Block> connectableBlocks;
 	protected BlockElement[][] baseElements;
-	protected BlockElement[][][] faceElements;
+	protected BlockElement[][][] connectedElements;
 
-	public UnbakedConnectedTextureModel(Pair<Vector3f, Vector3f> element, EnumSet<Direction> enabledFaces, boolean renderOnDisabledFaces, List<Block> connectableBlocks, int baseTintIndex, int baseEmissivity, int tintIndex, int emissivity, StandardModelParameters parameters) {
+	public UnbakedConnectedTextureModel(Pair<Vector3f, Vector3f> element, Set<Direction> connectedFaces, boolean renderOnDisabledFaces, List<Block> connectableBlocks, int baseTintIndex, int baseEmissivity, int tintIndex, int emissivity, StandardModelParameters parameters) {
 		super(parameters);
 		//a list of block faces that should have connected textures.
-		this.enabledFaces = enabledFaces;
-		//whether or not the overlay texture should render on disabled faces or not. Defaults to true
-		this.renderOnDisabledFaces = renderOnDisabledFaces;
+		this.connectedFaces = connectedFaces;
+		//whether the overlay texture should render on all faces or not. Defaults to true
+		this.renderOverlayOnAllFaces = renderOnDisabledFaces;
 		//a list of blocks this block can connect its texture to
 		this.connectableBlocks = connectableBlocks;
 		//base elements - the base block. No Connected Textures on this bit.
 		//the array is made of the directions and "sections". Each section is a corner quadrant of the block
 		this.baseElements = new BlockElement[6][4];
-
 		//face elements - the connected bit of the model.
 		//the array is made of the directions, "sections", and each logic value in the ConnectionLogic class
-		this.faceElements = new BlockElement[6][4][5];
+		this.connectedElements = new BlockElement[6][4][5];
+
 		int center = 8;
 
 		for (Direction face : Direction.values()) {
+			Direction cull = this.getCullface(face, element.getFirst(), element.getSecond());
 			Direction[] planeDirections = ConnectionLogic.AXIS_PLANE_DIRECTIONS[face.getAxis().ordinal()];
 
 			for (int i = 0; i < 4; ++i) {
@@ -62,21 +61,27 @@ public class UnbakedConnectedTextureModel extends AbstractUnbakedModel {
 						element.getSecond().y() < center ? element.getSecond().y() : Math.max(center, corner.getY() - (16 - element.getSecond().y())),
 						element.getSecond().z() < center ? element.getSecond().z() : Math.max(center, corner.getZ() - (16 - element.getSecond().z()))),
 					Map.of(), null, true, 0);
-				this.baseElements[face.get3DDataValue()][i] = new BlockElement(modifiedElement.from, modifiedElement.to, Map.of(face, new BlockElementFace(face, baseTintIndex, "", new BlockFaceUV(ConnectionLogic.NONE.remapUVs(modifiedElement.uvsByFace(face)), 0))), null, true, baseEmissivity);
+				this.baseElements[face.get3DDataValue()][i] = new BlockElement(modifiedElement.from, modifiedElement.to, Map.of(face, new BlockElementFace(cull, baseTintIndex, "", new BlockFaceUV(ConnectionLogic.NONE.remapUVs(modifiedElement.uvsByFace(face)), 0))), null, true, baseEmissivity);
 
 				for (ConnectionLogic logic : ConnectionLogic.values()) {
-					this.faceElements[face.get3DDataValue()][i][logic.ordinal()] = new BlockElement(modifiedElement.from, modifiedElement.to, Map.of(face, new BlockElementFace(face, tintIndex, "", new BlockFaceUV(logic.remapUVs(modifiedElement.uvsByFace(face)), 0))), null, true, emissivity);
+					this.connectedElements[face.get3DDataValue()][i][logic.ordinal()] = new BlockElement(modifiedElement.from, modifiedElement.to, Map.of(face, new BlockElementFace(cull, tintIndex, "", new BlockFaceUV(logic.remapUVs(modifiedElement.uvsByFace(face)), 0))), null, true, emissivity);
 				}
 			}
 		}
 	}
 
-	private float getElementScalar(Vector3f corner, Direction direction) {
-		return switch (direction.getAxis()) {
-			case X -> corner.x();
-			case Y -> corner.y();
-			case Z -> corner.z();
+	@Nullable
+	private Direction getCullface(Direction direction, Vector3f from, Vector3f to) {
+		boolean cull = switch (direction) {
+			case DOWN -> from.y() == 0.0F;
+			case UP -> to.y() == 16.0F;
+			case NORTH -> from.x() == 0.0F;
+			case SOUTH -> to.x() == 16.0F;
+			case WEST -> from.z() == 0.0F;
+			case EAST -> to.z() == 16.0F;
 		};
+
+		return cull ? direction : null;
 	}
 
 	@Override
@@ -85,21 +90,20 @@ public class UnbakedConnectedTextureModel extends AbstractUnbakedModel {
 		if (!rootTransform.isIdentity())
 			state = UnbakedElementsHelper.composeRootTransformIntoModelState(state, rootTransform);
 
-		@SuppressWarnings("unchecked") //this is fine, I hope
-		List<BakedQuad>[] baseQuads = (List<BakedQuad>[]) Array.newInstance(List.class, 6);
+		Map<Direction, BakedQuad[]> baseQuads = new HashMap<>();
+		Set<Direction> unculledFaces = new HashSet<>();
 
 		if (textureSlots.getMaterial("base_texture") != null) {
 			TextureAtlasSprite baseTexture = baker.findSprite(textureSlots, "base_texture");
 
-			for (int dir = 0; dir < 6; dir++) {
-				baseQuads[dir] = new ArrayList<>();
+			for (Direction dir : Direction.values()) {
+				List<BakedQuad> quadList = new ArrayList<>();
 
-				for (BlockElement element : this.baseElements[dir]) {
-					baseQuads[dir].add(FaceBakery.bakeQuad(element.from, element.to, element.faces.values().iterator().next(), baseTexture, Direction.values()[dir], state, element.rotation, element.shade, element.lightEmission));
+				for (BlockElement element : this.baseElements[dir.get3DDataValue()]) {
+					quadList.add(FaceBakery.bakeQuad(element.from, element.to, element.faces.get(dir), baseTexture, dir, state, element.rotation, element.shade, element.lightEmission));
 				}
+				baseQuads.put(dir, quadList.toArray(new BakedQuad[0]));
 			}
-		} else {
-			baseQuads = null;
 		}
 
 		//we'll use this to figure out which texture to use with the Connected Texture logic
@@ -109,17 +113,21 @@ public class UnbakedConnectedTextureModel extends AbstractUnbakedModel {
 			sprites[2] = sprites[0];
 		}
 
-		BakedQuad[][][] quads = new BakedQuad[6][4][5];
+		Map<Direction, BakedQuad[][]> connectedQuads = new HashMap<>();
 
-		for (int dir = 0; dir < 6; dir++) {
+		for (Direction dir : Direction.values()) {
+			BakedQuad[][] dirQuads = new BakedQuad[4][5];
 			for (int quad = 0; quad < 4; quad++) {
 				for (int type = 0; type < 5; type++) {
-					BlockElement element = this.faceElements[dir][quad][type];
-					quads[dir][quad][type] = FaceBakery.bakeQuad(element.from, element.to, element.faces.values().iterator().next(), ConnectionLogic.values()[type].chooseTexture(sprites), Direction.values()[dir], state, element.rotation, element.shade, element.lightEmission);
+					BlockElement element = this.connectedElements[dir.get3DDataValue()][quad][type];
+					BlockElementFace face = element.faces.get(dir);
+					if (face.cullForDirection() == null) unculledFaces.add(dir);
+					dirQuads[quad][type] = FaceBakery.bakeQuad(element.from, element.to, face, ConnectionLogic.values()[type].chooseTexture(sprites), dir, state, element.rotation, element.shade, element.lightEmission);
 				}
 			}
+			connectedQuads.put(dir, dirQuads);
 		}
 
-		return new ConnectedTextureModel(this.enabledFaces, this.renderOnDisabledFaces, this.connectableBlocks, baseQuads, quads, sprites[2], useAmbientOcclusion, usesBlockLight, itemTransforms, this.parameters.renderTypeGroup());
+		return new ConnectedTextureModel(this.connectedFaces, unculledFaces, this.renderOverlayOnAllFaces, this.connectableBlocks, baseQuads, connectedQuads, sprites[2], useAmbientOcclusion, usesBlockLight, itemTransforms, this.parameters.renderTypeGroup());
 	}
 }

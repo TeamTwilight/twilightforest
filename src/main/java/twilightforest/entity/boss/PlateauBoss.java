@@ -44,6 +44,6 @@ public class PlateauBoss extends BaseTFBoss {
 
 	@Override
 	public int getBossBarColor() {
-		return 0xFFFFFFFF;
+		return 0xFFFFFF;
 	}
 }

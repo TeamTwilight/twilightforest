@@ -335,6 +335,6 @@ public class AlphaYeti extends BaseTFBoss implements RangedAttackMob, IHostileMo
 
 	@Override
 	public int getBossBarColor() {
-		return 0xFFB4F0F0;
+		return 0xB4F0F0;
 	}
 }

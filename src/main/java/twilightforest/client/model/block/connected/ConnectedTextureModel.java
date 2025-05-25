@@ -16,19 +16,17 @@ import net.neoforged.neoforge.client.RenderTypeGroup;
 import net.neoforged.neoforge.client.model.IDynamicBakedModel;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.client.model.data.ModelProperty;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
+import java.util.*;
 
 public class ConnectedTextureModel implements IDynamicBakedModel {
 
-	private final EnumSet<Direction> enabledFaces;
-	private final boolean renderOnDisabledFaces;
-	private final List<BakedQuad>@Nullable[] baseQuads;
-	private final BakedQuad[][][] quads;
+	private final Set<Direction> connectedFaces;
+	private final Set<Direction> unculledFaces;
+	private final boolean renderOverlayOnAllFaces;
+	private final Map<Direction, BakedQuad[]> baseQuads;
+	private final Map<Direction, BakedQuad[][]> connectedQuads;
 	private final TextureAtlasSprite particle;
 	private final boolean usesAO;
 	private final boolean usesBlockLight;
@@ -40,12 +38,13 @@ public class ConnectedTextureModel implements IDynamicBakedModel {
 	private final List<Block> validConnectors;
 	private static final ModelProperty<ConnectedTextureData> DATA = new ModelProperty<>();
 
-	public ConnectedTextureModel(EnumSet<Direction> enabledFaces, boolean renderOnDisabledFaces, List<Block> connectableBlocks, List<BakedQuad>@Nullable[] baseQuads, BakedQuad[][][] quads, TextureAtlasSprite particle, boolean usesAO, boolean usesBlockLight, ItemTransforms transforms, RenderTypeGroup group) {
-		this.enabledFaces = enabledFaces;
-		this.renderOnDisabledFaces = renderOnDisabledFaces;
+	public ConnectedTextureModel(Set<Direction> connectedFaces, Set<Direction> unculledFaces, boolean renderOverlayOnAllFaces, List<Block> connectableBlocks, Map<Direction, BakedQuad[]> baseQuads, Map<Direction, BakedQuad[][]> connectedQuads, TextureAtlasSprite particle, boolean usesAO, boolean usesBlockLight, ItemTransforms transforms, RenderTypeGroup group) {
+		this.connectedFaces = connectedFaces;
+		this.unculledFaces = unculledFaces;
+		this.renderOverlayOnAllFaces = renderOverlayOnAllFaces;
 		this.validConnectors = connectableBlocks;
 		this.baseQuads = baseQuads;
-		this.quads = quads;
+		this.connectedQuads = connectedQuads;
 		this.particle = particle;
 		this.usesAO = usesAO;
 		this.usesBlockLight = usesBlockLight;
@@ -54,35 +53,34 @@ public class ConnectedTextureModel implements IDynamicBakedModel {
 		this.itemRenderType = !group.isEmpty() ? group.entity() : null;
 	}
 
-	@NotNull
 	@Override
-	public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @NotNull RandomSource random, @NotNull ModelData extraData, @Nullable RenderType type) {
-		if (side != null) {
-			int faceIndex = side.get3DDataValue();
-			ConnectedTextureData data = extraData.get(DATA);
-			ArrayList<BakedQuad> quads = new ArrayList<>(4 + (this.baseQuads != null ? 4 : 0));
-			if (this.baseQuads != null) {
-				quads.addAll(this.baseQuads[faceIndex]);
-			}
-
-			if (this.enabledFaces.contains(side) || this.renderOnDisabledFaces) {
-				for (int quad = 0; quad < 4; ++quad) {
-					//if our model data is null (happens for items) we can skip connected textures since we dont have the info we need
-					//i'd rather do this than crash the game or skip rendering the block entirely
-					ConnectionLogic connectionType = data != null && this.enabledFaces.contains(side) ? data.logic[faceIndex][quad] : ConnectionLogic.NONE;
-					quads.add(this.quads[faceIndex][quad][connectionType.ordinal()]);
-				}
-			}
-
-			return quads;
-		} else {
-			return List.of();
-		}
+	public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, RandomSource random, ModelData extraData, @Nullable RenderType type) {
+		if (side == null) {
+			List<BakedQuad> quadList = new ArrayList<>();
+			for (Direction direction : this.unculledFaces) quadList.addAll(this.getQuadsForFace(direction, extraData));
+			return quadList;
+		} else return this.getQuadsForFace(side, extraData);
 	}
 
-	@NotNull
+	public List<BakedQuad> getQuadsForFace(Direction side, ModelData extraData) {
+		BakedQuad[] baseQuads = this.baseQuads.get(side);
+		ConnectedTextureData data = extraData.get(DATA);
+		ArrayList<BakedQuad> quads = new ArrayList<>(4 + (baseQuads != null ? 4 : 0));
+		if (baseQuads != null) quads.addAll(List.of(baseQuads));
+
+		if (this.connectedFaces.contains(side) || this.renderOverlayOnAllFaces) {
+			for (int quad = 0; quad < 4; ++quad) {
+				//if our model data is null (happens for items), we can skip connected textures since we dont have the info we need
+				ConnectionLogic connectionType = data != null && this.connectedFaces.contains(side) ? data.logic[side.get3DDataValue()][quad] : ConnectionLogic.NONE;
+				quads.add(this.connectedQuads.get(side)[quad][connectionType.ordinal()]);
+			}
+		}
+
+		return quads;
+	}
+
 	@Override
-	public ModelData getModelData(@NotNull BlockAndTintGetter getter, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull ModelData modelData) {
+	public ModelData getModelData(BlockAndTintGetter getter, BlockPos pos, BlockState state, ModelData modelData) {
 		ConnectedTextureData data = new ConnectedTextureData();
 
 		for (Direction face : Direction.values()) {
@@ -110,11 +108,13 @@ public class ConnectedTextureModel implements IDynamicBakedModel {
 
 	private boolean shouldConnectSide(BlockAndTintGetter getter, BlockPos pos, Direction face, Direction side) {
 		BlockState neighborState = getter.getBlockState(pos.relative(side));
+		if (this.unculledFaces.contains(face)) return this.validConnectors.stream().anyMatch(neighborState::is);
 		return this.validConnectors.stream().anyMatch(neighborState::is) && Block.shouldRenderFace(getter, pos.relative(face), neighborState, getter.getBlockState(pos.relative(face)), face);
 	}
 
 	private boolean isCornerBlockPresent(BlockAndTintGetter getter, BlockPos pos, Direction face, Direction side1, Direction side2) {
 		BlockState neighborState = getter.getBlockState(pos.relative(side1).relative(side2));
+		if (this.unculledFaces.contains(face)) return this.validConnectors.stream().anyMatch(neighborState::is);
 		return this.validConnectors.stream().anyMatch(neighborState::is) && Block.shouldRenderFace(getter, pos.relative(face), neighborState, getter.getBlockState(pos.relative(face)), face);
 	}
 
@@ -133,21 +133,18 @@ public class ConnectedTextureModel implements IDynamicBakedModel {
 		return this.usesBlockLight;
 	}
 
-	@NotNull
 	@Override
 	public TextureAtlasSprite getParticleIcon() {
 		return this.particle;
 	}
 
-	@NotNull
 	@Override
 	public ItemTransforms getTransforms() {
 		return this.transforms;
 	}
 
-	@NotNull
 	@Override
-	public ChunkRenderTypeSet getRenderTypes(@NotNull BlockState state, @NotNull RandomSource rand, @NotNull ModelData data) {
+	public ChunkRenderTypeSet getRenderTypes(BlockState state, RandomSource rand, ModelData data) {
 		return this.blockRenderTypes != null ? this.blockRenderTypes : IDynamicBakedModel.super.getRenderTypes(state, rand, data);
 	}
 

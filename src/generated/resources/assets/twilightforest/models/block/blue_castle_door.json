@@ -8,7 +8,6 @@
   ],
   "connected_texture": {
     "emissivity": 15,
-    "render_disabled_faces": true,
     "tint_index": 0
   },
   "loader": "twilightforest:connected_texture_block",

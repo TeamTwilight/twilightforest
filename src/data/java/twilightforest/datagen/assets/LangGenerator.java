@@ -79,6 +79,9 @@ public class LangGenerator extends TFLangProvider {
 		this.addCommand("structure.spawn_list", "Spawn list for this area is:");
 		this.addCommand("structure.spawn_info", "%s, Weight %s");
 		this.addCommand("structure.boundaries", "Structure boundaries: %s");
+		this.addCommand("coords", "Position: %s");
+		this.addCommand("tp", "Click to copy TP command");
+		this.addCommand("seed_and_tp", "Click to copy both");
 
 		this.add("gamerule.tfEnforcedProgression", "Twilight Forest: Enforced Progression");
 		this.add("gamerule.tfEnforcedProgression.description", "Some Twilight Forest biomes will be locked until you defeat certain bosses in the dimension. (You can check the progression order in your advancements)");

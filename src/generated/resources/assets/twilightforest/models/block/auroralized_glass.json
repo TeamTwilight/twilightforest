@@ -4,7 +4,6 @@
     "twilightforest:auroralized_glass"
   ],
   "connected_texture": {
-    "render_disabled_faces": true,
     "tint_index": 0
   },
   "loader": "twilightforest:connected_texture_block",

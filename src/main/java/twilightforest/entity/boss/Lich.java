@@ -259,6 +259,7 @@ public class Lich extends BaseTFBoss {
 				this.getLookControl().tick();
 			}
 			this.setTeleportInvisibility(tpInvisibility - 1);
+			if (this.getRemainingFireTicks() > 0) this.clearFire();
 			if (tpInvisibility - 1 <= 0) {
 				this.lichTeleportParticles(true);
 				this.playSound(TFSounds.LICH_TELEPORT.get(), 1.125F, 1.125F);
@@ -576,8 +577,8 @@ public class Lich extends BaseTFBoss {
 			if (this.teleportToSightOfEntity(target)) {
 				for (Lich clone : this.getAllClones()) {
 					clone.setTarget(target);
-                    clone.teleportToSightOfEntity(target);
-                }
+					clone.teleportToSightOfEntity(target);
+				}
 				if (lichShadowsGoal != null) lichShadowsGoal.checkAndSpawnClones(target);
 				return true;
 			}
@@ -781,6 +782,11 @@ public class Lich extends BaseTFBoss {
 		} else {
 			return 3;
 		}
+	}
+
+	@Override
+	public boolean isOnFire() {
+		return super.isOnFire() && this.getTeleportInvisibility() <= 0;
 	}
 
 	public int getAttackCooldown() {
@@ -1064,8 +1070,8 @@ public class Lich extends BaseTFBoss {
 
 	@Override
 	public int getBossBarColor() {
-		if (this.getShieldStrength() > 0) return 0xFFFFD800;
-		return this.getPhase() == 2 ? 0xFFBE23FF : 0xFFFF0000;
+		if (this.getShieldStrength() > 0) return 0xFFD800;
+		return this.getPhase() == 2 ? 0xBE23FF : 0xFF0000;
 	}
 
 	@Override

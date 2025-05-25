@@ -493,6 +493,7 @@ public class EntityEvents {
 		} else {
 			event.getPlayerList().getPlayers().forEach(player -> PacketDistributor.sendToPlayer(player, new SyncQuestsPacket(questingRamCurrentContext.getContext())));
 		}
+		event.sendRecipes(TFRecipes.UNCRAFTING_RECIPE.get());
 	}
 
 	@SubscribeEvent

@@ -87,7 +87,9 @@ public abstract class TFLangProvider extends LanguageProvider {
 		this.add("block.twilightforest." + woodPrefix + "_chest", woodName + " Chest");
 		this.add("block.twilightforest." + woodPrefix + "_trapped_chest", "Trapped " + woodName + " Chest");
 		this.add("item.twilightforest." + woodPrefix + "_boat", woodName + " Boat");
+		this.add("entity.twilightforest." + woodPrefix + "_boat", woodName + " Boat");
 		this.add("item.twilightforest." + woodPrefix + "_chest_boat", woodName + " Boat with Chest");
+		this.add("entity.twilightforest." + woodPrefix + "_chest_boat", woodName + " Boat with Chest");
 		this.add("block.twilightforest." + woodPrefix + "_hanging_sign", woodName + " Hanging Sign");
 	}
 

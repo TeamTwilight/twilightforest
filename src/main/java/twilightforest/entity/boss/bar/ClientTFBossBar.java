@@ -40,16 +40,15 @@ public class ClientTFBossBar extends LerpingBossEvent {
 	private static final ResourceLocation BAR_BACKGROUND = ResourceLocation.withDefaultNamespace("boss_bar/white_background");
 	private static final ResourceLocation BAR_PROGRESS = ResourceLocation.withDefaultNamespace("boss_bar/white_progress");
 
-	//parchment calls the last param in `GuiGraphics.blitSprite` `blitOffset` but it's actually the color
 	public void renderBossBar(GuiGraphics guiGraphics, int x, int y) {
 		RenderSystem.enableBlend();
 
-		guiGraphics.blitSprite(RenderType::guiTextured, BAR_BACKGROUND, x, y, 182, 5, this.color);
-		if (this.overlay != BossEvent.BossBarOverlay.PROGRESS) guiGraphics.blitSprite(RenderType::guiTextured, BossHealthOverlay.OVERLAY_BACKGROUND_SPRITES[this.overlay.ordinal() - 1], x, y, 182, 5, this.color);
+		this.blitSprite(guiGraphics, RenderType::guiTextured, BAR_BACKGROUND, x, y, 182, 5);
+		if (this.overlay != BossEvent.BossBarOverlay.PROGRESS) this.blitSprite(guiGraphics, RenderType::guiTextured, BossHealthOverlay.OVERLAY_BACKGROUND_SPRITES[this.overlay.ordinal() - 1], x, y, 182, 5);
 		int progress = Mth.lerpDiscrete(this.getProgress(), 0, 182);
 		if (progress > 0) {
-			guiGraphics.blitSprite(RenderType::guiTextured, BAR_PROGRESS, x, y, progress, 5, this.color);
-			if (this.overlay != BossEvent.BossBarOverlay.PROGRESS) guiGraphics.blitSprite(RenderType::guiTextured, BossHealthOverlay.OVERLAY_PROGRESS_SPRITES[this.overlay.ordinal() - 1], x, y, progress, 5, this.color);
+			this.blitSprite(guiGraphics, RenderType::guiTextured, BAR_PROGRESS, x, y, progress, 5);
+			if (this.overlay != BossEvent.BossBarOverlay.PROGRESS) this.blitSprite(guiGraphics, RenderType::guiTextured, BossHealthOverlay.OVERLAY_PROGRESS_SPRITES[this.overlay.ordinal() - 1], x, y, progress, 5);
 		}
 
 		Component title = this.getName();
@@ -59,5 +58,23 @@ public class ClientTFBossBar extends LerpingBossEvent {
 		guiGraphics.drawString(Minecraft.getInstance().font, title, fontX, fontY, 0xFFFFFF);
 
 		RenderSystem.disableBlend();
+	}
+
+	public void blitSprite(GuiGraphics guiGraphics, Function<ResourceLocation, RenderType> renderTypeGetter, ResourceLocation location, float x, float y, int uWidth, int vHeight) {
+		TextureAtlasSprite sprite = guiGraphics.sprites.getSprite(location);
+
+		float minU = sprite.getU(0.0F);
+		float maxU = sprite.getU(uWidth / 182.0F);
+		float minV = sprite.getV(0.0F);
+		float maxV = sprite.getV(vHeight / 5.0F);
+
+		float r = ((this.color >> 16) & 255) / 255F, g = ((this.color >> 8) & 255) / 255F, b = (this.color & 255) / 255F, a = 1.0F;
+
+		Matrix4f matrix4f = guiGraphics.pose().last().pose();
+		VertexConsumer vertex = guiGraphics.bufferSource.getBuffer(renderTypeGetter.apply(sprite.atlasLocation()));
+		vertex.addVertex(matrix4f, x, y, 0.0F).setUv(minU, minV).setColor(r, g, b, a);
+		vertex.addVertex(matrix4f, x, y + vHeight, 0.0F).setUv(minU, maxV).setColor(r, g, b, a);
+		vertex.addVertex(matrix4f, x + uWidth, y + vHeight, 0.0F).setUv(maxU, maxV).setColor(r, g, b, a);
+		vertex.addVertex(matrix4f, x + uWidth, y, 0.0F).setUv(maxU, minV).setColor(r, g, b, a);
 	}
 }

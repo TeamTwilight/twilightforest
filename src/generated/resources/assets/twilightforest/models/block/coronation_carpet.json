@@ -7,8 +7,7 @@
     "faces": [
       "up",
       "down"
-    ],
-    "render_disabled_faces": true
+    ]
   },
   "element": {
     "from": [
