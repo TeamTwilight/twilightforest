@@ -21,6 +21,8 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.AbstractSkullCandleBlock;
+import twilightforest.components.item.SkullCandles;
 import twilightforest.config.TFConfig;
 import twilightforest.entity.MagicPaintingVariant;
 import twilightforest.tags.TFItemTags;
@@ -284,6 +286,12 @@ public class TFCreativeTabs {
 			output.accept(TFBlocks.TERRORCOTTA_LINES);
 			output.accept(TFBlocks.TERRORCOTTA_CURVES);
 			output.accept(TFBlocks.TERRORCOTTA_ARCS);
+			createDefaultSkullCandle(output, TFItems.SKELETON_SKULL_CANDLE);
+			createDefaultSkullCandle(output, TFItems.WITHER_SKELETON_SKULL_CANDLE);
+			createDefaultSkullCandle(output, TFItems.PLAYER_SKULL_CANDLE);
+			createDefaultSkullCandle(output, TFItems.ZOMBIE_SKULL_CANDLE);
+			createDefaultSkullCandle(output, TFItems.CREEPER_SKULL_CANDLE);
+			createDefaultSkullCandle(output, TFItems.PIGLIN_SKULL_CANDLE);
 			createCaskets(output);
 			output.accept(TFBlocks.SKULL_CHEST);
 			output.accept(TFBlocks.WROUGHT_IRON_FENCE);
@@ -570,6 +578,12 @@ public class TFCreativeTabs {
 	private static void createSpawnEggsAlphabetical(CreativeModeTab.Output output) {
 		Collection<? extends Item> eggs = TFEntities.SPAWN_EGGS.getEntries().stream().map(DeferredHolder::value).toList();
 		eggs.forEach(output::accept);
+	}
+
+	private static void createDefaultSkullCandle(CreativeModeTab.Output output, ItemLike item) {
+		ItemStack stack = new ItemStack(item);
+		stack.set(TFDataComponents.SKULL_CANDLES, new SkullCandles(AbstractSkullCandleBlock.CandleColors.PLAIN.getValue(), 1));
+		output.accept(stack);
 	}
 
 	private static void createCaskets(CreativeModeTab.Output output) {
