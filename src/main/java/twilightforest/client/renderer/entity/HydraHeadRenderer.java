@@ -78,7 +78,7 @@ public class HydraHeadRenderer extends TFPartRenderer<HydraHead, HydraHeadRender
 	public void extractRenderState(HydraHead entity, HydraHeadRenderState state, float partialTick) {
 		super.extractRenderState(entity, state, partialTick);
 		var container = getHeadObject(entity);
-		state.active = container == null || container.isActive();
+		state.active = container == null || entity.isActive();
 		state.mouthAngle = Mth.lerp(partialTick, entity.getMouthOpenLast(), entity.getMouthOpen());
 	}
 

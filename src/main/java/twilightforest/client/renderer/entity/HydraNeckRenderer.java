@@ -43,7 +43,7 @@ public class HydraNeckRenderer extends TFPartRenderer<HydraNeck, HydraNeckRender
 	public void extractRenderState(HydraNeck entity, HydraNeckRenderState state, float partialTick) {
 		super.extractRenderState(entity, state, partialTick);
 		var container = HydraHeadRenderer.getHeadObject(entity.head);
-		state.active = container == null || container.isActive();
+		state.active = container == null || entity.isActive();
 	}
 
 	@Override

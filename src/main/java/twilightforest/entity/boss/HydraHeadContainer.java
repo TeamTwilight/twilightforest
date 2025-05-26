@@ -597,20 +597,20 @@ public class HydraHeadContainer {
 			neckRotation = -90;
 		}
 		if (this.headNum == 3) {
-			vector = new Vec3(-1, 3, 3);
+			vector = new Vec3(-1, 2.5, 3);
 			neckRotation = 135;
 		}
 		if (this.headNum == 4) {
-			vector = new Vec3(1, 3, 3);
+			vector = new Vec3(1, 2.5, 3);
 			neckRotation = -135;
 		}
 
 		if (this.headNum == 5) {
-			vector = new Vec3(-1, 3, 5);
+			vector = new Vec3(-1, 2, 5);
 			neckRotation = 135;
 		}
 		if (this.headNum == 6) {
-			vector = new Vec3(1, 3, 5);
+			vector = new Vec3(1, 2, 5);
 			neckRotation = -135;
 		}
 
