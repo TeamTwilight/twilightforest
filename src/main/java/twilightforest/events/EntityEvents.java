@@ -47,6 +47,7 @@ import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.damagesource.DamageContainer;
 import net.neoforged.neoforge.event.EventHooks;
+import net.neoforged.neoforge.event.ItemAttributeModifierEvent;
 import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
@@ -502,6 +503,14 @@ public class EntityEvents {
 				event.getEntity().getData(TFDataAttachments.FLASK_DOSES).resetDoses();
 				break;
 			}
+		}
+	}
+
+	@SubscribeEvent
+	public static void addGiantModifiers(ItemAttributeModifierEvent event) {
+		if (event.getItemStack().is(TFItems.GIANT_PICKAXE) || event.getItemStack().is(TFItems.GIANT_SWORD)) {
+			event.addModifier(Attributes.BLOCK_INTERACTION_RANGE, new AttributeModifier(TwilightForestMod.prefix("reach_modifier"), 2.5, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
+			event.addModifier(Attributes.ENTITY_INTERACTION_RANGE, new AttributeModifier(TwilightForestMod.prefix("range_modifier"), 2.5, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
 		}
 	}
 
