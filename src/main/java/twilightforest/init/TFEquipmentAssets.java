@@ -15,7 +15,7 @@ public class TFEquipmentAssets {
 
 	public static final ResourceKey<EquipmentAsset> IRONWOOD = createId("ironwood");
 	public static final ResourceKey<EquipmentAsset> STEELEAF = createId("steeleaf");
-	public static final ResourceKey<EquipmentAsset> NAGA = createId("naga");
+	public static final ResourceKey<EquipmentAsset> NAGA = createId("naga_scale");
 	public static final ResourceKey<EquipmentAsset> FIERY = createId("fiery");
 	public static final ResourceKey<EquipmentAsset> KNIGHTMETAL = createId("knightmetal");
 	public static final ResourceKey<EquipmentAsset> PHANTOM = createId("phantom");
@@ -29,7 +29,7 @@ public class TFEquipmentAssets {
 	public static void bootstrap(BiConsumer<ResourceKey<EquipmentAsset>, EquipmentClientInfo> consumer) {
 		consumer.accept(IRONWOOD, EquipmentClientInfo.builder().addHumanoidLayers(TwilightForestMod.prefix("ironwood"), false).build());
 		consumer.accept(STEELEAF, EquipmentClientInfo.builder().addHumanoidLayers(TwilightForestMod.prefix("steeleaf"), false).build());
-		consumer.accept(NAGA, EquipmentClientInfo.builder().addHumanoidLayers(TwilightForestMod.prefix("naga"), false).build());
+		consumer.accept(NAGA, EquipmentClientInfo.builder().addHumanoidLayers(TwilightForestMod.prefix("naga_scale"), false).build());
 		consumer.accept(FIERY, EquipmentClientInfo.builder().addHumanoidLayers(TwilightForestMod.prefix("fiery"), false).build());
 		consumer.accept(KNIGHTMETAL, EquipmentClientInfo.builder().addHumanoidLayers(TwilightForestMod.prefix("knightmetal"), false).build());
 		consumer.accept(PHANTOM, EquipmentClientInfo.builder().addMainHumanoidLayer(TwilightForestMod.prefix("phantom"), false).build());
