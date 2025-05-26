@@ -1,6 +1,5 @@
 package twilightforest.compat.jei.renderers;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import mezz.jei.api.gui.builder.ITooltipBuilder;
 import mezz.jei.api.ingredients.IIngredientRenderer;
 import net.minecraft.ChatFormatting;
@@ -12,7 +11,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Matrix4fStack;
 import twilightforest.TwilightForestMod;
 import twilightforest.compat.jei.FakeItemEntity;
 import twilightforest.util.entities.EntityRenderingUtil;
@@ -45,12 +43,9 @@ public class FakeItemEntityRenderer implements IIngredientRenderer<FakeItemEntit
 		Level level = Minecraft.getInstance().level;
 		if (item != null && level != null) {
 			try {
-				Matrix4fStack modelView = RenderSystem.getModelViewStack();
-				modelView.pushMatrix();
-				modelView.mul(graphics.pose().last().pose());
+				graphics.pose().pushPose();
 				EntityRenderingUtil.renderItemEntity(graphics, item.stack(), this.bobOffs);
-				modelView.popMatrix();
-				//RenderSystem.applyModelViewMatrix(); FIXME no worky :(
+				graphics.pose().popPose();
 			} catch (Exception e) {
 				TwilightForestMod.LOGGER.error("Error drawing item in JEI!", e);
 			}

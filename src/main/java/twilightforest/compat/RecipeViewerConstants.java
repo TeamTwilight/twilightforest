@@ -41,12 +41,11 @@ public class RecipeViewerConstants {
 		List<RecipeHolder<? extends CraftingRecipe>> recipes = new ArrayList<>();
 		if (!TFConfig.disableUncraftingOnly) { //we only do this if uncrafting is not disabled
 			for (RecipeHolder<? extends CraftingRecipe> recipeHolder : manager.byType(RecipeType.CRAFTING)) {
-				if (recipeHolder.value() instanceof CraftingRecipe recipe) {
-					if (recipe instanceof ShapedRecipe shapedRecipe && isRecipeChill(recipeHolder, shapedRecipe.result.copy())) {
-						recipes.add(recipeHolder);
-					} else if (recipe instanceof ShapelessRecipe shapelessRecipe && !TFConfig.allowShapelessUncrafting && isRecipeChill(recipeHolder, shapelessRecipe.result.copy())) {
-						recipes.add(recipeHolder);
-					}
+				CraftingRecipe recipe = recipeHolder.value();
+				if (recipe instanceof ShapedRecipe shapedRecipe && isRecipeChill(recipeHolder, shapedRecipe.result.copy())) {
+					recipes.add(recipeHolder);
+				} else if (recipe instanceof ShapelessRecipe shapelessRecipe && TFConfig.allowShapelessUncrafting && isRecipeChill(recipeHolder, shapelessRecipe.result.copy())) {
+					recipes.add(recipeHolder);
 				}
 			}
 		}

@@ -162,10 +162,11 @@ public class EntityRenderingUtil {
 			ItemClusterRenderState state = new ItemClusterRenderState();
 			Minecraft.getInstance().getItemModelResolver().updateForTopItem(state.item, item, ItemDisplayContext.GROUND, false, Minecraft.getInstance().level, null, 0);
 			stack.pushPose();
-			float bob = Mth.sin((Minecraft.getInstance().level.getGameTime() + partialTicks) / 10.0F + bobOffset) * 0.1F + 0.1F;
+			float ageInTicks = Minecraft.getInstance().level.getGameTime() + partialTicks;
+			float bob = Mth.sin(ageInTicks / 10.0F + bobOffset) * 0.1F + 0.1F;
 			float offset = state.item.transform().scale.y();
 			stack.translate(0.0D, bob + 0.25F * offset, 0.0D);
-			float f3 = ItemEntity.getSpin(partialTicks, bobOffset);
+			float f3 = ItemEntity.getSpin(ageInTicks, bobOffset);
 			stack.mulPose(Axis.YP.rotation(f3));
 			state.count = ItemClusterRenderState.getRenderedAmount(item.getCount());
 			state.seed = ItemClusterRenderState.getSeedForItemStack(item);
