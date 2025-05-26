@@ -54,18 +54,18 @@ public class HydraHeadModel extends EntityModel<HydraHeadRenderState> implements
 
 		head.addOrReplaceChild("jaw", CubeListBuilder.create()
 				.texOffs(272, 92)
-				.addBox(-15.0F, 0.0F, -16.0F, 30.0F, 8.0F, 32.0F)
+				.addBox(-15.0F, 0.0F, -26.0F, 30.0F, 8.0F, 32.0F)
 				.texOffs(272, 156)
-				.addBox(-10.0F, -5.0F, -13.0F, 2.0F, 5.0F, 2.0F)
+				.addBox(-10.0F, -5.0F, -23.0F, 2.0F, 5.0F, 2.0F)
 				.texOffs(272, 156)
-				.addBox(8.0F, -5.0F, -13.0F, 2.0F, 5.0F, 2.0F)
+				.addBox(8.0F, -5.0F, -23.0F, 2.0F, 5.0F, 2.0F)
 				.texOffs(280, 156)
-				.addBox(-8.0F, -1.0F, -13.0F, 16.0F, 2.0F, 2.0F)
+				.addBox(-8.0F, -1.0F, -23.0F, 16.0F, 2.0F, 2.0F)
 				.texOffs(280, 160)
-				.addBox(-10.0F, -1.0F, -9.0F, 2.0F, 2.0F, 16.0F)
+				.addBox(-10.0F, -1.0F, -19.0F, 2.0F, 2.0F, 16.0F)
 				.texOffs(280, 160)
-				.addBox(8.0F, -1.0F, -9.0F, 2.0F, 2.0F, 16.0F),
-			PartPose.offset(0.0F, 10.0F, -20.0F));
+				.addBox(8.0F, -1.0F, -19.0F, 2.0F, 2.0F, 16.0F),
+			PartPose.offset(0.0F, 10.0F, -10.0F));
 
 		head.addOrReplaceChild("frill", CubeListBuilder.create()
 				.texOffs(272, 200)
@@ -90,8 +90,6 @@ public class HydraHeadModel extends EntityModel<HydraHeadRenderState> implements
 	public void setupRotationsForTrophy(float x, float y, float z, float mouthAngle) {
 		this.head.yRot = y * Mth.DEG_TO_RAD;
 		this.head.xRot = z * Mth.DEG_TO_RAD;
-
-		this.head.xRot -= mouthAngle * (Mth.PI / 12.0F);
 		this.jaw.xRot = mouthAngle * (Mth.PI / 3.0F);
 	}
 
