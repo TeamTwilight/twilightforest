@@ -5,33 +5,29 @@ import mezz.jei.api.ingredients.IIngredientType;
 import mezz.jei.api.ingredients.subtypes.UidContext;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.EntityType;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.compat.jei.FakeEntityType;
-import twilightforest.compat.jei.JEICompat;
-
-import java.util.Objects;
 
 public class EntityHelper implements IIngredientHelper<FakeEntityType> {
 
 	@Override
 	public IIngredientType<FakeEntityType> getIngredientType() {
-		return JEICompat.ENTITY_TYPE;
+		return FakeEntityType.ENTITY_TYPE;
 	}
 
 	@Override
 	public String getDisplayName(FakeEntityType type) {
-		return type.type().getDescription().getString();
+		return BuiltInRegistries.ENTITY_TYPE.get(type.type()).map(entityTypeReference -> entityTypeReference.value().getDescription().getString()).orElse("");
 	}
 
 	@Override
-	public String getUniqueId(FakeEntityType type, UidContext context) {
-		return Objects.requireNonNull(BuiltInRegistries.ENTITY_TYPE.getKey(type.type())).toString();
+	public Object getUid(FakeEntityType type, UidContext context) {
+		return this.getResourceLocation(type).toString();
 	}
 
 	@Override
 	public ResourceLocation getResourceLocation(FakeEntityType type) {
-		return Objects.requireNonNull(BuiltInRegistries.ENTITY_TYPE.getKey(type.type()));
+		return type.type().location();
 	}
 
 	@Override
@@ -41,13 +37,7 @@ public class EntityHelper implements IIngredientHelper<FakeEntityType> {
 
 	@Override
 	public String getErrorInfo(@Nullable FakeEntityType type) {
-		if (type == null) {
-			return "null";
-		}
-		ResourceLocation name = BuiltInRegistries.ENTITY_TYPE.getKey(type.type());
-		if (name == null) {
-			return "unnamed sadface :(";
-		}
-		return name.toString();
+		if (type == null) return "null";
+		return type.type().location().toString();
 	}
 }

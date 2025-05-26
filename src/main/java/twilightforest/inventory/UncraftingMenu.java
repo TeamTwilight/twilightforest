@@ -1,5 +1,6 @@
 package twilightforest.inventory;
 
+import it.unimi.dsi.fastutil.ints.IntList;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.core.Holder;
 import net.minecraft.core.NonNullList;
@@ -27,14 +28,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.config.TFConfig;
-import twilightforest.network.UpdateUncraftingCostPacket;
-import twilightforest.tags.TFItemTags;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFMenuTypes;
 import twilightforest.inventory.slot.AssemblySlot;
 import twilightforest.inventory.slot.UncraftingResultSlot;
 import twilightforest.inventory.slot.UncraftingSlot;
 import twilightforest.item.recipe.UncraftingRecipe;
+import twilightforest.network.UpdateUncraftingCostPacket;
+import twilightforest.tags.TFItemTags;
 import twilightforest.util.TFItemStackUtils;
 
 import java.util.ArrayList;
@@ -123,6 +124,10 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 		}
 	}
 
+	public static boolean canCraftInDimensions(ShapedRecipe recipe, int width, int height) {
+		return width >= recipe.getWidth() && height >= recipe.getHeight();
+	}
+
 	@Override
 	public void slotsChanged(Container inventory) {
 		// we need to see what inventory is calling this, and update appropriately
@@ -141,21 +146,19 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 				CraftingRecipe recipe = recipes[Math.floorMod(this.unrecipeInCycle, size)];
 				this.storedGhostRecipe = recipe;
 				ItemStack[] recipeItems = this.getIngredients(recipe);
+				IntList slotIndex = recipe.placementInfo().slotsToIngredientIndex();
 
 				if (recipe instanceof ShapedRecipe rec) {
+					for (int j = 0, k = 0; j - k < slotIndex.size(); j++) {
+						int x = j % 3, y = j / 3;
+						if (canCraftInDimensions(rec, x, 3) || canCraftInDimensions(rec, 3, y)) {
+							k++;
+							continue;
+						} //Skips empty spaces in shaped recipes
 
-					int recipeWidth = rec.getWidth();
-					int recipeHeight = rec.getHeight();
-
-					// set uncrafting grid
-					for (int invY = 0; invY < recipeHeight; invY++) {
-						for (int invX = 0; invX < recipeWidth; invX++) {
-
-							int index = invX + invY * recipeWidth;
-							if (index >= recipeItems.length) continue;
-
-							ItemStack ingredient = normalizeIngredient(recipeItems[index].copy());
-							this.uncraftingMatrix.setItem(invX + invY * 3, ingredient);
+						int index = slotIndex.getInt(j - k);
+						if (index > -1) {
+							this.uncraftingMatrix.setItem(x + y * 3, recipeItems[index]);
 						}
 					}
 				} else {

@@ -10,7 +10,7 @@ variables:
   artifactName: 'Release'
   GRADLE_USER_HOME: $(Pipeline.Workspace)/.gradle
   SKIP_BUILD: $[contains(variables['Build.SourceBranch'], 'refs/heads/no-build/')]
-  SKIP_DISCORD: 'true'
+  SKIP_DISCORD: 'false'
   ${{ if not(contains(variables['Build.SourceBranch'], 'refs/heads/no-build/')) }}:
     revision: $[counter('release-number', 0)]
 

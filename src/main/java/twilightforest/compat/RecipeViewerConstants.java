@@ -11,16 +11,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.block.Block;
 import twilightforest.config.TFConfig;
-import twilightforest.tags.TFItemTags;
 import twilightforest.init.TFDataMaps;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFRecipes;
 import twilightforest.inventory.UncraftingMenu;
+import twilightforest.tags.TFItemTags;
 import twilightforest.util.datamaps.EntityTransformation;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class RecipeViewerConstants {
 	public static final int GENERIC_RECIPE_WIDTH = 116;
@@ -38,21 +37,28 @@ public class RecipeViewerConstants {
 		Util.make(new ItemStack(TFItems.MOONWORM_QUEEN.get()), stack -> stack.setDamageValue(64)),
 		new ItemStack(TFItems.MOONWORM_QUEEN.get()));
 
-	public static List<RecipeHolder<? extends CraftingRecipe>> getAllUncraftingRecipes(RecipeManager manager) {
+	public static List<RecipeHolder<? extends CraftingRecipe>> getAllUncraftingRecipes(RecipeMap manager) {
+		List<RecipeHolder<? extends CraftingRecipe>> recipes = new ArrayList<>();
 		if (!TFConfig.disableUncraftingOnly) { //we only do this if uncrafting is not disabled
-			List<RecipeHolder<? extends CraftingRecipe>> recipes = new ArrayList<>(manager.getAllRecipesFor(RecipeType.CRAFTING));
-			recipes = recipes.stream().filter(recipe ->
-					!recipe.value().getResultItem(Minecraft.getInstance().level.registryAccess()).isEmpty() && //get rid of empty items
-						!recipe.value().getResultItem(Minecraft.getInstance().level.registryAccess()).is(TFItemTags.BANNED_UNCRAFTABLES) && //Prevents things that are tagged as banned from showing up
-						TFConfig.reverseRecipeBlacklist == TFConfig.disableUncraftingRecipes.contains(recipe.id().toString()) && //remove disabled recipes
-						TFConfig.flipUncraftingModIdList == TFConfig.blacklistedUncraftingModIds.contains(recipe.id().getNamespace())) //remove blacklisted mod ids
-				.collect(Collectors.toList());
-			recipes.removeIf(recipe -> (recipe.value() instanceof ShapelessRecipe && !TFConfig.allowShapelessUncrafting));
-			recipes.addAll(manager.getAllRecipesFor(TFRecipes.UNCRAFTING_RECIPE.get()));
-			return recipes;
-		} else {
-			return new ArrayList<>(manager.getAllRecipesFor(TFRecipes.UNCRAFTING_RECIPE.get()));
+			for (RecipeHolder<? extends CraftingRecipe> recipeHolder : manager.byType(RecipeType.CRAFTING)) {
+				if (recipeHolder.value() instanceof CraftingRecipe recipe) {
+					if (recipe instanceof ShapedRecipe shapedRecipe && isRecipeChill(recipeHolder, shapedRecipe.result.copy())) {
+						recipes.add(recipeHolder);
+					} else if (recipe instanceof ShapelessRecipe shapelessRecipe && !TFConfig.allowShapelessUncrafting && isRecipeChill(recipeHolder, shapelessRecipe.result.copy())) {
+						recipes.add(recipeHolder);
+					}
+				}
+			}
 		}
+		recipes.addAll(manager.byType(TFRecipes.UNCRAFTING_RECIPE.get()));
+		return recipes;
+	}
+
+	public static boolean isRecipeChill(RecipeHolder<?> holder, ItemStack result) {
+		return !result.isEmpty() &&  //get rid of empty items
+			!result.is(TFItemTags.BANNED_UNCRAFTABLES) &&  //Prevents things that are tagged as banned from showing up
+			TFConfig.reverseRecipeBlacklist == TFConfig.disableUncraftingRecipes.contains(holder.id().toString()) && //remove disabled recipes
+			TFConfig.flipUncraftingModIdList == TFConfig.blacklistedUncraftingModIds.contains(holder.id().location().getNamespace());
 	}
 
 	//all recipe viewers run this once when initializing recipes
@@ -93,12 +99,12 @@ public class RecipeViewerConstants {
 		}
 
 		for (EntityType<?> input : new ArrayList<>(inputs)) {
-            EntityTransformation output = input.builtInRegistryHolder().getData(TFDataMaps.OMINOUS_FIRE);
+			EntityTransformation output = input.builtInRegistryHolder().getData(TFDataMaps.OMINOUS_FIRE);
 			if (output != null) {
 				OminousFireInfo dummy = new OminousFireInfo(output.result(), input);
 				if (!info.contains(dummy)) {
-                    info.add(new OminousFireInfo(input, output.result()));
-                }
+					info.add(new OminousFireInfo(input, output.result()));
+				}
 			}
 		}
 		return info;

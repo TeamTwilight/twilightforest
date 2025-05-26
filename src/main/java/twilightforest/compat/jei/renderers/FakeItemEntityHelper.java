@@ -7,7 +7,6 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.compat.jei.FakeItemEntity;
-import twilightforest.compat.jei.JEICompat;
 
 import java.util.Objects;
 
@@ -15,16 +14,16 @@ public class FakeItemEntityHelper implements IIngredientHelper<FakeItemEntity> {
 
 	@Override
 	public IIngredientType<FakeItemEntity> getIngredientType() {
-		return JEICompat.FAKE_ITEM_ENTITY;
+		return FakeItemEntity.FAKE_ITEM_ENTITY;
 	}
 
 	@Override
 	public String getDisplayName(FakeItemEntity ingredient) {
-		return ingredient.stack().getItem().getDescription().toString();
+		return ingredient.stack().getItem().getName().getString();
 	}
 
 	@Override
-	public String getUniqueId(FakeItemEntity ingredient, UidContext context) {
+	public Object getUid(FakeItemEntity ingredient, UidContext context) {
 		return Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(ingredient.stack().getItem())).toString();
 	}
 
