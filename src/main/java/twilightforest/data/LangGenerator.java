@@ -557,6 +557,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addItem(TFItems.RAVEN_FEATHER, "Raven Feather");
 		this.addItem(TFItems.MAGIC_MAP_FOCUS, "Magic Map Focus");
 		this.addItem(TFItems.MAZE_MAP_FOCUS, "Maze Map Focus");
+		this.addItem(TFItems.MAZE_SLIME_BALL, "Maze Slime Ball");
 
 		this.addItem(TFItems.LIVEROOT, "Liveroot");
 		this.addItem(TFItems.RAW_IRONWOOD, "Raw Ironwood");

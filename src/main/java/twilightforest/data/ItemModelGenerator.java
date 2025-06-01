@@ -533,6 +533,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		singleTex(TFItems.FILLED_MAZE_MAP);
 		singleTex(TFItems.FILLED_ORE_MAP);
 		singleTex(TFItems.RAVEN_FEATHER);
+		singleTex(TFItems.MAZE_SLIME_BALL);
 		singleTex(TFItems.MAGIC_MAP_FOCUS);
 		singleTex(TFItems.MAZE_MAP_FOCUS);
 		singleTex(TFItems.LIVEROOT);

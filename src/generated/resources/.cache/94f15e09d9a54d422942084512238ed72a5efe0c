@@ -1,4 +1,4 @@
-// 1.21.1	2025-06-01T14:24:07.29313	TwilightForest Item and BlockItem models
+// 1.21.1	2025-06-01T16:24:00.528843	TwilightForest Item and BlockItem models
 387b18dfa614fda790f7b8e8324e3b139fa177c2 assets/twilightforest/models/item/acacia_banister.json
 59484730296a2f5e31f486fac16ad09d2a55ae8c assets/twilightforest/models/item/acacia_drying_rack.json
 0ca7dc7b4daec376dd0f85d57465830781584c7d assets/twilightforest/models/item/alpha_yeti_banner_pattern.json
@@ -513,6 +513,7 @@ f4dac8a73ee71c84e875908b6690237c43bf0633 assets/twilightforest/models/item/mangr
 6604d6d66e5d0be53e3daa017c419240b51205d9 assets/twilightforest/models/item/mangrove_trapped_chest.json
 2496be590449bb19a40a9bd04aa08fdfc4c263b9 assets/twilightforest/models/item/mangrove_wood.json
 11c99bf9307aac43c075320eb3fe411ec2eac58c assets/twilightforest/models/item/mayapple.json
+c1cba7f2d889bd08af910438417f67b0e75d2a7b assets/twilightforest/models/item/maze_slime_ball.json
 e2a76acdb90e8219e3be8d19003a7467ccf55c11 assets/twilightforest/models/item/mazebreaker_pickaxe.json
 ec981af97894d664b45ef734c30ad813ebf7ec30 assets/twilightforest/models/item/mazestone.json
 25c80cd7f729db78526a8e96b8225e925fa3161f assets/twilightforest/models/item/mazestone_border.json
