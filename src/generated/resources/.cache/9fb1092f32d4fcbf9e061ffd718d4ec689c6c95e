@@ -1,4 +1,4 @@
-// 1.21.1	2025-04-13T23:06:03.164438	Recipes
+// 1.21.1	2025-06-01T14:52:26.934181	Recipes
 c2df534e70a4871d9e50ee3a1c6242e5e0fe6eaa data/twilightforest/advancement/recipes/building_blocks/aurora_pillar.json
 07904494c5d60d52e5f79f8f6487d08016013692 data/twilightforest/advancement/recipes/building_blocks/canopy_bookshelf.json
 195eaa6599cda74857d6163a2d207b797e492275 data/twilightforest/advancement/recipes/building_blocks/castleblock/bold_castle_brick_pillar.json
@@ -333,6 +333,7 @@ f5d54473f419fe8991effd33f0b94f9f126b0938 data/twilightforest/advancement/recipes
 1d97ef2f296ef8dab26486d3561f2d6165fcc525 data/twilightforest/advancement/recipes/drying/pork_jerky.json
 fd145ef7dc2caae000d45b773fec968df7e15599 data/twilightforest/advancement/recipes/drying/rabbit_jerky.json
 4ee5cdf11d0c6255a2b171af93513d00fb204e06 data/twilightforest/advancement/recipes/drying/salmon_jerky.json
+4ad836079023855ca0b07c220cdf171afd55659b data/twilightforest/advancement/recipes/drying/tanned_leather.json
 0d9dad55e54289a503138d8538b87001466f51fe data/twilightforest/advancement/recipes/drying/venison_jerky.json
 5d1fcce4b234c8997ac428375626fd56ab4d4480 data/twilightforest/advancement/recipes/food/food/campfired_meef.json
 efa95bc01ed5201bcba73ebcc82b22d14914a81d data/twilightforest/advancement/recipes/food/food/campfired_venison.json
@@ -770,6 +771,7 @@ e31859dfdea901259513b9b2a0b9a5881ff23a2d data/twilightforest/recipe/stonecutting
 a5a0b65ac7ada3139260897b46df21ee5f856336 data/twilightforest/recipe/stonecutting/worn_castle_brick/bold_castle_brick_tile.json
 59f00fe0f444afb73a0a86066df5e4f7e9fd41ef data/twilightforest/recipe/stonecutting/worn_castle_brick/thick_castle_brick.json
 9a540c4018b4ee55f24433ecf0f2d97d24bd3ca9 data/twilightforest/recipe/stonecutting/worn_castle_brick/worn_castle_brick_stairs.json
+780a79499580ec0a07dbe45c2d71f0bf98091deb data/twilightforest/recipe/tanned_leather.json
 7566dbbb74cbebecd372b34342f7f53eb5f8df2d data/twilightforest/recipe/thorn_rose_to_red.json
 3aac40ad9fa1e124b5460d43a83cc5cd3d1b8e68 data/twilightforest/recipe/time_boat.json
 3153984436d024e52f46a546029ed1c2c52e3360 data/twilightforest/recipe/time_chest_boat.json

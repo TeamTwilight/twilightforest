@@ -1,4 +1,4 @@
-// 1.21.1	2025-04-13T19:16:36.7353064	TwilightForest Item and BlockItem models
+// 1.21.1	2025-06-01T14:24:07.29313	TwilightForest Item and BlockItem models
 387b18dfa614fda790f7b8e8324e3b139fa177c2 assets/twilightforest/models/item/acacia_banister.json
 59484730296a2f5e31f486fac16ad09d2a55ae8c assets/twilightforest/models/item/acacia_drying_rack.json
 0ca7dc7b4daec376dd0f85d57465830781584c7d assets/twilightforest/models/item/alpha_yeti_banner_pattern.json
@@ -784,6 +784,7 @@ ee065f8e4f9df73fd8cec17cadf3c219607928da assets/twilightforest/models/item/strip
 6944ef6f561af2c195b161f856e1e5628c12b3d3 assets/twilightforest/models/item/stripped_twilight_oak_wood.json
 96cc061452d7448bbe0acdbcda714c489edebae2 assets/twilightforest/models/item/stronghold_shield.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/swarm_spider_spawn_egg.json
+9216e2cbe4fcaee112d33f10e9d5a327a83b176d assets/twilightforest/models/item/tanned_leather.json
 618e6cb5fe62c6e41a6277f85e27878be738e91f assets/twilightforest/models/item/terrorcotta_arcs.json
 e1d29927bf89c2ef9b0a45ea90facc9279d9452a assets/twilightforest/models/item/terrorcotta_curves.json
 b03a59dab8b070aa8bb1b6bfd99a758ea8e5d9b2 assets/twilightforest/models/item/terrorcotta_lines.json
@@ -851,6 +852,7 @@ f60ae0d84245d753df2a6a97409f2c23b821c7dd assets/twilightforest/models/item/trave
 d118fba404b81ae1194fdaf4f77c2239cc10c65e assets/twilightforest/models/item/travellers_goggles.json
 be040810f171ef55e58de959282af737cef05dc5 assets/twilightforest/models/item/travellers_wings.json
 0727eba890308723207ea52fe893d3af02d740c2 assets/twilightforest/models/item/travellers_wings_belt.json
+c6e9c039647ddf58d39bdad8c85ff848c95c409f assets/twilightforest/models/item/treated_leather.json
 5bc1edf6b84c4ad6ce22df3d063818dc4e15debe assets/twilightforest/models/item/triple_bow.json
 a01e709e7b119f1c1c6c1f19c37a45adce96fe23 assets/twilightforest/models/item/triple_bow_pulling_0.json
 da8ccbaaf7197d8de6f5a670061779d6c9bd69b8 assets/twilightforest/models/item/triple_bow_pulling_1.json

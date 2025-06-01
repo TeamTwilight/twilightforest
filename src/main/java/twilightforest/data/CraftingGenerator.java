@@ -663,6 +663,10 @@ public class CraftingGenerator extends CraftingDataHelper {
 		DryingRecipeBuilder.drying(TFItems.RAW_MEEF, TFItems.MEEF_JERKY)
 			.unlockedBy("has_meat", has(TFItems.RAW_MEEF))
 			.save(output);
+
+		DryingRecipeBuilder.drying(TFItems.TREATED_LEATHER, TFItems.TANNED_LEATHER)
+			.unlockedBy("has_treated", has(TFItems.TREATED_LEATHER))
+			.save(output);
 	}
 
 	private void blockCompressionRecipes(RecipeOutput output) {

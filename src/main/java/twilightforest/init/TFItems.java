@@ -323,4 +323,7 @@ public class TFItems {
 	public static final DeferredItem<Item> FUGU_JERKY = ITEMS.register("fugu_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.8F).build())));
 	public static final DeferredItem<Item> VENISON_JERKY = ITEMS.register("venison_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationModifier(1.0F).build())));
 	public static final DeferredItem<Item> MEEF_JERKY = ITEMS.register("meef_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationModifier(1.0F).build())));
+
+	public static final DeferredItem<Item> TREATED_LEATHER = ITEMS.register("treated_leather", () -> new Item(new Item.Properties()));
+	public static final DeferredItem<Item> TANNED_LEATHER = ITEMS.register("tanned_leather", () -> new Item(new Item.Properties()));
 }

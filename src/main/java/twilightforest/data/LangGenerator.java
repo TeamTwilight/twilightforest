@@ -702,6 +702,9 @@ public class LangGenerator extends TFLangProvider {
 		this.addItem(TFItems.VENISON_JERKY, "Venison Jerky");
 		this.addItem(TFItems.MEEF_JERKY, "Meef Jerky");
 
+		this.addItem(TFItems.TREATED_LEATHER, "Treated Leather");
+		this.addItem(TFItems.TANNED_LEATHER, "Tanned Leather");
+
 		this.addItem(TFItems.COPPER_NUGGET, "Copper Nugget");
 		this.addItem(TFItems.IRON_BERRY, "Iron Oreberry");
 		this.addItem(TFItems.GOLD_BERRY, "Gold Oreberry");
