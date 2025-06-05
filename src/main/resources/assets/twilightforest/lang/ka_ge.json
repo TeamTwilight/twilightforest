@@ -1,1 +1,20 @@
-{}
+{
+  "Dimension Settings.button": "რედაქტირება",
+  "Magic Trees.button": "რედაქტირება",
+  "Portal Settings.button": "რედაქტირება",
+  "Shield Parrying.button": "რედაქტირება",
+  "Uncrafting Table.button": "რედაქტირება",
+  "advancement.twilightforest.magic_map.desc": "შექმენით %s",
+  "advancement.twilightforest.magic_map_focus.desc": "შექმენით %s %s-ით, %s-ით და %s-ით",
+  "advancement.twilightforest.maze_map": "აწი გაღწევაც არ გვაწყენს",
+  "advancement.twilightforest.ore_map.desc": "შექმენით %s",
+  "advancement.twilightforest.root": "ბინდტევრი",
+  "advancement.twilightforest.root.desc": "შედგით იდუმალ და ჯადოსნურ ბინდტევრში ",
+  "advancement.twilightforest.troll.desc": "იპოვეთ და მოკალით %s",
+  "auroraBiomes.button": "რედაქტირება",
+  "biome.twilightforest.dark_forest": "ბნელტევრი",
+  "biome.twilightforest.dark_forest_center": "ბნელტევრის შუაგული",
+  "biome.twilightforest.dense_forest": "უღრანი ტყე",
+  "biome.twilightforest.dense_mushroom_forest": "უღრანი მუშრუმის ტყე",
+  "biome.twilightforest.enchanted_forest": "მოჯადოებული ტყე"
+}
