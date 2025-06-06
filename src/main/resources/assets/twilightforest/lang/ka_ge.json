@@ -552,6 +552,8 @@
   "config.twilightforest.ingredient_switching.tooltip": "ჩართვისას, დამშლელი აღარ შეგაცვლევინებს ინგრედიენტებს, თუ რეცეპტი იყენებს შექმნის ტეგს.\nვერც ერთი რეცეპტი ვერ იმოქმედებს!\nთუ გსურთ გარკვეული რეცეპტების გამოჩენის გამორთვა, გამოიყენეთ ტეგი: „twilightforest:banned_uncrafting_ingredients“.",
   "config.twilightforest.magic_trees": "ჯადოსნური ხეები",
   "config.twilightforest.mining_range.tooltip": "წყვეტს ქვაბულხის ბირთვის მოქმედების არეალს. შეიძლება იყოს რიცხვი 1-დან 128-მდე. 0-ზე დააყენეთ, თუ გსურთ ქვაბულხის ბირთვის გათიშვა.",
+  "config.twilightforest.screen_shake": "ლობიოს ღეროსგან ქანქარი",
+  "config.twilightforest.screen_shake.tooltip": "მართავს იქანქარებს თუ არა ეკრანი ლობიოს ღეროს ზრდისას.",
   "config.twilightforest.shapeless_uncrafting": "უფორმო დაშლა",
   "config.twilightforest.shapeless_uncrafting.tooltip": "ჩართვისას, დამშლელი შეძლებს უფორმო რეცეპტების დაშლასაც.\nდამშლელი მოსაზრებული იყო ფორმიანი რეცეპტებისთვის, მაგრამ პარამეტრი შენარჩუნებულია ხალხისთვის, რომლებსაც სურთ ფუნქციის შენარჩუნება.",
   "config.twilightforest.sorting_range.tooltip": "წყვეტს დახარისხეს ბირთვის მოქმედების არეალს. შეიძლება იყოს რიცხვი 1-დან 128-მდე. 0-ზე დააყენეთ, თუ გსურთ დახარისხეს ბირთვის გათიშვა.",
