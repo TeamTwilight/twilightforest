@@ -251,7 +251,7 @@ public class EntityEvents {
 		ItemStack chest = livingEntity.getItemBySlot(EquipmentSlot.CHEST);
 		Float probability = chest.get(TFDataComponents.PERFECT_DODGE_PROBABILITY);
 		Level level = livingEntity.level();
-		if (probability == null || probability <= level.random.nextFloat() && probability == 0)
+		if (probability == null || probability <= level.random.nextFloat())
 			return;
 		Entity projectile = event.getEntity();
 		level.playLocalSound(projectile, SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 1, 1);  // FIXME: replace placeholder sound event and adjust volume and pitch parameters
