@@ -100,7 +100,7 @@ public class TravellersArmorItem extends ArmorItem {
 
 		livingEntity.setData(TFDataAttachments.LAST_TICK_WATER_WALKING, livingEntity.level().getGameTime());
 
-		ParticlePacket particlePacket = new ParticlePacket();  // we have to create it on client because of limitations of java
+		ParticlePacket particlePacket = new ParticlePacket();  // we have to create it on client to avoid networking delays
 		for (int particleNumber = 0; particleNumber < livingEntity.dimensions.width(); particleNumber++) {
 			double dx = (level.random.nextDouble() * 2.0 - 1.0) * (double)livingEntity.dimensions.width() / 2D;
 			double dz = (level.random.nextDouble() * 2.0 - 1.0) * (double)livingEntity.dimensions.width() / 2D;
