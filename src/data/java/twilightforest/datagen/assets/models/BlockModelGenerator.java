@@ -349,7 +349,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.wrapBlockItem(TFBlocks.TWILIGHT_OAK_LOG.get(), block -> this.generateLog(block, TextureMapping.logColumn(TFBlocks.TWILIGHT_OAK_LOG.get())));
 		this.wrapBlockItem(TFBlocks.TWILIGHT_OAK_WOOD.get(), block -> this.generateWood(block, TextureMapping.logColumn(TFBlocks.TWILIGHT_OAK_LOG.get())));
 		this.wrapBlockItem(TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.get(), block -> this.generateLog(block, TextureMapping.logColumn(TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.get())));
-		this.wrapBlockItem(TFBlocks.STRIPPED_TWILIGHT_OAK_WOOD.get(), block -> this.generateLog(block, TextureMapping.logColumn(TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.get())));
+		this.wrapBlockItem(TFBlocks.STRIPPED_TWILIGHT_OAK_WOOD.get(), block -> this.generateWood(block, TextureMapping.logColumn(TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.get())));
 		this.generateHollowLog(TFBlocks.TWILIGHT_OAK_LOG.get(), TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.get(), TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_VERTICAL.get(), TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_CLIMBABLE.get());
 		this.generateSapling(TFBlocks.TWILIGHT_OAK_SAPLING.get(), TFBlocks.POTTED_TWILIGHT_OAK_SAPLING.get(), PlantType.NOT_TINTED);
 		this.createTintedLeaves(TFBlocks.TWILIGHT_OAK_LEAVES.get(), TexturedModel.createDefault(block -> TextureMapping.cube(Blocks.OAK_LEAVES), ModelTemplates.LEAVES), -12012264);
@@ -370,7 +370,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.wrapBlockItem(TFBlocks.CANOPY_LOG.get(), block -> this.generateLog(block, TextureMapping.logColumn(TFBlocks.CANOPY_LOG.get())));
 		this.wrapBlockItem(TFBlocks.CANOPY_WOOD.get(), block -> this.generateWood(block, TextureMapping.logColumn(TFBlocks.CANOPY_LOG.get())));
 		this.wrapBlockItem(TFBlocks.STRIPPED_CANOPY_LOG.get(), block -> this.generateLog(block, TextureMapping.logColumn(TFBlocks.STRIPPED_CANOPY_LOG.get())));
-		this.wrapBlockItem(TFBlocks.STRIPPED_CANOPY_WOOD.get(), block -> this.generateLog(block, TextureMapping.logColumn(TFBlocks.STRIPPED_CANOPY_LOG.get())));
+		this.wrapBlockItem(TFBlocks.STRIPPED_CANOPY_WOOD.get(), block -> this.generateWood(block, TextureMapping.logColumn(TFBlocks.STRIPPED_CANOPY_LOG.get())));
 		this.generateHollowLog(TFBlocks.CANOPY_LOG.get(), TFBlocks.STRIPPED_CANOPY_LOG.get(), TFBlocks.HOLLOW_CANOPY_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_CANOPY_LOG_VERTICAL.get(), TFBlocks.HOLLOW_CANOPY_LOG_CLIMBABLE.get());
 		this.generateSapling(TFBlocks.CANOPY_SAPLING.get(), TFBlocks.POTTED_CANOPY_SAPLING.get(), PlantType.NOT_TINTED);
 		this.createTintedLeaves(TFBlocks.CANOPY_LEAVES.get(), TexturedModel.createDefault(block -> TextureMapping.cube(Blocks.SPRUCE_LEAVES), ModelTemplates.LEAVES), -10380959);
@@ -395,7 +395,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.wrapBlockItem(TFBlocks.MANGROVE_LOG.get(), block -> this.generateLog(block, TextureMapping.logColumn(TFBlocks.MANGROVE_LOG.get())));
 		this.wrapBlockItem(TFBlocks.MANGROVE_WOOD.get(), block -> this.generateWood(block, TextureMapping.logColumn(TFBlocks.MANGROVE_LOG.get())));
 		this.wrapBlockItem(TFBlocks.STRIPPED_MANGROVE_LOG.get(), block -> this.generateLog(block, TextureMapping.logColumn(TFBlocks.STRIPPED_MANGROVE_LOG.get())));
-		this.wrapBlockItem(TFBlocks.STRIPPED_MANGROVE_WOOD.get(), block -> this.generateLog(block, TextureMapping.logColumn(TFBlocks.STRIPPED_MANGROVE_LOG.get())));
+		this.wrapBlockItem(TFBlocks.STRIPPED_MANGROVE_WOOD.get(), block -> this.generateWood(block, TextureMapping.logColumn(TFBlocks.STRIPPED_MANGROVE_LOG.get())));
 		this.generateHollowLog(TFBlocks.MANGROVE_LOG.get(), TFBlocks.STRIPPED_MANGROVE_LOG.get(), TFBlocks.HOLLOW_MANGROVE_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_MANGROVE_LOG_VERTICAL.get(), TFBlocks.HOLLOW_MANGROVE_LOG_CLIMBABLE.get());
 		this.generateSapling(TFBlocks.MANGROVE_SAPLING.get(), TFBlocks.POTTED_MANGROVE_SAPLING.get(), PlantType.NOT_TINTED);
 		this.createTintedLeaves(TFBlocks.MANGROVE_LEAVES.get(), TexturedModel.createDefault(block -> TextureMapping.cube(Blocks.BIRCH_LEAVES), ModelTemplates.LEAVES), -8345771);
@@ -417,7 +417,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.wrapBlockItem(TFBlocks.DARK_LOG.get(), block -> this.generateLog(block, TextureMapping.logColumn(TFBlocks.DARK_LOG.get())));
 		this.wrapBlockItem(TFBlocks.DARK_WOOD.get(), block -> this.generateWood(block, TextureMapping.logColumn(TFBlocks.DARK_LOG.get())));
 		this.wrapBlockItem(TFBlocks.STRIPPED_DARK_LOG.get(), block -> this.generateLog(block, TextureMapping.logColumn(TFBlocks.STRIPPED_DARK_LOG.get())));
-		this.wrapBlockItem(TFBlocks.STRIPPED_DARK_WOOD.get(), block -> this.generateLog(block, TextureMapping.logColumn(TFBlocks.STRIPPED_DARK_LOG.get())));
+		this.wrapBlockItem(TFBlocks.STRIPPED_DARK_WOOD.get(), block -> this.generateWood(block, TextureMapping.logColumn(TFBlocks.STRIPPED_DARK_LOG.get())));
 		this.generateHollowLog(TFBlocks.DARK_LOG.get(), TFBlocks.STRIPPED_DARK_LOG.get(), TFBlocks.HOLLOW_DARK_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_DARK_LOG_VERTICAL.get(), TFBlocks.HOLLOW_DARK_LOG_CLIMBABLE.get());
 		this.generateSapling(TFBlocks.DARKWOOD_SAPLING.get(), TFBlocks.POTTED_DARKWOOD_SAPLING.get(), PlantType.NOT_TINTED);
 		this.createTintedLeaves(TFBlocks.DARK_LEAVES.get(), TexturedModel.LEAVES, -12012264);
@@ -439,7 +439,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.wrapBlockItem(TFBlocks.TIME_LOG.get(), block -> this.generateLog(block, TextureMapping.logColumn(TFBlocks.TIME_LOG.get())));
 		this.wrapBlockItem(TFBlocks.TIME_WOOD.get(), block -> this.generateWood(block, TextureMapping.logColumn(TFBlocks.TIME_LOG.get())));
 		this.wrapBlockItem(TFBlocks.STRIPPED_TIME_LOG.get(), block -> this.generateLog(block, TextureMapping.logColumn(TFBlocks.STRIPPED_TIME_LOG.get())));
-		this.wrapBlockItem(TFBlocks.STRIPPED_TIME_WOOD.get(), block -> this.generateLog(block, TextureMapping.logColumn(TFBlocks.STRIPPED_TIME_LOG.get())));
+		this.wrapBlockItem(TFBlocks.STRIPPED_TIME_WOOD.get(), block -> this.generateWood(block, TextureMapping.logColumn(TFBlocks.STRIPPED_TIME_LOG.get())));
 		this.generateTreeCore(TFBlocks.TIME_LOG.get(), TFBlocks.TIME_LOG_CORE.get());
 		this.generateHollowLog(TFBlocks.TIME_LOG.get(), TFBlocks.STRIPPED_TIME_LOG.get(), TFBlocks.HOLLOW_TIME_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_TIME_LOG_VERTICAL.get(), TFBlocks.HOLLOW_TIME_LOG_CLIMBABLE.get());
 		this.generateSapling(TFBlocks.TIME_SAPLING.get(), TFBlocks.POTTED_TIME_SAPLING.get(), PlantType.NOT_TINTED);
@@ -461,7 +461,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.wrapBlockItem(TFBlocks.TRANSFORMATION_LOG.get(), block -> this.generateLog(block, TextureMapping.logColumn(TFBlocks.TRANSFORMATION_LOG.get())));
 		this.wrapBlockItem(TFBlocks.TRANSFORMATION_WOOD.get(), block -> this.generateWood(block, TextureMapping.logColumn(TFBlocks.TRANSFORMATION_LOG.get())));
 		this.wrapBlockItem(TFBlocks.STRIPPED_TRANSFORMATION_LOG.get(), block -> this.generateLog(block, TextureMapping.logColumn(TFBlocks.STRIPPED_TRANSFORMATION_LOG.get())));
-		this.wrapBlockItem(TFBlocks.STRIPPED_TRANSFORMATION_WOOD.get(), block -> this.generateLog(block, TextureMapping.logColumn(TFBlocks.STRIPPED_TRANSFORMATION_LOG.get())));
+		this.wrapBlockItem(TFBlocks.STRIPPED_TRANSFORMATION_WOOD.get(), block -> this.generateWood(block, TextureMapping.logColumn(TFBlocks.STRIPPED_TRANSFORMATION_LOG.get())));
 		this.generateTreeCore(TFBlocks.TRANSFORMATION_LOG.get(), TFBlocks.TRANSFORMATION_LOG_CORE.get());
 		this.generateHollowLog(TFBlocks.TRANSFORMATION_LOG.get(), TFBlocks.STRIPPED_TRANSFORMATION_LOG.get(), TFBlocks.HOLLOW_TRANSFORMATION_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_TRANSFORMATION_LOG_VERTICAL.get(), TFBlocks.HOLLOW_TRANSFORMATION_LOG_CLIMBABLE.get());
 		this.generateSapling(TFBlocks.TRANSFORMATION_SAPLING.get(), TFBlocks.POTTED_TRANSFORMATION_SAPLING.get(), PlantType.NOT_TINTED);
@@ -483,7 +483,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.wrapBlockItem(TFBlocks.MINING_LOG.get(), block -> this.generateLog(block, TextureMapping.logColumn(TFBlocks.MINING_LOG.get())));
 		this.wrapBlockItem(TFBlocks.MINING_WOOD.get(), block -> this.generateWood(block, TextureMapping.logColumn(TFBlocks.MINING_LOG.get())));
 		this.wrapBlockItem(TFBlocks.STRIPPED_MINING_LOG.get(), block -> this.generateLog(block, TextureMapping.logColumn(TFBlocks.STRIPPED_MINING_LOG.get())));
-		this.wrapBlockItem(TFBlocks.STRIPPED_MINING_WOOD.get(), block -> this.generateLog(block, TextureMapping.logColumn(TFBlocks.STRIPPED_MINING_LOG.get())));
+		this.wrapBlockItem(TFBlocks.STRIPPED_MINING_WOOD.get(), block -> this.generateWood(block, TextureMapping.logColumn(TFBlocks.STRIPPED_MINING_LOG.get())));
 		this.generateTreeCore(TFBlocks.MINING_LOG.get(), TFBlocks.MINING_LOG_CORE.get());
 		this.generateHollowLog(TFBlocks.MINING_LOG.get(), TFBlocks.STRIPPED_MINING_LOG.get(), TFBlocks.HOLLOW_MINING_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_MINING_LOG_VERTICAL.get(), TFBlocks.HOLLOW_MINING_LOG_CLIMBABLE.get());
 		this.generateSapling(TFBlocks.MINING_SAPLING.get(), TFBlocks.POTTED_MINING_SAPLING.get(), PlantType.NOT_TINTED);
@@ -505,7 +505,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.wrapBlockItem(TFBlocks.SORTING_LOG.get(), block -> this.generateLog(block, TextureMapping.logColumn(TFBlocks.SORTING_LOG.get())));
 		this.wrapBlockItem(TFBlocks.SORTING_WOOD.get(), block -> this.generateWood(block, TextureMapping.logColumn(TFBlocks.SORTING_LOG.get())));
 		this.wrapBlockItem(TFBlocks.STRIPPED_SORTING_LOG.get(), block -> this.generateLog(block, TextureMapping.logColumn(TFBlocks.STRIPPED_SORTING_LOG.get())));
-		this.wrapBlockItem(TFBlocks.STRIPPED_SORTING_WOOD.get(), block -> this.generateLog(block, TextureMapping.logColumn(TFBlocks.STRIPPED_SORTING_LOG.get())));
+		this.wrapBlockItem(TFBlocks.STRIPPED_SORTING_WOOD.get(), block -> this.generateWood(block, TextureMapping.logColumn(TFBlocks.STRIPPED_SORTING_LOG.get())));
 		this.generateTreeCore(TFBlocks.SORTING_LOG.get(), TFBlocks.SORTING_LOG_CORE.get());
 		this.generateHollowLog(TFBlocks.SORTING_LOG.get(), TFBlocks.STRIPPED_SORTING_LOG.get(), TFBlocks.HOLLOW_SORTING_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_SORTING_LOG_VERTICAL.get(), TFBlocks.HOLLOW_SORTING_LOG_CLIMBABLE.get());
 		this.generateSapling(TFBlocks.SORTING_SAPLING.get(), TFBlocks.POTTED_SORTING_SAPLING.get(), PlantType.NOT_TINTED);
