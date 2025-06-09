@@ -21,7 +21,7 @@ public abstract class TFThrowable extends ThrowableProjectile implements ITFProj
 	}
 
 	public TFThrowable(EntityType<? extends TFThrowable> type, Level level, LivingEntity thrower) {
-		super(type, level);
+		super(type, thrower.getX(), thrower.getEyeY() - 0.1F, thrower.getZ(), level);
 		this.setOwner(thrower);
 	}
 
