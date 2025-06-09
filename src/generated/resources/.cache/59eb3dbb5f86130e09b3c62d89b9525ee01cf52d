@@ -1,4 +1,4 @@
-// 1.21.4	2025-04-19T09:17:11.3663895	Loot Tables
+// 1.21.4	2025-06-09T19:30:50.3747056	Loot Tables
 483a7e0c99d5cabeab1ba9f04bd8e88d0a8f7386 data/twilightforest/loot_table/aurora_cache.json
 002a6e2eccdc92db019bd775911912877b26771f data/twilightforest/loot_table/aurora_room.json
 afe7197a19b997d2f5c5980d9805b6093191b44f data/twilightforest/loot_table/blocks/acacia_banister.json
@@ -180,7 +180,7 @@ bfac878f3f3337cae9b12477f82d0004dc489bb3 data/twilightforest/loot_table/blocks/h
 66caeca7e64506c4ebf595c81d40ebb03d68e07c data/twilightforest/loot_table/blocks/ironwood_block.json
 3f7e92cbac43eeb9b9677d7e0047128ffab1c5c4 data/twilightforest/loot_table/blocks/iron_ladder.json
 c615f3316b9deb500c021b5665729ca49639ba13 data/twilightforest/loot_table/blocks/jungle_banister.json
-cd7cbebd276c4a3119c54f6da92aa512c05e1422 data/twilightforest/loot_table/blocks/keepsake_casket.json
+75f861b8ca95c4400bf22fd312420306a316301b data/twilightforest/loot_table/blocks/keepsake_casket.json
 8b178ab9d6562c428e911e9fd51d63623780be56 data/twilightforest/loot_table/blocks/knightmetal_block.json
 987a3f9e2b2a1417c6281e6750f8db1115c2ca1d data/twilightforest/loot_table/blocks/knight_phantom_trophy.json
 48c340fc13fbd8cae6f8bd034a86c0b6de02a9ef data/twilightforest/loot_table/blocks/lich_tower_miniature_structure.json
@@ -304,7 +304,7 @@ fff8c14cea64f079189a2e6eeb2bc54526fe0a3c data/twilightforest/loot_table/blocks/r
 ab8d5987d12f7961a1f8bc2669c889ef58eb3aff data/twilightforest/loot_table/blocks/root_strand.json
 fb7868a21fc15bb2227693e0604831ce049a0772 data/twilightforest/loot_table/blocks/rope.json
 ef904a158987dbd9963909ef8fb80667071025b7 data/twilightforest/loot_table/blocks/skeleton_skull_candle.json
-fa1bacdc1bec1dd168958c51a377d9a0609f44dc data/twilightforest/loot_table/blocks/skull_chest.json
+3cea4885275a47e1dbd15802d9d7722d86387bce data/twilightforest/loot_table/blocks/skull_chest.json
 b7336d3399cc73483a2b33de9185b17f64d19c1d data/twilightforest/loot_table/blocks/smoker.json
 358ed83d512f26a1dda0ab29047792e465020783 data/twilightforest/loot_table/blocks/snowy_cloud.json
 b1e3901cfaa3a38522179ac1f7338841754f13f9 data/twilightforest/loot_table/blocks/snow_queen_trophy.json

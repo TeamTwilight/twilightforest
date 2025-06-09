@@ -126,15 +126,7 @@ public class SkullChestBlock extends BaseEntityBlock implements BlockLoggingEnum
 	public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
 		if (level instanceof ServerLevel sl && !player.isCreative() && sl.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS)) {
 			BlockEntity tile = level.getBlockEntity(pos);
-			if (tile instanceof SkullChestBlockEntity chest) {
-				ItemStack stack = new ItemStack(this);
-				ItemEntity itementity = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), stack);
-				this.modifyDrop(state, stack);
-				if (chest.hasCustomName()) {
-					if (chest.owner != null)
-						itementity.setCustomName(chest.getDisplayName());
-					else itementity.setCustomName(chest.getCustomName());
-				}
+			if (tile instanceof SkullChestBlockEntity) {
 				if (state.getValue(BlockLoggingEnum.MULTILOGGED).getFluid() == Fluids.EMPTY) {
 					Block block = state.getValue(BlockLoggingEnum.MULTILOGGED).getBlock();
 					if (block != Blocks.AIR) {
@@ -144,8 +136,6 @@ public class SkullChestBlock extends BaseEntityBlock implements BlockLoggingEnum
 						level.addFreshEntity(item);
 					}
 				}
-				itementity.setDefaultPickUpDelay();
-				level.addFreshEntity(itementity);
 			}
 		}
 		return super.playerWillDestroy(level, pos, state, player);
