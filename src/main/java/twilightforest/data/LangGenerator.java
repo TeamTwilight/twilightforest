@@ -1187,7 +1187,7 @@ public class LangGenerator extends TFLangProvider {
 		this.add("config.twilightforest.multiplayer_fight_adjuster.more_health", "More Health");
 		this.add("config.twilightforest.multiplayer_fight_adjuster.more_loot_and_health", "More Loot & Health");
 
-		this.addKeyBindCategory(TFKeyBindsCategories.TRAVELLERS_GEAR, "Twilight Forest — Traveller's Gear");
+		this.addKeyBindCategory(TFKeyBindsCategories.TRAVELLERS_GEAR, "Twilight Forest (Traveller's Gear)");
 
 		this.addKeyMapping(TFKeyBinds.RED_THREAD_VISION_KEY, "See Red Thread with Goggles");
 		this.addKeyMapping(TFKeyBinds.ZOOM_KEY, "Zoom With Goggles");
@@ -1201,27 +1201,27 @@ public class LangGenerator extends TFLangProvider {
 		this.addTravellersModifier(TravellersModifiers.HIGH_STEP_MODIFIER, "High Step");
 
 		// insertable modifiers
-		this.addTravellersModifier(TravellersModifiers.AUTO_REPAIR_MODIFIER, "— Auto Repair");
+		this.addTravellersModifier(TravellersModifiers.AUTO_REPAIR_MODIFIER, "- Auto Repair");
 
-		this.addTravellersModifier(TravellersModifiers.RED_THREAD_VISION_MODIFIER, "— Red Thread Vision (keybind ${tfkeybinds/"+ TFKeyBinds.RED_THREAD_VISION_KEY.getName() + "})");
+		this.addTravellersModifier(TravellersModifiers.RED_THREAD_VISION_MODIFIER, "- Red Thread Vision (keybind ${tfkeybinds/"+ TFKeyBinds.RED_THREAD_VISION_KEY.getName() + "})");
 
-		this.addTravellersModifier(TravellersModifiers.STEALTH_MODIFIER,          "— Stealth (sneak to activate)");
-		this.addTravellersModifier(TravellersModifiers.ARROW_MAGNETISM_MODIFIER,  "— Arrow Magnetism");
-		this.addTravellersModifier(TravellersModifiers.FOOD_EFFICIENCY_MODIFIER,  "— Efficient Eater");
-		this.addTravellersModifier(TravellersModifiers.PERFECT_DODGE_MODIFIER,    "— Perfect Dodge");
-		this.addTravellersModifier(TravellersModifiers.HASTE_MODIFIER,            "— Haste");
+		this.addTravellersModifier(TravellersModifiers.STEALTH_MODIFIER,          "- Stealth (sneak to activate)");
+		this.addTravellersModifier(TravellersModifiers.ARROW_MAGNETISM_MODIFIER,  "- Arrow Magnetism");
+		this.addTravellersModifier(TravellersModifiers.FOOD_EFFICIENCY_MODIFIER,  "- Efficient Eater");
+		this.addTravellersModifier(TravellersModifiers.PERFECT_DODGE_MODIFIER,    "- Perfect Dodge");
+		this.addTravellersModifier(TravellersModifiers.HASTE_MODIFIER,            "- Haste");
 
-		this.addTravellersModifier(TravellersModifiers.CONTROLLED_FALL_MODIFIER,  "— Controlled Fall");
-		this.addTravellersModifier(TravellersModifiers.AGILE_RANGER_MODIFIER,     "— Agile Ranger");
-		this.addTravellersModifier(TravellersModifiers.DOUBLE_JUMP_MODIFIER,      "— Double Jump");
-		this.addTravellersModifier(TravellersModifiers.SIDESTEP_MODIFIER,         "— Sidestep");
+		this.addTravellersModifier(TravellersModifiers.CONTROLLED_FALL_MODIFIER,  "- Controlled Fall");
+		this.addTravellersModifier(TravellersModifiers.AGILE_RANGER_MODIFIER,     "- Agile Ranger");
+		this.addTravellersModifier(TravellersModifiers.DOUBLE_JUMP_MODIFIER,      "- Double Jump");
+		this.addTravellersModifier(TravellersModifiers.SIDESTEP_MODIFIER,         "- Sidestep");
 
-		this.addTravellersModifier(TravellersModifiers.STRAIGHT_AHEAD_MODIFIER,   "— Straight Ahead");
-		this.addTravellersModifier(TravellersModifiers.SLIMY_SOLES_MODIFIER,      "— Slimy Soles");
-		this.addTravellersModifier(TravellersModifiers.WATER_WALK_MODIFIER,       "— Water Walk");
+		this.addTravellersModifier(TravellersModifiers.STRAIGHT_AHEAD_MODIFIER,   "- Straight Ahead");
+		this.addTravellersModifier(TravellersModifiers.SLIMY_SOLES_MODIFIER,      "- Slimy Soles");
+		this.addTravellersModifier(TravellersModifiers.WATER_WALK_MODIFIER,       "- Water Walk");
 
 		// Other Traveller's gear components
 		this.add("travellers_gear.ability", "Ability: ");
-		this.add("travellers_gear.modifier.empty", "— Empty");
+		this.add("travellers_gear.modifier.empty", "- Empty");
 	}
 }
