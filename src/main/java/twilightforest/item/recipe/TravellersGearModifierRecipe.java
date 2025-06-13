@@ -36,7 +36,7 @@ public abstract class TravellersGearModifierRecipe extends CustomRecipe {
 			return false;
 		int slots = 0;
 		if (stack.getItem() instanceof TravellersArmorItem travellersArmorItem)
-			slots = travellersArmorItem.insertableModifierSlots;
+			slots = travellersArmorItem.getModifierSlots();
 		return TravellersModifiers.countInsertableModifiers(stack) < slots && !travellersModifier.hasModifier(stack);
 	}
 

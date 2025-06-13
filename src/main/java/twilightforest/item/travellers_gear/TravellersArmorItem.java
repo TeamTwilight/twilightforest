@@ -49,11 +49,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class TravellersArmorItem extends ArmorItem {
+public class TravellersArmorItem extends ArmorItem implements TravellersModifiable {
 	public static final double WATER_WALKING_MAX_SUBMERGED_HEIGHT = 0.4;
 	private static final double AUTO_REPAIR_SUNLIGHT_BOOST = 3;
 	private static final double AUTO_REPAIR_TWILIGHT_BOOST = AUTO_REPAIR_SUNLIGHT_BOOST / 2;
-	public int insertableModifierSlots;
+	private int insertableModifierSlots;
 	@Nullable
 	private ItemAttributeModifiers attributeModifiers;
 	public TravellersArmorItem(ArmorItem.Type equipmentType, Properties properties, int insertableModifierSlots, int durability) {
@@ -321,7 +321,7 @@ public class TravellersArmorItem extends ArmorItem {
 		builtinModifiers.forEach(modifier -> tooltip.add(Component.translatable("travellers_gear.ability").withStyle(ChatFormatting.GOLD).append(getModifierTooltipComponent(modifier))));
 		List<InsertableTravellersModifier> insertableModifiers = TravellersModifiers.findAllInsertableModifiers(stack);
 		insertableModifiers.forEach(modifier -> tooltip.add(getModifierTooltipComponent(modifier)));
-		for (int i = insertableModifiers.size(); i < insertableModifierSlots; i++) {
+		for (int i = insertableModifiers.size(); i < getModifierSlots(); i++) {
 			tooltip.add(Component.translatable("travellers_gear.modifier.empty").withStyle(ChatFormatting.DARK_GRAY));
 		}
 	}
@@ -386,6 +386,10 @@ public class TravellersArmorItem extends ArmorItem {
 			);
 		}
 		return defaultArmorModifiers;
+	}
+
+	public int getModifierSlots() {
+		return insertableModifierSlots;
 	}
 
 	public static final class ArmorRender extends TFArmorRenderer {
