@@ -14,8 +14,8 @@ import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import org.apache.commons.lang3.StringUtils;
 import twilightforest.data.helpers.TFLangProvider;
-import twilightforest.item.travellers_gear.TravellersArmorItem;
 import twilightforest.item.travellers_gear.modifiers.TravellersComponentModifier;
+import twilightforest.item.travellers_gear.modifiers.TravellersModifiable;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifiers;
 
 import javax.annotation.Nullable;
@@ -31,18 +31,18 @@ public abstract class TravellersGearModifierRecipe extends CustomRecipe {
 
 	@Override
 	public boolean matches(CraftingInput input, Level level) {
-		ItemStack stack = getTravellersArmor(input);
+		ItemStack stack = getModifiableArmor(input);
 		if (stack == null)
 			return false;
 		int slots = 0;
-		if (stack.getItem() instanceof TravellersArmorItem travellersArmorItem)
-			slots = travellersArmorItem.getModifierSlots();
+		if (stack.getItem() instanceof TravellersModifiable travellersModifiableItem)
+			slots = travellersModifiableItem.getModifierSlots();
 		return TravellersModifiers.countInsertableModifiers(stack) < slots && !travellersModifier.hasModifier(stack);
 	}
 
 	@Override
 	public ItemStack assemble(CraftingInput input, HolderLookup.Provider registries) {
-		ItemStack travellerArmorStack = getTravellersArmor(input);
+		ItemStack travellerArmorStack = getModifiableArmor(input);
 		if (travellerArmorStack == null)
 			return ItemStack.EMPTY;  // Should never happen
 
@@ -62,24 +62,24 @@ public abstract class TravellersGearModifierRecipe extends CustomRecipe {
 
 	public abstract int getHeight();
 
-	protected static @Nullable ItemStack getTravellersArmor(CraftingInput input) {
-		return getTravellersArmor(input.items());
+	protected static @Nullable ItemStack getModifiableArmor(CraftingInput input) {
+		return getModifiableArmor(input.items());
 	}
 
-	protected static @Nullable ItemStack getTravellersArmor(Iterable<ItemStack> items) {
+	protected static @Nullable ItemStack getModifiableArmor(Iterable<ItemStack> items) {
 		return StreamSupport.stream(items.spliterator(), false)
-			.filter(stack -> stack.getItem() instanceof TravellersArmorItem).findFirst().orElse(null);
+			.filter(stack -> stack.getItem() instanceof TravellersModifiable).findFirst().orElse(null);
 	}
 
-	public static ItemStack getTravellersArmorFromIngredients(Iterable<Ingredient> ingredients) {
+	public static ItemStack getModifiableArmorFromIngredients(Iterable<Ingredient> ingredients) {
 		return StreamSupport.stream(ingredients.spliterator(), false)
 			.flatMap(ingredient -> Arrays.stream(ingredient.getItems()))
-			.filter(stack -> stack.getItem() instanceof TravellersArmorItem).findFirst().orElseThrow();
+			.filter(stack -> stack.getItem() instanceof TravellersModifiable).findFirst().orElseThrow();
 	}
 
 	public ResourceLocation getId() {
 		return travellersModifier.getDataComponentTypeId()
-			.withPrefix(StringUtils.substringAfterLast(getTravellersArmorFromIngredients(getIngredients()).getDescriptionId(), '.') + "/")
+			.withPrefix(StringUtils.substringAfterLast(getModifiableArmorFromIngredients(getIngredients()).getDescriptionId(), '.') + "/")
 			.withPrefix("add_modifier_to_travellers_gear/")
 			.withSuffix("_modifier");
 	}

@@ -40,7 +40,7 @@ public class EmiTravellersGearModifierRecipe extends EmiPatternCraftingRecipe {
 	@Override
 	public SlotWidget getOutputWidget(int x, int y) {
 		return new GeneratedSlotWidget(
-			rand -> EmiStack.of(recipe.applyModifier(TravellersGearModifierRecipe.getTravellersArmorFromIngredients(recipe.getIngredients()))),
+			rand -> EmiStack.of(recipe.applyModifier(TravellersGearModifierRecipe.getModifiableArmorFromIngredients(recipe.getIngredients()))),
 			uniqueSeed,
 			x, y
 		);

@@ -22,7 +22,7 @@ public class REITravellersGearModifierRecipeFiller implements CraftingRecipeFill
 	public Collection<Display> apply(RecipeHolder<TravellersGearModifierRecipe> recipeHolder) {
 		TravellersGearModifierRecipe recipe = recipeHolder.value();
 		List<Ingredient> ingredients = recipe.getIngredients();
-		ItemStack output = TravellersGearModifierRecipe.getTravellersArmorFromIngredients(ingredients).copy();
+		ItemStack output = TravellersGearModifierRecipe.getModifiableArmorFromIngredients(ingredients).copy();
 		recipe.applyModifier(output);
 		Renderer renderer = EntryStack.of(VanillaEntryTypes.ITEM.getDefinition(), output);
 		return List.of(
