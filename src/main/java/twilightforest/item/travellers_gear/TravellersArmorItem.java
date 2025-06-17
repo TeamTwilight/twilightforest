@@ -53,7 +53,7 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 	public static final double WATER_WALKING_MAX_SUBMERGED_HEIGHT = 0.4;
 	private static final double AUTO_REPAIR_SUNLIGHT_BOOST = 3;
 	private static final double AUTO_REPAIR_TWILIGHT_BOOST = AUTO_REPAIR_SUNLIGHT_BOOST / 2;
-	private int insertableModifierSlots;
+	private final int insertableModifierSlots;
 	@Nullable
 	private ItemAttributeModifiers attributeModifiers;
 	public TravellersArmorItem(ArmorItem.Type equipmentType, Properties properties, int insertableModifierSlots, int durability) {
