@@ -664,6 +664,14 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.unlockedBy("has_meat", has(TFItems.RAW_MEEF))
 			.save(output);
 
+		DryingRecipeBuilder.drying(Ingredient.of(Tags.Items.SLIME_BALLS), TFItems.GELATINOUS_SLIME_DROP.toStack())
+			.unlockedBy("has_slime_ball", has(Tags.Items.SLIME_BALLS))
+			.save(output);
+
+		DryingRecipeBuilder.drying(TFItems.MAZE_SLIME_BALL, TFItems.GELATINOUS_MAZE_SLIME_DROP)
+			.unlockedBy("has_maze_slime_ball", has(TFItems.MAZE_SLIME_BALL))
+			.save(output);
+
 		DryingRecipeBuilder.drying(TFItems.TREATED_LEATHER, TFItems.TANNED_LEATHER)
 			.unlockedBy("has_treated", has(TFItems.TREATED_LEATHER))
 			.save(output);

@@ -1,0 +1,11 @@
+{
+  "type": "twilightforest:drying",
+  "filter_time": 6000,
+  "input": {
+    "item": "twilightforest:maze_slime_ball"
+  },
+  "result": {
+    "count": 1,
+    "id": "twilightforest:gelatinous_maze_slime_drop"
+  }
+}
