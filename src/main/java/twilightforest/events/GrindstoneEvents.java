@@ -41,8 +41,10 @@ public class GrindstoneEvents {
 		ItemStack unmodifiedStack = inputStack.copy();
 		modifiers.forEach(modifier -> modifier.removeModifier(unmodifiedStack));
 		ItemStack outputStack = unmodifiedStack.copy();
-		if (outputStack.is(TFItems.TRAVELLERS_WINGS_BELT))
+		if (outputStack.is(TFItems.TRAVELLERS_WINGS_BELT)) {
 			outputStack = new ItemStack(TFItems.TRAVELLERS_WINGS, outputStack.getCount(), outputStack.getComponentsPatch());
+			outputStack.remove(DataComponents.CONTAINER);
+		}
 		event.setOutput(outputStack);
 	}
 }
