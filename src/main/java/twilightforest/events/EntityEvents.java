@@ -298,8 +298,8 @@ public class EntityEvents {
 		if (!(entity instanceof LivingEntity livingEntity) || !event.getRayTraceResult().getType().equals(HitResult.Type.BLOCK) || projectile.tickCount >= 200)
 			return;
 
-		Boolean hasMagnetism = livingEntity.getItemBySlot(EquipmentSlot.CHEST).get(TFDataComponents.ARROW_MAGNETISM);
-		if (!Boolean.TRUE.equals(hasMagnetism) || !(projectile instanceof AbstractArrow arrow) || projectile.level().isClientSide())
+		if (!livingEntity.getItemBySlot(EquipmentSlot.CHEST).has(TFDataComponents.ARROW_MAGNETISM)
+			|| !(projectile instanceof AbstractArrow arrow) || projectile.level().isClientSide())
 			return;
 
 		if (!(livingEntity instanceof Player player)) {

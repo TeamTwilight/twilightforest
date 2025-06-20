@@ -305,8 +305,7 @@ public class ASMHooks {
 		if (!fluidState.is(FluidTags.WATER))
 			return null;
 
-		Boolean waterWalkEnabled = livingEntity.getItemBySlot(EquipmentSlot.FEET).get(TFDataComponents.WATER_WALK_ENABLE);
-		if (waterWalkEnabled == null || !waterWalkEnabled)
+		if (!livingEntity.getItemBySlot(EquipmentSlot.FEET).has(TFDataComponents.WATER_WALK))
 			return null;
 
 		double waterHeight = livingEntity.getFluidTypeHeight(NeoForgeMod.WATER_TYPE.value());

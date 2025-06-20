@@ -4,6 +4,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Unit;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -30,7 +31,7 @@ public class TravellersArmorBeltItem extends TravellersArmorItem {
 	public static Properties beltProperties(Properties properties) {
 		return properties
 			.component(DataComponents.CONTAINER, ItemContainerContents.fromItems(NonNullList.withSize(9, ItemStack.EMPTY)))
-			.component(TFDataComponents.TRAVELLERS_HAS_BELT, true);
+			.component(TFDataComponents.TRAVELLERS_HAS_BELT, Unit.INSTANCE);
 	}
 
 	@Override

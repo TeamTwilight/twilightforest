@@ -141,7 +141,7 @@ public class ClientEvents {
 	public static void playerTravellersArmorEffects(PlayerTickEvent.Pre event) {
 		if (!(event.getEntity() instanceof LocalPlayer localPlayer))
 			return;
-		if (Minecraft.getInstance().options.keyJump.consumeClick() && Boolean.TRUE.equals(localPlayer.getItemBySlot(EquipmentSlot.LEGS).get(TFDataComponents.HAS_DOUBLE_JUMP))) {
+		if (Minecraft.getInstance().options.keyJump.consumeClick() && localPlayer.getItemBySlot(EquipmentSlot.LEGS).has(TFDataComponents.DOUBLE_JUMP)) {
 			if (TravellersArmorItem.performDoubleJump(localPlayer))
 				localPlayer.connection.send(new PerformDoubleJumpPacket());
 		}

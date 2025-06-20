@@ -14,6 +14,7 @@ import net.minecraft.network.protocol.game.ClientboundPlayerPositionPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Unit;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -79,7 +80,7 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 
 	public static void travellersStealth(Player player, Consumer<Player> invisibilityHandler) {
 		ItemStack chestArmor = player.getInventory().getArmor(EquipmentSlot.CHEST.getIndex());
-		if (!Boolean.TRUE.equals(chestArmor.get(TFDataComponents.STEALTH_CROUCHING_ENABLE)))
+		if (!chestArmor.has(TFDataComponents.STEALTH_CROUCHING))
 			return;
 
 		if (player.isCrouching()) {
@@ -289,7 +290,7 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 
 	public static Properties chestProperties(Properties properties) {
 		return properties
-			.component(TFDataComponents.TRAVELLERS_HAS_CHESTPLATE, true)
+			.component(TFDataComponents.TRAVELLERS_HAS_CHESTPLATE, Unit.INSTANCE)
 			.attributes(defaultArmorProperties(Type.CHESTPLATE)
 				.add(Attributes.WATER_MOVEMENT_EFFICIENCY, TFAttributeModifiers.TRAVELLERS_SWIFT_SWIM, EquipmentSlotGroup.CHEST)
 				.build());
@@ -297,18 +298,18 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 
 	public static Properties glovesProperties(Properties properties) {
 		return properties
-			.component(TFDataComponents.TRAVELLERS_HAS_GLOVES, true);
+			.component(TFDataComponents.TRAVELLERS_HAS_GLOVES, Unit.INSTANCE);
 	}
 
 	public static Properties wingsProperties(Properties properties) {
 		return properties
-			.component(TFDataComponents.TRAVELLERS_HAS_WINGS, true)
+			.component(TFDataComponents.TRAVELLERS_HAS_WINGS, Unit.INSTANCE)
 			.component(TFDataComponents.HIGH_JUMP_AMPLIFIER, 1);
 	}
 
 	public static Properties bootsProperties(Properties properties) {
 		return properties
-			.component(TFDataComponents.TRAVELLERS_HAS_BOOTS, true)
+			.component(TFDataComponents.TRAVELLERS_HAS_BOOTS, Unit.INSTANCE)
 			.attributes(defaultArmorProperties(Type.BOOTS)
 				.add(Attributes.STEP_HEIGHT, TFAttributeModifiers.TRAVELLERS_HIGH_STEP,  EquipmentSlotGroup.FEET)
 				.build());

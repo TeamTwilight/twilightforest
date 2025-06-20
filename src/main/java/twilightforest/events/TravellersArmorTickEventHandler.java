@@ -26,8 +26,7 @@ public class TravellersArmorTickEventHandler {
 	private void playerTickPre(PlayerTickEvent.Pre event) {
 		Player player = event.getEntity();
 		Boolean hasDoubleJump = null;
-		Boolean hasDoubleJumpAbility = player.getItemBySlot(EquipmentSlot.LEGS).get(TFDataComponents.HAS_DOUBLE_JUMP);
-		if (!Boolean.TRUE.equals(hasDoubleJumpAbility)) {
+		if (!player.getItemBySlot(EquipmentSlot.LEGS).has(TFDataComponents.DOUBLE_JUMP)) {
 			hasDoubleJump = false;
 		} else if (player.onGround())
 			hasDoubleJump = true;
