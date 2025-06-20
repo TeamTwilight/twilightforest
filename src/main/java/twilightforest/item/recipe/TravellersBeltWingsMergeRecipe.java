@@ -2,6 +2,7 @@ package twilightforest.item.recipe;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
@@ -10,6 +11,7 @@ import twilightforest.init.TFRecipes;
 import twilightforest.item.travellers_gear.TravellersArmorBeltItem;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifiers;
 
+import java.util.List;
 import java.util.Optional;
 
 public class TravellersBeltWingsMergeRecipe extends CustomRecipe {
@@ -54,11 +56,11 @@ public class TravellersBeltWingsMergeRecipe extends CustomRecipe {
 	}
 
 	private Optional<InputPair> resolve(CraftingInput input) {
-		var items = input.items();
+		List<ItemStack> items = input.items().stream().filter(stack -> !stack.isEmpty()).toList();
 		if (items.size() != 2) return Optional.empty();
 
-		var wings = items.stream().filter(s -> s.is(TFItems.TRAVELLERS_WINGS.get())).findFirst();
-		var belt = items.stream().filter(s -> s.is(TFItems.TRAVELLERS_BELT.get())).findFirst();
+		Optional<ItemStack> wings = items.stream().filter(s -> s.is(TFItems.TRAVELLERS_WINGS.get())).findFirst();
+		Optional<ItemStack> belt = items.stream().filter(s -> s.is(TFItems.TRAVELLERS_BELT.get())).findFirst();
 
 		return wings.flatMap(w -> belt.map(b -> new InputPair(w, b)));
 	}
