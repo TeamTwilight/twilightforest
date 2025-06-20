@@ -405,10 +405,8 @@ public class ClientEvents {
 			return;
 
 		boolean isClicked = false;
-		boolean changed = false;
 		while (TFKeyBinds.SWAP_HOTBAR_KEY.consumeClick()) {
 			isClicked = !isClicked;  // clickCount can be even, so we may not swap hotbar
-			changed = true;
 		}
 		boolean hasClicked = isClicked;
 		if (!hasClicked)
