@@ -406,8 +406,8 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 				case CHEST -> {
 					ModelPart chestLayer = this.getModelPart(TFModelLayers.TRAVELLERS_ARMOR_CHEST_GLOVES);
 					chestLayer.getAllParts().forEach(part -> part.skipDraw = true);
-					boolean hasChestplate = Boolean.TRUE.equals(stack.get(TFDataComponents.TRAVELLERS_HAS_CHESTPLATE));
-					boolean hasGloves = Boolean.TRUE.equals(stack.get(TFDataComponents.TRAVELLERS_HAS_GLOVES));
+					boolean hasChestplate = stack.has(TFDataComponents.TRAVELLERS_HAS_CHESTPLATE);
+					boolean hasGloves = stack.has(TFDataComponents.TRAVELLERS_HAS_GLOVES);
 					chestLayer.getChild("body").skipDraw = !hasChestplate;
 					chestLayer.getChild("left_arm").skipDraw = !hasGloves;
 					chestLayer.getChild("right_arm").skipDraw = !hasGloves;
@@ -417,8 +417,8 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 				case LEGS -> {
 					ModelPart leggingsLayer = this.getModelPart(TFModelLayers.TRAVELLERS_ARMOR_LEGGINGS);
 					leggingsLayer.getAllParts().forEach(part -> part.skipDraw = true);
-					boolean hasWings = Boolean.TRUE.equals(stack.get(TFDataComponents.TRAVELLERS_HAS_WINGS));
-					boolean hasBelt = Boolean.TRUE.equals(stack.get(TFDataComponents.TRAVELLERS_HAS_BELT));
+					boolean hasWings = stack.has(TFDataComponents.TRAVELLERS_HAS_WINGS);
+					boolean hasBelt = stack.has(TFDataComponents.TRAVELLERS_HAS_BELT);
 
 					TravellersLeggingsModel.skipBelt(leggingsLayer, !hasBelt);
 					TravellersLeggingsModel.skipWings(leggingsLayer, !hasWings);
