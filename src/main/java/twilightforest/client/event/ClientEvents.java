@@ -65,6 +65,7 @@ import twilightforest.entity.boss.bar.ClientTFBossBar;
 import twilightforest.events.HostileMountEvents;
 import twilightforest.init.*;
 import twilightforest.item.*;
+import twilightforest.item.travellers_gear.TravellersArmorBeltItem;
 import twilightforest.item.travellers_gear.TravellersArmorItem;
 import twilightforest.network.PerformDoubleJumpPacket;
 import twilightforest.network.PerformSidestepPacket;
@@ -401,7 +402,7 @@ public class ClientEvents {
 		if (!(player instanceof LocalPlayer localPlayer)) return;
 		ItemStack legArmor = localPlayer.getItemBySlot(EquipmentSlot.LEGS);
 		ItemContainerContents containerContents = legArmor.get(DataComponents.CONTAINER);
-		if (!legArmor.has(TFDataComponents.TRAVELLERS_HAS_BELT) || containerContents == null)
+		if (!TravellersArmorBeltItem.hasSwapHotbar(legArmor) || containerContents == null)
 			return;
 
 		boolean isClicked = false;

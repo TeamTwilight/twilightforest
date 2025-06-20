@@ -525,6 +525,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		SpecialRecipeBuilder.special(EmperorsClothRecipe::new).save(output, TwilightForestMod.prefix("emperors_cloth_recipe").toString());
 		SpecialRecipeBuilder.special(CasketRepairRecipe::new).save(output, TwilightForestMod.prefix("casket_repair_recipe").toString());
 		SpecialRecipeBuilder.special(EssenceRepairRecipe::new).save(output, TwilightForestMod.prefix("essence_repair_recipe").toString());
+		SpecialRecipeBuilder.special(TravellersBeltWingsMergeRecipe::new).save(output, TwilightForestMod.prefix("travellers_belt_wings_merge_recipe").toString());
 
 		NoSmithingTemplateRecipeBuilder
 			.noTemplate(Ingredient.of(Tags.Items.ARMORS), Ingredient.of(TFItems.EMPERORS_CLOTH.get()), RecipeCategory.MISC)

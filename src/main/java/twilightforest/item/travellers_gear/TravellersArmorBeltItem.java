@@ -58,7 +58,7 @@ public class TravellersArmorBeltItem extends TravellersArmorItem {
 	public static void travellersTrySwapHotbar(Player player) {
 		ItemStack legArmor = player.getInventory().getArmor(EquipmentSlot.LEGS.getIndex());
 		ItemContainerContents containerContents = legArmor.get(DataComponents.CONTAINER);
-		if (!(TravellersModifiers.SWAP_HOTBAR_MODIFIER.hasModifier(legArmor) || TravellersModifiers.SWAP_HOTBAR_ABILITY.hasModifier(legArmor)) || containerContents == null)
+		if (!hasSwapHotbar(legArmor) || containerContents == null)
 			return;
 
 		NonNullList<ItemStack> hotbarStacks = NonNullList.withSize(9, ItemStack.EMPTY);
@@ -79,6 +79,11 @@ public class TravellersArmorBeltItem extends TravellersArmorItem {
 		legArmor.set(DataComponents.CONTAINER, ItemContainerContents.fromItems(hotbarStacks));
 		if (hasChanged)
 			player.level().playSound(null, player, SoundEvents.ARMOR_EQUIP_LEATHER.value(), SoundSource.PLAYERS, 1F, 1F);
+	}
+
+	public static boolean hasSwapHotbar(ItemStack stack) {
+		return (TravellersModifiers.SWAP_HOTBAR_MODIFIER.hasModifier(stack) || TravellersModifiers.SWAP_HOTBAR_ABILITY.hasModifier(stack))
+			&& stack.has(DataComponents.CONTAINER);
 	}
 
 	public record Tooltip(ItemContainerContents contents) implements TooltipComponent {}
