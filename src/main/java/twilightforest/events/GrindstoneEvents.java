@@ -5,6 +5,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.GrindstoneEvent;
 import twilightforest.TwilightForestMod;
+import twilightforest.init.TFItems;
 import twilightforest.item.travellers_gear.TravellersArmorItem;
 import twilightforest.item.travellers_gear.modifiers.InsertableTravellersModifier;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifiers;
@@ -33,9 +34,11 @@ public class GrindstoneEvents {
 			return;
 		}
 
-		ItemStack outputStack = inputStack.copy();
-		modifiers.forEach(modifier -> modifier.removeModifier(outputStack));
+		ItemStack unmodifiedStack = inputStack.copy();
+		modifiers.forEach(modifier -> modifier.removeModifier(unmodifiedStack));
+		ItemStack outputStack = unmodifiedStack.copy();
+		if (outputStack.is(TFItems.TRAVELLERS_WINGS_BELT))
+			outputStack = new ItemStack(TFItems.TRAVELLERS_WINGS, outputStack.getCount(), outputStack.getComponentsPatch());
 		event.setOutput(outputStack);
 	}
-
 }
