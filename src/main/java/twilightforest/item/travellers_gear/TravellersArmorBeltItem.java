@@ -15,6 +15,7 @@ import net.minecraft.world.item.component.ItemContainerContents;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.TFDataComponents;
+import twilightforest.item.travellers_gear.modifiers.TravellersModifiers;
 
 import java.util.Optional;
 
@@ -26,6 +27,14 @@ public class TravellersArmorBeltItem extends TravellersArmorItem {
 
 	public TravellersArmorBeltItem(ArmorItem.Type equipmentType, Properties properties, int insertableModifierSlots) {
 		super(equipmentType, beltProperties(properties), insertableModifierSlots, 4);
+	}
+
+	public static Properties addSwapHotbarAbility(Properties properties) {
+		return properties.component(TFDataComponents.SWAP_HOTBAR_ABILITY, Unit.INSTANCE);
+	}
+
+	public static Properties addSwapHotbarModifier(Properties properties) {
+		return properties.component(TFDataComponents.SWAP_HOTBAR_MODIFIER, Unit.INSTANCE);
 	}
 
 	public static Properties beltProperties(Properties properties) {
@@ -49,7 +58,7 @@ public class TravellersArmorBeltItem extends TravellersArmorItem {
 	public static void travellersTrySwapHotbar(Player player) {
 		ItemStack legArmor = player.getInventory().getArmor(EquipmentSlot.LEGS.getIndex());
 		ItemContainerContents containerContents = legArmor.get(DataComponents.CONTAINER);
-		if (!legArmor.has(TFDataComponents.TRAVELLERS_HAS_BELT) || containerContents == null)
+		if (!(TravellersModifiers.SWAP_HOTBAR_MODIFIER.hasModifier(legArmor) || TravellersModifiers.SWAP_HOTBAR_ABILITY.hasModifier(legArmor)) || containerContents == null)
 			return;
 
 		NonNullList<ItemStack> hotbarStacks = NonNullList.withSize(9, ItemStack.EMPTY);

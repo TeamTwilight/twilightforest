@@ -3,7 +3,7 @@
   "is_rotated": false,
   "modifier": {
     "data_component_map": {
-      "twilightforest:red_thread_vision_enable": true
+      "twilightforest:red_thread_vision": {}
     }
   },
   "pattern": {

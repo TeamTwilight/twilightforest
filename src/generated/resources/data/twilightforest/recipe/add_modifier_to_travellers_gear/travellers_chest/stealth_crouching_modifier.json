@@ -2,7 +2,7 @@
   "type": "twilightforest:travellers_gear_modifier_shapeless_recipe",
   "ingredients": [
     {
-      "item": "twilightforest:travellers_chest_gloves"
+      "item": "twilightforest:travellers_chest"
     },
     [
       {
@@ -36,7 +36,7 @@
   ],
   "modifier": {
     "data_component_map": {
-      "twilightforest:stealth_crouching_enable": true
+      "twilightforest:stealth_crouching": {}
     }
   }
 }

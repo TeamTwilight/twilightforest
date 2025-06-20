@@ -19,7 +19,7 @@
   ],
   "modifier": {
     "data_component_map": {
-      "twilightforest:arrow_magnetism": true
+      "twilightforest:arrow_magnetism": {}
     }
   }
 }

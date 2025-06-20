@@ -3,7 +3,7 @@
   "is_rotated": false,
   "modifier": {
     "data_component_map": {
-      "twilightforest:has_double_jump": true
+      "twilightforest:double_jump": {}
     }
   },
   "pattern": {

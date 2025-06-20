@@ -410,8 +410,7 @@ public class ClientEvents {
 			isClicked = !isClicked;  // clickCount can be even, so we may not swap hotbar
 			changed = true;
 		}
-		// make it work in inventory menu
-		boolean hasClicked = isClicked || !changed && event.getKey() == TFKeyBinds.SWAP_HOTBAR_KEY.getKey().getValue() && event.getAction() == 1;
+		boolean hasClicked = isClicked;
 		if (!hasClicked)
 			return;
 		localPlayer.connection.send(new SwapHotbarPacket());

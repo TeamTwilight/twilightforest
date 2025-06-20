@@ -3,7 +3,7 @@
   "is_rotated": false,
   "modifier": {
     "data_component_map": {
-      "twilightforest:sidestep_coolddown": 60
+      "twilightforest:sidestep_cooldown": 60
     }
   },
   "pattern": {
@@ -18,7 +18,7 @@
         "tag": "c:strings"
       },
       "W": {
-        "item": "twilightforest:travellers_wings_belt"
+        "item": "twilightforest:travellers_wings"
       }
     },
     "pattern": [

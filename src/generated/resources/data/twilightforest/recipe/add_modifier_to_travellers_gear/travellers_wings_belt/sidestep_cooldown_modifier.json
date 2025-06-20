@@ -3,24 +3,28 @@
   "is_rotated": false,
   "modifier": {
     "data_component_map": {
-      "twilightforest:water_walk_enable": true
+      "twilightforest:sidestep_cooldown": 60
     }
   },
   "pattern": {
     "key": {
       "B": {
-        "item": "twilightforest:travellers_boots"
+        "tag": "c:bones"
       },
-      "L": {
-        "item": "minecraft:lily_pad"
+      "P": {
+        "item": "minecraft:piston"
       },
       "S": {
-        "tag": "c:slime_balls"
+        "tag": "c:strings"
+      },
+      "W": {
+        "item": "twilightforest:travellers_wings_belt"
       }
     },
     "pattern": [
       "SBS",
-      "L L"
+      "PWP",
+      "SBS"
     ]
   }
 }

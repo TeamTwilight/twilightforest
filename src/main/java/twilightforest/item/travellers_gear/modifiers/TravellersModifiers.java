@@ -17,7 +17,7 @@ public abstract class TravellersModifiers {
 	*/
 
 	// all
-	public static final TravellersComponentModifier AUTO_REPAIR_MODIFIER = registerComponentModifier(TFDataComponents.AUTO_REPAIR_PROBABILITY, 0.001F);
+	public static final TravellersComponentModifier AUTO_REPAIR_MODIFIER = registerComponentModifier(TFDataComponents.	AUTO_REPAIR_PROBABILITY, 0.001F);
 
 	// goggles
 	public static final BuiltinTravellersComponentModifier ZOOM_MODIFIER = registerBuiltinComponentModifier(TFDataComponents.ZOOM_ABILITY_MODIFIER);
@@ -32,8 +32,8 @@ public abstract class TravellersModifiers {
 	public static final TravellersComponentModifier HASTE_MODIFIER = registerComponentModifier(TFDataComponents.HASTE_AMPLIFIER, 1);
 
 	// belt
-	public static final BuiltinTravellersComponentModifier SWAP_HOTBAR_MODIFIER = registerBuiltinComponentModifier(TFDataComponents.TRAVELLERS_HAS_BELT);
-
+	public static final BuiltinTravellersComponentModifier SWAP_HOTBAR_ABILITY = registerBuiltinComponentModifier(TFDataComponents.SWAP_HOTBAR_ABILITY);
+	public static final TravellersComponentModifier SWAP_HOTBAR_MODIFIER = registerComponentModifier(TFDataComponents.SWAP_HOTBAR_MODIFIER, Unit.INSTANCE);
 	// wings
 	public static final BuiltinTravellersComponentModifier HIGH_JUMP_MODIFIER = registerBuiltinComponentModifier(TFDataComponents.HIGH_JUMP_AMPLIFIER);
 	public static final TravellersComponentModifier CONTROLLED_FALL_MODIFIER = registerComponentModifier(TFDataComponents.CONTROLLED_FALLING_MULTIPLIER, 1 - 1 / 6F);
