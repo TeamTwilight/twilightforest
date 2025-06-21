@@ -1,16 +1,13 @@
 package twilightforest.events;
 
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.ItemContainerContents;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.GrindstoneEvent;
 import twilightforest.TwilightForestMod;
+import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFItems;
-import twilightforest.item.travellers_gear.TravellersArmorBeltItem;
-import twilightforest.item.travellers_gear.TravellersArmorItem;
 import twilightforest.item.travellers_gear.modifiers.InsertableTravellersModifier;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifiers;
 
@@ -22,7 +19,7 @@ public class GrindstoneEvents {
 	@SubscribeEvent
 	public static void removeModifiersFromTravellersGear(GrindstoneEvent.OnPlaceItem event) {
 		List<ItemStack> travellersItemStacks = Stream.of(event.getTopItem(), event.getBottomItem())
-			.filter(stack -> stack.getItem() instanceof TravellersArmorItem)
+			.filter(stack -> stack.has(TFDataComponents.IS_TRAVELLERS_GEAR))
 			.toList();
 
 		if (travellersItemStacks.isEmpty())

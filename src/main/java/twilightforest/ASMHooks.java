@@ -56,6 +56,7 @@ import org.joml.Matrix4f;
 import twilightforest.beans.Autowired;
 import twilightforest.init.*;
 import twilightforest.item.travellers_gear.TravellersArmorItem;
+import twilightforest.item.travellers_gear.modifiers.TravellersModifiers;
 import twilightforest.util.ArmorUtil;
 import twilightforest.util.multiparts.MultipartEntityUtil;
 import twilightforest.block.CloudBlock;
@@ -305,7 +306,7 @@ public class ASMHooks {
 		if (!fluidState.is(FluidTags.WATER))
 			return null;
 
-		if (!livingEntity.getItemBySlot(EquipmentSlot.FEET).has(TFDataComponents.WATER_WALK))
+		if (!TravellersModifiers.WATER_WALK_MODIFIER.isActive(livingEntity.getItemBySlot(EquipmentSlot.FEET)))
 			return null;
 
 		double waterHeight = livingEntity.getFluidTypeHeight(NeoForgeMod.WATER_TYPE.value());
@@ -382,7 +383,7 @@ public class ASMHooks {
 	 */
 	public static float cancelHighStepModifierForStepDownDuringSneaking(Player player, float f) {
 		for (ItemAttributeModifiers.Entry modifier : player.getInventory().getArmor(EquipmentSlot.FEET.getIndex()).getAttributeModifiers().modifiers()) {
-			if (modifier.matches(Attributes.STEP_HEIGHT, TFAttributeModifiers.TRAVELLERS_HIGH_STEP.id()))
+			if (modifier.matches(Attributes.STEP_HEIGHT, TFAttributeModifiers.TRAVELLERS_HIGH_STEP_ACTIVE.id()))
 				return (float) (f - modifier.modifier().amount());  // TODO: use multiply modifiers to this one if they are present
 		}
 		return f;
@@ -401,8 +402,9 @@ public class ASMHooks {
 	 */
 
 	public static float getFoodExhaustion(float f, Player player) {
-		Float divisor = player.getItemBySlot(EquipmentSlot.CHEST).get(TFDataComponents.EFFICIENT_EATER);
-		if (divisor == null)
+		ItemStack chestStack = player.getItemBySlot(EquipmentSlot.CHEST);
+		Float divisor = chestStack.get(TFDataComponents.EFFICIENT_EATER);
+		if (!TravellersModifiers.FOOD_EFFICIENCY_MODIFIER.isActive(chestStack) || divisor == null)
 			return f;
 		return f * (1 / divisor);
 	}

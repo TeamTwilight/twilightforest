@@ -80,6 +80,7 @@ import twilightforest.entity.projectile.LichBomb;
 import twilightforest.init.*;
 import twilightforest.item.FieryArmorItem;
 import twilightforest.item.YetiArmorItem;
+import twilightforest.item.travellers_gear.modifiers.TravellersModifiers;
 import twilightforest.network.ParticlePacket;
 import twilightforest.network.SyncQuestsPacket;
 import twilightforest.network.WipeOreMeterPacket;
@@ -251,7 +252,7 @@ public class EntityEvents {
 		ItemStack chest = livingEntity.getItemBySlot(EquipmentSlot.CHEST);
 		Float probability = chest.get(TFDataComponents.PERFECT_DODGE_PROBABILITY);
 		Level level = livingEntity.level();
-		if (probability == null || probability <= level.random.nextFloat())
+		if (!TravellersModifiers.PERFECT_DODGE_MODIFIER.isActive(chest) || probability == null || probability <= level.random.nextFloat())
 			return;
 		Entity projectile = event.getEntity();
 		level.playLocalSound(projectile, SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 1, 1);  // FIXME: replace placeholder sound event and adjust volume and pitch parameters
@@ -298,7 +299,7 @@ public class EntityEvents {
 		if (!(entity instanceof LivingEntity livingEntity) || !event.getRayTraceResult().getType().equals(HitResult.Type.BLOCK) || projectile.tickCount >= 200)
 			return;
 
-		if (!livingEntity.getItemBySlot(EquipmentSlot.CHEST).has(TFDataComponents.ARROW_MAGNETISM)
+		if (!TravellersModifiers.ARROW_MAGNETISM_MODIFIER.isActive(livingEntity.getItemBySlot(EquipmentSlot.CHEST))
 			|| !(projectile instanceof AbstractArrow arrow) || projectile.level().isClientSide())
 			return;
 
@@ -320,7 +321,7 @@ public class EntityEvents {
 		LivingEntity livingEntity = event.getEntity();
 		ItemStack boots = livingEntity.getItemBySlot(EquipmentSlot.FEET);
 		Float coefficient = boots.get(TFDataComponents.SLIMY_SOLES_COEFFICIENT);
-		if (coefficient != null)
+		if (TravellersModifiers.SLIMY_SOLES_MODIFIER.isActive(boots) && coefficient != null)
 			event.setDamageMultiplier(coefficient);
 	}
 

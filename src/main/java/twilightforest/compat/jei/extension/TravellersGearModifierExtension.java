@@ -9,8 +9,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import org.jetbrains.annotations.NotNull;
+import twilightforest.init.TFDataComponents;
 import twilightforest.item.recipe.TravellersGearModifierRecipe;
-import twilightforest.item.travellers_gear.TravellersArmorItem;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,7 +27,7 @@ public class TravellersGearModifierExtension implements ICraftingCategoryExtensi
 		List<ItemStack> outputs = new ArrayList<>();
 		for (Ingredient ingredient : recipe.getIngredients()) {
 			for (ItemStack stack : ingredient.getItems()) {
-				if (stack.getItem() instanceof TravellersArmorItem) {
+				if (stack.has(TFDataComponents.IS_TRAVELLERS_GEAR)) {
 					outputs.add(recipe.applyModifier(stack.copy()));
 				}
 			}

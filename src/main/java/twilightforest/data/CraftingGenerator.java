@@ -30,7 +30,6 @@ import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFItems;
 import twilightforest.item.recipe.*;
-import twilightforest.item.travellers_gear.TravellersArmorItem;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifiers;
 
 import java.util.Arrays;
@@ -612,7 +611,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.addRepairIngredient(Items.ROTTEN_FLESH)
 			.save(output, locEquip(TFItems.ZOMBIE_SCEPTER.getId().getPath()));
 
-		Predicate<Ingredient> splitTravellersModifiersRecipes = ingredient -> Arrays.stream(ingredient.getItems()).allMatch(stack -> stack.getItem() instanceof TravellersArmorItem);
+		Predicate<Ingredient> splitTravellersModifiersRecipes = ingredient -> Arrays.stream(ingredient.getItems()).allMatch(stack -> stack.has(TFDataComponents.IS_TRAVELLERS_GEAR));
 
 		TravellersGearComponentModifierBuilder.buildShaped(CartesianShapedRecipeBuilder.create(splitTravellersModifiersRecipes)
 				.pattern(" R ")

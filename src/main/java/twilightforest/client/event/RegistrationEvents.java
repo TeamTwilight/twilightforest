@@ -40,6 +40,7 @@ import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.extensions.common.IClientBlockExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.client.gui.map.RegisterMapDecorationRenderersEvent;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.*;
@@ -254,6 +255,13 @@ public class RegistrationEvents {
 		ItemProperties.register(TFItems.CRUMBLE_HORN.get(), TwilightForestMod.prefix("tooting"), (stack, world, entity, i) ->
 			entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F
 		);
+
+		ItemProperties.register(TFItems.TRAVELLERS_GOGGLES.get(), ResourceLocation.parse("broken"), RegistrationEvents::isBroken);
+		ItemProperties.register(TFItems.TRAVELLERS_CHESTPLATE_GLOVES.get(), ResourceLocation.parse("broken"), RegistrationEvents::isBroken);
+		ItemProperties.register(TFItems.TRAVELLERS_CHESTPLATE.get(), ResourceLocation.parse("broken"), RegistrationEvents::isBroken);
+		ItemProperties.register(TFItems.TRAVELLERS_WINGS_BELT.get(), ResourceLocation.parse("broken"), RegistrationEvents::isBroken);
+		ItemProperties.register(TFItems.TRAVELLERS_WINGS.get(), ResourceLocation.parse("broken"), RegistrationEvents::isBroken);
+		ItemProperties.register(TFItems.TRAVELLERS_BOOTS.get(), ResourceLocation.parse("broken"), RegistrationEvents::isBroken);
 
 		Map<ModelResourceLocation, BakedModel> models = event.getModels();
 		List<Map.Entry<ModelResourceLocation, BakedModel>> leavesModels = models.entrySet().stream()
@@ -719,5 +727,9 @@ public class RegistrationEvents {
 
 	public static boolean isOptifinePresent() {
 		return optifinePresent;
+	}
+
+	private static float isBroken(@NotNull ItemStack stack, @Nullable ClientLevel world, @Nullable LivingEntity livingEntity, int seed) {
+		return stack.getDamageValue() >= stack.getMaxDamage() - 1 ? 1F : 0F;
 	}
 }

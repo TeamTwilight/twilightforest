@@ -11,8 +11,8 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import twilightforest.beans.Component;
 import twilightforest.beans.PostConstruct;
 import twilightforest.init.TFDataAttachments;
-import twilightforest.init.TFDataComponents;
 import twilightforest.item.travellers_gear.TravellersArmorItem;
+import twilightforest.item.travellers_gear.modifiers.TravellersModifiers;
 
 @Component
 public class TravellersArmorTickEventHandler {
@@ -26,7 +26,7 @@ public class TravellersArmorTickEventHandler {
 	private void playerTickPre(PlayerTickEvent.Pre event) {
 		Player player = event.getEntity();
 		Boolean hasDoubleJump = null;
-		if (!player.getItemBySlot(EquipmentSlot.LEGS).has(TFDataComponents.DOUBLE_JUMP)) {
+		if (!TravellersModifiers.DOUBLE_JUMP_MODIFIER.isActive(player.getItemBySlot(EquipmentSlot.LEGS))) {
 			hasDoubleJump = false;
 		} else if (player.onGround())
 			hasDoubleJump = true;
