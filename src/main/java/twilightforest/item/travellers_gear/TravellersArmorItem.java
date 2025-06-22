@@ -206,9 +206,10 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 
 	public static boolean tryPerformSidestep(Player player, boolean isLeftSidestep) {
 		long lastSidestepTime = player.getData(TFDataAttachments.LAST_SIDESTEP_TIME);
-		Long cooldown = player.getItemBySlot(EquipmentSlot.LEGS).get(TFDataComponents.SIDESTEP_COOLDOWN);
+		ItemStack leggingsStack = player.getItemBySlot(EquipmentSlot.LEGS);
+		Long cooldown = leggingsStack.get(TFDataComponents.SIDESTEP_COOLDOWN);
 		long currentTime = player.level().getGameTime();
-		if (cooldown != null && currentTime - lastSidestepTime > cooldown && !player.isFallFlying() && player.onGround() && !player.isCrouching()) {
+		if (TravellersModifiers.SIDESTEP_MODIFIER.isActive(leggingsStack) && cooldown != null && currentTime - lastSidestepTime > cooldown && !player.isFallFlying() && player.onGround() && !player.isCrouching()) {
 			TravellersArmorItem.performSidestep(player, isLeftSidestep);
 			player.setData(TFDataAttachments.LAST_SIDESTEP_TIME, currentTime);
 			return true;

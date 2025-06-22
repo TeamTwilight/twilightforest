@@ -35,7 +35,7 @@ public abstract class TravellersModifiers {
 	public static final TravellersEntryModifier SWIFT_SWIM_MODIFIER = registerEntryModifier(Attributes.WATER_MOVEMENT_EFFICIENCY, TFAttributeModifiers.TRAVELLERS_SWIFT_SWIM_ACTIVATE, TFAttributeModifiers.TRAVELLERS_SWIFT_SWIM_DEACTIVATED, EquipmentSlotGroup.CHEST);
 	public static final TravellersComponentModifier STEALTH_MODIFIER = registerComponentModifier(TFDataComponents.STEALTH_CROUCHING, Unit.INSTANCE);
 	public static final TravellersComponentModifier ARROW_MAGNETISM_MODIFIER = registerComponentModifier(TFDataComponents.ARROW_MAGNETISM, Unit.INSTANCE);
-	public static final TravellersComponentModifier FOOD_EFFICIENCY_MODIFIER = registerComponentModifier(TFDataComponents.EFFICIENT_EATER, 1F);
+	public static final TravellersComponentModifier FOOD_EFFICIENCY_MODIFIER = registerComponentModifier(TFDataComponents.EFFICIENT_EATER, 2F);
 	public static final TravellersComponentModifier PERFECT_DODGE_MODIFIER = registerComponentModifier(TFDataComponents.PERFECT_DODGE_PROBABILITY, 0.1F);
 	public static final TravellersComponentModifier HASTE_MODIFIER = registerComponentModifier(TFDataComponents.HASTE_AMPLIFIER, 1);
 
