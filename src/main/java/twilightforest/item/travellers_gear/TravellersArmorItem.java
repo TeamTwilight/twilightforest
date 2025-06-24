@@ -449,4 +449,8 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 				wingsModel.setupModelAnimations(livingEntity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 		}
 	}
+
+	public boolean makesPiglinsNeutral(ItemStack stack, LivingEntity wearer) {
+		return this == TFItems.TRAVELLERS_GOGGLES.get() || stack.has(TFDataComponents.TRAVELLERS_HAS_WINGS);
+	}
 }
