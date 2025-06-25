@@ -14,6 +14,6 @@ public class SeekerBowItem extends BowItem {
 
 	@Override
 	public AbstractArrow customArrow(AbstractArrow arrow, ItemStack projectileStack, ItemStack weaponStack) {
-		return new SeekerArrow(arrow.level(), (LivingEntity) arrow.getOwner(), projectileStack.copyWithCount(1), weaponStack);
+		return new SeekerArrow(arrow, projectileStack.copyWithCount(1), weaponStack);
 	}
 }

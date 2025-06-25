@@ -14,6 +14,6 @@ public class IceBowItem extends BowItem {
 
 	@Override
 	public AbstractArrow customArrow(AbstractArrow arrow, ItemStack projectileStack, ItemStack weaponStack) {
-		return new IceArrow(arrow.level(), (LivingEntity) arrow.getOwner(), projectileStack.copyWithCount(1), weaponStack);
+		return new IceArrow(arrow, projectileStack.copyWithCount(1), weaponStack);
 	}
 }
