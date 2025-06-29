@@ -1,0 +1,11 @@
+{
+  "type": "twilightforest:oreberry_bushes",
+  "config": {
+    "state": {
+      "Name": "twilightforest:gold_oreberry",
+      "Properties": {
+        "age": "3"
+      }
+    }
+  }
+}

@@ -62,7 +62,11 @@
     ],
     [
       "twilightforest:plant_roots",
-      "twilightforest:torch_berries"
+      "twilightforest:torch_berries",
+      "twilightforest:iron_oreberries_enchanted_forest",
+      "twilightforest:gold_oreberries_enchanted_forest",
+      "twilightforest:copper_oreberries_enchanted_forest",
+      "twilightforest:essence_oreberries_enchanted_forest"
     ],
     [],
     [

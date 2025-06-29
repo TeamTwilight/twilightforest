@@ -48,12 +48,12 @@ public class OreBerryBlock extends TFBushBlock {
 
 	@Override
 	protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
-		return surviveInLight || level.getRawBrightness(pos, 0) < 13 && super.canSurvive(state, level, pos);
+		return super.canSurvive(state, level, pos) && (surviveInLight || level.getRawBrightness(pos, 0) < 13);
 	}
 
 	@Override
 	protected boolean canGrowAt(BlockState state, LevelReader level, BlockPos pos) {
-		return surviveInLight || level.getRawBrightness(pos, 0) < 10 && super.canGrowAt(state, level, pos);
+		return super.canGrowAt(state, level, pos) && (surviveInLight || level.getRawBrightness(pos, 0) < 10);
 	}
 
 	@Override

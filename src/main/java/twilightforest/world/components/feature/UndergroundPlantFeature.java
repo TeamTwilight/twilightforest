@@ -5,43 +5,54 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
 import twilightforest.init.TFBlocks;
 
 public class UndergroundPlantFeature extends Feature<BlockStateConfiguration> {
+	int maxCount;
+
+	public UndergroundPlantFeature(Codec<BlockStateConfiguration> config, int maxCount) {
+		super(config);
+		this.maxCount = maxCount;
+	}
 
 	public UndergroundPlantFeature(Codec<BlockStateConfiguration> config) {
 		super(config);
+		this.maxCount = Integer.MAX_VALUE;
 	}
 
 	@Override
 	public boolean place(FeaturePlaceContext<BlockStateConfiguration> ctx) {
 		WorldGenLevel world = ctx.level();
-		BlockPos pos = ctx.origin();
+		BlockPos origin = ctx.origin();
 		RandomSource random = ctx.random();
 
-		int copyX = pos.getX();
-		int copyZ = pos.getZ();
+		int x = origin.getX();
+		int z = origin.getZ();
+		int placed = 0;
 
-		for (; pos.getY() > world.getMinBuildHeight(); pos = pos.below()) {
-			if (world.isEmptyBlock(pos) && random.nextInt(6) > 0) {
-				if (ctx.config().state.canSurvive(ctx.level(), pos)) {
-					if (ctx.config().state.is(TFBlocks.TROLLVIDR) && random.nextInt(10) == 0) {
-						world.setBlock(pos, TFBlocks.UNRIPE_TROLLBER.get().defaultBlockState(), Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_CLIENTS);
-					} else {
-						world.setBlock(pos, ctx.config().state, Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_CLIENTS);
-					}
-				}
-			} else {
-				pos = new BlockPos(
-					copyX + random.nextInt(4) - random.nextInt(4),
-					pos.getY(),
-					copyZ + random.nextInt(4) - random.nextInt(4)
-				);
+		for (int y = origin.getY(); y > world.getMinBuildHeight(); y--) {
+			if (placed >= maxCount)
+				break;
+
+			BlockPos pos = new BlockPos(x, y, z);
+			if (!world.isEmptyBlock(pos) || random.nextInt(6) == 0) {
+				x = origin.getX() + random.nextInt(4) - random.nextInt(4);
+				z = origin.getZ() + random.nextInt(4) - random.nextInt(4);
+				continue;
+			}
+
+			BlockState state = ctx.config().state;
+			if (state.is(TFBlocks.TROLLVIDR) && random.nextInt(10) == 0)
+				state = TFBlocks.UNRIPE_TROLLBER.get().defaultBlockState();
+			if (state.canSurvive(world, pos)) {
+				world.setBlock(pos, state, Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_CLIENTS);
+				placed++;
 			}
 		}
-		return true;
+		return placed > 0;
 	}
 }
