@@ -633,7 +633,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		singleTex(TFItems.IRON_BERRY);
 		singleTex(TFItems.GOLD_BERRY);
 		singleTex(TFItems.COPPER_BERRY);
-		singleTex(TFItems.ESSENCE_BERRY);
+		singleTexFullbright(TFItems.ESSENCE_BERRY);
 		singleTex(TFItems.COPPER_NUGGET);
 		singleTexFullbright(TFItems.TOWER_KEY);
 		generated(TFItems.BORER_ESSENCE.getId().getPath(), prefix("item/" + TFItems.BORER_ESSENCE.getId().getPath()), prefix("item/borer_essence_particles"));

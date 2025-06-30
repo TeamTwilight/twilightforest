@@ -347,7 +347,7 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		registerBush(TFBlocks.IRON_OREBERRY.get());
 		registerBush(TFBlocks.GOLD_OREBERRY.get());
 		registerBush(TFBlocks.COPPER_OREBERRY.get());
-		registerBush(TFBlocks.ESSENCE_OREBERRY.get());
+		registerBush(TFBlocks.ESSENCE_OREBERRY.get(), 3, 3);
 		registerBush(TFBlocks.RASPBERRY_BUSH.get());
 		registerBush(TFBlocks.BLUEBERRY_BUSH.get());
 		registerBush(TFBlocks.BLACKBERRY_BUSH.get());
@@ -915,20 +915,32 @@ public class BlockstateGenerator extends BlockModelBuilders {
 	}
 
 	private void registerBush(Block block) {
-		ModelFile smallBush = models().cubeAll(name(block) + "_small", prefix("block/" + name(block)))
+		registerBush(block, 0, 0);
+	}
+
+	private void registerBush(Block block, int blockLight, int skyLight) {
+		String blockName = name(block);
+		ModelFile smallBush = models().cubeAll(blockName + "_small", prefix("block/" + blockName))
 			.element().from(4, 0, 4).to(12, 8, 12)
-			.allFaces((dir, builder) -> builder.texture("#all"))
+			.emissivity(blockLight, skyLight)
+			.allFaces((dir, b) -> b.texture("#all"))
 			.end().renderType(CUTOUT);
-		ModelFile mediumBush = models().cubeAll(name(block), prefix("block/" + name(block)))
+
+		ModelFile mediumBush = models().cubeAll(blockName, prefix("block/" + blockName))
 			.element().from(2, 0, 2).to(14, 12, 14)
+			.emissivity(blockLight, skyLight)
+			.allFaces((dir, b) -> b.texture("#all"))
+			.end().renderType(CUTOUT);
+
+		ModelFile largeBush = models().cubeAll(blockName + "_large", prefix("block/" + blockName))
+			.element().from(0, 0, 0).to(16, 16, 16)
+			.emissivity(blockLight, skyLight)
 			.allFaces((dir, builder) -> builder.texture("#all"))
 			.end().renderType(CUTOUT);
-		ModelFile largeBush = models().cubeAll(name(block) + "_large", prefix("block/" + name(block)))
+
+		ModelFile grownBush = models().cubeAll(blockName + "_grown", prefix("block/" + blockName + "_ripe"))
 			.element().from(0, 0, 0).to(16, 16, 16)
-			.allFaces((dir, builder) -> builder.texture("#all"))
-			.end().renderType(CUTOUT);
-		ModelFile grownBush = models().cubeAll(name(block) + "_grown", prefix("block/" + name(block) + "_ripe"))
-			.element().from(0, 0, 0).to(16, 16, 16)
+			.emissivity(blockLight, skyLight)
 			.allFaces((dir, builder) -> builder.cullface(dir).tintindex(1).texture("#all"))
 			.end().renderType(CUTOUT);
 
