@@ -175,8 +175,16 @@ public class TFPlacedFeatures {
 		return ImmutableList.<PlacementModifier>builder().add(extra).add(filter, RarityFilter.onAverageOnceEvery(rarity), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP, BiomeFilter.biome());
 	}
 
+	private static ImmutableList.Builder<PlacementModifier> tfFeatureCheckArea(AvoidLandmarkModifier filter, int rarity, VerticalAnchor minAnchor, VerticalAnchor maxAnchor, PlacementModifier... extra) {
+		return ImmutableList.<PlacementModifier>builder().add(extra).add(filter, RarityFilter.onAverageOnceEvery(rarity), InSquarePlacement.spread(), HeightRangePlacement.uniform(minAnchor, maxAnchor));
+	}
+
 	private static ImmutableList.Builder<PlacementModifier> hollowLog(AvoidLandmarkModifier filter) {
 		return ImmutableList.<PlacementModifier>builder().add(RarityFilter.onAverageOnceEvery(40), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, filter, BiomeFilter.biome());
+	}
+
+	private static ImmutableList<PlacementModifier> oreberry(int rarity) {
+		return tfFeatureCheckArea(AvoidLandmarkModifier.checkUnderground(), rarity, VerticalAnchor.absolute(-10), VerticalAnchor.absolute(-8)).build();
 	}
 
 	public static ResourceKey<PlacedFeature> registerKey(String name) {
@@ -216,14 +224,14 @@ public class TFPlacedFeatures {
 		context.register(PLACED_OUTSIDE_STALAGMITE, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.OUTSIDE_STALAGMITE), tfFeatureCheckArea(AvoidLandmarkModifier.checkSurface(), 77).build()));
 		context.register(PLACED_PLANT_ROOTS, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.PLANT_ROOTS), tfFeatureCheckArea(AvoidLandmarkModifier.checkUnderground(), 1, CountPlacement.of(4), HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(10))).build()));
 
-		// Rarity was determined through empirical experiments, so the number of oreberries per chunk is 0.33
-		context.register(PLACED_IRON_OREBERRIES, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.IRON_OREBERRIES), tfFeatureCheckArea(AvoidLandmarkModifier.checkUnderground(), 2, HeightRangePlacement.uniform(VerticalAnchor.absolute(-10), VerticalAnchor.absolute(-8))).build()));
-		context.register(PLACED_GOLD_OREBERRIES, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.GOLD_OREBERRIES), tfFeatureCheckArea(AvoidLandmarkModifier.checkUnderground(), 2, HeightRangePlacement.uniform(VerticalAnchor.absolute(-10), VerticalAnchor.absolute(-8))).build()));
-		context.register(PLACED_COPPER_OREBERRIES, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.COPPER_OREBERRIES), tfFeatureCheckArea(AvoidLandmarkModifier.checkUnderground(), 2, HeightRangePlacement.uniform(VerticalAnchor.absolute(-10), VerticalAnchor.absolute(-8))).build()));
-		context.register(PLACED_IRON_OREBERRIES_ENCHANTED_FOREST, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.IRON_OREBERRIES), tfFeatureCheckArea(AvoidLandmarkModifier.checkUnderground(), 3, HeightRangePlacement.uniform(VerticalAnchor.absolute(-10), VerticalAnchor.absolute(-8))).build()));
-		context.register(PLACED_GOLD_OREBERRIES_ENCHANTED_FOREST, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.GOLD_OREBERRIES), tfFeatureCheckArea(AvoidLandmarkModifier.checkUnderground(), 3, HeightRangePlacement.uniform(VerticalAnchor.absolute(-10), VerticalAnchor.absolute(-8))).build()));
-		context.register(PLACED_COPPER_OREBERRIES_ENCHANTED_FOREST, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.COPPER_OREBERRIES), tfFeatureCheckArea(AvoidLandmarkModifier.checkUnderground(), 3, HeightRangePlacement.uniform(VerticalAnchor.absolute(-10), VerticalAnchor.absolute(-8))).build()));
-		context.register(PLACED_ESSENCE_OREBERRIES_ENCHANTED_FOREST, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.ESSENCE_OREBERRIES), tfFeatureCheckArea(AvoidLandmarkModifier.checkUnderground(), 3, HeightRangePlacement.uniform(VerticalAnchor.absolute(-10), VerticalAnchor.absolute(-8))).build()));
+		// Rarity was determined through empirical experiments, so the number of oreberries per chunk is 0.2
+		context.register(PLACED_IRON_OREBERRIES, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.IRON_OREBERRIES), oreberry(3)));
+		context.register(PLACED_GOLD_OREBERRIES, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.GOLD_OREBERRIES), oreberry(3)));
+		context.register(PLACED_COPPER_OREBERRIES, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.COPPER_OREBERRIES), oreberry(3)));
+		context.register(PLACED_IRON_OREBERRIES_ENCHANTED_FOREST, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.IRON_OREBERRIES), oreberry(5)));
+		context.register(PLACED_GOLD_OREBERRIES_ENCHANTED_FOREST, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.GOLD_OREBERRIES), oreberry(5)));
+		context.register(PLACED_COPPER_OREBERRIES_ENCHANTED_FOREST, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.COPPER_OREBERRIES), oreberry(5)));
+		context.register(PLACED_ESSENCE_OREBERRIES_ENCHANTED_FOREST, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.ESSENCE_OREBERRIES), oreberry(5)));
 
 		context.register(PLACED_PUMPKIN_LAMPPOST, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.PUMPKIN_LAMPPOST), tfFeatureCheckArea(AvoidLandmarkModifier.checkSurface(), 10).build()));
 		context.register(PLACED_SMOKER, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.SMOKER), ImmutableList.<PlacementModifier>builder().add(PlacementUtils.HEIGHTMAP_WORLD_SURFACE, InSquarePlacement.spread(), BiomeFilter.biome()).build()));
