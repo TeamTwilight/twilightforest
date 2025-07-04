@@ -1,5 +1,6 @@
 package twilightforest.world.components.structures.darktower;
 
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -999,7 +1000,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 		// wart container
 		makePillarFrame(world, sbb, netherDeco, rotation, 12, y, 9, 4, 4, 7, true);
 		this.fillBlocksRotated(world, sbb, 13, y + 1, 10, 14, y + 1, 14, Blocks.SOUL_SAND.defaultBlockState(), rotation);
-		this.fillBlocksRotated(world, sbb, 13, y + 2, 10, 14, y + 2, 14, Blocks.NETHER_WART.defaultBlockState(), rotation);
+		this.fillBlocksRotated(world, sbb, 13, y + 2, 10, 14, y + 2, 14, getNetherPlant(decoRNG), rotation);
 		this.fillBlocksRotated(world, sbb, 13, y + 4, 10, 14, y + 4, 14, Blocks.SOUL_SAND.defaultBlockState(), rotation);
 
 		// blaze container
@@ -1436,5 +1437,16 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 				}
 			}
 		}
+	}
+
+	private BlockState getNetherPlant(RandomSource random) {
+		List<BlockState> blocks = List.of(
+			Blocks.NETHER_WART.defaultBlockState(),
+			TFBlocks.BLIGHTBERRY_BUSH.get().defaultBlockState(),
+			TFBlocks.DUSKBERRY_BUSH.get().defaultBlockState(),
+			TFBlocks.SKYBERRY_BUSH.get().defaultBlockState(),
+			TFBlocks.STINGBERRY_BUSH.get().defaultBlockState()
+		);
+		return Util.getRandom(blocks, random);
 	}
 }
