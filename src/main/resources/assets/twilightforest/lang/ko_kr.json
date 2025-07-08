@@ -1,5 +1,5 @@
 {
-  "Dimension Settings.button": "편집",
+  "Dimension Settings.button": " 수정",
   "Magic Trees.button": "편집",
   "Portal Settings.button": "편집",
   "Shield Parrying.button": "편집",
@@ -9,7 +9,7 @@
   "advancement.twilightforest.arctic_dyed": "패션의 완성",
   "advancement.twilightforest.arctic_dyed.desc": "네 개의 서로 다른 부위의 극지 방어구를 염색하세요",
   "advancement.twilightforest.beanstalk": "잭과 콩나무",
-  "advancement.twilightforest.beanstalk.desc": "트롤 동굴에서 %s을 구해 구름 아래 빛나는 흙에 사용하세요",
+  "advancement.twilightforest.beanstalk.desc": "Obtain some %s in the troll caves and use them on the glowing soil beneath the clouds",
   "advancement.twilightforest.experiment_115": "수상한 고기?",
   "advancement.twilightforest.experiment_115.desc": "케이크처럼 보이긴 하는데...",
   "advancement.twilightforest.experiment_115_2": "오늘의 일기: 대성공!",
