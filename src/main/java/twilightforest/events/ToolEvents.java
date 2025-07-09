@@ -78,8 +78,7 @@ public class ToolEvents {
 	}
 
 	@SubscribeEvent
-	@SuppressWarnings("UnstableApiUsage")
-	public static void onKnightmetalToolDamage(LivingDamageEvent.Pre event) {
+	public static void onKnightmetalToolDamage(LivingIncomingDamageEvent event) {
 		LivingEntity target = event.getEntity();
 
 		DamageContainer container = event.getContainer();
@@ -106,7 +105,6 @@ public class ToolEvents {
 	}
 
 	@SubscribeEvent
-	@SuppressWarnings("UnstableApiUsage")
 	public static void onMinotaurAxeCharge(LivingDamageEvent.Pre event) {
 		LivingEntity target = event.getEntity();
 		DamageContainer container = event.getContainer();
