@@ -82,7 +82,7 @@ public class ToolEvents {
 		LivingEntity target = event.getEntity();
 
 		DamageContainer container = event.getContainer();
-		if (!target.level().isClientSide() && container.getSource().getDirectEntity() instanceof LivingEntity living) {
+		if (!event.isCanceled() && !target.level().isClientSide() && container.getSource().getDirectEntity() instanceof LivingEntity living) {
 			ItemStack weapon = living.getMainHandItem();
 
 			if (!weapon.isEmpty()) {
