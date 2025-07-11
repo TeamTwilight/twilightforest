@@ -37,6 +37,11 @@ public class DryingRecipe extends SingleItemRecipe {
 		return this.dryingTime;
 	}
 
+	@Override
+	public boolean isSpecial() {
+		return true;
+	}
+
 	public static class Serializer implements RecipeSerializer<DryingRecipe> {
 
 		public static final MapCodec<DryingRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(

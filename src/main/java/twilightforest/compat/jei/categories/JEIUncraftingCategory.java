@@ -56,6 +56,16 @@ public class JEIUncraftingCategory implements IRecipeCategory<CraftingRecipe> {
 	}
 
 	@Override
+	public int getWidth() {
+		return RecipeViewerConstants.GENERIC_RECIPE_WIDTH;
+	}
+
+	@Override
+	public int getHeight() {
+		return RecipeViewerConstants.GENERIC_RECIPE_HEIGHT;
+	}
+
+	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, CraftingRecipe recipe, IFocusGroup focuses) {
 		List<Ingredient> outputs = new ArrayList<>(recipe.getIngredients()); //Collect each ingredient
 		outputs.replaceAll(ingredient -> Ingredient.of(Arrays.stream(ingredient.getItems())

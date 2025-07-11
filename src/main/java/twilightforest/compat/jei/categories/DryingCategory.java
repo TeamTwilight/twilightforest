@@ -37,15 +37,11 @@ import java.util.List;
 public class DryingCategory implements IRecipeCategory<DryingRecipe> {
 
 	public static final RecipeType<DryingRecipe> DRYING = RecipeType.create(TwilightForestMod.ID, "drying", DryingRecipe.class);
-	private final IDrawable background;
 	private final IDrawable icon;
-	private final IDrawable slot;
 	private final IDrawable arrow;
 	private final Component localizedName;
 
 	public DryingCategory(IGuiHelper helper) {
-		this.background = helper.createBlankDrawable(70, 30);
-		this.slot = helper.getSlotDrawable();
 		this.arrow = helper.createAnimatedRecipeArrow(20 * 60);
 		this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, TFBlocks.SORTING_DRYING_RACK.get().asItem().getDefaultInstance());
 		this.localizedName = Component.translatable("gui.twilightforest.drying_jei");
@@ -67,15 +63,41 @@ public class DryingCategory implements IRecipeCategory<DryingRecipe> {
 	}
 
 	@Override
+	public int getWidth() {
+		return 70;
+	}
+
+	@Override
+	public int getHeight() {
+		return 30;
+	}
+
+	@Override
 	public void draw(DryingRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics graphics, double mouseX, double mouseY) {
-		this.background.draw(graphics);
-		this.slot.draw(graphics);
-		this.slot.draw(graphics, 52, 0);
 		this.arrow.draw(graphics, 23, 1);
 
 		float dryingTicks = recipe.getDryingTime();
 		int dryingMinutes = (int) Math.floor(dryingTicks / 60 / 20);
-		Component time = Component.translatable("gui.twilightforest.drying_minutes", dryingMinutes);
+		int dryingSeconds = (int) Math.floor((dryingTicks / 20) % 60);
+		Component time;
+
+		if (dryingMinutes > 0) {
+			if (dryingSeconds > 0) {
+				time = Component.translatable("gui.twilightforest.drying_time", dryingMinutes, dryingSeconds);
+			} else {
+				if (dryingMinutes == 1) {
+					time = Component.translatable("gui.twilightforest.drying_minute", dryingMinutes);
+				} else {
+					time = Component.translatable("gui.twilightforest.drying_minutes", dryingMinutes);
+				}
+			}
+		} else {
+			if (dryingSeconds == 1) {
+				time = Component.translatable("gui.twilightforest.drying_second", dryingSeconds);
+			} else {
+				time = Component.translatable("gui.twilightforest.drying_seconds", dryingSeconds);
+			}
+		}
 
 		Minecraft minecraft = Minecraft.getInstance();
 		Font font = minecraft.font;
@@ -91,8 +113,8 @@ public class DryingCategory implements IRecipeCategory<DryingRecipe> {
 
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, DryingRecipe recipe, IFocusGroup focuses) {
-		builder.addSlot(RecipeIngredientRole.INPUT, 1, 1).addIngredients(recipe.getIngredients().getFirst());
+		builder.addSlot(RecipeIngredientRole.INPUT, 1, 1).addIngredients(recipe.getIngredients().getFirst()).setStandardSlotBackground();
 
-		builder.addSlot(RecipeIngredientRole.OUTPUT, 53, 1).addItemStack(recipe.getResult());
+		builder.addSlot(RecipeIngredientRole.OUTPUT, 53, 1).addItemStack(recipe.getResult()).setStandardSlotBackground();
 	}
 }

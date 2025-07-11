@@ -56,6 +56,16 @@ public class TransformationPowderCategory implements IRecipeCategory<Transformat
 	}
 
 	@Override
+	public int getWidth() {
+		return RecipeViewerConstants.GENERIC_RECIPE_WIDTH;
+	}
+
+	@Override
+	public int getHeight() {
+		return RecipeViewerConstants.GENERIC_RECIPE_HEIGHT;
+	}
+
+	@Override
 	public void draw(TransformationRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics graphics, double mouseX, double mouseY) {
 		this.background.draw(graphics);
 		if (recipe.isReversible()) {

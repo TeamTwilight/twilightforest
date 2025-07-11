@@ -49,6 +49,16 @@ public class MoonwormQueenCategory implements IRecipeCategory<MoonwormQueenRepai
 	}
 
 	@Override
+	public int getWidth() {
+		return RecipeViewerConstants.GENERIC_RECIPE_WIDTH;
+	}
+
+	@Override
+	public int getHeight() {
+		return RecipeViewerConstants.GENERIC_RECIPE_HEIGHT;
+	}
+
+	@Override
 	public void draw(MoonwormQueenRepairRecipe recipe, IRecipeSlotsView view, GuiGraphics graphics, double mouseX, double mouseY) {
 		this.background.draw(graphics);
 	}

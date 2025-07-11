@@ -54,6 +54,16 @@ public class OminousFireCategory implements IRecipeCategory<OminousFireRecipe> {
 	}
 
 	@Override
+	public int getWidth() {
+		return RecipeViewerConstants.GENERIC_RECIPE_WIDTH;
+	}
+
+	@Override
+	public int getHeight() {
+		return RecipeViewerConstants.GENERIC_RECIPE_HEIGHT;
+	}
+
+	@Override
 	public void draw(OminousFireRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics graphics, double mouseX, double mouseY) {
 		this.background.draw(graphics);
 		this.arrow.draw(graphics, 46, 19);

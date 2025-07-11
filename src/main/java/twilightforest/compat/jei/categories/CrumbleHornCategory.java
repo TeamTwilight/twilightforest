@@ -56,6 +56,16 @@ public class CrumbleHornCategory implements IRecipeCategory<CrumbleRecipe> {
 	}
 
 	@Override
+	public int getWidth() {
+		return RecipeViewerConstants.GENERIC_RECIPE_WIDTH;
+	}
+
+	@Override
+	public int getHeight() {
+		return RecipeViewerConstants.GENERIC_RECIPE_HEIGHT;
+	}
+
+	@Override
 	public void draw(CrumbleRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics graphics, double mouseX, double mouseY) {
 		this.background.draw(graphics);
 		if (recipe.output() != Blocks.AIR) this.crumbleSlot.draw(graphics, 76, 14);
