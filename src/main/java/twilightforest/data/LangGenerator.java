@@ -1080,6 +1080,7 @@ public class LangGenerator extends TFLangProvider {
 		this.translateTag(ItemTagGenerator.IRONWOOD_INGOTS, "Ironwood Ingots");
 		this.translateTag(ItemTagGenerator.KNIGHTMETAL_INGOTS, "Knightmetal Ingots");
 		this.translateTag(ItemTagGenerator.STEELEAF_INGOTS, "Steeleaf Ingots");
+		this.translateTag(ItemTagGenerator.WROUGHT_IRON_INGOTS, "Wrought Iron Ingots");
 		this.translateTag(ItemTagGenerator.PAPER, "Papers");
 		this.translateTag(ItemTagGenerator.RAW_MATERIALS_IRONWOOD, "Raw Ironwood");
 		this.translateTag(ItemTagGenerator.RAW_MATERIALS_KNIGHTMETAL, "Raw Knightmetal");
@@ -1123,6 +1124,8 @@ public class LangGenerator extends TFLangProvider {
 		this.translateTag(ItemTagGenerator.TWILIGHT_OAK_LOGS, "Twilight Oak Logs");
 		this.translateTag(ItemTagGenerator.UNCRAFTING_IGNORES_COST, "Uncrafting Table Ignores Cost");
 		this.translateTag(ItemTagGenerator.WIP, "Work In Progress Items");
+		this.translateTag(ItemTagGenerator.IMMUNE_TO_THORNS, "Immune to Thorns");
+		this.translateTag(ItemTagGenerator.SCEPTERS, "Scepters");
 		this.translateTag(FluidTagGenerator.FIRE_JET_FUEL, "Fire Jet Fuel");
 
 		//config

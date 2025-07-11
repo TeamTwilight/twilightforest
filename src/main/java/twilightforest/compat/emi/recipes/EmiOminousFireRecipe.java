@@ -6,6 +6,7 @@ import dev.emi.emi.api.render.EmiTexture;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.SpawnEggItem;
@@ -13,9 +14,10 @@ import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.compat.RecipeViewerConstants;
-import twilightforest.compat.emi.EmiEntityWidget;
 import twilightforest.compat.emi.TFEmiCategories;
-import twilightforest.compat.emi.TFEmiCompat;
+import twilightforest.compat.emi.widget.EmiBlockWidget;
+import twilightforest.compat.emi.widget.EmiEntityWidget;
+import twilightforest.init.TFBlocks;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,9 +27,7 @@ public class EmiOminousFireRecipe implements EmiRecipe {
 	//height is adjusted slightly to allow 2 entries per page
 	private static final int HEIGHT = RecipeViewerConstants.GENERIC_RECIPE_HEIGHT - 8;
 
-	public static final ResourceLocation TEXTURES = TwilightForestMod.getGuiTexture("ominous_fire_jei.png");
-	public static final EmiTexture BACKGROUND = new EmiTexture(TEXTURES, 0, 0, WIDTH, HEIGHT);
-	public static final EmiTexture SINGLE_ARROW = new EmiTexture(TEXTURES, 116, 0, 23, 15);
+	public static final EmiTexture SLOT = new EmiTexture(TwilightForestMod.getGuiTexture("big_slot.png"), 0, 0, 34, 34, 34, 34, 34, 34);
 
 	private final EntityType<?> input;
 	private final EntityType<?> output;
@@ -44,8 +44,9 @@ public class EmiOminousFireRecipe implements EmiRecipe {
 
 	@Override
 	public @Nullable ResourceLocation getId() {
-		return null;
+		return TwilightForestMod.prefix("/ominous/" + BuiltInRegistries.ENTITY_TYPE.getKey(this.output).getNamespace() + "/" + BuiltInRegistries.ENTITY_TYPE.getKey(this.output).getPath());
 	}
+
 
 	@Override
 	public List<EmiIngredient> getInputs() {
@@ -76,9 +77,11 @@ public class EmiOminousFireRecipe implements EmiRecipe {
 
 	@Override
 	public void addWidgets(WidgetHolder widgets) {
-		widgets.addTexture(BACKGROUND, 0, 0);
+		widgets.addTexture(SLOT, 7, 10);
 		widgets.add(new EmiEntityWidget(this.input, 7, 12, 32));
-		widgets.addTexture(SINGLE_ARROW, 46, 19);
+		widgets.addTexture(EmiTexture.EMPTY_ARROW, 46, 19);
+		widgets.add(new EmiBlockWidget(TFBlocks.OMINOUS_FIRE.get().defaultBlockState(), 49, 44));
+		widgets.addTexture(SLOT, 75, 10);
 		widgets.add(new EmiEntityWidget(this.output, 75, 12, 32));
 	}
 

@@ -5,16 +5,12 @@ import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.builder.ITooltipBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
-import mezz.jei.api.gui.drawable.IDrawableAnimated;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
-import mezz.jei.api.ingredients.IIngredientType;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import mezz.jei.common.Constants;
-import mezz.jei.common.util.Translator;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -23,21 +19,12 @@ import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Blocks;
 import twilightforest.TwilightForestMod;
 import twilightforest.compat.RecipeViewerConstants;
-import twilightforest.compat.jei.FakeItemEntity;
-import twilightforest.compat.jei.JEICompat;
-import twilightforest.compat.jei.renderers.FakeItemEntityRenderer;
-import twilightforest.compat.jei.util.CrumbleRecipe;
 import twilightforest.init.TFBlocks;
-import twilightforest.init.TFItems;
 import twilightforest.item.recipe.DryingRecipe;
-
-import java.util.List;
 
 public class DryingCategory implements IRecipeCategory<DryingRecipe> {
 
@@ -81,31 +68,9 @@ public class DryingCategory implements IRecipeCategory<DryingRecipe> {
 	public void draw(DryingRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics graphics, double mouseX, double mouseY) {
 		this.arrow.draw(graphics, 23, 1);
 
-		float dryingTicks = recipe.getDryingTime();
-		int dryingMinutes = (int) Math.floor(dryingTicks / 60 / 20);
-		int dryingSeconds = (int) Math.floor((dryingTicks / 20) % 60);
-		Component time;
-
-		if (dryingMinutes > 0) {
-			if (dryingSeconds > 0) {
-				time = Component.translatable("gui.twilightforest.drying_time", dryingMinutes, dryingSeconds);
-			} else {
-				if (dryingMinutes == 1) {
-					time = Component.translatable("gui.twilightforest.drying_minute", dryingMinutes);
-				} else {
-					time = Component.translatable("gui.twilightforest.drying_minutes", dryingMinutes);
-				}
-			}
-		} else {
-			if (dryingSeconds == 1) {
-				time = Component.translatable("gui.twilightforest.drying_second", dryingSeconds);
-			} else {
-				time = Component.translatable("gui.twilightforest.drying_seconds", dryingSeconds);
-			}
-		}
-
 		Minecraft minecraft = Minecraft.getInstance();
 		Font font = minecraft.font;
+		Component time = RecipeViewerConstants.getDryingTime(recipe.getDryingTime());
 		graphics.drawString(font, time, 35 - font.width(time.getString()) / 2, 20, 0xFF808080, false);
 
 		MultiBufferSource.BufferSource bufferSource = minecraft.renderBuffers().bufferSource();

@@ -5,7 +5,6 @@ import mezz.jei.api.ingredients.IIngredientType;
 import mezz.jei.api.ingredients.subtypes.UidContext;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.EntityType;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.compat.jei.FakeEntityType;
 import twilightforest.compat.jei.JEICompat;

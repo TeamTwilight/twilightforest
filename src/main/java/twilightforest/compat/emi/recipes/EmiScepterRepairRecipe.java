@@ -13,8 +13,11 @@ import java.util.Random;
 
 public class EmiScepterRepairRecipe extends EmiPatternCraftingRecipe {
 
-	public EmiScepterRepairRecipe(List<EmiIngredient> input, EmiStack output, ResourceLocation id) {
+	private final int durability;
+
+	public EmiScepterRepairRecipe(List<EmiIngredient> input, EmiStack output, int durability, ResourceLocation id) {
 		super(input, output, id);
+		this.durability = durability;
 	}
 
 	@Override
@@ -31,7 +34,20 @@ public class EmiScepterRepairRecipe extends EmiPatternCraftingRecipe {
 
 	@Override
 	public SlotWidget getOutputWidget(int x, int y) {
-		return new SlotWidget(this.output, x, y);
+		return new GeneratedSlotWidget(r -> EmiStack.of(this.damageNewScepter(r)), this.unique, x, y);
+	}
+
+	private ItemStack damageNewScepter(Random random) {
+		ItemStack stack = this.output.getItemStack();
+		if (stack.getMaxDamage() <= 0) {
+			return stack;
+		}
+		int d = random.nextInt(stack.getMaxDamage());
+		int damage = d - this.durability;
+		if (damage > 0) {
+			stack.setDamageValue(damage);
+		}
+		return stack;
 	}
 
 	private ItemStack damageScepter(Random random) {

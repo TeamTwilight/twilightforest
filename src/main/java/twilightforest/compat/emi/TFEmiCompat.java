@@ -42,11 +42,11 @@ public class TFEmiCompat implements EmiPlugin {
 
 	@Override
 	public void register(EmiRegistry registry) {
+
 		registry.addCategory(TFEmiCategories.UNCRAFTING);
 		registry.addCategory(TFEmiCategories.CRUMBLE_HORN);
 		registry.addCategory(TFEmiCategories.TRANSFORMATION);
 		registry.addCategory(TFEmiCategories.EXANIMATE);
-		registry.addCategory(TFEmiCategories.MOONWORM_QUEEN);
 		registry.addCategory(TFEmiCategories.DRYING);
 
 		if (!TFConfig.disableEntireTable) {
@@ -56,7 +56,6 @@ public class TFEmiCompat implements EmiPlugin {
 		registry.addWorkstation(TFEmiCategories.CRUMBLE_HORN, EmiStack.of(TFItems.CRUMBLE_HORN));
 		registry.addWorkstation(TFEmiCategories.TRANSFORMATION, EmiStack.of(TFItems.TRANSFORMATION_POWDER));
 		registry.addWorkstation(TFEmiCategories.EXANIMATE, EmiStack.of(TFItems.EXANIMATE_ESSENCE));
-		registry.addWorkstation(TFEmiCategories.MOONWORM_QUEEN, EmiStack.of(TFItems.MOONWORM_QUEEN));
 
 		RecipeManager manager = Objects.requireNonNull(Minecraft.getInstance().level).getRecipeManager();
 		if (!TFConfig.disableEntireTable) {
@@ -87,23 +86,18 @@ public class TFEmiCompat implements EmiPlugin {
 
 		for (RecipeHolder<?> holder : manager.getAllRecipesFor(RecipeType.CRAFTING)) {
 			EmiRecipe emiRecipe = switch (holder.value()) {
-				case MoonwormQueenRepairRecipe moonwormQueenRepairRecipe ->
-					new EmiMoonwormQueenRecipe();
-
-				case EmperorsClothRecipe emperorsClothRecipe ->
-					new EmiEmperorsClothRecipe();
-
-				case ScepterRepairRecipe scepterRepairRecipe ->
+				case MoonwormQueenRepairRecipe ignored -> new EmiMoonwormQueenRecipe();
+				case EmperorsClothRecipe ignored -> new EmiEmperorsClothRecipe();
+				case ScepterRepairRecipe recipe ->
 					new EmiScepterRepairRecipe(
-						scepterRepairRecipe.getIngredients().stream()
+						recipe.getIngredients().stream()
 							.map(EmiIngredient::of)
 							.toList(),
-						EmiStack.of(scepterRepairRecipe.getScepter()),
+						EmiStack.of(recipe.getScepter()),
+						recipe.getRepairDurability(),
 						holder.id()
 					);
-
-				case TravellersGearModifierRecipe travellersGearModifierRecipe ->
-					new EmiTravellersGearModifierRecipe(travellersGearModifierRecipe);
+				case TravellersGearModifierRecipe recipe -> new EmiTravellersGearModifierRecipe(recipe);
 
 				default -> null;
 			};

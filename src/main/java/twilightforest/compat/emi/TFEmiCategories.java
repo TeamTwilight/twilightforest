@@ -8,7 +8,6 @@ public class TFEmiCategories {
 	public static final TFEmiRecipeCategory CRUMBLE_HORN = new TFEmiRecipeCategory("crumble_horn", TFItems.CRUMBLE_HORN);
 	public static final TFEmiRecipeCategory TRANSFORMATION = new TFEmiRecipeCategory("transformation", TFItems.TRANSFORMATION_POWDER);
 	public static final TFEmiRecipeCategory EXANIMATE = new TFEmiRecipeCategory("ominous_flame", TFItems.EXANIMATE_ESSENCE);
-	public static final TFEmiRecipeCategory MOONWORM_QUEEN = new TFEmiRecipeCategory("moonworm_queen", TFItems.MOONWORM_QUEEN);
 	public static final TFEmiRecipeCategory DRYING = new TFEmiRecipeCategory("drying", TFBlocks.SORTING_DRYING_RACK);
 
 }

@@ -1,16 +1,15 @@
 package twilightforest.compat.emi.recipes;
 
+import dev.emi.emi.api.recipe.VanillaEmiRecipeCategories;
 import dev.emi.emi.api.render.EmiTexture;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
-import net.minecraft.Util;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import twilightforest.TwilightForestMod;
 import twilightforest.compat.RecipeViewerConstants;
-import twilightforest.compat.emi.TFEmiCategories;
-import twilightforest.compat.emi.TFEmiCompat;
-import twilightforest.compat.emi.OrderedSlotWidget;
+import twilightforest.compat.emi.widget.OrderedSlotWidget;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFRecipes;
 import twilightforest.item.recipe.MoonwormQueenRepairRecipe;
@@ -20,16 +19,16 @@ import java.util.List;
 public class EmiMoonwormQueenRecipe extends TFEmiRecipe<MoonwormQueenRepairRecipe> {
 
 	public EmiMoonwormQueenRecipe() {
-		super(TFEmiCategories.MOONWORM_QUEEN, new RecipeHolder<>(TFRecipes.MOONWORM_QUEEN_REPAIR_RECIPE.getId(), new MoonwormQueenRepairRecipe(CraftingBookCategory.MISC)), RecipeViewerConstants.GENERIC_RECIPE_WIDTH + 2, RecipeViewerConstants.GENERIC_RECIPE_HEIGHT);
+		super(VanillaEmiRecipeCategories.CRAFTING, new RecipeHolder<>(TFRecipes.MOONWORM_QUEEN_REPAIR_RECIPE.getId(), new MoonwormQueenRepairRecipe(CraftingBookCategory.MISC)), TwilightForestMod.prefix("/moonworm_queen_repairing"), RecipeViewerConstants.GENERIC_RECIPE_WIDTH + 2, RecipeViewerConstants.GENERIC_RECIPE_HEIGHT);
 	}
 
 	@Override
-	protected void addInputs(List<EmiIngredient> inputs) {
+	protected void addAdditionalInputs(List<EmiIngredient> inputs) {
 		inputs.add(EmiStack.of(TFItems.MOONWORM_QUEEN));
 	}
 
 	@Override
-	protected void addOutputs(List<EmiStack> outputs) {
+	protected void addAdditionalOutputs(List<EmiStack> outputs) {
 		outputs.add(EmiStack.of(TFItems.MOONWORM_QUEEN));
 	}
 

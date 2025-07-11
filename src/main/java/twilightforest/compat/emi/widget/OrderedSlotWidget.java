@@ -1,10 +1,9 @@
-package twilightforest.compat.emi;
+package twilightforest.compat.emi.widget;
 
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.SlotWidget;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
 
 import java.util.List;
 

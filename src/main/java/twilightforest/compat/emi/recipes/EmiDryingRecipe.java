@@ -13,8 +13,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.compat.RecipeViewerConstants;
 import twilightforest.compat.emi.TFEmiCategories;
-import twilightforest.compat.emi.TFEmiCompat;
+import twilightforest.compat.emi.widget.EmiBlockWidget;
+import twilightforest.init.TFBlocks;
 import twilightforest.item.recipe.DryingRecipe;
 
 import java.util.List;
@@ -66,17 +68,15 @@ public class EmiDryingRecipe implements EmiRecipe {
 	@Override
 	public void addWidgets(WidgetHolder widgets) {
 		widgets.addFillingArrow(22, 0, 20 * 60 * 50);
-		widgets.addSlot(this.getInputs().getFirst(), 0, 0);
-		widgets.addSlot(this.getOutputs().getFirst(), 51, 0).recipeContext(this);
+		widgets.addSlot(this.getInputs().getFirst(), 0, 0).drawBack(false);
+		widgets.add(new EmiBlockWidget(TFBlocks.OAK_DRYING_RACK.get().defaultBlockState(), 1, 16));
 
-		float dryingTicks = this.recipe.value().getDryingTime();
-		int dryingMinutes = (int) Math.floor(dryingTicks / 60 / 20);
-		Component time = Component.translatable("gui.twilightforest.drying_minutes", dryingMinutes);
+		widgets.add(new EmiBlockWidget(TFBlocks.OAK_DRYING_RACK.get().defaultBlockState(), 52, 16));
+		widgets.addSlot(this.getOutputs().getFirst(), 51, 0).drawBack(false).recipeContext(this);
 
+		Component time = RecipeViewerConstants.getDryingTime(this.recipe.value().getDryingTime());
 		widgets.addText(time, 35 - Minecraft.getInstance().font.width(time.getString()) / 2, 20, 0xFF808080, false);
 
 		widgets.addTooltipText(List.of(Component.translatable("gui.twilightforest.drying_ticks", this.recipe.value().getDryingTime()).withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY)), 22, 1, 24, 17);
 	}
-
-
 }

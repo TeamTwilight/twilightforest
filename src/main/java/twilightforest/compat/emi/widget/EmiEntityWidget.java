@@ -1,4 +1,4 @@
-package twilightforest.compat.emi;
+package twilightforest.compat.emi.widget;
 
 import dev.emi.emi.api.widget.Bounds;
 import dev.emi.emi.api.widget.Widget;
