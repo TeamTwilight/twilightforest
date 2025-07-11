@@ -514,6 +514,8 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.unlockedBy("has_item", has(TFBlocks.GIANT_COBBLESTONE.get()))
 			.save(output, locEquip(TFItems.GIANT_SWORD.getId().getPath()));
 
+		this.travellersGearRecipes(output);
+
 		charmRecipe(output, "charm_of_keeping_2", TFItems.CHARM_OF_KEEPING_2, TFItems.CHARM_OF_KEEPING_1);
 		charmRecipe(output, "charm_of_keeping_3", TFItems.CHARM_OF_KEEPING_3, TFItems.CHARM_OF_KEEPING_2);
 		charmRecipe(output, "charm_of_life_2", TFItems.CHARM_OF_LIFE_2, TFItems.CHARM_OF_LIFE_1);
@@ -1207,6 +1209,54 @@ public class CraftingGenerator extends CraftingDataHelper {
 		SimpleCookingRecipeBuilder.generic(Ingredient.of(TFItems.GOLD_BERRY.get()), RecipeCategory.MISC, Items.GOLD_NUGGET, 1.0F, smeltingTime, process, factory).unlockedBy("has_item", has(TFItems.GOLD_BERRY.get())).group("gold_nugget").save(output, TwilightForestMod.prefix("material/" + processName + "_gold_nugget").toString());
 		SimpleCookingRecipeBuilder.generic(Ingredient.of(TFItems.COPPER_BERRY.get()), RecipeCategory.MISC, TFItems.COPPER_NUGGET, 1.0F, smeltingTime, process, factory).unlockedBy("has_item", has(TFItems.COPPER_BERRY.get())).group("copper_nugget").save(output, TwilightForestMod.prefix("material/" + processName + "_copper_nugget").toString());
 
+	}
+
+	private void travellersGearRecipes(RecipeOutput output) {
+		ShapedRecipeBuilder.shaped(RecipeCategory.TRANSPORTATION, TFItems.TRAVELLERS_GOGGLES)
+			.pattern("l l")
+			.pattern("plp")
+			.pattern("g g")
+			.define('l', TFItems.TANNED_LEATHER)
+			.define('p', Tags.Items.GLASS_PANES_COLORLESS)
+			.define('g', Tags.Items.INGOTS_GOLD)
+			.unlockedBy("has_leather", has(TFItems.TANNED_LEATHER))
+			.save(output);
+
+		ShapedRecipeBuilder.shaped(RecipeCategory.TRANSPORTATION, TFItems.TRAVELLERS_CHESTPLATE)
+			.pattern("l l")
+			.pattern("lwl")
+			.pattern("lwl")
+			.define('l', TFItems.TANNED_LEATHER)
+			.define('w', ItemTags.WOOL)
+			.unlockedBy("has_leather", has(TFItems.TANNED_LEATHER))
+			.save(output);
+
+		ShapedRecipeBuilder.shaped(RecipeCategory.TRANSPORTATION, TFItems.TRAVELLERS_BOOTS)
+			.pattern("s s")
+			.pattern("l l")
+			.pattern("l l")
+			.define('l', TFItems.TANNED_LEATHER)
+			.define('s', Tags.Items.STRINGS)
+			.unlockedBy("has_leather", has(TFItems.TANNED_LEATHER))
+			.save(output);
+
+		ShapedRecipeBuilder.shaped(RecipeCategory.TRANSPORTATION, TFItems.TRAVELLERS_BELT)
+			.pattern("lll")
+			.pattern("ici")
+			.pattern("lll")
+			.define('l', TFItems.TANNED_LEATHER)
+			.define('c', Tags.Items.CHESTS_WOODEN)
+			.define('i', Tags.Items.NUGGETS_IRON)
+			.unlockedBy("has_leather", has(TFItems.TANNED_LEATHER))
+			.save(output);
+
+		ShapedRecipeBuilder.shaped(RecipeCategory.TRANSPORTATION, TFItems.TRAVELLERS_GLOVES)
+			.pattern("s s")
+			.pattern("l l")
+			.define('l', TFItems.TANNED_LEATHER)
+			.define('s', Tags.Items.STRINGS)
+			.unlockedBy("has_leather", has(TFItems.TANNED_LEATHER))
+			.save(output);
 	}
 
 	private void crackedWoodRecipes(RecipeOutput output) {

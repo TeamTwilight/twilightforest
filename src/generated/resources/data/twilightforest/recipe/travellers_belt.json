@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "c": {
+      "tag": "c:chests/wooden"
+    },
+    "i": {
+      "tag": "c:nuggets/iron"
+    },
+    "l": {
+      "item": "twilightforest:tanned_leather"
+    }
+  },
+  "pattern": [
+    "lll",
+    "ici",
+    "lll"
+  ],
+  "result": {
+    "count": 1,
+    "id": "twilightforest:travellers_belt"
+  }
+}

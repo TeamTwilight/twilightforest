@@ -17,7 +17,6 @@ import twilightforest.TwilightForestMod;
 import twilightforest.compat.jei.FakeItemEntity;
 import twilightforest.util.entities.EntityRenderingUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
