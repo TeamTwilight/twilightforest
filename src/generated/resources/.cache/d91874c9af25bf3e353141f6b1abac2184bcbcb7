@@ -1,6 +1,6 @@
-// 1.21.1	2025-06-01T16:24:00.533098	Languages: en_us for mod: twilightforest
-c7688b959d9a02acdb460df99e7bca640a4d89de assets/twilightforest/lang/en_ud.json
-e5d1d21b279dc1a08986e04893ac8a9dc430d9ad assets/twilightforest/lang/en_us.json
+// 1.21.1	2025-07-10T22:19:47.151099792	Languages: en_us for mod: twilightforest
+694541ff36bb1db2eb8ee8c03758f22bf0be5a6a assets/twilightforest/lang/en_ud.json
+c887625c533c5d96bb1ee271feb73dda742f2eb6 assets/twilightforest/lang/en_us.json
 31d12dd44604bd3c937abbc3d606bdd4d209058d assets/twilightforest/tips/anvil_squashing.json
 caa537d278fb4c0d01e8ba9ff9db8772e00351f3 assets/twilightforest/tips/arctic_armor.json
 b5e3a038ee043e0da8dc6aca7af9673b8b6182c2 assets/twilightforest/tips/banister_shape.json
@@ -37,8 +37,8 @@ da325be7fd26516ba3124e887bb89e5825d5c650 assets/twilightforest/tips/labyrinth_va
 0f9755ab2e0e083481322efd3379bac0a2dfe82f assets/twilightforest/tips/magic_saplings.json
 df16f3766193b17fe1dad801be7c6eec3a7e05b5 assets/twilightforest/tips/mazebreaker.json
 1e4f27cbc2de52f5f02ce20d1a6d76ec12759659 assets/twilightforest/tips/mining_tree.json
-290d92478e01b33bcaa8da66553918f007e698df assets/twilightforest/tips/moonworm_queen.json
 8b42d9bbb1babbb2bb589048b3ff2eb5dcf96e8a assets/twilightforest/tips/moon_dial.json
+290d92478e01b33bcaa8da66553918f007e698df assets/twilightforest/tips/moonworm_queen.json
 4b98ecb2ca0e86246efe725bbec5a6c92337435d assets/twilightforest/tips/mushglooms.json
 ff65dcc2db3921976d87f7e387aad31161e924e2 assets/twilightforest/tips/music_disc.json
 51d1ceca0c113f3be9d9242bb93e24b923a4f6dc assets/twilightforest/tips/naga.json
@@ -47,8 +47,8 @@ b8b1b4889bb1b4124234f0d7434a9644629e7096 assets/twilightforest/tips/ore_magnet.j
 eda8c00f5ac6ae073958437ab4dc41e78b0b2e78 assets/twilightforest/tips/peacock_feather_fan.json
 4f5daf5e1ed3db102f181620c196f54f487127c3 assets/twilightforest/tips/phantom_armor.json
 6ac1c21793fc264b4c0b33b898c798fea764777e assets/twilightforest/tips/quest_ram.json
-d6d73bfc5b2463609d6a8571f7a1c2a9a3865f92 assets/twilightforest/tips/redcap.json
 f49ab75316735dcf245463a9c0f80fe337c490bb assets/twilightforest/tips/red_thread.json
+d6d73bfc5b2463609d6a8571f7a1c2a9a3865f92 assets/twilightforest/tips/redcap.json
 ddd2be0accafe70fee6ebeb3a994dee7a9cce23d assets/twilightforest/tips/skull_candle.json
 6a654cd4f1ffd4224bba788121d6fd1625b77e32 assets/twilightforest/tips/sorting_tree.json
 6527e440a786b85ba28c54e4302ff96f9c8dbae1 assets/twilightforest/tips/spooky_forest.json
