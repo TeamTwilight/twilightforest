@@ -434,6 +434,7 @@ public class TFCreativeTabs {
 			output.accept(TFItems.ARMOR_SHARD_CLUSTER);
 			output.accept(TFItems.KNIGHTMETAL_INGOT);
 			output.accept(TFItems.KNIGHTMETAL_RING);
+			output.accept(TFItems.TANNIN);
 			output.accept(TFItems.FIERY_BLOOD);
 			output.accept(TFItems.FIERY_TEARS);
 			output.accept(TFItems.FIERY_INGOT);

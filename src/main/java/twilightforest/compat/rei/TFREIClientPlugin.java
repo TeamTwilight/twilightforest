@@ -29,15 +29,13 @@ import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.compat.rei.categories.*;
-import twilightforest.compat.rei.displays.REIOminousFireDisplay;
+import twilightforest.compat.rei.displays.*;
+import twilightforest.compat.rei.fillers.REITravellersGearModifierRecipeFiller;
 import twilightforest.compat.rei.filter.HideItemFilterType;
 import twilightforest.config.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.UncraftingScreen;
 import twilightforest.compat.RecipeViewerConstants;
-import twilightforest.compat.rei.displays.REICrumbleHornDisplay;
-import twilightforest.compat.rei.displays.REITransformationPowderDisplay;
-import twilightforest.compat.rei.displays.REIUncraftingDisplay;
 import twilightforest.compat.rei.entries.EntityEntryDefinition;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.TFBlocks;
@@ -114,6 +112,7 @@ public class TFREIClientPlugin implements REIClientPlugin {
 
 		registry.add(REIMoonwormQueenCategory.createDisplay());
 		registry.registerRecipeFiller(NoTemplateSmithingRecipe.class, RecipeType.SMITHING, holder -> new DefaultSmithingDisplay(holder.value(), holder.id(), List.of(EntryIngredients.of(ItemStack.EMPTY), EntryIngredients.ofIngredient(holder.value().getBase()), EntryIngredients.ofIngredient(holder.value().getAddition()))));
+		new REITravellersGearModifierRecipeFiller().registerDisplays(registry);
 	}
 
 	@Override

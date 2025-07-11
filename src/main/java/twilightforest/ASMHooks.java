@@ -55,7 +55,8 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import twilightforest.beans.Autowired;
 import twilightforest.init.*;
-import twilightforest.item.TravellersArmorItem;
+import twilightforest.item.travellers_gear.TravellersArmorItem;
+import twilightforest.item.travellers_gear.modifiers.TravellersModifiers;
 import twilightforest.util.ArmorUtil;
 import twilightforest.util.multiparts.MultipartEntityUtil;
 import twilightforest.block.CloudBlock;
@@ -96,10 +97,10 @@ public class ASMHooks {
 		AttributeInstance attributeInstance = player.getAttributes().getInstance(Attributes.MOVEMENT_SPEED);
 		if (attributeInstance == null)
 			return;
-		AttributeModifier modifier = attributeInstance.getModifier(TravellersArmorItem.FORWARD_BOOTS_ATTRIBUTE_MODIFIER_LOCATION);
+		AttributeModifier modifier = attributeInstance.getModifier(TFAttributeModifiers.FORWARD_BOOTS_ATTRIBUTE_MODIFIER_LOCATION);
 		double multiplier = modifier == null ? 1 : modifier.amount() + 1;
 		player.setData(TFDataAttachments.TEMPORARY_SAVED_FORWARD_BOOST, multiplier);
-		attributeInstance.removeModifier(TravellersArmorItem.FORWARD_BOOTS_ATTRIBUTE_MODIFIER_LOCATION);
+		attributeInstance.removeModifier(TFAttributeModifiers.FORWARD_BOOTS_ATTRIBUTE_MODIFIER_LOCATION);
 	}
 
 	/**
@@ -115,7 +116,7 @@ public class ASMHooks {
 		if (attributeInstance == null)
 			return;
 		double multiplier = player.getData(TFDataAttachments.TEMPORARY_SAVED_FORWARD_BOOST);
-		attributeInstance.addTransientModifier(new AttributeModifier(TravellersArmorItem.FORWARD_BOOTS_ATTRIBUTE_MODIFIER_LOCATION, multiplier - 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+		attributeInstance.addTransientModifier(new AttributeModifier(TFAttributeModifiers.FORWARD_BOOTS_ATTRIBUTE_MODIFIER_LOCATION, multiplier - 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
 	}
 
 	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -305,8 +306,7 @@ public class ASMHooks {
 		if (!fluidState.is(FluidTags.WATER))
 			return null;
 
-		Boolean waterWalkEnabled = livingEntity.getItemBySlot(EquipmentSlot.FEET).get(TFDataComponents.WATER_WALK_ENABLE);
-		if (waterWalkEnabled == null || !waterWalkEnabled)
+		if (!TravellersModifiers.WATER_WALK_MODIFIER.isActive(livingEntity.getItemBySlot(EquipmentSlot.FEET)))
 			return null;
 
 		double waterHeight = livingEntity.getFluidTypeHeight(NeoForgeMod.WATER_TYPE.value());
@@ -383,7 +383,7 @@ public class ASMHooks {
 	 */
 	public static float cancelHighStepModifierForStepDownDuringSneaking(Player player, float f) {
 		for (ItemAttributeModifiers.Entry modifier : player.getInventory().getArmor(EquipmentSlot.FEET.getIndex()).getAttributeModifiers().modifiers()) {
-			if (modifier.matches(Attributes.STEP_HEIGHT, TFAttributeModifiers.TRAVELLERS_HIGH_STEP.id()))
+			if (modifier.matches(Attributes.STEP_HEIGHT, TFAttributeModifiers.TRAVELLERS_HIGH_STEP_ACTIVE.id()))
 				return (float) (f - modifier.modifier().amount());  // TODO: use multiply modifiers to this one if they are present
 		}
 		return f;
@@ -401,11 +401,12 @@ public class ASMHooks {
 	 * {@link net.minecraft.world.entity.player.Player#jumpFromGround()}
 	 */
 
-	public static float getFoodExhaustionMultiplier(float f, Player player) {
-		AttributeInstance attributeInstance = player.getAttributes().getInstance(TFAttributes.TRAVEL_FOOD_EFFICIENCY);
-		if (attributeInstance == null)
-			return 1;
-		return (float) (f * (1 / attributeInstance.getValue()));
+	public static float getFoodExhaustion(float f, Player player) {
+		ItemStack chestStack = player.getItemBySlot(EquipmentSlot.CHEST);
+		Float divisor = chestStack.get(TFDataComponents.EFFICIENT_EATER);
+		if (!TravellersModifiers.FOOD_EFFICIENCY_MODIFIER.isActive(chestStack) || divisor == null)
+			return f;
+		return f * (1 / divisor);
 	}
 
 	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

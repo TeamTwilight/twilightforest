@@ -51,11 +51,6 @@ public class JEIUncraftingCategory implements IRecipeCategory<CraftingRecipe> {
 	}
 
 	@Override
-	public IDrawable getBackground() {
-		return this.background;
-	}
-
-	@Override
 	public IDrawable getIcon() {
 		return this.icon;
 	}
@@ -89,6 +84,7 @@ public class JEIUncraftingCategory implements IRecipeCategory<CraftingRecipe> {
 
 	@Override
 	public void draw(CraftingRecipe recipe, IRecipeSlotsView views, GuiGraphics graphics, double mouseX, double mouseY) {
+		this.background.draw(graphics);
 		int cost = recipe instanceof UncraftingRecipe ur ? ur.getCost() : RecipeViewerConstants.getRecipeCost(views.getSlotViews(RecipeIngredientRole.OUTPUT).stream().map(view -> view.getDisplayedItemStack().orElse(ItemStack.EMPTY)).toList());
 		if (cost > 0) {
 			String costStr = cost + "";

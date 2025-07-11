@@ -7,7 +7,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import twilightforest.TwilightForestMod;
-import twilightforest.item.TravellersArmorBeltItem;
+import twilightforest.item.travellers_gear.TravellersArmorBeltItem;
 
 public record SwapHotbarPacket() implements CustomPacketPayload {
 	public static final Type<SwapHotbarPacket> TYPE = new Type<>(TwilightForestMod.prefix("swap_hotbar_packet"));

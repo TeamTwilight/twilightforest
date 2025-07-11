@@ -1,0 +1,42 @@
+{
+  "type": "twilightforest:travellers_gear_modifier_shapeless_recipe",
+  "ingredients": [
+    {
+      "item": "twilightforest:travellers_chest"
+    },
+    [
+      {
+        "type": "neoforge:components",
+        "components": {
+          "minecraft:potion_contents": {
+            "potion": "minecraft:invisibility"
+          }
+        },
+        "items": "minecraft:potion"
+      },
+      {
+        "type": "neoforge:components",
+        "components": {
+          "minecraft:potion_contents": {
+            "potion": "minecraft:long_invisibility"
+          }
+        },
+        "items": "minecraft:potion"
+      }
+    ],
+    {
+      "item": "minecraft:ender_eye"
+    },
+    {
+      "item": "minecraft:spider_eye"
+    },
+    {
+      "item": "minecraft:golden_carrot"
+    }
+  ],
+  "modifier": {
+    "data_component_map": {
+      "twilightforest:stealth_crouching": {}
+    }
+  }
+}

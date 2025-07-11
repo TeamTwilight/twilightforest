@@ -7,7 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemContainerContents;
 import org.jetbrains.annotations.NotNull;
-import twilightforest.item.TravellersArmorBeltItem;
+import twilightforest.item.travellers_gear.TravellersArmorBeltItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,11 +63,11 @@ public class TravellersBeltTooltipComponent implements ClientTooltipComponent {
 	}
 
 	private int gridSizeX() {
-		return 3;
+		return 9;
 	}
 
 	private int gridSizeY() {
-		return 3;
+		return 1;
 	}
 
 	@Override

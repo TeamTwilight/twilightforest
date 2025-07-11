@@ -29,6 +29,7 @@ import org.apache.commons.lang3.text.WordUtils;
 import twilightforest.TwilightForestMod;
 import twilightforest.config.TFConfig;
 import twilightforest.init.TFKeyBindsCategories;
+import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 
 import java.util.HashMap;
 import java.util.List;
@@ -195,6 +196,10 @@ public abstract class TFLangProvider extends LanguageProvider {
 
 	public void addKeyMapping(KeyMapping keyMapping, String name) {
 		this.add(keyMapping.getName(), name);
+	}
+
+	public void addTravellersModifier(TravellersModifier modifier, String name) {
+		this.add(modifier.getTooltipTranslationKey(), name);
 	}
 
 	public void createTip(String key, String translation) {

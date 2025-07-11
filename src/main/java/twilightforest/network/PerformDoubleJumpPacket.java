@@ -5,7 +5,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import twilightforest.TwilightForestMod;
-import twilightforest.item.TravellersArmorItem;
+import twilightforest.item.travellers_gear.TravellersArmorItem;
 
 public record PerformDoubleJumpPacket() implements CustomPacketPayload {
 	public static final Type<PerformDoubleJumpPacket> TYPE = new Type<>(TwilightForestMod.prefix("perform_double_jump_packet"));

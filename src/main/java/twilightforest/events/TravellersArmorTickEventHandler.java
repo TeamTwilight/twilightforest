@@ -11,8 +11,8 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import twilightforest.beans.Component;
 import twilightforest.beans.PostConstruct;
 import twilightforest.init.TFDataAttachments;
-import twilightforest.init.TFDataComponents;
-import twilightforest.item.TravellersArmorItem;
+import twilightforest.item.travellers_gear.TravellersArmorItem;
+import twilightforest.item.travellers_gear.modifiers.TravellersModifiers;
 
 @Component
 public class TravellersArmorTickEventHandler {
@@ -26,8 +26,7 @@ public class TravellersArmorTickEventHandler {
 	private void playerTickPre(PlayerTickEvent.Pre event) {
 		Player player = event.getEntity();
 		Boolean hasDoubleJump = null;
-		Boolean hasDoubleJumpAbility = player.getItemBySlot(EquipmentSlot.LEGS).get(TFDataComponents.HAS_DOUBLE_JUMP);
-		if (!Boolean.TRUE.equals(hasDoubleJumpAbility)) {
+		if (!TravellersModifiers.DOUBLE_JUMP_MODIFIER.isActive(player.getItemBySlot(EquipmentSlot.LEGS))) {
 			hasDoubleJump = false;
 		} else if (player.onGround())
 			hasDoubleJump = true;
@@ -49,7 +48,7 @@ public class TravellersArmorTickEventHandler {
 				TravellersArmorItem.travellersWingsControlledFall(livingEntity);
 				TravellersArmorItem.travellersVestHaste(livingEntity);
 				TravellersArmorItem.travellersWingsHighJump(livingEntity);
-				TravellersArmorItem.travellersGearRepair(livingEntity);
+				TravellersArmorItem.travellersGearAutoRepair(livingEntity);
 				TravellersArmorItem.travellersBootsForwardBoost(livingEntity);
 			});
 		}

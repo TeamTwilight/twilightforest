@@ -576,6 +576,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		singleTex(TFItems.TREATED_LEATHER);
 		singleTex(TFItems.TANNED_LEATHER);
 		singleTex(TFItems.HYDRA_CHOP);
+		singleTex(TFItems.TANNIN);
 		singleTex(TFItems.FIERY_BLOOD);
 		singleTex(TFItems.FIERY_TEARS);
 		singleTexFullbright(TFItems.FIERY_INGOT);
@@ -595,16 +596,16 @@ public class ItemModelGenerator extends ItemModelProvider {
 		singleTexTool(TFItems.STEELEAF_AXE);
 		singleTexTool(TFItems.STEELEAF_SHOVEL);
 		singleTexTool(TFItems.STEELEAF_HOE);
-		singleTex(TFItems.TRAVELLERS_GOGGLES);
-		singleTex(TFItems.TRAVELLERS_CHESTPLATE_GLOVES);  // FIXME: replace placeholder
-		singleTex(TFItems.TRAVELLERS_CHESTPLATE);
-		singleTex(TFItems.TRAVELLERS_GLOVES);
-		singleTex(TFItems.TRAVELLERS_WINGS_BELT);
-		singleTex(TFItems.TRAVELLERS_WINGS);
-//		singleTex(TFItems.TRAVELLERS_LEGGINGS_BELT);
-//		singleTex(TFItems.TRAVELLERS_LEGGINGS);
+		travellersTex(
+			TFItems.TRAVELLERS_GOGGLES,
+			TFItems.TRAVELLERS_CHESTPLATE_GLOVES,
+			TFItems.TRAVELLERS_CHESTPLATE,
+			TFItems.TRAVELLERS_WINGS_BELT,
+			TFItems.TRAVELLERS_WINGS,
+			TFItems.TRAVELLERS_BOOTS
+		);
 		singleTex(TFItems.TRAVELLERS_BELT);
-		singleTex(TFItems.TRAVELLERS_BOOTS);
+		singleTex(TFItems.TRAVELLERS_GLOVES);
 		singleTexTool(TFItems.DIAMOND_MINOTAUR_AXE);
 		singleTexTool(TFItems.GOLDEN_MINOTAUR_AXE);
 		singleTexTool(TFItems.MAZEBREAKER_PICKAXE);
@@ -1043,6 +1044,15 @@ public class ItemModelGenerator extends ItemModelProvider {
 			.end()
 			.end()
 			.override().predicate(prefix("alt"), 1).model(alt).end();
+	}
+
+	@SafeVarargs
+	private void travellersTex(DeferredItem<? extends Item>... items) {
+		for (DeferredItem<? extends Item> item : items) {
+			String id = item.getId().getPath();
+			ItemModelBuilder brokenModel = withExistingParent(id + "_broken", "item/generated").texture("layer0", prefix("item/" + id + "_broken"));
+			singleTex(item).override().predicate(ResourceLocation.withDefaultNamespace("broken"), 1).model(brokenModel).end();
+		}
 	}
 
 	private ItemModelBuilder exanimateEssence(DeferredItem<Item> item) {

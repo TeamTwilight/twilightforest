@@ -15,7 +15,6 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
-import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -296,8 +295,8 @@ public class TFEntities {
 		event.put(RISING_ZOMBIE.get(), Zombie.createAttributes().build());
 	}
 
-	@SubscribeEvent
-	public static void addCustomAttributesToPlayer(EntityAttributeModificationEvent event) {
-		event.add(EntityType.PLAYER, TFAttributes.TRAVEL_FOOD_EFFICIENCY);
-	}
+//	@SubscribeEvent
+//	public static void addCustomAttributesToPlayer(EntityAttributeModificationEvent event) {
+//		event.add(EntityType.PLAYER, TFAttributes.TRAVEL_FOOD_EFFICIENCY);
+//	}
 }

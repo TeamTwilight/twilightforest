@@ -40,6 +40,7 @@ import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.extensions.common.IClientBlockExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.client.gui.map.RegisterMapDecorationRenderersEvent;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.*;
@@ -57,21 +58,22 @@ import twilightforest.client.model.block.patch.PatchModelLoader;
 import twilightforest.client.model.entity.*;
 import twilightforest.client.model.item.TrollsteinnModel;
 import twilightforest.client.particle.*;
-import twilightforest.client.renderer.tooltip.PotionFlaskTooltipComponent;
+import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.armor.TFArmorRenderer;
 import twilightforest.client.renderer.armor.TFSimpleArmorRenderer;
-import twilightforest.client.renderer.entity.RisingZombieRenderer;
-import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.block.*;
 import twilightforest.client.renderer.entity.*;
 import twilightforest.client.renderer.entity.layers.IceLayer;
 import twilightforest.client.renderer.entity.layers.ShieldLayer;
 import twilightforest.client.renderer.map.ConqueredMapIconRenderer;
 import twilightforest.client.renderer.map.MagicMapPlayerIconRenderer;
+import twilightforest.client.renderer.tooltip.PotionFlaskTooltipComponent;
 import twilightforest.client.renderer.tooltip.TravellersBeltTooltipComponent;
 import twilightforest.components.item.PotionFlaskComponent;
 import twilightforest.init.*;
 import twilightforest.item.*;
+import twilightforest.item.travellers_gear.TravellersArmorBeltItem;
+import twilightforest.item.travellers_gear.TravellersArmorItem;
 import twilightforest.util.woods.TFWoodTypes;
 
 import java.util.List;
@@ -253,6 +255,13 @@ public class RegistrationEvents {
 		ItemProperties.register(TFItems.CRUMBLE_HORN.get(), TwilightForestMod.prefix("tooting"), (stack, world, entity, i) ->
 			entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F
 		);
+
+		ItemProperties.register(TFItems.TRAVELLERS_GOGGLES.get(), ResourceLocation.parse("broken"), RegistrationEvents::isBroken);
+		ItemProperties.register(TFItems.TRAVELLERS_CHESTPLATE_GLOVES.get(), ResourceLocation.parse("broken"), RegistrationEvents::isBroken);
+		ItemProperties.register(TFItems.TRAVELLERS_CHESTPLATE.get(), ResourceLocation.parse("broken"), RegistrationEvents::isBroken);
+		ItemProperties.register(TFItems.TRAVELLERS_WINGS_BELT.get(), ResourceLocation.parse("broken"), RegistrationEvents::isBroken);
+		ItemProperties.register(TFItems.TRAVELLERS_WINGS.get(), ResourceLocation.parse("broken"), RegistrationEvents::isBroken);
+		ItemProperties.register(TFItems.TRAVELLERS_BOOTS.get(), ResourceLocation.parse("broken"), RegistrationEvents::isBroken);
 
 		Map<ModelResourceLocation, BakedModel> models = event.getModels();
 		List<Map.Entry<ModelResourceLocation, BakedModel>> leavesModels = models.entrySet().stream()
@@ -552,6 +561,7 @@ public class RegistrationEvents {
 		event.registerSpriteSet(TFParticleType.EXTENDED_SNOW_WARNING.get(), SnowWarningParticle.ExtendedFactory::new);
 		event.registerSpriteSet(TFParticleType.ICE_BEAM.get(), IceBeamParticle.Factory::new);
 		event.registerSpriteSet(TFParticleType.ANNIHILATE.get(), AnnihilateParticle.Factory::new);
+		event.registerSpriteSet(TFParticleType.PERFECT_DODGE.get(), PerfectDodgeParticle.Provider::new);
 		event.registerSpriteSet(TFParticleType.HUGE_SMOKE.get(), SmokeScaleParticle.Factory::new);
 		event.registerSpriteSet(TFParticleType.FIREFLY.get(), FireflyParticle.StationaryProvider::new);
 		event.registerSpriteSet(TFParticleType.WANDERING_FIREFLY.get(), FireflyParticle.WanderingProvider::new);
@@ -717,5 +727,9 @@ public class RegistrationEvents {
 
 	public static boolean isOptifinePresent() {
 		return optifinePresent;
+	}
+
+	private static float isBroken(@NotNull ItemStack stack, @Nullable ClientLevel world, @Nullable LivingEntity livingEntity, int seed) {
+		return stack.getDamageValue() >= stack.getMaxDamage() - 1 ? 1F : 0F;
 	}
 }

@@ -31,7 +31,7 @@ public class TravellersLeggingsModel extends HumanoidModel<LivingEntity> {
 		MeshDefinition mesh = HumanoidModel.createMesh(new CubeDeformation(deformation), 0);
 		PartDefinition root = mesh.getRoot().getChild("body");
 		createWings(root);
-		createBelt(root, 0.4F);
+		createBelt(root, 0F);
 
 		return LayerDefinition.create(mesh, 128, 32);
 	}

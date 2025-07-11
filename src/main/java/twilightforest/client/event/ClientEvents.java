@@ -66,6 +66,9 @@ import twilightforest.entity.boss.bar.ClientTFBossBar;
 import twilightforest.events.HostileMountEvents;
 import twilightforest.init.*;
 import twilightforest.item.*;
+import twilightforest.item.travellers_gear.TravellersArmorBeltItem;
+import twilightforest.item.travellers_gear.TravellersArmorItem;
+import twilightforest.item.travellers_gear.modifiers.TravellersModifiers;
 import twilightforest.network.PerformDoubleJumpPacket;
 import twilightforest.network.PerformSidestepPacket;
 import twilightforest.network.SwapHotbarPacket;
@@ -143,7 +146,7 @@ public class ClientEvents {
 	public static void playerTravellersArmorEffects(PlayerTickEvent.Pre event) {
 		if (!(event.getEntity() instanceof LocalPlayer localPlayer))
 			return;
-		if (Minecraft.getInstance().options.keyJump.consumeClick() && Boolean.TRUE.equals(localPlayer.getItemBySlot(EquipmentSlot.LEGS).get(TFDataComponents.HAS_DOUBLE_JUMP))) {
+		if (Minecraft.getInstance().options.keyJump.consumeClick() && TravellersModifiers.DOUBLE_JUMP_MODIFIER.isActive(localPlayer.getItemBySlot(EquipmentSlot.LEGS))) {
 			if (TravellersArmorItem.performDoubleJump(localPlayer))
 				localPlayer.connection.send(new PerformDoubleJumpPacket());
 		}
@@ -152,8 +155,9 @@ public class ClientEvents {
 	public static void travellersAgileRanger(MovementInputUpdateEvent event) {
 		if (!(event.getEntity() instanceof LocalPlayer localPlayer))
 			return;
-		Float agileRangerModifier = localPlayer.getItemBySlot(EquipmentSlot.LEGS).get(TFDataComponents.AGILE_RANGER_MODIFIER);
-		if (agileRangerModifier == null)
+		ItemStack leggingsStack = localPlayer.getItemBySlot(EquipmentSlot.LEGS);
+		Float agileRangerModifier = leggingsStack.get(TFDataComponents.AGILE_RANGER_MODIFIER);
+		if (!TravellersModifiers.AGILE_RANGER_MODIFIER.isActive(leggingsStack) || agileRangerModifier == null)
 			return;
 		if (localPlayer.isUsingItem() && !localPlayer.isPassenger() && localPlayer.getUseItem().getItem() instanceof ProjectileWeaponItem) {
 			Input input = event.getInput();
@@ -172,9 +176,9 @@ public class ClientEvents {
 			return;
 
 		Input input = localPlayer.input;
-		if (multiplier == null || input.forwardImpulse <= 0 || localPlayer.isInLiquid())
+		if (!TravellersModifiers.STRAIGHT_AHEAD_MODIFIER.isActive(bootsStack) || multiplier == null || input.forwardImpulse <= 0 || localPlayer.isInLiquid())
 			multiplier = 1D;
-		attributeInstance.addOrUpdateTransientModifier(new AttributeModifier(TravellersArmorItem.FORWARD_BOOTS_ATTRIBUTE_MODIFIER_LOCATION, multiplier - 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+		attributeInstance.addOrUpdateTransientModifier(new AttributeModifier(TFAttributeModifiers.FORWARD_BOOTS_ATTRIBUTE_MODIFIER_LOCATION, multiplier - 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
 		input.leftImpulse /= multiplier;
 	}
 
@@ -382,8 +386,9 @@ public class ClientEvents {
 
 	private static void updateTravellersZoomFOV(ComputeFovModifierEvent event) {
 		Player player = event.getPlayer();
-		Float zoomModifier = player.getInventory().getArmor(EquipmentSlot.HEAD.getIndex()).get(TFDataComponents.ZOOM_ABILITY_MODIFIER);
-		if (TFKeyBinds.ZOOM_KEY.isDown() && !player.isScoping() && zoomModifier != null)
+		ItemStack headStack = player.getInventory().getArmor(EquipmentSlot.HEAD.getIndex());
+		Float zoomModifier = headStack.get(TFDataComponents.ZOOM_ABILITY_MODIFIER);
+		if (TFKeyBinds.ZOOM_KEY.isDown() && !player.isScoping() && TravellersModifiers.ZOOM_MODIFIER.isActive(headStack) && zoomModifier != null)
 			event.setNewFovModifier(event.getNewFovModifier() * zoomModifier);
 	}
 
@@ -423,17 +428,14 @@ public class ClientEvents {
 		if (!(player instanceof LocalPlayer localPlayer)) return;
 		ItemStack legArmor = localPlayer.getItemBySlot(EquipmentSlot.LEGS);
 		ItemContainerContents containerContents = legArmor.get(DataComponents.CONTAINER);
-		if (!legArmor.has(TFDataComponents.TRAVELLERS_HAS_BELT) || containerContents == null)
+		if (!TravellersArmorBeltItem.hasSwapHotbar(legArmor) || containerContents == null)
 			return;
 
 		boolean isClicked = false;
-		boolean changed = false;
 		while (TFKeyBinds.SWAP_HOTBAR_KEY.consumeClick()) {
 			isClicked = !isClicked;  // clickCount can be even, so we may not swap hotbar
-			changed = true;
 		}
-		// make it work in inventory menu
-		boolean hasClicked = isClicked || !changed && event.getKey() == TFKeyBinds.SWAP_HOTBAR_KEY.getKey().getValue() && event.getAction() == 1;
+		boolean hasClicked = isClicked;
 		if (!hasClicked)
 			return;
 		localPlayer.connection.send(new SwapHotbarPacket());

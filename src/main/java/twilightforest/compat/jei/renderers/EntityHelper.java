@@ -24,7 +24,10 @@ public class EntityHelper implements IIngredientHelper<FakeEntityType> {
 		return type.type().getDescription().getString();
 	}
 
+	// we cannot delete this function on 1.21.1 but the whole class is not marked as deprecated so it should be fine
+	// Use Object getUid(FakeEntityType, UidContext) for later versions
 	@Override
+	@SuppressWarnings("removal")
 	public String getUniqueId(FakeEntityType type, UidContext context) {
 		return Objects.requireNonNull(BuiltInRegistries.ENTITY_TYPE.getKey(type.type())).toString();
 	}

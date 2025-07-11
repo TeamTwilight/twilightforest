@@ -23,7 +23,10 @@ public class FakeItemEntityHelper implements IIngredientHelper<FakeItemEntity> {
 		return ingredient.stack().getItem().getDescription().toString();
 	}
 
+	// we cannot delete this function on 1.21.1 but the whole class is not marked as deprecated so it should be fine
+	// Use Object getUid(FakeEntityType, UidContext) for later versions
 	@Override
+	@SuppressWarnings("removal")
 	public String getUniqueId(FakeItemEntity ingredient, UidContext context) {
 		return Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(ingredient.stack().getItem())).toString();
 	}

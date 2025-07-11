@@ -1,4 +1,4 @@
-// 1.21.1	2025-03-29T22:07:38.71429201	Particle Descriptions
+// 1.21.1	2025-05-23T14:34:51.298284	Particle Descriptions
 c12182d4cde474d99ce54a632c05e9799d305508 assets/twilightforest/particles/angry_lich.json
 ce403794cbcc5ec5f72b853a8c0a2f0608fadd0f assets/twilightforest/particles/annihilate.json
 21cdc0ed30720178ebd7bd11d6d92e9063330b1c assets/twilightforest/particles/cloud_puff.json
@@ -16,6 +16,7 @@ a30e84a77731c3583936efa8471c6c8d943d9fe2 assets/twilightforest/particles/log_cor
 ac30be158afad3968f4f1078b9ba237e4a141065 assets/twilightforest/particles/magic_effect.json
 e3bcad650b1e2acd0f025c6432eba365315f6fa8 assets/twilightforest/particles/ominous_flame.json
 5c3da6f955c278a9dde87ab1ea25c37b23d81af0 assets/twilightforest/particles/particle_spawner_firefly.json
+21cdc0ed30720178ebd7bd11d6d92e9063330b1c assets/twilightforest/particles/perfect_dodge.json
 512b0b60af28b1d94771e69ce5c21159a523a1a1 assets/twilightforest/particles/protection.json
 d1acb6d73662378b3a5c60aac4319930974a28a1 assets/twilightforest/particles/shield_break.json
 751968af9c8083c018515fe4180948027e85008a assets/twilightforest/particles/snow.json

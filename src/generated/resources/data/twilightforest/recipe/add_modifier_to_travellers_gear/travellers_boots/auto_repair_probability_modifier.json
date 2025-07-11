@@ -1,0 +1,27 @@
+{
+  "type": "twilightforest:travellers_gear_modifier_shaped_recipe",
+  "is_rotated": false,
+  "modifier": {
+    "data_component_map": {
+      "twilightforest:auto_repair_probability": 0.001
+    }
+  },
+  "pattern": {
+    "key": {
+      "E": {
+        "item": "minecraft:experience_bottle"
+      },
+      "M": {
+        "item": "twilightforest:moss_patch"
+      },
+      "T": {
+        "item": "twilightforest:travellers_boots"
+      }
+    },
+    "pattern": [
+      " E ",
+      "MTM",
+      " E "
+    ]
+  }
+}

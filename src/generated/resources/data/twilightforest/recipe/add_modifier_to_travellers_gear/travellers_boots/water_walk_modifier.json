@@ -1,0 +1,26 @@
+{
+  "type": "twilightforest:travellers_gear_modifier_shaped_recipe",
+  "is_rotated": false,
+  "modifier": {
+    "data_component_map": {
+      "twilightforest:water_walk": {}
+    }
+  },
+  "pattern": {
+    "key": {
+      "B": {
+        "item": "twilightforest:travellers_boots"
+      },
+      "L": {
+        "item": "minecraft:lily_pad"
+      },
+      "S": {
+        "tag": "c:slime_balls"
+      }
+    },
+    "pattern": [
+      "SBS",
+      "L L"
+    ]
+  }
+}

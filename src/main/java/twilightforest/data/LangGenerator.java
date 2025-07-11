@@ -8,6 +8,7 @@ import twilightforest.data.helpers.TFLangProvider;
 import twilightforest.data.tags.FluidTagGenerator;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.*;
+import twilightforest.item.travellers_gear.modifiers.TravellersModifiers;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -589,6 +590,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addItem(TFItems.PHANTOM_CHESTPLATE, "Phantom Chestplate");
 		this.add("item.twilightforest.phantom_armor.desc", "Is never lost on death");
 
+		this.addItem(TFItems.TANNIN, "Tannin");
 		this.addItem(TFItems.FIERY_BLOOD, "Fiery Blood");
 		this.addItem(TFItems.FIERY_TEARS, "Fiery Tears");
 		this.addItem(TFItems.FIERY_INGOT, "Fiery Ingot");
@@ -976,7 +978,6 @@ public class LangGenerator extends TFLangProvider {
 		this.addTrim("knightmetal", "Knightmetal");
 		this.addTrim("naga_scale", "Naga Scale");
 		this.addTrim("steeleaf", "Steeleaf");
-		this.addTrim("travellers", "Traveller's");
 
 		this.add("museumcurator.animalhusbandry.twilightforest.bugs", "Bugs");
 		this.add("museumcurator.architecture.twilightforest.aurorablocks", "Aurora Blocks");
@@ -1195,11 +1196,43 @@ public class LangGenerator extends TFLangProvider {
 		this.add("config.twilightforest.multiplayer_fight_adjuster.more_health", "More Health");
 		this.add("config.twilightforest.multiplayer_fight_adjuster.more_loot_and_health", "More Loot & Health");
 
-		this.addKeyBindCategory(TFKeyBindsCategories.TRAVELLERS_GEAR, "Twilight Forest — Traveller's Gear");
+		this.addKeyBindCategory(TFKeyBindsCategories.TRAVELLERS_GEAR, "Twilight Forest (Traveller's Gear)");
 
 		this.addKeyMapping(TFKeyBinds.RED_THREAD_VISION_KEY, "See Red Thread with Goggles");
 		this.addKeyMapping(TFKeyBinds.ZOOM_KEY, "Zoom With Goggles");
 		this.addKeyMapping(TFKeyBinds.SWAP_HOTBAR_KEY, "Swap Hotbar");
-		this.addAttribute(TFAttributes.TRAVEL_FOOD_EFFICIENCY, "Travel Food Efficiency");
+
+		// built-in modifiers
+		this.addTravellersModifier(TravellersModifiers.ZOOM_MODIFIER, "Zoom (keybind: ${tfkeybinds/"+ TFKeyBinds.ZOOM_KEY.getName() + "})");
+		this.addTravellersModifier(TravellersModifiers.SWIFT_SWIM_MODIFIER, "Swift Swim");
+		this.addTravellersModifier(TravellersModifiers.SWAP_HOTBAR_ABILITY, "Swap Hotbar (keybind: ${tfkeybinds/"+ TFKeyBinds.SWAP_HOTBAR_KEY.getName() + "})");
+		this.addTravellersModifier(TravellersModifiers.HIGH_JUMP_MODIFIER, "High Jump");
+		this.addTravellersModifier(TravellersModifiers.HIGH_STEP_MODIFIER, "High Step");
+
+		// insertable modifiers
+		this.addTravellersModifier(TravellersModifiers.AUTO_REPAIR_MODIFIER, "- Auto Repair");
+
+		this.addTravellersModifier(TravellersModifiers.RED_THREAD_VISION_MODIFIER, "- Red Thread Vision (keybind: ${tfkeybinds/"+ TFKeyBinds.RED_THREAD_VISION_KEY.getName() + "})");
+
+		this.addTravellersModifier(TravellersModifiers.STEALTH_MODIFIER,          "- Stealth (sneak to activate)");
+		this.addTravellersModifier(TravellersModifiers.ARROW_MAGNETISM_MODIFIER,  "- Arrow Magnetism");
+		this.addTravellersModifier(TravellersModifiers.FOOD_EFFICIENCY_MODIFIER,  "- Efficient Eater");
+		this.addTravellersModifier(TravellersModifiers.PERFECT_DODGE_MODIFIER,    "- Perfect Dodge");
+		this.addTravellersModifier(TravellersModifiers.HASTE_MODIFIER,            "- Haste");
+
+		this.addTravellersModifier(TravellersModifiers.SWAP_HOTBAR_MODIFIER, "- Swap Hotbar (keybind: ${tfkeybinds/"+ TFKeyBinds.SWAP_HOTBAR_KEY.getName() + "})");
+
+		this.addTravellersModifier(TravellersModifiers.CONTROLLED_FALL_MODIFIER,  "- Controlled Fall");
+		this.addTravellersModifier(TravellersModifiers.AGILE_RANGER_MODIFIER,     "- Agile Ranger");
+		this.addTravellersModifier(TravellersModifiers.DOUBLE_JUMP_MODIFIER,      "- Double Jump");
+		this.addTravellersModifier(TravellersModifiers.SIDESTEP_MODIFIER,         "- Sidestep");
+
+		this.addTravellersModifier(TravellersModifiers.STRAIGHT_AHEAD_MODIFIER,   "- Straight Ahead");
+		this.addTravellersModifier(TravellersModifiers.SLIMY_SOLES_MODIFIER,      "- Slimy Soles");
+		this.addTravellersModifier(TravellersModifiers.WATER_WALK_MODIFIER,       "- Water Walk");
+
+		// Other Traveller's gear components
+		this.add("travellers_gear.ability", "Ability: ");
+		this.add("travellers_gear.modifier.empty", "- Empty");
 	}
 }

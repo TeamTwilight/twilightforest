@@ -1,0 +1,25 @@
+{
+  "type": "twilightforest:travellers_gear_modifier_shapeless_recipe",
+  "ingredients": [
+    {
+      "item": "twilightforest:travellers_chest_gloves"
+    },
+    {
+      "item": "twilightforest:hydra_chop"
+    },
+    {
+      "item": "twilightforest:hydra_chop"
+    },
+    {
+      "item": "twilightforest:hydra_chop"
+    },
+    {
+      "item": "minecraft:bundle"
+    }
+  ],
+  "modifier": {
+    "data_component_map": {
+      "twilightforest:efficient_eater": 2.0
+    }
+  }
+}

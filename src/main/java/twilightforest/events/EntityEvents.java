@@ -2,6 +2,7 @@ package twilightforest.events;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
@@ -45,6 +46,7 @@ import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -54,7 +56,10 @@ import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
 import net.neoforged.neoforge.event.entity.living.*;
-import net.neoforged.neoforge.event.entity.player.*;
+import net.neoforged.neoforge.event.entity.player.AdvancementEvent;
+import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.level.ExplosionEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
@@ -65,8 +70,8 @@ import twilightforest.TwilightForestMod;
 import twilightforest.advancements.DrinkFromFlaskTrigger;
 import twilightforest.beans.Autowired;
 import twilightforest.block.*;
-import twilightforest.block.entity.SkullChestBlockEntity;
 import twilightforest.block.entity.SkullCandleBlockEntity;
+import twilightforest.block.entity.SkullChestBlockEntity;
 import twilightforest.config.TFConfig;
 import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.enchantment.ApplyFrostedEffect;
@@ -76,6 +81,8 @@ import twilightforest.entity.projectile.LichBomb;
 import twilightforest.init.*;
 import twilightforest.item.FieryArmorItem;
 import twilightforest.item.YetiArmorItem;
+import twilightforest.item.travellers_gear.modifiers.TravellersModifiers;
+import twilightforest.network.ParticlePacket;
 import twilightforest.network.SyncQuestsPacket;
 import twilightforest.network.WipeOreMeterPacket;
 import twilightforest.util.datamaps.EntityTransformation;
@@ -246,10 +253,25 @@ public class EntityEvents {
 		ItemStack chest = livingEntity.getItemBySlot(EquipmentSlot.CHEST);
 		Float probability = chest.get(TFDataComponents.PERFECT_DODGE_PROBABILITY);
 		Level level = livingEntity.level();
-		if (probability != null && probability > level.random.nextFloat()) {
-			level.playLocalSound(event.getEntity(), SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 1, 1);  // FIXME: replace placeholder sound event and adjust volume and pitch parameters
-			event.setCanceled(true);
+		if (!TravellersModifiers.PERFECT_DODGE_MODIFIER.isActive(chest) || probability == null || probability <= level.random.nextFloat())
+			return;
+		Entity projectile = event.getEntity();
+		level.playLocalSound(projectile, SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 1, 1);  // FIXME: replace placeholder sound event and adjust volume and pitch parameters
+		event.setCanceled(true);
+		if (level.isClientSide())
+			return;
+		ParticlePacket particlePacket = new ParticlePacket();
+		for (int particleNumber = 0; particleNumber < 20; particleNumber++) {
+			Vec3 particlePos = projectile.position().add(projectile.getDeltaMovement());
+			Vec3 particleVelocity = new Vec3(
+				(level.random.nextDouble() - 0.5),
+				(level.random.nextDouble() - 0.5),
+				(level.random.nextDouble() - 0.5)
+			);
+			ParticleOptions type = TFParticleType.PERFECT_DODGE.get();
+			particlePacket.queueParticle(type, false, particlePos, particleVelocity);
 		}
+		PacketDistributor.sendToPlayersTrackingEntityAndSelf(livingEntity, particlePacket);
 	}
 
 	// Parrying
@@ -278,8 +300,8 @@ public class EntityEvents {
 		if (!(entity instanceof LivingEntity livingEntity) || !event.getRayTraceResult().getType().equals(HitResult.Type.BLOCK) || projectile.tickCount >= 200)
 			return;
 
-		Boolean hasMagnetism = livingEntity.getItemBySlot(EquipmentSlot.CHEST).get(TFDataComponents.ARROW_MAGNETISM);
-		if (!Boolean.TRUE.equals(hasMagnetism) || !(projectile instanceof AbstractArrow arrow) || projectile.level().isClientSide())
+		if (!TravellersModifiers.ARROW_MAGNETISM_MODIFIER.isActive(livingEntity.getItemBySlot(EquipmentSlot.CHEST))
+			|| !(projectile instanceof AbstractArrow arrow) || projectile.level().isClientSide())
 			return;
 
 		if (!(livingEntity instanceof Player player)) {
@@ -300,7 +322,7 @@ public class EntityEvents {
 		LivingEntity livingEntity = event.getEntity();
 		ItemStack boots = livingEntity.getItemBySlot(EquipmentSlot.FEET);
 		Float coefficient = boots.get(TFDataComponents.SLIMY_SOLES_COEFFICIENT);
-		if (coefficient != null)
+		if (TravellersModifiers.SLIMY_SOLES_MODIFIER.isActive(boots) && coefficient != null)
 			event.setDamageMultiplier(coefficient);
 	}
 

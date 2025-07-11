@@ -1,5 +1,13 @@
 {
   "parent": "minecraft:item/generated",
+  "overrides": [
+    {
+      "model": "twilightforest:item/travellers_chest_gloves_broken",
+      "predicate": {
+        "minecraft:broken": 1.0
+      }
+    }
+  ],
   "textures": {
     "layer0": "twilightforest:item/travellers_chest_gloves"
   }

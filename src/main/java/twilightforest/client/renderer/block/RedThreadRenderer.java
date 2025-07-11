@@ -28,7 +28,7 @@ import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.RedThreadModel;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDataAttachments;
-import twilightforest.init.TFDataComponents;
+import twilightforest.item.travellers_gear.modifiers.TravellersModifiers;
 
 public class RedThreadRenderer<T extends RedThreadBlockEntity> implements BlockEntityRenderer<T> {
 	private static final ResourceLocation TEXTURE = TwilightForestMod.getModelTexture("red_thread.png");
@@ -55,7 +55,7 @@ public class RedThreadRenderer<T extends RedThreadBlockEntity> implements BlockE
 		if (player == null)
 			return;
 
-		boolean wearsActivatedTravellersGoggles = player.getData(TFDataAttachments.TRAVELLERS_GOGGLES_RED_THREAD_VISION) && Boolean.TRUE.equals(player.getItemBySlot(EquipmentSlot.HEAD).get(TFDataComponents.RED_THREAD_VISION_ENABLE));
+		boolean wearsActivatedTravellersGoggles = player.getData(TFDataAttachments.TRAVELLERS_GOGGLES_RED_THREAD_VISION) && TravellersModifiers.RED_THREAD_VISION_MODIFIER.isActive(player.getItemBySlot(EquipmentSlot.HEAD));
 		boolean glow = player.isHolding(TFBlocks.RED_THREAD.get().asItem()) || wearsActivatedTravellersGoggles;
 
 		for (Direction face : Direction.values()) {

@@ -6,6 +6,7 @@ import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.GeneratedSlotWidget;
 import dev.emi.emi.api.widget.SlotWidget;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Unit;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
@@ -22,6 +23,11 @@ public class EmiEmperorsClothRecipe extends EmiPatternCraftingRecipe {
 
 	public EmiEmperorsClothRecipe() {
 		super(List.of(EmiIngredient.of(ARMORS), EmiStack.of(TFItems.EMPERORS_CLOTH)), EmiStack.EMPTY, TFRecipes.EMPERORS_CLOTH_RECIPE.getId());
+	}
+
+	@Override
+	public ResourceLocation getId() {
+		return super.getId().withPrefix("/");
 	}
 
 	@Override

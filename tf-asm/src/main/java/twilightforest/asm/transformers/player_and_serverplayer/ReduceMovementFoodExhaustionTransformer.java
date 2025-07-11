@@ -14,7 +14,7 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 /**
- * {@link twilightforest.ASMHooks#getFoodExhaustionMultiplier}
+ * {@link twilightforest.ASMHooks#getFoodExhaustion}
  */
 public class ReduceMovementFoodExhaustionTransformer implements ITransformer<MethodNode> {
 	@Override
@@ -42,7 +42,7 @@ public class ReduceMovementFoodExhaustionTransformer implements ITransformer<Met
 				new MethodInsnNode(
 					Opcodes.INVOKESTATIC,
 					"twilightforest/ASMHooks",
-					"getFoodExhaustionMultiplier",
+					"getFoodExhaustion",
 					"(FLnet/minecraft/world/entity/player/Player;)F"
 				)
 			)

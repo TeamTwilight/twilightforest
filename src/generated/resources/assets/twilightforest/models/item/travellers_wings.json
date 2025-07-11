@@ -1,5 +1,13 @@
 {
   "parent": "minecraft:item/generated",
+  "overrides": [
+    {
+      "model": "twilightforest:item/travellers_wings_broken",
+      "predicate": {
+        "minecraft:broken": 1.0
+      }
+    }
+  ],
   "textures": {
     "layer0": "twilightforest:item/travellers_wings"
   }

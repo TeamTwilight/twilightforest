@@ -13,6 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.compat.RecipeViewerConstants;
 import twilightforest.compat.emi.EmiItemEntityWidget;
+import twilightforest.compat.emi.TFEmiCategories;
 import twilightforest.compat.emi.TFEmiCompat;
 
 import java.util.List;
@@ -36,7 +37,7 @@ public class EmiCrumbleHornRecipe implements EmiRecipe {
 
 	@Override
 	public EmiRecipeCategory getCategory() {
-		return TFEmiCompat.CRUMBLE_HORN;
+		return TFEmiCategories.CRUMBLE_HORN;
 	}
 
 	@Override
