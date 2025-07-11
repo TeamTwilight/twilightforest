@@ -1,5 +1,6 @@
 package twilightforest.compat.jei.categories;
 
+import com.mojang.blaze3d.platform.Lighting;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.builder.ITooltipBuilder;
@@ -18,8 +19,12 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import twilightforest.TwilightForestMod;
@@ -102,6 +107,18 @@ public class DryingCategory implements IRecipeCategory<DryingRecipe> {
 		Minecraft minecraft = Minecraft.getInstance();
 		Font font = minecraft.font;
 		graphics.drawString(font, time, 35 - font.width(time.getString()) / 2, 20, 0xFF808080, false);
+
+		MultiBufferSource.BufferSource bufferSource = minecraft.renderBuffers().bufferSource();
+		graphics.pose().pushPose();
+		Lighting.setupForFlatItems();
+		graphics.pose().scale(20.0F, -20.0F, 20.0F);
+		graphics.pose().translate(0.45F, -0.45F, 19.0F);
+		minecraft.getItemRenderer().renderStatic(new ItemStack(TFBlocks.OAK_DRYING_RACK), ItemDisplayContext.NONE, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, graphics.pose(), bufferSource, null, 0);
+		graphics.pose().translate(2.6F, 0.0F, 0.0F);
+		minecraft.getItemRenderer().renderStatic(new ItemStack(TFBlocks.OAK_DRYING_RACK), ItemDisplayContext.NONE, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, graphics.pose(), bufferSource, null, 0);
+		graphics.pose().popPose();
+		bufferSource.endBatch();
+		Lighting.setupFor3DItems();
 	}
 
 	@Override
@@ -113,8 +130,8 @@ public class DryingCategory implements IRecipeCategory<DryingRecipe> {
 
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, DryingRecipe recipe, IFocusGroup focuses) {
-		builder.addSlot(RecipeIngredientRole.INPUT, 1, 1).addIngredients(recipe.getIngredients().getFirst()).setStandardSlotBackground();
+		builder.addSlot(RecipeIngredientRole.INPUT, 1, 1).addIngredients(recipe.getIngredients().getFirst());
 
-		builder.addSlot(RecipeIngredientRole.OUTPUT, 53, 1).addItemStack(recipe.getResult()).setStandardSlotBackground();
+		builder.addSlot(RecipeIngredientRole.OUTPUT, 53, 1).addItemStack(recipe.getResult());
 	}
 }

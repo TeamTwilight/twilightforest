@@ -1,5 +1,7 @@
 package twilightforest.compat.jei.categories;
 
+import com.mojang.blaze3d.platform.Lighting;
+import com.mojang.math.Axis;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -9,9 +11,14 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SpawnEggItem;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
@@ -20,20 +27,20 @@ import twilightforest.compat.RecipeViewerConstants;
 import twilightforest.compat.jei.JEICompat;
 import twilightforest.compat.jei.renderers.EntityRenderer;
 import twilightforest.compat.jei.util.OminousFireRecipe;
+import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
 
 public class OminousFireCategory implements IRecipeCategory<OminousFireRecipe> {
 	public static final RecipeType<OminousFireRecipe> OMINOUS_FIRE = RecipeType.create(TwilightForestMod.ID, "ominous_fire", OminousFireRecipe.class);
-	private final IDrawable background;
 	private final IDrawable icon;
 	private final IDrawable arrow;
+	private final IDrawable slot;
 	private final Component localizedName;
 	private final EntityRenderer entityRenderer = new EntityRenderer(32);
 
 	public OminousFireCategory(IGuiHelper helper) {
-		ResourceLocation location = TwilightForestMod.getGuiTexture("ominous_fire_jei.png");
-		this.background = helper.createDrawable(location, 0, 0, RecipeViewerConstants.GENERIC_RECIPE_WIDTH, RecipeViewerConstants.GENERIC_RECIPE_HEIGHT);
-		this.arrow = helper.createDrawable(location, 116, 0, 23, 15);
+		this.arrow = helper.getRecipeArrow();
+		this.slot = helper.drawableBuilder(TwilightForestMod.getGuiTexture("big_slot.png"), 0, 0, 34, 34).setTextureSize(34, 34).build();
 		this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(TFItems.EXANIMATE_ESSENCE.get()));
 		this.localizedName = Component.translatable("gui.twilightforest.ominous_fire_jei");
 	}
@@ -65,8 +72,20 @@ public class OminousFireCategory implements IRecipeCategory<OminousFireRecipe> {
 
 	@Override
 	public void draw(OminousFireRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics graphics, double mouseX, double mouseY) {
-		this.background.draw(graphics);
 		this.arrow.draw(graphics, 46, 19);
+		this.slot.draw(graphics, 7, 10);
+		this.slot.draw(graphics, 75, 10);
+
+		Minecraft minecraft = Minecraft.getInstance();
+		MultiBufferSource.BufferSource bufferSource = minecraft.renderBuffers().bufferSource();
+		graphics.pose().pushPose();
+		Lighting.setupForFlatItems();
+		graphics.pose().scale(20.0F, -20.0F, 20.0F);
+		graphics.pose().translate(2.35F, -2.2F, 19.0F);
+		minecraft.getBlockRenderer().renderSingleBlock(TFBlocks.OMINOUS_FIRE.get().defaultBlockState(), graphics.pose(), bufferSource, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY);
+		graphics.pose().popPose();
+		bufferSource.endBatch();
+		Lighting.setupFor3DItems();
 	}
 
 	@Override
