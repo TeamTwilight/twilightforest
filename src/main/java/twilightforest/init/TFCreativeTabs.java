@@ -15,13 +15,11 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ItemLike;
-import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
-import twilightforest.components.item.SkullCandles;
 import twilightforest.config.TFConfig;
 import twilightforest.entity.MagicPaintingVariant;
 
@@ -598,6 +596,7 @@ public class TFCreativeTabs {
 			output.accept(TFItems.RAW_MEEF);
 			output.accept(TFItems.COOKED_MEEF);
 			output.accept(TFItems.MEEF_JERKY);
+			output.accept(TFItems.MEEF_JERKY);
 			output.accept(TFItems.MONSTER_JERKY);
 			output.accept(TFItems.BEEF_JERKY);
 			output.accept(TFItems.CHICKEN_JERKY);
@@ -607,7 +606,10 @@ public class TFCreativeTabs {
 			output.accept(TFItems.COD_JERKY);
 			output.accept(TFItems.SALMON_JERKY);
 			output.accept(TFItems.CLOWNFISH_JERKY);
+			output.accept(TFItems.MEEF_JERKY);
 			output.accept(TFItems.FUGU_JERKY);
+			output.accept(TFItems.GELATINOUS_SLIME_DROP);
+			output.accept(TFItems.GELATINOUS_MAZE_SLIME_DROP);
 			output.accept(TFItems.MAZE_WAFER);
 			output.accept(TFItems.MEEF_STROGANOFF);
 			output.accept(TFItems.HYDRA_CHOP);

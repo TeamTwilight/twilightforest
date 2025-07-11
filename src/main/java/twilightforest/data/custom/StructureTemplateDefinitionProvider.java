@@ -17,8 +17,11 @@ import java.util.concurrent.CompletableFuture;
 public abstract class StructureTemplateDefinitionProvider extends JsonCodecProvider<StructureTemplateDefinition> {
 	private final Map<ResourceLocation, Map<ResourceLocation, Integer>> poolsForTemplateWeights = new HashMap<>();
 
-	public StructureTemplateDefinitionProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, String modId, ExistingFileHelper existingFileHelper) {
+	private final String name;
+
+	public StructureTemplateDefinitionProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, String modId, ExistingFileHelper existingFileHelper, String name) {
 		super(output, PackOutput.Target.DATA_PACK, StructureTemplateDefinitions.DIRECTORY, PackType.SERVER_DATA, StructureTemplateDefinition.CODEC, lookupProvider, modId, existingFileHelper);
+		this.name = name;
 	}
 
 	protected abstract void generatePools();
@@ -54,5 +57,10 @@ public abstract class StructureTemplateDefinitionProvider extends JsonCodecProvi
 		Map<ResourceLocation, Integer> poolWeightsForTemplate = this.poolsForTemplateWeights.computeIfAbsent(templateId, k -> new HashMap<>());
 
 		poolWeightsForTemplate.put(poolId, weight);
+	}
+
+	@Override
+	public String getName() {
+		return String.format("%s generator for %s in %s", this.directory, this.name, this.modid);
 	}
 }

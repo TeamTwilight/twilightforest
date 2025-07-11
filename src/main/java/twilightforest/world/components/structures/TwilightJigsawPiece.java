@@ -24,6 +24,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.TwilightForestMod;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.util.jigsaw.JigsawRecord;
@@ -48,7 +49,7 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 	}
 
 	@Nullable
-	public static TwilightJigsawPiece initializeTemplateFromPool(ResourceLocation templatePool, BlockPos.MutableBlockPos parentJunctionPos, FrontAndTop parentOrientation, String selectName, RandomSource rand, int genDepth, StructureTemplateManager structureManager) {
+	public static TwilightJigsawPiece initializeTemplateFromPool(ResourceLocation templatePool, BlockPos parentJunctionPos, FrontAndTop parentOrientation, String selectName, RandomSource rand, int genDepth, StructureTemplateManager structureManager) {
 		ResourceLocation templateId = StructureTemplateDefinitions.getRandomTemplate(rand, templatePool);
 		JigsawPlaceContext placeContext = JigsawPlaceContext.pickPlaceableJunction(parentJunctionPos, BlockPos.ZERO, parentOrientation, structureManager, templateId, selectName, rand);
 
@@ -124,6 +125,13 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 	}
 
 	protected void processJigsaw(StructurePiece parent, StructurePieceAccessor pieceAccessor, RandomSource random, JigsawRecord connection, int jigsawIndex) {
+		TwilightJigsawPiece jigsawPiece = TwilightJigsawPiece.initializeTemplateFromPool(ResourceLocation.parse(connection.pool()), this.templatePosition.offset(connection.pos()), connection.orientation(), connection.target(), random, this.genDepth + 1, this.structureManager);
+
+		if (jigsawPiece == null)
+			return;
+
+		pieceAccessor.addPiece(jigsawPiece);
+		jigsawPiece.addChildren(this, pieceAccessor, random);
 	}
 
 	@Override

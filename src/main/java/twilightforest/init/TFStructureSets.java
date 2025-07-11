@@ -20,6 +20,7 @@ public class TFStructureSets {
 
 	public static final ResourceKey<StructureSet> FALLEN_TRUNK = registerKey("fallen_trunk");
 	public static final ResourceKey<StructureSet> HOLLOW_TREE = registerKey("hollow_tree");
+	public static final ResourceKey<StructureSet> CAMP = registerKey("camp");
 	public static final ResourceKey<StructureSet> HEDGE_MAZE = registerKey("hedge_maze");
 	public static final ResourceKey<StructureSet> QUEST_GROVE = registerKey("quest_grove");
 	public static final ResourceKey<StructureSet> HOLLOW_HILL_SMALL = registerKey("small_hollow_hill");
@@ -57,6 +58,8 @@ public class TFStructureSets {
 		);
 		context.register(FALLEN_TRUNK, new StructureSet(structures.getOrThrow(TFStructures.FALLEN_TRUNK), new AvoidLandmarkGridPlacement(Vec3i.ZERO, StructurePlacement.FrequencyReductionMethod.DEFAULT, 0.8F, 1275623845, Optional.of(new StructurePlacement.ExclusionZone(structureSets.getOrThrow(HOLLOW_TREE), 1)), 7, 5, RandomSpreadType.TRIANGULAR)));
 		context.register(HOLLOW_TREE, new StructureSet(hollowTrees, new AvoidLandmarkGridPlacement(Vec3i.ZERO, StructurePlacement.FrequencyReductionMethod.DEFAULT, 0.5F, 34481210, Optional.empty(), 7, 5, RandomSpreadType.TRIANGULAR)));
+
+		context.register(CAMP, new StructureSet(structures.getOrThrow(TFStructures.CAMP), new AvoidLandmarkGridPlacement(2, 1, RandomSpreadType.TRIANGULAR, 701432212)));
 
 		context.register(HEDGE_MAZE, new StructureSet(structures.getOrThrow(TFStructures.HEDGE_MAZE), new LandmarkGridPlacement(Optional.of(TFStructures.HEDGE_MAZE))));
 		context.register(HOLLOW_HILL_SMALL, new StructureSet(structures.getOrThrow(TFStructures.HOLLOW_HILL_SMALL), new LandmarkGridPlacement(Optional.of(TFStructures.HOLLOW_HILL_SMALL))));

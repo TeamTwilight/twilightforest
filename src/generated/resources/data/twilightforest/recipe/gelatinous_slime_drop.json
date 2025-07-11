@@ -1,0 +1,11 @@
+{
+  "type": "twilightforest:drying",
+  "filter_time": 6000,
+  "input": {
+    "tag": "c:slime_balls"
+  },
+  "result": {
+    "count": 1,
+    "id": "twilightforest:gelatinous_slime_drop"
+  }
+}
