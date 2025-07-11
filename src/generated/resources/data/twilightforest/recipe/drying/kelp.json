@@ -1,6 +1,6 @@
 {
   "type": "twilightforest:drying",
-  "filter_time": 4800,
+  "filter_time": 3600,
   "input": {
     "item": "minecraft:kelp"
   },

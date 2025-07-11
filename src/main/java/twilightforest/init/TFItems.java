@@ -328,8 +328,8 @@ public class TFItems {
 	public static final DeferredItem<Item> VENISON_JERKY = ITEMS.register("venison_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationModifier(1.0F).build())));
 	public static final DeferredItem<Item> MEEF_JERKY = ITEMS.register("meef_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationModifier(1.0F).build())));
 
-	public static final DeferredItem<Item> GELATINOUS_SLIME_DROP = ITEMS.register("gelatinous_slime_drop", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(1).saturationModifier(1.0F).build())));
-	public static final DeferredItem<Item> GELATINOUS_MAZE_SLIME_DROP = ITEMS.register("gelatinous_maze_slime_drop", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(1).saturationModifier(1.0F).build())));
+	public static final DeferredItem<Item> GELATINOUS_SLIME_DROP = ITEMS.register("gelatinous_slime_drop", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(1).saturationModifier(0.2F).effect(() -> new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 90), 1.0F).build())));
+	public static final DeferredItem<Item> GELATINOUS_MAZE_SLIME_DROP = ITEMS.register("gelatinous_maze_slime_drop", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(2).saturationModifier(0.3F).effect(() -> new MobEffectInstance(MobEffects.DIG_SPEED, 90), 1.0F).build())));
 
 	public static final DeferredItem<Item> TREATED_LEATHER = ITEMS.register("treated_leather", () -> new Item(new Item.Properties()));
 	public static final DeferredItem<Item> TANNED_LEATHER = ITEMS.register("tanned_leather", () -> new Item(new Item.Properties()));

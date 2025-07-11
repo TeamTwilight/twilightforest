@@ -569,7 +569,13 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.unlockedBy("has_block", has(TFBlocks.TWILIGHT_OAK_SAPLING))
 			.unlockedBy("has_block", has(TFBlocks.ROOT_STRAND))
 			.unlockedBy("has_block", has(TFBlocks.TWILIGHT_OAK_LEAVES))
-			.save(output, TwilightForestMod.prefix(TFItems.TANNIN.getId().getPath()));
+			.save(output);
+
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, TFItems.TREATED_LEATHER)
+			.requires(TFItems.TANNIN)
+			.requires(Tags.Items.LEATHERS)
+			.unlockedBy("has_tannin", has(TFItems.TANNIN))
+			.save(output);
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, TFItems.KNIGHTMETAL_RING.get())
 			.pattern(" - ")
@@ -777,7 +783,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.unlockedBy("has_wet_sponge", has(Items.WET_SPONGE))
 			.save(output, TwilightForestMod.prefix("drying/sponge"));
 
-		DryingRecipeBuilder.drying(Items.KELP, Items.DRIED_KELP, 4)
+		DryingRecipeBuilder.drying(Items.KELP, Items.DRIED_KELP, 3)
 			.unlockedBy("has_kelp", has(Items.KELP))
 			.save(output, TwilightForestMod.prefix("drying/kelp"));
 
@@ -861,6 +867,18 @@ public class CraftingGenerator extends CraftingDataHelper {
 		compressedBlock(output, "ironwood_block", TFBlocks.IRONWOOD_BLOCK, ItemTagGenerator.IRONWOOD_INGOTS);
 		compressedBlock(output, "knightmetal_block", TFBlocks.KNIGHTMETAL_BLOCK, ItemTagGenerator.KNIGHTMETAL_INGOTS);
 		compressedBlock(output, "steeleaf_block", TFBlocks.STEELEAF_BLOCK, ItemTagGenerator.STEELEAF_INGOTS);
+
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, TFBlocks.MAZE_SLIME_BLOCK)
+			.pattern("###")
+			.pattern("###")
+			.pattern("###")
+			.define('#', TFItems.MAZE_SLIME_BALL)
+			.unlockedBy("has_item", has(TFItems.MAZE_SLIME_BALL))
+			.save(output);
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, TFItems.MAZE_SLIME_BALL, 9)
+			.requires(TFBlocks.MAZE_SLIME_BLOCK)
+			.unlockedBy("has_item", has(TFBlocks.MAZE_SLIME_BLOCK))
+			.save(output);
 	}
 
 	private void emptyMapRecipes(RecipeOutput output) {
@@ -1189,7 +1207,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		SimpleCookingRecipeBuilder.generic(Ingredient.of(TFItems.GOLD_BERRY.get()), RecipeCategory.MISC, Items.GOLD_NUGGET, 1.0F, smeltingTime, process, factory).unlockedBy("has_item", has(TFItems.GOLD_BERRY.get())).group("gold_nugget").save(output, TwilightForestMod.prefix("material/" + processName + "_gold_nugget").toString());
 		SimpleCookingRecipeBuilder.generic(Ingredient.of(TFItems.COPPER_BERRY.get()), RecipeCategory.MISC, TFItems.COPPER_NUGGET, 1.0F, smeltingTime, process, factory).unlockedBy("has_item", has(TFItems.COPPER_BERRY.get())).group("copper_nugget").save(output, TwilightForestMod.prefix("material/" + processName + "_copper_nugget").toString());
 
- 	}
+	}
 
 	private void crackedWoodRecipes(RecipeOutput output) {
 		SimpleCookingRecipeBuilder.smoking(Ingredient.of(TFBlocks.TOWERWOOD.get()), RecipeCategory.BUILDING_BLOCKS, TFBlocks.CRACKED_TOWERWOOD.get(), 0.1F, 100).unlockedBy("has_item", has(TFBlocks.TOWERWOOD.get())).save(output, TwilightForestMod.prefix("wood/" + "smoked" + "_cracked_towerwood").toString());

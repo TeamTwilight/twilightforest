@@ -306,6 +306,7 @@ public class TFCreativeTabs {
 			output.accept(TFItems.HUGE_WATER_LILY);
 			output.accept(TFItems.HUGE_LILY_PAD);
 
+			output.accept(TFBlocks.MAZE_SLIME_BLOCK);
 			output.accept(TFBlocks.MAZESTONE);
 			output.accept(TFBlocks.MAZESTONE_BRICK);
 			output.accept(TFBlocks.CRACKED_MAZESTONE);
@@ -426,6 +427,7 @@ public class TFCreativeTabs {
 			output.accept(TFItems.RAW_IRONWOOD);
 			output.accept(TFItems.IRONWOOD_INGOT);
 			output.accept(TFItems.STEELEAF_INGOT);
+			output.accept(TFItems.MAZE_SLIME_BALL);
 			output.accept(TFItems.NAGA_SCALE);
 			output.accept(TFItems.WROUGHT_IRON_BAR);
 			output.accept(TFItems.ARMOR_SHARD);
@@ -433,6 +435,8 @@ public class TFCreativeTabs {
 			output.accept(TFItems.KNIGHTMETAL_INGOT);
 			output.accept(TFItems.KNIGHTMETAL_RING);
 			output.accept(TFItems.TANNIN);
+			output.accept(TFItems.TREATED_LEATHER);
+			output.accept(TFItems.TANNED_LEATHER);
 			output.accept(TFItems.FIERY_BLOOD);
 			output.accept(TFItems.FIERY_TEARS);
 			output.accept(TFItems.FIERY_INGOT);
@@ -590,12 +594,13 @@ public class TFCreativeTabs {
 			output.accept(TFItems.SKYBERRY);
 			output.accept(TFItems.STINGBERRY);
 			output.accept(TFItems.BERRY_MEDLEY);
+			output.accept(TFItems.GELATINOUS_SLIME_DROP);
+			output.accept(TFItems.GELATINOUS_MAZE_SLIME_DROP);
 			output.accept(TFItems.RAW_VENISON);
 			output.accept(TFItems.COOKED_VENISON);
 			output.accept(TFItems.VENISON_JERKY);
 			output.accept(TFItems.RAW_MEEF);
 			output.accept(TFItems.COOKED_MEEF);
-			output.accept(TFItems.MEEF_JERKY);
 			output.accept(TFItems.MEEF_JERKY);
 			output.accept(TFItems.MONSTER_JERKY);
 			output.accept(TFItems.BEEF_JERKY);
@@ -606,10 +611,7 @@ public class TFCreativeTabs {
 			output.accept(TFItems.COD_JERKY);
 			output.accept(TFItems.SALMON_JERKY);
 			output.accept(TFItems.CLOWNFISH_JERKY);
-			output.accept(TFItems.MEEF_JERKY);
 			output.accept(TFItems.FUGU_JERKY);
-			output.accept(TFItems.GELATINOUS_SLIME_DROP);
-			output.accept(TFItems.GELATINOUS_MAZE_SLIME_DROP);
 			output.accept(TFItems.MAZE_WAFER);
 			output.accept(TFItems.MEEF_STROGANOFF);
 			output.accept(TFItems.HYDRA_CHOP);
