@@ -1,4 +1,4 @@
-// 1.21.1	2025-05-06T14:30:52.176479	Twilight Forest Item Tags
+// 1.21.1	2025-07-13T17:39:08.544359269	Twilight Forest Item Tags
 3c5895c72cfffe09615ec2b28267a726fcbf52e8 data/alexscaves/tags/item/ferns.json
 4c5df8d60b8f068b482a22fd807ddea22e1bfe00 data/alexscaves/tags/item/ferromagnetic_items.json
 42afac82c004061587d5b1ae20c2e66c0d399c8c data/alexscaves/tags/item/raw_meats.json
@@ -101,6 +101,7 @@ db3a933719c405a3ec1c7ba068704346c2eb30a0 data/twilightforest/tags/item/banned_un
 84101198c6b6d645c6e155abb5349d33e7279300 data/twilightforest/tags/item/canopy_logs.json
 97652f431059f64ffc5747f498cdcf278ddd0555 data/twilightforest/tags/item/darkwood_logs.json
 34361cff7fe1d4c78efc9ccb282be74dda8e0396 data/twilightforest/tags/item/deer_tempt_items.json
+bb4b1a5f61f28bd55449672ed9cc8123141729fd data/twilightforest/tags/item/drying_racks.json
 13479a4922cba9026005d5176b48bae8b434b56d data/twilightforest/tags/item/dwarf_rabbit_tempt_items.json
 e69d5be074938c1ff9a1853ff8da6782500ff92f data/twilightforest/tags/item/enchantable/block_and_chain.json
 b428c7e83405bbb26b44a4f5e0471b9c8d8b3721 data/twilightforest/tags/item/fiery_vial.json
@@ -128,4 +129,4 @@ aa9ca0bf521d8c6b198f2c25e4d5528917308d9f data/twilightforest/tags/item/timewood_
 548dfc9d7e2225c6f7d761216b3fafc120978f73 data/twilightforest/tags/item/transwood_logs.json
 d94381f990d5908c2d71247b1b14946ef4a4ef3d data/twilightforest/tags/item/twilight_oak_logs.json
 f98e3791b370872501ab48edb20af5fe8f410ac0 data/twilightforest/tags/item/uncrafting_ignores_cost.json
-7ddad4d2842b7b868102074ee6799d3c2f805c92 data/twilightforest/tags/item/wip.json
+aa4f6890f5e3d94b497bbc7ead9207f160968bdc data/twilightforest/tags/item/wip.json

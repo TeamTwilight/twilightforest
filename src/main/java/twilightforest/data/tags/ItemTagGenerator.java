@@ -221,8 +221,7 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 			TFBlocks.CINDER_LOG.asItem(),
 			TFBlocks.CINDER_WOOD.asItem(),
 			TFBlocks.SLIDER.asItem(),
-			TFBlocks.BRAZIER.asItem(),
-			TFBlocks.MAZE_SLIME_BLOCK.asItem()
+			TFBlocks.BRAZIER.asItem()
 		);
 
 		this.tag(KOBOLD_PACIFICATION_BREADS).add(Items.BREAD);
