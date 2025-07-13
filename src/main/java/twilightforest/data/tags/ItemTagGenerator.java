@@ -31,6 +31,7 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 	public static final TagKey<Item> TWILIGHT_LOGS = create("logs");
 
 	public static final TagKey<Item> BANISTERS = create("banisters");
+	public static final TagKey<Item> DRYING_RACKS = create("drying_racks");
 
 	public static final TagKey<Item> PAPER = makeCommonTag("paper");
 
@@ -149,6 +150,7 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 
 		this.copy(BlockTagGenerator.TOWERWOOD, TOWERWOOD);
 		this.copy(BlockTagGenerator.BANISTERS, BANISTERS);
+		this.copy(BlockTagGenerator.DRYING_RACKS, DRYING_RACKS);
 
 		this.tag(PAPER).add(Items.PAPER);
 		this.tag(Tags.Items.FEATHERS).add(TFItems.RAVEN_FEATHER.get());

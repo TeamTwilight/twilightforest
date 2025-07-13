@@ -1,15 +1,24 @@
 package twilightforest.compat;
 
+import com.mojang.blaze3d.platform.Lighting;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
+import mezz.jei.library.plugins.vanilla.crafting.JeiShapedRecipe;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import twilightforest.config.TFConfig;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.TFDataMaps;
@@ -157,6 +166,70 @@ public class RecipeViewerConstants {
 			}
 		}
 		return time;
+	}
+
+	public static void renderFlatBlock(PoseStack stack, BlockState state, Vec3 location, float scale) {
+		Minecraft minecraft = Minecraft.getInstance();
+		MultiBufferSource.BufferSource bufferSource = minecraft.renderBuffers().bufferSource();
+		stack.pushPose();
+		Lighting.setupForFlatItems();
+		stack.translate(location.x(), location.y(), location.z());
+		stack.scale(scale, -scale, scale);
+		minecraft.getBlockRenderer().renderSingleBlock(state, stack, bufferSource, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY);
+		stack.popPose();
+		bufferSource.endBatch();
+		Lighting.setupFor3DItems();
+	}
+
+	//copy of JEI's CraftingGridHelper.getCraftingIndex
+	public static int getCraftingIndex(CraftingRecipe recipe, int i) {
+		int width = getRecipeWidth(recipe);
+		int height = getRecipeHeight(recipe);
+		int index;
+		if (width == 1) {
+			if (height == 3) {
+				index = (i * 3) + 1;
+			} else if (height == 2) {
+				index = (i * 3) + 1;
+			} else {
+				index = 4;
+			}
+		} else if (height == 1) {
+			index = i + 3;
+		} else if (width == 2) {
+			index = i;
+			if (i > 1) {
+				index++;
+				if (i > 3) {
+					index++;
+				}
+			}
+		} else if (height == 2) {
+			index = i + 3;
+		} else {
+			index = i;
+		}
+		return index;
+	}
+
+	public static int getRecipeWidth(CraftingRecipe recipe) {
+		if (recipe instanceof ShapedRecipe shapedRecipe) {
+			return shapedRecipe.getWidth();
+		}
+		if (recipe instanceof JeiShapedRecipe shapedRecipe) {
+			return shapedRecipe.getWidth();
+		}
+		return 0;
+	}
+
+	public static int getRecipeHeight(CraftingRecipe recipe) {
+		if (recipe instanceof ShapedRecipe shapedRecipe) {
+			return shapedRecipe.getHeight();
+		}
+		if (recipe instanceof JeiShapedRecipe shapedRecipe) {
+			return shapedRecipe.getHeight();
+		}
+		return 0;
 	}
 
 	public record TransformationPowderInfo(EntityType<?> input, EntityType<?> output, boolean reversible) {

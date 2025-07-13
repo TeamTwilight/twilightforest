@@ -15,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
 import twilightforest.compat.RecipeViewerConstants;
 import twilightforest.compat.rei.TFREIClientPlugin;
 import twilightforest.compat.rei.categories.REIOminousFireCategory;
+import twilightforest.init.TFBlocks;
 import twilightforest.util.entities.EntityRenderingUtil;
 
 import java.util.ArrayList;
@@ -44,6 +45,8 @@ public class REIOminousFireDisplay extends BasicDisplay {
 			}
 		});
 
+		inputs.add(EntryIngredients.of(TFREIClientPlugin.BLOCKSTATE_DEFINITION, List.of(TFBlocks.OMINOUS_FIRE.get().defaultBlockState())));
+
 		getEntity(recipe.output(), Minecraft.getInstance().level).ifPresent(entity -> {
 			outputs.add(EntryIngredients.of(TFREIClientPlugin.ENTITY_DEFINITION, List.of(entity)));
 			SpawnEggItem outputEgg = DeferredSpawnEggItem.byId(entity.getType());
@@ -53,7 +56,6 @@ public class REIOminousFireDisplay extends BasicDisplay {
 		});
 
 		if (!inputs.isEmpty() && !outputs.isEmpty()) {
-
 			return new REIOminousFireDisplay(inputs, outputs);
 		}
 

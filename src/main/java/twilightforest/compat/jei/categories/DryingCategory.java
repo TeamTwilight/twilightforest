@@ -21,6 +21,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec3;
 import twilightforest.TwilightForestMod;
 import twilightforest.compat.RecipeViewerConstants;
 import twilightforest.init.TFBlocks;
@@ -73,17 +74,8 @@ public class DryingCategory implements IRecipeCategory<DryingRecipe> {
 		Component time = RecipeViewerConstants.getDryingTime(recipe.getDryingTime());
 		graphics.drawString(font, time, 35 - font.width(time.getString()) / 2, 20, 0xFF808080, false);
 
-		MultiBufferSource.BufferSource bufferSource = minecraft.renderBuffers().bufferSource();
-		graphics.pose().pushPose();
-		Lighting.setupForFlatItems();
-		graphics.pose().scale(20.0F, -20.0F, 20.0F);
-		graphics.pose().translate(0.45F, -0.45F, 19.0F);
-		minecraft.getItemRenderer().renderStatic(new ItemStack(TFBlocks.OAK_DRYING_RACK), ItemDisplayContext.NONE, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, graphics.pose(), bufferSource, null, 0);
-		graphics.pose().translate(2.6F, 0.0F, 0.0F);
-		minecraft.getItemRenderer().renderStatic(new ItemStack(TFBlocks.OAK_DRYING_RACK), ItemDisplayContext.NONE, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, graphics.pose(), bufferSource, null, 0);
-		graphics.pose().popPose();
-		bufferSource.endBatch();
-		Lighting.setupFor3DItems();
+		RecipeViewerConstants.renderFlatBlock(graphics.pose(), TFBlocks.OAK_DRYING_RACK.get().defaultBlockState(), new Vec3(-1.0F, 19.0F, 201.0D), 20.0F);
+		RecipeViewerConstants.renderFlatBlock(graphics.pose(), TFBlocks.OAK_DRYING_RACK.get().defaultBlockState(), new Vec3(51.0F, 19.0F, 201.0D), 20.0F);
 	}
 
 	@Override

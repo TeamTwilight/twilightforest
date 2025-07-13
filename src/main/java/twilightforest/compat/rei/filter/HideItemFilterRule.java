@@ -3,6 +3,7 @@ package twilightforest.compat.rei.filter;
 import com.google.common.collect.Streams;
 import me.shedaniel.rei.api.client.entry.filtering.*;
 import me.shedaniel.rei.api.common.entry.EntryStack;
+import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.TFItems;
 
 import java.util.stream.Stream;
@@ -22,7 +23,10 @@ public class HideItemFilterRule implements FilteringRule<Object> {
 
 		Stream<EntryStack<?>> all = Streams.concat(context.getShownStacks().stream(), context.getUnsetStacks().stream());
 
-		filteringResult.hide(all.filter(stack -> TFItems.MAGIC_PAINTING.getId().equals(stack.getIdentifier())).toList());
+		filteringResult.hide(all.filter(stack -> TFItems.MAGIC_PAINTING.getId().equals(stack.getIdentifier())
+			|| TFItems.FOUR_LEAF_CLOVER.getId().equals(stack.getIdentifier())
+			|| stack.getTagsFor().anyMatch(tagKey -> tagKey.equals(ItemTagGenerator.WIP))
+		).toList());
 
 		return filteringResult;
 	}

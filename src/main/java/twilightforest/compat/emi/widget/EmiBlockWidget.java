@@ -9,6 +9,8 @@ import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
+import twilightforest.compat.RecipeViewerConstants;
 
 public class EmiBlockWidget extends Widget {
 
@@ -27,15 +29,6 @@ public class EmiBlockWidget extends Widget {
 
 	@Override
 	public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-		Minecraft minecraft = Minecraft.getInstance();
-		MultiBufferSource.BufferSource bufferSource = minecraft.renderBuffers().bufferSource();
-		graphics.pose().pushPose();
-		Lighting.setupForFlatItems();
-		graphics.pose().translate(this.getBounds().x(), this.getBounds().y(), 201.0D);
-		graphics.pose().scale(16.0F, -16.0F, 16.0F);
-		minecraft.getBlockRenderer().renderSingleBlock(this.state, graphics.pose(), bufferSource, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY);
-		graphics.pose().popPose();
-		bufferSource.endBatch();
-		Lighting.setupFor3DItems();
+		RecipeViewerConstants.renderFlatBlock(graphics.pose(), this.state, new Vec3(this.getBounds().x(), this.getBounds().y(), 201.0D), 20.0F);
 	}
 }

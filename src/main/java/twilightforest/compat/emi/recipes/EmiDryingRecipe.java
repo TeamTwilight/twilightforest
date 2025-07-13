@@ -69,9 +69,9 @@ public class EmiDryingRecipe implements EmiRecipe {
 	public void addWidgets(WidgetHolder widgets) {
 		widgets.addFillingArrow(22, 0, 20 * 60 * 50);
 		widgets.addSlot(this.getInputs().getFirst(), 0, 0).drawBack(false);
-		widgets.add(new EmiBlockWidget(TFBlocks.OAK_DRYING_RACK.get().defaultBlockState(), 1, 16));
+		widgets.add(new EmiBlockWidget(TFBlocks.OAK_DRYING_RACK.get().defaultBlockState(), -1, 19));
 
-		widgets.add(new EmiBlockWidget(TFBlocks.OAK_DRYING_RACK.get().defaultBlockState(), 52, 16));
+		widgets.add(new EmiBlockWidget(TFBlocks.OAK_DRYING_RACK.get().defaultBlockState(), 50, 19));
 		widgets.addSlot(this.getOutputs().getFirst(), 51, 0).drawBack(false).recipeContext(this);
 
 		Component time = RecipeViewerConstants.getDryingTime(this.recipe.value().getDryingTime());

@@ -90,7 +90,7 @@ public class JEIUncraftingCategory implements IRecipeCategory<CraftingRecipe> {
 				k++;
 				continue;
 			} //Skips empty spaces in shaped recipes
-			inputSlots.get(getCraftingIndex(j - k, getWidth(recipe), getHeight(recipe))).addIngredients(outputs.get(j - k)); //Set input as output and place in the grid
+			inputSlots.get(RecipeViewerConstants.getCraftingIndex(recipe, j - k)).addIngredients(outputs.get(j - k)); //Set input as output and place in the grid
 		}
 
 		if (recipe instanceof UncraftingRecipe uncraftingRecipe) {
@@ -111,54 +111,5 @@ public class JEIUncraftingCategory implements IRecipeCategory<CraftingRecipe> {
 			String costStr = cost + "";
 			graphics.drawString(Minecraft.getInstance().font, costStr, 45 - Minecraft.getInstance().font.width(costStr), 22, RecipeViewerConstants.getXPColor(cost), true);
 		}
-	}
-
-	//copy of CraftingGridHelper.getCraftingIndex
-	private static int getCraftingIndex(int i, int width, int height) {
-		int index;
-		if (width == 1) {
-			if (height == 3) {
-				index = (i * 3) + 1;
-			} else if (height == 2) {
-				index = (i * 3) + 1;
-			} else {
-				index = 4;
-			}
-		} else if (height == 1) {
-			index = i + 3;
-		} else if (width == 2) {
-			index = i;
-			if (i > 1) {
-				index++;
-				if (i > 3) {
-					index++;
-				}
-			}
-		} else if (height == 2) {
-			index = i + 3;
-		} else {
-			index = i;
-		}
-		return index;
-	}
-
-	private static int getWidth(CraftingRecipe recipe) {
-		if (recipe instanceof ShapedRecipe shapedRecipe) {
-			return shapedRecipe.getWidth();
-		}
-		if (recipe instanceof JeiShapedRecipe shapedRecipe) {
-			return shapedRecipe.getWidth();
-		}
-		return 0;
-	}
-
-	private static int getHeight(CraftingRecipe recipe) {
-		if (recipe instanceof ShapedRecipe shapedRecipe) {
-			return shapedRecipe.getHeight();
-		}
-		if (recipe instanceof JeiShapedRecipe shapedRecipe) {
-			return shapedRecipe.getHeight();
-		}
-		return 0;
 	}
 }

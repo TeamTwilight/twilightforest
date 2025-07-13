@@ -16,36 +16,44 @@ import me.shedaniel.rei.api.common.util.EntryIngredients;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import me.shedaniel.rei.forge.REIPluginClient;
 import me.shedaniel.rei.plugin.common.BuiltinPlugin;
-import me.shedaniel.rei.plugin.common.displays.DefaultSmithingDisplay;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.*;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.CraftingRecipe;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.ShapelessRecipe;
+import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.compat.rei.categories.*;
-import twilightforest.compat.rei.displays.*;
-import twilightforest.compat.rei.fillers.REITravellersGearModifierRecipeFiller;
-import twilightforest.compat.rei.filter.HideItemFilterType;
-import twilightforest.config.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.UncraftingScreen;
 import twilightforest.compat.RecipeViewerConstants;
+import twilightforest.compat.rei.categories.*;
+import twilightforest.compat.rei.displays.*;
+import twilightforest.compat.rei.entries.BlockStateEntryDefinition;
 import twilightforest.compat.rei.entries.EntityEntryDefinition;
+import twilightforest.compat.rei.fillers.MoonwormQueenRepairFiller;
+import twilightforest.compat.rei.fillers.REITravellersGearModifierRecipeFiller;
+import twilightforest.compat.rei.filter.HideItemFilterType;
+import twilightforest.config.TFConfig;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFRecipes;
+import twilightforest.item.recipe.DryingRecipe;
 import twilightforest.item.recipe.NoTemplateSmithingRecipe;
 import twilightforest.item.recipe.UncraftingRecipe;
 import twilightforest.util.entities.EntityRenderingUtil;
 
-import java.util.*;
+import java.util.Map;
+import java.util.Optional;
+import java.util.WeakHashMap;
 import java.util.stream.Stream;
 
 @SuppressWarnings("UnstableApiUsage")
@@ -53,6 +61,7 @@ import java.util.stream.Stream;
 public class TFREIClientPlugin implements REIClientPlugin {
 
 	public static final EntityEntryDefinition ENTITY_DEFINITION = new EntityEntryDefinition();
+	public static final BlockStateEntryDefinition BLOCKSTATE_DEFINITION = new BlockStateEntryDefinition();
 	public Map<EntryStack<Entity>, EntryRenderer<Entity>> RENDER_CACHE = new WeakHashMap<>();
 
 	static {
@@ -68,6 +77,7 @@ public class TFREIClientPlugin implements REIClientPlugin {
 		registry.addWorkstations(REICrumbleHornCategory.CRUMBLE_HORN, EntryStacks.of(TFItems.CRUMBLE_HORN));
 		registry.addWorkstations(REITransformationPowderCategory.TRANSFORMATION, EntryStacks.of(TFItems.TRANSFORMATION_POWDER));
 		registry.addWorkstations(REIOminousFireCategory.OMINOUS_FIRE, EntryStacks.of(TFItems.EXANIMATE_ESSENCE));
+		registry.addWorkstations(REIDryingCategory.DRYING, EntryIngredients.ofItemTag(ItemTagGenerator.DRYING_RACKS));
 
 		if (!TFConfig.disableEntireTable) {
 			registry.add(new REIUncraftingCategory());
@@ -75,7 +85,7 @@ public class TFREIClientPlugin implements REIClientPlugin {
 		registry.add(new REICrumbleHornCategory());
 		registry.add(new REITransformationPowderCategory());
 		registry.add(new REIOminousFireCategory());
-		registry.add(new REIMoonwormQueenCategory());
+		registry.add(new REIDryingCategory());
 	}
 
 	@Override
@@ -100,19 +110,16 @@ public class TFREIClientPlugin implements REIClientPlugin {
 				});
 			}
 		}
-		RecipeViewerConstants.getCrumbleHornRecipes().forEach(info ->
-			registry.add(new REICrumbleHornDisplay(
-				Collections.singletonList(EntryIngredients.of(info.getFirst().asItem())),
-				Collections.singletonList(EntryIngredients.of(info.getSecond().asItem())),
-				info.getSecond() == Blocks.AIR))
-		);
 
+		RecipeViewerConstants.getCrumbleHornRecipes().forEach(info -> registry.add(REICrumbleHornDisplay.of(info.getFirst(), info.getSecond())));
 		RecipeViewerConstants.getTransformationPowderRecipes().forEach(info -> registry.add(REITransformationPowderDisplay.of(info)));
 		RecipeViewerConstants.getOminousFireRecipes().forEach(info -> registry.add(REIOminousFireDisplay.of(info)));
 
-		registry.add(REIMoonwormQueenCategory.createDisplay());
-		registry.registerRecipeFiller(NoTemplateSmithingRecipe.class, RecipeType.SMITHING, holder -> new DefaultSmithingDisplay(holder.value(), holder.id(), List.of(EntryIngredients.of(ItemStack.EMPTY), EntryIngredients.ofIngredient(holder.value().getBase()), EntryIngredients.ofIngredient(holder.value().getAddition()))));
+		registry.registerRecipesFiller(NoTemplateSmithingRecipe.class, RecipeType.SMITHING, REINoTemplateDisplay::noTemplate);
+		registry.registerRecipeFiller(DryingRecipe.class, TFRecipes.DRYING_RECIPE.get(), holder -> REIDryingDisplay.of(holder.value()));
+
 		new REITravellersGearModifierRecipeFiller().registerDisplays(registry);
+		new MoonwormQueenRepairFiller().registerDisplays(registry);
 	}
 
 	@Override
@@ -124,7 +131,6 @@ public class TFREIClientPlugin implements REIClientPlugin {
 	}
 
 	@Override
-	@SuppressWarnings("all") //I dont care if this is experimental
 	public void registerEntryRenderers(EntryRendererRegistry registry) {
 		RENDER_CACHE.clear();
 
@@ -140,6 +146,7 @@ public class TFREIClientPlugin implements REIClientPlugin {
 	@Override
 	public void registerEntryTypes(EntryTypeRegistry registry) {
 		registry.register(EntityEntryDefinition.ENTITY_TYPE, ENTITY_DEFINITION);
+		registry.register(BlockStateEntryDefinition.BLOCKSTATE, BLOCKSTATE_DEFINITION);
 
 		registry.registerBridge(VanillaEntryTypes.ITEM, EntityEntryDefinition.ENTITY_TYPE, object -> {
 			Optional<Stream<EntryStack<Entity>>> stream;
@@ -183,6 +190,26 @@ public class TFREIClientPlugin implements REIClientPlugin {
 
 			if (stack != null) {
 				stream = Optional.of(Stream.of(EntryStacks.of(stack)));
+			}
+
+			return stream.map(CompoundEventResult::interruptTrue).orElseGet(CompoundEventResult::pass);
+		});
+
+		registry.registerBridge(VanillaEntryTypes.ITEM, BlockStateEntryDefinition.BLOCKSTATE, object -> {
+			Optional<Stream<EntryStack<BlockState>>> stream = Optional.empty();
+
+			if (object.getValue().getItem() instanceof BlockItem block) {
+				stream = Optional.of(Stream.of(EntryStack.of(BLOCKSTATE_DEFINITION, block.getBlock().defaultBlockState())));
+			}
+
+			return stream.map(CompoundEventResult::interruptTrue).orElseGet(CompoundEventResult::pass);
+		});
+
+		registry.registerBridge(BlockStateEntryDefinition.BLOCKSTATE, VanillaEntryTypes.ITEM, object -> {
+			Optional<Stream<EntryStack<ItemStack>>> stream = Optional.empty();
+
+			if (object.getValue().getBlock().asItem() != Items.AIR) {
+				stream = Optional.of(Stream.of(EntryStacks.of(new ItemStack(object.getValue().getBlock()))));
 			}
 
 			return stream.map(CompoundEventResult::interruptTrue).orElseGet(CompoundEventResult::pass);

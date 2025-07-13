@@ -80,7 +80,7 @@ public class EmiOminousFireRecipe implements EmiRecipe {
 		widgets.addTexture(SLOT, 7, 10);
 		widgets.add(new EmiEntityWidget(this.input, 7, 12, 32));
 		widgets.addTexture(EmiTexture.EMPTY_ARROW, 46, 19);
-		widgets.add(new EmiBlockWidget(TFBlocks.OMINOUS_FIRE.get().defaultBlockState(), 49, 44));
+		widgets.add(new EmiBlockWidget(TFBlocks.OMINOUS_FIRE.get().defaultBlockState(), 47, 44));
 		widgets.addTexture(SLOT, 75, 10);
 		widgets.add(new EmiEntityWidget(this.output, 75, 12, 32));
 	}
