@@ -37,21 +37,25 @@ public class DryingRackBlockEntity extends BlockEntity implements ContainerSingl
 	}
 
 	public static void tick(Level level, BlockPos pos, BlockState state, DryingRackBlockEntity entity) {
-		if (!state.getValue(DryingRackBlock.WATERLOGGED) && !level.isClientSide() && !entity.getTheItem().isEmpty()) {
-			SingleRecipeInput input = new SingleRecipeInput(entity.getTheItem());
-			RecipeHolder<DryingRecipe> recipeholder = entity.quickCheck.getRecipeFor(input, level).orElse(null);
+		if (!state.getValue(DryingRackBlock.WATERLOGGED) && !level.isClientSide()) {
+			if (!entity.getTheItem().isEmpty()) {
+				SingleRecipeInput input = new SingleRecipeInput(entity.getTheItem());
+				RecipeHolder<DryingRecipe> recipeholder = entity.quickCheck.getRecipeFor(input, level).orElse(null);
 
-			entity.updateDryingTime(recipeholder != null);
-			if (recipeholder != null) {
-				entity.dryTime++;
-				if (level.isClientSide()) {
-					level.addParticle(ParticleTypes.COMPOSTER, pos.getX(), pos.getY(), pos.getZ(), 0.0F, 0.0F, 0.0F);
-				}
+				entity.updateDryingTime(recipeholder != null);
+				if (recipeholder != null) {
+					entity.dryTime++;
+					if (level.isClientSide()) {
+						level.addParticle(ParticleTypes.COMPOSTER, pos.getX(), pos.getY(), pos.getZ(), 0.0F, 0.0F, 0.0F);
+					}
 
-				if (entity.dryTime >= entity.totalDryTime) {
-					entity.setTheItem(recipeholder.value().assemble(input, level.registryAccess()));
-					setChanged(level, pos, state);
+					if (entity.dryTime >= entity.totalDryTime) {
+						entity.setTheItem(recipeholder.value().assemble(input, level.registryAccess()));
+						setChanged(level, pos, state);
+					}
 				}
+			} else {
+				entity.updateDryingTime(false);
 			}
 		}
 	}

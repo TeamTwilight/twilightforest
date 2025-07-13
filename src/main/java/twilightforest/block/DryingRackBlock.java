@@ -7,6 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.util.ParticleUtils;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
@@ -28,6 +29,7 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
@@ -108,9 +110,7 @@ public class DryingRackBlock extends BaseEntityBlock implements SimpleWaterlogge
 	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
 		if (level.getBlockEntity(pos) instanceof DryingRackBlockEntity rack && rack.isDrying() && random.nextInt(5) == 0) {
 			Direction dir = state.getValue(FACING);
-			double x = pos.getX() + random.nextFloat() * dir.getStepZ() + 0.9F * dir.getStepX();
-			double z = pos.getZ() + random.nextFloat() * dir.getStepX() + 0.9F * dir.getStepZ();
-			level.addParticle(TFParticleType.DRYING_RACK.get(), x, pos.getY() + (random.nextFloat() * 0.7F), z, 0.0F, 0.0F, 0.0F);
+			ParticleUtils.spawnParticleOnFace(level, pos, dir, TFParticleType.DRYING_RACK.get(), Vec3.ZERO, 0.3F);
 		}
 	}
 
