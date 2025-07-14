@@ -37,25 +37,13 @@ public class MazeSlime extends Slime {
 	@Override
 	public void setSize(int size, boolean resetHealth) {
 		super.setSize(size, resetHealth);
+		this.getAttribute(Attributes.MAX_HEALTH).addOrReplacePermanentModifier(DOUBLE_HEALTH);
+		this.setHealth(this.getMaxHealth());
 		this.xpReward = size + 3;
 	}
 
 	public static boolean getCanSpawnHere(EntityType<MazeSlime> entity, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, RandomSource random) {
 		return world.getDifficulty() != Difficulty.PEACEFUL && checkMobSpawnRules(entity, world, reason, pos, random) && Monster.isDarkEnoughToSpawn(world, pos, random);
-	}
-
-	public static AttributeSupplier.Builder registerAttributes() {
-		return Monster.createMonsterAttributes()
-			.add(Attributes.MAX_HEALTH);
-	}
-
-	@Nullable
-	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn) {
-		AttributeInstance health = this.getAttribute(Attributes.MAX_HEALTH);
-		assert health != null;
-		health.addPermanentModifier(DOUBLE_HEALTH);
-		return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn);
 	}
 
 	@Override

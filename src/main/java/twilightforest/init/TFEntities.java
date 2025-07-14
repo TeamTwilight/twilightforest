@@ -260,7 +260,7 @@ public class TFEntities {
 		event.put(FIRE_BEETLE.get(), FireBeetle.registerAttributes().build());
 		event.put(SLIME_BEETLE.get(), SlimeBeetle.registerAttributes().build());
 		event.put(PINCH_BEETLE.get(), PinchBeetle.registerAttributes().build());
-		event.put(MAZE_SLIME.get(), MazeSlime.registerAttributes().build());
+		event.put(MAZE_SLIME.get(), Monster.createMonsterAttributes().build());
 		event.put(REDCAP_SAPPER.get(), RedcapSapper.registerAttributes().build());
 		event.put(MIST_WOLF.get(), MistWolf.registerAttributes().build());
 		event.put(KING_SPIDER.get(), KingSpider.registerAttributes().build());
