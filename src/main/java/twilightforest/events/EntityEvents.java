@@ -256,7 +256,7 @@ public class EntityEvents {
 		if (!TravellersModifiers.PERFECT_DODGE_MODIFIER.isActive(chest) || probability == null || probability <= level.random.nextFloat())
 			return;
 		Entity projectile = event.getEntity();
-		level.playLocalSound(projectile, SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 1, 1);  // FIXME: replace placeholder sound event and adjust volume and pitch parameters
+		level.playLocalSound(projectile, TFSounds.PERFECT_DODGE.get(), SoundSource.PLAYERS, 1, livingEntity.getVoicePitch());
 		event.setCanceled(true);
 		if (level.isClientSide())
 			return;

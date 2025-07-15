@@ -89,6 +89,9 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 	public static final TagKey<Item> SCEPTERS = create("scepters");
 	public static final TagKey<Item> IMMUNE_TO_THORNS = create("immune_to_thorns");
 
+	public static final TagKey<Item> FOODS_JERKY = makeCommonTag("foods/jerky");
+	public static final TagKey<Item> NUGGETS_COPPER = makeCommonTag("nuggets/copper");
+
 	public ItemTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> future, CompletableFuture<TagLookup<Block>> provider, ExistingFileHelper helper) {
 		super(output, future, provider, helper);
 	}
@@ -234,15 +237,15 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 		this.tag(TINY_BIRD_TEMPT_ITEMS).addTag(Tags.Items.SEEDS);
 
 		this.tag(BANNED_UNCRAFTING_INGREDIENTS).add(
-			TFBlocks.INFESTED_TOWERWOOD.get().asItem(),
-			TFBlocks.HOLLOW_OAK_SAPLING.get().asItem(),
-			TFBlocks.TIME_SAPLING.get().asItem(),
-			TFBlocks.TRANSFORMATION_SAPLING.get().asItem(),
-			TFBlocks.MINING_SAPLING.get().asItem(),
-			TFBlocks.SORTING_SAPLING.get().asItem(),
+			TFBlocks.INFESTED_TOWERWOOD.asItem(),
+			TFBlocks.HOLLOW_OAK_SAPLING.asItem(),
+			TFBlocks.TIME_SAPLING.asItem(),
+			TFBlocks.TRANSFORMATION_SAPLING.asItem(),
+			TFBlocks.MINING_SAPLING.asItem(),
+			TFBlocks.SORTING_SAPLING.asItem(),
 			TFItems.TRANSFORMATION_POWDER.get());
 
-		this.tag(BANNED_UNCRAFTABLES).add(TFBlocks.GIANT_LOG.get().asItem());
+		this.tag(BANNED_UNCRAFTABLES).add(TFBlocks.GIANT_LOG.asItem());
 		this.tag(UNCRAFTING_IGNORES_COST).addTag(Tags.Items.RODS_WOODEN);
 
 		this.tag(KEPT_ON_DEATH).add(TFItems.TOWER_KEY.get(), TFItems.PHANTOM_HELMET.get(), TFItems.PHANTOM_CHESTPLATE.get());
@@ -336,7 +339,7 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 			TFItems.FIERY_PICKAXE.get(),
 			TFItems.GIANT_PICKAXE.get());
 
-		this.tag(ItemTags.SMALL_FLOWERS).add(TFBlocks.THORN_ROSE.get().asItem());
+		this.tag(ItemTags.SMALL_FLOWERS).add(TFBlocks.THORN_ROSE.asItem());
 
 		this.tag(ItemTags.TRIM_MATERIALS).add(TFItems.IRONWOOD_INGOT.get(), TFItems.STEELEAF_INGOT.get(), TFItems.KNIGHTMETAL_INGOT.get(), TFItems.NAGA_SCALE.get(), TFItems.CARMINITE.get(), TFItems.FIERY_INGOT.get());
 
@@ -421,18 +424,35 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 		this.tag(ItemTags.EQUIPPABLE_ENCHANTABLE).remove(TFItems.PHANTOM_HELMET.get(), TFItems.PHANTOM_CHESTPLATE.get());
 		this.tag(ItemTags.BREAKS_DECORATED_POTS).add(TFItems.BLOCK_AND_CHAIN.get());
 
-		this.tag(Tags.Items.FOODS_BERRY).add(TFItems.TORCHBERRIES.get());
+		this.tag(Tags.Items.FOODS).addTag(FOODS_JERKY).add(TFItems.GELATINOUS_SLIME_DROP.get(), TFItems.GELATINOUS_MAZE_SLIME_DROP.get(), TFItems.BERRY_MEDLEY.get(), TFItems.MAZE_WAFER.get());
+		this.tag(FOODS_JERKY).add(
+			TFItems.MONSTER_JERKY.get(), TFItems.BEEF_JERKY.get(),
+			TFItems.PORK_JERKY.get(), TFItems.CHICKEN_JERKY.get(),
+			TFItems.RABBIT_JERKY.get(), TFItems.MUTTON_JERKY.get(),
+			TFItems.VENISON_JERKY.get(), TFItems.MEEF_JERKY.get(),
+			TFItems.COD_JERKY.get(), TFItems.SALMON_JERKY.get(),
+			TFItems.CLOWNFISH_JERKY.get(), TFItems.FUGU_JERKY.get());
+		this.tag(Tags.Items.FOODS_BERRY).add(
+			TFItems.TORCHBERRIES.get(), TFItems.RASPBERRY.get(),
+			TFItems.BLACKBERRY.get(), TFItems.BLUEBERRY.get(),
+			TFItems.MALOBERRY.get(), TFItems.DUSKBERRY.get(),
+			TFItems.SKYBERRY.get(), TFItems.BLIGHTBERRY.get(),
+			TFItems.STINGBERRY.get());
 		this.tag(Tags.Items.FOODS_RAW_MEAT).add(TFItems.RAW_VENISON.get(), TFItems.RAW_MEEF.get());
 		this.tag(Tags.Items.FOODS_COOKED_MEAT).add(TFItems.COOKED_VENISON.get(), TFItems.COOKED_MEEF.get(), TFItems.HYDRA_CHOP.get());
 		this.tag(Tags.Items.FOODS_SOUP).add(TFItems.MEEF_STROGANOFF.get());
 		this.tag(Tags.Items.FOODS_EDIBLE_WHEN_PLACED).add(TFItems.EXPERIMENT_115.get());
 		this.tag(Tags.Items.ROPES).add(TFItems.ROPE.get());
-		this.tag(Tags.Items.MUSHROOMS).add(TFBlocks.MUSHGLOOM.get().asItem());
+		this.tag(Tags.Items.MUSHROOMS).add(TFBlocks.MUSHGLOOM.asItem());
 		this.tag(Tags.Items.MUSIC_DISCS).add(
 			TFItems.MUSIC_DISC_RADIANCE.get(), TFItems.MUSIC_DISC_STEPS.get(), TFItems.MUSIC_DISC_SUPERSTITIOUS.get(),
 			TFItems.MUSIC_DISC_HOME.get(), TFItems.MUSIC_DISC_WAYFARER.get(), TFItems.MUSIC_DISC_FINDINGS.get(),
 			TFItems.MUSIC_DISC_MAKER.get(), TFItems.MUSIC_DISC_THREAD.get(), TFItems.MUSIC_DISC_MOTION.get()
 		);
+		this.tag(NUGGETS_COPPER).add(TFItems.COPPER_NUGGET.get());
+		this.tag(Tags.Items.NUGGETS).addTag(NUGGETS_COPPER);
+		this.tag(Tags.Items.SLIME_BALLS).add(TFItems.MAZE_SLIME_BALL.get());
+		this.tag(Tags.Items.STORAGE_BLOCKS_SLIME).add(TFBlocks.MAZE_SLIME_BLOCK.asItem());
 	}
 
 	public static TagKey<Item> create(String tagName) {

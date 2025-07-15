@@ -1,4 +1,4 @@
-// 1.21.1	2025-04-13T22:08:03.3193343	Twilight Forest Block Tags
+// 1.21.1	2025-07-15T12:26:54.947140952	Twilight Forest Block Tags
 9d529390443b5da5d71bd6e867c066632e1340b8 data/alexscaves/tags/block/ferromagnetic_blocks.json
 ddfcbead67bb9487c003af137a276963e5b20022 data/alexscaves/tags/block/gloomoth_light_sources.json
 c365018bd78f1335cd4508b5d74bc4500ae951bd data/alexscaves/tags/block/underzealot_light_sources.json
@@ -8,8 +8,8 @@ dbb45e0d36df554b46ceb4028ec61bc7b7a6315a data/c/tags/block/chests/trapped.json
 3d56c0ea016f639fad4fae4272d928867251da04 data/c/tags/block/chests/wooden.json
 211134157771c86a72a0c5a1985c2b05da55729b data/c/tags/block/fence_gates/wooden.json
 1c8be16360ba840051ed917f6b9667c66376d4ee data/c/tags/block/glass_blocks.json
-078ffd510c10188061614a42c5165e8a6b146fd7 data/c/tags/block/ores_in_ground/root.json
 092125a387f652f754cbd3e2eef2d3fe0a67bd55 data/c/tags/block/ore_bearing_ground/root.json
+078ffd510c10188061614a42c5165e8a6b146fd7 data/c/tags/block/ores_in_ground/root.json
 13ef2169fcd31b20ffd1e70c9f7b4855e786d936 data/c/tags/block/player_workstations/crafting_tables.json
 7088eeadc01cb4ee514f7c4fd5c25d66a2ee1a00 data/c/tags/block/relocation_not_supported.json
 d2e681a14efc494b83a43b07b35d26dad2fff850 data/c/tags/block/ropes.json
@@ -19,7 +19,10 @@ bb31db15f2b155aafc5bc956c01454bb27f14f72 data/c/tags/block/storage_blocks/carmin
 c15f20a0c7467da527d9bde3456b9eb9e6a86021 data/c/tags/block/storage_blocks/fiery.json
 b1bdb774a7cf90e5cfbf8d045a3ccca943b8e073 data/c/tags/block/storage_blocks/ironwood.json
 e1e1daa9f0fa727681cf4eb0a0a2cbde40e6708d data/c/tags/block/storage_blocks/knightmetal.json
+eb02dad5585025bae46b1a33a10ef57f1c33b78f data/c/tags/block/storage_blocks/slime.json
 34bb5d122fd15f6d868a5ff3cfe8ac8eafc6e892 data/c/tags/block/storage_blocks/steeleaf.json
+96e133a68b59752179daf0ace7f09c7aa6f86a6d data/c/tags/block/stripped_logs.json
+44805839a86579813bbaa5d7948e5adc4a4421a7 data/c/tags/block/stripped_woods.json
 27fc8e32e0e71b8dcbb82f0ada3b954d906256b6 data/farmersdelight/tags/block/compost_activators.json
 3c9240d12210edeb8e1ff96c47f8ed15bc265aa6 data/farmersdelight/tags/block/heat_sources.json
 0a52d65411c2027ae8e27da5af1fea4e9ef5f090 data/minecraft/tags/block/beacon_base_blocks.json
@@ -60,9 +63,9 @@ bb39f860aaf80d261eee2fc6cf18ee75a411d1c1 data/minecraft/tags/block/slabs.json
 0074c60e923669a4539ccbc5bd0c293f255ff5a5 data/minecraft/tags/block/standing_signs.json
 c15f20a0c7467da527d9bde3456b9eb9e6a86021 data/minecraft/tags/block/strider_warm_blocks.json
 89b1de786c6a6e577b7de5733e462baa124cd138 data/minecraft/tags/block/sword_efficient.json
-e67d2a0a3001de2207130c3fffff8d6665f26fbf data/minecraft/tags/block/walls.json
 f1654e579781c2bce8d458efa0cdb304b5ad052c data/minecraft/tags/block/wall_hanging_signs.json
 8b7e0d4d896e5e197798d761800abbb1510d92e8 data/minecraft/tags/block/wall_signs.json
+e67d2a0a3001de2207130c3fffff8d6665f26fbf data/minecraft/tags/block/walls.json
 21d68ed46d202a9b9c5b709deebf8105df972ec0 data/minecraft/tags/block/wither_immune.json
 f0813a14ba178a941ba37c4059a25e6b19f77091 data/minecraft/tags/block/wooden_buttons.json
 3ff910b3376b5166da794689b1bf7569ad0b2e87 data/minecraft/tags/block/wooden_doors.json
@@ -86,8 +89,8 @@ ecd0a9f97ab5b54a7c21ed4f6af6896d564ea5f0 data/twilightforest/tags/block/castle_b
 3d56c0ea016f639fad4fae4272d928867251da04 data/twilightforest/tags/block/chests.json
 63d6b8afab51c74ed26723c1e8a1588cbba120cb data/twilightforest/tags/block/clouds.json
 352073aacfa14a51f14ee10c729a41eeeb9326bc data/twilightforest/tags/block/common_protections.json
-97652f431059f64ffc5747f498cdcf278ddd0555 data/twilightforest/tags/block/darkwood_logs.json
 29d004c820708d44b1747a2f31f506646efb1a27 data/twilightforest/tags/block/dark_tower_allowed_pots.json
+97652f431059f64ffc5747f498cdcf278ddd0555 data/twilightforest/tags/block/darkwood_logs.json
 8ed2ef0f9a24051c4d152d5d47721e79f790e2eb data/twilightforest/tags/block/deadrock.json
 7caa25870567b18269192c1592a69bdd8558c275 data/twilightforest/tags/block/druid_projectile_replaceable.json
 bb4b1a5f61f28bd55449672ed9cc8123141729fd data/twilightforest/tags/block/drying_racks.json
@@ -114,10 +117,10 @@ dd1f6af3c96cc308a52726613452fddc17b9833c data/twilightforest/tags/block/mazebrea
 2e3669ba44aac2e69249800a996f0e1b27c08e54 data/twilightforest/tags/block/mining_tree_excluded.json
 545150b1994cb10f5d3f51ae4c8b7666c19ae96a data/twilightforest/tags/block/nether_natura_bushes_die.json
 542c567a503720b5f7e650472cdff13b709a8072 data/twilightforest/tags/block/nether_natura_bushes_survive.json
-a5a363a7fe3af2d48747e0a2353d98ef400d118e data/twilightforest/tags/block/oreberry_bushes_survive.json
 2e3669ba44aac2e69249800a996f0e1b27c08e54 data/twilightforest/tags/block/ore_magnet/ignored_ores.json
 3b364832bd51eac9a6ed381bfcb51d69a20c47ac data/twilightforest/tags/block/ore_magnet/ore_safe_replace_block.json
 997d71fbd6bbcc5b7e922ff11bba74a028a37077 data/twilightforest/tags/block/ore_meter_targetable.json
+a5a363a7fe3af2d48747e0a2353d98ef400d118e data/twilightforest/tags/block/oreberry_bushes_survive.json
 69c396cb051bbe9a130e6979b67065e5041b179d data/twilightforest/tags/block/overworld_natura_bushes_survive.json
 0a6d57dbfee5c2462339b802e3d71f90b2dbf41c data/twilightforest/tags/block/penguins_spawnable_on.json
 0ce6b55aef503d7bff8b5dd86b38092ba2b14c46 data/twilightforest/tags/block/plants_hang_on.json
@@ -130,8 +133,8 @@ cf3608bd187922aeb48c566c19e8482b0dca34c7 data/twilightforest/tags/block/portal/f
 e40d95a628eb206ce0b4bac90782bccc789cf8dc data/twilightforest/tags/block/sortwood_logs.json
 513552f34c4bbf125c67f4ba5b1dc6b34aa4d19f data/twilightforest/tags/block/structure_banned_interactions.json
 fe294f66f8396c4430eeb05932c598d8a86fbba0 data/twilightforest/tags/block/supports_stalagmites.json
-aa9ca0bf521d8c6b198f2c25e4d5528917308d9f data/twilightforest/tags/block/timewood_logs.json
 6ac229128975c2e8f70b767e08a76386b7bc81df data/twilightforest/tags/block/time_core_excluded.json
+aa9ca0bf521d8c6b198f2c25e4d5528917308d9f data/twilightforest/tags/block/timewood_logs.json
 6352667067c11a27cfc37713a8f8543507c1f18e data/twilightforest/tags/block/towerwood.json
 548dfc9d7e2225c6f7d761216b3fafc120978f73 data/twilightforest/tags/block/transwood_logs.json
 4fba579595d0eafa048882f138be9adc9e39b7b1 data/twilightforest/tags/block/tree_roots_skip.json

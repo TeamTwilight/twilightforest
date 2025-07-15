@@ -6,13 +6,10 @@
     }
   ],
   "type": "jeed:effect_provider",
-  "effect": "minecraft:blindness",
+  "effect": "minecraft:mining_fatigue",
   "providers": [
     {
-      "item": "twilightforest:mist_wolf_spawn_egg"
-    },
-    {
-      "item": "twilightforest:duskberry"
+      "item": "twilightforest:stingberry"
     }
   ]
 }

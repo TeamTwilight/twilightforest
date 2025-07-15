@@ -372,6 +372,11 @@ public class SoundGenerator extends TFSoundProvider {
 		this.generateNewSoundWithSubtitle(TFSounds.ZOMBIE_SCEPTER_USE, "random/scepter/zombie", 1, "Loyal Zombie summoned");
 		this.generateNewSoundWithSubtitle(TFSounds.OMINOUS_FIRE, "random/candelabra/ominous", 1, "Flame Whooshes Ominously");
 
+		this.generateNewSoundWithSubtitle(TFSounds.DOUBLE_JUMP, "random/travellers/double_jump", 1, "Double Jump performed");
+		this.generateNewSoundWithSubtitle(TFSounds.PERFECT_DODGE, "random/travellers/perfect_dodge", 1, "Attack dodged");
+		this.generateNewSoundWithSubtitle(TFSounds.SIDE_STEP, "random/travellers/side_step", 1, "Side Step performed");
+		this.generateNewSoundWithSubtitle(TFSounds.SIDE_STEP_CHARGED, "random/travellers/side_step_ready", 1, "Side Step recharged");
+
 		this.makeMusicDisc(TFSounds.MUSIC_DISC_RADIANCE, "radiance");
 		this.makeMusicDisc(TFSounds.MUSIC_DISC_STEPS, "steps");
 		this.makeMusicDisc(TFSounds.MUSIC_DISC_SUPERSTITIOUS, "superstitious");

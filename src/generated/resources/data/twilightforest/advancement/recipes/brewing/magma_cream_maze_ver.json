@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_slime_ball": {
+    "has_blaze_powder": {
       "conditions": {
         "items": [
           {
-            "items": "minecraft:slime_ball"
+            "items": "minecraft:blaze_powder"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "twilightforest:gelatinous_slime_drop"
+        "recipe": "twilightforest:magma_cream_maze_ver"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_slime_ball"
+      "has_blaze_powder"
     ]
   ],
   "rewards": {
     "recipes": [
-      "twilightforest:gelatinous_slime_drop"
+      "twilightforest:magma_cream_maze_ver"
     ]
   }
 }

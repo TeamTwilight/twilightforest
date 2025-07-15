@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "minecraft:slime_ball"
+            "items": "twilightforest:maze_slime_ball"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "twilightforest:gelatinous_slime_drop"
+        "recipe": "twilightforest:sticky_piston_maze_ver"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "twilightforest:gelatinous_slime_drop"
+      "twilightforest:sticky_piston_maze_ver"
     ]
   }
 }

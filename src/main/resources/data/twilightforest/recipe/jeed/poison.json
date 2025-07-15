@@ -9,10 +9,10 @@
   "effect": "minecraft:poison",
   "providers": [
     {
-      "item": "twilightforest:adherent_spawn_egg"
+      "item": "twilightforest:skeleton_druid_spawn_egg"
     },
     {
-      "item": "twilightforest:skeleton_druid_spawn_egg"
+      "item": "twilightforest:blightberry"
     }
   ]
 }

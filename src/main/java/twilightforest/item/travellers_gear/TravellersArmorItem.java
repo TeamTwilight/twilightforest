@@ -150,7 +150,7 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 		Long cooldown = leggingsStack.get(TFDataComponents.SIDESTEP_COOLDOWN);
 		Long dt = player.level().getGameTime() - player.getData(TFDataAttachments.LAST_SIDESTEP_TIME);
 		if (TravellersModifiers.SIDESTEP_MODIFIER.isActive(leggingsStack) && dt.equals(cooldown))
-			player.playSound(SoundEvents.EXPERIENCE_ORB_PICKUP, 1F, 1F);
+			player.playSound(TFSounds.SIDE_STEP_CHARGED.get(), 1F, player.getVoicePitch());
 	}
 
 	public static void travellersWingsControlledFall(LivingEntity livingEntity) {
@@ -232,6 +232,7 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 		double rot = isLeftSidestep ? -Math.PI / 2 : Math.PI / 2;
 		Vec3 dashDirection =new Vec3(-Math.sin(Math.toRadians(angle) + rot), 0, Math.cos(Math.toRadians(angle) + rot));
 		player.push(dashDirection.scale(1.6));  // 5 blocks
+		player.playSound(TFSounds.SIDE_STEP.get(), 1.0F, player.getVoicePitch());
 	}
 
 	public static boolean performDoubleJump(Player player) {
@@ -239,6 +240,7 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 		if (hasDoubleJump && !player.isFallFlying() && !player.onGround()) {
 			player.jumpFromGround();
 			player.fallDistance = 0;
+			player.playSound(TFSounds.DOUBLE_JUMP.get(), 2.0F, player.getVoicePitch());
 			player.setData(TFDataAttachments.HAS_DOUBLE_JUMP, false);
 			player.setData(TFDataAttachments.DOUBLE_JUMP_VALIDATOR, 0);
 			return true;

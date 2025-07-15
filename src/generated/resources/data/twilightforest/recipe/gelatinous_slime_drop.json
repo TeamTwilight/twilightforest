@@ -2,7 +2,7 @@
   "type": "twilightforest:drying",
   "filter_time": 6000,
   "input": {
-    "tag": "c:slime_balls"
+    "item": "minecraft:slime_ball"
   },
   "result": {
     "count": 1,

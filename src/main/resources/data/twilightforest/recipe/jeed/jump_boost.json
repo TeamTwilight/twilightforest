@@ -6,13 +6,10 @@
     }
   ],
   "type": "jeed:effect_provider",
-  "effect": "minecraft:blindness",
+  "effect": "minecraft:jump_boost",
   "providers": [
     {
-      "item": "twilightforest:mist_wolf_spawn_egg"
-    },
-    {
-      "item": "twilightforest:duskberry"
+      "item": "twilightforest:skyberry"
     }
   ]
 }

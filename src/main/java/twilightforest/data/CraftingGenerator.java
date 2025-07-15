@@ -290,6 +290,29 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.define('t', Ingredient.of(TFItems.CROWN_SPLINTER))
 			.unlockedBy("has_item", has(TFItems.CROWN_SPLINTER))
 			.save(output);
+
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, Items.LEAD, 2)
+			.define('~', Items.STRING)
+			.define('O', TFItems.MAZE_SLIME_BALL)
+			.pattern("~~ ")
+			.pattern("~O ")
+			.pattern("  ~")
+			.unlockedBy("has_slime_ball", has(TFItems.MAZE_SLIME_BALL))
+			.save(output, TwilightForestMod.prefix("lead_maze_ver"));
+
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.BREWING, Items.MAGMA_CREAM)
+			.requires(Items.BLAZE_POWDER)
+			.requires(TFItems.MAZE_SLIME_BALL)
+			.unlockedBy("has_blaze_powder", has(Items.BLAZE_POWDER))
+			.save(output, TwilightForestMod.prefix("magma_cream_maze_ver"));
+
+		ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, Blocks.STICKY_PISTON)
+			.define('P', Blocks.PISTON)
+			.define('S', TFItems.MAZE_SLIME_BALL)
+			.pattern("S")
+			.pattern("P")
+			.unlockedBy("has_slime_ball", has(TFItems.MAZE_SLIME_BALL))
+			.save(output, TwilightForestMod.prefix("sticky_piston_maze_ver"));
 	}
 
 	private void darkTowerRecipes(RecipeOutput output) {
@@ -837,8 +860,8 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.unlockedBy("has_meat", has(TFItems.RAW_MEEF))
 			.save(output);
 
-		DryingRecipeBuilder.drying(Ingredient.of(Tags.Items.SLIME_BALLS), TFItems.GELATINOUS_SLIME_DROP.toStack())
-			.unlockedBy("has_slime_ball", has(Tags.Items.SLIME_BALLS))
+		DryingRecipeBuilder.drying(Items.SLIME_BALL, TFItems.GELATINOUS_SLIME_DROP)
+			.unlockedBy("has_slime_ball", has(Items.SLIME_BALL))
 			.save(output);
 
 		DryingRecipeBuilder.drying(TFItems.MAZE_SLIME_BALL, TFItems.GELATINOUS_MAZE_SLIME_DROP)

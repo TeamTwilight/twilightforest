@@ -6,11 +6,8 @@
     }
   ],
   "type": "jeed:effect_provider",
-  "effect": "minecraft:blindness",
+  "effect": "minecraft:wither",
   "providers": [
-    {
-      "item": "twilightforest:mist_wolf_spawn_egg"
-    },
     {
       "item": "twilightforest:duskberry"
     }

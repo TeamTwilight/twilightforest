@@ -1,13 +1,15 @@
-// 1.21.1	2025-07-13T17:39:08.544359269	Twilight Forest Item Tags
+// 1.21.1	2025-07-15T12:26:54.959368625	Twilight Forest Item Tags
 3c5895c72cfffe09615ec2b28267a726fcbf52e8 data/alexscaves/tags/item/ferns.json
 4c5df8d60b8f068b482a22fd807ddea22e1bfe00 data/alexscaves/tags/item/ferromagnetic_items.json
 42afac82c004061587d5b1ae20c2e66c0d399c8c data/alexscaves/tags/item/raw_meats.json
 3d56c0ea016f639fad4fae4272d928867251da04 data/c/tags/item/chests/wooden.json
 3fc964a8f6314a307c994f9481e1ad6ca6d39785 data/c/tags/item/feathers.json
 211134157771c86a72a0c5a1985c2b05da55729b data/c/tags/item/fence_gates/wooden.json
-932db6906454527b9d89f0655bd6071261e0ebd3 data/c/tags/item/foods/berry.json
+8f7c0ef218710e60290d8d7964f0f0599e792877 data/c/tags/item/foods.json
+a53180342b48e56a210b567d045ca910767f2ebb data/c/tags/item/foods/berry.json
 747e752a3e4621e7200c41e7206040978f2380e9 data/c/tags/item/foods/cooked_meat.json
 a9956ad8e4792ffb57c8825a50c8715ad893ba0b data/c/tags/item/foods/edible_when_placed.json
+779c9a84c1c3554977a02df72280dcd7d81031b8 data/c/tags/item/foods/jerky.json
 42afac82c004061587d5b1ae20c2e66c0d399c8c data/c/tags/item/foods/raw_meat.json
 c2ff4ca98832e35ed824828949998129f1e05f15 data/c/tags/item/foods/soup.json
 bdd0576fc21bdaef37e030e39e717039d885ad56 data/c/tags/item/gems.json
@@ -20,19 +22,21 @@ bed43612fb08f85dd3dc7dbc5a4a871f7440b9d7 data/c/tags/item/ingots/ironwood.json
 7ae35dbf17ae8b58c9b692d0af6ee31961282467 data/c/tags/item/ingots/wrought_iron.json
 d6057311598b61ea8d097a01a73d1e48e960285c data/c/tags/item/mushrooms.json
 066e2fc42c34ca191dfa9e388b2ff46cbaa16fff data/c/tags/item/music_discs.json
-75175feaa56fc9efd7843260e55c7849efc44e76 data/c/tags/item/nuggets.json
-75175feaa56fc9efd7843260e55c7849efc44e76 data/c/tags/item/nuggets/copper.json
+60986fd7388ffd914d3258ea9f0f78e1d44d3cbc data/c/tags/item/nuggets.json
+4bf87ea819d4a66671ca773b904ec5186a581010 data/c/tags/item/nuggets/copper.json
 886e5e1db1abef8583882d996f8600275f839c37 data/c/tags/item/paper.json
 1b1e724c7125d97aba3327a044b945a2e3189e29 data/c/tags/item/raw_materials.json
 2973f905270dbbc53a2d666941d72485a9e85946 data/c/tags/item/raw_materials/ironwood.json
 4148b1147e82840f7df067661493919bf23a189c data/c/tags/item/raw_materials/knightmetal.json
 d2e681a14efc494b83a43b07b35d26dad2fff850 data/c/tags/item/ropes.json
+6e6210d00b0671be154425e43be74b7c659180d7 data/c/tags/item/slime_balls.json
 e31cfd841db5296d9df27b154f3e502b3c2a0a35 data/c/tags/item/storage_blocks.json
 894142a18566c008a63daa05efba2dde1ef6eb26 data/c/tags/item/storage_blocks/arctic_fur.json
 bb31db15f2b155aafc5bc956c01454bb27f14f72 data/c/tags/item/storage_blocks/carminite.json
 c15f20a0c7467da527d9bde3456b9eb9e6a86021 data/c/tags/item/storage_blocks/fiery.json
 b1bdb774a7cf90e5cfbf8d045a3ccca943b8e073 data/c/tags/item/storage_blocks/ironwood.json
 e1e1daa9f0fa727681cf4eb0a0a2cbde40e6708d data/c/tags/item/storage_blocks/knightmetal.json
+eb02dad5585025bae46b1a33a10ef57f1c33b78f data/c/tags/item/storage_blocks/slime.json
 34bb5d122fd15f6d868a5ff3cfe8ac8eafc6e892 data/c/tags/item/storage_blocks/steeleaf.json
 2973abf7fe5598a763a9738ca24c06f80b1eb5b1 data/c/tags/item/tools/bow.json
 1b205b8add451aa431d3db9121828f233c2cbad2 data/c/tags/item/tools/shield.json

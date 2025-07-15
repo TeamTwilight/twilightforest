@@ -818,6 +818,20 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			TFBlocks.TIME_DRYING_RACK.get(), TFBlocks.TRANSFORMATION_DRYING_RACK.get(),
 			TFBlocks.MINING_DRYING_RACK.get(), TFBlocks.SORTING_DRYING_RACK.get()
 		);
+
+		this.tag(Tags.Blocks.STRIPPED_LOGS).add(
+			TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.get(), TFBlocks.STRIPPED_CANOPY_LOG.get(),
+			TFBlocks.STRIPPED_MANGROVE_LOG.get(), TFBlocks.STRIPPED_DARK_LOG.get(),
+			TFBlocks.STRIPPED_TIME_LOG.get(), TFBlocks.STRIPPED_TRANSFORMATION_LOG.get(),
+			TFBlocks.STRIPPED_MINING_LOG.get(), TFBlocks.STRIPPED_SORTING_LOG.get());
+
+		this.tag(Tags.Blocks.STRIPPED_WOODS).add(
+			TFBlocks.STRIPPED_TWILIGHT_OAK_WOOD.get(), TFBlocks.STRIPPED_CANOPY_WOOD.get(),
+			TFBlocks.STRIPPED_MANGROVE_WOOD.get(), TFBlocks.STRIPPED_DARK_WOOD.get(),
+			TFBlocks.STRIPPED_TIME_WOOD.get(), TFBlocks.STRIPPED_TRANSFORMATION_WOOD.get(),
+			TFBlocks.STRIPPED_MINING_WOOD.get(), TFBlocks.STRIPPED_SORTING_WOOD.get());
+
+		this.tag(Tags.Blocks.STORAGE_BLOCKS_SLIME).add(TFBlocks.MAZE_SLIME_BLOCK.get());
 	}
 
 	public static TagKey<Block> create(String tagName) {
