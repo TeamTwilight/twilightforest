@@ -180,8 +180,16 @@ public class TFPlacedFeatures {
 		return ImmutableList.<PlacementModifier>builder().add(extra).add(filter, RarityFilter.onAverageOnceEvery(rarity), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP, BiomeFilter.biome());
 	}
 
+	private static ImmutableList.Builder<PlacementModifier> tfFeatureCheckArea(AvoidLandmarkModifier filter, int rarity, VerticalAnchor minAnchor, VerticalAnchor maxAnchor, PlacementModifier... extra) {
+		return ImmutableList.<PlacementModifier>builder().add(extra).add(filter, RarityFilter.onAverageOnceEvery(rarity), InSquarePlacement.spread(), HeightRangePlacement.uniform(minAnchor, maxAnchor));
+	}
+
 	private static ImmutableList.Builder<PlacementModifier> hollowLog(AvoidLandmarkModifier filter) {
 		return ImmutableList.<PlacementModifier>builder().add(RarityFilter.onAverageOnceEvery(40), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, filter, BiomeFilter.biome());
+	}
+
+	private static ImmutableList<PlacementModifier> oreberry(int rarity) {
+		return tfFeatureCheckArea(AvoidLandmarkModifier.checkUnderground(), rarity, VerticalAnchor.absolute(-10), VerticalAnchor.absolute(-8)).build();
 	}
 
 	public static ResourceKey<PlacedFeature> registerKey(String name) {
@@ -263,7 +271,7 @@ public class TFPlacedFeatures {
 		context.register(PLACED_DARK_RED_MUSHROOMS, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.DARK_RED_MUSHROOMS), ImmutableList.<PlacementModifier>builder().add(RarityFilter.onAverageOnceEvery(3), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_WORLD_SURFACE, BiomeFilter.biome()).build()));
 		context.register(PLACED_DARK_DEAD_BUSHES, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.DARK_DEAD_BUSHES), ImmutableList.<PlacementModifier>builder().add(RarityFilter.onAverageOnceEvery(3), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_WORLD_SURFACE, BiomeFilter.biome()).build()));
 
-		context.register(PLACED_ENCHANTED_FOREST_VINES, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.ENCHANTED_FOREST_VINES), ImmutableList.<PlacementModifier>builder().add(PlacementUtils.HEIGHTMAP).add(BiomeFilter.biome()).build()));
+		context.register(PLACED_ENCHANTED_FOREST_VINES, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.ENCHANTED_FOREST_VINES), ImmutableList.<PlacementModifier>builder().add(PlacementUtils.HEIGHTMAP).build()));
 
 		context.register(PLACED_LEGACY_COAL_ORE, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.LEGACY_COAL_ORE), ImmutableList.<PlacementModifier>builder().add(HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(127)), InSquarePlacement.spread(), CountPlacement.of(20), BiomeFilter.biome()).build()));
 		context.register(PLACED_LEGACY_IRON_ORE, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.LEGACY_IRON_ORE), ImmutableList.<PlacementModifier>builder().add(HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(63)), InSquarePlacement.spread(), CountPlacement.of(20), BiomeFilter.biome()).build()));

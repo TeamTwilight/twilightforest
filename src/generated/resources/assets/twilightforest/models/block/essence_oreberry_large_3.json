@@ -27,6 +27,10 @@
         6.008,
         0
       ],
+      "neoforge_data": {
+        "block_light": 3,
+        "sky_light": 3
+      },
       "to": [
         16,
         16,

@@ -1,4 +1,4 @@
-// 1.21.1	2025-07-08T02:44:22.035557595	Twilight Forest Block Tags
+// 1.21.1	2025-07-16T18:14:33.727754747	Twilight Forest Block Tags
 9d529390443b5da5d71bd6e867c066632e1340b8 data/alexscaves/tags/block/ferromagnetic_blocks.json
 ddfcbead67bb9487c003af137a276963e5b20022 data/alexscaves/tags/block/gloomoth_light_sources.json
 c365018bd78f1335cd4508b5d74bc4500ae951bd data/alexscaves/tags/block/underzealot_light_sources.json
@@ -19,7 +19,10 @@ bb31db15f2b155aafc5bc956c01454bb27f14f72 data/c/tags/block/storage_blocks/carmin
 c15f20a0c7467da527d9bde3456b9eb9e6a86021 data/c/tags/block/storage_blocks/fiery.json
 b1bdb774a7cf90e5cfbf8d045a3ccca943b8e073 data/c/tags/block/storage_blocks/ironwood.json
 e1e1daa9f0fa727681cf4eb0a0a2cbde40e6708d data/c/tags/block/storage_blocks/knightmetal.json
+eb02dad5585025bae46b1a33a10ef57f1c33b78f data/c/tags/block/storage_blocks/slime.json
 34bb5d122fd15f6d868a5ff3cfe8ac8eafc6e892 data/c/tags/block/storage_blocks/steeleaf.json
+96e133a68b59752179daf0ace7f09c7aa6f86a6d data/c/tags/block/stripped_logs.json
+44805839a86579813bbaa5d7948e5adc4a4421a7 data/c/tags/block/stripped_woods.json
 27fc8e32e0e71b8dcbb82f0ada3b954d906256b6 data/farmersdelight/tags/block/compost_activators.json
 3c9240d12210edeb8e1ff96c47f8ed15bc265aa6 data/farmersdelight/tags/block/heat_sources.json
 0a52d65411c2027ae8e27da5af1fea4e9ef5f090 data/minecraft/tags/block/beacon_base_blocks.json
@@ -90,6 +93,7 @@ ecd0a9f97ab5b54a7c21ed4f6af6896d564ea5f0 data/twilightforest/tags/block/castle_b
 97652f431059f64ffc5747f498cdcf278ddd0555 data/twilightforest/tags/block/darkwood_logs.json
 8ed2ef0f9a24051c4d152d5d47721e79f790e2eb data/twilightforest/tags/block/deadrock.json
 7caa25870567b18269192c1592a69bdd8558c275 data/twilightforest/tags/block/druid_projectile_replaceable.json
+bb4b1a5f61f28bd55449672ed9cc8123141729fd data/twilightforest/tags/block/drying_racks.json
 db6195d77bd598771b111d12750ba39f41fe35c7 data/twilightforest/tags/block/fire_jet_fuel.json
 25aee6721c6ac17e92f2a9f5d0733f89a0a0489b data/twilightforest/tags/block/giants_spawnable_on.json
 e222b54e9f838dbf2e905bf0b137ed8b0c60b328 data/twilightforest/tags/block/hollow_logs.json

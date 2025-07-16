@@ -14,6 +14,14 @@
       }
     },
     {
+      "type": "twilightforest:no_structure",
+      "additional_clearance": 0,
+      "occupies_surface": false,
+      "occupies_underground": true,
+      "occupies_vegetation": false,
+      "structures_allowed": []
+    },
+    {
       "type": "minecraft:rarity_filter",
       "chance": 40
     },
@@ -23,14 +31,6 @@
     {
       "type": "minecraft:heightmap",
       "heightmap": "MOTION_BLOCKING"
-    },
-    {
-      "type": "twilightforest:no_structure",
-      "additional_clearance": 0,
-      "occupies_surface": false,
-      "occupies_underground": true,
-      "occupies_vegetation": false,
-      "structures_allowed": []
     },
     {
       "type": "minecraft:biome"
