@@ -376,6 +376,7 @@ public class SoundGenerator extends TFSoundProvider {
 		this.generateNewSoundWithSubtitle(TFSounds.PERFECT_DODGE, "random/travellers/perfect_dodge", 1, "Attack dodged");
 		this.generateNewSoundWithSubtitle(TFSounds.SIDE_STEP, "random/travellers/side_step", 1, "Side Step performed");
 		this.generateNewSoundWithSubtitle(TFSounds.SIDE_STEP_CHARGED, "random/travellers/side_step_ready", 1, "Side Step recharged");
+		this.generateExistingSoundWithSubtitle(TFSounds.SWAP_HOTBAR, SoundEvents.ARMOR_EQUIP_LEATHER.value(), "Belt rustles");
 
 		this.makeMusicDisc(TFSounds.MUSIC_DISC_RADIANCE, "radiance");
 		this.makeMusicDisc(TFSounds.MUSIC_DISC_STEPS, "steps");

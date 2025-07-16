@@ -15,6 +15,7 @@ import net.minecraft.world.item.component.ItemContainerContents;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.TFDataComponents;
+import twilightforest.init.TFSounds;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifiers;
 
 import java.util.Optional;
@@ -78,7 +79,7 @@ public class TravellersArmorBeltItem extends TravellersArmorItem {
 		}
 		legArmor.set(DataComponents.CONTAINER, ItemContainerContents.fromItems(hotbarStacks));
 		if (hasChanged)
-			player.level().playSound(null, player, SoundEvents.ARMOR_EQUIP_LEATHER.value(), SoundSource.PLAYERS, 1F, 1F);
+			player.level().playSound(null, player, TFSounds.SWAP_HOTBAR.get(), SoundSource.PLAYERS, 1F, 1F);
 	}
 
 	public static boolean hasSwapHotbar(ItemStack stack) {

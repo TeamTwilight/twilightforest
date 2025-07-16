@@ -2567,6 +2567,15 @@
     ],
     "subtitle": "subtitles.twilightforest.item.travellers_gear.side_step_ready"
   },
+  "item.twilightforest.travellers_gear.swap_hotbar": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "item.armor.equip_leather"
+      }
+    ],
+    "subtitle": "subtitles.twilightforest.item.travellers_gear.swap_hotbar"
+  },
   "item.twilightforest.travellers_goggles.zoom_in": {
     "sounds": [
       {
