@@ -67,6 +67,8 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 	public static final TagKey<Block> PLANTS_HANG_ON = create("plants_hang_on");
 	public static final TagKey<Block> OREBERRY_BUSHES_SURVIVE = create("oreberry_bushes_survive");
 	public static final TagKey<Block> OVERWORLD_NATURA_BUSHES_SURVIVE = create("overworld_natura_bushes_survive");
+	public static final TagKey<Block> OVERWORLD_NATURA_BUSHES_REPLACE = create("overworld_natura_bushes_replace");
+	public static final TagKey<Block> SNOWY_NATURA_BUSHES_SURVIVE = create("snowy_natura_bushes_survive");
 	public static final TagKey<Block> NETHER_NATURA_BUSHES_SURVIVE = create("nether_natura_bushes_survive");
 	public static final TagKey<Block> NETHER_NATURA_BUSHES_DIE = create("nether_natura_bushes_die");
 
@@ -251,7 +253,12 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			TFBlocks.FALLEN_LEAVES.get(),
 			TFBlocks.TORCHBERRY_PLANT.get(),
 			TFBlocks.ROOT_STRAND.get(),
-			TFBlocks.ROOT_BLOCK.get());
+			TFBlocks.ROOT_BLOCK.get(),
+			TFBlocks.RASPBERRY_BUSH.get(),
+			TFBlocks.BLUEBERRY_BUSH.get(),
+			TFBlocks.BLACKBERRY_BUSH.get(),
+			TFBlocks.MALOBERRY_BUSH.get()
+		);
 
 		this.tag(BlockTags.CLIMBABLE).add(TFBlocks.IRON_LADDER.get(), TFBlocks.ROPE.get(), TFBlocks.ROOT_STRAND.get()).addTag(HOLLOW_LOGS_CLIMBABLE);
 
@@ -416,6 +423,14 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 
 		this.tag(OVERWORLD_NATURA_BUSHES_SURVIVE)
 			.addTags(BlockTags.DIRT);
+		this.tag(OVERWORLD_NATURA_BUSHES_REPLACE)
+			.addTags(BlockTags.REPLACEABLE)
+			.addTags(BlockTags.FLOWERS)
+			.add(TFBlocks.MAYAPPLE.get());
+
+		this.tag(SNOWY_NATURA_BUSHES_SURVIVE)
+			.addTags(OVERWORLD_NATURA_BUSHES_SURVIVE)
+			.add(Blocks.SNOW_BLOCK);
 
 		this.tag(NETHER_NATURA_BUSHES_SURVIVE)
 			.addTags(Tags.Blocks.NETHERRACKS)

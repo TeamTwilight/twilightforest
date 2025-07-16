@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 import static twilightforest.TwilightForestMod.prefix;
 
@@ -920,37 +921,101 @@ public class BlockstateGenerator extends BlockModelBuilders {
 
 	private void registerBush(Block block, int blockLight, int skyLight) {
 		String blockName = name(block);
-		ModelFile smallBush = models().cubeAll(blockName + "_small", prefix("block/" + blockName))
-			.element().from(4, 0, 4).to(12, 8, 12)
-			.emissivity(blockLight, skyLight)
-			.allFaces((dir, b) -> b.texture("#all"))
-			.end().renderType(CUTOUT);
+		ResourceLocation baseTexture = prefix("block/" + blockName);
+		ResourceLocation ripeTexture = prefix("block/" + blockName + "_ripe");
+		ModelFile[][] BUSH_MODELS = new ModelFile[TFBushBlock.MAX_AGE + 1][SnowLoggable.MAX_SNOW_LAYERS + 1];
 
-		ModelFile mediumBush = models().cubeAll(blockName, prefix("block/" + blockName))
-			.element().from(2, 0, 2).to(14, 12, 14)
-			.emissivity(blockLight, skyLight)
-			.allFaces((dir, b) -> b.texture("#all"))
-			.end().renderType(CUTOUT);
+		for (int age = 0; age <= TFBushBlock.MAX_AGE; age++) {
+			ResourceLocation texture = age == 3 ? ripeTexture : baseTexture;
+			for (int snow = SnowLoggable.MIN_SNOW_LAYERS; snow <= SnowLoggable.MAX_SNOW_LAYERS; snow++) {
+				BUSH_MODELS[age][snow] = createBushModel(block, age, snow, texture, blockLight, skyLight);
+			}
+		}
 
-		ModelFile largeBush = models().cubeAll(blockName + "_large", prefix("block/" + blockName))
-			.element().from(0, 0, 0).to(16, 16, 16)
-			.emissivity(blockLight, skyLight)
-			.allFaces((dir, builder) -> builder.texture("#all"))
-			.end().renderType(CUTOUT);
-
-		ModelFile grownBush = models().cubeAll(blockName + "_grown", prefix("block/" + blockName + "_ripe"))
-			.element().from(0, 0, 0).to(16, 16, 16)
-			.emissivity(blockLight, skyLight)
-			.allFaces((dir, builder) -> builder.cullface(dir).tintindex(1).texture("#all"))
-			.end().renderType(CUTOUT);
-
-		getVariantBuilder(block).forAllStates(state -> switch (state.getValue(BlockStateProperties.AGE_3)) {
-			case 0 -> new ConfiguredModel[] { new ConfiguredModel(smallBush, 0, 0, false) };
-			case 1 -> new ConfiguredModel[] { new ConfiguredModel(mediumBush, 0, 0, false) };
-			case 2 -> new ConfiguredModel[] { new ConfiguredModel(largeBush, 0, 0, false) };
-			case 3 -> new ConfiguredModel[] { new ConfiguredModel(grownBush, 0, 0, false) };
-			default -> new ConfiguredModel[0];
+		getVariantBuilder(block).forAllStates(state -> {
+			int age = state.getValue(BlockStateProperties.AGE_3);
+			int snowLayers = state.getValue(SnowLoggable.SNOW_LAYERS);
+			return new ConfiguredModel[]{
+				new ConfiguredModel(BUSH_MODELS[age][snowLayers], 0, 0, false)
+			};
 		});
+	}
+
+
+	private ModelFile createBushModel(Block block, int age, int snowLayers, ResourceLocation texturePath, int blockLight, int skyLight) {
+		String baseName = name(block);
+		String modelName = baseName + getSuffix(age, snowLayers);
+		float snowHeight = 16F / SnowLoggable.MAX_SNOW_LAYERS * snowLayers;
+
+		ModelBuilder<BlockModelBuilder> builder = models().cubeAll(modelName, texturePath);
+		addBushElements(builder, age, snowHeight, blockLight, skyLight);
+
+		if (snowLayers > 0) {
+			builder.texture("snow", ResourceLocation.withDefaultNamespace("block/snow"));
+			addSnowElements(builder, age, snowHeight);
+		}
+
+		return builder.renderType(CUTOUT);
+	}
+
+	private void addBushElements(ModelBuilder<BlockModelBuilder> b, int age, float snowHeight, int blockLight, int skyLight) {
+		switch (age) {
+			case 0 -> addShrunkBox(b,  4,  0,  4, 12,  8, 12, snowHeight, blockLight, skyLight, (direction, faceBuilder) -> faceBuilder.texture("#all"));
+			case 1 -> addShrunkBox(b,  2,  0,  2, 14, 12, 14, snowHeight, blockLight, skyLight, (direction, faceBuilder) -> faceBuilder.texture("#all"));
+			case 2 -> addShrunkBox(b,  0,  0,  0, 16, 16, 16, snowHeight, blockLight, skyLight, (direction, faceBuilder) -> faceBuilder.texture("#all"));
+			case 3 -> addShrunkBox(b,  0,  0,  0, 16, 16, 16, snowHeight, blockLight, skyLight,
+				(direction, faceBuilder) -> faceBuilder.cullface(direction).tintindex(1).texture("#all"));
+			default -> throw new IllegalArgumentException("Age out of range: " + age);
+		}
+	}
+
+	private void addSnowElements(ModelBuilder<BlockModelBuilder> b, int age, float snowHeight) {
+		switch (age) {
+			case 0 -> addSnowCap(b, 4, 8, 4,12,10, 12);
+			case 1 -> addSnowCap(b, 2, 12, 2,14, 14, 14);
+		}
+		addSnowCover(b, snowHeight);
+	}
+
+	private void addShrunkBox(ModelBuilder<BlockModelBuilder> b,
+							  float x1, float y1, float z1,
+							  float x2, float y2, float z2,
+							  float snowHeight, int blockLight, int skyLight,
+							  BiConsumer<Direction, ModelBuilder<BlockModelBuilder>.ElementBuilder.FaceBuilder> faces) {
+		if (snowHeight > y2 - SnowLoggable.SNOW_Z_FIGHTING)
+			return;
+		b.element()
+			.from(x1, Math.max(y1, snowHeight + SnowLoggable.SNOW_Z_FIGHTING), z1)
+			.to(x2, y2, z2)
+			.allFaces(faces)
+			.emissivity(blockLight, skyLight)
+			.end();
+	}
+
+	private void addSnowCap(ModelBuilder<BlockModelBuilder> b, float x1, float y1, float z1, float x2, float y2, float z2) {
+		b.element()
+			.from(x1, y1, z1)
+			.to(x2, y2, z2)
+			.allFaces((d,f) -> f.texture("#snow"))
+			.end();
+	}
+
+	private void addSnowCover(ModelBuilder<BlockModelBuilder> b, float snowHeight) {
+		b.element()
+			.from(0, 0, 0)
+			.to(16, snowHeight, 16)
+			.allFaces((d,f) -> f.texture("#snow"))
+			.end();
+	}
+
+	private String getSuffix(int age, int snowLayer) {
+		return switch (age) {
+			case 0 -> "_small_" + snowLayer;
+			case 1 -> "_" + snowLayer;
+			case 2 -> "_large_" + snowLayer;
+			case 3 -> "_grown_" + snowLayer;
+			default -> throw new IllegalArgumentException("Age out of range: " + age);
+		};
 	}
 
 	private void registerPlantBlocks() {

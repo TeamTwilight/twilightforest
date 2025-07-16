@@ -214,18 +214,18 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlockModel(TFBlocks.CICADA_JAR.get(), prefix("item/mason_jar"));
 		generated(TFBlocks.MOSS_PATCH.getId().getPath(), prefix("block/patch/moss"));
 		generated(TFBlocks.MAYAPPLE.getId().getPath(), prefix("block/mayapple"));
-		toBlock(TFBlocks.IRON_OREBERRY.get());
-		toBlock(TFBlocks.GOLD_OREBERRY.get());
-		toBlock(TFBlocks.COPPER_OREBERRY.get());
-		toBlock(TFBlocks.ESSENCE_OREBERRY.get());
-		toBlock(TFBlocks.RASPBERRY_BUSH.get());
-		toBlock(TFBlocks.BLUEBERRY_BUSH.get());
-		toBlock(TFBlocks.BLACKBERRY_BUSH.get());
-		toBlock(TFBlocks.MALOBERRY_BUSH.get());
-		toBlock(TFBlocks.BLIGHTBERRY_BUSH.get());
-		toBlock(TFBlocks.DUSKBERRY_BUSH.get());
-		toBlock(TFBlocks.SKYBERRY_BUSH.get());
-		toBlock(TFBlocks.STINGBERRY_BUSH.get());
+		bushBlock(TFBlocks.IRON_OREBERRY.get());
+		bushBlock(TFBlocks.GOLD_OREBERRY.get());
+		bushBlock(TFBlocks.COPPER_OREBERRY.get());
+		bushBlock(TFBlocks.ESSENCE_OREBERRY.get());
+		bushBlock(TFBlocks.RASPBERRY_BUSH.get());
+		bushBlock(TFBlocks.BLUEBERRY_BUSH.get());
+		bushBlock(TFBlocks.BLACKBERRY_BUSH.get());
+		bushBlock(TFBlocks.MALOBERRY_BUSH.get());
+		bushBlock(TFBlocks.BLIGHTBERRY_BUSH.get());
+		bushBlock(TFBlocks.DUSKBERRY_BUSH.get());
+		bushBlock(TFBlocks.SKYBERRY_BUSH.get());
+		bushBlock(TFBlocks.STINGBERRY_BUSH.get());
 		generated(TFBlocks.CLOVER_PATCH.getId().getPath(), prefix("block/patch/clover"));
 		generated(TFBlocks.FIDDLEHEAD.getId().getPath(), prefix("block/fiddlehead"));
 		generated(TFBlocks.MUSHGLOOM.getId().getPath(), prefix("block/mushgloom"), prefix("block/mushgloom_head"));
@@ -911,6 +911,10 @@ public class ItemModelGenerator extends ItemModelProvider {
 
 	private void toBlock(Block b) {
 		toBlockModel(b, BuiltInRegistries.BLOCK.getKey(b).getPath());
+	}
+
+	private void bushBlock(Block b) {
+		toBlockModel(b, BuiltInRegistries.BLOCK.getKey(b).getPath() + "_0");
 	}
 
 	private void woodBlock(Block b, String variant) {

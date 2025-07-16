@@ -63,6 +63,11 @@ public class TFPlacedFeatures {
 	public static final ResourceKey<PlacedFeature> PLACED_GOLD_OREBERRIES_ENCHANTED_FOREST = registerKey("gold_oreberries_enchanted_forest");
 	public static final ResourceKey<PlacedFeature> PLACED_COPPER_OREBERRIES_ENCHANTED_FOREST = registerKey("copper_oreberries_enchanted_forest");
 	public static final ResourceKey<PlacedFeature> PLACED_ESSENCE_OREBERRIES_ENCHANTED_FOREST = registerKey("essence_oreberries_enchanted_forest");
+	public static final ResourceKey<PlacedFeature> PLACED_RASPBERRY_BUSHES = registerKey("raspberry_bushes");
+	public static final ResourceKey<PlacedFeature> PLACED_SWAMP_RASPBERRY_BUSHES = registerKey("swamp_raspberry_bushes");
+	public static final ResourceKey<PlacedFeature> PLACED_BLUEBERRY_BUSHES = registerKey("blueberry_bushes");
+	public static final ResourceKey<PlacedFeature> PLACED_BLACKBERRY_BUSHES = registerKey("blackberry_bushes");
+	public static final ResourceKey<PlacedFeature> PLACED_MALOBERRY_BUSHES = registerKey("maloberry_bushes");
 	public static final ResourceKey<PlacedFeature> PLACED_PUMPKIN_LAMPPOST = registerKey("pumpkin_lamppost");
 	public static final ResourceKey<PlacedFeature> PLACED_SMOKER = registerKey("smoker");
 	public static final ResourceKey<PlacedFeature> PLACED_STONE_CIRCLE = registerKey("stone_circle");
@@ -175,16 +180,8 @@ public class TFPlacedFeatures {
 		return ImmutableList.<PlacementModifier>builder().add(extra).add(filter, RarityFilter.onAverageOnceEvery(rarity), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP, BiomeFilter.biome());
 	}
 
-	private static ImmutableList.Builder<PlacementModifier> tfFeatureCheckArea(AvoidLandmarkModifier filter, int rarity, VerticalAnchor minAnchor, VerticalAnchor maxAnchor, PlacementModifier... extra) {
-		return ImmutableList.<PlacementModifier>builder().add(extra).add(filter, RarityFilter.onAverageOnceEvery(rarity), InSquarePlacement.spread(), HeightRangePlacement.uniform(minAnchor, maxAnchor));
-	}
-
 	private static ImmutableList.Builder<PlacementModifier> hollowLog(AvoidLandmarkModifier filter) {
 		return ImmutableList.<PlacementModifier>builder().add(RarityFilter.onAverageOnceEvery(40), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, filter, BiomeFilter.biome());
-	}
-
-	private static ImmutableList<PlacementModifier> oreberry(int rarity) {
-		return tfFeatureCheckArea(AvoidLandmarkModifier.checkUnderground(), rarity, VerticalAnchor.absolute(-10), VerticalAnchor.absolute(-8)).add(BiomeFilter.biome()).build();
 	}
 
 	public static ResourceKey<PlacedFeature> registerKey(String name) {
@@ -233,6 +230,11 @@ public class TFPlacedFeatures {
 		context.register(PLACED_COPPER_OREBERRIES_ENCHANTED_FOREST, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.COPPER_OREBERRIES), oreberry(5)));
 		context.register(PLACED_ESSENCE_OREBERRIES_ENCHANTED_FOREST, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.ESSENCE_OREBERRIES), oreberry(5)));
 
+		context.register(PLACED_RASPBERRY_BUSHES, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.RASPBERRY_BUSHES), tfFeatureCheckArea(AvoidLandmarkModifier.checkSurface(), 50, PlacementUtils.HEIGHTMAP_TOP_SOLID, avoidLichTower).build()));
+		context.register(PLACED_SWAMP_RASPBERRY_BUSHES, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.RASPBERRY_BUSHES), tfFeatureCheckArea(AvoidLandmarkModifier.checkSurface(), 200, PlacementUtils.HEIGHTMAP_TOP_SOLID, avoidLichTower).build()));
+		context.register(PLACED_BLUEBERRY_BUSHES, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.BLUEBERRY_BUSHES), tfFeatureCheckArea(AvoidLandmarkModifier.checkSurface(), 50, PlacementUtils.HEIGHTMAP_TOP_SOLID, avoidLichTower).build()));
+		context.register(PLACED_BLACKBERRY_BUSHES, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.BLACKBERRY_BUSHES), tfFeatureCheckArea(AvoidLandmarkModifier.checkSurface(), 50, PlacementUtils.HEIGHTMAP_TOP_SOLID, avoidLichTower).build()));
+		context.register(PLACED_MALOBERRY_BUSHES, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.MALOBERRY_BUSHES), tfFeatureCheckArea(AvoidLandmarkModifier.checkSurface(), 25, PlacementUtils.HEIGHTMAP_TOP_SOLID, avoidLichTower).build()));
 		context.register(PLACED_PUMPKIN_LAMPPOST, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.PUMPKIN_LAMPPOST), tfFeatureCheckArea(AvoidLandmarkModifier.checkSurface(), 10).build()));
 		context.register(PLACED_SMOKER, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.SMOKER), ImmutableList.<PlacementModifier>builder().add(PlacementUtils.HEIGHTMAP_WORLD_SURFACE, InSquarePlacement.spread(), BiomeFilter.biome()).build()));
 		context.register(PLACED_STONE_CIRCLE, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.STONE_CIRCLE), tfFeatureCheckArea(AvoidLandmarkModifier.checkSurface(), 105).build()));

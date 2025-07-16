@@ -1,0 +1,12 @@
+{
+  "type": "twilightforest:natura_bush",
+  "config": {
+    "state": {
+      "Name": "twilightforest:blackberry_bush",
+      "Properties": {
+        "age": "0",
+        "layers": "0"
+      }
+    }
+  }
+}

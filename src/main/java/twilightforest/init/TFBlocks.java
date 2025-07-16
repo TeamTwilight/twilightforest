@@ -17,6 +17,7 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
+import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.enums.BlockLoggingEnum;
 import twilightforest.enums.BossVariant;
 import twilightforest.enums.FireJetVariant;
@@ -74,7 +75,7 @@ public class TFBlocks {
 	public static final DeferredBlock<Block> RASPBERRY_BUSH = register("raspberry_bush", () -> new NaturaBushBlock(TFItems.RASPBERRY));
 	public static final DeferredBlock<Block> BLUEBERRY_BUSH = register("blueberry_bush", () -> new NaturaBushBlock(TFItems.BLUEBERRY));
 	public static final DeferredBlock<Block> BLACKBERRY_BUSH = register("blackberry_bush", () -> new NaturaBushBlock(TFItems.BLACKBERRY));
-	public static final DeferredBlock<Block> MALOBERRY_BUSH = register("maloberry_bush", () -> new NaturaBushBlock(TFItems.MALOBERRY));
+	public static final DeferredBlock<Block> MALOBERRY_BUSH = register("maloberry_bush", () -> new NaturaBushBlock(TFItems.MALOBERRY, BlockTagGenerator.SNOWY_NATURA_BUSHES_SURVIVE));
 	public static final DeferredBlock<Block> BLIGHTBERRY_BUSH = register("blightberry_bush", () -> new NetherNaturaBushBlock(TFItems.BLIGHTBERRY));
 	public static final DeferredBlock<Block> DUSKBERRY_BUSH = register("duskberry_bush", () -> new NetherNaturaBushBlock(TFItems.DUSKBERRY));
 	public static final DeferredBlock<Block> SKYBERRY_BUSH = register("skyberry_bush", () -> new NetherNaturaBushBlock(TFItems.SKYBERRY));
