@@ -20,6 +20,8 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.AbstractSkullCandleBlock;
+import twilightforest.components.item.SkullCandles;
 import twilightforest.config.TFConfig;
 import twilightforest.entity.MagicPaintingVariant;
 
@@ -302,6 +304,20 @@ public class TFCreativeTabs {
 			output.accept(TFBlocks.BOLD_STONE_PILLAR);
 			output.accept(TFBlocks.TWISTED_STONE);
 			output.accept(TFBlocks.TWISTED_STONE_PILLAR);
+			output.accept(TFBlocks.TERRORCOTTA_LINES);
+			output.accept(TFBlocks.TERRORCOTTA_CURVES);
+			output.accept(TFBlocks.TERRORCOTTA_ARCS);
+			createDefaultSkullCandle(output, TFItems.SKELETON_SKULL_CANDLE);
+			createDefaultSkullCandle(output, TFItems.WITHER_SKELETON_SKULL_CANDLE);
+			createDefaultSkullCandle(output, TFItems.PLAYER_SKULL_CANDLE);
+			createDefaultSkullCandle(output, TFItems.ZOMBIE_SKULL_CANDLE);
+			createDefaultSkullCandle(output, TFItems.CREEPER_SKULL_CANDLE);
+			createDefaultSkullCandle(output, TFItems.PIGLIN_SKULL_CANDLE);
+			createCaskets(output);
+			output.accept(TFBlocks.SKULL_CHEST);
+			output.accept(TFBlocks.WROUGHT_IRON_FENCE);
+			output.accept(TFBlocks.CANDELABRA);
+			output.accept(TFBlocks.CORONATION_CARPET);
 
 			output.accept(TFItems.HUGE_WATER_LILY);
 			output.accept(TFItems.HUGE_LILY_PAD);
@@ -318,12 +334,14 @@ public class TFCreativeTabs {
 
 			output.accept(TFBlocks.SMOKER);
 			output.accept(TFBlocks.FIRE_JET);
+
 			output.accept(TFBlocks.UNDERBRICK);
 			output.accept(TFBlocks.CRACKED_UNDERBRICK);
 			output.accept(TFBlocks.MOSSY_UNDERBRICK);
 			output.accept(TFBlocks.UNDERBRICK_FLOOR);
 			output.accept(TFBlocks.STRONGHOLD_SHIELD);
 			output.accept(TFBlocks.TROPHY_PEDESTAL);
+
 			output.accept(TFBlocks.TOWERWOOD);
 			output.accept(TFBlocks.CRACKED_TOWERWOOD);
 			output.accept(TFBlocks.MOSSY_TOWERWOOD);
@@ -338,9 +356,11 @@ public class TFCreativeTabs {
 			output.accept(TFBlocks.CARMINITE_BUILDER);
 			output.accept(TFBlocks.ANTIBUILDER);
 			output.accept(TFBlocks.CARMINITE_REACTOR);
+
 			output.accept(TFBlocks.AURORA_BLOCK);
 			output.accept(TFBlocks.AURORA_PILLAR);
 			output.accept(TFBlocks.AURORA_SLAB);
+
 			output.accept(TFBlocks.UBEROUS_SOIL);
 			output.accept(TFBlocks.HUGE_STALK);
 			output.accept(TFBlocks.BEANSTALK_LEAVES);
@@ -358,6 +378,7 @@ public class TFCreativeTabs {
 			output.accept(TFBlocks.GIANT_LOG);
 			output.accept(TFBlocks.GIANT_LEAVES);
 			output.accept(TFBlocks.GIANT_OBSIDIAN);
+
 			output.accept(TFBlocks.BROWN_THORNS);
 			output.accept(TFBlocks.GREEN_THORNS);
 			output.accept(TFBlocks.BURNT_THORNS);
@@ -366,6 +387,7 @@ public class TFCreativeTabs {
 			output.accept(TFBlocks.DEADROCK);
 			output.accept(TFBlocks.CRACKED_DEADROCK);
 			output.accept(TFBlocks.WEATHERED_DEADROCK);
+
 			output.accept(TFBlocks.CASTLE_BRICK);
 			output.accept(TFBlocks.WORN_CASTLE_BRICK);
 			output.accept(TFBlocks.CRACKED_CASTLE_BRICK);
@@ -395,6 +417,7 @@ public class TFCreativeTabs {
 			output.accept(TFBlocks.GREEN_FORCE_FIELD);
 			output.accept(TFBlocks.BLUE_FORCE_FIELD);
 			output.accept(TFBlocks.VIOLET_FORCE_FIELD);
+
 			output.accept(TFBlocks.UNCRAFTING_TABLE);
 			output.accept(TFBlocks.IRON_LADDER);
 			output.accept(TFBlocks.ROPE);
@@ -631,6 +654,12 @@ public class TFCreativeTabs {
 	private static void createSpawnEggsAlphabetical(CreativeModeTab.Output output) {
 		Collection<? extends Item> eggs = TFEntities.SPAWN_EGGS.getEntries().stream().map(DeferredHolder::value).toList();
 		eggs.forEach(output::accept);
+	}
+
+	private static void createDefaultSkullCandle(CreativeModeTab.Output output, ItemLike item) {
+		ItemStack stack = new ItemStack(item);
+		stack.set(TFDataComponents.SKULL_CANDLES, new SkullCandles(AbstractSkullCandleBlock.CandleColors.PLAIN.getValue(), 1));
+		output.accept(stack);
 	}
 
 	private static void createCaskets(CreativeModeTab.Output output) {
