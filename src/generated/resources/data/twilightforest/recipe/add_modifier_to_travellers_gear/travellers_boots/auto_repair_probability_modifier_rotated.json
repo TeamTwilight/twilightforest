@@ -4,7 +4,8 @@
   "modifier": {
     "data_component_map": {
       "twilightforest:auto_repair_probability": 0.001
-    }
+    },
+    "name": "twilightforest:auto_repair"
   },
   "pattern": {
     "key": {

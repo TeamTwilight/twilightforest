@@ -20,6 +20,8 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import twilightforest.TwilightForestMod;
 import twilightforest.beans.Autowired;
+import twilightforest.client.model.item.TravellersGearItemModel;
+import twilightforest.data.custom.TravellersGearItemModelBuilder;
 import twilightforest.enums.extensions.TFItemDisplayContextEnumExtension;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
@@ -1053,7 +1055,9 @@ public class ItemModelGenerator extends ItemModelProvider {
 		for (DeferredItem<? extends Item> item : items) {
 			String id = item.getId().getPath();
 			ItemModelBuilder brokenModel = withExistingParent(id + "_broken", "item/generated").texture("layer0", prefix("item/" + id + "_broken"));
-			singleTex(item).override().predicate(ResourceLocation.withDefaultNamespace("broken"), 1).model(brokenModel).end();
+			withExistingParent(item.getId().getPath(), "neoforge:item/default").texture("base", prefix("item/" + item.getId().getPath()))
+				.customLoader(TravellersGearItemModelBuilder::begin).end()
+				.override().predicate(ResourceLocation.withDefaultNamespace("broken"), 1).model(brokenModel).end();
 		}
 	}
 

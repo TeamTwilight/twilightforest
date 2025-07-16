@@ -17,14 +17,16 @@ import org.apache.commons.lang3.StringUtils;
 public class TravellersComponentModifier implements InsertableTravellersModifier {
 	protected final TypedDataComponent<?> typedDataComponent;
 	protected final String tooltipTranslationKey;
+	protected final ResourceLocation name;
 
-	private TravellersComponentModifier(TypedDataComponent<?> typedDataComponent) {
+	private TravellersComponentModifier(ResourceLocation name, TypedDataComponent<?> typedDataComponent) {
 		this.typedDataComponent = typedDataComponent;
-		this.tooltipTranslationKey = "travellers_gear.modifier." + StringUtils.substringAfterLast(typedDataComponent.type().toString(), ':');
+		this.name = name;
+		this.tooltipTranslationKey = "travellers_gear.modifier." + name.toString().replace(":", ".");
 	}
 
-	public <T> TravellersComponentModifier(DeferredHolder<DataComponentType<?>, DataComponentType<T>> dataComponent, T value) {
-		this(new TypedDataComponent<>(dataComponent.get(), value));
+	public <T> TravellersComponentModifier(ResourceLocation name, DeferredHolder<DataComponentType<?>, DataComponentType<T>> dataComponent, T value) {
+		this(name, new TypedDataComponent<>(dataComponent.get(), value));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -48,30 +50,35 @@ public class TravellersComponentModifier implements InsertableTravellersModifier
 		return tooltipTranslationKey;
 	}
 
+	@Override
+	public ResourceLocation getName() {
+		return name;
+	}
+
 	public ResourceLocation getDataComponentTypeId() {
 		return ResourceLocation.parse(Util.getRegisteredName(BuiltInRegistries.DATA_COMPONENT_TYPE, this.typedDataComponent.type()));
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(typedDataComponent);
+		return Objects.hashCode(name, typedDataComponent);
 	}
 
 	@Override
 	public boolean equals(Object o) {
-		if (o instanceof TravellersComponentModifier travellersGearComponentModifier)
-			return travellersGearComponentModifier.typedDataComponent.equals(typedDataComponent);
+		if (o instanceof TravellersComponentModifier modifier)
+			return modifier.name.equals(name) && modifier.typedDataComponent.equals(typedDataComponent);
 		return false;
 	}
 
 	@SuppressWarnings("unchecked")
 	public static final MapCodec<TravellersComponentModifier> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-		DataComponentMap.CODEC
-			.fieldOf("data_component_map").forGetter(o -> DataComponentMap.builder().set((DataComponentType<Object>) o.typedDataComponent.type(), o.typedDataComponent.value()).build())
-	).apply(instance, (map) -> {
+		ResourceLocation.CODEC.fieldOf("name").forGetter(o -> o.name),
+		DataComponentMap.CODEC.fieldOf("data_component_map").forGetter(o -> DataComponentMap.builder().set((DataComponentType<Object>) o.typedDataComponent.type(), o.typedDataComponent.value()).build())
+	).apply(instance, (location, map) -> {
 		if (map.size() != 1)
 			throw new IllegalArgumentException("Expected exactly one entry in this data component map");
 		TypedDataComponent<?> dataComponent = map.stream().findFirst().orElseThrow();
-		return new TravellersComponentModifier(dataComponent);
+		return new TravellersComponentModifier(location, dataComponent);
 	}));
 }

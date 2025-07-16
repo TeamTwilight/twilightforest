@@ -1,5 +1,6 @@
 package twilightforest.item.travellers_gear.modifiers;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.neoforged.neoforge.event.ItemAttributeModifierEvent;
@@ -12,10 +13,13 @@ public class TravellersEntryModifier implements TravellersModifier {
 	protected final ItemAttributeModifiers.Entry activeModifier;
 	protected final ItemAttributeModifiers.Entry deactivatedModifier;
 	protected final String tooltipTranslationKey;
-	public TravellersEntryModifier(ItemAttributeModifiers.Entry activeModifier, ItemAttributeModifiers.Entry deactivatedModifier) {
+	protected final ResourceLocation name;
+
+	public TravellersEntryModifier(ResourceLocation name, ItemAttributeModifiers.Entry activeModifier, ItemAttributeModifiers.Entry deactivatedModifier) {
 		this.activeModifier = activeModifier;
 		this.deactivatedModifier = deactivatedModifier;
-		this.tooltipTranslationKey = "travellers_gear.ability." + StringUtils.substringAfterLast(this.activeModifier.modifier().id().toString(), ':');
+		this.name = name;
+		this.tooltipTranslationKey = "travellers_gear.ability." + name.toString().replace(":", ".");
 	}
 
 	@Override
@@ -28,6 +32,11 @@ public class TravellersEntryModifier implements TravellersModifier {
 	@Override
 	public String getTooltipTranslationKey() {
 		return tooltipTranslationKey;
+	}
+
+	@Override
+	public ResourceLocation getName() {
+		return name;
 	}
 
 	public void activate(ItemAttributeModifierEvent event) {

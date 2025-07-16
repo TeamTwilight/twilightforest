@@ -56,6 +56,7 @@ import twilightforest.client.model.block.giantblock.GiantBlockModelLoader;
 import twilightforest.client.model.block.leaves.BakedLeavesModel;
 import twilightforest.client.model.block.patch.PatchModelLoader;
 import twilightforest.client.model.entity.*;
+import twilightforest.client.model.item.TravellersGearItemModel;
 import twilightforest.client.model.item.TrollsteinnModel;
 import twilightforest.client.particle.*;
 import twilightforest.client.renderer.TFSkyRenderer;
@@ -120,6 +121,7 @@ public class RegistrationEvents {
 		event.register(TwilightForestMod.prefix("connected_texture_block"), ConnectedTextureModelLoader.INSTANCE);
 		event.register(TwilightForestMod.prefix("noise_varying"), NoiseVaryingModelLoader.INSTANCE);
 		event.register(TwilightForestMod.prefix("royal_rags"), RoyalRagsModelLoader.INSTANCE);
+		event.register(TwilightForestMod.prefix("travellers_gear"), TravellersGearItemModel.Loader.INSTANCE);
 	}
 
 	private static void bakeCustomModels(ModelEvent.ModifyBakingResult event) {
@@ -448,7 +450,7 @@ public class RegistrationEvents {
 		event.registerLayerDefinition(TFModelLayers.FIERY_ARMOR_OUTER, () -> LayerDefinition.create(FieryArmorModel.createMesh(LayerDefinitions.OUTER_ARMOR_DEFORMATION, 0.0F), 64, 32));
 		event.registerLayerDefinition(TFModelLayers.TRAVELLERS_ARMOR_HELMET, () -> LayerDefinition.create(HumanoidModel.createMesh(LayerDefinitions.OUTER_ARMOR_DEFORMATION, 0.0F), 64, 32));
 		event.registerLayerDefinition(TFModelLayers.TRAVELLERS_ARMOR_CHEST_GLOVES, () -> LayerDefinition.create(HumanoidModel.createMesh(new CubeDeformation(0.295F), 0.0F), 64, 32));  // TODO: reduce to 0.25F (+ dx?) without z-fighting in the player's inventory view
-		event.registerLayerDefinition(TFModelLayers.TRAVELLERS_ARMOR_LEGGINGS, () -> TravellersLeggingsModel.createLayer(0.25F));
+		event.registerLayerDefinition(TFModelLayers.TRAVELLERS_ARMOR_LEGGINGS, () -> TravellersWingsModel.createLayer(0.25F));
 		event.registerLayerDefinition(TFModelLayers.TRAVELLERS_ARMOR_BOOTS, () -> LayerDefinition.create(TravellersBootsModel.addPieces(new CubeDeformation(0.5F)), 64, 32));
 		event.registerLayerDefinition(TFModelLayers.KNIGHTMETAL_ARMOR_INNER, () -> LayerDefinition.create(KnightmetalArmorModel.addPieces(LayerDefinitions.INNER_ARMOR_DEFORMATION), 64, 32));
 		event.registerLayerDefinition(TFModelLayers.KNIGHTMETAL_ARMOR_OUTER, () -> LayerDefinition.create(KnightmetalArmorModel.addPieces(LayerDefinitions.OUTER_ARMOR_DEFORMATION), 64, 32));

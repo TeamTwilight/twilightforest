@@ -1,5 +1,6 @@
 {
-  "parent": "minecraft:item/generated",
+  "parent": "neoforge:item/default",
+  "loader": "twilightforest:travellers_gear",
   "overrides": [
     {
       "model": "twilightforest:item/travellers_chest_broken",
@@ -9,6 +10,6 @@
     }
   ],
   "textures": {
-    "layer0": "twilightforest:item/travellers_chest"
+    "base": "twilightforest:item/travellers_chest"
   }
 }
