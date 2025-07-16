@@ -147,8 +147,10 @@ public class ClientEvents {
 		if (!(event.getEntity() instanceof LocalPlayer localPlayer))
 			return;
 		if (Minecraft.getInstance().options.keyJump.consumeClick() && TravellersModifiers.DOUBLE_JUMP_MODIFIER.isActive(localPlayer.getItemBySlot(EquipmentSlot.LEGS))) {
-			if (TravellersArmorItem.performDoubleJump(localPlayer))
+			if (TravellersArmorItem.performDoubleJump(localPlayer)) {
+				localPlayer.getData(TFDataAttachments.TRAVELLERS_WINGS_ANIM).doubleJump = true;
 				localPlayer.connection.send(new PerformDoubleJumpPacket());
+			}
 		}
 	}
 

@@ -41,7 +41,7 @@ import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.TFArmorModel;
-import twilightforest.client.model.armor.TravellersLeggingsModel;
+import twilightforest.client.model.armor.TravellersWingsModel;
 import twilightforest.client.renderer.armor.TFArmorRenderer;
 import twilightforest.init.*;
 import twilightforest.item.travellers_gear.modifiers.*;
@@ -240,7 +240,7 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 		if (hasDoubleJump && !player.isFallFlying() && !player.onGround()) {
 			player.jumpFromGround();
 			player.fallDistance = 0;
-			player.playSound(TFSounds.DOUBLE_JUMP.get(), 2.0F, player.getVoicePitch());
+			player.playSound(TFSounds.DOUBLE_JUMP.get(), 1.5F, player.getVoicePitch());
 			player.setData(TFDataAttachments.HAS_DOUBLE_JUMP, false);
 			player.setData(TFDataAttachments.DOUBLE_JUMP_VALIDATOR, 0);
 			return true;
@@ -441,8 +441,8 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 					boolean hasWings = stack.has(TFDataComponents.TRAVELLERS_HAS_WINGS);
 					boolean hasBelt = stack.has(TFDataComponents.TRAVELLERS_HAS_BELT);
 
-					TravellersLeggingsModel.skipBelt(leggingsLayer, !hasBelt);
-					TravellersLeggingsModel.skipWings(leggingsLayer, !hasWings);
+					TravellersWingsModel.skipBelt(leggingsLayer, !hasBelt);
+					TravellersWingsModel.skipWings(leggingsLayer, !hasWings);
 
 					yield leggingsLayer;
 				}
@@ -451,13 +451,13 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 			};
 
 			if (slot == EquipmentSlot.LEGS)
-				return new TravellersLeggingsModel(root);
+				return new TravellersWingsModel(root);
 			return new TFArmorModel(root);
 		}
 
 		@Override
 		public void setupModelAnimations(@NotNull LivingEntity livingEntity, @NotNull ItemStack itemStack, @NotNull EquipmentSlot equipmentSlot, @NotNull Model model, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch) {
-			if (model instanceof TravellersLeggingsModel wingsModel)
+			if (model instanceof TravellersWingsModel wingsModel)
 				wingsModel.setupModelAnimations(livingEntity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 		}
 	}

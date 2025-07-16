@@ -36,6 +36,14 @@ public class TravellersArmorTickEventHandler {
 			player.setData(TFDataAttachments.DOUBLE_JUMP_VALIDATOR, 0);
 		}
 
+		//reset double jump wing anim if on the ground
+		if (event.getEntity().level().isClientSide()) {
+			if (player.getData(TFDataAttachments.TRAVELLERS_WINGS_ANIM).doubleJump && player.onGround()) {
+				player.getData(TFDataAttachments.TRAVELLERS_WINGS_ANIM).doubleJump = false;
+				player.getData(TFDataAttachments.TRAVELLERS_WINGS_ANIM).doubleJumpTime = 0;
+			}
+		}
+
 		TravellersArmorItem.travellersWingsSidestepCooldownSound(player);
 	}
 
