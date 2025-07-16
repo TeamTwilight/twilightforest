@@ -80,6 +80,10 @@ public final class TFConfiguredFeatures {
 	public static final ResourceKey<ConfiguredFeature<?, ?>> OUTSIDE_STALAGMITE = registerKey("outside_stalagmite");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> PLANT_ROOTS = registerKey("plant_roots");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> PUMPKIN_LAMPPOST = registerKey("pumpkin_lamppost");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> RASPBERRY_BUSHES = registerKey("raspberry_bushes");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> BLUEBERRY_BUSHES = registerKey("blueberry_bushes");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> BLACKBERRY_BUSHES = registerKey("blackberry_bushes");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> MALOBERRY_BUSHES = registerKey("maloberry_bushes");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> SMOKER = registerKey("smoker");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> STONE_CIRCLE = registerKey("stone_circle");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> THORNS = registerKey("thorns");
@@ -264,6 +268,10 @@ public final class TFConfiguredFeatures {
 		context.register(OUTSIDE_STALAGMITE, new ConfiguredFeature<>(TFFeatures.CAVE_STALACTITE.get(), NoneFeatureConfiguration.NONE));
 		context.register(PLANT_ROOTS, new ConfiguredFeature<>(TFFeatures.UNDERGROUND_PLANTS.get(), new BlockStateConfiguration(TFBlocks.ROOT_STRAND.get().defaultBlockState())));
 		context.register(PUMPKIN_LAMPPOST, new ConfiguredFeature<>(TFFeatures.LAMPPOSTS.get(), new BlockStateConfiguration(Blocks.JACK_O_LANTERN.defaultBlockState())));
+		context.register(RASPBERRY_BUSHES, new ConfiguredFeature<>(TFFeatures.NATURA_BUSH.get(), new BlockStateConfiguration(TFBlocks.RASPBERRY_BUSH.get().defaultBlockState())));
+		context.register(BLUEBERRY_BUSHES, new ConfiguredFeature<>(TFFeatures.NATURA_BUSH.get(), new BlockStateConfiguration(TFBlocks.BLUEBERRY_BUSH.get().defaultBlockState())));
+		context.register(BLACKBERRY_BUSHES, new ConfiguredFeature<>(TFFeatures.NATURA_BUSH.get(), new BlockStateConfiguration(TFBlocks.BLACKBERRY_BUSH.get().defaultBlockState())));
+		context.register(MALOBERRY_BUSHES, new ConfiguredFeature<>(TFFeatures.NATURA_BUSH.get(), new BlockStateConfiguration(TFBlocks.MALOBERRY_BUSH.get().defaultBlockState())));
 		context.register(SMOKER, new ConfiguredFeature<>(TFFeatures.FIRE_JET.get(), new BlockStateConfiguration(TFBlocks.SMOKER.get().defaultBlockState())));
 		context.register(STONE_CIRCLE, new ConfiguredFeature<>(TFFeatures.STONE_CIRCLE.get(), NoneFeatureConfiguration.NONE));
 		context.register(THORNS, new ConfiguredFeature<>(TFFeatures.THORNS.get(), new ThornsConfig(7, 3, 3, 50)));

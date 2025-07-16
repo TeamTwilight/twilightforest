@@ -2,7 +2,7 @@
   "parent": "twilightforest:block/horizontal_hollow_log",
   "render_type": "minecraft:cutout",
   "textures": {
-    "inner": "minecraft:block/stripped_birch_log",
+    "inner": "minecraft:block/snow",
     "side": "minecraft:block/birch_log",
     "top": "minecraft:block/birch_log_top"
   }

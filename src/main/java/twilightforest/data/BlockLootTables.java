@@ -205,18 +205,18 @@ public class BlockLootTables extends BlockLootSubProvider {
 		add(TFBlocks.FIREFLY_SPAWNER.get(), particleSpawner());
 		add(TFBlocks.MOSS_PATCH.get(), createShearsOnlyDrop(TFBlocks.MOSS_PATCH.get()));
 		add(TFBlocks.MAYAPPLE.get(), createShearsOnlyDrop(TFBlocks.MAYAPPLE.get()));
-		dropSelf(TFBlocks.IRON_OREBERRY.get());
-		dropSelf(TFBlocks.GOLD_OREBERRY.get());
-		dropSelf(TFBlocks.COPPER_OREBERRY.get());
-		dropSelf(TFBlocks.ESSENCE_OREBERRY.get());
-		dropSelf(TFBlocks.RASPBERRY_BUSH.get());
-		dropSelf(TFBlocks.BLUEBERRY_BUSH.get());
-		dropSelf(TFBlocks.BLACKBERRY_BUSH.get());
-		dropSelf(TFBlocks.MALOBERRY_BUSH.get());
-		dropSelf(TFBlocks.BLIGHTBERRY_BUSH.get());
-		dropSelf(TFBlocks.DUSKBERRY_BUSH.get());
-		dropSelf(TFBlocks.SKYBERRY_BUSH.get());
-		dropSelf(TFBlocks.STINGBERRY_BUSH.get());
+		addTFBush(TFBlocks.IRON_OREBERRY.get());
+		addTFBush(TFBlocks.GOLD_OREBERRY.get());
+		addTFBush(TFBlocks.COPPER_OREBERRY.get());
+		addTFBush(TFBlocks.ESSENCE_OREBERRY.get());
+		addTFBush(TFBlocks.RASPBERRY_BUSH.get());
+		addTFBush(TFBlocks.BLUEBERRY_BUSH.get());
+		addTFBush(TFBlocks.BLACKBERRY_BUSH.get());
+		addTFBush(TFBlocks.MALOBERRY_BUSH.get());
+		addTFBush(TFBlocks.BLIGHTBERRY_BUSH.get());
+		addTFBush(TFBlocks.DUSKBERRY_BUSH.get());
+		addTFBush(TFBlocks.SKYBERRY_BUSH.get());
+		addTFBush(TFBlocks.STINGBERRY_BUSH.get());
 		add(TFBlocks.CLOVER_PATCH.get(), createShearsOnlyDrop(TFBlocks.CLOVER_PATCH.get()));
 		add(TFBlocks.FIDDLEHEAD.get(), createShearsOnlyDrop(TFBlocks.FIDDLEHEAD.get()));
 		dropSelf(TFBlocks.MUSHGLOOM.get());
@@ -660,6 +660,28 @@ public class BlockLootTables extends BlockLootSubProvider {
 	private LootTable.Builder silkAndStick(Block block, ItemLike nonSilk, float... nonSilkFortune) {
 		HolderLookup.RegistryLookup<Enchantment> registrylookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
 		return createSilkTouchOrShearsDispatchTable(block, this.applyExplosionCondition(block, LootItem.lootTableItem(nonSilk.asItem())).when(BonusLevelTableCondition.bonusLevelFlatChance(registrylookup.getOrThrow(Enchantments.FORTUNE), nonSilkFortune))).withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).when((HAS_SHEARS.or(this.hasSilkTouch())).invert()).add(applyExplosionDecay(block, LootItem.lootTableItem(Items.STICK).apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F)))).when(BonusLevelTableCondition.bonusLevelFlatChance(registrylookup.getOrThrow(Enchantments.FORTUNE), 0.02F, 0.022222223F, 0.025F, 0.033333335F, 0.1F))));
+	}
+
+	private void addTFBush(Block block) {
+		if (!(block instanceof TFBushBlock bush))
+			throw new IllegalArgumentException(block + " is not a TFBushBlock");
+
+		add(block,
+			LootTable.lootTable()
+			.withPool(
+				LootPool.lootPool()
+					.when(
+						LootItemBlockStatePropertyCondition.hasBlockStateProperties(bush)
+							.setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(TFBushBlock.AGE, 3))
+					)
+					.add(LootItem.lootTableItem(bush.harvestItem.get()))
+					.apply(SetItemCountFunction.setCount(UniformGenerator.between(bush.minNumberOfBerries, bush.maxNumberOfBerries)))
+			)
+			.withPool(
+				LootPool.lootPool()
+					.add(LootItem.lootTableItem(bush.asItem()))
+			)
+		);
 	}
 
 	private static LootTable.Builder skullChest(Block block) {
