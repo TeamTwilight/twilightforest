@@ -45,7 +45,7 @@ public class TFFeatures {
 	public static final DeferredHolder<Feature<?>, Feature<TFTreeFeatureConfig>> MINERS_TREE = FEATURES.register("miners_tree", () -> new MiningTreeFeature(TFTreeFeatureConfig.codecTFTreeConfig));
 	public static final DeferredHolder<Feature<?>, Feature<NoneFeatureConfiguration>> MONOLITH = FEATURES.register("monolith", () -> new MonolithFeature(NoneFeatureConfiguration.CODEC));
 	public static final DeferredHolder<Feature<?>, Feature<DiskConfiguration>> MYCELIUM_BLOB = FEATURES.register("mycelium_blob", () -> new CheckAbovePatchFeature(DiskConfiguration.CODEC));
-	public static final DeferredHolder<Feature<?>, Feature<BlockStateConfiguration>> NATURA_BUSH = FEATURES.register("natura_bush", () -> new NaturaBushFeature(BlockStateConfiguration.CODEC));
+	public static final DeferredHolder<Feature<?>, Feature<BlockStateConfiguration>> BERRY_BUSH = FEATURES.register("berry_bush", () -> new BerryBushFeature(BlockStateConfiguration.CODEC));
 	public static final DeferredHolder<Feature<?>, Feature<BlockStateConfiguration>> UNDERGROUND_PLANTS = FEATURES.register("underground_plants", () -> new UndergroundPlantFeature(BlockStateConfiguration.CODEC));
 	public static final DeferredHolder<Feature<?>, Feature<BlockStateConfiguration>> OREBERRY_BUSHES = FEATURES.register("oreberry_bushes", () -> new UndergroundPlantFeature(BlockStateConfiguration.CODEC, 1));
 	public static final DeferredHolder<Feature<?>, Feature<BlockStateConfiguration>> TROLL_VINES = FEATURES.register("troll_vines", () -> new UndergroundPlantFeature(BlockStateConfiguration.CODEC));

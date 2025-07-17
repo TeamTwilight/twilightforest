@@ -13,7 +13,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
-import twilightforest.block.NaturaBushBlock;
+import twilightforest.block.BerryBushBlock;
 import twilightforest.block.SnowLoggable;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFBiomes;
@@ -22,10 +22,10 @@ import twilightforest.util.WorldUtil;
 
 import java.util.List;
 
-public class NaturaBushFeature extends Feature<BlockStateConfiguration> {
+public class BerryBushFeature extends Feature<BlockStateConfiguration> {
 	private static final float DEFAULT_RIPE_PROBABILITY = 0.2F;
 
-	public NaturaBushFeature(Codec<BlockStateConfiguration> codec) {
+	public BerryBushFeature(Codec<BlockStateConfiguration> codec) {
 		super(codec);
 	}
 
@@ -36,10 +36,10 @@ public class NaturaBushFeature extends Feature<BlockStateConfiguration> {
 		BlockState stateToPlace = context.config().state;
 		RandomSource random = context.random();
 
-		if (!(stateToPlace.getBlock() instanceof NaturaBushBlock naturaBushBlock))
+		if (!(stateToPlace.getBlock() instanceof BerryBushBlock berryBushBlock))
 			return false;
 
-		if (!level.getBlockState(pos.below()).is(naturaBushBlock.getSurviveBlockTag()))
+		if (!level.getBlockState(pos.below()).is(berryBushBlock.getSurviveBlockTag()))
 			return false;
 
 		boolean isInSnowyBiome = level.getBiome(pos).is(TFBiomes.SNOWY_FOREST);
@@ -103,12 +103,12 @@ public class NaturaBushFeature extends Feature<BlockStateConfiguration> {
 
 	protected void setBush(WorldGenLevel level, BlockPos pos, BlockState state, int age, boolean isInSnowyBiome) {
 		BlockState stateToReplace = level.getBlockState(pos);
-		if (!stateToReplace.is(BlockTagGenerator.OVERWORLD_NATURA_BUSHES_REPLACE) || stateToReplace.is(BlockTags.FEATURES_CANNOT_REPLACE) || !stateToReplace.getFluidState().isEmpty())
+		if (!stateToReplace.is(BlockTagGenerator.TF_BERRY_BUSHES_SURVIVE) || stateToReplace.is(BlockTags.FEATURES_CANNOT_REPLACE) || !stateToReplace.getFluidState().isEmpty())
 			return;
-		if (!(state.getBlock() instanceof NaturaBushBlock naturaBushBlock))
+		if (!(state.getBlock() instanceof BerryBushBlock berryBushBlock))
 			return;
 
-		if (!level.getBlockState(pos.below()).is(naturaBushBlock.getSurviveBlockTag()) && age < 2)
+		if (!level.getBlockState(pos.below()).is(berryBushBlock.getSurviveBlockTag()) && age < 2)
 			return;
 		BlockState stateToPlace = state.setValue(BlockStateProperties.AGE_3, age);
 		if (isInSnowyBiome && !level.getBlockState(pos.below()).is(state.getBlock()))

@@ -72,14 +72,14 @@ public class TFBlocks {
 	public static final DeferredBlock<Block> GOLD_OREBERRY = register("gold_oreberry", () -> new OreBerryBlock(TFItems.GOLD_BERRY));
 	public static final DeferredBlock<Block> COPPER_OREBERRY = register("copper_oreberry", () -> new OreBerryBlock(TFItems.COPPER_BERRY));
 	public static final DeferredBlock<Block> ESSENCE_OREBERRY = register("essence_oreberry", () -> new OreBerryBlock(TFItems.ESSENCE_BERRY, true));
-	public static final DeferredBlock<Block> RASPBERRY_BUSH = register("raspberry_bush", () -> new NaturaBushBlock(TFItems.RASPBERRY));
-	public static final DeferredBlock<Block> BLUEBERRY_BUSH = register("blueberry_bush", () -> new NaturaBushBlock(TFItems.BLUEBERRY));
-	public static final DeferredBlock<Block> BLACKBERRY_BUSH = register("blackberry_bush", () -> new NaturaBushBlock(TFItems.BLACKBERRY));
-	public static final DeferredBlock<Block> MALOBERRY_BUSH = register("maloberry_bush", () -> new NaturaBushBlock(TFItems.MALOBERRY, BlockTagGenerator.SNOWY_NATURA_BUSHES_SURVIVE));
-	public static final DeferredBlock<Block> BLIGHTBERRY_BUSH = register("blightberry_bush", () -> new NetherNaturaBushBlock(TFItems.BLIGHTBERRY));
-	public static final DeferredBlock<Block> DUSKBERRY_BUSH = register("duskberry_bush", () -> new NetherNaturaBushBlock(TFItems.DUSKBERRY));
-	public static final DeferredBlock<Block> SKYBERRY_BUSH = register("skyberry_bush", () -> new NetherNaturaBushBlock(TFItems.SKYBERRY));
-	public static final DeferredBlock<Block> STINGBERRY_BUSH = register("stingberry_bush", () -> new NetherNaturaBushBlock(TFItems.STINGBERRY));
+	public static final DeferredBlock<Block> RASPBERRY_BUSH = register("raspberry_bush", () -> new BerryBushBlock(TFItems.RASPBERRY));
+	public static final DeferredBlock<Block> BLUEBERRY_BUSH = register("blueberry_bush", () -> new BerryBushBlock(TFItems.BLUEBERRY));
+	public static final DeferredBlock<Block> BLACKBERRY_BUSH = register("blackberry_bush", () -> new BerryBushBlock(TFItems.BLACKBERRY));
+	public static final DeferredBlock<Block> MALOBERRY_BUSH = register("maloberry_bush", () -> new BerryBushBlock(TFItems.MALOBERRY, BlockTagGenerator.SNOWY_BERRY_BUSHES_SURVIVE));
+	public static final DeferredBlock<Block> BLIGHTBERRY_BUSH = register("blightberry_bush", () -> new DarkTowerBerryBushBlock(TFItems.BLIGHTBERRY));
+	public static final DeferredBlock<Block> DUSKBERRY_BUSH = register("duskberry_bush", () -> new DarkTowerBerryBushBlock(TFItems.DUSKBERRY));
+	public static final DeferredBlock<Block> SKYBERRY_BUSH = register("skyberry_bush", () -> new DarkTowerBerryBushBlock(TFItems.SKYBERRY));
+	public static final DeferredBlock<Block> STINGBERRY_BUSH = register("stingberry_bush", () -> new DarkTowerBerryBushBlock(TFItems.STINGBERRY));
 
 	//naga courtyard
 	public static final DeferredBlock<Block> NAGASTONE_HEAD = register("nagastone_head", () -> new TFHorizontalBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASEDRUM).mapColor(MapColor.STONE).requiresCorrectToolForDrops().sound(SoundType.STONE).strength(1.5F, 6.0F)));

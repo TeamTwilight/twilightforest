@@ -10,9 +10,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.registries.DeferredItem;
 import twilightforest.data.tags.BlockTagGenerator;
 
-public class NetherNaturaBushBlock extends NaturaBushBlock {
-	public NetherNaturaBushBlock(DeferredItem<Item> harvestItem) {
-		super(harvestItem, BlockTagGenerator.NETHER_NATURA_BUSHES_SURVIVE);
+public class DarkTowerBerryBushBlock extends BerryBushBlock {
+	public DarkTowerBerryBushBlock(DeferredItem<Item> harvestItem) {
+		super(harvestItem, BlockTagGenerator.DARK_TOWER_BERRY_BUSHES_SURVIVE);
 	}
 
 	// [VanillaCopy] CactusBlock with shouldDie instead of canSurvive
@@ -33,10 +33,10 @@ public class NetherNaturaBushBlock extends NaturaBushBlock {
 	}
 
 	protected boolean shouldDie(BlockState state, LevelAccessor level, BlockPos pos) {
-		return state.getBlock() instanceof NetherNaturaBushBlock netherNaturaBushBlock && netherNaturaBushBlock.shouldDie(level, pos);
+		return state.getBlock() instanceof DarkTowerBerryBushBlock darkTowerBerryBushBlock && darkTowerBerryBushBlock.shouldDie(level, pos);
 	}
 
 	protected boolean shouldDie(LevelAccessor level, BlockPos pos) {
-		return level.getBlockState(pos.below()).is(BlockTagGenerator.NETHER_NATURA_BUSHES_DIE);
+		return level.getBlockState(pos.below()).is(BlockTagGenerator.DARK_TOWER_BERRY_BUSHES_DIE);
 	}
 }

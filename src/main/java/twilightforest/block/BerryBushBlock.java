@@ -18,17 +18,17 @@ import twilightforest.data.tags.BlockTagGenerator;
 
 import java.util.stream.IntStream;
 
-public class NaturaBushBlock extends TFBushBlock implements BonemealableBlock {
+public class BerryBushBlock extends TFBushBlock implements BonemealableBlock {
 	private static final VoxelShape SMALL_BUSH_SHAPE = Block.box(4.0, 0.0, 4.0, 12.0, 8.0, 12.0);
 	private static final VoxelShape MEDIUM_BUSH_SHAPE = Block.box(2.0, 0.0, 2.0, 14.0, 12.0, 14.0);
 	private static final VoxelShape LARGE_BUSH_SHAPE = Block.box(0.0, 0.0, 0.0, 16.0, 16.0, 16.0);
 
-	public NaturaBushBlock(DeferredItem<Item> harvestItem, TagKey<Block> surviveBlockTag) {
+	public BerryBushBlock(DeferredItem<Item> harvestItem, TagKey<Block> surviveBlockTag) {
 		super(harvestItem, BlockBehaviour.Properties.of().sound(SoundType.GRASS), surviveBlockTag, SMALL_BUSH_SHAPE, MEDIUM_BUSH_SHAPE, LARGE_BUSH_SHAPE, 1, 1);
 	}
 
-	public NaturaBushBlock(DeferredItem<Item> harvestItem) {
-		this(harvestItem, BlockTagGenerator.OVERWORLD_NATURA_BUSHES_SURVIVE);
+	public BerryBushBlock(DeferredItem<Item> harvestItem) {
+		this(harvestItem, BlockTagGenerator.TF_BERRY_BUSHES_SURVIVE);
 	}
 
 	@Override

@@ -277,10 +277,10 @@ public final class TFConfiguredFeatures {
 		context.register(COPPER_OREBERRIES, new ConfiguredFeature<>(TFFeatures.OREBERRY_BUSHES.get(), new BlockStateConfiguration(TFBlocks.COPPER_OREBERRY.get().defaultBlockState().setValue(BlockStateProperties.AGE_3, 3))));
 		context.register(ESSENCE_OREBERRIES, new ConfiguredFeature<>(TFFeatures.OREBERRY_BUSHES.get(), new BlockStateConfiguration(TFBlocks.ESSENCE_OREBERRY.get().defaultBlockState().setValue(BlockStateProperties.AGE_3, 3))));
 		context.register(PUMPKIN_LAMPPOST, new ConfiguredFeature<>(TFFeatures.LAMPPOSTS.get(), new BlockStateConfiguration(Blocks.JACK_O_LANTERN.defaultBlockState())));
-		context.register(RASPBERRY_BUSHES, new ConfiguredFeature<>(TFFeatures.NATURA_BUSH.get(), new BlockStateConfiguration(TFBlocks.RASPBERRY_BUSH.get().defaultBlockState())));
-		context.register(BLUEBERRY_BUSHES, new ConfiguredFeature<>(TFFeatures.NATURA_BUSH.get(), new BlockStateConfiguration(TFBlocks.BLUEBERRY_BUSH.get().defaultBlockState())));
-		context.register(BLACKBERRY_BUSHES, new ConfiguredFeature<>(TFFeatures.NATURA_BUSH.get(), new BlockStateConfiguration(TFBlocks.BLACKBERRY_BUSH.get().defaultBlockState())));
-		context.register(MALOBERRY_BUSHES, new ConfiguredFeature<>(TFFeatures.NATURA_BUSH.get(), new BlockStateConfiguration(TFBlocks.MALOBERRY_BUSH.get().defaultBlockState())));
+		context.register(RASPBERRY_BUSHES, new ConfiguredFeature<>(TFFeatures.BERRY_BUSH.get(), new BlockStateConfiguration(TFBlocks.RASPBERRY_BUSH.get().defaultBlockState())));
+		context.register(BLUEBERRY_BUSHES, new ConfiguredFeature<>(TFFeatures.BERRY_BUSH.get(), new BlockStateConfiguration(TFBlocks.BLUEBERRY_BUSH.get().defaultBlockState())));
+		context.register(BLACKBERRY_BUSHES, new ConfiguredFeature<>(TFFeatures.BERRY_BUSH.get(), new BlockStateConfiguration(TFBlocks.BLACKBERRY_BUSH.get().defaultBlockState())));
+		context.register(MALOBERRY_BUSHES, new ConfiguredFeature<>(TFFeatures.BERRY_BUSH.get(), new BlockStateConfiguration(TFBlocks.MALOBERRY_BUSH.get().defaultBlockState())));
 		context.register(SMOKER, new ConfiguredFeature<>(TFFeatures.FIRE_JET.get(), new BlockStateConfiguration(TFBlocks.SMOKER.get().defaultBlockState())));
 		context.register(STONE_CIRCLE, new ConfiguredFeature<>(TFFeatures.STONE_CIRCLE.get(), NoneFeatureConfiguration.NONE));
 		context.register(THORNS, new ConfiguredFeature<>(TFFeatures.THORNS.get(), new ThornsConfig(7, 3, 3, 50)));
