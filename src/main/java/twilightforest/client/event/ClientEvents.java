@@ -146,7 +146,14 @@ public class ClientEvents {
 	public static void playerTravellersArmorEffects(PlayerTickEvent.Pre event) {
 		if (!(event.getEntity() instanceof LocalPlayer localPlayer))
 			return;
-		if (Minecraft.getInstance().options.keyJump.consumeClick() && TravellersModifiers.DOUBLE_JUMP_MODIFIER.isActive(localPlayer.getItemBySlot(EquipmentSlot.LEGS))) {
+		long lastJumpKeyPressTime = localPlayer.getData(TFDataAttachments.LAST_JUMP_KEY_PRESS_TIME);
+		long currentJumpKeyPressTime = localPlayer.level().getGameTime();
+		boolean holdsJumpKey = currentJumpKeyPressTime - lastJumpKeyPressTime <= 1;
+		boolean pressedKey = Minecraft.getInstance().options.keyJump.isDown();
+		if (pressedKey)
+			localPlayer.setData(TFDataAttachments.LAST_JUMP_KEY_PRESS_TIME, currentJumpKeyPressTime);
+
+		if (pressedKey && !holdsJumpKey && TravellersModifiers.DOUBLE_JUMP_MODIFIER.isActive(localPlayer.getItemBySlot(EquipmentSlot.LEGS))) {
 			if (TravellersArmorItem.performDoubleJump(localPlayer)) {
 				localPlayer.getData(TFDataAttachments.TRAVELLERS_WINGS_ANIM).doubleJump = true;
 				localPlayer.connection.send(new PerformDoubleJumpPacket());

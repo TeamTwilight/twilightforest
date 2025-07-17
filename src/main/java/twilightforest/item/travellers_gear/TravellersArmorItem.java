@@ -229,7 +229,7 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 	public static void performSidestep(Player player, boolean isLeftSidestep) {
 		float angle = player.getYRot();
 		double rot = isLeftSidestep ? -Math.PI / 2 : Math.PI / 2;
-		Vec3 dashDirection =new Vec3(-Math.sin(Math.toRadians(angle) + rot), 0, Math.cos(Math.toRadians(angle) + rot));
+		Vec3 dashDirection = new Vec3(-Math.sin(Math.toRadians(angle) + rot), 0, Math.cos(Math.toRadians(angle) + rot));
 		player.push(dashDirection.scale(1.6));  // 5 blocks
 		player.playSound(TFSounds.SIDE_STEP.get(), 1.0F, player.getVoicePitch());
 	}
