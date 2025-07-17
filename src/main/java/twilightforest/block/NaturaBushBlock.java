@@ -42,7 +42,7 @@ public class NaturaBushBlock extends TFBushBlock implements BonemealableBlock {
 
 	protected void tryGrowUpwards(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 		if (random.nextInt(3) == 0 && state.getValue(AGE) >= 2 && level.getBlockState(pos.above()).isAir())
-			level.setBlock(pos.above(), state.setValue(AGE, 0), Block.UPDATE_CLIENTS);
+			level.setBlock(pos.above(), state.getBlock().defaultBlockState(), Block.UPDATE_CLIENTS);
 	}
 
 	@Override
