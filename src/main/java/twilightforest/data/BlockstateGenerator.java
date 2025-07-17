@@ -17,6 +17,7 @@ import net.neoforged.neoforge.client.model.generators.loaders.CompositeModelBuil
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
 import twilightforest.client.model.block.aurorablock.NoiseVaryingModelBuilder;
@@ -43,6 +44,7 @@ import static twilightforest.TwilightForestMod.prefix;
 //make better helper methods and move them to BlockModelBuilders
 //finish datagenning blocks that arent done yet
 public class BlockstateGenerator extends BlockModelBuilders {
+	@Nullable
 	private static ModelFile[][] abstractBushStates;
 
 	public BlockstateGenerator(PackOutput output, ExistingFileHelper exFileHelper) {
@@ -1043,6 +1045,7 @@ public class BlockstateGenerator extends BlockModelBuilders {
 			.end();
 	}
 
+	@SuppressWarnings("ConstantValue")  // abstractBushStates can be null.
 	private ModelFile[][] getAbstractBushesStates() {
 		if (abstractBushStates == null) {
 			ResourceLocation defaultAbstractBushTexture = ResourceLocation.withDefaultNamespace("block/bedrock");
