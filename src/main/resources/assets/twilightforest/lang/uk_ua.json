@@ -754,7 +754,7 @@
   "config.twilightforest.optifine.tooltip": "Вимкнення екрана попередження коли встановлений Optifine.",
   "config.twilightforest.origin_dimension": "Походження виміру",
   "config.twilightforest.origin_dimension.tooltip": "Вимір, з якого ви завжди можете перейти до Сутінкового Лісу, а також вимір, у який ви повернетеся. Усталено— Верхній світ. (домен: regname).",
-  "config.twilightforest.parry_non_twilight": "Відбивання снарядів не з Сут. Ліс",
+  "config.twilightforest.parry_non_twilight": "Відбивання снарядів не з Сут. Лісу",
   "config.twilightforest.parry_non_twilight.tooltip": "Установіть «УВІМК.», щоб відбивати снаряди, відмінні від сутінкових.",
   "config.twilightforest.parry_window": "Вікно відбивання",
   "config.twilightforest.parry_window.tooltip": "Кількість позначок після підняття щита, що дозволяє відбивати снаряд. (1 такт = 1/20 секунди)",
