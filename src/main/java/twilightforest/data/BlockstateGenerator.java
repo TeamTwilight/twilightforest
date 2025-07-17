@@ -43,6 +43,8 @@ import static twilightforest.TwilightForestMod.prefix;
 //make better helper methods and move them to BlockModelBuilders
 //finish datagenning blocks that arent done yet
 public class BlockstateGenerator extends BlockModelBuilders {
+	private static ModelFile[][] abstractBushStates;
+
 	public BlockstateGenerator(PackOutput output, ExistingFileHelper exFileHelper) {
 		super(output, exFileHelper);
 	}
@@ -919,18 +921,14 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		registerBush(block, 0, 0);
 	}
 
+
 	private void registerBush(Block block, int blockLight, int skyLight) {
 		String blockName = name(block);
-		ResourceLocation baseTexture = prefix("block/" + blockName);
-		ResourceLocation ripeTexture = prefix("block/" + blockName + "_ripe");
-		ModelFile[][] BUSH_MODELS = new ModelFile[TFBushBlock.MAX_AGE + 1][SnowLoggable.MAX_SNOW_LAYERS + 1];
-
-		for (int age = 0; age <= TFBushBlock.MAX_AGE; age++) {
-			ResourceLocation texture = age == 3 ? ripeTexture : baseTexture;
-			for (int snow = SnowLoggable.MIN_SNOW_LAYERS; snow <= SnowLoggable.MAX_SNOW_LAYERS; snow++) {
-				BUSH_MODELS[age][snow] = createBushModel(block, age, snow, texture, blockLight, skyLight);
-			}
-		}
+		ModelFile[][] BUSH_MODELS;
+		if (blockLight == 0 && skyLight == 0)
+			BUSH_MODELS = createBushStatesWithoutEmissivity(blockName);
+		else
+			BUSH_MODELS = createBushStates(blockName, blockLight, skyLight);
 
 		getVariantBuilder(block).forAllStates(state -> {
 			int age = state.getValue(BlockStateProperties.AGE_3);
@@ -941,10 +939,47 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		});
 	}
 
+	private ModelFile[][] createBushStatesWithoutEmissivity(String blockName) {
+		ResourceLocation baseTexture = prefix("block/" + blockName);
+		ResourceLocation ripeTexture = prefix("block/" + blockName + "_ripe");
+		return createBushStatesWithoutEmissivity(blockName, baseTexture, ripeTexture);
+	}
 
-	private ModelFile createBushModel(Block block, int age, int snowLayers, ResourceLocation texturePath, int blockLight, int skyLight) {
-		String baseName = name(block);
-		String modelName = baseName + getSuffix(age, snowLayers);
+	private ModelFile[][] createBushStatesWithoutEmissivity(String blockName, ResourceLocation baseTexture, ResourceLocation ripeTexture) {
+		ModelFile[][] BUSH_MODELS = new ModelFile[TFBushBlock.MAX_AGE + 1][SnowLoggable.MAX_SNOW_LAYERS + 1];
+		for (int age = 0; age <= TFBushBlock.MAX_AGE; age++) {
+			ResourceLocation texture = age == 3 ? ripeTexture : baseTexture;
+			for (int snowLayers = SnowLoggable.MIN_SNOW_LAYERS; snowLayers <= SnowLoggable.MAX_SNOW_LAYERS; snowLayers++) {
+				BUSH_MODELS[age][snowLayers] = models()
+					.getBuilder("block/" + blockName + getSuffix(age, snowLayers))
+					.parent(getAbstractBushesStates()[age][snowLayers])
+					.texture("all",  texture);
+			}
+		}
+		return BUSH_MODELS;
+	}
+
+	private ModelFile[][] createBushStates(String blockName, int blockLight, int skyLight) {
+		ResourceLocation baseTexture = prefix("block/" + blockName);
+		ResourceLocation ripeTexture = prefix("block/" + blockName + "_ripe");
+		return createBushStates(blockName, blockLight, skyLight, baseTexture, ripeTexture);
+	}
+
+	private ModelFile[][] createBushStates(String blockName, int blockLight, int skyLight, ResourceLocation baseTexture, ResourceLocation ripeTexture) {
+		ModelFile[][] BUSH_MODELS = new ModelFile[TFBushBlock.MAX_AGE + 1][SnowLoggable.MAX_SNOW_LAYERS + 1];
+
+		for (int age = 0; age <= TFBushBlock.MAX_AGE; age++) {
+			ResourceLocation texture = age == 3 ? ripeTexture : baseTexture;
+			for (int snowLayers = SnowLoggable.MIN_SNOW_LAYERS; snowLayers <= SnowLoggable.MAX_SNOW_LAYERS; snowLayers++) {
+				BUSH_MODELS[age][snowLayers] = createBushModel(blockName, age, snowLayers, texture, blockLight, skyLight);
+			}
+		}
+		return BUSH_MODELS;
+	}
+
+
+	private ModelFile createBushModel(String bushName, int age, int snowLayers, ResourceLocation texturePath, int blockLight, int skyLight) {
+		String modelName = bushName + getSuffix(age, snowLayers);
 		float snowHeight = 16F / SnowLoggable.MAX_SNOW_LAYERS * snowLayers;
 
 		ModelBuilder<BlockModelBuilder> builder = models().cubeAll(modelName, texturePath);
@@ -1006,6 +1041,14 @@ public class BlockstateGenerator extends BlockModelBuilders {
 			.to(16, snowHeight, 16)
 			.allFaces((d,f) -> f.texture("#snow"))
 			.end();
+	}
+
+	private ModelFile[][] getAbstractBushesStates() {
+		if (abstractBushStates == null) {
+			ResourceLocation defaultAbstractBushTexture = ResourceLocation.withDefaultNamespace("block/bedrock");
+			abstractBushStates = createBushStates("abstract_bush", 0, 0, defaultAbstractBushTexture, defaultAbstractBushTexture);
+		}
+		return abstractBushStates;
 	}
 
 	private String getSuffix(int age, int snowLayer) {
