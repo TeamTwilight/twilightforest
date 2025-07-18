@@ -45,7 +45,7 @@ public interface SnowLoggable {
 			level.levelEvent(player, 2001, pos, Block.getId(Blocks.SNOW.defaultBlockState()));
 			level.setBlockAndUpdate(pos, blockToConvertTo != null ? blockToConvertTo : state.setValue(SNOW_LAYERS, 0));
 		} else {
-			level.levelEvent(player, 2001, pos, Block.getId(state));
+			level.levelEvent(player, 2001, pos, Block.getId(state.setValue(SNOW_LAYERS, 0)));
 			if (!player.isCreative())
 				Block.dropResources(state, level, pos, null, player, player.getMainHandItem());
 			level.setBlockAndUpdate(pos, Blocks.SNOW.defaultBlockState().setValue(SnowLayerBlock.LAYERS, state.getValue(SNOW_LAYERS)));

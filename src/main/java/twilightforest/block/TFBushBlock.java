@@ -10,10 +10,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -56,6 +59,16 @@ public abstract class TFBushBlock extends Block implements SnowLoggable {
 		this.minNumberOfBerries = minNumberOfBerries;
 		this.maxNumberOfBerries = maxNumberOfBerries;
 		this.registerDefaultState(this.stateDefinition.any().setValue(AGE, 0).setValue(SNOW_LAYERS, 0));
+	}
+
+	@Override
+	public @Nullable BlockState getStateForPlacement(BlockPlaceContext context) {
+		BlockState maybeSnow = context.getLevel().getBlockState(context.getClickedPos());
+		if (maybeSnow.is(Blocks.SNOW) && maybeSnow.getValue(SnowLayerBlock.LAYERS) == 1) {
+			return super.getStateForPlacement(context).setValue(SNOW_LAYERS, 1);
+		}
+
+		return super.getStateForPlacement(context);
 	}
 
 	@Override
@@ -112,6 +125,14 @@ public abstract class TFBushBlock extends Block implements SnowLoggable {
 		BlockState newState = state.setValue(SNOW_LAYERS, state.getValue(SNOW_LAYERS) + 1);
 		level.setBlock(pos, newState, Block.UPDATE_ALL | Block.UPDATE_KNOWN_SHAPE);
 		return ItemInteractionResult.SUCCESS;
+	}
+
+	@Override
+	protected void spawnDestroyParticles(Level level, Player player, BlockPos pos, BlockState state) {
+		if (!player.isSecondaryUseActive() && state.getValue(SNOW_LAYERS) > MIN_SNOW_LAYERS) {
+			return;
+		}
+		super.spawnDestroyParticles(level, player, pos, state);
 	}
 
 	@Override
