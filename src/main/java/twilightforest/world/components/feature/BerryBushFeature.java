@@ -103,7 +103,7 @@ public class BerryBushFeature extends Feature<BlockStateConfiguration> {
 
 	protected void setBush(WorldGenLevel level, BlockPos pos, BlockState state, int age, boolean isInSnowyBiome) {
 		BlockState stateToReplace = level.getBlockState(pos);
-		if (!stateToReplace.is(BlockTagGenerator.TF_BERRY_BUSHES_SURVIVE) || stateToReplace.is(BlockTags.FEATURES_CANNOT_REPLACE) || !stateToReplace.getFluidState().isEmpty())
+		if (!stateToReplace.is(BlockTagGenerator.TF_BERRY_BUSHES_REPLACE) || stateToReplace.is(BlockTags.FEATURES_CANNOT_REPLACE) || !stateToReplace.getFluidState().isEmpty())
 			return;
 		if (!(state.getBlock() instanceof BerryBushBlock berryBushBlock))
 			return;
