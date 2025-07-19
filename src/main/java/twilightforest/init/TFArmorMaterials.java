@@ -48,7 +48,7 @@ public class TFArmorMaterials {
 		map.put(ArmorItem.Type.CHESTPLATE, 5);
 		map.put(ArmorItem.Type.HELMET, 2);
 		map.put(ArmorItem.Type.BODY, 4);
-	}), 0, SoundEvents.ARMOR_EQUIP_GENERIC, () -> Ingredient.of(Items.LEATHER), List.of(new ArmorMaterial.Layer(TwilightForestMod.prefix("travellers"))), 0F, 0.0F));
+	}), 0, SoundEvents.ARMOR_EQUIP_GENERIC, () -> Ingredient.of(TFItems.TANNED_LEATHER), List.of(new ArmorMaterial.Layer(TwilightForestMod.prefix("travellers"))), 0F, 0.0F));
 
 	public static final DeferredHolder<ArmorMaterial, ArmorMaterial> STEELEAF = ARMOR_MATERIALS.register("steeleaf", () -> new ArmorMaterial(Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
 		map.put(ArmorItem.Type.BOOTS, 3);
