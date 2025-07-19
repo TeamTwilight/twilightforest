@@ -7,9 +7,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.BonemealableBlock;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -41,8 +39,15 @@ public class BerryBushBlock extends TFBushBlock implements BonemealableBlock {
 	}
 
 	protected void tryGrowUpwards(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-		if (random.nextInt(3) == 0 && state.getValue(AGE) >= 2 && level.getBlockState(pos.above()).isAir())
-			level.setBlock(pos.above(), state.getBlock().defaultBlockState(), Block.UPDATE_CLIENTS);
+		if (random.nextInt(3) == 0 && state.getValue(AGE) >= 2) {
+			BlockState aboveState = level.getBlockState(pos.above());
+			if (aboveState.isAir()) {
+				level.setBlock(pos.above(), state.getBlock().defaultBlockState(), Block.UPDATE_CLIENTS);
+			} else if (aboveState.is(Blocks.SNOW)) {
+				level.setBlock(pos.above(), state.getBlock().defaultBlockState().setValue(SNOW_LAYERS, aboveState.getValue(SnowLayerBlock.LAYERS)), Block.UPDATE_CLIENTS);
+			}
+		}
+
 	}
 
 	@Override
@@ -52,7 +57,7 @@ public class BerryBushBlock extends TFBushBlock implements BonemealableBlock {
 
 	@Override
 	public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
-		return state.getValue(AGE) < MAX_AGE - 1 || level.getBlockState(pos.above()).isAir();
+		return state.getValue(AGE) < MAX_AGE - 1 || level.getBlockState(pos.above()).isAir() || level.getBlockState(pos.above()).is(Blocks.SNOW);
 	}
 
 	@Override
@@ -63,7 +68,7 @@ public class BerryBushBlock extends TFBushBlock implements BonemealableBlock {
 	@Override
 	public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
 		int age = state.getValue(AGE);
-		if (age < MAX_AGE)
+		if (age < 2)
 			this.grow(state, level, pos, Math.min(state.getValue(AGE) + 1 + random.nextInt(2), MAX_AGE - 1));
 		tryGrowUpwards(state, level, pos, random);
 	}
