@@ -64,7 +64,7 @@ public class BerryBushBlock extends TFBushBlock implements BonemealableBlock {
 	public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
 		int age = state.getValue(AGE);
 		if (age < MAX_AGE)
-			level.setBlock(pos, state.setValue(AGE, Math.min(state.getValue(AGE) + 1 + random.nextInt(2), MAX_AGE - 1)), Block.UPDATE_CLIENTS);
+			this.grow(state, level, pos, Math.min(state.getValue(AGE) + 1 + random.nextInt(2), MAX_AGE - 1));
 		tryGrowUpwards(state, level, pos, random);
 	}
 }

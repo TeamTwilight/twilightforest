@@ -13,8 +13,8 @@ import twilightforest.asm.ASMUtil;
 import java.util.Set;
 
 /**
- * {@link twilightforest.ASMHooks#forwardBoostFovNullify}
- * {@link twilightforest.ASMHooks#forwardBoostFovRestore}
+ * {@link twilightforest.ASMHooks#forwardBoostNullify}
+ * {@link twilightforest.ASMHooks#forwardBoostRestore}
  */
 public class GetFieldOfViewModifierTransformer implements ITransformer<MethodNode> {
 

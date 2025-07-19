@@ -1,6 +1,7 @@
 package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
@@ -13,10 +14,9 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.SnowLayerBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -72,6 +72,18 @@ public abstract class TFBushBlock extends Block implements SnowLoggable {
 	}
 
 	@Override
+	protected BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
+		if (state.getValue(SNOW_LAYERS) > 0) {
+			if (!Blocks.SNOW.defaultBlockState().canSurvive(level, pos)) {
+				level.setBlock(pos, state.setValue(SNOW_LAYERS, 0), Block.UPDATE_CLIENTS);
+				level.levelEvent(LevelEvent.PARTICLES_DESTROY_BLOCK, pos, Block.getId(Blocks.SNOW.defaultBlockState()));
+			}
+		}
+
+		return super.updateShape(state, direction, neighborState, level, pos, neighborPos);
+	}
+
+	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		builder.add(AGE).add(SNOW_LAYERS);
 	}
@@ -94,11 +106,19 @@ public abstract class TFBushBlock extends Block implements SnowLoggable {
 	@Override
 	public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 		if (state.getValue(AGE) < MAX_AGE && random.nextInt(20) == 0 && canGrowAt(state, level, pos))
-			grow(state, level, pos);
+			this.grow(state, level, pos, state.getValue(AGE) + 1);
 	}
 
-	private void grow(BlockState state, ServerLevel level, BlockPos pos) {
-		level.setBlock(pos, state.setValue(AGE, state.getValue(AGE) + 1), Block.UPDATE_CLIENTS);
+	protected void grow(BlockState state, ServerLevel level, BlockPos pos, int age) {
+		level.setBlock(pos, state.setValue(AGE, age), Block.UPDATE_CLIENTS);
+		if (age == 2 && state.getValue(SNOW_LAYERS) > 0) {
+			BlockState aboveState = level.getBlockState(pos.above());
+			if (aboveState.canBeReplaced()) {
+				level.setBlock(pos.above(), Blocks.SNOW.defaultBlockState(), Block.UPDATE_CLIENTS);
+			} else if (aboveState.getBlock() instanceof SnowLoggable && aboveState.getValue(SNOW_LAYERS) == 0) {
+				level.setBlock(pos.above(), aboveState.setValue(SNOW_LAYERS, 1), Block.UPDATE_CLIENTS);
+			}
+		}
 	}
 
 	@Override
@@ -118,13 +138,20 @@ public abstract class TFBushBlock extends Block implements SnowLoggable {
 	protected ItemInteractionResult useItemOn(
 		ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult
 	) {
-		if (!stack.is(Items.SNOW) || state.getValue(SNOW_LAYERS) == MAX_SNOW_LAYERS)
+		if (!stack.is(Items.SNOW) || state.getValue(SNOW_LAYERS) == MAX_SNOW_LAYERS || !Blocks.SNOW.defaultBlockState().canSurvive(level, pos))
 			return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
 		if (!player.hasInfiniteMaterials())
 			stack.shrink(1);
 		BlockState newState = state.setValue(SNOW_LAYERS, state.getValue(SNOW_LAYERS) + 1);
 		level.setBlock(pos, newState, Block.UPDATE_ALL | Block.UPDATE_KNOWN_SHAPE);
+		updateSnowBeneath(level, pos);
 		return ItemInteractionResult.SUCCESS;
+	}
+
+	private static void updateSnowBeneath(Level level, BlockPos pos) {
+		if (level.getBlockState(pos.below()).getBlock() instanceof SpreadingSnowyDirtBlock) {
+			level.setBlock(pos.below(), level.getBlockState(pos.below()).setValue(SnowyDirtBlock.SNOWY, true), Block.UPDATE_CLIENTS);
+		}
 	}
 
 	@Override

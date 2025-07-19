@@ -23,6 +23,7 @@ import twilightforest.asm.transformers.multipart.SendDirtytEntityDataTransformer
 import twilightforest.asm.transformers.player.MaybeBackOffFromEdgeTransformer;
 import twilightforest.asm.transformers.player_and_serverplayer.ReduceMovementFoodExhaustionTransformer;
 import twilightforest.asm.transformers.shroom.ModifySoilDecisionForMushroomBlockSurvivabilityTransformer;
+import twilightforest.asm.transformers.snow.KeepGrassSnowyForSnowloggableBlocksTransformer;
 
 import java.util.List;
 
@@ -81,7 +82,10 @@ public class TFCoreMod implements ICoreMod {
 			new ModifySoilDecisionForMushroomBlockSurvivabilityTransformer(),
 
 			// mob
-			new PathFinderUnrestrainedByLeash()
+			new PathFinderUnrestrainedByLeash(),
+
+			//snow
+			new KeepGrassSnowyForSnowloggableBlocksTransformer()
 		);
 	}
 }

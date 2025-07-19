@@ -54,6 +54,7 @@ import net.neoforged.neoforge.common.util.TriState;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import twilightforest.beans.Autowired;
+import twilightforest.block.SnowLoggable;
 import twilightforest.init.*;
 import twilightforest.item.travellers_gear.TravellersArmorItem;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifiers;
@@ -447,5 +448,20 @@ public class ASMHooks {
 	 */
 	public static boolean overrideStayCloseToHolder(boolean prior, PathfinderMob mob) {
 		return prior && !mob.hasData(TFDataAttachments.LEASH_PATHFINDER_OVERRIDE);
+	}
+
+	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// snow
+	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	/**
+	 * {@link twilightforest.asm.transformers.snow.KeepGrassSnowyForSnowloggableBlocksTransformer}
+	 *
+	 * Injection Point:<br/>
+	 * {@link net.minecraft.world.level.block.SnowyDirtBlock.isSnowySetting(BlockState)}<br/>
+	 * Targets: IRETURN
+	 */
+	public static boolean keepSnowyStateForSnowloggableBlocks(boolean o, BlockState state) {
+		return o || (state.getBlock() instanceof SnowLoggable && state.getValue(SnowLoggable.SNOW_LAYERS) > 0);
 	}
 }
