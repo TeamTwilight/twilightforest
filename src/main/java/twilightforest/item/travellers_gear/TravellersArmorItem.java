@@ -13,6 +13,7 @@ import net.minecraft.network.DisconnectionDetails;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundPlayerPositionPacket;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Unit;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -36,6 +37,7 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
@@ -251,33 +253,36 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 										 DeferredHolder<AttachmentType<?>, AttachmentType<Integer>> validator,
 										 DeferredHolder<AttachmentType<?>, AttachmentType<Integer>> lastCheck,
 										 String movementType) {
-		int count = serverPlayer.getData(validator);
-		int lastTick = serverPlayer.getData(lastCheck);
-		int currentTick = serverPlayer.tickCount;
-		int diff = currentTick - lastTick;
-		TwilightForestMod.LOGGER.debug("{} {} check: count={}, lastTick={}, currentTick={}, diff={}",
-			serverPlayer.getName().getString(), movementType, count, lastTick, currentTick, diff);
+		MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+		if (server != null && server.isDedicatedServer()) {
+			int count = serverPlayer.getData(validator);
+			int lastTick = serverPlayer.getData(lastCheck);
+			int currentTick = serverPlayer.tickCount;
+			int diff = currentTick - lastTick;
+			TwilightForestMod.LOGGER.debug("{} {} check: count={}, lastTick={}, currentTick={}, diff={}",
+				serverPlayer.getName().getString(), movementType, count, lastTick, currentTick, diff);
 
-		if (diff >= 45 && !serverPlayer.isFallFlying()) {
-			count = -1;
-		}
+			if (diff >= 45 && !serverPlayer.isFallFlying()) {
+				count = -1;
+			}
 
-		serverPlayer.setData(lastCheck, currentTick);
+			serverPlayer.setData(lastCheck, currentTick);
 
-		if (count >= 5) {
-			serverPlayer.connection.disconnect(new DisconnectionDetails(Component.translatable("multiplayer.disconnect.flying")));
-			return;
-		}
+			if (count >= 5) {
+				serverPlayer.connection.disconnect(new DisconnectionDetails(Component.translatable("multiplayer.disconnect.flying")));
+				return;
+			}
 
-		serverPlayer.setData(validator, count + 1);
+			serverPlayer.setData(validator, count + 1);
 
-		if (count > 1) {
-			TwilightForestMod.LOGGER.warn("{} illegal {}", serverPlayer.getName().getString(), movementType);
-			serverPlayer.absMoveTo(serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(),
-				serverPlayer.getYRot(), serverPlayer.getXRot());
-			serverPlayer.connection.send(new ClientboundPlayerPositionPacket(
-				serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(),
-				serverPlayer.getYRot(), serverPlayer.getXRot(), Collections.emptySet(), 0));
+			if (count > 1) {
+				TwilightForestMod.LOGGER.warn("{} illegal {}", serverPlayer.getName().getString(), movementType);
+				serverPlayer.absMoveTo(serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(),
+					serverPlayer.getYRot(), serverPlayer.getXRot());
+				serverPlayer.connection.send(new ClientboundPlayerPositionPacket(
+					serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(),
+					serverPlayer.getYRot(), serverPlayer.getXRot(), Collections.emptySet(), 0));
+			}
 		}
 	}
 
