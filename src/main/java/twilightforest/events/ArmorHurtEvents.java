@@ -1,5 +1,8 @@
 package twilightforest.events;
 
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -12,13 +15,17 @@ import twilightforest.init.TFDataComponents;
 public class ArmorHurtEvents {
 	@SubscribeEvent
 	public static void stopDamagingTravellersGear(ArmorHurtEvent event) {
-		event.getArmorMap().entrySet().forEach((equipmentSlotArmorEntryEntry -> {
-			ArmorHurtEvent.ArmorEntry armorEntry = equipmentSlotArmorEntryEntry.getValue();
-			ItemStack damagedStack = armorEntry.armorItemStack.copy();
-			damagedStack.setDamageValue((int) Math.ceil(armorEntry.originalDamage + damagedStack.getDamageValue()));
-			if (damagedStack.has(TFDataComponents.IS_TRAVELLERS_GEAR) && damagedStack.getDamageValue() == damagedStack.getMaxDamage()) {
-				event.setNewDamage(equipmentSlotArmorEntryEntry.getKey(), damagedStack.getDamageValue() - armorEntry.armorItemStack.getDamageValue() - 1);
-			}
-		}));
+		if (!event.isCanceled()) {
+			event.getArmorMap().forEach((slot, entry) -> {
+				ItemStack damagedStack = event.getArmorItemStack(slot);
+				if (damagedStack.has(TFDataComponents.IS_TRAVELLERS_GEAR)) {
+					if (damagedStack.getDamageValue() + event.getNewDamage(slot) >= damagedStack.getMaxDamage()) {
+						event.setCanceled(true);
+					} else if (damagedStack.getDamageValue() + event.getNewDamage(slot) >= damagedStack.getMaxDamage() - 1 && event.getEntity() instanceof ServerPlayer player) {
+						player.playNotifySound(SoundEvents.ITEM_BREAK, SoundSource.PLAYERS, 1.0F, player.getVoicePitch());
+					}
+				}
+			});
+		}
 	}
 }
