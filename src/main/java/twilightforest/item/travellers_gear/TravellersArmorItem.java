@@ -302,6 +302,7 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 
 	public static Properties gogglesProperties(Properties properties) {
 		return properties
+			.attributes(defaultArmorProperties(Type.HELMET).build())
 			.component(TFDataComponents.ZOOM_ABILITY_MODIFIER, 0.3F);
 	}
 
@@ -321,6 +322,7 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 
 	public static Properties wingsProperties(Properties properties) {
 		return properties
+			.attributes(defaultArmorProperties(Type.LEGGINGS).build())
 			.component(TFDataComponents.TRAVELLERS_HAS_WINGS, Unit.INSTANCE)
 			.component(TFDataComponents.HIGH_JUMP_AMPLIFIER, 1);
 	}

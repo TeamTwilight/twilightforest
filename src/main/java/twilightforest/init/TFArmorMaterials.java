@@ -43,8 +43,8 @@ public class TFArmorMaterials {
 	}), 10, SoundEvents.ARMOR_EQUIP_GENERIC, () -> Ingredient.of(TFItems.FIERY_INGOT.get()), List.of(new ArmorMaterial.Layer(TwilightForestMod.prefix("fiery"))), 1.5F, 0.0F));
 
 	public static final DeferredHolder<ArmorMaterial, ArmorMaterial> TRAVELLERS = ARMOR_MATERIALS.register("travellers", () -> new ArmorMaterial(Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
-		map.put(ArmorItem.Type.BOOTS, 4);
-		map.put(ArmorItem.Type.LEGGINGS, 4);
+		map.put(ArmorItem.Type.BOOTS, 2);
+		map.put(ArmorItem.Type.LEGGINGS, 3);
 		map.put(ArmorItem.Type.CHESTPLATE, 5);
 		map.put(ArmorItem.Type.HELMET, 2);
 		map.put(ArmorItem.Type.BODY, 4);
