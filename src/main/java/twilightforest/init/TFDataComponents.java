@@ -71,6 +71,7 @@ public class TFDataComponents {
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Double>> FORWARD_BOOST_MULTIPLIER = COMPONENTS.register("forward_boost_multiplier", () -> DataComponentType.<Double>builder().persistent(Codec.DOUBLE).networkSynchronized(ByteBufCodecs.DOUBLE).cacheEncoding().build());
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Float>> SLIMY_SOLES_COEFFICIENT = COMPONENTS.register("slimy_soles_coefficient", () -> DataComponentType.<Float>builder().persistent(ExtraCodecs.POSITIVE_FLOAT).networkSynchronized(ByteBufCodecs.FLOAT).cacheEncoding().build());
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Unit>> WATER_WALK = COMPONENTS.register("water_walk", () -> DataComponentType.<Unit>builder().persistent(Codec.unit(Unit.INSTANCE)).networkSynchronized(StreamCodec.unit(Unit.INSTANCE)).cacheEncoding().build());
+	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Unit>> ALL_NIGHT_GOGGLES = COMPONENTS.register("all_night_goggles", () -> DataComponentType.<Unit>builder().persistent(Codec.unit(Unit.INSTANCE)).networkSynchronized(StreamCodec.unit(Unit.INSTANCE)).cacheEncoding().build());
 
 	private static @NotNull <T> DeferredHolder<DataComponentType<?>, DataComponentType<T>> register(String name, final Codec<T> codec) {
 		return register(name, codec, null);

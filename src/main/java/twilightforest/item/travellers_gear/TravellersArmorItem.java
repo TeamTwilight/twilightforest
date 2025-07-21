@@ -312,12 +312,9 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 	}
 
 	public static Properties chestProperties(Properties properties) {
-		ItemAttributeModifiers.Entry swiftSwimModifier = TravellersModifiers.SWIFT_SWIM_MODIFIER.getModifier();
 		return properties
 			.component(TFDataComponents.TRAVELLERS_HAS_CHESTPLATE, Unit.INSTANCE)
-			.attributes(defaultArmorProperties(Type.CHESTPLATE)
-				.add(swiftSwimModifier.attribute(), swiftSwimModifier.modifier(), swiftSwimModifier.slot())
-				.build());
+			.attributes(TravellersEntryModifier.addModifiers(defaultArmorProperties(Type.CHESTPLATE), TravellersModifiers.SWIFT_SWIM_MODIFIER).build());
 	}
 
 	public static Properties glovesProperties(Properties properties) {

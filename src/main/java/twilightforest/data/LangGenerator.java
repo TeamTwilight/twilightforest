@@ -1218,7 +1218,9 @@ public class LangGenerator extends TFLangProvider {
 		// insertable modifiers
 		this.addTravellersModifier(TravellersModifiers.AUTO_REPAIR_MODIFIER, "- Auto Repair");
 
+		this.addTravellersModifier(TravellersModifiers.AQUATIC_AGILITY, "- Aquatic Agility");
 		this.addTravellersModifier(TravellersModifiers.RED_THREAD_VISION_MODIFIER, "- Red Thread Vision (keybind: ${tfkeybinds/"+ TFKeyBinds.RED_THREAD_VISION_KEY.getName() + "})");
+		this.addTravellersModifier(TravellersModifiers.ALL_NIGHT_GOGGLES_MODIFIER, "- All-Night Goggles");
 
 		this.addTravellersModifier(TravellersModifiers.STEALTH_MODIFIER,          "- Stealth (sneak to activate)");
 		this.addTravellersModifier(TravellersModifiers.ARROW_MAGNETISM_MODIFIER,  "- Arrow Magnetism");

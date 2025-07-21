@@ -24,14 +24,22 @@ public abstract class TravellersModifiers {
 
 	/**
 	 * Modifiers are ordered by the length of the name in English, longest to shortest.
-	*/
+	 */
 
 	// all
 	public static final TravellersComponentModifier AUTO_REPAIR_MODIFIER = registerComponentModifier(TwilightForestMod.prefix("auto_repair"), TFDataComponents.AUTO_REPAIR_PROBABILITY, 0.001F);
 
 	// goggles
 	public static final BuiltinTravellersComponentModifier ZOOM_MODIFIER = registerBuiltinComponentModifier(TwilightForestMod.prefix("zoom"), TFDataComponents.ZOOM_ABILITY_MODIFIER);
+	public static final TravellersEntryModifier AQUATIC_AGILITY = registerEntryModifiers(TwilightForestMod.prefix("aquatic_agility"),
+		List.of(
+			new ItemAttributeModifiers.Entry(Attributes.OXYGEN_BONUS, TFAttributeModifiers.TRAVELLERS_AQUATIC_AGILITY_OXYGEN_ACTIVE, EquipmentSlotGroup.HEAD),
+			new ItemAttributeModifiers.Entry(Attributes.SUBMERGED_MINING_SPEED, TFAttributeModifiers.TRAVELLERS_AQUATIC_AGILITY_MINING_ACTIVE, EquipmentSlotGroup.HEAD)),
+		List.of(
+			new ItemAttributeModifiers.Entry(Attributes.OXYGEN_BONUS, TFAttributeModifiers.TRAVELLERS_AQUATIC_AGILITY_OXYGEN_DEACTIVATED, EquipmentSlotGroup.HEAD),
+			new ItemAttributeModifiers.Entry(Attributes.SUBMERGED_MINING_SPEED, TFAttributeModifiers.TRAVELLERS_AQUATIC_AGILITY_MINING_DEACTIVATED, EquipmentSlotGroup.HEAD)));
 	public static final TravellersComponentModifier RED_THREAD_VISION_MODIFIER = registerComponentModifier(TwilightForestMod.prefix("red_thread_vision"), TFDataComponents.RED_THREAD_VISION, Unit.INSTANCE);
+	public static final TravellersComponentModifier ALL_NIGHT_GOGGLES_MODIFIER = registerComponentModifier(TwilightForestMod.prefix("all_night_goggles"), TFDataComponents.ALL_NIGHT_GOGGLES, Unit.INSTANCE);
 
 	// vest
 	public static final TravellersEntryModifier SWIFT_SWIM_MODIFIER = registerEntryModifier(TwilightForestMod.prefix("swift_swim"), Attributes.WATER_MOVEMENT_EFFICIENCY, TFAttributeModifiers.TRAVELLERS_SWIFT_SWIM_ACTIVATE, TFAttributeModifiers.TRAVELLERS_SWIFT_SWIM_DEACTIVATED, EquipmentSlotGroup.CHEST);
@@ -75,7 +83,11 @@ public abstract class TravellersModifiers {
 	}
 
 	public static TravellersEntryModifier registerEntryModifier(ResourceLocation name, ItemAttributeModifiers.Entry activeEntry, ItemAttributeModifiers.Entry deactivatedEntry) {
-		return register(new TravellersEntryModifier(name, activeEntry, deactivatedEntry));
+		return register(new TravellersEntryModifier(name, List.of(activeEntry), List.of(deactivatedEntry)));
+	}
+
+	public static TravellersEntryModifier registerEntryModifiers(ResourceLocation name, List<ItemAttributeModifiers.Entry> activeEntries, List<ItemAttributeModifiers.Entry> deactivatedEntries) {
+		return register(new TravellersEntryModifier(name, activeEntries, deactivatedEntries));
 	}
 
 	public static <T extends InsertableTravellersModifier> T register(T modifier) {
