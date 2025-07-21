@@ -1,18 +1,23 @@
 {
   "parent": "twilightforest:root",
   "criteria": {
-    "cooked_meef": {
+    "berry": {
       "conditions": {
         "item": {
-          "items": "twilightforest:cooked_meef"
+          "items": [
+            "twilightforest:raspberry",
+            "twilightforest:blackberry",
+            "twilightforest:blueberry",
+            "twilightforest:maloberry"
+          ]
         }
       },
       "trigger": "minecraft:consume_item"
     },
-    "cooked_venison": {
+    "berry_medley": {
       "conditions": {
         "item": {
-          "items": "twilightforest:cooked_venison"
+          "items": "twilightforest:berry_medley"
         }
       },
       "trigger": "minecraft:consume_item"
@@ -33,10 +38,29 @@
       },
       "trigger": "minecraft:consume_item"
     },
+    "jerky": {
+      "conditions": {
+        "item": {
+          "items": "#c:foods/jerky"
+        }
+      },
+      "trigger": "minecraft:consume_item"
+    },
     "maze_wafer": {
       "conditions": {
         "item": {
           "items": "twilightforest:maze_wafer"
+        }
+      },
+      "trigger": "minecraft:consume_item"
+    },
+    "meef": {
+      "conditions": {
+        "item": {
+          "items": [
+            "twilightforest:raw_meef",
+            "twilightforest:cooked_meef"
+          ]
         }
       },
       "trigger": "minecraft:consume_item"
@@ -49,26 +73,32 @@
       },
       "trigger": "minecraft:consume_item"
     },
-    "raw_meef": {
+    "moss_soup": {
       "conditions": {
         "item": {
-          "items": "twilightforest:raw_meef"
+          "items": "twilightforest:moss_soup"
         }
       },
       "trigger": "minecraft:consume_item"
     },
-    "raw_venison": {
+    "slime_drop": {
       "conditions": {
         "item": {
-          "items": "twilightforest:raw_venison"
+          "items": [
+            "twilightforest:gelatinous_slime_drop",
+            "twilightforest:gelatinous_maze_slime_drop"
+          ]
         }
       },
       "trigger": "minecraft:consume_item"
     },
-    "torchberries": {
+    "venison": {
       "conditions": {
         "item": {
-          "items": "twilightforest:torchberries"
+          "items": [
+            "twilightforest:raw_venison",
+            "twilightforest:cooked_venison"
+          ]
         }
       },
       "trigger": "minecraft:consume_item"
@@ -89,12 +119,10 @@
   },
   "requirements": [
     [
-      "raw_venison",
-      "cooked_venison"
+      "venison"
     ],
     [
-      "raw_meef",
-      "cooked_meef"
+      "meef"
     ],
     [
       "meef_stroganoff"
@@ -109,7 +137,19 @@
       "experiment_115"
     ],
     [
-      "torchberries"
+      "jerky"
+    ],
+    [
+      "berry"
+    ],
+    [
+      "slime_drop"
+    ],
+    [
+      "berry_medley"
+    ],
+    [
+      "moss_soup"
     ]
   ],
   "rewards": {

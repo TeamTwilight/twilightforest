@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "twilightforest:travellers_gloves"
+        "recipe": "twilightforest:equipment/travellers_belt"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "twilightforest:travellers_gloves"
+      "twilightforest:equipment/travellers_belt"
     ]
   }
 }

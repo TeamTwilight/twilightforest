@@ -6,6 +6,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import twilightforest.TwilightForestMod;
 import twilightforest.advancements.*;
+import twilightforest.advancements.AddModifierTrigger;
 
 public class TFAdvancements {
 
@@ -23,4 +24,5 @@ public class TFAdvancements {
 	public static final DeferredHolder<CriterionTrigger<?>, SimpleAdvancementTrigger> KILL_ALL_PHANTOMS = TRIGGERS.register("kill_all_phantoms", SimpleAdvancementTrigger::new);
 	public static final DeferredHolder<CriterionTrigger<?>, UncraftItemTrigger> UNCRAFT_ITEM = TRIGGERS.register("uncraft_item", UncraftItemTrigger::new);
 	public static final DeferredHolder<CriterionTrigger<?>, SimpleAdvancementTrigger> BROKE_GLASS_SWORD = TRIGGERS.register("broke_glass_sword", SimpleAdvancementTrigger::new);
+	public static final DeferredHolder<CriterionTrigger<?>, AddModifierTrigger> ADD_MODIFIER = TRIGGERS.register("add_modifier", AddModifierTrigger::new);
 }

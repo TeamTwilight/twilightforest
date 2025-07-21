@@ -15,16 +15,19 @@ import net.neoforged.neoforge.event.AnvilUpdateEvent;
 import net.neoforged.neoforge.event.GrindstoneEvent;
 import net.neoforged.neoforge.event.ItemAttributeModifierEvent;
 import net.neoforged.neoforge.event.entity.living.ArmorHurtEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerSpawnPhantomsEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import twilightforest.beans.Component;
 import twilightforest.beans.PostConstruct;
+import twilightforest.init.TFAdvancements;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFItems;
 import twilightforest.item.travellers_gear.TravellersArmorItem;
 import twilightforest.item.travellers_gear.modifiers.InsertableTravellersModifier;
+import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifiers;
 
 import java.util.List;
@@ -40,6 +43,7 @@ public class TravellersGearEvents {
 		NeoForge.EVENT_BUS.addListener(this::activateAndDeactivateTravellersModifiers);
 		NeoForge.EVENT_BUS.addListener(this::cancelCombiningTravellersGear);
 		NeoForge.EVENT_BUS.addListener(this::cancelPhantomSpawns);
+		NeoForge.EVENT_BUS.addListener(this::fireCraftingModifierTrigger);
 		NeoForge.EVENT_BUS.addListener(this::removeModifiersFromTravellersGear);
 		NeoForge.EVENT_BUS.addListener(this::stopDamagingTravellersGear);
 	}
@@ -147,6 +151,22 @@ public class TravellersGearEvents {
 	private void cancelPhantomSpawns(PlayerSpawnPhantomsEvent event) {
 		if (TravellersModifiers.ALL_NIGHT_GOGGLES_MODIFIER.isActive(event.getEntity().getItemBySlot(EquipmentSlot.HEAD))) {
 			event.setResult(PlayerSpawnPhantomsEvent.Result.DENY);
+		}
+	}
+
+	private void fireCraftingModifierTrigger(PlayerEvent.ItemCraftedEvent event) {
+		if (event.getEntity() instanceof ServerPlayer player && event.getCrafting().has(TFDataComponents.IS_TRAVELLERS_GEAR)) {
+			ItemStack compareStack = ItemStack.EMPTY;
+			for (int i = 0; i < event.getInventory().getContainerSize(); i++) {
+				if (event.getInventory().getItem(i).is(event.getCrafting().getItem())) compareStack = event.getInventory().getItem(i);
+			}
+
+			if (!compareStack.isEmpty()) {
+				var oldMods = TravellersModifiers.findAllInsertableModifiers(compareStack);
+				TravellersModifiers.findAllInsertableModifiers(event.getCrafting()).stream()
+					.filter(modifier -> !oldMods.contains(modifier)).toList()
+						.forEach(modifier -> TFAdvancements.ADD_MODIFIER.get().trigger(player, modifier.getName()));
+			}
 		}
 	}
 }

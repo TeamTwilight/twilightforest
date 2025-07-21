@@ -314,6 +314,7 @@ public class TFItems {
 		new EdibleBerry.BerryEffect(MobEffects.DIG_SLOWDOWN, 10, 0.75F)
 	));
 	public static final DeferredItem<Item> BERRY_MEDLEY = ITEMS.register("berry_medley", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(5).saturationModifier(1.4f).usingConvertsTo(Items.BOWL).build())));
+	public static final DeferredItem<Item> MOSS_SOUP = ITEMS.register("moss_soup", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(5).saturationModifier(1.4F).usingConvertsTo(Items.BOWL).build())));
 
 	public static final DeferredItem<Item> MONSTER_JERKY = ITEMS.register("monster_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationModifier(0.4F).build())));
 	public static final DeferredItem<Item> BEEF_JERKY = ITEMS.register("beef_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationModifier(1.0F).build())));

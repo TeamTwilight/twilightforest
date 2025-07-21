@@ -1253,7 +1253,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.define('p', Tags.Items.GLASS_PANES_COLORLESS)
 			.define('g', Tags.Items.INGOTS_GOLD)
 			.unlockedBy("has_leather", has(TFItems.TANNED_LEATHER))
-			.save(output);
+			.save(output, locEquip(TFItems.TRAVELLERS_GOGGLES.getId().getPath()));
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.TRANSPORTATION, TFItems.TRAVELLERS_CHESTPLATE)
 			.pattern("l l")
@@ -1262,7 +1262,18 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.define('l', TFItems.TANNED_LEATHER)
 			.define('w', ItemTags.WOOL)
 			.unlockedBy("has_leather", has(TFItems.TANNED_LEATHER))
-			.save(output);
+			.save(output, locEquip(TFItems.TRAVELLERS_CHESTPLATE.getId().getPath()));
+
+		ShapedRecipeBuilder.shaped(RecipeCategory.TRANSPORTATION, TFItems.TRAVELLERS_WINGS)
+			.pattern("g g")
+			.pattern("ili")
+			.pattern("ici")
+			.define('l', TFItems.TANNED_LEATHER)
+			.define('g', Tags.Items.INGOTS_GOLD)
+			.define('i', Tags.Items.INGOTS_COPPER)
+			.define('c', ItemTagGenerator.CARMINITE_GEMS)
+			.unlockedBy("has_leather", has(TFItems.TANNED_LEATHER))
+			.save(output, locEquip(TFItems.TRAVELLERS_WINGS.getId().getPath()));
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.TRANSPORTATION, TFItems.TRAVELLERS_BOOTS)
 			.pattern("s s")
@@ -1271,7 +1282,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.define('l', TFItems.TANNED_LEATHER)
 			.define('s', Tags.Items.STRINGS)
 			.unlockedBy("has_leather", has(TFItems.TANNED_LEATHER))
-			.save(output);
+			.save(output, locEquip(TFItems.TRAVELLERS_BOOTS.getId().getPath()));
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.TRANSPORTATION, TFItems.TRAVELLERS_BELT)
 			.pattern("lll")
@@ -1281,7 +1292,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.define('c', Tags.Items.CHESTS_WOODEN)
 			.define('i', Tags.Items.NUGGETS_IRON)
 			.unlockedBy("has_leather", has(TFItems.TANNED_LEATHER))
-			.save(output);
+			.save(output, locEquip(TFItems.TRAVELLERS_BELT.getId().getPath()));
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.TRANSPORTATION, TFItems.TRAVELLERS_GLOVES)
 			.pattern("s s")
@@ -1289,7 +1300,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.define('l', TFItems.TANNED_LEATHER)
 			.define('s', Tags.Items.STRINGS)
 			.unlockedBy("has_leather", has(TFItems.TANNED_LEATHER))
-			.save(output);
+			.save(output, locEquip(TFItems.TRAVELLERS_GLOVES.getId().getPath()));
 	}
 
 	private void crackedWoodRecipes(RecipeOutput output) {

@@ -137,8 +137,11 @@ public class LangGenerator extends TFLangProvider {
 		this.addAdvancement("progression_end", "End of Progression", "Anything past this point in the Highlands is a work in progress. It will be finished in the future");
 		//this.addAdvancement("progress_thorns", "Past the Thorns [NYI]", "Make it past the Thornlands, and unlock the door of the castle");
 		//this.addAdvancement("progress_castle", "So Castle Very Wow [NYI]", "What could even be in that castle?!?");
-		this.addAdvancement("twilight_dining", "We Dine At Eternal Sundown", "Eat every edible item exclusive to Twilight Forest");
+		this.addAdvancement("twilight_dining", "We Dine At Eternal Sundown", "Eat every edible item type exclusive to Twilight Forest");
 		this.addAdvancement("arborist", "Maniacal Dendrologist", "Get your axes and shears ready. Search every nook and cranny and get anything and everything that comes from trees! Craft, loot, obtain every slab... sapling... leaves... more... everything. ALL OF IT!");
+		this.addAdvancement("chicken_jerky", "CHICKEN JERKY!", "");
+		this.addAdvancement("craft_travellers_gear", "Around the Forest in Eighty Days", "Craft a piece of traveller's gear");
+		this.addAdvancement("modify_travellers_gear", "Not All Those Who Wander Are Poorly Dressed", "Add a modifier to a piece of traveller's gear");
 
 		this.addMessage("advancement_hidden", "<Hidden Advancement>");
 		this.addMessage("advancement_required", "Advancement Required:");
