@@ -3,6 +3,7 @@ package twilightforest.client.model.item;
 import com.google.common.collect.Maps;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
+import com.mojang.math.Transformation;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
@@ -14,8 +15,10 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.ClientHooks;
 import net.neoforged.neoforge.client.model.CompositeModel;
 import net.neoforged.neoforge.client.model.DynamicFluidContainerModel;
+import net.neoforged.neoforge.client.model.SimpleModelState;
 import net.neoforged.neoforge.client.model.geometry.*;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 import twilightforest.TwilightForestMod;
 import twilightforest.item.travellers_gear.modifiers.InsertableTravellersModifier;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
@@ -27,6 +30,7 @@ import java.util.function.Function;
 
 public class TravellersGearItemModel implements IUnbakedGeometry<TravellersGearItemModel> {
 
+	private static final Function<Float, Transformation> TRANSFORM = f -> new Transformation(null, null, new Vector3f(1.0F + f), null);
 	private final List<InsertableTravellersModifier> modifiers;
 
 	TravellersGearItemModel(List<InsertableTravellersModifier> modifiers) {
@@ -45,19 +49,21 @@ public class TravellersGearItemModel implements IUnbakedGeometry<TravellersGearI
 
 		var normalRenderTypes = DynamicFluidContainerModel.getLayerRenderTypes(false);
 
-		if (baseLocation != null && baseSprite != null) {
+		if (baseLocation != null) {
 			// Base texture
 			var unbaked = UnbakedGeometryHelper.createUnbakedItemElements(0, baseSprite);
 			var quads = UnbakedGeometryHelper.bakeElements(unbaked, $ -> baseSprite, modelState);
 			modelBuilder.addQuads(normalRenderTypes, quads);
 		}
 
+		int layers = 1;
 		for (TravellersModifier modifier : this.modifiers) {
 			var sprite = this.getModifierSprite(modifier, baseSprite, spriteGetter);
 			if (!sprite.contents().name().equals(MissingTextureAtlasSprite.getLocation())) {
 				var unbaked = UnbakedGeometryHelper.createUnbakedItemElements(0, sprite);
-				var quads = UnbakedGeometryHelper.bakeElements(unbaked, $ -> sprite, modelState);
+				var quads = UnbakedGeometryHelper.bakeElements(unbaked, $ -> sprite, new SimpleModelState(modelState.getRotation().compose(TRANSFORM.apply(layers * 0.001F)), modelState.isUvLocked()));
 				modelBuilder.addQuads(normalRenderTypes, quads);
+				layers++;
 			}
 		}
 
