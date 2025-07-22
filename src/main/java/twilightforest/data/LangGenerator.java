@@ -694,6 +694,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addItem(TFItems.COOKED_MEEF, "Meef Steak");
 		this.addItem(TFItems.MEEF_STROGANOFF, "Meef Stroganoff");
 		this.addItem(TFItems.HYDRA_CHOP, "Hydra Chop");
+		this.addItem(TFItems.MOSS_SOUP, "Moss Soup");
 
 		this.addItem(TFItems.MONSTER_JERKY, "Monster Jerky");
 		this.addItem(TFItems.BEEF_JERKY, "Beef Jerky");

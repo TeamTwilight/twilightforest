@@ -187,6 +187,25 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.unlockedBy("has_uncrafting_table", has(TFBlocks.UNCRAFTING_TABLE.get()))
 			.save(output.withConditions(UncraftingTableCondition.INSTANCE), TwilightForestMod.prefix("uncrafting_table"));
 
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, TFItems.MOSS_SOUP)
+			.requires(TFBlocks.MOSS_PATCH)
+			.requires(Items.BOWL)
+			.requires(Ingredient.of(PotionContents.createItemStack(Items.POTION, Potions.WATER)))
+			.unlockedBy("has_moss", has(TFBlocks.MOSS_PATCH))
+			.save(output);
+
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, TFItems.BERRY_MEDLEY)
+			.requires(Items.BOWL)
+			.requires(TFItems.RASPBERRY)
+			.requires(TFItems.BLUEBERRY)
+			.requires(TFItems.BLACKBERRY)
+			.requires(TFItems.MALOBERRY)
+			.unlockedBy("has_raspberry", has(TFItems.RASPBERRY))
+			.unlockedBy("has_blueberry", has(TFItems.BLUEBERRY))
+			.unlockedBy("has_blackberry", has(TFItems.BLACKBERRY))
+			.unlockedBy("has_maloberry", has(TFItems.MALOBERRY))
+			.save(output);
+
 		cookingRecipes(output, "smelted", RecipeSerializer.SMELTING_RECIPE, SmeltingRecipe::new, 200);
 		cookingRecipes(output, "smoked", RecipeSerializer.SMOKING_RECIPE, SmokingRecipe::new, 100);
 		cookingRecipes(output, "campfired", RecipeSerializer.CAMPFIRE_COOKING_RECIPE, CampfireCookingRecipe::new, 600);

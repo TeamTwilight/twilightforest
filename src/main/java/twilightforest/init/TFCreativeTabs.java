@@ -617,6 +617,7 @@ public class TFCreativeTabs {
 			output.accept(TFItems.SKYBERRY);
 			output.accept(TFItems.STINGBERRY);
 			output.accept(TFItems.BERRY_MEDLEY);
+			output.accept(TFItems.MOSS_SOUP);
 			output.accept(TFItems.GELATINOUS_SLIME_DROP);
 			output.accept(TFItems.GELATINOUS_MAZE_SLIME_DROP);
 			output.accept(TFItems.RAW_VENISON);

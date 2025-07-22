@@ -440,7 +440,7 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 			TFItems.STINGBERRY.get());
 		this.tag(Tags.Items.FOODS_RAW_MEAT).add(TFItems.RAW_VENISON.get(), TFItems.RAW_MEEF.get());
 		this.tag(Tags.Items.FOODS_COOKED_MEAT).add(TFItems.COOKED_VENISON.get(), TFItems.COOKED_MEEF.get(), TFItems.HYDRA_CHOP.get());
-		this.tag(Tags.Items.FOODS_SOUP).add(TFItems.MEEF_STROGANOFF.get());
+		this.tag(Tags.Items.FOODS_SOUP).add(TFItems.MEEF_STROGANOFF.get(), TFItems.MOSS_SOUP.get());
 		this.tag(Tags.Items.FOODS_EDIBLE_WHEN_PLACED).add(TFItems.EXPERIMENT_115.get());
 		this.tag(Tags.Items.ROPES).add(TFItems.ROPE.get());
 		this.tag(Tags.Items.MUSHROOMS).add(TFBlocks.MUSHGLOOM.asItem());
