@@ -34,8 +34,10 @@ import twilightforest.block.DryingRackBlock;
 import twilightforest.block.entity.DryingRackBlockEntity;
 import twilightforest.block.entity.JarBlockEntity;
 import twilightforest.block.entity.MasonJarBlockEntity;
+import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.enums.extensions.TFItemDisplayContextEnumExtension;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.TFItems;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -57,7 +59,7 @@ public class DryingRackRenderer implements BlockEntityRenderer<DryingRackBlockEn
 			var model = this.itemRenderer.getModel(item, null, null, 0);
 			Direction dir = entity.getBlockState().getValue(DryingRackBlock.FACING);
 			stack.pushPose();
-			stack.translate(0.4F * dir.getStepX() + 0.5F, model.isGui3d() ? 0.5F : 0.45F, 0.4F * dir.getStepZ() + 0.5F);
+			stack.translate(0.4F * dir.getStepX() + 0.5F, model.isGui3d() ? 0.5F : item.is(ItemTagGenerator.RENDER_LOWER_ON_DRYING_RACK) ? 0.325F : 0.45F, 0.4F * dir.getStepZ() + 0.5F);
 			stack.scale(0.99F, 0.99F, 0.99F); //fix possible z-fighting
 			stack.mulPose(Axis.YP.rotationDegrees(-dir.toYRot()));
 			this.itemRenderer.renderStatic(entity.getTheItem(), ItemDisplayContext.FIXED, light, overlay, stack, source, null, (int) entity.getBlockPos().asLong());

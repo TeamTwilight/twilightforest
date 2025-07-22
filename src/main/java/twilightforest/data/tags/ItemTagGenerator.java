@@ -91,6 +91,7 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 
 	public static final TagKey<Item> FOODS_JERKY = makeCommonTag("foods/jerky");
 	public static final TagKey<Item> NUGGETS_COPPER = makeCommonTag("nuggets/copper");
+	public static final TagKey<Item> RENDER_LOWER_ON_DRYING_RACK = create("lower_on_drying_rack");
 
 	public ItemTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> future, CompletableFuture<TagLookup<Block>> provider, ExistingFileHelper helper) {
 		super(output, future, provider, helper);
@@ -453,6 +454,10 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 		this.tag(Tags.Items.NUGGETS).addTag(NUGGETS_COPPER);
 		this.tag(Tags.Items.SLIME_BALLS).add(TFItems.MAZE_SLIME_BALL.get());
 		this.tag(Tags.Items.STORAGE_BLOCKS_SLIME).add(TFBlocks.MAZE_SLIME_BLOCK.asItem());
+
+		this.tag(RENDER_LOWER_ON_DRYING_RACK)
+			.add(TFItems.GELATINOUS_SLIME_DROP.get(), TFItems.GELATINOUS_MAZE_SLIME_DROP.get())
+			.addTag(Tags.Items.TOOLS);
 	}
 
 	public static TagKey<Item> create(String tagName) {
