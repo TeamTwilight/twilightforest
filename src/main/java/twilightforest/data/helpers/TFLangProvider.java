@@ -26,6 +26,7 @@ import net.neoforged.neoforge.common.data.LanguageProvider;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import org.apache.commons.lang3.text.WordUtils;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.config.TFConfig;
 import twilightforest.init.TFKeyBindsCategories;
@@ -213,14 +214,18 @@ public abstract class TFLangProvider extends LanguageProvider {
 	}
 
 	public void configEntry(String key, String name, String description) {
+		this.configEntry(key, name, description, null);
+	}
+
+	public void configEntry(String key, String name, String description, @Nullable String button) {
 		this.add(TFConfig.CONFIG_ID + key, name);
 		this.add(TFConfig.CONFIG_ID + key + ".tooltip", description);
+		if (button != null) this.add(TFConfig.CONFIG_ID + key + ".button", button);
 	}
 
 	public void configCategory(String key, String name, String description) {
 		this.add(TFConfig.CONFIG_ID + key, name);
 		this.add(TFConfig.CONFIG_ID + key + ".tooltip", description);
-		this.add(name + ".button", "Edit");
 	}
 
 	@Override

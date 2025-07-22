@@ -140,7 +140,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addAdvancement("twilight_dining", "We Dine At Eternal Sundown", "Eat every edible item type exclusive to Twilight Forest");
 		this.addAdvancement("arborist", "Maniacal Dendrologist", "Get your axes and shears ready. Search every nook and cranny and get anything and everything that comes from trees! Craft, loot, obtain every slab... sapling... leaves... more... everything. ALL OF IT!");
 		this.addAdvancement("chicken_jerky", "CHICKEN JERKY!", "");
-		this.addAdvancement("craft_travellers_gear", "Around the Forest in Eighty Days", "Craft a piece of traveller's gear");
+		this.addAdvancement("craft_travellers_gear", "Around the Forest in 80 Days", "Craft a piece of traveller's gear");
 		this.addAdvancement("modify_travellers_gear", "Not All Those Who Wander Are Poorly Dressed", "Add a modifier to a piece of traveller's gear");
 
 		this.addMessage("advancement_hidden", "<Hidden Advancement>");
@@ -1149,10 +1149,8 @@ public class LangGenerator extends TFLangProvider {
 		this.configEntry("ram_indicator", "Questing Ram Wool Indicator", ConfigComments.QUESTING_RAM_WOOL);
 		this.configEntry("shield_indicator", "Fortification Shield Indicator", ConfigComments.FORTIFICATION);
 		this.configEntry("shield_indicator_creative", "Fortification Shield Indicator (creative)", ConfigComments.FORTIFICATION_CREATIVE);
-		this.configEntry("giant_skin_uuid_list", "Giant Skins", ConfigComments.GIANT_SKINS);
-		this.add("giantSkinUUIDs.button", "Edit Skins");
-		this.configEntry("aurora_biomes", "Aurora Shader Biomes", ConfigComments.AURORA_SHADER);
-		this.add("auroraBiomes.button", "Edit Biomes");
+		this.configEntry("giant_skin_uuid_list", "Giant Skins", ConfigComments.GIANT_SKINS, "Edit Skins");
+		this.configEntry("aurora_biomes", "Aurora Shader Biomes", ConfigComments.AURORA_SHADER, "Edit Biomes");
 		this.configEntry("prettify_ore_meter_gui", "Prettify Ore Meter GUI", ConfigComments.PRETTIFY_ORE_METER);
 		this.configEntry("totem_charm_animation", "Totem of Undying Charm Animation", ConfigComments.CHARMS_AS_TOTEMS);
 
@@ -1191,7 +1189,6 @@ public class LangGenerator extends TFLangProvider {
 		this.configEntry("sorting_range", "Sorting Tree Range", ConfigComments.SORTING_CORE);
 
 		this.configEntry("shield", "Shield Interactions", ConfigComments.SHIELD_PARRYING);
-		this.add("Shield Parrying.button", "Edit");
 		this.configEntry("parry_non_twilight", "Parry Non-TF Projectiles", ConfigComments.PARRY_NON_TF);
 		this.configEntry("parry_window", "Parry Window", ConfigComments.PARRY_WINDOW);
 
