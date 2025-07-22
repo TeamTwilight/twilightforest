@@ -139,7 +139,7 @@ public class LangGenerator extends TFLangProvider {
 		//this.addAdvancement("progress_castle", "So Castle Very Wow [NYI]", "What could even be in that castle?!?");
 		this.addAdvancement("twilight_dining", "We Dine At Eternal Sundown", "Eat every edible item type exclusive to Twilight Forest");
 		this.addAdvancement("arborist", "Maniacal Dendrologist", "Get your axes and shears ready. Search every nook and cranny and get anything and everything that comes from trees! Craft, loot, obtain every slab... sapling... leaves... more... everything. ALL OF IT!");
-		this.addAdvancement("chicken_jerky", "CHICKEN JERKY!", "");
+		this.add("advancement.twilightforest.chicken_jerky", "CHICKEN JERKEY!");
 		this.addAdvancement("craft_travellers_gear", "Around the Forest in 80 Days", "Craft a piece of traveller's gear");
 		this.addAdvancement("modify_travellers_gear", "Not All Those Who Wander Are Poorly Dressed", "Add a modifier to a piece of traveller's gear");
 
