@@ -9,6 +9,7 @@ import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.ParticleUtils;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -112,6 +113,12 @@ public class DryingRackBlock extends BaseEntityBlock implements SimpleWaterlogge
 			Direction dir = state.getValue(FACING);
 			ParticleUtils.spawnParticleOnFace(level, pos, dir, TFParticleType.DRYING_RACK.get(), Vec3.ZERO, 0.3F);
 		}
+	}
+
+	@Override
+	protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
+		Containers.dropContentsOnDestroy(state, newState, level, pos);
+		super.onRemove(state, level, pos, newState, movedByPiston);
 	}
 
 	@Nullable
