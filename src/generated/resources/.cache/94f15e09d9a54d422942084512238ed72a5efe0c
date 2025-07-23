@@ -1,4 +1,4 @@
-// 1.21.1	2025-07-21T22:38:50.082791341	TwilightForest Item and BlockItem models
+// 1.21.1	2025-07-22T22:43:17.048314405	TwilightForest Item and BlockItem models
 387b18dfa614fda790f7b8e8324e3b139fa177c2 assets/twilightforest/models/item/acacia_banister.json
 59484730296a2f5e31f486fac16ad09d2a55ae8c assets/twilightforest/models/item/acacia_drying_rack.json
 0ca7dc7b4daec376dd0f85d57465830781584c7d assets/twilightforest/models/item/alpha_yeti_banner_pattern.json
@@ -64,7 +64,7 @@ fd5610eff84568ff6a2105c742e9d67b89bc110a assets/twilightforest/models/item/bambo
 887637f73bd5c85702eda48a7eae5ae9eea30457 assets/twilightforest/models/item/bamboo_drying_rack.json
 3b22b7437760208f6214b9b121890393af3278a2 assets/twilightforest/models/item/beanstalk_leaves.json
 60e4620c52f32587557923d17a962eb498af18ac assets/twilightforest/models/item/beef_jerky.json
-39f92bc6e85bd2dad2088ca0ad451a31fbf82b27 assets/twilightforest/models/item/berry_medley.json
+c781fe1c8409163487bfb7378029ff541c7539b8 assets/twilightforest/models/item/berry_medley.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/bighorn_sheep_spawn_egg.json
 9916d25d03b28f2a6fc30d0f18e6b7607ec7f3f1 assets/twilightforest/models/item/birch_banister.json
 e61a92981ce7d5a7acf25d3c546b48f795d214eb assets/twilightforest/models/item/birch_drying_rack.json
@@ -570,7 +570,7 @@ bf19b0d9c6bdfda495e911a67eb4326e8357a99a assets/twilightforest/models/item/moon_
 824774180de2cddedf1c798073f84d69a045515d assets/twilightforest/models/item/moonworm_queen_alt.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/mosquito_swarm_spawn_egg.json
 45417066a8c4a018026d9951ba4b55e8d8cb2208 assets/twilightforest/models/item/moss_patch.json
-d75cf46389028afc69cb56750097c09809359ee6 assets/twilightforest/models/item/moss_soup.json
+93553993bac5afdae34170cb043045556650a357 assets/twilightforest/models/item/moss_soup.json
 08939ed055c2ecbdadc39131aaca1d01fb876dbb assets/twilightforest/models/item/mossy_castle_brick.json
 bd051cd90bfa4481c7bb03013f8c056434c118e2 assets/twilightforest/models/item/mossy_castle_brick_stairs.json
 0b2ba3317aa496a215a4a009d92a332e96b44629 assets/twilightforest/models/item/mossy_etched_nagastone.json

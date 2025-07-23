@@ -560,9 +560,11 @@ public class ItemModelGenerator extends ItemModelProvider {
 		singleTex(TFItems.SKYBERRY);
 		singleTex(TFItems.STINGBERRY);
 		withExistingParent(TFItems.BERRY_MEDLEY.getId().getPath(), "item/generated")
+			.texture("particle", TwilightForestMod.prefix("item/berry_medley"))
 			.texture("layer0", ResourceLocation.withDefaultNamespace("item/bowl"))
 			.texture("layer1", TwilightForestMod.prefix("item/berry_medley"));
 		withExistingParent(TFItems.MOSS_SOUP.getId().getPath(), "item/generated")
+			.texture("particle", TwilightForestMod.prefix("block/patch/moss"))
 			.texture("layer0", ResourceLocation.withDefaultNamespace("item/bowl"))
 			.texture("layer1", TwilightForestMod.prefix("item/moss_soup"));
 		singleTex(TFItems.MONSTER_JERKY);

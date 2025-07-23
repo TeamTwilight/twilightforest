@@ -2,6 +2,7 @@
   "parent": "minecraft:item/generated",
   "textures": {
     "layer0": "minecraft:item/bowl",
-    "layer1": "twilightforest:item/moss_soup"
+    "layer1": "twilightforest:item/moss_soup",
+    "particle": "twilightforest:block/patch/moss"
   }
 }
