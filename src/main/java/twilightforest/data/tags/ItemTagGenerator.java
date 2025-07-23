@@ -457,7 +457,11 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 
 		this.tag(RENDER_LOWER_ON_DRYING_RACK)
 			.add(TFItems.GELATINOUS_SLIME_DROP.get(), TFItems.GELATINOUS_MAZE_SLIME_DROP.get())
-			.addTag(Tags.Items.TOOLS);
+			.add(TFItems.ZOMBIE_SKULL_CANDLE.get(), TFItems.SKELETON_SKULL_CANDLE.get(), TFItems.WITHER_SKELETON_SKULL_CANDLE.get(), TFItems.CREEPER_SKULL_CANDLE.get(), TFItems.PLAYER_SKULL_CANDLE.get(), TFItems.PIGLIN_SKULL_CANDLE.get())
+			.add(Items.POINTED_DRIPSTONE, Items.RECOVERY_COMPASS, Items.CLOCK, Items.SPYGLASS, Items.TRIDENT)
+			.addTag(ItemTags.BANNERS)
+			.addTag(Tags.Items.TOOLS)
+			.remove(Tags.Items.TOOLS_SHIELD);
 	}
 
 	public static TagKey<Item> create(String tagName) {
