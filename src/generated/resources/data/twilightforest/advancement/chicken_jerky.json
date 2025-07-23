@@ -33,6 +33,7 @@
   },
   "display": {
     "description": "",
+    "frame": "challenge",
     "hidden": true,
     "icon": {
       "count": 1,

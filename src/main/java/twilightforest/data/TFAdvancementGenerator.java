@@ -376,7 +376,7 @@ public class TFAdvancementGenerator implements AdvancementProvider.AdvancementGe
 				Component.translatable("advancement.twilightforest.maze_map.desc",
 					Component.translatable(TFItems.FILLED_MAZE_MAP.get().getDescriptionId())),
 				null, AdvancementType.GOAL, true, true, false)
-			.addCriterion("maze_map", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.FILLED_MAZE_MAP.get()))
+			.addCriterion("maze_map", RecipeCraftedTrigger.TriggerInstance.craftedItem(TwilightForestMod.prefix("maze_map")))
 			.save(consumer, "twilightforest:maze_map");
 
 		Advancement.Builder.advancement().parent(maze_map).display(
@@ -385,7 +385,7 @@ public class TFAdvancementGenerator implements AdvancementProvider.AdvancementGe
 				Component.translatable("advancement.twilightforest.ore_map.desc",
 					Component.translatable(TFItems.FILLED_ORE_MAP.get().getDescriptionId())),
 				null, AdvancementType.CHALLENGE, true, true, true)
-			.addCriterion("ore_map", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.FILLED_ORE_MAP.get()))
+			.addCriterion("ore_map", RecipeCraftedTrigger.TriggerInstance.craftedItem(TwilightForestMod.prefix("ore_map")))
 			.save(consumer, "twilightforest:ore_map");
 
 		AdvancementHolder hill1 = Advancement.Builder.advancement().parent(root).display(
@@ -449,7 +449,7 @@ public class TFAdvancementGenerator implements AdvancementProvider.AdvancementGe
 				TFItems.CHICKEN_JERKY.get(),
 				Component.translatable("advancement.twilightforest.chicken_jerky"),
 				Component.empty(),
-				null, AdvancementType.TASK, true, true, true)
+				null, AdvancementType.CHALLENGE, true, true, true)
 			.addCriterion("jerky", KilledTrigger.TriggerInstance.playerKilledEntity(
 				EntityPredicate.Builder.entity()
 					.of(EntityType.ZOMBIE)
@@ -464,10 +464,11 @@ public class TFAdvancementGenerator implements AdvancementProvider.AdvancementGe
 				TFItems.NAGA_CHESTPLATE.get(),
 				Component.translatable("advancement.twilightforest.naga_armors"),
 				Component.translatable("advancement.twilightforest.naga_armors.desc",
-					Component.translatable(TFItems.NAGA_SCALE.get().getDescriptionId())),
+					Component.translatable(TFItems.NAGA_CHESTPLATE.get().getDescriptionId()),
+					Component.translatable(TFItems.NAGA_LEGGINGS.get().getDescriptionId())),
 				null, AdvancementType.CHALLENGE, true, true, false)
-			.addCriterion("armor", InventoryChangeTrigger.TriggerInstance.hasItems(
-				TFItems.NAGA_CHESTPLATE.get(), TFItems.NAGA_LEGGINGS.get()))
+			.addCriterion("chestplate", RecipeCraftedTrigger.TriggerInstance.craftedItem(TwilightForestMod.prefix("equipment/naga_chestplate")))
+			.addCriterion("leggings", RecipeCraftedTrigger.TriggerInstance.craftedItem(TwilightForestMod.prefix("equipment/naga_leggings")))
 			.rewards(AdvancementRewards.Builder.experience(25))
 			.save(consumer, "twilightforest:naga_armors");
 

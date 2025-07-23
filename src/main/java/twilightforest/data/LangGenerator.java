@@ -109,7 +109,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addAdvancement("ore_map", "How Can That Be Worth It?", "Craft the %s");
 		this.addAdvancement("twilight_hunter", "The Silence of the Forest", "Hunt some of the local wildlife");
 		this.addAdvancement("kill_naga", "Time To Even The Scales", "Slay the %s in its forest courtyard and obtain a %s to overcome the barrier magic surrounding the Lich's tower");
-		this.addAdvancement("naga_armors", "Naga Armorer", "Craft both %s chest and leg armor");
+		this.addAdvancement("naga_armors", "Naga Armorer", "Craft a %s and %s");
 		this.addAdvancement("kill_lich", "Bring Out Your Dead", "Slay the %s at top of his tower and retrieve a scepter to clear poisonous mosquitoes from the Swamp, see through blinding darkness of the Dark Forest's curse, and resist the Snowy Forest's chill");
 		this.addAdvancement("lich_scepters", "By Our Powers Combined!", "Acquire all four scepters of power");
 		this.addAdvancement("full_mettle_alchemist", "Full Mettle Alchemist", "Drink three doses of Harming II from a potion flask in under 6 seconds and survive");
