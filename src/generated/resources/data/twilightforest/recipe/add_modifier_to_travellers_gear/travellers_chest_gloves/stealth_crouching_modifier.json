@@ -1,9 +1,6 @@
 {
   "type": "twilightforest:travellers_gear_modifier_shapeless_recipe",
   "ingredients": [
-    {
-      "item": "twilightforest:travellers_chest_gloves"
-    },
     [
       {
         "type": "neoforge:components",
@@ -32,6 +29,9 @@
     },
     {
       "item": "minecraft:golden_carrot"
+    },
+    {
+      "item": "twilightforest:travellers_chest_gloves"
     }
   ],
   "modifier": {

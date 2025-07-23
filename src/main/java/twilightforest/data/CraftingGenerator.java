@@ -683,11 +683,11 @@ public class CraftingGenerator extends CraftingDataHelper {
 			TravellersModifiers.PERFECT_DODGE_MODIFIER).save(output);
 
 		TravellersGearComponentModifierBuilder.buildShapeless(CartesianShapelessRecipeBuilder.create(splitTravellersModifiersRecipes)
-				.ingredient(Ingredient.of(TFItems.TRAVELLERS_CHESTPLATE, TFItems.TRAVELLERS_CHESTPLATE_GLOVES))
 				.ingredient(potionsIngredient(Potions.INVISIBILITY, Potions.LONG_INVISIBILITY))
 				.ingredient(Items.ENDER_EYE)
 				.ingredient(Items.SPIDER_EYE)
 				.ingredient(Items.GOLDEN_CARROT)
+				.ingredient(Ingredient.of(TFItems.TRAVELLERS_CHESTPLATE, TFItems.TRAVELLERS_CHESTPLATE_GLOVES))
 				.build(),
 			TravellersModifiers.STEALTH_MODIFIER).save(output);
 
@@ -702,20 +702,20 @@ public class CraftingGenerator extends CraftingDataHelper {
 			TravellersModifiers.HASTE_MODIFIER).save(output);
 
 		TravellersGearComponentModifierBuilder.buildShapeless(CartesianShapelessRecipeBuilder.create(splitTravellersModifiersRecipes)
-				.ingredient(Ingredient.of(TFItems.TRAVELLERS_CHESTPLATE, TFItems.TRAVELLERS_CHESTPLATE_GLOVES))
 				.ingredient(TFItems.EXANIMATE_ESSENCE)
 				.ingredient(TFItems.ORE_MAGNET)
 				.ingredient(TFItems.LIVEROOT)
 				.ingredient(Items.CHICKEN)
+				.ingredient(Ingredient.of(TFItems.TRAVELLERS_CHESTPLATE, TFItems.TRAVELLERS_CHESTPLATE_GLOVES))
 				.build(),
 			TravellersModifiers.ARROW_MAGNETISM_MODIFIER).save(output);
 
 		TravellersGearComponentModifierBuilder.buildShapeless(CartesianShapelessRecipeBuilder.create(splitTravellersModifiersRecipes)
-				.ingredient(Ingredient.of(TFItems.TRAVELLERS_CHESTPLATE, TFItems.TRAVELLERS_CHESTPLATE_GLOVES))
 				.ingredient(TFItems.HYDRA_CHOP)
 				.ingredient(TFItems.HYDRA_CHOP)
 				.ingredient(TFItems.HYDRA_CHOP)
 				.ingredient(Items.BUNDLE)
+				.ingredient(Ingredient.of(TFItems.TRAVELLERS_CHESTPLATE, TFItems.TRAVELLERS_CHESTPLATE_GLOVES))
 				.build(),
 			TravellersModifiers.FOOD_EFFICIENCY_MODIFIER).save(output);
 
@@ -767,7 +767,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.pattern("SBS")
 				.pattern("L L")
 				.define('B', Ingredient.of(TFItems.TRAVELLERS_BOOTS))
-				.define('S', Ingredient.of(Tags.Items.SLIME_BALLS))
+				.define('S', Ingredient.of(TFItems.MAZE_SLIME_BALL))
 				.define('L', Ingredient.of(Items.LILY_PAD))
 				.build(),
 			TravellersModifiers.WATER_WALK_MODIFIER).save(output);

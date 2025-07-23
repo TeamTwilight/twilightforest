@@ -16,7 +16,7 @@
         "item": "minecraft:lily_pad"
       },
       "S": {
-        "tag": "c:slime_balls"
+        "item": "twilightforest:maze_slime_ball"
       }
     },
     "pattern": [
