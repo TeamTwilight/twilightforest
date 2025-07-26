@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
 public class TrollCaveStructure extends ProgressionStructure implements ConfigurableSpawns {
 	public static final MapCodec<TrollCaveStructure> CODEC = RecordCodecBuilder.mapCodec(instance -> instance
 		.group(
-			ControlledSpawns.ControlledSpawningConfig.FLAT_CODEC.forGetter(ConfigurableSpawns::getConfig),
+			ControlledSpawns.ControlledSpawningConfig.CODEC.fieldOf(ControlledSpawns.CODEC_NAME).forGetter(ConfigurableSpawns::getConfig),
 			StructureSpeleothemConfigs.CODEC.fieldOf("speleothem_config").forGetter(s -> s.speleothemConfig)
 		)
 		.and(progressionCodec(instance))
@@ -47,7 +47,7 @@ public class TrollCaveStructure extends ProgressionStructure implements Configur
 	private final ControlledSpawningConfig controlledSpawningConfig;
 	private final Holder.Reference<StructureSpeleothemConfig> speleothemConfig;
 
-	public TrollCaveStructure(ControlledSpawningConfig controlledSpawningConfig, Holder<StructureSpeleothemConfig> speleothemConfig, AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, DecorationConfig decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
+	public TrollCaveStructure(ControlledSpawningConfig controlledSpawningConfig, Holder<StructureSpeleothemConfig> speleothemConfig, AdvancementLockConfig advancementLockConfig, Optional<HintConfig> hintConfig, DecorationConfig decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
 		super(advancementLockConfig, hintConfig, decorationConfig, centerInChunk, structureIcon, structureSettings);
 
 		this.controlledSpawningConfig = controlledSpawningConfig;
@@ -83,7 +83,7 @@ public class TrollCaveStructure extends ProgressionStructure implements Configur
 			)), List.of(), List.of()),
 			context.lookup(TFRegistries.Keys.STRUCTURE_SPELEOTHEM_SETTINGS).getOrThrow(StructureSpeleothemConfigs.TROLL_CAVE),
 			new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_merge"))),
-			new HintConfig(HintConfig.book("trollcave", 3), TFEntities.KOBOLD.get()),
+			Optional.of(new HintConfig(HintConfig.book("trollcave", 3), TFEntities.KOBOLD.get())),
 			new DecorationConfig(4, true, true, false),
 			false, Optional.of(TFMapDecorations.TROLL_CAVES),
 			new StructureSettings(

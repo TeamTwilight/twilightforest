@@ -44,7 +44,7 @@ public class LichTowerStructure extends ControlledSpawningStructure implements C
 		controlledSpawningCodec(instance).apply(instance, LichTowerStructure::new)
 	);
 
-	public LichTowerStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, DecorationConfig decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
+	public LichTowerStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, Optional<HintConfig> hintConfig, DecorationConfig decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
 		super(controlledSpawningConfig, advancementLockConfig, hintConfig, decorationConfig, centerInChunk, structureIcon, structureSettings);
 	}
 
@@ -96,7 +96,7 @@ public class LichTowerStructure extends ControlledSpawningStructure implements C
 		return new LichTowerStructure(
 			monsters,
 			new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_naga"))),
-			new HintConfig(HintConfig.book("lichtower", 4), TFEntities.KOBOLD.get()),
+			Optional.of(new HintConfig(HintConfig.book("lichtower", 4), TFEntities.KOBOLD.get())),
 			new DecorationConfig(0, false, true, false, true),
 			true, Optional.of(TFMapDecorations.LICH_TOWER),
 			new StructureSettings(

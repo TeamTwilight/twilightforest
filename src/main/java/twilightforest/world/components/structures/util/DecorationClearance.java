@@ -8,6 +8,9 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.Structure;
 
 public interface DecorationClearance {
+
+	String CODEC_NAME = "decoration_clearance";
+
 	float chunkClearanceRadius();
 
 	boolean isSurfaceDecorationsAllowed();
@@ -29,14 +32,12 @@ public interface DecorationClearance {
 			this(chunkClearanceRadius, surfaceDecorations, undergroundDecorations, true, adjustElevation);
 		}
 
-		public static final MapCodec<DecorationConfig> FLAT_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+		public static final Codec<DecorationConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			Codec.floatRange(0, 8).fieldOf("chunk_clearance_radius").orElse(1f).forGetter(DecorationConfig::chunkClearanceRadius),
 			Codec.BOOL.fieldOf("allow_biome_surface_decorations").forGetter(DecorationConfig::surfaceDecorations),
 			Codec.BOOL.fieldOf("allow_biome_underground_decorations").forGetter(DecorationConfig::undergroundDecorations),
 			Codec.BOOL.fieldOf("allow_biome_vegetation").forGetter(DecorationConfig::vegetation),
 			Codec.BOOL.fieldOf("adjust_structure_elevation").forGetter(DecorationConfig::adjustElevation)
 		).apply(instance, DecorationConfig::new));
-
-		public static Codec<DecorationConfig> CODEC = FLAT_CODEC.codec();
 	}
 }

@@ -20,6 +20,7 @@ import twilightforest.init.TFMapDecorations;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.world.components.structures.trollcave.CloudCastleComponent;
 import twilightforest.world.components.structures.util.ConfigurableSpawns;
+import twilightforest.world.components.structures.util.ControlledSpawns;
 import twilightforest.world.components.structures.util.ProgressionStructure;
 
 import java.util.Arrays;
@@ -30,13 +31,13 @@ import java.util.stream.Collectors;
 public class GiantHouseStructure extends ProgressionStructure implements ConfigurableSpawns {
 	public static final MapCodec<GiantHouseStructure> CODEC = RecordCodecBuilder.mapCodec(instance ->
 		progressionCodec(instance)
-			.and(ControlledSpawningConfig.FLAT_CODEC.forGetter(ConfigurableSpawns::getConfig))
+			.and(ControlledSpawningConfig.CODEC.fieldOf(ControlledSpawns.CODEC_NAME).forGetter(ConfigurableSpawns::getConfig))
 			.apply(instance, GiantHouseStructure::new)
 	);
 
 	private final ControlledSpawningConfig controlledSpawningConfig;
 
-	public GiantHouseStructure(AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, DecorationConfig decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings, ControlledSpawningConfig controlledSpawningConfig) {
+	public GiantHouseStructure(AdvancementLockConfig advancementLockConfig, Optional<HintConfig> hintConfig, DecorationConfig decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings, ControlledSpawningConfig controlledSpawningConfig) {
 		super(advancementLockConfig, hintConfig, decorationConfig, centerInChunk, structureIcon, structureSettings);
 
 		this.controlledSpawningConfig = controlledSpawningConfig;
@@ -61,7 +62,7 @@ public class GiantHouseStructure extends ProgressionStructure implements Configu
 	public static GiantHouseStructure buildGiantHouseConfig(BootstrapContext<Structure> context) {
 		return new GiantHouseStructure(
 			new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_merge"))),
-			new HintConfig(HintConfig.book("trollcave", 3), TFEntities.KOBOLD.get()),
+			Optional.of(new HintConfig(HintConfig.book("trollcave", 3), TFEntities.KOBOLD.get())),
 			new DecorationConfig(1, true, true, false),
 			false, Optional.empty(),
 			new StructureSettings(

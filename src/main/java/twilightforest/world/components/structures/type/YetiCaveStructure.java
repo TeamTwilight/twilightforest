@@ -44,7 +44,7 @@ public class YetiCaveStructure extends ControlledSpawningStructure implements Cu
 
 	private final Holder.Reference<StructureSpeleothemConfig> speleothemConfig;
 
-	public YetiCaveStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, DecorationConfig decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings, Holder<StructureSpeleothemConfig> speleothemConfig) {
+	public YetiCaveStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, Optional<HintConfig> hintConfig, DecorationConfig decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings, Holder<StructureSpeleothemConfig> speleothemConfig) {
 		super(controlledSpawningConfig, advancementLockConfig, hintConfig, decorationConfig, centerInChunk, structureIcon, structureSettings);
 
 		this.speleothemConfig = (Holder.Reference<StructureSpeleothemConfig>) speleothemConfig;
@@ -64,7 +64,7 @@ public class YetiCaveStructure extends ControlledSpawningStructure implements Cu
 		return new YetiCaveStructure(
 			ControlledSpawningConfig.firstIndexMonsters(new MobSpawnSettings.SpawnerData(TFEntities.YETI.get(), 5, 1, 2)),
 			new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_lich"))),
-			new HintConfig(HintConfig.book("yeticave", 3), TFEntities.KOBOLD.get()),
+			Optional.of(new HintConfig(HintConfig.book("yeticave", 3), TFEntities.KOBOLD.get())),
 			new DecorationConfig(2, true, false, false),
 			false, Optional.of(TFMapDecorations.YETI_LAIR),
 			new StructureSettings(

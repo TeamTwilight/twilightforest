@@ -2,7 +2,6 @@ package twilightforest.world.components.structures.util;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
-import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
@@ -34,6 +33,8 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 public interface StructureHints {
+
+	String CODEC_NAME = "hint_creature";
 	String BOOK_AUTHOR = TwilightForestMod.ID + ".book.author";
 
 	/**
@@ -104,20 +105,24 @@ public interface StructureHints {
 
 		// make our hint monster
 		Mob hinty = this.createHintMonster(world);
-		hinty.moveTo(pos.offset(dx, dy, dz), 0f, 0f);
 
-		// check if the bounding box is clear
-		if (hinty.checkSpawnObstruction(world) && hinty.getSensing().hasLineOfSight(player)) {
+		if (hinty != null) {
+			hinty.moveTo(pos.offset(dx, dy, dz), 0f, 0f);
 
-			// add items and hint book
-			ItemStack book = this.createHintBook(world.registryAccess());
+			// check if the bounding box is clear
+			if (hinty.checkSpawnObstruction(world) && hinty.getSensing().hasLineOfSight(player)) {
+				// add items and hint book
+				ItemStack book = this.createHintBook(world.registryAccess());
 
-			hinty.setItemSlot(EquipmentSlot.MAINHAND, book);
-			hinty.setDropChance(EquipmentSlot.MAINHAND, 1.0F);
-			//hinty.setDropItemsWhenDead(true);
+				if (!book.isEmpty()) {
+					hinty.setItemSlot(EquipmentSlot.MAINHAND, book);
+					hinty.setDropChance(EquipmentSlot.MAINHAND, Mob.PRESERVE_ITEM_DROP_CHANCE_THRESHOLD);
+					//hinty.setDropItemsWhenDead(true);
+				}
 
-			world.addFreshEntity(hinty);
-			return true;
+				world.addFreshEntity(hinty);
+				return true;
+			}
 		}
 
 		return false;
@@ -127,12 +132,10 @@ public interface StructureHints {
 	Mob createHintMonster(Level world);
 
 	record HintConfig(ItemStack hintItem, EntityType<? extends Mob> hintMob) {
-		public static final MapCodec<HintConfig> FLAT_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+		public static final Codec<HintConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			ItemStack.CODEC.fieldOf("hint_item").forGetter(HintConfig::hintItem),
 			BuiltInRegistries.ENTITY_TYPE.byNameCodec().comapFlatMap(HintConfig::checkCastMob, entityType -> entityType).fieldOf("hint_mob").forGetter(HintConfig::hintMob)
 		).apply(instance, HintConfig::new));
-
-		public static Codec<HintConfig> CODEC = FLAT_CODEC.codec();
 
 		@SuppressWarnings("unchecked")
 		private static DataResult<EntityType<? extends Mob>> checkCastMob(EntityType<?> entityType) {

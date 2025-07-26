@@ -32,6 +32,7 @@ import twilightforest.world.components.structures.CustomDensitySource;
 import twilightforest.world.components.structures.HollowHillComponent;
 import twilightforest.world.components.structures.StructureSpeleothemConfig;
 import twilightforest.world.components.structures.util.ConfigurableSpawns;
+import twilightforest.world.components.structures.util.ControlledSpawns;
 import twilightforest.world.components.structures.util.LandmarkStructure;
 
 import java.util.Arrays;
@@ -44,7 +45,7 @@ public class HollowHillStructure extends LandmarkStructure implements Configurab
 		.group(
 			// TODO Clean up findGenerationPoint() first before even thinking about increasing upper limit
 			Codec.intRange(1, 3).fieldOf("hill_size").forGetter(s -> s.size),
-			ControlledSpawningConfig.FLAT_CODEC.forGetter(s -> s.controlledSpawningConfig),
+			ControlledSpawningConfig.CODEC.fieldOf(ControlledSpawns.CODEC_NAME).forGetter(s -> s.controlledSpawningConfig),
 			StructureSpeleothemConfigs.CODEC.fieldOf("speleothem_config").forGetter(s -> s.speleothemConfig)
 		)
 		.and(landmarkCodec(instance))

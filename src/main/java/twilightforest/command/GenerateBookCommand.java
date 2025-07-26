@@ -35,15 +35,21 @@ public class GenerateBookCommand {
 		if (structureKey == null) {
 			for (Structure structure : source.getLevel().registryAccess().registryOrThrow(Registries.STRUCTURE).stream().toList()) {
 				if (structure instanceof StructureHints hint) {
-					if (!player.addItem(hint.createHintBook(source.registryAccess()))) {
-						player.drop(hint.createHintBook(source.registryAccess()), true);
+					ItemStack book = hint.createHintBook(source.registryAccess());
+					if (!book.isEmpty()) {
+						if (!player.addItem(book)) {
+							player.drop(book, true);
+						}
 					}
 				}
 			}
 		} else {
 			if (source.getLevel().registryAccess().registryOrThrow(Registries.STRUCTURE).get(structureKey.key()) instanceof StructureHints hint) {
-				if (!player.addItem(hint.createHintBook(source.registryAccess()))) {
-					player.drop(hint.createHintBook(source.registryAccess()), true);
+				ItemStack book = hint.createHintBook(source.registryAccess());
+				if (!book.isEmpty()) {
+					if (!player.addItem(book)) {
+						player.drop(book, true);
+					}
 				}
 			} else {
 				ItemStack book = StructureHints.HintConfig.defaultBook();

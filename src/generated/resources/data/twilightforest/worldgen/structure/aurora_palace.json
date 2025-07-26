@@ -1,63 +1,70 @@
 {
   "type": "twilightforest:aurora_palace",
-  "adjust_structure_elevation": false,
   "advancements_required": [
     "twilightforest:progress_yeti"
   ],
-  "allow_biome_surface_decorations": false,
-  "allow_biome_underground_decorations": true,
-  "allow_biome_vegetation": true,
-  "ambient_spawns": [],
   "biomes": "#twilightforest:valid_aurora_palace_biomes",
-  "chunk_clearance_radius": 2.0,
-  "hint_item": {
-    "components": {
-      "minecraft:written_book_content": {
-        "author": "twilightforest.book.author",
-        "generation": 3,
-        "pages": [
-          {
-            "raw": "{\"translate\":\"twilightforest.book.icetower.1\"}"
-          },
-          {
-            "raw": "{\"translate\":\"twilightforest.book.icetower.2\"}"
-          },
-          {
-            "raw": "{\"translate\":\"twilightforest.book.icetower.3\"}"
-          }
-        ],
-        "resolved": true,
-        "title": {
-          "raw": "twilightforest.book.icetower"
+  "controlled_spawns": {
+    "ambient_spawns": [],
+    "labelled_monster_spawns": {
+      "0": [
+        {
+          "type": "twilightforest:snow_guardian",
+          "maxCount": 2,
+          "minCount": 1,
+          "weight": 10
+        },
+        {
+          "type": "twilightforest:stable_ice_core",
+          "maxCount": 2,
+          "minCount": 1,
+          "weight": 10
+        },
+        {
+          "type": "twilightforest:unstable_ice_core",
+          "maxCount": 2,
+          "minCount": 1,
+          "weight": 5
         }
-      },
-      "twilightforest:translatable_book": {}
+      ]
     },
-    "count": 1,
-    "id": "minecraft:written_book"
+    "water_spawns": []
   },
-  "hint_mob": "twilightforest:kobold",
-  "labelled_monster_spawns": {
-    "0": [
-      {
-        "type": "twilightforest:snow_guardian",
-        "maxCount": 2,
-        "minCount": 1,
-        "weight": 10
+  "decoration_clearance": {
+    "adjust_structure_elevation": false,
+    "allow_biome_surface_decorations": false,
+    "allow_biome_underground_decorations": true,
+    "allow_biome_vegetation": true,
+    "chunk_clearance_radius": 2.0
+  },
+  "hint_creature": {
+    "hint_item": {
+      "components": {
+        "minecraft:written_book_content": {
+          "author": "twilightforest.book.author",
+          "generation": 3,
+          "pages": [
+            {
+              "raw": "{\"translate\":\"twilightforest.book.icetower.1\"}"
+            },
+            {
+              "raw": "{\"translate\":\"twilightforest.book.icetower.2\"}"
+            },
+            {
+              "raw": "{\"translate\":\"twilightforest.book.icetower.3\"}"
+            }
+          ],
+          "resolved": true,
+          "title": {
+            "raw": "twilightforest.book.icetower"
+          }
+        },
+        "twilightforest:translatable_book": {}
       },
-      {
-        "type": "twilightforest:stable_ice_core",
-        "maxCount": 2,
-        "minCount": 1,
-        "weight": 10
-      },
-      {
-        "type": "twilightforest:unstable_ice_core",
-        "maxCount": 2,
-        "minCount": 1,
-        "weight": 5
-      }
-    ]
+      "count": 1,
+      "id": "minecraft:written_book"
+    },
+    "hint_mob": "twilightforest:kobold"
   },
   "spawn_overrides": {
     "ambient": {
@@ -94,6 +101,5 @@
     }
   },
   "step": "surface_structures",
-  "structure_icon": "twilightforest:aurora_palace",
-  "water_spawns": []
+  "structure_icon": "twilightforest:aurora_palace"
 }

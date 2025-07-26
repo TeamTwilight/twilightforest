@@ -40,7 +40,7 @@ import java.util.stream.Collectors;
 public class HollowTreeStructure extends Structure implements DecorationClearance, TreeGrowerStartable {
 	public static final MapCodec<HollowTreeStructure> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 		Structure.settingsCodec(instance),
-		DecorationConfig.FLAT_CODEC.forGetter(s -> s.decorationConfig),
+		DecorationConfig.CODEC.fieldOf(DecorationClearance.CODEC_NAME).forGetter(s -> s.decorationConfig),
 		IntProvider.codec(16, 128).fieldOf("height").forGetter(s -> s.height),
 		IntProvider.codec(1, 8).fieldOf("radius").forGetter(s -> s.radius),
 		BlockStateProvider.CODEC.fieldOf("log").forGetter(s -> s.log),

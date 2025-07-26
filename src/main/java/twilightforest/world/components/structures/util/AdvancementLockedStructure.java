@@ -8,6 +8,9 @@ import twilightforest.util.PlayerHelper;
 import java.util.List;
 
 public interface AdvancementLockedStructure {
+
+	String CODEC_NAME = "advancements_required";
+
 	default boolean doesPlayerHaveRequiredAdvancements(Player player) {
 		return PlayerHelper.playerHasRequiredAdvancements(player, this.getRequiredAdvancements());
 	}

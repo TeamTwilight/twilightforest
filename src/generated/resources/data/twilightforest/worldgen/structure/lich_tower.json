@@ -1,92 +1,99 @@
 {
   "type": "twilightforest:lich_tower",
-  "adjust_structure_elevation": true,
   "advancements_required": [
     "twilightforest:progress_naga"
   ],
-  "allow_biome_surface_decorations": false,
-  "allow_biome_underground_decorations": true,
-  "allow_biome_vegetation": false,
-  "ambient_spawns": [],
   "biomes": "#twilightforest:valid_lich_tower_biomes",
-  "chunk_clearance_radius": 0.0,
-  "hint_item": {
-    "components": {
-      "minecraft:written_book_content": {
-        "author": "twilightforest.book.author",
-        "generation": 3,
-        "pages": [
-          {
-            "raw": "{\"translate\":\"twilightforest.book.lichtower.1\"}"
-          },
-          {
-            "raw": "{\"translate\":\"twilightforest.book.lichtower.2\"}"
-          },
-          {
-            "raw": "{\"translate\":\"twilightforest.book.lichtower.3\"}"
-          },
-          {
-            "raw": "{\"translate\":\"twilightforest.book.lichtower.4\"}"
-          }
-        ],
-        "resolved": true,
-        "title": {
-          "raw": "twilightforest.book.lichtower"
+  "controlled_spawns": {
+    "ambient_spawns": [],
+    "labelled_monster_spawns": {
+      "0": [
+        {
+          "type": "twilightforest:rising_zombie",
+          "maxCount": 2,
+          "minCount": 1,
+          "weight": 2
         }
-      },
-      "twilightforest:translatable_book": {}
+      ],
+      "1": [
+        {
+          "type": "minecraft:zombie",
+          "maxCount": 2,
+          "minCount": 1,
+          "weight": 10
+        },
+        {
+          "type": "minecraft:skeleton",
+          "maxCount": 2,
+          "minCount": 1,
+          "weight": 10
+        },
+        {
+          "type": "minecraft:creeper",
+          "maxCount": 1,
+          "minCount": 1,
+          "weight": 1
+        },
+        {
+          "type": "minecraft:enderman",
+          "maxCount": 2,
+          "minCount": 1,
+          "weight": 1
+        },
+        {
+          "type": "twilightforest:death_tome",
+          "maxCount": 3,
+          "minCount": 2,
+          "weight": 10
+        },
+        {
+          "type": "minecraft:witch",
+          "maxCount": 1,
+          "minCount": 1,
+          "weight": 1
+        }
+      ]
     },
-    "count": 1,
-    "id": "minecraft:written_book"
+    "water_spawns": []
   },
-  "hint_mob": "twilightforest:kobold",
-  "labelled_monster_spawns": {
-    "0": [
-      {
-        "type": "twilightforest:rising_zombie",
-        "maxCount": 2,
-        "minCount": 1,
-        "weight": 2
-      }
-    ],
-    "1": [
-      {
-        "type": "minecraft:zombie",
-        "maxCount": 2,
-        "minCount": 1,
-        "weight": 10
+  "decoration_clearance": {
+    "adjust_structure_elevation": true,
+    "allow_biome_surface_decorations": false,
+    "allow_biome_underground_decorations": true,
+    "allow_biome_vegetation": false,
+    "chunk_clearance_radius": 0.0
+  },
+  "hint_creature": {
+    "hint_item": {
+      "components": {
+        "minecraft:written_book_content": {
+          "author": "twilightforest.book.author",
+          "generation": 3,
+          "pages": [
+            {
+              "raw": "{\"translate\":\"twilightforest.book.lichtower.1\"}"
+            },
+            {
+              "raw": "{\"translate\":\"twilightforest.book.lichtower.2\"}"
+            },
+            {
+              "raw": "{\"translate\":\"twilightforest.book.lichtower.3\"}"
+            },
+            {
+              "raw": "{\"translate\":\"twilightforest.book.lichtower.4\"}"
+            }
+          ],
+          "resolved": true,
+          "title": {
+            "raw": "twilightforest.book.lichtower"
+          }
+        },
+        "twilightforest:translatable_book": {}
       },
-      {
-        "type": "minecraft:skeleton",
-        "maxCount": 2,
-        "minCount": 1,
-        "weight": 10
-      },
-      {
-        "type": "minecraft:creeper",
-        "maxCount": 1,
-        "minCount": 1,
-        "weight": 1
-      },
-      {
-        "type": "minecraft:enderman",
-        "maxCount": 2,
-        "minCount": 1,
-        "weight": 1
-      },
-      {
-        "type": "twilightforest:death_tome",
-        "maxCount": 3,
-        "minCount": 2,
-        "weight": 10
-      },
-      {
-        "type": "minecraft:witch",
-        "maxCount": 1,
-        "minCount": 1,
-        "weight": 1
-      }
-    ]
+      "count": 1,
+      "id": "minecraft:written_book"
+    },
+    "hint_mob": "twilightforest:kobold"
   },
   "spawn_overrides": {
     "ambient": {
@@ -124,6 +131,5 @@
   },
   "step": "surface_structures",
   "structure_icon": "twilightforest:lich_tower",
-  "terrain_adaptation": "beard_thin",
-  "water_spawns": []
+  "terrain_adaptation": "beard_thin"
 }

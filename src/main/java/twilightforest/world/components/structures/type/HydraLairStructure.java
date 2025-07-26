@@ -45,7 +45,7 @@ public class HydraLairStructure extends ProgressionStructure implements CustomDe
 
 	private final Holder.Reference<StructureSpeleothemConfig> speleothemConfig;
 
-	public HydraLairStructure(AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, DecorationConfig decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings, Holder<StructureSpeleothemConfig> speleothemConfig) {
+	public HydraLairStructure(AdvancementLockConfig advancementLockConfig, Optional<HintConfig> hintConfig, DecorationConfig decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings, Holder<StructureSpeleothemConfig> speleothemConfig) {
 		super(advancementLockConfig, hintConfig, decorationConfig, centerInChunk, structureIcon, structureSettings);
 
 		this.speleothemConfig = (Holder.Reference<StructureSpeleothemConfig>) speleothemConfig;
@@ -64,7 +64,7 @@ public class HydraLairStructure extends ProgressionStructure implements CustomDe
 	public static HydraLairStructure buildHydraLairConfig(BootstrapContext<Structure> context) {
 		return new HydraLairStructure(
 			new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_labyrinth"))),
-			new HintConfig(HintConfig.book("hydralair", 4), TFEntities.KOBOLD.get()),
+			Optional.of(new HintConfig(HintConfig.book("hydralair", 4), TFEntities.KOBOLD.get())),
 			new DecorationConfig(2, false, false, false),
 			true, Optional.of(TFMapDecorations.HYDRA_LAIR),
 			new StructureSettings(

@@ -14,6 +14,9 @@ import java.util.Map;
 
 // FIXME Using IDs to enumerate lists of mob spawn tables is a bad idea... Using String for now in the config, will transition this implementation detail later
 public interface ControlledSpawns {
+
+	String CODEC_NAME = "controlled_spawns";
+
 	List<MobSpawnSettings.SpawnerData> getCombinedMonsterSpawnableList();
 
 	List<MobSpawnSettings.SpawnerData> getCombinedCreatureSpawnableList();
@@ -29,7 +32,7 @@ public interface ControlledSpawns {
 	List<MobSpawnSettings.SpawnerData> getSpawnableMonsterList(int index);
 
 	record ControlledSpawningConfig(Map<String, List<MobSpawnSettings.SpawnerData>> spawnableMonsterLists, List<MobSpawnSettings.SpawnerData> ambientCreatureList, List<MobSpawnSettings.SpawnerData> waterCreatureList, List<MobSpawnSettings.SpawnerData> combinedMonsterSpawnableCache, List<MobSpawnSettings.SpawnerData> combinedCreatureSpawnableCache) {
-		public static final MapCodec<ControlledSpawningConfig> FLAT_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+		public static final Codec<ControlledSpawningConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			Codec.unboundedMap(Codec.STRING, MobSpawnSettings.SpawnerData.CODEC.listOf()).fieldOf("labelled_monster_spawns").forGetter(ControlledSpawningConfig::spawnableMonsterLists),
 			MobSpawnSettings.SpawnerData.CODEC.listOf().fieldOf("ambient_spawns").forGetter(ControlledSpawningConfig::ambientCreatureList),
 			MobSpawnSettings.SpawnerData.CODEC.listOf().fieldOf("water_spawns").forGetter(ControlledSpawningConfig::waterCreatureList)

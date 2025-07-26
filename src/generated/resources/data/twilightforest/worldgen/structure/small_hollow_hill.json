@@ -1,47 +1,52 @@
 {
   "type": "twilightforest:hollow_hill",
-  "adjust_structure_elevation": false,
-  "allow_biome_surface_decorations": true,
-  "allow_biome_underground_decorations": false,
-  "allow_biome_vegetation": true,
-  "ambient_spawns": [],
   "biomes": "#twilightforest:valid_hollow_hill_biomes",
-  "chunk_clearance_radius": 1.0,
-  "hill_size": 1,
-  "labelled_monster_spawns": {
-    "0": [
-      {
-        "type": "minecraft:spider",
-        "maxCount": 4,
-        "minCount": 4,
-        "weight": 10
-      },
-      {
-        "type": "minecraft:zombie",
-        "maxCount": 4,
-        "minCount": 4,
-        "weight": 10
-      },
-      {
-        "type": "twilightforest:redcap",
-        "maxCount": 4,
-        "minCount": 4,
-        "weight": 10
-      },
-      {
-        "type": "twilightforest:swarm_spider",
-        "maxCount": 4,
-        "minCount": 4,
-        "weight": 10
-      },
-      {
-        "type": "twilightforest:kobold",
-        "maxCount": 8,
-        "minCount": 4,
-        "weight": 10
-      }
-    ]
+  "controlled_spawns": {
+    "ambient_spawns": [],
+    "labelled_monster_spawns": {
+      "0": [
+        {
+          "type": "minecraft:spider",
+          "maxCount": 4,
+          "minCount": 4,
+          "weight": 10
+        },
+        {
+          "type": "minecraft:zombie",
+          "maxCount": 4,
+          "minCount": 4,
+          "weight": 10
+        },
+        {
+          "type": "twilightforest:redcap",
+          "maxCount": 4,
+          "minCount": 4,
+          "weight": 10
+        },
+        {
+          "type": "twilightforest:swarm_spider",
+          "maxCount": 4,
+          "minCount": 4,
+          "weight": 10
+        },
+        {
+          "type": "twilightforest:kobold",
+          "maxCount": 8,
+          "minCount": 4,
+          "weight": 10
+        }
+      ]
+    },
+    "water_spawns": []
   },
+  "decoration_clearance": {
+    "adjust_structure_elevation": false,
+    "allow_biome_surface_decorations": true,
+    "allow_biome_underground_decorations": false,
+    "allow_biome_vegetation": true,
+    "chunk_clearance_radius": 1.0
+  },
+  "hill_size": 1,
   "spawn_overrides": {
     "ambient": {
       "bounding_box": "full",
@@ -78,6 +83,5 @@
   },
   "speleothem_config": "twilightforest:small_hollow_hill",
   "step": "surface_structures",
-  "structure_icon": "twilightforest:small_hollow_hill",
-  "water_spawns": []
+  "structure_icon": "twilightforest:small_hollow_hill"
 }

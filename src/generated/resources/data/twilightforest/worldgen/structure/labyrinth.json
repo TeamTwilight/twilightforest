@@ -1,99 +1,106 @@
 {
   "type": "twilightforest:labyrinth",
-  "adjust_structure_elevation": false,
   "advancements_required": [
     "twilightforest:progress_lich"
   ],
-  "allow_biome_surface_decorations": true,
-  "allow_biome_underground_decorations": false,
-  "allow_biome_vegetation": true,
-  "ambient_spawns": [],
   "biomes": "#twilightforest:valid_labyrinth_biomes",
-  "chunk_clearance_radius": 3.0,
-  "hint_item": {
-    "components": {
-      "minecraft:written_book_content": {
-        "author": "twilightforest.book.author",
-        "generation": 3,
-        "pages": [
-          {
-            "raw": "{\"translate\":\"twilightforest.book.labyrinth.1\"}"
-          },
-          {
-            "raw": "{\"translate\":\"twilightforest.book.labyrinth.2\"}"
-          },
-          {
-            "raw": "{\"translate\":\"twilightforest.book.labyrinth.3\"}"
-          },
-          {
-            "raw": "{\"translate\":\"twilightforest.book.labyrinth.4\"}"
-          },
-          {
-            "raw": "{\"translate\":\"twilightforest.book.labyrinth.5\"}"
-          }
-        ],
-        "resolved": true,
-        "title": {
-          "raw": "twilightforest.book.labyrinth"
+  "controlled_spawns": {
+    "ambient_spawns": [],
+    "labelled_monster_spawns": {
+      "0": [
+        {
+          "type": "twilightforest:minotaur",
+          "maxCount": 3,
+          "minCount": 2,
+          "weight": 20
+        },
+        {
+          "type": "minecraft:cave_spider",
+          "maxCount": 2,
+          "minCount": 1,
+          "weight": 10
+        },
+        {
+          "type": "minecraft:creeper",
+          "maxCount": 2,
+          "minCount": 1,
+          "weight": 10
+        },
+        {
+          "type": "twilightforest:maze_slime",
+          "maxCount": 4,
+          "minCount": 2,
+          "weight": 10
+        },
+        {
+          "type": "minecraft:enderman",
+          "maxCount": 2,
+          "minCount": 1,
+          "weight": 1
+        },
+        {
+          "type": "twilightforest:fire_beetle",
+          "maxCount": 2,
+          "minCount": 1,
+          "weight": 10
+        },
+        {
+          "type": "twilightforest:slime_beetle",
+          "maxCount": 2,
+          "minCount": 1,
+          "weight": 10
+        },
+        {
+          "type": "twilightforest:pinch_beetle",
+          "maxCount": 1,
+          "minCount": 1,
+          "weight": 10
         }
-      },
-      "twilightforest:translatable_book": {}
+      ]
     },
-    "count": 1,
-    "id": "minecraft:written_book"
+    "water_spawns": []
   },
-  "hint_mob": "twilightforest:kobold",
-  "labelled_monster_spawns": {
-    "0": [
-      {
-        "type": "twilightforest:minotaur",
-        "maxCount": 3,
-        "minCount": 2,
-        "weight": 20
+  "decoration_clearance": {
+    "adjust_structure_elevation": false,
+    "allow_biome_surface_decorations": true,
+    "allow_biome_underground_decorations": false,
+    "allow_biome_vegetation": true,
+    "chunk_clearance_radius": 3.0
+  },
+  "hint_creature": {
+    "hint_item": {
+      "components": {
+        "minecraft:written_book_content": {
+          "author": "twilightforest.book.author",
+          "generation": 3,
+          "pages": [
+            {
+              "raw": "{\"translate\":\"twilightforest.book.labyrinth.1\"}"
+            },
+            {
+              "raw": "{\"translate\":\"twilightforest.book.labyrinth.2\"}"
+            },
+            {
+              "raw": "{\"translate\":\"twilightforest.book.labyrinth.3\"}"
+            },
+            {
+              "raw": "{\"translate\":\"twilightforest.book.labyrinth.4\"}"
+            },
+            {
+              "raw": "{\"translate\":\"twilightforest.book.labyrinth.5\"}"
+            }
+          ],
+          "resolved": true,
+          "title": {
+            "raw": "twilightforest.book.labyrinth"
+          }
+        },
+        "twilightforest:translatable_book": {}
       },
-      {
-        "type": "minecraft:cave_spider",
-        "maxCount": 2,
-        "minCount": 1,
-        "weight": 10
-      },
-      {
-        "type": "minecraft:creeper",
-        "maxCount": 2,
-        "minCount": 1,
-        "weight": 10
-      },
-      {
-        "type": "twilightforest:maze_slime",
-        "maxCount": 4,
-        "minCount": 2,
-        "weight": 10
-      },
-      {
-        "type": "minecraft:enderman",
-        "maxCount": 2,
-        "minCount": 1,
-        "weight": 1
-      },
-      {
-        "type": "twilightforest:fire_beetle",
-        "maxCount": 2,
-        "minCount": 1,
-        "weight": 10
-      },
-      {
-        "type": "twilightforest:slime_beetle",
-        "maxCount": 2,
-        "minCount": 1,
-        "weight": 10
-      },
-      {
-        "type": "twilightforest:pinch_beetle",
-        "maxCount": 1,
-        "minCount": 1,
-        "weight": 10
-      }
-    ]
+      "count": 1,
+      "id": "minecraft:written_book"
+    },
+    "hint_mob": "twilightforest:kobold"
   },
   "spawn_overrides": {
     "ambient": {
@@ -131,6 +138,5 @@
   },
   "step": "underground_structures",
   "structure_icon": "twilightforest:labyrinth",
-  "terrain_adaptation": "bury",
-  "water_spawns": []
+  "terrain_adaptation": "bury"
 }

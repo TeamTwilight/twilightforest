@@ -18,17 +18,17 @@ import java.util.Optional;
 
 // Landmark structure with a progression lock; Lich Tower/Labyrinth/Hydra Lair/Final Castle/etc
 public abstract class ProgressionStructure extends ConquerableStructure implements AdvancementLockedStructure, StructureHints {
-	protected static <S extends ProgressionStructure> Products.P6<RecordCodecBuilder.Mu<S>, AdvancementLockConfig, HintConfig, DecorationConfig, Boolean, Optional<Holder<MapDecorationType>>, StructureSettings> progressionCodec(RecordCodecBuilder.Instance<S> instance) {
+	protected static <S extends ProgressionStructure> Products.P6<RecordCodecBuilder.Mu<S>, AdvancementLockConfig, Optional<HintConfig>, DecorationConfig, Boolean, Optional<Holder<MapDecorationType>>, StructureSettings> progressionCodec(RecordCodecBuilder.Instance<S> instance) {
 		return instance.group(
-			AdvancementLockConfig.CODEC.fieldOf("advancements_required").forGetter(s -> s.advancementLockConfig),
-			HintConfig.FLAT_CODEC.forGetter(s -> s.hintConfig)
+			AdvancementLockConfig.CODEC.fieldOf(AdvancementLockedStructure.CODEC_NAME).forGetter(s -> s.advancementLockConfig),
+			HintConfig.CODEC.optionalFieldOf(StructureHints.CODEC_NAME).forGetter(s -> s.hintConfig)
 		).and(landmarkCodec(instance));
 	}
 
 	protected final AdvancementLockConfig advancementLockConfig;
-	protected final HintConfig hintConfig;
+	protected final Optional<HintConfig> hintConfig;
 
-	public ProgressionStructure(AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, DecorationConfig decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
+	public ProgressionStructure(AdvancementLockConfig advancementLockConfig, Optional<HintConfig> hintConfig, DecorationConfig decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
 		super(decorationConfig, centerInChunk, structureIcon, structureSettings);
 
 		this.advancementLockConfig = advancementLockConfig;
@@ -68,12 +68,12 @@ public abstract class ProgressionStructure extends ConquerableStructure implemen
 
 	@Override
 	public ItemStack createHintBook(RegistryAccess registryAccess) {
-		return this.hintConfig.hintItem().copy();
+		return this.hintConfig.map(config -> config.hintItem().copy()).orElse(ItemStack.EMPTY);
 	}
 
 	@Override
 	@Nullable
 	public Mob createHintMonster(Level world) {
-		return this.hintConfig.hintMob().create(world);
+		return this.hintConfig.map(config -> config.hintMob().create(world)).orElse(null);
 	}
 }
