@@ -627,7 +627,7 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			TFBlocks.MINING_CHEST.get(),
 			TFBlocks.SORTING_CHEST.get(),
 			TFBlocks.HUGE_LILY_PAD.get()
-		).addTags(BANISTERS, HOLLOW_LOGS, TOWERWOOD);
+		).addTags(BANISTERS, HOLLOW_LOGS, TOWERWOOD, DRYING_RACKS);
 
 		this.tag(BlockTags.MINEABLE_WITH_HOE).add(
 			//vanilla doesnt use the leaves tag

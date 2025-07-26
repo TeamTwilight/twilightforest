@@ -1,4 +1,4 @@
-// 1.21.1	2025-07-21T22:27:59.511352579	Twilight Forest Block Tags
+// 1.21.1	2025-07-25T19:25:05.133075017	Twilight Forest Block Tags
 9d529390443b5da5d71bd6e867c066632e1340b8 data/alexscaves/tags/block/ferromagnetic_blocks.json
 ddfcbead67bb9487c003af137a276963e5b20022 data/alexscaves/tags/block/gloomoth_light_sources.json
 c365018bd78f1335cd4508b5d74bc4500ae951bd data/alexscaves/tags/block/underzealot_light_sources.json
@@ -42,7 +42,7 @@ e121d38615572a340044db73e20622af4e2a0a7c data/minecraft/tags/block/flower_pots.j
 30b260e82242a2b548549ed7a4f89117c8d2c3c3 data/minecraft/tags/block/leaves.json
 19bd74ce640c043c09053d7571fb7a9915d41417 data/minecraft/tags/block/logs.json
 19bd74ce640c043c09053d7571fb7a9915d41417 data/minecraft/tags/block/logs_that_burn.json
-a0a081794273a24a6369307f2d26f6a3a3975f72 data/minecraft/tags/block/mineable/axe.json
+36f20e739bf3d9604980514a3e3edb8ea78ba623 data/minecraft/tags/block/mineable/axe.json
 7177f5d8a3deacfcbfc12170902b73749e87213c data/minecraft/tags/block/mineable/hoe.json
 3fc307550c34c4309e6fc7b741b3aff86108253c data/minecraft/tags/block/mineable/pickaxe.json
 944d5178d1a94490d123e31a73bc58d4eea852ab data/minecraft/tags/block/mineable/shovel.json

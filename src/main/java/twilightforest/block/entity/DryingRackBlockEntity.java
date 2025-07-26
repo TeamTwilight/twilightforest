@@ -3,7 +3,6 @@ package twilightforest.block.entity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -45,9 +44,6 @@ public class DryingRackBlockEntity extends BlockEntity implements ContainerSingl
 				entity.updateDryingTime(recipeholder != null);
 				if (recipeholder != null) {
 					entity.dryTime++;
-					if (level.isClientSide()) {
-						level.addParticle(ParticleTypes.COMPOSTER, pos.getX(), pos.getY(), pos.getZ(), 0.0F, 0.0F, 0.0F);
-					}
 
 					if (entity.dryTime >= entity.totalDryTime) {
 						entity.setTheItem(recipeholder.value().assemble(input, level.registryAccess()));
