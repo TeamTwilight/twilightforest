@@ -25,6 +25,13 @@ public abstract class ProgressionStructure extends ConquerableStructure implemen
 		).and(landmarkCodec(instance));
 	}
 
+	protected static <S extends ProgressionStructure> Products.P5<RecordCodecBuilder.Mu<S>, AdvancementLockConfig, Optional<HintConfig>, DecorationConfig, Boolean, Optional<Holder<MapDecorationType>>> progressionCodecNoSettings(RecordCodecBuilder.Instance<S> instance) {
+		return instance.group(
+			AdvancementLockConfig.CODEC.fieldOf(AdvancementLockedStructure.CODEC_NAME).forGetter(s -> s.advancementLockConfig),
+			HintConfig.CODEC.optionalFieldOf(StructureHints.CODEC_NAME).forGetter(s -> s.hintConfig)
+		).and(landmarkCodecNoSettings(instance));
+	}
+
 	protected final AdvancementLockConfig advancementLockConfig;
 	protected final Optional<HintConfig> hintConfig;
 

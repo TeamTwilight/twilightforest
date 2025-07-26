@@ -13,6 +13,7 @@ import java.util.function.Supplier;
 public class TFStructureTypes {
 	public static final DeferredRegister<StructureType<?>> STRUCTURE_TYPES = DeferredRegister.create(Registries.STRUCTURE_TYPE, TwilightForestMod.ID);
 
+	public static final DeferredHolder<StructureType<?>, StructureType<LandmarkWrappedStructure>> LANDMARK_WRAPPED = registerType("landmark", () -> () -> LandmarkWrappedStructure.CODEC);
 	public static final DeferredHolder<StructureType<?>, StructureType<ProgressionWrappedStructure>> PROGRESSION_WRAPPED = registerType("progression", () -> () -> ProgressionWrappedStructure.CODEC);
 	public static final DeferredHolder<StructureType<?>, StructureType<FallenTrunkStructure>> FALLEN_TRUNK = registerType("fallen_trunk", () -> () -> FallenTrunkStructure.CODEC);
 	public static final DeferredHolder<StructureType<?>, StructureType<HollowTreeStructure>> HOLLOW_TREE = registerType("hollow_tree", () -> () -> HollowTreeStructure.CODEC);

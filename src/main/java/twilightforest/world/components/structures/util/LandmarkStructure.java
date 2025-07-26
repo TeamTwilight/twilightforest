@@ -22,6 +22,15 @@ import java.util.Optional;
 
 // Landmark structure without progression lock; Hollow Hills/Hedge Maze/Naga Courtyard/Quest Grove
 public abstract class LandmarkStructure extends Structure implements DecorationClearance {
+
+	protected static <S extends LandmarkStructure> Products.P3<RecordCodecBuilder.Mu<S>, DecorationConfig, Boolean, Optional<Holder<MapDecorationType>>> landmarkCodecNoSettings(RecordCodecBuilder.Instance<S> instance) {
+		return instance.group(
+			DecorationConfig.CODEC.fieldOf(DecorationClearance.CODEC_NAME).forGetter(s -> s.decorationConfig),
+			Codec.BOOL.optionalFieldOf("center_in_chunk", true).forGetter(s -> s.centerInChunk),
+			BuiltInRegistries.MAP_DECORATION_TYPE.holderByNameCodec().optionalFieldOf("structure_icon").forGetter(s -> s.structureIcon)
+		);
+	}
+
 	protected static <S extends LandmarkStructure> Products.P4<RecordCodecBuilder.Mu<S>, DecorationConfig, Boolean, Optional<Holder<MapDecorationType>>, StructureSettings> landmarkCodec(RecordCodecBuilder.Instance<S> instance) {
 		return instance.group(
 			DecorationConfig.CODEC.fieldOf(DecorationClearance.CODEC_NAME).forGetter(s -> s.decorationConfig),

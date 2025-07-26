@@ -13,23 +13,24 @@ import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFStructureTypes;
+import twilightforest.world.components.structures.util.LandmarkStructure;
 import twilightforest.world.components.structures.util.ProgressionStructure;
 
 import java.util.Map;
 import java.util.Optional;
 
-public class ProgressionWrappedStructure extends ProgressionStructure {
+public class LandmarkWrappedStructure extends LandmarkStructure {
 
-	public static final MapCodec<ProgressionWrappedStructure> CODEC = RecordCodecBuilder.mapCodec(instance ->
+	public static final MapCodec<LandmarkWrappedStructure> CODEC = RecordCodecBuilder.mapCodec(instance ->
 		instance.group(Structure.DIRECT_CODEC.fieldOf("wrapped").forGetter(o -> o.wrappedStructure))
-			.and(progressionCodecNoSettings(instance))
-			.apply(instance, ProgressionWrappedStructure::new)
+			.and(landmarkCodecNoSettings(instance))
+			.apply(instance, LandmarkWrappedStructure::new)
 	);
 
 	private final Structure wrappedStructure;
 
-	public ProgressionWrappedStructure(Structure wrappedStructure, AdvancementLockConfig advancementLockConfig, Optional<HintConfig> hintConfig, DecorationConfig decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon) {
-		super(advancementLockConfig, hintConfig, decorationConfig, centerInChunk, structureIcon, new StructureSettings(HolderSet.empty()));
+	public LandmarkWrappedStructure(Structure wrappedStructure, DecorationConfig decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon) {
+		super(decorationConfig, centerInChunk, structureIcon, new StructureSettings(HolderSet.empty()));
 		this.wrappedStructure = wrappedStructure;
 	}
 
@@ -66,6 +67,6 @@ public class ProgressionWrappedStructure extends ProgressionStructure {
 
 	@Override
 	public StructureType<?> type() {
-		return TFStructureTypes.PROGRESSION_WRAPPED.get();
+		return TFStructureTypes.LANDMARK_WRAPPED.get();
 	}
 }
