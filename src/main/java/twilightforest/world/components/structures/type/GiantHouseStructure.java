@@ -37,7 +37,7 @@ public class GiantHouseStructure extends ProgressionStructure implements Configu
 
 	private final ControlledSpawningConfig controlledSpawningConfig;
 
-	public GiantHouseStructure(AdvancementLockConfig advancementLockConfig, Optional<HintConfig> hintConfig, DecorationConfig decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings, ControlledSpawningConfig controlledSpawningConfig) {
+	public GiantHouseStructure(AdvancementLockConfig advancementLockConfig, Optional<HintConfig> hintConfig, Optional<DecorationConfig> decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings, ControlledSpawningConfig controlledSpawningConfig) {
 		super(advancementLockConfig, hintConfig, decorationConfig, centerInChunk, structureIcon, structureSettings);
 
 		this.controlledSpawningConfig = controlledSpawningConfig;
@@ -63,7 +63,7 @@ public class GiantHouseStructure extends ProgressionStructure implements Configu
 		return new GiantHouseStructure(
 			new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_merge"))),
 			Optional.of(new HintConfig(HintConfig.book("trollcave", 3), TFEntities.KOBOLD.get())),
-			new DecorationConfig(1, true, true, false),
+			Optional.of(new DecorationConfig(1, true, true, false)),
 			false, Optional.empty(),
 			new StructureSettings(
 				context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_GIANT_HOUSE_BIOMES),

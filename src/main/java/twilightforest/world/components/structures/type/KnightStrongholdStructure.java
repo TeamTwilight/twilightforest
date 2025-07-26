@@ -37,7 +37,7 @@ public class KnightStrongholdStructure extends ControlledSpawningStructure {
 		controlledSpawningCodec(instance).apply(instance, KnightStrongholdStructure::new)
 	);
 
-	public KnightStrongholdStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, Optional<HintConfig> hintConfig, DecorationConfig decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
+	public KnightStrongholdStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, Optional<HintConfig> hintConfig, Optional<DecorationConfig> decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
 		super(controlledSpawningConfig, advancementLockConfig, hintConfig, decorationConfig, centerInChunk, structureIcon, structureSettings);
 	}
 
@@ -65,7 +65,7 @@ public class KnightStrongholdStructure extends ControlledSpawningStructure {
 			),
 			new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_trophy_pedestal"))),
 			Optional.of(new HintConfig(HintConfig.book("tfstronghold", 4), TFEntities.KOBOLD.get())),
-			new DecorationConfig(3, true, false, false),
+			Optional.of(new DecorationConfig(3, true, false, false)),
 			true, Optional.of(TFMapDecorations.KNIGHT_STRONGHOLD),
 			new StructureSettings(
 				context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_KNIGHT_STRONGHOLD_BIOMES),

@@ -18,14 +18,14 @@ import java.util.Optional;
 
 // Landmark structure with a progression lock; Lich Tower/Labyrinth/Hydra Lair/Final Castle/etc
 public abstract class ProgressionStructure extends ConquerableStructure implements AdvancementLockedStructure, StructureHints {
-	protected static <S extends ProgressionStructure> Products.P6<RecordCodecBuilder.Mu<S>, AdvancementLockConfig, Optional<HintConfig>, DecorationConfig, Boolean, Optional<Holder<MapDecorationType>>, StructureSettings> progressionCodec(RecordCodecBuilder.Instance<S> instance) {
+	protected static <S extends ProgressionStructure> Products.P6<RecordCodecBuilder.Mu<S>, AdvancementLockConfig, Optional<HintConfig>, Optional<DecorationConfig>, Boolean, Optional<Holder<MapDecorationType>>, StructureSettings> progressionCodec(RecordCodecBuilder.Instance<S> instance) {
 		return instance.group(
 			AdvancementLockConfig.CODEC.fieldOf(AdvancementLockedStructure.CODEC_NAME).forGetter(s -> s.advancementLockConfig),
 			HintConfig.CODEC.optionalFieldOf(StructureHints.CODEC_NAME).forGetter(s -> s.hintConfig)
 		).and(landmarkCodec(instance));
 	}
 
-	protected static <S extends ProgressionStructure> Products.P5<RecordCodecBuilder.Mu<S>, AdvancementLockConfig, Optional<HintConfig>, DecorationConfig, Boolean, Optional<Holder<MapDecorationType>>> progressionCodecNoSettings(RecordCodecBuilder.Instance<S> instance) {
+	protected static <S extends ProgressionStructure> Products.P5<RecordCodecBuilder.Mu<S>, AdvancementLockConfig, Optional<HintConfig>, Optional<DecorationConfig>, Boolean, Optional<Holder<MapDecorationType>>> progressionCodecNoSettings(RecordCodecBuilder.Instance<S> instance) {
 		return instance.group(
 			AdvancementLockConfig.CODEC.fieldOf(AdvancementLockedStructure.CODEC_NAME).forGetter(s -> s.advancementLockConfig),
 			HintConfig.CODEC.optionalFieldOf(StructureHints.CODEC_NAME).forGetter(s -> s.hintConfig)
@@ -35,7 +35,7 @@ public abstract class ProgressionStructure extends ConquerableStructure implemen
 	protected final AdvancementLockConfig advancementLockConfig;
 	protected final Optional<HintConfig> hintConfig;
 
-	public ProgressionStructure(AdvancementLockConfig advancementLockConfig, Optional<HintConfig> hintConfig, DecorationConfig decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
+	public ProgressionStructure(AdvancementLockConfig advancementLockConfig, Optional<HintConfig> hintConfig, Optional<DecorationConfig> decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
 		super(decorationConfig, centerInChunk, structureIcon, structureSettings);
 
 		this.advancementLockConfig = advancementLockConfig;

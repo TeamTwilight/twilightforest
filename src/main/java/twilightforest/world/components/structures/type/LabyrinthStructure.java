@@ -41,7 +41,7 @@ public class LabyrinthStructure extends ControlledSpawningStructure implements C
 		controlledSpawningCodec(instance).apply(instance, LabyrinthStructure::new)
 	);
 
-	public LabyrinthStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, Optional<HintConfig> hintConfig, DecorationConfig decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
+	public LabyrinthStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, Optional<HintConfig> hintConfig, Optional<DecorationConfig> decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
 		super(controlledSpawningConfig, advancementLockConfig, hintConfig, decorationConfig, centerInChunk, structureIcon, structureSettings);
 	}
 
@@ -74,7 +74,7 @@ public class LabyrinthStructure extends ControlledSpawningStructure implements C
 			),
 			new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_lich"))),
 			Optional.of(new HintConfig(HintConfig.book("labyrinth", 5), TFEntities.KOBOLD.get())),
-			new DecorationConfig(3, true, false, false),
+			Optional.of(new DecorationConfig(3, true, false, false)),
 			true, Optional.of(TFMapDecorations.LABYRINTH),
 			new StructureSettings(
 				context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_LABYRINTH_BIOMES),

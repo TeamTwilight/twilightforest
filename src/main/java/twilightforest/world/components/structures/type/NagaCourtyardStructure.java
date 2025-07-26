@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 public class NagaCourtyardStructure extends ConquerableStructure implements CustomDensitySource {
 	public static final MapCodec<NagaCourtyardStructure> CODEC = RecordCodecBuilder.mapCodec(instance -> landmarkCodec(instance).apply(instance, NagaCourtyardStructure::new));
 
-	public NagaCourtyardStructure(DecorationConfig decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
+	public NagaCourtyardStructure(Optional<DecorationConfig> decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
 		super(decorationConfig, centerInChunk, structureIcon, structureSettings);
 	}
 
@@ -44,7 +44,7 @@ public class NagaCourtyardStructure extends ConquerableStructure implements Cust
 
 	public static NagaCourtyardStructure buildStructureConfig(BootstrapContext<Structure> context) {
 		return new NagaCourtyardStructure(
-			new DecorationConfig(3, false, true, true),
+			Optional.of(new DecorationConfig(3, false, true, true)),
 			true, Optional.of(TFMapDecorations.NAGA_COURTYARD),
 			new StructureSettings(
 				context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_NAGA_COURTYARD_BIOMES),

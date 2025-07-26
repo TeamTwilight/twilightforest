@@ -17,7 +17,7 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 public abstract class ConquerableStructure extends LandmarkStructure implements CustomStructureData {
-	public ConquerableStructure(DecorationConfig decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
+	public ConquerableStructure(Optional<DecorationConfig> decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
 		super(decorationConfig, centerInChunk, structureIcon, structureSettings);
 	}
 

@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 public class MushroomTowerStructure extends LandmarkStructure {
 	public static final MapCodec<MushroomTowerStructure> CODEC = RecordCodecBuilder.mapCodec(instance -> landmarkCodec(instance).apply(instance, MushroomTowerStructure::new));
 
-	public MushroomTowerStructure(DecorationConfig decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
+	public MushroomTowerStructure(Optional<DecorationConfig> decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
 		super(decorationConfig, centerInChunk, structureIcon, structureSettings);
 	}
 
@@ -40,7 +40,7 @@ public class MushroomTowerStructure extends LandmarkStructure {
 
 	public static MushroomTowerStructure buildStructureConfig(BootstrapContext<Structure> context) {
 		return new MushroomTowerStructure(
-			new DecorationConfig(2, true, true, true),
+			Optional.of(new DecorationConfig(2, true, true, true)),
 			true, Optional.empty(),
 			new StructureSettings(
 				context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_MUSHROOM_TOWER_BIOMES),

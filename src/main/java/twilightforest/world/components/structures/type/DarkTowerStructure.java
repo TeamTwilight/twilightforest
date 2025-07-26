@@ -33,7 +33,7 @@ public class DarkTowerStructure extends ControlledSpawningStructure {
 		controlledSpawningCodec(instance).apply(instance, DarkTowerStructure::new)
 	);
 
-	public DarkTowerStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, Optional<HintConfig> hintConfig, DecorationConfig decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
+	public DarkTowerStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, Optional<HintConfig> hintConfig, Optional<DecorationConfig> decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
 		super(controlledSpawningConfig, advancementLockConfig, hintConfig, decorationConfig, centerInChunk, structureIcon, structureSettings);
 	}
 
@@ -67,7 +67,7 @@ public class DarkTowerStructure extends ControlledSpawningStructure {
 			)),
 			new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_knights"))),
 			Optional.of(new HintConfig(HintConfig.book("darktower", 3), TFEntities.KOBOLD.get())),
-			new DecorationConfig(1, false, true, true),
+			Optional.of(new DecorationConfig(1, false, true, true)),
 			true, Optional.of(TFMapDecorations.DARK_TOWER),
 			new StructureSettings(
 				context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_DARK_TOWER_BIOMES),

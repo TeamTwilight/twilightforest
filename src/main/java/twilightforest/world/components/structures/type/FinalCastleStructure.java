@@ -31,7 +31,7 @@ public class FinalCastleStructure extends ControlledSpawningStructure {
 		controlledSpawningCodec(instance).apply(instance, FinalCastleStructure::new)
 	);
 
-	public FinalCastleStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, Optional<HintConfig> hintConfig, DecorationConfig decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
+	public FinalCastleStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, Optional<HintConfig> hintConfig, Optional<DecorationConfig> decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
 		super(controlledSpawningConfig, advancementLockConfig, hintConfig, decorationConfig, centerInChunk, structureIcon, structureSettings);
 	}
 
@@ -69,7 +69,7 @@ public class FinalCastleStructure extends ControlledSpawningStructure {
 			new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_troll"))),
 			// TODO: change this when we make a book for the castle
 			Optional.of(new HintConfig(HintConfig.defaultBook(), TFEntities.KOBOLD.get())),
-			new DecorationConfig(4, false, true, false),
+			Optional.of(new DecorationConfig(4, false, true, false)),
 			true, Optional.of(TFMapDecorations.FINAL_CASTLE),
 			new StructureSettings(
 				context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_FINAL_CASTLE_BIOMES),

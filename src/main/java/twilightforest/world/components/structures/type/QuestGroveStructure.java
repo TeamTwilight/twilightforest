@@ -27,7 +27,7 @@ public class QuestGroveStructure extends ConquerableStructure {
 	public static final MapCodec<QuestGroveStructure> CODEC = RecordCodecBuilder.mapCodec(instance -> landmarkCodec(instance).apply(instance, QuestGroveStructure::new));
 	public static final int LENGTH = 27;
 
-	public QuestGroveStructure(DecorationConfig decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
+	public QuestGroveStructure(Optional<DecorationConfig> decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
 		super(decorationConfig, centerInChunk, structureIcon, structureSettings);
 	}
 
@@ -43,7 +43,7 @@ public class QuestGroveStructure extends ConquerableStructure {
 
 	public static QuestGroveStructure buildStructureConfig(BootstrapContext<Structure> context) {
 		return new QuestGroveStructure(
-			new DecorationConfig(2, false, true, true),
+			Optional.of(new DecorationConfig(2, false, true, true)),
 			true, Optional.of(TFMapDecorations.QUEST_GROVE),
 			new StructureSettings(
 				context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_QUEST_GROVE_BIOMES),

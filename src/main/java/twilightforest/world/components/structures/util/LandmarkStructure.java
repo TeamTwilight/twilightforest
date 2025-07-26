@@ -23,28 +23,28 @@ import java.util.Optional;
 // Landmark structure without progression lock; Hollow Hills/Hedge Maze/Naga Courtyard/Quest Grove
 public abstract class LandmarkStructure extends Structure implements DecorationClearance {
 
-	protected static <S extends LandmarkStructure> Products.P3<RecordCodecBuilder.Mu<S>, DecorationConfig, Boolean, Optional<Holder<MapDecorationType>>> landmarkCodecNoSettings(RecordCodecBuilder.Instance<S> instance) {
+	protected static <S extends LandmarkStructure> Products.P3<RecordCodecBuilder.Mu<S>, Optional<DecorationConfig>, Boolean, Optional<Holder<MapDecorationType>>> landmarkCodecNoSettings(RecordCodecBuilder.Instance<S> instance) {
 		return instance.group(
-			DecorationConfig.CODEC.fieldOf(DecorationClearance.CODEC_NAME).forGetter(s -> s.decorationConfig),
+			DecorationConfig.CODEC.optionalFieldOf(DecorationClearance.CODEC_NAME).forGetter(s -> s.decorationConfig),
 			Codec.BOOL.optionalFieldOf("center_in_chunk", true).forGetter(s -> s.centerInChunk),
 			BuiltInRegistries.MAP_DECORATION_TYPE.holderByNameCodec().optionalFieldOf("structure_icon").forGetter(s -> s.structureIcon)
 		);
 	}
 
-	protected static <S extends LandmarkStructure> Products.P4<RecordCodecBuilder.Mu<S>, DecorationConfig, Boolean, Optional<Holder<MapDecorationType>>, StructureSettings> landmarkCodec(RecordCodecBuilder.Instance<S> instance) {
+	protected static <S extends LandmarkStructure> Products.P4<RecordCodecBuilder.Mu<S>, Optional<DecorationConfig>, Boolean, Optional<Holder<MapDecorationType>>, StructureSettings> landmarkCodec(RecordCodecBuilder.Instance<S> instance) {
 		return instance.group(
-			DecorationConfig.CODEC.fieldOf(DecorationClearance.CODEC_NAME).forGetter(s -> s.decorationConfig),
+			DecorationConfig.CODEC.optionalFieldOf(DecorationClearance.CODEC_NAME).forGetter(s -> s.decorationConfig),
 			Codec.BOOL.optionalFieldOf("center_in_chunk", true).forGetter(s -> s.centerInChunk),
 			BuiltInRegistries.MAP_DECORATION_TYPE.holderByNameCodec().optionalFieldOf("structure_icon").forGetter(s -> s.structureIcon),
 			Structure.settingsCodec(instance)
 		);
 	}
 
-	protected final DecorationConfig decorationConfig;
+	protected final Optional<DecorationConfig> decorationConfig;
 	protected final boolean centerInChunk;
 	protected Optional<Holder<MapDecorationType>> structureIcon;
 
-	public LandmarkStructure(DecorationConfig decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
+	public LandmarkStructure(Optional<DecorationConfig> decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
 		super(structureSettings);
 		this.decorationConfig = decorationConfig;
 		this.centerInChunk = centerInChunk;
@@ -91,27 +91,27 @@ public abstract class LandmarkStructure extends Structure implements DecorationC
 
 	@Override
 	public boolean isSurfaceDecorationsAllowed() {
-		return this.decorationConfig.surfaceDecorations();
+		return this.decorationConfig.map(DecorationConfig::surfaceDecorations).orElse(true);
 	}
 
 	@Override
 	public boolean isUndergroundDecoAllowed() {
-		return this.decorationConfig.undergroundDecorations();
+		return this.decorationConfig.map(DecorationConfig::undergroundDecorations).orElse(true);
 	}
 
 	@Override
 	public boolean isGrassDecoAllowed() {
-		return this.decorationConfig.vegetation();
+		return this.decorationConfig.map(DecorationConfig::vegetation).orElse(true);
 	}
 
 	@Override
 	public boolean shouldAdjustToTerrain() {
-		return this.decorationConfig.adjustElevation();
+		return this.decorationConfig.map(DecorationConfig::adjustElevation).orElse(false);
 	}
 
 	@Override
 	public float chunkClearanceRadius() {
-		return this.decorationConfig.chunkClearanceRadius();
+		return this.decorationConfig.map(DecorationConfig::chunkClearanceRadius).orElse(1.0F);
 	}
 
 	@Override

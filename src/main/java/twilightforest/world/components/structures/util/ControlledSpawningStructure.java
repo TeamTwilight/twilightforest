@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public abstract class ControlledSpawningStructure extends ProgressionStructure implements ConfigurableSpawns {
 
-	protected static <S extends ControlledSpawningStructure> Products.P7<RecordCodecBuilder.Mu<S>, ControlledSpawningConfig, AdvancementLockConfig, Optional<HintConfig>, DecorationConfig, Boolean, Optional<Holder<MapDecorationType>>, StructureSettings> controlledSpawningCodec(RecordCodecBuilder.Instance<S> instance) {
+	protected static <S extends ControlledSpawningStructure> Products.P7<RecordCodecBuilder.Mu<S>, ControlledSpawningConfig, AdvancementLockConfig, Optional<HintConfig>, Optional<DecorationConfig>, Boolean, Optional<Holder<MapDecorationType>>, StructureSettings> controlledSpawningCodec(RecordCodecBuilder.Instance<S> instance) {
 		return instance.group(
 			ControlledSpawningConfig.CODEC.fieldOf(ControlledSpawns.CODEC_NAME).forGetter(ControlledSpawningStructure::getConfig)
 		).and(progressionCodec(instance));
@@ -17,7 +17,7 @@ public abstract class ControlledSpawningStructure extends ProgressionStructure i
 
 	protected final ControlledSpawningConfig controlledSpawningConfig;
 
-	public ControlledSpawningStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, Optional<HintConfig> hintConfig, DecorationConfig decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
+	public ControlledSpawningStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, Optional<HintConfig> hintConfig, Optional<DecorationConfig> decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
 		super(advancementLockConfig, hintConfig, decorationConfig, centerInChunk, structureIcon, structureSettings);
 		this.controlledSpawningConfig = controlledSpawningConfig;
 	}

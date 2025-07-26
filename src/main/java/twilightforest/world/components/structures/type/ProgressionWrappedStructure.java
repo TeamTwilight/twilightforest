@@ -28,7 +28,7 @@ public class ProgressionWrappedStructure extends ProgressionStructure {
 
 	private final Structure wrappedStructure;
 
-	public ProgressionWrappedStructure(Structure wrappedStructure, AdvancementLockConfig advancementLockConfig, Optional<HintConfig> hintConfig, DecorationConfig decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon) {
+	public ProgressionWrappedStructure(Structure wrappedStructure, AdvancementLockConfig advancementLockConfig, Optional<HintConfig> hintConfig, Optional<DecorationConfig> decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon) {
 		super(advancementLockConfig, hintConfig, decorationConfig, centerInChunk, structureIcon, new StructureSettings(HolderSet.empty()));
 		this.wrappedStructure = wrappedStructure;
 	}

@@ -29,7 +29,7 @@ public class LandmarkWrappedStructure extends LandmarkStructure {
 
 	private final Structure wrappedStructure;
 
-	public LandmarkWrappedStructure(Structure wrappedStructure, DecorationConfig decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon) {
+	public LandmarkWrappedStructure(Structure wrappedStructure, Optional<DecorationConfig> decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon) {
 		super(decorationConfig, centerInChunk, structureIcon, new StructureSettings(HolderSet.empty()));
 		this.wrappedStructure = wrappedStructure;
 	}
