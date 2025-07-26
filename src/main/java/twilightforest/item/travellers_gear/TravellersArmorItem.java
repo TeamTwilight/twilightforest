@@ -61,24 +61,21 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 	private final int insertableModifierSlots;
 	@Nullable
 	private ItemAttributeModifiers attributeModifiers;
-	public TravellersArmorItem(ArmorItem.Type equipmentType, Properties properties, int insertableModifierSlots, int durability) {
-		super(
-			TFArmorMaterials.TRAVELLERS,
-			equipmentType,
-			properties.component(TFDataComponents.IS_TRAVELLERS_GEAR, Unit.INSTANCE).durability(equipmentType.getDurability(durability))
-		);
+
+	public TravellersArmorItem(ArmorItem.Type equipmentType, Properties properties, int insertableModifierSlots) {
+		super(TFArmorMaterials.TRAVELLERS, equipmentType, properties.component(TFDataComponents.IS_TRAVELLERS_GEAR, Unit.INSTANCE));
 		this.insertableModifierSlots = insertableModifierSlots;
-		attributeModifiers = this.components().get(DataComponents.ATTRIBUTE_MODIFIERS);
-		if (attributeModifiers == null)
+		this.attributeModifiers = this.components().get(DataComponents.ATTRIBUTE_MODIFIERS);
+		if (this.attributeModifiers == null)
 			return;
 
 		for (ItemAttributeModifiers.Entry modifier : this.getDefaultAttributeModifiers().modifiers()) {
-			attributeModifiers = attributeModifiers.withModifierAdded(modifier.attribute(), modifier.modifier(), modifier.slot());
+			this.attributeModifiers = this.attributeModifiers.withModifierAdded(modifier.attribute(), modifier.modifier(), modifier.slot());
 		}
 	}
 
-	public TravellersArmorItem(ArmorItem.Type equipmentType, Properties properties, int insertableModifierSlots) {
-		this(equipmentType, properties, insertableModifierSlots, 4);
+	public TravellersArmorItem(ArmorItem.Type equipmentType, Properties properties, int insertableModifierSlots, int durability) {
+		this(equipmentType, properties.durability(equipmentType.getDurability(durability)), insertableModifierSlots);
 	}
 
 	@Override
@@ -118,8 +115,8 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 
 		ParticlePacket particlePacket = new ParticlePacket();  // we have to create it on client to avoid networking delays
 		for (int particleNumber = 0; particleNumber < livingEntity.dimensions.width(); particleNumber++) {
-			double dx = (level.random.nextDouble() * 2.0 - 1.0) * (double)livingEntity.dimensions.width() / 2D;
-			double dz = (level.random.nextDouble() * 2.0 - 1.0) * (double)livingEntity.dimensions.width() / 2D;
+			double dx = (level.random.nextDouble() * 2.0 - 1.0) * (double) livingEntity.dimensions.width() / 2D;
+			double dz = (level.random.nextDouble() * 2.0 - 1.0) * (double) livingEntity.dimensions.width() / 2D;
 			Vec3 particlePos = new Vec3(livingEntity.getX() + dx, livingEntity.getY() + WATER_WALKING_MAX_SUBMERGED_HEIGHT, livingEntity.getZ() + dz);
 			Vec3 particleVelocity = new Vec3(-livingEntityVelocity.x, 0.5, -livingEntityVelocity.z);
 			if (level.isClientSide()) {
@@ -333,7 +330,7 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 		return properties
 			.component(TFDataComponents.TRAVELLERS_HAS_BOOTS, Unit.INSTANCE)
 			.attributes(defaultArmorProperties(Type.BOOTS)
-				.add(Attributes.STEP_HEIGHT, TFAttributeModifiers.TRAVELLERS_HIGH_STEP_DEACTIVATED,  EquipmentSlotGroup.FEET)
+				.add(Attributes.STEP_HEIGHT, TFAttributeModifiers.TRAVELLERS_HIGH_STEP_DEACTIVATED, EquipmentSlotGroup.FEET)
 				.build());
 	}
 

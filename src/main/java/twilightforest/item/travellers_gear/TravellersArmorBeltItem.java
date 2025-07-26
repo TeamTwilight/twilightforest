@@ -2,7 +2,6 @@ package twilightforest.item.travellers_gear;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Unit;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -21,13 +20,13 @@ import twilightforest.item.travellers_gear.modifiers.TravellersModifiers;
 import java.util.Optional;
 
 public class TravellersArmorBeltItem extends TravellersArmorItem {
-	@SuppressWarnings("unused")
+
 	public TravellersArmorBeltItem(ArmorItem.Type equipmentType, Properties properties, int insertableModifierSlots, int durability) {
 		super(equipmentType, beltProperties(properties), insertableModifierSlots, durability);
 	}
 
 	public TravellersArmorBeltItem(ArmorItem.Type equipmentType, Properties properties, int insertableModifierSlots) {
-		super(equipmentType, beltProperties(properties), insertableModifierSlots, 4);
+		super(equipmentType, beltProperties(properties), insertableModifierSlots);
 	}
 
 	public static Properties addSwapHotbarAbility(Properties properties) {
