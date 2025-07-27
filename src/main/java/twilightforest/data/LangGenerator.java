@@ -141,7 +141,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addAdvancement("arborist", "Maniacal Dendrologist", "Get your axes and shears ready. Search every nook and cranny and get anything and everything that comes from trees! Craft, loot, obtain every slab... sapling... leaves... more... everything. ALL OF IT!");
 		this.add("advancement.twilightforest.chicken_jerky", "CHICKEN JERKEY!");
 		this.addAdvancement("craft_travellers_gear", "Around the Forest in 80 Days", "Craft a piece of traveller's gear");
-		this.addAdvancement("modify_travellers_gear", "Not All Those Who Wander Are Poorly Dressed", "Add a modifier to a piece of traveller's gear");
+		this.addAdvancement("modify_travellers_gear", "Apparel Oft Proclaims the Man", "Add a modifier to a piece of traveller's gear");
 
 		this.addMessage("advancement_hidden", "<Hidden Advancement>");
 		this.addMessage("advancement_required", "Advancement Required:");
@@ -1014,8 +1014,10 @@ public class LangGenerator extends TFLangProvider {
 			this.add(location.toLanguageKey("magic_painting", "author"), stringStringPair.getSecond());
 		});
 
+		this.createTip("alpha_yeti", "The Alpha Yeti's rampage causes blocks to become dislodged from the ceiling. Watch out for falling icicles!");
 		this.createTip("anvil_squashing", "Bugs can be squashed by Anvils.");
 		this.createTip("arctic_armor", "Arctic Armor can be dyed any color.");
+		this.createTip("baby_jockey", "Baby Skeleton Druids can be found riding Swarm Spiders.");
 		this.createTip("banister_shape", "Banisters can be right-clicked with an axe to change their height.");
 		this.createTip("block_and_chain", "Enchanting a Block and Chain with Destruction allows it to break blocks.");
 		this.createTip("boggard", "What the heck is a Boggard?");
@@ -1024,13 +1026,17 @@ public class LangGenerator extends TFLangProvider {
 		this.createTip("carminite_builder", "Carminite Builders place temporary blocks in the direction you're looking.");
 		this.createTip("charm_of_keeping", "A Charm of Keeping will return parts of your inventory after death.");
 		this.createTip("charm_of_life", "A Charm of Life can save you from a fatal blow.");
+		this.createTip("clouds", "Rainy and Snowy Clouds can be used to simulate weather effects!");
 		this.createTip("crumble_horn", "The Crumble Horn will deteriorate nearby blocks when used.");
 		this.createTip("druid_hut", "Druid huts sometimes have hidden basements.");
 		this.createTip("e115_pickup", "Sneak + right-click placed Experiment 115 to pick it back up.");
 		this.createTip("e115_sprinkle", "Redstone can be sprinkled on top of Experiment 115.");
+		this.createTip("emperors_cloth", "Emperor's Cloth will prevent armor from rendering when crafted with it.");
 		this.createTip("experiment_115", "Does anyone know what Experiment 115 really is?");
+		this.createTip("feather_fan", "The Peacock Feather Fan can be used to push mobs away, or yourself into the air if used while jumping. It also works well with the Elytra and Mace!");
 		this.createTip("fiery_pickaxe", "A Fiery Pickaxe will smelt any blocks it breaks.");
 		this.createTip("ghast_trap", "Killing Carminite Ghastlings near a Ghast Trap will charge it.");
+		this.createTip("giant_block", "Mining a 4x4x4 area of the same block with a Giant's Pickaxe will drop 1 giant block instead.");
 		this.createTip("glass_sword", "Glass Swords break after a single hit.");
 		this.createTip("hollow_log", "Various things can be placed inside Hollow Logs such as snow, moss, or ladders.");
 		this.createTip("hollow_oak_sapling", "Saplings that grow into giant hollow trees can be found in Druid Huts.");
@@ -1040,6 +1046,8 @@ public class LangGenerator extends TFLangProvider {
 		this.createTip("hydra_mortars", "You can deflect the Hydra's mortar attack.");
 		this.createTip("ice_core", "Ice Cores and Snow Guardians melt in hot biomes.");
 		this.createTip("jars", "Fireflies and Cicadas can be put into jars.");
+		this.createTip("key_biomes", "Progression biomes generate in clusters of 4 minibosses surrounding a normal boss.");
+		this.createTip("key_biome_locations", "Progression biome clusters generate roughly 600 blocks away from each other, meaning the next boss is never too far away.");
 		this.createTip("kobold", "Kobold");
 		this.createTip("labyrinth_vault", "The Labyrinth contains a secret room.");
 		this.createTip("lich_scepters", "The Lich drops a variety of magic-based scepters.");
@@ -1048,8 +1056,10 @@ public class LangGenerator extends TFLangProvider {
 		this.createTip("magic_leaves", "Magic Tree Leaves won't drop saplings when broken.");
 		this.createTip("magic_map", "Magic Maps are used to easily locate structures.");
 		this.createTip("magic_saplings", "Special magic saplings can be found inside Hollow Oak trees.");
+		this.createTip("maze_map_focus", "Minotaurs can occasionally drop Maze Map Focuses, which can be used to make Maze Maps.");
 		this.createTip("mazebreaker", "The Mazebreaker can break Mazestone blocks 16 times faster and doesn't take extra durability damage.");
 		this.createTip("mining_tree", "The Miner's Tree will pull ores up to the surface.");
+		this.createTip("minoshroom", "The Minoshroom will perform a slam attack if a player lingers too close to it.");
 		this.createTip("moon_dial", "The Moon Dial shows the current phase of the moon.");
 		this.createTip("moonworm_queen", "The Moonworm Queen can be fed Torchberries.");
 		this.createTip("mushglooms", "Mushglooms cannot be bonemealed into giant mushrooms. However, placing them on Uberous Soil will make them grow.");
@@ -1057,8 +1067,12 @@ public class LangGenerator extends TFLangProvider {
 		this.createTip("naga", "The Naga can be stunned by making it ram something hard!");
 		this.createTip("netherite_axe", "There will never be a Netherite Minotaur Axe.");
 		this.createTip("ore_magnet", "The Ore Magnet can pull ore veins up to the surface.");
+		this.createTip("ore_meter", "The Ore Meter will display all nearby ores when turned on. It can also target certain blocks by shift-right clicking them, and will then only show a count of those blocks nearby. ");
+		this.createTip("parrying", "A well-timed shield block can parry a projectile back at a mob.");
 		this.createTip("peacock_feather_fan", "The Peacock Feather Fan can be used to extinguish Candles.");
 		this.createTip("phantom_armor", "Phantom Armor is automatically kept on death.");
+		this.createTip("phantoms", "Knight Phantoms take a lot less damage if they're invisible. Try to target the visible one when fighting them!");
+		this.createTip("pocket_watch", "The Rabbit's Pocket Watch will grants additional speed while in the hotbar, and will increase mining speed when held.");
 		this.createTip("quest_ram", "The Questing Ram will reward anyone who gives it what it's missing.");
 		this.createTip("red_thread", "Red Thread can be seen through walls.");
 		this.createTip("redcap", "Redcaps can place and light TNT.");
@@ -1067,17 +1081,40 @@ public class LangGenerator extends TFLangProvider {
 		this.createTip("spooky_forest", "The Spooky Forest is not Halloween themed.");
 		this.createTip("structure_conquering", "Killing a boss will make mobs stop spawning in that structure.");
 		this.createTip("structure_spawning", "Structures spawn in a grid-like pattern.");
+		this.createTip("the_lore", "The story is all here, you just need to figure it out yourself!");
 		this.createTip("time_tree", "The Tree of Time will accelerate the growth of nearby crops.");
 		this.createTip("torchberries", "We did glow berries first!");
 		this.createTip("towerwood", "Towerwood Planks are very resistant, but not immune, to fire.");
 		this.createTip("transformation_tree", "The Tree of Transformation will convert the area around it into an Enchanted Forest.");
 		this.createTip("trollber_ripening", "Killing a Troll will ripen nearby Trollber.");
+		this.createTip("trophy_pedestal", "Trophy Pedestals can only be mined after they have been activated.");
 		this.createTip("twilight_portal", "Throw a diamond into a pool of water surrounded by flowers.");
+		this.createTip("uncrafting_table", "The Uncrafting Table isn't just used to uncraft items. It can also recraft items into other ones, repair tools and armor, and transfer enchantments across gear!");
 		this.createTip("ur_ghast", "The Ur-Ghast can be pulled down from the sky using Ghast Traps.");
 		this.createTip("vanishing_block", "Vanishing Blocks will disappear forever when activated.");
 		this.createTip("worldgen_features", "The forest is filled with many ruins. Some may even contain unique items.");
 		this.createTip("yeti", "Yetis love throwing things.");
 		this.createTip("zombie_healing", "Zombies summoned with a Zombie Scepter can be healed with Rotten Flesh.");
+
+		this.createTip("mystic_crown", "The Mystic Crown slightly buffs scepters when worn.");
+		this.createTip("potion_flask", "Potion Flasks can hold up to 3 doses of the same potion.");
+		this.createTip("minion_buff", "If the Twilight Lich hits one of his minions with a projectile, it will make the minion stronger and faster. ");
+		this.createTip("ominous_fire", "Ominous fire can turn creatures undead.");
+		this.createTip("the_walls", "The Death Tomes are in your walls. They're in your walls.");
+		this.createTip("lich_deflection", "The Twilight Lich will deflect Scepter of Twilight bolts after his shields are down.");
+		this.createTip("candelabra", "Using Redstone Dust on a Candelabra will make its flames turn red and emit a redstone signal.");
+		this.createTip("wrought_iron", "Wrought Iron Bars cannot be obtained normally. They can only be obtained by uncrafting blocks made of them.");
+		this.createTip("essence_charge", "Exanimate Essence will fully charge any scepter it is crafted with.");
+		this.createTip("casket_usage", "The Keepsake Casket acts as a limited use gravestone. If in your inventory on death, it will place itself and hold all your items inside.");
+		this.createTip("casket_logging", "The Keepsake Casket can be waterlogged, lavalogged, and encased in a block if it falls victim to a fluid interaction.");
+		this.createTip("renewal", "Scepters enchanted with Renewal will automatically recharge themselves using the required items in the player's inventory.");
+
+		this.createTip("jerky", "Meat can be dried into jerky using Drying Racks.");
+		this.createTip("berry_bushes", "Berry bushes can be found all over the Twilight Forest.");
+		this.createTip("oreberries", "Metal berry bushes rarely generate underground.");
+		this.createTip("craft_travellers_gear", "Traveller's gear can be crafted from drying Treated Leather and turning it into Tanned Leather.");
+		this.createTip("modify_travellers_gear", "Each piece of traveller's gear has 1 built-in ability, and up to 3 more can be added per piece.");
+		this.createTip("nether_bushes", "Along with other foreign objects and materials, strange plantlife has made itself native to the Dark Tower.");
 
 		this.translateTag(ItemTagGenerator.CARMINITE_GEMS, "Carminite Gems");
 		this.translateTag(ItemTagGenerator.FIERY_INGOTS, "Fiery Ingots");

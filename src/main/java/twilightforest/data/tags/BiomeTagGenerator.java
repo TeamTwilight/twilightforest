@@ -61,7 +61,7 @@ public class BiomeTagGenerator extends BiomeTagsProvider {
 		this.tag(VALID_MUSHROOM_TOWER_BIOMES).add(TFBiomes.DENSE_MUSHROOM_FOREST);
 
 		this.tag(VALID_CAMP_BIOMES).add(
-			TFBiomes.OAK_SAVANNAH, TFBiomes.CLEARING
+			//TFBiomes.OAK_SAVANNAH, TFBiomes.CLEARING
 		);
 
 		this.tag(VALID_HOLLOW_TREE_BIOMES).add(
