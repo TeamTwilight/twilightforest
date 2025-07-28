@@ -7,21 +7,21 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.FrontAndTop;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.util.WorldUtil;
-import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
 
+import java.util.Map;
 import java.util.Optional;
 
 public class CampStructure extends Structure {
@@ -63,7 +63,10 @@ public class CampStructure extends Structure {
 
 	public static CampStructure buildStructureConfig(BootstrapContext<Structure> context) {
 		return new CampStructure(new StructureSettings(
-			context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_CAMP_BIOMES)
+			context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_CAMP_BIOMES),
+			Map.of(),
+			GenerationStep.Decoration.SURFACE_STRUCTURES,
+			TerrainAdjustment.BEARD_BOX
 		));
 	}
 

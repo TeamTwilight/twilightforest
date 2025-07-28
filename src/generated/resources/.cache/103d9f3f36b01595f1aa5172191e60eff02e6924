@@ -1,4 +1,4 @@
-// 1.21.1	2025-07-25T22:29:55.120995703	Registries
+// 1.21.1	2025-07-27T22:11:28.448973	Registries
 9089ada9ce06fd30adf8b10e50f02233c7d5a76e data/minecraft/twilight/wood_palettes/acacia.json
 dca1ef01d0df4e956fd414782de57c25dfddd290 data/minecraft/twilight/wood_palettes/birch.json
 01becb45438b7f2bfdc77baba72bc986341510c8 data/minecraft/twilight/wood_palettes/crimson.json
@@ -385,7 +385,7 @@ fc958799683c3678e341b73d9a24dc466ced77da data/twilightforest/worldgen/placed_fea
 cf1c91f89f727cbbb41f58ce9865533b956cfef3 data/twilightforest/worldgen/placed_feature/well_placer.json
 acf33832e2093d6dd231b73c085d201755345886 data/twilightforest/worldgen/placed_feature/wood_roots.json
 3757bf828431a289ab651249fcf1bcf17c3bbd31 data/twilightforest/worldgen/structure/aurora_palace.json
-5a0b393394c93fa1356e00a8c978c236466f3f27 data/twilightforest/worldgen/structure/camp.json
+68681ec5b773fc7abddca0d7a733ba4f3fbe7335 data/twilightforest/worldgen/structure/camp.json
 8bc0c63c6a4230af538ec9447138001ce35f65c9 data/twilightforest/worldgen/structure/dark_tower.json
 18220d6177ec50de5647843dbe4aec7b39ea00b2 data/twilightforest/worldgen/structure/fallen_trunk.json
 bd74ed012994ac436d00b116c16bfacf50d507b8 data/twilightforest/worldgen/structure/final_castle.json
@@ -406,7 +406,7 @@ fd8f740a244ff52e8a8df64af54f2b8f681a611b data/twilightforest/worldgen/structure/
 92eda134168d65a65fbb0b04e25e705c46871c05 data/twilightforest/worldgen/structure/troll_cave.json
 8e8ef7a42c9c2e3d1bdb892c875c3df67ef48097 data/twilightforest/worldgen/structure/yeti_cave.json
 9b7532428e43ad07cbd01befa87d2e61c1b3665b data/twilightforest/worldgen/structure_set/aurora_palace.json
-0b08b6208e66ae4b55a7ae9fb3bfec02f12f73a7 data/twilightforest/worldgen/structure_set/camp.json
+d4ae4faa36826fcff53812cf2cf5a0d6c190778d data/twilightforest/worldgen/structure_set/camp.json
 85637b23df17209511ee48619f7c2e62ee711e46 data/twilightforest/worldgen/structure_set/dark_tower.json
 c4b8ea24a4e71721b0361691b331753a17cba076 data/twilightforest/worldgen/structure_set/fallen_trunk.json
 812d3931021ba71e0967f0ca1ed4ed9b8b4084c6 data/twilightforest/worldgen/structure_set/final_castle.json

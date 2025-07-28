@@ -24,7 +24,6 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.util.jigsaw.JigsawRecord;
@@ -40,7 +39,7 @@ import java.util.function.Predicate;
 public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implements ProgressionPiece, PieceBeardifierModifier {
 	private final JigsawRecord sourceJigsaw;
 	private final List<JigsawRecord> spareJigsaws;
-	private TerrainAdjustment terrainAdjustment;
+	private final TerrainAdjustment terrainAdjustment;
 
 	public static TwilightJigsawPiece defaultDeserialize(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
 		TwilightJigsawPiece twilightJigsawPiece = new TwilightJigsawPiece(TFStructurePieceTypes.TFJigsawTemplate.value(), compoundTag, ctx, readSettings(compoundTag));
@@ -128,6 +127,9 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 		TwilightJigsawPiece jigsawPiece = TwilightJigsawPiece.initializeTemplateFromPool(ResourceLocation.parse(connection.pool()), this.templatePosition.offset(connection.pos()), connection.orientation(), connection.target(), random, this.genDepth + 1, this.structureManager);
 
 		if (jigsawPiece == null)
+			return;
+
+		if (pieceAccessor.findCollisionPiece(jigsawPiece.boundingBox) != null)
 			return;
 
 		pieceAccessor.addPiece(jigsawPiece);
