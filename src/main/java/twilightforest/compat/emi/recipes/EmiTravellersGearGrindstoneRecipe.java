@@ -52,11 +52,11 @@ public class EmiTravellersGearGrindstoneRecipe extends EmiGrindstoneRecipe {
 	}
 
 	private static ItemStack getDefaultVestGloves() {
-		ItemStack vest = new ItemStack(TFItems.TRAVELLERS_CHESTPLATE_GLOVES.get());
-		TravellersModifiers.AUTO_REPAIR_MODIFIER.addModifier(vest);
-		TravellersModifiers.HASTE_MODIFIER.addModifier(vest);
-		TravellersModifiers.ARROW_MAGNETISM_MODIFIER.addModifier(vest);
-		return vest;
+		ItemStack vestGloves = new ItemStack(TFItems.TRAVELLERS_CHESTPLATE_GLOVES.get());
+		TravellersModifiers.AUTO_REPAIR_MODIFIER.addModifier(vestGloves);
+		TravellersModifiers.HASTE_MODIFIER.addModifier(vestGloves);
+		TravellersModifiers.ARROW_MAGNETISM_MODIFIER.addModifier(vestGloves);
+		return vestGloves;
 	}
 
 	private static ItemStack getDefaultVest() {
@@ -68,26 +68,27 @@ public class EmiTravellersGearGrindstoneRecipe extends EmiGrindstoneRecipe {
 	}
 
 	private static ItemStack getDefaultWingsBelt() {
-		ItemStack vest = new ItemStack(TFItems.TRAVELLERS_WINGS_BELT.get());
-		TravellersModifiers.SWAP_HOTBAR_MODIFIER.addModifier(vest);
-		TravellersModifiers.CONTROLLED_FALL_MODIFIER.addModifier(vest);
-		TravellersModifiers.DOUBLE_JUMP_MODIFIER.addModifier(vest);
-		return vest;
+		ItemStack wingsBelt = new ItemStack(TFItems.TRAVELLERS_WINGS_BELT.get());
+		TravellersModifiers.SWAP_HOTBAR_MODIFIER.addModifier(wingsBelt);
+		TravellersModifiers.CONTROLLED_FALL_MODIFIER.addModifier(wingsBelt);
+		TravellersModifiers.DOUBLE_JUMP_MODIFIER.addModifier(wingsBelt);
+
+		return wingsBelt;
 	}
 
 	private static ItemStack getDefaultWings() {
-		ItemStack vest = new ItemStack(TFItems.TRAVELLERS_WINGS.get());
-		TravellersModifiers.AUTO_REPAIR_MODIFIER.addModifier(vest);
-		TravellersModifiers.HASTE_MODIFIER.addModifier(vest);
-		TravellersModifiers.SIDESTEP_MODIFIER.addModifier(vest);
-		return vest;
+		ItemStack wings = new ItemStack(TFItems.TRAVELLERS_WINGS.get());
+		TravellersModifiers.AUTO_REPAIR_MODIFIER.addModifier(wings);
+		TravellersModifiers.HASTE_MODIFIER.addModifier(wings);
+		TravellersModifiers.SIDESTEP_MODIFIER.addModifier(wings);
+		return wings;
 	}
 
 	private static ItemStack getDefaultBoots() {
-		ItemStack vest = new ItemStack(TFItems.TRAVELLERS_BOOTS.get());
-		TravellersModifiers.AUTO_REPAIR_MODIFIER.addModifier(vest);
-		TravellersModifiers.STRAIGHT_AHEAD_MODIFIER.addModifier(vest);
-		TravellersModifiers.WATER_WALK_MODIFIER.addModifier(vest);
-		return vest;
+		ItemStack boots = new ItemStack(TFItems.TRAVELLERS_BOOTS.get());
+		TravellersModifiers.AUTO_REPAIR_MODIFIER.addModifier(boots);
+		TravellersModifiers.STRAIGHT_AHEAD_MODIFIER.addModifier(boots);
+		TravellersModifiers.WATER_WALK_MODIFIER.addModifier(boots);
+		return boots;
 	}
 }
