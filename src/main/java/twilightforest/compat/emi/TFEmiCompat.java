@@ -84,6 +84,8 @@ public class TFEmiCompat implements EmiPlugin {
 			registry.addRecipe(new EmiDryingRecipe(holder));
 		}
 
+		EmiTravellersGearGrindstoneRecipe.register(registry);
+
 		for (RecipeHolder<?> holder : manager.getAllRecipesFor(RecipeType.CRAFTING)) {
 			EmiRecipe emiRecipe = switch (holder.value()) {
 				case MoonwormQueenRepairRecipe ignored -> new EmiMoonwormQueenRecipe();

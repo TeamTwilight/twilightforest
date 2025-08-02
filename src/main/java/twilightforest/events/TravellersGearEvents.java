@@ -27,7 +27,6 @@ import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFItems;
 import twilightforest.item.travellers_gear.TravellersArmorItem;
 import twilightforest.item.travellers_gear.modifiers.InsertableTravellersModifier;
-import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifiers;
 
 import java.util.List;
