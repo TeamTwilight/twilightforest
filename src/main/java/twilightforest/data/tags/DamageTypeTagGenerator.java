@@ -26,7 +26,7 @@ public class DamageTypeTagGenerator extends TagsProvider<DamageType> {
 
 	@Override
 	protected void addTags(HolderLookup.Provider provider) {
-		this.tag(TFDamageTypes.GHAST_TEAR, DamageTypeTags.BYPASSES_ARMOR, DamageTypeTags.DAMAGES_HELMET, Tags.DamageTypes.IS_PHYSICAL, DamageTypeTags.AVOIDS_GUARDIAN_THORNS);
+		this.tag(TFDamageTypes.GHAST_TEAR, DamageTypeTags.BYPASSES_ARMOR, DamageTypeTags.DAMAGES_HELMET, Tags.DamageTypes.IS_PHYSICAL, DamageTypeTags.AVOIDS_GUARDIAN_THORNS, DamageTypeTags.NO_KNOCKBACK);
 		this.tag(TFDamageTypes.HYDRA_BITE, Tags.DamageTypes.IS_PHYSICAL);
 		this.tag(TFDamageTypes.HYDRA_FIRE, DamageTypeTags.IS_FIRE, DamageTypeTags.IGNITES_ARMOR_STANDS, DamageTypeTags.AVOIDS_GUARDIAN_THORNS);
 		this.tag(TFDamageTypes.HYDRA_MORTAR, DamageTypeTags.IS_FIRE, DamageTypeTags.IGNITES_ARMOR_STANDS, DamageTypeTags.AVOIDS_GUARDIAN_THORNS);
@@ -36,12 +36,12 @@ public class DamageTypeTagGenerator extends TagsProvider<DamageType> {
 		this.tag(TFDamageTypes.SQUISH, Tags.DamageTypes.IS_PHYSICAL);
 		this.tag(TFDamageTypes.THROWN_AXE, DamageTypeTags.IS_PROJECTILE, Tags.DamageTypes.IS_PHYSICAL);
 		this.tag(TFDamageTypes.THROWN_PICKAXE, DamageTypeTags.IS_PROJECTILE, Tags.DamageTypes.IS_PHYSICAL);
-		this.tag(TFDamageTypes.THORNS, Tags.DamageTypes.IS_ENVIRONMENT, Tags.DamageTypes.IS_PHYSICAL);
+		this.tag(TFDamageTypes.THORNS, Tags.DamageTypes.IS_ENVIRONMENT, Tags.DamageTypes.IS_PHYSICAL, DamageTypeTags.NO_KNOCKBACK);
 		this.tag(TFDamageTypes.OREBERRY, Tags.DamageTypes.IS_ENVIRONMENT, Tags.DamageTypes.IS_PHYSICAL, DamageTypeTags.NO_KNOCKBACK);
 		this.tag(TFDamageTypes.KNIGHTMETAL, Tags.DamageTypes.IS_ENVIRONMENT);
-		this.tag(TFDamageTypes.FIERY, DamageTypeTags.IS_FIRE, Tags.DamageTypes.IS_ENVIRONMENT, Tags.DamageTypes.IS_PHYSICAL);
-		this.tag(TFDamageTypes.FIRE_JET, DamageTypeTags.IS_FIRE, Tags.DamageTypes.IS_ENVIRONMENT, Tags.DamageTypes.IS_PHYSICAL, DamageTypeTags.IGNITES_ARMOR_STANDS);
-		this.tag(TFDamageTypes.REACTOR, Tags.DamageTypes.IS_ENVIRONMENT, Tags.DamageTypes.IS_MAGIC);
+		this.tag(TFDamageTypes.FIERY, DamageTypeTags.IS_FIRE, Tags.DamageTypes.IS_ENVIRONMENT, Tags.DamageTypes.IS_PHYSICAL, DamageTypeTags.NO_KNOCKBACK);
+		this.tag(TFDamageTypes.FIRE_JET, DamageTypeTags.IS_FIRE, Tags.DamageTypes.IS_ENVIRONMENT, Tags.DamageTypes.IS_PHYSICAL, DamageTypeTags.IGNITES_ARMOR_STANDS, DamageTypeTags.NO_KNOCKBACK);
+		this.tag(TFDamageTypes.REACTOR, Tags.DamageTypes.IS_ENVIRONMENT, Tags.DamageTypes.IS_MAGIC, DamageTypeTags.NO_KNOCKBACK);
 		this.tag(TFDamageTypes.SLIDER, Tags.DamageTypes.IS_ENVIRONMENT, Tags.DamageTypes.IS_PHYSICAL);
 		this.tag(TFDamageTypes.THROWN_BLOCK, DamageTypeTags.DAMAGES_HELMET, DamageTypeTags.IS_PROJECTILE, Tags.DamageTypes.IS_PHYSICAL);
 		this.tag(TFDamageTypes.AXING, Tags.DamageTypes.IS_PHYSICAL);
@@ -49,7 +49,7 @@ public class DamageTypeTagGenerator extends TagsProvider<DamageType> {
 		this.tag(TFDamageTypes.YEETED, DamageTypeTags.BYPASSES_ARMOR, DamageTypeTags.IS_FALL, Tags.DamageTypes.IS_PHYSICAL, DamageTypeTags.AVOIDS_GUARDIAN_THORNS);
 		this.tag(TFDamageTypes.ANT, Tags.DamageTypes.IS_PHYSICAL);
 		this.tag(TFDamageTypes.HAUNT, Tags.DamageTypes.IS_MAGIC);
-		this.tag(TFDamageTypes.CLAMPED, Tags.DamageTypes.IS_PHYSICAL);
+		this.tag(TFDamageTypes.CLAMPED, Tags.DamageTypes.IS_PHYSICAL, DamageTypeTags.NO_KNOCKBACK);
 		this.tag(TFDamageTypes.SCORCHED, DamageTypeTags.IS_FIRE, DamageTypeTags.IGNITES_ARMOR_STANDS);
 		this.tag(TFDamageTypes.FROZEN, Tags.DamageTypes.IS_MAGIC, DamageTypeTags.BYPASSES_WOLF_ARMOR);
 		this.tag(TFDamageTypes.SPIKED, Tags.DamageTypes.IS_PHYSICAL);
@@ -61,8 +61,8 @@ public class DamageTypeTagGenerator extends TagsProvider<DamageType> {
 		this.tag(TFDamageTypes.LIFEDRAIN, DamageTypeTags.BYPASSES_ARMOR, DamageTypeTags.IS_PROJECTILE, Tags.DamageTypes.IS_MAGIC, DamageTypeTags.BYPASSES_WOLF_ARMOR);
 		this.tag(TFDamageTypes.EXPIRED, DamageTypeTags.BYPASSES_ARMOR, DamageTypeTags.BYPASSES_RESISTANCE, DamageTypeTags.ALWAYS_MOST_SIGNIFICANT_FALL, DamageTypeTags.BYPASSES_INVULNERABILITY, Tags.DamageTypes.IS_TECHNICAL, DamageTypeTags.BYPASSES_WOLF_ARMOR);
 		this.tag(TFDamageTypes.FALLING_ICE, DamageTypeTags.BYPASSES_ENCHANTMENTS, Tags.DamageTypes.IS_ENVIRONMENT, Tags.DamageTypes.IS_PHYSICAL);
-		this.tag(TFDamageTypes.MOONWORM, Tags.DamageTypes.IS_PHYSICAL);
-		this.tag(TFDamageTypes.ACID_RAIN, DamageTypeTags.BYPASSES_ARMOR, DamageTypeTags.WITCH_RESISTANT_TO, Tags.DamageTypes.IS_ENVIRONMENT, Tags.DamageTypes.IS_MAGIC, DamageTypeTags.BYPASSES_WOLF_ARMOR);
+		this.tag(TFDamageTypes.MOONWORM, Tags.DamageTypes.IS_PHYSICAL, DamageTypeTags.NO_KNOCKBACK);
+		this.tag(TFDamageTypes.ACID_RAIN, DamageTypeTags.BYPASSES_ARMOR, DamageTypeTags.WITCH_RESISTANT_TO, Tags.DamageTypes.IS_ENVIRONMENT, Tags.DamageTypes.IS_MAGIC, DamageTypeTags.BYPASSES_WOLF_ARMOR, DamageTypeTags.NO_KNOCKBACK);
 		this.tag(TFDamageTypes.OMINOUS_FIRE, Tags.DamageTypes.IS_MAGIC, DamageTypeTags.BYPASSES_ARMOR, DamageTypeTags.WITHER_IMMUNE_TO, DamageTypeTags.NO_KNOCKBACK, DamageTypeTags.PANIC_ENVIRONMENTAL_CAUSES);
 
 		this.tag(DamageTypes.MAGIC, BREAKS_LICH_SHIELDS);

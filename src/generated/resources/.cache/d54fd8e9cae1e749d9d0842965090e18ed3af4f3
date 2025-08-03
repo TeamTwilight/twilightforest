@@ -1,4 +1,4 @@
-// 1.21.1	2025-03-29T22:07:38.701373112	Tags for minecraft:damage_type mod id twilightforest
+// 1.21.1	2025-08-03T10:49:02.933513485	Tags for minecraft:damage_type mod id twilightforest
 e871224cfaf3f71ec4cef5455688114b0d13ee16 data/minecraft/tags/damage_type/always_most_significant_fall.json
 addc08f14bbae216b52a4e7f153141d2a3ba1788 data/minecraft/tags/damage_type/avoids_guardian_thorns.json
 95a58f3ed1b4a2272574f48d6e6901ca31e234c2 data/minecraft/tags/damage_type/bypasses_armor.json
@@ -13,7 +13,7 @@ f953fcb77923694dc4d54294fa83a1bc6249f0fb data/minecraft/tags/damage_type/is_fall
 ab38770a322cd432744b981e69b631f22a899f48 data/minecraft/tags/damage_type/is_fire.json
 7bd7907458433004776bd5d3b1a35ac5dd9b7540 data/minecraft/tags/damage_type/is_projectile.json
 3dfac6ba22176c226475f47389e1f7af39d799b1 data/minecraft/tags/damage_type/no_anger.json
-67190fe388812800418bb9ad1c15f1f4ce221976 data/minecraft/tags/damage_type/no_knockback.json
+e103f06859ecce616cf1cba9a27b0813edd39cc9 data/minecraft/tags/damage_type/no_knockback.json
 b84211b8bce51b7d8233bc8e8ea4ea0fc6befdf0 data/minecraft/tags/damage_type/panic_environmental_causes.json
 01207085c3c5616873fe025cae8c824b8e44d1df data/minecraft/tags/damage_type/witch_resistant_to.json
 b84211b8bce51b7d8233bc8e8ea4ea0fc6befdf0 data/minecraft/tags/damage_type/wither_immune_to.json
