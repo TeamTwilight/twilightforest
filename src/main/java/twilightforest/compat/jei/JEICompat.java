@@ -29,6 +29,7 @@ import twilightforest.compat.jei.renderers.FakeItemEntityHelper;
 import twilightforest.compat.jei.renderers.FakeItemEntityRenderer;
 import twilightforest.compat.jei.subtype.CasketSubtypeInterpreter;
 import twilightforest.compat.jei.util.CrumbleRecipe;
+import twilightforest.compat.jei.util.GrindstoneTravellersRecipesGetter;
 import twilightforest.compat.jei.util.OminousFireRecipe;
 import twilightforest.compat.jei.util.TransformationRecipe;
 import twilightforest.config.TFConfig;
@@ -133,6 +134,7 @@ public class JEICompat implements IModPlugin {
 		registration.addRecipes(OminousFireCategory.OMINOUS_FIRE, RecipeViewerConstants.getOminousFireRecipes().stream().map(info -> new OminousFireRecipe(new FakeEntityType(info.input()), new FakeEntityType(info.output()))).toList());
 		registration.addRecipes(CrumbleHornCategory.CRUMBLE_HORN, RecipeViewerConstants.getCrumbleHornRecipes().stream().map(info -> new CrumbleRecipe(info.getFirst(), info.getSecond())).toList());
 		registration.addRecipes(DryingCategory.DRYING, manager.getAllRecipesFor(TFRecipes.DRYING_RECIPE.get()).stream().map(RecipeHolder::value).toList());
+		registration.addRecipes(RecipeTypes.GRINDSTONE, GrindstoneTravellersRecipesGetter.getRecipes());
 	}
 
 	@Override
