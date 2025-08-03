@@ -16,6 +16,7 @@ import twilightforest.asm.transformers.foliage.FoliageColorResolverTransformer;
 import twilightforest.asm.transformers.lead.LeashFenceKnotSurvivesTransformer;
 import twilightforest.asm.transformers.livingentity.WaterWalkTransformer;
 import twilightforest.asm.transformers.map.ResolveNearestNonRandomSpreadMapStructureTransformer;
+import twilightforest.asm.transformers.map.UpdateMapsInGogglesTransformer;
 import twilightforest.asm.transformers.mob.PathFinderUnrestrainedByLeash;
 import twilightforest.asm.transformers.multipart.ResolveEntitiesForRendereringTransformer;
 import twilightforest.asm.transformers.multipart.ResolveEntityRendererTransformer;
@@ -66,6 +67,7 @@ public class TFCoreMod implements ICoreMod {
 
 			// map
 			new ResolveNearestNonRandomSpreadMapStructureTransformer(),
+			new UpdateMapsInGogglesTransformer(),
 
 			// multipart
 			new ResolveEntitiesForRendereringTransformer(),

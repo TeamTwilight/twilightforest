@@ -116,6 +116,7 @@ public class ClientEvents {
 		NeoForge.EVENT_BUS.addListener(ClientEvents::handleTravellersStealth);
 		NeoForge.EVENT_BUS.addListener(ClientEvents::updateTravellersSwapHotbar);
 		NeoForge.EVENT_BUS.addListener(ClientEvents::updateTravellersRedThreadAttachment);
+		NeoForge.EVENT_BUS.addListener(ClientEvents::updateTravellersItemDisplayVisibility);
 		NeoForge.EVENT_BUS.addListener(ClientEvents::travellersArmorEffects);
 		NeoForge.EVENT_BUS.addListener(ClientEvents::playerTravellersArmorEffects);
 		NeoForge.EVENT_BUS.addListener(ClientEvents::travellersAgileRanger);
@@ -464,12 +465,26 @@ public class ClientEvents {
 		player.setData(TFDataAttachments.TRAVELLERS_GOGGLES_RED_THREAD_VISION, isClicked != current);
 	}
 
-	private static void playZoomSounds(InputEvent.Key event) {
+	private static void updateTravellersItemDisplayVisibility(InputEvent.Key event) {
 		Player player = Minecraft.getInstance().player;
 		if (player == null)
 			return;
 
-		Float zoomModifier = player.getInventory().getArmor(EquipmentSlot.HEAD.getIndex()).get(TFDataComponents.ZOOM_ABILITY_MODIFIER);
+		boolean current = player.getData(TFDataAttachments.TRAVELLERS_GOGGLES_ITEM_DISPLAY);
+		boolean isClicked = false;
+		while (TFKeyBinds.ITEM_DISPLAY_KEY.consumeClick()) {
+			isClicked = !isClicked;  // clickCount can be even, so we may not toggle Red Thread Vision
+		}
+
+		player.setData(TFDataAttachments.TRAVELLERS_GOGGLES_ITEM_DISPLAY, isClicked != current);
+	}
+
+	private static void playZoomSounds(InputEvent.Key event) {
+		Player player = Minecraft.getInstance().player;
+		if (player == null || TravellersArmorItem.isTravellersArmorAndBroken(player.getItemBySlot(EquipmentSlot.HEAD)))
+			return;
+
+		Float zoomModifier = player.getItemBySlot(EquipmentSlot.HEAD).get(TFDataComponents.ZOOM_ABILITY_MODIFIER);
 		if (zoomModifier != null && event.getKey() == TFKeyBinds.ZOOM_KEY.getKey().getValue()) {
 			if (event.getAction() == InputConstants.PRESS) {
 				player.playSound(TFSounds.GOGGLES_ZOOM_IN.get());

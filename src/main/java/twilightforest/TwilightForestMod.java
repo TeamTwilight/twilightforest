@@ -63,10 +63,7 @@ import twilightforest.entity.passive.DwarfRabbitVariant;
 import twilightforest.entity.passive.TinyBirdVariant;
 import twilightforest.entity.passive.quest.QuestReloadListener;
 import twilightforest.init.*;
-import twilightforest.init.custom.BiomeLayerStack;
-import twilightforest.init.custom.BiomeLayerTypes;
-import twilightforest.init.custom.ChunkBlanketProcessors;
-import twilightforest.init.custom.Enforcements;
+import twilightforest.init.custom.*;
 import twilightforest.loot.modifiers.GiantToolGroupingModifier;
 import twilightforest.network.*;
 import twilightforest.util.HolidayEvent;
@@ -140,6 +137,7 @@ public final class TwilightForestMod {
 		TFCreativeTabs.TABS.register(bus);
 		TFLoot.CONDITIONALS.register(bus);
 		TFEntities.SPAWN_EGGS.register(bus);
+		ItemDisplays.DISPLAYS.register(bus);
 		TFMenuTypes.CONTAINERS.register(bus);
 		TFRecipes.RECIPE_TYPES.register(bus);
 		TFAttributes.ATTRIBUTES.register(bus);
@@ -252,6 +250,7 @@ public final class TwilightForestMod {
 		event.register(TFRegistries.BIOME_LAYER_TYPE);
 		event.register(TFRegistries.ENFORCEMENT);
 		event.register(TFRegistries.CHUNK_BLANKET_TYPES);
+		event.register(TFRegistries.ITEM_DISPLAY_TYPE);
 	}
 
 	public void setRegistriesForDatapack(DataPackRegistryEvent.NewRegistry event) {

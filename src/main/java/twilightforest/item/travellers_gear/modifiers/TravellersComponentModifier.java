@@ -25,8 +25,8 @@ public class TravellersComponentModifier implements InsertableTravellersModifier
 		this.tooltipTranslationKey = "travellers_gear.modifier." + name.toString().replace(":", ".");
 	}
 
-	public <T> TravellersComponentModifier(ResourceLocation name, DeferredHolder<DataComponentType<?>, DataComponentType<T>> dataComponent, T value) {
-		this(name, new TypedDataComponent<>(dataComponent.get(), value));
+	public <T> TravellersComponentModifier(ResourceLocation name, DataComponentType<T> dataComponent, T value) {
+		this(name, new TypedDataComponent<>(dataComponent, value));
 	}
 
 	@SuppressWarnings("unchecked")

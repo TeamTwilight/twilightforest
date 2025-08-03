@@ -821,6 +821,12 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.build(),
 			TravellersModifiers.ALL_NIGHT_GOGGLES_MODIFIER).save(output);
 
+		TravellersGearComponentModifierBuilder.buildShapeless(CartesianShapelessRecipeBuilder.create(splitTravellersModifiersRecipes)
+				.ingredient(Items.ITEM_FRAME)
+				.ingredient(TFItems.TRAVELLERS_GOGGLES)
+				.build(),
+			TravellersModifiers.ITEM_DISPLAY_MODIFIER).save(output);
+
 		DryingRecipeBuilder.drying(Ingredient.of(Tags.Items.FOODS_COOKED_MEAT), new ItemStack(Items.LEATHER), 8.5F)
 			.unlockedBy("has_meat", has(Tags.Items.FOODS_COOKED_MEAT))
 			.save(output, TwilightForestMod.prefix("drying/cooked_meat_to_leather"));

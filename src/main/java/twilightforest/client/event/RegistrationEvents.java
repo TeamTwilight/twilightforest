@@ -1,6 +1,7 @@
 package twilightforest.client.event;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.model.*;
 import net.minecraft.client.model.geom.LayerDefinitions;
 import net.minecraft.client.model.geom.ModelLayers;
@@ -8,6 +9,7 @@ import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
@@ -39,6 +41,7 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.extensions.common.IClientBlockExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
+import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.client.gui.map.RegisterMapDecorationRenderersEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -58,6 +61,7 @@ import twilightforest.client.model.block.patch.PatchModelLoader;
 import twilightforest.client.model.entity.*;
 import twilightforest.client.model.item.TravellersGearItemModel;
 import twilightforest.client.model.item.TrollsteinnModel;
+import twilightforest.client.overlay.*;
 import twilightforest.client.particle.*;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.armor.TFArmorRenderer;
@@ -68,13 +72,16 @@ import twilightforest.client.renderer.entity.layers.IceLayer;
 import twilightforest.client.renderer.entity.layers.ShieldLayer;
 import twilightforest.client.renderer.map.ConqueredMapIconRenderer;
 import twilightforest.client.renderer.map.MagicMapPlayerIconRenderer;
+import twilightforest.client.renderer.tooltip.ItemDisplayTooltipComponent;
 import twilightforest.client.renderer.tooltip.PotionFlaskTooltipComponent;
 import twilightforest.client.renderer.tooltip.TravellersBeltTooltipComponent;
 import twilightforest.components.item.PotionFlaskComponent;
+import twilightforest.events.HostileMountEvents;
 import twilightforest.init.*;
 import twilightforest.item.*;
 import twilightforest.item.travellers_gear.TravellersArmorBeltItem;
 import twilightforest.item.travellers_gear.TravellersArmorItem;
+import twilightforest.item.travellers_gear.TravellersGogglesItem;
 import twilightforest.util.woods.TFWoodTypes;
 
 import java.util.List;
@@ -100,18 +107,20 @@ public class RegistrationEvents {
 		bus.addListener(RegistrationEvents::registerClientExtensions);
 		bus.addListener(RegistrationEvents::registerMapDecorators);
 		bus.addListener(RegistrationEvents::registerParticleFactories);
+		bus.addListener(RegistrationEvents::registerOverlays);
 
 		bus.addListener(TFKeyBinds::registerKeyBindings);
 
 		bus.addListener(ColorHandler::registerBlockColors);
 		bus.addListener(ColorHandler::registerItemColors);
 
-		bus.addListener(OverlayHandler::registerOverlays);
-
 		bus.addListener(TFShaders::registerShaders);
 
-		bus.addListener(RegisterClientTooltipComponentFactoriesEvent.class, event -> event.register(BrittleFlaskItem.Tooltip.class, PotionFlaskTooltipComponent::new));
-		bus.addListener(RegisterClientTooltipComponentFactoriesEvent.class, event -> event.register(TravellersArmorBeltItem.Tooltip.class, TravellersBeltTooltipComponent::new));
+		bus.addListener(RegisterClientTooltipComponentFactoriesEvent.class, event -> {
+			event.register(BrittleFlaskItem.Tooltip.class, PotionFlaskTooltipComponent::new);
+			event.register(TravellersArmorBeltItem.Tooltip.class, TravellersBeltTooltipComponent::new);
+			event.register(TravellersGogglesItem.Tooltip.class, ItemDisplayTooltipComponent::new);
+		});
 	}
 
 	private static void registerModelLoaders(ModelEvent.RegisterGeometryLoaders event) {
@@ -705,6 +714,30 @@ public class RegistrationEvents {
 		event.register(TFMapDecorations.YETI_LAIR.get(), new ConqueredMapIconRenderer());
 		event.register(TFMapDecorations.AURORA_PALACE.get(), new ConqueredMapIconRenderer());
 		event.register(TFMapDecorations.FINAL_CASTLE.get(), new ConqueredMapIconRenderer());
+	}
+
+	private static void registerOverlays(RegisterGuiLayersEvent event) {
+		Minecraft minecraft = Minecraft.getInstance();
+		Gui gui = minecraft.gui;
+
+		event.registerAbove(VanillaGuiLayers.CROSSHAIR, TwilightForestMod.prefix("quest_ram_indicator"), (graphics, partialTicks) -> QuestingRamIndicatorOverlay.render(minecraft, graphics, gui, getCameraPlayer()));
+		event.registerAbove(VanillaGuiLayers.VEHICLE_HEALTH, TwilightForestMod.prefix("hostile_mount_hunger_bar"), (graphics, partialTicks) -> {
+			if (!minecraft.options.hideGui && minecraft.gameMode.canHurtPlayer() && getCameraPlayer() != null && HostileMountEvents.isRidingUnfriendly(getCameraPlayer())) {
+				int xPos = graphics.guiWidth() / 2 + 91;
+				int yPos = graphics.guiHeight() - gui.rightHeight;
+				gui.renderFood(graphics, getCameraPlayer(), yPos, xPos);
+				gui.rightHeight += 10;
+			}
+		});
+		event.registerAboveAll(TwilightForestMod.prefix("ore_meter_stats"), (graphics, partialTicks) -> OreMeterOverlay.render(graphics, minecraft, gui, getCameraPlayer()));
+		event.registerAbove(VanillaGuiLayers.ARMOR_LEVEL, TwilightForestMod.prefix("fortification_shield_count"), (graphics, partialTick) -> ShieldOverlay.render(graphics, minecraft, gui, getCameraPlayer()));
+		event.registerAboveAll(TwilightForestMod.prefix("portal_overlay"), (graphics, partialTick) -> PortalOverlay.render(graphics, minecraft, getCameraPlayer()));
+		event.registerAboveAll(TwilightForestMod.prefix("item_display_overlay"), (graphics, partialTick) -> ItemDisplayOverlay.render(graphics, minecraft, minecraft.getWindow(), gui, getCameraPlayer()));
+	}
+
+	@Nullable
+	private static Player getCameraPlayer() {
+		return Minecraft.getInstance().getCameraEntity() instanceof Player player ? player : null;
 	}
 
 	private static void attachRenderLayers(EntityRenderersEvent.AddLayers event) {

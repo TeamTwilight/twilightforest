@@ -1191,6 +1191,12 @@ public class LangGenerator extends TFLangProvider {
 		this.configEntry("prettify_ore_meter_gui", "Prettify Ore Meter GUI", ConfigComments.PRETTIFY_ORE_METER);
 		this.configEntry("totem_charm_animation", "Totem of Undying Charm Animation", ConfigComments.CHARMS_AS_TOTEMS);
 
+		this.configCategory("item_display", "Item Display Modifier Settings", ConfigComments.ITEM_DISPLAY);
+		this.configEntry("screen_offset_x", "Display X Offset", ConfigComments.DISPLAY_SCREEN_OFFSET_Y);
+		this.configEntry("screen_offset_y", "Display Y Offset", ConfigComments.DISPLAY_SCREEN_OFFSET_Y);
+		this.configEntry("screen_scale", "Display Scale", ConfigComments.DISPLAY_SCALE);
+		this.configEntry("military_time", "Military Time", ConfigComments.MILITARY_TIME);
+
 		//common config
 		this.configCategory("dim_settings", "Dimension Settings", ConfigComments.DIMENSION);
 		this.configEntry("spawn_in_tf", "Spawn in Twilight Forest", ConfigComments.SPAWN_IN_TF);
@@ -1243,6 +1249,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addKeyBindCategory(TFKeyBindsCategories.TRAVELLERS_GEAR, "Twilight Forest (Traveller's Gear)");
 
 		this.addKeyMapping(TFKeyBinds.RED_THREAD_VISION_KEY, "See Red Thread with Goggles");
+		this.addKeyMapping(TFKeyBinds.ITEM_DISPLAY_KEY, "Toggle Item Display Rendering");
 		this.addKeyMapping(TFKeyBinds.ZOOM_KEY, "Zoom With Goggles");
 		this.addKeyMapping(TFKeyBinds.SWAP_HOTBAR_KEY, "Swap Hotbar");
 
@@ -1259,6 +1266,9 @@ public class LangGenerator extends TFLangProvider {
 		this.addTravellersModifier(TravellersModifiers.AQUATIC_AGILITY, "- Aquatic Agility");
 		this.addTravellersModifier(TravellersModifiers.RED_THREAD_VISION_MODIFIER, "- Red Thread Vision (keybind: ${tfkeybinds/"+ TFKeyBinds.RED_THREAD_VISION_KEY.getName() + "})");
 		this.addTravellersModifier(TravellersModifiers.ALL_NIGHT_GOGGLES_MODIFIER, "- All-Night Goggles");
+		this.addTravellersModifier(TravellersModifiers.ITEM_DISPLAY_MODIFIER, "- Item Display (keybind: ${tfkeybinds/"+ TFKeyBinds.ITEM_DISPLAY_KEY.getName() + "})");
+		this.add("travellers_gear.modifier.twilightforest.item_display.clock.unknown", "Time Unknown");
+		this.add("travellers_gear.modifier.twilightforest.item_display.compass.lodestone", "%s (%s blocks away)");
 
 		this.addTravellersModifier(TravellersModifiers.STEALTH_MODIFIER,          "- Stealth (sneak to activate)");
 		this.addTravellersModifier(TravellersModifiers.ARROW_MAGNETISM_MODIFIER,  "- Arrow Magnetism");

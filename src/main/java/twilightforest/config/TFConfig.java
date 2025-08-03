@@ -32,7 +32,7 @@ public class TFConfig {
 	private static final List<Holder<Biome>> VALID_AURORA_BIOMES = new ArrayList<>();
 	public static final List<GameProfile> GAME_PROFILES = new ArrayList<>();
 
-	/// --- CLIENT ---
+	// --- CLIENT ---
 	public static boolean silentCicadas = false;
 	public static boolean silentCicadasOnHead = false;
 	public static boolean firstPersonEffects = true;
@@ -45,6 +45,12 @@ public class TFConfig {
 	private static int clientCloudBlockPrecipitationDistance = 32;
 	public static boolean prettifyOreMeterGui = true;
 	public static boolean spawnCharmAnimationAsTotem = false;
+
+	// --- Item Display ---
+	public static int itemDisplayXOffs = 4;
+	public static int itemDisplayYOffs = 4;
+	public static double itemDisplayScale = 1.0D;
+	public static boolean clockMilitaryTime = false;
 
 	// --- COMMON ---
 	public static boolean casketUUIDLocking = false;
@@ -209,6 +215,11 @@ public class TFConfig {
 		clientCloudBlockPrecipitationDistance = config.cloudBlockPrecipitationDistance.get();
 		prettifyOreMeterGui = config.prettifyOreMeterGui.get();
 		spawnCharmAnimationAsTotem = config.spawnCharmAnimationAsTotem.get();
+
+		itemDisplayXOffs = config.ITEM_DISPLAY.screenOffsetX.get();
+		itemDisplayYOffs = config.ITEM_DISPLAY.screenOffsetY.get();
+		itemDisplayScale = config.ITEM_DISPLAY.screenScale.get();
+		clockMilitaryTime = config.ITEM_DISPLAY.militaryTime.get();
 	}
 
 	private static void reloadGiantSkins(TFClientConfig config) {
@@ -259,7 +270,7 @@ public class TFConfig {
 
 		@Override
 		public Component getTranslatedName() {
-			return Component.translatable("config.twilightforest.multiplayer_fight_adjuster." + this.name().toLowerCase(Locale.ROOT));
+			return Component.translatable(CONFIG_ID + "multiplayer_fight_adjuster." + this.name().toLowerCase(Locale.ROOT));
 		}
 	}
 }

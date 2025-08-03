@@ -23,6 +23,8 @@ public class TFClientConfig {
 	final ModConfigSpec.BooleanValue prettifyOreMeterGui;
 	final ModConfigSpec.BooleanValue spawnCharmAnimationAsTotem;
 
+	final ItemDisplay ITEM_DISPLAY = new ItemDisplay();
+
 	public TFClientConfig(ModConfigSpec.Builder builder) {
 		silentCicadas = builder
 			.translation(TFConfig.CONFIG_ID + "silent_cicadas")
@@ -92,5 +94,37 @@ public class TFClientConfig {
 		spawnCharmAnimationAsTotem = builder.translation(TFConfig.CONFIG_ID + "totem_charm_animation")
 			.comment(ConfigComments.CHARMS_AS_TOTEMS)
 			.define("totemCharmAnimation", false);
+
+		builder.comment(ConfigComments.ITEM_DISPLAY).translation(TFConfig.CONFIG_ID + "item_display").push("Item Display Modifier Settings");
+		{
+
+			ITEM_DISPLAY.screenOffsetX = builder
+				.translation(TFConfig.CONFIG_ID + "screen_offset_x")
+				.comment(ConfigComments.DISPLAY_SCREEN_OFFSET_X)
+				.defineInRange("screenOffsetX", 4, Integer.MIN_VALUE, Integer.MAX_VALUE);
+
+			ITEM_DISPLAY.screenOffsetY = builder
+				.translation(TFConfig.CONFIG_ID + "screen_offset_y")
+				.comment(ConfigComments.DISPLAY_SCREEN_OFFSET_Y)
+				.defineInRange("screenOffsetY", 4, Integer.MIN_VALUE, Integer.MAX_VALUE);
+
+			ITEM_DISPLAY.screenScale = builder
+				.translation(TFConfig.CONFIG_ID + "screen_scale")
+				.comment(ConfigComments.DISPLAY_SCALE)
+				.defineInRange("screenScale", 1.0D, 0.1D, 10.0D);
+
+			ITEM_DISPLAY.militaryTime = builder
+				.translation(TFConfig.CONFIG_ID + "military_time")
+				.comment(ConfigComments.MILITARY_TIME)
+				.define("militaryTime", false);
+		}
+		builder.pop();
+	}
+
+	static class ItemDisplay {
+		ModConfigSpec.IntValue screenOffsetX;
+		ModConfigSpec.IntValue screenOffsetY;
+		ModConfigSpec.DoubleValue screenScale;
+		ModConfigSpec.BooleanValue militaryTime;
 	}
 }

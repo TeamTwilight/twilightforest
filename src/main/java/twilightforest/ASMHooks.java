@@ -70,6 +70,7 @@ import twilightforest.world.components.structures.CustomDensitySource;
 import twilightforest.world.components.structures.util.CustomStructureData;
 
 import java.util.Iterator;
+import java.util.function.Predicate;
 
 // TODO: Think about reorganizing each group into their own class or subclass of ASMHooks
 @SuppressWarnings({"JavadocReference", "unused", "RedundantSuppression", "deprecation"})
@@ -463,5 +464,18 @@ public class ASMHooks {
 	 */
 	public static boolean keepSnowyStateForSnowloggableBlocks(boolean o, BlockState state) {
 		return o || (state.getBlock() instanceof SnowLoggable && state.getValue(SnowLoggable.SNOW_LAYERS) > 0);
+	}
+
+	public static boolean mapHack;
+
+	/**
+	 * {@link twilightforest.asm.transformers.map.UpdateMapsInGogglesTransformer}
+	 *
+	 * Injection Point:<br/>
+	 * {@link net.minecraft.world.level.saveddata.maps.MapItemSavedData}<br/>
+	 * Targets: {@link net.minecraft.world.entity.player.Inventory.contains(Predicate)}
+	 */
+	public static boolean updateMapsInGoggles(boolean o) {
+		return o || mapHack;
 	}
 }

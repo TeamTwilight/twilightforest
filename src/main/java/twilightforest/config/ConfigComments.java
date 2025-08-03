@@ -21,6 +21,12 @@ public final class ConfigComments {
 	public static final String PRETTIFY_ORE_METER = "Lines up the dashes and percentages in the Ore Meter GUI.";
 	public static final String CHARMS_AS_TOTEMS = "Makes Charms when triggered display like the Totem of Undying instead of our own effects.";
 
+	public static final String ITEM_DISPLAY = "Controls where various things render when using the Item Display Modifier on traveller's gear.";
+	public static final String DISPLAY_SCREEN_OFFSET_X = "Defines the starting X offset of all display modifiers on the screen.";
+	public static final String DISPLAY_SCREEN_OFFSET_Y = "Defines the starting Y offset of all display modifiers on the screen.";
+	public static final String DISPLAY_SCALE = "Defines the scale of all display modifiers on the screen.";
+	public static final String MILITARY_TIME = "If true, the clock upgrade will display in the 24 hour format instead of 12.";
+
 	//COMMON
 	public static final String DIMENSION = "Settings that are not reversible without consequences.";
 	public static final String SPAWN_IN_TF = "If true, players spawning for the first time will spawn in the Twilight Forest.";

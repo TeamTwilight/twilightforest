@@ -1,7 +1,9 @@
 package twilightforest.item.travellers_gear.modifiers;
 
 import net.minecraft.core.Holder;
+import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Unit;
 import net.minecraft.world.entity.EquipmentSlotGroup;
@@ -10,8 +12,10 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
+import net.minecraft.world.item.component.ItemContainerContents;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import twilightforest.TwilightForestMod;
+import twilightforest.components.item.ItemDisplayContents;
 import twilightforest.init.TFAttributeModifiers;
 import twilightforest.init.TFDataComponents;
 
@@ -40,6 +44,7 @@ public abstract class TravellersModifiers {
 			new ItemAttributeModifiers.Entry(Attributes.SUBMERGED_MINING_SPEED, TFAttributeModifiers.TRAVELLERS_AQUATIC_AGILITY_MINING_DEACTIVATED, EquipmentSlotGroup.HEAD)));
 	public static final TravellersComponentModifier RED_THREAD_VISION_MODIFIER = registerComponentModifier(TwilightForestMod.prefix("red_thread_vision"), TFDataComponents.RED_THREAD_VISION, Unit.INSTANCE);
 	public static final TravellersComponentModifier ALL_NIGHT_GOGGLES_MODIFIER = registerComponentModifier(TwilightForestMod.prefix("all_night_goggles"), TFDataComponents.ALL_NIGHT_GOGGLES, Unit.INSTANCE);
+	public static final TravellersComponentModifier ITEM_DISPLAY_MODIFIER = registerComponentModifier(TwilightForestMod.prefix("item_display"), TFDataComponents.ITEM_DISPLAY, ItemDisplayContents.EMPTY);
 
 	// vest
 	public static final TravellersEntryModifier SWIFT_SWIM_MODIFIER = registerEntryModifier(TwilightForestMod.prefix("swift_swim"), Attributes.WATER_MOVEMENT_EFFICIENCY, TFAttributeModifiers.TRAVELLERS_SWIFT_SWIM_ACTIVATE, TFAttributeModifiers.TRAVELLERS_SWIFT_SWIM_DEACTIVATED, EquipmentSlotGroup.CHEST);
@@ -68,6 +73,10 @@ public abstract class TravellersModifiers {
 	public static final Set<TravellersModifier> ALWAYS_ACTIVE = Set.of(AUTO_REPAIR_MODIFIER);
 
 	public static <T> TravellersComponentModifier registerComponentModifier(ResourceLocation name, DeferredHolder<DataComponentType<?>, DataComponentType<T>> dataComponent, T value) {
+		return register(new TravellersComponentModifier(name, dataComponent.get(), value));
+	}
+
+	public static <T> TravellersComponentModifier registerComponentModifier(ResourceLocation name, DataComponentType<T> dataComponent, T value) {
 		return register(new TravellersComponentModifier(name, dataComponent, value));
 	}
 
