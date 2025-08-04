@@ -54,7 +54,7 @@ public class TravellersGogglesItem extends TravellersArmorItem {
 						mutableContents.tryInsert(itemstack2);
 					}
 				} else if (itemstack.getItem().canFitInsideContainerItems()) {
-					if (mutableContents.tryTransfer(slot, player)) {
+					if (mutableContents.trySwap(SlotAccess.of(slot::getItem, slot::set), player)) {
 						this.playInsertSound(player);
 					}
 				}
@@ -81,7 +81,7 @@ public class TravellersGogglesItem extends TravellersArmorItem {
 						access.set(itemstack);
 					}
 				} else {
-					if (mutableContents.tryInsert(other)) {
+					if (mutableContents.trySwap(SlotAccess.of(slot::getItem, slot::set), player)) {
 						this.playInsertSound(player);
 					}
 				}
