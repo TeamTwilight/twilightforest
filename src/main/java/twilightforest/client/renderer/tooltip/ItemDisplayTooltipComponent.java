@@ -41,17 +41,24 @@ public class ItemDisplayTooltipComponent implements ClientTooltipComponent {
 
 	private void renderSlot(int x, int y, int itemIndex, GuiGraphics graphics, Font font) {
 		graphics.blitSprite(SLOT_SPRITE, x, y, 0, SLOT_WIDTH, SLOT_HEIGHT);
+
 		if (itemIndex < this.contents.size()) {
-			var holder = TFRegistries.ITEM_DISPLAY_TYPE.asHolderIdMap().byId(itemIndex);
-			if (this.contents.get(itemIndex).isEmpty()) {
-				if (holder != null && holder.value().slotTexture().isPresent()) {
-					graphics.blit(holder.value().slotTexture().get(), x + 1, y + 1, 0, 0, 16, 16, 16, 16);
-				}
+			if (this.contents.isEmpty() || this.contents.get(itemIndex).isEmpty()) {
+				this.renderBlankSlot(graphics, itemIndex, x, y);
 			} else {
 				ItemStack itemstack = this.contents.get(itemIndex);
 				graphics.renderItem(itemstack, x + 1, y + 1, itemIndex);
 				graphics.renderItemDecorations(font, itemstack, x + 1, y + 1);
 			}
+		} else {
+			this.renderBlankSlot(graphics, itemIndex, x, y);
+		}
+	}
+
+	private void renderBlankSlot(GuiGraphics graphics, int index, int x, int y) {
+		var holder = TFRegistries.ITEM_DISPLAY_TYPE.asHolderIdMap().byId(index);
+		if (holder != null && holder.value().slotTexture().isPresent()) {
+			graphics.blit(holder.value().slotTexture().get(), x + 1, y + 1, 0, 0, 16, 16, 16, 16);
 		}
 	}
 
