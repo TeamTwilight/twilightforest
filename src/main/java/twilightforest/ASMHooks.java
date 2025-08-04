@@ -478,11 +478,13 @@ public class ASMHooks {
 	public static boolean updateMapsInGoggles(boolean o, ItemStack stack, Player player) {
 		if (o) return true;
 		ItemStack headStack = player.getItemBySlot(EquipmentSlot.HEAD);
-		ItemDisplayContents contents = headStack.get(TFDataComponents.ITEM_DISPLAY);
-		if (contents != null && !contents.items().isEmpty()) {
-			int mapSlot = TFRegistries.ITEM_DISPLAY_TYPE.getId(ItemDisplays.MAP.getKey());
-			ItemStack map = contents.items().get(mapSlot);
-			return !map.isEmpty() && ItemStack.isSameItemSameComponents(stack, map);
+		if (TravellersModifiers.ITEM_DISPLAY_MODIFIER.isActive(stack)) {
+			ItemDisplayContents contents = headStack.get(TFDataComponents.ITEM_DISPLAY);
+			if (!contents.isEmpty()) {
+				int mapSlot = TFRegistries.ITEM_DISPLAY_TYPE.getId(ItemDisplays.MAP.getKey());
+				ItemStack map = contents.items().get(mapSlot);
+				return !map.isEmpty() && ItemStack.isSameItemSameComponents(stack, map);
+			}
 		}
 		return false;
 	}

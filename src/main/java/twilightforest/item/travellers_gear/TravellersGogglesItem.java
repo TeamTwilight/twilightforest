@@ -102,17 +102,20 @@ public class TravellersGogglesItem extends TravellersArmorItem {
 	public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
 		//only tick while on the player's head
 		if (slotId == Inventory.INVENTORY_SIZE + EquipmentSlot.HEAD.getIndex()) {
-			if (stack.has(TFDataComponents.ITEM_DISPLAY) && !level.isClientSide() && !stack.get(TFDataComponents.ITEM_DISPLAY).items().isEmpty()) {
-				int mapSlot = TFRegistries.ITEM_DISPLAY_TYPE.getId(ItemDisplays.MAP.getKey());
-				ItemStack map = stack.get(TFDataComponents.ITEM_DISPLAY).items().get(mapSlot);
-				if (!map.isEmpty() && map.getItem() instanceof MapItem mapItem) {
-					//mark as selected so map properly updates
-					mapItem.inventoryTick(map, level, entity, slotId, true);
-					//send update packets here instead as the goggles arent considered a complex item
-					if (entity instanceof ServerPlayer player) {
-						Packet<?> packet = mapItem.getUpdatePacket(map, level, player);
-						if (packet != null) {
-							player.connection.send(packet);
+			if (!level.isClientSide() && TravellersModifiers.ITEM_DISPLAY_MODIFIER.isActive(stack)) {
+				ItemDisplayContents contents = stack.get(TFDataComponents.ITEM_DISPLAY);
+				if (!contents.isEmpty()) {
+					int mapSlot = TFRegistries.ITEM_DISPLAY_TYPE.getId(ItemDisplays.MAP.getKey());
+					ItemStack map = contents.items().get(mapSlot);
+					if (!map.isEmpty() && map.getItem() instanceof MapItem mapItem) {
+						//mark as selected so map properly updates
+						mapItem.inventoryTick(map, level, entity, slotId, true);
+						//send update packets here instead as the goggles arent considered a complex item
+						if (entity instanceof ServerPlayer player) {
+							Packet<?> packet = mapItem.getUpdatePacket(map, level, player);
+							if (packet != null) {
+								player.connection.send(packet);
+							}
 						}
 					}
 				}
