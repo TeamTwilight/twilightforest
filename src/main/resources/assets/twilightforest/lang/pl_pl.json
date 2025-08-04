@@ -80,7 +80,7 @@
   "advancement.twilightforest.quest_ram.desc": "Daj %s to, czego mu brakuje",
   "advancement.twilightforest.root": "Zmierzchowy Las",
   "advancement.twilightforest.root.desc": "Wkrocz do tajemniczej i magicznej krainy, jaką jest: Zmierzchowy Las",
-  "advancement.twilightforest.troll": "Czas na mały Trolaż",
+  "advancement.twilightforest.troll": "Trochę Trollujemy",
   "advancement.twilightforest.troll.desc": "Znajdź i zabij %s",
   "advancement.twilightforest.twilight_dining": "Ucztujmy Przy Wiecznym Zachodzie",
   "advancement.twilightforest.twilight_dining.desc": "Zjedz każdy możliwy przedmiot ze Zmierzchowego Lasu",
@@ -700,7 +700,7 @@
   "twilightforest.tips.quest_ram": "Poszukiwawczy Tryk obdarzy każdego, kto przyniesie mu tego, czego Trykowi brakuje.",
   "twilightforest.tips.spooky_forest": "Wygląd Upiornego Lasu nie został zainspirowany przez Halloween.",
   "twilightforest.tips.structure_conquering": "Zabicie bossa spowoduje że potwory przestaną się pojawiać w tej strukturze.",
-  "twilightforest.tips.trollber_ripening": "Zabić Trolla obok dojrzałego Trolljagu.",
+  "twilightforest.tips.trollber_ripening": "Zabijając Trolla obok dojrzałego Trolljagu.",
   "twilightforest.tips.yeti": "Yeti uwielbiają rzucać rzeczami.",
   "twilightforest.tips.zombie_healing": "Zombie przyzwane za pomocą Berła Umarłych, mogą zostać uleczone za pomocą Zgniłego mięsa."
 }
