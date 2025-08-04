@@ -15,7 +15,7 @@ import twilightforest.asm.ASMUtil;
 import java.util.Set;
 
 /**
- * {@link twilightforest.ASMHooks#isRainingAt}
+ * {@link twilightforest.asmhooks.BlockHooks#isRainingAt}
  */
 public class IsRainingAtTransformer implements ITransformer<MethodNode> {
 
@@ -31,7 +31,7 @@ public class IsRainingAtTransformer implements ITransformer<MethodNode> {
 				new VarInsnNode(Opcodes.ALOAD, 1),
 				new MethodInsnNode(
 					Opcodes.INVOKESTATIC,
-					"twilightforest/ASMHooks",
+					"twilightforest/asmhooks/BlockHooks",
 					"isRainingAt",
 					"(ZLnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;)Z"
 				)

@@ -17,7 +17,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MapItem;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
-import twilightforest.ASMHooks;
 import twilightforest.TFRegistries;
 import twilightforest.components.item.ItemDisplayContents;
 import twilightforest.init.TFDataComponents;

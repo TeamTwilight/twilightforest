@@ -16,7 +16,7 @@ import twilightforest.asm.ASMUtil;
 import java.util.Set;
 
 /**
- * {@link twilightforest.ASMHooks#cancelHighStepModifierForStepDownDuringSneaking}
+ * {@link twilightforest.asmhooks.PlayerHooks#cancelHighStepModifierForStepDownDuringSneaking}
  */
 public class MaybeBackOffFromEdgeTransformer implements ITransformer<MethodNode> {
 
@@ -34,7 +34,7 @@ public class MaybeBackOffFromEdgeTransformer implements ITransformer<MethodNode>
 				new InsnNode(Opcodes.SWAP),  // Swap so that the original float (returned by maxUpStep) is below the player.
 				new MethodInsnNode(
 					Opcodes.INVOKESTATIC,
-					"twilightforest/ASMHooks",
+					"twilightforest/asmhooks/PlayerHooks",
 					"cancelHighStepModifierForStepDownDuringSneaking",
 					"(Lnet/minecraft/world/entity/player/Player;F)F",
 					false

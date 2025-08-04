@@ -1,4 +1,4 @@
-package twilightforest.asm.transformers.livingentity;
+package twilightforest.asm.transformers.entity;
 
 import cpw.mods.modlauncher.api.ITransformer;
 import cpw.mods.modlauncher.api.ITransformerVotingContext;
@@ -11,14 +11,14 @@ import org.objectweb.asm.tree.*;
 import java.util.Set;
 
 /**
- * {@link twilightforest.ASMHooks#processWaterWalking}
+ * {@link twilightforest.asmhooks.EntityHooks#processWaterWalking}
  */
 public class WaterWalkTransformer implements ITransformer<MethodNode> {
 
 	/*
 		 We insert roughly this at the beginning of LivingEntity::canStandOnFluid
 
-		 Boolean tmp = ASMHooks.processWaterWalking(this, fluidState);
+		 Boolean tmp = EntityHooks.processWaterWalking(this, fluidState);
 		 if (tmp != null) {
 			 return tmp.booleanValue();
 		 }
@@ -38,7 +38,7 @@ public class WaterWalkTransformer implements ITransformer<MethodNode> {
 
 		list.add(new MethodInsnNode(
 			Opcodes.INVOKESTATIC,
-			"twilightforest/ASMHooks",
+			"twilightforest/asmhooks/EntityHooks",
 			"processWaterWalking",
 			"(Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/level/material/FluidState;)Ljava/lang/Boolean;",
 			false

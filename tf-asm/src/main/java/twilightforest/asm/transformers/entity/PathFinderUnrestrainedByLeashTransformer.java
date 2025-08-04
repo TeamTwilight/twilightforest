@@ -1,4 +1,4 @@
-package twilightforest.asm.transformers.mob;
+package twilightforest.asm.transformers.entity;
 
 import cpw.mods.modlauncher.api.ITransformer;
 import cpw.mods.modlauncher.api.ITransformerVotingContext;
@@ -12,7 +12,10 @@ import twilightforest.asm.ASMUtil;
 
 import java.util.Set;
 
-public class PathFinderUnrestrainedByLeash implements ITransformer<MethodNode> {
+/**
+ * {@link twilightforest.asmhooks.EntityHooks#overrideStayCloseToHolder}
+ */
+public class PathFinderUnrestrainedByLeashTransformer implements ITransformer<MethodNode> {
 	@Override
 	public @NotNull MethodNode transform(MethodNode node, ITransformerVotingContext iTransformerVotingContext) {
 		ASMUtil.findInstructions(
@@ -24,7 +27,7 @@ public class PathFinderUnrestrainedByLeash implements ITransformer<MethodNode> {
 				new VarInsnNode(Opcodes.ALOAD, 0), // PathfinderMob.this
 				new MethodInsnNode(
 					Opcodes.INVOKESTATIC,
-					"twilightforest/ASMHooks",
+					"twilightforest/asmhooks/EntityHooks",
 					"overrideStayCloseToHolder",
 					"(ZLnet/minecraft/world/entity/PathfinderMob;)Z"
 				)

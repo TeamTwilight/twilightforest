@@ -15,7 +15,7 @@ import twilightforest.asm.ASMUtil;
 import java.util.Set;
 
 /**
- * {@link twilightforest.ASMHooks#modifyArmorVisibility}
+ * {@link twilightforest.asmhooks.ArmorHooks#modifyArmorVisibility}
  */
 public class ArmorVisibilityRenderingTransformer implements ITransformer<MethodNode> {
 
@@ -29,7 +29,7 @@ public class ArmorVisibilityRenderingTransformer implements ITransformer<MethodN
 					new VarInsnNode(Opcodes.ALOAD, 0),
 					new MethodInsnNode(
 						Opcodes.INVOKESTATIC,
-						"twilightforest/ASMHooks",
+						"twilightforest/asmhooks/ArmorHooks",
 						"modifyArmorVisibility",
 						"(FLnet/minecraft/world/entity/LivingEntity;)F"
 					)

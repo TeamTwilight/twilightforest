@@ -15,7 +15,7 @@ import twilightforest.asm.ASMUtil;
 import java.util.Set;
 
 /**
- * {@link twilightforest.ASMHooks#resolveFoliageColor}
+ * {@link twilightforest.asmhooks.BlockHooks#resolveFoliageColor}
  */
 public class FoliageColorResolverTransformer implements ITransformer<MethodNode> {
 
@@ -32,7 +32,7 @@ public class FoliageColorResolverTransformer implements ITransformer<MethodNode>
 				new VarInsnNode(Opcodes.DLOAD, 3),
 				new MethodInsnNode(
 					Opcodes.INVOKESTATIC,
-					"twilightforest/ASMHooks",
+					"twilightforest/asmhooks/BlockHooks",
 					"resolveFoliageColor",
 					"(ILnet/minecraft/world/level/biome/Biome;DD)I"
 				)

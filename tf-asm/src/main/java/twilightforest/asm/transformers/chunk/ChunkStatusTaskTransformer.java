@@ -15,7 +15,7 @@ import twilightforest.asm.ASMUtil;
 import java.util.Set;
 
 /**
- * {@link twilightforest.ASMHooks#chunkBlanketing}
+ * {@link twilightforest.asmhooks.WorldgenHooks#chunkBlanketing}
  */
 public class ChunkStatusTaskTransformer implements ITransformer<MethodNode> {
 
@@ -34,7 +34,7 @@ public class ChunkStatusTaskTransformer implements ITransformer<MethodNode> {
 				new VarInsnNode(Opcodes.ALOAD, 5), // WorldGenRegion variable
 				new MethodInsnNode(
 					Opcodes.INVOKESTATIC,
-					"twilightforest/ASMHooks",
+					"twilightforest/asmhooks/WorldgenHooks",
 					"chunkBlanketing",
 					"(Lnet/minecraft/world/level/chunk/ChunkAccess;Lnet/minecraft/server/level/WorldGenRegion;)V"
 				)

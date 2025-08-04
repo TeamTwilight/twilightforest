@@ -3,6 +3,7 @@ package twilightforest;
 import net.minecraft.world.entity.Entity;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import twilightforest.asmhooks.MultipartHooks;
 import twilightforest.util.multiparts.MultipartEntityUtil;
 import twilightforest.beans.MockBean;
 import twilightforest.junit.MockitoFixer;
@@ -25,9 +26,9 @@ public class ASMHooksTests {
 		Iterator<Entity> iter = Collections.emptyIterator();
 		Entity entity = mock(Entity.class);
 
-		ASMHooks.resolveEntitiesForRendering(iter);
-		ASMHooks.resolveEntityRenderer(null, entity);
-		ASMHooks.sendDirtyEntityData(entity);
+		MultipartHooks.resolveEntitiesForRendering(iter);
+		MultipartHooks.resolveEntityRenderer(null, entity);
+		MultipartHooks.sendDirtyEntityData(entity);
 
 		verify(multipartEntityUtil, times(1)).injectTFPartEntities(iter);
 		verify(multipartEntityUtil, times(1)).tryLookupTFPartRenderer(null, entity);

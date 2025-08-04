@@ -14,9 +14,9 @@ import twilightforest.asm.ASMUtil;
 import java.util.Set;
 
 /**
- * {@link twilightforest.ASMHooks#sendDirtyEntityData}
+ * {@link twilightforest.asmhooks.MultipartHooks#sendDirtyEntityData}
  */
-public class SendDirtytEntityDataTransformer implements ITransformer<MethodNode> {
+public class SendDirtyEntityDataTransformer implements ITransformer<MethodNode> {
 
 	@Override
 	public @NotNull MethodNode transform(MethodNode node, ITransformerVotingContext context) {
@@ -30,7 +30,7 @@ public class SendDirtytEntityDataTransformer implements ITransformer<MethodNode>
 			ASMAPI.listOf(
 				new MethodInsnNode(
 					Opcodes.INVOKESTATIC,
-					"twilightforest/ASMHooks",
+					"twilightforest/asmhooks/MultipartHooks",
 					"sendDirtyEntityData",
 					"(Lnet/minecraft/world/entity/Entity;)Lnet/minecraft/world/entity/Entity;"
 				)

@@ -12,7 +12,7 @@ import twilightforest.asm.ASMUtil;
 import java.util.Set;
 
 /**
- * {@link twilightforest.ASMHooks#cancelArmorRendering}
+ * {@link twilightforest.asmhooks.ArmorHooks#cancelArmorRendering}
  */
 public class CancelArmorRenderingTransformer implements ITransformer<MethodNode> {
 
@@ -26,7 +26,7 @@ public class CancelArmorRenderingTransformer implements ITransformer<MethodNode>
 					new VarInsnNode(Opcodes.ALOAD, 13),
 					new MethodInsnNode(
 						Opcodes.INVOKESTATIC,
-						"twilightforest/ASMHooks",
+						"twilightforest/asmhooks/ArmorHooks",
 						"cancelArmorRendering",
 						"(ZLnet/minecraft/world/item/ItemStack;)Z"
 					)

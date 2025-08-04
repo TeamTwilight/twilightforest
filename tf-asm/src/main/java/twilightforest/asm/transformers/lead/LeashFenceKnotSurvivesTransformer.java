@@ -15,7 +15,7 @@ import twilightforest.asm.ASMUtil;
 import java.util.Set;
 
 /**
- * {@link twilightforest.ASMHooks#leashFenceKnotSurvives}
+ * {@link twilightforest.asmhooks.BlockHooks#leashFenceKnotSurvives}
  */
 public class LeashFenceKnotSurvivesTransformer implements ITransformer<MethodNode> {
 
@@ -30,7 +30,7 @@ public class LeashFenceKnotSurvivesTransformer implements ITransformer<MethodNod
 				new VarInsnNode(Opcodes.ALOAD, 0),
 				new MethodInsnNode(
 					Opcodes.INVOKESTATIC,
-					"twilightforest/ASMHooks",
+					"twilightforest/asmhooks/BlockHooks",
 					"leashFenceKnotSurvives",
 					"(ZLnet/minecraft/world/entity/decoration/LeashFenceKnotEntity;)Z"
 				)

@@ -13,7 +13,7 @@ import twilightforest.asm.ASMUtil;
 import java.util.Set;
 
 /**
- * {@link twilightforest.ASMHooks#gatherCustomTerrain}
+ * {@link twilightforest.asmhooks.WorldgenHooks#gatherCustomTerrain}
  */
 public class InitializeCustomBeardifierFieldsDuringCreateNoiseChunkTransformer implements ITransformer<MethodNode> {
 
@@ -39,7 +39,7 @@ public class InitializeCustomBeardifierFieldsDuringCreateNoiseChunkTransformer i
 				),
 				new MethodInsnNode(
 					Opcodes.INVOKESTATIC,
-					"twilightforest/ASMHooks",
+					"twilightforest/asmhooks/WorldgenHooks",
 					"gatherCustomTerrain",
 					"(Lnet/minecraft/world/level/StructureManager;Lnet/minecraft/world/level/ChunkPos;)Lit/unimi/dsi/fastutil/objects/ObjectListIterator;"
 				),

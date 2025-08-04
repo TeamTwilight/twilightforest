@@ -15,7 +15,7 @@ import twilightforest.asm.ASMUtil;
 import java.util.Set;
 
 /**
- * {@link twilightforest.ASMHooks#resolveNearestNonRandomSpreadMapStructure}
+ * {@link twilightforest.asmhooks.MapHooks#resolveNearestNonRandomSpreadMapStructure}
  */
 public class ResolveNearestNonRandomSpreadMapStructureTransformer implements ITransformer<MethodNode> {
 
@@ -34,7 +34,7 @@ public class ResolveNearestNonRandomSpreadMapStructureTransformer implements ITr
 				new VarInsnNode(Opcodes.ILOAD, 5), // boolean from params
 				new MethodInsnNode(
 					Opcodes.INVOKESTATIC,
-					"twilightforest/ASMHooks",
+					"twilightforest/asmhooks/MapHooks",
 					"resolveNearestNonRandomSpreadMapStructure",
 					"(Lcom/mojang/datafixers/util/Pair;Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/core/HolderSet;Lnet/minecraft/core/BlockPos;IZ)Lcom/mojang/datafixers/util/Pair;"
 				)

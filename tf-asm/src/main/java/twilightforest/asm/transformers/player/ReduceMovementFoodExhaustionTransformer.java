@@ -1,4 +1,4 @@
-package twilightforest.asm.transformers.player_and_serverplayer;
+package twilightforest.asm.transformers.player;
 
 import cpw.mods.modlauncher.api.ITransformer;
 import cpw.mods.modlauncher.api.ITransformerVotingContext;
@@ -14,7 +14,7 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 /**
- * {@link twilightforest.ASMHooks#getFoodExhaustion}
+ * {@link twilightforest.asmhooks.PlayerHooks#getFoodExhaustion}
  */
 public class ReduceMovementFoodExhaustionTransformer implements ITransformer<MethodNode> {
 	@Override
@@ -41,7 +41,7 @@ public class ReduceMovementFoodExhaustionTransformer implements ITransformer<Met
 				new VarInsnNode(Opcodes.ALOAD, 0),
 				new MethodInsnNode(
 					Opcodes.INVOKESTATIC,
-					"twilightforest/ASMHooks",
+					"twilightforest/asmhooks/PlayerHooks",
 					"getFoodExhaustion",
 					"(FLnet/minecraft/world/entity/player/Player;)F"
 				)

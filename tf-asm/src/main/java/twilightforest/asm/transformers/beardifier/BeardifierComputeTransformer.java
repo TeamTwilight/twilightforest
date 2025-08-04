@@ -13,7 +13,7 @@ import twilightforest.asm.ASMUtil;
 import java.util.Set;
 
 /**
- * {@link twilightforest.ASMHooks#getCustomDensity}
+ * {@link twilightforest.asmhooks.WorldgenHooks#getCustomDensity}
  */
 public class BeardifierComputeTransformer implements ITransformer<MethodNode> {
 
@@ -35,7 +35,7 @@ public class BeardifierComputeTransformer implements ITransformer<MethodNode> {
 				),
 				new MethodInsnNode(
 					Opcodes.INVOKESTATIC,
-					"twilightforest/ASMHooks",
+					"twilightforest/asmhooks/WorldgenHooks",
 					"getCustomDensity",
 					"(DLnet/minecraft/world/level/levelgen/DensityFunction$FunctionContext;Lit/unimi/dsi/fastutil/objects/ObjectListIterator;)D"
 				)

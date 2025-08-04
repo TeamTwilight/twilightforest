@@ -15,7 +15,7 @@ import twilightforest.asm.ASMUtil;
 import java.util.Set;
 
 /**
- * {@link twilightforest.ASMHooks#loadStaticStart}
+ * {@link twilightforest.asmhooks.WorldgenHooks#loadStaticStart}
  */
 public class StructureStartLoadStaticTransformer implements ITransformer<MethodNode> {
 
@@ -34,7 +34,7 @@ public class StructureStartLoadStaticTransformer implements ITransformer<MethodN
 				new VarInsnNode(Opcodes.ALOAD, 1),
 				new MethodInsnNode(
 					Opcodes.INVOKESTATIC,
-					"twilightforest/ASMHooks",
+					"twilightforest/asmhooks/WorldgenHooks",
 					"loadStaticStart",
 					"(Lnet/minecraft/world/level/levelgen/structure/StructureStart;Lnet/minecraft/world/level/levelgen/structure/pieces/PiecesContainer;Lnet/minecraft/nbt/CompoundTag;)Lnet/minecraft/world/level/levelgen/structure/StructureStart;"
 				)

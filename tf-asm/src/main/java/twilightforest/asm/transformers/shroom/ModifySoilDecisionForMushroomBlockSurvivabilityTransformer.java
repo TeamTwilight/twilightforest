@@ -15,7 +15,7 @@ import twilightforest.asm.ASMUtil;
 import java.util.Set;
 
 /**
- * {@link twilightforest.ASMHooks#modifySoilDecisionForMushroomBlockSurvivability}
+ * {@link twilightforest.asmhooks.BlockHooks#modifySoilDecisionForMushroomBlockSurvivability}
  */
 public class ModifySoilDecisionForMushroomBlockSurvivabilityTransformer implements ITransformer<MethodNode> {
 
@@ -34,7 +34,7 @@ public class ModifySoilDecisionForMushroomBlockSurvivabilityTransformer implemen
 				new VarInsnNode(Opcodes.ALOAD, 3),
 				new MethodInsnNode(
 					Opcodes.INVOKESTATIC,
-					"twilightforest/ASMHooks",
+					"twilightforest/asmhooks/BlockHooks",
 					"modifySoilDecisionForMushroomBlockSurvivability",
 					"(Lnet/neoforged/neoforge/common/util/TriState;Lnet/minecraft/world/level/LevelReader;Lnet/minecraft/core/BlockPos;)Lnet/neoforged/neoforge/common/util/TriState;"
 				)

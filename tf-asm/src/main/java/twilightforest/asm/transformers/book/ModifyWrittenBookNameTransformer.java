@@ -15,7 +15,7 @@ import twilightforest.asm.ASMUtil;
 import java.util.Set;
 
 /**
- * {@link twilightforest.ASMHooks#modifyWrittenBookName}
+ * {@link twilightforest.asmhooks.ItemHooks#modifyWrittenBookName}
  */
 public class ModifyWrittenBookNameTransformer implements ITransformer<MethodNode> {
 
@@ -29,7 +29,7 @@ public class ModifyWrittenBookNameTransformer implements ITransformer<MethodNode
 					new VarInsnNode(Opcodes.ALOAD, 1),
 					new MethodInsnNode(
 						Opcodes.INVOKESTATIC,
-						"twilightforest/ASMHooks",
+						"twilightforest/asmhooks/ItemHooks",
 						"modifyWrittenBookName",
 						"(Lnet/minecraft/network/chat/Component;Lnet/minecraft/world/item/ItemStack;)Lnet/minecraft/network/chat/Component;"
 					)

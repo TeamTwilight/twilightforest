@@ -15,7 +15,7 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * {@link twilightforest.ASMHooks#resolveEntitiesForRendering}
+ * {@link twilightforest.asmhooks.MultipartHooks#resolveEntitiesForRendering}
  */
 public class ResolveEntitiesForRendereringTransformer implements ITransformer<MethodNode> {
 
@@ -39,7 +39,7 @@ public class ResolveEntitiesForRendereringTransformer implements ITransformer<Me
 			ASMAPI.listOf(
 				new MethodInsnNode(
 					Opcodes.INVOKESTATIC,
-					"twilightforest/ASMHooks",
+					"twilightforest/asmhooks/MultipartHooks",
 					"resolveEntitiesForRendering",
 					"(Ljava/util/Iterator;)Ljava/util/Iterator;"
 				)

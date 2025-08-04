@@ -16,7 +16,7 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * {@link twilightforest.ASMHooks#resolveEntityRenderer}
+ * {@link twilightforest.asmhooks.MultipartHooks#resolveEntityRenderer}
  */
 public class ResolveEntityRendererTransformer implements ITransformer<MethodNode> {
 
@@ -45,7 +45,7 @@ public class ResolveEntityRendererTransformer implements ITransformer<MethodNode
 					new VarInsnNode(Opcodes.ALOAD, 1),
 					new MethodInsnNode(
 						Opcodes.INVOKESTATIC,
-						"twilightforest/ASMHooks",
+						"twilightforest/asmhooks/MultipartHooks",
 						"resolveEntityRenderer",
 						"(Lnet/minecraft/client/renderer/entity/EntityRenderer;Lnet/minecraft/world/entity/Entity;)Lnet/minecraft/client/renderer/entity/EntityRenderer;"
 					)

@@ -15,7 +15,7 @@ import twilightforest.asm.ASMUtil;
 import java.util.Set;
 
 /**
- * {@link twilightforest.ASMHooks#keepSnowyStateForSnowloggableBlocks}
+ * {@link twilightforest.asmhooks.BlockHooks#keepSnowyStateForSnowloggableBlocks}
  */
 public class KeepGrassSnowyForSnowloggableBlocksTransformer implements ITransformer<MethodNode> {
 
@@ -30,7 +30,7 @@ public class KeepGrassSnowyForSnowloggableBlocksTransformer implements ITransfor
 				new VarInsnNode(Opcodes.ALOAD, 0),
 				new MethodInsnNode(
 					Opcodes.INVOKESTATIC,
-					"twilightforest/ASMHooks",
+					"twilightforest/asmhooks/BlockHooks",
 					"keepSnowyStateForSnowloggableBlocks",
 					"(ZLnet/minecraft/world/level/block/state/BlockState;)Z"
 				)

@@ -1,4 +1,4 @@
-package twilightforest.asm.transformers.abstractclientplayer;
+package twilightforest.asm.transformers.player;
 
 import cpw.mods.modlauncher.api.ITransformer;
 import cpw.mods.modlauncher.api.ITransformerVotingContext;
@@ -13,8 +13,8 @@ import twilightforest.asm.ASMUtil;
 import java.util.Set;
 
 /**
- * {@link twilightforest.ASMHooks#forwardBoostNullify}
- * {@link twilightforest.ASMHooks#forwardBoostRestore}
+ * {@link twilightforest.asmhooks.PlayerHooks#forwardBoostNullify}
+ * {@link twilightforest.asmhooks.PlayerHooks#forwardBoostRestore}
  */
 public class GetFieldOfViewModifierTransformer implements ITransformer<MethodNode> {
 
@@ -28,7 +28,7 @@ public class GetFieldOfViewModifierTransformer implements ITransformer<MethodNod
 		node.instructions.insert(ASMAPI.listOf(
 			new VarInsnNode(Opcodes.ALOAD, 0),
 			new MethodInsnNode(Opcodes.INVOKESTATIC,
-				"twilightforest/ASMHooks",
+				"twilightforest/asmhooks/PlayerHooks",
 				"forwardBoostNullify",
 				"(Lnet/minecraft/client/player/AbstractClientPlayer;)V",
 				false)
@@ -38,7 +38,7 @@ public class GetFieldOfViewModifierTransformer implements ITransformer<MethodNod
 			node.instructions.insertBefore(insn, ASMAPI.listOf(
 				new VarInsnNode(Opcodes.ALOAD, 0),
 				new MethodInsnNode(Opcodes.INVOKESTATIC,
-					"twilightforest/ASMHooks",
+					"twilightforest/asmhooks/PlayerHooks",
 					"forwardBoostRestore",
 					"(Lnet/minecraft/client/player/AbstractClientPlayer;)V",
 					false)
