@@ -81,7 +81,7 @@ public class TravellersGogglesItem extends TravellersArmorItem {
 						access.set(itemstack);
 					}
 				} else {
-					if (mutableContents.trySwap(SlotAccess.of(slot::getItem, slot::set), player)) {
+					if (mutableContents.trySwap(access, player)) {
 						this.playInsertSound(player);
 					}
 				}
