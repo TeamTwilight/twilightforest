@@ -6,17 +6,19 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFRegistries;
 import twilightforest.item.travellers_gear.modifiers.display.ItemDisplayType;
+import twilightforest.util.TFItemStackUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.OptionalInt;
+import java.util.function.Consumer;
 
 public class ItemDisplayContents implements TooltipComponent {
 
@@ -116,13 +118,29 @@ public class ItemDisplayContents implements TooltipComponent {
 			return -1;
 		}
 
-		public boolean tryTransfer(Slot slot, Player player) {
-			ItemStack itemstack = slot.safeTake(slot.getItem().getCount(), 1, player);
-			if (!this.tryInsert(itemstack)) {
-				slot.safeInsert(itemstack);
+		public boolean trySwap(SlotAccess source, Player player) {
+			return this.trySwap(source, remainder -> TFItemStackUtils.giveOrDrop(remainder, player));
+		}
+
+		public boolean trySwap(SlotAccess source, Consumer<ItemStack> remainder) {
+			ItemStack slottedStack = source.get();
+			if (slottedStack.isEmpty() || !slottedStack.getItem().canFitInsideContainerItems())
 				return false;
+
+			int slotForStack = this.findFreeSlot(slottedStack);
+			if (slotForStack < 0 || ItemStack.isSameItemSameComponents(slottedStack, this.items.get(slotForStack)))
+				return false;
+
+			ItemStack insert = slottedStack.split(1);
+			ItemStack replaced = this.items.set(slotForStack, insert);
+
+			if (replaced.isEmpty()) {
+				return source.set(slottedStack);
+			} else {
+				boolean ret = source.set(replaced);
+				remainder.accept(slottedStack);
+				return ret;
 			}
-			return true;
 		}
 
 		public boolean tryInsert(ItemStack stack) {
