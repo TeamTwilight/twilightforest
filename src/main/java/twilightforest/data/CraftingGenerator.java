@@ -821,9 +821,13 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.build(),
 			TravellersModifiers.ALL_NIGHT_GOGGLES_MODIFIER).save(output);
 
-		TravellersGearComponentModifierBuilder.buildShapeless(CartesianShapelessRecipeBuilder.create(splitTravellersModifiersRecipes)
-				.ingredient(Items.ITEM_FRAME)
-				.ingredient(TFItems.TRAVELLERS_GOGGLES)
+		TravellersGearComponentModifierBuilder.buildShaped(CartesianShapedRecipeBuilder.create(splitTravellersModifiersRecipes)
+				.pattern("sis")
+				.pattern("igi")
+				.pattern("sis")
+				.define('i', Ingredient.of(Items.ITEM_FRAME))
+				.define('s', Ingredient.of(Tags.Items.RODS_WOODEN))
+				.define('g', Ingredient.of(TFItems.TRAVELLERS_GOGGLES))
 				.build(),
 			TravellersModifiers.ITEM_DISPLAY_MODIFIER).save(output);
 
