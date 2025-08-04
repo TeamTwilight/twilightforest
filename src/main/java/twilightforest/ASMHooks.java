@@ -55,7 +55,9 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import twilightforest.beans.Autowired;
 import twilightforest.block.SnowLoggable;
+import twilightforest.components.item.ItemDisplayContents;
 import twilightforest.init.*;
+import twilightforest.init.custom.ItemDisplays;
 import twilightforest.item.travellers_gear.TravellersArmorItem;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifiers;
 import twilightforest.util.ArmorUtil;
@@ -466,8 +468,6 @@ public class ASMHooks {
 		return o || (state.getBlock() instanceof SnowLoggable && state.getValue(SnowLoggable.SNOW_LAYERS) > 0);
 	}
 
-	public static boolean mapHack;
-
 	/**
 	 * {@link twilightforest.asm.transformers.map.UpdateMapsInGogglesTransformer}
 	 *
@@ -475,7 +475,15 @@ public class ASMHooks {
 	 * {@link net.minecraft.world.level.saveddata.maps.MapItemSavedData}<br/>
 	 * Targets: {@link net.minecraft.world.entity.player.Inventory.contains(Predicate)}
 	 */
-	public static boolean updateMapsInGoggles(boolean o) {
-		return o || mapHack;
+	public static boolean updateMapsInGoggles(boolean o, ItemStack stack, Player player) {
+		if (o) return true;
+		ItemStack headStack = player.getItemBySlot(EquipmentSlot.HEAD);
+		ItemDisplayContents contents = headStack.get(TFDataComponents.ITEM_DISPLAY);
+		if (contents != null && !contents.items().isEmpty()) {
+			int mapSlot = TFRegistries.ITEM_DISPLAY_TYPE.getId(ItemDisplays.MAP.getKey());
+			ItemStack map = contents.items().get(mapSlot);
+			return !map.isEmpty() && ItemStack.isSameItemSameComponents(stack, map);
+		}
+		return false;
 	}
 }

@@ -7,6 +7,7 @@ import cpw.mods.modlauncher.api.TransformerVoteResult;
 import net.neoforged.coremod.api.ASMAPI;
 import org.jetbrains.annotations.NotNull;
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.tree.FieldInsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
@@ -30,11 +31,13 @@ public class UpdateMapsInGogglesTransformer implements ITransformer<MethodNode> 
 		).forEach(target -> node.instructions.insert(
 			target,
 			ASMAPI.listOf(
+				new VarInsnNode(Opcodes.ALOAD, 2),
+				new VarInsnNode(Opcodes.ALOAD, 1),
 				new MethodInsnNode(
 					Opcodes.INVOKESTATIC,
 					"twilightforest/ASMHooks",
 					"updateMapsInGoggles",
-					"(Z)Z"
+					"(ZLnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/entity/player/Player;)Z"
 				)
 			)
 		));

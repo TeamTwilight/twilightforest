@@ -5,7 +5,9 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.SlotAccess;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
@@ -97,12 +99,11 @@ public class TravellersGogglesItem extends TravellersArmorItem {
 	@Override
 	public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
 		//only tick while on the player's head
-		if (slotId == 39) {
+		if (slotId == Inventory.INVENTORY_SIZE + EquipmentSlot.HEAD.getIndex()) {
 			if (stack.has(TFDataComponents.ITEM_DISPLAY) && !level.isClientSide() && !stack.get(TFDataComponents.ITEM_DISPLAY).items().isEmpty()) {
 				int mapSlot = TFRegistries.ITEM_DISPLAY_TYPE.getId(ItemDisplays.MAP.getKey());
 				ItemStack map = stack.get(TFDataComponents.ITEM_DISPLAY).items().get(mapSlot);
 				if (!map.isEmpty() && map.getItem() instanceof MapItem mapItem) {
-					ASMHooks.mapHack = true;
 					//mark as selected so map properly updates
 					mapItem.inventoryTick(map, level, entity, slotId, true);
 					//send update packets here instead as the goggles arent considered a complex item
@@ -112,7 +113,6 @@ public class TravellersGogglesItem extends TravellersArmorItem {
 							player.connection.send(packet);
 						}
 					}
-					ASMHooks.mapHack = false;
 				}
 			}
 		}
