@@ -7,6 +7,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.SlotAccess;
+import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
@@ -21,6 +22,7 @@ import twilightforest.TFRegistries;
 import twilightforest.components.item.ItemDisplayContents;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.custom.ItemDisplays;
+import twilightforest.item.travellers_gear.modifiers.TravellersModifiers;
 
 import java.util.Optional;
 
@@ -116,6 +118,11 @@ public class TravellersGogglesItem extends TravellersArmorItem {
 				}
 			}
 		}
+	}
+
+	@Override
+	public boolean isEnderMask(ItemStack stack, Player player, EnderMan enderman) {
+		return TravellersModifiers.ALL_NIGHT_GOGGLES_MODIFIER.isActive(stack);
 	}
 
 	private void playRemoveOneSound(Entity entity) {
