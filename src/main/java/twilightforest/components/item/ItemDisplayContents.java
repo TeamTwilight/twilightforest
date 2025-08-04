@@ -128,7 +128,7 @@ public class ItemDisplayContents implements TooltipComponent {
 				return false;
 
 			int slotForStack = this.findFreeSlot(slottedStack);
-			if (slotForStack < 0)
+			if (slotForStack < 0 || ItemStack.isSameItemSameComponents(slottedStack, this.items.get(slotForStack)))
 				return false;
 
 			ItemStack insert = slottedStack.split(1);
