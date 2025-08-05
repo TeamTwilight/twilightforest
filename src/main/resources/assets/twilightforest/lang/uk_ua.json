@@ -805,7 +805,7 @@
   "config.twilightforest.uncrafting_mod_id_flip": "Чорний список ID модів",
   "config.twilightforest.uncrafting_mod_id_flip.tooltip": "Якщо «УВІМК.», цей параметр буде перетворено з чорного списку на білий.",
   "config.twilightforest.uncrafting_mod_ids": "Вимкнені ID модів",
-  "config.twilightforest.uncrafting_mod_ids.tooltip": "Тут ви можете вимкнути всі предмети з певних модів, щоб розбирати.\nВведіть дійсний ID мода, щоб вимкнути всі рецепти розробки з цього моду.\nПриклад: «twilightforest» вимкне всі рецепти розбирання з цього моду.",
+  "config.twilightforest.uncrafting_mod_ids.tooltip": "Тут ви можете вимкнути всі предмети з певних модів, щоб розбирати.\nВведіть дійсний ID мода, щоб вимкнути всі рецепти розробки з цього мода.\nПриклад: «twilightforest» вимкне всі рецепти розбирання з цього моду.",
   "config.twilightforest.uncrafting_recipes": "Вимкнені рецепти",
   "config.twilightforest.uncrafting_recipes.tooltip": "Якщо ви не хочете повністю вимкнути розбирання, а хочете вимкнути певні рецепти, це для вас.\nЩоб додати рецепт, додайте ID мода, а потім назву рецепту. Ви можете перевірити це в таких речах, як JEI.\nПриклад: «twilightforest:firefly_particle_spawner» вимкне розбирання спавнера частинок у банку зі світляком, світляка та маку.\nЯкщо для предмета є кілька рецептів майстрування, і ви хочете вимкнути їх усі, додайте предмет до тегу предмета «twilightforest:banned_uncraftables».\nЯкщо у вас є проблемний інгредієнт, як-от заражене вежодерево, додайте його до теґу «twilightforest:banned_uncrafting_ingredients».",
   "config.twilightforest.uncrafting_recipes_flip": "Рецепт чорного списку",
