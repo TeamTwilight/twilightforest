@@ -92,6 +92,7 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 	public static final TagKey<Item> FOODS_JERKY = makeCommonTag("foods/jerky");
 	public static final TagKey<Item> NUGGETS_COPPER = makeCommonTag("nuggets/copper");
 	public static final TagKey<Item> RENDER_LOWER_ON_DRYING_RACK = create("lower_on_drying_rack");
+	public static final TagKey<Item> TROPHIES = create("trophies");
 
 	public ItemTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> future, CompletableFuture<TagLookup<Block>> provider, ExistingFileHelper helper) {
 		super(output, future, provider, helper);
@@ -462,6 +463,12 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 			.addTag(ItemTags.BANNERS)
 			.addTag(Tags.Items.TOOLS)
 			.remove(Tags.Items.TOOLS_SHIELD);
+
+		this.tag(TROPHIES).add(
+			TFItems.NAGA_TROPHY.get(), TFItems.LICH_TROPHY.get(),
+			TFItems.MINOSHROOM_TROPHY.get(), TFItems.HYDRA_TROPHY.get(),
+			TFItems.KNIGHT_PHANTOM_TROPHY.get(), TFItems.UR_GHAST_TROPHY.get(),
+			TFItems.ALPHA_YETI_TROPHY.get(), TFItems.SNOW_QUEEN_TROPHY.get());
 	}
 
 	public static TagKey<Item> create(String tagName) {

@@ -46,7 +46,7 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 	public static final TagKey<Block> GENERATED_PORTAL_DECO = create("portal/generated_decoration");
 
 	public static final TagKey<Block> DARK_TOWER_ALLOWED_POTS = create("dark_tower_allowed_pots");
-	public static final TagKey<Block> TROPHIES = create("trophies");
+	public static final TagKey<Block> TROPHY_PEDESTAL_ACTIVATION_BLOCKS = create("trophy_pedestal_activation_blocks");
 	public static final TagKey<Block> FIRE_JET_FUEL = create("fire_jet_fuel");
 	public static final TagKey<Block> ICE_BOMB_REPLACEABLES = create("ice_bomb_replaceables");
 	public static final TagKey<Block> MAZEBREAKER_ACCELERATED = create("mazebreaker_accelerated_mining");
@@ -383,16 +383,11 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 
 		this.tag(BlockTags.FROG_PREFER_JUMP_TO).add(TFBlocks.HUGE_LILY_PAD.get());
 
-		this.tag(TROPHIES)
-			.add(TFBlocks.NAGA_TROPHY.get(), TFBlocks.NAGA_WALL_TROPHY.get())
-			.add(TFBlocks.LICH_TROPHY.get(), TFBlocks.LICH_WALL_TROPHY.get())
-			.add(TFBlocks.MINOSHROOM_TROPHY.get(), TFBlocks.MINOSHROOM_WALL_TROPHY.get())
-			.add(TFBlocks.HYDRA_TROPHY.get(), TFBlocks.HYDRA_WALL_TROPHY.get())
-			.add(TFBlocks.KNIGHT_PHANTOM_TROPHY.get(), TFBlocks.KNIGHT_PHANTOM_WALL_TROPHY.get())
-			.add(TFBlocks.UR_GHAST_TROPHY.get(), TFBlocks.UR_GHAST_WALL_TROPHY.get())
-			.add(TFBlocks.ALPHA_YETI_TROPHY.get(), TFBlocks.ALPHA_YETI_WALL_TROPHY.get())
-			.add(TFBlocks.SNOW_QUEEN_TROPHY.get(), TFBlocks.SNOW_QUEEN_WALL_TROPHY.get())
-			.add(TFBlocks.QUEST_RAM_TROPHY.get(), TFBlocks.QUEST_RAM_WALL_TROPHY.get());
+		this.tag(TROPHY_PEDESTAL_ACTIVATION_BLOCKS).add(
+			TFBlocks.NAGA_TROPHY.get(), TFBlocks.LICH_TROPHY.get(),
+			TFBlocks.MINOSHROOM_TROPHY.get(), TFBlocks.HYDRA_TROPHY.get(),
+			TFBlocks.KNIGHT_PHANTOM_TROPHY.get(), TFBlocks.UR_GHAST_TROPHY.get(),
+			TFBlocks.ALPHA_YETI_TROPHY.get(), TFBlocks.SNOW_QUEEN_TROPHY.get());
 
 		this.tag(FIRE_JET_FUEL).add(Blocks.LAVA);
 
@@ -626,7 +621,8 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			TFBlocks.TRANSFORMATION_CHEST.get(),
 			TFBlocks.MINING_CHEST.get(),
 			TFBlocks.SORTING_CHEST.get(),
-			TFBlocks.HUGE_LILY_PAD.get()
+			TFBlocks.HUGE_LILY_PAD.get(),
+			TFBlocks.ENCASED_TOWERWOOD.get()
 		).addTags(BANISTERS, HOLLOW_LOGS, TOWERWOOD, DRYING_RACKS);
 
 		this.tag(BlockTags.MINEABLE_WITH_HOE).add(
@@ -697,6 +693,7 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			TFBlocks.CRACKED_NAGASTONE_STAIRS_LEFT.get(),
 			TFBlocks.CRACKED_NAGASTONE_STAIRS_RIGHT.get(),
 			TFBlocks.IRON_LADDER.get(),
+			TFBlocks.CANDELABRA.get(),
 			TFBlocks.TWISTED_STONE.get(),
 			TFBlocks.TWISTED_STONE_PILLAR.get(),
 			TFBlocks.SKULL_CHEST.get(),

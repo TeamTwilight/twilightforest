@@ -1,4 +1,4 @@
-// 1.21.1	2025-07-25T19:25:05.133075017	Twilight Forest Block Tags
+// 1.21.1	2025-08-06T15:20:01.295175606	Twilight Forest Block Tags
 9d529390443b5da5d71bd6e867c066632e1340b8 data/alexscaves/tags/block/ferromagnetic_blocks.json
 ddfcbead67bb9487c003af137a276963e5b20022 data/alexscaves/tags/block/gloomoth_light_sources.json
 c365018bd78f1335cd4508b5d74bc4500ae951bd data/alexscaves/tags/block/underzealot_light_sources.json
@@ -42,9 +42,9 @@ e121d38615572a340044db73e20622af4e2a0a7c data/minecraft/tags/block/flower_pots.j
 30b260e82242a2b548549ed7a4f89117c8d2c3c3 data/minecraft/tags/block/leaves.json
 19bd74ce640c043c09053d7571fb7a9915d41417 data/minecraft/tags/block/logs.json
 19bd74ce640c043c09053d7571fb7a9915d41417 data/minecraft/tags/block/logs_that_burn.json
-36f20e739bf3d9604980514a3e3edb8ea78ba623 data/minecraft/tags/block/mineable/axe.json
+669785c67bddb9eac489e5a7f4d301ecdad7c214 data/minecraft/tags/block/mineable/axe.json
 7177f5d8a3deacfcbfc12170902b73749e87213c data/minecraft/tags/block/mineable/hoe.json
-3fc307550c34c4309e6fc7b741b3aff86108253c data/minecraft/tags/block/mineable/pickaxe.json
+1d7a2fdc477a929d75be04aa052321b0fdad1421 data/minecraft/tags/block/mineable/pickaxe.json
 944d5178d1a94490d123e31a73bc58d4eea852ab data/minecraft/tags/block/mineable/shovel.json
 44cc0123e6b6b654303a046d924b4e8fca617f41 data/minecraft/tags/block/moss_replaceable.json
 6be3f00e1fa63bb65b978bb8e2c63bbf79b5775e data/minecraft/tags/block/mushroom_grow_block.json
@@ -140,6 +140,6 @@ aa9ca0bf521d8c6b198f2c25e4d5528917308d9f data/twilightforest/tags/block/timewood
 6352667067c11a27cfc37713a8f8543507c1f18e data/twilightforest/tags/block/towerwood.json
 548dfc9d7e2225c6f7d761216b3fafc120978f73 data/twilightforest/tags/block/transwood_logs.json
 4fba579595d0eafa048882f138be9adc9e39b7b1 data/twilightforest/tags/block/tree_roots_skip.json
-bf847accd5b18676d59a86e224adcfc328d677e6 data/twilightforest/tags/block/trophies.json
+53df7d57255dd3eb5af7094e75d5c6cf8e7cbcb5 data/twilightforest/tags/block/trophy_pedestal_activation_blocks.json
 d94381f990d5908c2d71247b1b14946ef4a4ef3d data/twilightforest/tags/block/twilight_oak_logs.json
 1617d0033c8d1499f706c5966971b445f59be257 data/twilightforest/tags/block/worldgen_replaceables.json

@@ -101,7 +101,7 @@ public class TrophyPedestalBlock extends Block implements SimpleWaterloggedBlock
 	}
 
 	private boolean isTrophyOnTop(Level level, BlockPos pos) {
-		return level.getBlockState(pos.above()).is(BlockTagGenerator.TROPHIES);
+		return level.getBlockState(pos.above()).is(BlockTagGenerator.TROPHY_PEDESTAL_ACTIVATION_BLOCKS);
 	}
 
 	private void warnIneligiblePlayers(Level level, BlockPos pos) {
