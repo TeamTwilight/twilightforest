@@ -1,5 +1,5 @@
 {
-  "type": "travellersentrymodifier",
+  "type": "entry_modifier",
   "active_modifiers": [
     {
       "type": "minecraft:generic.oxygen_bonus",

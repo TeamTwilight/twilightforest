@@ -1,5 +1,5 @@
 {
-  "type": "travellerscomponentmodifier",
+  "type": "component_modifier",
   "data_component_map": {
     "twilightforest:controlled_falling_multiplier": 0.8333333
   },

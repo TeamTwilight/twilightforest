@@ -7,7 +7,11 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
+import javax.annotation.Nullable;
+
 public class BuiltinTravellersComponentModifier implements TravellersModifier {
+	@Nullable
+	private static String TYPE_NAME = null;
 	protected final DataComponentType<?> dataComponentType;
 	protected final String tooltipTranslationKey;
 	protected final ResourceLocation name;
@@ -26,6 +30,17 @@ public class BuiltinTravellersComponentModifier implements TravellersModifier {
 	@Override
 	public ResourceLocation getName() {
 		return name;
+	}
+
+	public static void setTypeName(String typeName) {
+		TYPE_NAME = typeName;
+		TravellersModifierTypes.TYPE_TO_CODEC.put(typeName, MAP_CODEC);
+	}
+
+	@Override
+	public String getTypeName() {
+		TravellersModifierTypes.initialize();
+		return TYPE_NAME;
 	}
 
 	public static final MapCodec<BuiltinTravellersComponentModifier> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(

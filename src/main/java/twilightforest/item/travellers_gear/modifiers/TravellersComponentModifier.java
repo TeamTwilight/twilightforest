@@ -10,7 +10,11 @@ import net.minecraft.core.component.TypedDataComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
+import javax.annotation.Nullable;
+
 public class TravellersComponentModifier implements InsertableTravellersModifier {
+	@Nullable
+	private static String TYPE_NAME = null;
 	protected final TypedDataComponent<?> typedDataComponent;
 	protected final ResourceLocation name;
 
@@ -54,6 +58,17 @@ public class TravellersComponentModifier implements InsertableTravellersModifier
 		if (o instanceof TravellersComponentModifier modifier)
 			return modifier.name.equals(name) && modifier.typedDataComponent.equals(typedDataComponent);
 		return false;
+	}
+
+	public static void setTypeName(String typeName) {
+		TYPE_NAME = typeName;
+		TravellersModifierTypes.TYPE_TO_CODEC.put(typeName, MAP_CODEC);
+	}
+
+	@Override
+	public String getTypeName() {
+		TravellersModifierTypes.initialize();
+		return TYPE_NAME;
 	}
 
 	@SuppressWarnings("unchecked")

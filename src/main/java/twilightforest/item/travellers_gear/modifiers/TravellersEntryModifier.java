@@ -7,10 +7,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.neoforged.neoforge.event.ItemAttributeModifierEvent;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 
 public class TravellersEntryModifier implements TravellersModifier {
+	@Nullable
+	private static String TYPE_NAME = null;
 	protected final List<ItemAttributeModifiers.Entry> activeModifiers;
 	protected final List<ItemAttributeModifiers.Entry> deactivatedModifiers;
 	protected final ResourceLocation name;
@@ -53,6 +56,17 @@ public class TravellersEntryModifier implements TravellersModifier {
 		}
 	}
 
+	public static void setTypeName(String typeName) {
+		TYPE_NAME = typeName;
+		TravellersModifierTypes.TYPE_TO_CODEC.put(typeName, MAP_CODEC);
+	}
+
+	@Override
+	public String getTypeName() {
+		TravellersModifierTypes.initialize();
+		return TYPE_NAME;
+	}
+
 	public static final MapCodec<TravellersEntryModifier> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 			ResourceLocation.CODEC.fieldOf("name")
 				.forGetter(modifier -> modifier.name),
@@ -62,7 +76,7 @@ public class TravellersEntryModifier implements TravellersModifier {
 				.forGetter(modifier -> modifier.deactivatedModifiers)
 		).apply(instance, (name, active, deactivated) -> {
 			if (active.size() != deactivated.size()) {
-				throw new IllegalArgumentException(String.format("Active and deactivated modifier lists must have the same sizes:\n{}\n{}", active, deactivated));
+				throw new IllegalArgumentException(String.format("Active and deactivated modifier lists must have the same sizes:%n%s%n%s", active, deactivated));
 			}
 			return new TravellersEntryModifier(name, active, deactivated);
 		}));

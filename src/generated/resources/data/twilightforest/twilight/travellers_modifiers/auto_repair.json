@@ -1,5 +1,5 @@
 {
-  "type": "travellerscomponentmodifier",
+  "type": "component_modifier",
   "data_component_map": {
     "twilightforest:auto_repair_probability": 0.001
   },
