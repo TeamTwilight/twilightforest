@@ -200,7 +200,7 @@ public abstract class TFLangProvider extends LanguageProvider {
 	}
 
 	public void addTravellersModifier(TravellersModifiersManager.ManagedTravellersModifier modifier, String name) {
-		this.add(modifier.key.location().toString(), name);
+		this.add("travellers_gear.modifier." + modifier.key.location().toString().replace(":", "."), name);
 	}
 
 	public void createTip(String key, String translation) {

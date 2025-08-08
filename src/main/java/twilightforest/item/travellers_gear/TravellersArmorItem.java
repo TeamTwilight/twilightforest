@@ -380,7 +380,7 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 	}
 
 	private Component getModifierTooltipComponent(TravellersModifier modifier) {
-		return TooltipStringInterpolator.render(modifier.getName().toString()).withStyle(ChatFormatting.GRAY);
+		return TooltipStringInterpolator.render(modifier.getLangKey()).withStyle(ChatFormatting.GRAY);
 	}
 
 	public static boolean isTravellersArmorAndBroken(ItemStack stack) {

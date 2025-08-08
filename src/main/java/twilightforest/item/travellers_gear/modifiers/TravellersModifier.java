@@ -29,6 +29,10 @@ public interface TravellersModifier {
 		return getClass().getSimpleName().toLowerCase(Locale.ROOT);
 	}
 
+	default String getLangKey() {
+		return "travellers_gear.modifier." + this.getName().toString().replace(":", ".");
+	}
+
 	boolean hasModifier(ItemStack stack);
 	ResourceLocation getName();
 
