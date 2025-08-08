@@ -1,12 +1,7 @@
 {
   "type": "twilightforest:travellers_gear_modifier_shaped_recipe",
   "is_rotated": false,
-  "modifier": {
-    "data_component_map": {
-      "twilightforest:water_walk": {}
-    },
-    "name": "twilightforest:water_walk"
-  },
+  "modifier_key": "twilightforest:water_walk",
   "pattern": {
     "key": {
       "B": {

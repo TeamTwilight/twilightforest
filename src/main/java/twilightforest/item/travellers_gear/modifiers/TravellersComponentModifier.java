@@ -4,25 +4,19 @@ package twilightforest.item.travellers_gear.modifiers;
 import com.google.common.base.Objects;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.Util;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.TypedDataComponent;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import org.apache.commons.lang3.StringUtils;
 
 public class TravellersComponentModifier implements InsertableTravellersModifier {
 	protected final TypedDataComponent<?> typedDataComponent;
-	protected final String tooltipTranslationKey;
 	protected final ResourceLocation name;
 
 	private TravellersComponentModifier(ResourceLocation name, TypedDataComponent<?> typedDataComponent) {
 		this.typedDataComponent = typedDataComponent;
 		this.name = name;
-		this.tooltipTranslationKey = "travellers_gear.modifier." + name.toString().replace(":", ".");
 	}
 
 	public <T> TravellersComponentModifier(ResourceLocation name, DataComponentType<T> dataComponent, T value) {
@@ -46,17 +40,8 @@ public class TravellersComponentModifier implements InsertableTravellersModifier
 	}
 
 	@Override
-	public String getTooltipTranslationKey() {
-		return tooltipTranslationKey;
-	}
-
-	@Override
 	public ResourceLocation getName() {
 		return name;
-	}
-
-	public ResourceLocation getDataComponentTypeId() {
-		return ResourceLocation.parse(Util.getRegisteredName(BuiltInRegistries.DATA_COMPONENT_TYPE, this.typedDataComponent.type()));
 	}
 
 	@Override

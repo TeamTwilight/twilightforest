@@ -29,8 +29,8 @@ import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFItems;
+import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.item.recipe.*;
-import twilightforest.item.travellers_gear.modifiers.TravellersModifiers;
 
 import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
@@ -669,7 +669,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.define('R', Ingredient.of(TFBlocks.RED_THREAD))
 				.define('G', Ingredient.of(TFItems.TRAVELLERS_GOGGLES))
 				.build(),
-			TravellersModifiers.RED_THREAD_VISION_MODIFIER).save(output);
+			TravellersModifiersManager.RED_THREAD_VISION_MODIFIER).save(output);
 
 		TravellersGearComponentModifierBuilder.buildShaped(CartesianShapedRecipeBuilder.create(splitTravellersModifiersRecipes)
 				.pattern(" E ")
@@ -680,7 +680,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.define('V', Ingredient.of(TFItems.TRAVELLERS_CHESTPLATE, TFItems.TRAVELLERS_CHESTPLATE_GLOVES))
 				.define('S', Ingredient.of(Items.SUGAR))
 				.build(),
-			TravellersModifiers.PERFECT_DODGE_MODIFIER).save(output);
+			TravellersModifiersManager.PERFECT_DODGE_MODIFIER).save(output);
 
 		TravellersGearComponentModifierBuilder.buildShapeless(CartesianShapelessRecipeBuilder.create(splitTravellersModifiersRecipes)
 				.ingredient(potionsIngredient(Potions.INVISIBILITY, Potions.LONG_INVISIBILITY))
@@ -689,7 +689,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.ingredient(Items.GOLDEN_CARROT)
 				.ingredient(Ingredient.of(TFItems.TRAVELLERS_CHESTPLATE, TFItems.TRAVELLERS_CHESTPLATE_GLOVES))
 				.build(),
-			TravellersModifiers.STEALTH_MODIFIER).save(output);
+			TravellersModifiersManager.STEALTH_MODIFIER).save(output);
 
 		TravellersGearComponentModifierBuilder.buildShaped(CartesianShapedRecipeBuilder.create(splitTravellersModifiersRecipes)
 				.pattern("RRR")
@@ -699,7 +699,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.define('V', Ingredient.of(TFItems.TRAVELLERS_CHESTPLATE, TFItems.TRAVELLERS_CHESTPLATE_GLOVES))
 				.define('O', Ingredient.of(Items.OBSIDIAN))
 				.build(),
-			TravellersModifiers.HASTE_MODIFIER).save(output);
+			TravellersModifiersManager.HASTE_MODIFIER).save(output);
 
 		TravellersGearComponentModifierBuilder.buildShapeless(CartesianShapelessRecipeBuilder.create(splitTravellersModifiersRecipes)
 				.ingredient(TFItems.EXANIMATE_ESSENCE)
@@ -708,7 +708,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.ingredient(Items.CHICKEN)
 				.ingredient(Ingredient.of(TFItems.TRAVELLERS_CHESTPLATE, TFItems.TRAVELLERS_CHESTPLATE_GLOVES))
 				.build(),
-			TravellersModifiers.ARROW_MAGNETISM_MODIFIER).save(output);
+			TravellersModifiersManager.ARROW_MAGNETISM_MODIFIER).save(output);
 
 		TravellersGearComponentModifierBuilder.buildShapeless(CartesianShapelessRecipeBuilder.create(splitTravellersModifiersRecipes)
 				.ingredient(TFItems.HYDRA_CHOP)
@@ -717,7 +717,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.ingredient(Items.BUNDLE)
 				.ingredient(Ingredient.of(TFItems.TRAVELLERS_CHESTPLATE, TFItems.TRAVELLERS_CHESTPLATE_GLOVES))
 				.build(),
-			TravellersModifiers.FOOD_EFFICIENCY_MODIFIER).save(output);
+			TravellersModifiersManager.FOOD_EFFICIENCY_MODIFIER).save(output);
 
 		TravellersGearComponentModifierBuilder.buildShaped(CartesianShapedRecipeBuilder.create(splitTravellersModifiersRecipes)
 				.pattern("FCF")
@@ -728,7 +728,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.define('W', Ingredient.of(TFItems.TRAVELLERS_WINGS, TFItems.TRAVELLERS_WINGS_BELT))
 				.define('E', Ingredient.of(TFItems.BORER_ESSENCE))
 				.build(),
-			TravellersModifiers.CONTROLLED_FALL_MODIFIER).save(output);
+			TravellersModifiersManager.CONTROLLED_FALL_MODIFIER).save(output);
 
 		TravellersGearComponentModifierBuilder.buildShaped(CartesianShapedRecipeBuilder.create(splitTravellersModifiersRecipes)
 				.pattern(" L ")
@@ -739,7 +739,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.define('W', Ingredient.of(TFItems.TRAVELLERS_WINGS, TFItems.TRAVELLERS_WINGS_BELT))
 				.define('P', Ingredient.of(Items.PISTON))
 				.build(),
-			TravellersModifiers.DOUBLE_JUMP_MODIFIER).save(output);
+			TravellersModifiersManager.DOUBLE_JUMP_MODIFIER).save(output);
 
 		TravellersGearComponentModifierBuilder.buildShaped(CartesianShapedRecipeBuilder.create(splitTravellersModifiersRecipes)
 				.pattern(" P ")
@@ -750,7 +750,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.define('W', Ingredient.of(TFItems.TRAVELLERS_WINGS, TFItems.TRAVELLERS_WINGS_BELT))
 				.define('F', Ingredient.of(TFItems.RAVEN_FEATHER))
 				.build(),
-			TravellersModifiers.AGILE_RANGER_MODIFIER).save(output);
+			TravellersModifiersManager.AGILE_RANGER_MODIFIER).save(output);
 
 		TravellersGearComponentModifierBuilder.buildShaped(CartesianShapedRecipeBuilder.create(splitTravellersModifiersRecipes)
 				.pattern("SBS")
@@ -761,7 +761,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.define('P', Ingredient.of(Items.PISTON))
 				.define('W', Ingredient.of(TFItems.TRAVELLERS_WINGS, TFItems.TRAVELLERS_WINGS_BELT))
 				.build(),
-			TravellersModifiers.SIDESTEP_MODIFIER).save(output);
+			TravellersModifiersManager.SIDESTEP_MODIFIER).save(output);
 
 		TravellersGearComponentModifierBuilder.buildShaped(CartesianShapedRecipeBuilder.create(splitTravellersModifiersRecipes)
 				.pattern("SBS")
@@ -770,7 +770,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.define('S', Ingredient.of(TFItems.MAZE_SLIME_BALL))
 				.define('L', Ingredient.of(Items.LILY_PAD))
 				.build(),
-			TravellersModifiers.WATER_WALK_MODIFIER).save(output);
+			TravellersModifiersManager.WATER_WALK_MODIFIER).save(output);
 
 		TravellersGearComponentModifierBuilder.buildShaped(CartesianShapedRecipeBuilder.create(splitTravellersModifiersRecipes)
 				.pattern("WBW")
@@ -779,7 +779,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.define('B', Ingredient.of(TFItems.TRAVELLERS_BOOTS))
 				.define('S', Ingredient.of(Items.SLIME_BLOCK))
 				.build(),
-			TravellersModifiers.SLIMY_SOLES_MODIFIER).save(output);
+			TravellersModifiersManager.SLIMY_SOLES_MODIFIER).save(output);
 
 		TravellersGearComponentModifierBuilder.buildShaped(CartesianShapedRecipeBuilder.create(splitTravellersModifiersRecipes)
 				.pattern("MPM")
@@ -789,7 +789,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.define('B', Ingredient.of(TFItems.TRAVELLERS_BOOTS))
 				.define('H', Ingredient.of(Items.RABBIT_HIDE))
 				.build(),
-			TravellersModifiers.STRAIGHT_AHEAD_MODIFIER).save(output);
+			TravellersModifiersManager.STRAIGHT_AHEAD_MODIFIER).save(output);
 
 		TravellersGearComponentModifierBuilder.buildShaped(CartesianShapedRecipeBuilder.create(splitTravellersModifiersRecipes)
 				.pattern(" E ")
@@ -799,7 +799,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.define('M', Ingredient.of(TFBlocks.MOSS_PATCH))
 				.define('T', Ingredient.of(TFItems.TRAVELLERS_GOGGLES, TFItems.TRAVELLERS_CHESTPLATE, TFItems.TRAVELLERS_CHESTPLATE_GLOVES, TFItems.TRAVELLERS_WINGS, TFItems.TRAVELLERS_WINGS_BELT, TFItems.TRAVELLERS_BOOTS))
 				.build(),
-			TravellersModifiers.AUTO_REPAIR_MODIFIER).save(output);
+			TravellersModifiersManager.AUTO_REPAIR_MODIFIER).save(output);
 
 		TravellersGearComponentModifierBuilder.buildShaped(CartesianShapedRecipeBuilder.create(splitTravellersModifiersRecipes)
 				.pattern(" M ")
@@ -809,7 +809,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.define('E', Ingredient.of(Items.EXPERIENCE_BOTTLE))
 				.define('T', Ingredient.of(TFItems.TRAVELLERS_GOGGLES, TFItems.TRAVELLERS_CHESTPLATE, TFItems.TRAVELLERS_CHESTPLATE_GLOVES, TFItems.TRAVELLERS_WINGS, TFItems.TRAVELLERS_WINGS_BELT, TFItems.TRAVELLERS_BOOTS))
 				.build(),
-			TravellersModifiers.AUTO_REPAIR_MODIFIER, true).save(output);
+			TravellersModifiersManager.AUTO_REPAIR_MODIFIER, true).save(output);
 
 		TravellersGearComponentModifierBuilder.buildShaped(CartesianShapedRecipeBuilder.create(splitTravellersModifiersRecipes)
 				.pattern("M M")
@@ -819,7 +819,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.define('Y', Ingredient.of(Items.YELLOW_STAINED_GLASS_PANE))
 				.define('G', Ingredient.of(TFItems.TRAVELLERS_GOGGLES))
 				.build(),
-			TravellersModifiers.ALL_NIGHT_GOGGLES_MODIFIER).save(output);
+			TravellersModifiersManager.ALL_NIGHT_GOGGLES_MODIFIER).save(output);
 
 		TravellersGearComponentModifierBuilder.buildShaped(CartesianShapedRecipeBuilder.create(splitTravellersModifiersRecipes)
 				.pattern("sis")
@@ -829,7 +829,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.define('s', Ingredient.of(Tags.Items.RODS_WOODEN))
 				.define('g', Ingredient.of(TFItems.TRAVELLERS_GOGGLES))
 				.build(),
-			TravellersModifiers.ITEM_DISPLAY_MODIFIER).save(output);
+			TravellersModifiersManager.ITEM_DISPLAY_MODIFIER).save(output);
 
 		DryingRecipeBuilder.drying(Ingredient.of(Tags.Items.FOODS_COOKED_MEAT), new ItemStack(Items.LEATHER), 8.5F)
 			.unlockedBy("has_meat", has(Tags.Items.FOODS_COOKED_MEAT))

@@ -17,10 +17,5 @@
       "item": "twilightforest:travellers_chest_gloves"
     }
   ],
-  "modifier": {
-    "data_component_map": {
-      "twilightforest:arrow_magnetism": {}
-    },
-    "name": "twilightforest:arrow_magnetism"
-  }
+  "modifier_key": "twilightforest:arrow_magnetism"
 }

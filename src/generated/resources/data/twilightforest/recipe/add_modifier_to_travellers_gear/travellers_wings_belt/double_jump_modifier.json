@@ -1,12 +1,7 @@
 {
   "type": "twilightforest:travellers_gear_modifier_shaped_recipe",
   "is_rotated": false,
-  "modifier": {
-    "data_component_map": {
-      "twilightforest:double_jump": {}
-    },
-    "name": "twilightforest:double_jump"
-  },
+  "modifier_key": "twilightforest:double_jump",
   "pattern": {
     "key": {
       "L": [

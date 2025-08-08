@@ -1,12 +1,7 @@
 {
   "type": "twilightforest:travellers_gear_modifier_shaped_recipe",
   "is_rotated": false,
-  "modifier": {
-    "data_component_map": {
-      "twilightforest:all_night_goggles": {}
-    },
-    "name": "twilightforest:all_night_goggles"
-  },
+  "modifier_key": "twilightforest:all_night_goggles",
   "pattern": {
     "key": {
       "G": {

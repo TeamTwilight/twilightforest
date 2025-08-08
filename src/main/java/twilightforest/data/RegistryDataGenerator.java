@@ -37,6 +37,7 @@ public class RegistryDataGenerator extends DatapackBuiltinEntriesProvider {
 		.add(TFRegistries.Keys.CHUNK_BLANKET_PROCESSORS, ChunkBlanketProcessors::bootstrap)
 		.add(Registries.BANNER_PATTERN, TFBannerPatterns::bootstrap)
 		.add(TFRegistries.Keys.DWARF_RABBIT_VARIANT, DwarfRabbitVariants::bootstrap)
+		.add(TFRegistries.Keys.TRAVELLERS_MODIFIERS, TravellersModifiersManager::bootstrap)
 		.add(TFRegistries.Keys.TINY_BIRD_VARIANT, TinyBirdVariants::bootstrap)
 		.add(Registries.JUKEBOX_SONG, TFJukeboxSongs::bootstrap)
 		.add(Registries.ENCHANTMENT, TFEnchantments::bootstrap);

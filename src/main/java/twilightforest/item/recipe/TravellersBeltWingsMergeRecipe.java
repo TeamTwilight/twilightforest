@@ -2,14 +2,13 @@ package twilightforest.item.recipe;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFRecipes;
+import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.item.travellers_gear.TravellersArmorBeltItem;
-import twilightforest.item.travellers_gear.modifiers.TravellersModifiers;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,7 +24,7 @@ public class TravellersBeltWingsMergeRecipe extends CustomRecipe {
 		if (pair.isEmpty())
 			return false;
 		ItemStack wings = pair.get().wings();
-		return TravellersModifiers.countInsertableModifiers(wings) + 1 <= maxSlots();
+		return TravellersModifiersManager.countInsertableModifiers(wings) + 1 <= maxSlots();
 	}
 
 	@Override

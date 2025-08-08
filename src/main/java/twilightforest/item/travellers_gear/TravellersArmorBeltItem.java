@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFSounds;
-import twilightforest.item.travellers_gear.modifiers.TravellersModifiers;
+import twilightforest.init.custom.TravellersModifiersManager;
 
 import java.util.Optional;
 
@@ -82,7 +82,7 @@ public class TravellersArmorBeltItem extends TravellersArmorItem {
 	}
 
 	public static boolean hasSwapHotbar(ItemStack stack) {
-		return (TravellersModifiers.SWAP_HOTBAR_MODIFIER.isActive(stack) || TravellersModifiers.SWAP_HOTBAR_ABILITY.isActive(stack))
+		return (TravellersModifiersManager.isModifierActive(stack, TravellersModifiersManager.SWAP_HOTBAR_MODIFIER) || TravellersModifiersManager.isModifierActive(stack, TravellersModifiersManager.SWAP_HOTBAR_ABILITY))
 			&& stack.has(DataComponents.CONTAINER);
 	}
 

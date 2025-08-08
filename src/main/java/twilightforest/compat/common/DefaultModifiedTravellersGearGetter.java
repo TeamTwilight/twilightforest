@@ -2,7 +2,7 @@ package twilightforest.compat.common;
 
 import net.minecraft.world.item.ItemStack;
 import twilightforest.init.TFItems;
-import twilightforest.item.travellers_gear.modifiers.TravellersModifiers;
+import twilightforest.init.custom.TravellersModifiersManager;
 
 import java.util.List;
 
@@ -30,50 +30,49 @@ public class DefaultModifiedTravellersGearGetter {
 
 	private static ItemStack getDefaultGoggles() {
 		ItemStack goggles = new ItemStack(TFItems.TRAVELLERS_GOGGLES.get());
-		TravellersModifiers.AUTO_REPAIR_MODIFIER.addModifier(goggles);
-		TravellersModifiers.RED_THREAD_VISION_MODIFIER	.addModifier(goggles);
-		TravellersModifiers.ALL_NIGHT_GOGGLES_MODIFIER.addModifier(goggles);
+		TravellersModifiersManager.addModifier(goggles, TravellersModifiersManager.AUTO_REPAIR_MODIFIER);
+		TravellersModifiersManager.addModifier(goggles, TravellersModifiersManager.RED_THREAD_VISION_MODIFIER);
+		TravellersModifiersManager.addModifier(goggles, TravellersModifiersManager.ALL_NIGHT_GOGGLES_MODIFIER);
 		return goggles;
 	}
 
 	private static ItemStack getDefaultVestGloves() {
 		ItemStack vestGloves = new ItemStack(TFItems.TRAVELLERS_CHESTPLATE_GLOVES.get());
-		TravellersModifiers.AUTO_REPAIR_MODIFIER.addModifier(vestGloves);
-		TravellersModifiers.HASTE_MODIFIER.addModifier(vestGloves);
-		TravellersModifiers.ARROW_MAGNETISM_MODIFIER.addModifier(vestGloves);
+		TravellersModifiersManager.addModifier(vestGloves, TravellersModifiersManager.AUTO_REPAIR_MODIFIER);
+		TravellersModifiersManager.addModifier(vestGloves, TravellersModifiersManager.HASTE_MODIFIER);
+		TravellersModifiersManager.addModifier(vestGloves, TravellersModifiersManager.ARROW_MAGNETISM_MODIFIER);
 		return vestGloves;
 	}
 
 	private static ItemStack getDefaultVest() {
 		ItemStack vest = new ItemStack(TFItems.TRAVELLERS_CHESTPLATE.get());
-		TravellersModifiers.AUTO_REPAIR_MODIFIER.addModifier(vest);
-		TravellersModifiers.PERFECT_DODGE_MODIFIER.addModifier(vest);
-		TravellersModifiers.STEALTH_MODIFIER.addModifier(vest);
+		TravellersModifiersManager.addModifier(vest, TravellersModifiersManager.AUTO_REPAIR_MODIFIER);
+		TravellersModifiersManager.addModifier(vest, TravellersModifiersManager.PERFECT_DODGE_MODIFIER);
+		TravellersModifiersManager.addModifier(vest, TravellersModifiersManager.STEALTH_MODIFIER);
 		return vest;
 	}
 
 	private static ItemStack getDefaultWingsBelt() {
 		ItemStack wingsBelt = new ItemStack(TFItems.TRAVELLERS_WINGS_BELT.get());
-		TravellersModifiers.SWAP_HOTBAR_MODIFIER.addModifier(wingsBelt);
-		TravellersModifiers.CONTROLLED_FALL_MODIFIER.addModifier(wingsBelt);
-		TravellersModifiers.DOUBLE_JUMP_MODIFIER.addModifier(wingsBelt);
-
+		TravellersModifiersManager.addModifier(wingsBelt, TravellersModifiersManager.SWAP_HOTBAR_MODIFIER);
+		TravellersModifiersManager.addModifier(wingsBelt, TravellersModifiersManager.CONTROLLED_FALL_MODIFIER);
+		TravellersModifiersManager.addModifier(wingsBelt, TravellersModifiersManager.DOUBLE_JUMP_MODIFIER);
 		return wingsBelt;
 	}
 
 	private static ItemStack getDefaultWings() {
 		ItemStack wings = new ItemStack(TFItems.TRAVELLERS_WINGS.get());
-		TravellersModifiers.AUTO_REPAIR_MODIFIER.addModifier(wings);
-		TravellersModifiers.AGILE_RANGER_MODIFIER.addModifier(wings);
-		TravellersModifiers.SIDESTEP_MODIFIER.addModifier(wings);
+		TravellersModifiersManager.addModifier(wings, TravellersModifiersManager.AUTO_REPAIR_MODIFIER);
+		TravellersModifiersManager.addModifier(wings, TravellersModifiersManager.AGILE_RANGER_MODIFIER);
+		TravellersModifiersManager.addModifier(wings, TravellersModifiersManager.SIDESTEP_MODIFIER);
 		return wings;
 	}
 
 	private static ItemStack getDefaultBoots() {
 		ItemStack boots = new ItemStack(TFItems.TRAVELLERS_BOOTS.get());
-		TravellersModifiers.AUTO_REPAIR_MODIFIER.addModifier(boots);
-		TravellersModifiers.STRAIGHT_AHEAD_MODIFIER.addModifier(boots);
-		TravellersModifiers.WATER_WALK_MODIFIER.addModifier(boots);
+		TravellersModifiersManager.addModifier(boots, TravellersModifiersManager.AUTO_REPAIR_MODIFIER);
+		TravellersModifiersManager.addModifier(boots, TravellersModifiersManager.STRAIGHT_AHEAD_MODIFIER);
+		TravellersModifiersManager.addModifier(boots, TravellersModifiersManager.WATER_WALK_MODIFIER);
 		return boots;
 	}
 }

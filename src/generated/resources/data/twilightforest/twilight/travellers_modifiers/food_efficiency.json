@@ -1,0 +1,7 @@
+{
+  "type": "travellerscomponentmodifier",
+  "data_component_map": {
+    "twilightforest:efficient_eater": 2.0
+  },
+  "name": "twilightforest:food_efficiency"
+}

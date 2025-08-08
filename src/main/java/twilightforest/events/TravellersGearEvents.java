@@ -25,9 +25,9 @@ import twilightforest.init.TFAdvancements;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFItems;
+import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.item.travellers_gear.TravellersArmorItem;
 import twilightforest.item.travellers_gear.modifiers.InsertableTravellersModifier;
-import twilightforest.item.travellers_gear.modifiers.TravellersModifiers;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -50,9 +50,9 @@ public class TravellersGearEvents {
 	private void playerTickPre(PlayerTickEvent.Pre event) {
 		Player player = event.getEntity();
 		Boolean hasDoubleJump = null;
-		if (!TravellersModifiers.DOUBLE_JUMP_MODIFIER.isActive(player.getItemBySlot(EquipmentSlot.LEGS))) {
+		if (!TravellersModifiersManager.isModifierActive(player.getItemBySlot(EquipmentSlot.LEGS), TravellersModifiersManager.DOUBLE_JUMP_MODIFIER))
 			hasDoubleJump = false;
-		} else if (player.onGround())
+		else if (player.onGround())
 			hasDoubleJump = true;
 
 		if (hasDoubleJump != null && hasDoubleJump != player.getData(TFDataAttachments.HAS_DOUBLE_JUMP)) {
@@ -92,9 +92,9 @@ public class TravellersGearEvents {
 			return;
 
 		if (armor.getMaxDamage() - 1 <= armor.getDamageValue()) {
-			TravellersModifiers.ENTRY_MODIFIERS.forEach(modifier -> modifier.deactivate(event));
+			TravellersModifiersManager.ENTRY_MODIFIERS.get().forEach(modifier -> modifier.deactivate(event));
 		} else {
-			TravellersModifiers.ENTRY_MODIFIERS.forEach(modifier -> modifier.activate(event));
+			TravellersModifiersManager.ENTRY_MODIFIERS.get().forEach(modifier -> modifier.activate(event));
 		}
 	}
 
@@ -131,7 +131,7 @@ public class TravellersGearEvents {
 			return;
 		}
 		ItemStack inputStack = travellersItemStacks.getFirst();
-		List<InsertableTravellersModifier> modifiers = TravellersModifiers.findAllInsertableModifiers(inputStack);
+		List<InsertableTravellersModifier> modifiers = TravellersModifiersManager.findAllInsertableModifiers(inputStack);
 		if (modifiers.isEmpty()) {
 			event.setCanceled(true);
 			return;
@@ -148,7 +148,7 @@ public class TravellersGearEvents {
 	}
 
 	private void cancelPhantomSpawns(PlayerSpawnPhantomsEvent event) {
-		if (TravellersModifiers.ALL_NIGHT_GOGGLES_MODIFIER.isActive(event.getEntity().getItemBySlot(EquipmentSlot.HEAD))) {
+		if (TravellersModifiersManager.isModifierActive(event.getEntity().getItemBySlot(EquipmentSlot.HEAD), TravellersModifiersManager.ALL_NIGHT_GOGGLES_MODIFIER)) {
 			event.setResult(PlayerSpawnPhantomsEvent.Result.DENY);
 		}
 	}
@@ -161,8 +161,8 @@ public class TravellersGearEvents {
 			}
 
 			if (!compareStack.isEmpty()) {
-				var oldMods = TravellersModifiers.findAllInsertableModifiers(compareStack);
-				TravellersModifiers.findAllInsertableModifiers(event.getCrafting()).stream()
+				var oldMods = TravellersModifiersManager.findAllInsertableModifiers(compareStack);
+				TravellersModifiersManager.findAllInsertableModifiers(event.getCrafting()).stream()
 					.filter(modifier -> !oldMods.contains(modifier)).toList()
 						.forEach(modifier -> TFAdvancements.ADD_MODIFIER.get().trigger(player, modifier.getName()));
 			}

@@ -1,0 +1,7 @@
+{
+  "type": "travellerscomponentmodifier",
+  "data_component_map": {
+    "twilightforest:sidestep_cooldown": 60
+  },
+  "name": "twilightforest:side_step"
+}

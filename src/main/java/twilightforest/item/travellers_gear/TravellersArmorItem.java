@@ -45,6 +45,7 @@ import twilightforest.client.model.armor.TFArmorModel;
 import twilightforest.client.model.armor.TravellersWingsModel;
 import twilightforest.client.renderer.armor.TFArmorRenderer;
 import twilightforest.init.*;
+import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.item.travellers_gear.modifiers.*;
 import twilightforest.network.ParticlePacket;
 import twilightforest.util.TFMathUtil;
@@ -92,7 +93,7 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 
 	public static void travellersStealth(Player player, Consumer<Player> invisibilityHandler) {
 		ItemStack chestArmor = player.getInventory().getArmor(EquipmentSlot.CHEST.getIndex());
-		if (!TravellersModifiers.STEALTH_MODIFIER.isActive(chestArmor))
+		if (!TravellersModifiersManager.isModifierActive(chestArmor, TravellersModifiersManager.STEALTH_MODIFIER))
 			return;
 
 		if (player.isCrouching()) {
@@ -147,7 +148,7 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 		ItemStack leggingsStack = player.getItemBySlot(EquipmentSlot.LEGS);
 		Long cooldown = leggingsStack.get(TFDataComponents.SIDESTEP_COOLDOWN);
 		Long dt = player.level().getGameTime() - player.getData(TFDataAttachments.LAST_SIDESTEP_TIME);
-		if (TravellersModifiers.SIDESTEP_MODIFIER.isActive(leggingsStack) && dt.equals(cooldown))
+		if (TravellersModifiersManager.isModifierActive(leggingsStack, TravellersModifiersManager.SIDESTEP_MODIFIER) && dt.equals(cooldown))
 			player.playSound(TFSounds.SIDE_STEP_CHARGED.get(), 1F, player.getVoicePitch());
 	}
 
@@ -155,7 +156,7 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 		ItemStack leggingsStack = livingEntity.getItemBySlot(EquipmentSlot.LEGS);
 		Float multiplier = leggingsStack.get(TFDataComponents.CONTROLLED_FALLING_MULTIPLIER);
 		Vec3 deltaMovement = livingEntity.getDeltaMovement();
-		if (!TravellersModifiers.CONTROLLED_FALL_MODIFIER.isActive(leggingsStack) || multiplier == null || deltaMovement.y() >= 0 || livingEntity.isFallFlying())
+		if (!TravellersModifiersManager.isModifierActive(leggingsStack, TravellersModifiersManager.CONTROLLED_FALL_MODIFIER) || multiplier == null || deltaMovement.y() >= 0 || livingEntity.isFallFlying())
 			return;
 
 		if (livingEntity.isShiftKeyDown())
@@ -174,7 +175,7 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 	public static void travellersGearAutoRepair(LivingEntity livingEntity) {
 		livingEntity.getArmorSlots().forEach(slot -> {
 			Float probability = slot.get(TFDataComponents.AUTO_REPAIR_PROBABILITY);
-			if (probability == null || !TravellersModifiers.AUTO_REPAIR_MODIFIER.isActive(slot))
+			if (probability == null || !TravellersModifiersManager.isModifierActive(slot, TravellersModifiersManager.AUTO_REPAIR_MODIFIER))
 				return;
 			Level level = livingEntity.level();
 			double boostedProbability = getAutoRepairChance(probability, level, livingEntity.blockPosition());
@@ -201,14 +202,14 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 	public static void travellersWingsHighJump(LivingEntity livingEntity) {
 		ItemStack leggingsStack = livingEntity.getItemBySlot(EquipmentSlot.LEGS);
 		Integer amplifier = leggingsStack.get(TFDataComponents.HIGH_JUMP_AMPLIFIER);
-		if (TravellersModifiers.HIGH_JUMP_MODIFIER.isActive(leggingsStack) && amplifier != null)
+		if (TravellersModifiersManager.isModifierActive(leggingsStack, TravellersModifiersManager.HIGH_JUMP_ABILITY) && amplifier != null)
 			livingEntity.addEffect(new MobEffectInstance(MobEffects.JUMP, 2, amplifier, false, false, false));
 	}
 
 	public static void travellersVestHaste(LivingEntity livingEntity) {
 		ItemStack chestStack = livingEntity.getItemBySlot(EquipmentSlot.CHEST);
 		Integer amplifier = chestStack.get(TFDataComponents.HASTE_AMPLIFIER);
-		if (TravellersModifiers.HASTE_MODIFIER.isActive(chestStack) && amplifier != null)
+		if (TravellersModifiersManager.isModifierActive(chestStack, TravellersModifiersManager.HASTE_MODIFIER) && amplifier != null)
 			livingEntity.addEffect(new MobEffectInstance(MobEffects.DIG_SPEED, 2, amplifier, false, false, false));
 	}
 
@@ -217,7 +218,7 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 		ItemStack leggingsStack = player.getItemBySlot(EquipmentSlot.LEGS);
 		Long cooldown = leggingsStack.get(TFDataComponents.SIDESTEP_COOLDOWN);
 		long currentTime = player.level().getGameTime();
-		if (TravellersModifiers.SIDESTEP_MODIFIER.isActive(leggingsStack) && cooldown != null && currentTime - lastSidestepTime > cooldown && !player.isFallFlying() && player.onGround() && !player.isCrouching()) {
+		if (TravellersModifiersManager.isModifierActive(leggingsStack, TravellersModifiersManager.SIDESTEP_MODIFIER) && cooldown != null && currentTime - lastSidestepTime > cooldown && !player.isFallFlying() && player.onGround() && !player.isCrouching()) {
 			TravellersArmorItem.performSidestep(player, isLeftSidestep);
 			player.setData(TFDataAttachments.LAST_SIDESTEP_TIME, currentTime);
 			return true;
@@ -311,7 +312,7 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 	public static Properties chestProperties(Properties properties) {
 		return properties
 			.component(TFDataComponents.TRAVELLERS_HAS_CHESTPLATE, Unit.INSTANCE)
-			.attributes(TravellersEntryModifier.addModifiers(defaultArmorProperties(Type.CHESTPLATE), TravellersModifiers.SWIFT_SWIM_MODIFIER).build());
+			.attributes(ItemAttributeModifiers.builder().add(Attributes.WATER_MOVEMENT_EFFICIENCY, TFAttributeModifiers.TRAVELLERS_SWIFT_SWIM_ACTIVATE, EquipmentSlotGroup.CHEST).build());
 	}
 
 	public static Properties glovesProperties(Properties properties) {
@@ -337,11 +338,11 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 	@Override
 	public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context, @NotNull List<Component> tooltip, @NotNull TooltipFlag flags) {
 		super.appendHoverText(stack, context, tooltip, flags);
-		List<BuiltinTravellersComponentModifier> builtinModifiers = TravellersModifiers.findAllBuiltinModifiers(stack);
+		List<BuiltinTravellersComponentModifier> builtinModifiers = TravellersModifiersManager.findAllBuiltinModifiers(stack);
 		builtinModifiers.forEach(modifier -> tooltip.add(Component.translatable("travellers_gear.ability").withStyle(ChatFormatting.GOLD).append(getModifierTooltipComponent(modifier))));
-		List<TravellersEntryModifier> entryModifier = TravellersModifiers.findAllEntryModifiers(stack);
+		List<TravellersEntryModifier> entryModifier = TravellersModifiersManager.findAllEntryModifiers(stack);
 		entryModifier.forEach(modifier -> tooltip.add(Component.translatable("travellers_gear.ability").withStyle(ChatFormatting.GOLD).append(getModifierTooltipComponent(modifier))));
-		List<InsertableTravellersModifier> insertableModifiers = TravellersModifiers.findAllInsertableModifiers(stack);
+		List<InsertableTravellersModifier> insertableModifiers = TravellersModifiersManager.findAllInsertableModifiers(stack);
 		insertableModifiers.forEach(modifier -> tooltip.add(getModifierTooltipComponent(modifier)));
 		for (int i = insertableModifiers.size(); i < getModifierSlots(); i++) {
 			tooltip.add(Component.translatable("travellers_gear.modifier.empty").withStyle(ChatFormatting.DARK_GRAY));
@@ -379,7 +380,7 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 	}
 
 	private Component getModifierTooltipComponent(TravellersModifier modifier) {
-		return TooltipStringInterpolator.render(modifier.getTooltipTranslationKey()).withStyle(ChatFormatting.GRAY);
+		return TooltipStringInterpolator.render(modifier.getName().toString()).withStyle(ChatFormatting.GRAY);
 	}
 
 	public static boolean isTravellersArmorAndBroken(ItemStack stack) {

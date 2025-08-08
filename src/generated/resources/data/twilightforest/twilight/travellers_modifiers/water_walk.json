@@ -1,0 +1,7 @@
+{
+  "type": "travellerscomponentmodifier",
+  "data_component_map": {
+    "twilightforest:water_walk": {}
+  },
+  "name": "twilightforest:water_walk"
+}

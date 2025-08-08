@@ -64,6 +64,7 @@ import twilightforest.entity.passive.TinyBirdVariant;
 import twilightforest.entity.passive.quest.QuestReloadListener;
 import twilightforest.init.*;
 import twilightforest.init.custom.*;
+import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 import twilightforest.loot.modifiers.GiantToolGroupingModifier;
 import twilightforest.network.*;
 import twilightforest.util.HolidayEvent;
@@ -263,6 +264,7 @@ public final class TwilightForestMod {
 		event.dataPackRegistry(TFRegistries.Keys.CHUNK_BLANKET_PROCESSORS, ChunkBlanketProcessors.DISPATCH_CODEC);
 		event.dataPackRegistry(TFRegistries.Keys.DWARF_RABBIT_VARIANT, DwarfRabbitVariant.DIRECT_CODEC, DwarfRabbitVariant.DIRECT_CODEC);
 		event.dataPackRegistry(TFRegistries.Keys.TINY_BIRD_VARIANT, TinyBirdVariant.DIRECT_CODEC, TinyBirdVariant.DIRECT_CODEC);
+		event.dataPackRegistry(TFRegistries.Keys.TRAVELLERS_MODIFIERS, TravellersModifier.CODEC, TravellersModifier.CODEC);
 	}
 
 	public void registerExtraStuff(RegisterEvent evt) {

@@ -1,0 +1,7 @@
+{
+  "type": "travellerscomponentmodifier",
+  "data_component_map": {
+    "twilightforest:forward_boost_multiplier": 1.4
+  },
+  "name": "twilightforest:straight_ahead"
+}

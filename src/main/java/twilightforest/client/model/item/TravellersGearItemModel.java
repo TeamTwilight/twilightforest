@@ -20,9 +20,9 @@ import net.neoforged.neoforge.client.model.geometry.*;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import twilightforest.TwilightForestMod;
+import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.item.travellers_gear.modifiers.InsertableTravellersModifier;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
-import twilightforest.item.travellers_gear.modifiers.TravellersModifiers;
 
 import java.util.List;
 import java.util.Map;
@@ -111,7 +111,7 @@ public class TravellersGearItemModel implements IUnbakedGeometry<TravellersGearI
 			BakedModel overridden = this.nested.resolve(originalModel, stack, level, entity, seed);
 			if (overridden != originalModel) return overridden;
 
-			List<InsertableTravellersModifier> modifiers = TravellersModifiers.findAllInsertableModifiers(stack);
+			List<InsertableTravellersModifier> modifiers = TravellersModifiersManager.findAllInsertableModifiers(stack);
 			String key = BuiltInRegistries.ITEM.getKey(stack.getItem()).getPath() + this.getModifiersSuffix(modifiers);
 
 			if (!this.possibleCombos.containsKey(key)) {

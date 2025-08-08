@@ -1,0 +1,7 @@
+{
+  "type": "travellerscomponentmodifier",
+  "data_component_map": {
+    "twilightforest:stealth_crouching": {}
+  },
+  "name": "twilightforest:stealth"
+}

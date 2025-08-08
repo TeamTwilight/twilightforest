@@ -1,12 +1,7 @@
 {
   "type": "twilightforest:travellers_gear_modifier_shaped_recipe",
   "is_rotated": false,
-  "modifier": {
-    "data_component_map": {
-      "twilightforest:red_thread_vision": {}
-    },
-    "name": "twilightforest:red_thread_vision"
-  },
+  "modifier_key": "twilightforest:red_thread_vision",
   "pattern": {
     "key": {
       "G": {

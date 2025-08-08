@@ -30,7 +30,7 @@ import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.config.TFConfig;
 import twilightforest.init.TFKeyBindsCategories;
-import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
+import twilightforest.init.custom.TravellersModifiersManager;
 
 import java.util.HashMap;
 import java.util.List;
@@ -199,8 +199,8 @@ public abstract class TFLangProvider extends LanguageProvider {
 		this.add(keyMapping.getName(), name);
 	}
 
-	public void addTravellersModifier(TravellersModifier modifier, String name) {
-		this.add(modifier.getTooltipTranslationKey(), name);
+	public void addTravellersModifier(TravellersModifiersManager.ManagedTravellersModifier modifier, String name) {
+		this.add(modifier.key.location().toString(), name);
 	}
 
 	public void createTip(String key, String translation) {

@@ -7,6 +7,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.RegistryOps;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.ItemStack;
@@ -14,19 +15,19 @@ import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import org.apache.commons.lang3.StringUtils;
 import twilightforest.data.helpers.TFLangProvider;
-import twilightforest.item.travellers_gear.modifiers.TravellersComponentModifier;
+import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifiable;
-import twilightforest.item.travellers_gear.modifiers.TravellersModifiers;
+import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.stream.StreamSupport;
 
 public abstract class TravellersGearModifierRecipe extends CustomRecipe {
-	protected final TravellersComponentModifier travellersModifier;
-	public TravellersGearModifierRecipe(TravellersComponentModifier travellersModifier) {
+	protected final ResourceKey<TravellersModifier> travellersModifierKey;
+	public TravellersGearModifierRecipe(ResourceKey<TravellersModifier> travellersModifier) {
 		super(CraftingBookCategory.EQUIPMENT);
-		this.travellersModifier = travellersModifier;
+		this.travellersModifierKey = travellersModifier;
 	}
 
 	@Override
@@ -37,7 +38,7 @@ public abstract class TravellersGearModifierRecipe extends CustomRecipe {
 		int slots = 0;
 		if (stack.getItem() instanceof TravellersModifiable travellersModifiableItem)
 			slots = travellersModifiableItem.getModifierSlots();
-		return TravellersModifiers.countInsertableModifiers(stack) < slots && !travellersModifier.hasModifier(stack);
+		return TravellersModifiersManager.countInsertableModifiers(stack) < slots && !TravellersModifiersManager.hasTravellersModifier(stack, TravellersModifiersManager.MANAGED_TRAVELLERS_MODIFIER_HASH_MAP.get(travellersModifierKey));
 	}
 
 	@Override
@@ -47,13 +48,11 @@ public abstract class TravellersGearModifierRecipe extends CustomRecipe {
 			return ItemStack.EMPTY;  // Should never happen
 
 		ItemStack stack = travellerArmorStack.copy();
-		applyModifier(stack);
-		return stack;
+		return applyModifier(stack);
 	}
 
 	public ItemStack applyModifier(ItemStack stack) {
-		travellersModifier.addModifier(stack);
-		return stack;
+		return TravellersModifiersManager.addModifier(stack, TravellersModifiersManager.MANAGED_TRAVELLERS_MODIFIER_HASH_MAP.get(travellersModifierKey)) ? stack : ItemStack.EMPTY;
 	}
 
 	public abstract boolean isShapeless();
@@ -78,7 +77,7 @@ public abstract class TravellersGearModifierRecipe extends CustomRecipe {
 	}
 
 	public ResourceLocation getId() {
-		return travellersModifier.getDataComponentTypeId()
+		return travellersModifierKey.location()
 			.withPrefix(StringUtils.substringAfterLast(getModifiableArmorFromIngredients(getIngredients()).getDescriptionId(), '.') + "/")
 			.withPrefix("add_modifier_to_travellers_gear/")
 			.withSuffix("_modifier");

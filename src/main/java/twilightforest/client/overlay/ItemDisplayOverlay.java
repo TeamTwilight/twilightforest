@@ -1,7 +1,6 @@
 package twilightforest.client.overlay;
 
 import com.mojang.blaze3d.platform.Window;
-import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
@@ -13,7 +12,7 @@ import twilightforest.client.overlay.display.ItemDisplay;
 import twilightforest.config.TFConfig;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFDataComponents;
-import twilightforest.item.travellers_gear.modifiers.TravellersModifiers;
+import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.item.travellers_gear.modifiers.display.ItemDisplayType;
 
 import java.util.*;
@@ -23,7 +22,7 @@ public class ItemDisplayOverlay {
 	public static void render(GuiGraphics graphics, Minecraft minecraft, Window window, Gui gui, Player player) {
 		if (player == null || gui.getDebugOverlay().showDebugScreen() || minecraft.options.hideGui || !player.getData(TFDataAttachments.TRAVELLERS_GOGGLES_ITEM_DISPLAY)) return;
 		ItemStack goggles = player.getItemBySlot(EquipmentSlot.HEAD);
-		if (TravellersModifiers.ITEM_DISPLAY_MODIFIER.isActive(goggles)) {
+		if (TravellersModifiersManager.isModifierActive(goggles, TravellersModifiersManager.ITEM_DISPLAY_MODIFIER)) {
 			var contents = goggles.get(TFDataComponents.ITEM_DISPLAY);
 			List<DisplayHolder> typesToRender = new ArrayList<>();
 			if (!contents.isEmpty()) {

@@ -3,20 +3,22 @@ package twilightforest.item.recipe;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import net.minecraft.world.level.Level;
+import twilightforest.TFRegistries;
 import twilightforest.init.TFRecipes;
-import twilightforest.item.travellers_gear.modifiers.TravellersComponentModifier;
+import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 
 public class TravellersGearModifierShapedRecipe extends TravellersGearModifierRecipe {
 	protected final ShapedRecipePattern pattern;
 	protected final boolean isRotated;
 
-	public TravellersGearModifierShapedRecipe(ShapedRecipePattern pattern, TravellersComponentModifier travellersModifier, boolean isRotated) {
+	public TravellersGearModifierShapedRecipe(ShapedRecipePattern pattern, ResourceKey<TravellersModifier> travellersModifier, boolean isRotated) {
 		super(travellersModifier);
 		this.pattern = pattern;
 		this.isRotated = isRotated;
@@ -70,9 +72,9 @@ public class TravellersGearModifierShapedRecipe extends TravellersGearModifierRe
 				ShapedRecipePattern.MAP_CODEC
 					.fieldOf("pattern")
 					.forGetter(recipe -> recipe.pattern),
-				TravellersComponentModifier.MAP_CODEC
-					.fieldOf("modifier")
-					.forGetter(recipe -> recipe.travellersModifier),
+				ResourceKey.codec(TFRegistries.Keys.TRAVELLERS_MODIFIERS)
+					.fieldOf("modifier_key")
+					.forGetter(recipe -> recipe.travellersModifierKey),
 				Codec.BOOL
 					.fieldOf("is_rotated")
 					.forGetter(recipe -> recipe.isRotated)

@@ -1,0 +1,7 @@
+{
+  "type": "travellerscomponentmodifier",
+  "data_component_map": {
+    "twilightforest:swap_hotbar_modifier": {}
+  },
+  "name": "twilightforest:swap_hotbar_modifier"
+}

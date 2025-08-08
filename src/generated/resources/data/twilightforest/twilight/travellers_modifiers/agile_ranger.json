@@ -1,0 +1,7 @@
+{
+  "type": "travellerscomponentmodifier",
+  "data_component_map": {
+    "twilightforest:agile_ranger_modifier": 5.0
+  },
+  "name": "twilightforest:agile_ranger"
+}

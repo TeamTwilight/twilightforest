@@ -1,0 +1,7 @@
+{
+  "type": "travellerscomponentmodifier",
+  "data_component_map": {
+    "twilightforest:haste_amplifier": 1
+  },
+  "name": "twilightforest:haste"
+}
