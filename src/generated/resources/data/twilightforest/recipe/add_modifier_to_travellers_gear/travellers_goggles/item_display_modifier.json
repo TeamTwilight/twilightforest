@@ -1,12 +1,7 @@
 {
   "type": "twilightforest:travellers_gear_modifier_shaped_recipe",
   "is_rotated": false,
-  "modifier": {
-    "data_component_map": {
-      "twilightforest:item_display": []
-    },
-    "name": "twilightforest:item_display"
-  },
+  "modifier_key": "twilightforest:item_display",
   "pattern": {
     "key": {
       "g": {

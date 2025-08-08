@@ -14,7 +14,7 @@ import twilightforest.TFRegistries;
 import twilightforest.components.item.ItemDisplayContents;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.custom.ItemDisplays;
-import twilightforest.item.travellers_gear.modifiers.TravellersModifiers;
+import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.util.WorldUtil;
 
 import java.util.function.Predicate;
@@ -43,7 +43,7 @@ public class MapHooks {
 	public static boolean updateMapsInGoggles(boolean o, ItemStack stack, Player player) {
 		if (o) return true;
 		ItemStack headStack = player.getItemBySlot(EquipmentSlot.HEAD);
-		if (TravellersModifiers.ITEM_DISPLAY_MODIFIER.isActive(headStack)) {
+		if (TravellersModifiersManager.isModifierActive(headStack, TravellersModifiersManager.ITEM_DISPLAY_MODIFIER)) {
 			ItemDisplayContents contents = headStack.get(TFDataComponents.ITEM_DISPLAY);
 			if (!contents.isEmpty()) {
 				int mapSlot = TFRegistries.ITEM_DISPLAY_TYPE.getId(ItemDisplays.MAP.getKey());

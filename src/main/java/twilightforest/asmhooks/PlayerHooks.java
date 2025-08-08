@@ -16,7 +16,7 @@ import twilightforest.asm.transformers.player.ReduceMovementFoodExhaustionTransf
 import twilightforest.init.TFAttributeModifiers;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFDataComponents;
-import twilightforest.item.travellers_gear.modifiers.TravellersModifiers;
+import twilightforest.init.custom.TravellersModifiersManager;
 
 @SuppressWarnings({"JavadocReference", "unused"})
 public class PlayerHooks {
@@ -46,7 +46,7 @@ public class PlayerHooks {
 	public static float getFoodExhaustion(float f, Player player) {
 		ItemStack chestStack = player.getItemBySlot(EquipmentSlot.CHEST);
 		Float divisor = chestStack.get(TFDataComponents.EFFICIENT_EATER);
-		if (!TravellersModifiers.FOOD_EFFICIENCY_MODIFIER.isActive(chestStack) || divisor == null)
+		if (!TravellersModifiersManager.isModifierActive(chestStack, TravellersModifiersManager.FOOD_EFFICIENCY_MODIFIER) || divisor == null)
 			return f;
 		return f * (1 / divisor);
 	}

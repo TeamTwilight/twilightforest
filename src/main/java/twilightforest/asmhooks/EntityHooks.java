@@ -10,8 +10,8 @@ import net.neoforged.neoforge.common.NeoForgeMod;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.asm.transformers.entity.PathFinderUnrestrainedByLeashTransformer;
 import twilightforest.init.TFDataAttachments;
+import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.item.travellers_gear.TravellersArmorItem;
-import twilightforest.item.travellers_gear.modifiers.TravellersModifiers;
 
 @SuppressWarnings({"JavadocReference", "unused"})
 public class EntityHooks {
@@ -27,7 +27,7 @@ public class EntityHooks {
 		if (!fluidState.is(FluidTags.WATER))
 			return null;
 
-		if (!TravellersModifiers.WATER_WALK_MODIFIER.isActive(livingEntity.getItemBySlot(EquipmentSlot.FEET)))
+		if (!TravellersModifiersManager.isModifierActive(livingEntity.getItemBySlot(EquipmentSlot.FEET), TravellersModifiersManager.WATER_WALK_MODIFIER))
 			return null;
 
 		double waterHeight = livingEntity.getFluidTypeHeight(NeoForgeMod.WATER_TYPE.value());

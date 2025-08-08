@@ -4,8 +4,6 @@ import net.minecraft.advancements.*;
 import net.minecraft.advancements.critereon.*;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentPatch;
-import net.minecraft.core.component.DataComponentPredicate;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -33,7 +31,6 @@ import twilightforest.components.item.PotionFlaskComponent;
 import twilightforest.data.helpers.AdvancementDataMultiRequirements;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.*;
-import twilightforest.item.travellers_gear.modifiers.TravellersModifiers;
 
 import java.util.Optional;
 import java.util.function.Consumer;
