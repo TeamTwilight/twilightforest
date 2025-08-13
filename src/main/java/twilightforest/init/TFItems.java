@@ -26,6 +26,7 @@ import twilightforest.data.tags.CustomTagGenerator;
 import twilightforest.enums.extensions.TFBoatTypeEnumExtension;
 import twilightforest.enums.extensions.TFRarityEnumExtension;
 import twilightforest.item.*;
+import twilightforest.item.StackableEffectItem.StackableEffectInstance;
 import twilightforest.item.travellers_gear.TravellersArmorBeltItem;
 import twilightforest.item.travellers_gear.TravellersArmorItem;
 import twilightforest.item.travellers_gear.TravellersGogglesItem;
@@ -75,8 +76,8 @@ public class TFItems {
 	public static final DeferredItem<Item> IRONWOOD_AXE = ITEMS.register("ironwood_axe", () -> new AxeItem(TFToolMaterials.IRONWOOD, new Item.Properties().attributes(AxeItem.createAttributes(TFToolMaterials.IRONWOOD, 6.0F, -3.1F))));
 	public static final DeferredItem<Item> IRONWOOD_HOE = ITEMS.register("ironwood_hoe", () -> new HoeItem(TFToolMaterials.IRONWOOD, new Item.Properties().attributes(HoeItem.createAttributes(TFToolMaterials.IRONWOOD, -2, -1.0F))));
 	public static final DeferredItem<Item> TORCHBERRIES = ITEMS.register("torchberries", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().alwaysEdible().effect(() -> new MobEffectInstance(MobEffects.GLOWING, 100, 0), 0.75F).build())));
-	public static final DeferredItem<Item> RAW_VENISON = ITEMS.register("raw_venison", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.3F).build())));
-	public static final DeferredItem<Item> COOKED_VENISON = ITEMS.register("cooked_venison", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationModifier(0.8F).build())));
+	public static final DeferredItem<Item> RAW_VENISON = ITEMS.register("raw_venison", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(2).saturationModifier(0.3F).build())));
+	public static final DeferredItem<Item> COOKED_VENISON = ITEMS.register("cooked_venison", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(6).saturationModifier(0.6F).build())));
 	public static final DeferredItem<Item> HYDRA_CHOP = ITEMS.register("hydra_chop", () -> new HydraChopItem(new Item.Properties().fireResistant().food(new FoodProperties.Builder().nutrition(18).saturationModifier(2.0F).effect(() -> new MobEffectInstance(MobEffects.REGENERATION, 100, 0), 1.0F).build()).rarity(Rarity.UNCOMMON)));
 	public static final DeferredItem<Item> TANNIN = ITEMS.register("tannin", () -> new Item(new Item.Properties()));
 	public static final DeferredItem<Item> FIERY_BLOOD = ITEMS.register("fiery_blood", () -> new Item(new Item.Properties().rarity(Rarity.UNCOMMON)));
@@ -110,9 +111,9 @@ public class TFItems {
 	public static final DeferredItem<Item> DIAMOND_MINOTAUR_AXE = ITEMS.register("diamond_minotaur_axe", () -> new MinotaurAxeItem(Tiers.DIAMOND, new Item.Properties().rarity(Rarity.UNCOMMON).attributes(AxeItem.createAttributes(Tiers.DIAMOND, 6.0F, -3.2F))));
 	public static final DeferredItem<Item> MAZEBREAKER_PICKAXE = ITEMS.register("mazebreaker_pickaxe", () -> new MazebreakerPickItem(Tiers.DIAMOND, new Item.Properties().setNoRepair().rarity(Rarity.RARE).attributes(PickaxeItem.createAttributes(Tiers.DIAMOND, 1.0F, -2.8F))));
 	public static final DeferredItem<Item> TRANSFORMATION_POWDER = ITEMS.register("transformation_powder", () -> new TransformPowderItem(new Item.Properties()));
-	public static final DeferredItem<Item> RAW_MEEF = ITEMS.register("raw_meef", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(2).saturationModifier(0.3F).build())));
-	public static final DeferredItem<Item> COOKED_MEEF = ITEMS.register("cooked_meef", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(6).saturationModifier(0.6F).build())));
-	public static final DeferredItem<Item> MEEF_STROGANOFF = ITEMS.register("meef_stroganoff", () -> new Item(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON).fireResistant().food(new FoodProperties.Builder().nutrition(8).saturationModifier(0.6F).alwaysEdible().usingConvertsTo(Items.BOWL).build())));
+	public static final DeferredItem<Item> RAW_MEEF = ITEMS.register("raw_meef", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(2).saturationModifier(0.2F).build())));
+	public static final DeferredItem<Item> COOKED_MEEF = ITEMS.register("cooked_meef", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(7).saturationModifier(0.6F).build())));
+	public static final DeferredItem<Item> MEEF_STROGANOFF = ITEMS.register("meef_stroganoff", () -> new Item(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON).fireResistant().food(new FoodProperties.Builder().nutrition(14).saturationModifier(1.2F).alwaysEdible().effect(() -> new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 3600), 1.0F).effect(() -> new MobEffectInstance(MobEffects.DAMAGE_BOOST, 2400), 1.0F).usingConvertsTo(Items.BOWL).build())));
 	public static final DeferredItem<Item> MAZE_WAFER = ITEMS.register("maze_wafer", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationModifier(0.6F).build())));
 	public static final DeferredItem<Item> MAZE_SLIME_BALL = ITEMS.register("maze_slime_ball", () -> new Item(new Item.Properties()));
 	public static final DeferredItem<Item> ORE_MAGNET = ITEMS.register("ore_magnet", () -> new OreMagnetItem(new Item.Properties().durability(64)));
@@ -293,45 +294,45 @@ public class TFItems {
 	public static final DeferredItem<Item> SNOW_QUEEN_BANNER_PATTERN = ITEMS.register("snow_queen_banner_pattern", () -> new BannerPatternItem(CustomTagGenerator.BannerPatternTagGenerator.SNOW_QUEEN_BANNER_PATTERN, new Item.Properties().stacksTo(1).rarity(tfRarityEnumExtension.TWILIGHT)));
 	public static final DeferredItem<Item> QUEST_RAM_BANNER_PATTERN = ITEMS.register("quest_ram_banner_pattern", () -> new BannerPatternItem(CustomTagGenerator.BannerPatternTagGenerator.QUEST_RAM_BANNER_PATTERN, new Item.Properties().stacksTo(1).rarity(tfRarityEnumExtension.TWILIGHT)));
 
-	public static final DeferredItem<Item> RASPBERRY = ITEMS.register("raspberry", () -> new EdibleBerry());
-	public static final DeferredItem<Item> BLUEBERRY = ITEMS.register("blueberry", () -> new EdibleBerry());
-	public static final DeferredItem<Item> BLACKBERRY = ITEMS.register("blackberry", () -> new EdibleBerry());
-	public static final DeferredItem<Item> MALOBERRY = ITEMS.register("maloberry", () -> new EdibleBerry());
-	public static final DeferredItem<Item> BLIGHTBERRY = ITEMS.register("blightberry", () -> new EdibleBerry(
-		new EdibleBerry.BerryEffect(MobEffects.REGENERATION, 8),
-		new EdibleBerry.BerryEffect(MobEffects.POISON, 5, 0.75F),
-		new EdibleBerry.BerryEffect(MobEffects.WITHER, 5, 0.15F)
+	public static final DeferredItem<Item> RASPBERRY = ITEMS.register("raspberry", () -> new StackableEffectItem());
+	public static final DeferredItem<Item> BLUEBERRY = ITEMS.register("blueberry", () -> new StackableEffectItem());
+	public static final DeferredItem<Item> BLACKBERRY = ITEMS.register("blackberry", () -> new StackableEffectItem());
+	public static final DeferredItem<Item> MALOBERRY = ITEMS.register("maloberry", () -> new StackableEffectItem());
+	public static final DeferredItem<Item> BLIGHTBERRY = ITEMS.register("blightberry", () -> new StackableEffectItem(
+		new StackableEffectInstance(MobEffects.REGENERATION, 8),
+		new StackableEffectInstance(MobEffects.POISON, 5, 0.75F),
+		new StackableEffectInstance(MobEffects.WITHER, 5, 0.15F)
 	));
-	public static final DeferredItem<Item> DUSKBERRY = ITEMS.register("duskberry", () -> new EdibleBerry(
-		new EdibleBerry.BerryEffect(MobEffects.NIGHT_VISION, 15),
-		new EdibleBerry.BerryEffect(MobEffects.BLINDNESS, 3, 0.75F)
+	public static final DeferredItem<Item> DUSKBERRY = ITEMS.register("duskberry", () -> new StackableEffectItem(
+		new StackableEffectInstance(MobEffects.NIGHT_VISION, 15),
+		new StackableEffectInstance(MobEffects.BLINDNESS, 3, 0.75F)
 	));
-	public static final DeferredItem<Item> SKYBERRY = ITEMS.register("skyberry", () -> new EdibleBerry(
-		new EdibleBerry.BerryEffect(MobEffects.JUMP, 8),
-		new EdibleBerry.BerryEffect(MobEffects.MOVEMENT_SLOWDOWN, 3, 0.75F)
+	public static final DeferredItem<Item> SKYBERRY = ITEMS.register("skyberry", () -> new StackableEffectItem(
+		new StackableEffectInstance(MobEffects.JUMP, 8),
+		new StackableEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 3, 0.75F)
 	));
-	public static final DeferredItem<Item> STINGBERRY = ITEMS.register("stingberry", () -> new EdibleBerry(
-		new EdibleBerry.BerryEffect(MobEffects.DAMAGE_BOOST, 10),
-		new EdibleBerry.BerryEffect(MobEffects.DIG_SLOWDOWN, 10, 0.75F)
+	public static final DeferredItem<Item> STINGBERRY = ITEMS.register("stingberry", () -> new StackableEffectItem(
+		new StackableEffectInstance(MobEffects.DAMAGE_BOOST, 10),
+		new StackableEffectInstance(MobEffects.DIG_SLOWDOWN, 10, 0.75F)
 	));
-	public static final DeferredItem<Item> BERRY_MEDLEY = ITEMS.register("berry_medley", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(5).saturationModifier(1.4f).usingConvertsTo(Items.BOWL).build()).stacksTo(1)));
-	public static final DeferredItem<Item> MOSS_SOUP = ITEMS.register("moss_soup", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(5).saturationModifier(1.4F).usingConvertsTo(Items.BOWL).build()).stacksTo(1)));
+	public static final DeferredItem<Item> BERRY_MEDLEY = ITEMS.register("berry_medley", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(5).saturationModifier(0.6F).usingConvertsTo(Items.BOWL).build()).stacksTo(1)));
+	public static final DeferredItem<Item> MOSS_SOUP = ITEMS.register("moss_soup", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(5).saturationModifier(0.6F).usingConvertsTo(Items.BOWL).build()).stacksTo(1)));
 
 	public static final DeferredItem<Item> MONSTER_JERKY = ITEMS.register("monster_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationModifier(0.4F).build())));
-	public static final DeferredItem<Item> BEEF_JERKY = ITEMS.register("beef_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationModifier(1.0F).build())));
-	public static final DeferredItem<Item> CHICKEN_JERKY = ITEMS.register("chicken_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(6).saturationModifier(0.8F).build())));
-	public static final DeferredItem<Item> PORK_JERKY = ITEMS.register("pork_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationModifier(1.0F).build())));
-	public static final DeferredItem<Item> MUTTON_JERKY = ITEMS.register("mutton_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(6).saturationModifier(1.0F).build())));
-	public static final DeferredItem<Item> RABBIT_JERKY = ITEMS.register("rabbit_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(5).saturationModifier(0.8F).build())));
-	public static final DeferredItem<Item> COD_JERKY = ITEMS.register("cod_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(5).saturationModifier(0.8F).build())));
-	public static final DeferredItem<Item> SALMON_JERKY = ITEMS.register("salmon_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(6).saturationModifier(1.0F).build())));
-	public static final DeferredItem<Item> CLOWNFISH_JERKY = ITEMS.register("clownfish_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.8F).build())));
-	public static final DeferredItem<Item> FUGU_JERKY = ITEMS.register("fugu_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.8F).build())));
-	public static final DeferredItem<Item> VENISON_JERKY = ITEMS.register("venison_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationModifier(1.0F).build())));
-	public static final DeferredItem<Item> MEEF_JERKY = ITEMS.register("meef_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationModifier(1.0F).build())));
+	public static final DeferredItem<Item> BEEF_JERKY = ITEMS.register("beef_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(5).saturationModifier(0.6F).build())));
+	public static final DeferredItem<Item> CHICKEN_JERKY = ITEMS.register("chicken_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationModifier(0.4F).build())));
+	public static final DeferredItem<Item> PORK_JERKY = ITEMS.register("pork_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(5).saturationModifier(0.6F).build())));
+	public static final DeferredItem<Item> MUTTON_JERKY = ITEMS.register("mutton_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationModifier(0.4F).build())));
+	public static final DeferredItem<Item> RABBIT_JERKY = ITEMS.register("rabbit_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationModifier(0.4F).build())));
+	public static final DeferredItem<Item> COD_JERKY = ITEMS.register("cod_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.4F).build())));
+	public static final DeferredItem<Item> SALMON_JERKY = ITEMS.register("salmon_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.4F).build())));
+	public static final DeferredItem<Item> CLOWNFISH_JERKY = ITEMS.register("clownfish_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.4F).build())));
+	public static final DeferredItem<Item> FUGU_JERKY = ITEMS.register("fugu_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.4F).build())));
+	public static final DeferredItem<Item> VENISON_JERKY = ITEMS.register("venison_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(5).saturationModifier(0.6F).build())));
+	public static final DeferredItem<Item> MEEF_JERKY = ITEMS.register("meef_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(5).saturationModifier(0.6F).build())));
 
-	public static final DeferredItem<Item> GELATINOUS_SLIME_DROP = ITEMS.register("gelatinous_slime_drop", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(1).saturationModifier(0.2F).effect(() -> new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 90), 1.0F).build())));
-	public static final DeferredItem<Item> GELATINOUS_MAZE_SLIME_DROP = ITEMS.register("gelatinous_maze_slime_drop", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(2).saturationModifier(0.3F).effect(() -> new MobEffectInstance(MobEffects.DIG_SPEED, 90), 1.0F).build())));
+	public static final DeferredItem<Item> GELATINOUS_SLIME_DROP = ITEMS.register("gelatinous_slime_drop", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(1).saturationModifier(0.2F).fast().effect(() -> new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 600), 1.0F).build())));
+	public static final DeferredItem<Item> GELATINOUS_MAZE_SLIME_DROP = ITEMS.register("gelatinous_maze_slime_drop", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(2).saturationModifier(0.3F).fast().effect(() -> new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 600), 1.0F).build())));
 
 	public static final DeferredItem<Item> TREATED_LEATHER = ITEMS.register("treated_leather", () -> new Item(new Item.Properties()));
 	public static final DeferredItem<Item> TANNED_LEATHER = ITEMS.register("tanned_leather", () -> new Item(new Item.Properties()));
