@@ -25,6 +25,7 @@ public class MoonwormQueenExtension implements ICraftingCategoryExtension<Moonwo
 		inputs.add(RecipeViewerConstants.BERRY_2_LIST);
 		inputs.add(RecipeViewerConstants.BERRY_3_LIST);
 		inputs.add(RecipeViewerConstants.BERRY_4_LIST);
+		builder.setShapeless();
 
 		craftingGridHelper.createAndSetInputs(builder, inputs, 0, 0);
 		craftingGridHelper.createAndSetOutputs(builder, List.of(TFItems.MOONWORM_QUEEN.toStack()));
@@ -34,11 +35,6 @@ public class MoonwormQueenExtension implements ICraftingCategoryExtension<Moonwo
 	public void onDisplayedIngredientsUpdate(RecipeHolder<MoonwormQueenRepairRecipe> recipeHolder, List<IRecipeSlotDrawable> recipeSlots, IFocusGroup focuses) {
 		List<ItemStack> berries = recipeSlots.subList(2, 5).stream().map(drawable -> drawable.getDisplayedItemStack().orElse(ItemStack.EMPTY)).filter(stack -> !stack.isEmpty()).toList();
 
-		recipeSlots.stream()
-			.filter(slot -> slot.getRole().equals(RecipeIngredientRole.OUTPUT))
-			.findAny()
-			.orElseThrow()
-			.createDisplayOverrides()
-			.addItemStack(RecipeViewerConstants.MOONWORM_QUEEN_LIST.get(berries.size()));
+		recipeSlots.getFirst().createDisplayOverrides().addItemStack(RecipeViewerConstants.MOONWORM_QUEEN_LIST.get(berries.size()));
 	}
 }

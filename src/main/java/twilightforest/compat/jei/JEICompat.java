@@ -19,10 +19,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.UncraftingScreen;
 import twilightforest.compat.RecipeViewerConstants;
 import twilightforest.compat.jei.categories.*;
-import twilightforest.compat.jei.extension.MoonwormQueenExtension;
-import twilightforest.compat.jei.extension.NoTemplateSmithingExtension;
-import twilightforest.compat.jei.extension.ScepterRepairExtension;
-import twilightforest.compat.jei.extension.TravellersGearModifierExtension;
+import twilightforest.compat.jei.extension.*;
 import twilightforest.compat.jei.renderers.EntityHelper;
 import twilightforest.compat.jei.renderers.EntityRenderer;
 import twilightforest.compat.jei.renderers.FakeItemEntityHelper;
@@ -39,10 +36,7 @@ import twilightforest.init.TFItems;
 import twilightforest.init.TFMenuTypes;
 import twilightforest.init.TFRecipes;
 import twilightforest.inventory.UncraftingMenu;
-import twilightforest.item.recipe.MoonwormQueenRepairRecipe;
-import twilightforest.item.recipe.NoTemplateSmithingRecipe;
-import twilightforest.item.recipe.ScepterRepairRecipe;
-import twilightforest.item.recipe.TravellersGearModifierRecipe;
+import twilightforest.item.recipe.*;
 
 import java.util.Collections;
 import java.util.List;
@@ -119,6 +113,8 @@ public class JEICompat implements IModPlugin {
 		registration.getCraftingCategory().addExtension(ScepterRepairRecipe.class, new ScepterRepairExtension());
 		registration.getCraftingCategory().addExtension(TravellersGearModifierRecipe.class, new TravellersGearModifierExtension());
 		registration.getCraftingCategory().addExtension(MoonwormQueenRepairRecipe.class, new MoonwormQueenExtension());
+		registration.getCraftingCategory().addExtension(EssenceRepairRecipe.class, new ExanimateEssenceRepairExtension());
+		registration.getCraftingCategory().addExtension(CasketRepairRecipe.class, new CasketRepairExtension());
 	}
 
 	@Override

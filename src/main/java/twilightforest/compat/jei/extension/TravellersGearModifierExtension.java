@@ -33,6 +33,7 @@ public class TravellersGearModifierExtension implements ICraftingCategoryExtensi
 			}
 		}
 
+		if (recipe.isShapeless()) builder.setShapeless();
 		// output slot; use RENDER_ONLY to prevent displaying modifier recipes when using the "Show Recipe" key
 		builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 95, 19).setOutputSlotBackground().addItemStacks(outputs);
 	}

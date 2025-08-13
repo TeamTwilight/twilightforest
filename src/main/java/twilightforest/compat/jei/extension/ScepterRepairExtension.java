@@ -23,6 +23,7 @@ public class ScepterRepairExtension implements ICraftingCategoryExtension<Scepte
 		inputs.addAll(recipeHolder.value().getRepairItems().stream().map(ingredient -> Arrays.stream(ingredient.getItems()).toList()).toList());
 
 		craftingGridHelper.createAndSetInputs(builder, inputs, 0, 0);
+		builder.setShapeless();
 
 		var repairedScepter = new ItemStack(recipeHolder.value().getScepter());
 		repairedScepter.setDamageValue(scepter.getMaxDamage() - recipeHolder.value().getRepairDurability());
