@@ -6,9 +6,9 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import twilightforest.init.custom.TravellersModifiersManager;
-import twilightforest.item.recipe.TravellersGearModifierRecipe;
-import twilightforest.item.recipe.TravellersGearModifierShapedRecipe;
-import twilightforest.item.recipe.TravellersGearModifierShapelessRecipe;
+import twilightforest.item.recipe.travellers.TravellersGearModifierRecipe;
+import twilightforest.item.recipe.travellers.TravellersGearModifierShapedRecipe;
+import twilightforest.item.recipe.travellers.TravellersGearModifierShapelessRecipe;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 
 import java.util.*;

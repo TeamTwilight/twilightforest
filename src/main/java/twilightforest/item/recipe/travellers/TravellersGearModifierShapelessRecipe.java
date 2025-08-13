@@ -1,4 +1,4 @@
-package twilightforest.item.recipe;
+package twilightforest.item.recipe.travellers;
 
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.NonNullList;

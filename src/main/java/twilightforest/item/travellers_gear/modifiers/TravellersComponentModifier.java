@@ -27,8 +27,9 @@ public record TravellersComponentModifier(ResourceLocation name, TypedDataCompon
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void addModifier(ItemStack stack) {
+	public boolean addModifier(ItemStack stack) {
 		stack.set((DataComponentType<Object>) this.component().type(), this.component().value());
+		return true;
 	}
 
 	@Override

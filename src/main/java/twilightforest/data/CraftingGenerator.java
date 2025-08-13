@@ -31,6 +31,8 @@ import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFItems;
 import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.item.recipe.*;
+import twilightforest.item.recipe.travellers.TravellersBeltWingsMergeRecipe;
+import twilightforest.item.recipe.travellers.TravellersVestGlovesMergeRecipe;
 
 import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
@@ -569,6 +571,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		SpecialRecipeBuilder.special(CasketRepairRecipe::new).save(output, TwilightForestMod.prefix("casket_repair_recipe").toString());
 		SpecialRecipeBuilder.special(EssenceRepairRecipe::new).save(output, TwilightForestMod.prefix("essence_repair_recipe").toString());
 		SpecialRecipeBuilder.special(TravellersBeltWingsMergeRecipe::new).save(output, TwilightForestMod.prefix("travellers_belt_wings_merge_recipe").toString());
+		SpecialRecipeBuilder.special(TravellersVestGlovesMergeRecipe::new).save(output, TwilightForestMod.prefix("travellers_vest_gloves_merge_recipe").toString());
 
 		NoSmithingTemplateRecipeBuilder
 			.noTemplate(Ingredient.of(Tags.Items.ARMORS), Ingredient.of(TFItems.EMPERORS_CLOTH.get()), RecipeCategory.MISC)
@@ -822,14 +825,25 @@ public class CraftingGenerator extends CraftingDataHelper {
 			TravellersModifiersManager.ALL_NIGHT_GOGGLES_MODIFIER).save(output);
 
 		TravellersGearComponentModifierBuilder.buildShaped(CartesianShapedRecipeBuilder.create(splitTravellersModifiersRecipes)
-				.pattern("sis")
+				.pattern("sss")
 				.pattern("igi")
-				.pattern("sis")
+				.pattern("sss")
 				.define('i', Ingredient.of(Items.ITEM_FRAME))
 				.define('s', Ingredient.of(Tags.Items.RODS_WOODEN))
 				.define('g', Ingredient.of(TFItems.TRAVELLERS_GOGGLES))
 				.build(),
 			TravellersModifiersManager.ITEM_DISPLAY_MODIFIER).save(output);
+
+		TravellersGearComponentModifierBuilder.buildShaped(CartesianShapedRecipeBuilder.create(splitTravellersModifiersRecipes)
+				.pattern(" b")
+				.pattern("gb")
+				.pattern("sw")
+				.define('b', Ingredient.of(Items.BAMBOO))
+				.define('w', potionsIngredient(Potions.WATER_BREATHING, Potions.LONG_WATER_BREATHING))
+				.define('s', Ingredient.of(Tags.Items.SLIME_BALLS))
+				.define('g', Ingredient.of(TFItems.TRAVELLERS_GOGGLES))
+				.build(),
+			TravellersModifiersManager.AQUATIC_AGILITY_MODIFIER).save(output);
 
 		DryingRecipeBuilder.drying(Ingredient.of(Tags.Items.FOODS_COOKED_MEAT), new ItemStack(Items.LEATHER), 8.5F)
 			.unlockedBy("has_meat", has(Tags.Items.FOODS_COOKED_MEAT))

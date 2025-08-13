@@ -24,6 +24,7 @@ import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFRecipes;
 import twilightforest.item.recipe.*;
+import twilightforest.item.recipe.travellers.TravellersGearModifierRecipe;
 
 import java.util.List;
 import java.util.Objects;

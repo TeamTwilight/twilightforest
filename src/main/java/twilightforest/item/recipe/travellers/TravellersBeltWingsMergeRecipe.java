@@ -1,4 +1,4 @@
-package twilightforest.item.recipe;
+package twilightforest.item.recipe.travellers;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;

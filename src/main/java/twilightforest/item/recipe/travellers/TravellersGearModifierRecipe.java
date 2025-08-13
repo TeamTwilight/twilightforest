@@ -1,4 +1,4 @@
-package twilightforest.item.recipe;
+package twilightforest.item.recipe.travellers;
 
 import com.google.gson.JsonElement;
 import com.mojang.serialization.JsonOps;

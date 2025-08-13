@@ -12,7 +12,7 @@ import me.shedaniel.rei.plugin.common.displays.crafting.DefaultCustomShapedDispl
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
-import twilightforest.item.recipe.TravellersGearModifierRecipe;
+import twilightforest.item.recipe.travellers.TravellersGearModifierRecipe;
 
 import java.util.Collection;
 import java.util.List;

@@ -341,7 +341,11 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 		List<BuiltinTravellersComponentModifier> builtinModifiers = TravellersModifiersManager.findAllBuiltinModifiers(stack);
 		builtinModifiers.forEach(modifier -> tooltip.add(Component.translatable("travellers_gear.ability").withStyle(ChatFormatting.GOLD).append(getModifierTooltipComponent(modifier))));
 		List<TravellersEntryModifier> entryModifier = TravellersModifiersManager.findAllEntryModifiers(stack);
-		entryModifier.forEach(modifier -> tooltip.add(Component.translatable("travellers_gear.ability").withStyle(ChatFormatting.GOLD).append(getModifierTooltipComponent(modifier))));
+		entryModifier.forEach(modifier -> {
+			if (modifier.markerComponent().isEmpty()) {
+				tooltip.add(Component.translatable("travellers_gear.ability").withStyle(ChatFormatting.GOLD).append(getModifierTooltipComponent(modifier)));
+			}
+		});
 		List<InsertableTravellersModifier> insertableModifiers = TravellersModifiersManager.findAllInsertableModifiers(stack);
 		insertableModifiers.forEach(modifier -> tooltip.add(getModifierTooltipComponent(modifier)));
 		for (int i = insertableModifiers.size(); i < getModifierSlots(); i++) {

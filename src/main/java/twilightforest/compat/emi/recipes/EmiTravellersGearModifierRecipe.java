@@ -7,7 +7,7 @@ import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.GeneratedSlotWidget;
 import dev.emi.emi.api.widget.SlotWidget;
 import net.minecraft.resources.ResourceLocation;
-import twilightforest.item.recipe.TravellersGearModifierRecipe;
+import twilightforest.item.recipe.travellers.TravellersGearModifierRecipe;
 
 public class EmiTravellersGearModifierRecipe extends EmiPatternCraftingRecipe {
 	private final TravellersGearModifierRecipe recipe;

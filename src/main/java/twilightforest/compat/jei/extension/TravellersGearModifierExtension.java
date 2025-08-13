@@ -10,7 +10,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.init.TFDataComponents;
-import twilightforest.item.recipe.TravellersGearModifierRecipe;
+import twilightforest.item.recipe.travellers.TravellersGearModifierRecipe;
 
 import java.util.ArrayList;
 import java.util.Arrays;

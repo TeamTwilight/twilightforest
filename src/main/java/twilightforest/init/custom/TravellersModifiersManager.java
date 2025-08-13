@@ -117,7 +117,8 @@ public class TravellersModifiersManager {
 			List.of(
 				new ItemAttributeModifiers.Entry(Attributes.OXYGEN_BONUS, TFAttributeModifiers.TRAVELLERS_AQUATIC_AGILITY_OXYGEN_DEACTIVATED, EquipmentSlotGroup.HEAD),
 				new ItemAttributeModifiers.Entry(Attributes.SUBMERGED_MINING_SPEED, TFAttributeModifiers.TRAVELLERS_AQUATIC_AGILITY_MINING_DEACTIVATED, EquipmentSlotGroup.HEAD)
-			)
+			),
+			Optional.of(TFDataComponents.AQUATIC_AGILITY.get())
 		));
 		register(context, RED_THREAD_VISION_MODIFIER, new TravellersComponentModifier(RED_THREAD_VISION_MODIFIER.key.location(), TFDataComponents.RED_THREAD_VISION.get(), Unit.INSTANCE));
 		register(context, ALL_NIGHT_GOGGLES_MODIFIER, new TravellersComponentModifier(ALL_NIGHT_GOGGLES_MODIFIER.key.location(), TFDataComponents.ALL_NIGHT_GOGGLES.get(), Unit.INSTANCE));
@@ -191,8 +192,7 @@ public class TravellersModifiersManager {
 		TravellersModifier modifier = managedTravellersModifier.get();
 		if (!(modifier instanceof InsertableTravellersModifier insertableTravellersModifier))
 			return false;
-		insertableTravellersModifier.addModifier(stack);
-		return true;
+		return insertableTravellersModifier.addModifier(stack);
 	}
 
 	protected static List<TravellersModifier> getAllTravellersModifiers() {

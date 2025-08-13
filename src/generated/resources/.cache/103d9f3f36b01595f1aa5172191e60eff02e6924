@@ -1,4 +1,4 @@
-// 1.21.1	2025-08-13T07:24:54.399631431	Registries
+// 1.21.1	2025-08-13T08:40:59.739373102	Registries
 9089ada9ce06fd30adf8b10e50f02233c7d5a76e data/minecraft/twilight/wood_palettes/acacia.json
 dca1ef01d0df4e956fd414782de57c25dfddd290 data/minecraft/twilight/wood_palettes/birch.json
 01becb45438b7f2bfdc77baba72bc986341510c8 data/minecraft/twilight/wood_palettes/crimson.json
@@ -114,7 +114,7 @@ f1043dfc0421d0561f7a90528e923d1a199a4938 data/twilightforest/twilight/tiny_bird_
 2ad3829da4af06370c88f4270e3ee5e621df931c data/twilightforest/twilight/tiny_bird_variant/red.json
 299ca2b548b645cac6b478be27389bbcb325d2e5 data/twilightforest/twilight/travellers_modifiers/agile_ranger.json
 2b7e19ef5ad06a317e6a96db23615060bd4f3bf5 data/twilightforest/twilight/travellers_modifiers/all_night_goggles.json
-f3f480dafa0d0cc95e534802b7c649dcbaebb07b data/twilightforest/twilight/travellers_modifiers/aquatic_agility.json
+139e5ee00845aa531fbadd62faf81eab3a2b9cf9 data/twilightforest/twilight/travellers_modifiers/aquatic_agility.json
 76577836e306bcd485c8da1ef6cf1c2c6cfe019c data/twilightforest/twilight/travellers_modifiers/arrow_magnetism.json
 abd0fd32c19fbeb8456e2e54fd232ce5e4e7af32 data/twilightforest/twilight/travellers_modifiers/auto_repair.json
 24fe96c609d6a551f2f0c2bb7cd35afd108b43c7 data/twilightforest/twilight/travellers_modifiers/controlled_fall.json
