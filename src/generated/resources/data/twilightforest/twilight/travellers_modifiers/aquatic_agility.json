@@ -1,5 +1,5 @@
 {
-  "type": "entry_modifier",
+  "type": "twilightforest:attribute",
   "active_modifiers": [
     {
       "type": "minecraft:generic.oxygen_bonus",

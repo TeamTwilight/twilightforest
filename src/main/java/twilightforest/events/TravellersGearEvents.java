@@ -164,7 +164,7 @@ public class TravellersGearEvents {
 				var oldMods = TravellersModifiersManager.findAllInsertableModifiers(compareStack);
 				TravellersModifiersManager.findAllInsertableModifiers(event.getCrafting()).stream()
 					.filter(modifier -> !oldMods.contains(modifier)).toList()
-						.forEach(modifier -> TFAdvancements.ADD_MODIFIER.get().trigger(player, modifier.getName()));
+						.forEach(modifier -> TFAdvancements.ADD_MODIFIER.get().trigger(player, modifier.name()));
 			}
 		}
 	}

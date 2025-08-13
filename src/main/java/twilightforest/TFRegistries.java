@@ -1,5 +1,7 @@
 package twilightforest;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -27,6 +29,7 @@ public class TFRegistries {
 	public static final Registry<Enforcement> ENFORCEMENT = new RegistryBuilder<>(Keys.ENFORCEMENT).sync(true).create();
 	public static final Registry<ChunkBlanketType> CHUNK_BLANKET_TYPES = new RegistryBuilder<>(Keys.CHUNK_BLANKET_TYPE).create();
 	public static final Registry<ItemDisplayType> ITEM_DISPLAY_TYPE = new RegistryBuilder<>(Keys.ITEM_DISPLAY_TYPE).sync(true).create();
+	public static final Registry<MapCodec<? extends TravellersModifier>> TRAVELLERS_MODIFIER_TYPE = new RegistryBuilder<>(Keys.TRAVELLERS_MODIFIER_TYPE).sync(true).create();
 
 	public static final class Keys {
 		public static final String REGISTRY_NAMESPACE = "twilight";
@@ -36,6 +39,7 @@ public class TFRegistries {
 		public static final ResourceKey<Registry<Enforcement>> ENFORCEMENT = ResourceKey.createRegistryKey(TwilightForestMod.prefix("enforcement"));
 		public static final ResourceKey<Registry<ChunkBlanketType>> CHUNK_BLANKET_TYPE = ResourceKey.createRegistryKey(TwilightForestMod.prefix("chunk_blanket_type"));
 		public static final ResourceKey<Registry<ItemDisplayType>> ITEM_DISPLAY_TYPE = ResourceKey.createRegistryKey(namedRegistry("item_display_type"));
+		public static final ResourceKey<Registry<MapCodec<? extends TravellersModifier>>> TRAVELLERS_MODIFIER_TYPE = ResourceKey.createRegistryKey(namedRegistry("travellers_modifier_type"));
 
 		//Datapack Registries
 		public static final ResourceKey<Registry<BiomeLayerFactory>> BIOME_STACK = ResourceKey.createRegistryKey(namedRegistry("biome_layer_stack"));

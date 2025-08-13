@@ -1,5 +1,5 @@
 {
-  "type": "builtin_modifier",
-  "data_component_type": "twilightforest:swap_hotbar_ability",
+  "type": "twilightforest:builtin",
+  "component": "twilightforest:swap_hotbar_ability",
   "name": "twilightforest:swap_hotbar"
 }

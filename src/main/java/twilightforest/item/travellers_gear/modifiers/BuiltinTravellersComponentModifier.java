@@ -7,47 +7,20 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
-import javax.annotation.Nullable;
+public record BuiltinTravellersComponentModifier(ResourceLocation name, DataComponentType<?> component) implements TravellersModifier {
 
-public class BuiltinTravellersComponentModifier implements TravellersModifier {
-	@Nullable
-	private static String TYPE_NAME = null;
-	protected final DataComponentType<?> dataComponentType;
-	protected final String tooltipTranslationKey;
-	protected final ResourceLocation name;
-
-	public BuiltinTravellersComponentModifier(ResourceLocation name, DataComponentType<?> dataComponentType) {
-		this.dataComponentType = dataComponentType;
-		this.name = name;
-		this.tooltipTranslationKey = "travellers_gear.ability." + name.toString().replace(":", ".");
-	}
+	public static final MapCodec<BuiltinTravellersComponentModifier> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+		ResourceLocation.CODEC.fieldOf("name").forGetter(BuiltinTravellersComponentModifier::name),
+		BuiltInRegistries.DATA_COMPONENT_TYPE.byNameCodec().fieldOf("component").forGetter(BuiltinTravellersComponentModifier::component)
+	).apply(instance, BuiltinTravellersComponentModifier::new));
 
 	@Override
 	public boolean hasModifier(ItemStack stack) {
-		return stack.get(dataComponentType) != null;
+		return stack.get(this.component()) != null;
 	}
 
 	@Override
-	public ResourceLocation getName() {
-		return name;
+	public MapCodec<? extends TravellersModifier> codec() {
+		return CODEC;
 	}
-
-	public static void setTypeName(String typeName) {
-		TYPE_NAME = typeName;
-		TravellersModifierTypes.TYPE_TO_CODEC.put(typeName, MAP_CODEC);
-	}
-
-	@Override
-	public String getTypeName() {
-		TravellersModifierTypes.initialize();
-		return TYPE_NAME;
-	}
-
-	public static final MapCodec<BuiltinTravellersComponentModifier> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-			ResourceLocation.CODEC.fieldOf("name")
-				.forGetter(o -> o.name),
-			BuiltInRegistries.DATA_COMPONENT_TYPE.byNameCodec()
-				.fieldOf("data_component_type")
-				.forGetter(o -> o.dataComponentType)
-		).apply(instance, BuiltinTravellersComponentModifier::new));
 }

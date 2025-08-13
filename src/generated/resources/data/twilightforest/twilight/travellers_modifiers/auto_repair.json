@@ -1,6 +1,6 @@
 {
-  "type": "component_modifier",
-  "data_component_map": {
+  "type": "twilightforest:component",
+  "component": {
     "twilightforest:auto_repair_probability": 0.001
   },
   "name": "twilightforest:auto_repair"

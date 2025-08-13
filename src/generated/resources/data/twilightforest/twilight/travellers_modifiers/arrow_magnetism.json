@@ -1,6 +1,6 @@
 {
-  "type": "component_modifier",
-  "data_component_map": {
+  "type": "twilightforest:component",
+  "component": {
     "twilightforest:arrow_magnetism": {}
   },
   "name": "twilightforest:arrow_magnetism"

@@ -73,7 +73,7 @@ public class TravellersGearItemModel implements IUnbakedGeometry<TravellersGearI
 	}
 
 	private TextureAtlasSprite getModifierSprite(TravellersModifier modifier, TextureAtlasSprite base, Function<Material, TextureAtlasSprite> spriteGetter) {
-		return spriteGetter.apply(ClientHooks.getBlockMaterial(modifier.getName().withPrefix("item/travellers_modifiers/" + this.sanitize(base.contents().name().getPath()) + "/")));
+		return spriteGetter.apply(ClientHooks.getBlockMaterial(modifier.name().withPrefix("item/travellers_modifiers/" + this.sanitize(base.contents().name().getPath()) + "/")));
 	}
 
 	private String sanitize(String name) {
@@ -127,7 +127,7 @@ public class TravellersGearItemModel implements IUnbakedGeometry<TravellersGearI
 		private String getModifiersSuffix(List<InsertableTravellersModifier> modifiers) {
 			StringBuilder ret = new StringBuilder();
 			for (var mod : modifiers) {
-				ret.append("_").append(mod.getName().toString());
+				ret.append("_").append(mod.name().toString());
 			}
 			return ret.toString();
 		}

@@ -1,6 +1,6 @@
 {
-  "type": "component_modifier",
-  "data_component_map": {
+  "type": "twilightforest:component",
+  "component": {
     "twilightforest:stealth_crouching": {}
   },
   "name": "twilightforest:stealth"

@@ -1,6 +1,6 @@
 {
-  "type": "component_modifier",
-  "data_component_map": {
+  "type": "twilightforest:component",
+  "component": {
     "twilightforest:all_night_goggles": {}
   },
   "name": "twilightforest:all_night_goggles"

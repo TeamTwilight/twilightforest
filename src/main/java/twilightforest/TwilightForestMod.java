@@ -151,6 +151,7 @@ public final class TwilightForestMod {
 		TFRecipes.RECIPE_SERIALIZERS.register(bus);
 		TFMapDecorations.DECORATIONS.register(bus);
 		TFParticleType.PARTICLE_TYPES.register(bus);
+		TravellersModifierTypes.TYPES.register(bus);
 		TFBlockEntities.BLOCK_ENTITIES.register(bus);
 		TFLootModifiers.LOOT_MODIFIERS.register(bus);
 		TFArmorMaterials.ARMOR_MATERIALS.register(bus);
@@ -252,6 +253,7 @@ public final class TwilightForestMod {
 		event.register(TFRegistries.ENFORCEMENT);
 		event.register(TFRegistries.CHUNK_BLANKET_TYPES);
 		event.register(TFRegistries.ITEM_DISPLAY_TYPE);
+		event.register(TFRegistries.TRAVELLERS_MODIFIER_TYPE);
 	}
 
 	public void setRegistriesForDatapack(DataPackRegistryEvent.NewRegistry event) {

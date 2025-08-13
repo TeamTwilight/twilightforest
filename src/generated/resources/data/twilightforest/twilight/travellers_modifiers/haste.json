@@ -1,6 +1,6 @@
 {
-  "type": "component_modifier",
-  "data_component_map": {
+  "type": "twilightforest:component",
+  "component": {
     "twilightforest:haste_amplifier": 1
   },
   "name": "twilightforest:haste"

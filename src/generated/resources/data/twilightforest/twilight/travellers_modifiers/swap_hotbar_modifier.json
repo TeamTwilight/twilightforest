@@ -1,6 +1,6 @@
 {
-  "type": "component_modifier",
-  "data_component_map": {
+  "type": "twilightforest:component",
+  "component": {
     "twilightforest:swap_hotbar_modifier": {}
   },
   "name": "twilightforest:swap_hotbar_modifier"

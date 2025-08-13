@@ -1,5 +1,5 @@
 {
-  "type": "builtin_modifier",
-  "data_component_type": "twilightforest:high_jump_amplifier",
+  "type": "twilightforest:builtin",
+  "component": "twilightforest:high_jump_amplifier",
   "name": "twilightforest:high_jump"
 }
