@@ -2,6 +2,5 @@
   "type": "twilightforest:component",
   "component": {
     "twilightforest:slimy_soles_coefficient": 0.5
-  },
-  "name": "twilightforest:slimy_soles"
+  }
 }

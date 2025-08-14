@@ -23,16 +23,16 @@ public class TravellersGearComponentModifierBuilder {
 		ingredients.forEach(recipeIngredients -> recipes.add(new TravellersGearModifierShapelessRecipe(recipeIngredients, travellersModifierKey)));
 	}
 
-	public static TravellersGearComponentModifierBuilder buildShaped(Iterable<ShapedRecipePattern> pattern, TravellersModifiersManager.ManagedTravellersModifier travellersModifier) {
+	public static TravellersGearComponentModifierBuilder buildShaped(Iterable<ShapedRecipePattern> pattern, ResourceKey<TravellersModifier> travellersModifier) {
 		return buildShaped(pattern, travellersModifier, false);
 	}
 
-	public static TravellersGearComponentModifierBuilder buildShaped(Iterable<ShapedRecipePattern> pattern, TravellersModifiersManager.ManagedTravellersModifier travellersModifier, boolean isRotated) {
-		return new TravellersGearComponentModifierBuilder(pattern, travellersModifier.key, isRotated);
+	public static TravellersGearComponentModifierBuilder buildShaped(Iterable<ShapedRecipePattern> pattern, ResourceKey<TravellersModifier> travellersModifier, boolean isRotated) {
+		return new TravellersGearComponentModifierBuilder(pattern, travellersModifier, isRotated);
 	}
 
-	public static TravellersGearComponentModifierBuilder buildShapeless(Iterable<NonNullList<Ingredient>> ingredients, TravellersModifiersManager.ManagedTravellersModifier travellersModifier) {
-		return new TravellersGearComponentModifierBuilder(ingredients, travellersModifier.key);
+	public static TravellersGearComponentModifierBuilder buildShapeless(Iterable<NonNullList<Ingredient>> ingredients, ResourceKey<TravellersModifier> travellersModifier) {
+		return new TravellersGearComponentModifierBuilder(ingredients, travellersModifier);
 	}
 
 	public void save(RecipeOutput output) {

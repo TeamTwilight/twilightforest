@@ -6,6 +6,7 @@ import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.GeneratedSlotWidget;
 import dev.emi.emi.api.widget.SlotWidget;
+import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.item.recipe.travellers.TravellersGearModifierRecipe;
 
@@ -31,8 +32,8 @@ public class EmiTravellersGearModifierRecipe extends EmiPatternCraftingRecipe {
 
 	@Override
 	public SlotWidget getInputWidget(int slot, int x, int y) {
-		if (slot < input.size()) {
-			return new SlotWidget(input.get(slot), x, y);
+		if (slot < this.input.size()) {
+			return new SlotWidget(this.input.get(slot), x, y);
 		}
 		return new SlotWidget(EmiStack.EMPTY, x, y);
 	}
@@ -40,8 +41,8 @@ public class EmiTravellersGearModifierRecipe extends EmiPatternCraftingRecipe {
 	@Override
 	public SlotWidget getOutputWidget(int x, int y) {
 		return new GeneratedSlotWidget(
-			rand -> EmiStack.of(recipe.applyModifier(TravellersGearModifierRecipe.getModifiableArmorFromIngredients(recipe.getIngredients()))),
-			uniqueSeed,
+			rand -> EmiStack.of(this.recipe.applyModifier(Minecraft.getInstance().level.registryAccess(), TravellersGearModifierRecipe.getModifiableArmorFromIngredients(recipe.getIngredients()))),
+			this.uniqueSeed,
 			x, y
 		);
 	}

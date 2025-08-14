@@ -43,7 +43,7 @@ public class MapHooks {
 	public static boolean updateMapsInGoggles(boolean o, ItemStack stack, Player player) {
 		if (o) return true;
 		ItemStack headStack = player.getItemBySlot(EquipmentSlot.HEAD);
-		if (TravellersModifiersManager.isModifierActive(headStack, TravellersModifiersManager.ITEM_DISPLAY_MODIFIER)) {
+		if (TravellersModifiersManager.isModifierActive(player.registryAccess(), headStack, TravellersModifiersManager.ITEM_DISPLAY_MODIFIER)) {
 			ItemDisplayContents contents = headStack.get(TFDataComponents.ITEM_DISPLAY);
 			if (!contents.isEmpty()) {
 				int mapSlot = TFRegistries.ITEM_DISPLAY_TYPE.getId(ItemDisplays.MAP.getKey());

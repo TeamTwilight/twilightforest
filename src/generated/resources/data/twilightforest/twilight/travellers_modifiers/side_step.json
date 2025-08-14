@@ -2,6 +2,5 @@
   "type": "twilightforest:component",
   "component": {
     "twilightforest:sidestep_cooldown": 60
-  },
-  "name": "twilightforest:side_step"
+  }
 }

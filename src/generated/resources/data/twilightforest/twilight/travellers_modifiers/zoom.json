@@ -1,5 +1,4 @@
 {
   "type": "twilightforest:builtin",
-  "component": "twilightforest:zoom_ability_modifier",
-  "name": "twilightforest:zoom"
+  "component": "twilightforest:zoom_ability_modifier"
 }

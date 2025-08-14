@@ -9,6 +9,7 @@ import me.shedaniel.rei.api.common.entry.type.VanillaEntryTypes;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
 import me.shedaniel.rei.plugin.client.categories.crafting.filler.CraftingRecipeFiller;
 import me.shedaniel.rei.plugin.common.displays.crafting.DefaultCustomShapedDisplay;
+import net.minecraft.client.Minecraft;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -23,7 +24,7 @@ public class REITravellersGearModifierRecipeFiller implements CraftingRecipeFill
 		TravellersGearModifierRecipe recipe = recipeHolder.value();
 		List<Ingredient> ingredients = recipe.getIngredients();
 		ItemStack output = TravellersGearModifierRecipe.getModifiableArmorFromIngredients(ingredients).copy();
-		recipe.applyModifier(output);
+		recipe.applyModifier(Minecraft.getInstance().level.registryAccess(), output);
 		Renderer renderer = EntryStack.of(VanillaEntryTypes.ITEM.getDefinition(), output);
 		return List.of(
 			new DefaultCustomShapedDisplay(

@@ -76,7 +76,7 @@ public class DataGenerators {
 		//these have to go last due to magic paintings
 		//when magic paintings are registered their atlas and lang content is too
 		generator.addProvider(event.includeClient(), new AtlasGenerator(output, lookupProvider, helper));
-		generator.addProvider(event.includeClient(), new LangGenerator(output));
+		generator.addProvider(event.includeClient(), new LangGenerator(output, lookupProvider));
 
 		generator.addProvider(event.includeServer(), new QuestGenerator(output));
 

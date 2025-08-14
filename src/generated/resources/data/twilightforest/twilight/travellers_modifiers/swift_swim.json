@@ -9,6 +9,7 @@
       "slot": "chest"
     }
   ],
+  "builtin_modifier": true,
   "deactivated_modifiers": [
     {
       "type": "minecraft:generic.water_movement_efficiency",
@@ -17,6 +18,5 @@
       "operation": "add_value",
       "slot": "chest"
     }
-  ],
-  "name": "twilightforest:swift_swim"
+  ]
 }

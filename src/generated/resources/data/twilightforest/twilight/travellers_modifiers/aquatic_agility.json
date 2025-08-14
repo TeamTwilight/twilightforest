@@ -16,7 +16,7 @@
       "slot": "head"
     }
   ],
-  "component": "twilightforest:aquatic_agility",
+  "builtin_modifier": false,
   "deactivated_modifiers": [
     {
       "type": "minecraft:generic.oxygen_bonus",
@@ -32,6 +32,5 @@
       "operation": "add_value",
       "slot": "head"
     }
-  ],
-  "name": "twilightforest:aquatic_agility"
+  ]
 }

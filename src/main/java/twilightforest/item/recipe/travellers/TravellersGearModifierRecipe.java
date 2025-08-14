@@ -38,7 +38,7 @@ public abstract class TravellersGearModifierRecipe extends CustomRecipe {
 		int slots = 0;
 		if (stack.getItem() instanceof TravellersModifiable travellersModifiableItem)
 			slots = travellersModifiableItem.getModifierSlots();
-		return TravellersModifiersManager.countInsertableModifiers(stack) < slots && !TravellersModifiersManager.hasTravellersModifier(stack, TravellersModifiersManager.MANAGED_TRAVELLERS_MODIFIER_HASH_MAP.get(travellersModifierKey));
+		return TravellersModifiersManager.countInsertableModifiers(level.registryAccess(), stack) < slots && !TravellersModifiersManager.hasTravellersModifier(level.registryAccess(), stack, this.travellersModifierKey);
 	}
 
 	@Override
@@ -48,11 +48,11 @@ public abstract class TravellersGearModifierRecipe extends CustomRecipe {
 			return ItemStack.EMPTY;  // Should never happen
 
 		ItemStack stack = travellerArmorStack.copy();
-		return applyModifier(stack);
+		return applyModifier(registries, stack);
 	}
 
-	public ItemStack applyModifier(ItemStack stack) {
-		return TravellersModifiersManager.addModifier(stack, TravellersModifiersManager.MANAGED_TRAVELLERS_MODIFIER_HASH_MAP.get(travellersModifierKey)) ? stack : ItemStack.EMPTY;
+	public ItemStack applyModifier(HolderLookup.Provider registries, ItemStack stack) {
+		return TravellersModifiersManager.addModifier(registries, stack, this.travellersModifierKey) ? stack : ItemStack.EMPTY;
 	}
 
 	public abstract boolean isShapeless();

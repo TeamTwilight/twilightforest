@@ -55,7 +55,7 @@ public class RedThreadRenderer<T extends RedThreadBlockEntity> implements BlockE
 		if (player == null)
 			return;
 
-		boolean wearsActivatedTravellersGoggles = player.getData(TFDataAttachments.TRAVELLERS_GOGGLES_RED_THREAD_VISION) && TravellersModifiersManager.isModifierActive(player.getItemBySlot(EquipmentSlot.HEAD), TravellersModifiersManager.RED_THREAD_VISION_MODIFIER);
+		boolean wearsActivatedTravellersGoggles = player.getData(TFDataAttachments.TRAVELLERS_GOGGLES_RED_THREAD_VISION) && TravellersModifiersManager.isModifierActive(player.registryAccess(), player.getItemBySlot(EquipmentSlot.HEAD), TravellersModifiersManager.RED_THREAD_VISION_MODIFIER);
 		boolean glow = player.isHolding(TFBlocks.RED_THREAD.get().asItem()) || wearsActivatedTravellersGoggles;
 
 		for (Direction face : Direction.values()) {

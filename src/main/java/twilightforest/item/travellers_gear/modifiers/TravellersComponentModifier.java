@@ -8,21 +8,20 @@ import net.minecraft.core.component.TypedDataComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
-public record TravellersComponentModifier(ResourceLocation name, TypedDataComponent<?> component) implements InsertableTravellersModifier {
+public record TravellersComponentModifier(TypedDataComponent<?> component) implements InsertableTravellersModifier {
 
 	@SuppressWarnings("unchecked")
 	public static final MapCodec<TravellersComponentModifier> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-		ResourceLocation.CODEC.fieldOf("name").forGetter(TravellersComponentModifier::name),
 		DataComponentMap.CODEC.fieldOf("component").forGetter(o -> DataComponentMap.builder().set((DataComponentType<Object>) o.component().type(), o.component().value()).build())
-	).apply(instance, (location, map) -> {
+	).apply(instance, (map) -> {
 		if (map.size() != 1)
 			throw new IllegalArgumentException("Expected exactly one entry in this data component map");
 		TypedDataComponent<?> dataComponent = map.stream().findFirst().orElseThrow();
-		return new TravellersComponentModifier(location, dataComponent);
+		return new TravellersComponentModifier(dataComponent);
 	}));
 
-	public <T> TravellersComponentModifier(ResourceLocation name, DataComponentType<T> component, T defaultValue) {
-		this(name, new TypedDataComponent<>(component, defaultValue));
+	public <T> TravellersComponentModifier(DataComponentType<T> component, T defaultValue) {
+		this(new TypedDataComponent<>(component, defaultValue));
 	}
 
 	@SuppressWarnings("unchecked")

@@ -1,5 +1,6 @@
 package twilightforest.item.travellers_gear.modifiers;
 
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.component.DataComponentType;
@@ -10,59 +11,60 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.neoforged.neoforge.event.ItemAttributeModifierEvent;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public record TravellersEntryModifier(ResourceLocation name, List<ItemAttributeModifiers.Entry> activeModifiers, List<ItemAttributeModifiers.Entry> deactivatedModifiers, Optional<DataComponentType<?>> markerComponent) implements InsertableTravellersModifier {
+public record TravellersEntryModifier(List<ItemAttributeModifiers.Entry> activeModifiers, List<ItemAttributeModifiers.Entry> deactivatedModifiers, boolean builtin) implements InsertableTravellersModifier {
 
 	public static final MapCodec<TravellersEntryModifier> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-		ResourceLocation.CODEC.fieldOf("name").forGetter(TravellersEntryModifier::name),
 		ItemAttributeModifiers.Entry.CODEC.listOf().fieldOf("active_modifiers").forGetter(TravellersEntryModifier::activeModifiers),
 		ItemAttributeModifiers.Entry.CODEC.listOf().fieldOf("deactivated_modifiers").forGetter(TravellersEntryModifier::deactivatedModifiers),
-		DataComponentType.CODEC.optionalFieldOf("component").forGetter(TravellersEntryModifier::markerComponent)
-	).apply(instance, (name, active, deactivated, component) -> {
+		Codec.BOOL.fieldOf("builtin_modifier").forGetter(TravellersEntryModifier::builtin)
+	).apply(instance, (active, deactivated, builtin) -> {
 		if (active.size() != deactivated.size()) {
 			throw new IllegalArgumentException(String.format("Active and deactivated modifier lists must have the same sizes:%n%s%n%s", active, deactivated));
 		}
-		return new TravellersEntryModifier(name, active, deactivated, component);
+		return new TravellersEntryModifier(active, deactivated, builtin);
 	}));
-
-	public TravellersEntryModifier(ResourceLocation name, List<ItemAttributeModifiers.Entry> activeModifiers, List<ItemAttributeModifiers.Entry> deactivatedModifiers) {
-		this(name, activeModifiers, deactivatedModifiers, Optional.empty());
-	}
 
 	@Override
 	public MapCodec<? extends TravellersModifier> codec() {
 		return CODEC;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean addModifier(ItemStack stack) {
-		if (this.markerComponent().isPresent()) {
-			stack.set((DataComponentType<Unit>) this.markerComponent().get(), Unit.INSTANCE);
-
+		if (this.builtin()) return false;
+		if (stack.getMaxDamage() - 1 <= stack.getDamageValue()) {
 			ItemAttributeModifiers modifiers = stack.getAttributeModifiers();
 			for (ItemAttributeModifiers.Entry entry : this.activeModifiers()) {
 				modifiers = modifiers.withModifierAdded(entry.attribute(), entry.modifier(), entry.slot());
 			}
 			stack.set(DataComponents.ATTRIBUTE_MODIFIERS, modifiers);
-
-			return true;
 		}
-		return false;
+
+		return true;
 	}
 
 	@Override
 	public void removeModifier(ItemStack stack) {
-		this.markerComponent().ifPresent(stack::remove);
+		if (this.builtin()) return;
+		List<ItemAttributeModifiers.Entry> newEntries = new ArrayList<>();
+		var modifiers = stack.getAttributeModifiers();
+		modifiers.modifiers().forEach(entry -> {
+			if (!this.activeModifiers.contains(entry) && !this.deactivatedModifiers.contains(entry)) {
+				newEntries.add(entry);
+			}
+		});
+		stack.set(DataComponents.ATTRIBUTE_MODIFIERS, new ItemAttributeModifiers(newEntries, modifiers.showInTooltip()));
 	}
 
 	@Override
 	public boolean hasModifier(ItemStack stack) {
 		List<ItemAttributeModifiers.Entry> entries = stack.getAttributeModifiers().modifiers();
 		Optional<ItemAttributeModifiers.Entry> modifiers = entries.stream().filter(entry -> entry.modifier().is(this.deactivatedModifiers().getFirst().modifier().id()) || entry.modifier().is(this.activeModifiers().getFirst().modifier().id())).findAny();
-		return modifiers.isPresent() || this.markerComponent().map(stack::has).orElse(false);
+		return modifiers.isPresent();
 	}
 
 	public void activate(ItemAttributeModifierEvent event) {

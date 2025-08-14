@@ -958,6 +958,8 @@
   "death.attack.twilightforest.ominous": "%1$s was subsumed by ominous fire",
   "death.attack.twilightforest.ominousFire.zombified_player": "%1$s was killed by the zombified remains of %2$s",
   "death.attack.twilightforest.ominousFire.zombified_player.self": "%1$s was killed by the zombified remains of themselves",
+  "death.attack.twilightforest.oreberry": "%1$s was stabbed to death by an oreberry bush",
+  "death.attack.twilightforest.oreberry.player": "%1$s was stabbed to death by an oreberry bush while escaping %2$s",
   "death.attack.twilightforest.reactor": "%1$s stood too close to a Carminite Reactor",
   "death.attack.twilightforest.reactor.player": "%1$s stood too close to a Carminite Reactor while escaping %2$s",
   "death.attack.twilightforest.schooled": "%1$s was schooled by %2$s",

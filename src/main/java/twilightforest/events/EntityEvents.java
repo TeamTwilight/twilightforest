@@ -253,7 +253,7 @@ public class EntityEvents {
 		ItemStack chest = livingEntity.getItemBySlot(EquipmentSlot.CHEST);
 		Float probability = chest.get(TFDataComponents.PERFECT_DODGE_PROBABILITY);
 		Level level = livingEntity.level();
-		if (!TravellersModifiersManager.isModifierActive(chest, TravellersModifiersManager.PERFECT_DODGE_MODIFIER) || probability == null || probability <= level.random.nextFloat())
+		if (!TravellersModifiersManager.isModifierActive(livingEntity.registryAccess(), chest, TravellersModifiersManager.PERFECT_DODGE_MODIFIER) || probability == null || probability <= level.random.nextFloat())
 			return;
 		Entity projectile = event.getEntity();
 		level.playLocalSound(projectile, TFSounds.PERFECT_DODGE.get(), SoundSource.PLAYERS, 1.5F, livingEntity.getVoicePitch());
@@ -300,7 +300,7 @@ public class EntityEvents {
 		if (!(entity instanceof LivingEntity livingEntity) || !event.getRayTraceResult().getType().equals(HitResult.Type.BLOCK) || projectile.tickCount >= 200)
 			return;
 
-		if (!TravellersModifiersManager.isModifierActive(livingEntity.getItemBySlot(EquipmentSlot.CHEST), TravellersModifiersManager.ARROW_MAGNETISM_MODIFIER)
+		if (!TravellersModifiersManager.isModifierActive(entity.registryAccess(), livingEntity.getItemBySlot(EquipmentSlot.CHEST), TravellersModifiersManager.ARROW_MAGNETISM_MODIFIER)
 			|| !(projectile instanceof AbstractArrow arrow) || projectile.level().isClientSide())
 			return;
 
@@ -322,7 +322,7 @@ public class EntityEvents {
 		LivingEntity livingEntity = event.getEntity();
 		ItemStack boots = livingEntity.getItemBySlot(EquipmentSlot.FEET);
 		Float coefficient = boots.get(TFDataComponents.SLIMY_SOLES_COEFFICIENT);
-		if (TravellersModifiersManager.isModifierActive(boots, TravellersModifiersManager.SLIMY_SOLES_MODIFIER) && coefficient != null)
+		if (TravellersModifiersManager.isModifierActive(livingEntity.registryAccess(), boots, TravellersModifiersManager.SLIMY_SOLES_MODIFIER) && coefficient != null)
 			event.setDamageMultiplier(coefficient);
 	}
 

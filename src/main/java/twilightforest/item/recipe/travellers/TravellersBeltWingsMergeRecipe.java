@@ -24,7 +24,7 @@ public class TravellersBeltWingsMergeRecipe extends CustomRecipe {
 		if (pair.isEmpty())
 			return false;
 		ItemStack wings = pair.get().wings();
-		return TravellersModifiersManager.countInsertableModifiers(wings) + 1 <= maxSlots();
+		return TravellersModifiersManager.countInsertableModifiers(level.registryAccess(), wings) + 1 <= maxSlots();
 	}
 
 	@Override

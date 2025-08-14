@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import dev.emi.emi.api.EmiRegistry;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.recipe.EmiGrindstoneRecipe;
+import net.minecraft.client.Minecraft;
 import net.minecraft.world.item.ItemStack;
 import twilightforest.TwilightForestMod;
 import twilightforest.compat.common.DefaultModifiedTravellersGearGetter;
@@ -29,7 +30,7 @@ public class EmiTravellersGearGrindstoneRecipe extends EmiGrindstoneRecipe {
 	}
 
 	public static void register(EmiRegistry registry) {
-		DefaultModifiedTravellersGearGetter.getDefaultModifiedTravellersGear().forEach(stack ->
+		DefaultModifiedTravellersGearGetter.getDefaultModifiedTravellersGear(Minecraft.getInstance().level.registryAccess()).forEach(stack ->
 			registry.addRecipe(new EmiTravellersGearGrindstoneRecipe(stack))
 		);
 	}

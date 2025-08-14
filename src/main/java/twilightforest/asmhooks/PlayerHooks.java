@@ -46,7 +46,7 @@ public class PlayerHooks {
 	public static float getFoodExhaustion(float f, Player player) {
 		ItemStack chestStack = player.getItemBySlot(EquipmentSlot.CHEST);
 		Float divisor = chestStack.get(TFDataComponents.EFFICIENT_EATER);
-		if (!TravellersModifiersManager.isModifierActive(chestStack, TravellersModifiersManager.FOOD_EFFICIENCY_MODIFIER) || divisor == null)
+		if (!TravellersModifiersManager.isModifierActive(player.registryAccess(), chestStack, TravellersModifiersManager.FOOD_EFFICIENCY_MODIFIER) || divisor == null)
 			return f;
 		return f * (1 / divisor);
 	}

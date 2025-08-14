@@ -4,13 +4,11 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
-public record BuiltinTravellersComponentModifier(ResourceLocation name, DataComponentType<?> component) implements TravellersModifier {
+public record BuiltinTravellersComponentModifier(DataComponentType<?> component) implements TravellersModifier {
 
 	public static final MapCodec<BuiltinTravellersComponentModifier> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-		ResourceLocation.CODEC.fieldOf("name").forGetter(BuiltinTravellersComponentModifier::name),
 		BuiltInRegistries.DATA_COMPONENT_TYPE.byNameCodec().fieldOf("component").forGetter(BuiltinTravellersComponentModifier::component)
 	).apply(instance, BuiltinTravellersComponentModifier::new));
 

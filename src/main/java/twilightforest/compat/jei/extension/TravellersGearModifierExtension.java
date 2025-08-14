@@ -5,6 +5,7 @@ import mezz.jei.api.gui.ingredient.ICraftingGridHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.category.extensions.vanilla.crafting.ICraftingCategoryExtension;
+import net.minecraft.client.Minecraft;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -28,7 +29,7 @@ public class TravellersGearModifierExtension implements ICraftingCategoryExtensi
 		for (Ingredient ingredient : recipe.getIngredients()) {
 			for (ItemStack stack : ingredient.getItems()) {
 				if (stack.has(TFDataComponents.IS_TRAVELLERS_GEAR)) {
-					outputs.add(recipe.applyModifier(stack.copy()));
+					outputs.add(recipe.applyModifier(Minecraft.getInstance().level.registryAccess(), stack.copy()));
 				}
 			}
 		}

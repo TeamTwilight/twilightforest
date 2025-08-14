@@ -101,7 +101,7 @@ public class TravellersGogglesItem extends TravellersArmorItem {
 	public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
 		//only tick while on the player's head
 		if (slotId == Inventory.INVENTORY_SIZE + EquipmentSlot.HEAD.getIndex()) {
-			if (!level.isClientSide() && TravellersModifiersManager.isModifierActive(stack, TravellersModifiersManager.ITEM_DISPLAY_MODIFIER)) {
+			if (!level.isClientSide() && TravellersModifiersManager.isModifierActive(entity.registryAccess(), stack, TravellersModifiersManager.ITEM_DISPLAY_MODIFIER)) {
 				ItemDisplayContents contents = stack.get(TFDataComponents.ITEM_DISPLAY);
 				if (!contents.isEmpty()) {
 					int mapSlot = TFRegistries.ITEM_DISPLAY_TYPE.getId(ItemDisplays.MAP.getKey());
@@ -124,7 +124,7 @@ public class TravellersGogglesItem extends TravellersArmorItem {
 
 	@Override
 	public boolean isEnderMask(ItemStack stack, Player player, EnderMan enderman) {
-		return TravellersModifiersManager.isModifierActive(stack, TravellersModifiersManager.ALL_NIGHT_GOGGLES_MODIFIER);
+		return TravellersModifiersManager.isModifierActive(player.registryAccess(), stack, TravellersModifiersManager.ALL_NIGHT_GOGGLES_MODIFIER);
 	}
 
 	private void playRemoveOneSound(Entity entity) {

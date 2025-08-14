@@ -2,6 +2,5 @@
   "type": "twilightforest:component",
   "component": {
     "twilightforest:efficient_eater": 2.0
-  },
-  "name": "twilightforest:food_efficiency"
+  }
 }

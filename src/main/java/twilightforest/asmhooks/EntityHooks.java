@@ -27,7 +27,7 @@ public class EntityHooks {
 		if (!fluidState.is(FluidTags.WATER))
 			return null;
 
-		if (!TravellersModifiersManager.isModifierActive(livingEntity.getItemBySlot(EquipmentSlot.FEET), TravellersModifiersManager.WATER_WALK_MODIFIER))
+		if (!TravellersModifiersManager.isModifierActive(livingEntity.registryAccess(), livingEntity.getItemBySlot(EquipmentSlot.FEET), TravellersModifiersManager.WATER_WALK_MODIFIER))
 			return null;
 
 		double waterHeight = livingEntity.getFluidTypeHeight(NeoForgeMod.WATER_TYPE.value());

@@ -2,6 +2,5 @@
   "type": "twilightforest:component",
   "component": {
     "twilightforest:water_walk": {}
-  },
-  "name": "twilightforest:water_walk"
+  }
 }

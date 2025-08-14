@@ -9,6 +9,7 @@
       "slot": "feet"
     }
   ],
+  "builtin_modifier": true,
   "deactivated_modifiers": [
     {
       "type": "minecraft:generic.step_height",
@@ -17,6 +18,5 @@
       "operation": "add_value",
       "slot": "feet"
     }
-  ],
-  "name": "twilightforest:high_step"
+  ]
 }

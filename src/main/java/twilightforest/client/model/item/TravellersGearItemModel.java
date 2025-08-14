@@ -9,7 +9,9 @@ import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.*;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.ClientHooks;
@@ -31,9 +33,9 @@ import java.util.function.Function;
 public class TravellersGearItemModel implements IUnbakedGeometry<TravellersGearItemModel> {
 
 	private static final Function<Float, Transformation> TRANSFORM = f -> new Transformation(null, null, new Vector3f(1.0F + f), null);
-	private final List<InsertableTravellersModifier> modifiers;
+	private final List<Holder.Reference<TravellersModifier>> modifiers;
 
-	TravellersGearItemModel(List<InsertableTravellersModifier> modifiers) {
+	TravellersGearItemModel(List<Holder.Reference<TravellersModifier>> modifiers) {
 		this.modifiers = modifiers;
 	}
 
@@ -57,8 +59,8 @@ public class TravellersGearItemModel implements IUnbakedGeometry<TravellersGearI
 		}
 
 		int layers = 1;
-		for (TravellersModifier modifier : this.modifiers) {
-			var sprite = this.getModifierSprite(modifier, baseSprite, spriteGetter);
+		for (Holder.Reference<TravellersModifier> modifier : this.modifiers) {
+			var sprite = this.getModifierSprite(modifier.key(), baseSprite, spriteGetter);
 			if (!sprite.contents().name().equals(MissingTextureAtlasSprite.getLocation())) {
 				var unbaked = UnbakedGeometryHelper.createUnbakedItemElements(0, sprite);
 				var quads = UnbakedGeometryHelper.bakeElements(unbaked, $ -> sprite, new SimpleModelState(modelState.getRotation().compose(TRANSFORM.apply(layers * 0.001F)), modelState.isUvLocked()));
@@ -72,8 +74,8 @@ public class TravellersGearItemModel implements IUnbakedGeometry<TravellersGearI
 		return modelBuilder.build();
 	}
 
-	private TextureAtlasSprite getModifierSprite(TravellersModifier modifier, TextureAtlasSprite base, Function<Material, TextureAtlasSprite> spriteGetter) {
-		return spriteGetter.apply(ClientHooks.getBlockMaterial(modifier.name().withPrefix("item/travellers_modifiers/" + this.sanitize(base.contents().name().getPath()) + "/")));
+	private TextureAtlasSprite getModifierSprite(ResourceKey<TravellersModifier> modifier, TextureAtlasSprite base, Function<Material, TextureAtlasSprite> spriteGetter) {
+		return spriteGetter.apply(ClientHooks.getBlockMaterial(modifier.location().withPrefix("item/travellers_modifiers/" + this.sanitize(base.contents().name().getPath()) + "/")));
 	}
 
 	private String sanitize(String name) {
@@ -109,9 +111,9 @@ public class TravellersGearItemModel implements IUnbakedGeometry<TravellersGearI
 		@Override
 		public BakedModel resolve(BakedModel originalModel, ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int seed) {
 			BakedModel overridden = this.nested.resolve(originalModel, stack, level, entity, seed);
-			if (overridden != originalModel) return overridden;
+			if (overridden != originalModel || level == null) return overridden;
 
-			List<InsertableTravellersModifier> modifiers = TravellersModifiersManager.findAllInsertableModifiers(stack);
+			List<Holder.Reference<TravellersModifier>> modifiers = TravellersModifiersManager.findAllInsertableModifiers(level.registryAccess(), stack);
 			String key = BuiltInRegistries.ITEM.getKey(stack.getItem()).getPath() + this.getModifiersSuffix(modifiers);
 
 			if (!this.possibleCombos.containsKey(key)) {
@@ -124,10 +126,10 @@ public class TravellersGearItemModel implements IUnbakedGeometry<TravellersGearI
 			return this.possibleCombos.get(key);
 		}
 
-		private String getModifiersSuffix(List<InsertableTravellersModifier> modifiers) {
+		private String getModifiersSuffix(List<Holder.Reference<TravellersModifier>> modifiers) {
 			StringBuilder ret = new StringBuilder();
 			for (var mod : modifiers) {
-				ret.append("_").append(mod.name().toString());
+				ret.append("_").append(mod.key().location());
 			}
 			return ret.toString();
 		}
