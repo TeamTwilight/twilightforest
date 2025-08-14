@@ -28,7 +28,7 @@ import java.util.Optional;
 public class TravellersGogglesItem extends TravellersArmorItem {
 
 	public TravellersGogglesItem(Properties properties) {
-		super(Type.HELMET, properties, 3, 4);
+		super(Type.HELMET, properties, 3, 12);
 	}
 
 	@Override
