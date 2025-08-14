@@ -39,7 +39,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.beans.Autowired;
 import twilightforest.block.*;
 import twilightforest.block.entity.*;
-import twilightforest.client.event.ClientEvents;
+import twilightforest.client.event.ClientGameEvents;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.KnightmetalShieldModel;
 import twilightforest.client.model.entity.LichModel;
@@ -55,7 +55,6 @@ import twilightforest.components.item.SkullCandles;
 import twilightforest.config.TFConfig;
 import twilightforest.enums.BossVariant;
 import twilightforest.enums.extensions.TFItemDisplayContextEnumExtension;
-import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDataComponents;
 import twilightforest.item.KnightmetalShieldItem;
@@ -147,15 +146,15 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 					pose.pushPose();
 					pose.translate(0.5F, 0.5F, 0.5F);
 					pose.mulPose(Axis.XP.rotationDegrees(30));
-					pose.mulPose(Axis.YN.rotationDegrees(TFConfig.rotateTrophyHeadsGui && !minecraft.isPaused() ? ClientEvents.time % 360 : -45));
+					pose.mulPose(Axis.YN.rotationDegrees(TFConfig.rotateTrophyHeadsGui && !minecraft.isPaused() ? ClientGameEvents.time % 360 : -45));
 					pose.translate(-0.5F, -0.5F, -0.5F);
 					pose.translate(0.0F, 0.25F, 0.0F);
 					if (trophyBlock.getVariant() == BossVariant.UR_GHAST) pose.translate(0.0F, 0.5F, 0.0F);
 					if (trophyBlock.getVariant() == BossVariant.ALPHA_YETI) pose.translate(0.0F, -0.15F, 0.0F);
-					TrophyRenderer.render(null, 180.0F, trophy, variant, !minecraft.isPaused() ? ClientEvents.time + minecraft.getTimer().getRealtimeDeltaTicks() : 0, pose, buffers, light, camera);
+					TrophyRenderer.render(null, 180.0F, trophy, variant, !minecraft.isPaused() ? ClientGameEvents.time + minecraft.getTimer().getRealtimeDeltaTicks() : 0, pose, buffers, light, camera);
 					pose.popPose();
 				} else {
-					TrophyRenderer.render(null, 180.0F, trophy, variant, !minecraft.isPaused() ? ClientEvents.time + minecraft.getTimer().getRealtimeDeltaTicks() : 0, pose, buffers, light, camera);
+					TrophyRenderer.render(null, 180.0F, trophy, variant, !minecraft.isPaused() ? ClientGameEvents.time + minecraft.getTimer().getRealtimeDeltaTicks() : 0, pose, buffers, light, camera);
 				}
 
 			} else if (block instanceof KeepsakeCasketBlock) {

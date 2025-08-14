@@ -1,9 +1,7 @@
 package twilightforest.events;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -22,17 +20,16 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.neoforged.bus.api.EventPriority;
-import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
-import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.registries.DeferredItem;
 import twilightforest.TwilightForestMod;
+import twilightforest.beans.PostConstruct;
 import twilightforest.block.KeepsakeCasketBlock;
-import twilightforest.block.entity.KeepsakeCasketBlockEntity;
 import twilightforest.block.entity.SkullChestBlockEntity;
 import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.config.TFConfig;
@@ -46,31 +43,35 @@ import twilightforest.network.SpawnCharmPacket;
 import twilightforest.util.TFItemStackUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-@EventBusSubscriber(modid = TwilightForestMod.ID)
+@twilightforest.beans.Component
 public class CharmEvents {
 
 	public static final String CHARM_INV_TAG = "TFCharmInventory";
 	public static final String CASKET_DAMAGE_TAG = "CasketDamage";
 	public static final String CONSUMED_CHARM_TAG = "CharmStack";
 
-	@SubscribeEvent(priority = EventPriority.HIGHEST)
+	@PostConstruct
+	private void setup() {
+		NeoForge.EVENT_BUS.addListener(EventPriority.HIGHEST, this::applyCharmOfLife);
+		NeoForge.EVENT_BUS.addListener(EventPriority.HIGH, this::applyKeepingAndCasket);
+		NeoForge.EVENT_BUS.addListener(this::returnItemsOnRespawn);
+	}
+
 	// Check for charm of life first to stop a player from dying
-	public static void applyCharmOfLife(LivingDeathEvent event) {
+	private void applyCharmOfLife(LivingDeathEvent event) {
 		LivingEntity living = event.getEntity();
 
 		//ensure our player is real and in survival before attempting anything
 		if (event.isCanceled() || living.level().isClientSide() || !(living instanceof Player player) || living instanceof FakePlayer ||
 				player.isCreative() || player.isSpectator()) return;
 
-		if (charmOfLife(player)) event.setCanceled(true); // Executes if the player had charms
+		if (handleCharmOfLife(player)) event.setCanceled(true); // Executes if the player had charms
 	}
 
-	@SubscribeEvent(priority = EventPriority.HIGH)
 	// Then check if the player should keep any items through death
-	public static void applyKeepingAndCasket(LivingDeathEvent event) {
+	private void applyKeepingAndCasket(LivingDeathEvent event) {
 		LivingEntity living = event.getEntity();
 
 		//ensure our player is real and in survival before attempting anything
@@ -79,22 +80,21 @@ public class CharmEvents {
 
 		if (!living.level().getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) {
 			// Did the player recover? No? Let's give them their stuff based on the keeping charms
-			charmOfKeeping(player);
+			handleCharmOfKeeping(player);
 
 			// Then let's store the rest of their stuff in the casket
-			keepsakeCasket(player);
+			stockKeepsakeCasket(player);
 		}
 	}
 
-	@SubscribeEvent
-	public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
+	private void returnItemsOnRespawn(PlayerEvent.PlayerRespawnEvent event) {
 		if (!(event.getEntity() instanceof ServerPlayer serverPlayer)) return;
 		if (!event.isEndConquered()) {
 			returnStoredItems(serverPlayer);
 		}
 	}
 
-	private static boolean charmOfLife(Player player) {
+	private static boolean handleCharmOfLife(Player player) {
 		boolean charm2 = TFItemStackUtils.consumeInventoryItem(player, TFItems.CHARM_OF_LIFE_2.get(), getPlayerData(player), false) || hasCharmCurio(TFItems.CHARM_OF_LIFE_2.get(), player);
 		boolean charm1 = !charm2 && (TFItemStackUtils.consumeInventoryItem(player, TFItems.CHARM_OF_LIFE_1.get(), getPlayerData(player), false) || hasCharmCurio(TFItems.CHARM_OF_LIFE_1.get(), player));
 
@@ -123,7 +123,7 @@ public class CharmEvents {
 		return false;
 	}
 
-	private static void charmOfKeeping(Player player) {
+	private static void handleCharmOfKeeping(Player player) {
 		//create a fake inventory to organize our kept inventory in
 		Inventory keepInventory = new Inventory(player);
 		ListTag tagList = new ListTag();
@@ -186,7 +186,7 @@ public class CharmEvents {
 		return true;
 	}
 
-	private static void keepsakeCasket(Player player) {
+	private static void stockKeepsakeCasket(Player player) {
 		//make sure we are still actually holding onto items before trying to place a casket
 		if (player.getInventory().hasAnyMatching(stack -> !stack.isEmpty() && !stack.is(TFItems.KEEPSAKE_CASKET))) {
 			boolean casketConsumed = TFItemStackUtils.consumeInventoryItem(player, TFBlocks.KEEPSAKE_CASKET, getPlayerData(player), false);

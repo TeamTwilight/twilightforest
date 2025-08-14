@@ -6,6 +6,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import twilightforest.TwilightForestMod;
 import twilightforest.item.travellers_gear.TravellersArmorItem;
+import twilightforest.item.travellers_gear.TravellersGearLogic;
 
 public record PerformSidestepPacket(boolean isLeftStepSide) implements CustomPacketPayload {
 	public static final Type<twilightforest.network.PerformSidestepPacket> TYPE = new Type<>(TwilightForestMod.prefix("perform_sidestep_packet"));
@@ -25,8 +26,8 @@ public record PerformSidestepPacket(boolean isLeftStepSide) implements CustomPac
 
 	public static void handle(twilightforest.network.PerformSidestepPacket message, IPayloadContext ctx) {
 		ctx.enqueueWork(() -> {
-			if (!TravellersArmorItem.tryPerformSidestep(ctx.player(), message.isLeftStepSide))
-				TravellersArmorItem.handleSidestepAbuse(ctx.player());
+			if (!TravellersGearLogic.tryPerformSidestep(ctx.player(), message.isLeftStepSide))
+				TravellersGearLogic.handleSidestepAbuse(ctx.player());
 		});
 	}
 }

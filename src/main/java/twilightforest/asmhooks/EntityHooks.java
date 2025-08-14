@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 import twilightforest.asm.transformers.entity.PathFinderUnrestrainedByLeashTransformer;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.init.custom.TravellersModifiersManager;
-import twilightforest.item.travellers_gear.TravellersArmorItem;
+import twilightforest.item.travellers_gear.TravellersGearLogic;
 
 @SuppressWarnings({"JavadocReference", "unused"})
 public class EntityHooks {
@@ -32,11 +32,11 @@ public class EntityHooks {
 
 		double waterHeight = livingEntity.getFluidTypeHeight(NeoForgeMod.WATER_TYPE.value());
 		boolean isWaterWalking = waterHeight > 0 &&
-			waterHeight <= TravellersArmorItem.WATER_WALKING_MAX_SUBMERGED_HEIGHT &&
+			waterHeight <= TravellersGearLogic.WATER_WALKING_MAX_SUBMERGED_HEIGHT &&
 			!livingEntity.isShiftKeyDown();
 		Level level = livingEntity.level();
 		if (isWaterWalking && level.getGameTime() % 3 == 1)
-			TravellersArmorItem.waterWalkingSplashEffect(livingEntity);
+			TravellersGearLogic.waterWalkingSplashEffect(livingEntity);
 		return isWaterWalking;
 	}
 

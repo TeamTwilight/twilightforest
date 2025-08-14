@@ -9,7 +9,6 @@ import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
@@ -46,6 +45,8 @@ import net.neoforged.neoforge.client.gui.map.RegisterMapDecorationRenderersEvent
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
+import twilightforest.beans.Component;
+import twilightforest.beans.PostConstruct;
 import twilightforest.client.*;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.*;
@@ -88,28 +89,30 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class RegistrationEvents {
+@Component
+public class ClientRegistrationEvents {
 
 	private static boolean optifinePresent = false;
 
-	public static void initModBusEvents(IEventBus bus) {
-		bus.addListener(EntityRenderersEvent.AddLayers.class, RegistrationEvents::attachRenderLayers);
-		bus.addListener(RegistrationEvents::bakeCustomModels);
-		bus.addListener(RegistrationEvents::cacheJarLids);
-		bus.addListener(RegistrationEvents::clientSetup);
-		bus.addListener(RegistrationEvents::registerAdditionalModels);
-		bus.addListener(RegistrationEvents::registerClientReloadListeners);
-		bus.addListener(RegistrationEvents::registerDimEffects);
-		bus.addListener(RegistrationEvents::registerEntityRenderers);
-		bus.addListener(RegistrationEvents::registerLayerDefinitions);
-		bus.addListener(RegistrationEvents::registerModelLoaders);
-		bus.addListener(RegistrationEvents::registerScreens);
-		bus.addListener(RegistrationEvents::registerClientExtensions);
-		bus.addListener(RegistrationEvents::registerMapDecorators);
-		bus.addListener(RegistrationEvents::registerParticleFactories);
-		bus.addListener(RegistrationEvents::registerOverlays);
+	@PostConstruct
+	private void setup(IEventBus bus) {
+		bus.addListener(EntityRenderersEvent.AddLayers.class, this::attachRenderLayers);
+		bus.addListener(this::bakeCustomModels);
+		bus.addListener(this::cacheJarLids);
+		bus.addListener(this::clientSetup);
+		bus.addListener(this::registerAdditionalModels);
+		bus.addListener(this::registerClientReloadListeners);
+		bus.addListener(this::registerDimEffects);
+		bus.addListener(this::registerEntityRenderers);
+		bus.addListener(this::registerLayerDefinitions);
+		bus.addListener(this::registerModelLoaders);
+		bus.addListener(this::registerScreens);
+		bus.addListener(this::registerClientExtensions);
+		bus.addListener(this::registerMapDecorators);
+		bus.addListener(this::registerParticleFactories);
+		bus.addListener(this::registerOverlays);
 
-		bus.addListener(TFKeyBinds::registerKeyBindings);
+		bus.addListener(RegisterKeyMappingsEvent.class, event -> TFKeyBinds.KEY_MAPPINGS.forEach(event::register));
 
 		bus.addListener(ColorHandler::registerBlockColors);
 		bus.addListener(ColorHandler::registerItemColors);
@@ -123,7 +126,7 @@ public class RegistrationEvents {
 		});
 	}
 
-	private static void registerModelLoaders(ModelEvent.RegisterGeometryLoaders event) {
+	private void registerModelLoaders(ModelEvent.RegisterGeometryLoaders event) {
 		event.register(TwilightForestMod.prefix("patch"), PatchModelLoader.INSTANCE);
 		event.register(TwilightForestMod.prefix("giant_block"), GiantBlockModelLoader.INSTANCE);
 		event.register(TwilightForestMod.prefix("force_field"), ForceFieldModelLoader.INSTANCE);
@@ -133,7 +136,7 @@ public class RegistrationEvents {
 		event.register(TwilightForestMod.prefix("travellers_gear"), TravellersGearItemModel.Loader.INSTANCE);
 	}
 
-	private static void bakeCustomModels(ModelEvent.ModifyBakingResult event) {
+	private void bakeCustomModels(ModelEvent.ModifyBakingResult event) {
 		ItemProperties.register(TFItems.CUBE_OF_ANNIHILATION.get(), TwilightForestMod.prefix("thrown"), (stack, level, entity, idk) ->
 			stack.get(TFDataComponents.THROWN_PROJECTILE) != null ? 1 : 0);
 
@@ -267,12 +270,12 @@ public class RegistrationEvents {
 			entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F
 		);
 
-		ItemProperties.register(TFItems.TRAVELLERS_GOGGLES.get(), ResourceLocation.parse("broken"), RegistrationEvents::isBroken);
-		ItemProperties.register(TFItems.TRAVELLERS_CHESTPLATE_GLOVES.get(), ResourceLocation.parse("broken"), RegistrationEvents::isBroken);
-		ItemProperties.register(TFItems.TRAVELLERS_CHESTPLATE.get(), ResourceLocation.parse("broken"), RegistrationEvents::isBroken);
-		ItemProperties.register(TFItems.TRAVELLERS_WINGS_BELT.get(), ResourceLocation.parse("broken"), RegistrationEvents::isBroken);
-		ItemProperties.register(TFItems.TRAVELLERS_WINGS.get(), ResourceLocation.parse("broken"), RegistrationEvents::isBroken);
-		ItemProperties.register(TFItems.TRAVELLERS_BOOTS.get(), ResourceLocation.parse("broken"), RegistrationEvents::isBroken);
+		ItemProperties.register(TFItems.TRAVELLERS_GOGGLES.get(), ResourceLocation.parse("broken"), this::isBroken);
+		ItemProperties.register(TFItems.TRAVELLERS_CHESTPLATE_GLOVES.get(), ResourceLocation.parse("broken"), this::isBroken);
+		ItemProperties.register(TFItems.TRAVELLERS_CHESTPLATE.get(), ResourceLocation.parse("broken"), this::isBroken);
+		ItemProperties.register(TFItems.TRAVELLERS_WINGS_BELT.get(), ResourceLocation.parse("broken"), this::isBroken);
+		ItemProperties.register(TFItems.TRAVELLERS_WINGS.get(), ResourceLocation.parse("broken"), this::isBroken);
+		ItemProperties.register(TFItems.TRAVELLERS_BOOTS.get(), ResourceLocation.parse("broken"), this::isBroken);
 
 		Map<ModelResourceLocation, BakedModel> models = event.getModels();
 		List<Map.Entry<ModelResourceLocation, BakedModel>> leavesModels = models.entrySet().stream()
@@ -286,7 +289,7 @@ public class RegistrationEvents {
 		models.put(new ModelResourceLocation(TwilightForestMod.prefix("reactor_debris"), ""), new ReactorDebrisModel(defaultReactorDebrisModel));
 	}
 
-	private static void registerAdditionalModels(ModelEvent.RegisterAdditional event) {
+	private void registerAdditionalModels(ModelEvent.RegisterAdditional event) {
 		event.register(ShieldLayer.LOC);
 		event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("item/trophy")));
 		event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("item/trophy_minor")));
@@ -301,7 +304,7 @@ public class RegistrationEvents {
 		}
 	}
 
-	private static void cacheJarLids(ModelEvent.BakingCompleted event) {
+	private void cacheJarLids(ModelEvent.BakingCompleted event) {
 		JarRenderer.LID_LOCATION_LIST.get().forEach((lid) -> {
 			String name = lid.resourceLocation().getPath();
 			if (lid.customPath() != null) name = lid.customPath();
@@ -309,12 +312,12 @@ public class RegistrationEvents {
 		});
 	}
 
-	private static void registerDimEffects(RegisterDimensionSpecialEffectsEvent event) {
+	private void registerDimEffects(RegisterDimensionSpecialEffectsEvent event) {
 		TFSkyRenderer.createStars();
 		event.register(TFDimension.DIMENSION_RENDERER, new TwilightForestRenderInfo(128.0F, false, DimensionSpecialEffects.SkyType.NONE, false, false));
 	}
 
-	private static void clientSetup(FMLClientSetupEvent evt) {
+	private void clientSetup(FMLClientSetupEvent evt) {
 		try {
 			Class.forName("net.optifine.Config");
 			optifinePresent = true;
@@ -334,7 +337,7 @@ public class RegistrationEvents {
 		});
 	}
 
-	private static void registerClientReloadListeners(RegisterClientReloadListenersEvent event) {
+	private void registerClientReloadListeners(RegisterClientReloadListenersEvent event) {
 		((ReloadableResourceManager)Minecraft.getInstance().getResourceManager()).listeners.addFirst(JappaPackReloadListener.INSTANCE);
 		MagicPaintingTextureManager.instance = new MagicPaintingTextureManager(Minecraft.getInstance().getTextureManager());
 		event.registerReloadListener(MagicPaintingTextureManager.instance);
@@ -342,11 +345,11 @@ public class RegistrationEvents {
 		event.registerReloadListener(new TFArmorRenderer.ResourceReloadListener());
 	}
 
-	private static void registerScreens(RegisterMenuScreensEvent event) {
+	private void registerScreens(RegisterMenuScreensEvent event) {
 		event.register(TFMenuTypes.UNCRAFTING.get(), UncraftingScreen::new);
 	}
 
-	private static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
+	private void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
 		event.registerEntityRenderer(TFEntities.BOAR.get(), m -> new BoarRenderer<>(m, new BoarModel<>(m.bakeLayer(TFModelLayers.BOAR))));
 		event.registerEntityRenderer(TFEntities.BIGHORN_SHEEP.get(), m -> new BighornRenderer(m, new BighornModel<>(m.bakeLayer(TFModelLayers.BIGHORN_SHEEP)), 0.7F));
 		event.registerEntityRenderer(TFEntities.DEER.get(), m -> new TFGenericMobRenderer<>(m, new DeerModel(m.bakeLayer(TFModelLayers.DEER)), 0.7F, "wilddeer.png"));
@@ -452,7 +455,7 @@ public class RegistrationEvents {
 		event.registerBlockEntityRenderer(TFBlockEntities.DRYING_RACK.get(), DryingRackRenderer::new);
 	}
 
-	private static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
+	private void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
 		event.registerLayerDefinition(TFModelLayers.ARCTIC_ARMOR_INNER, () -> LayerDefinition.create(ArcticArmorModel.addPieces(LayerDefinitions.INNER_ARMOR_DEFORMATION), 64, 32));
 		event.registerLayerDefinition(TFModelLayers.ARCTIC_ARMOR_OUTER, () -> LayerDefinition.create(ArcticArmorModel.addPieces(LayerDefinitions.OUTER_ARMOR_DEFORMATION), 64, 32));
 		event.registerLayerDefinition(TFModelLayers.FIERY_ARMOR_INNER, () -> LayerDefinition.create(FieryArmorModel.createMesh(LayerDefinitions.INNER_ARMOR_DEFORMATION, 0.0F), 64, 32));
@@ -560,7 +563,7 @@ public class RegistrationEvents {
 		event.registerLayerDefinition(TFModelLayers.KNIGHTMETAL_SHIELD, KnightmetalShieldModel::create);
 	}
 
-	private static void registerParticleFactories(RegisterParticleProvidersEvent event) {
+	private void registerParticleFactories(RegisterParticleProvidersEvent event) {
 		event.registerSpriteSet(TFParticleType.LARGE_FLAME.get(), LargeFlameParticle.Factory::new);
 		event.registerSpriteSet(TFParticleType.LEAF_RUNE.get(), LeafRuneParticle.Factory::new);
 		event.registerSpecial(TFParticleType.BOSS_TEAR.get(), new GhastTearParticle.Factory());
@@ -591,7 +594,7 @@ public class RegistrationEvents {
 		event.registerSpriteSet(TFParticleType.SHIELD_BREAK.get(), CustomTextureParticle.ShieldBreak::new);
 	}
 
-	private static void registerClientExtensions(RegisterClientExtensionsEvent event) {
+	private void registerClientExtensions(RegisterClientExtensionsEvent event) {
 		event.registerBlock(new IClientBlockExtensions() {
 			@Override
 			public boolean addHitEffects(BlockState state, Level level, HitResult target, ParticleEngine manager) {
@@ -702,7 +705,7 @@ public class RegistrationEvents {
 		);
 	}
 
-	private static void registerMapDecorators(RegisterMapDecorationRenderersEvent event) {
+	private void registerMapDecorators(RegisterMapDecorationRenderersEvent event) {
 		event.register(MapDecorationTypes.PLAYER.value(), new MagicMapPlayerIconRenderer());
 		event.register(TFMapDecorations.QUEST_GROVE.get(), new ConqueredMapIconRenderer());
 		event.register(TFMapDecorations.NAGA_COURTYARD.get(), new ConqueredMapIconRenderer());
@@ -716,7 +719,7 @@ public class RegistrationEvents {
 		event.register(TFMapDecorations.FINAL_CASTLE.get(), new ConqueredMapIconRenderer());
 	}
 
-	private static void registerOverlays(RegisterGuiLayersEvent event) {
+	private void registerOverlays(RegisterGuiLayersEvent event) {
 		Minecraft minecraft = Minecraft.getInstance();
 		Gui gui = minecraft.gui;
 
@@ -736,11 +739,11 @@ public class RegistrationEvents {
 	}
 
 	@Nullable
-	private static Player getCameraPlayer() {
+	private Player getCameraPlayer() {
 		return Minecraft.getInstance().getCameraEntity() instanceof Player player ? player : null;
 	}
 
-	private static void attachRenderLayers(EntityRenderersEvent.AddLayers event) {
+	private void attachRenderLayers(EntityRenderersEvent.AddLayers event) {
 		BakedMultiPartRenderers.bakeMultiPartRenderers(event.getContext());
 		for (EntityType<?> type : event.getEntityTypes()) {
 			var renderer = event.getRenderer(type);
@@ -755,7 +758,7 @@ public class RegistrationEvents {
 		});
 	}
 
-	private static <T extends LivingEntity, M extends EntityModel<T>> void attachRenderLayers(LivingEntityRenderer<T, M> renderer) {
+	private <T extends LivingEntity, M extends EntityModel<T>> void attachRenderLayers(LivingEntityRenderer<T, M> renderer) {
 		renderer.addLayer(new ShieldLayer<>(renderer));
 		renderer.addLayer(new IceLayer<>(renderer));
 	}
@@ -764,7 +767,7 @@ public class RegistrationEvents {
 		return optifinePresent;
 	}
 
-	private static float isBroken(@NotNull ItemStack stack, @Nullable ClientLevel world, @Nullable LivingEntity livingEntity, int seed) {
+	private float isBroken(@NotNull ItemStack stack, @Nullable ClientLevel world, @Nullable LivingEntity livingEntity, int seed) {
 		return stack.getDamageValue() >= stack.getMaxDamage() - 1 ? 1F : 0F;
 	}
 }

@@ -19,15 +19,14 @@ import net.minecraft.world.level.block.LecternBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.AnvilUpdateEvent;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
-import twilightforest.TwilightForestMod;
+import twilightforest.beans.Component;
+import twilightforest.beans.PostConstruct;
 import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.entity.monster.DeathTome;
 import twilightforest.entity.passive.Bighorn;
@@ -37,14 +36,20 @@ import twilightforest.entity.passive.TinyBird;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFEntities;
-import twilightforest.init.TFItems;
 import twilightforest.network.CreateMovingCicadaSoundPacket;
 
-@EventBusSubscriber(modid = TwilightForestMod.ID)
+@Component
 public class MiscEvents {
 
-	@SubscribeEvent
-	public static void addPrey(EntityJoinLevelEvent event) {
+	@PostConstruct
+	private void setup() {
+		NeoForge.EVENT_BUS.addListener(this::addPrey);
+		NeoForge.EVENT_BUS.addListener(this::updateCicadaSoundsOnHead);
+		NeoForge.EVENT_BUS.addListener(this::addTomesToLecterns);
+		NeoForge.EVENT_BUS.addListener(this::washOffCloth);
+	}
+
+	private void addPrey(EntityJoinLevelEvent event) {
 		if (event.getEntity() instanceof Mob mob) {
 			EntityType<?> type = mob.getType();
 			if (type == EntityType.CAT) {
@@ -66,8 +71,7 @@ public class MiscEvents {
 		}
 	}
 
-	@SubscribeEvent
-	public static void armorChanged(LivingEquipmentChangeEvent event) {
+	private void updateCicadaSoundsOnHead(LivingEquipmentChangeEvent event) {
 		LivingEntity living = event.getEntity();
 
 		// from what I can see, vanilla doesn't have a hook for this in the item class. So this will have to do.
@@ -78,13 +82,12 @@ public class MiscEvents {
 		 	if (CuriosCompat.isCurioEquipped(living, stack -> stack.is(TFBlocks.CICADA.asItem()))) return;
 		 }
 
-		if (living != null && !living.level().isClientSide() && event.getSlot() == EquipmentSlot.HEAD && event.getTo().is(TFBlocks.CICADA.asItem())) {
+		if (!living.level().isClientSide() && event.getSlot() == EquipmentSlot.HEAD && event.getTo().is(TFBlocks.CICADA.asItem())) {
 			PacketDistributor.sendToPlayersTrackingEntityAndSelf(living, new CreateMovingCicadaSoundPacket(living.getId()));
 		}
 	}
 
-	@SubscribeEvent
-	public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
+	private void addTomesToLecterns(PlayerInteractEvent.RightClickBlock event) {
 		Player player = event.getEntity();
 		ItemStack stack = player.getItemInHand(event.getHand());
 
@@ -110,8 +113,7 @@ public class MiscEvents {
 		}
 	}
 
-	@SubscribeEvent
-	public static void washOffCloth(PlayerInteractEvent.RightClickBlock event) {
+	private void washOffCloth(PlayerInteractEvent.RightClickBlock event) {
 		if (event.isCanceled()) return;
 		BlockState state = event.getLevel().getBlockState(event.getPos());
 		if (!state.is(Blocks.WATER_CAULDRON) || state.getValue(LayeredCauldronBlock.LEVEL) <= 0) return;

@@ -6,23 +6,32 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.EntityMountEvent;
 import net.neoforged.neoforge.event.entity.EntityTeleportEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
-import twilightforest.TwilightForestMod;
+import twilightforest.beans.Component;
+import twilightforest.beans.PostConstruct;
 import twilightforest.entity.IHostileMount;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFDataAttachments;
 
-@EventBusSubscriber(modid = TwilightForestMod.ID)
+@Component
 public class HostileMountEvents {
 
 	public static volatile boolean allowDismount = false;
 
+	@PostConstruct
+	private void setup() {
+		NeoForge.EVENT_BUS.addListener(this::handleMountDamage);
+		NeoForge.EVENT_BUS.addListener(this::preventTeleportingOffHostileMounts);
+		NeoForge.EVENT_BUS.addListener(this::preventMountDismount);
+		NeoForge.EVENT_BUS.addListener(this::preventHostilMountCrouching);
+	}
+
 	@SubscribeEvent
-	public static void entityHurts(LivingIncomingDamageEvent event) {
+	private void handleMountDamage(LivingIncomingDamageEvent event) {
 		LivingEntity living = event.getEntity();
 		DamageSource damageSource = event.getSource();
 		// lets not make the player take suffocation damage if riding something
@@ -37,8 +46,7 @@ public class HostileMountEvents {
 		}
 	}
 
-	@SubscribeEvent
-	public static void entityTeleports(EntityTeleportEvent event) {
+	private void preventTeleportingOffHostileMounts(EntityTeleportEvent event) {
 		// if our grabbed target tries to teleport dont let them
 		if (event.getEntity() instanceof LivingEntity living && isRidingUnfriendly(living)) {
 			event.setCanceled(true);
@@ -51,8 +59,7 @@ public class HostileMountEvents {
 		HostileMountEvents.allowDismount = false;
 	}
 
-	@SubscribeEvent
-	public static void preventMountDismount(EntityMountEvent event) {
+	private void preventMountDismount(EntityMountEvent event) {
 		if (!event.getLevel().isClientSide() &&
 			!event.isMounting() && event.getEntityBeingMounted().isAlive() &&
 			event.getEntityMounting() instanceof Player player && player.isAlive() &&
@@ -60,8 +67,7 @@ public class HostileMountEvents {
 			event.setCanceled(true);
 	}
 
-	@SubscribeEvent
-	public static void livingUpdate(EntityTickEvent.Post event) {
+	private void preventHostilMountCrouching(EntityTickEvent.Post event) {
 		if (event.getEntity() instanceof IHostileMount)
 			event.getEntity().getPassengers().forEach(e -> e.setShiftKeyDown(false));
 	}

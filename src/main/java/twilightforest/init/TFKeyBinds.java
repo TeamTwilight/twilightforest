@@ -18,11 +18,6 @@ public abstract class TFKeyBinds {
 	public static final KeyMapping ZOOM_KEY = register("zoom", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_Z, TFKeyBindsCategories.TRAVELLERS_GEAR);
 	public static final KeyMapping SWAP_HOTBAR_KEY = register("swap_hotbar", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_V, TFKeyBindsCategories.TRAVELLERS_GEAR);
 
-	@SubscribeEvent
-	public static void registerKeyBindings(RegisterKeyMappingsEvent event) {
-		KEY_MAPPINGS.forEach(event::register);
-	}
-
 	@SuppressWarnings("SameParameterValue")
 	private static KeyMapping register(String name, InputConstants.Type type, int key, TFKeyBindsCategories.Category category) {
 		KeyMapping keyMapping = new KeyMapping(addPrefix(name), type, key, category.internalName());

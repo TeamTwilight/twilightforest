@@ -2,12 +2,8 @@ package twilightforest.item;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -23,11 +19,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.TagsUpdatedEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
-import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFParticleType;
 import twilightforest.init.TFSounds;
@@ -41,9 +33,11 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-@EventBusSubscriber(modid = TwilightForestMod.ID)
 public class OreMagnetItem extends Item {
 
+	// Switch over to ConcurrentHashMap if we run into any concurrency problems
+	public static final HashMap<Block, Block> MAGNET_ORE_TO_BLOCK_REPLACEMENTS = new HashMap<>();
+	public static final HashMap<Block, Block> TREE_ORE_TO_BLOCK_REPLACEMENTS = new HashMap<>();
 	private static final float WIGGLE = 10F;
 
 	public OreMagnetItem(Properties properties) {
@@ -248,48 +242,5 @@ public class OreMagnetItem extends Item {
 
 	private static boolean isOre(Block ore, boolean core) {
 		return (core ? TREE_ORE_TO_BLOCK_REPLACEMENTS : MAGNET_ORE_TO_BLOCK_REPLACEMENTS).containsKey(ore);
-	}
-
-	// Switch over to ConcurrentHashMap if we run into any concurrency problems
-	public static final HashMap<Block, Block> MAGNET_ORE_TO_BLOCK_REPLACEMENTS = new HashMap<>();
-	public static final HashMap<Block, Block> TREE_ORE_TO_BLOCK_REPLACEMENTS = new HashMap<>();
-
-	@SubscribeEvent
-	public static void onTagsUpdatedEvent(TagsUpdatedEvent event) {
-		MAGNET_ORE_TO_BLOCK_REPLACEMENTS.clear();
-		TREE_ORE_TO_BLOCK_REPLACEMENTS.clear();
-
-		//collect all tags
-		for (TagKey<Block> tag : BuiltInRegistries.BLOCK.getTagNames().filter(location -> location.location().getNamespace().equals("c")).toList()) {
-			//check if the tag is a valid ore tag
-			if (tag.location().getPath().contains("ores_in_ground/")) {
-				//grab the part after the slash for use later
-				String oreground = tag.location().getPath().substring(15);
-				//check if a tag for ore grounds matches up with our ores in ground tag
-				if (BuiltInRegistries.BLOCK.getTagNames().filter(location -> location.location().getNamespace().equals("c")).anyMatch(blockTagKey -> blockTagKey.location().getPath().equals("ore_bearing_ground/" + oreground))) {
-					//add each ground type to each ore
-					BuiltInRegistries.BLOCK.getTag(TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("c", "ore_bearing_ground/" + oreground))).get().forEach(ground ->
-						BuiltInRegistries.BLOCK.getTag(tag).get().forEach(ore -> {
-							//exclude ignored ores
-							if (!ore.value().defaultBlockState().is(BlockTagGenerator.ORE_MAGNET_IGNORE)) {
-								MAGNET_ORE_TO_BLOCK_REPLACEMENTS.put(ore.value(), ground.value());
-							}
-							if (!ore.value().defaultBlockState().is(BlockTagGenerator.MINING_CORE_EXCLUDED)) {
-								TREE_ORE_TO_BLOCK_REPLACEMENTS.put(ore.value(), ground.value());
-							}
-						}));
-				}
-			}
-		}
-
-		//Gonna need to special case this one as it isn't covered by tags.
-		//Ancient debris isn't exactly an ore, so it makes sense that the tag doesn't include it
-		if (!Blocks.ANCIENT_DEBRIS.defaultBlockState().is(BlockTagGenerator.ORE_MAGNET_IGNORE) && !MAGNET_ORE_TO_BLOCK_REPLACEMENTS.containsKey(Blocks.ANCIENT_DEBRIS)) {
-			MAGNET_ORE_TO_BLOCK_REPLACEMENTS.put(Blocks.ANCIENT_DEBRIS, Blocks.NETHERRACK);
-		}
-
-		if (!Blocks.ANCIENT_DEBRIS.defaultBlockState().is(BlockTagGenerator.MINING_CORE_EXCLUDED) && !TREE_ORE_TO_BLOCK_REPLACEMENTS.containsKey(Blocks.ANCIENT_DEBRIS)) {
-			TREE_ORE_TO_BLOCK_REPLACEMENTS.put(Blocks.ANCIENT_DEBRIS, Blocks.NETHERRACK);
-		}
 	}
 }
