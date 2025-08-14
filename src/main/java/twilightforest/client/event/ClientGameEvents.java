@@ -65,7 +65,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 
-@twilightforest.beans.Component
+@twilightforest.beans.Component(dist = Dist.CLIENT)
 public class ClientGameEvents {
 	private final VoxelShape GIANT_BLOCK = Shapes.box(0.0D, 0.0D, 0.0D, 4.0D, 4.0D, 4.0D);
 	private final MutableComponent WIP_TEXT = Component.translatable("misc.twilightforest.wip").withStyle(ChatFormatting.RED);

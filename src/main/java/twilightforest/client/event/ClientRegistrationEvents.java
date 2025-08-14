@@ -35,6 +35,7 @@ import net.minecraft.world.level.saveddata.maps.MapDecorationTypes;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.*;
@@ -89,7 +90,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-@Component
+@Component(dist = Dist.CLIENT)
 public class ClientRegistrationEvents {
 
 	private static boolean optifinePresent = false;
