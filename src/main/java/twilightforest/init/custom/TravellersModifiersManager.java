@@ -59,26 +59,15 @@ public class TravellersModifiersManager {
 	public static void bootstrap(BootstrapContext<TravellersModifier> context) {
 		context.register(AUTO_REPAIR_MODIFIER, new TravellersComponentModifier(TFDataComponents.AUTO_REPAIR_PROBABILITY.get(), 0.001F));
 		context.register(ZOOM_ABILITY, new BuiltinTravellersComponentModifier(TFDataComponents.ZOOM_ABILITY_MODIFIER.get()));
-		context.register(AQUATIC_AGILITY_MODIFIER, new TravellersEntryModifier(
-			List.of(
-				new ItemAttributeModifiers.Entry(Attributes.OXYGEN_BONUS, TFAttributeModifiers.TRAVELLERS_AQUATIC_AGILITY_OXYGEN_ACTIVE, EquipmentSlotGroup.HEAD),
-				new ItemAttributeModifiers.Entry(Attributes.SUBMERGED_MINING_SPEED, TFAttributeModifiers.TRAVELLERS_AQUATIC_AGILITY_MINING_ACTIVE, EquipmentSlotGroup.HEAD)
-			),
-			List.of(
-				new ItemAttributeModifiers.Entry(Attributes.OXYGEN_BONUS, TFAttributeModifiers.TRAVELLERS_AQUATIC_AGILITY_OXYGEN_DEACTIVATED, EquipmentSlotGroup.HEAD),
-				new ItemAttributeModifiers.Entry(Attributes.SUBMERGED_MINING_SPEED, TFAttributeModifiers.TRAVELLERS_AQUATIC_AGILITY_MINING_DEACTIVATED, EquipmentSlotGroup.HEAD)
-			),
-			false
-		));
+		context.register(AQUATIC_AGILITY_MODIFIER, new TravellersEntryModifier(List.of(
+			new ItemAttributeModifiers.Entry(Attributes.OXYGEN_BONUS, TFAttributeModifiers.TRAVELLERS_AQUATIC_AGILITY_OXYGEN, EquipmentSlotGroup.HEAD),
+			new ItemAttributeModifiers.Entry(Attributes.SUBMERGED_MINING_SPEED, TFAttributeModifiers.TRAVELLERS_AQUATIC_AGILITY_MINING, EquipmentSlotGroup.HEAD)
+		), TFDataComponents.AQUATIC_AGILITY.asOptional()));
 		context.register(RED_THREAD_VISION_MODIFIER, new TravellersComponentModifier(TFDataComponents.RED_THREAD_VISION.get(), Unit.INSTANCE));
 		context.register(ALL_NIGHT_GOGGLES_MODIFIER, new TravellersComponentModifier(TFDataComponents.ALL_NIGHT_GOGGLES.get(), Unit.INSTANCE));
 		context.register(ITEM_DISPLAY_MODIFIER, new TravellersComponentModifier(TFDataComponents.ITEM_DISPLAY.get(), ItemDisplayContents.EMPTY));
 
-		context.register(SWIFT_SWIM_ABILITY, new TravellersEntryModifier(
-			List.of(new ItemAttributeModifiers.Entry(Attributes.WATER_MOVEMENT_EFFICIENCY, TFAttributeModifiers.TRAVELLERS_SWIFT_SWIM_ACTIVATE, EquipmentSlotGroup.CHEST)),
-			List.of(new ItemAttributeModifiers.Entry(Attributes.WATER_MOVEMENT_EFFICIENCY, TFAttributeModifiers.TRAVELLERS_SWIFT_SWIM_DEACTIVATED, EquipmentSlotGroup.CHEST)),
-			true
-		));
+		context.register(SWIFT_SWIM_ABILITY, new TravellersEntryModifier(List.of(new ItemAttributeModifiers.Entry(Attributes.WATER_MOVEMENT_EFFICIENCY, TFAttributeModifiers.TRAVELLERS_SWIFT_SWIM, EquipmentSlotGroup.CHEST))));
 		context.register(STEALTH_MODIFIER, new TravellersComponentModifier(TFDataComponents.STEALTH_CROUCHING.get(), Unit.INSTANCE));
 		context.register(ARROW_MAGNETISM_MODIFIER, new TravellersComponentModifier(TFDataComponents.ARROW_MAGNETISM.get(), Unit.INSTANCE));
 		context.register(FOOD_EFFICIENCY_MODIFIER, new TravellersComponentModifier(TFDataComponents.EFFICIENT_EATER.get(), 2F));
@@ -94,11 +83,7 @@ public class TravellersModifiersManager {
 		context.register(DOUBLE_JUMP_MODIFIER, new TravellersComponentModifier(TFDataComponents.DOUBLE_JUMP.get(), Unit.INSTANCE));
 		context.register(SIDESTEP_MODIFIER, new TravellersComponentModifier(TFDataComponents.SIDESTEP_COOLDOWN.get(), 3 * 20L));
 
-		context.register(HIGH_STEP_ABILITY, new TravellersEntryModifier(
-			List.of(new ItemAttributeModifiers.Entry(Attributes.STEP_HEIGHT, TFAttributeModifiers.TRAVELLERS_HIGH_STEP_ACTIVE, EquipmentSlotGroup.FEET)),
-			List.of(new ItemAttributeModifiers.Entry(Attributes.STEP_HEIGHT, TFAttributeModifiers.TRAVELLERS_HIGH_STEP_DEACTIVATED, EquipmentSlotGroup.FEET)),
-			true
-		));
+		context.register(HIGH_STEP_ABILITY, new TravellersEntryModifier(List.of(new ItemAttributeModifiers.Entry(Attributes.STEP_HEIGHT, TFAttributeModifiers.TRAVELLERS_HIGH_STEP, EquipmentSlotGroup.FEET))));
 		context.register(STRAIGHT_AHEAD_MODIFIER, new TravellersComponentModifier(TFDataComponents.FORWARD_BOOST_MULTIPLIER.get(), 1.4));
 		context.register(SLIMY_SOLES_MODIFIER, new TravellersComponentModifier(TFDataComponents.SLIMY_SOLES_COEFFICIENT.get(), 0.5F));
 		context.register(WATER_WALK_MODIFIER, new TravellersComponentModifier(TFDataComponents.WATER_WALK.get(), Unit.INSTANCE));
@@ -124,15 +109,11 @@ public class TravellersModifiersManager {
 	}
 
 	public static List<Holder.Reference<TravellersModifier>> findAllInsertableModifiers(HolderLookup.Provider registries, ItemStack stack) {
-		return registries.lookupOrThrow(TFRegistries.Keys.TRAVELLERS_MODIFIERS).listElements().filter(travellersModifier -> travellersModifier.value() instanceof InsertableTravellersModifier && travellersModifier.value().hasModifier(stack)).toList();
+		return registries.lookupOrThrow(TFRegistries.Keys.TRAVELLERS_MODIFIERS).listElements().filter(travellersModifier -> travellersModifier.value() instanceof InsertableTravellersModifier && !travellersModifier.value().isAbility() && travellersModifier.value().hasModifier(stack)).toList();
 	}
 
-	public static List<Holder.Reference<TravellersModifier>> findAllBuiltinModifiers(HolderLookup.Provider registries, ItemStack stack) {
-		return registries.lookupOrThrow(TFRegistries.Keys.TRAVELLERS_MODIFIERS).listElements().filter(travellersModifier -> travellersModifier.value() instanceof BuiltinTravellersComponentModifier && travellersModifier.value().hasModifier(stack)).toList();
-	}
-
-	public static List<Holder.Reference<TravellersModifier>> findAllEntryModifiers(HolderLookup.Provider registries, ItemStack stack) {
-		return registries.lookupOrThrow(TFRegistries.Keys.TRAVELLERS_MODIFIERS).listElements().filter(travellersModifier -> travellersModifier.value() instanceof TravellersEntryModifier && travellersModifier.value().hasModifier(stack)).toList();
+	public static List<Holder.Reference<TravellersModifier>> findAllAbilityModifiers(HolderLookup.Provider registries, ItemStack stack) {
+		return registries.lookupOrThrow(TFRegistries.Keys.TRAVELLERS_MODIFIERS).listElements().filter(travellersModifier -> travellersModifier.value().isAbility() && travellersModifier.value().hasModifier(stack)).toList();
 	}
 
 	public static long countInsertableModifiers(HolderLookup.Provider registries, ItemStack stack) {

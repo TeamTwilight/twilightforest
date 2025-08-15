@@ -18,6 +18,11 @@ public record BuiltinTravellersComponentModifier(DataComponentType<?> component)
 	}
 
 	@Override
+	public boolean isAbility() {
+		return true;
+	}
+
+	@Override
 	public MapCodec<? extends TravellersModifier> codec() {
 		return CODEC;
 	}

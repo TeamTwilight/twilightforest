@@ -1294,5 +1294,6 @@ public class LangGenerator extends TFLangProvider {
 		// Other Traveller's gear components
 		this.add("travellers_gear.ability", "Ability: ");
 		this.add("travellers_gear.modifier.empty", "- Empty");
+		this.add("travellers_gear.broken", " (Broken)");
 	}
 }

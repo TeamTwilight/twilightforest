@@ -29,7 +29,7 @@ public class PlayerHooks {
 	 */
 	public static float cancelHighStepModifierForStepDownDuringSneaking(Player player, float f) {
 		for (ItemAttributeModifiers.Entry modifier : player.getInventory().getArmor(EquipmentSlot.FEET.getIndex()).getAttributeModifiers().modifiers()) {
-			if (modifier.matches(Attributes.STEP_HEIGHT, TFAttributeModifiers.TRAVELLERS_HIGH_STEP_ACTIVE.id()))
+			if (modifier.matches(Attributes.STEP_HEIGHT, TFAttributeModifiers.TRAVELLERS_HIGH_STEP.id()))
 				return (float) (f - modifier.modifier().amount());  // TODO: use multiply modifiers to this one if they are present
 		}
 		return f;

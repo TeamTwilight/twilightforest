@@ -18,6 +18,8 @@ public interface TravellersModifier {
 
 	boolean hasModifier(ItemStack stack);
 
+	boolean isAbility();
+
 	default String getPrefix() {
 		return "travellers_gear.modifier";
 	}

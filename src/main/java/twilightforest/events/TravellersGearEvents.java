@@ -17,6 +17,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -46,7 +47,9 @@ import twilightforest.item.travellers_gear.modifiers.TravellersEntryModifier;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 import twilightforest.network.ParticlePacket;
 
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Stream;
 
 @Component
@@ -175,16 +178,25 @@ public class TravellersGearEvents {
 
 	private void activateAndDeactivateTravellersModifiers(ItemAttributeModifierEvent event) {
 		if (ServerLifecycleHooks.getCurrentServer() != null) {
-			RegistryAccess access = ServerLifecycleHooks.getCurrentServer().registryAccess();
 			ItemStack armor = event.getItemStack();
 			if (!armor.has(TFDataComponents.IS_TRAVELLERS_GEAR))
 				return;
 
-			List<Holder.Reference<TravellersModifier>> entryMods = access.lookupOrThrow(TFRegistries.Keys.TRAVELLERS_MODIFIERS).listElements().filter(travellersModifier -> travellersModifier.value() instanceof TravellersEntryModifier).toList();
 			if (armor.getMaxDamage() - 1 <= armor.getDamageValue()) {
-				entryMods.forEach(modifier -> ((TravellersEntryModifier)modifier.value()).deactivate(event));
+				if (armor.has(DataComponents.ATTRIBUTE_MODIFIERS)) {
+					Set<ItemAttributeModifiers.Entry> entries = new LinkedHashSet<>(armor.get(DataComponents.ATTRIBUTE_MODIFIERS).modifiers());
+					if (armor.has(TFDataComponents.STORED_BROKEN_ATTRIBUTES)) {
+						entries.addAll(armor.get(TFDataComponents.STORED_BROKEN_ATTRIBUTES).modifiers());
+					}
+					armor.set(TFDataComponents.STORED_BROKEN_ATTRIBUTES, new ItemAttributeModifiers(entries.stream().toList(), armor.get(DataComponents.ATTRIBUTE_MODIFIERS).showInTooltip()));
+					event.clearModifiers();
+				}
 			} else {
-				entryMods.forEach(modifier -> ((TravellersEntryModifier)modifier.value()).activate(event));
+				if (armor.has(TFDataComponents.STORED_BROKEN_ATTRIBUTES)) {
+					armor.get(TFDataComponents.STORED_BROKEN_ATTRIBUTES).modifiers().forEach(entry -> event.replaceModifier(entry.attribute(), entry.modifier(), entry.slot()));
+					armor.remove(TFDataComponents.STORED_BROKEN_ATTRIBUTES);
+					armor.set(DataComponents.ATTRIBUTE_MODIFIERS, event.build());
+				}
 			}
 		}
 	}

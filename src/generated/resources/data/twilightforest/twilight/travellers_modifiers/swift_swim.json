@@ -1,20 +1,10 @@
 {
   "type": "twilightforest:attribute",
-  "active_modifiers": [
+  "attribute_modifiers": [
     {
       "type": "minecraft:generic.water_movement_efficiency",
       "amount": 1.0,
-      "id": "twilightforest:travellers_gear.vest_fast_swimming_active",
-      "operation": "add_value",
-      "slot": "chest"
-    }
-  ],
-  "builtin_modifier": true,
-  "deactivated_modifiers": [
-    {
-      "type": "minecraft:generic.water_movement_efficiency",
-      "amount": 0.0,
-      "id": "twilightforest:travellers_gear.vest_fast_swimming_deactivated",
+      "id": "twilightforest:travellers_gear.vest_fast_swimming",
       "operation": "add_value",
       "slot": "chest"
     }

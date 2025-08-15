@@ -135,7 +135,7 @@ public class TravellersClientEvents {
 		}
 	}
 
-	private void handleStealth(ClientTickEvent.Pre event) {
+	private void handleStealth(RenderFrameEvent.Pre event) {
 		Player player = Minecraft.getInstance().player;
 		if (player == null) return;
 

@@ -11,6 +11,7 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.Unit;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -46,6 +47,7 @@ public class TFDataComponents {
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Block>> ORE_FILTER = COMPONENTS.register("ore_filter", () -> DataComponentType.<Block>builder().persistent(BuiltInRegistries.BLOCK.byNameCodec().orElse(Blocks.AIR)).networkSynchronized(ByteBufCodecs.registry(Registries.BLOCK)).cacheEncoding().build());
 
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Unit>> IS_TRAVELLERS_GEAR = COMPONENTS.register("travellers_armor", () -> DataComponentType.<Unit>builder().persistent(Codec.unit(Unit.INSTANCE)).networkSynchronized(StreamCodec.unit(Unit.INSTANCE)).cacheEncoding().build());
+	public static final DeferredHolder<DataComponentType<?>, DataComponentType<ItemAttributeModifiers>> STORED_BROKEN_ATTRIBUTES = COMPONENTS.register("stored_broken_attributes", () -> DataComponentType.<ItemAttributeModifiers>builder().persistent(ItemAttributeModifiers.CODEC).networkSynchronized(ItemAttributeModifiers.STREAM_CODEC).cacheEncoding().build());
 
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Unit>> TRAVELLERS_HAS_CHESTPLATE = COMPONENTS.register("has_travellers_chestplate", () -> DataComponentType.<Unit>builder().persistent(Codec.unit(Unit.INSTANCE)).networkSynchronized(StreamCodec.unit(Unit.INSTANCE)).cacheEncoding().build());
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Unit>> TRAVELLERS_HAS_GLOVES = COMPONENTS.register("has_travellers_gloves", () -> DataComponentType.<Unit>builder().persistent(Codec.unit(Unit.INSTANCE)).networkSynchronized(StreamCodec.unit(Unit.INSTANCE)).cacheEncoding().build());
@@ -73,6 +75,7 @@ public class TFDataComponents {
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Unit>> WATER_WALK = COMPONENTS.register("water_walk", () -> DataComponentType.<Unit>builder().persistent(Codec.unit(Unit.INSTANCE)).networkSynchronized(StreamCodec.unit(Unit.INSTANCE)).cacheEncoding().build());
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Unit>> ALL_NIGHT_GOGGLES = COMPONENTS.register("all_night_goggles", () -> DataComponentType.<Unit>builder().persistent(Codec.unit(Unit.INSTANCE)).networkSynchronized(StreamCodec.unit(Unit.INSTANCE)).cacheEncoding().build());
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<ItemDisplayContents>> ITEM_DISPLAY = COMPONENTS.register("item_display", () -> DataComponentType.<ItemDisplayContents>builder().persistent(ItemDisplayContents.CODEC).networkSynchronized(ItemDisplayContents.STREAM_CODEC).cacheEncoding().build());
+	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Unit>> AQUATIC_AGILITY = COMPONENTS.register("aquatic_agility", () -> DataComponentType.<Unit>builder().persistent(Codec.unit(Unit.INSTANCE)).networkSynchronized(StreamCodec.unit(Unit.INSTANCE)).cacheEncoding().build());
 
 	private static @NotNull <T> DeferredHolder<DataComponentType<?>, DataComponentType<T>> register(String name, final Codec<T> codec) {
 		return register(name, codec, null);

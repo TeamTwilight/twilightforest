@@ -24,6 +24,11 @@ public record TravellersComponentModifier(TypedDataComponent<?> component) imple
 		this(new TypedDataComponent<>(component, defaultValue));
 	}
 
+	@Override
+	public boolean isAbility() {
+		return false;
+	}
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean addModifier(ItemStack stack) {

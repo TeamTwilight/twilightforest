@@ -5,39 +5,23 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.DisconnectionDetails;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.protocol.game.ClientboundPlayerPositionPacket;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Unit;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.attachment.AttachmentType;
-import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
@@ -47,13 +31,9 @@ import twilightforest.client.renderer.armor.TFArmorRenderer;
 import twilightforest.init.*;
 import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.item.travellers_gear.modifiers.*;
-import twilightforest.network.ParticlePacket;
-import twilightforest.util.TFMathUtil;
 
 import javax.annotation.Nullable;
-import java.util.Collections;
 import java.util.List;
-import java.util.function.Consumer;
 
 public class TravellersArmorItem extends ArmorItem implements TravellersModifiable {
 
@@ -78,6 +58,14 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 	}
 
 	@Override
+	public Component getName(ItemStack stack) {
+		if (isTravellersArmorAndBroken(stack)) {
+			return Component.translatable(this.getDescriptionId(stack)).append(Component.translatable("travellers_gear.broken").withStyle(ChatFormatting.GRAY));
+		}
+		return super.getName(stack);
+	}
+
+	@Override
 	public @NotNull ItemAttributeModifiers getDefaultAttributeModifiers() {
 		return this.attributeModifiers == null ? super.getDefaultAttributeModifiers() : this.attributeModifiers;
 	}
@@ -98,7 +86,9 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 	public static Properties chestProperties(Properties properties) {
 		return properties
 			.component(TFDataComponents.TRAVELLERS_HAS_CHESTPLATE, Unit.INSTANCE)
-			.attributes(ItemAttributeModifiers.builder().add(Attributes.WATER_MOVEMENT_EFFICIENCY, TFAttributeModifiers.TRAVELLERS_SWIFT_SWIM_ACTIVATE, EquipmentSlotGroup.CHEST).build());
+			.attributes(defaultArmorProperties(Type.CHESTPLATE)
+				.add(Attributes.WATER_MOVEMENT_EFFICIENCY, TFAttributeModifiers.TRAVELLERS_SWIFT_SWIM, EquipmentSlotGroup.CHEST)
+				.build());
 	}
 
 	public static Properties glovesProperties(Properties properties) {
@@ -117,7 +107,7 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 		return properties
 			.component(TFDataComponents.TRAVELLERS_HAS_BOOTS, Unit.INSTANCE)
 			.attributes(defaultArmorProperties(Type.BOOTS)
-				.add(Attributes.STEP_HEIGHT, TFAttributeModifiers.TRAVELLERS_HIGH_STEP_DEACTIVATED, EquipmentSlotGroup.FEET)
+				.add(Attributes.STEP_HEIGHT, TFAttributeModifiers.TRAVELLERS_HIGH_STEP, EquipmentSlotGroup.FEET)
 				.build());
 	}
 
@@ -125,16 +115,13 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 	public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context, @NotNull List<Component> tooltip, @NotNull TooltipFlag flags) {
 		super.appendHoverText(stack, context, tooltip, flags);
 		if (context.registries() != null) {
-			List<Holder.Reference<TravellersModifier>> builtinModifiers = TravellersModifiersManager.findAllBuiltinModifiers(context.registries(), stack);
-			builtinModifiers.forEach(modifier -> tooltip.add(Component.translatable("travellers_gear.ability").withStyle(ChatFormatting.GOLD).append(this.getModifierTooltipComponent(modifier))));
-			List<Holder.Reference<TravellersModifier>> entryModifier = TravellersModifiersManager.findAllEntryModifiers(context.registries(), stack);
-			entryModifier.forEach(modifier -> {
-				if (((TravellersEntryModifier)modifier.value()).builtin()) {
-					tooltip.add(Component.translatable("travellers_gear.ability").withStyle(ChatFormatting.GOLD).append(this.getModifierTooltipComponent(modifier)));
-				}
-			});
+			TravellersModifiersManager.findAllAbilityModifiers(context.registries(), stack).forEach(modifier ->
+				tooltip.add(Component.translatable("travellers_gear.ability").withStyle(ChatFormatting.GOLD).append(this.getModifierTooltipComponent(modifier))));
+
 			List<Holder.Reference<TravellersModifier>> insertableModifiers = TravellersModifiersManager.findAllInsertableModifiers(context.registries(), stack);
-			insertableModifiers.forEach(modifier -> tooltip.add(this.getModifierTooltipComponent(modifier)));
+			insertableModifiers.forEach(modifier ->
+				tooltip.add(this.getModifierTooltipComponent(modifier)));
+
 			for (int i = insertableModifiers.size(); i < getModifierSlots(); i++) {
 				tooltip.add(Component.translatable("travellers_gear.modifier.empty").withStyle(ChatFormatting.DARK_GRAY));
 			}
