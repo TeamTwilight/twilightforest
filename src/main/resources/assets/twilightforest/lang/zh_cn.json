@@ -49,7 +49,7 @@
   "advancement.twilightforest.magic_map": "我有千里眼",
   "advancement.twilightforest.magic_map.desc": "合成%s",
   "advancement.twilightforest.magic_map_focus": "用火书写",
-  "advancement.twilightforest.magic_map_focus.desc": "Craft the %s with a %s, %s, and %s",
+  "advancement.twilightforest.magic_map_focus.desc": "用%s、%s和%s合成%s",
   "advancement.twilightforest.maze_map": "现在，寻找出口",
   "advancement.twilightforest.maze_map.desc": "在迷宫中获取迷宫核心，并用它来合成%s",
   "advancement.twilightforest.mazebreaker": "毁坏迷宫",
