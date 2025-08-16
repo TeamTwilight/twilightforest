@@ -358,10 +358,8 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 		this.tag(ItemTags.TRIMMABLE_ARMOR)
 			.remove(TFItems.YETI_HELMET.get())
 			.remove(TFItems.TRAVELLERS_GOGGLES.get())
-			.remove(TFItems.TRAVELLERS_CHESTPLATE_GLOVES.get())
-			.remove(TFItems.TRAVELLERS_CHESTPLATE.get())
+			.remove(TFItems.TRAVELLERS_VEST.get())
 			.remove(TFItems.TRAVELLERS_GLOVES.get())
-			.remove(TFItems.TRAVELLERS_WINGS_BELT.get())
 			.remove(TFItems.TRAVELLERS_BELT.get())
 			.remove(TFItems.TRAVELLERS_WINGS.get())
 			.remove(TFItems.TRAVELLERS_BOOTS.get());
@@ -385,8 +383,7 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 			TFItems.FIERY_CHESTPLATE.get(),
 			TFItems.PHANTOM_CHESTPLATE.get(),
 			TFItems.NAGA_CHESTPLATE.get(),
-			TFItems.TRAVELLERS_CHESTPLATE_GLOVES.get(),
-			TFItems.TRAVELLERS_CHESTPLATE.get(),
+			TFItems.TRAVELLERS_VEST.get(),
 			TFItems.TRAVELLERS_GLOVES.get());
 
 		this.tag(ItemTags.LEG_ARMOR).add(
@@ -397,10 +394,8 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 			TFItems.YETI_LEGGINGS.get(),
 			TFItems.FIERY_LEGGINGS.get(),
 			TFItems.NAGA_LEGGINGS.get(),
-			TFItems.TRAVELLERS_WINGS_BELT.get(),
 			TFItems.TRAVELLERS_WINGS.get(),
 			TFItems.TRAVELLERS_BELT.get());
-
 
 		this.tag(ItemTags.FOOT_ARMOR).add(
 			TFItems.IRONWOOD_BOOTS.get(),

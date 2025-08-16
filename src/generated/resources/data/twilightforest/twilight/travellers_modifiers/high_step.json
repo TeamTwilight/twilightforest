@@ -8,5 +8,7 @@
       "operation": "add_value",
       "slot": "feet"
     }
-  ]
+  ],
+  "builtin_modifier": true,
+  "component": "twilightforest:high_step"
 }

@@ -90,12 +90,10 @@ public class TFItems {
 	public static final DeferredItem<Item> FIERY_SWORD = ITEMS.register("fiery_sword", () -> new FierySwordItem(TFToolMaterials.FIERY, new Item.Properties().fireResistant().rarity(Rarity.UNCOMMON).attributes(SwordItem.createAttributes(TFToolMaterials.FIERY, 3, -2.4F))));
 	public static final DeferredItem<Item> FIERY_PICKAXE = ITEMS.register("fiery_pickaxe", () -> new FieryPickItem(TFToolMaterials.FIERY, new Item.Properties().fireResistant().rarity(Rarity.UNCOMMON).attributes(PickaxeItem.createAttributes(TFToolMaterials.FIERY, 1.0F, -2.8F))));
 	public static final DeferredItem<ArmorItem> TRAVELLERS_GOGGLES = ITEMS.register("travellers_goggles", () -> new TravellersGogglesItem(TravellersArmorItem.gogglesProperties(new Item.Properties())));
-	public static final DeferredItem<ArmorItem> TRAVELLERS_CHESTPLATE_GLOVES = ITEMS.register("travellers_chest_gloves", () -> new TravellersArmorItem(ArmorItem.Type.CHESTPLATE, TravellersArmorItem.glovesProperties(TravellersArmorItem.chestProperties(new Item.Properties())), 3, 12));
-	public static final DeferredItem<ArmorItem> TRAVELLERS_CHESTPLATE = ITEMS.register("travellers_chest", () -> new TravellersArmorItem(ArmorItem.Type.CHESTPLATE, TravellersArmorItem.chestProperties(new Item.Properties()), 3, 12));
+	public static final DeferredItem<ArmorItem> TRAVELLERS_VEST = ITEMS.register("travellers_vest", () -> new TravellersArmorItem(ArmorItem.Type.CHESTPLATE, TravellersArmorItem.chestProperties(new Item.Properties()), 3, 12));
 	public static final DeferredItem<ArmorItem> TRAVELLERS_GLOVES = ITEMS.register("travellers_gloves", () -> new TravellersArmorItem(ArmorItem.Type.CHESTPLATE, TravellersArmorItem.glovesProperties(new Item.Properties().stacksTo(1)), 0));
-	public static final DeferredItem<ArmorItem> TRAVELLERS_WINGS_BELT = ITEMS.register("travellers_wings_belt", () -> new TravellersArmorBeltItem(ArmorItem.Type.LEGGINGS, TravellersArmorBeltItem.addSwapHotbarModifier(TravellersArmorItem.wingsProperties(new Item.Properties())), 3, 12));
-	public static final DeferredItem<ArmorItem> TRAVELLERS_WINGS = ITEMS.register("travellers_wings", () -> new TravellersArmorItem(ArmorItem.Type.LEGGINGS, TravellersArmorItem.wingsProperties(new Item.Properties()), 3, 12));
-	public static final DeferredItem<ArmorItem> TRAVELLERS_BELT = ITEMS.register("travellers_belt", () -> new TravellersArmorBeltItem(ArmorItem.Type.LEGGINGS, TravellersArmorBeltItem.addSwapHotbarAbility(new Item.Properties().stacksTo(1)), 0));
+	public static final DeferredItem<ArmorItem> TRAVELLERS_WINGS = ITEMS.register("travellers_wings", () -> new TravellersArmorBeltItem(ArmorItem.Type.LEGGINGS, TravellersArmorItem.wingsProperties(new Item.Properties()), 3, 12));
+	public static final DeferredItem<ArmorItem> TRAVELLERS_BELT = ITEMS.register("travellers_belt", () -> new TravellersArmorBeltItem(ArmorItem.Type.LEGGINGS, TravellersArmorBeltItem.beltProperties(new Item.Properties().stacksTo(1)), 0));
 	public static final DeferredItem<ArmorItem> TRAVELLERS_BOOTS = ITEMS.register("travellers_boots", () -> new TravellersArmorItem(ArmorItem.Type.BOOTS, TravellersArmorItem.bootsProperties(new Item.Properties()), 3, 12));
 	public static final DeferredItem<Item> STEELEAF_INGOT = ITEMS.register("steeleaf_ingot", () -> new Item(new Item.Properties()));
 	public static final DeferredItem<ArmorItem> STEELEAF_HELMET = ITEMS.register("steeleaf_helmet", () -> new ArmorItem(TFArmorMaterials.STEELEAF, ArmorItem.Type.HELMET, new Item.Properties().durability(ArmorItem.Type.HELMET.getDurability(10))));
@@ -130,7 +128,7 @@ public class TFItems {
 	public static final DeferredItem<Item> IRON_BERRY = ITEMS.register("iron_berry", () -> new Item(new Item.Properties()));
 	public static final DeferredItem<Item> GOLD_BERRY = ITEMS.register("gold_berry", () -> new Item(new Item.Properties()));
 	public static final DeferredItem<Item> COPPER_BERRY = ITEMS.register("copper_berry", () -> new Item(new Item.Properties()));
-	public static final DeferredItem<Item> ESSENCE_BERRY = ITEMS.register("essence_berry", () -> new EssenceBerry(new Item.Properties()));
+	public static final DeferredItem<Item> ESSENCE_BERRY = ITEMS.register("essence_berry", () -> new EssenceBerryItem(new Item.Properties()));
 	public static final DeferredItem<Item> COPPER_NUGGET = ITEMS.register("copper_nugget", () -> new Item(new Item.Properties()));
 	public static final DeferredItem<Item> TOWER_KEY = ITEMS.register("tower_key", () -> new Item(new Item.Properties().fireResistant().rarity(Rarity.UNCOMMON)));
 	public static final DeferredItem<Item> BORER_ESSENCE = ITEMS.register("borer_essence", () -> new Item(new Item.Properties()));

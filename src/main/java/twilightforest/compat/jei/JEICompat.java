@@ -37,7 +37,6 @@ import twilightforest.init.TFMenuTypes;
 import twilightforest.init.TFRecipes;
 import twilightforest.inventory.UncraftingMenu;
 import twilightforest.item.recipe.*;
-import twilightforest.item.recipe.travellers.TravellersBeltWingsMergeRecipe;
 import twilightforest.item.recipe.travellers.TravellersGearModifierRecipe;
 import twilightforest.item.recipe.travellers.TravellersVestGlovesMergeRecipe;
 
@@ -118,7 +117,6 @@ public class JEICompat implements IModPlugin {
 		registration.getCraftingCategory().addExtension(MoonwormQueenRepairRecipe.class, new MoonwormQueenExtension());
 		registration.getCraftingCategory().addExtension(EssenceRepairRecipe.class, new ExanimateEssenceRepairExtension());
 		registration.getCraftingCategory().addExtension(CasketRepairRecipe.class, new CasketRepairExtension());
-		registration.getCraftingCategory().addExtension(TravellersBeltWingsMergeRecipe.class, new TravellersWingsBeltMergeExtension());
 		registration.getCraftingCategory().addExtension(TravellersVestGlovesMergeRecipe.class, new TravellersVestGlovesMergeExtension());
 	}
 

@@ -639,12 +639,10 @@ public class LangGenerator extends TFLangProvider {
 		this.addItem(TFItems.CUBE_OF_ANNIHILATION, "Cube of Annihilation");
 
 		this.addItem(TFItems.TRAVELLERS_GOGGLES, "Traveller's Goggles");
-		this.addItem(TFItems.TRAVELLERS_CHESTPLATE, "Traveller's Vest");
-		this.addItem(TFItems.TRAVELLERS_CHESTPLATE_GLOVES, "Traveller's Vest with Gloves");
+		this.addItem(TFItems.TRAVELLERS_VEST, "Traveller's Vest");
 		this.addItem(TFItems.TRAVELLERS_GLOVES, "Traveller's Gloves");
 		this.addItem(TFItems.TRAVELLERS_BELT, "Traveller's Belt");
 		this.addItem(TFItems.TRAVELLERS_WINGS, "Traveller's Wings");
-		this.addItem(TFItems.TRAVELLERS_WINGS_BELT, "Traveller's Wings & Belt");
 		this.addItem(TFItems.TRAVELLERS_BOOTS, "Traveller's Boots");
 
 		this.addItem(TFItems.MOON_DIAL, "Moon Dial");

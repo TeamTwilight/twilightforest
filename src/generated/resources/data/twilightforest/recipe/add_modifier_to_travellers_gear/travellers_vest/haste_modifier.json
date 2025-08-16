@@ -1,0 +1,23 @@
+{
+  "type": "twilightforest:travellers_gear_modifier_shaped_recipe",
+  "is_rotated": false,
+  "modifier_key": "twilightforest:haste",
+  "pattern": {
+    "key": {
+      "O": {
+        "item": "minecraft:obsidian"
+      },
+      "R": {
+        "item": "minecraft:redstone_block"
+      },
+      "V": {
+        "item": "twilightforest:travellers_vest"
+      }
+    },
+    "pattern": [
+      "RRR",
+      "RVR",
+      "OOO"
+    ]
+  }
+}

@@ -1,4 +1,6 @@
 {
-  "type": "twilightforest:builtin",
-  "component": "twilightforest:swap_hotbar_ability"
+  "type": "twilightforest:component",
+  "component": {
+    "twilightforest:swap_hotbar_modifier": {}
+  }
 }

@@ -1,0 +1,12 @@
+{
+  "type": "twilightforest:travellers_gear_modifier_shapeless_recipe",
+  "ingredients": [
+    {
+      "item": "twilightforest:travellers_wings"
+    },
+    {
+      "item": "twilightforest:travellers_belt"
+    }
+  ],
+  "modifier_key": "twilightforest:swap_hotbar"
+}

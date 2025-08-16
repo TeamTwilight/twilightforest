@@ -1,7 +1,11 @@
 package twilightforest.data.custom;
 
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.ShapedRecipePattern;
+import net.minecraft.world.level.ItemLike;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -28,6 +32,14 @@ public class CartesianShapedRecipeBuilder extends AbstractCartesianRecipeBuilder
 			throw new IllegalArgumentException("Symbol ' ' is reserved and cannot be defined");
 		key.put(symbol, wrap(ingredient));
 		return this;
+	}
+
+	public CartesianShapedRecipeBuilder define(Character symbol, ItemLike item) {
+		return this.define(symbol, Ingredient.of(item));
+	}
+
+	public CartesianShapedRecipeBuilder define(Character symbol, TagKey<Item> tag) {
+		return this.define(symbol, Ingredient.of(tag));
 	}
 
 	public CartesianShapedRecipeBuilder pattern(String pattern) {

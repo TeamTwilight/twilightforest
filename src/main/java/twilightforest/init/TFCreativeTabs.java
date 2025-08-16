@@ -585,10 +585,8 @@ public class TFCreativeTabs {
 			output.accept(TFItems.FORTIFICATION_SCEPTER);
 			output.accept(TFItems.LAMP_OF_CINDERS);
 			output.accept(TFItems.TRAVELLERS_GOGGLES);
-			output.accept(TFItems.TRAVELLERS_CHESTPLATE_GLOVES);
-			output.accept(TFItems.TRAVELLERS_CHESTPLATE);
+			output.accept(TFItems.TRAVELLERS_VEST);
 			output.accept(TFItems.TRAVELLERS_GLOVES);
-			output.accept(TFItems.TRAVELLERS_WINGS_BELT);
 			output.accept(TFItems.TRAVELLERS_WINGS);
 			output.accept(TFItems.TRAVELLERS_BELT);
 			output.accept(TFItems.TRAVELLERS_BOOTS);

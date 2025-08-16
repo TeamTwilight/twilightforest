@@ -36,8 +36,8 @@ public class TravellersModifiersManager {
 	public static final ResourceKey<TravellersModifier> PERFECT_DODGE_MODIFIER = makeKey("perfect_dodge");
 	public static final ResourceKey<TravellersModifier> HASTE_MODIFIER = makeKey("haste");
 	// belt
-	public static final ResourceKey<TravellersModifier> SWAP_HOTBAR_ABILITY = makeKey("swap_hotbar");
-	public static final ResourceKey<TravellersModifier> SWAP_HOTBAR_MODIFIER = makeKey("swap_hotbar_modifier");
+	public static final ResourceKey<TravellersModifier> SWAP_HOTBAR_ABILITY = makeKey("swap_hotbar_ability");
+	public static final ResourceKey<TravellersModifier> SWAP_HOTBAR_MODIFIER = makeKey("swap_hotbar");
 	// wings
 	public static final ResourceKey<TravellersModifier> HIGH_JUMP_ABILITY = makeKey("high_jump");
 	public static final ResourceKey<TravellersModifier> CONTROLLED_FALL_MODIFIER = makeKey("controlled_fall");
@@ -62,12 +62,12 @@ public class TravellersModifiersManager {
 		context.register(AQUATIC_AGILITY_MODIFIER, new TravellersEntryModifier(List.of(
 			new ItemAttributeModifiers.Entry(Attributes.OXYGEN_BONUS, TFAttributeModifiers.TRAVELLERS_AQUATIC_AGILITY_OXYGEN, EquipmentSlotGroup.HEAD),
 			new ItemAttributeModifiers.Entry(Attributes.SUBMERGED_MINING_SPEED, TFAttributeModifiers.TRAVELLERS_AQUATIC_AGILITY_MINING, EquipmentSlotGroup.HEAD)
-		), TFDataComponents.AQUATIC_AGILITY.asOptional()));
+		), TFDataComponents.AQUATIC_AGILITY, false));
 		context.register(RED_THREAD_VISION_MODIFIER, new TravellersComponentModifier(TFDataComponents.RED_THREAD_VISION.get(), Unit.INSTANCE));
 		context.register(ALL_NIGHT_GOGGLES_MODIFIER, new TravellersComponentModifier(TFDataComponents.ALL_NIGHT_GOGGLES.get(), Unit.INSTANCE));
 		context.register(ITEM_DISPLAY_MODIFIER, new TravellersComponentModifier(TFDataComponents.ITEM_DISPLAY.get(), ItemDisplayContents.EMPTY));
 
-		context.register(SWIFT_SWIM_ABILITY, new TravellersEntryModifier(List.of(new ItemAttributeModifiers.Entry(Attributes.WATER_MOVEMENT_EFFICIENCY, TFAttributeModifiers.TRAVELLERS_SWIFT_SWIM, EquipmentSlotGroup.CHEST))));
+		context.register(SWIFT_SWIM_ABILITY, new TravellersEntryModifier(List.of(new ItemAttributeModifiers.Entry(Attributes.WATER_MOVEMENT_EFFICIENCY, TFAttributeModifiers.TRAVELLERS_SWIFT_SWIM, EquipmentSlotGroup.CHEST)), TFDataComponents.SWIFT_SWIM, true));
 		context.register(STEALTH_MODIFIER, new TravellersComponentModifier(TFDataComponents.STEALTH_CROUCHING.get(), Unit.INSTANCE));
 		context.register(ARROW_MAGNETISM_MODIFIER, new TravellersComponentModifier(TFDataComponents.ARROW_MAGNETISM.get(), Unit.INSTANCE));
 		context.register(FOOD_EFFICIENCY_MODIFIER, new TravellersComponentModifier(TFDataComponents.EFFICIENT_EATER.get(), 2F));
@@ -83,7 +83,7 @@ public class TravellersModifiersManager {
 		context.register(DOUBLE_JUMP_MODIFIER, new TravellersComponentModifier(TFDataComponents.DOUBLE_JUMP.get(), Unit.INSTANCE));
 		context.register(SIDESTEP_MODIFIER, new TravellersComponentModifier(TFDataComponents.SIDESTEP_COOLDOWN.get(), 3 * 20L));
 
-		context.register(HIGH_STEP_ABILITY, new TravellersEntryModifier(List.of(new ItemAttributeModifiers.Entry(Attributes.STEP_HEIGHT, TFAttributeModifiers.TRAVELLERS_HIGH_STEP, EquipmentSlotGroup.FEET))));
+		context.register(HIGH_STEP_ABILITY, new TravellersEntryModifier(List.of(new ItemAttributeModifiers.Entry(Attributes.STEP_HEIGHT, TFAttributeModifiers.TRAVELLERS_HIGH_STEP, EquipmentSlotGroup.FEET)), TFDataComponents.HIGH_STEP, true));
 		context.register(STRAIGHT_AHEAD_MODIFIER, new TravellersComponentModifier(TFDataComponents.FORWARD_BOOST_MULTIPLIER.get(), 1.4));
 		context.register(SLIMY_SOLES_MODIFIER, new TravellersComponentModifier(TFDataComponents.SLIMY_SOLES_COEFFICIENT.get(), 0.5F));
 		context.register(WATER_WALK_MODIFIER, new TravellersComponentModifier(TFDataComponents.WATER_WALK.get(), Unit.INSTANCE));

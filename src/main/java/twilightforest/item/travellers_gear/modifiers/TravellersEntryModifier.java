@@ -1,5 +1,6 @@
 package twilightforest.item.travellers_gear.modifiers;
 
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.component.DataComponentType;
@@ -11,17 +12,19 @@ import net.minecraft.world.item.component.ItemAttributeModifiers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 
-public record TravellersEntryModifier(List<ItemAttributeModifiers.Entry> modifiers, Optional<DataComponentType<Unit>> markerComponent) implements InsertableTravellersModifier {
+public record TravellersEntryModifier(List<ItemAttributeModifiers.Entry> modifiers, DataComponentType<Unit> markerComponent, boolean builtin) implements InsertableTravellersModifier {
 
 	@SuppressWarnings("unchecked")
 	public static final MapCodec<TravellersEntryModifier> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 		ItemAttributeModifiers.Entry.CODEC.listOf().fieldOf("attribute_modifiers").forGetter(TravellersEntryModifier::modifiers),
-		DataComponentType.CODEC.optionalFieldOf("component").xmap(componentType -> componentType.map(dataComponentType -> (DataComponentType<Unit>) dataComponentType), object -> object.map(dataComponentType -> dataComponentType)).forGetter(TravellersEntryModifier::markerComponent)
+		DataComponentType.CODEC.fieldOf("component").xmap(component -> (DataComponentType<Unit>) component, object -> object).forGetter(TravellersEntryModifier::markerComponent),
+		Codec.BOOL.fieldOf("builtin_modifier").orElse(false).forGetter(TravellersEntryModifier::builtin)
 	).apply(instance, TravellersEntryModifier::new));
 
-	public TravellersEntryModifier(List<ItemAttributeModifiers.Entry> modifiers) {
-		this(modifiers, Optional.empty());
+	public TravellersEntryModifier(List<ItemAttributeModifiers.Entry> modifiers, Supplier<DataComponentType<Unit>> markerComponent, boolean builtin) {
+		this(modifiers, markerComponent.get(), builtin);
 	}
 
 	@Override
@@ -31,7 +34,7 @@ public record TravellersEntryModifier(List<ItemAttributeModifiers.Entry> modifie
 
 	@Override
 	public boolean addModifier(ItemStack stack) {
-		if (this.markerComponent().isPresent()) {
+		if (!this.builtin()) {
 			if (stack.getMaxDamage() - 1 <= stack.getDamageValue()) {
 				ItemAttributeModifiers modifiers = stack.getAttributeModifiers();
 				for (ItemAttributeModifiers.Entry entry : this.modifiers()) {
@@ -39,16 +42,14 @@ public record TravellersEntryModifier(List<ItemAttributeModifiers.Entry> modifie
 				}
 				stack.set(DataComponents.ATTRIBUTE_MODIFIERS, modifiers);
 			}
-
-			stack.set(this.markerComponent().get(), Unit.INSTANCE);
-			return true;
 		}
-		return false;
+		stack.set(this.markerComponent(), Unit.INSTANCE);
+		return true;
 	}
 
 	@Override
 	public void removeModifier(ItemStack stack) {
-		if (this.markerComponent().isPresent()) {
+		if (!this.builtin()) {
 			List<ItemAttributeModifiers.Entry> newEntries = new ArrayList<>();
 			var modifiers = stack.getAttributeModifiers();
 			modifiers.modifiers().forEach(entry -> {
@@ -57,18 +58,17 @@ public record TravellersEntryModifier(List<ItemAttributeModifiers.Entry> modifie
 				}
 			});
 			stack.set(DataComponents.ATTRIBUTE_MODIFIERS, new ItemAttributeModifiers(newEntries, modifiers.showInTooltip()));
-			this.markerComponent().ifPresent(stack::remove);
+			stack.remove(this.markerComponent());
 		}
 	}
 
 	@Override
 	public boolean isAbility() {
-		return this.markerComponent().isEmpty();
+		return this.builtin();
 	}
 
 	@Override
 	public boolean hasModifier(ItemStack stack) {
-		List<ItemAttributeModifiers.Entry> entries = stack.getAttributeModifiers().modifiers();
-		return this.markerComponent().map(stack::has).orElse(false) || entries.stream().anyMatch(entry -> entry.modifier().is(this.modifiers().getFirst().modifier().id()));
+		return stack.has(this.markerComponent());
 	}
 }

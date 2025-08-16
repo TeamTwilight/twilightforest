@@ -16,5 +16,6 @@
       "slot": "head"
     }
   ],
+  "builtin_modifier": false,
   "component": "twilightforest:aquatic_agility"
 }

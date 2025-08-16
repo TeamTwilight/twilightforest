@@ -271,13 +271,6 @@ public class ClientRegistrationEvents {
 			entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F
 		);
 
-		ItemProperties.register(TFItems.TRAVELLERS_GOGGLES.get(), ResourceLocation.parse("broken"), this::isBroken);
-		ItemProperties.register(TFItems.TRAVELLERS_CHESTPLATE_GLOVES.get(), ResourceLocation.parse("broken"), this::isBroken);
-		ItemProperties.register(TFItems.TRAVELLERS_CHESTPLATE.get(), ResourceLocation.parse("broken"), this::isBroken);
-		ItemProperties.register(TFItems.TRAVELLERS_WINGS_BELT.get(), ResourceLocation.parse("broken"), this::isBroken);
-		ItemProperties.register(TFItems.TRAVELLERS_WINGS.get(), ResourceLocation.parse("broken"), this::isBroken);
-		ItemProperties.register(TFItems.TRAVELLERS_BOOTS.get(), ResourceLocation.parse("broken"), this::isBroken);
-
 		Map<ModelResourceLocation, BakedModel> models = event.getModels();
 		List<Map.Entry<ModelResourceLocation, BakedModel>> leavesModels = models.entrySet().stream()
 			.filter(entry -> entry.getKey().id().getNamespace().equals(TwilightForestMod.ID) && entry.getKey().id().getPath().contains("leaves") && !entry.getKey().id().getPath().contains("dark")).toList();
@@ -690,7 +683,7 @@ public class ClientRegistrationEvents {
 		);
 		event.registerItem(
 			new TravellersArmorItem.ArmorRender(),
-			TFItems.TRAVELLERS_GOGGLES.get(), TFItems.TRAVELLERS_CHESTPLATE_GLOVES.get(), TFItems.TRAVELLERS_CHESTPLATE.get(), TFItems.TRAVELLERS_GLOVES.get(), TFItems.TRAVELLERS_WINGS_BELT.get(), TFItems.TRAVELLERS_WINGS.get(), TFItems.TRAVELLERS_BELT.get(), TFItems.TRAVELLERS_BOOTS.get()
+			TFItems.TRAVELLERS_GOGGLES.get(), TFItems.TRAVELLERS_VEST.get(), TFItems.TRAVELLERS_GLOVES.get(), TFItems.TRAVELLERS_WINGS.get(), TFItems.TRAVELLERS_BELT.get(), TFItems.TRAVELLERS_BOOTS.get()
 		);
 		event.registerItem(
 			new TFSimpleArmorRenderer(TFArmorModel::new, TFModelLayers.KNIGHTMETAL_ARMOR_INNER, TFModelLayers.KNIGHTMETAL_ARMOR_OUTER),

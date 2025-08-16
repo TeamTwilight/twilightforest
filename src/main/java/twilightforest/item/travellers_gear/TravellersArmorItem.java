@@ -86,6 +86,7 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 	public static Properties chestProperties(Properties properties) {
 		return properties
 			.component(TFDataComponents.TRAVELLERS_HAS_CHESTPLATE, Unit.INSTANCE)
+			.component(TFDataComponents.SWIFT_SWIM, Unit.INSTANCE)
 			.attributes(defaultArmorProperties(Type.CHESTPLATE)
 				.add(Attributes.WATER_MOVEMENT_EFFICIENCY, TFAttributeModifiers.TRAVELLERS_SWIFT_SWIM, EquipmentSlotGroup.CHEST)
 				.build());
@@ -106,6 +107,7 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 	public static Properties bootsProperties(Properties properties) {
 		return properties
 			.component(TFDataComponents.TRAVELLERS_HAS_BOOTS, Unit.INSTANCE)
+			.component(TFDataComponents.HIGH_STEP, Unit.INSTANCE)
 			.attributes(defaultArmorProperties(Type.BOOTS)
 				.add(Attributes.STEP_HEIGHT, TFAttributeModifiers.TRAVELLERS_HIGH_STEP, EquipmentSlotGroup.FEET)
 				.build());
@@ -163,7 +165,7 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 	}
 
 	public static boolean isTravellersArmorAndBroken(ItemStack stack) {
-		return stack.has(TFDataComponents.IS_TRAVELLERS_GEAR) && stack.getMaxDamage() - 1 <= stack.getDamageValue();
+		return stack.has(TFDataComponents.IS_TRAVELLERS_GEAR) && stack.isDamageableItem() && stack.getMaxDamage() - 1 <= stack.getDamageValue();
 	}
 
 	// [VanillaCopy] modified ArmorItem constructor to just return default attribute modifiers

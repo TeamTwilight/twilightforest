@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.RegistryOps;
@@ -15,12 +16,14 @@ import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import org.apache.commons.lang3.StringUtils;
 import twilightforest.data.helpers.TFLangProvider;
+import twilightforest.init.TFItems;
 import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifiable;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.StreamSupport;
 
 public abstract class TravellersGearModifierRecipe extends CustomRecipe {
@@ -48,11 +51,29 @@ public abstract class TravellersGearModifierRecipe extends CustomRecipe {
 			return ItemStack.EMPTY;  // Should never happen
 
 		ItemStack stack = travellerArmorStack.copy();
-		return applyModifier(registries, stack);
+		return applyModifier(registries, stack, input.items().stream().map(Ingredient::of).toList());
 	}
 
-	public ItemStack applyModifier(HolderLookup.Provider registries, ItemStack stack) {
-		return TravellersModifiersManager.addModifier(registries, stack, this.travellersModifierKey) ? stack : ItemStack.EMPTY;
+	public ItemStack applyModifier(HolderLookup.Provider registries, ItemStack stack, List<Ingredient> inputs) {
+		boolean modifierAdded = TravellersModifiersManager.addModifier(registries, stack, this.travellersModifierKey);
+		if (modifierAdded) {
+			ItemStack belt = getAndReturnBelt(inputs);
+			if (!belt.isEmpty()) {
+				stack.set(DataComponents.CONTAINER, belt.get(DataComponents.CONTAINER));
+			}
+		}
+		return modifierAdded ? stack : ItemStack.EMPTY;
+	}
+
+	protected static ItemStack getAndReturnBelt(List<Ingredient> ingredients) {
+		for (Ingredient ingredient : ingredients) {
+			for (ItemStack itemstack : ingredient.getItems()) {
+				if (itemstack.is(TFItems.TRAVELLERS_BELT)) {
+					return itemstack;
+				}
+			}
+		}
+		return ItemStack.EMPTY;
 	}
 
 	public abstract boolean isShapeless();

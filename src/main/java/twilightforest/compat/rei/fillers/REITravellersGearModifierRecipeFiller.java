@@ -24,7 +24,7 @@ public class REITravellersGearModifierRecipeFiller implements CraftingRecipeFill
 		TravellersGearModifierRecipe recipe = recipeHolder.value();
 		List<Ingredient> ingredients = recipe.getIngredients();
 		ItemStack output = TravellersGearModifierRecipe.getModifiableArmorFromIngredients(ingredients).copy();
-		recipe.applyModifier(Minecraft.getInstance().level.registryAccess(), output);
+		recipe.applyModifier(Minecraft.getInstance().level.registryAccess(), output, ingredients);
 		Renderer renderer = EntryStack.of(VanillaEntryTypes.ITEM.getDefinition(), output);
 		return List.of(
 			new DefaultCustomShapedDisplay(

@@ -44,9 +44,8 @@
       }
     },
     "pattern": [
-      " P ",
-      "HWH",
-      "F F"
+      "FPF",
+      "HWH"
     ]
   }
 }

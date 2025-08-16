@@ -23,23 +23,16 @@ import java.util.Optional;
 public class TravellersArmorBeltItem extends TravellersArmorItem {
 
 	public TravellersArmorBeltItem(ArmorItem.Type equipmentType, Properties properties, int insertableModifierSlots, int durability) {
-		super(equipmentType, beltProperties(properties), insertableModifierSlots, durability);
+		super(equipmentType, properties, insertableModifierSlots, durability);
 	}
 
 	public TravellersArmorBeltItem(ArmorItem.Type equipmentType, Properties properties, int insertableModifierSlots) {
-		super(equipmentType, beltProperties(properties), insertableModifierSlots);
-	}
-
-	public static Properties addSwapHotbarAbility(Properties properties) {
-		return properties.component(TFDataComponents.SWAP_HOTBAR_ABILITY, Unit.INSTANCE);
-	}
-
-	public static Properties addSwapHotbarModifier(Properties properties) {
-		return properties.component(TFDataComponents.SWAP_HOTBAR_MODIFIER, Unit.INSTANCE);
+		super(equipmentType, properties, insertableModifierSlots);
 	}
 
 	public static Properties beltProperties(Properties properties) {
 		return properties
+			.component(TFDataComponents.SWAP_HOTBAR_ABILITY, Unit.INSTANCE)
 			.component(DataComponents.CONTAINER, ItemContainerContents.fromItems(NonNullList.withSize(9, ItemStack.EMPTY)))
 			.component(TFDataComponents.TRAVELLERS_HAS_BELT, Unit.INSTANCE);
 	}
@@ -51,6 +44,7 @@ public class TravellersArmorBeltItem extends TravellersArmorItem {
 			: Optional.empty();
 	}
 
+	//TODO check for the container component once #2575 is merged
 	@Override
 	public boolean canFitInsideContainerItems() {
 		return false;

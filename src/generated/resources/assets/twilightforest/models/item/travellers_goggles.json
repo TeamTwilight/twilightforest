@@ -1,15 +1,10 @@
 {
   "parent": "neoforge:item/default",
+  "broken_modifier_directory": "travellers_modifiers/goggles/broken/",
   "loader": "twilightforest:travellers_gear",
-  "overrides": [
-    {
-      "model": "twilightforest:item/travellers_goggles_broken",
-      "predicate": {
-        "minecraft:broken": 1.0
-      }
-    }
-  ],
+  "modifier_directory": "travellers_modifiers/goggles/",
   "textures": {
-    "base": "twilightforest:item/travellers_goggles"
+    "base": "twilightforest:item/travellers_goggles",
+    "broken": "twilightforest:item/travellers_goggles_broken"
   }
 }

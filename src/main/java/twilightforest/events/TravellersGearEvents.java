@@ -179,7 +179,7 @@ public class TravellersGearEvents {
 	private void activateAndDeactivateTravellersModifiers(ItemAttributeModifierEvent event) {
 		if (ServerLifecycleHooks.getCurrentServer() != null) {
 			ItemStack armor = event.getItemStack();
-			if (!armor.has(TFDataComponents.IS_TRAVELLERS_GEAR))
+			if (!armor.has(TFDataComponents.IS_TRAVELLERS_GEAR) || !armor.isDamageableItem())
 				return;
 
 			if (armor.getMaxDamage() - 1 <= armor.getDamageValue()) {
@@ -244,12 +244,7 @@ public class TravellersGearEvents {
 
 			ItemStack unmodifiedStack = inputStack.copy();
 			modifiers.forEach(modifier -> ((InsertableTravellersModifier) modifier.value()).removeModifier(unmodifiedStack));
-			ItemStack outputStack = unmodifiedStack.copy();
-			if (outputStack.is(TFItems.TRAVELLERS_WINGS_BELT)) {
-				outputStack = new ItemStack(TFItems.TRAVELLERS_WINGS, outputStack.getCount(), outputStack.getComponentsPatch());
-				outputStack.remove(DataComponents.CONTAINER);
-			}
-			event.setOutput(outputStack);
+			event.setOutput(unmodifiedStack.copy());
 		}
 	}
 

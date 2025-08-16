@@ -1,7 +1,6 @@
 package twilightforest.item.recipe.travellers;
 
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.util.Unit;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
@@ -12,8 +11,6 @@ import net.minecraft.world.level.Level;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFRecipes;
-import twilightforest.init.custom.TravellersModifiersManager;
-import twilightforest.item.travellers_gear.TravellersArmorBeltItem;
 
 import java.util.List;
 import java.util.Optional;
@@ -38,9 +35,8 @@ public class TravellersVestGlovesMergeRecipe extends CustomRecipe {
 		if (pair.isEmpty())
 			return ItemStack.EMPTY;
 
-		ItemStack vest = pair.get().vest();
-		ItemStack result = new ItemStack(TFItems.TRAVELLERS_CHESTPLATE_GLOVES, 1, vest.getComponentsPatch());
-		result.set(TFDataComponents.TRAVELLERS_HAS_GLOVES, Unit.INSTANCE);
+		ItemStack vest = pair.get().vest().copy();
+		vest.set(TFDataComponents.TRAVELLERS_HAS_GLOVES, Unit.INSTANCE);
 		return vest;
 	}
 
@@ -59,7 +55,7 @@ public class TravellersVestGlovesMergeRecipe extends CustomRecipe {
 		List<ItemStack> items = input.items().stream().filter(stack -> !stack.isEmpty()).toList();
 		if (items.size() != 2) return Optional.empty();
 
-		Optional<ItemStack> vest = items.stream().filter(s -> s.is(TFItems.TRAVELLERS_CHESTPLATE.get())).findFirst();
+		Optional<ItemStack> vest = items.stream().filter(s -> s.is(TFItems.TRAVELLERS_VEST.get())).findFirst();
 		Optional<ItemStack> gloves = items.stream().filter(s -> s.is(TFItems.TRAVELLERS_GLOVES.get())).findFirst();
 
 		return vest.flatMap(w -> gloves.map(b -> new InputPair(w, b)));

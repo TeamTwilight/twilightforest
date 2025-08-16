@@ -8,5 +8,7 @@
       "operation": "add_value",
       "slot": "chest"
     }
-  ]
+  ],
+  "builtin_modifier": true,
+  "component": "twilightforest:swift_swim"
 }

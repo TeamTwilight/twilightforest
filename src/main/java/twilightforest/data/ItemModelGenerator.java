@@ -20,7 +20,6 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import twilightforest.TwilightForestMod;
 import twilightforest.beans.Autowired;
-import twilightforest.client.model.item.TravellersGearItemModel;
 import twilightforest.data.custom.TravellersGearItemModelBuilder;
 import twilightforest.enums.extensions.TFItemDisplayContextEnumExtension;
 import twilightforest.init.TFBlocks;
@@ -605,9 +604,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		singleTexTool(TFItems.STEELEAF_HOE);
 		travellersTex(
 			TFItems.TRAVELLERS_GOGGLES,
-			TFItems.TRAVELLERS_CHESTPLATE_GLOVES,
-			TFItems.TRAVELLERS_CHESTPLATE,
-			TFItems.TRAVELLERS_WINGS_BELT,
+			TFItems.TRAVELLERS_VEST,
 			TFItems.TRAVELLERS_WINGS,
 			TFItems.TRAVELLERS_BOOTS
 		);
@@ -1063,10 +1060,9 @@ public class ItemModelGenerator extends ItemModelProvider {
 	private void travellersTex(DeferredItem<? extends Item>... items) {
 		for (DeferredItem<? extends Item> item : items) {
 			String id = item.getId().getPath();
-			ItemModelBuilder brokenModel = withExistingParent(id + "_broken", "item/generated").texture("layer0", prefix("item/" + id + "_broken"));
-			withExistingParent(item.getId().getPath(), "neoforge:item/default").texture("base", prefix("item/" + item.getId().getPath()))
-				.customLoader(TravellersGearItemModelBuilder::begin).end()
-				.override().predicate(ResourceLocation.withDefaultNamespace("broken"), 1).model(brokenModel).end();
+			String modifierID = id.replace("travellers_", "");
+			withExistingParent(id, "neoforge:item/default").texture("base", prefix("item/" + id)).texture("broken", prefix("item/" + id + "_broken"))
+				.customLoader((parent, helper) -> TravellersGearItemModelBuilder.begin(parent, "travellers_modifiers/" + modifierID + "/", "travellers_modifiers/" + modifierID + "/broken/", helper)).end();
 		}
 	}
 

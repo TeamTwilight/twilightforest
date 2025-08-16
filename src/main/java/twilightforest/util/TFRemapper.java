@@ -164,6 +164,7 @@ public class TFRemapper {
 		remapEntry(itemReg, "peacock_fan", "peacock_feather_fan");
 		remapEntry(itemReg, "alpha_fur", "alpha_yeti_fur");
 		remapEntry(itemReg, "questing_ram_banner_pattern", "quest_ram_banner_pattern");
+		remapEntry(itemReg, "travellers_chest", "travellers_vest");
 
 		remapEntry(itemReg, "bunny_spawn_egg", "dwarf_rabbit_spawn_egg");
 		remapEntry(itemReg, "goblin_knight_lower_spawn_egg", "lower_goblin_knight_spawn_egg");

@@ -1,4 +1,4 @@
-// 1.21.1	2025-08-06T15:18:12.087637078	Twilight Forest Item Tags
+// 1.21.1	2025-08-15T23:31:08.650262903	Twilight Forest Item Tags
 3c5895c72cfffe09615ec2b28267a726fcbf52e8 data/alexscaves/tags/item/ferns.json
 4c5df8d60b8f068b482a22fd807ddea22e1bfe00 data/alexscaves/tags/item/ferromagnetic_items.json
 42afac82c004061587d5b1ae20c2e66c0d399c8c data/alexscaves/tags/item/raw_meats.json
@@ -49,7 +49,7 @@ a60dbce39527970b03af723b64656128b26f70e6 data/minecraft/tags/item/axes.json
 6e4052d645637e55eca3bdbaebd8fbaf2a2cfbc4 data/minecraft/tags/item/beacon_payment_items.json
 932bd2980da6d582ac5ba3cb6d86e51597a713b4 data/minecraft/tags/item/boats.json
 e69d5be074938c1ff9a1853ff8da6782500ff92f data/minecraft/tags/item/breaks_decorated_pots.json
-4d55e57124ab1f6fc2dc744782845d01459b9a70 data/minecraft/tags/item/chest_armor.json
+0e8c2e40d850ec15ba0533ec536f70ddfea39d8d data/minecraft/tags/item/chest_armor.json
 dc2f26c3fd06fccd7385a8d16527701a68efb05a data/minecraft/tags/item/chest_boats.json
 387c3d6fc3d958d7d90aea6c542e7a1a46ed16d9 data/minecraft/tags/item/cluster_max_harvestables.json
 c4789374da6dba366c9372741cd1abcd08aa72c0 data/minecraft/tags/item/dyeable.json
@@ -71,7 +71,7 @@ e66649b3248e051912913e282cb83d3b5006cde0 data/minecraft/tags/item/freeze_immune_
 5aad0a08128e892d493125fbd082a1f1d981b585 data/minecraft/tags/item/head_armor.json
 b696524eda9e607bebc1b307e19c2b1633b8b0b1 data/minecraft/tags/item/hoes.json
 30b260e82242a2b548549ed7a4f89117c8d2c3c3 data/minecraft/tags/item/leaves.json
-f1af41a79e0fa41192726764b466c6e08d17c1a7 data/minecraft/tags/item/leg_armor.json
+254ea448382315685abec81ddfec26119189ac76 data/minecraft/tags/item/leg_armor.json
 19bd74ce640c043c09053d7571fb7a9915d41417 data/minecraft/tags/item/logs.json
 0af80d33dcbb7226a5afcb9d8a4c1a73a2c38c9d data/minecraft/tags/item/logs_that_burn.json
 3d97022fe689918fe10ff909adfe2953d455c6ec data/minecraft/tags/item/meat.json
@@ -88,7 +88,7 @@ bb39f860aaf80d261eee2fc6cf18ee75a411d1c1 data/minecraft/tags/item/slabs.json
 60d2c0021214d67e32e5edc0ee008326caa52bf7 data/minecraft/tags/item/stairs.json
 931bc115353e6c267d36d480a5891285fde13487 data/minecraft/tags/item/swords.json
 33e52f2e89c4cebba996ae0eae4b4974291b9d81 data/minecraft/tags/item/trim_materials.json
-d88ef445d63688618995d76a05da2b3b212ff682 data/minecraft/tags/item/trimmable_armor.json
+b865b9d4dbc027c1b21a7fb67f6129acdb4d5605 data/minecraft/tags/item/trimmable_armor.json
 f0813a14ba178a941ba37c4059a25e6b19f77091 data/minecraft/tags/item/wooden_buttons.json
 3ff910b3376b5166da794689b1bf7569ad0b2e87 data/minecraft/tags/item/wooden_doors.json
 879fc86d9d7face7697fbbb62565885740fc7f41 data/minecraft/tags/item/wooden_fences.json
