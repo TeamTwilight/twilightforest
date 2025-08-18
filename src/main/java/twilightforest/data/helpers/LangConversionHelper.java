@@ -117,7 +117,10 @@ public class LangConversionHelper {
 		int curIndex = numArguments;
 		for (int i = splitText.size() - 1; i >= 0; i--) {
 			LangFormatSplitter.Component component = splitText.get(i);
-			if (component instanceof LangFormatSplitter.FormatComponent formatComponent) {
+			if (component instanceof LangFormatSplitter.KeybindComponent keybindComponent) {
+				//do not convert keybinds so theyre properly parsed
+				converted.append(keybindComponent.contents());
+			} else if (component instanceof LangFormatSplitter.FormatComponent formatComponent) {
 				//Insert the full code directly
 				converted.append(convertFormattingComponent(formatComponent, curIndex--, numArguments));
 			} else {

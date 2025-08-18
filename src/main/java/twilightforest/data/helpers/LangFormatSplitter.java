@@ -62,12 +62,16 @@ public class LangFormatSplitter {
 		StringBuilder formattingCode = new StringBuilder();
 		StringBuilder rawText = new StringBuilder();
 		char[] exploded = text.toCharArray();
+		boolean keybind = false;
 		int leftBrackets = 0;
 		int firstBracket = -1;
 		int secondBracket = -1;
 		for (int i = 0; i < exploded.length; i++) {
 			char c = exploded[i];
-			if (c == '{') {
+			if (c == '$') {
+				keybind = true;
+				formattingCode.append(c);
+			} else if (c == '{') {
 				if (leftBrackets == 0) {
 					firstBracket = i;
 					String raw = rawText.toString();
@@ -89,7 +93,10 @@ public class LangFormatSplitter {
 						//If we finish closing our brackets add our formatting code
 						String piece = formattingCode.toString();
 						MessageFormatComponent component = MessageFormatComponent.fromContents(piece);
-						if (component == null) {
+						if (keybind) {
+							components.add(new KeybindComponent(piece));
+							keybind = false;
+						} else if (component == null) {
 							if (secondBracket != -1) {
 								//Add the text from the first bracket up to the second bracket as raw text
 								// and reset our state to as if we were starting at that point
@@ -157,6 +164,20 @@ public class LangFormatSplitter {
 		@Override
 		public String contents() {
 			return formattingCode;
+		}
+	}
+
+	public static class KeybindComponent implements Component {
+
+		private final String contents;
+
+		private KeybindComponent(String contents) {
+			this.contents = contents;
+		}
+
+		@Override
+		public String contents() {
+			return this.contents;
 		}
 	}
 

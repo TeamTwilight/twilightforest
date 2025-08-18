@@ -118,14 +118,14 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 		super.appendHoverText(stack, context, tooltip, flags);
 		if (context.registries() != null) {
 			TravellersModifiersManager.findAllAbilityModifiers(context.registries(), stack).forEach(modifier ->
-				tooltip.add(Component.translatable("travellers_gear.ability").withStyle(ChatFormatting.GOLD).append(this.getModifierTooltipComponent(modifier))));
+				tooltip.add(Component.translatable("travellers_gear.ability", this.getModifierTooltipComponent(modifier)).withStyle(ChatFormatting.GOLD)));
 
 			List<Holder.Reference<TravellersModifier>> insertableModifiers = TravellersModifiersManager.findAllInsertableModifiers(context.registries(), stack);
 			insertableModifiers.forEach(modifier ->
-				tooltip.add(this.getModifierTooltipComponent(modifier)));
+				tooltip.add(Component.literal("- ").append(this.getModifierTooltipComponent(modifier))));
 
 			for (int i = insertableModifiers.size(); i < getModifierSlots(); i++) {
-				tooltip.add(Component.translatable("travellers_gear.modifier.empty").withStyle(ChatFormatting.DARK_GRAY));
+				tooltip.add(Component.literal("- ").append(Component.translatable("travellers_gear.modifier.empty").withStyle(ChatFormatting.DARK_GRAY)));
 			}
 		}
 	}

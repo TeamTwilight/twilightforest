@@ -1258,42 +1258,42 @@ public class LangGenerator extends TFLangProvider {
 		this.addKeyMapping(TFKeyBinds.SWAP_HOTBAR_KEY, "Swap Hotbar");
 
 		// built-in modifiers
-		this.addTravellersModifier(registries, TravellersModifiersManager.ZOOM_ABILITY, "Zoom (keybind: ${tfkeybinds/"+ TFKeyBinds.ZOOM_KEY.getName() + "})");
+		this.addTravellersModifier(registries, TravellersModifiersManager.ZOOM_ABILITY, "Zoom (keybind: ${tfkeybinds/" + TFKeyBinds.ZOOM_KEY.getName() + "})");
 		this.addTravellersModifier(registries, TravellersModifiersManager.SWIFT_SWIM_ABILITY, "Swift Swim");
-		this.addTravellersModifier(registries, TravellersModifiersManager.SWAP_HOTBAR_ABILITY, "Swap Hotbar (keybind: ${tfkeybinds/"+ TFKeyBinds.SWAP_HOTBAR_KEY.getName() + "})");
+		this.addTravellersModifier(registries, TravellersModifiersManager.SWAP_HOTBAR_ABILITY, "Swap Hotbar (keybind: ${tfkeybinds/" + TFKeyBinds.SWAP_HOTBAR_KEY.getName() + "})");
 		this.addTravellersModifier(registries, TravellersModifiersManager.HIGH_JUMP_ABILITY, "High Jump");
 		this.addTravellersModifier(registries, TravellersModifiersManager.HIGH_STEP_ABILITY, "High Step");
 
 		// insertable modifiers
-		this.addTravellersModifier(registries, TravellersModifiersManager.AUTO_REPAIR_MODIFIER, "- Auto Repair");
+		this.addTravellersModifier(registries, TravellersModifiersManager.AUTO_REPAIR_MODIFIER, "Auto Repair");
 
-		this.addTravellersModifier(registries, TravellersModifiersManager.AQUATIC_AGILITY_MODIFIER, "- Aquatic Agility");
-		this.addTravellersModifier(registries, TravellersModifiersManager.RED_THREAD_VISION_MODIFIER, "- Red Thread Vision (keybind: ${tfkeybinds/"+ TFKeyBinds.RED_THREAD_VISION_KEY.getName() + "})");
-		this.addTravellersModifier(registries, TravellersModifiersManager.ALL_NIGHT_GOGGLES_MODIFIER, "- All-Night Goggles");
-		this.addTravellersModifier(registries, TravellersModifiersManager.ITEM_DISPLAY_MODIFIER, "- Item Display (keybind: ${tfkeybinds/"+ TFKeyBinds.ITEM_DISPLAY_KEY.getName() + "})");
+		this.addTravellersModifier(registries, TravellersModifiersManager.AQUATIC_AGILITY_MODIFIER, "Aquatic Agility");
+		this.addTravellersModifier(registries, TravellersModifiersManager.RED_THREAD_VISION_MODIFIER, "Red Thread Vision (keybind: ${tfkeybinds/" + TFKeyBinds.RED_THREAD_VISION_KEY.getName() + "})");
+		this.addTravellersModifier(registries, TravellersModifiersManager.ALL_NIGHT_GOGGLES_MODIFIER, "All-Night Goggles");
+		this.addTravellersModifier(registries, TravellersModifiersManager.ITEM_DISPLAY_MODIFIER, "Item Display (keybind: ${tfkeybinds/" + TFKeyBinds.ITEM_DISPLAY_KEY.getName() + "})");
 		this.add("travellers_gear.modifier.twilightforest.item_display.clock.unknown", "Time Unknown");
 		this.add("travellers_gear.modifier.twilightforest.item_display.compass.lodestone", "%s (%s blocks away)");
 
-		this.addTravellersModifier(registries, TravellersModifiersManager.STEALTH_MODIFIER,          "- Stealth (sneak to activate)");
-		this.addTravellersModifier(registries, TravellersModifiersManager.ARROW_MAGNETISM_MODIFIER,  "- Arrow Magnetism");
-		this.addTravellersModifier(registries, TravellersModifiersManager.FOOD_EFFICIENCY_MODIFIER,  "- Efficient Eater");
-		this.addTravellersModifier(registries, TravellersModifiersManager.PERFECT_DODGE_MODIFIER,    "- Perfect Dodge");
-		this.addTravellersModifier(registries, TravellersModifiersManager.HASTE_MODIFIER,            "- Haste");
+		this.addTravellersModifier(registries, TravellersModifiersManager.STEALTH_MODIFIER, "Stealth (sneak to activate)");
+		this.addTravellersModifier(registries, TravellersModifiersManager.ARROW_MAGNETISM_MODIFIER, "Arrow Magnetism");
+		this.addTravellersModifier(registries, TravellersModifiersManager.FOOD_EFFICIENCY_MODIFIER, "Efficient Eater");
+		this.addTravellersModifier(registries, TravellersModifiersManager.PERFECT_DODGE_MODIFIER, "Perfect Dodge");
+		this.addTravellersModifier(registries, TravellersModifiersManager.HASTE_MODIFIER, "Haste");
 
-		this.addTravellersModifier(registries, TravellersModifiersManager.SWAP_HOTBAR_MODIFIER, "- Swap Hotbar (keybind: ${tfkeybinds/"+ TFKeyBinds.SWAP_HOTBAR_KEY.getName() + "})");
+		this.addTravellersModifier(registries, TravellersModifiersManager.SWAP_HOTBAR_MODIFIER, "Swap Hotbar (keybind: ${tfkeybinds/" + TFKeyBinds.SWAP_HOTBAR_KEY.getName() + "})");
 
-		this.addTravellersModifier(registries, TravellersModifiersManager.CONTROLLED_FALL_MODIFIER,  "- Controlled Fall");
-		this.addTravellersModifier(registries, TravellersModifiersManager.AGILE_RANGER_MODIFIER,     "- Agile Ranger");
-		this.addTravellersModifier(registries, TravellersModifiersManager.DOUBLE_JUMP_MODIFIER,      "- Double Jump");
-		this.addTravellersModifier(registries, TravellersModifiersManager.SIDESTEP_MODIFIER,         "- Sidestep");
+		this.addTravellersModifier(registries, TravellersModifiersManager.CONTROLLED_FALL_MODIFIER, "Controlled Fall");
+		this.addTravellersModifier(registries, TravellersModifiersManager.AGILE_RANGER_MODIFIER, "Agile Ranger");
+		this.addTravellersModifier(registries, TravellersModifiersManager.DOUBLE_JUMP_MODIFIER, "Double Jump");
+		this.addTravellersModifier(registries, TravellersModifiersManager.SIDESTEP_MODIFIER, "Sidestep");
 
-		this.addTravellersModifier(registries, TravellersModifiersManager.STRAIGHT_AHEAD_MODIFIER,   "- Straight Ahead");
-		this.addTravellersModifier(registries, TravellersModifiersManager.SLIMY_SOLES_MODIFIER,      "- Slimy Soles");
-		this.addTravellersModifier(registries, TravellersModifiersManager.WATER_WALK_MODIFIER,       "- Water Walk");
+		this.addTravellersModifier(registries, TravellersModifiersManager.STRAIGHT_AHEAD_MODIFIER, "Straight Ahead");
+		this.addTravellersModifier(registries, TravellersModifiersManager.SLIMY_SOLES_MODIFIER, "Slimy Soles");
+		this.addTravellersModifier(registries, TravellersModifiersManager.WATER_WALK_MODIFIER, "Water Walk");
 
 		// Other Traveller's gear components
-		this.add("travellers_gear.ability", "Ability: ");
-		this.add("travellers_gear.modifier.empty", "- Empty");
+		this.add("travellers_gear.ability", "Ability: %s");
+		this.add("travellers_gear.modifier.empty", "Empty");
 		this.add("travellers_gear.broken", " (Broken)");
 	}
 }
