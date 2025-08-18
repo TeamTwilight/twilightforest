@@ -11,7 +11,6 @@ import net.minecraft.world.item.component.ItemAttributeModifiers;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Supplier;
 
 public record TravellersEntryModifier(List<ItemAttributeModifiers.Entry> modifiers, DataComponentType<Unit> markerComponent, boolean builtin) implements InsertableTravellersModifier {
@@ -35,13 +34,11 @@ public record TravellersEntryModifier(List<ItemAttributeModifiers.Entry> modifie
 	@Override
 	public boolean addModifier(ItemStack stack) {
 		if (!this.builtin()) {
-			if (stack.getMaxDamage() - 1 <= stack.getDamageValue()) {
-				ItemAttributeModifiers modifiers = stack.getAttributeModifiers();
-				for (ItemAttributeModifiers.Entry entry : this.modifiers()) {
-					modifiers = modifiers.withModifierAdded(entry.attribute(), entry.modifier(), entry.slot());
-				}
-				stack.set(DataComponents.ATTRIBUTE_MODIFIERS, modifiers);
+			ItemAttributeModifiers modifiers = stack.getAttributeModifiers();
+			for (ItemAttributeModifiers.Entry entry : this.modifiers()) {
+				modifiers = modifiers.withModifierAdded(entry.attribute(), entry.modifier(), entry.slot());
 			}
+			stack.set(DataComponents.ATTRIBUTE_MODIFIERS, modifiers);
 		}
 		stack.set(this.markerComponent(), Unit.INSTANCE);
 		return true;
