@@ -428,7 +428,7 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 			TFItems.RABBIT_JERKY.get(), TFItems.MUTTON_JERKY.get(),
 			TFItems.VENISON_JERKY.get(), TFItems.MEEF_JERKY.get(),
 			TFItems.COD_JERKY.get(), TFItems.SALMON_JERKY.get(),
-			TFItems.CLOWNFISH_JERKY.get(), TFItems.FUGU_JERKY.get());
+			TFItems.TROPICAL_FISH_JERKY.get(), TFItems.FUGU_JERKY.get());
 		this.tag(Tags.Items.FOODS_BERRY).add(
 			TFItems.TORCHBERRIES.get(), TFItems.RASPBERRY.get(),
 			TFItems.BLACKBERRY.get(), TFItems.BLUEBERRY.get(),

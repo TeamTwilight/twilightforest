@@ -704,7 +704,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addItem(TFItems.RABBIT_JERKY, "Rabbit Jerky");
 		this.addItem(TFItems.COD_JERKY, "Cod Jerky");
 		this.addItem(TFItems.SALMON_JERKY, "Salmon Jerky");
-		this.addItem(TFItems.CLOWNFISH_JERKY, "Clownfish Jerky");
+		this.addItem(TFItems.TROPICAL_FISH_JERKY, "Tropical Fish Jerky");
 		this.addItem(TFItems.FUGU_JERKY, "Fugu Jerky");
 		this.addItem(TFItems.VENISON_JERKY, "Venison Jerky");
 		this.addItem(TFItems.MEEF_JERKY, "Meef Jerky");
@@ -714,6 +714,7 @@ public class LangGenerator extends TFLangProvider {
 
 		this.addItem(TFItems.TREATED_LEATHER, "Treated Leather");
 		this.addItem(TFItems.TANNED_LEATHER, "Tanned Leather");
+		this.addItem(TFItems.STALE_BREAD, "Stale Bread");
 
 		this.addItem(TFItems.COPPER_NUGGET, "Copper Nugget");
 		this.addItem(TFItems.IRON_BERRY, "Iron Oreberry");

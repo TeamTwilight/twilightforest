@@ -632,7 +632,7 @@ public class TFCreativeTabs {
 			output.accept(TFItems.RABBIT_JERKY);
 			output.accept(TFItems.COD_JERKY);
 			output.accept(TFItems.SALMON_JERKY);
-			output.accept(TFItems.CLOWNFISH_JERKY);
+			output.accept(TFItems.TROPICAL_FISH_JERKY);
 			output.accept(TFItems.FUGU_JERKY);
 			output.accept(TFItems.MAZE_WAFER);
 			output.accept(TFItems.MEEF_STROGANOFF);

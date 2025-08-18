@@ -574,7 +574,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		singleTex(TFItems.RABBIT_JERKY);
 		singleTex(TFItems.COD_JERKY);
 		singleTex(TFItems.SALMON_JERKY);
-		singleTex(TFItems.CLOWNFISH_JERKY);
+		singleTex(TFItems.TROPICAL_FISH_JERKY);
 		singleTex(TFItems.FUGU_JERKY);
 		singleTex(TFItems.RAW_VENISON);
 		singleTex(TFItems.COOKED_VENISON);
@@ -796,6 +796,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		generated("shield", prefix("item/lich_shield_frame"), prefix("item/lich_shield_fill"));
 
 		this.toBlock(TFBlocks.SINISTER_SPAWNER.value());
+		tool(TFItems.STALE_BREAD.getId().getPath(), ResourceLocation.withDefaultNamespace("item/bread"));
 	}
 
 	private ItemModelBuilder fullbright(String name, ResourceLocation... layers) {

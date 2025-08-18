@@ -1,4 +1,4 @@
-// 1.21.1	2025-08-16T00:20:06.058096889	TwilightForest Item and BlockItem models
+// 1.21.1	2025-08-16T20:20:54.87059486	TwilightForest Item and BlockItem models
 387b18dfa614fda790f7b8e8324e3b139fa177c2 assets/twilightforest/models/item/acacia_banister.json
 59484730296a2f5e31f486fac16ad09d2a55ae8c assets/twilightforest/models/item/acacia_drying_rack.json
 0ca7dc7b4daec376dd0f85d57465830781584c7d assets/twilightforest/models/item/alpha_yeti_banner_pattern.json
@@ -717,6 +717,7 @@ fbdf1b275da3dd94971a38e4e48de4a3cf337fdd assets/twilightforest/models/item/spira
 3558c047cd587e30737081dfa9c726b710c52e14 assets/twilightforest/models/item/spruce_drying_rack.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/squirrel_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/stable_ice_core_spawn_egg.json
+71bc42362895d9b1b8e5661199cc8526f6e1cbb3 assets/twilightforest/models/item/stale_bread.json
 0528882d5d5ab12726109a66dba7b4ee98a5a655 assets/twilightforest/models/item/steeleaf_axe.json
 5b7f129cbe9eb8a521dba26e7d55c03220166a96 assets/twilightforest/models/item/steeleaf_block.json
 2ce90ddcba38601b8f3da67e477727e8e9fc661f assets/twilightforest/models/item/steeleaf_boots.json

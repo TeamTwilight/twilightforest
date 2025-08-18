@@ -1,4 +1,4 @@
-// 1.21.1	2025-08-16T08:54:36.86708012	Recipes
+// 1.21.1	2025-08-16T20:20:54.891370424	Recipes
 eee1c953c65260e0720758b4290db5e13271143c data/twilightforest/advancement/recipes/brewing/magma_cream_maze_ver.json
 c2df534e70a4871d9e50ee3a1c6242e5e0fe6eaa data/twilightforest/advancement/recipes/building_blocks/aurora_pillar.json
 07904494c5d60d52e5f79f8f6487d08016013692 data/twilightforest/advancement/recipes/building_blocks/canopy_bookshelf.json
@@ -337,6 +337,7 @@ f5d54473f419fe8991effd33f0b94f9f126b0938 data/twilightforest/advancement/recipes
 1d97ef2f296ef8dab26486d3561f2d6165fcc525 data/twilightforest/advancement/recipes/drying/pork_jerky.json
 fd145ef7dc2caae000d45b773fec968df7e15599 data/twilightforest/advancement/recipes/drying/rabbit_jerky.json
 4ee5cdf11d0c6255a2b171af93513d00fb204e06 data/twilightforest/advancement/recipes/drying/salmon_jerky.json
+26cce4696c8dab330e8b57c4e8983564526ecdbe data/twilightforest/advancement/recipes/drying/stale_bread.json
 4ad836079023855ca0b07c220cdf171afd55659b data/twilightforest/advancement/recipes/drying/tanned_leather.json
 0d9dad55e54289a503138d8538b87001466f51fe data/twilightforest/advancement/recipes/drying/venison_jerky.json
 dc3e35958930e7b95617cb381724c196fa89a662 data/twilightforest/advancement/recipes/food/berry_medley.json
@@ -714,6 +715,7 @@ cf0d688c1a3a99f1b27f151c6c6e64ca71626ebf data/twilightforest/recipe/reappearing_
 c0de62c657a98b9c17ccf19ec1dfd394db519ea9 data/twilightforest/recipe/snowy_cloud.json
 19072e4c716e79cef7637b7db678ff8bcf37d65f data/twilightforest/recipe/sorting_boat.json
 cbd70048931d37f66b2edcaf1f4dada7fa96a7d4 data/twilightforest/recipe/sorting_chest_boat.json
+d2effca5949a7f01f7f57d91382c0a6b226d55d9 data/twilightforest/recipe/stale_bread.json
 3bccd44e4da1c116a1a346879ed13484e57bd945 data/twilightforest/recipe/sticky_piston_maze_ver.json
 04ece3b610e37787a6726847afa6e1b6deb98052 data/twilightforest/recipe/stonecutting/acacia_log/hollow_acacia_log.json
 94da0e6657d852a3e60812eee28a77cb02f59946 data/twilightforest/recipe/stonecutting/birch_log/hollow_birch_log.json

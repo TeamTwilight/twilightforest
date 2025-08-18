@@ -900,7 +900,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.unlockedBy("has_meat", has(Items.SALMON))
 			.save(output);
 
-		DryingRecipeBuilder.drying(Items.TROPICAL_FISH, TFItems.CLOWNFISH_JERKY)
+		DryingRecipeBuilder.drying(Items.TROPICAL_FISH, TFItems.TROPICAL_FISH_JERKY)
 			.unlockedBy("has_meat", has(Items.TROPICAL_FISH))
 			.save(output);
 
@@ -927,6 +927,8 @@ public class CraftingGenerator extends CraftingDataHelper {
 		DryingRecipeBuilder.drying(TFItems.TREATED_LEATHER, TFItems.TANNED_LEATHER)
 			.unlockedBy("has_treated", has(TFItems.TREATED_LEATHER))
 			.save(output);
+
+		DryingRecipeBuilder.drying(Items.BREAD, TFItems.STALE_BREAD).save(output);
 	}
 
 	private void blockCompressionRecipes(RecipeOutput output) {

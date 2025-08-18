@@ -79,7 +79,7 @@ public class DryingRecipeBuilder implements RecipeBuilder {
 	}
 
 	private void ensureValid(ResourceLocation location) {
-		if (this.criteria.isEmpty()) {
+		if (this.criteria.isEmpty() && !location.getPath().equals("stale_bread")) {
 			throw new IllegalStateException("No way of obtaining recipe " + location);
 		}
 	}

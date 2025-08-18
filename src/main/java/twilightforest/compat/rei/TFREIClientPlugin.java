@@ -116,7 +116,12 @@ public class TFREIClientPlugin implements REIClientPlugin {
 		RecipeViewerConstants.getOminousFireRecipes().forEach(info -> registry.add(REIOminousFireDisplay.of(info)));
 
 		registry.registerRecipesFiller(NoTemplateSmithingRecipe.class, RecipeType.SMITHING, REINoTemplateDisplay::noTemplate);
-		registry.registerRecipeFiller(DryingRecipe.class, TFRecipes.DRYING_RECIPE.get(), holder -> REIDryingDisplay.of(holder.value()));
+		registry.registerRecipeFiller(DryingRecipe.class, TFRecipes.DRYING_RECIPE.get(), holder -> {
+			if (!holder.value().getResult().is(TFItems.STALE_BREAD)) {
+				return REIDryingDisplay.of(holder.value());
+			}
+			return null;
+		});
 
 		new REITravellersGearModifierRecipeFiller().registerDisplays(registry);
 		new MoonwormQueenRepairFiller().registerDisplays(registry);

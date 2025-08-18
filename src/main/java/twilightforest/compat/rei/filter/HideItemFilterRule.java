@@ -24,7 +24,7 @@ public class HideItemFilterRule implements FilteringRule<Object> {
 		Stream<EntryStack<?>> all = Streams.concat(context.getShownStacks().stream(), context.getUnsetStacks().stream());
 
 		filteringResult.hide(all.filter(stack -> TFItems.MAGIC_PAINTING.getId().equals(stack.getIdentifier())
-			|| TFItems.FOUR_LEAF_CLOVER.getId().equals(stack.getIdentifier())
+			|| TFItems.FOUR_LEAF_CLOVER.getId().equals(stack.getIdentifier()) || TFItems.STALE_BREAD.getId().equals(stack.getIdentifier())
 			|| stack.getTagsFor().anyMatch(tagKey -> tagKey.equals(ItemTagGenerator.WIP))
 		).toList());
 

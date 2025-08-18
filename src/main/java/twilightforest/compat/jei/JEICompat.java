@@ -132,7 +132,7 @@ public class JEICompat implements IModPlugin {
 		registration.addRecipes(TransformationPowderCategory.TRANSFORMATION, RecipeViewerConstants.getTransformationPowderRecipes().stream().map(info -> new TransformationRecipe(new FakeEntityType(info.input()), new FakeEntityType(info.output()), info.reversible())).toList());
 		registration.addRecipes(OminousFireCategory.OMINOUS_FIRE, RecipeViewerConstants.getOminousFireRecipes().stream().map(info -> new OminousFireRecipe(new FakeEntityType(info.input()), new FakeEntityType(info.output()))).toList());
 		registration.addRecipes(CrumbleHornCategory.CRUMBLE_HORN, RecipeViewerConstants.getCrumbleHornRecipes().stream().map(info -> new CrumbleRecipe(info.getFirst(), info.getSecond())).toList());
-		registration.addRecipes(DryingCategory.DRYING, manager.getAllRecipesFor(TFRecipes.DRYING_RECIPE.get()).stream().map(RecipeHolder::value).toList());
+		registration.addRecipes(DryingCategory.DRYING, manager.getAllRecipesFor(TFRecipes.DRYING_RECIPE.get()).stream().filter(holder -> !holder.value().getResult().is(TFItems.STALE_BREAD)).map(RecipeHolder::value).toList());
 		registration.addRecipes(RecipeTypes.GRINDSTONE, GrindstoneTravellersRecipesGetter.getRecipes());
 	}
 

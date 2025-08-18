@@ -82,7 +82,9 @@ public class TFEmiCompat implements EmiPlugin {
 
 
 		for (RecipeHolder<DryingRecipe> holder : manager.getAllRecipesFor(TFRecipes.DRYING_RECIPE.get())) {
-			registry.addRecipe(new EmiDryingRecipe(holder));
+			if (!holder.value().getResult().is(TFItems.STALE_BREAD)) {
+				registry.addRecipe(new EmiDryingRecipe(holder));
+			}
 		}
 
 		EmiTravellersGearGrindstoneRecipe.register(registry);

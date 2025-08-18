@@ -182,6 +182,7 @@ public class TFItems {
 	public static final DeferredItem<Item> FOUR_LEAF_CLOVER = ITEMS.register("four_leaf_clover", () -> new Item(new Item.Properties()));
 	public static final DeferredItem<Item> CROWN_SPLINTER = ITEMS.register("crown_splinter", () -> new Item(new Item.Properties().rarity(Rarity.UNCOMMON)));
 	public static final DeferredItem<Item> MYSTIC_CROWN = ITEMS.register("mystic_crown", () -> new MysticCrownItem(new Item.Properties().rarity(Rarity.UNCOMMON).stacksTo(1).attributes(ItemAttributeModifiers.builder().add(Attributes.ARMOR, new AttributeModifier(ResourceLocation.withDefaultNamespace("armor.head"), 2.0F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.HEAD).build())));
+	public static final DeferredItem<Item> STALE_BREAD = ITEMS.register("stale_bread", () -> new SwordItem(Tiers.WOOD, new Item.Properties().stacksTo(1).attributes(SwordItem.createAttributes(Tiers.WOOD, 3, -2.4F).withTooltip(false))));
 
 	public static final DeferredItem<Item> KEEPSAKE_CASKET = ITEMS.register("keepsake_casket", () -> new KeepsakeCasketItem(TFBlocks.KEEPSAKE_CASKET.get(), new Item.Properties().rarity(Rarity.UNCOMMON).component(TFDataComponents.CASKET_DAMAGE, 0)));
 	public static final DeferredItem<Item> HUGE_LILY_PAD = ITEMS.register("huge_lily_pad", () -> new HugeLilyPadItem(TFBlocks.HUGE_LILY_PAD.get(), new Item.Properties()));
@@ -324,7 +325,7 @@ public class TFItems {
 	public static final DeferredItem<Item> RABBIT_JERKY = ITEMS.register("rabbit_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationModifier(0.4F).build())));
 	public static final DeferredItem<Item> COD_JERKY = ITEMS.register("cod_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.4F).build())));
 	public static final DeferredItem<Item> SALMON_JERKY = ITEMS.register("salmon_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.4F).build())));
-	public static final DeferredItem<Item> CLOWNFISH_JERKY = ITEMS.register("clownfish_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.4F).build())));
+	public static final DeferredItem<Item> TROPICAL_FISH_JERKY = ITEMS.register("tropical_fish_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.4F).build())));
 	public static final DeferredItem<Item> FUGU_JERKY = ITEMS.register("fugu_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.4F).build())));
 	public static final DeferredItem<Item> VENISON_JERKY = ITEMS.register("venison_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(5).saturationModifier(0.6F).build())));
 	public static final DeferredItem<Item> MEEF_JERKY = ITEMS.register("meef_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(5).saturationModifier(0.6F).build())));
