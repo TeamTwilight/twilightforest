@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "twilightforest:clownfish_jerky"
+        "recipe": "twilightforest:tropical_fish_jerky"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "twilightforest:clownfish_jerky"
+      "twilightforest:tropical_fish_jerky"
     ]
   }
 }

@@ -1,4 +1,4 @@
-// 1.21.1	2025-08-16T20:20:54.87059486	TwilightForest Item and BlockItem models
+// 1.21.1	2025-08-17T21:35:29.692215125	TwilightForest Item and BlockItem models
 387b18dfa614fda790f7b8e8324e3b139fa177c2 assets/twilightforest/models/item/acacia_banister.json
 59484730296a2f5e31f486fac16ad09d2a55ae8c assets/twilightforest/models/item/acacia_drying_rack.json
 0ca7dc7b4daec376dd0f85d57465830781584c7d assets/twilightforest/models/item/alpha_yeti_banner_pattern.json
@@ -148,7 +148,6 @@ cbf50d18534bb0c500cf4c0ce6eca171f8814482 assets/twilightforest/models/item/cherr
 b9819b08c50eb1669081cbdefcda06703a043530 assets/twilightforest/models/item/cinder_log.json
 c0905c2fad082d3d418febd423b7b90cdee47d03 assets/twilightforest/models/item/cinder_wood.json
 5084f55df6adb38957ad4c8bd6b8369dfe286124 assets/twilightforest/models/item/clover_patch.json
-5b753bbc9064c9e9a18c16274465e92f1901df7c assets/twilightforest/models/item/clownfish_jerky.json
 efd252626f31547d1df95b5151b383b52ef8655b assets/twilightforest/models/item/cod_jerky.json
 672edc91d696882be7a512bd4b0016095d10bd5b assets/twilightforest/models/item/cooked_meef.json
 55102a381f3b4f01bc9e6a243790d044a95cd5c8 assets/twilightforest/models/item/cooked_venison.json
@@ -870,6 +869,7 @@ c40a954fe657d4d44a308596d3fcdc3ad6de9faf assets/twilightforest/models/item/troll
 6bd39542a0254d0e686843560dbdd0cf3f365f54 assets/twilightforest/models/item/trophy_minor.json
 2b527ae9d5ec3c96beeb9df4af0f5d1be79a23dc assets/twilightforest/models/item/trophy_pedestal.json
 1bcf251cd7d77b9e841783508272d4d56ad7310e assets/twilightforest/models/item/trophy_quest.json
+2753d13c35e8708a90f89d2c6f55d202216f9d24 assets/twilightforest/models/item/tropical_fish_jerky.json
 0f69546d0d0e0a17d51591d20fe7916d1475f61a assets/twilightforest/models/item/twilight_oak_banister.json
 ef21acc3297ac54d490d74b2a786ff5719d1ee37 assets/twilightforest/models/item/twilight_oak_boat.json
 4cd02ba209d06193c8390cd5fc2c4a0119d57195 assets/twilightforest/models/item/twilight_oak_button.json

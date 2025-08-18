@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "twilightforest:item/clownfish_jerky"
+    "layer0": "twilightforest:item/tropical_fish_jerky"
   }
 }

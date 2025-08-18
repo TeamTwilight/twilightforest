@@ -1,4 +1,4 @@
-// 1.21.1	2025-08-15T23:31:08.650262903	Twilight Forest Item Tags
+// 1.21.1	2025-08-17T21:35:29.709125409	Twilight Forest Item Tags
 3c5895c72cfffe09615ec2b28267a726fcbf52e8 data/alexscaves/tags/item/ferns.json
 4c5df8d60b8f068b482a22fd807ddea22e1bfe00 data/alexscaves/tags/item/ferromagnetic_items.json
 42afac82c004061587d5b1ae20c2e66c0d399c8c data/alexscaves/tags/item/raw_meats.json
@@ -9,7 +9,7 @@
 a53180342b48e56a210b567d045ca910767f2ebb data/c/tags/item/foods/berry.json
 747e752a3e4621e7200c41e7206040978f2380e9 data/c/tags/item/foods/cooked_meat.json
 a9956ad8e4792ffb57c8825a50c8715ad893ba0b data/c/tags/item/foods/edible_when_placed.json
-779c9a84c1c3554977a02df72280dcd7d81031b8 data/c/tags/item/foods/jerky.json
+3eaf5844c4cfddba620abe0d170ef602504abe68 data/c/tags/item/foods/jerky.json
 42afac82c004061587d5b1ae20c2e66c0d399c8c data/c/tags/item/foods/raw_meat.json
 5ef039d70a6ec1a2fd586b176d2737a954c0f889 data/c/tags/item/foods/soup.json
 bdd0576fc21bdaef37e030e39e717039d885ad56 data/c/tags/item/gems.json
