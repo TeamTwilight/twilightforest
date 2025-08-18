@@ -121,13 +121,13 @@ public class TravellersWingsModel extends HumanoidModel<LivingEntity> {
 
 		root.addOrReplaceChild("sideRight", CubeListBuilder.create()
 				.texOffs(0, 3)
-				.addBox(-1.0F, -1.0F, 0.0F, 1, 2, 4, cubeDeformation),
+				.addBox(-1.0F, -1.0F, 0.0F, 1, 2, 4, cubeDeformation.extend(-0.01F)),
 			PartPose.offset(-3.75F, 10.0F, -2.0F)
 		);
 
 		root.addOrReplaceChild("sideLeft", CubeListBuilder.create()
 				.texOffs(16, 3)
-				.addBox(0.0F, -1.0F, 0.0F, 1, 2, 4, cubeDeformation),
+				.addBox(0.0F, -1.0F, 0.0F, 1, 2, 4, cubeDeformation.extend(-0.01F)),
 			PartPose.offset(3.75F, 10.0F, -2.0F)
 		);
 

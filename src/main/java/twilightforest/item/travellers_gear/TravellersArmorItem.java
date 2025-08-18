@@ -16,12 +16,14 @@ import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
@@ -153,6 +155,13 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 	@Override
 	public boolean isRepairable(@NotNull ItemStack stack) {
 		return false;
+	}
+
+	@Override
+	public void onCraftedPostProcess(ItemStack stack, Level level) {
+		if (stack.has(TFDataComponents.SWAP_HOTBAR_MODIFIER)) {
+			stack.set(TFDataComponents.TRAVELLERS_HAS_BELT, Unit.INSTANCE);
+		}
 	}
 
 	@Override
