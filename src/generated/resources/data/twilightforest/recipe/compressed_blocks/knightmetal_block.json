@@ -4,11 +4,14 @@
   "key": {
     "#": {
       "tag": "c:ingots/knightmetal"
+    },
+    "m": {
+      "item": "twilightforest:knightmetal_ingot"
     }
   },
   "pattern": [
     "###",
-    "###",
+    "#m#",
     "###"
   ],
   "result": {

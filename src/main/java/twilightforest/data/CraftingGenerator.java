@@ -932,24 +932,20 @@ public class CraftingGenerator extends CraftingDataHelper {
 	}
 
 	private void blockCompressionRecipes(RecipeOutput output) {
-		reverseCompressBlock(output, "arctic_block_to_item", TFItems.ARCTIC_FUR, ItemTagGenerator.STORAGE_BLOCKS_ARCTIC_FUR);
-		reverseCompressBlock(output, "carminite_block_to_item", TFItems.CARMINITE, ItemTagGenerator.STORAGE_BLOCKS_CARMINITE);
-		reverseCompressBlock(output, "ironwood_block_ingot", TFItems.IRONWOOD_INGOT, ItemTagGenerator.STORAGE_BLOCKS_IRONWOOD);
-		reverseCompressBlock(output, "knightmetal_block_ingot", TFItems.KNIGHTMETAL_INGOT, ItemTagGenerator.STORAGE_BLOCKS_KNIGHTMETAL);
-		reverseCompressBlock(output, "steeleaf_block_ingot", TFItems.STEELEAF_INGOT, ItemTagGenerator.STORAGE_BLOCKS_STEELEAF);
+		reverseCompressBlock(output, TFItems.ARCTIC_FUR, TFBlocks.ARCTIC_FUR_BLOCK);
+		reverseCompressBlock(output, TFItems.CARMINITE, TFBlocks.CARMINITE_BLOCK);
+		reverseCompressBlock(output, TFItems.IRONWOOD_INGOT, TFBlocks.IRONWOOD_BLOCK);
+		reverseCompressBlock(output, TFItems.KNIGHTMETAL_INGOT, TFBlocks.KNIGHTMETAL_BLOCK);
+		reverseCompressBlock(output, TFItems.STEELEAF_INGOT, TFBlocks.STEELEAF_BLOCK);
+		reverseCompressBlock(output, TFItems.FIERY_INGOT, TFBlocks.FIERY_BLOCK);
+		reverseCompressBlock(output, TFItems.MAZE_SLIME_BALL, TFBlocks.MAZE_SLIME_BLOCK);
 
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, TFItems.FIERY_INGOT, 9)
-			.requires(ItemTagGenerator.STORAGE_BLOCKS_FIERY)
-			.unlockedBy("has_item", has(ItemTagGenerator.STORAGE_BLOCKS_FIERY))
-			.group("fiery_ingot")
-			.save(output, TwilightForestMod.prefix("compressed_blocks/reversed/fiery_block_to_ingot"));
-
-		compressedBlock(output, "arctic_block", TFBlocks.ARCTIC_FUR_BLOCK, ItemTagGenerator.ARCTIC_FUR);
-		compressedBlock(output, "carminite_block", TFBlocks.CARMINITE_BLOCK, ItemTagGenerator.CARMINITE_GEMS);
-		compressedBlock(output, "fiery_block", TFBlocks.FIERY_BLOCK, ItemTagGenerator.FIERY_INGOTS);
-		compressedBlock(output, "ironwood_block", TFBlocks.IRONWOOD_BLOCK, ItemTagGenerator.IRONWOOD_INGOTS);
-		compressedBlock(output, "knightmetal_block", TFBlocks.KNIGHTMETAL_BLOCK, ItemTagGenerator.KNIGHTMETAL_INGOTS);
-		compressedBlock(output, "steeleaf_block", TFBlocks.STEELEAF_BLOCK, ItemTagGenerator.STEELEAF_INGOTS);
+		compressedBlock(output, TFBlocks.ARCTIC_FUR_BLOCK, ItemTagGenerator.ARCTIC_FUR, TFItems.ARCTIC_FUR);
+		compressedBlock(output, TFBlocks.CARMINITE_BLOCK, ItemTagGenerator.CARMINITE_GEMS, TFItems.CARMINITE);
+		compressedBlock(output, TFBlocks.FIERY_BLOCK, ItemTagGenerator.FIERY_INGOTS, TFItems.FIERY_INGOT);
+		compressedBlock(output, TFBlocks.IRONWOOD_BLOCK, ItemTagGenerator.IRONWOOD_INGOTS, TFItems.IRONWOOD_INGOT);
+		compressedBlock(output, TFBlocks.KNIGHTMETAL_BLOCK, ItemTagGenerator.KNIGHTMETAL_INGOTS, TFItems.KNIGHTMETAL_INGOT);
+		compressedBlock(output, TFBlocks.STEELEAF_BLOCK, ItemTagGenerator.STEELEAF_INGOTS, TFItems.STEELEAF_INGOT);
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, TFBlocks.MAZE_SLIME_BLOCK)
 			.pattern("###")
@@ -957,11 +953,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.pattern("###")
 			.define('#', TFItems.MAZE_SLIME_BALL)
 			.unlockedBy("has_item", has(TFItems.MAZE_SLIME_BALL))
-			.save(output);
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, TFItems.MAZE_SLIME_BALL, 9)
-			.requires(TFBlocks.MAZE_SLIME_BLOCK)
-			.unlockedBy("has_item", has(TFBlocks.MAZE_SLIME_BLOCK))
-			.save(output);
+			.save(output, TwilightForestMod.prefix("compressed_blocks/maze_slime"));
 	}
 
 	private void emptyMapRecipes(RecipeOutput output) {

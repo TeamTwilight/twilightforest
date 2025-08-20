@@ -1,14 +1,13 @@
 {
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
-  "group": "fiery_ingot",
   "ingredients": [
     {
-      "tag": "c:storage_blocks/fiery"
+      "item": "twilightforest:arctic_fur_block"
     }
   ],
   "result": {
     "count": 9,
-    "id": "twilightforest:fiery_ingot"
+    "id": "twilightforest:arctic_fur"
   }
 }

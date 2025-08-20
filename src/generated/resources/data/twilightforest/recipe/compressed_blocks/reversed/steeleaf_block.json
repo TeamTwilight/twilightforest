@@ -3,11 +3,11 @@
   "category": "misc",
   "ingredients": [
     {
-      "tag": "c:storage_blocks/carminite"
+      "item": "twilightforest:steeleaf_block"
     }
   ],
   "result": {
     "count": 9,
-    "id": "twilightforest:carminite"
+    "id": "twilightforest:steeleaf_ingot"
   }
 }

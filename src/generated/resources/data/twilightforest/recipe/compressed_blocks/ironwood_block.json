@@ -4,11 +4,14 @@
   "key": {
     "#": {
       "tag": "c:ingots/ironwood"
+    },
+    "m": {
+      "item": "twilightforest:ironwood_ingot"
     }
   },
   "pattern": [
     "###",
-    "###",
+    "#m#",
     "###"
   ],
   "result": {

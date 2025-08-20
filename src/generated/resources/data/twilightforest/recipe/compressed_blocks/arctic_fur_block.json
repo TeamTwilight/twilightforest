@@ -4,11 +4,14 @@
   "key": {
     "#": {
       "tag": "twilightforest:arctic_fur"
+    },
+    "m": {
+      "item": "twilightforest:arctic_fur"
     }
   },
   "pattern": [
     "###",
-    "###",
+    "#m#",
     "###"
   ],
   "result": {

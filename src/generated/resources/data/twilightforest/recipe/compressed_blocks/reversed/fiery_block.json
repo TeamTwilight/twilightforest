@@ -3,11 +3,11 @@
   "category": "misc",
   "ingredients": [
     {
-      "tag": "c:storage_blocks/knightmetal"
+      "item": "twilightforest:fiery_block"
     }
   ],
   "result": {
     "count": 9,
-    "id": "twilightforest:knightmetal_ingot"
+    "id": "twilightforest:fiery_ingot"
   }
 }

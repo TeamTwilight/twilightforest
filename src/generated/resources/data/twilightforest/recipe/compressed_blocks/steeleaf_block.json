@@ -4,11 +4,14 @@
   "key": {
     "#": {
       "tag": "c:ingots/steeleaf"
+    },
+    "m": {
+      "item": "twilightforest:steeleaf_ingot"
     }
   },
   "pattern": [
     "###",
-    "###",
+    "#m#",
     "###"
   ],
   "result": {

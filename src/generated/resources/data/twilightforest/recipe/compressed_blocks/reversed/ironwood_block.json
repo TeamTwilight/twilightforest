@@ -3,11 +3,11 @@
   "category": "misc",
   "ingredients": [
     {
-      "tag": "c:storage_blocks/steeleaf"
+      "item": "twilightforest:ironwood_block"
     }
   ],
   "result": {
     "count": 9,
-    "id": "twilightforest:steeleaf_ingot"
+    "id": "twilightforest:ironwood_ingot"
   }
 }

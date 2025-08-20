@@ -3,11 +3,11 @@
   "category": "misc",
   "ingredients": [
     {
-      "tag": "c:storage_blocks/arctic_fur"
+      "item": "twilightforest:carminite_block"
     }
   ],
   "result": {
     "count": 9,
-    "id": "twilightforest:arctic_fur"
+    "id": "twilightforest:carminite"
   }
 }

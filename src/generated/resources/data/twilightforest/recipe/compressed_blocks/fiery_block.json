@@ -4,11 +4,14 @@
   "key": {
     "#": {
       "tag": "c:ingots/fiery"
+    },
+    "m": {
+      "item": "twilightforest:fiery_ingot"
     }
   },
   "pattern": [
     "###",
-    "###",
+    "#m#",
     "###"
   ],
   "result": {
