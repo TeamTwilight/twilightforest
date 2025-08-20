@@ -31,19 +31,18 @@ import net.neoforged.neoforge.event.entity.living.ArmorHurtEvent;
 import net.neoforged.neoforge.event.entity.living.LivingFallEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerSpawnPhantomsEvent;
+import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
-import twilightforest.TFRegistries;
 import twilightforest.beans.Component;
 import twilightforest.beans.PostConstruct;
 import twilightforest.init.*;
 import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.item.travellers_gear.TravellersGearLogic;
 import twilightforest.item.travellers_gear.modifiers.InsertableTravellersModifier;
-import twilightforest.item.travellers_gear.modifiers.TravellersEntryModifier;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 import twilightforest.network.ParticlePacket;
 
@@ -152,28 +151,23 @@ public class TravellersGearEvents {
 		}
 
 		TravellersGearLogic.travellersWingsSidestepCooldownSound(player);
+		TravellersGearLogic.travellersBootsUnrestrained(player);
 	}
 
 	private void performStealth(PlayerTickEvent.Post event) {
 		if (event.getEntity() instanceof ServerPlayer player) {
 			TravellersGearLogic.travellersStealth(player, player1 -> player1.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 2, 0, false, false, false)));
 		}
+		TravellersGearLogic.travellersBootsUnrestrained(event.getEntity());
 	}
 
-
-	private void updateOtherModifiers(LevelTickEvent.Post event) {
-		Level level = event.getLevel();
-		if (level instanceof ServerLevel serverLevel) {
-			serverLevel.getEntities().getAll().forEach(entity -> {
-				if (!(entity instanceof LivingEntity livingEntity))
-					return;
-				TravellersGearLogic.travellersWingsControlledFall(livingEntity);
-				TravellersGearLogic.travellersVestHaste(livingEntity);
-				TravellersGearLogic.travellersWingsHighJump(livingEntity);
-				TravellersGearLogic.travellersGearAutoRepair(livingEntity);
-				TravellersGearLogic.travellersBootsForwardBoost(livingEntity);
-			});
-		}
+	private void updateOtherModifiers(EntityTickEvent.Post event) {
+		if (!(event.getEntity() instanceof LivingEntity livingEntity)) return;
+		TravellersGearLogic.travellersWingsControlledFall(livingEntity);
+		TravellersGearLogic.travellersVestHaste(livingEntity);
+		TravellersGearLogic.travellersWingsHighJump(livingEntity);
+		TravellersGearLogic.travellersGearAutoRepair(livingEntity);
+		TravellersGearLogic.travellersBootsForwardBoost(livingEntity);
 	}
 
 	private void activateAndDeactivateTravellersModifiers(ItemAttributeModifierEvent event) {

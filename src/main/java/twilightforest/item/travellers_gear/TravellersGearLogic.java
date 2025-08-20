@@ -159,6 +159,11 @@ public class TravellersGearLogic {
 			livingEntity.addEffect(new MobEffectInstance(MobEffects.DIG_SPEED, 2, amplifier, false, false, false));
 	}
 
+	public static void travellersBootsUnrestrained(Player player) {
+		if (TravellersModifiersManager.isModifierActive(player.registryAccess(), player.getItemBySlot(EquipmentSlot.FEET), TravellersModifiersManager.UNRESTRAINED_MODIFIER))
+			player.stuckSpeedMultiplier = Vec3.ZERO;
+	}
+
 	public static boolean tryPerformSidestep(Player player, boolean isLeftSidestep) {
 		long lastSidestepTime = player.getData(TFDataAttachments.LAST_SIDESTEP_TIME);
 		ItemStack leggingsStack = player.getItemBySlot(EquipmentSlot.LEGS);

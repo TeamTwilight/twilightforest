@@ -1,6 +1,7 @@
 package twilightforest.asmhooks;
 
 import net.minecraft.tags.FluidTags;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
@@ -8,7 +9,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.FluidState;
 import net.neoforged.neoforge.common.NeoForgeMod;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.asm.transformers.entity.PathFinderUnrestrainedByLeashTransformer;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.item.travellers_gear.TravellersGearLogic;
@@ -41,7 +41,7 @@ public class EntityHooks {
 	}
 
 	/**
-	 * {@link PathFinderUnrestrainedByLeashTransformer}
+	 * {@link twilightforest.asm.transformers.entity.PathFinderUnrestrainedByLeashTransformer} <p/>
 	 *
 	 * Injection Point:<br/>
 	 * {@link net.minecraft.world.entity.PathfinderMob#shouldStayCloseToLeashHolder()}<br/>
@@ -51,4 +51,15 @@ public class EntityHooks {
 		return prior && !mob.hasData(TFDataAttachments.LEASH_PATHFINDER_OVERRIDE);
 	}
 
+	/**
+	 * {@link twilightforest.asm.transformers.entity.UnrestrainedBlockSpeedAndJumpFactorTransformer} <p/>
+	 *
+	 * Injection Points:<br/>
+	 * {@link net.minecraft.world.entity.Entity#getBlockJumpFactor()}<br/>
+	 * {@link net.minecraft.world.entity.Entity#getBlockSpeedFactor()}<br/>
+	 * Targets: FRETURN
+	 */
+	public static float resetFactorWithUnrestrained(float o, Entity entity) {
+		return entity instanceof LivingEntity living && TravellersModifiersManager.isModifierActive(entity.registryAccess(), living.getItemBySlot(EquipmentSlot.FEET), TravellersModifiersManager.UNRESTRAINED_MODIFIER) ? 1.0F : o;
+	}
 }

@@ -1,4 +1,4 @@
-// 1.21.1	2025-08-16T01:08:04.928484716	Registries
+// 1.21.1	2025-08-17T22:08:43.262077278	Registries
 9089ada9ce06fd30adf8b10e50f02233c7d5a76e data/minecraft/twilight/wood_palettes/acacia.json
 dca1ef01d0df4e956fd414782de57c25dfddd290 data/minecraft/twilight/wood_palettes/birch.json
 01becb45438b7f2bfdc77baba72bc986341510c8 data/minecraft/twilight/wood_palettes/crimson.json
@@ -133,6 +133,7 @@ e3f5630e64390746436da38cbc8e5323df5c7e67 data/twilightforest/twilight/travellers
 5c72fe957abc806e1b98b6eaa8c594def4bc533e data/twilightforest/twilight/travellers_modifiers/swap_hotbar.json
 cba2ee3252bf494f083addea2d982689c9b2ef61 data/twilightforest/twilight/travellers_modifiers/swap_hotbar_ability.json
 a5c5edd82fb55269ad7fc616b4a981ed5371822f data/twilightforest/twilight/travellers_modifiers/swift_swim.json
+df7e0fae5060c95f59c1bc5593b932279fc1b5ff data/twilightforest/twilight/travellers_modifiers/unrestrained.json
 e2562094afac36dc8999bb31ca2990eb766618e1 data/twilightforest/twilight/travellers_modifiers/water_walk.json
 d1f689ce93713d7eb5a41627aaebd767e7282fb8 data/twilightforest/twilight/travellers_modifiers/zoom.json
 2aa6f23871be95f6a25e9b6215dff1ad5294aeb6 data/twilightforest/twilight/wood_palettes/canopy.json

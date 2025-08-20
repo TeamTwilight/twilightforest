@@ -2,6 +2,9 @@ package twilightforest.asmhooks;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.decoration.LeashFenceKnotEntity;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -18,6 +21,7 @@ import twilightforest.block.WroughtIronFenceBlock;
 import twilightforest.client.FoliageColorHandler;
 import twilightforest.config.TFConfig;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.custom.TravellersModifiersManager;
 
 @SuppressWarnings({"JavadocReference", "unused"})
 public class BlockHooks {
@@ -101,5 +105,30 @@ public class BlockHooks {
 	 */
 	public static int resolveFoliageColor(int o, Biome biome, double x, double z) {
 		return foliageColorHandler.get(o, biome, x, z);
+	}
+
+	/**
+	 * {@link twilightforest.asm.transformers.block.UnrestrainedFrictionTransformer}<p/>
+	 *
+	 * Injection Point:<br/>
+	 * {@link net.neoforged.neoforge.common.extensions.IBlockExtension#getFriction(BlockState, LevelReader, BlockPos, Entity)}
+	 * Targets: FRETURN
+	 */
+	public static float resetBlockFrictionWithUnrestrained(float o, Entity entity) {
+		return entity instanceof LivingEntity living && TravellersModifiersManager.isModifierActive(entity.registryAccess(), living.getItemBySlot(EquipmentSlot.FEET), TravellersModifiersManager.UNRESTRAINED_MODIFIER) ? 0.6F : o;
+	}
+
+	/**
+	 * {@link twilightforest.asm.transformers.block.SlimeBlockMomentumTransformer}<p/>
+	 *
+	 * Injection Point:<br/>
+	 * {@link net.minecraft.world.level.block.Block#stepOn(Level, BlockPos, BlockState, Entity)}
+	 * Targets: {@link Entity#isSteppingCarefully()}
+	 */
+	public static boolean resetSlimeMomentumWithUnrestrained(boolean o, Entity entity) {
+		if (entity instanceof LivingEntity living && TravellersModifiersManager.isModifierActive(entity.registryAccess(), living.getItemBySlot(EquipmentSlot.FEET), TravellersModifiersManager.UNRESTRAINED_MODIFIER)) {
+			return true; //dont return false here as the original check is looking that an entity is NOT stepping carefully
+		}
+		return o;
 	}
 }

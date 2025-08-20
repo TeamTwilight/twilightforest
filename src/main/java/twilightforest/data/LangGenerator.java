@@ -1290,6 +1290,7 @@ public class LangGenerator extends TFLangProvider {
 
 		this.addTravellersModifier(registries, TravellersModifiersManager.STRAIGHT_AHEAD_MODIFIER, "Straight Ahead");
 		this.addTravellersModifier(registries, TravellersModifiersManager.SLIMY_SOLES_MODIFIER, "Slimy Soles");
+		this.addTravellersModifier(registries, TravellersModifiersManager.UNRESTRAINED_MODIFIER, "Unrestrained");
 		this.addTravellersModifier(registries, TravellersModifiersManager.WATER_WALK_MODIFIER, "Water Walk");
 
 		// Other Traveller's gear components

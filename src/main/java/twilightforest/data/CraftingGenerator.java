@@ -779,6 +779,17 @@ public class CraftingGenerator extends CraftingDataHelper {
 			TravellersModifiersManager.WATER_WALK_MODIFIER).save(output);
 
 		TravellersGearComponentModifierBuilder.buildShaped(CartesianShapedRecipeBuilder.create(splitTravellersModifiersRecipes)
+				.pattern("n n")
+				.pattern("kbk")
+				.pattern("i i")
+				.define('b', TFItems.TRAVELLERS_BOOTS)
+				.define('k', ItemTagGenerator.KNIGHTMETAL_INGOTS)
+				.define('n', Tags.Items.NUGGETS_IRON)
+				.define('i', Tags.Items.INGOTS_IRON)
+				.build(),
+			TravellersModifiersManager.UNRESTRAINED_MODIFIER).save(output);
+
+		TravellersGearComponentModifierBuilder.buildShaped(CartesianShapedRecipeBuilder.create(splitTravellersModifiersRecipes)
 				.pattern("WBW")
 				.pattern("S S")
 				.define('W', Tags.Items.STRINGS)

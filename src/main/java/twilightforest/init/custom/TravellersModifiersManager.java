@@ -48,6 +48,7 @@ public class TravellersModifiersManager {
 	public static final ResourceKey<TravellersModifier> HIGH_STEP_ABILITY = makeKey("high_step");
 	public static final ResourceKey<TravellersModifier> STRAIGHT_AHEAD_MODIFIER = makeKey("straight_ahead");
 	public static final ResourceKey<TravellersModifier> SLIMY_SOLES_MODIFIER = makeKey("slimy_soles");
+	public static final ResourceKey<TravellersModifier> UNRESTRAINED_MODIFIER = makeKey("unrestrained");
 	public static final ResourceKey<TravellersModifier> WATER_WALK_MODIFIER = makeKey("water_walk");
 
 	public static final Set<ResourceKey<TravellersModifier>> ALWAYS_ACTIVE = Set.of(AUTO_REPAIR_MODIFIER);
@@ -86,6 +87,7 @@ public class TravellersModifiersManager {
 		context.register(HIGH_STEP_ABILITY, new TravellersEntryModifier(List.of(new ItemAttributeModifiers.Entry(Attributes.STEP_HEIGHT, TFAttributeModifiers.TRAVELLERS_HIGH_STEP, EquipmentSlotGroup.FEET)), TFDataComponents.HIGH_STEP, true));
 		context.register(STRAIGHT_AHEAD_MODIFIER, new TravellersComponentModifier(TFDataComponents.FORWARD_BOOST_MULTIPLIER.get(), 1.4));
 		context.register(SLIMY_SOLES_MODIFIER, new TravellersComponentModifier(TFDataComponents.SLIMY_SOLES_COEFFICIENT.get(), 0.5F));
+		context.register(UNRESTRAINED_MODIFIER, new TravellersComponentModifier(TFDataComponents.UNRESTRAINED.get(), Unit.INSTANCE));
 		context.register(WATER_WALK_MODIFIER, new TravellersComponentModifier(TFDataComponents.WATER_WALK.get(), Unit.INSTANCE));
 	}
 
