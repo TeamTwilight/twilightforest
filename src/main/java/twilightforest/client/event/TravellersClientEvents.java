@@ -226,7 +226,7 @@ public class TravellersClientEvents {
 	}
 
 	private void playZoomSounds(InputEvent.Key event) {
-		if (TFKeyBinds.ZOOM_KEY.matches(event.getKey(), event.getScanCode()) && event.getAction() != InputConstants.REPEAT) {
+		if (TFKeyBinds.ZOOM_KEY.matches(event.getKey(), event.getScanCode()) && Minecraft.getInstance().screen == null && event.getAction() != InputConstants.REPEAT) {
 			Player player = Minecraft.getInstance().player;
 
 			if (player == null || TravellersArmorItem.isTravellersArmorAndBroken(player.getItemBySlot(EquipmentSlot.HEAD)))
