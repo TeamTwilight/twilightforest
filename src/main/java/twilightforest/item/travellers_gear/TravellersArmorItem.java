@@ -165,8 +165,8 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 	}
 
 	@Override
-	public boolean isValidRepairItem(@NotNull ItemStack toRepair, @NotNull ItemStack repair) {
-		return this.material.value().repairIngredient().get().test(repair);
+	public boolean canWalkOnPowderedSnow(ItemStack stack, LivingEntity wearer) {
+		return stack.is(TFItems.TRAVELLERS_BOOTS);
 	}
 
 	private Component getModifierTooltipComponent(Holder.Reference<TravellersModifier> modifier) {

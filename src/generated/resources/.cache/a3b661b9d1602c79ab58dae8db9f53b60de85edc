@@ -1,4 +1,4 @@
-// 1.21.1	2025-08-17T21:35:29.709125409	Twilight Forest Item Tags
+// 1.21.1	2025-08-19T19:59:28.910715754	Twilight Forest Item Tags
 3c5895c72cfffe09615ec2b28267a726fcbf52e8 data/alexscaves/tags/item/ferns.json
 4c5df8d60b8f068b482a22fd807ddea22e1bfe00 data/alexscaves/tags/item/ferromagnetic_items.json
 42afac82c004061587d5b1ae20c2e66c0d399c8c data/alexscaves/tags/item/raw_meats.json
@@ -66,7 +66,7 @@ e69d5be074938c1ff9a1853ff8da6782500ff92f data/minecraft/tags/item/enchantable/mi
 4780af3972429e8a298077e3b92a0d2878026f8b data/minecraft/tags/item/enchantable/vanishing.json
 211134157771c86a72a0c5a1985c2b05da55729b data/minecraft/tags/item/fence_gates.json
 08b587bf617c9246b6f038bcc4885f3d04739e45 data/minecraft/tags/item/foot_armor.json
-e66649b3248e051912913e282cb83d3b5006cde0 data/minecraft/tags/item/freeze_immune_wearables.json
+5c9a2961361f53116d1a8b154044951a6fa455cd data/minecraft/tags/item/freeze_immune_wearables.json
 6fe1e441c4085be357b16f3ef9158eda9139f939 data/minecraft/tags/item/hanging_signs.json
 5aad0a08128e892d493125fbd082a1f1d981b585 data/minecraft/tags/item/head_armor.json
 b696524eda9e607bebc1b307e19c2b1633b8b0b1 data/minecraft/tags/item/hoes.json

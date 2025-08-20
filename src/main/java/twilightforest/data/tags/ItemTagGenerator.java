@@ -213,7 +213,9 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 			TFItems.YETI_HELMET.get(),
 			TFItems.YETI_CHESTPLATE.get(),
 			TFItems.YETI_LEGGINGS.get(),
-			TFItems.YETI_BOOTS.get()
+			TFItems.YETI_BOOTS.get(),
+			TFItems.TRAVELLERS_VEST.get(),
+			TFItems.TRAVELLERS_BOOTS.get()
 		);
 
 		this.tag(WIP).add(
