@@ -1,4 +1,4 @@
-// 1.21.1	2025-08-06T15:20:01.295175606	Twilight Forest Block Tags
+// 1.21.1	2025-08-20T10:11:45.550445529	Twilight Forest Block Tags
 9d529390443b5da5d71bd6e867c066632e1340b8 data/alexscaves/tags/block/ferromagnetic_blocks.json
 ddfcbead67bb9487c003af137a276963e5b20022 data/alexscaves/tags/block/gloomoth_light_sources.json
 c365018bd78f1335cd4508b5d74bc4500ae951bd data/alexscaves/tags/block/underzealot_light_sources.json
@@ -59,6 +59,7 @@ e33c5143db03e28da803a9f265902c39e93589e2 data/minecraft/tags/block/overworld_car
 c1c4b1bbf5dca762f8c2dc1b6021bf08b541ac8f data/minecraft/tags/block/saplings.json
 bb39f860aaf80d261eee2fc6cf18ee75a411d1c1 data/minecraft/tags/block/slabs.json
 6be3f00e1fa63bb65b978bb8e2c63bbf79b5775e data/minecraft/tags/block/small_dripleaf_placeable.json
+a611586bbd92cd2b6fc215190312c76b12ce140f data/minecraft/tags/block/snow_layer_can_survive_on.json
 60d2c0021214d67e32e5edc0ee008326caa52bf7 data/minecraft/tags/block/stairs.json
 0074c60e923669a4539ccbc5bd0c293f255ff5a5 data/minecraft/tags/block/standing_signs.json
 c15f20a0c7467da527d9bde3456b9eb9e6a86021 data/minecraft/tags/block/strider_warm_blocks.json
@@ -91,7 +92,7 @@ ecd0a9f97ab5b54a7c21ed4f6af6896d564ea5f0 data/twilightforest/tags/block/castle_b
 352073aacfa14a51f14ee10c729a41eeeb9326bc data/twilightforest/tags/block/common_protections.json
 6e039a5df207706c27122daf24d6ed098e717711 data/twilightforest/tags/block/dark_tower_allowed_pots.json
 545150b1994cb10f5d3f51ae4c8b7666c19ae96a data/twilightforest/tags/block/dark_tower_berry_bushes_die.json
-542c567a503720b5f7e650472cdff13b709a8072 data/twilightforest/tags/block/dark_tower_berry_bushes_survive.json
+5a0cda96e4d6708d33f5c42c78f42d6a3bdfb0e2 data/twilightforest/tags/block/dark_tower_berry_bushes_survive.json
 97652f431059f64ffc5747f498cdcf278ddd0555 data/twilightforest/tags/block/darkwood_logs.json
 8ed2ef0f9a24051c4d152d5d47721e79f790e2eb data/twilightforest/tags/block/deadrock.json
 7caa25870567b18269192c1592a69bdd8558c275 data/twilightforest/tags/block/druid_projectile_replaceable.json
@@ -129,12 +130,11 @@ cf3608bd187922aeb48c566c19e8482b0dca34c7 data/twilightforest/tags/block/portal/f
 843ba474e71a542ef634fe664ef97ce079a3186c data/twilightforest/tags/block/portal/generated_decoration.json
 2585c456a9b7ce8d36c3a54a19bf73ef49cda315 data/twilightforest/tags/block/progression_allow_breaking.json
 5f9815895eca4e0b90e87d247658a28076d040a3 data/twilightforest/tags/block/small_lakes_dont_replace.json
-22cd1af5fa4c2d31fed3e38a39738c1e89b222a3 data/twilightforest/tags/block/snowy_berry_bushes_survive.json
 e40d95a628eb206ce0b4bac90782bccc789cf8dc data/twilightforest/tags/block/sortwood_logs.json
 513552f34c4bbf125c67f4ba5b1dc6b34aa4d19f data/twilightforest/tags/block/structure_banned_interactions.json
 fe294f66f8396c4430eeb05932c598d8a86fbba0 data/twilightforest/tags/block/supports_stalagmites.json
 e4701a0768e0d5c70f2c9ae58c3ab483ac55d536 data/twilightforest/tags/block/tf_berry_bushes_replace.json
-69c396cb051bbe9a130e6979b67065e5041b179d data/twilightforest/tags/block/tf_berry_bushes_survive.json
+657699c588dc2cf76409639efc0c45d2a3a584c2 data/twilightforest/tags/block/tf_berry_bushes_survive.json
 6ac229128975c2e8f70b767e08a76386b7bc81df data/twilightforest/tags/block/time_core_excluded.json
 aa9ca0bf521d8c6b198f2c25e4d5528917308d9f data/twilightforest/tags/block/timewood_logs.json
 6352667067c11a27cfc37713a8f8543507c1f18e data/twilightforest/tags/block/towerwood.json

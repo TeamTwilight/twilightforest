@@ -14,19 +14,8 @@
       ],
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "twilightforest:maloberry"
-        }
-      ],
-      "functions": [
-        {
-          "add": false,
-          "count": {
-            "type": "minecraft:uniform",
-            "max": 1.0,
-            "min": 1.0
-          },
-          "function": "minecraft:set_count"
+          "type": "minecraft:loot_table",
+          "value": "twilightforest:blocks/maloberry_bush_berries"
         }
       ],
       "rolls": 1.0

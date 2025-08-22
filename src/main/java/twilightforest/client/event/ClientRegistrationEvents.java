@@ -58,7 +58,7 @@ import twilightforest.client.model.block.carpet.RoyalRagsModelLoader;
 import twilightforest.client.model.block.connected.ConnectedTextureModelLoader;
 import twilightforest.client.model.block.forcefield.ForceFieldModelLoader;
 import twilightforest.client.model.block.giantblock.GiantBlockModelLoader;
-import twilightforest.client.model.block.leaves.BakedLeavesModel;
+import twilightforest.client.model.block.ConditionalMippedModel;
 import twilightforest.client.model.block.patch.PatchModelLoader;
 import twilightforest.client.model.entity.*;
 import twilightforest.client.model.item.TravellersGearItemModel;
@@ -89,6 +89,7 @@ import twilightforest.util.woods.TFWoodTypes;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Predicate;
 
 @Component(dist = Dist.CLIENT)
 public class ClientRegistrationEvents {
@@ -271,11 +272,15 @@ public class ClientRegistrationEvents {
 			entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F
 		);
 
-		Map<ModelResourceLocation, BakedModel> models = event.getModels();
-		List<Map.Entry<ModelResourceLocation, BakedModel>> leavesModels = models.entrySet().stream()
-			.filter(entry -> entry.getKey().id().getNamespace().equals(TwilightForestMod.ID) && entry.getKey().id().getPath().contains("leaves") && !entry.getKey().id().getPath().contains("dark")).toList();
+		Predicate<ResourceLocation> mippedIDs = location -> location.getNamespace().equals(TwilightForestMod.ID) && //only TF blocks
+			((location.getPath().contains("leaves") && !location.getPath().contains("dark")) || //all TF leaves (except dark)
+				location.getPath().contains("_bush") || //all berry bushes
+				location.getPath().contains("_oreberry")); //all oreberry bushes
 
-		leavesModels.forEach(entry -> models.put(entry.getKey(), new BakedLeavesModel(entry.getValue())));
+		Map<ModelResourceLocation, BakedModel> models = event.getModels();
+		List<Map.Entry<ModelResourceLocation, BakedModel>> mippedModels = models.entrySet().stream().filter(entry -> mippedIDs.test(entry.getKey().id())).toList();
+
+		mippedModels.forEach(entry -> models.put(entry.getKey(), new ConditionalMippedModel(entry.getValue())));
 
 		BakedModel oldModel = event.getModels().get(ModelResourceLocation.inventory(TwilightForestMod.prefix("trollsteinn")));
 		models.put(ModelResourceLocation.inventory(TwilightForestMod.prefix("trollsteinn")), new TrollsteinnModel(oldModel));

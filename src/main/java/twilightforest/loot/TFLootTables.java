@@ -107,6 +107,20 @@ public class TFLootTables {
 	public static final ResourceKey<LootTable> FIREFLY_SQUISH_DROPS = register("blocks/firefly_squish");
 	public static final ResourceKey<LootTable> MOONWORM_SQUISH_DROPS = register("blocks/moonworm_squish");
 
+	//bushes
+	public static final ResourceKey<LootTable> RASPBERRY_BUSH_DROPS = register("blocks/raspberry_bush_berries");
+	public static final ResourceKey<LootTable> BLUEBERRY_BUSH_DROPS = register("blocks/blueberry_bush_berries");
+	public static final ResourceKey<LootTable> BLACKBERRY_BUSH_DROPS = register("blocks/blackberry_bush_berries");
+	public static final ResourceKey<LootTable> MALOBERRY_BUSH_DROPS = register("blocks/maloberry_bush_berries");
+	public static final ResourceKey<LootTable> BLIGHTBERRY_BUSH_DROPS = register("blocks/blightberry_bush_berries");
+	public static final ResourceKey<LootTable> DUSKBERRY_BUSH_DROPS = register("blocks/duskberry_bush_berries");
+	public static final ResourceKey<LootTable> SKYBERRY_BUSH_DROPS = register("blocks/skyberry_bush_berries");
+	public static final ResourceKey<LootTable> STINGBERRY_BUSH_DROPS = register("blocks/stingberry_bush_berries");
+	public static final ResourceKey<LootTable> COPPER_OREBERRY_BUSH_DROPS = register("blocks/copper_oreberry_bush_berries");
+	public static final ResourceKey<LootTable> IRON_OREBERRY_BUSH_DROPS = register("blocks/iron_oreberry_bush_berries");
+	public static final ResourceKey<LootTable> GOLD_OREBERRY_BUSH_DROPS = register("blocks/gold_oreberry_bush_berries");
+	public static final ResourceKey<LootTable> ESSENCE_BERRY_BUSH_DROPS = register("blocks/essence_berry_bush_berries");
+
 	//public static final ResourceLocation ALL_BOSSES = register("entities/all_bosses");
 
 	public static void generateChest(WorldGenLevel world, BlockPos pos, Direction dir, boolean trapped, ResourceKey<LootTable> lootTable) {

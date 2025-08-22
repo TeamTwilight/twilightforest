@@ -1,5 +1,6 @@
 {
   "values": [
-    "#minecraft:dirt"
+    "#minecraft:dirt",
+    "minecraft:snow_block"
   ]
 }

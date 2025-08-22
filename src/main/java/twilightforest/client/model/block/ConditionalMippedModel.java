@@ -1,4 +1,4 @@
-package twilightforest.client.model.block.leaves;
+package twilightforest.client.model.block;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
@@ -15,9 +15,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class BakedLeavesModel extends BakedModelWrapper<BakedModel> {
+public class ConditionalMippedModel extends BakedModelWrapper<BakedModel> {
 
-	public BakedLeavesModel(BakedModel originalModel) {
+	public ConditionalMippedModel(BakedModel originalModel) {
 		super(originalModel);
 	}
 

@@ -20,19 +20,17 @@ public interface SnowLoggable {
 	int MIN_SNOW_LAYERS = 0;
 	int MAX_SNOW_LAYERS = SnowLayerBlock.MAX_HEIGHT;
 	IntegerProperty SNOW_LAYERS = IntegerProperty.create("layers", MIN_SNOW_LAYERS, MAX_SNOW_LAYERS);
-	VoxelShape[] SNOW_SHAPE_BY_LAYER = createSnowShapes();
-
-	private static VoxelShape[] createSnowShapes() {
-		VoxelShape[] shapes = new VoxelShape[MAX_SNOW_LAYERS + 1];
-		shapes[0] = Shapes.empty();
-		for (int i = 1; i <= MAX_SNOW_LAYERS; i++) {
-				shapes[i] = Block.box(
-					0.0D, 0.0D, 0.0D,
-					16.0D,  16.0D * i / MAX_SNOW_LAYERS, 16.0D
-				);
-			}
-		return shapes;
-	}
+	VoxelShape[] SNOW_SHAPE_BY_LAYER = new VoxelShape[]{
+		Shapes.empty(),
+		Block.box(0.0, 0.0, 0.0, 16.0, 2.0, 16.0),
+		Block.box(0.0, 0.0, 0.0, 16.0, 4.0, 16.0),
+		Block.box(0.0, 0.0, 0.0, 16.0, 6.0, 16.0),
+		Block.box(0.0, 0.0, 0.0, 16.0, 8.0, 16.0),
+		Block.box(0.0, 0.0, 0.0, 16.0, 10.0, 16.0),
+		Block.box(0.0, 0.0, 0.0, 16.0, 12.0, 16.0),
+		Block.box(0.0, 0.0, 0.0, 16.0, 14.0, 16.0),
+		Block.box(0.0, 0.0, 0.0, 16.0, 16.0, 16.0)
+	};
 
 	default void handleBreakingLogic(Level level, BlockPos pos, BlockState state, Player player, @Nullable BlockState blockToConvertTo) {
 		BlockHitResult rayTraceResult = this.clip(player);
@@ -50,10 +48,6 @@ public interface SnowLoggable {
 				Block.dropResources(state, level, pos, null, player, player.getMainHandItem());
 			level.setBlockAndUpdate(pos, Blocks.SNOW.defaultBlockState().setValue(SnowLayerBlock.LAYERS, state.getValue(SNOW_LAYERS)));
 		}
-	}
-
-	default VoxelShape mergeWithSnowLayer(VoxelShape shape, BlockState state) {
-		return Shapes.or(shape, SNOW_SHAPE_BY_LAYER[state.getValue(SNOW_LAYERS)]);
 	}
 
 	default BlockHitResult clip(Player entity) {

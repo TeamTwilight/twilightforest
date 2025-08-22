@@ -1,7 +1,9 @@
 package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
@@ -10,6 +12,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.registries.DeferredItem;
 import twilightforest.data.tags.BlockTagGenerator;
@@ -17,16 +20,9 @@ import twilightforest.data.tags.BlockTagGenerator;
 import java.util.stream.IntStream;
 
 public class BerryBushBlock extends TFBushBlock implements BonemealableBlock {
-	private static final VoxelShape SMALL_BUSH_SHAPE = Block.box(4.0, 0.0, 4.0, 12.0, 8.0, 12.0);
-	private static final VoxelShape MEDIUM_BUSH_SHAPE = Block.box(2.0, 0.0, 2.0, 14.0, 12.0, 14.0);
-	private static final VoxelShape LARGE_BUSH_SHAPE = Block.box(0.0, 0.0, 0.0, 16.0, 16.0, 16.0);
 
-	public BerryBushBlock(DeferredItem<Item> harvestItem, TagKey<Block> surviveBlockTag) {
-		super(harvestItem, BlockBehaviour.Properties.of().sound(SoundType.GRASS), surviveBlockTag, SMALL_BUSH_SHAPE, MEDIUM_BUSH_SHAPE, LARGE_BUSH_SHAPE, 1, 1);
-	}
-
-	public BerryBushBlock(DeferredItem<Item> harvestItem) {
-		this(harvestItem, BlockTagGenerator.TF_BERRY_BUSHES_SURVIVE);
+	public BerryBushBlock(ResourceKey<LootTable> berryTable, Properties properties) {
+		super(berryTable, properties);
 	}
 
 	@Override
@@ -35,7 +31,12 @@ public class BerryBushBlock extends TFBushBlock implements BonemealableBlock {
 
 		int height = (int) IntStream.iterate(1, n -> level.getBlockState(pos.below(n)).getBlock() == this, n -> n + 1).count();
 		if (random.nextInt(20) == 0 && height < 2 && canGrowAt(state, level, pos))  // bone meal growth doesn't care about canGrowAt
-			tryGrowUpwards(state, level, pos, random);
+			this.tryGrowUpwards(state, level, pos, random);
+	}
+
+	@Override
+	public boolean canBePlacedAt(BlockState state) {
+		return state.is(BlockTagGenerator.TF_BERRY_BUSHES_SURVIVE);
 	}
 
 	protected void tryGrowUpwards(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
@@ -70,6 +71,6 @@ public class BerryBushBlock extends TFBushBlock implements BonemealableBlock {
 		int age = state.getValue(AGE);
 		if (age < 2)
 			this.grow(state, level, pos, Math.min(state.getValue(AGE) + 1 + random.nextInt(2), MAX_AGE - 1));
-		tryGrowUpwards(state, level, pos, random);
+		this.tryGrowUpwards(state, level, pos, random);
 	}
 }

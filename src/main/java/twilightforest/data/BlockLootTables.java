@@ -5,6 +5,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.loot.BlockLootSubProvider;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -17,6 +18,7 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.AlternativesEntry;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
+import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.functions.CopyBlockState;
 import net.minecraft.world.level.storage.loot.functions.CopyComponentsFunction;
@@ -25,6 +27,7 @@ import net.minecraft.world.level.storage.loot.predicates.BonusLevelTableConditio
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.common.loot.CanItemPerformAbility;
@@ -35,6 +38,7 @@ import twilightforest.enums.HollowLogVariants;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFItems;
+import twilightforest.loot.TFLootTables;
 
 import java.util.List;
 import java.util.Set;
@@ -205,18 +209,18 @@ public class BlockLootTables extends BlockLootSubProvider {
 		add(TFBlocks.FIREFLY_SPAWNER.get(), particleSpawner());
 		add(TFBlocks.MOSS_PATCH.get(), createShearsOnlyDrop(TFBlocks.MOSS_PATCH.get()));
 		add(TFBlocks.MAYAPPLE.get(), createShearsOnlyDrop(TFBlocks.MAYAPPLE.get()));
-		addTFBush(TFBlocks.IRON_OREBERRY.get());
-		addTFBush(TFBlocks.GOLD_OREBERRY.get());
-		addTFBush(TFBlocks.COPPER_OREBERRY.get());
-		addTFBush(TFBlocks.ESSENCE_OREBERRY.get());
-		addTFBush(TFBlocks.RASPBERRY_BUSH.get());
-		addTFBush(TFBlocks.BLUEBERRY_BUSH.get());
-		addTFBush(TFBlocks.BLACKBERRY_BUSH.get());
-		addTFBush(TFBlocks.MALOBERRY_BUSH.get());
-		addTFBush(TFBlocks.BLIGHTBERRY_BUSH.get());
-		addTFBush(TFBlocks.DUSKBERRY_BUSH.get());
-		addTFBush(TFBlocks.SKYBERRY_BUSH.get());
-		addTFBush(TFBlocks.STINGBERRY_BUSH.get());
+		addTFBush(TFBlocks.IRON_OREBERRY.get(), TFLootTables.IRON_OREBERRY_BUSH_DROPS);
+		addTFBush(TFBlocks.GOLD_OREBERRY.get(), TFLootTables.GOLD_OREBERRY_BUSH_DROPS);
+		addTFBush(TFBlocks.COPPER_OREBERRY.get(), TFLootTables.COPPER_OREBERRY_BUSH_DROPS);
+		addTFBush(TFBlocks.ESSENCE_OREBERRY.get(), TFLootTables.ESSENCE_BERRY_BUSH_DROPS);
+		addTFBush(TFBlocks.RASPBERRY_BUSH.get(), TFLootTables.RASPBERRY_BUSH_DROPS);
+		addTFBush(TFBlocks.BLUEBERRY_BUSH.get(), TFLootTables.BLUEBERRY_BUSH_DROPS);
+		addTFBush(TFBlocks.BLACKBERRY_BUSH.get(), TFLootTables.BLACKBERRY_BUSH_DROPS);
+		addTFBush(TFBlocks.MALOBERRY_BUSH.get(), TFLootTables.MALOBERRY_BUSH_DROPS);
+		addTFBush(TFBlocks.BLIGHTBERRY_BUSH.get(), TFLootTables.BLIGHTBERRY_BUSH_DROPS);
+		addTFBush(TFBlocks.DUSKBERRY_BUSH.get(), TFLootTables.DUSKBERRY_BUSH_DROPS);
+		addTFBush(TFBlocks.SKYBERRY_BUSH.get(), TFLootTables.SKYBERRY_BUSH_DROPS);
+		addTFBush(TFBlocks.STINGBERRY_BUSH.get(), TFLootTables.STINGBERRY_BUSH_DROPS);
 		add(TFBlocks.CLOVER_PATCH.get(), createShearsOnlyDrop(TFBlocks.CLOVER_PATCH.get()));
 		add(TFBlocks.FIDDLEHEAD.get(), createShearsOnlyDrop(TFBlocks.FIDDLEHEAD.get()));
 		dropSelf(TFBlocks.MUSHGLOOM.get());
@@ -662,7 +666,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 		return createSilkTouchOrShearsDispatchTable(block, this.applyExplosionCondition(block, LootItem.lootTableItem(nonSilk.asItem())).when(BonusLevelTableCondition.bonusLevelFlatChance(registrylookup.getOrThrow(Enchantments.FORTUNE), nonSilkFortune))).withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).when((HAS_SHEARS.or(this.hasSilkTouch())).invert()).add(applyExplosionDecay(block, LootItem.lootTableItem(Items.STICK).apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F)))).when(BonusLevelTableCondition.bonusLevelFlatChance(registrylookup.getOrThrow(Enchantments.FORTUNE), 0.02F, 0.022222223F, 0.025F, 0.033333335F, 0.1F))));
 	}
 
-	private void addTFBush(Block block) {
+	private void addTFBush(Block block, ResourceKey<LootTable> berry) {
 		if (!(block instanceof TFBushBlock bush))
 			throw new IllegalArgumentException(block + " is not a TFBushBlock");
 
@@ -674,8 +678,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 						LootItemBlockStatePropertyCondition.hasBlockStateProperties(bush)
 							.setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(TFBushBlock.AGE, 3))
 					)
-					.add(LootItem.lootTableItem(bush.harvestItem.get()))
-					.apply(SetItemCountFunction.setCount(UniformGenerator.between(bush.minNumberOfBerries, bush.maxNumberOfBerries)))
+					.add(NestedLootTable.lootTableReference(berry))
 			)
 			.withPool(
 				LootPool.lootPool()

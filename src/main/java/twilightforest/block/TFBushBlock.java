@@ -2,13 +2,14 @@ package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.TagKey;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -21,44 +22,63 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.util.RandomSource;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
-import net.neoforged.neoforge.registries.DeferredItem;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
+
 public abstract class TFBushBlock extends Block implements SnowLoggable {
+
 	public static final IntegerProperty AGE = BlockStateProperties.AGE_3;
 	public static final int MAX_AGE = 3;
 
-	public final DeferredItem<Item> harvestItem;
-	public final int minNumberOfBerries;
-	public final int maxNumberOfBerries;
+	private final ResourceKey<LootTable> berryLoot;
 
-	protected final TagKey<Block> surviveBlockTag;
+	private static final VoxelShape SMALL_SNOWY_BUSH_SHAPE = Block.box(4.0, 0.0, 4.0, 12.0, 10.0, 12.0);
+	private static final VoxelShape MEDIUM_SNOWY_BUSH_SHAPE = Block.box(2.0, 0.0, 2.0, 14.0, 14.0, 14.0);
 
-	private final VoxelShape smallBushShape;
-	private final VoxelShape mediumBushShape;
-	private final VoxelShape largeBushShape;
+	private static final VoxelShape[] SMALL_BUSH_SHAPES = new VoxelShape[]{
+		Block.box(4.0, 0.0, 4.0, 12.0, 8.0, 12.0),
+		Shapes.or(SMALL_SNOWY_BUSH_SHAPE, SNOW_SHAPE_BY_LAYER[1]),
+		Shapes.or(SMALL_SNOWY_BUSH_SHAPE, SNOW_SHAPE_BY_LAYER[2]),
+		Shapes.or(SMALL_SNOWY_BUSH_SHAPE, SNOW_SHAPE_BY_LAYER[3]),
+		Shapes.or(SMALL_SNOWY_BUSH_SHAPE, SNOW_SHAPE_BY_LAYER[4]),
+		Shapes.or(SMALL_SNOWY_BUSH_SHAPE, SNOW_SHAPE_BY_LAYER[5]),
+		Shapes.or(SMALL_SNOWY_BUSH_SHAPE, SNOW_SHAPE_BY_LAYER[6]),
+		Shapes.or(SMALL_SNOWY_BUSH_SHAPE, SNOW_SHAPE_BY_LAYER[7])
+	};
 
-	public TFBushBlock(DeferredItem<Item> harvestItem, Properties properties, TagKey<Block> surviveBlockTag,
-					   VoxelShape smallBushShape, VoxelShape mediumBushShape, VoxelShape largeBushShape,
-					   int minNumberOfBerries, int maxNumberOfBerries) {
-		super(properties.destroyTime(0.3F).randomTicks().dynamicShape().noOcclusion());
+	private static final VoxelShape[] MEDIUM_BUSH_SHAPES = new VoxelShape[]{
+		Block.box(2.0, 0.0, 2.0, 14.0, 12.0, 14.0),
+		Shapes.or(MEDIUM_SNOWY_BUSH_SHAPE, SNOW_SHAPE_BY_LAYER[1]),
+		Shapes.or(MEDIUM_SNOWY_BUSH_SHAPE, SNOW_SHAPE_BY_LAYER[2]),
+		Shapes.or(MEDIUM_SNOWY_BUSH_SHAPE, SNOW_SHAPE_BY_LAYER[3]),
+		Shapes.or(MEDIUM_SNOWY_BUSH_SHAPE, SNOW_SHAPE_BY_LAYER[4]),
+		Shapes.or(MEDIUM_SNOWY_BUSH_SHAPE, SNOW_SHAPE_BY_LAYER[5]),
+		Shapes.or(MEDIUM_SNOWY_BUSH_SHAPE, SNOW_SHAPE_BY_LAYER[6]),
+		Shapes.or(MEDIUM_SNOWY_BUSH_SHAPE, SNOW_SHAPE_BY_LAYER[7])
+	};
 
-		this.harvestItem = harvestItem;
-		this.surviveBlockTag = surviveBlockTag;
-		this.smallBushShape = smallBushShape;
-		this.mediumBushShape = mediumBushShape;
-		this.largeBushShape = largeBushShape;
-		this.minNumberOfBerries = minNumberOfBerries;
-		this.maxNumberOfBerries = maxNumberOfBerries;
-		this.registerDefaultState(this.stateDefinition.any().setValue(AGE, 0).setValue(SNOW_LAYERS, 0));
+	public TFBushBlock(ResourceKey<LootTable> berryLoot, Properties properties) {
+		super(properties);
+
+		this.berryLoot = berryLoot;
+		this.registerDefaultState(this.getStateDefinition().any().setValue(AGE, 0).setValue(SNOW_LAYERS, 0));
 	}
 
 	@Override
@@ -90,12 +110,11 @@ public abstract class TFBushBlock extends Block implements SnowLoggable {
 
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-		return mergeSnowCap(mergeWithSnowLayer(
-			switch (state.getValue(AGE)) {
-				case 1 -> mediumBushShape;
-				case 2, 3 -> largeBushShape;
-				default -> smallBushShape;
-			}, state), state).optimize();
+		return switch (state.getValue(AGE)) {
+			case 1 -> MEDIUM_BUSH_SHAPES[state.getValue(SNOW_LAYERS)];
+			case 2, 3 -> Block.box(0.001D, 0.0D, 0.001D, 15.999D, 15.999D, 15.999D);
+			default -> SMALL_BUSH_SHAPES[state.getValue(SNOW_LAYERS)];
+		};
 	}
 
 	@Override
@@ -124,14 +143,17 @@ public abstract class TFBushBlock extends Block implements SnowLoggable {
 	@Override
 	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
 		if (state.getValue(AGE) == MAX_AGE) {
-			if (!level.isClientSide) {
-				int count = getNumberOfBerries(level.random);
-				ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(harvestItem.get(), count));
-				level.setBlock(pos, state.setValue(AGE, MAX_AGE - 1), Block.UPDATE_CLIENTS);
+			if (level instanceof ServerLevel serverLevel) {
+				dropFromBlockInteractLootTable(serverLevel, this.berryLoot, state, pos, (level1, stack) -> ItemHandlerHelper.giveItemToPlayer(player, stack));
+
+				level.playSound(null, pos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1.0F, 0.8F + level.getRandom().nextFloat() * 0.4F);
+				BlockState newState = state.setValue(AGE, MAX_AGE - 1);
+				level.setBlock(pos, newState, Block.UPDATE_CLIENTS);
+				level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(player, newState));
 			}
-			return InteractionResult.sidedSuccess(level.isClientSide);
+			return InteractionResult.SUCCESS;
 		}
-		return InteractionResult.PASS;
+		return super.useWithoutItem(state, level, pos, player, hitResult);
 	}
 
 	@Override
@@ -177,33 +199,49 @@ public abstract class TFBushBlock extends Block implements SnowLoggable {
 		return state.getValue(AGE) < 2 ? PushReaction.DESTROY : null;
 	}
 
-	private int getNumberOfBerries(RandomSource random) {
-		return random.nextIntBetweenInclusive(minNumberOfBerries, maxNumberOfBerries);
-	}
-
 	@Override
 	public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
-		BlockState blockStateBelow = level.getBlockState(pos.below());
-		boolean isSameMatureBush = blockStateBelow.is(state.getBlock()) && blockStateBelow.getValue(AGE) >= MAX_AGE - 1;
-		return blockStateBelow.is(surviveBlockTag) || isSameMatureBush;
+		BlockState stateBelow = level.getBlockState(pos.below());
+		boolean isSameMatureBush = stateBelow.is(state.getBlock()) && stateBelow.getValue(AGE) >= MAX_AGE - 1;
+		return this.canBePlacedAt(stateBelow) || isSameMatureBush;
 	}
 
-	public TagKey<Block> getSurviveBlockTag() {
-		return surviveBlockTag;
-	}
+	public abstract boolean canBePlacedAt(BlockState state);
 
 	protected boolean canGrowAt(BlockState state, LevelReader level, BlockPos pos) {
 		return canSurvive(state, level, pos);
 	}
 
-	private VoxelShape mergeSnowCap(VoxelShape shape, BlockState state) {
-		int age = state.getValue(AGE);
-		if (age > 1 || state.getValue(SNOW_LAYERS) == MIN_SNOW_LAYERS)
-			return shape;
-		return Shapes.or(switch (age) {
-			case 0 -> Block.box(4, 8, 4, 12, 10, 12);
-			case 1 -> Block.box(2, 12, 2, 14, 14, 14);
-			default -> throw new IllegalStateException("Unexpected value: " + age);
-		}, shape);
+	//TODO utilize Block.dropFromBlockInteractLootTable in 1.21.9
+	protected static void dropFromBlockInteractLootTable(
+		ServerLevel serverlevel,
+		ResourceKey<LootTable> resourcekey,
+		BlockState blockstate,
+		BlockPos pos,
+		BiConsumer<ServerLevel, ItemStack> biconsumer
+	) {
+		dropFromLootTable(
+			serverlevel,
+			resourcekey,
+			builder -> builder.withParameter(LootContextParams.BLOCK_STATE, blockstate)
+				.withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos))
+				.withParameter(LootContextParams.TOOL, ItemStack.EMPTY)
+				.create(LootContextParamSets.BLOCK),
+			biconsumer
+		);
+	}
+
+	protected static void dropFromLootTable(
+		ServerLevel serverlevel,
+		ResourceKey<LootTable> resourcekey,
+		Function<LootParams.Builder, LootParams> function,
+		BiConsumer<ServerLevel, ItemStack> biconsumer
+	) {
+		LootTable loottable = serverlevel.getServer().reloadableRegistries().getLootTable(resourcekey);
+		LootParams lootparams = function.apply(new LootParams.Builder(serverlevel));
+		List<ItemStack> list = loottable.getRandomItems(lootparams);
+		if (!list.isEmpty()) {
+			list.forEach(itemstack -> biconsumer.accept(serverlevel, itemstack));
+		}
 	}
 }

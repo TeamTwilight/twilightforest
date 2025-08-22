@@ -68,7 +68,6 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 	public static final TagKey<Block> OREBERRY_BUSHES_SURVIVE = create("oreberry_bushes_survive");
 	public static final TagKey<Block> TF_BERRY_BUSHES_SURVIVE = create("tf_berry_bushes_survive");
 	public static final TagKey<Block> TF_BERRY_BUSHES_REPLACE = create("tf_berry_bushes_replace");
-	public static final TagKey<Block> SNOWY_BERRY_BUSHES_SURVIVE = create("snowy_berry_bushes_survive");
 	public static final TagKey<Block> DARK_TOWER_BERRY_BUSHES_SURVIVE = create("dark_tower_berry_bushes_survive");
 	public static final TagKey<Block> DARK_TOWER_BERRY_BUSHES_DIE = create("dark_tower_berry_bushes_die");
 
@@ -417,20 +416,19 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			.add(Blocks.INFESTED_MOSSY_STONE_BRICKS)
 			.add(Blocks.INFESTED_STONE_BRICKS);
 
-		this.tag(TF_BERRY_BUSHES_SURVIVE)
-			.addTags(BlockTags.DIRT);
 		this.tag(TF_BERRY_BUSHES_REPLACE)
 			.addTags(BlockTags.REPLACEABLE)
 			.addTags(BlockTags.FLOWERS)
 			.add(TFBlocks.MAYAPPLE.get());
 
-		this.tag(SNOWY_BERRY_BUSHES_SURVIVE)
-			.addTags(TF_BERRY_BUSHES_SURVIVE)
+		this.tag(TF_BERRY_BUSHES_SURVIVE)
+			.addTags(BlockTags.DIRT)
 			.add(Blocks.SNOW_BLOCK);
 
 		this.tag(DARK_TOWER_BERRY_BUSHES_SURVIVE)
-			.addTags(Tags.Blocks.NETHERRACKS)
-			.addTags(Tags.Blocks.ORES_IN_GROUND_NETHERRACK)
+			.addTag(Tags.Blocks.NETHERRACKS)
+			.addTag(Tags.Blocks.ORES_IN_GROUND_NETHERRACK)
+			.add(Blocks.BLACKSTONE)
 			.add(Blocks.SOUL_SAND)
 			.add(Blocks.SOUL_SOIL);
 
@@ -553,6 +551,19 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 
 		this.tag(BlockTags.DAMPENS_VIBRATIONS).addTag(CLOUDS).add(TFBlocks.ARCTIC_FUR_BLOCK.get());
 		this.tag(BlockTags.OCCLUDES_VIBRATION_SIGNALS).add(TFBlocks.ARCTIC_FUR_BLOCK.get());
+		this.tag(BlockTags.SNOW_LAYER_CAN_SURVIVE_ON).add(
+			TFBlocks.RASPBERRY_BUSH.get(),
+			TFBlocks.BLUEBERRY_BUSH.get(),
+			TFBlocks.BLACKBERRY_BUSH.get(),
+			TFBlocks.MALOBERRY_BUSH.get(),
+			TFBlocks.BLIGHTBERRY_BUSH.get(),
+			TFBlocks.DUSKBERRY_BUSH.get(),
+			TFBlocks.SKYBERRY_BUSH.get(),
+			TFBlocks.STINGBERRY_BUSH.get(),
+			TFBlocks.IRON_OREBERRY.get(),
+			TFBlocks.GOLD_OREBERRY.get(),
+			TFBlocks.COPPER_OREBERRY.get(),
+			TFBlocks.ESSENCE_OREBERRY.get());
 
 		this.tag(BlockTags.SMALL_DRIPLEAF_PLACEABLE).add(TFBlocks.UBEROUS_SOIL.get());
 
