@@ -10,5 +10,6 @@
     }
   ],
   "builtin_modifier": true,
-  "component": "twilightforest:high_step"
+  "component": "twilightforest:high_step",
+  "equipment_slots": "feet"
 }

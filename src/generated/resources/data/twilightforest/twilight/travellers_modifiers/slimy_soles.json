@@ -2,5 +2,6 @@
   "type": "twilightforest:component",
   "component": {
     "twilightforest:slimy_soles_coefficient": 0.5
-  }
+  },
+  "equipment_slots": "feet"
 }

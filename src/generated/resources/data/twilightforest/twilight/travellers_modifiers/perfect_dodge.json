@@ -2,5 +2,6 @@
   "type": "twilightforest:component",
   "component": {
     "twilightforest:perfect_dodge_probability": 0.1
-  }
+  },
+  "equipment_slots": "chest"
 }

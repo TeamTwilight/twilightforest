@@ -58,37 +58,37 @@ public class TravellersModifiersManager {
 	}
 
 	public static void bootstrap(BootstrapContext<TravellersModifier> context) {
-		context.register(AUTO_REPAIR_MODIFIER, new TravellersComponentModifier(TFDataComponents.AUTO_REPAIR_PROBABILITY.get(), 0.001F));
-		context.register(ZOOM_ABILITY, new BuiltinTravellersComponentModifier(TFDataComponents.ZOOM_ABILITY_MODIFIER.get()));
-		context.register(AQUATIC_AGILITY_MODIFIER, new TravellersEntryModifier(List.of(
+		context.register(AUTO_REPAIR_MODIFIER, new TravellersComponentModifier(EquipmentSlotGroup.ARMOR, TFDataComponents.AUTO_REPAIR_PROBABILITY.get(), 0.001F));
+		context.register(ZOOM_ABILITY, new BuiltinTravellersComponentModifier(EquipmentSlotGroup.HEAD, TFDataComponents.ZOOM_ABILITY_MODIFIER.get()));
+		context.register(AQUATIC_AGILITY_MODIFIER, new TravellersEntryModifier(EquipmentSlotGroup.HEAD, List.of(
 			new ItemAttributeModifiers.Entry(Attributes.OXYGEN_BONUS, TFAttributeModifiers.TRAVELLERS_AQUATIC_AGILITY_OXYGEN, EquipmentSlotGroup.HEAD),
 			new ItemAttributeModifiers.Entry(Attributes.SUBMERGED_MINING_SPEED, TFAttributeModifiers.TRAVELLERS_AQUATIC_AGILITY_MINING, EquipmentSlotGroup.HEAD)
 		), TFDataComponents.AQUATIC_AGILITY, false));
-		context.register(RED_THREAD_VISION_MODIFIER, new TravellersComponentModifier(TFDataComponents.RED_THREAD_VISION.get(), Unit.INSTANCE));
-		context.register(ALL_NIGHT_GOGGLES_MODIFIER, new TravellersComponentModifier(TFDataComponents.ALL_NIGHT_GOGGLES.get(), Unit.INSTANCE));
-		context.register(ITEM_DISPLAY_MODIFIER, new TravellersComponentModifier(TFDataComponents.ITEM_DISPLAY.get(), ItemDisplayContents.EMPTY));
+		context.register(RED_THREAD_VISION_MODIFIER, new TravellersComponentModifier(EquipmentSlotGroup.HEAD, TFDataComponents.RED_THREAD_VISION.get(), Unit.INSTANCE));
+		context.register(ALL_NIGHT_GOGGLES_MODIFIER, new TravellersComponentModifier(EquipmentSlotGroup.HEAD, TFDataComponents.ALL_NIGHT_GOGGLES.get(), Unit.INSTANCE));
+		context.register(ITEM_DISPLAY_MODIFIER, new TravellersComponentModifier(EquipmentSlotGroup.HEAD, TFDataComponents.ITEM_DISPLAY.get(), ItemDisplayContents.EMPTY));
 
-		context.register(SWIFT_SWIM_ABILITY, new TravellersEntryModifier(List.of(new ItemAttributeModifiers.Entry(Attributes.WATER_MOVEMENT_EFFICIENCY, TFAttributeModifiers.TRAVELLERS_SWIFT_SWIM, EquipmentSlotGroup.CHEST)), TFDataComponents.SWIFT_SWIM, true));
-		context.register(STEALTH_MODIFIER, new TravellersComponentModifier(TFDataComponents.STEALTH_CROUCHING.get(), Unit.INSTANCE));
-		context.register(ARROW_MAGNETISM_MODIFIER, new TravellersComponentModifier(TFDataComponents.ARROW_MAGNETISM.get(), Unit.INSTANCE));
-		context.register(FOOD_EFFICIENCY_MODIFIER, new TravellersComponentModifier(TFDataComponents.EFFICIENT_EATER.get(), 2F));
-		context.register(PERFECT_DODGE_MODIFIER, new TravellersComponentModifier(TFDataComponents.PERFECT_DODGE_PROBABILITY.get(), 0.1F));
-		context.register(HASTE_MODIFIER, new TravellersComponentModifier(TFDataComponents.HASTE_AMPLIFIER.get(), 1));
+		context.register(SWIFT_SWIM_ABILITY, new TravellersEntryModifier(EquipmentSlotGroup.CHEST, List.of(new ItemAttributeModifiers.Entry(Attributes.WATER_MOVEMENT_EFFICIENCY, TFAttributeModifiers.TRAVELLERS_SWIFT_SWIM, EquipmentSlotGroup.CHEST)), TFDataComponents.SWIFT_SWIM, true));
+		context.register(STEALTH_MODIFIER, new TravellersComponentModifier(EquipmentSlotGroup.CHEST, TFDataComponents.STEALTH_CROUCHING.get(), Unit.INSTANCE));
+		context.register(ARROW_MAGNETISM_MODIFIER, new TravellersComponentModifier(EquipmentSlotGroup.CHEST, TFDataComponents.ARROW_MAGNETISM.get(), Unit.INSTANCE));
+		context.register(FOOD_EFFICIENCY_MODIFIER, new TravellersComponentModifier(EquipmentSlotGroup.CHEST, TFDataComponents.EFFICIENT_EATER.get(), 2F));
+		context.register(PERFECT_DODGE_MODIFIER, new TravellersComponentModifier(EquipmentSlotGroup.CHEST, TFDataComponents.PERFECT_DODGE_PROBABILITY.get(), 0.1F));
+		context.register(HASTE_MODIFIER, new TravellersComponentModifier(EquipmentSlotGroup.CHEST, TFDataComponents.HASTE_AMPLIFIER.get(), 1));
 
-		context.register(SWAP_HOTBAR_ABILITY, new BuiltinTravellersComponentModifier(TFDataComponents.SWAP_HOTBAR_ABILITY.get()));
-		context.register(SWAP_HOTBAR_MODIFIER, new TravellersComponentModifier(TFDataComponents.SWAP_HOTBAR_MODIFIER.get(), Unit.INSTANCE));
+		context.register(SWAP_HOTBAR_ABILITY, new BuiltinTravellersComponentModifier(EquipmentSlotGroup.LEGS, TFDataComponents.SWAP_HOTBAR_ABILITY.get()));
+		context.register(SWAP_HOTBAR_MODIFIER, new TravellersComponentModifier(EquipmentSlotGroup.LEGS, TFDataComponents.SWAP_HOTBAR_MODIFIER.get(), Unit.INSTANCE));
 
-		context.register(HIGH_JUMP_ABILITY, new BuiltinTravellersComponentModifier(TFDataComponents.HIGH_JUMP_AMPLIFIER.get()));
-		context.register(CONTROLLED_FALL_MODIFIER, new TravellersComponentModifier(TFDataComponents.CONTROLLED_FALLING_MULTIPLIER.get(), 1 - 1 / 6F));
-		context.register(AGILE_RANGER_MODIFIER, new TravellersComponentModifier(TFDataComponents.AGILE_RANGER_MODIFIER.get(), 5F));
-		context.register(DOUBLE_JUMP_MODIFIER, new TravellersComponentModifier(TFDataComponents.DOUBLE_JUMP.get(), Unit.INSTANCE));
-		context.register(SIDESTEP_MODIFIER, new TravellersComponentModifier(TFDataComponents.SIDESTEP_COOLDOWN.get(), 3 * 20L));
+		context.register(HIGH_JUMP_ABILITY, new BuiltinTravellersComponentModifier(EquipmentSlotGroup.LEGS, TFDataComponents.HIGH_JUMP_AMPLIFIER.get()));
+		context.register(CONTROLLED_FALL_MODIFIER, new TravellersComponentModifier(EquipmentSlotGroup.LEGS, TFDataComponents.CONTROLLED_FALLING_MULTIPLIER.get(), 1 - 1 / 6F));
+		context.register(AGILE_RANGER_MODIFIER, new TravellersComponentModifier(EquipmentSlotGroup.LEGS, TFDataComponents.AGILE_RANGER_MODIFIER.get(), 5F));
+		context.register(DOUBLE_JUMP_MODIFIER, new TravellersComponentModifier(EquipmentSlotGroup.LEGS, TFDataComponents.DOUBLE_JUMP.get(), Unit.INSTANCE));
+		context.register(SIDESTEP_MODIFIER, new TravellersComponentModifier(EquipmentSlotGroup.LEGS, TFDataComponents.SIDESTEP_COOLDOWN.get(), 3 * 20L));
 
-		context.register(HIGH_STEP_ABILITY, new TravellersEntryModifier(List.of(new ItemAttributeModifiers.Entry(Attributes.STEP_HEIGHT, TFAttributeModifiers.TRAVELLERS_HIGH_STEP, EquipmentSlotGroup.FEET)), TFDataComponents.HIGH_STEP, true));
-		context.register(STRAIGHT_AHEAD_MODIFIER, new TravellersComponentModifier(TFDataComponents.FORWARD_BOOST_MULTIPLIER.get(), 1.4));
-		context.register(SLIMY_SOLES_MODIFIER, new TravellersComponentModifier(TFDataComponents.SLIMY_SOLES_COEFFICIENT.get(), 0.5F));
-		context.register(UNRESTRAINED_MODIFIER, new TravellersComponentModifier(TFDataComponents.UNRESTRAINED.get(), Unit.INSTANCE));
-		context.register(WATER_WALK_MODIFIER, new TravellersComponentModifier(TFDataComponents.WATER_WALK.get(), Unit.INSTANCE));
+		context.register(HIGH_STEP_ABILITY, new TravellersEntryModifier(EquipmentSlotGroup.FEET, List.of(new ItemAttributeModifiers.Entry(Attributes.STEP_HEIGHT, TFAttributeModifiers.TRAVELLERS_HIGH_STEP, EquipmentSlotGroup.FEET)), TFDataComponents.HIGH_STEP, true));
+		context.register(STRAIGHT_AHEAD_MODIFIER, new TravellersComponentModifier(EquipmentSlotGroup.FEET, TFDataComponents.FORWARD_BOOST_MULTIPLIER.get(), 1.4));
+		context.register(SLIMY_SOLES_MODIFIER, new TravellersComponentModifier(EquipmentSlotGroup.FEET, TFDataComponents.SLIMY_SOLES_COEFFICIENT.get(), 0.5F));
+		context.register(UNRESTRAINED_MODIFIER, new TravellersComponentModifier(EquipmentSlotGroup.FEET, TFDataComponents.UNRESTRAINED.get(), Unit.INSTANCE));
+		context.register(WATER_WALK_MODIFIER, new TravellersComponentModifier(EquipmentSlotGroup.FEET, TFDataComponents.WATER_WALK.get(), Unit.INSTANCE));
 	}
 
 	protected static void register(BootstrapContext<TravellersModifier> context, ResourceKey<TravellersModifier> key, TravellersModifier travellersModifier) {

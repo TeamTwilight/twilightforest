@@ -2,5 +2,6 @@
   "type": "twilightforest:component",
   "component": {
     "twilightforest:forward_boost_multiplier": 1.4
-  }
+  },
+  "equipment_slots": "feet"
 }

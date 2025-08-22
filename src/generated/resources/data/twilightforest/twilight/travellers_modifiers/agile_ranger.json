@@ -2,5 +2,6 @@
   "type": "twilightforest:component",
   "component": {
     "twilightforest:agile_ranger_modifier": 5.0
-  }
+  },
+  "equipment_slots": "legs"
 }

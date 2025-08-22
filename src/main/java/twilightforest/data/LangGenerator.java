@@ -87,6 +87,16 @@ public class LangGenerator extends TFLangProvider {
 		this.addCommand("structure.spawn_info", "%s, Weight %s");
 		this.addCommand("structure.boundaries", "Structure boundaries: %s");
 
+		this.addCommand("invalid_modifier", "%s is not a valid Traveller's Gear Modifier");
+		this.addCommand("not_travellers_gear", "You are not holding a piece of Traveller's Gear");
+		this.addCommand("too_many_modifiers", "This piece of Traveller's Gear already has the maximum amount of modifiers");
+		this.addCommand("no_modifier", "%s is not applied to this piece of Traveller's Gear");
+		this.addCommand("has_modifier", "This piece of Traveller's Gear already has %s");
+		this.addCommand("wrong_modifier_slot", "%s is not allowed on this piece of Traveller's Gear");
+		this.addCommand("ability_modifier", "Abilities cannot be added or removed from Traveller's Gear");
+		this.addCommand("added_modifier", "Added %s to %s!");
+		this.addCommand("removed_modifier", "Removed %s from %s!");
+
 		this.add("gamerule.tfEnforcedProgression", "Twilight Forest: Enforced Progression");
 		this.add("gamerule.tfEnforcedProgression.description", "Some Twilight Forest biomes will be locked until you defeat certain bosses in the dimension. (You can check the progression order in your advancements)");
 

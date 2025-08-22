@@ -10,5 +10,6 @@
     }
   ],
   "builtin_modifier": true,
-  "component": "twilightforest:swift_swim"
+  "component": "twilightforest:swift_swim",
+  "equipment_slots": "chest"
 }

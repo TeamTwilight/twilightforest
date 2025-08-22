@@ -6,6 +6,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.util.Unit;
+import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 
@@ -13,17 +14,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-public record TravellersEntryModifier(List<ItemAttributeModifiers.Entry> modifiers, DataComponentType<Unit> markerComponent, boolean builtin) implements InsertableTravellersModifier {
+public record TravellersEntryModifier(EquipmentSlotGroup group, List<ItemAttributeModifiers.Entry> modifiers, DataComponentType<Unit> markerComponent, boolean builtin) implements InsertableTravellersModifier {
 
 	@SuppressWarnings("unchecked")
 	public static final MapCodec<TravellersEntryModifier> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+		EquipmentSlotGroup.CODEC.fieldOf("equipment_slots").validate(TravellersModifier::validateEquipment).forGetter(TravellersEntryModifier::group),
 		ItemAttributeModifiers.Entry.CODEC.listOf().fieldOf("attribute_modifiers").forGetter(TravellersEntryModifier::modifiers),
 		DataComponentType.CODEC.fieldOf("component").xmap(component -> (DataComponentType<Unit>) component, object -> object).forGetter(TravellersEntryModifier::markerComponent),
 		Codec.BOOL.fieldOf("builtin_modifier").orElse(false).forGetter(TravellersEntryModifier::builtin)
 	).apply(instance, TravellersEntryModifier::new));
 
-	public TravellersEntryModifier(List<ItemAttributeModifiers.Entry> modifiers, Supplier<DataComponentType<Unit>> markerComponent, boolean builtin) {
-		this(modifiers, markerComponent.get(), builtin);
+	public TravellersEntryModifier(EquipmentSlotGroup group, List<ItemAttributeModifiers.Entry> modifiers, Supplier<DataComponentType<Unit>> markerComponent, boolean builtin) {
+		this(group, modifiers, markerComponent.get(), builtin);
 	}
 
 	@Override

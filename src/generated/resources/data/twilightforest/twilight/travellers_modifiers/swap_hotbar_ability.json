@@ -1,4 +1,5 @@
 {
   "type": "twilightforest:builtin",
-  "component": "twilightforest:swap_hotbar_ability"
+  "component": "twilightforest:swap_hotbar_ability",
+  "equipment_slots": "legs"
 }

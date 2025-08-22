@@ -17,5 +17,6 @@
     }
   ],
   "builtin_modifier": false,
-  "component": "twilightforest:aquatic_agility"
+  "component": "twilightforest:aquatic_agility",
+  "equipment_slots": "head"
 }

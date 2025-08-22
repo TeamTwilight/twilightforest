@@ -2,5 +2,6 @@
   "type": "twilightforest:component",
   "component": {
     "twilightforest:haste_amplifier": 1
-  }
+  },
+  "equipment_slots": "chest"
 }

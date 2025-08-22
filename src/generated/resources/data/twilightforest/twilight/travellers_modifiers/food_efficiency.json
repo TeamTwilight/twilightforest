@@ -2,5 +2,6 @@
   "type": "twilightforest:component",
   "component": {
     "twilightforest:efficient_eater": 2.0
-  }
+  },
+  "equipment_slots": "chest"
 }

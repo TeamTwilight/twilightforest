@@ -2,5 +2,6 @@
   "type": "twilightforest:component",
   "component": {
     "twilightforest:water_walk": {}
-  }
+  },
+  "equipment_slots": "feet"
 }
