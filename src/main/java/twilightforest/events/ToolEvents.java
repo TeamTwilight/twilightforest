@@ -114,9 +114,9 @@ public class ToolEvents {
 					if (target.getArmorValue() > 0 && (weapon.is(TFItems.KNIGHTMETAL_PICKAXE.get()) || weapon.is(TFItems.KNIGHTMETAL_SWORD.get()))) {
 						if (target.getArmorCoverPercentage() > 0) {
 							int moreBonus = (int) (KNIGHTMETAL_BONUS_DAMAGE * target.getArmorCoverPercentage());
-							container.setNewDamage(container.getOriginalDamage() + moreBonus);
+							container.setNewDamage(container.getNewDamage() + moreBonus);
 						} else {
-							container.setNewDamage(container.getOriginalDamage() + KNIGHTMETAL_BONUS_DAMAGE);
+							container.setNewDamage(container.getNewDamage() + KNIGHTMETAL_BONUS_DAMAGE);
 						}
 						// enchantment attack sparkles
 						((ServerLevel) target.level()).getChunkSource().broadcastAndSend(target, new ClientboundAnimatePacket(target, 5));
