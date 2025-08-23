@@ -144,7 +144,7 @@ public class WroughtIronFenceBlock extends Block implements SimpleWaterloggedBlo
 
 	private BlockState fenceShape(LevelReader level, BlockState state, BlockPos pos, boolean north, boolean east, boolean south, boolean west) {
 		BlockState blockstate = this.updateSides(level, state, pos, north, east, south, west);
-		return blockstate.setValue(POST, this.makePost(level, blockstate, pos));
+		return blockstate.setValue(POST, makePost(level, blockstate, pos, true));
 	}
 
 	private BlockState updateSides(LevelReader level, BlockState state, BlockPos pos, boolean north, boolean east, boolean south, boolean west) {
@@ -169,20 +169,20 @@ public class WroughtIronFenceBlock extends Block implements SimpleWaterloggedBlo
 		return FenceSide.FULL;
 	}
 
-	private PostState makePost(LevelReader level, BlockState state, BlockPos pos) {
+	public static PostState makePost(LevelReader level, BlockState state, BlockPos pos, boolean allowCap) {
 		BlockState above = level.getBlockState(pos.above());
 
-		boolean shouldAnyBePost = shouldAnyBePost(level, pos);
-		if (state.getValue(POST) == PostState.CAPPED && above.canBeReplaced()) return PostState.CAPPED;
+		boolean shouldAnyBePost = shouldAnyBePost(level, state, pos);
+		if (allowCap && state.getValue(POST) == PostState.CAPPED && above.canBeReplaced()) return PostState.CAPPED;
 		if (shouldAnyBePost) return PostState.POST;
 		else return shouldBePost(state) ? PostState.POST : PostState.NONE;
 	}
 
-	private boolean shouldAnyBePost(LevelReader level, BlockPos pos) {
+	private static boolean shouldAnyBePost(LevelReader level, BlockState state, BlockPos pos) {
 		BlockPos.MutableBlockPos mutable = pos.above().mutable();
 		while (true) {
 			BlockState checkState = level.getBlockState(mutable);
-			if (!checkState.is(this)) break;
+			if (!checkState.is(state.getBlock())) break;
 			mutable.move(Direction.UP);
 			if (shouldBePost(checkState) || checkState.getValue(POST) == PostState.CAPPED) return true;
 		}
@@ -190,7 +190,7 @@ public class WroughtIronFenceBlock extends Block implements SimpleWaterloggedBlo
 		mutable.set(pos.below());
 		while (true) {
 			BlockState checkState = level.getBlockState(mutable);
-			if (!checkState.is(this)) break;
+			if (!checkState.is(state.getBlock())) break;
 			mutable.move(Direction.DOWN);
 			if (shouldBePost(checkState)) return true;
 		}
@@ -198,7 +198,7 @@ public class WroughtIronFenceBlock extends Block implements SimpleWaterloggedBlo
 		return false;
 	}
 
-	private boolean shouldBePost(BlockState state) {
+	private static boolean shouldBePost(BlockState state) {
 		FenceSide nSide = state.getValue(NORTH_FENCE);
 		FenceSide sSide = state.getValue(SOUTH_FENCE);
 		FenceSide eSide = state.getValue(EAST_FENCE);
@@ -208,7 +208,7 @@ public class WroughtIronFenceBlock extends Block implements SimpleWaterloggedBlo
 		boolean east = eSide == FenceSide.NONE;
 		boolean west = wSide == FenceSide.NONE;
 
-		return north && south && east && west || north != south || east != west || !north && !south && !east && !west;
+		return north && south && east && west || north != south || east != west || !north && !east;
 	}
 
 	@Override
@@ -232,7 +232,6 @@ public class WroughtIronFenceBlock extends Block implements SimpleWaterloggedBlo
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
 	public BlockState mirror(BlockState state, Mirror mirror) {
 		return switch (mirror) {
 			case LEFT_RIGHT -> state.setValue(NORTH_FENCE, state.getValue(SOUTH_FENCE)).setValue(SOUTH_FENCE, state.getValue(NORTH_FENCE));
