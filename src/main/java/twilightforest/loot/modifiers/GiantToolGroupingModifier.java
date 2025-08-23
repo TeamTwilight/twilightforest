@@ -4,6 +4,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
@@ -31,14 +32,15 @@ public class GiantToolGroupingModifier extends LootModifier {
 	@Override
 	protected @NotNull ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
 		if (context.getParam(LootContextParams.THIS_ENTITY) instanceof Player player) {
-			BlockState state = context.getParam(LootContextParams.BLOCK_STATE);
-			if (CONVERSIONS.containsKey(state.getBlock())) { // Should be true but let's double-check
-				var attachment = player.getData(TFDataAttachments.GIANT_PICKAXE_MINING);
-				int blockConversion = attachment.getGiantBlockConversion(); // Get how many conversions are left
-				attachment.setGiantBlockConversion(blockConversion - 1);
-				if (blockConversion == 64)
-					return ObjectArrayList.of(new ItemStack(CONVERSIONS.get(state.getBlock()))); // If it's the first conversion, drop our giant block
-				else return new ObjectArrayList<>(); // Drop nothing, all gets converted into giant block
+			if (!generatedLoot.isEmpty() && generatedLoot.getFirst().getItem() instanceof BlockItem block) {
+				if (CONVERSIONS.containsKey(block.getBlock())) { // Should be true but let's double-check
+					var attachment = player.getData(TFDataAttachments.GIANT_PICKAXE_MINING);
+					int blockConversion = attachment.getGiantBlockConversion(); // Get how many conversions are left
+					attachment.setGiantBlockConversion(blockConversion - 1);
+					if (blockConversion == 64)
+						return ObjectArrayList.of(new ItemStack(CONVERSIONS.get(block.getBlock()))); // If it's the first conversion, drop our giant block
+					else return new ObjectArrayList<>(); // Drop nothing, all gets converted into giant block
+				}
 			}
 		}
 		return generatedLoot;
