@@ -9,7 +9,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -28,7 +27,6 @@ import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.event.EventHooks;
 import net.neoforged.neoforge.event.TagsUpdatedEvent;
 import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
-import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
@@ -130,15 +128,17 @@ public class ToolEvents {
 		}
 	}
 
-	private void addExtraAxeChargingDamage(LivingDamageEvent.Pre event) {
-		LivingEntity target = event.getEntity();
-		DamageContainer container = event.getContainer();
-		if (!target.level().isClientSide() && container.getSource().getDirectEntity() instanceof LivingEntity living && living.isSprinting() && (container.getSource().is(DamageTypes.PLAYER_ATTACK) || container.getSource().is(DamageTypes.MOB_ATTACK))) {
-			ItemStack weapon = living.getMainHandItem();
-			if (!weapon.isEmpty() && weapon.getItem() instanceof MinotaurAxeItem) {
-				container.setNewDamage(container.getOriginalDamage() + MINOTAUR_AXE_BONUS_DAMAGE);
-				// enchantment attack sparkles
-				((ServerLevel) target.level()).getChunkSource().broadcastAndSend(target, new ClientboundAnimatePacket(target, 5));
+	private void addExtraAxeChargingDamage(LivingIncomingDamageEvent event) {
+		if (!event.isCanceled()) {
+			LivingEntity target = event.getEntity();
+			DamageContainer container = event.getContainer();
+			if (!target.level().isClientSide() && container.getSource().getDirectEntity() instanceof LivingEntity living && living.isSprinting()) {
+				ItemStack weapon = living.getMainHandItem();
+				if (!weapon.isEmpty() && weapon.getItem() instanceof MinotaurAxeItem) {
+					container.setNewDamage(container.getNewDamage() + MINOTAUR_AXE_BONUS_DAMAGE);
+					// enchantment attack sparkles
+					((ServerLevel) target.level()).getChunkSource().broadcastAndSend(target, new ClientboundAnimatePacket(target, 5));
+				}
 			}
 		}
 	}
