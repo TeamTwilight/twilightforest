@@ -20,11 +20,13 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.FurnaceBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.block.CinderFurnaceBlock;
+import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFBlocks;
 
 public class CinderFurnaceBlockEntity extends FurnaceBlockEntity {
@@ -32,6 +34,11 @@ public class CinderFurnaceBlockEntity extends FurnaceBlockEntity {
 
 	public CinderFurnaceBlockEntity(BlockPos pos, BlockState state) {
 		super(pos, state);
+	}
+
+	@Override
+	public BlockEntityType<?> getType() {
+		return TFBlockEntities.CINDER_FURNACE.get();
 	}
 
 	// [VanillaCopy] of superclass, edits noted
@@ -80,7 +87,7 @@ public class CinderFurnaceBlockEntity extends FurnaceBlockEntity {
 				} else {
 					te.cookingProgress = 0;
 				}
-			} else if (!te.isBurning() && te.cookingProgress > 0) {
+			} else if (te.cookingProgress > 0) {
 				te.cookingProgress = Mth.clamp(te.cookingProgress - 2, 0, te.cookingTotalTime);
 			}
 
@@ -123,31 +130,12 @@ public class CinderFurnaceBlockEntity extends FurnaceBlockEntity {
 			BlockState nearbyBlock = level.getBlockState(pos);
 
 			if (!nearbyBlock.is(TFBlocks.CINDER_LOG) && nearbyBlock.is(BlockTags.LOGS)) {
-				level.setBlock(pos, this.getCinderLog(dx, dy, dz), Block.UPDATE_CLIENTS);
+				level.setBlock(pos, TFBlocks.CINDER_LOG.get().withPropertiesOf(nearbyBlock), Block.UPDATE_CLIENTS);
 				level.levelEvent(LevelEvent.PARTICLES_MOBBLOCK_SPAWN, pos, 0);
 				level.levelEvent(LevelEvent.PARTICLES_MOBBLOCK_SPAWN, pos, 0);
 				level.playSound(null, pos, SoundEvents.FIRE_AMBIENT, SoundSource.BLOCKS, 1.0F, 1.0F);
 			}
 		}
-	}
-
-	/**
-	 * What meta should we set the log block with the specified offset to?
-	 */
-	private BlockState getCinderLog(int dx, int dy, int dz) {
-		@Nullable Direction.Axis direction;
-		if (dz == 0 && dx != 0) {
-			direction = dy == 0 ? Direction.Axis.X : Direction.Axis.Z;
-		} else if (dx == 0 && dz != 0) {
-			direction = dy == 0 ? Direction.Axis.Z : Direction.Axis.X;
-		} else if (dx == 0) {
-			direction = Direction.Axis.Y;
-		} else {
-			direction = dy == 0 ? Direction.Axis.Y : null; //We return null so we can get Cinder Wood.
-		}
-
-		return direction != null ? TFBlocks.CINDER_LOG.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, direction)
-			: TFBlocks.CINDER_WOOD.get().defaultBlockState();
 	}
 
 	/**
