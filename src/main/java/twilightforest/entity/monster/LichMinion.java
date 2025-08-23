@@ -1,6 +1,7 @@
 package twilightforest.entity.monster;
 
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
@@ -138,5 +139,15 @@ public class LichMinion extends Zombie {
 
 		spawnGroupData = new ZombieGroupData(baby, true);
 		return super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData);
+	}
+
+	@Override
+	protected void populateDefaultEquipmentSlots(RandomSource random, DifficultyInstance difficulty) {
+		//NO-OP
+	}
+
+	@Override
+	public boolean canPickUpLoot() {
+		return false;
 	}
 }
