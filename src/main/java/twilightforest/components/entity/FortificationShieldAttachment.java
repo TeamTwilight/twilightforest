@@ -2,6 +2,9 @@ package twilightforest.components.entity;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
@@ -16,7 +19,6 @@ import twilightforest.init.TFParticleType;
 import twilightforest.init.TFSounds;
 import twilightforest.init.TFStats;
 import twilightforest.network.ParticlePacket;
-import twilightforest.network.UpdateShieldPacket;
 
 public class FortificationShieldAttachment {
 
@@ -24,6 +26,12 @@ public class FortificationShieldAttachment {
 			Codec.INT.fieldOf("temporary_shields").forGetter(o -> o.temporaryShields),
 			Codec.INT.fieldOf("permanent_shields").forGetter(o -> o.permanentShields))
 		.apply(instance, FortificationShieldAttachment::new));
+
+	public static final StreamCodec<FriendlyByteBuf, FortificationShieldAttachment> STREAM_CODEC = StreamCodec.composite(
+		ByteBufCodecs.INT, o -> o.temporaryShields,
+		ByteBufCodecs.INT, o -> o.permanentShields,
+		FortificationShieldAttachment::new
+	);
 
 	private int temporaryShields;
 	private int permanentShields;
@@ -81,7 +89,6 @@ public class FortificationShieldAttachment {
 			player.awardStat(TFStats.TF_SHIELDS_BROKEN.get());
 		}
 
-		this.sendUpdatePacket(entity);
 		entity.level().playSound(null, entity.blockPosition(), expired ? TFSounds.SHIELD_EXPIRE.get() : TFSounds.SHIELD_BREAK.get(), SoundSource.PLAYERS, 1.0F, (entity.getRandom().nextFloat() - entity.getRandom().nextFloat()) * 0.3F + 1.0F);
 	}
 
@@ -127,8 +134,6 @@ public class FortificationShieldAttachment {
 		} else {
 			this.permanentShields = Math.clamp(amount, 0, 115);
 		}
-
-		this.sendUpdatePacket(entity);
 	}
 
 	public void addShields(LivingEntity entity, int amount, boolean temp) {
@@ -141,16 +146,9 @@ public class FortificationShieldAttachment {
 		} else {
 			this.permanentShields = Math.clamp(this.permanentShields + amount, 0, 115);
 		}
-
-		sendUpdatePacket(entity);
 	}
 
 	private void resetTimer() {
 		this.timer = 240;
-	}
-
-	private void sendUpdatePacket(LivingEntity entity) {
-		if (entity instanceof ServerPlayer)
-			PacketDistributor.sendToPlayersTrackingEntityAndSelf(entity, new UpdateShieldPacket(entity.getId(), this.temporaryShields, this.permanentShields));
 	}
 }

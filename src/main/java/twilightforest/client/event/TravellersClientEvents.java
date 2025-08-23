@@ -189,7 +189,7 @@ public class TravellersClientEvents {
 			boolean hasClicked = isClicked;
 			if (!hasClicked)
 				return;
-			localPlayer.connection.send(new SwapHotbarPacket());
+			localPlayer.connection.send(SwapHotbarPacket.INSTANCE);
 		}
 	}
 

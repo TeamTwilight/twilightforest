@@ -30,7 +30,7 @@ public class DataMapGenerator extends DataMapProvider {
 
 	@Override
 	@SuppressWarnings("deprecation")
-	protected void gather() {
+	protected void gather(HolderLookup.Provider provider) {
 		var compostables = this.builder(NeoForgeDataMaps.COMPOSTABLES);
 		compostables.add(TFBlocks.FALLEN_LEAVES.asItem().builtInRegistryHolder(), new Compostable(0.1F), false);
 		compostables.add(TFBlocks.CANOPY_LEAVES.asItem().builtInRegistryHolder(), new Compostable(0.3F), false);

@@ -37,6 +37,7 @@ public class BlockHooks {
 	 */
 	public static boolean isRainingAt(boolean isRaining, Level level, BlockPos pos) {
 		if (!isRaining && TFConfig.commonCloudBlockPrecipitationDistance > 0) {
+			if (!level.hasChunkAt(pos)) return false; //do NOT try to load new chunks when checking for rain. This can cause deadlocks if mobs ry to spawn in unloaded areas and check for rain
 			LevelChunk chunk = level.getChunkAt(pos);
 			for (int y = pos.getY(); y < pos.getY() + TFConfig.commonCloudBlockPrecipitationDistance; y++) {
 				BlockPos newPos = pos.atY(y);

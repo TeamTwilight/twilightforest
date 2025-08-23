@@ -44,10 +44,14 @@ public class TravellersArmorBeltItem extends TravellersArmorItem {
 			: Optional.empty();
 	}
 
-	//TODO check for the container component once #2575 is merged
 	@Override
 	public boolean canFitInsideContainerItems() {
 		return false;
+	}
+
+	@Override
+	public boolean canFitInsideContainerItems(ItemStack stack) {
+		return !stack.has(DataComponents.CONTAINER);
 	}
 
 	public static void travellersTrySwapHotbar(Player player) {

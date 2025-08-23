@@ -25,7 +25,7 @@ import twilightforest.data.tags.*;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
-@EventBusSubscriber(modid = TwilightForestMod.ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = TwilightForestMod.ID)
 public class DataGenerators {
 
 	@SubscribeEvent

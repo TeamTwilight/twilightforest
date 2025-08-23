@@ -4,7 +4,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.DamageTypeTags;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.common.NeoForge;
@@ -12,14 +11,12 @@ import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
-import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.beans.Component;
 import twilightforest.beans.PostConstruct;
 import twilightforest.components.entity.FortificationShieldAttachment;
 import twilightforest.config.TFConfig;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFDimension;
-import twilightforest.network.UpdateShieldPacket;
 import twilightforest.world.NoReturnTeleporter;
 import twilightforest.world.TFTeleporter;
 
@@ -34,9 +31,7 @@ public class CapabilityEvents {
 		NeoForge.EVENT_BUS.addListener(this::updatePlayerCaps);
 		NeoForge.EVENT_BUS.addListener(this::absorbShieldHits);
 		NeoForge.EVENT_BUS.addListener(this::spawnInTFIfNecessary);
-		NeoForge.EVENT_BUS.addListener(this::syncCapsOnLogin);
-		NeoForge.EVENT_BUS.addListener(this::syncCapsOnDimensionChange);
-		NeoForge.EVENT_BUS.addListener(this::syncCapsOnTracking);
+		NeoForge.EVENT_BUS.addListener(this::checkBanishmentOnLogin);
 	}
 
 	private void updateShields(EntityTickEvent.Post event) {
@@ -89,28 +84,9 @@ public class CapabilityEvents {
 	/**
 	 * When player logs in, report conflict status, set progression status
 	 */
-	private void syncCapsOnLogin(PlayerEvent.PlayerLoggedInEvent event) {
+	private void checkBanishmentOnLogin(PlayerEvent.PlayerLoggedInEvent event) {
 		if (!event.getEntity().level().isClientSide() && event.getEntity() instanceof ServerPlayer player) {
-			updateCapabilities(player, event.getEntity());
 			banishNewbieToTwilightZone(player);
-		}
-	}
-
-	private void syncCapsOnDimensionChange(PlayerEvent.PlayerChangedDimensionEvent event) {
-		if (!event.getEntity().level().isClientSide() && event.getEntity() instanceof ServerPlayer player) {
-			updateCapabilities(player, event.getEntity());
-		}
-	}
-
-	private void syncCapsOnTracking(PlayerEvent.StartTracking event) {
-		updateCapabilities((ServerPlayer) event.getEntity(), event.getTarget());
-	}
-
-	// send any capabilities that are needed client-side
-	private static void updateCapabilities(ServerPlayer clientTarget, Entity shielded) {
-		var attachment = shielded.getData(TFDataAttachments.FORTIFICATION_SHIELDS);
-		if (attachment.shieldsLeft() > 0) {
-			PacketDistributor.sendToPlayer(clientTarget, new UpdateShieldPacket(shielded.getId(), attachment.temporaryShieldsLeft(), attachment.permanentShieldsLeft()));
 		}
 	}
 

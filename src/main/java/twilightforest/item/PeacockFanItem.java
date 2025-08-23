@@ -30,7 +30,6 @@ import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFSounds;
 import twilightforest.network.MovePlayerPacket;
 import twilightforest.network.ParticlePacket;
-import twilightforest.network.UpdateFeatherFanFallPacket;
 import twilightforest.util.WorldUtil;
 
 import javax.annotation.Nonnull;
@@ -53,7 +52,6 @@ public class PeacockFanItem extends Item {
 			stack.hurtAndBreak(fanned + 1, player, LivingEntity.getSlotForHand(hand));
 			if (flag) {
 				player.setData(TFDataAttachments.FEATHER_FAN, true);
-				PacketDistributor.sendToPlayersTrackingEntityAndSelf(player, new UpdateFeatherFanFallPacket(player.getId(), true));
 			} else {
 				AABB fanBox = this.getEffectAABB(player);
 				Vec3 lookVec = player.getLookAngle();

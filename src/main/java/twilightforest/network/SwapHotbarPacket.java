@@ -9,17 +9,13 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 import twilightforest.TwilightForestMod;
 import twilightforest.item.travellers_gear.TravellersArmorBeltItem;
 
-public record SwapHotbarPacket() implements CustomPacketPayload {
-	public static final Type<SwapHotbarPacket> TYPE = new Type<>(TwilightForestMod.prefix("swap_hotbar_packet"));
-	public static final StreamCodec<RegistryFriendlyByteBuf, SwapHotbarPacket> STREAM_CODEC = CustomPacketPayload.codec(SwapHotbarPacket::write, SwapHotbarPacket::new);
+public class SwapHotbarPacket implements CustomPacketPayload {
 
-	public SwapHotbarPacket(RegistryFriendlyByteBuf registryFriendlyByteBuf) {
-		this();
-	}
+	public static final SwapHotbarPacket INSTANCE = new SwapHotbarPacket();
+	public static final Type<SwapHotbarPacket> TYPE = new Type<>(TwilightForestMod.prefix("swap_hotbar"));
+	public static final StreamCodec<RegistryFriendlyByteBuf, SwapHotbarPacket> STREAM_CODEC = StreamCodec.unit(INSTANCE);
 
-	private void write(RegistryFriendlyByteBuf registryFriendlyByteBuf) {
-
-	}
+	private SwapHotbarPacket() {}
 
 	@Override
 	public Type<? extends CustomPacketPayload> type() {
