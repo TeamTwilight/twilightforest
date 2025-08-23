@@ -330,7 +330,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addBlock(TFBlocks.IRONWOOD_BLOCK, "Block of Ironwood");
 		this.addBlock(TFBlocks.STEELEAF_BLOCK, "Block of Steeleaf");
 		this.addBlock(TFBlocks.KNIGHTMETAL_BLOCK, "Block of Knightmetal");
-		this.add("block.twilightforest.knightmetal_block.desc", "Works as a stronger cactus");
+		this.add("block.twilightforest.knightmetal_block.desc", "Deals strong contact damage");
 		this.addBlock(TFBlocks.ARCTIC_FUR_BLOCK, "Block of Arctic Fur");
 		this.add("block.twilightforest.arctic_fur_block.desc", "Reduces fall damage by 90%");
 		this.addBlock(TFBlocks.FIERY_BLOCK, "Block of Fiery Metal");
