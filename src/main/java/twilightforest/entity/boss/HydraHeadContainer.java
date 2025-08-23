@@ -596,20 +596,20 @@ public class HydraHeadContainer {
 			neckRotation = -90;
 		}
 		if (this.headNum == 3) {
-			vector = new Vec3(-1, 3, 3);
+			vector = new Vec3(-1, 2.5, 3);
 			neckRotation = 135;
 		}
 		if (this.headNum == 4) {
-			vector = new Vec3(1, 3, 3);
+			vector = new Vec3(1, 2.5, 3);
 			neckRotation = -135;
 		}
 
 		if (this.headNum == 5) {
-			vector = new Vec3(-1, 3, 5);
+			vector = new Vec3(-1, 2, 5);
 			neckRotation = 135;
 		}
 		if (this.headNum == 6) {
-			vector = new Vec3(1, 3, 5);
+			vector = new Vec3(1, 2, 5);
 			neckRotation = -135;
 		}
 
@@ -648,7 +648,7 @@ public class HydraHeadContainer {
 
 		dx = this.hydra.getX() + vector.x();
 		dy = this.hydra.getY() + vector.y() + 3;
-		dz = this.hydra.getZ() + vector.z() + 1;
+		dz = this.hydra.getZ() + vector.z();
 
 		this.headEntity.setPos(dx, dy, dz);
 		this.headEntity.setMouthOpen(getCurrentMouthOpen());
@@ -807,7 +807,7 @@ public class HydraHeadContainer {
 	protected void setNeckPosition(double startX, double startY, double startZ, float startYaw) {
 
 		double endX = this.headEntity.getX();
-		double endY = this.headEntity.getY();
+		double endY = this.headEntity.getY() - 0.5F;
 		double endZ = this.headEntity.getZ();
 		float endYaw = this.headEntity.getYRot();
 		float endPitch = this.headEntity.getXRot();
@@ -824,7 +824,7 @@ public class HydraHeadContainer {
 		// translate the end position back 1 unit
 		if (endPitch > 0) {
 			// if we are looking down, don't raise the first neck position, it looks weird
-			Vec3 vector = new Vec3(0.0D, 0.0D, -1.0D).yRot((-endYaw * 3.141593F) / 180.0F);
+			Vec3 vector = new Vec3(0.0D, 0.0D, -1.8D).yRot((-endYaw * 3.141593F) / 180.0F);
 			endX += vector.x();
 			endY += vector.y();
 			endZ += vector.z();

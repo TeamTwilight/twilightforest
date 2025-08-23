@@ -114,6 +114,34 @@ public class Hydra extends BaseTFBoss {
 	}
 
 	@Override
+	protected float tickHeadTurn(float yRot, float yTurnDelta) {
+		float f = Mth.wrapDegrees(yRot - this.yBodyRot);
+		this.yBodyRot += f * 0.3F;
+		float f1 = Mth.wrapDegrees(this.getYRot() - this.yBodyRot);
+		boolean flag = f1 < -90.0F || f1 >= 90.0F;
+
+		if (f1 < -75.0F) {
+			f1 = -75.0F;
+		}
+
+		if (f1 >= 75.0F) {
+			f1 = 75.0F;
+		}
+
+		this.yBodyRot = this.getYRot() - f1;
+
+		if (f1 * f1 > 2500.0F) {
+			this.yBodyRot += f1 * 0.2F;
+		}
+
+		if (flag) {
+			yTurnDelta *= -1.0F;
+		}
+
+		return yTurnDelta;
+	}
+
+	@Override
 	public boolean isPathFinding() {
 		return false;
 	}
