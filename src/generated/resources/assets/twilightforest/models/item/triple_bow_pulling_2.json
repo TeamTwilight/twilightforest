@@ -1,5 +1,58 @@
 {
-  "parent": "minecraft:item/bow",
+  "parent": "minecraft:item/generated",
+  "display": {
+    "firstperson_righthand": {
+      "rotation": [
+        0,
+        90,
+        -25
+      ],
+      "scale": [
+        0.68,
+        0.68,
+        0.68
+      ],
+      "translation": [
+        1.13,
+        3.2,
+        1.13
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        -80,
+        -280,
+        40
+      ],
+      "scale": [
+        0.9,
+        0.9,
+        0.9
+      ],
+      "translation": [
+        -1,
+        -2,
+        -2.5
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        -80,
+        260,
+        -40
+      ],
+      "scale": [
+        0.9,
+        0.9,
+        0.9
+      ],
+      "translation": [
+        -1,
+        -2,
+        -2.5
+      ]
+    }
+  },
   "textures": {
     "layer0": "twilightforest:item/triple_bow_pulling_2"
   }

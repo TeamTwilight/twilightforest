@@ -867,10 +867,15 @@ public class ItemModelGenerator extends ItemModelProvider {
 	}
 
 	private ItemModelBuilder bowItem(String name, ResourceLocation... layers) {
-		ItemModelBuilder builder = withExistingParent(name, "item/bow");
+		ItemModelBuilder builder = withExistingParent(name, "item/generated");
 		for (int i = 0; i < layers.length; i++) {
 			builder = builder.texture("layer" + i, layers[i]);
 		}
+		builder.transforms()
+			.transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND).translation(-1.0F, -2.0F, -2.5F).rotation(-80.0F, 260.0F, -40.0F).scale(0.9F).end()
+			.transform(ItemDisplayContext.THIRD_PERSON_LEFT_HAND).translation(-1.0F, -2.0F, -2.5F).rotation(-80.0F, -280.0F, 40.0F).scale(0.9F).end()
+			.transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND).translation(1.13F, 3.2F, 1.13F).rotation(0.0F, -90.0F, 25.0F).scale(0.68F).end()
+			.transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND).translation(1.13F, 3.2F, 1.13F).rotation(0.0F, 90.0F, -25.0F).scale(0.68F).end().end();
 		return builder;
 	}
 
