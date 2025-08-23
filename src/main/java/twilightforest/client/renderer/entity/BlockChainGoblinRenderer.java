@@ -46,9 +46,7 @@ public class BlockChainGoblinRenderer<T extends BlockChainGoblin, M extends Huma
 
 		stack.translate(blockInX, blockInY, blockInZ);
 
-		float pitch = entity.xRotO + (entity.getXRot() - entity.xRotO) * partialTicks;
-		stack.mulPose(Axis.YP.rotationDegrees(180 - Mth.wrapDegrees(yaw)));
-		stack.mulPose(Axis.XP.rotationDegrees(pitch));
+		stack.mulPose(Axis.YP.rotationDegrees(-entity.block.getYRot()));
 
 		stack.scale(-1.0F, -1.0F, 1.0F);
 

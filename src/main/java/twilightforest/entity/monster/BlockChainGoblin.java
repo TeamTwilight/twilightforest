@@ -46,7 +46,6 @@ public class BlockChainGoblin extends Monster {
 
 	private float chainMoveLength;
 
-	@SuppressWarnings("this-escape")
 	public final SpikeBlock block = new SpikeBlock(this);
 
 	private final MultipartGenericsAreDumb[] partsArray;
@@ -162,7 +161,6 @@ public class BlockChainGoblin extends Monster {
 			}
 		}
 
-		//when alive,Holding SpikeBlock
 		if (this.isAlive()) {
 			if (this.chainMoveLength > 0) {
 
@@ -183,12 +181,11 @@ public class BlockChainGoblin extends Monster {
 
 				this.block.setPos(sx2 - ox2, sy2 - oy2, sz2 - oz2);
 			} else {
-
 				// set block position
 				Vec3 blockPos = this.getChainPosition();
 				this.block.setPos(blockPos.x(), blockPos.y(), blockPos.z());
-				this.block.setYRot(getChainAngle());
 			}
+			this.block.setYRot(this.getChainAngle());
 		}
 
 		// collide things with the block

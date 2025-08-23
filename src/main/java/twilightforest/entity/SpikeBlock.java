@@ -18,21 +18,16 @@ public class SpikeBlock extends BlockChainGoblin.MultipartGenericsAreDumb {
 
 	private boolean isCollideBlock;
 
-	//@Override
-	//public EntityDimensions getDefaultDimensions(Pose pos) {
-	//	return EntityDimensions.scalable(0.75F, 0.75F);
-	//}
-
 	public SpikeBlock(Entity goblin) {
 		super(goblin);
 		this.goblin = goblin;
-		this.realSize = EntityDimensions.scalable(0.75F, 0.75F);
+		this.setSize(EntityDimensions.scalable(0.75F, 0.75F));
 	}
 
 	@Override
 	public void tick() {
 		super.tick();
-		if (this.goblin != null && !this.goblin.isAlive()) {
+		if (!this.goblin.isAlive()) {
 			this.doFall();
 		}
 	}
