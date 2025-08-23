@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "twilightforest:giant_log_to_oak_planks"
+        "recipe": "twilightforest:giant_log_to_oak_log"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "twilightforest:giant_log_to_oak_planks"
+      "twilightforest:giant_log_to_oak_log"
     ]
   }
 }

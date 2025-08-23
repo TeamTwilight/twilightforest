@@ -108,7 +108,6 @@ public class EntityEvents {
 		NeoForge.EVENT_BUS.addListener(this::wipeOreMeterOnLeftClick);
 		NeoForge.EVENT_BUS.addListener(this::entityHurts);
 		NeoForge.EVENT_BUS.addListener(this::onCasketBreak);
-		NeoForge.EVENT_BUS.addListener(this::onCrafting);
 		NeoForge.EVENT_BUS.addListener(this::reduceFrostedEffectIfOnFire);
 		NeoForge.EVENT_BUS.addListener(this::onParryProjectile);
 		NeoForge.EVENT_BUS.addListener(this::createSkullCandle);
@@ -224,20 +223,6 @@ public class EntityEvents {
 					}
 				}
 			}
-		}
-	}
-
-	@Deprecated
-	//TODO remove
-	private void onCrafting(PlayerEvent.ItemCraftedEvent event) {
-		ItemStack itemStack = event.getCrafting();
-
-		// if we've crafted 64 planks from a giant log, sneak 192 more planks into the player's inventory or drop them nearby
-		if (itemStack.is(Items.OAK_PLANKS) && itemStack.getCount() == 64 && event.getInventory().countItem(TFBlocks.GIANT_LOG.get().asItem()) > 0) {
-			Player player = event.getEntity();
-			ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Items.OAK_PLANKS, 64));
-			ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Items.OAK_PLANKS, 64));
-			ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Items.OAK_PLANKS, 64));
 		}
 	}
 

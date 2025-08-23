@@ -249,7 +249,7 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 			TFBlocks.SORTING_SAPLING.asItem(),
 			TFItems.TRANSFORMATION_POWDER.get());
 
-		this.tag(BANNED_UNCRAFTABLES).add(TFBlocks.GIANT_LOG.asItem());
+		this.tag(BANNED_UNCRAFTABLES);
 		this.tag(UNCRAFTING_IGNORES_COST).addTag(Tags.Items.RODS_WOODEN);
 
 		this.tag(KEPT_ON_DEATH).add(TFItems.TOWER_KEY.get(), TFItems.PHANTOM_HELMET.get(), TFItems.PHANTOM_CHESTPLATE.get());

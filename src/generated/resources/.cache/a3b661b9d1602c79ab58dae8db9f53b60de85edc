@@ -1,4 +1,4 @@
-// 1.21.1	2025-08-19T19:59:28.910715754	Twilight Forest Item Tags
+// 1.21.1	2025-08-23T07:09:22.908195322	Twilight Forest Item Tags
 3c5895c72cfffe09615ec2b28267a726fcbf52e8 data/alexscaves/tags/item/ferns.json
 4c5df8d60b8f068b482a22fd807ddea22e1bfe00 data/alexscaves/tags/item/ferromagnetic_items.json
 42afac82c004061587d5b1ae20c2e66c0d399c8c data/alexscaves/tags/item/raw_meats.json
@@ -99,7 +99,7 @@ f3de4b0d6d2929c8fab124e75ff6269ca7642aa7 data/minecraft/tags/item/wooden_stairs.
 80d39c2bda904c02ce91f31f02cd1079c0c1d4ee data/randomium/tags/item/blacklist.json
 b365ad6615ef9b05f43067637b8c869c06150e9e data/twilightforest/tags/item/arctic_fur.json
 af8520c845f14fb320bcefd284018a5ad57a7528 data/twilightforest/tags/item/banisters.json
-03701e27c1ba9819ac4dc5865a2bd2ab3be6a7be data/twilightforest/tags/item/banned_uncraftables.json
+35133e95f1c8fdd7a1c21afcc231fc0bffefb9a8 data/twilightforest/tags/item/banned_uncraftables.json
 db3a933719c405a3ec1c7ba068704346c2eb30a0 data/twilightforest/tags/item/banned_uncrafting_ingredients.json
 4f38a04e314d2d9244774aef16dc773b5870f883 data/twilightforest/tags/item/boar_tempt_items.json
 84101198c6b6d645c6e155abb5349d33e7279300 data/twilightforest/tags/item/canopy_logs.json
