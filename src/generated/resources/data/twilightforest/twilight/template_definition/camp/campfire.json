@@ -1,3 +1,10 @@
 {
-  "twilightforest:camp/structure_start": 100
+  "twilightforest:camp/structure_start": {
+    "processors": {
+      "processors": []
+    },
+    "projection": "rigid",
+    "terrain_adaptation": "beard_box",
+    "weight": 100
+  }
 }

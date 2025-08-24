@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public final class StructureTemplateDefinitions extends CodecResourceReloadListener<StructureTemplateDefinition> {
 
 	private final Map<ResourceLocation, Map<ResourceLocation, TemplatePoolInstance>> rawTemplatePools = new HashMap<>();
-	private final Map<ResourceLocation, WeightedRandomList<PoolEntry>> templatePools = new HashMap<>();
+	private final Map<ResourceLocation, WeightedRandomList<TemplatePoolEntry>> templatePools = new HashMap<>();
 
 	public static final String DIRECTORY = "twilight/template_definition";
 
@@ -33,7 +33,7 @@ public final class StructureTemplateDefinitions extends CodecResourceReloadListe
 
 	@Override
 	protected void forLocation(ResourceManager manager, ResourceLocation templateName, StructureTemplateDefinition templateDefinition) {
-		for(Map.Entry<ResourceLocation, TemplatePoolInstance> poolToRegisterWeight : templateDefinition.poolWeights().entrySet()) {
+		for (Map.Entry<ResourceLocation, TemplatePoolInstance> poolToRegisterWeight : templateDefinition.poolWeights().entrySet()) {
 			ResourceLocation templatePoolId = poolToRegisterWeight.getKey();
 			TemplatePoolInstance templatePoolInstance = poolToRegisterWeight.getValue();
 
@@ -50,13 +50,13 @@ public final class StructureTemplateDefinitions extends CodecResourceReloadListe
 
 		super.apply(map, manager, profiler);
 
-		for(Map.Entry<ResourceLocation, Map<ResourceLocation, TemplatePoolInstance>> rawTemplatePool : this.rawTemplatePools.entrySet()) {
-			ArrayList<PoolEntry> poolBuilder = new ArrayList<>();
+		for (Map.Entry<ResourceLocation, Map<ResourceLocation, TemplatePoolInstance>> rawTemplatePool : this.rawTemplatePools.entrySet()) {
+			ArrayList<TemplatePoolEntry> poolBuilder = new ArrayList<>();
 
 			// Ensures that the order of elements stays deterministic between sessions, as Sets are not implicitly ordered
 			List<Map.Entry<ResourceLocation, TemplatePoolInstance>> sortedTemplateWeights = rawTemplatePool.getValue().entrySet().stream().sorted(Map.Entry.comparingByKey()).toList();
 			for (Map.Entry<ResourceLocation, TemplatePoolInstance> templateIdWeight : sortedTemplateWeights) {
-				poolBuilder.add(new PoolEntry(templateIdWeight.getKey(), templateIdWeight.getValue()));
+				poolBuilder.add(new TemplatePoolEntry(templateIdWeight.getKey(), templateIdWeight.getValue()));
 			}
 
 			ResourceLocation templatePoolId = rawTemplatePool.getKey();
@@ -66,21 +66,25 @@ public final class StructureTemplateDefinitions extends CodecResourceReloadListe
 		this.rawTemplatePools.clear();
 	}
 
+	private Optional<TemplatePoolEntry> getRandomEntry(RandomSource random, ResourceLocation templatePoolId) {
+		WeightedRandomList<TemplatePoolEntry> templatePool = this.templatePools.get(templatePoolId);
+		return templatePool == null ? Optional.empty() : templatePool.getRandom(random);
+	}
+
 	@Nullable
 	public ResourceLocation getRandomTemplate(RandomSource random, ResourceLocation templatePoolId) {
-		WeightedRandomList<PoolEntry> templatePool = this.templatePools.get(templatePoolId);
-		return templatePool == null ? null : templatePool.getRandom(random).map(PoolEntry::templateLocation).orElse(null);
+		return this.getRandomEntry(random, templatePoolId).map(TemplatePoolEntry::templateLocation).orElse(null);
 	}
 
 	// https://en.wikipedia.org/wiki/Reservoir_sampling
 	public Iterable<ResourceLocation> getShuffledSequence(RandomSource random, ResourceLocation templatePoolId) {
-		WeightedRandomList<PoolEntry> templatePool = this.templatePools.get(templatePoolId);
+		WeightedRandomList<TemplatePoolEntry> templatePool = this.templatePools.get(templatePoolId);
 
 		if (templatePool == null)
-			return List.of();
+			return Collections.emptyList();
 
 		Map<ResourceLocation, Double> reservoirSampled = new HashMap<>();
-		for (PoolEntry entry : templatePool.unwrap()) {
+		for (TemplatePoolEntry entry : templatePool.unwrap()) {
 			double rand = random.nextDouble();
 			reservoirSampled.put(entry.templateLocation(), -Math.log(rand) / entry.getWeight().asInt());
 		}
@@ -88,20 +92,25 @@ public final class StructureTemplateDefinitions extends CodecResourceReloadListe
 		return reservoirSampled.entrySet().stream().sorted(Map.Entry.comparingByValue()).map(Map.Entry::getKey).collect(Collectors.toList());
 	}
 
-	// TODO initializeStubFromPool
+	// TODO initializeStubFromPool to return GenerationStub
 
 	@Nullable
 	public TwilightJigsawPiece initializeTemplateFromPool(ResourceLocation templatePool, BlockPos parentJunctionPos, FrontAndTop parentOrientation, String selectName, RandomSource rand, int genDepth, StructureTemplateManager structureManager) {
-		ResourceLocation templateId = this.getRandomTemplate(rand, templatePool);
-		JigsawPlaceContext placeContext = JigsawPlaceContext.pickPlaceableJunction(parentJunctionPos, BlockPos.ZERO, parentOrientation, structureManager, templateId, selectName, rand);
+		Optional<TemplatePoolEntry> entryOptional = this.getRandomEntry(rand, templatePool);
 
-		if (templateId == null || placeContext == null)
+		if (entryOptional.isEmpty())
 			return null;
 
-		return TwilightJigsawPiece.defaultForTemplate(genDepth, structureManager, templateId, placeContext);
+		TemplatePoolEntry templateEntry = entryOptional.get();
+		JigsawPlaceContext placeContext = JigsawPlaceContext.pickPlaceableJunction(parentJunctionPos, BlockPos.ZERO, parentOrientation, structureManager, templateEntry.templateLocation, selectName, rand);
+
+		if (placeContext == null)
+			return null;
+
+		return TwilightJigsawPiece.defaultForTemplate(genDepth, structureManager, templateEntry.templateLocation, placeContext, templateEntry.instance);
 	}
 
-	private record PoolEntry(ResourceLocation templateLocation, TemplatePoolInstance instance) implements WeightedEntry {
+	private record TemplatePoolEntry(ResourceLocation templateLocation, TemplatePoolInstance instance) implements WeightedEntry {
 		@Override
 		public Weight getWeight() {
 			return this.instance.getWeight();

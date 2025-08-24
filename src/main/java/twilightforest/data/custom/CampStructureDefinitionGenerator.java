@@ -1,12 +1,19 @@
 package twilightforest.data.custom;
 
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
+import net.minecraft.util.random.Weight;
+import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
+import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
 import twilightforest.beans.Autowired;
 import twilightforest.world.components.structures.camp.CampPieces;
+import twilightforest.world.components.structures.util.TemplatePoolInstance;
 
+import java.util.Collections;
 import java.util.concurrent.CompletableFuture;
 
 public class CampStructureDefinitionGenerator extends StructureTemplateDefinitionProvider {
@@ -19,11 +26,31 @@ public class CampStructureDefinitionGenerator extends StructureTemplateDefinitio
 
 	@Override
 	protected void generatePools() {
-		this.add("camp/campfire", campPieces.start, 100);
+		this.add("camp/campfire", campPieces.start, new TemplatePoolInstance(
+			Weight.of(100),
+			Holder.direct(new StructureProcessorList(Collections.emptyList())),
+			StructureTemplatePool.Projection.RIGID,
+			TerrainAdjustment.BEARD_BOX
+		));
 
-		this.add("camp/tent/solo_tent", campPieces.tent, 100);
-		this.add("camp/tent/duo_tent", campPieces.tent, 75);
-		this.add("camp/tent/luxury_tent", campPieces.tent, 50);
+		this.add("camp/tent/solo_tent", campPieces.tent, new TemplatePoolInstance(
+			Weight.of(100),
+			Holder.direct(new StructureProcessorList(Collections.emptyList())),
+			StructureTemplatePool.Projection.RIGID,
+			TerrainAdjustment.BEARD_BOX
+		));
+		this.add("camp/tent/duo_tent", campPieces.tent, new TemplatePoolInstance(
+			Weight.of(75),
+			Holder.direct(new StructureProcessorList(Collections.emptyList())),
+			StructureTemplatePool.Projection.RIGID,
+			TerrainAdjustment.BEARD_BOX
+		));
+		this.add("camp/tent/luxury_tent", campPieces.tent, new TemplatePoolInstance(
+			Weight.of(50),
+			Holder.direct(new StructureProcessorList(Collections.emptyList())),
+			StructureTemplatePool.Projection.RIGID,
+			TerrainAdjustment.BEARD_BOX
+		));
 
 		this.addAllTemplatesToPool(campPieces.mainPath, 100,
 			"camp/path/intersection_left",

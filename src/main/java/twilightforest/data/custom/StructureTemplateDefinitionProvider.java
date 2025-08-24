@@ -55,9 +55,17 @@ public abstract class StructureTemplateDefinitionProvider extends JsonCodecProvi
 	}
 
 	protected void add(ResourceLocation templateId, ResourceLocation poolId, int weight) {
+		this.add(templateId, poolId, TemplatePoolInstance.defaultsWithWeight(weight));
+	}
+
+	protected void add(String roomId, ResourceLocation poolId, TemplatePoolInstance poolData) {
+		this.add(TwilightForestMod.prefix(roomId), poolId, poolData);
+	}
+
+	protected void add(ResourceLocation templateId, ResourceLocation poolId, TemplatePoolInstance poolData) {
 		Map<ResourceLocation, TemplatePoolInstance> poolWeightsForTemplate = this.poolsForTemplateWeights.computeIfAbsent(templateId, k -> new HashMap<>());
 
-		poolWeightsForTemplate.put(poolId, TemplatePoolInstance.defaultsWithWeight(weight));
+		poolWeightsForTemplate.put(poolId, poolData);
 	}
 
 	@Override

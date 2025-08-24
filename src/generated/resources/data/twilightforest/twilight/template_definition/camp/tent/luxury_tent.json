@@ -1,3 +1,10 @@
 {
-  "twilightforest:camp/tent": 50
+  "twilightforest:camp/tent": {
+    "processors": {
+      "processors": []
+    },
+    "projection": "rigid",
+    "terrain_adaptation": "beard_box",
+    "weight": 50
+  }
 }
