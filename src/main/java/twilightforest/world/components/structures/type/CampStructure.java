@@ -7,6 +7,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.FrontAndTop;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Rotation;
@@ -20,6 +21,7 @@ import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
+import twilightforest.world.components.structures.util.StructureTemplateDefinitions;
 
 import java.util.Map;
 import java.util.Optional;
@@ -48,7 +50,10 @@ public class CampStructure extends Structure {
 		FrontAndTop oriented = FrontAndTop.fromFrontAndTop(Direction.UP, direction);
 
 		return Optional.of(new GenerationStub(freePosition, structurePiecesBuilder -> {
-			TwilightJigsawPiece twilightJigsawPiece = TwilightJigsawPiece.initializeTemplateFromPool(TwilightForestMod.prefix("camp/structure_start"), freePosition, oriented, "twilightforest:camp/structure_start", random, 0, context.structureTemplateManager());
+			ResourceLocation templatePool = TwilightForestMod.prefix("camp/structure_start");
+			TwilightJigsawPiece twilightJigsawPiece = StructureTemplateDefinitions.INSTANCE.initializeTemplateFromPool(templatePool, freePosition, oriented, templatePool.toString(), random, 0, context.structureTemplateManager());
+
+			// TODO StructureTemplateDefinitions.initializeStubFromPool
 
 			structurePiecesBuilder.addPiece(twilightJigsawPiece);
 

@@ -19,6 +19,7 @@ import twilightforest.beans.Component;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
 import twilightforest.world.components.processors.*;
+import twilightforest.world.components.structures.util.StructureTemplateDefinitions;
 
 import java.util.Collections;
 import java.util.List;

@@ -7,15 +7,16 @@ import net.minecraft.server.packs.PackType;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.common.data.JsonCodecProvider;
 import twilightforest.TwilightForestMod;
-import twilightforest.world.components.structures.lichtowerrevamp.StructureTemplateDefinition;
-import twilightforest.world.components.structures.lichtowerrevamp.StructureTemplateDefinitions;
+import twilightforest.world.components.structures.util.StructureTemplateDefinition;
+import twilightforest.world.components.structures.util.StructureTemplateDefinitions;
+import twilightforest.world.components.structures.util.TemplatePoolInstance;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 public abstract class StructureTemplateDefinitionProvider extends JsonCodecProvider<StructureTemplateDefinition> {
-	private final Map<ResourceLocation, Map<ResourceLocation, Integer>> poolsForTemplateWeights = new HashMap<>();
+	private final Map<ResourceLocation, Map<ResourceLocation, TemplatePoolInstance>> poolsForTemplateWeights = new HashMap<>();
 
 	private final String name;
 
@@ -30,7 +31,7 @@ public abstract class StructureTemplateDefinitionProvider extends JsonCodecProvi
 	protected void gather() {
 		this.generatePools();
 
-		for(Map.Entry<ResourceLocation, Map<ResourceLocation, Integer>> poolWeightsForTemplate : this.poolsForTemplateWeights.entrySet()) {
+		for(Map.Entry<ResourceLocation, Map<ResourceLocation, TemplatePoolInstance>> poolWeightsForTemplate : this.poolsForTemplateWeights.entrySet()) {
 			ResourceLocation templateId = poolWeightsForTemplate.getKey();
 
 			this.unconditional(templateId, new StructureTemplateDefinition(poolWeightsForTemplate.getValue()));
@@ -54,9 +55,9 @@ public abstract class StructureTemplateDefinitionProvider extends JsonCodecProvi
 	}
 
 	protected void add(ResourceLocation templateId, ResourceLocation poolId, int weight) {
-		Map<ResourceLocation, Integer> poolWeightsForTemplate = this.poolsForTemplateWeights.computeIfAbsent(templateId, k -> new HashMap<>());
+		Map<ResourceLocation, TemplatePoolInstance> poolWeightsForTemplate = this.poolsForTemplateWeights.computeIfAbsent(templateId, k -> new HashMap<>());
 
-		poolWeightsForTemplate.put(poolId, weight);
+		poolWeightsForTemplate.put(poolId, TemplatePoolInstance.defaultsWithWeight(weight));
 	}
 
 	@Override
