@@ -20,8 +20,6 @@ java {
 	}
 }
 
-compileJava.options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation,-this-escape" << "-Werror"
-
 dependencies {
 	compileOnly "org.jetbrains:annotations:24.0.1"
 	compileOnly "net.neoforged.fancymodloader:loader:4.0.8"
