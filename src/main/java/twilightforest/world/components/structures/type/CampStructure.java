@@ -17,6 +17,7 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import twilightforest.TwilightForestMod;
+import twilightforest.beans.Autowired;
 import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.util.WorldUtil;
@@ -31,6 +32,9 @@ public class CampStructure extends Structure {
 	public static final MapCodec<CampStructure> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 		Structure.settingsCodec(instance)
 	).apply(instance, CampStructure::new));
+
+	@Autowired
+	private static StructureTemplateDefinitions structureTemplateDefinitions;
 
 	protected CampStructure(StructureSettings settings) {
 		super(settings);
@@ -51,7 +55,7 @@ public class CampStructure extends Structure {
 
 		return Optional.of(new GenerationStub(freePosition, structurePiecesBuilder -> {
 			ResourceLocation templatePool = TwilightForestMod.prefix("camp/structure_start");
-			TwilightJigsawPiece twilightJigsawPiece = StructureTemplateDefinitions.INSTANCE.initializeTemplateFromPool(templatePool, freePosition, oriented, templatePool.toString(), random, 0, context.structureTemplateManager());
+			TwilightJigsawPiece twilightJigsawPiece = structureTemplateDefinitions.initializeTemplateFromPool(templatePool, freePosition, oriented, templatePool.toString(), random, 0, context.structureTemplateManager());
 
 			// TODO StructureTemplateDefinitions.initializeStubFromPool
 

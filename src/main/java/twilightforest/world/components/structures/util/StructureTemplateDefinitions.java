@@ -12,21 +12,22 @@ import net.minecraft.util.random.WeightedEntry;
 import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.beans.Component;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class StructureTemplateDefinitions extends CodecResourceReloadListener<StructureTemplateDefinition> {
-	public static final StructureTemplateDefinitions INSTANCE = new StructureTemplateDefinitions(); // TODO Autowired
+@Component
+public final class StructureTemplateDefinitions extends CodecResourceReloadListener<StructureTemplateDefinition> {
 
 	private final Map<ResourceLocation, Map<ResourceLocation, TemplatePoolInstance>> rawTemplatePools = new HashMap<>();
 	private final Map<ResourceLocation, WeightedRandomList<PoolEntry>> templatePools = new HashMap<>();
 
 	public static final String DIRECTORY = "twilight/template_definition";
 
-	private StructureTemplateDefinitions() {
+	public StructureTemplateDefinitions() {
 		super(DIRECTORY, StructureTemplateDefinition.CODEC);
 	}
 
@@ -66,13 +67,13 @@ public class StructureTemplateDefinitions extends CodecResourceReloadListener<St
 	}
 
 	@Nullable
-	private ResourceLocation rollTemplatePool(RandomSource random, ResourceLocation templatePoolId) {
+	public ResourceLocation getRandomTemplate(RandomSource random, ResourceLocation templatePoolId) {
 		WeightedRandomList<PoolEntry> templatePool = this.templatePools.get(templatePoolId);
 		return templatePool == null ? null : templatePool.getRandom(random).map(PoolEntry::templateLocation).orElse(null);
 	}
 
 	// https://en.wikipedia.org/wiki/Reservoir_sampling
-	private Iterable<ResourceLocation> shuffledTemplatePool(RandomSource random, ResourceLocation templatePoolId) {
+	public Iterable<ResourceLocation> getShuffledSequence(RandomSource random, ResourceLocation templatePoolId) {
 		WeightedRandomList<PoolEntry> templatePool = this.templatePools.get(templatePoolId);
 
 		if (templatePool == null)
@@ -87,21 +88,11 @@ public class StructureTemplateDefinitions extends CodecResourceReloadListener<St
 		return reservoirSampled.entrySet().stream().sorted(Map.Entry.comparingByValue()).map(Map.Entry::getKey).collect(Collectors.toList());
 	}
 
-	@Nullable // TODO Autowired
-	public static ResourceLocation getRandomTemplate(RandomSource random, ResourceLocation poolId) {
-		return INSTANCE.rollTemplatePool(random, poolId);
-	}
-
-	// TODO Autowired
-	public static Iterable<ResourceLocation> getShuffledSequence(RandomSource random, ResourceLocation poolId) {
-		return INSTANCE.shuffledTemplatePool(random, poolId);
-	}
-
 	// TODO initializeStubFromPool
 
 	@Nullable
 	public TwilightJigsawPiece initializeTemplateFromPool(ResourceLocation templatePool, BlockPos parentJunctionPos, FrontAndTop parentOrientation, String selectName, RandomSource rand, int genDepth, StructureTemplateManager structureManager) {
-		ResourceLocation templateId = this.rollTemplatePool(rand, templatePool);
+		ResourceLocation templateId = this.getRandomTemplate(rand, templatePool);
 		JigsawPlaceContext placeContext = JigsawPlaceContext.pickPlaceableJunction(parentJunctionPos, BlockPos.ZERO, parentOrientation, structureManager, templateId, selectName, rand);
 
 		if (templateId == null || placeContext == null)

@@ -17,6 +17,7 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import twilightforest.TwilightForestMod;
+import twilightforest.beans.Autowired;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.BoundingBoxUtils;
@@ -25,10 +26,12 @@ import twilightforest.world.components.structures.TwilightJigsawPiece;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
 import twilightforest.world.components.structures.util.StructureTemplateDefinitions;
 
-
 public class FinalCastleLargeTowerComponent extends TowerWingComponent {
 
 	public static final ResourceLocation LARGE_TOWER_TEMP_POOL = TwilightForestMod.prefix("final_castle/temp/large_tower");
+
+	@Autowired
+	private static StructureTemplateDefinitions structureTemplateDefinitions;
 
 	public FinalCastleLargeTowerComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(TFStructurePieceTypes.TFFCLaTo.get(), nbt);
@@ -54,7 +57,7 @@ public class FinalCastleLargeTowerComponent extends TowerWingComponent {
 		list.addPiece(roof);
 		roof.addChildren(this, list, rand);
 
-		TwilightJigsawPiece templatePiece = StructureTemplateDefinitions.INSTANCE.initializeTemplateFromPool(LARGE_TOWER_TEMP_POOL, this.getWorldPos(0, 1, 2), this.rotation.rotation().rotate(FrontAndTop.WEST_UP), "twilightforest:final_castle/large_tower", rand, this.genDepth + 1, ServerLifecycleHooks.getCurrentServer().getStructureManager());
+		TwilightJigsawPiece templatePiece = structureTemplateDefinitions.initializeTemplateFromPool(LARGE_TOWER_TEMP_POOL, this.getWorldPos(0, 1, 2), this.rotation.rotation().rotate(FrontAndTop.WEST_UP), "twilightforest:final_castle/large_tower", rand, this.genDepth + 1, ServerLifecycleHooks.getCurrentServer().getStructureManager());
 		if (templatePiece != null) {
 			list.addPiece(templatePiece);
 			templatePiece.addChildren(parent, list, rand);

@@ -22,6 +22,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
+import twilightforest.beans.Autowired;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.util.jigsaw.JigsawRecord;
@@ -35,6 +36,9 @@ import java.util.List;
 import java.util.function.Predicate;
 
 public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implements ProgressionPiece, PieceBeardifierModifier {
+	@Autowired
+	private static StructureTemplateDefinitions structureTemplateDefinitions;
+
 	private final JigsawRecord sourceJigsaw;
 	private final List<JigsawRecord> spareJigsaws;
 	private final TerrainAdjustment terrainAdjustment;
@@ -113,7 +117,7 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 	protected void processJigsaw(StructurePiece parent, StructurePieceAccessor pieceAccessor, RandomSource random, JigsawRecord connection, int jigsawIndex) {
 		ResourceLocation templatePool = ResourceLocation.parse(connection.pool());
 		BlockPos parentJunctionPos = this.templatePosition.offset(connection.pos());
-		TwilightJigsawPiece jigsawPiece = StructureTemplateDefinitions.INSTANCE.initializeTemplateFromPool(templatePool, parentJunctionPos, connection.orientation(), connection.target(), random, this.genDepth + 1, this.structureManager);
+		TwilightJigsawPiece jigsawPiece = structureTemplateDefinitions.initializeTemplateFromPool(templatePool, parentJunctionPos, connection.orientation(), connection.target(), random, this.genDepth + 1, this.structureManager);
 
 		if (jigsawPiece == null)
 			return;

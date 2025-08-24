@@ -82,6 +82,9 @@ public class RegistrationEvents {
 	@Autowired
 	private HolidayEvent holidayEvent;
 
+	@Autowired
+	private StructureTemplateDefinitions structureTemplateDefinitions;
+
 	@PostConstruct
 	private void setup(IEventBus bus) {
 		bus.addListener(this::init);
@@ -103,7 +106,7 @@ public class RegistrationEvents {
 		NeoForge.EVENT_BUS.addListener(this::registerCommands);
 		NeoForge.EVENT_BUS.addListener(AddReloadListenerEvent.class, event -> event.addListener(new QuestReloadListener()));
 		NeoForge.EVENT_BUS.addListener(StalactiteReloadListener.INSTANCE::registerListener);
-		NeoForge.EVENT_BUS.addListener(StructureTemplateDefinitions.INSTANCE::registerListener);
+		NeoForge.EVENT_BUS.addListener(this.structureTemplateDefinitions::registerListener);
 		NeoForge.EVENT_BUS.addListener(ConfigSetup::syncUncraftingConfig);
 	}
 
