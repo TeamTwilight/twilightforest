@@ -2,7 +2,7 @@
   "twilightforest:camp/deco": {
     "height_adjustment": {
       "heightmap": "WORLD_SURFACE_WG",
-      "y_offset": 0
+      "y_offset": 1
     },
     "terrain_adaptation": "beard_box",
     "weight": 100

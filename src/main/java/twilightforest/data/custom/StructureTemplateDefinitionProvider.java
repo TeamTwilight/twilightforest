@@ -4,6 +4,10 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
+import net.minecraft.util.random.Weight;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
+import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.common.data.JsonCodecProvider;
 import twilightforest.TwilightForestMod;
@@ -13,6 +17,7 @@ import twilightforest.world.components.structures.util.TemplatePoolInstance;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 public abstract class StructureTemplateDefinitionProvider extends JsonCodecProvider<StructureTemplateDefinition> {
@@ -72,6 +77,26 @@ public abstract class StructureTemplateDefinitionProvider extends JsonCodecProvi
 		Map<ResourceLocation, TemplatePoolInstance> poolWeightsForTemplate = this.poolsForTemplateWeights.computeIfAbsent(templateId, k -> new HashMap<>());
 
 		poolWeightsForTemplate.put(poolId, poolData);
+	}
+
+	protected TemplatePoolInstance weightedPathTemplate(int weight) {
+		return new TemplatePoolInstance(
+			Weight.of(weight),
+			Optional.empty(),
+			StructureTemplatePool.Projection.TERRAIN_MATCHING,
+			TerrainAdjustment.NONE,
+			Optional.empty()
+		);
+	}
+
+	protected TemplatePoolInstance weightedRigidTemplate(int weight, int yOffset, Optional<Integer> groundJunctionDiffLimit) {
+		return new TemplatePoolInstance(
+			Weight.of(weight),
+			Optional.empty(),
+			StructureTemplatePool.Projection.RIGID,
+			TerrainAdjustment.BEARD_BOX,
+			Optional.of(new TemplatePoolInstance.HeightAdjustment(Heightmap.Types.WORLD_SURFACE_WG, yOffset, groundJunctionDiffLimit))
+		);
 	}
 
 	@Override

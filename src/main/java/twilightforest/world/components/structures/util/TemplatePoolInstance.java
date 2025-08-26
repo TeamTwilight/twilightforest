@@ -6,16 +6,20 @@ import com.mojang.serialization.DataResult;
 import com.mojang.serialization.DynamicOps;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
+import net.minecraft.util.Mth;
 import net.minecraft.util.random.Weight;
 import net.minecraft.util.random.WeightedEntry;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
+import twilightforest.util.WorldUtil;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -68,14 +72,38 @@ public record TemplatePoolInstance(Weight weight, Optional<Holder<StructureProce
 		return Objects.hash(this.weight(), this.processors().map(Holder::value).map(StructureProcessorList::list), this.projection(), this.terrainAdjustment());
 	}
 
-	public record HeightAdjustment(Heightmap.Types heightType, int yOffset) {
+	public record HeightAdjustment(Heightmap.Types heightType, int yOffset, Optional<Integer> groundJunctionDiffLimit) {
 		public static final Codec<HeightAdjustment> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			Heightmap.Types.CODEC.fieldOf("heightmap").forGetter(HeightAdjustment::heightType),
-			Codec.INT.fieldOf("y_offset").forGetter(HeightAdjustment::yOffset)
+			Codec.INT.optionalFieldOf("y_offset", 0).forGetter(HeightAdjustment::yOffset),
+			Codec.intRange(0, Integer.MAX_VALUE).optionalFieldOf("ground_junction_diff_clamp").forGetter(HeightAdjustment::groundJunctionDiffLimit)
 		).apply(instance, HeightAdjustment::new));
 
 		public JigsawPlaceContext adjustForTerrain(JigsawPlaceContext placeContext, Structure.GenerationContext generationContext) {
-			return placeContext.adjustForTerrain(generationContext, this.heightType, this.yOffset);
+			BoundingBox box = placeContext.makeBoundingBox(generationContext.structureTemplateManager());
+			int yAdjusted = this.clampYLevel(generationContext, placeContext, box);
+			return new JigsawPlaceContext(
+				placeContext.templatePos().atY(yAdjusted),
+				placeContext.placementSettings().copy(),
+				placeContext.seedJigsaw(),
+				List.copyOf(placeContext.spareJigsaws()),
+				placeContext.templateLocation()
+			);
+		}
+
+		private int clampYLevel(Structure.GenerationContext generationContext, JigsawPlaceContext placeContext, BoundingBox box) {
+			if (this.groundJunctionDiffLimit.isEmpty()) {
+				return this.yOffset + WorldUtil.adjustForTerrain(generationContext, box.minX(), box.minZ(), box.maxX(), box.maxZ(), 2, this.heightType);
+			}
+
+			int templateY = placeContext.templatePos().getY();
+			int variantLimit = this.groundJunctionDiffLimit.get();
+			if (variantLimit == 0) {
+				return templateY;
+			}
+
+			int yTerrain = WorldUtil.adjustForTerrain(generationContext, box.minX(), box.minZ(), box.maxX(), box.maxZ(), 2, this.heightType);
+			return Mth.clamp(this.yOffset + yTerrain, templateY - variantLimit, templateY + variantLimit);
 		}
 	}
 

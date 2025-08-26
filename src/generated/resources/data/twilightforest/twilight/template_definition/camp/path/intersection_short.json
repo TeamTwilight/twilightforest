@@ -1,3 +1,6 @@
 {
-  "twilightforest:camp/main_path": 100
+  "twilightforest:camp/main_path": {
+    "projection": "terrain_matching",
+    "weight": 100
+  }
 }

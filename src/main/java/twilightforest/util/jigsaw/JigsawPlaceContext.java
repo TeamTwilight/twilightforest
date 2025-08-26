@@ -9,16 +9,13 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.JigsawBlock;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
-import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.util.RotationUtil;
-import twilightforest.util.WorldUtil;
 
 import java.util.List;
 import java.util.function.UnaryOperator;
@@ -123,9 +120,4 @@ public record JigsawPlaceContext(BlockPos templatePos, StructurePlaceSettings pl
 		return new JigsawPlaceContext(this.templatePos.immutable(), this.placementSettings.copy(), this.seedJigsaw, List.copyOf(this.spareJigsaws), this.templateLocation);
 	}
 
-	public JigsawPlaceContext adjustForTerrain(Structure.GenerationContext context, Heightmap.Types type, int yOffset) {
-		BoundingBox box = this.makeBoundingBox(context.structureTemplateManager());
-		int yAdjusted = WorldUtil.adjustForTerrain(context, box.minX(), box.minZ(), box.maxX(), box.maxZ(), 2, type) + yOffset;
-		return new JigsawPlaceContext(this.templatePos.atY(yAdjusted), this.placementSettings.copy(), this.seedJigsaw, List.copyOf(this.spareJigsaws), this.templateLocation);
-	}
 }
