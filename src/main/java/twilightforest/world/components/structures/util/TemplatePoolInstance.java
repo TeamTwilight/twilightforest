@@ -23,13 +23,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-public record TemplatePoolInstance(Weight weight, Optional<Holder<StructureProcessorList>> processors, StructureTemplatePool.Projection projection, TerrainAdjustment terrainAdjustment, Optional<HeightAdjustment> heightAdjustment) implements WeightedEntry {
+public record TemplatePoolInstance(Weight weight, Optional<Holder<StructureProcessorList>> processors, StructureTemplatePool.Projection projection, TerrainAdjustment terrainAdjustment, Optional<HeightAdjustment> heightAdjustment, boolean ignoreWorldWaterlog) implements WeightedEntry {
 	private static final Codec<TemplatePoolInstance> CODEC_DIRECT = Codec.withAlternative(RecordCodecBuilder.create(instance -> instance.group(
 		Weight.CODEC.fieldOf("weight").forGetter(TemplatePoolInstance::weight),
 		StructureProcessorType.LIST_CODEC.optionalFieldOf("processors").forGetter(TemplatePoolInstance::processors),
 		StructureTemplatePool.Projection.CODEC.optionalFieldOf("projection", StructureTemplatePool.Projection.RIGID).forGetter(TemplatePoolInstance::projection),
 		TerrainAdjustment.CODEC.optionalFieldOf("terrain_adaptation", TerrainAdjustment.NONE).forGetter(TemplatePoolInstance::terrainAdjustment),
-		HeightAdjustment.CODEC.optionalFieldOf("height_adjustment").forGetter(TemplatePoolInstance::heightAdjustment)
+		HeightAdjustment.CODEC.optionalFieldOf("height_adjustment").forGetter(TemplatePoolInstance::heightAdjustment),
+		Codec.BOOL.optionalFieldOf("ignore_world_waterlog", false).forGetter(TemplatePoolInstance::ignoreWorldWaterlog)
 	).apply(instance, TemplatePoolInstance::new)), Codec.INT, TemplatePoolInstance::defaultsWithWeight);
 
 	public static final Codec<TemplatePoolInstance> CODEC = new TemplatePoolInstanceCodec();
@@ -40,7 +41,8 @@ public record TemplatePoolInstance(Weight weight, Optional<Holder<StructureProce
 			Optional.empty(),
 			StructureTemplatePool.Projection.RIGID,
 			TerrainAdjustment.NONE,
-			Optional.empty()
+			Optional.empty(),
+			false
 		);
 	}
 

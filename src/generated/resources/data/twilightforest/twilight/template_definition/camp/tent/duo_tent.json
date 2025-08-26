@@ -5,6 +5,7 @@
       "heightmap": "WORLD_SURFACE_WG",
       "y_offset": 1
     },
+    "ignore_world_waterlog": true,
     "terrain_adaptation": "beard_box",
     "weight": 75
   }

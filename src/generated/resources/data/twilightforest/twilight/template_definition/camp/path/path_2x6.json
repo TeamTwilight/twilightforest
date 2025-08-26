@@ -1,10 +1,22 @@
 {
   "twilightforest:camp/main_path": {
+    "height_adjustment": {
+      "ground_junction_diff_clamp": 1,
+      "heightmap": "WORLD_SURFACE_WG",
+      "y_offset": 1
+    },
     "projection": "terrain_matching",
-    "weight": 100
+    "terrain_adaptation": "beard_thin",
+    "weight": 50
   },
   "twilightforest:camp/path": {
+    "height_adjustment": {
+      "ground_junction_diff_clamp": 1,
+      "heightmap": "WORLD_SURFACE_WG",
+      "y_offset": 1
+    },
     "projection": "terrain_matching",
-    "weight": 100
+    "terrain_adaptation": "beard_thin",
+    "weight": 50
   }
 }

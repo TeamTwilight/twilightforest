@@ -47,6 +47,7 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 	private static final String NBT_TEMPLATE_PROCESSORS = "template_processors";
 	private static final String NBT_PLACE_PROJECTION = "place_projection";
 	private static final String NBT_GROUND_OFFSET = "ground_offset";
+	private static final String NBT_IGNORE_WATERLOG = "ignore_waterlog";
 
 	private final JigsawRecord sourceJigsaw;
 	private final List<JigsawRecord> spareJigsaws;
@@ -88,6 +89,9 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 		}
 
 		this.groundOffset = compoundTag.getInt(NBT_GROUND_OFFSET);
+
+		if (compoundTag.getBoolean(NBT_IGNORE_WATERLOG))
+			this.placeSettings.setLiquidSettings(LiquidSettings.IGNORE_WATERLOGGING);
 	}
 
 	public TwilightJigsawPiece(StructurePieceType type, int genDepth, StructureTemplateManager structureManager, ResourceLocation templateLocation, JigsawPlaceContext jigsawContext) {
@@ -110,6 +114,7 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 		this.processors = templatePoolInstance.processors().orElseGet(() -> Holder.direct(new StructureProcessorList(Collections.emptyList())));
 		this.projection = templatePoolInstance.projection();
 		this.groundOffset = templatePoolInstance.heightAdjustment().map(TemplatePoolInstance.HeightAdjustment::yOffset).orElse(0);
+		if (templatePoolInstance.ignoreWorldWaterlog()) this.placeSettings.setLiquidSettings(LiquidSettings.IGNORE_WATERLOGGING);
 		for (StructureProcessor processor : ConcatenatedListView.of(this.processors.value().list(), this.projection.getProcessors())) {
 			this.placeSettings.addProcessor(processor);
 		}
@@ -162,6 +167,10 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 		}
 
 		structureTag.putInt(NBT_GROUND_OFFSET, this.groundOffset);
+
+		if (!this.placeSettings.shouldApplyWaterlogging()) {
+			structureTag.putBoolean(NBT_IGNORE_WATERLOG, true);
+		}
 	}
 
 	@Deprecated(forRemoval = true) // Instead use addChildren(StructurePiece, StructurePieceAccessor, Structure.GenerationContext)

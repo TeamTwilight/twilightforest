@@ -65,6 +65,10 @@ public abstract class StructureTemplateDefinitionProvider extends JsonCodecProvi
 		this.add(TwilightForestMod.prefix(roomId), poolId, weight);
 	}
 
+	protected void addEmpty(ResourceLocation poolId, int weight) {
+		this.add(TwilightForestMod.prefix("_empty"), poolId, weight);
+	}
+
 	protected void add(ResourceLocation templateId, ResourceLocation poolId, int weight) {
 		this.add(templateId, poolId, TemplatePoolInstance.defaultsWithWeight(weight));
 	}
@@ -84,8 +88,9 @@ public abstract class StructureTemplateDefinitionProvider extends JsonCodecProvi
 			Weight.of(weight),
 			Optional.empty(),
 			StructureTemplatePool.Projection.TERRAIN_MATCHING,
-			TerrainAdjustment.NONE,
-			Optional.empty()
+			TerrainAdjustment.BEARD_THIN,
+			Optional.of(new TemplatePoolInstance.HeightAdjustment(Heightmap.Types.WORLD_SURFACE_WG, 1, Optional.of(1))),
+			false
 		);
 	}
 
@@ -95,7 +100,8 @@ public abstract class StructureTemplateDefinitionProvider extends JsonCodecProvi
 			Optional.empty(),
 			StructureTemplatePool.Projection.RIGID,
 			TerrainAdjustment.BEARD_BOX,
-			Optional.of(new TemplatePoolInstance.HeightAdjustment(Heightmap.Types.WORLD_SURFACE_WG, yOffset, groundJunctionDiffLimit))
+			Optional.of(new TemplatePoolInstance.HeightAdjustment(Heightmap.Types.WORLD_SURFACE_WG, yOffset, groundJunctionDiffLimit)),
+			true
 		);
 	}
 
