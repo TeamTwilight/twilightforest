@@ -2,8 +2,8 @@
   "placement": {
     "type": "twilightforest:avoid_landmark_grid",
     "salt": 701432212,
-    "separation": 1,
-    "spacing": 4,
+    "separation": 6,
+    "spacing": 8,
     "spread_type": "triangular"
   },
   "structures": [

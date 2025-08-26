@@ -1,4 +1,4 @@
-// 1.21.1	2025-08-22T09:45:25.369003482	Registries
+// 1.21.1	2025-08-25T23:26:28.017474	Registries
 9089ada9ce06fd30adf8b10e50f02233c7d5a76e data/minecraft/twilight/wood_palettes/acacia.json
 dca1ef01d0df4e956fd414782de57c25dfddd290 data/minecraft/twilight/wood_palettes/birch.json
 01becb45438b7f2bfdc77baba72bc986341510c8 data/minecraft/twilight/wood_palettes/crimson.json
@@ -430,7 +430,7 @@ fd8f740a244ff52e8a8df64af54f2b8f681a611b data/twilightforest/worldgen/structure/
 92eda134168d65a65fbb0b04e25e705c46871c05 data/twilightforest/worldgen/structure/troll_cave.json
 8e8ef7a42c9c2e3d1bdb892c875c3df67ef48097 data/twilightforest/worldgen/structure/yeti_cave.json
 9b7532428e43ad07cbd01befa87d2e61c1b3665b data/twilightforest/worldgen/structure_set/aurora_palace.json
-d4ae4faa36826fcff53812cf2cf5a0d6c190778d data/twilightforest/worldgen/structure_set/camp.json
+2a820fbb66d7a0d74f239e92e75ed5804e86f95d data/twilightforest/worldgen/structure_set/camp.json
 85637b23df17209511ee48619f7c2e62ee711e46 data/twilightforest/worldgen/structure_set/dark_tower.json
 c4b8ea24a4e71721b0361691b331753a17cba076 data/twilightforest/worldgen/structure_set/fallen_trunk.json
 812d3931021ba71e0967f0ca1ed4ed9b8b4084c6 data/twilightforest/worldgen/structure_set/final_castle.json
