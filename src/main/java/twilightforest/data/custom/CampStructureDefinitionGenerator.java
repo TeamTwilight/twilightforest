@@ -1,19 +1,18 @@
 package twilightforest.data.custom;
 
-import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.util.random.Weight;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
 import twilightforest.beans.Autowired;
 import twilightforest.world.components.structures.camp.CampPieces;
 import twilightforest.world.components.structures.util.TemplatePoolInstance;
 
-import java.util.Collections;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 public class CampStructureDefinitionGenerator extends StructureTemplateDefinitionProvider {
@@ -28,51 +27,90 @@ public class CampStructureDefinitionGenerator extends StructureTemplateDefinitio
 	protected void generatePools() {
 		this.add("camp/campfire", campPieces.start, new TemplatePoolInstance(
 			Weight.of(100),
-			Holder.direct(new StructureProcessorList(Collections.emptyList())),
+			Optional.empty(),
 			StructureTemplatePool.Projection.RIGID,
-			TerrainAdjustment.BEARD_BOX
+			TerrainAdjustment.BEARD_BOX,
+			Optional.of(new TemplatePoolInstance.HeightAdjustment(Heightmap.Types.WORLD_SURFACE_WG, 1))
 		));
 
+		this.configureTents();
+
+		this.configureBigPaths();
+
+		this.configureSmallPaths();
+
+		this.configureDeco();
+	}
+
+	private void configureTents() {
 		this.add("camp/tent/solo_tent", campPieces.tent, new TemplatePoolInstance(
 			Weight.of(100),
-			Holder.direct(new StructureProcessorList(Collections.emptyList())),
+			Optional.empty(),
 			StructureTemplatePool.Projection.RIGID,
-			TerrainAdjustment.BEARD_BOX
+			TerrainAdjustment.BEARD_BOX,
+			Optional.of(new TemplatePoolInstance.HeightAdjustment(Heightmap.Types.WORLD_SURFACE_WG, 1))
 		));
 		this.add("camp/tent/duo_tent", campPieces.tent, new TemplatePoolInstance(
 			Weight.of(75),
-			Holder.direct(new StructureProcessorList(Collections.emptyList())),
+			Optional.empty(),
 			StructureTemplatePool.Projection.RIGID,
-			TerrainAdjustment.BEARD_BOX
+			TerrainAdjustment.BEARD_BOX,
+			Optional.of(new TemplatePoolInstance.HeightAdjustment(Heightmap.Types.WORLD_SURFACE_WG, 1))
 		));
 		this.add("camp/tent/luxury_tent", campPieces.tent, new TemplatePoolInstance(
 			Weight.of(50),
-			Holder.direct(new StructureProcessorList(Collections.emptyList())),
+			Optional.empty(),
 			StructureTemplatePool.Projection.RIGID,
-			TerrainAdjustment.BEARD_BOX
+			TerrainAdjustment.BEARD_BOX,
+			Optional.of(new TemplatePoolInstance.HeightAdjustment(Heightmap.Types.WORLD_SURFACE_WG, 1))
 		));
+	}
 
-		this.addAllTemplatesToPool(campPieces.mainPath, 100,
-			"camp/path/intersection_left",
-			"camp/path/intersection_right",
-			"camp/path/intersection_short",
-			"camp/path/j_path",
-			"camp/path/l_path"
+	private void configureBigPaths() {
+		this.add("camp/path/intersection_left", campPieces.mainPath, 100);
+		this.add("camp/path/intersection_right", campPieces.mainPath, 100);
+		this.add("camp/path/intersection_short", campPieces.mainPath, 100);
+		this.add("camp/path/j_path", campPieces.mainPath, 100);
+		this.add("camp/path/l_path", campPieces.mainPath, 100);
+	}
+
+	private void configureSmallPaths() {
+		TemplatePoolInstance data = new TemplatePoolInstance(
+			Weight.of(100),
+			Optional.empty(),
+			StructureTemplatePool.Projection.TERRAIN_MATCHING,
+			TerrainAdjustment.NONE,
+			Optional.empty()
 		);
 
-		this.addToAllPools("camp/path/path_2x4", 100, campPieces.mainPath, campPieces.path);
-		this.addToAllPools("camp/path/path_2x6", 100, campPieces.mainPath, campPieces.path);
-		this.addToAllPools("camp/path/path_2x7", 100, campPieces.mainPath, campPieces.path);
-		this.addToAllPools("camp/path/path_3x4", 100, campPieces.mainPath, campPieces.path);
+		this.addToAllPools("camp/path/path_2x4", data, campPieces.mainPath, campPieces.path);
+		this.addToAllPools("camp/path/path_2x6", data, campPieces.mainPath, campPieces.path);
+		this.addToAllPools("camp/path/path_2x7", data, campPieces.mainPath, campPieces.path);
+		this.addToAllPools("camp/path/path_3x4", data, campPieces.mainPath, campPieces.path);
+	}
 
-		this.addAllTemplatesToPool(campPieces.deco, 100,
-			"camp/deco/double_drying_rack",
-			"camp/deco/garden_1x2",
-			"camp/deco/garden_2x4",
-			"camp/deco/long_drying_rack",
-			"camp/deco/lumber",
-			"camp/deco/water_basin",
-			"camp/deco/wooden_basin"
+	private void configureDeco() {
+		TemplatePoolInstance offset0 = new TemplatePoolInstance(
+			Weight.of(100),
+			Optional.empty(),
+			StructureTemplatePool.Projection.RIGID,
+			TerrainAdjustment.BEARD_BOX,
+			Optional.of(new TemplatePoolInstance.HeightAdjustment(Heightmap.Types.WORLD_SURFACE_WG, 0))
 		);
+		TemplatePoolInstance offset1 = new TemplatePoolInstance(
+			Weight.of(100),
+			Optional.empty(),
+			StructureTemplatePool.Projection.RIGID,
+			TerrainAdjustment.BEARD_BOX,
+			Optional.of(new TemplatePoolInstance.HeightAdjustment(Heightmap.Types.WORLD_SURFACE_WG, 1))
+		);
+
+		this.add("camp/deco/double_drying_rack", campPieces.deco, offset0);
+		this.add("camp/deco/garden_1x2", campPieces.deco, offset1);
+		this.add("camp/deco/garden_2x4", campPieces.deco, offset1);
+		this.add("camp/deco/long_drying_rack", campPieces.deco, offset0);
+		this.add("camp/deco/lumber", campPieces.deco, offset0);
+		this.add("camp/deco/water_basin", campPieces.deco, offset1);
+		this.add("camp/deco/wooden_basin", campPieces.deco, offset1);
 	}
 }

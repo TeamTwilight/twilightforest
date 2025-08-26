@@ -1,9 +1,9 @@
 {
   "twilightforest:camp/tent": {
-    "processors": {
-      "processors": []
+    "height_adjustment": {
+      "heightmap": "WORLD_SURFACE_WG",
+      "y_offset": 1
     },
-    "projection": "rigid",
     "terrain_adaptation": "beard_box",
     "weight": 100
   }
