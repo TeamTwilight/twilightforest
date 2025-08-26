@@ -68,7 +68,6 @@ public class FinalCastleBellTower21Component extends FinalCastleMazeTower13Compo
 		TwilightJigsawPiece templatePiece = structureTemplateDefinitions.initializeTemplateFromPool(BELL_TOWER_TEMP_POOL, this.getWorldPos(0, 9, 10), this.rotation.rotation().rotate(FrontAndTop.WEST_UP), "twilightforest:final_castle/room", rand, this.genDepth + 1, ServerLifecycleHooks.getCurrentServer().getStructureManager());
 		if (templatePiece != null) {
 			list.addPiece(templatePiece);
-			templatePiece.addChildren(parent, list, rand);
 		}
 	}
 

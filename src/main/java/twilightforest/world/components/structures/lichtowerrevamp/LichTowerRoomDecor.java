@@ -12,10 +12,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
-import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
+import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
@@ -44,14 +41,14 @@ public class LichTowerRoomDecor extends TwilightJigsawPiece implements PieceBear
 		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(lichTowerUtil.getRoomSpawnerProcessor()));
 	}
 
-	public static void addDecor(TwilightTemplateStructurePiece parent, StructurePieceAccessor pieceAccessor, RandomSource random, JigsawRecord connection, int newDepth, StructureTemplateManager structureManager) {
-		ResourceLocation decorId = lichTowerUtil.rollRandomDecor(random, false);
-		JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(parent.templatePosition(), connection.pos(), connection.orientation(), structureManager, decorId, "twilightforest:lich_tower/decor", random);
+	public static void addDecor(TwilightTemplateStructurePiece parent, StructurePieceAccessor pieceAccessor, Structure.GenerationContext context, JigsawRecord connection, int newDepth, StructureTemplateManager structureManager) {
+		ResourceLocation decorId = lichTowerUtil.rollRandomDecor(context.random(), false);
+		JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(parent.templatePosition(), connection.pos(), connection.orientation(), structureManager, decorId, "twilightforest:lich_tower/decor", context.random());
 
 		if (placeableJunction != null) {
-			StructurePiece decor = new LichTowerRoomDecor(newDepth, structureManager, decorId, placeableJunction);
+			LichTowerRoomDecor decor = new LichTowerRoomDecor(newDepth, structureManager, decorId, placeableJunction);
 			pieceAccessor.addPiece(decor);
-			decor.addChildren(parent, pieceAccessor, random);
+			decor.addJigsaws(parent, pieceAccessor, context);
 		}
 	}
 
@@ -79,7 +76,7 @@ public class LichTowerRoomDecor extends TwilightJigsawPiece implements PieceBear
 	}
 
 	@Override
-	protected void processJigsaw(StructurePiece parent, StructurePieceAccessor pieceAccessor, RandomSource random, JigsawRecord connection, int jigsawIndex) {
+	protected void processJigsaw(StructurePiece parent, StructurePieceAccessor pieceAccessor, Structure.GenerationContext context, JigsawRecord connection, int jigsawIndex) {
 	}
 
 	@Override

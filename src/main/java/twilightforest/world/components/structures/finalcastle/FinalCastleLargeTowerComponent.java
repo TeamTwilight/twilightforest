@@ -60,7 +60,6 @@ public class FinalCastleLargeTowerComponent extends TowerWingComponent {
 		TwilightJigsawPiece templatePiece = structureTemplateDefinitions.initializeTemplateFromPool(LARGE_TOWER_TEMP_POOL, this.getWorldPos(0, 1, 2), this.rotation.rotation().rotate(FrontAndTop.WEST_UP), "twilightforest:final_castle/large_tower", rand, this.genDepth + 1, ServerLifecycleHooks.getCurrentServer().getStructureManager());
 		if (templatePiece != null) {
 			list.addPiece(templatePiece);
-			templatePiece.addChildren(parent, list, rand);
 		}
 	}
 

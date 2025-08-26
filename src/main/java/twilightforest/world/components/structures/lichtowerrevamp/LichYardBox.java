@@ -281,7 +281,7 @@ public class LichYardBox extends StructurePiece implements PieceBeardifierModifi
 			LichYardGrave grave = new LichYardGrave(context.structureTemplateManager(), placeableJunction, templateId);
 			if (pieces.findCollisionPiece(grave.getBoundingBox()) == null) {
 				pieces.addPiece(grave);
-				grave.addChildren(piece, pieces, random);
+				grave.addJigsaws(piece, pieces, context);
 			}
 		}
 	}

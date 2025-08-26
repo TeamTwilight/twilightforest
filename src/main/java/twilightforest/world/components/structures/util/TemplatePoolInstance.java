@@ -8,21 +8,24 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.util.random.Weight;
 import net.minecraft.util.random.WeightedEntry;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
+import twilightforest.util.jigsaw.JigsawPlaceContext;
 
-import java.util.Collections;
 import java.util.Objects;
 import java.util.Optional;
 
-public record TemplatePoolInstance(Weight weight, Holder<StructureProcessorList> processors, StructureTemplatePool.Projection projection, TerrainAdjustment terrainAdjustment) implements WeightedEntry {
+public record TemplatePoolInstance(Weight weight, Optional<Holder<StructureProcessorList>> processors, StructureTemplatePool.Projection projection, TerrainAdjustment terrainAdjustment, Optional<HeightAdjustment> heightAdjustment) implements WeightedEntry {
 	private static final Codec<TemplatePoolInstance> CODEC_DIRECT = Codec.withAlternative(RecordCodecBuilder.create(instance -> instance.group(
 		Weight.CODEC.fieldOf("weight").forGetter(TemplatePoolInstance::weight),
-		StructureProcessorType.LIST_CODEC.fieldOf("processors").forGetter(TemplatePoolInstance::processors),
-		StructureTemplatePool.Projection.CODEC.fieldOf("projection").forGetter(TemplatePoolInstance::projection),
-		TerrainAdjustment.CODEC.fieldOf("terrain_adaptation").forGetter(TemplatePoolInstance::terrainAdjustment)
+		StructureProcessorType.LIST_CODEC.optionalFieldOf("processors").forGetter(TemplatePoolInstance::processors),
+		StructureTemplatePool.Projection.CODEC.optionalFieldOf("projection", StructureTemplatePool.Projection.RIGID).forGetter(TemplatePoolInstance::projection),
+		TerrainAdjustment.CODEC.optionalFieldOf("terrain_adaptation", TerrainAdjustment.NONE).forGetter(TemplatePoolInstance::terrainAdjustment),
+		HeightAdjustment.CODEC.optionalFieldOf("height_adjustment").forGetter(TemplatePoolInstance::heightAdjustment)
 	).apply(instance, TemplatePoolInstance::new)), Codec.INT, TemplatePoolInstance::defaultsWithWeight);
 
 	public static final Codec<TemplatePoolInstance> CODEC = new TemplatePoolInstanceCodec();
@@ -30,9 +33,10 @@ public record TemplatePoolInstance(Weight weight, Holder<StructureProcessorList>
 	public static TemplatePoolInstance defaultsWithWeight(int weight) {
 		return new TemplatePoolInstance(
 			Weight.of(weight),
-			Holder.direct(new StructureProcessorList(Collections.emptyList())),
+			Optional.empty(),
 			StructureTemplatePool.Projection.RIGID,
-			TerrainAdjustment.NONE
+			TerrainAdjustment.NONE,
+			Optional.empty()
 		);
 	}
 
@@ -41,19 +45,38 @@ public record TemplatePoolInstance(Weight weight, Holder<StructureProcessorList>
 		return this.weight;
 	}
 
+	@SuppressWarnings("OptionalIsPresent")
+	public JigsawPlaceContext adjustContextForTerrain(JigsawPlaceContext placeContext, Structure.GenerationContext generationContext) {
+		if (this.heightAdjustment.isEmpty())
+			return placeContext;
+
+		return this.heightAdjustment.get().adjustForTerrain(placeContext, generationContext);
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (o == null || this.getClass() != o.getClass()) return false;
 		TemplatePoolInstance that = (TemplatePoolInstance) o;
 		return Objects.equals(this.weight(), that.weight())
 			&& this.terrainAdjustment() == that.terrainAdjustment()
-			&& Objects.equals(this.processors().value().list(), that.processors().value().list())
+			&& ((this.processors.isEmpty() && that.processors.isEmpty()) || ((this.processors.isPresent() && that.processors.isPresent()) && Objects.equals(this.processors().get().value().list(), that.processors().get().value().list())))
 			&& this.projection() == that.projection();
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(this.weight(), this.processors().value().list(), this.projection(), this.terrainAdjustment());
+		return Objects.hash(this.weight(), this.processors().map(Holder::value).map(StructureProcessorList::list), this.projection(), this.terrainAdjustment());
+	}
+
+	public record HeightAdjustment(Heightmap.Types heightType, int yOffset) {
+		public static final Codec<HeightAdjustment> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+			Heightmap.Types.CODEC.fieldOf("heightmap").forGetter(HeightAdjustment::heightType),
+			Codec.INT.fieldOf("y_offset").forGetter(HeightAdjustment::yOffset)
+		).apply(instance, HeightAdjustment::new));
+
+		public JigsawPlaceContext adjustForTerrain(JigsawPlaceContext placeContext, Structure.GenerationContext generationContext) {
+			return placeContext.adjustForTerrain(generationContext, this.heightType, this.yOffset);
+		}
 	}
 
 	private static class TemplatePoolInstanceCodec implements Codec<TemplatePoolInstance> {

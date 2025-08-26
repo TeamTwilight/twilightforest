@@ -10,6 +10,7 @@ import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.util.random.Weight;
 import net.minecraft.util.random.WeightedEntry;
 import net.minecraft.util.random.WeightedRandomList;
+import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.beans.Component;
@@ -73,7 +74,7 @@ public final class StructureTemplateDefinitions extends CodecResourceReloadListe
 
 	@Nullable
 	public ResourceLocation getRandomTemplate(RandomSource random, ResourceLocation templatePoolId) {
-		return this.getRandomEntry(random, templatePoolId).map(TemplatePoolEntry::templateLocation).orElse(null);
+		return this.getRandomEntry(random, templatePoolId).map(TemplatePoolEntry::templateId).orElse(null);
 	}
 
 	// https://en.wikipedia.org/wiki/Reservoir_sampling
@@ -86,7 +87,7 @@ public final class StructureTemplateDefinitions extends CodecResourceReloadListe
 		Map<ResourceLocation, Double> reservoirSampled = new HashMap<>();
 		for (TemplatePoolEntry entry : templatePool.unwrap()) {
 			double rand = random.nextDouble();
-			reservoirSampled.put(entry.templateLocation(), -Math.log(rand) / entry.getWeight().asInt());
+			reservoirSampled.put(entry.templateId(), -Math.log(rand) / entry.getWeight().asInt());
 		}
 
 		return reservoirSampled.entrySet().stream().sorted(Map.Entry.comparingByValue()).map(Map.Entry::getKey).collect(Collectors.toList());
@@ -94,6 +95,7 @@ public final class StructureTemplateDefinitions extends CodecResourceReloadListe
 
 	// TODO initializeStubFromPool to return GenerationStub
 
+	@Deprecated
 	@Nullable
 	public TwilightJigsawPiece initializeTemplateFromPool(ResourceLocation templatePool, BlockPos parentJunctionPos, FrontAndTop parentOrientation, String selectName, RandomSource rand, int genDepth, StructureTemplateManager structureManager) {
 		Optional<TemplatePoolEntry> entryOptional = this.getRandomEntry(rand, templatePool);
@@ -102,15 +104,29 @@ public final class StructureTemplateDefinitions extends CodecResourceReloadListe
 			return null;
 
 		TemplatePoolEntry templateEntry = entryOptional.get();
-		JigsawPlaceContext placeContext = JigsawPlaceContext.pickPlaceableJunction(parentJunctionPos, BlockPos.ZERO, parentOrientation, structureManager, templateEntry.templateLocation, selectName, rand);
+		JigsawPlaceContext placeContext = JigsawPlaceContext.pickPlaceableJunction(parentJunctionPos, BlockPos.ZERO, parentOrientation, structureManager, templateEntry.templateId, selectName, rand);
 
 		if (placeContext == null)
 			return null;
 
-		return TwilightJigsawPiece.defaultForTemplate(genDepth, structureManager, templateEntry.templateLocation, placeContext, templateEntry.instance);
+		return TwilightJigsawPiece.defaultForTemplate(genDepth, structureManager, templateEntry.templateId, placeContext, templateEntry.instance);
 	}
 
-	private record TemplatePoolEntry(ResourceLocation templateLocation, TemplatePoolInstance instance) implements WeightedEntry {
+	@Nullable
+	public TwilightJigsawPiece initializeTemplateFromPool(ResourceLocation templatePool, BlockPos parentJunctionPos, FrontAndTop parentOrientation, String selectName, Structure.GenerationContext generationContext, int genDepth, StructureTemplateManager structureManager) {
+		Optional<TemplatePoolEntry> entryOptional = this.getRandomEntry(generationContext.random(), templatePool);
+		if (entryOptional.isEmpty())
+			return null;
+
+		TemplatePoolEntry templateEntry = entryOptional.get();
+		JigsawPlaceContext placeContext = JigsawPlaceContext.pickPlaceableJunction(parentJunctionPos, BlockPos.ZERO, parentOrientation, structureManager, templateEntry.templateId, selectName, generationContext.random());
+
+		if (placeContext == null)
+			return null;
+		return TwilightJigsawPiece.defaultForTemplate(genDepth, structureManager, templateEntry.templateId, templateEntry.instance.adjustContextForTerrain(placeContext, generationContext), templateEntry.instance);
+	}
+
+	private record TemplatePoolEntry(ResourceLocation templateId, TemplatePoolInstance instance) implements WeightedEntry {
 		@Override
 		public Weight getWeight() {
 			return this.instance.getWeight();

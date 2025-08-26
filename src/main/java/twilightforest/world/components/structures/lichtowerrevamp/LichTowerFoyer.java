@@ -10,10 +10,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
-import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
+import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
@@ -64,24 +61,24 @@ public final class LichTowerFoyer extends TwilightJigsawPiece implements PieceBe
 	// No need to serialize, this stateful object only needs to exist globally within this StructurePiece for the structure instance's initialization
 	private final List<BlockPos> shelfPositions = new ArrayList<>();
 	@Override
-	protected void processJigsaw(StructurePiece parent, StructurePieceAccessor pieceAccessor, RandomSource random, JigsawRecord connection, int jigsawIndex) {
+	protected void processJigsaw(StructurePiece parent, StructurePieceAccessor pieceAccessor, Structure.GenerationContext context, JigsawRecord connection, int jigsawIndex) {
 		if ("twilightforest:lich_tower/tower_base".equals(connection.target())) {
-			JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(this.templatePosition(), connection.pos(), connection.orientation(), this.structureManager, TwilightForestMod.prefix("lich_tower/tower_base"), "twilightforest:lich_tower/tower_base", random);
+			JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(this.templatePosition(), connection.pos(), connection.orientation(), this.structureManager, TwilightForestMod.prefix("lich_tower/tower_base"), "twilightforest:lich_tower/tower_base", context.random());
 
 			if (placeableJunction == null) return;
 
-			StructurePiece towerBase = new LichTowerBase(this.structureManager, placeableJunction);
+			LichTowerBase towerBase = new LichTowerBase(this.structureManager, placeableJunction);
 			pieceAccessor.addPiece(towerBase);
-			towerBase.addChildren(this, pieceAccessor, random);
-		} else if ("twilightforest:shelf".equals(connection.target()) && random.nextFloat() <= 0.5f) {
-			JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(this.templatePosition(), connection.pos(), connection.orientation(), this.structureManager, TwilightForestMod.prefix("lich_tower/foyer_decor"), "twilightforest:shelf", random);
+			towerBase.addJigsaws(this, pieceAccessor, context);
+		} else if ("twilightforest:shelf".equals(connection.target()) && context.random().nextFloat() <= 0.5f) {
+			JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(this.templatePosition(), connection.pos(), connection.orientation(), this.structureManager, TwilightForestMod.prefix("lich_tower/foyer_decor"), "twilightforest:shelf", context.random());
 
 			// Don't want to place next to an existing shelf
 			if (placeableJunction == null || this.hasShelfNeighbor(connection.pos())) return;
 
-			StructurePiece towerBase = new LichTowerFoyerDecor(this.genDepth + 1, this.structureManager, placeableJunction);
+			LichTowerFoyerDecor towerBase = new LichTowerFoyerDecor(this.genDepth + 1, this.structureManager, placeableJunction);
 			pieceAccessor.addPiece(towerBase);
-			towerBase.addChildren(this, pieceAccessor, random);
+			towerBase.addJigsaws(this, pieceAccessor, context);
 
 			this.shelfPositions.add(connection.pos());
 		}

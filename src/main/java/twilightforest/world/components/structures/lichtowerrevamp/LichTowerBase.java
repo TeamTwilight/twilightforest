@@ -12,10 +12,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CandleBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
-import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
+import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.*;
 import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
@@ -62,38 +59,38 @@ public final class LichTowerBase extends TwilightJigsawPiece implements PieceBea
 	}
 
 	@Override
-	protected void processJigsaw(StructurePiece parent, StructurePieceAccessor pieceAccessor, RandomSource random, JigsawRecord connection, int jigsawIndex) {
+	protected void processJigsaw(StructurePiece parent, StructurePieceAccessor pieceAccessor, Structure.GenerationContext context, JigsawRecord connection, int jigsawIndex) {
 		switch (connection.target()) {
-			case "twilightforest:lich_tower/tower_below" -> LichTowerSegment.buildTowerBySegments(pieceAccessor, random, connection.pos(), connection.orientation(), this, this.structureManager, random.nextIntBetweenInclusive(12, 15));
+			case "twilightforest:lich_tower/tower_below" -> LichTowerSegment.buildTowerBySegments(pieceAccessor, context, connection.pos(), connection.orientation(), this, this.structureManager, context.random().nextIntBetweenInclusive(12, 15));
 			case "twilightforest:lich_tower/bridge" -> {
 				ResourceLocation room;
 				if (jigsawIndex == this.casketWingIndex) {
-					room = lichTowerUtil.getKeepsakeCasketRoom(random);
+					room = lichTowerUtil.getKeepsakeCasketRoom(context.random());
 				} else {
 					room = null;
 				}
 				if (room != null || connection.pos().getY() < 6) {
-					LichTowerWingBridge.tryRoomAndBridge(this, pieceAccessor, random, connection, this.structureManager, true, 4, true, this.genDepth + 1, room);
+					LichTowerWingBridge.tryRoomAndBridge(this, pieceAccessor, context, connection, this.structureManager, true, 4, true, this.genDepth + 1, room);
 				}
 			}
 			case "twilightforest:lich_tower/decor" -> {
-				ResourceLocation decorId = lichTowerUtil.rollRandomDecor(random, true);
-				JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(this.templatePosition(), connection.pos(), connection.orientation(), this.structureManager, decorId, "twilightforest:lich_tower/decor", random);
+				ResourceLocation decorId = lichTowerUtil.rollRandomDecor(context.random(), true);
+				JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(this.templatePosition(), connection.pos(), connection.orientation(), this.structureManager, decorId, "twilightforest:lich_tower/decor", context.random());
 
 				if (placeableJunction != null) {
-					StructurePiece decor = new LichTowerRoomDecor(this.genDepth + 1, this.structureManager, decorId, placeableJunction);
+					LichTowerRoomDecor decor = new LichTowerRoomDecor(this.genDepth + 1, this.structureManager, decorId, placeableJunction);
 					pieceAccessor.addPiece(decor);
-					decor.addChildren(this, pieceAccessor, random);
+					decor.addJigsaws(this, pieceAccessor, context);
 				}
 			}
 			case "twilightforest:lich_tower/tower_trim" -> {
 				ResourceLocation decorId = TwilightForestMod.prefix("lich_tower/central_trim");
-				JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(this.templatePosition(), connection.pos(), connection.orientation(), this.structureManager, decorId, "twilightforest:lich_tower/tower_trim", random);
+				JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(this.templatePosition(), connection.pos(), connection.orientation(), this.structureManager, decorId, "twilightforest:lich_tower/tower_trim", context.random());
 
 				if (placeableJunction != null) {
-					StructurePiece decor = new LichTowerBaseTrim(this.structureManager, placeableJunction);
+					LichTowerBaseTrim decor = new LichTowerBaseTrim(this.structureManager, placeableJunction);
 					pieceAccessor.addPiece(decor);
-					decor.addChildren(this, pieceAccessor, random);
+					decor.addJigsaws(this, pieceAccessor, context);
 				}
 			}
 		}

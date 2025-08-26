@@ -19,10 +19,7 @@ import net.minecraft.world.level.block.CandleBlock;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
-import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
+import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
@@ -116,11 +113,11 @@ public final class LichBossRoom extends TwilightJigsawPiece implements PieceBear
 	}
 
 	@Override
-	protected void processJigsaw(StructurePiece parent, StructurePieceAccessor pieceAccessor, RandomSource random, JigsawRecord connection, int jigsawIndex) {
+	protected void processJigsaw(StructurePiece parent, StructurePieceAccessor pieceAccessor, Structure.GenerationContext context, JigsawRecord connection, int jigsawIndex) {
 		if (!"twilightforest:lich_tower/tower_below".equals(connection.target()))
 			return;
 
-		JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(this.templatePosition(), connection.pos(), connection.orientation(), this.structureManager, TwilightForestMod.prefix("lich_tower/tower_boss_roof"), "twilightforest:lich_tower/tower_below", random);
+		JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(this.templatePosition(), connection.pos(), connection.orientation(), this.structureManager, TwilightForestMod.prefix("lich_tower/tower_boss_roof"), "twilightforest:lich_tower/tower_below", context.random());
 
 		if (placeableJunction == null)
 			return;
@@ -128,7 +125,7 @@ public final class LichBossRoom extends TwilightJigsawPiece implements PieceBear
 		LichBossRoof lichBossRoof = new LichBossRoof(this.structureManager, placeableJunction);
 
 		pieceAccessor.addPiece(lichBossRoof);
-		lichBossRoof.addChildren(this, pieceAccessor, random);
+		lichBossRoof.addJigsaws(this, pieceAccessor, context);
 	}
 
 	@Override

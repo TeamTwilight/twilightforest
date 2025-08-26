@@ -2,6 +2,7 @@ package twilightforest.util;
 
 import com.mojang.datafixers.util.Pair;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntComparators;
 import it.unimi.dsi.fastutil.ints.IntList;
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import it.unimi.dsi.fastutil.objects.ObjectArraySet;
@@ -146,7 +147,7 @@ public final class WorldUtil {
 		return Optional.ofNullable(nearest);
 	}
 
-	public static int adjustForTerrain(Structure.GenerationContext context, int xMin, int zMin, int xMax, int zMax, int gridLength) {
+	public static int adjustForTerrain(Structure.GenerationContext context, int xMin, int zMin, int xMax, int zMax, int gridLength, Heightmap.Types type) {
 		int subDivisions = gridLength - 1;
 		IntList heights = new IntArrayList(gridLength * gridLength);
 
@@ -155,11 +156,11 @@ public final class WorldUtil {
 			for (int xStep = 0; xStep <= subDivisions; xStep++) {
 				int xPos = Mth.lerpDiscrete((float) xStep / subDivisions, xMin, xMax);
 
-				heights.add(context.chunkGenerator().getFirstOccupiedHeight(xPos, zPos, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState()));
+				heights.add(context.chunkGenerator().getFirstOccupiedHeight(xPos, zPos, type, context.heightAccessor(), context.randomState()));
 			}
 		}
 
-		heights.sort((a, b) -> Integer.compare(b, a));  // sort from highest to lowest
+		heights.sort(IntComparators.OPPOSITE_COMPARATOR); // sort from highest to lowest
 
 		double weightedSum = 0;
 		double totalWeight = 0;
@@ -175,6 +176,6 @@ public final class WorldUtil {
 		int chunkOriginX = xInCenterChunk & ~0b1111;
 		int chunkOriginZ = zInCenterChunk & ~0b1111;
 
-		return WorldUtil.adjustForTerrain(context, chunkOriginX - radiusFromCenterChunk, chunkOriginZ - radiusFromCenterChunk, chunkOriginX + 15 + radiusFromCenterChunk, chunkOriginZ + 15 + radiusFromCenterChunk, gridLength);
+		return WorldUtil.adjustForTerrain(context, chunkOriginX - radiusFromCenterChunk, chunkOriginZ - radiusFromCenterChunk, chunkOriginX + 15 + radiusFromCenterChunk, chunkOriginZ + 15 + radiusFromCenterChunk, gridLength, Heightmap.Types.WORLD_SURFACE_WG);
 	}
 }

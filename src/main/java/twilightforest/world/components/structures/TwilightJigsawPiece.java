@@ -14,10 +14,7 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
-import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
+import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
@@ -49,12 +46,14 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 	private static final String NBT_TERRAIN_ADAPT = "terrain_adaptation";
 	private static final String NBT_TEMPLATE_PROCESSORS = "template_processors";
 	private static final String NBT_PLACE_PROJECTION = "place_projection";
+	private static final String NBT_GROUND_OFFSET = "ground_offset";
 
 	private final JigsawRecord sourceJigsaw;
 	private final List<JigsawRecord> spareJigsaws;
 	private final TerrainAdjustment terrainAdjustment;
 	private final Holder<StructureProcessorList> processors;
 	private final StructureTemplatePool.Projection projection;
+	private final int groundOffset;
 
 	public static TwilightJigsawPiece defaultDeserialize(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
 		TwilightJigsawPiece twilightJigsawPiece = new TwilightJigsawPiece(TFStructurePieceTypes.TFJigsawTemplate.value(), compoundTag, ctx, readSettings(compoundTag));
@@ -87,6 +86,8 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 		for (StructureProcessor processor : ConcatenatedListView.of(this.processors.value().list(), this.projection.getProcessors())) {
 			this.placeSettings.addProcessor(processor);
 		}
+
+		this.groundOffset = compoundTag.getInt(NBT_GROUND_OFFSET);
 	}
 
 	public TwilightJigsawPiece(StructurePieceType type, int genDepth, StructureTemplateManager structureManager, ResourceLocation templateLocation, JigsawPlaceContext jigsawContext) {
@@ -97,6 +98,7 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 		this.terrainAdjustment = TerrainAdjustment.NONE;
 		this.processors = Holder.direct(new StructureProcessorList(Collections.emptyList()));
 		this.projection = StructureTemplatePool.Projection.RIGID;
+		this.groundOffset = 0;
 	}
 
 	public TwilightJigsawPiece(StructurePieceType type, int genDepth, StructureTemplateManager structureManager, ResourceLocation templateLocation, JigsawPlaceContext jigsawContext, TemplatePoolInstance templatePoolInstance) {
@@ -105,8 +107,9 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 		this.sourceJigsaw = jigsawContext.seedJigsaw();
 		this.spareJigsaws = Collections.unmodifiableList(jigsawContext.spareJigsaws());
 		this.terrainAdjustment = templatePoolInstance.terrainAdjustment();
-		this.processors = templatePoolInstance.processors();
+		this.processors = templatePoolInstance.processors().orElseGet(() -> Holder.direct(new StructureProcessorList(Collections.emptyList())));
 		this.projection = templatePoolInstance.projection();
+		this.groundOffset = templatePoolInstance.heightAdjustment().map(TemplatePoolInstance.HeightAdjustment::yOffset).orElse(0);
 		for (StructureProcessor processor : ConcatenatedListView.of(this.processors.value().list(), this.projection.getProcessors())) {
 			this.placeSettings.addProcessor(processor);
 		}
@@ -157,22 +160,27 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 				structureTag.put(NBT_TEMPLATE_PROCESSORS, processorsList.get());
 			}
 		}
+
+		structureTag.putInt(NBT_GROUND_OFFSET, this.groundOffset);
 	}
 
+	@Deprecated(forRemoval = true) // Instead use addChildren(StructurePiece, StructurePieceAccessor, Structure.GenerationContext)
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor pieceAccessor, RandomSource random) {
-		super.addChildren(parent, pieceAccessor, random);
+	public void addChildren(StructurePiece parent, StructurePieceAccessor pieceAccessor, RandomSource random) {}
+
+	public void addJigsaws(StructurePiece parent, StructurePieceAccessor pieceAccessor, Structure.GenerationContext context) {
+		super.addChildren(parent, pieceAccessor, context.random());
 
 		List<JigsawRecord> jigsaws = this.spareJigsaws;
 		for (int i = 0; i < jigsaws.size(); i++) {
-			this.processJigsaw(parent, pieceAccessor, random, jigsaws.get(i), i);
+			this.processJigsaw(parent, pieceAccessor, context, jigsaws.get(i), i);
 		}
 	}
 
-	protected void processJigsaw(StructurePiece parent, StructurePieceAccessor pieceAccessor, RandomSource random, JigsawRecord connection, int jigsawIndex) {
+	protected void processJigsaw(StructurePiece parent, StructurePieceAccessor pieceAccessor, Structure.GenerationContext context, JigsawRecord connection, int jigsawIndex) {
 		ResourceLocation templatePool = ResourceLocation.parse(connection.pool());
 		BlockPos parentJunctionPos = this.templatePosition.offset(connection.pos());
-		TwilightJigsawPiece jigsawPiece = structureTemplateDefinitions.initializeTemplateFromPool(templatePool, parentJunctionPos, connection.orientation(), connection.target(), random, this.genDepth + 1, this.structureManager);
+		TwilightJigsawPiece jigsawPiece = structureTemplateDefinitions.initializeTemplateFromPool(templatePool, parentJunctionPos, connection.orientation(), connection.target(), context, this.genDepth + 1, this.structureManager);
 
 		if (jigsawPiece == null)
 			return;
@@ -181,7 +189,7 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 			return;
 
 		pieceAccessor.addPiece(jigsawPiece);
-		jigsawPiece.addChildren(this, pieceAccessor, random);
+		jigsawPiece.addJigsaws(this, pieceAccessor, context);
 	}
 
 	@Override
@@ -239,6 +247,6 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 
 	@Override
 	public int getGroundLevelDelta() {
-		return 0;
+		return this.groundOffset;
 	}
 }

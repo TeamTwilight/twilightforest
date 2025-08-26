@@ -55,13 +55,14 @@ public class CampStructure extends Structure {
 
 		return Optional.of(new GenerationStub(freePosition, structurePiecesBuilder -> {
 			ResourceLocation templatePool = TwilightForestMod.prefix("camp/structure_start");
-			TwilightJigsawPiece twilightJigsawPiece = structureTemplateDefinitions.initializeTemplateFromPool(templatePool, freePosition, oriented, templatePool.toString(), random, 0, context.structureTemplateManager());
+			// TODO Instead use StructureTemplateDefinitions.initializeStubFromPool
+			TwilightJigsawPiece twilightJigsawPiece = structureTemplateDefinitions.initializeTemplateFromPool(templatePool, freePosition, oriented, templatePool.toString(), context, 0, context.structureTemplateManager());
 
-			// TODO StructureTemplateDefinitions.initializeStubFromPool
+			if (twilightJigsawPiece == null) return;
 
 			structurePiecesBuilder.addPiece(twilightJigsawPiece);
 
-			twilightJigsawPiece.addChildren(twilightJigsawPiece, structurePiecesBuilder, context.random());
+			twilightJigsawPiece.addJigsaws(twilightJigsawPiece, structurePiecesBuilder, context);
 		}));
 	}
 

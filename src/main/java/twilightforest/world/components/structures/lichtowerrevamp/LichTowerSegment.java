@@ -8,10 +8,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
-import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
+import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
@@ -25,7 +22,6 @@ import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.util.jigsaw.JigsawRecord;
 import twilightforest.world.components.structures.SpawnIndexProvider;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
-import twilightforest.world.components.structures.TwilightTemplateStructurePiece;
 
 import java.util.ArrayList;
 
@@ -78,16 +74,16 @@ public final class LichTowerSegment extends TwilightJigsawPiece implements Piece
 		structureTag.putBoolean("put_gallery", this.putGallery);
 	}
 
-	public static void buildTowerBySegments(StructurePieceAccessor pieceAccessor, RandomSource random, final BlockPos sourceJigsawPos, final FrontAndTop sourceOrientation, final TwilightJigsawPiece parentBase, StructureTemplateManager structureManager, final int segments) {
+	public static void buildTowerBySegments(StructurePieceAccessor pieceAccessor, Structure.GenerationContext context, final BlockPos sourceJigsawPos, final FrontAndTop sourceOrientation, final TwilightJigsawPiece parentBase, StructureTemplateManager structureManager, final int segments) {
 		ResourceLocation segmentId = TwilightForestMod.prefix("lich_tower/tower_slice");
-		ArrayList<TwilightTemplateStructurePiece> pieces = new ArrayList<>();
+		ArrayList<TwilightJigsawPiece> pieces = new ArrayList<>();
 
-		TwilightTemplateStructurePiece priorPiece = parentBase;
+		TwilightJigsawPiece priorPiece = parentBase;
 		BlockPos priorJigsawOffset = sourceJigsawPos;
 		FrontAndTop priorOrientation = sourceOrientation;
-		int mobBridge = random.nextIntBetweenInclusive(0, 5);
+		int mobBridge = context.random().nextIntBetweenInclusive(0, 5);
 		for (int stackIndex = 0; stackIndex < segments; stackIndex++) {
-			JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(priorPiece.templatePosition(), priorJigsawOffset, priorOrientation, structureManager, segmentId, "twilightforest:lich_tower/tower_below", random);
+			JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(priorPiece.templatePosition(), priorJigsawOffset, priorOrientation, structureManager, segmentId, "twilightforest:lich_tower/tower_below", context.random());
 
 			if (placeableJunction == null) continue;
 
@@ -105,19 +101,19 @@ public final class LichTowerSegment extends TwilightJigsawPiece implements Piece
 			priorPiece = towerSegment;
 			priorJigsawOffset = firstJunction.pos();
 			priorOrientation = firstJunction.orientation();
-			mobBridge = mobBridge == 0 ? random.nextIntBetweenInclusive(2, 5) : (mobBridge - 1);
+			mobBridge = mobBridge == 0 ? context.random().nextIntBetweenInclusive(2, 5) : (mobBridge - 1);
 		}
 
 		// The boss room is wider than Main Tower segments, adding to piece list sooner will help prevent these collisions
-		JigsawPlaceContext bossRoomJunction = JigsawPlaceContext.pickPlaceableJunction(priorPiece.templatePosition(), priorJigsawOffset, priorOrientation, structureManager, TwilightForestMod.prefix("lich_tower/tower_boss_room"), "twilightforest:lich_tower/tower_below", random);
+		JigsawPlaceContext bossRoomJunction = JigsawPlaceContext.pickPlaceableJunction(priorPiece.templatePosition(), priorJigsawOffset, priorOrientation, structureManager, TwilightForestMod.prefix("lich_tower/tower_boss_room"), "twilightforest:lich_tower/tower_below", context.random());
 		if (bossRoomJunction != null) {
-			StructurePiece bossRoom = new LichBossRoom(structureManager, bossRoomJunction);
+			LichBossRoom bossRoom = new LichBossRoom(structureManager, bossRoomJunction);
 			pieceAccessor.addPiece(bossRoom);
-			bossRoom.addChildren(priorPiece, pieceAccessor, random);
+			bossRoom.addJigsaws(priorPiece, pieceAccessor, context);
 
-			StructurePiece boundary = new LichTowerSegment(structureManager, priorPiece.getGenDepth() + 1, bossRoomJunction.copy(), false, false, false, TwilightForestMod.prefix("lich_tower/tower_boss_boundary"));
+			LichTowerSegment boundary = new LichTowerSegment(structureManager, priorPiece.getGenDepth() + 1, bossRoomJunction.copy(), false, false, false, TwilightForestMod.prefix("lich_tower/tower_boss_boundary"));
 			pieceAccessor.addPiece(boundary);
-			boundary.addChildren(priorPiece, pieceAccessor, random);
+			boundary.addJigsaws(priorPiece, pieceAccessor, context);
 		}
 
 		if (pieces.isEmpty())
@@ -125,18 +121,18 @@ public final class LichTowerSegment extends TwilightJigsawPiece implements Piece
 
 		// Call the topmost segment first, so that guaranteed generation of the Magic Gallery is better deterministic and not competing against side-tower clearances
 		priorPiece = pieces.removeLast();
-		priorPiece.addChildren(pieces.isEmpty() ? parentBase : pieces.getLast(), pieceAccessor, random);
+		priorPiece.addJigsaws(pieces.isEmpty() ? parentBase : pieces.getLast(), pieceAccessor, context);
 
 		// Now call .addChildren of all segment pieces so that the side-towers generate their shapes
 		priorPiece = parentBase;
-		for (TwilightTemplateStructurePiece piece : pieces) {
-			piece.addChildren(priorPiece, pieceAccessor, random);
+		for (TwilightJigsawPiece piece : pieces) {
+			piece.addJigsaws(priorPiece, pieceAccessor, context);
 			priorPiece = piece;
 		}
 	}
 
 	@Override
-	protected void processJigsaw(StructurePiece parent, StructurePieceAccessor pieceAccessor, RandomSource random, JigsawRecord connection, int jigsawIndex) {
+	protected void processJigsaw(StructurePiece parent, StructurePieceAccessor pieceAccessor, Structure.GenerationContext context, JigsawRecord connection, int jigsawIndex) {
 		switch (connection.target()) {
 			case "twilightforest:lich_tower/bridge" -> {
 				if (!this.putWings) return;
@@ -144,26 +140,26 @@ public final class LichTowerSegment extends TwilightJigsawPiece implements Piece
 				// If this is the top segment, then place only the gallery so that the normal side towers place lower
 				//  and thus generate taller without colliding into the boss room
 				if (this.putGallery) {
-					if (jigsawIndex == 2 && random.nextInt(10) == 0) {
-						LichTowerMagicGallery.tryPlaceGallery(random, pieceAccessor, lichTowerUtil.rollTowerGallery(random), connection, this, this.genDepth + 1, this.structureManager, "twilightforest:lich_tower/bridge_center");
+					if (jigsawIndex == 2 && context.random().nextInt(10) == 0) {
+						LichTowerMagicGallery.tryPlaceGallery(context, pieceAccessor, lichTowerUtil.rollTowerGallery(context.random()), connection, this, this.genDepth + 1, this.structureManager, "twilightforest:lich_tower/bridge_center");
 					}
 				} else {
-					LichTowerWingBridge.tryRoomAndBridge(this, pieceAccessor, random, connection, this.structureManager, true, 4, false, this.genDepth + 1, null);
+					LichTowerWingBridge.tryRoomAndBridge(this, pieceAccessor, context, connection, this.structureManager, true, 4, false, this.genDepth + 1, null);
 				}
 			}
 			case "twilightforest:mob_bridge" -> {
 				if (this.putMobBridge) {
 					FrontAndTop orientation = connection.orientation();
 					// Either keep match jigsaw rotation or spin it 180. This will "flip" a few bridges
-					FrontAndTop forPlacement = random.nextBoolean() ? orientation : FrontAndTop.fromFrontAndTop(orientation.front(), orientation.top().getOpposite());
+					FrontAndTop forPlacement = context.random().nextBoolean() ? orientation : FrontAndTop.fromFrontAndTop(orientation.front(), orientation.top().getOpposite());
 
-					ResourceLocation mobBridgeLocation = lichTowerUtil.rollRandomMobBridge(random);
-					JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(this.templatePosition(), connection.pos(), forPlacement, this.structureManager, mobBridgeLocation, "twilightforest:mob_bridge", random);
+					ResourceLocation mobBridgeLocation = lichTowerUtil.rollRandomMobBridge(context.random());
+					JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(this.templatePosition(), connection.pos(), forPlacement, this.structureManager, mobBridgeLocation, "twilightforest:mob_bridge", context.random());
 
 					if (placeableJunction != null) {
-						StructurePiece mobBridgePiece = new LichTowerSpawnerBridge(this.genDepth + 1, this.structureManager, mobBridgeLocation, placeableJunction, random.nextBoolean());
+						LichTowerSpawnerBridge mobBridgePiece = new LichTowerSpawnerBridge(this.genDepth + 1, this.structureManager, mobBridgeLocation, placeableJunction, context.random().nextBoolean());
 						pieceAccessor.addPiece(mobBridgePiece);
-						mobBridgePiece.addChildren(this, pieceAccessor, random);
+						mobBridgePiece.addJigsaws(this, pieceAccessor, context);
 					}
 				}
 			}

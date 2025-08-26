@@ -114,7 +114,7 @@ public class FallenTrunkStructure extends Structure implements CustomDensitySour
 		if (radius == radiuses.getFirst())
 			return defaultY;
 
-		return WorldUtil.adjustForTerrain(context, box.minX(), box.minZ(), box.maxX(), box.maxZ(), 4);
+		return WorldUtil.adjustForTerrain(context, box.minX(), box.minZ(), box.maxX(), box.maxZ(), 4, Heightmap.Types.WORLD_SURFACE_WG);
 	}
 
 	@Override

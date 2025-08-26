@@ -30,6 +30,7 @@ import twilightforest.util.WorldUtil;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.world.components.chunkgenerators.BoxDensityFunction;
 import twilightforest.world.components.structures.CustomDensitySource;
+import twilightforest.world.components.structures.TwilightJigsawPiece;
 import twilightforest.world.components.structures.lichtowerrevamp.LichTowerBaseTrim;
 import twilightforest.world.components.structures.lichtowerrevamp.LichTowerFoyer;
 import twilightforest.world.components.structures.lichtowerrevamp.LichTowerWingBeard;
@@ -63,7 +64,12 @@ public class LichTowerStructure extends ControlledSpawningStructure implements C
 
 	@Override
 	protected void generateFromStartingPiece(StructurePiece startingPiece, GenerationContext context, StructurePiecesBuilder structurePiecesBuilder) {
-		super.generateFromStartingPiece(startingPiece, context, structurePiecesBuilder);
+		structurePiecesBuilder.addPiece(startingPiece);
+		if (startingPiece instanceof TwilightJigsawPiece jigsaw) {
+			jigsaw.addJigsaws(startingPiece, structurePiecesBuilder, context);
+		} else {
+			startingPiece.addChildren(startingPiece, structurePiecesBuilder, context.random());
+		}
 
 		if (startingPiece instanceof LichTowerFoyer foyerPiece) {
 			LichYardBox.beginYard(foyerPiece, context, structurePiecesBuilder);
