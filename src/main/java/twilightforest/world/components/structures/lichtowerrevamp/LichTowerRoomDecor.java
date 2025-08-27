@@ -22,7 +22,6 @@ import twilightforest.util.TFStructureHelper;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.util.jigsaw.JigsawRecord;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
-import twilightforest.world.components.structures.TwilightTemplateStructurePiece;
 import twilightforest.world.components.structures.util.SortablePiece;
 
 public class LichTowerRoomDecor extends TwilightJigsawPiece implements PieceBeardifierModifier, SortablePiece {
@@ -41,7 +40,7 @@ public class LichTowerRoomDecor extends TwilightJigsawPiece implements PieceBear
 		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(lichTowerUtil.getRoomSpawnerProcessor()));
 	}
 
-	public static void addDecor(TwilightTemplateStructurePiece parent, StructurePieceAccessor pieceAccessor, Structure.GenerationContext context, JigsawRecord connection, int newDepth, StructureTemplateManager structureManager) {
+	public static void addDecor(TwilightJigsawPiece parent, StructurePieceAccessor pieceAccessor, Structure.GenerationContext context, JigsawRecord connection, int newDepth, StructureTemplateManager structureManager) {
 		ResourceLocation decorId = lichTowerUtil.rollRandomDecor(context.random(), false);
 		JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(parent.templatePosition(), connection.pos(), connection.orientation(), structureManager, decorId, "twilightforest:lich_tower/decor", context.random());
 
@@ -76,7 +75,7 @@ public class LichTowerRoomDecor extends TwilightJigsawPiece implements PieceBear
 	}
 
 	@Override
-	protected void processJigsaw(StructurePiece parent, StructurePieceAccessor pieceAccessor, Structure.GenerationContext context, JigsawRecord connection, int jigsawIndex) {
+	protected void processJigsaw(TwilightJigsawPiece parent, StructurePieceAccessor pieceAccessor, Structure.GenerationContext context, JigsawRecord connection, int jigsawIndex) {
 	}
 
 	@Override

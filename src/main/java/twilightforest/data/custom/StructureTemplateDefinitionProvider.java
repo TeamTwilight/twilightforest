@@ -1,5 +1,6 @@
 package twilightforest.data.custom;
 
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -8,6 +9,8 @@ import net.minecraft.util.random.Weight;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
+import net.minecraft.world.level.levelgen.structure.templatesystem.GravityProcessor;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.common.data.JsonCodecProvider;
 import twilightforest.TwilightForestMod;
@@ -16,6 +19,7 @@ import twilightforest.world.components.structures.util.StructureTemplateDefiniti
 import twilightforest.world.components.structures.util.TemplatePoolInstance;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -86,9 +90,9 @@ public abstract class StructureTemplateDefinitionProvider extends JsonCodecProvi
 	protected TemplatePoolInstance weightedPathTemplate(int weight) {
 		return new TemplatePoolInstance(
 			Weight.of(weight),
-			Optional.empty(),
-			StructureTemplatePool.Projection.TERRAIN_MATCHING,
-			TerrainAdjustment.BEARD_THIN,
+			Optional.of(Holder.direct(new StructureProcessorList(List.of(new GravityProcessor(Heightmap.Types.WORLD_SURFACE_WG, -2))))),
+			StructureTemplatePool.Projection.RIGID,
+			TerrainAdjustment.NONE,
 			Optional.of(new TemplatePoolInstance.HeightAdjustment(Heightmap.Types.WORLD_SURFACE_WG, 1, Optional.of(1))),
 			false
 		);

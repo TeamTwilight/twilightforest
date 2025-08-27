@@ -66,7 +66,7 @@ public class LichTowerStructure extends ControlledSpawningStructure implements C
 	protected void generateFromStartingPiece(StructurePiece startingPiece, GenerationContext context, StructurePiecesBuilder structurePiecesBuilder) {
 		structurePiecesBuilder.addPiece(startingPiece);
 		if (startingPiece instanceof TwilightJigsawPiece jigsaw) {
-			jigsaw.addJigsaws(startingPiece, structurePiecesBuilder, context);
+			jigsaw.addJigsaws(jigsaw, structurePiecesBuilder, context);
 		} else {
 			startingPiece.addChildren(startingPiece, structurePiecesBuilder, context.random());
 		}

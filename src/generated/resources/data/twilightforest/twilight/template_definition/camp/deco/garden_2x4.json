@@ -1,7 +1,7 @@
 {
   "twilightforest:camp/deco": {
     "height_adjustment": {
-      "ground_junction_diff_clamp": 1,
+      "ground_junction_diff_clamp": 0,
       "heightmap": "WORLD_SURFACE_WG",
       "y_offset": 1
     },

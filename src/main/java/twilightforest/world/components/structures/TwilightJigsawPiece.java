@@ -14,12 +14,12 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.templatesystem.*;
-import net.neoforged.neoforge.common.util.ConcatenatedListView;
 import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import twilightforest.TwilightForestMod;
 import twilightforest.beans.Autowired;
@@ -64,8 +64,7 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 
 	public static TwilightJigsawPiece defaultForTemplate(int genDepth, StructureTemplateManager structureManager, ResourceLocation templateLocation, JigsawPlaceContext jigsawContext, TemplatePoolInstance templatePoolInstance) {
 		TwilightJigsawPiece twilightJigsawPiece = new TwilightJigsawPiece(TFStructurePieceTypes.TFJigsawTemplate.value(), genDepth, structureManager, templateLocation, jigsawContext, templatePoolInstance);
-		StructurePlaceSettings structurePlaceSettings = twilightJigsawPiece.placeSettings();
-		structurePlaceSettings.addProcessor(MetaBlockProcessor.INSTANCE);
+		twilightJigsawPiece.placeSettings().addProcessor(MetaBlockProcessor.INSTANCE);
 		return twilightJigsawPiece;
 	}
 
@@ -84,14 +83,12 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 		}
 		this.projection = compoundTag.contains(NBT_PLACE_PROJECTION) ? StructureTemplatePool.Projection.valueOf(compoundTag.getString(NBT_PLACE_PROJECTION)) : StructureTemplatePool.Projection.RIGID;
 
-		for (StructureProcessor processor : ConcatenatedListView.of(this.processors.value().list(), this.projection.getProcessors())) {
-			this.placeSettings.addProcessor(processor);
-		}
-
 		this.groundOffset = compoundTag.getInt(NBT_GROUND_OFFSET);
 
 		if (compoundTag.getBoolean(NBT_IGNORE_WATERLOG))
 			this.placeSettings.setLiquidSettings(LiquidSettings.IGNORE_WATERLOGGING);
+
+		this.processors.value().list().forEach(this.placeSettings::addProcessor);
 	}
 
 	public TwilightJigsawPiece(StructurePieceType type, int genDepth, StructureTemplateManager structureManager, ResourceLocation templateLocation, JigsawPlaceContext jigsawContext) {
@@ -115,9 +112,7 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 		this.projection = templatePoolInstance.projection();
 		this.groundOffset = templatePoolInstance.heightAdjustment().map(TemplatePoolInstance.HeightAdjustment::yOffset).orElse(0);
 		if (templatePoolInstance.ignoreWorldWaterlog()) this.placeSettings.setLiquidSettings(LiquidSettings.IGNORE_WATERLOGGING);
-		for (StructureProcessor processor : ConcatenatedListView.of(this.processors.value().list(), this.projection.getProcessors())) {
-			this.placeSettings.addProcessor(processor);
-		}
+		this.processors.value().list().forEach(this.placeSettings::addProcessor);
 	}
 
 	protected static JigsawRecord readSourceFromNBT(CompoundTag structureTag) {
@@ -177,19 +172,21 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 	@Override
 	public void addChildren(StructurePiece parent, StructurePieceAccessor pieceAccessor, RandomSource random) {}
 
-	public void addJigsaws(StructurePiece parent, StructurePieceAccessor pieceAccessor, Structure.GenerationContext context) {
-		super.addChildren(parent, pieceAccessor, context.random());
+	public void addJigsaws(TwilightJigsawPiece parent, StructurePieceAccessor pieceAccessor, Structure.GenerationContext context) {
+		WorldgenRandom random = context.random();
+		random.setSeed(random.nextLong() ^ (context.seed() * this.templatePosition.asLong()));
 
+		this.addChildren(parent, pieceAccessor, random);
 		List<JigsawRecord> jigsaws = this.spareJigsaws;
 		for (int i = 0; i < jigsaws.size(); i++) {
 			this.processJigsaw(parent, pieceAccessor, context, jigsaws.get(i), i);
 		}
 	}
 
-	protected void processJigsaw(StructurePiece parent, StructurePieceAccessor pieceAccessor, Structure.GenerationContext context, JigsawRecord connection, int jigsawIndex) {
+	protected void processJigsaw(TwilightJigsawPiece parent, StructurePieceAccessor pieceAccessor, Structure.GenerationContext context, JigsawRecord connection, int jigsawIndex) {
 		ResourceLocation templatePool = ResourceLocation.parse(connection.pool());
 		BlockPos parentJunctionPos = this.templatePosition.offset(connection.pos());
-		TwilightJigsawPiece jigsawPiece = structureTemplateDefinitions.initializeTemplateFromPool(templatePool, parentJunctionPos, connection.orientation(), connection.target(), context, this.genDepth + 1, this.structureManager);
+		TwilightJigsawPiece jigsawPiece = structureTemplateDefinitions.initializeTemplateFromPool(templatePool, parentJunctionPos, connection.orientation(), connection.target(), context, this.genDepth + 1, parent.projection == StructureTemplatePool.Projection.TERRAIN_MATCHING);
 
 		if (jigsawPiece == null)
 			return;

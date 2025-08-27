@@ -70,7 +70,6 @@ import twilightforest.util.jigsaw.JigsawRecord;
 import twilightforest.util.jigsaw.JigsawUtil;
 import twilightforest.world.components.structures.SpawnIndexProvider;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
-import twilightforest.world.components.structures.TwilightTemplateStructurePiece;
 
 import java.util.*;
 import java.util.function.Function;
@@ -201,7 +200,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 	}
 
 	@Override
-	protected void processJigsaw(StructurePiece parent, StructurePieceAccessor pieceAccessor, Structure.GenerationContext context, JigsawRecord connection, int jigsawIndex) {
+	protected void processJigsaw(TwilightJigsawPiece parent, StructurePieceAccessor pieceAccessor, Structure.GenerationContext context, JigsawRecord connection, int jigsawIndex) {
 		switch (connection.target()) {
 			case "twilightforest:lich_tower/bridge" -> {
 				if (this.roomSize < 1) {
@@ -256,7 +255,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 		if (this.ladderIndex == jigsawIndex && this.jigsawLadderTarget.equals(connection.target())) {
 			int ladderOffset = Integer.parseInt(this.jigsawLadderTarget.substring(this.jigsawLadderTarget.length() - 1));
 			ResourceLocation roomId = lichTowerUtil.getRoomUpwards(context.random(), this.roomSize, ladderOffset);
-			if (roomId != null && (this.templateName.equals(roomId.toString()) || (parent instanceof TwilightTemplateStructurePiece twilightTemplate && twilightTemplate.getTemplateName().equals(roomId.toString())))) {
+			if (roomId != null && (this.templateName.equals(roomId.toString()) || (parent.getTemplateName().equals(roomId.toString())))) {
 				// 1 chance at reroll if template is same as current or parent's
 				roomId = lichTowerUtil.getRoomUpwards(context.random(), this.roomSize, ladderOffset);
 				// Otherwise if a repeat gets rolled -- how lucky!
@@ -277,7 +276,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 				BoundingBox boundingBox = BoundingBoxUtils.cloneWithAdjustments(room.getBoundingBox(), 1, 0, 1, -1, 0, -1);
 				if (pieceAccessor.findCollisionPiece(boundingBox) == null) {
 					pieceAccessor.addPiece(room);
-					room.addJigsaws(parent, pieceAccessor, context);
+					room.addJigsaws(this, pieceAccessor, context);
 
 					return;
 				}

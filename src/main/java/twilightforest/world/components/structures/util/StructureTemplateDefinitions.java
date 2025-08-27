@@ -113,17 +113,17 @@ public final class StructureTemplateDefinitions extends CodecResourceReloadListe
 	}
 
 	@Nullable
-	public TwilightJigsawPiece initializeTemplateFromPool(ResourceLocation templatePool, BlockPos parentJunctionPos, FrontAndTop parentOrientation, String selectName, Structure.GenerationContext generationContext, int genDepth, StructureTemplateManager structureManager) {
+	public TwilightJigsawPiece initializeTemplateFromPool(ResourceLocation templatePool, BlockPos parentJunctionPos, FrontAndTop parentOrientation, String selectName, Structure.GenerationContext generationContext, int genDepth, boolean parentProjectsTerrain) {
 		Optional<TemplatePoolEntry> entryOptional = this.getRandomEntry(generationContext.random(), templatePool);
 		if (entryOptional.isEmpty())
 			return null;
 
 		TemplatePoolEntry templateEntry = entryOptional.get();
-		JigsawPlaceContext placeContext = JigsawPlaceContext.pickPlaceableJunction(parentJunctionPos, BlockPos.ZERO, parentOrientation, structureManager, templateEntry.templateId, selectName, generationContext.random());
+		JigsawPlaceContext placeContext = JigsawPlaceContext.pickPlaceableJunction(parentJunctionPos, BlockPos.ZERO, parentOrientation, generationContext.structureTemplateManager(), templateEntry.templateId, selectName, generationContext.random());
 
 		if (placeContext == null)
 			return null;
-		return TwilightJigsawPiece.defaultForTemplate(genDepth, structureManager, templateEntry.templateId, templateEntry.instance.adjustContextForTerrain(placeContext, generationContext), templateEntry.instance);
+		return TwilightJigsawPiece.defaultForTemplate(genDepth, generationContext.structureTemplateManager(), templateEntry.templateId, templateEntry.instance.adjustContextForTerrain(placeContext, generationContext, parentProjectsTerrain), templateEntry.instance);
 	}
 
 	private record TemplatePoolEntry(ResourceLocation templateId, TemplatePoolInstance instance) implements WeightedEntry {

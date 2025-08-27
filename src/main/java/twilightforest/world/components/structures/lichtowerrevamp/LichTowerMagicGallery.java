@@ -103,7 +103,7 @@ public class LichTowerMagicGallery extends TwilightJigsawPiece implements PieceB
 	}
 
 	@Override
-	protected void processJigsaw(StructurePiece parent, StructurePieceAccessor pieceAccessor, Structure.GenerationContext context, JigsawRecord connection, int jigsawIndex) {
+	protected void processJigsaw(TwilightJigsawPiece parent, StructurePieceAccessor pieceAccessor, Structure.GenerationContext context, JigsawRecord connection, int jigsawIndex) {
 		if ("twilightforest:lich_tower/roof".equals(connection.target())) {
 			ResourceLocation fallbackRoof = lichTowerUtil.rollGalleryRoof(context.random(), this.boundingBox);
 			FrontAndTop orientationToMatch = LichTowerWingRoom.getVerticalOrientation(connection, Direction.UP, this);

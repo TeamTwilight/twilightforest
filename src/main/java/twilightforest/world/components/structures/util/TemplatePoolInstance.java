@@ -5,6 +5,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.DynamicOps;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.util.Mth;
 import net.minecraft.util.random.Weight;
@@ -52,11 +53,11 @@ public record TemplatePoolInstance(Weight weight, Optional<Holder<StructureProce
 	}
 
 	@SuppressWarnings("OptionalIsPresent")
-	public JigsawPlaceContext adjustContextForTerrain(JigsawPlaceContext placeContext, Structure.GenerationContext generationContext) {
+	public JigsawPlaceContext adjustContextForTerrain(JigsawPlaceContext placeContext, Structure.GenerationContext generationContext, boolean parentProjectsTerrain) {
 		if (this.heightAdjustment.isEmpty())
 			return placeContext;
 
-		return this.heightAdjustment.get().adjustForTerrain(placeContext, generationContext);
+		return this.heightAdjustment.get().adjustForTerrain(placeContext, generationContext, parentProjectsTerrain);
 	}
 
 	@Override
@@ -81,9 +82,13 @@ public record TemplatePoolInstance(Weight weight, Optional<Holder<StructureProce
 			Codec.intRange(0, Integer.MAX_VALUE).optionalFieldOf("ground_junction_diff_clamp").forGetter(HeightAdjustment::groundJunctionDiffLimit)
 		).apply(instance, HeightAdjustment::new));
 
-		public JigsawPlaceContext adjustForTerrain(JigsawPlaceContext placeContext, Structure.GenerationContext generationContext) {
+		public JigsawPlaceContext adjustForTerrain(JigsawPlaceContext placeContext, Structure.GenerationContext generationContext, boolean parentProjectsTerrain) {
 			BoundingBox box = placeContext.makeBoundingBox(generationContext.structureTemplateManager());
-			int yAdjusted = this.clampYLevel(generationContext, placeContext, box);
+
+			int yAdjusted = parentProjectsTerrain
+				? this.clampYLevelPos(generationContext, placeContext, placeContext.templatePos().offset(placeContext.seedJigsaw().pos()))
+				: this.clampYLevelBox(generationContext, placeContext, box);
+
 			return new JigsawPlaceContext(
 				placeContext.templatePos().atY(yAdjusted),
 				placeContext.placementSettings().copy(),
@@ -93,7 +98,7 @@ public record TemplatePoolInstance(Weight weight, Optional<Holder<StructureProce
 			);
 		}
 
-		private int clampYLevel(Structure.GenerationContext generationContext, JigsawPlaceContext placeContext, BoundingBox box) {
+		private int clampYLevelBox(Structure.GenerationContext generationContext, JigsawPlaceContext placeContext, BoundingBox box) {
 			if (this.groundJunctionDiffLimit.isEmpty()) {
 				return this.yOffset + WorldUtil.adjustForTerrain(generationContext, box.minX(), box.minZ(), box.maxX(), box.maxZ(), 2, this.heightType);
 			}
@@ -105,6 +110,21 @@ public record TemplatePoolInstance(Weight weight, Optional<Holder<StructureProce
 			}
 
 			int yTerrain = WorldUtil.adjustForTerrain(generationContext, box.minX(), box.minZ(), box.maxX(), box.maxZ(), 2, this.heightType);
+			return Mth.clamp(this.yOffset + yTerrain, templateY - variantLimit, templateY + variantLimit);
+		}
+
+		private int clampYLevelPos(Structure.GenerationContext generationContext, JigsawPlaceContext placeContext, BlockPos pos) {
+			if (this.groundJunctionDiffLimit.isEmpty()) {
+				return this.yOffset + generationContext.chunkGenerator().getFirstOccupiedHeight(pos.getX(), pos.getZ(), this.heightType, generationContext.heightAccessor(), generationContext.randomState());
+			}
+
+			int templateY = placeContext.templatePos().getY();
+			int variantLimit = this.groundJunctionDiffLimit.get();
+			if (variantLimit == 0) {
+				return templateY;
+			}
+
+			int yTerrain = generationContext.chunkGenerator().getFirstOccupiedHeight(pos.getX(), pos.getZ(), this.heightType, generationContext.heightAccessor(), generationContext.randomState());
 			return Mth.clamp(this.yOffset + yTerrain, templateY - variantLimit, templateY + variantLimit);
 		}
 	}

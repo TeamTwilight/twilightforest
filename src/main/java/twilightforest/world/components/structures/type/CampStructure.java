@@ -56,7 +56,7 @@ public class CampStructure extends Structure {
 		return Optional.of(new GenerationStub(freePosition, structurePiecesBuilder -> {
 			ResourceLocation templatePool = TwilightForestMod.prefix("camp/structure_start");
 			// TODO Instead use StructureTemplateDefinitions.initializeStubFromPool
-			TwilightJigsawPiece twilightJigsawPiece = structureTemplateDefinitions.initializeTemplateFromPool(templatePool, freePosition, oriented, templatePool.toString(), context, 0, context.structureTemplateManager());
+			TwilightJigsawPiece twilightJigsawPiece = structureTemplateDefinitions.initializeTemplateFromPool(templatePool, freePosition, oriented, templatePool.toString(), context, 0, false);
 
 			if (twilightJigsawPiece == null) return;
 

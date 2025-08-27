@@ -57,7 +57,7 @@ public class LichTowerWingBeard extends TwilightJigsawPiece implements PieceBear
 	}
 
 	@Override
-	protected void processJigsaw(StructurePiece parent, StructurePieceAccessor pieceAccessor, Structure.GenerationContext context, JigsawRecord connection, int jigsawIndex) {
+	protected void processJigsaw(TwilightJigsawPiece parent, StructurePieceAccessor pieceAccessor, Structure.GenerationContext context, JigsawRecord connection, int jigsawIndex) {
 	}
 
 	public BoundingBox generationCollisionBox() {

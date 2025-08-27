@@ -59,7 +59,7 @@ public final class LichTowerBase extends TwilightJigsawPiece implements PieceBea
 	}
 
 	@Override
-	protected void processJigsaw(StructurePiece parent, StructurePieceAccessor pieceAccessor, Structure.GenerationContext context, JigsawRecord connection, int jigsawIndex) {
+	protected void processJigsaw(TwilightJigsawPiece parent, StructurePieceAccessor pieceAccessor, Structure.GenerationContext context, JigsawRecord connection, int jigsawIndex) {
 		switch (connection.target()) {
 			case "twilightforest:lich_tower/tower_below" -> LichTowerSegment.buildTowerBySegments(pieceAccessor, context, connection.pos(), connection.orientation(), this, this.structureManager, context.random().nextIntBetweenInclusive(12, 15));
 			case "twilightforest:lich_tower/bridge" -> {

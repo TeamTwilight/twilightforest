@@ -31,6 +31,7 @@ import twilightforest.util.BoundingBoxUtils;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.util.jigsaw.JigsawRecord;
 import twilightforest.world.components.structures.SpawnIndexProvider;
+import twilightforest.world.components.structures.TwilightJigsawPiece;
 import twilightforest.world.components.structures.util.SortablePiece;
 
 import java.util.ArrayList;
@@ -257,8 +258,8 @@ public class LichYardBox extends StructurePiece implements PieceBeardifierModifi
 		return new BlockPos(Mth.lerpDiscrete(delta, first.getX(), second.getX()), Mth.lerpDiscrete(delta, first.getY(), second.getY()), Mth.lerpDiscrete(delta, first.getZ(), second.getZ()));
 	}
 
-	public void addDecoration(StructurePiece piece, StructurePieceAccessor pieces, RandomSource random, Structure.GenerationContext context) {
-		this.addChildren(piece, pieces, random);
+	public void addDecoration(TwilightJigsawPiece parent, StructurePieceAccessor pieces, RandomSource random, Structure.GenerationContext context) {
+		this.addChildren(parent, pieces, random);
 
 		Direction.Axis axis = this.direction.getAxis();
 		if (axis == Direction.Axis.Y || this.scale != 0) return;
@@ -281,7 +282,7 @@ public class LichYardBox extends StructurePiece implements PieceBeardifierModifi
 			LichYardGrave grave = new LichYardGrave(context.structureTemplateManager(), placeableJunction, templateId);
 			if (pieces.findCollisionPiece(grave.getBoundingBox()) == null) {
 				pieces.addPiece(grave);
-				grave.addJigsaws(piece, pieces, context);
+				grave.addJigsaws(parent, pieces, context);
 			}
 		}
 	}

@@ -113,7 +113,7 @@ public final class LichBossRoom extends TwilightJigsawPiece implements PieceBear
 	}
 
 	@Override
-	protected void processJigsaw(StructurePiece parent, StructurePieceAccessor pieceAccessor, Structure.GenerationContext context, JigsawRecord connection, int jigsawIndex) {
+	protected void processJigsaw(TwilightJigsawPiece parent, StructurePieceAccessor pieceAccessor, Structure.GenerationContext context, JigsawRecord connection, int jigsawIndex) {
 		if (!"twilightforest:lich_tower/tower_below".equals(connection.target()))
 			return;
 

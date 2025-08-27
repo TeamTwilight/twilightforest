@@ -39,41 +39,54 @@ public class CampStructureDefinitionGenerator extends StructureTemplateDefinitio
 	}
 
 	private void configureBigPaths() {
-		TemplatePoolInstance rigidTemplateData = this.weightedPathTemplate(25);
+		TemplatePoolInstance pathTemplateData = this.weightedPathTemplate(25);
 
-		this.add("camp/path/intersection_left", campPieces.mainPath, rigidTemplateData);
-		this.add("camp/path/intersection_right", campPieces.mainPath, rigidTemplateData);
-		this.add("camp/path/intersection_short", campPieces.mainPath, rigidTemplateData);
-		this.add("camp/path/j_path", campPieces.mainPath, rigidTemplateData);
-		this.add("camp/path/l_path", campPieces.mainPath, rigidTemplateData);
-		this.addEmpty(campPieces.mainPath, 200);
+		this.addEmpty(campPieces.mainPath, 400);
+
+		this.add("camp/path/intersection_left", campPieces.mainPath, pathTemplateData);
+		this.add("camp/path/intersection_right", campPieces.mainPath, pathTemplateData);
+		this.add("camp/path/intersection_short", campPieces.mainPath, pathTemplateData);
+		this.add("camp/path/j_path", campPieces.mainPath, pathTemplateData);
+		this.add("camp/path/l_path", campPieces.mainPath, pathTemplateData);
 	}
 
 	private void configureSmallPaths() {
 		TemplatePoolInstance pathTemplateData = this.weightedPathTemplate(50);
 
+		this.addEmpty(campPieces.path, 400);
+
 		this.addToAllPools("camp/path/path_2x4", pathTemplateData, campPieces.mainPath, campPieces.path);
 		this.addToAllPools("camp/path/path_2x6", pathTemplateData, campPieces.mainPath, campPieces.path);
 		this.addToAllPools("camp/path/path_2x7", pathTemplateData, campPieces.mainPath, campPieces.path);
 		this.addToAllPools("camp/path/path_3x4", pathTemplateData, campPieces.mainPath, campPieces.path);
-		this.addEmpty(campPieces.path, 100);
 	}
 
 	private void configureDeco() {
-		TemplatePoolInstance rigidTemplateDataAnyDiff = this.weightedRigidTemplate(100, 1, Optional.of(1));
-		TemplatePoolInstance rigidTemplateDataOneDiff = this.weightedRigidTemplate(100, 1, Optional.of(1));
+		TemplatePoolInstance rigidTemplateDataAnyDiff = this.weightedRigidTemplate(100, 1, Optional.empty());
 		TemplatePoolInstance rigidTemplateDataNoDiff = this.weightedRigidTemplate(100, 1, Optional.of(0));
+		TemplatePoolInstance berryTemplateData = this.weightedRigidTemplate(75, 1, Optional.of(0));
 
 		this.add("camp/deco/double_drying_rack", campPieces.deco, rigidTemplateDataAnyDiff);
 		this.add("camp/deco/long_drying_rack", campPieces.deco, rigidTemplateDataAnyDiff);
 
-		this.add("camp/deco/garden_1x2", campPieces.deco, rigidTemplateDataOneDiff);
-		this.add("camp/deco/garden_2x4", campPieces.deco, rigidTemplateDataOneDiff);
+		this.add("camp/deco/garden_1x2", campPieces.deco, rigidTemplateDataNoDiff);
+		this.add("camp/deco/garden_2x4", campPieces.deco, rigidTemplateDataNoDiff);
+		this.add("camp/deco/garden_straight", campPieces.deco, rigidTemplateDataNoDiff);
+		this.add("camp/deco/garden_u", campPieces.deco, rigidTemplateDataNoDiff);
 
-		this.add("camp/deco/lumber", campPieces.deco, rigidTemplateDataOneDiff);
+		this.add("camp/deco/berries_staked", campPieces.deco, berryTemplateData);
+		this.add("camp/deco/berries_trellis", campPieces.deco, berryTemplateData);
+		this.add("camp/deco/blackberry_wall", campPieces.deco, berryTemplateData);
+		this.add("camp/deco/blueberry_wall", campPieces.deco, berryTemplateData);
+		this.add("camp/deco/raspberry_wall", campPieces.deco, berryTemplateData);
+
+		this.add("camp/deco/lumber1", campPieces.deco, rigidTemplateDataNoDiff);
+		this.add("camp/deco/lumber2", campPieces.deco, rigidTemplateDataNoDiff);
+		this.add("camp/deco/lumber3", campPieces.deco, rigidTemplateDataNoDiff);
 
 		this.add("camp/deco/water_basin", campPieces.deco, rigidTemplateDataNoDiff);
 		this.add("camp/deco/wooden_basin", campPieces.deco, rigidTemplateDataNoDiff);
+		this.add("camp/deco/repair_station", campPieces.deco, rigidTemplateDataNoDiff);
 		this.addEmpty(campPieces.deco, 1000);
 	}
 }

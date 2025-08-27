@@ -55,7 +55,7 @@ public final class LichTowerWingBridge extends TwilightJigsawPiece implements Pi
 	}
 
 	@Override
-	protected void processJigsaw(StructurePiece parent, StructurePieceAccessor pieceAccessor, Structure.GenerationContext context, JigsawRecord record, int jigsawIndex) {
+	protected void processJigsaw(TwilightJigsawPiece parent, StructurePieceAccessor pieceAccessor, Structure.GenerationContext context, JigsawRecord record, int jigsawIndex) {
 	}
 
 	@Override
