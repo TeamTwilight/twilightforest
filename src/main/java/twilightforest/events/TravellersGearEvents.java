@@ -199,7 +199,7 @@ public class TravellersGearEvents {
 				ItemStack damagedStack = event.getArmorItemStack(slot);
 				if (damagedStack.has(TFDataComponents.IS_TRAVELLERS_GEAR)) {
 					if (damagedStack.getDamageValue() + event.getNewDamage(slot) >= damagedStack.getMaxDamage()) {
-						event.setNewDamage(slot, 0);
+						event.setNewDamage(slot, damagedStack.getMaxDamage() - damagedStack.getDamageValue() - 1);
 					} else if (damagedStack.getDamageValue() + event.getNewDamage(slot) >= damagedStack.getMaxDamage() - 1 && event.getEntity() instanceof ServerPlayer player) {
 						player.playNotifySound(SoundEvents.ITEM_BREAK, SoundSource.PLAYERS, 1.0F, player.getVoicePitch());
 					}
