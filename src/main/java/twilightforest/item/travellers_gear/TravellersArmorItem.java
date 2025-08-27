@@ -59,7 +59,7 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 	}
 
 	@Override
-	public Component getName(ItemStack stack) {
+	public @NotNull Component getName(@NotNull ItemStack stack) {
 		if (isTravellersArmorAndBroken(stack)) {
 			return Component.translatable(this.getDescriptionId(stack)).append(Component.translatable("travellers_gear.broken").withStyle(ChatFormatting.GRAY));
 		}
@@ -72,7 +72,7 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 	}
 
 	@Override
-	public @Nullable ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, ArmorMaterial.Layer layer, boolean innerModel) {
+	public @Nullable ResourceLocation getArmorTexture(@NotNull ItemStack stack, @NotNull Entity entity, @NotNull EquipmentSlot slot, ArmorMaterial.@NotNull Layer layer, boolean innerModel) {
 		return !innerModel && entity instanceof LocalPlayer && TFKeyBinds.ZOOM_KEY.isDown() ?
 			TwilightForestMod.prefix("textures/models/armor/travellers_layer_1_down.png") :
 			super.getArmorTexture(stack, entity, slot, layer, innerModel);
@@ -157,14 +157,14 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 	}
 
 	@Override
-	public void onCraftedPostProcess(ItemStack stack, Level level) {
+	public void onCraftedPostProcess(ItemStack stack, @NotNull Level level) {
 		if (stack.has(TFDataComponents.SWAP_HOTBAR_MODIFIER)) {
 			stack.set(TFDataComponents.TRAVELLERS_HAS_BELT, Unit.INSTANCE);
 		}
 	}
 
 	@Override
-	public boolean canWalkOnPowderedSnow(ItemStack stack, LivingEntity wearer) {
+	public boolean canWalkOnPowderedSnow(ItemStack stack, @NotNull LivingEntity wearer) {
 		return stack.is(TFItems.TRAVELLERS_BOOTS);
 	}
 
@@ -252,7 +252,7 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 		}
 	}
 
-	public boolean makesPiglinsNeutral(ItemStack stack, LivingEntity wearer) {
+	public boolean makesPiglinsNeutral(@NotNull ItemStack stack, @NotNull LivingEntity wearer) {
 		return this == TFItems.TRAVELLERS_GOGGLES.get() || stack.has(TFDataComponents.TRAVELLERS_HAS_WINGS);
 	}
 }
