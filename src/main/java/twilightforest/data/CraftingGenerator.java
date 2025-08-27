@@ -7,6 +7,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Unit;
 import net.minecraft.world.item.ItemStack;
@@ -939,6 +940,8 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.unlockedBy("has_treated", has(TFItems.TREATED_LEATHER))
 			.save(output);
 
+		DryingRackCoralRecipes(output);
+
 		DryingRecipeBuilder.drying(Items.BREAD, TFItems.STALE_BREAD).save(output);
 	}
 
@@ -1293,6 +1296,22 @@ public class CraftingGenerator extends CraftingDataHelper {
 		SimpleCookingRecipeBuilder.generic(Ingredient.of(TFItems.GOLD_BERRY.get()), RecipeCategory.MISC, Items.GOLD_NUGGET, 1.0F, smeltingTime, process, factory).unlockedBy("has_item", has(TFItems.GOLD_BERRY.get())).group("gold_nugget").save(output, TwilightForestMod.prefix("material/" + processName + "_gold_nugget").toString());
 		SimpleCookingRecipeBuilder.generic(Ingredient.of(TFItems.COPPER_BERRY.get()), RecipeCategory.MISC, TFItems.COPPER_NUGGET, 1.0F, smeltingTime, process, factory).unlockedBy("has_item", has(TFItems.COPPER_BERRY.get())).group("copper_nugget").save(output, TwilightForestMod.prefix("material/" + processName + "_copper_nugget").toString());
 
+	}
+
+	private void DryingRackCoralRecipes(RecipeOutput output) {
+		String[] coralNames = {"tube", "brain", "bubble", "fire", "horn"};
+		String[] coralTypes = {"", "_block", "_fan"};
+		for (String name : coralNames) {
+			for (String type : coralTypes) {
+				registerCoral(output, name + "_coral" + type);
+			}
+		}
+	}
+
+	private void registerCoral(RecipeOutput output, String coral) {
+		DryingRecipeBuilder.drying(BuiltInRegistries.ITEM.get(ResourceLocation.withDefaultNamespace(coral)), BuiltInRegistries.ITEM.get(ResourceLocation.withDefaultNamespace(coral).withPrefix("dead_")), 1 / 30F)
+			.unlockedBy("has_coral", has(BuiltInRegistries.ITEM.get(ResourceLocation.withDefaultNamespace(coral))))
+			.save(output);
 	}
 
 	private void travellersGearRecipes(RecipeOutput output) {
