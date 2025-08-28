@@ -12,6 +12,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -59,6 +60,7 @@ public class TravellersGearEvents {
 		NeoForge.EVENT_BUS.addListener(this::reduceSlimySolesFallDamage);
 		NeoForge.EVENT_BUS.addListener(this::tickDoubleJumpAndSidestep);
 		NeoForge.EVENT_BUS.addListener(this::performStealth);
+		NeoForge.EVENT_BUS.addListener(this::disableHighStepWhileSneaking);
 		NeoForge.EVENT_BUS.addListener(this::updateOtherModifiers);
 		NeoForge.EVENT_BUS.addListener(this::activateAndDeactivateTravellersModifiers);
 		NeoForge.EVENT_BUS.addListener(this::cancelCombiningTravellersGear);
@@ -74,7 +76,7 @@ public class TravellersGearEvents {
 		if (!(entity instanceof LivingEntity livingEntity) || !event.getRayTraceResult().getType().equals(HitResult.Type.BLOCK) || projectile.tickCount >= 200)
 			return;
 
-		if (!TravellersModifiersManager.isModifierActive(entity.registryAccess(), livingEntity.getItemBySlot(EquipmentSlot.CHEST), TravellersModifiersManager.ARROW_MAGNETISM_MODIFIER)
+		if (!TravellersModifiersManager.isModifierActive(entity, livingEntity.getItemBySlot(EquipmentSlot.CHEST), TravellersModifiersManager.ARROW_MAGNETISM_MODIFIER)
 			|| !(projectile instanceof AbstractArrow arrow) || projectile.level().isClientSide())
 			return;
 
@@ -98,7 +100,7 @@ public class TravellersGearEvents {
 		ItemStack chest = livingEntity.getItemBySlot(EquipmentSlot.CHEST);
 		Float probability = chest.get(TFDataComponents.PERFECT_DODGE_PROBABILITY);
 		Level level = livingEntity.level();
-		if (!TravellersModifiersManager.isModifierActive(livingEntity.registryAccess(), chest, TravellersModifiersManager.PERFECT_DODGE_MODIFIER) || probability == null || probability <= level.random.nextFloat())
+		if (!TravellersModifiersManager.isModifierActive(livingEntity, chest, TravellersModifiersManager.PERFECT_DODGE_MODIFIER) || probability == null || probability <= level.random.nextFloat())
 			return;
 		Entity projectile = event.getEntity();
 		level.playLocalSound(projectile, TFSounds.PERFECT_DODGE.get(), SoundSource.PLAYERS, 1.5F, livingEntity.getVoicePitch());
@@ -123,14 +125,14 @@ public class TravellersGearEvents {
 		LivingEntity livingEntity = event.getEntity();
 		ItemStack boots = livingEntity.getItemBySlot(EquipmentSlot.FEET);
 		Float coefficient = boots.get(TFDataComponents.SLIMY_SOLES_COEFFICIENT);
-		if (TravellersModifiersManager.isModifierActive(livingEntity.registryAccess(), boots, TravellersModifiersManager.SLIMY_SOLES_MODIFIER) && coefficient != null)
+		if (TravellersModifiersManager.isModifierActive(livingEntity, boots, TravellersModifiersManager.SLIMY_SOLES_MODIFIER) && coefficient != null)
 			event.setDamageMultiplier(coefficient);
 	}
 
 	private void tickDoubleJumpAndSidestep(PlayerTickEvent.Pre event) {
 		Player player = event.getEntity();
 		Boolean hasDoubleJump = null;
-		if (!TravellersModifiersManager.isModifierActive(player.registryAccess(), player.getItemBySlot(EquipmentSlot.LEGS), TravellersModifiersManager.DOUBLE_JUMP_MODIFIER))
+		if (!TravellersModifiersManager.isModifierActive(player, player.getItemBySlot(EquipmentSlot.LEGS), TravellersModifiersManager.DOUBLE_JUMP_MODIFIER))
 			hasDoubleJump = false;
 		else if (player.onGround())
 			hasDoubleJump = true;
@@ -157,6 +159,23 @@ public class TravellersGearEvents {
 			TravellersGearLogic.travellersStealth(player, player1 -> player1.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 2, 0, false, false, false)));
 		}
 		TravellersGearLogic.travellersBootsUnrestrained(event.getEntity());
+	}
+
+	private void disableHighStepWhileSneaking(PlayerTickEvent.Pre event) {
+		Player player = event.getEntity();
+		ItemStack boots = player.getItemBySlot(EquipmentSlot.FEET);
+		if (!TravellersModifiersManager.isModifierActive(player, boots, TravellersModifiersManager.HIGH_STEP_ABILITY))
+			return;
+		AttributeInstance attribute = player.getAttributes().getInstance(Attributes.STEP_HEIGHT);
+		if (attribute == null)
+			return;
+
+		boolean shouldHaveHighStepModifier = !player.isCrouching();
+		boolean hasHighStepModifier = attribute.hasModifier(TFAttributeModifiers.TRAVELLERS_HIGH_STEP.id());
+		if (!shouldHaveHighStepModifier && hasHighStepModifier)
+			attribute.removeModifier(TFAttributeModifiers.TRAVELLERS_HIGH_STEP);
+		if (shouldHaveHighStepModifier && !hasHighStepModifier)
+			attribute.addPermanentModifier(TFAttributeModifiers.TRAVELLERS_HIGH_STEP);
 	}
 
 	private void updateOtherModifiers(EntityTickEvent.Post event) {
@@ -241,7 +260,7 @@ public class TravellersGearEvents {
 	}
 
 	private void cancelPhantomSpawns(PlayerSpawnPhantomsEvent event) {
-		if (TravellersModifiersManager.isModifierActive(event.getEntity().registryAccess(), event.getEntity().getItemBySlot(EquipmentSlot.HEAD), TravellersModifiersManager.ALL_NIGHT_GOGGLES_MODIFIER)) {
+		if (TravellersModifiersManager.isModifierActive(event.getEntity(), event.getEntity().getItemBySlot(EquipmentSlot.HEAD), TravellersModifiersManager.ALL_NIGHT_GOGGLES_MODIFIER)) {
 			event.setResult(PlayerSpawnPhantomsEvent.Result.DENY);
 		}
 	}
@@ -254,8 +273,8 @@ public class TravellersGearEvents {
 			}
 
 			if (!compareStack.isEmpty()) {
-				var oldMods = TravellersModifiersManager.findAllInsertableModifiers(player.registryAccess(), compareStack);
-				TravellersModifiersManager.findAllInsertableModifiers(player.registryAccess(), event.getCrafting()).stream()
+				var oldMods = TravellersModifiersManager.findAllInsertableModifiers(player, compareStack);
+				TravellersModifiersManager.findAllInsertableModifiers(player, event.getCrafting()).stream()
 					.filter(modifier -> !oldMods.contains(modifier)).toList()
 						.forEach(modifier -> TFAdvancements.ADD_MODIFIER.get().trigger(player, modifier.key().location()));
 			}

@@ -72,7 +72,7 @@ public class TravellersClientEvents {
 		if (pressedKey)
 			localPlayer.setData(TFDataAttachments.LAST_JUMP_KEY_PRESS_TIME, currentJumpKeyPressTime);
 
-		if (pressedKey && !holdsJumpKey && TravellersModifiersManager.isModifierActive(localPlayer.registryAccess(), localPlayer.getItemBySlot(EquipmentSlot.LEGS), TravellersModifiersManager.DOUBLE_JUMP_MODIFIER)) {
+		if (pressedKey && !holdsJumpKey && TravellersModifiersManager.isModifierActive(localPlayer, localPlayer.getItemBySlot(EquipmentSlot.LEGS), TravellersModifiersManager.DOUBLE_JUMP_MODIFIER)) {
 			if (TravellersGearLogic.performDoubleJump(localPlayer)) {
 				localPlayer.getData(TFDataAttachments.TRAVELLERS_WINGS_ANIM).doubleJump = true;
 				localPlayer.connection.send(new PerformDoubleJumpPacket());
@@ -85,7 +85,7 @@ public class TravellersClientEvents {
 			return;
 		ItemStack leggingsStack = localPlayer.getItemBySlot(EquipmentSlot.LEGS);
 		Float agileRangerModifier = leggingsStack.get(TFDataComponents.AGILE_RANGER_MODIFIER);
-		if (!TravellersModifiersManager.isModifierActive(localPlayer.registryAccess(), leggingsStack, TravellersModifiersManager.AGILE_RANGER_MODIFIER) || agileRangerModifier == null)
+		if (!TravellersModifiersManager.isModifierActive(localPlayer, leggingsStack, TravellersModifiersManager.AGILE_RANGER_MODIFIER) || agileRangerModifier == null)
 			return;
 		if (localPlayer.isUsingItem() && !localPlayer.isPassenger() && localPlayer.getUseItem().getItem() instanceof ProjectileWeaponItem) {
 			Input input = event.getInput();
@@ -104,7 +104,7 @@ public class TravellersClientEvents {
 			return;
 
 		Input input = localPlayer.input;
-		if (!TravellersModifiersManager.isModifierActive(localPlayer.registryAccess(), bootsStack, TravellersModifiersManager.STRAIGHT_AHEAD_MODIFIER) || multiplier == null || input.forwardImpulse <= 0 || localPlayer.isInLiquid())
+		if (!TravellersModifiersManager.isModifierActive(localPlayer, bootsStack, TravellersModifiersManager.STRAIGHT_AHEAD_MODIFIER) || multiplier == null || input.forwardImpulse <= 0 || localPlayer.isInLiquid())
 			multiplier = 1D;
 		attributeInstance.addOrUpdateTransientModifier(new AttributeModifier(TFAttributeModifiers.FORWARD_BOOTS_ATTRIBUTE_MODIFIER_LOCATION, multiplier - 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
 		input.leftImpulse /= multiplier;
@@ -145,7 +145,7 @@ public class TravellersClientEvents {
 	private void updateZoomFOV(ComputeFovModifierEvent event) {
 		Player player = event.getPlayer();
 		ItemStack headStack = player.getItemBySlot(EquipmentSlot.HEAD);
-		if (TFKeyBinds.ZOOM_KEY.isDown() && !player.isScoping() && TravellersModifiersManager.isModifierActive(player.registryAccess(), headStack, TravellersModifiersManager.ZOOM_ABILITY)) {
+		if (TFKeyBinds.ZOOM_KEY.isDown() && !player.isScoping() && TravellersModifiersManager.isModifierActive(player, headStack, TravellersModifiersManager.ZOOM_ABILITY)) {
 			Float zoomModifier = headStack.get(TFDataComponents.ZOOM_ABILITY_MODIFIER);
 			if (zoomModifier != null) {
 				event.setNewFovModifier(event.getNewFovModifier() * zoomModifier);
@@ -179,7 +179,7 @@ public class TravellersClientEvents {
 			if (!(player instanceof LocalPlayer localPlayer)) return;
 			ItemStack legArmor = localPlayer.getItemBySlot(EquipmentSlot.LEGS);
 			ItemContainerContents containerContents = legArmor.get(DataComponents.CONTAINER);
-			if (!TravellersArmorBeltItem.hasSwapHotbar(player.registryAccess(), legArmor) || containerContents == null)
+			if (!TravellersArmorBeltItem.hasSwapHotbar(player, legArmor) || containerContents == null)
 				return;
 
 			boolean isClicked = false;

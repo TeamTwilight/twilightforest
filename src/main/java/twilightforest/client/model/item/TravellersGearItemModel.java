@@ -142,7 +142,7 @@ public class TravellersGearItemModel implements IUnbakedGeometry<TravellersGearI
 			BakedModel overridden = this.nested.resolve(originalModel, stack, level, entity, seed);
 			if (overridden != originalModel) return overridden;
 
-			List<Holder.Reference<TravellersModifier>> modifiers = TravellersModifiersManager.findAllInsertableModifiers(level.registryAccess(), stack);
+			List<Holder.Reference<TravellersModifier>> modifiers = TravellersModifiersManager.findAllInsertableModifiers(level, stack);
 			boolean broken = TravellersArmorItem.isTravellersArmorAndBroken(stack);
 			boolean gloves = stack.has(TFDataComponents.TRAVELLERS_HAS_GLOVES);
 			String key = BuiltInRegistries.ITEM.getKey(stack.getItem()).getPath() + this.getModifiersSuffix(modifiers, broken, gloves);

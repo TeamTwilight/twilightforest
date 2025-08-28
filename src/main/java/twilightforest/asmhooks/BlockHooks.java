@@ -116,7 +116,7 @@ public class BlockHooks {
 	 * Targets: FRETURN
 	 */
 	public static float resetBlockFrictionWithUnrestrained(float o, Entity entity) {
-		return entity instanceof LivingEntity living && TravellersModifiersManager.isModifierActive(entity.registryAccess(), living.getItemBySlot(EquipmentSlot.FEET), TravellersModifiersManager.UNRESTRAINED_MODIFIER) ? 0.6F : o;
+		return entity instanceof LivingEntity living && TravellersModifiersManager.isModifierActive(entity, living.getItemBySlot(EquipmentSlot.FEET), TravellersModifiersManager.UNRESTRAINED_MODIFIER) ? 0.6F : o;
 	}
 
 	/**
@@ -127,7 +127,7 @@ public class BlockHooks {
 	 * Targets: {@link Entity#isSteppingCarefully()}
 	 */
 	public static boolean resetSlimeMomentumWithUnrestrained(boolean o, Entity entity) {
-		if (entity instanceof LivingEntity living && TravellersModifiersManager.isModifierActive(entity.registryAccess(), living.getItemBySlot(EquipmentSlot.FEET), TravellersModifiersManager.UNRESTRAINED_MODIFIER)) {
+		if (entity instanceof LivingEntity living && TravellersModifiersManager.isModifierActive(entity, living.getItemBySlot(EquipmentSlot.FEET), TravellersModifiersManager.UNRESTRAINED_MODIFIER)) {
 			return true; //dont return false here as the original check is looking that an entity is NOT stepping carefully
 		}
 		return o;

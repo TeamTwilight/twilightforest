@@ -1,6 +1,5 @@
 package twilightforest.item.travellers_gear;
 
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.sounds.SoundSource;
@@ -57,7 +56,7 @@ public class TravellersArmorBeltItem extends TravellersArmorItem {
 	public static void travellersTrySwapHotbar(Player player) {
 		ItemStack legArmor = player.getInventory().getArmor(EquipmentSlot.LEGS.getIndex());
 		ItemContainerContents containerContents = legArmor.get(DataComponents.CONTAINER);
-		if (!hasSwapHotbar(player.registryAccess(), legArmor) || containerContents == null)
+		if (!hasSwapHotbar(player, legArmor) || containerContents == null)
 			return;
 
 		NonNullList<ItemStack> hotbarStacks = NonNullList.withSize(9, ItemStack.EMPTY);
@@ -80,8 +79,8 @@ public class TravellersArmorBeltItem extends TravellersArmorItem {
 			player.level().playSound(null, player, TFSounds.SWAP_HOTBAR.get(), SoundSource.PLAYERS, 1F, 1F);
 	}
 
-	public static boolean hasSwapHotbar(HolderLookup.Provider registries, ItemStack stack) {
-		return (TravellersModifiersManager.isModifierActive(registries, stack, TravellersModifiersManager.SWAP_HOTBAR_MODIFIER) || TravellersModifiersManager.isModifierActive(registries, stack, TravellersModifiersManager.SWAP_HOTBAR_ABILITY))
+	public static boolean hasSwapHotbar(Player player, ItemStack stack) {
+		return (TravellersModifiersManager.isModifierActive(player, stack, TravellersModifiersManager.SWAP_HOTBAR_MODIFIER) || TravellersModifiersManager.isModifierActive(player, stack, TravellersModifiersManager.SWAP_HOTBAR_ABILITY))
 			&& stack.has(DataComponents.CONTAINER);
 	}
 

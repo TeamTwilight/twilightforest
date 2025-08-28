@@ -5,10 +5,12 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Unit;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
+import net.minecraft.world.level.Level;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.components.item.ItemDisplayContents;
@@ -91,12 +93,12 @@ public class TravellersModifiersManager {
 		context.register(WATER_WALK_MODIFIER, new TravellersComponentModifier(EquipmentSlotGroup.FEET, TFDataComponents.WATER_WALK.get(), Unit.INSTANCE));
 	}
 
-	protected static void register(BootstrapContext<TravellersModifier> context, ResourceKey<TravellersModifier> key, TravellersModifier travellersModifier) {
-		context.register(key, travellersModifier);
-	}
-
 	public static boolean isModifierActive(HolderLookup.Provider registries, ItemStack stack, ResourceKey<TravellersModifier> modifierKey) {
 		return registries.holder(modifierKey).map(ref -> ref.value().isActive(stack, modifierKey)).orElse(false);
+	}
+
+	public static boolean isModifierActive(Entity entity, ItemStack stack, ResourceKey<TravellersModifier> modifierKey) {
+		return isModifierActive(entity.registryAccess(), stack, modifierKey);
 	}
 
 	public static boolean hasTravellersModifier(HolderLookup.Provider registries, ItemStack stack, ResourceKey<TravellersModifier> modifierKey) {
@@ -112,6 +114,14 @@ public class TravellersModifiersManager {
 
 	public static List<Holder.Reference<TravellersModifier>> findAllInsertableModifiers(HolderLookup.Provider registries, ItemStack stack) {
 		return registries.lookupOrThrow(TFRegistries.Keys.TRAVELLERS_MODIFIERS).listElements().filter(travellersModifier -> travellersModifier.value() instanceof InsertableTravellersModifier && !travellersModifier.value().isAbility() && travellersModifier.value().hasModifier(stack)).toList();
+	}
+
+	public static List<Holder.Reference<TravellersModifier>> findAllInsertableModifiers(Entity entity, ItemStack stack) {
+		return findAllAbilityModifiers(entity.registryAccess(), stack);
+	}
+
+	public static List<Holder.Reference<TravellersModifier>> findAllInsertableModifiers(Level level, ItemStack stack) {
+		return findAllAbilityModifiers(level.registryAccess(), stack);
 	}
 
 	public static List<Holder.Reference<TravellersModifier>> findAllAbilityModifiers(HolderLookup.Provider registries, ItemStack stack) {

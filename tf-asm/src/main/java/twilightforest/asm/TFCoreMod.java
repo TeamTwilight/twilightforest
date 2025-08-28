@@ -24,7 +24,6 @@ import twilightforest.asm.transformers.multipart.ResolveEntitiesForRendereringTr
 import twilightforest.asm.transformers.multipart.ResolveEntityRendererTransformer;
 import twilightforest.asm.transformers.multipart.SendDirtyEntityDataTransformer;
 import twilightforest.asm.transformers.player.GetFieldOfViewModifierTransformer;
-import twilightforest.asm.transformers.player.MaybeBackOffFromEdgeTransformer;
 import twilightforest.asm.transformers.player.ReduceMovementFoodExhaustionTransformer;
 import twilightforest.asm.transformers.shroom.ModifySoilDecisionForMushroomBlockSurvivabilityTransformer;
 import twilightforest.asm.transformers.snow.KeepGrassSnowyForSnowloggableBlocksTransformer;
@@ -82,7 +81,6 @@ public class TFCoreMod implements ICoreMod {
 
 			// player
 			new GetFieldOfViewModifierTransformer(),
-			new MaybeBackOffFromEdgeTransformer(),
 			new ReduceMovementFoodExhaustionTransformer(),
 
 			// shroom

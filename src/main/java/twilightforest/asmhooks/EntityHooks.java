@@ -27,7 +27,7 @@ public class EntityHooks {
 		if (!fluidState.is(FluidTags.WATER))
 			return null;
 
-		if (!TravellersModifiersManager.isModifierActive(livingEntity.registryAccess(), livingEntity.getItemBySlot(EquipmentSlot.FEET), TravellersModifiersManager.WATER_WALK_MODIFIER))
+		if (!TravellersModifiersManager.isModifierActive(livingEntity, livingEntity.getItemBySlot(EquipmentSlot.FEET), TravellersModifiersManager.WATER_WALK_MODIFIER))
 			return null;
 
 		double waterHeight = livingEntity.getFluidTypeHeight(NeoForgeMod.WATER_TYPE.value());
@@ -60,6 +60,6 @@ public class EntityHooks {
 	 * Targets: FRETURN
 	 */
 	public static float resetFactorWithUnrestrained(float o, Entity entity) {
-		return entity instanceof LivingEntity living && TravellersModifiersManager.isModifierActive(entity.registryAccess(), living.getItemBySlot(EquipmentSlot.FEET), TravellersModifiersManager.UNRESTRAINED_MODIFIER) ? 1.0F : o;
+		return entity instanceof LivingEntity living && TravellersModifiersManager.isModifierActive(entity, living.getItemBySlot(EquipmentSlot.FEET), TravellersModifiersManager.UNRESTRAINED_MODIFIER) ? 1.0F : o;
 	}
 }

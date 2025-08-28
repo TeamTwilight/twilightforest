@@ -22,7 +22,7 @@ public class ItemDisplayOverlay {
 	public static void render(GuiGraphics graphics, Minecraft minecraft, Window window, Gui gui, Player player) {
 		if (player == null || gui.getDebugOverlay().showDebugScreen() || minecraft.options.hideGui || !player.getData(TFDataAttachments.TRAVELLERS_GOGGLES_ITEM_DISPLAY)) return;
 		ItemStack goggles = player.getItemBySlot(EquipmentSlot.HEAD);
-		if (TravellersModifiersManager.isModifierActive(player.registryAccess(), goggles, TravellersModifiersManager.ITEM_DISPLAY_MODIFIER)) {
+		if (TravellersModifiersManager.isModifierActive(player, goggles, TravellersModifiersManager.ITEM_DISPLAY_MODIFIER)) {
 			var contents = goggles.get(TFDataComponents.ITEM_DISPLAY);
 			List<DisplayHolder> typesToRender = new ArrayList<>();
 			if (!contents.isEmpty()) {

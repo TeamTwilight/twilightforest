@@ -3,14 +3,11 @@ package twilightforest.asmhooks;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.ItemAttributeModifiers;
-import net.minecraft.world.phys.Vec3;
 import twilightforest.asm.transformers.player.GetFieldOfViewModifierTransformer;
 import twilightforest.asm.transformers.player.ReduceMovementFoodExhaustionTransformer;
 import twilightforest.init.TFAttributeModifiers;
@@ -21,19 +18,6 @@ import twilightforest.init.custom.TravellersModifiersManager;
 @SuppressWarnings({"JavadocReference", "unused"})
 public class PlayerHooks {
 
-	/**
-	 * {@link twilightforest.asm.transformers.player.MaybeBackOffFromEdgeTransformer}<p/>
-	 *
-	 * Injection Point:<br/>
-	 * {@link net.minecraft.world.entity.player.Player#maybeBackOffFromEdge(Vec3 vec, MoverType mover)}
-	 */
-	public static float cancelHighStepModifierForStepDownDuringSneaking(Player player, float f) {
-		for (ItemAttributeModifiers.Entry modifier : player.getInventory().getArmor(EquipmentSlot.FEET.getIndex()).getAttributeModifiers().modifiers()) {
-			if (modifier.matches(Attributes.STEP_HEIGHT, TFAttributeModifiers.TRAVELLERS_HIGH_STEP.id()))
-				return (float) (f - modifier.modifier().amount());  // TODO: use multiply modifiers to this one if they are present
-		}
-		return f;
-	}
 
 	/**
 	 * {@link ReduceMovementFoodExhaustionTransformer ()}<p/>
@@ -46,7 +30,7 @@ public class PlayerHooks {
 	public static float getFoodExhaustion(float f, Player player) {
 		ItemStack chestStack = player.getItemBySlot(EquipmentSlot.CHEST);
 		Float divisor = chestStack.get(TFDataComponents.EFFICIENT_EATER);
-		if (!TravellersModifiersManager.isModifierActive(player.registryAccess(), chestStack, TravellersModifiersManager.FOOD_EFFICIENCY_MODIFIER) || divisor == null)
+		if (!TravellersModifiersManager.isModifierActive(player, chestStack, TravellersModifiersManager.FOOD_EFFICIENCY_MODIFIER) || divisor == null)
 			return f;
 		return f * (1 / divisor);
 	}

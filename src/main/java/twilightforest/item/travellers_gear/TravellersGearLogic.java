@@ -39,7 +39,7 @@ public class TravellersGearLogic {
 
 	public static void travellersStealth(Player player, Consumer<Player> invisibilityHandler) {
 		ItemStack chestArmor = player.getInventory().getArmor(EquipmentSlot.CHEST.getIndex());
-		if (!TravellersModifiersManager.isModifierActive(player.registryAccess(), chestArmor, TravellersModifiersManager.STEALTH_MODIFIER))
+		if (!TravellersModifiersManager.isModifierActive(player, chestArmor, TravellersModifiersManager.STEALTH_MODIFIER))
 			return;
 
 		if (player.isCrouching()) {
@@ -94,7 +94,7 @@ public class TravellersGearLogic {
 		ItemStack leggingsStack = player.getItemBySlot(EquipmentSlot.LEGS);
 		Long cooldown = leggingsStack.get(TFDataComponents.SIDESTEP_COOLDOWN);
 		Long dt = player.level().getGameTime() - player.getData(TFDataAttachments.LAST_SIDESTEP_TIME);
-		if (TravellersModifiersManager.isModifierActive(player.registryAccess(), leggingsStack, TravellersModifiersManager.SIDESTEP_MODIFIER) && dt.equals(cooldown))
+		if (TravellersModifiersManager.isModifierActive(player, leggingsStack, TravellersModifiersManager.SIDESTEP_MODIFIER) && dt.equals(cooldown))
 			player.playSound(TFSounds.SIDE_STEP_CHARGED.get(), 1F, player.getVoicePitch());
 	}
 
@@ -102,7 +102,7 @@ public class TravellersGearLogic {
 		ItemStack leggingsStack = livingEntity.getItemBySlot(EquipmentSlot.LEGS);
 		Float multiplier = leggingsStack.get(TFDataComponents.CONTROLLED_FALLING_MULTIPLIER);
 		Vec3 deltaMovement = livingEntity.getDeltaMovement();
-		if (!TravellersModifiersManager.isModifierActive(livingEntity.registryAccess(), leggingsStack, TravellersModifiersManager.CONTROLLED_FALL_MODIFIER) || multiplier == null || deltaMovement.y() >= 0 || livingEntity.isFallFlying())
+		if (!TravellersModifiersManager.isModifierActive(livingEntity, leggingsStack, TravellersModifiersManager.CONTROLLED_FALL_MODIFIER) || multiplier == null || deltaMovement.y() >= 0 || livingEntity.isFallFlying())
 			return;
 
 		if (livingEntity.isShiftKeyDown())
@@ -121,7 +121,7 @@ public class TravellersGearLogic {
 	public static void travellersGearAutoRepair(LivingEntity livingEntity) {
 		livingEntity.getArmorSlots().forEach(slot -> {
 			Float probability = slot.get(TFDataComponents.AUTO_REPAIR_PROBABILITY);
-			if (probability == null || !TravellersModifiersManager.isModifierActive(livingEntity.registryAccess(), slot, TravellersModifiersManager.AUTO_REPAIR_MODIFIER))
+			if (probability == null || !TravellersModifiersManager.isModifierActive(livingEntity, slot, TravellersModifiersManager.AUTO_REPAIR_MODIFIER))
 				return;
 			Level level = livingEntity.level();
 			double boostedProbability = getAutoRepairChance(probability, level, livingEntity.blockPosition());
@@ -148,19 +148,19 @@ public class TravellersGearLogic {
 	public static void travellersWingsHighJump(LivingEntity livingEntity) {
 		ItemStack leggingsStack = livingEntity.getItemBySlot(EquipmentSlot.LEGS);
 		Integer amplifier = leggingsStack.get(TFDataComponents.HIGH_JUMP_AMPLIFIER);
-		if (TravellersModifiersManager.isModifierActive(livingEntity.registryAccess(), leggingsStack, TravellersModifiersManager.HIGH_JUMP_ABILITY) && amplifier != null)
+		if (TravellersModifiersManager.isModifierActive(livingEntity, leggingsStack, TravellersModifiersManager.HIGH_JUMP_ABILITY) && amplifier != null)
 			livingEntity.addEffect(new MobEffectInstance(MobEffects.JUMP, 2, amplifier, false, false, false));
 	}
 
 	public static void travellersVestHaste(LivingEntity livingEntity) {
 		ItemStack chestStack = livingEntity.getItemBySlot(EquipmentSlot.CHEST);
 		Integer amplifier = chestStack.get(TFDataComponents.HASTE_AMPLIFIER);
-		if (TravellersModifiersManager.isModifierActive(livingEntity.registryAccess(), chestStack, TravellersModifiersManager.HASTE_MODIFIER) && amplifier != null)
+		if (TravellersModifiersManager.isModifierActive(livingEntity, chestStack, TravellersModifiersManager.HASTE_MODIFIER) && amplifier != null)
 			livingEntity.addEffect(new MobEffectInstance(MobEffects.DIG_SPEED, 2, amplifier, false, false, false));
 	}
 
 	public static void travellersBootsUnrestrained(Player player) {
-		if (TravellersModifiersManager.isModifierActive(player.registryAccess(), player.getItemBySlot(EquipmentSlot.FEET), TravellersModifiersManager.UNRESTRAINED_MODIFIER))
+		if (TravellersModifiersManager.isModifierActive(player, player.getItemBySlot(EquipmentSlot.FEET), TravellersModifiersManager.UNRESTRAINED_MODIFIER))
 			player.stuckSpeedMultiplier = Vec3.ZERO;
 	}
 
@@ -169,7 +169,7 @@ public class TravellersGearLogic {
 		ItemStack leggingsStack = player.getItemBySlot(EquipmentSlot.LEGS);
 		Long cooldown = leggingsStack.get(TFDataComponents.SIDESTEP_COOLDOWN);
 		long currentTime = player.level().getGameTime();
-		if (TravellersModifiersManager.isModifierActive(player.registryAccess(), leggingsStack, TravellersModifiersManager.SIDESTEP_MODIFIER) && cooldown != null && currentTime - lastSidestepTime > cooldown && !player.isFallFlying() && player.onGround() && !player.isCrouching()) {
+		if (TravellersModifiersManager.isModifierActive(player, leggingsStack, TravellersModifiersManager.SIDESTEP_MODIFIER) && cooldown != null && currentTime - lastSidestepTime > cooldown && !player.isFallFlying() && player.onGround() && !player.isCrouching()) {
 			TravellersGearLogic.performSidestep(player, isLeftSidestep);
 			player.setData(TFDataAttachments.LAST_SIDESTEP_TIME, currentTime);
 			return true;
