@@ -31,8 +31,7 @@ public class EntityHooks {
 			return null;
 
 		double waterHeight = livingEntity.getFluidTypeHeight(NeoForgeMod.WATER_TYPE.value());
-		boolean isWaterWalking = waterHeight > 0 &&
-			waterHeight <= TravellersGearLogic.WATER_WALKING_MAX_SUBMERGED_HEIGHT &&
+		boolean isWaterWalking = waterHeight <= TravellersGearLogic.WATER_WALKING_MAX_SUBMERGED_HEIGHT &&
 			!livingEntity.isShiftKeyDown();
 		Level level = livingEntity.level();
 		if (isWaterWalking && level.getGameTime() % 3 == 1)
