@@ -39,7 +39,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Predicate;
 
 public class CraftingGenerator extends CraftingDataHelper {
-
+	private static final String[] CORAL_SPECIES = {"tube", "brain", "bubble", "fire", "horn"};
+	private static final String[] CORAL_TYPES = {"", "_block", "_fan"};
 	private final HolderLookup.Provider provider;
 
 	public CraftingGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
@@ -1299,10 +1300,8 @@ public class CraftingGenerator extends CraftingDataHelper {
 	}
 
 	private void DryingRackCoralRecipes(RecipeOutput output) {
-		String[] coralNames = {"tube", "brain", "bubble", "fire", "horn"};
-		String[] coralTypes = {"", "_block", "_fan"};
-		for (String name : coralNames) {
-			for (String type : coralTypes) {
+		for (String name : CORAL_SPECIES) {
+			for (String type : CORAL_TYPES) {
 				registerCoral(output, name + "_coral" + type);
 			}
 		}
