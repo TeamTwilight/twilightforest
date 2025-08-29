@@ -12,6 +12,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -83,18 +84,18 @@ public class DryingRackBlock extends BaseEntityBlock implements SimpleWaterlogge
 	}
 
 	@Override
-	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-		if (level.getBlockEntity(pos) instanceof DryingRackBlockEntity rack) {
-			if (!stack.isEmpty() && rack.getTheItem().isEmpty()) {
-				rack.setTheItem(stack.split(1));
-				return ItemInteractionResult.sidedSuccess(level.isClientSide());
-			} else {
-				ItemHandlerHelper.giveItemToPlayer(player, rack.getTheItem());
-				rack.setTheItem(ItemStack.EMPTY);
-				return ItemInteractionResult.sidedSuccess(level.isClientSide());
-			}
+	protected ItemInteractionResult useItemOn(ItemStack playerStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+		if (!(level.getBlockEntity(pos) instanceof DryingRackBlockEntity rack))
+			return super.useItemOn(playerStack, state, level, pos, player, hand, hitResult);
+
+		if (rack.getTheItem().isEmpty() && !playerStack.isEmpty()) {
+			rack.setTheItem(player.hasInfiniteMaterials() ? playerStack.copyWithCount(1) : playerStack.split(1));
+		} else {
+			ItemStack taken = rack.splitTheItem(1);
+			if (playerStack.isEmpty()) player.setItemInHand(hand, taken);
+			else ItemHandlerHelper.giveItemToPlayer(player, taken);
 		}
-		return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
+		return ItemInteractionResult.sidedSuccess(level.isClientSide());
 	}
 
 	@Override
