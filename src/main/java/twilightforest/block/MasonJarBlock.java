@@ -33,6 +33,8 @@ import java.util.List;
 
 public class MasonJarBlock extends JarBlock implements SimpleWaterloggedBlock {
 	public static final MapCodec<MasonJarBlock> CODEC = simpleCodec(MasonJarBlock::new);
+	private static final int SLOT = 0;
+	private static final int ALL  = Integer.MAX_VALUE;
 
 	public MasonJarBlock(BlockBehaviour.Properties properties) {
 		super(properties);
@@ -49,50 +51,57 @@ public class MasonJarBlock extends JarBlock implements SimpleWaterloggedBlock {
 	}
 
 	@Override
-	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-		if (super.useItemOn(stack, state, level, pos, player, hand, hitResult) == ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION) {
-			if (level.getBlockEntity(pos) instanceof MasonJarBlockEntity blockEntity) {
-				if (level instanceof ServerLevel serverLevel) {
-					MasonJarBlockEntity.MasonJarItemStackHandler handler = blockEntity.getItemHandler();
-					if (stack.isEmpty()) {
-						ItemStack test = handler.extractItem(0, Integer.MAX_VALUE, true);
-						if (!test.isEmpty()) {
-							if (player.isSecondaryUseActive()) {
-								player.displayClientMessage(Component.literal(test.getItem().getName(test).getString() + " x" + test.getCount()), true);
-								serverLevel.playSound(null, pos, TFSounds.JAR_WIGGLE.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
-								blockEntity.wobble(DecoratedPotBlockEntity.WobbleStyle.NEGATIVE);
-							} else {
-								ItemStack attainedStack = handler.extractItem(0, Integer.MAX_VALUE, false);
-								player.setItemInHand(hand, attainedStack);
-								serverLevel.playSound(null, pos, TFSounds.JAR_REMOVE.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
-								serverLevel.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
-							}
-						} else {
-							serverLevel.playSound(null, pos, TFSounds.JAR_WIGGLE.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
-							blockEntity.wobble(DecoratedPotBlockEntity.WobbleStyle.NEGATIVE);
-						}
-					} else if (handler.insertItem(0, stack, true).getCount() < stack.getCount()) {
-						blockEntity.setItemRotation(RotationSegment.convertToSegment(player.getYRot() + 180.0F));
-						player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
-						ItemStack inserted = stack.copy();
-						ItemStack returned = handler.insertItem(0, stack, false);
+	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+		if (super.useItemOn(stack, state, level, pos, player, hand, hit) != ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION)
+			return ItemInteractionResult.SUCCESS;
+		if (!(level.getBlockEntity(pos) instanceof MasonJarBlockEntity jar))
+			return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
+		if (!(level instanceof ServerLevel server))
+			return ItemInteractionResult.SUCCESS;
 
-						player.setItemInHand(hand, returned);
-						float pitch = (float) (inserted.getCount() - returned.getCount()) / (float) inserted.getMaxStackSize();
-						serverLevel.playSound(null, pos, TFSounds.JAR_INSERT.get(), SoundSource.BLOCKS, 1.0F, 0.7F + 0.5F * pitch);
-
-						serverLevel.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
-					} else {
-						serverLevel.playSound(null, pos, TFSounds.JAR_WIGGLE.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
-						blockEntity.wobble(DecoratedPotBlockEntity.WobbleStyle.NEGATIVE);
-					}
-				}
-				return ItemInteractionResult.SUCCESS;
-			} else {
-				return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
-			}
-		}
+		MasonJarBlockEntity.MasonJarItemStackHandler handler = jar.getItemHandler();
+		if (stack.isEmpty()) handleEmptyHand(server, pos, player, hand, jar, handler);
+		else handleInsert(server, pos, player, hand, jar, handler, stack);
 		return ItemInteractionResult.SUCCESS;
+	}
+
+	private static void handleEmptyHand(ServerLevel server, BlockPos pos, Player player, InteractionHand hand, MasonJarBlockEntity jar, MasonJarBlockEntity.MasonJarItemStackHandler handler) {
+		ItemStack preview = handler.extractItem(SLOT, ALL, true);
+		if (preview.isEmpty()) {
+			wiggle(server, pos, jar);
+			return;
+		}
+		if (player.isSecondaryUseActive()) {
+			player.displayClientMessage(Component.literal(preview.getHoverName().getString() + " x" + preview.getCount()), true);
+			wiggle(server, pos, jar);
+			return;
+		}
+		ItemStack extracted = handler.extractItem(SLOT, ALL, false);
+		player.setItemInHand(hand, extracted);
+		server.playSound(null, pos, TFSounds.JAR_REMOVE.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+		server.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
+	}
+
+	private static void handleInsert(ServerLevel server, BlockPos pos, Player player, InteractionHand hand, MasonJarBlockEntity jar, MasonJarBlockEntity.MasonJarItemStackHandler handler, ItemStack stack) {
+		// Simulate insert first; if nothing would go in then just wiggle
+		if (handler.insertItem(SLOT, stack, true).getCount() >= stack.getCount()) {
+			wiggle(server, pos, jar);
+			return;
+		}
+
+		jar.setItemRotation(RotationSegment.convertToSegment(player.getYRot() + 180.0F));
+		player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
+		ItemStack before = stack.copy();
+		ItemStack remainder = handler.insertItem(SLOT, stack, false);
+		player.setItemInHand(hand, player.hasInfiniteMaterials() ? before : remainder);
+		float filledRatio = (float) (before.getCount() - remainder.getCount()) / (float) before.getMaxStackSize();
+		server.playSound(null, pos, TFSounds.JAR_INSERT.get(), SoundSource.BLOCKS, 1.0F, 0.7F + 0.5F * filledRatio);
+		server.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
+	}
+
+	private static void wiggle(ServerLevel server, BlockPos pos, MasonJarBlockEntity jar) {
+		server.playSound(null, pos, TFSounds.JAR_WIGGLE.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+		jar.wobble(DecoratedPotBlockEntity.WobbleStyle.NEGATIVE);
 	}
 
 	@Override
