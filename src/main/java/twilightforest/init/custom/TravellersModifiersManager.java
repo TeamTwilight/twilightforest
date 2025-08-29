@@ -117,11 +117,11 @@ public class TravellersModifiersManager {
 	}
 
 	public static List<Holder.Reference<TravellersModifier>> findAllInsertableModifiers(Entity entity, ItemStack stack) {
-		return findAllAbilityModifiers(entity.registryAccess(), stack);
+		return findAllInsertableModifiers(entity.registryAccess(), stack);
 	}
 
 	public static List<Holder.Reference<TravellersModifier>> findAllInsertableModifiers(Level level, ItemStack stack) {
-		return findAllAbilityModifiers(level.registryAccess(), stack);
+		return findAllInsertableModifiers(level.registryAccess(), stack);
 	}
 
 	public static List<Holder.Reference<TravellersModifier>> findAllAbilityModifiers(HolderLookup.Provider registries, ItemStack stack) {
