@@ -1,6 +1,7 @@
 package twilightforest.client.event;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.Input;
@@ -17,10 +18,12 @@ import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.Level;
 import net.neoforged.api.distmarker.Dist;
+import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import twilightforest.beans.Component;
 import twilightforest.beans.PostConstruct;
 import twilightforest.init.*;
@@ -194,35 +197,29 @@ public class TravellersClientEvents {
 	}
 
 	private void toggleRedThreadVision(InputEvent.Key event) {
-		if (TFKeyBinds.RED_THREAD_VISION_KEY.matches(event.getKey(), event.getScanCode())) {
-			Player player = Minecraft.getInstance().player;
-			if (player == null)
-				return;
-
-			boolean current = player.getData(TFDataAttachments.TRAVELLERS_GOGGLES_RED_THREAD_VISION);
-			boolean isClicked = false;
-			while (TFKeyBinds.RED_THREAD_VISION_KEY.consumeClick()) {
-				isClicked = !isClicked;  // clickCount can be even, so we may not toggle Red Thread Vision
-			}
-
-			player.setData(TFDataAttachments.TRAVELLERS_GOGGLES_RED_THREAD_VISION, isClicked != current);
-		}
+		this.toggleBooleanDataAttachment(event, TFKeyBinds.RED_THREAD_VISION_KEY, TFDataAttachments.TRAVELLERS_GOGGLES_RED_THREAD_VISION);
 	}
 
 	private void toggleItemDisplayVisibility(InputEvent.Key event) {
-		if (TFKeyBinds.ITEM_DISPLAY_KEY.matches(event.getKey(), event.getScanCode())) {
-			Player player = Minecraft.getInstance().player;
-			if (player == null)
-				return;
+		this.toggleBooleanDataAttachment(event, TFKeyBinds.ITEM_DISPLAY_KEY, TFDataAttachments.TRAVELLERS_GOGGLES_ITEM_DISPLAY);
+	}
 
-			boolean current = player.getData(TFDataAttachments.TRAVELLERS_GOGGLES_ITEM_DISPLAY);
-			boolean isClicked = false;
-			while (TFKeyBinds.ITEM_DISPLAY_KEY.consumeClick()) {
-				isClicked = !isClicked;  // clickCount can be even, so we may not toggle Red Thread Vision
-			}
+	private void toggleBooleanDataAttachment(InputEvent.Key event, KeyMapping key, DeferredHolder<AttachmentType<?>, AttachmentType<Boolean>> attachment) {
+		if (!key.matches(event.getKey(), event.getScanCode()))
+			return;
 
-			player.setData(TFDataAttachments.TRAVELLERS_GOGGLES_ITEM_DISPLAY, isClicked != current);
+		Player player = Minecraft.getInstance().player;
+		if (player == null)
+			return;
+
+		boolean current = player.getData(attachment.get());
+		boolean isClicked = false;
+		while (key.consumeClick()) {
+			isClicked = !isClicked;  // clickCount can be even, so we may not toggle
 		}
+
+		if (isClicked)
+			player.setData(attachment.get(), !current);
 	}
 
 	private void playZoomSounds(InputEvent.Key event) {
