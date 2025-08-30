@@ -68,8 +68,8 @@ public class TravellersClientEvents {
 	private void tickPlayerGearEffects(PlayerTickEvent.Pre event) {
 		if (!(event.getEntity() instanceof LocalPlayer localPlayer))
 			return;
-		long lastJumpKeyPressTime = localPlayer.getData(TFDataAttachments.LAST_JUMP_KEY_PRESS_TIME);
-		long currentJumpKeyPressTime = localPlayer.level().getGameTime();
+		int lastJumpKeyPressTime = localPlayer.getData(TFDataAttachments.LAST_JUMP_KEY_PRESS_TIME);
+		int currentJumpKeyPressTime = localPlayer.tickCount;
 		boolean holdsJumpKey = currentJumpKeyPressTime - lastJumpKeyPressTime <= 1;
 		boolean pressedKey = Minecraft.getInstance().options.keyJump.isDown();
 		if (pressedKey)
@@ -120,8 +120,8 @@ public class TravellersClientEvents {
 		Input input = localPlayer.input;
 		boolean lastImpulseZero = localPlayer.getData(TFDataAttachments.LAST_HORIZONTAL_IMPULSE) == 0;
 		boolean sameImpulseDirection = Math.signum(localPlayer.getData(TFDataAttachments.LAST_NON_ZERO_HORIZONTAL_IMPULSE)) == Math.signum(input.leftImpulse);
-		long currentTime = localPlayer.level().getGameTime();
-		long lastWalkingTime = localPlayer.getData(TFDataAttachments.LAST_HORIZONTAL_WALKING_TIME);
+		int currentTime = localPlayer.tickCount;
+		int lastWalkingTime = localPlayer.getData(TFDataAttachments.LAST_HORIZONTAL_WALKING_TIME);
 		boolean hasDoubleTapped = currentTime - lastWalkingTime < 4;
 
 		if (lastImpulseZero && sameImpulseDirection && hasDoubleTapped) {
