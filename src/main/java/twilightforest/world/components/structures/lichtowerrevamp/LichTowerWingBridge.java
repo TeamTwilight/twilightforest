@@ -16,7 +16,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.beans.Autowired;
+import tamaized.beanification.Autowired;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.BoundingBoxUtils;

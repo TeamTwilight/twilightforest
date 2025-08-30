@@ -1,16 +1,14 @@
 package twilightforest.init;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
-import net.minecraft.core.HolderGetter;
-import net.minecraft.core.HolderSet;
+import net.minecraft.core.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.features.VegetationFeatures;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.data.worldgen.placement.VegetationPlacements;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.valueproviders.ClampedInt;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.biome.Biome;
@@ -223,8 +221,8 @@ public class TFPlacedFeatures {
 		context.register(PLACED_HUGE_WATER_LILY, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.HUGE_WATER_LILY), ImmutableList.<PlacementModifier>builder().add(PlacementUtils.HEIGHTMAP_WORLD_SURFACE, RarityFilter.onAverageOnceEvery(25), InSquarePlacement.spread(), CountPlacement.of(5), BiomeFilter.biome()).build()));
 		context.register(PLACED_MAYAPPLE, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.MAYAPPLE), ImmutableList.<PlacementModifier>builder().add(PlacementUtils.HEIGHTMAP_WORLD_SURFACE, BiomeFilter.biome(), avoidLichTower).build()));
 		context.register(PLACED_MONOLITH, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.MONOLITH), tfFeatureCheckArea(AvoidLandmarkModifier.checkSurface(), 90).build()));
-		context.register(PLACED_MUSHGLOOM_CLUSTER, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.MUSHGLOOM_CLUSTER), ImmutableList.<PlacementModifier>builder().add(PlacementUtils.HEIGHTMAP_WORLD_SURFACE, RarityFilter.onAverageOnceEvery(5), InSquarePlacement.spread(), BiomeFilter.biome(), avoidLichTower).build()));
-		context.register(PLACED_SPARSE_MUSHGLOOMS, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.MUSHGLOOM_CLUSTER), ImmutableList.<PlacementModifier>builder().add(PlacementUtils.HEIGHTMAP_WORLD_SURFACE, RarityFilter.onAverageOnceEvery(15), InSquarePlacement.spread(), BiomeFilter.biome()).build()));
+		context.register(PLACED_MUSHGLOOM_CLUSTER, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.MUSHGLOOM_CLUSTER), ImmutableList.<PlacementModifier>builder().add(PlacementUtils.HEIGHTMAP_WORLD_SURFACE, RarityFilter.onAverageOnceEvery(5), InSquarePlacement.spread(), PlacementUtils.filteredByBlockSurvival(TFBlocks.MUSHGLOOM.get()), BiomeFilter.biome(), avoidLichTower).build()));
+		context.register(PLACED_SPARSE_MUSHGLOOMS, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.MUSHGLOOM_CLUSTER), ImmutableList.<PlacementModifier>builder().add(PlacementUtils.HEIGHTMAP_WORLD_SURFACE, RarityFilter.onAverageOnceEvery(15), InSquarePlacement.spread(), PlacementUtils.filteredByBlockSurvival(TFBlocks.MUSHGLOOM.get()), BiomeFilter.biome()).build()));
 		context.register(PLACED_MYCELIUM_BLOB, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.MYCELIUM_BLOB), tfFeatureCheckArea(AvoidLandmarkModifier.checkSurface(), 3).build()));
 		context.register(PLACED_OUTSIDE_STALAGMITE, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.OUTSIDE_STALAGMITE), tfFeatureCheckArea(AvoidLandmarkModifier.checkSurface(), 77).build()));
 		context.register(PLACED_PLANT_ROOTS, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.PLANT_ROOTS), tfFeatureCheckArea(AvoidLandmarkModifier.checkUnderground(), 1, CountPlacement.of(4), HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(10))).build()));
@@ -271,7 +269,7 @@ public class TFPlacedFeatures {
 		context.register(PLACED_DARK_RED_MUSHROOMS, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.DARK_RED_MUSHROOMS), ImmutableList.<PlacementModifier>builder().add(RarityFilter.onAverageOnceEvery(3), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_WORLD_SURFACE, BiomeFilter.biome()).build()));
 		context.register(PLACED_DARK_DEAD_BUSHES, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.DARK_DEAD_BUSHES), ImmutableList.<PlacementModifier>builder().add(RarityFilter.onAverageOnceEvery(3), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_WORLD_SURFACE, BiomeFilter.biome()).build()));
 
-		context.register(PLACED_ENCHANTED_FOREST_VINES, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.ENCHANTED_FOREST_VINES), ImmutableList.<PlacementModifier>builder().add(PlacementUtils.HEIGHTMAP).build()));
+		context.register(PLACED_ENCHANTED_FOREST_VINES, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.ENCHANTED_FOREST_VINES), ImmutableList.<PlacementModifier>builder().add(PlacementUtils.HEIGHTMAP, BiomeFilter.biome()).build()));
 
 		context.register(PLACED_LEGACY_COAL_ORE, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.LEGACY_COAL_ORE), ImmutableList.<PlacementModifier>builder().add(HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(127)), InSquarePlacement.spread(), CountPlacement.of(20), BiomeFilter.biome()).build()));
 		context.register(PLACED_LEGACY_IRON_ORE, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.LEGACY_IRON_ORE), ImmutableList.<PlacementModifier>builder().add(HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(63)), InSquarePlacement.spread(), CountPlacement.of(20), BiomeFilter.biome()).build()));

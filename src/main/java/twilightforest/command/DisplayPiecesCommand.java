@@ -21,8 +21,8 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
-import twilightforest.beans.Autowired;
-import twilightforest.beans.Component;
+import tamaized.beanification.Autowired;
+import tamaized.beanification.Component;
 import twilightforest.util.DisplayUtil;
 import twilightforest.world.components.structures.util.ProgressionPiece;
 

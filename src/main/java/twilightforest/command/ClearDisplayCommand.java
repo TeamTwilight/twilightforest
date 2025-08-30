@@ -5,8 +5,8 @@ import com.mojang.brigadier.context.CommandContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.server.MinecraftServer;
-import twilightforest.beans.Autowired;
-import twilightforest.beans.Component;
+import tamaized.beanification.Autowired;
+import tamaized.beanification.Component;
 import twilightforest.util.DisplayUtil;
 
 import java.util.List;

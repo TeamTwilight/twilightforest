@@ -25,6 +25,8 @@ import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
+import net.minecraft.world.level.levelgen.structure.templatesystem.BlockIgnoreProcessor;
+import net.minecraft.world.level.levelgen.structure.templatesystem.JigsawReplacementProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
@@ -38,7 +40,6 @@ import twilightforest.util.BoundingBoxUtils;
 import twilightforest.util.entities.EntityUtil;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.util.jigsaw.JigsawRecord;
-import twilightforest.world.components.processors.MetaBlockProcessor;
 import twilightforest.world.components.structures.SpawnIndexProvider;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
 import twilightforest.world.components.structures.UtilityPiece;
@@ -55,14 +56,16 @@ public class LichPerimeterFence extends TwilightJigsawPiece implements PieceBear
 	public LichPerimeterFence(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
 		super(TFStructurePieceTypes.LICH_PERIMETER_FENCE.value(), compoundTag, ctx, readSettings(compoundTag));
 
-		this.placeSettings.addProcessor(MetaBlockProcessor.INSTANCE);
+		this.placeSettings.addProcessor(JigsawReplacementProcessor.INSTANCE);
+		this.placeSettings.addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK);
 		this.leashPos = NbtUtils.readBlockPos(compoundTag, "leash_pos").orElse(null);
 	}
 
 	public LichPerimeterFence(StructureTemplateManager structureManager, JigsawPlaceContext jigsawContext, ResourceLocation templateId, RandomSource random) {
 		super(TFStructurePieceTypes.LICH_PERIMETER_FENCE.value(), 0, structureManager, templateId, jigsawContext);
 
-		this.placeSettings.addProcessor(MetaBlockProcessor.INSTANCE);
+		this.placeSettings.addProcessor(JigsawReplacementProcessor.INSTANCE);
+		this.placeSettings.addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK);
 
 		List<StructureTemplate.StructureBlockInfo> fenceBlocks = random.nextFloat() > 0.25 ? List.of() : this.template.filterBlocks(BlockPos.ZERO, this.placeSettings, TFBlocks.WROUGHT_IRON_FENCE.value(), true);
 		if (!fenceBlocks.isEmpty()) {

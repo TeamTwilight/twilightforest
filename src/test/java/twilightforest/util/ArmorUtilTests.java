@@ -8,12 +8,11 @@ import net.minecraft.world.item.Items;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import tamaized.beanification.junit.MockitoFixer;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFItems;
-import twilightforest.junit.MockitoFixer;
 
 import java.util.List;
-import java.util.OptionalInt;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;

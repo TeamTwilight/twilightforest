@@ -9,7 +9,7 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import twilightforest.beans.Component;
+import tamaized.beanification.Component;
 import twilightforest.init.TFDataAttachments;
 
 @Component

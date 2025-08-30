@@ -126,6 +126,28 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 		this.tag(BlockTags.LOGS).addTag(TF_LOGS);
 		this.tag(BlockTags.LOGS_THAT_BURN).addTag(TF_LOGS);
 
+		this.tag(Tags.Blocks.STRIPPED_LOGS).add(
+			TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.value(),
+			TFBlocks.STRIPPED_CANOPY_LOG.value(),
+			TFBlocks.STRIPPED_MANGROVE_LOG.value(),
+			TFBlocks.STRIPPED_DARK_LOG.value(),
+			TFBlocks.STRIPPED_TIME_LOG.value(),
+			TFBlocks.STRIPPED_TRANSFORMATION_LOG.value(),
+			TFBlocks.STRIPPED_MINING_LOG.value(),
+			TFBlocks.STRIPPED_SORTING_LOG.value()
+		);
+
+		this.tag(Tags.Blocks.STRIPPED_WOODS).add(
+			TFBlocks.STRIPPED_TWILIGHT_OAK_WOOD.value(),
+			TFBlocks.STRIPPED_CANOPY_WOOD.value(),
+			TFBlocks.STRIPPED_MANGROVE_WOOD.value(),
+			TFBlocks.STRIPPED_DARK_WOOD.value(),
+			TFBlocks.STRIPPED_TIME_WOOD.value(),
+			TFBlocks.STRIPPED_TRANSFORMATION_WOOD.value(),
+			TFBlocks.STRIPPED_MINING_WOOD.value(),
+			TFBlocks.STRIPPED_SORTING_WOOD.value()
+		);
+
 		this.tag(BlockTags.SAPLINGS).add(TFBlocks.TWILIGHT_OAK_SAPLING.get(), TFBlocks.CANOPY_SAPLING.get(), TFBlocks.MANGROVE_SAPLING.get(), TFBlocks.DARKWOOD_SAPLING.get(), TFBlocks.TIME_SAPLING.get(), TFBlocks.TRANSFORMATION_SAPLING.get(), TFBlocks.MINING_SAPLING.get(), TFBlocks.SORTING_SAPLING.get(), TFBlocks.HOLLOW_OAK_SAPLING.get(), TFBlocks.RAINBOW_OAK_SAPLING.get());
 		this.tag(BlockTags.LEAVES).add(TFBlocks.RAINBOW_OAK_LEAVES.get(), TFBlocks.TWILIGHT_OAK_LEAVES.get(), TFBlocks.CANOPY_LEAVES.get(), TFBlocks.MANGROVE_LEAVES.get(), TFBlocks.DARK_LEAVES.get(), TFBlocks.TIME_LEAVES.get(), TFBlocks.TRANSFORMATION_LEAVES.get(), TFBlocks.MINING_LEAVES.get(), TFBlocks.SORTING_LEAVES.get(), TFBlocks.THORN_LEAVES.get(), TFBlocks.BEANSTALK_LEAVES.get());
 

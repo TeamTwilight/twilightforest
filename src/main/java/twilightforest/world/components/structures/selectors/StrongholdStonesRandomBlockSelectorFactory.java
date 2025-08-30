@@ -2,7 +2,7 @@ package twilightforest.world.components.structures.selectors;
 
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.world.level.block.Blocks;
-import twilightforest.beans.Component;
+import tamaized.beanification.Component;
 import twilightforest.world.components.structures.util.SimpleRandomBlockSelector;
 
 import java.util.List;

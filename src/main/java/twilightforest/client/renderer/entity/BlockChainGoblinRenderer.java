@@ -40,9 +40,11 @@ public class BlockChainGoblinRenderer<T extends BlockChainGoblin, M extends Huma
 
 		stack.pushPose();
 
-		double blockInX = (entity.block.getX() - entity.getX());
-		double blockInY = (entity.block.getY() - entity.getY());
-		double blockInZ = (entity.block.getZ() - entity.getZ());
+		Vec3 entityPosition = entity.getPosition(partialTicks);
+		Vec3 blockPosition = entity.block.getPosition(partialTicks);
+		double blockInX = (blockPosition.x() - entityPosition.x());
+		double blockInY = (blockPosition.y() - entityPosition.y());
+		double blockInZ = (blockPosition.z() - entityPosition.z());
 
 		stack.translate(blockInX, blockInY, blockInZ);
 

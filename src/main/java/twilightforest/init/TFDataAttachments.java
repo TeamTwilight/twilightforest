@@ -2,10 +2,12 @@ package twilightforest.init;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.serialization.Codec;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.util.Unit;
 import net.neoforged.neoforge.attachment.AttachmentType;
+import net.neoforged.neoforge.attachment.IAttachmentHolder;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
@@ -42,4 +44,9 @@ public class TFDataAttachments {
 	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Long>> LAST_HORIZONTAL_WALKING_TIME = ATTACHMENT_TYPES.register("last_horizontal_walking_time", () -> AttachmentType.builder(() -> 0L).serialize(Codec.LONG).build());
 	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Integer>> SIDESTEP_VALIDATOR = ATTACHMENT_TYPES.register("sidestep_validator", () -> AttachmentType.builder(() -> 0).serialize(Codec.INT).build());
 	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Integer>> SIDESTEP_VALIDATOR_LAST_CHECK = ATTACHMENT_TYPES.register("sidestep_validator_last_check", () -> AttachmentType.builder(() -> 0).serialize(Codec.INT).build());
+	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Unit>> BANISHED_TO_TWILIGHT_FOREST = ATTACHMENT_TYPES.register("twilightforest_banished", () -> AttachmentType.builder(() -> Unit.INSTANCE).serialize(Codec.unit(Unit.INSTANCE)).copyOnDeath().build());
+
+	private static <T> T directCopy(T attachment, IAttachmentHolder holder, HolderLookup.Provider provider) {
+		return attachment;
+	}
 }

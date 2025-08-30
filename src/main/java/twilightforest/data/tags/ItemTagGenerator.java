@@ -117,6 +117,28 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 			.addTag(TWILIGHT_OAK_LOGS).addTag(CANOPY_LOGS).addTag(MANGROVE_LOGS)
 			.addTag(TIME_LOGS).addTag(TRANSFORMATION_LOGS).addTag(MINING_LOGS).addTag(SORTING_LOGS);
 
+		this.tag(Tags.Items.STRIPPED_LOGS).add(
+			TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.value().asItem(),
+			TFBlocks.STRIPPED_CANOPY_LOG.value().asItem(),
+			TFBlocks.STRIPPED_MANGROVE_LOG.value().asItem(),
+			TFBlocks.STRIPPED_DARK_LOG.value().asItem(),
+			TFBlocks.STRIPPED_TIME_LOG.value().asItem(),
+			TFBlocks.STRIPPED_TRANSFORMATION_LOG.value().asItem(),
+			TFBlocks.STRIPPED_MINING_LOG.value().asItem(),
+			TFBlocks.STRIPPED_SORTING_LOG.value().asItem()
+		);
+
+		this.tag(Tags.Items.STRIPPED_WOODS).add(
+			TFBlocks.STRIPPED_TWILIGHT_OAK_WOOD.value().asItem(),
+			TFBlocks.STRIPPED_CANOPY_WOOD.value().asItem(),
+			TFBlocks.STRIPPED_MANGROVE_WOOD.value().asItem(),
+			TFBlocks.STRIPPED_DARK_WOOD.value().asItem(),
+			TFBlocks.STRIPPED_TIME_WOOD.value().asItem(),
+			TFBlocks.STRIPPED_TRANSFORMATION_WOOD.value().asItem(),
+			TFBlocks.STRIPPED_MINING_WOOD.value().asItem(),
+			TFBlocks.STRIPPED_SORTING_WOOD.value().asItem()
+		);
+
 		this.copy(BlockTags.SAPLINGS, ItemTags.SAPLINGS);
 		this.copy(BlockTags.LEAVES, ItemTags.LEAVES);
 

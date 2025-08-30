@@ -31,7 +31,7 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
-import twilightforest.beans.Autowired;
+import tamaized.beanification.Autowired;
 import twilightforest.loot.TFLootTables;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.world.components.structures.selectors.StrongholdStonesRandomBlockSelectorFactory;

@@ -15,7 +15,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProc
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import twilightforest.TwilightForestMod;
-import twilightforest.beans.Autowired;
+import tamaized.beanification.Autowired;
 import twilightforest.data.tags.CustomTagGenerator;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.jigsaw.JigsawPlaceContext;

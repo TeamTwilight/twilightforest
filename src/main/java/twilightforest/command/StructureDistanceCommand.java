@@ -20,10 +20,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
-import twilightforest.beans.Autowired;
+import tamaized.beanification.Autowired;
 import twilightforest.util.DisplayUtil;
 
-@twilightforest.beans.Component
+@tamaized.beanification.Component
 public class StructureDistanceCommand {
 	@Autowired
 	private DisplayUtil displayUtil;

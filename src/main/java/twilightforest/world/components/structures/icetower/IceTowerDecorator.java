@@ -3,7 +3,7 @@ package twilightforest.world.components.structures.icetower;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RotatedPillarBlock;
-import twilightforest.beans.Autowired;
+import tamaized.beanification.Autowired;
 import twilightforest.init.TFBlocks;
 import twilightforest.world.components.structures.TFStructureDecorator;
 import twilightforest.world.components.structures.selectors.IceTowerRandomBlockSelectorFactory;

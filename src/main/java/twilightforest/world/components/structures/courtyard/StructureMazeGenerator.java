@@ -24,7 +24,7 @@ public abstract class StructureMazeGenerator extends TFStructureComponent {
 	private final int[][] cornerClipping = new int[4][2];
 	private final int widthInCellCount;
 	private final int heightInCellCount;
-	private final StructureTemplateManager structureManager;
+	protected final StructureTemplateManager structureManager;
 	protected BoundingBox sizeConstraints;
 
 	public StructureMazeGenerator(StructureTemplateManager structureManager, StructurePieceType piece, CompoundTag nbt) {

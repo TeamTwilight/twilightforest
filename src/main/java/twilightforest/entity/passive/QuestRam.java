@@ -36,7 +36,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.beans.Autowired;
+import tamaized.beanification.Autowired;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.entity.ai.goal.QuestRamEatWoolGoal;
 import twilightforest.entity.passive.quest.ram.QuestingRamCurrentContext;

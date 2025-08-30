@@ -19,7 +19,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFRegistries;
-import twilightforest.beans.Autowired;
+import tamaized.beanification.Autowired;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.data.tags.CustomTagGenerator;
 import twilightforest.entity.MagicPainting;

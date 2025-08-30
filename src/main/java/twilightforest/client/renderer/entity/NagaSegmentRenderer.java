@@ -35,8 +35,8 @@ public class NagaSegmentRenderer<T extends NagaSegment, M extends NagaModel<T>> 
 
 			if (!JappaPackReloadListener.INSTANCE.isJappaPackLoaded()) {
 				stack.scale(2.0F, 2.0F, 2.0F);
+				stack.translate(0.0D, -1.25F, 0.0D);
 			}
-			stack.translate(0.0D, -1.25F, 0.0D);
 
 			int realLight = this.entityRenderDispatcher.getPackedLightCoords(entity.getParent(), partialTicks);
 			super.render(entity, entityYaw, partialTicks, stack, buffer, realLight);

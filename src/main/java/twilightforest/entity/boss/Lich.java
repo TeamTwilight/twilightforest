@@ -375,7 +375,7 @@ public class Lich extends BaseTFBoss {
 					int newShieldStrength = this.getShieldStrength() - 1;
 					this.setShieldStrength(newShieldStrength);
 					float volume = 1.5F;
-					FortificationShieldAttachment.addShieldBreakParticles(src, this);
+					if (!this.level().isClientSide()) FortificationShieldAttachment.addShieldBreakParticles(src, this);
 					if (newShieldStrength < 6) volume += 0.25F * (6 - newShieldStrength);
 					if (newShieldStrength == 0) volume += 0.5F;
 					this.playSound(TFSounds.SHIELD_BREAK.get(), volume, this.getVoicePitch() * 1.25F);

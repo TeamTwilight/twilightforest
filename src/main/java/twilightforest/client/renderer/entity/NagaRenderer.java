@@ -25,8 +25,10 @@ public class NagaRenderer<T extends Naga, M extends NagaModel<T>> extends MobRen
 		//make size adjustment
 		if (!JappaPackReloadListener.INSTANCE.isJappaPackLoaded()) {
 			stack.scale(2.01F, 2.01F, 2.01F);
+			stack.translate(0.0F, entity.isDazed() ? 1.075F : 0.75F, entity.isDazed() ? 0.175F : 0.0F);
+		} else {
+			stack.translate(0.0F, entity.isDazed() ? 0.0F : -0.75F, 0.0F);
 		}
-		stack.translate(0.0F, entity.isDazed() ? 1.075F : 0.75F, entity.isDazed() ? 0.175F : 0.0F);
 	}
 
 	@Override

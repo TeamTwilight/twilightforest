@@ -4,9 +4,14 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.util.Unit;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.common.NeoForge;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
@@ -72,12 +77,8 @@ public class CapabilityEvents {
 	private void spawnInTFIfNecessary(PlayerEvent.PlayerRespawnEvent event) {
 		if (!(event.getEntity() instanceof ServerPlayer serverPlayer)) return;
 
-		if (TFConfig.newPlayersSpawnInTF && serverPlayer.getRespawnPosition() == null) {
-			CompoundTag tagCompound = serverPlayer.getPersistentData();
-			CompoundTag playerData = tagCompound.getCompound(Player.PERSISTED_NBT_TAG);
-			playerData.putBoolean(NBT_TAG_TWILIGHT, false); // set to false so that the method works
-			tagCompound.put(Player.PERSISTED_NBT_TAG, playerData); // commit
-			banishNewbieToTwilightZone(serverPlayer);
+		if (serverPlayer.getRespawnPosition() == null) {
+			newSpawnInTwilightForest(serverPlayer);
 		}
 	}
 
@@ -112,5 +113,22 @@ public class CapabilityEvents {
 				NoReturnTeleporter.createNoPortalTransition(level, player, player.blockPosition()));
 			player.setRespawnPosition(TFDimension.DIMENSION_KEY, player.blockPosition(), player.getYRot(), true, false);
 		}
+	}
+
+	private static void newSpawnInTwilightForest(ServerPlayer player) {
+		if (!TFConfig.newPlayersSpawnInTF)
+			return;
+		ServerLevel level = player.getServer().getLevel(TFDimension.DIMENSION_KEY);
+		if (level == null)
+			return;
+
+		BlockPos newDefaultSpawn = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, player.blockPosition());
+
+		player.changeDimension(TFConfig.portalForNewPlayerSpawn ?
+			TFTeleporter.createTransition(player, level, newDefaultSpawn, true) :
+			NoReturnTeleporter.createNoPortalTransition(level, player, newDefaultSpawn));
+		player.setRespawnPosition(TFDimension.DIMENSION_KEY, newDefaultSpawn, player.getYRot(), true, false);
+
+		player.setData(TFDataAttachments.BANISHED_TO_TWILIGHT_FOREST, Unit.INSTANCE);
 	}
 }

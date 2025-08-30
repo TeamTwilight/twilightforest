@@ -18,6 +18,7 @@ import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
+import net.minecraft.world.level.levelgen.structure.templatesystem.*;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.templatesystem.*;
 import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
@@ -26,6 +27,7 @@ import twilightforest.beans.Autowired;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.util.jigsaw.JigsawRecord;
+import twilightforest.world.components.structures.lichtowerrevamp.StructureTemplateDefinitions;
 import twilightforest.world.components.processors.MetaBlockProcessor;
 import twilightforest.world.components.structures.util.StructureTemplateDefinitions;
 import twilightforest.world.components.structures.util.ProgressionPiece;
@@ -58,13 +60,26 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 
 	public static TwilightJigsawPiece defaultDeserialize(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
 		TwilightJigsawPiece twilightJigsawPiece = new TwilightJigsawPiece(TFStructurePieceTypes.TFJigsawTemplate.value(), compoundTag, ctx, readSettings(compoundTag));
-		twilightJigsawPiece.placeSettings().addProcessor(MetaBlockProcessor.INSTANCE);
+		twilightJigsawPiece.placeSettings().addProcessor(JigsawReplacementProcessor.INSTANCE);
+		twilightJigsawPiece.placeSettings().addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK);
 		return twilightJigsawPiece;
 	}
 
-	public static TwilightJigsawPiece defaultForTemplate(int genDepth, StructureTemplateManager structureManager, ResourceLocation templateLocation, JigsawPlaceContext jigsawContext, TemplatePoolInstance templatePoolInstance) {
-		TwilightJigsawPiece twilightJigsawPiece = new TwilightJigsawPiece(TFStructurePieceTypes.TFJigsawTemplate.value(), genDepth, structureManager, templateLocation, jigsawContext, templatePoolInstance);
-		twilightJigsawPiece.placeSettings().addProcessor(MetaBlockProcessor.INSTANCE);
+	@Nullable
+	public static TwilightJigsawPiece initializeTemplateFromPool(ResourceLocation templatePool, BlockPos parentJunctionPos, FrontAndTop parentOrientation, String selectName, RandomSource rand, int genDepth, StructureTemplateManager structureManager) {
+		ResourceLocation templateId = StructureTemplateDefinitions.getRandomTemplate(rand, templatePool);
+		JigsawPlaceContext placeContext = JigsawPlaceContext.pickPlaceableJunction(parentJunctionPos, BlockPos.ZERO, parentOrientation, structureManager, templateId, selectName, rand);
+
+		if (templateId == null || placeContext == null)
+			return null;
+
+		return TwilightJigsawPiece.defaultForTemplate(genDepth, structureManager, templateId, placeContext);
+	}
+
+	public static TwilightJigsawPiece defaultForTemplate(int genDepth, StructureTemplateManager structureManager, ResourceLocation templateLocation, JigsawPlaceContext jigsawContext) {
+		TwilightJigsawPiece twilightJigsawPiece = new TwilightJigsawPiece(TFStructurePieceTypes.TFJigsawTemplate.value(), genDepth, structureManager, templateLocation, jigsawContext);
+		twilightJigsawPiece.placeSettings().addProcessor(JigsawReplacementProcessor.INSTANCE);
+		twilightJigsawPiece.placeSettings().addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK);
 		return twilightJigsawPiece;
 	}
 

@@ -30,7 +30,7 @@ import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import java.util.Collection;
 import java.util.Collections;
 
-@twilightforest.beans.Component
+@tamaized.beanification.Component
 public class MapLocatorCommand {
 
 	// [vanillacopy] LocateCommand.java

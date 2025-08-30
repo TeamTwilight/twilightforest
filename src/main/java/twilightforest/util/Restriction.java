@@ -2,6 +2,7 @@ package twilightforest.util;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -43,17 +44,24 @@ public record Restriction(@Nullable ResourceKey<Structure> hintStructureKey, Res
 	}
 
 	public static Optional<Restriction> getRestrictionForBiome(Biome biome, Entity entity) {
-		if (entity instanceof Player player) {
-			RegistryAccess access = entity.level().registryAccess();
-			ResourceLocation biomeLocation = access.registryOrThrow(Registries.BIOME).getKey(biome);
-			if (biomeLocation != null) {
-				Restriction restrictions = access.registryOrThrow(TFRegistries.Keys.RESTRICTIONS).get(biomeLocation);
-				if (restrictions != null && !PlayerHelper.doesPlayerHaveRequiredAdvancements(player, restrictions.advancements())) {
-					return Optional.of(restrictions);
-				}
-			}
+		if (!(entity instanceof Player player))
+			return Optional.empty();
+
+		RegistryAccess access = entity.level().registryAccess();
+		ResourceLocation biomeLocation = access.registryOrThrow(Registries.BIOME).getKey(biome);
+		if (biomeLocation == null)
+			return Optional.empty();
+
+		Optional<Registry<Restriction>> restrictionsRegistry = access.registry(TFRegistries.Keys.RESTRICTIONS);
+		if (restrictionsRegistry.isEmpty())
+			return Optional.empty();
+
+		Restriction restrictions = restrictionsRegistry.get().get(biomeLocation);
+		if (restrictions == null || PlayerHelper.doesPlayerHaveRequiredAdvancements(player, restrictions.advancements())) {
+			return Optional.empty();
 		}
-		return Optional.empty();
+
+		return Optional.of(restrictions);
 	}
 
 	public static boolean isBiomeSafeFor(Biome biome, Entity entity) {

@@ -21,6 +21,7 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import twilightforest.TwilightForestMod;
 import twilightforest.beans.Autowired;
 import twilightforest.data.custom.TravellersGearItemModelBuilder;
+import tamaized.beanification.Autowired;
 import twilightforest.enums.extensions.TFItemDisplayContextEnumExtension;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;

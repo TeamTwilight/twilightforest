@@ -7,8 +7,10 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.Container;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.SpawnData;
 import net.minecraft.world.level.Spawner;
@@ -109,5 +111,21 @@ public class ChiseledCanopyShelfBlockEntity extends ChiseledBookShelfBlockEntity
 
 	public BookshelfSpawner getSpawner() {
 		return this.spawner;
+	}
+
+	@Override
+	public ItemStack removeItem(int slot, int amount) {
+		if (this.getBlockState().getValue(ChiseledCanopyShelfBlock.SPAWNER)) return ItemStack.EMPTY;
+		return super.removeItem(slot, amount);
+	}
+
+	@Override
+	public boolean canTakeItem(Container target, int slot, ItemStack stack) {
+		return !this.getBlockState().getValue(ChiseledCanopyShelfBlock.SPAWNER) && super.canTakeItem(target, slot, stack);
+	}
+
+	@Override
+	public boolean canPlaceItem(int slot, ItemStack stack) {
+		return !this.getBlockState().getValue(ChiseledCanopyShelfBlock.SPAWNER) && super.canPlaceItem(slot, stack);
 	}
 }

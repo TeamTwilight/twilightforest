@@ -65,6 +65,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.advancements.DrinkFromFlaskTrigger;
 import twilightforest.beans.Autowired;
 import twilightforest.beans.PostConstruct;
+import tamaized.beanification.Autowired;
 import twilightforest.block.*;
 import twilightforest.block.entity.SkullCandleBlockEntity;
 import twilightforest.block.entity.SkullChestBlockEntity;

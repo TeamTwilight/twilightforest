@@ -27,6 +27,8 @@ public class ModdedItemTagGenerator extends ItemTagsProvider {
 	public static final TagKey<Item> CA_PLANTS = createTagFor("createaddition", "plants");
 	public static final TagKey<Item> CA_PLANT_FOODS = createTagFor("createaddition", "plant_foods");
 
+	public static final TagKey<Item> FA_MODIFIER_ETERNAL_INCOMPATIBLE = createTagFor("forbidden_arcanus", "modifier/eternal_incompatible");
+
 	public static final TagKey<Item> FD_CABBAGE_ROLL_INGREDIENTS = createTagFor("farmersdelight", "cabbage_roll_ingredients");
 
 	public static final TagKey<Item> RANDOMIUM_BLACKLIST = createTagFor("randomium", "blacklist");
@@ -93,6 +95,8 @@ public class ModdedItemTagGenerator extends ItemTagsProvider {
 			TFBlocks.MUSHGLOOM.get().asItem(), TFBlocks.TORCHBERRY_PLANT.get().asItem(),
 			TFBlocks.ROOT_STRAND.get().asItem(), TFBlocks.FALLEN_LEAVES.get().asItem(),
 			TFBlocks.HEDGE.get().asItem(), TFBlocks.ROOT_BLOCK.get().asItem(), TFBlocks.LIVEROOT_BLOCK.get().asItem());
+
+		tag(FA_MODIFIER_ETERNAL_INCOMPATIBLE).add(TFItems.GLASS_SWORD.value());
 
 		tag(FD_CABBAGE_ROLL_INGREDIENTS).add(TFItems.RAW_VENISON.get(), TFItems.RAW_MEEF.get());
 

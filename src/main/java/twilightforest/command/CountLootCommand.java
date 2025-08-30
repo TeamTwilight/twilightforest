@@ -33,7 +33,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-@twilightforest.beans.Component
+@tamaized.beanification.Component
 public class CountLootCommand {
 	public LiteralArgumentBuilder<CommandSourceStack> register() {
 		return Commands.literal("count_loot").requires(cs -> cs.hasPermission(Commands.LEVEL_GAMEMASTERS))

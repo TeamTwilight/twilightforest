@@ -22,9 +22,9 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import tamaized.beanification.junit.MockitoFixer;
 import twilightforest.enums.HollowLogVariants;
 import twilightforest.init.TFBlocks;
-import twilightforest.junit.MockitoFixer;
 import twilightforest.util.DirectionUtil;
 
 import static org.junit.jupiter.api.Assertions.*;

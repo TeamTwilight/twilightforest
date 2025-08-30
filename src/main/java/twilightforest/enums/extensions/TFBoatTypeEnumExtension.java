@@ -3,8 +3,8 @@ package twilightforest.enums.extensions;
 import net.minecraft.world.entity.vehicle.Boat;
 import net.neoforged.neoforge.common.util.Lazy;
 import twilightforest.TFEnumExtensions;
-import twilightforest.beans.Autowired;
-import twilightforest.beans.Component;
+import tamaized.beanification.Autowired;
+import tamaized.beanification.Component;
 import twilightforest.util.ModidPrefixUtil;
 
 @Component

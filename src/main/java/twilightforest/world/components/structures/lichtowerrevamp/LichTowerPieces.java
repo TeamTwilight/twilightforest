@@ -4,7 +4,7 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
-import twilightforest.beans.Component;
+import tamaized.beanification.Component;
 
 import java.util.HashSet;
 import java.util.List;

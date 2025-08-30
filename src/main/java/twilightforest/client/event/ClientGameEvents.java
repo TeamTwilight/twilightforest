@@ -43,6 +43,7 @@ import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import twilightforest.TwilightForestMod;
 import twilightforest.beans.Autowired;
 import twilightforest.beans.PostConstruct;
+import tamaized.beanification.Autowired;
 import twilightforest.block.GiantBlock;
 import twilightforest.block.MiniatureStructureBlock;
 import twilightforest.block.entity.GrowingBeanstalkBlockEntity;
@@ -50,6 +51,7 @@ import twilightforest.client.BugModelAnimationHelper;
 import twilightforest.client.ISTER;
 import twilightforest.client.OptifineWarningScreen;
 import twilightforest.client.TFShaders;
+import twilightforest.client.renderer.entity.MagicPaintingRenderer;
 import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.config.TFConfig;
 import twilightforest.data.tags.ItemTagGenerator;
@@ -219,28 +221,34 @@ public class ClientGameEvents {
 
 			BugModelAnimationHelper.animate();
 
-			if (TFConfig.firstPersonEffects && mc.level != null && mc.player != null) {
-				HashSet<ChunkPos> chunksInRange = new HashSet<>();
-				for (int x = -16; x <= 16; x += 16) {
-					for (int z = -16; z <= 16; z += 16) {
-						chunksInRange.add(new ChunkPos((int) (mc.player.getX() + x) >> 4, (int) (mc.player.getZ() + z) >> 4));
-					}
+			if (mc.level != null) {
+				if (mc.level.getSkyFlashTime() > 0) {
+					MagicPaintingRenderer.lastLightning = mc.level.getGameTime();
 				}
-				for (ChunkPos pos : chunksInRange) {
-					if (mc.level.getChunk(pos.x, pos.z, ChunkStatus.FULL, false) != null) {
-						List<BlockEntity> beanstalksInChunk = mc.level.getChunk(pos.x, pos.z).getBlockEntities().values().stream()
-							.filter(blockEntity -> blockEntity instanceof GrowingBeanstalkBlockEntity beanstalkBlock && beanstalkBlock.isBeanstalkRumbling())
-							.toList();
-						if (!beanstalksInChunk.isEmpty()) {
-							BlockEntity beanstalk = beanstalksInChunk.getFirst();
-							Player player = mc.player;
-							shakeIntensity = (float) (1.0F - mc.player.distanceToSqr(Vec3.atCenterOf(beanstalk.getBlockPos())) / Math.pow(16, 2));
-							if (shakeIntensity > 0) {
-								player.moveTo(player.getX(), player.getY(), player.getZ(),
-									player.getYRot() + (player.getRandom().nextFloat() - 0.5F) * shakeIntensity,
-									player.getXRot() + (player.getRandom().nextFloat() * 2.5F - 1.25F) * shakeIntensity);
-								shakeIntensity = 0.0F;
-								break;
+
+				if (TFConfig.firstPersonEffects && mc.player != null) {
+					HashSet<ChunkPos> chunksInRange = new HashSet<>();
+					for (int x = -16; x <= 16; x += 16) {
+						for (int z = -16; z <= 16; z += 16) {
+							chunksInRange.add(new ChunkPos((int) (mc.player.getX() + x) >> 4, (int) (mc.player.getZ() + z) >> 4));
+						}
+					}
+					for (ChunkPos pos : chunksInRange) {
+						if (mc.level.getChunk(pos.x, pos.z, ChunkStatus.FULL, false) != null) {
+							List<BlockEntity> beanstalksInChunk = mc.level.getChunk(pos.x, pos.z).getBlockEntities().values().stream()
+								.filter(blockEntity -> blockEntity instanceof GrowingBeanstalkBlockEntity beanstalkBlock && beanstalkBlock.isBeanstalkRumbling())
+								.toList();
+							if (!beanstalksInChunk.isEmpty()) {
+								BlockEntity beanstalk = beanstalksInChunk.getFirst();
+								Player player = mc.player;
+								shakeIntensity = (float) (1.0F - mc.player.distanceToSqr(Vec3.atCenterOf(beanstalk.getBlockPos())) / Math.pow(16, 2));
+								if (shakeIntensity > 0) {
+									player.moveTo(player.getX(), player.getY(), player.getZ(),
+										player.getYRot() + (player.getRandom().nextFloat() - 0.5F) * shakeIntensity,
+										player.getXRot() + (player.getRandom().nextFloat() * 2.5F - 1.25F) * shakeIntensity);
+									shakeIntensity = 0.0F;
+									break;
+								}
 							}
 						}
 					}

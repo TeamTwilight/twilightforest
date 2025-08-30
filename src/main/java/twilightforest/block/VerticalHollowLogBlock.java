@@ -29,8 +29,8 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import twilightforest.beans.Autowired;
-import twilightforest.beans.Configurable;
+import tamaized.beanification.Autowired;
+import tamaized.beanification.Configurable;
 import twilightforest.enums.HollowLogVariants;
 import twilightforest.util.DirectionUtil;
 

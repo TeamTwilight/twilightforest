@@ -36,7 +36,7 @@ import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import twilightforest.TwilightForestMod;
-import twilightforest.beans.Autowired;
+import tamaized.beanification.Autowired;
 import twilightforest.block.*;
 import twilightforest.block.entity.*;
 import twilightforest.client.event.ClientGameEvents;

@@ -16,7 +16,7 @@ import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
-import twilightforest.beans.Autowired;
+import tamaized.beanification.Autowired;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.TFStructureHelper;
 import twilightforest.util.jigsaw.JigsawPlaceContext;

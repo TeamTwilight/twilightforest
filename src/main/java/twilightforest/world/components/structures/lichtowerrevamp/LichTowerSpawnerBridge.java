@@ -13,7 +13,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import twilightforest.TFRegistries;
-import twilightforest.beans.Autowired;
+import tamaized.beanification.Autowired;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.init.custom.WoodPalettes;
 import twilightforest.util.woods.WoodPalette;

@@ -3,7 +3,7 @@ package twilightforest.data.helpers;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.Criterion;
-import twilightforest.beans.Component;
+import tamaized.beanification.Component;
 
 import java.util.ArrayList;
 import java.util.List;

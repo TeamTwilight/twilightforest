@@ -37,7 +37,6 @@ public class TFStructureProcessors {
 
 	public static final DeferredHolder<StructureProcessorType<?>, StructureProcessorType<SoftReplaceProcessor>> SOFT_REPLACE = registerProcessor("soft_replace", () -> () -> SoftReplaceProcessor.CODEC);
 
-	public static final DeferredHolder<StructureProcessorType<?>, StructureProcessorType<MetaBlockProcessor>> META_BLOCK_PROCESSOR = registerProcessor("meta_block_processor", () -> () -> MetaBlockProcessor.CODEC);
 	public static final DeferredHolder<StructureProcessorType<?>, StructureProcessorType<SpawnerProcessor>> SPAWNER_PROCESSOR = registerProcessor("spawner_processor", () -> () -> SpawnerProcessor.CODEC);
 	public static final DeferredHolder<StructureProcessorType<?>, StructureProcessorType<UpdateMarkingProcessor>> UPDATE_MARKING_PROCESSOR = registerProcessor("update_marking", () -> () -> UpdateMarkingProcessor.CODEC);
 

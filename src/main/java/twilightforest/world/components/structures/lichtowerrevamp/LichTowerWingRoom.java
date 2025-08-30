@@ -49,7 +49,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
-import twilightforest.beans.Autowired;
+import tamaized.beanification.Autowired;
 import twilightforest.block.ChiseledCanopyShelfBlock;
 import twilightforest.block.LightableBlock;
 import twilightforest.block.SkullCandleBlock;
