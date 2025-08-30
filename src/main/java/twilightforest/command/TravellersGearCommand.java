@@ -13,10 +13,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.common.util.FakePlayer;
 import twilightforest.TFRegistries;
-import twilightforest.init.TFDataComponents;
 import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.item.travellers_gear.TravellersArmorItem;
 import twilightforest.item.travellers_gear.modifiers.InsertableTravellersModifier;
+import twilightforest.item.travellers_gear.modifiers.TravellersModifiable;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 
 import java.util.function.Function;
@@ -46,7 +46,7 @@ public class TravellersGearCommand {
 	private int addModifier(CommandSourceStack source, Holder.Reference<TravellersModifier> modifier) throws CommandSyntaxException {
 		Component modKey = Component.translatable(modifier.key().location().toLanguageKey(modifier.value().getPrefix()));
 		if (!(source.getEntity() instanceof Player player) || player instanceof FakePlayer) throw ERROR_NOT_RUN_BY_PLAYER.create();
-		if (!(player.getMainHandItem().getItem() instanceof TravellersArmorItem armor)) throw ERROR_NOT_HOLDING_GEAR.create();
+		if (!(player.getMainHandItem().getItem() instanceof TravellersModifiable armor)) throw ERROR_NOT_HOLDING_GEAR.create();
 		if (modifier.value().isAbility()) throw ERROR_ABILITY.create();
 		if (TravellersModifiersManager.countInsertableModifiers(source.registryAccess(), player.getMainHandItem()) >= armor.getModifierSlots()) throw ERROR_TOO_MANY_MODIFIERS.create();
 		if (TravellersModifiersManager.hasTravellersModifier(source.registryAccess(), player.getMainHandItem(), modifier.key())) throw ERROR_HAS_MODIFIER.apply(modKey).create();
