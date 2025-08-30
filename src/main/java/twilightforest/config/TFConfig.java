@@ -22,6 +22,9 @@ import twilightforest.network.SyncUncraftingTableConfigPacket;
 import twilightforest.util.PlayerHelper;
 
 import java.net.Proxy;
+import java.time.chrono.IsoChronology;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.FormatStyle;
 import java.util.*;
 
 public class TFConfig {
@@ -50,7 +53,7 @@ public class TFConfig {
 	public static int itemDisplayXOffs = 4;
 	public static int itemDisplayYOffs = 4;
 	public static double itemDisplayScale = 1.0D;
-	public static boolean clockMilitaryTime = false;
+	public static boolean clock24HourFormat = use24HourTimeDefault();
 
 	// --- COMMON ---
 	public static boolean casketUUIDLocking = false;
@@ -219,7 +222,7 @@ public class TFConfig {
 		itemDisplayXOffs = config.ITEM_DISPLAY.screenOffsetX.get();
 		itemDisplayYOffs = config.ITEM_DISPLAY.screenOffsetY.get();
 		itemDisplayScale = config.ITEM_DISPLAY.screenScale.get();
-		clockMilitaryTime = config.ITEM_DISPLAY.militaryTime.get();
+		clock24HourFormat = config.ITEM_DISPLAY.twentyFourHourFormat.get();
 	}
 
 	private static void reloadGiantSkins(TFClientConfig config) {
@@ -271,6 +274,15 @@ public class TFConfig {
 		@Override
 		public Component getTranslatedName() {
 			return Component.translatable(CONFIG_ID + "multiplayer_fight_adjuster." + this.name().toLowerCase(Locale.ROOT));
+		}
+	}
+
+	public static boolean use24HourTimeDefault() {
+		try {
+			String pattern = DateTimeFormatterBuilder.getLocalizedDateTimePattern(FormatStyle.SHORT, FormatStyle.SHORT, IsoChronology.INSTANCE, Locale.getDefault());
+			return !pattern.contains("a");  // "a" is used to display AM / PM.
+		} catch (Throwable throwable) {
+			return true;
 		}
 	}
 }

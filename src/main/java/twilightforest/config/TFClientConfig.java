@@ -113,10 +113,10 @@ public class TFClientConfig {
 				.comment(ConfigComments.DISPLAY_SCALE)
 				.defineInRange("screenScale", 1.0D, 0.1D, 10.0D);
 
-			ITEM_DISPLAY.militaryTime = builder
-				.translation(TFConfig.CONFIG_ID + "military_time")
-				.comment(ConfigComments.MILITARY_TIME)
-				.define("militaryTime", false);
+			ITEM_DISPLAY.twentyFourHourFormat = builder
+				.translation(TFConfig.CONFIG_ID + "twenty_four_hour_format")
+				.comment(ConfigComments.TWENTY_FOUR_HOUR_FORMAT)
+				.define("twentyFourHourFormat", TFConfig.use24HourTimeDefault());
 		}
 		builder.pop();
 	}
@@ -125,6 +125,6 @@ public class TFClientConfig {
 		ModConfigSpec.IntValue screenOffsetX;
 		ModConfigSpec.IntValue screenOffsetY;
 		ModConfigSpec.DoubleValue screenScale;
-		ModConfigSpec.BooleanValue militaryTime;
+		ModConfigSpec.BooleanValue twentyFourHourFormat;
 	}
 }

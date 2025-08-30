@@ -11,13 +11,46 @@ import net.minecraft.world.level.Level;
 import twilightforest.TwilightForestMod;
 import twilightforest.config.TFConfig;
 
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Map;
+import java.util.NavigableMap;
+import java.util.TreeMap;
+
 public class ClockDisplay implements ItemDisplay {
+	private static final long INITIAL_DAY_OFFSET_IN_TICKS = 6000L;
+	private static final long MINECRAFT_DAY_LENGTH_IN_TICKS = 24000L;
+	private static final long REAL_LIFE_DAY_LENGTH_IN_SECONDS = 86400L;
+	private static final DateTimeFormatter FORMAT_24 = DateTimeFormatter.ofPattern("HH:mm");
+	private static final DateTimeFormatter FORMAT_12 = DateTimeFormatter.ofPattern("hh:mm a");
+	private static final NavigableMap<Long, TimeFrame> TIME_FRAMES = new TreeMap<>(Map.ofEntries(
+		Map.entry(0L, TimeFrame.SUNRISE),
+		Map.entry(501L, TimeFrame.DAY),
+		Map.entry(12500L, TimeFrame.SUNSET),
+		Map.entry(14000L, TimeFrame.NIGHT),
+		Map.entry(22000L, TimeFrame.SUNRISE)
+	));
+
+	private static long getMinecraftClockTimeInTicks(long ticks) {
+		return (ticks + INITIAL_DAY_OFFSET_IN_TICKS) % MINECRAFT_DAY_LENGTH_IN_TICKS;
+	}
+
+	private static Component getGameTime(Level level, boolean use24HourFormat) {
+		if (!level.dimensionType().natural())
+			return Component.translatable("travellers_gear.modifier.twilightforest.item_display.clock.unknown");
+
+		long rawTime = level.dimensionType().fixedTime().orElse(level.getDayTime());
+		long ticksOfDay = getMinecraftClockTimeInTicks(rawTime);
+		long secondsOfDay = (ticksOfDay * REAL_LIFE_DAY_LENGTH_IN_SECONDS) / MINECRAFT_DAY_LENGTH_IN_TICKS;
+		LocalTime localTime = LocalTime.ofSecondOfDay(secondsOfDay);
+		return Component.literal(localTime.format(use24HourFormat ? FORMAT_24 : FORMAT_12));
+	}
 
 	@Override
 	public void render(ItemStack item, GuiGraphics graphics, Minecraft minecraft, Gui gui, Player player, int widestWidgetWidth) {
 		FormattedCharSequence formattedcharsequence = this.getText(minecraft).getVisualOrderText();
 		if (minecraft.level.dimensionType().natural()) {
-			int k = this.getFrameForTime(minecraft.level.dimensionType().fixedTime().orElse(minecraft.level.getDayTime()));
+			int k = this.getFrameForTime(minecraft.level.dimensionType().fixedTime().orElse(minecraft.level.getDayTime())).frame;
 			int xRow = k % 2;
 			int yRow = k / 2 % 2;
 			float xMin = xRow * 8;
@@ -27,19 +60,9 @@ public class ClockDisplay implements ItemDisplay {
 		graphics.drawString(minecraft.font, formattedcharsequence, Math.max(0, (widestWidgetWidth / 2 + 5) - minecraft.font.width(formattedcharsequence) / 2), 0, 0xFFFFFF);
 	}
 
-	private int getFrameForTime(long time) {
-		if (time >= 22000 || time <= 500) {
-			return 0; //sunrise
-		} else if (time >= 12500 && time < 14000) {
-			return 2; //sunset
-		} else if (time >= 14000) {
-			return 3; //night
-		}
-		return 1; //day
-	}
-
-	private Component getText(Minecraft minecraft) {
-		return getGameTime(minecraft.level, TFConfig.clockMilitaryTime);
+	private TimeFrame getFrameForTime(long dayTimeInTicks) {
+		long time = dayTimeInTicks % MINECRAFT_DAY_LENGTH_IN_TICKS;
+		return TIME_FRAMES.floorEntry(time).getValue();
 	}
 
 	@Override
@@ -49,31 +72,20 @@ public class ClockDisplay implements ItemDisplay {
 		return new Bounds(Math.max(0, (widestWidgetWidth / 2 - (natural ? 5 : 0)) - (textWidth / 2)), 0, textWidth + (natural ? 10 : 0), minecraft.font.lineHeight);
 	}
 
-	private static Component getGameTime(Level level, boolean militaryTime) {
-		if (level.dimensionType().natural()) {
-			double ratio = 1000.0D / 60.0D;
+	private Component getText(Minecraft minecraft) {
+		return getGameTime(minecraft.level, TFConfig.clock24HourFormat);
+	}
 
-			long rawTime = level.dimensionType().fixedTime().orElse(level.getDayTime());
-			int dayTime = (int) ((rawTime + 6000L) % (militaryTime ? 24000L : 12000L));
-			int hours = dayTime / 1000;
-			int minutes = (int) ((dayTime % 1000) / ratio);
+	private enum TimeFrame {
+		SUNRISE(0),
+		DAY(1),
+		SUNSET(2),
+		NIGHT(3);
 
-			if (!militaryTime && hours == 0) {
-				hours = 12;
-			}
+		final int frame;
 
-			String timeOfDay = "";
-
-			if (!militaryTime) {
-				timeOfDay = rawTime % 24000L > 6000L && rawTime < 18000L ? " PM" : " AM";
-			}
-
-			return Component.literal((hours < 10 ? "0" : "") +
-				hours + ":" +
-				(minutes < 10 ? "0" : "") +
-				minutes + timeOfDay);
-		} else {
-			return Component.translatable("travellers_gear.modifier.twilightforest.item_display.clock.unknown");
+		TimeFrame(int frame) {
+			this.frame = frame;
 		}
 	}
 }

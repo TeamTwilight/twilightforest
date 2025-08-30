@@ -1210,7 +1210,7 @@ public class LangGenerator extends TFLangProvider {
 		this.configEntry("screen_offset_x", "Display X Offset", ConfigComments.DISPLAY_SCREEN_OFFSET_Y);
 		this.configEntry("screen_offset_y", "Display Y Offset", ConfigComments.DISPLAY_SCREEN_OFFSET_Y);
 		this.configEntry("screen_scale", "Display Scale", ConfigComments.DISPLAY_SCALE);
-		this.configEntry("military_time", "Military Time", ConfigComments.MILITARY_TIME);
+		this.configEntry("twenty_four_hour_format", "24-Hour Format", ConfigComments.TWENTY_FOUR_HOUR_FORMAT);
 
 		//common config
 		this.configCategory("dim_settings", "Dimension Settings", ConfigComments.DIMENSION);
