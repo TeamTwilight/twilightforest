@@ -88,7 +88,8 @@ public class TrollsteinnBlock extends Block {
 		for (Map.Entry<Direction, BooleanProperty> e : PROPERTY_MAP.entrySet()) {
 			Level level = ctx.getLevel();
 			BlockPos pos = ctx.getClickedPos();
-			int light = level.getMaxLocalRawBrightness(pos.relative(e.getKey()), level instanceof ClientLevel clientLevel ? calculateServerSkyDarken(clientLevel) : level.getSkyDarken());
+			int light = level.getMaxLocalRawBrightness(pos.relative(e.getKey()),
+					level.isClientSide() ? calculateServerSkyDarken((ClientLevel) level) : level.getSkyDarken());
 			ret = ret.setValue(e.getValue(), light > LIGHT_THRESHOLD);
 		}
 		return ret;
