@@ -148,6 +148,12 @@ neoForge {
 			gameDirectory = project.file('run-data')
 			programArguments.addAll '--mod', mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
 		}
+
+		gametest {
+			type = 'gameTestServer'
+			gameDirectory = project.file('run-test')
+			systemProperty 'neoforge.enabledGameTestNamespaces', mod_id
+		}
 	}
 }
 

@@ -24,5 +24,6 @@ run
 classes
 logs
 run-data
+run-test
 gource.sh
 .noai
