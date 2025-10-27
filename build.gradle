@@ -98,6 +98,21 @@ subprojects {
 	version = project(":").version
 }
 
+sourceSets {
+	gametest {
+		compileClasspath += main.compileClasspath + main.output
+
+		java {
+			srcDirs += ['src/main/java', 'src/gametest/java']
+		}
+		resources {
+			srcDirs += ['src/gametest/generated']
+		}
+	}
+}
+
+project.configurations.maybeCreate(sourceSets.gametest.getTaskName(null, 'implementation')).extendsFrom(project.configurations.named('implementation').get())
+
 neoForge {
 	// we need the subprojects to evaluate first so that the sourceSets are properly constructed
 	evaluationDependsOnChildren()
@@ -107,6 +122,8 @@ neoForge {
 
 	validateAccessTransformers = true
 
+	addModdingDependenciesTo sourceSets.gametest
+
 	mods {
 		"${mod_id}" {
 			it.sourceSet this.sourceSets.main
@@ -114,6 +131,11 @@ neoForge {
 
 		'tf-asm' {
 			it.sourceSet project(":tf-asm").sourceSets.main
+		}
+
+		'gametest' {
+			sourceSet sourceSets.main
+			sourceSet sourceSets.gametest
 		}
 	}
 
@@ -149,10 +171,12 @@ neoForge {
 			programArguments.addAll '--mod', mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
 		}
 
-		gametest {
+		'gametest-server' {
 			type = 'gameTestServer'
 			gameDirectory = project.file('run-test')
 			systemProperty 'neoforge.enabledGameTestNamespaces', mod_id
+			sourceSet = sourceSets.gametest
+			loadedMods = [mods.'tf-asm', mods.'gametest']
 		}
 	}
 }
@@ -212,11 +236,17 @@ repositories {
 dependencies {
 	jarJar implementation(project(":tf-asm"))
 
+	// gametestImplementation("net.neoforged:testframework:${neo_version}") {
+	// 	transitive = false
+	// }
+
 	def beanification = "tamaized:beanification:${project.beanification_version}"
 	implementation beanification
 	shade beanification
 	testImplementation "${beanification}:tests"
 	testCompileOnly "${beanification}:test-sources"
+
+	gametestImplementation(beanification)
 
 	//make sure to only pick one of these when testing (switch others to compileOnly)
 	implementation "mezz.jei:jei-${project.base_minecraft_version}-neoforge:${project.jei_version}"

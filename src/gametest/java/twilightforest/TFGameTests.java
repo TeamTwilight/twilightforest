@@ -1,4 +1,4 @@
-package twilightforest.gametests;
+package twilightforest;
 
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
@@ -17,7 +17,6 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.gametest.GameTestHolder;
 import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 import net.neoforged.neoforge.registries.DeferredHolder;
-import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
 
 import java.util.Iterator;
@@ -52,6 +51,11 @@ public class TFGameTests {
 			.filter(Predicate.not(excludeBlocks::contains))
 			.flatMap(TFGameTests::extractBlockStates)
 			.iterator();
+
+		if (!blockStatesForTesting.hasNext()) {
+			test.fail("No blockstates available to place");
+			return;
+		}
 
 		while (blockStatesForTesting.hasNext()) {
 			test.setBlock(BlockPos.ZERO, Blocks.AIR);
@@ -119,10 +123,15 @@ public class TFGameTests {
 			TFBlocks.CINDER_FURNACE
 		);
 
-		Iterator<? extends Block> blockForTesting = TFBlocks.BLOCKS.getEntries().stream()
+		Iterator<? extends Block> blocksForTesting = TFBlocks.BLOCKS.getEntries().stream()
 			.filter(Predicate.not(excludeBlocks::contains))
 			.map(DeferredHolder::value)
 			.iterator();
+
+		if (!blocksForTesting.hasNext()) {
+			test.fail("No blocks available to place");
+			return;
+		}
 
 		BlockPos worldPos = test.absolutePos(BlockPos.ZERO);
 
@@ -135,10 +144,10 @@ public class TFGameTests {
 
 		test.setBlock(BlockPos.ZERO.below(), Blocks.DIRT); // Plant support
 
-		while (blockForTesting.hasNext()) {
+		while (blocksForTesting.hasNext()) {
 			test.setBlock(BlockPos.ZERO, Blocks.AIR);
 
-			Item blockItem = blockForTesting.next().asItem();
+			Item blockItem = blocksForTesting.next().asItem();
 			if (blockItem.getDefaultInstance().isEmpty()) continue;
 			ItemStack stack = new ItemStack(blockItem);
 			player.setItemInHand(InteractionHand.MAIN_HAND, stack);
