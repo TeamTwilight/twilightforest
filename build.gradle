@@ -155,13 +155,11 @@ neoForge {
 
 		client {
 			client()
-			systemProperty 'forge.enabledGameTestNamespaces', mod_id
 			programArguments.addAll '--username', secrets.getProperty("username") ?: 'Dev', secrets.getProperty("uuid") ? '--uuid' : '', secrets.getProperty("uuid") ?: ''
 		}
 
 		server {
 			server()
-			systemProperty 'forge.enabledGameTestNamespaces', mod_id
 			programArgument '--nogui'
 		}
 
@@ -236,9 +234,9 @@ repositories {
 dependencies {
 	jarJar implementation(project(":tf-asm"))
 
-	// gametestImplementation("net.neoforged:testframework:${neo_version}") {
-	// 	transitive = false
-	// }
+	gametestImplementation("net.neoforged:testframework:${neo_version}") {
+		transitive = false
+	}
 
 	def beanification = "tamaized:beanification:${project.beanification_version}"
 	implementation beanification
