@@ -49,6 +49,7 @@ public class HedgeMazeComponent extends TFStructureComponentOld {
 
 	@Override
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+		rand.setSeed(getMazeSeed(world));
 		TFMaze maze = new TFMaze(MSIZE, MSIZE, rand);
 
 		maze.oddBias = 2;
@@ -59,7 +60,6 @@ public class HedgeMazeComponent extends TFStructureComponentOld {
 		maze.roots = 3;
 
 		// set the seed to a fixed value based on this maze's x and z
-		maze.setSeed(world.getSeed() + (long) this.boundingBox.minX() * this.boundingBox.minZ());
 
 		// just add grass below the maze for now
 		// grass underneath
@@ -93,8 +93,8 @@ public class HedgeMazeComponent extends TFStructureComponentOld {
 			for (int i = 0; i < nrooms; i++) {
 				int rx, rz;
 				do {
-					rx = maze.rand.nextInt(MSIZE - 2) + 1;
-					rz = maze.rand.nextInt(MSIZE - 2) + 1;
+					rx = rand.nextInt(MSIZE - 2) + 1;
+					rz = rand.nextInt(MSIZE - 2) + 1;
 				} while (isNearRoom(rx, rz, rcoords));
 
 				maze.carveRoom1(rx, rz);
@@ -103,14 +103,18 @@ public class HedgeMazeComponent extends TFStructureComponentOld {
 				rcoords[i * 2 + 1] = rz;
 			}
 
-			maze.generateRecursiveBacktracker(0, 0);
+			maze.generateRecursiveBacktracker(0, 0, rand);
 		}
 
 		maze.add4Exits();
 
-		maze.copyToStructure(world, manager, generator, 1, FLOOR_LEVEL, 1, this, sbb);
+		maze.copyToStructure(world, manager, generator, 1, FLOOR_LEVEL, 1, this, sbb, rand);
 
 		decorate3x3Rooms(world, rcoords, sbb);
+	}
+
+	private long getMazeSeed(WorldGenLevel world) {
+		return world.getSeed() + (long) this.boundingBox.minX() * this.boundingBox.minZ();
 	}
 
 	/**
