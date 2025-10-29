@@ -1066,6 +1066,7 @@
   "jukebox_song.twilightforest.thread": "MrCompost – Thread",
   "jukebox_song.twilightforest.warfarer": "MrCompost – Wayfarer",
   "magic_painting.twilightforest.castaway_paradise.author": "HexaBlu",
+  "magic_painting.twilightforest.castaway_paradise.title": "სამოთხიდან გაძევებული",
   "magic_painting.twilightforest.darkness.author": "???",
   "magic_painting.twilightforest.darkness.title": "წყვდიადი",
   "magic_painting.twilightforest.lucid_lands.author": "Androsa",
@@ -1086,6 +1087,7 @@
   "misc.twilightforest.ore_meter_ratio": "(%s%%)",
   "misc.twilightforest.ore_meter_separator": "-",
   "misc.twilightforest.pedestal_ineligible": "თქვენ ღირსეული არ ხართ.",
+  "museumcurator.animalhusbandry.twilightforest.bugs": "ხოჭოები",
   "museumcurator.architecture.twilightforest.aurorablocks": "ციალის ბლოკი",
   "museumcurator.architecture.twilightforest.banisters": "მოაჯირები",
   "museumcurator.architecture.twilightforest.castlebrick": "ციხე-კოშკის აგური",
@@ -1431,6 +1433,9 @@
   "twilightforest.tips.structure_spawning": "სტრუქტურები ბადისამებრ განლაგებით ჩნდება.",
   "twilightforest.tips.towerwood": "კოშკხის ფიცრები სიმკვრივით გამოირჩევა, მაგრამ აალებადია.",
   "twilightforest.tips.trollber_ripening": "ტროლის მოკვლით ახლო მდებარე ტროლბერი დამწიფდება.",
+  "twilightforest.tips.twilight_portal": "ჩააგდეთ ალმასი ყვავილებით გარშემორტყმულ წყლის გუბეში.",
   "twilightforest.tips.ur_ghast": "ხუცესი გასტის ციდან ჩამოყვანა საგასტო ხაფანგით შეიძლება.",
+  "twilightforest.tips.worldgen_features": "ტევრი მოფარულია მრავალი ნანგრევით. ზოგში შეიძლება უნიკალური ნივთები ინახებოდეს.",
+  "twilightforest.tips.yeti": "ისტის უყვართ რაღაცების სროლა.",
   "twilightforest.tips.zombie_healing": "ზომბის კვერთხით გამოძახებული ზომბები დამპალი ხორცით განიკურნებიან. "
 }
