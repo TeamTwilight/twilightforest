@@ -1,4 +1,4 @@
-package twilightforest;
+package twilightforest.gametest;
 
 import net.minecraft.gametest.framework.GameTestGenerator;
 import net.minecraft.gametest.framework.TestFunction;
@@ -7,6 +7,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.RegisterGameTestsEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import twilightforest.TwilightForestMod;
 
 import java.util.Collection;
 

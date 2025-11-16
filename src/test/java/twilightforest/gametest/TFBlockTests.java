@@ -1,4 +1,4 @@
-package twilightforest;
+package twilightforest.gametest;
 
 import com.google.common.collect.Streams;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.gametest.GameTestHolder;
 import net.neoforged.neoforge.registries.DeferredHolder;
+import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
 
 import java.util.Collection;
