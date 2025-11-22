@@ -22,7 +22,7 @@ public class MistWolfModel extends HostileWolfModel<MistWolf> {
 		if (this.wolf != null) {
 			float brightness = this.wolf.level().getMaxLocalRawBrightness(this.wolf.blockPosition()) / 15.0F;
 			float misty = Math.min(1.0F, brightness * 3.0F + 0.25F);
-			float smoky = Math.min(1.0F, brightness * 2.0F + 0.6F);
+			float smoky = Math.min(1.0F, brightness * 2.0F + 0.3F);
 			super.renderToBuffer(stack, consumer, light, overlay, FastColor.ARGB32.colorFromFloat(smoky, misty, misty, misty));
 		} else {
 			super.renderToBuffer(stack, consumer, light, overlay, color);
