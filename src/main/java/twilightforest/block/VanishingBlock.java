@@ -140,11 +140,12 @@ public class VanishingBlock extends Block {
 		if (this.isVanished(state)) {
 			if (state.getValue(ACTIVE)) {
 				level.setBlockAndUpdate(pos, state.setValue(VANISHED, false).setValue(ACTIVE, false));
+				level.playSound(null, pos, TFSounds.REAPPEAR_BLOCK.get(), SoundSource.BLOCKS, 0.3F, 0.3F);
 			} else {
+				level.playSound(null, pos, TFSounds.REAPPEAR_POOF.get(), SoundSource.BLOCKS, 0.3F, 0.5F);
 				level.setBlockAndUpdate(pos, state.setValue(ACTIVE, true));
 				level.scheduleTick(pos, this, 15);
 			}
-			level.playSound(null, pos, TFSounds.REAPPEAR_BLOCK.get(), SoundSource.BLOCKS, 0.3F, 0.6F);
 		} else {
 			if (state.getValue(ACTIVE)) {
 				if (state.hasProperty(VANISHED)) {

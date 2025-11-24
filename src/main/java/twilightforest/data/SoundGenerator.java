@@ -329,7 +329,7 @@ public class SoundGenerator extends TFSoundProvider {
 		this.generateExistingSoundWithSubtitle(TFSounds.PICKED_TORCHBERRIES, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, "Torchberries pop");
 		this.generateExistingSoundWithSubtitle(TFSounds.PORTAL_WHOOSH, SoundEvents.PORTAL_AMBIENT, "Twilight Forest Portal beckons");
 		this.generateExistingSoundWithSubtitle(TFSounds.REACTOR_AMBIENT, SoundEvents.PORTAL_AMBIENT, "Carminite Reactor whooshes");
-		this.generateExistingSoundWithSubtitle(TFSounds.REAPPEAR_BLOCK, SoundEvents.ITEM_PICKUP, "Reappearing Block reappears");
+		this.generateExistingSoundWithSubtitle(TFSounds.REAPPEAR_BLOCK, SoundEvents.DISPENSER_DISPENSE, "Reappearing Block reappears");
 		this.generateExistingSoundWithSubtitle(TFSounds.REAPPEAR_POOF, SoundEvents.ITEM_PICKUP, "Reappearing Block disappears");
 		this.generateNewSoundWithSubtitle(TFSounds.SKULL_CHEST_CLOSE, "random/casket/close", 1, "Skull Chest closes");
 		this.generateExistingSoundWithSubtitle(TFSounds.SKULL_CHEST_LOCKED, SoundEvents.CHEST_LOCKED, "Skull Chest clicks");
