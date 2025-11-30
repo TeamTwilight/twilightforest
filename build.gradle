@@ -98,6 +98,19 @@ subprojects {
 	version = project(":").version
 }
 
+sourceSets {
+	test {
+		compileClasspath += main.compileClasspath + main.output
+
+		java {
+			srcDirs += ['src/main/java', 'src/test/java']
+		}
+		resources {
+			srcDirs += ['src/test/generated']
+		}
+	}
+}
+
 neoForge {
 	// we need the subprojects to evaluate first so that the sourceSets are properly constructed
 	evaluationDependsOnChildren()
@@ -107,6 +120,8 @@ neoForge {
 
 	validateAccessTransformers = true
 
+	addModdingDependenciesTo sourceSets.test
+
 	mods {
 		"${mod_id}" {
 			it.sourceSet this.sourceSets.main
@@ -114,6 +129,11 @@ neoForge {
 
 		'tf-asm' {
 			it.sourceSet project(":tf-asm").sourceSets.main
+		}
+
+		'test' {
+			sourceSet sourceSets.main
+			sourceSet sourceSets.test
 		}
 	}
 
@@ -133,13 +153,11 @@ neoForge {
 
 		client {
 			client()
-			systemProperty 'forge.enabledGameTestNamespaces', mod_id
 			programArguments.addAll '--username', secrets.getProperty("username") ?: 'Dev', secrets.getProperty("uuid") ? '--uuid' : '', secrets.getProperty("uuid") ?: ''
 		}
 
 		server {
 			server()
-			systemProperty 'forge.enabledGameTestNamespaces', mod_id
 			programArgument '--nogui'
 		}
 
@@ -147,6 +165,14 @@ neoForge {
 			data()
 			gameDirectory = project.file('run-data')
 			programArguments.addAll '--mod', mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+		}
+
+		'gametest-server' {
+			type = 'gameTestServer'
+			gameDirectory = project.file('run-test')
+			systemProperty 'neoforge.enabledGameTestNamespaces', mod_id
+			sourceSet = sourceSets.test
+			loadedMods = [mods.'tf-asm', mods.'test']
 		}
 	}
 }
@@ -205,6 +231,10 @@ repositories {
 
 dependencies {
 	jarJar implementation(project(":tf-asm"))
+
+	testImplementation("net.neoforged:testframework:${neo_version}") {
+		transitive = false
+	}
 
 	def beanification = "tamaized:beanification:${project.beanification_version}"
 	implementation beanification
