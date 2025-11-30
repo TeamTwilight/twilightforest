@@ -258,11 +258,12 @@ public class TFTeleporter {
 		XZQuadrantIterator<BlockPos> landmarkCenterGrid = new XZQuadrantIterator<>(nearestCenterXZ.getX() >> 4, nearestCenterXZ.getZ() >> 4, true, 128, 16, LegacyLandmarkPlacements::getNearestCenterXZ);
 		// Iterator loops over every center landmark. Searches a 9x9 grid of centers
 		for (BlockPos landmarkCenter : landmarkCenterGrid) {
-			if (isSafeAround(level, landmarkCenter, entity, checkProgression)) {
-				return landmarkCenter;
+			// Check biome overlapping structure, never put portal overlapping structure center
+			if (checkProgression && biomeUnsafe(level, landmarkCenter, entity)) {
+				continue;
 			}
 
-			// Searches every second chunk in a 9x9 grid around the center
+			// Searches every second chunk in a 9x9 grid around the center, inside the map-biome cell
 			XZQuadrantIterator<BlockPos> gridAroundLandmark = new XZQuadrantIterator<>(landmarkCenter.getX(), landmarkCenter.getZ(), true, 128, 32, (x, z) -> new BlockPos(x, 4, z));
 			for (BlockPos posInBiome : gridAroundLandmark) {
 				if (isSafeAround(level, posInBiome, entity, checkProgression)) {
@@ -293,7 +294,7 @@ public class TFTeleporter {
 			if (isOutsideBorder(world, pos))
 				return true;
 
-			if (checkProgression && !checkBiome(world, pos, entity))
+			if (checkProgression && biomeUnsafe(world, pos, entity))
 				return true;
 
 			return structureUnsafe(world, pos);
@@ -319,8 +320,8 @@ public class TFTeleporter {
 		return boundingBox.isInside(pos.atY(boundingBox.minY()));
 	}
 
-	private static boolean checkBiome(Level world, BlockPos pos, Entity entity) {
-		return Restriction.isBiomeSafeFor(world.getBiome(pos).value(), entity);
+	private static boolean biomeUnsafe(Level world, BlockPos pos, Entity entity) {
+		return !Restriction.isBiomeSafeFor(world.getBiome(pos).value(), entity);
 	}
 
 	protected static void makePortal(TeleporterCache cache, Entity entity, ServerLevel world, Vec3 pos, boolean locked) {
