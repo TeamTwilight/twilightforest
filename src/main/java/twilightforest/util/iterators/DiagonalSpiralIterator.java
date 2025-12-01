@@ -15,9 +15,15 @@ public class DiagonalSpiralIterator implements Iterator<BlockPos>, Iterable<Bloc
 	@Deprecated // FIXME remove
 	private static final Logger LOGGER = LogManager.getLogger();
 
+	private final int range;
+
 	private int offset = 0; // How far are the rows from the center
 	private int side = 0; // Which of the 4 sides is being marched over
 	private int advance = 0; // Where on the side?
+
+	public DiagonalSpiralIterator(int range) {
+		this.range = range;
+	}
 
 	@Override
 	public @NotNull Iterator<BlockPos> iterator() {
@@ -26,7 +32,7 @@ public class DiagonalSpiralIterator implements Iterator<BlockPos>, Iterable<Bloc
 
 	@Override
 	public boolean hasNext() {
-		return false;
+		return this.offset <= this.range * 2;
 	}
 
 	@Override
@@ -45,12 +51,16 @@ public class DiagonalSpiralIterator implements Iterator<BlockPos>, Iterable<Bloc
 
 		this.advance++; // Prepped for next iteration
 
-		if (this.advance >= this.offset) {
+		int advanceLimit = Math.min(this.offset, this.range + 1);
+		if (this.advance >= advanceLimit) {
 			this.side = (this.side + 1) % 4;
 			if (this.side == 0) {
 				this.offset++;
 			}
 			this.advance = 0;
+			if (this.offset > this.range) {
+				this.advance = this.offset - this.range;
+			}
 		}
 	}
 
