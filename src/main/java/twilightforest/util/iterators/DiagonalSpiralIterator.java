@@ -2,42 +2,53 @@ package twilightforest.util.iterators;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.NotNull;
+import twilightforest.util.BinaryIntegerFunction;
 
 import java.util.Iterator;
 
-public class DiagonalSpiralIterator implements Iterator<BlockPos>, Iterable<BlockPos> {
+public class DiagonalSpiralIterator<T> implements Iterator<T>, Iterable<T> {
 
 	private static final Direction[] DIRECTIONS = new Direction[]{ Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST };
 
-	@Deprecated // FIXME remove
-	private static final Logger LOGGER = LogManager.getLogger();
-
-	private final int range;
+	private final int xConstant;
+	private final int zConstant;
+	private final int radius;
+	private final int spacing;
+	private final BinaryIntegerFunction<T> converter;
 
 	private int offset = 0; // How far are the rows from the center
 	private int side = 0; // Which of the 4 sides is being marched over
 	private int advance = 0; // Where on the side?
 
-	public DiagonalSpiralIterator(int range) {
-		this.range = range;
+	public static DiagonalSpiralIterator<BlockPos> atElevationZero(int xConstant, int zConstant, boolean skipCenter, int radius, int spacing) {
+		return new DiagonalSpiralIterator<>(xConstant, zConstant, skipCenter, radius, spacing, (x, z) -> new BlockPos(x, 0, z));
+	}
+
+	public DiagonalSpiralIterator(int xConstant, int zConstant, boolean skipCenter, int radius, int spacing, BinaryIntegerFunction<T> converter) {
+		this.xConstant = xConstant;
+		this.zConstant = zConstant;
+		this.radius = radius / spacing;
+		this.spacing = spacing;
+		this.converter = converter;
+
+		if (skipCenter) {
+			this.offset = 1;
+		}
 	}
 
 	@Override
-	public @NotNull Iterator<BlockPos> iterator() {
+	public Iterator<T> iterator() {
 		return this;
 	}
 
 	@Override
 	public boolean hasNext() {
-		return this.offset <= this.range * 2;
+		return this.offset <= this.radius * 2;
 	}
 
 	@Override
-	public BlockPos next() {
-		BlockPos newPos = this.nextBlockPos();
+	public T next() {
+		T newPos = this.nextBlockPos();
 		this.advancePos();
 		return newPos;
 	}
@@ -51,21 +62,24 @@ public class DiagonalSpiralIterator implements Iterator<BlockPos>, Iterable<Bloc
 
 		this.advance++; // Prepped for next iteration
 
-		int advanceLimit = Math.min(this.offset, this.range + 1);
+		int advanceLimit = Math.min(this.offset, this.radius + 1);
 		if (this.advance >= advanceLimit) {
 			this.side = (this.side + 1) % 4;
 			if (this.side == 0) {
 				this.offset++;
 			}
 			this.advance = 0;
-			if (this.offset > this.range) {
-				this.advance = this.offset - this.range;
+			if (this.offset > this.radius) {
+				this.advance = this.offset - this.radius;
 			}
 		}
 	}
 
-	private @NotNull BlockPos nextBlockPos() {
+	private T nextBlockPos() {
 		Direction direction = DIRECTIONS[this.side];
-		return BlockPos.ZERO.relative(direction, this.offset - this.advance).relative(direction.getClockWise(), this.advance);
+		Direction clockWise = direction.getClockWise();
+		int u = this.offset - this.advance;
+		int v = this.advance;
+		return this.converter.apply(this.xConstant + (direction.getStepX() * u + clockWise.getStepX() * v) * this.spacing, this.zConstant + (direction.getStepZ() * u + clockWise.getStepZ() * v) * this.spacing);
 	}
 }
