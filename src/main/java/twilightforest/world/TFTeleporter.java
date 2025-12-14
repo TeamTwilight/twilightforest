@@ -32,6 +32,7 @@ import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.data.tags.StructureTagGenerator;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDimension;
+import twilightforest.util.iterators.DiagonalSpiralIterator;
 import twilightforest.util.iterators.XZQuadrantIterator;
 import twilightforest.util.landmarks.LandmarkUtil;
 import twilightforest.util.landmarks.LegacyLandmarkPlacements;
@@ -252,23 +253,19 @@ public class TFTeleporter {
 
 	@Nullable
 	private static BlockPos scanIntoSafeBiomes(ServerLevel level, BlockPos pos, Entity entity, boolean checkProgression) {
-		BlockPos nearestCenterXZ = LegacyLandmarkPlacements.getNearestCenterXZ(pos.getX() >> 4, pos.getZ() >> 4);
-		if (isSafeAround(level, nearestCenterXZ, entity, checkProgression)) {
-			return nearestCenterXZ;
-		}
-
-		XZQuadrantIterator<BlockPos> landmarkCenterGrid = new XZQuadrantIterator<>(nearestCenterXZ.getX() >> 4, nearestCenterXZ.getZ() >> 4, true, 128, 16, LegacyLandmarkPlacements::getNearestCenterXZ);
-		// Iterator loops over every center landmark. Searches a 9x9 grid of centers
-		for (BlockPos landmarkCenter : landmarkCenterGrid) {
+		Iterable<BlockPos> biomeCenterGrid = new DiagonalSpiralIterator<>(pos.getX() >> 4, pos.getZ() >> 4, false, 128, 16, LegacyLandmarkPlacements::getNearestCenterXZ);
+		// Iterator loops over a 9x9 grid of biomes' random centers, maintaining an approximate order of proximity
+		for (BlockPos biomeCenter : biomeCenterGrid) {
 			// Check biome overlapping structure center
-			if (checkProgression && biomeUnsafe(level, landmarkCenter, entity)) {
+			if (checkProgression && biomeUnsafe(level, biomeCenter, entity)) {
 				continue;
 			}
 
-			// Searches every second chunk in a 9x9 grid around the center, inside the map-biome cell
-			XZQuadrantIterator<BlockPos> gridAroundLandmark = new XZQuadrantIterator<>(landmarkCenter.getX(), landmarkCenter.getZ(), true, 128, 32, (x, z) -> new BlockPos(x, 4, z));
+			// Searches every chunk in a 17x17 grid around the center, inside the biome cell
+			Iterable<BlockPos> gridAroundLandmark = new XZQuadrantIterator<>(biomeCenter.getX(), biomeCenter.getZ(), true, 128, 16, (x, z) -> new BlockPos(x, 4, z));
 			for (BlockPos posInBiome : gridAroundLandmark) {
 				if (isSafeAround(level, posInBiome, entity, checkProgression)) {
+					LOGGER.debug("Found {} in biome-scanning for safe portal placement", posInBiome.toShortString());
 					return posInBiome;
 				}
 			}
