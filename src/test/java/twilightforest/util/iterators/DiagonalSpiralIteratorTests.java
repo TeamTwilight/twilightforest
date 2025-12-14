@@ -317,7 +317,7 @@ public class DiagonalSpiralIteratorTests {
 	public void diagonalSpiralFromCenterBoundedAdvanced7x7OffsetAndScaled() {
 		int x = 256;
 		int z = 512;
-		DiagonalSpiralIterator<BlockPos> spiralIterator = DiagonalSpiralIterator.atElevationZero(x, z, false, 3, 16);
+		DiagonalSpiralIterator<BlockPos> spiralIterator = DiagonalSpiralIterator.atElevationZero(x, z, false, 48, 16);
 
 		assertTrue(spiralIterator.hasNext());
 		BlockPos center = new BlockPos(x, 0, z);
