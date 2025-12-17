@@ -215,8 +215,10 @@
   "block.minecraft.banner.twilightforest.snow_queen.light_blue": "Copo de nieve Azul Claro",
   "block.minecraft.banner.twilightforest.snow_queen.light_gray": "Copo de nieve Gris Claro",
   "block.minecraft.banner.twilightforest.snow_queen.lime": "Copo de nieve Lima",
+  "block.minecraft.banner.twilightforest.snow_queen.magenta": "Copo de nieve Magenta",
   "block.minecraft.banner.twilightforest.snow_queen.orange": "Copo de nieve Naranja",
   "block.minecraft.banner.twilightforest.snow_queen.pink": "Copo de nieve Rosa",
+  "block.minecraft.banner.twilightforest.snow_queen.purple": "Copo de nieve Púrpura",
   "block.minecraft.banner.twilightforest.snow_queen.red": "Copo de nieve Rojo",
   "block.minecraft.banner.twilightforest.snow_queen.white": "Copo de nieve Blanco",
   "block.minecraft.banner.twilightforest.snow_queen.yellow": "Copo de nieve Amarillo",
@@ -349,7 +351,9 @@
   "block.twilightforest.green_thorns": "Espinas verdes",
   "block.twilightforest.hardened_dark_leaves": "Hojas de madera oscura gruesas",
   "block.twilightforest.hedge": "Seto",
+  "block.twilightforest.hollow_oak_log": "Tronco de roble vacío",
   "block.twilightforest.hollow_oak_sapling": "Brote de roble crepuscular robusto",
+  "block.twilightforest.hollow_spruce_log": "Tronco de abeto vacío",
   "block.twilightforest.huge_lily_pad": "Nenúfar enorme",
   "block.twilightforest.huge_mushgloom": "Bloque de champifotón enorme",
   "block.twilightforest.huge_mushgloom_stem": "Tallo de champifotón enorme",
@@ -425,6 +429,7 @@
   "effect.twilightforest.frosted": "Congelado",
   "enchantment.twilightforest.chill_aura": "Aura de Paz",
   "enchantment.twilightforest.destruction": "Destrucción",
+  "entity.twilightforest.canopy_boat": "Bote de dosel",
   "entity.twilightforest.deer": "Ciervo",
   "entity.twilightforest.dwarf_rabbit": "Conejo Enano",
   "entity.twilightforest.giant_miner": "Minero Gigante",
@@ -467,5 +472,6 @@
   "misc.twilightforest.biome_locked": "Bioma Bloqueado!",
   "misc.twilightforest.biome_locked_2": "Comprueba tus logros",
   "misc.twilightforest.ore_meter_loading": "Cargando",
-  "misc.twilightforest.ore_meter_separator": "-"
+  "misc.twilightforest.ore_meter_separator": "-",
+  "tag.item.twilightforest.canopy_logs": "Troncos de dosel"
 }
