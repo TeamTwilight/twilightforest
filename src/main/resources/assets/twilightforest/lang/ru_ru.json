@@ -730,6 +730,7 @@
   "config.twilightforest.uncrafting": "Стол для разборки",
   "config.twilightforest.uncrafting.tooltip": "Настройки всего что связано со Столом для разборки",
   "config.twilightforest.uncrafting_recipes": "Отключённые рецепты",
+  "config.twilightforest.uncrafting_recipes.tooltip": "Если не хотите отключать разборочный стол полностью, а только отдельные рецепты, то эта настройка для вас.\nДля добавления рецепта напишите название мода и название рецепта. Вы можете найти эту информацию, например, в JEI.\nПример: \"twilightforest:firefly_particle_spawner\" отключит разборку Рассадника частиц светлячка на светлячка, светлячка в банке и мак.\nЕсли у предмета несколько рецептов крафта и вы хотит отключить их всех, то добавьте тэг \"twilightforest:banned_uncraftables\" желаемому предмету.\nЕсли у вас проблемный ингредиент, например, Заражённые доски из башенной древесины, то добавьте тэг \"twilightforest:banned_uncrafting_ingredients\" желаемому предмету.",
   "config.twilightforest.uncrafting_xp_cost": "Коэффициент стоимости разборки",
   "container.twilightforest.uncrafting_table": "Разборочный верстак",
   "container.twilightforest.uncrafting_table.cycle_back_recipe": "Предыдущий рецепт создания",
