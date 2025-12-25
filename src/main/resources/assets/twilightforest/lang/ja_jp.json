@@ -995,7 +995,7 @@
   "entity.twilightforest.wraith": "レイス",
   "entity.twilightforest.yeti": "イエティ",
   "gamerule.tfEnforcedProgression": "黄昏の森の進行状況",
-  "gamerule.tfEnforcedProgression.description": "一部の黄昏の森のバイオームは、そのディメンション内で特定のボスを倒すまでロックされます（進行状況は進捗で確認できます）",
+  "gamerule.tfEnforcedProgression.description": "黄昏の森の一部のバイオームは、そのディメンション内で特定のボスを倒すまでロックされます（進行順序は進捗で確認できます）",
   "giantSkinUUIDs.button": "スキンを編集",
   "gui.twilightforest.crumble_horn_jei": "山鳴りの角笛",
   "gui.twilightforest.moonworm_queen_jei": "女王月光虫を回復",
