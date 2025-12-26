@@ -2,6 +2,7 @@ package twilightforest.world.components.feature;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.SectionPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
@@ -9,7 +10,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
+import net.minecraft.world.level.levelgen.structure.Structure;
+import net.minecraft.world.level.levelgen.structure.StructureStart;
 import twilightforest.init.TFBlocks;
+import twilightforest.util.landmarks.LandmarkUtil;
+
+import java.util.Optional;
 
 public class UndergroundPlantFeature extends Feature<BlockStateConfiguration> {
 	int maxCount;
@@ -46,9 +52,10 @@ public class UndergroundPlantFeature extends Feature<BlockStateConfiguration> {
 			}
 
 			BlockState state = ctx.config().state;
+			Optional<StructureStart> structureStart = LandmarkUtil.locateNearestLandmarkStart(world, SectionPos.blockToSectionCoord(pos.getX()), SectionPos.blockToSectionCoord(pos.getZ()));
 			if (state.is(TFBlocks.TROLLVIDR) && random.nextInt(10) == 0)
 				state = TFBlocks.UNRIPE_TROLLBER.get().defaultBlockState();
-			if (state.canSurvive(world, pos)) {
+			if (state.canSurvive(world, pos) && structureStart.isEmpty()) {
 				world.setBlock(pos, state, Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_CLIENTS);
 				placed++;
 			}
