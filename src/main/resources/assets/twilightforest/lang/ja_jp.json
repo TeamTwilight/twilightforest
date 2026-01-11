@@ -860,7 +860,7 @@
   "config.twilightforest.multiplayer_fight_adjuster.more_loot": "ドロップアイテムの増加",
   "config.twilightforest.multiplayer_fight_adjuster.more_loot_and_health": "ドロップアイテム／体力の増加",
   "config.twilightforest.multiplayer_fight_adjuster.none": "なし",
- "config.twilightforest.multiplayer_fight_adjuster.tooltip": "ボスがマルチプレイでの戦闘に適応する方法を設定します。ここでは4つの値を設定できます：\nNONE：ボスとの戦闘に複数のプレイヤーが参加してもなにもしません。ボスはシングルプレイや一人での戦闘と同じように機能します。\nMORE_LOOT：先頭に参加したプレイヤーの数に基づいて、ボスのルートテーブルにドロップアイテムを追加します。これらは「twilightforest:multiplayer_multiplier」ルート関数を使用し、エンティティのルートテーブルを通じて完全に制御されます。この関数は「twilightforest:multiplayer_inclusive_entities」タグに含まれるエンティティに対してのみ機能することに注意してください。\nMORE_HEALTH：戦闘の開始時に、近くにいるプレイヤーごとに各ボスの体力をハート20個分ずつ増加させます。\nMORE_LOOT_AND_HEALTH：各ボスに対して上記の両方の機能を適用します。",
+  "config.twilightforest.multiplayer_fight_adjuster.tooltip": "ボスがマルチプレイでの戦闘に適応する方法を設定します。ここでは4つの値を設定できます：\nNONE：ボスとの戦闘に複数のプレイヤーが参加してもなにもしません。ボスはシングルプレイや一人での戦闘と同じように機能します。\nMORE_LOOT：先頭に参加したプレイヤーの数に基づいて、ボスのルートテーブルにドロップアイテムを追加します。これらは「twilightforest:multiplayer_multiplier」ルート関数を使用し、エンティティのルートテーブルを通じて完全に制御されます。この関数は「twilightforest:multiplayer_inclusive_entities」タグに含まれるエンティティに対してのみ機能することに注意してください。\nMORE_HEALTH：戦闘の開始時に、近くにいるプレイヤーごとに各ボスの体力をハート20個分ずつ増加させます。\nMORE_LOOT_AND_HEALTH：各ボスに対して上記の両方の機能を適用します。",
   "config.twilightforest.optifine": "Optifineの警告画面の表示",
   "config.twilightforest.optifine.tooltip": "OptiFineが導入されている場合の警告画面を無効化します。",
   "config.twilightforest.origin_dimension": "起点のディメンション",
