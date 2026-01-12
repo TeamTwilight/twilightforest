@@ -516,7 +516,7 @@ public class TFTeleporter {
 		// dirt under it
 		BlockState dirt = Blocks.DIRT.defaultBlockState();
 		for (BlockPos blockpos : positions) {
-			if (world.getBlockState(pos).is(BlockTags.DIRT))
+			if (world.getBlockState(pos).is(BlockTags.DIRT) || world.getBlockState(pos).is(BlockTags.REPLACEABLE) || world.getBlockState(pos).is(BlockTags.AIR))
 				world.setBlockAndUpdate(blockpos, dirt);
 		}
 
