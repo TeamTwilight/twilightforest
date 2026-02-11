@@ -7,9 +7,6 @@ import twilightforest.util.BinaryIntegerFunction;
 import java.util.Iterator;
 
 public class DiagonalSpiralIterator<T> implements Iterator<T>, Iterable<T> {
-
-	private static final Direction[] DIRECTIONS = new Direction[]{ Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST };
-
 	private final int xConstant;
 	private final int zConstant;
 	private final int radius;
@@ -17,7 +14,7 @@ public class DiagonalSpiralIterator<T> implements Iterator<T>, Iterable<T> {
 	private final BinaryIntegerFunction<T> converter;
 
 	private int offset = 0; // How far are the rows from the center
-	private int side = 0; // Which of the 4 sides is being marched over
+	private Direction side = Direction.NORTH; // Which of the 4 sides is being marched over
 	private int advance = 0; // Where on the side?
 
 	public static DiagonalSpiralIterator<BlockPos> atElevationZero(int xConstant, int zConstant, boolean skipCenter, int radius, int spacing) {
@@ -64,8 +61,8 @@ public class DiagonalSpiralIterator<T> implements Iterator<T>, Iterable<T> {
 
 		int advanceLimit = Math.min(this.offset, this.radius + 1);
 		if (this.advance >= advanceLimit) {
-			this.side = (this.side + 1) % 4;
-			if (this.side == 0) {
+			this.side = this.side.getClockWise();
+			if (this.side == Direction.NORTH) {
 				this.offset++;
 			}
 			this.advance = 0;
@@ -76,7 +73,7 @@ public class DiagonalSpiralIterator<T> implements Iterator<T>, Iterable<T> {
 	}
 
 	private T nextBlockPos() {
-		Direction direction = DIRECTIONS[this.side];
+		Direction direction = this.side;
 		Direction clockWise = direction.getClockWise();
 		int u = this.offset - this.advance;
 		int v = this.advance;
