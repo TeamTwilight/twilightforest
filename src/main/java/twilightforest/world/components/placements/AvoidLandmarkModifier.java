@@ -102,7 +102,7 @@ public class AvoidLandmarkModifier extends PlacementModifier {
 
 			StructureStart startForStructure = startChunk.getStartForStructure(structure);
 
-			if (startForStructure == null)
+			if (startForStructure == null || !startForStructure.isValid())
 				continue;
 
 			BlockPos diff = blockPos.subtract(startForStructure.getBoundingBox().getCenter());

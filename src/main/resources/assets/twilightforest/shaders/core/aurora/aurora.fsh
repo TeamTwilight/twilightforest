@@ -20,7 +20,16 @@ vec3 grad(float hash) {
     // Also a cuboctahedral vertex
     // And corresponds to the face of its dual, the rhombic dodecahedron
     vec3 cuboct = cube;
-    cuboct[int(hash / 16.0)] = 0.0;
+    // cuboct[int(hash / 16.0)] = 0.0;
+    // Copy the OpenSimplex2 HLSL version to avoid an Intel Driver crash
+    int idx = int(hash * (1.0 / 16.0));
+
+    if (idx == 0)
+        cuboct.x = 0.0;
+    else if (idx == 1)
+        cuboct.y = 0.0;
+    else
+        cuboct.z = 0.0;
 
     // In a funky way, pick one of the four points on the rhombic face
     float type = mod(floor(hash / 8.0), 2.0);
@@ -76,14 +85,6 @@ vec4 openSimplex2Base(vec3 X) {
 
     // Return it all as a vec4
     return vec4(derivative, dot(aaaa, extrapolations));
-}
-
-// Use this if you don't want Z to look different from X and Y
-vec4 openSimplex2_Conventional(vec3 X) {
-
-    // Rotate around the main diagonal. Not a skew transform.
-    vec4 result = openSimplex2Base(dot(X, vec3(2.0/3.0)) - X);
-    return vec4(dot(result.xyz, vec3(2.0/3.0)) - result.xyz, result.w);
 }
 
 // Use this if you want to show X and Y in a plane, then use Z for time, vertical, etc.
