@@ -731,7 +731,7 @@ public class Lich extends BaseTFBoss {
 		for (BlockPos pos : BlockPos.betweenClosed(this.homeOrElseCurrent().offset(-range, -3, -range), this.homeOrElseCurrent().offset(range, yRange, range))) {
 			if (this.random.nextInt(Math.max(40 - tick, 2)) == 1 || done) {
 				BlockState state = this.level().getBlockState(pos);
-				if (state.getBlock() instanceof AbstractCandleBlock candleBlock && state.getValue(CandleBlock.LIT)) {
+				if (state.getBlock() instanceof AbstractCandleBlock candleBlock && OminousCandleBlock.CANDLE_MAP.containsKey(candleBlock) && state.getValue(CandleBlock.LIT)) {
 					this.level().setBlockAndUpdate(pos, OminousCandleBlock.CANDLE_MAP.get(candleBlock).get().defaultBlockState().setValue(OminousCandleBlock.CANDLES, state.getValue(CandleBlock.CANDLES)));
 					this.level().playSound(null, pos, TFSounds.OMINOUS_FIRE.get(), SoundSource.BLOCKS, 0.5F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 0.75F);
 				} else if (state.getBlock() instanceof LightableBlock && state.getValue(LightableBlock.LIGHTING) == LightableBlock.Lighting.NORMAL) {

@@ -25,7 +25,7 @@ public class ExanimateEssenceItem extends Item {
 		BlockPos blockpos = context.getClickedPos();
 		boolean flag = false;
 		BlockState state = level.getBlockState(blockpos);
-		if (state.getBlock() instanceof CandleBlock candleBlock && state.getValue(CandleBlock.LIT)) {
+		if (state.getBlock() instanceof CandleBlock candleBlock && OminousCandleBlock.CANDLE_MAP.containsKey(candleBlock) && state.getValue(CandleBlock.LIT)) {
 			this.playSound(level, blockpos);
 			level.setBlockAndUpdate(blockpos, OminousCandleBlock.CANDLE_MAP.get(candleBlock).get().defaultBlockState().setValue(OminousCandleBlock.CANDLES, state.getValue(CandleBlock.CANDLES)));
 			level.gameEvent(context.getPlayer(), GameEvent.BLOCK_PLACE, blockpos);
