@@ -1,5 +1,5 @@
 {
-  "type": "twilightforest:underground_plants",
+  "type": "twilightforest:underground_plants_in_structure",
   "config": {
     "state": {
       "Name": "twilightforest:mushgloom"

@@ -18,15 +18,32 @@ import java.util.Optional;
 
 public class UndergroundPlantFeature extends Feature<BlockStateConfiguration> {
 	int maxCount;
+	boolean inStructure;
 
 	public UndergroundPlantFeature(Codec<BlockStateConfiguration> config, int maxCount) {
 		super(config);
 		this.maxCount = maxCount;
+		this.inStructure = false;
+
 	}
 
 	public UndergroundPlantFeature(Codec<BlockStateConfiguration> config) {
 		super(config);
 		this.maxCount = Integer.MAX_VALUE;
+		this.inStructure = false;
+
+	}
+
+	public UndergroundPlantFeature(Codec<BlockStateConfiguration> config, int maxCount, boolean inStructure){
+		super(config);
+		this.maxCount = maxCount;
+		this.inStructure = inStructure;
+	}
+
+	public UndergroundPlantFeature(Codec<BlockStateConfiguration> config, boolean inStructure){
+		super(config);
+		this.maxCount = Integer.MAX_VALUE;
+		this.inStructure = inStructure;
 	}
 
 	@Override
@@ -54,7 +71,7 @@ public class UndergroundPlantFeature extends Feature<BlockStateConfiguration> {
 			Optional<StructureStart> structureStart = LandmarkUtil.locateNearestLandmarkStart(world, SectionPos.blockToSectionCoord(pos.getX()), SectionPos.blockToSectionCoord(pos.getZ()));
 			if (state.is(TFBlocks.TROLLVIDR) && random.nextInt(10) == 0)
 				state = TFBlocks.UNRIPE_TROLLBER.get().defaultBlockState();
-			if (state.canSurvive(world, pos) && structureStart.isEmpty()) {
+			if (state.canSurvive(world, pos) && (structureStart.isPresent() && inStructure)){
 				world.setBlock(pos, state, Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_CLIENTS);
 				placed++;
 			}
