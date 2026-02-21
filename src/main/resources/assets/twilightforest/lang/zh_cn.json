@@ -833,7 +833,7 @@
   "config.twilightforest.locked_toasts.tooltip": "禁用进入已锁定生物群系时的提示。如果对游戏推进过程不够了解，不推荐启用此项。",
   "config.twilightforest.magic_trees": "魔法树",
   "config.twilightforest.magic_trees.tooltip": "魔法树的设置",
-  "config.twilightforest.manual_travellers_wings_gradual_glide": "手动缓慢滑翔",
+  "config.twilightforest.manual_travellers_wings_gradual_glide": "手动渐进滑翔",
   "config.twilightforest.manual_travellers_wings_gradual_glide.tooltip": "关闭时：默认缓降，潜行加速下落；开启时：默认自由落体，潜行触发缓降",
   "config.twilightforest.max_portal_size": "最大传送门规模",
   "config.twilightforest.max_portal_size.tooltip": "创建传送门时，游戏所检测的水域面积的最大值。过大的数值可能导致性能问题。",
