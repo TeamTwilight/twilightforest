@@ -1223,6 +1223,7 @@ public class LangGenerator extends TFLangProvider {
 		this.configEntry("prettify_ore_meter_gui", "Prettify Ore Meter GUI", ConfigComments.PRETTIFY_ORE_METER);
 		this.configEntry("totem_charm_animation", "Totem of Undying Charm Animation", ConfigComments.CHARMS_AS_TOTEMS);
 		this.configEntry("manual_travellers_wings_gradual_glide", "Manual Gradually Gliding", ConfigComments.MANUAL_TRAVELLERS_WINGS_GRADUAL_GLIDE);
+		this.configEntry("first_person_glove_overlay", "First-Person Glove Overlay", ConfigComments.FIRST_PERSON_GLOVE_OVERLAY);
 
 		this.configCategory("item_display", "Item Display Modifier Settings", ConfigComments.ITEM_DISPLAY);
 		this.configEntry("screen_offset_x", "Display X Offset", ConfigComments.DISPLAY_SCREEN_OFFSET_Y);

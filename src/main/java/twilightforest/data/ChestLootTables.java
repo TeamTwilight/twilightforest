@@ -424,7 +424,7 @@ public record ChestLootTables(HolderLookup.Provider registries) implements LootT
 			LootTable.lootTable()
 				.withPool(LootPool.lootPool()
 					//empty
-					.add(LootItem.lootTableItem(Items.AIR).setWeight(20))
+					.add(EmptyLootItem.emptyItem().setWeight(20))
 					//common
 					.add(LootItem.lootTableItem(TFItems.CHICKEN_JERKY).setWeight(8))
 					.add(LootItem.lootTableItem(TFItems.MUTTON_JERKY).setWeight(8))

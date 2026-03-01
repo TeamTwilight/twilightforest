@@ -90,6 +90,7 @@ public class HedgeMazeComponent extends TFStructureComponentOld {
 
 		while (!maze.allCellsNonZero()) {
 			maze.resetCells();
+			rcoords = new int[nrooms * 2];
 			for (int i = 0; i < nrooms; i++) {
 				int rx, rz;
 				do {

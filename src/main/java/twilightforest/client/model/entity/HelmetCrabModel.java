@@ -6,17 +6,23 @@
 
 package twilightforest.client.model.entity;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.LivingEntity;
 import twilightforest.client.JappaPackReloadListener;
 import twilightforest.entity.monster.HelmetCrab;
 
 public class HelmetCrabModel extends HierarchicalModel<HelmetCrab> {
 
 	private final ModelPart root;
+	private final ModelPart helmet;
+	private final ModelPart crab;
 	private final ModelPart body;
 	private final ModelPart leftClaw;
 	private final ModelPart rightClaw;
@@ -28,14 +34,17 @@ public class HelmetCrabModel extends HierarchicalModel<HelmetCrab> {
 	public HelmetCrabModel(ModelPart root) {
 		this.root = root;
 
-		this.body = root.getChild("body");
-		this.rightClaw = root.getChild("right_claw");
-		this.leftClaw = root.getChild("left_claw");
+		this.helmet = root.getChild("helmet_base");
+		this.crab = root.getChild("crab");
 
-		this.rightLeg1 = root.getChild("right_leg_1");
-		this.rightLeg2 = root.getChild("right_leg_2");
-		this.leftLeg1 = root.getChild("left_leg_1");
-		this.leftLeg2 = root.getChild("left_leg_2");
+		this.body = this.crab.getChild("body");
+		this.rightClaw = this.crab.getChild("right_claw");
+		this.leftClaw = this.crab.getChild("left_claw");
+
+		this.rightLeg1 = this.crab.getChild("right_leg_1");
+		this.rightLeg2 = this.crab.getChild("right_leg_2");
+		this.leftLeg1 = this.crab.getChild("left_leg_1");
+		this.leftLeg2 = this.crab.getChild("left_leg_2");
 	}
 
 	public static LayerDefinition checkForPack() {
@@ -46,10 +55,14 @@ public class HelmetCrabModel extends HierarchicalModel<HelmetCrab> {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		var body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create()
+		var crab = partdefinition.addOrReplaceChild("crab", CubeListBuilder.create()
+				.addBox(-2.5F, -0.5F, -5.0F, 0.0F, 1.0F, 0.0F),
+			PartPose.offset(0.0F, 19.0F, 0.0F));
+
+		var body = crab.addOrReplaceChild("body", CubeListBuilder.create()
 				.texOffs(32, 4)
 				.addBox(-2.5F, -2.5F, -5.0F, 5.0F, 5.0F, 5.0F),
-			PartPose.offset(0.0F, 19.0F, 0.0F));
+			PartPose.ZERO);
 
 		body.addOrReplaceChild("right_eye", CubeListBuilder.create()
 				.texOffs(10, 0)
@@ -89,10 +102,10 @@ public class HelmetCrabModel extends HierarchicalModel<HelmetCrab> {
 				.addBox(0.0F, -1.0F, -1.0F, 3.0F, 2.0F, 2.0F),
 			PartPose.offsetAndRotation(5.5F, 0.0F, 0.0F, 0.0F, 15.0F * Mth.DEG_TO_RAD, -10.0F * Mth.DEG_TO_RAD));
 
-		var rightArm = partdefinition.addOrReplaceChild("right_claw", CubeListBuilder.create()
+		var rightArm = crab.addOrReplaceChild("right_claw", CubeListBuilder.create()
 				.texOffs(38, 0)
 				.addBox(-7.0F, -1.0F, -1.0F, 8.0F, 2.0F, 2.0F),
-			PartPose.offsetAndRotation(-3.0F, 20.0F, -3.0F, 0.0F, -1.319531F, -0.1919862F));
+			PartPose.offsetAndRotation(-3.0F, 1.0F, -3.0F, 0.0F, -1.319531F, -0.1919862F));
 
 		var clawBase = rightArm.addOrReplaceChild("claw_base", CubeListBuilder.create()
 				.texOffs(0, 0)
@@ -109,30 +122,30 @@ public class HelmetCrabModel extends HierarchicalModel<HelmetCrab> {
 				.addBox(0.0F, -0.5F, -1.0F, 3.0F, 1.0F, 2.0F),
 			PartPose.offsetAndRotation(3.0F, -1.0F, 0.0F, 0.0F, 0.0F, -0.1858931F));
 
-		partdefinition.addOrReplaceChild("left_claw", CubeListBuilder.create()
+		crab.addOrReplaceChild("left_claw", CubeListBuilder.create()
 				.texOffs(18, 0)
 				.addBox(-1.0F, -1.0F, -1.0F, 8.0F, 2.0F, 2.0F),
-			PartPose.offsetAndRotation(3.0F, 20.0F, -3.0F, 0.0F, 0.5759587F, 0.1919862F));
+			PartPose.offsetAndRotation(3.0F, 1.0F, -3.0F, 0.0F, 0.5759587F, 0.1919862F));
 
-		partdefinition.addOrReplaceChild("right_leg_1", CubeListBuilder.create()
+		crab.addOrReplaceChild("right_leg_1", CubeListBuilder.create()
 				.texOffs(18, 0)
 				.addBox(-7.0F, -1.0F, -1.0F, 8.0F, 2.0F, 2.0F),
-			PartPose.offsetAndRotation(-3.0F, 20.0F, -1.0F, 0.0F, 0.2792527F, -0.1919862F));
+			PartPose.offsetAndRotation(-3.0F, 1.0F, -1.0F, 0.0F, 0.2792527F, -0.1919862F));
 
-		partdefinition.addOrReplaceChild("left_leg_1", CubeListBuilder.create()
+		crab.addOrReplaceChild("left_leg_1", CubeListBuilder.create()
 				.texOffs(18, 0)
 				.addBox(-1.0F, -1.0F, -1.0F, 8.0F, 2.0F, 2.0F),
-			PartPose.offsetAndRotation(3.0F, 20.0F, -1.0F, 0.0F, -0.2792527F, 0.1919862F));
+			PartPose.offsetAndRotation(3.0F, 1.0F, -1.0F, 0.0F, -0.2792527F, 0.1919862F));
 
-		partdefinition.addOrReplaceChild("right_leg_2", CubeListBuilder.create()
+		crab.addOrReplaceChild("right_leg_2", CubeListBuilder.create()
 				.texOffs(18, 0)
 				.addBox(-7.0F, -1.0F, -1.0F, 8.0F, 2.0F, 2.0F),
-			PartPose.offsetAndRotation(-3.0F, 20.0F, -2.0F, 0.0F, -0.2792527F, -0.1919862F));
+			PartPose.offsetAndRotation(-3.0F, 1.0F, -2.0F, 0.0F, -0.2792527F, -0.1919862F));
 
-		partdefinition.addOrReplaceChild("left_leg_2", CubeListBuilder.create()
+		crab.addOrReplaceChild("left_leg_2", CubeListBuilder.create()
 				.texOffs(18, 0)
 				.addBox(-1.0F, -1.0F, -1.0F, 8.0F, 2.0F, 2.0F),
-			PartPose.offsetAndRotation(3.0F, 20.0F, -2.0F, 0.0F, 0.2792527F, 0.1919862F));
+			PartPose.offsetAndRotation(3.0F, 1.0F, -2.0F, 0.0F, 0.2792527F, 0.1919862F));
 
 		return LayerDefinition.create(meshdefinition, 64, 32);
 	}
@@ -141,7 +154,9 @@ public class HelmetCrabModel extends HierarchicalModel<HelmetCrab> {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		var body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create()
+		var crab = partdefinition.addOrReplaceChild("crab", CubeListBuilder.create(), PartPose.ZERO);
+
+		var body = crab.addOrReplaceChild("body", CubeListBuilder.create()
 				.texOffs(0, 9)
 				.addBox(-2.5F, -4.0F, -2.5F, 5.0F, 4.0F, 5.0F)
 				.texOffs(58, 0)
@@ -162,32 +177,32 @@ public class HelmetCrabModel extends HierarchicalModel<HelmetCrab> {
 				.addBox(-11.5F, -12.0F, -0.67F, 23.0F, 9.0F, 0.0F),
 			PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 0.7853981633974483F, 0.0F));
 
-		partdefinition.addOrReplaceChild("right_claw", CubeListBuilder.create()
+		crab.addOrReplaceChild("right_claw", CubeListBuilder.create()
 				.texOffs(0, 0)
 				.addBox(-1.0F, -3.0F, -5.0F, 2.0F, 4.0F, 5.0F),
 			PartPose.offsetAndRotation(-2.0F, 21.0F, -2.0F, 0.0F, 0.39269908169872414F, 0.0F));
 
-		partdefinition.addOrReplaceChild("left_claw", CubeListBuilder.create()
+		crab.addOrReplaceChild("left_claw", CubeListBuilder.create()
 				.texOffs(0, 23)
 				.addBox(-1.0F, -3.0F, -5.0F, 2.0F, 4.0F, 5.0F),
 			PartPose.offsetAndRotation(2.0F, 21.0F, -2.0F, 0.0F, -0.39269908169872414F, 0.0F));
 
-		partdefinition.addOrReplaceChild("right_leg_1", CubeListBuilder.create()
+		crab.addOrReplaceChild("right_leg_1", CubeListBuilder.create()
 				.texOffs(32, 15)
 				.addBox(-6.0F, -1.0F, -1.0F, 6.0F, 2.0F, 2.0F),
 			PartPose.offsetAndRotation(-2.0F, 21.0F, 0.0F, 0.2181661564992912F, 0.4363323129985824F, -0.4363323129985824F));
 
-		partdefinition.addOrReplaceChild("left_leg_1", CubeListBuilder.create()
+		crab.addOrReplaceChild("left_leg_1", CubeListBuilder.create()
 				.texOffs(48, 19)
 				.addBox(0.0F, -1.0F, -1.0F, 6.0F, 2.0F, 2.0F),
 			PartPose.offsetAndRotation(2.0F, 21.0F, 0.0F, 0.2181661564992912F, -0.4363323129985824F, 0.4363323129985824F));
 
-		partdefinition.addOrReplaceChild("right_leg_2", CubeListBuilder.create()
+		crab.addOrReplaceChild("right_leg_2", CubeListBuilder.create()
 				.texOffs(32, 19)
 				.addBox(-6.0F, -1.0F, -1.0F, 6.0F, 2.0F, 2.0F),
 			PartPose.offsetAndRotation(-2.0F, 21.0F, -1.5F, 0.2181661564992912F, 0.0F, -0.4363323129985824F));
 
-		partdefinition.addOrReplaceChild("left_leg_2", CubeListBuilder.create()
+		crab.addOrReplaceChild("left_leg_2", CubeListBuilder.create()
 				.texOffs(48, 15)
 				.addBox(0.0F, -1.0F, -1.0F, 6.0F, 2.0F, 2.0F),
 			PartPose.offsetAndRotation(2.0F, 21.0F, -1.5F, 0.2181661564992912F, 0.0F, 0.4363323129985824F));
@@ -202,8 +217,15 @@ public class HelmetCrabModel extends HierarchicalModel<HelmetCrab> {
 	}
 
 	@Override
+	public void renderToBuffer(PoseStack stack, VertexConsumer consumer, int light, int overlay, int color) {
+		this.crab.render(stack, consumer, light, overlay, color);
+		//no red overlay on the helmet
+		this.helmet.render(stack, consumer, light, OverlayTexture.NO_OVERLAY, color);
+	}
+
+	@Override
 	public void setupAnim(HelmetCrab entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		this.body.yRot = netHeadYaw * Mth.DEG_TO_RAD;
+		this.crab.yRot = netHeadYaw * Mth.DEG_TO_RAD;
 		this.body.xRot = headPitch * Mth.DEG_TO_RAD;
 
 		float f6 = (Mth.PI / 4F);
@@ -245,6 +267,32 @@ public class HelmetCrabModel extends HierarchicalModel<HelmetCrab> {
 			this.leftClaw.yRot = f8 * 2.0F - f7;
 			this.leftClaw.yRot -= f12;
 			this.leftClaw.zRot -= f16;
+		}
+	}
+
+	private float getHelmetRotation(HelmetCrab entity, float partialTicks) {
+		float f = Mth.rotLerp(partialTicks, entity.yBodyRotO, entity.yBodyRot);
+		float f1 = Mth.rotLerp(partialTicks, entity.helmetRotO, entity.helmetRot);
+		float f2 = f1 - f;
+		return Mth.wrapDegrees(f2) - 25;
+	}
+
+	@Override
+	public void prepareMobModel(HelmetCrab entity, float limbSwing, float limbSwingAmount, float partialTick) {
+		this.root().getAllParts().forEach(ModelPart::resetPose);
+		super.prepareMobModel(entity, limbSwing, limbSwingAmount, partialTick);
+		this.helmet.yRot = this.getHelmetRotation(entity, partialTick) * Mth.DEG_TO_RAD;
+		if (entity.deathTime > 0) {
+			float f = ((float)entity.deathTime + partialTick - 1.0F) / 20.0F * 1.6F;
+			f = Mth.sqrt(f);
+			if (f > 1.0F) {
+				f = 1.0F;
+			}
+			f *= entity.getId() % 4 >= 2 ? 1 : -1;
+
+			this.crab.zRot = (f * 90.0F) * Mth.DEG_TO_RAD;
+		} else {
+			this.crab.zRot = 0.0F;
 		}
 	}
 }

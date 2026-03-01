@@ -21,6 +21,7 @@ public final class ConfigComments {
 	public static final String PRETTIFY_ORE_METER = "Lines up the dashes and percentages in the Ore Meter GUI.";
 	public static final String CHARMS_AS_TOTEMS = "Makes Charms when triggered display like the Totem of Undying instead of our own effects.";
 	public static final String MANUAL_TRAVELLERS_WINGS_GRADUAL_GLIDE = "When this option is off, slow falling is the default. Holding the sneak key makes you fall at normal speed. When this option is on, normal falling is the default. Holding the sneak key activates slow falling.";
+	public static final String FIRST_PERSON_GLOVE_OVERLAY = "Allows Traveller's Gloves to render on your hand when in 1st person view.";
 
 	public static final String ITEM_DISPLAY = "Controls where various elements render when using the Item Display Modifier on Traveller's Gear.";
 	public static final String DISPLAY_SCREEN_OFFSET_X = "Defines the starting X offset for all display modifiers on the screen.";

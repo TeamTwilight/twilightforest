@@ -9,9 +9,9 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import org.joml.Vector3f;
 import twilightforest.components.entity.TravellersWingsAnimAttachment;
+import twilightforest.components.entity.TravellersWingsAttachment;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.util.TFMathUtil;
 
@@ -170,9 +170,10 @@ public class TravellersWingsModel extends HumanoidModel<LivingEntity> {
 	public void setupModelAnimations(LivingEntity entity, float f, float f1, double ageInTicks, float netHeadYaw, float headPitch) {
 		this.bodyParts().forEach(modelPart -> modelPart.getAllParts().forEach(ModelPart::resetPose));
 		super.setupAnim(entity, f, f1, (float) ageInTicks, netHeadYaw, headPitch);
-		TravellersWingsAnimAttachment attachment = entity.getData(TFDataAttachments.TRAVELLERS_WINGS_ANIM);
+		TravellersWingsAnimAttachment animAttachment = entity.getData(TFDataAttachments.TRAVELLERS_WINGS_ANIM);
+		TravellersWingsAttachment attachment = entity.getData(TFDataAttachments.TRAVELLERS_WINGS);
 
-		double dtInTicks = ageInTicks - attachment.oldAgeInTicks;
+		double dtInTicks = ageInTicks - animAttachment.oldAgeInTicks;
 
 		//slightly move wings down when crouching so they arent detached
 		if (entity.isCrouching()) {
@@ -180,42 +181,43 @@ public class TravellersWingsModel extends HumanoidModel<LivingEntity> {
 			this.wingBaseLeft.y += 2;
 		}
 
-		if (attachment.doubleJump && attachment.doubleJumpTime < 13.33) {
-			this.wingBaseRight.xRot = (float) TFMathUtil.interpolateToTarget(attachment.xRotOld, -0.4F, dtInTicks, TAU - 1);
-			this.wingBaseRight.yRot = (float) TFMathUtil.interpolateToTarget(attachment.yRotOld, -0.8F, dtInTicks, TAU - 1);
-			this.wingBaseRight.zRot = (float) TFMathUtil.interpolateToTarget(attachment.zRotOld, -0.1F, dtInTicks, TAU - 1);
-			attachment.doubleJumpTime += dtInTicks;
-		} else {
-			Vector3f rotations;  // must be initialized later
-			if (this.riding)
-				rotations = this.calculateRotations(attachment, dtInTicks, 10.0F, ANGLE_10_DEG * 3, -0.6F, -0.3F, BIG_SWING);
-			else if (entity.isSwimming())
-				rotations = this.calculateRotations(attachment, dtInTicks, 17.0F, ANGLE_10_DEG * 4, -1.0F, -0.5F, BIG_SWING);
-			else if (!entity.onGround() && !entity.isInLiquid() && entity.fallDistance < 2.3F && (!(entity instanceof Player player) || !player.getAbilities().flying))
-				rotations = this.calculateRotations(attachment, dtInTicks, 17.0F, ANGLE_10_DEG * 5, -1.1F, -0.1F, BIG_SWING);
-			else if (entity.getDeltaMovement().y < 0 && entity.fallDistance > 2.3F)
-				rotations = this.calculateRotations(attachment, dtInTicks, 2.0F, ANGLE_10_DEG * 4, -1.1F, -0.3F, SMALL_SWING);
-			else if (entity.isSprinting() || this.attackTime > 0)
-				rotations = this.calculateRotations(attachment, dtInTicks, 2.0F, ANGLE_10_DEG * 3, -0.3F, 0.0F, BIG_SWING);
-			else {
-				float phaseDivisor = entity.walkAnimation.speed() > 0.1 ? 4.0F : 20.0F;  // use 0.1 instead of isMoving to avoid increasing animation speed when legs barely move
-				rotations = this.calculateRotations(attachment, dtInTicks, phaseDivisor, ANGLE_10_DEG * 3, -0.6F, -0.3F, BIG_SWING);
+		Vector3f rightWingRotations;  // must be initialized later
+		double interpolationSpeed = TAU;
+		float targetLeftWingY;
+		switch (attachment.state) {
+			case DOUBLE_JUMP -> {
+				rightWingRotations = new Vector3f(-0.4F, -0.8F, -0.1F);
+				interpolationSpeed = TAU - 1;
 			}
-
-			this.wingBaseRight.xRot = (float) TFMathUtil.interpolateToTarget(attachment.xRotOld, rotations.x, dtInTicks, TAU);
-			this.wingBaseRight.yRot = (float) TFMathUtil.interpolateToTarget(attachment.yRotOld, rotations.y, dtInTicks, TAU);
-			this.wingBaseRight.zRot = (float) TFMathUtil.interpolateToTarget(attachment.zRotOld, rotations.z, dtInTicks, TAU);
+			case RIDE -> rightWingRotations = this.calculateRotations(animAttachment, dtInTicks, 10.0F, ANGLE_10_DEG * 3, -0.6F, -0.3F, BIG_SWING);
+			case SWIM -> rightWingRotations = this.calculateRotations(animAttachment, dtInTicks, 17.0F, ANGLE_10_DEG * 4, -1.0F, -0.5F, BIG_SWING);
+			case FALL_SLOW -> rightWingRotations = this.calculateRotations(animAttachment, dtInTicks, 17.0F, ANGLE_10_DEG * 5, -1.1F, -0.1F, BIG_SWING);
+			case FALL_FAST -> rightWingRotations = this.calculateRotations(animAttachment, dtInTicks, 2.0F, ANGLE_10_DEG * 4, -1.1F, -0.3F, SMALL_SWING);
+			case SPRINT -> rightWingRotations = this.calculateRotations(animAttachment, dtInTicks, 2.0F, ANGLE_10_DEG * 3, -0.3F, 0.0F, BIG_SWING);
+			case SIDESTEP -> rightWingRotations = this.calculateRotations(animAttachment, dtInTicks, 2.0F, ANGLE_10_DEG * 3, attachment.sidestepLeft ? -0.6F : 0.4F, 0.0F, BIG_SWING);
+			default -> {
+				float phaseDivisor = entity.walkAnimation.speed() > 0.1 ? 4.0F : 20.0F;  // use 0.1 instead of isMoving to avoid increasing animation speed when legs barely move
+				rightWingRotations = this.calculateRotations(animAttachment, dtInTicks, phaseDivisor, ANGLE_10_DEG * 3, -0.6F, -0.3F, BIG_SWING);
+			}
 		}
 
+		this.wingBaseRight.xRot = (float) TFMathUtil.interpolateToTarget(animAttachment.xRotOld, rightWingRotations.x, dtInTicks, interpolationSpeed);
+		this.wingBaseRight.yRot = (float) TFMathUtil.interpolateToTarget(animAttachment.yRotOldRight, rightWingRotations.y, dtInTicks, interpolationSpeed);
+		this.wingBaseRight.zRot = (float) TFMathUtil.interpolateToTarget(animAttachment.zRotOld, rightWingRotations.z, dtInTicks, interpolationSpeed);
+
+		targetLeftWingY = attachment.state.equals(TravellersWingsAttachment.WingState.SIDESTEP)
+			? this.calculateRotations(animAttachment, dtInTicks, 2.0F, ANGLE_10_DEG * 3, attachment.sidestepLeft ? -0.4F : 0.6F, 0.0F, BIG_SWING).y()
+			: -rightWingRotations.y();
 		this.wingBaseLeft.xRot = this.wingBaseRight.xRot;
-		this.wingBaseLeft.yRot = -this.wingBaseRight.yRot;
+		this.wingBaseLeft.yRot = (float) TFMathUtil.interpolateToTarget(animAttachment.yRotOldLeft, targetLeftWingY, dtInTicks, interpolationSpeed);
 		this.wingBaseLeft.zRot = -this.wingBaseRight.zRot;
 
-		attachment.accumulatedPhase = attachment.accumulatedPhase % Mth.TWO_PI;
-		attachment.oldAgeInTicks = ageInTicks;
-		attachment.xRotOld = this.wingBaseRight.xRot;
-		attachment.yRotOld = this.wingBaseRight.yRot;
-		attachment.zRotOld = this.wingBaseRight.zRot;
+		animAttachment.accumulatedPhase = animAttachment.accumulatedPhase % Mth.TWO_PI;
+		animAttachment.oldAgeInTicks = ageInTicks;
+		animAttachment.xRotOld = this.wingBaseRight.xRot;
+		animAttachment.yRotOldRight = this.wingBaseRight.yRot;
+		animAttachment.yRotOldLeft = this.wingBaseLeft.yRot;
+		animAttachment.zRotOld = this.wingBaseRight.zRot;
 
 		// If the wing model keeps a non-changing offset then looking at it with a spyglass even 4 chunks away will reveal Z-fighting.
 		float distance = (float) (Math.sqrt(entity.distanceToSqr(this.mainCamera.getPosition())) * PART_OFFSET);

@@ -11,6 +11,7 @@ public class TFModelLayers {
 	public static final ModelLayerLocation FIERY_ARMOR_OUTER = register("fiery_armor", "outer");
 	public static final ModelLayerLocation TRAVELLERS_ARMOR_HELMET = register("travellers_armor", "helmet");
 	public static final ModelLayerLocation TRAVELLERS_ARMOR_CHEST_GLOVES = register("travellers_armor", "chest_gloves");
+	public static final ModelLayerLocation TRAVELLERS_ARMOR_CHEST_GLOVES_SLIM = register("travellers_armor", "chest_gloves_slim");
 	public static final ModelLayerLocation TRAVELLERS_ARMOR_LEGGINGS = register("travellers_armor", "leggings");
 	public static final ModelLayerLocation TRAVELLERS_ARMOR_BOOTS = register("travellers_armor", "boots");
 	public static final ModelLayerLocation KNIGHTMETAL_ARMOR_INNER = register("knightmetal_armor", "inner");

@@ -49,6 +49,7 @@ public class TFConfig {
 	public static boolean prettifyOreMeterGui = true;
 	public static boolean spawnCharmAnimationAsTotem = false;
 	public static boolean manualTravellersWingsGradualGlideDefault = true;
+	public static boolean firstPersonGloveOverlay = true;
 
 	// --- Item Display ---
 	public static int itemDisplayXOffs = 4;
@@ -220,6 +221,7 @@ public class TFConfig {
 		prettifyOreMeterGui = config.prettifyOreMeterGui.get();
 		spawnCharmAnimationAsTotem = config.spawnCharmAnimationAsTotem.get();
 		manualTravellersWingsGradualGlideDefault = config.manualTravellersWingsGradualGlide.get();
+		firstPersonGloveOverlay = config.firstPersonGloveOverlay.get();
 
 		itemDisplayXOffs = config.ITEM_DISPLAY.screenOffsetX.get();
 		itemDisplayYOffs = config.ITEM_DISPLAY.screenOffsetY.get();

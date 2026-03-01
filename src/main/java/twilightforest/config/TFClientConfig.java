@@ -23,6 +23,7 @@ public class TFClientConfig {
 	final ModConfigSpec.BooleanValue prettifyOreMeterGui;
 	final ModConfigSpec.BooleanValue spawnCharmAnimationAsTotem;
 	final ModConfigSpec.BooleanValue manualTravellersWingsGradualGlide;
+	final ModConfigSpec.BooleanValue firstPersonGloveOverlay;
 
 	final ItemDisplay ITEM_DISPLAY = new ItemDisplay();
 
@@ -99,6 +100,10 @@ public class TFClientConfig {
 		manualTravellersWingsGradualGlide = builder.translation(TFConfig.CONFIG_ID + "manual_travellers_wings_gradual_glide")
 			.comment(ConfigComments.MANUAL_TRAVELLERS_WINGS_GRADUAL_GLIDE)
 			.define("travellersWingsGradualGlide", true);
+
+		firstPersonGloveOverlay = builder.translation(TFConfig.CONFIG_ID + "first_person_glove_overlay")
+			.comment(ConfigComments.FIRST_PERSON_GLOVE_OVERLAY)
+			.define("firstPersonGloveOverlay", true);
 
 		builder.comment(ConfigComments.ITEM_DISPLAY).translation(TFConfig.CONFIG_ID + "item_display").push("Item Display Modifier Settings");
 		{

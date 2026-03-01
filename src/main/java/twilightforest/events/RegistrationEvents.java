@@ -51,6 +51,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.block.entity.DryingRackBlockEntity;
 import twilightforest.block.entity.JarBlockEntity;
 import twilightforest.command.TFCommand;
+import twilightforest.components.block.ChiseledCanopyBookshelfWrapper;
 import twilightforest.config.ConfigSetup;
 import twilightforest.data.custom.stalactites.entry.StalactiteReloadListener;
 import twilightforest.dispenser.TFDispenserBehaviors;
@@ -141,7 +142,8 @@ public class RegistrationEvents {
 		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, TFBlockEntities.MASON_JAR.get(), (masonJarBlock, side) ->
 			side == Direction.UP ? masonJarBlock.getItemHandler() : null);
 
-		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, TFBlockEntities.DRYING_RACK.value(),  (dryingRackBlock, side) -> new DryingRackBlockEntity.DryingRackHandler(dryingRackBlock));
+		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, TFBlockEntities.DRYING_RACK.get(),  (entity, side) -> new DryingRackBlockEntity.DryingRackHandler(entity));
+		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, TFBlockEntities.CHISELED_CANOPY_BOOKSHELF.get(), (entity, side) -> new ChiseledCanopyBookshelfWrapper(entity));
 	}
 
 	public void addBlockEntityTypes(BlockEntityTypeAddBlocksEvent event) {
@@ -260,6 +262,7 @@ public class RegistrationEvents {
 		registrar.playToClient(TFBossBarPacket.UpdateTFBossBarStylePacket.TYPE, TFBossBarPacket.UpdateTFBossBarStylePacket.STREAM_CODEC, TFBossBarPacket.UpdateTFBossBarStylePacket::handle);
 		registrar.playToClient(SetMasonJarItemPacket.TYPE, SetMasonJarItemPacket.STREAM_CODEC, SetMasonJarItemPacket::handle);
 		registrar.playToClient(SyncQuestsPacket.TYPE, SyncQuestsPacket.STREAM_CODEC, SyncQuestsPacket::handle);
+		registrar.playToClient(TravellersWingsStatePacket.TYPE, TravellersWingsStatePacket.STREAM_CODEC, TravellersWingsStatePacket::handle);
 	}
 
 	public void init(FMLCommonSetupEvent evt) {

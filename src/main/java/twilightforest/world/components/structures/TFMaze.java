@@ -16,6 +16,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFConfiguredFeatures;
 
+import java.util.Arrays;
 import java.util.stream.IntStream;
 
 /**
@@ -183,9 +184,7 @@ public class TFMaze {
 
 
 	public void resetCells() {
-		IntStream.range(0, width)
-			.forEach(x -> IntStream.range(0, depth)
-				.forEach(z -> putCell(x, z, 0)));
+		Arrays.fill(storage, 0);
 	}
 
 	/**

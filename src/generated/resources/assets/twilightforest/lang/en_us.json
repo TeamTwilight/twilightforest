@@ -838,6 +838,8 @@
   "config.twilightforest.disable_uncrafting.tooltip": "Disables the uncrafting function of the uncrafting table. Recommended as a last resort if there's too many things to change about its behavior (or you're just lazy, I dont judge).\nDo note that special uncrafting recipes are not disabled as the mod relies on them for other things.",
   "config.twilightforest.disable_uncrafting_table": "Disable Uncrafting Table",
   "config.twilightforest.disable_uncrafting_table.tooltip": "Disables any usage of the uncrafting table, as well as prevents it from showing up in loot or crafted.\nPlease note that table has more uses than just uncrafting, you can read about them here! http://benimatic.com/tfwiki/index.php?title=Uncrafting_Table\nIt is highly recommended to keep the table enabled as the mod has special uncrafting exclusive recipes, but the option remains for people that dont want the table to be functional at all.\nIf you are looking to just prevent normal crafting recipes from being reversed, consider using the 'disableUncrafting' option instead.",
+  "config.twilightforest.first_person_glove_overlay": "First-Person Glove Overlay",
+  "config.twilightforest.first_person_glove_overlay.tooltip": "Allows Traveller's Gloves to render on your hand when in 1st person view.",
   "config.twilightforest.giant_skin_uuid_list": "Giant Skins",
   "config.twilightforest.giant_skin_uuid_list.button": "Edit Skins",
   "config.twilightforest.giant_skin_uuid_list.tooltip": "List of player UUIDs whose skins the Giants should use. Leave the list empty to use the skin of the player viewing them.",

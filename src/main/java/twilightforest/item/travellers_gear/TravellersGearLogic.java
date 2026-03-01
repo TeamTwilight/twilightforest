@@ -30,9 +30,11 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import twilightforest.TwilightForestMod;
 import twilightforest.components.entity.SlimySolesAttachment;
+import twilightforest.components.entity.TravellersWingsAttachment;
 import twilightforest.init.*;
 import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.network.ParticlePacket;
+import twilightforest.network.TravellersWingsStatePacket;
 import twilightforest.util.TFMathUtil;
 
 import java.util.Collections;
@@ -112,11 +114,11 @@ public class TravellersGearLogic {
 		Long cooldown = leggingsStack.get(TFDataComponents.SIDESTEP_COOLDOWN);
 		if (cooldown == null)
 			return;
-		long dt = player.level().getGameTime() - player.getData(TFDataAttachments.LAST_SIDESTEP_TIME);
-		Boolean shouldPlaySound = player.getData(TFDataAttachments.SHOULD_PLAY_SIDE_STEP_COOLDOWN_SOUND);
-		if (TravellersModifiersManager.isModifierActive(player, leggingsStack, TravellersModifiersManager.SIDESTEP_MODIFIER) && dt > cooldown && shouldPlaySound) {
+		TravellersWingsAttachment attachment = player.getData(TFDataAttachments.TRAVELLERS_WINGS);
+		long dt = player.level().getGameTime() - attachment.lastSidestepTime;
+		if (TravellersModifiersManager.isModifierActive(player, leggingsStack, TravellersModifiersManager.SIDESTEP_MODIFIER) && dt > cooldown && attachment.shouldPlaySideStepCooldownSound) {
 			player.playSound(TFSounds.SIDE_STEP_CHARGED.get(), 1F, player.getVoicePitch());
-			player.setData(TFDataAttachments.SHOULD_PLAY_SIDE_STEP_COOLDOWN_SOUND, false);
+			attachment.shouldPlaySideStepCooldownSound = false;
 		}
 	}
 
@@ -192,14 +194,15 @@ public class TravellersGearLogic {
 	}
 
 	public static boolean tryPerformSidestep(Player player, boolean isLeftSidestep) {
-		long lastSidestepTime = player.getData(TFDataAttachments.LAST_SIDESTEP_TIME);
+		TravellersWingsAttachment attachment = player.getData(TFDataAttachments.TRAVELLERS_WINGS);
+		long lastSidestepTime = attachment.lastSidestepTime;
 		ItemStack leggingsStack = player.getItemBySlot(EquipmentSlot.LEGS);
 		Long cooldown = leggingsStack.get(TFDataComponents.SIDESTEP_COOLDOWN);
 		long currentTime = player.level().getGameTime();
 		if (TravellersModifiersManager.isModifierActive(player, leggingsStack, TravellersModifiersManager.SIDESTEP_MODIFIER) && cooldown != null && currentTime - lastSidestepTime > cooldown && !player.isFallFlying() && player.onGround() && !player.isCrouching()) {
 			TravellersGearLogic.performSidestep(player, isLeftSidestep);
-			player.setData(TFDataAttachments.LAST_SIDESTEP_TIME, currentTime);
-			player.setData(TFDataAttachments.SHOULD_PLAY_SIDE_STEP_COOLDOWN_SOUND, true);
+			attachment.lastSidestepTime = currentTime;
+			attachment.shouldPlaySideStepCooldownSound = true;
 			return true;
 		}
 		return false;
@@ -211,6 +214,16 @@ public class TravellersGearLogic {
 		Vec3 dashDirection = new Vec3(-Math.sin(Math.toRadians(angle) + rot), 0, Math.cos(Math.toRadians(angle) + rot));
 		player.push(dashDirection.scale(1.6));  // 5 blocks
 		player.playSound(TFSounds.SIDE_STEP.get(), 1.0F, player.getVoicePitch());
+
+		TravellersWingsAttachment attachment = player.getData(TFDataAttachments.TRAVELLERS_WINGS);
+		TravellersWingsAttachment.WingState newState = TravellersWingsAttachment.WingState.SIDESTEP;
+		attachment.state = newState;
+		attachment.sidestepLeft = isLeftSidestep;
+		attachment.sidestepTimer = 0;
+
+		if (player.level() instanceof ServerLevel) {
+			PacketDistributor.sendToPlayersTrackingEntityAndSelf(player, new TravellersWingsStatePacket(player.getId(), newState, isLeftSidestep, attachment.doubleJumpTimer, attachment.sidestepTimer));
+		}
 	}
 
 	public static boolean performDoubleJump(Player player) {
@@ -227,6 +240,12 @@ public class TravellersGearLogic {
 		if (instance != null) // Increase safe fall distance so the player can land up to 2 blocks below their starting height after performing a double jump at peak height without taking fall damage
 			instance.addOrUpdateTransientModifier(TFAttributeModifiers.TRAVELLERS_DOUBLE_JUMP_SAFE_FALL_DISTANCE);
 
+		if (player.getItemBySlot(EquipmentSlot.LEGS).is(TFItems.TRAVELLERS_WINGS)) {
+			TravellersWingsAttachment attachment = player.getData(TFDataAttachments.TRAVELLERS_WINGS);
+			attachment.state = TravellersWingsAttachment.WingState.DOUBLE_JUMP;
+			attachment.doubleJumpTimer = 0;
+		}
+
 		if (player.level() instanceof ServerLevel serverLevel && player.getItemBySlot(EquipmentSlot.LEGS).is(TFItems.TRAVELLERS_WINGS)) {
 			ParticlePacket particlePacket = new ParticlePacket();
 			Vec3 deltaMovement = player.getDeltaMovement();
@@ -241,6 +260,8 @@ public class TravellersGearLogic {
 				particlePacket.queueParticle(type, false, wingsPosition, particleVelocity.multiply(0.25, -0.5, 0.25).add(deltaMovement));
 			}
 			PacketDistributor.sendToPlayersTrackingEntityAndSelf(player, particlePacket);
+			TravellersWingsAttachment attachment = player.getData(TFDataAttachments.TRAVELLERS_WINGS);
+			PacketDistributor.sendToPlayersTrackingEntityAndSelf(player, new TravellersWingsStatePacket(player.getId(), TravellersWingsAttachment.WingState.DOUBLE_JUMP, attachment.sidestepLeft, attachment.doubleJumpTimer, attachment.sidestepTimer));
 		}
 		return true;
 	}
@@ -330,6 +351,50 @@ public class TravellersGearLogic {
 				TFDataAttachments.DOUBLE_JUMP_VALIDATOR,
 				TFDataAttachments.DOUBLE_JUMP_VALIDATOR_LAST_CHECK,
 				"double jump");
+		}
+	}
+
+	public static void determineWingState(LivingEntity livingEntity) {
+		TravellersWingsAttachment attachment = livingEntity.getData(TFDataAttachments.TRAVELLERS_WINGS);
+		TravellersWingsAttachment.WingState newState = TravellersWingsAttachment.WingState.IDLE;
+
+		boolean isLocked = false;
+		if (attachment.state == TravellersWingsAttachment.WingState.DOUBLE_JUMP) {
+			attachment.doubleJumpTimer++;
+			if (attachment.doubleJumpTimer < TravellersWingsAttachment.DOUBLE_JUMP_DURATION) {
+				isLocked = true;
+				newState = TravellersWingsAttachment.WingState.DOUBLE_JUMP;
+			}
+		} else if (attachment.state == TravellersWingsAttachment.WingState.SIDESTEP) {
+			attachment.sidestepTimer++;
+			if (attachment.sidestepTimer < TravellersWingsAttachment.SIDESTEP_DURATION) {
+				isLocked = true;
+				newState = attachment.state;
+			}
+		} else {
+			attachment.doubleJumpTimer = 0;
+			attachment.sidestepTimer = 0;
+		}
+
+		if (!isLocked) {
+			if (livingEntity.isPassenger()) {
+				newState = TravellersWingsAttachment.WingState.RIDE;
+			} else if (livingEntity.isSwimming()) {
+				newState = TravellersWingsAttachment.WingState.SWIM;
+			} else if (!livingEntity.onGround() && !livingEntity.isInLiquid() && livingEntity.fallDistance < 2.3F && (!(livingEntity instanceof Player p) || !p.getAbilities().flying)) {
+				newState = TravellersWingsAttachment.WingState.FALL_SLOW;
+			} else if (livingEntity.getDeltaMovement().y < 0 && livingEntity.fallDistance > 2.3F) {
+				newState = TravellersWingsAttachment.WingState.FALL_FAST;
+			} else if (livingEntity.isSprinting()) {
+				newState = TravellersWingsAttachment.WingState.SPRINT;
+			} else if (livingEntity.walkAnimation.speed() > 0.1) {
+				newState = TravellersWingsAttachment.WingState.WALK;
+			}
+		}
+
+		if (newState != attachment.state) {
+			attachment.state = newState;
+			PacketDistributor.sendToPlayersTrackingEntityAndSelf(livingEntity, new TravellersWingsStatePacket(livingEntity.getId(), newState, attachment.sidestepLeft, attachment.doubleJumpTimer, attachment.sidestepTimer));
 		}
 	}
 }

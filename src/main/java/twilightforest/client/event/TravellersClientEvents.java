@@ -3,12 +3,20 @@ package twilightforest.client.event;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.player.PlayerRenderer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -19,10 +27,12 @@ import net.minecraft.world.item.component.ItemContainerContents;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.client.event.*;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import tamaized.beanification.Component;
 import tamaized.beanification.PostConstruct;
+import twilightforest.TwilightForestMod;
 import twilightforest.config.TFConfig;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.*;
@@ -53,6 +63,7 @@ public class TravellersClientEvents {
 		NeoForge.EVENT_BUS.addListener(this::slowZoomSensitivity);
 		NeoForge.EVENT_BUS.addListener(this::swapHotbar);
 		NeoForge.EVENT_BUS.addListener(this::toggleRedThreadVision);
+		NeoForge.EVENT_BUS.addListener(this::renderGlovesInFirstPerson);
 	}
 
 	private void handleAgileRanger(MovementInputUpdateEvent event) {
@@ -138,7 +149,6 @@ public class TravellersClientEvents {
 		boolean avoidCreativeFly = localPlayer.mayFly() && localPlayer.tickCount - lastJumpKeyPressTime <= 6;
 		if (pressedKey && !avoidCreativeFly && TravellersModifiersManager.isModifierActive(localPlayer, TravellersModifiersManager.DOUBLE_JUMP_MODIFIER)) {
 			if (TravellersGearLogic.performDoubleJump(localPlayer)) {
-				localPlayer.getData(TFDataAttachments.TRAVELLERS_WINGS_ANIM).doubleJump = true;
 				localPlayer.connection.send(new PerformDoubleJumpPacket());
 			}
 		}
@@ -230,5 +240,25 @@ public class TravellersClientEvents {
 
 	private boolean ignoreKeyEvent(InputEvent.Key event, KeyMapping key) {
 		return !key.matches(event.getKey(), event.getScanCode()) || event.getAction() != InputConstants.PRESS || Minecraft.getInstance().screen != null;
+	}
+
+	@SuppressWarnings("unchecked") //meh
+	private void renderGlovesInFirstPerson(RenderArmEvent event) {
+		if (TFConfig.firstPersonGloveOverlay) {
+			AbstractClientPlayer player = event.getPlayer();
+			ItemStack chestStack = player.getItemBySlot(EquipmentSlot.CHEST);
+			if (chestStack.has(TFDataComponents.TRAVELLERS_HAS_GLOVES) && !chestStack.has(TFDataComponents.EMPERORS_CLOTH)) {
+				PlayerRenderer renderer = (PlayerRenderer) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
+				HumanoidModel<AbstractClientPlayer> model = (HumanoidModel<AbstractClientPlayer>) IClientItemExtensions.of(TFItems.TRAVELLERS_GLOVES.get()).getHumanoidArmorModel(player, chestStack, EquipmentSlot.CHEST, renderer.getModel());
+				ModelPart armPart = event.getArm() == HumanoidArm.RIGHT ? model.rightArm : model.leftArm;
+				model.attackTime = 0.0F;
+				model.crouching = false;
+				model.swimAmount = 0.0F;
+				model.setupAnim(player, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
+				armPart.xRot = 0.0F;
+				ResourceLocation gloveLocation = TwilightForestMod.prefix("textures/models/armor/travellers_layer_1.png");
+				armPart.render(event.getPoseStack(), event.getMultiBufferSource().getBuffer(RenderType.armorCutoutNoCull(gloveLocation)), event.getPackedLight(), OverlayTexture.NO_OVERLAY);
+			}
+		}
 	}
 }

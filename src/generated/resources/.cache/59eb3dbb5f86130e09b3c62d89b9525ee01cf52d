@@ -1,4 +1,4 @@
-// 1.21.1	2025-12-19T06:57:56.223095168	Loot Tables
+// 1.21.1	2026-02-27T15:38:13.076635821	Loot Tables
 483a7e0c99d5cabeab1ba9f04bd8e88d0a8f7386 data/twilightforest/loot_table/aurora_cache.json
 002a6e2eccdc92db019bd775911912877b26771f data/twilightforest/loot_table/aurora_room.json
 afe7197a19b997d2f5c5980d9805b6093191b44f data/twilightforest/loot_table/blocks/acacia_banister.json
@@ -509,7 +509,7 @@ b3507ca92af17635402d16ecbab1ac502deafc3e data/twilightforest/loot_table/blocks/y
 f6f955a9b6eab3108071104319701e84fc4ce5d5 data/twilightforest/loot_table/blocks/zombie_skull_candle.json
 a49d1d64b70fc90cec5f3c947fe2467a6dc60016 data/twilightforest/loot_table/blocks/zombie_wall_skull_candle.json
 6408299b8c629ea3ae8d61949ca19924a2588485 data/twilightforest/loot_table/camp_armor_rack.json
-bac2dd1b3a04b231ceb606ec09357ccbad5853f4 data/twilightforest/loot_table/camp_drying_rack.json
+f386ba81d340b2b87906b759aba2cfc6b9fe8d24 data/twilightforest/loot_table/camp_drying_rack.json
 16f85642f2d63e74548365dc249da661518642c7 data/twilightforest/loot_table/camp_pot.json
 be1b2fd8e2cf75c07269536228b5eb47ced68b93 data/twilightforest/loot_table/camp_tent.json
 53072cea763e790a9ef2465367e3d75b60630af6 data/twilightforest/loot_table/chests/basement.json

@@ -203,7 +203,6 @@ public class TravellersGearEvents {
 		if (event.getEntity().level().isClientSide()) {
 			if (player.getData(TFDataAttachments.TRAVELLERS_WINGS_ANIM).doubleJump && player.onGround()) {
 				player.getData(TFDataAttachments.TRAVELLERS_WINGS_ANIM).doubleJump = false;
-				player.getData(TFDataAttachments.TRAVELLERS_WINGS_ANIM).doubleJumpTime = 0;
 			}
 		}
 
@@ -243,6 +242,7 @@ public class TravellersGearEvents {
 		TravellersGearLogic.travellersWingsHighJump(livingEntity);
 		TravellersGearLogic.travellersGearAutoRepair(livingEntity);
 		TravellersGearLogic.travellersBootsStraightAhead(livingEntity);
+		TravellersGearLogic.determineWingState(livingEntity);
 	}
 
 	private void activateAndDeactivateTravellersModifiers(ItemAttributeModifierEvent event) {
