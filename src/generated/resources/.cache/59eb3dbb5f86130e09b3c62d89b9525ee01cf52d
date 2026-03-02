@@ -1,4 +1,4 @@
-// 1.21.1	2026-02-27T15:38:13.076635821	Loot Tables
+// 1.21.1	2026-03-01T16:30:32.980538775	Loot Tables
 483a7e0c99d5cabeab1ba9f04bd8e88d0a8f7386 data/twilightforest/loot_table/aurora_cache.json
 002a6e2eccdc92db019bd775911912877b26771f data/twilightforest/loot_table/aurora_room.json
 afe7197a19b997d2f5c5980d9805b6093191b44f data/twilightforest/loot_table/blocks/acacia_banister.json
@@ -104,6 +104,7 @@ d6ea4b339bef08f39047192ce31727f6d8155716 data/twilightforest/loot_table/blocks/d
 c8a9a50d6e7c03b354b5da00bb675017877a1ee6 data/twilightforest/loot_table/blocks/dark_sign.json
 193a2ae813f3a7eaaab560c53c59fe1ee1423d5d data/twilightforest/loot_table/blocks/dark_slab.json
 4166bab52eb795a5a0f035cef1642ba7039bcee9 data/twilightforest/loot_table/blocks/dark_stairs.json
+c433c81aec2cc31870687507b6d5ac0169473f58 data/twilightforest/loot_table/blocks/dark_tower_miniature_structure.json
 851e1c9caa67bb93cf49cedc044e6b5e5fa08d9e data/twilightforest/loot_table/blocks/dark_trapdoor.json
 2d25ca8522019a996bd37fabba8aa6052946be8e data/twilightforest/loot_table/blocks/dark_trapped_chest.json
 c18f4cf533e235f523da6f494749d0a95790d1e8 data/twilightforest/loot_table/blocks/dark_wall_hanging_sign.json
@@ -273,6 +274,7 @@ e6c740b43f202b58c6d558162b800b3d09f4fb15 data/twilightforest/loot_table/blocks/m
 dc7b881eaacf704e632a74ce9b5a074e6deadaaa data/twilightforest/loot_table/blocks/mining_wood.json
 3aef535d7c935cb886f3e9fa9126246a7d4fda30 data/twilightforest/loot_table/blocks/minoshroom_trophy.json
 70a7f91ceb28f93e51f2f91ddd38add7d61b3a7b data/twilightforest/loot_table/blocks/minoshroom_wall_trophy.json
+a2b6ba3d256bc6662ad7a9bda7867dfdaeceddea data/twilightforest/loot_table/blocks/minotaur_labyrinth_miniature_structure.json
 d0d4666b40bcae766f1b1b75ae17cc118e27dab0 data/twilightforest/loot_table/blocks/moonworm.json
 c8874f4b1d43c412358f4c3a7177f7bf429ab371 data/twilightforest/loot_table/blocks/moonworm_failed_to_place.json
 1068831eee22daf8b30e3362e6c0d6774038cf11 data/twilightforest/loot_table/blocks/moonworm_squish.json

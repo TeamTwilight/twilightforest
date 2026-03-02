@@ -32,6 +32,12 @@ public class YetiArmorModel extends TFArmorModel {
 		addPairHorns(head, 2, -6.0F, 15.0F);
 		addPairHorns(head, 3, -4.0F, -5.0F);
 
+		//the body is apparently smaller than vanilla
+		partdefinition.addOrReplaceChild("body", CubeListBuilder.create()
+				.texOffs(16, 16)
+				.addBox(-4.0F, 0.0F, -2.0F, 8.0F, 11.0F, 4.0F, deformation),
+			PartPose.ZERO);
+
 		partdefinition.getChild("right_leg").addOrReplaceChild("right_ruff", CubeListBuilder.create()
 				.texOffs(44, 0)
 				.addBox(-2.5F, 0.0F, -2.5F, 5.0F, 2.0F, 5.0F, deformation),

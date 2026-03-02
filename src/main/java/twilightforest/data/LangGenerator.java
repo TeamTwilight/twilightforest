@@ -229,7 +229,6 @@ public class LangGenerator extends TFLangProvider {
 		this.addBlock(TFBlocks.TERRORCOTTA_CURVES, "Terrorcotta Curves");
 		this.addBlock(TFBlocks.TERRORCOTTA_LINES, "Terrorcotta Lines");
 		this.addBlock(TFBlocks.CORONATION_CARPET, "Coronation Carpet");
-
 		this.addBlock(TFBlocks.SKULL_CHEST, "Skull Chest");
 		this.addBlock(TFBlocks.KEEPSAKE_CASKET, "Keepsake Casket");
 		this.add("block.twilightforest.chipped_keepsake_casket", "Chipped Keepsake Casket");
@@ -249,6 +248,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addBlock(TFBlocks.MAZESTONE_BORDER, "Mazestone Border");
 		this.addBlock(TFBlocks.RED_THREAD, "Red Thread");
 		this.addBlock(TFBlocks.MAZE_SLIME_BLOCK, "Maze Slime Block");
+		this.addBlock(TFBlocks.MINOTAUR_LABYRINTH_MINIATURE_STRUCTURE, "Miniature Minotaur Labyrinth");
 
 		this.addBlock(TFBlocks.SMOKER, "Smoker");
 		this.addBlock(TFBlocks.FIRE_JET, "Fire Jet");
@@ -281,6 +281,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addBlock(TFBlocks.FAKE_DIAMOND, "Diamond Block");
 		this.addBlock(TFBlocks.FAKE_GOLD, "Gold Block");
 		this.addBlock(TFBlocks.EXPERIMENT_115, "Experiment 115");
+		this.addBlock(TFBlocks.DARK_TOWER_MINIATURE_STRUCTURE, "Miniature Dark Tower");
 
 		this.addBlock(TFBlocks.AURORA_BLOCK, "Aurora Block");
 		this.addBlock(TFBlocks.AURORA_SLAB, "Aurora Slab");

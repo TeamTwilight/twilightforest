@@ -1,4 +1,4 @@
-// 1.21.1	2025-09-13T07:07:35.191219698	TwilightForest Item and BlockItem models
+// 1.21.1	2026-03-01T16:30:32.987197564	TwilightForest Item and BlockItem models
 387b18dfa614fda790f7b8e8324e3b139fa177c2 assets/twilightforest/models/item/acacia_banister.json
 59484730296a2f5e31f486fac16ad09d2a55ae8c assets/twilightforest/models/item/acacia_drying_rack.json
 0ca7dc7b4daec376dd0f85d57465830781584c7d assets/twilightforest/models/item/alpha_yeti_banner_pattern.json
@@ -193,6 +193,7 @@ bb7778528993122f7e0e1580cf2f8f0f020444ac assets/twilightforest/models/item/dark_
 eabcc78bb30aef9eb11d6f55ff944b8623f85eda assets/twilightforest/models/item/dark_sign.json
 e55282d4e6cb8b9c19dc036e7174e2fe39f01a7a assets/twilightforest/models/item/dark_slab.json
 5a9ccf782f81a4a2eac0c200144458052781e155 assets/twilightforest/models/item/dark_stairs.json
+dff931b7c64eca34d295071587d9f15dfa04c055 assets/twilightforest/models/item/dark_tower_miniature_structure.json
 fc7fa6c2d37875a13c4c9ab7eeac2ef6b5a37354 assets/twilightforest/models/item/dark_trapdoor.json
 31bb8e075e499ae624ac0953114b8d041d9db2c0 assets/twilightforest/models/item/dark_trapped_chest.json
 90d034851a42185a2a4c5f28ad31465b8e484b79 assets/twilightforest/models/item/dark_wood.json
@@ -553,6 +554,7 @@ cf3737de5ae670012ca4fd9135bae81ed57138c6 assets/twilightforest/models/item/minin
 061906a0c9a9a334fbb82acb809c3748e2b1f9cb assets/twilightforest/models/item/minoshroom_boss_spawner.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/minoshroom_spawn_egg.json
 621a3a44e9aa5fc8a52bf833e473ca652f4c15b9 assets/twilightforest/models/item/minoshroom_trophy.json
+b8f69bf704d510a141be1577e96f0c1497d8f92b assets/twilightforest/models/item/minotaur_labyrinth_miniature_structure.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/minotaur_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/mist_wolf_spawn_egg.json
 fcd1da7bbd60c8556ead41d324e63a27d0c6e2be assets/twilightforest/models/item/monster_jerky.json

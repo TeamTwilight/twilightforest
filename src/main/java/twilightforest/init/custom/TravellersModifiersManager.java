@@ -115,12 +115,12 @@ public class TravellersModifiersManager {
 		return List.of(Component.translatable(modifier.location().toLanguageKey("travellers_gear.modifier", "description"), args));
 	}
 
-	public static boolean isModifierActive(HolderLookup.Provider registries, ItemStack stack, ResourceKey<TravellersModifier> modifierKey) {
-		return getCachedModifier(registries, modifierKey).map(modifier -> modifier.isActive(stack, modifierKey)).orElse(false);
+	public static boolean isModifierActive(HolderLookup.Provider registries, ItemStack stack, ResourceKey<TravellersModifier> modifierKey, boolean spectator) {
+		return getCachedModifier(registries, modifierKey).map(modifier -> modifier.isActive(stack, modifierKey, spectator)).orElse(false);
 	}
 
 	public static boolean isModifierActive(Entity entity, ItemStack stack, ResourceKey<TravellersModifier> modifierKey) {
-		return isModifierActive(entity.registryAccess(), stack, modifierKey);
+		return isModifierActive(entity.registryAccess(), stack, modifierKey, entity.isSpectator());
 	}
 
 	public static boolean isModifierActive(Entity entity, ResourceKey<TravellersModifier> modifierKey) {
@@ -132,7 +132,7 @@ public class TravellersModifiersManager {
 		if (modifier.isEmpty())
 			return false;
 		ItemStack equippedStack = getStackForGroup(livingEntity, modifier.get().group());
-		return !equippedStack.isEmpty() && modifier.get().isActive(equippedStack, modifierKey);
+		return !equippedStack.isEmpty() && modifier.get().isActive(equippedStack, modifierKey, livingEntity.isSpectator());
 	}
 
 	public static boolean hasTravellersModifier(HolderLookup.Provider registries, ItemStack stack, ResourceKey<TravellersModifier> modifierKey) {

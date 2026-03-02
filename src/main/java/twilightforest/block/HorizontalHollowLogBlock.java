@@ -19,6 +19,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -142,7 +143,7 @@ public class HorizontalHollowLogBlock extends Block implements WaterloggedBlock 
 		if (stack.is(TFBlocks.MOSS_PATCH.asItem())) {
 			if (canChangeVariant(variant, level, pos, stateAxis)) {
 				level.setBlock(pos, state.setValue(VARIANT, HollowLogVariants.Horizontal.MOSS), Block.UPDATE_ALL);
-				level.playSound(null, pos, SoundEvents.MOSS_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
+				playPlaceSound(TFBlocks.MOSS_PATCH.get().defaultBlockState(), level, pos, player);
 				stack.consume(1, player);
 
 				return ItemInteractionResult.sidedSuccess(level.isClientSide());
@@ -150,7 +151,7 @@ public class HorizontalHollowLogBlock extends Block implements WaterloggedBlock 
 		} else if (stack.is(Blocks.SHORT_GRASS.asItem())) {
 			if (variant == HollowLogVariants.Horizontal.MOSS) {
 				level.setBlock(pos, state.setValue(VARIANT, HollowLogVariants.Horizontal.MOSS_AND_GRASS), Block.UPDATE_ALL);
-				level.playSound(null, pos, SoundEvents.GRASS_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
+				playPlaceSound(Blocks.SHORT_GRASS.defaultBlockState(), level, pos, player);
 				stack.consume(1, player);
 
 				return ItemInteractionResult.sidedSuccess(level.isClientSide());
@@ -158,7 +159,7 @@ public class HorizontalHollowLogBlock extends Block implements WaterloggedBlock 
 		} else if (stack.is(Items.SNOWBALL)) {
 			if (canChangeVariant(variant, level, pos, stateAxis)) {
 				level.setBlock(pos, state.setValue(VARIANT, HollowLogVariants.Horizontal.SNOW), Block.UPDATE_ALL);
-				level.playSound(null, pos, SoundEvents.SNOW_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
+				playPlaceSound(Blocks.SNOW.defaultBlockState(), level, pos, player);
 				stack.consume(1, player);
 
 				return ItemInteractionResult.sidedSuccess(level.isClientSide());
@@ -166,7 +167,7 @@ public class HorizontalHollowLogBlock extends Block implements WaterloggedBlock 
 		} else if (stack.canPerformAction(ItemAbilities.SHOVEL_DIG)) {
 			if (variant == HollowLogVariants.Horizontal.SNOW) {
 				level.setBlock(pos, state.setValue(VARIANT, HollowLogVariants.Horizontal.EMPTY), Block.UPDATE_ALL);
-				level.playSound(null, pos, SoundEvents.SNOW_BREAK, SoundSource.BLOCKS, 1.0F, 1.0F);
+				playBreakSound(Blocks.SNOW.defaultBlockState(), level, pos, player);
 				if (!player.isCreative()) {
 					stack.hurtAndBreak(1, player, hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
 					level.addFreshEntity(new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(Items.SNOWBALL)));
@@ -191,6 +192,16 @@ public class HorizontalHollowLogBlock extends Block implements WaterloggedBlock 
 		}
 
 		return super.useItemOn(stack, state, level, pos, player, hand, hit);
+	}
+
+	public static void playPlaceSound(BlockState state, Level level, BlockPos pos, Player player) {
+		SoundType soundtype = state.getSoundType(level, pos, player);
+		level.playSound(null, pos, soundtype.getPlaceSound(), SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
+	}
+
+	public static void playBreakSound(BlockState state, Level level, BlockPos pos, Player player) {
+		SoundType soundtype = state.getSoundType(level, pos, player);
+		level.playSound(null, pos, soundtype.getBreakSound(), SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
 	}
 
 	@Override

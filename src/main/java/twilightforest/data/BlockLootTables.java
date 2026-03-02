@@ -134,6 +134,8 @@ public class BlockLootTables extends BlockLootSubProvider {
 		dropSelf(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get());
 		dropSelf(TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE.get());
 		dropSelf(TFBlocks.LICH_TOWER_MINIATURE_STRUCTURE.get());
+		dropSelf(TFBlocks.MINOTAUR_LABYRINTH_MINIATURE_STRUCTURE.get());
+		dropSelf(TFBlocks.DARK_TOWER_MINIATURE_STRUCTURE.get());
 		dropSelf(TFBlocks.KNIGHTMETAL_BLOCK.get());
 		dropSelf(TFBlocks.IRONWOOD_BLOCK.get());
 		dropSelf(TFBlocks.FIERY_BLOCK.get());

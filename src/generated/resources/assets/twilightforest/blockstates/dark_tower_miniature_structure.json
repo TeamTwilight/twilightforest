@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "twilightforest:block/miniature/dark_tower",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "twilightforest:block/miniature/dark_tower"
+    },
+    "facing=south": {
+      "model": "twilightforest:block/miniature/dark_tower",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "twilightforest:block/miniature/dark_tower",
+      "y": 270
+    }
+  }
+}

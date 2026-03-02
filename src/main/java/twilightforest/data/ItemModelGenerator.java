@@ -172,6 +172,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlockModel(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get(), "miniature/portal");
 		toBlockModel(TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE.get(), "miniature/naga_courtyard");
 		toBlockModel(TFBlocks.LICH_TOWER_MINIATURE_STRUCTURE.get(), "miniature/lich_tower");
+		toBlockModel(TFBlocks.MINOTAUR_LABYRINTH_MINIATURE_STRUCTURE.get(), "miniature/labyrinth");
+		toBlockModel(TFBlocks.DARK_TOWER_MINIATURE_STRUCTURE.get(), "miniature/dark_tower");
 		toBlock(TFBlocks.KNIGHTMETAL_BLOCK.get());
 		toBlock(TFBlocks.IRONWOOD_BLOCK.get());
 		toBlock(TFBlocks.FIERY_BLOCK.get());

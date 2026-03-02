@@ -80,14 +80,14 @@ public class VerticalHollowLogBlock extends Block implements SimpleWaterloggedBl
 
 		if (stack.is(Blocks.VINE.asItem())) {
 			level.setBlock(pos, this.climbable.value().defaultBlockState().setValue(ClimbableHollowLogBlock.VARIANT, HollowLogVariants.Climbable.VINE).setValue(ClimbableHollowLogBlock.FACING, directionUtil.horizontalOrElse(hit.getDirection(), player.getDirection().getOpposite())), 3);
-			level.playSound(null, pos, SoundEvents.VINE_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
+			HorizontalHollowLogBlock.playPlaceSound(Blocks.VINE.defaultBlockState(), level, pos, player);
 			stack.consume(1, player);
 
 			return ItemInteractionResult.sidedSuccess(level.isClientSide());
 
 		} else if (stack.is(Blocks.LADDER.asItem())) {
 			level.setBlock(pos, this.climbable.value().defaultBlockState().setValue(ClimbableHollowLogBlock.VARIANT, state.getValue(WATERLOGGED) ? HollowLogVariants.Climbable.LADDER_WATERLOGGED : HollowLogVariants.Climbable.LADDER).setValue(ClimbableHollowLogBlock.FACING, directionUtil.horizontalOrElse(hit.getDirection(), player.getDirection().getOpposite())), 3);
-			level.playSound(null, pos, SoundEvents.LADDER_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
+			HorizontalHollowLogBlock.playPlaceSound(Blocks.LADDER.defaultBlockState(), level, pos, player);
 			stack.consume(1, player);
 
 			return ItemInteractionResult.sidedSuccess(level.isClientSide());

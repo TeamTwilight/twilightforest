@@ -305,6 +305,8 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		horizontalBlock(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get(), models().getExistingFile(prefix("block/miniature/portal")));
 		horizontalBlock(TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE.get(), models().getExistingFile(prefix("block/miniature/naga_courtyard")));
 		horizontalBlock(TFBlocks.LICH_TOWER_MINIATURE_STRUCTURE.get(), models().getExistingFile(prefix("block/miniature/lich_tower")));
+		horizontalBlock(TFBlocks.MINOTAUR_LABYRINTH_MINIATURE_STRUCTURE.get(), models().getExistingFile(prefix("block/miniature/labyrinth")));
+		horizontalBlock(TFBlocks.DARK_TOWER_MINIATURE_STRUCTURE.get(), models().getExistingFile(prefix("block/miniature/dark_tower")));
 		mazestone();
 		simpleBlock(TFBlocks.HEDGE.get(), ConfiguredModel.builder()
 			.weight(10).modelFile(models().cubeAll(TFBlocks.HEDGE.getId().getPath(), blockTexture(TFBlocks.HEDGE.get()))).nextModel()

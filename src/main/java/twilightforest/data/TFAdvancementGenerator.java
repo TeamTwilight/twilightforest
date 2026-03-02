@@ -119,7 +119,7 @@ public class TFAdvancementGenerator implements AdvancementProvider.AdvancementGe
 			.save(consumer, "twilightforest:progress_lich");
 
 		AdvancementHolder minoshroom = Advancement.Builder.advancement().parent(lich).display(
-				TFItems.MEEF_STROGANOFF.get(),
+				TFBlocks.MINOTAUR_LABYRINTH_MINIATURE_STRUCTURE.get(),
 				Component.translatable("advancement.twilightforest.progress_labyrinth"),
 				Component.translatable("advancement.twilightforest.progress_labyrinth.desc"),
 				null, AdvancementType.GOAL, true, true, false)
@@ -176,7 +176,7 @@ public class TFAdvancementGenerator implements AdvancementProvider.AdvancementGe
 			.save(consumer, "twilightforest:ghast_trap");
 
 		AdvancementHolder ur_ghast = advancementDataMultiRequirements.wrap(Advancement.Builder.advancement().parent(trap).display(
-				TFBlocks.UR_GHAST_TROPHY.get(),
+				TFBlocks.DARK_TOWER_MINIATURE_STRUCTURE.get(),
 				Component.translatable("advancement.twilightforest.progress_ur_ghast"),
 				Component.translatable("advancement.twilightforest.progress_ur_ghast.desc",
 					Component.translatable(TFEntities.UR_GHAST.get().getDescriptionId())),
