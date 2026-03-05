@@ -73,6 +73,7 @@ public class SoundGenerator extends TFSoundProvider {
 		this.generateNewSoundWithSubtitle(TFSounds.DEER_AMBIENT, "mob/deer/idle", 3, "Deer moos");
 		this.generateNewSoundWithSubtitle(TFSounds.DEER_DEATH, "mob/deer/death", 1, "Deer dies");
 		this.generateNewSoundWithSubtitle(TFSounds.DEER_HURT, "mob/deer/hurt", 2, "Deer hurts");
+		this.generateNewSoundMC(TFSounds.DEER_EAT, "entity/horse/eat", 5, "Deer eats");
 
 		this.generateExistingSoundWithSubtitle(TFSounds.DWARF_RABBIT_AMBIENT, SoundEvents.RABBIT_AMBIENT, "Dwarf Rabbit squeaks");
 		this.generateExistingSoundWithSubtitle(TFSounds.DWARF_RABBIT_DEATH, SoundEvents.RABBIT_DEATH, "Dwarf Rabbit dies");

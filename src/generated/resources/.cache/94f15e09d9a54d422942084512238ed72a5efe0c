@@ -1,4 +1,4 @@
-// 1.21.1	2026-03-01T16:30:32.987197564	TwilightForest Item and BlockItem models
+// 1.21.1	2026-03-03T16:07:01.525221	TwilightForest Item and BlockItem models
 387b18dfa614fda790f7b8e8324e3b139fa177c2 assets/twilightforest/models/item/acacia_banister.json
 59484730296a2f5e31f486fac16ad09d2a55ae8c assets/twilightforest/models/item/acacia_drying_rack.json
 0ca7dc7b4daec376dd0f85d57465830781584c7d assets/twilightforest/models/item/alpha_yeti_banner_pattern.json
@@ -677,6 +677,7 @@ d595f519d3b0bc04d05df292af27f32faafa1c7f assets/twilightforest/models/item/seeke
 02dbf7d47b4be510da10aa9eeca37841abd09fae assets/twilightforest/models/item/seeker_bow_pulling_1.json
 efd1f5c64c16dacd32b8b1320d9e713ddc58f339 assets/twilightforest/models/item/seeker_bow_pulling_2.json
 a450c4e34bd472d349597e9e1740eb26e6e98d80 assets/twilightforest/models/item/shield.json
+382f729f235b5bd3e589f1d289d4350bb2f94e70 assets/twilightforest/models/item/shika_senbei.json
 77dcf40c893ab2b10523d77c21f622eeff3b3373 assets/twilightforest/models/item/sinister_spawner.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/skeleton_druid_spawn_egg.json
 bf81b7da7483a7cb79e848de49ff41d1c6c832f9 assets/twilightforest/models/item/skeleton_skull_candle.json

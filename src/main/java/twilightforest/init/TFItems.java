@@ -316,6 +316,7 @@ public class TFItems {
 	));
 	public static final DeferredItem<Item> BERRY_MEDLEY = ITEMS.register("berry_medley", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(5).saturationModifier(0.6F).usingConvertsTo(Items.BOWL).build()).stacksTo(1)));
 	public static final DeferredItem<Item> MOSS_SOUP = ITEMS.register("moss_soup", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(5).saturationModifier(0.6F).usingConvertsTo(Items.BOWL).build()).stacksTo(1)));
+	public static final DeferredItem<Item> SHIKA_SENBEI = ITEMS.register("shika_senbei", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationModifier(1.0F).build())));
 
 	public static final DeferredItem<Item> MONSTER_JERKY = ITEMS.register("monster_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationModifier(0.275F).build())));
 	public static final DeferredItem<Item> BEEF_JERKY = ITEMS.register("beef_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(6).saturationModifier(1.18F).build())));

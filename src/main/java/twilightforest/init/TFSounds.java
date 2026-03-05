@@ -80,6 +80,7 @@ public final class TFSounds {
 	public static final DeferredHolder<SoundEvent, SoundEvent> DEER_AMBIENT = createEvent("entity.twilightforest.deer.ambient");
 	public static final DeferredHolder<SoundEvent, SoundEvent> DEER_DEATH = createEvent("entity.twilightforest.deer.death");
 	public static final DeferredHolder<SoundEvent, SoundEvent> DEER_HURT = createEvent("entity.twilightforest.deer.hurt");
+	public static final DeferredHolder<SoundEvent, SoundEvent> DEER_EAT = createEvent("entity.twilightforest.deer.eat");
 	public static final DeferredHolder<SoundEvent, SoundEvent> DOOR_ACTIVATED = createEvent("block.twilightforest.door.activate");
 	public static final DeferredHolder<SoundEvent, SoundEvent> DOOR_REAPPEAR = createEvent("block.twilightforest.door.reappear");
 	public static final DeferredHolder<SoundEvent, SoundEvent> DOOR_VANISH = createEvent("block.twilightforest.door.vanish");

@@ -807,6 +807,16 @@
     ],
     "subtitle": "subtitles.twilightforest.entity.deer.death"
   },
+  "entity.twilightforest.deer.eat": {
+    "sounds": [
+      "entity/horse/eat1",
+      "entity/horse/eat2",
+      "entity/horse/eat3",
+      "entity/horse/eat4",
+      "entity/horse/eat5"
+    ],
+    "subtitle": "subtitles.twilightforest.entity.deer.eat"
+  },
   "entity.twilightforest.deer.hurt": {
     "sounds": [
       "twilightforest:mob/deer/hurt1",

@@ -109,6 +109,7 @@ public record ChestLootTables(HolderLookup.Provider registries) implements LootT
 					.setRolls(ConstantValue.exactly(2))
 					//uncommon loot
 					.add(LootItem.lootTableItem(Items.BREAD).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 8))))
+					.add(LootItem.lootTableItem(TFItems.SHIKA_SENBEI).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4))))
 					.add(LootItem.lootTableItem(Items.COOKED_BEEF).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 6))))
 					.add(LootItem.lootTableItem(Items.COOKED_PORKCHOP).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 8))))
 					.add(LootItem.lootTableItem(Items.BAKED_POTATO).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 8))))
@@ -337,6 +338,7 @@ public record ChestLootTables(HolderLookup.Provider registries) implements LootT
 					.add(LootItem.lootTableItem(Items.CARROT).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 6))).setWeight(75))
 					.add(LootItem.lootTableItem(Items.MELON_SLICE).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 6))).setWeight(75))
 					.add(LootItem.lootTableItem(Items.MELON_SEEDS).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 5))).setWeight(75))
+					.add(LootItem.lootTableItem(TFItems.SHIKA_SENBEI).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 6))).setWeight(75))
 					.add(LootItem.lootTableItem(Items.WATER_BUCKET).setWeight(75))
 					.add(LootItem.lootTableItem(Items.MILK_BUCKET).setWeight(75)))
 				.withPool(LootPool.lootPool()

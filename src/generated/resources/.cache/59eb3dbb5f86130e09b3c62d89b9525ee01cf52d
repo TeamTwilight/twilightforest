@@ -1,4 +1,4 @@
-// 1.21.1	2026-03-01T16:30:32.980538775	Loot Tables
+// 1.21.1	2026-03-03T16:07:01.52109	Loot Tables
 483a7e0c99d5cabeab1ba9f04bd8e88d0a8f7386 data/twilightforest/loot_table/aurora_cache.json
 002a6e2eccdc92db019bd775911912877b26771f data/twilightforest/loot_table/aurora_room.json
 afe7197a19b997d2f5c5980d9805b6093191b44f data/twilightforest/loot_table/blocks/acacia_banister.json
@@ -514,7 +514,7 @@ a49d1d64b70fc90cec5f3c947fe2467a6dc60016 data/twilightforest/loot_table/blocks/z
 f386ba81d340b2b87906b759aba2cfc6b9fe8d24 data/twilightforest/loot_table/camp_drying_rack.json
 16f85642f2d63e74548365dc249da661518642c7 data/twilightforest/loot_table/camp_pot.json
 be1b2fd8e2cf75c07269536228b5eb47ced68b93 data/twilightforest/loot_table/camp_tent.json
-53072cea763e790a9ef2465367e3d75b60630af6 data/twilightforest/loot_table/chests/basement.json
+c0567368f353068ff8688fd954f66e5386fc416c data/twilightforest/loot_table/chests/basement.json
 28eb3bab3e238426a093275a3bffb3fa8cc0d63e data/twilightforest/loot_table/chests/casket_loot.json
 0bef516a1e2af8997605a7aba43f809f96650ae7 data/twilightforest/loot_table/chests/hut_junk.json
 cec21e98847eaf2b048bb3f7962deaf97ff6c5e7 data/twilightforest/loot_table/chests/just_bones.json
@@ -610,7 +610,7 @@ f52444d7cae4e6fb57ee4b10216fef9b99595020 data/twilightforest/loot_table/entities
 68239e2a9351ba878a41c400750f984e9ddcac22 data/twilightforest/loot_table/entities/winter_wolf.json
 ef41d4cde2c58f4c1d6beaa710d699053eff74cf data/twilightforest/loot_table/entities/wraith.json
 5801d3cd4caafecf8ae6c40d20a7c755fd68ef44 data/twilightforest/loot_table/entities/yeti.json
-fbd701b4a73264323c02f598d03160b0413f5fb7 data/twilightforest/loot_table/fallen_trunk_loot.json
+961b5a641c67f1bbd4a0683c0301db6684edbe76 data/twilightforest/loot_table/fallen_trunk_loot.json
 e66102730538df43c05894866f47cfc577f29ea7 data/twilightforest/loot_table/fancy_well.json
 0e37b799703ea4e3a4828a0cf055899f982d29f8 data/twilightforest/loot_table/foundation_basement.json
 bf8cde237e5f714b008bb04f0113f1496ed9edac data/twilightforest/loot_table/graveyard.json

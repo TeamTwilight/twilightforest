@@ -635,6 +635,7 @@ public class TFCreativeTabs {
 			output.accept(TFItems.GELATINOUS_SLIME_DROP);
 			output.accept(TFItems.GELATINOUS_MAZE_SLIME_DROP);
 			output.accept(TFItems.MAZE_WAFER);
+			output.accept(TFItems.SHIKA_SENBEI);
 			output.accept(TFItems.MEEF_STROGANOFF);
 			output.accept(TFItems.HYDRA_CHOP);
 			output.accept(TFItems.EXPERIMENT_115);

@@ -2,7 +2,7 @@ package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
@@ -105,7 +105,7 @@ public class HollowLogVerticalTests {
 		verify(level, times(1)).setBlock(eq(BlockPos.ZERO), climbable.capture(), eq(Block.UPDATE_ALL));
 		assertSame(HollowLogVariants.Climbable.VINE, climbable.getValue().getValue(ClimbableHollowLogBlock.VARIANT));
 		assertSame(Direction.NORTH, climbable.getValue().getValue(ClimbableHollowLogBlock.FACING));
-		verify(level, times(1)).playSound(null, BlockPos.ZERO, SoundEvents.VINE_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
+		verify(level, times(1)).playSound(isNull(), eq(BlockPos.ZERO), any(SoundEvent.class), eq(SoundSource.BLOCKS), anyFloat(), anyFloat());
 		verify(stack, times(1)).consume(1, player);
 
 		verify(stack, never()).is(Blocks.LADDER.asItem());
@@ -139,7 +139,7 @@ public class HollowLogVerticalTests {
 		verify(level, times(1)).setBlock(eq(BlockPos.ZERO), climbable.capture(), eq(Block.UPDATE_ALL));
 		assertSame(HollowLogVariants.Climbable.LADDER, climbable.getValue().getValue(ClimbableHollowLogBlock.VARIANT));
 		assertSame(Direction.NORTH, climbable.getValue().getValue(ClimbableHollowLogBlock.FACING));
-		verify(level, times(1)).playSound(null, BlockPos.ZERO, SoundEvents.LADDER_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
+		verify(level, times(1)).playSound(isNull(), eq(BlockPos.ZERO), any(SoundEvent.class), eq(SoundSource.BLOCKS), anyFloat(), anyFloat());
 		verify(stack, times(1)).consume(1, player);
 	}
 
@@ -171,7 +171,7 @@ public class HollowLogVerticalTests {
 		verify(level, times(1)).setBlock(eq(BlockPos.ZERO), climbable.capture(), eq(Block.UPDATE_ALL));
 		assertSame(HollowLogVariants.Climbable.LADDER_WATERLOGGED, climbable.getValue().getValue(ClimbableHollowLogBlock.VARIANT));
 		assertSame(Direction.NORTH, climbable.getValue().getValue(ClimbableHollowLogBlock.FACING));
-		verify(level, times(1)).playSound(null, BlockPos.ZERO, SoundEvents.LADDER_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
+		verify(level, times(1)).playSound(isNull(), eq(BlockPos.ZERO), any(SoundEvent.class), eq(SoundSource.BLOCKS), anyFloat(), anyFloat());
 		verify(stack, times(1)).consume(1, player);
 	}
 

@@ -1,4 +1,4 @@
-// 1.21.1	2025-11-06T20:38:18.993332163	Twilight Forest Item Tags
+// 1.21.1	2026-03-03T16:07:01.537565	Twilight Forest Item Tags
 3c5895c72cfffe09615ec2b28267a726fcbf52e8 data/alexscaves/tags/item/ferns.json
 4c5df8d60b8f068b482a22fd807ddea22e1bfe00 data/alexscaves/tags/item/ferromagnetic_items.json
 42afac82c004061587d5b1ae20c2e66c0d399c8c data/alexscaves/tags/item/raw_meats.json
@@ -108,7 +108,7 @@ db3a933719c405a3ec1c7ba068704346c2eb30a0 data/twilightforest/tags/item/banned_un
 4f38a04e314d2d9244774aef16dc773b5870f883 data/twilightforest/tags/item/boar_tempt_items.json
 84101198c6b6d645c6e155abb5349d33e7279300 data/twilightforest/tags/item/canopy_logs.json
 97652f431059f64ffc5747f498cdcf278ddd0555 data/twilightforest/tags/item/darkwood_logs.json
-34361cff7fe1d4c78efc9ccb282be74dda8e0396 data/twilightforest/tags/item/deer_tempt_items.json
+55814b13c1a82e62a4bac6bce447706e858e6272 data/twilightforest/tags/item/deer_tempt_items.json
 bb4b1a5f61f28bd55449672ed9cc8123141729fd data/twilightforest/tags/item/drying_racks.json
 13479a4922cba9026005d5176b48bae8b434b56d data/twilightforest/tags/item/dwarf_rabbit_tempt_items.json
 e69d5be074938c1ff9a1853ff8da6782500ff92f data/twilightforest/tags/item/enchantable/block_and_chain.json

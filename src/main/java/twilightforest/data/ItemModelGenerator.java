@@ -568,6 +568,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 			.texture("particle", TwilightForestMod.prefix("block/patch/moss"))
 			.texture("layer0", ResourceLocation.withDefaultNamespace("item/bowl"))
 			.texture("layer1", TwilightForestMod.prefix("item/moss_soup"));
+		singleTex(TFItems.SHIKA_SENBEI);
 		singleTex(TFItems.MONSTER_JERKY);
 		singleTex(TFItems.BEEF_JERKY);
 		singleTex(TFItems.CHICKEN_JERKY);
