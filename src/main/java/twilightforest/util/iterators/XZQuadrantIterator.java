@@ -1,6 +1,7 @@
 package twilightforest.util.iterators;
 
 import org.jetbrains.annotations.NotNull;
+import twilightforest.util.BinaryIntegerFunction;
 
 import java.util.Iterator;
 
@@ -79,11 +80,6 @@ public class XZQuadrantIterator<T> implements Iterator<T>, Iterable<T> {
 	@Override
 	public Iterator<T> iterator() {
 		return this;
-	}
-
-	@FunctionalInterface
-	public interface BinaryIntegerFunction<T> {
-		T apply(int x, int z);
 	}
 
 	@Override

@@ -10,12 +10,11 @@ import twilightforest.TwilightForestMod;
 public class NoReturnTeleporter extends TFTeleporter {
 
 	public static DimensionTransition createNoPortalTransition(ServerLevel dest, Entity entity, BlockPos destPos) {
-		DimensionTransition info = moveToSafeCoords(dest, entity, destPos);
-		info = placePosition(entity, dest, info.pos());
-		return info;
+		Vec3 safePos = moveToSafeCoords(dest, entity, destPos);
+		return makeTransition(dest, entity, placePosition(entity, dest, safePos));
 	}
 
-	private static DimensionTransition placePosition(Entity entity, ServerLevel level, Vec3 pos) {
+	private static Vec3 placePosition(Entity entity, ServerLevel level, Vec3 pos) {
 		// ensure area is populated first
 		loadSurroundingArea(level, pos);
 
@@ -24,14 +23,14 @@ public class NoReturnTeleporter extends TFTeleporter {
 
 		if (spot != null) {
 			TwilightForestMod.LOGGER.debug("Found existing teleportation for {} at {}", name, spot);
-			return makePortalInfo(level, entity, Vec3.atCenterOf(spot.above()));
+			return safePosInColumn(level, entity, Vec3.atCenterOf(spot.above()));
 		}
 
 		spot = findPortalCoords(level, pos, blockpos -> isIdealForPortal(level, blockpos));
 
 		if (spot != null) {
 			TwilightForestMod.LOGGER.debug("Found ideal teleportation spot for {} at {}", name, spot);
-			return makePortalInfo(level, entity, Vec3.atCenterOf(spot.above()));
+			return safePosInColumn(level, entity, Vec3.atCenterOf(spot.above()));
 		}
 
 		TwilightForestMod.LOGGER.debug("Did not find ideal teleportation spot, shooting for okay one for {}", name);
@@ -39,7 +38,7 @@ public class NoReturnTeleporter extends TFTeleporter {
 
 		if (spot != null) {
 			TwilightForestMod.LOGGER.debug("Found okay teleportation spot for {} at {}", name, spot);
-			return makePortalInfo(level, entity, Vec3.atCenterOf(spot.above()));
+			return safePosInColumn(level, entity, Vec3.atCenterOf(spot.above()));
 		}
 
 		// well I don't think we can actually just return and fail here
@@ -49,6 +48,6 @@ public class NoReturnTeleporter extends TFTeleporter {
 		double yFactor = getYFactor(level);
 		// modified copy of base Teleporter method:
 		// + 2 to make it above bedrock
-		return makePortalInfo(level, entity, entity.getX() * getHorizontalScale(level), (entity.getY() * yFactor) + 2, entity.getZ() * getHorizontalScale(level));
+		return safePosInColumn(level, entity, entity.getX() * getHorizontalScale(level), (entity.getY() * yFactor) + 2, entity.getZ() * getHorizontalScale(level));
 	}
 }
