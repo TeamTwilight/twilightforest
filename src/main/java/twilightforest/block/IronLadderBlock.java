@@ -20,15 +20,14 @@ public class IronLadderBlock extends LadderBlock {
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		super.createBlockStateDefinition(builder);
-		builder.add(LEFT, RIGHT);
+		super.createBlockStateDefinition(builder.add(LEFT, RIGHT));
 	}
 
 	@Override
 	public BlockState updateShape(BlockState state, Direction direction, BlockState facingState, LevelAccessor accessor, BlockPos currentPos, BlockPos facingPos) {
 		Direction facing = state.getValue(LadderBlock.FACING);
 		BlockState superUpdated = super.updateShape(state, direction, facingState, accessor, currentPos, facingPos);
-		if (superUpdated.getBlock() != this) {
+		if (!superUpdated.is(this)) {
 			return superUpdated;
 		}
 
@@ -36,6 +35,6 @@ public class IronLadderBlock extends LadderBlock {
 		BlockState rightState = accessor.getBlockState(currentPos.relative(facing.getClockWise()));
 
 		return superUpdated.setValue(LEFT, leftState.getBlock() instanceof IronLadderBlock && leftState.getValue(LadderBlock.FACING) == facing)
-				.setValue(RIGHT, rightState.getBlock() instanceof IronLadderBlock && rightState.getValue(LadderBlock.FACING) == facing);
+			.setValue(RIGHT, rightState.getBlock() instanceof IronLadderBlock && rightState.getValue(LadderBlock.FACING) == facing);
 	}
 }

@@ -2,10 +2,9 @@
   "carvers": {
     "air": "twilightforest:tf_caves"
   },
-  "creature_spawn_probability": 0.2,
   "downfall": 1.0,
   "effects": {
-    "fog_color": 12648408,
+    "fog_color": 8549265,
     "foliage_color": 16745729,
     "grass_color": 12865827,
     "grass_color_modifier": "twilightforest:spooky_forest",
@@ -23,7 +22,7 @@
     },
     "sky_color": 2105930,
     "water_color": 12355671,
-    "water_fog_color": 329011
+    "water_fog_color": 12355671
   },
   "features": [
     [],
@@ -52,16 +51,15 @@
     ],
     [
       "twilightforest:plant_roots",
-      "twilightforest:torch_berries",
-      "twilightforest:vanilla_roots"
+      "twilightforest:torch_berries"
     ],
     [],
     [
-      "minecraft:patch_grass_forest",
       "minecraft:patch_tall_grass",
-      "minecraft:patch_grass_badlands",
-      "minecraft:patch_grass_savanna",
+      "twilightforest:patch_grass_badlands",
+      "twilightforest:patch_grass_savanna",
       "minecraft:patch_sugar_cane",
+      "twilightforest:patch_grass_jungle",
       "twilightforest:mayapple",
       "twilightforest:tree/twilight_oak_tree",
       "twilightforest:tree/large_twilight_oak_tree",

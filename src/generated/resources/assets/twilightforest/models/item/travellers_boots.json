@@ -1,0 +1,10 @@
+{
+  "parent": "neoforge:item/default",
+  "broken_modifier_directory": "travellers_modifiers/boots/broken/",
+  "loader": "twilightforest:travellers_gear",
+  "modifier_directory": "travellers_modifiers/boots/",
+  "textures": {
+    "base": "twilightforest:item/travellers_boots",
+    "broken": "twilightforest:item/travellers_boots_broken"
+  }
+}

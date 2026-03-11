@@ -8,13 +8,16 @@ import twilightforest.util.PlayerHelper;
 import java.util.List;
 
 public interface AdvancementLockedStructure {
-    default boolean doesPlayerHaveRequiredAdvancements(Player player) {
-        return PlayerHelper.playerHasRequiredAdvancements(player, this.getRequiredAdvancements());
-    }
 
-    List<ResourceLocation> getRequiredAdvancements();
+	String CODEC_NAME = "advancements_required";
 
-    record AdvancementLockConfig(List<ResourceLocation> requiredAdvancements) {
-        public static final Codec<AdvancementLockConfig> CODEC = ResourceLocation.CODEC.listOf().xmap(AdvancementLockConfig::new, AdvancementLockConfig::requiredAdvancements);
-    }
+	default boolean doesPlayerHaveRequiredAdvancements(Player player) {
+		return PlayerHelper.playerHasRequiredAdvancements(player, this.getRequiredAdvancements());
+	}
+
+	List<ResourceLocation> getRequiredAdvancements();
+
+	record AdvancementLockConfig(List<ResourceLocation> requiredAdvancements) {
+		public static final Codec<AdvancementLockConfig> CODEC = ResourceLocation.CODEC.listOf().xmap(AdvancementLockConfig::new, AdvancementLockConfig::requiredAdvancements);
+	}
 }

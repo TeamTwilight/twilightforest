@@ -1,82 +1,88 @@
 {
   "type": "twilightforest:hollow_hill",
-  "adjust_structure_elevation": false,
-  "allow_biome_surface_decorations": true,
-  "allow_biome_underground_decorations": false,
-  "ambient_spawns": [],
   "biomes": "#twilightforest:valid_hollow_hill_biomes",
-  "chunk_clearance_radius": 3,
-  "hill_size": 3,
-  "labelled_monster_spawns": {
-    "0": [
-      {
-        "type": "twilightforest:redcap",
-        "maxCount": 4,
-        "minCount": 2,
-        "weight": 10
-      },
-      {
-        "type": "twilightforest:redcap_sapper",
-        "maxCount": 2,
-        "minCount": 1,
-        "weight": 2
-      },
-      {
-        "type": "minecraft:skeleton",
-        "maxCount": 3,
-        "minCount": 2,
-        "weight": 10
-      },
-      {
-        "type": "minecraft:cave_spider",
-        "maxCount": 2,
-        "minCount": 1,
-        "weight": 10
-      },
-      {
-        "type": "minecraft:creeper",
-        "maxCount": 1,
-        "minCount": 1,
-        "weight": 10
-      },
-      {
-        "type": "minecraft:enderman",
-        "maxCount": 1,
-        "minCount": 1,
-        "weight": 1
-      },
-      {
-        "type": "twilightforest:wraith",
-        "maxCount": 2,
-        "minCount": 1,
-        "weight": 2
-      },
-      {
-        "type": "twilightforest:fire_beetle",
-        "maxCount": 2,
-        "minCount": 1,
-        "weight": 10
-      },
-      {
-        "type": "twilightforest:slime_beetle",
-        "maxCount": 2,
-        "minCount": 1,
-        "weight": 10
-      },
-      {
-        "type": "twilightforest:pinch_beetle",
-        "maxCount": 2,
-        "minCount": 1,
-        "weight": 10
-      },
-      {
-        "type": "minecraft:witch",
-        "maxCount": 1,
-        "minCount": 1,
-        "weight": 1
-      }
-    ]
+  "controlled_spawns": {
+    "ambient_spawns": [],
+    "labelled_monster_spawns": {
+      "0": [
+        {
+          "type": "twilightforest:redcap",
+          "maxCount": 4,
+          "minCount": 2,
+          "weight": 10
+        },
+        {
+          "type": "twilightforest:redcap_sapper",
+          "maxCount": 2,
+          "minCount": 1,
+          "weight": 2
+        },
+        {
+          "type": "minecraft:skeleton",
+          "maxCount": 3,
+          "minCount": 2,
+          "weight": 10
+        },
+        {
+          "type": "minecraft:cave_spider",
+          "maxCount": 2,
+          "minCount": 1,
+          "weight": 10
+        },
+        {
+          "type": "minecraft:creeper",
+          "maxCount": 1,
+          "minCount": 1,
+          "weight": 10
+        },
+        {
+          "type": "minecraft:enderman",
+          "maxCount": 1,
+          "minCount": 1,
+          "weight": 1
+        },
+        {
+          "type": "twilightforest:wraith",
+          "maxCount": 2,
+          "minCount": 1,
+          "weight": 2
+        },
+        {
+          "type": "twilightforest:fire_beetle",
+          "maxCount": 2,
+          "minCount": 1,
+          "weight": 10
+        },
+        {
+          "type": "twilightforest:slime_beetle",
+          "maxCount": 2,
+          "minCount": 1,
+          "weight": 10
+        },
+        {
+          "type": "twilightforest:pinch_beetle",
+          "maxCount": 2,
+          "minCount": 1,
+          "weight": 10
+        },
+        {
+          "type": "minecraft:witch",
+          "maxCount": 1,
+          "minCount": 1,
+          "weight": 1
+        }
+      ]
+    },
+    "water_spawns": []
   },
+  "decoration_clearance": {
+    "adjust_structure_elevation": false,
+    "allow_biome_surface_decorations": true,
+    "allow_biome_underground_decorations": false,
+    "allow_biome_vegetation": true,
+    "chunk_clearance_radius": 3.0
+  },
+  "hill_size": 3,
   "spawn_overrides": {
     "ambient": {
       "bounding_box": "full",
@@ -111,6 +117,7 @@
       "spawns": []
     }
   },
+  "speleothem_config": "twilightforest:large_hollow_hill",
   "step": "surface_structures",
-  "water_spawns": []
+  "structure_icon": "twilightforest:large_hollow_hill"
 }

@@ -1,0 +1,13 @@
+{
+  "twilightforest:camp/deco": {
+    "height_adjustment": {
+      "ground_junction_diff_clamp": 0,
+      "heightmap": "WORLD_SURFACE_WG",
+      "y_offset": 2
+    },
+    "ignore_world_waterlog": true,
+    "marker_handlers": "twilightforest:camp_marker_handlers",
+    "terrain_adaptation": "beard_box",
+    "weight": 75
+  }
+}

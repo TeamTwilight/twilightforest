@@ -1,0 +1,12 @@
+{
+  "type": "twilightforest:component",
+  "component": {
+    "twilightforest:efficient_eater": 2.0
+  },
+  "description": [
+    {
+      "translate": "travellers_gear.modifier.twilightforest.efficient_eater.description"
+    }
+  ],
+  "equipment_slots": "chest"
+}

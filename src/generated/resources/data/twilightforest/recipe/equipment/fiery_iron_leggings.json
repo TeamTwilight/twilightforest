@@ -1,0 +1,35 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "group": "fiery_leggings",
+  "ingredients": [
+    {
+      "item": "minecraft:iron_leggings"
+    },
+    {
+      "tag": "twilightforest:fiery_vial"
+    },
+    {
+      "tag": "twilightforest:fiery_vial"
+    },
+    {
+      "tag": "twilightforest:fiery_vial"
+    },
+    {
+      "tag": "twilightforest:fiery_vial"
+    },
+    {
+      "tag": "twilightforest:fiery_vial"
+    },
+    {
+      "tag": "twilightforest:fiery_vial"
+    },
+    {
+      "tag": "twilightforest:fiery_vial"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "twilightforest:fiery_leggings"
+  }
+}

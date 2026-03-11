@@ -17,7 +17,7 @@ public class FinalBossSpawnerBlockEntity extends BossSpawnerBlockEntity<PlateauB
 
 	//no spawning for you
 	@Override
-	protected boolean spawnMyBoss(ServerLevelAccessor world) {
+	protected boolean spawnMyBoss(ServerLevelAccessor accessor) {
 		return false;
 	}
 

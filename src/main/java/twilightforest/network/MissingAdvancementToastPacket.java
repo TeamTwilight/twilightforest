@@ -2,43 +2,41 @@ package twilightforest.network;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentSerialization;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
+import twilightforest.TwilightForestMod;
 import twilightforest.client.MissingAdvancementToast;
 
-import java.util.function.Supplier;
+public record MissingAdvancementToastPacket(Component title, ItemStack icon) implements CustomPacketPayload {
 
-public class MissingAdvancementToastPacket {
-	private final Component title;
-	private final ItemStack icon;
+	public static final Type<MissingAdvancementToastPacket> TYPE = new Type<>(TwilightForestMod.prefix("missing_advancement_toast"));
+	public static final StreamCodec<RegistryFriendlyByteBuf, MissingAdvancementToastPacket> STREAM_CODEC = StreamCodec.composite(
+		ComponentSerialization.STREAM_CODEC, MissingAdvancementToastPacket::title,
+		ItemStack.STREAM_CODEC, MissingAdvancementToastPacket::icon,
+		MissingAdvancementToastPacket::new);
 
-	public MissingAdvancementToastPacket(Component title, ItemStack icon) {
-		this.title = title;
-		this.icon = icon;
+	@Override
+	public Type<? extends CustomPacketPayload> type() {
+		return TYPE;
 	}
 
-	public MissingAdvancementToastPacket(FriendlyByteBuf buf) {
-		this.title = buf.readComponent();
-		this.icon = buf.readItem();
-	}
-
-	public void encode(FriendlyByteBuf buf) {
-		buf.writeComponent(this.title);
-		buf.writeItem(this.icon);
-	}
-
-	public static class Handler {
-		@SuppressWarnings("Convert2Lambda")
-		public static boolean onMessage(MissingAdvancementToastPacket packet, Supplier<NetworkEvent.Context> ctx) {
-			ctx.get().enqueueWork(new Runnable() {
+	@SuppressWarnings("Convert2Lambda")
+	public static void handle(MissingAdvancementToastPacket packet, IPayloadContext ctx) {
+		//ensure this is only done on clients as this uses client only code
+		if (ctx.flow().isClientbound()) {
+			ctx.enqueueWork(new Runnable() {
 				@Override
 				public void run() {
-					Minecraft.getInstance().getToasts().addToast(new MissingAdvancementToast(packet.title, packet.icon));
+					Minecraft.getInstance().getToasts().addToast(new MissingAdvancementToast(packet.title(), packet.icon()));
 				}
 			});
-			ctx.get().setPacketHandled(true);
-			return true;
 		}
 	}
 }

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "tag": "c:ingots/steeleaf"
+    }
+  },
+  "pattern": [
+    "# #",
+    "# #"
+  ],
+  "result": {
+    "components": {
+      "minecraft:enchantments": {
+        "levels": {
+          "minecraft:feather_falling": 2
+        }
+      }
+    },
+    "count": 1,
+    "id": "twilightforest:steeleaf_boots"
+  }
+}

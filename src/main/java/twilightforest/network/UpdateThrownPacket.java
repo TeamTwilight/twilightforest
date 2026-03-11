@@ -1,67 +1,48 @@
 package twilightforest.network;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.network.NetworkEvent;
-import twilightforest.capabilities.CapabilityList;
-import twilightforest.capabilities.thrown.YetiThrowCapability;
+import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
+import twilightforest.TwilightForestMod;
+import twilightforest.init.TFDataAttachments;
 
-import java.util.function.Supplier;
+public record UpdateThrownPacket(int entityID, boolean thrown, int thrower, int throwCooldown) implements CustomPacketPayload {
 
-public class UpdateThrownPacket {
-
-	private final int entityID;
-	private final boolean thrown;
-	private int thrower = 0;
-	private final int throwCooldown;
-
-	public UpdateThrownPacket(int id, YetiThrowCapability cap) {
-		this.entityID = id;
-		this.thrown = cap.getThrown();
-		this.throwCooldown = cap.getThrowCooldown();
-		if(cap.getThrower() != null) {
-			this.thrower = cap.getThrower().getId();
-		}
-	}
-
-	public UpdateThrownPacket(Entity entity, YetiThrowCapability cap) {
-		this(entity.getId(), cap);
-	}
+	public static final Type<UpdateThrownPacket> TYPE = new Type<>(TwilightForestMod.prefix("update_thrown_attachment"));
+	public static final StreamCodec<RegistryFriendlyByteBuf, UpdateThrownPacket> STREAM_CODEC = CustomPacketPayload.codec(UpdateThrownPacket::write, UpdateThrownPacket::new);
 
 	public UpdateThrownPacket(FriendlyByteBuf buf) {
-		this.entityID = buf.readInt();
-		this.thrown = buf.readBoolean();
-		this.thrower = buf.readInt();
-		this.throwCooldown = buf.readInt();
+		this(buf.readInt(), buf.readBoolean(), buf.readInt(), buf.readInt());
 	}
 
-	public void encode(FriendlyByteBuf buf) {
-		buf.writeInt(this.entityID);
-		buf.writeBoolean(this.thrown);
-		buf.writeInt(this.thrower);
-		buf.writeInt(this.throwCooldown);
+	public void write(FriendlyByteBuf buf) {
+		buf.writeInt(this.entityID());
+		buf.writeBoolean(this.thrown());
+		buf.writeInt(this.thrower());
+		buf.writeInt(this.throwCooldown());
 	}
 
-	public static class Handler {
+	@Override
+	public Type<? extends CustomPacketPayload> type() {
+		return TYPE;
+	}
 
-		public static boolean onMessage(UpdateThrownPacket message, Supplier<NetworkEvent.Context> ctx) {
-			ctx.get().enqueueWork(() -> {
-				Entity entity = Minecraft.getInstance().level.getEntity(message.entityID);
-				if (entity instanceof LivingEntity) {
-					entity.getCapability(CapabilityList.YETI_THROWN).ifPresent(cap -> {
-						LivingEntity thrower = message.thrower != 0 ? (LivingEntity) Minecraft.getInstance().level.getEntity(message.thrower) : null;
-						if (entity instanceof Player)
-							cap.setThrown(message.thrown, thrower);
-						cap.setThrowCooldown(message.throwCooldown);
-					});
-				}
-			});
-
-			ctx.get().setPacketHandled(true);
-			return true;
-		}
+	public static void handle(UpdateThrownPacket message, IPayloadContext ctx) {
+		ctx.enqueueWork(() -> {
+			Level level = ctx.player().level();
+			Entity entity = level.getEntity(message.entityID());
+			if (entity instanceof Player player) {
+				var attachment = player.getData(TFDataAttachments.YETI_THROWING);
+				LivingEntity thrower = message.thrower() != 0 ? (LivingEntity) level.getEntity(message.thrower()) : null;
+				attachment.setThrown(player, message.thrown(), thrower);
+				attachment.setThrowCooldown(player, message.throwCooldown());
+			}
+		});
 	}
 }

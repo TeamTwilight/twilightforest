@@ -1,0 +1,31 @@
+{
+  "parent": "twilightforest:progress_yeti",
+  "criteria": {
+    "broken_sword": {
+      "trigger": "twilightforest:broke_glass_sword"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.twilightforest.glass_sword.desc"
+    },
+    "frame": "challenge",
+    "hidden": true,
+    "icon": {
+      "count": 1,
+      "id": "twilightforest:glass_sword"
+    },
+    "title": {
+      "translate": "advancement.twilightforest.glass_sword"
+    }
+  },
+  "requirements": [
+    [
+      "broken_sword"
+    ]
+  ],
+  "rewards": {
+    "experience": 42
+  },
+  "sends_telemetry_event": true
+}

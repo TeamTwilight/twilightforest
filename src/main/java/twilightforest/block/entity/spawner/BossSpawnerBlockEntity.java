@@ -13,7 +13,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.neoforged.neoforge.event.EventHooks;
 import twilightforest.entity.EnforcedHomePoint;
 
 import java.util.Objects;
@@ -30,12 +30,8 @@ public abstract class BossSpawnerBlockEntity<T extends Mob & EnforcedHomePoint> 
 		this.entityType = entityType;
 	}
 
-	public boolean anyPlayerInRange() {
-		return Objects.requireNonNull(this.getLevel()).hasNearbyAlivePlayer(this.getBlockPos().getX() + 0.5D, this.getBlockPos().getY() + 0.5D, this.getBlockPos().getZ() + 0.5D, this.getRange());
-	}
-
 	public static void tick(Level level, BlockPos pos, BlockState state, BossSpawnerBlockEntity<?> te) {
-		if (te.spawnedBoss || !te.anyPlayerInRange()) {
+		if (te.spawnedBoss || !te.anyPlayerInRange(level)) {
 			return;
 		}
 		if (level.isClientSide()) {
@@ -54,13 +50,17 @@ public abstract class BossSpawnerBlockEntity<T extends Mob & EnforcedHomePoint> 
 		}
 	}
 
+	public boolean anyPlayerInRange(Level level) {
+		return level.hasNearbyAlivePlayer(this.getBlockPos().getX() + 0.5D, this.getBlockPos().getY() + 0.5D, this.getBlockPos().getZ() + 0.5D, this.getRange());
+	}
+
 	protected boolean spawnMyBoss(ServerLevelAccessor accessor) {
 		// create creature
 		T myCreature = this.makeMyCreature();
 
 		BlockPos spawnPos = accessor.getBlockState(this.getBlockPos().below()).getCollisionShape(accessor, this.getBlockPos().below()).isEmpty() ? this.getBlockPos().below() : this.getBlockPos();
 		myCreature.moveTo(spawnPos, accessor.getLevel().getRandom().nextFloat() * 360F, 0.0F);
-		ForgeEventFactory.onFinalizeSpawn(myCreature, accessor, accessor.getCurrentDifficultyAt(spawnPos), MobSpawnType.SPAWNER, null, null);
+		EventHooks.finalizeMobSpawn(myCreature, accessor, accessor.getCurrentDifficultyAt(spawnPos), MobSpawnType.SPAWNER, null);
 
 		// set creature's home to this
 		this.initializeCreature(myCreature);

@@ -1,6 +1,0 @@
-{
-  "type": "twilightforest:transformation_powder",
-  "from": "twilightforest:maze_slime",
-  "reversible": true,
-  "to": "minecraft:slime"
-}

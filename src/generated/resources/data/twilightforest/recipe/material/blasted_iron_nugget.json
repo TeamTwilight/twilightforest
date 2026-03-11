@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:blasting",
+  "category": "misc",
+  "cookingtime": 100,
+  "experience": 1.0,
+  "group": "iron_nugget",
+  "ingredient": {
+    "item": "twilightforest:iron_berry"
+  },
+  "result": {
+    "count": 1,
+    "id": "minecraft:iron_nugget"
+  }
+}

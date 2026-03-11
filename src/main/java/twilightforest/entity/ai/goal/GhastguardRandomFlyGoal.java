@@ -11,6 +11,7 @@ import java.util.EnumSet;
 public class GhastguardRandomFlyGoal extends Goal {
 	private final CarminiteGhastguard parentEntity;
 
+	@SuppressWarnings("this-escape")
 	public GhastguardRandomFlyGoal(CarminiteGhastguard ghast) {
 		this.parentEntity = ghast;
 		this.setFlags(EnumSet.of(Flag.MOVE));

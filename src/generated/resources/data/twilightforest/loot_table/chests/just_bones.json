@@ -1,0 +1,109 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "add": false,
+                        "count": {
+                          "type": "minecraft:uniform",
+                          "max": 50.0,
+                          "min": 49.0
+                        },
+                        "function": "minecraft:set_count"
+                      }
+                    ],
+                    "name": "minecraft:bone"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "add": false,
+                        "count": 39.0,
+                        "function": "minecraft:set_count"
+                      }
+                    ],
+                    "name": "minecraft:bone"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          }
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": 15.0,
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "minecraft:bone",
+          "weight": 50
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": 16.0,
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "minecraft:bone",
+          "weight": 50
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 13.0,
+                "min": 12.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "minecraft:bone",
+          "weight": 50
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": 13.0,
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "minecraft:bone",
+          "weight": 50
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "twilightforest:chests/just_bones"
+}

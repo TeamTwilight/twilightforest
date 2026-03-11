@@ -1,6 +1,9 @@
+@FieldsAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 package twilightforest.world.registration;
 
+import net.minecraft.FieldsAreNonnullByDefault;
 import net.minecraft.MethodsReturnNonnullByDefault;
+
 import javax.annotation.ParametersAreNonnullByDefault;

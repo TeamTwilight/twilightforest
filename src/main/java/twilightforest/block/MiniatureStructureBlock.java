@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -13,9 +14,17 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class MiniatureStructureBlock extends HorizontalDirectionalBlock {
+
+	public static final MapCodec<MiniatureStructureBlock> CODEC = simpleCodec(MiniatureStructureBlock::new);
+
 	public MiniatureStructureBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH));
+	}
+
+	@Override
+	protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
+		return CODEC;
 	}
 
 	@Override

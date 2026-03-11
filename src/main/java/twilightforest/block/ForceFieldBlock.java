@@ -8,9 +8,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.PipeBlock;
-import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -24,44 +22,53 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 public class ForceFieldBlock extends Block implements SimpleWaterloggedBlock {
-	private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	public static final BooleanProperty DOWN = PipeBlock.DOWN;
 	public static final BooleanProperty UP = PipeBlock.UP;
 	public static final BooleanProperty NORTH = PipeBlock.NORTH;
 	public static final BooleanProperty SOUTH = PipeBlock.SOUTH;
 	public static final BooleanProperty WEST = PipeBlock.WEST;
 	public static final BooleanProperty EAST = PipeBlock.EAST;
-
 	protected static final VoxelShape BASE_SHAPE = Block.box(7.0D, 7.0D, 7.0D, 9.0D, 9.0D, 9.0D);
-
 	protected static final VoxelShape WEST_SHAPE = Block.box(0.0D, 7.0D, 7.0D, 7.0D, 9.0D, 9.0D);
 	protected static final VoxelShape EAST_SHAPE = Block.box(9.0D, 7.0D, 7.0D, 16.0D, 9.0D, 9.0D);
 	protected static final VoxelShape DOWN_SHAPE = Block.box(7.0D, 0.0D, 7.0D, 9.0D, 7.0D, 9.0D);
 	protected static final VoxelShape UP_SHAPE = Block.box(7.0D, 9.0D, 7.0D, 9.0D, 16.0D, 9.0D);
 	protected static final VoxelShape NORTH_SHAPE = Block.box(7.0D, 7.0D, 0.0D, 9.0D, 9.0D, 7.0D);
 	protected static final VoxelShape SOUTH_SHAPE = Block.box(7.0D, 7.0D, 9.0D, 9.0D, 9.0D, 16.0D);
-
 	protected static final VoxelShape DOWN_WEST_SHAPE = Block.box(0.0D, 0.0D, 7.0D, 7.0D, 7.0D, 9.0D);
 	protected static final VoxelShape DOWN_EAST_SHAPE = Block.box(9.0D, 0.0D, 7.0D, 16.0D, 7.0D, 9.0D);
 	protected static final VoxelShape DOWN_NORTH_SHAPE = Block.box(7.0D, 0.0D, 0.0D, 9.0D, 7.0D, 7.0D);
 	protected static final VoxelShape DOWN_SOUTH_SHAPE = Block.box(7.0D, 0.0D, 9.0D, 9.0D, 7.0D, 16.0D);
-
 	protected static final VoxelShape UP_WEST_SHAPE = Block.box(0.0D, 9.0D, 7.0D, 7.0D, 16.0D, 9.0D);
 	protected static final VoxelShape UP_EAST_SHAPE = Block.box(9.0D, 9.0D, 7.0D, 16.0D, 16.0D, 9.0D);
 	protected static final VoxelShape UP_NORTH_SHAPE = Block.box(7.0D, 9.0D, 0.0D, 9.0D, 16.0D, 7.0D);
 	protected static final VoxelShape UP_SOUTH_SHAPE = Block.box(7.0D, 9.0D, 9.0D, 9.0D, 16.0D, 16.0D);
-
 	protected static final VoxelShape NORTH_WEST_SHAPE = Block.box(0.0D, 7.0D, 0.0D, 7.0D, 9.0D, 7.0D);
 	protected static final VoxelShape NORTH_EAST_SHAPE = Block.box(9.0D, 7.0D, 0.0D, 16.0D, 9.0D, 7.0D);
 	protected static final VoxelShape SOUTH_WEST_SHAPE = Block.box(0.0D, 7.0D, 9.0D, 7.0D, 9.0D, 16.0D);
 	protected static final VoxelShape SOUTH_EAST_SHAPE = Block.box(9.0D, 7.0D, 9.0D, 16.0D, 9.0D, 16.0D);
+	private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
 	public ForceFieldBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(WATERLOGGED, false)
-				.setValue(DOWN, false).setValue(UP, false)
-				.setValue(NORTH, false).setValue(SOUTH, false)
-				.setValue(WEST, false).setValue(EAST, false));
+			.setValue(DOWN, false).setValue(UP, false)
+			.setValue(NORTH, false).setValue(SOUTH, false)
+			.setValue(WEST, false).setValue(EAST, false));
+	}
+
+	public static boolean cornerConnects(BlockGetter getter, BlockPos pos, Direction dir1, Direction dir2) {
+		Vec3i vec31 = dir1.getNormal();
+		Vec3i vec32 = dir2.getNormal();
+
+		return fullFaceOrSimilarForceField(getter, pos.offset(vec31), dir1, dir2) ||
+			fullFaceOrSimilarForceField(getter, pos.offset(vec32), dir2, dir1);
+	}
+
+	private static boolean fullFaceOrSimilarForceField(BlockGetter getter, BlockPos pos, Direction relative, Direction similar) {
+		BlockState state = getter.getBlockState(pos);
+		return state.isFaceSturdy(getter, pos, relative.getOpposite()) ||
+			(state.getBlock() instanceof ForceFieldBlock && state.getValue(PipeBlock.PROPERTY_BY_DIRECTION.get(similar)));
 	}
 
 	@Override
@@ -70,7 +77,6 @@ public class ForceFieldBlock extends Block implements SimpleWaterloggedBlock {
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
 	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 		VoxelShape shape = BASE_SHAPE;
 
@@ -111,22 +117,7 @@ public class ForceFieldBlock extends Block implements SimpleWaterloggedBlock {
 		return shape;
 	}
 
-	public static boolean cornerConnects(BlockGetter getter, BlockPos pos, Direction dir1, Direction dir2) {
-		Vec3i vec31 = dir1.getNormal();
-		Vec3i vec32 = dir2.getNormal();
-
-		return  fullFaceOrSimilarForceField(getter, pos.offset(vec31), dir1, dir2) ||
-				fullFaceOrSimilarForceField(getter, pos.offset(vec32), dir2, dir1);
-	}
-
-	private static boolean fullFaceOrSimilarForceField(BlockGetter getter, BlockPos pos, Direction relative, Direction similar) {
-		BlockState state = getter.getBlockState(pos);
-		return state.isFaceSturdy(getter, pos, relative.getOpposite()) ||
-				(state.getBlock() instanceof ForceFieldBlock && state.getValue(PipeBlock.PROPERTY_BY_DIRECTION.get(similar)));
-	}
-
 	@Override
-	@SuppressWarnings("deprecation")
 	public float getShadeBrightness(BlockState state, BlockGetter getter, BlockPos pos) {
 		return 1.0F;
 	}
@@ -156,12 +147,10 @@ public class ForceFieldBlock extends Block implements SimpleWaterloggedBlock {
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
 	public FluidState getFluidState(BlockState state) {
 		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
 	}
 
-	@Nullable
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		BlockPos pos = context.getClickedPos();
@@ -172,14 +161,13 @@ public class ForceFieldBlock extends Block implements SimpleWaterloggedBlock {
 
 		for (Direction dir : Direction.values()) {
 			state = state.setValue(PipeBlock.PROPERTY_BY_DIRECTION.get(dir), clicked.getOpposite() == dir ||
-					(clicked != dir ? this.canConnectTo(null, level, pos, dir) : !context.isSecondaryUseActive()));
+				(clicked != dir ? this.canConnectTo(null, level, pos, dir) : !context.isSecondaryUseActive()));
 		}
 
 		return state;
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
 	public BlockState updateShape(BlockState state, Direction direction, BlockState facingState, LevelAccessor accessor, BlockPos pos, BlockPos facingPos) {
 		if (state.getValue(WATERLOGGED)) accessor.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(accessor));
 		return this.canConnectTo(state, accessor, pos, direction) ? state.setValue(PipeBlock.PROPERTY_BY_DIRECTION.get(direction), true) : state;
@@ -187,8 +175,34 @@ public class ForceFieldBlock extends Block implements SimpleWaterloggedBlock {
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		super.createBlockStateDefinition(builder);
 		builder.add(WATERLOGGED, NORTH, EAST, SOUTH, WEST, UP, DOWN);
 	}
 
+	@Override
+	protected BlockState rotate(BlockState state, Rotation rotation) {
+		return switch (rotation) {
+			case CLOCKWISE_180 -> state.setValue(NORTH, state.getValue(SOUTH))
+				.setValue(EAST, state.getValue(WEST))
+				.setValue(SOUTH, state.getValue(NORTH))
+				.setValue(WEST, state.getValue(EAST));
+			case COUNTERCLOCKWISE_90 -> state.setValue(NORTH, state.getValue(EAST))
+				.setValue(EAST, state.getValue(SOUTH))
+				.setValue(SOUTH, state.getValue(WEST))
+				.setValue(WEST, state.getValue(NORTH));
+			case CLOCKWISE_90 -> state.setValue(NORTH, state.getValue(WEST))
+				.setValue(EAST, state.getValue(NORTH))
+				.setValue(SOUTH, state.getValue(EAST))
+				.setValue(WEST, state.getValue(SOUTH));
+			default -> state;
+		};
+	}
+
+	@Override
+	protected BlockState mirror(BlockState state, Mirror mirror) {
+		return switch (mirror) {
+			case LEFT_RIGHT -> state.setValue(NORTH, state.getValue(SOUTH)).setValue(SOUTH, state.getValue(NORTH));
+			case FRONT_BACK -> state.setValue(EAST, state.getValue(WEST)).setValue(WEST, state.getValue(EAST));
+			default -> state;
+		};
+	}
 }

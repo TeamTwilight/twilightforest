@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "count": 1,
-  "ingredient": {
-    "item": "twilightforest:mazestone_border"
-  },
-  "result": "twilightforest:cut_mazestone"
-}

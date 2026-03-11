@@ -1,0 +1,81 @@
+[
+  {
+    "type": "twilightforest:rotation",
+    "rotated": {
+      "type": "twilightforest:handler_switch",
+      "element_processor": {
+        "birch_drying_rack": {
+          "type": "twilightforest:drying_rack",
+          "drying_rack_block": {
+            "type": "minecraft:simple_state_provider",
+            "state": {
+              "Name": "twilightforest:birch_drying_rack",
+              "Properties": {
+                "facing": "north",
+                "waterlogged": "false"
+              }
+            }
+          },
+          "loot_table": "twilightforest:camp_drying_rack"
+        },
+        "camp_armor_rack": {
+          "type": "twilightforest:drying_rack",
+          "drying_rack_block": {
+            "type": "minecraft:simple_state_provider",
+            "state": {
+              "Name": "twilightforest:canopy_drying_rack",
+              "Properties": {
+                "facing": "north",
+                "waterlogged": "false"
+              }
+            }
+          },
+          "loot_table": "twilightforest:camp_armor_rack"
+        },
+        "painting": {
+          "type": "twilightforest:painting",
+          "paintings": "minecraft:placeable"
+        },
+        "tent_pot": {
+          "type": "twilightforest:loot",
+          "loot_block": {
+            "type": "minecraft:simple_state_provider",
+            "state": {
+              "Name": "minecraft:decorated_pot",
+              "Properties": {
+                "cracked": "false",
+                "facing": "north",
+                "waterlogged": "false"
+              }
+            }
+          },
+          "loot_table": "twilightforest:camp_pot"
+        },
+        "twilight_oak_slab": {
+          "type": "twilightforest:block_placement",
+          "block_state": {
+            "type": "minecraft:weighted_state_provider",
+            "entries": [
+              {
+                "data": {
+                  "Name": "twilightforest:twilight_oak_slab",
+                  "Properties": {
+                    "type": "bottom",
+                    "waterlogged": "false"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "minecraft:air"
+                },
+                "weight": 3
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+]

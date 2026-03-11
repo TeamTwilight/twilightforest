@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "twilightforest:lich_banner_pattern"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_trophy": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:lich_trophy"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_trophy"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "twilightforest:lich_banner_pattern"
+    ]
+  }
+}

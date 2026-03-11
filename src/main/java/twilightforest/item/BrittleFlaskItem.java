@@ -1,35 +1,34 @@
 package twilightforest.item;
 
-import net.minecraft.ChatFormatting;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
+import net.minecraft.util.FastColor;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.*;
-import net.minecraft.world.item.alchemy.Potion;
-import net.minecraft.world.item.alchemy.PotionUtils;
-import net.minecraft.world.item.alchemy.Potions;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
-import twilightforest.advancements.TFAdvancements;
+import twilightforest.components.item.PotionFlaskComponent;
+import twilightforest.init.TFDamageTypes;
+import twilightforest.init.TFDataAttachments;
+import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFSounds;
 
-import java.util.List;
+import java.util.Optional;
+import java.util.function.Consumer;
 
 public class BrittleFlaskItem extends Item {
 
-	private static Potion lastUsedPotion;
-	private static int timesUsed;
-	private static boolean advancementWindow;
-	public static int seconds;
+	public static final int DOSES = 3;
 
 	public BrittleFlaskItem(Properties properties) {
 		super(properties);
@@ -37,51 +36,66 @@ public class BrittleFlaskItem extends Item {
 
 	@Override
 	public ItemStack getDefaultInstance() {
-		ItemStack stack = new ItemStack(this);
-		stack.getOrCreateTag().putInt("Uses", 0);
-		stack.getOrCreateTag().putInt("Breakage", 0);
-		stack.getOrCreateTag().putBoolean("Refillable", true);
-		PotionUtils.setPotion(stack, Potions.EMPTY);
-		return stack;
+		ItemStack itemstack = super.getDefaultInstance();
+		itemstack.set(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY);
+		return itemstack;
+	}
+
+	@Override
+	public int getMaxStackSize(ItemStack stack) {
+		return stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY).potion().potion().isPresent() ? 1 : super.getMaxStackSize(stack);
 	}
 
 	@Override
 	public boolean isBarVisible(ItemStack stack) {
-		return PotionUtils.getPotion(stack) != Potions.EMPTY;
+		return stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY).potion().potion().isPresent();
 	}
 
 	@Override
 	public int getBarColor(ItemStack stack) {
-		return PotionUtils.getColor(stack);
+		return FastColor.ARGB32.opaque(stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY).potion().getColor());
 	}
 
 	@Override
 	public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action, Player player, SlotAccess access) {
-		CompoundTag flaskTag = stack.getTag();
-		CompoundTag potionTag = other.getTag();
+		PotionFlaskComponent flaskContents = stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY);
+		PotionContents potionContents = other.get(DataComponents.POTION_CONTENTS);
 
-		if (flaskTag != null && potionTag != null) {
-			if (action == ClickAction.SECONDARY && other.is(Items.POTION)) {
-				if (potionTag.contains("Potion") && this.canBeRefilled(stack)) {
-					if (flaskTag.contains("Potion") && flaskTag.getString("Potion").equals(potionTag.getString("Potion")) && flaskTag.getInt("Uses") < 4) {
-						if (!player.getAbilities().instabuild) {
-							other.shrink(1);
-							player.getInventory().add(new ItemStack(Items.GLASS_BOTTLE));
-						}
-						flaskTag.putInt("Uses", flaskTag.getInt("Uses") + 1);
-						player.playSound(TFSounds.FLASK_FILL.get(), flaskTag.getInt("Uses") * 0.25F, player.level().getRandom().nextFloat() * 0.1F + 0.9F);
-						return true;
-					} else if (!flaskTag.contains("Potion")) {
-						if (!player.getAbilities().instabuild) {
-							other.shrink(1);
-							player.getInventory().add(new ItemStack(Items.GLASS_BOTTLE));
-						}
-						flaskTag.putString("Potion", potionTag.getString("Potion"));
-						flaskTag.putInt("Uses", flaskTag.getInt("Uses") + 1);
-						player.playSound(TFSounds.FLASK_FILL.get(), flaskTag.getInt("Uses") * 0.25F, player.level().getRandom().nextFloat() * 0.1F + 0.9F);
-						return true;
+		if (action == ClickAction.SECONDARY && potionContents != null) {
+			if ((flaskContents.potion().potion().isEmpty() || flaskContents.potion().equals(potionContents)) && flaskContents.doses() < DOSES - flaskContents.breakage()) {
+				if (!player.getAbilities().instabuild) {
+					other.shrink(1);
+					if (!player.getInventory().add(new ItemStack(Items.GLASS_BOTTLE))) {
+						player.drop(new ItemStack(Items.GLASS_BOTTLE), false);
 					}
 				}
+
+				this.changeAndConsumeFlask(stack, player, flask -> flask.update(TFDataComponents.POTION_FLASK_CONTENTS, flaskContents, component -> component.tryAddDose(potionContents)));
+				player.playSound(TFSounds.FLASK_FILL.get(), (flaskContents.doses() + 1) * 0.25F, player.level().getRandom().nextFloat() * 0.1F + 0.9F);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean overrideStackedOnOther(ItemStack stack, Slot slot, ClickAction action, Player player) {
+		PotionFlaskComponent flaskContents = stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY);
+		ItemStack other = slot.getItem();
+		PotionContents potionContents = other.get(DataComponents.POTION_CONTENTS);
+
+		if (action == ClickAction.SECONDARY && potionContents != null) {
+			if ((flaskContents.potion().potion().isEmpty() || flaskContents.potion().equals(potionContents)) && flaskContents.doses() < DOSES - flaskContents.breakage()) {
+				if (!player.getAbilities().instabuild) {
+					other.shrink(1);
+					if (!player.getInventory().add(new ItemStack(Items.GLASS_BOTTLE))) {
+						player.drop(new ItemStack(Items.GLASS_BOTTLE), false);
+					}
+				}
+
+				this.changeAndConsumeFlask(stack, player, flask -> flask.update(TFDataComponents.POTION_FLASK_CONTENTS, flaskContents, component -> component.tryAddDose(potionContents)));
+				player.playSound(TFSounds.FLASK_FILL.get(), (flaskContents.doses() + 1) * 0.25F, player.level().getRandom().nextFloat() * 0.1F + 0.9F);
+				return true;
 			}
 		}
 		return false;
@@ -90,122 +104,99 @@ public class BrittleFlaskItem extends Item {
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
-		CompoundTag tag = stack.getTag();
+		PotionFlaskComponent flaskContents = stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY);
 
-		if (tag != null && tag.contains("Potion") && tag.getString("Potion").equals(Potions.EMPTY.toString())) {
+		if (flaskContents.potion() == PotionContents.EMPTY) {
 			return InteractionResultHolder.fail(player.getItemInHand(hand));
 		}
 
-		if (tag != null && tag.contains("Uses") && tag.getInt("Uses") > 0) {
+		if (flaskContents.doses() > 0) {
 			return ItemUtils.startUsingInstantly(level, player, hand);
 		}
 
 		return InteractionResultHolder.fail(player.getItemInHand(hand));
 	}
 
-	public int getUseDuration(ItemStack stack) {
+	@Override
+	public int getUseDuration(ItemStack stack, LivingEntity entity) {
 		return 32;
 	}
 
+	@Override
 	public UseAnim getUseAnimation(ItemStack stack) {
 		return UseAnim.DRINK;
 	}
 
 	@Override
 	public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
-		CompoundTag tag = stack.getTag();
-		if (tag != null) {
+		PotionFlaskComponent flaskContents = stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY);
+		if (flaskContents.potion() != PotionContents.EMPTY) {
 			if (entity instanceof Player player) {
 				if (!level.isClientSide()) {
-					if (!player.isCreative()) addTowardsAdvancement(Potion.byName(tag.getString("Potion")), player);
-					for (MobEffectInstance mobeffectinstance : PotionUtils.getMobEffects(stack)) {
-						if (mobeffectinstance.getEffect().isInstantenous()) {
-							mobeffectinstance.getEffect().applyInstantenousEffect(player, player, player, mobeffectinstance.getAmplifier(), 1.0D);
+					for (MobEffectInstance mobeffectinstance : flaskContents.potion().getAllEffects()) {
+						if (mobeffectinstance.is(MobEffects.HARM) != entity.isInvertedHealAndHarm() && mobeffectinstance.getAmplifier() > 0) {
+							//custom harming death message for the advancement
+							entity.hurt(entity.damageSources().source(TFDamageTypes.FAILED_CHALLENGE), (float)(6 << mobeffectinstance.getAmplifier()));
+						} else if (mobeffectinstance.getEffect().value().isInstantenous()) {
+							mobeffectinstance.getEffect().value().applyInstantenousEffect(player, player, player, mobeffectinstance.getAmplifier(), 1.0D);
 						} else {
 							player.addEffect(new MobEffectInstance(mobeffectinstance));
 						}
 					}
+					if (!player.isCreative() && !player.isSpectator() && player instanceof ServerPlayer serverPlayer) {
+						flaskContents.potion().potion().ifPresent(potion -> player.getData(TFDataAttachments.FLASK_DOSES).trackDrink(potion, serverPlayer));
+					}
 				}
 				player.awardStat(Stats.ITEM_USED.get(this));
 				if (!player.getAbilities().instabuild) {
-					tag.putInt("Uses", tag.getInt("Uses") - 1);
-				}
 
-				if (tag.getInt("Uses") <= 0) {
-					tag.remove("Potion");
-				}
-
-				if (this.canBreak() && !player.getAbilities().instabuild) {
-					if (tag.getInt("Uses") <= 0) {
-						stack.shrink(1);
-						level.playSound(null, player, TFSounds.BRITTLE_FLASK_BREAK.get(), player.getSoundSource(), 1.5F, 0.7F);
-					} else {
-						tag.putInt("Breakage", tag.getInt("Breakage") + 1);
-						tag.putBoolean("Refillable", false);
-						level.playSound(null, player, TFSounds.BRITTLE_FLASK_CRACK.get(), player.getSoundSource(), 1.5F, 2.0F);
-					}
+					this.changeAndConsumeFlask(stack, player, flask -> {
+						flask.update(TFDataComponents.POTION_FLASK_CONTENTS, flaskContents, component -> {
+							component = component.removeDose();
+							if (component.breakable()) {
+								if (component.breakage() >= DOSES) {
+									flask.shrink(1);
+									level.playSound(null, player, TFSounds.BRITTLE_FLASK_BREAK.get(), player.getSoundSource(), 1.5F, 0.7F);
+								} else {
+									level.playSound(null, player, TFSounds.BRITTLE_FLASK_CRACK.get(), player.getSoundSource(), 1.5F, 2.0F);
+								}
+							}
+							return component;
+						});
+					});
 				}
 			}
 		}
 		return super.finishUsingItem(stack, level, entity);
 	}
 
-	private void addTowardsAdvancement(Potion potionDrank, Player drinker) {
-		if (lastUsedPotion == null) {
-			lastUsedPotion = Potions.EMPTY;
-		}
+	private void changeAndConsumeFlask(ItemStack stack, Player player, Consumer<ItemStack> onDrink) {
+		//if we have a stack of flasks, separate one when filling/emptying
+		if (stack.getCount() > 1) {
+			var copy = stack.copyWithCount(1);
+			stack.shrink(1);
 
-		if (!lastUsedPotion.equals(potionDrank)) {
-			timesUsed = 1;
-			lastUsedPotion = potionDrank;
-			advancementWindow = true;
+			onDrink.accept(copy);
+			if (!player.getInventory().add(copy)) {
+				player.drop(copy, false);
+			}
 		} else {
-			timesUsed++;
+			//otherwise just use the existing stack. Having it jump around the inventory is weird
+			onDrink.accept(stack);
 		}
-
-		if (drinker instanceof ServerPlayer player && drinker.isAlive() && advancementWindow) {
-			TFAdvancements.DRINK_FROM_FLASK.trigger(player, timesUsed, lastUsedPotion);
-		}
-	}
-
-	public static void ticker() {
-		if (advancementWindow) seconds++;
-
-		if (seconds == 8) {
-			advancementWindow = false;
-			timesUsed = 0;
-			lastUsedPotion = null;
-			seconds = 0;
-		}
-	}
-
-	public boolean canBreak() {
-		return true;
-	}
-
-	public boolean canBeRefilled(ItemStack stack) {
-		if (stack.getTag() != null && stack.getTag().contains("Refillable")) {
-			return stack.getTag() != null && stack.getTag().getBoolean("Refillable");
-		}
-		return true;
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-		PotionUtils.addPotionTooltip(stack, tooltip, 1.0F);
-		if (stack.getTag() != null) {
-			tooltip.add(Component.translatable("item.twilightforest.flask.doses", stack.getTag().getInt("Uses"), 4).withStyle(ChatFormatting.GRAY));
-			if (stack.getTag().contains("Refillable") && !stack.getTag().getBoolean("Refillable"))
-				tooltip.add(Component.translatable("item.twilightforest.flask_no_refill").withStyle(ChatFormatting.RED));
-		}
+	public Optional<TooltipComponent> getTooltipImage(ItemStack stack) {
+		return Optional.of(new Tooltip(stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY), DOSES));
 	}
 
 	//copied from Item.getBarWidth, but reversed the "durability" check so it increments up, not down
 	@Override
 	public int getBarWidth(ItemStack stack) {
-		if (stack.getTag() != null) {
-			return Math.round(13.0F - Math.abs(stack.getTag().getInt("Uses") - 4) * 13.0F / 4);
-		}
-		return 0;
+		return Math.round(13.0F - Math.abs(stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY).doses() - DOSES) * 13.0F / DOSES);
+	}
+
+	public record Tooltip(PotionFlaskComponent component, int maxDoses) implements TooltipComponent {
 	}
 }

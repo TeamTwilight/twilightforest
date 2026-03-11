@@ -1,0 +1,10 @@
+{
+  "parent": "neoforge:item/default",
+  "broken_modifier_directory": "travellers_modifiers/vest/broken/",
+  "loader": "twilightforest:travellers_gear",
+  "modifier_directory": "travellers_modifiers/vest/",
+  "textures": {
+    "base": "twilightforest:item/travellers_vest",
+    "broken": "twilightforest:item/travellers_vest_broken"
+  }
+}

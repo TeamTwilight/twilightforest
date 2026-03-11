@@ -44,18 +44,18 @@ public class KnightPhantomOldModel<T extends KnightPhantomEntity> extends Humano
 
 		this.helmet = new ModelPart(this, 0, 0);
 		this.helmet.addBox(-4.0F, -11.0F, -4.0F, 8, 11, 8);
-		this.helmet.yRot = 45F / (180F / (float) Math.PI);
+		this.helmet.yRot = 45F * Mth.DEG_TO_RAD;
 
 		this.righthorn1 = new ModelPart(this, 28, 0);
 		this.righthorn1.addBox(-6F, -1.5F, -1.5F, 7, 3, 3);
 		this.righthorn1.setPos(-3.5F, -9F, 0.0F);
-		this.righthorn1.yRot = 15F / (180F / (float) Math.PI);
-		this.righthorn1.zRot = 10F / (180F / (float) Math.PI);
+		this.righthorn1.yRot = 15F * Mth.DEG_TO_RAD;
+		this.righthorn1.zRot = 10F * Mth.DEG_TO_RAD;
 
 		this.righthorn2 = new ModelPart(this, 28, 6);
 		this.righthorn2.addBox(-3.0F, -1.0F, -1.0F, 3, 2, 2);
 		this.righthorn2.setPos(-5.5F, 0.0F, 0.0F);
-		this.righthorn2.zRot = 10F / (180F / (float) Math.PI);
+		this.righthorn2.zRot = 10F * Mth.DEG_TO_RAD;
 
 		this.righthorn1.addChild(righthorn2);
 
@@ -63,13 +63,13 @@ public class KnightPhantomOldModel<T extends KnightPhantomEntity> extends Humano
 		this.lefthorn1.mirror = true;
 		this.lefthorn1.addBox(-1F, -1.5F, -1.5F, 7, 3, 3);
 		this.lefthorn1.setPos(3.5F, -9F, 0.0F);
-		this.lefthorn1.yRot = -15F / (180F / (float) Math.PI);
-		this.lefthorn1.zRot = -10F / (180F / (float) Math.PI);
+		this.lefthorn1.yRot = -15F * Mth.DEG_TO_RAD;
+		this.lefthorn1.zRot = -10F * Mth.DEG_TO_RAD;
 
 		this.lefthorn2 = new ModelPart(this, 28, 6);
 		this.lefthorn2.addBox(0.0F, -1.0F, -1.0F, 3, 2, 2);
 		this.lefthorn2.setPos(5.5F, 0.0F, 0.0F);
-		this.lefthorn2.zRot = -10F / (180F / (float) Math.PI);
+		this.lefthorn2.zRot = -10F * Mth.DEG_TO_RAD;
 
 		this.lefthorn1.addChild(lefthorn2);
 
@@ -108,8 +108,8 @@ public class KnightPhantomOldModel<T extends KnightPhantomEntity> extends Humano
 	 */
 	@Override
 	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		this.head.yRot = netHeadYaw / (180F / (float) Math.PI);
-		this.head.xRot = headPitch / (180F / (float) Math.PI);
+		this.head.yRot = netHeadYaw * Mth.DEG_TO_RAD;
+		this.head.xRot = headPitch * Mth.DEG_TO_RAD;
 		this.head.zRot = 0;
 		this.hat.yRot = this.head.yRot;
 		this.hat.xRot = this.head.xRot;

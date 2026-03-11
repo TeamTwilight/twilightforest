@@ -1,0 +1,106 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "texture": "#all"
+        },
+        "east": {
+          "texture": "#all"
+        },
+        "north": {
+          "texture": "#all"
+        },
+        "south": {
+          "texture": "#all"
+        },
+        "up": {
+          "texture": "#all"
+        },
+        "west": {
+          "texture": "#all"
+        }
+      },
+      "from": [
+        2,
+        8.008,
+        2
+      ],
+      "to": [
+        14,
+        12,
+        14
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "texture": "#snow"
+        },
+        "east": {
+          "texture": "#snow"
+        },
+        "north": {
+          "texture": "#snow"
+        },
+        "south": {
+          "texture": "#snow"
+        },
+        "up": {
+          "texture": "#snow"
+        },
+        "west": {
+          "texture": "#snow"
+        }
+      },
+      "from": [
+        2,
+        12,
+        2
+      ],
+      "to": [
+        14,
+        14,
+        14
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "texture": "#snow"
+        },
+        "east": {
+          "texture": "#snow"
+        },
+        "north": {
+          "texture": "#snow"
+        },
+        "south": {
+          "texture": "#snow"
+        },
+        "up": {
+          "texture": "#snow"
+        },
+        "west": {
+          "texture": "#snow"
+        }
+      },
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        8,
+        16
+      ]
+    }
+  ],
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "all": "minecraft:block/bedrock",
+    "snow": "minecraft:block/snow"
+  }
+}

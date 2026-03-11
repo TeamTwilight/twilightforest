@@ -20,4 +20,5 @@ public class HugeWaterLilyBlock extends WaterlilyBlock {
 	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 		return AABB;
 	}
+
 }

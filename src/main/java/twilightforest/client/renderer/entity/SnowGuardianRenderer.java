@@ -1,10 +1,10 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
-import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.util.Mth;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.NoopModel;
@@ -20,6 +20,6 @@ public class SnowGuardianRenderer extends TFBipedRenderer<SnowGuardian, NoopMode
 	@Override
 	protected void scale(SnowGuardian entity, PoseStack stack, float partialTicks) {
 		float bounce = entity.tickCount + partialTicks;
-		stack.translate(0F, Mth.sin((bounce) * 0.2F) * 0.15F, 0F);
+		stack.translate(0.0F, Mth.sin((bounce) * 0.2F) * 0.15F, 0.0F);
 	}
 }

@@ -1,0 +1,11 @@
+{
+  "type": "twilightforest:drying",
+  "filter_time": 40,
+  "input": {
+    "item": "minecraft:bubble_coral"
+  },
+  "result": {
+    "count": 1,
+    "id": "minecraft:dead_bubble_coral"
+  }
+}

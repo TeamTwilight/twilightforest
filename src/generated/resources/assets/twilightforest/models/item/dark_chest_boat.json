@@ -1,6 +1,7 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "twilightforest:item/dark_chest_boat"
+    "layer0": "minecraft:item/oak_chest_boat",
+    "layer1": "twilightforest:item/dark_chest_boat"
   }
 }

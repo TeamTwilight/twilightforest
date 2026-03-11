@@ -1,0 +1,49 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "twilightforest:block/rope_y"
+      },
+      "when": {
+        "y": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/rope_x"
+      },
+      "when": {
+        "x": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/rope_z"
+      },
+      "when": {
+        "z": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/rope_knot"
+      },
+      "when": {
+        "OR": [
+          {
+            "x": "true",
+            "y": "true"
+          },
+          {
+            "y": "true",
+            "z": "true"
+          },
+          {
+            "x": "true",
+            "z": "true"
+          }
+        ]
+      }
+    }
+  ]
+}

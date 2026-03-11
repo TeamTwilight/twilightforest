@@ -22,12 +22,10 @@ public class TranslucentBuiltBlock extends Block {
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		super.createBlockStateDefinition(builder);
 		builder.add(ACTIVE);
 	}
 
 	@Override
-	@Deprecated
 	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 		if (state.getValue(ACTIVE)) {
 			level.removeBlock(pos, false);

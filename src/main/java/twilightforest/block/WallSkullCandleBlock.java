@@ -3,6 +3,8 @@ package twilightforest.block;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMaps;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
@@ -21,7 +23,8 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import twilightforest.block.entity.SkullCandleBlockEntity;
+import twilightforest.components.item.SkullCandles;
+import twilightforest.init.TFDataComponents;
 
 import java.util.List;
 import java.util.Map;
@@ -29,18 +32,22 @@ import java.util.Map;
 public class WallSkullCandleBlock extends AbstractSkullCandleBlock {
 
 	public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
+	public static final MapCodec<WallSkullCandleBlock> CODEC = RecordCodecBuilder.mapCodec(
+		instance -> instance.group(SkullBlock.Type.CODEC.fieldOf("kind").forGetter(AbstractSkullCandleBlock::getType), propertiesCodec())
+			.apply(instance, WallSkullCandleBlock::new)
+	);
 	//im not doing individual boxes for each candle per facing, the boxes get cut off since the heads are halfway up the wall, and that would be 16!! boxes to make. No thanks.
 	private static final Map<Direction, VoxelShape> AABBS = Maps.newEnumMap(ImmutableMap.of(
-			Direction.NORTH, Block.box(4.0D, 4.0D, 8.0D, 12.0D, 12.0D, 16.0D),
-			Direction.SOUTH, Block.box(4.0D, 4.0D, 0.0D, 12.0D, 12.0D, 8.0D),
-			Direction.EAST, Block.box(0.0D, 4.0D, 4.0D, 8.0D, 12.0D, 12.0D),
-			Direction.WEST, Block.box(8.0D, 4.0D, 4.0D, 16.0D, 12.0D, 12.0D)));
+		Direction.NORTH, Block.box(4.0D, 4.0D, 8.0D, 12.0D, 12.0D, 16.0D),
+		Direction.SOUTH, Block.box(4.0D, 4.0D, 0.0D, 12.0D, 12.0D, 8.0D),
+		Direction.EAST, Block.box(0.0D, 4.0D, 4.0D, 8.0D, 12.0D, 12.0D),
+		Direction.WEST, Block.box(8.0D, 4.0D, 4.0D, 16.0D, 12.0D, 12.0D)));
 
 	private static final Map<Direction, VoxelShape> PIGLIN_AABBS = Maps.newEnumMap(ImmutableMap.of(
-			Direction.NORTH, Block.box(3.0D, 4.0D, 8.0D, 13.0D, 12.0D, 16.0D),
-			Direction.SOUTH, Block.box(3.0D, 4.0D, 0.0D, 13.0D, 12.0D, 8.0D),
-			Direction.EAST, Block.box(0.0D, 4.0D, 3.0D, 8.0D, 12.0D, 13.0D),
-			Direction.WEST, Block.box(8.0D, 4.0D, 3.0D, 16.0D, 12.0D, 13.0D)));
+		Direction.NORTH, Block.box(3.0D, 4.0D, 8.0D, 13.0D, 12.0D, 16.0D),
+		Direction.SOUTH, Block.box(3.0D, 4.0D, 0.0D, 13.0D, 12.0D, 8.0D),
+		Direction.EAST, Block.box(0.0D, 4.0D, 3.0D, 8.0D, 12.0D, 13.0D),
+		Direction.WEST, Block.box(8.0D, 4.0D, 3.0D, 16.0D, 12.0D, 13.0D)));
 
 	private static final Int2ObjectMap<List<Vec3>> PARTICLE_OFFSETS = Util.make(() -> {
 		Int2ObjectMap<List<Vec3>> var0 = new Int2ObjectOpenHashMap<>();
@@ -57,16 +64,19 @@ public class WallSkullCandleBlock extends AbstractSkullCandleBlock {
 		this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH));
 	}
 
+	@Override
+	protected MapCodec<? extends BaseEntityBlock> codec() {
+		return CODEC;
+	}
+
+	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 		return this.getType() == SkullBlock.Types.PIGLIN ? PIGLIN_AABBS.get(state.getValue(FACING)) : AABBS.get(state.getValue(FACING));
 	}
 
 	@Override
 	public Iterable<Vec3> getParticleOffsets(BlockState state, LevelAccessor accessor, BlockPos pos) {
-		if (accessor.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) {
-			return PARTICLE_OFFSETS.get(sc.getCandleAmount());
-		}
-		return PARTICLE_OFFSETS.get(1);
+		return PARTICLE_OFFSETS.get(state.getValue(CANDLES));
 	}
 
 	@Override
@@ -81,7 +91,7 @@ public class WallSkullCandleBlock extends AbstractSkullCandleBlock {
 				Direction var10 = dir.getOpposite();
 				state = state.setValue(FACING, var10);
 				if (!getter.getBlockState(pos.relative(dir)).canBeReplaced(ctx)) {
-					return state.setValue(LIGHTING, Lighting.NONE);
+					return state.setValue(LIGHTING, Lighting.NONE).setValue(CANDLES, ctx.getItemInHand().getOrDefault(TFDataComponents.SKULL_CANDLES, SkullCandles.DEFAULT).count());
 				}
 			}
 		}
@@ -93,8 +103,10 @@ public class WallSkullCandleBlock extends AbstractSkullCandleBlock {
 	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource rand) {
 		Direction dir = state.getValue(FACING);
 		if (state.getValue(LIGHTING) != Lighting.NONE) {
-			this.getParticleOffsets(state, level, pos).forEach((offset) ->
-					addParticlesAndSound(level, offset.add(pos.getX() - (float) dir.getStepX() * 0.25F, pos.getY(), pos.getZ() - (float) dir.getStepZ() * 0.25F), rand, state.getValue(LIGHTING) == Lighting.OMINOUS));
+			this.getParticleOffsets(state, level, pos).forEach(offset -> {
+				Vec3 trueOffset = offset.add(pos.getX() - (float) dir.getStepX() * 0.25F, pos.getY(), pos.getZ() - (float) dir.getStepZ() * 0.25F);
+				this.addParticlesAndSound(level, trueOffset.x(), trueOffset.y(), trueOffset.z(), rand, state.getValue(LIGHTING));
+			});
 		}
 	}
 
@@ -104,6 +116,7 @@ public class WallSkullCandleBlock extends AbstractSkullCandleBlock {
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public BlockState mirror(BlockState state, Mirror mirror) {
 		return state.rotate(mirror.getRotation(state.getValue(FACING)));
 	}

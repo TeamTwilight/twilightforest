@@ -1,0 +1,346 @@
+{
+  "parent": "minecraft:block/block",
+  "elements": [
+    {
+      "faces": {
+        "north": {
+          "texture": "#candelabra",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            6.0
+          ]
+        },
+        "south": {
+          "texture": "#candelabra",
+          "uv": [
+            16.0,
+            0.0,
+            0.0,
+            6.0
+          ]
+        }
+      },
+      "from": [
+        0,
+        1,
+        8
+      ],
+      "to": [
+        16,
+        7,
+        8
+      ]
+    },
+    {
+      "faces": {
+        "east": {
+          "texture": "#candelabra",
+          "uv": [
+            0.0,
+            6.0,
+            6.0,
+            12.0
+          ]
+        },
+        "west": {
+          "texture": "#candelabra",
+          "uv": [
+            6.0,
+            6.0,
+            0.0,
+            12.0
+          ]
+        }
+      },
+      "from": [
+        8,
+        1,
+        5
+      ],
+      "to": [
+        8,
+        7,
+        11
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "texture": "#candelabra",
+          "uv": [
+            0.0,
+            12.0,
+            4.0,
+            16.0
+          ]
+        },
+        "east": {
+          "texture": "#candelabra",
+          "uv": [
+            0.0,
+            12.0,
+            4.0,
+            13.0
+          ]
+        },
+        "north": {
+          "texture": "#candelabra",
+          "uv": [
+            0.0,
+            12.0,
+            4.0,
+            13.0
+          ]
+        },
+        "south": {
+          "texture": "#candelabra",
+          "uv": [
+            0.0,
+            12.0,
+            4.0,
+            13.0
+          ]
+        },
+        "up": {
+          "texture": "#candelabra",
+          "uv": [
+            0.0,
+            12.0,
+            4.0,
+            16.0
+          ]
+        },
+        "west": {
+          "texture": "#candelabra",
+          "uv": [
+            0.0,
+            12.0,
+            4.0,
+            13.0
+          ]
+        }
+      },
+      "from": [
+        1,
+        7,
+        6
+      ],
+      "to": [
+        5,
+        8,
+        10
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "texture": "#candelabra",
+          "uv": [
+            0.0,
+            12.0,
+            4.0,
+            16.0
+          ]
+        },
+        "east": {
+          "texture": "#candelabra",
+          "uv": [
+            0.0,
+            12.0,
+            4.0,
+            13.0
+          ]
+        },
+        "north": {
+          "texture": "#candelabra",
+          "uv": [
+            0.0,
+            12.0,
+            4.0,
+            13.0
+          ]
+        },
+        "south": {
+          "texture": "#candelabra",
+          "uv": [
+            0.0,
+            12.0,
+            4.0,
+            13.0
+          ]
+        },
+        "up": {
+          "texture": "#candelabra",
+          "uv": [
+            0.0,
+            12.0,
+            4.0,
+            16.0
+          ]
+        },
+        "west": {
+          "texture": "#candelabra",
+          "uv": [
+            0.0,
+            12.0,
+            4.0,
+            13.0
+          ]
+        }
+      },
+      "from": [
+        6,
+        7,
+        6
+      ],
+      "to": [
+        10,
+        8,
+        10
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "texture": "#candelabra",
+          "uv": [
+            0.0,
+            12.0,
+            4.0,
+            16.0
+          ]
+        },
+        "east": {
+          "texture": "#candelabra",
+          "uv": [
+            0.0,
+            12.0,
+            4.0,
+            13.0
+          ]
+        },
+        "north": {
+          "texture": "#candelabra",
+          "uv": [
+            0.0,
+            12.0,
+            4.0,
+            13.0
+          ]
+        },
+        "south": {
+          "texture": "#candelabra",
+          "uv": [
+            0.0,
+            12.0,
+            4.0,
+            13.0
+          ]
+        },
+        "up": {
+          "texture": "#candelabra",
+          "uv": [
+            0.0,
+            12.0,
+            4.0,
+            16.0
+          ]
+        },
+        "west": {
+          "texture": "#candelabra",
+          "uv": [
+            0.0,
+            12.0,
+            4.0,
+            13.0
+          ]
+        }
+      },
+      "from": [
+        11,
+        7,
+        6
+      ],
+      "to": [
+        15,
+        8,
+        10
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "texture": "#candelabra",
+          "uv": [
+            0.0,
+            12.0,
+            4.0,
+            16.0
+          ]
+        },
+        "east": {
+          "texture": "#candelabra",
+          "uv": [
+            0.0,
+            12.0,
+            4.0,
+            13.0
+          ]
+        },
+        "north": {
+          "texture": "#candelabra",
+          "uv": [
+            0.0,
+            12.0,
+            4.0,
+            13.0
+          ]
+        },
+        "south": {
+          "texture": "#candelabra",
+          "uv": [
+            0.0,
+            12.0,
+            4.0,
+            13.0
+          ]
+        },
+        "up": {
+          "texture": "#candelabra",
+          "uv": [
+            0.0,
+            12.0,
+            4.0,
+            16.0
+          ]
+        },
+        "west": {
+          "texture": "#candelabra",
+          "uv": [
+            0.0,
+            12.0,
+            4.0,
+            13.0
+          ]
+        }
+      },
+      "from": [
+        6,
+        0,
+        6
+      ],
+      "to": [
+        10,
+        1,
+        10
+      ]
+    }
+  ],
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "candelabra": "twilightforest:block/candelabra",
+    "particle": "#candelabra"
+  }
+}

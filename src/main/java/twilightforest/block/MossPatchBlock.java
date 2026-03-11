@@ -6,24 +6,17 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.PlantType;
 
 public class MossPatchBlock extends PatchBlock {
 
-	public MossPatchBlock(Properties props) {
-		super(props);
+	public MossPatchBlock(Properties properties) {
+		super(properties);
 	}
 
 	@Override
-	public boolean canSurvive(BlockState state, LevelReader reader, BlockPos pos) {
-		return reader.getBlockState(pos.below()).isFaceSturdy(reader, pos, Direction.UP);
-	}
-
-	@Override
-	public PlantType getPlantType(BlockGetter getter, BlockPos pos) {
-		return PlantType.CAVE;
+	protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos) {
+		return level.getBlockState(pos).isFaceSturdy(level, pos, Direction.UP);
 	}
 
 	@Override

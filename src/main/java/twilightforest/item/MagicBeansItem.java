@@ -1,6 +1,6 @@
 package twilightforest.item;
 
-import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.PlayerAdvancements;
 import net.minecraft.server.ServerAdvancementManager;
@@ -35,7 +35,7 @@ public class MagicBeansItem extends Item {
 		ItemStack stack = context.getItemInHand();
 
 		int maxY = Math.max(pos.getY() + 100, 175);
-		if (pos.getY() < maxY && level.getBlockState(pos).is(TFBlocks.UBEROUS_SOIL.get()) && level.getBlockState(pos.above()).isAir()) {
+		if (pos.getY() < maxY && level.getBlockState(pos).is(TFBlocks.UBEROUS_SOIL) && level.getBlockState(pos.above()).isAir()) {
 			if (!level.isClientSide()) {
 				stack.shrink(1);
 				level.setBlockAndUpdate(pos.above(), TFBlocks.BEANSTALK_GROWER.get().defaultBlockState());
@@ -46,9 +46,9 @@ public class MagicBeansItem extends Item {
 					//fallback if the other part doesnt work since its inconsistent
 					PlayerAdvancements advancements = ((ServerPlayer) player).getAdvancements();
 					ServerAdvancementManager manager = ((ServerLevel) player.getCommandSenderWorld()).getServer().getAdvancements();
-					Advancement advancement = manager.getAdvancement(TwilightForestMod.prefix("beanstalk"));
-					if (advancement != null && !manager.getAllAdvancements().contains(advancement)) {
-						advancements.award(advancement, "use_beans");
+					AdvancementHolder holder = manager.get(TwilightForestMod.prefix("beanstalk"));
+					if (holder != null && !manager.getAllAdvancements().contains(holder)) {
+						advancements.award(holder, "use_beans");
 					}
 				}
 			}

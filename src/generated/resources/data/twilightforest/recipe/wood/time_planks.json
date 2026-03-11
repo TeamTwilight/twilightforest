@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "planks",
+  "ingredients": [
+    {
+      "tag": "twilightforest:timewood_logs"
+    }
+  ],
+  "result": {
+    "count": 4,
+    "id": "twilightforest:time_planks"
+  }
+}

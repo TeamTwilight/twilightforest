@@ -33,7 +33,7 @@ public class TowerOutbuildingComponent extends TowerWingComponent {
 	 */
 	@Override
 	public void makeABeard(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
-    }
+	}
 
 	/**
 	 * Outbuildings should not make new wings close to the ground.

@@ -1,0 +1,12 @@
+{
+  "type": "twilightforest:component",
+  "component": {
+    "twilightforest:slimy_soles_coefficient": 0.5
+  },
+  "description": [
+    {
+      "translate": "travellers_gear.modifier.twilightforest.slimy_soles.description"
+    }
+  ],
+  "equipment_slots": "feet"
+}

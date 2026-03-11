@@ -3,7 +3,7 @@ package twilightforest.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -29,8 +29,7 @@ public class LockedVanishingBlock extends VanishingBlock {
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		super.createBlockStateDefinition(builder);
-		builder.add(LOCKED);
+		super.createBlockStateDefinition(builder.add(LOCKED));
 	}
 
 	@Override
@@ -44,16 +43,16 @@ public class LockedVanishingBlock extends VanishingBlock {
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
-		ItemStack stack = player.getItemInHand(hand);
-		if (!stack.isEmpty() && stack.getItem() == TFItems.TOWER_KEY.get() && state.getValue(LOCKED)) {
+	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+		if (!stack.isEmpty() && stack.is(TFItems.TOWER_KEY.get()) && state.getValue(LOCKED)) {
 			if (!level.isClientSide()) {
 				stack.shrink(1);
 				level.setBlockAndUpdate(pos, state.setValue(LOCKED, false));
 				level.playSound(null, pos, TFSounds.UNLOCK_VANISHING_BLOCK.get(), SoundSource.BLOCKS, 0.3F, 0.6F);
 			}
-			return InteractionResult.sidedSuccess(level.isClientSide());
+			return ItemInteractionResult.sidedSuccess(level.isClientSide());
 		}
-		return super.use(state, level, pos, player, hand, result);
+
+		return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
 	}
 }

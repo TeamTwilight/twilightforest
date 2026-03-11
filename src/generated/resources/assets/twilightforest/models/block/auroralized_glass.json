@@ -1,60 +1,16 @@
 {
   "parent": "minecraft:block/block",
-  "elements": [
-    {
-      "faces": {
-        "down": {
-          "cullface": "down",
-          "texture": "#down",
-          "tintindex": 0
-        },
-        "east": {
-          "cullface": "east",
-          "texture": "#east",
-          "tintindex": 0
-        },
-        "north": {
-          "cullface": "north",
-          "texture": "#north",
-          "tintindex": 0
-        },
-        "south": {
-          "cullface": "south",
-          "texture": "#south",
-          "tintindex": 0
-        },
-        "up": {
-          "cullface": "up",
-          "texture": "#up",
-          "tintindex": 0
-        },
-        "west": {
-          "cullface": "west",
-          "texture": "#west",
-          "tintindex": 0
-        }
-      },
-      "from": [
-        0,
-        0,
-        0
-      ],
-      "to": [
-        16,
-        16,
-        16
-      ]
-    }
+  "connectable_blocks": [
+    "twilightforest:auroralized_glass"
   ],
+  "connected_texture": {
+    "render_disabled_faces": true,
+    "tint_index": 0
+  },
+  "loader": "twilightforest:connected_texture_block",
   "render_type": "minecraft:translucent",
   "textures": {
-    "all": "twilightforest:block/auroralized_glass",
-    "down": "#all",
-    "east": "#all",
-    "north": "#all",
-    "particle": "#north",
-    "south": "#all",
-    "up": "#all",
-    "west": "#all"
+    "overlay_connected": "twilightforest:block/auroralized_glass_ct",
+    "overlay_texture": "twilightforest:block/auroralized_glass"
   }
 }

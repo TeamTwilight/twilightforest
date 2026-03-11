@@ -12,11 +12,11 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.LevelWriter;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
@@ -24,6 +24,7 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.phys.shapes.BitSetDiscreteVoxelShape;
 import net.minecraft.world.phys.shapes.DiscreteVoxelShape;
+import twilightforest.util.features.FeaturePlacers;
 
 import java.util.List;
 import java.util.OptionalInt;
@@ -68,10 +69,10 @@ public class DarkCanopyTreeFeature extends Feature<TreeConfiguration> {
 			return false;
 		}
 
-		for (int i = 0; i < 4; i ++) {
+		for (int i = 0; i < 4; i++) {
 			//We check against the TreeFeature's validTreePos method, to see if the tree can grow here, cuz the trunk placer uses this as well
 			//If we don't, some trees end up growing only one or two blocks tall
-			if (!TreeFeature.validTreePos(reader, pos.relative(Direction.UP, i))) return false;
+			if (!FeaturePlacers.validTreePos(reader, pos.relative(Direction.UP, i))) return false;
 		}
 
 		// do not grow next to another tree
@@ -88,25 +89,27 @@ public class DarkCanopyTreeFeature extends Feature<TreeConfiguration> {
 		Set<BlockPos> set3 = Sets.newHashSet();
 		BiConsumer<BlockPos, BlockState> biconsumer = (p_160555_, p_160556_) -> {
 			set.add(p_160555_.immutable());
-			reader.setBlock(p_160555_, p_160556_, 19);
+			reader.setBlock(p_160555_, p_160556_, Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_ALL);
 		};
 		BiConsumer<BlockPos, BlockState> biconsumer1 = (p_160548_, p_160549_) -> {
 			set1.add(p_160548_.immutable());
-			reader.setBlock(p_160548_, p_160549_, 19);
+			reader.setBlock(p_160548_, p_160549_, Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_ALL);
 		};
 		FoliagePlacer.FoliageSetter setter = new FoliagePlacer.FoliageSetter() {
+			@Override
 			public void set(BlockPos pos, BlockState state) {
 				set2.add(pos.immutable());
-				reader.setBlock(pos, state, 19);
+				reader.setBlock(pos, state, Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_ALL);
 			}
 
+			@Override
 			public boolean isSet(BlockPos p_272999_) {
 				return set2.contains(p_272999_);
 			}
 		};
 		BiConsumer<BlockPos, BlockState> biconsumer3 = (p_225290_, p_225291_) -> {
 			set3.add(p_225290_.immutable());
-			reader.setBlock(p_225290_, p_225291_, 19);
+			reader.setBlock(p_225290_, p_225291_, Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_ALL);
 		};
 		boolean flag = this.doPlace(reader, rand, pos, biconsumer, biconsumer1, setter, treeconfiguration);
 		if (flag && (!set1.isEmpty() || !set2.isEmpty())) {
@@ -161,11 +164,11 @@ public class DarkCanopyTreeFeature extends Feature<TreeConfiguration> {
 	private int getMaxFreeTreeHeight(LevelSimulatedReader level, int trunkHeight, BlockPos pos, TreeConfiguration config) {
 		BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
 
-		for(int i = 0; i <= trunkHeight + 1; ++i) {
+		for (int i = 0; i <= trunkHeight + 1; ++i) {
 			int j = config.minimumSize.getSizeAtHeight(trunkHeight, i);
 
-			for(int k = -j; k <= j; ++k) {
-				for(int l = -j; l <= j; ++l) {
+			for (int k = -j; k <= j; ++k) {
+				for (int l = -j; l <= j; ++l) {
 					mutable.setWithOffset(pos, k, i, l);
 					if (!validTreePos(level, mutable) || !config.ignoreVines) {
 						return i - 2;
@@ -177,12 +180,13 @@ public class DarkCanopyTreeFeature extends Feature<TreeConfiguration> {
 		return trunkHeight;
 	}
 
+	@Override
 	protected void setBlock(LevelWriter world, BlockPos pos, BlockState state) {
 		setBlockKnownShape(world, pos, state);
 	}
 
 	public static void setBlockKnownShape(LevelWriter p_236408_0_, BlockPos p_236408_1_, BlockState p_236408_2_) {
-		p_236408_0_.setBlock(p_236408_1_, p_236408_2_, 19);
+		p_236408_0_.setBlock(p_236408_1_, p_236408_2_, Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_ALL);
 	}
 
 	private static DiscreteVoxelShape updateLeaves(LevelAccessor p_67203_, BoundingBox p_67204_, Set<BlockPos> p_67205_, Set<BlockPos> p_67206_) {
@@ -190,24 +194,24 @@ public class DarkCanopyTreeFeature extends Feature<TreeConfiguration> {
 		DiscreteVoxelShape discretevoxelshape = new BitSetDiscreteVoxelShape(p_67204_.getXSpan(), p_67204_.getYSpan(), p_67204_.getZSpan());
 		int i = 6;
 
-		for(int j = 0; j < 6; ++j) {
+		for (int j = 0; j < 6; ++j) {
 			list.add(Sets.newHashSet());
 		}
 
 		BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
 
-		for(BlockPos blockpos : Lists.newArrayList(p_67206_)) {
+		for (BlockPos blockpos : Lists.newArrayList(p_67206_)) {
 			if (p_67204_.isInside(blockpos)) {
 				discretevoxelshape.fill(blockpos.getX() - p_67204_.minX(), blockpos.getY() - p_67204_.minY(), blockpos.getZ() - p_67204_.minZ());
 			}
 		}
 
-		for(BlockPos blockpos1 : Lists.newArrayList(p_67205_)) {
+		for (BlockPos blockpos1 : Lists.newArrayList(p_67205_)) {
 			if (p_67204_.isInside(blockpos1)) {
 				discretevoxelshape.fill(blockpos1.getX() - p_67204_.minX(), blockpos1.getY() - p_67204_.minY(), blockpos1.getZ() - p_67204_.minZ());
 			}
 
-			for(Direction direction : Direction.values()) {
+			for (Direction direction : Direction.values()) {
 				blockpos$mutableblockpos.setWithOffset(blockpos1, direction);
 				if (!p_67205_.contains(blockpos$mutableblockpos)) {
 					BlockState blockstate = p_67203_.getBlockState(blockpos$mutableblockpos);
@@ -222,16 +226,16 @@ public class DarkCanopyTreeFeature extends Feature<TreeConfiguration> {
 			}
 		}
 
-		for(int l = 1; l < 6; ++l) {
+		for (int l = 1; l < 6; ++l) {
 			Set<BlockPos> set = list.get(l - 1);
 			Set<BlockPos> set1 = list.get(l);
 
-			for(BlockPos blockpos2 : set) {
+			for (BlockPos blockpos2 : set) {
 				if (p_67204_.isInside(blockpos2)) {
 					discretevoxelshape.fill(blockpos2.getX() - p_67204_.minX(), blockpos2.getY() - p_67204_.minY(), blockpos2.getZ() - p_67204_.minZ());
 				}
 
-				for(Direction direction1 : Direction.values()) {
+				for (Direction direction1 : Direction.values()) {
 					blockpos$mutableblockpos.setWithOffset(blockpos2, direction1);
 					if (!set.contains(blockpos$mutableblockpos) && !set1.contains(blockpos$mutableblockpos)) {
 						BlockState blockstate1 = p_67203_.getBlockState(blockpos$mutableblockpos);

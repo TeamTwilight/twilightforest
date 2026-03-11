@@ -8,22 +8,25 @@ package twilightforest.client.model.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.model.Model;
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.model.Model;
-import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
-import twilightforest.client.BugModelAnimationHelper;
-import twilightforest.block.entity.MoonwormBlockEntity;
-
 import org.jetbrains.annotations.Nullable;
+import twilightforest.block.entity.MoonwormBlockEntity;
+import twilightforest.client.BugModelAnimationHelper;
 
 public class MoonwormModel extends Model {
-	private final ModelPart shape1, shape2, shape3, head;
+
+	private final ModelPart shape1;
+	private final ModelPart shape2;
+	private final ModelPart shape3;
+	private final ModelPart head;
 
 	public MoonwormModel(ModelPart root) {
 		super(RenderType::entityCutoutNoCull);
@@ -37,60 +40,60 @@ public class MoonwormModel extends Model {
 	public static LayerDefinition create() {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
-		partdefinition.addOrReplaceChild("shape1",
-				CubeListBuilder.create()
-						.texOffs(0, 4)
-						.addBox(-1.0F, -1.0F, -1.0F, 4.0F, 2.0F, 2.0F),
-				PartPose.offset(-1.0F, 7.0F, 3.0F));
-		partdefinition.addOrReplaceChild("shape2",
-				CubeListBuilder.create()
-						.texOffs(0, 8)
-						.addBox(-1.0F, -1.0F, -1.0F, 2.0F, 2.0F, 4.0F),
-				PartPose.offset(3.0F, 7.0F, 0.0F));
-		partdefinition.addOrReplaceChild("shape3",
-				CubeListBuilder.create()
-						.texOffs(0, 14)
-						.addBox(-1.0F, -1.0F, -1.0F, 2.0F, 2.0F, 2.0F),
-				PartPose.offset(2.0F, 7.0F, -2.0F));
-		partdefinition.addOrReplaceChild("head",
-				CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(-1.0F, -1.0F, -1.0F, 2.0F, 2.0F, 2.0F),
-				PartPose.offset(-3.0F, 7.0F, 2.0F));
+
+		partdefinition.addOrReplaceChild("shape1", CubeListBuilder.create()
+				.texOffs(0, 4)
+				.addBox(-1.0F, -1.0F, -1.0F, 4.0F, 2.0F, 2.0F),
+			PartPose.offset(-1.0F, 7.0F, 3.0F));
+
+		partdefinition.addOrReplaceChild("shape2", CubeListBuilder.create()
+				.texOffs(0, 8)
+				.addBox(-1.0F, -1.0F, -1.0F, 2.0F, 2.0F, 4.0F),
+			PartPose.offset(3.0F, 7.0F, 0.0F));
+
+		partdefinition.addOrReplaceChild("shape3", CubeListBuilder.create()
+				.texOffs(0, 14)
+				.addBox(-1.0F, -1.0F, -1.0F, 2.0F, 2.0F, 2.0F),
+			PartPose.offset(2.0F, 7.0F, -2.0F));
+
+		partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
+				.texOffs(0, 0)
+				.addBox(-1.0F, -1.0F, -1.0F, 2.0F, 2.0F, 2.0F),
+			PartPose.offset(-3.0F, 7.0F, 2.0F));
 
 		return LayerDefinition.create(meshdefinition, 32, 32);
 	}
 
 	public void setRotationAngles(@Nullable MoonwormBlockEntity moonworm, float partialTime) {
-		this.head.y = 7F;
-		this.shape1.y = 7F;
-		this.shape2.y = 7F;
-		this.shape3.y = 7F;
+		this.head.y = 7.0F;
+		this.shape1.y = 7.0F;
+		this.shape2.y = 7.0F;
+		this.shape3.y = 7.0F;
 
 		if (moonworm != null && moonworm.yawDelay == 0) {
 			float time = (moonworm.desiredYaw - moonworm.currentYaw) - partialTime;
 
 			// moving
-			this.head.y += Math.min(0, Mth.sin(time / 2));
-			this.shape1.y += Math.min(0, Mth.sin(time / 2 + 1));
-			this.shape2.y += Math.min(0, Mth.sin(time / 2 + 2));
-			this.shape3.y += Math.min(0, Mth.sin(time / 2 + 3));
+			this.head.y += Math.min(0.0F, Mth.sin(time / 2.0F));
+			this.shape1.y += Math.min(0.0F, Mth.sin(time / 2.0F + 1.0F));
+			this.shape2.y += Math.min(0.0F, Mth.sin(time / 2.0F + 2.0F));
+			this.shape3.y += Math.min(0.0F, Mth.sin(time / 2.0F + 3.0F));
 		} else if (moonworm == null && BugModelAnimationHelper.yawWriggleDelay == 0) {
 			float time = (BugModelAnimationHelper.desiredRotation - BugModelAnimationHelper.currentRotation) - partialTime;
 
 			// moving
-			this.head.y += Math.min(0, Mth.sin(time / 2));
-			this.shape1.y += Math.min(0, Mth.sin(time / 2 + 1));
-			this.shape2.y += Math.min(0, Mth.sin(time / 2 + 2));
-			this.shape3.y += Math.min(0, Mth.sin(time / 2 + 3));
+			this.head.y += Math.min(0.0F, Mth.sin(time / 2.0F));
+			this.shape1.y += Math.min(0.0F, Mth.sin(time / 2.0F + 1.0F));
+			this.shape2.y += Math.min(0.0F, Mth.sin(time / 2.0F + 2.0F));
+			this.shape3.y += Math.min(0.0F, Mth.sin(time / 2.0F + 3.0F));
 		}
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack ms, VertexConsumer buffer, int light, int overlay, float r, float g, float b, float a) {
-		this.shape1.render(ms, buffer, light, overlay, r, g, b, a);
-		this.shape2.render(ms, buffer, light, overlay, r, g, b, a);
-		this.shape3.render(ms, buffer, light, overlay, r, g, b, a);
-		this.head.render(ms, buffer, light, overlay, r, g, b, a);
+	public void renderToBuffer(PoseStack ms, VertexConsumer buffer, int light, int overlay, int color) {
+		this.shape1.render(ms, buffer, light, overlay, color);
+		this.shape2.render(ms, buffer, light, overlay, color);
+		this.shape3.render(ms, buffer, light, overlay, color);
+		this.head.render(ms, buffer, light, overlay, color);
 	}
 }

@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -26,8 +27,9 @@ public class WebFeature extends Feature<NoneFeatureConfiguration> {
 		BlockPos pos = config.origin().above(config.random().nextInt(world.getMaxBuildHeight() - config.origin().getY()));
 		while (pos.getY() > config.origin().getY()) {
 			pos = pos.below();
-			if (world.isEmptyBlock(pos.below()) && isValidMaterial(world.getBlockState(pos))) {
-				world.setBlock(pos.below(), Blocks.COBWEB.defaultBlockState(), 16 | 2);
+			BlockState state = world.getBlockState(pos);
+			if (world.isEmptyBlock(pos.below()) && isValidMaterial(state)) {
+				world.setBlock(state.is(BlockTags.LEAVES) && config.random().nextBoolean() ? pos : pos.below(), Blocks.COBWEB.defaultBlockState(), Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_CLIENTS);
 				return true;
 			}
 		}

@@ -33,7 +33,7 @@ public class RedcapSapper extends Redcap {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Redcap.registerAttributes()
-				.add(Attributes.MAX_HEALTH, 30.0D)
-				.add(Attributes.ARMOR, 2.0D);
+			.add(Attributes.MAX_HEALTH, 30.0D)
+			.add(Attributes.ARMOR, 2.0D);
 	}
 }

@@ -3,8 +3,8 @@ package twilightforest.compat.jei.renderers;
 import mezz.jei.api.ingredients.IIngredientHelper;
 import mezz.jei.api.ingredients.IIngredientType;
 import mezz.jei.api.ingredients.subtypes.UidContext;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.compat.jei.FakeItemEntity;
 import twilightforest.compat.jei.JEICompat;
@@ -23,14 +23,17 @@ public class FakeItemEntityHelper implements IIngredientHelper<FakeItemEntity> {
 		return ingredient.stack().getItem().getDescription().toString();
 	}
 
+	// we cannot delete this function on 1.21.1 but the whole class is not marked as deprecated so it should be fine
+	// Use Object getUid(FakeEntityType, UidContext) for later versions
 	@Override
+	@SuppressWarnings("removal")
 	public String getUniqueId(FakeItemEntity ingredient, UidContext context) {
-		return Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(ingredient.stack().getItem())).toString();
+		return Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(ingredient.stack().getItem())).toString();
 	}
 
 	@Override
 	public ResourceLocation getResourceLocation(FakeItemEntity ingredient) {
-		return Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(ingredient.stack().getItem()));
+		return Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(ingredient.stack().getItem()));
 	}
 
 	@Override

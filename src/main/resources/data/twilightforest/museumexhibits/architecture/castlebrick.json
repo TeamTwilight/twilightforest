@@ -2,7 +2,7 @@
   "collection": "museumcurator.collection.architecture",
   "name": "museumcurator.architecture.twilightforest.castlebrick",
   "relativeTo": "museumcurator.lithology.concrete",
-  "placement" : "before",
+  "placement": "before",
   "items": [
     "twilightforest:castle_brick",
     "twilightforest:castle_brick_stairs",

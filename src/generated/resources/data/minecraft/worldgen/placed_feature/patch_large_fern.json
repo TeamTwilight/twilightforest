@@ -1,0 +1,27 @@
+{
+  "feature": "minecraft:patch_large_fern",
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 5
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:heightmap",
+      "heightmap": "MOTION_BLOCKING"
+    },
+    {
+      "type": "minecraft:biome"
+    },
+    {
+      "type": "twilightforest:no_structure",
+      "additional_clearance": 0,
+      "occupies_surface": false,
+      "occupies_underground": false,
+      "occupies_vegetation": true,
+      "structures_allowed": []
+    }
+  ]
+}

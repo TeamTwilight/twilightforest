@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "twilightforest:tannin"
+    },
+    {
+      "tag": "c:leathers"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "twilightforest:treated_leather"
+  }
+}

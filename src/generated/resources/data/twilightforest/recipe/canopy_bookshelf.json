@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "-": {
+      "item": "twilightforest:canopy_planks"
+    },
+    "B": {
+      "item": "minecraft:book"
+    }
+  },
+  "pattern": [
+    "---",
+    "B B",
+    "---"
+  ],
+  "result": {
+    "count": 1,
+    "id": "twilightforest:canopy_bookshelf"
+  }
+}

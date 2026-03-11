@@ -1,0 +1,51 @@
+{
+  "type": "twilightforest:travellers_gear_modifier_shaped_recipe",
+  "is_rotated": false,
+  "modifier_key": "twilightforest:straight_ahead",
+  "pattern": {
+    "key": {
+      "B": {
+        "item": "twilightforest:travellers_boots"
+      },
+      "H": {
+        "item": "minecraft:rabbit_hide"
+      },
+      "M": {
+        "item": "twilightforest:raw_meef"
+      },
+      "P": [
+        {
+          "type": "neoforge:components",
+          "components": {
+            "minecraft:potion_contents": {
+              "potion": "minecraft:swiftness"
+            }
+          },
+          "items": "minecraft:potion"
+        },
+        {
+          "type": "neoforge:components",
+          "components": {
+            "minecraft:potion_contents": {
+              "potion": "minecraft:long_swiftness"
+            }
+          },
+          "items": "minecraft:potion"
+        },
+        {
+          "type": "neoforge:components",
+          "components": {
+            "minecraft:potion_contents": {
+              "potion": "minecraft:strong_swiftness"
+            }
+          },
+          "items": "minecraft:potion"
+        }
+      ]
+    },
+    "pattern": [
+      "MPM",
+      "HBH"
+    ]
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "parent": "twilightforest:experiment_115",
+  "criteria": {
+    "eat_115_e115": {
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type_specific": {
+                "type": "minecraft:player",
+                "stats": [
+                  {
+                    "type": "minecraft:custom",
+                    "stat": "twilightforest:e115_slices_eaten",
+                    "value": {
+                      "min": 115
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:location"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.twilightforest.experiment_115_3.desc"
+    },
+    "frame": "challenge",
+    "hidden": true,
+    "icon": {
+      "components": {
+        "twilightforest:e115_variant": "think"
+      },
+      "count": 1,
+      "id": "twilightforest:experiment_115"
+    },
+    "title": {
+      "translate": "advancement.twilightforest.experiment_115_3"
+    }
+  },
+  "requirements": [
+    [
+      "eat_115_e115"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

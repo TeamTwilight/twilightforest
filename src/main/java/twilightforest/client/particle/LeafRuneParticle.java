@@ -1,23 +1,23 @@
 package twilightforest.client.particle;
 
-import net.minecraft.client.particle.*;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class LeafRuneParticle extends TextureSheetParticle {
 
 	LeafRuneParticle(ClientLevel level, double x, double y, double z, double velX, double velY, double velZ) {
 		super(level, x, y, z, velX, velY, velZ);
-		// super applies jittering, reset it
 		this.xd = velX;
 		this.yd = velY;
 		this.zd = velZ;
-
 		this.quadSize = this.random.nextFloat() * 0.25F;
-		this.lifetime = (int)(Math.random() * 10.0D) + 40;
-		this.gravity = 0.3F + random.nextFloat() * 0.6F;
+		this.lifetime = (int) (Math.random() * 10.0D) + 40;
+		this.gravity = 0.15F + this.random.nextFloat() * 0.1F;
+		float f = this.random.nextFloat() * 0.6F + 0.4F;
+		this.rCol = 0.9F * f;
+		this.gCol = 0.9F * f;
+		this.bCol = f;
 	}
 
 	@Override
@@ -25,7 +25,6 @@ public class LeafRuneParticle extends TextureSheetParticle {
 		return ParticleRenderType.PARTICLE_SHEET_OPAQUE;
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	public record Factory(SpriteSet sprite) implements ParticleProvider<SimpleParticleType> {
 
 		@Override

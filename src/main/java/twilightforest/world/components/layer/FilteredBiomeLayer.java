@@ -1,6 +1,7 @@
 package twilightforest.world.components.layer;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
@@ -12,8 +13,8 @@ import twilightforest.world.components.layer.vanillalegacy.Area;
 import twilightforest.world.components.layer.vanillalegacy.BiomeLayerFactory;
 import twilightforest.world.components.layer.vanillalegacy.BiomeLayerType;
 import twilightforest.world.components.layer.vanillalegacy.area.LazyArea;
-import twilightforest.world.components.layer.vanillalegacy.context.Context;
 import twilightforest.world.components.layer.vanillalegacy.context.LazyAreaContext;
+import twilightforest.world.components.layer.vanillalegacy.context.RandomContext;
 import twilightforest.world.components.layer.vanillalegacy.traits.AreaTransformer2;
 import twilightforest.world.components.layer.vanillalegacy.traits.DimensionOffset0Transformer;
 
@@ -21,7 +22,7 @@ import java.util.function.LongFunction;
 
 public record FilteredBiomeLayer(ResourceKey<Biome> biomeFirst) implements AreaTransformer2, DimensionOffset0Transformer {
 	@Override
-	public ResourceKey<Biome> applyPixel(Context context, Area area1, Area area2, int x, int z) {
+	public ResourceKey<Biome> applyPixel(RandomContext randomContext, Area area1, Area area2, int x, int z) {
 		ResourceKey<Biome> riverInputs = area2.getBiome(this.getParentX(x), this.getParentY(z));
 
 		if (riverInputs == this.biomeFirst) {
@@ -32,11 +33,11 @@ public record FilteredBiomeLayer(ResourceKey<Biome> biomeFirst) implements AreaT
 	}
 
 	public static final class Factory implements BiomeLayerFactory {
-		public static final Codec<Factory> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-				Codec.LONG.fieldOf("salt").forGetter(Factory::salt),
-				ResourceKey.codec(Registries.BIOME).fieldOf("keep_biome").forGetter(Factory::filterKeep),
-				BiomeLayerStack.HOLDER_CODEC.fieldOf("filtered_layer").forGetter(Factory::filteredLayer),
-				BiomeLayerStack.HOLDER_CODEC.fieldOf("fallback_layer").forGetter(Factory::fallbackLayer)
+		public static final MapCodec<Factory> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
+			Codec.LONG.fieldOf("salt").forGetter(Factory::salt),
+			ResourceKey.codec(Registries.BIOME).fieldOf("keep_biome").forGetter(Factory::filterKeep),
+			BiomeLayerStack.HOLDER_CODEC.fieldOf("filtered_layer").forGetter(Factory::filteredLayer),
+			BiomeLayerStack.HOLDER_CODEC.fieldOf("fallback_layer").forGetter(Factory::fallbackLayer)
 		).apply(inst, Factory::new));
 
 		private final long salt;
@@ -57,7 +58,7 @@ public record FilteredBiomeLayer(ResourceKey<Biome> biomeFirst) implements AreaT
 
 		@Override
 		public LazyArea build(LongFunction<LazyAreaContext> contextFactory) {
-			return this.filteredBiomeLayer.run(contextFactory.apply(this.salt), this.fallbackLayer.get().build(contextFactory), this.filteredLayer.get().build(contextFactory));
+			return this.filteredBiomeLayer.run(contextFactory.apply(this.salt), this.fallbackLayer.value().build(contextFactory), this.filteredLayer.value().build(contextFactory));
 		}
 
 		@Override

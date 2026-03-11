@@ -1,0 +1,12 @@
+{
+  "type": "twilightforest:component",
+  "component": {
+    "twilightforest:perfect_dodge_probability": 0.3
+  },
+  "description": [
+    {
+      "translate": "travellers_gear.modifier.twilightforest.perfect_dodge.description"
+    }
+  ],
+  "equipment_slots": "chest"
+}

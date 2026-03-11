@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:empty",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "twilightforest:moonworm"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "twilightforest:blocks/moonworm_failed_to_place"
+}

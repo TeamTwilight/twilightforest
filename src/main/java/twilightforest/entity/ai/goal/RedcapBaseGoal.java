@@ -7,9 +7,8 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.item.PrimedTnt;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.AABB;
-import twilightforest.entity.monster.Redcap;
-
 import org.jetbrains.annotations.Nullable;
+import twilightforest.entity.monster.Redcap;
 
 public abstract class RedcapBaseGoal extends Goal {
 

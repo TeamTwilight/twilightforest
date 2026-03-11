@@ -14,32 +14,36 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.chunk.PalettedContainer;
-import twilightforest.TFConfig;
+import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.network.PacketDistributor;
+import twilightforest.config.TFConfig;
 import twilightforest.init.TFBiomes;
+import twilightforest.init.TFParticleType;
 import twilightforest.init.TFSounds;
+import twilightforest.network.ParticlePacket;
 import twilightforest.util.WorldUtil;
 
 import java.util.List;
 
 public class TransLogCoreBlock extends SpecialMagicLogBlock {
 
-	public TransLogCoreBlock(Properties props) {
-		super(props);
+	public TransLogCoreBlock(Properties properties) {
+		super(properties);
 	}
 
 	@Override
 	public boolean doesCoreFunction() {
-		return !TFConfig.COMMON_CONFIG.MAGIC_TREES.disableTransformation.get();
+		return !TFConfig.disableTransformationCore;
 	}
 
 	/**
 	 * The tree of transformation transforms the biome in the area near it into the enchanted forest biome.
 	 */
 	@Override
-	void performTreeEffect(Level level, BlockPos pos, RandomSource rand) {
+	void performTreeEffect(ServerLevel level, BlockPos pos, RandomSource rand) {
 		ResourceKey<Biome> target = TFBiomes.ENCHANTED_FOREST;
 		Holder<Biome> biome = level.registryAccess().registryOrThrow(Registries.BIOME).getHolderOrThrow(target);
-		int range = TFConfig.COMMON_CONFIG.MAGIC_TREES.transformationRange.get();
+		int range = TFConfig.transformationCoreRange;
 		for (int i = 0; i < 16; i++) {
 			BlockPos dPos = WorldUtil.randomOffset(rand, pos, range, 0, range);
 			if (dPos.distSqr(pos) > 256.0)
@@ -65,16 +69,24 @@ public class TransLogCoreBlock extends SpecialMagicLogBlock {
 				}
 			}
 
-			if (level instanceof ServerLevel server) {
-				if (!chunkAt.isUnsaved()) chunkAt.setUnsaved(true);
-				server.getChunkSource().chunkMap.resendBiomesForChunks(List.of(chunkAt));
+			if (!chunkAt.isUnsaved()) chunkAt.setUnsaved(true);
+			level.getChunkSource().chunkMap.resendBiomesForChunks(List.of(chunkAt));
+
+			Vec3 xyz = Vec3.atCenterOf(dPos);
+
+			ParticlePacket particlePacket = new ParticlePacket();
+			for (int j = 0; j < 9; j++) {
+				float angle = rand.nextFloat() * 360.0F;
+				Vec3 offset = new Vec3(Math.cos(angle), 0.0D, Math.sin(angle)).scale(2.0D);
+				particlePacket.queueParticle(TFParticleType.TRANSFORMATION_PARTICLE.get(), false, xyz.add(offset), Vec3.ZERO.subtract(offset));
 			}
+			PacketDistributor.sendToPlayersNear(level, null, xyz.x(), xyz.y(), xyz.z(), 64.0D, particlePacket);
 			break;
 		}
 	}
 
 	@Override
 	protected void playSound(Level level, BlockPos pos, RandomSource rand) {
-		level.playSound(null, pos, TFSounds.TRANSFORMATION_CORE.get(), SoundSource.BLOCKS, 0.1F, rand.nextFloat() * 2F);
+		level.playSound(null, pos, TFSounds.TRANSFORMATION_CORE.get(), SoundSource.BLOCKS, 0.1F, rand.nextFloat() * 2.0F);
 	}
 }

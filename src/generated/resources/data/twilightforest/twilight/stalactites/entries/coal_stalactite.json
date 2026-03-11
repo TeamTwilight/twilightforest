@@ -1,0 +1,6 @@
+{
+  "max_length": 12,
+  "ores": "minecraft:coal_ore",
+  "size_variation": 0.8,
+  "weight": 30
+}

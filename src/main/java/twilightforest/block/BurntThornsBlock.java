@@ -8,10 +8,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
-
+import net.minecraft.world.level.pathfinder.PathType;
 import org.jetbrains.annotations.Nullable;
 
 public class BurntThornsBlock extends ThornsBlock {
@@ -20,14 +20,12 @@ public class BurntThornsBlock extends ThornsBlock {
 		super(properties);
 	}
 
-	@Nullable
 	@Override
-	public BlockPathTypes getBlockPathType(BlockState state, BlockGetter getter, BlockPos pos, @Nullable Mob entity) {
+	public @Nullable PathType getBlockPathType(BlockState state, BlockGetter getter, BlockPos pos, @Nullable Mob entity) {
 		return null;
 	}
 
 	@Override
-	@Deprecated
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
 		// dissolve
 		if (!level.isClientSide() && (entity instanceof LivingEntity || entity instanceof Projectile)) {
@@ -38,6 +36,6 @@ public class BurntThornsBlock extends ThornsBlock {
 	@Override
 	public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
 		state.getBlock().playerWillDestroy(level, pos, state, player);
-		return level.setBlock(pos, fluid.createLegacyBlock(), level.isClientSide ? 11 : 3);
+		return level.setBlock(pos, fluid.createLegacyBlock(), level.isClientSide() ? Block.UPDATE_ALL_IMMEDIATE : Block.UPDATE_ALL);
 	}
 }

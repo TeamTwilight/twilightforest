@@ -16,9 +16,9 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import twilightforest.init.TFBlocks;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
-import twilightforest.util.LegacyLandmarkPlacements;
+import twilightforest.util.BoundingBoxUtils;
+import twilightforest.util.landmarks.LegacyLandmarkPlacements;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 
@@ -32,28 +32,16 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 		super(TFStructurePieceTypes.TFFCMain.get(), nbt);
 	}
 
+	@SuppressWarnings("this-escape")
 	public FinalCastleMainComponent(int i, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFFCMain.get(), i, x, y, z);
 		this.setOrientation(Direction.SOUTH);
 		this.spawnListIndex = 1; // main monsters
 
-		x = ((x + 127) >> 8) << 8;
-		z = ((z + 127) >> 8) << 8;
-
-		this.boundingBox = TFLandmark.getComponentToAddBoundingBox(x, y, z, -24, 120, -24, 48, 40, 48, Direction.SOUTH, false);
-
-		BlockPos cc = LegacyLandmarkPlacements.getNearestCenterXZ(x >> 4, z >> 4);
-
-		int cx = (x >> 8) << 8;
-		int cz = (z >> 8) << 8;
-
-		//TwilightForestMod.LOGGER.debug("Making castle at {}, {}. center is {}, {}", x, z, cc.getX(), cc.getZ());
-		//TwilightForestMod.LOGGER.debug("Natural center at {}, {}", cx, cz);
+		this.boundingBox = BoundingBoxUtils.getComponentToAddBoundingBox(x, y, z, -24, 120, -24, 48, 40, 48, Direction.SOUTH, false);
 
 		// decorator
-		if (this.deco == null) {
-			this.deco = new StructureTFDecoratorCastle();
-		}
+		this.deco = new StructureTFDecoratorCastle();
 	}
 
 	@Override
@@ -172,7 +160,7 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 	private boolean isMazeComplete(StructurePieceAccessor list, BlockState type) {
 		if (list instanceof StructurePiecesBuilder start) {
 			if (start.pieces.size() > 60) {
-				//TwilightForestMod.LOGGER.warn("Maze of color {} is getting a bit excessive.", ForgeRegistries.BLOCKS.getKey(type.getBlock()).toString());
+				//TwilightForestMod.LOGGER.warn("Maze of color {} is getting a bit excessive.", BuiltInRegistries.BLOCK.getKey(type.getBlock()).toString());
 			}
 			for (StructurePiece structurecomponent : start.pieces) {
 				BoundingBox boundingBox = structurecomponent.getBoundingBox();
@@ -206,7 +194,8 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 			case WEST -> dz += howFar;
 			case NORTH -> dx -= howFar;
 			case EAST -> dz -= howFar;
-			default -> { }
+			default -> {
+			}
 		}
 
 		// ugh?

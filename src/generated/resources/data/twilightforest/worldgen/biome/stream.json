@@ -1,5 +1,6 @@
 {
   "carvers": {},
+  "creature_spawn_probability": 0.15,
   "downfall": 0.1,
   "effects": {
     "fog_color": 12648408,
@@ -38,7 +39,11 @@
       "twilightforest:small_diorite",
       "twilightforest:small_granite"
     ],
-    [],
+    [
+      "twilightforest:iron_oreberries",
+      "twilightforest:gold_oreberries",
+      "twilightforest:copper_oreberries"
+    ],
     [],
     [
       "minecraft:seagrass_normal",

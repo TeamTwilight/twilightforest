@@ -1,6 +1,7 @@
 {
   "parent": "minecraft:item/generated",
-  "forge_data": {
+  "loader": "neoforge:item_layers",
+  "neoforge_data": {
     "layers": {
       "0": {
         "block_light": 15,
@@ -8,7 +9,6 @@
       }
     }
   },
-  "loader": "forge:item_layers",
   "overrides": [
     {
       "model": "twilightforest:item/fiery_boots_quartz_trim",

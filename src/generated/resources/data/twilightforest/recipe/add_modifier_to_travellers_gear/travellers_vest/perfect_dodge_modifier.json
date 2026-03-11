@@ -1,0 +1,26 @@
+{
+  "type": "twilightforest:travellers_gear_modifier_shaped_recipe",
+  "is_rotated": false,
+  "modifier_key": "twilightforest:perfect_dodge",
+  "pattern": {
+    "key": {
+      "E": {
+        "item": "minecraft:ender_eye"
+      },
+      "P": {
+        "item": "minecraft:ender_pearl"
+      },
+      "S": {
+        "item": "minecraft:sugar"
+      },
+      "V": {
+        "item": "twilightforest:travellers_vest"
+      }
+    },
+    "pattern": [
+      " E ",
+      "PVP",
+      " S "
+    ]
+  }
+}

@@ -1,0 +1,304 @@
+{
+  "twilightforest:camp/tent": {
+    "height_adjustment": {
+      "ground_junction_diff_clamp": 0,
+      "heightmap": "WORLD_SURFACE_WG",
+      "y_offset": 1
+    },
+    "ignore_world_waterlog": true,
+    "marker_handlers": "twilightforest:camp_marker_handlers",
+    "randomized_processors": [
+      [
+        {
+          "data": {
+            "processor_type": "twilightforest:state_transfiguring",
+            "rules": [
+              {
+                "input_predicate": {
+                  "block": "minecraft:light_gray_wool",
+                  "predicate_type": "minecraft:block_match"
+                },
+                "location_predicate": {
+                  "predicate_type": "minecraft:always_true"
+                },
+                "output_state": {
+                  "Name": "minecraft:white_wool"
+                }
+              }
+            ]
+          },
+          "weight": 10
+        },
+        {
+          "data": {
+            "processor_type": "twilightforest:state_transfiguring",
+            "rules": [
+              {
+                "input_predicate": {
+                  "block": "minecraft:light_gray_wool",
+                  "predicate_type": "minecraft:block_match"
+                },
+                "location_predicate": {
+                  "predicate_type": "minecraft:always_true"
+                },
+                "output_state": {
+                  "Name": "minecraft:light_gray_wool"
+                }
+              }
+            ]
+          },
+          "weight": 10
+        },
+        {
+          "data": {
+            "processor_type": "twilightforest:state_transfiguring",
+            "rules": [
+              {
+                "input_predicate": {
+                  "block": "minecraft:light_gray_wool",
+                  "predicate_type": "minecraft:block_match"
+                },
+                "location_predicate": {
+                  "predicate_type": "minecraft:always_true"
+                },
+                "output_state": {
+                  "Name": "minecraft:gray_wool"
+                }
+              }
+            ]
+          },
+          "weight": 10
+        },
+        {
+          "data": {
+            "processor_type": "twilightforest:state_transfiguring",
+            "rules": [
+              {
+                "input_predicate": {
+                  "block": "minecraft:light_gray_wool",
+                  "predicate_type": "minecraft:block_match"
+                },
+                "location_predicate": {
+                  "predicate_type": "minecraft:always_true"
+                },
+                "output_state": {
+                  "Name": "minecraft:brown_wool"
+                }
+              }
+            ]
+          },
+          "weight": 10
+        },
+        {
+          "data": {
+            "processor_type": "twilightforest:state_transfiguring",
+            "rules": [
+              {
+                "input_predicate": {
+                  "block": "minecraft:light_gray_wool",
+                  "predicate_type": "minecraft:block_match"
+                },
+                "location_predicate": {
+                  "predicate_type": "minecraft:always_true"
+                },
+                "output_state": {
+                  "Name": "minecraft:green_wool"
+                }
+              }
+            ]
+          },
+          "weight": 10
+        },
+        {
+          "data": {
+            "processor_type": "twilightforest:state_transfiguring",
+            "rules": [
+              {
+                "input_predicate": {
+                  "block": "minecraft:light_gray_wool",
+                  "predicate_type": "minecraft:block_match"
+                },
+                "location_predicate": {
+                  "predicate_type": "minecraft:always_true"
+                },
+                "output_state": {
+                  "Name": "minecraft:blue_wool"
+                }
+              }
+            ]
+          },
+          "weight": 10
+        },
+        {
+          "data": {
+            "processor_type": "twilightforest:state_transfiguring",
+            "rules": [
+              {
+                "input_predicate": {
+                  "block": "minecraft:light_gray_wool",
+                  "predicate_type": "minecraft:block_match"
+                },
+                "location_predicate": {
+                  "predicate_type": "minecraft:always_true"
+                },
+                "output_state": {
+                  "Name": "minecraft:red_wool"
+                }
+              }
+            ]
+          },
+          "weight": 10
+        },
+        {
+          "data": {
+            "processor_type": "twilightforest:state_transfiguring",
+            "rules": [
+              {
+                "input_predicate": {
+                  "block": "minecraft:light_gray_wool",
+                  "predicate_type": "minecraft:block_match"
+                },
+                "location_predicate": {
+                  "predicate_type": "minecraft:always_true"
+                },
+                "output_state": {
+                  "Name": "minecraft:lime_wool"
+                }
+              }
+            ]
+          },
+          "weight": 1
+        }
+      ],
+      [
+        {
+          "data": {
+            "processor_type": "twilightforest:state_transfiguring",
+            "rules": [
+              {
+                "input_predicate": {
+                  "block": "minecraft:red_bed",
+                  "predicate_type": "minecraft:block_match"
+                },
+                "location_predicate": {
+                  "predicate_type": "minecraft:always_true"
+                },
+                "output_state": {
+                  "Name": "minecraft:red_bed",
+                  "Properties": {
+                    "facing": "north",
+                    "occupied": "false",
+                    "part": "foot"
+                  }
+                }
+              }
+            ]
+          },
+          "weight": 10
+        },
+        {
+          "data": {
+            "processor_type": "twilightforest:state_transfiguring",
+            "rules": [
+              {
+                "input_predicate": {
+                  "block": "minecraft:red_bed",
+                  "predicate_type": "minecraft:block_match"
+                },
+                "location_predicate": {
+                  "predicate_type": "minecraft:always_true"
+                },
+                "output_state": {
+                  "Name": "minecraft:light_blue_bed",
+                  "Properties": {
+                    "facing": "north",
+                    "occupied": "false",
+                    "part": "foot"
+                  }
+                }
+              }
+            ]
+          },
+          "weight": 10
+        },
+        {
+          "data": {
+            "processor_type": "twilightforest:state_transfiguring",
+            "rules": [
+              {
+                "input_predicate": {
+                  "block": "minecraft:red_bed",
+                  "predicate_type": "minecraft:block_match"
+                },
+                "location_predicate": {
+                  "predicate_type": "minecraft:always_true"
+                },
+                "output_state": {
+                  "Name": "minecraft:lime_bed",
+                  "Properties": {
+                    "facing": "north",
+                    "occupied": "false",
+                    "part": "foot"
+                  }
+                }
+              }
+            ]
+          },
+          "weight": 10
+        },
+        {
+          "data": {
+            "processor_type": "twilightforest:state_transfiguring",
+            "rules": [
+              {
+                "input_predicate": {
+                  "block": "minecraft:red_bed",
+                  "predicate_type": "minecraft:block_match"
+                },
+                "location_predicate": {
+                  "predicate_type": "minecraft:always_true"
+                },
+                "output_state": {
+                  "Name": "minecraft:orange_bed",
+                  "Properties": {
+                    "facing": "north",
+                    "occupied": "false",
+                    "part": "foot"
+                  }
+                }
+              }
+            ]
+          },
+          "weight": 10
+        },
+        {
+          "data": {
+            "processor_type": "twilightforest:state_transfiguring",
+            "rules": [
+              {
+                "input_predicate": {
+                  "block": "minecraft:red_bed",
+                  "predicate_type": "minecraft:block_match"
+                },
+                "location_predicate": {
+                  "predicate_type": "minecraft:always_true"
+                },
+                "output_state": {
+                  "Name": "minecraft:light_gray_bed",
+                  "Properties": {
+                    "facing": "north",
+                    "occupied": "false",
+                    "part": "foot"
+                  }
+                }
+              }
+            ]
+          },
+          "weight": 10
+        }
+      ]
+    ],
+    "terrain_adaptation": "beard_box",
+    "weight": 100
+  }
+}

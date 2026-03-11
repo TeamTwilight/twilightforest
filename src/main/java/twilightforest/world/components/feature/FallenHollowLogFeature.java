@@ -1,20 +1,21 @@
 package twilightforest.world.components.feature;
 
 import com.mojang.serialization.Codec;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
-import net.minecraft.core.Direction;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import twilightforest.init.TFBlocks;
-import twilightforest.util.FeatureUtil;
+import twilightforest.util.features.FeatureUtil;
 
 public class FallenHollowLogFeature extends Feature<NoneFeatureConfiguration> {
 
@@ -34,7 +35,7 @@ public class FallenHollowLogFeature extends Feature<NoneFeatureConfiguration> {
 		WorldGenLevel world = ctx.level();
 		BlockPos pos = ctx.origin();
 		RandomSource rand = ctx.random();
-		
+
 		return rand.nextBoolean() ? makeLog4Z(world, rand, pos) : makeLog4X(world, rand, pos);
 	}
 
@@ -63,41 +64,41 @@ public class FallenHollowLogFeature extends Feature<NoneFeatureConfiguration> {
 		for (int dz = 0; dz < 4; dz++) {
 			// floor
 			if (rand.nextBoolean()) {
-				world.setBlock(pos.offset(1, -1, dz + 3), oakLogWithZAxis, 3);
+				world.setBlock(pos.offset(1, -1, dz + 3), oakLogWithZAxis, Block.UPDATE_ALL);
 				if (rand.nextBoolean()) {
-					world.setBlock(pos.offset(1, 0, dz + 3), mossPatch, 3);
+					world.setBlock(pos.offset(1, 0, dz + 3), mossPatch, Block.UPDATE_ALL);
 					this.markAboveForPostProcessing(world, pos.offset(1, -1, dz + 3));
 				}
 			} else {
-				world.setBlock(pos.offset(1, -1, dz + 3), grass, 3);
-				world.setBlock(pos.offset(1, 0, dz + 3), mossPatch, 3);
+				world.setBlock(pos.offset(1, -1, dz + 3), grass, Block.UPDATE_ALL);
+				world.setBlock(pos.offset(1, 0, dz + 3), mossPatch, Block.UPDATE_ALL);
 				this.markAboveForPostProcessing(world, pos.offset(1, -1, dz + 3));
 			}
 			if (rand.nextBoolean()) {
-				world.setBlock(pos.offset(2, -1, dz + 3), oakLogWithZAxis, 3);
+				world.setBlock(pos.offset(2, -1, dz + 3), oakLogWithZAxis, Block.UPDATE_ALL);
 				if (rand.nextBoolean()) {
-					world.setBlock(pos.offset(2, 0, dz + 3), mossPatch, 3);
+					world.setBlock(pos.offset(2, 0, dz + 3), mossPatch, Block.UPDATE_ALL);
 					this.markAboveForPostProcessing(world, pos.offset(2, -1, dz + 3));
 				}
 			} else {
-				world.setBlock(pos.offset(2, -1, dz + 3), grass, 3);
-				world.setBlock(pos.offset(2, 0, dz + 3), mossPatch, 3);
+				world.setBlock(pos.offset(2, -1, dz + 3), grass, Block.UPDATE_ALL);
+				world.setBlock(pos.offset(2, 0, dz + 3), mossPatch, Block.UPDATE_ALL);
 				this.markAboveForPostProcessing(world, pos.offset(2, -1, dz + 3));
 			}
 
 			// log part
-			world.setBlock(pos.offset(0, 0, dz + 3), oakLogWithZAxis, 3);
-			world.setBlock(pos.offset(3, 0, dz + 3), oakLogWithZAxis, 3);
-			world.setBlock(pos.offset(0, 1, dz + 3), oakLogWithZAxis, 3);
-			world.setBlock(pos.offset(3, 1, dz + 3), oakLogWithZAxis, 3);
-			world.setBlock(pos.offset(1, 2, dz + 3), oakLogWithZAxis, 3);
-			world.setBlock(pos.offset(2, 2, dz + 3), oakLogWithZAxis, 3);
+			world.setBlock(pos.offset(0, 0, dz + 3), oakLogWithZAxis, Block.UPDATE_ALL);
+			world.setBlock(pos.offset(3, 0, dz + 3), oakLogWithZAxis, Block.UPDATE_ALL);
+			world.setBlock(pos.offset(0, 1, dz + 3), oakLogWithZAxis, Block.UPDATE_ALL);
+			world.setBlock(pos.offset(3, 1, dz + 3), oakLogWithZAxis, Block.UPDATE_ALL);
+			world.setBlock(pos.offset(1, 2, dz + 3), oakLogWithZAxis, Block.UPDATE_ALL);
+			world.setBlock(pos.offset(2, 2, dz + 3), oakLogWithZAxis, Block.UPDATE_ALL);
 			if (rand.nextBoolean()) {
-				world.setBlock(pos.offset(1, 3, dz + 3), mossPatch, 3);
+				world.setBlock(pos.offset(1, 3, dz + 3), mossPatch, Block.UPDATE_ALL);
 				this.markAboveForPostProcessing(world, pos.offset(1, 2, dz + 3));
 			}
 			if (rand.nextBoolean()) {
-				world.setBlock(pos.offset(2, 3, dz + 3), mossPatch, 3);
+				world.setBlock(pos.offset(2, 3, dz + 3), mossPatch, Block.UPDATE_ALL);
 				this.markAboveForPostProcessing(world, pos.offset(2, 2, dz + 3));
 			}
 		}
@@ -107,19 +108,19 @@ public class FallenHollowLogFeature extends Feature<NoneFeatureConfiguration> {
 		boolean plusX = rand.nextBoolean();
 		for (int dz = 0; dz < 3; dz++) {
 			if (rand.nextBoolean()) {
-				world.setBlock(pos.offset(plusX ? 3 : 0, 2, dz + offZ), oakLeaves, 3);
+				world.setBlock(pos.offset(plusX ? 3 : 0, 2, dz + offZ), oakLeaves, Block.UPDATE_ALL);
 				if (rand.nextBoolean()) {
-					world.setBlock(pos.offset(plusX ? 3 : 0, 3, dz + offZ), oakLeaves, 3);
+					world.setBlock(pos.offset(plusX ? 3 : 0, 3, dz + offZ), oakLeaves, Block.UPDATE_ALL);
 				}
 				if (rand.nextBoolean()) {
-					world.setBlock(pos.offset(plusX ? 4 : -1, 2, dz + offZ), oakLeaves, 3);
+					world.setBlock(pos.offset(plusX ? 4 : -1, 2, dz + offZ), oakLeaves, Block.UPDATE_ALL);
 				}
 			}
 		}
 
 
 		// firefly
-		world.setBlock(pos.offset(plusX ? 0 : 3, 2, rand.nextInt(4) + 3), firefly, 3);
+		world.setBlock(pos.offset(plusX ? 0 : 3, 2, rand.nextInt(4) + 3), firefly, Block.UPDATE_ALL);
 
 
 		return true;
@@ -127,13 +128,13 @@ public class FallenHollowLogFeature extends Feature<NoneFeatureConfiguration> {
 
 	private void makeNegativeZJaggy(LevelAccessor world, BlockPos pos, int length, int dx, int dy) {
 		for (int dz = -length; dz < 0; dz++) {
-			world.setBlock(pos.offset(dx, dy, dz + 3), oakLogWithZAxis, 3);
+			world.setBlock(pos.offset(dx, dy, dz + 3), oakLogWithZAxis, Block.UPDATE_ALL);
 		}
 	}
 
 	private void makePositiveZJaggy(LevelAccessor world, BlockPos pos, int length, int dx, int dy) {
 		for (int dz = 0; dz < length; dz++) {
-			world.setBlock(pos.offset(dx, dy, dz + 7), oakLogWithZAxis, 3);
+			world.setBlock(pos.offset(dx, dy, dz + 7), oakLogWithZAxis, Block.UPDATE_ALL);
 		}
 	}
 
@@ -165,41 +166,41 @@ public class FallenHollowLogFeature extends Feature<NoneFeatureConfiguration> {
 		for (int dx = 0; dx < 4; dx++) {
 			// floor
 			if (rand.nextBoolean()) {
-				world.setBlock(pos.offset(dx + 3, -1, 1), oakLogWithXAxis, 3);
+				world.setBlock(pos.offset(dx + 3, -1, 1), oakLogWithXAxis, Block.UPDATE_ALL);
 				if (rand.nextBoolean()) {
-					world.setBlock(pos.offset(dx + 3, 0, 1), mossPatch, 3);
+					world.setBlock(pos.offset(dx + 3, 0, 1), mossPatch, Block.UPDATE_ALL);
 					this.markAboveForPostProcessing(world, pos.offset(dx + 3, -1, 1));
 				}
 			} else {
-				world.setBlock(pos.offset(dx + 3, -1, 1), grass, 3);
-				world.setBlock(pos.offset(dx + 3, 0, 1), mossPatch, 3);
+				world.setBlock(pos.offset(dx + 3, -1, 1), grass, Block.UPDATE_ALL);
+				world.setBlock(pos.offset(dx + 3, 0, 1), mossPatch, Block.UPDATE_ALL);
 				this.markAboveForPostProcessing(world, pos.offset(dx + 3, -1, 1));
 			}
 			if (rand.nextBoolean()) {
-				world.setBlock(pos.offset(dx + 3, -1, 2), oakLogWithXAxis, 3);
+				world.setBlock(pos.offset(dx + 3, -1, 2), oakLogWithXAxis, Block.UPDATE_ALL);
 				if (rand.nextBoolean()) {
-					world.setBlock(pos.offset(dx + 3, 0, 2), mossPatch, 3);
+					world.setBlock(pos.offset(dx + 3, 0, 2), mossPatch, Block.UPDATE_ALL);
 					this.markAboveForPostProcessing(world, pos.offset(dx + 3, -1, 2));
 				}
 			} else {
-				world.setBlock(pos.offset(dx + 3, -1, 2), grass, 3);
-				world.setBlock(pos.offset(dx + 3, 0, 2), mossPatch, 3);
+				world.setBlock(pos.offset(dx + 3, -1, 2), grass, Block.UPDATE_ALL);
+				world.setBlock(pos.offset(dx + 3, 0, 2), mossPatch, Block.UPDATE_ALL);
 				this.markAboveForPostProcessing(world, pos.offset(dx + 3, -1, 2));
 			}
 
 			// log part
-			world.setBlock(pos.offset(dx + 3, 0, 0), oakLogWithXAxis, 3);
-			world.setBlock(pos.offset(dx + 3, 0, 3), oakLogWithXAxis, 3);
-			world.setBlock(pos.offset(dx + 3, 1, 0), oakLogWithXAxis, 3);
-			world.setBlock(pos.offset(dx + 3, 1, 3), oakLogWithXAxis, 3);
-			world.setBlock(pos.offset(dx + 3, 2, 1), oakLogWithXAxis, 3);
-			world.setBlock(pos.offset(dx + 3, 2, 2), oakLogWithXAxis, 3);
+			world.setBlock(pos.offset(dx + 3, 0, 0), oakLogWithXAxis, Block.UPDATE_ALL);
+			world.setBlock(pos.offset(dx + 3, 0, 3), oakLogWithXAxis, Block.UPDATE_ALL);
+			world.setBlock(pos.offset(dx + 3, 1, 0), oakLogWithXAxis, Block.UPDATE_ALL);
+			world.setBlock(pos.offset(dx + 3, 1, 3), oakLogWithXAxis, Block.UPDATE_ALL);
+			world.setBlock(pos.offset(dx + 3, 2, 1), oakLogWithXAxis, Block.UPDATE_ALL);
+			world.setBlock(pos.offset(dx + 3, 2, 2), oakLogWithXAxis, Block.UPDATE_ALL);
 			if (rand.nextBoolean()) {
-				world.setBlock(pos.offset(dx + 3, 3, 1), mossPatch, 3);
+				world.setBlock(pos.offset(dx + 3, 3, 1), mossPatch, Block.UPDATE_ALL);
 				this.markAboveForPostProcessing(world, pos.offset(dx + 3, 2, 1));
 			}
 			if (rand.nextBoolean()) {
-				world.setBlock(pos.offset(dx + 3, 3, 2), mossPatch, 3);
+				world.setBlock(pos.offset(dx + 3, 3, 2), mossPatch, Block.UPDATE_ALL);
 				this.markAboveForPostProcessing(world, pos.offset(dx + 3, 2, 2));
 			}
 
@@ -211,32 +212,32 @@ public class FallenHollowLogFeature extends Feature<NoneFeatureConfiguration> {
 		for (int dx = 0; dx < 3; dx++) {
 			if (rand.nextBoolean()) {
 
-				world.setBlock(pos.offset(dx + offX, 2, plusZ ? 3 : 0), oakLeaves, 3);
+				world.setBlock(pos.offset(dx + offX, 2, plusZ ? 3 : 0), oakLeaves, Block.UPDATE_ALL);
 				if (rand.nextBoolean()) {
-					world.setBlock(pos.offset(dx + offX, 3, plusZ ? 3 : 0), oakLeaves, 3);
+					world.setBlock(pos.offset(dx + offX, 3, plusZ ? 3 : 0), oakLeaves, Block.UPDATE_ALL);
 				}
 				if (rand.nextBoolean()) {
-					world.setBlock(pos.offset(dx + offX, 2, plusZ ? 4 : -1), oakLeaves, 3);
+					world.setBlock(pos.offset(dx + offX, 2, plusZ ? 4 : -1), oakLeaves, Block.UPDATE_ALL);
 				}
 			}
 		}
 
 
 		// firefly
-		world.setBlock(pos.offset(rand.nextInt(4) + 3, 2, plusZ ? 0 : 3), firefly, 3);
+		world.setBlock(pos.offset(rand.nextInt(4) + 3, 2, plusZ ? 0 : 3), firefly, Block.UPDATE_ALL);
 
 		return true;
 	}
 
 	private void makeNegativeXJaggy(LevelAccessor world, BlockPos pos, int length, int dz, int dy) {
 		for (int dx = -length; dx < 0; dx++) {
-			world.setBlock(pos.offset(dx + 3, dy, dz), oakLogWithXAxis, 3);
+			world.setBlock(pos.offset(dx + 3, dy, dz), oakLogWithXAxis, Block.UPDATE_ALL);
 		}
 	}
 
 	private void makePositiveXJaggy(LevelAccessor world, BlockPos pos, int length, int dz, int dy) {
 		for (int dx = 0; dx < length; dx++) {
-			world.setBlock(pos.offset(dx + 7, dy, dz), oakLogWithXAxis, 3);
+			world.setBlock(pos.offset(dx + 7, dy, dz), oakLogWithXAxis, Block.UPDATE_ALL);
 		}
 	}
 }

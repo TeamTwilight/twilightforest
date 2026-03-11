@@ -2,6 +2,7 @@ package twilightforest.world.components.layer;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
@@ -12,8 +13,8 @@ import twilightforest.init.custom.BiomeLayerTypes;
 import twilightforest.world.components.layer.vanillalegacy.BiomeLayerFactory;
 import twilightforest.world.components.layer.vanillalegacy.BiomeLayerType;
 import twilightforest.world.components.layer.vanillalegacy.area.LazyArea;
-import twilightforest.world.components.layer.vanillalegacy.context.Context;
 import twilightforest.world.components.layer.vanillalegacy.context.LazyAreaContext;
+import twilightforest.world.components.layer.vanillalegacy.context.RandomContext;
 import twilightforest.world.components.layer.vanillalegacy.traits.CastleTransformer;
 
 import java.util.List;
@@ -21,7 +22,7 @@ import java.util.function.LongFunction;
 
 public record CompanionBiomesLayer(List<Pair<ResourceKey<Biome>, ResourceKey<Biome>>> biomeCompanions) implements CastleTransformer {
 	@Override
-	public ResourceKey<Biome> apply(Context context, ResourceKey<Biome> up, ResourceKey<Biome> right, ResourceKey<Biome> down, ResourceKey<Biome> left, ResourceKey<Biome> center) {
+	public ResourceKey<Biome> apply(RandomContext randomContext, ResourceKey<Biome> up, ResourceKey<Biome> right, ResourceKey<Biome> down, ResourceKey<Biome> left, ResourceKey<Biome> center) {
 		for (Pair<ResourceKey<Biome>, ResourceKey<Biome>> biomeCompanion : this.biomeCompanions)
 			if (isKey(biomeCompanion.getFirst(), center, left, right, up, down))
 				return biomeCompanion.getSecond();
@@ -37,10 +38,10 @@ public record CompanionBiomesLayer(List<Pair<ResourceKey<Biome>, ResourceKey<Bio
 	}
 
 	public static final class Factory implements BiomeLayerFactory {
-		public static final Codec<Factory> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-				Codec.LONG.fieldOf("salt").forGetter(Factory::salt),
-				Codec.mapPair(ResourceKey.codec(Registries.BIOME).fieldOf("key"), ResourceKey.codec(Registries.BIOME).fieldOf("companion")).codec().listOf().fieldOf("keys_to_companions").forGetter(Factory::biomeCompanions),
-				BiomeLayerStack.HOLDER_CODEC.fieldOf("parent").forGetter(Factory::parent)
+		public static final MapCodec<Factory> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
+			Codec.LONG.fieldOf("salt").forGetter(Factory::salt),
+			Codec.mapPair(ResourceKey.codec(Registries.BIOME).fieldOf("key"), ResourceKey.codec(Registries.BIOME).fieldOf("companion")).codec().listOf().fieldOf("keys_to_companions").forGetter(Factory::biomeCompanions),
+			BiomeLayerStack.HOLDER_CODEC.fieldOf("parent").forGetter(Factory::parent)
 		).apply(inst, Factory::new));
 		private final long salt;
 		private final List<Pair<ResourceKey<Biome>, ResourceKey<Biome>>> biomeCompanions;
@@ -57,7 +58,7 @@ public record CompanionBiomesLayer(List<Pair<ResourceKey<Biome>, ResourceKey<Bio
 
 		@Override
 		public LazyArea build(LongFunction<LazyAreaContext> contextFactory) {
-			return this.instance.run(contextFactory.apply(this.salt), this.parent.get().build(contextFactory));
+			return this.instance.run(contextFactory.apply(this.salt), this.parent.value().build(contextFactory));
 		}
 
 		@Override

@@ -1,0 +1,6 @@
+{
+  "parent": "twilightforest:block/abstract_bush_2",
+  "textures": {
+    "all": "twilightforest:block/gold_oreberry"
+  }
+}

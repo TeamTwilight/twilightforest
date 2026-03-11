@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "chest_boat",
+  "ingredients": [
+    {
+      "item": "twilightforest:sorting_boat"
+    },
+    {
+      "tag": "c:chests/wooden"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "twilightforest:sorting_chest_boat"
+  }
+}

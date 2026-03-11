@@ -14,12 +14,13 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
+import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructurePieceTypes;
 
 
-public class StrongholdAccessChamberComponent extends StructureTFStrongholdComponent {
+public class StrongholdAccessChamberComponent extends KnightStrongholdComponent {
 
 	public StrongholdAccessChamberComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(TFStructurePieceTypes.TFSAC.get(), nbt);

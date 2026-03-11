@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "twilightforest:cicada"
+    },
+    {
+      "item": "twilightforest:mason_jar"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "twilightforest:cicada_jar"
+  }
+}

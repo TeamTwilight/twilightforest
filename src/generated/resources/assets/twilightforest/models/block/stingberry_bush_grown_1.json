@@ -1,0 +1,6 @@
+{
+  "parent": "twilightforest:block/abstract_bush_grown_1",
+  "textures": {
+    "all": "twilightforest:block/stingberry_bush_ripe"
+  }
+}

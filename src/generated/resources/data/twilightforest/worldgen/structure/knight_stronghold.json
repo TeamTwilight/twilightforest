@@ -1,82 +1,103 @@
 {
   "type": "twilightforest:knight_stronghold",
-  "adjust_structure_elevation": false,
   "advancements_required": [
     "twilightforest:progress_trophy_pedestal"
   ],
-  "allow_biome_surface_decorations": true,
-  "allow_biome_underground_decorations": false,
-  "ambient_spawns": [],
   "biomes": "#twilightforest:valid_knight_stronghold_biomes",
-  "chunk_clearance_radius": 3,
-  "hint_item": {
-    "Count": 1,
-    "id": "minecraft:written_book",
-    "tag": {
-      "author": "twilightforest.book.author",
-      "generation": 3,
-      "pages": [
-        "{\"translate\":\"twilightforest.book.tfstronghold.1\"}",
-        "{\"translate\":\"twilightforest.book.tfstronghold.2\"}",
-        "{\"translate\":\"twilightforest.book.tfstronghold.3\"}",
-        "{\"translate\":\"twilightforest.book.tfstronghold.4\"}"
-      ],
-      "title": "twilightforest.book.tfstronghold",
-      "twilightforest:book": 1
-    }
+  "controlled_spawns": {
+    "ambient_spawns": [],
+    "labelled_monster_spawns": {
+      "0": [
+        {
+          "type": "twilightforest:blockchain_goblin",
+          "maxCount": 2,
+          "minCount": 1,
+          "weight": 10
+        },
+        {
+          "type": "twilightforest:lower_goblin_knight",
+          "maxCount": 2,
+          "minCount": 1,
+          "weight": 5
+        },
+        {
+          "type": "twilightforest:helmet_crab",
+          "maxCount": 4,
+          "minCount": 2,
+          "weight": 10
+        },
+        {
+          "type": "twilightforest:slime_beetle",
+          "maxCount": 3,
+          "minCount": 2,
+          "weight": 10
+        },
+        {
+          "type": "twilightforest:redcap_sapper",
+          "maxCount": 2,
+          "minCount": 1,
+          "weight": 2
+        },
+        {
+          "type": "twilightforest:kobold",
+          "maxCount": 4,
+          "minCount": 2,
+          "weight": 10
+        },
+        {
+          "type": "minecraft:creeper",
+          "maxCount": 2,
+          "minCount": 1,
+          "weight": 5
+        },
+        {
+          "type": "minecraft:slime",
+          "maxCount": 4,
+          "minCount": 4,
+          "weight": 5
+        }
+      ]
+    },
+    "water_spawns": []
   },
-  "hint_mob": "twilightforest:kobold",
-  "labelled_monster_spawns": {
-    "0": [
-      {
-        "type": "twilightforest:blockchain_goblin",
-        "maxCount": 2,
-        "minCount": 1,
-        "weight": 10
+  "decoration_clearance": {
+    "adjust_structure_elevation": false,
+    "allow_biome_surface_decorations": true,
+    "allow_biome_underground_decorations": false,
+    "allow_biome_vegetation": true,
+    "chunk_clearance_radius": 3.0
+  },
+  "hint_creature": {
+    "hint_item": {
+      "components": {
+        "minecraft:written_book_content": {
+          "author": "twilightforest.book.author",
+          "generation": 3,
+          "pages": [
+            {
+              "raw": "{\"translate\":\"twilightforest.book.tfstronghold.1\"}"
+            },
+            {
+              "raw": "{\"translate\":\"twilightforest.book.tfstronghold.2\"}"
+            },
+            {
+              "raw": "{\"translate\":\"twilightforest.book.tfstronghold.3\"}"
+            },
+            {
+              "raw": "{\"translate\":\"twilightforest.book.tfstronghold.4\"}"
+            }
+          ],
+          "resolved": true,
+          "title": {
+            "raw": "twilightforest.book.tfstronghold"
+          }
+        },
+        "twilightforest:translatable_book": {}
       },
-      {
-        "type": "twilightforest:lower_goblin_knight",
-        "maxCount": 2,
-        "minCount": 1,
-        "weight": 5
-      },
-      {
-        "type": "twilightforest:helmet_crab",
-        "maxCount": 4,
-        "minCount": 2,
-        "weight": 10
-      },
-      {
-        "type": "twilightforest:slime_beetle",
-        "maxCount": 3,
-        "minCount": 2,
-        "weight": 10
-      },
-      {
-        "type": "twilightforest:redcap_sapper",
-        "maxCount": 2,
-        "minCount": 1,
-        "weight": 2
-      },
-      {
-        "type": "twilightforest:kobold",
-        "maxCount": 4,
-        "minCount": 2,
-        "weight": 10
-      },
-      {
-        "type": "minecraft:creeper",
-        "maxCount": 2,
-        "minCount": 1,
-        "weight": 5
-      },
-      {
-        "type": "minecraft:slime",
-        "maxCount": 4,
-        "minCount": 4,
-        "weight": 5
-      }
-    ]
+      "count": 1,
+      "id": "minecraft:written_book"
+    },
+    "hint_mob": "twilightforest:kobold"
   },
   "spawn_overrides": {
     "ambient": {
@@ -113,6 +134,6 @@
     }
   },
   "step": "underground_structures",
-  "terrain_adaptation": "bury",
-  "water_spawns": []
+  "structure_icon": "twilightforest:knight_stronghold",
+  "terrain_adaptation": "bury"
 }

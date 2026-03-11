@@ -1,0 +1,37 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": "twilightforest:labyrinth_vault"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "enchantments": {
+                "minecraft:efficiency": 4.0,
+                "minecraft:fortune": 2.0,
+                "minecraft:unbreaking": 3.0
+              },
+              "function": "minecraft:set_enchantments"
+            }
+          ],
+          "name": "twilightforest:mazebreaker_pickaxe"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "twilightforest:labyrinth_vault_jackpot"
+}

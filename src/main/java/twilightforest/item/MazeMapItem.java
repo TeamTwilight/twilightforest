@@ -4,29 +4,40 @@ import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Multisets;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MapItem;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.MapPostProcessing;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.saveddata.maps.MapDecoration;
+import net.minecraft.world.level.saveddata.maps.MapDecorationTypes;
+import net.minecraft.world.level.saveddata.maps.MapId;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
-import net.minecraftforge.common.Tags;
+import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TFMazeMapData;
+import twilightforest.init.TFDataMaps;
 import twilightforest.init.TFItems;
+import twilightforest.item.mapdata.TFMagicMapData;
+import twilightforest.item.mapdata.TFMazeMapData;
+import twilightforest.util.datamaps.OreMapOreColor;
+
+import java.util.List;
+import java.util.Optional;
 
 // [VanillaCopy] super everything, but with appropriate redirections to our own datastructures. finer details noted
-
 public class MazeMapItem extends MapItem {
 
 	public static final String STR_ID = "mazemap";
@@ -47,8 +58,8 @@ public class MazeMapItem extends MapItem {
 
 	@Nullable
 	public static TFMazeMapData getData(ItemStack stack, Level level) {
-		Integer id = getMapId(stack);
-		return id == null ? null : TFMazeMapData.getMazeMapData(level, getMapName(id));
+		MapId id = stack.get(DataComponents.MAP_ID);
+		return id == null ? null : TFMazeMapData.getMazeMapData(level, getMapName(id.id()));
 	}
 
 	@Nullable
@@ -56,14 +67,15 @@ public class MazeMapItem extends MapItem {
 	protected TFMazeMapData getCustomMapData(ItemStack stack, Level level) {
 		TFMazeMapData mapdata = getData(stack, level);
 		if (mapdata == null && !level.isClientSide()) {
-			mapdata = MazeMapItem.createMapData(stack, level, level.getLevelData().getXSpawn(), level.getLevelData().getZSpawn(), 0, false, false, level.dimension(), level.getLevelData().getYSpawn(), mapOres);
+			BlockPos pos = level.getSharedSpawnPos();
+			mapdata = MazeMapItem.createMapData(stack, level, pos.getX(), pos.getZ(), 0, false, false, level.dimension(), pos.getY(), mapOres);
 		}
 
 		return mapdata;
 	}
 
 	private static TFMazeMapData createMapData(ItemStack stack, Level level, int x, int z, int scale, boolean trackingPosition, boolean unlimitedTracking, ResourceKey<Level> dimension, int y, boolean ore) {
-		int i = level.getFreeMapId();
+		MapId i = level.getFreeMapId();
 
 		int mapSize = 128 * (1 << scale);
 		int roundX = Mth.floor((x + 64.0D) / (double) mapSize);
@@ -74,8 +86,8 @@ public class MazeMapItem extends MapItem {
 		TFMazeMapData mapdata = new TFMazeMapData(scaledX, scaledZ, (byte) scale, trackingPosition, unlimitedTracking, false, dimension);
 		mapdata.calculateMapCenter(level, x, y, z); // call our own map center calculation
 		mapdata.ore = ore;
-		TFMazeMapData.registerMazeMapData(level, mapdata, getMapName(i)); // call our own register method
-		stack.getOrCreateTag().putInt("map", i);
+		TFMazeMapData.registerMazeMapData(level, mapdata, getMapName(i.id())); // call our own register method
+		stack.set(DataComponents.MAP_ID, i);
 		return mapdata;
 	}
 
@@ -126,11 +138,10 @@ public class MazeMapItem extends MapItem {
 									l3 = l3 * l3 * 31287121 + l3 * 11;
 
 									if ((l3 >> 20 & 1) == 0) {
-										multiset.add(Blocks.DIRT.defaultBlockState().getMapColor(level, BlockPos.ZERO), 10);
+										multiset.add(MapColor.DIRT, 10);
 									} else {
-										multiset.add(Blocks.STONE.defaultBlockState().getMapColor(level, BlockPos.ZERO), 100);
+										multiset.add(MapColor.STONE, 100);
 									}
-
 								} else {
 									// TF - remove extra 2 levels of loops
 									// maze maps are always 0 scale, which is 1 pixel = 1 block, so the loops are unneeded
@@ -158,25 +169,12 @@ public class MazeMapItem extends MapItem {
 										}
 									}
 
-									if (mapOres) {
+									if (this.mapOres) {
 										// recolor ores
-										if (state.is(BlockTags.COAL_ORES)) {
-											multiset.add(MapColor.COLOR_BLACK, 1000);
-										} else if (state.is(BlockTags.GOLD_ORES)) {
-											multiset.add(MapColor.GOLD, 1000);
-										} else if (state.is(BlockTags.IRON_ORES)) {
-											multiset.add(MapColor.METAL, 1000);
-										} else if (state.is(BlockTags.LAPIS_ORES)) {
-											multiset.add(MapColor.LAPIS, 1000);
-										} else if (state.is(BlockTags.REDSTONE_ORES)) {
-											multiset.add(MapColor.COLOR_RED, 1000);
-										} else if (state.is(BlockTags.DIAMOND_ORES)) {
-											multiset.add(MapColor.DIAMOND, 1000);
-										} else if (state.is(BlockTags.EMERALD_ORES)) {
-											multiset.add(MapColor.EMERALD, 1000);
-										} else if (state.is(BlockTags.COPPER_ORES)) {
-											multiset.add(MapColor.COLOR_ORANGE, 1000);
-										} else if (state.getBlock() != Blocks.AIR && state.is(Tags.Blocks.ORES)) {
+										OreMapOreColor color = state.getBlock().builtInRegistryHolder().getData(TFDataMaps.ORE_MAP_ORE_COLOR);
+										if (color != null) {
+											multiset.add(color.color(), 1000);
+										} else if (!state.isAir() && state.is(Tags.Blocks.ORES)) {
 											multiset.add(MapColor.COLOR_PINK, 1000);
 										}
 									}
@@ -217,7 +215,7 @@ public class MazeMapItem extends MapItem {
 					if (yProximity < -YSEARCH || yProximity > YSEARCH) {
 						MapDecoration decoration = mapdata.decorations.get(entityplayer.getName().getString());
 						if (decoration != null) {
-							mapdata.decorations.put(entityplayer.getName().getString(), new MapDecoration(MapDecoration.Type.PLAYER_OFF_MAP, decoration.getX(), decoration.getY(), decoration.getRot(), null));
+							mapdata.decorations.put(entityplayer.getName().getString(), new MapDecoration(MapDecorationTypes.PLAYER_OFF_MAP, decoration.x(), decoration.y(), decoration.rot(), Optional.empty()));
 						}
 					}
 				}
@@ -237,8 +235,26 @@ public class MazeMapItem extends MapItem {
 	@Override
 	@Nullable
 	public Packet<?> getUpdatePacket(ItemStack stack, Level level, Player player) {
-		Integer id = getMapId(stack);
-		TFMazeMapData mapdata = getCustomMapData(stack, level);
-		return id == null || mapdata == null ? null : mapdata.getUpdatePacket(id, player);
+		MapId mapId = stack.get(DataComponents.MAP_ID);
+		TFMazeMapData mapdata = this.getCustomMapData(stack, level);
+		return mapId == null || mapdata == null ? null : mapdata.getUpdatePacket(mapId, player);
+	}
+
+	@Override
+	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+		MapId mapId = stack.get(DataComponents.MAP_ID);
+		if (mapId != null) {
+			TFMazeMapData data = TFMazeMapData.getClientMagicMapData(getMapName(mapId.id()));
+			if (flag.isAdvanced()) {
+				if (data != null) {
+					tooltip.add(Component.translatable("item.twilightforest.maze_map.y_level", data.yCenter).withStyle(ChatFormatting.GRAY));
+					tooltip.add(Component.translatable("filled_map.id", mapId.id()).withStyle(ChatFormatting.GRAY));
+					tooltip.add(Component.translatable("filled_map.scale", 1 << data.scale).withStyle(ChatFormatting.GRAY));
+					tooltip.add(Component.translatable("filled_map.level", data.scale, 4).withStyle(ChatFormatting.GRAY));
+				} else {
+					tooltip.add(Component.translatable("filled_map.unknown").withStyle(ChatFormatting.GRAY));
+				}
+			} else tooltip.add(MapItem.getTooltipForId(mapId));
+		}
 	}
 }

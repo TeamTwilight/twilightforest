@@ -90,7 +90,7 @@
     {
       "faces": {
         "north": {
-          "forge_data": {
+          "neoforge_data": {
             "block_light": 15,
             "sky_light": 15
           },
@@ -103,7 +103,7 @@
           ]
         },
         "south": {
-          "forge_data": {
+          "neoforge_data": {
             "block_light": 15,
             "sky_light": 15
           },
@@ -141,7 +141,7 @@
     {
       "faces": {
         "east": {
-          "forge_data": {
+          "neoforge_data": {
             "block_light": 15,
             "sky_light": 15
           },
@@ -154,7 +154,7 @@
           ]
         },
         "west": {
-          "forge_data": {
+          "neoforge_data": {
             "block_light": 15,
             "sky_light": 15
           },

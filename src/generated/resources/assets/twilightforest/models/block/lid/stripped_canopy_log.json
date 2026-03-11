@@ -1,0 +1,7 @@
+{
+  "parent": "twilightforest:block/jar_lid",
+  "textures": {
+    "1": "twilightforest:block/stripped_canopy_log_top",
+    "2": "twilightforest:block/stripped_canopy_log"
+  }
+}

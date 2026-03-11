@@ -1,16 +1,17 @@
 package twilightforest.inventory.slot;
 
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.Container;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.TFConfig;
-import twilightforest.advancements.TFAdvancements;
-import twilightforest.inventory.UncraftingMenu;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import twilightforest.config.TFConfig;
+import twilightforest.init.TFAdvancements;
 import twilightforest.inventory.UncraftingContainer;
+import twilightforest.inventory.UncraftingMenu;
 import twilightforest.item.recipe.UncraftingRecipe;
 
 public class UncraftingSlot extends Slot {
@@ -53,7 +54,7 @@ public class UncraftingSlot extends Slot {
 		}
 
 		// if uncrafting is disabled, no!
-		if (TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingOnly.get() && !(this.uncraftingMatrix.menu.storedGhostRecipe instanceof UncraftingRecipe)) {
+		if (TFConfig.disableUncraftingOnly && !(this.uncraftingMatrix.menu.storedGhostRecipe instanceof UncraftingRecipe)) {
 			return false;
 		}
 
@@ -85,7 +86,14 @@ public class UncraftingSlot extends Slot {
 		ItemStack inputStack = this.inputSlot.getItem(0);
 		if (!inputStack.isEmpty()) {
 			if (player instanceof ServerPlayer server) {
-				TFAdvancements.UNCRAFT_ITEM.trigger(server, inputStack);
+				TFAdvancements.UNCRAFT_ITEM.get().trigger(server, inputStack);
+			}
+			if (inputStack.has(DataComponents.CONTAINER)) {
+				inputStack.get(DataComponents.CONTAINER).nonEmptyItems().forEach(stack1 -> {
+					if (!player.getInventory().add(stack1)) {
+						player.drop(stack1, false);
+					}
+				});
 			}
 			this.inputSlot.removeItem(0, this.uncraftingMatrix.numberOfInputItems);
 		}
@@ -94,7 +102,6 @@ public class UncraftingSlot extends Slot {
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public boolean isActive() {
 		return false;
 	}

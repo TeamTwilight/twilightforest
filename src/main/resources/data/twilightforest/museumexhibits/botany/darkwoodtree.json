@@ -2,7 +2,7 @@
   "collection": "museumcurator.collection.botany",
   "name": "museumcurator.botany.twilightforest.darkwoodtree",
   "relativeTo": "museumcurator.botany.jungletree",
-  "placement" : "before",
+  "placement": "before",
   "items": [
     "twilightforest:darkwood_sapling",
     "twilightforest:dark_leaves",

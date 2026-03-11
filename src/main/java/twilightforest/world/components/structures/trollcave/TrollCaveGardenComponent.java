@@ -2,8 +2,9 @@ package twilightforest.world.components.structures.trollcave;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.features.TreeFeatures;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.RandomSource;
@@ -19,10 +20,10 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.init.TFBiomes;
-import twilightforest.init.TFLandmark;
-import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.init.TFConfiguredFeatures;
-import twilightforest.world.components.feature.BlockSpikeFeature;
+import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.util.BoundingBoxUtils;
+import twilightforest.world.components.structures.StructureSpeleothemConfig;
 
 import java.util.function.Predicate;
 
@@ -30,15 +31,16 @@ import java.util.function.Predicate;
 public class TrollCaveGardenComponent extends TrollCaveMainComponent {
 
 	public TrollCaveGardenComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFTCGard.get(), nbt);
+		super(TFStructurePieceTypes.TFTCGard.get(), ctx, nbt);
 	}
 
-	public TrollCaveGardenComponent(int index, int x, int y, int z, int caveSize, int caveHeight, Direction direction) {
-		super(TFStructurePieceTypes.TFTCGard.get(), index, x, y, z);
+	@SuppressWarnings("this-escape")
+	public TrollCaveGardenComponent(int index, int x, int y, int z, int caveSize, int caveHeight, Direction direction, Holder.Reference<StructureSpeleothemConfig> speleothemConfig) {
+		super(TFStructurePieceTypes.TFTCGard.get(), index, x, y, z, speleothemConfig);
 		this.size = caveSize;
 		this.height = caveHeight;
 		this.setOrientation(direction);
-		this.boundingBox = TFLandmark.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, size - 1, height - 1, size - 1, direction, false);
+		this.boundingBox = BoundingBoxUtils.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, size - 1, height - 1, size - 1, direction, false);
 	}
 
 	@Override
@@ -48,8 +50,9 @@ public class TrollCaveGardenComponent extends TrollCaveMainComponent {
 
 	@Override
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		Predicate<Biome> highlands = biome -> biome == world.registryAccess().registryOrThrow(Registries.BIOME).get(TFBiomes.HIGHLANDS);
-		if (this.isBoundingBoxOutsideBiomes(world, highlands)) {
+		Registry<Biome> biomeRegistry = world.registryAccess().registryOrThrow(Registries.BIOME);
+		Predicate<Biome> highlands = biome -> biome == biomeRegistry.get(TFBiomes.HIGHLANDS) || biome == biomeRegistry.get(TFBiomes.HIGHLANDS_UNDERGROUND);
+		if (this.isBoundingBoxOutsideBiomes(world, highlands, blockPos)) {
 			return;
 		}
 
@@ -84,21 +87,17 @@ public class TrollCaveGardenComponent extends TrollCaveMainComponent {
 		for (int i = 0; i < 8; i++) {
 			BlockPos.MutableBlockPos dest = getCoordsInCave(decoRNG);
 			setBlockStateRotated(world, Blocks.MYCELIUM.defaultBlockState(), dest.getX(), dest.setY(0).getY(), dest.getZ(), this.rotation, sbb);
-			generate(world, generator, TFConfiguredFeatures.BIG_MUSHGLOOM, decoRNG, dest.getX(), dest.setY(1).getY(), dest.getZ(), sbb);
+			generate(world, generator, TFConfiguredFeatures.TROLL_BIG_MUSHGLOOMS, decoRNG, dest.getX(), dest.setY(1).getY(), dest.getZ(), sbb);
 		}
 
 		// mushrooms!
 		for (int i = 0; i < 16; i++) {
 			BlockPos.MutableBlockPos dest = getCoordsInCave(decoRNG);
 			setBlockStateRotated(world, Blocks.MYCELIUM.defaultBlockState(), dest.getX(), dest.setY(0).getY(), dest.getZ(), this.rotation, sbb);
-			generate(world, generator, rand.nextBoolean() ? TreeFeatures.HUGE_BROWN_MUSHROOM : TreeFeatures.HUGE_RED_MUSHROOM, decoRNG, dest.getX(), dest.setY(1).getY(), dest.getZ(), sbb);
+			generate(world, generator, rand.nextBoolean() ? TFConfiguredFeatures.TROLL_HUGE_BROWN_MUSHROOMS : TFConfiguredFeatures.TROLL_HUGE_RED_MUSHROOMS, decoRNG, dest.getX(), dest.setY(1).getY(), dest.getZ(), sbb);
 		}
 
-		// stone stalactites!
-		for (int i = 0; i < 128; i++) {
-			BlockPos dest = getCoordsInCave(decoRNG);
-			generateBlockSpike(world, BlockSpikeFeature.STONE_STALACTITE, dest.atY(this.height), sbb, true);
-		}
+		this.placeSpeleothems(world, rand, sbb, decoRNG);
 	}
 
 	protected void generate(WorldGenLevel world, ChunkGenerator generator, ResourceKey<ConfiguredFeature<?, ?>> feature, RandomSource rand, int x, int y, int z, BoundingBox sbb) {

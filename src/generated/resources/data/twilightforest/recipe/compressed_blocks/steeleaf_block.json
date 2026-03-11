@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "#": {
+      "tag": "c:ingots/steeleaf"
+    },
+    "m": {
+      "item": "twilightforest:steeleaf_ingot"
+    }
+  },
+  "pattern": [
+    "###",
+    "#m#",
+    "###"
+  ],
+  "result": {
+    "count": 1,
+    "id": "twilightforest:steeleaf_block"
+  }
+}

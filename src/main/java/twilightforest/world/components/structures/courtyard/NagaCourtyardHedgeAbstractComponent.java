@@ -21,29 +21,29 @@ import twilightforest.world.components.structures.TFStructureComponentTemplate;
 
 public abstract class NagaCourtyardHedgeAbstractComponent extends TFStructureComponentTemplate {
 
-    private final ResourceLocation HEDGE;
-    private final ResourceLocation HEDGE_BIG;
+	private final ResourceLocation HEDGE;
+	private final ResourceLocation HEDGE_BIG;
 
-    private StructureTemplate templateBig;
+	private StructureTemplate templateBig;
 
-    public NagaCourtyardHedgeAbstractComponent(StructurePieceSerializationContext ctx, StructurePieceType piece, CompoundTag nbt, ResourceLocation hedge, ResourceLocation hedgeBig) {
-        super(ctx, piece, nbt);
-        this.HEDGE = hedge;
-        this.HEDGE_BIG = hedgeBig;
-    }
+	public NagaCourtyardHedgeAbstractComponent(StructurePieceSerializationContext ctx, StructurePieceType piece, CompoundTag nbt, ResourceLocation hedge, ResourceLocation hedgeBig) {
+		super(ctx, piece, nbt);
+		this.HEDGE = hedge;
+		this.HEDGE_BIG = hedgeBig;
+	}
 
-    @SuppressWarnings("WeakerAccess")
-    public NagaCourtyardHedgeAbstractComponent(StructureTemplateManager manager, StructurePieceType type, int i, int x, int y, int z, Rotation rotation, ResourceLocation hedge, ResourceLocation hedgeBig) {
-        super(manager, type, i, x, y, z, rotation);
-        this.HEDGE = hedge;
-        this.HEDGE_BIG = hedgeBig;
-    }
+	@SuppressWarnings("WeakerAccess")
+	public NagaCourtyardHedgeAbstractComponent(StructureTemplateManager manager, StructurePieceType type, int i, int x, int y, int z, Rotation rotation, ResourceLocation hedge, ResourceLocation hedgeBig) {
+		super(manager, type, i, x, y, z, rotation);
+		this.HEDGE = hedge;
+		this.HEDGE_BIG = hedgeBig;
+	}
 
-    @Override
-    protected void loadTemplates(StructureTemplateManager templateManager) {
-        TEMPLATE = templateManager.getOrCreate(HEDGE);
-        templateBig = templateManager.getOrCreate(HEDGE_BIG);
-    }
+	@Override
+	protected void loadTemplates(StructureTemplateManager templateManager) {
+		TEMPLATE = templateManager.getOrCreate(HEDGE);
+		templateBig = templateManager.getOrCreate(HEDGE_BIG);
+	}
 
 	@Override
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource random, BoundingBox structureBoundingBox, ChunkPos chunkPosIn, BlockPos blockPos) {
@@ -51,6 +51,6 @@ public abstract class NagaCourtyardHedgeAbstractComponent extends TFStructureCom
 		if (TEMPLATE == null) // FIXME: this should never be null in the first place
 			LAZY_TEMPLATE_LOADER.run();
 		TEMPLATE.placeInWorld(world, rotatedPosition, rotatedPosition, placeSettings.clearProcessors().addProcessor(NagastoneVariants.INSTANCE), random, 18);
-        templateBig.placeInWorld(world, rotatedPosition, rotatedPosition, placeSettings.addProcessor(BlockIgnoreProcessor.AIR).addProcessor(new BlockRotProcessor(CourtyardMain.HEDGE_FLOOF)), random, 18);
+		templateBig.placeInWorld(world, rotatedPosition, rotatedPosition, placeSettings.addProcessor(BlockIgnoreProcessor.AIR).addProcessor(new BlockRotProcessor(CourtyardMain.HEDGE_FLOOF)), random, 18);
 	}
 }

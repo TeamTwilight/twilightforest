@@ -1,0 +1,112 @@
+{
+  "variants": {
+    "age=0,layers=0": {
+      "model": "twilightforest:block/iron_oreberry_small_0"
+    },
+    "age=0,layers=1": {
+      "model": "twilightforest:block/iron_oreberry_small_1"
+    },
+    "age=0,layers=2": {
+      "model": "twilightforest:block/iron_oreberry_small_2"
+    },
+    "age=0,layers=3": {
+      "model": "twilightforest:block/iron_oreberry_small_3"
+    },
+    "age=0,layers=4": {
+      "model": "twilightforest:block/iron_oreberry_small_4"
+    },
+    "age=0,layers=5": {
+      "model": "twilightforest:block/iron_oreberry_small_5"
+    },
+    "age=0,layers=6": {
+      "model": "twilightforest:block/iron_oreberry_small_6"
+    },
+    "age=0,layers=7": {
+      "model": "twilightforest:block/iron_oreberry_small_7"
+    },
+    "age=0,layers=8": {
+      "model": "twilightforest:block/iron_oreberry_small_8"
+    },
+    "age=1,layers=0": {
+      "model": "twilightforest:block/iron_oreberry_0"
+    },
+    "age=1,layers=1": {
+      "model": "twilightforest:block/iron_oreberry_1"
+    },
+    "age=1,layers=2": {
+      "model": "twilightforest:block/iron_oreberry_2"
+    },
+    "age=1,layers=3": {
+      "model": "twilightforest:block/iron_oreberry_3"
+    },
+    "age=1,layers=4": {
+      "model": "twilightforest:block/iron_oreberry_4"
+    },
+    "age=1,layers=5": {
+      "model": "twilightforest:block/iron_oreberry_5"
+    },
+    "age=1,layers=6": {
+      "model": "twilightforest:block/iron_oreberry_6"
+    },
+    "age=1,layers=7": {
+      "model": "twilightforest:block/iron_oreberry_7"
+    },
+    "age=1,layers=8": {
+      "model": "twilightforest:block/iron_oreberry_8"
+    },
+    "age=2,layers=0": {
+      "model": "twilightforest:block/iron_oreberry_large_0"
+    },
+    "age=2,layers=1": {
+      "model": "twilightforest:block/iron_oreberry_large_1"
+    },
+    "age=2,layers=2": {
+      "model": "twilightforest:block/iron_oreberry_large_2"
+    },
+    "age=2,layers=3": {
+      "model": "twilightforest:block/iron_oreberry_large_3"
+    },
+    "age=2,layers=4": {
+      "model": "twilightforest:block/iron_oreberry_large_4"
+    },
+    "age=2,layers=5": {
+      "model": "twilightforest:block/iron_oreberry_large_5"
+    },
+    "age=2,layers=6": {
+      "model": "twilightforest:block/iron_oreberry_large_6"
+    },
+    "age=2,layers=7": {
+      "model": "twilightforest:block/iron_oreberry_large_7"
+    },
+    "age=2,layers=8": {
+      "model": "twilightforest:block/iron_oreberry_large_8"
+    },
+    "age=3,layers=0": {
+      "model": "twilightforest:block/iron_oreberry_grown_0"
+    },
+    "age=3,layers=1": {
+      "model": "twilightforest:block/iron_oreberry_grown_1"
+    },
+    "age=3,layers=2": {
+      "model": "twilightforest:block/iron_oreberry_grown_2"
+    },
+    "age=3,layers=3": {
+      "model": "twilightforest:block/iron_oreberry_grown_3"
+    },
+    "age=3,layers=4": {
+      "model": "twilightforest:block/iron_oreberry_grown_4"
+    },
+    "age=3,layers=5": {
+      "model": "twilightforest:block/iron_oreberry_grown_5"
+    },
+    "age=3,layers=6": {
+      "model": "twilightforest:block/iron_oreberry_grown_6"
+    },
+    "age=3,layers=7": {
+      "model": "twilightforest:block/iron_oreberry_grown_7"
+    },
+    "age=3,layers=8": {
+      "model": "twilightforest:block/iron_oreberry_grown_8"
+    }
+  }
+}

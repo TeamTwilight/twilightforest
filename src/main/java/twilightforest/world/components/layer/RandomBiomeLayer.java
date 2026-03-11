@@ -1,6 +1,7 @@
 package twilightforest.world.components.layer;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -9,8 +10,8 @@ import twilightforest.init.custom.BiomeLayerTypes;
 import twilightforest.world.components.layer.vanillalegacy.BiomeLayerFactory;
 import twilightforest.world.components.layer.vanillalegacy.BiomeLayerType;
 import twilightforest.world.components.layer.vanillalegacy.area.LazyArea;
-import twilightforest.world.components.layer.vanillalegacy.context.Context;
 import twilightforest.world.components.layer.vanillalegacy.context.LazyAreaContext;
+import twilightforest.world.components.layer.vanillalegacy.context.RandomContext;
 import twilightforest.world.components.layer.vanillalegacy.traits.AreaTransformer0;
 
 import java.util.List;
@@ -34,22 +35,22 @@ public class RandomBiomeLayer implements AreaTransformer0 {
 	}
 
 	@Override
-	public ResourceKey<Biome> applyPixel(Context context, int x, int z) {
-		if (context.nextRandom(this.rareBiomeChance) == 0) {
+	public ResourceKey<Biome> applyPixel(RandomContext randomContext, int x, int z) {
+		if (randomContext.nextRandom(this.rareBiomeChance) == 0) {
 			// make specialBiomes biome
-			return this.rareBiomes.get(context.nextRandom(this.rareBiomes.size()));
+			return this.rareBiomes.get(randomContext.nextRandom(this.rareBiomes.size()));
 		} else {
 			// make common biome
-			return this.commonBiomes.get(context.nextRandom(this.commonBiomes.size()));
+			return this.commonBiomes.get(randomContext.nextRandom(this.commonBiomes.size()));
 		}
 	}
 
 	public static final class Factory implements BiomeLayerFactory {
-		public static final Codec<Factory> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-				Codec.LONG.fieldOf("salt").forGetter(Factory::salt),
-				Codec.INT.fieldOf("rare_biome_chance").forGetter(Factory::rareBiomeChance),
-				ResourceKey.codec(Registries.BIOME).listOf().fieldOf("common_biomes").forGetter(Factory::commonBiomes),
-				ResourceKey.codec(Registries.BIOME).listOf().fieldOf("rare_biomes").forGetter(Factory::rareBiomes)
+		public static final MapCodec<Factory> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
+			Codec.LONG.fieldOf("salt").forGetter(Factory::salt),
+			Codec.INT.fieldOf("rare_biome_chance").forGetter(Factory::rareBiomeChance),
+			ResourceKey.codec(Registries.BIOME).listOf().fieldOf("common_biomes").forGetter(Factory::commonBiomes),
+			ResourceKey.codec(Registries.BIOME).listOf().fieldOf("rare_biomes").forGetter(Factory::rareBiomes)
 		).apply(inst, Factory::new));
 		private final long salt;
 		private final int rareBiomeChance;

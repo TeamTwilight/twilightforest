@@ -1,0 +1,26 @@
+{
+  "type": "twilightforest:travellers_gear_modifier_shaped_recipe",
+  "is_rotated": false,
+  "modifier_key": "twilightforest:gradual_glide",
+  "pattern": {
+    "key": {
+      "C": {
+        "item": "minecraft:cobweb"
+      },
+      "E": {
+        "item": "twilightforest:borer_essence"
+      },
+      "F": {
+        "item": "minecraft:feather"
+      },
+      "W": {
+        "item": "twilightforest:travellers_wings"
+      }
+    },
+    "pattern": [
+      "FCF",
+      "FWF",
+      "FEF"
+    ]
+  }
+}

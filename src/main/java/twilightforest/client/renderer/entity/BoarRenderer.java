@@ -1,23 +1,22 @@
 package twilightforest.client.renderer.entity;
 
+import net.minecraft.client.model.PigModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
-import twilightforest.client.model.entity.BoarModel;
 import twilightforest.entity.passive.Boar;
 
-//old renderer used to use PigModel, had to change it because of the texture size change
-public class BoarRenderer extends MobRenderer<Boar, BoarModel<Boar>> {
+public class BoarRenderer<T extends Boar, M extends PigModel<T>> extends MobRenderer<T, M> {
 
-	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("wildboar.png");
+	private static final ResourceLocation TEXTURE = TwilightForestMod.getModelTexture("wildboar.png");
 
-	public BoarRenderer(EntityRendererProvider.Context manager, BoarModel<Boar> model) {
-		super(manager, model, 0.7F);
+	public BoarRenderer(EntityRendererProvider.Context context, M model) {
+		super(context, model, 0.7F);
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(Boar entity) {
-		return textureLoc;
+	public ResourceLocation getTextureLocation(T entity) {
+		return TEXTURE;
 	}
 }

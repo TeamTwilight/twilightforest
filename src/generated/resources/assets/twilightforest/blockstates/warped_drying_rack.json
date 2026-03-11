@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "twilightforest:block/wood/rack/warped/warped_drying_rack",
+      "y": 270
+    },
+    "facing=north": {
+      "model": "twilightforest:block/wood/rack/warped/warped_drying_rack",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "twilightforest:block/wood/rack/warped/warped_drying_rack"
+    },
+    "facing=west": {
+      "model": "twilightforest:block/wood/rack/warped/warped_drying_rack",
+      "y": 90
+    }
+  }
+}

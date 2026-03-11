@@ -9,9 +9,7 @@ import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.entity.PartEntity;
+import net.neoforged.neoforge.entity.PartEntity;
 import twilightforest.TwilightForestMod;
 import twilightforest.network.UpdateTFMultipartPacket;
 
@@ -21,7 +19,7 @@ public abstract class TFPart<T extends Entity> extends PartEntity<T> {
 
 	public static final ResourceLocation RENDERER = TwilightForestMod.prefix("noop");
 
-	protected EntityDimensions realSize;
+	protected EntityDimensions realSize = EntityDimensions.fixed(1F, 1F);
 
 	protected int newPosRotationIncrements;
 	protected double interpTargetX;
@@ -39,12 +37,10 @@ public abstract class TFPart<T extends Entity> extends PartEntity<T> {
 		super(parent);
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	public ResourceLocation renderer() {
 		return RENDERER;
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements) {
 		this.interpTargetX = x;
 		this.interpTargetY = y;
@@ -124,16 +120,15 @@ public abstract class TFPart<T extends Entity> extends PartEntity<T> {
 
 	public UpdateTFMultipartPacket.PartDataHolder writeData() {
 		return new UpdateTFMultipartPacket.PartDataHolder(
-				this.getX(),
-				this.getY(),
-				this.getZ(),
-				this.getYRot(),
-				this.getXRot(),
-				this.dimensions.width,
-				this.dimensions.height,
-				this.dimensions.fixed,
-				getEntityData().isDirty(),
-				getEntityData().isDirty() ? getEntityData().packDirty() : null);
+			this.getX(),
+			this.getY(),
+			this.getZ(),
+			this.getYRot(),
+			this.getXRot(),
+			this.dimensions.width(),
+			this.dimensions.height(),
+			this.dimensions.fixed(),
+			getEntityData().packDirty());
 
 	}
 
@@ -143,9 +138,9 @@ public abstract class TFPart<T extends Entity> extends PartEntity<T> {
 		final float w = data.width();
 		final float h = data.height();
 		this.setSize(data.fixed() ? EntityDimensions.fixed(w, h) : EntityDimensions.scalable(w, h));
-		this.refreshDimensions();
-		if (data.dirty())
+		if (data.data() != null)
 			getEntityData().assignValues(data.data());
+		this.refreshDimensions();
 	}
 
 	public static void assignPartIDs(Entity parent) {

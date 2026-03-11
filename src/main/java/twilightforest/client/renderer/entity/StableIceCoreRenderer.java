@@ -8,13 +8,13 @@ import twilightforest.entity.monster.StableIceCore;
 
 public class StableIceCoreRenderer extends TFGenericMobRenderer<StableIceCore, StableIceCoreModel> {
 
-	public StableIceCoreRenderer(EntityRendererProvider.Context manager, StableIceCoreModel model) {
-		super(manager, model, 0.4F, "iceshooter.png");
+	public StableIceCoreRenderer(EntityRendererProvider.Context context, StableIceCoreModel model) {
+		super(context, model, 0.4F, "iceshooter.png");
 	}
 
 	@Override
 	protected void scale(StableIceCore entity, PoseStack stack, float partialTicks) {
 		float bounce = entity.tickCount + partialTicks;
-		stack.translate(0F, Mth.sin((bounce) * 0.2F) * 0.15F, 0F);
+		stack.translate(0.0F, Mth.sin((bounce) * 0.2F) * 0.15F, 0.0F);
 	}
 }

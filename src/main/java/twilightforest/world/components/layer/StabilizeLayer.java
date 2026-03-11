@@ -1,6 +1,7 @@
 package twilightforest.world.components.layer;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
@@ -11,8 +12,8 @@ import twilightforest.world.components.layer.vanillalegacy.Area;
 import twilightforest.world.components.layer.vanillalegacy.BiomeLayerFactory;
 import twilightforest.world.components.layer.vanillalegacy.BiomeLayerType;
 import twilightforest.world.components.layer.vanillalegacy.area.LazyArea;
-import twilightforest.world.components.layer.vanillalegacy.context.BigContext;
 import twilightforest.world.components.layer.vanillalegacy.context.LazyAreaContext;
+import twilightforest.world.components.layer.vanillalegacy.context.RandomContext;
 import twilightforest.world.components.layer.vanillalegacy.traits.AreaTransformer1;
 
 import java.util.function.LongFunction;
@@ -68,9 +69,8 @@ public enum StabilizeLayer implements AreaTransformer1 {
 //
 //		return output;
 //	}
-
 	@Override
-	public ResourceKey<Biome> applyPixel(BigContext<?> context, Area layer, int x, int z) {
+	public ResourceKey<Biome> applyPixel(RandomContext randomContext, Area layer, int x, int z) {
 		int offX = getParentX(x << 4);
 		int offZ = getParentY(z << 4);
 		int centerX = ((x + offX + 1) & -4) - offX;
@@ -92,14 +92,14 @@ public enum StabilizeLayer implements AreaTransformer1 {
 	}
 
 	public record Factory(long salt, Holder<BiomeLayerFactory> parent) implements BiomeLayerFactory {
-		public static final Codec<Factory> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-				Codec.LONG.fieldOf("salt").forGetter(Factory::salt),
-				BiomeLayerStack.HOLDER_CODEC.fieldOf("parent").forGetter(Factory::parent)
+		public static final MapCodec<Factory> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
+			Codec.LONG.fieldOf("salt").forGetter(Factory::salt),
+			BiomeLayerStack.HOLDER_CODEC.fieldOf("parent").forGetter(Factory::parent)
 		).apply(inst, Factory::new));
 
 		@Override
 		public LazyArea build(LongFunction<LazyAreaContext> contextFactory) {
-			return INSTANCE.run(contextFactory.apply(this.salt), this.parent.get().build(contextFactory));
+			return INSTANCE.run(contextFactory.apply(this.salt), this.parent.value().build(contextFactory));
 		}
 
 		@Override

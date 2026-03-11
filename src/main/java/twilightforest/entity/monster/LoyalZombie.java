@@ -1,6 +1,11 @@
 package twilightforest.entity.monster;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -10,6 +15,8 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -24,24 +31,32 @@ import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Ghast;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFDamageTypes;
+import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
 
 public class LoyalZombie extends TamableAnimal {
 
-	public LoyalZombie(EntityType<? extends LoyalZombie> type, Level world) {
-		super(type, world);
+	private static final EntityDataAccessor<Boolean> DATA_BABY_ID = SynchedEntityData.defineId(LoyalZombie.class, EntityDataSerializers.BOOLEAN);
+	private static final ResourceLocation SPEED_MODIFIER_BABY_ID = ResourceLocation.withDefaultNamespace("baby");
+	private static final AttributeModifier SPEED_MODIFIER_BABY = new AttributeModifier(SPEED_MODIFIER_BABY_ID, 0.5, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
+	private static final EntityDimensions BABY_DIMENSIONS = TFEntities.LOYAL_ZOMBIE.get().getDimensions().scale(0.5F).withEyeHeight(0.93F);
+
+	public LoyalZombie(EntityType<? extends LoyalZombie> type, Level level) {
+		super(type, level);
 	}
 
 	@Override
 	protected void registerGoals() {
 		this.goalSelector.addGoal(1, new FloatGoal(this));
 		this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, true));
-		this.goalSelector.addGoal(5, new FollowOwnerGoal(this, 1.0D, 10.0F, 2.0F, true));
+		this.goalSelector.addGoal(5, new FollowOwnerGoal(this, 1.0D, 10.0F, 2.0F));
 		this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0D));
 		this.goalSelector.addGoal(9, new LookAtPlayerGoal(this, Player.class, 8.0F));
 		this.goalSelector.addGoal(9, new RandomLookAroundGoal(this));
@@ -52,15 +67,21 @@ public class LoyalZombie extends TamableAnimal {
 	}
 
 	@Override
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(DATA_BABY_ID, false);
+	}
+
+	@Override
 	public Animal getBreedOffspring(ServerLevel level, AgeableMob animal) {
 		return null;
 	}
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Mob.createMobAttributes()
-				.add(Attributes.MAX_HEALTH, 40.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.3D)
-				.add(Attributes.ARMOR, 3.0D);
+			.add(Attributes.MAX_HEALTH, 40.0D)
+			.add(Attributes.MOVEMENT_SPEED, 0.3D)
+			.add(Attributes.ARMOR, 3.0D);
 	}
 
 	@Override
@@ -95,7 +116,7 @@ public class LoyalZombie extends TamableAnimal {
 			this.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 1200, 1));
 			this.heal(1.0F);
 			this.playSound(SoundEvents.ZOMBIE_INFECT, this.getSoundVolume(), this.getVoicePitch());
-			if (!player.getAbilities().instabuild) player.getItemInHand(hand).shrink(1);
+			player.getItemInHand(hand).consume(1, player);
 			return InteractionResult.sidedSuccess(this.level().isClientSide());
 		}
 
@@ -123,13 +144,25 @@ public class LoyalZombie extends TamableAnimal {
 	}
 
 	@Override
+	public void addAdditionalSaveData(CompoundTag compound) {
+		super.addAdditionalSaveData(compound);
+		compound.putBoolean("IsBaby", this.isBaby());
+	}
+
+	@Override
+	public void readAdditionalSaveData(CompoundTag compound) {
+		super.readAdditionalSaveData(compound);
+		this.setBaby(compound.getBoolean("IsBaby"));
+	}
+
+	@Override
 	public boolean removeWhenFarAway(double distanceToClosestPlayer) {
 		return !this.isTame();
 	}
 
 	@Override
-	public double getMyRidingOffset() {
-		return -0.35D;
+	public boolean isFood(ItemStack stack) {
+		return false;
 	}
 
 	@Override
@@ -153,11 +186,38 @@ public class LoyalZombie extends TamableAnimal {
 	}
 
 	@Override
-	public MobType getMobType() {
-		return MobType.UNDEAD;
+	protected void dropExperience(@Nullable Entity entity) {
+
 	}
 
 	@Override
-	protected void dropExperience() {
+	public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
+		if (DATA_BABY_ID.equals(key)) {
+			this.refreshDimensions();
+		}
+
+		super.onSyncedDataUpdated(key);
+	}
+
+	@Override
+	public boolean isBaby() {
+		return this.getEntityData().get(DATA_BABY_ID);
+	}
+
+	@Override
+	public void setBaby(boolean baby) {
+		this.getEntityData().set(DATA_BABY_ID, baby);
+		if (this.level() != null && !this.level().isClientSide()) {
+			AttributeInstance attributeinstance = this.getAttribute(Attributes.MOVEMENT_SPEED);
+			attributeinstance.removeModifier(SPEED_MODIFIER_BABY_ID);
+			if (baby) {
+				attributeinstance.addTransientModifier(SPEED_MODIFIER_BABY);
+			}
+		}
+	}
+
+	@Override
+	public EntityDimensions getDefaultDimensions(Pose pose) {
+		return this.isBaby() ? BABY_DIMENSIONS : super.getDefaultDimensions(pose);
 	}
 }

@@ -1,0 +1,10 @@
+{
+  "parent": "neoforge:item/default",
+  "broken_modifier_directory": "travellers_modifiers/wings/broken/",
+  "loader": "twilightforest:travellers_gear",
+  "modifier_directory": "travellers_modifiers/wings/",
+  "textures": {
+    "base": "twilightforest:item/travellers_wings",
+    "broken": "twilightforest:item/travellers_wings_broken"
+  }
+}

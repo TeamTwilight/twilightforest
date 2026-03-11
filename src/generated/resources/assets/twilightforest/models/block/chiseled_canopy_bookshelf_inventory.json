@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "front": "twilightforest:block/wood/chiseled_canopy_bookshelf_empty",
+    "side": "twilightforest:block/wood/chiseled_canopy_bookshelf_side",
+    "top": "twilightforest:block/wood/chiseled_canopy_bookshelf_top"
+  }
+}

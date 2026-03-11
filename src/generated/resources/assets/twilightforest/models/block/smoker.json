@@ -48,7 +48,7 @@
   ],
   "render_type": "minecraft:solid",
   "textures": {
-    "bottom": "minecraft:block/grass_block_top",
+    "bottom": "minecraft:block/black_concrete_powder",
     "down": "#bottom",
     "east": "#side",
     "north": "#side",

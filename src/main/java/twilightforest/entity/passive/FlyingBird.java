@@ -6,14 +6,18 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFSounds;
 
 //flying logic moved out of TinyBird, put here instead.
@@ -23,9 +27,11 @@ public abstract class FlyingBird extends Bird {
 	private static final EntityDataAccessor<Byte> DATA_BIRDFLAGS = SynchedEntityData.defineId(FlyingBird.class, EntityDataSerializers.BYTE);
 
 	// [VanillaCopy] Bat field
+	@Nullable
 	private BlockPos targetPosition;
 	private int currentFlightTime;
 
+	@SuppressWarnings("this-escape")
 	public FlyingBird(EntityType<? extends Bird> entity, Level world) {
 		super(entity, world);
 		this.setIsBirdLanded(true);
@@ -33,9 +39,9 @@ public abstract class FlyingBird extends Bird {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(DATA_BIRDFLAGS, (byte) 0);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(DATA_BIRDFLAGS, (byte) 0);
 	}
 
 	@Override
@@ -43,15 +49,10 @@ public abstract class FlyingBird extends Bird {
 		super.registerGoals();
 		this.goalSelector.addGoal(0, new FloatGoal(this));
 		this.goalSelector.addGoal(0, new PanicGoal(this, 1.5F));
-		this.goalSelector.addGoal(3, new TemptGoal(this, 1.0F, SEEDS, true));
+		this.goalSelector.addGoal(3, new TemptGoal(this, 1.0F, Ingredient.of(this.getTemptItems()), true));
 		this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
 		this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6F));
 		this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
-	}
-
-	@Override
-	public float getStepHeight() {
-		return 1.0F;
 	}
 
 	@Override
@@ -112,9 +113,9 @@ public abstract class FlyingBird extends Bird {
 				// TF - modify shift factor of Y
 				int yTarget = this.currentFlightTime < 100 ? 2 : 4;
 				this.targetPosition = BlockPos.containing(
-						this.getX() + (double) this.getRandom().nextInt(7) - (double) this.getRandom().nextInt(7),
-						this.getY() + (double) this.getRandom().nextInt(6) - yTarget,
-						this.getZ() + (double) this.getRandom().nextInt(7) - (double) this.getRandom().nextInt(7));
+					this.getX() + (double) this.getRandom().nextInt(7) - (double) this.getRandom().nextInt(7),
+					this.getY() + (double) this.getRandom().nextInt(6) - yTarget,
+					this.getZ() + (double) this.getRandom().nextInt(7) - (double) this.getRandom().nextInt(7));
 			}
 
 			double d2 = (double) this.targetPosition.getX() + 0.5D - this.getX();
@@ -140,7 +141,7 @@ public abstract class FlyingBird extends Bird {
 	public boolean isLandableBlock(BlockPos pos) {
 		BlockState state = this.level().getBlockState(pos);
 		return !state.isAir()
-				&& (state.is(BlockTags.LEAVES) || state.isFaceSturdy(this.level(), pos, Direction.UP));
+			&& (state.is(BlockTags.LEAVES) || state.isFaceSturdy(this.level(), pos, Direction.UP));
 	}
 
 	@Override
@@ -182,4 +183,6 @@ public abstract class FlyingBird extends Bird {
 	}
 
 	public abstract boolean isSpooked();
+
+	public abstract TagKey<Item> getTemptItems();
 }

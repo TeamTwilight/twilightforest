@@ -38,6 +38,7 @@ public class Wraith extends FlyingMob implements Enemy, EnforcedHomePoint {
 
 	private static final EntityDataAccessor<Optional<GlobalPos>> HOME_POINT = SynchedEntityData.defineId(Wraith.class, EntityDataSerializers.OPTIONAL_GLOBAL_POS);
 
+	@SuppressWarnings("this-escape")
 	public Wraith(EntityType<? extends Wraith> type, Level level) {
 		super(type, level);
 		this.moveControl = new NoClipMoveControl(this);
@@ -56,15 +57,15 @@ public class Wraith extends FlyingMob implements Enemy, EnforcedHomePoint {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Mob.createMobAttributes()
-				.add(Attributes.MAX_HEALTH, 20.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.5D)
-				.add(Attributes.ATTACK_DAMAGE, 5.0D);
+			.add(Attributes.MAX_HEALTH, 20.0D)
+			.add(Attributes.MOVEMENT_SPEED, 0.5D)
+			.add(Attributes.ATTACK_DAMAGE, 5.0D);
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(HOME_POINT, Optional.empty());
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(HOME_POINT, Optional.empty());
 	}
 
 	@Override
@@ -124,9 +125,9 @@ public class Wraith extends FlyingMob implements Enemy, EnforcedHomePoint {
 	}
 
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data) {
 		if (type == MobSpawnType.STRUCTURE || type == MobSpawnType.SPAWNER) this.setRestrictionPoint(GlobalPos.of(accessor.getLevel().dimension(), this.blockPosition()));
-		return super.finalizeSpawn(accessor, difficulty, type, data, tag);
+		return super.finalizeSpawn(accessor, difficulty, type, data);
 	}
 
 	@Override
@@ -222,6 +223,7 @@ public class Wraith extends FlyingMob implements Enemy, EnforcedHomePoint {
 	public static class LookAroundGoal extends Goal {
 		private final Wraith wraith;
 
+		@SuppressWarnings("this-escape")
 		public LookAroundGoal(Wraith wraith) {
 			this.wraith = wraith;
 			this.setFlags(EnumSet.of(Flag.LOOK));
@@ -258,19 +260,21 @@ public class Wraith extends FlyingMob implements Enemy, EnforcedHomePoint {
 		private double wantedZ;
 		private final double speedModifier;
 
+		@SuppressWarnings("this-escape")
 		public MoveTowardsHomeGoal(Wraith mob, double speedModifier) {
 			this.mob = mob;
 			this.speedModifier = speedModifier;
 			this.setFlags(EnumSet.of(Goal.Flag.MOVE));
 		}
 
+		@Override
 		public boolean canUse() {
 			if (this.mob.isMobWithinHomeArea(this.mob) || this.mob.getTarget() != null) {
 				return false;
 			} else {
 				BlockPos pos = this.mob.getRestrictionPoint().pos()
-						.relative(Direction.getRandom(this.mob.getRandom()))
-						.offset(this.mob.getRandom().nextInt(5), this.mob.getRandom().nextInt(5), this.mob.getRandom().nextInt(5));
+					.relative(Direction.getRandom(this.mob.getRandom()))
+					.offset(this.mob.getRandom().nextInt(5), this.mob.getRandom().nextInt(5), this.mob.getRandom().nextInt(5));
 				if (!this.mob.level().isLoaded(pos)) {
 					return false;
 				} else {
@@ -282,10 +286,12 @@ public class Wraith extends FlyingMob implements Enemy, EnforcedHomePoint {
 			}
 		}
 
+		@Override
 		public boolean canContinueToUse() {
 			return false;
 		}
 
+		@Override
 		public void start() {
 			this.mob.getMoveControl().setWantedPosition(this.wantedX, this.wantedY, this.wantedZ, this.speedModifier);
 		}

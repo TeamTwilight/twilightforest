@@ -1,7 +1,7 @@
 package twilightforest.world.components.structures.mushroomtower;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;

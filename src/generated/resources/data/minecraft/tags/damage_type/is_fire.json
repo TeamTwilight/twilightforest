@@ -1,6 +1,9 @@
 {
   "values": [
+    "twilightforest:hydra_fire",
     "twilightforest:hydra_mortar",
-    "twilightforest:hydra_fire"
+    "twilightforest:fiery",
+    "twilightforest:fire_jet",
+    "twilightforest:scorched"
   ]
 }

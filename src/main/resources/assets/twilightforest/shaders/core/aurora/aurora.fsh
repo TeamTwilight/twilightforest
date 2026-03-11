@@ -20,7 +20,16 @@ vec3 grad(float hash) {
     // Also a cuboctahedral vertex
     // And corresponds to the face of its dual, the rhombic dodecahedron
     vec3 cuboct = cube;
-    cuboct[int(hash / 16.0)] = 0.0;
+    // cuboct[int(hash / 16.0)] = 0.0;
+    // Copy the OpenSimplex2 HLSL version to avoid an Intel Driver crash
+    int idx = int(hash * (1.0 / 16.0));
+
+    if (idx == 0)
+        cuboct.x = 0.0;
+    else if (idx == 1)
+        cuboct.y = 0.0;
+    else
+        cuboct.z = 0.0;
 
     // In a funky way, pick one of the four points on the rhombic face
     float type = mod(floor(hash / 8.0), 2.0);
@@ -78,14 +87,6 @@ vec4 openSimplex2Base(vec3 X) {
     return vec4(derivative, dot(aaaa, extrapolations));
 }
 
-// Use this if you don't want Z to look different from X and Y
-vec4 openSimplex2_Conventional(vec3 X) {
-
-    // Rotate around the main diagonal. Not a skew transform.
-    vec4 result = openSimplex2Base(dot(X, vec3(2.0/3.0)) - X);
-    return vec4(dot(result.xyz, vec3(2.0/3.0)) - result.xyz, result.w);
-}
-
 // Use this if you want to show X and Y in a plane, then use Z for time, vertical, etc.
 vec4 openSimplex2_ImproveXY(vec3 X) {
 
@@ -116,6 +117,7 @@ in vec4 vertexColor;
 
 const int STEPS = 16;
 const float FSTEPS = 16.0;
+const float PRECISION = 0.000001;
 
 float genNoise(float x, float z, float speed) {
     float xx = x + PositionContext.x + (SeedContext / 360);
@@ -124,15 +126,14 @@ float genNoise(float x, float z, float speed) {
 }
 
 int floatToOneOrZero(float value) {
-    int swap = min(1, max(0, int(value)));
-    // 7 decimal places, we may lose precision but thats fine
-    return (1 - swap) * min(1, max(0, int(value * 10000000.0))) + swap;
+    return int(step(PRECISION, value));
 }
 
 float fixNoise(float noise) {
+    float absNoise = abs(noise);
     // Avoids if (noise > -0.2 && noise < 0.2) else ...
-    int swap = floatToOneOrZero(abs(noise) - 0.2);
-    noise = (1 - swap) * (1.0 + abs(noise) * 5.0) + swap * -1.0;
+    int swap = floatToOneOrZero(absNoise - 0.2);
+    noise = (1 - swap) * (1.0 + absNoise * 5.0) + swap * -1.0;
 
     noise = clamp((noise + 1.0) / 2.0 - 0.5, 0.0, 1.0);
     noise = (1.0 - noise) * floatToOneOrZero(noise); // Avoids if (noise > 0)

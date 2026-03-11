@@ -13,6 +13,6 @@ public class NoopModel<T extends LivingEntity> extends HumanoidModel<T> {
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack ms, VertexConsumer buffers, int light, int overlay, float r, float g, float b, float a) {
+	public void renderToBuffer(PoseStack ms, VertexConsumer buffers, int light, int overlay, int color) {
 	}
 }

@@ -1,9 +1,11 @@
 package twilightforest.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
@@ -15,12 +17,19 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import twilightforest.init.TFBlocks;
 
 public class ThornRoseBlock extends BushBlock {
+
+	public static final MapCodec<ThornRoseBlock> CODEC = simpleCodec(ThornRoseBlock::new);
 	private static final float RADIUS = 0.4F;
 	private static final VoxelShape AABB = Shapes.create(new AABB(0.5F - RADIUS, 0.5F - RADIUS, 0.5F - RADIUS, 0.5F + RADIUS, .5F + RADIUS, 0.5F + RADIUS));
 
 	public ThornRoseBlock(Properties properties) {
 		super(properties);
-		this.registerDefaultState(this.stateDefinition.any().setValue(DirectionalBlock.FACING, Direction.UP));
+		this.registerDefaultState(this.getStateDefinition().any().setValue(DirectionalBlock.FACING, Direction.UP));
+	}
+
+	@Override
+	protected MapCodec<? extends BushBlock> codec() {
+		return CODEC;
 	}
 
 	@Override
@@ -31,11 +40,10 @@ public class ThornRoseBlock extends BushBlock {
 	@Override
 	public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
 		BlockState blockstate = level.getBlockState(pos.relative(state.getValue(DirectionalBlock.FACING).getOpposite()));
-		return blockstate.is(TFBlocks.BROWN_THORNS.get()) || blockstate.is(TFBlocks.GREEN_THORNS.get()) || blockstate.isFaceSturdy(level, pos, state.getValue(DirectionalBlock.FACING));
+		return blockstate.is(TFBlocks.BROWN_THORNS) || blockstate.is(TFBlocks.GREEN_THORNS) || blockstate.isFaceSturdy(level, pos, state.getValue(DirectionalBlock.FACING));
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
 	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 		return AABB;
 	}
@@ -51,7 +59,6 @@ public class ThornRoseBlock extends BushBlock {
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
 	public BlockState rotate(BlockState state, Rotation rotation) {
 		return state.setValue(DirectionalBlock.FACING, rotation.rotate(state.getValue(DirectionalBlock.FACING)));
 	}

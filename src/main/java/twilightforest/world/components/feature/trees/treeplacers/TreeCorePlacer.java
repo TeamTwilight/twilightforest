@@ -1,6 +1,7 @@
 package twilightforest.world.components.feature.trees.treeplacers;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
@@ -9,12 +10,10 @@ import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorTy
 import twilightforest.init.TFFeatureModifiers;
 
 public class TreeCorePlacer extends TreeDecorator {
-
-	public static final Codec<TreeCorePlacer> CODEC = RecordCodecBuilder.create(
-			instance -> instance.group(
-					Codec.intRange(0, 20).fieldOf("core_position").forGetter(o -> o.corePos),
-					BlockStateProvider.CODEC.fieldOf("deco_provider").forGetter(o -> o.core)
-			).apply(instance, TreeCorePlacer::new));
+	public static final MapCodec<TreeCorePlacer> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+		Codec.intRange(0, 20).fieldOf("core_position").forGetter(o -> o.corePos),
+		BlockStateProvider.CODEC.fieldOf("deco_provider").forGetter(o -> o.core)
+	).apply(instance, TreeCorePlacer::new));
 
 	private final int corePos;
 	private final BlockStateProvider core;

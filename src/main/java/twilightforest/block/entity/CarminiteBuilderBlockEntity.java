@@ -1,55 +1,37 @@
 package twilightforest.block.entity;
 
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.init.TFBlockEntities;
-import twilightforest.init.TFSounds;
 import twilightforest.block.BuilderBlock;
 import twilightforest.block.TranslucentBuiltBlock;
-import twilightforest.init.TFBlocks;
 import twilightforest.enums.TowerDeviceVariant;
+import twilightforest.init.TFBlockEntities;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFSounds;
 
 public class CarminiteBuilderBlockEntity extends BlockEntity {
 	private static final int RANGE = 16;
-
+	private final BlockState blockBuiltState = TFBlocks.BUILT_BLOCK.get().defaultBlockState().setValue(TranslucentBuiltBlock.ACTIVE, false);
+	public boolean makingBlocks = false;
 	private int ticksRunning = 0;
 	private int blockedCounter = 0;
 	private int ticksStopped = 0;
-
-	public boolean makingBlocks = false;
-
 	private int blocksMade = 0;
-
+	@Nullable
 	private BlockPos lastBlockCoords;
-
-    private Player trackedPlayer;
-
-	private final BlockState blockBuiltState = TFBlocks.BUILT_BLOCK.get().defaultBlockState().setValue(TranslucentBuiltBlock.ACTIVE, false);
+	@Nullable
+	private Player trackedPlayer;
 
 	public CarminiteBuilderBlockEntity(BlockPos pos, BlockState state) {
 		super(TFBlockEntities.TOWER_BUILDER.get(), pos, state);
-	}
-
-	/**
-	 * Start building stuffs
-	 */
-	public void startBuilding() {
-		this.makingBlocks = true;
-		resetStats();
-	}
-
-	public void resetStats() {
-		this.blocksMade = 0;
-		this.lastBlockCoords = getBlockPos();
-		this.ticksStopped = 0;
-		this.blockedCounter = 0;
 	}
 
 	public static void tick(Level level, BlockPos pos, BlockState state, CarminiteBuilderBlockEntity te) {
@@ -60,7 +42,7 @@ public class CarminiteBuilderBlockEntity extends BlockEntity {
 			}
 
 			// find player facing
-            Direction nextFacing = te.findNextFacing();
+			Direction nextFacing = te.findNextFacing();
 
 			++te.ticksRunning;
 
@@ -70,7 +52,7 @@ public class CarminiteBuilderBlockEntity extends BlockEntity {
 
 				// make a block
 				if (te.blocksMade <= RANGE && level.isEmptyBlock(nextPos)) {
-					level.setBlock(nextPos, te.blockBuiltState, 3);
+					level.setBlock(nextPos, te.blockBuiltState, Block.UPDATE_ALL);
 
 					level.playSound(null, pos, TFSounds.BUILDER_CREATE.get(), SoundSource.BLOCKS, 0.75F, 1.2F);
 
@@ -99,6 +81,21 @@ public class CarminiteBuilderBlockEntity extends BlockEntity {
 		}
 	}
 
+	/**
+	 * Start building stuffs
+	 */
+	public void startBuilding() {
+		this.makingBlocks = true;
+		resetStats();
+	}
+
+	public void resetStats() {
+		this.blocksMade = 0;
+		this.lastBlockCoords = getBlockPos();
+		this.ticksStopped = 0;
+		this.blockedCounter = 0;
+	}
+
 	@Nullable
 	private Direction findNextFacing() {
 		if (this.trackedPlayer != null) {
@@ -118,7 +115,7 @@ public class CarminiteBuilderBlockEntity extends BlockEntity {
 	}
 
 	/**
-	 * Who is the closest player?  Used to find which player we should track when building
+	 * Who is the closest player? Used to find which player we should track when building
 	 */
 	@Nullable
 	private Player findClosestValidPlayer() {

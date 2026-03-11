@@ -1,0 +1,5 @@
+{
+  "type": "twilightforest:builtin",
+  "component": "twilightforest:high_jump_amplifier",
+  "equipment_slots": "legs"
+}

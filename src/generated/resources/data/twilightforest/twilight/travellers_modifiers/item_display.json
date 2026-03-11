@@ -1,0 +1,15 @@
+{
+  "type": "twilightforest:component",
+  "component": {
+    "twilightforest:item_display": {
+      "chosen_map_slot": 0,
+      "slots": []
+    }
+  },
+  "description": [
+    {
+      "translate": "travellers_gear.modifier.twilightforest.item_display.description"
+    }
+  ],
+  "equipment_slots": "head"
+}

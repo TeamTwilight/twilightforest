@@ -1,12 +1,9 @@
 package twilightforest.client.particle;
 
-import net.minecraft.client.particle.*;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
 public class IceBeamParticle extends TextureSheetParticle {
 
 	final float initialParticleScale;
@@ -59,7 +56,6 @@ public class IceBeamParticle extends TextureSheetParticle {
 		return 240 | 240 << 16;
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	public record Factory(SpriteSet sprite) implements ParticleProvider<SimpleParticleType> {
 
 		@Override

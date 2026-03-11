@@ -13,27 +13,23 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import net.minecraftforge.event.ForgeEventFactory;
-import twilightforest.init.TFBlocks;
-import twilightforest.init.TFEntities;
+import net.neoforged.neoforge.event.EventHooks;
 import twilightforest.entity.monster.ArmoredGiant;
 import twilightforest.entity.monster.GiantMiner;
-import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.init.TFLandmark;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFEntities;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.util.BoundingBoxUtils;
+import twilightforest.world.components.structures.TFStructureComponentOld;
 
 
 public class CloudCastleComponent extends TFStructureComponentOld {
 
-	private boolean minerPlaced = false;
-	private boolean warriorPlaced = false;
-
 	public CloudCastleComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(TFStructurePieceTypes.TFClCa.get(), nbt);
-		this.minerPlaced = nbt.getBoolean("minerPlaced");
-		this.warriorPlaced = nbt.getBoolean("warriorPlaced");
 	}
 
+	@SuppressWarnings("this-escape")
 	public CloudCastleComponent(int index, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFClCa.get(), index, x, y, z);
 		this.setOrientation(Direction.SOUTH);
@@ -43,21 +39,21 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 		y &= ~0b11;
 		z &= ~0b11;
 
-		// spawn list!
-		this.spawnListIndex = 1;
-
-		this.boundingBox = TFLandmark.getComponentToAddBoundingBox(x, y, z, -8, -4, -8, 64, 16, 64, Direction.SOUTH, false);
+		this.boundingBox = BoundingBoxUtils.getComponentToAddBoundingBox(x, y, z, -8, -4, -8, 64, 16, 64, Direction.SOUTH, false);
 	}
 
 	@Override
 	protected void addAdditionalSaveData(StructurePieceSerializationContext ctx, CompoundTag tagCompound) {
 		super.addAdditionalSaveData(ctx, tagCompound);
-		tagCompound.putBoolean("minerPlaced", this.minerPlaced);
-		tagCompound.putBoolean("warriorPlaced", this.warriorPlaced);
 	}
 
 	@Override
 	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
+		// The literal cloud
+		CloudComponent cloudComponent = new CloudComponent(this.getGenDepth() + 1, this.boundingBox.minX(), this.boundingBox.minY() + 3, this.boundingBox.minZ());
+		list.addPiece(cloudComponent);
+		cloudComponent.addChildren(this, list, rand);
+
 		// up to two trees
 		// tree in x direction
 		boolean plus = rand.nextBoolean();
@@ -72,7 +68,6 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 		CloudTreeComponent treeZ = new CloudTreeComponent(this.getGenDepth() + 1, boundingBox.minX() + (offset * 4), 168, boundingBox.minZ() + 8 + (plus ? 32 : -16));
 		list.addPiece(treeZ);
 		treeZ.addChildren(this, list, rand);
-
 	}
 
 	@Override
@@ -90,39 +85,41 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 		this.generateAirBox(world, sbb, 8, 4, 12, 12, 11, 15);
 
 		// add giants
-		if (!this.minerPlaced) {
-			int bx = this.getWorldX(14, 14);
-			int by = this.getWorldY(4);
-			int bz = this.getWorldZ(14, 14);
+		this.placeGiantMiner(world, sbb);
+		this.placeWarrior(world, sbb);
+	}
+
+	private void placeGiantMiner(WorldGenLevel world, BoundingBox chunkGenerating) {
+		int bx = this.getWorldX(14, 14);
+		int by = this.getWorldY(4);
+		int bz = this.getWorldZ(14, 14);
+
+		if (chunkGenerating.isInside(bx, by, bz)) {
 			BlockPos pos = new BlockPos(bx, by, bz);
 
-			if (sbb.isInside(pos)) {
-				this.minerPlaced = true;
+			GiantMiner miner = TFEntities.GIANT_MINER.get().create(world.getLevel());
+			miner.setPos(bx, by, bz);
+			miner.setPersistenceRequired();
+			EventHooks.finalizeMobSpawn(miner, world, world.getCurrentDifficultyAt(pos), MobSpawnType.STRUCTURE, null);
 
-				GiantMiner miner = TFEntities.GIANT_MINER.get().create(world.getLevel());
-				miner.setPos(bx, by, bz);
-				miner.setPersistenceRequired();
-				ForgeEventFactory.onFinalizeSpawn(miner, world, world.getCurrentDifficultyAt(pos), MobSpawnType.STRUCTURE, null, null);
-
-				world.addFreshEntity(miner);
-			}
+			world.addFreshEntity(miner);
 		}
-		if (!this.warriorPlaced) {
-			int bx = this.getWorldX(17, 17);
-			int by = this.getWorldY(4);
-			int bz = this.getWorldZ(17, 17);
+	}
+
+	private void placeWarrior(WorldGenLevel world, BoundingBox chunkGenerating) {
+		int bx = this.getWorldX(17, 17);
+		int by = this.getWorldY(4);
+		int bz = this.getWorldZ(17, 17);
+
+		if (chunkGenerating.isInside(bx, by, bz)) {
 			BlockPos pos = new BlockPos(bx, by, bz);
 
-			if (sbb.isInside(pos)) {
-				this.warriorPlaced = true;
+			ArmoredGiant warrior = TFEntities.ARMORED_GIANT.get().create(world.getLevel());
+			warrior.setPos(bx, by, bz);
+			warrior.setPersistenceRequired();
+			EventHooks.finalizeMobSpawn(warrior, world, world.getCurrentDifficultyAt(pos), MobSpawnType.STRUCTURE, null);
 
-				ArmoredGiant warrior = TFEntities.ARMORED_GIANT.get().create(world.getLevel());
-				warrior.setPos(bx, by, bz);
-				warrior.setPersistenceRequired();
-				ForgeEventFactory.onFinalizeSpawn(warrior, world, world.getCurrentDifficultyAt(pos), MobSpawnType.STRUCTURE, null, null);
-
-				world.addFreshEntity(warrior);
-			}
+			world.addFreshEntity(warrior);
 		}
 	}
 }

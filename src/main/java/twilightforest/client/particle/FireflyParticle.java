@@ -1,15 +1,13 @@
 package twilightforest.client.particle;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.particle.*;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.particle.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LightLayer;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class FireflyParticle extends TextureSheetParticle {
 
@@ -45,7 +43,7 @@ public class FireflyParticle extends TextureSheetParticle {
 
 	@Override
 	public void tick() {
-		if (this.checkSkylight && this.level.getBrightness(LightLayer.SKY, BlockPos.containing(this.x, this.y, this.z)) < 1) {
+		if (this.checkSkylight && this.level.getBrightness(LightLayer.SKY, BlockPos.containing(this.x, this.y, this.z)) <= 12) {
 			this.remove();
 		}
 		super.tick();

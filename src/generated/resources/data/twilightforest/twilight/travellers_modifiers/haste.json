@@ -1,0 +1,12 @@
+{
+  "type": "twilightforest:component",
+  "component": {
+    "twilightforest:haste_amplifier": 1
+  },
+  "description": [
+    {
+      "translate": "travellers_gear.modifier.twilightforest.haste.description"
+    }
+  ],
+  "equipment_slots": "chest"
+}

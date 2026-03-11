@@ -1,0 +1,23 @@
+{
+  "type": "twilightforest:travellers_gear_modifier_shaped_recipe",
+  "is_rotated": false,
+  "modifier_key": "twilightforest:item_display",
+  "pattern": {
+    "key": {
+      "g": {
+        "item": "twilightforest:travellers_goggles"
+      },
+      "i": {
+        "item": "minecraft:item_frame"
+      },
+      "s": {
+        "tag": "c:rods/wooden"
+      }
+    },
+    "pattern": [
+      "sss",
+      "igi",
+      "sss"
+    ]
+  }
+}

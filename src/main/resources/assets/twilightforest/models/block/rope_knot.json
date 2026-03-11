@@ -1,0 +1,23 @@
+{
+	"parent": "block/block",
+	"textures": {
+		"particle": "twilightforest:block/rope",
+		"all": "twilightforest:block/rope_knot"
+	},
+	"elements": [
+		{
+			"from": [6, 6, 6],
+			"to": [10, 10, 10],
+			"shade": false,
+			"rotation": {"angle": 0, "axis": "x", "origin": [8, 8, 8]},
+			"faces": {
+				"north": { "rotation": 90, "texture": "#all"},
+				"east": { "rotation": 90, "texture": "#all"},
+				"south": { "rotation": 90, "texture": "#all"},
+				"west": { "rotation": 90, "texture": "#all"},
+				"up": { "rotation": 90, "texture": "#all"},
+				"down": { "rotation": 90, "texture": "#all"}
+			}
+		}
+	]
+}

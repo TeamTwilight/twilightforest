@@ -12,20 +12,20 @@ import twilightforest.entity.monster.IceCrystal;
 
 public class IceCrystalRenderer extends MobRenderer<IceCrystal, IceCrystalModel> {
 
-	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("icecrystal.png");
+	private static final ResourceLocation TEXTURE = TwilightForestMod.getModelTexture("icecrystal.png");
 
-	public IceCrystalRenderer(EntityRendererProvider.Context manager) {
-		super(manager, new IceCrystalModel(manager.bakeLayer(TFModelLayers.ICE_CRYSTAL)), 0.25F);
+	public IceCrystalRenderer(EntityRendererProvider.Context context) {
+		super(context, new IceCrystalModel(context.bakeLayer(TFModelLayers.ICE_CRYSTAL)), 0.25F);
 	}
 
 	@Override
 	protected void scale(IceCrystal entity, PoseStack stack, float partialTicks) {
 		float bounce = entity.tickCount + partialTicks;
-		stack.translate(0F, Mth.sin((bounce) * 0.2F) * 0.15F, 0F);
+		stack.translate(0.0F, Mth.sin((bounce) * 0.2F) * 0.15F, 0.0F);
 	}
 
 	@Override
 	public ResourceLocation getTextureLocation(IceCrystal entity) {
-		return textureLoc;
+		return TEXTURE;
 	}
 }

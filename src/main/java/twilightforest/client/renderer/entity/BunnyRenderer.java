@@ -8,12 +8,12 @@ import twilightforest.entity.passive.DwarfRabbit;
 
 public class BunnyRenderer extends MobRenderer<DwarfRabbit, BunnyModel> {
 
-	public BunnyRenderer(EntityRendererProvider.Context manager, BunnyModel model, float shadowSize) {
-		super(manager, model, shadowSize);
+	public BunnyRenderer(EntityRendererProvider.Context context, BunnyModel model, float shadowSize) {
+		super(context, model, shadowSize);
 	}
 
 	@Override
 	public ResourceLocation getTextureLocation(DwarfRabbit entity) {
-		return entity.getBunnyType().texture();
+		return entity.getVariant().value().texture();
 	}
 }

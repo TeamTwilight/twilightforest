@@ -1,16 +1,19 @@
 package twilightforest.block.entity.spawner;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.neoforged.neoforge.event.EventHooks;
 import twilightforest.entity.boss.Lich;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFEntities;
+import twilightforest.init.TFParticleType;
 
 public class LichSpawnerBlockEntity extends BossSpawnerBlockEntity<Lich> {
 
@@ -19,23 +22,33 @@ public class LichSpawnerBlockEntity extends BossSpawnerBlockEntity<Lich> {
 	}
 
 	@Override
-	public boolean anyPlayerInRange() {
-		Player closestPlayer = this.getLevel().getNearestPlayer(this.getBlockPos().getX() + 0.5D, this.getBlockPos().getY() + 0.5D, this.getBlockPos().getZ() + 0.5D, this.getRange(), false);
+	public boolean anyPlayerInRange(Level level) {
+		Player closestPlayer = level.getNearestPlayer(this.getBlockPos().getX() + 0.5D, this.getBlockPos().getY() + 0.5D, this.getBlockPos().getZ() + 0.5D, this.getRange(), false);
 		return closestPlayer != null && closestPlayer.getY() > this.getBlockPos().getY() - 4;
 	}
 
 	@Override
 	protected boolean spawnMyBoss(ServerLevelAccessor accessor) {
-
 		Lich myCreature = this.makeMyCreature();
 
-		myCreature.moveTo(this.getBlockPos(), accessor.getLevel().random.nextFloat() * 360F, 0.0F);
-		ForgeEventFactory.onFinalizeSpawn(myCreature, accessor, accessor.getCurrentDifficultyAt(this.getBlockPos()), MobSpawnType.SPAWNER, null, null);
+		BlockPos.MutableBlockPos mutableBlockPos = this.getBlockPos().mutable();
+		while (true) {
+			if (accessor.getMinBuildHeight() >= mutableBlockPos.getY()) break;
+			if (accessor.getBlockState(mutableBlockPos.below()).isAir()) {
+				mutableBlockPos.move(Direction.DOWN);
+			} else break;
+		}
+
+		mutableBlockPos.move(Direction.UP);
+
+		myCreature.moveTo(mutableBlockPos, accessor.getLevel().random.nextFloat() * 360F, 0.0F);
+
+		EventHooks.finalizeMobSpawn(myCreature, accessor, accessor.getCurrentDifficultyAt(mutableBlockPos), MobSpawnType.SPAWNER, null);
 		myCreature.setAttackCooldown(40);
 		myCreature.setExtinguishTimer();
 
 		// set creature's home to this
-		this.initializeCreature(myCreature);
+		myCreature.setRestrictionPoint(GlobalPos.of(myCreature.level().dimension(), mutableBlockPos));
 
 		// spawn it
 		return accessor.addFreshEntity(myCreature);
@@ -43,6 +56,6 @@ public class LichSpawnerBlockEntity extends BossSpawnerBlockEntity<Lich> {
 
 	@Override
 	public ParticleOptions getSpawnerParticle() {
-		return ParticleTypes.ANGRY_VILLAGER;
+		return TFParticleType.OMINOUS_FLAME.get();
 	}
 }

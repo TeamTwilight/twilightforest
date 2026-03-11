@@ -2,36 +2,30 @@ package twilightforest.client;
 
 import com.mojang.blaze3d.shaders.Uniform;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceProvider;
-import net.minecraftforge.client.event.RegisterShadersEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
+import net.neoforged.neoforge.client.event.RegisterShadersEvent;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 
 import java.io.IOException;
-import java.util.function.Consumer;
 
 public class TFShaders {
 
 	public static ShaderInstance RED_THREAD;
 	public static PositionAwareShaderInstance AURORA;
 
-	public static void init(IEventBus bus) {
-		bus.addListener((Consumer<RegisterShadersEvent>) event -> {
-			try {
-				event.registerShader(new ShaderInstance(event.getResourceProvider(), TwilightForestMod.prefix("red_thread/red_thread"), DefaultVertexFormat.BLOCK),
-						shader -> RED_THREAD = shader);
-				event.registerShader(new PositionAwareShaderInstance(event.getResourceProvider(), TwilightForestMod.prefix("aurora/aurora"), DefaultVertexFormat.POSITION_COLOR),
-						shader -> AURORA = (PositionAwareShaderInstance) shader);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		});
+	public static void registerShaders(RegisterShadersEvent event) {
+		try {
+			event.registerShader(new ShaderInstance(event.getResourceProvider(), TwilightForestMod.prefix("red_thread/red_thread"), DefaultVertexFormat.BLOCK),
+				shader -> RED_THREAD = shader);
+			event.registerShader(new PositionAwareShaderInstance(event.getResourceProvider(), TwilightForestMod.prefix("aurora/aurora"), DefaultVertexFormat.POSITION_COLOR),
+				shader -> AURORA = (PositionAwareShaderInstance) shader);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static class BindableShaderInstance extends ShaderInstance {
@@ -70,12 +64,12 @@ public class TFShaders {
 			invokeThenClear(null, execPost);
 		}
 
-		public final void invokeThenEndTesselator(@Nullable Runnable execBind) {
-			invokeThenClear(execBind, () -> Tesselator.getInstance().end());
+		public final void invokeThenEndTesselator(@Nullable Runnable execBind, BufferBuilder builder) {
+			invokeThenClear(execBind, () -> BufferUploader.drawWithShader(builder.buildOrThrow()));
 		}
 
-		public final void invokeThenEndTesselator() {
-			invokeThenClear(() -> Tesselator.getInstance().end());
+		public final void invokeThenEndTesselator(BufferBuilder builder) {
+			invokeThenClear(() -> BufferUploader.drawWithShader(builder.buildOrThrow()));
 		}
 
 	}
@@ -121,8 +115,8 @@ public class TFShaders {
 			resetClear();
 		}
 
-		public final void invokeThenEndTesselator(int seed, float x, float y, float z) {
-			invokeThenClear(seed, x, y, z, () -> Tesselator.getInstance().end());
+		public final void invokeThenEndTesselator(int seed, float x, float y, float z, BufferBuilder builder) {
+			invokeThenClear(seed, x, y, z, () -> BufferUploader.drawWithShader(builder.buildOrThrow()));
 		}
 
 	}

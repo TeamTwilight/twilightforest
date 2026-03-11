@@ -27,6 +27,7 @@ public class MazeDeadEndChestComponent extends MazeDeadEndComponent {
 		super(piece, nbt);
 	}
 
+	@SuppressWarnings("this-escape")
 	public MazeDeadEndChestComponent(StructurePieceType type, int i, int x, int y, int z, Direction rotation) {
 		super(type, i, x, y, z, rotation);
 		this.setOrientation(rotation);

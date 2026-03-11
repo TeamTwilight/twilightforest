@@ -1,0 +1,6 @@
+{
+  "max_length": 8,
+  "ores": "minecraft:glowstone",
+  "size_variation": 0.5,
+  "weight": 20
+}

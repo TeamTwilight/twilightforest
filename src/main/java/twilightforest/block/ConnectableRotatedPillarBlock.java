@@ -25,31 +25,26 @@ public abstract class ConnectableRotatedPillarBlock extends RotatedPillarBlock {
 	final double boundingBoxWidthLower;
 	final double boundingBoxWidthUpper;
 
-	ConnectableRotatedPillarBlock(Properties props, double size) {
-		this(props, size, size);
-	}
+	public ConnectableRotatedPillarBlock(Properties properties, double width) {
+		super(properties);
 
-	ConnectableRotatedPillarBlock(Properties props, double width, double height) {
-		super(props.noOcclusion());
-
-		if (width >= 16d) {
-			this.boundingBoxWidthLower = 0d;
-			this.boundingBoxWidthUpper = 16d;
+		if (width >= 16.0D) {
+			this.boundingBoxWidthLower = 0.0D;
+			this.boundingBoxWidthUpper = 16.0D;
 		} else {
-			this.boundingBoxWidthLower = 8d - (width / 2d);
-			this.boundingBoxWidthUpper = 16d - this.boundingBoxWidthLower;
+			this.boundingBoxWidthLower = 8.0D - (width / 2.0D);
+			this.boundingBoxWidthUpper = 16.0D - this.boundingBoxWidthLower;
 		}
 
 		this.registerDefaultState(this.getStateDefinition().any().setValue(AXIS, Direction.Axis.Y)
-				.setValue(NORTH, false).setValue(WEST, false)
-				.setValue(SOUTH, false).setValue(EAST, false)
-				.setValue(DOWN, false).setValue(UP, false));
+			.setValue(NORTH, false).setValue(WEST, false)
+			.setValue(SOUTH, false).setValue(EAST, false)
+			.setValue(DOWN, false).setValue(UP, false));
 	}
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		super.createBlockStateDefinition(builder);
-		builder.add(NORTH, EAST, SOUTH, WEST, DOWN, UP);
+		super.createBlockStateDefinition(builder.add(NORTH, EAST, SOUTH, WEST, DOWN, UP));
 	}
 
 	@Override
@@ -76,39 +71,38 @@ public abstract class ConnectableRotatedPillarBlock extends RotatedPillarBlock {
 
 		Direction.Axis axis = context.getClickedFace().getAxis();
 		return this.defaultBlockState().setValue(AXIS, axis)
-				.setValue(NORTH, this.canConnectTo(axis, Direction.NORTH, blockstate, blockstate.isFaceSturdy(iblockreader, blockpos1, Direction.SOUTH)))
-				.setValue(SOUTH, this.canConnectTo(axis, Direction.SOUTH, blockstate1, blockstate1.isFaceSturdy(iblockreader, blockpos2, Direction.NORTH)))
-				.setValue(WEST, this.canConnectTo(axis, Direction.WEST, blockstate2, blockstate2.isFaceSturdy(iblockreader, blockpos3, Direction.EAST)))
-				.setValue(EAST, this.canConnectTo(axis, Direction.EAST, blockstate3, blockstate3.isFaceSturdy(iblockreader, blockpos4, Direction.WEST)));
+			.setValue(NORTH, this.canConnectTo(axis, Direction.NORTH, blockstate, blockstate.isFaceSturdy(iblockreader, blockpos1, Direction.SOUTH)))
+			.setValue(SOUTH, this.canConnectTo(axis, Direction.SOUTH, blockstate1, blockstate1.isFaceSturdy(iblockreader, blockpos2, Direction.NORTH)))
+			.setValue(WEST, this.canConnectTo(axis, Direction.WEST, blockstate2, blockstate2.isFaceSturdy(iblockreader, blockpos3, Direction.EAST)))
+			.setValue(EAST, this.canConnectTo(axis, Direction.EAST, blockstate3, blockstate3.isFaceSturdy(iblockreader, blockpos4, Direction.WEST)));
 	}
 
 	@Override
-	@Deprecated
 	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 		return switch (state.getValue(AXIS)) {
 			case X -> box(
-					0d,
-					state.getValue(NORTH) ? 0d : this.boundingBoxWidthLower,
-					state.getValue(WEST) ? 0d : this.boundingBoxWidthLower,
-					16d,
-					state.getValue(SOUTH) ? 16d : this.boundingBoxWidthUpper,
-					state.getValue(EAST) ? 16d : this.boundingBoxWidthUpper
+				0.0D,
+				state.getValue(NORTH) ? 0.0D : this.boundingBoxWidthLower,
+				state.getValue(WEST) ? 0.0D : this.boundingBoxWidthLower,
+				16.0D,
+				state.getValue(SOUTH) ? 16.0D : this.boundingBoxWidthUpper,
+				state.getValue(EAST) ? 16.0D : this.boundingBoxWidthUpper
 			);
 			case Z -> box(
-					state.getValue(EAST) ? 0d : this.boundingBoxWidthLower,
-					state.getValue(SOUTH) ? 0d : this.boundingBoxWidthLower,
-					0d,
-					state.getValue(WEST) ? 16d : this.boundingBoxWidthUpper,
-					state.getValue(NORTH) ? 16d : this.boundingBoxWidthUpper,
-					16d
+				state.getValue(EAST) ? 0.0D : this.boundingBoxWidthLower,
+				state.getValue(SOUTH) ? 0.0D : this.boundingBoxWidthLower,
+				0.0D,
+				state.getValue(WEST) ? 16.0D : this.boundingBoxWidthUpper,
+				state.getValue(NORTH) ? 16.0D : this.boundingBoxWidthUpper,
+				16.0D
 			);
 			default -> box(
-					state.getValue(WEST) ? 0d : this.boundingBoxWidthLower,
-					0d,
-					state.getValue(NORTH) ? 0d : this.boundingBoxWidthLower,
-					state.getValue(EAST) ? 16d : this.boundingBoxWidthUpper,
-					16d,
-					state.getValue(SOUTH) ? 16d : this.boundingBoxWidthUpper
+				state.getValue(WEST) ? 0.0D : this.boundingBoxWidthLower,
+				0.0D,
+				state.getValue(NORTH) ? 0.0D : this.boundingBoxWidthLower,
+				state.getValue(EAST) ? 16.0D : this.boundingBoxWidthUpper,
+				16.0D,
+				state.getValue(SOUTH) ? 16.0D : this.boundingBoxWidthUpper
 			);
 		};
 	}

@@ -8,68 +8,59 @@ import net.minecraft.util.Mth;
 import twilightforest.entity.monster.Adherent;
 
 public class AdherentModel extends HumanoidModel<Adherent> {
+
 	public AdherentModel(ModelPart root) {
 		super(root);
 	}
 
 	public static LayerDefinition create() {
-		MeshDefinition mesh = HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F);
-		PartDefinition partRoot = mesh.getRoot();
+		MeshDefinition meshdefinition = HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F);
+		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		partRoot.addOrReplaceChild("head",
-				CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F),
-				PartPose.ZERO);
+		partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
+				.texOffs(0, 0)
+				.addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F),
+			PartPose.ZERO);
 
-		partRoot.addOrReplaceChild("hat",
-				CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F),
-				PartPose.ZERO);
+		partdefinition.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
 
-		partRoot.addOrReplaceChild("body",
-				CubeListBuilder.create()
-						.texOffs(32, 0)
-						.addBox(-4.0F, 0.0F, -2.0F, 8.0F, 24.0F, 4.0F),
-				PartPose.ZERO);
+		partdefinition.addOrReplaceChild("body", CubeListBuilder.create()
+				.texOffs(32, 0)
+				.addBox(-4.0F, 0.0F, -2.0F, 8.0F, 24.0F, 4.0F),
+			PartPose.ZERO);
 
-		var leftArm = partRoot.addOrReplaceChild("left_arm",
-				CubeListBuilder.create()
-						.texOffs(0, 16)
-						.addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F),
-				PartPose.offset(5.0F, 2.0F, 0.0F));
+		var leftArm = partdefinition.addOrReplaceChild("left_arm", CubeListBuilder.create()
+				.texOffs(0, 16)
+				.addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F),
+			PartPose.offset(5.0F, 2.0F, 0.0F));
 
-		leftArm.addOrReplaceChild("left_sleeve",
-				CubeListBuilder.create()
-						.texOffs(16, 16)
-						.addBox(-1.0F, -2.0F, 2.0F, 4.0F, 12.0F, 4.0F),
-				PartPose.ZERO);
+		leftArm.addOrReplaceChild("left_sleeve", CubeListBuilder.create()
+				.texOffs(16, 16)
+				.addBox(-1.0F, -2.0F, 2.0F, 4.0F, 12.0F, 4.0F),
+			PartPose.ZERO);
 
-		var rightArm = partRoot.addOrReplaceChild("right_arm",
-				CubeListBuilder.create()
-						.texOffs(0, 16)
-						.addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F),
-				PartPose.offset(-5.0F, 2.0F, 0.0F));
+		var rightArm = partdefinition.addOrReplaceChild("right_arm", CubeListBuilder.create()
+				.texOffs(0, 16)
+				.addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F),
+			PartPose.offset(-5.0F, 2.0F, 0.0F));
 
-		rightArm.addOrReplaceChild("right_sleeve",
-				CubeListBuilder.create()
-						.texOffs(16, 16)
-						.addBox(-3.0F, -2.0F, 2.0F, 4.0F, 12.0F, 4.0F),
-				PartPose.ZERO);
+		rightArm.addOrReplaceChild("right_sleeve", CubeListBuilder.create()
+				.texOffs(16, 16)
+				.addBox(-3.0F, -2.0F, 2.0F, 4.0F, 12.0F, 4.0F),
+			PartPose.ZERO);
 
-		partRoot.addOrReplaceChild("left_leg",
-				CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F),
-				PartPose.ZERO);
+		partdefinition.addOrReplaceChild("left_leg",
+			CubeListBuilder.create()
+				.texOffs(0, 0)
+				.addBox(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F),
+			PartPose.ZERO);
 
-		partRoot.addOrReplaceChild("right_leg",
-				CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F),
-				PartPose.ZERO);
-		return LayerDefinition.create(mesh, 64, 32);
+		partdefinition.addOrReplaceChild("right_leg", CubeListBuilder.create()
+				.texOffs(0, 0)
+				.addBox(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F),
+			PartPose.ZERO);
+
+		return LayerDefinition.create(meshdefinition, 64, 32);
 	}
 
 	@Override
@@ -83,8 +74,8 @@ public class AdherentModel extends HumanoidModel<Adherent> {
 		this.rightArm.zRot = 0.0F;
 		this.leftArm.zRot = 0.0F;
 
-		this.rightArm.zRot += Mth.cos((ageInTicks + 10F) * 0.133F) * 0.3F + 0.3F;
-		this.leftArm.zRot -= Mth.cos((ageInTicks + 10F) * 0.133F) * 0.3F + 0.3F;
+		this.rightArm.zRot += Mth.cos((ageInTicks + 10.0F) * 0.133F) * 0.3F + 0.3F;
+		this.leftArm.zRot -= Mth.cos((ageInTicks + 10.0F) * 0.133F) * 0.3F + 0.3F;
 		this.rightArm.xRot += Mth.sin(ageInTicks * 0.067F) * 0.05F;
 		this.leftArm.xRot -= Mth.sin(ageInTicks * 0.067F) * 0.05F;
 	}

@@ -1,0 +1,27 @@
+{
+  "feature": "minecraft:patch_grass_jungle",
+  "placement": [
+    {
+      "type": "minecraft:count",
+      "count": 25
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:heightmap",
+      "heightmap": "WORLD_SURFACE_WG"
+    },
+    {
+      "type": "minecraft:biome"
+    },
+    {
+      "type": "twilightforest:no_structure",
+      "additional_clearance": 0,
+      "occupies_surface": false,
+      "occupies_underground": false,
+      "occupies_vegetation": true,
+      "structures_allowed": []
+    }
+  ]
+}

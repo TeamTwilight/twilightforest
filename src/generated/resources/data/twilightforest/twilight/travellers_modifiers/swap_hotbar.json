@@ -1,0 +1,13 @@
+{
+  "type": "twilightforest:transferable_component",
+  "component": "twilightforest:swap_hotbar_modifier",
+  "description": [
+    {
+      "translate": "travellers_gear.modifier.twilightforest.swap_hotbar.description"
+    }
+  ],
+  "equipment_slots": "legs",
+  "transferable_components": {
+    "minecraft:container": []
+  }
+}

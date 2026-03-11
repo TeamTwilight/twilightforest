@@ -1,15 +1,29 @@
 package twilightforest.entity.monster;
 
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.ZombieAttackGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.monster.Zombie;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.AABB;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.boss.Lich;
+import twilightforest.init.TFAttributes;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
 
@@ -17,6 +31,7 @@ import java.util.List;
 
 public class LichMinion extends Zombie {
 
+	@Nullable
 	public Lich master;
 
 	public LichMinion(EntityType<? extends LichMinion> type, Level world) {
@@ -30,6 +45,19 @@ public class LichMinion extends Zombie {
 	}
 
 	@Override
+	protected void addBehaviourGoals() {
+		this.goalSelector.addGoal(2, new ZombieAttackGoal(this, 1.0, false));
+		this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0));
+		this.targetSelector.addGoal(1, new HurtByTargetGoal(this, Lich.class) {
+			@Override
+			protected boolean canAttack(@Nullable LivingEntity potentialTarget, TargetingConditions targetPredicate) {
+				return !(potentialTarget instanceof Lich) && super.canAttack(potentialTarget, targetPredicate);
+			}
+		});
+		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
+	}
+
+	@Override
 	public boolean hurt(DamageSource source, float amount) {
 		LivingEntity prevTarget = getTarget();
 
@@ -37,13 +65,11 @@ public class LichMinion extends Zombie {
 			if (source.getEntity() instanceof Lich) {
 				// return to previous target but speed up
 				this.setLastHurtByMob(prevTarget);
-				this.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 200, 4));
+				this.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 200, 2));
 				this.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 200, 1));
 			}
 			return true;
-		} else {
-			return false;
-		}
+		} else return false;
 	}
 
 	@Override
@@ -97,5 +123,31 @@ public class LichMinion extends Zombie {
 				break;
 			}
 		}
+	}
+
+	@Override
+	public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData) {
+		boolean baby = false;
+
+		if (this.master != null && difficulty.getDifficulty() == Difficulty.HARD) {
+			int babiesSummoned = this.master.getBabyMinionsSummoned();
+			if (babiesSummoned < this.master.getAttributeValue(TFAttributes.MINION_COUNT) / 4) { // One quarter can be babies on hard, by default: 9 / 4 = 2
+				baby = this.getRandom().nextInt(100) <= 20; // 20%
+			}
+			if (baby) this.master.setBabyMinionsSummoned(babiesSummoned + 1);
+		}
+
+		spawnGroupData = new ZombieGroupData(baby, true);
+		return super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData);
+	}
+
+	@Override
+	protected void populateDefaultEquipmentSlots(RandomSource random, DifficultyInstance difficulty) {
+		//NO-OP
+	}
+
+	@Override
+	public boolean canPickUpLoot() {
+		return false;
 	}
 }

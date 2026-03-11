@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "group": "trapped_chest",
+  "key": {
+    "#": {
+      "item": "twilightforest:transformation_planks"
+    },
+    "C": {
+      "item": "minecraft:trapped_chest"
+    }
+  },
+  "pattern": [
+    "###",
+    "#C#",
+    "###"
+  ],
+  "result": {
+    "count": 2,
+    "id": "twilightforest:transformation_trapped_chest"
+  }
+}

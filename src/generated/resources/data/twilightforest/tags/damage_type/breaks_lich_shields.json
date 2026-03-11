@@ -1,9 +1,9 @@
 {
   "values": [
+    "twilightforest:lich_bolt",
+    "twilightforest:twilight_scepter",
     "minecraft:magic",
     "minecraft:indirect_magic",
-    "minecraft:sonic_boom",
-    "twilightforest:lich_bolt",
-    "twilightforest:twilight_scepter"
+    "minecraft:sonic_boom"
   ]
 }

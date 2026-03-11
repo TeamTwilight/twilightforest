@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "item": "twilightforest:naga_scale"
+    }
+  },
+  "pattern": [
+    "###",
+    "# #",
+    "# #"
+  ],
+  "result": {
+    "components": {
+      "minecraft:enchantments": {
+        "levels": {
+          "minecraft:protection": 3
+        }
+      }
+    },
+    "count": 1,
+    "id": "twilightforest:naga_leggings"
+  }
+}

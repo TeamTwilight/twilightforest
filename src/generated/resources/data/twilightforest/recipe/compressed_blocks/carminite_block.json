@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "#": {
+      "tag": "c:gems/carminite"
+    },
+    "m": {
+      "item": "twilightforest:carminite"
+    }
+  },
+  "pattern": [
+    "###",
+    "#m#",
+    "###"
+  ],
+  "result": {
+    "count": 1,
+    "id": "twilightforest:carminite_block"
+  }
+}

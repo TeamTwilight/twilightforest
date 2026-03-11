@@ -1,0 +1,23 @@
+{
+  "type": "twilightforest:travellers_gear_modifier_shaped_recipe",
+  "is_rotated": false,
+  "modifier_key": "twilightforest:all_night_goggles",
+  "pattern": {
+    "key": {
+      "G": {
+        "item": "twilightforest:travellers_goggles"
+      },
+      "M": {
+        "item": "minecraft:phantom_membrane"
+      },
+      "Y": {
+        "item": "minecraft:yellow_stained_glass_pane"
+      }
+    },
+    "pattern": [
+      "M M",
+      "YGY",
+      "M M"
+    ]
+  }
+}

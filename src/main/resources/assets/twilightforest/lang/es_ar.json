@@ -114,7 +114,6 @@
 
   // Commands
   "commands.tffeature.usage": "/tffeature <info|reactivate|conquer|center>",
-  "commands.tffeature.not_in_twilight_forest": "You are not in the Twilight Forest dimension",
   "commands.tffeature.nearest": "The nearest feature is %s",
   "commands.tffeature.center": "Center of feature: %s",
   "commands.tffeature.chunk": "Are in feature chunk: %s",
@@ -962,7 +961,7 @@
   "subtitles.twilightforest.entity.yeti.growl": "Yeti gruñe",
   "subtitles.twilightforest.entity.yeti.hurt": "Yeti herido",
   "subtitles.twilightforest.entity.yeti.throw": "Yeti tira con fuerza",
-  
+
   "subtitles.twilightforest.entity.alphayeti.parrot": "Loro gruñe fríamente",
   "subtitles.twilightforest.entity.carminitegolem.parrot": "Loro golpea",
   "subtitles.twilightforest.entity.hostilewolf.parrot": "Gruñidos de Loro",

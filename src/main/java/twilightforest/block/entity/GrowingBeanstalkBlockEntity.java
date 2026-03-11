@@ -2,12 +2,14 @@ package twilightforest.block.entity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -38,7 +40,7 @@ public class GrowingBeanstalkBlockEntity extends BlockEntity {
 			//initialize shit. We can't do this in the ctor because there is no level yet
 			te.nextLeafY = pos.getY() + 10 + level.getRandom().nextInt(10);
 			te.yOffset = level.getRandom().nextInt(100);
-			te.cScale = level.getRandom().nextFloat() * 0.25F + 0.125F; // spiral tightness scaling  //make this number negative to reverse the spiral
+			te.cScale = level.getRandom().nextFloat() * 0.25F + 0.125F; // spiral tightness scaling, make this number negative to reverse the spiral
 			te.rScale = level.getRandom().nextFloat() * 0.25F + 0.125F; // radius change scaling
 			te.maxY = Math.max(pos.getY() + 100, 175);
 		}
@@ -51,11 +53,11 @@ public class GrowingBeanstalkBlockEntity extends BlockEntity {
 					BlockState underState = level.getBlockState(BlockPos.containing(x, pos.below().getY(), z));
 					if (underState.isSolid()) {
 						level.addAlwaysVisibleParticle(
-								new BlockParticleOption(ParticleTypes.BLOCK, underState),
-								x,
-								pos.getY(),
-								z,
-								0.0F, 0.0F, 0.0F);
+							new BlockParticleOption(ParticleTypes.BLOCK, underState),
+							x,
+							pos.getY(),
+							z,
+							0.0F, 0.0F, 0.0F);
 					}
 				}
 			}
@@ -134,67 +136,67 @@ public class GrowingBeanstalkBlockEntity extends BlockEntity {
 		}
 	}
 
-	private void placeLeaves(Level world, BlockPos pos) {
+	private void placeLeaves(Level level, BlockPos pos) {
 		// stalk at center
-		world.setBlockAndUpdate(pos, TFBlocks.HUGE_STALK.get().defaultBlockState());
+		level.setBlockAndUpdate(pos, TFBlocks.HUGE_STALK.get().defaultBlockState());
 
 		// small squares
 		for (int dx = -1; dx <= 1; dx++) {
 			for (int dz = -1; dz <= 1; dz++) {
 				int distance = Math.abs(dx) + Math.abs(dz) + 1;
-				this.tryToPlaceLeaves(world, pos.offset(dx, -1, dz), distance);
-				this.tryToPlaceLeaves(world, pos.offset(dx, 1, dz), distance);
+				this.tryToPlaceLeaves(level, pos.offset(dx, -1, dz), distance);
+				this.tryToPlaceLeaves(level, pos.offset(dx, 1, dz), distance);
 			}
 		}
 		// larger square
 		for (int dx = -2; dx <= 2; dx++) {
 			for (int dz = -2; dz <= 2; dz++) {
 				if (!((dx == 2 || dx == -2) && (dz == 2 || dz == -2))) {
-					this.tryToPlaceLeaves(world, pos.offset(dx, 0, dz), Math.max(Math.abs(dx) + Math.abs(dz), 1));
+					this.tryToPlaceLeaves(level, pos.offset(dx, 0, dz), Math.max(Math.abs(dx) + Math.abs(dz), 1));
 				}
 			}
 		}
 	}
 
 	/**
-	 * Place the stalk block only if the destination is clear.  Return false if a layer is blocked by 15 or more blocks.
+	 * Place the stalk block only if the destination is clear. Return false if a layer is blocked by 15 or more blocks.
 	 */
 	private boolean tryToPlaceStalk(Level level, BlockPos pos, boolean checkBlocked) {
 		BlockState state = level.getBlockState(pos);
-		if (state.isAir() || (state.canBeReplaced() && !state.is(TFBlocks.BEANSTALK_GROWER.get())) || (state.isAir() || state.is(BlockTags.LEAVES)) || state.getBlock().equals(TFBlocks.FLUFFY_CLOUD.get())) {
+		if (state.isAir() || (state.canBeReplaced() && !state.is(TFBlocks.BEANSTALK_GROWER)) || (state.isAir() || state.is(BlockTags.LEAVES)) || state.is(TFBlocks.FLUFFY_CLOUD)) {
 			level.setBlockAndUpdate(pos, TFBlocks.HUGE_STALK.get().defaultBlockState());
 			if (pos.getY() > 150) {
 				for (int i = 0; i < 7; i++) {
-					if (level.getBlockState(pos.relative(Direction.UP, i)).is(TFBlocks.WISPY_CLOUD.get()) || level.getBlockState(pos.relative(Direction.UP, i)).is(TFBlocks.FLUFFY_CLOUD.get())) {
+					if (level.getBlockState(pos.relative(Direction.UP, i)).is(TFBlocks.WISPY_CLOUD) || level.getBlockState(pos.relative(Direction.UP, i)).is(TFBlocks.FLUFFY_CLOUD)) {
 						level.setBlockAndUpdate(pos.relative(Direction.UP, i), Blocks.AIR.defaultBlockState());
 					}
 				}
 			}
 			return true;
 		} else {
-			if (!state.is(TFBlocks.HUGE_STALK.get()) && checkBlocked) {
-				blocksSkipped++;
+			if (!state.is(TFBlocks.HUGE_STALK) && checkBlocked) {
+				this.blocksSkipped++;
 			}
-			return blocksSkipped < 15;
+			return this.blocksSkipped < 15;
 		}
 	}
 
-	private void tryToPlaceLeaves(Level world, BlockPos pos, int distance) {
-		BlockState state = world.getBlockState(pos);
+	private void tryToPlaceLeaves(Level level, BlockPos pos, int distance) {
+		BlockState state = level.getBlockState(pos);
 		if (state.isAir() || state.is(BlockTags.LEAVES)) {
-			world.setBlock(pos, TFBlocks.BEANSTALK_LEAVES.get().defaultBlockState().setValue(LeavesBlock.DISTANCE, distance), 2);
+			level.setBlock(pos, TFBlocks.BEANSTALK_LEAVES.get().defaultBlockState().setValue(LeavesBlock.DISTANCE, distance), Block.UPDATE_CLIENTS);
 		}
 	}
 
 	@Override
-	protected void saveAdditional(CompoundTag compoundTag) {
-		super.saveAdditional(compoundTag);
+	protected void saveAdditional(CompoundTag compoundTag, HolderLookup.Provider provider) {
+		super.saveAdditional(compoundTag, provider);
 		compoundTag.putInt("ticker", this.ticker);
 		compoundTag.putInt("layer", this.layer);
 		compoundTag.putBoolean("isAreaClearEnough", this.isAreaClearEnough);
 
 		compoundTag.putInt("nextLeafY", this.nextLeafY);
-		compoundTag.putInt("yOffset", this.yOffset);
+		compoundTag.putInt("beardifierGroundDelta", this.yOffset);
 		compoundTag.putFloat("cScale", this.cScale);
 		compoundTag.putFloat("rScale", this.rScale);
 		compoundTag.putInt("maxY", this.maxY);
@@ -202,14 +204,14 @@ public class GrowingBeanstalkBlockEntity extends BlockEntity {
 	}
 
 	@Override
-	public void load(CompoundTag compoundTag) {
-		super.load(compoundTag);
+	protected void loadAdditional(CompoundTag compoundTag, HolderLookup.Provider provider) {
+		super.loadAdditional(compoundTag, provider);
 		this.ticker = compoundTag.getInt("ticker");
 		this.layer = compoundTag.getInt("layer");
 		this.isAreaClearEnough = compoundTag.getBoolean("isAreaClearEnough");
 
 		this.nextLeafY = compoundTag.getInt("nextLeafY");
-		this.yOffset = compoundTag.getInt("yOffset");
+		this.yOffset = compoundTag.getInt("beardifierGroundDelta");
 		this.cScale = compoundTag.getFloat("cScale");
 		this.rScale = compoundTag.getFloat("rScale");
 		this.maxY = compoundTag.getInt("maxY");

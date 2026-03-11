@@ -8,13 +8,13 @@ import twilightforest.client.model.entity.AdherentModel;
 import twilightforest.entity.monster.Adherent;
 
 public class AdherentRenderer extends TFBipedRenderer<Adherent, AdherentModel> {
-	public AdherentRenderer(EntityRendererProvider.Context manager) {
-		super(manager, new AdherentModel(manager.bakeLayer(TFModelLayers.ADHERENT)), 0.625F, "adherent.png");
+	public AdherentRenderer(EntityRendererProvider.Context context) {
+		super(context, new AdherentModel(context.bakeLayer(TFModelLayers.ADHERENT)), 0.625F, "adherent.png");
 	}
 
 	@Override
-	protected void scale(Adherent e, PoseStack ms, float partialTicks) {
-		float bounce = e.tickCount + partialTicks;
-		ms.translate(0F, -0.125F - Mth.sin((bounce) * 0.133F) * 0.1F, 0F);
+	protected void scale(Adherent entity, PoseStack stack, float partialTicks) {
+		float bounce = entity.tickCount + partialTicks;
+		stack.translate(0.0F, -0.125F - Mth.sin((bounce) * 0.133F) * 0.1F, 0.0F);
 	}
 }

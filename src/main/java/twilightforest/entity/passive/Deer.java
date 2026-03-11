@@ -3,18 +3,24 @@ package twilightforest.entity.passive;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.TFEntities;
+import twilightforest.init.TFItems;
 import twilightforest.init.TFSounds;
 
 public class Deer extends Animal {
@@ -28,7 +34,7 @@ public class Deer extends Animal {
 		goalSelector.addGoal(0, new FloatGoal(this));
 		goalSelector.addGoal(1, new PanicGoal(this, 2.0D));
 		goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
-		goalSelector.addGoal(3, new TemptGoal(this, 1.25D, Ingredient.of(Items.WHEAT), false));
+		goalSelector.addGoal(3, new TemptGoal(this, 1.25D, Ingredient.of(ItemTagGenerator.DEER_TEMPT_ITEMS), false));
 		goalSelector.addGoal(4, new FollowParentGoal(this, 1.25D));
 		goalSelector.addGoal(4, new AvoidEntityGoal<>(this, Player.class, 16.0F, 1.5D, 1.8D));
 		goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
@@ -38,13 +44,30 @@ public class Deer extends Animal {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Mob.createMobAttributes()
-				.add(Attributes.MAX_HEALTH, 10.0)
-				.add(Attributes.MOVEMENT_SPEED, 0.2);
+			.add(Attributes.MAX_HEALTH, 10.0)
+			.add(Attributes.MOVEMENT_SPEED, 0.2);
 	}
 
 	@Override
-	public float getEyeHeight(Pose pose) {
-		return this.getBbHeight() * 0.7F;
+	public InteractionResult mobInteract(Player player, InteractionHand hand) {
+		InteractionResult result = super.mobInteract(player, hand);
+		ItemStack stack = player.getItemInHand(hand);
+		if (result == InteractionResult.PASS && stack.is(TFItems.SHIKA_SENBEI) && this.getHealth() < this.getMaxHealth()) {
+			this.usePlayerItem(player, hand, stack);
+			return InteractionResult.SUCCESS;
+		}
+
+		return result;
+	}
+
+	@Override
+	public void usePlayerItem(Player player, InteractionHand hand, ItemStack stack) {
+		if (stack.is(TFItems.SHIKA_SENBEI)) {
+			if (!this.level().isClientSide())
+				this.heal(4.0F);
+			this.level().playSound(null, getX(), getY(), getZ(), TFSounds.DEER_EAT.get(), this.getSoundSource(), 1, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
+		}
+		super.usePlayerItem(player, hand, stack);
 	}
 
 	@Override
@@ -72,7 +95,7 @@ public class Deer extends Animal {
 	}
 
 	@Override
-	protected float getStandingEyeHeight(Pose pos, EntityDimensions size) {
-		return this.isBaby() ? size.height * 0.95F : 1.65F;
+	public boolean isFood(ItemStack stack) {
+		return stack.is(ItemTagGenerator.DEER_TEMPT_ITEMS);
 	}
 }

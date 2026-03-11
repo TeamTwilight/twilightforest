@@ -1,70 +1,65 @@
 package twilightforest.advancements;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
-import net.minecraft.advancements.critereon.*;
-import net.minecraft.resources.ResourceLocation;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.advancements.Criterion;
+import net.minecraft.advancements.critereon.ContextAwarePredicate;
+import net.minecraft.advancements.critereon.EntityPredicate;
+import net.minecraft.advancements.critereon.MinMaxBounds;
+import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.alchemy.Potion;
-import net.minecraftforge.registries.ForgeRegistries;
-import twilightforest.TwilightForestMod;
+import tamaized.beanification.Autowired;
+import tamaized.beanification.Component;
+import tamaized.beanification.Configurable;
+import twilightforest.init.TFAdvancements;
+import twilightforest.util.HolderMatcher;
 
-import org.jetbrains.annotations.Nullable;
+import java.util.Optional;
 
-public class DrinkFromFlaskTrigger extends SimpleCriterionTrigger<DrinkFromFlaskTrigger.Instance> {
+@Configurable
+public class DrinkFromFlaskTrigger extends SimpleCriterionTrigger<DrinkFromFlaskTrigger.TriggerInstance> {
 
-	public static final ResourceLocation ID = TwilightForestMod.prefix("drink_from_flask");
+	@Autowired
+	private TriggerInstance.DrinkFromFlaskTriggerInstanceFactory factory;
 
-	@Override
-	public ResourceLocation getId() {
-		return ID;
+	@Autowired
+	private HolderMatcher holderMatcher;
+
+	public Codec<DrinkFromFlaskTrigger.TriggerInstance> codec() {
+		return factory.CODEC;
 	}
 
-	@Override
-	protected Instance createInstance(JsonObject json, ContextAwarePredicate player, DeserializationContext ctx) {
-		Potion potion = null;
-		if (json.has("potion")) {
-			ResourceLocation resourcelocation = new ResourceLocation(GsonHelper.getAsString(json, "potion"));
-			potion = ForgeRegistries.POTIONS.getValue(resourcelocation);
-		}
-		if(json.has("doses") && GsonHelper.getAsInt(json, "doses") > 4) throw new JsonSyntaxException("DrinkFromFlaskTrigger: can't have more than 4 doses.");
-		MinMaxBounds.Ints doses = MinMaxBounds.Ints.fromJson(json.get("doses"));
-		return new Instance(player, doses, potion);
+	public void trigger(ServerPlayer player, int doses, int seconds, Holder<Potion> potion) {
+		this.trigger(player, (instance) -> instance.matches(this, doses, seconds, potion));
 	}
 
-	public void trigger(ServerPlayer player, int doses, Potion potion) {
-		this.trigger(player, (instance) -> instance.matches(doses, potion));
-	}
+	public record TriggerInstance(Optional<ContextAwarePredicate> player, MinMaxBounds.Ints doses, MinMaxBounds.Ints seconds, Holder<Potion> potion) implements SimpleInstance {
 
-	public static class Instance extends AbstractCriterionTriggerInstance {
-
-		private final MinMaxBounds.Ints doses;
-		@Nullable
-		private final Potion potion;
-
-		public Instance(ContextAwarePredicate player, MinMaxBounds.Ints doses, @Nullable Potion potion) {
-			super(ID, player);
-			this.doses = doses;
-			this.potion = potion;
+		public boolean matches(DrinkFromFlaskTrigger parent, int doses, int seconds, Holder<Potion> potion) {
+			return this.doses().matches(doses) && this.seconds().matches(seconds) && parent.holderMatcher.match(this.potion(), potion);
 		}
 
-		public static Instance drankPotion(int doses, Potion potion) {
-			return new Instance(ContextAwarePredicate.ANY, MinMaxBounds.Ints.exactly(doses), potion);
-		}
+		@Component
+		public static class DrinkFromFlaskTriggerInstanceFactory {
 
-		public boolean matches(int doses, Potion potion) {
-			return this.doses.matches(doses) && this.potion != null && this.potion == potion;
-		}
+			public final Codec<DrinkFromFlaskTrigger.TriggerInstance> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+					EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(DrinkFromFlaskTrigger.TriggerInstance::player),
+					MinMaxBounds.Ints.CODEC.optionalFieldOf("doses", MinMaxBounds.Ints.between(0, 4)).forGetter(DrinkFromFlaskTrigger.TriggerInstance::doses),
+					MinMaxBounds.Ints.CODEC.optionalFieldOf("seconds", MinMaxBounds.Ints.exactly(8)).forGetter(DrinkFromFlaskTrigger.TriggerInstance::seconds),
+					BuiltInRegistries.POTION.holderByNameCodec().fieldOf("potion").forGetter(DrinkFromFlaskTrigger.TriggerInstance::potion))
+				.apply(instance, DrinkFromFlaskTrigger.TriggerInstance::new));
 
-		@Override
-		public JsonObject serializeToJson(SerializationContext ctx) {
-			JsonObject object = super.serializeToJson(ctx);
-			object.add("doses", this.doses.serializeToJson());
-			if (this.potion != null) {
-				object.addProperty("potion", ForgeRegistries.POTIONS.getKey(this.potion).toString());
+			public Criterion<DrinkFromFlaskTrigger.TriggerInstance> drankPotion(int doses, MinMaxBounds.Ints seconds, Holder<Potion> potion) {
+				return TFAdvancements.DRINK_FROM_FLASK.get().createCriterion(new TriggerInstance(Optional.empty(), MinMaxBounds.Ints.exactly(doses), seconds, potion));
 			}
-			return object;
+
+			public Criterion<DrinkFromFlaskTrigger.TriggerInstance> drankPotion(MinMaxBounds.Ints doses, MinMaxBounds.Ints seconds, Holder<Potion> potion) {
+				return TFAdvancements.DRINK_FROM_FLASK.get().createCriterion(new TriggerInstance(Optional.empty(), doses, seconds, potion));
+			}
 		}
+
 	}
 }

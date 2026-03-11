@@ -1,71 +1,91 @@
 {
   "type": "twilightforest:troll_cave",
-  "adjust_structure_elevation": false,
   "advancements_required": [
     "twilightforest:progress_merge"
   ],
-  "allow_biome_surface_decorations": true,
-  "allow_biome_underground_decorations": true,
-  "ambient_spawns": [],
   "biomes": "#twilightforest:valid_troll_cave_biomes",
-  "chunk_clearance_radius": 4,
-  "hint_item": {
-    "Count": 1,
-    "id": "minecraft:written_book",
-    "tag": {
-      "author": "twilightforest.book.author",
-      "generation": 3,
-      "pages": [
-        "{\"translate\":\"twilightforest.book.trollcave.1\"}",
-        "{\"translate\":\"twilightforest.book.trollcave.2\"}",
-        "{\"translate\":\"twilightforest.book.trollcave.3\"}"
+  "center_in_chunk": false,
+  "controlled_spawns": {
+    "ambient_spawns": [],
+    "labelled_monster_spawns": {
+      "0": [
+        {
+          "type": "minecraft:creeper",
+          "maxCount": 2,
+          "minCount": 1,
+          "weight": 5
+        },
+        {
+          "type": "minecraft:skeleton",
+          "maxCount": 2,
+          "minCount": 1,
+          "weight": 10
+        },
+        {
+          "type": "twilightforest:troll",
+          "maxCount": 2,
+          "minCount": 1,
+          "weight": 20
+        },
+        {
+          "type": "minecraft:witch",
+          "maxCount": 1,
+          "minCount": 1,
+          "weight": 5
+        }
       ],
-      "title": "twilightforest.book.trollcave",
-      "twilightforest:book": 1
-    }
+      "1": [
+        {
+          "type": "twilightforest:giant_miner",
+          "maxCount": 1,
+          "minCount": 1,
+          "weight": 10
+        },
+        {
+          "type": "twilightforest:armored_giant",
+          "maxCount": 1,
+          "minCount": 1,
+          "weight": 10
+        }
+      ]
+    },
+    "water_spawns": []
   },
-  "hint_mob": "twilightforest:kobold",
-  "labelled_monster_spawns": {
-    "0": [
-      {
-        "type": "minecraft:creeper",
-        "maxCount": 2,
-        "minCount": 1,
-        "weight": 5
+  "decoration_clearance": {
+    "adjust_structure_elevation": false,
+    "allow_biome_surface_decorations": true,
+    "allow_biome_underground_decorations": true,
+    "allow_biome_vegetation": true,
+    "chunk_clearance_radius": 4.0
+  },
+  "hint_creature": {
+    "hint_item": {
+      "components": {
+        "minecraft:written_book_content": {
+          "author": "twilightforest.book.author",
+          "generation": 3,
+          "pages": [
+            {
+              "raw": "{\"translate\":\"twilightforest.book.trollcave.1\"}"
+            },
+            {
+              "raw": "{\"translate\":\"twilightforest.book.trollcave.2\"}"
+            },
+            {
+              "raw": "{\"translate\":\"twilightforest.book.trollcave.3\"}"
+            }
+          ],
+          "resolved": true,
+          "title": {
+            "raw": "twilightforest.book.trollcave"
+          }
+        },
+        "twilightforest:translatable_book": {}
       },
-      {
-        "type": "minecraft:skeleton",
-        "maxCount": 2,
-        "minCount": 1,
-        "weight": 10
-      },
-      {
-        "type": "twilightforest:troll",
-        "maxCount": 2,
-        "minCount": 1,
-        "weight": 20
-      },
-      {
-        "type": "minecraft:witch",
-        "maxCount": 1,
-        "minCount": 1,
-        "weight": 5
-      }
-    ],
-    "1": [
-      {
-        "type": "twilightforest:giant_miner",
-        "maxCount": 1,
-        "minCount": 1,
-        "weight": 10
-      },
-      {
-        "type": "twilightforest:armored_giant",
-        "maxCount": 1,
-        "minCount": 1,
-        "weight": 10
-      }
-    ]
+      "count": 1,
+      "id": "minecraft:written_book"
+    },
+    "hint_mob": "twilightforest:kobold"
   },
   "spawn_overrides": {
     "ambient": {
@@ -101,7 +121,8 @@
       "spawns": []
     }
   },
+  "speleothem_config": "twilightforest:troll_cave",
   "step": "underground_structures",
-  "terrain_adaptation": "bury",
-  "water_spawns": []
+  "structure_icon": "twilightforest:troll_caves",
+  "terrain_adaptation": "bury"
 }

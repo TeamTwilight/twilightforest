@@ -19,7 +19,7 @@ import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.loot.TFLootTables;
 
 
-public class StrongholdSmallStairsComponent extends StructureTFStrongholdComponent {
+public class StrongholdSmallStairsComponent extends KnightStrongholdComponent {
 
 	private boolean enterBottom;
 	public boolean hasTreasure;

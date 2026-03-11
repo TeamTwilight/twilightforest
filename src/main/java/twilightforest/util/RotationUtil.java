@@ -1,12 +1,14 @@
 package twilightforest.util;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 
 public final class RotationUtil {
 	public static final Rotation[] ROTATIONS = Rotation.values();
-	public static final Direction[] CARDINALS = { Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST };
+	public static final Direction[] CARDINALS = {Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST};
 
 	private RotationUtil() {
 	}
@@ -77,5 +79,17 @@ public final class RotationUtil {
 
 	public static Direction getRandomFacing(RandomSource random) {
 		return CARDINALS[random.nextInt(CARDINALS.length)];
+	}
+
+	public static BlockPos mirrorOffset(Mirror mirror, BlockPos offset) {
+		return mirror == Mirror.NONE ? offset : new BlockPos(
+			mirror == Mirror.FRONT_BACK ? -offset.getX() : offset.getX(),
+			offset.getY(),
+			mirror == Mirror.LEFT_RIGHT ? -offset.getZ() : offset.getZ()
+		);
+	}
+
+	public static Mirror mirrorOverAxis(boolean shouldFlip, Direction.Axis axis) {
+		return shouldFlip ? (axis == Direction.Axis.X ? Mirror.LEFT_RIGHT : Mirror.FRONT_BACK) : Mirror.NONE;
 	}
 }

@@ -6,7 +6,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.minecraft.client.renderer.block.model.BlockElement;
 import net.minecraft.util.GsonHelper;
-import net.minecraftforge.client.model.geometry.IGeometryLoader;
+import net.neoforged.neoforge.client.model.geometry.IGeometryLoader;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.client.model.block.forcefield.ForceFieldModel.ExtraDirection;
 
@@ -46,7 +46,7 @@ public class ForceFieldModelLoader implements IGeometryLoader<UnbakedForceFieldM
 		return new UnbakedForceFieldModel(elementsAndConditions);
 	}
 
-	record Condition(@Nullable ExtraDirection direction, boolean b, List<ExtraDirection> parents) {
+	public record Condition(@Nullable ExtraDirection direction, boolean b, List<ExtraDirection> parents) {
 
 	}
 }

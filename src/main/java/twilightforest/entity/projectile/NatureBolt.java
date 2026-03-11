@@ -8,6 +8,7 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ItemSupplier;
@@ -21,15 +22,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.neoforged.neoforge.event.EventHooks;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
-import twilightforest.util.EntityUtil;
+import twilightforest.util.entities.EntityUtil;
 
-@OnlyIn(value = Dist.CLIENT, _interface = ItemSupplier.class)
 public class NatureBolt extends TFThrowable implements ITFProjectile, ItemSupplier {
 
 	public NatureBolt(EntityType<? extends NatureBolt> type, Level level) {
@@ -47,14 +45,13 @@ public class NatureBolt extends TFThrowable implements ITFProjectile, ItemSuppli
 	}
 
 	@Override
-	protected float getGravity() {
+	protected double getDefaultGravity() {
 		return 0.003F;
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void handleEntityEvent(byte id) {
-		if (id == 3) {
+		if (id == EntityEvent.DEATH) {
 			for (int i = 0; i < 8; ++i) {
 				this.level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.OAK_LEAVES.defaultBlockState()), false, this.getX(), this.getY(), this.getZ(), random.nextGaussian() * 0.05D, random.nextDouble() * 0.2D, random.nextGaussian() * 0.05D);
 			}
@@ -69,8 +66,8 @@ public class NatureBolt extends TFThrowable implements ITFProjectile, ItemSuppli
 		BlockPos blockPosHit = result.getBlockPos();
 		BlockState stateHit = this.level().getBlockState(blockPosHit);
 
-		if (ForgeEventFactory.getMobGriefingEvent(this.level(), this)) {
-			if (!this.level().isClientSide() && stateHit.getBlock() instanceof BonemealableBlock bonemealable && bonemealable.isValidBonemealTarget(this.level(), blockPosHit, stateHit, this.level().isClientSide())) {
+		if (EventHooks.canEntityGrief(this.level(), this)) {
+			if (!this.level().isClientSide() && stateHit.getBlock() instanceof BonemealableBlock bonemealable && bonemealable.isValidBonemealTarget(this.level(), blockPosHit, stateHit)) {
 				bonemealable.performBonemeal((ServerLevel) this.level(), this.random, blockPosHit, stateHit);
 			} else if (stateHit.isSolid() && this.canReplaceBlock(this.level(), blockPosHit)) {
 				this.level().setBlockAndUpdate(blockPosHit, Blocks.BIRCH_LEAVES.defaultBlockState().setValue(LeavesBlock.PERSISTENT, true));
@@ -85,7 +82,7 @@ public class NatureBolt extends TFThrowable implements ITFProjectile, ItemSuppli
 		Entity entityHit = result.getEntity();
 		if (entityHit instanceof LivingEntity living && (owner == null || (entityHit != owner && entityHit != owner.getVehicle()))) {
 			if (entityHit.hurt(TFDamageTypes.getIndirectEntityDamageSource(this.level(), TFDamageTypes.LEAF_BRAIN, this, this.getOwner()), 2)
-					&& this.level().getDifficulty() != Difficulty.PEACEFUL) {
+				&& this.level().getDifficulty() != Difficulty.PEACEFUL) {
 				int poisonTime = this.level().getDifficulty() == Difficulty.HARD ? 7 : 3;
 				living.addEffect(new MobEffectInstance(MobEffects.POISON, poisonTime * 20, 0));
 			}

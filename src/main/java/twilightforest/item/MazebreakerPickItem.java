@@ -10,7 +10,7 @@ import javax.annotation.Nonnull;
 
 public class MazebreakerPickItem extends PickaxeItem {
 	public MazebreakerPickItem(Tier material, Properties properties) {
-		super(material, 1, -2.8F, properties);
+		super(material, properties);
 	}
 
 	@Override

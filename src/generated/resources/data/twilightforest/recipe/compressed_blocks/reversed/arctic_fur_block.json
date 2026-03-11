@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "twilightforest:arctic_fur_block"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "id": "twilightforest:arctic_fur"
+  }
+}

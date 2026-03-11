@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "drying_rack",
+  "key": {
+    "-": {
+      "item": "twilightforest:mining_slab"
+    }
+  },
+  "pattern": [
+    "---"
+  ],
+  "result": {
+    "count": 1,
+    "id": "twilightforest:mining_drying_rack"
+  }
+}

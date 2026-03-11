@@ -24,3 +24,7 @@ run
 classes
 logs
 run-data
+gource.sh
+.noai
+.profileconfig.json
+profile.jfr

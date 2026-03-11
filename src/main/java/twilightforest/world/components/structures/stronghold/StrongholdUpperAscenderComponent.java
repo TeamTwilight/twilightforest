@@ -15,11 +15,11 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import twilightforest.init.TFDimensionData;
 import twilightforest.init.TFStructurePieceTypes;
-import twilightforest.world.registration.TFGenerationSettings;
 
 
-public class StrongholdUpperAscenderComponent extends StructureTFStrongholdComponent {
+public class StrongholdUpperAscenderComponent extends KnightStrongholdComponent {
 
 	boolean exitTop;
 
@@ -40,7 +40,7 @@ public class StrongholdUpperAscenderComponent extends StructureTFStrongholdCompo
 
 	@Override
 	public BoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
-		if (y < TFGenerationSettings.SEALEVEL - 7) { // FIXME Fix this when we overhaul this structure
+		if (y < TFDimensionData.SEALEVEL + 5) { // FIXME Fix this when we overhaul this structure
 			this.exitTop = true;
 			return BoundingBox.orientBox(x, y, z, -2, -1, 0, 5, 10, 10, facing);
 		} else /*if (y < -32)*/ { // FIXME world.minBuildHeight
@@ -54,38 +54,34 @@ public class StrongholdUpperAscenderComponent extends StructureTFStrongholdCompo
 		super.addChildren(parent, list, random);
 
 		// make a random component on the other side
-		addNewUpperComponent(parent, list, random, Rotation.NONE, 2, exitTop ? 6 : 1, 10);
+		this.addNewUpperComponent(parent, list, random, Rotation.NONE, 2, exitTop ? 6 : 1, 10);
 	}
 
 	@Override
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		/*if (this.edgesLiquid(world, sbb)) {
-			return false;
-		} else */{
-			placeUpperStrongholdWalls(world, sbb, 0, 0, 0, 4, 9, 9, rand, deco.randomBlocks);
+		this.placeUpperStrongholdWalls(world, sbb, 0, 0, 0, 4, 9, 9, rand, this.deco.randomBlocks);
 
-			// entrance doorway
-			placeSmallDoorwayAt(world, 2, 2, exitTop ? 1 : 6, 0, sbb);
+		// entrance doorway
+		this.placeSmallDoorwayAt(world, 2, 2, this.exitTop ? 1 : 6, 0, sbb);
 
-			// exit doorway
-			placeSmallDoorwayAt(world, 0, 2, exitTop ? 6 : 1, 9, sbb);
+		// exit doorway
+		this.placeSmallDoorwayAt(world, 0, 2, this.exitTop ? 6 : 1, 9, sbb);
 
-			// steps!
-			if (exitTop) {
-				makeStairsAt(world, 1, 3, Direction.NORTH, sbb);
-				makeStairsAt(world, 2, 4, Direction.NORTH, sbb);
-				makeStairsAt(world, 3, 5, Direction.NORTH, sbb);
-				makeStairsAt(world, 4, 6, Direction.NORTH, sbb);
-				makeStairsAt(world, 5, 7, Direction.NORTH, sbb);
-				makePlatformAt(world, 5, 8, sbb);
-			} else {
-				makeStairsAt(world, 1, 6, Direction.NORTH, sbb);
-				makeStairsAt(world, 2, 5, Direction.NORTH, sbb);
-				makeStairsAt(world, 3, 4, Direction.NORTH, sbb);
-				makeStairsAt(world, 4, 3, Direction.NORTH, sbb);
-				makeStairsAt(world, 5, 2, Direction.NORTH, sbb);
-				makePlatformAt(world, 5, 1, sbb);
-			}
+		// steps!
+		if (this.exitTop) {
+			this.makeStairsAt(world, 1, 3, Direction.NORTH, sbb);
+			this.makeStairsAt(world, 2, 4, Direction.NORTH, sbb);
+			this.makeStairsAt(world, 3, 5, Direction.NORTH, sbb);
+			this.makeStairsAt(world, 4, 6, Direction.NORTH, sbb);
+			this.makeStairsAt(world, 5, 7, Direction.NORTH, sbb);
+			this.makePlatformAt(world, 5, 8, sbb);
+		} else {
+			this.makeStairsAt(world, 1, 6, Direction.SOUTH, sbb);
+			this.makeStairsAt(world, 2, 5, Direction.SOUTH, sbb);
+			this.makeStairsAt(world, 3, 4, Direction.SOUTH, sbb);
+			this.makeStairsAt(world, 4, 3, Direction.SOUTH, sbb);
+			this.makeStairsAt(world, 5, 2, Direction.SOUTH, sbb);
+			this.makePlatformAt(world, 5, 1, sbb);
 		}
 	}
 
@@ -94,9 +90,9 @@ public class StrongholdUpperAscenderComponent extends StructureTFStrongholdCompo
 	 */
 	private void makeStairsAt(WorldGenLevel world, int y, int z, Direction facing, BoundingBox sbb) {
 		// check walls
-		if (this.getBlock(world, 0, y, z, sbb).getBlock() != Blocks.AIR || this.getBlock(world, 4, y, z, sbb).getBlock() != Blocks.AIR) {
+		if (!this.getBlock(world, 0, y, z, sbb).isAir() || !this.getBlock(world, 4, y, z, sbb).isAir()) {
 			for (int x = 1; x < 4; x++) {
-				this.placeBlock(world, Blocks.STONE_BRICK_STAIRS.defaultBlockState().setValue(StairBlock.FACING, facing.getOpposite()), x, y, z, sbb);
+				this.placeBlock(world, Blocks.STONE_BRICK_STAIRS.defaultBlockState().setValue(StairBlock.FACING, facing), x, y, z, sbb);
 			}
 		}
 	}
@@ -106,7 +102,7 @@ public class StrongholdUpperAscenderComponent extends StructureTFStrongholdCompo
 	 */
 	private void makePlatformAt(WorldGenLevel world, int y, int z, BoundingBox sbb) {
 		// check walls
-		if (this.getBlock(world, 0, y, z, sbb).getBlock() != Blocks.AIR || this.getBlock(world, 4, y, z, sbb).getBlock() != Blocks.AIR) {
+		if (!this.getBlock(world, 0, y, z, sbb).isAir() || !this.getBlock(world, 4, y, z, sbb).isAir()) {
 			for (int x = 1; x < 4; x++) {
 				this.placeBlock(world, Blocks.STONE_BRICKS.defaultBlockState(), x, y, z, sbb);
 			}

@@ -56,14 +56,14 @@ public class WinterWolf extends HostileWolf implements IBreathAttacker {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return HostileWolf.registerAttributes()
-				.add(Attributes.MAX_HEALTH, 30.0D)
-				.add(Attributes.ATTACK_DAMAGE, 6);
+			.add(Attributes.MAX_HEALTH, 30.0D)
+			.add(Attributes.ATTACK_DAMAGE, 6);
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(BREATH_FLAG, false);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(BREATH_FLAG, false);
 	}
 
 	@Override

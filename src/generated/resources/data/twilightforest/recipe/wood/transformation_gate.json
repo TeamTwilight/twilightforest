@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "group": "wooden_fence_gate",
+  "key": {
+    "#": {
+      "item": "twilightforest:transformation_planks"
+    },
+    "S": {
+      "tag": "c:rods/wooden"
+    }
+  },
+  "pattern": [
+    "S#S",
+    "S#S"
+  ],
+  "result": {
+    "count": 1,
+    "id": "twilightforest:transformation_fence_gate"
+  }
+}

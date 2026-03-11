@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_tannin": {
+      "conditions": {
+        "items": [
+          {
+            "items": "twilightforest:tannin"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "twilightforest:treated_leather"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_tannin"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "twilightforest:treated_leather"
+    ]
+  }
+}

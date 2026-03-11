@@ -1,5 +1,5 @@
 {
-  "ambient_light": 0.0,
+  "ambient_light": 0.01,
   "bed_works": true,
   "coordinate_scale": 0.125,
   "effects": "twilightforest:renderer",
@@ -14,13 +14,11 @@
   "monster_spawn_block_light_limit": 7,
   "monster_spawn_light_level": {
     "type": "minecraft:uniform",
-    "value": {
-      "max_inclusive": 7,
-      "min_inclusive": 0
-    }
+    "max_inclusive": 7,
+    "min_inclusive": 0
   },
   "natural": true,
   "piglin_safe": false,
-  "respawn_anchor_works": true,
+  "respawn_anchor_works": false,
   "ultrawarm": false
 }

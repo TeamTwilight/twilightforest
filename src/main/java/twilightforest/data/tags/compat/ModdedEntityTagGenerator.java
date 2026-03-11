@@ -7,7 +7,7 @@ import net.minecraft.data.tags.EntityTypeTagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
-import net.minecraftforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.EntityTagGenerator;
@@ -41,11 +41,11 @@ public class ModdedEntityTagGenerator extends EntityTypeTagsProvider {
 		tag(AC_RESISTS_TREMORSAURUS_ROAR).add(TFEntities.HYDRA.get(), TFEntities.UR_GHAST.get());
 
 		tag(AETHER_DEFLECTABLE_PROJECTILES).add(
-				TFEntities.NATURE_BOLT.get(),
-				TFEntities.LICH_BOLT.get(),
-				TFEntities.WAND_BOLT.get(),
-				TFEntities.SLIME_BLOB.get(),
-				TFEntities.ICE_SNOWBALL.get());
+			TFEntities.NATURE_BOLT.get(),
+			TFEntities.LICH_BOLT.get(),
+			TFEntities.WAND_BOLT.get(),
+			TFEntities.SLIME_BLOB.get(),
+			TFEntities.ICE_SNOWBALL.get());
 
 		tag(AETHER_FIRE_MOB).add(TFEntities.FIRE_BEETLE.get());
 		tag(AETHER_PIGS).add(TFEntities.BOAR.get());
@@ -57,7 +57,7 @@ public class ModdedEntityTagGenerator extends EntityTypeTagsProvider {
 	}
 
 	private static TagKey<EntityType<?>> createTagFor(String modid, String tagName) {
-		return TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation(modid, tagName));
+		return TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(modid, tagName));
 	}
 
 }

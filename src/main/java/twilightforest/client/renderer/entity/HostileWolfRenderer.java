@@ -8,20 +8,18 @@ import twilightforest.client.model.entity.HostileWolfModel;
 import twilightforest.entity.monster.HostileWolf;
 
 public class HostileWolfRenderer extends MobRenderer<HostileWolf, HostileWolfModel<HostileWolf>> {
-	private static final ResourceLocation WOLF_LOCATION = new ResourceLocation("textures/entity/wolf/wolf.png");
-	private static final ResourceLocation WOLF_ANGRY_LOCATION = new ResourceLocation("textures/entity/wolf/wolf_angry.png");
 
-	public HostileWolfRenderer(EntityRendererProvider.Context p_174452_) {
-		super(p_174452_, new HostileWolfModel<>(p_174452_.bakeLayer(TFModelLayers.HOSTILE_WOLF)), 0.5F);
+	public HostileWolfRenderer(EntityRendererProvider.Context context) {
+		super(context, new HostileWolfModel<>(context.bakeLayer(TFModelLayers.HOSTILE_WOLF)), 0.5F);
 	}
 
 	@Override
-	protected float getBob(HostileWolf p_116528_, float p_116529_) {
-		return p_116528_.getTailAngle();
+	protected float getBob(HostileWolf entity, float partialTicks) {
+		return entity.getTailAngle();
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(HostileWolf wolf) {
-		return wolf.isAggressive() ? WOLF_ANGRY_LOCATION : WOLF_LOCATION;
+	public ResourceLocation getTextureLocation(HostileWolf entity) {
+		return entity.getTexture();
 	}
 }

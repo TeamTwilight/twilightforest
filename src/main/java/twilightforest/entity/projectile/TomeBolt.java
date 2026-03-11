@@ -6,6 +6,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EntityEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ItemSupplier;
@@ -16,11 +17,8 @@ import net.minecraft.world.level.block.LecternBlock;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.init.TFDamageTypes;
 
-@OnlyIn(value = Dist.CLIENT, _interface = ItemSupplier.class)
 public class TomeBolt extends TFThrowable implements ItemSupplier {
 
 	public TomeBolt(EntityType<? extends TomeBolt> type, Level world, LivingEntity thrower) {
@@ -38,15 +36,13 @@ public class TomeBolt extends TFThrowable implements ItemSupplier {
 	}
 
 	@Override
-	protected float getGravity() {
+	protected double getDefaultGravity() {
 		return 0.003F;
 	}
 
-
-	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void handleEntityEvent(byte id) {
-		if (id == 3) {
+		if (id == EntityEvent.DEATH) {
 			ParticleOptions particle = new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(Items.PAPER));
 			for (int i = 0; i < 8; ++i) {
 				this.level().addParticle(particle, false, this.getX(), this.getY(), this.getZ(), this.random.nextGaussian() * 0.05D, this.random.nextDouble() * 0.2D, this.random.nextGaussian() * 0.05D);
@@ -71,8 +67,8 @@ public class TomeBolt extends TFThrowable implements ItemSupplier {
 	@Override
 	protected void onHit(HitResult result) {
 		if (this.getOwner() != null && result instanceof BlockHitResult blockHitResult &&
-				this.getOwner().blockPosition().equals(blockHitResult.getBlockPos()) &&
-				this.level().getBlockState(blockHitResult.getBlockPos()).getBlock() instanceof LecternBlock) {
+			this.getOwner().blockPosition().equals(blockHitResult.getBlockPos()) &&
+			this.level().getBlockState(blockHitResult.getBlockPos()).getBlock() instanceof LecternBlock) {
 			return;
 		}
 		super.onHit(result);

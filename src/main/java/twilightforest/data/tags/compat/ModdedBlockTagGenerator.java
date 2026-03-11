@@ -6,11 +6,9 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFBlocks;
@@ -24,6 +22,10 @@ public class ModdedBlockTagGenerator extends IntrinsicHolderTagsProvider<Block> 
 	public static final TagKey<Block> AC_UNDERZEALOT_LIGHT_SOURCES = createTagFor("alexscaves", "underzealot_light_sources");
 
 	public static final TagKey<Block> ARTIFACTS_CAMPSITE_CHESTS = createTagFor("artifacts", "campsite_chests");
+
+	public static final TagKey<Block> CHEST_MOUNTED_STORAGE = createTagFor("create", "chest_mounted_storage");
+	public static final TagKey<Block> PASSIVE_BOILER_HEATERS = createTagFor("create", "passive_boiler_heaters");
+	public static final TagKey<Block> TREE_ATTACHMENTS = createTagFor("create", "tree_attachments");
 
 	public static final TagKey<Block> FD_COMPOST_ACTIVATORS = createTagFor("farmersdelight", "compost_activators");
 	public static final TagKey<Block> FD_HEAT_SOURCES = createTagFor("farmersdelight", "heat_sources");
@@ -40,11 +42,27 @@ public class ModdedBlockTagGenerator extends IntrinsicHolderTagsProvider<Block> 
 
 		tag(ARTIFACTS_CAMPSITE_CHESTS).addTag(BlockTagGenerator.TF_CHESTS);
 
+		tag(CHEST_MOUNTED_STORAGE).addTag(BlockTagGenerator.TF_CHESTS).add(
+			TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST.get(),
+			TFBlocks.CANOPY_TRAPPED_CHEST.get(),
+			TFBlocks.MANGROVE_TRAPPED_CHEST.get(),
+			TFBlocks.DARK_TRAPPED_CHEST.get(),
+			TFBlocks.TIME_TRAPPED_CHEST.get(),
+			TFBlocks.TRANSFORMATION_TRAPPED_CHEST.get(),
+			TFBlocks.MINING_TRAPPED_CHEST.get(),
+			TFBlocks.SORTING_TRAPPED_CHEST.get());
+		tag(PASSIVE_BOILER_HEATERS).addTag(BlockTagGenerator.STORAGE_BLOCKS_FIERY);
+		tag(TREE_ATTACHMENTS).add(
+			TFBlocks.TIME_LOG_CORE.get(), TFBlocks.TRANSFORMATION_LOG_CORE.get(),
+			TFBlocks.MINING_LOG_CORE.get(), TFBlocks.SORTING_LOG_CORE.get(),
+			TFBlocks.ROOT_BLOCK.get(), TFBlocks.LIVEROOT_BLOCK.get(),
+			TFBlocks.MANGROVE_ROOT.get(), TFBlocks.FIREFLY.get(), TFBlocks.CICADA.get());
+
 		tag(FD_COMPOST_ACTIVATORS).add(TFBlocks.UBEROUS_SOIL.get(), TFBlocks.MUSHGLOOM.get());
 		tag(FD_HEAT_SOURCES).addTag(BlockTagGenerator.STORAGE_BLOCKS_FIERY);
 	}
 
 	private static TagKey<Block> createTagFor(String modid, String tagName) {
-		return BlockTags.create(new ResourceLocation(modid, tagName));
+		return BlockTags.create(ResourceLocation.fromNamespaceAndPath(modid, tagName));
 	}
 }

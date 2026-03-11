@@ -1,0 +1,6 @@
+{
+  "max_length": 6,
+  "ores": "minecraft:gold_ore",
+  "size_variation": 0.6,
+  "weight": 10
+}

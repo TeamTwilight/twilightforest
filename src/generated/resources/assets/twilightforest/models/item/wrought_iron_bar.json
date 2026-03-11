@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "twilightforest:item/wrought_iron_bar"
+  }
+}

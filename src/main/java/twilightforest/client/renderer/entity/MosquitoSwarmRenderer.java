@@ -7,12 +7,12 @@ import twilightforest.entity.monster.MosquitoSwarm;
 
 public class MosquitoSwarmRenderer extends TFGenericMobRenderer<MosquitoSwarm, MosquitoSwarmModel> {
 
-	public MosquitoSwarmRenderer(EntityRendererProvider.Context manager) {
-		super(manager, new MosquitoSwarmModel(manager.bakeLayer(TFModelLayers.MOSQUITO_SWARM)), 0.0F, "mosquitoswarm.png");
+	public MosquitoSwarmRenderer(EntityRendererProvider.Context context) {
+		super(context, new MosquitoSwarmModel(context.bakeLayer(TFModelLayers.MOSQUITO_SWARM)), 0.0F, "mosquitoswarm.png");
 	}
 
 	@Override
-	protected float getFlipDegrees(MosquitoSwarm swarm) {
+	protected float getFlipDegrees(MosquitoSwarm entity) {
 		return 0.0F;
 	}
 }

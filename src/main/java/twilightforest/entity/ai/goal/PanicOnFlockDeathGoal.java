@@ -19,6 +19,7 @@ public class PanicOnFlockDeathGoal extends Goal {
 
 	private int fleeTimer;
 
+	@SuppressWarnings("this-escape")
 	public PanicOnFlockDeathGoal(PathfinderMob creature, float speed) {
 		this.flockCreature = creature;
 		this.speed = speed;

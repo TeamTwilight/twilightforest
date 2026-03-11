@@ -1,0 +1,10 @@
+{
+  "values": [
+    "#minecraft:features_cannot_replace",
+    "#minecraft:logs",
+    "#minecraft:leaves",
+    "twilightforest:root",
+    "twilightforest:liveroot_block",
+    "minecraft:mushroom_stem"
+  ]
+}

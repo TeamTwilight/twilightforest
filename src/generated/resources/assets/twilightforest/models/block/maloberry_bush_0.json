@@ -1,0 +1,6 @@
+{
+  "parent": "twilightforest:block/abstract_bush_0",
+  "textures": {
+    "all": "twilightforest:block/maloberry_bush"
+  }
+}

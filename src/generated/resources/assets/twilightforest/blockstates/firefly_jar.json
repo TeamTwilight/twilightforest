@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "twilightforest:block/firefly_jar"
+      "model": "twilightforest:block/mason_jar"
     }
   }
 }

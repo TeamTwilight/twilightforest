@@ -1,0 +1,62 @@
+{
+  "anvil_cost": 8,
+  "description": {
+    "translate": "enchantment.twilightforest.chill_aura"
+  },
+  "effects": {
+    "minecraft:post_attack": [
+      {
+        "affected": "attacker",
+        "effect": {
+          "type": "minecraft:all_of",
+          "effects": [
+            {
+              "type": "twilightforest:apply_frosted",
+              "amplifier": {
+                "type": "minecraft:linear",
+                "base": 0.0,
+                "per_level_above_first": 1.0
+              },
+              "duration": 200.0
+            },
+            {
+              "type": "minecraft:damage_item",
+              "amount": 2.0
+            }
+          ]
+        },
+        "enchanted": "victim",
+        "requirements": {
+          "chance": {
+            "type": "minecraft:enchantment_level",
+            "amount": {
+              "type": "minecraft:linear",
+              "base": 0.15,
+              "per_level_above_first": 0.15
+            }
+          },
+          "condition": "minecraft:random_chance"
+        }
+      }
+    ]
+  },
+  "exclusive_set": [
+    "minecraft:thorns",
+    "twilightforest:fire_react"
+  ],
+  "max_cost": {
+    "base": 20,
+    "per_level_above_first": 9
+  },
+  "max_level": 3,
+  "min_cost": {
+    "base": 5,
+    "per_level_above_first": 9
+  },
+  "primary_items": "#minecraft:enchantable/chest_armor",
+  "slots": [
+    "armor"
+  ],
+  "supported_items": "#minecraft:enchantable/armor",
+  "weight": 1
+}

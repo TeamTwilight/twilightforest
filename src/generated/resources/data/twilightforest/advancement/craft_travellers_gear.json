@@ -1,0 +1,64 @@
+{
+  "parent": "twilightforest:root",
+  "criteria": {
+    "craft_belt": {
+      "conditions": {
+        "recipe_id": "twilightforest:equipment/travellers_belt"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "craft_boots": {
+      "conditions": {
+        "recipe_id": "twilightforest:equipment/travellers_boots"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "craft_gloves": {
+      "conditions": {
+        "recipe_id": "twilightforest:equipment/travellers_gloves"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "craft_goggles": {
+      "conditions": {
+        "recipe_id": "twilightforest:equipment/travellers_goggles"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "craft_vest": {
+      "conditions": {
+        "recipe_id": "twilightforest:equipment/travellers_chest"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "craft_wings": {
+      "conditions": {
+        "recipe_id": "twilightforest:equipment/travellers_wings"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.twilightforest.craft_travellers_gear.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "twilightforest:travellers_boots"
+    },
+    "title": {
+      "translate": "advancement.twilightforest.craft_travellers_gear"
+    }
+  },
+  "requirements": [
+    [
+      "craft_goggles",
+      "craft_vest",
+      "craft_wings",
+      "craft_boots",
+      "craft_belt",
+      "craft_gloves"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

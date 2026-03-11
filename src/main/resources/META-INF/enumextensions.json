@@ -1,0 +1,148 @@
+{
+  "entries": [
+    {
+      "enum": "net/minecraft/world/damagesource/DamageEffects",
+      "name": "TWILIGHTFOREST_PINCH",
+      "constructor": "(Ljava/lang/String;Ljava/util/function/Supplier;)V",
+      "parameters": {
+        "class": "twilightforest/TFEnumExtensions",
+        "method": "DamageEffects_PINCH"
+      }
+    },
+    {
+      "enum": "net/minecraft/world/item/Rarity",
+      "name": "TWILIGHTFOREST_TWILIGHT",
+      "constructor": "(ILjava/lang/String;Ljava/util/function/UnaryOperator;)V",
+      "parameters": {
+        "class": "twilightforest/TFEnumExtensions",
+        "method": "Rarity_TWILIGHT"
+      }
+    },
+    {
+      "enum": "net/minecraft/world/level/biome/BiomeSpecialEffects$GrassColorModifier",
+      "name": "TWILIGHTFOREST_ENCHANTED_FOREST",
+      "constructor": "(Ljava/lang/String;Lnet/minecraft/world/level/biome/BiomeSpecialEffects$GrassColorModifier$ColorModifier;)V",
+      "parameters": {
+        "class": "twilightforest/TFEnumExtensions",
+        "method": "GrassColorModifier_ENCHANTED_FOREST"
+      }
+    },
+    {
+      "enum": "net/minecraft/world/level/biome/BiomeSpecialEffects$GrassColorModifier",
+      "name": "TWILIGHTFOREST_SWAMP",
+      "constructor": "(Ljava/lang/String;Lnet/minecraft/world/level/biome/BiomeSpecialEffects$GrassColorModifier$ColorModifier;)V",
+      "parameters": {
+        "class": "twilightforest/TFEnumExtensions",
+        "method": "GrassColorModifier_SWAMP"
+      }
+    },
+    {
+      "enum": "net/minecraft/world/level/biome/BiomeSpecialEffects$GrassColorModifier",
+      "name": "TWILIGHTFOREST_DARK_FOREST",
+      "constructor": "(Ljava/lang/String;Lnet/minecraft/world/level/biome/BiomeSpecialEffects$GrassColorModifier$ColorModifier;)V",
+      "parameters": {
+        "class": "twilightforest/TFEnumExtensions",
+        "method": "GrassColorModifier_DARK_FOREST"
+      }
+    },
+    {
+      "enum": "net/minecraft/world/level/biome/BiomeSpecialEffects$GrassColorModifier",
+      "name": "TWILIGHTFOREST_DARK_FOREST_CENTER",
+      "constructor": "(Ljava/lang/String;Lnet/minecraft/world/level/biome/BiomeSpecialEffects$GrassColorModifier$ColorModifier;)V",
+      "parameters": {
+        "class": "twilightforest/TFEnumExtensions",
+        "method": "GrassColorModifier_DARK_FOREST_CENTER"
+      }
+    },
+    {
+      "enum": "net/minecraft/world/level/biome/BiomeSpecialEffects$GrassColorModifier",
+      "name": "TWILIGHTFOREST_SPOOKY_FOREST",
+      "constructor": "(Ljava/lang/String;Lnet/minecraft/world/level/biome/BiomeSpecialEffects$GrassColorModifier$ColorModifier;)V",
+      "parameters": {
+        "class": "twilightforest/TFEnumExtensions",
+        "method": "GrassColorModifier_SPOOKY_FOREST"
+      }
+    },
+    {
+      "enum": "net/minecraft/world/item/ItemDisplayContext",
+      "name": "TWILIGHTFOREST_JARRED",
+      "constructor": "(ILjava/lang/String;Ljava/lang/String;)V",
+      "parameters": {
+        "class": "twilightforest/TFEnumExtensions",
+        "method": "ItemDisplayContext_JARRED"
+      }
+    },
+    {
+      "enum": "net/minecraft/world/entity/vehicle/Boat$Type",
+      "name": "TWILIGHTFOREST_TWILIGHT_OAK",
+      "constructor": "(Ljava/util/function/Supplier;Ljava/lang/String;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Z)V",
+      "parameters": {
+        "class": "twilightforest/TFEnumExtensions",
+        "method": "Boat$Type_TWILIGHT_OAK"
+      }
+    },
+    {
+      "enum": "net/minecraft/world/entity/vehicle/Boat$Type",
+      "name": "TWILIGHTFOREST_CANOPY",
+      "constructor": "(Ljava/util/function/Supplier;Ljava/lang/String;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Z)V",
+      "parameters": {
+        "class": "twilightforest/TFEnumExtensions",
+        "method": "Boat$Type_CANOPY"
+      }
+    },
+    {
+      "enum": "net/minecraft/world/entity/vehicle/Boat$Type",
+      "name": "TWILIGHTFOREST_MANGROVE",
+      "constructor": "(Ljava/util/function/Supplier;Ljava/lang/String;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Z)V",
+      "parameters": {
+        "class": "twilightforest/TFEnumExtensions",
+        "method": "Boat$Type_MANGROVE"
+      }
+    },
+    {
+      "enum": "net/minecraft/world/entity/vehicle/Boat$Type",
+      "name": "TWILIGHTFOREST_DARK",
+      "constructor": "(Ljava/util/function/Supplier;Ljava/lang/String;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Z)V",
+      "parameters": {
+        "class": "twilightforest/TFEnumExtensions",
+        "method": "Boat$Type_DARK"
+      }
+    },
+    {
+      "enum": "net/minecraft/world/entity/vehicle/Boat$Type",
+      "name": "TWILIGHTFOREST_TIME",
+      "constructor": "(Ljava/util/function/Supplier;Ljava/lang/String;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Z)V",
+      "parameters": {
+        "class": "twilightforest/TFEnumExtensions",
+        "method": "Boat$Type_TIME"
+      }
+    },
+    {
+      "enum": "net/minecraft/world/entity/vehicle/Boat$Type",
+      "name": "TWILIGHTFOREST_TRANSFORMATION",
+      "constructor": "(Ljava/util/function/Supplier;Ljava/lang/String;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Z)V",
+      "parameters": {
+        "class": "twilightforest/TFEnumExtensions",
+        "method": "Boat$Type_TRANSFORMATION"
+      }
+    },
+    {
+      "enum": "net/minecraft/world/entity/vehicle/Boat$Type",
+      "name": "TWILIGHTFOREST_MINING",
+      "constructor": "(Ljava/util/function/Supplier;Ljava/lang/String;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Z)V",
+      "parameters": {
+        "class": "twilightforest/TFEnumExtensions",
+        "method": "Boat$Type_MINING"
+      }
+    },
+    {
+      "enum": "net/minecraft/world/entity/vehicle/Boat$Type",
+      "name": "TWILIGHTFOREST_SORTING",
+      "constructor": "(Ljava/util/function/Supplier;Ljava/lang/String;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Z)V",
+      "parameters": {
+        "class": "twilightforest/TFEnumExtensions",
+        "method": "Boat$Type_SORTING"
+      }
+    }
+  ]
+}

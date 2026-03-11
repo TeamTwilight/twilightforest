@@ -1,0 +1,112 @@
+{
+  "variants": {
+    "age=0,layers=0": {
+      "model": "twilightforest:block/duskberry_bush_small_0"
+    },
+    "age=0,layers=1": {
+      "model": "twilightforest:block/duskberry_bush_small_1"
+    },
+    "age=0,layers=2": {
+      "model": "twilightforest:block/duskberry_bush_small_2"
+    },
+    "age=0,layers=3": {
+      "model": "twilightforest:block/duskberry_bush_small_3"
+    },
+    "age=0,layers=4": {
+      "model": "twilightforest:block/duskberry_bush_small_4"
+    },
+    "age=0,layers=5": {
+      "model": "twilightforest:block/duskberry_bush_small_5"
+    },
+    "age=0,layers=6": {
+      "model": "twilightforest:block/duskberry_bush_small_6"
+    },
+    "age=0,layers=7": {
+      "model": "twilightforest:block/duskberry_bush_small_7"
+    },
+    "age=0,layers=8": {
+      "model": "twilightforest:block/duskberry_bush_small_8"
+    },
+    "age=1,layers=0": {
+      "model": "twilightforest:block/duskberry_bush_0"
+    },
+    "age=1,layers=1": {
+      "model": "twilightforest:block/duskberry_bush_1"
+    },
+    "age=1,layers=2": {
+      "model": "twilightforest:block/duskberry_bush_2"
+    },
+    "age=1,layers=3": {
+      "model": "twilightforest:block/duskberry_bush_3"
+    },
+    "age=1,layers=4": {
+      "model": "twilightforest:block/duskberry_bush_4"
+    },
+    "age=1,layers=5": {
+      "model": "twilightforest:block/duskberry_bush_5"
+    },
+    "age=1,layers=6": {
+      "model": "twilightforest:block/duskberry_bush_6"
+    },
+    "age=1,layers=7": {
+      "model": "twilightforest:block/duskberry_bush_7"
+    },
+    "age=1,layers=8": {
+      "model": "twilightforest:block/duskberry_bush_8"
+    },
+    "age=2,layers=0": {
+      "model": "twilightforest:block/duskberry_bush_large_0"
+    },
+    "age=2,layers=1": {
+      "model": "twilightforest:block/duskberry_bush_large_1"
+    },
+    "age=2,layers=2": {
+      "model": "twilightforest:block/duskberry_bush_large_2"
+    },
+    "age=2,layers=3": {
+      "model": "twilightforest:block/duskberry_bush_large_3"
+    },
+    "age=2,layers=4": {
+      "model": "twilightforest:block/duskberry_bush_large_4"
+    },
+    "age=2,layers=5": {
+      "model": "twilightforest:block/duskberry_bush_large_5"
+    },
+    "age=2,layers=6": {
+      "model": "twilightforest:block/duskberry_bush_large_6"
+    },
+    "age=2,layers=7": {
+      "model": "twilightforest:block/duskberry_bush_large_7"
+    },
+    "age=2,layers=8": {
+      "model": "twilightforest:block/duskberry_bush_large_8"
+    },
+    "age=3,layers=0": {
+      "model": "twilightforest:block/duskberry_bush_grown_0"
+    },
+    "age=3,layers=1": {
+      "model": "twilightforest:block/duskberry_bush_grown_1"
+    },
+    "age=3,layers=2": {
+      "model": "twilightforest:block/duskberry_bush_grown_2"
+    },
+    "age=3,layers=3": {
+      "model": "twilightforest:block/duskberry_bush_grown_3"
+    },
+    "age=3,layers=4": {
+      "model": "twilightforest:block/duskberry_bush_grown_4"
+    },
+    "age=3,layers=5": {
+      "model": "twilightforest:block/duskberry_bush_grown_5"
+    },
+    "age=3,layers=6": {
+      "model": "twilightforest:block/duskberry_bush_grown_6"
+    },
+    "age=3,layers=7": {
+      "model": "twilightforest:block/duskberry_bush_grown_7"
+    },
+    "age=3,layers=8": {
+      "model": "twilightforest:block/duskberry_bush_grown_8"
+    }
+  }
+}

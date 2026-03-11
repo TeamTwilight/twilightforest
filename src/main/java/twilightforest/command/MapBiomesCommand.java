@@ -5,25 +5,26 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraftforge.fml.loading.FMLEnvironment;
+import net.minecraft.world.level.storage.LevelResource;
+import net.neoforged.fml.loading.FMLEnvironment;
 import twilightforest.init.TFBiomes;
-import twilightforest.item.MagicMapItem;
+import twilightforest.init.TFDataMaps;
 import twilightforest.util.ColorUtil;
-import twilightforest.world.registration.TFGenerationSettings;
+import twilightforest.util.datamaps.MagicMapBiomeColor;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,12 +32,14 @@ import java.util.Map;
 /**
  * Thank you @SuperCoder79 (from Twitter) for sharing the original code! Code sourced from a LGPL project
  */
+@tamaized.beanification.Component
 public class MapBiomesCommand {
-	private static final DecimalFormat numberFormat = new DecimalFormat("#.00");
 
-	private static final HashMap<ResourceLocation, BiomeMapColor> BIOME2COLOR = new HashMap<>();
+	private final DecimalFormat numberFormat = new DecimalFormat("#.00");
 
-	private static void init() {
+	private final HashMap<ResourceLocation, BiomeMapColor> BIOME2COLOR = new HashMap<>();
+
+	private void init() {
 		BIOME2COLOR.put(TFBiomes.STREAM.location(), new BiomeMapColor(0, 0, 255));
 		BIOME2COLOR.put(TFBiomes.LAKE.location(), new BiomeMapColor(0, 0, 255));
 		BIOME2COLOR.put(TFBiomes.CLEARING.location(), new BiomeMapColor(132, 245, 130));
@@ -63,31 +66,27 @@ public class MapBiomesCommand {
 		BIOME2COLOR.put(TFBiomes.FINAL_PLATEAU.location(), new BiomeMapColor(128, 128, 128));
 	}
 
-	public static LiteralArgumentBuilder<CommandSourceStack> register() {
+	public LiteralArgumentBuilder<CommandSourceStack> register() {
 		return Commands.literal("biomepng").requires(cs -> cs.hasPermission(2)).executes(context -> createMap(context.getSource(), 4096, 4096, true))
-				.then(Commands.argument("width", IntegerArgumentType.integer(0))
-						.executes(context -> createMap(context.getSource(), IntegerArgumentType.getInteger(context, "width"), IntegerArgumentType.getInteger(context, "width"), true))
-						.then(Commands.argument("height", IntegerArgumentType.integer(0))
-								.executes(context -> createMap(context.getSource(), IntegerArgumentType.getInteger(context, "width"), IntegerArgumentType.getInteger(context, "height"), true))
-								.then(Commands.argument("showBiomePercents", BoolArgumentType.bool())
-										.executes(context -> createMap(context.getSource(), IntegerArgumentType.getInteger(context, "width"), IntegerArgumentType.getInteger(context, "height"), BoolArgumentType.getBool(context, "showBiomePercents"))))));
+			.then(Commands.argument("width", IntegerArgumentType.integer(0))
+				.executes(context -> createMap(context.getSource(), IntegerArgumentType.getInteger(context, "width"), IntegerArgumentType.getInteger(context, "width"), true))
+				.then(Commands.argument("height", IntegerArgumentType.integer(0))
+					.executes(context -> createMap(context.getSource(), IntegerArgumentType.getInteger(context, "width"), IntegerArgumentType.getInteger(context, "height"), true))
+					.then(Commands.argument("showBiomePercents", BoolArgumentType.bool())
+						.executes(context -> createMap(context.getSource(), IntegerArgumentType.getInteger(context, "width"), IntegerArgumentType.getInteger(context, "height"), BoolArgumentType.getBool(context, "showBiomePercents"))))));
 
 	}
 
-	private static int createMap(CommandSourceStack source, int width, int height, boolean showBiomePercents) throws CommandSyntaxException {
+	private int createMap(CommandSourceStack source, int width, int height, boolean showBiomePercents) {
 		if (FMLEnvironment.dist.isDedicatedServer())
 			return -1;
-
-		if (!TFGenerationSettings.usesTwilightChunkGenerator(source.getLevel())) {
-			throw TFCommand.NOT_IN_TF.create();
-		}
 
 		if (BIOME2COLOR.isEmpty()) {
 			init();
 		}
 
 		//setup image
-		Map<Biome, Integer> biomeCount = new HashMap<>();
+		Map<Holder<Biome>, Integer> biomeCount = new HashMap<>();
 		NativeImage img = new NativeImage(width, height, false);
 
 		int progressUpdate = img.getHeight() / 8;
@@ -95,15 +94,15 @@ public class MapBiomesCommand {
 		for (int x = 0; x < img.getHeight(); x++) {
 			for (int z = 0; z < img.getWidth(); z++) {
 				ServerLevel level = source.getLevel();
-				Biome b = level.getNoiseBiome(x - (img.getWidth() / 2), 0, z - (img.getHeight() / 2)).value();
-				ResourceLocation key = level.registryAccess().registryOrThrow(Registries.BIOME).getKey(b);
+				Holder<Biome> b = level.getNoiseBiome(x - (img.getWidth() / 2), 0, z - (img.getHeight() / 2));
+				ResourceLocation key = level.registryAccess().registryOrThrow(Registries.BIOME).getKey(b.value());
 				BiomeMapColor color = BIOME2COLOR.get(key);
 
 				if (color == null) {
-					int colorInt = MagicMapItem.getBiomeColor(source.getLevel(), b);
+					int colorInt = getBiomeColor(b);
 
 					if (colorInt == 0)
-						colorInt = b.getGrassColor(0, 0);
+						colorInt = b.value().getGrassColor(0, 0);
 
 					BIOME2COLOR.put(key, color = new BiomeMapColor(colorInt | 0xFF000000));
 				}
@@ -121,35 +120,51 @@ public class MapBiomesCommand {
 			//send a progress update to let people know the server isn't dying
 			if (x % progressUpdate == 0) {
 				int finalX = x;
-				source.sendSuccess(() -> Component.translatable(((double) finalX / img.getHeight()) * 100 + "% Done mapping"), false);
+				double percentComplete = (double) finalX / img.getHeight() * 100;
+				String percentDisplay = this.numberFormat.format(percentComplete);
+				source.sendSuccess(() -> Component.translatable("commands.tffeature.biomepng.progress", percentDisplay), false);
 			}
 		}
 
 		if (showBiomePercents) {
-			source.sendSuccess(() -> Component.literal("Approximate biome-block counts within a " + (width + "x" + height) + " region"), false);
+			source.sendSuccess(() -> Component.translatable("commands.tffeature.biomepng.counts_header", width, height), false);
 			int totalCount = biomeCount.values().stream().mapToInt(i -> i).sum();
 			biomeCount.forEach((biome, integer) -> source.sendSuccess(() -> Component.literal(
-							source.getLevel().registryAccess().registryOrThrow(Registries.BIOME).getKey(biome).toString())
-					.append(": " + (integer) + ChatFormatting.GRAY + " (" + numberFormat.format(((double) integer / totalCount) * 100) + "%)"), false));
+					source.getLevel().registryAccess().registryOrThrow(Registries.BIOME).getKey(biome.value()).toString())
+				.append(": " + (integer) + ChatFormatting.GRAY + " (" + numberFormat.format(((double) integer / totalCount) * 100) + "%)"), false));
 		}
 
 		int startX = Mth.floor(source.getPosition().x()) - (img.getWidth() / 2);
 		int startZ = Mth.floor(source.getPosition().z()) - (img.getHeight() / 2);
 		//file name is formatted as: biomemap-seed-(startX.startZ)-(endX.endZ)
-		//I wanted to put generated maps in the path generated/biomemaps/seed, but it doesnt like when I add more params to the method
-		Path p = Paths.get("biome_map-" + source.getLevel().getSeed() + "-(" + startX + "." + startZ + ")-(" + (startX + width) + "." + (startZ + height) + ").png");
+		Path path = source.getLevel().getServer().getWorldPath(LevelResource.GENERATED_DIR).resolve("biomemaps").resolve(String.valueOf(source.getLevel().getSeed())).resolve("biome_map-" + source.getLevel().getSeed() + "-(" + startX + "." + startZ + ")-(" + (startX + width) + "." + (startZ + height) + ").png").normalize();
 		//save the biome map
 		try {
-			img.writeToFile(p.toAbsolutePath().toFile());
+			if (!Files.exists(path)) {
+				Files.createDirectories(path.getParent());
+				Files.write(path, img.asByteArray());
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
-			source.sendFailure(Component.literal("Could not save image! Please report this!"));
+			source.sendFailure(Component.translatable("commands.tffeature.biomepng.save_failed"));
 			return 0;
 		}
 
-		source.sendSuccess(() -> Component.literal("Image saved!"), false);
+		source.sendSuccess(() -> Component.translatable("commands.tffeature.biomepng.save_success"), false);
 
 		return Command.SINGLE_SUCCESS;
+	}
+
+	public static int getBiomeColor(Holder<Biome> biome) {
+		MagicMapBiomeColor c = biome.getData(TFDataMaps.MAGIC_MAP_BIOME_COLOR);
+		return c != null ? getMapColor(c) : 0xFF000000;
+	}
+
+	public static int getMapColor(MagicMapBiomeColor color) {
+		int j = (color.color().col >> 16 & 255);
+		int k = (color.color().col >> 8 & 255);
+		int l = (color.color().col & 255);
+		return 0xFF000000 | l << 16 | k << 8 | j;
 	}
 
 	public static class BiomeMapColor {
@@ -162,9 +177,9 @@ public class MapBiomesCommand {
 
 		public BiomeMapColor(int r, int g, int b, int a) {
 			this.value = ((a & 0xFF) << 24) |
-					((r & 0xFF) << 16) |
-					((g & 0xFF) << 8) |
-					((b & 0xFF));
+				((r & 0xFF) << 16) |
+				((g & 0xFF) << 8) |
+				((b & 0xFF));
 		}
 
 		public BiomeMapColor(int rgb) {

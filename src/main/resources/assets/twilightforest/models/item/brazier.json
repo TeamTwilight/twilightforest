@@ -1,0 +1,53 @@
+{
+  "parent": "builtin/entity",
+  "textures": {
+    "particle": "twilightforest:block/wood/planks_canopy_0"
+  },
+  "display": {
+    "gui": {
+      "rotation": [ 30, 180, 0 ],
+      "translation": [ 0, -2.5, 0 ],
+      "scale":[ 0.45, 0.45, 0.45 ]
+    },
+    "ground": {
+      "rotation": [ 0, 180, 0 ],
+      "translation": [ 0, 2, 0 ],
+      "scale":[ 0.25, 0.25, 0.25 ]
+    },
+    "head": {
+      "rotation": [ 180, 0, 180 ],
+      "translation": [ 0, 14, 0 ],
+      "scale":[ 1, 1, 1 ]
+    },
+    "fixed": {
+      "rotation": [ 180, 180, 180 ],
+      "translation": [ 0, -3, 0.75 ],
+      "scale":[ 0.5, 0.5, 0.5 ]
+    },
+   "thirdperson_righthand": {
+      "rotation": [ 90, 270, 90 ],
+      "translation": [ 0, -2, 2 ],
+      "scale": [ 0.375, 0.375, 0.375 ]
+    },
+    "thirdperson_lefthand": {
+     "rotation": [ 90, 270, 90 ],
+      "translation": [ 0, -2, 2 ],
+      "scale": [ 0.375, 0.375, 0.375 ]
+    },
+    "firstperson_righthand": {
+      "rotation": [ 0, 180, -15 ],
+      "translation": [ 2, 0, 0 ],
+      "scale": [ 0.4, 0.4, 0.4 ]
+    },
+   "firstperson_lefthand": {
+      "rotation": [ 0, 180, -10 ],
+      "translation": [ 2, 0, 0 ],
+      "scale": [ 0.4, 0.4, 0.4 ]
+    },
+    "twilightforest:jarred": {
+      "rotation": [ 180, 0, 180 ],
+      "translation": [ 0, -3, 0 ],
+      "scale":[ 0.5, 0.5, 0.5 ]
+    }
+  }
+}

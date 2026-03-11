@@ -563,15 +563,15 @@ public class CastleGuardianModel extends ListModel<CastleGuardianEntity> {
 	@Override
 	public Iterable<ModelPart> parts() {
 		return ImmutableList.of(
-				this.MainBody,
-				this.MidBody,
-				this.Head
+			this.MainBody,
+			this.MidBody,
+			this.Head
 		);
 	}
 
 	@Override
 	public void setupAnim(CastleGuardianEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		this.Head.yRot = netHeadYaw / (180F / (float) Math.PI);
+		this.Head.yRot = netHeadYaw * Mth.DEG_TO_RAD;
 	}
 
 	/**

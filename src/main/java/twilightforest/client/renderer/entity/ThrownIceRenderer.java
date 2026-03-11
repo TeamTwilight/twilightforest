@@ -14,7 +14,7 @@ import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.client.model.data.ModelData;
+import net.neoforged.neoforge.client.model.data.ModelData;
 import twilightforest.entity.projectile.IceBomb;
 
 /**
@@ -22,8 +22,8 @@ import twilightforest.entity.projectile.IceBomb;
  */
 public class ThrownIceRenderer extends EntityRenderer<IceBomb> {
 
-	public ThrownIceRenderer(EntityRendererProvider.Context manager) {
-		super(manager);
+	public ThrownIceRenderer(EntityRendererProvider.Context context) {
+		super(context);
 		this.shadowRadius = 0.5F;
 	}
 

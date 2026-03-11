@@ -24,7 +24,9 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LightLayer;
+import twilightforest.TwilightForestMod;
 import twilightforest.entity.projectile.NatureBolt;
+import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
 
 import java.util.UUID;
@@ -46,9 +48,9 @@ public class SkeletonDruid extends AbstractSkeleton {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(DATA_BABY_ID, false);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(DATA_BABY_ID, false);
 	}
 
 	@Override
@@ -140,9 +142,9 @@ public class SkeletonDruid extends AbstractSkeleton {
 
 	// Below: VANILLACOPY Zombie Baby Code
 
-	private static final UUID SPEED_MODIFIER_BABY_UUID = UUID.fromString("3F508BEA-92F5-47B3-BCA2-B0FA84860574");
-	private static final AttributeModifier SPEED_MODIFIER_BABY = new AttributeModifier(SPEED_MODIFIER_BABY_UUID, "Baby speed boost", 0.5D, AttributeModifier.Operation.MULTIPLY_BASE);
+	private static final AttributeModifier SPEED_MODIFIER_BABY = new AttributeModifier(TwilightForestMod.prefix("baby_speed_boost"), 0.5D, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
 	private static final EntityDataAccessor<Boolean> DATA_BABY_ID = SynchedEntityData.defineId(SkeletonDruid.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDimensions BABY_DIMENSIONS = TFEntities.SKELETON_DRUID.get().getDimensions().scale(0.5F).withEyeHeight(0.93F);
 
 	@Override
 	public boolean isBaby() {
@@ -150,12 +152,12 @@ public class SkeletonDruid extends AbstractSkeleton {
 	}
 
 	@Override
-	public int getExperienceReward() {
+	public int getBaseExperienceReward() {
 		if (this.isBaby()) {
 			this.xpReward = (int) (this.xpReward * 2.5F);
 		}
 
-		return super.getExperienceReward();
+		return super.getBaseExperienceReward();
 	}
 
 	@Override
@@ -163,7 +165,7 @@ public class SkeletonDruid extends AbstractSkeleton {
 		this.getEntityData().set(DATA_BABY_ID, shouldBaby);
 		if (!this.level().isClientSide()) {
 			AttributeInstance attributeinstance = this.getAttribute(Attributes.MOVEMENT_SPEED);
-			attributeinstance.removeModifier(SPEED_MODIFIER_BABY);
+			attributeinstance.removeModifier(SPEED_MODIFIER_BABY.id());
 			if (shouldBaby) {
 				attributeinstance.addTransientModifier(SPEED_MODIFIER_BABY);
 			}
@@ -180,12 +182,7 @@ public class SkeletonDruid extends AbstractSkeleton {
 	}
 
 	@Override
-	public double getMyRidingOffset() {
-		return this.isBaby() ? -0.35D : -0.6D;
-	}
-
-	@Override
-	protected float getStandingEyeHeight(Pose pose, EntityDimensions size) {
-		return this.isBaby() ? 0.93F : super.getStandingEyeHeight(pose, size);
+	protected EntityDimensions getDefaultDimensions(Pose pose) {
+		return this.isBaby() ? BABY_DIMENSIONS : super.getDefaultDimensions(pose);
 	}
 }

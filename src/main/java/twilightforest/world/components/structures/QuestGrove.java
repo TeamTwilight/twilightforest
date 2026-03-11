@@ -6,7 +6,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
@@ -18,11 +17,11 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFEntities;
+import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.loot.TFLootTables;
-import twilightforest.util.FeaturePlacers;
+import twilightforest.util.features.FeaturePlacers;
 import twilightforest.world.components.processors.StoneBricksVariants;
 import twilightforest.world.components.processors.TargetedRotProcessor;
-import twilightforest.init.TFStructurePieceTypes;
 
 
 public class QuestGrove extends TwilightTemplateStructurePiece {
@@ -38,17 +37,17 @@ public class QuestGrove extends TwilightTemplateStructurePiece {
 
 	@Override
 	public void postProcess(WorldGenLevel level, StructureManager structureFeatureManager, ChunkGenerator chunkGenerator, RandomSource random, BoundingBox boundingBox, ChunkPos chunkPos, BlockPos pos) {
-		this.placePieceAdjusted(level, structureFeatureManager, chunkGenerator, random, boundingBox, chunkPos, pos, -2);
+		this.placePieceAdjusted(level, chunkGenerator, random, boundingBox, pos, -2);
 	}
 
 	@Override
-	protected void handleDataMarker(String name, BlockPos pos, ServerLevelAccessor levelAccessor, RandomSource random, BoundingBox boundingBox) {
-		if (!boundingBox.isInside(pos)) return;
+	protected void handleDataMarker(String name, BlockPos pos, WorldGenLevel levelAccessor, RandomSource random, BoundingBox chunkBounds, ChunkGenerator chunkGen, Rotation rotation) {
+		if (!chunkBounds.isInside(pos)) return;
 
 		if ("quest_ram".equals(name)) {
 			FeaturePlacers.placeEntity(TFEntities.QUEST_RAM.get(), pos, levelAccessor);
 		} else if ("dispenser".equals(name)) {
-			TFLootTables.QUEST_GROVE.generateLootContainer(levelAccessor, pos, Blocks.DROPPER.defaultBlockState().setValue(DispenserBlock.FACING, this.placeSettings.getRotation().rotate(Direction.NORTH)), 16 | 4 | 2, random.nextLong());
+			TFLootTables.generateLootContainer(levelAccessor, pos, Blocks.DROPPER.defaultBlockState().setValue(DispenserBlock.FACING, this.placeSettings.getRotation().rotate(Direction.NORTH)), 16 | 4 | 2, random.nextLong(), TFLootTables.QUEST_GROVE);
 		}
 	}
 }

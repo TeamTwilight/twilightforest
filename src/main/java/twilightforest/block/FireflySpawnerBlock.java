@@ -2,11 +2,11 @@ package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -56,25 +56,24 @@ public class FireflySpawnerBlock extends AbstractParticleSpawnerBlock implements
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
-		ItemStack stack = player.getItemInHand(hand);
+	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
 		if (stack.getItem() == TFBlocks.FIREFLY.get().asItem() && !player.isShiftKeyDown() && state.getValue(RADIUS) < 10) {
 			level.setBlockAndUpdate(pos, state.setValue(RADIUS, state.getValue(RADIUS) + 1));
-			if (!player.isCreative()) stack.shrink(1);
+			stack.consume(1, player);
 			player.displayClientMessage(Component.translatable("misc.twilightforest.firefly_spawner_radius", state.getValue(RADIUS) + 1), true);
-			return InteractionResult.sidedSuccess(level.isClientSide());
+			return ItemInteractionResult.sidedSuccess(level.isClientSide());
 		} else if (player.isShiftKeyDown() && state.getValue(RADIUS) > 1) {
 			level.setBlockAndUpdate(pos, state.setValue(RADIUS, state.getValue(RADIUS) - 1));
 			ItemEntity bug = new ItemEntity(level, pos.getX() + 0.5D, pos.getY() + 1, pos.getZ() + 0.5D, new ItemStack(TFBlocks.FIREFLY.get()));
 			level.addFreshEntity(bug);
 			player.displayClientMessage(Component.translatable("misc.twilightforest.firefly_spawner_radius", state.getValue(RADIUS) - 1), true);
-			return InteractionResult.sidedSuccess(level.isClientSide());
+			return ItemInteractionResult.sidedSuccess(level.isClientSide());
 		}
-		return super.use(state, level, pos, player, hand, result);
+		return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
 	}
 
 	@Override
-	public ParticleType<?> getParticlesToSpawn() {
+	public ParticleOptions getParticlesToSpawn() {
 		return TFParticleType.PARTICLE_SPAWNER_FIREFLY.get();
 	}
 
@@ -106,7 +105,6 @@ public class FireflySpawnerBlock extends AbstractParticleSpawnerBlock implements
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		super.createBlockStateDefinition(builder);
-		builder.add(WATERLOGGED);
+		super.createBlockStateDefinition(builder.add(WATERLOGGED));
 	}
 }

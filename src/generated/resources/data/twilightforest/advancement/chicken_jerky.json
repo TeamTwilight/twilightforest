@@ -1,0 +1,52 @@
+{
+  "parent": "twilightforest:root",
+  "criteria": {
+    "jerky": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "minecraft:zombie",
+              "flags": {
+                "is_baby": true
+              },
+              "vehicle": {
+                "type": "minecraft:chicken"
+              }
+            }
+          }
+        ],
+        "killing_blow": {
+          "direct_entity": {
+            "equipment": {
+              "mainhand": {
+                "items": "twilightforest:chicken_jerky"
+              }
+            }
+          }
+        }
+      },
+      "trigger": "minecraft:player_killed_entity"
+    }
+  },
+  "display": {
+    "description": "",
+    "frame": "challenge",
+    "hidden": true,
+    "icon": {
+      "count": 1,
+      "id": "twilightforest:chicken_jerky"
+    },
+    "title": {
+      "translate": "advancement.twilightforest.chicken_jerky"
+    }
+  },
+  "requirements": [
+    [
+      "jerky"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

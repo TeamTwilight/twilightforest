@@ -1,0 +1,14 @@
+{
+  "values": [
+    "#minecraft:dirt",
+    "#c:gravels",
+    "#c:sands",
+    "#minecraft:nylium",
+    "#minecraft:base_stone_overworld",
+    "#minecraft:base_stone_nether",
+    "#c:end_stones",
+    "#minecraft:deepslate_ore_replaceables",
+    "#minecraft:stone_ore_replaceables",
+    "#c:ore_bearing_ground/root"
+  ]
+}

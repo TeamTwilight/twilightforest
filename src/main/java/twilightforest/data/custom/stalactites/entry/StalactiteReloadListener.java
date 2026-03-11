@@ -1,98 +1,79 @@
 package twilightforest.data.custom.stalactites.entry;
 
-import com.google.gson.*;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.mojang.serialization.JsonOps;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.GsonHelper;
-import net.minecraft.util.RandomSource;
 import net.minecraft.util.profiling.ProfilerFiller;
 import twilightforest.TwilightForestMod;
-import twilightforest.world.components.feature.BlockSpikeFeature;
+import twilightforest.world.components.structures.util.CodecResourceReloadListener;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
+import java.io.IOException;
+import java.io.Reader;
 import java.util.*;
 
-public class StalactiteReloadListener extends SimpleJsonResourceReloadListener {
+public class StalactiteReloadListener extends CodecResourceReloadListener<SpeleothemVarietyConfig> {
+	public final static StalactiteReloadListener INSTANCE = new StalactiteReloadListener(); // TODO Autowired
 
-	public static final Gson GSON = new GsonBuilder().registerTypeAdapter(Stalactite.class, new Stalactite.Serializer()).create();
+	public static final String STALACTITE_DIRECTORY = "twilight/stalactites";
 
-	private final Map<ResourceLocation, Stalactite> smallStalactites = new HashMap<>();
-	private final Map<ResourceLocation, Stalactite> mediumStalactites = new HashMap<>();
-	private final Map<ResourceLocation, Stalactite> largeStalactites = new HashMap<>();
+	public static final Map<String, SpeleothemVarietyConfig> HILL_CONFIGS = new HashMap<>();
+	public static final Map<String, List<Stalactite>> STALACTITES_PER_HILL = new HashMap<>();
+	public static final Map<String, List<Stalactite>> ORE_STALACTITES_PER_HILL = new HashMap<>();
+	public static final Map<String, List<Stalactite>> STALAGMITES_PER_HILL = new HashMap<>();
 
 	public StalactiteReloadListener() {
-		super(GSON, "stalactites");
+		super(STALACTITE_DIRECTORY, SpeleothemVarietyConfig.CODEC);
 	}
 
 	@Override
-	protected void apply(Map<ResourceLocation, JsonElement> object, ResourceManager resourceManager, ProfilerFiller profiler) {
+	protected void apply(Map<ResourceLocation, JsonElement> map, ResourceManager manager, ProfilerFiller profiler) {
+		HILL_CONFIGS.clear();
+		ORE_STALACTITES_PER_HILL.clear();
+		STALAGMITES_PER_HILL.clear();
+		HILL_CONFIGS.clear();
 
-		for (Stalactite.HollowHillType type : Stalactite.HollowHillType.values()) {
-			ResourceLocation resourcelocation = new ResourceLocation(TwilightForestMod.ID, "stalactites/" + type.name().toLowerCase(Locale.ROOT) + "_hollow_hill.json");
-			List<ResourceLocation> finalLocations = new ArrayList<>();
-			Map<ResourceLocation, Stalactite> mapToUse =
-					type == Stalactite.HollowHillType.LARGE ? this.largeStalactites :
-							type == Stalactite.HollowHillType.MEDIUM ? this.mediumStalactites :
-									this.smallStalactites;
+		super.apply(map, manager, profiler);
+	}
 
-			for (Resource resource : resourceManager.getResourceStack(resourcelocation)) {
-				try (InputStream inputstream = resource.open();
-					 Reader reader = new BufferedReader(new InputStreamReader(inputstream, StandardCharsets.UTF_8))) {
-					JsonObject jsonobject = GsonHelper.fromJson(GSON, reader, JsonObject.class);
-					boolean replace = jsonobject.get("replace").getAsBoolean();
-					if (replace)
-						finalLocations.clear();
-					JsonArray entryList = jsonobject.get("stalactites").getAsJsonArray();
-					for (JsonElement entry : entryList) {
-						ResourceLocation loc = new ResourceLocation(entry.getAsString().replace(":", ":entries/"));
-						finalLocations.remove(loc);
-						finalLocations.add(loc);
-					}
-				} catch (RuntimeException | IOException ioexception) {
-					TwilightForestMod.LOGGER.error("Couldn't read Hollow Hill list {} in data pack {}", resourcelocation, resource.sourcePackId(), ioexception);
-				}
-
-				if (finalLocations.isEmpty()) {
-					TwilightForestMod.LOGGER.warn("Hollow Hill list {} was empty, adding default stone entry so things don't break!", resourcelocation);
-					mapToUse.put(new ResourceLocation(TwilightForestMod.ID, "default_fallback_stone"), BlockSpikeFeature.STONE_STALACTITE);
-					break;
-				}
-
-				for (ResourceLocation location : finalLocations) {
-					JsonElement json = object.get(location);
-					mapToUse.put(location, GSON.fromJson(json, Stalactite.class));
-				}
+	@Override
+	protected void forLocation(ResourceManager manager, ResourceLocation location, SpeleothemVarietyConfig config) {
+		if (!HILL_CONFIGS.containsKey(config.type()) || config.replace()) {
+			HILL_CONFIGS.put(config.type(), config);
+			if (config.replace()) {
+				TwilightForestMod.LOGGER.info("Stalactite Config {} wiped by {}", config.type(), location.getNamespace());
 			}
 		}
 
-		TwilightForestMod.LOGGER.info("Loaded {} Stalactite configs!", this.getLargeStalactites().size());
+		this.populateList(manager, config, config.baseStalactites(), STALACTITES_PER_HILL);
+		this.populateList(manager, config, config.oreStalactites(), ORE_STALACTITES_PER_HILL);
+		this.populateList(manager, config, config.stalagmites(), STALAGMITES_PER_HILL);
 	}
 
-	public static JsonElement serialize(Stalactite stalactite) {
-		return GSON.toJsonTree(stalactite);
-	}
+	private void populateList(ResourceManager manager, SpeleothemVarietyConfig config, List<ResourceLocation> rawEntries, Map<String, List<Stalactite>> stalactiteDict) {
+		List<Stalactite> stalactitesForType = stalactiteDict.computeIfAbsent(config.type(), k -> new ArrayList<>());
 
-	public Map<ResourceLocation, Stalactite> getLargeStalactites() {
-		Map<ResourceLocation, Stalactite> finalMap = this.largeStalactites;
-		finalMap.putAll(this.getMediumStalactites());
-		return finalMap;
-	}
+		if (config.replace()) stalactitesForType.clear();
 
-	public Map<ResourceLocation, Stalactite> getMediumStalactites() {
-		Map<ResourceLocation, Stalactite> finalMap = this.mediumStalactites;
-		finalMap.putAll(this.getSmallStalactites());
-		return finalMap;
-	}
-
-	public Map<ResourceLocation, Stalactite> getSmallStalactites() {
-		return this.smallStalactites;
-	}
-
-	public Stalactite getRandomStalactiteFromList(RandomSource random, Map<ResourceLocation, Stalactite> map) {
-		Stalactite[] list = map.values().toArray(new Stalactite[0]);
-		return list[random.nextInt(list.length)];
+		for (ResourceLocation rl : rawEntries) {
+			rl = ResourceLocation.fromNamespaceAndPath(rl.getNamespace(), String.format("%s/%s.json", STALACTITE_DIRECTORY, rl.getPath()));
+			Optional<Resource> stalRes = manager.getResource(rl);
+			if (stalRes.isPresent()) {
+				try {
+					Reader stalReader = stalRes.get().openAsReader();
+					JsonObject stalObject = GsonHelper.fromJson(this.gson, stalReader, JsonObject.class);
+					Stalactite stalactite = Stalactite.CODEC.parse(JsonOps.INSTANCE, stalObject).resultOrPartial(TwilightForestMod.LOGGER::error).orElseThrow();
+					stalactitesForType.add(stalactite);
+					TwilightForestMod.LOGGER.debug("Loaded Stalactite {} for config {}", rl, config.type());
+				} catch (RuntimeException | IOException e) {
+					TwilightForestMod.LOGGER.error("Failed to parse stalactite entry {} in file {}", rl, config, e);
+				}
+			} else {
+				TwilightForestMod.LOGGER.error("Could not find stalactite entry for {}", rl);
+			}
+		}
 	}
 }

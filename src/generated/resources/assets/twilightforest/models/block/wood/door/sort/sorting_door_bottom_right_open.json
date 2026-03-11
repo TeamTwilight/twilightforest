@@ -1,0 +1,9 @@
+{
+  "parent": "twilightforest:block/util/corrected_door_bottom_right_open",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "bottom": "twilightforest:block/wood/door/sort_lower",
+    "side": "twilightforest:block/wood/door/sort_side",
+    "top": "twilightforest:block/wood/door/sort_upper"
+  }
+}

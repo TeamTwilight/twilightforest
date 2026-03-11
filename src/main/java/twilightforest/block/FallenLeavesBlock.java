@@ -1,5 +1,7 @@
 package twilightforest.block;
 
+import com.mojang.serialization.MapCodec;
+import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -15,33 +17,42 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.IceBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.client.particle.data.LeafParticleData;
 import twilightforest.network.SpawnFallenLeafFromPacket;
-import twilightforest.network.TFPacketHandler;
-
-import javax.annotation.Nullable;
 
 public class FallenLeavesBlock extends TFPlantBlock {
 
 	public static final int MAX_HEIGHT = 8;
 	public static final IntegerProperty LAYERS = BlockStateProperties.LAYERS;
-	protected static final VoxelShape[] SHAPE_BY_LAYER = new VoxelShape[]{Block.box(0.0D, 0.0D, 0.0D, 16.0D, 0.2D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 4.0D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 6.0D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 8.0D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 10.0D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 12.0D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 14.0D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D)};
-	public static final int HEIGHT_IMPASSABLE = 5;
+	public static final MapCodec<FallenLeavesBlock> CODEC = simpleCodec(FallenLeavesBlock::new);
+	protected static final VoxelShape[] SHAPE_BY_LAYER = Util.make(new VoxelShape[9], arr -> {
+		arr[0] = Block.box(0.0, 0.0, 0.0, 16.0, 0.2, 16.0);
+		for (int i = 1; i <= 8; i++) {
+			double height = i * 2.0;
+			arr[i] = Block.box(0.0, 0.0, 0.0, 16.0, height, 16.0);
+		}
+	});
 
 	public FallenLeavesBlock(Properties properties) {
 		super(properties);
-		this.registerDefaultState(this.stateDefinition.any().setValue(LAYERS, 1));
+		this.registerDefaultState(this.getStateDefinition().any().setValue(LAYERS, 1));
+	}
+
+	@Override
+	protected MapCodec<? extends BushBlock> codec() {
+		return CODEC;
 	}
 
 	@Override
@@ -50,28 +61,18 @@ public class FallenLeavesBlock extends TFPlantBlock {
 	}
 
 	@Override
-	public boolean useShapeForLightOcclusion(BlockState pState) {
+	public boolean useShapeForLightOcclusion(BlockState state) {
 		return true;
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-		return SHAPE_BY_LAYER[pState.getValue(LAYERS) - 1];
+	public VoxelShape getShape(BlockState state, BlockGetter pLevel, BlockPos pos, CollisionContext pContext) {
+		return SHAPE_BY_LAYER[state.getValue(LAYERS) - 1];
 	}
 
 	@Override
 	public VoxelShape getCollisionShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-		return SHAPE_BY_LAYER[0];
-	}
-
-	@Override
-	public VoxelShape getBlockSupportShape(BlockState pState, BlockGetter pReader, BlockPos pPos) {
-		return SHAPE_BY_LAYER[pState.getValue(LAYERS) - 1];
-	}
-
-	@Override
-	public VoxelShape getVisualShape(BlockState pState, BlockGetter pReader, BlockPos pPos, CollisionContext pContext) {
-		return SHAPE_BY_LAYER[pState.getValue(LAYERS) - 1];
+		return Shapes.empty();
 	}
 
 	@Override
@@ -80,37 +81,42 @@ public class FallenLeavesBlock extends TFPlantBlock {
 	}
 
 	@Override
-	public boolean canBeReplaced(BlockState pState, BlockPlaceContext pUseContext) {
-		int i = pState.getValue(LAYERS);
-		if (pUseContext.getItemInHand().is(this.asItem()) && i < MAX_HEIGHT) {
-			if (pUseContext.replacingClickedOnBlock()) {
-				return pUseContext.getClickedFace() == Direction.UP;
+	public boolean canBeReplaced(BlockState state, BlockPlaceContext context) {
+		int i = state.getValue(LAYERS);
+		boolean waterBelow = context.getLevel().getBlockState(context.getClickedPos().below()).liquid();
+
+		if (!waterBelow) {
+			if (context.getItemInHand().is(this.asItem()) && i < MAX_HEIGHT) {
+				if (context.replacingClickedOnBlock()) {
+					return context.getClickedFace() == Direction.UP;
+				} else {
+					return true;
+				}
 			} else {
-				return true;
+				return i == 1;
 			}
-		} else {
-			return i == 1;
 		}
+		return false;
 	}
 
-	@Nullable
-	public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-		BlockState blockstate = pContext.getLevel().getBlockState(pContext.getClickedPos());
+	@Override
+	public BlockState getStateForPlacement(BlockPlaceContext context) {
+		BlockState blockstate = context.getLevel().getBlockState(context.getClickedPos());
+
 		if (blockstate.is(this)) {
 			int i = blockstate.getValue(LAYERS);
 			return blockstate.setValue(LAYERS, Math.min(MAX_HEIGHT, i + 1));
 		} else {
-			return super.getStateForPlacement(pContext);
+			return super.getStateForPlacement(context);
 		}
 	}
 
 	@Override
-	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-		pBuilder.add(LAYERS);
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+		builder.add(LAYERS);
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
 		super.animateTick(state, level, pos, random);
 		if (random.nextInt(50) == 0) {
@@ -136,23 +142,26 @@ public class FallenLeavesBlock extends TFPlantBlock {
 	@Override
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
 		super.entityInside(state, level, pos, entity);
+		if (state.getValue(LAYERS) > 2) {
+			entity.makeStuckInBlock(state, new Vec3(1.0D - (0.05D * (state.getValue(LAYERS) - 2)), 1.0D, 1.0D - (0.05D * (state.getValue(LAYERS) - 2))));
+		}
 		if (entity instanceof LivingEntity && (entity.getDeltaMovement().x() != 0 || entity.getDeltaMovement().z() != 0) && level.getRandom().nextBoolean()) {
-			if(level.isClientSide()) {
+			if (level.isClientSide()) {
 				int color = Minecraft.getInstance().getBlockColors().getColor(Blocks.OAK_LEAVES.defaultBlockState(), level, pos, 0);
 				int r = Mth.clamp(((color >> 16) & 0xFF) + level.getRandom().nextInt(0x22) - 0x11, 0x00, 0xFF);
 				int g = Mth.clamp(((color >> 8) & 0xFF) + level.getRandom().nextInt(0x22) - 0x11, 0x00, 0xFF);
 				int b = Mth.clamp((color & 0xFF) + level.getRandom().nextInt(0x22) - 0x11, 0x00, 0xFF);
 				level.addParticle(new LeafParticleData(r, g, b),
-						pos.getX() + level.getRandom().nextFloat(),
-						pos.getY() + ((2F / 16F) * (state.getValue(LAYERS) - 1)),
-						pos.getZ() + level.getRandom().nextFloat(),
+					pos.getX() + level.getRandom().nextFloat(),
+					pos.getY() + ((2F / 16F) * (state.getValue(LAYERS) - 1)),
+					pos.getZ() + level.getRandom().nextFloat(),
 
-						(level.getRandom().nextFloat() * -0.5F) * entity.getDeltaMovement().x(),
-						level.getRandom().nextFloat() * 0.5F + 0.25F,
-						(level.getRandom().nextFloat() * -0.5F) * entity.getDeltaMovement().z()
+					(level.getRandom().nextFloat() * -0.5F) * entity.getDeltaMovement().x(),
+					level.getRandom().nextFloat() * 0.5F + 0.25F,
+					(level.getRandom().nextFloat() * -0.5F) * entity.getDeltaMovement().z()
 				);
 			} else if (level instanceof ServerLevel)
-				TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), new SpawnFallenLeafFromPacket(pos, entity.getDeltaMovement()));
+				PacketDistributor.sendToPlayersTrackingEntityAndSelf(entity, new SpawnFallenLeafFromPacket(pos, entity.getDeltaMovement()));
 		}
 	}
 }

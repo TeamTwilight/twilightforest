@@ -2,6 +2,7 @@ package twilightforest.world.components.layer;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
@@ -13,8 +14,8 @@ import twilightforest.util.Codecs;
 import twilightforest.world.components.layer.vanillalegacy.BiomeLayerFactory;
 import twilightforest.world.components.layer.vanillalegacy.BiomeLayerType;
 import twilightforest.world.components.layer.vanillalegacy.area.LazyArea;
-import twilightforest.world.components.layer.vanillalegacy.context.Context;
 import twilightforest.world.components.layer.vanillalegacy.context.LazyAreaContext;
+import twilightforest.world.components.layer.vanillalegacy.context.RandomContext;
 import twilightforest.world.components.layer.vanillalegacy.traits.CastleTransformer;
 
 import java.util.List;
@@ -22,7 +23,7 @@ import java.util.function.LongFunction;
 
 public record SeamLayer(ResourceKey<Biome> partitioningBiome, List<ResourceKey<Biome>> excludedBiomeNeighbors, List<Pair<ResourceKey<Biome>, ResourceKey<Biome>>> excludedBiomeIntersections) implements CastleTransformer {
 	@Override
-	public ResourceKey<Biome> apply(Context context, ResourceKey<Biome> up, ResourceKey<Biome> left, ResourceKey<Biome> down, ResourceKey<Biome> right, ResourceKey<Biome> mid) {
+	public ResourceKey<Biome> apply(RandomContext randomContext, ResourceKey<Biome> up, ResourceKey<Biome> left, ResourceKey<Biome> down, ResourceKey<Biome> right, ResourceKey<Biome> mid) {
 		if (this.shouldPartition(mid, left) || this.shouldPartition(mid, right) || this.shouldPartition(mid, down) || this.shouldPartition(mid, up)) {
 			return this.partitioningBiome;
 		} else {
@@ -54,12 +55,12 @@ public record SeamLayer(ResourceKey<Biome> partitioningBiome, List<ResourceKey<B
 	}
 
 	public static final class Factory implements BiomeLayerFactory {
-		public static final Codec<Factory> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-				Codec.LONG.fieldOf("salt").forGetter(Factory::salt),
-				ResourceKey.codec(Registries.BIOME).fieldOf("dividing_biome").forGetter(Factory::partitioningBiome),
-				ResourceKey.codec(Registries.BIOME).listOf().fieldOf("excluded_neighbor_biomes").forGetter(Factory::excludedBiomeNeighbors),
-				ResourceKey.codec(Registries.BIOME).listOf().comapFlatMap(Codecs::arrayToPair, p -> List.of(p.getFirst(), p.getSecond())).listOf().fieldOf("excluded_biome_intersections").forGetter(Factory::excludedBiomeIntersections),
-				BiomeLayerStack.HOLDER_CODEC.fieldOf("parent").forGetter(Factory::parent)
+		public static final MapCodec<Factory> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
+			Codec.LONG.fieldOf("salt").forGetter(Factory::salt),
+			ResourceKey.codec(Registries.BIOME).fieldOf("dividing_biome").forGetter(Factory::partitioningBiome),
+			ResourceKey.codec(Registries.BIOME).listOf().fieldOf("excluded_neighbor_biomes").forGetter(Factory::excludedBiomeNeighbors),
+			ResourceKey.codec(Registries.BIOME).listOf().comapFlatMap(Codecs::arrayToPair, p -> List.of(p.getFirst(), p.getSecond())).listOf().fieldOf("excluded_biome_intersections").forGetter(Factory::excludedBiomeIntersections),
+			BiomeLayerStack.HOLDER_CODEC.fieldOf("parent").forGetter(Factory::parent)
 		).apply(inst, Factory::new));
 
 		private final long salt;
@@ -81,7 +82,7 @@ public record SeamLayer(ResourceKey<Biome> partitioningBiome, List<ResourceKey<B
 
 		@Override
 		public LazyArea build(LongFunction<LazyAreaContext> contextFactory) {
-			return this.instance.run(contextFactory.apply(this.salt), this.parent.get().build(contextFactory));
+			return this.instance.run(contextFactory.apply(this.salt), this.parent.value().build(contextFactory));
 		}
 
 		@Override

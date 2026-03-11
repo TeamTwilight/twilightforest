@@ -1,41 +1,44 @@
 package twilightforest.entity.passive;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.animal.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.TFRegistries;
+import twilightforest.data.tags.ItemTagGenerator;
+import twilightforest.init.TFDataSerializers;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
-import twilightforest.init.custom.DwarfRabbitVariant;
+import twilightforest.init.custom.DwarfRabbitVariants;
 
-public class DwarfRabbit extends Animal {
+import java.util.Optional;
 
-	private static final EntityDataAccessor<String> TYPE = SynchedEntityData.defineId(DwarfRabbit.class, EntityDataSerializers.STRING);
+public class DwarfRabbit extends Animal implements VariantHolder<Holder<DwarfRabbitVariant>> {
+
+	private static final EntityDataAccessor<Holder<DwarfRabbitVariant>> VARIANT = SynchedEntityData.defineId(DwarfRabbit.class, TFDataSerializers.DWARF_RABBIT_VARIANT.get());
 
 	public DwarfRabbit(EntityType<? extends DwarfRabbit> type, Level world) {
 		super(type, world);
-		this.setBunnyType(DwarfRabbitVariant.getVariantId(DwarfRabbitVariant.getRandomVariant(this.getRandom())));
 	}
 
 	@Override
@@ -43,7 +46,7 @@ public class DwarfRabbit extends Animal {
 		this.goalSelector.addGoal(0, new FloatGoal(this));
 		this.goalSelector.addGoal(1, new PanicGoal(this, 2.0F));
 		this.goalSelector.addGoal(2, new BreedGoal(this, 0.8D));
-		this.goalSelector.addGoal(2, new TemptGoal(this, 1.0F, Ingredient.of(Items.CARROT, Items.GOLDEN_CARROT, Blocks.DANDELION), false));
+		this.goalSelector.addGoal(2, new TemptGoal(this, 1.0F, Ingredient.of(ItemTagGenerator.DWARF_RABBIT_TEMPT_ITEMS), false));
 		this.goalSelector.addGoal(3, new AvoidEntityGoal<>(this, Player.class, 2.0F, 0.8F, 1.33F));
 		this.goalSelector.addGoal(4, new AvoidEntityGoal<>(this, Ocelot.class, 8.0F, 0.8F, 1.1F));
 		this.goalSelector.addGoal(4, new AvoidEntityGoal<>(this, Cat.class, 8.0F, 0.8F, 1.1F));
@@ -57,61 +60,66 @@ public class DwarfRabbit extends Animal {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Mob.createMobAttributes()
-				.add(Attributes.MAX_HEALTH, 3.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.3D);
-	}
-
-	@Override
-	public float getStepHeight() {
-		return 1.0F;
+			.add(Attributes.MAX_HEALTH, 3.0D)
+			.add(Attributes.MOVEMENT_SPEED, 0.3D)
+			.add(Attributes.STEP_HEIGHT, 1.0D);
 	}
 
 	@Nullable
 	@Override
 	public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob mob) {
 		DwarfRabbit dwarf = TFEntities.DWARF_RABBIT.get().create(level);
-		DwarfRabbitVariant variant = DwarfRabbitVariant.getRandomVariant(this.getRandom());
-		if (this.getRandom().nextInt(20) != 0) {
-			if (mob instanceof DwarfRabbit rabbit && this.getRandom().nextBoolean()) {
-				variant = rabbit.getBunnyType();
-			} else {
-				variant = this.getBunnyType();
+		Holder<DwarfRabbitVariant> variant = DwarfRabbitVariant.getRandomCommonVariant(level.registryAccess(), level.getRandom());
+		if (dwarf != null && mob instanceof DwarfRabbit parent) {
+			if (this.getRandom().nextInt(20) != 0) {
+				if (this.getRandom().nextBoolean()) {
+					variant = this.getVariant();
+				} else {
+					variant = parent.getVariant();
+				}
 			}
+			dwarf.setVariant(variant);
 		}
 
-		dwarf.setBunnyType(DwarfRabbitVariant.getVariantId(variant));
 		return dwarf;
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(TYPE, DwarfRabbitVariant.getVariantId(DwarfRabbitVariant.getRandomVariant(this.getRandom())));
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(VARIANT, this.registryAccess().registryOrThrow(TFRegistries.Keys.DWARF_RABBIT_VARIANT).getHolderOrThrow(DwarfRabbitVariants.BROWN));
 	}
 
 	@Override
 	public void addAdditionalSaveData(CompoundTag compound) {
 		super.addAdditionalSaveData(compound);
-		compound.putString("BunnyType", DwarfRabbitVariant.getVariantId(this.getBunnyType()));
+		compound.putString("variant", this.getVariant().unwrapKey().orElse(DwarfRabbitVariants.BROWN).location().toString());
 	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
-		this.setBunnyType(compound.getString("BunnyType"));
-	}
-
-	public DwarfRabbitVariant getBunnyType() {
-		return DwarfRabbitVariant.getVariant(this.getEntityData().get(TYPE)).orElse(DwarfRabbitVariant.BROWN.get());
-	}
-
-	public void setBunnyType(String type) {
-		this.getEntityData().set(TYPE, type);
+		Optional.ofNullable(ResourceLocation.tryParse(compound.getString("variant")))
+			.map(location -> ResourceKey.create(TFRegistries.Keys.DWARF_RABBIT_VARIANT, location))
+			.flatMap(key -> this.registryAccess().registryOrThrow(TFRegistries.Keys.DWARF_RABBIT_VARIANT).getHolder(key))
+			.ifPresent(this::setVariant);
 	}
 
 	@Override
-	public float getEyeHeight(Pose pose) {
-		return this.getBbHeight() * 0.5F;
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data) {
+		data = super.finalizeSpawn(accessor, difficulty, type, data);
+		this.setVariant(DwarfRabbitVariant.getVariant(accessor.registryAccess(), accessor.getBiome(this.blockPosition()), this.getRandom()));
+		return data;
+	}
+
+	@Override
+	public Holder<DwarfRabbitVariant> getVariant() {
+		return this.getEntityData().get(VARIANT);
+	}
+
+	@Override
+	public void setVariant(Holder<DwarfRabbitVariant> variant) {
+		this.getEntityData().set(VARIANT, variant);
 	}
 
 	@Override
@@ -133,13 +141,9 @@ public class DwarfRabbit extends Animal {
 		return this.level().getMaxLocalRawBrightness(pos) - 0.5F;
 	}
 
-	private static boolean isTemptingItem(ItemStack stack) {
-		return stack.is(Items.CARROT) || stack.is(Items.GOLDEN_CARROT) || stack.is(Blocks.DANDELION.asItem());
-	}
-
 	@Override
 	public boolean isFood(ItemStack stack) {
-		return isTemptingItem(stack);
+		return stack.is(ItemTagGenerator.DWARF_RABBIT_TEMPT_ITEMS);
 	}
 
 	@Nullable
