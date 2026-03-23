@@ -25,6 +25,7 @@ public class YetiRenderer extends HumanoidMobRenderer<Yeti, YetiRenderState, Yet
 	@Override
 	public void extractRenderState(Yeti entity, YetiRenderState state, float partialTick) {
 		super.extractRenderState(entity, state, partialTick);
+		state.isAngry = entity.isAngry();
 		state.isHoldingEntity = entity.isVehicle();
 	}
 
