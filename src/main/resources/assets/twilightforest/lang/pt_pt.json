@@ -506,5 +506,20 @@
   "block.twilightforest.ominous_orange_candle": "Vela Sinistra Laranja",
   "block.twilightforest.ominous_pink_candle": "Vela Sinistra Rosa",
   "block.twilightforest.ominous_purple_candle": "Vela Sinistra Roxa",
-  "block.twilightforest.ominous_red_candle": "Vela Sinistra Vermelha"
+  "block.twilightforest.ominous_red_candle": "Vela Sinistra Vermelha",
+  "block.twilightforest.ominous_white_candle": "Vela Sinistra Branca",
+  "block.twilightforest.ominous_yellow_candle": "Vela Sinistra Amarela",
+  "block.twilightforest.orange_force_field": "Campo de Forças Laranja",
+  "block.twilightforest.pale_oak_banister": "Corrimão de Carvalho Pálido",
+  "block.twilightforest.piglin_skull_candle": "Vela de Cabeça de Piglin",
+  "block.twilightforest.pink_castle_door": "Porta do Castelo Magenta",
+  "block.twilightforest.pink_castle_rune_brick": "Tijolos de Runas do Castelo Magenta",
+  "block.twilightforest.pink_force_field": "Campo de Forças Magenta",
+  "block.twilightforest.player_skull_candle": "Vela de Caveira de Jogador",
+  "block.twilightforest.player_skull_candle.named": "Vela de Caveira do %s",
+  "block.twilightforest.potted_canopy_sapling": "Vaso de Rebento de Copa",
+  "block.twilightforest.potted_darkwood_sapling": "Vaso de Rebento de Madeira Tenebrosa",
+  "block.twilightforest.potted_dead_thorn": "Vaso de Rebento de Espinho Queimado",
+  "block.twilightforest.potted_fiddlehead": "Vaso de Broto de Feto",
+  "block.twilightforest.potted_green_thorn": "Vaso de Espinho Jovem"
 }
