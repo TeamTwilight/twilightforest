@@ -500,5 +500,11 @@
   "block.twilightforest.ominous_gray_candle": "Vela Sinistra Cinzenta",
   "block.twilightforest.ominous_green_candle": "Vela Sinistra Verde",
   "block.twilightforest.ominous_light_blue_candle": "Vela Sinistra Azul Clara",
-  "block.twilightforest.ominous_light_gray_candle": "Vela Sinistra Cinzento-Clara"
+  "block.twilightforest.ominous_light_gray_candle": "Vela Sinistra Cinzento-Clara",
+  "block.twilightforest.ominous_lime_candle": "Vela Sinistra Verde Lima",
+  "block.twilightforest.ominous_magenta_candle": "Vela Sinistra Magenta",
+  "block.twilightforest.ominous_orange_candle": "Vela Sinistra Laranja",
+  "block.twilightforest.ominous_pink_candle": "Vela Sinistra Rosa",
+  "block.twilightforest.ominous_purple_candle": "Vela Sinistra Roxa",
+  "block.twilightforest.ominous_red_candle": "Vela Sinistra Vermelha"
 }
