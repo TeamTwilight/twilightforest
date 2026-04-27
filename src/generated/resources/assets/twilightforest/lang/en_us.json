@@ -1018,6 +1018,8 @@
   "effect.twilightforest.frosted": "Frosted",
   "enchantment.twilightforest.chill_aura": "Chill Aura",
   "enchantment.twilightforest.chill_aura.desc": "Adds a chance for the attacker to gain the frosted effect after hitting the wearer.",
+  "enchantment.twilightforest.curse_of_silence": "Curse of Silence",
+  "enchantment.twilightforest.curse_of_silence.desc": "Silences sounds around the player.",
   "enchantment.twilightforest.destruction": "Destruction",
   "enchantment.twilightforest.destruction.desc": "Allows the Block and Chain to break blocks with a higher mining tier.",
   "enchantment.twilightforest.fire_react": "Fire React",

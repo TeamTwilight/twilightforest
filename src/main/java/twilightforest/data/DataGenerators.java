@@ -67,6 +67,7 @@ public class DataGenerators {
 		generator.addProvider(event.includeServer(), new FluidTagGenerator(output, lookupProvider, helper));
 		generator.addProvider(event.includeServer(), new ItemTagGenerator(output, lookupProvider, blocktags.contentsGetter(), helper));
 		generator.addProvider(event.includeServer(), new EntityTagGenerator(output, lookupProvider, helper));
+		generator.addProvider(event.includeServer(), new EnchantmentTagGenerator(output, lookupProvider, helper));
 		generator.addProvider(event.includeServer(), new CraftingGenerator(output, lookupProvider));
 		generator.addProvider(event.includeServer(), new LootModifierGenerator(output, lookupProvider));
 

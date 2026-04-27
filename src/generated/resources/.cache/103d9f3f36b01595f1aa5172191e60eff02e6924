@@ -1,4 +1,4 @@
-// 1.21.1	2026-03-01T12:23:38.769856163	Registries
+// 1.21.1	2026-04-26T17:26:12.457646	Registries
 9089ada9ce06fd30adf8b10e50f02233c7d5a76e data/minecraft/twilight/wood_palettes/acacia.json
 dca1ef01d0df4e956fd414782de57c25dfddd290 data/minecraft/twilight/wood_palettes/birch.json
 01becb45438b7f2bfdc77baba72bc986341510c8 data/minecraft/twilight/wood_palettes/crimson.json
@@ -63,6 +63,7 @@ c4304ad6f22195ea9ddeff9a926a0bea41dd5b0d data/twilightforest/damage_type/yeeted.
 d4c99e67de057db06a30a6ca4746f46801f15971 data/twilightforest/dimension/twilight_forest.json
 52c2f166a51fd5f9ac3180ec6c3bfc1bff80e44b data/twilightforest/dimension_type/twilight_forest_type.json
 af6c238a39a9b034ea47dfcfbf664a09cac37fd3 data/twilightforest/enchantment/chill_aura.json
+6910d138c6d7b08a419d000c3f8776e58a076d27 data/twilightforest/enchantment/curse_of_silence.json
 13fb18e0e1572713b6f0f3904c59e8a0e5333023 data/twilightforest/enchantment/destruction.json
 2fdeb1be69f6b2140c4b001dca85e6febd620857 data/twilightforest/enchantment/fire_react.json
 4272d53452c08df022ada2a8e4fa66c96cd1a072 data/twilightforest/enchantment/renewal.json

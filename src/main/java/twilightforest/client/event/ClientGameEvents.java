@@ -12,20 +12,25 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.resources.sounds.AbstractSoundInstance;
+import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraft.sounds.Music;
 import net.minecraft.sounds.Musics;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -37,6 +42,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.client.event.*;
+import net.neoforged.neoforge.client.event.sound.PlaySoundEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
@@ -101,6 +107,7 @@ public class ClientGameEvents {
 		NeoForge.EVENT_BUS.addListener(this::translateBookAuthor);
 		NeoForge.EVENT_BUS.addListener(this::unrenderHeadWithTrophies);
 		NeoForge.EVENT_BUS.addListener(this::updateBowFOV);
+		NeoForge.EVENT_BUS.addListener(this::curseOfSilenceEnchantment);
 
 		NeoForge.EVENT_BUS.addListener(CloudEvents::renderPrecipitation);
 		NeoForge.EVENT_BUS.addListener(CloudEvents::tickWeatherEffects);
@@ -357,6 +364,27 @@ public class ClientGameEvents {
 		if (event.getBossEvent() instanceof ClientTFBossBar bossEvent) {
 			event.setCanceled(true);
 			bossEvent.renderBossBar(event.getGuiGraphics(), event.getX(), event.getY());
+		}
+	}
+
+	private void curseOfSilenceEnchantment(PlaySoundEvent event) {
+		final LocalPlayer player = Minecraft.getInstance().player;
+		if (player == null) {
+			return;
+		}
+
+		Holder.Reference<Enchantment> curseOfSilence = player.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(TFEnchantments.CURSE_OF_SILENCE);
+		if (player.getItemBySlot(EquipmentSlot.HEAD).getEnchantmentLevel(curseOfSilence) > 0) {
+			SoundInstance sound = event.getSound();
+			if (sound == null) {
+				return;
+			}
+
+			if (SoundEvents.WARDEN_SONIC_BOOM.getLocation().equals(sound.getLocation()) && sound instanceof AbstractSoundInstance soundInstance) {
+				soundInstance.volume *= 0.001f;
+			} else {
+				event.setSound(null);
+			}
 		}
 	}
 }

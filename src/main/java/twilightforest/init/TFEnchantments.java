@@ -33,6 +33,7 @@ public class TFEnchantments {
 	public static final ResourceKey<Enchantment> CHILL_AURA = registerKey("chill_aura");
 	public static final ResourceKey<Enchantment> DESTRUCTION = registerKey("destruction");
 	public static final ResourceKey<Enchantment> RENEWAL = registerKey("renewal");
+	public static final ResourceKey<Enchantment> CURSE_OF_SILENCE = registerKey("curse_of_silence");
 
 	private static ResourceKey<Enchantment> registerKey(String name) {
 		return ResourceKey.create(Registries.ENCHANTMENT, TwilightForestMod.prefix(name));
@@ -103,6 +104,16 @@ public class TFEnchantments {
 			8,
 			EquipmentSlotGroup.HAND))
 			.withEffect(EnchantmentEffectComponents.TICK, new RechargeScepterEffect()));
+
+		register(context, CURSE_OF_SILENCE, new Enchantment.Builder(Enchantment.definition(
+			items.getOrThrow(ItemTags.HEAD_ARMOR_ENCHANTABLE),
+			1,
+			1,
+			Enchantment.constantCost(25),
+			Enchantment.constantCost(50),
+			4,
+			EquipmentSlotGroup.HEAD
+		)));
 
 	}
 
