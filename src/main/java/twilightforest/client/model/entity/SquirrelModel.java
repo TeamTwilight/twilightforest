@@ -10,18 +10,18 @@ import net.minecraft.client.model.QuadrupedModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.util.Mth;
 import twilightforest.client.JappaPackReloadListener;
-import twilightforest.entity.passive.Squirrel;
 
-public class SquirrelModel extends QuadrupedModel<Squirrel> {
+public class SquirrelModel extends QuadrupedModel<LivingEntityRenderState> {
 
 	private final ModelPart tail;
 	private final ModelPart tailPart1;
 	private final ModelPart tailPart2;
 
 	public SquirrelModel(ModelPart root) {
-		super(root, false, 4.0F, 4.0F, 2.0F, 2.0F, 24);
+		super(root);
 		this.tail = this.body.getChild("tail");
 		this.tailPart1 = this.tail.getChild("tail_1");
 		this.tailPart2 = this.tailPart1.getChild("tail_2");
@@ -32,7 +32,7 @@ public class SquirrelModel extends QuadrupedModel<Squirrel> {
 	}
 
 	private static LayerDefinition create() {
-		MeshDefinition meshdefinition = QuadrupedModel.createBodyMesh(0, CubeDeformation.NONE);
+		MeshDefinition meshdefinition = QuadrupedModel.createBodyMesh(0, false, true, CubeDeformation.NONE);
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
 		partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
@@ -90,7 +90,7 @@ public class SquirrelModel extends QuadrupedModel<Squirrel> {
 	}
 
 	private static LayerDefinition createJappaModel() {
-		MeshDefinition meshdefinition = QuadrupedModel.createBodyMesh(1, CubeDeformation.NONE);
+		MeshDefinition meshdefinition = QuadrupedModel.createBodyMesh(1, false, true, CubeDeformation.NONE);
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
 		partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
@@ -142,23 +142,23 @@ public class SquirrelModel extends QuadrupedModel<Squirrel> {
 	}
 
 	@Override
-	public void setupAnim(Squirrel entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		this.head.xRot = headPitch * Mth.DEG_TO_RAD;
-		this.head.yRot = netHeadYaw * Mth.DEG_TO_RAD;
-		this.rightHindLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-		this.leftHindLeg.xRot = Mth.cos(limbSwing * 0.6662F + Mth.PI) * 1.4F * limbSwingAmount;
-		this.rightFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F + Mth.PI) * 1.4F * limbSwingAmount;
-		this.leftFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+	public void setupAnim(LivingEntityRenderState entity) {
+		this.head.xRot = entity.xRot * Mth.DEG_TO_RAD;
+		this.head.yRot = entity.yRot * Mth.DEG_TO_RAD;
+		this.rightHindLeg.xRot = Mth.cos(entity.walkAnimationPos * 0.6662F) * 1.4F * entity.walkAnimationSpeed;
+		this.leftHindLeg.xRot = Mth.cos(entity.walkAnimationPos * 0.6662F + Mth.PI) * 1.4F * entity.walkAnimationSpeed;
+		this.rightFrontLeg.xRot = Mth.cos(entity.walkAnimationPos * 0.6662F + Mth.PI) * 1.4F * entity.walkAnimationSpeed;
+		this.leftFrontLeg.xRot = Mth.cos(entity.walkAnimationPos * 0.6662F) * 1.4F * entity.walkAnimationSpeed;
 
-		if (limbSwingAmount > 0.2) {
-			float wiggle = Math.min(limbSwingAmount, 0.6F);
-			this.tail.xRot = (JappaPackReloadListener.INSTANCE.isJappaPackLoaded() ? 2.5F : 0.2F) + (Mth.cos(ageInTicks * 0.6662F) - Mth.PI / 3.0F) * wiggle;
-			this.tailPart1.xRot = Mth.cos(ageInTicks * 0.7774F) * 1.2F * wiggle;
-			this.tailPart2.xRot = Mth.cos(ageInTicks * 0.8886F + Mth.PI / 2.0F) * 1.4F * wiggle;
+		if (entity.walkAnimationSpeed > 0.2) {
+			float wiggle = Math.min(entity.walkAnimationSpeed, 0.6F);
+			this.tail.xRot = (JappaPackReloadListener.INSTANCE.isJappaPackLoaded() ? 2.5F : 0.2F) + (Mth.cos(entity.ageInTicks * 0.6662F) - Mth.PI / 3.0F) * wiggle;
+			this.tailPart1.xRot = Mth.cos(entity.ageInTicks * 0.7774F) * 1.2F * wiggle;
+			this.tailPart2.xRot = Mth.cos(entity.ageInTicks * 0.8886F + Mth.PI / 2.0F) * 1.4F * wiggle;
 		} else {
-			this.tail.xRot = (JappaPackReloadListener.INSTANCE.isJappaPackLoaded() ? 2.5F : 0.2F) + Mth.cos(ageInTicks * 0.3335F) * 0.15F;
-			this.tailPart1.xRot = 0.1F + Mth.cos(ageInTicks * 0.4445F) * 0.20F;
-			this.tailPart2.xRot = 0.1F + Mth.cos(ageInTicks * 0.5555F) * 0.25F;
+			this.tail.xRot = (JappaPackReloadListener.INSTANCE.isJappaPackLoaded() ? 2.5F : 0.2F) + Mth.cos(entity.ageInTicks * 0.3335F) * 0.15F;
+			this.tailPart1.xRot = 0.1F + Mth.cos(entity.ageInTicks * 0.4445F) * 0.20F;
+			this.tailPart2.xRot = 0.1F + Mth.cos(entity.ageInTicks * 0.5555F) * 0.25F;
 		}
 	}
 }

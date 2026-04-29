@@ -1,14 +1,14 @@
 package twilightforest.client.model.entity;
 
-import net.minecraft.client.model.PigModel;
+
 import net.minecraft.client.model.QuadrupedModel;
+import net.minecraft.client.model.animal.pig.PigModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import twilightforest.client.JappaPackReloadListener;
-import twilightforest.entity.passive.Boar;
 
-public class BoarModel<T extends Boar> extends PigModel<T> {
+public class BoarModel extends PigModel {
 
 	public BoarModel(ModelPart root) {
 		super(root);
@@ -19,7 +19,7 @@ public class BoarModel<T extends Boar> extends PigModel<T> {
 	}
 
 	public static LayerDefinition create() {
-		MeshDefinition meshdefinition = PigModel.createBodyMesh(0, CubeDeformation.NONE);
+		MeshDefinition meshdefinition = PigModel.createBodyMesh(0, true, false, CubeDeformation.NONE);
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
 		partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
@@ -62,7 +62,7 @@ public class BoarModel<T extends Boar> extends PigModel<T> {
 	}
 
 	public static LayerDefinition createJappaModel() {
-		MeshDefinition meshdefinition = QuadrupedModel.createBodyMesh(6, CubeDeformation.NONE);
+		MeshDefinition meshdefinition = QuadrupedModel.createBodyMesh(6, true, false, CubeDeformation.NONE);
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
 		partdefinition.addOrReplaceChild("right_front_leg", CubeListBuilder.create()

@@ -1,14 +1,12 @@
 package twilightforest.client.model.entity;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
-import net.minecraft.client.model.SkeletonModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import twilightforest.entity.monster.SkeletonDruid;
+import net.minecraft.client.model.monster.skeleton.SkeletonModel;
+import net.minecraft.client.renderer.entity.state.SkeletonRenderState;
 
-public class SkeletonDruidModel extends SkeletonModel<SkeletonDruid> {
+public class SkeletonDruidModel extends SkeletonModel<SkeletonRenderState> {
 
 	private final ModelPart dress;
 
@@ -60,8 +58,4 @@ public class SkeletonDruidModel extends SkeletonModel<SkeletonDruid> {
 		return create(CubeDeformation.NONE);
 	}
 
-	@Override
-	protected Iterable<ModelPart> bodyParts() {
-		return Iterables.concat(super.bodyParts(), ImmutableList.of(this.dress));
-	}
 }

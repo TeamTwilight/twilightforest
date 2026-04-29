@@ -9,9 +9,9 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import twilightforest.entity.monster.Yeti;
+import twilightforest.client.state.YetiRenderState;
 
-public class YetiModel<T extends Yeti> extends HumanoidModel<T> {
+public class YetiModel extends HumanoidModel<YetiRenderState> {
 	private final ModelPart leftEye;
 	private final ModelPart rightEye;
 	private final ModelPart angryLeftEye;
@@ -31,12 +31,12 @@ public class YetiModel<T extends Yeti> extends HumanoidModel<T> {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
+		var head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
 				.texOffs(0, 0)
 				.addBox(-4.0F, -8.0F, -4.0F, 0.0F, 0.0F, 0.0F),
 			PartPose.ZERO);
 
-		partdefinition.addOrReplaceChild("hat", CubeListBuilder.create()
+		head.addOrReplaceChild("hat", CubeListBuilder.create()
 				.texOffs(32, 0)
 				.addBox(-4.0F, -8.0F, -4.0F, 0.0F, 0.0F, 0.0F),
 			PartPose.ZERO);
@@ -96,21 +96,26 @@ public class YetiModel<T extends Yeti> extends HumanoidModel<T> {
 	}
 
 	@Override
-	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		this.head.yRot = netHeadYaw * Mth.DEG_TO_RAD;
-		this.head.xRot = headPitch * Mth.DEG_TO_RAD;
+	public void setupAnim(YetiRenderState state) {
+		this.rightEye.visible = !state.isAngry;
+		this.leftEye.visible = !state.isAngry;
+		this.angryRightEye.visible = state.isAngry;
+		this.angryLeftEye.visible = state.isAngry;
+
+		this.head.yRot = state.yRot * Mth.DEG_TO_RAD;
+		this.head.xRot = state.xRot * Mth.DEG_TO_RAD;
 		this.hat.yRot = this.head.yRot;
 		this.hat.xRot = this.head.xRot;
-		this.rightArm.xRot = Mth.cos(limbSwing * 0.6662F + Mth.PI) * 2.0F * limbSwingAmount * 0.5F;
-		this.leftArm.xRot = Mth.cos(limbSwing * 0.6662F) * 2.0F * limbSwingAmount * 0.5F;
+		this.rightArm.xRot = Mth.cos(state.walkAnimationPos * 0.6662F + Mth.PI) * 2.0F * state.walkAnimationSpeed * 0.5F;
+		this.leftArm.xRot = Mth.cos(state.walkAnimationPos * 0.6662F) * 2.0F * state.walkAnimationSpeed * 0.5F;
 		this.rightArm.zRot = 0.0F;
 		this.leftArm.zRot = 0.0F;
-		this.rightLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-		this.leftLeg.xRot = Mth.cos(limbSwing * 0.6662F + Mth.PI) * 1.4F * limbSwingAmount;
+		this.rightLeg.xRot = Mth.cos(state.walkAnimationPos * 0.6662F) * 1.4F * state.walkAnimationSpeed;
+		this.leftLeg.xRot = Mth.cos(state.walkAnimationPos * 0.6662F + Mth.PI) * 1.4F * state.walkAnimationSpeed;
 		this.rightLeg.yRot = 0.0F;
 		this.leftLeg.yRot = 0.0F;
 
-		if (entity.isVehicle()) {
+		if (state.isHoldingEntity) {
 			// arms up!
 			this.rightArm.xRot += Mth.PI;
 			this.leftArm.xRot += Mth.PI;
@@ -119,12 +124,12 @@ public class YetiModel<T extends Yeti> extends HumanoidModel<T> {
 		this.rightArm.yRot = 0.0F;
 		this.leftArm.yRot = 0.0F;
 
-		AnimationUtils.bobArms(this.rightArm, this.leftArm, ageInTicks);
+		AnimationUtils.bobArms(this.rightArm, this.leftArm, state.ageInTicks);
 
 		// if yeti is angry, hold arms forwards like a zombie
-		if (entity.isAngry()) {
-			float f6 = Mth.sin(this.attackTime * Mth.PI);
-			float f7 = Mth.sin((1.0F - (1.0F - this.attackTime) * (1.0F - this.attackTime)) * Mth.PI);
+		if (state.isAngry) {
+			float f6 = Mth.sin(state.attackTime * Mth.PI);
+			float f7 = Mth.sin((1.0F - (1.0F - state.attackTime) * (1.0F - state.attackTime)) * Mth.PI);
 			this.rightArm.zRot = 0.0F;
 			this.leftArm.zRot = 0.0F;
 			this.rightArm.yRot = -(0.1F - f6 * 0.6F);
@@ -133,29 +138,11 @@ public class YetiModel<T extends Yeti> extends HumanoidModel<T> {
 			this.leftArm.xRot = -(Mth.HALF_PI);
 			this.rightArm.xRot -= f6 * 1.2F - f7 * 0.4F;
 			this.leftArm.xRot -= f6 * 1.2F - f7 * 0.4F;
-			if (entity.isVehicle()) {
+			if (state.isHoldingEntity) {
 				// arms up!
 				this.rightArm.xRot -= Mth.HALF_PI;
 				this.leftArm.xRot -= Mth.HALF_PI;
 			}
-		}
-	}
-
-	/**
-	 * Change eye color if yeti is angry
-	 */
-	@Override
-	public void prepareMobModel(T entity, float limbSwing, float limbSwingAmount, float partialTicks) {
-		if (entity.isAngry()) {
-			this.rightEye.visible = false;
-			this.leftEye.visible = false;
-			this.angryRightEye.visible = true;
-			this.angryLeftEye.visible = true;
-		} else {
-			this.rightEye.visible = true;
-			this.leftEye.visible = true;
-			this.angryRightEye.visible = false;
-			this.angryLeftEye.visible = false;
 		}
 	}
 }

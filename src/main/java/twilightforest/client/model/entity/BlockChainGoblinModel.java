@@ -6,12 +6,12 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 import twilightforest.client.JappaPackReloadListener;
-import twilightforest.entity.monster.BlockChainGoblin;
+import twilightforest.client.state.BlockChainGoblinRenderState;
 
-public class BlockChainGoblinModel<T extends BlockChainGoblin> extends FixedHumanoidModel<T> {
+public class BlockChainGoblinModel extends HumanoidModel<BlockChainGoblinRenderState> {
 
 	public BlockChainGoblinModel(ModelPart root) {
-		super(root, 3.0F);
+		super(root);
 	}
 
 	public static LayerDefinition checkForPack() {
@@ -107,8 +107,8 @@ public class BlockChainGoblinModel<T extends BlockChainGoblin> extends FixedHuma
 	}
 
 	@Override
-	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+	public void setupAnim(BlockChainGoblinRenderState state) {
+		super.setupAnim(state);
 
 		this.rightArm.xRot += Mth.PI;
 		this.leftArm.xRot += Mth.PI;

@@ -9,7 +9,6 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.FastColor;
 
@@ -21,7 +20,7 @@ public class FireflyModel extends Model {
 	private final ModelPart glow;
 
 	public FireflyModel(ModelPart root) {
-		super(RenderType::entityCutoutNoCull);
+		super(RenderTypes::entityCutoutNoCull);
 
 		this.legs = root.getChild("legs");
 		this.fatbody = root.getChild("fat_body");

@@ -4,13 +4,13 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import twilightforest.client.JappaPackReloadListener;
-import twilightforest.entity.monster.Redcap;
 
-public class RedcapModel<T extends Redcap> extends FixedHumanoidModel<T> {
+public class RedcapModel<T extends HumanoidRenderState> extends HumanoidModel<T> {
 
 	public RedcapModel(ModelPart root) {
-		super(root, 3.0F);
+		super(root);
 	}
 
 	public static LayerDefinition checkForPack() {

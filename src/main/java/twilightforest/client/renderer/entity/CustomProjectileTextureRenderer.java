@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
@@ -17,7 +18,7 @@ import twilightforest.entity.projectile.TFThrowable;
  * This renderer serves as a way to render item textures on a projectile without needing an actual item registered for it.
  * Consider using {@link net.minecraft.client.renderer.entity.ThrownItemRenderer} if your projectile is an existing item already.
  */
-public class CustomProjectileTextureRenderer extends EntityRenderer<TFThrowable> {
+public class CustomProjectileTextureRenderer extends EntityRenderer<TFThrowable, EntityRenderState> {
 
 	private final Identifier texture;
 	private final float scale;
@@ -42,11 +43,10 @@ public class CustomProjectileTextureRenderer extends EntityRenderer<TFThrowable>
 	}
 
 	@Override
-	public void render(TFThrowable entity, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light) {
+	public void render(EntityRenderState state, PoseStack stack, MultiBufferSource buffer, int light) {
 		if (this.flashing) {
 			stack.pushPose();
-			float age = entity.tickCount + partialTicks;
-			float f = (Mth.sin(age) + 1.0F) * 0.5F;
+			float f = (Mth.sin(state.ageInTicks) + 1.0F) * 0.5F;
 			float f1 = 1.0F + Mth.sin(f * 100.0F) * f * 0.01F;
 			f = Mth.clamp(f, 0.0F, 1.0F);
 			f *= f;
@@ -54,15 +54,15 @@ public class CustomProjectileTextureRenderer extends EntityRenderer<TFThrowable>
 			float f2 = (1.0F + f * 0.4F) * f1;
 			float f3 = (1.0F + f * 0.1F) / f1;
 			stack.scale(f2, f3, f2);
-			this.render(entity, entityYaw, partialTicks, stack, buffer, light, OverlayTexture.pack(OverlayTexture.u(f), OverlayTexture.v(false)));
+			this.render(state, stack, buffer, light, OverlayTexture.pack(OverlayTexture.u(f), OverlayTexture.v(false)));
 			stack.popPose();
 		} else {
-			this.render(entity, entityYaw, partialTicks, stack, buffer, light, OverlayTexture.NO_OVERLAY);
+			this.render(state, stack, buffer, light, OverlayTexture.NO_OVERLAY);
 		}
 	}
 
 	//[VanillaCopy] of DragonFireballRender.render, we just input our own texture stuff instead
-	public void render(TFThrowable entity, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light, int overlayTexture) {
+	public void render(EntityRenderState state, PoseStack stack, MultiBufferSource buffer, int light, int overlay) {
 		stack.pushPose();
 		stack.scale(0.5F * this.scale, 0.5F * this.scale, 0.5F * this.scale);
 
@@ -71,20 +71,20 @@ public class CustomProjectileTextureRenderer extends EntityRenderer<TFThrowable>
 		PoseStack.Pose pose = stack.last();
 		VertexConsumer consumer = buffer.getBuffer(RenderType.entityCutoutNoCull(this.texture));
 
-		vertex(consumer, pose, light, 0.0F, 0.0F, 0.0F, 1.0F, overlayTexture);
-		vertex(consumer, pose, light, 1.0F, 0.0F, 1.0F, 1.0F, overlayTexture);
-		vertex(consumer, pose, light, 1.0F, 1.0F, 1.0F, 0.0F, overlayTexture);
-		vertex(consumer, pose, light, 0.0F, 1.0F, 0.0F, 0.0F, overlayTexture);
+		vertex(consumer, pose, light, 0.0F, 0.0F, 0.0F, 1.0F, overlay);
+		vertex(consumer, pose, light, 1.0F, 0.0F, 1.0F, 1.0F, overlay);
+		vertex(consumer, pose, light, 1.0F, 1.0F, 1.0F, 0.0F, overlay);
+		vertex(consumer, pose, light, 0.0F, 1.0F, 0.0F, 0.0F, overlay);
 		stack.popPose();
-		super.render(entity, entityYaw, partialTicks, stack, buffer, light);
+		super.render(state, stack, buffer, light);
 	}
 
 	private static void vertex(VertexConsumer consumer, PoseStack.Pose pose, int light, float xOffset, float zOffset, float u, float v, int overlay) {
-		consumer.addVertex(pose, xOffset - 0.5F, zOffset - 0.25F, 0.0F).setColor(255, 255, 255, 255).setUv(u, v).setOverlay(overlay).setLight(light).setNormal(pose, 0.0F, 1.0F, 0.0F);
+		consumer.addVertex(pose, xOffset - 0.5F, zOffset - 0.25F, 0.0F).setColor(-1).setUv(u, v).setOverlay(overlay).setLight(light).setNormal(pose, 0.0F, 1.0F, 0.0F);
 	}
 
 	@Override
-	public Identifier getTextureLocation(TFThrowable entity) {
-		return this.texture;
+	public EntityRenderState createRenderState() {
+		return new EntityRenderState();
 	}
 }

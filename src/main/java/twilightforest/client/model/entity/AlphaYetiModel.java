@@ -1,6 +1,5 @@
 package twilightforest.client.model.entity;
 
-import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.HumanoidModel;
@@ -8,16 +7,13 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.resources.Identifier;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
-import twilightforest.TwilightForestMod;
-import twilightforest.entity.boss.AlphaYeti;
+import twilightforest.client.renderer.entity.AlphaYetiRenderer;
+import twilightforest.client.state.AlphaYetiRenderState;
 
-public class AlphaYetiModel extends HumanoidModel<AlphaYeti> implements TrophyBlockModel {
-
-	private static final Identifier ALPHA_YETI_TEXTURE = TwilightForestMod.getModelTexture("yetialpha.png");
+public class AlphaYetiModel extends HumanoidModel<AlphaYetiRenderState> implements TrophyBlockModel {
 
 	public AlphaYetiModel(ModelPart root) {
 		super(root);
@@ -140,26 +136,20 @@ public class AlphaYetiModel extends HumanoidModel<AlphaYeti> implements TrophyBl
 				0.0F, 20F * Mth.DEG_TO_RAD, -zangle * Mth.DEG_TO_RAD));
 	}
 
-
 	@Override
-	protected Iterable<ModelPart> bodyParts() {
-		return ImmutableList.of(this.body, this.rightArm, this.leftArm, this.rightLeg, this.leftLeg);
-	}
+	public void setupAnim(AlphaYetiRenderState state) {
+		this.head.yRot = state.yRot * Mth.DEG_TO_RAD;
+		this.head.xRot = state.xRot * Mth.DEG_TO_RAD;
 
-	@Override
-	public void setupAnim(AlphaYeti entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		this.head.yRot = netHeadYaw * Mth.DEG_TO_RAD;
-		this.head.xRot = headPitch * Mth.DEG_TO_RAD;
+		this.body.xRot = state.xRot * Mth.DEG_TO_RAD;
 
-		this.body.xRot = headPitch * Mth.DEG_TO_RAD;
-
-		this.rightLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-		this.leftLeg.xRot = Mth.cos(limbSwing * 0.6662F + Mth.PI) * 1.4F * limbSwingAmount;
+		this.rightLeg.xRot = Mth.cos(state.walkAnimationPos * 0.6662F) * 1.4F * state.walkAnimationSpeed;
+		this.leftLeg.xRot = Mth.cos(state.walkAnimationPos * 0.6662F + Mth.PI) * 1.4F * state.walkAnimationSpeed;
 		this.rightLeg.yRot = 0.0F;
 		this.leftLeg.yRot = 0.0F;
 
-		float f6 = Mth.sin(this.attackTime * Mth.PI);
-		float f7 = Mth.sin((1.0F - (1.0F - this.attackTime) * (1.0F - this.attackTime)) * Mth.PI);
+		float f6 = Mth.sin(state.attackTime * Mth.PI);
+		float f7 = Mth.sin((1.0F - (1.0F - state.attackTime) * (1.0F - state.attackTime)) * Mth.PI);
 		this.rightArm.zRot = 0.0F;
 		this.leftArm.zRot = 0.0F;
 		this.rightArm.yRot = -(0.1F - f6 * 0.6F);
@@ -168,19 +158,19 @@ public class AlphaYetiModel extends HumanoidModel<AlphaYeti> implements TrophyBl
 		this.leftArm.xRot = -Mth.HALF_PI;
 		this.rightArm.xRot -= f6 * 1.2F - f7 * 0.4F;
 		this.leftArm.xRot -= f6 * 1.2F - f7 * 0.4F;
-		this.rightArm.zRot += Mth.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
-		this.leftArm.zRot -= Mth.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
-		this.rightArm.xRot += Mth.sin(ageInTicks * 0.067F) * 0.05F;
-		this.leftArm.xRot -= Mth.sin(ageInTicks * 0.067F) * 0.05F;
+		this.rightArm.zRot += Mth.cos(state.ageInTicks * 0.09F) * 0.05F + 0.05F;
+		this.leftArm.zRot -= Mth.cos(state.ageInTicks * 0.09F) * 0.05F + 0.05F;
+		this.rightArm.xRot += Mth.sin(state.ageInTicks * 0.067F) * 0.05F;
+		this.leftArm.xRot -= Mth.sin(state.ageInTicks * 0.067F) * 0.05F;
 
 		this.body.y = -6F;
 		this.rightLeg.y = 4F;
 		this.leftLeg.y = 4F;
 
-		if (entity.isTired()) {
+		if (state.isTired) {
 			// arms down
-			this.rightArm.xRot = Mth.cos(limbSwing * 0.6662F + Mth.PI) * 2.0F * limbSwingAmount * 0.5F;
-			this.leftArm.xRot = Mth.cos(limbSwing * 0.6662F) * 2.0F * limbSwingAmount * 0.5F;
+			this.rightArm.xRot = Mth.cos(state.walkAnimationPos * 0.6662F + Mth.PI) * 2.0F * state.walkAnimationSpeed * 0.5F;
+			this.leftArm.xRot = Mth.cos(state.walkAnimationPos * 0.6662F) * 2.0F * state.walkAnimationSpeed * 0.5F;
 			this.rightArm.zRot = 0.0F;
 			this.leftArm.zRot = 0.0F;
 
@@ -198,13 +188,13 @@ public class AlphaYetiModel extends HumanoidModel<AlphaYeti> implements TrophyBl
 			this.leftLeg.y = 12.0F;
 		}
 
-		if (entity.isRampaging()) {
+		if (state.isRampaging) {
 			// arms up
-			this.rightArm.xRot = Mth.cos(limbSwing * 0.66F + Mth.PI) * 2.0F * limbSwingAmount * 0.5F;
-			this.leftArm.xRot = Mth.cos(limbSwing * 0.66F) * 2.0F * limbSwingAmount * 0.5F;
+			this.rightArm.xRot = Mth.cos(state.walkAnimationPos * 0.66F + Mth.PI) * 2.0F * state.walkAnimationSpeed * 0.5F;
+			this.leftArm.xRot = Mth.cos(state.walkAnimationPos * 0.66F) * 2.0F * state.walkAnimationSpeed * 0.5F;
 
-			this.rightArm.yRot += Mth.cos(limbSwing * 0.25F) * 0.5F + 0.5F;
-			this.leftArm.yRot -= Mth.cos(limbSwing * 0.25F) * 0.5F + 0.5F;
+			this.rightArm.yRot += Mth.cos(state.walkAnimationPos * 0.25F) * 0.5F + 0.5F;
+			this.leftArm.yRot -= Mth.cos(state.walkAnimationPos * 0.25F) * 0.5F + 0.5F;
 
 			this.rightArm.xRot += Mth.PI * 1.25F;
 			this.leftArm.xRot += Mth.PI * 1.25F;
@@ -212,7 +202,7 @@ public class AlphaYetiModel extends HumanoidModel<AlphaYeti> implements TrophyBl
 			this.leftArm.zRot = 0.0F;
 		}
 
-		if (entity.isVehicle()) {
+		if (state.isHoldingEntity) {
 			// arms up!
 			this.rightArm.xRot += Mth.PI;
 			this.leftArm.xRot += Mth.PI;
@@ -229,7 +219,7 @@ public class AlphaYetiModel extends HumanoidModel<AlphaYeti> implements TrophyBl
 	public void renderTrophy(PoseStack stack, MultiBufferSource buffer, int light, int overlay, int color, ItemDisplayContext context) {
 		stack.scale(0.2F, 0.2F, 0.2F);
 		stack.translate(0.0F, -1.5F, 0.0F);
-		VertexConsumer consumer = buffer.getBuffer(RenderType.entityCutoutNoCull(ALPHA_YETI_TEXTURE));
+		VertexConsumer consumer = buffer.getBuffer(RenderTypes.entityCutout(AlphaYetiRenderer.TEXTURE));
 		this.head.render(stack, consumer, light, overlay, color);
 	}
 }

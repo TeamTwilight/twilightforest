@@ -1,6 +1,6 @@
 package twilightforest.client.model.entity;
 
-import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
@@ -8,9 +8,9 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import twilightforest.entity.monster.DeathTome;
+import twilightforest.client.state.DeathTomeRenderState;
 
-public class DeathTomeModel extends HierarchicalModel<DeathTome> {
+public class DeathTomeModel extends EntityModel<DeathTomeRenderState> {
 
 	private final ModelPart root;
 	private final ModelPart book;
@@ -28,6 +28,7 @@ public class DeathTomeModel extends HierarchicalModel<DeathTome> {
 	private final ModelPart loosePage3;
 
 	public DeathTomeModel(ModelPart root) {
+		super(root);
 		this.root = root;
 
 		this.book = root.getChild("book");
@@ -115,15 +116,12 @@ public class DeathTomeModel extends HierarchicalModel<DeathTome> {
 	}
 
 	@Override
-	public ModelPart root() {
-		return this.root;
-	}
-
-	@Override
-	public void setupAnim(DeathTome entity, float limbAngle, float limbDistance, float ageInTicks, float headYaw, float headPitch) {
+	public void setupAnim(DeathTomeRenderState entity) {
+		super.setupAnim(entity);
+		this.prepareMobModel(entity);
 		this.root.yRot = Mth.HALF_PI;
 
-		if (entity.isOnLectern()) {
+		if (entity.onLectern) {
 			this.book.zRot = -0.8726646259971647F * 1.35F;
 			this.book.x = 1.75F;
 		} else {
@@ -131,18 +129,17 @@ public class DeathTomeModel extends HierarchicalModel<DeathTome> {
 			this.book.x = 0.0F;
 		}
 
-		this.paperStorm.yRot = ageInTicks * Mth.DEG_TO_RAD + Mth.HALF_PI;
+		this.paperStorm.yRot = entity.ageInTicks * Mth.DEG_TO_RAD + Mth.HALF_PI;
 		this.paperStorm.zRot = 0.8726646259971647F;
 	}
 
-	@Override
-	public void prepareMobModel(DeathTome entity, float limbSwing, float limbSwingAmount, float partialTicks) {
-		boolean onLectern = entity.isOnLectern();
+	public void prepareMobModel(DeathTomeRenderState entity) {
+		boolean onLectern = entity.onLectern;
 
-		float bounce = onLectern ? 0.0F : entity.tickCount + partialTicks;
+		float bounce = onLectern ? 0.0F : entity.ageInTicks;
 		float open = onLectern ? 1.2F : 0.9f;
 
-		float flip = Mth.lerp(partialTicks, entity.oFlip, entity.flip);
+		float flip = entity.flip;
 		float flipRight = Mth.clamp(Mth.frac(flip + 0.25F) * 1.6F - 0.3F, 0.0F, 1.0F);
 		float flipLeft = Mth.clamp(Mth.frac(flip + 0.75F) * 1.6F - 0.3F, 0.0F, 1.0F);
 

@@ -1,8 +1,8 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.culling.Frustum;
@@ -16,11 +16,13 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
+import twilightforest.client.model.entity.BlockChainGoblinModel;
 import twilightforest.client.model.entity.ChainModel;
 import twilightforest.client.model.entity.SpikeBlockModel;
+import twilightforest.client.state.BlockChainGoblinRenderState;
 import twilightforest.entity.monster.BlockChainGoblin;
 
-public class BlockChainGoblinRenderer<T extends BlockChainGoblin, M extends HumanoidModel<T>> extends HumanoidMobRenderer<T, M> {
+public class BlockChainGoblinRenderer extends HumanoidMobRenderer<BlockChainGoblin, BlockChainGoblinRenderState, BlockChainGoblinModel> {
 
 	private static final Identifier GOBLIN_TEXTURE = TwilightForestMod.getModelTexture("blockgoblin.png");
 	private static final Identifier BLOCK_AND_CHAIN_TEXTURE = TwilightForestMod.getModelTexture("block_and_chain.png");
@@ -28,47 +30,59 @@ public class BlockChainGoblinRenderer<T extends BlockChainGoblin, M extends Huma
 	private final Model model;
 	private final Model chainModel;
 
-	public BlockChainGoblinRenderer(EntityRendererProvider.Context context, M model, float shadowSize) {
-		super(context, model, shadowSize);
+	public BlockChainGoblinRenderer(EntityRendererProvider.Context context) {
+		super(context, new BlockChainGoblinModel(context.bakeLayer(TFModelLayers.BLOCKCHAIN_GOBLIN)), 0.4F);
 		this.model = new SpikeBlockModel(context.bakeLayer(TFModelLayers.CHAIN_BLOCK));
 		this.chainModel = new ChainModel(context.bakeLayer(TFModelLayers.CHAIN));
 	}
 
 	@Override
-	public void render(T entity, float yaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light) {
-		super.render(entity, yaw, partialTicks, stack, buffer, light);
+	public void render(BlockChainGoblinRenderState state, PoseStack stack, MultiBufferSource source, int light) {
+		super.render(state, stack, source, light);
 
 		stack.pushPose();
 
-		Vec3 entityPosition = entity.getPosition(partialTicks);
-		Vec3 blockPosition = entity.block.getPosition(partialTicks);
-		double blockInX = (blockPosition.x() - entityPosition.x());
-		double blockInY = (blockPosition.y() - entityPosition.y());
-		double blockInZ = (blockPosition.z() - entityPosition.z());
+		double blockInX = (state.chainBlockPos.x() - state.x);
+		double blockInY = (state.chainBlockPos.y() - state.y);
+		double blockInZ = (state.chainBlockPos.z() - state.z);
 
+		VertexConsumer consumer = source.getBuffer(this.model.renderType(BLOCK_AND_CHAIN_TEXTURE));
 		stack.translate(blockInX, blockInY, blockInZ);
 
-		stack.mulPose(Axis.YP.rotationDegrees(-entity.block.getYRot()));
+		stack.mulPose(Axis.YP.rotationDegrees(180 - Mth.wrapDegrees(state.yRot)));
+		stack.mulPose(Axis.XP.rotationDegrees(state.xRot));
 
 		stack.scale(-1.0F, -1.0F, 1.0F);
 
-		this.model.renderToBuffer(stack, buffer.getBuffer(this.model.renderType(BLOCK_AND_CHAIN_TEXTURE)), light, OverlayTexture.NO_OVERLAY);
+		this.model.renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY);
 		stack.popPose();
 
-		if (entity.isAlive()) {
+		if (state.deathTime <= 0) {
 			stack.pushPose();
-			stack.translate(0.0D, entity.getEyeHeight(), 0.0D);
-			Vec3 xyz = entity.block.getEyePosition(partialTicks).subtract(entity.getEyePosition(partialTicks)).multiply(1.0D, 0.5D, 1.0D);
-			BlockChainRenderer.renderChain(entity.block, xyz.scale(0.00D), stack, buffer, light, this.chainModel);
-			BlockChainRenderer.renderChain(entity.block, xyz.scale(0.25D), stack, buffer, light, this.chainModel);
-			BlockChainRenderer.renderChain(entity.block, xyz.scale(0.50D), stack, buffer, light, this.chainModel);
-			BlockChainRenderer.renderChain(entity.block, xyz.scale(0.75D), stack, buffer, light, this.chainModel);
+			stack.translate(0.0D, state.eyeHeight, 0.0D);
+			Vec3 xyz = state.chainStartPos;
+			BlockChainRenderer.renderChain(false, xyz, stack, source, light, this.chainModel);
+			BlockChainRenderer.renderChain(false, xyz, stack, source, light, this.chainModel);
+			BlockChainRenderer.renderChain(false, xyz, stack, source, light, this.chainModel);
+			BlockChainRenderer.renderChain(false, xyz, stack, source, light, this.chainModel);
 			stack.popPose();
 		}
 	}
 
 	@Override
-	public boolean shouldRender(T entity, Frustum frustum, double camX, double camY, double camZ) {
+	public BlockChainGoblinRenderState createRenderState() {
+		return new BlockChainGoblinRenderState();
+	}
+
+	@Override
+	public void extractRenderState(BlockChainGoblin entity, BlockChainGoblinRenderState state, float partialTick) {
+		super.extractRenderState(entity, state, partialTick);
+		state.chainBlockPos = entity.block.position();
+		state.chainStartPos = entity.block.getEyePosition().subtract(entity.getEyePosition()).multiply(1.0D, 0.5D, 1.0D);
+	}
+
+	@Override
+	public boolean shouldRender(BlockChainGoblin entity, Frustum frustum, double camX, double camY, double camZ) {
 		if (super.shouldRender(entity, frustum, camX, camY, camZ)) {
 			return true;
 		} else {
@@ -86,7 +100,7 @@ public class BlockChainGoblinRenderer<T extends BlockChainGoblin, M extends Huma
 	}
 
 	@Override
-	public Identifier getTextureLocation(T entity) {
+	public Identifier getTextureLocation(BlockChainGoblinRenderState entity) {
 		return GOBLIN_TEXTURE;
 	}
 }

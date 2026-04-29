@@ -1,14 +1,11 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.UUIDUtil;
 import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.NbtUtils;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -39,6 +36,7 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileDeflection;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -47,10 +45,12 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.CandleBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.entity.UniquelyIdentifyable;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -59,8 +59,6 @@ import org.jetbrains.annotations.Nullable;
 import twilightforest.block.LightableBlock;
 import twilightforest.block.OminousCandleBlock;
 import twilightforest.components.entity.FortificationShieldAttachment;
-import twilightforest.data.tags.DamageTypeTagGenerator;
-import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.entity.ai.goal.*;
 import twilightforest.entity.monster.LichMinion;
 import twilightforest.entity.projectile.LichBomb;
@@ -70,10 +68,9 @@ import twilightforest.tags.TFDamageTypeTags;
 import twilightforest.tags.TFEntityTypeTags;
 import twilightforest.util.entities.EntityUtil;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 public class Lich extends BaseTFBoss {
 	public static final int PARTICLE_BURST_COOLDOWN = 23; //How many ticks between bursts of particles during the start of the death animation
@@ -82,13 +79,13 @@ public class Lich extends BaseTFBoss {
 	public static final int DEATH_ANIMATION_POINT_C = DEATH_ANIMATION_POINT_B + 32; //How long should the crown just kinda sit there
 	public static final int DEATH_ANIMATION_DURATION = DEATH_ANIMATION_POINT_C + 132; //How many ticks of the purple flames coalescing into a loot chest
 
-	protected static final EntityDataAccessor<Optional<UUID>> MASTER_LICH = SynchedEntityData.defineId(Lich.class, EntityDataSerializers.OPTIONAL_UUID);
+	protected static final EntityDataAccessor<Optional<EntityReference<LivingEntity>>> MASTER_LICH = SynchedEntityData.defineId(Lich.class, EntityDataSerializers.OPTIONAL_LIVING_ENTITY_REFERENCE);
 	protected static final EntityDataAccessor<Integer> SHIELD_STRENGTH = SynchedEntityData.defineId(Lich.class, EntityDataSerializers.INT);
 	protected static final EntityDataAccessor<Integer> MINIONS_LEFT = SynchedEntityData.defineId(Lich.class, EntityDataSerializers.INT);
 	protected static final EntityDataAccessor<Integer> ATTACK_TYPE = SynchedEntityData.defineId(Lich.class, EntityDataSerializers.INT);
 	protected static final EntityDataAccessor<Integer> TELEPORT_INVISIBILITY = SynchedEntityData.defineId(Lich.class, EntityDataSerializers.INT);
 
-	protected static final ItemParticleOption BONE_PARTICLE = new ItemParticleOption(ParticleTypes.ITEM, Items.BONE.getDefaultInstance());
+	protected static final ItemParticleOption BONE_PARTICLE = new ItemParticleOption(ParticleTypes.ITEM, new ItemStackTemplate(Items.BONE));
 	public static final int MAX_ACTIVE_MINIONS = 3;
 
 	public static final int MAX_HEALTH = 100;
@@ -218,39 +215,42 @@ public class Lich extends BaseTFBoss {
 	}
 
 	@Override
-	public void addAdditionalSaveData(ValueOutput compound) {
-		super.addAdditionalSaveData(compound);
-		if (this.getMasterUUID() != null) {
-			compound.putUUID("MasterLich", this.getMasterUUID());
+	public void addAdditionalSaveData(ValueOutput output) {
+		super.addAdditionalSaveData(output);
+		if (this.getMasterReference() != null) {
+			output.store("MasterLich", EntityReference.codec(), this.getMasterReference());
 		}
-		ListTag clonesTag = new ListTag();
-		for (UUID uuid : this.summonedClones) {
-			clonesTag.add(NbtUtils.createUUID(uuid));
+		ValueOutput clonesTag = output.child("SummonedClones");
+		clonesTag.store("UUIDs", UUIDUtil.CODEC_SET, Set.copyOf(this.summonedClones));
+
+		if (clonesTag.isEmpty()) {
+			output.discard("SummonedClones");
 		}
-		if (!clonesTag.isEmpty()) {
-			compound.put("SummonedClones", clonesTag);
-		}
-		compound.putInt("ShieldStrength", this.getShieldStrength());
-		compound.putInt("MinionsToSummon", this.getMinionsToSummon());
-		compound.putInt("BabyMinionsSummoned", this.babyMinionsSummoned);
-		compound.putInt("HitsWithoutTeleport", this.hitsWithoutTeleport);
+		output.putInt("ShieldStrength", this.getShieldStrength());
+		output.putInt("MinionsToSummon", this.getMinionsToSummon());
+		output.putInt("BabyMinionsSummoned", this.babyMinionsSummoned);
+		output.putInt("HitsWithoutTeleport", this.hitsWithoutTeleport);
 	}
 
 	@Override
-	public void readAdditionalSaveData(ValueInput compound) {
-		super.readAdditionalSaveData(compound);
-		if (compound.contains("MasterLich")) {
-			this.setMasterUUID(compound.getUUID("MasterLich"));
-		}
-		if (compound.contains("SummonedClones", Tag.TAG_LIST)) {
+	public void readAdditionalSaveData(ValueInput input) {
+		super.readAdditionalSaveData(input);
+		Optional<EntityReference<UniquelyIdentifyable>> entityReference = input.read("MasterLich", EntityReference.codec());
+
+		UUID uuid1 = entityReference.map(EntityReference::getUUID).orElse(null);
+		this.setMasterUUID(uuid1);
+		Optional<ValueInput> valueInput = input.child("SummonedClones");
+		if (valueInput.isPresent()) {
+
+
 			this.summonedClones.clear();
-			ListTag cloneList = compound.getList("SummonedClones", Tag.TAG_INT_ARRAY);
-			cloneList.forEach(tag -> this.summonedClones.add(NbtUtils.loadUUID(tag)));
+			Optional<Set<UUID>> cloneList = valueInput.get().read("UUIDs", UUIDUtil.CODEC_SET);
+			cloneList.ifPresent(this.summonedClones::addAll);
 		}
-		this.setShieldStrength(compound.getInt("ShieldStrength"));
-		this.setMinionsToSummon(compound.getInt("MinionsToSummon"));
-		this.babyMinionsSummoned = compound.getInt("BabyMinionsSummoned");
-		this.hitsWithoutTeleport = compound.getInt("HitsWithoutTeleport");
+		this.setShieldStrength(input.getIntOr("ShieldStrength", 0));
+		this.setMinionsToSummon(input.getIntOr("MinionsToSummon", 0));
+		this.babyMinionsSummoned = input.getIntOr("BabyMinionsSummoned", 0);
+		this.hitsWithoutTeleport = input.getIntOr("HitsWithoutTeleport", 0);
 	}
 
 	@Override
@@ -323,8 +323,8 @@ public class Lich extends BaseTFBoss {
 	}
 
 	@Override
-	protected void customServerAiStep(ServerLevel server) {
-		super.customServerAiStep(server);
+	protected void customServerAiStep(ServerLevel serverLevel) {
+		super.customServerAiStep(serverLevel);
 
 		// Teleport home if we get too far away from it
 		if (this.isOutsideHomeRange(this.position()) && this.getTeleportInvisibility() <= 0) this.teleportHome();
@@ -353,7 +353,7 @@ public class Lich extends BaseTFBoss {
 	}
 
 	@Override
-	public boolean hurtServer(ServerLevel server, DamageSource src, float damage) {
+	public boolean hurtServer(ServerLevel serverLevel, DamageSource src, float damage) {
 		if (this.getTeleportInvisibility() > 0 && !src.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) return false;
 
 		// if we're in a wall, teleport for gosh sakes
@@ -396,7 +396,7 @@ public class Lich extends BaseTFBoss {
 			return false;
 		}
 
-		if (super.hurtServer(server, src, damage)) {
+		if (super.hurtServer(serverLevel, src, damage)) {
 			if (this.getRandom().nextInt(this.getPhase() == 3 ? 6 : 3) <= this.hitsWithoutTeleport++ && !this.isDeadOrDying()) {
 				this.hitsWithoutTeleport = 0;
 				this.teleportToNewTarget(this.getTarget(), 20.0F, null);
@@ -486,14 +486,14 @@ public class Lich extends BaseTFBoss {
 	}
 
 	@Nullable
-	public UUID getMasterUUID() {
+	public EntityReference<LivingEntity> getMasterReference() {
 		return this.getEntityData().get(MASTER_LICH).orElse(null);
 	}
 
 	@Nullable
 	public Lich getMaster() {
-		if (this.level() instanceof ServerLevel server && this.getMasterUUID() != null) {
-			Entity entity = server.getEntity(this.getMasterUUID());
+		if (this.level() instanceof ServerLevel server && this.getMasterReference() != null) {
+			Entity entity = server.getEntity(this.getMasterReference().getUUID());
 			if (entity instanceof Lich lich) {
 				return lich;
 			}
@@ -503,7 +503,11 @@ public class Lich extends BaseTFBoss {
 
 	public void setMasterUUID(@Nullable UUID lich) {
 		this.getBossBar().setVisible(lich != null);
-		this.getEntityData().set(MASTER_LICH, Optional.ofNullable(lich));
+		if (lich != null) {
+			this.getEntityData().set(MASTER_LICH, Optional.of(EntityReference.of(lich)));
+		} else {
+			this.getEntityData().set(MASTER_LICH, Optional.empty());
+		}
 	}
 
 	public boolean wantsNewClone(Lich clone) {
@@ -883,10 +887,12 @@ public class Lich extends BaseTFBoss {
 	}
 
 	@Override
-	@Nullable
-	@SuppressWarnings("NullableProblems")
-	public ResourceKey<LootTable> getDefaultLootTable() {
-		return !this.isShadowClone() ? super.getDefaultLootTable() : null;
+	protected boolean dropFromLootTable(ServerLevel level, ResourceKey<LootTable> key, Function<LootParams.Builder, LootParams> paramsBuilder, BiConsumer<ServerLevel, ItemStack> consumer) {
+		if (!this.isShadowClone()) {
+			return super.dropFromLootTable(level, key, paramsBuilder, consumer);
+		} else {
+			return false;
+		}
 	}
 
 	@Override
@@ -926,8 +932,8 @@ public class Lich extends BaseTFBoss {
 	}
 
 	@Override
-	protected boolean shouldSpawnLoot(ServerLevel server) {
-		return !this.isShadowClone() && super.shouldSpawnLoot(server);
+	protected boolean shouldSpawnLoot(ServerLevel serverLevel) {
+		return !this.isShadowClone() && super.shouldSpawnLoot(serverLevel);
 	}
 
 	@Override
@@ -962,7 +968,7 @@ public class Lich extends BaseTFBoss {
 				double x = (this.getRandom().nextDouble() - 0.5D) * 0.7D;
 				double y = this.getRandom().nextDouble() * this.getBbHeight();
 				double z = (this.getRandom().nextDouble() - 0.5D) * 0.7D;
-				this.level().addParticle(this.getRandom().nextBoolean() || hurt ? BONE_PARTICLE : ParticleTypes.SMOKE, false, pos.x() + x, pos.y() + y, pos.z() + z, 0.0D, 0.0D, 0.0D);
+				this.level().addParticle(this.getRandom().nextBoolean() || hurt ? BONE_PARTICLE : ParticleTypes.SMOKE, false, false, pos.x() + x, pos.y() + y, pos.z() + z, 0.0D, 0.0D, 0.0D);
 			}
 
 			if (hurt) {
@@ -973,7 +979,7 @@ public class Lich extends BaseTFBoss {
 					double x1 = x + (this.getRandom().nextDouble() - 0.5D) * 0.1D;
 					double y1 = y + (this.getRandom().nextDouble() - 0.5D) * 0.1D;
 					double z1 = z + (this.getRandom().nextDouble() - 0.5D) * 0.1D;
-					this.level().addParticle(this.getRandom().nextBoolean() ? BONE_PARTICLE : ParticleTypes.CLOUD, false, pos.x() + x1, pos.y() + y1, pos.z() + z1, 0.0D, 0.0D, 0.0D);
+					this.level().addParticle(this.getRandom().nextBoolean() ? BONE_PARTICLE : ParticleTypes.CLOUD, false, false, pos.x() + x1, pos.y() + y1, pos.z() + z1, 0.0D, 0.0D, 0.0D);
 				}
 
 				Vec3 added = this.position().add(0.0D, this.getBbHeight() * 0.5D, 0.0D);
@@ -990,7 +996,7 @@ public class Lich extends BaseTFBoss {
 					double x = (this.getRandom().nextDouble() - 0.5D) * 0.7D;
 					double y = this.getRandom().nextDouble() * this.getBbHeight();
 					double z = (this.getRandom().nextDouble() - 0.5D) * 0.7D;
-					this.level().addParticle(this.getRandom().nextBoolean() ? BONE_PARTICLE : ParticleTypes.CLOUD, false, pos.x() + x, pos.y() + y, pos.z() + z, 0.0D, 0.0D, 0.0D);
+					this.level().addParticle(this.getRandom().nextBoolean() ? BONE_PARTICLE : ParticleTypes.CLOUD, false, false, pos.x() + x, pos.y() + y, pos.z() + z, 0.0D, 0.0D, 0.0D);
 				}
 			}
 		} else if (this.deathTime == DEATH_ANIMATION_POINT_B) {
@@ -998,7 +1004,7 @@ public class Lich extends BaseTFBoss {
 			for (int i = 0; i < 3; i++) {
 				double x = (this.getRandom().nextDouble() - 0.5D) * 0.75D;
 				double z = (this.getRandom().nextDouble() - 0.5D) * 0.75D;
-				this.level().addParticle(ParticleTypes.CLOUD, false, pos.x() + x, pos.y(), pos.z() + z, 0.0D, 0.0D, 0.0D);
+				this.level().addParticle(ParticleTypes.CLOUD, false, false, pos.x() + x, pos.y(), pos.z() + z, 0.0D, 0.0D, 0.0D);
 			}
 		} else if (this.deathTime > DEATH_ANIMATION_POINT_C) {
 			Vec3 start = this.position().add(0.0D, 0.45F, 0.0D);
@@ -1012,7 +1018,7 @@ public class Lich extends BaseTFBoss {
 			for (double i = 0.0D; i < 1.0D; i += 0.2D) {
 				double x = Math.sin((powFactor + i) * Math.PI * 2.0D) * expandFactor * 1.75D;
 				double z = Math.cos((powFactor + i) * Math.PI * 2.0D) * expandFactor * 1.75D;
-				this.level().addParticle(TFParticleType.OMINOUS_FLAME.get(), false, particlePos.x() + x, particlePos.y() - 0.25D, particlePos.z() + z, 0.0D, 0.0D, 0.0D);
+				this.level().addParticle(TFParticleType.OMINOUS_FLAME.get(), false, false, particlePos.x() + x, particlePos.y() - 0.25D, particlePos.z() + z, 0.0D, 0.0D, 0.0D);
 			}
 		}
 
@@ -1021,7 +1027,7 @@ public class Lich extends BaseTFBoss {
 			double x = (this.getRandom().nextDouble() - 0.5D) * 0.25D;
 			double y = this.getRandom().nextDouble() * this.getBbHeight() * 0.1D;
 			double z = (this.getRandom().nextDouble() - 0.5D) * 0.25D;
-			this.level().addParticle(ParticleTypes.SMOKE, false, start.x() + x, start.y() + y, start.z() + z, 0.0D, 0.0D, 0.0D);
+			this.level().addParticle(ParticleTypes.SMOKE, false, false, start.x() + x, start.y() + y, start.z() + z, 0.0D, 0.0D, 0.0D);
 		}
 	}
 
@@ -1049,7 +1055,7 @@ public class Lich extends BaseTFBoss {
 	@Nullable
 	protected Entity lookAtUponDeath() {
 		if (this.getTarget() != null) return this.getTarget();
-		else if (this.lastHurtByPlayer != null) return this.lastHurtByPlayer;
+		else if (this.lastHurtByPlayer != null) return this.lastHurtByPlayer.getEntity(this.level(), Player.class);
 		else return this.level().getNearestPlayer(this, 20.0D);
 	}
 
@@ -1077,7 +1083,7 @@ public class Lich extends BaseTFBoss {
 
 	@Override
 	public ProjectileDeflection deflection(Projectile projectile) {
-		if (projectile.is(TFEntityTypeTags.LICH_DEFLECTS_PHASE_2) && (projectile.getOwner() instanceof Player || projectile.getOwner() instanceof Lich || projectile.getOwner() == null) && this.getPhase() > 1) {
+		if (projectile.typeHolder().is(TFEntityTypeTags.LICH_DEFLECTS_PHASE_2) && (projectile.getOwner() instanceof Player || projectile.getOwner() instanceof Lich || projectile.getOwner() == null) && this.getPhase() > 1) {
 			return (proj, entity, random) -> {
 				proj.setDeltaMovement(this.getDeltaMovement().add(0.5D - this.getRandom().nextDouble(), 0.75D, 0.5D - this.getRandom().nextDouble()).multiply(0.75D, 1.5D, 0.75D));
 				proj.setOwner(this);

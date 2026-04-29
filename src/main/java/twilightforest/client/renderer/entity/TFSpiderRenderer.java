@@ -3,8 +3,9 @@ package twilightforest.client.renderer.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.SpiderRenderer;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.entity.monster.Spider;
+import net.minecraft.world.entity.monster.spider.Spider;
 import twilightforest.TwilightForestMod;
 
 public class TFSpiderRenderer<T extends Spider> extends SpiderRenderer<T> {
@@ -20,12 +21,12 @@ public class TFSpiderRenderer<T extends Spider> extends SpiderRenderer<T> {
 	}
 
 	@Override
-	public Identifier getTextureLocation(T entity) {
+	public Identifier getTextureLocation(LivingEntityRenderState entity) {
 		return this.texture;
 	}
 
 	@Override
-	protected void scale(T entity, PoseStack stack, float partialTicks) {
+	protected void scale(LivingEntityRenderState entity, PoseStack stack) {
 		stack.scale(this.scale, this.scale, this.scale);
 	}
 }

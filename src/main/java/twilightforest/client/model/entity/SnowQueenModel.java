@@ -8,36 +8,24 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
-import twilightforest.client.JappaPackReloadListener;
 import twilightforest.client.renderer.entity.SnowQueenRenderer;
-import twilightforest.entity.boss.SnowQueen;
+import twilightforest.client.state.SnowQueenRenderState;
 import twilightforest.entity.boss.SnowQueen.Phase;
 
-public class SnowQueenModel extends HumanoidModel<SnowQueen> implements TrophyBlockModel {
+public class SnowQueenModel extends HumanoidModel<SnowQueenRenderState> implements TrophyBlockModel {
 
 	public SnowQueenModel(ModelPart root) {
 		super(root);
 	}
 
-	public static LayerDefinition checkForPack() {
-		return JappaPackReloadListener.INSTANCE.isJappaPackLoaded() ? createJappaModel() : create();
-	}
-
-	private static LayerDefinition create() {
+	public static LayerDefinition create() {
 		MeshDefinition meshdefinition = HumanoidModel.createMesh(CubeDeformation.NONE, 0);
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		var head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
-				.texOffs(0, 0)
-				.addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F),
-			PartPose.offset(0.0F, -4.0F, 0.0F));
-
-		partdefinition.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
-
-		var crown = head.addOrReplaceChild("crown", CubeListBuilder.create(), PartPose.ZERO);
+		var crown = partdefinition.getChild("head").addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
 
 		makeFrontCrown(crown, -1.0F, -4.0F, 10.0F, 0);
 		makeFrontCrown(crown, 0.0F, 4.0F, -10.0F, 1);
@@ -120,77 +108,14 @@ public class SnowQueenModel extends HumanoidModel<SnowQueen> implements TrophyBl
 
 	}
 
-	private static LayerDefinition createJappaModel() {
-		MeshDefinition meshdefinition = new MeshDefinition();
-		PartDefinition partdefinition = meshdefinition.getRoot();
-
-		partdefinition.addOrReplaceChild("body", CubeListBuilder.create()
-				.texOffs(0, 16)
-				.addBox(-4.0F, 0.0F, -2.0F, 8.0F, 12.0F, 4.0F)
-				.texOffs(32, 45)
-				.addBox(-4.5F, 10.0F, -2.5F, 9.0F, 14.0F, 5.0F),
-			PartPose.ZERO);
-
-		var head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
-				.texOffs(0, 0)
-				.addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F),
-			PartPose.ZERO);
-
-		partdefinition.addOrReplaceChild("left_arm", CubeListBuilder.create()
-				.texOffs(14, 32)
-				.addBox(-1.0F, -2.0F, -2.0F, 3.0F, 12.0F, 4.0F),
-			PartPose.offset(5.0F, 2.0F, 0.0F));
-
-		partdefinition.addOrReplaceChild("left_leg", CubeListBuilder.create()
-				.texOffs(16, 48)
-				.addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F),
-			PartPose.offset(1.9F, 12.0F, 0.0F));
-
-		partdefinition.addOrReplaceChild("right_leg", CubeListBuilder.create()
-				.texOffs(0, 48)
-				.addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F),
-			PartPose.offset(-1.9F, 12.0F, 0.0F));
-
-		partdefinition.addOrReplaceChild("right_arm", CubeListBuilder.create()
-				.texOffs(0, 32)
-				.addBox(-2.0F, -2.0F, -2.0F, 3.0F, 12.0F, 4.0F),
-			PartPose.offset(-5.0F, 2.0F, 0.0F));
-
-		partdefinition.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
-		var crown = head.addOrReplaceChild("crown", CubeListBuilder.create(), PartPose.ZERO);
-
-		crown.addOrReplaceChild("crown_front", CubeListBuilder.create()
-				.texOffs(24, 0)
-				.addBox(-5.0F, -4.0F, 0.0F, 10.0F, 4.0F, 0.0F),
-			PartPose.offsetAndRotation(0.0F, -6.0F, -4.0F, 0.39269908169872414F, 0.0F, 0.0F));
-
-		crown.addOrReplaceChild("crown_right", CubeListBuilder.create()
-				.texOffs(24, 4)
-				.addBox(-5.0F, -4.0F, 0.0F, 10.0F, 4.0F, 0.0F),
-			PartPose.offsetAndRotation(-4.0F, -6.0F, 0.0F, 0.39269908169872414F, 1.5707963267948966F, 0.0F));
-
-		crown.addOrReplaceChild("crown_left", CubeListBuilder.create()
-				.texOffs(44, 4)
-				.addBox(-5.0F, -4.0F, 0.0F, 10.0F, 4.0F, 0.0F),
-			PartPose.offsetAndRotation(4.0F, -6.0F, 0.0F, -0.39269908169872414F, 1.5707963267948966F, 0.0F));
-
-		crown.addOrReplaceChild("crown_back", CubeListBuilder.create()
-				.texOffs(44, 0)
-				.addBox(-5.0F, -4.0F, 0.0F, 10.0F, 4.0F, 0.0F),
-			PartPose.offsetAndRotation(0.0F, -6.0F, 4.0F, -0.39269908169872414F, 0.0F, 0.0F));
-
-		return LayerDefinition.create(meshdefinition, 64, 64);
-	}
-
 	@Override
-	public void setupAnim(SnowQueen entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-
+	public void setupAnim(SnowQueenRenderState state) {
+		super.setupAnim(state);
 		// in beam phase, arms forwards
-		if (entity.getCurrentPhase() == Phase.BEAM) {
-			if (entity.isBreathing()) {
-				float f6 = Mth.sin(this.attackTime * Mth.PI);
-				float f7 = Mth.sin((1.0F - (1.0F - this.attackTime) * (1.0F - this.attackTime)) * Mth.PI);
+		if (state.phase == Phase.BEAM) {
+			if (state.breathing) {
+				float f6 = Mth.sin(state.attackTime * Mth.PI);
+				float f7 = Mth.sin((1.0F - (1.0F - state.attackTime) * (1.0F - state.attackTime)) * Mth.PI);
 				this.rightArm.zRot = 0.0F;
 				this.leftArm.zRot = 0.0F;
 				this.rightArm.yRot = -(0.1F - f6 * 0.6F);
@@ -199,7 +124,7 @@ public class SnowQueenModel extends HumanoidModel<SnowQueen> implements TrophyBl
 				this.leftArm.xRot = -Mth.HALF_PI;
 				this.rightArm.xRot -= f6 * 1.2F - f7 * 0.4F;
 				this.leftArm.xRot -= f6 * 1.2F - f7 * 0.4F;
-				AnimationUtils.bobArms(this.rightArm, this.leftArm, ageInTicks);
+				AnimationUtils.bobArms(this.rightArm, this.leftArm, state.ageInTicks);
 			} else {
 				// arms up
 				this.rightArm.xRot += Mth.PI;
@@ -210,10 +135,7 @@ public class SnowQueenModel extends HumanoidModel<SnowQueen> implements TrophyBl
 
 	@Override
 	public void renderTrophy(PoseStack stack, MultiBufferSource buffer, int light, int overlay, int color, ItemDisplayContext context) {
-		if (!JappaPackReloadListener.INSTANCE.isJappaPackLoaded()) {
-			stack.translate(0.0F, 0.25F, 0.0F);
-		}
-		VertexConsumer consumer = buffer.getBuffer(RenderType.entityCutoutNoCull(SnowQueenRenderer.TEXTURE));
+		VertexConsumer consumer = buffer.getBuffer(RenderTypes.entityCutout(SnowQueenRenderer.TEXTURE));
 		this.head.render(stack, consumer, light, overlay, color);
 	}
 

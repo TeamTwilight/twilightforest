@@ -1,18 +1,17 @@
 package twilightforest.client.model.entity;
 
-import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.renderer.entity.state.IronGolemRenderState;
 import net.minecraft.util.Mth;
-import twilightforest.entity.monster.CarminiteGolem;
 
-public class CarminiteGolemModel<T extends CarminiteGolem> extends HierarchicalModel<T> {
+public class CarminiteGolemModel extends EntityModel<IronGolemRenderState> {
 
-	private final ModelPart root;
 	private final ModelPart head;
 	private final ModelPart rightArm;
 	private final ModelPart leftArm;
@@ -20,12 +19,12 @@ public class CarminiteGolemModel<T extends CarminiteGolem> extends HierarchicalM
 	private final ModelPart rightLeg;
 
 	public CarminiteGolemModel(ModelPart root) {
-		this.root = root;
-		this.head = this.root.getChild("head");
-		this.rightArm = this.root.getChild("right_arm");
-		this.leftArm = this.root.getChild("left_arm");
-		this.rightLeg = this.root.getChild("right_leg");
-		this.leftLeg = this.root.getChild("left_leg");
+		super(root);
+		this.head = root.getChild("head");
+		this.rightArm = root.getChild("right_arm");
+		this.leftArm = root.getChild("left_arm");
+		this.rightLeg = root.getChild("right_leg");
+		this.leftLeg = root.getChild("left_leg");
 	}
 
 	public static LayerDefinition create() {
@@ -109,34 +108,25 @@ public class CarminiteGolemModel<T extends CarminiteGolem> extends HierarchicalM
 	}
 
 	@Override
-	public ModelPart root() {
-		return this.root;
-	}
+	public void setupAnim(IronGolemRenderState state) {
+		super.setupAnim(state);
+		float timer = state.attackTicksRemaining;
+		if (timer > 0.0F) {
+			this.rightArm.xRot = -2.0F + 1.5F * Mth.triangleWave(timer, 10.0F);
+			this.leftArm.xRot = -2.0F + 1.5F * Mth.triangleWave(timer, 10.0F);
+		} else {
+			this.rightArm.xRot = (-0.2F + 1.5F * Mth.triangleWave(state.walkAnimationPos, 13.0F)) * state.walkAnimationSpeed;
+			this.leftArm.xRot = (-0.2F - 1.5F * Mth.triangleWave(state.walkAnimationPos, 13.0F)) * state.walkAnimationSpeed;
+		}
 
-	@Override
-	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		this.head.yRot = netHeadYaw * Mth.DEG_TO_RAD;
-		this.head.xRot = headPitch * Mth.DEG_TO_RAD;
-		this.leftLeg.xRot = -1.5F * Mth.triangleWave(limbSwing, 13.0F) * limbSwingAmount;
-		this.rightLeg.xRot = 1.5F * Mth.triangleWave(limbSwing, 13.0F) * limbSwingAmount;
+		this.head.yRot = state.yRot * Mth.DEG_TO_RAD;
+		this.head.xRot = state.xRot * Mth.DEG_TO_RAD;
+		this.leftLeg.xRot = -1.5F * Mth.triangleWave(state.walkAnimationPos, 13.0F) * state.walkAnimationSpeed;
+		this.rightLeg.xRot = 1.5F * Mth.triangleWave(state.walkAnimationPos, 13.0F) * state.walkAnimationSpeed;
 		this.leftLeg.yRot = 0.0F;
 		this.rightLeg.yRot = 0.0F;
 
-
-		this.rightArm.zRot = Mth.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
-		this.leftArm.zRot = -Mth.cos(ageInTicks * 0.09F) * 0.05F - 0.05F;
-	}
-
-	@Override
-	public void prepareMobModel(T entity, float limbSwing, float limbSwingAmount, float partialTicks) {
-		int timer = entity.getAttackTimer();
-
-		if (timer > 0) {
-			this.rightArm.xRot = -2.0F + 1.5F * Mth.triangleWave(timer - partialTicks, 10.0F);
-			this.leftArm.xRot = -2.0F + 1.5F * Mth.triangleWave(timer - partialTicks, 10.0F);
-		} else {
-			this.rightArm.xRot = (-0.2F + 1.5F * Mth.triangleWave(limbSwing, 13.0F)) * limbSwingAmount;
-			this.leftArm.xRot = (-0.2F - 1.5F * Mth.triangleWave(limbSwing, 13.0F)) * limbSwingAmount;
-		}
+		this.rightArm.zRot = Mth.cos(state.ageInTicks * 0.09F) * 0.05F + 0.05F;
+		this.leftArm.zRot = -Mth.cos(state.ageInTicks * 0.09F) * 0.05F - 0.05F;
 	}
 }

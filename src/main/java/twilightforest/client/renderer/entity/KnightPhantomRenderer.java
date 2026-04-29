@@ -9,42 +9,56 @@ import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
 import net.minecraft.resources.Identifier;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.KnightPhantomModel;
+import twilightforest.client.state.KnightPhantomRenderState;
 import twilightforest.entity.boss.KnightPhantom;
 
-public class KnightPhantomRenderer extends HumanoidMobRenderer<KnightPhantom, KnightPhantomModel> {
+public class KnightPhantomRenderer extends HumanoidMobRenderer<KnightPhantom, KnightPhantomRenderState, KnightPhantomModel> {
 
 	public static final Identifier TEXTURE = TwilightForestMod.getModelTexture("phantomskeleton.png");
 
-	public KnightPhantomRenderer(EntityRendererProvider.Context context, KnightPhantomModel model, float shadowSize) {
-		super(context, model, shadowSize);
-		this.addLayer(new ItemInHandLayer<>(this, context.getItemInHandRenderer()));
-		this.addLayer(new HumanoidArmorLayer<>(this, new KnightPhantomModel(context.bakeLayer(ModelLayers.PLAYER_INNER_ARMOR)), new KnightPhantomModel(context.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR)), context.getModelManager()));
+	public KnightPhantomRenderer(EntityRendererProvider.Context context) {
+		super(context, new KnightPhantomModel(context.bakeLayer(TFModelLayers.KNIGHT_PHANTOM)), 0.625F);
+		this.addLayer(new ItemInHandLayer<>(this));
+		this.addLayer(new HumanoidArmorLayer<>(this, new KnightPhantomModel(context.bakeLayer(ModelLayers.PLAYER_INNER_ARMOR)), new KnightPhantomModel(context.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR)), context.getEquipmentRenderer()));
 	}
 
 	@Override
-	public void render(KnightPhantom entity, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int packedLight) {
-		if (entity.hasYetToDisappear()) super.render(entity, entityYaw, partialTicks, stack, buffer, packedLight);
+	public void render(KnightPhantomRenderState state, PoseStack stack, MultiBufferSource buffer, int packedLight) {
+		if (!state.isDying) super.render(state, stack, buffer, packedLight);
 	}
 
 	@Override
-	protected boolean isShaking(KnightPhantom entity) {
-		return super.isShaking(entity) || entity.isDeadOrDying();
+	protected boolean isShaking(KnightPhantomRenderState state) {
+		return super.isShaking(state) || state.deathTime > 0;
 	}
 
 	@Override
-	public Identifier getTextureLocation(KnightPhantom entity) {
+	public KnightPhantomRenderState createRenderState() {
+		return new KnightPhantomRenderState();
+	}
+
+	@Override
+	public void extractRenderState(KnightPhantom entity, KnightPhantomRenderState state, float partialTick) {
+		super.extractRenderState(entity, state, partialTick);
+		state.isDying = !entity.hasYetToDisappear();
+		state.isCharging = entity.isChargingAtPlayer();
+	}
+
+	@Override
+	public Identifier getTextureLocation(KnightPhantomRenderState state) {
 		return TEXTURE;
 	}
 
 	@Override
-	protected void scale(KnightPhantom entity, PoseStack stack, float partialTicks) {
-		float scale = entity.isChargingAtPlayer() ? 1.8F : 1.2F;
+	protected void scale(KnightPhantomRenderState state, PoseStack stack) {
+		float scale = state.isCharging ? 1.8F : 1.2F;
 		stack.scale(scale, scale, scale);
 	}
 
 	@Override
-	protected float getFlipDegrees(KnightPhantom entity) { //Prevent the body from keeling over
-		return entity.isDeadOrDying() ? 0.0F : super.getFlipDegrees(entity);
+	protected float getFlipDegrees() { //Prevent the body from keeling over
+		return 0.0F;
 	}
 }

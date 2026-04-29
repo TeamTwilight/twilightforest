@@ -7,43 +7,50 @@ import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.Identifier;
-import net.minecraft.util.FastColor;
-import twilightforest.TwilightForestMod;
+import net.minecraft.util.ARGB;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.ProtectionBoxModel;
 import twilightforest.client.renderer.TFRenderTypes;
+import twilightforest.client.state.ProtectionBoxRenderState;
 import twilightforest.entity.ProtectionBox;
 
-public class ProtectionBoxRenderer<T extends ProtectionBox> extends EntityRenderer<T> {
+public class ProtectionBoxRenderer extends EntityRenderer<ProtectionBox, ProtectionBoxRenderState> {
 
-	private static final Identifier TEXTURE = TwilightForestMod.getModelTexture("protectionbox.png");
-	private final ProtectionBoxModel<T> boxModel;
+	private final ProtectionBoxModel boxModel;
 
 	public ProtectionBoxRenderer(EntityRendererProvider.Context context) {
 		super(context);
 		this.shadowRadius = 0.0F;
-		this.boxModel = new ProtectionBoxModel<>(context.bakeLayer(TFModelLayers.PROTECTION_BOX));
+		this.boxModel = new ProtectionBoxModel(context.bakeLayer(TFModelLayers.PROTECTION_BOX));
 	}
 
 	@Override
-	public boolean shouldRender(T entity, Frustum frustum, double x, double y, double z) {
+	public boolean shouldRender(ProtectionBox entity, Frustum frustum, double x, double y, double z) {
 		return true;
 	}
 
 	@Override
-	public void render(T entity, float yaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light) {
+	public void render(ProtectionBoxRenderState state, PoseStack stack, MultiBufferSource buffer, int light) {
 
 		float alpha = 1.0F;
-		if (entity.lifeTime < 20) alpha = entity.lifeTime / 20.0F;
+		if (state.life < 20) alpha = state.life / 20.0F;
 
 		VertexConsumer vertexconsumer = buffer.getBuffer(TFRenderTypes.PROTECTION_BOX);
-		this.boxModel.setupAnim(entity, 0.0F, 0.0F, 0, 0.0F, 0.0F);
-		this.boxModel.renderToBuffer(stack, vertexconsumer, light, OverlayTexture.NO_OVERLAY, FastColor.ARGB32.colorFromFloat(alpha, 1.0F, 1.0F, 1.0F));
+		this.boxModel.setupAnim(state);
+		this.boxModel.renderToBuffer(stack, vertexconsumer, light, OverlayTexture.NO_OVERLAY, ARGB.colorFromFloat(alpha, 1.0F, 1.0F, 1.0F));
 	}
 
 	@Override
-	public Identifier getTextureLocation(T entity) {
-		return TEXTURE;
+	public ProtectionBoxRenderState createRenderState() {
+		return new ProtectionBoxRenderState();
+	}
+
+	@Override
+	public void extractRenderState(ProtectionBox entity, ProtectionBoxRenderState state, float partialTick) {
+		super.extractRenderState(entity, state, partialTick);
+		state.life = entity.lifeTime;
+		state.sizeX = entity.sizeX;
+		state.sizeY = entity.sizeY;
+		state.sizeZ = entity.sizeZ;
 	}
 }

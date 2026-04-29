@@ -4,10 +4,10 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.util.Mth;
-import twilightforest.entity.monster.Adherent;
 
-public class AdherentModel extends HumanoidModel<Adherent> {
+public class AdherentModel extends HumanoidModel<HumanoidRenderState> {
 
 	public AdherentModel(ModelPart root) {
 		super(root);
@@ -64,19 +64,19 @@ public class AdherentModel extends HumanoidModel<Adherent> {
 	}
 
 	@Override
-	public void setupAnim(Adherent entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(HumanoidRenderState entity) {
 		// rotate head normally
-		this.head.yRot = netHeadYaw * Mth.DEG_TO_RAD;
-		this.head.xRot = headPitch * Mth.DEG_TO_RAD;
+		this.head.yRot = entity.yRot * Mth.DEG_TO_RAD;
+		this.head.xRot = entity.xRot * Mth.DEG_TO_RAD;
 
 		this.rightArm.xRot = 0.0F;
 		this.leftArm.xRot = 0.0F;
 		this.rightArm.zRot = 0.0F;
 		this.leftArm.zRot = 0.0F;
 
-		this.rightArm.zRot += Mth.cos((ageInTicks + 10.0F) * 0.133F) * 0.3F + 0.3F;
-		this.leftArm.zRot -= Mth.cos((ageInTicks + 10.0F) * 0.133F) * 0.3F + 0.3F;
-		this.rightArm.xRot += Mth.sin(ageInTicks * 0.067F) * 0.05F;
-		this.leftArm.xRot -= Mth.sin(ageInTicks * 0.067F) * 0.05F;
+		this.rightArm.zRot += Mth.cos((entity.ageInTicks + 10.0F) * 0.133F) * 0.3F + 0.3F;
+		this.leftArm.zRot -= Mth.cos((entity.ageInTicks + 10.0F) * 0.133F) * 0.3F + 0.3F;
+		this.rightArm.xRot += Mth.sin(entity.ageInTicks * 0.067F) * 0.05F;
+		this.leftArm.xRot -= Mth.sin(entity.ageInTicks * 0.067F) * 0.05F;
 	}
 }

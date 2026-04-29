@@ -9,14 +9,14 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.renderer.entity.UrGhastRenderer;
-import twilightforest.entity.boss.UrGhast;
+import twilightforest.client.state.TFGhastRenderState;
 
-public class UrGhastModel extends TFGhastModel<UrGhast> implements TrophyBlockModel {
+public class UrGhastModel extends TFGhastModel<TFGhastRenderState> implements TrophyBlockModel {
 
 	private final ModelPart[][] tentacles = new ModelPart[9][4];
 	private final ModelPart body;
@@ -89,11 +89,11 @@ public class UrGhastModel extends TFGhastModel<UrGhast> implements TrophyBlockMo
 	}
 
 	@Override
-	public void setupAnim(UrGhast entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+	public void setupAnim(TFGhastRenderState entity) {
+		super.setupAnim(entity);
 
 		// wave tentacles
-		this.waveTentacles(limbSwingAmount, ageInTicks);
+		this.waveTentacles(entity.walkAnimationSpeed, entity.ageInTicks);
 	}
 
 	private void waveTentacles(float limbSwingAmount, float ageInTicks) {
@@ -132,7 +132,7 @@ public class UrGhastModel extends TFGhastModel<UrGhast> implements TrophyBlockMo
 			stack.translate(0.0F, -1.0F, 0.0F);
 		}
 		stack.scale(0.5F, 0.5F, 0.5F);
-		VertexConsumer consumer = buffer.getBuffer(RenderType.entityCutoutNoCull(UrGhastRenderer.TEXTURE));
+		VertexConsumer consumer = buffer.getBuffer(RenderTypes.entityCutout(UrGhastRenderer.TEXTURE));
 		this.body.render(stack, consumer, light, overlay, color);
 	}
 }

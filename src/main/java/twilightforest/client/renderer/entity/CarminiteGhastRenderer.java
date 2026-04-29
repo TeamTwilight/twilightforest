@@ -2,23 +2,23 @@ package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.TFGhastModel;
+import twilightforest.client.state.TFGhastRenderState;
 import twilightforest.entity.monster.CarminiteGhastguard;
 
 /**
  * This is a copy of the GhastRenderer class that changes the model
  */
-public class CarminiteGhastRenderer<T extends CarminiteGhastguard, M extends TFGhastModel<T>> extends TFGhastRenderer<T, M> {
+public class CarminiteGhastRenderer extends TFGhastRenderer<CarminiteGhastguard, TFGhastModel> {
 
-	public CarminiteGhastRenderer(EntityRendererProvider.Context renderManager, M modelTFGhast, float f) {
-		super(renderManager, modelTFGhast, f);
+	public CarminiteGhastRenderer(EntityRendererProvider.Context context) {
+		super(context, new TFGhastModel(context.bakeLayer(TFModelLayers.CARMINITE_GHASTGUARD)), 3.0F);
 	}
 
 	@Override
-	protected void scale(T entity, PoseStack stack, float partialTicks) {
-		int attackTimer = entity.getAttackTimer();
-		int prevAttackTimer = entity.getPrevAttackTimer();
-		float scaleVariable = (prevAttackTimer + (attackTimer - prevAttackTimer) * partialTicks) / 20.0F;
+	protected void scale(TFGhastRenderState state, PoseStack stack) {
+		float scaleVariable = state.attackTimer / 20.0F;
 		if (scaleVariable < 0.0F) {
 			scaleVariable = 0.0F;
 		}

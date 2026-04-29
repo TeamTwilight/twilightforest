@@ -7,9 +7,9 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 import twilightforest.client.JappaPackReloadListener;
-import twilightforest.entity.monster.Troll;
+import twilightforest.client.state.TrollRenderState;
 
-public class TrollModel extends HumanoidModel<Troll> {
+public class TrollModel extends HumanoidModel<TrollRenderState> {
 
 	public TrollModel(ModelPart root) {
 		super(root);
@@ -105,36 +105,41 @@ public class TrollModel extends HumanoidModel<Troll> {
 	}
 
 	@Override
-	public void setupAnim(Troll entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		this.head.yRot = netHeadYaw * Mth.DEG_TO_RAD;
-		this.head.xRot = headPitch * Mth.DEG_TO_RAD;
+	public void setupAnim(TrollRenderState entity) {
+		super.setupAnim(entity);
+		if (entity.agressive) {
+			this.rightArm.xRot += Mth.PI;
+			this.leftArm.xRot += Mth.PI;
+		}
+		this.head.yRot = entity.yRot * Mth.DEG_TO_RAD;
+		this.head.xRot = entity.xRot * Mth.DEG_TO_RAD;
 		this.hat.yRot = this.head.yRot;
 		this.hat.xRot = this.head.xRot;
-		this.rightLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-		this.leftLeg.xRot = Mth.cos(limbSwing * 0.6662F + Mth.PI) * 1.4F * limbSwingAmount;
+		this.rightLeg.xRot = Mth.cos(entity.walkAnimationPos * 0.6662F) * 1.4F * entity.walkAnimationSpeed;
+		this.leftLeg.xRot = Mth.cos(entity.walkAnimationPos * 0.6662F + Mth.PI) * 1.4F * entity.walkAnimationSpeed;
 		this.rightLeg.yRot = 0.0F;
 		this.leftLeg.yRot = 0.0F;
 
-		if (entity.isVehicle()) {
+		if (entity.isHoldingRock) {
 			// arms up!
 			this.rightArm.xRot = Mth.PI;
 			this.leftArm.xRot = Mth.PI;
 		} else {
-			this.rightArm.xRot = Mth.cos(limbSwing * 0.6662F + Mth.PI) * 2.0F * limbSwingAmount * 0.5F;
-			this.leftArm.xRot = Mth.cos(limbSwing * 0.6662F) * 2.0F * limbSwingAmount * 0.5F;
+			this.rightArm.xRot = Mth.cos(entity.walkAnimationPos * 0.6662F + Mth.PI) * 2.0F * entity.walkAnimationSpeed * 0.5F;
+			this.leftArm.xRot = Mth.cos(entity.walkAnimationPos * 0.6662F) * 2.0F * entity.walkAnimationSpeed * 0.5F;
 		}
 		this.rightArm.zRot = 0.0F;
 		this.leftArm.zRot = 0.0F;
 
-		if (this.leftArmPose != ArmPose.EMPTY) {
+		if (entity.leftArmPose != ArmPose.EMPTY) {
 			this.rightArm.xRot += Mth.PI;
 		}
-		if (this.rightArmPose != ArmPose.EMPTY) {
+		if (entity.rightArmPose != ArmPose.EMPTY) {
 			this.leftArm.xRot += Mth.PI;
 		}
 
-		if (this.attackTime > 0F) {
-			float swing = 1.0F - this.attackTime;
+		if (entity.attackTime > 0F) {
+			float swing = 1.0F - entity.attackTime;
 
 			this.rightArm.xRot -= (Mth.PI * swing);
 			this.leftArm.xRot -= (Mth.PI * swing);
@@ -143,16 +148,8 @@ public class TrollModel extends HumanoidModel<Troll> {
 		this.rightArm.yRot = 0.0F;
 		this.leftArm.yRot = 0.0F;
 
-		if (!entity.isVehicle()) {
-			AnimationUtils.bobArms(this.rightArm, this.leftArm, ageInTicks);
-		}
-	}
-
-	@Override
-	public void prepareMobModel(Troll entity, float limbSwing, float limbSwingAmount, float partialTicks) {
-		if (entity.getTarget() != null) {
-			this.rightArm.xRot += Mth.PI;
-			this.leftArm.xRot += Mth.PI;
+		if (!entity.isHoldingRock) {
+			AnimationUtils.bobArms(this.rightArm, this.leftArm, entity.ageInTicks);
 		}
 	}
 }
