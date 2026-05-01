@@ -4,11 +4,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.tags.BiomeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.attribute.EnvironmentAttributes;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
@@ -16,9 +14,9 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Slime;
-import net.minecraft.world.level.*;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.WorldgenRandom;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFSounds;
@@ -37,33 +35,6 @@ public class MazeSlime extends Slime {
 		this.getAttribute(Attributes.MAX_HEALTH).addOrReplacePermanentModifier(DOUBLE_HEALTH);
 		this.setHealth(this.getMaxHealth());
 		this.xpReward = size + 3;
-	}
-
-	public static boolean checkMazeSlimeSpawnRules(EntityType<? extends MazeSlime> type, LevelAccessor level, EntitySpawnReason spawnReason, BlockPos pos, RandomSource random) {
-		if (level.getDifficulty() != Difficulty.PEACEFUL) {
-			if (EntitySpawnReason.isSpawner(spawnReason)) {
-				return checkMobSpawnRules(type, level, spawnReason, pos, random);
-			}
-
-			if (level.getBiome(pos).is(BiomeTags.ALLOWS_SURFACE_SLIME_SPAWNS) && pos.getY() > 50 && pos.getY() < 70) {
-				float surfaceSlimeSpawnChance = (Float) level.environmentAttributes().getValue(EnvironmentAttributes.SURFACE_SLIME_SPAWN_CHANCE, pos);
-				if (random.nextFloat() < surfaceSlimeSpawnChance && level.getMaxLocalRawBrightness(pos) <= random.nextInt(8)) {
-					return checkMobSpawnRules(type, level, spawnReason, pos, random);
-				}
-			}
-
-			if (!(level instanceof WorldGenLevel)) {
-				return false;
-			}
-
-			ChunkPos chunkPos = ChunkPos.containing(pos);
-			boolean slimeChunk = WorldgenRandom.seedSlimeChunk(chunkPos.x(), chunkPos.z(), ((WorldGenLevel) level).getSeed(), 987234911L).nextInt(10) == 0;
-			if (random.nextInt(10) == 0 && slimeChunk && pos.getY() < 40) {
-				return checkMobSpawnRules(type, level, spawnReason, pos, random);
-			}
-		}
-
-		return false;
 	}
 
 	public static boolean getCanSpawnHere(EntityType<MazeSlime> entity, ServerLevelAccessor world, EntitySpawnReason reason, BlockPos pos, RandomSource random) {
