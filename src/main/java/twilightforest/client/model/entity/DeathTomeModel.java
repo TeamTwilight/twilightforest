@@ -118,22 +118,7 @@ public class DeathTomeModel extends EntityModel<DeathTomeRenderState> {
 	@Override
 	public void setupAnim(DeathTomeRenderState entity) {
 		super.setupAnim(entity);
-		this.prepareMobModel(entity);
-		this.root.yRot = Mth.HALF_PI;
 
-		if (entity.onLectern) {
-			this.book.zRot = -0.8726646259971647F * 1.35F;
-			this.book.x = 1.75F;
-		} else {
-			this.book.zRot = -0.8726646259971647F;
-			this.book.x = 0.0F;
-		}
-
-		this.paperStorm.yRot = entity.ageInTicks * Mth.DEG_TO_RAD + Mth.HALF_PI;
-		this.paperStorm.zRot = 0.8726646259971647F;
-	}
-
-	public void prepareMobModel(DeathTomeRenderState entity) {
 		boolean onLectern = entity.onLectern;
 
 		float bounce = onLectern ? 0.0F : entity.ageInTicks;
@@ -182,5 +167,18 @@ public class DeathTomeModel extends EntityModel<DeathTomeRenderState> {
 		this.pagesLeft.x = Mth.sin(openAngle);
 		this.flippingPageRight.x = Mth.sin(openAngle);
 		this.flippingPageLeft.x = Mth.sin(openAngle);
+
+		this.root.yRot = Mth.HALF_PI;
+
+		if (entity.onLectern) {
+			this.book.zRot = -0.8726646259971647F * 1.35F;
+			this.book.x = 1.75F;
+		} else {
+			this.book.zRot = -0.8726646259971647F;
+			this.book.x = 0.0F;
+		}
+
+		this.paperStorm.yRot = entity.ageInTicks * Mth.DEG_TO_RAD + Mth.HALF_PI;
+		this.paperStorm.zRot = 0.8726646259971647F;
 	}
 }
