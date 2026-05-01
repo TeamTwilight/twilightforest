@@ -2,18 +2,13 @@ package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
-import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.network.chat.Component;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
-import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Matrix4f;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.HydraHeadModel;
 import twilightforest.client.state.HydraHeadRenderState;
@@ -30,10 +25,11 @@ public class HydraHeadRenderer extends TFPartRenderer<HydraHead, HydraHeadRender
 	}
 
 	@Override
-	public void render(HydraHeadRenderState state, PoseStack stack, MultiBufferSource buffer, int light) {
+	public void submit(HydraHeadRenderState state, PoseStack stack, SubmitNodeCollector buffer, CameraRenderState cameraRenderState) {
 		stack.mulPose(Axis.YP.rotationDegrees(-180));
-		super.render(state, stack, buffer, light);
+		super.submit(state, stack, buffer, cameraRenderState);
 	}
+
 
 	@Override
 	protected @Nullable RenderType getRenderType(HydraHeadRenderState state, boolean visible, boolean ghostly, boolean glowing) {
@@ -45,28 +41,6 @@ public class HydraHeadRenderer extends TFPartRenderer<HydraHead, HydraHeadRender
 	@Override
 	protected boolean shouldShowName(HydraHead entity, double partialTick) {
 		return entity.hasCustomName() && !entity.getCustomName().getString().isEmpty();
-	}
-
-	@Override
-	protected void renderNameTag(HydraHeadRenderState state, Component component, PoseStack stack, MultiBufferSource source, int light) {
-		Vec3 vec3 = state.nameTagAttachment;
-		if (vec3 != null) {
-			boolean flag = !state.isDiscrete;
-			stack.pushPose();
-			stack.translate(vec3.x, vec3.y + 0.5, vec3.z);
-			stack.mulPose(this.entityRenderDispatcher.cameraOrientation());
-			stack.scale(0.025F, -0.025F, 0.025F);
-			Matrix4f matrix4f = stack.last().pose();
-			Font font = this.getFont();
-			float f = (float) (-font.width(component)) / 2.0F;
-			int j = (int) (Minecraft.getInstance().options.getBackgroundOpacity(0.25F) * 255.0F) << 24;
-			font.drawInBatch(component, f, 0, -2130706433, false, matrix4f, source, flag ? Font.DisplayMode.SEE_THROUGH : Font.DisplayMode.NORMAL, j, light);
-			if (flag) {
-				font.drawInBatch(component, f, 0, -1, false, matrix4f, source, Font.DisplayMode.NORMAL, 0, LightTexture.lightCoordsWithEmission(light, 2));
-			}
-
-			stack.popPose();
-		}
 	}
 
 	@Override

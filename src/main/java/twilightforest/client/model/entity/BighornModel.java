@@ -16,7 +16,7 @@ public class BighornModel extends SheepModel {
 		super(root);
 	}
 
-	private static LayerDefinition create() {
+	public static LayerDefinition create() {
 		MeshDefinition meshdefinition = SheepModel.createBodyMesh(0, false, true, CubeDeformation.NONE);
 		PartDefinition partdefinition = meshdefinition.getRoot();
 

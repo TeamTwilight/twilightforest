@@ -10,7 +10,7 @@ import twilightforest.entity.monster.CarminiteGhastguard;
 /**
  * This is a copy of the GhastRenderer class that changes the model
  */
-public class CarminiteGhastRenderer extends TFGhastRenderer<CarminiteGhastguard, TFGhastModel> {
+public class CarminiteGhastRenderer extends TFGhastRenderer<CarminiteGhastguard, TFGhastModel<TFGhastRenderState>> {
 
 	public CarminiteGhastRenderer(EntityRendererProvider.Context context) {
 		super(context, new TFGhastModel(context.bakeLayer(TFModelLayers.CARMINITE_GHASTGUARD)), 3.0F);

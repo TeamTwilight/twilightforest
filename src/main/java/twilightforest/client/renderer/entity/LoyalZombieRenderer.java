@@ -1,7 +1,7 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.client.model.AbstractZombieModel;
-import net.minecraft.client.model.ZombieModel;
+import net.minecraft.client.model.monster.zombie.AbstractZombieModel;
+import net.minecraft.client.model.monster.zombie.ZombieModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.client.renderer.entity.state.ZombieRenderState;

@@ -12,7 +12,7 @@ public class DeerModel extends QuadrupedModel<LivingEntityRenderState> {
 		super(root);
 	}
 
-	private static LayerDefinition create() {
+	public static LayerDefinition create() {
 		MeshDefinition meshdefinition = QuadrupedModel.createBodyMesh(0, true, false, CubeDeformation.NONE);
 		PartDefinition partdefinition = meshdefinition.getRoot();
 

@@ -13,7 +13,7 @@ public class BlockChainGoblinModel extends HumanoidModel<BlockChainGoblinRenderS
 		super(root);
 	}
 
-	private static LayerDefinition create() {
+	public static LayerDefinition create() {
 		MeshDefinition meshdefinition = HumanoidModel.createMesh(CubeDeformation.NONE, 0);
 		PartDefinition partdefinition = meshdefinition.getRoot();
 

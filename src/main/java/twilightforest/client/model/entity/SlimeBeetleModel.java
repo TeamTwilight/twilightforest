@@ -7,18 +7,18 @@ package twilightforest.client.model.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.util.Mth;
 import twilightforest.client.JappaPackReloadListener;
-import twilightforest.entity.monster.SlimeBeetle;
 
-public class SlimeBeetleModel<T extends SlimeBeetle> extends HierarchicalModel<T> {
+public class SlimeBeetleModel<T extends LivingEntityRenderState> extends EntityModel<T> {
 	private final ModelPart root;
 	private final ModelPart head;
 	private final ModelPart rightLeg1;
@@ -33,6 +33,7 @@ public class SlimeBeetleModel<T extends SlimeBeetle> extends HierarchicalModel<T
 	private final ModelPart slimeCenter;
 
 	public SlimeBeetleModel(ModelPart root) {
+		super(root);
 		this.root = root;
 
 		this.head = root.getChild("head");
@@ -241,11 +242,6 @@ public class SlimeBeetleModel<T extends SlimeBeetle> extends HierarchicalModel<T
 	}
 
 	@Override
-	public ModelPart root() {
-		return this.root;
-	}
-
-	@Override
 	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, int color) {
 		this.slime.visible = false;
 		this.root().render(stack, builder, light, overlay, color);
@@ -256,9 +252,9 @@ public class SlimeBeetleModel<T extends SlimeBeetle> extends HierarchicalModel<T
 	}
 
 	@Override
-	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		this.head.yRot = netHeadYaw * Mth.DEG_TO_RAD;
-		this.head.xRot = headPitch * Mth.DEG_TO_RAD;
+	public void setupAnim(T entity) {
+		this.head.yRot = entity.yRot * Mth.DEG_TO_RAD;
+		this.head.xRot = entity.xRot * Mth.DEG_TO_RAD;
 
 		// legs!
 		float legZ = Mth.PI / 11.0F;
@@ -278,13 +274,13 @@ public class SlimeBeetleModel<T extends SlimeBeetle> extends HierarchicalModel<T
 		this.leftLeg3.yRot = -var10 * 2.0F + var9;
 		this.rightLeg3.yRot = var10 * 2.0F - var9;
 
-		float var11 = -(Mth.cos(limbSwing * 0.6662F * 2.0F + 0.0F) * 0.4F) * limbSwingAmount;
-		float var12 = -(Mth.cos(limbSwing * 0.6662F * 2.0F + Mth.PI) * 0.4F) * limbSwingAmount;
-		float var14 = -(Mth.cos(limbSwing * 0.6662F * 2.0F + (Mth.PI * 3.0F / 2.0F)) * 0.4F) * limbSwingAmount;
+		float var11 = -(Mth.cos(entity.walkAnimationPos * 0.6662F * 2.0F + 0.0F) * 0.4F) * entity.walkAnimationSpeed;
+		float var12 = -(Mth.cos(entity.walkAnimationPos * 0.6662F * 2.0F + Mth.PI) * 0.4F) * entity.walkAnimationSpeed;
+		float var14 = -(Mth.cos(entity.walkAnimationPos * 0.6662F * 2.0F + (Mth.PI * 3.0F / 2.0F)) * 0.4F) * entity.walkAnimationSpeed;
 
-		float var15 = Math.abs(Mth.sin(limbSwing * 0.6662F + 0.0F) * 0.4F) * limbSwingAmount;
-		float var16 = Math.abs(Mth.sin(limbSwing * 0.6662F + Mth.PI) * 0.4F) * limbSwingAmount;
-		float var18 = Math.abs(Mth.sin(limbSwing * 0.6662F + (Mth.PI * 3.0F / 2.0F)) * 0.4F) * limbSwingAmount;
+		float var15 = Math.abs(Mth.sin(entity.walkAnimationPos * 0.6662F + 0.0F) * 0.4F) * entity.walkAnimationSpeed;
+		float var16 = Math.abs(Mth.sin(entity.walkAnimationPos * 0.6662F + Mth.PI) * 0.4F) * entity.walkAnimationSpeed;
+		float var18 = Math.abs(Mth.sin(entity.walkAnimationPos * 0.6662F + (Mth.PI * 3.0F / 2.0F)) * 0.4F) * entity.walkAnimationSpeed;
 
 		this.leftLeg1.yRot += var11;
 		this.rightLeg1.yRot -= var11;
@@ -303,8 +299,8 @@ public class SlimeBeetleModel<T extends SlimeBeetle> extends HierarchicalModel<T
 		this.rightLeg3.zRot -= var18;
 
 		// tail wiggle
-		this.tailBottom.xRot = Mth.cos(ageInTicks * 0.3335F) * 0.15F;
-		this.tailTop.xRot = Mth.cos(ageInTicks * 0.4445F) * 0.20F;
-		this.slimeCenter.xRot = Mth.cos(ageInTicks * 0.5555F + 0.25F) * 0.25F;
+		this.tailBottom.xRot = Mth.cos(entity.ageInTicks * 0.3335F) * 0.15F;
+		this.tailTop.xRot = Mth.cos(entity.ageInTicks * 0.4445F) * 0.20F;
+		this.slimeCenter.xRot = Mth.cos(entity.ageInTicks * 0.5555F + 0.25F) * 0.25F;
 	}
 }

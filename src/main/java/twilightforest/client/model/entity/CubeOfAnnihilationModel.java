@@ -1,17 +1,15 @@
 package twilightforest.client.model.entity;
 
-import com.google.common.collect.ImmutableList;
-import net.minecraft.client.model.ListModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.util.Mth;
-import twilightforest.entity.projectile.CubeOfAnnihilation;
+import twilightforest.client.state.CubeOfAnnihilationRenderState;
 
-public class CubeOfAnnihilationModel extends ListModel<CubeOfAnnihilation> {
+public class CubeOfAnnihilationModel extends EntityModel<CubeOfAnnihilationRenderState> {
 
 	private final ModelPart box;
 	private final ModelPart boxX;
@@ -19,6 +17,7 @@ public class CubeOfAnnihilationModel extends ListModel<CubeOfAnnihilation> {
 	private final ModelPart boxZ;
 
 	public CubeOfAnnihilationModel(ModelPart root) {
+		super(root);
 		this.box = root.getChild("box");
 		this.boxX = root.getChild("box_x");
 		this.boxY = root.getChild("box_y");
@@ -54,14 +53,10 @@ public class CubeOfAnnihilationModel extends ListModel<CubeOfAnnihilation> {
 	}
 
 	@Override
-	public Iterable<ModelPart> parts() {
-		return ImmutableList.of(this.box, this.boxX, this.boxY, this.boxZ);
-	}
-
-	@Override
-	public void setupAnim(CubeOfAnnihilation entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		this.boxX.xRot = Mth.sin((entity.tickCount + headPitch)) / 5.0F;
-		this.boxY.yRot = Mth.sin((entity.tickCount + headPitch)) / 5.0F;
-		this.boxZ.zRot = Mth.sin((entity.tickCount + headPitch)) / 5.0F;
+	public void setupAnim(CubeOfAnnihilationRenderState state) {
+		super.setupAnim(state);
+		this.boxX.xRot = state.rotation / 5.0F;
+		this.boxY.yRot = state.rotation / 5.0F;
+		this.boxZ.zRot = state.rotation / 5.0F;
 	}
 }

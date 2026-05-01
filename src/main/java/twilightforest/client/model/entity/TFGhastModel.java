@@ -8,11 +8,11 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import twilightforest.client.state.TFGhastRenderState;
 
-public class TFGhastModel<T extends LivingEntityRenderState> extends EntityModel<T> {
+public class TFGhastModel<T extends TFGhastRenderState> extends EntityModel<T> {
 
 	protected final static int tentacleCount = 9;
 	private final ModelPart root;

@@ -2,11 +2,13 @@ package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.geom.ModelLayers;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.entity.ArmorModelSet;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.resources.Identifier;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
@@ -21,12 +23,14 @@ public class KnightPhantomRenderer extends HumanoidMobRenderer<KnightPhantom, Kn
 	public KnightPhantomRenderer(EntityRendererProvider.Context context) {
 		super(context, new KnightPhantomModel(context.bakeLayer(TFModelLayers.KNIGHT_PHANTOM)), 0.625F);
 		this.addLayer(new ItemInHandLayer<>(this));
-		this.addLayer(new HumanoidArmorLayer<>(this, new KnightPhantomModel(context.bakeLayer(ModelLayers.PLAYER_INNER_ARMOR)), new KnightPhantomModel(context.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR)), context.getEquipmentRenderer()));
+		this.addLayer(new HumanoidArmorLayer<>(this, ArmorModelSet.bake(
+			ModelLayers.PLAYER_ARMOR, context.getModelSet(), KnightPhantomModel::new
+		), context.getEquipmentRenderer()));
 	}
 
 	@Override
-	public void render(KnightPhantomRenderState state, PoseStack stack, MultiBufferSource buffer, int packedLight) {
-		if (!state.isDying) super.render(state, stack, buffer, packedLight);
+	public void submit(KnightPhantomRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera) {
+		if (!state.isDying) super.submit(state, poseStack, submitNodeCollector, camera);
 	}
 
 	@Override

@@ -3,9 +3,13 @@ package twilightforest.client.event;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.animal.wolf.WolfModel;
 import net.minecraft.client.model.geom.LayerDefinitions;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.monster.silverfish.SilverfishModel;
+import net.minecraft.client.model.monster.slime.SlimeModel;
+import net.minecraft.client.model.monster.spider.SpiderModel;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.FlameParticle;
 import net.minecraft.client.particle.Particle;
@@ -479,18 +483,18 @@ public class ClientRegistrationEvents {
 		event.registerLayerDefinition(TFModelLayers.HYDRA_TROPHY, HydraHeadModel::checkForPack);
 		event.registerLayerDefinition(TFModelLayers.KNIGHT_PHANTOM_TROPHY, KnightPhantomModel::createTrophy);
 		event.registerLayerDefinition(TFModelLayers.LICH_TROPHY, LichModel::create);
-		event.registerLayerDefinition(TFModelLayers.MINOSHROOM_TROPHY, MinoshroomModel::checkForPack);
-		event.registerLayerDefinition(TFModelLayers.NAGA_TROPHY, NagaModel::checkForPack);
+		event.registerLayerDefinition(TFModelLayers.MINOSHROOM_TROPHY, MinoshroomModel::create);
+		event.registerLayerDefinition(TFModelLayers.NAGA_TROPHY, NagaModel::create);
 		event.registerLayerDefinition(TFModelLayers.QUEST_RAM_TROPHY, QuestRamModel::checkForPackTrophyEdition);
-		event.registerLayerDefinition(TFModelLayers.SNOW_QUEEN_TROPHY, SnowQueenModel::checkForPack);
+		event.registerLayerDefinition(TFModelLayers.SNOW_QUEEN_TROPHY, SnowQueenModel::create);
 		event.registerLayerDefinition(TFModelLayers.UR_GHAST_TROPHY, UrGhastModel::create);
 
 		event.registerLayerDefinition(TFModelLayers.ADHERENT, AdherentModel::create);
 		event.registerLayerDefinition(TFModelLayers.ALPHA_YETI, AlphaYetiModel::create);
 		event.registerLayerDefinition(TFModelLayers.ARMORED_GIANT, () -> LayerDefinition.create(HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F), 64, 32));
-		event.registerLayerDefinition(TFModelLayers.BIGHORN_SHEEP, BighornModel::checkForPack);
-		event.registerLayerDefinition(TFModelLayers.BLOCKCHAIN_GOBLIN, BlockChainGoblinModel::checkForPack);
-		event.registerLayerDefinition(TFModelLayers.BOAR, BoarModel::checkForPack);
+		event.registerLayerDefinition(TFModelLayers.BIGHORN_SHEEP, BighornModel::create);
+		event.registerLayerDefinition(TFModelLayers.BLOCKCHAIN_GOBLIN, BlockChainGoblinModel::create);
+		event.registerLayerDefinition(TFModelLayers.BOAR, BoarModel::create);
 		event.registerLayerDefinition(TFModelLayers.BUNNY, BunnyModel::create);
 		event.registerLayerDefinition(TFModelLayers.CARMINITE_BROODLING, SpiderModel::createSpiderBodyLayer);
 		event.registerLayerDefinition(TFModelLayers.CARMINITE_GOLEM, CarminiteGolemModel::create);
@@ -499,13 +503,14 @@ public class ClientRegistrationEvents {
 		event.registerLayerDefinition(TFModelLayers.CHAIN, ChainModel::create);
 		event.registerLayerDefinition(TFModelLayers.CUBE_OF_ANNIHILATION, CubeOfAnnihilationModel::create);
 		event.registerLayerDefinition(TFModelLayers.DEATH_TOME, DeathTomeModel::create);
-		event.registerLayerDefinition(TFModelLayers.DEER, DeerModel::checkForPack);
+		event.registerLayerDefinition(TFModelLayers.DEER, DeerModel::create);
 		event.registerLayerDefinition(TFModelLayers.FIRE_BEETLE, FireBeetleModel::checkForPack);
 		event.registerLayerDefinition(TFModelLayers.GIANT_MINER, () -> LayerDefinition.create(HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F), 64, 32));
 		event.registerLayerDefinition(TFModelLayers.HARBINGER_CUBE, HarbingerCubeModel::create);
 		event.registerLayerDefinition(TFModelLayers.HEDGE_SPIDER, SpiderModel::createSpiderBodyLayer);
 		event.registerLayerDefinition(TFModelLayers.HELMET_CRAB, HelmetCrabModel::checkForPack);
-		event.registerLayerDefinition(TFModelLayers.HOSTILE_WOLF, () -> LayerDefinition.create(WolfModel.createMeshDefinition(CubeDeformation.NONE), 64, 32));
+		//TODO Need Check The Wolf Model
+		event.registerLayerDefinition(TFModelLayers.HOSTILE_WOLF, () -> LayerDefinition.create(WolfModel.create(CubeDeformation.NONE), 64, 32));
 		event.registerLayerDefinition(TFModelLayers.HYDRA_HEAD, HydraHeadModel::checkForPack);
 		event.registerLayerDefinition(TFModelLayers.HYDRA, HydraModel::checkForPack);
 		event.registerLayerDefinition(TFModelLayers.HYDRA_MORTAR, HydraMortarModel::create);
@@ -520,12 +525,13 @@ public class ClientRegistrationEvents {
 		event.registerLayerDefinition(TFModelLayers.LOYAL_ZOMBIE, () -> LayerDefinition.create(HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F), 64, 64));
 		event.registerLayerDefinition(TFModelLayers.MAZE_SLIME, SlimeModel::createInnerBodyLayer);
 		event.registerLayerDefinition(TFModelLayers.MAZE_SLIME_OUTER, SlimeModel::createOuterBodyLayer);
-		event.registerLayerDefinition(TFModelLayers.MINOSHROOM, MinoshroomModel::checkForPack);
+		event.registerLayerDefinition(TFModelLayers.MINOSHROOM, MinoshroomModel::create);
 		event.registerLayerDefinition(TFModelLayers.MINOTAUR, MinotaurModel::checkForPack);
+		//TODO Need Check The Wolf Model
 		event.registerLayerDefinition(TFModelLayers.MIST_WOLF, () -> LayerDefinition.create(WolfModel.createMeshDefinition(CubeDeformation.NONE), 64, 32));
 		event.registerLayerDefinition(TFModelLayers.MOSQUITO_SWARM, MosquitoSwarmModel::create);
-		event.registerLayerDefinition(TFModelLayers.NAGA, NagaModel::checkForPack);
-		event.registerLayerDefinition(TFModelLayers.NAGA_BODY, NagaModel::checkForPack);
+		event.registerLayerDefinition(TFModelLayers.NAGA, NagaModel::create);
+		event.registerLayerDefinition(TFModelLayers.NAGA_BODY, NagaModel::create);
 		event.registerLayerDefinition(TFModelLayers.NOOP, () -> LayerDefinition.create(HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F), 0, 0));
 		event.registerLayerDefinition(TFModelLayers.PENGUIN, PenguinModel::create);
 		event.registerLayerDefinition(TFModelLayers.PINCH_BEETLE, PinchBeetleModel::checkForPack);
@@ -540,7 +546,7 @@ public class ClientRegistrationEvents {
 		event.registerLayerDefinition(TFModelLayers.SKELETON_DRUID, SkeletonDruidModel::create);
 		event.registerLayerDefinition(TFModelLayers.SLIME_BEETLE, SlimeBeetleModel::checkForPack);
 		event.registerLayerDefinition(TFModelLayers.SLIME_BEETLE_TAIL, SlimeBeetleModel::checkForPack);
-		event.registerLayerDefinition(TFModelLayers.SNOW_QUEEN, SnowQueenModel::checkForPack);
+		event.registerLayerDefinition(TFModelLayers.SNOW_QUEEN, SnowQueenModel::create);
 		event.registerLayerDefinition(TFModelLayers.CHAIN_BLOCK, SpikeBlockModel::create);
 		event.registerLayerDefinition(TFModelLayers.SQUIRREL, SquirrelModel::checkForPack);
 		event.registerLayerDefinition(TFModelLayers.STABLE_ICE_CORE, StableIceCoreModel::create);
@@ -551,6 +557,7 @@ public class ClientRegistrationEvents {
 		event.registerLayerDefinition(TFModelLayers.UNSTABLE_ICE_CORE, UnstableIceCoreModel::create);
 		event.registerLayerDefinition(TFModelLayers.UPPER_GOBLIN_KNIGHT, UpperGoblinKnightModel::checkForPack);
 		event.registerLayerDefinition(TFModelLayers.UR_GHAST, UrGhastModel::create);
+		//TODO Need Check The Wolf Model
 		event.registerLayerDefinition(TFModelLayers.WINTER_WOLF, () -> LayerDefinition.create(WolfModel.createMeshDefinition(CubeDeformation.NONE), 64, 32));
 		event.registerLayerDefinition(TFModelLayers.WRAITH, WraithModel::create);
 		event.registerLayerDefinition(TFModelLayers.YETI, YetiModel::create);

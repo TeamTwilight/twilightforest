@@ -1,17 +1,18 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.model.SlimeModel;
 import net.minecraft.client.model.geom.EntityModelSet;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.model.monster.slime.SlimeModel;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.state.SlimeRenderState;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import twilightforest.TwilightForestMod;
@@ -27,10 +28,11 @@ public class MazeSlimeRenderer extends MobRenderer<MazeSlime, SlimeRenderState, 
 		this.addLayer(new MazeSlimeOuterLayer(this, context.getModelSet()));
 	}
 
+
 	@Override
-	public void render(SlimeRenderState state, PoseStack stack, MultiBufferSource buffer, int light) {
+	public void submit(SlimeRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera) {
 		this.shadowRadius = 0.25F * state.size;
-		super.render(state, stack, buffer, light);
+		super.submit(state, poseStack, submitNodeCollector, camera);
 	}
 
 	@Override
@@ -69,15 +71,15 @@ public class MazeSlimeRenderer extends MobRenderer<MazeSlime, SlimeRenderState, 
 		}
 
 		@Override
-		public void render(PoseStack stack, MultiBufferSource source, int light, SlimeRenderState renderState, float yRot, float xRot) {
-			boolean flag = renderState.appearsGlowing && renderState.isInvisible;
+		public void submit(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int i, SlimeRenderState renderState, float v, float v1) {
+			boolean flag = renderState.appearsGlowing() && renderState.isInvisible;
 			if (!renderState.isInvisible || flag) {
-				VertexConsumer vertexconsumer;
-				if (flag) vertexconsumer = source.getBuffer(RenderType.outline(TEXTURE));
-				else vertexconsumer = source.getBuffer(RenderType.entityTranslucent(TEXTURE));
+				RenderType renderType;
+				if (flag) renderType = RenderTypes.outline(TEXTURE);
+				else renderType = RenderTypes.entityTranslucent(TEXTURE);
 
 				this.model.setupAnim(renderState);
-				this.model.renderToBuffer(stack, vertexconsumer, light, LivingEntityRenderer.getOverlayCoords(renderState, 0.0F));
+				submitNodeCollector.submitModel(this.model, renderState, poseStack, renderType, renderState.lightCoords, LivingEntityRenderer.getOverlayCoords(renderState, 0.0F), renderState.outlineColor, null);
 			}
 		}
 	}

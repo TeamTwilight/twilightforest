@@ -1,14 +1,15 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.Model;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.feature.ItemFeatureRenderer;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.phys.AABB;
@@ -33,17 +34,18 @@ public class BlockChainRenderer extends EntityRenderer<ChainBlock, ChainBlockRen
 	}
 
 	@Override
-	public void render(ChainBlockRenderState state, PoseStack stack, MultiBufferSource buffer, int light) {
-		super.render(state, stack, buffer, light);
-
+	public void submit(ChainBlockRenderState state, PoseStack stack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera) {
+		super.submit(state, stack, submitNodeCollector, camera);
 		stack.pushPose();
-		VertexConsumer consumer = ItemRenderer.getFoilBuffer(buffer, this.model.renderType(TEXTURE), false, state.isFoil);
-
+		RenderType foilRenderType = ItemFeatureRenderer.getFoilRenderType(chainModel.renderType(TEXTURE), false);
 		stack.mulPose(Axis.YP.rotationDegrees(state.yRot - 90.0F));
 		stack.mulPose(Axis.ZP.rotationDegrees(state.xRot));
 
 		stack.scale(-1.0F, -1.0F, 1.0F);
-		this.model.renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY);
+		submitNodeCollector.order(0).submitModel(this.model, state, stack, this.model.renderType(TEXTURE), state.lightCoords, OverlayTexture.NO_OVERLAY, state.outlineColor, null);
+		if (state.isFoil) {
+			submitNodeCollector.order(1).submitModel(this.model, state, stack, foilRenderType, state.lightCoords, OverlayTexture.NO_OVERLAY, state.outlineColor, null);
+		}
 		stack.popPose();
 		if (state.chainStartPos != null) {
 			stack.pushPose();
@@ -53,7 +55,7 @@ public class BlockChainRenderer extends EntityRenderer<ChainBlock, ChainBlockRen
 			double links = xyz.length() / linksPerMeter;
 			Vec3 offset = xyz.normalize().scale(-linksPerMeter);
 			for (int i = 1; i < links; i++) {
-				renderChain(state.isFoil, xyz.add(offset.scale(links - i)), stack, buffer, Math.max(light, state.ownerLight), this.chainModel);
+				renderChain(state, state.isFoil, xyz.add(offset.scale(links - i)), stack, submitNodeCollector, Math.max(state.lightCoords, state.ownerLight), this.chainModel);
 			}
 			stack.popPose();
 		}
@@ -69,14 +71,18 @@ public class BlockChainRenderer extends EntityRenderer<ChainBlock, ChainBlockRen
 		return super.getBoundingBoxForCulling(chainBlock);
 	}
 
-	public static void renderChain(boolean renderFoil, Vec3 offset, PoseStack stack, MultiBufferSource buffer, int light, Model chainModel) {
+	public static void renderChain(ChainBlockRenderState state, boolean renderFoil, Vec3 offset, PoseStack stack, SubmitNodeCollector submitNodeCollector, int light, Model chainModel) {
 		stack.pushPose();
-		VertexConsumer vertexConsumer = ItemRenderer.getFoilBuffer(buffer, chainModel.renderType(TEXTURE), false, renderFoil);
+		RenderType foilRenderType = ItemFeatureRenderer.getFoilRenderType(chainModel.renderType(TEXTURE), false);
 
 		stack.translate(offset.x(), offset.y(), offset.z());
 
 		stack.scale(-1.0F, -1.0F, 1.0F);
-		chainModel.renderToBuffer(stack, vertexConsumer, light, OverlayTexture.NO_OVERLAY);
+		submitNodeCollector.submitModel(chainModel, state, stack, chainModel.renderType(TEXTURE), state.lightCoords, OverlayTexture.NO_OVERLAY, state.outlineColor, null);
+
+		if (renderFoil) {
+			submitNodeCollector.submitModel(chainModel, state, stack, foilRenderType, state.lightCoords, OverlayTexture.NO_OVERLAY, state.outlineColor, null);
+		}
 		stack.popPose();
 	}
 

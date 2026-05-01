@@ -40,8 +40,8 @@ public class Minoshroom extends BaseTFBoss implements ITFCharger {
 	private static final EntityDataAccessor<Boolean> GROUND_ATTACK = SynchedEntityData.defineId(Minoshroom.class, EntityDataSerializers.BOOLEAN);
 	private static final EntityDataAccessor<Integer> GROUND_CHARGE = SynchedEntityData.defineId(Minoshroom.class, EntityDataSerializers.INT);
 
-	private float prevClientSideChargeAnimation;
-	private float clientSideChargeAnimation;
+	public float prevClientSideChargeAnimation;
+	public float clientSideChargeAnimation;
 	private boolean groundSmashState = false;
 
 	@SuppressWarnings("this-escape")

@@ -8,10 +8,10 @@ import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.HostileWolfModel;
 import twilightforest.entity.monster.HostileWolf;
 
-public class HostileWolfRenderer extends MobRenderer<HostileWolf, WolfRenderState, HostileWolfModel> {
+public class HostileWolfRenderer extends MobRenderer<HostileWolf, WolfRenderState, HostileWolfModel<WolfRenderState>> {
 
 	public HostileWolfRenderer(EntityRendererProvider.Context context) {
-		super(context, new HostileWolfModel(context.bakeLayer(TFModelLayers.HOSTILE_WOLF)), 0.5F);
+		super(context, new HostileWolfModel<>(context.bakeLayer(TFModelLayers.HOSTILE_WOLF)), 0.5F);
 	}
 
 	@Override

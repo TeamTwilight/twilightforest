@@ -1,10 +1,11 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
@@ -27,7 +28,7 @@ public class HydraMortarRenderer extends EntityRenderer<HydraMortar, HydraMortar
 	}
 
 	@Override
-	public void render(HydraMortarRenderState state, PoseStack stack, MultiBufferSource source, int light) {
+	public void submit(HydraMortarRenderState state, PoseStack stack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera) {
 		stack.pushPose();
 		// [VanillaCopy] TNTRenderer fuse logic
 		float f = state.fuse;
@@ -42,11 +43,12 @@ public class HydraMortarRenderer extends EntityRenderer<HydraMortar, HydraMortar
 
 		float alpha = (1.0F - f / 100.0F) * 0.8F;
 
-		VertexConsumer consumer = source.getBuffer(this.mortarModel.renderType(TEXTURE));
-		this.mortarModel.renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY);
+		RenderType renderType = this.mortarModel.renderType(TEXTURE);
+		submitNodeCollector.submitModel(this.mortarModel, state, stack, renderType, state.lightCoords, OverlayTexture.NO_OVERLAY, state.outlineColor, null);
 
 		if (state.fuse / 5 % 2 == 0) {
-			this.mortarModel.renderToBuffer(stack, consumer, light, OverlayTexture.pack(OverlayTexture.u(1.0F), 10), ARGB.colorFromFloat(alpha, 1.0F, 1.0F, 1.0F));
+			submitNodeCollector.submitModel(this.mortarModel, state, stack, renderType, state.lightCoords, OverlayTexture.pack(OverlayTexture.u(1.0F), 10), ARGB.colorFromFloat(alpha, 1.0F, 1.0F, 1.0F), null, state.outlineColor, null);
+
 		}
 
 		stack.popPose();

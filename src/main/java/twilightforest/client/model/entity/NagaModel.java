@@ -28,7 +28,7 @@ public class NagaModel<T extends EntityRenderState> extends EntityModel<T> imple
 		this.head = root.getChild("head");
 	}
 
-	private static LayerDefinition create() {
+	public static LayerDefinition create() {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 

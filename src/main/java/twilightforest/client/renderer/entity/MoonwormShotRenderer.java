@@ -1,11 +1,11 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
 import twilightforest.TwilightForestMod;
@@ -26,19 +26,18 @@ public class MoonwormShotRenderer extends EntityRenderer<MoonwormShot, MoonwormS
 	}
 
 	@Override
-	public void render(MoonwormShotRenderState state, PoseStack stack, MultiBufferSource buffer, int light) {
-		stack.pushPose();
-		stack.translate(0.0F, 0.5F, 0.0F);
-		stack.scale(-1.0F, -1.0F, -1.0F);
+	public void submit(MoonwormShotRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera) {
+		poseStack.pushPose();
+		poseStack.translate(0.0F, 0.5F, 0.0F);
+		poseStack.scale(-1.0F, -1.0F, -1.0F);
 
-		stack.mulPose(Axis.YP.rotationDegrees(state.yRot - 180.0F));
-		stack.mulPose(Axis.ZP.rotationDegrees(state.xRot));
+		poseStack.mulPose(Axis.YP.rotationDegrees(state.yRot - 180.0F));
+		poseStack.mulPose(Axis.ZP.rotationDegrees(state.xRot));
+		submitNodeCollector.submitModel(this.model, state, poseStack, this.model.renderType(TEXTURE), state.lightCoords, OverlayTexture.NO_OVERLAY, state.outlineColor, null);
 
-		VertexConsumer consumer = buffer.getBuffer(this.model.renderType(TEXTURE));
-		this.model.renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY);
-
-		stack.popPose();
+		poseStack.popPose();
 	}
+
 
 	@Override
 	public MoonwormShotRenderState createRenderState() {

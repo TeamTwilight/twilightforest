@@ -1,11 +1,11 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.ARGB;
 import twilightforest.client.model.TFModelLayers;
@@ -30,14 +30,14 @@ public class ProtectionBoxRenderer extends EntityRenderer<ProtectionBox, Protect
 	}
 
 	@Override
-	public void render(ProtectionBoxRenderState state, PoseStack stack, MultiBufferSource buffer, int light) {
+	public void submit(ProtectionBoxRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera) {
 
 		float alpha = 1.0F;
 		if (state.life < 20) alpha = state.life / 20.0F;
 
-		VertexConsumer vertexconsumer = buffer.getBuffer(TFRenderTypes.PROTECTION_BOX);
 		this.boxModel.setupAnim(state);
-		this.boxModel.renderToBuffer(stack, vertexconsumer, light, OverlayTexture.NO_OVERLAY, ARGB.colorFromFloat(alpha, 1.0F, 1.0F, 1.0F));
+		//TODO Need to fix RenderType
+		submitNodeCollector.submitModel(this.boxModel, state, poseStack, TFRenderTypes.PROTECTION_BOX, state.lightCoords, OverlayTexture.NO_OVERLAY, ARGB.colorFromFloat(alpha, 1.0F, 1.0F, 1.0F), null, state.outlineColor, null);
 	}
 
 	@Override

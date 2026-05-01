@@ -2,7 +2,7 @@ package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
@@ -16,7 +16,7 @@ import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.RedcapModel;
 import twilightforest.entity.monster.Redcap;
 
-public class RedcapRenderer extends HumanoidMobRenderer<Redcap, HumanoidRenderState, RedcapModel> {
+public class RedcapRenderer extends HumanoidMobRenderer<Redcap, HumanoidRenderState, RedcapModel<HumanoidRenderState>> {
 
 	private static final Identifier TEXTURE = TwilightForestMod.getModelTexture("redcap.png");
 
@@ -42,15 +42,16 @@ public class RedcapRenderer extends HumanoidMobRenderer<Redcap, HumanoidRenderSt
 		}
 
 		@Override
-		public void render(PoseStack stack, MultiBufferSource source, int light, S state, float yRot, float xRot) {
-			this.renderArmorPiece(stack, source, state.chestEquipment, EquipmentSlot.CHEST, light, this.getArmorModel(state, EquipmentSlot.CHEST));
-			this.renderArmorPiece(stack, source, state.legsEquipment, EquipmentSlot.LEGS, light, this.getArmorModel(state, EquipmentSlot.LEGS));
+		public void submit(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, S state, float yRot, float xRot) {
+			//TODO Need Access Transformer
+			this.renderArmorPiece(poseStack, submitNodeCollector, state.chestEquipment, EquipmentSlot.CHEST, state, this.getArmorModel(state, EquipmentSlot.CHEST));
+			this.renderArmorPiece(poseStack, submitNodeCollector, state.legsEquipment, EquipmentSlot.LEGS, state, this.getArmorModel(state, EquipmentSlot.LEGS));
 			//TF: raise boots
-			stack.pushPose();
-			stack.translate(0.0D, -0.2D, 0.0D);
-			this.renderArmorPiece(stack, source, state.feetEquipment, EquipmentSlot.FEET, light, this.getArmorModel(state, EquipmentSlot.FEET));
-			stack.popPose();
-			this.renderArmorPiece(stack, source, state.headEquipment, EquipmentSlot.HEAD, light, this.getArmorModel(state, EquipmentSlot.HEAD));
+			poseStack.pushPose();
+			poseStack.translate(0.0D, -0.2D, 0.0D);
+			this.renderArmorPiece(poseStack, submitNodeCollector, state.feetEquipment, EquipmentSlot.FEET, state, this.getArmorModel(state, EquipmentSlot.FEET));
+			poseStack.popPose();
+			this.renderArmorPiece(poseStack, submitNodeCollector, state.headEquipment, EquipmentSlot.HEAD, state, this.getArmorModel(state, EquipmentSlot.HEAD));
 		}
 	}
 }

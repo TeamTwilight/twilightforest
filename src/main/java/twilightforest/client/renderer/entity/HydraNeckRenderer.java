@@ -2,8 +2,9 @@ package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.resources.Identifier;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.HydraNeckModel;
@@ -19,7 +20,7 @@ public class HydraNeckRenderer extends TFPartRenderer<HydraNeck, HydraNeckRender
 	}
 
 	@Override
-	public void render(HydraNeckRenderState state, PoseStack stack, MultiBufferSource buffer, int light) {
+	public void submit(HydraNeckRenderState state, PoseStack stack, SubmitNodeCollector buffer, CameraRenderState cameraRenderState) {
 		if (state.active) {
 			float yawDiff = state.yRot - state.yRotO;
 			if (yawDiff > 180) {
@@ -30,7 +31,8 @@ public class HydraNeckRenderer extends TFPartRenderer<HydraNeck, HydraNeckRender
 			float yaw2 = state.yRotO + yawDiff * state.partialTick;
 
 			stack.mulPose(Axis.YN.rotationDegrees(yaw2 + 180));
-			super.render(state, stack, buffer, light);
+			super.submit(state, stack, buffer, cameraRenderState);
+
 		}
 	}
 
