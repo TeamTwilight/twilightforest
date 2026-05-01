@@ -3,7 +3,6 @@ package twilightforest.client.renderer.entity;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.Identifier;
-import net.minecraft.util.Mth;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.HelmetCrabModel;
@@ -26,17 +25,11 @@ public class HelmetCrabRenderer extends MobRenderer<HelmetCrab, HelmetCrabRender
 	@Override
 	public void extractRenderState(HelmetCrab entity, HelmetCrabRenderState state, float partialTicks) {
 		super.extractRenderState(entity, state, partialTicks);
-		state.helmetRot = getHelmetRotation(entity, partialTicks);
+		state.helmetRot = state.getHelmetRotation(entity, partialTicks);
 		state.id = entity.getId();
 		state.blue = entity.isBlue();
 	}
 
-	private float getHelmetRotation(HelmetCrab entity, float partialTicks) {
-		float f = Mth.rotLerp(partialTicks, entity.yBodyRotO, entity.yBodyRot);
-		float f1 = Mth.rotLerp(partialTicks, entity.helmetRotO, entity.helmetRot);
-		float f2 = f1 - f;
-		return Mth.wrapDegrees(f2) - 25;
-	}
 
 
 	@Override
