@@ -61,20 +61,20 @@ public class LichRenderer extends HumanoidMobRenderer<Lich, LichRenderState, Lic
 
 	@Override
 	public void submit(LichRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera) {
+		poseStack.pushPose();
+		poseStack.scale(1.125F, 1.125F, 1.125F);
+
 		if (state.deathTime > 0) {
-			poseStack.pushPose();
-			poseStack.scale(1.125F, 1.125F, 1.125F);
 			if (state.deathTime > Lich.DEATH_ANIMATION_POINT_A) {
 				poseStack.translate(0.0D, -1.8D * Math.pow(Math.min(((state.deathTime - Lich.DEATH_ANIMATION_POINT_A) + state.partialTick) / (float) (Lich.DEATH_ANIMATION_POINT_B - Lich.DEATH_ANIMATION_POINT_A), 1.0D), 3.0D), 0.0D);
 			} else {
 				float time = state.deathTime + state.partialTick;
 				poseStack.translate(Math.sin(time * time) * 0.01D, 0.0D, Math.cos(time * time) * 0.01D);
 			}
-			super.submit(state, poseStack, submitNodeCollector, camera);
-			poseStack.popPose();
-		} else {
-			super.submit(state, poseStack, submitNodeCollector, camera);
+
 		}
+		super.submit(state, poseStack, submitNodeCollector, camera);
+		poseStack.popPose();
 	}
 
 	@Override
