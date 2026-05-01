@@ -6,21 +6,14 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.entity.state.SheepRenderState;
-import twilightforest.client.JappaPackReloadListener;
 
 import java.util.Set;
-
-import static twilightforest.client.model.entity.BoarModel.createJappaModel;
 
 public class BighornModel extends SheepModel {
 	public static final MeshTransformer BABY_TRANSFORMER = new BabyModelTransform(false, 8.0F, 4.0F, 2.0F, 2.0F, 24.0F, Set.of("head"));
 
 	public BighornModel(ModelPart root) {
 		super(root);
-	}
-
-	public static LayerDefinition checkForPack() {
-		return JappaPackReloadListener.INSTANCE.isJappaPackLoaded() ? createJappaModel() : create();
 	}
 
 	private static LayerDefinition create() {

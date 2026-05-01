@@ -5,7 +5,7 @@
 // - ZeuX
 package twilightforest.client.model.entity;
 
-import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
@@ -14,9 +14,9 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import twilightforest.client.JappaPackReloadListener;
-import twilightforest.entity.monster.PinchBeetle;
+import twilightforest.client.state.PinchBeetleRenderState;
 
-public class PinchBeetleModel extends HierarchicalModel<PinchBeetle> {
+public class PinchBeetleModel extends EntityModel<PinchBeetleRenderState> {
 
 	private final ModelPart root;
 	private final ModelPart head;
@@ -30,6 +30,7 @@ public class PinchBeetleModel extends HierarchicalModel<PinchBeetle> {
 	private final ModelPart leftPincer;
 
 	public PinchBeetleModel(ModelPart root) {
+		super(root);
 		this.root = root;
 
 		this.head = root.getChild("head");
@@ -249,14 +250,19 @@ public class PinchBeetleModel extends HierarchicalModel<PinchBeetle> {
 	}
 
 	@Override
-	public ModelPart root() {
-		return this.root;
-	}
-
-	@Override
-	public void setupAnim(PinchBeetle entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		this.head.yRot = netHeadYaw * Mth.DEG_TO_RAD;
-		this.head.xRot = headPitch * Mth.DEG_TO_RAD;
+	public void setupAnim(PinchBeetleRenderState entity) {
+		super.setupAnim(entity);
+		if (entity.isHoldingVictim) {
+			// open jaws
+			this.rightPincer.yRot = -(JappaPackReloadListener.INSTANCE.isJappaPackLoaded() ? 20.0F : 170.0F) * Mth.DEG_TO_RAD;
+			this.leftPincer.yRot = 20.0F * Mth.DEG_TO_RAD;
+		} else {
+			// close jaws
+			this.rightPincer.yRot = (JappaPackReloadListener.INSTANCE.isJappaPackLoaded() ? -45.0F : 135.0F) * Mth.DEG_TO_RAD;
+			this.leftPincer.yRot = 45.0F * Mth.DEG_TO_RAD;
+		}
+		this.head.yRot = entity.yRot * Mth.DEG_TO_RAD;
+		this.head.xRot = entity.xRot * Mth.DEG_TO_RAD;
 
 		float legZ = (Mth.PI / 11.0F);
 		this.leftLeg1.zRot = legZ;
@@ -275,13 +281,13 @@ public class PinchBeetleModel extends HierarchicalModel<PinchBeetle> {
 		this.leftLeg3.yRot = var10 * 2.0F + var9;
 		this.rightLeg3.yRot = -var10 * 2.0F - var9;
 
-		float var11 = -(Mth.cos(limbSwing * 0.6662F * 2.0F + 0.0F) * 0.4F) * limbSwingAmount;
-		float var12 = -(Mth.cos(limbSwing * 0.6662F * 2.0F + Mth.PI) * 0.4F) * limbSwingAmount;
-		float var14 = -(Mth.cos(limbSwing * 0.6662F * 2.0F + (Mth.PI * 3.0F / 2.0F)) * 0.4F) * limbSwingAmount;
+		float var11 = -(Mth.cos(entity.walkAnimationPos * 0.6662F * 2.0F + 0.0F) * 0.4F) * entity.walkAnimationSpeed;
+		float var12 = -(Mth.cos(entity.walkAnimationPos * 0.6662F * 2.0F + Mth.PI) * 0.4F) * entity.walkAnimationSpeed;
+		float var14 = -(Mth.cos(entity.walkAnimationPos * 0.6662F * 2.0F + (Mth.PI * 3.0F / 2.0F)) * 0.4F) * entity.walkAnimationSpeed;
 
-		float var15 = Math.abs(Mth.sin(limbSwing * 0.6662F + 0.0F) * 0.4F) * limbSwingAmount;
-		float var16 = Math.abs(Mth.sin(limbSwing * 0.6662F + Mth.PI) * 0.4F) * limbSwingAmount;
-		float var18 = Math.abs(Mth.sin(limbSwing * 0.6662F + (Mth.PI * 3.0F / 2.0F)) * 0.4F) * limbSwingAmount;
+		float var15 = Math.abs(Mth.sin(entity.walkAnimationPos * 0.6662F + 0.0F) * 0.4F) * entity.walkAnimationSpeed;
+		float var16 = Math.abs(Mth.sin(entity.walkAnimationPos * 0.6662F + Mth.PI) * 0.4F) * entity.walkAnimationSpeed;
+		float var18 = Math.abs(Mth.sin(entity.walkAnimationPos * 0.6662F + (Mth.PI * 3.0F / 2.0F)) * 0.4F) * entity.walkAnimationSpeed;
 
 		this.leftLeg1.yRot += var11;
 		this.rightLeg1.yRot -= var11;
@@ -298,18 +304,5 @@ public class PinchBeetleModel extends HierarchicalModel<PinchBeetle> {
 
 		this.leftLeg3.zRot += var18;
 		this.rightLeg3.zRot -= var18;
-	}
-
-	@Override
-	public void prepareMobModel(PinchBeetle entity, float limbSwing, float limbSwingAmount, float partialTicks) {
-		if (entity.isVehicle()) {
-			// open jaws
-			this.rightPincer.yRot = -(JappaPackReloadListener.INSTANCE.isJappaPackLoaded() ? 20.0F : 170.0F) * Mth.DEG_TO_RAD;
-			this.leftPincer.yRot = 20.0F * Mth.DEG_TO_RAD;
-		} else {
-			// close jaws
-			this.rightPincer.yRot = (JappaPackReloadListener.INSTANCE.isJappaPackLoaded() ? -45.0F : 135.0F) * Mth.DEG_TO_RAD;
-			this.leftPincer.yRot = 45.0F * Mth.DEG_TO_RAD;
-		}
 	}
 }

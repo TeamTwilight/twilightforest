@@ -4,11 +4,11 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.util.Mth;
 import twilightforest.client.JappaPackReloadListener;
-import twilightforest.entity.monster.Minotaur;
 
-public class MinotaurModel extends HumanoidModel<Minotaur> {
+public class MinotaurModel extends HumanoidModel<HumanoidRenderState> {
 
 	public MinotaurModel(ModelPart root) {
 		super(root);

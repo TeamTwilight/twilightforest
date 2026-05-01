@@ -5,17 +5,12 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
-import twilightforest.client.JappaPackReloadListener;
 import twilightforest.client.state.BlockChainGoblinRenderState;
 
 public class BlockChainGoblinModel extends HumanoidModel<BlockChainGoblinRenderState> {
 
 	public BlockChainGoblinModel(ModelPart root) {
 		super(root);
-	}
-
-	public static LayerDefinition checkForPack() {
-		return JappaPackReloadListener.INSTANCE.isJappaPackLoaded() ? createJappaModel() : create();
 	}
 
 	private static LayerDefinition create() {

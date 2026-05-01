@@ -1,7 +1,6 @@
 package twilightforest.client.model.entity;
 
-import com.google.common.collect.ImmutableList;
-import net.minecraft.client.model.ListModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
@@ -10,13 +9,14 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import twilightforest.client.JappaPackReloadListener;
-import twilightforest.entity.boss.HydraNeck;
+import twilightforest.client.state.HydraNeckRenderState;
 
-public class HydraNeckModel extends ListModel<HydraNeck> {
+public class HydraNeckModel extends EntityModel<HydraNeckRenderState> {
 
 	private final ModelPart neck;
 
 	public HydraNeckModel(ModelPart root) {
+		super(root);
 		this.neck = root.getChild("neck");
 	}
 
@@ -53,13 +53,8 @@ public class HydraNeckModel extends ListModel<HydraNeck> {
 	}
 
 	@Override
-	public Iterable<ModelPart> parts() {
-		return ImmutableList.of(this.neck);
-	}
-
-	@Override
-	public void setupAnim(HydraNeck entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		this.neck.yRot = netHeadYaw * Mth.DEG_TO_RAD;
-		this.neck.xRot = headPitch * Mth.DEG_TO_RAD;
+	public void setupAnim(HydraNeckRenderState entity) {
+		this.neck.yRot = entity.yRot * Mth.DEG_TO_RAD;
+		this.neck.xRot = entity.xRot * Mth.DEG_TO_RAD;
 	}
 }

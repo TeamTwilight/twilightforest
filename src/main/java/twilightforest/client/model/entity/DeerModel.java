@@ -4,21 +4,16 @@ import net.minecraft.client.model.QuadrupedModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import twilightforest.client.JappaPackReloadListener;
-import twilightforest.entity.passive.Deer;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 
-public class DeerModel extends QuadrupedModel<Deer> {
+public class DeerModel extends QuadrupedModel<LivingEntityRenderState> {
 
 	public DeerModel(ModelPart root) {
-		super(root, true, 15.25F, 4.0F, 2.0F, 2.0F, 24);
-	}
-
-	public static LayerDefinition checkForPack() {
-		return JappaPackReloadListener.INSTANCE.isJappaPackLoaded() ? createJappaModel() : create();
+		super(root);
 	}
 
 	private static LayerDefinition create() {
-		MeshDefinition meshdefinition = QuadrupedModel.createBodyMesh(0, CubeDeformation.NONE);
+		MeshDefinition meshdefinition = QuadrupedModel.createBodyMesh(0, true, false, CubeDeformation.NONE);
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
 		var head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
@@ -93,7 +88,7 @@ public class DeerModel extends QuadrupedModel<Deer> {
 	}
 
 	private static LayerDefinition createJappaModel() {
-		MeshDefinition mesh = QuadrupedModel.createBodyMesh(12, CubeDeformation.NONE);
+		MeshDefinition mesh = QuadrupedModel.createBodyMesh(12, true, false, CubeDeformation.NONE);
 		PartDefinition definition = mesh.getRoot();
 
 		var head = definition.addOrReplaceChild("head", CubeListBuilder.create()
@@ -146,9 +141,10 @@ public class DeerModel extends QuadrupedModel<Deer> {
 	}
 
 	@Override
-	public void prepareMobModel(Deer entity, float limbSwing, float limbSwingAmount, float partialTicks) {
-		this.head.getChild("right_antler").visible = !entity.isBaby();
-		this.head.getChild("left_antler").visible = !entity.isBaby();
-		super.prepareMobModel(entity, limbSwing, limbSwingAmount, partialTicks);
+	public void setupAnim(LivingEntityRenderState state) {
+		this.head.getChild("right_antler").visible = !state.isBaby;
+		this.head.getChild("left_antler").visible = !state.isBaby;
+		super.setupAnim(state);
 	}
+
 }

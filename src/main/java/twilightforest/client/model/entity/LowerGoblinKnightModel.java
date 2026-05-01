@@ -9,9 +9,9 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 import twilightforest.client.JappaPackReloadListener;
-import twilightforest.entity.monster.LowerGoblinKnight;
+import twilightforest.client.state.LowerGoblinKnightRenderState;
 
-public class LowerGoblinKnightModel extends HumanoidModel<LowerGoblinKnight> {
+public class LowerGoblinKnightModel extends HumanoidModel<LowerGoblinKnightRenderState> {
 
 	private final ModelPart tunic;
 
@@ -121,34 +121,34 @@ public class LowerGoblinKnightModel extends HumanoidModel<LowerGoblinKnight> {
 	}
 
 	@Override
-	public void setupAnim(LowerGoblinKnight entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		if (entity.isVehicle()) {
+	public void setupAnim(LowerGoblinKnightRenderState entity) {
+		if (entity.hasUpperGoblin) {
 			this.head.yRot = 0;
 			this.head.xRot = 0;
 		} else {
-			this.head.yRot = netHeadYaw * Mth.DEG_TO_RAD;
-			this.head.xRot = headPitch * Mth.DEG_TO_RAD;
+			this.head.yRot = entity.yRot * Mth.DEG_TO_RAD;
+			this.head.xRot = entity.xRot * Mth.DEG_TO_RAD;
 		}
 		this.hat.yRot = this.head.yRot;
 		this.hat.xRot = this.head.xRot;
-		if (!entity.hasArmor() && !entity.isVehicle()) {
-			this.rightArm.xRot = Mth.cos(limbSwing * 0.6662F + Mth.PI) * 2.0F * limbSwingAmount * 0.5F;
-			this.leftArm.xRot = Mth.cos(limbSwing * 0.6662F) * 2.0F * limbSwingAmount * 0.5F;
+		if (!entity.hasArmor && !entity.hasUpperGoblin) {
+			this.rightArm.xRot = Mth.cos(entity.walkAnimationPos * 0.6662F + Mth.PI) * 2.0F * entity.walkAnimationSpeed * 0.5F;
+			this.leftArm.xRot = Mth.cos(entity.walkAnimationPos * 0.6662F) * 2.0F * entity.walkAnimationSpeed * 0.5F;
 		} else {
 			this.rightArm.xRot = 0.0F;
 			this.leftArm.xRot = 0.0F;
 		}
 		this.rightArm.zRot = 0.0F;
 		this.leftArm.zRot = 0.0F;
-		this.rightLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-		this.leftLeg.xRot = Mth.cos(limbSwing * 0.6662F + Mth.PI) * 1.4F * limbSwingAmount;
+		this.rightLeg.xRot = Mth.cos(entity.walkAnimationPos * 0.6662F) * 1.4F * entity.walkAnimationSpeed;
+		this.leftLeg.xRot = Mth.cos(entity.walkAnimationPos * 0.6662F + Mth.PI) * 1.4F * entity.walkAnimationSpeed;
 		this.rightLeg.yRot = 0.0F;
 		this.leftLeg.yRot = 0.0F;
 
-		if (!entity.hasArmor() && !entity.isVehicle()) {
-			AnimationUtils.bobArms(this.rightArm, this.leftArm, ageInTicks);
+		if (!entity.hasArmor && !entity.hasUpperGoblin) {
+			AnimationUtils.bobArms(this.rightArm, this.leftArm, entity.ageInTicks);
 		}
 
-		this.tunic.visible = entity.hasArmor();
+		this.tunic.visible = entity.hasArmor;
 	}
 }

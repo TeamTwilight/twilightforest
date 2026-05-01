@@ -6,16 +6,11 @@ import net.minecraft.client.model.animal.pig.PigModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import twilightforest.client.JappaPackReloadListener;
 
 public class BoarModel extends PigModel {
 
 	public BoarModel(ModelPart root) {
 		super(root);
-	}
-
-	public static LayerDefinition checkForPack() {
-		return JappaPackReloadListener.INSTANCE.isJappaPackLoaded() ? createJappaModel() : create();
 	}
 
 	public static LayerDefinition create() {

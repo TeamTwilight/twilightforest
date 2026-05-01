@@ -10,9 +10,9 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import twilightforest.client.JappaPackReloadListener;
-import twilightforest.entity.monster.UpperGoblinKnight;
+import twilightforest.client.state.UpperGoblinKnightRenderState;
 
-public class UpperGoblinKnightModel extends HumanoidModel<UpperGoblinKnight> {
+public class UpperGoblinKnightModel extends HumanoidModel<UpperGoblinKnightRenderState> {
 
 	private final ModelPart breastplate;
 	private final ModelPart shield;
@@ -175,35 +175,35 @@ public class UpperGoblinKnightModel extends HumanoidModel<UpperGoblinKnight> {
 	}
 
 	@Override
-	public void setupAnim(UpperGoblinKnight entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		boolean hasShield = entity.hasShield();
+	public void setupAnim(UpperGoblinKnightRenderState entity) {
+		boolean hasShield = entity.hasShield;
 
-		this.head.yRot = netHeadYaw * Mth.DEG_TO_RAD;
-		this.head.xRot = headPitch * Mth.DEG_TO_RAD;
+		this.head.yRot = entity.yRot * Mth.DEG_TO_RAD;
+		this.head.xRot = entity.xRot * Mth.DEG_TO_RAD;
 		this.head.zRot = 0.0F;
 		this.hat.yRot = this.head.yRot;
 		this.hat.xRot = this.head.xRot;
 		this.hat.zRot = this.head.zRot;
 
-		this.rightArm.xRot = Mth.cos(limbSwing * 0.6662F + Mth.PI) * 2.0F * limbSwingAmount * 0.5F;
+		this.rightArm.xRot = Mth.cos(entity.walkAnimationPos * 0.6662F + Mth.PI) * 2.0F * entity.walkAnimationSpeed * 0.5F;
 
-		float leftConstraint = hasShield ? 0.2F : limbSwingAmount;
+		float leftConstraint = hasShield ? 0.2F : entity.walkAnimationSpeed;
 
-		if (entity.isShieldDisabled()) {
-			this.leftArm.zRot = ((Mth.cos(entity.tickCount * 3.25F) * Mth.PI * 0.4F) * Mth.DEG_TO_RAD) - 0.4F;
+		if (entity.isShieldDisabled) {
+			this.leftArm.zRot = ((Mth.cos(entity.ageInTicks * 3.25F) * Mth.PI * 0.4F) * Mth.DEG_TO_RAD) - 0.4F;
 		} else {
 			this.leftArm.zRot = 0.0F;
 		}
 
-		this.leftArm.xRot = Mth.cos(limbSwing * 0.6662F) * 2.0F * leftConstraint * 0.5F;
+		this.leftArm.xRot = Mth.cos(entity.walkAnimationPos * 0.6662F) * 2.0F * leftConstraint * 0.5F;
 		this.rightArm.zRot = 0.0F;
 
-		this.rightLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-		this.leftLeg.xRot = Mth.cos(limbSwing * 0.6662F + Mth.PI) * 1.4F * limbSwingAmount;
+		this.rightLeg.xRot = Mth.cos(entity.walkAnimationPos * 0.6662F) * 1.4F * entity.walkAnimationSpeed;
+		this.leftLeg.xRot = Mth.cos(entity.walkAnimationPos * 0.6662F + Mth.PI) * 1.4F * entity.walkAnimationSpeed;
 		this.rightLeg.yRot = 0.0F;
 		this.leftLeg.yRot = 0.0F;
 
-		if (this.riding) {
+		if (entity.isPassenger) {
 			this.rightArm.xRot -= (Mth.PI / 5.0F);
 			this.leftArm.xRot -= (Mth.PI / 5.0F);
 			this.rightLeg.xRot = 0;

@@ -1,24 +1,21 @@
 package twilightforest.client.model.entity;
 
-import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.model.AnimationUtils;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.util.Mth;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemDisplayContext;
 import twilightforest.client.JappaPackReloadListener;
 import twilightforest.client.renderer.entity.MinoshroomRenderer;
-import twilightforest.entity.boss.Minoshroom;
+import twilightforest.client.state.MinoshroomRenderState;
 
-public class MinoshroomModel<T extends Minoshroom> extends HumanoidModel<T> implements TrophyBlockModel {
+public class MinoshroomModel<T extends MinoshroomRenderState> extends HumanoidModel<T> implements TrophyBlockModel {
 
 	public final ModelPart cowTorso;
 	private final ModelPart rightFrontLeg;
@@ -188,67 +185,18 @@ public class MinoshroomModel<T extends Minoshroom> extends HumanoidModel<T> impl
 	}
 
 	@Override
-	protected Iterable<ModelPart> bodyParts() {
-		return ImmutableList.of(this.body, this.leftArm, this.rightArm, this.cowTorso, this.leftBackLeg, this.rightBackLeg, this.leftFrontLeg, this.rightFrontLeg);
-	}
-
-	@Override
-	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		// copied from HumanoidModel
-		this.head.yRot = netHeadYaw * Mth.DEG_TO_RAD;
-		this.head.xRot = headPitch * Mth.DEG_TO_RAD;
-		this.hat.yRot = this.head.yRot;
-		this.hat.xRot = this.head.xRot;
-
-		this.rightArm.xRot = Mth.cos(limbSwing * 0.6662F + Mth.PI) * 2.0F * limbSwingAmount * 0.5F;
-		this.leftArm.xRot = Mth.cos(limbSwing * 0.6662F) * 2.0F * limbSwingAmount * 0.5F;
-		this.rightArm.zRot = 0.0F;
-		this.leftArm.zRot = 0.0F;
-
-		this.rightLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-		this.leftLeg.xRot = Mth.cos(limbSwing * 0.6662F + Mth.PI) * 1.4F * limbSwingAmount;
-		this.rightLeg.yRot = 0.0F;
-		this.leftLeg.yRot = 0.0F;
-
-		this.rightArm.yRot = 0.0F;
-		this.leftArm.yRot = 0.0F;
-		boolean flag2 = entity.getMainArm() == HumanoidArm.RIGHT;
-		if (entity.isUsingItem()) {
-			boolean flag3 = entity.getUsedItemHand() == InteractionHand.MAIN_HAND;
-			if (flag3 == flag2) {
-				this.poseRightArm(entity);
-			} else {
-				this.poseLeftArm(entity);
-			}
-		} else {
-			boolean flag4 = flag2 ? this.leftArmPose.isTwoHanded() : this.rightArmPose.isTwoHanded();
-			if (flag2 != flag4) {
-				this.poseLeftArm(entity);
-				this.poseRightArm(entity);
-			} else {
-				this.poseRightArm(entity);
-				this.poseLeftArm(entity);
-			}
-		}
-
-		if (this.rightArmPose != HumanoidModel.ArmPose.SPYGLASS) {
-			AnimationUtils.bobModelPart(this.rightArm, ageInTicks, 1.0F);
-		}
-
-		if (this.leftArmPose != HumanoidModel.ArmPose.SPYGLASS) {
-			AnimationUtils.bobModelPart(this.leftArm, ageInTicks, -1.0F);
-		}
+	public void setupAnim(T entity) {
+		super.setupAnim(entity);
 
 		// copied from QuadrupedModel
 		this.cowTorso.xRot = Mth.HALF_PI;
-		this.leftFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-		this.rightFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F + Mth.PI) * 1.4F * limbSwingAmount;
-		this.leftBackLeg.xRot = Mth.cos(limbSwing * 0.6662F + Mth.PI) * 1.4F * limbSwingAmount;
-		this.rightBackLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+		this.leftFrontLeg.xRot = Mth.cos(entity.walkAnimationPos * 0.6662F) * 1.4F * entity.walkAnimationSpeed;
+		this.rightFrontLeg.xRot = Mth.cos(entity.walkAnimationPos * 0.6662F + Mth.PI) * 1.4F * entity.walkAnimationSpeed;
+		this.leftBackLeg.xRot = Mth.cos(entity.walkAnimationPos * 0.6662F + Mth.PI) * 1.4F * entity.walkAnimationSpeed;
+		this.rightBackLeg.xRot = Mth.cos(entity.walkAnimationPos * 0.6662F) * 1.4F * entity.walkAnimationSpeed;
 
 		// Ground slam animation
-		float f = ageInTicks - entity.tickCount;
-		float f1 = entity.getChargeAnimationScale(f);
+		float f1 = entity.chargeAnim;
 		f1 = f1 * f1;
 
 		boolean jappa = JappaPackReloadListener.INSTANCE.isJappaPackLoaded();
@@ -269,7 +217,7 @@ public class MinoshroomModel<T extends Minoshroom> extends HumanoidModel<T> impl
 		this.leftArm.z = this.rightArm.z;
 
 		if (f1 > 0) {
-			if (entity.getMainArm() == HumanoidArm.RIGHT) {
+			if (entity.mainArm == HumanoidArm.RIGHT) {
 				this.rightArm.xRot = f1 * -1.8F;
 				this.leftArm.xRot = 0.0F;
 				this.rightArm.zRot = -0.2F;
@@ -297,7 +245,7 @@ public class MinoshroomModel<T extends Minoshroom> extends HumanoidModel<T> impl
 		} else {
 			stack.translate(0.0F, 0.5625F, 0.4375F);
 		}
-		VertexConsumer consumer = buffer.getBuffer(RenderType.entityCutoutNoCull(MinoshroomRenderer.TEXTURE));
+		VertexConsumer consumer = buffer.getBuffer(RenderTypes.entityCutout(MinoshroomRenderer.TEXTURE));
 		this.head.render(stack, consumer, light, overlay, color);
 	}
 }

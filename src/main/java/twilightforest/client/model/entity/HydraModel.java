@@ -5,9 +5,7 @@
 // - ZeuX
 package twilightforest.client.model.entity;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
@@ -15,11 +13,10 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import org.jetbrains.annotations.Nullable;
 import twilightforest.client.JappaPackReloadListener;
-import twilightforest.entity.boss.Hydra;
+import twilightforest.client.state.HydraRenderState;
 
-public class HydraModel extends HierarchicalModel<Hydra> {
+public class HydraModel extends EntityModel<HydraRenderState> {
 
 	private final ModelPart root;
 	private final ModelPart body;
@@ -27,10 +24,8 @@ public class HydraModel extends HierarchicalModel<Hydra> {
 	private final ModelPart rightLeg;
 	private final ModelPart leftLeg;
 
-	@Nullable
-	private Hydra hydra;
-
 	public HydraModel(ModelPart root) {
+		super(root);
 		this.root = root;
 		this.body = root.getChild("body");
 		this.tail = root.getChild("tail_1");
@@ -391,27 +386,19 @@ public class HydraModel extends HierarchicalModel<Hydra> {
 	}
 
 	@Override
-	public ModelPart root() {
-		return this.root;
-	}
-
-	@Override
-	public void renderToBuffer(PoseStack stack, VertexConsumer consumer, int light, int overlay, int color) {
-		if (this.hydra != null && this.hydra.renderFakeHeads) {
-			super.renderToBuffer(stack, consumer, light, overlay, color);
+	public void setupAnim(HydraRenderState entity) {
+		super.setupAnim(entity);
+		if (entity.renderFakeHeads) {
+			this.root.getAllParts().forEach(part -> part.visible = true);
 		} else {
-			this.rightLeg.render(stack, consumer, light, overlay, color);
-			this.leftLeg.render(stack, consumer, light, overlay, color);
-			this.body.render(stack, consumer, light, overlay, color);
-			this.tail.render(stack, consumer, light, overlay, color);
+			this.root.getAllParts().forEach(part -> part.visible = false);
+			this.rightLeg.visible = true;
+			this.leftLeg.visible = true;
+			this.body.visible = true;
+			this.tail.visible = true;
 		}
-		this.hydra = null;
-	}
 
-	@Override
-	public void setupAnim(Hydra entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		this.hydra = entity;
-		this.rightLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-		this.leftLeg.xRot = Mth.cos(limbSwing * 0.6662F + Mth.PI) * 1.4F * limbSwingAmount;
+		this.rightLeg.xRot = Mth.cos(entity.walkAnimationPos * 0.6662F) * 1.4F * entity.walkAnimationSpeed;
+		this.leftLeg.xRot = Mth.cos(entity.walkAnimationPos * 0.6662F + Mth.PI) * 1.4F * entity.walkAnimationSpeed;
 	}
 }

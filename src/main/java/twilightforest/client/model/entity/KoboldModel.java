@@ -14,12 +14,11 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
 import twilightforest.client.JappaPackReloadListener;
-import twilightforest.entity.monster.Kobold;
+import twilightforest.client.state.KoboldRenderState;
 
-public class KoboldModel extends HumanoidModel<Kobold> {
+public class KoboldModel extends HumanoidModel<KoboldRenderState> {
 
 	private final ModelPart jaw;
-	private boolean isJumping;
 
 	public KoboldModel(ModelPart root) {
 		super(root);
@@ -146,9 +145,9 @@ public class KoboldModel extends HumanoidModel<Kobold> {
 	}
 
 	@Override
-	public void setupAnim(Kobold entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		this.head.yRot = netHeadYaw * Mth.DEG_TO_RAD;
-		this.head.xRot = headPitch * Mth.DEG_TO_RAD;
+	public void setupAnim(KoboldRenderState entity) {
+		this.head.yRot = entity.yRot * Mth.DEG_TO_RAD;
+		this.head.xRot = entity.xRot * Mth.DEG_TO_RAD;
 
 		this.rightArm.zRot = 0.0F;
 		this.leftArm.zRot = 0.0F;
@@ -156,17 +155,17 @@ public class KoboldModel extends HumanoidModel<Kobold> {
 		this.rightArm.xRot = -(Mth.PI * 0.15F);
 		this.leftArm.xRot = -(Mth.PI * 0.15F);
 
-		this.rightLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-		this.leftLeg.xRot = Mth.cos(limbSwing * 0.6662F + Mth.PI) * 1.4F * limbSwingAmount;
+		this.rightLeg.xRot = Mth.cos(entity.walkAnimationPos * 0.6662F) * 1.4F * entity.walkAnimationSpeed;
+		this.leftLeg.xRot = Mth.cos(entity.walkAnimationPos * 0.6662F + Mth.PI) * 1.4F * entity.walkAnimationSpeed;
 		this.rightLeg.yRot = 0.0F;
 		this.leftLeg.yRot = 0.0F;
 
-		this.rightArm.zRot += Mth.cos(ageInTicks * 0.19F) * 0.15F + 0.05F;
-		this.leftArm.zRot -= Mth.cos(ageInTicks * 0.19F) * 0.15F + 0.05F;
-		this.rightArm.xRot += Mth.sin(ageInTicks * 0.267F) * 0.25F;
-		this.leftArm.xRot -= Mth.sin(ageInTicks * 0.267F) * 0.25F;
+		this.rightArm.zRot += Mth.cos(entity.ageInTicks * 0.19F) * 0.15F + 0.05F;
+		this.leftArm.zRot -= Mth.cos(entity.ageInTicks * 0.19F) * 0.15F + 0.05F;
+		this.rightArm.xRot += Mth.sin(entity.ageInTicks * 0.267F) * 0.25F;
+		this.leftArm.xRot -= Mth.sin(entity.ageInTicks * 0.267F) * 0.25F;
 
-		if (this.isJumping) {
+		if (entity.jumping) {
 			// open jaw
 			this.jaw.xRot = 1.44F;
 		} else {
@@ -175,15 +174,9 @@ public class KoboldModel extends HumanoidModel<Kobold> {
 	}
 
 	@Override
-	public void translateToHand(HumanoidArm arm, PoseStack stack) {
-		super.translateToHand(arm, stack);
+	public void translateToHand(KoboldRenderState renderState, HumanoidArm arm, PoseStack stack) {
+		super.translateToHand(renderState, arm, stack);
 		stack.translate(0.0F, -0.075F, 0.0F);
 		stack.scale(0.75F, 0.75F, 0.75F);
-	}
-
-	@Override
-	public void prepareMobModel(Kobold entity, float limbSwing, float limbSwingAmount, float partialTicks) {
-		// check if entity is jumping
-		this.isJumping = !entity.isNoAi() && entity.getDeltaMovement().y() > 0;
 	}
 }

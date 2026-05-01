@@ -7,19 +7,20 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
-import net.minecraft.util.FastColor;
+import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.renderer.entity.KnightPhantomRenderer;
+import twilightforest.client.state.KnightPhantomRenderState;
 import twilightforest.entity.boss.KnightPhantom;
 
 import javax.annotation.Nullable;
 
-public class KnightPhantomModel extends HumanoidModel<KnightPhantom> implements TrophyBlockModel {
+public class KnightPhantomModel extends HumanoidModel<KnightPhantomRenderState> implements TrophyBlockModel {
 
 	private static final Identifier PHANTOM_ARMOR_TEXTURE = TwilightForestMod.prefix("textures/models/armor/phantom_layer_1.png");
 
@@ -123,18 +124,20 @@ public class KnightPhantomModel extends HumanoidModel<KnightPhantom> implements 
 	}
 
 	@Override
-	public void setupAnim(KnightPhantom entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		this.knight = entity;
+	public void setupAnim(KnightPhantomRenderState entity) {
+		if (entity.isCharging) {
+			this.root().visible = false;
+		}
 
-		super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+		super.setupAnim(entity);
 		this.leftLeg.yRot = 0;
 		this.leftLeg.zRot = 0;
 
 		this.rightLeg.yRot = 0;
 		this.rightLeg.zRot = 0;
 
-		this.rightLeg.xRot = 0.2F * Mth.sin(ageInTicks * 0.3F) + 0.4F;
-		this.leftLeg.xRot = 0.2F * Mth.sin(ageInTicks * 0.3F) + 0.4F;
+		this.rightLeg.xRot = 0.2F * Mth.sin(entity.ageInTicks * 0.3F) + 0.4F;
+		this.leftLeg.xRot = 0.2F * Mth.sin(entity.ageInTicks * 0.3F) + 0.4F;
 	}
 
 	@Override
@@ -156,24 +159,24 @@ public class KnightPhantomModel extends HumanoidModel<KnightPhantom> implements 
 
 			stack.pushPose();
 			stack.translate(0.0F, 0.3f, 0.0F);
-			VertexConsumer armorConsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(PHANTOM_ARMOR_TEXTURE));
-			this.helmet.render(stack, armorConsumer, light, OverlayTexture.NO_OVERLAY, FastColor.ARGB32.colorFromFloat(0.0625F, 1.0F, 1.0F, 1.0F));
+			VertexConsumer armorConsumer = buffer.getBuffer(RenderTypes.entityCutout(PHANTOM_ARMOR_TEXTURE));
+			this.helmet.render(stack, armorConsumer, light, OverlayTexture.NO_OVERLAY, ARGB.colorFromFloat(0.0625F, 1.0F, 1.0F, 1.0F));
 			stack.popPose();
 
 			stack.scale(1 / 1.1F, 1 / 1.1F, 1 / 1.1F);
 			stack.translate(0.0F, 0.25F, 0.0F);
-			VertexConsumer consumer = buffer.getBuffer(RenderType.entityCutoutNoCull(KnightPhantomRenderer.TEXTURE));
+			VertexConsumer consumer = buffer.getBuffer(RenderTypes.entityCutout(KnightPhantomRenderer.TEXTURE));
 			this.head.render(stack, consumer, light, overlay, color);
 
 			stack.popPose();
 		} else {
 			stack.translate(0.0F, 0.25F, 0.0F);
-			VertexConsumer consumer = buffer.getBuffer(RenderType.entityCutoutNoCull(KnightPhantomRenderer.TEXTURE));
+			VertexConsumer consumer = buffer.getBuffer(RenderTypes.entityCutout(KnightPhantomRenderer.TEXTURE));
 			this.head.render(stack, consumer, light, overlay, color);
 			stack.scale(1.1F, 1.1F, 1.1F);
 			stack.translate(0.0F, 0.05F, 0.0F);
-			VertexConsumer armorConsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(PHANTOM_ARMOR_TEXTURE));
-			this.helmet.render(stack, armorConsumer, light, OverlayTexture.NO_OVERLAY, FastColor.ARGB32.colorFromFloat(0.0625F, 1.0F, 1.0F, 1.0F));
+			VertexConsumer armorConsumer = buffer.getBuffer(RenderTypes.entityCutout(PHANTOM_ARMOR_TEXTURE));
+			this.helmet.render(stack, armorConsumer, light, OverlayTexture.NO_OVERLAY, ARGB.colorFromFloat(0.0625F, 1.0F, 1.0F, 1.0F));
 		}
 	}
 }

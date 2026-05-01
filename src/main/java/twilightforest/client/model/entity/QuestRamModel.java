@@ -8,23 +8,22 @@ package twilightforest.client.model.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemDisplayContext;
 import twilightforest.client.JappaPackReloadListener;
 import twilightforest.client.renderer.entity.QuestRamRenderer;
-import twilightforest.entity.passive.QuestRam;
+import twilightforest.client.state.QuestingRamRenderState;
 
 import java.util.Arrays;
 
-public class QuestRamModel<T extends QuestRam> extends HierarchicalModel<T> implements TrophyBlockModel {
+public class QuestRamModel<T extends QuestingRamRenderState> extends EntityModel<T> implements TrophyBlockModel {
 
 	private final ModelPart root;
 	private final ModelPart head;
@@ -40,6 +39,7 @@ public class QuestRamModel<T extends QuestRam> extends HierarchicalModel<T> impl
 	final int[] colorOrder = new int[]{0, 8, 7, 15, 14, 1, 4, 5, 13, 3, 9, 11, 10, 2, 6, 12};
 
 	public QuestRamModel(ModelPart root) {
+		super(root);
 		this.root = root;
 		this.head = root.getChild("head");
 		if (root.hasChild("neck")) {
@@ -278,46 +278,26 @@ public class QuestRamModel<T extends QuestRam> extends HierarchicalModel<T> impl
 	}
 
 	@Override
-	public ModelPart root() {
-		return this.root;
-	}
-
-	@Override
 	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, int color) {
 		super.renderToBuffer(stack, builder, light, overlay, color);
 
 		for (int i = 0; i < 16; i++) {
-			final int dyeRgb = Sheep.getColor(DyeColor.byId(i));
+			final int dyeRgb = DyeColor.byId(i).getTextureDiffuseColor();
 			segments[i].render(stack, builder, light, overlay, dyeRgb);
 		}
 	}
 
 	@Override
-	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		this.head.xRot = headPitch * Mth.DEG_TO_RAD;
-		this.head.yRot = netHeadYaw * Mth.DEG_TO_RAD;
-
-		if (!JappaPackReloadListener.INSTANCE.isJappaPackLoaded()) {
-			this.neck.yRot = this.head.yRot;
-		}
-
-		this.leftFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount * 0.5F;
-		this.rightFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F + Mth.PI) * 1.4F * limbSwingAmount * 0.5F;
-		this.leftBackLeg.xRot = Mth.cos(limbSwing * 0.6662F + Mth.PI) * 1.4F * limbSwingAmount * 0.5F;
-		this.rightBackLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount * 0.5F;
-	}
-
-	@Override
-	public void prepareMobModel(T entity, float limbSwing, float limbSwingAmount, float partialTicks) {
+	public void setupAnim(T entity) {
+		super.setupAnim(entity);
 
 		// how many colors should we display?
 		int count = entity.countColorsSet();
-		boolean jappa = JappaPackReloadListener.INSTANCE.isJappaPackLoaded();
 
-		this.head.z = -count - (jappa ? 20 : 11);
-		this.neck.z = -count - (jappa ? 17 : 11);
-		this.frontTorso.z = -count - (jappa ? 12 : 0);
-		this.backTorso.z = count - (jappa ? 10 : 0);
+		this.head.z = -count - 11;
+		this.neck.z = -count - 11;
+		this.frontTorso.z = -count;
+		this.backTorso.z = count;
 		this.leftBackLeg.z = 9 + count;
 		this.rightBackLeg.z = 9 + count;
 		this.leftFrontLeg.z = -11 - count;
@@ -328,13 +308,24 @@ public class QuestRamModel<T extends QuestRam> extends HierarchicalModel<T> impl
 		for (int color : this.colorOrder) {
 			if (entity.isColorPresent(DyeColor.byId(color))) {
 				this.segments[color].visible = true;
-				this.segments[color].z = segmentOffset - count - (jappa ? 10 : 0);
+				this.segments[color].z = segmentOffset - count;
 
 				segmentOffset += 2;
 			} else {
 				this.segments[color].visible = false;
 			}
 		}
+		this.head.xRot = entity.xRot * Mth.DEG_TO_RAD;
+		this.head.yRot = entity.yRot * Mth.DEG_TO_RAD;
+
+		if (!JappaPackReloadListener.INSTANCE.isJappaPackLoaded()) {
+			this.neck.yRot = this.head.yRot;
+		}
+
+		this.leftFrontLeg.xRot = Mth.cos(entity.walkAnimationPos * 0.6662F) * 1.4F * entity.walkAnimationSpeed * 0.5F;
+		this.rightFrontLeg.xRot = Mth.cos(entity.walkAnimationPos * 0.6662F + Mth.PI) * 1.4F * entity.walkAnimationSpeed * 0.5F;
+		this.leftBackLeg.xRot = Mth.cos(entity.walkAnimationPos * 0.6662F + Mth.PI) * 1.4F * entity.walkAnimationSpeed * 0.5F;
+		this.rightBackLeg.xRot = Mth.cos(entity.walkAnimationPos * 0.6662F) * 1.4F * entity.walkAnimationSpeed * 0.5F;
 	}
 
 	@Override
@@ -350,11 +341,11 @@ public class QuestRamModel<T extends QuestRam> extends HierarchicalModel<T> impl
 			stack.translate(0.0F, 0.5F, context != ItemDisplayContext.NONE ? 0.5F : 0.67F);
 		}
 
-		VertexConsumer consumer = buffer.getBuffer(RenderType.entityCutoutNoCull(QuestRamRenderer.TEXTURE));
+		VertexConsumer consumer = buffer.getBuffer(RenderTypes.entityCutout(QuestRamRenderer.TEXTURE));
 		this.head.render(stack, consumer, light, overlay, color);
 		stack.pushPose();
 		stack.scale(1.025F, 1.025F, 1.025F);
-		consumer = buffer.getBuffer(RenderType.entityTranslucent(QuestRamRenderer.LINE_TEXTURE));
+		consumer = buffer.getBuffer(RenderTypes.entityTranslucent(QuestRamRenderer.LINE_TEXTURE));
 		this.head.render(stack, consumer, 0xF000F0, overlay, color);
 		stack.popPose();
 	}

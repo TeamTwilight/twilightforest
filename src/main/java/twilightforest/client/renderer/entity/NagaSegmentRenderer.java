@@ -2,8 +2,9 @@ package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.resources.Identifier;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.NagaModel;
@@ -18,7 +19,7 @@ public class NagaSegmentRenderer extends TFPartRenderer<NagaSegment, NagaSegment
 	}
 
 	@Override
-	public void render(NagaSegmentRenderState state, PoseStack stack, MultiBufferSource buffer, int light) {
+	public void submit(NagaSegmentRenderState state, PoseStack stack, SubmitNodeCollector buffer, CameraRenderState cameraRenderState) {
 		if (!state.isInvisible) {
 			stack.pushPose();
 
@@ -36,7 +37,8 @@ public class NagaSegmentRenderer extends TFPartRenderer<NagaSegment, NagaSegment
 			stack.scale(2.0F, 2.0F, 2.0F);
 			stack.translate(0.0D, -1.25F, 0.0D);
 
-			super.render(state, stack, buffer, state.parentLight);
+			super.submit(state, stack, buffer, cameraRenderState);
+
 			stack.popPose();
 		}
 	}

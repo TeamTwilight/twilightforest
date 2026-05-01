@@ -1,19 +1,20 @@
 package twilightforest.client.model.entity;
 
-import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import twilightforest.entity.boss.HydraMortar;
+import twilightforest.client.state.HydraMortarRenderState;
 
-public class HydraMortarModel extends HierarchicalModel<HydraMortar> {
+public class HydraMortarModel extends EntityModel<HydraMortarRenderState> {
 
 	private final ModelPart root;
 
 	public HydraMortarModel(ModelPart root) {
+		super(root);
 		this.root = root;
 	}
 
@@ -30,11 +31,6 @@ public class HydraMortarModel extends HierarchicalModel<HydraMortar> {
 	}
 
 	@Override
-	public ModelPart root() {
-		return this.root;
-	}
-
-	@Override
-	public void setupAnim(HydraMortar entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(HydraMortarRenderState renderState) {
 	}
 }
