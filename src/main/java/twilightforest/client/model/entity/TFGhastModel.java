@@ -1,6 +1,5 @@
 package twilightforest.client.model.entity;
 
-
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -10,19 +9,17 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import twilightforest.client.state.TFGhastRenderState;
+import twilightforest.client.state.entity.TFGhastRenderState;
 
 public class TFGhastModel<T extends TFGhastRenderState> extends EntityModel<T> {
 
 	protected final static int tentacleCount = 9;
-	private final ModelPart root;
 	private final ModelPart body;
 	private final ModelPart[] tentacles = new ModelPart[tentacleCount];
 
 	public TFGhastModel(ModelPart root) {
 		super(root);
-		this.root = root;
-		this.body = this.root.getChild("body");
+		this.body = root.getChild("body");
 
 		for (int i = 0; i < this.tentacles.length; i++) {
 			this.tentacles[i] = this.body.getChild("tentacle_" + i);

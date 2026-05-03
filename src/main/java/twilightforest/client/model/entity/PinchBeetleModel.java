@@ -13,12 +13,10 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import twilightforest.client.JappaPackReloadListener;
-import twilightforest.client.state.PinchBeetleRenderState;
+import twilightforest.client.state.entity.PinchBeetleRenderState;
 
 public class PinchBeetleModel extends EntityModel<PinchBeetleRenderState> {
 
-	private final ModelPart root;
 	private final ModelPart head;
 	private final ModelPart rightLeg1;
 	private final ModelPart rightLeg2;
@@ -31,8 +29,6 @@ public class PinchBeetleModel extends EntityModel<PinchBeetleRenderState> {
 
 	public PinchBeetleModel(ModelPart root) {
 		super(root);
-		this.root = root;
-
 		this.head = root.getChild("head");
 
 		this.leftPincer = this.head.getChild("left_pincher");
@@ -47,11 +43,7 @@ public class PinchBeetleModel extends EntityModel<PinchBeetleRenderState> {
 		this.leftLeg3 = root.getChild("left_leg_3");
 	}
 
-	public static LayerDefinition checkForPack() {
-		return JappaPackReloadListener.INSTANCE.isJappaPackLoaded() ? createJappaModel() : create();
-	}
-
-	private static LayerDefinition create() {
+	public static LayerDefinition create() {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
@@ -183,82 +175,16 @@ public class PinchBeetleModel extends EntityModel<PinchBeetleRenderState> {
 		return LayerDefinition.create(meshdefinition, 64, 32);
 	}
 
-	private static LayerDefinition createJappaModel() {
-		MeshDefinition meshdefinition = new MeshDefinition();
-		PartDefinition partdefinition = meshdefinition.getRoot();
-
-		var head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
-				.texOffs(0, 0)
-				.addBox(-4.0F, -3.0F, -6.0F, 8.0F, 6.0F, 6.0F),
-			PartPose.offset(0.0F, 19.0F, 0.0F));
-
-		head.addOrReplaceChild("left_antenna", CubeListBuilder.create()
-				.texOffs(52, 0)
-				.addBox(0.0F, 0.0F, -10.0F, 1.0F, 0.0F, 10.0F),
-			PartPose.offsetAndRotation(1.0F, -3.0F, -6.0F, -0.4363323129985824F, -0.4363323129985824F, 0.0F));
-
-		head.addOrReplaceChild("right_antenna", CubeListBuilder.create()
-				.texOffs(48, 0).addBox(-1.0F, 0.0F, -10.0F, 1.0F, 0.0F, 10.0F),
-			PartPose.offsetAndRotation(-1.0F, -3.0F, -6.0F, -0.4363323129985824F, 0.4363323129985824F, 0.0F));
-
-		head.addOrReplaceChild("left_pincher", CubeListBuilder.create()
-				.texOffs(16, 14)
-				.addBox(0.0F, 0.0F, -12.0F, 12.0F, 2.0F, 12.0F),
-			PartPose.offsetAndRotation(4.0F, 2.0F, -4.0F, 0.08726646259971647F, 0.6108652381980153F, 0.0F));
-
-		head.addOrReplaceChild("right_pincher", CubeListBuilder.create()
-				.texOffs(16, 0)
-				.addBox(-12.0F, 0.0F, -12.0F, 12.0F, 2.0F, 12.0F),
-			PartPose.offsetAndRotation(-4.0F, 2.0F, -4.0F, 0.08726646259971647F, -0.6108652381980153F, 0.0F));
-
-		partdefinition.addOrReplaceChild("body", CubeListBuilder.create()
-				.texOffs(0, 28)
-				.addBox(-5.0F, -8.0F, -3.0F, 10.0F, 10.0F, 7.0F),
-			PartPose.offsetAndRotation(0.0F, 19.0F, 8.0F, 1.5707963267948966F, 0.0F, 0.0F));
-
-		partdefinition.addOrReplaceChild("right_leg_1", CubeListBuilder.create()
-				.texOffs(40, 28)
-				.addBox(-10.0F, 0.0F, -1.0F, 10.0F, 2.0F, 2.0F),
-			PartPose.offsetAndRotation(-2.0F, 21.0F, 6.0F, 0.0F, 0.6108652381980153F, -0.17453292519943295F));
-
-		partdefinition.addOrReplaceChild("right_leg_2", CubeListBuilder.create()
-				.texOffs(40, 32)
-				.addBox(-10.0F, 0.0F, -1.0F, 10.0F, 2.0F, 2.0F),
-			PartPose.offsetAndRotation(-2.0F, 21.0F, 4.0F, 0.0F, 0.20943951023931953F, -0.17453292519943295F));
-
-		partdefinition.addOrReplaceChild("right_leg_3", CubeListBuilder.create()
-				.texOffs(40, 36)
-				.addBox(-10.0F, 0.0F, -1.0F, 10.0F, 2.0F, 2.0F),
-			PartPose.offsetAndRotation(-2.0F, 21.0F, 2.0F, 0.0F, -0.20943951023931953F, -0.17453292519943295F));
-
-		partdefinition.addOrReplaceChild("left_leg_1", CubeListBuilder.create()
-				.texOffs(40, 42)
-				.addBox(0.0F, 0.0F, -1.0F, 10.0F, 2.0F, 2.0F),
-			PartPose.offsetAndRotation(2.0F, 21.0F, 6.0F, 0.0F, -0.6108652381980153F, 0.17453292519943295F));
-
-		partdefinition.addOrReplaceChild("left_leg_2", CubeListBuilder.create()
-				.texOffs(40, 46)
-				.addBox(0.0F, 0.0F, -1.0F, 10.0F, 2.0F, 2.0F),
-			PartPose.offsetAndRotation(2.0F, 21.0F, 4.0F, 0.0F, -0.20943951023931953F, 0.17453292519943295F));
-
-		partdefinition.addOrReplaceChild("left_leg_3", CubeListBuilder.create()
-				.texOffs(40, 50)
-				.addBox(0.0F, 0.0F, -1.0F, 10.0F, 2.0F, 2.0F),
-			PartPose.offsetAndRotation(2.0F, 21.0F, 2.0F, 0.0F, 0.20943951023931953F, 0.17453292519943295F));
-
-		return LayerDefinition.create(meshdefinition, 64, 64);
-	}
-
 	@Override
 	public void setupAnim(PinchBeetleRenderState entity) {
 		super.setupAnim(entity);
 		if (entity.isHoldingVictim) {
 			// open jaws
-			this.rightPincer.yRot = -(JappaPackReloadListener.INSTANCE.isJappaPackLoaded() ? 20.0F : 170.0F) * Mth.DEG_TO_RAD;
+			this.rightPincer.yRot = -170.0F * Mth.DEG_TO_RAD;
 			this.leftPincer.yRot = 20.0F * Mth.DEG_TO_RAD;
 		} else {
 			// close jaws
-			this.rightPincer.yRot = (JappaPackReloadListener.INSTANCE.isJappaPackLoaded() ? -45.0F : 135.0F) * Mth.DEG_TO_RAD;
+			this.rightPincer.yRot = 135.0F * Mth.DEG_TO_RAD;
 			this.leftPincer.yRot = 45.0F * Mth.DEG_TO_RAD;
 		}
 		this.head.yRot = entity.yRot * Mth.DEG_TO_RAD;

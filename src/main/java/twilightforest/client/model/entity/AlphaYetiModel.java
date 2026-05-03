@@ -11,7 +11,7 @@ import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
 import twilightforest.client.renderer.entity.AlphaYetiRenderer;
-import twilightforest.client.state.AlphaYetiRenderState;
+import twilightforest.client.state.entity.AlphaYetiRenderState;
 
 public class AlphaYetiModel extends HumanoidModel<AlphaYetiRenderState> implements TrophyBlockModel {
 

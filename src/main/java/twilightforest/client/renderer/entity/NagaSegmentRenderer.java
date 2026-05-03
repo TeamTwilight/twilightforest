@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.resources.Identifier;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.NagaModel;
-import twilightforest.client.state.NagaSegmentRenderState;
+import twilightforest.client.state.entity.NagaSegmentRenderState;
 import twilightforest.entity.boss.NagaSegment;
 
 public class NagaSegmentRenderer extends TFPartRenderer<NagaSegment, NagaSegmentRenderState, NagaModel<NagaSegmentRenderState>> {

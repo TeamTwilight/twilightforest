@@ -6,7 +6,7 @@ import net.minecraft.resources.Identifier;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.YetiModel;
-import twilightforest.client.state.YetiRenderState;
+import twilightforest.client.state.entity.YetiRenderState;
 import twilightforest.entity.monster.Yeti;
 
 public class YetiRenderer extends HumanoidMobRenderer<Yeti, YetiRenderState, YetiModel> {

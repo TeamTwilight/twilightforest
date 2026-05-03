@@ -1,13 +1,12 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import net.minecraft.client.model.Model;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
@@ -19,7 +18,8 @@ import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.BlockChainGoblinModel;
 import twilightforest.client.model.entity.ChainModel;
 import twilightforest.client.model.entity.SpikeBlockModel;
-import twilightforest.client.state.BlockChainGoblinRenderState;
+import twilightforest.client.state.entity.BlockChainGoblinRenderState;
+import twilightforest.client.state.entity.ChainBlockRenderState;
 import twilightforest.entity.monster.BlockChainGoblin;
 
 public class BlockChainGoblinRenderer extends HumanoidMobRenderer<BlockChainGoblin, BlockChainGoblinRenderState, BlockChainGoblinModel> {
@@ -27,8 +27,9 @@ public class BlockChainGoblinRenderer extends HumanoidMobRenderer<BlockChainGobl
 	private static final Identifier GOBLIN_TEXTURE = TwilightForestMod.getModelTexture("blockgoblin.png");
 	private static final Identifier BLOCK_AND_CHAIN_TEXTURE = TwilightForestMod.getModelTexture("block_and_chain.png");
 
-	private final Model model;
-	private final Model chainModel;
+	private final SpikeBlockModel model;
+	private final ChainModel chainModel;
+	private static final ChainBlockRenderState STATE = new ChainBlockRenderState();
 
 	public BlockChainGoblinRenderer(EntityRendererProvider.Context context) {
 		super(context, new BlockChainGoblinModel(context.bakeLayer(TFModelLayers.BLOCKCHAIN_GOBLIN)), 0.4F);
@@ -37,8 +38,8 @@ public class BlockChainGoblinRenderer extends HumanoidMobRenderer<BlockChainGobl
 	}
 
 	@Override
-	public void render(BlockChainGoblinRenderState state, PoseStack stack, MultiBufferSource source, int light) {
-		super.render(state, stack, source, light);
+	public void submit(BlockChainGoblinRenderState state, PoseStack stack, SubmitNodeCollector collector, CameraRenderState camera) {
+		super.submit(state, stack, collector, camera);
 
 		stack.pushPose();
 
@@ -46,25 +47,23 @@ public class BlockChainGoblinRenderer extends HumanoidMobRenderer<BlockChainGobl
 		double blockInY = (state.chainBlockPos.y() - state.y);
 		double blockInZ = (state.chainBlockPos.z() - state.z);
 
-		VertexConsumer consumer = source.getBuffer(this.model.renderType(BLOCK_AND_CHAIN_TEXTURE));
 		stack.translate(blockInX, blockInY, blockInZ);
 
 		stack.mulPose(Axis.YP.rotationDegrees(180 - Mth.wrapDegrees(state.yRot)));
 		stack.mulPose(Axis.XP.rotationDegrees(state.xRot));
 
 		stack.scale(-1.0F, -1.0F, 1.0F);
-
-		this.model.renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY);
+		collector.submitModel(this.model, STATE, stack, this.model.renderType(BLOCK_AND_CHAIN_TEXTURE), state.lightCoords, OverlayTexture.NO_OVERLAY, -1, null);
 		stack.popPose();
 
 		if (state.deathTime <= 0) {
 			stack.pushPose();
 			stack.translate(0.0D, state.eyeHeight, 0.0D);
 			Vec3 xyz = state.chainStartPos;
-			BlockChainRenderer.renderChain(false, xyz, stack, source, light, this.chainModel);
-			BlockChainRenderer.renderChain(false, xyz, stack, source, light, this.chainModel);
-			BlockChainRenderer.renderChain(false, xyz, stack, source, light, this.chainModel);
-			BlockChainRenderer.renderChain(false, xyz, stack, source, light, this.chainModel);
+			BlockChainRenderer.renderChain(false, xyz, stack, collector, state.lightCoords, state.outlineColor, this.chainModel);
+			BlockChainRenderer.renderChain(false, xyz, stack, collector, state.lightCoords, state.outlineColor, this.chainModel);
+			BlockChainRenderer.renderChain(false, xyz, stack, collector, state.lightCoords, state.outlineColor, this.chainModel);
+			BlockChainRenderer.renderChain(false, xyz, stack, collector, state.lightCoords, state.outlineColor, this.chainModel);
 			stack.popPose();
 		}
 	}

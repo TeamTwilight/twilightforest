@@ -6,7 +6,7 @@ import net.minecraft.resources.Identifier;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.HelmetCrabModel;
-import twilightforest.client.state.HelmetCrabRenderState;
+import twilightforest.client.state.entity.HelmetCrabRenderState;
 import twilightforest.entity.monster.HelmetCrab;
 
 public class HelmetCrabRenderer extends MobRenderer<HelmetCrab, HelmetCrabRenderState, HelmetCrabModel> {
@@ -29,8 +29,6 @@ public class HelmetCrabRenderer extends MobRenderer<HelmetCrab, HelmetCrabRender
 		state.id = entity.getId();
 		state.blue = entity.isBlue();
 	}
-
-
 
 	@Override
 	protected float getFlipDegrees() {

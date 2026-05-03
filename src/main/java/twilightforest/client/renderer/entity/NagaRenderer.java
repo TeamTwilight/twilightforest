@@ -8,7 +8,7 @@ import net.minecraft.util.ARGB;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.NagaModel;
-import twilightforest.client.state.NagaRenderState;
+import twilightforest.client.state.entity.NagaRenderState;
 import twilightforest.entity.boss.Naga;
 
 public class NagaRenderer extends MobRenderer<Naga, NagaRenderState, NagaModel<NagaRenderState>> {

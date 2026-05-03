@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.entity.state.SheepRenderState;
 import java.util.Set;
 
 public class BighornModel extends SheepModel {
-	public static final MeshTransformer BABY_TRANSFORMER = new BabyModelTransform(false, 8.0F, 4.0F, 2.0F, 2.0F, 24.0F, Set.of("head"));
+	public static final MeshTransformer BABY_TRANSFORMER = new BabyModelTransform(false, 8.0F, 4.0F, Set.of("head"));
 
 	public BighornModel(ModelPart root) {
 		super(root);

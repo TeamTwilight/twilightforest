@@ -1,13 +1,16 @@
 package twilightforest.client.model.entity;
 
 
-import net.minecraft.client.model.QuadrupedModel;
+import net.minecraft.client.model.BabyModelTransform;
 import net.minecraft.client.model.animal.pig.PigModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 
+import java.util.Set;
+
 public class BoarModel extends PigModel {
+	public static final MeshTransformer BABY_TRANSFORMER = new BabyModelTransform(false, 8.0F, 4.0F, Set.of("head"));
 
 	public BoarModel(ModelPart root) {
 		super(root);
@@ -54,48 +57,5 @@ public class BoarModel extends PigModel {
 			PartPose.offset(3.0F, 18.0F, -5.0F));
 
 		return LayerDefinition.create(meshdefinition, 64, 32);
-	}
-
-	public static LayerDefinition createJappaModel() {
-		MeshDefinition meshdefinition = QuadrupedModel.createBodyMesh(6, true, false, CubeDeformation.NONE);
-		PartDefinition partdefinition = meshdefinition.getRoot();
-
-		partdefinition.addOrReplaceChild("right_front_leg", CubeListBuilder.create()
-				.texOffs(0, 13)
-				.addBox(-2.0F, 0.0F, -1.9F, 4.0F, 6.0F, 4.0F),
-			PartPose.offset(-2.9F, 18.0F, -2.0F));
-
-		partdefinition.addOrReplaceChild("left_front_leg", CubeListBuilder.create()
-				.texOffs(0, 23)
-				.addBox(-2.0F, 0.0F, -1.9F, 4.0F, 6.0F, 4.0F),
-			PartPose.offset(2.9F, 18.0F, -2.0F));
-
-		partdefinition.addOrReplaceChild("right_hind_leg", CubeListBuilder.create()
-				.texOffs(0, 33)
-				.addBox(-2.0F, 0.0F, -2.0F, 4.0F, 6.0F, 4.0F),
-			PartPose.offset(-3.1F, 18.0F, 9.0F));
-
-		partdefinition.addOrReplaceChild("left_hind_leg", CubeListBuilder.create()
-				.texOffs(0, 43)
-				.addBox(-2.0F, 0.0F, -2.0F, 4.0F, 6.0F, 4.0F),
-			PartPose.offset(3.1F, 18.0F, 9.0F));
-
-		// Snout and tusks included
-		partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
-				.addBox(-4.0F, -4.0F, -5.0F, 8.0F, 7.0F, 6.0F)
-				.texOffs(46, 22)
-				.addBox(-3.0F, -1.0F, -8.0F, 6.0F, 4.0F, 3.0F)
-				.texOffs(28, 0)
-				.addBox(-4.0F, 0.0F, -8.0F, 1.0F, 2.0F, 1.0F)
-				.texOffs(28, 3)
-				.addBox(3.0F, 0.0F, -8.0F, 1.0F, 2.0F, 1.0F),
-			PartPose.offset(0.0F, 15.5F, -5.0F));
-
-		partdefinition.addOrReplaceChild("body", CubeListBuilder.create()
-				.texOffs(28, 0)
-				.addBox(-5.0F, -6.0F, 0.0F, 10.0F, 14.0F, 8.0F),
-			PartPose.offsetAndRotation(0.0F, 19.0F, 2.0F, 1.6580627893946132F, 0.0F, 0.0F));
-
-		return LayerDefinition.create(meshdefinition, 64, 64);
 	}
 }

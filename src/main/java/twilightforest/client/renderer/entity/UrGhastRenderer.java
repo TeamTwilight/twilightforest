@@ -9,7 +9,7 @@ import net.minecraft.util.Mth;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.UrGhastModel;
-import twilightforest.client.state.TFGhastRenderState;
+import twilightforest.client.state.entity.TFGhastRenderState;
 import twilightforest.entity.boss.UrGhast;
 
 public class UrGhastRenderer extends MobRenderer<UrGhast, TFGhastRenderState, UrGhastModel> {

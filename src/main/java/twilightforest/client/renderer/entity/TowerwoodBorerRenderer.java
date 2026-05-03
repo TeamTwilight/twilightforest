@@ -1,6 +1,6 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.client.model.SilverfishModel;
+import net.minecraft.client.model.monster.silverfish.SilverfishModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;

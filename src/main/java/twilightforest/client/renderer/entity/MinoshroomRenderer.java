@@ -17,7 +17,7 @@ import net.minecraft.world.level.block.Blocks;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.MinoshroomModel;
-import twilightforest.client.state.MinoshroomRenderState;
+import twilightforest.client.state.entity.MinoshroomRenderState;
 import twilightforest.entity.boss.Minoshroom;
 
 public class MinoshroomRenderer extends HumanoidMobRenderer<Minoshroom, MinoshroomRenderState, MinoshroomModel<MinoshroomRenderState>> {

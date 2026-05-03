@@ -5,7 +5,7 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.Identifier;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.BunnyModel;
-import twilightforest.client.state.DwarfRabbitRenderState;
+import twilightforest.client.state.entity.DwarfRabbitRenderState;
 import twilightforest.entity.passive.DwarfRabbit;
 
 public class BunnyRenderer extends MobRenderer<DwarfRabbit, DwarfRabbitRenderState, BunnyModel> {

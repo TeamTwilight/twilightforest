@@ -11,11 +11,13 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.Mth;
-import twilightforest.client.JappaPackReloadListener;
-import twilightforest.client.state.HelmetCrabRenderState;
+import twilightforest.client.state.entity.HelmetCrabRenderState;
 
 public class HelmetCrabModel extends EntityModel<HelmetCrabRenderState> {
 
@@ -47,11 +49,7 @@ public class HelmetCrabModel extends EntityModel<HelmetCrabRenderState> {
 		this.leftLeg2 = this.crab.getChild("left_leg_2");
 	}
 
-	public static LayerDefinition checkForPack() {
-		return JappaPackReloadListener.INSTANCE.isJappaPackLoaded() ? createJappaModel() : create();
-	}
-
-	private static LayerDefinition create() {
+	public static LayerDefinition create() {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
@@ -150,69 +148,6 @@ public class HelmetCrabModel extends EntityModel<HelmetCrabRenderState> {
 		return LayerDefinition.create(meshdefinition, 64, 32);
 	}
 
-	private static LayerDefinition createJappaModel() {
-		MeshDefinition meshdefinition = new MeshDefinition();
-		PartDefinition partdefinition = meshdefinition.getRoot();
-
-		var crab = partdefinition.addOrReplaceChild("crab", CubeListBuilder.create(), PartPose.ZERO);
-
-		var body = crab.addOrReplaceChild("body", CubeListBuilder.create()
-				.texOffs(0, 9)
-				.addBox(-2.5F, -4.0F, -2.5F, 5.0F, 4.0F, 5.0F)
-				.texOffs(58, 0)
-				.addBox(-1.5F, -5.0F, -3.5F, 1.0F, 2.0F, 1.0F)
-				.texOffs(58, 3)
-				.addBox(0.5F, -5.0F, -3.5F, 1.0F, 2.0F, 1.0F),
-			PartPose.offset(0.0F, 21.0F, 0.0F));
-
-		partdefinition.addOrReplaceChild("helmet_base", CubeListBuilder.create(), PartPose.ZERO);
-
-		var helmet = body.addOrReplaceChild("helmet", CubeListBuilder.create()
-				.texOffs(40, 0)
-				.addBox(-4.0F, -8.0F, -4.0F, 6.0F, 8.0F, 6.0F)
-				.texOffs(16, 0)
-				.addBox(-4.0F, -8.0F, -4.0F, 6.0F, 8.0F, 6.0F, new CubeDeformation(-0.25F)),
-			PartPose.offsetAndRotation(0.0F, -1.0F, 0.5F, -1.3089969389957472F, -0.2617993877991494F, 0.7463027588580033F));
-
-		helmet.addOrReplaceChild("horns", CubeListBuilder.create()
-				.texOffs(18, 23)
-				.addBox(-11.5F, -12.0F, -0.67F, 23.0F, 9.0F, 0.0F),
-			PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 0.7853981633974483F, 0.0F));
-
-		crab.addOrReplaceChild("right_claw", CubeListBuilder.create()
-				.texOffs(0, 0)
-				.addBox(-1.0F, -3.0F, -5.0F, 2.0F, 4.0F, 5.0F),
-			PartPose.offsetAndRotation(-2.0F, 21.0F, -2.0F, 0.0F, 0.39269908169872414F, 0.0F));
-
-		crab.addOrReplaceChild("left_claw", CubeListBuilder.create()
-				.texOffs(0, 23)
-				.addBox(-1.0F, -3.0F, -5.0F, 2.0F, 4.0F, 5.0F),
-			PartPose.offsetAndRotation(2.0F, 21.0F, -2.0F, 0.0F, -0.39269908169872414F, 0.0F));
-
-		crab.addOrReplaceChild("right_leg_1", CubeListBuilder.create()
-				.texOffs(32, 15)
-				.addBox(-6.0F, -1.0F, -1.0F, 6.0F, 2.0F, 2.0F),
-			PartPose.offsetAndRotation(-2.0F, 21.0F, 0.0F, 0.2181661564992912F, 0.4363323129985824F, -0.4363323129985824F));
-
-		crab.addOrReplaceChild("left_leg_1", CubeListBuilder.create()
-				.texOffs(48, 19)
-				.addBox(0.0F, -1.0F, -1.0F, 6.0F, 2.0F, 2.0F),
-			PartPose.offsetAndRotation(2.0F, 21.0F, 0.0F, 0.2181661564992912F, -0.4363323129985824F, 0.4363323129985824F));
-
-		crab.addOrReplaceChild("right_leg_2", CubeListBuilder.create()
-				.texOffs(32, 19)
-				.addBox(-6.0F, -1.0F, -1.0F, 6.0F, 2.0F, 2.0F),
-			PartPose.offsetAndRotation(-2.0F, 21.0F, -1.5F, 0.2181661564992912F, 0.0F, -0.4363323129985824F));
-
-		crab.addOrReplaceChild("left_leg_2", CubeListBuilder.create()
-				.texOffs(48, 15)
-				.addBox(0.0F, -1.0F, -1.0F, 6.0F, 2.0F, 2.0F),
-			PartPose.offsetAndRotation(2.0F, 21.0F, -1.5F, 0.2181661564992912F, 0.0F, 0.4363323129985824F));
-
-
-		return LayerDefinition.create(meshdefinition, 64, 32);
-	}
-
 	@Override
 	public void renderToBuffer(PoseStack stack, VertexConsumer consumer, int light, int overlay, int color) {
 		this.crab.render(stack, consumer, light, overlay, color);
@@ -225,7 +160,7 @@ public class HelmetCrabModel extends EntityModel<HelmetCrabRenderState> {
 		super.setupAnim(entity);
 		this.helmet.yRot = entity.helmetRot * Mth.DEG_TO_RAD;
 		if (entity.deathTime > 0) {
-			float f = ((float) entity.deathTime + entity.partialTick - 1.0F) / 20.0F * 1.6F;
+			float f = (entity.deathTime + entity.partialTick - 1.0F) / 20.0F * 1.6F;
 			f = Mth.sqrt(f);
 			if (f > 1.0F) {
 				f = 1.0F;
@@ -267,18 +202,11 @@ public class HelmetCrabModel extends EntityModel<HelmetCrabRenderState> {
 		this.leftLeg2.zRot -= f15;
 
 		// swing right arm as if it were an arm, not a leg
-		if (JappaPackReloadListener.INSTANCE.isJappaPackLoaded()) {
-			this.rightClaw.yRot = 0.319531F;
-			this.rightClaw.yRot += (Mth.cos(entity.walkAnimationPos * 0.6662F + Mth.PI) * 2.0F * entity.walkAnimationSpeed * 0.5F) / 2;
-			this.leftClaw.yRot = -0.319531F;
-			this.leftClaw.yRot += -(Mth.cos(entity.walkAnimationPos * 0.6662F + Mth.PI) * 2.0F * entity.walkAnimationSpeed * 0.5F) / 2;
-		} else {
-			this.rightClaw.yRot = -1.319531F;
-			this.rightClaw.yRot += Mth.cos(entity.walkAnimationPos * 0.6662F + Mth.PI) * 2.0F * entity.walkAnimationSpeed * 0.5F;
-			this.leftClaw.zRot = f6;
-			this.leftClaw.yRot = f8 * 2.0F - f7;
-			this.leftClaw.yRot -= f12;
-			this.leftClaw.zRot -= f16;
-		}
+		this.rightClaw.yRot = -1.319531F;
+		this.rightClaw.yRot += Mth.cos(entity.walkAnimationPos * 0.6662F + Mth.PI) * 2.0F * entity.walkAnimationSpeed * 0.5F;
+		this.leftClaw.zRot = f6;
+		this.leftClaw.yRot = f8 * 2.0F - f7;
+		this.leftClaw.yRot -= f12;
+		this.leftClaw.zRot -= f16;
 	}
 }

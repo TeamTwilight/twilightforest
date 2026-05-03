@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.resources.Identifier;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.HydraNeckModel;
-import twilightforest.client.state.HydraNeckRenderState;
+import twilightforest.client.state.entity.HydraNeckRenderState;
 import twilightforest.entity.boss.HydraNeck;
 
 public class HydraNeckRenderer extends TFPartRenderer<HydraNeck, HydraNeckRenderState, HydraNeckModel> {

@@ -6,7 +6,7 @@ import net.minecraft.resources.Identifier;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.AlphaYetiModel;
-import twilightforest.client.state.AlphaYetiRenderState;
+import twilightforest.client.state.entity.AlphaYetiRenderState;
 import twilightforest.entity.boss.AlphaYeti;
 
 public class AlphaYetiRenderer extends HumanoidMobRenderer<AlphaYeti, AlphaYetiRenderState, AlphaYetiModel> {

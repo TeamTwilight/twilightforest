@@ -7,7 +7,7 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import twilightforest.client.state.CubeOfAnnihilationRenderState;
+import twilightforest.client.state.entity.CubeOfAnnihilationRenderState;
 
 public class CubeOfAnnihilationModel extends EntityModel<CubeOfAnnihilationRenderState> {
 

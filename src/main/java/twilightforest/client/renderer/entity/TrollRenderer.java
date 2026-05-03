@@ -6,7 +6,7 @@ import net.minecraft.resources.Identifier;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.TrollModel;
-import twilightforest.client.state.TrollRenderState;
+import twilightforest.client.state.entity.TrollRenderState;
 import twilightforest.entity.monster.Troll;
 
 public class TrollRenderer extends HumanoidMobRenderer<Troll, TrollRenderState, TrollModel> {

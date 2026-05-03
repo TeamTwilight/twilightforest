@@ -10,9 +10,8 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
-import twilightforest.client.JappaPackReloadListener;
 import twilightforest.client.renderer.entity.HydraRenderer;
-import twilightforest.client.state.HydraHeadRenderState;
+import twilightforest.client.state.entity.HydraHeadRenderState;
 
 public class HydraHeadModel extends EntityModel<HydraHeadRenderState> implements TrophyBlockModel {
 
@@ -25,11 +24,7 @@ public class HydraHeadModel extends EntityModel<HydraHeadRenderState> implements
 		this.jaw = this.head.getChild("jaw");
 	}
 
-	public static LayerDefinition checkForPack() {
-		return JappaPackReloadListener.INSTANCE.isJappaPackLoaded() ? createJappaModel() : create();
-	}
-
-	private static LayerDefinition create() {
+	public static LayerDefinition create() {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
@@ -73,34 +68,6 @@ public class HydraHeadModel extends EntityModel<HydraHeadRenderState> implements
 				.texOffs(272, 200)
 				.addBox(-24.0F, -50.0F, 16.0F, 48.0F, 48.0F, 4.0F),
 			PartPose.offsetAndRotation(0.0F, 0.0F, -14.0F, -0.5235988F, 0.0F, 0.0F));
-
-		return LayerDefinition.create(meshdefinition, 512, 256);
-	}
-
-	private static LayerDefinition createJappaModel() {
-		MeshDefinition meshdefinition = new MeshDefinition();
-		PartDefinition partdefinition = meshdefinition.getRoot();
-
-		var head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
-				.texOffs(260, 64)
-				.addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F)
-				.texOffs(236, 128)
-				.addBox(-16.0F, -2.0F, -40.0F, 32.0F, 10.0F, 24.0F)
-				.texOffs(356, 70)
-				.addBox(-12.0F, 8.0F, -36.0F, 24.0F, 6.0F, 20.0F),
-			PartPose.ZERO);
-
-		head.addOrReplaceChild("jaw", CubeListBuilder.create()
-				.texOffs(240, 162)
-				.addBox(-15.0F, 0.0F, -24.0F, 30.0F, 8.0F, 24.0F),
-			PartPose.offset(0.0F, 10.0F, -14.0F));
-
-		head.addOrReplaceChild("plate", CubeListBuilder.create()
-				.texOffs(388, 0)
-				.addBox(-24.0F, -48.0F, 0.0F, 48.0F, 48.0F, 6.0F)
-				.texOffs(220, 0)
-				.addBox(-4.0F, -32.0F, -8.0F, 8.0F, 32.0F, 8.0F),
-			PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.7853981633974483F, 0.0F, 0.0F));
 
 		return LayerDefinition.create(meshdefinition, 512, 256);
 	}

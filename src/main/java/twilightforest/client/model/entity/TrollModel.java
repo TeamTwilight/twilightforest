@@ -6,8 +6,7 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
-import twilightforest.client.JappaPackReloadListener;
-import twilightforest.client.state.TrollRenderState;
+import twilightforest.client.state.entity.TrollRenderState;
 
 public class TrollModel extends HumanoidModel<TrollRenderState> {
 
@@ -15,11 +14,7 @@ public class TrollModel extends HumanoidModel<TrollRenderState> {
 		super(root);
 	}
 
-	public static LayerDefinition checkForPack() {
-		return JappaPackReloadListener.INSTANCE.isJappaPackLoaded() ? createJappaModel() : create();
-	}
-
-	private static LayerDefinition create() {
+	public static LayerDefinition create() {
 		MeshDefinition meshdefinition = HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F);
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
@@ -61,47 +56,6 @@ public class TrollModel extends HumanoidModel<TrollRenderState> {
 			PartPose.offset(5.0F, 12.0F, 0.0F));
 
 		return LayerDefinition.create(meshdefinition, 128, 64);
-	}
-
-	private static LayerDefinition createJappaModel() {
-		MeshDefinition meshdefinition = HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F);
-		PartDefinition partdefinition = meshdefinition.getRoot();
-
-		partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
-				.texOffs(52, 31)
-				.addBox(-5.0F, -8.0F, -8.0F, 10.0F, 10.0F, 10.0F)
-				.texOffs(36, 41)
-				.addBox(-2.0F, -4.0F, -11.0F, 4.0F, 8.0F, 4.0F),
-			PartPose.offset(0.0F, -11.0F, -1.0F));
-
-		partdefinition.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
-
-		partdefinition.addOrReplaceChild("body", CubeListBuilder.create()
-				.texOffs(0, 0)
-				.addBox(-8.0F, -37.0F, -6.0F, 16.0F, 26.0F, 15.0F),
-			PartPose.offset(0.0F, 24.0F, 0.0F));
-
-		partdefinition.addOrReplaceChild("right_arm", CubeListBuilder.create()
-				.texOffs(0, 41)
-				.addBox(-6.0F, -1.0F, -4.0F, 6.0F, 25.0F, 8.0F),
-			PartPose.offset(-8.0F, -9.0F, 0.0F));
-
-		partdefinition.addOrReplaceChild("left_arm", CubeListBuilder.create().mirror()
-				.texOffs(0, 41)
-				.addBox(0.0F, -1.0F, -4.0F, 6.0F, 25.0F, 8.0F),
-			PartPose.offset(8.0F, -9.0F, 0.0F));
-
-		partdefinition.addOrReplaceChild("right_leg", CubeListBuilder.create()
-				.texOffs(28, 54)
-				.addBox(-3.0F, -1.0F, -4.0F, 6.0F, 12.0F, 8.0F),
-			PartPose.offset(-4.0F, 13.0F, 0.0F));
-
-		partdefinition.addOrReplaceChild("left_leg", CubeListBuilder.create().mirror()
-				.texOffs(28, 54)
-				.addBox(-3.0F, -1.0F, -4.0F, 6.0F, 12.0F, 8.0F),
-			PartPose.offset(4.0F, 13.0F, 0.0F));
-
-		return LayerDefinition.create(meshdefinition, 128, 128);
 	}
 
 	@Override

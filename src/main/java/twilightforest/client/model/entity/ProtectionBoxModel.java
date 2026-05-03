@@ -6,9 +6,9 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import twilightforest.client.state.ProtectionBoxRenderState;
+import twilightforest.client.state.entity.ProtectionBoxRenderState;
 
-public class ProtectionBoxModel<T extends ProtectionBoxRenderState> extends EntityModel<T> {
+public class ProtectionBoxModel extends EntityModel<ProtectionBoxRenderState> {
 	public ModelPart box;
 	private int lastPixelsX;
 	private int lastPixelsY;
@@ -33,10 +33,10 @@ public class ProtectionBoxModel<T extends ProtectionBoxRenderState> extends Enti
 
 
 	@Override
-	public void setupAnim(T entity) {
-		int pixelsX = entity.sizeX * 16 + 2;
-		int pixelsY = entity.sizeY * 16 + 2;
-		int pixelsZ = entity.sizeZ * 16 + 2;
+	public void setupAnim(ProtectionBoxRenderState state) {
+		int pixelsX = state.sizeX * 16 + 2;
+		int pixelsY = state.sizeY * 16 + 2;
+		int pixelsZ = state.sizeZ * 16 + 2;
 
 		if (pixelsX != this.lastPixelsX || pixelsY != this.lastPixelsY || pixelsZ != this.lastPixelsZ) {
 			this.resizeBoxElement(pixelsX, pixelsY, pixelsZ);

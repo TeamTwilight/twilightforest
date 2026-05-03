@@ -6,7 +6,7 @@ import net.minecraft.resources.Identifier;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.LowerGoblinKnightModel;
-import twilightforest.client.state.LowerGoblinKnightRenderState;
+import twilightforest.client.state.entity.LowerGoblinKnightRenderState;
 import twilightforest.entity.monster.LowerGoblinKnight;
 import twilightforest.entity.monster.UpperGoblinKnight;
 

@@ -1,20 +1,25 @@
 package twilightforest.client.renderer.entity;
 
 import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.renderer.entity.AgeableMobRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import twilightforest.TwilightForestMod;
-import twilightforest.client.state.BirdRenderState;
+import twilightforest.client.state.entity.BirdRenderState;
 import twilightforest.entity.passive.Bird;
 
-public class BirdRenderer<T extends Bird, M extends EntityModel<BirdRenderState>> extends MobRenderer<T, BirdRenderState, M> {
+public class BirdRenderer<T extends Bird, M extends EntityModel<BirdRenderState>> extends AgeableMobRenderer<T, BirdRenderState, M> {
 
 	private final Identifier texture;
 
 	public BirdRenderer(EntityRendererProvider.Context context, M model, float shadowSize, String textureName) {
-		super(context, model, shadowSize);
+		this(context, model, model, shadowSize, textureName);
+	}
+
+	public BirdRenderer(EntityRendererProvider.Context context, M model, M babyModel, float shadowSize, String textureName) {
+		super(context, model, babyModel, shadowSize);
 		this.texture = TwilightForestMod.getModelTexture(textureName);
 	}
 

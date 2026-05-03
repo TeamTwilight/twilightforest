@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.TFGhastModel;
-import twilightforest.client.state.TFGhastRenderState;
+import twilightforest.client.state.entity.TFGhastRenderState;
 import twilightforest.entity.monster.CarminiteGhastguard;
 
 /**
@@ -13,7 +13,7 @@ import twilightforest.entity.monster.CarminiteGhastguard;
 public class CarminiteGhastRenderer extends TFGhastRenderer<CarminiteGhastguard, TFGhastModel<TFGhastRenderState>> {
 
 	public CarminiteGhastRenderer(EntityRendererProvider.Context context) {
-		super(context, new TFGhastModel(context.bakeLayer(TFModelLayers.CARMINITE_GHASTGUARD)), 3.0F);
+		super(context, new TFGhastModel<>(context.bakeLayer(TFModelLayers.CARMINITE_GHASTGUARD)), 3.0F);
 	}
 
 	@Override

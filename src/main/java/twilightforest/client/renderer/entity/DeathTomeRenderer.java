@@ -6,7 +6,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.DeathTomeModel;
-import twilightforest.client.state.DeathTomeRenderState;
+import twilightforest.client.state.entity.DeathTomeRenderState;
 import twilightforest.entity.monster.DeathTome;
 
 public class DeathTomeRenderer extends MobRenderer<DeathTome, DeathTomeRenderState, DeathTomeModel> {

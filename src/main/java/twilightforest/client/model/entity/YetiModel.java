@@ -9,7 +9,7 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import twilightforest.client.state.YetiRenderState;
+import twilightforest.client.state.entity.YetiRenderState;
 
 public class YetiModel extends HumanoidModel<YetiRenderState> {
 	private final ModelPart leftEye;

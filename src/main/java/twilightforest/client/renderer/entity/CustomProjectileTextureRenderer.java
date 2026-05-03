@@ -55,15 +55,15 @@ public class CustomProjectileTextureRenderer extends EntityRenderer<TFThrowable,
 			float f2 = (1.0F + f * 0.4F) * f1;
 			float f3 = (1.0F + f * 0.1F) / f1;
 			poseStack.scale(f2, f3, f2);
-			render(state, poseStack, submitNodeCollector, state.lightCoords, OverlayTexture.NO_OVERLAY, camera);
+			this.submit(state, poseStack, submitNodeCollector, state.lightCoords, OverlayTexture.NO_OVERLAY, camera);
 			poseStack.popPose();
 		} else {
-			render(state, poseStack, submitNodeCollector, state.lightCoords, OverlayTexture.NO_OVERLAY, camera);
+			this.submit(state, poseStack, submitNodeCollector, state.lightCoords, OverlayTexture.NO_OVERLAY, camera);
 		}
 	}
 
 	//[VanillaCopy] of DragonFireballRender.render, we just input our own texture stuff instead
-	public void render(EntityRenderState state, PoseStack stack, SubmitNodeCollector submitNodeCollector, int light, int overlay, CameraRenderState camera) {
+	public void submit(EntityRenderState state, PoseStack stack, SubmitNodeCollector submitNodeCollector, int light, int overlay, CameraRenderState camera) {
 		stack.pushPose();
 		stack.scale(0.5F * this.scale, 0.5F * this.scale, 0.5F * this.scale);
 

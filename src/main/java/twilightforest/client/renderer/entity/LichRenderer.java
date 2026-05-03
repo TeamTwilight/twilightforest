@@ -16,7 +16,7 @@ import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.LichModel;
 import twilightforest.client.renderer.TFRenderTypes;
 import twilightforest.client.renderer.entity.layers.ShieldLayer;
-import twilightforest.client.state.LichRenderState;
+import twilightforest.client.state.entity.LichRenderState;
 import twilightforest.entity.boss.Lich;
 
 public class LichRenderer extends HumanoidMobRenderer<Lich, LichRenderState, LichModel> {

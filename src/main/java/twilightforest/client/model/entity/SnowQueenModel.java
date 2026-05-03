@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
 import twilightforest.client.renderer.entity.SnowQueenRenderer;
-import twilightforest.client.state.SnowQueenRenderState;
+import twilightforest.client.state.entity.SnowQueenRenderState;
 import twilightforest.entity.boss.SnowQueen.Phase;
 
 public class SnowQueenModel extends HumanoidModel<SnowQueenRenderState> implements TrophyBlockModel {

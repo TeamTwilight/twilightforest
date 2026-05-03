@@ -14,7 +14,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.renderer.entity.UrGhastRenderer;
-import twilightforest.client.state.TFGhastRenderState;
+import twilightforest.client.state.entity.TFGhastRenderState;
 
 public class UrGhastModel extends TFGhastModel<TFGhastRenderState> implements TrophyBlockModel {
 

@@ -6,7 +6,7 @@ import net.minecraft.resources.Identifier;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.KoboldModel;
-import twilightforest.client.state.KoboldRenderState;
+import twilightforest.client.state.entity.KoboldRenderState;
 import twilightforest.entity.monster.Kobold;
 
 public class KoboldRenderer extends HumanoidMobRenderer<Kobold, KoboldRenderState, KoboldModel> {

@@ -13,8 +13,9 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import org.joml.Vector3f;
 
+//TODO I just realized that mosquitoes are supposed to have random models. Since models are baked nowadays this is no longer the case. Investigate a workaround
 public class MosquitoSwarmModel extends EntityModel<LivingEntityRenderState> {
-	private final ModelPart root;
+
 	private final ModelPart core;
 	private final ModelPart group1;
 	private final ModelPart group2;
@@ -27,9 +28,8 @@ public class MosquitoSwarmModel extends EntityModel<LivingEntityRenderState> {
 
 	public MosquitoSwarmModel(ModelPart root) {
 		super(root);
-		this.root = root;
 
-		this.core = this.root.getChild("core");
+		this.core = root.getChild("core");
 
 		this.group1 = this.core.getChild("group_1");
 		this.group2 = this.core.getChild("group_2");

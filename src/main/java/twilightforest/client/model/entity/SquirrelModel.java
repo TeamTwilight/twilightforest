@@ -12,7 +12,6 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.util.Mth;
-import twilightforest.client.JappaPackReloadListener;
 
 public class SquirrelModel extends QuadrupedModel<LivingEntityRenderState> {
 
@@ -27,11 +26,7 @@ public class SquirrelModel extends QuadrupedModel<LivingEntityRenderState> {
 		this.tailPart2 = this.tailPart1.getChild("tail_2");
 	}
 
-	public static LayerDefinition checkForPack() {
-		return JappaPackReloadListener.INSTANCE.isJappaPackLoaded() ? createJappaModel() : create();
-	}
-
-	private static LayerDefinition create() {
+	public static LayerDefinition create() {
 		MeshDefinition meshdefinition = QuadrupedModel.createBodyMesh(0, false, true, CubeDeformation.NONE);
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
@@ -89,58 +84,6 @@ public class SquirrelModel extends QuadrupedModel<LivingEntityRenderState> {
 		return LayerDefinition.create(meshdefinition, 32, 32);
 	}
 
-	private static LayerDefinition createJappaModel() {
-		MeshDefinition meshdefinition = QuadrupedModel.createBodyMesh(1, false, true, CubeDeformation.NONE);
-		PartDefinition partdefinition = meshdefinition.getRoot();
-
-		partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
-				.texOffs(0, 0)
-				.addBox(-2.0F, -2.0F, -3.0F, 4.0F, 4.0F, 4.0F)
-				.addBox(-2.0F, -3.0F, -1.0F, 1.0F, 1.0F, 1.0F)
-				.texOffs(0, 2)
-				.addBox(1.0F, -3.0F, -1.0F, 1.0F, 1.0F, 1.0F),
-			PartPose.offset(0.0F, 20.0F, -3.0F));
-
-		var body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create()
-				.texOffs(0, 8)
-				.addBox(-2.0F, -3.0F, -3.0F, 4.0F, 3.0F, 5.0F),
-			PartPose.offset(0.0F, 23.0F, 0.0F));
-
-		partdefinition.addOrReplaceChild("right_front_leg", CubeListBuilder.create()
-				.texOffs(0, 16)
-				.addBox(-0.5F, 0.0F, -0.5F, 1.0F, 1.0F, 1.0F),
-			PartPose.offset(-1.5F, 23.0F, -2.5F));
-
-		partdefinition.addOrReplaceChild("left_front_leg", CubeListBuilder.create()
-				.texOffs(4, 16)
-				.addBox(-0.5F, 0.0F, -0.5F, 1.0F, 1.0F, 1.0F),
-			PartPose.offset(1.5F, 23.0F, -2.5F));
-
-		partdefinition.addOrReplaceChild("right_hind_leg", CubeListBuilder.create()
-				.texOffs(0, 18)
-				.addBox(-0.5F, 0.0F, -0.5F, 1.0F, 1.0F, 1.0F),
-			PartPose.offset(-1.5F, 23.0F, 1.5F));
-
-		partdefinition.addOrReplaceChild("left_hind_leg", CubeListBuilder.create()
-				.texOffs(4, 18)
-				.addBox(-0.5F, 0.0F, -0.5F, 1.0F, 1.0F, 1.0F),
-			PartPose.offset(1.5F, 23.0F, 1.5F));
-
-		var tail = body.addOrReplaceChild("tail", CubeListBuilder.create()
-				.texOffs(18, 0)
-				.addBox(-1.5F, 0.0F, -1.5F, 3.0F, 4.0F, 3.0F),
-			PartPose.offset(0.0F, -3.0F, 2.0F));
-
-		var tail1 = tail.addOrReplaceChild("tail_1", CubeListBuilder.create()
-				.texOffs(13, 11)
-				.addBox(-1.5F, -1.0F, 0.0F, 3.0F, 3.0F, 5.0F),
-			PartPose.offset(0.0F, 4.0F, 0.5F));
-
-		tail1.addOrReplaceChild("tail_2", CubeListBuilder.create(), PartPose.ZERO);
-
-		return LayerDefinition.create(meshdefinition, 32, 32);
-	}
-
 	@Override
 	public void setupAnim(LivingEntityRenderState entity) {
 		this.head.xRot = entity.xRot * Mth.DEG_TO_RAD;
@@ -152,11 +95,11 @@ public class SquirrelModel extends QuadrupedModel<LivingEntityRenderState> {
 
 		if (entity.walkAnimationSpeed > 0.2) {
 			float wiggle = Math.min(entity.walkAnimationSpeed, 0.6F);
-			this.tail.xRot = (JappaPackReloadListener.INSTANCE.isJappaPackLoaded() ? 2.5F : 0.2F) + (Mth.cos(entity.ageInTicks * 0.6662F) - Mth.PI / 3.0F) * wiggle;
+			this.tail.xRot = 0.2F + (Mth.cos(entity.ageInTicks * 0.6662F) - Mth.PI / 3.0F) * wiggle;
 			this.tailPart1.xRot = Mth.cos(entity.ageInTicks * 0.7774F) * 1.2F * wiggle;
 			this.tailPart2.xRot = Mth.cos(entity.ageInTicks * 0.8886F + Mth.PI / 2.0F) * 1.4F * wiggle;
 		} else {
-			this.tail.xRot = (JappaPackReloadListener.INSTANCE.isJappaPackLoaded() ? 2.5F : 0.2F) + Mth.cos(entity.ageInTicks * 0.3335F) * 0.15F;
+			this.tail.xRot = 0.2F + Mth.cos(entity.ageInTicks * 0.3335F) * 0.15F;
 			this.tailPart1.xRot = 0.1F + Mth.cos(entity.ageInTicks * 0.4445F) * 0.20F;
 			this.tailPart2.xRot = 0.1F + Mth.cos(entity.ageInTicks * 0.5555F) * 0.25F;
 		}

@@ -10,7 +10,7 @@ import net.minecraft.world.entity.Pose;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.HydraModel;
-import twilightforest.client.state.HydraRenderState;
+import twilightforest.client.state.entity.HydraRenderState;
 import twilightforest.entity.boss.Hydra;
 
 public class HydraRenderer extends MobRenderer<Hydra, HydraRenderState, HydraModel> {

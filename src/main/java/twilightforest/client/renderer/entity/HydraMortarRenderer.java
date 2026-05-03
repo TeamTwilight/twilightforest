@@ -13,7 +13,7 @@ import net.minecraft.util.Mth;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.HydraMortarModel;
-import twilightforest.client.state.HydraMortarRenderState;
+import twilightforest.client.state.entity.HydraMortarRenderState;
 import twilightforest.entity.boss.HydraMortar;
 
 public class HydraMortarRenderer extends EntityRenderer<HydraMortar, HydraMortarRenderState> {

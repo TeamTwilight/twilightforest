@@ -11,12 +11,8 @@ import net.minecraft.util.Mth;
 
 public class WraithModel extends HumanoidModel<HumanoidRenderState> {
 
-	private final ModelPart dress;
-
 	public WraithModel(ModelPart root) {
 		super(root, RenderTypes::entityTranslucent);
-
-		this.dress = root.getChild("dress");
 	}
 
 	public static LayerDefinition create() {

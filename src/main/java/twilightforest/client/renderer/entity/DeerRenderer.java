@@ -1,7 +1,7 @@
 package twilightforest.client.renderer.entity;
 
+import net.minecraft.client.renderer.entity.AgeableMobRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.resources.Identifier;
 import twilightforest.TwilightForestMod;
@@ -9,12 +9,12 @@ import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.DeerModel;
 import twilightforest.entity.passive.Deer;
 
-public class DeerRenderer extends MobRenderer<Deer, LivingEntityRenderState, DeerModel> {
+public class DeerRenderer extends AgeableMobRenderer<Deer, LivingEntityRenderState, DeerModel> {
 
 	private static final Identifier TEXTURE = TwilightForestMod.getModelTexture("wilddeer.png");
 
 	public DeerRenderer(EntityRendererProvider.Context context) {
-		super(context, new DeerModel(context.bakeLayer(TFModelLayers.DEER)), 0.7F);
+		super(context, new DeerModel(context.bakeLayer(TFModelLayers.DEER)), new DeerModel(context.bakeLayer(TFModelLayers.DEER_BABY)), 0.7F);
 	}
 
 	@Override

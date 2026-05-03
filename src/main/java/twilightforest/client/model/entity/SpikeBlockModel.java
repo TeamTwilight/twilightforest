@@ -8,14 +8,12 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import twilightforest.client.state.ChainBlockRenderState;
+import twilightforest.client.state.entity.ChainBlockRenderState;
 
 public class SpikeBlockModel extends EntityModel<ChainBlockRenderState> {
-	private final ModelPart block;
 
 	public SpikeBlockModel(ModelPart root) {
 		super(root);
-		this.block = root.getChild("block");
 	}
 
 	public static LayerDefinition create() {
@@ -168,10 +166,5 @@ public class SpikeBlockModel extends EntityModel<ChainBlockRenderState> {
 			PartPose.offsetAndRotation(-4.0F, 0.0F, 4.0F, ANGLE_MINOR, -QUARTER_PI, 0.0F));
 
 		return LayerDefinition.create(meshdefinition, 32, 16);
-	}
-
-	@Override
-	public void setupAnim(ChainBlockRenderState renderState) {
-
 	}
 }

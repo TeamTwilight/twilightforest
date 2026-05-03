@@ -3,7 +3,6 @@ package twilightforest.client.renderer.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -12,20 +11,21 @@ import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.Unit;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.ChainModel;
 import twilightforest.client.model.entity.SpikeBlockModel;
-import twilightforest.client.state.ChainBlockRenderState;
+import twilightforest.client.state.entity.ChainBlockRenderState;
 import twilightforest.entity.projectile.ChainBlock;
 
 public class BlockChainRenderer extends EntityRenderer<ChainBlock, ChainBlockRenderState> {
 
 	private static final Identifier TEXTURE = TwilightForestMod.getModelTexture("block_and_chain.png");
-	private final Model model;
-	private final Model chainModel;
+	private final SpikeBlockModel model;
+	private final ChainModel chainModel;
 
 	public BlockChainRenderer(EntityRendererProvider.Context context) {
 		super(context);
@@ -55,7 +55,7 @@ public class BlockChainRenderer extends EntityRenderer<ChainBlock, ChainBlockRen
 			double links = xyz.length() / linksPerMeter;
 			Vec3 offset = xyz.normalize().scale(-linksPerMeter);
 			for (int i = 1; i < links; i++) {
-				renderChain(state, state.isFoil, xyz.add(offset.scale(links - i)), stack, submitNodeCollector, Math.max(state.lightCoords, state.ownerLight), this.chainModel);
+				renderChain(state.isFoil, xyz.add(offset.scale(links - i)), stack, submitNodeCollector, Math.max(state.lightCoords, state.ownerLight), state.outlineColor, this.chainModel);
 			}
 			stack.popPose();
 		}
@@ -71,17 +71,17 @@ public class BlockChainRenderer extends EntityRenderer<ChainBlock, ChainBlockRen
 		return super.getBoundingBoxForCulling(chainBlock);
 	}
 
-	public static void renderChain(ChainBlockRenderState state, boolean renderFoil, Vec3 offset, PoseStack stack, SubmitNodeCollector submitNodeCollector, int light, Model chainModel) {
+	public static void renderChain(boolean renderFoil, Vec3 offset, PoseStack stack, SubmitNodeCollector collector, int light, int outlineColor, ChainModel model) {
 		stack.pushPose();
-		RenderType foilRenderType = ItemFeatureRenderer.getFoilRenderType(chainModel.renderType(TEXTURE), false);
+		RenderType foilRenderType = ItemFeatureRenderer.getFoilRenderType(model.renderType(TEXTURE), false);
 
 		stack.translate(offset.x(), offset.y(), offset.z());
 
 		stack.scale(-1.0F, -1.0F, 1.0F);
-		submitNodeCollector.submitModel(chainModel, state, stack, chainModel.renderType(TEXTURE), state.lightCoords, OverlayTexture.NO_OVERLAY, state.outlineColor, null);
+		collector.submitModel(model, Unit.INSTANCE, stack, model.renderType(TEXTURE), light, OverlayTexture.NO_OVERLAY, outlineColor, null);
 
 		if (renderFoil) {
-			submitNodeCollector.submitModel(chainModel, state, stack, foilRenderType, state.lightCoords, OverlayTexture.NO_OVERLAY, state.outlineColor, null);
+			collector.submitModel(model, Unit.INSTANCE, stack, foilRenderType, light, OverlayTexture.NO_OVERLAY, outlineColor, null);
 		}
 		stack.popPose();
 	}

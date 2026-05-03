@@ -6,7 +6,7 @@ import net.minecraft.resources.Identifier;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.PinchBeetleModel;
-import twilightforest.client.state.PinchBeetleRenderState;
+import twilightforest.client.state.entity.PinchBeetleRenderState;
 import twilightforest.entity.monster.PinchBeetle;
 
 public class PinchBeetleRenderer extends MobRenderer<PinchBeetle, PinchBeetleRenderState, PinchBeetleModel> {

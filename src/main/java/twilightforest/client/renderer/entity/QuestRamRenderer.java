@@ -9,30 +9,22 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.world.phys.AABB;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.QuestRamModel;
-import twilightforest.client.state.QuestingRamRenderState;
+import twilightforest.client.state.entity.QuestingRamRenderState;
 import twilightforest.entity.passive.QuestRam;
 
-public class QuestRamRenderer<T extends QuestRam, M extends QuestRamModel<QuestingRamRenderState>> extends MobRenderer<T, QuestingRamRenderState, M> {
+public class QuestRamRenderer extends MobRenderer<QuestRam, QuestingRamRenderState, QuestRamModel> {
 
 	public static final Identifier TEXTURE = TwilightForestMod.getModelTexture("questram.png");
 	public static final Identifier LINE_TEXTURE = TwilightForestMod.getModelTexture("questram_lines.png");
 
-	public QuestRamRenderer(EntityRendererProvider.Context context, M model) {
-		super(context, model, 1.0F);
-		this.addLayer(new GlowingLinesLayer<>(this));
-	}
-
-	@Override
-	public Identifier getTextureLocation(QuestingRamRenderState entity) {
-		return TEXTURE;
-	}
-
-	@Override
-	public AABB getBoundingBoxForCulling(T entity) {
-		return super.getBoundingBoxForCulling(entity).inflate(3.0D);
+	public QuestRamRenderer(EntityRendererProvider.Context context) {
+		super(context, new QuestRamModel(context.bakeLayer(TFModelLayers.QUEST_RAM)), 1.0F);
+		this.addLayer(new GlowingLinesLayer(this));
 	}
 
 	@Override
@@ -41,22 +33,26 @@ public class QuestRamRenderer<T extends QuestRam, M extends QuestRamModel<Questi
 	}
 
 	@Override
-	public void extractRenderState(T entity, QuestingRamRenderState state, float partialTicks) {
-		super.extractRenderState(entity, state, partialTicks);
+	public void extractRenderState(QuestRam entity, QuestingRamRenderState state, float partialTick) {
+		super.extractRenderState(entity, state, partialTick);
 		state.colorFlags = entity.getColorFlags();
 	}
 
-	public static class GlowingLinesLayer<T extends QuestingRamRenderState, M extends QuestRamModel<T>> extends RenderLayer<T, M> {
+	@Override
+	public Identifier getTextureLocation(QuestingRamRenderState state) {
+		return TEXTURE;
+	}
 
-		public GlowingLinesLayer(RenderLayerParent<T, M> renderer) {
+	public static class GlowingLinesLayer extends RenderLayer<QuestingRamRenderState, QuestRamModel> {
+
+		public GlowingLinesLayer(RenderLayerParent<QuestingRamRenderState, QuestRamModel> renderer) {
 			super(renderer);
 		}
 
 		@Override
-		public void submit(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int i, T state, float v, float v1) {
-			poseStack.scale(1.025F, 1.025F, 1.025F);
-			submitNodeCollector.submitModel(this.getParentModel(), state, poseStack, RenderTypes.entityTranslucent(LINE_TEXTURE), 0xF000F0, OverlayTexture.NO_OVERLAY, state.outlineColor, null);
+		public void submit(PoseStack stack, SubmitNodeCollector collector, int light, QuestingRamRenderState state, float yRot, float xRot) {
+			stack.scale(1.025F, 1.025F, 1.025F);
+			collector.order(1).submitModel(this.getParentModel(), state, stack, RenderTypes.entityTranslucent(LINE_TEXTURE), LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, -1, null);
 		}
-
 	}
 }

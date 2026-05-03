@@ -13,7 +13,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemDisplayContext;
 import twilightforest.client.renderer.entity.LichRenderer;
-import twilightforest.client.state.LichRenderState;
+import twilightforest.client.state.entity.LichRenderState;
 import twilightforest.entity.boss.Lich;
 
 public class LichModel extends HumanoidModel<LichRenderState> implements TrophyBlockModel {

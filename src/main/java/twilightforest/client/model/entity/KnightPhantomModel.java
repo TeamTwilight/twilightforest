@@ -15,7 +15,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.renderer.entity.KnightPhantomRenderer;
-import twilightforest.client.state.KnightPhantomRenderState;
+import twilightforest.client.state.entity.KnightPhantomRenderState;
 import twilightforest.entity.boss.KnightPhantom;
 
 import javax.annotation.Nullable;

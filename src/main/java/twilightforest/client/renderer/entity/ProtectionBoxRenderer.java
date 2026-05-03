@@ -11,7 +11,7 @@ import net.minecraft.util.ARGB;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.ProtectionBoxModel;
 import twilightforest.client.renderer.TFRenderTypes;
-import twilightforest.client.state.ProtectionBoxRenderState;
+import twilightforest.client.state.entity.ProtectionBoxRenderState;
 import twilightforest.entity.ProtectionBox;
 
 public class ProtectionBoxRenderer extends EntityRenderer<ProtectionBox, ProtectionBoxRenderState> {
@@ -37,7 +37,7 @@ public class ProtectionBoxRenderer extends EntityRenderer<ProtectionBox, Protect
 
 		this.boxModel.setupAnim(state);
 		//TODO Need to fix RenderType
-		submitNodeCollector.submitModel(this.boxModel, state, poseStack, TFRenderTypes.PROTECTION_BOX, state.lightCoords, OverlayTexture.NO_OVERLAY, ARGB.colorFromFloat(alpha, 1.0F, 1.0F, 1.0F), null, state.outlineColor, null);
+		submitNodeCollector.submitModel(this.boxModel, state, poseStack, TFRenderTypes.PROTECTION_BOX, state.lightCoords, OverlayTexture.NO_OVERLAY, ARGB.white(alpha), null, state.outlineColor, null);
 	}
 
 	@Override

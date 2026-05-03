@@ -13,7 +13,7 @@ import net.minecraft.resources.Identifier;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.KnightPhantomModel;
-import twilightforest.client.state.KnightPhantomRenderState;
+import twilightforest.client.state.entity.KnightPhantomRenderState;
 import twilightforest.entity.boss.KnightPhantom;
 
 public class KnightPhantomRenderer extends HumanoidMobRenderer<KnightPhantom, KnightPhantomRenderState, KnightPhantomModel> {

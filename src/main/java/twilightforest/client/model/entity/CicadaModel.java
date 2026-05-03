@@ -1,7 +1,5 @@
 package twilightforest.client.model.entity;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -9,26 +7,13 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.util.Unit;
 
-public class CicadaModel extends Model {
-
-	private final ModelPart legs;
-	private final ModelPart fatbody;
-	private final ModelPart skinnybody;
-	private final ModelPart eye1;
-	private final ModelPart eye2;
-	private final ModelPart wings;
+public class CicadaModel extends Model<Unit> {
 
 	public CicadaModel(ModelPart root) {
-		super(RenderType::entityCutoutNoCull);
-
-		this.legs = root.getChild("legs");
-		this.fatbody = root.getChild("fat_body");
-		this.skinnybody = root.getChild("skinny_body");
-		this.eye1 = root.getChild("eye_1");
-		this.eye2 = root.getChild("eye_2");
-		this.wings = root.getChild("wings");
+		super(root, RenderTypes::entityCutout);
 	}
 
 	public static LayerDefinition create() {
@@ -66,15 +51,5 @@ public class CicadaModel extends Model {
 			PartPose.ZERO);
 
 		return LayerDefinition.create(meshdefinition, 64, 32);
-	}
-
-	@Override
-	public void renderToBuffer(PoseStack ms, VertexConsumer buffer, int light, int overlay, int color) {
-		this.legs.render(ms, buffer, light, overlay, color);
-		this.fatbody.render(ms, buffer, light, overlay, color);
-		this.skinnybody.render(ms, buffer, light, overlay, color);
-		this.eye1.render(ms, buffer, light, overlay, color);
-		this.eye2.render(ms, buffer, light, overlay, color);
-		this.wings.render(ms, buffer, light, overlay, color);
 	}
 }

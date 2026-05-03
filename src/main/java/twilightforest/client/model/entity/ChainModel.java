@@ -1,21 +1,19 @@
 package twilightforest.client.model.entity;
 
-import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.client.renderer.entity.state.EntityRenderState;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.util.Unit;
 
-public class ChainModel extends EntityModel<EntityRenderState> {
-
-	private final ModelPart chain;
+public class ChainModel extends Model<Unit> {
 
 	public ChainModel(ModelPart root) {
-		super(root);
-		this.chain = root.getChild("chain");
+		super(root, RenderTypes::entityCutout);
 	}
 
 	public static LayerDefinition create() {
@@ -28,10 +26,5 @@ public class ChainModel extends EntityModel<EntityRenderState> {
 			PartPose.ZERO);
 
 		return LayerDefinition.create(meshdefinition, 32, 16);
-	}
-
-	@Override
-	public void setupAnim(EntityRenderState entityRenderState) {
-
 	}
 }

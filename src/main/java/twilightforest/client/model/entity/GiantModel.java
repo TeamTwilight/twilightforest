@@ -5,7 +5,7 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.world.entity.HumanoidArm;
-import twilightforest.client.state.GiantRenderState;
+import twilightforest.client.state.entity.GiantRenderState;
 
 public class GiantModel extends HumanoidModel<GiantRenderState> {
 	public final ModelPart leftSleeve;

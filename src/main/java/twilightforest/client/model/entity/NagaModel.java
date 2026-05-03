@@ -14,14 +14,11 @@ import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
-import org.jetbrains.annotations.Nullable;
 import twilightforest.client.renderer.entity.NagaRenderer;
 
 public class NagaModel<T extends EntityRenderState> extends EntityModel<T> implements TrophyBlockModel {
 
 	private final ModelPart head;
-	@Nullable
-	private T entity;
 
 	public NagaModel(ModelPart root) {
 		super(root);
@@ -38,23 +35,6 @@ public class NagaModel<T extends EntityRenderState> extends EntityModel<T> imple
 			PartPose.ZERO);
 
 		return LayerDefinition.create(meshdefinition, 64, 32);
-	}
-
-	private static LayerDefinition createJappaModel() {
-		MeshDefinition meshdefinition = new MeshDefinition();
-		PartDefinition partdefinition = meshdefinition.getRoot();
-
-		var head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
-				.texOffs(0, 0)
-				.addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F),
-			PartPose.offset(0.0F, 8.0F, 0.0F));
-
-		head.addOrReplaceChild("tongue", CubeListBuilder.create()
-				.texOffs(84, 0)
-				.addBox(-6.0F, 0.0F, -12.0F, 12.0F, 0.0F, 12.0F),
-			PartPose.offsetAndRotation(0.0F, 10.0F, -16.0F, 0.4363323129985824F, 0.0F, 0.0F));
-
-		return LayerDefinition.create(meshdefinition, 128, 64);
 	}
 
 	@Override

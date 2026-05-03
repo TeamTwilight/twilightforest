@@ -8,7 +8,7 @@ import net.minecraft.util.ARGB;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.MistWolfModel;
-import twilightforest.client.state.MistWolfRenderState;
+import twilightforest.client.state.entity.MistWolfRenderState;
 import twilightforest.entity.monster.MistWolf;
 
 public class MistWolfRenderer extends MobRenderer<MistWolf, MistWolfRenderState, MistWolfModel> {

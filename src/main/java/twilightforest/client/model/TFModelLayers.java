@@ -35,8 +35,10 @@ public class TFModelLayers {
 	public static final ModelLayerLocation ALPHA_YETI = register("alpha_yeti");
 	public static final ModelLayerLocation ARMORED_GIANT = register("armored_giant");
 	public static final ModelLayerLocation BIGHORN_SHEEP = register("bighorn_sheep");
+	public static final ModelLayerLocation BIGHORN_SHEEP_BABY = register("bighorn_sheep_baby");
 	public static final ModelLayerLocation BLOCKCHAIN_GOBLIN = register("blockchain_goblin");
 	public static final ModelLayerLocation BOAR = register("boar");
+	public static final ModelLayerLocation BOAR_BABY = register("boar_baby");
 	public static final ModelLayerLocation BUNNY = register("bunny");
 	public static final ModelLayerLocation CARMINITE_BROODLING = register("carminite_broodling");
 	public static final ModelLayerLocation CARMINITE_GHASTGUARD = register("carminite_ghastguard");
@@ -45,6 +47,7 @@ public class TFModelLayers {
 	public static final ModelLayerLocation CHAIN = register("chain");
 	public static final ModelLayerLocation DEATH_TOME = register("death_tome");
 	public static final ModelLayerLocation DEER = register("deer");
+	public static final ModelLayerLocation DEER_BABY = register("deer_baby");
 	public static final ModelLayerLocation FIRE_BEETLE = register("fire_beetle");
 	public static final ModelLayerLocation GIANT_MINER = register("giant_miner");
 	public static final ModelLayerLocation HARBINGER_CUBE = register("harbinger_cube");
@@ -72,6 +75,7 @@ public class TFModelLayers {
 	public static final ModelLayerLocation NAGA_BODY = register("naga_body");
 	public static final ModelLayerLocation NOOP = register("noop");
 	public static final ModelLayerLocation PENGUIN = register("penguin");
+	public static final ModelLayerLocation PENGUIN_BABY = register("penguin_baby");
 	public static final ModelLayerLocation PINCH_BEETLE = register("pinch_beetle");
 	public static final ModelLayerLocation QUEST_RAM = register("quest_ram");
 	public static final ModelLayerLocation RAVEN = register("raven");

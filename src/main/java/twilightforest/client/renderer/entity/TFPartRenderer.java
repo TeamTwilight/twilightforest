@@ -16,7 +16,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.client.state.PartEntityState;
+import twilightforest.client.state.entity.PartEntityState;
 import twilightforest.entity.TFPart;
 
 public abstract class TFPartRenderer<T extends TFPart<?>, S extends PartEntityState, M extends EntityModel<S>> extends EntityRenderer<T, S> {

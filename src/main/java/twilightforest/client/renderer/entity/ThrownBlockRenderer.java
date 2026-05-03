@@ -1,28 +1,22 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.BlockRenderDispatcher;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.renderer.entity.state.FallingBlockRenderState;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.Identifier;
-import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.inventory.InventoryMenu;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.client.model.data.ModelData;
 import twilightforest.entity.projectile.ThrownBlock;
 
 /**
  * [VanillaCopy] of {@link net.minecraft.client.renderer.entity.FallingBlockRenderer} because of generic type restrictions
  */
-public class ThrownBlockRenderer extends EntityRenderer<ThrownBlock> {
+public class ThrownBlockRenderer extends EntityRenderer<ThrownBlock, FallingBlockRenderState> {
 
 	public ThrownBlockRenderer(EntityRendererProvider.Context context) {
 		super(context);
@@ -30,27 +24,38 @@ public class ThrownBlockRenderer extends EntityRenderer<ThrownBlock> {
 	}
 
 	@Override
-	public void render(ThrownBlock entity, float yaw, float partialTicks, PoseStack ms, MultiBufferSource buffers, int light) {
-		BlockState blockstate = entity.getBlockState();
-		if (blockstate.getRenderShape() == RenderShape.MODEL) {
-			Level world = entity.level();
-			if (blockstate.getRenderShape() != RenderShape.INVISIBLE) {
-				ms.pushPose();
-				ms.mulPose(Axis.YN.rotationDegrees(Mth.lerp(partialTicks, entity.yRotO, entity.getYRot()) - 90.0F));
-				BlockPos blockpos = BlockPos.containing(entity.getX(), entity.getBoundingBox().maxY, entity.getZ());
-				ms.translate(-0.5D, 0.0D, -0.5D);
-				BlockRenderDispatcher dispatcher = Minecraft.getInstance().getBlockRenderer();
-				var model = dispatcher.getBlockModel(blockstate);
-				for (var renderType : model.getRenderTypes(blockstate, RandomSource.create(entity.getId()), ModelData.EMPTY))
-					dispatcher.getModelRenderer().tesselateBlock(world, model, blockstate, blockpos, ms, buffers.getBuffer(renderType), false, RandomSource.create(), entity.getId(), OverlayTexture.NO_OVERLAY, ModelData.EMPTY, renderType);
-				ms.popPose();
-				super.render(entity, yaw, partialTicks, ms, buffers, light);
-			}
+	public boolean shouldRender(ThrownBlock entity, Frustum culler, double camX, double camY, double camZ) {
+		return super.shouldRender(entity, culler, camX, camY, camZ) && entity.getBlockState() != entity.level().getBlockState(entity.blockPosition());
+	}
+
+	@Override
+	public void submit(FallingBlockRenderState state, PoseStack stack, SubmitNodeCollector collector, CameraRenderState camera) {
+		BlockState blockState = state.movingBlockRenderState.blockState;
+		if (blockState.getRenderShape() == RenderShape.MODEL) {
+			stack.pushPose();
+			stack.translate(-0.5D, 0.0D, -0.5D);
+			collector.submitMovingBlock(stack, state.movingBlockRenderState);
+			stack.popPose();
+			super.submit(state, stack, collector, camera);
 		}
 	}
 
 	@Override
-	public Identifier getTextureLocation(ThrownBlock entity) {
-		return InventoryMenu.BLOCK_ATLAS;
+	public FallingBlockRenderState createRenderState() {
+		return new FallingBlockRenderState();
+	}
+
+	@Override
+	public void extractRenderState(ThrownBlock entity, FallingBlockRenderState state, float partialTicks) {
+		super.extractRenderState(entity, state, partialTicks);
+		BlockPos pos = BlockPos.containing(entity.getX(), entity.getBoundingBox().maxY, entity.getZ());
+		state.movingBlockRenderState.randomSeedPos = pos;
+		state.movingBlockRenderState.blockPos = pos;
+		state.movingBlockRenderState.blockState = entity.getBlockState();
+		if (entity.level() instanceof ClientLevel clientLevel) {
+			state.movingBlockRenderState.biome = clientLevel.getBiome(pos);
+			state.movingBlockRenderState.cardinalLighting = clientLevel.cardinalLighting();
+			state.movingBlockRenderState.lightEngine = clientLevel.getLightEngine();
+		}
 	}
 }

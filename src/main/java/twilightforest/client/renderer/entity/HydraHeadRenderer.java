@@ -11,7 +11,7 @@ import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.HydraHeadModel;
-import twilightforest.client.state.HydraHeadRenderState;
+import twilightforest.client.state.entity.HydraHeadRenderState;
 import twilightforest.entity.boss.Hydra;
 import twilightforest.entity.boss.HydraHead;
 import twilightforest.entity.boss.HydraHeadContainer;

@@ -2,7 +2,7 @@ package twilightforest.client.model.entity;
 
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.monster.zombie.AbstractZombieModel;
-import twilightforest.client.state.RisingZombieRenderState;
+import twilightforest.client.state.entity.RisingZombieRenderState;
 
 public class RisingZombieModel extends AbstractZombieModel<RisingZombieRenderState> {
 

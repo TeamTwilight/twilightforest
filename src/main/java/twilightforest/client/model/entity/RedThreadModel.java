@@ -9,11 +9,12 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
+import net.minecraft.util.Unit;
 
-public class RedThreadModel extends Model {
+public class RedThreadModel extends Model<Unit> {
 
 	private final ModelPart center;
 	private final ModelPart up;
@@ -22,7 +23,7 @@ public class RedThreadModel extends Model {
 	private final ModelPart right;
 
 	public RedThreadModel(ModelPart root) {
-		super(RenderType::entityCutoutNoCull);
+		super(root, RenderTypes::entityCutout);
 		this.center = root.getChild("center");
 		this.up = root.getChild("up");
 		this.down = root.getChild("down");
@@ -60,15 +61,6 @@ public class RedThreadModel extends Model {
 			PartPose.ZERO);
 
 		return LayerDefinition.create(meshdefinition, 16, 16);
-	}
-
-	@Override
-	public void renderToBuffer(PoseStack stack, VertexConsumer consumer, int light, int overlay, int color) {
-		this.center.render(stack, consumer, light, overlay, color);
-		this.up.render(stack, consumer, light, overlay, color);
-		this.down.render(stack, consumer, light, overlay, color);
-		this.left.render(stack, consumer, light, overlay, color);
-		this.right.render(stack, consumer, light, overlay, color);
 	}
 
 	public void renderCenterPiece(PoseStack stack, VertexConsumer consumer, int light) {

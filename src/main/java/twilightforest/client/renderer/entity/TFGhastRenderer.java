@@ -6,7 +6,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.TFGhastModel;
-import twilightforest.client.state.TFGhastRenderState;
+import twilightforest.client.state.entity.TFGhastRenderState;
 import twilightforest.entity.monster.CarminiteGhastguard;
 
 public class TFGhastRenderer<T extends CarminiteGhastguard, M extends TFGhastModel<TFGhastRenderState>> extends MobRenderer<T, TFGhastRenderState, M> {
