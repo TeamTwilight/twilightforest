@@ -10,13 +10,14 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.Unit;
 
 import java.util.function.Function;
 
-public class BrazierModel extends Model {
+public class BrazierModel extends Model<Unit> {
 
 	public BrazierModel(ModelPart root) {
-		super(root, (Function<Identifier, RenderType>) RenderTypes::entityCutout);
+		super(root, RenderTypes::entityCutout);
 	}
 
 	public static LayerDefinition create() {

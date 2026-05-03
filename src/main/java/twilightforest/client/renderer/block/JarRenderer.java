@@ -38,6 +38,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+//TODO I ideally want to move the jar lids to be data driven
 public class JarRenderer<T extends JarBlockEntity> implements BlockEntityRenderer<T> {
 	public static final Map<Item, BakedModel> LIDS = new HashMap<>();
 

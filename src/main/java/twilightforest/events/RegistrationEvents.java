@@ -166,28 +166,6 @@ public class RegistrationEvents {
 			TFBlocks.TRANSFORMATION_SIGN.get(), TFBlocks.TRANSFORMATION_WALL_SIGN.get(),
 			TFBlocks.MINING_SIGN.get(), TFBlocks.MINING_WALL_SIGN.get(),
 			TFBlocks.SORTING_SIGN.get(), TFBlocks.SORTING_WALL_SIGN.get());
-
-		event.modify(BlockEntityType.CHEST,
-			TFBlocks.TWILIGHT_OAK_CHEST.get(),
-			TFBlocks.CANOPY_CHEST.get(),
-			TFBlocks.MANGROVE_CHEST.get(),
-			TFBlocks.DARK_CHEST.get(),
-			TFBlocks.TIME_CHEST.get(),
-			TFBlocks.TRANSFORMATION_CHEST.get(),
-			TFBlocks.MINING_CHEST.get(),
-			TFBlocks.SORTING_CHEST.get()
-		);
-
-		event.modify(BlockEntityType.TRAPPED_CHEST,
-			TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST.get(),
-			TFBlocks.CANOPY_TRAPPED_CHEST.get(),
-			TFBlocks.MANGROVE_TRAPPED_CHEST.get(),
-			TFBlocks.DARK_TRAPPED_CHEST.get(),
-			TFBlocks.TIME_TRAPPED_CHEST.get(),
-			TFBlocks.TRANSFORMATION_TRAPPED_CHEST.get(),
-			TFBlocks.MINING_TRAPPED_CHEST.get(),
-			TFBlocks.SORTING_TRAPPED_CHEST.get()
-		);
 	}
 
 	public void createNewRegistries(NewRegistryEvent event) {

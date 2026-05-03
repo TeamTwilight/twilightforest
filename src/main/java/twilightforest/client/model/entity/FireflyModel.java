@@ -17,17 +17,10 @@ import net.minecraft.util.Unit;
 
 public class FireflyModel extends Model<Unit> {
 
-	private final ModelPart legs;
-	private final ModelPart fatbody;
-	private final ModelPart skinnybody;
-	private final ModelPart glow;
+	public final ModelPart glow;
 
 	public FireflyModel(ModelPart root) {
 		super(root, RenderTypes::entityCutout);
-
-		this.legs = root.getChild("legs");
-		this.fatbody = root.getChild("fat_body");
-		this.skinnybody = root.getChild("skinny_body");
 		this.glow = root.getChild("glow");
 	}
 
@@ -58,13 +51,7 @@ public class FireflyModel extends Model<Unit> {
 		return LayerDefinition.create(meshdefinition, 64, 32);
 	}
 
-	public void renderFirefly(PoseStack stack, VertexConsumer consumer, int light, int overlay, int color) {
-		this.legs.render(stack, consumer, light, overlay, color);
-		this.fatbody.render(stack, consumer, light, overlay, color);
-		this.skinnybody.render(stack, consumer, light, overlay, color);
-	}
-
-	public void renderGlow(PoseStack stack, VertexConsumer consumer, float alpha) {
-		this.glow.render(stack, consumer, LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, ARGB.colorFromFloat(alpha, 1.0F, 1.0F, 1.0F));
+	public void setupGlow() {
+		this.glow.skipDraw = true;
 	}
 }

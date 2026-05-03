@@ -446,8 +446,8 @@ public class ClientRegistrationEvents {
 		event.registerBlockEntityRenderer(TFBlockEntities.CICADA.get(), CicadaRenderer::new);
 		event.registerBlockEntityRenderer(TFBlockEntities.MOONWORM.get(), MoonwormRenderer::new);
 		event.registerBlockEntityRenderer(TFBlockEntities.TROPHY.get(), TrophyRenderer::new);
-		event.registerBlockEntityRenderer(BlockEntityType.CHEST, TFChestRenderer::new);
-		event.registerBlockEntityRenderer(BlockEntityType.TRAPPED_CHEST, TFChestRenderer::new);
+		event.registerBlockEntityRenderer(TFBlockEntities.TF_CHEST.get(), TFChestRenderer::new);
+		event.registerBlockEntityRenderer(TFBlockEntities.TF_TRAPPED_CHEST.get(), TFChestRenderer::new);
 		event.registerBlockEntityRenderer(TFBlockEntities.SKULL_CHEST.get(), SkullChestRenderer::new);
 		event.registerBlockEntityRenderer(TFBlockEntities.KEEPSAKE_CASKET.get(), KeepsakeCasketRenderer::new);
 		event.registerBlockEntityRenderer(TFBlockEntities.SKULL_CANDLE.get(), SkullCandleRenderer::new);
@@ -565,8 +565,8 @@ public class ClientRegistrationEvents {
 
 		event.registerLayerDefinition(TFModelLayers.CICADA, CicadaModel::create);
 		event.registerLayerDefinition(TFModelLayers.FIREFLY, FireflyModel::create);
-		event.registerLayerDefinition(TFModelLayers.KEEPSAKE_CASKET, () -> SkullChestRenderer.create(true));
-		event.registerLayerDefinition(TFModelLayers.SKULL_CHEST, () -> SkullChestRenderer.create(false));
+		event.registerLayerDefinition(TFModelLayers.KEEPSAKE_CASKET, () -> KeepsakeCasketModel.create(true));
+		event.registerLayerDefinition(TFModelLayers.SKULL_CHEST, () -> KeepsakeCasketModel.create(false));
 		event.registerLayerDefinition(TFModelLayers.MOONWORM, MoonwormModel::create);
 		event.registerLayerDefinition(TFModelLayers.BRAZIER, BrazierModel::create);
 

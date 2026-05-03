@@ -7,7 +7,9 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
 import twilightforest.client.renderer.entity.AlphaYetiRenderer;
@@ -210,16 +212,9 @@ public class AlphaYetiModel extends HumanoidModel<AlphaYetiRenderState> implemen
 	}
 
 	@Override
-	public void setupRotationsForTrophy(float x, float y, float z, float mouthAngle) {
-		this.head.yRot = y * Mth.DEG_TO_RAD;
-		this.head.xRot = z * Mth.DEG_TO_RAD;
-	}
-
-	@Override
-	public void renderTrophy(PoseStack stack, MultiBufferSource buffer, int light, int overlay, int color, ItemDisplayContext context) {
+	public void renderTrophy(PoseStack stack, SubmitNodeCollector collector, int light, ItemDisplayContext context) {
 		stack.scale(0.2F, 0.2F, 0.2F);
 		stack.translate(0.0F, -1.5F, 0.0F);
-		VertexConsumer consumer = buffer.getBuffer(RenderTypes.entityCutout(AlphaYetiRenderer.TEXTURE));
-		this.head.render(stack, consumer, light, overlay, color);
+		collector.submitModelPart(this.head, stack, RenderTypes.entityCutout(AlphaYetiRenderer.TEXTURE), light, OverlayTexture.NO_OVERLAY, null);
 	}
 }

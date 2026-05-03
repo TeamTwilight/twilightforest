@@ -7,14 +7,17 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemDisplayContext;
+import twilightforest.client.renderer.entity.AlphaYetiRenderer;
 import twilightforest.client.renderer.entity.MinoshroomRenderer;
 import twilightforest.client.state.entity.MinoshroomRenderState;
 
-public class MinoshroomModel<T extends MinoshroomRenderState> extends HumanoidModel<T> implements TrophyBlockModel {
+public class MinoshroomModel extends HumanoidModel<MinoshroomRenderState> implements TrophyBlockModel {
 
 	public final ModelPart cowTorso;
 	private final ModelPart rightFrontLeg;
@@ -116,18 +119,18 @@ public class MinoshroomModel<T extends MinoshroomRenderState> extends HumanoidMo
 	}
 
 	@Override
-	public void setupAnim(T entity) {
-		super.setupAnim(entity);
+	public void setupAnim(MinoshroomRenderState state) {
+		super.setupAnim(state);
 
 		// copied from QuadrupedModel
 		this.cowTorso.xRot = Mth.HALF_PI;
-		this.leftFrontLeg.xRot = Mth.cos(entity.walkAnimationPos * 0.6662F) * 1.4F * entity.walkAnimationSpeed;
-		this.rightFrontLeg.xRot = Mth.cos(entity.walkAnimationPos * 0.6662F + Mth.PI) * 1.4F * entity.walkAnimationSpeed;
-		this.leftBackLeg.xRot = Mth.cos(entity.walkAnimationPos * 0.6662F + Mth.PI) * 1.4F * entity.walkAnimationSpeed;
-		this.rightBackLeg.xRot = Mth.cos(entity.walkAnimationPos * 0.6662F) * 1.4F * entity.walkAnimationSpeed;
+		this.leftFrontLeg.xRot = Mth.cos(state.walkAnimationPos * 0.6662F) * 1.4F * state.walkAnimationSpeed;
+		this.rightFrontLeg.xRot = Mth.cos(state.walkAnimationPos * 0.6662F + Mth.PI) * 1.4F * state.walkAnimationSpeed;
+		this.leftBackLeg.xRot = Mth.cos(state.walkAnimationPos * 0.6662F + Mth.PI) * 1.4F * state.walkAnimationSpeed;
+		this.rightBackLeg.xRot = Mth.cos(state.walkAnimationPos * 0.6662F) * 1.4F * state.walkAnimationSpeed;
 
 		// Ground slam animation
-		float f1 = entity.chargeAnim;
+		float f1 = state.chargeAnim;
 		f1 = f1 * f1;
 
 		this.leftFrontLeg.y = 12.0F + -5.0F * f1;
@@ -146,7 +149,7 @@ public class MinoshroomModel<T extends MinoshroomRenderState> extends HumanoidMo
 		this.leftArm.z = this.rightArm.z;
 
 		if (f1 > 0) {
-			if (entity.mainArm == HumanoidArm.RIGHT) {
+			if (state.mainArm == HumanoidArm.RIGHT) {
 				this.rightArm.xRot = f1 * -1.8F;
 				this.leftArm.xRot = 0.0F;
 				this.rightArm.zRot = -0.2F;
@@ -162,15 +165,8 @@ public class MinoshroomModel<T extends MinoshroomRenderState> extends HumanoidMo
 	}
 
 	@Override
-	public void setupRotationsForTrophy(float x, float y, float z, float mouthAngle) {
-		this.head.yRot = y * Mth.DEG_TO_RAD;
-		this.head.xRot = z * Mth.DEG_TO_RAD;
-	}
-
-	@Override
-	public void renderTrophy(PoseStack stack, MultiBufferSource buffer, int light, int overlay, int color, ItemDisplayContext context) {
+	public void renderTrophy(PoseStack stack, SubmitNodeCollector collector, int light, ItemDisplayContext context) {
 		stack.translate(0.0F, 0.375F, 0.56F);
-		VertexConsumer consumer = buffer.getBuffer(RenderTypes.entityCutout(MinoshroomRenderer.TEXTURE));
-		this.head.render(stack, consumer, light, overlay, color);
+		collector.submitModelPart(this.head, stack, RenderTypes.entityCutout(MinoshroomRenderer.TEXTURE), light, OverlayTexture.NO_OVERLAY, null);
 	}
 }

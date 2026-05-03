@@ -1,176 +1,124 @@
 package twilightforest.client.model.item;
 
 import com.google.common.collect.Maps;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonObject;
 import com.mojang.math.Transformation;
-import net.minecraft.client.Minecraft;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.block.model.ItemOverrides;
+import net.minecraft.client.renderer.block.dispatch.BlockModelRotation;
+import net.minecraft.client.renderer.item.*;
 import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.*;
+import net.minecraft.client.resources.model.cuboid.ItemModelGenerator;
+import net.minecraft.client.resources.model.cuboid.ItemTransforms;
+import net.minecraft.client.resources.model.geometry.QuadCollection;
+import net.minecraft.client.resources.model.sprite.Material;
+import net.minecraft.client.resources.model.sprite.MaterialBaker;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.util.GsonHelper;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ItemOwner;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.client.ClientHooks;
-import net.neoforged.neoforge.client.model.CompositeModel;
-import net.neoforged.neoforge.client.model.DynamicFluidContainerModel;
-import net.neoforged.neoforge.client.model.SimpleModelState;
-import net.neoforged.neoforge.client.model.geometry.*;
-import org.jetbrains.annotations.Nullable;
+import net.neoforged.neoforge.client.model.ComposedModelState;
+import org.joml.Matrix4fc;
 import org.joml.Vector3f;
-import twilightforest.TwilightForestMod;
+import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.custom.TravellersModifiersManager;
-import twilightforest.item.travellers_gear.TravellersArmorItem;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-public class TravellersGearItemModel implements IUnbakedGeometry<TravellersGearItemModel> {
+public class TravellersGearItemModel implements ItemModel {
 
 	private static final Function<Float, Transformation> TRANSFORM = f -> new Transformation(null, null, new Vector3f(1.0F + f), null);
-	private final List<Holder.Reference<TravellersModifier>> modifiers;
-	private final String directory;
-	private final boolean broken;
-	private final String brokenDirectory;
-	private final boolean showGloves;
+	private static final ModelDebugName DEBUG_NAME = () -> "TravellersGearItemModel";
 
-	TravellersGearItemModel(List<Holder.Reference<TravellersModifier>> modifiers, String directory, boolean broken, String brokenDirectory, boolean showGloves) {
-		this.modifiers = modifiers;
-		this.directory = directory;
-		this.broken = broken;
-		this.brokenDirectory = brokenDirectory;
-		this.showGloves = showGloves;
-	}
+	private final ItemModel baseModel;
+	private final Identifier modifierDirectory;
+	private final BakingContext bakingContext;
+	private final Matrix4fc transformation;
+	private final ItemTransforms itemTransforms;
 
-	public TravellersGearItemModel withModifiers(List<Holder.Reference<TravellersModifier>> modifiers, boolean broken, boolean showGloves) {
-		return new TravellersGearItemModel(modifiers, this.directory, broken, this.brokenDirectory, showGloves);
+	private final Map<String, ItemModel> possibleCombos = Maps.newHashMap();
+
+	private TravellersGearItemModel(ItemModel baseModel, Identifier modifierDirectory, BakingContext bakingContext, Matrix4fc transformation) {
+		this.baseModel = baseModel;
+		this.modifierDirectory = modifierDirectory;
+		this.bakingContext = bakingContext;
+		this.transformation = transformation;
+		var baseItemModel = bakingContext.blockModelBaker().getModel(Identifier.withDefaultNamespace("item/generated"));
+		this.itemTransforms = baseItemModel.getTopTransforms();
 	}
 
 	@Override
-	public BakedModel bake(IGeometryBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides) {
+	public void update(ItemStackRenderState state, ItemStack stack, ItemModelResolver resolver, ItemDisplayContext context, @Nullable ClientLevel level, @Nullable ItemOwner owner, int seed) {
+		this.baseModel.update(state, stack, resolver, context, level, owner, seed);
 
-		var sprite = this.getSprite(context, spriteGetter);
-
-		// We need to disable GUI 3D and block lighting for this to render properly
-		var itemContext = StandaloneGeometryBakingContext.builder(context).withGui3d(false).withUseBlockLight(false).build(TwilightForestMod.prefix("travellers_gear"));
-		var modelBuilder = CompositeModel.Baked.builder(itemContext, null, new TravellersGearItemModel.Overrides(overrides, this, baker, itemContext), context.getTransforms());
-
-		var normalRenderTypes = DynamicFluidContainerModel.getLayerRenderTypes(false);
-
-		if (sprite != null) {
-			// Base texture
-			var unbaked = UnbakedGeometryHelper.createUnbakedItemElements(0, sprite);
-			var quads = UnbakedGeometryHelper.bakeElements(unbaked, $ -> sprite, modelState);
-			modelBuilder.addQuads(normalRenderTypes, quads);
+		if (stack.has(TFDataComponents.IS_TRAVELLERS_GEAR) && level != null) {
+			List<Holder.Reference<TravellersModifier>> modifiers = TravellersModifiersManager.findAllInsertableModifiers(level, stack);
+			if (!modifiers.isEmpty()) {
+				String key = BuiltInRegistries.ITEM.getKey(stack.getItem()).getPath() + this.getModifiersSuffix(modifiers);
+				this.possibleCombos.computeIfAbsent(key, _ -> this.getModifiedGear(modifiers)).update(state, stack, resolver, context, level, owner, seed);
+			}
 		}
+	}
 
+	private ItemModel getModifiedGear(List<Holder.Reference<TravellersModifier>> modifiers) {
+		ModelBaker baker = this.bakingContext.blockModelBaker();
+		MaterialBaker materials = baker.materials();
+
+		List<ItemModel> modelLayers = new ArrayList<>();
 		int layers = 1;
-		for (Holder.Reference<TravellersModifier> modifier : this.modifiers) {
-			var modSprite = this.getModifierSprite(modifier.key(), spriteGetter);
-			if (!modSprite.contents().name().equals(MissingTextureAtlasSprite.getLocation())) {
-				var unbaked = UnbakedGeometryHelper.createUnbakedItemElements(0, modSprite);
-				var quads = UnbakedGeometryHelper.bakeElements(unbaked, $ -> modSprite, new SimpleModelState(modelState.getRotation().compose(TRANSFORM.apply(layers * 0.001F)), modelState.isUvLocked()));
-				modelBuilder.addQuads(normalRenderTypes, quads);
+		for (Holder.Reference<TravellersModifier> modifier : modifiers) {
+			Material.Baked modSprite = this.getModifierSprite(modifier.key(), materials);
+			if (!modSprite.sprite().contents().name().equals(MissingTextureAtlasSprite.getLocation())) {
+				ModelRenderProperties overlayRenderProps = new ModelRenderProperties(false, modSprite, this.itemTransforms);
+				QuadCollection overlayQuads = baker.compute(new ItemModelGenerator.ItemLayerKey(modSprite, new ComposedModelState(BlockModelRotation.IDENTITY, TRANSFORM.apply(layers * 0.001F)), layers));
+
+				modelLayers.add(new CuboidItemModelWrapper(List.of(), overlayQuads, overlayRenderProps, this.transformation));
 				layers++;
 			}
 		}
+		return new CompositeModel(modelLayers);
+	}
 
-		if (this.showGloves) {
-			var modSprite = spriteGetter.apply(ClientHooks.getBlockMaterial(TwilightForestMod.prefix("item/" + (this.broken ? this.brokenDirectory : this.directory) + "gloves")));
-			if (!modSprite.contents().name().equals(MissingTextureAtlasSprite.getLocation())) {
-				var unbaked = UnbakedGeometryHelper.createUnbakedItemElements(0, modSprite);
-				var quads = UnbakedGeometryHelper.bakeElements(unbaked, $ -> modSprite, new SimpleModelState(modelState.getRotation().compose(TRANSFORM.apply(layers * 0.001F)), modelState.isUvLocked()));
-				modelBuilder.addQuads(normalRenderTypes, quads);
-			}
+	private String getModifiersSuffix(List<Holder.Reference<TravellersModifier>> modifiers) {
+		StringBuilder ret = new StringBuilder();
+		for (var mod : modifiers) {
+			ret.append("_").append(mod.key().identifier().getPath());
 		}
-
-		modelBuilder.setParticle(sprite);
-
-		return modelBuilder.build();
+		return ret.toString();
 	}
 
-	@Nullable
-	private TextureAtlasSprite getSprite(IGeometryBakingContext context, Function<Material, TextureAtlasSprite> spriteGetter) {
-		Material baseLocation = context.hasMaterial("base") ? context.getMaterial("base") : null;
-		if (this.broken) {
-			Material brokenLocation = context.hasMaterial("broken") ? context.getMaterial("broken") : null;
-			return brokenLocation != null ? spriteGetter.apply(brokenLocation) : baseLocation != null ? spriteGetter.apply(baseLocation) : null;
-		} else {
-			return baseLocation != null ? spriteGetter.apply(baseLocation) : null;
-		}
+	private Material.Baked getModifierSprite(ResourceKey<TravellersModifier> modifier, MaterialBaker baker) {
+		return baker.get(new Material(modifier.identifier().withPrefix("item/" + this.modifierDirectory)), DEBUG_NAME);
 	}
 
-	private TextureAtlasSprite getModifierSprite(ResourceKey<TravellersModifier> modifier, Function<Material, TextureAtlasSprite> spriteGetter) {
-		return spriteGetter.apply(ClientHooks.getBlockMaterial(modifier.location().withPrefix("item/" + (this.broken ? this.brokenDirectory : this.directory))));
-	}
-
-	public static final class Loader implements IGeometryLoader<TravellersGearItemModel> {
-		public static final TravellersGearItemModel.Loader INSTANCE = new TravellersGearItemModel.Loader();
-
-		private Loader() {}
+	public record Unbaked(ItemModel.Unbaked baseModel, Identifier modifierDirectory) implements ItemModel.Unbaked {
+		public static final MapCodec<Unbaked> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+				ItemModels.CODEC.fieldOf("base_model").forGetter(Unbaked::baseModel),
+				Identifier.CODEC.fieldOf("modifier_directory").forGetter(Unbaked::modifierDirectory))
+			.apply(instance, Unbaked::new));
 
 		@Override
-		public TravellersGearItemModel read(JsonObject object, JsonDeserializationContext context) {
-			return new TravellersGearItemModel(List.of(), GsonHelper.getAsString(object, "modifier_directory"), false, GsonHelper.getAsString(object, "broken_modifier_directory"), false);
-		}
-	}
-
-	private static final class Overrides extends ItemOverrides {
-		private final Map<String, BakedModel> possibleCombos = Maps.newHashMap();
-		private final ItemOverrides nested;
-		private final TravellersGearItemModel parent;
-		private final ModelBaker baker;
-		private final IGeometryBakingContext owner;
-
-		private Overrides(ItemOverrides nested, TravellersGearItemModel parent, ModelBaker baker, IGeometryBakingContext owner) {
-			this.nested = nested;
-			this.parent = parent;
-			this.baker = baker;
-			this.owner = owner;
+		public ItemModel bake(BakingContext context, Matrix4fc transformation) {
+			return new TravellersGearItemModel(this.baseModel().bake(context, transformation), this.modifierDirectory(), context, transformation);
 		}
 
-		@Nullable
 		@Override
-		public BakedModel resolve(BakedModel originalModel, ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int seed) {
-			BakedModel overridden = this.nested.resolve(originalModel, stack, level, entity, seed);
-			if (overridden != originalModel)
-				return overridden;
-			if (level == null)
-				level = Minecraft.getInstance().level;
-			if (level == null)
-				return originalModel;
-
-			List<Holder.Reference<TravellersModifier>> modifiers = TravellersModifiersManager.findAllInsertableModifiers(level, stack);
-			boolean broken = TravellersArmorItem.isTravellersArmorAndBroken(stack);
-			boolean gloves = stack.has(TFDataComponents.TRAVELLERS_HAS_GLOVES);
-			String key = BuiltInRegistries.ITEM.getKey(stack.getItem()).getPath() + this.getModifiersSuffix(modifiers, broken, gloves);
-
-			if (!this.possibleCombos.containsKey(key)) {
-				TravellersGearItemModel unbaked = this.parent.withModifiers(modifiers, broken, gloves);
-				BakedModel bakedModel = unbaked.bake(this.owner, this.baker, Material::sprite, BlockModelRotation.X0_Y0, this);
-				this.possibleCombos.put(key, bakedModel);
-				return bakedModel;
-			}
-
-			return this.possibleCombos.get(key);
+		public void resolveDependencies(Resolver resolver) {
+			this.baseModel.resolveDependencies(resolver);
 		}
 
-		private String getModifiersSuffix(List<Holder.Reference<TravellersModifier>> modifiers, boolean broken, boolean gloves) {
-			StringBuilder ret = new StringBuilder();
-			if (gloves) ret.append("_gloves");
-			if (broken) ret.append("_broken");
-			for (var mod : modifiers) {
-				ret.append("_").append(mod.key().location().toLanguageKey());
-			}
-			return ret.toString();
+		@Override
+		public MapCodec<? extends ItemModel.Unbaked> type() {
+			return MAP_CODEC;
 		}
 	}
 }

@@ -1,24 +1,28 @@
 package twilightforest.client.renderer.block;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.level.block.DirectionalBlock;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.util.ARGB;
+import net.minecraft.util.Unit;
+import net.minecraft.world.phys.Vec3;
+import org.jspecify.annotations.Nullable;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.CicadaBlock;
 import twilightforest.block.entity.FireflyBlockEntity;
-import twilightforest.client.BugModelAnimationHelper;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.FireflyModel;
+import twilightforest.client.state.block.FireflyRenderState;
 
-public class FireflyRenderer implements BlockEntityRenderer<FireflyBlockEntity> {
+public class FireflyRenderer implements BlockEntityRenderer<FireflyBlockEntity, FireflyRenderState> {
 
 	private final FireflyModel fireflyModel;
 	private static final Identifier TEXTURE = TwilightForestMod.getModelTexture("firefly-tiny.png");
@@ -28,29 +32,35 @@ public class FireflyRenderer implements BlockEntityRenderer<FireflyBlockEntity> 
 	}
 
 	@Override
-	public void render(@Nullable FireflyBlockEntity entity, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light, int overlay) {
-		int yaw = entity != null ? entity.currentYaw : BugModelAnimationHelper.currentYaw;
-		float glow = entity != null ? entity.glowIntensity : BugModelAnimationHelper.glowIntensity;
-		float randRot = entity != null ? entity.randRot : 0.0F;
+	public void submit(FireflyRenderState state, PoseStack stack, SubmitNodeCollector collector, CameraRenderState camera) {
+		submitFirefly(this.fireflyModel, state.yaw, state.glowIntensity, state.rotation, state.facing, stack, collector, state.lightCoords);
+	}
 
+	public static void submitFirefly(FireflyModel model, int yaw, float glow, float rotation, Direction facing, PoseStack stack, SubmitNodeCollector collector, int light) {
 		stack.pushPose();
-		Direction facing = entity != null ? entity.getBlockState().getValue(DirectionalBlock.FACING) : Direction.NORTH;
-
 		stack.translate(0.5F, 0.5F, 0.5F);
 		stack.mulPose(facing.getRotation());
 		stack.mulPose(Axis.ZP.rotationDegrees(180.0F));
-		stack.mulPose(Axis.YP.rotationDegrees(180.0F + randRot));
+		stack.mulPose(Axis.YP.rotationDegrees(180.0F + rotation));
 		stack.mulPose(Axis.YN.rotationDegrees(yaw));
 
-		stack.pushPose();
-
-		VertexConsumer consumer = buffer.getBuffer(RenderType.entityCutout(TEXTURE));
-		this.fireflyModel.renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY);
-
-		consumer = buffer.getBuffer(RenderType.entityTranslucent(TEXTURE));
-		this.fireflyModel.renderGlow(stack, consumer, glow);
-
+		model.setupGlow();
+		collector.submitModel(model, Unit.INSTANCE, stack, RenderTypes.entityCutout(TEXTURE), light, OverlayTexture.NO_OVERLAY, 0, null);
+		collector.submitModelPart(model.glow, stack, RenderTypes.entityTranslucentEmissive(TEXTURE), light, OverlayTexture.NO_OVERLAY, null, ARGB.white(glow), null);
 		stack.popPose();
-		stack.popPose();
+	}
+
+	@Override
+	public FireflyRenderState createRenderState() {
+		return new FireflyRenderState();
+	}
+
+	@Override
+	public void extractRenderState(FireflyBlockEntity blockEntity, FireflyRenderState state, float partialTicks, Vec3 cameraPosition, ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress) {
+		BlockEntityRenderer.super.extractRenderState(blockEntity, state, partialTicks, cameraPosition, breakProgress);
+		state.facing = blockEntity.getBlockState().getValue(CicadaBlock.FACING);
+		state.yaw = blockEntity.currentYaw;
+		state.rotation = blockEntity.randRot;
+		state.glowIntensity = blockEntity.glowIntensity;
 	}
 }

@@ -15,9 +15,10 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.util.Mth;
-import twilightforest.client.state.block.MoonwormState;
+import net.minecraft.util.Unit;
+import twilightforest.client.state.block.MoonwormRenderState;
 
-public class MoonwormModel extends Model<MoonwormState> {
+public class MoonwormModel extends Model<Unit> {
 
 	private final ModelPart shape1;
 	private final ModelPart shape2;
@@ -60,15 +61,14 @@ public class MoonwormModel extends Model<MoonwormState> {
 		return LayerDefinition.create(meshdefinition, 32, 32);
 	}
 
-	@Override
-	public void setupAnim(MoonwormState state) {
-		super.setupAnim(state);
-		if (state.delay == 0) {
+	public void setupAnim(float delay, float rotation) {
+		this.resetPose();
+		if (delay == 0) {
 			// moving
-			this.head.y += Math.min(0.0F, Mth.sin(state.rotation / 2.0F));
-			this.shape1.y += Math.min(0.0F, Mth.sin(state.rotation / 2.0F + 1.0F));
-			this.shape2.y += Math.min(0.0F, Mth.sin(state.rotation / 2.0F + 2.0F));
-			this.shape3.y += Math.min(0.0F, Mth.sin(state.rotation / 2.0F + 3.0F));
+			this.head.y += Math.min(0.0F, Mth.sin(rotation / 2.0F));
+			this.shape1.y += Math.min(0.0F, Mth.sin(rotation / 2.0F + 1.0F));
+			this.shape2.y += Math.min(0.0F, Mth.sin(rotation / 2.0F + 2.0F));
+			this.shape3.y += Math.min(0.0F, Mth.sin(rotation / 2.0F + 3.0F));
 		}
 	}
 }

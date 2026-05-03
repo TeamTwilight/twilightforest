@@ -7,25 +7,25 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
+import org.jspecify.annotations.Nullable;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.renderer.entity.AlphaYetiRenderer;
 import twilightforest.client.renderer.entity.KnightPhantomRenderer;
 import twilightforest.client.state.entity.KnightPhantomRenderState;
 import twilightforest.entity.boss.KnightPhantom;
-
-import javax.annotation.Nullable;
 
 public class KnightPhantomModel extends HumanoidModel<KnightPhantomRenderState> implements TrophyBlockModel {
 
 	private static final Identifier PHANTOM_ARMOR_TEXTURE = TwilightForestMod.prefix("textures/models/armor/phantom_layer_1.png");
 
 	@Nullable
-	private KnightPhantom knight;
 	private ModelPart helmet;
 
 	public KnightPhantomModel(ModelPart root) {
@@ -39,8 +39,7 @@ public class KnightPhantomModel extends HumanoidModel<KnightPhantomRenderState> 
 		MeshDefinition meshdefinition = HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F);
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		partdefinition.addOrReplaceChild("hat", CubeListBuilder.create(),
-			PartPose.ZERO);
+		partdefinition.getChild("head").addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
 
 		partdefinition.addOrReplaceChild("right_arm", CubeListBuilder.create()
 				.texOffs(40, 16)
@@ -70,14 +69,13 @@ public class KnightPhantomModel extends HumanoidModel<KnightPhantomRenderState> 
 		PartDefinition partdefinition = meshdefinition.getRoot();
 		CubeDeformation deformation = new CubeDeformation(0.25F);
 
-		partdefinition.addOrReplaceChild("head",
+		var head = partdefinition.addOrReplaceChild("head",
 			CubeListBuilder.create()
 				.texOffs(0, 0)
 				.addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F),
 			PartPose.offset(0.0F, -4.0F, 0.0F));
 
-		partdefinition.addOrReplaceChild("hat", CubeListBuilder.create(),
-			PartPose.ZERO);
+		head.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
 
 		var helm = partdefinition.addOrReplaceChild("helmet",
 			CubeListBuilder.create()
@@ -115,15 +113,6 @@ public class KnightPhantomModel extends HumanoidModel<KnightPhantomRenderState> 
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, int color) {
-		if (this.knight != null && this.knight.isChargingAtPlayer()) {
-			// render full skeleton
-			super.renderToBuffer(stack, builder, light, overlay, color);
-		}
-		this.knight = null;
-	}
-
-	@Override
 	public void setupAnim(KnightPhantomRenderState entity) {
 		if (entity.isCharging) {
 			this.root().visible = false;
@@ -141,15 +130,7 @@ public class KnightPhantomModel extends HumanoidModel<KnightPhantomRenderState> 
 	}
 
 	@Override
-	public void setupRotationsForTrophy(float x, float y, float z, float mouthAngle) {
-		this.head.yRot = y * Mth.DEG_TO_RAD;
-		this.head.xRot = z * Mth.DEG_TO_RAD;
-		this.helmet.xRot = this.head.xRot;
-		this.helmet.yRot = this.head.yRot;
-	}
-
-	@Override
-	public void renderTrophy(PoseStack stack, MultiBufferSource buffer, int light, int overlay, int color, ItemDisplayContext context) {
+	public void renderTrophy(PoseStack stack, SubmitNodeCollector collector, int light, ItemDisplayContext context) {
 		if (context == ItemDisplayContext.GUI) {
 			stack.pushPose();
 
@@ -159,24 +140,19 @@ public class KnightPhantomModel extends HumanoidModel<KnightPhantomRenderState> 
 
 			stack.pushPose();
 			stack.translate(0.0F, 0.3f, 0.0F);
-			VertexConsumer armorConsumer = buffer.getBuffer(RenderTypes.entityCutout(PHANTOM_ARMOR_TEXTURE));
-			this.helmet.render(stack, armorConsumer, light, OverlayTexture.NO_OVERLAY, ARGB.colorFromFloat(0.0625F, 1.0F, 1.0F, 1.0F));
+			collector.submitModelPart(this.helmet, stack, RenderTypes.entityCutout(PHANTOM_ARMOR_TEXTURE), light, OverlayTexture.NO_OVERLAY, null);
 			stack.popPose();
 
 			stack.scale(1 / 1.1F, 1 / 1.1F, 1 / 1.1F);
 			stack.translate(0.0F, 0.25F, 0.0F);
-			VertexConsumer consumer = buffer.getBuffer(RenderTypes.entityCutout(KnightPhantomRenderer.TEXTURE));
-			this.head.render(stack, consumer, light, overlay, color);
-
+			collector.submitModelPart(this.head, stack, RenderTypes.entityCutout(KnightPhantomRenderer.TEXTURE), light, OverlayTexture.NO_OVERLAY, null);
 			stack.popPose();
 		} else {
 			stack.translate(0.0F, 0.25F, 0.0F);
-			VertexConsumer consumer = buffer.getBuffer(RenderTypes.entityCutout(KnightPhantomRenderer.TEXTURE));
-			this.head.render(stack, consumer, light, overlay, color);
+			collector.submitModelPart(this.head, stack, RenderTypes.entityCutout(KnightPhantomRenderer.TEXTURE), light, OverlayTexture.NO_OVERLAY, null);
 			stack.scale(1.1F, 1.1F, 1.1F);
 			stack.translate(0.0F, 0.05F, 0.0F);
-			VertexConsumer armorConsumer = buffer.getBuffer(RenderTypes.entityCutout(PHANTOM_ARMOR_TEXTURE));
-			this.helmet.render(stack, armorConsumer, light, OverlayTexture.NO_OVERLAY, ARGB.colorFromFloat(0.0625F, 1.0F, 1.0F, 1.0F));
+			collector.submitModelPart(this.helmet, stack, RenderTypes.entityCutout(PHANTOM_ARMOR_TEXTURE), light, OverlayTexture.NO_OVERLAY, null);
 		}
 	}
 }

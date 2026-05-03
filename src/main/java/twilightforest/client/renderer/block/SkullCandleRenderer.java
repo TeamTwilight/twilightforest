@@ -1,116 +1,120 @@
 package twilightforest.client.renderer.block;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.util.Util;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.PiglinHeadModel;
-import net.minecraft.client.model.SkullModel;
-import net.minecraft.client.model.SkullModelBase;
-import net.minecraft.client.model.geom.EntityModelSet;
-import net.minecraft.client.model.geom.ModelLayers;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import com.mojang.math.Transformation;
+import net.minecraft.client.model.object.skull.SkullModelBase;
+import net.minecraft.client.renderer.PlayerSkinRenderCache;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.block.BlockModelRenderState;
+import net.minecraft.client.renderer.block.BlockModelResolver;
+import net.minecraft.client.renderer.block.model.BlockDisplayContext;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.blockentity.SkullBlockRenderer;
+import net.minecraft.client.renderer.blockentity.WallAndGroundTransformations;
+import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.resources.DefaultPlayerSkin;
-import net.minecraft.client.resources.SkinManager;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.Identifier;
+import net.minecraft.util.Util;
 import net.minecraft.world.item.component.ResolvableProfile;
+import net.minecraft.world.level.block.AbstractSkullBlock;
 import net.minecraft.world.level.block.CandleBlock;
 import net.minecraft.world.level.block.SkullBlock;
+import net.minecraft.world.level.block.WallSkullBlock;
+import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.RotationSegment;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.world.phys.Vec3;
+import org.joml.Matrix4f;
+import org.jspecify.annotations.Nullable;
 import twilightforest.block.AbstractSkullCandleBlock;
 import twilightforest.block.LightableBlock;
-import twilightforest.block.SkullCandleBlock;
-import twilightforest.block.WallSkullCandleBlock;
 import twilightforest.block.entity.SkullCandleBlockEntity;
+import twilightforest.client.state.block.SkullCandleRenderState;
 
-import java.util.Map;
+import java.util.function.Function;
 
 //[VanillaCopy] of SkullBlockRenderer, but render a candle or candles on top of the skull/head
-public class SkullCandleRenderer<T extends SkullCandleBlockEntity> implements BlockEntityRenderer<T> {
+public class SkullCandleRenderer implements BlockEntityRenderer<SkullCandleBlockEntity, SkullCandleRenderState> {
 
-	private final Map<SkullBlock.Type, SkullModelBase> modelByType;
-
-	public static final Map<SkullBlock.Type, Identifier> SKIN_BY_TYPE = Util.make(Maps.newHashMap(), map -> {
-		map.put(SkullBlock.Types.SKELETON, Identifier.withDefaultNamespace("textures/entity/skeleton/skeleton.png"));
-		map.put(SkullBlock.Types.WITHER_SKELETON, Identifier.withDefaultNamespace("textures/entity/skeleton/wither_skeleton.png"));
-		map.put(SkullBlock.Types.ZOMBIE, Identifier.withDefaultNamespace("textures/entity/zombie/zombie.png"));
-		map.put(SkullBlock.Types.CREEPER, Identifier.withDefaultNamespace("textures/entity/creeper/creeper.png"));
-		map.put(SkullBlock.Types.PIGLIN, Identifier.withDefaultNamespace("textures/entity/piglin/piglin.png"));
-		map.put(SkullBlock.Types.PLAYER, DefaultPlayerSkin.getDefaultTexture());
-	});
-
-	public static Map<SkullBlock.Type, SkullModelBase> createSkullRenderers(EntityModelSet set) {
-		ImmutableMap.Builder<SkullBlock.Type, SkullModelBase> map = ImmutableMap.builder();
-		map.put(SkullBlock.Types.SKELETON, new SkullModel(set.bakeLayer(ModelLayers.SKELETON_SKULL)));
-		map.put(SkullBlock.Types.WITHER_SKELETON, new SkullModel(set.bakeLayer(ModelLayers.WITHER_SKELETON_SKULL)));
-		map.put(SkullBlock.Types.PLAYER, new SkullModel(set.bakeLayer(ModelLayers.PLAYER_HEAD)));
-		map.put(SkullBlock.Types.ZOMBIE, new SkullModel(set.bakeLayer(ModelLayers.ZOMBIE_HEAD)));
-		map.put(SkullBlock.Types.CREEPER, new SkullModel(set.bakeLayer(ModelLayers.CREEPER_HEAD)));
-		map.put(SkullBlock.Types.PIGLIN, new PiglinHeadModel(set.bakeLayer(ModelLayers.PIGLIN_HEAD)));
-		return map.build();
-	}
+	public static final WallAndGroundTransformations<Transformation> CANDLE_TRANSFORMS = new WallAndGroundTransformations<>(
+		SkullCandleRenderer::createWallTransformation, SkullCandleRenderer::createGroundTransformation, 16
+	);
+	private final Function<SkullBlock.Type, SkullModelBase> modelByType;
+	private final BlockModelResolver blockResolver;
+	private final PlayerSkinRenderCache playerSkinRenderCache;
 
 	public SkullCandleRenderer(BlockEntityRendererProvider.Context context) {
-		this.modelByType = createSkullRenderers(context.getModelSet());
+		this.playerSkinRenderCache = context.playerSkinRenderCache();
+		this.blockResolver = context.blockModelResolver();
+		this.modelByType = Util.memoize(type -> SkullBlockRenderer.createModel(context.entityModelSet(), type));
 	}
 
 	@Override
-	public void render(SkullCandleBlockEntity entity, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light, int overlay) {
-		float animationTime = entity.getAnimation(partialTicks);
-		BlockState state = entity.getBlockState();
-		boolean wallSkull = state.getBlock() instanceof WallSkullCandleBlock;
-		Direction direction = wallSkull ? state.getValue(WallSkullCandleBlock.FACING) : null;
-		int rotation = wallSkull ? RotationSegment.convertToSegment(direction.getOpposite()) : state.getValue(SkullCandleBlock.ROTATION);
-		float rotDegrees = RotationSegment.convertToDegrees(rotation);
-		SkullBlock.Type type = ((AbstractSkullCandleBlock) state.getBlock()).getType();
-		SkullModelBase base = this.modelByType.get(type);
-		RenderType rendertype = getRenderType(type, entity.getOwnerProfile());
-		renderSkull(direction, rotDegrees, animationTime, stack, buffer, light, base, rendertype);
-
-		if (direction != null) {
-			stack.translate(-direction.getStepX() * 0.25F, 0.75F, -direction.getStepZ() * 0.25F);
-		} else {
-			stack.translate(0.0F, 0.45F, 0.0F);
-		}
-		Minecraft.getInstance().getBlockRenderer().renderSingleBlock(
-			AbstractSkullCandleBlock.candleColorToCandle(AbstractSkullCandleBlock.CandleColors.colorFromInt(entity.getCandleColor()))
-				.defaultBlockState()
-				.setValue(CandleBlock.CANDLES, Math.max(1, state.getValue(BlockStateProperties.CANDLES)))
-				.setValue(CandleBlock.LIT, state.getValue(AbstractSkullCandleBlock.LIGHTING) != LightableBlock.Lighting.NONE), stack, buffer, light, overlay);
-	}
-
-	public static void renderSkull(@Nullable Direction direction, float pYRot, float animationTime, PoseStack stack, MultiBufferSource buffer, int light, SkullModelBase base, RenderType type) {
+	public void submit(SkullCandleRenderState state, PoseStack stack, SubmitNodeCollector collector, CameraRenderState camera) {
+		SkullModelBase model = this.modelByType.apply(state.skullType);
 		stack.pushPose();
-		if (direction == null) {
-			stack.translate(0.5F, 0.0F, 0.5F);
-		} else {
-			stack.translate(0.5F - (float) direction.getStepX() * 0.25F, 0.25F, 0.5F - (float) direction.getStepZ() * 0.25F);
-		}
+		stack.mulPose(state.transformation);
+		SkullBlockRenderer.submitSkull(state.animationProgress, stack, collector, state.lightCoords, model, state.renderType, 0, state.breakProgress);
 
-		stack.scale(-1.0F, -1.0F, 1.0F);
-		VertexConsumer consumer = buffer.getBuffer(type);
-		base.setupAnim(animationTime, pYRot, 0.0F);
-		base.renderToBuffer(stack, consumer, light, OverlayTexture.NO_OVERLAY);
+		stack.mulPose(state.candleTransformation);
+		submitCandles(state.candle, stack, collector, state.lightCoords);
 		stack.popPose();
+
 	}
 
-	public static RenderType getRenderType(SkullBlock.Type type, @Nullable ResolvableProfile profile) {
-		Identifier identifier = SKIN_BY_TYPE.get(type);
-		if (type == SkullBlock.Types.PLAYER && profile != null) {
-			SkinManager skinmanager = Minecraft.getInstance().getSkinManager();
-			return RenderType.entityTranslucent(skinmanager.getInsecureSkin(profile.gameProfile()).texture());
+	public static void submitCandles(BlockModelRenderState state, PoseStack stack, SubmitNodeCollector collector, int light) {
+		state.submit(stack, collector, light, OverlayTexture.NO_OVERLAY, 0);
+	}
+
+	@Override
+	public SkullCandleRenderState createRenderState() {
+		return new SkullCandleRenderState();
+	}
+
+	@Override
+	public void extractRenderState(SkullCandleBlockEntity blockEntity, SkullCandleRenderState state, float partialTicks, Vec3 cameraPosition, ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress) {
+		BlockEntityRenderer.super.extractRenderState(blockEntity, state, partialTicks, cameraPosition, breakProgress);
+		state.animationProgress = blockEntity.getAnimation(partialTicks);
+		BlockState blockState = blockEntity.getBlockState();
+		if (blockState.getBlock() instanceof WallSkullBlock) {
+			Direction facing = blockState.getValue(WallSkullBlock.FACING);
+			state.transformation = SkullBlockRenderer.TRANSFORMATIONS.wallTransformation(facing);
+			state.candleTransformation = CANDLE_TRANSFORMS.wallTransformation(facing);
 		} else {
-			return RenderType.entityCutoutNoCullZOffset(identifier);
+			state.transformation = SkullBlockRenderer.TRANSFORMATIONS.freeTransformations(blockState.getValue(SkullBlock.ROTATION));
+			state.candleTransformation = CANDLE_TRANSFORMS.freeTransformations(0);
 		}
+
+		state.skullType = ((AbstractSkullBlock)blockState.getBlock()).getType();
+		state.renderType = this.resolveSkullRenderType(state.skullType, blockEntity);
+
+		this.blockResolver.update(state.candle,
+			AbstractSkullCandleBlock.candleColorToCandle(AbstractSkullCandleBlock.CandleColors.colorFromInt(blockEntity.candleInfo.color()))
+			.defaultBlockState()
+			.setValue(CandleBlock.CANDLES, Math.max(1, blockState.getValue(BlockStateProperties.CANDLES)))
+			.setValue(CandleBlock.LIT, blockState.getValue(AbstractSkullCandleBlock.LIGHTING) != LightableBlock.Lighting.NONE),
+			BlockDisplayContext.create());
+	}
+
+	private static Transformation createWallTransformation(Direction wallDirection) {
+		return new Transformation(new Matrix4f().translation(wallDirection.getStepX() * 0.25F, 0.75F, wallDirection.getStepZ() * 0.25F));
+	}
+
+	private static Transformation createGroundTransformation(int segment) {
+		return new Transformation(new Matrix4f().translation(0.0F, 0.45F, 0.0F));
+	}
+
+	private RenderType resolveSkullRenderType(SkullBlock.Type type, SkullBlockEntity entity) {
+		if (type == SkullBlock.Types.PLAYER) {
+			ResolvableProfile ownerProfile = entity.getOwnerProfile();
+			if (ownerProfile != null) {
+				return this.playerSkinRenderCache.getOrDefault(ownerProfile).renderType();
+			}
+		}
+
+		return SkullBlockRenderer.getSkullRenderType(type, null);
 	}
 }

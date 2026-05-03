@@ -8,9 +8,12 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
+import twilightforest.client.renderer.entity.AlphaYetiRenderer;
 import twilightforest.client.renderer.entity.SnowQueenRenderer;
 import twilightforest.client.state.entity.SnowQueenRenderState;
 import twilightforest.entity.boss.SnowQueen.Phase;
@@ -134,14 +137,7 @@ public class SnowQueenModel extends HumanoidModel<SnowQueenRenderState> implemen
 	}
 
 	@Override
-	public void renderTrophy(PoseStack stack, MultiBufferSource buffer, int light, int overlay, int color, ItemDisplayContext context) {
-		VertexConsumer consumer = buffer.getBuffer(RenderTypes.entityCutout(SnowQueenRenderer.TEXTURE));
-		this.head.render(stack, consumer, light, overlay, color);
-	}
-
-	@Override
-	public void setupRotationsForTrophy(float x, float y, float z, float mouthAngle) {
-		this.head.yRot = y * Mth.DEG_TO_RAD;
-		this.head.xRot = z * Mth.DEG_TO_RAD;
+	public void renderTrophy(PoseStack stack, SubmitNodeCollector collector, int light, ItemDisplayContext context) {
+		collector.submitModelPart(this.head, stack, RenderTypes.entityCutout(SnowQueenRenderer.TEXTURE), light, OverlayTexture.NO_OVERLAY, null);
 	}
 }

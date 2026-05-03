@@ -16,7 +16,7 @@ import net.minecraft.util.Unit;
 
 public class RedThreadModel extends Model<Unit> {
 
-	private final ModelPart center;
+	public final ModelPart center;
 	private final ModelPart up;
 	private final ModelPart down;
 	private final ModelPart left;

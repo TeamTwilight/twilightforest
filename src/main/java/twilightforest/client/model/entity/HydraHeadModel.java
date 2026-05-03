@@ -7,9 +7,12 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
+import twilightforest.client.renderer.entity.AlphaYetiRenderer;
 import twilightforest.client.renderer.entity.HydraRenderer;
 import twilightforest.client.state.entity.HydraHeadRenderState;
 
@@ -84,14 +87,12 @@ public class HydraHeadModel extends EntityModel<HydraHeadRenderState> implements
 
 
 	@Override
-	public void setupRotationsForTrophy(float x, float y, float z, float mouthAngle) {
-		this.head.yRot = y * Mth.DEG_TO_RAD;
-		this.head.xRot = z * Mth.DEG_TO_RAD;
+	public void setupRotationsForTrophy(float animationProgress, float mouthAngle) {
 		this.jaw.xRot = mouthAngle * (Mth.PI / 3.0F);
 	}
 
 	@Override
-	public void renderTrophy(PoseStack stack, MultiBufferSource buffer, int light, int overlay, int color, ItemDisplayContext context) {
+	public void renderTrophy(PoseStack stack, SubmitNodeCollector collector, int light, ItemDisplayContext context) {
 		boolean itemForm = context != ItemDisplayContext.NONE;
 		stack.scale(0.25F, 0.25F, 0.25F);
 		if (itemForm) {
@@ -101,7 +102,6 @@ public class HydraHeadModel extends EntityModel<HydraHeadRenderState> implements
 			stack.translate(0.0F, 0.0F, 0.75f);
 		}
 		stack.translate(0.0F, -1.0F, itemForm ? -1.0F : 0.0F);
-		VertexConsumer consumer = buffer.getBuffer(RenderTypes.entityCutout(HydraRenderer.TEXTURE));
-		this.head.render(stack, consumer, light, overlay, color);
+		collector.submitModelPart(this.head, stack, RenderTypes.entityCutout(HydraRenderer.TEXTURE), light, OverlayTexture.NO_OVERLAY, null);
 	}
 }

@@ -20,7 +20,7 @@ import twilightforest.client.model.entity.MinoshroomModel;
 import twilightforest.client.state.entity.MinoshroomRenderState;
 import twilightforest.entity.boss.Minoshroom;
 
-public class MinoshroomRenderer extends HumanoidMobRenderer<Minoshroom, MinoshroomRenderState, MinoshroomModel<MinoshroomRenderState>> {
+public class MinoshroomRenderer extends HumanoidMobRenderer<Minoshroom, MinoshroomRenderState, MinoshroomModel> {
 	public static final BlockDisplayContext BLOCK_DISPLAY_CONTEXT = BlockDisplayContext.create();
 
 	public static final Identifier TEXTURE = TwilightForestMod.getModelTexture("minoshroomtaur.png");
@@ -53,9 +53,9 @@ public class MinoshroomRenderer extends HumanoidMobRenderer<Minoshroom, Minoshro
 	/**
 	 * [VanillaCopy] {@link net.minecraft.client.renderer.entity.layers.MushroomCowMushroomLayer}
 	 */
-	static class MinoshroomMushroomLayer extends RenderLayer<MinoshroomRenderState, MinoshroomModel<MinoshroomRenderState>> {
+	static class MinoshroomMushroomLayer extends RenderLayer<MinoshroomRenderState, MinoshroomModel> {
 
-		public MinoshroomMushroomLayer(RenderLayerParent<MinoshroomRenderState, MinoshroomModel<MinoshroomRenderState>> renderer) {
+		public MinoshroomMushroomLayer(RenderLayerParent<MinoshroomRenderState, MinoshroomModel> renderer) {
 			super(renderer);
 		}
 

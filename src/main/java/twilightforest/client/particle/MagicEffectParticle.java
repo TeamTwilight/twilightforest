@@ -7,8 +7,8 @@ import net.minecraft.util.RandomSource;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
 public class MagicEffectParticle extends SpellParticle {
+
 	protected MagicEffectParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, SpriteSet sprites) {
 		super(level, x, y, z, xSpeed, ySpeed, zSpeed, sprites);
 	}
@@ -18,7 +18,6 @@ public class MagicEffectParticle extends SpellParticle {
 		return 0xF000F0;
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	public static class Factory implements ParticleProvider<ColorParticleOption> {
 		private final SpriteSet sprite;
 
@@ -26,6 +25,7 @@ public class MagicEffectParticle extends SpellParticle {
 			this.sprite = sprite;
 		}
 
+		@Override
 		public Particle createParticle(ColorParticleOption type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
 			MagicEffectParticle particle = new MagicEffectParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, this.sprite);
 			particle.setColor(type.getRed(), type.getGreen(), type.getBlue());

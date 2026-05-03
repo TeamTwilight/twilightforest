@@ -13,10 +13,14 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemDisplayContext;
+import twilightforest.client.renderer.entity.AlphaYetiRenderer;
 import twilightforest.client.renderer.entity.QuestRamRenderer;
 import twilightforest.client.state.entity.QuestingRamRenderState;
 
@@ -210,22 +214,14 @@ public class QuestRamModel extends EntityModel<QuestingRamRenderState> implement
 	}
 
 	@Override
-	public void setupRotationsForTrophy(float x, float y, float z, float mouthAngle) {
-		this.head.yRot = y * Mth.DEG_TO_RAD;
-		this.head.xRot = z * Mth.DEG_TO_RAD;
-	}
-
-	@Override
-	public void renderTrophy(PoseStack stack, MultiBufferSource buffer, int light, int overlay, int color, ItemDisplayContext context) {
+	public void renderTrophy(PoseStack stack, SubmitNodeCollector collector, int light, ItemDisplayContext context) {
 		stack.scale(0.67F, 0.67F, 0.67F);
 		stack.translate(0.0F, 0.5F, context != ItemDisplayContext.NONE ? 0.5F : 0.67F);
 
-		VertexConsumer consumer = buffer.getBuffer(RenderTypes.entityCutout(QuestRamRenderer.TEXTURE));
-		this.head.render(stack, consumer, light, overlay, color);
+		collector.submitModelPart(this.head, stack, RenderTypes.entityCutout(QuestRamRenderer.TEXTURE), light, OverlayTexture.NO_OVERLAY, null);
 		stack.pushPose();
 		stack.scale(1.025F, 1.025F, 1.025F);
-		consumer = buffer.getBuffer(RenderTypes.entityTranslucent(QuestRamRenderer.LINE_TEXTURE));
-		this.head.render(stack, consumer, 0xF000F0, overlay, color);
+		collector.submitModelPart(this.head, stack, RenderTypes.entityTranslucent(QuestRamRenderer.TEXTURE), LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, null);
 		stack.popPose();
 	}
 }

@@ -8,7 +8,6 @@ import net.minecraft.util.RandomSource;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
 public class CustomTextureParticle extends SingleQuadParticle {
     private final boolean fullBright;
 	private final float uo;
@@ -63,16 +62,13 @@ public class CustomTextureParticle extends SingleQuadParticle {
 		return this.sprite.getV((this.vo + 1.0F) / 4.0F);
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	public record Factory(SpriteSet sprite, boolean fullBright) implements ParticleProvider<SimpleParticleType> {
 		@Override
 		public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
-			CustomTextureParticle particle = new CustomTextureParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, this.fullBright, this.sprite.get(random));
-			return particle;
+			return new CustomTextureParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, this.fullBright, this.sprite.get(random));
 		}
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	public record ShieldBreak(SpriteSet sprite) implements ParticleProvider<SimpleParticleType> {
 		@Override
 		public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
