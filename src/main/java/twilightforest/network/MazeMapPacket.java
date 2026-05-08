@@ -1,17 +1,18 @@
 package twilightforest.network;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.MapRenderer;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import twilightforest.TwilightForestMod;
 import twilightforest.item.MazeMapItem;
 import twilightforest.item.mapdata.TFMazeMapData;
+
+import java.util.stream.StreamSupport;
 
 // Rewraps vanilla ClientboundMapItemDataPacket to properly add our own data
 public record MazeMapPacket(ClientboundMapItemDataPacket inner, boolean ore, int yCenter) implements CustomPacketPayload {
@@ -30,27 +31,32 @@ public record MazeMapPacket(ClientboundMapItemDataPacket inner, boolean ore, int
 		return TYPE;
 	}
 
-	@SuppressWarnings("Convert2Lambda")
 	public static void handle(MazeMapPacket message, IPayloadContext ctx) {
 		//ensure this is only done on clients as this uses client only code
 		if (ctx.flow().isClientbound()) {
-			ctx.enqueueWork(new Runnable() {
-				@Override
-				public void run() {
-					Level level = ctx.player().level();
-					// [VanillaCopy] ClientPlayNetHandler#handleMaps with our own mapdatas
-					MapRenderer mapitemrenderer = Minecraft.getInstance().gameRenderer.getMapRenderer();
-					String s = MazeMapItem.getMapName(message.inner().mapId().id());
-					TFMazeMapData mapdata = TFMazeMapData.getMazeMapData(level, s);
-					if (mapdata == null) {
-						mapdata = new TFMazeMapData(0, 0, message.inner().scale(), false, false, message.inner().locked(), level.dimension());
-						TFMazeMapData.registerMazeMapData(level, mapdata, s);
-					}
+			ctx.enqueueWork(() -> {
+				Level level = ctx.player().level();
 
-					mapdata.ore = message.ore();
-					mapdata.yCenter = message.yCenter();
-					message.inner().applyToMap(mapdata);
-					mapitemrenderer.update(message.inner().mapId(), mapdata);
+				String s = MazeMapItem.getMapName(message.inner().mapId().id());
+				TFMazeMapData mapdata = TFMazeMapData.getMazeMapData(level, s);
+				if (mapdata == null) {
+					mapdata = new TFMazeMapData(0, 0, message.inner().scale(), false, false, message.inner().locked(), level.dimension());
+					TFMazeMapData.registerMazeMapData(level, mapdata, s);
+				}
+
+				mapdata.ore = message.ore();
+				mapdata.yCenter = message.yCenter();
+				message.inner().applyToMap(mapdata);
+
+				// This may or may not be equivalent to updating the renderer directly, will need testing to verify
+
+
+				MapItemSavedData saved = level.getMapData(message.inner().mapId());
+
+				if (saved != null) {
+					saved.addClientSideDecorations(
+						StreamSupport.stream(mapdata.getDecorations().spliterator(), false).toList()
+					);
 				}
 			});
 		}

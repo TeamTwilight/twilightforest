@@ -30,7 +30,7 @@ public class ParticlePacket implements CustomPacketPayload {
 			ParticleType<?> type = BuiltInRegistries.PARTICLE_TYPE.byId(buf.readInt());
 			if (type == null)
 				break; // Fail silently and end execution entirely. Due to Type serialization we now have completely unknown data in the pipeline without any way to safely read it all
-			this.queuedParticles.add(new QueuedParticle(ParticleTypes.STREAM_CODEC.decode(buf), buf.readBoolean(), buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readDouble()));
+			this.queuedParticles.add(new QueuedParticle(ParticleTypes.STREAM_CODEC.decode(buf), buf.readBoolean(), buf.readBoolean(), buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readDouble()));
 		}
 	}
 
@@ -55,22 +55,24 @@ public class ParticlePacket implements CustomPacketPayload {
 		return TYPE;
 	}
 
-	public void queueParticle(ParticleOptions particleOptions, boolean b, double x, double y, double z, double x2, double y2, double z2) {
-		this.queuedParticles.add(new QueuedParticle(particleOptions, b, x, y, z, x2, y2, z2));
+	public void queueParticle(ParticleOptions particleOptions, boolean b, boolean b2, double x, double y, double z, double x2, double y2, double z2) {
+		this.queuedParticles.add(new QueuedParticle(particleOptions, b, b2, x, y, z, x2, y2, z2));
 	}
 
-	public void queueParticle(ParticleOptions particleOptions, boolean b, Vec3 xyz, Vec3 xyz2) {
-		this.queuedParticles.add(new QueuedParticle(particleOptions, b, xyz.x, xyz.y, xyz.z, xyz2.x, xyz2.y, xyz2.z));
+	public void queueParticle(ParticleOptions particleOptions, boolean b, boolean b2, Vec3 xyz, Vec3 xyz2) {
+		this.queuedParticles.add(new QueuedParticle(particleOptions, b, b2, xyz.x, xyz.y, xyz.z, xyz2.x, xyz2.y, xyz2.z));
 	}
 
-	private record QueuedParticle(ParticleOptions particleOptions, boolean b, double x, double y, double z, double x2,
+
+	// Important to note that b2 is equivalent to b on the old call sites, b now represents the new parameter 'overrideLimiter'
+	private record QueuedParticle(ParticleOptions particleOptions, boolean b, boolean b2, double x, double y, double z, double x2,
 								  double y2, double z2) {
 	}
 
 	public static void handle(ParticlePacket message, IPayloadContext ctx) {
 		ctx.enqueueWork(() -> {
 			for (QueuedParticle queuedParticle : message.queuedParticles) {
-				ctx.player().level().addParticle(queuedParticle.particleOptions, queuedParticle.b, queuedParticle.x, queuedParticle.y, queuedParticle.z, queuedParticle.x2, queuedParticle.y2, queuedParticle.z2);
+				ctx.player().level().addParticle(queuedParticle.particleOptions, queuedParticle.b, queuedParticle.b2, queuedParticle.x, queuedParticle.y, queuedParticle.z, queuedParticle.x2, queuedParticle.y2, queuedParticle.z2);
 			}
 		});
 	}
