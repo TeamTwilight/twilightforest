@@ -30,32 +30,36 @@ public record MagicMapPacket(ClientboundMapItemDataPacket inner, List<String> co
 		return TYPE;
 	}
 
+	@SuppressWarnings("Convert2Lambda")
 	public static void handle(MagicMapPacket message, IPayloadContext ctx) {
 		//ensure this is only done on clients as this uses client only code
 		if (ctx.flow().isClientbound()) {
-			ctx.enqueueWork(() -> {
-				Level level = ctx.player().level();
+			ctx.enqueueWork(new Runnable() {
+				@Override
+				public void run() {
+					Level level = ctx.player().level();
 
-				String s = MagicMapItem.getMapName(message.inner.mapId().id());
-				TFMagicMapData mapdata = TFMagicMapData.getMagicMapData(level, s);
-				if (mapdata == null) {
-					mapdata = new TFMagicMapData(0, 0, message.inner.scale(), false, false, message.inner.locked(), level.dimension());
-					TFMagicMapData.registerMagicMapData(level, mapdata, s);
-				}
+					String s = MagicMapItem.getMapName(message.inner.mapId().id());
+					TFMagicMapData mapdata = TFMagicMapData.getMagicMapData(level, s);
+					if (mapdata == null) {
+						mapdata = new TFMagicMapData(0, 0, message.inner.scale(), false, false, message.inner.locked(), level.dimension());
+						TFMagicMapData.registerMagicMapData(level, mapdata, s);
+					}
 
-				message.inner.applyToMap(mapdata);
-				//TF: sync conquered structures for map
-				mapdata.conqueredStructures.clear();
-				mapdata.conqueredStructures.addAll(message.conqueredStructures());
+					message.inner.applyToMap(mapdata);
+					//TF: sync conquered structures for map
+					mapdata.conqueredStructures.clear();
+					mapdata.conqueredStructures.addAll(message.conqueredStructures());
 
-				// This may or may not be equivalent to updating the renderer directly, will need testing to verify
+					// This may or may not be equivalent to updating the renderer directly, will need testing to verify
 
-				MapItemSavedData saved = level.getMapData(message.inner.mapId());
+					MapItemSavedData saved = level.getMapData(message.inner.mapId());
 
-				if (saved != null) {
-					saved.addClientSideDecorations(
-						StreamSupport.stream(mapdata.getDecorations().spliterator(), false).toList()
-					);
+					if (saved != null) {
+						saved.addClientSideDecorations(
+							StreamSupport.stream(mapdata.getDecorations().spliterator(), false).toList()
+						);
+					}
 				}
 			});
 		}

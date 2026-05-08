@@ -31,32 +31,42 @@ public record MazeMapPacket(ClientboundMapItemDataPacket inner, boolean ore, int
 		return TYPE;
 	}
 
+	@SuppressWarnings("Convert2Lambda")
 	public static void handle(MazeMapPacket message, IPayloadContext ctx) {
 		//ensure this is only done on clients as this uses client only code
 		if (ctx.flow().isClientbound()) {
-			ctx.enqueueWork(() -> {
-				Level level = ctx.player().level();
+			ctx.enqueueWork(new Runnable() {
+				@Override
+				public void run() {
+					Level level = ctx.player().level();
 
-				String s = MazeMapItem.getMapName(message.inner().mapId().id());
-				TFMazeMapData mapdata = TFMazeMapData.getMazeMapData(level, s);
-				if (mapdata == null) {
-					mapdata = new TFMazeMapData(0, 0, message.inner().scale(), false, false, message.inner().locked(), level.dimension());
-					TFMazeMapData.registerMazeMapData(level, mapdata, s);
-				}
+					String s = MazeMapItem.getMapName(message.inner().mapId().id());
+					TFMazeMapData mapdata = TFMazeMapData.getMazeMapData(level, s);
+					if (mapdata == null) {
+						mapdata = new TFMazeMapData(
+							0, 0,
+							message.inner().scale(),
+							false,
+							false,
+							message.inner().locked(),
+							level.dimension()
+						);
+						TFMazeMapData.registerMazeMapData(level, mapdata, s);
+					}
 
-				mapdata.ore = message.ore();
-				mapdata.yCenter = message.yCenter();
-				message.inner().applyToMap(mapdata);
+					mapdata.ore = message.ore();
+					mapdata.yCenter = message.yCenter();
+					message.inner().applyToMap(mapdata);
 
-				// This may or may not be equivalent to updating the renderer directly, will need testing to verify
+					// This may or may not be equivalent to updating the renderer directly, will need testing to verify
 
+					MapItemSavedData saved = level.getMapData(message.inner().mapId());
 
-				MapItemSavedData saved = level.getMapData(message.inner().mapId());
-
-				if (saved != null) {
-					saved.addClientSideDecorations(
-						StreamSupport.stream(mapdata.getDecorations().spliterator(), false).toList()
-					);
+					if (saved != null) {
+						saved.addClientSideDecorations(
+							StreamSupport.stream(mapdata.getDecorations().spliterator(), false).toList()
+						);
+					}
 				}
 			});
 		}
