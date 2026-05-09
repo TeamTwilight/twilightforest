@@ -16,6 +16,7 @@ import net.minecraft.world.phys.Vec3;
 import twilightforest.init.TFDimension;
 
 import java.util.Locale;
+import java.util.Set;
 
 @tamaized.beanification.Component
 public class TFTeleportCommand {
@@ -46,7 +47,7 @@ public class TFTeleportCommand {
 		Vec3 teleportPos = new Vec3(pos.x, yConverted, pos.z);
 		if (!twilight.isInWorldBounds(BlockPos.containing(teleportPos)))
 			throw INVALID_POSITION.create();
-		player.teleportTo(twilight, teleportPos.x(), teleportPos.y(), teleportPos.z(), player.getYRot(), player.getXRot(), false);
+		player.teleportTo(twilight, teleportPos.x(), teleportPos.y(), teleportPos.z(), Set.of(), player.getYRot(), player.getXRot(), false);
 		String formattedX = String.format(Locale.ROOT, "%.1f", teleportPos.x());
 		String formattedY = String.format(Locale.ROOT, "%.1f", teleportPos.y());
 		String formattedZ = String.format(Locale.ROOT, "%.1f", teleportPos.z());

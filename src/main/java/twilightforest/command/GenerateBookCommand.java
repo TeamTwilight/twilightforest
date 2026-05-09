@@ -33,7 +33,7 @@ public class GenerateBookCommand {
 	private int generateBook(CommandSourceStack source, @Nullable Holder.Reference<Structure> structureKey) throws CommandSyntaxException {
 		if (!(source.getEntity() instanceof Player player) || player instanceof FakePlayer) throw ERROR_NOT_RUN_BY_PLAYER.create();
 		if (structureKey == null) {
-			for (Structure structure : source.getLevel().registryAccess().registryOrThrow(Registries.STRUCTURE).stream().toList()) {
+			for (Structure structure : source.getLevel().registryAccess().lookupOrThrow(Registries.STRUCTURE).stream().toList()) {
 				if (structure instanceof StructureHints hint) {
 					ItemStack book = hint.createHintBook(source.registryAccess());
 					if (!book.isEmpty()) {
@@ -44,7 +44,7 @@ public class GenerateBookCommand {
 				}
 			}
 		} else {
-			if (source.getLevel().registryAccess().registryOrThrow(Registries.STRUCTURE).get(structureKey.key()) instanceof StructureHints hint) {
+			if (source.getLevel().registryAccess().lookupOrThrow(Registries.STRUCTURE).get(structureKey.key()).orElseThrow() instanceof StructureHints hint) {
 				ItemStack book = hint.createHintBook(source.registryAccess());
 				if (!book.isEmpty()) {
 					if (!player.addItem(book)) {

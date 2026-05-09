@@ -2,6 +2,7 @@ package twilightforest.command;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
@@ -9,7 +10,9 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.ResourceKeyArgument;
 import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.util.FakePlayer;
@@ -37,10 +40,10 @@ public class TravellersGearCommand {
 		return Commands.literal("travellers_gear").requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
 			.then(Commands.literal("add_modifier")
 				.then(Commands.argument("modifier", ResourceKeyArgument.key(TFRegistries.Keys.TRAVELLERS_MODIFIERS))
-					.executes(context -> this.addModifier(context.getSource(), ResourceKeyArgument.resolveKey(context, "modifier", TFRegistries.Keys.TRAVELLERS_MODIFIERS, ERROR_INVALID_MODIFIER)))))
+					.executes(context -> this.addModifier(context.getSource(), resolveKey(context, "modifier", TFRegistries.Keys.TRAVELLERS_MODIFIERS, ERROR_INVALID_MODIFIER)))))
 				.then(Commands.literal("remove_modifier")
 					.then(Commands.argument("modifier", ResourceKeyArgument.key(TFRegistries.Keys.TRAVELLERS_MODIFIERS))
-						.executes(context -> this.removeModifier(context.getSource(), ResourceKeyArgument.resolveKey(context, "modifier", TFRegistries.Keys.TRAVELLERS_MODIFIERS, ERROR_INVALID_MODIFIER)))));
+						.executes(context -> this.removeModifier(context.getSource(), resolveKey(context, "modifier", TFRegistries.Keys.TRAVELLERS_MODIFIERS, ERROR_INVALID_MODIFIER)))));
 	}
 
 	private int addModifier(CommandSourceStack source, Holder.Reference<TravellersModifier> modifier) throws CommandSyntaxException {
@@ -69,6 +72,21 @@ public class TravellersGearCommand {
 		if (modifier.value().isAbility()) throw ERROR_ABILITY.create();
 		Component modKey = TravellersModifiersManager.getModifierTooltipComponent(modifier);
 		return new Context(player, player.getMainHandItem(), armor, modKey);
+	}
+
+	// Might be worth considering access widening the vanilla methods or simply refactoring this whole system to better align with new vanilla expectations
+
+	// [VanillaCopy] of ResourceKeyArgument.resolveKey
+	private static <T> Holder.Reference<T> resolveKey(
+		CommandContext<CommandSourceStack> context, String name, ResourceKey<Registry<T>> registryKey, DynamicCommandExceptionType exception
+	) throws CommandSyntaxException {
+		ResourceKey<T> key = ResourceKeyArgument.getRegistryKey(context, name, registryKey, exception);
+		return getRegistry(context, registryKey).get(key).orElseThrow(() -> exception.create(key.identifier()));
+	}
+
+	// [VanillaCopy] of ResourceKeyArgument.getRegistry
+	private static <T> Registry<T> getRegistry(CommandContext<CommandSourceStack> context, ResourceKey<? extends Registry<T>> registryKey) {
+		return context.getSource().getServer().registryAccess().lookupOrThrow(registryKey);
 	}
 
 	private record Context(Player player, ItemStack stack, TravellersModifiable item, Component modKey) {}

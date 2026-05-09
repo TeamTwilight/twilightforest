@@ -43,6 +43,7 @@ public class CountTemplateCommand {
 		List<StructurePiece> structurePieces = structureAt.getPieces();
 		for (StructurePiece piece : structurePieces) {
 			if (piece instanceof TemplateStructurePiece templatePiece) {
+				// makeTemplateLocation() is protected in TemplateStructurePiece, may need to inject a public getter or access widen the vanilla method
 				Identifier identifier = templatePiece.makeTemplateLocation();
 				templateCounts.put(identifier, templateCounts.getOrDefault(identifier, 0) + 1);
 			}

@@ -41,15 +41,15 @@ public class InfoCommand {
 
 		BlockPos pos = BlockPos.containing(source.getPosition());
 
-		Optional<Registry<Structure>> possibleStructureRegistry = level.registryAccess().registry(Registries.STRUCTURE);
+		Optional<Registry<Structure>> possibleStructureRegistry = level.registryAccess().lookup(Registries.STRUCTURE);
 		Optional<StructureStart> possibleNearLandmark = LandmarkUtil.locateNearestLandmarkStart(level, SectionPos.blockToSectionCoord(pos.getX()), SectionPos.blockToSectionCoord(pos.getZ()));
 
-		if (possibleStructureRegistry.isEmpty() || possibleNearLandmark.isEmpty() || !(possibleNearLandmark.get().getStructure() instanceof LandmarkStructure landmarkStructure)) return 0;
+		if (possibleNearLandmark.isEmpty() || !(possibleNearLandmark.get().getStructure() instanceof LandmarkStructure landmarkStructure)) return 0;
 		StructureStart structureStart = possibleNearLandmark.get();
 
-		Identifier key = possibleStructureRegistry.get().getKey(landmarkStructure);
+		Identifier key = possibleStructureRegistry.orElseThrow().getKey(landmarkStructure);
 
-		if (FMLLoader.isProduction()) {
+		if (FMLLoader.getCurrent().isProduction()) {
 			source.sendSuccess(() -> Component.translatable("commands.tffeature.info.wip").withStyle(ChatFormatting.RED, ChatFormatting.BOLD), false);
 		}
 
@@ -80,7 +80,7 @@ public class InfoCommand {
 			source.sendSuccess(() -> Component.translatable("commands.tffeature.structure.spawn_list").withStyle(ChatFormatting.UNDERLINE), false);
 			if (spawnList != null)
 				for (MobSpawnSettings.SpawnerData entry : spawnList)
-					source.sendSuccess(() -> Component.translatable("commands.tffeature.structure.spawn_info", entry.type.getDescription().getString(), entry.getWeight().asInt()), false);
+					source.sendSuccess(() -> Component.translatable("commands.tffeature.structure.spawn_info", entry.type().getDescription().getString(), entry.minCount(), entry.maxCount()), false);
 		} else {
 			source.sendSuccess(() -> Component.translatable("commands.tffeature.structure.outside").withStyle(ChatFormatting.BOLD, ChatFormatting.RED), false);
 		}
