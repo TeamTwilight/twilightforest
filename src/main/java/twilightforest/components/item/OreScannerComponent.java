@@ -8,8 +8,6 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMaps;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
-import net.minecraft.core.component.DataComponentHolder;
-import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.BlockGetter;
@@ -105,7 +103,7 @@ public class OreScannerComponent {
 		ImmutableMap.Builder<String, Integer> builder = ImmutableMap.builder();
 
 		for (Object2IntMap.Entry<Block> entry : this.blockCounter.object2IntEntrySet()) {
-			if (entry.getIntValue() > 0 && entry.getKey().builtInRegistryHolder().is(Tags.Blocks.ORES)) {
+			if (entry.getIntValue() > 0 && entry.getKey().defaultBlockState().is(Tags.Blocks.ORES)) {
 				builder.put(entry.getKey().getDescriptionId(), entry.getIntValue());
 			}
 		}
