@@ -18,7 +18,7 @@ import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
-import net.neoforged.fml.loading.FMLLoader;
+import net.neoforged.fml.loading.FMLEnvironment;
 import twilightforest.events.EntityEvents;
 import twilightforest.util.landmarks.LandmarkUtil;
 import twilightforest.world.components.structures.start.TFStructureStart;
@@ -49,7 +49,7 @@ public class InfoCommand {
 
 		Identifier key = possibleStructureRegistry.orElseThrow().getKey(landmarkStructure);
 
-		if (FMLLoader.getCurrent().isProduction()) {
+		if (FMLEnvironment.isProduction()) {
 			source.sendSuccess(() -> Component.translatable("commands.tffeature.info.wip").withStyle(ChatFormatting.RED, ChatFormatting.BOLD), false);
 		}
 
@@ -80,7 +80,8 @@ public class InfoCommand {
 			source.sendSuccess(() -> Component.translatable("commands.tffeature.structure.spawn_list").withStyle(ChatFormatting.UNDERLINE), false);
 			if (spawnList != null)
 				for (MobSpawnSettings.SpawnerData entry : spawnList)
-					source.sendSuccess(() -> Component.translatable("commands.tffeature.structure.spawn_info", entry.type().getDescription().getString(), entry.minCount(), entry.maxCount()), false);
+					// TODO: Address the removal of entry.getWeight() in MobSpawnSettings.SpawnerData
+					source.sendSuccess(() -> Component.translatable("commands.tffeature.structure.spawn_info", entry.type().getDescription().getString(), entry.getWeight().asInt()), false);
 		} else {
 			source.sendSuccess(() -> Component.translatable("commands.tffeature.structure.outside").withStyle(ChatFormatting.BOLD, ChatFormatting.RED), false);
 		}
