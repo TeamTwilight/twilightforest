@@ -690,6 +690,7 @@
   "commands.tffeature.structure.spawn_list": "Список появления этой области:",
   "commands.tffeature.usage": "/%s <info | reactivate | conquer | center>",
   "config.jade.plugin_twilightforest.quest_ram_wool": "Шерсть квестового барана",
+  "config.twilightforest.animate_trophies": "Анимировать трофеи",
   "config.twilightforest.boss_drop_chests": "Сундуки с добычей боссов",
   "config.twilightforest.boss_drop_chests.tooltip": "Если включено, добыча с боссов Twilight Forest будет помещена в сундук, где босс появился изначально, вместо того чтобы выпасть на пол.\nЗаметьте, что эта настройка не распространяется на Призрака рыцаря, так как механика их дропа отличается.",
   "config.twilightforest.casket_uuid_locking": "Заблокировать ящик по UUID",
