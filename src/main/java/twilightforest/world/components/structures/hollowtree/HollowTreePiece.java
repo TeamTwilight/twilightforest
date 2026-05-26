@@ -114,6 +114,8 @@ public abstract class HollowTreePiece extends StructurePiece {
 	/**
 	 * Make a leaf blob
 	 */
+
+	// TODO: Simplify this function after the 26.1.2 port
 	protected void drawBlockBlob(WorldGenLevel world, BoundingBox sbb, int sx, int sy, int sz, int blobRadius, RandomSource random, BlockStateProvider stateProvider, boolean forcedPlace, boolean leafHack, boolean imperfect) {
 		BlockPos origin = this.getWorldPos(sx, sy, sz).immutable();
 

@@ -6,7 +6,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.util.RandomSource;
-import net.minecraft.util.random.WeightedRandomList;
+import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.biome.MobSpawnSettings;
@@ -16,7 +16,6 @@ import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFEntities;
-import twilightforest.init.TFMapDecorations;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.world.components.structures.trollcave.CloudCastleComponent;
 import twilightforest.world.components.structures.util.ConfigurableSpawns;
@@ -67,14 +66,15 @@ public class GiantHouseStructure extends ProgressionStructure implements Configu
 			false, Optional.empty(),
 			new StructureSettings(
 				context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_GIANT_HOUSE_BIOMES),
-				Arrays.stream(MobCategory.values()).collect(Collectors.toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create()))), // Landmarks have Controlled Mob spawning
+				Arrays.stream(MobCategory.values()).collect(Collectors.<MobCategory, MobCategory, StructureSpawnOverride>toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedList.<MobSpawnSettings.SpawnerData>builder().build()))), // Landmarks have Controlled Mob spawning
 				GenerationStep.Decoration.TOP_LAYER_MODIFICATION,
 				TerrainAdjustment.NONE
 			),
-			ControlledSpawningConfig.create(List.of(List.of( // cloud monsters
-				new MobSpawnSettings.SpawnerData(TFEntities.GIANT_MINER.get(), 10, 1, 1),
-				new MobSpawnSettings.SpawnerData(TFEntities.ARMORED_GIANT.get(), 10, 1, 1)
-			)), List.of(), List.of())
+			ControlledSpawningConfig.create(List.of(WeightedList.<MobSpawnSettings.SpawnerData>builder() // cloud monsters
+				.add(new MobSpawnSettings.SpawnerData(TFEntities.GIANT_MINER.get(), 1, 1), 10)
+				.add(new MobSpawnSettings.SpawnerData(TFEntities.ARMORED_GIANT.get(), 1, 1), 10)
+				.build()
+			), WeightedList.of(), WeightedList.of())
 		);
 	}
 }

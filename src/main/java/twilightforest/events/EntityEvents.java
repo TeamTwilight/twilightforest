@@ -12,6 +12,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -366,8 +367,8 @@ public class EntityEvents {
 	}
 
 	@Nullable
-	public static List<MobSpawnSettings.SpawnerData> gatherPotentialSpawns(StructureManager structureManager, MobCategory classification, BlockPos pos) {
-		List<StructureStart> structureStarts = structureManager.startsForStructure(new ChunkPos(pos), s -> s instanceof ControlledSpawns);
+	public static WeightedList<MobSpawnSettings.SpawnerData> gatherPotentialSpawns(StructureManager structureManager, MobCategory classification, BlockPos pos) {
+		List<StructureStart> structureStarts = structureManager.startsForStructure(ChunkPos.containing(pos), s -> s instanceof ControlledSpawns);
 
 		// This is wretched FIXME make this method return void instead, make one of parameters the SpawnerData consumer (eg LevelEvent.PotentialSpawns::addSpawnerData or List::add)
 		for (StructureStart start : structureStarts) {
@@ -400,10 +401,10 @@ public class EntityEvents {
 		if (!(event.getLevel() instanceof ServerLevel serverLevel))
 			return;
 
-		List<MobSpawnSettings.SpawnerData> potentialStructureSpawns = gatherPotentialSpawns(serverLevel.structureManager(), event.getMobCategory(), event.getPos());
+		WeightedList<MobSpawnSettings.SpawnerData> potentialStructureSpawns = gatherPotentialSpawns(serverLevel.structureManager(), event.getMobCategory(), event.getPos());
 		if (potentialStructureSpawns != null) {
 			List.copyOf(event.getSpawnerDataList()).forEach(event::removeSpawnerData);
-			potentialStructureSpawns.forEach(event::addSpawnerData);
+			potentialStructureSpawns.unwrap().forEach(event::addSpawnerData);
 		}
 	}
 

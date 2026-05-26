@@ -13,6 +13,8 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.random.Weighted;
+import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
@@ -76,12 +78,11 @@ public class InfoCommand {
 			}
 
 			// what is the spawn list
-			List<MobSpawnSettings.SpawnerData> spawnList = EntityEvents.gatherPotentialSpawns(level.structureManager(), MobCategory.MONSTER, pos);
+			WeightedList<MobSpawnSettings.SpawnerData> spawnList = EntityEvents.gatherPotentialSpawns(level.structureManager(), MobCategory.MONSTER, pos);
 			source.sendSuccess(() -> Component.translatable("commands.tffeature.structure.spawn_list").withStyle(ChatFormatting.UNDERLINE), false);
 			if (spawnList != null)
-				for (MobSpawnSettings.SpawnerData entry : spawnList)
-					// TODO: Address the removal of entry.getWeight() in MobSpawnSettings.SpawnerData
-					source.sendSuccess(() -> Component.translatable("commands.tffeature.structure.spawn_info", entry.type().getDescription().getString(), entry.getWeight().asInt()), false);
+				for (Weighted<MobSpawnSettings.SpawnerData> entry : spawnList.unwrap())
+					source.sendSuccess(() -> Component.translatable("commands.tffeature.structure.spawn_info", entry.value().type().getDescription().getString(), entry.weight()), false);
 		} else {
 			source.sendSuccess(() -> Component.translatable("commands.tffeature.structure.outside").withStyle(ChatFormatting.BOLD, ChatFormatting.RED), false);
 		}
