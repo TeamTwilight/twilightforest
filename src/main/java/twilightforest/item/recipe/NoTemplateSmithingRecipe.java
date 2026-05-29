@@ -12,7 +12,6 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
-import twilightforest.init.TFRecipes;
 
 import java.util.List;
 import java.util.Optional;
