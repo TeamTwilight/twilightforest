@@ -17,11 +17,11 @@ import java.util.List;
 
 public class ScepterRepairRecipe extends CustomRecipe {
 	public static final MapCodec<ScepterRepairRecipe> MAP_CODEC =
-		RecordCodecBuilder.mapCodec(instance -> instance.group(
+		RecordCodecBuilder.mapCodec(i -> i.group(
 			BuiltInRegistries.ITEM.byNameCodec().fieldOf("scepter").forGetter(o -> o.scepter),
 			Ingredient.CODEC.listOf().fieldOf("repair_ingredients").forGetter(o -> o.repairItems),
 			Codec.INT.fieldOf("durability").forGetter(o -> o.durability)
-		).apply(instance, ScepterRepairRecipe::new)
+		).apply(i, ScepterRepairRecipe::new)
 	);
 
 	public static final StreamCodec<RegistryFriendlyByteBuf, ScepterRepairRecipe> STREAM_CODEC =
