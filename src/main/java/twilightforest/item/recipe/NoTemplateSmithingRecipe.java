@@ -12,6 +12,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
+import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
@@ -41,6 +42,7 @@ public class NoTemplateSmithingRecipe implements SmithingRecipe {
 
 	public static final RecipeSerializer<NoTemplateSmithingRecipe> SERIALIZER = new RecipeSerializer<>(MAP_CODEC, STREAM_CODEC);
 
+	private @Nullable PlacementInfo placementInfo;
 	private final Ingredient base;
 	private final Ingredient addition;
 	private final List<TypedDataComponent<?>> additionalData;
@@ -96,6 +98,25 @@ public class NoTemplateSmithingRecipe implements SmithingRecipe {
 		return Optional.of(this.addition);
 	}
 
+	@Override
+	public RecipeSerializer<? extends SmithingRecipe> getSerializer() {
+		return SERIALIZER;
+	}
+
+	@Override
+	public PlacementInfo placementInfo() {
+		if (this.placementInfo == null) {
+			this.placementInfo = createPlacementInfo();
+		}
+		return this.placementInfo;
+	}
+
+	protected PlacementInfo createPlacementInfo() {
+		return PlacementInfo.create(
+			List.of(this.base, this.addition)
+		);
+	}
+
 	private void setComponents(ItemStack itemstack) {
 		for (TypedDataComponent<?> data : this.additionalData)
 			setComponent(data, itemstack);
@@ -107,15 +128,5 @@ public class NoTemplateSmithingRecipe implements SmithingRecipe {
 
 	private static <T> void setComponent(TypedDataComponent<T> data, DataComponentMap.Builder builder) {
 		builder.set(data.type(), data.value());
-	}
-
-	@Override
-	public RecipeSerializer<? extends SmithingRecipe> getSerializer() {
-		return SERIALIZER;
-	}
-
-	@Override
-	public PlacementInfo placementInfo() {
-		return null;
 	}
 }
