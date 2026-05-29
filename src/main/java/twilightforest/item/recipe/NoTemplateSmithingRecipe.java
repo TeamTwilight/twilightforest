@@ -97,10 +97,6 @@ public class NoTemplateSmithingRecipe implements SmithingRecipe {
 		return Optional.of(this.addition);
 	}
 
-	private List<TypedDataComponent<?>> additionalData() {
-		return this.additionalData;
-	}
-
 	private void setComponents(ItemStack itemstack) {
 		for (TypedDataComponent<?> data : this.additionalData)
 			setComponent(data, itemstack);
@@ -116,7 +112,7 @@ public class NoTemplateSmithingRecipe implements SmithingRecipe {
 
 	@Override
 	public RecipeSerializer<? extends SmithingRecipe> getSerializer() {
-		return TFRecipes.NO_TEMPLATE_SMITHING_SERIALIZER.get();
+		return SERIALIZER;
 	}
 
 	@Override
