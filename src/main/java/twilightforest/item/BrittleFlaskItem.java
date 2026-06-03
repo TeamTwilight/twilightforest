@@ -1,7 +1,6 @@
 package twilightforest.item;
 
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
@@ -112,9 +111,6 @@ public class BrittleFlaskItem extends Item {
 		if (flaskContents.potion() != PotionContents.EMPTY) {
 			if (entity instanceof Player player) {
 				if (level instanceof ServerLevel serverLevel) {
-					if (!player.isCreative() && !player.isSpectator() && player instanceof ServerPlayer serverPlayer) {
-						flaskContents.potion().potion().ifPresent(potion -> player.getData(TFDataAttachments.FLASK_DOSES).trackDrink(potion, serverPlayer));
-					}
 					for (MobEffectInstance mobeffectinstance : flaskContents.potion().getAllEffects()) {
 						if (mobeffectinstance.is(MobEffects.HARM) != entity.isInvertedHealAndHarm() && mobeffectinstance.getAmplifier() > 0) {
 							//custom harming death message for the advancement
@@ -125,6 +121,7 @@ public class BrittleFlaskItem extends Item {
 							player.addEffect(new MobEffectInstance(mobeffectinstance));
 						}
 					}
+
 					if (!player.isCreative() && !player.isSpectator() && player instanceof ServerPlayer serverPlayer) {
 						flaskContents.potion().potion().ifPresent(potion -> player.getData(TFDataAttachments.FLASK_DOSES).trackDrink(potion, serverPlayer));
 					}
