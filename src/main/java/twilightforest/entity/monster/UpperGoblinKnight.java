@@ -44,7 +44,7 @@ public class UpperGoblinKnight extends Monster {
 	private static final EntityDataAccessor<Boolean> SHIELD_DISABLED = SynchedEntityData.defineId(UpperGoblinKnight.class, EntityDataSerializers.BOOLEAN);
 
 	private static final AttributeModifier ARMOR_MODIFIER = new AttributeModifier(TwilightForestMod.prefix("armor_boost"), 20, AttributeModifier.Operation.ADD_VALUE);
-	private static final AttributeModifier DAMAGE_MODIFIER = new AttributeModifier(TwilightForestMod.prefix("spear_attack_boost"), 12, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
+	private static final AttributeModifier DAMAGE_MODIFIER = new AttributeModifier(TwilightForestMod.prefix("spear_attack_boost"), 12, AttributeModifier.Operation.ADD_VALUE);
 	public static final int HEAVY_SPEAR_TIMER_START = 60;
 
 	private int shieldHits = 0;
@@ -223,8 +223,15 @@ public class UpperGoblinKnight extends Monster {
 		List<Entity> inBox = this.level().getEntities(this, spearBB, e -> e != this.getVehicle());
 
 		for (Entity entity : inBox) {
-			super.doHurtTarget(level, entity);
+			if (entity instanceof LivingEntity livingEntity) {
+				DamageSource source = level.damageSources().mobAttack(this);
+
+				float damageAmount = (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE);
+
+				livingEntity.hurtServer(level, source, damageAmount);
+			}
 		}
+
 
 		if (!inBox.isEmpty()) {
 			this.playSound(SoundEvents.PLAYER_ATTACK_CRIT, getSoundVolume(), getVoicePitch());
