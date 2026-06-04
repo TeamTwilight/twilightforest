@@ -14,7 +14,6 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFPart;
 
 public abstract class HydraPart extends TFPart<Hydra> {

@@ -181,17 +181,9 @@ public class HydraHeadContainer {
 		this.setupStateRotations();
 
 		if (startActive) {
-			this.prevState = State.IDLE;
-			this.currentState = State.IDLE;
-			this.nextState = NEXT_AUTOMATIC;
-			this.ticksNeeded = 60;
-			this.ticksProgress = 60;
+			this.forceActive();
 		} else {
-			this.prevState = State.DEAD;
-			this.currentState = State.DEAD;
-			this.nextState = NEXT_AUTOMATIC;
-			this.ticksNeeded = 20;
-			this.ticksProgress = 20;
+			this.forceInactive();
 		}
 		this.setHeadPosition();
 		this.setNeckPosition();
@@ -373,6 +365,22 @@ public class HydraHeadContainer {
 
 	public boolean canRespawn() {
 		return this.currentState == State.DEAD && this.respawnCounter == -1;
+	}
+
+	public void forceActive() {
+		this.prevState = State.IDLE;
+		this.currentState = State.IDLE;
+		this.nextState = NEXT_AUTOMATIC;
+		this.ticksNeeded = 60;
+		this.ticksProgress = 60;
+	}
+
+	public void forceInactive() {
+		this.prevState = State.DEAD;
+		this.currentState = State.DEAD;
+		this.nextState = NEXT_AUTOMATIC;
+		this.ticksNeeded = 20;
+		this.ticksProgress = 20;
 	}
 
 	private void advanceRespawnCounter() {
