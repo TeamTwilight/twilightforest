@@ -40,6 +40,11 @@ public class LichRenderer extends HumanoidMobRenderer<Lich, LichRenderState, Lic
 	}
 
 	@Override
+	protected void scale(LichRenderState state, PoseStack stack) {
+		stack.scale(1.03125F, 1.03125F, 1.03125F);
+	}
+
+	@Override
 	protected int getModelTint(LichRenderState state) {
 		if (state.isShadowClone) return ARGB.colorFromFloat(0.5F, 0.333F, 0.333F, 0.333F);
 		return super.getModelTint(state);
