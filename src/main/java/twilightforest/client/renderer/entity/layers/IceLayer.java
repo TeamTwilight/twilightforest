@@ -16,7 +16,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.DeathTomeModel;
-import twilightforest.potions.FrostedEffect;
 
 public class IceLayer<S extends LivingEntityRenderState, M extends EntityModel<S>> extends RenderLayer<S, M> {
 	private final RandomSource random = RandomSource.create();
@@ -37,7 +36,7 @@ public class IceLayer<S extends LivingEntityRenderState, M extends EntityModel<S
 
 		this.random.setSeed(id * id * 3121L + id * 45238971L);
 
-		int numCubes = (int) (state.boundingBoxHeight / 0.4F) + (int) (count / FrostedEffect.FROST_MULTIPLIER) + 1; //Number of cubes, adds more cubes based on the level of the effect
+		int numCubes = (int) (state.boundingBoxHeight / 0.4F) + (int) (count.doubleValue()) + 1; //Number of cubes, adds more cubes based on the level of the effect
 
 		float specialOffset = this.getParentModel() instanceof DeathTomeModel ? 1.0F : 0.0F;
 

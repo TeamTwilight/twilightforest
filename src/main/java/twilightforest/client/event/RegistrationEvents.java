@@ -16,8 +16,6 @@ import net.minecraft.client.renderer.entity.BoatRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
-import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
-import net.minecraft.client.renderer.entity.state.PlayerRenderState;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
@@ -26,11 +24,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.SkullBlock;
@@ -80,7 +74,6 @@ import twilightforest.util.woods.TFWoodTypes;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.Supplier;
 
 public class RegistrationEvents {
@@ -689,25 +682,28 @@ public class RegistrationEvents {
 		event.register(TFMapDecorations.FINAL_CASTLE.get(), new ConqueredMapIconRenderer());
 	}
 
-	@SuppressWarnings("unchecked")//Should be fine…?
-	private static <T extends LivingEntity, S extends LivingEntityRenderState, M extends EntityModel<S>> void attachRenderLayers(EntityRenderersEvent.AddLayers event) {
+	private static void attachRenderLayers(EntityRenderersEvent.AddLayers event) {
 		BakedMultiPartRenderers.bakeMultiPartRenderers(event.getContext());
+
 		for (EntityType<?> type : event.getEntityTypes()) {
 			var renderer = event.getRenderer(type);
 			if (renderer instanceof LivingEntityRenderer<?, ?, ?> living) {
-				attachRenderLayers((LivingEntityRenderer<T, S, M>) living);
+				attachSingleRenderLayer(living);
 			}
 		}
 
-		event.getSkins().forEach(renderer -> {
-			LivingEntityRenderer<Player, PlayerRenderState, EntityModel<PlayerRenderState>> skin = event.getSkin(renderer);
-			attachRenderLayers(Objects.requireNonNull(skin));
+		event.getSkins().forEach(skinName -> {
+			var skin = event.getSkin(skinName);
+			if (skin instanceof LivingEntityRenderer<?, ?, ?> livingSkin) {
+				attachSingleRenderLayer(livingSkin);
+			}
 		});
 	}
 
-	private static <T extends LivingEntity, S extends LivingEntityRenderState, M extends EntityModel<S>> void attachRenderLayers(LivingEntityRenderer<T, S, M> renderer) {
-		renderer.addLayer(new ShieldLayer<>(renderer));
-		renderer.addLayer(new IceLayer<>(renderer));
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	private static void attachSingleRenderLayer(LivingEntityRenderer<?, ?, ?> renderer) {
+		renderer.addLayer(new ShieldLayer(renderer));
+		renderer.addLayer(new IceLayer(renderer));
 	}
 
 	public static boolean isOptifinePresent() {
@@ -717,14 +713,15 @@ public class RegistrationEvents {
 	public static void registerCustomRenderData(RegisterRenderStateModifiersEvent event) {
 		event.registerEntityModifier(new TypeToken<LivingEntityRenderer<?, ?, ?>>() {}, (living, state) -> state.setRenderData(ShieldLayer.SHIELD_COUNT_KEY, ShieldLayer.getShieldCount(living)));
 		event.registerEntityModifier(new TypeToken<LivingEntityRenderer<?, ?, ?>>() {}, (living, state) -> {
-			AttributeInstance speed = living.getAttribute(Attributes.MOVEMENT_SPEED);
-			if (speed == null) return;
-
-			AttributeModifier frost = speed.getModifier(FrostedEffect.MOVEMENT_SPEED_MODIFIER);
-			if (frost == null) return;
-
-            state.setRenderData(IceLayer.FROST_COUNT_KEY, frost.amount());
-			state.setRenderData(IceLayer.FROST_ID_KEY, living.getId());
+			var speedAttribute = living.getAttribute(Attributes.MOVEMENT_SPEED);
+			if (speedAttribute != null) {
+				var frostModifier = speedAttribute.getModifier(FrostedEffect.MOVEMENT_SPEED_MODIFIER);
+				if (frostModifier != null) {
+					double count = Math.abs(frostModifier.amount()) / Math.abs(FrostedEffect.FROST_MULTIPLIER);
+					state.setRenderData(IceLayer.FROST_COUNT_KEY, count);
+					state.setRenderData(IceLayer.FROST_ID_KEY, living.getId());
+				}
+			}
         });
 		event.registerEntityModifier(new TypeToken<LivingEntityRenderer<?, ?, ?>>() {}, (living, state) -> state.setRenderData(ClientEvents.HEAD_KEY, living.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof TrophyItem || ClientEvents.areCuriosEquipped(living)));
 
