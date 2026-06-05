@@ -39,7 +39,17 @@ public class ThrowRiderGoal extends MeleeAttackGoal {
 	public void start() {
 		this.throwTimer = 10 + this.mob.getRandom().nextInt(30); // Wait 0.5 to 2 seconds before we throw the target
 		this.timeout = 80 + this.mob.getRandom().nextInt(40); // Lets only try to chase for around 4-6 seconds
+		this.cooldown = 0;
 		super.start();
+	}
+
+	// Use a distance-based reach check instead of 1.21's bounding box intersection.
+	// The bounding box approach gives a much tighter range, making grabs unreliable.
+	// This restores the old getAttackReachSqr formula for a wider, more appropriate grab range.
+	@Override
+	protected boolean canPerformAttack(LivingEntity target) {
+		double reach = this.mob.getBbWidth() * 2.0F * this.mob.getBbWidth() * 2.0F + target.getBbWidth();
+		return this.mob.distanceToSqr(target) <= reach;
 	}
 
 	@Override
