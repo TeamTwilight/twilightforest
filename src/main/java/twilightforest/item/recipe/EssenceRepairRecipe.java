@@ -8,8 +8,8 @@ import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
-import twilightforest.init.TFItems;
 import twilightforest.tags.TFItemTags;
+import twilightforest.init.TFItems;
 
 public class EssenceRepairRecipe extends CustomRecipe {
 	public static final MapCodec<EssenceRepairRecipe> MAP_CODEC =

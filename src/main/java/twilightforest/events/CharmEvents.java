@@ -33,7 +33,7 @@ import twilightforest.block.KeepsakeCasketBlock;
 import twilightforest.block.entity.SkullChestBlockEntity;
 import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.config.TFConfig;
-import twilightforest.data.tags.ItemTagGenerator;
+import twilightforest.tags.TFItemTags;
 import twilightforest.enums.BlockLoggingEnum;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
@@ -140,7 +140,7 @@ public class CharmEvents {
 		//keep all items in the kept_on_death tag. This allows modpacks to support other items to keep on death
 		for (int i = 0; i < player.getInventory().items.size(); i++) {
 			ItemStack stack = player.getInventory().items.get(i);
-			if (stack.is(ItemTagGenerator.KEPT_ON_DEATH)) {
+			if (stack.is(TFItemTags.KEPT_ON_DEATH)) {
 				keepInventory.items.set(i, stack.copy());
 				player.getInventory().items.set(i, ItemStack.EMPTY);
 			}
@@ -148,13 +148,13 @@ public class CharmEvents {
 
 		for (int i = 0; i < player.getInventory().armor.size(); i++) {
 			ItemStack armor = player.getInventory().armor.get(i);
-			if (armor.is(ItemTagGenerator.KEPT_ON_DEATH)) {
+			if (armor.is(TFItemTags.KEPT_ON_DEATH)) {
 				keepInventory.armor.set(i, armor.copy());
 				player.getInventory().armor.set(i, ItemStack.EMPTY);
 			}
 		}
 
-		if (player.getInventory().offhand.getFirst().is(ItemTagGenerator.KEPT_ON_DEATH)) {
+		if (player.getInventory().offhand.getFirst().is(TFItemTags.KEPT_ON_DEATH)) {
 			keepInventory.offhand.set(0, player.getInventory().offhand.getFirst().copy());
 			player.getInventory().offhand.set(0, ItemStack.EMPTY);
 		}

@@ -11,6 +11,7 @@ import twilightforest.item.recipe.travellers.TravellersGearModifierShapedRecipe;
 import twilightforest.item.recipe.travellers.TravellersGearModifierShapelessRecipe;
 import twilightforest.item.recipe.travellers.TravellersVestGlovesMergeRecipe;
 
+// TODO: Update recipes to use new codec serialization system. Check RecipeSerializers and ShapedRecipe classes for reference implementation.
 public class TFRecipes {
 	public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(Registries.RECIPE_SERIALIZER, TwilightForestMod.ID);
 	public static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(Registries.RECIPE_TYPE, TwilightForestMod.ID);

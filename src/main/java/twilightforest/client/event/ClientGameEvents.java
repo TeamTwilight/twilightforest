@@ -53,7 +53,7 @@ import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.entity.MagicPaintingRenderer;
 import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.config.TFConfig;
-import twilightforest.data.tags.ItemTagGenerator;
+import twilightforest.tags.TFItemTags;
 import twilightforest.entity.boss.bar.ClientTFBossBar;
 import twilightforest.events.HostileMountEvents;
 import twilightforest.init.*;
@@ -273,7 +273,7 @@ public class ClientGameEvents {
 			event.getToolTip().add(1, EMPERORS_CLOTH_TOOLTIP);
 		}
 
-		if (item.is(ItemTagGenerator.WIP)) {
+		if (item.is(TFItemTags.WIP)) {
 			event.getToolTip().add(WIP_TEXT);
 		}
 	}
