@@ -6,7 +6,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.util.RandomSource;
-import net.minecraft.util.random.WeightedRandomList;
+import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.ChunkPos;
@@ -17,7 +17,7 @@ import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
-import twilightforest.data.tags.BiomeTagGenerator;
+import twilightforest.tags.TFBiomeTags;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFMapDecorations;
 import twilightforest.init.TFStructurePieceTypes;
@@ -71,24 +71,25 @@ public class TrollCaveStructure extends ProgressionStructure implements Configur
 
 	public static TrollCaveStructure buildTrollCaveConfig(BootstrapContext<Structure> context) {
 		return new TrollCaveStructure(
-			ControlledSpawningConfig.create(List.of(List.of(
-				new MobSpawnSettings.SpawnerData(EntityType.CREEPER, 5, 1, 2),
-				new MobSpawnSettings.SpawnerData(EntityType.SKELETON, 10, 1, 2),
-				new MobSpawnSettings.SpawnerData(TFEntities.TROLL.get(), 20, 1, 2),
-				new MobSpawnSettings.SpawnerData(EntityType.WITCH, 5, 1, 1)
-			), List.of(
-				// cloud monsters
-				new MobSpawnSettings.SpawnerData(TFEntities.GIANT_MINER.get(), 10, 1, 1),
-				new MobSpawnSettings.SpawnerData(TFEntities.ARMORED_GIANT.get(), 10, 1, 1)
-			)), List.of(), List.of()),
+			ControlledSpawningConfig.create(List.of(WeightedList.<MobSpawnSettings.SpawnerData>builder()
+				.add(new MobSpawnSettings.SpawnerData(EntityType.CREEPER, 1, 2), 5)
+				.add(new MobSpawnSettings.SpawnerData(EntityType.SKELETON, 1, 2), 10)
+				.add(new MobSpawnSettings.SpawnerData(TFEntities.TROLL.get(), 1, 2), 20)
+				.add(new MobSpawnSettings.SpawnerData(EntityType.WITCH, 1, 1), 5)
+				.build()
+			, WeightedList.<MobSpawnSettings.SpawnerData>builder()
+				.add(new MobSpawnSettings.SpawnerData(TFEntities.GIANT_MINER.get(), 1, 1), 10)
+				.add(new MobSpawnSettings.SpawnerData(TFEntities.ARMORED_GIANT.get(), 1, 1), 10)
+				.build()
+			), WeightedList.of(), WeightedList.of()),
 			context.lookup(TFRegistries.Keys.STRUCTURE_SPELEOTHEM_SETTINGS).getOrThrow(StructureSpeleothemConfigs.TROLL_CAVE),
 			new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_merge"))),
 			Optional.of(new HintConfig(HintConfig.book("trollcave", 3), TFEntities.KOBOLD.get())),
 			Optional.of(new DecorationConfig(4, true, true, false)),
 			false, Optional.of(TFMapDecorations.TROLL_CAVES),
 			new StructureSettings(
-				context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_TROLL_CAVE_BIOMES),
-				Arrays.stream(MobCategory.values()).collect(Collectors.toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create()))), // Landmarks have Controlled Mob spawning
+				context.lookup(Registries.BIOME).getOrThrow(TFBiomeTags.VALID_TROLL_CAVE_BIOMES),
+				Arrays.stream(MobCategory.values()).collect(Collectors.<MobCategory, MobCategory, StructureSpawnOverride>toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedList.<MobSpawnSettings.SpawnerData>builder().build()))), // Landmarks have Controlled Mob spawning
 				GenerationStep.Decoration.UNDERGROUND_STRUCTURES,
 				TerrainAdjustment.BURY
 			)

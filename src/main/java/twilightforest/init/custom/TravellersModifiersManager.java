@@ -1,6 +1,5 @@
 package twilightforest.init.custom;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
@@ -112,7 +111,7 @@ public class TravellersModifiersManager {
 	}
 
 	private static List<Component> componentText(ResourceKey<TravellersModifier> modifier, Object... args) {
-		return List.of(Component.translatable(modifier.location().toLanguageKey("travellers_gear.modifier", "description"), args));
+		return List.of(Component.translatable(modifier.identifier().toLanguageKey("travellers_gear.modifier", "description"), args));
 	}
 
 	public static boolean isModifierActive(HolderLookup.Provider registries, ItemStack stack, ResourceKey<TravellersModifier> modifierKey, boolean spectator) {
@@ -161,7 +160,7 @@ public class TravellersModifiersManager {
 	}
 
 	public static MutableComponent getModifierTooltipComponent(Holder.Reference<TravellersModifier> modifier) {
-		return TooltipStringInterpolator.render(modifier.getKey().location().toLanguageKey(modifier.value().getPrefix()));
+		return TooltipStringInterpolator.render(modifier.getKey().identifier().toLanguageKey(modifier.value().getPrefix()));
 	}
 
 	public static List<Holder.Reference<TravellersModifier>> findAllInsertableModifiers(HolderLookup.Provider registries, ItemStack stack) {
@@ -218,7 +217,7 @@ public class TravellersModifiersManager {
 			return Optional.of(modifier.get().value());
 		}
 
-		TwilightForestMod.LOGGER.warn("Travellers modifier {} is not present in the registry", modifierKey.location());
+		TwilightForestMod.LOGGER.warn("Travellers modifier {} is not present in the registry", modifierKey.identifier());
 		MISSING_MODIFIERS.add(modifierKey);
 		return Optional.empty();
 	}

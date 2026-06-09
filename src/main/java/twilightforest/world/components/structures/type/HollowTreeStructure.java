@@ -9,7 +9,7 @@ import net.minecraft.resources.RegistryFixedCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.util.random.WeightedRandomList;
+import net.minecraft.util.random.WeightedList;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.util.valueproviders.IntProviders;
 import net.minecraft.world.entity.EntityType;
@@ -37,6 +37,7 @@ import twilightforest.world.components.structures.util.DecorationClearance;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import net.minecraft.world.level.biome.MobSpawnSettings;
 
 public class HollowTreeStructure extends Structure implements DecorationClearance, TreeGrowerStartable {
 	public static final MapCodec<HollowTreeStructure> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
@@ -167,7 +168,7 @@ public class HollowTreeStructure extends Structure implements DecorationClearanc
 
 	@Override
 	public StructureStart generateFromSapling(RegistryAccess registryAccess, ChunkGenerator generator, BiomeSource biomeSource, RandomState randomState, StructureTemplateManager templateManager, long seed, BlockPos blockPos, LevelHeightAccessor heightAccessor) {
-		ChunkPos chunkPos = new ChunkPos(blockPos);
+		ChunkPos chunkPos = ChunkPos.containing(blockPos);
 		RandomSource random = RandomSource.create(seed + chunkPos.x() * 25117L + chunkPos.z() * 151121L);
 
 		int height = Math.min(this.height.sample(random) + blockPos.getY(), heightAccessor.getMaxY()) - blockPos.getY();
@@ -225,7 +226,7 @@ public class HollowTreeStructure extends Structure implements DecorationClearanc
 		return new HollowTreeStructure(
 			new Structure.StructureSettings(
 				biomes,
-				Arrays.stream(MobCategory.values()).collect(Collectors.toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create()))), // Landmarks have Controlled Mob spawning
+				Arrays.stream(MobCategory.values()).collect(Collectors.<MobCategory, MobCategory, StructureSpawnOverride>toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedList.<MobSpawnSettings.SpawnerData>builder().build()))), // Landmarks have Controlled Mob spawning
 				GenerationStep.Decoration.SURFACE_STRUCTURES,
 				TerrainAdjustment.NONE
 			),

@@ -11,6 +11,7 @@ import net.minecraft.world.item.enchantment.EnchantedItemInUse;
 import net.minecraft.world.item.enchantment.effects.EnchantmentEntityEffect;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.init.TFItems;
+import twilightforest.inventory.InventoryUtil;
 import twilightforest.item.recipe.ScepterRepairRecipe;
 
 import java.util.ArrayList;
@@ -55,9 +56,7 @@ public record RechargeScepterEffect() implements EnchantmentEntityEffect {
 							ItemStack stack = player.getInventory().items.get(slot);
 							stack.shrink(1);
 							if (stack.hasCraftingRemainingItem()) {
-								if (!player.getInventory().add(stack.getCraftingRemainingItem())) {
-									player.drop(stack.getCraftingRemainingItem(), false);
-								}
+								InventoryUtil.giveItemToPlayer(player, stack.getCraftingRemainingItem());
 							}
 						}
 						item.setDamageValue(item.getDamageValue() - recipe.getRepairDurability());

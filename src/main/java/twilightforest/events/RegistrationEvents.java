@@ -34,24 +34,25 @@ import net.neoforged.neoforge.event.BlockEntityTypeAddBlocksEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.wrapper.InvWrapper;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
 import net.neoforged.neoforge.registries.RegisterEvent;
 import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.item.VanillaContainerWrapper;
 import org.jetbrains.annotations.Nullable;
 import tamaized.beanification.Autowired;
 import tamaized.beanification.Component;
 import tamaized.beanification.PostConstruct;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.ChiseledCanopyShelfBlock;
 import twilightforest.block.entity.DryingRackBlockEntity;
 import twilightforest.block.entity.JarBlockEntity;
 import twilightforest.command.TFCommand;
-import twilightforest.components.block.ChiseledCanopyBookshelfWrapper;
 import twilightforest.config.ConfigSetup;
 import twilightforest.data.custom.stalactites.entry.StalactiteReloadListener;
 import twilightforest.dispenser.TFDispenserBehaviors;
@@ -117,9 +118,9 @@ public class RegistrationEvents {
 	}
 
 	private void registerGenericItemHandlers(RegisterCapabilitiesEvent event) {
-		IBlockCapabilityProvider<IItemHandler, @Nullable Direction> itemHandlerProvider = (level, pos, state, blockEntity, side) -> level.getBlockEntity(pos) instanceof ChestBlockEntity tfChestBlock ? new InvWrapper(tfChestBlock) : null;
+		IBlockCapabilityProvider<ResourceHandler<ItemResource>, @Nullable Direction> itemHandlerProvider = (level, pos, state, blockEntity, side) -> level.getBlockEntity(pos) instanceof ChestBlockEntity tfChestBlock ? VanillaContainerWrapper.of(tfChestBlock) : null;
 		event.registerBlock(
-			Capabilities.ItemHandler.BLOCK,
+			Capabilities.Item.BLOCK,
 			itemHandlerProvider,
 			TFBlocks.TWILIGHT_OAK_CHEST.get(),
 			TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST.get(),
@@ -139,11 +140,11 @@ public class RegistrationEvents {
 			TFBlocks.SORTING_TRAPPED_CHEST.get()
 		);
 
-		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, TFBlockEntities.MASON_JAR.get(), (masonJarBlock, side) ->
+		event.registerBlockEntity(Capabilities.Item.BLOCK, TFBlockEntities.MASON_JAR.get(), (masonJarBlock, side) ->
 			side == Direction.UP ? masonJarBlock.getItemHandler() : null);
 
-		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, TFBlockEntities.DRYING_RACK.get(),  (entity, side) -> new DryingRackBlockEntity.DryingRackHandler(entity));
-		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, TFBlockEntities.CHISELED_CANOPY_BOOKSHELF.get(), (entity, side) -> new ChiseledCanopyBookshelfWrapper(entity));
+		event.registerBlockEntity(Capabilities.Item.BLOCK, TFBlockEntities.DRYING_RACK.get(), (entity, side) -> new DryingRackBlockEntity.DryingRackHandler(entity));
+		event.registerBlockEntity(Capabilities.Item.BLOCK, TFBlockEntities.CHISELED_CANOPY_BOOKSHELF.get(), (entity, side) -> entity.getBlockState().getValue(ChiseledCanopyShelfBlock.SPAWNER) ? null : VanillaContainerWrapper.of(entity));
 	}
 
 	public void addBlockEntityTypes(BlockEntityTypeAddBlocksEvent event) {

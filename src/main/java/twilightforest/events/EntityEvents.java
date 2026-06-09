@@ -12,6 +12,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -70,7 +71,7 @@ import twilightforest.block.*;
 import twilightforest.block.entity.SkullCandleBlockEntity;
 import twilightforest.block.entity.SkullChestBlockEntity;
 import twilightforest.config.TFConfig;
-import twilightforest.data.tags.EntityTagGenerator;
+import twilightforest.tags.TFEntityTypeTags;
 import twilightforest.enchantment.ApplyFrostedEffect;
 import twilightforest.entity.passive.quest.ram.QuestingRamCurrentContext;
 import twilightforest.entity.projectile.ITFProjectile;
@@ -366,8 +367,8 @@ public class EntityEvents {
 	}
 
 	@Nullable
-	public static List<MobSpawnSettings.SpawnerData> gatherPotentialSpawns(StructureManager structureManager, MobCategory classification, BlockPos pos) {
-		List<StructureStart> structureStarts = structureManager.startsForStructure(new ChunkPos(pos), s -> s instanceof ControlledSpawns);
+	public static WeightedList<MobSpawnSettings.SpawnerData> gatherPotentialSpawns(StructureManager structureManager, MobCategory classification, BlockPos pos) {
+		List<StructureStart> structureStarts = structureManager.startsForStructure(ChunkPos.containing(pos), s -> s instanceof ControlledSpawns);
 
 		// This is wretched FIXME make this method return void instead, make one of parameters the SpawnerData consumer (eg LevelEvent.PotentialSpawns::addSpawnerData or List::add)
 		for (StructureStart start : structureStarts) {
@@ -400,10 +401,10 @@ public class EntityEvents {
 		if (!(event.getLevel() instanceof ServerLevel serverLevel))
 			return;
 
-		List<MobSpawnSettings.SpawnerData> potentialStructureSpawns = gatherPotentialSpawns(serverLevel.structureManager(), event.getMobCategory(), event.getPos());
+		WeightedList<MobSpawnSettings.SpawnerData> potentialStructureSpawns = gatherPotentialSpawns(serverLevel.structureManager(), event.getMobCategory(), event.getPos());
 		if (potentialStructureSpawns != null) {
 			List.copyOf(event.getSpawnerDataList()).forEach(event::removeSpawnerData);
-			potentialStructureSpawns.forEach(event::addSpawnerData);
+			potentialStructureSpawns.unwrap().forEach(event::addSpawnerData);
 		}
 	}
 
@@ -419,7 +420,7 @@ public class EntityEvents {
 	}
 
 	private void adjustEntityHealthInMultiplayerFights(FinalizeSpawnEvent event) {
-		if (event.getEntity().getType().is(EntityTagGenerator.MULTIPLAYER_INCLUSIVE_ENTITIES)) {
+		if (event.getEntity().is(TFEntityTypeTags.MULTIPLAYER_INCLUSIVE_ENTITIES)) {
 			if (TFConfig.multiplayerFightAdjuster.adjustsHealth()) {
 				List<ServerPlayer> nearbyPlayers = event.getLevel().getEntitiesOfClass(ServerPlayer.class, event.getEntity().getBoundingBox().inflate(32, 10, 32), player -> EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(EntitySelector.ENTITY_STILL_ALIVE).test(player));
 				if (nearbyPlayers.size() > 1 && event.getEntity().getAttribute(Attributes.MAX_HEALTH) != null) {
@@ -439,7 +440,7 @@ public class EntityEvents {
 	}
 
 	private void addQualifiedGroupPlayerIfNeeded(LivingDamageEvent.Post event) {
-		if (event.getEntity().getType().is(EntityTagGenerator.MULTIPLAYER_INCLUSIVE_ENTITIES)) {
+		if (event.getEntity().is(TFEntityTypeTags.MULTIPLAYER_INCLUSIVE_ENTITIES)) {
 			var data = event.getEntity().getData(TFDataAttachments.MULTIPLAYER_FIGHT);
 			if (event.getSource().getEntity() != null) {
 				data.maybeAddQualifiedPlayer(event.getSource().getEntity());

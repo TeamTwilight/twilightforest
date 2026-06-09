@@ -7,7 +7,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.RandomSource;
-import net.minecraft.util.random.WeightedRandomList;
+import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.ChunkPos;
@@ -19,7 +19,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
-import twilightforest.data.tags.BiomeTagGenerator;
+import twilightforest.tags.TFBiomeTags;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFMapDecorations;
 import twilightforest.init.TFStructureTypes;
@@ -53,23 +53,24 @@ public class KnightStrongholdStructure extends ControlledSpawningStructure {
 
 	public static KnightStrongholdStructure buildKnightStrongholdConfig(BootstrapContext<Structure> context) {
 		return new KnightStrongholdStructure(
-			ControlledSpawningConfig.firstIndexMonsters(
-				new MobSpawnSettings.SpawnerData(TFEntities.BLOCKCHAIN_GOBLIN.get(), 10, 1, 2),
-				new MobSpawnSettings.SpawnerData(TFEntities.LOWER_GOBLIN_KNIGHT.get(), 5, 1, 2),
-				new MobSpawnSettings.SpawnerData(TFEntities.HELMET_CRAB.get(), 10, 2, 4),
-				new MobSpawnSettings.SpawnerData(TFEntities.SLIME_BEETLE.get(), 10, 2, 3),
-				new MobSpawnSettings.SpawnerData(TFEntities.REDCAP_SAPPER.get(), 2, 1, 2),
-				new MobSpawnSettings.SpawnerData(TFEntities.KOBOLD.get(), 10, 2, 4),
-				new MobSpawnSettings.SpawnerData(EntityType.CREEPER, 5, 1, 2),
-				new MobSpawnSettings.SpawnerData(EntityType.SLIME, 5, 4, 4)
+			ControlledSpawningConfig.firstIndexMonsters(WeightedList.<MobSpawnSettings.SpawnerData>builder()
+				.add(new MobSpawnSettings.SpawnerData(TFEntities.BLOCKCHAIN_GOBLIN.get(), 1, 2), 10)
+				.add(new MobSpawnSettings.SpawnerData(TFEntities.LOWER_GOBLIN_KNIGHT.get(), 1, 2), 5)
+				.add(new MobSpawnSettings.SpawnerData(TFEntities.HELMET_CRAB.get(), 2, 4), 10)
+				.add(new MobSpawnSettings.SpawnerData(TFEntities.SLIME_BEETLE.get(), 2, 3), 10)
+				.add(new MobSpawnSettings.SpawnerData(TFEntities.REDCAP_SAPPER.get(), 1, 2), 2)
+				.add(new MobSpawnSettings.SpawnerData(TFEntities.KOBOLD.get(), 2, 4), 10)
+				.add(new MobSpawnSettings.SpawnerData(EntityType.CREEPER, 1, 2), 5)
+				.add(new MobSpawnSettings.SpawnerData(EntityType.SLIME, 4, 4), 5)
+				.build()
 			),
 			new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_trophy_pedestal"))),
 			Optional.of(new HintConfig(HintConfig.book("tfstronghold", 4), TFEntities.KOBOLD.get())),
 			Optional.of(new DecorationConfig(3, true, false, false)),
 			true, Optional.of(TFMapDecorations.KNIGHT_STRONGHOLD),
 			new StructureSettings(
-				context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_KNIGHT_STRONGHOLD_BIOMES),
-				Arrays.stream(MobCategory.values()).collect(Collectors.toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create()))), // Landmarks have Controlled Mob spawning
+				context.lookup(Registries.BIOME).getOrThrow(TFBiomeTags.VALID_KNIGHT_STRONGHOLD_BIOMES),
+				Arrays.stream(MobCategory.values()).collect(Collectors.<MobCategory, MobCategory, StructureSpawnOverride>toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedList.<MobSpawnSettings.SpawnerData>builder().build()))), // Landmarks have Controlled Mob spawning
 				GenerationStep.Decoration.UNDERGROUND_STRUCTURES,
 				TerrainAdjustment.BURY
 			)

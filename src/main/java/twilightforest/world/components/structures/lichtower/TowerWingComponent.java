@@ -20,7 +20,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
-import twilightforest.data.tags.BlockTagGenerator;
+import twilightforest.tags.TFBlockTags;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.loot.TFLootTables;
@@ -1845,7 +1845,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 		if (sbb.isInside(new BlockPos(dx, this.boundingBox.minY() + 1, dz))) {
 			for (int dy = this.getWorldY(startHeight); dy > 0; dy--) {
 				final BlockPos pos = new BlockPos(dx, dy, dz);
-				if (world.getBlockState(pos).is(BlockTagGenerator.CASTLE_BLOCKS) && world.getBlockState(pos).isRedstoneConductor(world, pos)) {
+				if (world.getBlockState(pos).is(TFBlockTags.CASTLE_BLOCKS) && world.getBlockState(pos).isRedstoneConductor(world, pos)) {
 					world.setBlock(pos, colour, Block.UPDATE_CLIENTS);
 				} else {
 					break;
