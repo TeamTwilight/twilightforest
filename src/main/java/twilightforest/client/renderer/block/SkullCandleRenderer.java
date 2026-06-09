@@ -25,7 +25,6 @@ import net.minecraft.world.level.block.SkullBlock;
 import net.minecraft.world.level.block.WallSkullBlock;
 import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
 import org.jspecify.annotations.Nullable;
@@ -92,7 +91,7 @@ public class SkullCandleRenderer implements BlockEntityRenderer<SkullCandleBlock
 		state.skullType = ((AbstractSkullBlock)blockState.getBlock()).getType();
 		state.renderType = this.resolveSkullRenderType(state.skullType, blockEntity);
 
-		updateSkullCandle(blockEntity.candleInfo, this.blockResolver, state.candle, blockState.getValue(AbstractSkullCandleBlock.LIGHTING) != LightableBlock.Lighting.NONE);
+		updateSkullCandle(blockEntity.getCandleInfo(), this.blockResolver, state.candle, blockState.getValue(AbstractSkullCandleBlock.LIGHTING) != LightableBlock.Lighting.NONE);
 	}
 
 	public static void updateSkullCandle(SkullCandles info, BlockModelResolver resolver, BlockModelRenderState state, boolean lit) {

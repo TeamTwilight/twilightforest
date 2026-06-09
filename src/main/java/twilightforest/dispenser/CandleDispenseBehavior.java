@@ -1,6 +1,8 @@
 package twilightforest.dispenser;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponentPatch;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
 import net.minecraft.server.level.ServerLevel;
@@ -18,7 +20,9 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import twilightforest.block.*;
 import twilightforest.block.entity.CandelabraBlockEntity;
 import twilightforest.block.entity.SkullCandleBlockEntity;
+import twilightforest.components.item.SkullCandles;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.TFDataComponents;
 
 public class CandleDispenseBehavior extends OptionalDispenseItemBehavior {
 
@@ -41,7 +45,7 @@ public class CandleDispenseBehavior extends OptionalDispenseItemBehavior {
 
 	private static boolean tryAddCandle(ServerLevel level, BlockPos pos, Item candle) {
 		if (level.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) {
-			if (candle == AbstractSkullCandleBlock.candleColorToCandle(AbstractSkullCandleBlock.CandleColors.colorFromInt(sc.candleInfo.color())).asItem()) {
+			if (candle == AbstractSkullCandleBlock.candleColorToCandle(AbstractSkullCandleBlock.CandleColors.colorFromInt(sc.getCandleInfo().color())).asItem()) {
 				BlockState state = level.getBlockState(pos);
 				int candles = state.getValue(BlockStateProperties.CANDLES);
 				if (candles < 4) {
@@ -118,8 +122,14 @@ public class CandleDispenseBehavior extends OptionalDispenseItemBehavior {
 			newBlock.defaultBlockState()
 				.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE)
 				.setValue(SkullCandleBlock.ROTATION, level.getBlockState(pos).getValue(SkullBlock.ROTATION))));
-		// TODO: Deal with removal of .setOwner()
-		if (level.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) sc.setOwner(profile);
+		if (level.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) {
+			DataComponentPatch patch = DataComponentPatch.builder()
+				.set(TFDataComponents.SKULL_CANDLES.get(), new SkullCandles(sc.getCandleInfo().count(), AbstractSkullCandleBlock.candleToCandleColor(candle).getValue()))
+				.set(DataComponents.PROFILE, profile)
+				.build();
+			sc.applyComponents(sc.collectComponents(), patch);
+			sc.setChanged();
+		}
 	}
 
 	private static void makeWallSkull(Level level, BlockPos pos, Block newBlock, Item candle) {
@@ -132,7 +142,13 @@ public class CandleDispenseBehavior extends OptionalDispenseItemBehavior {
 			newBlock.defaultBlockState()
 				.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE)
 				.setValue(WallSkullCandleBlock.FACING, level.getBlockState(pos).getValue(WallSkullBlock.FACING))));
-		// TODO: Deal with removal of .setOwner()
-		if (level.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) sc.setOwner(profile);
+		if (level.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) {
+			DataComponentPatch patch = DataComponentPatch.builder()
+				.set(TFDataComponents.SKULL_CANDLES.get(), new SkullCandles(sc.getCandleInfo().count(), AbstractSkullCandleBlock.candleToCandleColor(candle).getValue()))
+				.set(DataComponents.PROFILE, profile)
+				.build();
+			sc.applyComponents(sc.collectComponents(), patch);
+			sc.setChanged();
+		}
 	}
 }
