@@ -41,7 +41,7 @@ public class CandleDispenseBehavior extends OptionalDispenseItemBehavior {
 
 	private static boolean tryAddCandle(ServerLevel level, BlockPos pos, Item candle) {
 		if (level.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) {
-			if (candle == AbstractSkullCandleBlock.candleColorToCandle(AbstractSkullCandleBlock.CandleColors.colorFromInt(sc.getCandleColor())).asItem()) {
+			if (candle == AbstractSkullCandleBlock.candleColorToCandle(AbstractSkullCandleBlock.CandleColors.colorFromInt(sc.candleInfo.color())).asItem()) {
 				BlockState state = level.getBlockState(pos);
 				int candles = state.getValue(BlockStateProperties.CANDLES);
 				if (candles < 4) {
@@ -117,8 +117,8 @@ public class CandleDispenseBehavior extends OptionalDispenseItemBehavior {
 		level.setBlockEntity(new SkullCandleBlockEntity(pos,
 			newBlock.defaultBlockState()
 				.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE)
-				.setValue(SkullCandleBlock.ROTATION, level.getBlockState(pos).getValue(SkullBlock.ROTATION)),
-			AbstractSkullCandleBlock.candleToCandleColor(candle).getValue()));
+				.setValue(SkullCandleBlock.ROTATION, level.getBlockState(pos).getValue(SkullBlock.ROTATION))));
+		// TODO: Deal with removal of .setOwner()
 		if (level.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) sc.setOwner(profile);
 	}
 
@@ -131,8 +131,8 @@ public class CandleDispenseBehavior extends OptionalDispenseItemBehavior {
 		level.setBlockEntity(new SkullCandleBlockEntity(pos,
 			newBlock.defaultBlockState()
 				.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE)
-				.setValue(WallSkullCandleBlock.FACING, level.getBlockState(pos).getValue(WallSkullBlock.FACING)),
-			AbstractSkullCandleBlock.candleToCandleColor(candle).getValue()));
+				.setValue(WallSkullCandleBlock.FACING, level.getBlockState(pos).getValue(WallSkullBlock.FACING))));
+		// TODO: Deal with removal of .setOwner()
 		if (level.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) sc.setOwner(profile);
 	}
 }
