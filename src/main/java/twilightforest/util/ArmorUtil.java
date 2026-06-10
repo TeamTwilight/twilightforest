@@ -1,30 +1,33 @@
 package twilightforest.util;
 
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.DyedItemColor;
 import tamaized.beanification.Component;
 import twilightforest.init.TFDataComponents;
-import twilightforest.item.ArcticArmorItem;
-
-import java.util.OptionalInt;
 
 @Component
 public class ArmorUtil {
 
 	public float getShroudedArmorPercentage(LivingEntity entity) {
 		int shroudedArmor = 0;
-		int nonShroudedArmor = 0;
+		int armorSlots = 0;
 
-		for (ItemStack stack : entity.getArmorSlots()) {
+		for (EquipmentSlot slot : EquipmentSlot.values()) {
+			if (!slot.isArmor()) {
+				continue;
+			}
+
+			ItemStack stack = entity.getItemBySlot(slot);
+
 			if (!stack.isEmpty() && stack.get(TFDataComponents.EMPERORS_CLOTH) != null) {
 				shroudedArmor++;
 			}
 
-			nonShroudedArmor++;
+			armorSlots++;
 		}
 
-		return nonShroudedArmor > 0 && shroudedArmor > 0 ? (float) shroudedArmor / (float) nonShroudedArmor : 0.0F;
+		return armorSlots > 0 && shroudedArmor > 0 ? (float) shroudedArmor / armorSlots : 0.0F;
 	}
 
 }
