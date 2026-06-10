@@ -202,9 +202,11 @@ repositories {
 		name 'Jared\'s Maven' // JEI
 		url 'https://maven.blamejared.com/'
 	}
-	maven {
-		name = "OctoStudios" //Curios
-		url = uri("https://maven.octo-studios.com/releases")
+	repositories {
+		maven {
+			name = "Curios" // Curios
+			url = uri("https://maven.theillusivec4.top/")
+		}
 	}
 	maven {
 		name 'Shedaniel\'s Maven' //REI
@@ -244,7 +246,7 @@ dependencies {
 //	compileOnly "dev.emi:emi-neoforge:${project.emi_version}+${project.base_minecraft_version}"
 
 	// theillusivec4
-//	implementation "top.theillusivec4.curios:curios-neoforge:${project.curios_version}+${project.base_minecraft_version}"
+//  implementation "top.theillusivec4.curios:curios-neoforge:${project.curios_version}+26.1.2"
 
 	//curse maven
 //	implementation "curse.maven:jade-324717:6170888"
