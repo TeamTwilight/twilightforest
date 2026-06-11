@@ -7,6 +7,8 @@
   "biome.twilightforest.enchanted_forest": "Čarovný les",
   "biome.twilightforest.fire_swamp": "Ohnivý močiar",
   "biome.twilightforest.firefly_forest": "Svetluškový les",
+  "biome.twilightforest.mushroom_forest": "Hubový les",
+  "biome.twilightforest.snowy_forest": "Snežný les",
   "biome.twilightforest.underground": "Podzemie",
   "block.minecraft.banner.twilightforest.snow_queen.black": "Čierna snehová vločka",
   "block.minecraft.banner.twilightforest.snow_queen.blue": "Modrá snehová vločka",
@@ -15,5 +17,7 @@
   "block.twilightforest.root": "Korene",
   "block.twilightforest.rope": "Lano",
   "config.twilightforest.magic_trees": "Magické stromy",
-  "death.attack.twilightforest.thorns": "Hráč %1$s vošiel do tŕňov"
+  "death.attack.twilightforest.thorns": "Hráč %1$s vošiel do tŕňov",
+  "entity.twilightforest.fire_beetle": "Ohnivý chrobák",
+  "item.twilightforest.fire_beetle_spawn_egg": "Vajíčko s ohnivým chrobákom"
 }
