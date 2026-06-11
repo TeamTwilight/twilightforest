@@ -4,10 +4,9 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.phys.Vec2;
 import snownee.jade.api.*;
 import snownee.jade.api.config.IPluginConfig;
-import snownee.jade.api.ui.IElementHelper;
+import snownee.jade.api.ui.JadeUI;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.entity.DryingRackBlockEntity;
 import twilightforest.compat.RecipeViewerConstants;
@@ -19,11 +18,9 @@ public enum DryingRackProvider implements IBlockComponentProvider, IServerDataPr
 	public void appendTooltip(ITooltip tooltip, BlockAccessor accessor, IPluginConfig config) {
 		CompoundTag data = accessor.getServerData();
 		if (data.contains("progress")) {
-			int progress = data.getInt("progress");
-
-			IElementHelper helper = IElementHelper.get();
-			int total = data.getInt("total");
-			tooltip.add(helper.text(Component.translatable("jade.drying_rack.remaining", RecipeViewerConstants.getDryingTime(total - progress))).translate(new Vec2(10.0F, 0.0F)));
+			int progress = data.getInt("progress").orElseThrow();
+			int total = data.getInt("total").orElseThrow();
+			tooltip.add(JadeUI.text(Component.translatable("jade.drying_rack.remaining", RecipeViewerConstants.getDryingTime(total - progress))).offset(10, 0));
 		}
 	}
 
@@ -32,8 +29,8 @@ public enum DryingRackProvider implements IBlockComponentProvider, IServerDataPr
 		BlockEntity entity = accessor.getBlockEntity();
 		if (entity instanceof DryingRackBlockEntity rack && rack.isDrying()) {
 			CompoundTag tag = rack.saveWithoutMetadata(accessor.getLevel().registryAccess());
-			data.putInt("progress", tag.getInt("dry_time"));
-			data.putInt("total", tag.getInt("total_dry_time"));
+			data.putInt("progress", tag.getInt("dry_time").orElseThrow());
+			data.putInt("total", tag.getInt("total_dry_time").orElseThrow());
 		}
 	}
 
