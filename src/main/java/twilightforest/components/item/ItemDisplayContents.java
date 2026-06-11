@@ -11,7 +11,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ItemStackTemplate;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.custom.ItemDisplays;
@@ -32,27 +31,27 @@ public class ItemDisplayContents implements TooltipComponent {
 		Codec.INT.fieldOf("chosen_map_slot").forGetter(ItemDisplayContents::findActiveMapSlot)
 	).apply(instance, ItemDisplayContents::fromSlots));
 	public static final StreamCodec<RegistryFriendlyByteBuf, ItemDisplayContents> STREAM_CODEC = StreamCodec.composite(
-		ItemStackTemplate.STREAM_CODEC.apply(ByteBufCodecs.list()), contents -> new ArrayList<>(contents.items),
+		ItemStack.OPTIONAL_STREAM_CODEC.apply(ByteBufCodecs.list()), contents -> new ArrayList<>(contents.items),
 		ByteBufCodecs.VAR_INT, contents -> contents.chosenMapSlot,
 		ItemDisplayContents::new
 	);
-	final NonNullList<ItemStackTemplate> items;
+	final NonNullList<ItemStack> items;
 	public final int chosenMapSlot;
 
 	private ItemDisplayContents(int size, int chosenMapSlot) {
-		this.items = NonNullList.withSize(size, new ItemStackTemplate(ItemStack.EMPTY.getItem()));
+		this.items = NonNullList.withSize(size, ItemStack.EMPTY);
 		this.chosenMapSlot = chosenMapSlot;
 	}
 
-	private ItemDisplayContents(List<ItemStackTemplate> items, int chosenMapSlot) {
+	private ItemDisplayContents(List<ItemStack> items, int chosenMapSlot) {
 		this.items = NonNullList.copyOf(items);
 		this.chosenMapSlot = chosenMapSlot;
 	}
 
 	private void copyInto(NonNullList<ItemStack> list) {
 		for (int i = 0; i < list.size(); i++) {
-			ItemStackTemplate itemStackTemplate = i < this.items.size() ? this.items.get(i) : new ItemStackTemplate(ItemStack.EMPTY.getItem());
-			list.set(i, itemStackTemplate.create());
+			ItemStack itemstack = i < this.items.size() ? this.items.get(i) : ItemStack.EMPTY;
+			list.set(i, itemstack.copy());
 		}
 	}
 
@@ -64,7 +63,7 @@ public class ItemDisplayContents implements TooltipComponent {
 			ItemDisplayContents contents = new ItemDisplayContents(optionalint.getAsInt() + 1, chosenMapSlot);
 
 			for (DisplaySlot slot : slots) {
-				contents.items.set(slot.index(), new ItemStackTemplate(slot.item().getItem()));
+				contents.items.set(slot.index(), slot.item());
 			}
 
 			return contents;
@@ -75,9 +74,9 @@ public class ItemDisplayContents implements TooltipComponent {
 		List<DisplaySlot> list = new ArrayList<>();
 
 		for (int i = 0; i < this.items.size(); i++) {
-			ItemStackTemplate itemStackTemplate = this.items.get(i);
-			if (!itemStackTemplate.create().isEmpty()) {
-				list.add(new DisplaySlot(i, itemStackTemplate.create()));
+			ItemStack itemstack = this.items.get(i);
+			if (!itemstack.isEmpty()) {
+				list.add(new DisplaySlot(i, itemstack));
 			}
 		}
 
@@ -88,7 +87,7 @@ public class ItemDisplayContents implements TooltipComponent {
 		return chosenMapSlot;
 	}
 
-	public NonNullList<ItemStackTemplate> items() {
+	public NonNullList<ItemStack> items() {
 		return this.items;
 	}
 
@@ -102,15 +101,31 @@ public class ItemDisplayContents implements TooltipComponent {
 
 	@Override
 	public boolean equals(Object other) {
-		return this == other || (other instanceof ItemDisplayContents contents && this.items.equals(contents.items));
+		if (this == other) {
+			return true;
+		} else if (other instanceof ItemDisplayContents contents && this.chosenMapSlot == contents.chosenMapSlot) {
+			if (this.items.size() != contents.items.size()) {
+				return false;
+			}
+
+			for (int i = 0; i < this.items.size(); ++i) {
+				if (!ItemStack.matches(this.items.get(i), contents.items.get(i))) {
+					return false;
+				}
+			}
+
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	@Override
 	public int hashCode() {
 		int result = 0;
 
-		for (ItemStackTemplate stackTemplate : this.items) {
-			result = result * 31 + ItemStack.hashItemAndComponents(stackTemplate.create());
+		for (ItemStack stack : this.items) {
+			result = result * 31 + ItemStack.hashItemAndComponents(stack);
 		}
 
 		return 31 * result + this.chosenMapSlot;
@@ -203,13 +218,7 @@ public class ItemDisplayContents implements TooltipComponent {
 		}
 
 		public ItemDisplayContents toImmutable() {
-			List<ItemStackTemplate> converted = new ArrayList<>(this.items.size());
-
-			for (ItemStack stack : this.items) {
-				converted.add(new ItemStackTemplate(stack.getItem()));
-			}
-
-			return new ItemDisplayContents(converted, this.chosenMapSlot);
+			return new ItemDisplayContents(this.items, this.chosenMapSlot);
 		}
 
 		public int cycleChosenMapSlot() {
