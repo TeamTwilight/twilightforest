@@ -99,6 +99,8 @@
   "death.attack.twilightforest.ghastTear.player": "Hráč %1$s bol usmažený ohnivými slzami pri úteku pred %2$s.",
   "death.attack.twilightforest.hydraFire": "Hráč %1$s bol zaživa upečený Hydrou",
   "death.attack.twilightforest.hydraFire.player": "Hráč %1$s bol zaživa upečený Hydrou pri úteku pred %2$s",
+  "death.attack.twilightforest.leafBrain": "Mozog hráča %1$s sa premenil na lístie vďaka hráčovi %2$s",
+  "death.attack.twilightforest.leafBrain.item": "Mozog hráča %1$s sa premenil na lístie vďaka hráčovi %2$s pomocou %3$s",
   "death.attack.twilightforest.thorns": "Hráč %1$s vošiel do tŕnia",
   "death.attack.twilightforest.thorns.player": "Hráč %1$s narazil do tŕnia pri úteku pred %2$s",
   "entity.twilightforest.boar": "Diviak",
