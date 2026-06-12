@@ -101,13 +101,9 @@ public class ItemDisplayContents implements TooltipComponent {
 
 	@Override
 	public boolean equals(Object other) {
-		if (this == other) {
-			return true;
-		} else {
-			return other instanceof ItemDisplayContents contents
-				&& this.chosenMapSlot == contents.chosenMapSlot
-				&& ItemStack.listMatches(this.items, contents.items);
-		}
+		return this == other || (other instanceof ItemDisplayContents contents
+			&& this.chosenMapSlot == contents.chosenMapSlot
+			&& ItemStack.listMatches(this.items, contents.items));
 	}
 
 	@Override
