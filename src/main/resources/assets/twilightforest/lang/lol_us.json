@@ -1,1 +1,7 @@
-{}
+{
+  "biome.twilightforest.enchanted_forest": "Majik forust",
+  "biome.twilightforest.spooky_forest": "Spooooky wuds",
+  "block.twilightforest.iron_ladder": "Irun laddr",
+  "block.twilightforest.root": "Stik bluk",
+  "config.twilightforest.multiplayer_fight_adjuster.none": "Nope"
+}
