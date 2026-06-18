@@ -107,7 +107,7 @@ public class RectangleLatticeIterator<T> implements Iterator<T>, Iterable<T> {
 
 		public static final TriangularLatticeConfig DEFAULT = new TriangularLatticeConfig(3.5f);
 
-		public static final Codec<TriangularLatticeConfig> CODEC = Codec.withAlternative(VERBOSE_CODEC, Codec.withAlternative(OFFSET_CODEC, Codec.withAlternative(SPACING_CODEC, MapCodec.unit(DEFAULT).codec())));
+		public static final Codec<TriangularLatticeConfig> CODEC = Codec.withAlternative(VERBOSE_CODEC, Codec.withAlternative(OFFSET_CODEC, Codec.withAlternative(SPACING_CODEC, MapCodec.unitCodec(DEFAULT))));
 
 		public TriangularLatticeConfig(float spacing) {
 			this(spacing, Mth.cos(Mth.PI / 6f) * spacing, Mth.sin(Mth.PI / 6f) * spacing);
