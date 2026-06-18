@@ -1,6 +1,7 @@
 {
   "biome.twilightforest.mushroom_forest": "Shroom forest",
   "biome.twilightforest.snowy_forest": "Snowy forest",
+  "commands.tffeature.coords": "Position: %s",
   "config.twilightforest.multiplayer_fight_adjuster.more_loot": "More loot",
   "config.twilightforest.multiplayer_fight_adjuster.none": "Nothin'"
 }
