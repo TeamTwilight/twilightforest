@@ -1,9 +1,13 @@
 {
   "biome.twilightforest.enchanted_forest": "Majik forust",
+  "biome.twilightforest.fire_swamp": "fier zwump",
   "biome.twilightforest.snowy_forest": "Snuwy wudz",
   "biome.twilightforest.spooky_forest": "Spooooky wuds",
   "block.twilightforest.hollow_oak_log": "Ok lawg wit a hole",
   "block.twilightforest.iron_ladder": "Irun laddr",
+  "block.twilightforest.liveroot_block": "Greenizh stik bluk",
   "block.twilightforest.root": "Stik bluk",
-  "config.twilightforest.multiplayer_fight_adjuster.none": "Nope"
+  "config.twilightforest.multiplayer_fight_adjuster.none": "Nope",
+  "entity.twilightforest.dwarf_rabbit": "smol Jumpin Foodz",
+  "item.twilightforest.liveroot": "Greenizh stik bluk"
 }
