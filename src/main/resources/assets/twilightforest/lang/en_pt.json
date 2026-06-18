@@ -3,5 +3,7 @@
   "biome.twilightforest.snowy_forest": "Snowy forest",
   "commands.tffeature.coords": "Position: %s",
   "config.twilightforest.multiplayer_fight_adjuster.more_loot": "More loot",
-  "config.twilightforest.multiplayer_fight_adjuster.none": "Nothin'"
+  "config.twilightforest.multiplayer_fight_adjuster.none": "Nothin'",
+  "item.twilightforest.ender_bow": "Ender flintlock",
+  "subtitles.twilightforest.block.wrought_iron_fence.extend": "Steel clanks"
 }
