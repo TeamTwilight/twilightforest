@@ -18,8 +18,8 @@ public enum DryingRackProvider implements IBlockComponentProvider, IServerDataPr
 	public void appendTooltip(ITooltip tooltip, BlockAccessor accessor, IPluginConfig config) {
 		CompoundTag data = accessor.getServerData();
 		if (data.contains("progress")) {
-			int progress = data.getInt("progress").orElseThrow();
-			int total = data.getInt("total").orElseThrow();
+			int progress = data.getIntOr("progress", 0);
+			int total = data.getIntOr("total", 0);
 			tooltip.add(JadeUI.text(Component.translatable("jade.drying_rack.remaining", RecipeViewerConstants.getDryingTime(total - progress))).offset(10, 0));
 		}
 	}
@@ -29,8 +29,8 @@ public enum DryingRackProvider implements IBlockComponentProvider, IServerDataPr
 		BlockEntity entity = accessor.getBlockEntity();
 		if (entity instanceof DryingRackBlockEntity rack && rack.isDrying()) {
 			CompoundTag tag = rack.saveWithoutMetadata(accessor.getLevel().registryAccess());
-			data.putInt("progress", tag.getInt("dry_time").orElseThrow());
-			data.putInt("total", tag.getInt("total_dry_time").orElseThrow());
+			data.putInt("progress", tag.getIntOr("dry_time", 0));
+			data.putInt("total", tag.getIntOr("total_dry_time", 0));
 		}
 	}
 
