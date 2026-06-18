@@ -31,18 +31,28 @@ public class ArmorUtilTests {
 	public void getShroudedArmorPercentage() {
 		LivingEntity entity = mock(LivingEntity.class);
 
-		ItemStack empty = ItemStack.EMPTY;
-		ItemStack stick = new ItemStack((Items.STICK));
-		ItemStack shrouded = new ItemStack(TFItems.ARCTIC_BOOTS, 1, DataComponentPatch.builder().set(TFDataComponents.EMPERORS_CLOTH.get(), Unit.INSTANCE).build());
+		when(entity.getItemBySlot(EquipmentSlot.HEAD))
+			.thenReturn(ItemStack.EMPTY);
 
-		when(entity.getItemBySlot(EquipmentSlot.HEAD)).thenReturn(empty);
-		when(entity.getItemBySlot(EquipmentSlot.CHEST)).thenReturn(stick);
-		when(entity.getItemBySlot(EquipmentSlot.LEGS)).thenReturn(shrouded);
-		when(entity.getItemBySlot(EquipmentSlot.FEET)).thenReturn(empty);
+		when(entity.getItemBySlot(EquipmentSlot.CHEST))
+			.thenReturn(new ItemStack(Items.STICK));
+
+		when(entity.getItemBySlot(EquipmentSlot.LEGS))
+			.thenReturn(ItemStack.EMPTY);
+
+		when(entity.getItemBySlot(EquipmentSlot.FEET))
+			.thenReturn(
+				new ItemStack(
+					TFItems.ARCTIC_BOOTS,
+					1,
+					DataComponentPatch.builder()
+						.set(TFDataComponents.EMPERORS_CLOTH.get(), Unit.INSTANCE)
+						.build()
+				)
+			);
 
 		float result = instance.getShroudedArmorPercentage(entity);
 
-		assertEquals(1F / 3F, result);
+		assertEquals(0.25F, result);
 	}
-
 }
