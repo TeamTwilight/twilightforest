@@ -58,8 +58,6 @@ public record MazeMapPacket(ClientboundMapItemDataPacket inner, boolean ore, int
 					mapdata.yCenter = message.yCenter();
 					message.inner().applyToMap(mapdata);
 
-					// This may or may not be equivalent to updating the renderer directly, will need testing to verify
-
 					MapItemSavedData saved = level.getMapData(message.inner().mapId());
 
 					if (saved != null) {

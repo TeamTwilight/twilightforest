@@ -51,8 +51,6 @@ public record MagicMapPacket(ClientboundMapItemDataPacket inner, List<String> co
 					mapdata.conqueredStructures.clear();
 					mapdata.conqueredStructures.addAll(message.conqueredStructures());
 
-					// This may or may not be equivalent to updating the renderer directly, will need testing to verify
-
 					MapItemSavedData saved = level.getMapData(message.inner.mapId());
 
 					if (saved != null) {
