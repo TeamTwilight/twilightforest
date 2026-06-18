@@ -202,11 +202,9 @@ repositories {
 		name 'Jared\'s Maven' // JEI
 		url 'https://maven.blamejared.com/'
 	}
-	repositories {
-		maven {
-			name = "Curios" // Curios
-			url = uri("https://maven.theillusivec4.top/")
-		}
+	maven {
+		name = "Curios" // Curios
+		url = uri("https://maven.theillusivec4.top/")
 	}
 	maven {
 		name 'Shedaniel\'s Maven' //REI
@@ -222,8 +220,12 @@ repositories {
 	maven { //CS
 		url "https://nexus.resourcefulbees.com/repository/maven-public/"
 	}
-	maven { // Jade
-		url = "https://api.modrinth.com/maven"
+	maven {
+		name 'Curseforge Maven' // Jade
+		url "https://www.cursemaven.com"
+		content {
+			includeGroup "curse.maven"
+		}
 	}
 }
 
@@ -237,15 +239,15 @@ dependencies {
 	testCompileOnly "${beanification}:test-sources"
 
 	//make sure to only pick one of these when testing (switch others to compileOnly)
-//  implementation "mezz.jei:jei-26.1.2-neoforge:${project.jei_version}"
+//  implementation "mezz.jei:jei-${project.minecraft_version}-neoforge:${project.jei_version}"
 //	compileOnly "me.shedaniel:RoughlyEnoughItems-neoforge:${project.rei_version}"
 //	compileOnly "dev.emi:emi-neoforge:${project.emi_version}+${project.base_minecraft_version}"
 
 	// theillusivec4
-//  implementation "top.theillusivec4.curios:curios-neoforge:${project.curios_version}+26.1.2"
+//  implementation "top.theillusivec4.curios:curios-neoforge:${project.curios_version}+${project.minecraft_version}"
 
 	//curse maven
-//	implementation "maven.modrinth:jade:${project.minecraft_version}+neoforge"
+	implementation "curse.maven:jade-324717:8251883"
 //	implementation "curse.maven:cosmetic-armor-reworked-237307:5961480"
 //	runtimeOnly "curse.maven:jeed-532286:5483315"
 //	runtimeOnly "curse.maven:museum-curator-859070:4629894"
