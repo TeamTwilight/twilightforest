@@ -11,7 +11,7 @@ import twilightforest.init.TFDataComponents;
 public class ArmorUtil {
 	public float getShroudedArmorPercentage(LivingEntity entity) {
 		int shroudedArmor = 0;
-		int nonShroudedArmor = 0;
+		int armorSlots = 0;
 
 		for (EquipmentSlot slot : EquipmentSlotGroup.ARMOR) {
 			ItemStack stack = entity.getItemBySlot(slot);
@@ -20,9 +20,9 @@ public class ArmorUtil {
 				shroudedArmor++;
 			}
 
-			nonShroudedArmor++;
+			armorSlots++;
 		}
 
-		return nonShroudedArmor > 0 && shroudedArmor > 0 ? (float) shroudedArmor / (float) nonShroudedArmor : 0.0F;
+		return armorSlots > 0 && shroudedArmor > 0 ? (float) shroudedArmor / (float) armorSlots : 0.0F;
 	}
 }
