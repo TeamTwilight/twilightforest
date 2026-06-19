@@ -124,11 +124,11 @@ public class RectangleLatticeIterator<T> implements Iterator<T>, Iterable<T> {
 			float xOffset = tag.getFloat("x_offset").orElse(Mth.cos(Mth.PI / 6f) * spacing);
 			float zOffset = tag.getFloat("z_offset").orElse(Mth.sin(Mth.PI / 6f) * spacing);
 
-			Optional<Float> xSpacing = tag.getFloat("x_spacing");
-			Optional<Float> zSpacing = tag.getFloat("z_spacing");
+			float xSpacing = tag.getFloatOr("x_spacing", 0f);
+			float zSpacing = tag.getFloatOr("z_spacing", 0f);
 
-			if (xSpacing.isPresent() || zSpacing.isPresent()) {
-				return new TriangularLatticeConfig(spacing, xOffset, zOffset, xSpacing.orElseThrow(), zSpacing.orElseThrow());
+			if (xSpacing != 0 || zSpacing != 0) {
+				return new TriangularLatticeConfig(spacing, xOffset, zOffset, xSpacing, zSpacing);
 			} else {
 				return new TriangularLatticeConfig(spacing, xOffset, zOffset);
 			}
