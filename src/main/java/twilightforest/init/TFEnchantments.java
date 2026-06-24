@@ -67,7 +67,7 @@ public class TFEnchantments {
 				EnchantmentTarget.VICTIM,
 				EnchantmentTarget.ATTACKER,
 				AllOf.entityEffects(
-					new ApplyFrostedEffect(LevelBasedValue.constant(200), LevelBasedValue.perLevel(1.0F, 1.0F)),
+					new ApplyFrostedEffect(LevelBasedValue.constant(200), LevelBasedValue.perLevel(0.0F, 1.0F)),
 					new ChangeItemDamage(LevelBasedValue.constant(2.0F))),
 				LootItemRandomChanceCondition.randomChance(EnchantmentLevelProvider.forEnchantmentLevel(LevelBasedValue.perLevel(0.15F)))));
 
