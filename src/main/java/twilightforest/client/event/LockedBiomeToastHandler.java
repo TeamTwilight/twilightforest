@@ -12,7 +12,6 @@ import twilightforest.util.Restriction;
 import java.util.Optional;
 
 public class LockedBiomeToastHandler {
-
 	private static boolean shownToast = false;
 	private static int timeUntilToast = 60;
 
@@ -29,7 +28,7 @@ public class LockedBiomeToastHandler {
 			if (restriction.isPresent() && restriction.get().lockedBiomeToast() != null) {
 				timeUntilToast--;
 				if (!shownToast && timeUntilToast <= 0) {
-					Minecraft.getInstance().getToasts().addToast(new LockedBiomeToast(restriction.get().lockedBiomeToast()));
+					Minecraft.getInstance().getToastManager().addToast(new LockedBiomeToast(restriction.get().lockedBiomeToast()));
 					shownToast = true;
 				}
 			} else {

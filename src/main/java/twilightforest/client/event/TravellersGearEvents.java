@@ -1,4 +1,4 @@
-package twilightforest.events;
+package twilightforest.client.event;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
@@ -8,7 +8,6 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -18,8 +17,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.component.ItemContainerContents;
@@ -40,10 +39,10 @@ import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerSpawnPhantomsEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
-import net.neoforged.neoforge.items.ItemHandlerHelper;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
+import org.jetbrains.annotations.NotNull;
 import tamaized.beanification.Component;
 import tamaized.beanification.PostConstruct;
 import twilightforest.components.entity.SlimySolesAttachment;
@@ -62,7 +61,7 @@ import java.util.stream.Stream;
 
 @Component
 public class TravellersGearEvents {
-	private static final List<DeferredHolder<AttachmentType<?>, ? extends AttachmentType<?>>> ATTACHMENTS_TO_PRESERVE_ON_DEATH = List.of(
+	private static final List<DeferredHolder<@NotNull AttachmentType<?>, ? extends @NotNull AttachmentType<?>>> ATTACHMENTS_TO_PRESERVE_ON_DEATH = List.of(
 		TFDataAttachments.TRAVELLERS_GOGGLES_RED_THREAD_VISION
 	);
 
@@ -103,7 +102,7 @@ public class TravellersGearEvents {
 		}
 		AbstractArrow.Pickup pickup = arrow.pickup;
 		if (!player.hasInfiniteMaterials() && pickup.equals(AbstractArrow.Pickup.ALLOWED)) {
-			ItemHandlerHelper.giveItemToPlayer(player, arrow.getPickupItemStackOrigin());
+			player.addItem(arrow.getPickupItemStackOrigin());
 			player.getInventory().setChanged();
 		}
 		if (pickup.equals(AbstractArrow.Pickup.ALLOWED) || pickup.equals(AbstractArrow.Pickup.CREATIVE_ONLY) && player.isCreative())
@@ -123,7 +122,7 @@ public class TravellersGearEvents {
 			event.setCanceled(true); // always cancel on the client side because the game sends a damage packet when it hits the player
 			return;
 		}
-		if (probability <= level.random.nextFloat())
+		if (probability <= level.getRandom().nextFloat())
 			return;
 		Entity projectile = event.getEntity();
 		Vec3 hitPosition = projectile.position().add(projectile.getDeltaMovement());
@@ -132,9 +131,9 @@ public class TravellersGearEvents {
 		ParticlePacket particlePacket = new ParticlePacket();
 		for (int particleNumber = 0; particleNumber < 20; particleNumber++) {
 			Vec3 particleVelocity = new Vec3(
-				(level.random.nextDouble() - 0.5),
-				(level.random.nextDouble() - 0.5),
-				(level.random.nextDouble() - 0.5)
+				(level.getRandom().nextDouble() - 0.5),
+				(level.getRandom().nextDouble() - 0.5),
+				(level.getRandom().nextDouble() - 0.5)
 			);
 			ParticleOptions type = TFParticleType.PERFECT_DODGE.get();
 			particlePacket.queueParticle(type, false, hitPosition, particleVelocity);
@@ -256,7 +255,7 @@ public class TravellersGearEvents {
 				if (armor.has(TFDataComponents.STORED_BROKEN_ATTRIBUTES)) {
 					entries.addAll(armor.get(TFDataComponents.STORED_BROKEN_ATTRIBUTES).modifiers());
 				}
-				armor.set(TFDataComponents.STORED_BROKEN_ATTRIBUTES, new ItemAttributeModifiers(entries.stream().toList(), armor.get(DataComponents.ATTRIBUTE_MODIFIERS).showInTooltip()));
+				armor.set(TFDataComponents.STORED_BROKEN_ATTRIBUTES, new ItemAttributeModifiers(entries.stream().toList()));
 				event.clearModifiers();
 			}
 		} else {
@@ -278,7 +277,7 @@ public class TravellersGearEvents {
 			if (damagedStack.getDamageValue() + event.getNewDamage(slot) >= damagedStack.getMaxDamage()) {
 				event.setNewDamage(slot, damagedStack.getMaxDamage() - damagedStack.getDamageValue() - 1);
 			} else if (damagedStack.getDamageValue() + event.getNewDamage(slot) >= damagedStack.getMaxDamage() - 1 && event.getEntity() instanceof ServerPlayer player) {
-				player.playNotifySound(SoundEvents.ITEM_BREAK, SoundSource.PLAYERS, 1.0F, player.getVoicePitch());
+				player.playSound(SoundEvents.ITEM_BREAK.value(), 1.0F, player.getVoicePitch());
 			}
 		});
 	}
@@ -311,7 +310,7 @@ public class TravellersGearEvents {
 			return;
 		}
 		ItemStack inputStack = travellersItemStacks.getFirst();
-		List<Holder.Reference<TravellersModifier>> modifiers = TravellersModifiersManager.findAllInsertableModifiers(access, inputStack);
+		List<Holder.Reference<@NotNull TravellersModifier>> modifiers = TravellersModifiersManager.findAllInsertableModifiers(access, inputStack);
 		if (modifiers.isEmpty()) {
 			event.setCanceled(true);
 			return;
@@ -326,7 +325,7 @@ public class TravellersGearEvents {
 		returnModifierItems(event,
 			TravellersModifiersManager.SWAP_HOTBAR_MODIFIER,
 			DataComponents.CONTAINER,
-			ItemContainerContents::nonEmptyStream
+			ItemContainerContents::nonEmptyItemCopyStream
 		);
 
 		returnModifierItems(event,
@@ -336,7 +335,7 @@ public class TravellersGearEvents {
 		);
 	}
 
-	private <T> void returnModifierItems(GrindstoneEvent.OnTakeItem event, ResourceKey<TravellersModifier> modifierKey, DataComponentType<T> componentType, Function<T, Stream<ItemStack>> itemStreamExtractor) {
+	private <T> void returnModifierItems(GrindstoneEvent.OnTakeItem event, ResourceKey<@NotNull TravellersModifier> modifierKey, DataComponentType<@NotNull T> componentType, Function<T, Stream<ItemStack>> itemStreamExtractor) {
 		if (event.getPlayer() == null)
 			return;
 
@@ -345,7 +344,7 @@ public class TravellersGearEvents {
 		).map(stack -> stack.get(componentType))
 			.ifPresent(component ->
 				itemStreamExtractor.apply(component)
-					.forEach(itemStack -> ItemHandlerHelper.giveItemToPlayer(event.getPlayer(), itemStack))
+					.forEach(itemStack -> event.getPlayer().addItem(itemStack))
 			);
 	}
 
@@ -374,20 +373,20 @@ public class TravellersGearEvents {
 				var oldMods = TravellersModifiersManager.findAllInsertableModifiers(player, compareStack);
 				TravellersModifiersManager.findAllInsertableModifiers(player, event.getCrafting()).stream()
 					.filter(modifier -> !oldMods.contains(modifier)).toList()
-						.forEach(modifier -> TFAdvancements.ADD_MODIFIER.get().trigger(player, modifier.key().location()));
+						.forEach(modifier -> TFAdvancements.ADD_MODIFIER.get().trigger(player, modifier.key().identifier()));
 			}
 		}
 	}
 
 	public void keepAttachmentsOnDeath(PlayerEvent.Clone event) {
 		if (event.isWasDeath()) {
-			for (DeferredHolder<AttachmentType<?>, ? extends AttachmentType<?>> attachmentHolder : ATTACHMENTS_TO_PRESERVE_ON_DEATH) {
+			for (DeferredHolder<@NotNull AttachmentType<?>, ? extends @NotNull AttachmentType<?>> attachmentHolder : ATTACHMENTS_TO_PRESERVE_ON_DEATH) {
 				copyAttachmentData(event.getOriginal(), event.getEntity(), attachmentHolder.get());
 			}
 		}
 	}
 
-	private <T> void copyAttachmentData(Player source, Player target, AttachmentType<T> type) {
+	private <T> void copyAttachmentData(Player source, Player target, AttachmentType<@NotNull T> type) {
 		if (source.hasData(type)) {
 			target.setData(type, source.getData(type));
 		}

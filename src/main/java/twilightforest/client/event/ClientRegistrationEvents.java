@@ -1,12 +1,14 @@
 package twilightforest.client.event;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.animal.wolf.AdultWolfModel;
 import net.minecraft.client.model.geom.LayerDefinitions;
+import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.monster.silverfish.SilverfishModel;
 import net.minecraft.client.model.monster.slime.SlimeModel;
 import net.minecraft.client.model.monster.spider.SpiderModel;
@@ -24,8 +26,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
@@ -47,7 +47,6 @@ import twilightforest.client.*;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.*;
 import twilightforest.client.model.block.BrazierModel;
-import twilightforest.client.model.block.ReactorDebrisModel;
 import twilightforest.client.model.block.aurorablock.UnbakedNoiseVaryingBlockStateModel;
 import twilightforest.client.model.block.carpet.RoyalRagsModelLoader;
 import twilightforest.client.model.block.connected.ConnectedTextureModelLoader;
@@ -56,7 +55,6 @@ import twilightforest.client.model.block.giantblock.UnbakedGiantBlockStateModel;
 import twilightforest.client.model.block.patch.PatchModelLoader;
 import twilightforest.client.model.entity.*;
 import twilightforest.client.model.item.TravellersGearItemModel;
-import twilightforest.client.model.item.TrollsteinnModel;
 import twilightforest.client.particle.*;
 import twilightforest.client.properties.*;
 import twilightforest.client.renderer.armor.TFArmorRenderer;
@@ -67,6 +65,7 @@ import twilightforest.client.renderer.entity.layers.IceLayer;
 import twilightforest.client.renderer.entity.layers.ShieldLayer;
 import twilightforest.client.renderer.map.ConqueredMapIconRenderer;
 import twilightforest.client.renderer.map.MagicMapPlayerIconRenderer;
+import twilightforest.client.renderer.special.*;
 import twilightforest.client.renderer.tooltip.ItemDisplayTooltipComponent;
 import twilightforest.client.renderer.tooltip.PotionFlaskTooltipComponent;
 import twilightforest.client.renderer.tooltip.TravellersBeltTooltipComponent;
@@ -77,8 +76,6 @@ import twilightforest.item.travellers_gear.TravellersArmorItem;
 import twilightforest.item.travellers_gear.TravellersGogglesItem;
 import twilightforest.util.woods.TFWoodTypes;
 
-import java.util.Objects;
-
 @Component(dist = Dist.CLIENT)
 public class ClientRegistrationEvents {
 
@@ -87,10 +84,7 @@ public class ClientRegistrationEvents {
 	@PostConstruct
 	private void setup(IEventBus bus) {
 		bus.addListener(EntityRenderersEvent.AddLayers.class, this::attachRenderLayers);
-		bus.addListener(this::bakeCustomModels);
-		bus.addListener(this::cacheJarLids);
 		bus.addListener(this::clientSetup);
-		bus.addListener(this::registerAdditionalModels);
 		bus.addListener(this::registerClientReloadListeners);
 		bus.addListener(this::registerAtlases);
 		bus.addListener(this::registerEntityRenderers);
@@ -105,13 +99,12 @@ public class ClientRegistrationEvents {
 		bus.addListener(this::registerRangeProperties);
 		bus.addListener(this::registerSelectProperties);
 		bus.addListener(this::registerItemModels);
+		bus.addListener(this::registerSpecialModelRenderers);
 
 		bus.addListener(RegisterKeyMappingsEvent.class, event -> TFKeyBinds.KEY_MAPPINGS.forEach(event::register));
 
 		bus.addListener(ColorHandler::registerBlockColors);
 		bus.addListener(ColorHandler::registerItemColors);
-
-		bus.addListener(TFShaders::registerShaders);
 
 		bus.addListener(OverlayHandler::registerOverlays);
 
@@ -152,36 +145,6 @@ public class ClientRegistrationEvents {
 		event.register(TwilightForestMod.prefix("experiment_115_variant"), Experiment115Type.TYPE);
 	}
 
-	private void bakeCustomModels(ModelEvent.ModifyBakingResult event) {
-		BakedModel oldModel = event.getModels().get(ModelResourceLocation.inventory(TwilightForestMod.prefix("trollsteinn")));
-		models.put(ModelResourceLocation.inventory(TwilightForestMod.prefix("trollsteinn")), new TrollsteinnModel(oldModel));
-		BakedModel defaultReactorDebrisModel = event.getModels().get(ModelResourceLocation.vanilla("netherrack", ""));
-		models.put(new ModelResourceLocation(TwilightForestMod.prefix("reactor_debris"), ""), new ReactorDebrisModel(defaultReactorDebrisModel));
-	}
-
-	private void registerAdditionalModels(ModelEvent.RegisterAdditional event) {
-		event.register(ShieldLayer.LOC);
-		event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("item/trophy")));
-		event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("item/trophy_minor")));
-		event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("item/trophy_quest")));
-		event.register(TrollsteinnModel.LIT_TROLLSTEINN);
-
-		for (JarRenderer.LidResource lid : JarRenderer.LID_LOCATION_LIST.get()) {
-			Identifier location = lid.identifier();
-			String name = location.getPath();
-			if (lid.customPath() != null) name = lid.customPath();
-			event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("block/lid/" + name)));
-		}
-	}
-
-	private void cacheJarLids(ModelEvent.BakingCompleted event) {
-		JarRenderer.LID_LOCATION_LIST.get().forEach((lid) -> {
-			String name = lid.identifier().getPath();
-			if (lid.customPath() != null) name = lid.customPath();
-			JarRenderer.LIDS.put(lid.lid(), event.getModels().get(ModelResourceLocation.standalone(TwilightForestMod.prefix("block/lid/" + name))));
-		});
-	}
-
 	private void clientSetup(FMLClientSetupEvent evt) {
 		try {
 			Class.forName("net.optifine.Config");
@@ -207,7 +170,7 @@ public class ClientRegistrationEvents {
 	}
 
 	private void registerClientReloadListeners(AddClientReloadListenersEvent event) {
-		event.addListener(TwilightForestMod.prefix("texture_generator"), TextureGeneratorReloadListener.INSTANCE);
+//		event.addListener(TwilightForestMod.prefix("texture_generator"), TextureGeneratorReloadListener.INSTANCE);
 		event.addListener(TwilightForestMod.prefix("armor_cache"), new TFArmorRenderer.ResourceReloadListener());
 	}
 
@@ -321,6 +284,11 @@ public class ClientRegistrationEvents {
 		event.registerBlockEntityRenderer(TFBlockEntities.DRYING_RACK.get(), DryingRackRenderer::new);
 	}
 
+	private static LayerDefinition createFixedLayer(MeshDefinition mesh, int texWidth, int texHeight) {
+		mesh.getRoot().addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
+		return LayerDefinition.create(mesh, texWidth, texHeight);
+	}
+
 	private void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
 		event.registerLayerDefinition(TFModelLayers.ARCTIC_ARMOR_INNER, () -> LayerDefinition.create(ArcticArmorModel.addPieces(LayerDefinitions.INNER_ARMOR_DEFORMATION), 64, 32));
 		event.registerLayerDefinition(TFModelLayers.ARCTIC_ARMOR_OUTER, () -> LayerDefinition.create(ArcticArmorModel.addPieces(LayerDefinitions.OUTER_ARMOR_DEFORMATION), 64, 32));
@@ -350,7 +318,6 @@ public class ClientRegistrationEvents {
 
 		event.registerLayerDefinition(TFModelLayers.ADHERENT, AdherentModel::create);
 		event.registerLayerDefinition(TFModelLayers.ALPHA_YETI, AlphaYetiModel::create);
-		event.registerLayerDefinition(TFModelLayers.ARMORED_GIANT, () -> LayerDefinition.create(HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F), 64, 32));
 		event.registerLayerDefinition(TFModelLayers.BIGHORN_SHEEP, BighornModel::create);
 		event.registerLayerDefinition(TFModelLayers.BIGHORN_SHEEP_BABY, () -> BighornModel.create().apply(BighornModel.BABY_TRANSFORMER));
 		event.registerLayerDefinition(TFModelLayers.BLOCKCHAIN_GOBLIN, BlockChainGoblinModel::create);
@@ -367,7 +334,6 @@ public class ClientRegistrationEvents {
 		event.registerLayerDefinition(TFModelLayers.DEER, DeerModel::create);
 		event.registerLayerDefinition(TFModelLayers.DEER_BABY, () -> DeerModel.create().apply(DeerModel.BABY_TRANSFORMER));
 		event.registerLayerDefinition(TFModelLayers.FIRE_BEETLE, FireBeetleModel::create);
-		event.registerLayerDefinition(TFModelLayers.GIANT_MINER, () -> LayerDefinition.create(HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F), 64, 32));
 		event.registerLayerDefinition(TFModelLayers.HARBINGER_CUBE, HarbingerCubeModel::create);
 		event.registerLayerDefinition(TFModelLayers.HEDGE_SPIDER, SpiderModel::createSpiderBodyLayer);
 		event.registerLayerDefinition(TFModelLayers.HELMET_CRAB, HelmetCrabModel::create);
@@ -380,10 +346,8 @@ public class ClientRegistrationEvents {
 		event.registerLayerDefinition(TFModelLayers.KING_SPIDER, SpiderModel::createSpiderBodyLayer);
 		event.registerLayerDefinition(TFModelLayers.KNIGHT_PHANTOM, KnightPhantomModel::create);
 		event.registerLayerDefinition(TFModelLayers.KOBOLD, KoboldModel::create);
-		event.registerLayerDefinition(TFModelLayers.LICH_MINION, () -> LayerDefinition.create(HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F), 64, 64));
 		event.registerLayerDefinition(TFModelLayers.LICH, LichModel::create);
 		event.registerLayerDefinition(TFModelLayers.LOWER_GOBLIN_KNIGHT, LowerGoblinKnightModel::create);
-		event.registerLayerDefinition(TFModelLayers.LOYAL_ZOMBIE, () -> LayerDefinition.create(HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F), 64, 64));
 		event.registerLayerDefinition(TFModelLayers.MAZE_SLIME, SlimeModel::createInnerBodyLayer);
 		event.registerLayerDefinition(TFModelLayers.MAZE_SLIME_OUTER, SlimeModel::createOuterBodyLayer);
 		event.registerLayerDefinition(TFModelLayers.MINOSHROOM, MinoshroomModel::create);
@@ -392,7 +356,6 @@ public class ClientRegistrationEvents {
 		event.registerLayerDefinition(TFModelLayers.MOSQUITO_SWARM, MosquitoSwarmModel::create);
 		event.registerLayerDefinition(TFModelLayers.NAGA, NagaModel::create);
 		event.registerLayerDefinition(TFModelLayers.NAGA_BODY, NagaModel::create);
-		event.registerLayerDefinition(TFModelLayers.NOOP, () -> LayerDefinition.create(HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F), 0, 0));
 		event.registerLayerDefinition(TFModelLayers.PENGUIN, PenguinModel::create);
 		event.registerLayerDefinition(TFModelLayers.PENGUIN_BABY, () -> PenguinModel.create().apply(PenguinModel.BABY_TRANSFORMER));
 		event.registerLayerDefinition(TFModelLayers.PINCH_BEETLE, PinchBeetleModel::create);
@@ -400,9 +363,6 @@ public class ClientRegistrationEvents {
 		event.registerLayerDefinition(TFModelLayers.QUEST_RAM, QuestRamModel::create);
 		event.registerLayerDefinition(TFModelLayers.RAVEN, RavenModel::create);
 		event.registerLayerDefinition(TFModelLayers.REDCAP, RedcapModel::create);
-		event.registerLayerDefinition(TFModelLayers.REDCAP_ARMOR_INNER, () -> LayerDefinition.create(HumanoidModel.createMesh(new CubeDeformation(0.25F), 0.7F), 64, 32));
-		event.registerLayerDefinition(TFModelLayers.REDCAP_ARMOR_OUTER, () -> LayerDefinition.create(HumanoidModel.createMesh(new CubeDeformation(0.65F), 0.7F), 64, 32));
-		event.registerLayerDefinition(TFModelLayers.RISING_ZOMBIE, () -> LayerDefinition.create(HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F), 64, 64));
 		event.registerLayerDefinition(TFModelLayers.ROVING_CUBE, CubeOfAnnihilationModel::create);
 		event.registerLayerDefinition(TFModelLayers.SKELETON_DRUID, SkeletonDruidModel::create);
 		event.registerLayerDefinition(TFModelLayers.SLIME_BEETLE, SlimeBeetleModel::create);
@@ -432,6 +392,15 @@ public class ClientRegistrationEvents {
 		event.registerLayerDefinition(TFModelLayers.RED_THREAD, RedThreadModel::create);
 
 		event.registerLayerDefinition(TFModelLayers.KNIGHTMETAL_SHIELD, KnightmetalShieldModel::create);
+
+		event.registerLayerDefinition(TFModelLayers.ARMORED_GIANT, () -> createFixedLayer(HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F), 64, 32));
+		event.registerLayerDefinition(TFModelLayers.GIANT_MINER, () -> createFixedLayer(HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F), 64, 32));
+		event.registerLayerDefinition(TFModelLayers.LICH_MINION, () -> createFixedLayer(HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F), 64, 64));
+		event.registerLayerDefinition(TFModelLayers.LOYAL_ZOMBIE, () -> createFixedLayer(HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F), 64, 64));
+		event.registerLayerDefinition(TFModelLayers.NOOP, () -> createFixedLayer(HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F), 0, 0));
+		event.registerLayerDefinition(TFModelLayers.REDCAP_ARMOR_INNER, () -> createFixedLayer(HumanoidModel.createMesh(new CubeDeformation(0.25F), 0.7F), 64, 32));
+		event.registerLayerDefinition(TFModelLayers.REDCAP_ARMOR_OUTER, () -> createFixedLayer(HumanoidModel.createMesh(new CubeDeformation(0.65F), 0.7F), 64, 32));
+		event.registerLayerDefinition(TFModelLayers.RISING_ZOMBIE, () -> createFixedLayer(HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F), 64, 64));
 	}
 
 	private void registerParticleFactories(RegisterParticleProvidersEvent event) {
@@ -465,6 +434,21 @@ public class ClientRegistrationEvents {
 		event.registerSpriteSet(TFParticleType.TWILIGHT_ORB.get(), (SpriteSet sprite) -> new CustomTextureParticle.Factory(sprite, true));
 		event.registerSpriteSet(TFParticleType.SHIELD_BREAK.get(), CustomTextureParticle.ShieldBreak::new);
 	}
+
+	private void registerSpecialModelRenderers(RegisterSpecialModelRendererEvent event) {
+		event.register(TwilightForestMod.prefix("item/template_skull_candle"), SkullCandleSpecialRenderer.Unbaked.MAP_CODEC);
+		event.register(TwilightForestMod.prefix("item/template_trophy"), TrophySpecialRenderer.Unbaked.MAP_CODEC);
+		event.register(TwilightForestMod.prefix("block/mason_jar"), MasonJarSpecialRenderer.Unbaked.MAP_CODEC);
+		event.register(TwilightForestMod.prefix("block/candelabra"), CandelabraSpecialRenderer.Unbaked.MAP_CODEC);
+		event.register(TwilightForestMod.prefix("item/mystic_crown"), MysticCrownSpecialRenderer.Unbaked.MAP_CODEC);
+		event.register(TwilightForestMod.prefix("item/knightmetal_shield"), KnightmetalShieldSpecialRenderer.Unbaked.MAP_CODEC);
+		event.register(TwilightForestMod.prefix("item/keepsake_casket"), KeepsakeCasketSpecialRenderer.Unbaked.MAP_CODEC);
+		event.register(TwilightForestMod.prefix("item/skull_chest"), SkullChestSpecialRenderer.Unbaked.MAP_CODEC);
+		event.register(TwilightForestMod.prefix("item/cicada"), CicadaSpecialRenderer.Unbaked.MAP_CODEC);
+		event.register(TwilightForestMod.prefix("item/firefly"), FireflySpecialRenderer.Unbaked.MAP_CODEC);
+		event.register(TwilightForestMod.prefix("item/moonworm"), MoonwormSpecialRenderer.Unbaked.MAP_CODEC);
+	}
+
 
 	private void registerClientExtensions(RegisterClientExtensionsEvent event) {
 		event.registerBlock(new IClientBlockExtensions() {
@@ -586,20 +570,22 @@ public class ClientRegistrationEvents {
 		BakedMultiPartRenderers.bakeMultiPartRenderers(event.getContext());
 		for (EntityType<?> type : event.getEntityTypes()) {
 			var renderer = event.getRenderer(type);
-			if (renderer instanceof LivingEntityRenderer<?, ?> living) {
-				attachRenderLayers(living);
+			if (renderer instanceof LivingEntityRenderer<?, ?, ?> living) {
+				attachToLiving(living);
 			}
 		}
-
-		event.getSkins().forEach(renderer -> {
-			LivingEntityRenderer<Player, EntityModel<Player>> skin = event.getSkin(renderer);
-			attachRenderLayers(Objects.requireNonNull(skin));
+		event.getSkins().forEach(skinName -> {
+			var skinRenderer = event.getPlayerRenderer(skinName);
+			if (skinRenderer != null) {
+				attachToLiving(skinRenderer);
+			}
 		});
 	}
 
-	private <T extends LivingEntity, M extends EntityModel<T>> void attachRenderLayers(LivingEntityRenderer<T, M> renderer) {
-		renderer.addLayer(new ShieldLayer<>(renderer));
-		renderer.addLayer(new IceLayer<>(renderer));
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	private static void attachToLiving(net.minecraft.client.renderer.entity.LivingEntityRenderer<?, ?, ?> renderer) {
+		renderer.addLayer(new ShieldLayer(renderer));
+		renderer.addLayer(new IceLayer(renderer));
 	}
 
 	public static boolean isOptifinePresent() {

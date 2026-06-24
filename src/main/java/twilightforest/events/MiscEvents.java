@@ -40,7 +40,6 @@ import twilightforest.network.CreateMovingCicadaSoundPacket;
 
 @Component
 public class MiscEvents {
-
 	@PostConstruct
 	private void setup() {
 		NeoForge.EVENT_BUS.addListener(this::addPrey);
@@ -91,7 +90,7 @@ public class MiscEvents {
 		Player player = event.getEntity();
 		ItemStack stack = player.getItemInHand(event.getHand());
 
-		if (!(stack.getItem() instanceof SpawnEggItem spawnEggItem) || spawnEggItem.getType(stack) != TFEntities.DEATH_TOME.get())
+		if (!(stack.getItem() instanceof SpawnEggItem) || SpawnEggItem.getType(stack) != TFEntities.DEATH_TOME.get())
 			return;
 
 		BlockPos pos = event.getPos();
@@ -103,7 +102,7 @@ public class MiscEvents {
 			level.playSound(null, pos, SoundEvents.BOOK_PUT, SoundSource.BLOCKS, 1.0F, 1.0F);
 
 			if (level instanceof ServerLevel serverLevel) {
-				DeathTome tome = TFEntities.DEATH_TOME.get().spawn(serverLevel, stack, player, pos.below(), EntitySpawnReason.SPAWN_EGG, true, false);
+				DeathTome tome = TFEntities.DEATH_TOME.get().spawn(serverLevel, stack, player, pos.below(), EntitySpawnReason.SPAWN_ITEM_USE, true, false);
 				if (tome != null) {
 					stack.consume(1, player);
 					serverLevel.gameEvent(player, GameEvent.ENTITY_PLACE, pos);

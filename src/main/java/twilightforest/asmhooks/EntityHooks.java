@@ -5,11 +5,11 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.fluids.FluidType;
-import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.item.travellers_gear.TravellersGearLogic;
@@ -25,7 +25,6 @@ public class EntityHooks {
 	 * Injection Point:<br/>
 	 * {@link net.minecraft.world.entity.LivingEntity#canStandOnFluid(FluidState)}
 	 */
-	@Nullable
 	public static boolean processWaterWalking(boolean o, LivingEntity livingEntity, FluidState fluidState) {
 		if (!fluidState.is(FluidTags.WATER))
 			return o;
@@ -34,8 +33,10 @@ public class EntityHooks {
 			return o;
 
 		boolean isWaterWalking = TravellersGearLogic.isBelowMaxWaterWalkingSubmergedHeight(livingEntity) && !livingEntity.isShiftKeyDown();
-		if (livingEntity.getFluidTypeHeight(NeoForgeMod.WATER_TYPE.value()) > 0 && isWaterWalking && livingEntity.level().getGameTime() % 3 == 1)
+
+		if (livingEntity.getFluidHeight(FluidTags.WATER) > 0.0D && isWaterWalking && livingEntity.level().getGameTime() % 3 == 1)
 			TravellersGearLogic.waterWalkingSplashEffect(livingEntity);
+
 		return isWaterWalking;
 	}
 
@@ -99,9 +100,10 @@ public class EntityHooks {
 	 * {@link net.minecraft.world.entity.Entity#move(MoverType, Vec3)}<br/>
 	 */
 	public static Entity resetStuckUnrestrained(Entity entity) {
-		if (!(entity instanceof LivingEntity living) || living.stuckSpeedMultiplier.lengthSqr() <= 1.0E-7 || !TravellersModifiersManager.isModifierActive(entity, TravellersModifiersManager.UNRESTRAINED_MODIFIER))
+		if (!(entity instanceof LivingEntity living) || !TravellersModifiersManager.isModifierActive(entity, TravellersModifiersManager.UNRESTRAINED_MODIFIER))
 			return entity;
-		living.stuckSpeedMultiplier = Vec3.ZERO;
+
+		living.makeStuckInBlock(Blocks.AIR.defaultBlockState(), new Vec3(1.0D, 1.0D, 1.0D));
 
 		return entity;
 	}
