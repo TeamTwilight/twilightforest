@@ -35,6 +35,7 @@ import java.util.Optional;
  */
 public record Restriction(@Nullable ResourceKey<@NotNull Structure> hintStructureKey, ResourceKey<@NotNull Enforcement> enforcement,
 						  float multiplier, @Nullable ItemStack lockedBiomeToast, List<Identifier> advancements) {
+	//TODO: refactor this CODEC
 	public static final Codec<Restriction> CODEC = RecordCodecBuilder.create((recordCodecBuilder) -> recordCodecBuilder.group(
 		ResourceKey.codec(Registries.STRUCTURE).optionalFieldOf("structure_key").forGetter((restriction) -> Optional.ofNullable(restriction.hintStructureKey())),
 		ResourceKey.codec(TFRegistries.Keys.ENFORCEMENT).fieldOf("enforcement").forGetter(Restriction::enforcement),
