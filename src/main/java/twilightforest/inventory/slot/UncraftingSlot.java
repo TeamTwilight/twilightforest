@@ -88,8 +88,8 @@ public class UncraftingSlot extends Slot {
 			}
 			if (inputStack.has(DataComponents.CONTAINER)) {
 				inputStack.get(DataComponents.CONTAINER).nonEmptyItems().forEach(stack1 -> {
-					if (!player.getInventory().add(stack1)) {
-						player.drop(stack1, false);
+					if (!player.getInventory().add(stack1.create())) {
+						player.drop(stack1.create(), false);
 					}
 				});
 			}
